@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Core.Serialization
             Debug.Assert(arch.Object != null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
             this.platform = new Mock<IPlatform>();
-            var oe = new Mock<OperatingEnvironment>();
+            var oe = new Mock<PlatformDefinition>();
             this.platform.Setup(p => p.Name).Returns("testOS");
             this.platform.Setup(p => p.SaveUserOptions()).Returns((Dictionary<string,object>) null);
             this.platform.Setup(p => p.Architecture).Returns(arch.Object);

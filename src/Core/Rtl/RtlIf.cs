@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -49,17 +49,17 @@ namespace Reko.Core.Rtl
             this.Class = instr.Class | InstrClass.Conditional;
         }
 
-        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
-        {
-            return visitor.VisitIf(this);
-        }
-
-        public Expression Condition { get; private set; }
+        public Expression Condition { get; }
 
         /// <summary>
         /// The conditionally executed RTL instruction.
         /// </summary>
-        public RtlInstruction Instruction { get; private set; }
+        public RtlInstruction Instruction { get; }
+
+        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
+        {
+            return visitor.VisitIf(this);
+        }
 
         protected override void WriteInner(TextWriter writer)
         {

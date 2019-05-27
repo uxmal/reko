@@ -66,7 +66,7 @@ namespace Reko.Arch.Mos6502
             this.instr = new Instruction
             {
                 Code = opcode,
-                IClass = iclass,
+                InstructionClass = iclass,
                 Operand = ops.Count > 0 ? ops[0] : null,
                 Address = addr,
                 Length = (int)(rdr.Address - addr),

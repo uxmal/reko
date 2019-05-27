@@ -42,12 +42,12 @@ namespace Reko.UnitTests.Structure
         protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
             var cfgSvc = new Mock<IConfigurationService>();
-            var env = new Mock<OperatingEnvironment>();
+            var env = new Mock<PlatformDefinition>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
-            cfgSvc.Setup(c => c.GetSignatureFiles()).Returns(new List<SignatureFile>());
-            env.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
-            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            cfgSvc.Setup(c => c.GetSignatureFiles()).Returns(new List<SignatureFileDefinition>());
+            env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
+            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());

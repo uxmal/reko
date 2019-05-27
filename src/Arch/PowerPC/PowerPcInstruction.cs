@@ -30,7 +30,6 @@ namespace Reko.Arch.PowerPC
     public class PowerPcInstruction : MachineInstruction
     {
         private Opcode opcode;
-        public InstrClass iclass;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
@@ -50,12 +49,10 @@ namespace Reko.Arch.PowerPC
             this.op2 = op2;
             this.op3 = op3;
             this.setsCR0 = setsCR0;
-            this.iclass = InstrClass.Linear;
+            this.InstructionClass = InstrClass.Linear;
         }
 
         public override int OpcodeAsInteger => (int) opcode;
-
-        public override InstrClass InstructionClass => iclass;
 
         public int Operands
         {

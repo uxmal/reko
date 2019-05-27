@@ -26,10 +26,7 @@ namespace Reko.Arch.M6800.M6812
 {
     public class M6812Instruction : MachineInstruction
     {
-        public InstrClass iclass;
         public MachineOperand[] Operands;
-
-        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int) Opcode;
 

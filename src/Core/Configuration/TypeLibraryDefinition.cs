@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -17,35 +17,23 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    /// <summary>
-    /// Contains processor-specific settings for a particular 
-    /// platform.
-    /// </summary>
-    public interface IPlatformArchitectureElement
+    public class TypeLibraryDefinition
     {
-        string Name { get; }
-        List<string> TrashedRegisters { get; }
-        List<ITypeLibraryElement> TypeLibraries { get; }
-    }
-
-    public class PlatformArchitectureElement : IPlatformArchitectureElement
-    {
-        public PlatformArchitectureElement()
-        {
-            this.TrashedRegisters = new List<string>();
-            this.TypeLibraries = new List<ITypeLibraryElement>();
-        }
-
         public string Name { get; set; }
-        public List<string> TrashedRegisters { get; internal set; }
-        public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
+
+        public string Architecture { get; set; }
+
+        public string Module { get; set; }
+
+        public string Loader { get; set; }
     }
 }

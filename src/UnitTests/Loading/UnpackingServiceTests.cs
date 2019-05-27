@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Loading
             var image = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x12, 0x34, 0x00, 0x00 };
 
             Given_File("foo.exe.sufa-raw.ubj", new byte[] { 0x5B, 0x24, 0x6C, 0x23, 0x69, 0x00 });
-            var le = new Mock<LoaderConfiguration>();
+            var le = new Mock<LoaderDefinition>();
             le.SetupAllProperties();
             le.Object.Label = "LoaderKey";
             le.Object.TypeName = typeof(TestImageLoader).AssemblyQualifiedName;

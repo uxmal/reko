@@ -169,13 +169,13 @@ namespace Reko.Arch.Pdp11
                         return new Pdp11Instruction
                         {
                             Opcode = Opcode.illegal,
-                            IClass = InstrClass.Invalid,
+                            InstructionClass = InstrClass.Invalid,
                         };
                 }
                 var instr = new Pdp11Instruction
                 {
                     Opcode = this.opcode,
-                    IClass = iclass,
+                    InstructionClass = iclass,
                     DataWidth = dasm.dataWidth,
                     op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
@@ -480,13 +480,13 @@ namespace Reko.Arch.Pdp11
                 return new Pdp11Instruction
                 {
                     Opcode = Opcode.illegal,
-                    IClass = InstrClass.Invalid
+                    InstructionClass = InstrClass.Invalid
                 };
             }
             return new Pdp11Instruction
             {
                 Opcode = oc,
-                IClass = iclass,
+                InstructionClass = iclass,
                 DataWidth = dataWidth,
                 op1 = op1,
                 op2 = op2,
@@ -500,13 +500,13 @@ namespace Reko.Arch.Pdp11
                 return new Pdp11Instruction
                 {
                     Opcode = Opcode.nop,
-                    IClass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                 };
             } 
             return new Pdp11Instruction
             {
                 Opcode = ((opcode & 0x10) != 0) ? Opcode.setflags : Opcode.clrflags,
-                IClass = InstrClass.Linear,
+                InstructionClass = InstrClass.Linear,
                 DataWidth = dataWidth,
                 op1 = new ImmediateOperand(Constant.Byte((byte)(opcode&0xF))),
             };
@@ -527,7 +527,7 @@ namespace Reko.Arch.Pdp11
             return new Pdp11Instruction
             {
                 Opcode = oc,
-                IClass = iclass,
+                InstructionClass = iclass,
                 DataWidth = PrimitiveType.Word16,
                 op1 = new AddressOperand(this.rdr.Address + 2 * (sbyte)(opcode & 0xFF)),
             };

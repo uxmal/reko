@@ -175,14 +175,14 @@ l00000740:
 	goto l00000740;
 }
 
-// 00000768: Register int64 fib(Register int64 r2, Register word64 r10, Register Eq_n r11, Register word64 r12, Register word64 r13, Register Eq_n r14, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
-int64 fib(int64 r2, word64 r10, Eq_n r11, word64 r12, word64 r13, Eq_n r14, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out)
+// 00000768: Register Eq_n fib(Register Eq_n r2, Register word64 r10, Register Eq_n r11, Register word64 r12, Register word64 r13, Register Eq_n r14, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+Eq_n fib(Eq_n r2, word64 r10, Eq_n r11, word64 r12, word64 r13, Eq_n r14, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out)
 {
-	word64 r1_n;
-	word32 dwLocA4_n = (word32) r2;
+	Eq_n r1_n;
 	Eq_n r11_n = fp - 0x0148;
-	if (DPB(r2, dwLocA4_n, 0) <= 0x01)
-		r1_n = DPB(r2, dwLocA4_n, 0);
+	word32 dwLocA4_n = (word32) r2;
+	if (r2 <= 0x01)
+		r1_n = r2;
 	else
 	{
 		word64 r10_n;
@@ -200,7 +200,7 @@ int64 fib(int64 r2, word64 r10, Eq_n r11, word64 r12, word64 r13, Eq_n r14, unio
 	Eq_n r11_n;
 	Eq_n r12_n;
 	Eq_n r13_n;
-	int64 r2_n;
+	Eq_n r2_n;
 	r4_n();
 	r10Out = r10_n;
 	r11Out = r11_n;

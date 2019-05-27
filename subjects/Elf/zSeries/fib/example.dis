@@ -416,9 +416,9 @@ fib_entry:
 
 l00000768:
 	word64 r1_68
-	word32 dwLocA4_106 = (word32) r2
 	word64 r11_21 = fp - 328
-	branch DPB(r2, dwLocA4_106, 0) >u 0x0000000000000001 l00000792
+	word32 dwLocA4_106 = (word32) r2
+	branch r2 >u 0x0000000000000001 l00000792
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -436,7 +436,7 @@ l00000792:
 // SymbolicIn:
 
 l0000078A:
-	r1_68 = DPB(r2, dwLocA4_106, 0)
+	r1_68 = r2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

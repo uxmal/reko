@@ -61,7 +61,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
             var instr = Oprecs[b].Decode(b, this);
             if (instr == null)
-                instr = new Tlcs90Instruction { Opcode = Opcode.invalid, iclass = InstrClass.Invalid };
+                instr = new Tlcs90Instruction { Opcode = Opcode.invalid, InstructionClass = InstrClass.Invalid };
             var len = rdr.Address - addr;
             instr.Address = addr;
             instr.Length = (int) len;
@@ -252,13 +252,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
             public abstract Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm);
         }
 
-        private class OpRec : Decoder
+        private class InstrDecoder : Decoder
         {
             private Opcode opcode;
             private InstrClass iclass;
             private Mutator<Tlcs90Disassembler>[] mutators;
 
-            public OpRec(Opcode opcode, InstrClass iclass, Mutator<Tlcs90Disassembler> [] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, Mutator<Tlcs90Disassembler> [] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -273,13 +273,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         return new Tlcs90Instruction
                         {
                             Opcode = Opcode.invalid,
-                            iclass = InstrClass.Invalid
+                            InstructionClass = InstrClass.Invalid
                         };
                 }
                 return new Tlcs90Instruction
                 {
                     Opcode = opcode,
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
                 };
@@ -502,19 +502,19 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 return new Tlcs90Instruction
                 {
                     Opcode = Opcode.invalid,
-                    iclass = InstrClass.Invalid
+                    InstructionClass = InstrClass.Invalid
                 };
             }
         }
 
-        private static OpRec Instr(Opcode opcode, params Mutator<Tlcs90Disassembler>[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, params Mutator<Tlcs90Disassembler>[] mutators)
         {
-            return new OpRec(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        private static OpRec Instr(Opcode opcode, InstrClass iclass, params Mutator<Tlcs90Disassembler>[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<Tlcs90Disassembler>[] mutators)
         {
-            return new OpRec(opcode, iclass, mutators);
+            return new InstrDecoder(opcode, iclass, mutators);
         }
 
         private static Decoder invalid = new InvalidDecoder();

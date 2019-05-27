@@ -66,7 +66,7 @@ namespace Reko.Arch.Rl78
         {
             return new Rl78Instruction
             {
-                IClass = InstrClass.Invalid,
+                InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
                 Operands = new MachineOperand[0]
             };
@@ -373,7 +373,7 @@ namespace Reko.Arch.Rl78
                 }
                 var instr = new Rl78Instruction
                 {
-                    IClass = iclass,
+                    InstructionClass = iclass,
                     Mnemonic = mnem,
                     Prefix = dasm.prefix,
                     Operands = dasm.ops.ToArray()

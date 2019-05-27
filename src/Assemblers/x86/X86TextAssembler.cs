@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,22 +21,19 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Assemblers;
-using Reko.Core.Code;
-using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 
 namespace Reko.Assemblers.x86
 {
-	/// <summary>
-	/// A crude MASM-style assembler for x86 opcodes.
-	/// </summary>
-	public class X86TextAssembler : Assembler
+    /// <summary>
+    /// A crude MASM-style assembler for x86 opcodes.
+    /// </summary>
+    public class X86TextAssembler : Assembler
 	{
         private IServiceProvider services;
 		private Lexer lexer;

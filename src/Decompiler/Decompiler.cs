@@ -71,10 +71,8 @@ namespace Reko
         public DecompilerDriver(ILoader ldr, IServiceProvider services)
         {
             this.loader = ldr ?? throw new ArgumentNullException("ldr");
-            if (services == null)
-                throw new ArgumentNullException("services");
+            this.services = services ?? throw new ArgumentNullException("services");
             this.host = services.RequireService<DecompilerHost>();
-            this.services = services;
             this.eventListener = services.RequireService<DecompilerEventListener>();
         }
 

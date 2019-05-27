@@ -213,7 +213,7 @@ namespace Reko.Loading
             return CreateRawImageLoader(filename, image, rawFile);
         }
 
-        private ImageLoader CreateRawImageLoader(string filename, byte[] image, RawFileElement rawFile)
+        private ImageLoader CreateRawImageLoader(string filename, byte[] image, RawFileDefinition rawFile)
         {
             var arch = cfgSvc.GetArchitecture(rawFile.Architecture);
             var env = cfgSvc.GetEnvironment(rawFile.Environment);
@@ -255,7 +255,7 @@ namespace Reko.Loading
         }
 
         public static Address GetRawBinaryEntryAddress(
-            RawFileElement rawFile,
+            RawFileDefinition rawFile,
             byte[] image, 
             IProcessorArchitecture arch, 
             Address baseAddr)
@@ -323,7 +323,7 @@ namespace Reko.Loading
         /// <returns>An appropriate image loader if one can be found, otherwise null.
         public T FindImageLoader<T>(string filename, byte[] rawBytes)
         {
-            foreach (LoaderConfiguration e in cfgSvc.GetImageLoaders())
+            foreach (LoaderDefinition  e in cfgSvc.GetImageLoaders())
             {
                 if (!string.IsNullOrEmpty(e.MagicNumber) &&
                     ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset)

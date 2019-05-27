@@ -198,10 +198,9 @@ word32 fn00000001400012BC(word64 rax, ptr64 rdx, int32 * rbx, ptr64 rbp, word64 
 		rsi_n = DPB(rsi, 0x01, 0);
 		bLoc18_n = 0x01;
 	}
-	byte sil_n = (byte) rsi_n;
 	fn00000001400017B4(cl);
 	fn0000000140001964();
-	word64 rsi_n = DPB(rsi_n, sil_n, 0);
+	byte sil_n = (byte) rsi_n;
 	Eq_n rcx_n = DPB(rcx_n, al, 0);
 	if (rax_n->t0000 != 0x00)
 	{
@@ -360,7 +359,6 @@ struct Eq_n * fn000000014000164C(up32 ecx, word64 rdx, int32 * rbx, ptr64 rbp, u
 {
 	int32 * rbx_n = (uint64) ecx;
 	word32 ebx_n = (word32) rbx_n;
-	uint64 rbx_n = DPB(rbx_n, ebx_n, 0);
 	if (ecx > 0x01)
 	{
 		struct Eq_n * rcx_n;
@@ -449,15 +447,16 @@ uint64 fn0000000140001718(struct Eq_n * rcx, struct Eq_n & rcxOut, struct Eq_n &
 				r9 = rdx + rax_n * 0x28;
 				for (; rdx != r9; rdx += 0x28)
 				{
-					rcx = (uint64) rdx->dw000C;
-					word32 ecx_n = (word32) rcx;
-					rcx = DPB(rcx, ecx_n, 0);
-					if (r8_n >= rcx)
+					struct Eq_n * rcx_n = (uint64) rdx->dw000C;
+					word32 ecx_n = (word32) rcx_n;
+					rcx = rcx_n;
+					if (r8_n >= rcx_n)
 					{
 						rax_n = (uint64) ((word32) (uint64) rdx->dw0008 + ecx_n);
 						if (r8_n < rax_n)
 							goto l000000014000178F;
 					}
+					rcx = rcx_n;
 				}
 				rdx = null;
 l000000014000178F:
@@ -667,7 +666,6 @@ void fn0000000140001B24(struct Eq_n ** rcx, int32 * rbx, word64 rsi, word64 rdi)
 		return;
 	uint64 rcx_n = (uint64) rax_n->dw0020;
 	word32 ecx_n = (word32) rcx_n;
-	rcx_n = DPB(rcx_n, ecx_n, 0);
 	struct Eq_n * rax_n = DPB(rax_n, rcx_n + ~0x1993051F, 0);
 	if (rcx_n > ~0x19930521 && ecx_n != 0x01994000)
 		return;
@@ -719,23 +717,12 @@ void fn0000000140001BFC(word32 edx, Eq_n ebx)
 	globals->dw4000301C = 0x02;
 	__cpuid(0x00, 0x00, &0x00, &ebx_n, &0x00, &edx);
 	globals->dw40003018 = 0x01;
-	rdx_n = (uint64) ((word32) (uint64) ebx_n ^ 1970169159);
+	uint64 rdx_n = (uint64) ((word32) (uint64) ebx_n ^ 1970169159);
 	ui32 edx_n = (word32) rdx_n;
 	ui32 r8d_n = (word32) (uint64) globals->dw40003614;
 	__cpuid(0x01, 0x00, &0x01, &ebx_n, &0x00, &edx_n);
 	byte bLoc20_n = SLICE(dwLoc20 & 0x00, byte, 0);
 	word32 r11d_n = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ebx_n ^ 1752462657) | (word32) ((uint64) ((word32) ((uint64) edx) ^ 0x69746E65))) | 0x444D4163);
-	uint64 rdx_n = DPB(rdx_n, edx_n, 0);
-	rdx_n = DPB(rdx_n, edx_n, 0);
-	rdx_n = DPB(rdx_n, edx_n, 0);
-	rdx_n = DPB(rdx_n, edx_n, 0);
-	rdx_n = DPB(rdx_n, edx_n, 0);
-	rdx_n = DPB(rdx_n, edx_n, 0);
-	uint64 rdx_n = DPB(rdx_n, edx_n, 0);
-	rdx_n = DPB(rdx_n, edx_n, 0);
-	rdx_n = DPB(rdx_n, edx_n, 0);
-	uint64 rdx_n = DPB(rdx_n, edx_n, 0);
-	rdx_n = DPB(rdx_n, edx_n, 0);
 	if ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) edx ^ 0x49656E69) | 1818588270) | edx_n) == 0x00)
 	{
 		globals->qw40003020 |= ~0x00;

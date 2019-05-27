@@ -51,7 +51,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public string SelectedArchitectureTypeName
         {
-            get { return ((AssemblerElement)((ListOption)ddlAssembler.SelectedValue).Value).TypeName; }
+            get { return ((AssemblerDefinition)((ListOption)ddlAssembler.SelectedValue).Value).TypeName; }
         }
     }
 }

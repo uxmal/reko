@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -17,29 +17,28 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-
+ 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface SignatureFile
+    /// <summary>
+    /// Contains processor-specific settings for a particular 
+    /// platform.
+    /// </summary>
+    public class PlatformArchitectureDefinition
     {
-        string Filename { get; }
-        
-        string Label { get; }
-        string Type { get; }
-    }
+        public PlatformArchitectureDefinition()
+        {
+            this.TrashedRegisters = new List<string>();
+            this.TypeLibraries = new List<TypeLibraryDefinition>();
+        }
 
-    public class SignatureFileElement : SignatureFile
-    {
-        public string Filename { get; set; }
-
-        public string Label { get; set; }
-
-        public string Type { get; set; }
+        public string Name { get; set; }
+        public List<string> TrashedRegisters { get; internal set; }
+        public List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
     }
 }

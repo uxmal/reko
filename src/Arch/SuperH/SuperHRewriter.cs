@@ -35,12 +35,12 @@ namespace Reko.Arch.SuperH
 {
     public class SuperHRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private SuperHArchitecture arch;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private SuperHState state;
-        private EndianImageReader rdr;
-        private IEnumerator<SuperHInstruction> dasm;
+        private readonly SuperHArchitecture arch;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly SuperHState state;
+        private readonly EndianImageReader rdr;
+        private readonly IEnumerator<SuperHInstruction> dasm;
         private SuperHInstruction instr;
         private RtlEmitter m;
         private InstrClass rtlc;

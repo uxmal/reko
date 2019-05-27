@@ -82,7 +82,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             this.win32.Setup(w => w.FindMainProcedure(
                 It.IsAny<Program>(),
                 It.IsAny<Address>())).Returns((ImageSymbol)null);
-            var win32Env = new Mock<OperatingEnvironment>();
+            var win32Env = new Mock<PlatformDefinition>();
             cfgSvc.Setup(c => c.GetArchitecture("x86-protected-32")).Returns(arch_386.Object);
             cfgSvc.Setup(c => c.GetEnvironment("win32")).Returns(win32Env.Object);
             win32Env.Setup(w => w.Load(

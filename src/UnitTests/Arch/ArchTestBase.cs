@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Arch
 
         public byte[] ParseHexPattern(string hexPattern)
         {
-            return OperatingEnvironmentElement.LoadHexBytes(hexPattern)
+            return PlatformDefinition.LoadHexBytes(hexPattern)
                 .ToArray();
         }
 

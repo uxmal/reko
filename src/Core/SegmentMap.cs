@@ -45,7 +45,7 @@ namespace Reko.Core
             }
         }
 
-        public Address BaseAddress { get; private set; }
+        public Address BaseAddress { get; }
 
         public SortedList<Address, ImageSegment> Segments { get; }
 

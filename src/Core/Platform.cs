@@ -318,7 +318,7 @@ namespace Reko.Core
                 foreach (var tl in envCfg.TypeLibraries
                     .Where(t => t.Architecture == null ||
                                 t.Architecture.Contains(Architecture.Name))
-                    .OfType<ITypeLibraryElement>())
+                    .OfType<TypeLibraryDefinition>())
                 {
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }

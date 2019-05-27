@@ -171,10 +171,9 @@ l00401172:
 		*(esp_n - 0x08) = *eax_n;
 		*(esp_n - 0x0C) = *eax_n;
 		Eq_n eax_n = fn00401040(eax_n, ecx_n, ebp_n, eax_n);
-		byte bl_n = (byte) ebx_n;
 		word32 ecx_n;
 		word32 eax_n = fn0040188B(out ecx_n);
-		word32 ebx_n = DPB(ebx_n, bl_n, 0);
+		byte bl_n = (byte) ebx_n;
 		Eq_n Top_n = <invalid>;
 		ptr32 esp_n = esp_n;
 		if ((byte) eax_n == 0x00)
@@ -253,13 +252,11 @@ byte fn0040146F(word32 edx, word32 dwArg04)
 	if (dwArg04 == 0x00)
 		globals->b403354 = 0x01;
 	fn004019FE(edx);
-	byte al_n = fn00401C46();
-	word32 eax_n = DPB(eax_n, al_n, 0);
-	if (al_n == 0x00)
+	if (fn00401C46() == 0x00)
 		return (byte) DPB(eax_n, 0x00, 0);
 	if (fn00401C46() != 0x00)
 		return (byte) DPB(eax_n, 0x01, 0);
-	eax_n = DPB(eax_n, fn00401C46(), 0);
+	fn00401C46();
 	return (byte) DPB(eax_n, 0x00, 0);
 }
 

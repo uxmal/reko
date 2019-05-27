@@ -79,7 +79,7 @@ namespace Reko.Arch.M68k
                 instr = new M68kInstruction
                 {
                     Address = addr,
-                    iclass = handler.iclass
+                    InstructionClass = handler.iclass
                 };
                 instr = handler.UseDecodeMethod(this);
                 if (instr == null)
@@ -92,7 +92,7 @@ namespace Reko.Arch.M68k
             ops.Clear();
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
-            instr.iclass |= (uInstr == 0) ? InstrClass.Zero : 0;
+            instr.InstructionClass |= (uInstr == 0) ? InstrClass.Zero : 0;
             return instr;
         }
 
@@ -201,7 +201,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.illegal,
-                iclass = InstrClass.Invalid,
+                InstructionClass = InstrClass.Invalid,
             };
         }
 
@@ -244,9 +244,6 @@ namespace Reko.Arch.M68k
                 this.mask = mask;
                 this.match = match;
                 this.ea_mask = ea_mask;
-
-                if (opcode == Opcode.nop)
-                    opcode.ToString();
                 this.opcode = opcode;
                 this.iclass = iclass;
             }
@@ -255,7 +252,7 @@ namespace Reko.Arch.M68k
             {
                 var instr = dasm.instr;
                 instr.code = opcode;
-                instr.iclass = iclass;
+                instr.InstructionClass = iclass;
                 foreach (var m in mutators)
                 {
                     if (!m(dasm))
@@ -331,7 +328,6 @@ namespace Reko.Arch.M68k
                 opcode,
                 iclass);
         }
-
 
         // Opcode handler jump table 
         private static Decoder[] g_instruction_table = new Decoder[0x10000];
@@ -778,7 +774,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = code,
-                iclass = iclass,
+                InstructionClass = iclass,
                 dataWidth = width,
                 op1 = op1,
                 op2 = op2,
@@ -833,7 +829,7 @@ namespace Reko.Arch.M68k
         {
             if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1010", dasm.uInstr);
             dasm.instr.code = Opcode.illegal;
-            dasm.instr.iclass = InstrClass.Invalid;
+            dasm.instr.InstructionClass = InstrClass.Invalid;
             dasm.instr.op1 = new M68kImmediateOperand(Constant.Word16(dasm.uInstr));
             return true;
         }
@@ -848,7 +844,7 @@ namespace Reko.Arch.M68k
         {
             var temp_pc = dasm.rdr.Address + (sbyte) dasm.uInstr;
             dasm.instr.code = g_bcc[(dasm.uInstr >> 8) & 0xf];
-            dasm.instr.iclass = InstrClass.ConditionalTransfer;
+            dasm.instr.InstructionClass = InstrClass.ConditionalTransfer;
             dasm.instr.op1 = new M68kAddressOperand(temp_pc);
             return true;
         }
@@ -859,7 +855,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeInt16(out short s))
                 return false;
             dasm.instr.code = g_bcc[(dasm.uInstr >> 8) & 0xf]; 
-            dasm.instr.iclass = InstrClass.ConditionalTransfer;
+            dasm.instr.InstructionClass = InstrClass.ConditionalTransfer;
             dasm.instr.op1 = new M68kAddressOperand(temp_pc + s);
             return true;
         }
@@ -871,7 +867,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeInt32(out int s))
                 return false;
             dasm.instr.code = g_bcc[(dasm.uInstr >> 8) & 0xf]; 
-            dasm.instr.iclass = InstrClass.ConditionalTransfer;
+            dasm.instr.InstructionClass = InstrClass.ConditionalTransfer;
             dasm.instr.op1 = new M68kAddressOperand(temp_pc + s);
             return true;
         }
@@ -880,7 +876,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68010_PLUS);
             dasm.instr.code = Opcode.bkpt;
-            dasm.instr.iclass = InstrClass.System;
+            dasm.instr.InstructionClass = InstrClass.System;
             dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (dasm.uInstr & 7)));
             return true;
         }
@@ -1064,7 +1060,7 @@ namespace Reko.Arch.M68k
             if (!dasm.TryReadImm8(out byte b))
                 return false;
             dasm.instr.code = Opcode.callm;
-            dasm.instr.iclass = InstrClass.Transfer|InstrClass.Call;
+            dasm.instr.InstructionClass = InstrClass.Transfer|InstrClass.Call;
             dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte(b));
             dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
@@ -1076,7 +1072,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
             dasm.instr.code = Opcode.cas;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
             dasm.instr.op1 = get_data_reg((int) extension & 7);
             dasm.instr.op2 = get_data_reg((int) (extension >> 8) & 7);
@@ -1090,7 +1086,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
             dasm.instr.code = Opcode.cas;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = get_data_reg((int) extension & 7);
             dasm.instr.op2 = get_data_reg((int) (extension >> 8) & 7);
@@ -1104,7 +1100,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
             dasm.instr.code = Opcode.cas;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = get_data_reg((int) extension & 7);
             dasm.instr.op2 = get_data_reg((int) (extension >> 8) & 7);
@@ -1145,7 +1141,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_chk_16(M68kDisassembler dasm)
         {
             dasm.instr.code = Opcode.chk;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
             dasm.instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
@@ -1156,7 +1152,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.chk;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
             dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
             dasm.instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
@@ -1170,7 +1166,7 @@ namespace Reko.Arch.M68k
                 return false;
 
             dasm.instr.code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2;
-            dasm.instr.iclass = InstrClass.Invalid;
+            dasm.instr.InstructionClass = InstrClass.Invalid;
             dasm.instr.dataWidth = PrimitiveType.Byte;
             dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
             dasm.instr.op2 = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
@@ -1183,7 +1179,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
             dasm.instr.code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
             dasm.instr.op2 = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
@@ -1197,7 +1193,7 @@ namespace Reko.Arch.M68k
                 return false;
 
             dasm.instr.code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
             dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
             dasm.instr.op2 = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
@@ -1216,7 +1212,7 @@ namespace Reko.Arch.M68k
             switch ((dasm.uInstr >> 3) & 3)
             {
             case 0:
-                dasm.instr.iclass = InstrClass.Invalid;
+                dasm.instr.InstructionClass = InstrClass.Invalid;
                 dasm.instr.code = Opcode.cinv; // illegal
                 break;
             case 1:
@@ -1243,7 +1239,7 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s8(out var imm))
                 return false;
             dasm.instr.code = Opcode.cmpi;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = imm;
             dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
@@ -1255,7 +1251,7 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s8(out var imm))
                 return false;
             dasm.instr.code = Opcode.cmpi;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
             dasm.instr.op1 = imm;
             dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
@@ -1268,7 +1264,7 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
             dasm.instr.code = Opcode.cmpi;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = imm;
             dasm.instr.op2 = dasm.get_ea_mode_str_16(dasm.uInstr);
@@ -1281,7 +1277,7 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
             dasm.instr.code = Opcode.cmpi;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = imm;
             dasm.instr.op2 = dasm.get_ea_mode_str_16(dasm.uInstr);
@@ -1293,7 +1289,7 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s32(out var imm))
                 return false;
             dasm.instr.code = Opcode.cmpi;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
             dasm.instr.op1 = imm;
             dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.uInstr);
@@ -1306,7 +1302,7 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s32(out var imm))
                 return false;
             dasm.instr.code = Opcode.cmpi;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
             dasm.instr.op1 = imm;
             dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.uInstr);
@@ -1323,7 +1319,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeInt16(out var displacement))
                 return false;
             dasm.instr.code = opcode;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = new M68kAddressOperand(new_pc + displacement);
             return true;
         }
@@ -1478,7 +1474,7 @@ namespace Reko.Arch.M68k
             Address temp_pc = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
                 return false;
-            dasm.instr.iclass = InstrClass.ConditionalTransfer;
+            dasm.instr.InstructionClass = InstrClass.ConditionalTransfer;
             dasm.instr.code = g_dbcc[(dasm.uInstr >> 8) & 0xf];
             dasm.instr.op1 = get_data_reg(dasm.uInstr & 7);
             dasm.instr.op2 = new M68kAddressOperand(temp_pc + sDisplacement);
@@ -1522,7 +1518,7 @@ namespace Reko.Arch.M68k
             }
 
             dasm.instr.code = code;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = dataWidth;
             dasm.instr.op1 = ea;
             dasm.instr.op2 = op2;
@@ -1535,7 +1531,7 @@ namespace Reko.Arch.M68k
                 return false;
 
             dasm.instr.code = Opcode.eori;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = imm;
             dasm.instr.op2 = new RegisterOperand(Registers.ccr);
             return true;
@@ -1547,7 +1543,7 @@ namespace Reko.Arch.M68k
                 return false;
 
             dasm.instr.code = Opcode.eori;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt16(extension1));
             dasm.instr.op2 = new RegisterOperand(Registers.sr);
@@ -1795,7 +1791,7 @@ namespace Reko.Arch.M68k
         {
             var ea = dasm.get_ea_mode_str_8(dasm.uInstr);
             dasm.instr.code = Opcode.move;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
             dasm.instr.op1 = ea;
             dasm.instr.op2 = dasm.get_ea_mode_str_8(((dasm.uInstr >> 9) & 7) | ((dasm.uInstr >> 3) & 0x38));
@@ -1806,7 +1802,7 @@ namespace Reko.Arch.M68k
         {
             var str = dasm.get_ea_mode_str_16(dasm.uInstr);
             dasm.instr.code = Opcode.move;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = str;
             dasm.instr.op2 = dasm.get_ea_mode_str_16(((dasm.uInstr >> 9) & 7) | ((dasm.uInstr >> 3) & 0x38));
@@ -1817,7 +1813,7 @@ namespace Reko.Arch.M68k
         {
             var str = dasm.get_ea_mode_str_32(dasm.uInstr);
             dasm.instr.code = Opcode.move;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
             dasm.instr.op1 = str;
             dasm.instr.op2 = dasm.get_ea_mode_str_32(((dasm.uInstr >> 9) & 7) | ((dasm.uInstr >> 3) & 0x38));
@@ -1828,7 +1824,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68010_PLUS);
             dasm.instr.code = Opcode.move;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = new RegisterOperand(Registers.ccr);
             dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
@@ -1837,7 +1833,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_move_fr_sr(M68kDisassembler dasm)
         {
             dasm.instr.code = Opcode.move;
-            dasm.instr.iclass = InstrClass.System;
+            dasm.instr.InstructionClass = InstrClass.System;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = new RegisterOperand(Registers.sr);
             dasm.instr.op2 = dasm.get_ea_mode_str_16(dasm.uInstr);
@@ -1847,7 +1843,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_move_to_sr(M68kDisassembler dasm)
         {
             dasm.instr.code = Opcode.move;
-            dasm.instr.iclass = InstrClass.System;
+            dasm.instr.InstructionClass = InstrClass.System;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
             dasm.instr.op2 = new RegisterOperand(Registers.sr);
@@ -1857,7 +1853,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_move_fr_usp(M68kDisassembler dasm)
         {
             dasm.instr.code = Opcode.move;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = new RegisterOperand(Registers.usp);
             dasm.instr.op2 = get_addr_reg(dasm.uInstr & 7);
             return true;
@@ -1866,7 +1862,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_move_to_usp(M68kDisassembler dasm)
         {
             dasm.instr.code = Opcode.move;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = get_addr_reg(dasm.uInstr & 7);
             dasm.instr.op2 = new RegisterOperand(Registers.usp);
             return true;
@@ -1938,7 +1934,7 @@ namespace Reko.Arch.M68k
                 ? get_addr_reg((int)(extension >> 12) & 7)
                 : get_data_reg((int)(extension >> 12) & 7);
             dasm.instr.code = Opcode.movec;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             if (BIT_0(dasm.uInstr))
             {
                 dasm.instr.op1 = other_reg;
@@ -2034,7 +2030,7 @@ namespace Reko.Arch.M68k
             if (BIT_B(extension))
             {
                 dasm.instr.code = Opcode.moves;
-                dasm.instr.iclass = InstrClass.System;
+                dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.dataWidth = PrimitiveType.Word16;
                 dasm.instr.op1 = reg;
                 dasm.instr.op2 = ea;
@@ -2042,7 +2038,7 @@ namespace Reko.Arch.M68k
             else
             {
                 dasm.instr.code = Opcode.moves;
-                dasm.instr.iclass = InstrClass.System;
+                dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.dataWidth = PrimitiveType.Word16;
                 dasm.instr.op1 = ea;
                 dasm.instr.op2 = reg;
@@ -2060,7 +2056,7 @@ namespace Reko.Arch.M68k
             if (BIT_B(extension))
             {
                 dasm.instr.code = Opcode.moves;
-                dasm.instr.iclass = InstrClass.System;
+                dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.dataWidth = PrimitiveType.Word16;
                 dasm.instr.op1 = reg;
                 dasm.instr.op2 = ea;
@@ -2068,7 +2064,7 @@ namespace Reko.Arch.M68k
             else
             {
                 dasm.instr.code = Opcode.moves;
-                dasm.instr.iclass = InstrClass.System;
+                dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.dataWidth = PrimitiveType.Word16;
                 dasm.instr.op1 = ea;
                 dasm.instr.op2 = reg;
@@ -2084,7 +2080,7 @@ namespace Reko.Arch.M68k
             var reg = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7);
             var ea = dasm.get_ea_mode_str_32(dasm.uInstr);
             dasm.instr.code = Opcode.moves;
-            dasm.instr.iclass = InstrClass.System;
+            dasm.instr.InstructionClass = InstrClass.System;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             if (BIT_B(extension))
             {
@@ -2105,7 +2101,7 @@ namespace Reko.Arch.M68k
             if (dasm.rdr.TryReadBeUInt16(out ushort us))
                 return false;
             dasm.instr.code = Opcode.move16;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = dasm.get_post_inc(dasm.uInstr & 7);
             dasm.instr.op2 = dasm.get_post_inc((us >> 12) & 7);
             return true;
@@ -2117,7 +2113,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt32(out uint uOp2))
                 return false;
             dasm.instr.code = Opcode.move16;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = dasm.get_post_inc(dasm.uInstr & 7);
             dasm.instr.op2 = new M68kImmediateOperand(Constant.UInt32(uOp2));
             return true;
@@ -2129,7 +2125,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt32(out uint uOp1))
                 return false;
             dasm.instr.code = Opcode.move16;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt32(uOp1));
             dasm.instr.op2 = dasm.get_post_inc(dasm.uInstr & 7);
             return true;
@@ -2183,7 +2179,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_nbcd(M68kDisassembler dasm)
         {
             dasm.instr.code = Opcode.nbcd;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
         }
@@ -2194,7 +2190,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
             dasm.instr.code = Opcode.pack;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = get_data_reg(dasm.uInstr & 7);
             dasm.instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
             dasm.instr.op3 = new M68kImmediateOperand(Constant.UInt16(uImm));
@@ -2207,7 +2203,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
             dasm.instr.code = Opcode.pack;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = dasm.get_pre_dec(dasm.uInstr & 7);
             dasm.instr.op2 = dasm.get_pre_dec((dasm.uInstr >> 9) & 7);
             dasm.instr.op3 = new M68kImmediateOperand(Constant.UInt16(uImm));
@@ -2235,7 +2231,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_ONLY);
             int reg = dasm.uInstr & 7;
             dasm.instr.code = Opcode.rtm;
-            dasm.instr.iclass = InstrClass.Transfer | InstrClass.Call;
+            dasm.instr.InstructionClass = InstrClass.Transfer | InstrClass.Call;
             dasm.instr.op1 = BIT_3(dasm.uInstr)
                 ? get_addr_reg(reg)
                 : get_data_reg(reg);
@@ -2245,7 +2241,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_scc(M68kDisassembler dasm)
         {
             dasm.instr.code = g_scc[(dasm.uInstr >> 8) & 0xf];
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
         }
@@ -2255,7 +2251,7 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
             dasm.instr.code = Opcode.stop;
-            dasm.instr.iclass = InstrClass.System;
+            dasm.instr.InstructionClass = InstrClass.System;
             dasm.instr.op1 = imm;
             return true;
         }
@@ -2263,7 +2259,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_tas(M68kDisassembler dasm)
         {
             dasm.instr.code = Opcode.tas;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
         }
@@ -2271,7 +2267,7 @@ namespace Reko.Arch.M68k
         private static bool d68000_trap(M68kDisassembler dasm)
         {
             dasm.instr.code = Opcode.trap;
-            dasm.instr.iclass = InstrClass.Call | InstrClass.Transfer;
+            dasm.instr.InstructionClass = InstrClass.Call | InstrClass.Transfer;
             dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (dasm.uInstr & 0xf)));
             return true;
         }
@@ -2280,7 +2276,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = g_trapcc[(dasm.uInstr >> 8) & 0xf];
-            dasm.instr.iclass = dasm.instr.code != Opcode.trapf
+            dasm.instr.InstructionClass = dasm.instr.code != Opcode.trapf
                 ? InstrClass.Call | InstrClass.Transfer
                 : InstrClass.Linear;
             return true;
@@ -2293,7 +2289,7 @@ namespace Reko.Arch.M68k
                 return false;
 
             dasm.instr.code = g_trapcc[(dasm.uInstr >> 8) & 0xf];
-            dasm.instr.iclass = InstrClass.Call | InstrClass.Transfer;
+            dasm.instr.InstructionClass = InstrClass.Call | InstrClass.Transfer;
             dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt16(uImm));
             return true;
         }
@@ -2305,7 +2301,7 @@ namespace Reko.Arch.M68k
                 return false;
 
             dasm.instr.code = g_trapcc[(dasm.uInstr >> 8) & 0xf];
-            dasm.instr.iclass = InstrClass.Call | InstrClass.Transfer;
+            dasm.instr.InstructionClass = InstrClass.Call | InstrClass.Transfer;
             dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt32(uOp1));
             return true;
         }
@@ -2314,7 +2310,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
             dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
@@ -2324,7 +2320,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
             dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
@@ -2334,7 +2330,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
             dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
             return true;
@@ -2344,7 +2340,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
             return true;
@@ -2354,7 +2350,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
             return true;
@@ -2364,7 +2360,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
             return true;
@@ -2374,7 +2370,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
             return true;
@@ -2384,7 +2380,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
             dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
             return true;
@@ -2394,7 +2390,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
             dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
             return true;
@@ -2404,7 +2400,7 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             dasm.instr.code = Opcode.tst;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
             dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
             return true;
@@ -2416,7 +2412,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
             dasm.instr.code = Opcode.unpk;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = get_data_reg(dasm.uInstr & 7);
             dasm.instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
             dasm.instr.op3 = new M68kImmediateOperand(Constant.UInt16(uImm));
@@ -2429,7 +2425,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
             dasm.instr.code = Opcode.unpk;
-            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.op1 = dasm.get_pre_dec(dasm.uInstr & 7);
             dasm.instr.op2 = dasm.get_pre_dec((dasm.uInstr >> 9) & 7);
             dasm.instr.op3 = new M68kImmediateOperand(Constant.UInt16(uImm));
@@ -2458,7 +2454,7 @@ namespace Reko.Arch.M68k
                 if ((modes & 0x0200) != 0)
                 {
                     dasm.instr.code = Opcode.pload;
-                    dasm.instr.iclass = InstrClass.Linear;
+                    dasm.instr.InstructionClass = InstrClass.Linear;
                     dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 10) & 7)));
                     dasm.instr.op2 = str;
                     return true;
@@ -2466,7 +2462,7 @@ namespace Reko.Arch.M68k
                 else
                 {
                     dasm.instr.code = Opcode.pload;
-                    dasm.instr.iclass = InstrClass.Linear;
+                    dasm.instr.InstructionClass = InstrClass.Linear;
                     dasm.instr.op1 = str;
                     dasm.instr.op2 = new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 10) & 7)));
                     return true;
@@ -2476,7 +2472,7 @@ namespace Reko.Arch.M68k
             if ((modes & 0xe200) == 0x2000)	// PFLUSH
             {
                 dasm.instr.code = Opcode.pflushr;
-                dasm.instr.iclass = InstrClass.System;
+                dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f)));
                 dasm.instr.op2 = new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 5) & 0xf)));
                 dasm.instr.op3 = str;
@@ -2486,7 +2482,7 @@ namespace Reko.Arch.M68k
             if (modes == 0xa000)	// PFLUSHR
             {
                 dasm.instr.code = Opcode.pflushr;
-                dasm.instr.iclass = InstrClass.System;
+                dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.op1 = str;
                 return true;
             }
@@ -2494,7 +2490,7 @@ namespace Reko.Arch.M68k
             if (modes == 0x2800)	// PVALID (FORMAT 1)
             {
                 dasm.instr.code = Opcode.pvalid;
-                dasm.instr.iclass = InstrClass.Linear;
+                dasm.instr.InstructionClass = InstrClass.Linear;
                 dasm.instr.op1 = dasm.get_ctrl_reg("VAL", 0x2800);
                 dasm.instr.op2 = str;
                 return true;
@@ -2503,7 +2499,7 @@ namespace Reko.Arch.M68k
             if ((modes & 0xfff8) == 0x2c00)	// PVALID (FORMAT 2)
             {
                 dasm.instr.code = Opcode.pvalid;
-                dasm.instr.iclass = InstrClass.Linear;
+                dasm.instr.InstructionClass = InstrClass.Linear;
                 dasm.instr.op1 = get_addr_reg(modes & 0xf);
                 dasm.instr.op2 = str;
                 return true;
@@ -2512,7 +2508,7 @@ namespace Reko.Arch.M68k
             if ((modes & 0xe000) == 0x8000)	// PTEST
             {
                 dasm.instr.code = Opcode.ptest;
-                dasm.instr.iclass = InstrClass.System;
+                dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f)));
                 dasm.instr.op2 = str;
                 return true;

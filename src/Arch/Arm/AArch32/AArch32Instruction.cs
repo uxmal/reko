@@ -86,12 +86,9 @@ namespace Reko.Arch.Arm.AArch32
             this.condition = ArmCondition.AL;
         }
 
-        public InstrClass iclass { get; set; }
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
         public MachineOperand[] ops { get; set; }
-
-        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int) opcode;
 

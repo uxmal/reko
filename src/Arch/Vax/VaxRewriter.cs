@@ -42,8 +42,8 @@ namespace Reko.Arch.Vax
         private readonly IEnumerator<VaxInstruction> dasm;
         private InstrClass rtlc;
         private VaxInstruction instr;
-        private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
+        private List<RtlInstruction> rtlInstructions;
 
         public VaxRewriter(VaxArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -62,9 +62,9 @@ namespace Reko.Arch.Vax
                 instr = dasm.Current;
                 var addr = this.instr.Address;
                 var len = this.instr.Length;
-                rtlInstructions = new List<RtlInstruction>();
-                rtlc = this.instr.IClass;
-                m = new RtlEmitter(rtlInstructions);
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = this.instr.InstructionClass;
+                this.m = new RtlEmitter(rtlInstructions);
                 switch (this.instr.Opcode)
                 {
                 default:

@@ -61,7 +61,7 @@ namespace Reko.Arch.RiscV
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 var rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = this.instr.iclass;
+                this.rtlc = this.instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
 
                 switch (instr.opcode)

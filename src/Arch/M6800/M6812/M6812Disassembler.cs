@@ -28,7 +28,6 @@ using System.Diagnostics;
 
 namespace Reko.Arch.M6800.M6812
 {
-    using Mutator = Func<byte, M6812Disassembler, bool>;
 
     public class M6812Disassembler : DisassemblerBase<M6812Instruction>
     {
@@ -70,23 +69,23 @@ namespace Reko.Arch.M6800.M6812
 
         public abstract class Decoder
         {
-            public abstract M6812Instruction Decode(byte bInstr, M6812Disassembler dasm);
+            public abstract M6812Instruction Decode(uint bInstr, M6812Disassembler dasm);
         }
 
         public class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
-            private readonly Mutator[] mutators;
+            private readonly Mutator<M6812Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator<M6812Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
 
-            public override M6812Instruction Decode(byte bInstr, M6812Disassembler dasm)
+            public override M6812Instruction Decode(uint bInstr, M6812Disassembler dasm)
             {
                 foreach (var mutator in mutators)
                 {
@@ -96,7 +95,7 @@ namespace Reko.Arch.M6800.M6812
                 return new M6812Instruction
                 {
                     Opcode = this.opcode,
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     Operands = dasm.operands.ToArray()
                 };
             }
@@ -111,21 +110,21 @@ namespace Reko.Arch.M6800.M6812
                 this.decoders = decoders;
             }
 
-            public override M6812Instruction Decode(byte bInstr, M6812Disassembler dasm)
+            public override M6812Instruction Decode(uint bInstr, M6812Disassembler dasm)
             {
-                if (!dasm.rdr.TryReadByte(out bInstr))
+                if (!dasm.rdr.TryReadByte(out byte b))
                     return dasm.Invalid();
-                return this.decoders[bInstr].Decode(bInstr, dasm);
+                return this.decoders[b].Decode(b, dasm);
             }
         }
 
 
-        private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
+        private static Decoder Instr(Opcode opcode, params Mutator<M6812Disassembler> [] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator<M6812Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, mutators);
         }
@@ -136,49 +135,49 @@ namespace Reko.Arch.M6800.M6812
             return new InstrDecoder(Opcode.invalid, InstrClass.Invalid, NotYetImplemented);
         }
 
-        private static bool A(byte bInstr, M6812Disassembler dasm)
+        private static bool A(uint bInstr, M6812Disassembler dasm)
         {
             dasm.operands.Add(new RegisterOperand(Registers.a));
             return true;
         }
 
-        private static bool B(byte bInstr, M6812Disassembler dasm)
+        private static bool B(uint bInstr, M6812Disassembler dasm)
         {
             dasm.operands.Add(new RegisterOperand(Registers.b));
             return true;
         }
 
-        private static bool D(byte bInstr, M6812Disassembler dasm)
+        private static bool D(uint bInstr, M6812Disassembler dasm)
         {
             dasm.operands.Add(new RegisterOperand(Registers.d));
             return true;
         }
 
-        private static bool S(byte bInstr, M6812Disassembler dasm)
+        private static bool S(uint bInstr, M6812Disassembler dasm)
         {
             dasm.operands.Add(new RegisterOperand(Registers.sp));
             return true;
         }
 
-        private static bool X(byte bInstr, M6812Disassembler dasm)
+        private static bool X(uint bInstr, M6812Disassembler dasm)
         {
             dasm.operands.Add(new RegisterOperand(Registers.x));
             return true;
         }
 
-        private static bool Y(byte bInstr, M6812Disassembler dasm)
+        private static bool Y(uint bInstr, M6812Disassembler dasm)
         {
             dasm.operands.Add(new RegisterOperand(Registers.y));
             return true;
         }
 
-        private static bool CCR(byte bInstr, M6812Disassembler dasm)
+        private static bool CCR(uint bInstr, M6812Disassembler dasm)
         {
             dasm.operands.Add(new RegisterOperand(Registers.ccr));
             return true;
         }
 
-        private static bool I(byte bInstr, M6812Disassembler dasm)
+        private static bool I(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out var imm))
                 return false;
@@ -186,7 +185,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool JK(byte bInstr, M6812Disassembler dasm)
+        private static bool JK(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadBeUInt16(out var imm))
                 return false;
@@ -194,7 +193,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool PG(byte bInstr, M6812Disassembler dasm)
+        private static bool PG(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadBeUInt16(out var imm))
                 return false;
@@ -202,7 +201,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool Dir(byte bInstr, M6812Disassembler dasm)
+        private static bool Dir(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out var imm))
                 return false;
@@ -215,7 +214,7 @@ namespace Reko.Arch.M6800.M6812
         }
 
 
-        private static bool HL(byte bInstr, M6812Disassembler dasm)
+        private static bool HL(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadBeInt16(out var imm))
                 return false;
@@ -233,7 +232,7 @@ namespace Reko.Arch.M6800.M6812
         };
         private Address addr;
 
-        public static bool XB(byte bInstr, M6812Disassembler dasm)
+        public static bool XB(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out var bExtraByte))
                 return false;
@@ -321,7 +320,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool R(byte bInstr, M6812Disassembler dasm)
+        private static bool R(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out var rel))
                 return false;
@@ -330,7 +329,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool RPlus(byte bInstr, M6812Disassembler dasm)
+        private static bool RPlus(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out var rel))
                 return false;
@@ -339,7 +338,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool RMinus(byte bInstr, M6812Disassembler dasm)
+        private static bool RMinus(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out var rel))
                 return false;
@@ -348,7 +347,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool QR(byte bInstr, M6812Disassembler dasm)
+        private static bool QR(uint bInstr, M6812Disassembler dasm)
         {
             if (!dasm.rdr.TryReadBeInt16(out var rel))
                 return false;
@@ -357,7 +356,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool NotYetImplemented(byte bInstr, M6812Disassembler dasm)
+        private static bool NotYetImplemented(uint bInstr, M6812Disassembler dasm)
         {
             var instrHex = $"{bInstr:X2}";
             dasm.EmitUnitTest("M6812", instrHex, "", "M6812", dasm.addr, w =>

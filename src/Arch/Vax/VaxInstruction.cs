@@ -29,16 +29,11 @@ namespace Reko.Arch.Vax
 {
     public class VaxInstruction : MachineInstruction
     {
-        internal MachineOperand[] Operands;
-
-        public override InstrClass InstructionClass => IClass;
-
         public Opcode Opcode { get; internal set; }
 
-        public InstrClass IClass { get; set; }
+        public MachineOperand[] Operands;
 
         public override int OpcodeAsInteger => (int)Opcode;
-
 
         public override MachineOperand GetOperand(int i)
         {

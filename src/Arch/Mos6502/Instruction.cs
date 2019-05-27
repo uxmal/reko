@@ -30,12 +30,9 @@ namespace Reko.Arch.Mos6502
     public class Instruction : MachineInstruction
     {
         public Opcode Code;
-        public InstrClass IClass;
         public Operand Operand;
 
         public override int OpcodeAsInteger => (int) Code;
-
-        public override InstrClass InstructionClass => IClass;
 
         public override MachineOperand GetOperand(int i)
         {

@@ -206,9 +206,9 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 		c_n <<= 0x01;
 		b_n = __rcl(b_n, 0x01, SLICE(cond(c_n), bool, 0));
 		hl_n = hl_n * 0x02 + (b_n < 0x00);
-		byte l_n = (byte) hl_n;
 		byte h_n = SLICE(hl_n, byte, 8);
-		ui16 hl_n = DPB(DPB(hl_n, l_n, 0), h_n, 8);
+		byte l_n = (byte) hl_n;
+		ui16 hl_n = DPB(hl_n, h_n, 8);
 	}
 	uint8 a_n = (word16) c_n + ix->bFFFFFFF6;
 	ix->bFFFFFFFC = a_n;

@@ -26,17 +26,6 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface RawFileElement
-    {
-        string Name { get; set; }
-        string Description { get; set; }
-        string Architecture { get; set; }
-        string Environment { get; set; }
-        string BaseAddress { get; set; }
-        string Loader { get; set; }
-        EntryPointElement EntryPoint { get; }
-    }
-
     //<!-- Raw files have no headers, so we need a hint from the user -->
     //<RawFiles>
     //  <RawFile Name="ms-dos-com" Arch="x86-real-16" Env="ms-dos" Base="0C00:0100">
@@ -46,11 +35,11 @@ namespace Reko.Core.Configuration
     //  </RawFile>
     //</RawFiles>
 
-    public class RawFileElementImpl : RawFileElement
+    public class RawFileDefinition
     {
-        public RawFileElementImpl()
+        public RawFileDefinition()
         {
-            this.EntryPoint = new EntryPointElement();
+            this.EntryPoint = new EntryPointDefinition();
         }
 
         public string Name { get; set; }
@@ -65,13 +54,13 @@ namespace Reko.Core.Configuration
 
         public string Loader { get; set; }
 
-        public EntryPointElement EntryPoint { get; set; }
+        public EntryPointDefinition EntryPoint { get; set; }
     }
 
     //    <Entry Addr="0C00:0000" Name="MsDosCom_Start">
     //      <Register Name="ax" Value="0" />
     //    </Entry>
-    public class EntryPointElement : ConfigurationElement
+    public class EntryPointDefinition
     {
         /// <summary>
         /// Optional name of the entry point.

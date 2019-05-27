@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -33,12 +33,12 @@ namespace Reko.Core.Rtl
             this.Expression = sideEffect;
         }
 
+        public Expression Expression { get; }
+
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitSideEffect(this);
         }
-
-        public Expression Expression { get; private set; }
 
         protected override void WriteInner(TextWriter writer)
         {

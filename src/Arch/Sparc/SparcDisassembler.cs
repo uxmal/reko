@@ -81,30 +81,30 @@ namespace Reko.Arch.Sparc
             default: Debug.Assert(false, "Impossible!"); break;
 
             case 0:
-                instrCur = opRecs_0[(wInstr >> 22) & 7].Decode(this, wInstr);
+                instrCur = decoders_0[(wInstr >> 22) & 7].Decode(this, wInstr);
                 break;
             case 1:
                 instrCur = new SparcInstruction
                 {
                     Opcode = Opcode.call,
-                    IClass = LinkTransfer,
+                    InstructionClass = LinkTransfer,
                     Op1 = new AddressOperand((imageReader.Address - 4) + ((int) wInstr << 2)),
                 };
                 break;
             case 2:
-                instrCur = opRecs_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
+                instrCur = decoders_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
                 break;
             case 3:
-                instrCur = opRecs_3[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
+                instrCur = decoders_3[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
                 break;
             }
             instrCur.Address = addr;
             instrCur.Length = 4;
-            instrCur.IClass |= wInstr == 0 ? InstrClass.Zero : 0;
+            instrCur.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
             return instrCur;
         }
 
-        private class OpRec
+        private class Decoder
         {
             public Opcode code;
             public InstrClass iclass = InstrClass.Linear;
@@ -120,7 +120,7 @@ namespace Reko.Arch.Sparc
                 return new SparcInstruction
                 {
                     Opcode = code,
-                    IClass = iclass,
+                    InstructionClass = iclass,
                     Op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     Op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
                     Op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
@@ -350,19 +350,19 @@ namespace Reko.Arch.Sparc
             return new ImmediateOperand(Constant.Word32(imm));
         }
 
-        private static OpRec[] opRecs_0 = new OpRec[]
+        private static Decoder[] decoders_0 = new Decoder[]
         {
             Instr(Opcode.unimp, InstrClass.Invalid),
             Instr(Opcode.illegal, InstrClass.Invalid),
-            new BrachOpRec { offset = 0x00 },
+            new BranchDecoder { offset = 0x00 },
             Instr(Opcode.illegal, InstrClass.Invalid),
             Instr(Opcode.sethi, I,r25),
             Instr(Opcode.illegal, InstrClass.Invalid),
-            new BrachOpRec { offset = 0x10 },
-            new BrachOpRec { offset = 0x20 },
+            new BranchDecoder { offset = 0x10 },
+            new BranchDecoder { offset = 0x20 },
         };
 
-        private class BrachOpRec : OpRec
+        private class BranchDecoder : Decoder
         {
             public uint offset;
 
@@ -370,24 +370,24 @@ namespace Reko.Arch.Sparc
             {
                 uint i = ((wInstr >> 25) & 0xF) + offset;
                 SparcInstruction instr = branchOps[i].Decode(dasm, wInstr);
-                instr.IClass |= ((wInstr & (1u << 29)) != 0) ? InstrClass.Annul : 0;
+                instr.InstructionClass |= ((wInstr & (1u << 29)) != 0) ? InstrClass.Annul : 0;
                 return instr;
             }
         }
 
-        private static OpRec Instr(Opcode opcode, params Mutator<SparcDisassembler>[] mutators)
+        private static Decoder Instr(Opcode opcode, params Mutator<SparcDisassembler>[] mutators)
         {
-            return new OpRec { code = opcode, iclass = InstrClass.Linear, mutators = mutators };
+            return new Decoder { code = opcode, iclass = InstrClass.Linear, mutators = mutators };
         }
 
-        private static OpRec Instr(Opcode opcode, InstrClass iclass, params Mutator<SparcDisassembler>[] mutators)
+        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator<SparcDisassembler>[] mutators)
         {
-            return new OpRec { code = opcode, iclass = iclass, mutators = mutators };
+            return new Decoder { code = opcode, iclass = iclass, mutators = mutators };
         }
 
-        private static OpRec invalid = Instr(Opcode.illegal, InstrClass.Invalid);
+        private static Decoder invalid = Instr(Opcode.illegal, InstrClass.Invalid);
 
-        private static OpRec[] branchOps = new OpRec[]
+        private static Decoder[] branchOps = new Decoder[]
         {
             // 00
             Instr(Opcode.bn, CondTransfer, J),
@@ -466,7 +466,7 @@ namespace Reko.Arch.Sparc
             Instr(Opcode.tvc, r14,T),
         };
 
-        private static OpRec[] opRecs_2 = new OpRec[]
+        private static Decoder[] decoders_2 = new Decoder[]
         {
             // 00
             Instr(Opcode.add, r14,R0,r25),
@@ -517,8 +517,8 @@ namespace Reko.Arch.Sparc
             Instr(Opcode.sra, r14,S,r25),
 
             Instr(Opcode.rd, ry,r25),
-            new OpRec { code=Opcode.rdpsr, },
-            new OpRec { code=Opcode.rdtbr, },
+            new Decoder { code=Opcode.rdpsr, },
+            new Decoder { code=Opcode.rdtbr, },
             invalid,
             invalid,
             invalid,
@@ -526,18 +526,18 @@ namespace Reko.Arch.Sparc
             invalid,
 
             // 30
-            new OpRec { code=Opcode.wrasr, },
-            new OpRec { code=Opcode.wrpsr, },
-            new OpRec { code=Opcode.wrwim, },
-            new OpRec { code=Opcode.wrtbr, },
-            new FPop1Rec { },
-            new FPop2Rec { },
+            new Decoder { code=Opcode.wrasr, },
+            new Decoder { code=Opcode.wrpsr, },
+            new Decoder { code=Opcode.wrwim, },
+            new Decoder { code=Opcode.wrtbr, },
+            new FPop1Decoder { },
+            new FPop2Decoder { },
             new CPop1 {  },
             new CPop2 {  },
 
             Instr(Opcode.jmpl, r14,Rs,r25),
             Instr(Opcode.rett, r14,Rs ),
-            new BrachOpRec { offset= 0x30, },
+            new BranchDecoder { offset= 0x30, },
             Instr(Opcode.flush),
             Instr(Opcode.save, r14,R0,r25),
             Instr(Opcode.restore, r14,R0,r25),
@@ -545,7 +545,7 @@ namespace Reko.Arch.Sparc
             invalid,
         };
 
-        private static OpRec[] opRecs_3 = new OpRec[]
+        private static Decoder[] decoders_3 = new Decoder[]
         {
             // 00
             Instr(Opcode.ld, Mw,r25),
@@ -562,7 +562,7 @@ namespace Reko.Arch.Sparc
             Instr(Opcode.ldsh, Msh,r25),
             invalid,
             invalid,
-            new OpRec { code=Opcode.ldstub,  iclass=InstrClass.Invalid },
+            new Decoder { code=Opcode.ldstub,  iclass=InstrClass.Invalid },
             invalid,
             Instr(Opcode.swap, Mw,r25),
 
@@ -605,14 +605,14 @@ namespace Reko.Arch.Sparc
             invalid,
 
             // 30
-            new OpRec { code=Opcode.ldc, },
-            new OpRec { code=Opcode.ldcsr, },
+            new Decoder { code=Opcode.ldc, },
+            new Decoder { code=Opcode.ldcsr, },
             invalid,
-            new OpRec { code=Opcode.lddc, },
-            new OpRec { code=Opcode.stc, },
-            new OpRec { code=Opcode.stcsr, },
-            new OpRec { code=Opcode.stdcq, },
-            new OpRec { code=Opcode.stdc, },
+            new Decoder { code=Opcode.lddc, },
+            new Decoder { code=Opcode.stc, },
+            new Decoder { code=Opcode.stcsr, },
+            new Decoder { code=Opcode.stdcq, },
+            new Decoder { code=Opcode.stdc, },
 
             invalid,
             invalid,
@@ -624,38 +624,38 @@ namespace Reko.Arch.Sparc
             invalid,
         };
 
-        private class FPop1Rec : OpRec
+        private class FPop1Decoder : Decoder
         {
             public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 5) & 0x1FF].Decode(dasm, wInstr);
+                return fpDecoders[(wInstr >> 5) & 0x1FF].Decode(dasm, wInstr);
             }
         }
 
-        private class FPop2Rec : OpRec
+        private class FPop2Decoder : Decoder
         {
             public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 5) & 0x1FF].Decode(dasm, wInstr);
+                return fpDecoders[(wInstr >> 5) & 0x1FF].Decode(dasm, wInstr);
             }
         }
 
-        private class CPop1 : OpRec
+        private class CPop1 : Decoder
         {
             public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 4) & 0x1FF].Decode(dasm, wInstr);
+                return fpDecoders[(wInstr >> 4) & 0x1FF].Decode(dasm, wInstr);
             }
         }
-        private class CPop2 : OpRec
+        private class CPop2 : Decoder
         {
             public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 4) & 0xFF].Decode(dasm, wInstr);
+                return fpDecoders[(wInstr >> 4) & 0xFF].Decode(dasm, wInstr);
             }
         }
 
-        private static Dictionary<uint, OpRec> fpOprecs = new Dictionary<uint, OpRec>
+        private static Dictionary<uint, Decoder> fpDecoders = new Dictionary<uint, Decoder>
         {
             // 00 
             { 0x01, Instr(Opcode.fmovs, f0,f25) },

@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Environments.SegaGenesis
         {
             var sc = new ServiceContainer();
             var cfgSvc = new Mock<IConfigurationService>();
-            var openv = new Mock<OperatingEnvironment>();
+            var openv = new Mock<PlatformDefinition>();
             var diagSvc = new Mock<IDiagnosticsService>();
             var arch = new M68kArchitecture("m68k");
             var platform = new SegaGenesisPlatform(sc, arch);

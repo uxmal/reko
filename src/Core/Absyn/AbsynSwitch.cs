@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,25 +26,15 @@ namespace Reko.Core.Absyn
 {
     public class AbsynSwitch : AbsynStatement
     {
-        private Expression expr;
-        private List<AbsynStatement> statements;
-
         public AbsynSwitch(Expression expr, List<AbsynStatement> statements)
         {
-            this.expr = expr;
-            this.statements = statements;
+            this.Expression = expr;
+            this.Statements = statements;
         }
 
-        public Expression Expression
-        {
-            get { return expr; }
-        }
+        public Expression Expression { get; }
 
-        public List<AbsynStatement> Statements
-        {
-            get { return statements; }
-        }
-
+        public List<AbsynStatement> Statements { get; }
 
         public override void Accept(IAbsynVisitor visitor)
         {
@@ -55,6 +45,5 @@ namespace Reko.Core.Absyn
         {
             return visitor.VisitSwitch(this);
         }
-
     }
 }

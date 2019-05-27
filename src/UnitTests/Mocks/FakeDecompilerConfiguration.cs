@@ -29,7 +29,7 @@ namespace Reko.UnitTests.Mocks
 {
     public class FakeDecompilerConfiguration : IConfigurationService
     {
-        private List<LoaderConfiguration> imageLoaders = new List<LoaderConfiguration>();
+        private List<LoaderDefinition> imageLoaders = new List<LoaderDefinition>();
         private IServiceProvider services;
 
         public FakeDecompilerConfiguration(IServiceProvider services = null)
@@ -37,45 +37,45 @@ namespace Reko.UnitTests.Mocks
             this.services = services;
         }
 
-        public ICollection<LoaderConfiguration> GetImageLoaders()
+        public ICollection<LoaderDefinition> GetImageLoaders()
         {
             return imageLoaders;
         }
 
-        public LoaderConfiguration GetImageLoader(string loaderName)
+        public LoaderDefinition GetImageLoader(string loaderName)
         {
             throw new NotImplementedException();
         }
 
 
-        public ICollection<Architecture> GetArchitectures()
+        public ICollection<ArchitectureDefinition> GetArchitectures()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<AssemblerElement> GetAssemblers()
+        public ICollection<AssemblerDefinition> GetAssemblers()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<RawFileElement> GetRawFiles()
+        public ICollection<RawFileDefinition> GetRawFiles()
         {
             throw new NotImplementedException();
 
         }
-        public ICollection<OperatingEnvironment> GetEnvironments()
+        public ICollection<PlatformDefinition> GetEnvironments()
         {
             throw new NotImplementedException();
         }
 
-        public RawFileElement GetRawFile(string rawFileFormat)
+        public RawFileDefinition GetRawFile(string rawFileFormat)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<SignatureFile> GetSignatureFiles()
+        public ICollection<SignatureFileDefinition> GetSignatureFiles()
         {
-            return new SignatureFileElement[0];
+            return new SignatureFileDefinition[0];
         }
 
         public string GetInstallationRelativePath(params string[] pathComponents)
@@ -93,17 +93,17 @@ namespace Reko.UnitTests.Mocks
             return new Reko.Assemblers.x86.X86TextAssembler(services, new Reko.Arch.X86.X86ArchitectureReal("x86-real-16"));
         }
 
-        public OperatingEnvironment GetEnvironment(string envName)
+        public PlatformDefinition GetEnvironment(string envName)
         {
             return null;
         }
 
-        IEnumerable<UiStyle> IConfigurationService.GetDefaultPreferences()
+        IEnumerable<UiStyleDefinition> IConfigurationService.GetDefaultPreferences()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<SymbolSource> GetSymbolSources()
+        public ICollection<SymbolSourceDefinition> GetSymbolSources()
         {
             throw new NotImplementedException();
         }

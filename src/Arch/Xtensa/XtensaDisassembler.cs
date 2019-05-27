@@ -30,7 +30,7 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaDisassembler : DisassemblerBase<XtensaInstruction>
     {
-        private static readonly OpRecBase[] deocders;
+        private static readonly Decoder[] deocders;
         private static readonly int[] b4const;
         private static readonly int[] b4constu;
 
@@ -261,16 +261,16 @@ namespace Reko.Arch.Xtensa
             return AddressOperand.Ptr32((uint)nAddr);
         }
 
-        public abstract class OpRecBase
+        public abstract class Decoder
         {
             public abstract XtensaInstruction Decode(XtensaDisassembler dasm);
         }
 
-        public class Op1Rec : OpRecBase
+        public class Op1Decoder : Decoder
         {
-            private OpRecBase[] aOprecs;
+            private Decoder[] aOprecs;
 
-            public Op1Rec(params OpRecBase [] aOprecs)
+            public Op1Decoder(params Decoder [] aOprecs)
             {
                 Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
@@ -282,11 +282,11 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class Op2Rec : OpRecBase
+        public class Op2Decoder : Decoder
         {
-            private OpRecBase[] aOprecs;
+            private Decoder[] aOprecs;
 
-            public Op2Rec(params OpRecBase[] aOprecs)
+            public Op2Decoder(params Decoder[] aOprecs)
             {
                 Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
@@ -299,11 +299,11 @@ namespace Reko.Arch.Xtensa
         }
 
 
-        public class r_Rec : OpRecBase
+        public class r_Rec : Decoder
         {
-            private OpRecBase[] aOprecs;
+            private Decoder[] aOprecs;
 
-            public r_Rec(params OpRecBase[] aOprecs)
+            public r_Rec(params Decoder[] aOprecs)
             {
                 Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
@@ -315,11 +315,11 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class m_Rec : OpRecBase
+        public class m_Rec : Decoder
         {
-            private OpRecBase[] aOprecs;
+            private Decoder[] aOprecs;
 
-            public m_Rec(params OpRecBase[] aOprecs)
+            public m_Rec(params Decoder[] aOprecs)
             {
                 Debug.Assert(aOprecs.Length == 4);
                 this.aOprecs = aOprecs;
@@ -331,11 +331,11 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class n_Rec : OpRecBase
+        public class n_Rec : Decoder
         {
-            private OpRecBase[] aOprecs;
+            private Decoder[] aOprecs;
 
-            public n_Rec(params OpRecBase[] aOprecs)
+            public n_Rec(params Decoder[] aOprecs)
             {
                 Debug.Assert(aOprecs.Length == 4);
                 this.aOprecs = aOprecs;
@@ -347,11 +347,11 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class s_Rec : OpRecBase
+        public class s_Rec : Decoder
         {
-            private OpRecBase[] aOprecs;
+            private Decoder[] aOprecs;
 
-            public s_Rec(params OpRecBase[] aOprecs)
+            public s_Rec(params Decoder[] aOprecs)
             {
                 Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
@@ -363,11 +363,11 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class t_Rec : OpRecBase
+        public class t_Rec : Decoder
         {
-            private OpRecBase[] aOprecs;
+            private Decoder[] aOprecs;
 
-            public t_Rec(params OpRecBase[] aOprecs)
+            public t_Rec(params Decoder[] aOprecs)
             {
                 Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
@@ -379,7 +379,7 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class OpRec : OpRecBase
+        public class OpRec : Decoder
         {
             private Opcodes opcode;
             private InstrClass iclass;
@@ -414,7 +414,7 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class OpRecMovi_n : OpRecBase
+        public class OpRecMovi_n : Decoder
         {
             public override XtensaInstruction Decode(XtensaDisassembler dasm)
             {
@@ -441,7 +441,7 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class OpRec_bz : OpRecBase
+        public class OpRec_bz : Decoder
         {
             private Opcodes opcode;
 
@@ -471,7 +471,7 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class OpRecBeqxx_n : OpRecBase
+        public class OpRecBeqxx_n : Decoder
         {
             private Opcodes opcode;
 
@@ -502,7 +502,7 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class OpRec_bbxi : OpRecBase
+        public class OpRec_bbxi : Decoder
         {
             private Opcodes opcode;
 
@@ -525,7 +525,7 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class ExtuiOpRec : OpRecBase
+        public class ExtuiOpRec : Decoder
         {
             public override XtensaInstruction Decode(XtensaDisassembler dasm)
             {
@@ -573,7 +573,7 @@ namespace Reko.Arch.Xtensa
 
             var reserved = new OpRec(Opcodes.reserved, "");
 
-            var oprecLSCX = new Op1Rec(
+            var oprecLSCX = new Op1Decoder(
                 new OpRec(Opcodes.lsx,"T,Rs,Rr"),
                 null,
                 reserved,
@@ -594,7 +594,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
-            var oprecLSC4 = new Op2Rec(
+            var oprecLSC4 = new Op2Decoder(
                 new OpRec(Opcodes.l32e, "Rt,Rs,e"),
                 reserved,
                 reserved,
@@ -615,7 +615,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
-            var oprecFP0 = new Op2Rec(
+            var oprecFP0 = new Op2Decoder(
                 new OpRec(Opcodes.add_s, "Fr,Fs,Ft"),
                 new OpRec(Opcodes.sub_s, "Fr,Fs,Ft"),
                 new OpRec(Opcodes.mul_s, "Fr,Fs,Ft"),
@@ -636,7 +636,7 @@ namespace Reko.Arch.Xtensa
                 null,
                 null);
 
-            var oprecFP1 = new Op2Rec(
+            var oprecFP1 = new Op2Decoder(
                 reserved,
                 null,
                 null,
@@ -910,7 +910,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
-            var oprecRST0 = new Op2Rec(
+            var oprecRST0 = new Op2Decoder(
                 oprecST0,
                 new OpRec(Opcodes.and, "Rr,Rs,Rt"),
                 new OpRec(Opcodes.or, "Rr,Rs,Rt"),
@@ -952,7 +952,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 new OpRec(Opcodes.ldpte, ""));       //$TODO: doesn't appear to be documented
 
-            var oprecRST1 = new Op2Rec(
+            var oprecRST1 = new Op2Decoder(
                 new OpRec(Opcodes.slli, "Rr,Rs,IS"),
                 new OpRec(Opcodes.slli, "Rr,Rs,IS"),
                 new OpRec(Opcodes.srai, "Rr,Rt,IR"),
@@ -973,7 +973,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 oprecIMP);
 
-            var oprecRST2 = new Op2Rec(
+            var oprecRST2 = new Op2Decoder(
                 new OpRec(Opcodes.andb, "Br,Bs,Bt"),
                 new OpRec(Opcodes.andbc, "Br,Bs,Bt"),
                 new OpRec(Opcodes.orb, "Br,Bs,Bt"),
@@ -994,7 +994,7 @@ namespace Reko.Arch.Xtensa
                 new OpRec(Opcodes.remu, "Rr,Rs,Rt"),
                 new OpRec(Opcodes.rems, "Rr,Rs,Rt"));
 
-            var oprecRST3 = new Op2Rec(
+            var oprecRST3 = new Op2Decoder(
                new OpRec(Opcodes.rsr, "Rt,S"),
                new OpRec(Opcodes.wsr, "Rt,S"),
                null,
@@ -1015,7 +1015,7 @@ namespace Reko.Arch.Xtensa
                null,
                null);
 
-            var oprecQRST = new Op1Rec(
+            var oprecQRST = new Op1Decoder(
                 oprecRST0,
                 oprecRST1,
                 oprecRST2,
@@ -1078,7 +1078,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
-            var oprecMACID = new Op1Rec(
+            var oprecMACID = new Op1Decoder(
                 reserved,
                 reserved,
                 reserved,
@@ -1098,7 +1098,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved,
                 reserved);
-            var oprecMACDD = new Op1Rec(
+            var oprecMACDD = new Op1Decoder(
                 reserved,
                 reserved,
                 reserved,
@@ -1119,7 +1119,7 @@ namespace Reko.Arch.Xtensa
                 null,
                 null);
 
-            var oprecMACC = new Op1Rec(
+            var oprecMACC = new Op1Decoder(
                 reserved,
                 reserved,
                 reserved,
@@ -1140,7 +1140,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
-            var oprecMAC16 = new Op2Rec(
+            var oprecMAC16 = new Op2Decoder(
                 oprecMACID,
                 null,
                 oprecMACDD,
@@ -1167,7 +1167,7 @@ namespace Reko.Arch.Xtensa
                 new OpRec(Opcodes.call8, "c"),
                 new OpRec(Opcodes.call12, "c"));
 
-            deocders = new OpRecBase[]
+            deocders = new Decoder[]
             {
                 oprecQRST,
                 new OpRec(Opcodes.l32r, "Rt,p"),

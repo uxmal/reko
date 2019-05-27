@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -30,32 +30,32 @@ namespace Reko.WindowsItp
 {
     public class FakeConfigurationService : IConfigurationService
     {
-        public ICollection<Architecture> GetArchitectures()
+        public ICollection<ArchitectureDefinition> GetArchitectures()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<AssemblerElement> GetAssemblers()
+        public ICollection<AssemblerDefinition> GetAssemblers()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<OperatingEnvironment> GetEnvironments()
+        public ICollection<PlatformDefinition> GetEnvironments()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<LoaderConfiguration> GetImageLoaders()
+        public ICollection<LoaderDefinition> GetImageLoaders()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<RawFileElement> GetRawFiles()
+        public ICollection<RawFileDefinition> GetRawFiles()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<SignatureFile> GetSignatureFiles()
+        public ICollection<SignatureFileDefinition> GetSignatureFiles()
         {
             throw new NotImplementedException();
         }
@@ -70,12 +70,12 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public OperatingEnvironment GetEnvironment(string envName)
+        public PlatformDefinition GetEnvironment(string envName)
         {
             throw new NotImplementedException();
         }
 
-        public LoaderConfiguration GetImageLoader(string loaderName)
+        public LoaderDefinition GetImageLoader(string loaderName)
         {
             throw new NotImplementedException();
         }
@@ -85,32 +85,32 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public RawFileElement GetRawFile(string rawFileFormat)
+        public RawFileDefinition GetRawFile(string rawFileFormat)
         {
             throw new NotImplementedException();
         }
 
 
-        public IEnumerable<Core.Configuration.UiStyle> GetDefaultPreferences()
+        public IEnumerable<Core.Configuration.UiStyleDefinition> GetDefaultPreferences()
         {
-            return new Core.Configuration.UiStyle[] {
-                    new UiStyleElement { Name = UiStyles.MemoryWindow, FontName="Lucida Console, 9pt"},
-                    new UiStyleElement { Name = UiStyles.MemoryCode, ForeColor = "#000000", BackColor="#FFC0C0", },
-                    new UiStyleElement { Name = UiStyles.MemoryHeuristic, ForeColor = "#000000", BackColor="#FFE0E0"},
-                    new UiStyleElement { Name = UiStyles.MemoryData, ForeColor="#000000", BackColor="#C0C0FF" },
+            return new Core.Configuration.UiStyleDefinition[] {
+                    new UiStyleDefinition { Name = UiStyles.MemoryWindow, FontName="Lucida Console, 9pt"},
+                    new UiStyleDefinition { Name = UiStyles.MemoryCode, ForeColor = "#000000", BackColor="#FFC0C0", },
+                    new UiStyleDefinition { Name = UiStyles.MemoryHeuristic, ForeColor = "#000000", BackColor="#FFE0E0"},
+                    new UiStyleDefinition { Name = UiStyles.MemoryData, ForeColor="#000000", BackColor="#C0C0FF" },
 
-                    new UiStyleElement { Name = UiStyles.Disassembler,  FontName="Lucida Console, 9pt" },
-                    new UiStyleElement { Name = UiStyles.DisassemblerOpcode, ForeColor = "#801010" },
+                    new UiStyleDefinition { Name = UiStyles.Disassembler,  FontName="Lucida Console, 9pt" },
+                    new UiStyleDefinition { Name = UiStyles.DisassemblerOpcode, ForeColor = "#801010" },
 
-                    new UiStyleElement { Name = UiStyles.CodeWindow, FontName = "Lucida Console, 9pt"},
-                    new UiStyleElement { Name = UiStyles.CodeKeyword, ForeColor="#00C0C0" },
-                    new UiStyleElement { Name = UiStyles.CodeComment, ForeColor="#00C000" },
+                    new UiStyleDefinition { Name = UiStyles.CodeWindow, FontName = "Lucida Console, 9pt"},
+                    new UiStyleDefinition { Name = UiStyles.CodeKeyword, ForeColor="#00C0C0" },
+                    new UiStyleDefinition { Name = UiStyles.CodeComment, ForeColor="#00C000" },
                 };
         }
 
-        public ICollection<SymbolSource> GetSymbolSources()
+        public ICollection<SymbolSourceDefinition> GetSymbolSources()
         {
-            return new List<SymbolSource>
+            return new List<SymbolSourceDefinition>
             {
                 new SymbolSourceDefinition { Name = "Bobsym", Description="BOB symbol loader", TypeName="BobSymSource,Bob" },
                 new SymbolSourceDefinition { Name = "PDB", Description="PDB", TypeName="PDBSymSource,PDBLoader" }

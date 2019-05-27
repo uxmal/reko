@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,25 +21,12 @@
 using Reko.Core;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Reflection;
 using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface LoaderConfiguration
-    {
-        string MagicNumber { get; }
-        string TypeName { get; set; }
-        string Offset { get; }
-        string Extension { get; }
-
-        string Label { get; set; }
-        string Argument { get; set; }
-        string Description { get; set; }
-    }
-
-    public class LoaderElementImpl : LoaderConfiguration
+    public class LoaderDefinition
     {
         /// <summary>
         /// The first few bytes of an image file expressed as a hexadecimal string. The presence of such a

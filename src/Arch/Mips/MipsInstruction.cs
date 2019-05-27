@@ -27,12 +27,6 @@ namespace Reko.Arch.Mips
 {
     public class MipsInstruction : MachineInstruction
     {
-        private const InstrClass LinkCondTransfer = InstrClass.Conditional | InstrClass.Call | InstrClass.Transfer | InstrClass.Delay;
-        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer | InstrClass.Delay;
-        private const InstrClass Linear = InstrClass.Linear;
-        private const InstrClass Transfer = InstrClass.Transfer | InstrClass.Delay;
-        private const InstrClass LinkTransfer = InstrClass.Transfer | InstrClass.Call | InstrClass.Delay;
-
         private static readonly Dictionary<Opcode, string> instrNames = new Dictionary<Opcode, string>
         {
             { Opcode.add_d,     "add.d" },
@@ -61,14 +55,11 @@ namespace Reko.Arch.Mips
         };
 
         public Opcode opcode;
-        public InstrClass iclass;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
-
-        public override InstrClass InstructionClass => iclass;
 
         public override MachineOperand GetOperand(int i)
         {
@@ -83,8 +74,7 @@ namespace Reko.Arch.Mips
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            string name;
-            if (!instrNames.TryGetValue(opcode, out name))
+            if (!instrNames.TryGetValue(opcode, out string name))
             {
                 name = opcode.ToString();
             }

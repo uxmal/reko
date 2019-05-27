@@ -8118,10 +8118,10 @@ l00013B30:
 								r4_n = DPB(r4_n, 0x77, 0);
 							else
 								r4_n = DPB(r4_n, 0x2D, 0);
-							int32 r2_n;
 							fp_n->bFFFFFFDE = (byte) r4_n;
 							if ((r7_n & 0x40) != 0x00)
 							{
+								int32 r2_n;
 								if ((r7_n & 0x0800) != 0x00)
 									r2_n = DPB(r2_n, 115, 0);
 								else
@@ -8130,16 +8130,17 @@ l00013B30:
 							}
 							else
 							{
+								int32 r2_n;
 								if ((r7_n & 0x0800) != 0x00)
 									r2_n = DPB(r2_n, 0x53, 0);
 								else
 									r2_n = DPB(r2_n, 0x2D, 0);
 								fp_n->bFFFFFFD9 = (byte) r2_n;
 							}
-							int32 r2_n;
 							uint32 r3_n = (uint32) sp_n->w000E;
 							if ((r3_n & 0x08) != 0x00)
 							{
+								int32 r2_n;
 								if ((r3_n & 0x0400) != 0x00)
 									r2_n = DPB(r2_n, 115, 0);
 								else
@@ -8148,6 +8149,7 @@ l00013B30:
 							}
 							else
 							{
+								int32 r2_n;
 								if ((r3_n & 0x0400) != 0x00)
 									r2_n = DPB(r2_n, 0x6C, 0);
 								else

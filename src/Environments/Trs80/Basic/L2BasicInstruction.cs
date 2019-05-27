@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,6 +34,11 @@ namespace Reko.Environments.Trs80.Basic
         internal const int TokenMin = 0x80;
         internal const int TokenMax = 0xCC;
 
+        public L2BasicInstruction()
+        {
+            this.InstructionClass = InstrClass.Linear;
+        }
+
         public override int OpcodeAsInteger
         {
             get { throw new NotImplementedException(); }
@@ -42,14 +47,6 @@ namespace Reko.Environments.Trs80.Basic
         public override MachineOperand GetOperand(int i)
         {
             return null;
-        }
-
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                return InstrClass.Linear;
-            }
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

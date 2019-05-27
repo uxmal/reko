@@ -37,20 +37,20 @@ namespace Reko.Core.Configuration
     /// </summary>
     public interface IConfigurationService
     {
-         ICollection<LoaderConfiguration> GetImageLoaders();
-         ICollection<Architecture> GetArchitectures();
-         ICollection<OperatingEnvironment> GetEnvironments();
-         ICollection<SignatureFile> GetSignatureFiles();
-         ICollection<AssemblerElement> GetAssemblers();
-         ICollection<RawFileElement> GetRawFiles();
+         ICollection<LoaderDefinition> GetImageLoaders();
+         ICollection<ArchitectureDefinition> GetArchitectures();
+         ICollection<PlatformDefinition> GetEnvironments();
+         ICollection<SignatureFileDefinition> GetSignatureFiles();
+         ICollection<AssemblerDefinition> GetAssemblers();
+         ICollection<RawFileDefinition> GetRawFiles();
 
-         OperatingEnvironment GetEnvironment(string envName);
+         PlatformDefinition GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
-         ICollection<SymbolSource> GetSymbolSources();
+         ICollection<SymbolSourceDefinition> GetSymbolSources();
          Assembler GetAssembler(string assemblerName);
-         RawFileElement GetRawFile(string rawFileFormat);
+         RawFileDefinition GetRawFile(string rawFileFormat);
 
-         IEnumerable<UiStyle> GetDefaultPreferences ();
+         IEnumerable<UiStyleDefinition> GetDefaultPreferences ();
 
          /// <summary>
          /// Given a relative path with respect to the installation directory, 
@@ -59,19 +59,19 @@ namespace Reko.Core.Configuration
          /// <param name="path"></param>
          /// <returns></returns>
          string GetInstallationRelativePath(params string [] pathComponents);
-        LoaderConfiguration GetImageLoader(string loader);
+        LoaderDefinition GetImageLoader(string loader);
     }
 
     public class RekoConfigurationService : IConfigurationService
     {
-        private List<LoaderConfiguration> loaders;
-        private List<SignatureFile> sigFiles;
-        private List<Architecture> architectures;
-        private List<OperatingEnvironment> opEnvs;
-        private List<AssemblerElement> asms;
-        private List<SymbolSource> symSources;
-        private List<RawFileElement> rawFiles;
-        private UiPreferencesConfiguration uiPreferences;
+        private readonly List<LoaderDefinition> loaders;
+        private readonly List<SignatureFileDefinition> sigFiles;
+        private readonly List<ArchitectureDefinition> architectures;
+        private readonly List<PlatformDefinition> opEnvs;
+        private readonly List<AssemblerDefinition> asms;
+        private readonly List<SymbolSourceDefinition> symSources;
+        private readonly List<RawFileDefinition> rawFiles;
+        private readonly UiPreferencesConfiguration uiPreferences;
 
         public RekoConfigurationService(RekoConfiguration_v1 config)
         {
@@ -90,9 +90,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private LoaderConfiguration LoadLoaderConfiguration(RekoLoader l)
+        private LoaderDefinition LoadLoaderConfiguration(RekoLoader l)
         {
-            return new LoaderElementImpl
+            return new LoaderDefinition
             {
                 Argument = l.Argument,
                 Extension = l.Extension,
@@ -103,9 +103,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private SignatureFile LoadSignatureFile(SignatureFile_v1 sSig)
+        private SignatureFileDefinition LoadSignatureFile(SignatureFile_v1 sSig)
         {
-            return new SignatureFileElement
+            return new SignatureFileDefinition
             {
                 Filename = sSig.Filename,
                 Label = sSig.Label,
@@ -113,9 +113,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private Architecture LoadArchitecture(Architecture_v1 sArch)
+        private ArchitectureDefinition LoadArchitecture(Architecture_v1 sArch)
         {
-            return new ArchitectureElement
+            return new ArchitectureDefinition
             {
                 Description = sArch.Description,
                 Name = sArch.Name,
@@ -137,9 +137,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private OperatingEnvironment LoadEnvironment(Environment_v1 env)
+        private PlatformDefinition LoadEnvironment(Environment_v1 env)
         {
-            return new OperatingEnvironmentElement
+            return new PlatformDefinition
             {
                 Name = env.Name,
                 Description = env.Description,
@@ -158,9 +158,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private AssemblerElement LoadAssembler(Assembler_v1 sAsm)
+        private AssemblerDefinition LoadAssembler(Assembler_v1 sAsm)
         {
-            return new AssemblerElementImpl
+            return new AssemblerDefinition
             {
                 Description = sAsm.Description,
                 Name = sAsm.Name,
@@ -168,7 +168,7 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private SymbolSource LoadSymbolSource(SymbolSource_v1 sSymSrc)
+        private SymbolSourceDefinition LoadSymbolSource(SymbolSource_v1 sSymSrc)
         {
             return new SymbolSourceDefinition
             {
@@ -179,9 +179,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private ITypeLibraryElement LoadTypeLibraryReference(TypeLibraryReference_v1 tlibRef)
+        private TypeLibraryDefinition LoadTypeLibraryReference(TypeLibraryReference_v1 tlibRef)
         {
-            return new TypeLibraryElement
+            return new TypeLibraryDefinition
             {
                 Architecture = tlibRef.Arch,
                 Loader = tlibRef.Loader,
@@ -194,11 +194,11 @@ namespace Reko.Core.Configuration
         /// Loads processor-specific settings for a particular 
         /// platform.
         /// </summary>
-        private IPlatformArchitectureElement LoadPlatformArchitecture(PlatformArchitecture_v1 spa)
+        private PlatformArchitectureDefinition LoadPlatformArchitecture(PlatformArchitecture_v1 spa)
         {
             var sTrashedRegs = spa.TrashedRegisters ?? "";
             var sLibraries = spa.TypeLibraries ?? new TypeLibraryReference_v1[0];
-            return new PlatformArchitectureElement
+            return new PlatformArchitectureDefinition
             {
                 Name = spa.Name,
                 TrashedRegisters = sTrashedRegs
@@ -209,9 +209,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private RawFileElement LoadRawFile(RawFile_v1 sRaw)
+        private RawFileDefinition LoadRawFile(RawFile_v1 sRaw)
         {
-            return new RawFileElementImpl
+            return new RawFileDefinition
             {
                 Architecture = sRaw.Architecture,
                 BaseAddress = sRaw.Base,
@@ -223,18 +223,18 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private EntryPointElement LoadEntryPoint(EntryPoint_v1 sEntry)
+        private EntryPointDefinition LoadEntryPoint(EntryPoint_v1 sEntry)
         {
             if (sEntry == null)
             {
-                return new EntryPointElement
+                return new EntryPointDefinition
                 {
                     Address = null,
                     Follow = false,
                     Name = null,
                 };
             }
-            return new EntryPointElement
+            return new EntryPointDefinition
             {
                 Address = sEntry.Address,
                 Follow = sEntry.Follow,
@@ -242,9 +242,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private UiStyle LoadUiStyle(StyleDefinition_v1 sUiStyle)
+        private UiStyleDefinition LoadUiStyle(StyleDefinition_v1 sUiStyle)
         {
-            return new UiStyleElement
+            return new UiStyleDefinition
             {
                 Name = sUiStyle.Name,
                 BackColor = sUiStyle.BackColor,
@@ -294,37 +294,37 @@ namespace Reko.Core.Configuration
             }
         }
 
-        public virtual ICollection<LoaderConfiguration> GetImageLoaders()
+        public virtual ICollection<LoaderDefinition> GetImageLoaders()
         {
             return loaders;
         }
 
-        public virtual ICollection<SignatureFile> GetSignatureFiles()
+        public virtual ICollection<SignatureFileDefinition> GetSignatureFiles()
         {
             return sigFiles;
         }
 
-        public virtual ICollection<Architecture> GetArchitectures()
+        public virtual ICollection<ArchitectureDefinition> GetArchitectures()
         {
             return architectures;
         }
 
-        public virtual ICollection<SymbolSource> GetSymbolSources()
+        public virtual ICollection<SymbolSourceDefinition> GetSymbolSources()
         {
             return symSources;
         }
 
-        public virtual ICollection<OperatingEnvironment> GetEnvironments()
+        public virtual ICollection<PlatformDefinition> GetEnvironments()
         {
             return opEnvs;
         }
 
-        public virtual ICollection<AssemblerElement> GetAssemblers()
+        public virtual ICollection<AssemblerDefinition> GetAssemblers()
         {
             return asms;
         }
 
-        public virtual ICollection<RawFileElement> GetRawFiles()
+        public virtual ICollection<RawFileDefinition> GetRawFiles()
         {
             return rawFiles;
         }
@@ -354,32 +354,32 @@ namespace Reko.Core.Configuration
             return (Assembler)t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
 
-        public OperatingEnvironment GetEnvironment(string envName)
+        public PlatformDefinition GetEnvironment(string envName)
         {
             var env = GetEnvironments()
                 .Where(e => e.Name == envName).SingleOrDefault();
             if (env != null)
                 return env;
 
-            return new OperatingEnvironmentElement
+            return new PlatformDefinition
             {
                 TypeName = typeof(DefaultPlatform).FullName,
             };
         }
 
-        public virtual LoaderConfiguration GetImageLoader(string loaderName)
+        public virtual LoaderDefinition GetImageLoader(string loaderName)
         {
             return loaders.FirstOrDefault(ldr => ldr.Label == loaderName);
         }
 
-        public virtual RawFileElement GetRawFile(string rawFileFormat)
+        public virtual RawFileDefinition GetRawFile(string rawFileFormat)
         {
             return GetRawFiles()
                 .Where(r => r.Name == rawFileFormat)
                 .SingleOrDefault();
         }
 
-        public IEnumerable<UiStyle> GetDefaultPreferences()
+        public IEnumerable<UiStyleDefinition> GetDefaultPreferences()
         {
             return uiPreferences.Styles;
         }

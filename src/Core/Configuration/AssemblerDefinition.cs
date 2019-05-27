@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -20,24 +20,29 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Configuration
 {
-    public interface SymbolSource
+    public class AssemblerDefinition
     {
-        string Description { get; }
-        string Name { get; }
-        string TypeName { get; }
-    }
+        /// <summary>
+        /// Short, technical name for the assembler.
+        /// the assembler.
+        /// </summary>
+        public string Name { get; set; }
 
-    public class SymbolSourceDefinition : SymbolSource
-    {
-        public string Description { get;  set; }
-        public string Extension { get;  set; }
-        public string Name { get;  set; }
-        public string TypeName { get;  set; }
+        /// <summary>
+        /// Human friendly description of the assembler.
+        /// the assembler.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// The assembly-qualified name for the .NET type that implements
+        /// the assembler.
+        /// </summary>
+        public string TypeName { get; set; }
     }
 }

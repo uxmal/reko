@@ -40,6 +40,11 @@ namespace Reko.Environments.C64
         internal const int TokenMin = 0x80;
         internal const int TokenMax = 0xCC;
 
+        public C64BasicInstruction()
+        {
+            this.InstructionClass = InstrClass.Linear;
+        }
+
         public override int OpcodeAsInteger
         {
             get { throw new NotImplementedException(); }
@@ -50,7 +55,6 @@ namespace Reko.Environments.C64
             return null;
         }
 
-        public override InstrClass InstructionClass => InstrClass.Linear;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

@@ -1,20 +1,19 @@
-void prvUnlockQueue(word32 r0, word32 r6, word32 cpsr)
+void prvUnlockQueue(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] r0:[0..31] r6:[0..31]
+// MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
-// Trashed: NZCV r0 r1 r2 r3
-// Preserved: cpsr lr r4 r5 r6 sp
+// Trashed: NZCV r0 r2 r3
+// Preserved: lr r1 r4 r5 r6 sp
 prvUnlockQueue_entry:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000058:
-	word32 r0_15
-	vPortEnterCritical(cpsr, out r0_15)
-	word32 r4_146 = (int32) (int8) (word32) Mem11[r0 + 69:byte]
-	branch r4_146 <= 0x00000000 l00000082
+	vPortEnterCritical(cpsr, out r0_169)
+	word32 r4_133 = (int32) (int8) (word32) Mem11[r0 + 69:byte]
+	branch r4_133 <= 0x00000000 l00000098
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -26,108 +25,91 @@ l0000006A:
 // SymbolicIn:
 
 l0000006E:
-	r6 = r0 + 0x00000024
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000080:
-	r0_15 = r6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00000082:
-	Mem57 = Mem11 (alias)
-	branch xTaskRemoveFromEventList(r0_15) == 0x00000000 l00000074
+	branch xTaskRemoveFromEventList(r0 + 0x00000024) == 0x00000000 l00000074
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000074:
-	word32 r3_43 = (uint32) (byte) (r4_146 - 0x00000001)
-	r4_146 = (int32) (int8) r3_43
-	branch r3_43 == 0x00000000 l00000098
+	word32 r3_41 = (uint32) (byte) (r4_133 - 0x00000001)
+	r4_133 = (int32) (int8) r3_41
+	branch r3_41 == 0x00000000 l00000098
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000008A:
 	vTaskMissedYield()
-	word32 r3_49 = (uint32) (byte) (r4_146 - 0x00000001)
-	r4_146 = (int32) (int8) r3_49
-	branch r3_49 != 0x00000000 l0000007C
+	word32 r3_47 = (uint32) (byte) (r4_133 - 0x00000001)
+	r4_133 = (int32) (int8) r3_47
+	branch r3_47 != 0x00000000 l0000007C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000007C:
-	branch Mem57[r0 + 36:word32] == 0x00000000 l00000098
+	branch Mem11[r0 + 36:word32] == 0x00000000 l00000098
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000098:
-	Mem62[r0 + 69:byte] = 0xFF
+	Mem58[r0 + 69:byte] = 0xFF
 	vPortExitCritical(cpsr)
-	word32 r0_73
-	vPortEnterCritical(cpsr, out r0_73)
-	word32 r4_102 = (int32) (int8) (word32) Mem62[r0 + 68:byte]
-	branch r4_102 <= 0x00000000 l000000C8
+	vPortEnterCritical(cpsr, out r0_170)
+	word32 r4_101 = (int32) (int8) (word32) Mem58[r0 + 68:byte]
+	branch r4_101 <= 0x00000000 l000000DE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000B0:
-	branch Mem62[r0 + 16:word32] == 0x00000000 l000000DE
+	branch Mem58[r0 + 16:word32] == 0x00000000 l000000DE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000B4:
-	r6 = r0 + 0x00000010
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000C6:
-	r0_73 = r6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000000C8:
-	Mem115 = Mem62 (alias)
-	branch xTaskRemoveFromEventList(r0_73) == 0x00000000 l000000BA
+	branch xTaskRemoveFromEventList(r0 + 0x00000010) == 0x00000000 l000000BA
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000BA:
-	word32 r3_101 = (uint32) (byte) (r4_102 - 0x00000001)
-	r4_102 = (int32) (int8) r3_101
-	branch r3_101 == 0x00000000 l000000DE
+	word32 r3_94 = (uint32) (byte) (r4_101 - 0x00000001)
+	r4_101 = (int32) (int8) r3_94
+	branch r3_94 == 0x00000000 l000000DE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000D0:
 	vTaskMissedYield()
-	word32 r3_107 = (uint32) (byte) (r4_102 - 0x00000001)
-	r4_102 = (int32) (int8) r3_107
-	branch r3_107 != 0x00000000 l000000C2
+	word32 r3_100 = (uint32) (byte) (r4_101 - 0x00000001)
+	r4_101 = (int32) (int8) r3_100
+	branch r3_100 != 0x00000000 l000000C2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000C2:
-	branch Mem115[r0 + 16:word32] == 0x00000000 l000000DE
+	branch Mem58[r0 + 16:word32] == 0x00000000 l000000DE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000DE:
-	Mem120[r0 + 68:byte] = 0xFF
+	Mem111[r0 + 68:byte] = 0xFF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -396,7 +378,7 @@ l00000190:
 // SymbolicIn:
 
 l000001F8:
-	vPortEnterCritical(cpsr, out r0_409)
+	vPortEnterCritical(cpsr, out r0_403)
 	word32 r3_42 = Mem40[r0 + 60:word32]
 	branch Mem40[r0 + 56:word32] <u r3_42 l00000246
 // DataOut:
@@ -412,7 +394,7 @@ l00000204:
 l00000246:
 	word32 lr_58
 	word32 r0_59
-	prvCopyDataToQueue(r0, r1, r3, r3_42, r3, lr, out r0_59, out r7_410, out lr_58)
+	prvCopyDataToQueue(r0, r1, r3, r3_42, r3, lr, out r0_59, out r7_404, out lr_58)
 	branch Mem40[r0 + 36:word32] != 0x00000000 l00000290
 // DataOut:
 // DataOut (flags):
@@ -478,7 +460,7 @@ l00000210:
 l000001A8:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
-	vPortEnterCritical(cpsr, out r0_411)
+	vPortEnterCritical(cpsr, out r0_405)
 	branch (word32) Mem40[r0 + 68:byte] != 0x000000FF l000001C0
 // DataOut:
 // DataOut (flags):
@@ -510,7 +492,7 @@ l000001CC:
 // SymbolicIn:
 
 l0000027E:
-	prvUnlockQueue(r0, r2, cpsr)
+	prvUnlockQueue(r0, cpsr)
 	xTaskResumeAll(cpsr)
 	return lr
 // DataOut:
@@ -523,8 +505,8 @@ xQueueGenericSend_exit:
 // SymbolicIn:
 
 l000001DC:
-	vPortEnterCritical(cpsr, out r0_412)
-	branch Mem211[r0 + 56:word32] == Mem211[r0 + 60:word32] l00000218
+	vPortEnterCritical(cpsr, out r0_406)
+	branch Mem207[r0 + 56:word32] == Mem207[r0 + 60:word32] l00000218
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -532,14 +514,14 @@ l000001DC:
 l00000218:
 	vPortExitCritical(cpsr)
 	vTaskPlaceOnEventList(r0 + 0x00000010, r2)
-	prvUnlockQueue(r0, r2, cpsr)
+	prvUnlockQueue(r0, cpsr)
 	branch xTaskResumeAll(cpsr) != 0x00000000 l000001F6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000234:
-	Mem270[r9_31:word32] = 0x10000000
+	Mem265[r9_31:word32] = 0x10000000
 	__dsb_sy()
 	__isb_sy()
 // DataOut:
@@ -548,7 +530,7 @@ l00000234:
 
 l000001E8:
 	vPortExitCritical(cpsr)
-	prvUnlockQueue(r0, r2, cpsr)
+	prvUnlockQueue(r0, cpsr)
 	xTaskResumeAll(cpsr)
 // DataOut:
 // DataOut (flags):
@@ -628,7 +610,7 @@ l000002D8:
 // SymbolicIn:
 
 l0000030A:
-	vPortEnterCritical(cpsr, out r0_491)
+	vPortEnterCritical(cpsr, out r0_484)
 	word32 r6_41 = Mem40[r0 + 56:word32]
 	branch r6_41 != 0x00000000 l000003B0
 // DataOut:
@@ -639,7 +621,7 @@ l000003B0:
 	word32 lr_51
 	word32 r5_56
 	word32 r6_57
-	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12:word32], r6_41, 0x00000000, lr, out r5_56, out r6_57, out r7_492, out lr_51)
+	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12:word32], r6_41, 0x00000000, lr, out r5_56, out r6_57, out r7_485, out lr_51)
 	branch r3 != 0x00000000 l000003E8
 // DataOut:
 // DataOut (flags):
@@ -727,7 +709,7 @@ l0000039C:
 l0000031E:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
-	vPortEnterCritical(cpsr, out r0_493)
+	vPortEnterCritical(cpsr, out r0_486)
 	branch (word32) Mem40[r0 + 68:byte] != 0x000000FF l00000336
 // DataOut:
 // DataOut (flags):
@@ -759,7 +741,7 @@ l00000342:
 // SymbolicIn:
 
 l000002F0:
-	vPortEnterCritical(cpsr, out r0_494)
+	vPortEnterCritical(cpsr, out r0_487)
 	branch Mem203[r0 + 56:word32] == 0x00000000 l0000036A
 // DataOut:
 // DataOut (flags):
@@ -773,7 +755,7 @@ l0000036A:
 // SymbolicIn:
 
 l000003D8:
-	vPortEnterCritical(cpsr, out r0_496)
+	vPortEnterCritical(cpsr, out r0_489)
 	vTaskPriorityInherit(Mem203[r0 + 4:word32])
 	vPortExitCritical(cpsr)
 // DataOut:
@@ -782,14 +764,14 @@ l000003D8:
 
 l00000372:
 	vTaskPlaceOnEventList(r0 + 0x00000024, r2)
-	prvUnlockQueue(r0, r6_41, cpsr)
+	prvUnlockQueue(r0, cpsr)
 	branch xTaskResumeAll(cpsr) != 0x00000000 l00000308
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000038A:
-	Mem278[r8_31:word32] = 0x10000000
+	Mem273[r8_31:word32] = 0x10000000
 	__dsb_sy()
 	__isb_sy()
 // DataOut:
@@ -798,16 +780,16 @@ l0000038A:
 
 l000002FA:
 	vPortExitCritical(cpsr)
-	prvUnlockQueue(r0, r6_41, cpsr)
+	prvUnlockQueue(r0, cpsr)
 	xTaskResumeAll(cpsr)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000352:
-	prvUnlockQueue(r0, r6_41, cpsr)
+	prvUnlockQueue(r0, cpsr)
 	xTaskResumeAll(cpsr)
-	vPortEnterCritical(cpsr, out r0_495)
+	vPortEnterCritical(cpsr, out r0_488)
 	branch Mem203[r0 + 56:word32] == 0x00000000 l000003A4
 // DataOut:
 // DataOut (flags):
@@ -1958,7 +1940,7 @@ l00000932:
 	word32 r1_35 = Mem17[r0 + 20:word32]
 	Mem36[r0_24 + 101:byte] = 0x01
 	word32 r3_37 = Mem36[r0 + 12:word32]
-	word32 r2_38 = (word32) Mem36[r0 + 16:word16]
+	word32 r2_38 = (word32) Mem36[r0 + 8:word16]
 	word32 lr_39 = Mem36[r0 + 16:word32]
 	Mem40[r0_24 + 80:word32] = r1_35
 	prvInitialiseNewTask(Mem43[r0:word32], Mem40[r0 + 4:word32], r2_38, r3_37, lr_39, r1, r0_24, r0 + 24)
@@ -7105,7 +7087,7 @@ l00008670:
 	word32 r5_107
 	word32 r6_105
 	word32 r0_26
-	word32 r3_13 = (word32) Mem11[r0 + 104:word16]
+	word32 r3_13 = (word32) Mem11[r0 + 52:word16]
 	branch r3_13 == 0x000001C2 l000086B6
 // DataOut:
 // DataOut (flags):
@@ -7152,7 +7134,7 @@ l00008696:
 // SymbolicIn:
 
 l000086D8:
-	Mem65[r0 + 104:word16] = 0x01C2
+	Mem65[r0 + 52:word16] = 0x01C2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7164,7 +7146,7 @@ l000086A6:
 // SymbolicIn:
 
 l000086C8:
-	Mem69[r0 + 104:word16] = 0x01C3
+	Mem69[r0 + 52:word16] = 0x01C3
 	return
 // DataOut:
 // DataOut (flags):
@@ -7217,7 +7199,7 @@ l000086E8:
 	word32 r0_81
 	bool Z_29
 	word32 r0_22
-	word32 r3_9 = (word32) Mem7[r0 + 104:word16]
+	word32 r3_9 = (word32) Mem7[r0 + 52:word16]
 	branch r3_9 == 0x00000182 l00008750
 // DataOut:
 // DataOut (flags):
@@ -7267,7 +7249,7 @@ l0000871C:
 // SymbolicIn:
 
 l0000876E:
-	Mem65[r0 + 104:word16] = 0x0182
+	Mem65[r0 + 52:word16] = 0x0182
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7279,7 +7261,7 @@ l0000872C:
 // SymbolicIn:
 
 l00008766:
-	Mem71[r0 + 104:word16] = 0x0183
+	Mem71[r0 + 52:word16] = 0x0183
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7317,7 +7299,7 @@ l0000875E:
 // SymbolicIn:
 
 l0000870C:
-	Mem103[r0 + 104:word16] = 0x0196
+	Mem103[r0 + 52:word16] = 0x0196
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8988,7 +8970,7 @@ l00008E64_1:
 // SymbolicIn:
 
 l00008E66:
-	Mem92[r0_32 + 104:word16] = 0x0000
+	Mem92[r0_32 + 52:word16] = 0x0000
 	Mem94[r0_32 + 44:word32] = r5_28
 	Mem97[r0_32 + 48:word32] = r2
 	Mem100[r0_32:word32] = r0
@@ -11708,9 +11690,9 @@ l00009938:
 // SymbolicIn:
 
 l0000992A:
-	r4_53 = (word32) Mem56[r3_88 + 236:byte]
-	r0_54 = (word32) Mem56[r3_88 + 237:byte]
-	r6_52 = (word32) Mem56[r3_88 + r4_53 + 236:byte]
+	r4_53 = (word32) Mem56[r3_88 + 492:byte]
+	r0_54 = (word32) Mem56[r3_88 + 493:byte]
+	r6_52 = (word32) Mem56[r3_88 + r4_53 + 492:byte]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11768,9 +11750,9 @@ l00009996:
 // SymbolicIn:
 
 l00009988:
-	r4_18 = (word32) Mem15[r3_52 + 236:byte]
-	r0_19 = (word32) Mem15[r3_52 + 237:byte]
-	r6_17 = (word32) Mem15[r3_52 + r4_18 + 236:byte]
+	r4_18 = (word32) Mem15[r3_52 + 492:byte]
+	r0_19 = (word32) Mem15[r3_52 + 493:byte]
+	r6_17 = (word32) Mem15[r3_52 + r4_18 + 492:byte]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

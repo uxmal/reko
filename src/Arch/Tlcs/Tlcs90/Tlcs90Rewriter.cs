@@ -35,12 +35,12 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     public partial class Tlcs90Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private EndianImageReader rdr;
-        private ProcessorState state;
-        private Tlcs90Architecture arch;
-        private IEnumerator<Tlcs90Instruction> dasm;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly EndianImageReader rdr;
+        private readonly ProcessorState state;
+        private readonly Tlcs90Architecture arch;
+        private readonly IEnumerator<Tlcs90Instruction> dasm;
         private Tlcs90Instruction instr;
         private InstrClass rtlc;
         private RtlEmitter m;

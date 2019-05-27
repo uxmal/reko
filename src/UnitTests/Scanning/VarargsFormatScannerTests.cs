@@ -64,9 +64,9 @@ namespace Reko.UnitTests.Scanning
         {
             this.sc = new ServiceContainer();
             var cfg = new Mock<IConfigurationService>();
-            var env = new Mock<OperatingEnvironment>();
+            var env = new Mock<PlatformDefinition>();
             cfg.Setup(c => c.GetEnvironment(It.IsAny<string>())).Returns(env.Object);
-            env.Setup(e => e.Architectures).Returns(new List<IPlatformArchitectureElement>());
+            env.Setup(e => e.Architectures).Returns(new List<PlatformArchitectureDefinition>());
             sc.AddService<IConfigurationService>(cfg.Object);
             this.win32 = new Win32Platform(sc, new X86ArchitectureFlat32("x86-protected-32"));
             this.win_x86_64 = new Win_x86_64_Platform(sc, new X86ArchitectureFlat64("x86-protected-64"));

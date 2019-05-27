@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -21,35 +21,17 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface AssemblerElement
+    public class SignatureFileDefinition
     {
-        string Name { get; }
-        string Description { get; }
-        string TypeName { get; }
-    }
+        public string Filename { get; set; }
 
-    public class AssemblerElementImpl : AssemblerElement
-    {
-        /// <summary>
-        /// Short, technical name for the assembler.
-        /// the assembler.
-        /// </summary>
-        public string Name { get; set; }
+        public string Label { get; set; }
 
-        /// <summary>
-        /// Human friendly description of the assembler.
-        /// the assembler.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// The assembly-qualified name for the .NET type that implements
-        /// the assembler.
-        /// </summary>
-        public string TypeName { get; set; }
+        public string Type { get; set; }
     }
 }

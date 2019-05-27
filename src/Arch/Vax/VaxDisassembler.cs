@@ -58,7 +58,7 @@ namespace Reko.Arch.Vax
             {
                 instr = new VaxInstruction {
                     Opcode = Opcode.Invalid,
-                    IClass = InstrClass.Invalid,
+                    InstructionClass = InstrClass.Invalid,
                     Operands = new MachineOperand[0] };
             }
             if (instr == null)
@@ -257,7 +257,7 @@ namespace Reko.Arch.Vax
                         return new VaxInstruction
                         {
                             Opcode = Opcode.Invalid,
-                            IClass = InstrClass.Invalid,
+                            InstructionClass = InstrClass.Invalid,
                             Operands = new MachineOperand[0]
                         };
                     }
@@ -265,7 +265,7 @@ namespace Reko.Arch.Vax
                 var instr = new VaxInstruction
                 {
                     Opcode = this.op,
-                    IClass = this.iclass,
+                    InstructionClass = this.iclass,
                     Operands = dasm.ops.ToArray()
                 };
                 return instr;

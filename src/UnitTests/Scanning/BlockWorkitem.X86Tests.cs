@@ -58,12 +58,12 @@ namespace Reko.UnitTests.Scanning
         public void Setup()
         {
             var cfgSvc = new Mock<IConfigurationService>();
-            var env = new Mock<OperatingEnvironment>();
+            var env = new Mock<PlatformDefinition>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
             var eventListener = new Mock<DecompilerEventListener>();
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
-            env.Setup(c => c.TypeLibraries).Returns(new List<ITypeLibraryElement>());
-            env.Setup(c => c.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            env.Setup(c => c.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
+            env.Setup(c => c.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IConfigurationService>(cfgSvc.Object);

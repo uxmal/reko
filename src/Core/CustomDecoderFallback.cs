@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -25,13 +25,7 @@ namespace Reko.Core
 {
     internal class CustomDecoderFallback : DecoderFallback
     {
-        public override int MaxCharCount
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override int MaxCharCount => 4;
 
         public override DecoderFallbackBuffer CreateFallbackBuffer()
         {
