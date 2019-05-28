@@ -582,35 +582,42 @@ Parameter name: key
 00000226: warning: Expected sizes of arrays to have been determined by now
 === Elf\RiscV\ipcalc\ipcalc.dcproject
 === Elf\Sparc\from_boomerang\subject.exe
-*** Elf\Sparc\from_boomerang\subject.exe
-error: An error occurred during decompilation. System.TypeLoadException: Declaration referenced in a method implementation cannot be a final method.  Type: 'Reko.Arch.Sparc.SparcArchitecture'.  Assembly: 'Reko.Arch.Sparc, Version=0.8.1.0, Culture=neutral, PublicKeyToken=null'.
-   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
-   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
-   at System.Type.GetType(String typeName, Boolean throwOnError)
-   at Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(String archLabel) in D:\dev\uxmal\reko\master\src\Core\Configuration\RekoConfigurationService.cs:line 339
-   at Reko.ImageLoaders.Elf.ElfLoader.CreateArchitecture(UInt16 machineType, Byte endianness) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 264
-   at Reko.ImageLoaders.Elf.ElfLoader..ctor(ElfImageLoader imgLoader, UInt16 machine, Byte endianness) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 93
-   at Reko.ImageLoaders.Elf.ElfLoader32..ctor(ElfImageLoader imgLoader, Elf32_EHdr header32, Byte[] rawImage, Byte endianness) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 1217
-   at Reko.ImageLoaders.Elf.ElfImageLoader.CreateLoader() in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 157
-   at Reko.ImageLoaders.Elf.ElfImageLoader.Load(Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 78
-   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, String loader, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 123
-   at Reko.DecompilerDriver.Load(String fileName, String loaderName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 205
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 151
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
-error: An error occurred during decompilation. System.TypeLoadException: Declaration referenced in a method implementation cannot be a final method.  Type: 'Reko.Arch.Sparc.SparcArchitecture'.  Assembly: 'Reko.Arch.Sparc, Version=0.8.1.0, Culture=neutral, PublicKeyToken=null'.
-   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
-   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
-   at System.Type.GetType(String typeName, Boolean throwOnError)
-   at Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(String archLabel) in D:\dev\uxmal\reko\master\src\Core\Configuration\RekoConfigurationService.cs:line 339
-   at Reko.ImageLoaders.Elf.ElfLoader.CreateArchitecture(UInt16 machineType, Byte endianness) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 264
-   at Reko.ImageLoaders.Elf.ElfLoader..ctor(ElfImageLoader imgLoader, UInt16 machine, Byte endianness) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 93
-   at Reko.ImageLoaders.Elf.ElfLoader32..ctor(ElfImageLoader imgLoader, Elf32_EHdr header32, Byte[] rawImage, Byte endianness) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 1217
-   at Reko.ImageLoaders.Elf.ElfImageLoader.CreateLoader() in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 157
-   at Reko.ImageLoaders.Elf.ElfImageLoader.Load(Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 78
-   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, String loader, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 123
-   at Reko.DecompilerDriver.Load(String fileName, String loaderName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 205
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 151
+00011610: warning: Unable to resolve imported reference __register_frame_info.
+00016E9C: warning: Call target address 00000014 is invalid.
+00016B94: warning: Call target address 00000001 is invalid.
+00027EB4: warning: Unable to resolve imported reference __udiv64.
+00027EA8: warning: Unable to resolve imported reference __urem64.
+00011570: warning: Call target address 02800019 is invalid.
+000115A8: warning: Unable to resolve imported reference __deregister_frame_info.
+00016D1C: warning: Unable to resolve imported reference __urem64.
+00016D38: warning: Unable to resolve imported reference __udiv64.
+00016D4C: warning: Unable to resolve imported reference __urem64.
+00016D68: warning: Unable to resolve imported reference __udiv64.
+00016D7C: warning: Unable to resolve imported reference __urem64.
+00016D98: warning: Unable to resolve imported reference __udiv64.
+00016DAC: warning: Unable to resolve imported reference __urem64.
+00016DC8: warning: Unable to resolve imported reference __udiv64.
+00016DDC: warning: Unable to resolve imported reference __urem64.
+00016DF8: warning: Unable to resolve imported reference __udiv64.
+00016E04: warning: Unable to resolve imported reference __urem64.
+00015508: warning: Call target address 00000FE8 is invalid.
+00015440: warning: Call target address 00000FE8 is invalid.
+00027EB4: warning: Unable to resolve imported reference __udiv64.
+00027EA8: warning: Unable to resolve imported reference __urem64.
+safe_read: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 590
+00017540: warning: Expected sizes of arrays to have been determined by now
+00017540: warning: Expected sizes of arrays to have been determined by now
 === Elf\x86-64\ais3_crackme\ais3_crackme
 === Elf\x86-64\ls\ls
 *** Elf\x86-64\ls\ls
@@ -1852,4 +1859,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 78.60 seconds ---
+Decompiled 56 binaries in 85.32 seconds ---

@@ -6,7 +6,6 @@ loaded dynamically (using the services provided by IConfigurationService).
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Target Name="AfterBuild">
-
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying ImageLoaders to $(TargetDir)" />
