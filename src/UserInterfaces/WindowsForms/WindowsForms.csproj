@@ -221,6 +221,12 @@
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FindStringsDialogInteractor.cs" />
+    <Compile Include="Forms\SegmentEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SegmentEditorDialog.Designer.cs">
+      <DependentUpon>SegmentEditorDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\JumpTableDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -409,6 +415,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FindStringsDialog.resx">
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SegmentEditorDialog.resx">
+      <DependentUpon>SegmentEditorDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\JumpTableDialog.resx">
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
