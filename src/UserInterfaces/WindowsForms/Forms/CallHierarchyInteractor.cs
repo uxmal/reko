@@ -22,47 +22,160 @@ using Reko.Core;
 using Reko.Gui;
 using System;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
     public class CallHierarchyInteractor : ICallHierarchyService, ICommandTarget, IWindowPane
     {
         private CallHierarchyView view;
+        private ITreeNodeDesignerHost host;
 
         public CallHierarchyInteractor(CallHierarchyView view)
         {
             this.view = view;
         }
 
+        public IServiceProvider Services { get; private set; }
+
         public IWindowFrame Frame { get; set; }
+
+        public ITreeNodeDesignerHost Host { get { return host ?? new TreeNodeDesignerHost(view.CallTree, Services); } }
 
         public void Close()
         {
+            this.view = null;
         }
 
         public object CreateControl()
         {
+            view.Services = this.Services;
             return view;
         }
 
         public bool Execute(CommandID cmdId)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public void SetSite(IServiceProvider services)
         {
-            throw new NotImplementedException();
+            this.Services = services;
         }
 
         public void Show(Program program, Procedure proc)
         {
-            throw new NotImplementedException();
+            //$TODO: bring tab to the foreground.
+            AddProcedure(program, proc);
+        }
+
+        /// <summary>
+        /// Adds the procedure <paramref name="proc"/> of the <see cref="Program"/> <paramref name="program"/> to the
+        /// call hierarchy tree.
+        /// </summary>
+        public void AddProcedure(Program program, Procedure proc)
+        {
+            if (Host.GetDesigner(proc) != null)
+                return; // Already there!
+            Host.AddComponent(null, new CHProcedureDesigner(program, proc));
+        }
+
+        private class CHProcedureDesigner : TreeNodeDesigner
+        {
+            private Program program;
+            private Procedure proc;
+
+            public CHProcedureDesigner(Program program, Procedure proc)
+            {
+                this.program = program;
+                this.proc = proc;
+            }
+
+            public override void Initialize(object obj)
+            {
+                base.Initialize(obj);
+                base.TreeNode.Text = proc.Name;
+                this.Host.AddComponent(this, new CHCallsDesigner(program, proc));
+            }
+        }
+
+        private class CHCallsDesigner : TreeNodeDesigner
+        {
+            private readonly Program program;
+            private readonly Procedure proc;
+            private object dummy;
+
+            public CHCallsDesigner(Program program, Procedure proc)
+            {
+                this.program = program;
+                this.proc = proc;
+                this.dummy = new object();
+            }
+
+            public override void Initialize(object obj)
+            {
+                base.Initialize(obj);
+                base.TreeNode.Text = $"Calls to '{proc.Name}'";
+            }
+
+            public override void OnExpanded()
+            {
+                if (dummy != null)
+                {
+                    dummy = null;
+                    var callStms = program.CallGraph.CallerStatements(proc);
+                    var designers = callStms
+                        .Select(s => new CHCallStatementDesigner(program, s))
+                        .ToArray();
+                    Host.AddComponents(this, designers);
+                    TreeNode.Expand();
+                }
+            }
+        }
+
+        private class CHCallStatementDesigner : TreeNodeDesigner
+        {
+            private readonly Program program;
+            private readonly Statement stm;
+            private object dummy;
+
+            public CHCallStatementDesigner(Program program, Statement stm)
+            {
+                this.program = program;
+                this.stm = stm;
+                this.dummy = new object();
+            }
+
+            public override void Initialize(object obj)
+            {
+                base.Initialize(obj);
+                var proc = stm.Block.Procedure;
+                var offset = stm.LinearAddress - proc.EntryAddress.ToLinear();
+                this.TreeNode.Text = string.Format("{0}+{1} {2}", proc, offset, stm.Instruction);
+            }
+
+            public override void OnExpanded()
+            {
+                if (dummy != null)
+                {
+                    dummy = null;
+                    var procDes = Host.GetDesigner(stm.Block.Procedure);
+                    if (procDes != null)
+                        return;
+                    procDes = new CHCallsDesigner(program, stm.Block.Procedure);
+                    this.Host.AddComponent(this, procDes);
+                }
+            }
+
+            public override void DoDefaultAction()
+            {
+                Services.RequireService<ICodeViewerService>().DisplayStatement(program, stm);
+            }
         }
     }
 }

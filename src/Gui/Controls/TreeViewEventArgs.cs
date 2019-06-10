@@ -20,29 +20,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using Reko.Gui;
-using System.Collections;
-using Reko.UserInterfaces.WindowsForms.Controls;
-using Reko.Gui.Controls;
 
-namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.Gui.Controls
 {
-    public partial class CallHierarchyView : UserControl
+    public class TreeViewEventArgs : EventArgs
     {
-        public CallHierarchyView()
+        public TreeViewEventArgs(ITreeNode node)
         {
-            InitializeComponent();
-            this.CallTree = new TreeViewWrapper(this.treeCallHierarchy);
+            this.Node = node;
         }
 
-        public IServiceProvider Services { get; internal set; }
-        public ITreeView CallTree { get; }
+        public ITreeNode Node { get; }
     }
 }

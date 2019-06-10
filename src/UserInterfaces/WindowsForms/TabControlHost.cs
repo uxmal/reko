@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
 * Copyright (C) 1999-2019 John Källén.
 *
@@ -30,8 +30,8 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class TabControlHost : ITabControlHostService
     {
-        private TabControl tabCtrl;
-        private IServiceProvider services;
+        private readonly TabControl tabCtrl;
+        private readonly IServiceProvider services;
 
         public TabControlHost(IServiceProvider services, TabControl tabCtrl)
         {

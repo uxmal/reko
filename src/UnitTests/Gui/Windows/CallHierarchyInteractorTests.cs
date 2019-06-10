@@ -21,6 +21,8 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
@@ -35,11 +37,14 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class CallHierarchyInteractorTests
     {
         private CallHierarchyView view;
         private Mock<IProcessorArchitecture> arch;
         private Procedure proc1;
+        private Procedure proc2;
+        private Procedure proc3;
         private Program program;
         private CallHierarchyInteractor interactor;
 
@@ -48,8 +53,22 @@ namespace Reko.UnitTests.Gui.Windows
         {
             this.arch = new Mock<IProcessorArchitecture>();
             this.program = new Program();
+            // Create a program graph where proc1 calls proc2, and proc2 calls proc3.
             this.proc1 = new Procedure(arch.Object, "proc1", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
+            this.proc2 = new Procedure(arch.Object, "proc2", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
+            this.proc3 = new Procedure(arch.Object, "proc3", Address.Ptr32(0x00123600), new Frame(PrimitiveType.Ptr32));
+            var stm1 = proc1.EntryBlock.Statements.Add(proc1.EntryAddress.ToLinear(), new CallInstruction(
+                new ProcedureConstant(PrimitiveType.Ptr32, proc2),
+                new CallSite(0, 0)));
+            var stm2 = proc2.EntryBlock.Statements.Add(proc2.EntryAddress.ToLinear(), new CallInstruction(
+                new ProcedureConstant(PrimitiveType.Ptr32, proc3),
+                new CallSite(0, 0)));
+
             this.program.CallGraph.AddProcedure(proc1);
+            this.program.CallGraph.AddProcedure(proc2);
+            this.program.CallGraph.AddProcedure(proc3);
+            this.program.CallGraph.AddEdge(stm1, proc2);
+            this.program.CallGraph.AddEdge(stm2, proc3);
         }
 
         private void Given_CallHierarchyView()
@@ -73,9 +92,12 @@ namespace Reko.UnitTests.Gui.Windows
             Given_CallHierarchyView();
             Given_CallHierarchyInteractor();
 
-            When_AddProcedure(proc1);
+            When_AddProcedure(proc3);
 
-            Assert.AreEqual("+ Proc");
+            var node1 = view.CallTree.Nodes[0];
+            Assert.AreEqual("proc3", node1.Text);
+            Assert.AreEqual(1, node1.Nodes.Count);
+            Assert.AreEqual("Calls to 'proc3'", node1.Nodes[0].Text);
         }
     }
 }

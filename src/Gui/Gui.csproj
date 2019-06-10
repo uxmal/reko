@@ -238,6 +238,8 @@
     <Compile Include="Forms\FinalPageInteractor.cs" />
     <Compile Include="Forms\InitialPageInteractor.cs" />
     <Compile Include="Forms\PhasePageInteractor.cs" />
+    <Compile Include="TreeNodeDesignerHost.cs" />
+    <Compile Include="Controls\TreeViewEventArgs.cs" />
     <Compile Include="Visualizers\AsciiStringVisualizer.cs" />
     <Compile Include="Visualizers\CodeDataVisualizer.cs" />
     <Compile Include="Visualizers\HeatmapVisualizer.cs" />
