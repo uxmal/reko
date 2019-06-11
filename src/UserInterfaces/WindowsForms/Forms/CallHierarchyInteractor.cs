@@ -70,8 +70,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public void Show(Program program, Procedure proc)
         {
-            //$TODO: bring tab to the foreground.
             AddProcedure(program, proc);
+            Services.RequireService<IWindowFrame>().Show();
         }
 
         /// <summary>
