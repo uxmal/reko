@@ -40,9 +40,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             InitializeComponent();
             this.CallTree = new TreeViewWrapper(this.treeCallHierarchy);
+            this.DeleteButton = new ToolStripButtonWrapper(this.btnDelete);
         }
 
         public IServiceProvider Services { get; internal set; }
         public ITreeView CallTree { get; }
+        public IButton DeleteButton { get; }
     }
 }

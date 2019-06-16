@@ -34,6 +34,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public CallHierarchyInteractor(CallHierarchyView view)
         {
             this.view = view;
+            this.view.DeleteButton.Click += DeleteButton_Click;
         }
 
         public IServiceProvider Services { get; private set; }
@@ -85,10 +86,19 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             Host.AddComponent(null, new CHProcedureDesigner(program, proc));
         }
 
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            var des = Host.GetSelectedDesigner();
+            if (des != null)
+            {
+                Host.RemoveComponent(des);
+            }
+        }
+
         private class CHProcedureDesigner : TreeNodeDesigner
         {
-            private Program program;
-            private Procedure proc;
+            private readonly Program program;
+            private readonly Procedure proc;
 
             public CHProcedureDesigner(Program program, Procedure proc)
             {
@@ -101,6 +111,19 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 base.Initialize(obj);
                 base.TreeNode.Text = proc.Name;
                 this.Host.AddComponent(this, new CHCallsDesigner(program, proc));
+                this.Host.AddComponent(this, new CHCalleesDesigner(program, proc));
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is CHProcedureDesigner that)
+                    return this.proc == that.proc;
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return proc.GetHashCode();
             }
         }
 
@@ -136,6 +159,41 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     TreeNode.Expand();
                 }
             }
+        }
+
+        private class CHCalleesDesigner  : TreeNodeDesigner
+        {
+            private readonly Program program;
+            private readonly Procedure proc;
+            private object dummy;
+
+            public CHCalleesDesigner(Program program, Procedure proc)
+            {
+                this.program = program;
+                this.proc = proc;
+                this.dummy = new object();
+            }
+
+            public override void Initialize(object obj)
+            {
+                base.Initialize(obj);
+                base.TreeNode.Text = $"Calls from '{proc.Name}'";
+            }
+
+            public override void OnExpanded()
+            {
+                if (dummy != null)
+                {
+                    dummy = null;
+                    var callees = program.CallGraph.Callees(proc);
+                    var designers = callees
+                        .Select(p => new CHProcedureDesigner(program, p))
+                        .ToArray();
+                    Host.AddComponents(this, designers);
+                    TreeNode.Expand();
+                }
+            }
+
         }
 
         private class CHCallStatementDesigner : TreeNodeDesigner

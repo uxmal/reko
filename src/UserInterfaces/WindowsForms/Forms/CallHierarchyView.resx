@@ -120,4 +120,15 @@
   <metadata name="toolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnDelete.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADHSURBVDhPvZKxDcMgEEWZwgO4o6ZyS09JTccK3sA70LnI
+        BEzAAOx00SeHYyXgECnKk06G4+7zT1j8hJwzretKKSXi1Hfs+4201mSMoRjjRxHU8/IJHCzLUoRCCF0R
+        ay1t29Y+hwgEEK9F9azbXKnjnIvxHWo+45wrI9XAno/GUUodbjg1Dl4EAgg44PQ4Ukry3pdG2IeQv3id
+        A9id5/lt5vrMvG2DG3Fzb2aMBSHetnlY71vtukDTNE3ld+ZUE9SFkK9d/BEh7nVGhGeDyKCWAAAAAElF
+        TkSuQmCC
+</value>
+  </data>
 </root>

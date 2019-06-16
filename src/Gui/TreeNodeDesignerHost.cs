@@ -32,7 +32,7 @@ namespace Reko.Gui
 {
     public class TreeNodeDesignerHost : ITreeNodeDesignerHost
     {
-        private ITreeView tree;
+        private readonly ITreeView tree;
         private Dictionary<object, TreeNodeDesigner> mpitemToDesigner;
 
         public TreeNodeDesignerHost(ITreeView tree, IServiceProvider services)
@@ -179,7 +179,7 @@ namespace Reko.Gui
             des?.OnExpanded();
         }
 
-        protected TreeNodeDesigner GetSelectedDesigner()
+        public TreeNodeDesigner GetSelectedDesigner()
         {
             if (tree.SelectedNode == null)
                 return null;
@@ -198,8 +198,7 @@ namespace Reko.Gui
         {
             if (component == null)
                 return;
-            TreeNodeDesigner des;
-            if (!mpitemToDesigner.TryGetValue(component, out des))
+            if (!mpitemToDesigner.TryGetValue(component, out TreeNodeDesigner des))
                 return;
             tree.SelectedNode = des.TreeNode;
         }

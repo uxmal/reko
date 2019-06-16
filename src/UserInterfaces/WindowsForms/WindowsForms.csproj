@@ -342,6 +342,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources.sv-SE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.sv-SE.resx</DependentUpon>
+    </Compile>
     <Compile Include="SearchResultServiceImpl.cs" />
     <Compile Include="StatusBarService.cs" />
     <Compile Include="StyleStack.cs" />
@@ -473,7 +478,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources.sv-SE.resx" />
+    <EmbeddedResource Include="Resources.sv-SE.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.sv-SE.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewImportsControl.resx">
       <DependentUpon>ViewImportsControl.cs</DependentUpon>
     </EmbeddedResource>

@@ -71,6 +71,7 @@ namespace Reko.Gui
         void AddComponents(object parent, System.Collections.IEnumerable components);
         void RemoveComponent(object component);
         TreeNodeDesigner GetDesigner(object component);
+        TreeNodeDesigner GetSelectedDesigner();
     }
 
     public static class TreeNodeDesignerEx

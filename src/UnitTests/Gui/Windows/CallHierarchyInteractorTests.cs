@@ -96,8 +96,9 @@ namespace Reko.UnitTests.Gui.Windows
 
             var node1 = view.CallTree.Nodes[0];
             Assert.AreEqual("proc3", node1.Text);
-            Assert.AreEqual(1, node1.Nodes.Count);
+            Assert.AreEqual(2, node1.Nodes.Count);
             Assert.AreEqual("Calls to 'proc3'", node1.Nodes[0].Text);
+            Assert.AreEqual("Calls from 'proc3'", node1.Nodes[1].Text);
         }
     }
 }
