@@ -142,6 +142,11 @@ namespace Reko.Gui
                 switch (cmdId.ID)
                 {
                 case CmdIds.CollapseAllNodes: status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                case CmdIds.CreateUserSegment: status.Status = 
+                        IsSegmentSelected()
+                            ? MenuStatus.Visible | MenuStatus.Enabled
+                            : MenuStatus.Visible;
+                    return true;
                 }
             }
             return false;
@@ -159,10 +164,44 @@ namespace Reko.Gui
             {
                 switch (cmdId.ID)
                 {
-                case CmdIds.CollapseAllNodes: tree.CollapseAll(); break;
+                case CmdIds.CollapseAllNodes: tree.CollapseAll(); return true;
+                case CmdIds.CreateUserSegment: CreateUserSegment(); return true;
                 }
             }
             return false;
+        }
+
+        private bool IsSegmentSelected()
+        {
+            var des = GetSelectedDesigner();
+            if (des == null)
+                return false;
+            return des.Component is ImageSegment;
+        }
+
+        private void CreateUserSegment()
+        {
+            var des = GetSelectedDesigner();
+            if (des == null)
+                return;
+            var program = FindCurrentProgram();
+            if (!(des.Component is ImageSegment segment))
+                return;
+            using (var dlg = Services.RequireService<IDialogFactory>().CreateSegmentEditorDialog())
+            {
+                dlg.LoadUserSegment(segment.MemoryArea.Bytes, new UserSegment
+                {
+                    Name = segment.Name,
+                    Address = segment.Address,
+                    Length = segment.Size,
+                    AccessMode = segment.Access,
+                    Architecture = program.Architecture
+                });
+                if (Services.RequireService<IDecompilerShellUiService>().ShowModalDialog(dlg) == DialogResult.OK)
+                {
+
+                }
+            }
         }
     }
 }

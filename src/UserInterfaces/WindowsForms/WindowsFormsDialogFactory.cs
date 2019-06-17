@@ -33,8 +33,8 @@ namespace Reko.UserInterfaces.WindowsForms
 {
 	public class WindowsFormsDialogFactory : IDialogFactory
 	{
-        private IServiceProvider services;
-        private Form syncForm;  // used _only_ to make sure forms are created on the UI thread for Mono compatibility.
+        private readonly IServiceProvider services;
+        private readonly Form syncForm;  // used _only_ to make sure forms are created on the UI thread for Mono compatibility.
 
 		public WindowsFormsDialogFactory(IServiceProvider services)
 		{
@@ -205,6 +205,15 @@ namespace Reko.UserInterfaces.WindowsForms
                 Items = items,
                 MultiSelect = multiSelect
             };
+        }
+
+        public ISegmentEditorDialog CreateSegmentEditorDialog()
+        {
+            var dlg = new SegmentEditorDialog
+            {
+                Services = services,
+            };
+            return dlg;
         }
     }
 }

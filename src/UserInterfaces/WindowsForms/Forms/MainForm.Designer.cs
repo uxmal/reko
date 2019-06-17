@@ -1,4 +1,4 @@
-﻿namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.UserInterfaces.WindowsForms.Forms
 {
     partial class MainForm
     {
@@ -54,9 +54,9 @@
             this.listProcedures = new System.Windows.Forms.ListView();
             this.colProcAddress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colProcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colProcSegment = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtProcedureFilter = new System.Windows.Forms.TextBox();
             this.tabDocuments = new System.Windows.Forms.TabControl();
-            this.colProcSegment = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.callHierarchyView = new Reko.UserInterfaces.WindowsForms.Forms.CallHierarchyView();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -183,6 +183,7 @@
             this.imageList.Images.SetKeyName(6, "Warning");
             this.imageList.Images.SetKeyName(7, "CloseTab");
             this.imageList.Images.SetKeyName(8, "Collapse.ico");
+            this.imageList.Images.SetKeyName(9, "CreateSegment.ico");
             // 
             // tabFindResults
             // 
@@ -322,6 +323,10 @@
             this.colProcName.Text = "Name";
             this.colProcName.Width = 200;
             // 
+            // colProcSegment
+            // 
+            this.colProcSegment.Text = "Segment";
+            // 
             // txtProcedureFilter
             // 
             this.txtProcedureFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -341,10 +346,6 @@
             this.tabDocuments.SelectedIndex = 0;
             this.tabDocuments.Size = new System.Drawing.Size(601, 339);
             this.tabDocuments.TabIndex = 0;
-            // 
-            // colProcSegment
-            // 
-            this.colProcSegment.Text = "Segment";
             // 
             // callHierarchyView
             // 

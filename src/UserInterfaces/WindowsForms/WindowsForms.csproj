@@ -286,6 +286,7 @@
       <DependentUpon>SearchDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchDialogInteractor.cs" />
+    <Compile Include="Forms\SegmentEditorInteractor.cs" />
     <Compile Include="Forms\SelectItemDialog.cs">
       <SubType>Form</SubType>
     </Compile>

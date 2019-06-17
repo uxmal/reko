@@ -144,6 +144,7 @@
     <Compile Include="Forms\IKeyBindingsDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
+    <Compile Include="Forms\ISegmentEditorDialog.cs" />
     <Compile Include="Forms\ISelectItemDialog.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
     <Compile Include="Forms\KeyBindingsInteractor.cs" />
@@ -297,6 +298,7 @@
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\DiscardableSection.ico" />
     <None Include="Images\Error.ico" />
+    <Content Include="Images\CreateSegment.ico" />
     <Content Include="Images\UserEntryProcedure.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />

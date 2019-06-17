@@ -623,5 +623,62 @@ namespace Reko.UnitTests.Core.Serialization
 
             Assert.IsTrue(project.Programs[0].User.ExtractResources);
         }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void Prld_UserSegments()
+        {
+            var sProject = new Project_v4
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                Inputs =
+                {
+                    new DecompilerInput_v4
+                    {
+                        User = new UserData_v4
+                        {
+                            Segments =
+                            {
+                                new Segment_v4
+                                {
+                                     Name="text", Address="00123400", Length="C00", Architecture="testArch", Access="r-x",
+                                },
+                                new Segment_v4
+                                {
+                                     Name="data", Address="00200000", Offset="C00", Length="1200", Access="rw" 
+                                },
+                            }
+                        }
+                    }
+                }
+            };
+
+            var ldr = mockFactory.CreateLoader();
+            Given_TestArch();
+            Given_TestOS();
+            Address addr = Address.Ptr32(0x00123400);
+            platform.Setup(p => p.TryParseAddress("00123400", out addr)).Returns(true);
+            addr = Address.Ptr32(0x00200000);
+            platform.Setup(p => p.TryParseAddress("00200000", out addr)).Returns(true);
+
+            var prld = new ProjectLoader(sc, ldr, listener.Object);
+            var prj = prld.LoadProject("foo.dcproject", sProject);
+
+            var u = prj.Programs[0].User;
+            Assert.AreEqual(2, u.Segments.Count);
+
+            Assert.AreEqual("text", u.Segments[0].Name);
+            Assert.AreEqual("00123400", u.Segments[0].Address.ToString());
+            Assert.AreEqual(0xC00, u.Segments[0].Length);
+            Assert.AreEqual(0, u.Segments[0].Offset);
+            Assert.AreEqual(AccessMode.ReadExecute, u.Segments[0].AccessMode);
+
+            Assert.AreEqual("data", u.Segments[1].Name);
+            Assert.AreEqual("00200000", u.Segments[1].Address.ToString());
+            Assert.AreEqual(0x1200, u.Segments[1].Length);
+            Assert.AreEqual(0x0C00, u.Segments[1].Offset);
+            Assert.AreEqual(AccessMode.ReadWrite, u.Segments[1].AccessMode);
+        }
     }
 }

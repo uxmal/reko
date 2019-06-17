@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.Text;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
+using System.Globalization;
 
 namespace Reko.Core.Serialization
 {
@@ -335,7 +336,7 @@ namespace Reko.Core.Serialization
         }
 
         /// <summary>
-        /// Loads 
+        /// Loads the user-specified data.
         /// </summary>
         /// <param name="sUser"></param>
         /// <param name="program"></param>
@@ -425,12 +426,19 @@ namespace Reko.Core.Serialization
                     .Where(t => t != null)
                     .ToSortedList(k => k.Address, v => v);
             }
-            if (user.IndirectJumps != null)
+            if (sUser.IndirectJumps != null)
             {
                 program.User.IndirectJumps = sUser.IndirectJumps
                     .Select(ij => LoadIndirectJump_v4(ij, program))
                     .Where(ij => ij != null)
                     .ToSortedList(k => k.Item1, v => v.Item2);
+            }
+            if (sUser.Segments != null)
+            {
+                program.User.Segments = sUser.Segments
+                    .Select(s => LoadUserSegment_v4(s))
+                    .Where(s => s != null)
+                    .ToList();
             }
             program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
             program.User.ShowBytesInDisassembly = sUser.ShowBytesInDisassembly;
@@ -524,6 +532,57 @@ namespace Reko.Core.Serialization
                 Table = table,
                 IndexRegister = reg,
             });
+        }
+
+        public UserSegment LoadUserSegment_v4(Segment_v4 sSegment)
+        {
+            if (!platform.TryParseAddress(sSegment.Address, out Address addr))
+                return null;
+            ulong offset;
+            if (string.IsNullOrEmpty(sSegment.Offset))
+            {
+                offset = 0;
+            }
+            else
+            {
+                if (!ulong.TryParse(sSegment.Offset, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out offset))
+                    return null;
+            }
+            if (string.IsNullOrEmpty(sSegment.Length))
+                return null;
+            if (!uint.TryParse(sSegment.Length, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint length))
+                return null;
+
+            var arch = Services.RequireService<IConfigurationService>().GetArchitecture(sSegment.Architecture);
+
+            var access = LoadAccessMode(sSegment.Access);
+
+            return new UserSegment
+            {
+                Name = sSegment.Name,
+                Address = addr,
+                Offset = offset,
+                Length = length,
+                Architecture = arch,
+                AccessMode = access
+            };
+        }
+
+        private AccessMode LoadAccessMode(string sMode)
+        {
+            if (string.IsNullOrWhiteSpace(sMode))
+                return AccessMode.ReadWriteExecute;
+            AccessMode mode = 0;
+            foreach (char c in sMode)
+            {
+                switch (c)
+                {
+                case 'r': mode |= AccessMode.Read; break;
+                case 'w': mode |= AccessMode.Write; break;
+                case 'x': mode |= AccessMode.Execute; break;
+                }
+            }
+            return mode;
         }
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)
