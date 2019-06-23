@@ -35,17 +35,17 @@ namespace Reko.Arch.Avr
 {
     public class Avr8Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Avr8Architecture arch;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private LookaheadEnumerator<AvrInstruction> dasm;
-        private EndianImageReader rdr;
-        private ProcessorState state;
+        private readonly Avr8Architecture arch;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly LookaheadEnumerator<AvrInstruction> dasm;
+        private readonly EndianImageReader rdr;
+        private readonly ProcessorState state;
         private AvrInstruction instr;
+        private RtlEmitter m;
         private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private List<RtlInstructionCluster> clusters;
-        private RtlEmitter m;
 
         private static HashSet<Opcode> seen = new HashSet<Opcode>();
 
@@ -76,7 +76,7 @@ namespace Reko.Arch.Avr
         {
             this.instr = instr;
             this.rtlInstructions = new List<RtlInstruction>();
-            this.rtlc = instr.iclass;
+            this.rtlc = instr.InstructionClass;
             this.m = new RtlEmitter(rtlInstructions);
             switch (instr.opcode)
             {

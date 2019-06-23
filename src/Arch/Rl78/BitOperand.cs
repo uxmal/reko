@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,38 +18,30 @@
  */
 #endregion
 
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Core.Configuration
+namespace Reko.Arch.Rl78
 {
-    public interface AssemblerElement
+    public class BitOperand : MachineOperand
     {
-        string Name { get; }
-        string Description { get; }
-        string TypeName { get; }
-    }
+        public BitOperand(MachineOperand op, int bitPos) : base(PrimitiveType.Bool)
+        {
+            this.Operand = op;
+            this.BitPosition = bitPos;
+        }
 
-    public class AssemblerElementImpl : AssemblerElement
-    {
-        /// <summary>
-        /// Short, technical name for the assembler.
-        /// the assembler.
-        /// </summary>
-        public string Name { get; set; }
+        public MachineOperand Operand { get; }
+        public int BitPosition { get; }
 
-        /// <summary>
-        /// Human friendly description of the assembler.
-        /// the assembler.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// The assembly-qualified name for the .NET type that implements
-        /// the assembler.
-        /// </summary>
-        public string TypeName { get; set; }
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

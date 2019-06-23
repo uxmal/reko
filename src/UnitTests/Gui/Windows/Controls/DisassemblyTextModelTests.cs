@@ -177,6 +177,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
         private class TestInstruction : MachineInstruction
         {
+            public TestInstruction()
+            {
+                this.InstructionClass = InstrClass.Invalid;
+            }
+
             public override int OpcodeAsInteger
             {
                 get { throw new NotImplementedException(); }
@@ -190,11 +195,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
             {
                 writer.WriteOpcode("opcode.l");
-            }
-
-            public override InstrClass InstructionClass
-            {
-                get { return InstrClass.Invalid; } 
             }
         }
 

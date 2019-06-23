@@ -53,6 +53,7 @@ namespace Reko.Gui.Forms
         private ISearchResultService srSvc;
         private IWorkerDialogService workerDlgSvc;
         private IProjectBrowserService projectBrowserSvc;
+        private IProcedureListService procedureListSvc;
         private IDialogFactory dlgFactory;
         private ITabControlHostService searchResultsTabControl;
         private ILoader loader;
@@ -175,6 +176,9 @@ namespace Reko.Gui.Forms
             this.projectBrowserSvc = svcFactory.CreateProjectBrowserService();
             sc.AddService<IProjectBrowserService>(projectBrowserSvc);
 
+            this.procedureListSvc = svcFactory.CreateProcedureListService();
+            sc.AddService<IProcedureListService>(procedureListSvc);
+
             var upSvc = svcFactory.CreateUiPreferencesService();
             sc.AddService<IUiPreferencesService>(upSvc);
 
@@ -238,7 +242,10 @@ namespace Reko.Gui.Forms
                 SwitchInteractor(InitialPageInteractor);
                 if (openAction(file) || onFailAction(file))
                 {
-                    ProjectFileName = file;
+                    if (file.EndsWith(Project_v3.FileExtension))
+                    {
+                        ProjectFileName = file;
+                    }
                 }
             }
             catch (Exception ex)
@@ -339,18 +346,18 @@ namespace Reko.Gui.Forms
                 string envName = null;
                 string sAddr = null;
                 string loader = null;
-                EntryPointElement entry = null;
+                EntryPointDefinition entry = null;
                 if (rawFileOption != null && rawFileOption.Value != null)
                 {
-                    var raw = (RawFileElement)rawFileOption.Value;
+                    var raw = (RawFileDefinition)rawFileOption.Value;
                     loader = raw.Loader;
                     archName = raw.Architecture;
                     envName = raw.Environment;
                     sAddr = raw.BaseAddress;
                     entry = raw.EntryPoint;
                 }
-                Architecture archOption = dlg.GetSelectedArchitecture();
-                OperatingEnvironment envOption = dlg.GetSelectedEnvironment();
+                ArchitectureDefinition archOption = dlg.GetSelectedArchitecture();
+                PlatformDefinition envOption = dlg.GetSelectedEnvironment();
                 archName = archName ?? archOption?.Name;
                 envName = envName ?? envOption?.Name;
                 sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();
@@ -394,6 +401,7 @@ namespace Reko.Gui.Forms
 
             CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
+            sc.RequireService<IProcedureListService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
             this.ProjectFileName = null;
@@ -446,6 +454,7 @@ namespace Reko.Gui.Forms
             CloseAllDocumentWindows();
             diagnosticsSvc.ClearDiagnostics();
             projectBrowserSvc.Reload();
+            projectBrowserSvc.Show();
         }
 
         public void NextPhase()
@@ -503,6 +512,7 @@ namespace Reko.Gui.Forms
                 prev.EnterPage();
                 CurrentPhase = prev;
                 projectBrowserSvc.Reload();
+                procedureListSvc.Load(decompilerSvc.Decompiler.Project);
             }
             catch (Exception ex)
             {
@@ -592,6 +602,16 @@ namespace Reko.Gui.Forms
             }
             else
                 throw new NotSupportedException();
+        }
+
+        public void ViewProjectBrowser()
+        {
+            this.projectBrowserSvc.Show();
+        }
+
+        public void ViewProcedureList()
+        {
+            this.procedureListSvc.Show();
         }
 
         public void FindProcedures(ISearchResultService svc)
@@ -768,6 +788,8 @@ namespace Reko.Gui.Forms
                 return searchResultsTabControl;
             if (projectBrowserSvc.ContainsFocus)
                 return projectBrowserSvc;
+            if (procedureListSvc.ContainsFocus)
+                return procedureListSvc;
             return subWindowCommandTarget;
         }
 
@@ -790,6 +812,8 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileExit:
                 case CmdIds.FileOpenAs:
                 case CmdIds.FileAssemble:
+                case CmdIds.ViewProjectBrowser:
+                case CmdIds.ViewProcedureList:
                 case CmdIds.ToolsOptions:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
@@ -886,6 +910,8 @@ namespace Reko.Gui.Forms
 
                 case CmdIds.EditFind: EditFind(); retval = true; break;
 
+                case CmdIds.ViewProjectBrowser: ViewProjectBrowser(); retval = true; break;
+                case CmdIds.ViewProcedureList: ViewProcedureList(); retval = true; break;
                 case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); retval = true; break;
                 case CmdIds.ViewMemory: ViewMemoryWindow(); retval = true; break;
                 case CmdIds.ViewCallGraph: ViewCallGraph(); retval = true; break;
@@ -914,7 +940,7 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = mru.Items[iMru];
-                OpenBinary(file, (f) => pageInitial.OpenBinary(file), f => OpenBinaryAs(f));
+                OpenBinary(file, pageInitial.OpenBinary, OpenBinaryAs);
                 RememberFilenameInMru(file);
                 return true;
             }

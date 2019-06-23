@@ -27,10 +27,7 @@ namespace Reko.Arch.zSeries
     public class zSeriesInstruction : MachineInstruction
     {
         internal Opcode Opcode;
-        internal InstrClass IClass;
         internal MachineOperand[] Ops;
-
-        public override InstrClass InstructionClass => IClass;
 
         public override int OpcodeAsInteger => (int) Opcode;
 

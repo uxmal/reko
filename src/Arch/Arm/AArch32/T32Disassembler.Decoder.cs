@@ -60,7 +60,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, uint shMask, string debugString)
             {
-                // return;
+                return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -227,38 +227,22 @@ namespace Reko.Arch.Arm.AArch32
 
         /// <summary>
         /// This decoder hands control back to the disassembler, passing the 
-        /// deduced opcode and a format string describing the encoding of the 
-        /// instruction operands.
+        /// deduced opcode and an array of mutator functions that are called in
+        /// order to build instruction operands and other ARM instruction
+        /// fields.
         /// </summary>
         private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
-            private readonly string format;
-
-            public InstrDecoder(Opcode opcode, InstrClass iclass, string format)
-            {
-                this.opcode = opcode;
-                this.iclass = iclass;
-                this.format = format;
-            }
-
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
-            {
-                return dasm.DecodeFormat(wInstr, opcode, iclass, format);
-            }
-        }
-
-        private class InstrDecoder2 : Decoder
-        {
-            private readonly Opcode opcode;
-            private readonly InstrClass iclass;
+            private readonly ArmVectorData vec;
             private readonly Mutator<T32Disassembler>[] mutators;
 
-            public InstrDecoder2(Opcode opcode, InstrClass iclass, params Mutator<T32Disassembler>[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
+                this.vec = vec;
                 this.mutators = mutators;
             }
 
@@ -266,6 +250,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 dasm.state.opcode = this.opcode;
                 dasm.state.iclass = this.iclass;
+                dasm.state.vectorData = this.vec;
                 for (int i = 0; i < mutators.Length; ++i)
                 {
                     if (!mutators[i](wInstr, dasm))
@@ -313,7 +298,7 @@ namespace Reko.Arch.Arm.AArch32
                     opcode = st
                         ? Opcode.stm
                         : Opcode.ldm,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     Writeback = w,
                     ops = new MachineOperand[] {
                             new RegisterOperand(rn),
@@ -326,12 +311,10 @@ namespace Reko.Arch.Arm.AArch32
         private class LdmStmDecoder32 : Decoder
         {
             private readonly Opcode opcode;
-            private readonly string format;
 
-            public LdmStmDecoder32(Opcode opcode, string format)
+            public LdmStmDecoder32(Opcode opcode)
             {
                 this.opcode = opcode;
-                this.format = format;
             }
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
@@ -346,10 +329,10 @@ namespace Reko.Arch.Arm.AArch32
                     return new T32Instruction
                     {
                         opcode = l != 0 ? Opcode.pop : Opcode.push,
-                        iclass = InstrClass.Linear,
+                        InstructionClass = InstrClass.Linear,
                         Wide = true,
                         Writeback = w,
-                        ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
+                        ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers) }
                     };
                 }
                 else
@@ -357,11 +340,11 @@ namespace Reko.Arch.Arm.AArch32
                     return new T32Instruction
                     {
                         opcode = opcode,
-                        iclass = InstrClass.Linear,
+                        InstructionClass = InstrClass.Linear,
                         Writeback = w,
                         ops = new MachineOperand[] {
                             new RegisterOperand(rn),
-                            new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers))
+                            new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers)
                         }
                     };
                 }
@@ -371,11 +354,9 @@ namespace Reko.Arch.Arm.AArch32
         // Decodes Mov/Movs instructions with optional shifts
         private class MovMovsDecoder : InstrDecoder
         {
-            private readonly string format;
 
-            public MovMovsDecoder(Opcode opcode, string format) : base(opcode, InstrClass.Linear, format)
+            public MovMovsDecoder(Opcode opcode, params Mutator<T32Disassembler>[] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
-                this.format = format;
             }
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
@@ -397,7 +378,7 @@ namespace Reko.Arch.Arm.AArch32
                 var instr = new T32Instruction
                 {
                     opcode = Opcode.it,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte)SBitfield(wInstr, 0, 4)
                 };
@@ -412,7 +393,7 @@ namespace Reko.Arch.Arm.AArch32
         // differently from how they are repesented in the word.
         private class BfcBfiDecoder : InstrDecoder
         {
-            public BfcBfiDecoder(Opcode opcode, string format) : base(opcode, InstrClass.Linear, format)
+            public BfcBfiDecoder(Opcode opcode, Mutator<T32Disassembler> [] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
             }
 
@@ -458,6 +439,5 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         #endregion
-
     }
 }

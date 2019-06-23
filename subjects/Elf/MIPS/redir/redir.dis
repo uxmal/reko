@@ -12547,7 +12547,6 @@ _fpadd_parts_entry:
 
 l00408180:
 	word32 r7_10 = Mem0[r4:word32]
-	word32 r13_15 = r6
 	branch (word32) (r7_10 <u 2) != 0x00000000 l00408180_ds_t
 // DataOut:
 // DataOut (flags):
@@ -12971,9 +12970,9 @@ l00408410:
 l00408414:
 	word32 r7_194 = r9_171 << 0x01
 	word32 r6_189 = r6_186 | r2_179
-	Mem203[r13_15 + 0x00000008:word32] = Mem191[r13_15 + 0x00000008:word32] + -1
-	Mem204[r13_15 + 0x00000010:word32] = r6_189
-	Mem205[r13_15 + 0x00000014:word32] = r7_194
+	Mem203[r6 + 0x00000008:word32] = Mem191[r6 + 0x00000008:word32] + -1
+	Mem204[r6 + 0x00000010:word32] = r6_189
+	Mem205[r6 + 0x00000014:word32] = r7_194
 	word32 r4_199 = r6_189 + -1 + (word32) (r7_194 <u 0)
 	branch (word32) (r4_199 >u 0x0FFFFFFF) != 0x00000000 l00408410_ds_t
 // DataOut:
@@ -13022,30 +13021,30 @@ l00408460_ds_t:
 // SymbolicIn:
 
 l00408490:
-	branch (word32) (Mem213[r13_15 + 0x00000010:word32] >u 0x1FFFFFFF) == 0x00000000 l00408470_ds_t
+	branch (word32) (Mem213[r6 + 0x00000010:word32] >u 0x1FFFFFFF) == 0x00000000 l00408470_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00408470_ds_t:
-	Mem219[r13_15:word32] = 3
+	Mem219[r6:word32] = 3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00408470_ds_f:
-	Mem220[r13_15:word32] = 3
+	Mem220[r6:word32] = 3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004084AC:
-	word32 r4_221 = Mem220[r13_15 + 0x00000010:word32]
-	word32 r5_222 = Mem220[r13_15 + 0x00000014:word32]
-	word32 r6_230 = Mem220[r13_15 + 0x00000008:word32]
-	Mem235[r13_15 + 0x00000010:word32] = r4_221 | r4_221 >>u 0x01
-	Mem236[r13_15 + 0x00000014:word32] = r5_222 + 1 | (r5_222 >>u 0x01 | r4_221 << 0x1F)
-	Mem237[r13_15 + 0x00000008:word32] = r6_230 + 1
+	word32 r4_221 = Mem220[r6 + 0x00000010:word32]
+	word32 r5_222 = Mem220[r6 + 0x00000014:word32]
+	word32 r6_230 = Mem220[r6 + 0x00000008:word32]
+	Mem235[r6 + 0x00000010:word32] = r4_221 | r4_221 >>u 0x01
+	Mem236[r6 + 0x00000014:word32] = r5_222 + 1 | (r5_222 >>u 0x01 | r4_221 << 0x1F)
+	Mem237[r6 + 0x00000008:word32] = r6_230 + 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

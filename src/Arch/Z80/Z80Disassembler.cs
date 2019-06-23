@@ -68,7 +68,7 @@ namespace Reko.Arch.Z80
         {
             return new Z80Instruction
             {
-                IClass = InstrClass.Invalid,
+                InstructionClass = InstrClass.Invalid,
                 Code = Opcode.illegal,
                 Address = this.addr,
             };
@@ -126,7 +126,7 @@ namespace Reko.Arch.Z80
                     if (!m(op, disasm))
                         return disasm.Invalid();
                 }
-                instr.IClass = IClass;
+                instr.InstructionClass = IClass;
                 instr.Code = Z80Opcode;
                 var ops = disasm.ops;
                 if (ops.Count > 0)
@@ -208,7 +208,7 @@ namespace Reko.Arch.Z80
                 if (!dasm.rdr.TryReadByte(out var op))
                     return dasm.Invalid();
 
-                dasm.instr.IClass = InstrClass.Linear;
+                dasm.instr.InstructionClass = InstrClass.Linear;
                 var y = (byte) ((op >> 3) & 0x07);
                 switch (op >> 6)
                 {

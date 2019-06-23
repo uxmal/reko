@@ -177,7 +177,7 @@ namespace Reko.Arch.Tms7000
                 var instr = new Tms7000Instruction
                 {
                     Opcode = opcode,
-                    IClass = iclass,
+                    InstructionClass = iclass,
                     op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
                     op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,

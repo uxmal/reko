@@ -18,33 +18,27 @@
  */
 #endregion
 
-using Reko.Arch.Sparc;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Sparc
 {
     public partial class SparcRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private SparcArchitecture arch;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private LookaheadEnumerator<SparcInstruction> dasm;
-        private EndianImageReader rdr;
-        private SparcInstruction instrCur;
+        private readonly SparcArchitecture arch;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly LookaheadEnumerator<SparcInstruction> dasm;
+        private readonly EndianImageReader rdr;
         private RtlEmitter m;
-        private List<RtlInstruction> rtlInstructions;
+        private SparcInstruction instrCur;
         private InstrClass rtlc;
 
         public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -75,9 +69,7 @@ namespace Reko.Arch.Sparc
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
-                if (addr.ToLinear() == 0x0000000000010c44)
-                    addr.ToString();
-                rtlInstructions = new List<RtlInstruction>();
+                var rtlInstructions = new List<RtlInstruction>();
                 rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Opcode)
@@ -271,21 +263,19 @@ namespace Reko.Arch.Sparc
 
         private Expression RewriteOp(MachineOperand op, bool g0_becomes_null)
         {
-            var r = op as RegisterOperand;
-            if (r != null)
+            if (op is RegisterOperand r)
             {
                 if (r.Register == Registers.g0)
                 {
                     if (g0_becomes_null)
                         return null;
-                    else 
+                    else
                         return Constant.Zero(PrimitiveType.Word32);
                 }
                 else
                     return binder.EnsureRegister(r.Register);
             }
-            var imm = op as ImmediateOperand;
-            if (imm != null)
+            if (op is ImmediateOperand imm)
                 return imm.Value;
             throw new NotImplementedException(string.Format("Unsupported operand {0} ({1})", op, op.GetType().Name));
         }
@@ -311,18 +301,16 @@ namespace Reko.Arch.Sparc
 
         private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
         {
-            var mem = op as MemoryOperand;
             Expression baseReg;
             Expression offset;
-            if (mem != null)
+            if (op is MemoryOperand mem)
             {
                 baseReg = mem.Base == Registers.g0 ? null : binder.EnsureRegister(mem.Base);
                 offset = mem.Offset.IsIntegerZero ? null : mem.Offset;
             }
             else
             {
-                var i = op as IndexedMemoryOperand;
-                if (i != null)
+                if (op is IndexedMemoryOperand i)
                 {
                     baseReg = i.Base == Registers.g0 ? null : binder.EnsureRegister(i.Base);
                     offset = i.Index == Registers.g0 ? null : binder.EnsureRegister(i.Index);

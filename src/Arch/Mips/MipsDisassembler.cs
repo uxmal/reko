@@ -855,41 +855,5 @@ namespace Reko.Arch.Mips
             var baseReg = arch.GetRegister((int)(wInstr >> shift) & 0x1F);
             return new IndirectOperand(dataWidth, offset, baseReg);
         }
-
-        /*
-         *    classOf = new Dictionary<Opcode, InstrClass>
-            {
-                { Opcode.illegal, InstrClass.Invalid },
-
-                { Opcode.beq,     CondTransfer },
-                { Opcode.beql,    LinkCondTransfer },
-                { Opcode.bgez,    CondTransfer },
-                { Opcode.bgezal,  LinkCondTransfer },
-                { Opcode.bgezall, LinkCondTransfer },
-                { Opcode.bgezl,   LinkCondTransfer },
-                { Opcode.bgtz,    CondTransfer },
-                { Opcode.bgtzl,   LinkCondTransfer },
-                { Opcode.blez,    CondTransfer },
-                { Opcode.blezl,   LinkCondTransfer },
-                { Opcode.bltz,    CondTransfer },
-                { Opcode.bltzal,  LinkCondTransfer },
-                { Opcode.bltzall, LinkCondTransfer },
-                { Opcode.bltzl,   CondTransfer },
-                { Opcode.bne,     CondTransfer },
-                { Opcode.bnel,    LinkCondTransfer },
-                { Opcode.@break,  Transfer },
-                { Opcode.j,       Transfer },
-                { Opcode.jal,     LinkTransfer },
-                { Opcode.jalr,    LinkTransfer },
-                { Opcode.jr,      Transfer },
-                { Opcode.syscall, LinkTransfer },
-                { Opcode.teq,     LinkCondTransfer },
-                { Opcode.tlt,     LinkCondTransfer },
-                { Opcode.tltu,    LinkCondTransfer },
-                { Opcode.tge,     LinkCondTransfer },
-                { Opcode.tgeu,    LinkCondTransfer },
-                { Opcode.tne,     LinkCondTransfer },
-            };
-        */
     }
 }

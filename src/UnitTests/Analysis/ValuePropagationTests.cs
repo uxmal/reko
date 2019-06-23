@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Analysis
         {
             var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, importResolver.Object, listener);
             vp.Transform();
-            m.Ssa.Validate(s => Assert.Fail(s));
+            m.Ssa.Validate(s => { m.Ssa.Dump(true); Assert.Fail(s); });
         }
 
 		[Test]
@@ -1167,6 +1167,73 @@ SsaProcedureBuilder_exit:
             vp.Transform();
 
             m.Ssa.Validate(s => Assert.Fail(s));
+            AssertStringsEqual(sExp, m.Ssa);
+        }
+
+        // Unit test for Github #773
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void VpDpbPhi()
+        {
+            var d3 = m.Reg32("d3", 3);
+            var wLoc02_2 = m.Local16("wLoc02_2");
+            var d3_3 = m.Reg32("d3_3", 3);
+            var d3_4 = m.Reg32("d3_4", 3);
+            var d3_5 = m.Reg32("d3_5", 3);
+            var d3_6 = m.Reg32("d3_6", 3);
+
+            m.Assign(wLoc02_2, m.Cast(PrimitiveType.Word16, d3));
+            m.Label("m1");
+            m.Assign(d3_3, m.Dpb(d3, m.Word16(3), 0));
+            m.Goto("m3");
+            m.Label("m2");
+            m.Assign(d3_4, m.Dpb(d3, m.Word16(4), 0));
+            m.Label("m3");
+            m.Phi(d3_5, (d3_3, "m1"), (d3_4, "m2"));
+            m.Assign(d3_6, m.Dpb(d3_5, wLoc02_2, 0));
+
+            RunValuePropagator();
+
+            var sExp =
+            #region Expected
+@"d3:d3
+    uses: wLoc02_2 = (word16) d3
+          d3_3 = DPB(d3, 0x0003, 0)
+          d3_4 = DPB(d3, 0x0004, 0)
+          d3_6 = d3
+wLoc02_2:Local -0004
+    def:  wLoc02_2 = (word16) d3
+d3_3:d3_3
+    def:  d3_3 = DPB(d3, 0x0003, 0)
+    uses: d3_5 = PHI((d3_3, m1), (d3_4, m2))
+d3_4:d3_4
+    def:  d3_4 = DPB(d3, 0x0004, 0)
+    uses: d3_5 = PHI((d3_3, m1), (d3_4, m2))
+d3_5:d3_5
+    def:  d3_5 = PHI((d3_3, m1), (d3_4, m2))
+d3_6:d3_6
+    def:  d3_6 = d3
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	wLoc02_2 = (word16) d3
+	// succ:  m1
+m1:
+	d3_3 = DPB(d3, 0x0003, 0)
+	goto m3
+	// succ:  m3
+m2:
+	d3_4 = DPB(d3, 0x0004, 0)
+	// succ:  m3
+m3:
+	d3_5 = PHI((d3_3, m1), (d3_4, m2))
+	d3_6 = d3
+SsaProcedureBuilder_exit:
+";
+            #endregion
             AssertStringsEqual(sExp, m.Ssa);
         }
     }

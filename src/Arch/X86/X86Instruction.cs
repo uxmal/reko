@@ -38,7 +38,6 @@ namespace Reko.Arch.X86
         private const InstrClass Transfer = InstrClass.Transfer;
 
 		public Opcode code;		        // Opcode of the instruction.
-        public InstrClass iclass;       // Instruction class.
         public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
@@ -49,7 +48,7 @@ namespace Reko.Arch.X86
 		public X86Instruction(Opcode code, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.code = code;
-            this.iclass = iclass;
+            this.InstructionClass = iclass;
 			this.dataWidth = dataWidth;
 			this.addrWidth = addrWidth;
 			if (ops.Length >= 1)
@@ -65,8 +64,6 @@ namespace Reko.Arch.X86
 				}
 			}
 		}
-
-        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int) code;
 

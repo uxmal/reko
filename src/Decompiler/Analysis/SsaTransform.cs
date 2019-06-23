@@ -49,7 +49,7 @@ namespace Reko.Analysis
     [DebuggerDisplay("{SsaState.Procedure.Name}")]
     public partial class SsaTransform : InstructionTransformer 
     {
-        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
+        private static readonly TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
 
         private readonly IProcessorArchitecture arch;
         private readonly Program program;
@@ -106,6 +106,11 @@ namespace Reko.Analysis
         public SsaState Transform()
         {
             DebugEx.Info(trace, "SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
+            if (ssa.Procedure.Name == "fn101BD733")
+            {
+                ssa.ToString();//$DEBUG
+            }
+
             this.sidsToRemove = new HashSet<SsaIdentifier>();
             foreach (var bs in blockstates.Values)
             {
@@ -117,7 +122,7 @@ namespace Reko.Analysis
 
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
-                DebugEx.Verbose(trace, "SsaTransform:   {0}", b.Name);
+                DebugEx.Verbose(trace, "SsaTransform:   {0} ({1} statements)", b.Name, b.Statements.Count);
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
                 {
@@ -134,6 +139,7 @@ namespace Reko.Analysis
                 blockstates[b].terminates = false;
             }
             ProcessIncompletePhis();
+            RemoveRedundantPhis();
             RemoveDeadSsaIdentifiers();
             return ssa;
         }
@@ -169,6 +175,7 @@ namespace Reko.Analysis
             // (e.g. eax, ax, al, ah) and render them as a single
             // register (eax).
             this.block = ssa.Procedure.ExitBlock;
+            DebugEx.Verbose(trace, "SsaTransform: AddUsesToExitBlock  {0}", this.block);
 
             // Compute the set of all blocks b such that there is a path from
             // b to the exit block.
@@ -204,8 +211,74 @@ namespace Reko.Analysis
             stms.ForEach(u =>
             {
                 var use = (UseInstruction)u.Instruction;
+                DebugEx.Verbose(trace, "SsaTransform:   {0}", use);
                 use.Expression = NewUse((Identifier)use.Expression, u, true);
             });
+        }
+
+        /// <summary>
+        /// Remove SCC's of phi assignments whose arguments are other variables in the SCC
+        /// or a single external value.
+        /// </summary>
+        /// <remarks>
+        /// Implements Algorithm 5 of the Braun et al. paper.
+        /// </remarks>
+        private void RemoveRedundantPhis(PhiAssignment[] phis = null)
+        {
+            if (phis == null)
+            {
+                phis = ssa.Procedure.Statements
+                    .Select(stm => stm.Instruction as PhiAssignment)
+                    .Where(p => p != null)
+                    .ToArray();
+            }
+
+            SccFinder<PhiAssignment> sccFinder = new SccFinder<PhiAssignment>(new PhiGraph(ssa, phis), processScc);
+            sccFinder.FindAll();
+
+            void processScc(IList<PhiAssignment> scc)
+            {
+                if (scc.Count == 1)
+                    return;
+                var sccIds = new HashSet<Expression>(scc.Select(p => (Expression) p.Dst));
+                var inner = new HashSet<PhiAssignment>();
+                var outerOps = new HashSet<Expression>();
+                foreach (var phi in scc)
+                {
+                    bool isInner = true;
+                    foreach (var arg in phi.Src.Arguments)
+                    {
+                        if (!sccIds.Contains(arg.Value))
+                        {
+                            outerOps.Add(arg.Value);
+                            isInner = false;
+                        }
+                    }
+                    if (isInner)
+                        inner.Add(phi);
+                }
+
+                if (outerOps.Count == 1)
+                {
+                    ReplaceWithValue(scc, outerOps.First());
+                }
+                //$TODO: this code is causing stack overflows in many places.
+                //else if (outerOps.Count > 1)
+                //{
+                //    RemoveRedundantPhis(inner.ToArray());
+                //}
+            }
+        }
+
+        private void ReplaceWithValue(IEnumerable<PhiAssignment> scc, Expression value)
+        {
+            foreach (var phi in scc)
+            {
+                var stm = ssa.Identifiers[phi.Dst].DefStatement;
+                ssa.RemoveUses(stm);
+                stm.Instruction = new AliasAssignment(phi.Dst, value);
+                ssa.AddUses(stm);
+            }
         }
 
         private ISet<Block> FindPredecessorClosure(Block start)
@@ -447,24 +520,20 @@ namespace Reko.Analysis
                 var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
                 foreach (var stgUse in calleeFlow.BitsUsed.Keys)
                 {
+                    Expression e;
                     if (stgUse is FpuStackStorage fpuUse)
                     {
-                        var fpuUseExpr = arch.CreateFpuStackAccess(
+                        e = arch.CreateFpuStackAccess(
                             ssa.Procedure.Frame,
                             fpuUse.FpuStackOffset,
                             PrimitiveType.Word64); //$TODO: datatype?
-                        fpuUseExpr = fpuUseExpr.Accept(this);
-                        ci.Uses.Add(
-                            new CallBinding(
-                                stgUse,
-                                fpuUseExpr));
                     }
                     else
                     {
-                        var arg = stgUse.Accept(ab);
-                        arg = arg.Accept(this);
-                        ci.Uses.Add(new CallBinding(stgUse, arg));
+                        e = stgUse.Accept(ab);
                     }
+                    e = e.Accept(this);
+                    ci.Uses.Add(new CallBinding(stgUse, e));
                 }
 
                 if (calleeFlow.TerminatesProcess)
@@ -711,7 +780,7 @@ namespace Reko.Analysis
                     var idDst = NewDef(idFrame, src, false);
                     return idDst;
                 }
-                else if (this.RenameFrameAccesses && IsConstFpuStackAccess(ssa.Procedure, acc))
+                else if (this.RenameFrameAccesses && IsConstFpuStackAccess(acc))
                 {
                     ssa.Identifiers[acc.MemoryId].DefStatement = null;
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(((Constant)acc.EffectiveAddress).ToInt32(), acc.DataType);
@@ -862,7 +931,7 @@ namespace Reko.Analysis
                     var idNew = NewUse(idFrame, stmCur, true);
                     return idNew;
                 }
-                if (IsConstFpuStackAccess(ssa.Procedure, access))
+                if (IsConstFpuStackAccess(access))
                 {
                     ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
@@ -950,7 +1019,7 @@ namespace Reko.Analysis
             return bin.Right is Constant;
         }
 
-        private static bool IsConstFpuStackAccess(Procedure proc, MemoryAccess acc)
+        private bool IsConstFpuStackAccess(MemoryAccess acc)
         {
             if (!acc.MemoryId.Name.StartsWith("ST"))  //$HACK: gross hack but we have to start somewhere.
                 return false;

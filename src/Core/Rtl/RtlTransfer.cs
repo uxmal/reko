@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,6 +34,6 @@ namespace Reko.Core.Rtl
             this.Class = rtlClass;
         }
 
-        public Expression Target { get; private set; }
+        public Expression Target { get; }
     }
 }

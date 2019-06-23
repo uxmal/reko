@@ -218,10 +218,7 @@ namespace Reko.Analysis
         {
             bool change = false;
             DebugEx.Verbose(trace, "UVR: {0}", ssa.Procedure.Name);
-            var liveOutStorages = this.dataFlow[ssa.Procedure].BitsLiveOut;
-            var deadStms = new HashSet<Statement>();
-            var deadStgs = new HashSet<Storage>();
-            FindDeadStatementsInExitBlock(ssa, liveOutStorages, deadStms, deadStgs);
+            var (deadStms, deadStgs) = FindDeadStatementsInExitBlock(ssa, this.dataFlow[ssa.Procedure].BitsLiveOut);
 
             // Remove 'use' statements that are known to be dead from the exit block.
             foreach (var stm in deadStms)
@@ -249,12 +246,14 @@ namespace Reko.Analysis
             return change;
         }
 
-        private static void FindDeadStatementsInExitBlock(
+        private static (HashSet<Statement> deadStms, HashSet<Storage> deadStgs) FindDeadStatementsInExitBlock(
             SsaState ssa,
-            Dictionary<Storage, BitRange> liveOutStorages,
-            HashSet<Statement> deadStms, 
-            HashSet<Storage> deadStgs)
+            Dictionary<Storage, BitRange> liveOutStorages)
+            //Dictionary<StorageDomain, BitRange> liveOutStorages)
         {
+            var deadStms = new HashSet<Statement>();
+            var deadStgs = new HashSet<Storage>();
+
             foreach (var stm in ssa.Procedure.ExitBlock.Statements)
             {
                 if (!(stm.Instruction is UseInstruction use))
@@ -270,6 +269,7 @@ namespace Reko.Analysis
                     }
                 }
             }
+            return (deadStms, deadStgs);
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace Reko.Analysis
                             DebugEx.Verbose(trace, "  {0}: {1}", sid.Identifier.Name, br);
                             if (liveOutStorages.TryGetValue(def.Storage, out BitRange brOld))
                             {
-                                br = br | brOld;
+                                br |= brOld;
                                 liveOutStorages[def.Storage] = br;
                             }
                             else if (!br.IsEmpty)

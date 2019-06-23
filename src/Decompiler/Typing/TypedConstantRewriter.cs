@@ -79,9 +79,9 @@ namespace Reko.Typing
                 dtInferred = c.TypeVariable.DataType;
                 this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
             }
-            dtInferred = dtInferred.ResolveAs<DataType>();
+            var dt = dtInferred.ResolveAs<DataType>();
             this.dereferenced = dereferenced;
-            return dtInferred.Accept(this);
+            return dt.Accept(this);
         }
 
         public Expression Rewrite(Address addr, bool dereferenced)

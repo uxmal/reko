@@ -243,7 +243,7 @@ namespace Reko.Arch.Z80
         public static readonly RegisterStorage iy = new RegisterStorage("iy", 6, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage af = new RegisterStorage("af", 0, 0, PrimitiveType.Word16);
 
-        public static readonly RegisterStorage f = new RegisterStorage("f", 28, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage f = new RegisterStorage("f", 0, 0, PrimitiveType.Byte);
 
         public static readonly RegisterStorage i = new RegisterStorage("i", 8, 0, PrimitiveType.Byte);
         public static readonly RegisterStorage r = new RegisterStorage("r", 9, 0, PrimitiveType.Byte);

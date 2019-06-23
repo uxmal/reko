@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -17,35 +17,29 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace Reko.Core.Configuration
+namespace Reko.UserInterfaces.WindowsForms.Controls
 {
-    /// <summary>
-    /// Contains processor-specific settings for a particular 
-    /// platform.
-    /// </summary>
-    public interface IPlatformArchitectureElement
+    public class TabPageWrapper : ITabPage
     {
-        string Name { get; }
-        List<string> TrashedRegisters { get; }
-        List<ITypeLibraryElement> TypeLibraries { get; }
-    }
+        private readonly TabPage tabPage;
 
-    public class PlatformArchitectureElement : IPlatformArchitectureElement
-    {
-        public PlatformArchitectureElement()
+        public TabPageWrapper(TabPage tabPage)
         {
-            this.TrashedRegisters = new List<string>();
-            this.TypeLibraries = new List<ITypeLibraryElement>();
+            this.tabPage = tabPage;
         }
 
-        public string Name { get; set; }
-        public List<string> TrashedRegisters { get; internal set; }
-        public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
+        public void Select()
+        {
+            ((TabControl) tabPage.Parent).SelectedTab = tabPage;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -48,11 +48,6 @@ namespace Reko.Arch.Arm.AArch32
         {
             Marshal.ReleaseComObject(nInstr);
             nInstr = null;
-        }
-
-        public override InstrClass InstructionClass 
-        {
-            get { return (InstrClass)info.InstructionClass; }
         }
 
         public override int OpcodeAsInteger

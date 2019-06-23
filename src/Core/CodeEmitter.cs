@@ -199,7 +199,17 @@ namespace Reko.Core
         public Identifier Local16(string name)
         {
             localStackOffset -= PrimitiveType.Word32.Size;
-            return Frame.EnsureStackLocal(localStackOffset, PrimitiveType.Word16, name);
+            return Local16(name, localStackOffset);
+        }
+
+        /// <summary>
+        /// Allocates a stack-based 16-bit variable  named <paramref name="name"/> at the 
+        /// given <paramref name="offset"/>.
+        /// </summary>
+        public virtual Identifier Local16(string name, int offset)
+        {
+            Debug.Assert(offset < 0);
+            return Frame.EnsureStackLocal(offset, PrimitiveType.Word16, name);
         }
 
         /// <summary>

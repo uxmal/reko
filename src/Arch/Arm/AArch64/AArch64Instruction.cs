@@ -52,11 +52,6 @@ namespace Reko.Arch.Arm.AArch64
             nInstr = null;
         }
 
-        public override InstrClass InstructionClass
-        {
-            get { return (InstrClass) info.InstructionClass; }
-        }
-
         public override int OpcodeAsInteger
         {
             get { return info.Opcode; }
@@ -76,13 +71,10 @@ namespace Reko.Arch.Arm.AArch64
     public class AArch64Instruction : MachineInstruction
     {
         public Opcode opcode;
-        public InstrClass iclass;
         public MachineOperand[] ops;
         public Opcode shiftCode;
         public MachineOperand shiftAmount;
         public VectorData vectorData;
-
-        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int)opcode;
 

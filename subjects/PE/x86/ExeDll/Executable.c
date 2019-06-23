@@ -40,13 +40,10 @@ word32 fn00401060(int32 * eax, word32 ecx, struct Eq_n * ebp, word32 * esi, word
 // 004012CE: Register Eq_n Win32CrtStartup()
 Eq_n Win32CrtStartup()
 {
-	int8 Top_n = 0x00;
 	fn00401663();
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x14);
 	Eq_n esp_n = <invalid>;
 	*(esp_n - 0x04) = 0x01;
-	word32 dwLoc04_n = 0x14;
-	word32 dwLoc08_n = 0x004024D8;
 	Eq_n esp_n = esp_n;
 	if ((byte) (word32) fn00401474(edx, *(esp_n - 0x04)) == 0x00)
 	{
@@ -59,6 +56,8 @@ l00401177:
 	*(ebp_n - 0x04) &= 0x00;
 	word32 edx_n;
 	*(ebp_n - 0x24) = (byte) (word32) fn0040143F(out edx_n);
+	int8 Top_n = 0x00;
+	struct Eq_n * ebp_n = ebp_n;
 	word32 ebx_n = DPB(ebx, 0x00, 0);
 	word32 eax_n = globals->dw403334;
 	if (eax_n != 0x01)
@@ -154,10 +153,9 @@ l00401177:
 		*(esp_n - 0x08) = *eax_n;
 		*(esp_n - 0x0C) = *eax_n;
 		Eq_n eax_n = fn00401000(ecx_n, ebp_n, eax_n);
-		byte bl_n = (byte) ebx_n;
 		word32 ecx_n;
 		word32 eax_n = fn0040188F(out ecx_n);
-		word32 ebx_n = DPB(ebx_n, bl_n, 0);
+		byte bl_n = (byte) ebx_n;
 		Eq_n Top_n = <invalid>;
 		ptr32 esp_n = esp_n;
 		if ((byte) eax_n == 0x00)
@@ -244,13 +242,11 @@ byte fn00401474(word32 edx, word32 dwArg04)
 	if (dwArg04 == 0x00)
 		globals->b403354 = 0x01;
 	fn004019FE(edx);
-	byte al_n = fn00401C48();
-	word32 eax_n = DPB(eax_n, al_n, 0);
-	if (al_n == 0x00)
+	if (fn00401C48() == 0x00)
 		return (byte) DPB(eax_n, 0x00, 0);
 	if (fn00401C48() != 0x00)
 		return (byte) DPB(eax_n, 0x01, 0);
-	eax_n = DPB(eax_n, fn00401C48(), 0);
+	fn00401C48();
 	return (byte) DPB(eax_n, 0x00, 0);
 }
 

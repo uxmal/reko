@@ -121,6 +121,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\arch\PaRisc\PaRisc.csproj">
+      <Name>PaRisc</Name>
+      <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Name>Pdp11</Name>
       <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
@@ -148,6 +156,14 @@
     <ProjectReference Include="..\Arch\RiscV\RiscV.csproj">
       <Name>RiscV</Name>
       <Project>{e0697f4c-5f5e-4037-9f0e-7a9064a55b4d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Rl78\Rl78.csproj">
+      <Name>Rl78</Name>
+      <Project>{54029784-c8a6-43f5-9d00-62ec8da04fa1}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -329,6 +345,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\Hpux\Hpux.csproj">
+      <Name>Hpux</Name>
+      <Project>{3488c24e-187c-4477-a310-d2292892d257}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
       <Name>MacOS</Name>
       <Project>{d0d1798c-08f7-4de6-94e9-cc382e1fbec8}</Project>
@@ -457,6 +481,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\HpSom\HpSom.csproj">
+      <Name>HpSom</Name>
+      <Project>{6faa0b0c-f6c2-4091-9cc8-1dc2cf708bc2}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\Hunk\Hunk.csproj">
       <Name>Hunk</Name>
       <Project>{f1b0c3c9-1c64-4744-9217-c25fbc5d0dcc}</Project>
@@ -572,4 +604,6 @@
 	<Target Name="AfterBuild">
 	</Target>
 	-->
+  
+  
 </Project>

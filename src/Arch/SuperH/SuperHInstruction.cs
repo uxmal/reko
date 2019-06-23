@@ -30,13 +30,9 @@ namespace Reko.Arch.SuperH
 
 
         public Opcode Opcode { get; set; }
-        public InstrClass IClass { get; set; }
         public MachineOperand op1 { get; set; }
         public MachineOperand op2 { get; set; }
         public MachineOperand op3 { get; set; }
-
-
-        public override InstrClass InstructionClass => IClass;
 
         public override int OpcodeAsInteger => (int) Opcode;
 

@@ -33,9 +33,9 @@ namespace Reko.Arch.Avr
 {
     public class Avr8Architecture : ProcessorArchitecture
     {
-        private RegisterStorage[] regs;
-        private Dictionary<uint, FlagGroupStorage> grfs;
-        private List<Tuple<FlagM, char>> grfToString;
+        private readonly RegisterStorage[] regs;
+        private readonly Dictionary<uint, FlagGroupStorage> grfs;
+        private readonly List<Tuple<FlagM, char>> grfToString;
 
         public Avr8Architecture(string archId) : base(archId)
         {

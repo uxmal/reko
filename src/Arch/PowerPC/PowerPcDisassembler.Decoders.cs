@@ -29,7 +29,7 @@ namespace Reko.Arch.PowerPC
                     {
                         return new PowerPcInstruction(Opcode.illegal)
                         {
-                            iclass = InstrClass.Invalid
+                            InstructionClass = InstrClass.Invalid
                         };
                     }
                 }
@@ -178,7 +178,7 @@ namespace Reko.Arch.PowerPC
                     wInstr &= ~1u;
                     return new PowerPcInstruction(opcode)
                     {
-                        iclass = InstrClass.Linear,
+                        InstructionClass = InstrClass.Linear,
                         op1 = dasm.RegFromBits(wInstr >> 16),
                         op2 = dasm.RegFromBits(wInstr >> 21),
                         op3 = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1F | (wInstr << 4) & 0x20)),
@@ -251,7 +251,7 @@ namespace Reko.Arch.PowerPC
                 {
                     return new PowerPcInstruction(Opcode.illegal)
                     {
-                        iclass = InstrClass.Invalid
+                        InstructionClass = InstrClass.Invalid
                     };
                 }
             }
@@ -277,7 +277,7 @@ namespace Reko.Arch.PowerPC
                     if (!m(wInstr, dasm))
                         return new PowerPcInstruction(Opcode.illegal)
                         {
-                            iclass = InstrClass.Invalid
+                            InstructionClass = InstrClass.Invalid
                         };
                 }
                 return dasm.MakeInstruction(iclass, opcode);
@@ -296,7 +296,7 @@ namespace Reko.Arch.PowerPC
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
                 return new PowerPcInstruction(opcode)
                 {
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     op1 = new AddressOperand(baseAddr + uOffset),
                 };
             }
@@ -470,7 +470,7 @@ namespace Reko.Arch.PowerPC
                 }
                 return new PowerPcInstruction(opcode)
                 {
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     op1 = op1,
                     op2 = op2,
                 };
@@ -495,7 +495,7 @@ namespace Reko.Arch.PowerPC
                 {
                     return new PowerPcInstruction(Opcode.blr)
                     {
-                        iclass = InstrClass.Transfer
+                        InstructionClass = InstrClass.Transfer
                     };
                 }
 
@@ -505,7 +505,7 @@ namespace Reko.Arch.PowerPC
                 default:
                     return new PowerPcInstruction(link ? Opcode.bclrl : Opcode.bclr)
                     {
-                        iclass = iclass | InstrClass.Transfer,
+                        InstructionClass = iclass | InstrClass.Transfer,
                         op1 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),
                         op2 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
                     };
@@ -520,7 +520,7 @@ namespace Reko.Arch.PowerPC
                 }
                 return new PowerPcInstruction(opcode)
                 {
-                    iclass = iclass | InstrClass.ConditionalTransfer,
+                    InstructionClass = iclass | InstrClass.ConditionalTransfer,
                     op1 = dasm.CRegFromBits(crf),
                 };
             }
@@ -538,7 +538,7 @@ namespace Reko.Arch.PowerPC
                 var spr = (wInstr >> 11) & 0x3FF;
                 return new PowerPcInstruction(opcode)
                 {
-                    iclass = base.iclass,
+                    InstructionClass = base.iclass,
                     op1 = reg,
                     op2 = new ImmediateOperand(Constant.Word16((ushort)spr))
                 };
@@ -572,7 +572,7 @@ namespace Reko.Arch.PowerPC
                 }
                 return new PowerPcInstruction(opcode)
                 {
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     op1 = op1,
                     op2 = op2
                 };

@@ -35,12 +35,8 @@ namespace Reko.Analysis
 	{
 		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
-			if (id == null)
-				throw new ArgumentNullException("id");
-			if (idOrig == null)
-				throw new ArgumentNullException("idOrig");
-			this.Identifier = id;
-			this.OriginalIdentifier = idOrig;
+            this.Identifier = id ?? throw new ArgumentNullException("id");
+			this.OriginalIdentifier = idOrig ?? throw new ArgumentNullException("idOrig");
 			this.DefStatement = stmDef;
             this.DefExpression = exprDef;
             this.IsSideEffect = isSideEffect;

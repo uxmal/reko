@@ -19,16 +19,16 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
-using System.Collections.Generic;
+using Reko.Core.Types;
 using System;
 using System.Collections;
-using Reko.Core.Machine;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.Core.Operators;
 
 namespace Reko.Arch.Alpha
 {
@@ -59,7 +59,7 @@ namespace Reko.Arch.Alpha
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = instr.iclass;
+                this.rtlc = instr.InstructionClass;
                 switch (instr.Opcode)
                 {
                 default:

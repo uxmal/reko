@@ -55,6 +55,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private Mock<IConfigurationService> configSvc;
         private Mock<ITypeLibraryLoaderService> typeLibSvc;
         private Mock<IProjectBrowserService> brSvc;
+        private Mock<IProcedureListService> procSvc;
         private Mock<IFileSystemService> fsSvc;
         private Mock<ILoader> loader;
         private Mock<IUiPreferencesService> uiPrefs;
@@ -578,6 +579,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             disasmSvc = new Mock<IDisassemblyViewService>();
             typeLibSvc = new Mock<ITypeLibraryLoaderService>();
             brSvc = new Mock<IProjectBrowserService>();
+            procSvc = new Mock<IProcedureListService>();
             uiPrefs = new Mock<IUiPreferencesService>();
             fsSvc = new Mock<IFileSystemService>();
             tcHostSvc = new Mock<ITabControlHostService>();
@@ -609,6 +611,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Setup(s => s.CreateScannedPageInteractor()).Returns(new FakeScannedPageInteractor());
             svcFactory.Setup(s => s.CreateTypeLibraryLoaderService()).Returns(typeLibSvc.Object);
             svcFactory.Setup(s => s.CreateProjectBrowserService()).Returns(brSvc.Object);
+            svcFactory.Setup(s => s.CreateProcedureListService()).Returns(procSvc.Object);
             svcFactory.Setup(s => s.CreateUiPreferencesService()).Returns(uiPrefs.Object);
             svcFactory.Setup(s => s.CreateFileSystemService()).Returns(fsSvc.Object);
             svcFactory.Setup(s => s.CreateStatusBarService()).Returns(sbSvc.Object);
@@ -685,5 +688,32 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             else
                 return null;
         }
+
+        [Test]
+        public void Mfi_FinishDecompilation_UpdateProcedureList()
+        {
+            Given_MainFormInteractor();
+            Given_LoadPreferences();
+            Given_DecompilerInstance();
+            Given_XmlWriter();
+            Given_SavePrompt(false);
+            decompiler.Setup(d => d.AnalyzeDataFlow());
+            decompiler.Setup(d => d.ReconstructTypes());
+            decompiler.Setup(d => d.StructureProgram());
+            fsSvc.Setup(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Returns("foo.exe");
+            brSvc.Setup(b => b.Reload())
+                .Verifiable();
+            procSvc.Setup(p => p.Load(
+                It.IsNotNull<Project>()))
+                .Verifiable();
+
+            When_CreateMainFormInteractor();
+            interactor.OpenBinary("foo.exe");
+
+            Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
+            interactor.FinishDecompilation();
+            procSvc.Verify();
+        }
+
     }
 }

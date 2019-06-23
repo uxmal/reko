@@ -126,6 +126,7 @@ namespace Reko.Gui.Forms
 
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
+            browserSvc.Show();
             ShowLowLevelWindow();
             return true;
         }
@@ -141,14 +142,18 @@ namespace Reko.Gui.Forms
                 Decompiler.ExtractResources();
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
+            var procListSvc = Services.RequireService<IProcedureListService>();
             if (Decompiler.Project != null)
             {
                 browserSvc.Load(Decompiler.Project);
+                browserSvc.Show();
+                procListSvc.Clear();
                 ShowLowLevelWindow();
             }
             else
             {
                 browserSvc.Clear();
+                procListSvc.Clear();
             }
             return false;   // We never open projects this way.
         }
@@ -175,6 +180,7 @@ namespace Reko.Gui.Forms
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
+            browserSvc.Show();
             ShowLowLevelWindow();
             return false;
         }

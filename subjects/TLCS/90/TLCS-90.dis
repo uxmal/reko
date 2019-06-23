@@ -542,9 +542,9 @@ l050B:
 	c_14 = c_14 << 1
 	b_16 = __rcl(b_16, 0x01, SLICE(cond(c_14), bool, 0))
 	hl_298 = hl_298 * 0x0002 + (b_16 <u 0x00)
-	byte l_53 = (byte) hl_298
 	byte h_60 = SLICE(hl_298, byte, 8)
-	word16 hl_301 = DPB(DPB(hl_298, l_53, 0), h_60, 8)
+	byte l_53 = (byte) hl_298
+	word16 hl_301 = DPB(hl_298, h_60, 8)
 	a_23 = a_23 - 1
 	branch a_23 != 0x00 l050B
 // DataOut:
@@ -2296,7 +2296,6 @@ void fn59FE()
 // Preserved:
 l5A25:
 	a_34 = a ^ 0x80
-	af_67 = DPB(af, a ^ 0x80, 8) (alias)
 	branch (a ^ 0x80) >= 0x00 l0A3F
 	def l
 	def h
@@ -2330,21 +2329,19 @@ l0A35:
 	def ix
 	def b
 	a_31 = Mem26[ix + -9:byte] + b + (a_23 <u 0x00)
-	af_68 = DPB(af, a_31, 8) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0A3F:
 	hl_179 = PHI((hl_182, l5A25), (hl_184, l0A35))
-	af_65 = PHI((af_67, l5A25), (af_68, l0A35))
 	a_41 = PHI((a_34, l5A25), (a_31, l0A35))
 	Mem43[ix + -9:byte] = a_41
 	a_50 = Mem43[ix + -8:byte] + l + (a_31 <u 0x00)
 	Mem52[ix + -8:byte] = a_50
 	a_58 = Mem52[ix + -7:byte] + h + (a_50 <u 0x00)
 	Mem61[ix + -7:byte] = a_58
-	Mem70[sp - 2:word16] = DPB(af_65, a_58, 8)
+	Mem70[sp - 2:word16] = DPB(af, a_58, 8)
 	c_72 = Mem70[ix + -10:byte]
 	b_74 = Mem70[ix + -9:byte]
 	hl_188 = DPB(DPB(hl_186, Mem70[ix + -8:byte], 0), Mem70[ix + -7:byte], 8) (alias)

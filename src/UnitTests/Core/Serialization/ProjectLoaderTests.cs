@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core.Serialization
         private Mock<IProcessorArchitecture> arch;
         private Dictionary<string, object> loadedOptions;
         private Mock<ITypeLibraryLoaderService> tlSvc;
-        private Mock<OperatingEnvironment> oe;
+        private Mock<PlatformDefinition> oe;
         private Mock<DecompilerEventListener> listener;
 
         [SetUp]
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_TestOS()
         {
-            this.oe = new Mock<OperatingEnvironment>();
+            this.oe = new Mock<PlatformDefinition>();
             this.platform = new Mock<IPlatform>();
             this.cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(oe.Object);
             oe.Setup(e => e.Load(sc, It.IsAny<IProcessorArchitecture>())).Returns(platform.Object);
@@ -407,7 +407,7 @@ namespace Reko.UnitTests.Core.Serialization
             var platform = new TestPlatform(sc);
             Given_Binary(ldr, platform);
             Given_TypeLibraryLoaderService();
-            cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(new OperatingEnvironmentElement
+            cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(new PlatformDefinition
             {
 
             });
@@ -447,8 +447,8 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS();
             Given_Binary(ldr, platform);
             Given_TypeLibraryLoaderService();
-            oe.Setup(o => o.TypeLibraries).Returns(new List<ITypeLibraryElement>());
-            oe.Setup(o => o.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            oe.Setup(o => o.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
+            oe.Setup(o => o.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -21,30 +21,28 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface ITypeLibraryElement
+    public class AssemblerDefinition
     {
-        string Name { get; }
-
-        string Architecture { get; set; }
-
-        string Module { get; set; }
-
-        string Loader { get; set; }
-    }
-
-    public class TypeLibraryElement : ITypeLibraryElement
-    {
+        /// <summary>
+        /// Short, technical name for the assembler.
+        /// the assembler.
+        /// </summary>
         public string Name { get; set; }
 
-        public string Architecture { get; set; }
+        /// <summary>
+        /// Human friendly description of the assembler.
+        /// the assembler.
+        /// </summary>
+        public string Description { get; set; }
 
-        public string Module { get; set; }
-
-        public string Loader { get; set; }
+        /// <summary>
+        /// The assembly-qualified name for the .NET type that implements
+        /// the assembler.
+        /// </summary>
+        public string TypeName { get; set; }
     }
 }

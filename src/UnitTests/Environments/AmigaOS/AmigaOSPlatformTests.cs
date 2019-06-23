@@ -54,13 +54,13 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.tllSvc = new Mock<ITypeLibraryLoaderService>();
             this.services = new ServiceContainer();
             var cfgSvc = new Mock<IConfigurationService>();
-            var env = new Mock<OperatingEnvironment>();
+            var env = new Mock<PlatformDefinition>();
             this.arch = new M68kArchitecture("m68k");
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
             cfgSvc.Setup(c => c.GetEnvironment("amigaOS")).Returns(env.Object);
-            env.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
-            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
+            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             env.Setup(e => e.Options).Returns(new Dictionary<string, object>
             {
                 { "versionDependentLibraries", new Dictionary<string,object>

@@ -353,9 +353,6 @@ frame_dummy_entry:
 l00000720:
 	word64 r13_11 = DPB(r13, 0x000008D8, 0)
 	word64 r2_14 = DPB(r2, 0x00001E18, 0)
-	word64 qwLoc38_54 = r13
-	word64 qwLoc30_55 = r14
-	word64 qwLoc28_56 = fp - 160
 	word64 r15_12 = fp - 320
 	byte CC_15 = cond(Mem10[r13_11:byte] - Mem10[r2_14:byte])
 	branch Mem10[r13_11:byte] != Mem10[r2_14:byte] l0000074C
@@ -364,6 +361,7 @@ l00000720:
 // SymbolicIn:
 
 l00000740:
+	Mem18 = Mem10 (alias)
 	word64 v8_17 = r15_12 + 264
 	r13_11 = Mem18[v8_17:word64]
 	word64 r14_21 = Mem18[v8_17 + 8:word64]
@@ -386,7 +384,7 @@ frame_dummy_exit:
 // SymbolicIn:
 
 l0000074C:
-	word64 r1_38 = Mem37[DPB(r1, 0x00002048, 0):word64]
+	word64 r1_38 = Mem10[DPB(r1, 0x00002048, 0):word64]
 	r1 = r1_38
 	CC_15 = cond(r1_38)
 	branch r1_38 == 0x0000000000000000 l00000740
@@ -396,7 +394,7 @@ l0000074C:
 
 l00000760:
 	call r1_38 (retsize: 0;)
-		uses: r1:r1_38,r13:r13_44,r14:0x00000762,r15:r15_42,r2:r2_47,r3:r3_50,Stack +FFFFFFC8:qwLoc38_57,Stack +FFFFFFD0:qwLoc30_59,Stack +FFFFFFD8:qwLoc28_61
+		uses: r1:r1_38,r13:r13_44,r14:0x00000762,r15:r15_42,r2:r2_47,r3:r3_50,Stack +FFFFFFC8:r13,Stack +FFFFFFD0:r14,Stack +FFFFFFD8:fp - 160
 		defs: CC:CC_53,r1:r1_49,r15:r15_43,r2:r2_48,r3:r3_52
 // DataOut:
 // DataOut (flags):
@@ -418,9 +416,9 @@ fib_entry:
 
 l00000768:
 	word64 r1_68
-	word32 dwLocA4_106 = (word32) r2
 	word64 r11_21 = fp - 328
-	branch DPB(r2, dwLocA4_106, 0) >u 0x0000000000000001 l00000792
+	word32 dwLocA4_106 = (word32) r2
+	branch r2 >u 0x0000000000000001 l00000792
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -438,7 +436,7 @@ l00000792:
 // SymbolicIn:
 
 l0000078A:
-	r1_68 = DPB(r2, dwLocA4_106, 0)
+	r1_68 = r2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

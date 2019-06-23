@@ -63,7 +63,7 @@ namespace Reko.Arch.RiscV
             var instr = decoders[hInstr & 0x3].Decode(this, hInstr);
             instr.Address = addrInstr;
             instr.Length = (int) (rdr.Address - addrInstr);
-            instr.iclass |= hInstr == 0 ? InstrClass.Zero : 0;
+            instr.InstructionClass |= hInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 
@@ -73,7 +73,7 @@ namespace Reko.Arch.RiscV
             {
                 Address = this.addrInstr,
                 opcode = opcode,
-                iclass = iclass,
+                InstructionClass = iclass,
                 Length = (int)(this.rdr.Address - addrInstr)
             };
             if (ops.Count > 0)
@@ -321,7 +321,7 @@ namespace Reko.Arch.RiscV
             return new RiscVInstruction
             {
                 Address = addrInstr,
-                iclass = InstrClass.Invalid,
+                InstructionClass = InstrClass.Invalid,
                 opcode = Opcode.invalid,
             };
         }
@@ -370,7 +370,7 @@ namespace Reko.Arch.RiscV
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                dasm.state.instr.iclass = this.iclass;
+                dasm.state.instr.InstructionClass = this.iclass;
                 dasm.state.instr.opcode = opcode;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)
@@ -401,7 +401,7 @@ namespace Reko.Arch.RiscV
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                dasm.state.instr.iclass = this.iclass;
+                dasm.state.instr.InstructionClass = this.iclass;
                 dasm.state.instr.opcode = opcode;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)
@@ -426,7 +426,7 @@ namespace Reko.Arch.RiscV
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                dasm.state.instr.iclass = InstrClass.Linear;
+                dasm.state.instr.InstructionClass = InstrClass.Linear;
                 dasm.state.instr.opcode = opcode;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)

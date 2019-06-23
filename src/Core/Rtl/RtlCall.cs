@@ -46,8 +46,8 @@ namespace Reko.Core.Rtl
         /// <param name="rtlClass">Instruction class of the call.</param>
         /// <param name="archSwitch">If non-null, the new architecture to switch to.</param>
         public RtlCall(
-            Expression target, 
-            byte stackPushedReturnAddressSize, 
+            Expression target,
+            byte stackPushedReturnAddressSize,
             InstrClass rtlClass,
             IProcessorArchitecture arch = null) : base(target, rtlClass)
         {
@@ -66,7 +66,7 @@ namespace Reko.Core.Rtl
         /// pass the return address on the stack, but in a register. In those
         /// cases, this property should have the value 0.
         /// </summary>
-        public int ReturnAddressSize { get; private set; }
+        public int ReturnAddressSize { get; }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {

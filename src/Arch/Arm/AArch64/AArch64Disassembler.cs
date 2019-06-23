@@ -58,7 +58,7 @@ namespace Reko.Arch.Arm.AArch64
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = addr;
             instr.Length = 4;
-            instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
+            instr.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 
@@ -95,7 +95,7 @@ namespace Reko.Arch.Arm.AArch64
                 var instr = new AArch64Instruction
                 {
                     opcode = opcode,
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     ops = ops.ToArray(),
                     shiftCode = shiftCode,
                     shiftAmount = shiftAmount,

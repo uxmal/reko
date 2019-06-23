@@ -56,6 +56,7 @@ namespace Reko.UnitTests.Analysis
             var sActual = sw.ToString();
             if (sActual != sExp)
             {
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
             m.Ssa.Validate(s => Assert.Fail(s));
@@ -245,7 +246,7 @@ SsaProcedureBuilder_exit:
 l1:
 	h = SLICE(hl, byte, 8)
 	l = SLICE(hl, byte, 0)
-	hl_1 = hl
+	hl_1 = hl (alias)
 loop:
 	hl_3 = PHI((hl_1, l1), (hl_2, loop))
 	h_4 = PHI((h, l1), (h_2, loop))
@@ -253,7 +254,7 @@ loop:
 	hl_1 = hl_3 << 0x01
 	h_2 = SLICE(hl_1, byte, 8)
 	l_3 = (byte) hl_1
-	hl_2 = hl_1
+	hl_2 = hl_1 (alias)
 	goto loop
 xit:
 	return
@@ -496,7 +497,6 @@ SsaProcedureBuilder_exit:
         [Ignore("Needs more thought and possibly a deeper analysis")]
         public void Prjpr_Defs_UsedElsewhere()
         {
-
             var sExp =
             #region Expected
 @"SsaProcedureBuilder_entry:
@@ -528,6 +528,40 @@ SsaProcedureBuilder_exit:
                 m.Assign(ax_1, m.SegMem16(ds, si));
                 m.Assign(bx_2, m.SegMem16(ds, di));
                 m.Return();
+            });
+        }
+
+        [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        public void Prprj_ReturnedRegisterPair()
+        {
+            string sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	def ds
+l1:
+	es_ax_1 = Mem4[ds:0x1234:word32]
+	ax_2 = (word16) es_ax_1 (alias)
+	es_3 = SLICE(es_ax_1, word16, 16) (alias)
+	return
+SsaProcedureBuilder_exit:
+	use ax_2
+	use es_3";
+            #endregion
+            Given_X86_16_Arch();
+            RunTest(sExp, arch, m =>
+            {
+                var ds = m.Reg("ds", X86Registers.ds);
+                var es_ax_1 = m.SeqId("es_ax_1", PrimitiveType.Word32, X86Registers.ds, X86Registers.ax);
+                var ax_2 = m.Reg("ax_2", X86Registers.ax);
+                var es_3 = m.Reg("es_3", X86Registers.es);
+                m.AddDefToEntryBlock(ds);
+                m.Assign(es_ax_1, m.SegMem(PrimitiveType.Word32, ds, m.Word16(0x1234)));
+                m.Alias(ax_2, m.Cast(PrimitiveType.Word16, es_ax_1));
+                m.Alias(es_3, m.Slice(PrimitiveType.Word16, es_ax_1, 16));
+                m.Return();
+                m.AddUseToExitBlock(ax_2);
+                m.AddUseToExitBlock(es_3);
             });
         }
     }

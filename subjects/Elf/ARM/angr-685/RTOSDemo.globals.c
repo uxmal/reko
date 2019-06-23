@@ -34,66 +34,70 @@ Eq_n g_tFFF04F23;
 Eq_n g_tFFF04FFF;
 struct Eq_n g_tFFFFFFFF;
 word32 g_dw0001 = 0x09200002;
-word32 g_dw0004 = 0x00008009;
+struct Eq_n g_t0004 = 
+	{
+		
+		{
+			;
 word32 g_dw0005 = 0x01000080;
 Eq_n g_t0008 = 
-	{
-		&g_t8001,
-		0x00008005,
-		null,
-		0x00000000,
-		null,
-		0x00000000,
-		&g_t1715,
-		0x00000000,
-		&g_t1689,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-		null,
-		0x00,
-		0x00008109,
-		&g_t4605B570,
-		0x8C,
-		0x4045F895,
-		0x2C00B264,
-		0x6A6BDD16,
-		0xA3,
-		0xB1,
-		0x0624,
-	};
+			{
+				&g_t8001,
+				0x00008005,
+				null,
+				0x00000000,
+				null,
+				0x00000000,
+				&g_t1715,
+				0x00000000,
+				&g_t1689,
+				0x16E5,
+				0x00000000,
+				0x00000000,
+				0x00000000,
+				null,
+				0x00,
+				0x00008109,
+				&g_t4605B570,
+				0x8C,
+				0x4045F895,
+				0x2C00B264,
+				0x6A6BDD16,
+				0xA3,
+				0xB1,
+			};
 struct Eq_n g_t000C = 
-	{
-		0x00008005,
-		0xFFF0F007,
-	};
+			{
+				0x00008005,
+				0xFFF0F007,
+			};
 word32 g_dw000D = 0x00000080;
 Eq_n g_t00FF = 
-	{
-		&g_t16BD7063,
-		0x7E460246,
-		&g_tA68A0B9,
-		0xA3FA5BF0,
-		&g_t626C2168,
-		0x1960A342,
-		&g_t7063A560,
-		0x22FA4BF0,
-		&g_t5268E36C,
-		0xE3428B44,
-		0x63D20260,
-		0xE2441A68,
-		&g_t72E0260,
-		0x02,
-		0x7063A520,
-		&g_t303501BD,
-		0x63,
-		0x01B905BD,
-		0xCE200025,
-		0x016860E7,
-		0xF0,
-		0x75,
-		0x6635,
-	};
+			{
+				&g_t16BD7063,
+				0x7E460246,
+				&g_tA68A0B9,
+				0xA3FA5BF0,
+				&g_t626C2168,
+				0x1960A342,
+				&g_t7063A560,
+				0x22FA4BF0,
+				&g_t5268E36C,
+				0x2142,
+				0xE3428B44,
+				0x63D20260,
+				0xE2441A68,
+				&g_t72E0260,
+				0x02,
+				0x7063A520,
+				&g_t303501BD,
+				0x63,
+				0x01B905BD,
+				0xCE200025,
+				0x016860E7,
+				0xF0,
+				0x75,
+			};
 word32 * g_ptr02A0 = &g_dwE000ED04;
 word32 * g_ptr0424 = &g_dwE000ED04;
 word32 * g_ptr06A8 = &g_dwE000ED04;
@@ -177,59 +181,59 @@ ui32 g_dw167C = 0x0107003F;
 ui32 g_dw1680 = 0x03070009;
 ui32 g_dw1684 = 0x01070009;
 Eq_n g_t1689 = 
-	{
-		&g_t148009F3,
-		0xEF681A4B,
-		&g_t208114F3,
-		0x100FF2E9,
-		&g_t8E92D60,
-		0x11F38000,
-		&g_t11F38000,
-		0x08681940,
-		&g_t4F10168,
-		0xA20FF0E8,
-		0xB00FF0E8,
-		0x830FF8E8,
-		&g_t808814F3,
-		0x14,
-		0xAFBF0047,
-		&g_tAF8000F3,
-		0x80,
-		0x10200000,
-		0x11F3EFB5,
-		0xBFF04F84,
-		0x03,
-		0x83,
-		0xBF88,
-	};
+			{
+				&g_t148009F3,
+				0xEF681A4B,
+				&g_t208114F3,
+				0x100FF2E9,
+				&g_t8E92D60,
+				0x11F38000,
+				&g_t11F38000,
+				0x08681940,
+				&g_t4F10168,
+				0x1A01,
+				0xA20FF0E8,
+				0xB00FF0E8,
+				0x830FF8E8,
+				&g_t808814F3,
+				0x14,
+				0xAFBF0047,
+				&g_tAF8000F3,
+				0x80,
+				0x10200000,
+				0x11F3EFB5,
+				0xBFF04F84,
+				0x03,
+				0x83,
+			};
 struct Eq_n ** g_ptr16E0 = &g_ptr200000C8;
 word32 * g_ptr1710 = &g_dwE000ED04;
 Eq_n g_t1715 = 
-	{
-		&g_tC0F04F0,
-		0x08F3EFBF,
-		&g_t9F3EF80,
-		0x08E60780,
-		&g_t9CE000ED,
-		0x434604B5,
-		&g_t67F7FF34,
-		0x40B1AA68,
-		&g_tD351B3F2,
-		0x09428C44,
-		0x0742A2D8,
-		0xC36819D2,
-		&g_t8C45C0F8,
-		0xC0,
-		0x104620FB,
-		&g_tFF2400BD,
-		0xFB,
-		0x03BD1046,
-		0x22020CF1,
-		0x1A0207F0,
-		0x60,
-		0xE3,
-		0x0002,
-	};
+			{
+				&g_tC0F04F0,
+				0x08F3EFBF,
+				&g_t9F3EF80,
+				0x08E60780,
+				&g_t9CE000ED,
+				0x434604B5,
+				&g_t67F7FF34,
+				0x40B1AA68,
+				&g_tD351B3F2,
+				0xC0F8,
+				0x09428C44,
+				0x0742A2D8,
+				0xC36819D2,
+				&g_t8C45C0F8,
+				0xC0,
+				0x104620FB,
+				&g_tFF2400BD,
+				0xFB,
+				0x03BD1046,
+				0x22020CF1,
+				0x1A0207F0,
+				0x60,
+				0xE3,
+			};
 union Eq_n ** g_ptr1724 = &g_ptrE000ED08;
 struct Eq_n * g_ptr1728 = &g_dwE000ED9C;
 struct Eq_n * g_ptr177C = &g_t20000230;
@@ -237,31 +241,31 @@ struct Eq_n * g_ptr1790 = &g_t20000230;
 word32 * g_ptr1870 = &g_dwE000ED04;
 word32 * g_ptr1984 = &g_dwE000ED04;
 Eq_n g_t8001 = 
-	{
-		&g_tFEBF00E7,
-		0x08BF00E7,
-		&g_t8348094B,
-		0xDAD20A42,
-		&g_t2210043,
-		0x1A320402,
-		&g_t3BF000D1,
-		0x80200001,
-		&g_tFE200008,
-		0x092400B5,
-		0x01B0834D,
-		0x003401A9,
-		&g_tFFF04F23,
-		0x4F,
-		0x01FD8EF0,
-		&g_t4FB96F0,
-		0x02,
-		0x01013FF0,
-		0xB5F00198,
-		0x80E7EDFB,
-		0x08,
-		0x00,
-		0x0BB5,
-	};
+			{
+				&g_tFEBF00E7,
+				0x08BF00E7,
+				&g_t8348094B,
+				0xDAD20A42,
+				&g_t2210043,
+				0x1A320402,
+				&g_t3BF000D1,
+				0x80200001,
+				&g_tFE200008,
+				0x00E7,
+				0x092400B5,
+				0x01B0834D,
+				0x003401A9,
+				&g_tFFF04F23,
+				0x4F,
+				0x01FD8EF0,
+				&g_t4FB96F0,
+				0x02,
+				0x01013FF0,
+				0xB5F00198,
+				0x80E7EDFB,
+				0x08,
+				0x00,
+			};
 word32 * g_ptr802C = &g_dw20000160;
 word32 * g_ptr8030 = &g_dw20000880;
 union Eq_n * g_ptr8064 = &g_dw20000880;
@@ -288,59 +292,59 @@ byte * g_ptr85F0 = &g_b200007F4;
 byte * g_ptr862C = &g_b200007F4;
 byte * g_ptr866C = &g_b200007F4;
 Eq_n g_t8671 = 
-	{
-		&g_t828E83B5,
-		0xE1F5B3B0,
-		&g_t1B46047F,
-		0xC3F240D0,
-		&g_t2429312,
-		0x14BD70B0,
-		&g_tFFF04FFF,
-		0xAFF7FF68,
-		&g_t181D02FE,
-		0xF02801D0,
-		0x0C2200D0,
-		0xEF601A4B,
-		&g_t14D0AE7,
-		0x0A,
-		0xFF220046,
-		&g_t43FE9EF7,
-		0xD1,
-		0xA313C3F2,
-		0x70B00286,
-		0x014D03BD,
-		0xAE,
-		0xDE,
-		0xE1F4,
-	};
+			{
+				&g_t828E83B5,
+				0xE1F5B3B0,
+				&g_t1B46047F,
+				0xC3F240D0,
+				&g_t2429312,
+				0x14BD70B0,
+				&g_tFFF04FFF,
+				0xAFF7FF68,
+				&g_t181D02FE,
+				0x43D0,
+				0xF02801D0,
+				0x0C2200D0,
+				0xEF601A4B,
+				&g_t14D0AE7,
+				0x0A,
+				0xFF220046,
+				&g_t43FE9EF7,
+				0xD1,
+				0xA313C3F2,
+				0x70B00286,
+				0x014D03BD,
+				0xAE,
+				0xDE,
+			};
 union Eq_n * g_ptr86E0 = &g_t200007F8;
 word32 * g_ptr86E4 = &g_dw200000C0;
 Eq_n g_t86E9 = 
-	{
-		&g_t828E83B5,
-		0xC1F5B3B0,
-		&g_t146047F,
-		0x26D02B91,
-		&g_t83F240D9,
-		0x014B1DD1,
-		&g_tA373CBF4,
-		0xCBF5B3BD,
-		&g_t17D1FA7F,
-		0xFFA90168,
-		0x02FE1EF7,
-		0x43D0201D,
-		&g_t1D01A1D,
-		0x1A,
-		0x1A4B1222,
-		&g_t14B0F60,
-		0xF8,
-		0xE2280000,
-		0x00E00AD0,
-		0x02D0E72B,
-		0xB0,
-		0x10,
-		0x004B,
-	};
+			{
+				&g_t828E83B5,
+				0xC1F5B3B0,
+				&g_t146047F,
+				0x26D02B91,
+				&g_t83F240D9,
+				0x014B1DD1,
+				&g_tA373CBF4,
+				0xCBF5B3BD,
+				&g_t17D1FA7F,
+				0x004B,
+				0xFFA90168,
+				0x02FE1EF7,
+				0x43D0201D,
+				&g_t1D01A1D,
+				0x1A,
+				0x1A4B1222,
+				&g_t14B0F60,
+				0xF8,
+				0xE2280000,
+				0x00E00AD0,
+				0x02D0E72B,
+				0xB0,
+				0x10,
+			};
 Eq_n (* g_ptr8778)[] = &g_aA284;
 union Eq_n * g_ptr877C = &g_t200007F8;
 word32 * g_ptr8780 = &g_dw200000C0;
@@ -434,17 +438,17 @@ uint32 g_dwA120 = 0x001E8480;
 uint32 g_dwA124 = 0x007A1200;
 byte g_bA268 = 0x53;
 Eq_n g_aA284[] = 
-	{
-	};
+			{
+			};
 ui32 g_aA2A4[] = 
-	{
-	};
+			{
+			};
 word32 g_dwA2A8 = 0x00000600;
 byte g_bA2F4 = 0xB0;
 byte g_bA2FC = 0xB1;
 word32 * g_aA554[] = 
-	{
-	};
+			{
+			};
 Eq_n g_t146047F;
 Eq_n g_t14B0F60;
 Eq_n g_t14D0AE7;
@@ -465,40 +469,40 @@ Eq_n g_t17D1FA7F;
 Eq_n g_t181D02FE;
 Eq_n g_t1B46047F;
 word32 g_a20000000[] = 
-	{
-	};
+			{
+			};
 word32 g_dw200000BC = 0xAAAAAAAA;
 word32 g_dw200000C0 = 0x00000001;
 Eq_n g_t200000C4 = 
-	{
-		0x00000000,
-		null,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-	};
+			{
+				0x00000000,
+				null,
+				0x00000000,
+				0x00000000,
+				0x00000000,
+				0x00000000,
+				0x00000000,
+			};
 struct Eq_n * g_ptr200000C8 = null;
 word32 g_dw20000160 = 0x00000000;
 byte g_b2000022C = 0x00;
 Eq_n g_t20000230 = 
-	{
-		0x00000000,
-		0x00000000,
-	};
+			{
+				0x00000000,
+				0x00000000,
+			};
 byte g_b200007F4 = 0x00;
 Eq_n g_t200007F8 = 
-	{
-		null
-	};
+			{
+				0x00
+			};
 Eq_n g_t200007FC = 
-	{
-		null,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-	};
+			{
+				null,
+				0x00000000,
+				0x00000000,
+				0x00000000,
+			};
 word32 g_dw2000087C = 0x00000000;
 word32 g_dw20000880 = 0x00000000;
 Eq_n g_t208114F3;

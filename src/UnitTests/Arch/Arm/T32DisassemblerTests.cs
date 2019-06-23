@@ -804,7 +804,40 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("bne\t$00100000");
         }
 
+        [Test]
+        public void ThumbDis_vorr_imm()
+        {
+            Given_Instructions(0xFFC4, 0x4B10);
+            Expect_Code("vorr.i16\td20,#&C000C000C000C000");
+        }
 
+        [Test]
+        public void ThumbDis_smmul()
+        {
+            Given_Instructions(0xFB5A, 0xF104);
+            Expect_Code("smmul\tr1,r10,r4");
+        }
+
+        [Test]
+        public void ThumbDis_smmul_invalid()
+        {
+            Given_Instructions(0xFB5F, 0xF104);
+            Expect_Code("Invalid");
+        }
+
+        [Test]
+        public void ThumbDis_ldrb_regression()
+        {
+            Given_Instructions(0xF895, 0x4045);
+            Expect_Code("ldrb\tr4,[r5,#&45]");
+        }
+
+        [Test]
+        public void ThumbDis_ldr_regression2()
+        {
+            Given_Instructions(0x6A6B);
+            Expect_Code("ldr\tr3,[r5,#&24]");
+        }
 
         //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
         //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]

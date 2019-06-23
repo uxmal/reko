@@ -313,6 +313,11 @@ namespace Reko.Core
         void LoadUserOptions(Dictionary<string, object> options);
 
         Dictionary<string, object> SaveUserOptions();
+
+        /// <summary>
+        /// Provide an architecture-defined CallingConvention.
+        /// </summary>
+        CallingConvention GetCallingConvention(string ccName);
     }
 
     /// <summary>
@@ -389,6 +394,14 @@ namespace Reko.Core
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
+
+        public virtual CallingConvention GetCallingConvention(string name)
+        {
+            // By default, there is no calling convention defined for architectures. Some
+            // manufacturers however, define calling conventions.
+            return null;
+        }
+
         public abstract RegisterStorage GetRegister(string name);
 
         public abstract RegisterStorage GetRegister(StorageDomain domain, BitRange range);

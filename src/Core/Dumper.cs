@@ -36,8 +36,7 @@ namespace Reko.Core
 	/// </summary>
 	public class Dumper
 	{
-        private Program program;
-        private string instrByteFormat;
+        private readonly Program program;
         private PrimitiveType instrByteSize;
 
         public Dumper(Program program)
@@ -318,13 +317,13 @@ namespace Reko.Core
 		{
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
             var byteSize = (7 + arch.InstructionBitSize) / 8;
-            this.instrByteFormat = $"{{0:X{byteSize * 2}}} "; // each byte is two nybbles.
+            string instrByteFormat = $"{{0:X{byteSize * 2}}} "; // each byte is two nybbles.
             this.instrByteSize = PrimitiveType.CreateWord(arch.InstructionBitSize);
 
             while (rdr.Address < addrEnd)
 			{
                 var v = rdr.Read(this.instrByteSize);
-                writer.WriteFormat(this.instrByteFormat, v.ToUInt64());
+                writer.WriteFormat(instrByteFormat, v.ToUInt64());
 			}
 		}
 

@@ -395,11 +395,11 @@ fn00000001400012A0_exit:
 
 
 
-void fn00000001400012BC(word64 rax, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0)
+word32 fn00000001400012BC(word64 rax, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  al:[0..63] r8:[0..63] r9:[0..63] rax:[8..63] rbp:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] xmm0:[0..127]
-// LiveOut:
+// LiveOut: rax
 // Trashed: SCZO r8 r9 rax rcx rdx xmm0
 // Preserved: rbx rdi rsi rsp
 fn00000001400012BC_entry:
@@ -444,6 +444,7 @@ l00000001400012FE:
 // SymbolicIn:
 
 l0000000140001308:
+	word64 rax_246
 	word64 rcx_163 = DPB(rcx_164, ecx_37, 0)
 	branch ecx_37 != 0x00000000 l0000000140001356
 // DataOut:
@@ -476,10 +477,9 @@ l0000000140001337:
 // SymbolicIn:
 
 l000000014000135E:
-	byte sil_227 = (byte) rsi_110
 	fn00000001400017B4(cl)
 	fn0000000140001964()
-	word64 rsi_231 = DPB(rsi_110, sil_227, 0)
+	byte sil_227 = (byte) rsi_110
 	word64 rcx_118 = DPB(rcx_163, al, 0)
 	branch Mem84[rax_119:word64] == 0x0000000000000000 l0000000140001395
 // DataOut:
@@ -554,6 +554,8 @@ l00000001400013B7:
 	word64 rax_213 = fn0000000140001000(rax_195, rsi_110, rax_169, out rcx_214, out rdx_215, out r8_211, out r9_212, out xmm0_216)
 	fn0000000140001AC0(rax)
 	word64 rbx_222 = (uint64) (word32) rax_213
+	word32 ebx_243 = (word32) rbx_222
+	ebx_243 = (word32) rbx_222 (alias)
 	word32 ebx_247 = (word32) rbx_222
 	branch (byte) rax_213 != 0x00 l00000001400013EB
 // DataOut:
@@ -568,13 +570,14 @@ l00000001400013EB:
 
 l00000001400013F0:
 	call cexit (retsize: 8;)
-		uses: r8:r8_211,r9:r9_212,rax:rax_213,rbp:rbp,rbx:rbx_222,rcx:rcx_214,rdi:rax_169,rdx:rdx_215,rsi:rsi_231,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0_216
+		uses: r8:r8_211,r9:r9_212,rax:rax_213,rbp:rbp,rbx:rbx_222,rcx:rcx_214,rdi:rax_169,rdx:rdx_215,rsi:rsi_110,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0_216
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000001400013F5:
 	fn00000001400017D8(dl)
+	rax_246 = (uint64) ebx_243
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -586,12 +589,13 @@ l00000001400013E4:
 // SymbolicIn:
 
 l000000014000132D:
+	rax_246 = 0x00000000000000FF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000140001423:
-	return
+	return (word32) rax_246
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -622,8 +626,7 @@ l0000000140001434:
 // SymbolicIn:
 
 l0000000140001441_thunk_fn00000001400012BC:
-	fn00000001400012BC(rax_6, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0)
-	return (DWORD) rax_26
+	return (DWORD) (word64) fn00000001400012BC(rax_6, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -834,7 +837,7 @@ void fn0000000140001600(word32 ecx, word32 edx)
 
 // MayUse:  ecx:[0..31] edx:[0..31]
 // LiveOut:
-// Trashed: SCZO r10 r11d r8 r9 rax rcx rdx
+// Trashed: SCZO r10 r8 r9 rax rcx rdx
 // Preserved: rbx rsp
 fn0000000140001600_entry:
 // DataOut:
@@ -912,7 +915,6 @@ fn000000014000164C_entry:
 l000000014000164C:
 	word64 rbx_11 = (uint64) ecx
 	word32 ebx_42 = (word32) rbx_11
-	word64 rbx_85 = DPB(rbx_11, ebx_42, 0)
 	branch ecx >u 0x00000001 l000000014000170A
 // DataOut:
 // DataOut (flags):
@@ -981,7 +983,7 @@ l0000000140001698:
 l0000000140001671:
 	word64 rax_87
 	call initialize_onexit_table (retsize: 8;)
-		uses: r8:r8,r9:r9,rax:rax_33,rbp:fp - 8,rbx:rbx_85,rcx:0x00000001400035C0,rdx:rdx,rsp:fp - 0x0000000000000048,Stack +0000:qwLoc50,Stack +0010:qwLoc40,Stack +0028:qwLoc28,Stack +0030:qwLoc20,Stack +0038:qwLoc18,Stack +0048:rbp,Stack +0058:rbx,xmm0:xmm0,xmm1:xmm1
+		uses: r8:r8,r9:r9,rax:rax_33,rbp:fp - 8,rbx:rbx_11,rcx:0x00000001400035C0,rdx:rdx,rsp:fp - 0x0000000000000048,Stack +0000:qwLoc50,Stack +0010:qwLoc40,Stack +0028:qwLoc28,Stack +0030:qwLoc20,Stack +0038:qwLoc18,Stack +0048:rbp,Stack +0058:rbx,xmm0:xmm0,xmm1:xmm1
 		defs: r8:r8_90,r9:r9_93,rax:rax_87,rdx:rdx_89
 	branch (word32) rax_87 == 0x00000000 l0000000140001685
 // DataOut:
@@ -991,7 +993,7 @@ l0000000140001671:
 l0000000140001685:
 	word64 rax_101
 	call initialize_onexit_table (retsize: 8;)
-		uses: r8:r8_90,r9:r9_93,rax:rax_87,rbp:fp - 8,rbx:rbx_85,rcx:0x00000001400035D8,rdx:rdx_89,rsp:fp - 0x0000000000000048,Stack +0000:qwLoc50,Stack +0010:qwLoc40,Stack +0028:qwLoc28,Stack +0030:qwLoc20,Stack +0038:qwLoc18,Stack +0048:rbp,Stack +0058:rbx,xmm0:xmm0,xmm1:xmm1
+		uses: r8:r8_90,r9:r9_93,rax:rax_87,rbp:fp - 8,rbx:rbx_11,rcx:0x00000001400035D8,rdx:rdx_89,rsp:fp - 0x0000000000000048,Stack +0000:qwLoc50,Stack +0010:qwLoc40,Stack +0028:qwLoc28,Stack +0030:qwLoc20,Stack +0038:qwLoc18,Stack +0048:rbp,Stack +0058:rbx,xmm0:xmm0,xmm1:xmm1
 		defs: r8:r8_103,r9:r9_104,rax:rax_101,rdx:rdx_102
 	rax_151 = DPB(rax_101, (word32) rax_101 == 0x00000000, 0) (alias)
 // DataOut:
@@ -1090,10 +1092,10 @@ l000000014000178D:
 // SymbolicIn:
 
 l0000000140001775:
-	rcx = (uint64) Mem35[rdx + 0x000000000000000C:word32]
-	word32 ecx_49 = (word32) rcx
-	rcx = DPB(rcx, ecx_49, 0) (alias)
-	branch r8_23 <u rcx l0000000140001787
+	word64 rcx_43 = (uint64) Mem35[rdx + 0x000000000000000C:word32]
+	word32 ecx_49 = (word32) rcx_43
+	rcx = rcx_43 (alias)
+	branch r8_23 <u rcx_43 l0000000140001787
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1151,6 +1153,7 @@ fn0000000140001718_exit:
 // SymbolicIn:
 
 l0000000140001787:
+	rcx = rcx_43
 	rdx = rdx + 0x0000000000000028
 // DataOut:
 // DataOut (flags):
@@ -1829,7 +1832,6 @@ l0000000140001B33:
 l0000000140001B39:
 	word64 rcx_11 = (uint64) Mem0[rax_6 + 0x0000000000000020:word32]
 	word32 ecx_15 = (word32) rcx_11
-	rcx_11 = DPB(rcx_11, ecx_15, 0) (alias)
 	word64 rax_20 = DPB(rax_6, rcx_11 + 0xFFFFFFFFE66CFAE0, 0)
 	branch rcx_11 <=u 0xFFFFFFFFE66CFADE l0000000140001B56
 // DataOut:
@@ -1844,7 +1846,7 @@ l0000000140001B47:
 
 l0000000140001B56:
 	call api-ms-win-crt-runtime-l1-1-0.dll!terminate (retsize: 8;)
-		uses: rax:rax_20,rbx:rbx,rcx:rcx_22,rdi:rdi,rsi:rsi,rsp:fp - 0x0000000000000028
+		uses: rax:rax_20,rbx:rbx,rcx:rcx_11,rdi:rdi,rsi:rsi,rsp:fp - 0x0000000000000028
 	int3()
 // DataOut:
 // DataOut (flags):
@@ -2017,7 +2019,7 @@ void fn0000000140001BFC(word32 edx, word32 ebx)
 
 // MayUse:  edx:[0..31] rbx:[0..31]
 // LiveOut:
-// Trashed: SCZO r10 r11d r8 r9 rax rcx rdx
+// Trashed: SCZO r10 r8 r9 rax rcx rdx
 // Preserved: rbp rbx rdi rsp
 fn0000000140001BFC_entry:
 	word32 ebx_137 = (word32) rbx
@@ -2029,23 +2031,12 @@ l0000000140001BFC:
 	Mem17[0x000000014000301C:word32] = 0x00000002
 	__cpuid(0x00000000, 0x00000000, &0x00000000, &ebx_137, &0x00000000, &edx)
 	Mem23[0x0000000140003018:word32] = 0x00000001
-	rdx_163 = (uint64) ((word32) (uint64) ebx_137 ^ 0x756E6547)
-	word32 edx_52 = (word32) rdx_163
+	word64 rdx_48 = (uint64) ((word32) (uint64) ebx_137 ^ 0x756E6547)
+	word32 edx_52 = (word32) rdx_48
 	word32 r8d_108 = (word32) (uint64) Mem23[0x0000000140003614:word32]
 	__cpuid(0x00000001, 0x00000000, &0x00000001, &ebx_137, &0x00000000, &edx_52)
 	byte bLoc20_235 = SLICE(dwLoc20 & 0x00000000, byte, 0)
 	word32 r11d_96 = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ebx_137 ^ 0x68747541) | (word32) ((uint64) ((word32) ((uint64) edx) ^ 0x69746E65))) | 0x444D4163)
-	word64 rdx_163 = DPB(rdx_163, edx_52, 0)
-	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
-	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
-	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
-	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
-	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
-	word64 rdx_162 = DPB(rdx_163, edx_52, 0)
-	rdx_162 = DPB(rdx_163, edx_52, 0) (alias)
-	rdx_162 = DPB(rdx_163, edx_52, 0) (alias)
-	word64 rdx_161 = DPB(rdx_162, edx_52, 0)
-	rdx_161 = DPB(rdx_162, edx_52, 0) (alias)
 	branch (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) edx ^ 0x49656E69) | 0x6C65746E) | edx_52) != 0x00000000 l0000000140001CE9
 // DataOut:
 // DataOut (flags):
@@ -2153,7 +2144,7 @@ l0000000140001D5D:
 
 l0000000140001D64:
 	word64 edx_eax_160 = __xgetbv(0x00000000)
-	branch ((byte) (DPB(rdx_161, edx_eax_160, 0) << 0x0000000000000020 | DPB(0x0000000000000007, edx_eax_160, 0)) & 0x06) != 0x06 l0000000140001DB0
+	branch ((byte) (DPB(rdx_48, edx_eax_160, 0) << 0x0000000000000020 | DPB(0x0000000000000007, edx_eax_160, 0)) & 0x06) != 0x06 l0000000140001DB0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2242,7 +2233,7 @@ void fn0000000140001E7C(word64 rdx, word64 rbx, word64 rsi, word64 rdi, word64 r
 
 // MayUse:  r9:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
 // LiveOut:
-// Trashed: SCZO r10 r11d r8 r9 rax rcx rdx rsp
+// Trashed: SCZO r10 r8 r9 rax rcx rdx rsp
 // Preserved:
 fn0000000140001E7C_entry:
 // DataOut:
@@ -2268,7 +2259,7 @@ void fn0000000140001E9C(word64 rcx, word64 rdx, word64 rbx, word64 rsi, word64 r
 
 // MayUse:  r8:[0..63] rbx:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] Stack +0000:[0..63]
 // LiveOut:
-// Trashed: SCZO r10 r11d r8 r9 rax rcx rdx
+// Trashed: SCZO r10 r8 r9 rax rcx rdx
 // Preserved: rbx rsp
 fn0000000140001E9C_entry:
 // DataOut:

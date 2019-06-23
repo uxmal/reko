@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -38,6 +38,11 @@ namespace Reko.Analysis
             this.procs = program.Procedures.Values;
         }
 
+        public ICollection<Procedure> Nodes
+        {
+            get { return procs; }
+        }
+
         public ICollection<Procedure> Predecessors(Procedure node)
         {
             throw new NotSupportedException();
@@ -47,11 +52,6 @@ namespace Reko.Analysis
         {
             var succs = new List<Procedure>(cg.Callees(node));
             return succs;
-        }
-
-        public ICollection<Procedure> Nodes
-        {
-            get { return procs; }
         }
 
         public void AddEdge(Procedure nodeFrom, Procedure nodeTo)

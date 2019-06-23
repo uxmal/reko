@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -43,8 +43,8 @@ namespace Reko.Gui.Forms
 
         Dictionary<string, object> ArchitectureOptions { get; set; }
 
-        Architecture GetSelectedArchitecture();
-        OperatingEnvironment GetSelectedEnvironment();
+        ArchitectureDefinition GetSelectedArchitecture();
+        PlatformDefinition GetSelectedEnvironment();
         void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options);
     }
 }

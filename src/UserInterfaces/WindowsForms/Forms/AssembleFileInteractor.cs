@@ -49,7 +49,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             var asms = dlg.Services.RequireService<IConfigurationService>()
                 .GetAssemblers()
-                .OfType<AssemblerElement>()
+                .OfType<AssemblerDefinition>()
                 .Select(elem => new ListOption { Text = elem.Description, Value = elem }).ToList();
             dlg.AssemblerList.DataSource = asms;
         }

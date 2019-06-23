@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -20,24 +20,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Configuration
 {
-    public interface SymbolSource
+    public class SignatureFileDefinition
     {
-        string Description { get; }
-        string Name { get; }
-        string TypeName { get; }
-    }
+        public string Filename { get; set; }
 
-    public class SymbolSourceDefinition : SymbolSource
-    {
-        public string Description { get;  set; }
-        public string Extension { get;  set; }
-        public string Name { get;  set; }
-        public string TypeName { get;  set; }
+        public string Label { get; set; }
+
+        public string Type { get; set; }
     }
 }

@@ -30,14 +30,11 @@ namespace Reko.Arch.Pdp11
     public class Pdp11Instruction : MachineInstruction
     {
         public Opcode Opcode;
-        public InstrClass IClass;
         public PrimitiveType DataWidth;
         public MachineOperand op1;
         public MachineOperand op2;
 
         public override int OpcodeAsInteger => (int)Opcode;
-
-        public override InstrClass InstructionClass => IClass;
 
         public override MachineOperand GetOperand(int i)
         {

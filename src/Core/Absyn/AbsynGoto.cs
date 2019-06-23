@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,17 +24,12 @@ namespace Reko.Core.Absyn
 {
 	public class AbsynGoto : AbsynStatement
 	{
-		private string label;
-
 		public AbsynGoto(string label)
 		{
-			this.label = label;
+			this.Label = label;
 		}
 
-		public string Label
-		{
-			get { return label; }
-		}
+		public string Label { get; }
 
         public override void Accept(IAbsynVisitor visitor)
         {

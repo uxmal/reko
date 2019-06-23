@@ -14832,13 +14832,13 @@ l000139BB:
 // SymbolicIn:
 
 l000139CC:
-	r3_2475 = DPB(r3_2434, 0x2D, 0)
+	r3_2475 = DPB(r3_1966, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000139C3:
-	r3_2475 = DPB(r3_2434, 0x70, 0)
+	r3_2475 = DPB(r3_1966, 0x70, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14852,13 +14852,13 @@ l000139CF:
 // SymbolicIn:
 
 l000139E0:
-	r4_2494 = DPB(r4_2456, 0x2D, 0)
+	r4_2494 = DPB(r4_1968, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000139D7:
-	r4_2494 = DPB(r4_2456, 0x61, 0)
+	r4_2494 = DPB(r4_1968, 0x61, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14872,13 +14872,13 @@ l000139E3:
 // SymbolicIn:
 
 l000139F4:
-	r3_2513 = DPB(r3_2475, 0x2D, 0)
+	r3_2513 = DPB(r3_1966, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000139EB:
-	r3_2513 = DPB(r3_2475, 0x72, 0)
+	r3_2513 = DPB(r3_1966, 0x72, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14892,13 +14892,13 @@ l000139F7:
 // SymbolicIn:
 
 l00013A08:
-	r4_2532 = DPB(r4_2494, 0x2D, 0)
+	r4_2532 = DPB(r4_1968, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000139FF:
-	r4_2532 = DPB(r4_2494, 0x77, 0)
+	r4_2532 = DPB(r4_1968, 0x77, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14912,13 +14912,13 @@ l00013A0B:
 // SymbolicIn:
 
 l00013A1C:
-	r3_2551 = DPB(r3_2513, 0x2D, 0)
+	r3_2551 = DPB(r3_1966, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013A13:
-	r3_2551 = DPB(r3_2513, 0x65, 0)
+	r3_2551 = DPB(r3_1966, 0x65, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14932,13 +14932,13 @@ l00013A1F:
 // SymbolicIn:
 
 l00013A2C:
-	r4_2570 = DPB(r4_2532, 0x2D, 0)
+	r4_2570 = DPB(r4_1968, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013A26:
-	r4_2570 = DPB(r4_2532, 0x64, 0)
+	r4_2570 = DPB(r4_1968, 0x64, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15207,13 +15207,13 @@ l00013B57:
 // SymbolicIn:
 
 l00013B68:
-	r3_2897 = DPB(r3_2856, 0x2D, 0)
+	r3_2897 = DPB(r3_1966, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013B5F:
-	r3_2897 = DPB(r3_2856, 0x72, 0)
+	r3_2897 = DPB(r3_1966, 0x72, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15227,13 +15227,13 @@ l00013B6B:
 // SymbolicIn:
 
 l00013B7C:
-	r4_2916 = DPB(r4_2878, 0x2D, 0)
+	r4_2916 = DPB(r4_1968, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013B73:
-	r4_2916 = DPB(r4_2878, 0x77, 0)
+	r4_2916 = DPB(r4_1968, 0x77, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15247,13 +15247,13 @@ l00013B7F:
 // SymbolicIn:
 
 l00013B90:
-	r3_2935 = DPB(r3_2897, 0x2D, 0)
+	r3_2935 = DPB(r3_1966, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013B87:
-	r3_2935 = DPB(r3_2897, 0x77, 0)
+	r3_2935 = DPB(r3_1966, 0x77, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15267,19 +15267,18 @@ l00013B93:
 // SymbolicIn:
 
 l00013BA4:
-	r4_2954 = DPB(r4_2916, 0x2D, 0)
+	r4_2954 = DPB(r4_1968, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013B9B:
-	r4_2954 = DPB(r4_2916, 0x77, 0)
+	r4_2954 = DPB(r4_1968, 0x77, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BA7:
-	word32 r2_2980
 	Mem2966[fp_1967 + -34:byte] = (byte) r4_2954
 	branch (r7_2849 & 0x00000040) == 0x00000000 l00013BC8
 // DataOut:
@@ -15287,6 +15286,7 @@ l00013BA7:
 // SymbolicIn:
 
 l00013BC8:
+	word32 r2_2980
 	branch (r7_2849 & 0x00000800) == 0x00000000 l00013BD4
 // DataOut:
 // DataOut (flags):
@@ -15311,31 +15311,31 @@ l00013BD7:
 // SymbolicIn:
 
 l00013BAF:
+	word32 r2_2997
 	branch (r7_2849 & 0x00000800) == 0x00000000 l00013BBC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BBC:
-	r2_2980 = DPB(r2_2777, 0x78, 0)
+	r2_2997 = DPB(r2_2777, 0x78, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BB3:
-	r2_2980 = DPB(r2_2777, 0x73, 0)
+	r2_2997 = DPB(r2_2777, 0x73, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BC0:
-	Mem3009[fp_1967 + -39:byte] = (byte) r2_2980
+	Mem3009[fp_1967 + -39:byte] = (byte) r2_2997
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BDB:
-	word32 r2_3029
 	word32 r3_3023 = (uint32) Mem3022[sp_1960 + 14:word16]
 	branch (r3_3023 & 0x00000008) == 0x00000000 l00013BFC
 // DataOut:
@@ -15343,19 +15343,20 @@ l00013BDB:
 // SymbolicIn:
 
 l00013BFC:
+	word32 r2_3029
 	branch (r3_3023 & 0x00000400) == 0x00000000 l00013C08
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013C08:
-	r2_3029 = DPB(r2_2980, 0x2D, 0)
+	r2_3029 = DPB(r2_2777, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013C00:
-	r2_3029 = DPB(r2_2980, 0x6C, 0)
+	r2_3029 = DPB(r2_2777, 0x6C, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15367,25 +15368,26 @@ l00013C0B:
 // SymbolicIn:
 
 l00013BE3:
+	word32 r2_3047
 	branch (r3_3023 & 0x00000400) == 0x00000000 l00013BF0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BF0:
-	r2_3029 = DPB(r2_2980, 0x78, 0)
+	r2_3047 = DPB(r2_2777, 0x78, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BE7:
-	r2_3029 = DPB(r2_2980, 0x73, 0)
+	r2_3047 = DPB(r2_2777, 0x73, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BF4:
-	Mem3059[fp_1967 + -36:byte] = (byte) r2_3029
+	Mem3059[fp_1967 + -36:byte] = (byte) r2_3047
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15405,13 +15407,13 @@ l00013C2C:
 // SymbolicIn:
 
 l00013C38:
-	r2_3073 = DPB(r2_3029, 0x2D, 0)
+	r2_3073 = DPB(r2_2777, 0x2D, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013C30:
-	r2_3073 = DPB(r2_3029, 0x54, 0)
+	r2_3073 = DPB(r2_2777, 0x54, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15429,13 +15431,13 @@ l00013C16:
 // SymbolicIn:
 
 l00013C20:
-	r2_3073 = DPB(r2_3029, 0x78, 0)
+	r2_3073 = DPB(r2_2777, 0x78, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013C1A:
-	r2_3073 = DPB(r2_3029, 0x74, 0)
+	r2_3073 = DPB(r2_2777, 0x74, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

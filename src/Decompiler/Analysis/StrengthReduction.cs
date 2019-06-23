@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,8 +107,7 @@ namespace Reko.Analysis
         {
             if (ctx.InitialStatement == null)
                 return false;
-            Assignment ass = ctx.InitialStatement.Instruction as Assignment;
-            if (ass == null)
+            if (!(ctx.InitialStatement.Instruction is Assignment ass))
                 return false;
             if (ass.Src is Constant c)
             {
@@ -129,37 +128,21 @@ namespace Reko.Analysis
 
         public class IncrementedUse
         {
-            private Statement stm;
-            private BinaryExpression exp;
-            private Constant inc;
-
             public IncrementedUse(Statement stm, BinaryExpression exp, Constant inc)
             {
-                this.stm = stm;
-                this.exp = exp;
-                this.inc = inc;
+                this.Statement = stm;
+                this.Expression = exp;
+                this.Increment = inc;
             }
 
-            public Statement Statement
-            {
-                get { return stm; }
-            }
-
-            public BinaryExpression Expression
-            {
-                get { return exp; }
-            }
-
-            public Constant Increment
-            {
-                get { return inc; }
-            }
-
+            public Statement Statement { get; }
+            public BinaryExpression Expression { get; }
+            public Constant Increment { get; }
         }
 
         public class IncrementedUseFinder : InstructionVisitorBase
         {
-            private List<IncrementedUse> uses;
+            private readonly List<IncrementedUse> uses;
             private Identifier id;
             private Statement stmCur;
 

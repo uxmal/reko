@@ -25,6 +25,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Mips\bin\$(Configuration)\Reko.Arch.Mips.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(Configuration)\Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\MSP430\bin\$(Configuration)\Reko.Arch.Msp430.*" />
+    <Architectures Include="$(SolutionDir)Arch\PaRisc\bin\$(Configuration)\net47\Reko.Arch.PaRisc.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\bin\$(Configuration)\Reko.Arch.Pdp11.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\bin\$(Configuration)\Reko.Arch.PowerPC.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC.Design\bin\$(Configuration)\Reko.Arch.PowerPC.Design.*" />
@@ -39,6 +40,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(Configuration)\Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(Configuration)\Reko.Arch.Z80.*" />
     <Architectures Include="$(SolutionDir)Arch\zSeries\bin\$(Configuration)\Reko.Arch.zSeries.*" />
+    <Architectures Include="$(SolutionDir)Arch\Rl78\bin\$(Configuration)\Reko.Arch.Rl78.*" />
 
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
@@ -83,6 +85,7 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\bin\$(Configuration)\Reko.ImageLoaders.BinHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\bin\$(Configuration)\Reko.ImageLoaders.Dol.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\bin\$(Configuration)\Reko.ImageLoaders.Elf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\HpSom\bin\$(Configuration)\net47\Reko.ImageLoaders.HpSom.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\bin\$(Configuration)\Reko.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\bin\$(Configuration)\Reko.ImageLoaders.IntelHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\bin\$(Configuration)\Reko.ImageLoaders.LLVM.*" />
@@ -98,6 +101,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\C64\bin\$(Configuration)\Reko.Environments.C64.*" />
     <Environments Include="$(SolutionDir)Environments\Cpm\bin\$(Configuration)\Reko.Environments.Cpm.*" />
     <Environments Include="$(SolutionDir)Environments\Dreamcast\bin\$(Configuration)\Reko.Environments.Dreamcast.*" />
+    <Environments Include="$(SolutionDir)Environments\Hpux\bin\$(Configuration)\net47\Reko.Environments.Hpux.*" />
     <Environments Include="$(SolutionDir)Environments\MacOS\bin\$(Configuration)\Reko.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos\bin\$(Configuration)\Reko.Environments.Msdos.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos.Design\bin\$(Configuration)\Reko.Environments.Msdos.Design.*" />

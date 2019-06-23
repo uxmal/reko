@@ -94,8 +94,6 @@ namespace Reko.Structure
             stmts.RemoveAll(s => s == null);
         }
 
- 
-
         private AbsynFor TryRewriteWhileLoop(AbsynWhile whi, List<AbsynStatement> stmts, int i)
         {
             RewriteForLoops(whi.Body);

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -30,6 +30,6 @@ namespace Reko.Core.Configuration
 {
     public class UiPreferencesConfiguration
     {
-        public List<UiStyle> Styles { get; internal set; }
+        public List<UiStyleDefinition> Styles { get; internal set; }
     }
 }

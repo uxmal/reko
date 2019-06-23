@@ -51,12 +51,12 @@ namespace Reko.UnitTests.Arch.Intel
             this.services = new ServiceContainer();
             var tlSvc = new TypeLibraryLoaderServiceImpl(services);
             var configSvc = new Mock<IConfigurationService>();
-            var win32env = new OperatingEnvironmentElement
+            var win32env = new PlatformDefinition
             {
                 TypeLibraries = 
                 {
-                    new TypeLibraryElement {  Name= "msvcrt.xml" },
-                    new TypeLibraryElement {  Name= "windows32.xml" },
+                    new TypeLibraryDefinition {  Name= "msvcrt.xml" },
+                    new TypeLibraryDefinition {  Name= "windows32.xml" },
                 }
             };
             configSvc.Setup(c => c.GetEnvironment("win32")).Returns(win32env);

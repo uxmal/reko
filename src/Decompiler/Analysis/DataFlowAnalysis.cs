@@ -204,6 +204,8 @@ namespace Reko.Analysis
             foreach (var ssa in ssts.Select(sst => sst.SsaState))
             {
                 RemovePreservedRegistersFromIndirectCalls(ssa);
+                //var prj = new ProjectionPropagator(ssa);
+                //prj.Transform();
             }
 
             var uid = new UsedRegisterFinder(program.Architecture, flow, procs, this.eventListener);
@@ -326,7 +328,6 @@ namespace Reko.Analysis
                 var ssa = sst.SsaState;
                 try
                 {
-
                     // Procedures should be untangled from each other. Now process
                     // each one separately.
                     DeadCode.Eliminate(ssa);
@@ -393,6 +394,8 @@ namespace Reko.Analysis
                 // which case the the SSA treats the call as a "hell node".
                 var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
                 var ssa = sst.Transform();
+                if (proc.Name.StartsWith("INIT"))//$DEBUG
+                    proc.ToString();
 
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);

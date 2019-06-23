@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -65,14 +65,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public Dictionary<string, object> ArchitectureOptions { get; set; }
 
-        public Architecture GetSelectedArchitecture()
+        public ArchitectureDefinition GetSelectedArchitecture()
         {
-            return (Architecture)((ListOption)Architectures.SelectedValue).Value;
+            return (ArchitectureDefinition)((ListOption)Architectures.SelectedValue).Value;
         }
 
-        public OperatingEnvironment GetSelectedEnvironment()
+        public PlatformDefinition GetSelectedEnvironment()
         {
-            return (OperatingEnvironment)((ListOption)Platforms.SelectedValue).Value;
+            return (PlatformDefinition)((ListOption)Platforms.SelectedValue).Value;
         }
 
         public void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options)

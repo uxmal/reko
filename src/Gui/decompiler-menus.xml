@@ -17,8 +17,9 @@
   <menu id="TextEncodingMenu" cmdSet="Reko" container="GrpLowLevel">_Text Encoding</menu>
   
   <menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Reko"/>
-  <menu type="ContextMenu" id="CtxDisassembler" cmdSet="Reko"/> 
+  <menu type="ContextMenu" id="CtxDisassembler" cmdSet="Reko"/>
   <menu type="ContextMenu" id="CtxBrowser" cmdSet="Reko"/>
+  <menu type="ContextMenu" id="CtxProcedureList" cmdSet="Reko"/>
   <menu type="ContextMenu" id="CtxProcedure" cmdSet="Reko"/>
   <menu type="ContextMenu" id="CtxAddressSearch" cmdSet="Reko"/>
   <menu type="ContextMenu" id="CtxCodeView" cmdSet="Reko"/>
@@ -38,8 +39,10 @@
 
   <group id="GrpEdit" cmdSet="Reko" container="EditMenu" />
 
+  <group id="GrpView" cmdSet="Reko" container="ViewMenu" />
   <group id="GrpLowLevel" cmdSet="Reko" container="ViewMenu" />
 	<group id="GrpViewScanned" cmdSet="Reko" container="ViewMenu"/>
+
   <group id="GrpTextEncoding" cmdSet="Reko" container="TextEncodingMenu" />
 
 	<group id="GrpActions" cmdSet="Reko" container="ActionMenu"/>
@@ -59,7 +62,7 @@
   <group id="GrpCodeView" cmdSet="Reko" container="CtxCodeView" />
   <group id="GrpCodeViewMode" cmdSet="Reko" container="CtxCodeView" />
   <group id="GrpBrowser" cmdSet="Reko" container="CtxBrowser"/>
-  <group id="GrpBrowserProc" cmdSet="Reko" container="CtxBrowser"/>
+  <group id="GrpBrowserProc" cmdSet="Reko" container="GrpBrowserProc"/>  <!-- commands used for procedures in lists -->
 
   <group id="GrpToolbarFileOps" cmdSet="Reko" container="MainToolbar" />
   <group id="GrpToolbarActions" cmdSet="Reko" container="MainToolbar" />
@@ -92,6 +95,9 @@
   <cmd id="EditSelectAll" cmdSet="Reko" container="GrpEdit">Select _all</cmd>
 
   <cmd id="EditProperties" cmdSet="Reko" container="EditProperties">P_roperties</cmd>
+
+  <cmd id="ViewProjectBrowser" cmdSet="Reko" container="GrpView">Project _browser</cmd>
+  <cmd id="ViewProcedureList" cmdSet="Reko" container="GrpView">_Procedure list</cmd>
 
   <cmd id="ViewMemory" cmdSet="Reko" container="GrpLowLevel">_Memory</cmd>
   <cmd id="ViewDisassembly" cmdSet="Reko" container="GrpLowLevel">_Disassembly</cmd>
@@ -157,6 +163,9 @@
   <placement item="FileAddBinary" container="GrpFile"/>
   <placement item="FileAddMetadata" container="GrpFile"/>
   <placement item="FileAssemble" container="GrpFile"/>
+
+  <placement item="GrpBrowserProc" container="CtxBrowser" />
+  <placement item="GrpBrowserProc" container="CtxProcedureList" />
 
   <placement item="FileOpen" container="GrpToolbarFileOps"/>
   <placement item="FileSave" container="GrpToolbarFileOps"/>

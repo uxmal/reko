@@ -21,7 +21,7 @@ F008 FA8C     	bl	$00008578
 F895 4045     	ldrb	r4,[r5,#&45]
 B264           	sxtb	r4,r4
 2C00           	cmps	r4,#0
-DD16           	ble	$00000082
+DD16           	ble	$00000098
 
 l0000006A:
 6A6B           	ldr	r3,[r5,#&24]
@@ -43,8 +43,6 @@ B15B           	cbz	r3,$00000098
 
 l00000080:
 4630           	mov	r0,r6
-
-l00000082:
 F000 FFCB     	bl	$0000101C
 2800           	cmps	r0,#0
 D0F4           	beq	$00000074
@@ -65,7 +63,7 @@ F008 FA69     	bl	$00008578
 F895 4044     	ldrb	r4,[r5,#&44]
 B264           	sxtb	r4,r4
 2C00           	cmps	r4,#0
-DD16           	ble	$000000C8
+DD16           	ble	$000000DE
 
 l000000B0:
 692B           	ldr	r3,[r5,#&10]
@@ -87,8 +85,6 @@ B15B           	cbz	r3,$000000DE
 
 l000000C6:
 4630           	mov	r0,r6
-
-l000000C8:
 F000 FFA8     	bl	$0000101C
 2800           	cmps	r0,#0
 D0F4           	beq	$000000BA
@@ -1350,7 +1346,7 @@ l00000932:
 6961           	ldr	r1,[r4,#&14]
 F880 6065     	strb	r6,[r0,#&65]
 68E3           	ldr	r3,[r4,#&C]
-8922           	ldrh	r2,[r4,#&10]
+8922           	ldrh	r2,[r4,#&8]
 F8D4 E010     	ldr	lr,[r4,#&10]
 6501           	str	r1,[r0,#&50]
 6861           	ldr	r1,[r4,#&4]
@@ -1534,7 +1530,7 @@ B2E4           	uxtb	r4,r4
 D806           	bhi	$00000A8C
 
 l00000A7E:
-E8DF F002     	tbb	[pc,-r2]                                 ; 00000A80
+E8DF F002     	tbb	[pc,r2]                                  ; 00000A80
 
 l00000A82:
 0C3A           	lsrs	r2,r7,#&10
@@ -1628,7 +1624,7 @@ B2E4           	uxtb	r4,r4
 D806           	bhi	$00000B4A
 
 l00000B3C:
-E8DF F002     	tbb	[pc,-r2]                                 ; 00000B40
+E8DF F002     	tbb	[pc,r2]                                  ; 00000B40
 
 l00000B40:
 0C2A           	lsrs	r2,r5,#&10
@@ -4816,7 +4812,7 @@ E7F2           	b	$00008652
 ;; prvFlashCoRoutine: 00008670
 prvFlashCoRoutine proc
 B570           	push	{r4-r6,lr}
-8E83           	ldrh	r3,[r0,#&68]
+8E83           	ldrh	r3,[r0,#&34]
 B082           	sub	sp,#8
 F5B3 7FE1     	cmp	r3,#&1C2
 4604           	mov	r4,r0
@@ -4876,7 +4872,7 @@ D1F0           	bne	$000086AA
 
 l000086C8:
 F240 13C3     	mov	r3,#&1C3
-86A3           	strh	r3,[r4,#&68]
+86A3           	strh	r3,[r4,#&34]
 B002           	add	sp,#8
 BD70           	pop	{r4-r6,pc}
 
@@ -4887,14 +4883,14 @@ E7DE           	b	$00008696
 
 l000086D8:
 F44F 73E1     	mov	r3,#&1C2
-86A3           	strh	r3,[r4,#&68]
+86A3           	strh	r3,[r4,#&34]
 E7D3           	b	$00008688
 000086E0 F8 07 00 20 C0 00 00 20                         ... ...        
 
 ;; prvFixedDelayCoRoutine: 000086E8
 prvFixedDelayCoRoutine proc
 B510           	push	{r4,lr}
-8E83           	ldrh	r3,[r0,#&68]
+8E83           	ldrh	r3,[r0,#&34]
 B082           	sub	sp,#8
 F5B3 7FC1     	cmp	r3,#&182
 4604           	mov	r4,r0
@@ -4917,7 +4913,7 @@ BB40           	cbnz	r0,$0000875E
 
 l0000870C:
 F44F 73CB     	mov	r3,#&196
-86A3           	strh	r3,[r4,#&68]
+86A3           	strh	r3,[r4,#&34]
 
 l00008712:
 B002           	add	sp,#8
@@ -4980,12 +4976,12 @@ E7D2           	b	$0000870C
 
 l00008766:
 F240 1383     	mov	r3,#&183
-86A3           	strh	r3,[r4,#&68]
+86A3           	strh	r3,[r4,#&34]
 E7D1           	b	$00008712
 
 l0000876E:
 F44F 73C1     	mov	r3,#&182
-86A3           	strh	r3,[r4,#&68]
+86A3           	strh	r3,[r4,#&34]
 E7CD           	b	$00008712
 00008776                   00 BF 84 A2 00 00 F8 07 00 20       ......... 
 00008780 C0 00 00 20                                     ...            
@@ -5973,7 +5969,7 @@ BF28           	it	hs
 l00008E66:
 2300           	mov	r3,#0
 4626           	mov	r6,r4
-86A3           	strh	r3,[r4,#&68]
+86A3           	strh	r3,[r4,#&34]
 62E5           	str	r5,[r4,#&2C]
 F8C4 A030     	str	r10,[r4,#&30]
 F846 9B04     	str	r9,[r6],#&4
@@ -7575,10 +7571,10 @@ F507 78F6     	add	r8,r7,#&1EC
 E006           	b	$00009938
 
 l0000992A:
-F893 41EC     	ldrb	r4,[r3,#&EC]
-F893 01ED     	ldrb	r0,[r3,#&ED]
+F893 41EC     	ldrb	r4,[r3,#&1EC]
+F893 01ED     	ldrb	r0,[r3,#&1ED]
 4423           	adds	r3,r4
-F893 61EC     	ldrb	r6,[r3,#&EC]
+F893 61EC     	ldrb	r6,[r3,#&1EC]
 
 l00009938:
 F7FF FEB0     	bl	$0000969C
@@ -7612,10 +7608,10 @@ F507 78F6     	add	r8,r7,#&1EC
 E006           	b	$00009996
 
 l00009988:
-F893 41EC     	ldrb	r4,[r3,#&EC]
-F893 01ED     	ldrb	r0,[r3,#&ED]
+F893 41EC     	ldrb	r4,[r3,#&1EC]
+F893 01ED     	ldrb	r0,[r3,#&1ED]
 4423           	adds	r3,r4
-F893 61EC     	ldrb	r6,[r3,#&EC]
+F893 61EC     	ldrb	r6,[r3,#&1EC]
 
 l00009996:
 F7FF FE81     	bl	$0000969C

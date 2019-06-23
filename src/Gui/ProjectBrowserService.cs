@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -42,13 +42,15 @@ namespace Reko.Gui
         /// </summary>
         public event EventHandler<FileDropEventArgs> FileDropped;
 
+        private ITabPage tabPage;
         protected ITreeView tree;
         private Dictionary<object, TreeNodeDesigner> mpitemToDesigner;
         private Project project;
 
-        public ProjectBrowserService(IServiceProvider services, ITreeView treeView)
+        public ProjectBrowserService(IServiceProvider services, ITabPage tabPage, ITreeView treeView)
         {
             this.Services = services;
+            this.tabPage = tabPage;
             this.tree = treeView;
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
             this.tree.AfterSelect += tree_AfterSelect;
@@ -99,7 +101,13 @@ namespace Reko.Gui
         {
             Load(project);
         }
-        
+
+        public void Show()
+        {
+            tabPage.Select();
+            tree.Focus();
+        }
+
         public void AddComponents(IEnumerable components)
         {
             var nodes = components

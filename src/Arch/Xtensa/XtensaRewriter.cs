@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -31,16 +31,15 @@ namespace Reko.Arch.Xtensa
 {
     public partial class XtensaRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private EndianImageReader rdr;
-        private ProcessorState state;
-        private XtensaArchitecture arch;
-        private IEnumerator<XtensaInstruction> dasm;
-        private InstrClass rtlc;
-        private List<RtlInstruction> rtlInstructions;
-        private RtlEmitter m;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly EndianImageReader rdr;
+        private readonly ProcessorState state;
+        private readonly XtensaArchitecture arch;
+        private readonly IEnumerator<XtensaInstruction> dasm;
         private XtensaInstruction instr;
+        private InstrClass rtlc;
+        private RtlEmitter m;
 
         public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -58,7 +57,7 @@ namespace Reko.Arch.Xtensa
             {
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                rtlInstructions = new List<RtlInstruction>();
+                var rtlInstructions = new List<RtlInstruction>();
                 rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 this.instr = dasm.Current;
@@ -197,19 +196,13 @@ namespace Reko.Arch.Xtensa
 
         private Expression RewriteOp(MachineOperand op)
         {
-            var rOp = op as RegisterOperand;
-            if (rOp != null)
+            switch (op)
             {
+            case RegisterOperand rOp:
                 return binder.EnsureRegister(rOp.Register);
-            }
-            var aOp = op as AddressOperand;
-            if (aOp != null)
-            {
+            case AddressOperand aOp:
                 return aOp.Address;
-            }
-            var iOp = op as ImmediateOperand;
-            if (iOp != null)
-            {
+            case ImmediateOperand iOp:
                 return iOp.Value;
             }
             throw new NotImplementedException(op.GetType().FullName);

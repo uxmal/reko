@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
+    <AssemblyName>Reko.ImageLoaders.HpSom</AssemblyName>
+    <RootNamespace>Reko.ImageLoaders.HpSom</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <!-- The new multi-target format of .NET SDK csproj files confuses WiX 3.x. This is a workaround from
+  https://github.com/wixtoolset/issues/issues/5705. Hopefully this goes away in WiX 4.x
+  <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
+    <ItemGroup>
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(AssemblyName).dll" />
+    </ItemGroup>
+  </Target>
+  -->
+
+</Project>

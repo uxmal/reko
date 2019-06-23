@@ -28,12 +28,12 @@ using System.Linq;
 
 namespace Reko.Core.Serialization
 {
-	/// <summary>
-	/// Helper class that serializes and deserializes procedures with their signatures.
-	/// </summary>
-	public sealed class ProcedureSerializer
+    /// <summary>
+    /// Helper class that serializes and deserializes procedures with their signatures.
+    /// </summary>
+    public sealed class ProcedureSerializer
 	{
-        private IPlatform platform;
+        private readonly IPlatform platform;
         private ArgumentDeserializer argDeser;
 
         public ProcedureSerializer(
@@ -154,6 +154,16 @@ namespace Reko.Core.Serialization
                 // parameters
 
                 var cc = platform.GetCallingConvention(ss.Convention);
+                if (cc == null)
+                {
+                    // It was impossible to determine a calling convention,
+                    // so we don't know how to decode this signature accurately.
+                    return new FunctionType
+                    {
+                        StackDelta = ss.StackDelta,
+                        ReturnAddressOnStack = retAddrSize,
+                    };
+                }
                 var res = new CallingConventionEmitter();
                 cc.Generate(res, dtRet, dtThis, dtParameters);
                 if (res.Return != null)

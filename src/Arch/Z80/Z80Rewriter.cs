@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -34,12 +35,11 @@ namespace Reko.Arch.Z80
 {
     public class Z80Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Z80ProcessorArchitecture arch;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private IEnumerator<Z80Instruction> dasm;
+        private readonly Z80ProcessorArchitecture arch;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly IEnumerator<Z80Instruction> dasm;
         private InstrClass rtlc;
-        private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
 
         public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -56,8 +56,8 @@ namespace Reko.Arch.Z80
             {
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                this.rtlc = dasm.Current.IClass;
-                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = dasm.Current.InstructionClass;
+                var rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Code)
                 {
@@ -425,7 +425,11 @@ namespace Reko.Arch.Z80
 
         private void RewriteHlt()
         {
-            m.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance));
+            var c = new ProcedureCharacteristics
+            {
+                Terminates = true,
+            };
+            m.SideEffect(host.PseudoProcedure("__hlt", c, VoidType.Instance));
         }
 
         private void RewriteInc()

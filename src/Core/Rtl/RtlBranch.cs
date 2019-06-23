@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,12 +34,12 @@ namespace Reko.Core.Rtl
             this.Condition = condition;
         }
 
+        public Expression Condition { get; }
+
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitBranch(this);
         }
-
-        public Expression Condition { get; private set; }
 
         protected override void WriteInner(TextWriter writer)
         {

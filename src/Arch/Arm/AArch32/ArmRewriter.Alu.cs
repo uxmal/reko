@@ -541,6 +541,14 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private void RewritePld()
+        {
+            var dst = ((MemoryAccess) this.Operand(Dst())).EffectiveAddress;
+               m.SideEffect(host.PseudoProcedure("__pld",
+                VoidType.Instance,
+                dst));
+        }
+
         private void RewritePop()
         {
             var sp = Reg(Registers.sp);
@@ -698,6 +706,30 @@ namespace Reko.Arch.Arm.AArch32
                 src3));
         }
 
+        private void RewriteSmmul()
+        {
+            var src1 = Operand(Src1());
+            var src2 = Operand(Src2());
+            var dst = Operand(Dst());
+
+            var mul = m.SMul(src1, src2);
+            mul.DataType = PrimitiveType.Int64;
+            m.Assign(dst, m.Cast(PrimitiveType.Int32, m.Sar(mul, m.Int32(32))));
+        }
+
+        private void RewriteSmusd()
+        {
+            var s16 = PrimitiveType.Int16;
+            var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
+            var rn = this.Operand(Src1());
+            var rm = this.Operand(Src2());
+            var p1 = binder.CreateTemporary(PrimitiveType.Int32);
+            var p2 = binder.CreateTemporary(PrimitiveType.Int32);
+            m.Assign(p1, m.SMul(m.Slice(s16, rn, 0), m.Slice(s16, rm, 0)));
+            m.Assign(p2, m.SMul(m.Slice(s16, rn, 16), m.Slice(s16, rm, 16)));
+            m.Assign(dst, m.ISub(p1, p2));
+        }
+
         private void RewriteMulw(bool highPart)
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
@@ -784,6 +816,19 @@ namespace Reko.Arch.Arm.AArch32
 		m.Assign(dst, m.IAdd(dst, m.Int32(offset)));
 	}
     */
+        }
+
+        private void RewriteUasx()
+        {
+            var diff = binder.CreateTemporary(PrimitiveType.UInt16);
+            var sum = binder.CreateTemporary(PrimitiveType.UInt16);
+            var rn = Operand(instr.ops[1]);
+            var rm = Operand(instr.ops[2]);
+            m.Assign(diff, m.ISub(m.Slice(rn, 0, 16), m.Slice(rm, 16, 16)));
+            m.Assign(sum, m.IAdd(m.Slice(rn, 16, 16), m.Slice(rm, 0, 16)));
+            var rd = Operand(Dst());
+            m.Assign(rd, m.Seq(sum, diff));
+            //$REVIEW: flags?
         }
 
         private void RewriteUbfx()
