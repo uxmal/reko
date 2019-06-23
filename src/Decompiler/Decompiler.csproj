@@ -147,6 +147,7 @@
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\ProjectionPropagator.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
+    <Compile Include="Analysis\SparseValuePropagation.cs" />
     <Compile Include="Analysis\SsaDefinitionsCollector.cs" />
     <Compile Include="Analysis\SequenceIdentifierGenerator.cs" />
     <Compile Include="Analysis\SsaMutator.cs" />
