@@ -125,6 +125,11 @@ namespace Reko.Analysis
                 return values[id];
             }
 
+            public List<Statement> GetDefiningStatementClosure(Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
             public Expression GetValue(Identifier id)
             {
                 return values[id];

@@ -394,8 +394,6 @@ namespace Reko.Analysis
                 // which case the the SSA treats the call as a "hell node".
                 var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
                 var ssa = sst.Transform();
-                if (proc.Name.StartsWith("INIT"))//$DEBUG
-                    proc.ToString();
 
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);

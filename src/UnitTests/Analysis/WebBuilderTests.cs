@@ -77,19 +77,6 @@ namespace Reko.UnitTests.Analysis
                 var sst = ssts.Single(s => s.SsaState.Procedure == proc);
 				var ssa = sst.SsaState;
 
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
-
-				DeadCode.Eliminate(ssa);
-
-                sst.RenameFrameAccesses = true;
-                sst.Transform();
-
-                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, null, eventListener);
-				vp.Transform();
-
-				DeadCode.Eliminate(ssa);
-
 				Coalescer coa = new Coalescer(ssa);
 				coa.Transform();
 
