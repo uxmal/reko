@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -37,13 +37,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     public class TreeViewWrapper : ControlWrapper, ITreeView
     {
         public event EventHandler AfterSelect;
+        public event EventHandler<Gui.Controls.TreeViewEventArgs> AfterExpand;
+        public event EventHandler<Gui.Controls.TreeViewEventArgs> BeforeExpand;
         public event DragEventHandler DragEnter;
         public event DragEventHandler DragOver;
         public event DragEventHandler DragDrop;
         public event MouseEventHandler MouseWheel;
         public event EventHandler DragLeave;
 
-        private TreeView treeView;
+        private readonly TreeView treeView;
 
         public TreeViewWrapper(TreeView treeView)
             : base(treeView)
@@ -51,6 +53,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.treeView = treeView;
             this.Nodes = new WrappedNodeList(treeView.Nodes);
             this.treeView.AfterSelect += treeView_AfterSelect;
+            this.treeView.AfterExpand += treeView_AfterExpand;
+            this.treeView.BeforeSelect += treeView_BeforeExpand;
             this.treeView.DragEnter += treeView_DragEnter;
             this.treeView.DragLeave += treeView_DragLeave;
             this.treeView.DragOver += treeView_DragOver;
@@ -59,6 +63,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             this.treeView.MouseDown += TreeView_MouseDown;
         }
+
 
         public object ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = (ContextMenu) value; } }
         public bool Focused { get { return treeView.Focused; } } 
@@ -79,44 +84,44 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        private void treeView_AfterSelect(object sender, EventArgs e)
         {
-            AfterSelect.Fire(this);
+            AfterSelect?.Invoke(this, e);
+        }
+
+        private void treeView_AfterExpand(object sender, System.Windows.Forms.TreeViewEventArgs e)
+        {
+            this.AfterExpand?.Invoke(this, new Gui.Controls.TreeViewEventArgs((ITreeNode) e.Node));
+        }
+
+        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            this.BeforeExpand?.Invoke(this, new Gui.Controls.TreeViewEventArgs((ITreeNode) e.Node));
         }
 
         void treeView_DragDrop(object sender, DragEventArgs e)
         {
-            var eh = DragDrop;
-            if (eh != null)
-                eh(this, e);
+            DragDrop?.Invoke(this, e);
         }
 
         void treeView_DragOver(object sender, DragEventArgs e)
         {
- 	        var eh = DragOver;
-            if (eh != null)
-                eh(this, e);
+            DragOver?.Invoke(this, e);
         }
 
         void treeView_DragLeave(object sender, EventArgs e)
         {
- 	        var eh = DragLeave;
-            if (eh != null)
-                eh(this, e);
+            DragLeave?.Invoke(this, e);
         }
 
         void treeView_DragEnter(object sender, DragEventArgs e)
         {
-            var eh = DragEnter;
-            if (eh != null)
-                eh(this, e);
+            DragEnter?.Invoke(this, e);
         }
 
         void treeView_MouseWheel(object sender, MouseEventArgs e)
         {
-            var eh = MouseWheel;
-            if (eh != null)
-                eh(this, e);
+            MouseWheel?.Invoke(this, e);
         }
 
         private void TreeView_MouseDown(object sender, MouseEventArgs e)
@@ -256,7 +261,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             public int Count
             {
-                get { throw new NotImplementedException(); }
+                get { return nodes.Count; }
             }
 
             public bool IsReadOnly
@@ -266,7 +271,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             public bool Remove(ITreeNode item)
             {
-                throw new NotImplementedException();
+                nodes.Remove((WrappedNode) item);
+                return true;
             }
 
             public IEnumerator<ITreeNode> GetEnumerator()

@@ -38,7 +38,6 @@ namespace Reko.UserInterfaces.WindowsForms
             this.tree.DragDrop += tree_DragDrop;
             this.tree.DragLeave += tree_DragLeave;
             this.tree.MouseWheel += tree_MouseWheel;
-
         }
 
         void tree_DragEnter(object sender, DragEventArgs e)

@@ -430,7 +430,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaRisc", "Arch\PaRisc\PaRis
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HpSom", "ImageLoaders\HpSom\HpSom.csproj", "{6FAA0B0C-F6C2-4091-9CC8-1DC2CF708BC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hpux", "Environments\Hpux\Hpux.csproj", "{3488C24E-187C-4477-A310-D2292892D257}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hpux", "Environments\Hpux\Hpux.csproj", "{3488C24E-187C-4477-A310-D2292892D257}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2544,8 +2544,8 @@ Global
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.TravisRelease|x86.Build.0 = Release|Any CPU
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
-		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x64.ActiveCfg = Release|Any CPU
-		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x64.Build.0 = Release|Any CPU
+		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x64.ActiveCfg = UnixRelease|Any CPU
+		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x64.Build.0 = UnixRelease|Any CPU
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x86.ActiveCfg = Release|Any CPU
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x86.Build.0 = Release|Any CPU
 		{6FAA0B0C-F6C2-4091-9CC8-1DC2CF708BC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

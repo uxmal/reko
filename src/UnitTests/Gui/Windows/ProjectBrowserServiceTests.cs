@@ -116,6 +116,8 @@ namespace Reko.UnitTests.Gui.Windows
         private class FakeTreeView : ITreeView
         {
             public event EventHandler AfterSelect;
+            public event EventHandler<Reko.Gui.Controls.TreeViewEventArgs> AfterExpand;
+            public event EventHandler<Reko.Gui.Controls.TreeViewEventArgs> BeforeExpand;
             public event DragEventHandler DragEnter;
             public event DragEventHandler DragOver;
             public event DragEventHandler DragDrop;
@@ -179,6 +181,11 @@ namespace Reko.UnitTests.Gui.Windows
             public ITreeNode CreateNode(string text)
             {
                 return new FakeTreeNode { Text = text };
+            }
+
+            public void PerformBeforeExpand(Reko.Gui.Controls.TreeViewEventArgs e)
+            {
+                BeforeExpand(this, e);
             }
 
             public void PerformDragEnter(DragEventArgs e)
@@ -329,11 +336,19 @@ namespace Reko.UnitTests.Gui.Windows
             public string Text { get; set; }
             public string ToolTipText { get; set; }
 
+            public void Collapse()
+            {
+            }
+
             public void Expand()
             {
             }
 
             public void Invoke(Action a) { a();  }
+
+            public void Remove()
+            {
+            }
         }
 
         [Designer(typeof(TestDesigner))]
@@ -375,8 +390,11 @@ namespace Reko.UnitTests.Gui.Windows
             public string Text { get; set; }
             public string ToolTipText { get; set; }
 
+            public void Collapse() { }
             public void Expand() { }
             public void Invoke(Action a) { a(); }
+
+            public void Remove() { }
         }
 
         #endregion

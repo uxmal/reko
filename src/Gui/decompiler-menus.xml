@@ -148,9 +148,10 @@
   
   <cmd id="HelpAbout" cmdSet="Reko" container="GrpHelp">_About Decompiler...</cmd>
 
-  <cmd id="ShowProcedureCallHierarchy" cmdSet="Reko" container="GrpProcedure">Call graph</cmd>
-  
+  <cmd id="ShowProcedureCallHierarchy" cmdSet="Reko" container="GrpProcedure">Show Call _Hierarchy</cmd>
+
   <cmd id="CollapseAllNodes" cmdSet="Reko" container="GrpBrowserToolbar" imageKey="Collapse.ico" tip="Collapse All"></cmd>
+  <cmd id="CreateUserSegment" cmdSet="Reko" container="GrpBrowserToolbar" imageKey="CreateSegment.ico" tip="Create Segment"></cmd>
   
   <cmd id="LoadSymbols" cmdSet="Reko" container="GrpBrowser">Load Symbols...</cmd>
   
@@ -203,6 +204,7 @@
   <placement item="EditProperties" container="GrpBrowser" />
   <placement item="ViewGoToAddress" container="GrpBrowserProc"/>
   <placement item="ViewFindWhatPointsHere" container="GrpBrowserProc" />
+  <placement item="ShowProcedureCallHierarchy" container="GrpBrowserProc" />
   <placement item="ActionEditSignature" container="GrpBrowserProc"/>
   <placement item="ActionAssumeRegisterValues" container="GrpBrowserProc" />
   

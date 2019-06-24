@@ -144,12 +144,14 @@
     <Compile Include="Forms\IKeyBindingsDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
+    <Compile Include="Forms\ISegmentEditorDialog.cs" />
     <Compile Include="Forms\ISelectItemDialog.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
     <Compile Include="Forms\KeyBindingsInteractor.cs" />
     <Compile Include="Forms\ScannedPageInteractor.cs" />
     <Compile Include="Forms\SymbolSourceInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />
+    <Compile Include="ICallHierarchyService.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
     <Compile Include="IProcedureListService.cs" />
@@ -237,6 +239,8 @@
     <Compile Include="Forms\FinalPageInteractor.cs" />
     <Compile Include="Forms\InitialPageInteractor.cs" />
     <Compile Include="Forms\PhasePageInteractor.cs" />
+    <Compile Include="TreeNodeDesignerHost.cs" />
+    <Compile Include="Controls\TreeViewEventArgs.cs" />
     <Compile Include="Visualizers\AsciiStringVisualizer.cs" />
     <Compile Include="Visualizers\CodeDataVisualizer.cs" />
     <Compile Include="Visualizers\HeatmapVisualizer.cs" />
@@ -294,6 +298,7 @@
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\DiscardableSection.ico" />
     <None Include="Images\Error.ico" />
+    <Content Include="Images\CreateSegment.ico" />
     <Content Include="Images\UserEntryProcedure.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />

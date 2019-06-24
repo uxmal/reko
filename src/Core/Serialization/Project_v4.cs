@@ -111,6 +111,7 @@ namespace Reko.Core.Serialization
             Annotations = new List<Annotation_v3>();
             Calls = new List<SerializedCall_v1>();
             IndirectJumps = new List<IndirectJump_v4>();
+            Segments = new List<Segment_v4>();
         }
 
         [XmlElement("address")]
@@ -155,6 +156,9 @@ namespace Reko.Core.Serialization
         [XmlArray("registerValues")]
         [XmlArrayItem("assume")]
         public RegisterValue_v2[] RegisterValues;
+
+        [XmlElement("segment")]
+        public List<Segment_v4> Segments;
 
         [XmlElement("dasmAddress")]
         [DefaultValue(false)]
@@ -206,5 +210,26 @@ namespace Reko.Core.Serialization
 
         [XmlAttribute("idxReg")]
         public string IndexRegister;
+    }
+
+    public class Segment_v4
+    {
+        [XmlAttribute("name")]
+        public string Name;
+
+        [XmlAttribute("offset")]
+        public string Offset;
+
+        [XmlAttribute("length")]
+        public string Length;
+
+        [XmlAttribute("addr")]
+        public string Address;
+
+        [XmlAttribute("arch")]
+        public string Architecture;
+
+        [XmlAttribute("access")]
+        public string Access;
     }
 }
