@@ -282,8 +282,7 @@ namespace Reko.Core.Configuration
 
         public static RekoConfigurationService Load(string configFileName)
         {
-            var appConfig = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-            var appDir = Path.GetDirectoryName(appConfig);
+            var appDir = AppDomain.CurrentDomain.BaseDirectory;
             configFileName = Path.Combine(appDir, configFileName);
 
             using (var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
