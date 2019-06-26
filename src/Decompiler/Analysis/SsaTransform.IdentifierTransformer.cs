@@ -574,20 +574,6 @@ namespace Reko.Analysis
                 this.flagMask = flagGroup.FlagGroupBits;
             }
 
-            private Expression OrTogether(IEnumerable<SsaIdentifier> sids, Statement stm)
-            {
-                Expression e = null;
-                foreach (var sid in sids.OrderBy(id => id.Identifier.Name))
-                {
-                    sid.Uses.Add(stm);
-                    if (e == null)
-                        e = sid.Identifier;
-                    else
-                        e = new BinaryExpression(Operator.Or, PrimitiveType.Byte, e, sid.Identifier);
-                }
-                return e;
-            }
-
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 if (!bs.currentDef.TryGetValue(flagGroup.FlagRegister.Domain, out var alias))
@@ -623,7 +609,6 @@ namespace Reko.Analysis
             protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom)
             {
                 var sidFrom = aliasFrom.SsaId;
-                var b = sidFrom.DefStatement.Block;
                 var stgUse = id.Storage;
                 var stgFrom = (FlagGroupStorage) sidFrom.Identifier.Storage;
                 if (stgFrom == stgUse)
