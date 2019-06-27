@@ -44,7 +44,6 @@ byte g_b05EF = 0x22;
 byte g_b0601 = 0x20;
 <anonymous> * g_ptr0ABE = &g_t0AC0;
 <anonymous> g_t0AC0 = <code>;
-<anonymous> g_t0BEC = <code>;
 <anonymous> g_t0FE2 = <code>;
 Eq_n g_t101E = 
 	{
@@ -55,7 +54,10 @@ Eq_n g_t101E =
 		&g_wFFFF8000,
 		0x1DC4,
 		0x0109,
-		0x1D,
+		
+		{
+			0xF41D
+		},
 		0x002A,
 		0x158C,
 		0x15B6,
@@ -70,7 +72,10 @@ Eq_n g_t1020 =
 		&g_w1DC4,
 		0x4400,
 		0x1DC4,
-		0x43,
+		
+		{
+			0xC443
+		},
 		0x158C,
 		0x15B6,
 		0x0002,
@@ -87,7 +92,10 @@ Eq_n g_t151E =
 		&g_wFFFF95B3,
 		0x00A2,
 		0x0004,
-		0x0C,
+		
+		{
+			0x020C
+		},
 		0x35CC,
 		0x0001,
 		0x0302,
@@ -365,7 +373,10 @@ cui16 g_w53EC = 0x0000;
 Eq_n g_a541C[] = 
 	{
 	};
-struct Eq_n * g_ptr5424 = &g_w542C;
+Eq_n g_t5424 = 
+	{
+		0x2C
+	};
 ci16 * g_ptr5426 = null;
 word16 g_w542C = 0x0000;
 word16 g_w5506 = 0x0000;

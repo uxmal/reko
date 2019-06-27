@@ -61,7 +61,7 @@ l0224:
 ;;     051D (in fn0483)
 ;;     063A (in fn061B)
 ;;     07AF (in fn075C)
-;;     105B (in fn1055)
+;;     105B (in fn100A)
 ;;     125E (in fn123C)
 ;;     125E (in fn1229)
 fn0387 proc
@@ -236,12 +236,12 @@ l045A:
 ;; fn045B: 045B
 ;;   Called from:
 ;;     1044 (in fn100A)
-;;     1078 (in fn1078)
-;;     1081 (in fn1081)
-;;     11B5 (in fn1081)
-;;     11C6 (in fn1081)
-;;     11D9 (in fn1081)
-;;     11F4 (in fn1081)
+;;     1078 (in fn100A)
+;;     1081 (in fn100A)
+;;     11B5 (in fn100A)
+;;     11C6 (in fn100A)
+;;     11D9 (in fn100A)
+;;     11F4 (in fn100A)
 ;;     1255 (in fn123C)
 ;;     126A (in fn1262)
 ;;     1279 (in fn1279)
@@ -454,7 +454,7 @@ l056A:
 ;;     07DD (in fn07B3)
 ;;     0816 (in fn0814)
 ;;     081B (in fn0814)
-;;     1207 (in fn1081)
+;;     1207 (in fn100A)
 ;;     123E (in fn123C)
 ;;     1243 (in fn123C)
 ;;     1252 (in fn123C)
@@ -534,8 +534,8 @@ l05CD:
 ;;     07E3 (in fn07B3)
 ;;     07F8 (in fn07B3)
 ;;     0C0A (in fn0BE4)
-;;     1058 (in fn1055)
-;;     1231 (in fn1081)
+;;     1058 (in fn100A)
+;;     1231 (in fn100A)
 ;;     1231 (in fn1229)
 fn05CE proc
 	ld	hl,166E
@@ -849,7 +849,7 @@ l07AF:
 ;; fn07B3: 07B3
 ;;   Called from:
 ;;     082B (in fn0814)
-;;     1221 (in fn1081)
+;;     1221 (in fn100A)
 fn07B3 proc
 	ld	a,(14F9)
 	rra
@@ -1563,7 +1563,7 @@ fn0B91 proc
 
 ;; fn0BE4: 0BE4
 ;;   Called from:
-;;     1224 (in fn1081)
+;;     1224 (in fn100A)
 fn0BE4 proc
 	ld	a,(138A)
 	sub	a,01
@@ -1956,11 +1956,7 @@ l104D:
 	cp	a,00
 	jp	nz,105E
 
-;; fn1055: 1055
-;;   Called from:
-;;     1052 (in fn100A)
-;;     1052 (in fn100A)
-fn1055 proc
+l1055:
 	ld	bc,0369
 	call	05CE
 	call	0387
@@ -1974,9 +1970,6 @@ l105E:
 	push	af
 	ld	a,(16A8)
 	sub	a,00
-
-;; fn106E: 106E
-fn106E proc
 	add	a,FF
 	sbc	a,a
 	pop	bc
@@ -1985,20 +1978,12 @@ fn106E proc
 	rra
 	jp	nc,1081
 
-;; fn1078: 1078
-;;   Called from:
-;;     105B (in fn1055)
-;;     1075 (in fn106E)
-fn1078 proc
+l1078:
 	call	045B
 	ld	(16A8),a
 	jp	105E
 
-;; fn1081: 1081
-;;   Called from:
-;;     1075 (in fn106E)
-;;     1075 (in fn1078)
-fn1081 proc
+l1081:
 	call	045B
 	ld	(16A8),a
 
@@ -2256,11 +2241,11 @@ l120F:
 
 ;; fn1229: 1229
 ;;   Called from:
-;;     11B2 (in fn1081)
+;;     11B2 (in fn100A)
 ;;     128A (in fn1279)
 ;;     12D1 (in fn1279)
 ;;     12F4 (in fn12D8)
-;;     130E (in fn130E)
+;;     130E (in fn12D8)
 fn1229 proc
 	ld	hl,14F3
 	ld	(hl),02
@@ -2273,8 +2258,8 @@ fn1229 proc
 ;; fn123C: 123C
 ;;   Called from:
 ;;     1239 (in fn1229)
-;;     1239 (in fn1081)
-;;     1239 (in fn1081)
+;;     1239 (in fn100A)
+;;     1239 (in fn100A)
 fn123C proc
 	ld	c,3E
 	call	056B
@@ -2300,9 +2285,9 @@ l125E:
 
 ;; fn1262: 1262
 ;;   Called from:
-;;     10A9 (in fn1081)
-;;     11BB (in fn1081)
-;;     11DF (in fn1081)
+;;     10A9 (in fn100A)
+;;     11BB (in fn100A)
+;;     11DF (in fn100A)
 ;;     127F (in fn1279)
 ;;     12C6 (in fn1279)
 ;;     12DE (in fn12D8)
@@ -2325,9 +2310,9 @@ l1278:
 
 ;; fn1279: 1279
 ;;   Called from:
-;;     10D5 (in fn1081)
-;;     1106 (in fn1081)
-;;     1198 (in fn1081)
+;;     10D5 (in fn100A)
+;;     1106 (in fn100A)
+;;     1198 (in fn100A)
 fn1279 proc
 	call	045B
 	ld	(16A8),a
@@ -2394,9 +2379,9 @@ l12D4:
 
 ;; fn12D8: 12D8
 ;;   Called from:
-;;     10C4 (in fn1081)
-;;     1147 (in fn1081)
-;;     11A9 (in fn1081)
+;;     10C4 (in fn100A)
+;;     1147 (in fn100A)
+;;     11A9 (in fn100A)
 fn12D8 proc
 	call	045B
 	ld	(16A8),a
@@ -2428,17 +2413,9 @@ l12F7:
 	ld	c,b
 	or	a,c
 	rra
-
-;; fn130B: 130B
-fn130B proc
 	jp	nc,1311
 
-;; fn130E: 130E
-;;   Called from:
-;;     130B (in fn130B)
-;;     130B (in fn12D8)
-;;     130B (in fn12D8)
-fn130E proc
+l130E:
 	call	1229
 
 l1311:

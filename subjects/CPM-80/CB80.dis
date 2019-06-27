@@ -3064,7 +3064,7 @@ void fn100A(word16 af, byte b, byte e, byte d, byte l, byte h)
 // MayUse:  af b d e h l
 // LiveOut:
 // Trashed: SZPC a b bc c d de e h hl l sp
-// Preserved: sp
+// Preserved:
 fn100A_entry:
 // DataOut: af b d e h l
 // DataOut (flags): 
@@ -3073,39 +3073,471 @@ fn100A_entry:
 
 l100A:
 	byte b_49 = SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8)
+	word16 sp_111 = fp
 	word16 bc_52 = DPB(af, b_49, 0)
 	branch (0x00 - (Mem0[0x14FF:byte] <u 0x0E) & b_49) >>u 0x01 >=u 0x00 l104D
-// DataOut: af b bc c d e h l
+// DataOut: af b bc c d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:0x00 hl:<invalid> -2(fp):af
 // LocalsOut: fp(16)
 
 l104D:
 	byte a_83 = Mem0[0x14FF:byte]
-	word16 af_84 = DPB(af, a_83, 0)
+	word16 af_121 = DPB(af, a_83, 0)
 	branch a_83 != 0x00 l105E
-// DataOut: af b c d e h l
+// DataOut: af b c d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> -2(fp):af
 
-l1052_thunk_fn1055:
-	fn1055(af_84, b_49, b_49, e, d, l, h)
-	return
-// DataOut:
+l1055:
+	byte l_428
+	byte h_429
+	fn05CE(0x69, 0x03, e, d, l, h, out l_428, out h_429)
+	word16 hl_433 = fn0387(out sp_111)
+	l = (byte) hl_433 (alias)
+	h = SLICE(hl_433, byte, 8) (alias)
+// DataOut: af b d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> -2(fp):af
 
-l1052_thunk_fn1055:
-	fn1055(af_84, b_49, b_49, e, d, l, h)
+l105E:
+	word16 sp_100 = sp_111 - 0x0002
+	Mem101[sp_100:word16] = DPB(af_121, 0x00 - (Mem0[0x16A8:byte] <u 0x03), 0)
+	sp_111 = sp_100 + 0x0002
+	branch (0x00 - (Mem101[0x16A8:byte] <u 0xFF) & Mem101[sp_100 + 0x0001:byte]) >>u 0x01 >=u 0x00 l1081
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1081:
+	byte a_123 = fn045B()
+	Mem125[0x16A8:byte] = a_123
+	word16 af_124 = DPB(af_121, a_123, 0)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1087:
+	word16 sp_140 = sp_111 - 0x0002
+	Mem141[sp_140:word16] = DPB(af_124, 0x00 - (Mem125[0x16A8:byte] <u 0x01), 0)
+	byte b_150 = Mem141[sp_140 + 0x0001:byte]
+	sp_111 = sp_140 + 0x0002
+	branch (0x00 - (Mem141[0x16A8:byte] <u 0xFF) & b_150) >>u 0x01 >=u 0x00 l11FD
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11FD:
+	branch Mem141[0x14F3:byte] != 0x01 l120F
+// DataOut: af d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1205:
+	byte a_413
+	word16 bc_414
+	word16 de_415
+	byte l_416
+	byte h_417
+	fn056B(0x0C, e, d, l, h, out a_413, out bc_414, out de_415, out l_416, out h_417)
+	Mem424[0x14F9:byte] = 0x01
+// DataOut: af d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l120F:
+	Mem366[0x14F4:byte] = Mem141[0x14F3:byte]
+	byte a_367 = Mem366[0x14F7:byte]
+	Mem371[0x14FD:byte] = a_367 + 0x01
+	Mem375[0x138A:byte] = 0x01
+	byte b_376
+	byte l_377
+	byte h_378
+	fn07B3(e, d, 0x8A, 0x13, out b_376, out l_377, out h_378)
+	byte b_380
+	byte e_381
+	byte d_382
+	byte l_383
+	byte h_384
+	fn0BE4(DPB(af_124, a_367 + 0x01, 0), b_376, e, d, h_378, l_377, out b_380, out e_381, out d_382, out l_383, out h_384)
+	__ei()
+	__hlt()
+	Mem389[0x14F3:byte] = 0x02
+	byte l_393
+	byte h_394
+	fn05CE(0xD1, 0x02, e_381, d_382, 0xF3, 0x14, out l_393, out h_394)
+	branch Mem389[0x16A8:byte] == 0x00 l125E
+// DataOut: d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
+
+l1239_thunk_fn123C:
+	byte l_407
+	byte h_408
+	word16 sp_409
+	fn123C(e_381, d_382, l_393, h_394, out l_407, out h_408, out sp_409)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> -2(fp):af
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid> -2(fp):af
+
+l1239_thunk_fn123C:
+	byte l_403
+	byte h_404
+	word16 sp_405
+	fn123C(e_381, d_382, l_393, h_394, out l_403, out h_404, out sp_405)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid> -2(fp):af
 
 fn100A_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> h:<invalid> de:<invalid> e:<invalid> l:<invalid> d:<invalid> -2(fp):af
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid> -2(fp):af
+
+l10A1:
+	branch Mem141[0x16A8:byte] != 0x20 l10AC
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10A9:
+	fn1262()
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10AC:
+	byte a_164 = Mem141[0x16A8:byte]
+	word16 af_165 = DPB(af_124, a_164, 0)
+	branch a_164 != 0x42 l10BC
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10BC:
+	byte a_214 = Mem141[0x16A8:byte]
+	word16 af_215 = DPB(af_124, a_214, 0)
+	branch a_214 != 0x43 l10CD
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10CD:
+	byte a_226 = Mem141[0x16A8:byte]
+	word16 af_227 = DPB(af_124, a_226, 0)
+	branch a_226 != 0x44 l10DE
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10DE:
+	byte a_236 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_236, 0) (alias)
+	branch a_236 != 0x46 l10EE
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10EE:
+	byte a_244 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_244, 0) (alias)
+	branch a_244 != 0x49 l10FE
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10FE:
+	byte a_252 = Mem141[0x16A8:byte]
+	word16 af_253 = DPB(af_124, a_252, 0)
+	branch a_252 != 0x4C l110F
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l110F:
+	byte a_262 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_262, 0) (alias)
+	branch a_262 != 0x4E l111F
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l111F:
+	byte a_270 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_270, 0) (alias)
+	branch a_270 != 0x4F l112F
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l112F:
+	byte a_278 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_278, 0) (alias)
+	branch a_278 != 0x50 l113F
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l113F:
+	byte a_286 = Mem141[0x16A8:byte]
+	word16 af_287 = DPB(af_124, a_286, 0)
+	branch a_286 != 0x52 l1150
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1150:
+	byte a_296 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_296, 0) (alias)
+	branch a_296 != 0x53 l1160
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1160:
+	byte a_304 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_304, 0) (alias)
+	branch a_304 != 0x54 l1170
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1170:
+	byte a_312 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_312, 0) (alias)
+	branch a_312 != 0x55 l1180
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1180:
+	byte a_320 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_320, 0) (alias)
+	branch a_320 != 0x56 l1190
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1190:
+	byte a_328 = Mem141[0x16A8:byte]
+	word16 af_329 = DPB(af_124, a_328, 0)
+	branch a_328 != 0x57 l11A1
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11A1:
+	byte a_338 = Mem141[0x16A8:byte]
+	af_165 = DPB(af_124, a_338, 0) (alias)
+	branch a_338 != 0x58 l11B2
+// DataOut: af b c d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11B2:
+	fn1229(b_150, b_150, e, d, l, h, out l, out h, out sp_111)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11A9:
+	byte b_342
+	byte a_345 = fn12D8(af_165, b_150, b_150, e, d, l, h, out b_342, out l, out h)
+	Mem347[0x151E:byte] = a_345
+	af_165 = DPB(af_124, a_345, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1198:
+	byte b_332
+	byte a_335 = fn1279(af_329, b_150, b_150, e, d, l, h, out b_332, out l, out h)
+	Mem337[0x14F8:byte] = a_335
+	af_165 = DPB(af_124, a_335, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1188:
+	Mem327[0x14FC:byte] = 0x01
+	l = 0xFC (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1178:
+	Mem319[0x1529:byte] = 0x01
+	l = 0x29 (alias)
+	h = 0x15 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1168:
+	Mem311[0x14F5:byte] = 0x01
+	l = 0xF5 (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1158:
+	Mem303[0x14F0:byte] = 0x01
+	l = 0xF0 (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1147:
+	byte b_290
+	byte a_293 = fn12D8(af_287, b_150, b_150, e, d, l, h, out b_290, out l, out h)
+	Mem295[0x1520:byte] = a_293
+	af_165 = DPB(af_124, a_293, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1137:
+	Mem285[0x14F3:byte] = 0x01
+	l = 0xF3 (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1127:
+	Mem277[0x14EF:byte] = 0x00
+	l = 0xEF (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1117:
+	Mem269[0x14FB:byte] = 0x01
+	l = 0xFB (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1106:
+	byte b_256
+	byte a_259 = fn1279(af_253, b_150, b_150, e, d, l, h, out b_256, out l, out h)
+	Mem261[0x14F7:byte] = a_259
+	af_165 = DPB(af_124, a_259, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10F6:
+	Mem251[0x14FA:byte] = 0x01
+	l = 0xFA (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10E6:
+	Mem243[0x14F3:byte] = 0x04
+	l = 0xF3 (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10D5:
+	byte b_230
+	byte a_233 = fn1279(af_227, b_150, b_150, e, d, l, h, out b_230, out l, out h)
+	Mem235[0x138B:byte] = a_233
+	af_165 = DPB(af_124, a_233, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10C4:
+	byte b_220
+	byte a_223 = fn12D8(af_215, b_150, b_150, e, d, l, h, out b_220, out l, out h)
+	Mem225[0x151D:byte] = a_223
+	af_165 = DPB(af_124, a_223, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l10B4:
+	Mem213[0x14F3:byte] = 0x00
+	l = 0xF3 (alias)
+	h = 0x14 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11B5:
+	Mem176[0x16A8:byte] = fn045B()
+	fn1262()
+	branch Mem176[0x16A8:byte] != 0x2C l11CF
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11CF:
+	byte a_191 = Mem176[0x16A8:byte]
+	af_124 = DPB(af_165, a_191 + 0x5F, 0) (alias)
+	branch a_191 != 0x02 l11FA
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11D9:
+	Mem197[0x16A8:byte] = fn045B()
+	fn1262()
+	byte a_198 = Mem197[0x16A8:byte]
+	af_124 = DPB(af_165, a_198 + 0x5F, 0) (alias)
+	branch a_198 == 0x04 l11F4
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11F4:
+	byte a_207 = fn045B()
+	Mem209[0x16A8:byte] = a_207
+	af_124 = DPB(af_165, a_207, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11EC:
+	Mem206[0x16A8:byte] = 0x5D
+	l = 0xA8 (alias)
+	h = 0x16 (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11C6:
+	byte a_188 = fn045B()
+	Mem190[0x16A8:byte] = a_188
+	af_124 = DPB(af_165, a_188, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l11FA:
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
+
+l1078:
+	byte a_120 = fn045B()
+	Mem122[0x16A8:byte] = a_120
+	af_121 = DPB(af_121, a_120, 0) (alias)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> b:<invalid> h:<invalid> de:<invalid> l:<invalid> -2(fp):af
 
 l1032:
 	Mem61[0x14FF:byte] = Mem0[0x14FF:byte] + 0x01
@@ -3125,568 +3557,6 @@ l1002:
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:0x00 hl:<invalid> -2(fp):af
 // LocalsOut: fp(16)
-
-
-
-void fn1055(word16 af, byte c, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b c d e h l
-// LiveOut:
-// Trashed: SZPC a b bc c d de e h hl l sp
-// Preserved: sp
-fn1055_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1055:
-	byte l_9
-	byte h_10
-	byte b_12 = SLICE(fn05CE(0x69, 0x03, e, d, l, h, out l_9, out h_10), byte, 8)
-	word16 sp_13
-	word16 hl_14 = fn0387(out sp_13)
-	byte l_15 = (byte) hl_14
-	byte h_16 = SLICE(hl_14, byte, 8)
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l105B_thunk_fn1078:
-	fn1078(af, b_12, e, d, l_15, h_16)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> bc:<invalid> hl:<invalid> a:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid>
-
-fn1055_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> bc:<invalid> hl:<invalid> a:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid>
-
-
-
-void fn106E(word16 af, byte b, byte e, byte d, byte l, byte h, word16 wArg00)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  a af b d e h l
-// LiveOut:
-// Trashed: SZPC a b bc c d de e h hl l sp
-// Preserved:
-fn106E_entry:
-// DataOut: a af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
-l106E:
-	byte b_10 = SLICE(wArg00, byte, 8)
-	byte a_14 = 0x00 - (a <u 0xFF) & b_10
-	word16 af_19 = DPB(af, a_14 >>u 0x01, 0)
-	branch a_14 >>u 0x01 >=u 0x00 l1075_thunk_fn1081
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1075_thunk_fn1081:
-	fn1081(af_19, b_10, e, d, l, h)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 a:<invalid> bc:<invalid> c:b
-
-l1075_thunk_fn1078:
-	fn1078(af_19, b_10, e, d, l, h)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 a:<invalid> bc:<invalid> c:b
-
-fn106E_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid>
-
-
-
-void fn1078(word16 af, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b d e h l
-// LiveOut:
-// Trashed: SZPC a b bc c d de e h hl l sp
-// Preserved: sp
-fn1078_entry:
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
-l1078:
-	Mem21[0x16A8:byte] = fn045B()
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:b hl:<invalid> -2(fp):af
-// LocalsOut: fp(16)
-
-l105E:
-	byte b_40 = SLICE(DPB(af, 0x00 - (Mem21[0x16A8:byte] <u 0x03), 0), byte, 8)
-	byte a_44 = 0x00 - (Mem21[0x16A8:byte] <u 0xFF) & b_40
-	af = DPB(af, a_44 >>u 0x01, 0) (alias)
-	branch a_44 >>u 0x01 >=u 0x00 l1081
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:b hl:<invalid> -2(fp):af
-// LocalsOut: fp(16)
-
-l1075_thunk_fn1081:
-	fn1081(af, b_40, e, d, l, h)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:b hl:<invalid> -2(fp):af
-
-fn1078_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid> -2(fp):af
-
-
-
-void fn1081(word16 af, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b d e h l
-// LiveOut:
-// Trashed: SZPC a b bc c d de e h hl l sp
-// Preserved:
-fn1081_entry:
-	word16 sp_1 = fp
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1081:
-	byte a_2 = fn045B()
-	Mem5[0x16A8:byte] = a_2
-	word16 af_15 = DPB(af, a_2, 0)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1087:
-	word16 sp_24 = sp_1 - 0x0002
-	Mem25[sp_24:word16] = DPB(af_15, 0x00 - (Mem5[0x16A8:byte] <u 0x01), 0)
-	byte b_34 = Mem25[sp_24 + 0x0001:byte]
-	sp_1 = sp_24 + 0x0002
-	branch (0x00 - (Mem25[0x16A8:byte] <u 0xFF) & b_34) >>u 0x01 >=u 0x00 l11FD
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11FD:
-	branch Mem25[0x14F3:byte] != 0x01 l120F
-// DataOut: af d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1205:
-	byte a_297
-	word16 bc_298
-	word16 de_299
-	byte l_300
-	byte h_301
-	fn056B(0x0C, e, d, l, h, out a_297, out bc_298, out de_299, out l_300, out h_301)
-	Mem308[0x14F9:byte] = 0x01
-// DataOut: af d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l120F:
-	Mem250[0x14F4:byte] = Mem25[0x14F3:byte]
-	byte a_251 = Mem250[0x14F7:byte]
-	Mem255[0x14FD:byte] = a_251 + 0x01
-	Mem259[0x138A:byte] = 0x01
-	byte b_260
-	byte l_261
-	byte h_262
-	fn07B3(e, d, 0x8A, 0x13, out b_260, out l_261, out h_262)
-	byte b_264
-	byte e_265
-	byte d_266
-	byte l_267
-	byte h_268
-	fn0BE4(DPB(af_15, a_251 + 0x01, 0), b_260, e, d, h_262, l_261, out b_264, out e_265, out d_266, out l_267, out h_268)
-	__ei()
-	__hlt()
-	Mem273[0x14F3:byte] = 0x02
-	byte l_277
-	byte h_278
-	fn05CE(0xD1, 0x02, e_265, d_266, 0xF3, 0x14, out l_277, out h_278)
-	branch Mem273[0x16A8:byte] == 0x00 l125E
-// DataOut: d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1239_thunk_fn123C:
-	byte l_291
-	byte h_292
-	word16 sp_293
-	fn123C(e_265, d_266, l_277, h_278, out l_291, out h_292, out sp_293)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid> -2(fp):af
-
-l1239_thunk_fn123C:
-	byte l_287
-	byte h_288
-	word16 sp_289
-	fn123C(e_265, d_266, l_277, h_278, out l_287, out h_288, out sp_289)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid> -2(fp):af
-
-fn1081_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> e:<invalid> l:<invalid> d:<invalid> -2(fp):af
-
-l10A1:
-	branch Mem25[0x16A8:byte] != 0x20 l10AC
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10A9:
-	fn1262()
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10AC:
-	byte a_48 = Mem25[0x16A8:byte]
-	word16 af_108 = DPB(af_15, a_48, 0)
-	branch a_48 != 0x42 l10BC
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10BC:
-	byte a_98 = Mem25[0x16A8:byte]
-	word16 af_99 = DPB(af_15, a_98, 0)
-	branch a_98 != 0x43 l10CD
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10CD:
-	byte a_110 = Mem25[0x16A8:byte]
-	word16 af_111 = DPB(af_15, a_110, 0)
-	branch a_110 != 0x44 l10DE
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10DE:
-	byte a_120 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_120, 0) (alias)
-	branch a_120 != 0x46 l10EE
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10EE:
-	byte a_128 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_128, 0) (alias)
-	branch a_128 != 0x49 l10FE
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10FE:
-	byte a_136 = Mem25[0x16A8:byte]
-	word16 af_137 = DPB(af_15, a_136, 0)
-	branch a_136 != 0x4C l110F
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l110F:
-	byte a_146 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_146, 0) (alias)
-	branch a_146 != 0x4E l111F
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l111F:
-	byte a_154 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_154, 0) (alias)
-	branch a_154 != 0x4F l112F
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l112F:
-	byte a_162 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_162, 0) (alias)
-	branch a_162 != 0x50 l113F
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l113F:
-	byte a_170 = Mem25[0x16A8:byte]
-	word16 af_171 = DPB(af_15, a_170, 0)
-	branch a_170 != 0x52 l1150
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1150:
-	byte a_180 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_180, 0) (alias)
-	branch a_180 != 0x53 l1160
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1160:
-	byte a_188 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_188, 0) (alias)
-	branch a_188 != 0x54 l1170
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1170:
-	byte a_196 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_196, 0) (alias)
-	branch a_196 != 0x55 l1180
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1180:
-	byte a_204 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_204, 0) (alias)
-	branch a_204 != 0x56 l1190
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1190:
-	byte a_212 = Mem25[0x16A8:byte]
-	word16 af_213 = DPB(af_15, a_212, 0)
-	branch a_212 != 0x57 l11A1
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11A1:
-	byte a_222 = Mem25[0x16A8:byte]
-	af_108 = DPB(af_15, a_222, 0) (alias)
-	branch a_222 != 0x58 l11B2
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11B2:
-	fn1229(b_34, b_34, e, d, l, h, out l, out h, out sp_1)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11A9:
-	byte b_226
-	byte a_229 = fn12D8(af_108, b_34, b_34, e, d, l, h, out b_226, out l, out h)
-	Mem231[0x151E:byte] = a_229
-	af_108 = DPB(af_15, a_229, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1198:
-	byte b_216
-	byte a_219 = fn1279(af_213, b_34, b_34, e, d, l, h, out b_216, out l, out h)
-	Mem221[0x14F8:byte] = a_219
-	af_108 = DPB(af_15, a_219, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1188:
-	Mem211[0x14FC:byte] = 0x01
-	l = 0xFC (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1178:
-	Mem203[0x1529:byte] = 0x01
-	l = 0x29 (alias)
-	h = 0x15 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1168:
-	Mem195[0x14F5:byte] = 0x01
-	l = 0xF5 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1158:
-	Mem187[0x14F0:byte] = 0x01
-	l = 0xF0 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1147:
-	byte b_174
-	byte a_177 = fn12D8(af_171, b_34, b_34, e, d, l, h, out b_174, out l, out h)
-	Mem179[0x1520:byte] = a_177
-	af_108 = DPB(af_15, a_177, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1137:
-	Mem169[0x14F3:byte] = 0x01
-	l = 0xF3 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1127:
-	Mem161[0x14EF:byte] = 0x00
-	l = 0xEF (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1117:
-	Mem153[0x14FB:byte] = 0x01
-	l = 0xFB (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l1106:
-	byte b_140
-	byte a_143 = fn1279(af_137, b_34, b_34, e, d, l, h, out b_140, out l, out h)
-	Mem145[0x14F7:byte] = a_143
-	af_108 = DPB(af_15, a_143, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10F6:
-	Mem135[0x14FA:byte] = 0x01
-	l = 0xFA (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10E6:
-	Mem127[0x14F3:byte] = 0x04
-	l = 0xF3 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10D5:
-	byte b_114
-	byte a_117 = fn1279(af_111, b_34, b_34, e, d, l, h, out b_114, out l, out h)
-	Mem119[0x138B:byte] = a_117
-	af_108 = DPB(af_15, a_117, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10C4:
-	byte b_104
-	byte a_107 = fn12D8(af_99, b_34, b_34, e, d, l, h, out b_104, out l, out h)
-	Mem109[0x151D:byte] = a_107
-	af_108 = DPB(af_15, a_107, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l10B4:
-	Mem97[0x14F3:byte] = 0x00
-	l = 0xF3 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11B5:
-	Mem60[0x16A8:byte] = fn045B()
-	fn1262()
-	branch Mem60[0x16A8:byte] != 0x2C l11CF
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11CF:
-	byte a_75 = Mem60[0x16A8:byte]
-	af_15 = DPB(af_108, a_75 + 0x5F, 0) (alias)
-	branch a_75 != 0x02 l11FA
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11D9:
-	Mem81[0x16A8:byte] = fn045B()
-	fn1262()
-	byte a_82 = Mem81[0x16A8:byte]
-	af_15 = DPB(af_108, a_82 + 0x5F, 0) (alias)
-	branch a_82 == 0x04 l11F4
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11F4:
-	byte a_91 = fn045B()
-	Mem93[0x16A8:byte] = a_91
-	af_15 = DPB(af_108, a_91, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11EC:
-	Mem90[0x16A8:byte] = 0x5D
-	l = 0xA8 (alias)
-	h = 0x16 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11C6:
-	byte a_72 = fn045B()
-	Mem74[0x16A8:byte] = a_72
-	af_15 = DPB(af_108, a_72, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-l11FA:
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
 
 
 
@@ -3980,17 +3850,17 @@ l12D8:
 // SymbolicIn: sp:fp
 
 l12F4:
-	byte l_69
-	byte h_70
-	fn1229(c, b, e, d, l, h, out l_69, out h_70, out sp_1)
+	byte l_66
+	byte h_67
+	fn1229(c, b, e, d, l, h, out l_66, out h_67, out sp_1)
 // DataOut: af b d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> hl:<invalid>
 
 l12E9:
-	byte a_60 = fn045B()
-	Mem64[0x16AB:byte] = a_60 + 0x1F
-	af_10 = DPB(af, a_60 + 0x1F, 0) (alias)
+	byte a_57 = fn045B()
+	Mem61[0x16AB:byte] = a_57 + 0x1F
+	af_10 = DPB(af, a_57 + 0x1F, 0) (alias)
 // DataOut: af b d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> hl:<invalid>
@@ -3999,109 +3869,36 @@ l12F7:
 	word16 sp_18 = sp_1 - 0x0002
 	Mem19[sp_18:word16] = DPB(af_10, 0x00 - (fn045B() <u 0x2A), 0)
 	byte b_30 = Mem19[sp_18 + 0x0001:byte]
+	*bOut = b_30
+	byte l_22
+	*lOut = 0xAB
+	byte h_23
+	*hOut = 0x16
 	branch (0x00 - (Mem19[0x16AB:byte] >u 0x10) | b_30) >>u 0x01 >=u 0x00 l1311
 // DataOut: af b c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid>
 
-l130B_thunk_fn130E:
+l130E:
+	byte l_52
+	byte h_53
+	word16 sp_54
 	byte b_55
-	byte l_56
-	byte h_57
-	return fn130E(b_30, b_30, e, d, 0xAB, 0x16, out b_55, out l_56, out h_57)
-// DataOut: a af b d e h l
+	*bOut = fn1229(b_30, b_30, e, d, 0xAB, 0x16, out l_52, out h_53, out sp_54)
+// DataOut: af b d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> a:<invalid> hl:0x16AB bc:<invalid> c:<invalid> h:0x16 de:<invalid> b:<invalid> l:0xAB -2(fp):af
 
-l130B_thunk_fn130E:
-	byte b_50
-	byte l_51
-	byte h_52
-	return fn130E(b_30, b_30, e, d, 0xAB, 0x16, out b_50, out l_51, out h_52)
+l1311:
+	return Mem19[0x16AB:byte]
 // DataOut: a af b d e h l
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:0x16AB bc:<invalid> c:<invalid> h:0x16 de:<invalid> b:<invalid> l:0xAB -2(fp):af
+// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
 
 fn12D8_exit:
 // DataOut: a b h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-
-
-
-void fn130B(byte c, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  C b c d e h l
-// LiveOut:
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
-fn130B_entry:
-// DataOut: b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-l130B:
-	branch C l1311_in_fn130B
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1311_in_fn130B:
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l130B_thunk_fn130E:
-	byte b_13
-	byte l_14
-	byte h_15
-	fn130E(c, b, e, d, l, h, out b_13, out l_14, out h_15)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-fn130B_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid>
-
-
-
-byte fn130E(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e h l
-// LiveOut: a b h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
-fn130E_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l130E:
-	byte l_8
-	byte h_9
-	word16 sp_10
-	byte b_11
-	*bOut = fn1229(c, b, e, d, l, h, out l_8, out h_9, out sp_10)
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1311:
-	return Mem0[0x16AB:byte]
-// DataOut: a af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid>
-
-fn130E_exit:
-// DataOut: a b h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid>
 
 
 
