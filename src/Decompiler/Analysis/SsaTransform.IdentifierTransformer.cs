@@ -176,26 +176,33 @@ namespace Reko.Analysis
                     // Defined identifier is "wider" than the storage being 
                     // read. The reader gets a slice of the defined identifier.
                     int offset = stgFrom.OffsetOf(stgTo);
+                    //$TODO: should always be slicing here. Casts should only be used 
+                    // when type conversions (e.g. int => float) are done.
                     if (offset > 0)
                         e = new Slice(id.DataType, sidFrom.Identifier, offset);
                     else
                         e = new Cast(id.DataType, sidFrom.Identifier);
                     sidUse = aliasFrom.SsaId;
                 }
-                else if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
-                {
-                    // There is a previous alias, try using that.
-                    sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState, bsTo);
-                    e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int) stgFrom.BitAddress);
-                }
                 else
                 {
-                    this.liveBits = this.liveBits - stgFrom.GetBitRange();
-                    DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockFrom.Name);
-                    sidUse = ReadVariableRecursive(bsTo);
-                    e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int) stgFrom.BitAddress);
+                    // The defined identifier only writes some of the bits of the 
+                    // read identifier, so we have to proceed to the previous alias
+                    if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
+                    {
+                        // There is a previous alias, try using that.
+                        sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState, bsTo);
+                    }
+                    else
+                    {
+                        this.liveBits = this.liveBits - stgFrom.GetBitRange();
+                        DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockFrom.Name);
+                        sidUse = ReadVariableRecursive(bsTo);
+                    }
+                    e = DepositBits(sidUse, aliasFrom.SsaId, (int) stgFrom.BitAddress);
                 }
 
+                // Insert an alias assignment. 
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
@@ -203,6 +210,12 @@ namespace Reko.Analysis
                     sidFrom.Uses.Add(sidAlias.DefStatement);
                 aliasFrom.Aliases[id] = sidAlias;
                 return sidAlias;
+            }
+
+            private Expression DepositBits(SsaIdentifier sidUse, SsaIdentifier sidFrom, int bitAddress)
+            {
+                var e = new DepositBits(sidUse.Identifier, sidFrom.Identifier, bitAddress);
+                return e;
             }
 
             /// <summary>
@@ -536,7 +549,7 @@ namespace Reko.Analysis
                     return null;
 
                 // Identifier id is defined locally in this block.
-                // Has the alias already been calculated?
+                // Has an alias already been calculated?
                 for (var a = alias; a != null; a = a.PrevState)
                 {
                     DebugEx.Verbose(trace, "    found alias ({0}, {1}, ({2})", bs.Block.Name, a.SsaId.Identifier.Name, string.Join(",", a.Aliases.Select(aa => aa.Value.Identifier.Name)));
