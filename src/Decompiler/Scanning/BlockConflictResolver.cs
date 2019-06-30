@@ -220,6 +220,48 @@ namespace Reko.Scanning
         {
             //Debug.Print("Removing block: {0}", n.Address);
             blocks.Nodes.Remove(n);
+            foreach (var i in n.Instructions)
+            {
+                RemoveDirectlyCalledAddress(i);
+            }
+        }
+
+        private void RemoveDirectlyCalledAddress(RtlInstructionCluster i)
+        {
+            var callTransfer = InstrClass.Call | InstrClass.Transfer;
+            if ((i.Class & callTransfer) != callTransfer)
+                return;
+            var addrDest = DestinationAddress(i);
+            if (addrDest == null)
+                return;
+            if (!this.sr.DirectlyCalledAddresses.ContainsKey(addrDest))
+                return;
+            this.sr.DirectlyCalledAddresses[addrDest]--;
+            if (this.sr.DirectlyCalledAddresses[addrDest] == 0)
+            {
+                this.sr.DirectlyCalledAddresses.Remove(addrDest);
+            }
+        }
+
+        /// <summary>
+        /// Find the constant destination of a transfer instruction.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private Address DestinationAddress(RtlInstructionCluster i)
+        {
+            var rtl = i.Instructions[i.Instructions.Length - 1];
+            for (;;)
+            {
+                if (!(rtl is RtlIf rif))
+                    break;
+                rtl = rif.Instruction;
+            }
+            if (rtl is RtlTransfer xfer)
+            {
+                return xfer.Target as Address;
+            }
+            return null;
         }
 
         private void RemoveConflictsRandomly()

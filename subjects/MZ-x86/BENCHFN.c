@@ -263,12 +263,14 @@ void _exit(Eq_n * ds, word16 wArg02)
 // 0800:0336: void __setargv(Register byte al, Register (ptr16 Eq_n) ds, Stack Eq_n wArg00)
 void __setargv(byte al, Eq_n * ds, Eq_n wArg00)
 {
+	byte al_n;
 	struct Eq_n * es_n;
 	0x0800->t0330 = wArg00;
 	0x0800->ptr0332 = ds;
+	word16 si_n = ds->w008A;
 	struct Eq_n * es_n = ds->ptr0090;
 	word16 ax_n = DPB(ax, ds->b0080, 0);
-	word16 si_n = ds->w008A;
+	Eq_n si_n = si_n + 0x02;
 	word16 cx_n = 0x01;
 	es_n = es_n;
 	if (ds->b0092 >= 0x03)
@@ -277,6 +279,7 @@ void __setargv(byte al, Eq_n * ds, Eq_n wArg00)
 		byte Eq_n::* di_n = si_n + 0x02;
 		byte cl_n = 0x7F;
 		word16 cx_n = 0x7F;
+		al_n = 0x00;
 		while (cx_n != 0x00)
 		{
 			--cx_n;
@@ -288,69 +291,55 @@ void __setargv(byte al, Eq_n * ds, Eq_n wArg00)
 		}
 		if (cx_n == 0x00)
 		{
-			fn0800-03E7(0x00, si_n + 0x02);
+l0800_nE7:
+			_abort(al_n, si_n);
 			return;
 		}
 		cx_n = DPB(cx_n, cl_n ^ 0x7F, 0);
 	}
 	cui16 ax_n = ax_n + 0x02 + cx_n;
-	byte al_n = (byte) (ax_n & ~0x01);
+	al_n = (byte) (ax_n & ~0x01);
 	Eq_n di_n = fp - ((ax_n & ~0x01) & ~0x01);
-	if (di_n < 0x00)
-		fn0800-03E7(al_n, si_n + 0x02);
-	else
+	if (di_n >= 0x00)
 	{
 		ss->*(di_n - 0x02) = cx_n;
 		word16 cx_n = cx_n - 0x01;
-		fn0800-0393(cx_n, &Eq_n::t0081, ax_n + 0x01, es_n, si_n + 0x02, di_n, ss, es_n, wArg00);
-	}
-}
-
-// 0800:038D: void fn0800-038D(Register Eq_n cx, Register (memptr (ptr16 Eq_n) Eq_n) dx, Register word16 bx, Register (ptr16 Eq_n) bp, Register (memptr (ptr16 Eq_n) byte) si, Register Eq_n di, Register (ptr16 Eq_n) ds)
-void fn0800-038D(Eq_n cx, Eq_n Eq_n::*dx, word16 bx, Eq_n * bp, byte Eq_n::*si, Eq_n di, Eq_n * ds)
-{
-	fn0800-0393(cx - 0x01, dx, bx, bp, si, di, ss, ds, cx);
-}
-
-// 0800:0393: void fn0800-0393(Register word16 cx, Register (memptr (ptr16 Eq_n) Eq_n) dx, Register word16 bx, Register (ptr16 Eq_n) bp, Register (memptr (ptr16 Eq_n) byte) si, Register Eq_n di, Register (ptr16 Eq_n) es, Register (ptr16 Eq_n) ds, Stack Eq_n wArg00)
-void fn0800-0393(word16 cx, Eq_n Eq_n::*dx, word16 bx, Eq_n * bp, byte Eq_n::*si, Eq_n di, Eq_n * es, Eq_n * ds, Eq_n wArg00)
-{
-	for (; cx != 0x00; --cx)
-	{
-		es->*di = ds->*si;
-		++si;
-		di = (word32) di + 0x01;
-	}
-	es->*di = 0x00;
-	byte Eq_n::* di_n = (word32) di + 0x01;
-	struct Eq_n Eq_n::* si_n = dx;
-	word16 cx_n = bx;
-	word16 ax_n = cx;
-	byte al_n = (byte) cx;
-	word16 dx_n = cx;
-	word16 bx_n = cx + 0x01;
-	while (true)
-	{
-		Eq_n CZ_n = fn0800-03BF(ax_n, cx_n, dx_n, bx_n, si_n, di_n, es, bp, out ax_n, out cx_n, out dx_n, out bx_n, out si_n, out di_n);
-		bool C_n = (bool) CZ_n;
-		if (!CZ_n)
+		di_n = di_n;
+		while (true)
 		{
-			do
+			Eq_n di_n;
+			if (cx_n == 0x00)
+				break;
+			ss->*di_n = es_n->*si_n;
+			si_n = (word32) si_n + 0x01;
+			di_n = (word16) di_n + 0x01;
+			--cx_n;
+		}
+		ss->*di_n = 0x00;
+		Eq_n di_n = (word16) di_n + 0x01;
+		struct Eq_n Eq_n::* si_n = &Eq_n::t0081;
+		word16 cx_n = ax_n + 0x01;
+		word16 ax_n = cx_n;
+		al_n = (byte) cx_n;
+		word16 dx_n = cx_n;
+		word16 bx_n = cx_n + 0x01;
+		while (true)
+		{
+			Eq_n CZ_n = fn0800-03BF(ax_n, cx_n, dx_n, bx_n, si_n, di_n, ss, es_n, out ax_n, out cx_n, out dx_n, out bx_n, out si_n, out di_n);
+			bool C_n = (bool) CZ_n;
+			if (!CZ_n)
 			{
-				if (C_n)
+				do
 				{
-					struct Eq_n * ds_n = 0x0800->ptr0332;
-					ds_n->w0084 = bx_n;
-					word16 cx_n = (word16) wArg00.u0 + dx_n;
-					byte Eq_n::* si_n = fp + 0x02;
-					Eq_n bp_n = fp + 0x02 - (bx_n + 0x01) * 0x02;
-					if (bp_n < 0x00)
+					if (C_n)
 					{
-						fn0800-03E7(al_n, fp + 0x02);
-						return;
-					}
-					else
-					{
+						word16 cx_n = ss->*(di_n - 0x02) + dx_n;
+						struct Eq_n * ds_n = 0x0800->ptr0332;
+						ds_n->w0084 = bx_n;
+						si_n = di_n;
+						Eq_n bp_n = di_n - (bx_n + 0x01) * 0x02;
+						if (bp_n < 0x00)
+							goto l0800_nE7;
 						ds_n->t0086 = bp_n;
 						while (cx_n != 0x00)
 						{
@@ -359,7 +348,7 @@ void fn0800-0393(word16 cx, Eq_n Eq_n::*dx, word16 bx, Eq_n * bp, byte Eq_n::*si
 							do
 							{
 								byte al_n = ds_n->*si_n;
-								++si_n;
+								si_n = (word32) si_n + 0x01;
 								--cx_n;
 							} while (al_n != 0x00 && cx_n != 0x00);
 							if (al_n != 0x00)
@@ -367,40 +356,44 @@ void fn0800-0393(word16 cx, Eq_n Eq_n::*dx, word16 bx, Eq_n * bp, byte Eq_n::*si
 						}
 						ss->*bp_n = 0x00;
 						word16 sp_n;
-						word16 cx_n;
+						struct Eq_n * ss_n;
 						struct Eq_n * ds_n;
-						word16 si_n;
+						bool D_n;
 						struct Eq_n * es_n;
-						word16 di_n;
-						byte al_n;
+						word16 si_n;
+						byte ah_n;
 						byte SZO_n;
 						bool C_n;
+						byte al_n;
+						word16 ax_n;
 						word16 bp_n;
 						word16 dx_n;
 						word16 bx_n;
-						word16 ax_n;
-						byte CZ_n;
 						byte SCZO_n;
+						word16 cx_n;
+						word16 di_n;
+						byte cl_n;
 						bool Z_n;
-						struct Eq_n * ss_n;
+						byte CZ_n;
 						0x0800->t0330();
 						return;
 					}
-				}
-				Eq_n CZ_n = fn0800-03BF(ax_n, cx_n, dx_n, bx_n, si_n, di_n, es, bp, out ax_n, out cx_n, out dx_n, out bx_n, out si_n, out di_n);
-				C_n = (bool) CZ_n;
-			} while (CZ_n);
-		}
-		if (al_n == 0x20 || (al_n == 0x0D || al_n == 0x09))
-		{
-			al_n = 0x00;
-			ax_n = DPB(ax_n, 0x00, 0);
+					Eq_n CZ_n = fn0800-03BF(ax_n, cx_n, dx_n, bx_n, si_n, di_n, ss, es_n, out ax_n, out cx_n, out dx_n, out bx_n, out si_n, out di_n);
+					C_n = (bool) CZ_n;
+				} while (CZ_n);
+			}
+			if (al_n == 0x20 || (al_n == 0x0D || al_n == 0x09))
+			{
+				al_n = 0x00;
+				ax_n = DPB(ax_n, 0x00, 0);
+			}
 		}
 	}
+	goto l0800_nE7;
 }
 
-// 0800:03BF: FlagGroup byte fn0800-03BF(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register (memptr (ptr16 Eq_n) Eq_n) si, Register (memptr (ptr16 Eq_n) byte) di, Register (ptr16 Eq_n) es, Register (ptr16 Eq_n) ds, Register out ptr16 axOut, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 siOut, Register out Eq_n diOut)
-byte fn0800-03BF(word16 ax, word16 cx, word16 dx, word16 bx, Eq_n Eq_n::*si, byte Eq_n::*di, Eq_n * es, Eq_n * ds, ptr16 & axOut, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & siOut, Eq_n & diOut)
+// 0800:03BF: FlagGroup byte fn0800-03BF(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register (memptr (ptr16 Eq_n) Eq_n) si, Register Eq_n di, Register (ptr16 Eq_n) es, Register (ptr16 Eq_n) ds, Register out ptr16 axOut, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 siOut, Register out Eq_n diOut)
+byte fn0800-03BF(word16 ax, word16 cx, word16 dx, word16 bx, Eq_n Eq_n::*si, Eq_n di, Eq_n * es, Eq_n * ds, ptr16 & axOut, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & siOut, Eq_n & diOut)
 {
 	*dxOut = dx;
 	*diOut = di;
@@ -415,7 +408,7 @@ byte fn0800-03BF(word16 ax, word16 cx, word16 dx, word16 bx, Eq_n Eq_n::*si, byt
 		word16 dx_n;
 		*dxOut = dx + 0x01;
 		word16 di_n;
-		*diOut = di + 0x01;
+		*diOut = (byte Eq_n::*) ((word32) di + 0x01);
 		ax_n = DPB(ax, al_n, 0);
 		if (al_n == 0x00)
 		{
@@ -455,12 +448,6 @@ byte fn0800-03BF(word16 ax, word16 cx, word16 dx, word16 bx, Eq_n Eq_n::*si, byt
 		}
 	}
 	return CZ_n;
-}
-
-// 0800:03E7: void fn0800-03E7(Register byte al, Register Eq_n si)
-void fn0800-03E7(byte al, Eq_n si)
-{
-	_abort(al, si);
 }
 
 // 0800:0421: void __setenvp(Register Eq_n si, Register (ptr16 Eq_n) ds)

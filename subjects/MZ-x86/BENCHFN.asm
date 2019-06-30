@@ -127,7 +127,7 @@ fn0800_01DA proc
 
 ;; _abort: 0800:01E2
 ;;   Called from:
-;;     0800:03E7 (in fn0800_03E7)
+;;     0800:03E7 (in __setargv)
 ;;     0800:0454 (in __setenvp)
 _abort proc
 	mov	cx,001E
@@ -413,19 +413,12 @@ l0800_0387:
 	mov	sp,di
 	mov	ax,es
 	mov	ds,ax
-
-;; fn0800_038D: 0800:038D
-fn0800_038D proc
 	mov	ax,ss
 	mov	es,ax
 	push	cx
 	dec	cx
 
-;; fn0800_0393: 0800:0393
-;;   Called from:
-;;     0800:0392 (in fn0800_038D)
-;;     0800:0392 (in __setargv)
-fn0800_0393 proc
+l0800_0393:
 	rep movsb
 
 l0800_0395:
@@ -467,8 +460,8 @@ l0800_03BB:
 
 ;; fn0800_03BF: 0800:03BF
 ;;   Called from:
-;;     0800:03A3 (in fn0800_0393)
-;;     0800:03AA (in fn0800_0393)
+;;     0800:03A3 (in __setargv)
+;;     0800:03AA (in __setargv)
 fn0800_03BF proc
 	or	ax,ax
 	jz	03CA
@@ -513,12 +506,7 @@ l0800_03E4:
 l0800_03E6:
 	ret
 
-;; fn0800_03E7: 0800:03E7
-;;   Called from:
-;;     0800:036F (in __setargv)
-;;     0800:0385 (in __setargv)
-;;     0800:03FF (in fn0800_0393)
-fn0800_03E7 proc
+l0800_03E7:
 	jmp	01E2
 
 l0800_03EA:
