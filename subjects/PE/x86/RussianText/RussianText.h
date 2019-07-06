@@ -10,7 +10,7 @@ Eq_2: (fn void ((ptr32 Eq_4)))
 	T_2 (in fn004011FC : ptr32)
 	T_3 (in signature of fn004011FC : void)
 	T_146 (in fn004011FC : ptr32)
-Eq_4: (struct "Eq_4" (0 word32 dw0000) (4 word32 dw0004))
+Eq_4: (struct "Eq_4" (0 word32 dw0000) (4 ptr32 ptr0004))
 	T_4 (in dwArg04 : (ptr32 Eq_4))
 	T_5 (in dwArg04 : word32)
 	T_148 (in fp - 0x0000000C : word32)
@@ -703,10 +703,10 @@ T_162: (in Mem15[dwArg04 + 0x00000000:word32] : word32)
   Class: Eq_159
   DataType: word32
   OrigDataType: word32
-T_163: (in 0x004020E4 : word32)
+T_163: (in 0x004020E4 : ptr32)
   Class: Eq_163
-  DataType: word32
-  OrigDataType: word32
+  DataType: ptr32
+  OrigDataType: ptr32
 T_164: (in 0x00000004 : word32)
   Class: Eq_164
   DataType: word32
@@ -717,7 +717,7 @@ T_165: (in dwArg04 + 0x00000004 : word32)
   OrigDataType: ptr32
 T_166: (in Mem16[dwArg04 + 0x00000004:word32] : word32)
   Class: Eq_163
-  DataType: word32
+  DataType: ptr32
   OrigDataType: word32
 T_167:
   Class: Eq_167
@@ -734,7 +734,7 @@ typedef void (Eq_2)(Eq_4 *);
 
 typedef struct Eq_4 {
 	word32 dw0000;	// 0
-	word32 dw0004;	// 4
+	ptr32 ptr0004;	// 4
 } Eq_4;
 
 typedef HANDLE (Eq_33)();

@@ -40,10 +40,10 @@ T_6: (in n > 0xFFFFFFFE : bool)
   Class: Eq_6
   DataType: bool
   OrigDataType: bool
-T_7: (in 0x10072000 : word32)
+T_7: (in 0x10072000 : ptr32)
   Class: Eq_2
   DataType: (ptr32 char)
-  OrigDataType: word32
+  OrigDataType: ptr32
 T_8: (in 0x00000001 : word32)
   Class: Eq_8
   DataType: word32
@@ -52,22 +52,22 @@ T_9: (in n + 0x00000001 : word32)
   Class: Eq_9
   DataType: uint32
   OrigDataType: uint32
-T_10: (in 0x10072018 : word32)
+T_10: (in 0x10072018 : ptr32)
   Class: Eq_2
   DataType: (ptr32 char)
-  OrigDataType: word32
-T_11: (in 0x10072014 : word32)
+  OrigDataType: ptr32
+T_11: (in 0x10072014 : ptr32)
   Class: Eq_2
   DataType: (ptr32 char)
-  OrigDataType: word32
-T_12: (in 0x10072010 : word32)
+  OrigDataType: ptr32
+T_12: (in 0x10072010 : ptr32)
   Class: Eq_2
   DataType: (ptr32 char)
-  OrigDataType: word32
-T_13: (in 0x10072008 : word32)
+  OrigDataType: ptr32
+T_13: (in 0x10072008 : ptr32)
   Class: Eq_2
   DataType: (ptr32 char)
-  OrigDataType: word32
+  OrigDataType: ptr32
 T_14: (in eax : Eq_14)
   Class: Eq_14
   DataType: Eq_14

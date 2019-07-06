@@ -92,6 +92,6 @@ void fn004011FC(Eq_n * dwArg04)
 {
 	globals->dw4020F8 = fn00401158() + 0x1C;
 	dwArg04->dw0000 = 0x82727349;
-	dwArg04->dw0004 = 0x004020E4;
+	dwArg04->ptr0004 = 0x004020E4;
 }
 
