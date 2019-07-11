@@ -65,6 +65,10 @@ namespace Reko.Scanning
             this.conflicts = BuildConflictGraph(blocks.Nodes);
         }
 
+        /// <summary>
+        /// Resolve all block conflicts.
+        /// </summary>
+        /// <param name="procedureStarts"></param>
         public void ResolveBlockConflicts(IEnumerable<Address> procedureStarts)
         {
             var reachable = TraceReachableBlocks(procedureStarts);
@@ -79,29 +83,6 @@ namespace Reko.Scanning
             this.sr.Dump("After parents of conflicting blocks removed");
             // RemoveBlocksWithFewPredecessors();
             //DumpGraph();
-            RemoveBlocksWithFewSuccessors();
-            Dump("After few successor removal");
-            RemoveConflictsRandomly();
-        }
-
-        /// <summary>
-        /// Resolve all block conflicts.
-        /// </summary>
-        /// <param name="blocks"></param>
-        public void BlockConflictResolution(Address addrProcedureStart)
-        {
-            var valid = TraceReachableBlocks(new[] { addrProcedureStart });
-            // We're never using these stats, so disable them for now.
-            //ComputeStatistics(valid);
-            Dump("Before conflict resolution");
-            RemoveBlocksEndingWithInvalidInstruction();
-            Dump("After invalid instruction elimination");
-            RemoveBlocksConflictingWithValidBlocks(valid);
-            Dump("After conflicting block removal");
-            RemoveParentsOfConflictingBlocks();
-            Dump("After parents of conflicting blocks removed");
-            RemoveBlocksWithFewAncestors();
-            Dump("After few ancestors removal");
             RemoveBlocksWithFewSuccessors();
             Dump("After few successor removal");
             RemoveConflictsRandomly();
