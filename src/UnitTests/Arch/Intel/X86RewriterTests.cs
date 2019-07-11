@@ -1000,7 +1000,7 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|0C00:0000(2): 1 instructions",
                 "1|L--|FPUF = cond(rArg0 - rArg1)",
-                "2|L--|0C00:0002(7): 2 instructions",
+                "2|T--|0C00:0002(7): 2 instructions",
                 "3|L--|SCZO = FPUF",
                 "4|T--|if (Test(NE,FPUF)) branch 0C00:0000");
         }
@@ -1017,7 +1017,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Jnz("foo");
             });
             AssertCode(
-                "0|L--|10000000(12): 3 instructions",
+                "0|T--|10000000(12): 3 instructions",
                 "1|L--|SCZO = FPUF",
                 "2|L--|eax = Mem0[esp + 0x00000004:word32]",
                 "3|T--|if (Test(LE,FPUF)) branch 10000000");
