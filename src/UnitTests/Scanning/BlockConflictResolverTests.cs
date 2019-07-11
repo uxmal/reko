@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Scanning
 
             When_DisassembleProcedure();
             var hps = new BlockConflictResolver(program,CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
-            hps.BlockConflictResolution(proc.BeginAddress);
+            hps.ResolveBlockConflicts(new[] { proc.BeginAddress });
 
             var sExp =
             #region Expected
@@ -231,7 +231,7 @@ l00010009:  // pred: l00010008
 
             When_DisassembleProcedure();
             var hps = new BlockConflictResolver(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
-            hps.BlockConflictResolution(proc.BeginAddress);
+            hps.ResolveBlockConflicts(new[] { proc.BeginAddress });
 
             var sExp =
             #region Expected
