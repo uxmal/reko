@@ -358,6 +358,8 @@ namespace Reko.Core
         {
             this.Name = name;
             this.Domain = domain;
+            this.BitAddress = 0;
+            this.BitSize = 1;
         }
 
         public override T Accept<T>(StorageVisitor<T> visitor)

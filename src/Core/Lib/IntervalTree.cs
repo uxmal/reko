@@ -1,4 +1,4 @@
-﻿/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 // File Name               : IntervalTree.cs
 //      Created            : 06 8 2012   22:38
 //      Author             : Costin S
@@ -327,9 +327,11 @@ namespace Reko.Core.Lib
 
         /// <summary>
         /// Gets the collection of values (ascending order)
-        /// Those intervals starting at the same time/value are sorted further based on their End value (i.e. returned in ascending order of their End values)
+        /// Those intervals starting at the same time/value are sorted further
+        /// based on their End value (i.e. returned in ascending order of their
+        /// End values)
         /// </summary>
-        public IEnumerator<TypeValue> Values
+        public IEnumerable<TypeValue> Values
         {
             get
             {

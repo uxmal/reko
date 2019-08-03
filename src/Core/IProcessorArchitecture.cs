@@ -176,7 +176,7 @@ namespace Reko.Core
         int? GetOpcodeNumber(string name);
         
         /// <summary>
-        /// Returns regist333er whose name is 'name'
+        /// Returns register whose name is 'name'
         /// </summary>
         RegisterStorage GetRegister(string name);
 
