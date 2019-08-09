@@ -158,7 +158,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.srsdb:
                 case Opcode.srsia:
                 case Opcode.srsib:
-                case Opcode.ssat16:
                 case Opcode.ssax:
                 case Opcode.stl:
                 case Opcode.stlb:
@@ -185,7 +184,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.uqsub8:
                 case Opcode.usad8:
                 case Opcode.usada8:
-                case Opcode.usat16:
                 case Opcode.uxtab16:
                 case Opcode.uxtb16:
                 case Opcode.vabal:
@@ -223,7 +221,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vmovl:
                 case Opcode.vmovn:
                 case Opcode.vmsr:
-                case Opcode.vmull:
                 case Opcode.vorn:
                 case Opcode.vpadal:
                 case Opcode.vpaddl:
@@ -265,7 +262,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vselge:
                 case Opcode.vselgt:
                 case Opcode.vselvs:
-                case Opcode.vshll:
                 case Opcode.vshrn:
                 case Opcode.vsli:
                 case Opcode.vsri:
@@ -274,7 +270,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vst3:
                 case Opcode.vst4:
                 case Opcode.vsubhn:
-                case Opcode.vsubl:
                 case Opcode.vsubw:
                 case Opcode.vswp:
                 case Opcode.vtbl:
@@ -421,6 +416,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.smusd: RewriteSmusd(); break;
                 case Opcode.ssat: RewriteSsat(); break;
+                case Opcode.ssat16: RewriteSat16(PrimitiveType.Int16); break;
                 case Opcode.ssub16: RewriteVectorBinOp("__ssub16", ArmVectorData.S16); break;
                 case Opcode.ssub8: RewriteVectorBinOp("__ssub8", ArmVectorData.S8); break;
                 case Opcode.stc2l: RewriteStc("__stc2l"); break;
@@ -464,6 +460,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.uqasx: RewriteVectorBinOp("__uqasx_{0}", ArmVectorData.U16); break;
                 case Opcode.usat: RewriteUsat(); break;
+                case Opcode.usat16: RewriteSat16(PrimitiveType.UInt16); break;
                 case Opcode.usax: RewriteUsax(); break;
                 case Opcode.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
                 case Opcode.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
@@ -506,6 +503,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vmrs: RewriteVmrs(); break;
                 case Opcode.vmvn: RewriteVmvn(); break;
                 case Opcode.vmul: RewriteVectorBinOp("__vmul_{0}"); break;
+                case Opcode.vmull: RewriteVectorBinOp("__vmull_{0}"); break;
                 case Opcode.vorr: RewriteVecBinOp(m.Or); break;
                 case Opcode.vneg: RewriteVectorUnaryOp("__vneg_{0}"); break;
                 case Opcode.vnmla: RewriteVectorBinOp("__vnmla_{0}"); break;
@@ -526,10 +524,12 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vstmia: RewriteVstmia(true, true); break;
                 case Opcode.vsqrt: RewriteVsqrt(); break;
                 case Opcode.vshl: RewriteVectorBinOp("__vshl_{0}"); break;
+                case Opcode.vshll: RewriteVectorBinOp("__vshll_{0}"); break;
                 case Opcode.vshr: RewriteVectorBinOp("__vshr_{0}"); break;
                 case Opcode.vsra: RewriteVectorBinOp("__vsra_{0}"); break;
                 case Opcode.vstr: RewriteVstr(); break;
                 case Opcode.vsub: RewriteVectorBinOp("__vsub_{0}"); break;
+                case Opcode.vsubl: RewriteVectorBinOp("__vsubl_{0}"); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
                 {

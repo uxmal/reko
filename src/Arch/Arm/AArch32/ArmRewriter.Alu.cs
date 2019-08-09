@@ -892,6 +892,20 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(Q(), m.Cond(dst));
         }
 
+        private void RewriteSat16(PrimitiveType elemType)
+        {
+            var dst = this.Operand(Dst());
+            var src1 = this.Operand(Src1());
+            var src2 = this.Operand(Src2());
+            var arrSrc = new ArrayType(elemType, 2);
+            var arrDst = new ArrayType(elemType, 2);
+
+            var intrinsic = host.PseudoProcedure("__usat16", arrDst, src1, src2);
+            m.Assign(dst, intrinsic);
+            m.Assign(Q(), m.Cond(dst));
+        }
+
+
         private void RewriteUsax()
         {
             var sum = binder.CreateTemporary(PrimitiveType.UInt16);

@@ -6633,15 +6633,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.Capstone)]
         public void ThumbRw_umaal()
         {
-            RewriteCode("E0FB63F0");	// umaal pc, r0, r0, r3
+            RewriteCode("E0FB6320");	// umaal r2, r0, r0, r3
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v2 = r0 *u r3",
                 "2|L--|v2 = v2 + (uint64) r0",
-                "3|L--|r0_pc = v2 + (uint64) pc");
+                "3|L--|r0_r2 = v2 + (uint64) r2");
         }
 
         [Test]
@@ -6945,13 +6944,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vsubl()
         {
             RewriteCode("E1FFA042");	// vsubl.u32 q10, d17, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|q10 = __vsubl_u32(d17, d16)");
         }
 
         [Test]
@@ -7143,13 +7141,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vmull()
         {
             RewriteCode("E3FF2B8C");	// vmull.u32 q12, d3, d27
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|q12 = __vmull_u32(d3, d27)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmull_polynomial()
+        {
+            RewriteCode("E3FF2B8E");	// vmull.p64 q12, d3, d27
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q12 = __vmull_p64(d3, d27)");
         }
 
         [Test]
@@ -7644,13 +7651,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vshll()
         {
             RewriteCode("FAFF1E4A");	// vshll.u32 q10, d14, #0x1a
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|q10 = __vshll_u32(d14, 26)");
         }
 
         [Test]
@@ -7664,13 +7670,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_usat16()
         {
             RewriteCode("ACF30200");	// usat16 r0, #2, ip
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r0 = __usat16(0x00000002, ip)",
+                "2|L--|Q = cond(r0)");
         }
 
         [Test]
