@@ -13,9 +13,12 @@ struct Eq_n * g_ptr1498 = null;
 struct Eq_n * g_ptr149C = null;
 struct Eq_n * g_ptr14A0 = null;
 struct Eq_n * g_ptr14A4 = null;
-int32 g_dw14A8 = 0;
-int32 g_dw14AC;
-int32 g_dw14B0;
+Eq_n g_t14A8 = 
+	{
+		0
+	};
+Eq_n g_t14AC;
+Eq_n g_t14B0;
 word32 g_dw14BC;
 ptr32 g_ptr14C0;
 int32 g_dw14C4;

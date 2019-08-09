@@ -9,14 +9,52 @@ Eq_n g_t0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
+Eq_n g_t0078;
+struct Eq_n g_t142C = 
+	{
+		
+		{
+			0x61203D20
+		},
+		0x20,
+		&g_b25642C20,
+		&g_b62203D20,
+		&g_t25640A00,
+		789065519,
+		0x00082F39,
+		11496,
+	};
+struct Eq_n g_t1DAC = 
+	{
+		
+		{
+			0x25000000
+		},
+		0x00,
+		&g_b23302D20,
+		&g_b2B000000,
+		&g_t30313233,
+		943284578,
+		0x63646566,
+		808530483,
+	};
 ptr32 g_ptr2B88 = 0x00000000;
 struct Eq_n * g_ptr2B8C = &g_t4000;
 struct Eq_n * g_ptr2B90 = null;
 struct Eq_n * g_ptr2B94 = &g_t10202;
 struct Eq_n * g_ptr2B98 = &g_t3030303;
-int32 g_dw2B9C = 67372036;
-int32 g_dw2BA0 = 67372036;
-int32 g_dw2BA4 = 84215045;
+Eq_n g_t2B9C = 
+	{
+		67372036
+	};
+Eq_n g_t2BA0 = 
+	{
+		67372036
+	};
+Eq_n g_t2BA4 = 
+	{
+		84215045
+	};
 word32 g_dw2BB0 = 0x05050505;
 ptr32 g_ptr2BB4 = 0x06060606;
 int32 g_dw2BB8 = 101058054;
@@ -31,10 +69,16 @@ Eq_n g_t2BC4 =
 word32 g_dw2CC8;
 word32 g_dw2CD4;
 struct Eq_n * g_ptr2CE0;
-Eq_n g_t2CE8;
-Eq_n g_t2CF0;
+struct Eq_n * g_ptr2CE8;
+struct Eq_n * g_ptr2CF0;
 Eq_n g_t4000;
 Eq_n g_t10202;
 Eq_n g_t3030303;
 Eq_n g_t6060606;
+byte g_b23302D20;
+Eq_n g_t25640A00;
+byte g_b25642C20;
+byte g_b2B000000;
+Eq_n g_t30313233;
+byte g_b62203D20;
 
