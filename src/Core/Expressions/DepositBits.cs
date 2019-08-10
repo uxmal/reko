@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,16 +42,18 @@ namespace Reko.Core.Expressions
     /// </remarks>
 	public class DepositBits : Expression
 	{
-		private Expression src;
-		private Expression bits;
-		private int bitPos;
-
 		public DepositBits(Expression src, Expression bits, int bitPos) : base(src.DataType)
 		{
-			this.src = src;
-			this.bits = bits;
-			this.bitPos = bitPos;
+			this.Source = src;
+			this.InsertedBits = bits;
+			this.BitPosition = bitPos;
 		}
+
+        public int BitPosition { get; }
+
+        public Expression Source { get; }
+
+        public Expression InsertedBits { get;  }
 
         public override IEnumerable<Expression> Children
         {
@@ -73,30 +75,14 @@ namespace Reko.Core.Expressions
 			visit.VisitDepositBits(this);
 		}
 
-		public int BitPosition
-		{
-			get { return bitPos; }
-		}
-
 		public override Expression CloneExpression()
 		{
-			return new DepositBits(src.CloneExpression(), bits.CloneExpression(), bitPos);
+			return new DepositBits(Source.CloneExpression(), InsertedBits.CloneExpression(), BitPosition);
 		}
 
         public override Expression Invert()
         {
             return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
         }
-
-        public Expression Source
-		{
-			get { return src; }
-			set { src = value; }
-		}
-
-		public Expression InsertedBits
-		{
-			get { return bits; }
-		}
 	}
 }
