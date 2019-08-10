@@ -138,11 +138,13 @@ namespace Reko.Arch.PowerPC
             {
                 var reg = binder.EnsureRegister(arch.GetRegister(r));
                 Expression w = reg;
-                if (reg.DataType.Size > 4)
+                if (reg.DataType.BitSize > 32)
                 {
                     var tmp2 = binder.CreateTemporary(PrimitiveType.Word32);
+                    var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(reg.DataType.BitSize - 32));
                     m.Assign(tmp2, m.Mem32(tmp));
-                    m.Assign(reg, m.Dpb(reg, tmp2, 0));
+                    m.Assign(tmpHi, m.Slice(tmpHi.DataType, reg, 32));
+                    m.Assign(reg, m.Seq(tmpHi, tmp2));
                 }
                 else
                 {

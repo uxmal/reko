@@ -366,8 +366,7 @@ namespace Reko.Arch.M68k
                 dividend = binder.EnsureRegister(((RegisterOperand) instr.op2).Register);
                 m.Assign(rem, m.Cast(rem.DataType, m.Remainder(dividend, src)));
                 m.Assign(quot, m.Cast(quot.DataType, op(dividend, src)));
-                m.Assign(dividend, m.Dpb(dividend, rem, 16));
-                m.Assign(dividend, m.Dpb(dividend, quot, 0));
+                m.Assign(dividend, m.Seq(rem, quot));
             }
             else
             {
@@ -786,8 +785,9 @@ namespace Reko.Arch.M68k
         {
             if (dst is Identifier && dst.DataType.BitSize > bitSize)
             {
-                var dpb = m.Dpb(dst, src, 0);
-                m.Assign(dst, dpb);
+                var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bitSize));
+                m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, bitSize));
+                m.Assign(dst, m.Seq(tmpHi, src));
             }
             else
             {

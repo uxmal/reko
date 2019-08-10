@@ -1,4 +1,4 @@
-﻿using Reko.Core.Expressions;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -39,7 +39,9 @@ namespace Reko.Arch.zSeries
             m.Assign(dst, src);
             if (reg.DataType.BitSize > dt.BitSize)
             {
-                m.Assign(reg, m.Dpb(reg, dst, 0));
+                var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(reg.DataType.BitSize - dt.BitSize));
+                m.Assign(tmpHi, m.Slice(tmpHi.DataType, reg, dt.BitSize));
+                m.Assign(reg, m.Seq(tmpHi, dst));
             }
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.Assign(cc, m.Cond(dst));
@@ -60,8 +62,10 @@ namespace Reko.Arch.zSeries
             var dst = Reg(instr.Ops[0]);
             var dt = PrimitiveType.Word32;
             var tmp = binder.CreateTemporary(dt);
+            var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(src.DataType.BitSize - dt.BitSize));
             m.Assign(tmp, m.IAdd(m.Cast(dt,dst), m.Cast(dt,src)));
-            m.Assign(dst, m.Dpb(dst, tmp, 0));
+            m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, dt.BitSize));
+            m.Assign(dst, m.Seq(tmpHi, tmp));
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.Assign(cc, m.Cond(tmp));
         }
@@ -122,7 +126,9 @@ namespace Reko.Arch.zSeries
             var dst = Reg(instr.Ops[0]);
             if (src.DataType.BitSize < dst.DataType.BitSize)
             {
-                m.Assign(dst, m.Dpb(dst, src, 0));
+                var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - src.DataType.BitSize));
+                m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, src.DataType.BitSize));
+                m.Assign(dst, m.Seq(tmpHi, src));
             }
             else
             {
@@ -192,7 +198,17 @@ namespace Reko.Arch.zSeries
         {
             var src = Reg(instr.Ops[1]);
             var dst = Reg(instr.Ops[0]);
-            m.Assign(dst, m.Dpb(dst, m.Cast(PrimitiveType.Word32, src), 0));
+            var excessBits = dst.DataType.BitSize - src.DataType.BitSize;
+            if (excessBits > 0)
+            {
+                var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(excessBits));
+                m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, src.DataType.BitSize));
+                m.Assign(dst, m.Seq(dst, m.Slice(PrimitiveType.Word32, src, 0)));
+            }
+            else
+            {
+                m.Assign(dst, src);
+            }
         }
 
         private void RewriteLtgr()
