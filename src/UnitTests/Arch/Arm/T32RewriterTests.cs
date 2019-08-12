@@ -6356,6 +6356,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbRw_vqadd_2()
+        {
+            RewriteCode("7FFF3700");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d16 = __vqadd_u64(d15, d23)");
+        }
+
+        [Test]
         [Ignore(Categories.FailedTests)]
         public void ThumbRw_smladx()
         {
@@ -7607,7 +7616,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("03FF0DE5");	// vrshl.u8 d14, d13, d3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d14 = __vrshl_u8(d3, d13)");
+                "1|L--|d14 = __vrshl_u8(d13, d3)");
         }
 
         [Test]
@@ -7905,7 +7914,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("66B6");	// cpsie ai
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|__cps_id()");
+                "1|L--|__cps()");
         }
 
         [Test]
@@ -7989,6 +7998,92 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|T--|00100000(2): 1 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100000");
+        }
+
+
+
+        [Test]
+        public void ThumbRw_hlt()
+        {
+            RewriteCode("86BA");
+            AssertCode(
+                "0|H--|00100000(2): 1 instructions",
+                "1|H--|__hlt()");
+        }
+
+
+        [Test]
+        public void ThumbRw_movs_w()
+        {
+            RewriteCode("5FEA5B0B");    // movs.w\tfp,fp,lsr #1
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|fp = fp >> 0x00000001",
+                "2|L--|NZC = cond(fp)");
+        }
+
+        [Test]
+        public void ThumbRw_eor_w_lsl()
+        {
+            RewriteCode("80EA8000");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r0 ^ r0 << 0x00000002");
+        }
+
+        [Test]
+        public void ThumbRw_teqs_w()
+        {
+            RewriteCode("9CEA000F");    // teqs.w\tip,r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|NZC = cond(ip ^ r0)");
+        }
+
+        [Test]
+        public void ThumbRw_adds_w()
+        {
+            RewriteCode("10EB0208"); // adds.w\tr8,r0,r2
+            AssertCode(
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|r8 = r0 + r2");
+        }
+
+        [Test]
+        public void ThumbRw_adcs_rxx()
+        {
+            RewriteCode("54EB3200"); // adcs.w\tr0,r4,r2,rrx
+            AssertCode(
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|r0 = r4 + __rcr(r2, 0x00000001, C) + C");
+        }
+
+        [Test]
+        public void ThumbRw_subs_w()
+        {
+            RewriteCode("B6EB0A08"); // subs.w\tr8,r6,r10
+            AssertCode(
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|r8 = r6 - r10",
+                 "2|L--|NZCV = cond(r8)");
+        }
+
+        [Test]
+        public void ThumbRw_sub_w()
+        {
+            RewriteCode("A9EB0809"); // sub.w\tr9,r9,r8
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|r9 = r9 - r8");
+        }
+
+        [Test]
+        public void ThumbRw_cmp_w_lsl()
+        {
+            RewriteCode("B0EB450F"); // cmp.w\tr0,r5,lsl #1"
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|NZCV = cond(r0 - (r5 << 0x00000001))");
         }
     }
 }

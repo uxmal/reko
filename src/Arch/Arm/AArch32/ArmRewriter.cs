@@ -92,7 +92,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.aesmc:
                 case Opcode.bxj:
                 case Opcode.clrex:
-                case Opcode.crc32b:
                 case Opcode.crc32cb:
                 case Opcode.crc32ch:
                 case Opcode.crc32cw:
@@ -103,7 +102,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.fldmiax:
                 case Opcode.fstmdbx:
                 case Opcode.fstmiax:
-                case Opcode.hlt:
                 case Opcode.lda:
                 case Opcode.ldab:
                 case Opcode.ldaex:
@@ -314,12 +312,15 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.clz: RewriteClz(); break;
                 case Opcode.cmn: RewriteCmp(m.IAdd); break;
                 case Opcode.cmp: RewriteCmp(m.ISub); break;
-                case Opcode.cps: RewriteCps(); break;
+                case Opcode.cps: RewriteCps("__cps"); break;
+                case Opcode.cpsid: RewriteCps("__cps_id"); break;
+                case Opcode.crc32b: RewriteCrc("__crc32b"); break;
                 case Opcode.dsb: RewriteDsb(); break;
                 case Opcode.dmb: RewriteDmb(); break;
                 case Opcode.eor: RewriteLogical(m.Xor); break;
                 case Opcode.eret: RewriteEret(); break;
                 case Opcode.hint: RewriteHint(); break;
+                case Opcode.hlt: RewriteHlt(); break;
                 case Opcode.hvc: RewriteHvc(); break;
                 case Opcode.isb: RewriteIsb(); break;
                 case Opcode.it: RewriteIt(); break;

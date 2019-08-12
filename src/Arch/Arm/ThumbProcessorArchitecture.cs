@@ -256,10 +256,7 @@ namespace Reko.Arch.Arm
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            //$TODO: for some reason, uncommenting the code below causes a regression in 
-            // the regression suite. Disabled for PR #771, but needs to be addressed.
-            //return Address.Ptr32(c.ToUInt32());
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

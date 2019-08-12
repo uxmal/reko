@@ -6,7 +6,6 @@ namespace Reko.Arch.Arm.AArch32
         Invalid = 0,
 
         adc,
-
         add,
         addw,
         adr,
@@ -28,6 +27,8 @@ namespace Reko.Arch.Arm.AArch32
         cmn,
         cmp,
         cps,
+        cpsid,
+        cpsie,
         dmb,
         eor,
         eret,
