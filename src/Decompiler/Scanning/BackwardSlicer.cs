@@ -994,7 +994,10 @@ namespace Reko.Scanning
 
         public SlicerResult VisitSlice(Slice slice, BackwardSlicerContext ctx)
         {
-            throw new NotImplementedException();
+            var range = new BitRange(
+                (short)slice.Offset,
+                (short) (slice.DataType.BitSize + slice.Offset));
+            return slice.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
         public SlicerResult VisitTestCondition(TestCondition tc, BackwardSlicerContext ctx)

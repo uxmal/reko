@@ -193,6 +193,15 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
+        public void Exs_DistributedSlice()
+        {
+            Given_ExpressionSimplifier();
+            var w16 = PrimitiveType.Word16;
+            var expr = m.IAdd(m.Slice(w16, foo, 0), m.Slice(w16, foo, 0));
+            Assert.AreEqual("SLICE(foo_0 * 0x00000002, word16, 0)", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
         public void Exs_RedundantCast()
         {
             Given_ExpressionSimplifier();

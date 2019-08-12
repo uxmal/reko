@@ -65,7 +65,8 @@ namespace Reko.Evaluation
         private IdProcConstRule idProcConstRule;
         private CastCastRule castCastRule;
         private DistributedCastRule distributedCast;
-        
+        private DistributedSliceRule distributedSlice;
+
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
             this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(SegmentMap));
@@ -95,6 +96,7 @@ namespace Reko.Evaluation
             this.idProcConstRule = new IdProcConstRule(ctx);
             this.castCastRule = new CastCastRule(ctx);
             this.distributedCast = new DistributedCastRule();
+            this.distributedSlice = new DistributedSliceRule();
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -205,6 +207,11 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 return distributedCast.Transform(ctx).Accept(this);
+            }
+            if (distributedSlice.Match(binExp))
+            {
+                Changed = true;
+                return distributedSlice.Transform(ctx).Accept(this);
             }
 
             var left = binExp.Left.Accept(this);

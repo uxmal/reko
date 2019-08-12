@@ -605,6 +605,91 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
+        public void Bwslc_Slices()
+        {
+            // This test is derived from a m68k binary which originally looked like this:
+
+            //  cmpi.b #$17,d0
+            //  bhi $0010F010
+            //  
+            //  moveq #$00,d1
+            //  move.b d0,d1
+            //  add.w d1,d1
+            //  move.w (06,pc,d1),d1
+            //  jmp.l (pc,d1)
+
+            // The code introduces a lot of SLICEs, which must be dealt with appropriately.
+
+            var W8 = PrimitiveType.Byte;
+            var W16 = PrimitiveType.Word16;
+            var W32 = PrimitiveType.Word32;
+            var I16 = PrimitiveType.Int16;
+            var I32 = PrimitiveType.Int32;
+            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            var d0 = Reg("d0");
+            var d1 = Reg("d1");
+            var v2 = binder.CreateTemporary("v2", W8);
+            var v3 = binder.CreateTemporary("v3", W8);
+            var v4 = binder.CreateTemporary("v4", W16);
+            var v5 = binder.CreateTemporary("v5", PrimitiveType.Word16);
+            var CVZNX = Cc("CVZNX");
+            var CVZN = Cc("CVZN");
+            var CZ = Cc("CZ");
+
+            var b = Given_Block(0x00100000);
+            Given_Instrs(b, m =>
+            {
+                m.Assign(v2, m.ISub(m.Slice(PrimitiveType.Byte, d0, 0), 0x17));
+                m.Assign(CVZN, m.Cond(v2));
+            });
+            Given_Instrs(b, m =>
+            {
+                m.Branch(m.Test(ConditionCode.UGT, CZ), Address.Ptr32(0x00100040), InstrClass.ConditionalTransfer);
+            });
+
+            var b2 = Given_Block(0x00100008);
+            Given_Instrs(b2, m => {
+                m.Assign(d1, m.Word32(0));
+                m.Assign(CVZN, m.Cond(d1));
+            });
+            Given_Instrs(b2, m =>
+            {
+                m.Assign(v3, m.Slice(v3.DataType, d0, 0));
+                m.Assign(d1, m.Dpb(d1, v3, 0));
+                m.Assign(CVZN, m.Cond(v3));
+            });
+            Given_Instrs(b2, m =>
+            {
+                m.Assign(v4, m.IAdd(m.Slice(v4.DataType, d1, 0), m.Slice(v4.DataType, d1, 0)));
+                m.Assign(d1, m.Dpb(d1, v4, 0));
+                m.Assign(CVZNX, m.Cond(v4));
+            });
+            Given_Instrs(b2, m =>
+            {
+                m.Assign(v5, m.Mem16(m.IAdd(m.Word32(0x0010EC32), m.Cast(W32, m.Slice(W16, d1, 0)))));
+                m.Assign(d1, m.Dpb(d1, v5, 0));
+                m.Assign(CVZN, m.Cond(v5));
+            });
+            Given_Instrs(b2, m => {
+                m.Goto(m.IAdd(m.Word32(0x0010EC30), m.Cast(I32, m.Slice(I16, d1, 0))));
+            });
+
+            graph.Nodes.Add(b);
+            graph.Nodes.Add(b2);
+            graph.AddEdge(b, b2);
+
+            var bwslc = new BackwardSlicer(host, b2, processorState);
+            Assert.IsTrue(bwslc.Start(b2, 10, Target(b2)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual(2, bwslc.Live.Count);
+            Assert.AreEqual("(int32) Mem0[(word32) SLICE(SLICE((word32) d0 * 0x00000002, word16, 0), word16, 0) + 0x0010EC32:int16] + 0x0010EC30", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
+        }
+
+        [Test]
         public void Bwslc_DetectUsingExpression()
         {
             var r1 = Reg(1);
