@@ -71,7 +71,12 @@ namespace Reko.Arch.M68k
             case RegisterOperand reg:
                 r = binder.EnsureRegister(reg.Register);
                 if (DataWidth != null && DataWidth.Size != reg.Width.Size)
-                    r = m.Cast(DataWidth, r);
+                {
+                    if (DataWidth.Domain == Domain.Real)
+                        r = m.Cast(DataWidth, r);
+                    else
+                        r = m.Slice(DataWidth, r, 0);
+                }
                 return r;
             case M68kImmediateOperand imm:
                 if (imm.Width.Domain == Domain.Real)
@@ -202,7 +207,7 @@ namespace Reko.Arch.M68k
                         reg.Width.BitSize > dataWidth.BitSize &&
                         reg.Width.Domain != Domain.Real)
                     {
-                        Expression rSub = m.Cast(dataWidth, r);
+                        Expression rSub = m.Slice(dataWidth, r, 0);
                         var srcExp = opGen(src, rSub);
                         if (srcExp is Identifier || srcExp is Constant || srcExp is MkSequence)
                         {

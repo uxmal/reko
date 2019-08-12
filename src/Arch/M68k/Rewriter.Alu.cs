@@ -214,14 +214,6 @@ namespace Reko.Arch.M68k
             generateFlags(op);
         }
 
-        private Expression MaybeCast(PrimitiveType width, Expression expr)
-        {
-            if (expr.DataType.Size == width.Size)
-                return expr;
-            else
-                return m.Cast(width, expr);
-        }
-
         private void RewriteAddSubq(Func<Expression,Expression,Expression> opGen)
         {
             var opSrc = (Constant) orw.RewriteSrc(instr.op1, instr.Address);
@@ -498,7 +490,7 @@ namespace Reko.Arch.M68k
                 {
                     var idx = orw.Combine(null, indop.index_reg, instr.Address);
                     if (indop.index_reg_width.BitSize != 32)
-                        idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
+                        idx = m.Cast(PrimitiveType.Word32, m.Slice(PrimitiveType.Int16, idx, 0));
                     if (indop.index_scale > 1)
                         idx = m.IMul(idx, m.Int32(indop.index_scale));
                     ea = orw.Combine(ea, idx);
