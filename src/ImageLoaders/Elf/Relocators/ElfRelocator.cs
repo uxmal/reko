@@ -204,7 +204,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         continue;
                     }
 
-                    Debug.Print("Relocating entries in DT_JMPREL:");
+                    DebugEx.Inform(ElfImageLoader.trace, "Relocating entries in DT_JMPREL:");
                     foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                     {
                         symbols.Add(elfSym);
@@ -276,7 +276,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    Debug.Print("  {0}: symbol {1} type: {2}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info));
+                    DebugEx.Verbose(ElfImageLoader.trace, "  {0}: symbol {1} type: {2}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info));
                     relocator.RelocateEntry(program, elfSym, null, relocation);
                     symbols.Add(elfSym);
                 }
