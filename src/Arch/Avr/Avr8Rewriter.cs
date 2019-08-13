@@ -539,7 +539,7 @@ namespace Reko.Arch.Avr
             var op = RewriteOp(0);
             if (op is Constant c)
             {
-                op = arch.MakeAddressFromConstant(c);
+                op = arch.MakeAddressFromConstant(c, true);
             }
             m.Goto(op);
         }

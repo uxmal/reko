@@ -225,7 +225,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(mem.Offset);
+                    ea = arch.MakeAddressFromConstant(mem.Offset, false);
                 }
                 var tmp = binder.CreateTemporary(mem.Width);
                 m.Assign(tmp, m.Mem(mem.Width, ea));
@@ -271,7 +271,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(mem.Offset);
+                    ea = arch.MakeAddressFromConstant(mem.Offset, false);
                 }
                 var load = m.Mem(mem.Width, ea);
                 src = fn(load, src);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -249,9 +249,12 @@ namespace Reko.Arch.Pdp11
             return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), binder, host);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr16(c.ToUInt16());
+            var uAddr = c.ToUInt16();
+            if (codeAlign)
+                uAddr &= unchecked((ushort)~1u);
+            return Address.Ptr16(uAddr);
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

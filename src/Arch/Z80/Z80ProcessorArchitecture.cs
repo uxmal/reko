@@ -191,7 +191,7 @@ namespace Reko.Arch.Z80
             return GetFlagGroup(Registers.f, (uint)flags);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             return Address.Ptr16(c.ToUInt16());
         }

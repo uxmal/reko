@@ -650,7 +650,7 @@ namespace Reko.Scanning
             {
                 if (c.IsValid)
                 {
-                    return arch.MakeAddressFromConstant(c);
+                    return arch.MakeAddressFromConstant(c, true);
                 }
                 else
                 {
@@ -1014,7 +1014,7 @@ namespace Reko.Scanning
             imgVector = null;
             switchExp = null;
 
-            var bwsHost = new BackwardSlicerHost(program);
+            var bwsHost = new BackwardSlicerHost(program, this.arch);
             var rtlBlock = bwsHost.GetRtlBlock(blockCur);
             var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
             var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
@@ -1179,7 +1179,7 @@ namespace Reko.Scanning
             {
                 if (!(mem.EffectiveAddress is Constant offset))
                     return null;
-                addrTarget = program.Platform.MakeAddressFromConstant(offset);
+                addrTarget = program.Platform.MakeAddressFromConstant(offset, true);
             }
             var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric.Address);
             //if (impEp != null)

@@ -141,7 +141,7 @@ namespace Reko.Core
             {
                 if (constAddr == Constant.Invalid)
                     return constAddr;
-                var ea = Architecture.MakeAddressFromConstant(constAddr);
+                var ea = Architecture.MakeAddressFromConstant(constAddr, false);
                 return GetMemoryValue(ea, access.DataType, segmentMap);
             }
             var addr = access.EffectiveAddress as Address;

@@ -205,6 +205,15 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
+        public void Exs_DistributedSlice()
+        {
+            Given_ExpressionSimplifier();
+            var w16 = PrimitiveType.Word16;
+            var expr = m.IAdd(m.Slice(w16, foo, 0), m.Slice(w16, foo, 0));
+            Assert.AreEqual("SLICE(foo_1 * 0x00000002, word16, 0)", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
         public void Exs_RedundantCast()
         {
             Given_ExpressionSimplifier();
@@ -266,6 +275,14 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var expr = m.Seq(m.Word32(0x3FF00000), m.Word32(0));
             Assert.AreEqual("0x3FF0000000000000", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_SeqOfSlices_Adjacent()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(m.Slice(foo, 8, 24), m.Slice(foo, 0, 8));
+            Assert.AreEqual("foo_1", expr.Accept(simplifier).ToString());
         }
     }
 }

@@ -240,11 +240,12 @@ namespace Reko.Arch.Arm
             return Address.TryParse32(txtAddr, out addr);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            //$REVIEW: this strips the LSB, do we want to return this fact?
-            // or should the caller be doing the stripping?
-            return Address.Ptr32(c.ToUInt32() >> 1 << 1);
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~1u;
+            return Address.Ptr32(uAddr);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

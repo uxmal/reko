@@ -29,15 +29,6 @@ namespace Reko.Core
     public static class DebugEx
     {
         [Conditional("DEBUG")]
-        public static void PrintIf(bool trace, string message, params object[] args)
-        {
-            if (trace)
-            {
-                Debug.Print(message, args);
-            }
-        }
-
-        [Conditional("DEBUG")]
         public static void Error(TraceSwitch trace, string message, params object[] args)
         {
             if (trace.TraceError)
@@ -56,7 +47,7 @@ namespace Reko.Core
         }
 
         [Conditional("DEBUG")]
-        public static void Info(TraceSwitch trace, string message, params object[] args)
+        public static void Inform(TraceSwitch trace, string message, params object[] args)
         {
             if (trace.TraceInfo)
             {

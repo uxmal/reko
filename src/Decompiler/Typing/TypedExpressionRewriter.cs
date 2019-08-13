@@ -36,12 +36,12 @@ namespace Reko.Typing
     /// </summary>
     public class TypedExpressionRewriter : InstructionTransformer
     {
-        private Program program;
-        private Identifier globals;
-        private DataTypeComparer compTypes;
-        private TypedConstantRewriter tcr;
-        private ExpressionEmitter m;
-        private Unifier unifier;
+        private readonly Program program;
+        private readonly Identifier globals;
+        private readonly DataTypeComparer compTypes;
+        private readonly TypedConstantRewriter tcr;
+        private readonly ExpressionEmitter m;
+        private readonly Unifier unifier;
         private bool dereferenced;
         private Expression basePtr;
         private DecompilerEventListener eventListener;
@@ -337,6 +337,21 @@ namespace Reko.Typing
             result.TypeVariable = access.TypeVariable;
             this.basePtr = oldBase;
             return result;
+        }
+
+        public override Expression VisitSlice(Slice slice)
+        {
+            var exp = base.VisitSlice(slice);
+            if (exp is Slice newSlice && newSlice.Offset == 0)
+            {
+                //$REVIEW: here we convert SLICE(xxx, yy, 0) to the cast (yy) xxx.
+                // Should SLICE(xxx, yy, nn) be cast to (yy) (xxx >> nn) as well?
+                return new Cast(slice.DataType, slice.Expression)
+                {
+                    TypeVariable = slice.TypeVariable
+                };
+            }
+            return exp;
         }
 
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)

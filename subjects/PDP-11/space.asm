@@ -689,10 +689,7 @@ l07AC:
 l07B6:
 	mov	#07EC,-(sp)
 
-;; fn07BA: 07BA
-;;   Called from:
-;;     07B6 (in fn0754)
-fn07BA proc
+l07BA:
 	asl	r3
 	rol	r4
 	bcs	07C6
@@ -735,19 +732,10 @@ l07E0:
 	cmp	(sp)+,#07F6
 	beq	07FE
 
-;; fn07E6: 07E6
-;;   Called from:
-;;     07AA (in fn0754)
-;;     07E4 (in fn07BA)
-fn07E6 proc
+l07E6:
 	add	r0,r2
 
-;; fn07E8: 07E8
-;;   Called from:
-;;     07E4 (in fn07BA)
-;;     07E6 (in fn07E6)
-;;     080E (in fn0754)
-fn07E8 proc
+l07E8:
 	clr	r0
 	br	07FE
 07EC                                     02 60 C0 15             .`..
@@ -871,14 +859,24 @@ fn0AE6 proc
 	cmp	@sp,#0001
 	beq	0B02
 
-l0AF8:
+;; fn0AF8: 0AF8
+;;   Called from:
+;;     0AF6 (in fn0AE6)
+;;     0AF6 (in fn0AE6)
+fn0AF8 proc
 	cmp	@sp,#0008
 	beq	0B02
 
 l0AFE:
 	add	#0003,@sp
 
-l0B02:
+;; fn0B02: 0B02
+;;   Called from:
+;;     0AF6 (in fn0AE6)
+;;     0AF6 (in fn0AE6)
+;;     0AFC (in fn0AF8)
+;;     0AFE (in fn0AF8)
+fn0B02 proc
 	cmp	0004(sp),0005(sp)
 	adc	@sp
 	mov	(sp)+,00A4(r3)
@@ -2220,19 +2218,12 @@ l18CE:
 	jmp	0008(sp)
 18F4             0F 87                                   ..         
 
-;; fn18F6: 18F6
-;;   Called from:
-;;     1938 (in fn1932)
-fn18F6 proc
+l18F6:
 	inc	0016(r4)
 	clr	r2
 	mov	(sp)+,r0
 
-;; fn18FE: 18FE
-;;   Called from:
-;;     18FC (in fn18F6)
-;;     190E (in fn1900)
-fn18FE proc
+l18FE:
 	rts	pc
 
 ;; fn1900: 1900
@@ -2269,6 +2260,7 @@ l1930:
 ;; fn1932: 1932
 ;;   Called from:
 ;;     18CC (in fn18BE)
+;;     190E (in fn1900)
 ;;     1924 (in fn1900)
 ;;     192E (in fn1900)
 ;;     1930 (in fn1900)
@@ -2294,27 +2286,17 @@ fn194E proc
 	bis	@0012(r3),r1
 	inc	0012(r3)
 	rts	pc
-
-;; fn195A: 195A
-fn195A proc
-	jsr	pc,@#196A
-	movb	@r0,r0
-	rts	pc
-
-;; fn1962: 1962
-fn1962 proc
-	movb	#2020,r0
+195A                               F7 09 0C 00 00 92           ......
+1960 87 00 C0 95 20 20                               ....           
 
 ;; fn1966: 1966
 ;;   Called from:
-;;     1962 (in fn1962)
 ;;     1996 (in fn197A)
 fn1966 proc
 	movb	r0,@001C(r3)
 
 ;; fn196A: 196A
 ;;   Called from:
-;;     195A (in fn195A)
 ;;     1966 (in fn1966)
 fn196A proc
 	mov	001C(r3),r0

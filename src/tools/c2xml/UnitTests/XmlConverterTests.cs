@@ -106,7 +106,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override Address MakeAddressFromConstant(Constant c)
+            public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
             {
                 throw new NotImplementedException();
             }

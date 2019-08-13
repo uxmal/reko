@@ -20,7 +20,9 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Rtl;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -72,6 +74,38 @@ namespace Reko.UnitTests.Scanning
             this.proc = hsc.DisassembleProcedure(
                 mem.BaseAddress,
                 mem.EndAddress);
+        }
+
+        private RtlBlock Given_Block(uint uAddr)
+        {
+            var b = new RtlBlock(Address.Ptr32(uAddr), $"l{uAddr:X8}");
+            return b;
+        }
+
+        private void Given_Instrs(RtlBlock block, Action<RtlEmitter> b)
+        {
+            var instrs = new List<RtlInstruction>();
+            var trace = new RtlEmitter(instrs);
+            b(trace);
+            var rtlc = InstrClass.Linear;
+            if (instrs.Count == 1)
+            {
+                rtlc = instrs.First().Class;
+            }
+            block.Instructions.Add(
+                new RtlInstructionCluster(
+                    block.Address + (block.Instructions.Count * 4),
+                    4,
+                    instrs.ToArray())
+                {
+                    Class = rtlc,
+                });
+        }
+
+        private void ResolveBlockConflicts(ScanResults sr)
+        {
+            var hps = new BlockConflictResolver(null, sr, null, null);
+            hps.ResolveBlockConflicts(new Address[0]);
         }
 
         [Test]
@@ -128,7 +162,7 @@ namespace Reko.UnitTests.Scanning
 
             When_DisassembleProcedure();
             var hps = new BlockConflictResolver(program,CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
-            hps.BlockConflictResolution(proc.BeginAddress);
+            hps.ResolveBlockConflicts(new[] { proc.BeginAddress });
 
             var sExp =
             #region Expected
@@ -148,6 +182,40 @@ l00010009:  // pred: l00010008
             AssertBlocks(sExp, proc.Cfg);
         }
 
+        [Test(Description =
+            "If caller block was discarded, call target address should " +
+            "be removed from directly called addresses list")]
+        public void HPSC_ResolveBlockConflicts_RemoveDirectlyCalledAddress()
+        {
+            var calledAddr = Address.Ptr32(0x5678);
+            var wrongBlock = Given_Block(0x1234);
+            Given_Instrs(wrongBlock, m =>
+            {
+                m.Call(calledAddr, 4);
+            });
+            var firstBlock = Given_Block(0x1235);
+            Given_Instrs(firstBlock, m =>
+            {
+                m.Assign(m.Mem32(m.Word32(0x2222)), 0);
+            });
+            var lastBlock = Given_Block(0x1240);
+            Given_Instrs(lastBlock, m =>
+            {
+                m.Return(4, 0);
+            });
+            var cfg = new DiGraph<RtlBlock>();
+            cfg.AddNode(wrongBlock);
+            cfg.AddNode(firstBlock);
+            cfg.AddNode(lastBlock);
+            cfg.AddEdge(firstBlock, lastBlock);
+            var sr = CreateScanResults(cfg);
+            sr.DirectlyCalledAddresses.Add(calledAddr, 1);
+
+            ResolveBlockConflicts(sr);
+
+            Assert.AreEqual(0, sr.DirectlyCalledAddresses.Count);
+        }
+
         [Test]
         [Ignore("This code will be obsolete soon")]
         public void HPSC_TrickyProc()
@@ -163,7 +231,7 @@ l00010009:  // pred: l00010008
 
             When_DisassembleProcedure();
             var hps = new BlockConflictResolver(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
-            hps.BlockConflictResolution(proc.BeginAddress);
+            hps.ResolveBlockConflicts(new[] { proc.BeginAddress });
 
             var sExp =
             #region Expected

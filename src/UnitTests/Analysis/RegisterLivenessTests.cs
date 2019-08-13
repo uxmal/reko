@@ -1,4 +1,3 @@
-
 #region License
 /* 
  * Copyright (C) 1999-2019 John Källén.

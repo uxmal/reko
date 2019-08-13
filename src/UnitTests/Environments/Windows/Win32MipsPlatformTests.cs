@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Environments.Windows
             var services = new Mock<IServiceProvider>();
             var arch = new Mock<IProcessorArchitecture>();
             var addr = Address.Ptr32(0x00031234);
-            arch.Setup(a => a.MakeAddressFromConstant(It.IsNotNull<Constant>())).Returns(addr);
+            arch.Setup(a => a.MakeAddressFromConstant(It.IsNotNull<Constant>(), It.IsAny<bool>())).Returns(addr);
             host.Setup(h => h.GetImportedProcedure(
                 It.IsNotNull<IProcessorArchitecture>(),
                 addr,

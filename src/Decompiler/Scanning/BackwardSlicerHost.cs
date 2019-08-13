@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -32,22 +32,22 @@ namespace Reko.Scanning
 {
     public class BackwardSlicerHost : IBackWalkHost<RtlBlock, RtlInstruction>
     {
-        private Program program;
         private Dictionary<Block, RtlBlock> cache;
         private Dictionary<RtlBlock, Block> invCache;
 
-        public BackwardSlicerHost(Program program)
+        public BackwardSlicerHost(Program program, IProcessorArchitecture arch)
         {
-            this.program = program;
+            this.Program = program;
+            this.Architecture = arch;
             this.cache = new Dictionary<Block, RtlBlock>();
             this.invCache = new Dictionary<RtlBlock, Block>();
         }
 
-        public IProcessorArchitecture Architecture => program.Architecture;
+        public IProcessorArchitecture Architecture { get; }
 
-        public Program Program => program;
+        public Program Program { get; }
 
-        public SegmentMap SegmentMap => program.SegmentMap;
+        public SegmentMap SegmentMap => Program.SegmentMap;
 
         public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
         {

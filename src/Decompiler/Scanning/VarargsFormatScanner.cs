@@ -143,7 +143,7 @@ namespace Reko.Scanning
 
         private string ReadCString(Constant cAddr)
         {
-            var addr = program.Platform.MakeAddressFromConstant(cAddr);
+            var addr = program.Platform.MakeAddressFromConstant(cAddr, false);
             return ReadCString(addr);
         }
 

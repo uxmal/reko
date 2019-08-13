@@ -206,7 +206,7 @@ namespace Reko.Arch.X86
             }
             if (!IsSegmentedAccessRequired && expr is Constant c && mem.SegOverride == RegisterStorage.None)
             {
-                return arch.MakeAddressFromConstant(c);
+                return arch.MakeAddressFromConstant(c, false);
             }
             return expr;
         }

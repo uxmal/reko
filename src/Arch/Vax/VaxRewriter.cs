@@ -588,7 +588,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(memOp.Offset);
+                    ea = arch.MakeAddressFromConstant(memOp.Offset, false);
                     Expression load;
                     if (memOp.Deferred)
                     {
@@ -615,14 +615,16 @@ namespace Reko.Arch.Vax
                 var reg = binder.EnsureRegister(regOp.Register);
                 if (reg == null)
                     return null;
-                if (width.Size < 4)
+                if (width.BitSize < 32)
                 {
                     var tmp = binder.CreateTemporary(width);
+                    var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(32 - width.BitSize));
                     m.Assign(tmp, fn(m.Cast(width, reg)));
-                    m.Assign(reg, m.Dpb(reg, tmp, 0));
+                    m.Assign(tmpHi, m.Slice(tmpHi.DataType, reg, width.BitSize));
+                    m.Assign(reg, m.Seq(tmpHi, tmp));
                     return tmp;
                 }
-                else if (width.Size == 8)
+                else if (width.BitSize == 64)
                 {
                     var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
                     if (rHi == null)
@@ -630,7 +632,7 @@ namespace Reko.Arch.Vax
                     var regHi = binder.EnsureRegister(rHi);
                     reg = binder.EnsureSequence(width, regHi.Storage, reg.Storage);
                 }
-                else if (width.Size == 16)
+                else if (width.BitSize == 128)
                 {
                     var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
                     var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
@@ -668,7 +670,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(memOp.Offset);
+                    ea = arch.MakeAddressFromConstant(memOp.Offset, false);
                 }
                 var tmp = binder.CreateTemporary(width);
                 m.Assign(tmp, fn(m.Mem(width, ea)));

@@ -379,7 +379,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_vhadd_signed()
         {
             Given_Instructions(0xEF41, 0xB002);
-            Expect_Code("vhadd.i8\td27,d1,d2");
+            Expect_Code("vhadd.s8\td27,d1,d2");
         }
 
         [Test]
@@ -457,7 +457,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_vrshl()
         {
             Given_Instructions(0xFF7F, 0xA52D);
-            Expect_Code("vrshl\td26,d15,d29");
+            Expect_Code("vrshl.u64\td26,d29,d15");
         }
 
         [Test]
@@ -518,7 +518,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vcge.f16\tq1,q7,q2");
         }
 
-        // A T32 decoder for the instruction EFE4778A(Unknown format specifier* in * integer when decoding vabdl) has not been implemented yet.
         [Test]
         public void ThumbDis_vabdl()
         {
@@ -568,7 +567,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("rfeia\tlr");
         }
 
-        // A T32 decoder for the instruction F7811103(usatLslVariant) has not been implemented yet.
         [Test]
         [Ignore("Complex")]
         public void ThumbDis_F7811103()
@@ -606,10 +604,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_vrshl_i32()
+        public void ThumbDis_vrshl_s32()
         {
             Given_Instructions(0xEF67, 0x7565);
-            Expect_Code("vrshl.i32\tq11,q3,q10");
+            Expect_Code("vrshl.s32\tq11,q10,q3");
         }
 
         [Test]
@@ -640,8 +638,6 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instructions(0xF90F, 0x24FB);
             Expect_Code("@@@");
         }
-
-        //////////////////////////////////////////////////////////////////////////////
 
         [Test]
         public void ThumbDis_ldaex()
@@ -839,6 +835,13 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ldr\tr3,[r5,#&24]");
         }
 
+        [Test]
+        public void ThumbDis_strh_unsigned()
+        {
+            Given_Instructions(0xF82A, 0xE009);
+            Expect_Code("strh\tlr,[r10,r9]");
+        }
+
         //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
         //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]
         //.data:0000001e ED9C E000  ldc	0, cr14, [r12]
@@ -850,5 +853,125 @@ namespace Reko.UnitTests.Arch.Arm
         //.data:00000036 FE2D 4604  cdp2	6, 2, cr4, cr13, cr4, {0}
         //.data:0000003a FE3B 2501  cdp2	5, 3, cr2, cr11, cr1, {0}
         //.data:0000003e FE6F E7FC  mcr2	7, 3, lr, cr15, cr12, {7}
+
+
+        [Test]
+        public void ThumbDis_ands_w()
+        {
+            Given_Instructions(0xEA10, 0x0301);
+            Expect_Code("ands.w\tr3,r0,r1");
+        }
+
+        [Test]
+        public void ThumbDis_movs_w()
+        {
+            Given_Instructions(0xEA5F, 0x0B5B);
+            Expect_Code("movs.w\tfp,fp,lsr #1");
+        }
+
+        [Test]
+        public void ThumbDis_eor_w()
+        {
+            Given_Instructions(0xEA80, 0x000E);
+            Expect_Code("eor.w\tr0,r0,lr");
+        }
+
+        [Test]
+        public void ThumbDis_teqs_w()
+        {
+            Given_Instructions(0xEA9C, 0x0F00);
+            Expect_Code("teqs.w\tip,r0");
+        }
+
+        [Test]
+        public void ThumbDis_adds_w()
+        {
+            Given_Instructions(0xEB10, 0x0802);
+            Expect_Code("adds.w\tr8,r0,r2");
+        }
+
+        [Test]
+        public void ThumbDis_adc_w()
+        {
+            Given_Instructions(0xEB41, 0x0603);
+            Expect_Code("adc.w\tr6,r1,r3");
+        }
+
+        [Test]
+        public void ThumbDis_adcs_rxx()
+        {
+            Given_Instructions(0xEB54, 0x0032);
+            Expect_Code("adcs.w\tr0,r4,r2,rrx");
+        }
+
+        [Test]
+        public void ThumbDis_subs_w()
+        {
+            Given_Instructions(0xEBB6, 0x080A);
+            Expect_Code("subs.w\tr8,r6,r10");
+        }
+
+        [Test]
+        public void ThumbDis_sub_w()
+        {
+            Given_Instructions(0xEBA9, 0x0908);
+            Expect_Code("sub.w\tr9,r9,r8");
+        }
+
+        [Test]
+        public void ThumbDis_cmp_w()
+        {
+            Given_Instructions(0xEBB1, 0x1FA2);
+            Expect_Code("cmp.w\tr1,r2,asr #6");
+        }
+
+        [Test]
+        public void ThumbDis_ldrsb_w()
+        {
+            Given_Instructions(0xF91C, 0x3002);
+            Expect_Code("ldrsb.w\tr3,[ip,r2]");
+        }
+
+        [Test]
+        public void ThumbDis_rev16()
+        {
+            Given_Instructions(0xFA99, 0xF299);
+            Expect_Code("rev16.w\tr2,r9");
+        }
+
+        [Test]
+        public void ThumbDis_vldr_literal()
+        {
+            Given_Instructions(0xED9F, 0x0B08);
+            Expect_Code("vldr\td0,[pc,#&20]");
+        }
+
+        //////////////////////////////////////////
+
+        // Reko: a decoder for T32 instruction FFA7F104 at address 001284FA has not been implemented. (04F1A7FF - Unimplemented format specifier '*' when decoding FFA7F104)
+        [Test]
+        public void ThumbDis_FFA7F104()
+        {
+            Given_Instructions(0xFFA7, 0xF104);
+            Expect_Code("vaddw.u32\tq7,q3,d4");
+        }
+
+#if BORED
+        // Reko: a decoder for T32 instruction EF230CF7 at address 00280013 has not been implemented. (F70C23EF - AdvancedSimd3RegistersSameLength_opcC)
+        [Test]
+        public void ThumbDis_EF230CF7()
+        {
+            Given_Instructions(0xEF23, 0x0CF7);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for T32 instruction F9890035 at address 006A6718 has not been implemented. (350089F9 - AdvancedSimdLdStSingleStructureOneLane)
+        [Test]
+        public void ThumbDis_F9890035()
+        {
+            Given_Instructions(0xF989, 0x0035);
+            Expect_Code("@@@");
+        }
+#endif
     }
 }

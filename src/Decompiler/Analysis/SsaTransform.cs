@@ -105,7 +105,7 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         public SsaState Transform()
         {
-            DebugEx.Info(trace, "SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
+            DebugEx.Inform(trace, "SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
             if (ssa.Procedure.Name == "fn101BD733")
             {
                 ssa.ToString();//$DEBUG

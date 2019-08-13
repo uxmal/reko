@@ -140,6 +140,11 @@ namespace Reko.Core
 			return offset < (ulong) abImage.Length;
         }
 
+        public Constant ReadRelocation(long imageOffset)
+        {
+            return Relocations[BaseAddress.ToLinear() + (ulong) imageOffset];
+        }
+
 		/// <summary>
 		/// Reads a little-endian word from image offset.
 		/// </summary>
@@ -152,7 +157,7 @@ namespace Reko.Core
 		/// <returns>Typed constant from the image.</returns>
 		public Constant ReadLe(long imageOffset, PrimitiveType type)
 		{
-			Constant c = Relocations[(uint)imageOffset];
+			var c = ReadRelocation(imageOffset);
 			if (c != null && c.DataType.Size == type.Size)
 				return c;
             return ReadLe(abImage, imageOffset, type);
@@ -160,7 +165,7 @@ namespace Reko.Core
 
         public Constant ReadBe(long imageOffset, PrimitiveType type)
         {
-            Constant c = Relocations[(uint)imageOffset];
+            var c = ReadRelocation(imageOffset);
             if (c != null && c.DataType.Size == type.Size)
                 return c;
             return ReadBe(abImage, imageOffset, type);
@@ -173,7 +178,7 @@ namespace Reko.Core
 
         public bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
         {
-            c = Relocations[(uint)imageOffset];
+            c = ReadRelocation(imageOffset);
             if (c != null && c.DataType.Size == type.Size)
                 return true;
             if (type.Size + imageOffset > abImage.Length)
@@ -189,7 +194,7 @@ namespace Reko.Core
 
         public bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
         {
-            c = Relocations[(uint)imageOffset];
+            c = ReadRelocation(imageOffset);
             if (c != null && c.DataType.Size == type.Size)
                 return true;
             if (type.Size + imageOffset > abImage.Length)

@@ -1531,9 +1531,7 @@ D806           	bhi	$00000A8C
 
 l00000A7E:
 E8DF F002     	tbb	[pc,r2]                                  ; 00000A80
-
-l00000A82:
-0C3A           	lsrs	r2,r7,#&10
+l00000A82	db	0x3A
 l00000A83	db	0x0C
 l00000A84	db	0x04
 l00000A85	db	0x02
@@ -1554,12 +1552,15 @@ l00000A90:
 
 l00000A92:
 F007 FD8D     	bl	$000085B0
-
-l00000A96:
 4620           	mov	r0,r4
 BDF8           	pop	{r3-r7,pc}
-00000A9A                               33 6E 01 2C 03 F1           3n.,..
-00000AA0 01 03 33 66 F4 D1                               ..3f..         
+
+l00000A9A:
+6E33           	ldr	r3,[r6,#&60]
+2C01           	cmps	r4,#1
+F103 0301     	add	r3,r3,#1
+6633           	str	r3,[r6,#&60]
+D1F4           	bne	$00000A90
 
 l00000AA6:
 F106 0724     	add	r7,r6,#&24
@@ -1589,11 +1590,14 @@ F04F 5280     	mov	r2,#&10000000
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 F007 FD5F     	bl	$000085B0
-
-l00000AF2:
 4620           	mov	r0,r4
 BDF8           	pop	{r3-r7,pc}
-00000AF6                   33 6E 1F 43 37 66 C6 E7             3n.C7f.. 
+
+l00000AF6:
+6E33           	ldr	r3,[r6,#&60]
+431F           	orrs	r7,r3
+6637           	str	r7,[r6,#&60]
+E7C6           	b	$00000A8C
 
 l00000AFE:
 2400           	mov	r4,#0
@@ -1625,9 +1629,7 @@ D806           	bhi	$00000B4A
 
 l00000B3C:
 E8DF F002     	tbb	[pc,r2]                                  ; 00000B40
-
-l00000B40:
-0C2A           	lsrs	r2,r5,#&10
+l00000B40	db	0x2A
 l00000B41	db	0x0C
 l00000B42	db	0x04
 l00000B43	db	0x02
@@ -1648,11 +1650,14 @@ l00000B4E:
 
 l00000B50:
 F385 8811     	msr	cpsr,r5
-
-l00000B54:
 E8BD 81F0     	pop.w	{r4-r8,pc}
-00000B58                         03 6E 01 2C 03 F1 01 03         .n.,....
-00000B60 03 66 F4 D1                                     .f..           
+
+l00000B58:
+6E03           	ldr	r3,[r0,#&60]
+2C01           	cmps	r4,#1
+F103 0301     	add	r3,r3,#1
+6603           	str	r3,[r0,#&60]
+D1F4           	bne	$00000B4E
 
 l00000B64:
 4E1A           	ldr	r6,[00000BD0]                           ; [pc,#&68]
@@ -1680,10 +1685,13 @@ B1F3           	cbz	r3,$00000BC8
 l00000B8A:
 6018           	str	r0,[r3]
 F385 8811     	msr	cpsr,r5
-
-l00000B90:
 E8BD 81F0     	pop.w	{r4-r8,pc}
-00000B94             03 6E 19 43 01 66 D6 E7                 .n.C.f..   
+
+l00000B94:
+6E03           	ldr	r3,[r0,#&60]
+4319           	orrs	r1,r3
+6601           	str	r1,[r0,#&60]
+E7D6           	b	$00000B4A
 
 l00000B9C:
 F100 0824     	add	r8,r0,#&24

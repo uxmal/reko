@@ -1,4 +1,5 @@
-﻿#region License
+
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -199,7 +200,10 @@ namespace Reko.Core.Expressions
 
         public Expression VisitSlice(Slice slice)
         {
-            throw new NotImplementedException();
+            if (cmp.Equals(slice, original))
+                return replacement;
+            var exp = slice.Expression.Accept(this);
+            return new Slice(slice.DataType, exp, slice.Offset);
         }
 
         public Expression VisitTestCondition(TestCondition tc)

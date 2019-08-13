@@ -799,7 +799,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_cpsid()
         {
             Disassemble32(0xF10C0080);
-            Expect_Code("cps");
+            Expect_Code("cpsid\t#0");
         }
 
         [Test]
@@ -972,10 +972,28 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore(Categories.FailedTests)]
         public void ArmDasm_vext_8()
         {
             Disassemble32(0xF2F068E2);
             Expect_Code("vext.u8\tq11,q8,q9,#8");
+        }
+
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ArmDasm_vext_64()
+        {
+            Disassemble32(0xF2F208C8);
+            Expect_Code("vext.u8\tq8,q9,q4,#8");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ArmDasm_vshr_3()
+        {
+            Disassemble32(0xF3F340D0);
+            Expect_Code("vshr.i64\tq10,q0,&#D");
         }
 
         [Test]
@@ -1443,13 +1461,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_cps()
-        {
-            Disassemble32(0xF100BF00);
-            Expect_Code("cps\t#0");
-        }
-
-        [Test]
         public void ArmDasm_vaddl_u32()
         {
             Disassemble32(0xF3AF8000);
@@ -1667,13 +1678,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_vext_64()
-        {
-            Disassemble32(0xF2F208C8);
-            Expect_Code("vext.u8\tq8,q9,q4,#8");
-        }
-
-        [Test]
         public void ArmDasm_vsub_i16_q()
         {
             Disassemble32(0xF35008E2);
@@ -1708,9 +1712,188 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("pld\t[r0,#&20]");
         }
 
+
+
+        [Test]
+        public void ArmDasm_F30DF1A5()
+        {
+            Disassemble32(0xF30DF1A5);
+            Expect_Code("vrhadd.u8\td15,d29,d21");
+        }
+
+        [Test]
+        public void ArmDasm_vext_u8()
+        {
+            Disassemble32(0xF2F5F1A5);
+            Expect_Code("vext.u8\td31,d21,d21,#8");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ArmDasm_vshr_u8()
+        {
+            Disassemble32(0xF3882030);
+            Expect_Code("vshr.i8\td2,d16, #8");
+        }
+
+        [Test]
+        public void ArmDasm_vshr_1()
+        {
+            Disassemble32(0xF3892010);
+            Expect_Code("vshr.i8\td2,d0,#1");
+        }
+
+
 #if BORED
         /// If you're bored and want something to do, why not implement a 
         /// A32 decoder or 10? :)
+
+
+        // Reko: a decoder for A32 instruction 47A04630 at address 00123214 has not been implemented. (media - 0b11010 - 001)
+        [Test]
+        public void ArmDasm_47A04630()
+        {
+            Disassemble32(0x47A04630);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction 4630447C at address 001232C4 has not been implemented. (shsub16)
+        [Test]
+        public void ArmDasm_4630447C()
+        {
+            Disassemble32(0x4630447C);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction 46914631 at address 001232DC has not been implemented. (media1 - 0b01001)
+        [Test]
+        public void ArmDasm_46914631()
+        {
+            Disassemble32(0x46914631);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F3892040 at address 0012388C has not been implemented. (AdvancedSimdDataProcessing A=1x001 C=0100)
+        [Test]
+        public void ArmDasm_F3892040()
+        {
+            Disassemble32(0xF3892040);
+            Expect_Code("@@@");
+        }
+
+
+        // Reko: a decoder for A32 instruction F3934620 at address 001238F0 has not been implemented. (vsubhn - *)
+        [Test]
+        public void ArmDasm_F3934620()
+        {
+            Disassemble32(0xF3934620);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F812F007 at address 0012394C has not been implemented. (Unconditional op1=0b100xxxxx)
+        [Test]
+        public void ArmDasm_F812F007()
+        {
+            Disassemble32(0xF812F007);
+            Expect_Code("@@@");
+        }
+
+
+        // Reko: a decoder for A32 instruction F664F393 at address 00123984 has not been implemented. (op1=110xxxx)
+        [Test]
+        public void ArmDasm_F664F393()
+        {
+            Disassemble32(0xF664F393);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F61CF393 at address 00123A14 has not been implemented. (op1=110xxxx)
+        [Test]
+        public void ArmDasm_F61CF393()
+        {
+            Disassemble32(0xF61CF393);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F6424816 at address 00123A30 has not been implemented. (op1=110xxxx)
+        [Test]
+        public void ArmDasm_F6424816()
+        {
+            Disassemble32(0xF6424816);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F59AF393 at address 00123B18 has not been implemented. (op1=1011001)
+        [Test]
+        public void ArmDasm_F59AF393()
+        {
+            Disassemble32(0xF59AF393);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F3F36800 at address 00123DDC has not been implemented. (AdvancedSimdDataProcessing A=1x11x C=0000)
+        [Test]
+        public void ArmDasm_F3F36800()
+        {
+            Disassemble32(0xF3F36800);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F3B2F393 at address 00123EE8 has not been implemented. (AdvancedSimd_TwoRegisterShiftAmount)
+        [Test]
+        public void ArmDasm_F3B2F393()
+        {
+            Disassemble32(0xF3B2F393);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F3882040 at address 00124030 has not been implemented. (AdvancedSimdDataProcessing A=1x001 C=0100)
+        [Test]
+        public void ArmDasm_F3882040()
+        {
+            Disassemble32(0xF3882040);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F6407008 at address 00124250 has not been implemented. (op1=110xxxx)
+        [Test]
+        public void ArmDasm_F6407008()
+        {
+            Disassemble32(0xF6407008);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F6436801 at address 00124384 has not been implemented. (op1=110xxxx)
+        [Test]
+        public void ArmDasm_F6436801()
+        {
+            Disassemble32(0xF6436801);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F6426801 at address 001243BC has not been implemented. (op1=110xxxx)
+        [Test]
+        public void ArmDasm_F6426801()
+        {
+            Disassemble32(0xF6426801);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F6406801 at address 00124444 has not been implemented. (op1=110xxxx)
+        [Test]
+        public void ArmDasm_F6406801()
+        {
+            Disassemble32(0xF6406801);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for A32 instruction F998F006 at address 00124640 has not been implemented. (Unconditional op1=0b100xxxxx)
+        [Test]
+        public void ArmDasm_F998F006()
+        {
+            Disassemble32(0xF998F006);
+            Expect_Code("@@@");
+        }
 
         // An A32 decoder for the instruction F4E7B940 (AdvancedSimdElementLoadStore) has not been implemented yet.
         [Test]

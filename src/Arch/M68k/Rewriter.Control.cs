@@ -140,9 +140,11 @@ namespace Reko.Arch.M68k
             }
             var src = orw.RewriteSrc(instr.op1, instr.Address);
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            var tmpHi = binder.CreateTemporary(PrimitiveType.Word16);
             m.Assign(tmp, m.Slice(tmp.DataType, src, 0));
             m.Assign(tmp, m.ISubS(tmp, 1));
-            m.Assign(src, m.Dpb(src, tmp, 0));
+            m.Assign(tmpHi, m.Slice(tmpHi.DataType, src, 16));
+            m.Assign(src, m.Seq(tmpHi, tmp));
             m.Branch(
                 m.Ne(tmp, m.Word16(0xFFFF)),
                 addr,

@@ -376,6 +376,36 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        private static Mutator<A32Disassembler> viu()
+        {
+            var sizes = new ArmVectorData[][]
+            {
+                new ArmVectorData[]
+                {
+                    ArmVectorData.S8,
+                    ArmVectorData.S16,
+                    ArmVectorData.S32,
+                    ArmVectorData.INVALID
+                },
+                new ArmVectorData[]
+                {
+                    ArmVectorData.U8,
+                    ArmVectorData.U16,
+                    ArmVectorData.U32,
+                    ArmVectorData.INVALID
+                },
+            };
+            var unsignedField = new Bitfield(24, 1);
+            var sizeField = new Bitfield(20, 2);
+            return (u, d) =>
+            {
+                var uf = unsignedField.Read(u);
+                var sf = sizeField.Read(u);
+                d.state.vectorData = sizes[uf][sf];
+                return d.state.vectorData != ArmVectorData.INVALID;
+            };
+        }
+
         private static Mutator<A32Disassembler> vi(int offset, int [] sizes)
         {
             return (u, d) => {
@@ -1063,6 +1093,51 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        private static (ArmVectorData, uint)[] vectorImmediateShiftSize = new[]
+    {
+           (ArmVectorData.INVALID, 0u),
+           (ArmVectorData.I8,  8u),
+
+           (ArmVectorData.I16, 16u),
+           (ArmVectorData.I16, 16u),
+
+           (ArmVectorData.I32, 32u),
+           (ArmVectorData.I32, 32u),
+           (ArmVectorData.I32, 32u),
+           (ArmVectorData.I32, 32u),
+
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+        };
+
+        /// <summary>
+        /// Compute size of vector elements from shift amount.
+        /// </summary>
+        private static bool VshImmSize(uint wInstr, A32Disassembler dasm)
+        {
+            var immL_6 = ((wInstr >> 1) & 0x40) | (wInstr >> 16) & 0b111111;
+            dasm.state.vectorData = vectorImmediateShiftSize[immL_6 >> 3].Item1;
+            return true;
+        }
+
+        /// <summary>
+        /// Compute SIMD shift amount.
+        /// </summary>
+        private static bool VshImm(uint wInstr, A32Disassembler dasm)
+        {
+            var immL_6 = ((wInstr >> 1) & 0x40) | (wInstr >> 16) & 0b111111;
+            var imm = immL_6 - vectorImmediateShiftSize[immL_6 >> 3].Item2;
+            dasm.state.ops.Add(ImmediateOperand.Int32((int) imm));
+            return true;
+        }
+
+
         /// <summary>
         /// Compute vector element type from cmode(0:2)
         /// </summary>
@@ -1743,14 +1818,17 @@ namespace Reko.Arch.Arm.AArch32
             var Clz = Instr(Opcode.clz, r(3),r(0));
             var Eret = Instr(Opcode.eret, InstrClass.Transfer);
 
-            var ChangeProcessState = new MaskDecoder(16, 1, // op
-                Mask(18, 0x3,
+            var ChangeProcessState = new MaskDecoder("Change Process State", 16, 1, // op
+                Mask("  imod:M", 17, 0b111,
+                    invalid,
                     Instr(Opcode.cps, i(0, 5)),
-                    nyi("CPS,CPSID,CPSIE mask=0b01"),
-                    nyi("CPS,CPSID,CPSIE mask=0b10"),
-                    Mask(17, 1,  // mask=0b11 M
-                        Instr(Opcode.cps),
-                        nyi("CPS,CPSID,CPSIE mask=0b11 m=1"))),
+                    invalid,
+                    invalid,
+
+                    invalid, 
+                    Instr(Opcode.cpsie, i(0, 5)),
+                    Instr(Opcode.cpsid, i(0, 5)),
+                    Instr(Opcode.cpsid, i(0, 5))),
                 Select(4, 1, n => n == 0, Instr(Opcode.setend, E(9,1)), invalid));
 
             var UncMiscellaneous = new MaskDecoder(22, 7,   // op0
@@ -2428,29 +2506,29 @@ namespace Reko.Arch.Arm.AArch32
                 nyi("srs"),
                 invalid);
 
-            var ExceptionSaveRestore = Mask("ExceptionSaveRestore", 22, 7, // PUS
+            var ExceptionSaveRestore = Mask("Exception Save/Restore", 22, 7, // PUS
                 new MaskDecoder(20, 1, // L
                     invalid,
-                    RfeRfeda),
+                    nyi("rfeda")),
                 new MaskDecoder(20, 1, // L
                     SrcSrsda,
                     invalid),
                 new MaskDecoder(20, 1, // L
                     invalid,
-                    RfeRfeda),
+                    nyi("rfeia")),
                 new MaskDecoder(20, 1, // L
                     SrcSrsda,
                     invalid),
 
                 new MaskDecoder(20, 1, // L
                     invalid,
-                    RfeRfeda),
+                    nyi("rfedb")),
                 new MaskDecoder(20, 1, // L
                     SrcSrsda,
                     invalid),
                 new MaskDecoder(20, 1, // L
                     invalid,
-                    RfeRfeda),
+                    nyi("rfeib")),
                 new MaskDecoder(20, 1, // L
                     SrcSrsda,
                     invalid));
@@ -2823,7 +2901,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.mrc, CP(8),i(21,3),r(3),CR(16),CR(0),i(5,3))),
                 invalid);
 
-            var AdvancedSimd_ThreeRegisters = Mask("AdvancedSimd_ThreeRegisters", 24, 1,
+            var AdvancedSimd_ThreeRegisters = Mask("Advanced SIMD three registers of the same length", 24, 1,
                 Mask(8, 0xF, // AdvancedSimd_ThreeRegisters - U = 0
                     Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=00
@@ -2840,7 +2918,7 @@ namespace Reko.Arch.Arm.AArch32
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=10 o1
                             nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=10 o1=0"),
                             Instr(Opcode.vorr, q(6), W22_12, W7_16, W5_0)),
-                        nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=11")),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=11")),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0010"),
                     Mask("AdvancedSimd_ThreeRegisters - U=0, opc=0b0011", 4, 1,
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=0
@@ -2929,7 +3007,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vqsub, x("*"))),
                     Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1
-                            nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1=0"),
+                            Instr(Opcode.vrhadd, q(6), viu(), W22_12, W7_16, W5_0),
                             Instr(Opcode.veor, q(6), W22_12 ,W7_16,W5_0)),
                         nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=01"),
                         Instr(Opcode.vbit, q(6), W22_12, W7_16, W5_0),
@@ -3151,13 +3229,43 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.vmvn, x("immediate - A3")),
 
                 vmov_A4,
-                Instr(Opcode.vmov, I64, q(6), W(22,1, 12,4), Is(24,1, 16,3, 0,4)),
+                Instr(Opcode.vmov, I64, q(6), W22_12, Is(24,1, 16,3, 0,4)),
                 vmov_A4,
                 invalid);
 
+            var AdvancedSimd_TwoRegisterShiftAmount = Mask("Advanced SIMD two registers and shift amount", 8, 0b1111,
+                Instr(Opcode.vshr, q(6),VshImmSize, W22_12,W5_0,VshImm),
+                Instr(Opcode.vsra, x("")),
+                Mask("  Q", 6, 1,
+                    Instr(Opcode.vrshr, x("")),
+                    invalid),
+                Instr(Opcode.vrsra, x("")),
 
+                Mask("  U", 24, 1,
+                    invalid,
+                    Instr(Opcode.vsri, x(""))),
+                Mask("  U", 24, 1,
+                    Instr(Opcode.vshl, x("(immediate)")),
+                    Instr(Opcode.vsli, x(""))),
+                Mask("  U", 24, 1,
+                    invalid,
+                    nyi("vqshl, vqshlu")),
+                nyi("vqshl, vqshlu"),
 
-            var AdvancedSimd_TwoRegisterShiftAmount = nyi("AdvancedSimd_TwoRegisterShiftAmount");
+                nyi(""),
+                nyi(""),
+                Select(6, 3, n => n != 0,
+                    Select(16, 7, n => n != 0,
+                        Instr(Opcode.vshl, x("")),
+                        Instr(Opcode.vmov, x(""))),
+                    invalid),
+                nyi(""),
+
+                nyi(""),
+                nyi(""),
+                nyi(""),
+                nyi(""));
+
 
             var AdvancedSimd_ShiftsAndImmediate = Select(7, 0b111000000000001, n => n == 0,
                 AdvancedSimd_OneRegisterModifiedImmediate,
@@ -3268,115 +3376,121 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
             var vext = Instr(Opcode.vext, U8, q(6), W22_12, W7_16, W5_0, i(8, 4));
-            
-            var AdvancedSimdDataProcessing = Mask("AdvancedSimdDataProcessing", 23, 1,
+
+            var AdvancedSimdDataProcessing = Mask("Advanced SIMD data-processing", 23, 1,
                 AdvancedSimd_ThreeRegisters,
-                Mask("AdvancedSimdDataProcessing A=1x??x", 20, 0b11,
-                    Mask("AdvancedSimdDataProcessing A=1x00?", 19, 1,
-                        Mask("AdvancedSimdDataProcessing A=1x000 C=????", 4, 0b1111,
-                            AdvanceSimd_ThreeRegistersDifferentLength,
-                            AdvancedSimd_OneRegisterModifiedImmediate,
-                            AdvanceSimd_ThreeRegistersDifferentLength,
-                            AdvancedSimd_OneRegisterModifiedImmediate,
+                Mask(" op0=1", 4, 1,
+                    AdvancedSimd_TwoRegisterOrThreeRegisters,
+                    AdvancedSimd_ShiftsAndImmediate));
 
-                            nyi("AdvancedSimdDataProcessing A=1x000 C=0100"),
-                            AdvancedSimd_OneRegisterModifiedImmediate,
-                            nyi("AdvancedSimdDataProcessing A=1x000 C=0110"),
-                            AdvancedSimd_OneRegisterModifiedImmediate,
+            /*            var AdvancedSimdDataProcessing = Mask("AdvancedSimdDataProcessing", 23, 1,
+                            AdvancedSimd_ThreeRegisters,
+                            Mask("AdvancedSimdDataProcessing A=1x??x", 20, 0b11,
+                                Mask("AdvancedSimdDataProcessing A=1x00?", 19, 1,
+                                    Mask("AdvancedSimdDataProcessing A=1x000 C=????", 4, 0b1111,
+                                        AdvanceSimd_ThreeRegistersDifferentLength,
+                                        AdvancedSimd_OneRegisterModifiedImmediate,
+                                        AdvanceSimd_ThreeRegistersDifferentLength,
+                                        AdvancedSimd_OneRegisterModifiedImmediate,
 
-                            AdvanceSimd_ThreeRegistersDifferentLength,
-                            nyi("AdvancedSimdDataProcessing A=1x000 C=1001"),
-                            AdvanceSimd_ThreeRegistersDifferentLength,
-                            nyi("AdvancedSimdDataProcessing A=1x000 C=1011"),
+                                        nyi("AdvancedSimdDataProcessing A=1x000 C=0100"),
+                                        AdvancedSimd_OneRegisterModifiedImmediate,
+                                        nyi("AdvancedSimdDataProcessing A=1x000 C=0110"),
+                                        AdvancedSimd_OneRegisterModifiedImmediate,
 
-                            nyi("AdvancedSimdDataProcessing A=1x000 C=1100"),
-                            nyi("AdvancedSimdDataProcessing A=1x000 C=1101"),
-                            nyi("AdvancedSimdDataProcessing A=1x000 C=1110"),
-                            nyi("AdvancedSimdDataProcessing A=1x000 C=1111")),
-                        Mask("AdvancedSimdDataProcessing A=1x001 C=????", 4, 0b1111,
-                            AdvanceSimd_ThreeRegistersDifferentLength,
-                            AdvancedSimd_TwoRegisterShiftAmount,
-                            AdvanceSimd_ThreeRegistersDifferentLength,
-                            AdvancedSimd_TwoRegisterShiftAmount,
+                                        AdvanceSimd_ThreeRegistersDifferentLength,
+                                        nyi("AdvancedSimdDataProcessing A=1x000 C=1001"),
+                                        AdvanceSimd_ThreeRegistersDifferentLength,
+                                        nyi("AdvancedSimdDataProcessing A=1x000 C=1011"),
 
-                            nyi("AdvancedSimdDataProcessing A=1x001 C=0100"),
-                            AdvancedSimd_TwoRegisterShiftAmount,
-                            nyi("AdvancedSimdDataProcessing A=1x001 C=0110"),
-                            AdvancedSimd_TwoRegisterShiftAmount,
+                                        nyi("AdvancedSimdDataProcessing A=1x000 C=1100"),
+                                        nyi("AdvancedSimdDataProcessing A=1x000 C=1101"),
+                                        nyi("AdvancedSimdDataProcessing A=1x000 C=1110"),
+                                        nyi("AdvancedSimdDataProcessing A=1x000 C=1111")),
+                                    Mask("AdvancedSimdDataProcessing A=1x001 C=????", 4, 0b1111,
+                                        AdvanceSimd_ThreeRegistersDifferentLength,
+                                        AdvancedSimd_TwoRegisterShiftAmount,
+                                        AdvanceSimd_ThreeRegistersDifferentLength,
+                                        AdvancedSimd_TwoRegisterShiftAmount,
 
-                            AdvanceSimd_ThreeRegistersDifferentLength,
-                            AdvancedSimd_TwoRegisterShiftAmount,
-                            AdvanceSimd_ThreeRegistersDifferentLength,
-                            AdvancedSimd_TwoRegisterShiftAmount,
+                                        nyi("AdvancedSimdDataProcessing A=1x001 C=0100"),
+                                        AdvancedSimd_TwoRegisterShiftAmount,
+                                        nyi("AdvancedSimdDataProcessing A=1x001 C=0110"),
+                                        AdvancedSimd_TwoRegisterShiftAmount,
 
-                            nyi("AdvancedSimdDataProcessing A=1x001 C=1100"),
-                            AdvancedSimd_TwoRegisterShiftAmount,
-                            nyi("AdvancedSimdDataProcessing A=1x001 C=1110"),
-                            AdvancedSimd_TwoRegisterShiftAmount)),
-                    Mask("AdvancedSimdDataProcessing A=1x01x C=????", 4, 0b1111,
-                        AdvanceSimd_ThreeRegistersDifferentLength,
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        AdvanceSimd_ThreeRegistersDifferentLength,
-                        AdvancedSimd_TwoRegisterShiftAmount,
+                                        AdvanceSimd_ThreeRegistersDifferentLength,
+                                        AdvancedSimd_TwoRegisterShiftAmount,
+                                        AdvanceSimd_ThreeRegistersDifferentLength,
+                                        AdvancedSimd_TwoRegisterShiftAmount,
 
-                        nyi("AdvancedSimdDataProcessing A=1x01x C=0100"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        nyi("AdvancedSimdDataProcessing A=1x01x C=0110"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
+                                        nyi("AdvancedSimdDataProcessing A=1x001 C=1100"),
+                                        AdvancedSimd_TwoRegisterShiftAmount,
+                                        nyi("AdvancedSimdDataProcessing A=1x001 C=1110"),
+                                        AdvancedSimd_TwoRegisterShiftAmount)),
+                                Mask("AdvancedSimdDataProcessing A=1x01x C=????", 4, 0b1111,
+                                    AdvanceSimd_ThreeRegistersDifferentLength,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    AdvanceSimd_ThreeRegistersDifferentLength,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
 
-                        AdvanceSimd_ThreeRegistersDifferentLength,
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        AdvanceSimd_ThreeRegistersDifferentLength,
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        
-                        nyi("AdvancedSimdDataProcessing A=1x01x C=1100"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        nyi("AdvancedSimdDataProcessing A=1x01x C=1110"),
-                        AdvancedSimd_TwoRegisterShiftAmount),
-                    Mask("AdvancedSimdDataProcessing A=1x10x C=????", 4, 0b1111,
-                        AdvanceSimd_ThreeRegistersDifferentLength,
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        AdvanceSimd_ThreeRegistersDifferentLength,
-                        AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x01x C=0100"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x01x C=0110"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
 
-                        nyi("AdvancedSimdDataProcessing A=1x10x C=0100"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        nyi("AdvancedSimdDataProcessing A=1x10x C=0110"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
+                                    AdvanceSimd_ThreeRegistersDifferentLength,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    AdvanceSimd_ThreeRegistersDifferentLength,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
 
-                        AdvanceSimd_ThreeRegistersDifferentLength,
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        AdvanceSimd_ThreeRegistersDifferentLength,
-                        AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x01x C=1100"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x01x C=1110"),
+                                    AdvancedSimd_TwoRegisterShiftAmount),
+                                Mask("AdvancedSimdDataProcessing A=1x10x C=????", 4, 0b1111,
+                                    AdvanceSimd_ThreeRegistersDifferentLength,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    AdvanceSimd_ThreeRegistersDifferentLength,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
 
-                        nyi("AdvancedSimdDataProcessing A=1x10x C=1100"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        nyi("AdvancedSimdDataProcessing A=1x10x C=1110"),
-                        AdvancedSimd_TwoRegisterShiftAmount),
-                    Mask("AdvancedSimdDataProcessing A=1x11x C=????", 4, 0b1111,
-                        nyi("AdvancedSimdDataProcessing A=1x11x C=0000"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        nyi("AdvancedSimdDataProcessing A=1x11x C=0010"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x10x C=0100"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x10x C=0110"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
 
-                        nyi("AdvancedSimdDataProcessing A=1x11x C=0100"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        nyi("AdvancedSimdDataProcessing A=1x11x C=0110"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
+                                    AdvanceSimd_ThreeRegistersDifferentLength,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    AdvanceSimd_ThreeRegistersDifferentLength,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
 
-                        nyi("AdvancedSimdDataProcessing A=1x11x C=1000"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        nyi("AdvancedSimdDataProcessing A=1x11x C=1010"),
-                        AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x10x C=1100"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x10x C=1110"),
+                                    AdvancedSimd_TwoRegisterShiftAmount),
+                                Mask("AdvancedSimdDataProcessing A=1x11x C=????", 4, 0b1111,
+                                    nyi("AdvancedSimdDataProcessing A=1x11x C=0000"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x11x C=0010"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
 
-                        vext,
-                        AdvancedSimd_TwoRegisterShiftAmount,
-                        Mask(4, 1, 
-                            vext,
-                            nyi("AdvancedSimdDataProcessing A=1x11x C=1110 U=1")),
-                        AdvancedSimd_TwoRegisterShiftAmount)));
+                                    nyi("AdvancedSimdDataProcessing A=1x11x C=0100"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("AdvancedSimdDataProcessing A=1x11x C=0110"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
 
-        var MemoryHintsAdvancedSimdMiscellaneous = Mask("MemoryHintsAdvancedSimdMiscellaneous", 24, 0b111,
+                                    nyi("AdvancedSimdDataProcessing A=1x11x C=1000"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    nyi("$$ AdvancedSimdDataProcessing A=1x11x C=1010"),
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+
+                                    vext,
+                                    AdvancedSimd_TwoRegisterShiftAmount,
+                                    Mask(4, 1, 
+                                        vext,
+                                        nyi("AdvancedSimdDataProcessing A=1x11x C=1110 U=1")),
+                                    AdvancedSimd_TwoRegisterShiftAmount)));
+            */
+            var MemoryHintsAdvancedSimdMiscellaneous = Mask("Memory hints, Advanced SIMD instructions, and miscellaneous instructions", 24, 0b111,
                 invalid,
                 Select("op1=001????", 20, 0b1111, u => u == 0,
                     Mask("Rn=xxx?", 16, 1,
@@ -3412,17 +3526,47 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.pld, Mo(w4)),
                         nyi("op1=1011111"))),
                 nyi("op1=110xxxx"),
-                nyi("op1=111xxxx"));
+                Mask("  op1=111xxxx", 24, 0b1111,
+                    nyi("op1=1110000"),
+                    nyi("op1=1110001"),
+                    nyi("op1=1110010"),
+                    invalid,
 
-            var UnconditionalDecoder = Mask("Unconditional", 25, 0b111,
+                    nyi("op1=1110100"),
+                    nyi("Preload (PLD,PLDW)"),
+                    nyi("op1=1110110"),
+                    invalid,
+
+                    nyi("op1=1111000"),
+                    nyi("op1=1111001"),
+                    nyi("op1=1111010"),
+                    invalid,
+
+                    nyi("op1=1111100"),
+                    nyi("Preload (PLD,PLDW)"),
+                    nyi("op1=1111110"),
+                    invalid));
+
+            var SystemRegisterAccessAdvancedSimd = Mask("System register access, Advanced SIMD, floating-point, and Supervisor call", 24, 0b11,
+                Select("  op0=0b00", 9, 0b111, n => n == 0b111,
+                    SystemRegister_LdSt_64bitMove,
+                    invalid),
+                Select("  op0=0b01", 9, 0b111, n => n == 0b111,
+                    SystemRegister_LdSt_64bitMove,
+                    invalid),
+                nyi("  op0=0b10"),
+                Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0, 24)));
+
+            // Note: this decoder is ARM7. ARM8 looks different.
+            var UnconditionalDecoder = Mask("Unconditional instructions", 25, 0b111,
                 MemoryHintsAdvancedSimdMiscellaneous,
                 MemoryHintsAdvancedSimdMiscellaneous,
                 MemoryHintsAdvancedSimdMiscellaneous,
                 MemoryHintsAdvancedSimdMiscellaneous,
 
-                nyi("Unconditional op1=0b100xxxxx"),
+                ExceptionSaveRestore,
                 Branch_BranchLink_BlockDataTransfer,
-                new PcDecoder(28, 
+                new PcDecoder(28,
                     Mask("Unconditional op1=0b110x?x??", 20, 7,
                         Instr(Opcode.stc, CP(8), CR(12), Mi(2, w4)),
                         Instr(Opcode.ldc, CP(8), CR(12), Mi(2, w4)),
@@ -3455,7 +3599,7 @@ namespace Reko.Arch.Arm.AArch32
             var unconditional = Mask("Unconditional", 25, 7,
                 UncMiscellaneous,
                 AdvancedSimd,
-                new MaskDecoder(20, 1,
+                Mask(20, 1,
                     AdvancedSimdElementLoadStore,
                     MemoryHintsAndBarriers),
                 new MaskDecoder(20, 1,

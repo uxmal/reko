@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,16 +35,16 @@ namespace Reko.Core
         private SortedList<ulong, Constant> map = new SortedList<ulong, Constant>();
 
         /// <summary>
-        /// Retrieves a relocated value at the <paramref name="imageOffset"/>.
+        /// Retrieves a relocated value at the <paramref name="linAddress"/>.
         /// </summary>
-        /// <param name="imageOffset"></param>
+        /// <param name="linAddress"></param>
         /// <returns></returns>
-        public Constant this[ulong imageOffset]
+        public Constant this[ulong linAddress]
         {
             get
             {
                 Constant c;
-                if (map.TryGetValue(imageOffset, out c))
+                if (map.TryGetValue(linAddress, out c))
                     return c;
                 else
                     return null;
@@ -63,9 +63,9 @@ namespace Reko.Core
 			map.Add(linAddress, c);
 		}
 
-		public bool Contains(uint imageOffset)
+		public bool Contains(uint linAddress)
 		{
-			return map.ContainsKey(imageOffset);
+			return map.ContainsKey(linAddress);
 		}
 
         /// <summary>

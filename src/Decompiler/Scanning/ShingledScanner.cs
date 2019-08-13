@@ -71,7 +71,7 @@ namespace Reko.Scanning
             this.storageBinder = storageBinder;
             this.sr = sr;
             this.eventListener = eventListener;
-            this.Bad = program.Platform.MakeAddressFromLinear(~0ul);
+            this.Bad = program.Platform.MakeAddressFromLinear(~0ul, false);
         }
 
         /// <summary>
@@ -601,7 +601,7 @@ namespace Reko.Scanning
             var rdr = program.CreateImageReader(arch, seg.Address);
             while (rdr.TryRead(program.Platform.PointerType, out Constant c))
             {
-                yield return program.Architecture.MakeAddressFromConstant(c);
+                yield return program.Architecture.MakeAddressFromConstant(c, false);
             }
         }
 

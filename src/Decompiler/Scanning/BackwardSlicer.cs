@@ -177,7 +177,7 @@ namespace Reko.Scanning
                     var sel = rtlBlock.Address.Selector.Value;
                     return host.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
                 }
-                return host.Architecture.MakeAddressFromConstant(c);
+                return host.Architecture.MakeAddressFromConstant(c, true);
             }
             if (arg is MkSequence seq)
             {
@@ -242,8 +242,8 @@ namespace Reko.Scanning
                 if (preds.Count == 0)
                 {
                     DebugEx.Verbose(trace, "  No predecessors found for block {0}", state.block.Address);
-                    DebugEx.Verbose(BackwardSlicer.trace, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
-                    DebugEx.Verbose(BackwardSlicer.trace, "  expr:  {0}", this.JumpTableFormat);
+                    DebugEx.Verbose(trace, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
+                    DebugEx.Verbose(trace, "  expr:  {0}", this.JumpTableFormat);
                     return true;
                 }
                 foreach (var pred in preds)
@@ -534,7 +534,7 @@ namespace Reko.Scanning
         public bool Step()
         {
             var instr = this.instrs[this.iInstr];
-            DebugEx.Info(BackwardSlicer.trace, "Bwslc: Stepping to instruction {0}", instr);
+            DebugEx.Inform(BackwardSlicer.trace, "Bwslc: Stepping to instruction {0}", instr);
             var sr = instr.Accept(this);
             --this.iInstr;
             if (sr == null)
@@ -1004,7 +1004,10 @@ namespace Reko.Scanning
 
         public SlicerResult VisitSlice(Slice slice, BackwardSlicerContext ctx)
         {
-            throw new NotImplementedException();
+            var range = new BitRange(
+                (short)slice.Offset,
+                (short) (slice.DataType.BitSize + slice.Offset));
+            return slice.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
         public SlicerResult VisitTestCondition(TestCondition tc, BackwardSlicerContext ctx)
