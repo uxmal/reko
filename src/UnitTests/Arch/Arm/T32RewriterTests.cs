@@ -6481,7 +6481,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("DFE802F0");	// tbb [pc, r2]
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto 0x00100000 + Mem0[0x00100004 + r2:byte] * 0x02");
+                "1|T--|goto 0x00100004 + Mem0[0x00100004 + r2:byte] * 0x02");
         }
 
 
@@ -6491,7 +6491,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("DFE813F0");	// tbh [pc, r3, lsl #1]
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto 0x00100000 + Mem0[0x00100004 + r3 * 0x00000002:word16] * 0x0002");
+                "1|T--|goto 0x00100004 + Mem0[0x00100004 + r3 * 0x00000002:word16] * 0x0002");
         }
 
         [Test]

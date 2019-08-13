@@ -1003,7 +1003,7 @@ namespace Reko.Scanning
             imgVector = null;
             switchExp = null;
 
-            var bwsHost = new BackwardSlicerHost(program);
+            var bwsHost = new BackwardSlicerHost(program, this.arch);
             var rtlBlock = bwsHost.GetRtlBlock(blockCur);
             var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
             var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
