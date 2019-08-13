@@ -2751,6 +2751,16 @@ namespace Reko.Arch.Arm.AArch32
                             nyi("floating point minNum/maxNum"),
                             nyi("floating point data processing")))));
 
+            var vmov_scalar_to_gp_reg = Mask("AdvancedSimd_32bitTransfer LC=11 U:opc1:opc2=??xxx", 22, 0b11,
+                    Mask("U:opc1:opc2=00x?? = 0", 5, 0b11,
+                        Instr(Opcode.vmov, I32, r(3), D7_16, Ix(21, 1)),
+                        Instr(Opcode.vmov, I16, r(3), D7_16, Ix(21, 1)),
+                        invalid,
+                        Instr(Opcode.vmov, I16, r(3), D7_16, Ix(21, 1))),
+                    Instr(Opcode.vmov, I8, r(3), D7_16, Ix(21, 1)),
+                    nyi("AdvancedSimd_32bitTransfer LC=11 U:opc1:opc2=10xxx"),
+                    Instr(Opcode.vmov, I8, r(3), D7_16, Ix(21, 1)));
+
             var AdvancedSimd_32bitTransfer = Mask("Advanced SIMD 8/16/32-bit element move/duplicate", 20, 1, 6, 1,
                 Mask("AdvancedSimd_32bitTransfer LC=00 A=?xx", 23, 1,
                     nyi("VMOV (general-purpose register to scalar)"),
@@ -2760,16 +2770,8 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(6, 1,
                         Instr(Opcode.vdup, vW(22, 1, 5, 1), q(21), W7_16, R12),
                         invalid)),
-                nyi("AdvancedSimd_32bitTransfer LC=10"),
-                Mask("AdvancedSimd_32bitTransfer LC=11 U:opc1:opc2=??xxx", 22, 0b11,
-                    Mask("U:opc1:opc2=00x?? = 0", 5, 0b11,
-                        Instr(Opcode.vmov, I32, r(3), D7_16, Ix(21,1)),
-                        Instr(Opcode.vmov, I16, r(3), D7_16, Ix(21,1)),
-                        invalid,
-                        Instr(Opcode.vmov, I16, r(3), D7_16, Ix(21,1))),
-                    Instr(Opcode.vmov, I8, r(3), D7_16, Ix(21,1)),
-                    nyi("AdvancedSimd_32bitTransfer LC=11 U:opc1:opc2=10xxx"),
-                    Instr(Opcode.vmov, I8, r(3), D7_16, Ix(21,1))));
+                vmov_scalar_to_gp_reg,
+                vmov_scalar_to_gp_reg);
 
             //var AdvancedSIMDElementMovDuplicate = Mask("AdvancedSIMDElementMovDuplicate", 20, 1,
             //    Mask(21,2,5,2,
