@@ -36,6 +36,8 @@ namespace Reko.Core
 		{
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Blocks must have a valid name.", nameof(name));
+            if (name == "l00000A80") //$DEBUG
+                name.ToString();
 			this.Procedure = proc;
 			this.Name = name;
 			this.Statements = new StatementList(this);

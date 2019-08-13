@@ -30,14 +30,6 @@ namespace Reko.Core
     public static class DebugEx
     {
         [Conditional("DEBUG")]
-        public static void PrintIf(bool doPrint, string fmt, params object[] args)
-        {
-            if (!doPrint)
-                return;
-            Debug.Print(fmt, args);
-        }
-
-        [Conditional("DEBUG")]
         public static void Error(TraceSwitch trace, string fmt, params object[] args)
         {
             if (trace.TraceError)

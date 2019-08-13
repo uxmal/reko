@@ -1635,7 +1635,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            DebugEx.PrintIf(ElfImageLoader.trace.TraceInfo , "== Symbols from {0} ==", symSection.Name);
+            DebugEx.Inform(ElfImageLoader.trace, "== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();
@@ -1643,7 +1643,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 var sym = Elf32_Sym.Load(rdr);
                 var symName = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
-                DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                DebugEx.Verbose(ElfImageLoader.trace, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     string.IsNullOrWhiteSpace(symName) ? "<empty>" : symName,
                     (ElfSymbolType)(sym.st_info & 0xF),
