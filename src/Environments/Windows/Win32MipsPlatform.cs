@@ -128,7 +128,7 @@ namespace Reko.Environments.Windows
             var hi = (Constant)trampPattern[0].CapturedExpressions("hi");
             var lo = (Constant)trampPattern[1].CapturedExpressions("lo");
             var c = Operator.IAdd.ApplyConstants(hi, lo);
-            var addrTarget= MakeAddressFromConstant(c);
+            var addrTarget= MakeAddressFromConstant(c, false);
             ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrFrom);
             if (proc != null)
                 return proc;

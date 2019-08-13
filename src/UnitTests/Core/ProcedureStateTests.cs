@@ -214,7 +214,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Address MakeAddressFromConstant(Constant c)
+            public Address MakeAddressFromConstant(Constant c, bool codeAlign)
             {
                 return Address.Ptr32(c.ToUInt32());
             }

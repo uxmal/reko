@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -275,9 +275,12 @@ namespace Reko.Arch.Mips
             return new BeImageWriter(mem, addr);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr32(c.ToUInt32());
+                var uAddr = c.ToUInt32();
+                if (codeAlign)
+                    uAddr &= ~3u;
+                return Address.Ptr32(uAddr);
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
@@ -315,9 +318,12 @@ namespace Reko.Arch.Mips
             return new LeImageWriter(mem, addr);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr32(c.ToUInt32());
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
@@ -356,9 +362,12 @@ namespace Reko.Arch.Mips
             return new BeImageWriter(mem, addr);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr64(c.ToUInt64());
+            var uAddr = c.ToUInt64();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr64(uAddr);
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
@@ -398,9 +407,12 @@ namespace Reko.Arch.Mips
             return new LeImageWriter(mem, addr);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr64(c.ToUInt64());
+            var uAddr = c.ToUInt64();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr64(uAddr);
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

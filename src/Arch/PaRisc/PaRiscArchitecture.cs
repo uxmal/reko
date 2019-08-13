@@ -153,9 +153,23 @@ namespace Reko.Arch.PaRisc
             SetOptionDependentProperties();
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr32(c.ToUInt32());
+            if (Is64Bit())
+            {
+                var uAddr = c.ToUInt64();
+                if (codeAlign)
+                    uAddr &= ~3u;
+                return Address.Ptr64(uAddr);
+            }
+            else
+            {
+                var uAddr = c.ToUInt32();
+                if (codeAlign)
+                    uAddr &= ~3u;
+                return Address.Ptr32(uAddr);
+
+            }
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

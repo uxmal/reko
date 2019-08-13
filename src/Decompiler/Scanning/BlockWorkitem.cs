@@ -662,7 +662,7 @@ namespace Reko.Scanning
             {
                 if (c.IsValid)
                 {
-                    return arch.MakeAddressFromConstant(c);
+                    return arch.MakeAddressFromConstant(c, true);
                 }
                 else
                 {
@@ -1168,7 +1168,7 @@ namespace Reko.Scanning
             {
                 if (!(mem.EffectiveAddress is Constant offset))
                     return null;
-                addrTarget = program.Platform.MakeAddressFromConstant(offset);
+                addrTarget = program.Platform.MakeAddressFromConstant(offset, true);
             }
             var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric.Address);
             //if (impEp != null)

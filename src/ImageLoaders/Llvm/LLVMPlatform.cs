@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -169,12 +169,12 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Core.Expressions.Constant c)
+        public Address MakeAddressFromConstant(Core.Expressions.Constant c, bool codeAlign)
         {
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromLinear(ulong uAddr)
+        public Address MakeAddressFromLinear(ulong uAddr, bool codeAlign)
         {
             throw new NotImplementedException();
         }

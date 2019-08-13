@@ -167,7 +167,7 @@ namespace Reko.Arch.Mos6502
                 dataType);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             return Address.Ptr16(c.ToUInt16());
         }

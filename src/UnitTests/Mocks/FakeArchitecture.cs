@@ -307,7 +307,7 @@ namespace Reko.UnitTests.Mocks
             return null;
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             return Address.Ptr32(c.ToUInt32());
         }

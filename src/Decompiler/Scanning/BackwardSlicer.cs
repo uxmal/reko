@@ -177,7 +177,7 @@ namespace Reko.Scanning
                     var sel = rtlBlock.Address.Selector.Value;
                     return host.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
                 }
-                return host.Architecture.MakeAddressFromConstant(c);
+                return host.Architecture.MakeAddressFromConstant(c, true);
             }
             if (arg is MkSequence seq)
             {

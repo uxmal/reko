@@ -588,7 +588,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(memOp.Offset);
+                    ea = arch.MakeAddressFromConstant(memOp.Offset, false);
                     Expression load;
                     if (memOp.Deferred)
                     {
@@ -670,7 +670,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(memOp.Offset);
+                    ea = arch.MakeAddressFromConstant(memOp.Offset, false);
                 }
                 var tmp = binder.CreateTemporary(width);
                 m.Assign(tmp, fn(m.Mem(width, ea)));

@@ -435,26 +435,26 @@ namespace Reko.Arch.Mos6502
                             offset,
                             m.Cast(PrimitiveType.UInt16, x))));
             case AddressMode.Absolute:
-                return m.Mem8(arch.MakeAddressFromConstant(op.Offset));
+                return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));
             case AddressMode.AbsoluteX:
             case AddressMode.AbsoluteY:
                 return m.Mem8(m.IAdd(
-                    arch.MakeAddressFromConstant(op.Offset),
+                    arch.MakeAddressFromConstant(op.Offset, false),
                     binder.EnsureRegister(op.Register)));
             case AddressMode.ZeroPage:
                 if (op.Register != null)
                 {
                     return m.Mem8(
                         m.IAdd(
-                            arch.MakeAddressFromConstant(op.Offset),
+                            arch.MakeAddressFromConstant(op.Offset, false),
                             binder.EnsureRegister(op.Register)));
                 }
                 else
                 {
-                    return m.Mem8(arch.MakeAddressFromConstant(op.Offset));
+                    return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));
                 }
             case AddressMode.Indirect:
-                return m.Mem16(m.Mem16(arch.MakeAddressFromConstant(op.Offset)));
+                return m.Mem16(m.Mem16(arch.MakeAddressFromConstant(op.Offset, false)));
             }
         }
 

@@ -195,7 +195,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-                ea = arch.MakeAddressFromConstant(mem.Offset);
+                ea = arch.MakeAddressFromConstant(mem.Offset, false);
             }
 
             return ea;
@@ -210,13 +210,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 m.Assign(id, fn(id, src));
                 return id;
             }
-            var addr = op as AddressOperand;
-            if (addr != null)
+            if (op is AddressOperand addr)
             {
                 return addr.Address;
             }
-            var mem = op as MemoryOperand;
-            if (mem != null)
+            if (op is MemoryOperand mem)
             {
                 Expression ea;
                 if (mem.Base != null)
@@ -225,7 +223,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(mem.Offset);
+                    ea = arch.MakeAddressFromConstant(mem.Offset, false);
                 }
                 if (mem.Increment < 0)
                 {

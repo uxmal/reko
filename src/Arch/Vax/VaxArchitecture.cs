@@ -193,7 +193,7 @@ namespace Reko.Arch.Vax
             return s.ToString();
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             return Address.Ptr32(c.ToUInt32());
         }

@@ -851,8 +851,8 @@ testProc_exit:
             Given_SimpleTrace(trace);
             arch.Setup(s => s.GetRegister("r1")).Returns((RegisterStorage)r1.Storage);
             arch.Setup(s => s.GetRegister("r2")).Returns((RegisterStorage)r2.Storage);
-            arch.Setup(s => s.MakeAddressFromConstant(It.IsAny<Constant>()))
-                .Returns((Constant c) => Address.Ptr32(c.ToUInt32()));
+            arch.Setup(s => s.MakeAddressFromConstant(It.IsAny<Constant>(), It.IsAny<bool>()))
+                .Returns((Constant c, bool b) => Address.Ptr32(c.ToUInt32()));
             Constant co;
             arch.Setup(s => s.TryRead(
                 It.IsAny<MemoryArea>(),
@@ -933,7 +933,8 @@ testProc_exit:
             scanner.Setup(s => s.FindContainingBlock(addrStart)).Returns(block);
             Given_SimpleTrace(trace);
             arch.Setup(a => a.MakeAddressFromConstant(
-                It.Is<Constant>(c => c.ToUInt32() == 0x00100004))).Returns(Address.Ptr32(0x00100004));
+                It.Is<Constant>(c => c.ToUInt32() == 0x00100004),
+                It.IsAny<bool>())).Returns(Address.Ptr32(0x00100004));
             var addr = Constant.Word32(0x00123400);
             arch.Setup(a => a.TryRead(
                 It.IsNotNull<MemoryArea>(),
@@ -941,7 +942,8 @@ testProc_exit:
                 PrimitiveType.Word32,
                 out addr)).Returns(true);
             arch.Setup(a => a.MakeAddressFromConstant(
-                It.Is<Constant>(c => c.ToUInt32() == 0x00123400))).Returns(Address.Ptr32(0x00123400));
+                It.Is<Constant>(c => c.ToUInt32() == 0x00123400),
+                It.IsAny<bool>())).Returns(Address.Ptr32(0x00123400));
             Given_NoInlinedCall();
             scanner.Setup(s => s.SetProcedureReturnAddressBytes(
                 proc,

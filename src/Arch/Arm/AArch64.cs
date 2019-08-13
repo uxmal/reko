@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -250,9 +250,12 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr64(c.ToUInt64());
+            var uAddr = c.ToUInt64();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr64(uAddr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

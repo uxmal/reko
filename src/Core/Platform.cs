@@ -149,8 +149,8 @@ namespace Reko.Core
         Expression ResolveImportByName(string moduleName, string globalName);
         Expression ResolveImportByOrdinal(string moduleName, int ordinal);
         ProcedureCharacteristics LookupCharacteristicsByName(string procName);
-        Address MakeAddressFromConstant(Constant c);
-        Address MakeAddressFromLinear(ulong uAddr);
+        Address MakeAddressFromConstant(Constant c, bool codeAlign);
+        Address MakeAddressFromLinear(ulong uAddr, bool codeAlign);
 
         /// <summary>
         /// Given an indirect call, attempt to resolve it into an address.
@@ -402,9 +402,9 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual Address MakeAddressFromConstant(Constant c)
+        public virtual Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Architecture.MakeAddressFromConstant(c);
+            return Architecture.MakeAddressFromConstant(c, codeAlign);
         }
 
         public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
@@ -422,7 +422,7 @@ namespace Reko.Core
         /// </remarks>
         /// <param name="uAddr"></param>
         /// <returns></returns>
-        public virtual Address MakeAddressFromLinear(ulong uAddr)
+        public virtual Address MakeAddressFromLinear(ulong uAddr, bool codeAlign)
         {
             return Address.Create(Architecture.PointerType, uAddr);
         }

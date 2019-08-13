@@ -134,10 +134,13 @@ namespace Reko.Arch.Alpha
             return "";
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             //$TODO: this should be in Platform since pointer sizes != word sizes.
-            return Address.Ptr32((uint)c.ToInt64());
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Scanning
 
         public Address MakeAddressFromConstant(Constant c)
         {
-            return program.Architecture.MakeAddressFromConstant(c);
+            return program.Architecture.MakeAddressFromConstant(c, true);
         }
 
         public Address MakeSegmentedAddress(Constant selector, Constant offset)

@@ -362,8 +362,8 @@ namespace Reko.UnitTests.Analysis
             platformMock.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             platformMock.Setup(p => p.CreateImplicitArgumentRegisters()).Returns(
                 new HashSet<RegisterStorage>());
-            platformMock.Setup(p => p.MakeAddressFromLinear(It.IsAny<ulong>()))
-                .Returns((ulong ul) => Address.Ptr32((uint) ul));
+            platformMock.Setup(p => p.MakeAddressFromLinear(It.IsAny<ulong>(), It.IsAny<bool>()))
+                .Returns((ulong ul, bool b) => Address.Ptr32((uint) ul));
             platformMock.Setup(p => p.CreateTrashedRegisters())
                 .Returns(new HashSet<RegisterStorage>());
             Given_Platform(platformMock.Object);

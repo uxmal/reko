@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -129,7 +129,7 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override Address MakeAddressFromConstant(Constant c)
+		public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
 		{
 			throw new NotImplementedException();
 		}

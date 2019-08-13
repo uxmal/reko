@@ -127,10 +127,10 @@ namespace Reko.Scanning
         private Address GetAddressOfLastInstruction(Block inboundBlock)
         {
             if (inboundBlock.Statements.Count == 0)
-                return Program.Platform.MakeAddressFromLinear(0);
+                return Program.Platform.MakeAddressFromLinear(0, true);
             return inboundBlock.Address != null
                 ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last.LinearAddress);
+                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last.LinearAddress, true);
         }
 
         public void FixOutboundEdges(Block block)

@@ -157,18 +157,16 @@ namespace Reko.Environments.SysV
             {
                 if (jump.Target is ProcedureConstant pc)
                     return pc.Procedure;
-                var access = jump.Target as MemoryAccess;
-                if (access == null)
+                if (!(jump.Target is MemoryAccess access))
                     return null;
                 addrTarget = access.EffectiveAddress as Address;
                 if (addrTarget == null)
                 {
-                    var wAddr = access.EffectiveAddress as Constant;
-                    if (wAddr == null)
+                    if (!(access.EffectiveAddress is Constant wAddr))
                     {
                         return null;
                     }
-                    addrTarget = MakeAddressFromConstant(wAddr);
+                    addrTarget = MakeAddressFromConstant(wAddr, true);
                 }
             }
             if (addrTarget == null)

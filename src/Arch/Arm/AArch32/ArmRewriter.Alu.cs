@@ -492,7 +492,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else if (Src1() is ImmediateOperand imm)
                 {
-                    m.Goto(arch.MakeAddressFromConstant(imm.Value));
+                    m.Goto(arch.MakeAddressFromConstant(imm.Value, true));
                 }
                 else
                 {

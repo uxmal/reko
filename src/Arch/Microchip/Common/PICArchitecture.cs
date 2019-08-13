@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work from:
@@ -329,7 +329,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override ProcessorState CreateProcessorState()
             => ProcessorModel.CreateProcessorState(this);
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
             => Address.Ptr32(c.ToUInt32());
 
         public override Address MakeSegmentedAddress(Constant seg, Constant offset)
