@@ -5226,7 +5226,7 @@ l5510:
 // LocalsOut: fp(20) Local -0002(20) Local -0008(20) Local -001A(16) Local -001C(16) Local -001D(20) Local -001E(20) Local -0020(20) Local -0022(20) Local -0024(20)
 
 l551C:
-	word20 r13_587 = (int16) SLICE(bLoc1D_193 - r11_451, byte, 0)
+	word20 r13_587 = (int16) (bLoc1D_193 - SLICE(r11_451, byte, 0))
 	branch r13_587 < 0x0001 l5542
 // DataOut: pc r10 r11 r13 r14 r5 r6 r8 sr
 // DataOut (flags): 
@@ -5297,7 +5297,7 @@ l5576:
 // LocalsOut: fp(20) Local -0002(20) Local -0008(20) Local -001A(16) Local -001C(16) Local -001D(20) Local -001E(20) Local -0020(20) Local -0022(20)
 
 l55C4:
-	word20 r13_532 = (int16) SLICE(bLoc1D_193 - r11_451, byte, 0)
+	word20 r13_532 = (int16) (bLoc1D_193 - SLICE(r11_451, byte, 0))
 	branch r13_532 < 0x0001 l557C
 // DataOut: pc r10 r13 r5 r6 r8 sr
 // DataOut (flags): 
@@ -5349,7 +5349,7 @@ l559C:
 // LocalsOut: fp(20) Local -0002(20) Local -0008(20) Local -001A(16) Local -001C(16) Local -001D(20) Local -0022(20)
 
 l55A4:
-	word20 r13_515 = (int16) SLICE(bLoc1D_193 - r11_497, byte, 0)
+	word20 r13_515 = (int16) (bLoc1D_193 - SLICE(r11_497, byte, 0))
 	branch r13_515 < 0x0001 l53A6
 // DataOut: pc r13 r5 r6 r8 sr
 // DataOut (flags): 

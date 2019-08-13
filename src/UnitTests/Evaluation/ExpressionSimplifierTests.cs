@@ -234,5 +234,13 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Seq(m.Word32(0x3FF00000), m.Word32(0));
             Assert.AreEqual("0x3FF0000000000000", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_SeqOfSlices_Adjacent()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(m.Slice(foo, 8, 24), m.Slice(foo, 0, 8));
+            Assert.AreEqual("foo_0", expr.Accept(simplifier).ToString());
+        }
     }
 }

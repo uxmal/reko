@@ -40,6 +40,7 @@ namespace Reko.Evaluation
     {
         private readonly SegmentMap segmentMap;
         private EvaluationContext ctx;
+        private readonly ExpressionValueComparer cmp;
 
         private AddTwoIdsRule add2ids;
         private Add_e_c_cRule addEcc;
@@ -71,6 +72,7 @@ namespace Reko.Evaluation
         {
             this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(SegmentMap));
             this.ctx = ctx;
+            this.cmp = new ExpressionValueComparer();
 
             this.add2ids = new AddTwoIdsRule(ctx);
             this.addEcc = new Add_e_c_cRule(ctx);
@@ -623,7 +625,7 @@ namespace Reko.Evaluation
                     }
                 }
             }
-            if (newSeq.Take(newSeq.Length-1).All(e => e.IsZero))
+            if (newSeq.Take(newSeq.Length - 1).All(e => e.IsZero))
             {
                 var tail = newSeq.Last();
                 // leading zeros imply a conversion to unsigned.
@@ -633,7 +635,37 @@ namespace Reko.Evaluation
                         PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.BitSize),
                         tail));
             }
-            return new MkSequence(seq.DataType, newSeq);
+            return FuseAdjacentSlices(seq.DataType, newSeq);
+        }
+
+        private Expression FuseAdjacentSlices(DataType dataType, Expression[] elements)
+        {
+            var fused = new List<Expression> { elements[0] };
+            for (int i = 1; i < elements.Length; ++i)
+            {
+                var e = elements[i];
+                if (fused[fused.Count - 1] is Slice slPrev && e is Slice slNext &&
+                    cmp.Equals(slPrev.Expression, slNext.Expression) &&
+                    slPrev.Offset == slNext.Offset + slNext.DataType.BitSize)
+                {
+                    // Found two consecutive slices. Fuse them into one slice and 
+                    // un-use the shared expression.
+                    var newSlice = new Slice(
+                        PrimitiveType.CreateWord(slPrev.DataType.BitSize + slNext.DataType.BitSize),
+                        slNext.Expression,
+                        slNext.Offset);
+                    ctx.RemoveExpressionUse(slPrev);
+                    fused[fused.Count - 1] = newSlice.Accept(this);
+                }
+                else
+                {
+                    fused.Add(e);
+                }
+            }
+            if (fused.Count == 1)
+                return fused[0];
+            else
+                return new MkSequence(dataType, fused.ToArray());
         }
 
         public virtual Expression VisitOutArgument(OutArgument outArg)
@@ -738,6 +770,9 @@ namespace Reko.Evaluation
         public virtual Expression VisitSlice(Slice slice)
         {
             var e = slice.Expression.Accept(this);
+            // Is the slice the same size as the expression?
+            if (slice.Offset == 0 && slice.DataType.BitSize == e.DataType.BitSize)
+                return e;
             slice = new Slice(slice.DataType, e, slice.Offset);
             if (sliceConst.Match(slice))
             {

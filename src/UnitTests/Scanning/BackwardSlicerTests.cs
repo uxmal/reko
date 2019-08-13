@@ -683,7 +683,7 @@ namespace Reko.UnitTests.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("(int32) Mem0[(word32) SLICE(SLICE((word32) d0 * 0x00000002, word16, 0), word16, 0) + 0x0010EC32:int16] + 0x0010EC30", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(int32) Mem0[(word32) SLICE((word32) d0 * 0x00000002, word16, 0) + 0x0010EC32:word16] + 0x0010EC30", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());

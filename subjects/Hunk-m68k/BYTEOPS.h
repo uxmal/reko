@@ -3527,7 +3527,7 @@ T_630: (in SLICE(d3_17, word24, 8) : word24)
   Class: Eq_630
   DataType: word24
   OrigDataType: word24
-T_631: (in d3_17 + d2_15 : byte)
+T_631: (in d3_17 + d2_15 : word32)
   Class: Eq_631
   DataType: uip32
   OrigDataType: uip32
@@ -3547,7 +3547,7 @@ T_635: (in SLICE(d2_15, word24, 8) : word24)
   Class: Eq_635
   DataType: word24
   OrigDataType: word24
-T_636: (in d2_15 - d3_20 : byte)
+T_636: (in d2_15 - d3_20 : word32)
   Class: Eq_636
   DataType: uip32
   OrigDataType: uip32
@@ -3659,7 +3659,7 @@ T_663: (in __swap(d1_31) * (word16) d0_27 : word32)
   Class: Eq_663
   DataType: uint32
   OrigDataType: uint32
-T_664: (in d4_36 + __swap(d1_31) * (word16) d0_27 : word16)
+T_664: (in d4_36 + __swap(d1_31) * (word16) d0_27 : word32)
   Class: Eq_664
   DataType: uint32
   OrigDataType: uint32
@@ -5027,7 +5027,7 @@ T_1005: (in __swap(d5_1644) * 0x000A : word32)
   Class: Eq_1005
   DataType: uint32
   OrigDataType: uint32
-T_1006: (in d1_1674 + __swap(d5_1644) * 0x000A : word16)
+T_1006: (in d1_1674 + __swap(d5_1644) * 0x000A : word32)
   Class: Eq_1006
   DataType: uint32
   OrigDataType: uint32
@@ -5459,7 +5459,7 @@ T_1113: (in __swap(d2_1162) * 0x000A : word32)
   Class: Eq_1113
   DataType: uint32
   OrigDataType: uint32
-T_1114: (in d1_1765 + __swap(d2_1162) * 0x000A : word16)
+T_1114: (in d1_1765 + __swap(d2_1162) * 0x000A : word32)
   Class: Eq_1114
   DataType: uint32
   OrigDataType: uint32
@@ -15067,7 +15067,7 @@ T_3515: (in v34_206 : cup16)
   Class: Eq_3515
   DataType: cup16
   OrigDataType: cup16
-T_3516: (in d2_205 + d3_200 : word16)
+T_3516: (in d2_205 + d3_200 : word32)
   Class: Eq_3516
   DataType: word32
   OrigDataType: word32
@@ -15103,7 +15103,7 @@ T_3524: (in v39_214 : cup16)
   Class: Eq_3524
   DataType: cup16
   OrigDataType: cup16
-T_3525: (in d2_208 + d4_202 : word16)
+T_3525: (in d2_208 + d4_202 : word32)
   Class: Eq_3525
   DataType: uipr32
   OrigDataType: uipr32
@@ -15915,7 +15915,7 @@ T_3727: (in v56_229 : cup16)
   Class: Eq_3727
   DataType: cup16
   OrigDataType: cup16
-T_3728: (in d6_228 + d5_223 : word16)
+T_3728: (in d6_228 + d5_223 : word32)
   Class: Eq_3728
   DataType: word32
   OrigDataType: word32
@@ -15963,7 +15963,7 @@ T_3739: (in v60_237 : cup16)
   Class: Eq_3739
   DataType: cup16
   OrigDataType: cup16
-T_3740: (in d6_231 + d2_225 : word16)
+T_3740: (in d6_231 + d2_225 : word32)
   Class: Eq_3740
   DataType: uipr32
   OrigDataType: uipr32
@@ -16447,7 +16447,7 @@ T_3860: (in __swap(d7_12) : word32)
   Class: Eq_639
   DataType: (ptr32 Eq_1408)
   OrigDataType: word32
-T_3861: (in d2_175 - d3_176 : word16)
+T_3861: (in d2_175 - d3_176 : word32)
   Class: Eq_3861
   DataType: word32
   OrigDataType: word32
@@ -16963,7 +16963,7 @@ T_3989: (in v36_179 : cup16)
   Class: Eq_3989
   DataType: cup16
   OrigDataType: cup16
-T_3990: (in d2_178 + d3_173 : word16)
+T_3990: (in d2_178 + d3_173 : word32)
   Class: Eq_3990
   DataType: word32
   OrigDataType: word32
@@ -16999,7 +16999,7 @@ T_3998: (in v40_187 : cup16)
   Class: Eq_3998
   DataType: cup16
   OrigDataType: cup16
-T_3999: (in d2_181 + d4_175 : word16)
+T_3999: (in d2_181 + d4_175 : word32)
   Class: Eq_3999
   DataType: uipr32
   OrigDataType: uipr32

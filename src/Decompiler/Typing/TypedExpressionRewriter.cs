@@ -36,12 +36,12 @@ namespace Reko.Typing
     /// </summary>
     public class TypedExpressionRewriter : InstructionTransformer
     {
-        private Program program;
-        private Identifier globals;
-        private DataTypeComparer compTypes;
-        private TypedConstantRewriter tcr;
-        private ExpressionEmitter m;
-        private Unifier unifier;
+        private readonly Program program;
+        private readonly Identifier globals;
+        private readonly DataTypeComparer compTypes;
+        private readonly TypedConstantRewriter tcr;
+        private readonly ExpressionEmitter m;
+        private readonly Unifier unifier;
         private bool dereferenced;
         private Expression basePtr;
         private DecompilerEventListener eventListener;

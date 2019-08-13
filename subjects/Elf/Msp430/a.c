@@ -1931,7 +1931,7 @@ l54FC:
 					r8_n = bLoc1E_n & 0x30;
 					if (r8_n == 0x00)
 					{
-						Eq_n r13_n = (int16) (byte) (bLoc1D_n - r11_n);
+						Eq_n r13_n = (int16) (bLoc1D_n - (byte) r11_n);
 						if (r13_n >= 0x01)
 						{
 							Eq_n r15_n = 0x20;
@@ -1961,7 +1961,7 @@ l54FC:
 l5576:
 					if ((bLoc1E_n & 0x30) == 0x20)
 					{
-						Eq_n r13_n = (int16) (byte) (bLoc1D_n - r11_n);
+						Eq_n r13_n = (int16) (bLoc1D_n - (byte) r11_n);
 						if (r13_n >= 0x01)
 						{
 							Eq_n r15_n = 0x30;
@@ -1977,14 +1977,14 @@ l5576:
 					word20 r9_n = __write_pad(pc, r10_n, r15_n, out r10_n, out r11_n);
 					if (r15_n < 0x00)
 						goto l5924;
-					Eq_n r11_n;
+					word20 r11_n;
 					Eq_n r15_n;
 					PRINT(pc, (int16) (byte) r9_n, wLoc20_n, out r11_n, out r15_n);
 					if (r15_n < 0x00)
 						goto l5924;
 					if ((bLoc1E_n & 0x10) == 0x00)
 						goto l53A6;
-					Eq_n r13_n = (int16) (byte) (bLoc1D_n - r11_n);
+					Eq_n r13_n = (int16) (bLoc1D_n - (byte) r11_n);
 					if (r13_n < 0x01)
 						goto l53A6;
 					Eq_n r15_n = 0x20;

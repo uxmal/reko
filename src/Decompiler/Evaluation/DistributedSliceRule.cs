@@ -69,7 +69,7 @@ namespace Reko.Evaluation
                 dt, 
                 new BinaryExpression(
                     this.op, 
-                    this.dt, 
+                    this.eLeft.DataType, 
                     this.eLeft, 
                     this.eRight),
                 this.offset);
