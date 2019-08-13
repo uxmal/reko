@@ -28,18 +28,18 @@ l0000100A:
 // LocalsOut: fp(32) Local -0010(32)
 
 l00001020:
-	word32 a0_473 = 0x000040F8
-	word32 d0_476 = 0x0000000C
+	word32 a0_474 = 0x000040F8
+	word32 d0_477 = 0x0000000C
 // DataOut: a0 a2 a4 a6 d0 d2 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp d2:d0 a2:a0 a4:0000C0EE a6:<invalid>
 // LocalsOut: fp(32) Local -0010(32)
 
 l00001030:
-	Mem480[a0_473:word32] = 0x00000000
-	a0_473 = a0_473 + 4
-	d0_476 = d0_476 - 0x00000001
-	branch d0_476 != 0x00000000 l00001030
+	Mem481[a0_474:word32] = 0x00000000
+	a0_474 = a0_474 + 4
+	d0_477 = d0_477 - 0x00000001
+	branch d0_477 != 0x00000000 l00001030
 // DataOut: a0 a2 a4 a6 d0 d2 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp d2:d0 a2:a0 a4:0000C0EE a6:<invalid> a0:<invalid> d0:<invalid>
@@ -63,7 +63,7 @@ l00001226:
 // SymbolicIn: a7:fp d2:d0 a2:a0 a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> a0:<invalid>
 
 l00001056:
-	word32 d4_427
+	word32 d4_428
 	Mem83[0x00004100:word32] = d0_24
 	branch Mem83[d0_20 + 172:word32] != 0x00000000 l00001066
 // DataOut: a2 a3 a4 d2 d7
@@ -72,38 +72,38 @@ l00001056:
 // LocalsOut: fp(32) Local -0010(32)
 
 l00001066:
-	word32 a0_430 = a0
-	d4_427 = 3
+	word32 a0_431 = a0
+	d4_428 = 3
 // DataOut: a0 a2 a3 a4 d2 d4 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp d2:d0 a2:a0 a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> a0:<invalid>
 // LocalsOut: fp(32) Local -0010(32)
 
 l0000106A:
-	branch Mem83[a0_485:byte] != 0x20 l00001072
+	branch Mem83[a0_486:byte] != 0x20 l00001072
 // DataOut: a0 a2 a3 a4 d2 d4 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp d2:d0 a2:a0 a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> a0:<invalid> d4:<invalid>
 // LocalsOut: fp(32) Local -0010(32)
 
 l00001070:
-	d4_427 = SEQ(SLICE(d4_427, word16, 16), (word16) d4_427 + 0x0001)
+	d4_428 = SEQ(SLICE(d4_428, word16, 16), SLICE(d4_428, word16, 0) + 0x0001)
 // DataOut: a0 a2 a3 a4 d2 d4 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp d2:d0 a2:a0 a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> a0:<invalid> d4:<invalid>
 // LocalsOut: fp(32) Local -0010(32)
 
 l00001072:
-	a0_430 = a0_485 + 1
-	word32 a0_485 = a0_430
-	branch Mem83[a0_485:byte] != 0x00 l0000106A
+	a0_431 = a0_486 + 1
+	word32 a0_486 = a0_431
+	branch Mem83[a0_486:byte] != 0x00 l0000106A
 // DataOut: a0 a2 a3 a4 d2 d4 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp d2:d0 a2:a0 a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> a0:<invalid> d4:<invalid>
 // LocalsOut: fp(32) Local -0010(32)
 
 l00001060:
-	d4_427 = 2
+	d4_428 = 2
 	d2_192 = 8
 // DataOut: a2 a3 a4 d2 d4 d7
 // DataOut (flags): 
@@ -111,7 +111,7 @@ l00001060:
 // LocalsOut: fp(32) Local -0010(32)
 
 l00001076:
-	word32 d0_92 = d4_427 << 0x00000002
+	word32 d0_92 = d4_428 << 0x00000002
 	word32 d0_94 = d0_92 + d2_192
 	word32 d1_208 = 0x00010001
 	d0_24 = AllocMem(d0_94 + 0x00000011, 0x00010001)
@@ -151,7 +151,7 @@ l00001096:
 	word32 dwLoc0C_127
 	word32 a0_133
 	Mem109[d0_24:word32] = d0_94 + 0x00000011
-	Mem113[d0_24 + 12:word32] = d4_427 - 0x00000001
+	Mem113[d0_24 + 12:word32] = d4_428 - 0x00000001
 	Mem117[d0_24 + 8:word32] = d0_24 + 16 + d0_92
 	Mem119[0x00000000:word32] = 0x00000000
 	word32 d0_120 = Mem119[d0_20 + 172:word32]
@@ -163,12 +163,12 @@ l00001096:
 
 l00001190:
 	fn00001214(d0_20)
-	Mem361[0x00004104:word32] = d0_120
-	Mem363[0x00004108:word32] = d0_120
-	Mem368[0x00000000:word32] = 0x00000000
+	Mem362[0x00004104:word32] = d0_120
+	Mem364[0x00004108:word32] = d0_120
+	Mem369[0x00000000:word32] = 0x00000000
 	dwLoc0C_127 = d0_120
-	word32 d0_371 = Mem368[d0_120 + 36:word32]
-	branch d0_371 == 0x00000000 l000011B6
+	word32 d0_372 = Mem369[d0_120 + 36:word32]
+	branch d0_372 == 0x00000000 l000011B6
 // DataOut: a3 a4 a5 d0 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:a0 a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:0x00010001 a5:<invalid> a0:<invalid> -4(fp):<invalid>
@@ -183,28 +183,28 @@ l000011AE:
 
 l000011B6:
 	Supervisor(d0_24)
-	Mem378[d0_24 + 4:word32] = d0_371
-	branch d0_371 != 0x00000000 l000011D2
+	Mem379[d0_24 + 4:word32] = d0_372
+	branch d0_372 != 0x00000000 l000011D2
 // DataOut: a3 a4 d0 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 16 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Local -0010(32)
 
 l000011D2:
-	Mem387[0x0000410C:word32] = d0_371
-	Mem389[0x00004110:word32] = d0_371
-	Mem391[0x00004114:word32] = d0_371
-	Mem393[d0_20 + 156:word32] = d0_371
-	Mem395[d0_20 + 160:word32] = d0_371
-	word32 d0_399 = Mem395[(d0_371 << 0x00000002) + 8:word32]
-	branch d0_399 == 0x00000000 l000011F4
+	Mem388[0x0000410C:word32] = d0_372
+	Mem390[0x00004110:word32] = d0_372
+	Mem392[0x00004114:word32] = d0_372
+	Mem394[d0_20 + 156:word32] = d0_372
+	Mem396[d0_20 + 160:word32] = d0_372
+	word32 d0_400 = Mem396[(d0_372 << 0x00000002) + 8:word32]
+	branch d0_400 == 0x00000000 l000011F4
 // DataOut: a3 a4 d0 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 16 d2:0x000003ED a2:<invalid> a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:000012C8 a5:<invalid> a0:000012C8 -12(fp):<invalid> -8(fp):<invalid> -4(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Local -0010(32)
 
 l000011F0:
-	Mem405[d0_20 + 164:word32] = d0_399
+	Mem406[d0_20 + 164:word32] = d0_400
 // DataOut: a3 a4 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 16 d2:0x000003ED a2:<invalid> a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:000012C8 a5:<invalid> a0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):<invalid>
@@ -222,9 +222,9 @@ l000011CC:
 // SymbolicIn: a7:fp - 16 d2:0x000003ED a2:<invalid> a4:0000C0EE a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:000012C8 a5:<invalid> a0:000012C8 -12(fp):<invalid> -8(fp):<invalid> -4(fp):<invalid>
 
 l000011CE_thunk_fn0000127C:
-	word32 a1_383
-	word32 a5_384
-	fn0000127C(out a1_383, out a5_384)
+	word32 a1_384
+	word32 a5_385
+	fn0000127C(out a1_384, out a5_385)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -255,7 +255,7 @@ l000010DA:
 
 l000010DE_1:
 	word16 v37_355 = SLICE(d2_192, word16, 0)
-	d2_192 = DPB(d2_192, v37_355 - 1, 0)
+	d2_192 = SEQ(SLICE(d2_192, word16, 16), v37_355 - 1)
 	branch v37_355 != 0x0000 l000010DA
 // DataOut: a0 a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
@@ -270,24 +270,24 @@ l000010E2:
 // LocalsOut: fp(32)
 
 l000010E6:
-	byte v39_213 = Mem198[a2_204:byte]
+	byte v40_213 = Mem198[a2_204:byte]
 	a2_204 = a2_204 + 1
-	d1_208 = SEQ(SLICE(d1_208, word24, 8), v39_213)
-	branch v39_213 == 0x00 l00001148
+	d1_208 = SEQ(SLICE(d1_208, word24, 8), v40_213)
+	branch v40_213 == 0x00 l00001148
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
 // LocalsOut: fp(32)
 
 l000010EA:
-	branch (byte) d1_208 == 0x20 l000010E6
+	branch SLICE(d1_208, byte, 0) == 0x20 l000010E6
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
 // LocalsOut: fp(32)
 
 l000010F0:
-	branch (byte) d1_208 == 0x09 l000010E6
+	branch SLICE(d1_208, byte, 0) == 0x09 l000010E6
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
@@ -303,32 +303,32 @@ l000010F6:
 l000010FC:
 	Mem271[a6_187:word32] = a1_176
 	a6_187 = a6_187 + 4
-	d3_188 = SEQ(SLICE(d3_188, word16, 16), (word16) d3_188 + 0x0001)
-	branch (byte) d1_208 == 0x22 l0000111A
+	d3_188 = SEQ(SLICE(d3_188, word16, 16), SLICE(d3_188, word16, 0) + 0x0001)
+	branch SLICE(d1_208, byte, 0) == 0x22 l0000111A
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
 // LocalsOut: fp(32)
 
 l0000111A:
-	byte v70_315 = Mem271[a2_204:byte]
+	byte v71_315 = Mem271[a2_204:byte]
 	a2_204 = a2_204 + 1
-	d1_208 = SEQ(SLICE(d1_208, word24, 8), v70_315)
-	branch v70_315 == 0x00 l00001148
+	d1_208 = SEQ(SLICE(d1_208, word24, 8), v71_315)
+	branch v71_315 == 0x00 l00001148
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
 // LocalsOut: fp(32)
 
 l0000111E:
-	branch (byte) d1_208 == 0x22 l00001116
+	branch SLICE(d1_208, byte, 0) == 0x22 l00001116
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
 // LocalsOut: fp(32)
 
 l00001124:
-	branch (byte) d1_208 != 0x2A l00001144
+	branch SLICE(d1_208, byte, 0) != 0x2A l00001144
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
@@ -336,17 +336,17 @@ l00001124:
 
 l0000112A:
 	d1_208 = SEQ(SLICE(d1_208, word24, 8), Mem271[a2_204:byte])
-	word32 d2_341 = SEQ(SLICE(d2_192, word24, 8), (byte) d1_208)
-	d2_192 = SEQ(SLICE(d2_341, word24, 8), (byte) d2_341 & 0xDF)
+	word32 d2_341 = SEQ(SLICE(d2_192, word24, 8), SLICE(d1_208, byte, 0))
+	d2_192 = SEQ(SLICE(d2_341, word24, 8), SLICE(d2_341, byte, 0) & 0xDF)
 	a2_204 = a2_204 + 1
-	branch (byte) d2_192 != 0x4E l0000113C
+	branch SLICE(d2_192, byte, 0) != 0x4E l0000113C
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
 // LocalsOut: fp(32)
 
 l0000113C:
-	branch (byte) d2_192 != 0x45 l00001144
+	branch SLICE(d2_192, byte, 0) != 0x45 l00001144
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
@@ -367,7 +367,7 @@ l00001138:
 // LocalsOut: fp(32)
 
 l00001144:
-	Mem332[a1_176:byte] = (byte) d1_208
+	Mem332[a1_176:byte] = SLICE(d1_208, byte, 0)
 	a1_176 = a1_176 + 1
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
@@ -375,7 +375,7 @@ l00001144:
 // LocalsOut: fp(32)
 
 l00001106:
-	Mem292[a1_176:byte] = (byte) d1_208
+	Mem292[a1_176:byte] = SLICE(d1_208, byte, 0)
 	a1_176 = a1_176 + 1
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
@@ -383,10 +383,10 @@ l00001106:
 // LocalsOut: fp(32)
 
 l00001108:
-	byte v49_298 = Mem292[a2_204:byte]
+	byte v50_298 = Mem292[a2_204:byte]
 	a2_204 = a2_204 + 1
-	d1_208 = SEQ(SLICE(d1_208, word24, 8), v49_298)
-	branch v49_298 == 0x00 l00001148
+	d1_208 = SEQ(SLICE(d1_208, word24, 8), v50_298)
+	branch v50_298 == 0x00 l00001148
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
@@ -408,9 +408,9 @@ l00001148:
 // LocalsOut: fp(32) Local -000C(32) Local -0010(32)
 
 l00001172:
-	word32 v91_257 = Mem238[d0_20 + 224:word32]
-	Mem258[0x00004114:word32] = v91_257
-	branch v91_257 != 0x00000000 l0000117E
+	word32 v92_257 = Mem238[d0_20 + 224:word32]
+	Mem258[0x00004114:word32] = v92_257
+	branch v92_257 != 0x00000000 l0000117E
 // DataOut: a3 a4 d0 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000010 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -16(fp):<invalid> -12(fp):<invalid> -4(fp):<invalid>
@@ -468,7 +468,7 @@ fn00001000_exit:
 // SymbolicIn: a7:<invalid> d2:<invalid> a2:<invalid> a4:<invalid> a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d7:d7 a5:<invalid> a0:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):<invalid>
 
 l0000110C:
-	branch (byte) d1_208 == 0x20 l00001116
+	branch SLICE(d1_208, byte, 0) == 0x20 l00001116
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d2:<invalid> a2:<invalid> a4:0000C0EE a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -4(fp):<invalid>
@@ -483,7 +483,7 @@ l00001116:
 // LocalsOut: fp(32)
 
 l00001112:
-	Mem308[a1_176:byte] = (byte) d1_208
+	Mem308[a1_176:byte] = SLICE(d1_208, byte, 0)
 	a1_176 = a1_176 + 1
 // DataOut: a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d7
 // DataOut (flags): 
@@ -925,56 +925,56 @@ l00001684:
 // LocalsOut: fp(32) Local -0004(32) Local -0014(32) Local -0034(32)
 
 l000013F0:
-	word32 d4_128 = __swap(3) *u (word16) dwLoc14
-	word32 d0_137 = (word16) dwLoc14 *u 3 + SEQ(SLICE(__swap(SEQ(SLICE(d4_128, word16, 16), (word16) (d4_128 + __swap(dwLoc14) *u 0x0003))), word16, 16), 0x0000)
-	word32 d4_143 = __swap(d0_137) *u (word16) dwLoc14
-	word32 d0_152 = d0_137 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_143, word16, 16), (word16) (d4_143 + __swap(dwLoc14) *u (word16) d0_137))), word16, 16), 0x0000)
-	word32 d4_158 = __swap(d0_152) *u (word16) dwLoc14
-	word32 d0_167 = d0_152 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_158, word16, 16), (word16) (d4_158 + __swap(dwLoc14) *u (word16) d0_152))), word16, 16), 0x0000)
-	word32 d4_173 = __swap(d0_167) *u (word16) dwLoc14
-	word32 d0_182 = d0_167 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_173, word16, 16), (word16) (d4_173 + __swap(dwLoc14) *u (word16) d0_167))), word16, 16), 0x0000)
-	word32 d4_188 = __swap(d0_182) *u (word16) dwLoc14
-	word32 d0_197 = d0_182 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_188, word16, 16), (word16) (d4_188 + __swap(dwLoc14) *u (word16) d0_182))), word16, 16), 0x0000)
-	word32 d4_203 = __swap(d0_197) *u (word16) dwLoc14
-	word32 d0_212 = d0_197 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_203, word16, 16), (word16) (d4_203 + __swap(dwLoc14) *u (word16) d0_197))), word16, 16), 0x0000)
-	word32 d4_218 = __swap(d0_212) *u (word16) dwLoc14
-	word32 d0_227 = d0_212 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_218, word16, 16), (word16) (d4_218 + __swap(dwLoc14) *u (word16) d0_212))), word16, 16), 0x0000)
-	word32 d4_233 = __swap(d0_227) *u (word16) dwLoc14
-	word32 d0_242 = d0_227 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_233, word16, 16), (word16) (d4_233 + __swap(dwLoc14) *u (word16) d0_227))), word16, 16), 0x0000)
-	word32 d4_248 = __swap(d0_242) *u (word16) dwLoc14
-	word32 d0_257 = d0_242 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_248, word16, 16), (word16) (d4_248 + __swap(dwLoc14) *u (word16) d0_242))), word16, 16), 0x0000)
-	word32 d4_263 = __swap(d0_257) *u (word16) dwLoc14
-	word32 d0_272 = d0_257 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_263, word16, 16), (word16) (d4_263 + __swap(dwLoc14) *u (word16) d0_257))), word16, 16), 0x0000)
-	word32 d4_278 = __swap(d0_272) *u (word16) dwLoc14
-	word32 d0_287 = d0_272 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_278, word16, 16), (word16) (d4_278 + __swap(dwLoc14) *u (word16) d0_272))), word16, 16), 0x0000)
-	word32 d4_293 = __swap(d0_287) *u (word16) dwLoc14
-	word32 d0_302 = d0_287 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_293, word16, 16), (word16) (d4_293 + __swap(dwLoc14) *u (word16) d0_287))), word16, 16), 0x0000)
-	word32 d4_308 = __swap(d0_302) *u (word16) dwLoc14
-	word32 d0_317 = d0_302 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_308, word16, 16), (word16) (d4_308 + __swap(dwLoc14) *u (word16) d0_302))), word16, 16), 0x0000)
-	word32 d4_323 = __swap(d0_317) *u (word16) dwLoc14
-	word32 d0_332 = d0_317 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_323, word16, 16), (word16) (d4_323 + __swap(dwLoc14) *u (word16) d0_317))), word16, 16), 0x0000)
-	word32 d4_338 = __swap(d0_332) *u (word16) dwLoc14
-	word32 d0_347 = d0_332 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_338, word16, 16), (word16) (d4_338 + __swap(dwLoc14) *u (word16) d0_332))), word16, 16), 0x0000)
-	word32 d4_353 = __swap(d0_347) *u (word16) dwLoc14
-	word32 d0_362 = d0_347 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_353, word16, 16), (word16) (d4_353 + __swap(dwLoc14) *u (word16) d0_347))), word16, 16), 0x0000)
-	word32 d4_368 = __swap(d0_362) *u (word16) dwLoc14
-	word32 d0_377 = d0_362 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_368, word16, 16), (word16) (d4_368 + __swap(dwLoc14) *u (word16) d0_362))), word16, 16), 0x0000)
-	word32 d4_383 = __swap(d0_377) *u (word16) dwLoc14
-	word32 d0_392 = d0_377 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_383, word16, 16), (word16) (d4_383 + __swap(dwLoc14) *u (word16) d0_377))), word16, 16), 0x0000)
-	word32 d4_398 = __swap(d0_392) *u (word16) dwLoc14
-	word32 d0_407 = d0_392 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_398, word16, 16), (word16) (d4_398 + __swap(dwLoc14) *u (word16) d0_392))), word16, 16), 0x0000)
-	word32 d4_413 = __swap(d0_407) *u (word16) dwLoc14
-	word32 d0_422 = d0_407 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_413, word16, 16), (word16) (d4_413 + __swap(dwLoc14) *u (word16) d0_407))), word16, 16), 0x0000)
-	word32 d4_428 = __swap(d0_422) *u (word16) dwLoc14
-	word32 d0_437 = d0_422 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_428, word16, 16), (word16) (d4_428 + __swap(dwLoc14) *u (word16) d0_422))), word16, 16), 0x0000)
-	word32 d4_443 = __swap(d0_437) *u (word16) dwLoc14
-	word32 d0_452 = d0_437 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_443, word16, 16), (word16) (d4_443 + __swap(dwLoc14) *u (word16) d0_437))), word16, 16), 0x0000)
-	word32 d4_458 = __swap(d0_452) *u (word16) dwLoc14
-	word32 d0_467 = d0_452 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_458, word16, 16), (word16) (d4_458 + __swap(dwLoc14) *u (word16) d0_452))), word16, 16), 0x0000)
-	word32 d4_473 = __swap(d0_467) *u (word16) dwLoc14
-	word32 d0_482 = d0_467 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d4_473, word16, 16), (word16) (d4_473 + __swap(dwLoc14) *u (word16) d0_467))), word16, 16), 0x0000)
-	word32 d5_489 = __swap(d0_482) *u (word16) dwLoc14
-	dwLoc14 = d0_482 *u (word16) dwLoc14 + SEQ(SLICE(__swap(SEQ(SLICE(d5_489, word16, 16), (word16) (d5_489 + __swap(dwLoc14) *u (word16) d0_482))), word16, 16), 0x0000)
+	word32 d4_128 = __swap(3) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_137 = SLICE(dwLoc14, word16, 0) *u 3 + SEQ(SLICE(__swap(SEQ(SLICE(d4_128, word16, 16), SLICE(d4_128 + __swap(dwLoc14) *u 0x0003, word16, 0))), word16, 16), 0x0000)
+	word32 d4_143 = __swap(d0_137) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_152 = d0_137 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_143, word16, 16), SLICE(d4_143 + __swap(dwLoc14) *u SLICE(d0_137, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_158 = __swap(d0_152) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_167 = d0_152 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_158, word16, 16), SLICE(d4_158 + __swap(dwLoc14) *u SLICE(d0_152, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_173 = __swap(d0_167) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_182 = d0_167 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_173, word16, 16), SLICE(d4_173 + __swap(dwLoc14) *u SLICE(d0_167, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_188 = __swap(d0_182) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_197 = d0_182 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_188, word16, 16), SLICE(d4_188 + __swap(dwLoc14) *u SLICE(d0_182, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_203 = __swap(d0_197) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_212 = d0_197 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_203, word16, 16), SLICE(d4_203 + __swap(dwLoc14) *u SLICE(d0_197, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_218 = __swap(d0_212) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_227 = d0_212 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_218, word16, 16), SLICE(d4_218 + __swap(dwLoc14) *u SLICE(d0_212, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_233 = __swap(d0_227) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_242 = d0_227 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_233, word16, 16), SLICE(d4_233 + __swap(dwLoc14) *u SLICE(d0_227, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_248 = __swap(d0_242) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_257 = d0_242 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_248, word16, 16), SLICE(d4_248 + __swap(dwLoc14) *u SLICE(d0_242, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_263 = __swap(d0_257) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_272 = d0_257 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_263, word16, 16), SLICE(d4_263 + __swap(dwLoc14) *u SLICE(d0_257, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_278 = __swap(d0_272) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_287 = d0_272 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_278, word16, 16), SLICE(d4_278 + __swap(dwLoc14) *u SLICE(d0_272, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_293 = __swap(d0_287) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_302 = d0_287 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_293, word16, 16), SLICE(d4_293 + __swap(dwLoc14) *u SLICE(d0_287, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_308 = __swap(d0_302) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_317 = d0_302 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_308, word16, 16), SLICE(d4_308 + __swap(dwLoc14) *u SLICE(d0_302, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_323 = __swap(d0_317) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_332 = d0_317 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_323, word16, 16), SLICE(d4_323 + __swap(dwLoc14) *u SLICE(d0_317, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_338 = __swap(d0_332) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_347 = d0_332 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_338, word16, 16), SLICE(d4_338 + __swap(dwLoc14) *u SLICE(d0_332, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_353 = __swap(d0_347) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_362 = d0_347 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_353, word16, 16), SLICE(d4_353 + __swap(dwLoc14) *u SLICE(d0_347, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_368 = __swap(d0_362) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_377 = d0_362 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_368, word16, 16), SLICE(d4_368 + __swap(dwLoc14) *u SLICE(d0_362, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_383 = __swap(d0_377) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_392 = d0_377 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_383, word16, 16), SLICE(d4_383 + __swap(dwLoc14) *u SLICE(d0_377, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_398 = __swap(d0_392) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_407 = d0_392 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_398, word16, 16), SLICE(d4_398 + __swap(dwLoc14) *u SLICE(d0_392, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_413 = __swap(d0_407) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_422 = d0_407 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_413, word16, 16), SLICE(d4_413 + __swap(dwLoc14) *u SLICE(d0_407, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_428 = __swap(d0_422) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_437 = d0_422 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_428, word16, 16), SLICE(d4_428 + __swap(dwLoc14) *u SLICE(d0_422, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_443 = __swap(d0_437) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_452 = d0_437 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_443, word16, 16), SLICE(d4_443 + __swap(dwLoc14) *u SLICE(d0_437, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_458 = __swap(d0_452) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_467 = d0_452 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_458, word16, 16), SLICE(d4_458 + __swap(dwLoc14) *u SLICE(d0_452, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d4_473 = __swap(d0_467) *u SLICE(dwLoc14, word16, 0)
+	word32 d0_482 = d0_467 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d4_473, word16, 16), SLICE(d4_473 + __swap(dwLoc14) *u SLICE(d0_467, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d5_489 = __swap(d0_482) *u SLICE(dwLoc14, word16, 0)
+	dwLoc14 = d0_482 *u SLICE(dwLoc14, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d5_489, word16, 16), SLICE(d5_489 + __swap(dwLoc14) *u SLICE(d0_482, word16, 0), word16, 0))), word16, 16), 0x0000)
 	d2_107 = d2_107 + 0x00000001
 // DataOut: d2 d3
 // DataOut (flags): 
@@ -1117,7 +1117,7 @@ l0000175C:
 	word32 a7_214 = a7_154 - 4
 	Mem216[a7_214:word32] = d0
 	d0 = Mem216[a7_214:word32]
-	branch (byte) SEQ(SLICE(d0, word24, 8), Mem216[0x00002070 + d1_1721:byte]) - Mem216[a2_1624:byte] != 0x00 l00001780
+	branch SLICE(SEQ(SLICE(d0, word24, 8), Mem216[0x00002070 + d1_1721:byte]), byte, 0) - Mem216[a2_1624:byte] != 0x00 l00001780
 // DataOut: a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:-1 d4:105 a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1172,9 +1172,9 @@ l000017EC:
 
 l000017F0:
 	Mem1788[a7_154 - 4:word32] = d3_1428
-	word32 d1_1793 = __swap(10) *u (word16) d2_1190
-	word32 d1_1801 = SEQ(SLICE(__swap(SEQ(SLICE(d1_1793, word16, 16), (word16) (d1_1793 + __swap(d2_1190) *u 0x000A))), word16, 16), 0x0000)
-	word32 d0_1802 = (word16) d2_1190 *u 10 + d1_1801
+	word32 d1_1793 = __swap(10) *u SLICE(d2_1190, word16, 0)
+	word32 d1_1801 = SEQ(SLICE(__swap(SEQ(SLICE(d1_1793, word16, 16), SLICE(d1_1793 + __swap(d2_1190) *u 0x000A, word16, 0))), word16, 16), 0x0000)
+	word32 d0_1802 = SLICE(d2_1190, word16, 0) *u 10 + d1_1801
 	a2_1624 = a2_1624 + 1
 	a0_1430 = 0x00002B15 + (SEQ(SLICE(d0_1802, word24, 8), Mem1788[a2_1624:byte]) & 0x000000FF)
 	word32 d1_1811 = (int32) (int16) (int8) SEQ(SLICE(d1_1801, word24, 8), Mem1788[a2_1624:byte])
@@ -1246,9 +1246,9 @@ l0000186A:
 l00001888:
 	word32 a7_1695 = a7_154 - 4
 	Mem1697[a7_1695:word32] = d2_1190
-	word32 d1_1702 = __swap(10) *u (word16) d5_1672
-	word32 d1_1710 = SEQ(SLICE(__swap(SEQ(SLICE(d1_1702, word16, 16), (word16) (d1_1702 + __swap(d5_1672) *u 0x000A))), word16, 16), 0x0000)
-	word32 d0_1711 = (word16) d5_1672 *u 10 + d1_1710
+	word32 d1_1702 = __swap(10) *u SLICE(d5_1672, word16, 0)
+	word32 d1_1710 = SEQ(SLICE(__swap(SEQ(SLICE(d1_1702, word16, 16), SLICE(d1_1702 + __swap(d5_1672) *u 0x000A, word16, 0))), word16, 16), 0x0000)
+	word32 d0_1711 = SLICE(d5_1672, word16, 0) *u 10 + d1_1710
 	a2_1624 = a2_1624 + 1
 	a0_1430 = 0x00002B15 + (SEQ(SLICE(d0_1711, word24, 8), Mem1697[a2_1624:byte]) & 0x000000FF)
 	word32 d1_1720 = (int32) (int16) (int8) SEQ(SLICE(d1_1710, word24, 8), Mem1697[a2_1624:byte])
@@ -1403,8 +1403,8 @@ l0000193C:
 	word32 d1_1058 = SEQ(SLICE(d1_1721, word24, 8), Mem237[a2_1624:byte])
 	*d1Out = d1_1058
 	word32 a2_1409 = a2_1624 + 1
-	word32 d0_1412 = SEQ(SLICE(d0_1663, word24, 8), (byte) d1_1058)
-	branch (byte) d1_1058 == 0x25 l00001DC4
+	word32 d0_1412 = SEQ(SLICE(d0_1663, word24, 8), SLICE(d1_1058, byte, 0))
+	branch SLICE(d1_1058, byte, 0) == 0x25 l00001DC4
 // DataOut: a0 a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1418,13 +1418,13 @@ l00001DC4:
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001948:
-	branch (byte) d0_1412 == 0x58 l00001996
+	branch SLICE(d0_1412, byte, 0) == 0x58 l00001996
 // DataOut: a0 a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l0000194E:
-	branch (byte) d0_1412 == 0x63 l00001D44
+	branch SLICE(d0_1412, byte, 0) == 0x63 l00001D44
 // DataOut: a0 a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1459,20 +1459,20 @@ l00001D72:
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001956:
-	branch (byte) d0_1412 == 0x64 l00001996
+	branch SLICE(d0_1412, byte, 0) == 0x64 l00001996
 // DataOut: a0 a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l0000195C:
-	branch (byte) d0_1412 == 0x69 l00001996
+	branch SLICE(d0_1412, byte, 0) == 0x69 l00001996
 // DataOut: a0 a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001962:
-	Mem1379[a7_154 + 44:byte] = (byte) d0_1412
-	branch (byte) d0_1412 == 0x6E l00001DD6
+	Mem1379[a7_154 + 44:byte] = SLICE(d0_1412, byte, 0)
+	branch SLICE(d0_1412, byte, 0) == 0x6E l00001DD6
 // DataOut: a0 a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1512,7 +1512,7 @@ l00001E52:
 l00001E3C:
 	d0_1412 = d3_1428 + 0x00000003 >>u 0x00000002 << 0x00000002
 	a0_1430 = Mem1379[d0_1412:word32]
-	Mem1561[a0_1430:byte] = (byte) d6_119
+	Mem1561[a0_1430:byte] = SLICE(d6_119, byte, 0)
 // DataOut: a0 a1 a2 a3 a5 a7 d0 d1 d3 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1520,7 +1520,7 @@ l00001E3C:
 l00001E1E:
 	d0_1412 = d3_1428 + 0x00000003 >>u 0x00000002 << 0x00000002
 	a0_1430 = Mem1379[d0_1412:word32]
-	Mem1546[a0_1430:word16] = (word16) d6_119
+	Mem1546[a0_1430:word16] = SLICE(d6_119, word16, 0)
 // DataOut: a0 a1 a2 a3 a5 a7 d0 d1 d3 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1552,8 +1552,8 @@ l00001E66:
 
 l0000196E:
 	word32 d0_1385 = SEQ(SLICE(d0_1412, word24, 8), Mem1379[a7_154 + 44:byte])
-	word32 d0_1388 = SEQ(SLICE(d0_1385, word24, 8), (byte) d0_1385 - 0x6F)
-	byte v116_1390 = (byte) d0_1388 - 0x01
+	word32 d0_1388 = SEQ(SLICE(d0_1385, word24, 8), SLICE(d0_1385, byte, 0) - 0x6F)
+	byte v116_1390 = SLICE(d0_1388, byte, 0) - 0x01
 	byte VZ_1392 = cond(v116_1390)
 	branch v116_1390 <=u 0x00 l00001996
 // DataOut: a0 a1 a2 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -1562,7 +1562,7 @@ l0000196E:
 
 l0000197C:
 	word32 d0_1395 = SEQ(SLICE(d0_1388, word24, 8), Mem1379[a7_154 + 44:byte])
-	branch (byte) d0_1395 == 0x73 l00001D80
+	branch SLICE(d0_1395, byte, 0) == 0x73 l00001D80
 // DataOut: a0 a1 a2 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1637,19 +1637,19 @@ l00001DBE:
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001988:
-	branch (byte) d0_1395 == 0x75 l00001996
+	branch SLICE(d0_1395, byte, 0) == 0x75 l00001996
 // DataOut: a0 a1 a2 a4 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l0000198E:
-	branch (byte) d0_1395 != 0x78 l00001E6E
+	branch SLICE(d0_1395, byte, 0) != 0x78 l00001E6E
 // DataOut: a0 a1 a2 a4 a5 a7 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001E6E:
-	branch (byte) d1_1058 != 0x00 l00001E74
+	branch SLICE(d1_1058, byte, 0) != 0x00 l00001E74
 // DataOut: a0 a1 a2 a4 a5 a7 d1 d3 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1671,7 +1671,7 @@ l00001E74:
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001996:
-	branch (byte) d1_1058 != 0x70 l000019A8
+	branch SLICE(d1_1058, byte, 0) != 0x70 l000019A8
 // DataOut: a2 a5 a7 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1687,13 +1687,13 @@ l0000199C:
 l000019A8:
 	word32 d3_1027
 	word32 a7_1170
-	branch (byte) d1_1058 == 0x64 l000019B6
+	branch SLICE(d1_1058, byte, 0) == 0x64 l000019B6
 // DataOut: a2 a5 a7 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l000019AE:
-	branch (byte) d1_1058 != 0x69 l00001B00
+	branch SLICE(d1_1058, byte, 0) != 0x69 l00001B00
 // DataOut: a2 a5 a7 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1748,7 +1748,7 @@ l00001B66:
 	d0_1157 = SEQ(SLICE(d0_1157, word16, 16), Mem237[a7_154 + 62:word16])
 	word32 a7_1302 = a7_154 - 4
 	Mem1304[a7_1302:word32] = d1_1058
-	Mem1310[a7_1302 + 64:word32] = (uint32) (uint16) (word16) d0_1157
+	Mem1310[a7_1302 + 64:word32] = (uint32) (uint16) SLICE(d0_1157, word16, 0)
 	Mem1311[a7_1302 + 60:word32] = 0x00000000
 	d1_1058 = Mem1311[a7_1302:word32]
 // DataOut: a2 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -1765,7 +1765,7 @@ l00001B82:
 	word32 d0_1284 = SEQ(SLICE(d0_1157, word24, 8), Mem237[a7_154 + 63:byte])
 	word32 a7_1285 = a7_154 - 4
 	Mem1287[a7_1285:word32] = d1_1058
-	Mem1293[a7_1285 + 64:word32] = (uint32) (uint8) (byte) d0_1284
+	Mem1293[a7_1285 + 64:word32] = (uint32) (uint8) SLICE(d0_1284, byte, 0)
 	Mem1294[a7_1285 + 60:word32] = 0x00000000
 	d1_1058 = Mem1294[a7_1285:word32]
 // DataOut: a2 a5 a7 d1 d2 d3 d5 d6 d7
@@ -1774,7 +1774,7 @@ l00001B82:
 
 l00001B96:
 	word32 d0_1172 = Mem237[a7_154 + 72:word32] & 1
-	Mem1174[a7_154 + 44:byte] = (byte) d1_1058
+	Mem1174[a7_154 + 44:byte] = SLICE(d1_1058, byte, 0)
 	a7_1170 = a7_154
 	branch d0_1172 == 0x00000000 l00001C34
 // DataOut: a2 a5 a7 d0 d1 d2 d3 d5 d6 d7
@@ -1782,7 +1782,7 @@ l00001B96:
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001BA6:
-	branch (byte) d1_1058 != 0x6F l00001BE2
+	branch SLICE(d1_1058, byte, 0) != 0x6F l00001BE2
 // DataOut: a2 a5 a7 d0 d1 d2 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1817,20 +1817,20 @@ l00001BD6:
 
 l00001BE2:
 	a7_1170 = a7_154
-	branch (byte) d1_1058 == 0x78 l00001BF2
+	branch SLICE(d1_1058, byte, 0) == 0x78 l00001BF2
 // DataOut: a2 a5 a7 d0 d1 d2 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:<invalid> a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001BE8:
-	Mem1237[a7_154 + 44:byte] = (byte) d1_1058
-	branch (byte) d1_1058 != 0x58 l00001C34
+	Mem1237[a7_154 + 44:byte] = SLICE(d1_1058, byte, 0)
+	branch SLICE(d1_1058, byte, 0) != 0x58 l00001C34
 // DataOut: a2 a5 a7 d0 d1 d2 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:<invalid> a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001BF2:
-	Mem1198[a7_154 + 44:byte] = (byte) d1_1058
+	Mem1198[a7_154 + 44:byte] = SLICE(d1_1058, byte, 0)
 	word32 a7_1199 = a7_154 - 4
 	Mem1201[a7_1199:word32] = d0_1172
 	Mem1204[a7_1199 - 4:word32] = d1_1058
@@ -1847,8 +1847,8 @@ l00001BF2:
 l00001C1C:
 	Mem1227[a7_1199 + 110 + d7_1004:byte] = 0x30
 	word32 d7_1225 = d7_1004 + 0x00000001
-	Mem1232[a7_1199 + 110 + d7_1225:byte] = (byte) d1_1058
-	Mem1234[a7_1199 + 48:byte] = (byte) d1_1058
+	Mem1232[a7_1199 + 110 + d7_1225:byte] = SLICE(d1_1058, byte, 0)
+	Mem1234[a7_1199 + 48:byte] = SLICE(d1_1058, byte, 0)
 	d7_1004 = d7_1225 + 0x00000001
 // DataOut: a2 a5 a7 d1 d3 d5 d6 d7
 // DataOut (flags): 
@@ -1886,7 +1886,7 @@ l00001A08:
 l00001A32:
 	word32 d0_1121 = SEQ(SLICE(d0_1067 >> 31, word16, 16), Mem1077[a7_1070 + 58:word16])
 	Mem1124[a7_1070:word32] = v237_1078
-	word32 d1_1128 = (int32) (int16) SEQ(SLICE(v237_1078, word16, 16), (word16) d0_1121)
+	word32 d1_1128 = (int32) (int16) SEQ(SLICE(v237_1078, word16, 16), SLICE(d0_1121, word16, 0))
 	Mem1130[a7_1070 + 56:word32] = d1_1128
 	Mem1133[a7_1070 - 4:word32] = d0_1121
 	Mem1138[a7_1070 + 52:word32] = d1_1128 >> 31
@@ -1906,7 +1906,7 @@ l00001A56:
 	word32 d0_1093 = SEQ(SLICE(d0_1025, word24, 8), Mem1077[a7_154 + 55:byte])
 	word32 a7_1094 = a7_154 - 4
 	Mem1096[a7_1094:word32] = d1_1058
-	word32 d1_1101 = (int32) (int16) (int8) SEQ(SLICE(d1_1058, word24, 8), (byte) d0_1093)
+	word32 d1_1101 = (int32) (int16) (int8) SEQ(SLICE(d1_1058, word24, 8), SLICE(d0_1093, byte, 0))
 	Mem1103[a7_1094 + 56:word32] = d1_1101
 	Mem1106[a7_1094 - 4:word32] = d0_1093
 	Mem1111[a7_1094 + 52:word32] = d1_1101 >> 31
@@ -1940,7 +1940,7 @@ l000019BE:
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001A74:
-	Mem933[a7_154 + 44:byte] = (byte) d1_1058
+	Mem933[a7_154 + 44:byte] = SLICE(d1_1058, byte, 0)
 	word32 a7_934 = a7_154 - 4
 	Mem936[a7_934:word32] = d0_1025
 	Mem939[a7_934 - 4:word32] = d1_1058
@@ -1984,7 +1984,7 @@ l00001ACA:
 l00001AEC:
 	Mem996[a7_934 + 64:word32] = Mem944[a7_934 + 56:word32]
 	Mem998[a7_934 + 60:word32] = Mem996[a7_934 + 52:word32]
-	Mem1000[a7_934 + 48:byte] = (byte) d1_1058
+	Mem1000[a7_934 + 48:byte] = SLICE(d1_1058, byte, 0)
 // DataOut: a2 a5 a7 d1 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:<invalid> a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -2001,19 +2001,19 @@ l00001A9E:
 l00001C34:
 	word32 d1_770 = SEQ(SLICE(d1_1058, word24, 8), Mem237[a7_1170 + 44:byte])
 	a3_1410 = a7_1170 + 98
-	branch (byte) d1_770 == 0x78 l00001C48
+	branch SLICE(d1_770, byte, 0) == 0x78 l00001C48
 // DataOut: a2 a3 a5 a7 d1 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:<invalid> a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a6:<invalid> a1:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001C42:
-	branch (byte) d1_770 != 0x58 l00001C52
+	branch SLICE(d1_770, byte, 0) != 0x58 l00001C52
 // DataOut: a2 a3 a5 a7 d1 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:<invalid> a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a6:<invalid> a1:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001C52:
-	branch (byte) d1_770 != 0x6F l00001C62
+	branch SLICE(d1_770, byte, 0) != 0x6F l00001C62
 // DataOut: a2 a3 a5 a7 d1 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:<invalid> a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a6:<invalid> a1:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -2045,7 +2045,7 @@ l00001C48:
 l00001C70:
 	word32 a6_780
 	Mem776[a7_1170 + 108:word32] = Mem237[a7_1170 + 44:word32]
-	branch (byte) d1_770 == 0x58 l00001C82
+	branch SLICE(d1_770, byte, 0) == 0x58 l00001C82
 // DataOut: a2 a3 a5 a7 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:<invalid> a3:<invalid> d7:<invalid> a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a6:<invalid> a1:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -2543,10 +2543,10 @@ l000020C6:
 	word32 a0_79 = Mem22[dwArg08 + 4:word32]
 	*a0Out = a0_79
 	Mem83[dwArg08 + 4:word32] = a0_79 + 1
-	Mem85[a0_79:byte] = (byte) dwArg04
+	Mem85[a0_79:byte] = SLICE(dwArg04, byte, 0)
 	word32 a1_78
 	*a1Out = dwArg08 + 4
-	*d1Out = (uint32) (uint8) (byte) SEQ(SLICE(d0_69, word24, 8), Mem85[a0_79:byte])
+	*d1Out = (uint32) (uint8) SLICE(SEQ(SLICE(d0_69, word24, 8), Mem85[a0_79:byte]), byte, 0)
 // DataOut: a0 a1 a4 a5 d1 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 12 d2:<invalid> a2:<invalid> a0:<invalid> d0:<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a3
@@ -2685,7 +2685,7 @@ l000021CE:
 l00002196:
 	word32 a0_198 = Mem0[dwArg08 + 4:word32]
 	Mem202[dwArg08 + 4:word32] = a0_198 + 1
-	Mem204[a0_198:byte] = (byte) dwArg04
+	Mem204[a0_198:byte] = SLICE(dwArg04, byte, 0)
 	word32 a0_209
 	word32 a1_210
 	word32 a5_211
@@ -2739,7 +2739,7 @@ l000021DE:
 	Mem115[dwArg08 + 24:word32] = Mem0[dwArg08 + 24:word32] | 2
 	word32 a0_117 = Mem115[dwArg08 + 8:word32]
 	*a0Out = a0_117
-	Mem119[a0_117:byte] = (byte) dwArg04
+	Mem119[a0_117:byte] = SLICE(dwArg04, byte, 0)
 	word32 a1_120 = Mem119[dwArg08 + 8:word32]
 	Mem123[dwArg08 + 4:word32] = a1_120 + 1
 	Mem128[dwArg08 + 20:word32] = Mem123[dwArg08 + 28:word32] - 0x00000001
@@ -3636,7 +3636,7 @@ l000026B8:
 	*d1Out = dwArg08
 	word32 a0_21
 	*a0Out = dwArg08
-	word32 d3_123 = dwArg10
+	word32 d3_122 = dwArg10
 	branch dwArg0C != 0x00000000 l0000270E
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3
 // DataOut (flags): 
@@ -3651,94 +3651,94 @@ l0000270E:
 // LocalsOut: fp(32)
 
 l00002718:
-	word32 d4_141 = 24
-	word32 d6_142 = __rol(dwArg0C, 0x00000008)
-	branch (byte) d6_142 != 0x00 l00002736
+	word32 d4_140 = 24
+	word32 d6_141 = __rol(dwArg0C, 0x00000008)
+	branch SLICE(d6_141, byte, 0) != 0x00 l00002736
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
 // LocalsOut: fp(32)
 
 l00002722:
-	d4_141 = 16
-	d6_142 = __rol(d6_142, 0x00000008)
-	branch (byte) d6_142 != 0x00 l00002736
+	d4_140 = 16
+	d6_141 = __rol(d6_141, 0x00000008)
+	branch SLICE(d6_141, byte, 0) != 0x00 l00002736
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:24 -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
 // LocalsOut: fp(32)
 
 l0000272A:
-	d4_141 = 8
-	d6_142 = __rol(d6_142, 0x00000008)
-	branch (byte) d6_142 != 0x00 l00002736
+	d4_140 = 8
+	d6_141 = __rol(d6_141, 0x00000008)
+	branch SLICE(d6_141, byte, 0) != 0x00 l00002736
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:16 -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
 // LocalsOut: fp(32)
 
 l00002732:
-	d4_141 = 0
-	d6_142 = SEQ(SLICE(d6_142, word24, 8), (byte) dwArg0C)
+	d4_140 = 0
+	d6_141 = SEQ(SLICE(d6_141, word24, 8), SLICE(dwArg0C, byte, 0))
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:8 -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
 // LocalsOut: fp(32)
 
 l00002736:
-	word32 d4_160 = SEQ(SLICE(d4_141, word24, 8), (byte) d4_141 + Mem0[0x00004134 + (int32) ((int16) SEQ(SLICE(d6_142, word16, 16), (word16) d6_142 & 0x00FF)):byte])
-	word32 d5_162 = 32 - d4_160
-	branch d5_162 != 0x00000000 l00002756
+	word32 d4_159 = SEQ(SLICE(d4_140, word24, 8), SLICE(d4_140, byte, 0) + Mem0[0x00004134 + (int32) ((int16) SEQ(SLICE(d6_141, word16, 16), SLICE(d6_141, word16, 0) & 0x00FF)):byte])
+	word32 d5_161 = 32 - d4_159
+	branch d5_161 != 0x00000000 l00002756
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:<invalid> -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
 // LocalsOut: fp(32)
 
 l00002756:
-	word32 d1_189
-	word32 d2_190
-	word32 d0_191 = fn000027BC(dwArg04 >>u d4_160, dwArg04 << d5_162 | dwArg08 >>u d4_160, dwArg0C << d5_162 | dwArg10 >>u d4_160, out d1_189, out d2_190)
-	word32 d3_178 = dwArg10 << d5_162
-	word32 d5_200 = __swap(d0_191)
-	word32 d6_202 = __swap(d3_178)
-	word32 d3_201 = d3_178 *u (word16) d5_200
-	word32 d2_206 = __swap(d0_191 *u (word16) d3_178)
-	word16 v34_207 = (word16) (d2_206 + d3_201)
-	word32 d4_203 = d0_191 *u (word16) d6_202
-	word32 d2_209 = SEQ(SLICE(d2_206, word16, 16), v34_207)
-	word16 v39_215 = (word16) (d2_209 + d4_203)
-	word32 d5_204 = d5_200 *u (word16) d6_202
-	word32 d6_186 = dwArg08 << d5_162
-	word32 d2_223 = __swap(SEQ(SLICE(d2_209, word16, 16), v39_215))
-	word32 d5_214 = SEQ(SLICE(d5_204, word16, 16), (word16) d5_204 + (v34_207 <u 0x0000))
-	word32 a0_188
-	*a0Out = d6_186
-	word32 d1_195
-	*d1Out = d0_191
-	word32 v48_234 = d1_189 - ((__swap(SEQ(SLICE(d3_201, word16, 16), 0x0000)) + __swap(SEQ(SLICE(d4_203, word16, 16), 0x0000))) + SEQ(SLICE(d5_214, word16, 16), (word16) d5_214 + (v39_215 <u 0x0000)))
-	branch v48_234 <u 0x00000000 l000027B2
+	word32 d1_188
+	word32 d2_189
+	word32 d0_190 = fn000027BC(dwArg04 >>u d4_159, dwArg04 << d5_161 | dwArg08 >>u d4_159, dwArg0C << d5_161 | dwArg10 >>u d4_159, out d1_188, out d2_189)
+	word32 d3_177 = dwArg10 << d5_161
+	word32 d5_199 = __swap(d0_190)
+	word32 d6_201 = __swap(d3_177)
+	word32 d3_200 = d3_177 *u SLICE(d5_199, word16, 0)
+	word32 d2_205 = __swap(d0_190 *u SLICE(d3_177, word16, 0))
+	word16 v34_206 = SLICE(d2_205 + d3_200, word16, 0)
+	word32 d4_202 = d0_190 *u SLICE(d6_201, word16, 0)
+	word32 d2_208 = SEQ(SLICE(d2_205, word16, 16), v34_206)
+	word16 v39_214 = SLICE(d2_208 + d4_202, word16, 0)
+	word32 d5_203 = d5_199 *u SLICE(d6_201, word16, 0)
+	word32 d6_185 = dwArg08 << d5_161
+	word32 d2_222 = __swap(SEQ(SLICE(d2_208, word16, 16), v39_214))
+	word32 d5_213 = SEQ(SLICE(d5_203, word16, 16), SLICE(d5_203, word16, 0) + (v34_206 <u 0x0000))
+	word32 a0_187
+	*a0Out = d6_185
+	word32 d1_194
+	*d1Out = d0_190
+	word32 v48_233 = d1_188 - ((__swap(SEQ(SLICE(d3_200, word16, 16), 0x0000)) + __swap(SEQ(SLICE(d4_202, word16, 16), 0x0000))) + SEQ(SLICE(d5_213, word16, 16), SLICE(d5_213, word16, 0) + (v39_214 <u 0x0000)))
+	branch v48_233 <u 0x00000000 l000027B2
 // DataOut: a0 a2 a3 a5 d1 d2
 // DataOut (flags): Z
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:<invalid> a1:00004134 d5:<invalid> -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
 // LocalsOut: fp(32)
 
 l000027AC:
-	branch v48_234 != 0x00000000 l000027B4
+	branch v48_233 != 0x00000000 l000027B4
 // DataOut: a0 a2 a3 a5 d1 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:0 d4:<invalid> a1:00004134 d5:<invalid> -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
 // LocalsOut: fp(32)
 
 l000027AE:
-	branch d6_186 - d2_223 >=u 0x00000000 l000027B4
+	branch d6_185 - d2_222 >=u 0x00000000 l000027B4
 // DataOut: a0 a2 a3 a5 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:0 d4:<invalid> a1:00004134 d5:<invalid> -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
 // LocalsOut: fp(32)
 
 l000027B2:
-	word32 d1_247
-	*d1Out = d0_191 - 0x00000001
+	word32 d1_246
+	*d1Out = d0_190 - 0x00000001
 // DataOut: a0 a2 a3 a5 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:0 d4:<invalid> a1:00004134 d5:<invalid> -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
@@ -3785,7 +3785,7 @@ l000026E2:
 // LocalsOut: fp(32)
 
 l000026E6:
-	d3_123 = (int32) (uint16) (1 /u (uint16) dwArg10)
+	d3_122 = (int32) (int16) SEQ((uint16) (1 % SLICE(dwArg10, uint16, 0)), (uint16) (1 /u SLICE(dwArg10, uint16, 0)))
 // DataOut: a0 a2 a3 a5 d0 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
@@ -3794,7 +3794,7 @@ l000026E6:
 l000026EE:
 	word32 d1_104
 	word32 d2_105
-	word32 d0_106 = fn000027BC(0, dwArg04, d3_123, out d1_104, out d2_105)
+	word32 d0_106 = fn000027BC(0, dwArg04, d3_122, out d1_104, out d2_105)
 	word32 d1_111
 	word32 d2_112
 	word32 d1_114
@@ -3859,8 +3859,8 @@ l000027BC:
 // LocalsOut: fp(32) Local -0024(32)
 
 l000027C4:
-	word32 d6_154 = d1
-	word32 d5_153 = d0
+	word32 d6_152 = d1
+	word32 d5_151 = d0
 	branch d0 != 0x00000000 l000027E4
 // DataOut: a2 a3 a5 d0 d1 d2 d5 d6 d7
 // DataOut (flags): 
@@ -3869,15 +3869,15 @@ l000027C4:
 
 l000027E4:
 	word32 d2_95 = __swap(d2)
-	branch (word16) d2_95 != 0x0000 l0000280C
+	branch SLICE(d2_95, word16, 0) != 0x0000 l0000280C
 // DataOut: a2 a3 a5 d0 d1 d2 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 12 d7:d2 d6:d1 d5:d0 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0024(32)
 
 l0000280C:
-	byte bLoc26_142 = 0x00
-	word32 d0_144 = 0
+	byte bLoc26_140 = 0x00
+	word32 d0_142 = 0
 	branch d2 < 0x00000000 l00002828
 // DataOut: a2 a3 a5 d0 d5 d6 d7
 // DataOut (flags): 
@@ -3885,9 +3885,9 @@ l0000280C:
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0)
 
 l0000281E:
-	d6_154 = d6_154 * 0x00000002
-	d0_144 = SEQ(SLICE(d0_144, word16, 16), (word16) d0_144 + 0x0001)
-	d5_153 = d5_153 * 0x00000002 + (d6_154 <u 0x00000000)
+	d6_152 = d6_152 * 0x00000002
+	d0_142 = SEQ(SLICE(d0_142, word16, 16), SLICE(d0_142, word16, 0) + 0x0001)
+	d5_151 = d5_151 * 0x00000002 + (d6_152 <u 0x00000000)
 	d7_12 = d7_12 * 0x00000002
 	branch d7_12 > 0x00000000 l0000281E
 // DataOut: a2 a3 a5 d0 d5 d6 d7
@@ -3896,130 +3896,130 @@ l0000281E:
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0)
 
 l00002828:
-	word16 v41_156 = (word16) d0_144
+	word16 v41_154 = SLICE(d0_142, word16, 0)
 // DataOut: a2 a3 a5 d0 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:0 d0:<invalid> -38(fp):0x00 -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l0000282A:
-	word32 d1_183
-	word32 d2_177 = __swap(d5_153)
-	word32 d3_178 = __swap(d7_12)
-	branch (word16) (d2_177 - d3_178) != 0x0000 l0000283C
+	word32 d1_181
+	word32 d2_175 = __swap(d5_151)
+	word32 d3_176 = __swap(d7_12)
+	branch SLICE(d2_175 - d3_176, word16, 0) != 0x0000 l0000283C
 // DataOut: a2 a3 a5 d0 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:0 d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l0000283C:
-	d1_183 = __swap(SEQ(SLICE(__swap(DPB(DPB(d5_153, (uint16) (d5_153 % (uint16) d3_178), 16), (uint16) (d5_153 /u (uint16) d3_178), 0)), word16, 16), 0x0000))
+	d1_181 = __swap(SEQ(SLICE(__swap(SEQ((uint16) (d5_151 % SLICE(d3_176, uint16, 0)), (uint16) (d5_151 /u SLICE(d3_176, uint16, 0)))), word16, 16), 0x0000))
 // DataOut: a2 a3 a5 d0 d1 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:0 d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l00002836:
-	d1_183 = 0x0000FFFF
+	d1_181 = 0x0000FFFF
 // DataOut: a2 a3 a5 d0 d1 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:0 d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l00002846:
-	word32 d6_187 = __swap(SEQ(SLICE(d6_154, word16, 16), 0x0000))
+	word32 d6_185 = __swap(SEQ(SLICE(d6_152, word16, 16), 0x0000))
 // DataOut: a1 a2 a3 a5 d0 d1 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l0000284C:
-	word32 d4_203 = __swap(d5_153 - __swap(d7_12) *u (word16) d1_183)
-	word32 d2_197 = d1_183 *u (word16) d7_12
-	d0_144 = SEQ(SLICE(d0_144, word16, 16), (word16) d4_203)
-	word32 d4_209 = SEQ(SLICE(d4_203, word16, 16), (word16) d6_187)
-	branch (word16) d0_144 != 0x0000 l0000286C
+	word32 d4_201 = __swap(d5_151 - __swap(d7_12) *u SLICE(d1_181, word16, 0))
+	word32 d2_195 = d1_181 *u SLICE(d7_12, word16, 0)
+	d0_142 = SEQ(SLICE(d0_142, word16, 16), SLICE(d4_201, word16, 0))
+	word32 d4_207 = SEQ(SLICE(d4_201, word16, 16), SLICE(d6_185, word16, 0))
+	branch SLICE(d0_142, word16, 0) != 0x0000 l0000286C
 // DataOut: a1 a2 a3 a5 d0 d1 d2 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:<invalid> a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l00002864:
-	branch d2_197 - d4_209 <=u 0x00000000 l0000286C
+	branch d2_195 - d4_207 <=u 0x00000000 l0000286C
 // DataOut: a1 a2 a3 a5 d0 d1 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:<invalid> a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l0000286C:
-	word32 d6_218 = __swap(d1_183)
-	word32 d3_224 = __swap(d6_218)
-	word32 d4_226 = __swap(d7_12)
-	word32 d5_225 = d7_12 *u (word16) d3_224
-	word32 d6_230 = __swap(d6_218 *u (word16) d7_12)
-	word16 v56_231 = (word16) (d6_230 + d5_225)
-	word32 d2_227 = d6_218 *u (word16) d4_226
-	word32 d6_233 = SEQ(SLICE(d6_230, word16, 16), v56_231)
-	word32 d3_228 = d3_224 *u (word16) d4_226
-	word16 v60_239 = (word16) (d6_233 + d2_227)
-	word32 d3_238 = SEQ(SLICE(d3_228, word16, 16), (word16) d3_228 + (v56_231 <u 0x0000))
-	word32 d6_260 = d6_154 - __swap(SEQ(SLICE(d6_233, word16, 16), v60_239))
-	word32 d5_263 = d5_153 - ((__swap(SEQ(SLICE(d5_225, word16, 16), 0x0000)) + __swap(SEQ(SLICE(d2_227, word16, 16), 0x0000))) + SEQ(SLICE(d3_238, word16, 16), (word16) d3_238 + (v60_239 <u 0x0000))) - (d6_260 <u 0x00000000)
-	branch d5_263 >=u 0x00000000 l000028C4
+	word32 d6_216 = __swap(d1_181)
+	word32 d3_222 = __swap(d6_216)
+	word32 d4_224 = __swap(d7_12)
+	word32 d5_223 = d7_12 *u SLICE(d3_222, word16, 0)
+	word32 d6_228 = __swap(d6_216 *u SLICE(d7_12, word16, 0))
+	word16 v56_229 = SLICE(d6_228 + d5_223, word16, 0)
+	word32 d2_225 = d6_216 *u SLICE(d4_224, word16, 0)
+	word32 d6_231 = SEQ(SLICE(d6_228, word16, 16), v56_229)
+	word32 d3_226 = d3_222 *u SLICE(d4_224, word16, 0)
+	word16 v60_237 = SLICE(d6_231 + d2_225, word16, 0)
+	word32 d3_236 = SEQ(SLICE(d3_226, word16, 16), SLICE(d3_226, word16, 0) + (v56_229 <u 0x0000))
+	word32 d6_258 = d6_152 - __swap(SEQ(SLICE(d6_231, word16, 16), v60_237))
+	word32 d5_261 = d5_151 - ((__swap(SEQ(SLICE(d5_223, word16, 16), 0x0000)) + __swap(SEQ(SLICE(d2_225, word16, 16), 0x0000))) + SEQ(SLICE(d3_236, word16, 16), SLICE(d3_236, word16, 0) + (v60_237 <u 0x0000))) - (d6_258 <u 0x00000000)
+	branch d5_261 >=u 0x00000000 l000028C4
 // DataOut: a2 a3 a5 d0 d1 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:<invalid> a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l000028AE:
-	d6_260 = d6_260 + SEQ(SLICE(__swap(d7_12), word16, 16), 0x0000)
-	d1_183 = d1_183 - 0x00000001
-	d5_263 = d5_263 + (d6_260 <u 0x00000000) + __swap(SEQ(SLICE(d7_12, word16, 16), 0x0000))
+	d6_258 = d6_258 + SEQ(SLICE(__swap(d7_12), word16, 16), 0x0000)
+	d1_181 = d1_181 - 0x00000001
+	d5_261 = d5_261 + (d6_258 <u 0x00000000) + __swap(SEQ(SLICE(d7_12, word16, 16), 0x0000))
 // DataOut: a2 a3 a5 d0 d1 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l000028C4:
-	branch bLoc26_142 != 0x00 l000028E0
+	branch bLoc26_140 != 0x00 l000028E0
 // DataOut: a2 a3 a5 d0 d1 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0028(32)
 
 l000028E0:
-	word32 d6_300 = __swap(SEQ(SLICE(d6_260, word16, 16), (word16) d5_263))
-	d0 = SEQ(SLICE(dwLoc24, word16, 16), (word16) d1_183)
-	word32 d5_301 = __swap(d5_263)
-	word32 d7_304 = SEQ(SLICE(d7_12, word16, 16), v41_156)
-	branch v41_156 == 0x0000 l000028FA
+	word32 d6_298 = __swap(SEQ(SLICE(d6_258, word16, 16), SLICE(d5_261, word16, 0)))
+	d0 = SEQ(SLICE(dwLoc24, word16, 16), SLICE(d1_181, word16, 0))
+	word32 d5_299 = __swap(d5_261)
+	word32 d7_302 = SEQ(SLICE(d7_12, word16, 16), v41_154)
+	branch v41_154 == 0x0000 l000028FA
 // DataOut: a2 a3 a5 d0 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32)
 
 l000028F0:
-	word32 d7_329 = SEQ(SLICE(d7_304, word16, 16), (word16) d7_304 - 0x0001)
+	word32 d7_327 = SEQ(SLICE(d7_302, word16, 16), SLICE(d7_302, word16, 0) - 0x0001)
 // DataOut: a2 a3 a5 d0 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32)
 
 l000028F2:
-	d5_301 = d5_301 >>u 0x00000001
-	word16 v87_340 = SLICE(d7_329, word16, 0)
-	d6_300 = __rcr(d6_300, 0x00000001, (bool) cond(d5_301))
-	d7_329 = DPB(d7_329, v87_340 - 1, 0)
-	branch v87_340 != 0x0000 l000028F2
+	d5_299 = d5_299 >>u 0x00000001
+	word16 v87_338 = SLICE(d7_327, word16, 0)
+	d6_298 = __rcr(d6_298, 0x00000001, (bool) cond(d5_299))
+	d7_327 = SEQ(SLICE(d7_327, word16, 16), v87_338 - 1)
+	branch v87_338 != 0x0000 l000028F2
 // DataOut: a2 a3 a5 d0 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32)
 
 l000028FA:
-	word32 d1_314
-	*d1Out = d6_300
-	word32 d2_317
+	word32 d1_312
+	*d1Out = d6_298
+	word32 d2_315
 	*d2Out = d2_95
 // DataOut: a2 a3 a5 d0 d1 d2
 // DataOut (flags): 
@@ -4027,18 +4027,18 @@ l000028FA:
 // LocalsOut: fp(32)
 
 l000028CA:
-	word32 d5_280 = __swap(d5_263)
-	word32 d6_281 = __swap(d6_260)
-	d5_153 = SEQ(SLICE(d5_280, word16, 16), (word16) d6_281)
-	d6_154 = SEQ(SLICE(d6_281, word16, 16), 0x0000)
-	bLoc26_142 = true
+	word32 d5_278 = __swap(d5_261)
+	word32 d6_279 = __swap(d6_258)
+	d5_151 = SEQ(SLICE(d5_278, word16, 16), SLICE(d6_279, word16, 0))
+	d6_152 = SEQ(SLICE(d6_279, word16, 16), 0x0000)
+	bLoc26_140 = true
 // DataOut: a2 a3 a5 d0 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0026(0) Local -0028(32)
 
 l00002868:
-	d1_183 = d1_183 - 0x00000001
+	d1_181 = d1_181 - 0x00000001
 // DataOut: a1 a2 a3 a5 d0 d1 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:<invalid> d0:<invalid> d3:<invalid> a1:<invalid> d4:<invalid> a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -4047,15 +4047,15 @@ l00002868:
 l000027EA:
 	word32 d0_101 = __swap(d0)
 	word32 d1_102 = __swap(d1)
-	word32 d0_105 = SEQ(SLICE(d0_101, word16, 16), (word16) d1_102)
-	uint16 v19_107 = (uint16) (d0_105 /u (uint16) d2)
-	word32 d0_116 = SEQ(SLICE(DPB(DPB(d0_105, (uint16) (d0_105 % (uint16) d2), 16), v19_107, 0), word16, 16), (word16) __swap(d1_102))
-	uint16 v26_118 = (uint16) (d0_116 /u (uint16) d2)
-	word32 d2_124 = SEQ(SLICE(__swap((uint32) (uint16) v19_107), word16, 16), v26_118)
-	*d2Out = d2_124
-	word32 d1_128
-	*d1Out = __swap(SEQ(SLICE(DPB(DPB(d0_116, (uint16) (d0_116 % (uint16) d2), 16), v26_118, 0), word16, 16), 0x0000))
-	d0 = d2_124
+	word32 d0_105 = SEQ(SLICE(d0_101, word16, 16), SLICE(d1_102, word16, 0))
+	word32 d0_108 = SEQ((uint16) (d0_105 % SLICE(d2, uint16, 0)), (uint16) (d0_105 /u SLICE(d2, uint16, 0)))
+	word32 d0_115 = SEQ(SLICE(d0_108, word16, 16), SLICE(__swap(d1_102), word16, 0))
+	word32 d0_118 = SEQ((uint16) (d0_115 % SLICE(d2, uint16, 0)), (uint16) (d0_115 /u SLICE(d2, uint16, 0)))
+	word32 d2_122 = SEQ(SLICE(__swap((uint32) (uint16) SLICE(d0_108, word16, 0)), word16, 16), SLICE(d0_118, word16, 0))
+	*d2Out = d2_122
+	word32 d1_126
+	*d1Out = __swap(SEQ(SLICE(d0_118, word16, 16), 0x0000))
+	d0 = d2_122
 // DataOut: a2 a3 a5 d0 d1 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 12 d7:d2 d6:d1 d5:d0 d2:<invalid> -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -4178,8 +4178,8 @@ fn0000297A_entry:
 // LocalsOut: fp(32)
 
 l0000297A:
-	word32 d1_103 = __swap(d1)
-	word16 v10_8 = (word16) d1_103
+	word32 d1_101 = __swap(d1)
+	word16 v10_8 = SLICE(d1_101, word16, 0)
 	word32 d2_10 = SEQ(SLICE(d2, word16, 16), v10_8)
 	branch v10_8 != 0x0000 l000029A0
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d4 d5 d6 d7
@@ -4188,106 +4188,106 @@ l0000297A:
 // LocalsOut: fp(32)
 
 l000029A0:
-	word32 d3_102 = 16
-	branch (word16) d1_103 >=u 0x0080 l000029AE
+	word32 d3_100 = 16
+	branch SLICE(d1_101, word16, 0) >=u 0x0080 l000029AE
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 4 d1:<invalid> d2:<invalid> -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029AA:
-	d1_103 = __rol(d1_103, 0x00000008)
-	d3_102 = 0x00000008
+	d1_101 = __rol(d1_101, 0x00000008)
+	d3_100 = 0x00000008
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:16 -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029AE:
-	branch (word16) d1_103 >=u 0x0800 l000029B8
+	branch SLICE(d1_101, word16, 0) >=u 0x0800 l000029B8
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029B4:
-	d1_103 = __rol(d1_103, 0x00000004)
-	d3_102 = SEQ(SLICE(d3_102, word16, 16), (word16) d3_102 - 0x0004)
+	d1_101 = __rol(d1_101, 0x00000004)
+	d3_100 = SEQ(SLICE(d3_100, word16, 16), SLICE(d3_100, word16, 0) - 0x0004)
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029B8:
-	branch (word16) d1_103 >=u 0x2000 l000029C2
+	branch SLICE(d1_101, word16, 0) >=u 0x2000 l000029C2
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029BE:
-	d1_103 = __rol(d1_103, 0x00000002)
-	d3_102 = SEQ(SLICE(d3_102, word16, 16), (word16) d3_102 - 0x0002)
+	d1_101 = __rol(d1_101, 0x00000002)
+	d3_100 = SEQ(SLICE(d3_100, word16, 16), SLICE(d3_100, word16, 0) - 0x0002)
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029C2:
-	branch (word16) d1_103 < 0x0000 l000029CA
+	branch SLICE(d1_101, word16, 0) < 0x0000 l000029CA
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029C6:
-	d1_103 = __rol(d1_103, 0x00000001)
-	d3_102 = SEQ(SLICE(d3_102, word16, 16), (word16) d3_102 - 0x0001)
+	d1_101 = __rol(d1_101, 0x00000001)
+	d3_100 = SEQ(SLICE(d3_100, word16, 16), SLICE(d3_100, word16, 0) - 0x0001)
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029CA:
-	word32 d0_107 = d0 >>u d3_102
-	word32 d2_111 = SEQ(SLICE(__swap(SEQ(SLICE(d2_10, word16, 16), (word16) d0)), word16, 16), 0x0000) >>u d3_102
-	uint16 v51_114 = (uint16) (d0_107 /u (uint16) d1_103)
-	word32 d3_119 = SEQ(SLICE(__swap(d3_102), word16, 16), v51_114)
-	word32 d1_126 = __swap(d1_103)
-	word32 d0_128 = SEQ(SLICE(DPB(DPB(d0_107, (uint16) (d0_107 % (uint16) d1_103), 16), v51_114, 0), word16, 16), (word16) d2_111) - SEQ(SLICE(d2_111, word16, 16), (word16) d3_119) *u (word16) d1_126
-	branch d0_128 >=u 0x00000000 l000029EC
+	word32 d0_105 = d0 >>u d3_100
+	word32 d2_109 = SEQ(SLICE(__swap(SEQ(SLICE(d2_10, word16, 16), SLICE(d0, word16, 0))), word16, 16), 0x0000) >>u d3_100
+	word32 d0_113 = SEQ((uint16) (d0_105 % SLICE(d1_101, uint16, 0)), (uint16) (d0_105 /u SLICE(d1_101, uint16, 0)))
+	word32 d3_116 = SEQ(SLICE(__swap(d3_100), word16, 16), SLICE(d0_113, word16, 0))
+	word32 d1_123 = __swap(d1_101)
+	word32 d0_125 = SEQ(SLICE(d0_113, word16, 16), SLICE(d2_109, word16, 0)) - SEQ(SLICE(d2_109, word16, 16), SLICE(d3_116, word16, 0)) *u SLICE(d1_123, word16, 0)
+	branch d0_125 >=u 0x00000000 l000029EC
 // DataOut: a2 a3 a5 a6 d0 d1 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029E6:
-	d3_119 = SEQ(SLICE(d3_119, word16, 16), (word16) d3_119 - 0x0001)
-	d0_128 = d0_128 + d1_126
+	d3_116 = SEQ(SLICE(d3_116, word16, 16), SLICE(d3_116, word16, 0) - 0x0001)
+	d0_125 = d0_125 + d1_123
 // DataOut: a2 a3 a5 a6 d0 d3 d4 d5 d6 d7
 // DataOut (flags): C
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> d0:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029EA:
-	branch d0_128 >=u 0x00000000 l000029EA
+	branch d0_125 >=u 0x00000000 l000029EA
 // DataOut: a2 a3 a5 a6 d0 d3 d4 d5 d6 d7
 // DataOut (flags): C
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> d0:<invalid> -8(fp):d3 -4(fp):d2
 // LocalsOut: fp(32)
 
 l000029EC:
-	word32 d1_150
-	*d1Out = __swap(__rol(d0_128, __swap(d3_119)))
-	return (uint32) (uint16) (word16) d3_119
+	word32 d1_147
+	*d1Out = __swap(__rol(d0_125, __swap(d3_116)))
+	return (uint32) (uint16) SLICE(d3_116, word16, 0)
 // DataOut: a2 a3 a5 a6 d0 d1 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> d0:<invalid> -8(fp):d3 -4(fp):d2
 
 l00002982:
 	word32 d0_30 = __swap(d0)
-	word32 d1_31 = __swap(d1_103)
-	word16 v14_33 = (word16) d0_30
+	word32 d1_31 = __swap(d1_101)
+	word16 v14_33 = SLICE(d0_30, word16, 0)
 	word32 d2_35 = SEQ(SLICE(__swap(d2_10), word16, 16), v14_33)
 	branch v14_33 == 0x0000 l00002990
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d4 d5 d6 d7
@@ -4295,20 +4295,19 @@ l00002982:
 // SymbolicIn: a7:fp - 4 d1:<invalid> d2:<invalid> -4(fp):d2
 
 l0000298C:
-	uint16 v17_69 = (uint16) (d2_35 /u (uint16) d1_31)
-	d2_35 = DPB(DPB(d2_35, (uint16) (d2_35 % (uint16) d1_31), 16), v17_69, 0)
-	d0_30 = SEQ(SLICE(d0_30, word16, 16), v17_69)
+	d2_35 = SEQ((uint16) (d2_35 % SLICE(d1_31, uint16, 0)), (uint16) (d2_35 /u SLICE(d1_31, uint16, 0)))
+	d0_30 = SEQ(SLICE(d0_30, word16, 16), SLICE(d2_35, word16, 0))
 // DataOut: a2 a3 a5 a6 d0 d1 d2 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 4 d1:<invalid> d2:<invalid> d0:<invalid> -4(fp):d2
 
 l00002990:
 	word32 d0_40 = __swap(d0_30)
-	word32 d2_43 = SEQ(SLICE(d2_35, word16, 16), (word16) d0_40)
-	uint16 v34_45 = (uint16) (d2_43 /u (uint16) d1_31)
-	word32 d1_54
-	*d1Out = SEQ(SLICE(d1_31, word16, 16), (word16) __swap(DPB(DPB(d2_43, (uint16) (d2_43 % (uint16) d1_31), 16), v34_45, 0)))
-	return SEQ(SLICE(d0_40, word16, 16), v34_45)
+	word32 d2_43 = SEQ(SLICE(d2_35, word16, 16), SLICE(d0_40, word16, 0))
+	word32 d2_46 = SEQ((uint16) (d2_43 % SLICE(d1_31, uint16, 0)), (uint16) (d2_43 /u SLICE(d1_31, uint16, 0)))
+	word32 d1_53
+	*d1Out = SEQ(SLICE(d1_31, word16, 16), SLICE(__swap(d2_46), word16, 0))
+	return SEQ(SLICE(d0_40, word16, 16), SLICE(d2_46, word16, 0))
 // DataOut: a2 a3 a5 a6 d0 d1 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 4 d1:<invalid> d2:<invalid> d0:<invalid> -4(fp):d2
@@ -4335,8 +4334,8 @@ fn00002A00_entry:
 // LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32) Stack +0010(32)
 
 l00002A00:
-	word32 d1_139 = dwArg08
-	word32 d3_104 = dwArg10
+	word32 d1_138 = dwArg08
+	word32 d3_103 = dwArg10
 	branch dwArg0C != 0x00000000 l00002A52
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3
 // DataOut (flags): 
@@ -4351,99 +4350,99 @@ l00002A52:
 // LocalsOut: fp(32)
 
 l00002A58:
-	word32 d4_110 = 24
-	word32 d6_111 = __rol(dwArg0C, 0x00000008)
-	branch (byte) d6_111 != 0x00 l00002A76
+	word32 d4_109 = 24
+	word32 d6_110 = __rol(dwArg0C, 0x00000008)
+	branch SLICE(d6_110, byte, 0) != 0x00 l00002A76
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002A62:
-	d4_110 = 16
-	d6_111 = __rol(d6_111, 0x00000008)
-	branch (byte) d6_111 != 0x00 l00002A76
+	d4_109 = 16
+	d6_110 = __rol(d6_110, 0x00000008)
+	branch SLICE(d6_110, byte, 0) != 0x00 l00002A76
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:24 -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002A6A:
-	d4_110 = 8
-	d6_111 = __rol(d6_111, 0x00000008)
-	branch (byte) d6_111 != 0x00 l00002A76
+	d4_109 = 8
+	d6_110 = __rol(d6_110, 0x00000008)
+	branch SLICE(d6_110, byte, 0) != 0x00 l00002A76
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:16 -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002A72:
-	d4_110 = 0
-	d6_111 = SEQ(SLICE(d6_111, word24, 8), (byte) dwArg0C)
+	d4_109 = 0
+	d6_110 = SEQ(SLICE(d6_110, word24, 8), SLICE(dwArg0C, byte, 0))
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:8 -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002A76:
-	word32 d4_129 = SEQ(SLICE(d4_110, word24, 8), (byte) d4_110 + Mem0[0x00004134 + (int32) ((int16) SEQ(SLICE(d6_111, word16, 16), (word16) d6_111 & 0x00FF)):byte])
-	word32 d5_131 = 32 - d4_129
-	branch d5_131 != 0x00000000 l00002A98
+	word32 d4_128 = SEQ(SLICE(d4_109, word24, 8), SLICE(d4_109, byte, 0) + Mem0[0x00004134 + (int32) ((int16) SEQ(SLICE(d6_110, word16, 16), SLICE(d6_110, word16, 0) & 0x00FF)):byte])
+	word32 d5_130 = 32 - d4_128
+	branch d5_130 != 0x00000000 l00002A98
 // DataOut: a0 a2 a3 a5 d0 d1 d2 d3 d4 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002A98:
-	word32 d1_162
-	word32 d2_163
-	word32 d0_164 = fn000027BC(dwArg04 >>u d4_129, dwArg04 << d5_131 | dwArg08 >>u d4_129, dwArg0C << d5_131 | dwArg10 >>u d4_129, out d1_162, out d2_163)
-	word32 d3_151 = dwArg10 << d5_131
-	word32 d7_173 = __swap(d0_164)
-	word32 d6_175 = __swap(d3_151)
-	word32 d3_174 = d3_151 *u (word16) d7_173
-	word32 d2_179 = __swap(d0_164 *u (word16) d3_151)
-	word16 v36_180 = (word16) (d2_179 + d3_174)
-	word32 d4_176 = d0_164 *u (word16) d6_175
-	word32 d2_182 = SEQ(SLICE(d2_179, word16, 16), v36_180)
-	word16 v40_188 = (word16) (d2_182 + d4_176)
-	word32 d7_177 = d7_173 *u (word16) d6_175
-	word32 d2_196 = __swap(SEQ(SLICE(d2_182, word16, 16), v40_188))
-	word32 d7_187 = SEQ(SLICE(d7_177, word16, 16), (word16) d7_177 + (v36_180 <u 0x0000))
-	word32 d6_159 = dwArg08 << d5_131
-	word32 d3_204 = __swap(SEQ(SLICE(d3_174, word16, 16), 0x0000)) + __swap(SEQ(SLICE(d4_176, word16, 16), 0x0000)) + SEQ(SLICE(d7_187, word16, 16), (word16) d7_187 + (v40_188 <u 0x0000))
-	word32 v49_207 = d1_162 - d2_196
-	branch v49_207 <u 0x00000000 l00002AF4
+	word32 d1_161
+	word32 d2_162
+	word32 d0_163 = fn000027BC(dwArg04 >>u d4_128, dwArg04 << d5_130 | dwArg08 >>u d4_128, dwArg0C << d5_130 | dwArg10 >>u d4_128, out d1_161, out d2_162)
+	word32 d3_150 = dwArg10 << d5_130
+	word32 d7_172 = __swap(d0_163)
+	word32 d6_174 = __swap(d3_150)
+	word32 d3_173 = d3_150 *u SLICE(d7_172, word16, 0)
+	word32 d2_178 = __swap(d0_163 *u SLICE(d3_150, word16, 0))
+	word16 v36_179 = SLICE(d2_178 + d3_173, word16, 0)
+	word32 d4_175 = d0_163 *u SLICE(d6_174, word16, 0)
+	word32 d2_181 = SEQ(SLICE(d2_178, word16, 16), v36_179)
+	word16 v40_187 = SLICE(d2_181 + d4_175, word16, 0)
+	word32 d7_176 = d7_172 *u SLICE(d6_174, word16, 0)
+	word32 d2_195 = __swap(SEQ(SLICE(d2_181, word16, 16), v40_187))
+	word32 d7_186 = SEQ(SLICE(d7_176, word16, 16), SLICE(d7_176, word16, 0) + (v36_179 <u 0x0000))
+	word32 d6_158 = dwArg08 << d5_130
+	word32 d3_203 = __swap(SEQ(SLICE(d3_173, word16, 16), 0x0000)) + __swap(SEQ(SLICE(d4_175, word16, 16), 0x0000)) + SEQ(SLICE(d7_186, word16, 16), SLICE(d7_186, word16, 0) + (v40_187 <u 0x0000))
+	word32 v49_206 = d1_161 - d2_195
+	branch v49_206 <u 0x00000000 l00002AF4
 // DataOut: a0 a1 a2 a3 a5 d0 d1 d2 d3 d5
 // DataOut (flags): Z
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:<invalid> a1:00004134 d5:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002AEE:
-	branch v49_207 != 0x00000000 l00002AF8
+	branch v49_206 != 0x00000000 l00002AF8
 // DataOut: a0 a1 a2 a3 a5 d0 d1 d2 d3 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:0 d4:<invalid> a1:<invalid> d5:<invalid> d7:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002AF0:
-	branch d6_159 - d3_204 >=u 0x00000000 l00002AF8
+	branch d6_158 - d3_203 >=u 0x00000000 l00002AF8
 // DataOut: a0 a1 a2 a3 a5 d0 d1 d2 d3 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:0 d4:<invalid> a1:<invalid> d5:<invalid> d7:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002AF4:
-	d3_204 = d3_204 - d3_151
-	d2_196 = d2_196 - d2_163 - (d3_204 <u 0x00000000)
+	d3_203 = d3_203 - d3_150
+	d2_195 = d2_195 - d2_162 - (d3_203 <u 0x00000000)
 // DataOut: a0 a2 a3 a5 d1 d2 d3 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:0 d4:<invalid> a1:<invalid> d5:<invalid> d7:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002AF8:
-	word32 d6_223 = d6_159 - d3_204
-	d1_139 = d1_162 - d2_196 - (d6_223 <u 0x00000000) << 32 - d5_131 | d6_223 >>u d5_131
+	word32 d6_222 = d6_158 - d3_203
+	d1_138 = d1_161 - d2_195 - (d6_222 <u 0x00000000) << 32 - d5_130 | d6_222 >>u d5_130
 // DataOut: a2 a3 a5 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:0 d4:<invalid> a1:<invalid> d5:<invalid> d7:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -4464,7 +4463,7 @@ l00002A8E:
 // LocalsOut: fp(32)
 
 l00002A92:
-	d1_139 = dwArg08 - dwArg10
+	d1_138 = dwArg08 - dwArg10
 // DataOut: a2 a3 a5 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d6:<invalid> d4:<invalid> a1:00004134 d5:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -4485,7 +4484,7 @@ l00002A2A:
 // LocalsOut: fp(32)
 
 l00002A2E:
-	d3_104 = (int32) (uint16) (1 /u (uint16) dwArg10)
+	d3_103 = (int32) (int16) SEQ((uint16) (1 % SLICE(dwArg10, uint16, 0)), (uint16) (1 /u SLICE(dwArg10, uint16, 0)))
 // DataOut: a0 a2 a3 a5 d0 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -4494,9 +4493,9 @@ l00002A2E:
 l00002A36:
 	word32 d1_87
 	word32 d2_88
-	fn000027BC(0, dwArg04, d3_104, out d1_87, out d2_88)
+	fn000027BC(0, dwArg04, d3_103, out d1_87, out d2_88)
 	word32 d2_94
-	fn000027BC(d1_87, dwArg08, d2_88, out d1_139, out d2_94)
+	fn000027BC(d1_87, dwArg08, d2_88, out d1_138, out d2_94)
 // DataOut: a2 a3 a5 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d4:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -4504,14 +4503,14 @@ l00002A36:
 
 l00002A1C:
 	word32 d2_64
-	fn000027BC(dwArg04, dwArg08, dwArg10, out d1_139, out d2_64)
+	fn000027BC(dwArg04, dwArg08, dwArg10, out d1_138, out d2_64)
 // DataOut: a2 a3 a5 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
 // LocalsOut: fp(32)
 
 l00002B0C:
-	return d1_139
+	return d1_138
 // DataOut: a2 a3 a5 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 24 d1:<invalid> d0:<invalid> a0:<invalid> d3:<invalid> d2:<invalid> d4:<invalid> d6:<invalid> a1:<invalid> d5:<invalid> d7:<invalid> -24(fp):d2 -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -4759,7 +4758,7 @@ l00003E2A:
 	a2_1037 = Mem3195[a7_3189:word32]
 	d0_3153 = SEQ(SLICE(d0_3021 & 0x00000008, word24, 8), Mem3195[a0_3188:byte])
 	Mem3204[a7_3189:word32] = d1
-	Mem3210[a7_3189 + 48:word32] = (uint32) (uint8) (byte) d0_3153
+	Mem3210[a7_3189 + 48:word32] = (uint32) (uint8) SLICE(d0_3153, byte, 0)
 	d1 = Mem3210[a7_3189:word32]
 // DataOut: a1 a2 a4 a5 a7 d0 d1 d2 d4 d7
 // DataOut (flags): 
@@ -4828,13 +4827,13 @@ l00003DBA:
 	Mem3119[a1:word32] = a0_3112 + 1
 	d0_3069 = SEQ(SLICE(d0, word24, 8), Mem3119[a0_3112:byte])
 	a2_1037 = Mem3119[a7_3113:word32]
-	d1 = (uint32) (uint8) (byte) d0_3069
+	d1 = (uint32) (uint8) SLICE(d0_3069, byte, 0)
 // DataOut: a1 a2 a4 a5 a7 d0 d1 d2 d3 d4 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d0:<invalid> a0:<invalid> a1:<invalid> d1:<invalid> a5:<invalid> d6:<invalid> a3:<invalid> d7:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003DDE:
-	word32 d0_3087 = (uint32) (uint8) Mem3064[0x00002B15 + (SEQ(SLICE(d0_3069, word24, 8), (byte) d1) & 0x000000FF):byte]
+	word32 d0_3087 = (uint32) (uint8) Mem3064[0x00002B15 + (SEQ(SLICE(d0_3069, word24, 8), SLICE(d1, byte, 0)) & 0x000000FF):byte]
 	d5_1257 = d1
 	d4_141 = d4_141 + 0x00000001
 	d0 = d0_3087 & 0x00000008
@@ -4895,8 +4894,8 @@ l00002EE0:
 l00002EFA:
 	word32 a7_2968 = a7_150 - 4
 	Mem2970[a7_2968:word32] = d2_140
-	word32 d1_2975 = __swap(10) *u (word16) d6_185
-	word32 d0_2984 = (word16) d6_185 *u 10 + SEQ(SLICE(__swap(SEQ(SLICE(d1_2975, word16, 16), (word16) (d1_2975 + __swap(d6_185) *u 0x000A))), word16, 16), 0x0000)
+	word32 d1_2975 = __swap(10) *u SLICE(d6_185, word16, 0)
+	word32 d0_2984 = SLICE(d6_185, word16, 0) *u 10 + SEQ(SLICE(__swap(SEQ(SLICE(d1_2975, word16, 16), SLICE(d1_2975 + __swap(d6_185) *u 0x000A, word16, 0))), word16, 16), 0x0000)
 	a3_189 = a3_189 + 1
 	word32 d1_2992 = (uint32) (uint8) Mem2970[a3_189:byte]
 	word32 d0_3006 = (uint32) (uint8) Mem2970[0x00002B15 + (uint32) ((uint8) Mem2970[a3_189:byte]):byte]
@@ -4965,7 +4964,7 @@ l00002F6E:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00002F78:
-	branch (byte) d1 != 0x68 l00002F88
+	branch SLICE(d1, byte, 0) != 0x68 l00002F88
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -4977,7 +4976,7 @@ l00002F7E:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00002F88:
-	branch (byte) d1 != 0x6C l00002F98
+	branch SLICE(d1, byte, 0) != 0x6C l00002F98
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5056,8 +5055,8 @@ l00002FC0:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00002FC6:
-	Mem2902[a7_150 + 72:byte] = (byte) d1
-	Mem2904[a7_150 + 73:byte] = (byte) d7
+	Mem2902[a7_150 + 72:byte] = SLICE(d1, byte, 0)
+	Mem2904[a7_150 + 73:byte] = SLICE(d7, byte, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5108,25 +5107,25 @@ l00002FF8:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d1:<invalid> d7:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00002FFC:
-	branch (byte) d7 == 0x25 l0000306E
+	branch SLICE(d7, byte, 0) == 0x25 l0000306E
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003002:
-	branch (byte) d7 == 0x63 l0000306E
+	branch SLICE(d7, byte, 0) == 0x63 l0000306E
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003008:
-	branch (byte) d7 == 0x6E l0000306E
+	branch SLICE(d7, byte, 0) == 0x6E l0000306E
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000300E:
-	branch (byte) d7 == 0x5B l0000306E
+	branch SLICE(d7, byte, 0) == 0x5B l0000306E
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5162,13 +5161,13 @@ l00003026:
 	Mem2831[a1:word32] = a0_2824 + 1
 	d0_2797 = SEQ(SLICE(d0, word24, 8), Mem2831[a0_2824:byte])
 	a2_1037 = Mem2831[a7_2825:word32]
-	d1 = (uint32) (uint8) (byte) d0_2797
+	d1 = (uint32) (uint8) SLICE(d0_2797, byte, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000304A:
-	word32 d0_2815 = (uint32) (uint8) Mem2792[0x00002B15 + (SEQ(SLICE(d0_2797, word24, 8), (byte) d1) & 0x000000FF):byte]
+	word32 d0_2815 = (uint32) (uint8) Mem2792[0x00002B15 + (SEQ(SLICE(d0_2797, word24, 8), SLICE(d1, byte, 0)) & 0x000000FF):byte]
 	d5_1257 = d1
 	d4_141 = d4_141 + 0x00000001
 	d0 = d0_2815 & 0x00000008
@@ -5184,8 +5183,8 @@ l0000306C:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> a1:<invalid> d1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000306E:
-	word32 d1_254 = SEQ(SLICE(d1, word24, 8), (byte) d7)
-	byte v148_255 = (byte) d1_254 - 0x25
+	word32 d1_254 = SEQ(SLICE(d1, word24, 8), SLICE(d7, byte, 0))
+	byte v148_255 = SLICE(d1_254, byte, 0) - 0x25
 	word32 d1_257 = SEQ(SLICE(d1_254, word24, 8), v148_255)
 	branch v148_255 == 0x00 l000034BA
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -5223,7 +5222,7 @@ l000034CC:
 	a2_1037 = Mem2729[a7_2723:word32]
 	d0 = SEQ(SLICE(d0, word24, 8), Mem2729[a0_2722:byte])
 	Mem2738[a7_2723:word32] = d1_257
-	Mem2744[a7_2723 + 48:word32] = (uint32) (uint8) (byte) d0
+	Mem2744[a7_2723 + 48:word32] = (uint32) (uint8) SLICE(d0, byte, 0)
 	d1 = Mem2744[a7_2723:word32]
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d7
 // DataOut (flags): 
@@ -5261,7 +5260,7 @@ l00003520:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003078:
-	byte v150_286 = (byte) d1_257 - 0x36
+	byte v150_286 = SLICE(d1_257, byte, 0) - 0x36
 	word32 d1_288 = SEQ(SLICE(d1_257, word24, 8), v150_286)
 	branch v150_286 == 0x00 l000031B6
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -5292,7 +5291,7 @@ l000031C8:
 
 l000031D4:
 	word32 d5_2230
-	branch (byte) d7 == 0x00 l000031E0
+	branch SLICE(d7, byte, 0) == 0x00 l000031E0
 // DataOut: a2 a3 a5 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5310,7 +5309,7 @@ l000031D8:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000031E2:
-	Mem2233[a5 + d1_2219:byte] = (byte) d5_2230
+	Mem2233[a5 + d1_2219:byte] = SLICE(d5_2230, byte, 0)
 	d1_2219 = d1_2219 + 0x00000001
 	branch d1_2219 <u 0x00000020 l000031D4
 // DataOut: a2 a3 a5 a7 d0 d1 d2 d3 d4 d6 d7
@@ -5319,7 +5318,7 @@ l000031E2:
 
 l000031F4:
 	Mem2240[a7_150 + 132:word32] = d2_140
-	Mem2242[a7_150 + 44:byte] = (byte) d7
+	Mem2242[a7_150 + 44:byte] = SLICE(d7, byte, 0)
 	word32 d2_2245 = SEQ(SLICE(d2_140, word24, 8), Mem2242[a7_150 + 44:byte])
 // DataOut: a2 a3 a5 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
@@ -5340,13 +5339,13 @@ l00003204:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000320C:
-	branch (byte) d1_2219 - Mem2242[a3_1686 + 1:byte] >=u 0x00 l00003218
+	branch SLICE(d1_2219, byte, 0) - Mem2242[a3_1686 + 1:byte] >=u 0x00 l00003218
 // DataOut: a2 a3 a5 a7 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003218:
-	d7 = SEQ(SLICE(d7, word24, 8), (byte) d1_2219)
+	d7 = SEQ(SLICE(d7, word24, 8), SLICE(d1_2219, byte, 0))
 // DataOut: a2 a3 a5 a7 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5359,15 +5358,15 @@ l00003212:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000321A:
-	word32 d5_2582 = (uint32) (uint8) (byte) d1_2219
-	d0 = (uint32) (uint8) (byte) d7
+	word32 d5_2582 = (uint32) (uint8) SLICE(d1_2219, byte, 0)
+	d0 = (uint32) (uint8) SLICE(d7, byte, 0)
 	branch d0 - d5_2582 <u 0x00000000 l00003270
 // DataOut: a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003226:
-	branch (byte) d2_2245 == 0x00 l0000324A
+	branch SLICE(d2_2245, byte, 0) == 0x00 l0000324A
 // DataOut: a2 a3 a5 a7 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5375,7 +5374,7 @@ l00003226:
 l0000324A:
 	word32 a0_2644 = a7_150 + 78 + (d5_2582 >>u 0x00000003)
 	d1_2219 = (uint32) (uint8) Mem2242[a0_2644:byte]
-	Mem2657[a0_2644:byte] = (byte) (1 << (d5_2582 & 7) | d1_2219)
+	Mem2657[a0_2644:byte] = SLICE(1 << (d5_2582 & 7) | d1_2219, byte, 0)
 // DataOut: a2 a3 a5 a7 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5383,14 +5382,14 @@ l0000324A:
 l0000322A:
 	word32 a0_2625 = a7_150 + 78 + (d5_2582 >>u 0x00000003)
 	d1_2219 = (uint32) (uint8) Mem2242[a0_2625:byte]
-	Mem2639[a0_2625:byte] = (byte) (~(1 << (d5_2582 & 7)) & d1_2219)
+	Mem2639[a0_2625:byte] = SLICE(~(1 << (d5_2582 & 7)) & d1_2219, byte, 0)
 // DataOut: a2 a3 a5 a7 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003266:
 	d5_2582 = d5_2582 + 0x00000001
-	d0 = (uint32) (uint8) (byte) d7
+	d0 = (uint32) (uint8) SLICE(d7, byte, 0)
 	branch d0 - d5_2582 >=u 0x00000000 l00003226
 // DataOut: a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
@@ -5457,7 +5456,7 @@ l000032AA:
 	a2_1037 = Mem2528[a7_2522:word32]
 	d0 = SEQ(SLICE(d0, word24, 8), Mem2528[a0_2521:byte])
 	Mem2537[a7_2522:word32] = d1_2219
-	Mem2543[a7_2522 + 48:word32] = (uint32) (uint8) (byte) d0
+	Mem2543[a7_2522 + 48:word32] = (uint32) (uint8) SLICE(d0, byte, 0)
 	d1 = Mem2543[a7_2522:word32]
 // DataOut: a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
@@ -5499,13 +5498,13 @@ l00003322:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a6:<invalid> a1:<invalid> a5:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003326:
-	branch (byte) d7 != 0x00 l0000332C
+	branch SLICE(d7, byte, 0) != 0x00 l0000332C
 // DataOut: a2 a3 a5 a6 a7 d0 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a6:<invalid> a1:<invalid> a5:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000332A:
-	Mem2517[a6_2275:byte] = (byte) d5_1257
+	Mem2517[a6_2275:byte] = SLICE(d5_1257, byte, 0)
 	a6_2275 = a6_2275 + 1
 // DataOut: a2 a3 a5 a6 a7 d0 d2 d3 d4 d6 d7
 // DataOut (flags): 
@@ -5541,7 +5540,7 @@ l0000333E:
 	Mem2493[a1:word32] = a0_2486 + 1
 	d0 = SEQ(SLICE(d0, word24, 8), Mem2493[a0_2486:byte])
 	a2_1037 = Mem2493[a7_2487:word32]
-	d1 = (uint32) (uint8) (byte) d0
+	d1 = (uint32) (uint8) SLICE(d0, byte, 0)
 // DataOut: a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a6:<invalid> a1:<invalid> a5:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5576,7 +5575,7 @@ l0000339E:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a6:<invalid> a1:<invalid> a5:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000033A2:
-	Mem2443[a7_150 + 73:byte] = (byte) d7
+	Mem2443[a7_150 + 73:byte] = SLICE(d7, byte, 0)
 // DataOut: a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a6:<invalid> a1:<invalid> a5:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5618,7 +5617,7 @@ l000033CA:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a6:<invalid> a1:<invalid> a5:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003080:
-	byte v152_291 = (byte) d1_288 - 0x08
+	byte v152_291 = SLICE(d1_288, byte, 0) - 0x08
 	word32 d1_293 = SEQ(SLICE(d1_288, word24, 8), v152_291)
 	branch v152_291 == 0x00 l00003096
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -5692,7 +5691,7 @@ l000030D4:
 	a2_1037 = Mem2160[a7_2154:word32]
 	d0 = SEQ(SLICE(d0, word24, 8), Mem2160[a0_2153:byte])
 	Mem2169[a7_2154:word32] = d1_293
-	Mem2175[a7_2154 + 56:word32] = (uint32) (uint8) (byte) d0
+	Mem2175[a7_2154 + 56:word32] = (uint32) (uint8) SLICE(d0, byte, 0)
 	d1 = Mem2175[a7_2154:word32]
 // DataOut: a2 a3 a5 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
@@ -5724,13 +5723,13 @@ l00003130:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003138:
-	branch (byte) d7 != 0x00 l0000313E
+	branch SLICE(d7, byte, 0) != 0x00 l0000313E
 // DataOut: a2 a3 a4 a5 a7 d0 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000313C:
-	Mem2149[a4_2067:byte] = (byte) d5_1257
+	Mem2149[a4_2067:byte] = SLICE(d5_1257, byte, 0)
 	a4_2067 = a4_2067 + 1
 // DataOut: a2 a3 a4 a5 a7 d0 d2 d3 d4 d6 d7
 // DataOut (flags): 
@@ -5766,7 +5765,7 @@ l00003150:
 	Mem2125[a1:word32] = a0_2118 + 1
 	d0 = SEQ(SLICE(d0, word24, 8), Mem2125[a0_2118:byte])
 	a2_1037 = Mem2125[a7_2119:word32]
-	d1 = (uint32) (uint8) (byte) d0
+	d1 = (uint32) (uint8) SLICE(d0, byte, 0)
 // DataOut: a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5787,7 +5786,7 @@ l00003182:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003186:
-	Mem2112[a7_150 + 73:byte] = (byte) d7
+	Mem2112[a7_150 + 73:byte] = SLICE(d7, byte, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -5828,7 +5827,7 @@ l000031AE:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003084:
-	byte v154_296 = (byte) d1_293 - 0x0B
+	byte v154_296 = SLICE(d1_293, byte, 0) - 0x0B
 	d1 = SEQ(SLICE(d1_293, word24, 8), v154_296)
 	branch v154_296 == 0x00 l00003528
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -5875,7 +5874,7 @@ l000035AC:
 
 l00003596:
 	d0 = d2_140 + 0x00000003 >>u 0x00000002 << 0x00000002
-	Mem1959[Mem188[d0:word32]:byte] = (byte) d4_141
+	Mem1959[Mem188[d0:word32]:byte] = SLICE(d4_141, byte, 0)
 	d2_140 = d0 + 0x00000004
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d4 d5 d7
 // DataOut (flags): 
@@ -5883,7 +5882,7 @@ l00003596:
 
 l00003578:
 	d0 = d2_140 + 0x00000003 >>u 0x00000002 << 0x00000002
-	Mem1944[Mem188[d0:word32]:word16] = (word16) d4_141
+	Mem1944[Mem188[d0:word32]:word16] = SLICE(d4_141, word16, 0)
 	d2_140 = d0 + 0x00000004
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d4 d5 d7
 // DataOut (flags): 
@@ -5915,7 +5914,7 @@ l000035C0:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000308C:
-	byte v156_301 = (byte) d1 - 0x05
+	byte v156_301 = SLICE(d1, byte, 0) - 0x05
 	d1 = SEQ(SLICE(d1, word24, 8), v156_301)
 	branch v156_301 == 0x00 l000033D4
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -5949,7 +5948,7 @@ l000033F0:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a5:<invalid> a1:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000033FA:
-	word32 d0_1755 = (uint32) (uint8) Mem188[0x00002B15 + (SEQ(SLICE(d0, word24, 8), (byte) d5_1257) & 0x000000FF):byte]
+	word32 d0_1755 = (uint32) (uint8) Mem188[0x00002B15 + (SEQ(SLICE(d0, word24, 8), SLICE(d5_1257, byte, 0)) & 0x000000FF):byte]
 	d0 = d0_1755 & 0x00000008
 	branch (d0_1755 & 0x00000008) != 0x00000000 l0000348C
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -5969,13 +5968,13 @@ l0000341A:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a5:<invalid> a1:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000341E:
-	branch (byte) d7 != 0x00 l00003424
+	branch SLICE(d7, byte, 0) != 0x00 l00003424
 // DataOut: a2 a3 a5 a7 d0 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a5:<invalid> a1:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003422:
-	Mem1868[a5:byte] = (byte) d5_1257
+	Mem1868[a5:byte] = SLICE(d5_1257, byte, 0)
 	a5 = a5 + 1
 // DataOut: a2 a3 a5 a7 d0 d2 d3 d4 d6 d7
 // DataOut (flags): 
@@ -6011,7 +6010,7 @@ l00003436:
 	Mem1844[a1:word32] = a0_1837 + 1
 	d0 = SEQ(SLICE(d0, word24, 8), Mem1844[a0_1837:byte])
 	a2_1037 = Mem1844[a7_1838:word32]
-	d1 = (uint32) (uint8) (byte) d0
+	d1 = (uint32) (uint8) SLICE(d0, byte, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a5:<invalid> a1:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6026,7 +6025,7 @@ l0000345A:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a5:<invalid> a1:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003468:
-	word32 d0_1827 = (uint32) (uint8) Mem1792[0x00002B15 + (SEQ(SLICE(d0, word24, 8), (byte) d1) & 0x000000FF):byte]
+	word32 d0_1827 = (uint32) (uint8) Mem1792[0x00002B15 + (SEQ(SLICE(d0, word24, 8), SLICE(d1, byte, 0)) & 0x000000FF):byte]
 	d0 = d0_1827 & 0x00000008
 	branch (d0_1827 & 0x00000008) != 0x00000000 l00003488
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -6040,7 +6039,7 @@ l00003484:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a5:<invalid> a1:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003488:
-	Mem1816[a7_150 + 73:byte] = (byte) d7
+	Mem1816[a7_150 + 73:byte] = SLICE(d7, byte, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a5:<invalid> a1:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6091,7 +6090,7 @@ l000035CA:
 	Mem306[a7_150 + 48:word32] = 0x00000000
 	Mem307[a7_150 + 44:word32] = 0x00000000
 	Mem308[a7_150 + 110:word32] = 0x00000000
-	branch (byte) d7 != 0x00 l000035DC
+	branch SLICE(d7, byte, 0) != 0x00 l000035DC
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6103,7 +6102,7 @@ l000035DA:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000035DC:
-	branch (byte) d7 != 0x70 l000035EA
+	branch SLICE(d7, byte, 0) != 0x70 l000035EA
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6122,7 +6121,7 @@ l000035EA:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000035F2:
-	branch (byte) d7 != 0x75 l00003600
+	branch SLICE(d7, byte, 0) != 0x75 l00003600
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6171,7 +6170,7 @@ l0000361A:
 	a2_1037 = Mem1644[a7_1638:word32]
 	d0 = SEQ(SLICE(d0, word24, 8), Mem1644[a0_1637:byte])
 	Mem1653[a7_1638:word32] = d1
-	Mem1659[a7_1638 + 56:word32] = (uint32) (uint8) (byte) d0
+	Mem1659[a7_1638 + 56:word32] = (uint32) (uint8) SLICE(d0, byte, 0)
 	d1 = Mem1659[a7_1638:word32]
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d6 d7
 // DataOut (flags): 
@@ -6186,7 +6185,7 @@ l00003648:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003650:
-	branch (byte) d7 != 0x69 l000037C2
+	branch SLICE(d7, byte, 0) != 0x69 l000037C2
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6204,7 +6203,7 @@ l00003662:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003784:
-	word32 d0_1358 = (uint32) (uint8) Mem308[0x00002B15 + (SEQ(SLICE(d0, word24, 8), (byte) d5_1257) & 0x000000FF):byte]
+	word32 d0_1358 = (uint32) (uint8) Mem308[0x00002B15 + (SEQ(SLICE(d0, word24, 8), SLICE(d5_1257, byte, 0)) & 0x000000FF):byte]
 	d0 = d0_1358 & 0x00000004
 	branch (d0_1358 & 0x00000004) != 0x00000000 l000037C2
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -6212,7 +6211,7 @@ l00003784:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000037A0:
-	word32 d0_1373 = (uint32) (uint8) Mem308[0x00002B15 + (SEQ(SLICE(d0_1358 & 0x00000004, word24, 8), (byte) d5_1257) & 0x000000FF):byte]
+	word32 d0_1373 = (uint32) (uint8) Mem308[0x00002B15 + (SEQ(SLICE(d0_1358 & 0x00000004, word24, 8), SLICE(d5_1257, byte, 0)) & 0x000000FF):byte]
 	d0 = d0_1373 & 0x00000044
 	branch (d0_1373 & 0x00000044) == 0x00000000 l000037C2
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -6263,7 +6262,7 @@ l0000367A:
 	a2_1037 = Mem1578[a7_1572:word32]
 	d0_1397 = SEQ(SLICE(d0, word24, 8), Mem1578[a0_1571:byte])
 	Mem1587[a7_1572:word32] = d1
-	Mem1593[a7_1572 + 56:word32] = (uint32) (uint8) (byte) d0_1397
+	Mem1593[a7_1572 + 56:word32] = (uint32) (uint8) SLICE(d0_1397, byte, 0)
 	d1 = Mem1593[a7_1572:word32]
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
@@ -6280,7 +6279,7 @@ l000036A8:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000036CA:
-	d0 = SEQ(SLICE(d0_1409 & 0x000000FF, word24, 8), (byte) (d0_1409 & 0x000000FF) | 0x20)
+	d0 = SEQ(SLICE(d0_1409 & 0x000000FF, word24, 8), SLICE(d0_1409 & 0x000000FF, byte, 0) | 0x20)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:00002B14 d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6335,7 +6334,7 @@ l000036F0:
 	a2_1037 = Mem1532[a7_1526:word32]
 	d0_1473 = SEQ(SLICE(d0, word24, 8), Mem1532[a0_1525:byte])
 	Mem1541[a7_1526:word32] = d1
-	Mem1547[a7_1526 + 56:word32] = (uint32) (uint8) (byte) d0_1473
+	Mem1547[a7_1526 + 56:word32] = (uint32) (uint8) SLICE(d0_1473, byte, 0)
 	d1 = Mem1547[a7_1526:word32]
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
@@ -6343,7 +6342,7 @@ l000036F0:
 
 l0000371E:
 	Mem1479[a7_150 + 74:word32] = Mem1468[a7_150 + 52:word32]
-	word32 d0_1492 = (uint32) (uint8) Mem1479[0x00002B15 + (SEQ(SLICE(d0_1473, word24, 8), (byte) d5_1257) & 0x000000FF):byte]
+	word32 d0_1492 = (uint32) (uint8) Mem1479[0x00002B15 + (SEQ(SLICE(d0_1473, word24, 8), SLICE(d5_1257, byte, 0)) & 0x000000FF):byte]
 	d0 = d0_1492 & 0x00000044
 	branch (d0_1492 & 0x00000044) == 0x00000000 l0000374A
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -6405,7 +6404,7 @@ l0000377E:
 l000037C2:
 	word32 d3_1183 = d3_151
 	word32 d4_1068 = d4_141
-	branch (byte) d7 != 0x78 l000038F6
+	branch SLICE(d7, byte, 0) != 0x78 l000038F6
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6454,7 +6453,7 @@ l000037EC:
 	a2_1037 = Mem1313[a7_1307:word32]
 	d0_1137 = SEQ(SLICE(d0, word24, 8), Mem1313[a0_1306:byte])
 	Mem1322[a7_1307:word32] = d1
-	Mem1328[a7_1307 + 56:word32] = (uint32) (uint8) (byte) d0_1137
+	Mem1328[a7_1307 + 56:word32] = (uint32) (uint8) SLICE(d0_1137, byte, 0)
 	d1 = Mem1328[a7_1307:word32]
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
@@ -6472,7 +6471,7 @@ l0000381A:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000383C:
-	d0 = SEQ(SLICE(d0_1149 & 0x000000FF, word24, 8), (byte) (d0_1149 & 0x000000FF) | 0x20)
+	d0 = SEQ(SLICE(d0_1149 & 0x000000FF, word24, 8), SLICE(d0_1149 & 0x000000FF, byte, 0) | 0x20)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:00002B14 d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6521,7 +6520,7 @@ l00003862:
 	a2_1037 = Mem1267[a7_1261:word32]
 	d0_1209 = SEQ(SLICE(d0, word24, 8), Mem1267[a0_1260:byte])
 	Mem1276[a7_1261:word32] = d1
-	Mem1282[a7_1261 + 56:word32] = (uint32) (uint8) (byte) d0_1209
+	Mem1282[a7_1261 + 56:word32] = (uint32) (uint8) SLICE(d0_1209, byte, 0)
 	d1 = Mem1282[a7_1261:word32]
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
@@ -6593,19 +6592,19 @@ l000038BC:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000038F6:
-	branch (byte) d7 == 0x78 l00003902
+	branch SLICE(d7, byte, 0) == 0x78 l00003902
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l000038FC:
-	branch (byte) d7 != 0x58 l0000390C
+	branch SLICE(d7, byte, 0) != 0x58 l0000390C
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l0000390C:
-	branch (byte) d7 != 0x6F l0000391C
+	branch SLICE(d7, byte, 0) != 0x6F l0000391C
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6636,10 +6635,10 @@ l00003902:
 
 l0000392A:
 	Mem375[a7_150 + 114:word32] = Mem308[a7_150 + 64:word32]
-	word32 d0_385 = (uint32) (uint8) Mem375[0x00002B15 + (SEQ(SLICE(d0, word24, 8), (byte) d5_1257) & 0x000000FF):byte]
+	word32 d0_385 = (uint32) (uint8) Mem375[0x00002B15 + (SEQ(SLICE(d0, word24, 8), SLICE(d5_1257, byte, 0)) & 0x000000FF):byte]
 	Mem388[a7_150 + 132:word32] = d2_140
 	Mem390[a7_150 + 52:word32] = d4_1068
-	Mem392[a7_150 + 74:byte] = (byte) d7
+	Mem392[a7_150 + 74:byte] = SLICE(d7, byte, 0)
 	d0 = d0_385 & 0x00000044
 	branch (d0_385 & 0x00000044) == 0x00000000 l00003B92
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -6653,10 +6652,10 @@ l0000395C:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003966:
-	word32 d0_1090 = (uint32) (uint8) Mem392[0x00002B15 + (SEQ(SLICE(d0_385 & 0x00000044, word24, 8), (byte) d5_1257) & 0x000000FF):byte]
+	word32 d0_1090 = (uint32) (uint8) Mem392[0x00002B15 + (SEQ(SLICE(d0_385 & 0x00000044, word24, 8), SLICE(d5_1257, byte, 0)) & 0x000000FF):byte]
 	Mem1093[a7_150 + 132:word32] = d2_140
 	Mem1095[a7_150 + 52:word32] = d4_1068
-	Mem1097[a7_150 + 74:byte] = (byte) d7
+	Mem1097[a7_150 + 74:byte] = SLICE(d7, byte, 0)
 	d0 = d0_1090 & 0x00000004
 	branch (d0_1090 & 0x00000004) == 0x00000000 l00003B92
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -6672,7 +6671,7 @@ l00003992:
 l0000399C:
 	Mem1073[a7_150 + 132:word32] = d2_140
 	Mem1075[a7_150 + 52:word32] = d4_1068
-	Mem1077[a7_150 + 74:byte] = (byte) d7
+	Mem1077[a7_150 + 74:byte] = SLICE(d7, byte, 0)
 	branch d5_1257 > 0x00000037 l00003B92
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
@@ -6682,7 +6681,7 @@ l000039B2:
 	Mem732[a7_150 + 132:word32] = d2_140
 	Mem734[a7_150 + 52:word32] = d4_1068
 	Mem736[a7_150 + 64:word32] = d6_185
-	Mem738[a7_150 + 74:byte] = (byte) d7
+	Mem738[a7_150 + 74:byte] = SLICE(d7, byte, 0)
 	branch d6_185 - d3_1183 <u 0x00000000 l00003B92
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
@@ -6709,7 +6708,7 @@ l000039D0:
 	word32 d1_791
 	Mem798[a7_759 + 68:word32] = fn00003EB0(d4_1068, dwArg00, dwArg04, dwArg08, dwArg0C, out d1_791)
 	Mem800[a7_759 + 72:word32] = d1_791
-	branch ((uint32) (uint8) Mem800[0x00002B15 + (SEQ(Mem800[a7_759 + 0x00000001:word24], (byte) d5_1257) & 0x000000FF):byte] & 0x00000004) == 0x00000000 l00003A30
+	branch ((uint32) (uint8) Mem800[0x00002B15 + (SEQ(Mem800[a7_759 + 0x00000001:word24], SLICE(d5_1257, byte, 0)) & 0x000000FF):byte] & 0x00000004) == 0x00000000 l00003A30
 // DataOut: a2 a3 a4 a5 a7 d2 d3 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6737,7 +6736,7 @@ l00003A32:
 	Mem849[a7_150 + 44:word32] = Mem844[a7_150 + 64:word32] + d0_828 + (d2_836 <u 0x00000000)
 	word32 v441_850 = Mem849[a7_150 - 8:word32]
 	word32 v442_853 = Mem849[a7_150 - 4:word32]
-	branch ((uint32) (uint8) Mem849[0x00002B15 + (SEQ(SLICE(d0_828, word24, 8), (byte) d5_1257) & 0x000000FF):byte] & 0x00000001) == 0x00000000 l00003A82
+	branch ((uint32) (uint8) Mem849[0x00002B15 + (SEQ(SLICE(d0_828, word24, 8), SLICE(d5_1257, byte, 0)) & 0x000000FF):byte] & 0x00000001) == 0x00000000 l00003A82
 // DataOut: a2 a3 a4 a5 a7 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6764,7 +6763,7 @@ l00003A84:
 	word32 d0_879 = d6_1063 >> 31
 	Mem900[a7_150 + 64:word32] = Mem895[a7_150 + 44:word32] + d0_879 + (d2_887 <u 0x00000000)
 	word32 v453_901 = Mem900[a7_150 - 8:word32]
-	branch ((uint32) (uint8) Mem900[0x00002B15 + (SEQ(SLICE(d0_879, word24, 8), (byte) d5_1257) & 0x000000FF):byte] & 0x00000002) == 0x00000000 l00003AD4
+	branch ((uint32) (uint8) Mem900[0x00002B15 + (SEQ(SLICE(d0_879, word24, 8), SLICE(d5_1257, byte, 0)) & 0x000000FF):byte] & 0x00000002) == 0x00000000 l00003AD4
 // DataOut: a2 a3 a4 a5 a7 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6819,14 +6818,14 @@ l00003B10:
 	Mem1034[a1:word32] = a0_1027 + 1
 	d0_1040 = (uint32) (uint8) Mem1034[a0_1027:byte]
 	a2_1037 = Mem1034[a7_150 - 4:word32]
-	d1 = (uint32) (uint8) (byte) d0_1040
+	d1 = (uint32) (uint8) SLICE(d0_1040, byte, 0)
 // DataOut: a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:1 a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003B34:
 	Mem976[a7_150 + 52:word32] = Mem963[a7_150 + 52:word32] + 0x00000001
-	word32 d0_987 = (uint32) (uint8) Mem976[0x00002B15 + (SEQ(SLICE(d0_1040, word24, 8), (byte) d1) & 0x000000FF):byte]
+	word32 d0_987 = (uint32) (uint8) Mem976[0x00002B15 + (SEQ(SLICE(d0_1040, word24, 8), SLICE(d1, byte, 0)) & 0x000000FF):byte]
 	d5_1257 = d1
 	d3_1183 = v465_951 + 0x00000001
 	d0 = d0_987 & 0x00000044
@@ -6842,7 +6841,7 @@ l00003B58:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003B60:
-	word32 d0_1020 = (uint32) (uint8) Mem976[0x00002B15 + (SEQ(SLICE(d0_987 & 0x00000044, word24, 8), (byte) d1) & 0x000000FF):byte]
+	word32 d0_1020 = (uint32) (uint8) Mem976[0x00002B15 + (SEQ(SLICE(d0_987 & 0x00000044, word24, 8), SLICE(d1, byte, 0)) & 0x000000FF):byte]
 	d0 = d0_1020 & 0x00000004
 	branch (d0_1020 & 0x00000004) == 0x00000000 l00003B92
 // DataOut: a1 a2 a3 a4 a5 a7 d0 d1 d2 d3 d4 d5 d7
@@ -6935,7 +6934,7 @@ l00003BE4:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
 
 l00003BEA:
-	branch (byte) d7 != 0x75 l00003CAC
+	branch SLICE(d7, byte, 0) != 0x75 l00003CAC
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -6966,7 +6965,7 @@ l00003CD4:
 	word32 a7_570 = a7_150 - 4
 	Mem572[a7_570:word32] = d0
 	word32 d0_575 = SEQ(SLICE(d0, word24, 8), Mem572[a7_570 + 76:byte])
-	Mem581[a7_570 + 48:byte] = (byte) SEQ(SLICE(d0_575, word24, 8), (byte) d0_575 - 0x01)
+	Mem581[a7_570 + 48:byte] = SLICE(SEQ(SLICE(d0_575, word24, 8), SLICE(d0_575, byte, 0) - 0x01), byte, 0)
 	a7_150 = a7_570 + 4
 	branch Mem581[a7_570 + 48:byte] == 0x00 l00003CFE
 // DataOut: a1 a2 a3 a5 a7 d1 d2 d3 d4 d5 d7
@@ -6995,7 +6994,7 @@ l00003CE8:
 l00003D50:
 	d2_140 = (d2_140 + 0x00000003 >>u 0x00000002 << 0x00000002) + 0x00000004
 	d0 = Mem590[a7_570 + 60:word32]
-	Mem651[Mem590[d2_140 + -4:word32]:byte] = (byte) d0
+	Mem651[Mem590[d2_140 + -4:word32]:byte] = SLICE(d0, byte, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a6:<invalid> a1:<invalid> a5:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -7011,7 +7010,7 @@ l00003CEE:
 l00003D36:
 	d2_140 = (d2_140 + 0x00000003 >>u 0x00000002 << 0x00000002) + 0x00000004
 	d0 = Mem594[a7_570 + 60:word32]
-	Mem638[Mem594[d2_140 + -4:word32]:word16] = (word16) d0
+	Mem638[Mem594[d2_140 + -4:word32]:word16] = SLICE(d0, word16, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a6:<invalid> a1:<invalid> a5:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -7049,7 +7048,7 @@ l00003BF2:
 	word32 a7_464 = a7_150 - 4
 	Mem466[a7_464:word32] = d0
 	word32 d0_469 = SEQ(SLICE(d0, word24, 8), Mem466[a7_464 + 76:byte])
-	Mem475[a7_464 + 56:byte] = (byte) SEQ(SLICE(d0_469, word24, 8), (byte) d0_469 - 0x01)
+	Mem475[a7_464 + 56:byte] = SLICE(SEQ(SLICE(d0_469, word24, 8), SLICE(d0_469, byte, 0) - 0x01), byte, 0)
 	a7_150 = a7_464 + 4
 	branch Mem475[a7_464 + 56:byte] == 0x00 l00003C1C
 // DataOut: a1 a2 a3 a5 a7 d1 d2 d3 d4 d5 d7
@@ -7078,7 +7077,7 @@ l00003C06:
 l00003C74:
 	d2_140 = (d2_140 + 0x00000003 >>u 0x00000002 << 0x00000002) + 0x00000004
 	d0 = Mem484[a7_464 + 52:word32]
-	Mem545[Mem484[d2_140 + -4:word32]:byte] = (byte) d0
+	Mem545[Mem484[d2_140 + -4:word32]:byte] = SLICE(d0, byte, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -7094,7 +7093,7 @@ l00003C0C:
 l00003C58:
 	d2_140 = (d2_140 + 0x00000003 >>u 0x00000002 << 0x00000002) + 0x00000004
 	d0 = Mem488[a7_464 + 52:word32]
-	Mem532[Mem488[d2_140 + -4:word32]:word16] = (word16) d0
+	Mem532[Mem488[d2_140 + -4:word32]:word16] = SLICE(d0, word16, 0)
 // DataOut: a1 a2 a3 a5 a7 d0 d1 d2 d3 d4 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d6:<invalid> a3:<invalid> d0:<invalid> a0:<invalid> d7:<invalid> d1:<invalid> a1:<invalid> a5:<invalid> a6:<invalid> -148(fp):<invalid> -144(fp):<invalid> -140(fp):<invalid> -136(fp):<invalid> -132(fp):<invalid> -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> 12(fp):<invalid>
@@ -7207,9 +7206,9 @@ fn00003EB0_entry:
 l00003EB0:
 	word32 d0_24 = __swap(dwArg08)
 	word32 d1_26 = __swap(dwArg10)
-	word32 d4_30 = SEQ(SLICE(d4, word16, 16), (word16) dwArg08) *u (word16) dwArg10
-	word32 d1_102 = d1_26 *u (word16) d0_24
-	word32 d2_40 = dwArg08 *u (word16) d1_26 + __swap(SEQ(SLICE(d4_30, word16, 16), (word16) d4_30 ^ (word16) d4_30)) + dwArg10 *u (word16) d0_24
+	word32 d4_30 = SEQ(SLICE(d4, word16, 16), SLICE(dwArg08, word16, 0)) *u SLICE(dwArg10, word16, 0)
+	word32 d1_102 = d1_26 *u SLICE(d0_24, word16, 0)
+	word32 d2_40 = dwArg08 *u SLICE(d1_26, word16, 0) + __swap(SEQ(SLICE(d4_30, word16, 16), SLICE(d4_30, word16, 0) ^ SLICE(d4_30, word16, 0))) + dwArg10 *u SLICE(d0_24, word16, 0)
 	branch d2_40 >=u 0x00000000 l00003EE4
 // DataOut: a2 a3 a4 a5 d1 d2 d4 d5 d6 d7
 // DataOut (flags): 
@@ -7225,13 +7224,13 @@ l00003EDE:
 
 l00003EE4:
 	word32 d2_44 = __swap(d2_40)
-	word32 d3_60 = __swap(dwArg0C) *u (word16) dwArg08
-	word32 d3_66 = __swap(SEQ(SLICE(d3_60, word16, 16), (word16) (d3_60 + __swap(dwArg08) *u (word16) dwArg0C)))
-	word32 d3_78 = __swap(dwArg04) *u (word16) dwArg10
-	word32 d3_84 = __swap(SEQ(SLICE(d3_78, word16, 16), (word16) (d3_78 + __swap(dwArg10) *u (word16) dwArg04)))
+	word32 d3_60 = __swap(dwArg0C) *u SLICE(dwArg08, word16, 0)
+	word32 d3_66 = __swap(SEQ(SLICE(d3_60, word16, 16), SLICE(d3_60 + __swap(dwArg08) *u SLICE(dwArg0C, word16, 0), word16, 0)))
+	word32 d3_78 = __swap(dwArg04) *u SLICE(dwArg10, word16, 0)
+	word32 d3_84 = __swap(SEQ(SLICE(d3_78, word16, 16), SLICE(d3_78 + __swap(dwArg10) *u SLICE(dwArg04, word16, 0), word16, 0)))
 	word32 d1_53
-	*d1Out = SEQ(SLICE(d2_44, word16, 16), (word16) d4_30)
-	return (uint32) (uint16) (word16) d2_44 + d1_102 + (dwArg0C *u (word16) dwArg08 + SEQ(SLICE(d3_66, word16, 16), (word16) d3_66 ^ (word16) d3_66)) + (dwArg04 *u (word16) dwArg10 + SEQ(SLICE(d3_84, word16, 16), (word16) d3_84 ^ (word16) d3_84))
+	*d1Out = SEQ(SLICE(d2_44, word16, 16), SLICE(d4_30, word16, 0))
+	return (uint32) (uint16) SLICE(d2_44, word16, 0) + d1_102 + (dwArg0C *u SLICE(dwArg08, word16, 0) + SEQ(SLICE(d3_66, word16, 16), SLICE(d3_66, word16, 0) ^ SLICE(d3_66, word16, 0))) + (dwArg04 *u SLICE(dwArg10, word16, 0) + SEQ(SLICE(d3_84, word16, 16), SLICE(d3_84, word16, 0) ^ SLICE(d3_84, word16, 0)))
 // DataOut: a2 a3 a4 a5 d0 d1 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 20 d5:<invalid> d6:<invalid> d0:<invalid> d1:<invalid> d2:<invalid> d3:<invalid> d4:<invalid> -20(fp):d2 -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):d6
@@ -7604,7 +7603,7 @@ l000040A4:
 	Mem157[a0_151:byte] = Mem155[a2_109:byte]
 	word32 a1_150
 	*a1Out = a1_149 + 4
-	*d1Out = (uint32) (uint8) (byte) SEQ(SLICE(d0_120, word24, 8), Mem157[a0_151:byte])
+	*d1Out = (uint32) (uint8) SLICE(SEQ(SLICE(d0_120, word24, 8), Mem157[a0_151:byte]), byte, 0)
 // DataOut: a1 a2 a5 d1 d2 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 12 a2:<invalid> d2:<invalid> a0:<invalid> a1:<invalid> d0:<invalid> d1:<invalid> a3:<invalid> a5:<invalid> -20(fp):<invalid> -16(fp):<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a3

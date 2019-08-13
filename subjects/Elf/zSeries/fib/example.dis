@@ -456,42 +456,43 @@ fib_entry:
 // LocalsOut: fp(64)
 
 l00000768:
-	word32 dwLocA4_23 = (word32) r2
-	branch DPB(r2, dwLocA4_23, 0) >u 0x0000000000000001 l00000792
-// DataOut:
+	word64 r1_26 = SEQ(SLICE(r2, word32, 32), Mem0[fp - 164:word32])
+	branch r1_26 >u 0x0000000000000001 l00000792
+// DataOut: r1 r11
 // DataOut (flags): CC
 // SymbolicIn: r15:fp - 160
-// LocalsOut: fp(64) Local -00A4(0)
+// LocalsOut: fp(64)
 
 l00000792:
-	fib((int64) (dwLocA4_23 - 1))
-	fib((int64) (dwLocA4_23 - 2))
+	word64 r1_58 = SEQ(SLICE(r1_26, word32, 32), Mem0[fp - 164:word32])
+	word64 r1_71 = SEQ(SLICE(fib((int64) (word32) SEQ(SLICE(r1_58, word32, 32), (word32) r1_58 - 1)), word32, 32), Mem0[fp - 164:word32])
+	fib((int64) (word32) SEQ(SLICE(r1_71, word32, 32), (word32) r1_71 - 2))
 // DataOut: r1
 // DataOut (flags): CC
-// SymbolicIn: r15:fp - 328 r11:fp - 328 r1:r2 -164(fp):(word32) r2 -80(fp):r10 -72(fp):r11 -64(fp):r12 -56(fp):r13 -48(fp):r14 -40(fp):fp - 160
+// SymbolicIn: r15:fp - 328 r11:fp - 328 r1:SEQ(SLICE(r2, word32, 32), (word32) r2) -164(fp):(word32) r2 -80(fp):r10 -72(fp):r11 -64(fp):r12 -56(fp):r13 -48(fp):r14 -40(fp):fp - 160
 // LocalsOut: fp(64)
 
 l0000078A:
 // DataOut: r1
 // DataOut (flags): CC
-// SymbolicIn: r15:fp - 328 r11:fp - 328 r1:r2 -164(fp):(word32) r2 -80(fp):r10 -72(fp):r11 -64(fp):r12 -56(fp):r13 -48(fp):r14 -40(fp):fp - 160
+// SymbolicIn: r15:fp - 328 r11:fp - 328 r1:SEQ(SLICE(r2, word32, 32), (word32) r2) -164(fp):(word32) r2 -80(fp):r10 -72(fp):r11 -64(fp):r12 -56(fp):r13 -48(fp):r14 -40(fp):fp - 160
 // LocalsOut: fp(64)
 
 l000007CA:
-	word64 r15_43
-	word64 r10_44
-	word64 r11_45
-	word64 r12_46
-	word64 r13_47
-	word64 r14_48
-	byte CC_49
-	word64 r2_50
-	word64 r1_51
-	word64 r4_52
+	word64 r15_45
+	word64 r10_46
+	word64 r11_47
+	word64 r12_48
+	word64 r13_49
+	word64 r14_50
+	byte CC_51
+	word64 r2_52
+	word64 r1_53
+	word64 r4_54
 	call r14 (retsize: 0;)
-		uses: CC_25,dwLocA4_23,qwLoc28_18,qwLoc30_16,qwLoc38_13,qwLoc40_10,qwLoc48_7,qwLoc50_4,r1_28,r10_32,r11_34,r12_36,r13_38,r14_40,r15_42,r2_29,r4_30
-		defs: CC_49,r1_51,r10_44,r11_45,r12_46,r13_47,r14_48,r15_43,r2_50,r4_52
-	return r2_50
+		uses: CC_27,dwLocA4_23,qwLoc28_18,qwLoc30_16,qwLoc38_13,qwLoc40_10,qwLoc48_7,qwLoc50_4,r1_30,r10_34,r11_36,r12_38,r13_40,r14_42,r15_44,r2_31,r4_32
+		defs: CC_51,r1_53,r10_46,r11_47,r12_48,r13_49,r14_50,r15_45,r2_52,r4_54
+	return r2_52
 // DataOut: r2
 // DataOut (flags): CC
 // SymbolicIn: r15:fp - 328 r11:fp - 328 r1:<invalid> r2:<invalid> r14:000007C4 r10:<invalid> r4:<invalid> -164(fp):(word32) r2 -80(fp):r10 -72(fp):r11 -64(fp):r12 -56(fp):r13 -48(fp):r14 -40(fp):fp - 160

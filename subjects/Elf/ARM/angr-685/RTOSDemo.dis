@@ -1853,7 +1853,7 @@ l0000085C:
 // SymbolicIn: sp:fp
 
 l00000870:
-	Mem78[r4_12 + 124:word32] = Mem0[r4_12 + 124:word32] & ~((0x00000001 << Mem0[Mem0[r4_12 + 4:word32] + 76:word32]) << 0x00000000)
+	Mem78[r4_12 + 124:word32] = Mem0[r4_12 + 124:word32] & ~(0x00000001 << Mem0[Mem0[r4_12 + 4:word32] + 76:word32])
 // DataOut: cpsr r10 r4 r5 r6 r7 r8 r9
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 16 r4:<invalid> r5:r0 r6:<invalid> r0:<invalid> r2:<invalid> r3:<invalid> r1:0x00000000 -16(fp):r4 -12(fp):r5 -8(fp):r6 -4(fp):lr
@@ -2325,7 +2325,7 @@ void xTaskGenericNotify(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr)
 
 // MayUse:  cpsr r0 r1 r2 r3
 // LiveOut:
-// Trashed: NZCV lr r0 r1 r2
+// Trashed: NZCV ip lr r0 r1 r2
 // Preserved: r3 r4 r5 r6 r7 sp
 xTaskGenericNotify_entry:
 // DataOut: cpsr r0 r1 r2 r3
@@ -2342,7 +2342,7 @@ l00000A58:
 // SymbolicIn: sp:fp
 
 l00000A68:
-	Mem139[r3:word32] = Mem0[r0 + 96:word32]
+	Mem118[r3:word32] = Mem0[r0 + 96:word32]
 // DataOut: cpsr r0 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r4:r3 r6:r0 r7:r1 r5:r2 r2:<invalid> r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
@@ -2350,94 +2350,104 @@ l00000A68:
 l00000A6C:
 	word32 r4_27 = (word32) Mem0[r0 + 100:byte]
 	Mem29[r0 + 100:byte] = 0x02
-	word32 r4_130 = (uint32) (byte) r4_27
+	word32 r4_111 = (uint32) (byte) r4_27
 	branch r2 >u 0x00000004 || r2 <u 0x00000001 l00000A8C
 // DataOut: cpsr r0 r2 r4 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r4:r3 r6:r0 r7:r1 r5:r2 r3:<invalid> r2:<invalid> r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00000A7E:
-	switch (r2 - 0x00000001) { l00000AF2 l00000A96 l00000A86 l00000A82 }
-// DataOut: cpsr r0 r4 r6 r7
+	switch (r2 - 0x00000001) { l00000AF0 l00000A94 l00000A84 l00000A80 }
+// DataOut: cpsr r0 r2 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
-l00000A82:
-	r4_130 = r0_23 << 8
-// DataOut: cpsr r4 r6 r7
+l00000A80:
+// DataOut: cpsr r0 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
-l00000A86:
-	branch r4_130 == 0x00000002 l00000AFE
+l00000A84:
+	r4_111 = r0_23 << 8
+	branch r0_23 << 8 == 0x00000002 l00000AFE
 // DataOut: cpsr r4 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:<invalid> r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 ip:r2 - 0x00000002 & 0x0000003A r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00000AFE:
 // DataOut: cpsr
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:<invalid> r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 ip:r2 - 0x00000002 & 0x0000003A r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00000A8A:
-	Mem133[r0 + 96:word32] = r1
+	Mem114[r0 + 96:word32] = r1
 // DataOut: cpsr r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:<invalid> r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 ip:r2 - 0x00000002 & 0x0000003A r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00000A8C:
-	branch r4_130 == 0x00000001 l00000AA6
+	branch r4_111 == 0x00000001 l00000AA6
 // DataOut: cpsr r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:<invalid> r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 r0:<invalid> ip:r2 - 0x00000002 & 0x0000003A -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00000AA6:
-	word32 r5_106 = Mem29[0x00000B04:word32]
+	word32 r5_82 = Mem29[0x00000B04:word32]
 	uxListRemove(r0 + 0x00000024)
-	word32 r0_109 = Mem29[r0 + 76:word32]
-	Mem117[r5_106 + 124:word32] = r4_130 << r0_109 | Mem29[r5_106 + 124:word32] << 0x00000000
-	vListInsertEnd(r5_106 + 0x00000008 + r0_109 * 0x00000014, r0 + 0x00000024)
-	branch Mem117[r0 + 76:word32] <=u Mem117[Mem117[r5_106 + 4:word32] + 76:word32] l00000A90
+	word32 r0_85 = Mem29[r0 + 76:word32]
+	Mem93[r5_82 + 124:word32] = r4_111 << r0_85 | Mem29[r5_82 + 124:word32]
+	vListInsertEnd(r5_82 + 0x00000008 + r0_85 * 0x00000014, r0 + 0x00000024)
+	branch Mem93[r0 + 76:word32] <=u Mem93[Mem93[r5_82 + 4:word32] + 76:word32] l00000A90
 // DataOut: cpsr
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:<invalid> r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 r0:<invalid> ip:r2 - 0x00000002 & 0x0000003A -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00000ADE:
-	Mem125[Mem117[0x00000B08:word32]:word32] = 0x10000000
+	Mem101[Mem93[0x00000B08:word32]:word32] = 0x10000000
 	__dsb_sy()
 	__isb_sy()
 	vPortExitCritical(cpsr)
 // DataOut: cpsr
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r0 + 0x00000024 r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
-
-l00000A90:
-// DataOut: cpsr
-// DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
-
-l00000A92:
-	vPortExitCritical(cpsr)
-// DataOut: cpsr
-// DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
-
-l00000A96:
-	return
-// DataOut: cpsr
-// DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r0 + 0x00000024 r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> ip:r2 - 0x00000002 & 0x0000003A -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00000AF2:
 	return
 // DataOut: cpsr
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r0 + 0x00000024 r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> ip:r2 - 0x00000002 & 0x0000003A -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+
+l00000A90:
+// DataOut: cpsr
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> ip:r2 - 0x00000002 & 0x0000003A -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+
+l00000A92:
+	vPortExitCritical(cpsr)
+// DataOut: cpsr
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> ip:r2 - 0x00000002 & 0x0000003A -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+
+l00000A96:
+	return
+// DataOut: cpsr
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> ip:r2 - 0x00000002 & 0x0000003A -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 xTaskGenericNotify_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r4:r4 r6:r6 r7:r7 r5:r5 r3:r3 r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+// SymbolicIn: sp:fp r4:r4 r6:r6 r7:r7 r5:r5 r3:r3 r2:<invalid> r0:<invalid> r1:r0 + 0x00000024 lr:<invalid> ip:r2 - 0x00000002 & 0x0000003A -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+
+l00000A94:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
+
+l00000AF0:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 24 r4:<invalid> r6:r0 r7:r1 r5:r2 r3:0x00000002 r2:r2 - 0x00000001 r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 
 
@@ -2628,7 +2638,7 @@ l00000BD4:
 
 l00000BF0:
 	word32 r1_65 = Mem0[r4_16 + 4:word32]
-	Mem68[r1_65 + 96:word32] = Mem0[r1_65 + 96:word32] & ~(r0 << 0x00000000)
+	Mem68[r1_65 + 96:word32] = Mem0[r1_65 + 96:word32] & ~r0
 	Mem70[Mem68[r4_16 + 4:word32] + 100:byte] = 0x01
 	branch r3 != 0x00000000 l00000C3C
 // DataOut: cpsr r4 r5 r6 r7
@@ -2672,7 +2682,7 @@ l00000C54:
 
 l00000C1E:
 	word32 r3_56 = Mem0[r4_16 + 4:word32]
-	Mem59[r3_56 + 96:word32] = Mem0[r3_56 + 96:word32] & ~(r1 << 0x00000000)
+	Mem59[r3_56 + 96:word32] = Mem0[r3_56 + 96:word32] & ~r1
 // DataOut: cpsr r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r4:<invalid> r5:r2 r8:r0 r6:r1 r7:r3 r2:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
@@ -3466,7 +3476,7 @@ l00001080:
 	word32 r4_24 = Mem21[0x000010D4:word32]
 	uxListRemove(r6_18 + 0x00000024)
 	word32 r3_27 = Mem21[r6_18 + 76:word32]
-	Mem35[r4_24 + 124:word32] = 0x00000001 << r3_27 | Mem21[r4_24 + 124:word32] << 0x00000000
+	Mem35[r4_24 + 124:word32] = 0x00000001 << r3_27 | Mem21[r4_24 + 124:word32]
 	vListInsertEnd(r4_24 + 0x00000008 + r3_27 * 0x00000014, r6_18 + 0x00000024)
 	branch Mem35[r6_18 + 76:word32] <=u Mem35[Mem35[r4_24 + 4:word32] + 76:word32] l000010CA
 // DataOut: cpsr r4
@@ -3802,14 +3812,14 @@ l00001204:
 // SymbolicIn: sp:fp - 24 r4:<invalid> r3:<invalid> r2:<invalid> r5:<invalid> r7:r0 + 0x00000024 r6:r0 r0:<invalid> r1:0x00000000 -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00001212:
-	Mem102[r4_40 + 124:word32] = Mem0[r4_40 + 124:word32] & ~((0x00000001 << r2_94) << 0x00000000)
+	Mem102[r4_40 + 124:word32] = Mem0[r4_40 + 124:word32] & ~(0x00000001 << r2_94)
 // DataOut: cpsr r10 r4 r5 r6 r7 r8 r9
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r4:<invalid> r3:<invalid> r2:<invalid> r5:<invalid> r7:r0 + 0x00000024 r6:r0 r0:<invalid> r1:0x00000000 -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00001220:
 	word32 r2_78 = Mem0[Mem0[r4_40 + 4:word32] + 76:word32]
-	word32 r3_82 = 0x00000001 << r2_78 | Mem0[r4_40 + 124:word32] << 0x00000000
+	word32 r3_82 = 0x00000001 << r2_78 | Mem0[r4_40 + 124:word32]
 	Mem84[r0 + 76:word32] = r2_78
 	Mem86[r4_40 + 124:word32] = r3_82
 	word32 r0_85 = r5_62 + r2_78 * 0x00000014
@@ -3907,7 +3917,7 @@ l00001278:
 // SymbolicIn: sp:fp - 24 r1:0x00000000 r3:<invalid> r2:<invalid> r7:r0 + 0x00000024 r4:r0 r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l00001288:
-	Mem85[r2_55 + 124:word32] = Mem43[r2_55 + 124:word32] & ~((0x00000001 << r1_76) << 0x00000000)
+	Mem85[r2_55 + 124:word32] = Mem43[r2_55 + 124:word32] & ~(0x00000001 << r1_76)
 // DataOut: cpsr r2 r4 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r1:<invalid> r3:<invalid> r2:<invalid> r7:r0 + 0x00000024 r4:r0 r0:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
@@ -3918,7 +3928,7 @@ l0000129A:
 	word32 r0_59 = Mem43[0x000012D0:word32]
 	Mem62[r0 + 76:word32] = r3_57
 	Mem67[r0 + 56:word32] = 0x00000002 - r3_57
-	Mem68[r2_55 + 124:word32] = 0x00000001 << r3_57 | lr_58 << 0x00000000
+	Mem68[r2_55 + 124:word32] = 0x00000001 << r3_57 | lr_58
 	vListInsertEnd(r0_59 + r3_57 * 0x00000014, r0 + 0x00000024)
 	return 0x00000001
 // DataOut: cpsr r0
@@ -4384,8 +4394,8 @@ l000013CE:
 	Mem32[r2_29:word32] = 0x00000007
 	Mem33[r3_30:word32] = 0x00000000
 	__msr(cpsr, Mem33[Mem33[Mem33[0x00001724:word32]:word32]:word32])
-	__cps_id()
-	__cps_id()
+	__cps()
+	__cps()
 	__dsb_sy()
 	__isb_sy()
 	__syscall(0x00000000)
@@ -5077,7 +5087,7 @@ l000017C4:
 // LocalsOut: Stack +0000(32)
 
 l000017F2:
-	branch (r1 & ~(r4_129 << 0x00000000)) == 0x00000000 l000017DC
+	branch (r1 & ~r4_129) == 0x00000000 l000017DC
 // DataOut: cpsr r4 r5 r6 r7 r8
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r6:r0 r7:r3 r5:r1 r8:r2 r4:<invalid> r2:<invalid> r3:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
@@ -5157,7 +5167,7 @@ l00001844:
 // SymbolicIn: sp:fp - 24 r6:r0 r7:r3 r5:r1 r8:r2 r4:<invalid> r3:<invalid> r1:<invalid> r2:<invalid> r0:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
 
 l00001868:
-	branch (r1 & ~(r4_99 << 0x00000000)) != 0x00000000 l0000185C
+	branch (r1 & ~r4_99) != 0x00000000 l0000185C
 // DataOut: cpsr r4 r5 r6 r8
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r6:r0 r7:r3 r5:r1 r8:r2 r4:<invalid> r3:<invalid> r1:<invalid> r2:<invalid> r0:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
@@ -5181,7 +5191,7 @@ l00001850:
 // SymbolicIn: sp:fp - 24 r6:r0 r7:r3 r5:<invalid> r8:r2 r4:<invalid> r3:<invalid> r1:<invalid> r2:<invalid> r0:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
 
 l00001856:
-	Mem117[r0:word32] = r4_99 & ~(r5_113 << 0x00000000)
+	Mem117[r0:word32] = r4_99 & ~r5_113
 // DataOut: cpsr r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r6:r0 r7:r3 r5:<invalid> r8:r2 r4:<invalid> r3:<invalid> r1:<invalid> r2:<invalid> r0:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
@@ -5206,7 +5216,7 @@ l000017DC:
 // SymbolicIn: sp:fp - 24 r6:r0 r7:r3 r5:r1 r8:r2 r4:<invalid> r3:<invalid> r2:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
 
 l000017E2:
-	Mem66[r0:word32] = r4_129 & ~(r1 << 0x00000000)
+	Mem66[r0:word32] = r4_129 & ~r1
 // DataOut: cpsr
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r6:r0 r7:r3 r5:r1 r8:r2 r4:<invalid> r3:<invalid> r2:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
@@ -5241,7 +5251,7 @@ xEventGroupClearBits_entry:
 l00001874:
 	word32 r0_16
 	vPortEnterCritical(cpsr, out r0_16)
-	Mem21[r0:word32] = Mem0[r0:word32] & ~(r1 << 0x00000000)
+	Mem21[r0:word32] = Mem0[r0:word32] & ~r1
 	vPortExitCritical(cpsr)
 	return
 // DataOut: cpsr
@@ -5308,7 +5318,7 @@ l000018AE:
 // SymbolicIn: sp:fp - 24 r5:r0 r4:<invalid> r1:<invalid> r0:<invalid> r6:r0 + 0x0000000C r7:<invalid> r3:<invalid> r2:<invalid> lr:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
 
 l000018D6:
-	branch (r2_101 & ~(r1_24 << 0x00000000)) == 0x00000000 l000018B2
+	branch (r2_101 & ~r1_24) == 0x00000000 l000018B2
 // DataOut: cpsr r0 r1 r2 r3 r4 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r5:r0 r4:<invalid> r1:<invalid> r0:<invalid> r6:r0 + 0x0000000C r7:<invalid> r3:<invalid> r2:<invalid> lr:<invalid> -24(fp):r3 -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r7 -4(fp):lr
@@ -5385,13 +5395,13 @@ l000018F8:
 	word32 r4_28 = Mem0[r0:word32] | r1
 	xEventGroupSetBits(r0, r1, cpsr)
 	word32 r6_20 = r2
-	branch (r2 & ~(r4_28 << 0x00000000)) == 0x00000000 l0000195E
+	branch (r2 & ~r4_28) == 0x00000000 l0000195E
 // DataOut: cpsr r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0000195E:
-	Mem99[r0:word32] = Mem0[r0:word32] & ~(r2 << 0x00000000)
+	Mem99[r0:word32] = Mem0[r0:word32] & ~r2
 // DataOut: cpsr
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r8:r1 r5:r0 r6:r2 r7:r3 r1:<invalid> r4:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> lr:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
@@ -5427,13 +5437,13 @@ l00001968:
 	word32 r0_83
 	vPortEnterCritical(cpsr, out r0_83)
 	word32 r4_85 = Mem0[r0:word32]
-	branch (r2 & ~(r4_85 << 0x00000000)) != 0x00000000 l00001978
+	branch (r2 & ~r4_85) != 0x00000000 l00001978
 // DataOut: cpsr r4 r5 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r8:r1 r5:r0 r6:r2 r7:r3 r1:<invalid> r4:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> lr:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
 
 l00001974_1:
-	r6_20 = r4_85 & ~(r2 << 0x00000000)
+	r6_20 = r4_85 & ~r2
 // DataOut: cpsr r4 r5 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 24 r8:r1 r5:r0 r6:r2 r7:r3 r1:<invalid> r4:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> lr:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
@@ -5599,7 +5609,7 @@ vEventGroupClearBitsCallback_entry:
 l000019D4:
 	word32 r0_16
 	vPortEnterCritical(cpsr, out r0_16)
-	Mem21[r0:word32] = Mem0[r0:word32] & ~(r1 << 0x00000000)
+	Mem21[r0:word32] = Mem0[r0:word32] & ~r1
 // DataOut: cpsr
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -5986,7 +5996,7 @@ l00008184:
 l00008188_thunk_vParTestSetLED:
 	vParTestSetLED(0x00000007, 0x00000001, cpsr)
 	return
-// DataOut:
+// DataOut: cpsr
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:0x00000001 r0:0x00000007
 
@@ -5997,13 +6007,13 @@ vSetErrorLED_exit:
 
 
 
-void prvSetAndCheckRegisters()
+void prvSetAndCheckRegisters(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  cpsr
 // LiveOut:
 // Trashed: NZCV fp ip r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
-// Preserved: sp
+// Preserved: lr sp
 prvSetAndCheckRegisters_entry:
 // DataOut: cpsr
 // DataOut (flags): 
@@ -6102,7 +6112,9 @@ l000081F8:
 // LocalsOut: fp(32)
 
 l00008200:
-// DataOut:
+	vSetErrorLED(cpsr)
+	return
+// DataOut: cpsr
 // DataOut (flags): 
 // SymbolicIn: sp:fp fp:0x0000000A r0:0x0000000B r1:0x0000000C r2:0x0000000D r3:0x0000000E r4:0x0000000F r5:0x00000010 r6:0x00000011 r7:0x00000012 r8:0x00000013 r9:0x00000014 r10:0x00000015 ip:0x00000016
 
@@ -6115,7 +6127,7 @@ l000081FE:
 prvSetAndCheckRegisters_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp fp:0x0000000A r0:0x0000000B r1:0x0000000C r2:0x0000000D r3:0x0000000E r4:0x0000000F r5:0x00000010 r6:0x00000011 r7:0x00000012 r8:0x00000013 r9:0x00000014 r10:0x00000015 ip:0x00000016
+// SymbolicIn: sp:fp fp:0x0000000A r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r4:0x0000000F r5:0x00000010 r6:0x00000011 r7:0x00000012 r8:0x00000013 r9:0x00000014 r10:0x00000015 ip:0x00000016 lr:lr -4(fp):lr
 
 
 
@@ -6145,10 +6157,10 @@ l00008210:
 
 l00008212:
 	vCoRoutineSchedule(cpsr)
-	prvSetAndCheckRegisters()
+	prvSetAndCheckRegisters(cpsr)
 // DataOut: cpsr
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 8 r3:<invalid> r2:<invalid> r0:<invalid> r1:<invalid> fp:0x0000000A r4:0x0000000F r5:0x00000010 r6:0x00000011 r7:0x00000012 r8:0x00000013 r9:0x00000014 r10:0x00000015 ip:0x00000016 -8(fp):r3 -4(fp):lr
+// SymbolicIn: sp:fp - 8 fp:0x0000000A r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r4:0x0000000F r5:0x00000010 r6:0x00000011 r7:0x00000012 r8:0x00000013 r9:0x00000014 r10:0x00000015 ip:0x00000016 -8(fp):r3 -4(fp):lr
 
 
 
@@ -7144,7 +7156,7 @@ l00008602:
 // SymbolicIn: sp:fp - 16 r4:r0 r5:r1 r0:<invalid> r2:<invalid> r3:<invalid> -16(fp):r3 -12(fp):r4 -8(fp):r5 -4(fp):lr
 
 l00008624:
-	Mem42[r3_32:byte] = (byte) (r2_34 & ~(r0_33 << 0x00000000))
+	Mem42[r3_32:byte] = (byte) (r2_34 & ~r0_33)
 // DataOut: cpsr r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 16 r4:r0 r5:r1 r3:<invalid> r0:<invalid> r2:<invalid> -16(fp):r3 -12(fp):r4 -8(fp):r5 -4(fp):lr
@@ -7169,7 +7181,7 @@ l0000861C:
 l00008620_thunk_MPU_xTaskResumeAll:
 	MPU_xTaskResumeAll(cpsr)
 	return
-// DataOut:
+// DataOut: cpsr
 // DataOut (flags): 
 // SymbolicIn: sp:fp r4:r4 r5:r5 r3:r3 lr:lr r0:<invalid> r2:<invalid> r1:<invalid> -16(fp):r3 -12(fp):r4 -8(fp):r5 -4(fp):lr
 
@@ -7210,7 +7222,7 @@ l0000863C:
 // SymbolicIn: sp:fp - 8 r4:r0 r0:<invalid> r2:<invalid> r3:<invalid> -8(fp):r4 -4(fp):lr
 
 l00008662:
-	Mem47[r3_30:byte] = (byte) ((word32) Mem0[r3_30:byte] & ~(r0_31 << 0x00000000))
+	Mem47[r3_30:byte] = (byte) ((word32) Mem0[r3_30:byte] & ~r0_31)
 // DataOut: cpsr r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 8 r4:r0 r2:<invalid> r3:<invalid> r0:0x00000001 << r0 r1:<invalid> -8(fp):r4 -4(fp):lr
@@ -8113,7 +8125,7 @@ void MPU_xTaskGenericNotify(word32 r0, word32 r1, word32 r2, word32 r3, word32 c
 
 // MayUse:  cpsr r0 r1 r2 r3
 // LiveOut:
-// Trashed: NZCV lr r0 r1 r2 r3
+// Trashed: NZCV ip lr r0 r1 r2 r3
 // Preserved: r0 r1 r2 r4 r5 r6 r7 r8 sp
 MPU_xTaskGenericNotify_entry:
 // DataOut: cpsr r0 r1 r2 r3
@@ -8133,18 +8145,18 @@ l000089E8:
 	__msr(cpsr, __mrs(cpsr) | 0x00000001)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r5:r0 r6:r1 r7:r2 r8:r3 r3:<invalid> r4:<invalid> r2:<invalid> r1:<invalid> r0:<invalid> lr:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r5:r0 r6:r1 r7:r2 r8:r3 r3:<invalid> r4:<invalid> r2:<invalid> r1:<invalid> r0:<invalid> lr:<invalid> ip:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
 
 l000089F4:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 24 r5:r0 r6:r1 r7:r2 r8:r3 r3:<invalid> r4:<invalid> r2:<invalid> r1:<invalid> r0:<invalid> lr:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
+// SymbolicIn: sp:fp - 24 r5:r0 r6:r1 r7:r2 r8:r3 r3:<invalid> r4:<invalid> r2:<invalid> r1:<invalid> r0:<invalid> lr:<invalid> ip:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
 
 MPU_xTaskGenericNotify_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r5:r5 r6:r6 r7:r7 r8:r8 r3:<invalid> r4:r4 r2:<invalid> r1:<invalid> r0:<invalid> lr:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
+// SymbolicIn: sp:fp r5:r5 r6:r6 r7:r7 r8:r8 r3:<invalid> r4:r4 r2:<invalid> r1:<invalid> r0:<invalid> lr:<invalid> ip:<invalid> -24(fp):r4 -20(fp):r5 -16(fp):r6 -12(fp):r7 -8(fp):r8 -4(fp):lr
 
 
 
@@ -9796,7 +9808,7 @@ l00009126_1:
 // SymbolicIn: sp:fp r3:<invalid> r2:r2 << 30
 
 l00009128:
-	Mem18[r0 + 1056:word32] = r3_12 & ~(r1 << 0x00000000)
+	Mem18[r0 + 1056:word32] = r3_12 & ~r1
 	return
 // DataOut:
 // DataOut (flags): 
@@ -9914,7 +9926,7 @@ l00009188_1:
 // SymbolicIn: sp:fp r3:<invalid> r2:r2 << 29
 
 l0000918A:
-	Mem24[r0 + 1036:word32] = r3_18 & ~(r1 << 0x00000000)
+	Mem24[r0 + 1036:word32] = r3_18 & ~r1
 	return
 // DataOut:
 // DataOut (flags): 
@@ -10115,7 +10127,7 @@ l0000924E_1:
 // SymbolicIn: sp:fp r4:r4 r2:<invalid> r3:<invalid> -4(fp):r4
 
 l00009250:
-	Mem62[r0 + 1308:word32] = r3_57 & ~(r1 << 0x00000000)
+	Mem62[r0 + 1308:word32] = r3_57 & ~r1
 	return
 // DataOut: cpsr
 // DataOut (flags): 
@@ -10258,7 +10270,7 @@ l000092CC_1:
 // SymbolicIn: sp:fp - 16 r4:0x00000000 r5:<invalid> r1:<invalid> r7:0x00000000 r6:<invalid> r2:<invalid> r0:0x00000000 -16(fp):r4 -12(fp):r5 -8(fp):r6 -4(fp):r7
 
 l000092CE:
-	Mem82[r3:word32] = r5_45 << 0x00000000
+	Mem82[r3:word32] = r5_45
 	return
 // DataOut:
 // DataOut (flags): 
@@ -10310,7 +10322,7 @@ GPIOPinIntDisable_entry:
 // SymbolicIn: sp:fp
 
 l000092EC:
-	Mem7[r0 + 1040:word32] = Mem0[r0 + 1040:word32] & ~(r1 << 0x00000000)
+	Mem7[r0 + 1040:word32] = Mem0[r0 + 1040:word32] & ~r1
 	return
 // DataOut:
 // DataOut (flags): 
@@ -10758,7 +10770,7 @@ GPIOPinTypeI2C_entry:
 // LocalsOut: fp(32)
 
 l00009480:
-	Mem16[r0 + 1024:word32] = Mem0[r0 + 1024:word32] & ~(r1 << 0x00000000)
+	Mem16[r0 + 1024:word32] = Mem0[r0 + 1024:word32] & ~r1
 	Mem21[r0 + 1056:word32] = r1 | Mem16[r0 + 1056:word32]
 // DataOut: cpsr r0 r1 r2 r3
 // DataOut (flags): 
@@ -10792,7 +10804,7 @@ GPIOPinTypeQEI_entry:
 // LocalsOut: fp(32)
 
 l000094A4:
-	Mem16[r0 + 1024:word32] = Mem0[r0 + 1024:word32] & ~(r1 << 0x00000000)
+	Mem16[r0 + 1024:word32] = Mem0[r0 + 1024:word32] & ~r1
 	Mem21[r0 + 1056:word32] = r1 | Mem16[r0 + 1056:word32]
 // DataOut: r0 r1 r2 r3
 // DataOut (flags): 
@@ -10826,7 +10838,7 @@ GPIOPinTypeUART_entry:
 // LocalsOut: fp(32)
 
 l000094C8:
-	Mem16[r0 + 1024:word32] = Mem0[r0 + 1024:word32] & ~(r1 << 0x00000000)
+	Mem16[r0 + 1024:word32] = Mem0[r0 + 1024:word32] & ~r1
 	Mem21[r0 + 1056:word32] = r1 | Mem16[r0 + 1056:word32]
 // DataOut: r0 r1 r2 r3
 // DataOut (flags): 
@@ -11202,7 +11214,7 @@ IntPrioritySet_entry:
 l00009590:
 	word32 r4_12 = Mem0[Mem0[0x000095B8:word32] + (r0 & ~0x00000003) + 32:word32]
 	word32 r0_15 = (r0 & 0x00000003) << 3
-	Mem22[r4_12:word32] = r1 << r0_15 | Mem0[r4_12:word32] & ~((0x000000FF << r0_15) << 0x00000000)
+	Mem22[r4_12:word32] = r1 << r0_15 | Mem0[r4_12:word32] & ~(0x000000FF << r0_15)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -11961,7 +11973,7 @@ l00009938:
 	OSRAMWriteArray(r5_30 + 0x00000002 + (r7_26 + 0x000001EC), r4_28 - 0x00000002)
 	OSRAMWriteFinal(r6_27)
 	r5_30 = r5_30 + (r4_28 + 0x00000001)
-	word32 r3_47 = r7_26 + (r5_30 << 0x00000000)
+	word32 r3_47 = r7_26 + r5_30
 	branch r5_30 <=u 0x00000070 l0000992A
 // DataOut: cpsr r3 r5 r7 r8
 // DataOut (flags): 
@@ -12022,7 +12034,7 @@ l00009996:
 	OSRAMWriteArray(r5_20 + 0x00000002 + (r7_16 + 0x000001EC), r4_18 - 0x00000002)
 	OSRAMWriteFinal(r6_17)
 	r5_20 = r5_20 + (r4_18 + 0x00000001)
-	word32 r3_36 = r7_16 + (r5_20 << 0x00000000)
+	word32 r3_36 = r7_16 + r5_20
 	branch r5_20 <=u 0x00000070 l00009988
 // DataOut: r3 r5 r7 r8
 // DataOut (flags): 
@@ -12314,7 +12326,7 @@ SSIIntDisable_entry:
 // SymbolicIn: sp:fp
 
 l00009A7C:
-	Mem7[r0 + 20:word32] = Mem0[r0 + 20:word32] & ~(r1 << 0x00000000)
+	Mem7[r0 + 20:word32] = Mem0[r0 + 20:word32] & ~r1
 	return
 // DataOut:
 // DataOut (flags): 
@@ -12696,7 +12708,7 @@ l00009B5E:
 // LocalsOut: fp(32) Local -000C(32)
 
 l00009B6A:
-	Mem26[r2_11:word32] = Mem16[r2_11:word32] & ~(r0 << 0x00000000)
+	Mem26[r2_11:word32] = Mem16[r2_11:word32] & ~r0
 	return
 // DataOut:
 // DataOut (flags): 
@@ -12750,7 +12762,7 @@ SysCtlPeripheralDisable_entry:
 
 l00009B98:
 	word32 r2_8 = Mem0[Mem0[0x00009BB0:word32] + ((r0 >>u 28) << 0x00000002) + 28:word32]
-	Mem12[r2_8:word32] = Mem0[r2_8:word32] & ~((r0 & ~0xF0000000) << 0x00000000)
+	Mem12[r2_8:word32] = Mem0[r2_8:word32] & ~(r0 & ~0xF0000000)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -12804,7 +12816,7 @@ SysCtlPeripheralSleepDisable_entry:
 
 l00009BD0:
 	word32 r2_8 = Mem0[Mem0[0x00009BE8:word32] + ((r0 >>u 28) << 0x00000002) + 40:word32]
-	Mem12[r2_8:word32] = Mem0[r2_8:word32] & ~((r0 & ~0xF0000000) << 0x00000000)
+	Mem12[r2_8:word32] = Mem0[r2_8:word32] & ~(r0 & ~0xF0000000)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -12858,7 +12870,7 @@ SysCtlPeripheralDeepSleepDisable_entry:
 
 l00009C08:
 	word32 r2_8 = Mem0[Mem0[0x00009C20:word32] + ((r0 >>u 28) << 0x00000002) + 52:word32]
-	Mem12[r2_8:word32] = Mem0[r2_8:word32] & ~((r0 & ~0xF0000000) << 0x00000000)
+	Mem12[r2_8:word32] = Mem0[r2_8:word32] & ~(r0 & ~0xF0000000)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -13019,7 +13031,7 @@ SysCtlIntDisable_entry:
 
 l00009C78:
 	word32 r2_3 = Mem0[0x00009C84:word32]
-	Mem7[r2_3:word32] = Mem0[r2_3:word32] & ~(r0 << 0x00000000)
+	Mem7[r2_3:word32] = Mem0[r2_3:word32] & ~r0
 	return
 // DataOut:
 // DataOut (flags): 
@@ -13303,7 +13315,7 @@ SysCtlResetCauseClear_entry:
 
 l00009D10:
 	word32 r2_3 = Mem0[0x00009D1C:word32]
-	Mem7[r2_3:word32] = Mem0[r2_3:word32] & ~(r0 << 0x00000000)
+	Mem7[r2_3:word32] = Mem0[r2_3:word32] & ~r0
 	return
 // DataOut:
 // DataOut (flags): 
@@ -13382,7 +13394,7 @@ l00009D6A:
 l00009D76:
 	word32 r2_42 = r2_28 & ~0x00000003 | r0 & 0x00000003
 	Mem45[Mem31[0x00009DE0:word32]:word32] = r2_42
-	word32 r1_49 = r0 & 0x07C00000 | (r2_42 & ~0x07C00000) << 0x00000000
+	word32 r1_49 = r0 & 0x07C00000 | r2_42 & ~0x07C00000
 	branch r0 << 20 < 0x00000000 l00009DBE
 // DataOut: r1
 // DataOut (flags): 
@@ -14393,7 +14405,7 @@ UARTIntDisable_entry:
 // SymbolicIn: sp:fp
 
 l0000A0C0:
-	Mem7[r0 + 56:word32] = Mem0[r0 + 56:word32] & ~(r1 << 0x00000000)
+	Mem7[r0 + 56:word32] = Mem0[r0 + 56:word32] & ~r1
 	return
 // DataOut:
 // DataOut (flags): 
@@ -14482,7 +14494,7 @@ CPUcpsie_entry:
 // SymbolicIn: sp:fp
 
 l0000A0DC:
-	__cps_id()
+	__cps()
 	return
 // DataOut:
 // DataOut (flags): 
@@ -14508,7 +14520,7 @@ CPUcpsid_entry:
 // SymbolicIn: sp:fp
 
 l0000A0E4:
-	__cps_id()
+	__cps()
 	return
 // DataOut:
 // DataOut (flags): 

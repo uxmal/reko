@@ -7,7 +7,7 @@
 // 00000560: FlagGroup byte _init()
 byte _init()
 {
-	word64 r1_n = Mem0[0x00002038:word64];
+	Eq_n r1_n = globals->t2038;
 	if (r1_n != 0x00)
 	{
 		word64 r15_n;
@@ -59,8 +59,8 @@ void _start(Eq_n r14)
 	*(r15_n - 0x00B0) = 0x00;
 	*(r15_n - 0x0010) = r14;
 	*(r15_n - 0x08) = r15_n - 0x00B0;
-	word64 r2_n = Mem15[0x00002040:word64];
-	__libc_start_main(r2_n, qwLocA0, fp - 0x0098, 0x00000820, 0x00000888, Mem15[r15_n - 0x0010 + 0x00:(ptr32 (fn void ()))], Mem15[r15_n - 0x08 + 0x00:(ptr32 void)]);
+	Eq_n r2_n = globals->t2040;
+	__libc_start_main(r2_n, qwLocA0, fp - 0x0098, &globals->t0820, &globals->t0888, *(r15_n - 0x0010), *(r15_n - 0x08));
 }
 
 // 00000648: Register word64 deregister_tm_clones()
@@ -71,7 +71,7 @@ word64 deregister_tm_clones()
 	Eq_n r1_n = 8303 - r2_n;
 	if (r1_n > *r5_n)
 	{
-		word64 r1_n = Mem0[0x00002030:word64];
+		Eq_n r1_n = globals->t2030;
 		if (r1_n != 0x00)
 		{
 			word64 r15_n;
@@ -115,7 +115,7 @@ void register_tm_clones()
 	uint64 r1_n = r3_n >> 0x03 >> 0x003F;
 	if ((r3_n >> 0x03) + r1_n != 0x00)
 	{
-		word64 r1_n = Mem0[0x00002050:word64];
+		Eq_n r1_n = globals->t2050;
 		if (r1_n != 0x00)
 		{
 			word64 r15_n;
@@ -157,7 +157,7 @@ void __do_global_dtors_aux()
 	Eq_n r11_n = 0x2068;
 	if (*r11_n == 0x00)
 	{
-		if (Mem0[r13_n + 0x00:byte] != Mem0[0x00002028:byte])
+		if (*r13_n != globals->b2028)
 		{
 			word64 r15_n;
 			word64 r12_n;
@@ -200,7 +200,7 @@ l00000740:
 			return;
 		}
 	}
-	word64 r1_n = Mem0[0x00002048:word64];
+	Eq_n r1_n = globals->t2048;
 	CC_n = cond(r1_n);
 	if (r1_n != 0x00)
 	{
@@ -218,11 +218,12 @@ l00000740:
 // 00000768: Register int64 fib(Register int64 r2)
 int64 fib(int64 r2)
 {
-	word32 dwLocA4_n = (word32) r2;
-	if (DPB(r2, dwLocA4_n, 0) > 0x01)
+	up64 r1_n = SEQ(SLICE(r2, word32, 32), *(fp - 0x00A4));
+	if (r1_n > 0x01)
 	{
-		fib((int64) (dwLocA4_n - 0x01));
-		fib((int64) (dwLocA4_n - 0x02));
+		word64 r1_n = SEQ(SLICE(r1_n, word32, 32), *(fp - 0x00A4));
+		word64 r1_n = SEQ(SLICE(fib((int64) (word32) SEQ(SLICE(r1_n, word32, 32), (word32) r1_n - 0x01)), word32, 32), *(fp - 0x00A4));
+		fib((int64) (word32) SEQ(SLICE(r1_n, word32, 32), (word32) r1_n - 0x02));
 	}
 	word64 r15_n;
 	word64 r10_n;

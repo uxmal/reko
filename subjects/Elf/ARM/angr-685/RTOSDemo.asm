@@ -1532,15 +1532,15 @@ D806           	bhi	$00000A8C
 l00000A7E:
 E8DF F002     	tbb	[pc,r2]                                  ; 00000A80
 
-l00000A82:
-0C3A           	lsrs	r2,r7,#&10
+l00000A80:
+F002 0C3A     	and	ip,r2,#&3A
+l00000A82	db	0x3A
 l00000A83	db	0x0C
-l00000A84	db	0x04
-l00000A85	db	0x02
 
-l00000A86:
-2C02           	cmps	r4,#2
-D039           	beq	$00000AFE
+l00000A84:
+0204           	lsls	r4,r0,#8
+l00000A85	db	0x02
+00000A86                   02 2C 39 D0                         .,9.     
 
 l00000A8A:
 6637           	str	r7,[r6,#&60]
@@ -1554,6 +1554,9 @@ l00000A90:
 
 l00000A92:
 F007 FD8D     	bl	$000085B0
+
+l00000A94:
+FD8D 4620     	Invalid
 
 l00000A96:
 4620           	mov	r0,r4
@@ -1589,6 +1592,9 @@ F04F 5280     	mov	r2,#&10000000
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 F007 FD5F     	bl	$000085B0
+
+l00000AF0:
+FD5F 4620     	Invalid
 
 l00000AF2:
 4620           	mov	r0,r4
@@ -3912,6 +3918,8 @@ E7DD           	b	$00008130
 00008180 04 ED 00 E0                                     ....           
 
 ;; vSetErrorLED: 00008184
+;;   Called from:
+;;     00008204 (in prvSetAndCheckRegisters)
 vSetErrorLED proc
 2101           	mov	r1,#1
 2007           	mov	r0,#7
@@ -3994,8 +4002,7 @@ B500           	push	{lr}
 4788           	blx	r1
 F85D EB04     	pop	lr
 4770           	bx	lr
-4770           	bx	lr
-BF00           	nop
+0000820C                                     70 47 00 BF             pG..
 
 ;; vApplicationIdleHook: 00008210
 ;;   Called from:

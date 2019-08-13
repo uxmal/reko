@@ -1610,7 +1610,7 @@ word20 __write_pad(Eq_n * pc, Eq_n r14, Eq_n r15, Eq_n & r10Out, Eq_n & r11Out)
 	Eq_n r11_n = r14;
 	if (r14 >= 0x01)
 	{
-		Eq_n r10_n = (int16) SLICE(r15, byte, 0);
+		Eq_n r10_n = (int16) (byte) r15;
 		do
 		{
 			__write_char(pc);
@@ -1742,7 +1742,7 @@ l58A8:
 						do
 						{
 							ui20 r14_n = r13_n * 0x02;
-							ui20 r13_n = r13_n * 0x04 + r14_n + r14_n + r14_n + (int16) SLICE(r7_n, byte, 0);
+							ui20 r13_n = r13_n * 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n);
 							Eq_n v65_n = *r6_n;
 							r13_n = r13_n + ~0x2F;
 							r7_n = v65_n;
@@ -1904,7 +1904,7 @@ l5620:
 						goto l54F8;
 					}
 					Eq_n r15_n;
-					Eq_n r11_n = memchr((int16) SLICE(r11_n, byte, 0), 0x00, wLoc20_n, out r15_n);
+					Eq_n r11_n = memchr((int16) (byte) r11_n, 0x00, wLoc20_n, out r15_n);
 					if (r15_n != 0x00)
 					{
 						r9_n = r15_n - bLoc20;
@@ -1931,7 +1931,7 @@ l54FC:
 					r8_n = bLoc1E_n & 0x30;
 					if (r8_n == 0x00)
 					{
-						Eq_n r13_n = (int16) (SLICE(bLoc1D_n, byte, 0) - SLICE(r11_n, byte, 0));
+						Eq_n r13_n = (int16) (byte) (bLoc1D_n - r11_n);
 						if (r13_n >= 0x01)
 						{
 							Eq_n r15_n = 0x20;
@@ -1961,7 +1961,7 @@ l54FC:
 l5576:
 					if ((bLoc1E_n & 0x30) == 0x20)
 					{
-						Eq_n r13_n = (int16) (SLICE(bLoc1D_n, byte, 0) - SLICE(r11_n, byte, 0));
+						Eq_n r13_n = (int16) (byte) (bLoc1D_n - r11_n);
 						if (r13_n >= 0x01)
 						{
 							Eq_n r15_n = 0x30;
@@ -1977,14 +1977,14 @@ l5576:
 					word20 r9_n = __write_pad(pc, r10_n, r15_n, out r10_n, out r11_n);
 					if (r15_n < 0x00)
 						goto l5924;
-					word20 r11_n;
+					Eq_n r11_n;
 					Eq_n r15_n;
-					PRINT(pc, (int16) SLICE(r9_n, byte, 0), wLoc20_n, out r11_n, out r15_n);
+					PRINT(pc, (int16) (byte) r9_n, wLoc20_n, out r11_n, out r15_n);
 					if (r15_n < 0x00)
 						goto l5924;
 					if ((bLoc1E_n & 0x10) == 0x00)
 						goto l53A6;
-					Eq_n r13_n = (int16) (SLICE(bLoc1D_n, byte, 0) - SLICE(r11_n, byte, 0));
+					Eq_n r13_n = (int16) (byte) (bLoc1D_n - r11_n);
 					if (r13_n < 0x01)
 						goto l53A6;
 					Eq_n r15_n = 0x20;
@@ -2015,7 +2015,7 @@ l5576:
 					{
 						ui20 r14_n = r13_n * 0x02;
 						Eq_n v60_n = *r6_n;
-						r13_n = r13_n * 0x04 + r14_n + r14_n + r14_n + (int16) SLICE(r7_n, byte, 0) + ~0x2F;
+						r13_n = r13_n * 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n) + ~0x2F;
 						r7_n = v60_n;
 						++r6_n;
 					} while (v60_n >= ~0x39);

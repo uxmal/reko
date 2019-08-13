@@ -101,17 +101,17 @@ l000011F8:
 				--a0_n;
 				if (a0_n->b0000 > 0x20)
 					break;
-				word16 v37_n = SLICE(d2_n, word16, 0);
-				d2_n = DPB(d2_n, v37_n - 0x01, 0);
+				word16 v37_n = (word16) d2_n;
+				d2_n = SEQ(SLICE(d2_n, word16, 16), v37_n - 0x01);
 			} while (v37_n != 0x00);
 			a0_n[0x01] = (struct Eq_n) 0x00;
 			do
 			{
 l000010E6:
-				byte v39_n = *a2_n;
+				byte v40_n = *a2_n;
 				++a2_n;
-				d1_n = SEQ(SLICE(d1_n, word24, 8), v39_n);
-				if (v39_n == 0x00)
+				d1_n = SEQ(SLICE(d1_n, word24, 8), v40_n);
+				if (v40_n == 0x00)
 					goto l00001148;
 			} while ((byte) d1_n == 0x20 || (byte) d1_n == 0x09);
 			if (d3_n - d0_n->dw000C != 0x00)
@@ -125,10 +125,10 @@ l000010E6:
 					++a1_n;
 					while (true)
 					{
-						byte v49_n = *a2_n;
+						byte v50_n = *a2_n;
 						++a2_n;
-						d1_n = SEQ(SLICE(d1_n, word24, 8), v49_n);
-						if (v49_n == 0x00)
+						d1_n = SEQ(SLICE(d1_n, word24, 8), v50_n);
+						if (v50_n == 0x00)
 							break;
 						if ((byte) d1_n == 0x20)
 							goto l00001116;
@@ -140,10 +140,10 @@ l000010E6:
 				{
 					while (true)
 					{
-						byte v70_n = *a2_n;
+						byte v71_n = *a2_n;
 						++a2_n;
-						d1_n = SEQ(SLICE(d1_n, word24, 8), v70_n);
-						if (v70_n == 0x00)
+						d1_n = SEQ(SLICE(d1_n, word24, 8), v71_n);
+						if (v71_n == 0x00)
 							break;
 						if ((byte) d1_n == 0x22)
 						{
@@ -179,9 +179,9 @@ l00001148:
 			dwLoc10 = d3_n;
 			if (globals->ptr13CC->w0014 >= 0x24)
 			{
-				Eq_n v91_n = d0_n->t00E0;
-				*(union Eq_n *) 0x13E4 = v91_n;
-				if (v91_n != 0x00)
+				Eq_n v92_n = d0_n->t00E0;
+				*(union Eq_n *) 0x13E4 = v92_n;
+				if (v92_n != 0x00)
 				{
 l0000117E:
 					if (d0_n->b0008 == 0x0D)
