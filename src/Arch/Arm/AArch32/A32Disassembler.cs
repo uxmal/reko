@@ -372,7 +372,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var imm = Bitfield.ReadFields(fields, u);
                 d.state.vectorData = d.VectorElementUntypedReverse(imm);
-                return true;
+                return d.state.vectorData != ArmVectorData.INVALID;
             };
         }
 
@@ -505,6 +505,8 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
+
+        private static Mutator<A32Disassembler> R12 = r(3);
 
         /// <summary>
         /// rp - Register pair
@@ -2749,12 +2751,14 @@ namespace Reko.Arch.Arm.AArch32
                             nyi("floating point minNum/maxNum"),
                             nyi("floating point data processing")))));
 
-            var AdvancedSimd_32bitTransfer = Mask("AdvancedSimd_32bitTransfer LC=??", 20, 1, 8, 1,
-                nyi("AdvancedSimd_32bitTransfer LC=00"),
+            var AdvancedSimd_32bitTransfer = Mask("Advanced SIMD 8/16/32-bit element move/duplicate", 20, 1, 6, 1,
+                Mask("AdvancedSimd_32bitTransfer LC=00 A=?xx", 23, 1,
+                    nyi("VMOV (general-purpose register to scalar)"),
+                    Instr(Opcode.vdup, vW(22, 1, 5, 1), q(21), W7_16, R12)),
                 Mask("AdvancedSimd_32bitTransfer LC=01 A=?xx", 23, 1,
                     Instr(Opcode.vmov, vW(22, 1, 5, 1), D7_16, r(3)),
                     Mask(6, 1,
-                        Instr(Opcode.vdup, vW(22, 1, 5, 1), q(21), W7_16, r(3)),
+                        Instr(Opcode.vdup, vW(22, 1, 5, 1), q(21), W7_16, R12),
                         invalid)),
                 nyi("AdvancedSimd_32bitTransfer LC=10"),
                 Mask("AdvancedSimd_32bitTransfer LC=11 U:opc1:opc2=??xxx", 22, 0b11,
@@ -2793,7 +2797,7 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.vmsr, i(16,4), r(3)),
                 Instr(Opcode.vmrs, r(3), i(16,4)));
 
-            var AdvancedSIMDandFloatingPoint32bitMove = Mask(8, 1,
+            var AdvancedSIMDandFloatingPoint32bitMove = Mask("Advanced SIMD and floating-point 32-bit move", 8, 1,
                     Mask(21, 7,
                         Instr(Opcode.vmov, S16_7,r(3)),
                         invalid,
