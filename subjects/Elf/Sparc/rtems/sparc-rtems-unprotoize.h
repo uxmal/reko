@@ -3188,11 +3188,11 @@ T_103: (in Z_138 : byte)
   Class: Eq_103
   DataType: byte
   OrigDataType: byte
-T_104: (in fn02800019 : ptr32)
+T_104: (in fn02800018 : ptr32)
   Class: Eq_104
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_105: (in signature of fn02800019 : void)
+T_105: (in signature of fn02800018 : void)
   Class: Eq_105
   DataType: Eq_105
   OrigDataType: 
@@ -37420,11 +37420,11 @@ T_8661: (in l1_176 : word32)
   Class: Eq_8661
   DataType: word32
   OrigDataType: word32
-T_8662: (in fn00000001 : ptr32)
+T_8662: (in fn00000000 : ptr32)
   Class: Eq_8662
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_8663: (in signature of fn00000001 : void)
+T_8663: (in signature of fn00000000 : void)
   Class: Eq_8663
   DataType: Eq_8663
   OrigDataType: 

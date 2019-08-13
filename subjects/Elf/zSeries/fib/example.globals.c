@@ -4,6 +4,10 @@
 
 #include "example.h"
 
+void g_t0820() = Unexpected function type (fn void ())
+;
+void g_t0888() = Unexpected function type (fn void ())
+;
 byte g_b2028 = 0x00;
 Eq_n g_t2030 = 
 	{

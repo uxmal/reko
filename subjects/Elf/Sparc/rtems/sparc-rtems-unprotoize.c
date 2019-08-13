@@ -56,7 +56,7 @@ void __do_global_dtors_aux(word32 o7)
 			word32 g0_n;
 			byte NZVC_n;
 			byte Z_n;
-			fn02800019();
+			fn02800018();
 			word32 * o0_n = *l0_n;
 			if (*o0_n == 0x00)
 				break;
@@ -4534,7 +4534,7 @@ l00016AEC:
 			bool NV_n;
 			bool NZV_n;
 			word32 l1_n;
-			fn00000001();
+			fn00000000();
 			fprintf(&globals->t2B640, "%s: ", o2);
 			fprintf(&globals->t2B640, globals->ptr28078, o0);
 			fprintf(&globals->t2B640, ": %s\n", xstrerror(globals->ptr2B760));

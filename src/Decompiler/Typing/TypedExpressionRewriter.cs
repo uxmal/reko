@@ -339,6 +339,21 @@ namespace Reko.Typing
             return result;
         }
 
+        public override Expression VisitSlice(Slice slice)
+        {
+            var exp = base.VisitSlice(slice);
+            if (exp is Slice newSlice && newSlice.Offset == 0)
+            {
+                //$REVIEW: here we convert SLICE(xxx, yy, 0) to the cast (yy) xxx.
+                // Should SLICE(xxx, yy, nn) be cast to (yy) (xxx >> nn) as well?
+                return new Cast(slice.DataType, slice.Expression)
+                {
+                    TypeVariable = slice.TypeVariable
+                };
+            }
+            return exp;
+        }
+
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)
         {
             if (compTypes.Compare(dtSrc, dtDst) == 0)
