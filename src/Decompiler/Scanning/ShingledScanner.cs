@@ -168,6 +168,13 @@ namespace Reko.Scanning
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
+            
+            // Align the start address to instruction granularity. If we align off 
+            // into invalid memory, return immediately.
+            addrStart = addrStart.Align(step);
+            if (!program.SegmentMap.IsExecutableAddress(addrStart))
+                return y;
+
             var delaySlot = InstrClass.None;
             var rewriterCache = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
             var instrCount = 0;
