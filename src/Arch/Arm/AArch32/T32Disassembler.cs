@@ -988,6 +988,7 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
+        //$REFACTOR: a lot of shared features btw T32 and A32
         private static Bitfield[] Bf(params (int pos, int len)[] fields)
         {
             return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();

@@ -41,6 +41,12 @@ namespace Reko.Arch.Arm.AArch32
                 return (u >> shift) & mask;
             }
 
+            [Conditional("DEBUG")]
+            protected void DumpMaskedInstruction(uint wInstr, uint shMask, Opcode opcode)
+            {
+                DumpMaskedInstruction(wInstr, shMask, opcode.ToString());
+            }
+
             protected void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
             {
                 return;
@@ -193,6 +199,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
+                DumpMaskedInstruction(wInstr, 0, this.opcode);
                 dasm.state.iclass = iclass;
                 dasm.state.opcode = this.opcode;
                 dasm.state.vectorData = this.vectorData;
