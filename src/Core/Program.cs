@@ -352,7 +352,7 @@ namespace Reko.Core
             this.OutputFilename = OutputFilename ?? Path.ChangeExtension(fileName, ".c");
             this.TypesFilename = TypesFilename ?? Path.ChangeExtension(fileName, ".h");
             this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
-            this.ResourcesDirectory = ResourcesDirectory ?? Path.Combine(dir, "resources");
+            this.ResourcesDirectory = ResourcesDirectory ?? Path.ChangeExtension(fileName, ".resources");
         }
 
         /// <summary>
