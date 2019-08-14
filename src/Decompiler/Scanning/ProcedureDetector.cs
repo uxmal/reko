@@ -273,6 +273,8 @@ namespace Reko.Scanning
         private List<RtlProcedure> BuildProcedures(IEnumerable<Cluster> clusters)
         {
             var procs = new List<RtlProcedure>();
+            if (clusters.Count() == 0)
+                return procs;
             listener.ShowProgress("Building procedures", 0, clusters.Count());
             foreach (var cluster in clusters)
             {
