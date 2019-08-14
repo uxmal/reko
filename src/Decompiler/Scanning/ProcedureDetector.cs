@@ -270,12 +270,12 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="sr"></param>
         /// <param name="clusters"></param>
-        private List<RtlProcedure> BuildProcedures(IEnumerable<Cluster> clusters)
+        private List<RtlProcedure> BuildProcedures(IList<Cluster> clusters)
         {
             var procs = new List<RtlProcedure>();
-            if (clusters.Count() == 0)
+            if (clusters.Count == 0)
                 return procs;
-            listener.ShowProgress("Building procedures", 0, clusters.Count());
+            listener.ShowProgress("Building procedures", 0, clusters.Count);
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())
