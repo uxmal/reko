@@ -92,14 +92,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
             22  R_ARM_JUMP_SLOT Dynamic     Data            (S + A) | T 
             23  R_ARM_RELATIVE Dynamic      Data            B(S) + A  [Note: see Table 4-18]
             */
-            var addr = referringSection != null
-                ? referringSection.Address + rela.Offset
-                : loader.CreateAddress(rela.Offset);
-
-            var arch = program.Architecture;
-            var relR = program.CreateImageReader(arch, addr);
-            var relW = program.CreateImageWriter(arch, addr);
-
             var A = rela.Addend;
             uint S = (uint) symbol.Value;
             uint mask = ~0u;
@@ -107,6 +99,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var rt = (Arm32Rt)(rela.Info & 0xFF);
             switch (rt)
             {
+            case Arm32Rt.R_ARM_NONE:
+                return symbol;
             case Arm32Rt.R_ARM_COPY:
                 A = S = 0;
                 break;
@@ -133,6 +127,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
             default:
                 throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
             }
+
+            var addr = referringSection != null
+                    ? referringSection.Address + rela.Offset
+                    : loader.CreateAddress(rela.Offset);
+
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
+
             var w = relR.ReadLeUInt32();
             w += ((uint) (S + A) >> sh) & mask;
             relW.WriteLeUInt32(w);
