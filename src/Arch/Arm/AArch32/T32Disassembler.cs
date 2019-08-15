@@ -2005,18 +2005,27 @@ namespace Reko.Arch.Arm.AArch32
             return new SelectDecoder(predicate, decoderTrue, decoderFalse);
         }
 
-        private static SelectFieldDecoder Select((int,int) fieldSpecifier, Func<uint, bool> predicate, Decoder decoderTrue, Decoder decoderFalse)
+        private static SelectFieldDecoder Select((int,int) fieldSpecifier, Func<uint, bool> predicate, string tag, Decoder decoderTrue, Decoder decoderFalse)
         {
             var fields = new[]
             {
                 new Bitfield(fieldSpecifier.Item1, fieldSpecifier.Item2)
             };
-            return new SelectFieldDecoder(fields, predicate, decoderTrue, decoderFalse);
+            return new SelectFieldDecoder(fields, predicate, tag, decoderTrue, decoderFalse);
+        }
+
+        private static SelectFieldDecoder Select((int, int) fieldSpecifier, Func<uint, bool> predicate, Decoder decoderTrue, Decoder decoderFalse)
+        {
+            var fields = new[]
+            {
+                new Bitfield(fieldSpecifier.Item1, fieldSpecifier.Item2)
+            };
+            return new SelectFieldDecoder(fields, predicate, "", decoderTrue, decoderFalse);
         }
 
         private static SelectFieldDecoder Select(Bitfield[] fields, Func<uint, bool> predicate, Decoder decoderTrue, Decoder decoderFalse)
         {
-            return new SelectFieldDecoder(fields, predicate, decoderTrue, decoderFalse);
+            return new SelectFieldDecoder(fields, predicate, "", decoderTrue, decoderFalse);
         }
 
         /// <summary>
@@ -2028,7 +2037,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 new Bitfield(bitPos, 4)
             };
-            return new SelectFieldDecoder(fields, n => n != 15, decoderNot15, decoder15);
+            return new SelectFieldDecoder(fields, n => n != 15, "", decoderNot15, decoder15);
         }
 
         private static NyiDecoder Nyi(string msg)
@@ -2725,8 +2734,9 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
+            var AdvancedSimdAndFp64bitMove = nyi("Advanced SIMD and floating-point 64-bit move");
 
-            var AvancedSimdLdStAnd64bitMove = Select((5 + 16, 4), w => (w & 0b1101) == 0,
+            var AvancedSimdLdStAnd64bitMove = Select((5 + 16, 4), w => (w & 0b1101) == 0, "Advanced SIMD load/store and 64-bit move",
                 Nyi("AdvancedSimdAndFp64bitMove"),
                 AdvancedSimdAndFpLdSt);
 

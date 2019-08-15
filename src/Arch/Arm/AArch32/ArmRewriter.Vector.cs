@@ -120,6 +120,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVmov()
         {
+            //if (instr.ops.Length > 2) throw new NotImplementedException();
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var src = this.Operand(Src1());
             if (instr.vector_data != ArmVectorData.INVALID)

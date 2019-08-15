@@ -134,10 +134,7 @@ namespace Reko.Arch.Arm.AArch32
                     RenderOperand(ops[iOp], writer, options);
                 }
             }
-            if (vector_index.HasValue)
-            {
-                writer.WriteFormat("[{0}]", vector_index.Value);
-            }
+    
             if (ShiftType != Opcode.Invalid)
             {
                 if (ShiftType != Opcode.lsl ||
@@ -245,6 +242,13 @@ namespace Reko.Arch.Arm.AArch32
         {
             switch (op)
             {
+            case RegisterOperand reg:
+                if (vector_index.HasValue && Registers.SIMDRegisters.Contains(reg.Register))
+                {
+                    writer.WriteFormat("{0}[{1}]", reg.Register.Name, vector_index.Value);
+                    return;
+                }
+                goto default;
             case ImmediateOperand imm:
                 if (imm.Value.IsReal)
                 {

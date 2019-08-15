@@ -1,4 +1,4 @@
-﻿using Reko.Core;
+using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -106,6 +106,8 @@ namespace Reko.Arch.Arm.AArch32
 
         public static readonly Dictionary<string, RegisterStorage> RegistersByName;
 
+        public static readonly HashSet<RegisterStorage> SIMDRegisters;
+
         static Registers()
         {
             RegistersByName = GpRegs
@@ -115,6 +117,8 @@ namespace Reko.Arch.Arm.AArch32
                 .Concat(DRegs)
                 .Concat(SRegs)
                 .ToDictionary(r => r.Name);
+
+            SIMDRegisters = QRegs.Concat(DRegs).Concat(SRegs).ToHashSet();
         }
     }
 }

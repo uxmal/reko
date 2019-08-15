@@ -956,7 +956,26 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vaddw.u32\tq7,q3,d4");
         }
 
+
+        /////////////////////////////////
+
 #if BORED
+        // Reko: a decoder for T32 instruction F9890035 at address 006A6718 has not been implemented. (350089F9 - AdvancedSimdLdStSingleStructureOneLane)
+        [Test]
+        public void ThumbDis_F9890035()
+        {
+            Given_Instructions(0xF989, 0x0035);
+            Expect_Code("@@@");
+        }
+
+        // Reko: a decoder for T32 instruction EC410B11 at address 006B8898 has not been implemented. (110B41EC - AdvancedSimdAndFp64bitMove)
+        [Test]
+        public void ThumbDis_EC410B11()
+        {
+            Given_Instructions(0xEC41, 0x0B11);
+            Expect_Code("@@@");
+        }
+
         // Reko: a decoder for T32 instruction EF230CF7 at address 00280013 has not been implemented. (F70C23EF - AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_EF230CF7()
@@ -973,5 +992,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 #endif
+
     }
 }

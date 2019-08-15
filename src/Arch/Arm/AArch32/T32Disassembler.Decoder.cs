@@ -181,22 +181,25 @@ namespace Reko.Arch.Arm.AArch32
             private readonly Func<uint, bool> predicate;
             private readonly Decoder trueDecoder;
             private readonly Decoder falseDecoder;
+            private readonly string tag;
 
             public SelectFieldDecoder(
                 Bitfield[] fieldSpecifier,
                 Func<uint, bool> predicate,
+                string tag,
                 Decoder trueDecoder,
                 Decoder falseDecoder)
             {
                 this.fieldSpecifier = fieldSpecifier;
                 this.predicate = predicate;
+                this.tag = tag;
                 this.trueDecoder = trueDecoder;
                 this.falseDecoder = falseDecoder;
             }
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                TraceDecoder(wInstr, fieldSpecifier, null);
+                TraceDecoder(wInstr, fieldSpecifier, tag);
                 var n = Bitfield.ReadFields(fieldSpecifier, wInstr);
                 var decoder = (predicate(n) ? trueDecoder : falseDecoder);
                 return decoder.Decode(dasm, wInstr);

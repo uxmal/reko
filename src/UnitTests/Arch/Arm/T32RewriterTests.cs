@@ -7550,8 +7550,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-
-
         [Test]
         [Ignore(Categories.FailedTests)]
         public void ThumbRw_vqrshrn()
@@ -7573,13 +7571,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_qsax()
         {
             RewriteCode("E0FA19F0");	// qsax r0, r0, sb
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r0 = __qsax(r0, r9)");
         }
 
         [Test]
@@ -7601,13 +7598,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_sasx()
         {
             RewriteCode("AEFA0EF0");	// sasx r0, lr, lr
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r0 = __sasx(lr, lr)");
         }
 
         [Test]
