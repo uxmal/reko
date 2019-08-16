@@ -314,6 +314,7 @@ namespace Reko.Arch.Arm
             case ArmVectorData.I8: return PrimitiveType.SByte;
             case ArmVectorData.S8: return PrimitiveType.SByte;
             case ArmVectorData.U8: return PrimitiveType.Byte;
+            case ArmVectorData.F16: return PrimitiveType.Real16;
             case ArmVectorData.I16: return PrimitiveType.Int16;
             case ArmVectorData.S16: return PrimitiveType.Int16;
             case ArmVectorData.U16: return PrimitiveType.UInt16;
