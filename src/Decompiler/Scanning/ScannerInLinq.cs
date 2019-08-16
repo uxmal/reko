@@ -107,6 +107,7 @@ namespace Reko.Scanning
         {
             var ranges = FindUnscannedRanges().ToList();
             DumpRanges(ranges);
+            var workToDo = (ulong)ranges.Sum(r => r.Item4);
             var binder = new StorageBinder();
             var shsc = new ShingledScanner(this.program, this.host, binder, sr, this.eventListener);
             bool unscanned = false;
@@ -116,11 +117,11 @@ namespace Reko.Scanning
                 try
                 {
                     shsc.ScanRange(
-                        program.Architecture,
                         range.Item1,
                         range.Item2,
                         range.Item3,
-                        range.Item3);
+                        range.Item4,
+                        workToDo);
                 }
                 catch (AddressCorrelatedException aex)
                 {
@@ -137,11 +138,11 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void DumpRanges(List<Tuple<MemoryArea, Address, uint>> ranges)
+        private void DumpRanges(List<Tuple<IProcessorArchitecture, MemoryArea, Address, uint>> ranges)
         {
             foreach (var range in ranges)
             {
-                Debug.Print("{0} - {1}", range.Item2, range.Item3);
+                Debug.Print("{0}: {1} - {2}", range.Item1, range.Item3, range.Item4);
             }
         }
 
@@ -156,21 +157,116 @@ namespace Reko.Scanning
         /// been identified as code/data yet.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Tuple<MemoryArea, Address, uint>> FindUnscannedRanges()
+        public IEnumerable<Tuple<IProcessorArchitecture, MemoryArea, Address, uint>> FindUnscannedRanges()
         {
-            return this.program.ImageMap.Items
-                .Where(de => de.Value.DataType is UnknownType)
-                .Select(de => CreateUnscannedArea(de))
-                .Where(tup => tup != null);
+            return MakeTriples(program.ImageMap.Items.Values)
+                .Select(triple => CreateUnscannedArea(triple))
+                .Where(triple => triple != null);
         }
 
-        private Tuple<MemoryArea, Address, uint> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
+        /// <summary>
+        /// From an <see cref="IEnumerable{T}"/> of items, generate an <see cref="IEnumerable{T}"/> of 
+        /// triples, where the middle item of each triple corresponds to the items from <paramref name="items"/>.
+        /// </summary>
+        /// <remarks>
+        /// Consider the sequence A B C D..X Y Z. The output of this method is:
+        /// (_ A B)
+        /// (A B C)
+        /// (B C D)
+        /// ...
+        /// (X Y Z)
+        /// (Y Z _)
+        /// (where '_' is the default element.
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <returns>A sequence of triples</returns>
+        private static IEnumerable<(T, T, T)> MakeTriples<T>(IEnumerable<T> items)
+        {
+            T prev = default(T);
+            var e = items.GetEnumerator();
+            if (!e.MoveNext())
+                yield break;
+            T item = e.Current;
+            while (e.MoveNext())
+            {
+                var next = e.Current;
+                yield return (prev, item, next);
+                prev = item;
+                item = next;
+            }
+            yield return (prev, item, default(T));
+        }
+
+        /// <summary>
+        /// Given a triple of blocks, decides whether the middle block is an unscanned area
+        /// that could be fed to the shingle scanner.
+        /// </summary>
+        /// <param name="triple"></param>
+        /// <returns></returns>
+        private Tuple<IProcessorArchitecture, MemoryArea, Address, uint> CreateUnscannedArea((ImageMapItem, ImageMapItem, ImageMapItem) triple)
+        {
+            var (prev, item, next) = triple;
+            if (!(item.DataType is UnknownType))
+                return null;
+            if (!this.program.SegmentMap.TryFindSegment(item.Address, out ImageSegment seg))
+                return null;
+            if (!seg.IsExecutable)
+                return null;
+
+            // Determine an architecture for the item.
+            var prevArch = GetBlockArchitecture(prev);
+            var nextArch = GetBlockArchitecture(next);
+            IProcessorArchitecture arch = null;
+            if (prevArch == null)
+            {
+                arch = nextArch ?? program.Architecture;
+            }
+            else if (nextArch == null)
+            {
+                arch = prevArch ?? program.Architecture;
+            }
+            else
+            {
+                // Both prev and next have an architecture.
+                if (prevArch == nextArch)
+                {
+                    arch = prevArch;
+                }
+                else
+                {
+                    // Different architectures on both sides. 
+                    // Arbitrarily pick the architecture of the largest 
+                    // adjacent block. If they're the same size, default 
+                    // to the predecessor.
+                    arch = (prev.Size < next.Size)
+                        ? nextArch
+                        : prevArch;
+                }
+            }
+
+            return Tuple.Create(
+                arch,
+                seg.MemoryArea,
+                item.Address,
+                item.Size);
+        }
+
+        private static IProcessorArchitecture GetBlockArchitecture(ImageMapItem item)
+        {
+            return (item is ImageMapBlock imb)
+                ? imb.Block.Procedure.Architecture
+                : null;
+        }
+
+        private Tuple<IProcessorArchitecture, MemoryArea, Address, uint> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
         {
             if (!this.program.SegmentMap.TryFindSegment(de.Key, out ImageSegment seg))
                 return null;
             if (!seg.IsExecutable)
                 return null;
             return Tuple.Create(
+                program.Architecture,
                 seg.MemoryArea,
                 de.Key,
                 de.Value.Size);
