@@ -38,11 +38,10 @@ namespace Reko.Scanning
 
     public class ScannerInLinq
     {
-        private IServiceProvider services;
-        private Program program;
-        private IRewriterHost host;
-        private DecompilerEventListener eventListener;
-        private ScanResults sr;
+        private readonly IServiceProvider services;
+        private readonly Program program;
+        private readonly IRewriterHost host;
+        private readonly DecompilerEventListener eventListener;
 
         public ScannerInLinq(IServiceProvider services, Program program, IRewriterHost host, DecompilerEventListener eventListener)
         {
@@ -54,8 +53,6 @@ namespace Reko.Scanning
 
         public ScanResults ScanImage(ScanResults sr)
         {
-            this.sr = sr;
-
             // sr.WatchedAddresses.Add(Address.Ptr32(0x00404F5C)); //$DEBUG
 
             // At this point, we have some entries in the image map
@@ -88,7 +85,6 @@ namespace Reko.Scanning
                 sr,
                 program.SegmentMap.IsValidAddress,
                 host);
-            Probe(sr);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
             Probe(sr);
             sr.Dump("After block conflict resolution");
@@ -99,6 +95,7 @@ namespace Reko.Scanning
             var pads = ppf.FindPaddingBlocks();
             ppf.Remove(pads);
 
+            // Detect procedures from the "soup" of baslic blocks in sr.
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
@@ -118,7 +115,9 @@ namespace Reko.Scanning
                 unscanned = true;
                 try
                 {
-                    shsc.ScanRange(range.Item1,
+                    shsc.ScanRange(
+                        program.Architecture,
+                        range.Item1,
                         range.Item2,
                         range.Item3,
                         range.Item3);
@@ -177,7 +176,7 @@ namespace Reko.Scanning
                 de.Value.Size);
         }
 
-        private void BuildWeaklyConnectedComponents(Dictionary<long, block> the_blocks)
+        private void BuildWeaklyConnectedComponents(ScanResults sr, Dictionary<long, block> the_blocks)
         {
             while (true)
             {

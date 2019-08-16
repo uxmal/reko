@@ -59,6 +59,7 @@ namespace Reko.Core
             this.Name = name;
             this.Size = size;
             this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
+            this.MemoryArea = new MemoryArea(addr, new byte[size]);
 			this.Access = access;
 		}
 

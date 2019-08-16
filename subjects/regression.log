@@ -44,6 +44,16 @@ fn092A: error: An error occurred during data flow analysis.
 fn092A_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
+000004C4: error: AArch32 instruction 'vsli.i32	d27,d24,#&F' (F3EFB538) is not supported yet.
+        [Test]
+        public void ArmRw_vsli()
+        {
+            RewriteCode("38B5EFF3");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+000016E4: error: AArch32 instruction 'vsli.i32	d27,d0,#&F' (F3EFB510) is not supported yet.
 0000951A: error: An error occurred while processing the statement Mem29[r3_24 + 0x00000000:word32] = Mem0[r3_24 - r4_10 + 0x00000000:word32].
     Not handling (ptr32 (struct (0 T_7261 t0000))) and (ptr32 (struct (0 (arr T_9391) a0000))) yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
@@ -1497,4 +1507,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 70.53 seconds ---
+Decompiled 56 binaries in 73.57 seconds ---

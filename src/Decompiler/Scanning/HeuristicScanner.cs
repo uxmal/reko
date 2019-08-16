@@ -81,14 +81,16 @@ namespace Reko.Scanning
             var ranges = FindUnscannedRanges();
 
             var stopwatch = new Stopwatch();
-            var dasm = new ShingledScanner(program, host, storageBinder, sr, eventListener);
+            var shsc = new ShingledScanner(program, host, storageBinder, sr, eventListener);
             bool unscanned = false;
             foreach (var range in ranges)
             {
                 unscanned = true;
                 try
                 {
-                    dasm.ScanRange(range.Item1,
+                    shsc.ScanRange(
+                        program.Architecture,
+                        range.Item1,
                         range.Item2,
                         range.Item3,
                         range.Item3);
@@ -106,9 +108,9 @@ namespace Reko.Scanning
             // Remove blocks that fall off the end of the segment
             // or into data.
             Probe(sr);
-            dasm.Dump("After shingle scan graph built");
-            var deadNodes = dasm.RemoveBadInstructionsFromGraph();
-            dasm.BuildIcfg(deadNodes);
+            shsc.Dump("After shingle scan graph built");
+            var deadNodes = shsc.RemoveBadInstructionsFromGraph();
+            shsc.BuildIcfg(deadNodes);
             Probe(sr);
             sr.Dump("After shingle scan");
 
