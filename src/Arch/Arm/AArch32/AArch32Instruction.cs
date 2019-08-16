@@ -242,13 +242,6 @@ namespace Reko.Arch.Arm.AArch32
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                if (vector_index.HasValue && Registers.SIMDRegisters.Contains(reg.Register))
-                {
-                    writer.WriteFormat("{0}[{1}]", reg.Register.Name, vector_index.Value);
-                    return;
-                }
-                goto default;
             case ImmediateOperand imm:
                 if (imm.Value.IsReal)
                 {
@@ -378,7 +371,6 @@ namespace Reko.Arch.Arm.AArch32
         public MachineOperand ShiftValue;
         public ArmVectorData vector_data;
         public int vector_size;         // only valid if vector_data is valid
-        public int? vector_index;
         public byte itmask;
     }
 

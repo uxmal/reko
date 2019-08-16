@@ -1876,6 +1876,14 @@ means
                 "1|L--|@@@");
         }
 
+        [Test]
+        public void ArmRw_vmlsl_scalar()
+        {
+            BuildTest(0xF2EF4665);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q10 = __vmlsl_s32(d15, d5[1])");
+        }
 
     }
 }

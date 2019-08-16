@@ -833,6 +833,10 @@ namespace Reko.Arch.Arm.AArch32
                 }
             case AddressOperand aop:
                 return aop.Address;
+            case IndexedOperand ixop:
+                // Extract a single item from the vector register
+                var ixreg = Reg(ixop.Register);
+                return m.ARef(ixop.Width, ixreg, Constant.Int32(ixop.Index));
             }
             throw new NotImplementedException(op.GetType().Name);
         }

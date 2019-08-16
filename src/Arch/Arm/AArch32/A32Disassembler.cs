@@ -76,7 +76,6 @@ namespace Reko.Arch.Arm.AArch32
             public MachineOperand shiftValue = null;
             public bool useQ = false;
             public bool userStmLdm = false;
-            public int? vector_index = null;
             public ArmVectorData vectorData;
 
             public void Clear()
@@ -89,7 +88,6 @@ namespace Reko.Arch.Arm.AArch32
                 shiftValue = null;
                 useQ = false;
                 userStmLdm = false;
-                vector_index = null;
                 vectorData = ArmVectorData.INVALID;
             }
 
@@ -112,7 +110,6 @@ namespace Reko.Arch.Arm.AArch32
                     Writeback = writeback,
                     UserStmLdm = userStmLdm,
                     vector_data = vectorData,
-                    vector_index = vector_index,
                 };
                 return instr;
             }
@@ -667,15 +664,19 @@ namespace Reko.Arch.Arm.AArch32
         private readonly static Mutator<A32Disassembler> W22_12 = W(22, 1, 12, 4);
 
         /// <summary>
-        /// Set the SIMD vector index
+        /// Set the SIMD vector index of the most recently added operand.
         /// </summary>
         private static Mutator<A32Disassembler> Ix(params (int pos, int size)[] fieldSpecs)
         {
             var fields = Bf(fieldSpecs);
             return (u, d) =>
             {
-                var imm = Bitfield.ReadFields(fields, u);
-                d.state.vector_index = (int) imm;
+                var imm = (int) Bitfield.ReadFields(fields, u);
+                int iLastOp = d.state.ops.Count - 1;
+                var rLast = (RegisterOperand) d.state.ops[iLastOp];
+                var dtElem = Arm32Architecture.VectorElementDataType(d.state.vectorData);
+                var ixOp = new IndexedOperand(dtElem, rLast.Register, imm);
+                d.state.ops[iLastOp] = ixOp;
                 return true;
             };
         }
@@ -3060,15 +3061,15 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vmov, u23_I8, Rnp12, D7_16, Ix((21, 1), (5,2))));
 
             var vmov_gp_reg_to_scalar = Mask(23, 1, 5, 2, "VMOV (general-purpose register to scalar) LC=11 opc1:opc2=?x??",
-                    Instr(Opcode.vmov, I32, D7_16, Rnp12, Ix((21, 1))),
-                    Instr(Opcode.vmov, I16, D7_16, Rnp12, Ix((21, 1), (6, 1))),
+                    Instr(Opcode.vmov, I32, D7_16, Ix((21, 1)), Rnp12),
+                    Instr(Opcode.vmov, I16, D7_16, Ix((21, 1), (6, 1)), Rnp12),
                     invalid,
-                    Instr(Opcode.vmov, I16, D7_16, Rnp12, Ix((21, 1), (6, 1))),
+                    Instr(Opcode.vmov, I16, D7_16, Ix((21, 1), (6, 1)), Rnp12),
 
-                    Instr(Opcode.vmov, I8, D7_16, Rnp12, Ix((21, 1), (6, 2))),
-                    Instr(Opcode.vmov, I8, D7_16, Rnp12, Ix((21, 1), (6, 2))),
-                    Instr(Opcode.vmov, I8, D7_16, Rnp12, Ix((21, 1), (6, 2))),
-                    Instr(Opcode.vmov, I8, D7_16, Rnp12, Ix((21, 1), (6, 2))));
+                    Instr(Opcode.vmov, I8, D7_16, Ix((21, 1), (6, 2)), Rnp12),
+                    Instr(Opcode.vmov, I8, D7_16, Ix((21, 1), (6, 2)), Rnp12),
+                    Instr(Opcode.vmov, I8, D7_16, Ix((21, 1), (6, 2)), Rnp12),
+                    Instr(Opcode.vmov, I8, D7_16, Ix((21, 1), (6, 2)), Rnp12));
 
             var AdvancedSimd_32bitTransfer = Mask(20, 1, 6, 1, "Advanced SIMD 8/16/32-bit element move/duplicate",
                 Mask(23, 1, "AdvancedSimd_32bitTransfer LC=00 A=?xx",
@@ -3500,13 +3501,13 @@ namespace Reko.Arch.Arm.AArch32
             var VmlsByScalar = Instr(Opcode.vmls, q(24),W22_12, vi_HW_f_HS_, W22_12,W7_16,W5_0,Ix(5,1));
             var VmlalByScalar = Mask(20, 0b11, "vmlsl",
                 invalid,
-                Instr(Opcode.vmlal, vi_HW__HW_, Q22_12, D7_16, Ix((5, 1), (0, 4))),
-                Instr(Opcode.vmlal, vi_HW__HW_, Q22_12, D7_16, Ix((0, 4))),
+                Instr(Opcode.vmlal, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 3), Ix((5, 1), (3, 1))),
+                Instr(Opcode.vmlal, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 4), Ix((5, 1))),
                 invalid);
             var VmlslByScalar = Mask(20, 0b11, "vmlsl",
                 invalid,
-                Instr(Opcode.vmlsl, vi_HW__HW_, Q22_12, D7_16, Ix((5, 1), (0, 4))),
-                Instr(Opcode.vmlsl, vi_HW__HW_, Q22_12, D7_16, Ix((0, 4))),
+                Instr(Opcode.vmlsl, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 3), Ix((5, 1), (3, 1))),
+                Instr(Opcode.vmlsl, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 4), Ix((5, 1))),
                 invalid);
             var Vqdmlal = nyi("vqdmlal");
             var Vqdmlsl = nyi("vqdmlsl");

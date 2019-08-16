@@ -123,12 +123,12 @@ namespace Reko.Arch.Arm.AArch32
             //if (instr.ops.Length > 2) throw new NotImplementedException();
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var src = this.Operand(Src1());
-            if (instr.vector_data != ArmVectorData.INVALID)
+            if (instr.vector_data != ArmVectorData.INVALID && !(src is ArrayAccess))
             {
-                var dt = VectorElementDataType(instr.vector_data);
+                var dt = Arm32Architecture.VectorElementDataType(instr.vector_data);
                 var dstType = Dst().Width;
                 var srcType = Src1().Width;
-                var srcElemSize = VectorElementDataType(instr.vector_data);
+                var srcElemSize = Arm32Architecture.VectorElementDataType(instr.vector_data);
                 var celemSrc = dstType.BitSize / srcElemSize.BitSize;
                 var arrDst = new ArrayType(dstType, celemSrc);
 
@@ -141,13 +141,7 @@ namespace Reko.Arch.Arm.AArch32
                     m.Assign(dst, src);
                     return;
                 }
-                if (instr.vector_index.HasValue)
-                {
-                    // Extract a single item from the vector register
-                    var index = Constant.Int32(instr.vector_index.Value);
-                    m.Assign(dst, m.ARef(dst.DataType, src, index));
-                    return;
-                }
+ 
                 var fname = $"__vmov_{VectorElementType(instr.vector_data)}";
                 var ppp = host.PseudoProcedure(fname, Dst().Width, src);
                 m.Assign(dst, m.Fn(ppp));
@@ -303,7 +297,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var dstType = Dst().Width;
             var srcType = Src1().Width;
-            var srcElemSize = VectorElementDataType(instr.vector_data);
+            var srcElemSize = Arm32Architecture.VectorElementDataType(instr.vector_data);
             var celemSrc = srcType.BitSize / srcElemSize.BitSize;
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
@@ -323,7 +317,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var dstType = Dst().Width;
             var srcType = Src1().Width;
-            var srcElemSize = VectorElementDataType(elemType);
+            var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
             var celemSrc = srcType.BitSize / srcElemSize.BitSize;
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
@@ -344,7 +338,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var dstType = Dst().Width;
             var srcType = Src1().Width;
-            var srcElemSize = VectorElementDataType(elemType);
+            var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
             //$BUG: some instructions are returned with srcElemnSize == 0!
             var celemSrc = srcType.BitSize / (srcElemSize.BitSize != 0 ? srcElemSize.BitSize : 8);
             var arrSrc = new ArrayType(srcType, celemSrc);
@@ -383,26 +377,5 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private DataType VectorElementDataType(ArmVectorData elemType)
-        {
-            switch (elemType)
-            {
-            case ArmVectorData.I8: return PrimitiveType.SByte;
-            case ArmVectorData.S8: return PrimitiveType.SByte;
-            case ArmVectorData.U8: return PrimitiveType.Byte;
-            case ArmVectorData.I16: return PrimitiveType.Int16;
-            case ArmVectorData.S16: return PrimitiveType.Int16;
-            case ArmVectorData.U16: return PrimitiveType.UInt16;
-            case ArmVectorData.F32: return PrimitiveType.Real32;
-            case ArmVectorData.I32: return PrimitiveType.Int32;
-            case ArmVectorData.S32: return PrimitiveType.Int32;
-            case ArmVectorData.U32: return PrimitiveType.UInt32;
-            case ArmVectorData.F64: return PrimitiveType.Real64;
-            case ArmVectorData.I64: return PrimitiveType.Int64;
-            case ArmVectorData.S64: return PrimitiveType.Int64;
-            case ArmVectorData.U64: return PrimitiveType.UInt64;
-            default: NotImplementedYet(); return VoidType.Instance;
-            }
-        }
     }
 }
