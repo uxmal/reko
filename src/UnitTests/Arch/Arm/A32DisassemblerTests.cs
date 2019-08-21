@@ -281,10 +281,10 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_cdp()
         {
             var instr = Disassemble32(0xFECED300);
-            Assert.AreEqual("cdp2\tp3,#&C,c13,c14,c0,#0", instr.ToString());
+            Assert.AreEqual("cdp2\tp3,#&C,cr13,cr14,cr0,#0", instr.ToString());
 
             instr = Disassemble32(0x4EC4EC4F);
-            Assert.AreEqual("cdpmi\tp12,#&C,c14,c4,c15,#2", instr.ToString());
+            Assert.AreEqual("cdpmi\tp12,#&C,cr14,cr4,cr15,#2", instr.ToString());
         }
 
         [Test]
@@ -813,14 +813,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_mcr()
         {
             Disassemble32(0xEE070F58);
-            Expect_Code("mcr\tp15,#0,r0,c7,c8,#2");
+            Expect_Code("mcr\tp15,#0,r0,cr7,cr8,#2");
         }
 
         [Test]
         public void ArmDasm_mrc()
         {
             Disassemble32(0xEE123F10);
-            Expect_Code("mrc\tp15,#0,r3,c2,c0,#0");
+            Expect_Code("mrc\tp15,#0,r3,cr2,cr0,#0");
         }
 
         [Test]
@@ -1278,7 +1278,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_mrrc()
         {
             Disassemble32(0xEC5F5554);
-            Expect_Code("mrrc\tp5,#5,r5,pc,c4");
+            Expect_Code("mrrc\tp5,#5,r5,pc,cr4");
         }
 
         [Test]
@@ -1369,7 +1369,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_stc()
         {
             Disassemble32(0x2C645520);
-            Expect_Code("stchs\tp5,c5,[r4],-#&80");
+            Expect_Code("stchs\tp5,cr5,[r4],-#&80");
         }
 
         [Test]
@@ -1411,7 +1411,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldc()
         {
             Disassemble32(0x0CBF140F);
-            Expect_Code("ldceq\tp4,c1,[pc],#&3C");
+            Expect_Code("ldceq\tp4,cr1,[pc],#&3C");
         }
 
         [Test]
@@ -1607,21 +1607,21 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldc2l()
         {
             Disassemble32(0xFDF001A9);
-            Expect_Code("ldc2l\tp1,c0,[r0,#&2A4]!");
+            Expect_Code("ldc2l\tp1,cr0,[r0,#&2A4]!");
         }
 
         [Test]
         public void ArmDasm_mrc2()
         {
             Disassemble32(0xFEB068F8);
-            Expect_Code("mrc2\tp8,#5,r6,c0,c8,#7");
+            Expect_Code("mrc2\tp8,#5,r6,cr0,cr8,#7");
         }
 
         [Test]
         public void ArmDasm_stc2()
         {
             Disassemble32(0xFD0080EB);
-            Expect_Code("stc2\tp0,c8,[r0,-#&3AC]");
+            Expect_Code("stc2\tp0,cr8,[r0,-#&3AC]");
         }
 
         [Test]
@@ -1635,7 +1635,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_stc2l()
         {
             Disassemble32(0xFC684C25);
-            Expect_Code("stc2l\tp12,c4,[r8],-#&94");
+            Expect_Code("stc2l\tp12,cr4,[r8],-#&94");
         }
 
         [Test]
@@ -1705,7 +1705,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_stchs()
         {
             Disassemble32(0x2D207325);
-            Expect_Code("stchs\tp3,c7,[r0,-#&94]!");
+            Expect_Code("stchs\tp3,cr7,[r0,-#&94]!");
         }
 
         [Test]

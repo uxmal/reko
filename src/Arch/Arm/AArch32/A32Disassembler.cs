@@ -2909,7 +2909,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vcmpe, F32, S12_22, S0_5),
                         Instr(Opcode.vcmpe, F64, D22_12, D5_0))),
                 Select("vcmpe #0", 0, 0xF, u => u == 0,
-                    Mask(7, 3, "0101",
+                    Mask(7, 0b11, "0101",
                         Instr(Opcode.vcmp, F32, S12_22, Imm0_r32),
                         Instr(Opcode.vcmpe, F32, S12_22, Imm0_r32),
                         Instr(Opcode.vcmp, F64, D22_12, Imm0_r64),

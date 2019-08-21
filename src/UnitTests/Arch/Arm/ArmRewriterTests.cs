@@ -644,7 +644,7 @@ means
             BuildTest(0xEE123F10);  // mrc p15,#0,r3,c2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = __mrc(p15, 0x00000000, c2, c0, 0x00000000)");
+                "1|L--|r3 = __mrc(p15, 0x00000000, cr2, cr0, 0x00000000)");
         }
 
         [Test]
@@ -653,7 +653,7 @@ means
             BuildTest(0xEC565554);        // mrrc\tp5,#5,r5,r6,c4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5_r6 = __mrrc(p5, 0x00000005, c4)");
+                "1|L--|r5_r6 = __mrrc(p5, 0x00000005, cr4)");
         }
 
         [Test]
@@ -662,7 +662,7 @@ means
             BuildTest(0xEE070F58);  // mcr p15,#0,r0,c7,c8,#2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__mcr(p15, 0x00000000, r0, c7, c8, 0x00000002)");
+                "1|L--|__mcr(p15, 0x00000000, r0, cr7, cr8, 0x00000002)");
         }
 
         [Test]
@@ -1136,7 +1136,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(UGE,C)) branch 00100004",
-                "2|L--|__cdp(p0, 0x00000002, c0, c0, c0, 0x00000000)");
+                "2|L--|__cdp(p0, 0x00000002, cr0, cr0, cr0, 0x00000000)");
         }
 
         [Test]
@@ -1174,7 +1174,7 @@ means
             BuildTest(0xECCC5CED);  // stc p12, c12, [ip], {0xcd}
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stc(p12, c5, Mem0[ip:word32])");
+                "1|L--|__stc(p12, cr5, Mem0[ip:word32])");
         }
 
         [Test]
@@ -1184,7 +1184,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v3 = Mem0[ip:word32]",
-                "2|L--|p12 = __ldc(c5, v3)");
+                "2|L--|p12 = __ldc(cr5, v3)");
         }
 
         [Test]

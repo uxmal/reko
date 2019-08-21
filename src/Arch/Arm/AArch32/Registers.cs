@@ -89,7 +89,7 @@ namespace Reko.Arch.Arm.AArch32
             .Select(n => new RegisterStorage($"p{n}", 128 + n, 0, PrimitiveType.Byte))
             .ToArray();
         public static readonly RegisterStorage[] CoprocessorRegisters = Enumerable.Range(0, 16)
-            .Select(n => new RegisterStorage($"c{n}", 144 + n, 0, PrimitiveType.Word32))
+            .Select(n => new RegisterStorage($"cr{n}", 144 + n, 0, PrimitiveType.Word32))
             .ToArray();
 
         // The 'S..' floating point registers alias the 'D..' double floating point registers

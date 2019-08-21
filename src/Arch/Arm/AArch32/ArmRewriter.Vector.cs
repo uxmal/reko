@@ -158,21 +158,29 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVmrs()
         {
-            var nsysreg= ((ImmediateOperand)Src1()).Value.ToInt32();
+            var expSysreg = Src1();
             var dst = Operand(Dst());
             RegisterStorage sysreg;
-            switch (nsysreg)
+            if (expSysreg is RegisterOperand regSysreg)
             {
-            case 0: sysreg = Registers.fpsid; break;
-            case 1:
-                sysreg =  Registers.fpscr;
-                dst = NZCV();
-                break;
-            case 5: sysreg = Registers.mvfr2; break;
-            case 6: sysreg = Registers.mvfr1; break;
-            case 7: sysreg = Registers.mvfr0; break;
-            case 8: sysreg = Registers.fpexc; break;
-            default: Invalid(); return;
+                sysreg = regSysreg.Register;
+            }
+            else
+            {
+                var nsysreg = ((ImmediateOperand) Src1()).Value.ToInt32();
+                switch (nsysreg)
+                {
+                case 0: sysreg = Registers.fpsid; break;
+                case 1:
+                    sysreg = Registers.fpscr;
+                    dst = NZCV();
+                    break;
+                case 5: sysreg = Registers.mvfr2; break;
+                case 6: sysreg = Registers.mvfr1; break;
+                case 7: sysreg = Registers.mvfr0; break;
+                case 8: sysreg = Registers.fpexc; break;
+                default: Invalid(); return;
+                }
             }
             m.Assign(dst, binder.EnsureRegister(sysreg));
         }
@@ -362,6 +370,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.I8: return "i8";
             case ArmVectorData.S8: return "s8";
             case ArmVectorData.U8: return "u8";
+            case ArmVectorData.F16: return "f16";
             case ArmVectorData.I16: return "i16";
             case ArmVectorData.S16: return "s16";
             case ArmVectorData.U16: return "u16";

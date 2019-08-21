@@ -559,6 +559,14 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private void RewritePk(string name)
+        {
+            var src1 = Operand(Src1());
+            var src2 = Operand(Src2());
+            var dst = Operand(Dst());
+            m.Assign(dst, host.PseudoProcedure(name, dst.DataType, src1, src2));
+        }
+
         private void RewritePld(string name)
         {
             var dst = ((MemoryAccess) this.Operand(Dst())).EffectiveAddress;

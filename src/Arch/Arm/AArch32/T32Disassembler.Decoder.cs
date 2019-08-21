@@ -42,6 +42,11 @@ namespace Reko.Arch.Arm.AArch32
         {
             public abstract AArch32Instruction Decode(T32Disassembler dasm, uint wInstr);
 
+            [Conditional("DEBUG")]
+            protected void DumpMaskedInstruction(uint wInstr, uint shMask, Opcode opcode)
+            {
+                TraceDecoder(wInstr, shMask, opcode.ToString());
+            }
 
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, Bitfield[] bitfields, string debugString)
@@ -120,33 +125,38 @@ namespace Reko.Arch.Arm.AArch32
 
         private class BitFieldsDecoder : Decoder
         {
-            private readonly (int, int, uint)[] bitfields;
+            private readonly Bitfield[] bitfields;
             private readonly Decoder[] decoders;
+            private readonly string tag;
+
+            public BitFieldsDecoder(Bitfield [] bitfields, string tag, params Decoder[] decoders)
+            {
+                this.bitfields = bitfields;
+                this.tag = tag;
+                this.decoders = decoders;
+            }
 
             public BitFieldsDecoder(string fieldSpecifier, params Decoder[] decoders)
             {
                 this.decoders = decoders;
 
                 int i = 0;
-                var list = new List<(int, int, uint)>();
+                var list = new List<Bitfield>();
                 do
                 {
                     int pos = ReadDecimal(fieldSpecifier, ref i);
                     Expect(':', fieldSpecifier, ref i); ;
                     int size = ReadDecimal(fieldSpecifier, ref i);
                     var subMask = (1u << size) - 1u;
-                    list.Add((pos, size, subMask));
+                    list.Add(new Bitfield(pos, size));
                 } while (PeekAndDiscard(':', fieldSpecifier, ref i));
                 this.bitfields = list.ToArray();
             }
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                uint val = 0;
-                foreach (var (pos, size, submask) in bitfields)
-                {
-                    val = (val << size) | ((wInstr >> pos) & submask);
-                }
+                TraceDecoder(wInstr, bitfields, tag);
+                var val = Bitfield.ReadFields(this.bitfields, wInstr);
                 return decoders[val].Decode(dasm, wInstr);
             }
         }
@@ -251,6 +261,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
+                DumpMaskedInstruction(wInstr, 0, this.opcode);
                 dasm.state.opcode = this.opcode;
                 dasm.state.iclass = this.iclass;
                 dasm.state.vectorData = this.vec;
@@ -436,9 +447,9 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
+                Debug.Print("NYI: {0}", message);
                 return dasm.NotYetImplemented(message, wInstr);
             }
-
         }
 
         #endregion
