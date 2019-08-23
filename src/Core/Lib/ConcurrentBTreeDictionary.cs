@@ -44,15 +44,18 @@ namespace Reko.Core.Lib
     /// </remarks>
     public class ConcurrentBTreeDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
+        private static TraceSwitch trace = new TraceSwitch("ConcurrentBTreeDictionary", "Traces the concurrent BTree dictionary") { Level = TraceLevel.Error };
+
         private Node root;
         private int version;
-        private int InternalNodeChildren;
-        private int LeafNodeChildren;
+        private readonly int InternalNodeChildren;
+        private readonly int LeafNodeChildren;
         private readonly KeyCollection keyCollection;
         private readonly ValueCollection valueCollection;
 
         public ConcurrentBTreeDictionary() :
-            this(Comparer<TKey>.Default) {
+            this(Comparer<TKey>.Default)
+        {
         }
 
         public ConcurrentBTreeDictionary(IComparer<TKey> cmp)
@@ -65,7 +68,7 @@ namespace Reko.Core.Lib
             this.valueCollection = new ValueCollection(this);
         }
 
-        public ConcurrentBTreeDictionary(IDictionary<TKey,TValue> entries) :
+        public ConcurrentBTreeDictionary(IDictionary<TKey, TValue> entries) :
             this()
         {
             if (entries == null)
@@ -73,7 +76,7 @@ namespace Reko.Core.Lib
             Populate(entries);
         }
 
-        public ConcurrentBTreeDictionary(IDictionary<TKey,TValue> entries, IComparer<TKey> comparer) :
+        public ConcurrentBTreeDictionary(IDictionary<TKey, TValue> entries, IComparer<TKey> comparer) :
             this(comparer)
         {
             if (entries == null)
@@ -108,18 +111,18 @@ namespace Reko.Core.Lib
 
             public override string ToString()
             {
-                return $"{GetType().Name}: {count} items; keys: {string.Join(",",keys.Take(count))}.";
+                return $"{GetType().Name}: {count} items; keys: {string.Join(",", keys.Take(count))}.";
             }
         }
 
         /// <summary>
         /// In a B+Tree, the values are held in the leaf nodes of the data structure.
         /// </summary>
-        private class LeafNode : Node 
+        private class LeafNode : Node
         {
             public readonly TValue[] values;
 
-            public LeafNode(TKey[] keys, TValue[] values, int count, int totalCount):
+            public LeafNode(TKey[] keys, TValue[] values, int count, int totalCount) :
                 base(keys, count, totalCount)
             {
                 this.values = values;
@@ -164,8 +167,8 @@ namespace Reko.Core.Lib
                     var nCount = this.count - 1;
                     if (idx > 0)
                     {
-                        Array.Copy(keys, 0, nKeys, 0, idx - 1);
-                        Array.Copy(values, 0, nValues, 0, idx - 1);
+                        Array.Copy(keys, 0, nKeys, 0, idx);
+                        Array.Copy(values, 0, nValues, 0, idx);
                     }
                     Array.Copy(keys, idx + 1, nKeys, idx, nCount - idx);
                     Array.Copy(values, idx + 1, nValues, idx, nCount - idx);
@@ -231,13 +234,15 @@ namespace Reko.Core.Lib
                     count = leftCount;
                     ++leftCount;
                 }
+
+                // Find the place where the item would be if it had been present.
                 int idx = Array.BinarySearch(nKeys, 0, count, key, tree.Comparer);
                 if (idx >= 0)
                     throw new ArgumentException("Duplicate key.");
                 idx = ~idx;
                 if (idx < count)
                 {
-                    // Make a 'hole'
+                    // Make a 'hole' if the place is not at the end of the items.
                     Array.Copy(nKeys, idx, nKeys, idx + 1, count - idx);
                     Array.Copy(nValues, idx, nValues, idx + 1, count - idx);
                 }
@@ -277,7 +282,7 @@ namespace Reko.Core.Lib
 
             public override (Node, Node) Put(TKey key, TValue value, bool setting, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
-                int idx = Array.BinarySearch(keys, 1, count-1, key, tree.Comparer);
+                int idx = Array.BinarySearch(keys, 1, count - 1, key, tree.Comparer);
                 int iPos = (idx >= 0)
                     ? idx
                     : (~idx) - 1;
@@ -350,6 +355,9 @@ namespace Reko.Core.Lib
                 return (newNode, null);
             }
 
+            /// <summary>
+            /// Make a pair of new nodes by partitioning the subnodes of the current node.
+            /// </summary>
             private (Node, Node) SplitAndInsert(TKey key, int iLeft, Node leftNode, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 var iSplit = (this.count + 1) / 2;
@@ -363,13 +371,13 @@ namespace Reko.Core.Lib
                 Array.Copy(this.keys, iSplit, rKeys, 0, rightCount);
                 Array.Copy(this.nodes, 0, lNodes, 0, leftCount);
                 Array.Copy(this.nodes, iSplit, rNodes, 0, rightCount);
-                if (iLeft < iSplit)
+                if (iLeft-1 < iSplit)
                 {
-                    lNodes[iLeft] = leftNode;
+                    lNodes[iLeft-1] = leftNode;
                 }
                 else
                 {
-                    lNodes[iLeft - iSplit] = leftNode;
+                    rNodes[iLeft - (iSplit+1)] = leftNode;
                 }
                 TKey[] nKeys;
                 Node[] nNodes;
@@ -389,18 +397,21 @@ namespace Reko.Core.Lib
                     ++leftCount;
                 }
 
-                int idx = Array.BinarySearch(keys, 1, count - 1, key, tree.Comparer);
+                int idx = Array.BinarySearch(nKeys, 1, count - 1, key, tree.Comparer);
+                if (idx >= 0)
+                    throw new ArgumentException("Duplicate key.");
+                idx = ~idx;
                 if (idx < count)
                 {
                     // Leave a 'hole' at position idx.
-                    Array.Copy(this.keys, idx, nKeys, idx + 1, count - idx);
-                    Array.Copy(this.nodes, idx, nNodes, idx + 1, count - idx);
+                    Array.Copy(nKeys, idx, nKeys, idx + 1, count - idx);
+                    Array.Copy(nNodes, idx, nNodes, idx + 1, count - idx);
                 }
                 nKeys[idx] = key;
                 nNodes[idx] = node;
 
                 var left = new InternalNode(lKeys, lNodes, leftCount, SumNodeCounts(lNodes, leftCount));
-                var right = new InternalNode(rKeys, rNodes, rightCount, SumNodeCounts(lNodes, leftCount));
+                var right = new InternalNode(rKeys, rNodes, rightCount, SumNodeCounts(rNodes, rightCount));
                 return (left, right);
             }
 
@@ -516,7 +527,7 @@ namespace Reko.Core.Lib
                 yield break;
             // Get the leftmost leaf node.
             Node node;
-            var stack = new Stack<(Node,int)>();
+            var stack = new Stack<(Node, int)>();
             for (node = root; node is InternalNode intern; node = intern.nodes[0])
                 stack.Push((intern, 0));
             stack.Push((node, 0));
@@ -526,7 +537,7 @@ namespace Reko.Core.Lib
                 // Invariant: the top of the stack is a leaf node.
 
                 var (nLeaf, _) = stack.Pop();
-                var leaf = (LeafNode) nLeaf;
+                var leaf = (LeafNode)nLeaf;
                 for (int i = 0; i < leaf.count; ++i)
                 {
                     if (myVersion != this.version)
@@ -537,7 +548,7 @@ namespace Reko.Core.Lib
                 {
                     // Find a parent who is not exhausted. Then find the deepest leaf node.
                     var (nParent, iParent) = stack.Pop();
-                    var parent = (InternalNode) nParent;
+                    var parent = (InternalNode)nParent;
                     ++iParent;
                     if (iParent < parent.count)
                     {
@@ -617,7 +628,7 @@ namespace Reko.Core.Lib
             }
         }
 
-        bool ICollection<KeyValuePair<TKey,TValue>>.Remove(KeyValuePair<TKey, TValue> item)
+        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
             throw new NotImplementedException();
         }
@@ -634,6 +645,193 @@ namespace Reko.Core.Lib
             return found;
         }
 
+        public bool TryGetLowerBound(TKey key, out TValue value)
+        {
+            var cmp = this.Comparer;
+            int lo = 0;
+            int hi = this.Count - 1;
+            value = default(TValue);
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                var k = this.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    value = this.Values[mid];
+                    return true;
+                }
+                if (c < 0)
+                {
+                    value = this.Values[mid];
+                    set = true;
+                    lo = mid + 1;
+                }
+                else
+                {
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
+
+        public bool TryGetUpperBound(TKey key, out TValue value)
+        {
+            var cmp = this.Comparer;
+            int lo = 0;
+            int hi = this.Count - 1;
+            value = default(TValue);
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                var k = this.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    value = this.Values[mid];
+                    return true;
+                }
+                if (c > 0)
+                {
+                    value = this.Values[mid];
+                    set = true;
+                    hi = mid - 1;
+                }
+                else
+                {
+                    lo = mid + 1;
+                }
+            }
+            return set;
+        }
+
+        public bool TryGetLowerBoundKey(TKey key, out TKey closestKey)
+        {
+            var cmp = this.Comparer;
+            int lo = 0;
+            int hi = this.Count - 1;
+            closestKey = default(TKey);
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                var k = this.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    closestKey = k;
+                    return true;
+                }
+                if (c < 0)
+                {
+                    closestKey = k;
+                    set = true;
+                    lo = mid + 1;
+                }
+                else
+                {
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
+
+        public bool TryGetUpperBoundKey(TKey key, out TKey closestKey)
+        {
+            var cmp = this.Comparer;
+            int lo = 0;
+            int hi = this.Count - 1;
+            closestKey = default(TKey);
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                var k = this.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    closestKey = k;
+                    return true;
+                }
+                if (c < 0)
+                {
+                    lo = mid + 1;
+                }
+                else
+                {
+                    closestKey = k;
+                    set = true;
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
+
+        public bool TryGetLowerBoundIndex(TKey key, out int closestIndex)
+        {
+            var cmp = this.Comparer;
+            int lo = 0;
+            int hi = this.Count - 1;
+            closestIndex = -1;
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                var k = this.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    closestIndex = mid;
+                    return true;
+                }
+                if (c < 0)
+                {
+                    lo = mid + 1;
+                    closestIndex = mid;
+                    set = true;
+                }
+                else
+                {
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
+
+        public bool TryGetUpperBoundIndex(TKey key, out int closestIndex)
+        {
+            var cmp = this.Comparer;
+            int lo = 0;
+            int hi = this.Count - 1;
+            closestIndex = -1;
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                var k = this.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    closestIndex = mid;
+                    return true;
+                }
+                if (c < 0)
+                {
+                    lo = mid + 1;
+                }
+                else
+                {
+                    closestIndex = mid;
+                    set = true;
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
+
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -649,7 +847,7 @@ namespace Reko.Core.Lib
                 0, 0);
         }
 
-        private KeyValuePair<TKey,TValue> GetEntry(int index)
+        private KeyValuePair<TKey, TValue> GetEntry(int index)
         {
             if (0 <= index && index < this.Count)
             {
@@ -678,7 +876,7 @@ namespace Reko.Core.Lib
         private InternalNode NewInternalRoot(Node left, Node right)
         {
             var intern = new InternalNode(
-                new TKey[InternalNodeChildren], 
+                new TKey[InternalNodeChildren],
                 new Node[InternalNodeChildren],
                 2,
                 left.totalCount + right.totalCount);
@@ -735,11 +933,15 @@ namespace Reko.Core.Lib
         [Conditional("DEBUG")]
         private void Validate(Node node)
         {
-            Dump();
+            if (!trace.TraceVerbose)
+                return;
             if (node is LeafNode leaf)
             {
                 if (leaf.totalCount != leaf.count)
+                {
+                    Dump();
                     throw new InvalidOperationException($"Leaf node {leaf} has mismatched counts.");
+                }
             }
             else if (node is InternalNode intern)
             {
@@ -773,7 +975,7 @@ namespace Reko.Core.Lib
             public bool IsReadOnly => true;
 
             public abstract T this[int index] { get; }
-            
+
             public void Add(T item)
             {
                 throw new NotSupportedException();
@@ -803,7 +1005,7 @@ namespace Reko.Core.Lib
 
         public class KeyCollection : Collection<TKey>
         {
-            internal KeyCollection(ConcurrentBTreeDictionary<TKey, TValue> btree) : 
+            internal KeyCollection(ConcurrentBTreeDictionary<TKey, TValue> btree) :
                 base(btree)
             {
             }

@@ -35,8 +35,6 @@ namespace Reko.UnitTests.Core.Lib
             var btree = new ConcurrentBTreeDictionary<string, int>();
             foreach (var item in items)
             {
-                if (btree.Count == 22)
-                    btree.ToString();    //$DEBUG
                 btree.Add(item.ToString(), item);
             }
             return btree;
@@ -297,7 +295,7 @@ namespace Reko.UnitTests.Core.Lib
             var items = btree.Keys.ToArray();
             for (int i = 0; i < btree.Count; ++i)
             {
-                Assert.AreEqual(items[i], btree.Keys[i]);
+                Assert.AreEqual(items[i], btree.Keys[i], $"Failed at index {i}");
             }
         }
 
@@ -349,18 +347,17 @@ namespace Reko.UnitTests.Core.Lib
         [Test]
         public void CBTree_Remove_Exercise()
         {
-            var btree = Given_Dictionary(Enumerable.Range(0, 40));
-            foreach (var n in Enumerable.Range(0, 40))
+            const int Number = 300;
+            var btree = Given_Dictionary(Enumerable.Range(0, Number));
+            foreach (var n in Enumerable.Range(0, Number))
             {
-                if (n == 17) //$DEBUG
-                    n.ToString();
                 Assert.IsTrue(btree.Remove(n.ToString()), $"Failed to remove key \"{n}\"");
             }
-            foreach (var n in Enumerable.Range(0, 40))
+            foreach (var n in Enumerable.Range(0, Number))
             {
                 btree.Add(n.ToString(), n);
             }
-            Assert.AreEqual(40, btree.Count);
+            Assert.AreEqual(Number, btree.Count);
         }
     }
 }
