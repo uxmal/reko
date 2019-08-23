@@ -112,7 +112,7 @@ Options:
                     return 1;
                 }
             }
-            var xWriter = new XmlTextWriter(output, Encoding.UTF8)
+            var xWriter = new XmlTextWriter(new StreamWriter(output, new UTF8Encoding(false)))
             {
                 Formatting = Formatting.Indented
             };
