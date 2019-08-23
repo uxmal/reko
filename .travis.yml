@@ -28,5 +28,6 @@ script:
   - msbuild /version
   - msbuild /restore /p:Configuration=UnixRelease /p:Platform=x64 /verbosity:minimal src/Reko-decompiler.sln
   - od -t x1 ./src/UnitTests/bin/x64/UnixRelease/msvcrt.xml | head
+  - head ./src/UnitTests/bin/x64/UnixRelease/msvcrt.xml
   - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./src/UnitTests/bin/x64/UnixRelease/Reko.UnitTests.dll --where="cat != FailedTests && cat != UserInterface"
   - python ./subjects/regressionTests.py --check-output --platform=x64 --configuration=UnixRelease
