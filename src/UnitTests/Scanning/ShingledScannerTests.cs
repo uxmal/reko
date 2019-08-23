@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Scanning
             Given_Mips_Image(0x00001403);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.Size, 0);
+            var scseg = sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
             Assert.AreEqual(new byte[] { 0 }, TakeEach(scseg, 4));
         }
 
@@ -211,7 +211,7 @@ namespace Reko.UnitTests.Scanning
             Given_Mips_Image(0x03E00008, 0);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.Size, 0);
+            var scseg = sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
             Assert.AreEqual(new byte[] { 1, 0 }, TakeEach(scseg, 4));
         }
 
@@ -225,7 +225,7 @@ namespace Reko.UnitTests.Scanning
                 0);             // nop
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.Size, 0);
+            var scseg = sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
             Assert.AreEqual(new byte[] { 1, 1, 1, 0, }, TakeEach(scseg, 4));
         }
 
@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
 
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = this.sh.ScanRange(seg.MemoryArea, seg.Address, seg.Size, 0);
+            var scseg = this.sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
             Assert.AreEqual(new byte[]
                 {
                     0, 0, 0, 0, 0

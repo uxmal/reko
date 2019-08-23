@@ -290,6 +290,31 @@ namespace Reko.Arch.Arm
             return Address.TryParse32(txtAddress, out addr);
         }
 
+        public static PrimitiveType VectorElementDataType(ArmVectorData elemType)
+        {
+            switch (elemType)
+            {
+            case ArmVectorData.I8: return PrimitiveType.SByte;
+            case ArmVectorData.S8: return PrimitiveType.SByte;
+            case ArmVectorData.U8: return PrimitiveType.Byte;
+            case ArmVectorData.F16: return PrimitiveType.Real16;
+            case ArmVectorData.I16: return PrimitiveType.Int16;
+            case ArmVectorData.S16: return PrimitiveType.Int16;
+            case ArmVectorData.U16: return PrimitiveType.UInt16;
+            case ArmVectorData.F32: return PrimitiveType.Real32;
+            case ArmVectorData.I32: return PrimitiveType.Int32;
+            case ArmVectorData.S32: return PrimitiveType.Int32;
+            case ArmVectorData.U32: return PrimitiveType.UInt32;
+            case ArmVectorData.F64: return PrimitiveType.Real64;
+            case ArmVectorData.I64: return PrimitiveType.Int64;
+            case ArmVectorData.S64: return PrimitiveType.Int64;
+            case ArmVectorData.U64: return PrimitiveType.UInt64;
+            default: throw new ArgumentException(nameof(elemType));
+            }
+        }
+
+
+
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]
         public static extern IntPtr CreateNativeArchitecture(
             [MarshalAs(UnmanagedType.LPStr)] string archName);

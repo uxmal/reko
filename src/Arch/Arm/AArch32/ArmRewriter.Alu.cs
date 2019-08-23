@@ -195,10 +195,14 @@ namespace Reko.Arch.Arm.AArch32
                 op(dst, src)));
         }
 
-        private void RewriteCrc(string fnName)
+        private void RewriteCrc(string fnName, DataType dt)
         {
             var src1 = this.Operand(Src1());
             var src2 = this.Operand(Src2());
+            if (src1.DataType.BitSize > dt.BitSize)
+            {
+                src2 = EmitNarrowingSlice(src2, dt);
+            }
             var dst = this.Operand(Dst());
             var intrinsic = host.PseudoProcedure(fnName, PrimitiveType.UInt32, src1, src2);
             m.Assign(dst, intrinsic);
@@ -555,12 +559,21 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewritePld()
+        private void RewritePk(string name)
+        {
+            var src1 = Operand(Src1());
+            var src2 = Operand(Src2());
+            var dst = Operand(Dst());
+            m.Assign(dst, host.PseudoProcedure(name, dst.DataType, src1, src2));
+        }
+
+        private void RewritePld(string name)
         {
             var dst = ((MemoryAccess) this.Operand(Dst())).EffectiveAddress;
-               m.SideEffect(host.PseudoProcedure("__pld",
-                VoidType.Instance,
-                dst));
+               m.SideEffect(host.PseudoProcedure(
+                   name,
+                   VoidType.Instance,
+                   dst));
         }
 
         private void RewritePop()
@@ -597,6 +610,16 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(
                 Q(),
                 m.Cond(dst));
+        }
+
+        private void RewriteQasx(string name)
+        {
+            var src1 = Operand(Src1());
+            var src2 = Operand(Src2());
+            var dst = Operand(Dst());
+            var dtArray = new ArrayType(PrimitiveType.Int16, 2);
+            var qasx = host.PseudoProcedure(name, dtArray, src1, src2);
+            m.Assign(dst, qasx);
         }
 
         private void RewriteQDAddSub(Func<Expression, Expression, Expression> op)

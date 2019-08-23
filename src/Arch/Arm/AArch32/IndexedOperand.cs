@@ -18,28 +18,35 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Core.Rtl
+namespace Reko.Arch.Arm.AArch32
 {
-    public class RtlGoto : RtlTransfer
+    /// <summary>
+    /// Models an ARM indexed SIMD register.
+    /// </summary>
+    public class IndexedOperand : MachineOperand
     {
-        public RtlGoto(Expression target, InstrClass rtlClass) : base(target, rtlClass)
+        public IndexedOperand(PrimitiveType dt, RegisterStorage reg, int index) : base(dt)
         {
+            this.Register = reg;
+            this.Index = index;
         }
 
-        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
-        {
-            return visitor.VisitGoto(this);
-        }
+        public RegisterStorage Register { get; }
 
-        protected override void WriteInner(TextWriter writer)
+        public int Index { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("goto {0}", Target);
+            writer.WriteFormat("{0}[{1}]", Register.Name, Index);
         }
     }
 }

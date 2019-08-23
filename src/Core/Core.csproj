@@ -335,6 +335,7 @@
     <Compile Include="IStorageBinder.cs" />
     <Compile Include="Lib\ArticulationPointFinder.cs" />
     <Compile Include="Lib\Bitfield.cs" />
+    <Compile Include="Lib\ConcurrentBTreeDictionary.cs" />
     <Compile Include="Lib\BTreeDictionary.cs" />
     <Compile Include="Lib\BTreeDictionaryEx.cs" />
     <Compile Include="Lib\Dijkstra.cs" />

@@ -40,12 +40,12 @@ namespace Reko.Core
         public ImageMap(Address addrBase)
         {
             this.BaseAddress = addrBase ?? throw new ArgumentNullException(nameof(addrBase));
-            this.Items = new BTreeDictionary<Address, ImageMapItem>(new ItemComparer());
+            this.Items = new ConcurrentBTreeDictionary<Address, ImageMapItem>(new ItemComparer());
         }
 
         public Address BaseAddress { get; }
 
-        public BTreeDictionary<Address, ImageMapItem> Items { get; }
+        public ConcurrentBTreeDictionary<Address, ImageMapItem> Items { get; }
 
         /// <summary>
         /// Adds an image map item at the specified address. 
@@ -197,9 +197,13 @@ namespace Reko.Core
             long delta = addr - item.Address;
             if (delta == 0)
                 return;
-            
+
             // Need to split the item.
-            var itemNew = new ImageMapItem { Address = addr, Size = (uint)(item.Size - delta) };
+            var itemNew = new ImageMapItem { Address = addr };
+            if (item.Size != 0)
+            {
+                itemNew.Size = (uint) (item.Size - delta);
+            }
             Items.Add(itemNew.Address, itemNew);
 
             item.Size = (uint)delta;
@@ -315,7 +319,7 @@ namespace Reko.Core
 	public class ImageMapItem
 	{
         private uint _size;
-        public uint Size { get { return _size; } set { if ((int)value < 0) throw new ArgumentException(); _size = value; } }
+        public uint Size { get { return _size; } set { if ((int) value < 0) throw new ArgumentException(); _size = value; } }
         public string Name;
         public DataType DataType;
 
