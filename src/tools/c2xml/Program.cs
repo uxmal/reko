@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -57,7 +57,7 @@ Options:
         public int Execute(string [] args)
         {
             TextReader input = Console.In;
-            TextWriter output = Console.Out;
+            Stream output = Console.OpenStandardOutput();
             var sc = new ServiceContainer();
             var rekoCfg = RekoConfigurationService.Load();
             sc.AddService<IConfigurationService>(rekoCfg);
@@ -104,7 +104,7 @@ Options:
             {
                 try
                 {
-                    output = new StreamWriter(options["<outputfile>"].ToString());
+                    output = new FileStream(options["<outputfile>"].ToString(), FileMode.OpenOrCreate, FileAccess.Write);
                 }
                 catch (Exception ex)
                 {
@@ -112,7 +112,7 @@ Options:
                     return 1;
                 }
             }
-            var xWriter = new XmlTextWriter(output)
+            var xWriter = new XmlTextWriter(new StreamWriter(output, new UTF8Encoding(false)))
             {
                 Formatting = Formatting.Indented
             };
@@ -120,6 +120,7 @@ Options:
             XmlConverter c = new XmlConverter(input, xWriter, platform);
             c.Convert();
             output.Flush();
+            output.Close();
             return 0;
         }
 
