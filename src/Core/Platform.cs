@@ -279,8 +279,7 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual SegmentMap CreateAbsoluteMemoryMap()
         {
-            if (this.MemoryMap == null ||
-                  this.MemoryMap.Segments == null)
+            if (this.MemoryMap == null || this.MemoryMap.Segments == null)
                 return null;
             var diagSvc = Services.RequireService<IDiagnosticsService>();
             var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, diagSvc))
