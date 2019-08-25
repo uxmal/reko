@@ -289,5 +289,19 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("[0x00001100,0x00001060,0x00001800]", vs.ToString());
             Assert.AreEqual("([00002080, word32],[00002084, word32],[00002088, word32])", DumpReads(reads));
         }
+
+        [Test(Description = "Fix for GitHub issue #784")]
+        public void Vse_CastOfSlice()
+        {
+            var r0 = m.Reg16("r0", 0);
+            var r1 = m.Reg16("r1", 1);
+            Given_ValueSet(r0, IVS(1, 0, 3));
+            Given_ValueSet(r1, ValueSet.Any);
+            Given_Evaluator();
+
+            var exp = m.Cast(PrimitiveType.Int16, m.Seq(r1, r0));
+            var (vs, reads) = vse.Evaluate(exp);
+            Assert.AreEqual("1[0,3]", vs.ToString());
+        }
     }
 }

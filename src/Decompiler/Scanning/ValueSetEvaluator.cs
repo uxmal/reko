@@ -151,7 +151,23 @@ namespace Reko.Scanning
         {
             if (this.context.TryGetValue(cast, out ValueSet vs))
                 return vs;
-            vs = cast.Expression.Accept(this);
+            if (cast.Expression is MkSequence seq)
+            {
+                int cbitsTotal = 0;
+                var values = new List<ValueSet>();
+                for (int i = seq.Expressions.Length - 1; i >= 0 && cbitsTotal < cast.DataType.BitSize; --i)
+                {
+                    var vsElem = seq.Expressions[i].Accept(this);
+                    values.Add(vsElem);
+                    cbitsTotal += seq.Expressions[i].DataType.BitSize;
+                }
+                values.Reverse();
+                vs = EvaluateSequence(cast.DataType, values.ToArray());
+            }
+            else
+            {
+                vs = cast.Expression.Accept(this);
+            }
             if (cast.DataType.BitSize == cast.Expression.DataType.BitSize)
             {
                 // no-op!
@@ -283,11 +299,18 @@ namespace Reko.Scanning
 
         public ValueSet VisitMkSequence(MkSequence seq)
         {
-            var consts = new Expression[seq.Expressions.Length];
-            for (int i = 0; i < seq.Expressions.Length - 1; ++i)
+            var valuesets = seq.Expressions.Select(e => e.Accept(this)).ToArray();
+            return EvaluateSequence(seq.DataType, valuesets);
+        }
+
+        private ValueSet EvaluateSequence(DataType dt, ValueSet[] valuesets)
+        {
+            if (valuesets.Length == 1)
+                return valuesets[0];
+            var consts = new Expression[valuesets.Length];
+            for (int i = 0; i < valuesets.Length - 1; ++i)
             {
-                var e = seq.Expressions[i];
-                var va = e.Accept(this);
+                var va = valuesets[i];
                 if (va == ValueSet.Any)
                     return va;
                 var aVa = va.Values.ToArray();
@@ -299,11 +322,11 @@ namespace Reko.Scanning
                     return ValueSet.Any;
             }
 
-            var vsTail = seq.Expressions.Last().Accept(this);
+            var vsTail = valuesets[valuesets.Length - 1];
             return new ConcreteValueSet(
                 vsTail.DataType,
                 vsTail.Values
-                      .Select(v => MakeSequence(seq.DataType, consts, v))
+                      .Select(v => MakeSequence(dt, consts, v))
                       .ToArray());
         }
 
