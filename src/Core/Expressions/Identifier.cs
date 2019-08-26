@@ -43,6 +43,11 @@ namespace Reko.Core.Expressions
 			this.Storage = stg;
 		}
 
+        public static Identifier Create(RegisterStorage reg)
+        {
+            return new Identifier(reg.Name, reg.DataType, reg);
+        }
+
         public static Identifier CreateTemporary(string name, DataType dt)
         {
             var tmp = new TemporaryStorage(name, 0, dt);

@@ -104,7 +104,7 @@ Options:
             {
                 try
                 {
-                    output = new FileStream(options["<outputfile>"].ToString(), FileMode.OpenOrCreate, FileAccess.Write);
+                    output = new FileStream(options["<outputfile>"].ToString(), FileMode.Create, FileAccess.Write);
                 }
                 catch (Exception ex)
                 {

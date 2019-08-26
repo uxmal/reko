@@ -36,7 +36,7 @@ using System.Text;
 namespace Reko.Scanning
 {
     /// <summary>
-    /// Traces a backward slice in a (pontentially partial)
+    /// Traces a backward slice in a (potentially partial)
     /// control flow graph, in order to discover the entries of an indirect
     /// call or jump. 
     /// </summary>

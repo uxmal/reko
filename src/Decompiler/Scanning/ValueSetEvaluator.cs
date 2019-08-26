@@ -38,7 +38,7 @@ namespace Reko.Scanning
     /// As a side effect, this evaluator tracks memory accesses and generates
     /// type information about them.
     /// </remarks>
-    public class ValueSetEvaluator : ExpressionVisitor<ValueSet>
+    public class ValueSetEvaluator : ExpressionVisitor<ValueSet, BitRange>
     {
         private const int MaxTransferTableEntries = 2000;
 
@@ -61,26 +61,27 @@ namespace Reko.Scanning
 
         public (ValueSet, Dictionary<Address,DataType>) Evaluate(Expression expr)
         {
-            var values = expr.Accept(this);
+            var bitrange = new BitRange(0, (short)expr.DataType.BitSize);
+            var values = expr.Accept(this, bitrange);
             return (values, this.memAccesses);
         }
 
-        public ValueSet VisitAddress(Address addr)
+        public ValueSet VisitAddress(Address addr, BitRange bitRange)
         {
             return new ConcreteValueSet(addr.DataType, addr.ToConstant());
         }
 
-        public ValueSet VisitApplication(Application appl)
+        public ValueSet VisitApplication(Application appl, BitRange bitRange)
         {
             return IntervalValueSet.Any;
         }
 
-        public ValueSet VisitArrayAccess(ArrayAccess acc)
+        public ValueSet VisitArrayAccess(ArrayAccess acc, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitBinaryExpression(BinaryExpression binExp)
+        public ValueSet VisitBinaryExpression(BinaryExpression binExp, BitRange bitRange)
         {
             var cLeft = binExp.Left as Constant;
             var cRight = binExp.Right as Constant;
@@ -102,7 +103,7 @@ namespace Reko.Scanning
 
             if (cLeft == null && cRight != null)
             {
-                var left = binExp.Left.Accept(this);
+                var left = binExp.Left.Accept(this, bitRange);
                 if (binExp.Operator == Operator.IAdd)
                 {
                     return left.Add(cRight);
@@ -126,7 +127,7 @@ namespace Reko.Scanning
             }
             if (cRight == null && cLeft != null)
             {
-                var right = binExp.Right.Accept(this);
+                var right = binExp.Right.Accept(this, bitRange);
                 if (binExp.Operator == Operator.IAdd)
                 {
                     return right.Add(cLeft);
@@ -140,18 +141,19 @@ namespace Reko.Scanning
             {
                 if (cmp.Equals(binExp.Left, binExp.Right))
                 {
-                    var left = binExp.Left.Accept(this);
+                    var left = binExp.Left.Accept(this, bitRange);
                     return left.Shl(Constant.Int32(1));
                 }
             }
             return IntervalValueSet.Any;
         }
 
-        public ValueSet VisitCast(Cast cast)
+        public ValueSet VisitCast(Cast cast, BitRange bitRange)
         {
             if (this.context.TryGetValue(cast, out ValueSet vs))
                 return vs;
-            vs = cast.Expression.Accept(this);
+            var bitRangeNarrow = new BitRange(0, (short)cast.DataType.BitSize);
+            vs = cast.Expression.Accept(this, bitRangeNarrow);
             if (cast.DataType.BitSize == cast.Expression.DataType.BitSize)
             {
                 // no-op!
@@ -168,37 +170,37 @@ namespace Reko.Scanning
             return vs.ZeroExtend(cast.DataType);
         }
 
-        public ValueSet VisitConditionalExpression(ConditionalExpression cond)
+        public ValueSet VisitConditionalExpression(ConditionalExpression cond, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitConditionOf(ConditionOf cof)
+        public ValueSet VisitConditionOf(ConditionOf cof, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitConstant(Constant c)
+        public ValueSet VisitConstant(Constant c, BitRange bitRange)
         {
             return new ConcreteValueSet(c.DataType, c);
         }
 
-        public ValueSet VisitDepositBits(DepositBits d)
+        public ValueSet VisitDepositBits(DepositBits d, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitDereference(Dereference deref)
+        public ValueSet VisitDereference(Dereference deref, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitFieldAccess(FieldAccess acc)
+        public ValueSet VisitFieldAccess(FieldAccess acc, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitIdentifier(Identifier id)
+        public ValueSet VisitIdentifier(Identifier id, BitRange bitRange)
         {
             if (context.TryGetValue(id, out ValueSet vs))
                 return vs;
@@ -207,7 +209,7 @@ namespace Reko.Scanning
             return new IntervalValueSet(id.DataType, StridedInterval.Empty);
         }
 
-        public ValueSet VisitMemberPointerSelector(MemberPointerSelector mps)
+        public ValueSet VisitMemberPointerSelector(MemberPointerSelector mps, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
@@ -218,13 +220,14 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="access"></param>
         /// <returns></returns>
-        public ValueSet VisitMemoryAccess(MemoryAccess access)
+        public ValueSet VisitMemoryAccess(MemoryAccess access, BitRange bitRange)
         {
             if (context.TryGetValue(access, out ValueSet value))
             {
                 return value;
             }
-            var vs = access.EffectiveAddress.Accept(this);
+            var eaRange = new BitRange(0, (short)access.EffectiveAddress.DataType.BitSize);
+            var vs = access.EffectiveAddress.Accept(this, eaRange);
             return new ConcreteValueSet(
                 access.DataType,
                 vs.Values
@@ -281,13 +284,31 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitMkSequence(MkSequence seq)
+        public ValueSet VisitMkSequence(MkSequence seq, BitRange bitRange)
         {
-            var consts = new Expression[seq.Expressions.Length];
-            for (int i = 0; i < seq.Expressions.Length - 1; ++i)
+            if (bitRange.begin > 0)
             {
-                var e = seq.Expressions[i];
-                var va = e.Accept(this);
+                // We seldom encounter this. If we do, we write the code accordingly.
+                return ValueSet.Any;
+            }
+            var valuesets = new List<ValueSet>();
+            int nTotalBits = 0;
+            for (int i = seq.Expressions.Length-1; i >= 0 && nTotalBits < bitRange.end; --i)
+            {
+                var elem = seq.Expressions[i];
+                var elemRange = new BitRange(0, Math.Min((short) elem.DataType.BitSize, (short) (bitRange.end - nTotalBits)));
+                var vs = elem.Accept(this, elemRange);
+                valuesets.Add(vs);
+                nTotalBits += elem.DataType.BitSize;
+            }
+            if (valuesets.Count == 1)
+                return valuesets[0];
+
+            valuesets.Reverse();
+            var consts = new Expression[valuesets.Count];
+            for (int i = 0; i < valuesets.Count - 1; ++i)
+            {
+                var va = valuesets[i];
                 if (va == ValueSet.Any)
                     return va;
                 var aVa = va.Values.ToArray();
@@ -299,7 +320,7 @@ namespace Reko.Scanning
                     return ValueSet.Any;
             }
 
-            var vsTail = seq.Expressions.Last().Accept(this);
+            var vsTail = valuesets[valuesets.Count - 1];
             return new ConcreteValueSet(
                 vsTail.DataType,
                 vsTail.Values
@@ -321,22 +342,22 @@ namespace Reko.Scanning
             return new MkSequence(dataType, exps);
         }
 
-        public ValueSet VisitOutArgument(OutArgument outArgument)
+        public ValueSet VisitOutArgument(OutArgument outArgument, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitPhiFunction(PhiFunction phi)
+        public ValueSet VisitPhiFunction(PhiFunction phi, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitPointerAddition(PointerAddition pa)
+        public ValueSet VisitPointerAddition(PointerAddition pa, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitProcedureConstant(ProcedureConstant pc)
+        public ValueSet VisitProcedureConstant(ProcedureConstant pc, BitRange bitRange)
         {
             Address addr;
             switch (pc.Procedure)
@@ -350,20 +371,20 @@ namespace Reko.Scanning
             }
         }
 
-        public ValueSet VisitScopeResolution(ScopeResolution scopeResolution)
+        public ValueSet VisitScopeResolution(ScopeResolution scopeResolution, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitSegmentedAccess(SegmentedAccess access)
+        public ValueSet VisitSegmentedAccess(SegmentedAccess access, BitRange bitRange)
         {
             if (context.TryGetValue(access, out ValueSet value))
             {
                 return value;
             }
-            var vs = access.EffectiveAddress.Accept(this);
+            var vs = access.EffectiveAddress.Accept(this, bitRange);
 
-            var vaSeg = access.BasePointer.Accept(this);
+            var vaSeg = access.BasePointer.Accept(this, bitRange);
             if (vaSeg == ValueSet.Any)
                 return vaSeg;
             var segs = vaSeg.Values.ToArray();
@@ -373,7 +394,7 @@ namespace Reko.Scanning
             if (cSeg == null)
                 return ValueSet.Any;
 
-            var vsOff = access.EffectiveAddress.Accept(this);
+            var vsOff = access.EffectiveAddress.Accept(this, bitRange);
             return new ConcreteValueSet(
                 vsOff.DataType,
                 vsOff.Values
@@ -381,17 +402,39 @@ namespace Reko.Scanning
                     .ToArray());
         }
 
-        public ValueSet VisitSlice(Slice slice)
+        public ValueSet VisitSlice(Slice slice, BitRange bitRange)
+        {
+            if (slice.Offset != 0)
+            {
+                // This rarely occurs in real-world code. We punt the implementation to when
+                // it becomes necessary.
+                return ValueSet.Any;
+            }
+            var bitRangeNarrow = new BitRange((short)slice.Offset, (short) (slice.Offset + slice.DataType.BitSize));
+            ValueSet vs = slice.Expression.Accept(this, bitRangeNarrow);
+
+            if (slice.DataType.BitSize == slice.Expression.DataType.BitSize)
+            {
+                // no-op!
+                return vs;
+            }
+            if (slice.DataType.BitSize < slice.Expression.DataType.BitSize)
+            {
+                return vs.Truncate(slice.DataType);
+            }
+            if (slice.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+            {
+                return vs.SignExtend(slice.DataType);
+            }
+            return vs.ZeroExtend(slice.DataType);
+        }
+
+        public ValueSet VisitTestCondition(TestCondition tc, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitTestCondition(TestCondition tc)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ValueSet VisitUnaryExpression(UnaryExpression unary)
+        public ValueSet VisitUnaryExpression(UnaryExpression unary, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
