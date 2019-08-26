@@ -58,7 +58,7 @@ l000080:
 		TBLPTRH_n = globals->b00C8;
 		TBLPTRU_n = globals->b00C9;
 		0x00->b00C5 = 0x00->b00C5 - 0x01;
-		0x00->b00C6 = 0x00->b00C6 - !SLICE(cond(0x00->b00C5), bool, 0);
+		0x00->b00C6 = 0x00->b00C6 - !((bool) cond(0x00->b00C5));
 		Z_n = SLICE(cond(0x00->b00C6), bool, 2);
 	}
 	while (true)

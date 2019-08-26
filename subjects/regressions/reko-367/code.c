@@ -16,7 +16,7 @@ real96 fn80000132(real96 rArg04, real96 rArg10)
 	real96 fp0_n = *(real96 *) 0x800004FC;
 	word32 dwLoc10_n = SLICE(fp0_n, word32, 64);
 	word32 dwLoc0C_n = SLICE(fp0_n, word32, 32);
-	word32 dwLoc08_n = SLICE(fp0_n, word32, 0);
+	word32 dwLoc08_n = (word32) fp0_n;
 	word32 dwLoc14_n = 0x00;
 	while (true)
 	{
@@ -26,7 +26,7 @@ real96 fn80000132(real96 rArg04, real96 rArg10)
 		real96 fp0_n = rLoc10_n * rArg04;
 		dwLoc10_n = SLICE(fp0_n, word32, 64);
 		dwLoc0C_n = SLICE(fp0_n, word32, 32);
-		dwLoc08_n = SLICE(fp0_n, word32, 0);
+		dwLoc08_n = (word32) fp0_n;
 		++dwLoc14_n;
 	}
 	return SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
@@ -38,7 +38,7 @@ real96 fn8000018E(real96 rArg04)
 	real96 fp0_n = *(real96 *) 0x80000508;
 	word32 dwLoc10_n = SLICE(fp0_n, word32, 64);
 	word32 dwLoc0C_n = SLICE(fp0_n, word32, 32);
-	word32 dwLoc08_n = SLICE(fp0_n, word32, 0);
+	word32 dwLoc08_n = (word32) fp0_n;
 	int32 dwLoc14_n = 0x01;
 	while (true)
 	{
@@ -48,7 +48,7 @@ real96 fn8000018E(real96 rArg04)
 		real96 fp1_n = rLoc10_n * (real80) ((real96) dwLoc14_n);
 		dwLoc10_n = SLICE(fp1_n, word32, 64);
 		dwLoc0C_n = SLICE(fp1_n, word32, 32);
-		dwLoc08_n = SLICE(fp1_n, word32, 0);
+		dwLoc08_n = (word32) fp1_n;
 		++dwLoc14_n;
 	}
 	return SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
@@ -59,7 +59,7 @@ real96 fn800001F2(real96 rArg04)
 {
 	word32 dwLoc10_n = SLICE(rArg04, word32, 64);
 	word32 dwLoc0C_n = SLICE(rArg04, word32, 32);
-	word32 dwLoc08_n = SLICE(rArg04, word32, 0);
+	word32 dwLoc08_n = (word32) rArg04;
 	real96 rLoc1C_n = *(real96 *) 0x80000514;
 	int32 dwLoc20_n = 0x03;
 	while (true)
@@ -71,7 +71,7 @@ real96 fn800001F2(real96 rArg04)
 		real96 fp1_n = rLoc10_n + (real80) fp0_n;
 		dwLoc10_n = SLICE(fp1_n, word32, 64);
 		dwLoc0C_n = SLICE(fp1_n, word32, 32);
-		dwLoc08_n = SLICE(fp1_n, word32, 0);
+		dwLoc08_n = (word32) fp1_n;
 		rLoc1C_n = fp0_n;
 		dwLoc20_n += 0x02;
 	}
@@ -84,7 +84,7 @@ real96 fn800002AE(real96 rArg04)
 	real96 fp0_n = *(real96 *) 0x80000520;
 	word32 dwLoc10_n = SLICE(fp0_n, word32, 64);
 	word32 dwLoc0C_n = SLICE(fp0_n, word32, 32);
-	word32 dwLoc08_n = SLICE(fp0_n, word32, 0);
+	word32 dwLoc08_n = (word32) fp0_n;
 	real96 rLoc1C_n = *(real96 *) 0x8000052C;
 	int32 dwLoc20_n = 0x02;
 	while (true)
@@ -96,7 +96,7 @@ real96 fn800002AE(real96 rArg04)
 		real96 fp1_n = rLoc10_n + (real80) fp0_n;
 		dwLoc10_n = SLICE(fp1_n, word32, 64);
 		dwLoc0C_n = SLICE(fp1_n, word32, 32);
-		dwLoc08_n = SLICE(fp1_n, word32, 0);
+		dwLoc08_n = (word32) fp1_n;
 		rLoc1C_n = fp0_n;
 		dwLoc20_n += 0x02;
 	}

@@ -1710,7 +1710,7 @@ l54FC:
 					r8 = v80_n & 0x30;
 					if ((v80_n & 0x30) == 0x00)
 					{
-						word20 r13_n = (int16) (Mem630[sp_n + 0x2F:byte] - SLICE(r11_n, byte, 0));
+						word20 r13_n = (int16) (Mem630[sp_n + 0x002F:byte] - SLICE(r11_n, byte, 0));
 						if (r13_n >= 0x01)
 						{
 							word20 r15_n;
@@ -1738,7 +1738,7 @@ l54FC:
 l5576:
 					if ((v80_n & 0x30) == 0x20)
 					{
-						word20 r13_n = (int16) (Mem759[sp_n + 0x2F:byte] - SLICE(r11_n, byte, 0));
+						word20 r13_n = (int16) (Mem759[sp_n + 0x002F:byte] - SLICE(r11_n, byte, 0));
 						if (r13_n >= 0x01)
 						{
 							word20 r15_n;
@@ -1758,7 +1758,7 @@ l5576:
 						goto l5924;
 					if ((Mem759[sp_n + 0x002E:byte] & 0x10) == 0x00)
 						goto l53A6;
-					word20 r13_n = (int16) (Mem759[sp_n + 0x2F:byte] - SLICE(r11, byte, 0));
+					word20 r13_n = (int16) (Mem759[sp_n + 0x002F:byte] - SLICE(r11, byte, 0));
 					if (r13_n < 0x01)
 						goto l53A6;
 					word20 r15_n;

@@ -127,19 +127,18 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 {
-	word32 dwArg04_n = SLICE(rArg04, word32, 0);
 	word32 dwArg08_n = SLICE(rArg04, word32, 32);
 	int32 dwLoc08_n = 0x03;
 	while (dwLoc08_n - dwArg0C <= 0x00)
 	{
-		pow_int(SEQ(dwArg04_n, dwArg08_n), dwLoc08_n);
+		pow_int(SEQ((word32) rArg04, dwArg08_n), dwLoc08_n);
 		factorial(dwLoc08_n);
 		dwLoc08_n += 0x04;
 	}
 	int32 dwLoc08_n = 0x05;
 	while (dwLoc08_n - dwArg0C <= 0x00)
 	{
-		pow_int(SEQ(dwArg04_n, dwArg08_n), dwLoc08_n);
+		pow_int(SEQ((word32) rArg04, dwArg08_n), dwLoc08_n);
 		factorial(dwLoc08_n);
 		dwLoc08_n += 0x04;
 	}
@@ -155,9 +154,8 @@ void main()
 // 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_n tArg14)
 void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 {
-	word32 dwArg04_n = SLICE(rArg04, word32, 0);
 	word32 dwArg08_n = SLICE(rArg04, word32, 32);
-	real64 rLoc0C_n = SEQ(dwArg04_n, dwArg08_n);
+	real64 rLoc0C_n = SEQ((word32) rArg04, dwArg08_n);
 	real64 v9_n = (real64) ((real96) rLoc0C_n * rLoc0C_n);
 	word32 dwLoc20_n = 0x02;
 	real64 rLoc14_n = 1.0;

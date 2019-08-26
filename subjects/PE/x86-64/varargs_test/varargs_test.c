@@ -278,7 +278,7 @@ word32 fn0000000140001448(Eq_n tArg00, Eq_n tArg08)
 word64 fn000000014000147C(Eq_n rcx, word64 rbx, word64 rsi, word64 rdi, word64 qwArg00, ptr64 & rcxOut, ptr64 & rdxOut, ptr64 & r8Out)
 {
 	word64 qwLoc38_n = SEQ(dwLoc34, tLoc38);
-	Eq_n tLoc38_n = SLICE(qwLoc38_n, DWORD, 0);
+	Eq_n tLoc38_n = (DWORD) qwLoc38_n;
 	if (IsProcessorFeaturePresent(tLoc38) == 0x00)
 	{
 		fn0000000140001550(&globals->t400030E0, rbx, rsi, rdi, qwLoc38_n);
@@ -603,7 +603,7 @@ Eq_n fn0000000140001974(word32 ecx, int32 * rbx, ptr64 rbp, Eq_n qwArg00, word64
 {
 	Eq_n ptrLoc05C8_n = SEQ(dwLoc05C4, tLoc05C8);
 	word32 ebx_n = (word32) (uint64) ecx;
-	Eq_n tLoc05C8_n = SLICE(ptrLoc05C8_n, DWORD, 0);
+	Eq_n tLoc05C8_n = (DWORD) ptrLoc05C8_n;
 	word32 dwLoc05C4_n = SLICE(ptrLoc05C8_n, word32, 32);
 	if (IsProcessorFeaturePresent(tLoc05C8) == 0x00)
 	{
@@ -612,10 +612,7 @@ Eq_n fn0000000140001974(word32 ecx, int32 * rbx, ptr64 rbp, Eq_n qwArg00, word64
 		RtlCaptureContext(ptrLoc05C8_n);
 		Eq_n rax_n = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10, null);
 		if (rax_n != null)
-		{
 			KERNEL32.dll!RtlVirtualUnwind();
-			ptrLoc05C8_n = SEQ(dwLoc05C4_n, tLoc05C8_n);
-		}
 		memset(ptrLoc05C8_n, dwLoc05C0, tLoc05B8);
 		Eq_n eax_n = IsDebuggerPresent();
 		SetUnhandledExceptionFilter(ptrLoc05C8_n);
@@ -721,7 +718,7 @@ void fn0000000140001BFC(word32 edx, Eq_n ebx)
 	ui32 edx_n = (word32) rdx_n;
 	ui32 r8d_n = (word32) (uint64) globals->dw40003614;
 	__cpuid(0x01, 0x00, &0x01, &ebx_n, &0x00, &edx_n);
-	byte bLoc20_n = SLICE(dwLoc20 & 0x00, byte, 0);
+	byte bLoc20_n = (byte) (dwLoc20 & 0x00);
 	word32 r11d_n = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ebx_n ^ 1752462657) | (word32) ((uint64) ((word32) ((uint64) edx) ^ 0x69746E65))) | 0x444D4163);
 	if ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) edx ^ 0x49656E69) | 1818588270) | edx_n) == 0x00)
 	{
@@ -751,7 +748,7 @@ l0000000140001CE9:
 	if (false)
 	{
 		__cpuid(0x07, 0x00, &0x07, &ebx_n, &0x00, &edx_n);
-		bLoc20_n = SLICE(ebx_n, byte, 0);
+		bLoc20_n = (byte) ebx_n;
 		if (!__bt(ebx_n, 0x09))
 			globals->dw40003614 = (word32) (uint64) (r8d_n | 0x02);
 	}

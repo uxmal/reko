@@ -920,7 +920,7 @@ bool fn114A(Eq_n r0, Eq_n r1, union Eq_n & r2Out, union Eq_n & r3Out)
 	Eq_n r2_n;
 	cup16 v10_n = r0 - r1;
 	Eq_n r3_n = 0x00;
-	bool C_n = SLICE(cond(v10_n), bool, 0);
+	bool C_n = (bool) cond(v10_n);
 	if (v10_n < 0x00)
 	{
 		r2_n = r1;
@@ -1105,12 +1105,12 @@ l1224:
 l122E:
 														Eq_n r2_n = __rol(r2_n, r2_n);
 														Eq_n r3_n = r3_n << 0x01;
-														bool C_n = SLICE(cond(r2_n), bool, 0);
+														bool C_n = (bool) cond(r2_n);
 														if (r2_n < 0x00)
 														{
 															r3_n += r1;
 															r2_n += r3_n <u 0x00;
-															C_n = SLICE(cond(r2_n), bool, 0);
+															C_n = (bool) cond(r2_n);
 														}
 														r2Out = r2_n;
 														r3Out = r3_n;

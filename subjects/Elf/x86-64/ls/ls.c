@@ -3939,7 +3939,7 @@ Eq_n fn0000000000407EA0(Eq_n rcx, Eq_n dl, Eq_n rbx, Eq_n rbp, word32 esi, Eq_n 
 	rbp_n = fp - 0x08;
 	r13d_n = (word32) (uint64) esi;
 	rbx_n = rdi;
-	bLoc038C_n = SLICE(edx, byte, 0);
+	bLoc038C_n = (byte) edx;
 	rcx_n = globals->t61B1B0;
 	r9_n = globals->t61B1C0;
 	if (rcx_n == globals->t61B1B8)
@@ -6201,8 +6201,7 @@ Eq_n fn000000000040BD70(Eq_n rcx, word32 edx, Eq_n rsi, Eq_n rdi, Eq_n r8, struc
 	word32 eax_n = (word32) (uint64) ((word32) (uint64) edx & 0x20);
 	Eq_n rax_n = DPB(rax_n, strlen(r15_n), 0);
 	word32 eax_n = (word32) (uint64) ((word32) (uint64) edx & 0x03);
-	byte bLocC8_n = SLICE(edx, byte, 0);
-	word24 nLocC7_n = SLICE(edx, word24, 8);
+	byte bLocC8_n = (byte) edx;
 	ui32 v22_n = ((word32) (uint64) (0x00 - SLICE(cond(eax_n - 0x01), bool, 1)) & ~0x17) + 0x0400;
 	byte * rbp_n = rax_n->ptr0010;
 	Eq_n r11_n = rax_n;
@@ -6423,8 +6422,7 @@ l000000000040C237:
 				}
 				r12_n = rax_n;
 			}
-			word32 dwLocC8_n = SEQ(nLocC7_n, bLocC8_n);
-			byte bLocC8_n = SLICE(dwLocC8_n, byte, 0);
+			byte bLocC8_n = (byte) edx;
 			if ((bLocC8_n & 0x80) != 0x00)
 			{
 				if (ebx_n == ~0x00)
@@ -6445,7 +6443,7 @@ l000000000040C237:
 					else
 						ebx_n = 0x00;
 				}
-				ui32 eax_n = (word32) (uint64) ((word32) (uint64) dwLocC8_n & 0x0100);
+				ui32 eax_n = (word32) (uint64) ((word32) (uint64) edx & 0x0100);
 				if ((word32) (uint64) ((word32) (uint64) ebx_n | eax_n) != 0x00)
 				{
 					if ((bLocC8_n & 0x40) != 0x00)
@@ -7943,9 +7941,9 @@ Eq_n fn000000000040D8A0(Eq_n rcx, Eq_n rdx, Eq_n rbx, Eq_n rbp, Eq_n rsi, Eq_n r
 		{
 			dwLocB4_n = SLICE(qwLocB8, word32, 32);
 			nLocBF = SLICE(qwLocC0_n, word56, 8);
-			bLocC0_n = SLICE(qwLocC0_n, byte, 0);
+			bLocC0_n = (byte) qwLocC0_n;
 			nLocD7_n = SLICE(qwLocD8_n, word56, 8);
-			bLocD8_n = SLICE(qwLocD8_n, byte, 0);
+			bLocD8_n = (byte) qwLocD8_n;
 			ecx_n = (word32) rcx_n;
 			rax_n = DPB(rax_n, al_n, 0);
 			if (al_n == 0x00)
@@ -8084,7 +8082,7 @@ l000000000040E0A0:
 				word32 edx_n = (word32) *((char *) *__ctype_b_loc() + DPB(rdx_n, (word32) r12b_n, 0) * 0x02);
 				rdx_n = (uint64) ((word32) (uint64) (DPB(edx_n, (word16) edx_n >> 0x0E, 0) ^ 0x01) & 0x01);
 				qwLocB8_n = SEQ(dwLocB4_n, r11d_n);
-				dwLocA8 = SLICE(r8_n, word32, 0);
+				dwLocA8 = (word32) r8_n;
 				qwLocB0 = r9_n;
 				r11b_n = (byte) (uint64) r11d_n;
 				rax_n.u0 = 0x01;
@@ -8117,7 +8115,7 @@ l000000000040E0A0:
 				r14_n = rbx_n + rbp_n;
 				word64 r15_n = r8_n + r14_n;
 				Eq_n rax_n = DPB(rbp_n, mbrtowc(fp - 0x4C, r15_n, r15_n - r14_n, fp - 0x48), 0);
-				dwLocA8 = SLICE(r14_n, word32, 0);
+				dwLocA8 = (word32) r14_n;
 				uint64 r12_n = DPB(r12_n, r12d_n, 0);
 				r12_n = DPB(r12_n, r12d_n, 0);
 				r12_n = DPB(r12_n, r12d_n, 0);
@@ -8205,7 +8203,7 @@ l000000000040E0A0:
 						r12_n = r12_n;
 					} while (rdx_n != rax_n);
 				}
-				dwLocA8 = SLICE(r14_n, word32, 0);
+				dwLocA8 = (word32) r14_n;
 				rdi_n = fp - 0x48;
 				if (iswprint((uint64) dwLoc4C) == 0x00)
 				{
@@ -8341,8 +8339,8 @@ l000000000040DB50:
 			r12_n = DPB(r12_n, r12b_n, 0);
 			++rbp_n;
 l000000000040DB54:
-			bLocC0_n = SLICE(qwLocC0_n, byte, 0);
-			bLocD8_n = SLICE(qwLocD8_n, byte, 0);
+			bLocC0_n = (byte) qwLocC0_n;
+			bLocD8_n = (byte) qwLocD8_n;
 			r12_n = DPB(r12_n, r12b_n, 0);
 			r12_n = DPB(r12_n, r12b_n, 0);
 			if (rbx_n < r14_n)
@@ -8812,7 +8810,7 @@ l000000000040EE52:
 										}
 									}
 									r9_n = DPB(r9_n, r9b_n, 0);
-									dwLoc04E0 = SLICE(rbx_n, word32, 0);
+									dwLoc04E0 = (word32) rbx_n;
 									qwLoc04F0 = rcx_n;
 									rsi_n = r15_n;
 									rdi_n = r12_n;
@@ -9065,7 +9063,6 @@ l0000000000410EF0:
 	Eq_n rax_n = __errno_location();
 	*rax_n = 0x00;
 	Eq_n rax_n = DPB(rax_n, strtoul(rdi, r15_n, (uint64) r14d_n), 0);
-	word32 dwLoc4C_n = SLICE(rax_n, word32, 32);
 	Eq_n r14_n = *r15_n;
 	Eq_n rbx_n = rax_n;
 	if (r14_n != rdi)
@@ -9138,7 +9135,7 @@ l0000000000410EF5:
 	}
 	uint64 rcx_n;
 	uint64 rax_n;
-	word64 qwLoc50_n = SEQ(dwLoc4C_n, edx_n);
+	word64 qwLoc50_n = SEQ(SLICE(rax_n, word32, 32), edx_n);
 	Eq_n rbp_n = DPB(rbp_n, ebp_n, 0);
 	word32 edx_n = (word32) (uint64) edx_n;
 	word32 dwLoc4C_n = SLICE(qwLoc50_n, word32, 32);
@@ -9246,7 +9243,6 @@ l00000000004113C0:
 	Eq_n rax_n = __errno_location();
 	*rax_n = 0x00;
 	Eq_n rax_n = DPB(rax_n, __strtoul_internal(rdi, r15_n, (uint64) r14d_n, 0x00), 0);
-	word32 dwLoc4C_n = SLICE(rax_n, word32, 32);
 	Eq_n r14_n = *r15_n;
 	Eq_n rbx_n = rax_n;
 	r8 = rax_n;
@@ -9315,7 +9311,7 @@ l00000000004113C5:
 	}
 	uint64 rcx_n;
 	uint64 rax_n;
-	word64 qwLoc50_n = SEQ(dwLoc4C_n, edx_n);
+	word64 qwLoc50_n = SEQ(SLICE(rax_n, word32, 32), edx_n);
 	word32 edx_n = (word32) (uint64) edx_n;
 	word32 dwLoc4C_n = SLICE(qwLoc50_n, word32, 32);
 	if (strchr(r8, 0x30) == 0x00)

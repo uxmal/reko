@@ -586,9 +586,10 @@ l0800_0336:
 	selector es_32
 	Mem6[0x0800:0x0330:word16] = wArg00
 	Mem9[0x0800:0x0332:word16] = ds
+	word16 si_27 = Mem9[ds:0x008A:word16]
 	selector es_11 = Mem9[ds:0x0090:selector]
 	word16 ax_18 = DPB(DPB(ax, 0x00, 8), Mem9[ds:0x0080:byte], 0)
-	word16 si_27 = Mem9[ds:0x008A:word16]
+	word16 si_221 = si_27 + 0x0002
 	word16 cx_29 = 0x0001
 	es_32 = es_11
 	branch Mem9[ds:0x0092:byte] <u 0x03 l0800_0374
@@ -599,69 +600,153 @@ l0800_0336:
 l0800_0363:
 	es_32 = Mem9[ds:0x008C:selector]
 	word16 di_33 = si_27 + 0x0002
-	word16 cx_106 = 0x007F
+	word16 cx_228 = 0x007F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_036D:
-	branch cx_106 == 0x0000 l0800_036F
+	branch cx_228 == 0x0000 l0800_036F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_036D_1:
-	di_33 = di_156 + 0x0001
-	cx_106 = cx_106 - 0x0001
-	di_156 = di_33
-	branch Mem9[es_32:di_156:byte] == 0x00 l0800_036D
+	di_33 = di_364 + 0x0001
+	cx_228 = cx_228 - 0x0001
+	di_364 = di_33
+	branch Mem9[es_32:di_364:byte] == 0x00 l0800_036D
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_036F:
-	byte cl_50 = (byte) cx_106
-	branch cx_106 == 0x0000 l0800_03E7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_036F_thunk_fn0800_03E7:
-	fn0800_03E7()
-	return
+	byte cl_48 = (byte) cx_228
+	branch cx_228 == 0x0000 l0800_03E7
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_0371:
-	cx_29 = DPB(cx_106, cl_50 ^ 0x7F, 0) (alias)
+	cx_29 = DPB(cx_228, cl_48 ^ 0x7F, 0) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_0374:
-	word16 di_68 = fp - ((ax_18 + 0x0002) + cx_29 & 0xFFFE)
-	branch di_68 <u 0x0000 l0800_03E7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0385_thunk_fn0800_03E7:
-	fn0800_03E7()
-	return
+	word16 di_66 = fp - ((ax_18 + 0x0002) + cx_29 & 0xFFFE)
+	branch di_66 <u 0x0000 l0800_03E7
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_0387:
-	Mem80[ss:di_68 - 2:word16] = cx_29
-	word16 cx_81 = cx_29 - 0x0001
+	Mem80[ss:di_66 - 2:word16] = cx_29
+	word16 cx_227 = cx_29 - 0x0001
+	di_226 = di_66
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
-l0800_0392_thunk_fn0800_0393:
-	fn0800_0393(cx_81, 0x0081, ax_18 + 0x0001, es_11, si_27 + 0x0002, di_68, ss, es_32, Mem80[ss:di_68 - 2:word16])
+l0800_0393:
+	word16 di_226
+	branch cx_227 == 0x0000 l0800_0395
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_0395:
+	Mem88[ss:di_226:byte] = 0x00
+	word16 di_89 = di_226 + 0x0001
+	word16 si_108 = 0x0081
+	word16 cx_106 = ax_18 + 0x0001
+	word16 ax_103 = cx_227
+	word16 bx_101 = cx_227 + 0x0001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_03A3:
+	word16 ax_109
+	fn0800_03BF(ax_103, cx_106, si_108, di_89, ss, es_11, out ax_109, out cx_106, out si_108)
+	bool Z_114 = <invalid>
+	bool C_113 = <invalid>
+	byte al_208 = (byte) ax_109
+	branch Z_114 | C_113 l0800_03AF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_03A8:
+	branch C_113 l0800_03EA
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_03EA:
+	word16 cx_124 = Mem88[ss:di_66 - 2:word16] + cx_227
+	selector ds_125 = Mem88[0x0800:0x0332:selector]
+	Mem127[ds_125:0x0084:word16] = bx_101
+	word16 bx_129 = (bx_101 + 0x0001) * 0x0002
+	word16 si_130 = di_66
+	word16 bp_132 = di_66 - bx_129
+	branch bp_132 <u 0x0000 l0800_03E7
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_03E7:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_03E7_thunk__abort:
+	_abort()
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_0401:
+	Mem137[ds_125:0x0086:word16] = bp_132
+	bp_141 = bp_132
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_0407:
+	word16 bp_141
+	branch cx_124 == 0x0000 l0800_0417
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_0409:
+	Mem142[ss:bp_141:word16] = si_130
+	bp_141 = bp_141 + 0x0002
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_040F:
+	byte al_148 = Mem142[ds_125:si_130:byte]
+	si_130 = si_130 + 0x0001
+	cx_124 = cx_124 - 0x0001
+	branch al_148 != 0x00 && cx_124 != 0x0000 l0800_040F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_0415:
+	branch al_148 == 0x00 l0800_0407
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0800_0417:
+	Mem163[ss:bp_141:word16] = 0x0000
+	call Mem163[0x0800:0x0330:word16] (retsize: 2;)
+		uses: ax:0x0000,bx:bx_129,cx:cx_184,dx:cx_83,sp:bp_132,Stack +0002:wArg00,Top:0
 	return
 // DataOut:
 // DataOut (flags):
@@ -672,194 +757,46 @@ fn0800_0336_exit:
 // DataOut (flags):
 // SymbolicIn:
 
-
-
-void fn0800_038D(word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  bp:[0..15] bx:[0..15] cx:[0..15] di:[0..15] ds:[0..15] dx:[0..15] si:[0..15] ss:[0..15]
-// LiveOut:
-// Trashed: SCZO ax bp bx cx di ds dx es si sp Top
-// Preserved:
-fn0800_038D_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_038D:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0392_thunk_fn0800_0393:
-	fn0800_0393(cx - 0x0001, dx, bx, bp, si, di, ss, ds, cx)
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-fn0800_038D_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-
-
-void fn0800_0393(word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, word16 wArg00)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  bp:[0..15] bx:[0..15] cx:[0..15] di:[0..15] ds:[0..15] dx:[0..15] es:[0..15] si:[0..15] ss:[0..15] Stack +0000:[0..15]
-// LiveOut:
-// Trashed: SCZO ax bp bx cx di ds dx si sp Top
-// Preserved:
-fn0800_0393_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0393:
-	branch cx == 0x0000 l0800_0395
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0395:
-	Mem9[es:di:byte] = 0x00
-	word16 di_10 = di + 0x0001
-	word16 si_119 = dx
-	word16 cx_117 = bx
-	word16 ax_157 = cx
-	word16 bx_22 = cx + 0x0001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_03A3:
-	word16 ax_116
-	fn0800_03BF(ax_157, cx_117, si_119, di_10, es, bp, out ax_116, out cx_117, out si_119)
-	bool Z_35 = <invalid>
-	bool C_124 = <invalid>
-	byte al_128 = (byte) ax_116
-	branch Z_35 | C_124 l0800_03AF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_03A8:
-	branch C_124 l0800_03EA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_03EA:
-	selector ds_46 = Mem9[0x0800:0x0332:selector]
-	Mem48[ds_46:0x0084:word16] = bx_22
-	word16 bx_50 = (bx_22 + 0x0001) * 0x0002
-	word16 cx_45 = wArg00 + cx
-	word16 si_51 = fp + 2
-	word16 bp_53 = fp + 2 - bx_50
-	branch bp_53 <u 0x0000 l0800_03E7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_03FF_thunk_fn0800_03E7:
-	fn0800_03E7()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0401:
-	Mem57[ds_46:0x0086:word16] = bp_53
-	bp_61 = bp_53
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0407:
-	word16 bp_61
-	branch cx_45 == 0x0000 l0800_0417
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0409:
-	Mem62[ss:bp_61:word16] = si_51
-	bp_61 = bp_61 + 0x0002
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_040F:
-	byte al_68 = Mem62[ds_46:si_51:byte]
-	si_51 = si_51 + 0x0001
-	cx_45 = cx_45 - 0x0001
-	branch al_68 != 0x00 && cx_45 != 0x0000 l0800_040F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0415:
-	branch al_68 == 0x00 l0800_0407
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_0417:
-	Mem83[ss:bp_61:word16] = 0x0000
-	call Mem83[0x0800:0x0330:word16] (retsize: 2;)
-		uses: ax:0x0000,bx:bx_50,cx:cx_93,dx:cx_4,sp:bp_53,Stack +0002:wArg00,Top:0
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-fn0800_0393_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0800_03AA:
-	fn0800_03BF(ax_116, cx_117, si_119, di_10, es, bp, out ax_116, out cx_117, out si_119)
-	bool Z_125 = <invalid>
-	C_124 = <invalid>
-	al_128 = (byte) ax_116 (alias)
-	branch Z_125 | C_124 l0800_03A8
+	fn0800_03BF(ax_109, cx_106, si_108, di_89, ss, es_11, out ax_109, out cx_106, out si_108)
+	bool Z_205 = <invalid>
+	C_113 = <invalid>
+	al_208 = (byte) ax_109 (alias)
+	branch Z_205 | C_113 l0800_03A8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_03AF:
-	ax_157 = DPB(ax_116, al_128, 0) (alias)
-	branch al_128 == 0x20 l0800_03BB
+	ax_103 = DPB(ax_109, al_208, 0) (alias)
+	branch al_208 == 0x20 l0800_03BB
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_03B3:
-	branch al_128 == 0x0D l0800_03BB
+	branch al_208 == 0x0D l0800_03BB
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_03B7:
-	branch al_128 != 0x09 l0800_03A3
+	branch al_208 != 0x09 l0800_03A3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_03BB:
-	ax_157 = DPB(ax_116, 0x00, 0) (alias)
+	ax_103 = DPB(ax_109, 0x00, 0) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_0393_1:
-	Mem144[es:di:byte] = Mem142[ds:si:byte]
-	si = si + 0x0001
-	di = di + 0x0001
-	cx = cx - 0x0001
+	Mem224[ss:di_226:byte] = Mem222[es_32:si_221:byte]
+	si_221 = si_221 + 0x0001
+	di_226 = di_226 + 0x0001
+	cx_227 = cx_227 - 0x0001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -960,37 +897,6 @@ l0800_03E6:
 // SymbolicIn:
 
 fn0800_03BF_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-
-
-void fn0800_03E7()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  ss:[0..15]
-// LiveOut:
-// Trashed: Top
-// Preserved: sp
-fn0800_03E7_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_03E7:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0800_03E7_thunk__abort:
-	_abort()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-fn0800_03E7_exit:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2759,10 +2665,9 @@ l0800_0C89:
 // SymbolicIn:
 
 l0800_0C8E:
-	word32 dx_ax_55 = (uint32) (uint16) cx_33
-	word32 dx_ax_63 = SEQ((uint16) (dx_ax_55 % wArg06), ax_31)
+	word32 dx_ax_63 = SEQ(SLICE(dx_ax_55 % wArg06, uint16, 0), ax_31)
 	Mem71[ds:si_108:byte] = (byte) (uint16) (dx_ax_63 % wArg06)
-	word16 ax_59 = (uint16) (dx_ax_55 /u wArg06)
+	word16 ax_59 = (uint16) ((uint32) (uint16) cx_33 /u wArg06)
 	cx_33 = ax_59
 	ax_31 = (uint16) (dx_ax_63 /u wArg06)
 	si_108 = si_108 + 0x0001
@@ -3326,10 +3231,10 @@ fn0800_1044_exit:
 
 
 
-word16 fn0800_1048(word16 di, selector es, selector ds, byte bArg02)
+word16 fn0800_1048(word16 di, selector es, selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  di:[0..15] ds:[0..15] es:[0..15] Stack +0002:[0..7]
+// MayUse:  di:[0..15] ds:[0..15] es:[0..15] Stack +0002:[0..15]
 // LiveOut: di
 // Trashed: SCZDO al bx cx di dx Top
 // Preserved: bp sp
@@ -7059,7 +6964,7 @@ l0800_1CEF:
 l0800_1CD9:
 	int32 dx_ax_387 = wArg08 *u si_137
 	int32 dx_ax_396 = wArg08 *u di_139
-	ui32 ax_si_579 = SEQ((word16) dx_ax_396, ax_361) + dx_ax_387
+	ui32 ax_si_579 = SEQ(SLICE(dx_ax_396, word16, 0), ax_361) + dx_ax_387
 	word16 ax_401 = SLICE(ax_si_579, word16, 16)
 	byte dl_409 = SLICE(dx_ax_396, byte, 16) + SLICE(dx_ax_396, byte, 24) + (ax_401 <u 0x0000)
 	cx = SLICE(dx_ax_387, word16, 16)

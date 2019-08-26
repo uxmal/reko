@@ -99,7 +99,7 @@ Eq_161: (union "Eq_161" (byte u0) ((memptr (ptr8 Eq_160) byte) u1) ((memptr (ptr
 Eq_163: (segment "Eq_163" (C5 byte b00C5))
 	T_163 (in 0x00 : byte)
 Eq_167: (union "Eq_167" (bool u0) (byte u1))
-	T_167 (in !SLICE(cond(0x00->b00C5), bool, 0) : bool)
+	T_167 (in !(bool) cond(0x00->b00C5) : bool)
 Eq_169: (segment "Eq_169" (C6 byte b00C6))
 	T_169 (in 0x00 : byte)
 Eq_171: (segment "Eq_171" (C6 byte b00C6))
@@ -801,11 +801,11 @@ T_166: (in SLICE(cond(0x00->b00C5), bool, 0) : bool)
   Class: Eq_166
   DataType: bool
   OrigDataType: bool
-T_167: (in !SLICE(cond(0x00->b00C5), bool, 0) : bool)
+T_167: (in !(bool) cond(0x00->b00C5) : bool)
   Class: Eq_167
   DataType: Eq_167
   OrigDataType: (union (bool u0) (byte u1))
-T_168: (in 0x00->b00C6 - !SLICE(cond(0x00->b00C5), bool, 0) : byte)
+T_168: (in 0x00->b00C6 - !((bool) cond(0x00->b00C5)) : byte)
   Class: Eq_168
   DataType: byte
   OrigDataType: byte

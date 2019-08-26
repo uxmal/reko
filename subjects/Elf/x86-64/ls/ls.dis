@@ -13267,7 +13267,6 @@ l000000000040BD70:
 	word64 rax_63 = DPB(rax_57, strlen(r15_481), 0)
 	word32 eax_32 = (word32) (uint64) ((word32) (uint64) edx & 0x00000003)
 	byte bLocC8_1506 = SLICE(edx, byte, 0)
-	word24 nLocC7_1730 = SLICE(edx, word24, 8)
 	word32 v22_55 = ((word32) (uint64) (0x00000000 - SLICE(cond(eax_45 - 0x00000001), bool, 1)) & 0xFFFFFFE8) + 0x00000400
 	word64 rbp_1111 = Mem56[rax_57 + 0x0000000000000010:word64]
 	word64 r11_64 = rax_63
@@ -14253,8 +14252,7 @@ l000000000040C3AC:
 // SymbolicIn:
 
 l000000000040C242:
-	word32 dwLocC8_1754 = SEQ(nLocC7_1730, bLocC8_1506)
-	byte bLocC8_1756 = SLICE(dwLocC8_1754, byte, 0)
+	byte bLocC8_1756 = SLICE(edx, byte, 0)
 	branch (bLocC8_1506 & 0x80) == 0x00 l000000000040C2BA
 // DataOut:
 // DataOut (flags):
@@ -14306,7 +14304,7 @@ l000000000040C655:
 // SymbolicIn:
 
 l000000000040C252:
-	word32 eax_1236 = (word32) (uint64) ((word32) (uint64) dwLocC8_1754 & 0x00000100)
+	word32 eax_1236 = (word32) (uint64) ((word32) (uint64) edx & 0x00000100)
 	branch (word32) (uint64) ((word32) (uint64) ebx_1185 | eax_1236) == 0x00000000 l000000000040C2BA
 // DataOut:
 // DataOut (flags):
@@ -19511,7 +19509,6 @@ l0000000000410F08:
 	word64 rax_65 = __errno_location()
 	Mem70[rax_65:word32] = 0x00000000
 	word64 rax_81 = DPB(rax_65, strtoul(rdi, r15_34, (uint64) r14d_68), 0)
-	word32 dwLoc4C_377 = SLICE(rax_65, word32, 32)
 	word64 r14_80 = Mem78[r15_34:word64]
 	word64 rbx_101 = rax_81
 	branch r14_80 == rdi l0000000000410FE7
@@ -19601,7 +19598,7 @@ l0000000000410F78:
 l0000000000410F94:
 	word64 rcx_172
 	word64 rax_165
-	word64 qwLoc50_379 = SEQ(dwLoc4C_377, edx_146)
+	word64 qwLoc50_379 = SEQ(SLICE(rax_65, word32, 32), edx_146)
 	word64 rbp_249 = DPB(rbp_100, ebp_117, 0)
 	word32 edx_178 = (word32) (uint64) edx_146
 	word32 dwLoc4C_470 = SLICE(qwLoc50_379, word32, 32)
@@ -19889,7 +19886,6 @@ l00000000004113D8:
 	word64 rax_65 = __errno_location()
 	Mem71[rax_65:word32] = 0x00000000
 	word64 rax_82 = DPB(rax_65, __strtoul_internal(rdi, r15_34, (uint64) r14d_69, 0x0000000000000000), 0)
-	word32 dwLoc4C_376 = SLICE(rax_65, word32, 32)
 	word64 r14_81 = Mem79[r15_34:word64]
 	word64 rbx_102 = rax_82
 	r8 = rax_65
@@ -19975,7 +19971,7 @@ l0000000000411450:
 l000000000041146C:
 	word64 rcx_173
 	word64 rax_166
-	word64 qwLoc50_378 = SEQ(dwLoc4C_376, edx_147)
+	word64 qwLoc50_378 = SEQ(SLICE(rax_65, word32, 32), edx_147)
 	word32 edx_179 = (word32) (uint64) edx_147
 	word32 dwLoc4C_471 = SLICE(qwLoc50_378, word32, 32)
 	branch strchr(r8, 0x0000000000000030) == 0x0000000000000000 l00000000004114A3

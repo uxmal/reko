@@ -4676,7 +4676,7 @@ l5510:
 // SymbolicIn:
 
 l551C:
-	word20 r13_673 = (int16) (Mem630[sp_27 + 0x0002F:byte] - SLICE(r11_657, byte, 0))
+	word20 r13_673 = (int16) (Mem630[sp_27 + 47:byte] - SLICE(r11_657, byte, 0))
 	branch r13_673 < 0x0001 l5542
 // DataOut:
 // DataOut (flags):
@@ -4738,7 +4738,7 @@ l5576:
 // SymbolicIn:
 
 l55C4:
-	word20 r13_769 = (int16) (Mem759[sp_27 + 0x0002F:byte] - SLICE(r11_657, byte, 0))
+	word20 r13_769 = (int16) (Mem759[sp_27 + 47:byte] - SLICE(r11_657, byte, 0))
 	branch r13_769 < 0x0001 l557C
 // DataOut:
 // DataOut (flags):
@@ -4781,7 +4781,7 @@ l559C:
 // SymbolicIn:
 
 l55A4:
-	word20 r13_838 = (int16) (Mem759[sp_27 + 0x0002F:byte] - SLICE(r11, byte, 0))
+	word20 r13_838 = (int16) (Mem759[sp_27 + 47:byte] - SLICE(r11, byte, 0))
 	branch r13_838 < 0x0001 l53A6
 // DataOut:
 // DataOut (flags):
