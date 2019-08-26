@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work from:
@@ -41,7 +41,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public readonly MachineOperand op2;
         public readonly MachineOperand op3;
 
-        private static Dictionary<Opcode, InstrClass> classOf = new Dictionary<Opcode, InstrClass>()
+        private static readonly Dictionary<Opcode, InstrClass> classOf = new Dictionary<Opcode, InstrClass>()
         {
                 { Opcode.ADDULNK,   Transfer },
                 { Opcode.BRA,       Transfer },
@@ -97,6 +97,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public PICInstruction(Opcode opc, params MachineOperand[] ops)
         {
             Opcode = opc;
+
+            if (!classOf.TryGetValue(Opcode, out this.InstructionClass))
+                this.InstructionClass = InstrClass.Linear;
+
             if (ops.Length >= 1)
             {
                 op1 = ops[0];
@@ -167,20 +171,6 @@ namespace Reko.Arch.MicrochipPIC.Common
                     return null;
             }
         }
-
-        /// <summary>
-        /// The control-flow kind of the instruction.
-        /// </summary>
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                if (!classOf.TryGetValue(Opcode, out InstrClass il))
-                    il = InstrClass.Linear;
-                return il;
-            }
-        }
-
     }
 
     /// <summary>

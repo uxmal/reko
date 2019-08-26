@@ -179,6 +179,13 @@
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AssumedRegisterValuesInteractor.cs" />
+    <Compile Include="Forms\CallHierarchyInteractor.cs" />
+    <Compile Include="Forms\CallHierarchyView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CallHierarchyView.Designer.cs">
+      <DependentUpon>CallHierarchyView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CallSiteDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -221,6 +228,12 @@
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FindStringsDialogInteractor.cs" />
+    <Compile Include="Forms\SegmentEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SegmentEditorDialog.Designer.cs">
+      <DependentUpon>SegmentEditorDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\JumpTableDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,6 +286,7 @@
       <DependentUpon>SearchDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchDialogInteractor.cs" />
+    <Compile Include="Forms\SegmentEditorInteractor.cs" />
     <Compile Include="Forms\SelectItemDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -328,6 +342,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources.sv-SE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.sv-SE.resx</DependentUpon>
     </Compile>
     <Compile Include="SearchResultServiceImpl.cs" />
     <Compile Include="StatusBarService.cs" />
@@ -395,6 +414,9 @@
     <EmbeddedResource Include="Forms\AssumedRegisterValuesDialog.resx">
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CallHierarchyView.resx">
+      <DependentUpon>CallHierarchyView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CallSiteDialog.resx">
       <DependentUpon>CallSiteDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -409,6 +431,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FindStringsDialog.resx">
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SegmentEditorDialog.resx">
+      <DependentUpon>SegmentEditorDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\JumpTableDialog.resx">
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
@@ -454,7 +479,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources.sv-SE.resx" />
+    <EmbeddedResource Include="Resources.sv-SE.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.sv-SE.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewImportsControl.resx">
       <DependentUpon>ViewImportsControl.cs</DependentUpon>
     </EmbeddedResource>

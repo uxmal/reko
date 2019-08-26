@@ -147,7 +147,7 @@ l0C00_002F:
 	// succ:  fn0C00_002F_exit
 fn0C00_002F_exit:
 Register word16 fn0C00_0036(Sequence word32 ds_si, Register out ptr16 siOut)
-// MayUse:  Sequence ds:si:[0..15]
+// MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax si
 // Trashed: ax si Top
 // Preserved: sp

@@ -150,7 +150,7 @@ namespace Reko.Arch.X86
             return new MemoryAccess(Registers.ST, e, dataType);
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             return mode.MakeAddressFromConstant(c);
         }

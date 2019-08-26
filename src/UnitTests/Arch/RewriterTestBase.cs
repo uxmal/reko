@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch
 
         protected virtual MemoryArea RewriteCode(string hexBytes)
         {
-            Assert.Fail();
+            Assert.Fail($"RewriteCode not implemented for {this.GetType().Name}");
             return null;
         }
 

@@ -65,7 +65,7 @@ namespace Reko.Scanning
                 if (b.Procedure == ProcNew || b == b.Procedure.ExitBlock || b.Procedure.EntryBlock.Succ[0] == b)
                     continue;
 
-                DebugEx.Info(trace, "PromoteBlock visiting block {0}, stack depth {1}", b.Name, stack.Count);
+                DebugEx.Inform(trace, "PromoteBlock visiting block {0}, stack depth {1}", b.Name, stack.Count);
                 b.Procedure.RemoveBlock(b);
                 ProcNew.AddBlock(b);
                 b.Procedure = ProcNew;
@@ -129,10 +129,10 @@ namespace Reko.Scanning
         private Address GetAddressOfLastInstruction(Block inboundBlock)
         {
             if (inboundBlock.Statements.Count == 0)
-                return Program.Platform.MakeAddressFromLinear(0);
+                return Program.Platform.MakeAddressFromLinear(0, true);
             return inboundBlock.Address != null
                 ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last.LinearAddress);
+                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last.LinearAddress, true);
         }
 
         public void FixOutboundEdges(Block block)

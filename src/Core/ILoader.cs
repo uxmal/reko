@@ -129,6 +129,6 @@ namespace Reko.Core
         /// <summary>
         /// Entry point of the program.
         /// </summary>
-        public EntryPointElement EntryPoint;
+        public EntryPointDefinition EntryPoint;
     }
 }

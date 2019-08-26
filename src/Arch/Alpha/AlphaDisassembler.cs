@@ -48,7 +48,7 @@ namespace Reko.Arch.Alpha
             var instr = decoders[op].Decode(uInstr, this);
             instr.Address = addr;
             instr.Length = 4;
-            instr.iclass |= uInstr == 0 ? InstrClass.Zero : 0;
+            instr.InstructionClass |= uInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 
@@ -64,7 +64,7 @@ namespace Reko.Arch.Alpha
 
         private AlphaInstruction Invalid()
         {
-            return new AlphaInstruction { Opcode = Opcode.invalid, iclass = InstrClass.Invalid };
+            return new AlphaInstruction { Opcode = Opcode.invalid, InstructionClass = InstrClass.Invalid };
         }
 
         private AlphaInstruction Nyi(uint uInstr)
@@ -109,7 +109,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     op1 = dasm.AluRegister(uInstr >> 21),
                     op2 = new MemoryOperand(
                         PrimitiveType.Word32,    // Dummy value
@@ -133,7 +133,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     op1 = dasm.FpuRegister(uInstr >> 21),
                     op2 = new MemoryOperand(
                         PrimitiveType.Word32,    // Dummy value
@@ -166,7 +166,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = opcodes[(uInstr >> 14) & 0x3],
-                    iclass = iclasses[(uInstr>> 14) & 0x3],
+                    InstructionClass = iclasses[(uInstr>> 14) & 0x3],
                     op1 = dasm.AluRegister(uInstr >> 21),
                     op2 = dasm.AluRegister(uInstr >> 16)
                 };
@@ -199,7 +199,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
-                    iclass = InstrClass.ConditionalTransfer,
+                    InstructionClass = InstrClass.ConditionalTransfer,
                     op1 = op1,
                     op2 = op2,
                 };
@@ -223,7 +223,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
-                    iclass = InstrClass.ConditionalTransfer,
+                    InstructionClass = InstrClass.ConditionalTransfer,
                     op1 = op1,
                     op2 = op2,
                 };
@@ -249,7 +249,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     op1 = op1,
                     op2 = op2,
                     op3 = op3,
@@ -312,7 +312,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     op1 = op1,
                     op2 = op2,
                     op3 = op3,
@@ -335,7 +335,7 @@ namespace Reko.Arch.Alpha
                     return dasm.Invalid();
                 return new AlphaInstruction {
                     Opcode = opcode.Item1,
-                    iclass = opcode.Item2
+                    InstructionClass = opcode.Item2
                 };
             }
         }
@@ -355,7 +355,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     op1 = op1,
                     op2 = op2,
                 };

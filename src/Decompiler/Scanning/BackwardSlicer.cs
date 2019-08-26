@@ -36,7 +36,7 @@ using System.Text;
 namespace Reko.Scanning
 {
     /// <summary>
-    /// Traces a backward slice in a (pontentially partial)
+    /// Traces a backward slice in a (potentially partial)
     /// control flow graph, in order to discover the entries of an indirect
     /// call or jump. 
     /// </summary>
@@ -177,7 +177,7 @@ namespace Reko.Scanning
                     var sel = rtlBlock.Address.Selector.Value;
                     return host.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
                 }
-                return host.Architecture.MakeAddressFromConstant(c);
+                return host.Architecture.MakeAddressFromConstant(c, true);
             }
             if (arg is MkSequence seq)
             {
@@ -242,8 +242,8 @@ namespace Reko.Scanning
                 if (preds.Count == 0)
                 {
                     DebugEx.Verbose(trace, "  No predecessors found for block {0}", state.block.Address);
-                    DebugEx.Verbose(BackwardSlicer.trace, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
-                    DebugEx.Verbose(BackwardSlicer.trace, "  expr:  {0}", this.JumpTableFormat);
+                    DebugEx.Verbose(trace, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
+                    DebugEx.Verbose(trace, "  expr:  {0}", this.JumpTableFormat);
                     return true;
                 }
                 foreach (var pred in preds)
@@ -333,6 +333,11 @@ namespace Reko.Scanning
             public Expression GetDefiningExpression(Identifier id)
             {
                 return id;
+            }
+
+            public List<Statement> GetDefiningStatementClosure(Identifier id)
+            {
+                return new List<Statement>();
             }
 
             public Expression GetValue(Identifier id)
@@ -529,7 +534,7 @@ namespace Reko.Scanning
         public bool Step()
         {
             var instr = this.instrs[this.iInstr];
-            DebugEx.Info(BackwardSlicer.trace, "Bwslc: Stepping to instruction {0}", instr);
+            DebugEx.Inform(BackwardSlicer.trace, "Bwslc: Stepping to instruction {0}", instr);
             var sr = instr.Accept(this);
             --this.iInstr;
             if (sr == null)
@@ -603,12 +608,8 @@ namespace Reko.Scanning
             case ConditionCode.ULT: return StridedInterval.Create(1, 0, (long) right.ToUInt64() - 1);
             case ConditionCode.UGE: return StridedInterval.Create(1, (long)right.ToUInt64(), long.MaxValue);
             case ConditionCode.UGT: return StridedInterval.Create(1, (long)right.ToUInt64() + 1, long.MaxValue);
-            case ConditionCode.EQ:
-            case ConditionCode.NE:
-            case ConditionCode.None:
-                return StridedInterval.Empty;
             default:
-                throw new NotImplementedException($"Unimplemented condition code {cc}.");
+                return StridedInterval.Empty;
             }
         }
 
@@ -999,7 +1000,10 @@ namespace Reko.Scanning
 
         public SlicerResult VisitSlice(Slice slice, BackwardSlicerContext ctx)
         {
-            throw new NotImplementedException();
+            var range = new BitRange(
+                (short)slice.Offset,
+                (short) (slice.DataType.BitSize + slice.Offset));
+            return slice.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
         public SlicerResult VisitTestCondition(TestCondition tc, BackwardSlicerContext ctx)

@@ -67,7 +67,7 @@ namespace Reko.Arch.PowerPC
             return new PowerPcInstruction(opcode)
             {
                 Address = addr,
-                iclass = iclass,
+                InstructionClass = iclass,
                 Length = 4,
                 op1 = ops.Count > 0 ? ops[0] : null,
                 op2 = ops.Count > 1 ? ops[1] : null,
@@ -351,7 +351,7 @@ namespace Reko.Arch.PowerPC
 #endif
             return new PowerPcInstruction(Opcode.illegal)
             {
-                iclass = InstrClass.Invalid
+                InstructionClass = InstrClass.Invalid
             };
         }
     }

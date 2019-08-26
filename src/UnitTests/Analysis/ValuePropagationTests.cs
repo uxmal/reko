@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Analysis
         {
             var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, importResolver.Object, listener);
             vp.Transform();
-            m.Ssa.Validate(s => Assert.Fail(s));
+            m.Ssa.Validate(s => { m.Ssa.Dump(true); Assert.Fail(s); });
         }
 
 		[Test]
@@ -1098,15 +1098,15 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"r2_1:r2
+@"r2_1: orig: r2
     def:  r2_1 = Mem4[0x00220200:word32]
     uses: r4_1 = r2_1
           callee(r2_1)
-r2_2:r2
+r2_2: orig: r2
     def:  r2_2 = callee
-r4_1:r4
+r4_1: orig: r4
     def:  r4_1 = r2_1
-r25_1:r25
+r25_1: orig: r25
     def:  r25_1 = callee
 Mem4: orig: Mem0
     uses: r2_1 = Mem4[0x00220200:word32]
@@ -1167,6 +1167,73 @@ SsaProcedureBuilder_exit:
             vp.Transform();
 
             m.Ssa.Validate(s => Assert.Fail(s));
+            AssertStringsEqual(sExp, m.Ssa);
+        }
+
+        // Unit test for Github #773
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void VpDpbPhi()
+        {
+            var d3 = m.Reg32("d3", 3);
+            var wLoc02_2 = m.Local16("wLoc02_2");
+            var d3_3 = m.Reg32("d3_3", 3);
+            var d3_4 = m.Reg32("d3_4", 3);
+            var d3_5 = m.Reg32("d3_5", 3);
+            var d3_6 = m.Reg32("d3_6", 3);
+
+            m.Assign(wLoc02_2, m.Cast(PrimitiveType.Word16, d3));
+            m.Label("m1");
+            m.Assign(d3_3, m.Dpb(d3, m.Word16(3), 0));
+            m.Goto("m3");
+            m.Label("m2");
+            m.Assign(d3_4, m.Dpb(d3, m.Word16(4), 0));
+            m.Label("m3");
+            m.Phi(d3_5, (d3_3, "m1"), (d3_4, "m2"));
+            m.Assign(d3_6, m.Dpb(d3_5, wLoc02_2, 0));
+
+            RunValuePropagator();
+
+            var sExp =
+            #region Expected
+@"d3: orig: d3
+    uses: wLoc02_2 = (word16) d3
+          d3_3 = DPB(d3, 0x0003, 0)
+          d3_4 = DPB(d3, 0x0004, 0)
+          d3_6 = d3
+wLoc02_2: orig: wLoc04
+    def:  wLoc02_2 = (word16) d3
+d3_3: orig: d3_3
+    def:  d3_3 = DPB(d3, 0x0003, 0)
+    uses: d3_5 = PHI((d3_3, m1), (d3_4, m2))
+d3_4: orig: d3_4
+    def:  d3_4 = DPB(d3, 0x0004, 0)
+    uses: d3_5 = PHI((d3_3, m1), (d3_4, m2))
+d3_5: orig: d3_5
+    def:  d3_5 = PHI((d3_3, m1), (d3_4, m2))
+d3_6: orig: d3_6
+    def:  d3_6 = d3
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	wLoc02_2 = (word16) d3
+	// succ:  m1
+m1:
+	d3_3 = DPB(d3, 0x0003, 0)
+	goto m3
+	// succ:  m3
+m2:
+	d3_4 = DPB(d3, 0x0004, 0)
+	// succ:  m3
+m3:
+	d3_5 = PHI((d3_3, m1), (d3_4, m2))
+	d3_6 = d3
+SsaProcedureBuilder_exit:
+";
+            #endregion
             AssertStringsEqual(sExp, m.Ssa);
         }
     }

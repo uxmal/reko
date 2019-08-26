@@ -60,18 +60,18 @@ namespace Reko.UnitTests.Environments.SysV
             cfgSvc.Setup(c => c.GetInstallationRelativePath("libc.xml"))
                 .Returns("libc.xml");
 
-            var env = new OperatingEnvironmentElement
+            var env = new PlatformDefinition
             {
                 TypeLibraries =
                      {
-                         new TypeLibraryElement
+                         new TypeLibraryDefinition
                          {
                               Name="libc.xml"
                          }
                      },
                 CharacteristicsLibraries =
                      {
-                         new TypeLibraryElement
+                         new TypeLibraryDefinition
                          {
                              Name="libcharacteristics.xml",
                          }
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Environments.SysV
                 });
             tlSvc.Setup(t => t.LoadMetadataIntoLibrary(
                 It.IsAny<IPlatform>(),
-                It.IsAny<ITypeLibraryElement>(),
+                It.IsAny<TypeLibraryDefinition>(),
                 It.IsAny<TypeLibrary>()))
                 .Returns(new TypeLibrary
                 {
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Environments.SysV
             Assert.IsTrue(proc.Characteristics.Terminates, "exit should have been marked as terminating.");
         }
 
-        private void Given_EnvironmentConfiguration(OperatingEnvironmentElement env)
+        private void Given_EnvironmentConfiguration(PlatformDefinition env)
         {
             cfgSvc.Setup(c => c.GetEnvironment(It.IsAny<string>()))
                 .Returns(env);
@@ -124,11 +124,11 @@ namespace Reko.UnitTests.Environments.SysV
             arch.Setup(a => a.Name).Returns("mmix");
             arch.Setup(a => a.GetRegister(It.IsAny<string>()))
                 .Returns((string r) => new RegisterStorage(r, (int)r[1], 0, PrimitiveType.Word32));
-            var env = new OperatingEnvironmentElement
+            var env = new PlatformDefinition
             {
                 Architectures =
                 {
-                    new PlatformArchitectureElement()
+                    new PlatformArchitectureDefinition()
                     {
                          Name = "mmix",
                          TrashedRegisters =

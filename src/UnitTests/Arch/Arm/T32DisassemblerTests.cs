@@ -224,14 +224,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_mrc()
         {
             Given_Instructions(0xEE1D, 0x3F50);
-            Expect_Code("mrc\tp15,#0,r3,c13,c0,#2");
+            Expect_Code("mrc\tp15,#0,r3,cr13,cr0,#2");
         }
 
         [Test]
         public void ThumbDis_mcr()
         {
             Given_Instructions(0xEE01, 0x3F10);
-            Expect_Code("mcr\tp15,#0,r3,c1,c0,#0");
+            Expect_Code("mcr\tp15,#0,r3,cr1,cr0,#0");
         }
 
         [Test]
@@ -308,7 +308,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_vmlal()
         {
             Given_Instructions(0xFFCB, 0x2800);
-            Expect_Code("vmlal.i8\tq9,d11,d0");
+            Expect_Code("vmlal.u8\tq9,d11,d0");
         }
 
         [Test]
@@ -379,7 +379,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_vhadd_signed()
         {
             Given_Instructions(0xEF41, 0xB002);
-            Expect_Code("vhadd.i8\td27,d1,d2");
+            Expect_Code("vhadd.s8\td27,d1,d2");
         }
 
         [Test]
@@ -443,7 +443,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_stc()
         {
             Given_Instructions(0xED88, 0x5E3D); // stc p14, c6, [r8, #0xf4]
-            Expect_Code("stc\tp14,c5,[r8,#&F4]");
+            Expect_Code("stc\tp14,cr5,[r8,#&F4]");
         }
 
         [Test]
@@ -457,7 +457,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_vrshl()
         {
             Given_Instructions(0xFF7F, 0xA52D);
-            Expect_Code("vrshl\td26,d15,d29");
+            Expect_Code("vrshl.u64\td26,d29,d15");
         }
 
         [Test]
@@ -518,12 +518,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vcge.f16\tq1,q7,q2");
         }
 
-        // A T32 decoder for the instruction EFE4778A(Unknown format specifier* in * integer when decoding vabdl) has not been implemented yet.
         [Test]
         public void ThumbDis_vabdl()
         {
             Given_Instructions(0xEFE4, 0x778A);
-            Expect_Code("vabdl.i32\tq11,d20,d10");
+            Expect_Code("vabdl.s32\tq11,d20,d10");
         }
 
         [Test]
@@ -568,7 +567,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("rfeia\tlr");
         }
 
-        // A T32 decoder for the instruction F7811103(usatLslVariant) has not been implemented yet.
         [Test]
         [Ignore("Complex")]
         public void ThumbDis_F7811103()
@@ -606,10 +604,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_vrshl_i32()
+        public void ThumbDis_vrshl_s32()
         {
             Given_Instructions(0xEF67, 0x7565);
-            Expect_Code("vrshl.i32\tq11,q3,q10");
+            Expect_Code("vrshl.s32\tq11,q10,q3");
         }
 
         [Test]
@@ -640,8 +638,6 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instructions(0xF90F, 0x24FB);
             Expect_Code("@@@");
         }
-
-        //////////////////////////////////////////////////////////////////////////////
 
         [Test]
         public void ThumbDis_ldaex()
@@ -681,8 +677,22 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbDis_vqshl()
         {
-            Given_Instructions(0xEF80, 0xE7FE);
-            Expect_Code("vqshl.i64\tq7,q15,#&40");
+            Given_Instructions(0xEF81, 0xE7FE);
+            Expect_Code("vqshl.i64\tq7,q15,#1");
+        }
+
+        [Test]
+        public void ThumbDis_vqshl_s32()
+        {
+            Given_Instructions(0xEfff, 0x4750);
+            Expect_Code("vqshl.i32\tq10,q0,#&1F");
+        }
+
+        [Test]
+        public void ThumbDis_vqshlu()
+        {
+            Given_Instructions(0xffff, 0x4650);
+            Expect_Code("vqshlu.u32\tq10,q0,#&1F");
         }
 
         [Test]
@@ -804,7 +814,47 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("bne\t$00100000");
         }
 
+        [Test]
+        public void ThumbDis_vorr_imm()
+        {
+            Given_Instructions(0xFFC4, 0x4B10);
+            Expect_Code("vorr.i16\td20,#&C000C000C000C000");
+        }
 
+        [Test]
+        public void ThumbDis_smmul()
+        {
+            Given_Instructions(0xFB5A, 0xF104);
+            Expect_Code("smmul\tr1,r10,r4");
+        }
+
+        [Test]
+        public void ThumbDis_smmul_invalid()
+        {
+            Given_Instructions(0xFB5F, 0xF104);
+            Expect_Code("Invalid");
+        }
+
+        [Test]
+        public void ThumbDis_ldrb_regression()
+        {
+            Given_Instructions(0xF895, 0x4045);
+            Expect_Code("ldrb\tr4,[r5,#&45]");
+        }
+
+        [Test]
+        public void ThumbDis_ldr_regression2()
+        {
+            Given_Instructions(0x6A6B);
+            Expect_Code("ldr\tr3,[r5,#&24]");
+        }
+
+        [Test]
+        public void ThumbDis_strh_unsigned()
+        {
+            Given_Instructions(0xF82A, 0xE009);
+            Expect_Code("strh\tlr,[r10,r9]");
+        }
 
         //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
         //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]
@@ -817,5 +867,532 @@ namespace Reko.UnitTests.Arch.Arm
         //.data:00000036 FE2D 4604  cdp2	6, 2, cr4, cr13, cr4, {0}
         //.data:0000003a FE3B 2501  cdp2	5, 3, cr2, cr11, cr1, {0}
         //.data:0000003e FE6F E7FC  mcr2	7, 3, lr, cr15, cr12, {7}
+
+
+        [Test]
+        public void ThumbDis_ands_w()
+        {
+            Given_Instructions(0xEA10, 0x0301);
+            Expect_Code("ands.w\tr3,r0,r1");
+        }
+
+        [Test]
+        public void ThumbDis_movs_w()
+        {
+            Given_Instructions(0xEA5F, 0x0B5B);
+            Expect_Code("movs.w\tfp,fp,lsr #1");
+        }
+
+        [Test]
+        public void ThumbDis_eor_w()
+        {
+            Given_Instructions(0xEA80, 0x000E);
+            Expect_Code("eor.w\tr0,r0,lr");
+        }
+
+        [Test]
+        public void ThumbDis_teqs_w()
+        {
+            Given_Instructions(0xEA9C, 0x0F00);
+            Expect_Code("teqs.w\tip,r0");
+        }
+
+        [Test]
+        public void ThumbDis_adds_w()
+        {
+            Given_Instructions(0xEB10, 0x0802);
+            Expect_Code("adds.w\tr8,r0,r2");
+        }
+
+        [Test]
+        public void ThumbDis_adc_w()
+        {
+            Given_Instructions(0xEB41, 0x0603);
+            Expect_Code("adc.w\tr6,r1,r3");
+        }
+
+        [Test]
+        public void ThumbDis_adcs_rxx()
+        {
+            Given_Instructions(0xEB54, 0x0032);
+            Expect_Code("adcs.w\tr0,r4,r2,rrx");
+        }
+
+        [Test]
+        public void ThumbDis_subs_w()
+        {
+            Given_Instructions(0xEBB6, 0x080A);
+            Expect_Code("subs.w\tr8,r6,r10");
+        }
+
+        [Test]
+        public void ThumbDis_sub_w()
+        {
+            Given_Instructions(0xEBA9, 0x0908);
+            Expect_Code("sub.w\tr9,r9,r8");
+        }
+
+        [Test]
+        public void ThumbDis_cmp_w()
+        {
+            Given_Instructions(0xEBB1, 0x1FA2);
+            Expect_Code("cmp.w\tr1,r2,asr #6");
+        }
+
+        [Test]
+        public void ThumbDis_ldrsb_w()
+        {
+            Given_Instructions(0xF91C, 0x3002);
+            Expect_Code("ldrsb.w\tr3,[ip,r2]");
+        }
+
+        [Test]
+        public void ThumbDis_rev16()
+        {
+            Given_Instructions(0xFA99, 0xF299);
+            Expect_Code("rev16.w\tr2,r9");
+        }
+
+        [Test]
+        public void ThumbDis_vldr_literal()
+        {
+            Given_Instructions(0xED9F, 0x0B08);
+            Expect_Code("vldr\td0,[pc,#&20]");
+        }
+
+        [Test]
+        public void ThumbDis_vsub_i64()
+        {
+            Given_Instructions(0xFF39, 0x6828);
+            Expect_Code("vsub.i64\td6,d9,d24");
+        }
+
+
+        [Test]
+        public void ThumbDis_ldrexd()
+        {
+            Given_Instructions(0xE8D1, 0x4573);
+            Expect_Code("ldrexd\tr4,r5,[r1]");
+        }
+
+        [Test]
+        public void ThumbDis_strexd()
+        {
+            Given_Instructions(0xE8C3, 0x347E);
+            Expect_Code("strexd\tlr,r3,r4,[r3]");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_r_s()
+        {
+            Given_Instructions(0xEE11, 0xAA10);
+            Expect_Code("vmov\tr10,s2");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_s_r()
+        {
+            Given_Instructions(0xEE04, 0x1A10);
+            Expect_Code("vmov\ts8,r1");
+        }
+
+
+        [Test]
+        public void ThumbDis_vmov_f32()
+        {
+            Given_Instructions(0xeeb0, 0x0a41);
+            Expect_Code("vmov.f32\ts0,s2");
+        }
+
+
+        [Test]
+        public void ThumbDis_stlb()
+        {
+            Given_Instructions(0xE8C0, 0x0088);
+            Expect_Code("stlb\tr0,[r0]");
+        }
+
+        [Test]
+        public void ThumbDis_vmla_f32()
+        {
+            Given_Instructions(0xEE01, 0x0A02);
+            Expect_Code("vmla.f32\ts0,s2,s4");
+        }
+
+        [Test]
+        public void ThumbDis_vld1_multi()
+        {
+            Given_Instructions(0xF92D, 0xF208);
+            Expect_Code("vld1.i8\t{d15-d18},[sp],r8");
+        }
+
+        [Test]
+        public void ThumbDis_stlh()
+        {
+            Given_Instructions(0xE8C8, 0x0094);
+            Expect_Code("stlh\tr0,[r8]");
+        }
+
+        [Test]
+        public void ThumbDis_ldah()
+        {
+            Given_Instructions(0xE8D2, 0x0093);
+            Expect_Code("ldah\tr3,r0,[r2]");
+        }
+
+        [Test]
+        public void ThumbDis_ldab()
+        {
+            Given_Instructions(0xE8DC, 0x0081);
+            Expect_Code("ldab\tr1,r0,[ip]");
+        }
+
+        [Test]
+        public void ThumbDis_vmls_i16()
+        {
+            Given_Instructions(0xFF1C, 0x6924);
+            Expect_Code("vmls.u16\td6,d12,d20");
+        }
+
+        [Test]
+        public void ThumbDis_vmlsl_scalar()
+        {
+            Given_Instructions(0xFFDB, 0x4668);
+            Expect_Code("vmlsl.u16\tq10,d11,d0[3]");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_from_gp_pair()
+        {
+            Given_Instructions(0xEC46, 0x5B18);
+            Expect_Code("vmov\td8,r5,r6");
+        }
+
+        [Test]
+        public void ThumbDis_vmul_f64()
+        {
+            Given_Instructions(0xee21, 0x1b08);
+            Expect_Code("vmul.f64\td1,d1,d8");
+        }
+
+        [Test]
+        public void ThumbDis_vadd_f32()
+        {
+            Given_Instructions(0xee30, 0x0a01);
+            Expect_Code("vadd.f32\ts0,s0,s2");
+        }
+
+        [Test]
+        public void ThumbDis_vdiv_f32()
+        {
+            Given_Instructions(0xee80, 0x0a05);
+            Expect_Code("vdiv.f32\ts0,s0,s10");
+        }
+
+        [Test]
+        public void ThumbDis_vdiv_f64()
+        {
+            Given_Instructions(0xee80, 0x0b01);
+            Expect_Code("vdiv.f64\td0,d0,d1");
+        }
+
+        [Test]
+        public void ThumbDis_tst_w()
+        {
+            Given_Instructions(0xea10, 0x0f0a);
+            Expect_Code("tst.w\tr0,r10");
+        }
+
+        [Test]
+        public void ThumbDis_orns()
+        {
+            Given_Instructions(0xea7a, 0x0092);
+            Expect_Code("orns\tr0,r10,r2,lsr #2");
+        }
+
+        [Test]
+        public void ThumbDis_mvns_w()
+        {
+            Given_Instructions(0xea7f, 0x5c65);
+            Expect_Code("mvns.w\tip,r5,asr #&15");
+        }
+
+        [Test]
+        public void ThumbDis_pkhbt()
+        {
+            Given_Instructions(0xeac0, 0x0087);
+            Expect_Code("pkhbt\tr0,r0,r7,lsl #2");
+        }
+
+        [Test]
+        public void ThumbDis_pkhbt_2()
+        {
+            Given_Instructions(0xEAC6, 0x2E00);
+            Expect_Code("pkhbt\tlr,r6,r0,lsl #8");
+        }
+
+        [Test]
+        public void ThumbDis_mrrc()
+        {
+            Given_Instructions(0xec58, 0xbf00);
+            Expect_Code("mrrc\tp15,#0,fp,r8,cr0");
+        }
+
+        [Test]
+        public void ThumbDis_vpop_d()
+        {
+            Given_Instructions(0xecbd, 0x1b12);
+            Expect_Code("vldmia\tsp!,{d1-d9}");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_f64_imm()
+        {
+            Given_Instructions(0xeeb0, 0x0b08);
+            Expect_Code("vmov.f64\td0,#3.0");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_f32_imm()
+        {
+            Given_Instructions(0xeeb0, 0x2a00);
+            Expect_Code("vmov.f32\ts4,#2.0F");
+        }
+
+        [Test]
+        public void ThumbDis_vneg_f64()
+        {
+            Given_Instructions(0xeeb1, 0x8b48);
+            Expect_Code("vneg.f64\td8,d8");
+        }
+
+        [Test]
+        public void ThumbDis_vcmpe_f32()
+        {
+            Given_Instructions(0xeeb4, 0x0ac2);
+            Expect_Code("vcmpe.f32\ts0,s4");
+        }
+
+        [Test]
+        public void ThumbDis_vcmpe_f32_0()
+        {
+            Given_Instructions(0xeeb5, 0xdac0);
+            Expect_Code("vcmpe.f32\ts26,#0.0F");
+        }
+
+        [Test]
+        public void ThumbDis_vcvt_f64_f32()
+        {
+            Given_Instructions(0xeeb7, 0x0ac1);
+            Expect_Code("vcvt.f64.f32\td0,s2");
+        }
+
+        [Test]
+        public void ThumbDis_vcvt_f64_s32()
+        {
+            Given_Instructions(0xeeb8, 0x0bc0);
+            Expect_Code("vcvt.f64.s32\td0,s0");
+        }
+
+        [Test]
+        public void ThumbDis_vcvt_u32_f64()
+        {
+            Given_Instructions(0xeebc, 0x0bc2);
+            Expect_Code("vcvt.u32.f64\ts0,d2");
+        }
+
+        [Test]
+        public void ThumbDis_vmrs_cpsr()
+        {
+            Given_Instructions(0xeef1, 0xfa10);
+            Expect_Code("vmrs\tcpsr,fpscr");
+        }
+
+        [Test]
+        public void ThumbDis_vmax_f32()
+        {
+            Given_Instructions(0xef08, 0xbf00);
+            Expect_Code("vmax.f32\td11,d8,d0");
+        }
+
+        [Test]
+        public void ThumbDis_vrsrts_f32()
+        {
+            Given_Instructions(0xef6f, 0xffb6);
+            Expect_Code("vrsqrts.f32\td31,d31,d22");
+        }
+
+        [Test]
+        public void ThumbDis_vext_8()
+        {
+            Given_Instructions(0xefb4, 0x0286);
+            Expect_Code("vext.i8\td0,d20,d6,#2");
+        }
+
+        [Test]
+        public void ThumbDis_ssat_asr()
+        {
+            Given_Instructions(0xf321, 0x4648);
+            Expect_Code("ssat\tr6,#8,r1,asr #&11");
+        }
+
+        [Test]
+        public void ThumbDis_udf_w()
+        {
+            Given_Instructions(0xf7f1, 0xa801);
+            Expect_Code("udf.w\t#&1801");
+        }
+
+        [Test]
+        public void ThumbDis_vst2_sparse_writeback()
+        {
+            Given_Instructions(0xf903, 0x492d);
+            Expect_Code("vst2.i8\t{d4,d6},[r3:128]");
+        }
+
+        [Test]
+        public void ThumbDis_vst4_sparse_writeback()
+        {
+            Given_Instructions(0xf905, 0xf10d);
+            Expect_Code("vst4.i8\t{d15,d17,d19,d21},[r5]");
+        }
+
+
+
+        [Test]
+        public void ThumbDis_vst1_i8_single()
+        {
+            Given_Instructions(0xf9c3, 0xf00b);
+            Expect_Code("vst1.i8\t{d31[0]},[r3],fp");
+        }
+
+        [Test]
+        public void ThumbDis_vtbx_i8()
+        {
+            Given_Instructions(0xffb5, 0x4a63);
+            Expect_Code("vtbx.i8\td4,{d5-d7},d19");
+        }
+
+        [Test]
+        public void ThumbDis_vqshlu_i32()
+        {
+            Given_Instructions(0xffff, 0x4650);
+            Expect_Code("vqshlu.u32\tq10,q0,#&1F");
+        }
+
+        [Test]
+        public void ThumbDis_vqshrn_u64()
+        {
+            Given_Instructions(0xfff3, 0x491a);
+            Expect_Code("vqshrn.u64\td20,q5,#&D");
+        }
+
+        [Test]
+        public void ThumbDis_vcgt_s8()
+        {
+            Given_Instructions(0xfff1, 0xe004);
+            Expect_Code("vcgt.s8\td30,d4,#0");
+        }
+
+        [Test]
+        public void ThumbDis_vtrn_16()
+        {
+            Given_Instructions(0xffb6, 0x008e);
+            Expect_Code("vtrn.i16\td0,d14");
+        }
+
+        [Test]
+        public void ThumbDis_vsli_i64()
+        {
+            Given_Instructions(0xffb1, 0xb5b0);
+            Expect_Code("vsli.i64\td11,d16,#&31");
+        }
+
+        [Test]
+        public void ThumbDis_vrsra()
+        {
+            Given_Instructions(0xff97, 0xb3b0);
+            Expect_Code("vrsra.u64\td11,d16,#&29");
+        }
+
+        [Test]
+        public void ThumbDis_vcvtn_u32_f32()
+        {
+            Given_Instructions(0xfefd, 0xea4f);
+            Expect_Code("vcvtn.u32.f32\ts29,s30");
+        }
+
+        [Test]
+        public void ThumbDis_vorr_i16()
+        {
+            Given_Instructions(0xffc7, 0x491a);
+            Expect_Code("vorr.i16\td20,#&FA00FA00FA00FA");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_i16()
+        {
+            Given_Instructions(0xffc7, 0x4a1f);
+            Expect_Code("vmov.i16\td20,#&FF00FF00FF00FF00");
+        }
+
+        [Test]
+        public void ThumbDis_ldc2l()
+        {
+            Given_Instructions(0xfd79, 0x9819);
+            Expect_Code("ldc2l\tp8,cr9,[r9,-#&64]!");
+        }
+
+        [Test]
+        public void ThumbDis_vaddw_u32()
+        {
+            Given_Instructions(0xFFA7, 0xF104);
+            Expect_Code("vaddw.u32\tq7,q3,d4");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_d1_tworegs()
+        {
+            Given_Instructions(0xEC41, 0x0B11);
+            Expect_Code("vmov\td1,r0,r1");
+        }
+
+#if BORED
+        [Test]
+        public void ThumbDis_vld4_single()
+        {
+            Given_Instructions(0xf9ad, 0x9805);
+            Expect_Code("vld4.i32\t{d9[0]},[sp],r5");
+        }
+
+        [Test]
+        public void ThumbDis_vld3_single()
+        {
+            Given_Instructions(0xf9ab, 0x4628);
+            Expect_Code("vld3.i16\t{d4[0],d6[0],d8[0]},[fp],r8");
+        }
+
+
+        [Test]
+        public void ThumbDis_vld3_i16_single()
+        {
+            Given_Instructions(0xf9ef, 0x4620);
+            Expect_Code("vld3.i16\t{d20[0],d22[0],d24[0]},[pc],r0");
+        }
+
+        [Test]
+        public void ThumbDis_vst3_i32_single()
+        {
+            Given_Instructions(0xf9c3, 0x9a02);
+            Expect_Code("vst3.i32\t{d25[0],d26[0],d27[0]},[r3],r2");
+        }
+
+                [Test]
+        public void ThumbDis_vst3_single_sparse()
+        {
+            Given_Instructions(0xf98f, 0x4668);
+            Expect_Code("vst3.i16\t{d4[1],d6[1],d8[1]},[pc],r8");
+        }
+#endif
     }
 }

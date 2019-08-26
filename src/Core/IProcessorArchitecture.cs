@@ -290,11 +290,12 @@ namespace Reko.Core
         bool TryParseAddress(string txtAddr, out Address addr);
 
         /// <summary>
-        /// Given a constant, returns an Address of the correct size for this architecture.
+        /// Given a <see cref="Constant"/>, returns an Address of the correct size for this architecture.
         /// </summary>
-        /// <param name="c"></param>
+        /// <param name="c">Constant to be converted to address.</param>
+        /// <param name="codeAlign">If true, aligns the address to a valid code address.</param>
         /// <returns>An address.</returns>
-        Address MakeAddressFromConstant(Constant c);
+        Address MakeAddressFromConstant(Constant c, bool codeAlign);
 
         /// <summary>
         /// After the program has been loaded, the architecture is given a final
@@ -492,7 +493,7 @@ namespace Reko.Core
         }
 
         public virtual void LoadUserOptions(Dictionary<string, object> options) { }
-        public abstract Address MakeAddressFromConstant(Constant c);
+        public abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public virtual void PostprocessProgram(Program program) { }
         public abstract Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);

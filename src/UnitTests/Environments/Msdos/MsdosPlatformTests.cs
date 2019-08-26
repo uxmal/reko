@@ -46,9 +46,9 @@ namespace Reko.UnitTests.Environments.Msdos
         {
             var cfgSvc = new Mock<IConfigurationService>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
-            var env = new Mock<OperatingEnvironment>();
-            env.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
-            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            var env = new Mock<PlatformDefinition>();
+            env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
+            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());

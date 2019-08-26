@@ -149,8 +149,8 @@ namespace Reko.Core
         Expression ResolveImportByName(string moduleName, string globalName);
         Expression ResolveImportByOrdinal(string moduleName, int ordinal);
         ProcedureCharacteristics LookupCharacteristicsByName(string procName);
-        Address MakeAddressFromConstant(Constant c);
-        Address MakeAddressFromLinear(ulong uAddr);
+        Address MakeAddressFromConstant(Constant c, bool codeAlign);
+        Address MakeAddressFromLinear(ulong uAddr, bool codeAlign);
 
         /// <summary>
         /// Given an indirect call, attempt to resolve it into an address.
@@ -279,8 +279,7 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual SegmentMap CreateAbsoluteMemoryMap()
         {
-            if (this.MemoryMap == null ||
-                  this.MemoryMap.Segments == null)
+            if (this.MemoryMap == null || this.MemoryMap.Segments == null)
                 return null;
             var diagSvc = Services.RequireService<IDiagnosticsService>();
             var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, diagSvc))
@@ -318,7 +317,7 @@ namespace Reko.Core
                 foreach (var tl in envCfg.TypeLibraries
                     .Where(t => t.Architecture == null ||
                                 t.Architecture.Contains(Architecture.Name))
-                    .OfType<ITypeLibraryElement>())
+                    .OfType<TypeLibraryDefinition>())
                 {
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }
@@ -402,9 +401,9 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual Address MakeAddressFromConstant(Constant c)
+        public virtual Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Architecture.MakeAddressFromConstant(c);
+            return Architecture.MakeAddressFromConstant(c, codeAlign);
         }
 
         public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
@@ -422,7 +421,7 @@ namespace Reko.Core
         /// </remarks>
         /// <param name="uAddr"></param>
         /// <returns></returns>
-        public virtual Address MakeAddressFromLinear(ulong uAddr)
+        public virtual Address MakeAddressFromLinear(ulong uAddr, bool codeAlign)
         {
             return Address.Create(Architecture.PointerType, uAddr);
         }

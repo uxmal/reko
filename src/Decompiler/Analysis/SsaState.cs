@@ -153,7 +153,7 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Check if there are uses which is not in the procedure statements
+        /// Check if there are uses which aren't in the procedure statement
         /// list.
         /// </summary>
         private void ValidateDeadUses(Action<string> error)
@@ -180,7 +180,7 @@ namespace Reko.Analysis
             var uc = new InstructionUseCollector();
             foreach (var stm in Procedure.Statements)
             {
-                var idMapStored = GetStatemenIdentifierCounts(stm);
+                var idMapStored = GetStatementIdentifierCounts(stm);
                 var idMapActual = uc.CollectUses(stm);
                 foreach (var id in idMapStored.Keys)
                 {
@@ -212,8 +212,8 @@ namespace Reko.Analysis
         /// statement <paramref name="stm"/> by consulting the SSA state.
         /// </summary>
         /// <param name="stm"></param>
-        /// <returns></returns>
-        private IDictionary<Identifier, int> GetStatemenIdentifierCounts(Statement stm)
+        /// <returns>A dictionary mapping identifiers to use counts.</returns>
+        private IDictionary<Identifier, int> GetStatementIdentifierCounts(Statement stm)
         {
             var idMap =
                (from sid in Identifiers
@@ -286,7 +286,7 @@ namespace Reko.Analysis
         /// Deletes a statement by removing all the ids it references 
         /// from SSA state, then removes the statement itself from code.
         /// </summary>
-        /// <param name="pstm"></param>
+        /// <param name="stm"></param>
         public void DeleteStatement(Statement stm)
 		{
 			// Remove all definitions and uses.
@@ -441,7 +441,7 @@ namespace Reko.Analysis
 		/// </summary>
 		private class UnSSA : InstructionTransformer
 		{
-			private SsaState ssa;
+			private readonly SsaState ssa;
 
 			public UnSSA(SsaState ssa)
 			{

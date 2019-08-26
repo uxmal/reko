@@ -234,7 +234,7 @@ namespace Reko.Scanning
 
         public Address MakeAddressFromConstant(Constant c)
         {
-            return program.Platform.MakeAddressFromConstant(c);
+            return program.Platform.MakeAddressFromConstant(c, true);
         }
 
         public Address MakeSegmentedAddress(Constant seg, Constant off)

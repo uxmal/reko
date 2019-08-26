@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -64,7 +64,7 @@ namespace Reko.Core.Expressions
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
         {
-            return visitor.VisitConditionalExpression(this ,context);
+            return visitor.VisitConditionalExpression(this, context);
         }
 
         public override Expression CloneExpression()

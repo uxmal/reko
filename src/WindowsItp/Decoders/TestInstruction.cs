@@ -22,8 +22,6 @@ namespace Reko.WindowsItp.Decoders
         public MachineOperand Op2;
         public MachineOperand Op3;
 #endif
-        public override InstrClass InstructionClass { get;  }
-
         public override int OpcodeAsInteger => (int) Opcode;
 
         public override MachineOperand GetOperand(int i)

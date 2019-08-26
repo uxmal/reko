@@ -370,7 +370,7 @@ namespace Reko.Arch.PowerPC
             return Options;
         }
 
-        public override abstract Address MakeAddressFromConstant(Constant c);
+        public override abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
@@ -398,9 +398,12 @@ namespace Reko.Arch.PowerPC
                 .Select(u => Address.Ptr32(u));
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr32(c.ToUInt32());
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -421,9 +424,12 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr32(c.ToUInt32());
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -451,9 +457,12 @@ namespace Reko.Arch.PowerPC
                 .Select(u => Address.Ptr64(u));
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr64(c.ToUInt64());
+            var uAddr = c.ToUInt64();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr64(uAddr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

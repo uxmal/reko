@@ -31,7 +31,6 @@ namespace Reko.Arch.RiscV
         private static Dictionary<Opcode, string> opcodeNames;
 
         internal Opcode opcode;
-        internal InstrClass iclass;
         internal MachineOperand op1;
         internal MachineOperand op2;
         internal MachineOperand op3;
@@ -91,8 +90,6 @@ namespace Reko.Arch.RiscV
                 { Opcode.fmv_s_x, "fmv.s.x" },
             };
         }
-
-        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 

@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Arch.zSeries
 
         private void Given_MachineCode(string hex)
         {
-            var bytes = OperatingEnvironmentElement.LoadHexBytes(hex)
+            var bytes = PlatformDefinition.LoadHexBytes(hex)
                 .ToArray();
             this.image = new MemoryArea(LoadAddress, bytes);
         }
@@ -390,10 +390,11 @@ namespace Reko.UnitTests.Arch.zSeries
         {
             Given_MachineCode("A71AFFFF");
             AssertCode(     // ahi	r1,-00000001
-                "0|L--|00100000(4): 3 instructions",
+                "0|L--|00100000(4): 4 instructions",
                 "1|L--|v3 = (word32) r1 - 1",
-                "2|L--|r1 = DPB(r1, v3, 0)",
-                "3|L--|CC = cond(v3)");
+                "2|L--|v4 = SLICE(r1, word32, 32)",
+                "3|L--|r1 = SEQ(v4, v3)",
+                "4|L--|CC = cond(v3)");
         }
 
         [Test]
@@ -420,10 +421,11 @@ namespace Reko.UnitTests.Arch.zSeries
         {
             Given_MachineCode("1A12");
             AssertCode( // ar\tr1,r2
-                "0|L--|00100000(2): 3 instructions",
+                "0|L--|00100000(2): 4 instructions",
                 "1|L--|v4 = (word32) r1 + (word32) r2",
-                "2|L--|r1 = DPB(r1, v4, 0)",
-                "3|L--|CC = cond(v4)");
+                "2|L--|v5 = SLICE(r1, word32, 32)",
+                "3|L--|r1 = SEQ(v5, v4)",
+                "4|L--|CC = cond(v4)");
         }
 
         [Test]
@@ -432,7 +434,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_MachineCode("18A1");
             AssertCode(     // lr	r10,r1
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r10 = DPB(r10, (word32) r1, 0)");
+                "1|L--|r10 = r1");
         }
 
 

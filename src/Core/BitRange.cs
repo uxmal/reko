@@ -115,6 +115,13 @@ namespace Reko.Core
             return a;
         }
 
+        public static BitRange operator <<(BitRange a, int sh)
+        {
+            if (a.IsEmpty)
+                return a;
+            return new BitRange(a.Lsb + sh, a.Msb + sh);
+        }
+
         public static bool operator ==(BitRange a, BitRange b)
         {
             return a.Lsb == b.Lsb && a.Msb == b.Msb;

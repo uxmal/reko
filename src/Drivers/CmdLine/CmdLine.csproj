@@ -137,6 +137,10 @@
       <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
       <Name>MSP430</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\PaRisc\PaRisc.csproj">
+      <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>
+      <Name>PaRisc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
       <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
       <Name>zSeries</Name>

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -33,11 +33,13 @@ namespace Reko.Arch.Arm.AArch32
     {
         private readonly RegisterStorage[] registers;
         private readonly uint bitmask;
+        private readonly int index;
 
-        public MultiRegisterOperand(RegisterStorage[] registers, PrimitiveType width, uint bitmask) : base(width)
+        public MultiRegisterOperand(RegisterStorage[] registers, PrimitiveType width, uint bitmask, int index = -1) : base(width)
         {
             this.registers = registers;
             this.bitmask = bitmask;
+            this.index = index;
         }
 
         public IEnumerable<RegisterStorage> GetRegisters()
@@ -59,7 +61,14 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if ((bitmask & mask) != 0)
                 {
-                    if (iStart < 0)
+                    if (index >= 0)
+                    {
+                        writer.WriteString(sep);
+                        sep = ",";
+                        writer.WriteString(registers[i].Name);
+                        writer.WriteFormat("[{0}]", index);
+                    }
+                    else if (iStart < 0)
                     {
                         // Start a range
                         writer.WriteString(sep);
@@ -70,12 +79,15 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else
                 {
-                    if (0 <= iStart && iStart < i - 1)
+                    if (index < 0)
                     {
-                        writer.WriteChar('-');
-                        writer.WriteString(registers[i-1].Name);
+                        if (0 <= iStart && iStart < i - 1)
+                        {
+                            writer.WriteChar('-');
+                            writer.WriteString(registers[i - 1].Name);
+                        }
+                        iStart = -1;
                     }
-                    iStart = -1;
                 }
             }
             writer.WriteChar('}');

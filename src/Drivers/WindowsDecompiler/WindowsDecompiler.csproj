@@ -220,6 +220,10 @@
       <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
       <Name>MSP430</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\PaRisc\PaRisc.csproj">
+      <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>
+      <Name>PaRisc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\PowerPC.Design\PowerPC.Design.csproj">
       <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
       <Name>PowerPC.Design</Name>
@@ -248,6 +252,10 @@
       <Project>{a1376626-5207-41a9-a77b-11ddb9f534d1}</Project>
       <Name>Cpm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Hpux\Hpux.csproj">
+      <Project>{3488c24e-187c-4477-a310-d2292892d257}</Project>
+      <Name>Hpux</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
       <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
       <Name>SysV</Name>
@@ -271,6 +279,10 @@
     <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj">
       <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
       <Name>Elf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\HpSom\HpSom.csproj">
+      <Project>{6faa0b0c-f6c2-4091-9cc8-1dc2cf708bc2}</Project>
+      <Name>HpSom</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj">
       <Project>{db44d301-72ea-4f9b-8327-be8ebc5b1bc8}</Project>

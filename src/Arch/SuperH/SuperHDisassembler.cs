@@ -75,7 +75,6 @@ namespace Reko.Arch.SuperH
             public void Clear()
             {
                 ops.Clear();
-
             }
 
             internal SuperHInstruction MakeInstruction()
@@ -83,7 +82,7 @@ namespace Reko.Arch.SuperH
                 var instr = new SuperHInstruction
                 {
                     Opcode = this.opcode,
-                    IClass = iclass,
+                    InstructionClass = iclass,
                 };
                 if (ops.Count > 0)
                 {
@@ -566,11 +565,6 @@ namespace Reko.Arch.SuperH
 
         // Predicates
 
-        private static bool Eq0(uint n)
-        {
-            return n == 0;
-        }
-
         private static bool Ne0(uint n)
         {
             return n != 0;
@@ -685,9 +679,9 @@ namespace Reko.Arch.SuperH
             }
         }
 
-        private static Decoder invalid = Instr(Opcode.invalid);
+        private static readonly Decoder invalid = Instr(Opcode.invalid);
 
-        private static FieldDecoder decode_FxFD = Mask(8, 4,
+        private static readonly FieldDecoder decode_FxFD = Mask(8, 4,
             Instr(Opcode.fsca, fpul, f1),
             Instr(Opcode.ftrv, xmtrx, v2),
             Instr(Opcode.fsca, fpul, f1),
@@ -708,7 +702,7 @@ namespace Reko.Arch.SuperH
             Instr(Opcode.fsca, fpul, f1),
             invalid);
 
-        private static FieldDecoder decode_FxxD = Sparse(4, 5,
+        private static readonly FieldDecoder decode_FxxD = Sparse(4, 5,
             (0x01, Instr(Opcode.flds, d1, fpul)),
             (0x02, Instr(Opcode.@float, fpul, d1)),
             (0x03, Instr(Opcode.ftrc, d1, fpul)),

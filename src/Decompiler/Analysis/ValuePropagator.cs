@@ -82,7 +82,13 @@ namespace Reko.Analysis
                 Changed = false;
                 foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
+                    if (eventListener.IsCanceled())
+                        return;
                     this.stmCur = stm;
+                    if (ssa.Procedure.Name == "INITCURSORCTL" && stm.ToString().Contains("SEQ") &&
+                        stm.ToString().Contains("d3_202") &&
+                        stm.ToString().Contains("v11_18"))//$DEBUG
+                        ssa.ToString();
                     Transform(stm);
                 }
             } while (Changed);

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -168,14 +168,19 @@ namespace Reko.Environments.Ps3
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             // Bizarrely, pointers are 32-bit on this 64-bit platform.
-            return Address.Ptr32(c.ToUInt32());
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
 
-        public override Address MakeAddressFromLinear(ulong uAddr)
+        public override Address MakeAddressFromLinear(ulong uAddr, bool codeAlign)
         {
+            if (codeAlign)
+                uAddr &= ~3u;
             return Address.Ptr32((uint)uAddr);
         }
 

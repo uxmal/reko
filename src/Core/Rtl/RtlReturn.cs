@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -42,8 +42,9 @@ namespace Reko.Core.Rtl
         /// Architectures where the return address is not passed on the stack should specify 0 as the
         /// size of this property.
         /// </remarks>
-        public int ReturnAddressBytes { get; private set; }
-        public int ExtraBytesPopped { get; private set; }
+        public int ReturnAddressBytes { get; }
+
+        public int ExtraBytesPopped { get; }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {

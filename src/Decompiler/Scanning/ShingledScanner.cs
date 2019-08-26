@@ -71,7 +71,7 @@ namespace Reko.Scanning
             this.storageBinder = storageBinder;
             this.sr = sr;
             this.eventListener = eventListener;
-            this.Bad = program.Platform.MakeAddressFromLinear(~0ul);
+            this.Bad = program.Platform.MakeAddressFromLinear(~0ul, false);
         }
 
         /// <summary>
@@ -136,11 +136,12 @@ namespace Reko.Scanning
                 .Where(s => s.IsExecutable)
                 .Select(s => s.Size)
                 .Aggregate(0ul, (s, n) => s + n);
-                
+
+            var arch = program.Architecture;
             foreach (var segment in program.SegmentMap.Segments.Values
                 .Where(s => s.IsExecutable))
             {
-                var sc = ScanRange(segment.MemoryArea, segment.Address, segment.Size, workToDo);
+                var sc = ScanRange(arch, segment.MemoryArea, segment.Address, segment.Size, workToDo);
                 map.Add(segment, sc);
             }
             return map;
@@ -161,13 +162,20 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
-        public byte[] ScanRange(MemoryArea mem, Address addrStart, uint cbAlloc, ulong workToDo)
+        public byte[] ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, uint cbAlloc, ulong workToDo)
         {
             const int ProgressBarUpdateInterval = 256 * 1024;
 
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
+            
+            // Align the start address to instruction granularity. If we align off 
+            // into invalid memory, return immediately.
+            addrStart = addrStart.Align(step);
+            if (!program.SegmentMap.IsExecutableAddress(addrStart))
+                return y;
+
             var delaySlot = InstrClass.None;
             var rewriterCache = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
             var instrCount = 0;
@@ -176,7 +184,7 @@ namespace Reko.Scanning
             {
                 y[a] = MaybeCode;
                 var addr = addrStart + a;
-                var dasm = GetRewriter(addr, rewriterCache);
+                var dasm = GetRewriter(arch, addr, rewriterCache);
                 if (!dasm.MoveNext())
                 {
                     sr.Invalid.Add(addr);
@@ -352,12 +360,12 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <returns></returns>
         private IEnumerator<RtlInstructionCluster> GetRewriter(
+            IProcessorArchitecture arch,
             Address addr, 
             IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
         {
             if (!pool.TryGetValue(addr, out var e))
             {
-                var arch = program.Architecture;
                 var rdr = program.CreateImageReader(arch, addr);
                 var rw = arch.CreateRewriter(
                     program.CreateImageReader(arch, addr),
@@ -601,7 +609,7 @@ namespace Reko.Scanning
             var rdr = program.CreateImageReader(arch, seg.Address);
             while (rdr.TryRead(program.Platform.PointerType, out Constant c))
             {
-                yield return program.Architecture.MakeAddressFromConstant(c);
+                yield return program.Architecture.MakeAddressFromConstant(c, false);
             }
         }
 

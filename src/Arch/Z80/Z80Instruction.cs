@@ -30,13 +30,11 @@ namespace Reko.Arch.Z80
     public class Z80Instruction : MachineInstruction
     {
         public Opcode Code;
-        public InstrClass IClass;
         public MachineOperand Op1;
         public MachineOperand Op2;
 
         public override int OpcodeAsInteger => (int)Code;
 
-        public override InstrClass InstructionClass => IClass;
         public override MachineOperand GetOperand(int i)
         {
             if (i == 0)

@@ -94,6 +94,7 @@ namespace Reko.Gui.Design
                 case CmdIds.ViewFindWhatPointsHere:
                 case CmdIds.ActionEditSignature:
                 case CmdIds.EditRename:
+                case CmdIds.ShowProcedureCallHierarchy:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
                 case CmdIds.ActionAssumeRegisterValues:
@@ -115,6 +116,9 @@ namespace Reko.Gui.Design
                     return true;
                 case CmdIds.ActionEditSignature:
                     EditSignature();
+                    return true;
+                case CmdIds.ShowProcedureCallHierarchy:
+                    Services.RequireService<ICallHierarchyService>().Show(program, procedure);
                     return true;
                 case CmdIds.ActionAssumeRegisterValues:
                     AssumeRegisterValues();

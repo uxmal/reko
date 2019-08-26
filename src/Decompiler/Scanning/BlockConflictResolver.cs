@@ -65,6 +65,10 @@ namespace Reko.Scanning
             this.conflicts = BuildConflictGraph(blocks.Nodes);
         }
 
+        /// <summary>
+        /// Resolve all block conflicts.
+        /// </summary>
+        /// <param name="procedureStarts"></param>
         public void ResolveBlockConflicts(IEnumerable<Address> procedureStarts)
         {
             var reachable = TraceReachableBlocks(procedureStarts);
@@ -84,33 +88,10 @@ namespace Reko.Scanning
             RemoveConflictsRandomly();
         }
 
-        /// <summary>
-        /// Resolve all block conflicts.
-        /// </summary>
-        /// <param name="blocks"></param>
-        public void BlockConflictResolution(Address addrProcedureStart)
-        {
-            var valid = TraceReachableBlocks(new[] { addrProcedureStart });
-            // We're never using these stats, so disable them for now.
-            //ComputeStatistics(valid);
-            Dump("Before conflict resolution");
-            RemoveBlocksEndingWithInvalidInstruction();
-            Dump("After invalid instruction elimination");
-            RemoveBlocksConflictingWithValidBlocks(valid);
-            Dump("After conflicting block removal");
-            RemoveParentsOfConflictingBlocks();
-            Dump("After parents of conflicting blocks removed");
-            RemoveBlocksWithFewAncestors();
-            Dump("After few ancestors removal");
-            RemoveBlocksWithFewSuccessors();
-            Dump("After few successor removal");
-            RemoveConflictsRandomly();
-        }
-
         private void Dump(string message)
         {
-            Debug.WriteLineIf(trace.TraceInfo, message);
-            DebugEx.Info(trace, "  icfg nodes: {0}, conflicts: {1}", sr.ICFG.Nodes.Count, conflicts.Count);
+            DebugEx.Inform(trace, message);
+            DebugEx.Inform(trace, "  icfg nodes: {0}, conflicts: {1}", sr.ICFG.Nodes.Count, conflicts.Count);
         }
 
         /// <summary>
@@ -220,6 +201,48 @@ namespace Reko.Scanning
         {
             //Debug.Print("Removing block: {0}", n.Address);
             blocks.Nodes.Remove(n);
+            foreach (var i in n.Instructions)
+            {
+                RemoveDirectlyCalledAddress(i);
+            }
+        }
+
+        private void RemoveDirectlyCalledAddress(RtlInstructionCluster i)
+        {
+            var callTransfer = InstrClass.Call | InstrClass.Transfer;
+            if ((i.Class & callTransfer) != callTransfer)
+                return;
+            var addrDest = DestinationAddress(i);
+            if (addrDest == null)
+                return;
+            if (!this.sr.DirectlyCalledAddresses.ContainsKey(addrDest))
+                return;
+            this.sr.DirectlyCalledAddresses[addrDest]--;
+            if (this.sr.DirectlyCalledAddresses[addrDest] == 0)
+            {
+                this.sr.DirectlyCalledAddresses.Remove(addrDest);
+            }
+        }
+
+        /// <summary>
+        /// Find the constant destination of a transfer instruction.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private Address DestinationAddress(RtlInstructionCluster i)
+        {
+            var rtl = i.Instructions[i.Instructions.Length - 1];
+            for (;;)
+            {
+                if (!(rtl is RtlIf rif))
+                    break;
+                rtl = rif.Instruction;
+            }
+            if (rtl is RtlTransfer xfer)
+            {
+                return xfer.Target as Address;
+            }
+            return null;
         }
 
         private void RemoveConflictsRandomly()

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,45 +17,28 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-
+ 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface Architecture
+    /// <summary>
+    /// Contains processor-specific settings for a particular 
+    /// platform.
+    /// </summary>
+    public class PlatformArchitectureDefinition
     {
-        string Name { get ; }
+        public PlatformArchitectureDefinition()
+        {
+            this.TrashedRegisters = new List<string>();
+            this.TypeLibraries = new List<TypeLibraryDefinition>();
+        }
 
-        string Description { get; }
-
-        string TypeName { get; }
-
-        List<PropertyOption> Options { get; set; }
-    }
-
-    public class ArchitectureElement : Architecture
-    {
-        /// <summary>
-        /// Short abbreviation for the architecture.
-        /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Human-readable description of the processor architecture
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// .NET type name for the architecture.
-        /// </summary>
-        public string TypeName { get; set; }
-
-        /// <summary>
-        /// Available property options.
-        /// </summary>
-        public List<PropertyOption> Options{ get; set; }
+        public List<string> TrashedRegisters { get; internal set; }
+        public List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
     }
 }

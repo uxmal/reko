@@ -46,9 +46,9 @@ namespace Reko.Arch.Arm.AArch32
             m.SideEffect(host.PseudoProcedure("__cdp", VoidType.Instance, ops));
         }
 
-        private void RewriteCps()
+        private void RewriteCps(string name)
         {
-            m.SideEffect(host.PseudoProcedure("__cps_id", VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
         }
 
         private void RewriteDmb()
@@ -68,6 +68,18 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteEret()
         {
             m.Return(0, 0);
+        }
+
+        private void RewriteHlt()
+        {
+            m.SideEffect(host.PseudoProcedure(
+                "__hlt",
+                new Core.Serialization.ProcedureCharacteristics
+                {
+                    Terminates = true
+                },
+                VoidType.Instance),
+                InstrClass.Terminates);
         }
 
         private void RewriteHvc()

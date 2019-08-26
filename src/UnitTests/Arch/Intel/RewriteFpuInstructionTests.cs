@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Jnz("foo");
             });
             AssertCode(
-                "0|L--|00010000(8): 2 instructions",
+                "0|T--|00010000(8): 2 instructions",
                 "1|L--|SCZO = FPUF",
                 "2|T--|if (Test(EQ,FPUF)) branch 00010000"
                 );            
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Jz("foo");
             });
             AssertCode(
-                "0|L--|00010000(8): 2 instructions",
+                "0|T--|00010000(8): 2 instructions",
                 "1|L--|SCZO = FPUF",
                 "2|T--|if (Test(GE,FPUF)) branch 00010000"
                 );

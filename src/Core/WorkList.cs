@@ -72,6 +72,11 @@ namespace Reko.Core
 			get { return inQ.Count == 0; }
 		}
 
+        public bool Contains(T item)
+        {
+            return inQ.Contains(item);
+        }
+
 		public bool GetWorkItem(out T item)
 		{
 			while (!IsEmpty)

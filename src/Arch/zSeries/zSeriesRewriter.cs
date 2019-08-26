@@ -186,8 +186,8 @@ namespace Reko.Arch.zSeries
                 ea = m.IAdd(ea, off);
             }
             return ea;
-
         }
+
         private Identifier Reg(MachineOperand op)
         {
             return binder.EnsureRegister(((RegisterOperand)op).Register);

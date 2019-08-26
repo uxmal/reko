@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -41,7 +41,7 @@ namespace Reko.Scanning
             this.DataType = dt;
         }
 
-        public static ValueSet Any = new ConcreteValueSet(new UnknownType());
+        public static readonly ValueSet Any = new ConcreteValueSet(new UnknownType());
         public DataType DataType { get; }
 
         /// <summary>

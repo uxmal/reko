@@ -86,12 +86,9 @@ namespace Reko.Arch.Arm.AArch32
             this.condition = ArmCondition.AL;
         }
 
-        public InstrClass iclass { get; set; }
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
         public MachineOperand[] ops { get; set; }
-
-        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int) opcode;
 
@@ -137,10 +134,7 @@ namespace Reko.Arch.Arm.AArch32
                     RenderOperand(ops[iOp], writer, options);
                 }
             }
-            if (vector_index.HasValue)
-            {
-                writer.WriteFormat("[{0}]", vector_index.Value);
-            }
+    
             if (ShiftType != Opcode.Invalid)
             {
                 if (ShiftType != Opcode.lsl ||
@@ -377,7 +371,6 @@ namespace Reko.Arch.Arm.AArch32
         public MachineOperand ShiftValue;
         public ArmVectorData vector_data;
         public int vector_size;         // only valid if vector_data is valid
-        public int? vector_index;
         public byte itmask;
     }
 

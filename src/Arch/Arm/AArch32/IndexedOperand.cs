@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,26 +18,35 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core.Configuration
+namespace Reko.Arch.Arm.AArch32
 {
-    public interface SymbolSource
+    /// <summary>
+    /// Models an ARM indexed SIMD register.
+    /// </summary>
+    public class IndexedOperand : MachineOperand
     {
-        string Description { get; }
-        string Name { get; }
-        string TypeName { get; }
-    }
+        public IndexedOperand(PrimitiveType dt, RegisterStorage reg, int index) : base(dt)
+        {
+            this.Register = reg;
+            this.Index = index;
+        }
 
-    public class SymbolSourceDefinition : SymbolSource
-    {
-        public string Description { get;  set; }
-        public string Extension { get;  set; }
-        public string Name { get;  set; }
-        public string TypeName { get;  set; }
+        public RegisterStorage Register { get; }
+
+        public int Index { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteFormat("{0}[{1}]", Register.Name, Index);
+        }
     }
 }

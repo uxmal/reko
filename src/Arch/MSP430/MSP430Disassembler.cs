@@ -223,6 +223,7 @@ namespace Reko.Arch.Msp430
                 if (instr.op2 is RegisterOperand dst &&
                     dst.Register == Registers.pc)
                 {
+                    instr.InstructionClass = InstrClass.Transfer;
                     if (instr.op1 is MemoryOperand mem &&
                         mem.PostIncrement &&
                         mem.Base == Registers.sp)
@@ -573,7 +574,7 @@ namespace Reko.Arch.Msp430
                 var instr = new Msp430Instruction
                 {
                     opcode = jj.Item1,
-                    IClass = jj.Item2,
+                    InstructionClass = jj.Item2,
                     dataWidth = dasm.dataWidth,
                     op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,

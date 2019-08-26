@@ -141,7 +141,7 @@ namespace Reko.Core
             {
                 if (constAddr == Constant.Invalid)
                     return constAddr;
-                var ea = Architecture.MakeAddressFromConstant(constAddr);
+                var ea = Architecture.MakeAddressFromConstant(constAddr, false);
                 return GetMemoryValue(ea, access.DataType, segmentMap);
             }
             var addr = access.EffectiveAddress as Address;
@@ -203,6 +203,11 @@ namespace Reko.Core
         public Expression GetDefiningExpression(Identifier id)
         {
             return null;
+        }
+
+        public List<Statement> GetDefiningStatementClosure(Identifier id)
+        {
+            return new List<Statement>();
         }
 
         public Expression MakeSegmentedAddress(Constant seg, Constant off)

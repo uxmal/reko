@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
 			{
 				uint n = (uint) (imgR.ReadUInt32() + (baseOfImage - program.ImageMap.BaseAddress));
 				imgW.WriteUInt32(n);
-				relocations.AddPointerReference(offset.ToLinear() - imgW.MemoryArea.BaseAddress.ToLinear(), n);
+				relocations.AddPointerReference(offset.ToLinear(), n);
 				break;
 			}
             case 0xA:

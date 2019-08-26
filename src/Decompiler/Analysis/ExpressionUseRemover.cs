@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 Pavel Tomin.
  *
@@ -26,14 +26,13 @@ namespace Reko.Analysis
 {
     public class ExpressionUseRemover : ExpressionVisitorBase
     {
-        private Statement user;
-        private SsaIdentifierCollection ssaIds;
+        private readonly Statement user;
+        private readonly SsaIdentifierCollection ssaIds;
 
         public ExpressionUseRemover(Statement user, SsaIdentifierCollection ssaIds)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            this.user = user; this.ssaIds = ssaIds;
+            this.user = user ?? throw new ArgumentNullException(nameof(user));
+            this.ssaIds = ssaIds;
         }
 
         public override void VisitIdentifier(Identifier id)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -52,7 +52,7 @@ namespace Reko.Loading
             return null;
         }
 
-        public ISymbolSource LoadSymbolSource(SymbolSource symSrcDef, byte [] bytes, string filename)
+        public ISymbolSource LoadSymbolSource(SymbolSourceDefinition symSrcDef, byte [] bytes, string filename)
         {
             var type = Type.GetType(symSrcDef.TypeName, false);
             if (type == null)

@@ -254,7 +254,7 @@ namespace Reko.Environments.Windows
                 {
                     return null;
                 }
-                addrTarget = MakeAddressFromConstant(wAddr);
+                addrTarget = MakeAddressFromConstant(wAddr, true);
             }
             ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, rtlc.Address);
             if (proc != null)

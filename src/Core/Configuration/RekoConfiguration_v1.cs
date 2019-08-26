@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -25,6 +25,22 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// The physical file format of the Reko configuration file.
+    /// </summary>
+    /// <remarks>
+    /// To add new elements into the configuration file format, add them to 
+    /// this file, suffixed with a "_vN" prefix, where "N" is a version
+    /// number.
+    /// <para>
+    /// Adding a new configuration element into the configuration file is 
+    /// backwards compatible; in such cases an update of the version number is
+    /// not needed. If you rename or remove a field from a configuration
+    /// element, however, the change is not backwards compatible, and you must
+    /// update the "_vN" prefix of not just the configuration element, but also
+    /// of any other configuration elements that include it.
+    /// </para>
+    /// </remarks>
     [Serializable]
     [XmlRoot(ElementName="Reko", Namespace = "http://schemata.jklnet.org/Reko/Config/v1", IsNullable = false)]
     public partial class RekoConfiguration_v1

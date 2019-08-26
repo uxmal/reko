@@ -345,7 +345,7 @@ $@"    [Test]
                         return new i8051Instruction
                         {
                             Opcode = Opcode.Invalid,
-                            IClass = InstrClass.Invalid,
+                            InstructionClass = InstrClass.Invalid,
                         };
                     }
                 }

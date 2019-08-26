@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Typing
             var sActual = sw.ToString();
             if (expectedOutput != sActual)
             {
-                Debug.Print(sActual);
+                Console.WriteLine(sActual);
                 Assert.AreEqual(expectedOutput, sActual);
             }
         }
@@ -1179,6 +1179,50 @@ test_exit:
             });
             var program = pb.BuildProgram();
             RunTest(program, "Typing/" + nameof(TerAddress) + ".txt");
+        }
+
+        [Test]
+        public void TerSliceToCast()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	eax = Mem0[0x00001200:word32]
+	ax_1 = SLICE(eax, word16, 0)
+	return
+	// succ:  test_exit
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	eax = globals->dw1200
+	ax_1 = (word16) eax
+	return
+	// succ:  test_exit
+test_exit:
+
+";
+            #endregion
+
+            RunStringTest(m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var ax_1 = m.Reg16("ax_1", 0);
+                m.Assign(eax, m.Mem32(m.Word32(0x1200)));
+                m.Assign(ax_1, m.Slice(PrimitiveType.Word16, eax, 0));
+                m.Return();
+            }, sExp);
         }
     }
 }

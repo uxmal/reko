@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.Core.Absyn
 		public AbsynDoWhile(List<AbsynStatement> body, Expression condition) : base(condition, body)
 		{
 			if (body == null)
-				throw new ArgumentNullException("body", "Body of do-while mustn't be null");
+				throw new ArgumentNullException(nameof(body), "Body of do-while mustn't be null");
 		}
 
 		public override void Accept(IAbsynVisitor visitor)

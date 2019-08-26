@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -48,6 +48,10 @@ namespace Reko.Gui
     
         public TreeNodeDesigner Parent { get; set; }
 
+        public virtual void OnExpanded()
+        {
+
+        }
 
         public virtual bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
@@ -67,6 +71,7 @@ namespace Reko.Gui
         void AddComponents(object parent, System.Collections.IEnumerable components);
         void RemoveComponent(object component);
         TreeNodeDesigner GetDesigner(object component);
+        TreeNodeDesigner GetSelectedDesigner();
     }
 
     public static class TreeNodeDesignerEx

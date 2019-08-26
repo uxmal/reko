@@ -143,13 +143,19 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public TabPage FindResultsPage
         {
-            get {return tabFindResults; }
+            get { return tabFindResults; }
         }
 
         public TabPage DiagnosticsPage
         {
             get { return tabDiagnostics; }
         }
+
+        public TabPage CallHierarchyPage
+        {
+            get { return tabCallHierarchy; }
+        }
+
 
         public TabPage ConsolePage
         {
@@ -251,6 +257,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public StatusStrip StatusStrip
         {
             get { return statusStrip; }
+        }
+
+        public CallHierarchyView CallHierarchy
+        {
+            get { return callHierarchyView; }
         }
 
         public event KeyEventHandler ProcessCommandKey;

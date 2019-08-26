@@ -79,9 +79,9 @@ namespace Reko.Typing
                 dtInferred = c.TypeVariable.DataType;
                 this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
             }
-            dtInferred = dtInferred.ResolveAs<DataType>();
+            var dt = dtInferred.ResolveAs<DataType>();
             this.dereferenced = dereferenced;
-            return dtInferred.Accept(this);
+            return dt.Accept(this);
         }
 
         public Expression Rewrite(Address addr, bool dereferenced)
@@ -248,7 +248,7 @@ namespace Reko.Typing
                     return np;
                 }
 
-                var addr = program.Platform.MakeAddressFromConstant(c);
+                var addr = program.Platform.MakeAddressFromConstant(c, false);
                 // An invalid pointer -- often used as sentinels in code.
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
@@ -321,7 +321,7 @@ namespace Reko.Typing
 
         private bool IsPtrToReadonlySection(Constant c, DataType dt)
         {
-            var addr = platform.MakeAddressFromConstant(c);
+            var addr = platform.MakeAddressFromConstant(c, false);
             if (addr == null)
                 return false;
             if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
@@ -331,7 +331,7 @@ namespace Reko.Typing
 
         private Expression ReadNullTerminatedString(Constant c, DataType dt)
         {
-            var rdr = program.CreateImageReader(program.Architecture, platform.MakeAddressFromConstant(c));
+            var rdr = program.CreateImageReader(program.Architecture, platform.MakeAddressFromConstant(c, false));
             return rdr.ReadCString(dt, program.TextEncoding);
         }
 

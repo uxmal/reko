@@ -199,21 +199,21 @@ namespace Reko.Scanning
         /// </summary>
         public List<Cluster> FindClusters()
         {
-            var nodesLeft = new HashSet<RtlBlock>(sr.ICFG.Nodes);
+            var nodesLeft = sr.ICFG.Nodes.ToHashSet();
             var clusters = new List<Cluster>();
             int totalCount = nodesLeft.Count;
             if (totalCount > 0)
             {
                 listener.ShowProgress("Finding procedure candidates", 0, totalCount);
-                while (nodesLeft.Count > 0)
+                var wl = new WorkList<RtlBlock>(nodesLeft);
+                while (wl.GetWorkItem(out var node))
                 {
                     if (listener.IsCanceled())
                         break;
-                    var node = nodesLeft.First();
                     var cluster = new Cluster();
                     clusters.Add(cluster);
 
-                    BuildWCC(node, cluster, nodesLeft);
+                    BuildWCC(node, cluster, wl);
                     sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
                     listener.ShowProgress("Finding procedure candidates", totalCount - nodesLeft.Count, totalCount);
                 }
@@ -230,22 +230,22 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="node"></param>
         /// <param name="cluster"></param>
-        /// <param name="nodesLeft"></param>
+        /// <param name="wl"></param>
         private void BuildWCC(
             RtlBlock node,
             Cluster cluster,
-            HashSet<RtlBlock> nodesLeft)
+            WorkList<RtlBlock> wl)
         {
-            nodesLeft.Remove(node);
+            wl.Remove(node);
             cluster.Blocks.Add(node);
             foreach (var s in sr.ICFG.Successors(node))
             {
-                if (nodesLeft.Contains(s))
+                if (wl.Contains(s))
                 {
                     // Only add if successor is not CALLed.
                     if (!procedures.Contains(s.Address))
                     {
-                        BuildWCC(s, cluster, nodesLeft);
+                        BuildWCC(s, cluster, wl);
                     }
                 }
             }
@@ -255,9 +255,9 @@ namespace Reko.Scanning
                 // is not CALLed.
                 foreach (var p in sr.ICFG.Predecessors(node))
                 {
-                    if (nodesLeft.Contains(p))
+                    if (wl.Contains(p))
                     {
-                        BuildWCC(p, cluster, nodesLeft);
+                        BuildWCC(p, cluster, wl);
                     }
                 }
             }
@@ -270,10 +270,12 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="sr"></param>
         /// <param name="clusters"></param>
-        private List<RtlProcedure> BuildProcedures(IEnumerable<Cluster> clusters)
+        private List<RtlProcedure> BuildProcedures(IList<Cluster> clusters)
         {
             var procs = new List<RtlProcedure>();
-            listener.ShowProgress("Building procedures", 0, clusters.Count());
+            if (clusters.Count == 0)
+                return procs;
+            listener.ShowProgress("Building procedures", 0, clusters.Count);
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())

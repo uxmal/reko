@@ -30,6 +30,9 @@ namespace Reko.Gui.Controls
     public interface ITreeView : IControl
     {
         event EventHandler AfterSelect;
+        event EventHandler<TreeViewEventArgs> AfterExpand;
+        event EventHandler<TreeViewEventArgs> BeforeExpand;
+
         event DragEventHandler DragEnter;
         event DragEventHandler DragOver;
         event DragEventHandler DragDrop;
@@ -63,7 +66,9 @@ namespace Reko.Gui.Controls
         string Text { get; set; }
         string ToolTipText { get; set; }
 
+        void Collapse();
         void Expand();
         void Invoke(Action action);
+        void Remove();
     }
 }

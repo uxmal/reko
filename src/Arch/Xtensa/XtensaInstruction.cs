@@ -46,14 +46,10 @@ namespace Reko.Arch.Xtensa
             { Opcodes.ueq_s, "ueq.s" }
         };
 
-        public override InstrClass InstructionClass => IClass;
-        public override int OpcodeAsInteger => (int) Opcode;
-
         public Opcodes Opcode { get; set; }
-
-        public InstrClass IClass { get; set; }
-
         public MachineOperand[] Operands { get; internal set; }
+
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public override MachineOperand GetOperand(int i)
         {

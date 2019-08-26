@@ -33,9 +33,9 @@ namespace Reko.Arch.Avr
 {
     public class Avr8Architecture : ProcessorArchitecture
     {
-        private RegisterStorage[] regs;
-        private Dictionary<uint, FlagGroupStorage> grfs;
-        private List<Tuple<FlagM, char>> grfToString;
+        private readonly RegisterStorage[] regs;
+        private readonly Dictionary<uint, FlagGroupStorage> grfs;
+        private readonly List<Tuple<FlagM, char>> grfToString;
 
         public Avr8Architecture(string archId) : base(archId)
         {
@@ -183,9 +183,12 @@ namespace Reko.Arch.Avr
             return s.ToString();
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr16((ushort)c.ToUInt32());
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~1u;
+            return Address.Ptr16((ushort)uAddr);
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

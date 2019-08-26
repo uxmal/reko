@@ -133,6 +133,7 @@ namespace Reko.Gui
                 switch (cmdId.ID) {
                 case CmdIds.ActionEditSignature:
                 case CmdIds.ViewGoToAddress:
+                case CmdIds.ShowProcedureCallHierarchy:
                     status.Status = singleItemSelected
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
@@ -153,6 +154,9 @@ namespace Reko.Gui
                     return true;
                 case CmdIds.ViewGoToAddress:
                     GotoProcedureAddress();
+                    return true;
+                case CmdIds.ShowProcedureCallHierarchy:
+                    ShowProcedureCallHierarchy();
                     return true;
                 }
             }
@@ -177,6 +181,13 @@ namespace Reko.Gui
             var item = listProcedures.SelectedItems[0];
             var pp = (ProgramProcedure) item.Tag;
             services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(pp.Program, pp.Procedure.EntryAddress);
+        }
+
+        private void ShowProcedureCallHierarchy()
+        {
+            var item = listProcedures.SelectedItems[0];
+            var pp = (ProgramProcedure) item.Tag;
+            services.RequireService<ICallHierarchyService>().Show(pp.Program, pp.Procedure);
         }
 
         private IEnumerable<ProgramProcedure> SelectedItems()

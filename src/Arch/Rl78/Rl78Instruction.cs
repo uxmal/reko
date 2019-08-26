@@ -30,11 +30,8 @@ namespace Reko.Arch.Rl78
 {
     public class Rl78Instruction : MachineInstruction
     {
-        public InstrClass IClass { get; set; }
         public Mnemonic Mnemonic { get; set; }
         public MachineOperand[] Operands { get; set; }
-
-        public override InstrClass InstructionClass => IClass;
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 

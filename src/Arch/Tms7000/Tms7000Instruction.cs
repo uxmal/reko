@@ -30,9 +30,6 @@ namespace Reko.Arch.Tms7000
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override InstrClass InstructionClass => IClass;
-        public InstrClass IClass;
-
         public override int OpcodeAsInteger => (int) Opcode;
 
         public override MachineOperand GetOperand(int i)

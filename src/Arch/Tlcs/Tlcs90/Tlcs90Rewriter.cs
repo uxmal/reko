@@ -35,12 +35,12 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     public partial class Tlcs90Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private EndianImageReader rdr;
-        private ProcessorState state;
-        private Tlcs90Architecture arch;
-        private IEnumerator<Tlcs90Instruction> dasm;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly EndianImageReader rdr;
+        private readonly ProcessorState state;
+        private readonly Tlcs90Architecture arch;
+        private readonly IEnumerator<Tlcs90Instruction> dasm;
         private Tlcs90Instruction instr;
         private InstrClass rtlc;
         private RtlEmitter m;
@@ -225,7 +225,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(mem.Offset);
+                    ea = arch.MakeAddressFromConstant(mem.Offset, false);
                 }
                 var tmp = binder.CreateTemporary(mem.Width);
                 m.Assign(tmp, m.Mem(mem.Width, ea));
@@ -271,7 +271,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(mem.Offset);
+                    ea = arch.MakeAddressFromConstant(mem.Offset, false);
                 }
                 var load = m.Mem(mem.Width, ea);
                 src = fn(load, src);

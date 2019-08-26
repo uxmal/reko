@@ -52,8 +52,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.sc = new ServiceContainer();
             var cfgSvc = new Mock<IConfigurationService>();
             var arch = new Mock<IProcessorArchitecture>();
-            platform.Setup(p => p.MakeAddressFromLinear(It.IsAny<ulong>()))
-                .Returns((ulong u) => Address.Ptr64(u));
+            platform.Setup(p => p.MakeAddressFromLinear(It.IsAny<ulong>(), It.IsAny<bool>()))
+                .Returns((ulong u, bool b) => Address.Ptr64(u));
             cfgSvc.Setup(c => c.GetArchitecture("x86-protected-64")).Returns(arch.Object);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
         }

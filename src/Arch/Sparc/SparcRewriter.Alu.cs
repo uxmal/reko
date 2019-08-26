@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -76,9 +76,11 @@ namespace Reko.Arch.Sparc
             var mem = (MemoryAccess)RewriteOp(instrCur.Op1);
             var dst = RewriteOp(instrCur.Op2);
             var bTmp = binder.CreateTemporary(PrimitiveType.Byte);
+            var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bTmp.DataType.BitSize));
             var intrinsic = host.PseudoProcedure("__ldstub", bTmp.DataType, m.AddrOf(mem));
             m.Assign(bTmp, intrinsic);
-            m.Assign(dst, m.Dpb(dst, bTmp, 0));
+            m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, bTmp.DataType.BitSize));
+            m.Assign(dst, m.Seq(tmpHi, bTmp));
         }
 
         private void RewriteLoad(PrimitiveType size)

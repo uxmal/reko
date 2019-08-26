@@ -29,10 +29,20 @@ namespace Reko.Arch.Arm.AArch32
     {
         private void RewriteVecBinOp(Func<Expression, Expression, Expression> fn)
         {
-            var src1 = Operand(Src1());
-            var src2 = Operand(Src2());
-            var dst = Operand(Dst(), PrimitiveType.Word32, true);
-            m.Assign(dst, fn(src1, src2));
+            if (instr.ops.Length == 3)
+            {
+                var src1 = Operand(Src1());
+                var src2 = Operand(Src2());
+                var dst = Operand(Dst(), PrimitiveType.Word32, true);
+                m.Assign(dst, fn(src1, src2));
+            }
+            else
+            {
+                var src1 = Operand(Dst());
+                var src2 = Operand(Src1());
+                var dst = Operand(Dst(), PrimitiveType.Word32, true);
+                m.Assign(dst, fn(src1, src2));
+            }
         }
 
         private void RewriteVcmp()
@@ -110,14 +120,15 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVmov()
         {
+            //if (instr.ops.Length > 2) throw new NotImplementedException();
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var src = this.Operand(Src1());
-            if (instr.vector_data != ArmVectorData.INVALID)
+            if (instr.vector_data != ArmVectorData.INVALID && !(src is ArrayAccess))
             {
-                var dt = VectorElementDataType(instr.vector_data);
+                var dt = Arm32Architecture.VectorElementDataType(instr.vector_data);
                 var dstType = Dst().Width;
                 var srcType = Src1().Width;
-                var srcElemSize = VectorElementDataType(instr.vector_data);
+                var srcElemSize = Arm32Architecture.VectorElementDataType(instr.vector_data);
                 var celemSrc = dstType.BitSize / srcElemSize.BitSize;
                 var arrDst = new ArrayType(dstType, celemSrc);
 
@@ -130,13 +141,7 @@ namespace Reko.Arch.Arm.AArch32
                     m.Assign(dst, src);
                     return;
                 }
-                if (instr.vector_index.HasValue)
-                {
-                    // Extract a single item from the vector register
-                    var index = Constant.Int32(instr.vector_index.Value);
-                    m.Assign(dst, m.ARef(dst.DataType, src, index));
-                    return;
-                }
+ 
                 var fname = $"__vmov_{VectorElementType(instr.vector_data)}";
                 var ppp = host.PseudoProcedure(fname, Dst().Width, src);
                 m.Assign(dst, m.Fn(ppp));
@@ -153,21 +158,29 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVmrs()
         {
-            var nsysreg= ((ImmediateOperand)Src1()).Value.ToInt32();
+            var expSysreg = Src1();
             var dst = Operand(Dst());
             RegisterStorage sysreg;
-            switch (nsysreg)
+            if (expSysreg is RegisterOperand regSysreg)
             {
-            case 0: sysreg = Registers.fpsid; break;
-            case 1:
-                sysreg =  Registers.fpscr;
-                dst = NZCV();
-                break;
-            case 5: sysreg = Registers.mvfr2; break;
-            case 6: sysreg = Registers.mvfr1; break;
-            case 7: sysreg = Registers.mvfr0; break;
-            case 8: sysreg = Registers.fpexc; break;
-            default: Invalid(); return;
+                sysreg = regSysreg.Register;
+            }
+            else
+            {
+                var nsysreg = ((ImmediateOperand) Src1()).Value.ToInt32();
+                switch (nsysreg)
+                {
+                case 0: sysreg = Registers.fpsid; break;
+                case 1:
+                    sysreg = Registers.fpscr;
+                    dst = NZCV();
+                    break;
+                case 5: sysreg = Registers.mvfr2; break;
+                case 6: sysreg = Registers.mvfr1; break;
+                case 7: sysreg = Registers.mvfr0; break;
+                case 8: sysreg = Registers.fpexc; break;
+                default: Invalid(); return;
+                }
             }
             m.Assign(dst, binder.EnsureRegister(sysreg));
         }
@@ -292,7 +305,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var dstType = Dst().Width;
             var srcType = Src1().Width;
-            var srcElemSize = VectorElementDataType(instr.vector_data);
+            var srcElemSize = Arm32Architecture.VectorElementDataType(instr.vector_data);
             var celemSrc = srcType.BitSize / srcElemSize.BitSize;
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
@@ -312,7 +325,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var dstType = Dst().Width;
             var srcType = Src1().Width;
-            var srcElemSize = VectorElementDataType(elemType);
+            var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
             var celemSrc = srcType.BitSize / srcElemSize.BitSize;
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
@@ -333,7 +346,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var dstType = Dst().Width;
             var srcType = Src1().Width;
-            var srcElemSize = VectorElementDataType(elemType);
+            var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
             //$BUG: some instructions are returned with srcElemnSize == 0!
             var celemSrc = srcType.BitSize / (srcElemSize.BitSize != 0 ? srcElemSize.BitSize : 8);
             var arrSrc = new ArrayType(srcType, celemSrc);
@@ -357,6 +370,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.I8: return "i8";
             case ArmVectorData.S8: return "s8";
             case ArmVectorData.U8: return "u8";
+            case ArmVectorData.F16: return "f16";
             case ArmVectorData.I16: return "i16";
             case ArmVectorData.S16: return "s16";
             case ArmVectorData.U16: return "u16";
@@ -372,26 +386,5 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private DataType VectorElementDataType(ArmVectorData elemType)
-        {
-            switch (elemType)
-            {
-            case ArmVectorData.I8: return PrimitiveType.SByte;
-            case ArmVectorData.S8: return PrimitiveType.SByte;
-            case ArmVectorData.U8: return PrimitiveType.Byte;
-            case ArmVectorData.I16: return PrimitiveType.Int16;
-            case ArmVectorData.S16: return PrimitiveType.Int16;
-            case ArmVectorData.U16: return PrimitiveType.UInt16;
-            case ArmVectorData.F32: return PrimitiveType.Real32;
-            case ArmVectorData.I32: return PrimitiveType.Int32;
-            case ArmVectorData.S32: return PrimitiveType.Int32;
-            case ArmVectorData.U32: return PrimitiveType.UInt32;
-            case ArmVectorData.F64: return PrimitiveType.Real64;
-            case ArmVectorData.I64: return PrimitiveType.Int64;
-            case ArmVectorData.S64: return PrimitiveType.Int64;
-            case ArmVectorData.U64: return PrimitiveType.UInt64;
-            default: NotImplementedYet(); return VoidType.Instance;
-            }
-        }
     }
 }

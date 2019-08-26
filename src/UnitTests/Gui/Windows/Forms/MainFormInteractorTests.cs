@@ -71,6 +71,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private Mock<ImageSegmentService> imgSegSvc;
         private Mock<ISymbolLoadingService> symLoadSvc;
         private Mock<ISelectionService> selSvc;
+        private Mock<ICallHierarchyService> callHierSvc;
 
         [SetUp]
         public void Setup()
@@ -597,6 +598,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             imgSegSvc = new Mock<ImageSegmentService>();
             symLoadSvc = new Mock<ISymbolLoadingService>();
             selSvc = new Mock<ISelectionService>();
+            callHierSvc = new Mock<ICallHierarchyService>();
 
             svcFactory.Setup(s => s.CreateArchiveBrowserService()).Returns(archSvc.Object);
             svcFactory.Setup(s => s.CreateCodeViewerService()).Returns(cvSvc.Object);
@@ -623,6 +625,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Setup(s => s.CreateViewImportService()).Returns(vimpSvc.Object);
             svcFactory.Setup(s => s.CreateSymbolLoadingService()).Returns(symLoadSvc.Object);
             svcFactory.Setup(s => s.CreateSelectionService()).Returns(selSvc.Object);
+            svcFactory.Setup(s => s.CreateCallHierarchyService()).Returns(callHierSvc.Object);
             services.AddService<IDialogFactory>(dlgFactory.Object);
             services.AddService<IServiceFactory>(svcFactory.Object);
             services.AddService<IFileSystemService>(fsSvc.Object);

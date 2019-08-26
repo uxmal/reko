@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public override Address MakeAddressFromConstant(Constant c)
+            public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
             {
                 return Address.Ptr32(c.ToUInt32());
             }

@@ -683,6 +683,11 @@ namespace Reko.Analysis
                 return null;
             }
 
+            public List<Statement> GetDefiningStatementClosure(Identifier id)
+            {
+                return new List<Statement>();
+            }
+
             public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);

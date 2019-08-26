@@ -185,6 +185,9 @@ namespace Reko.Gui.Forms
             srSvc = svcFactory.CreateSearchResultService();
             sc.AddService<ISearchResultService>(srSvc);
 
+            var callHierSvc = svcFactory.CreateCallHierarchyService();
+            sc.AddService<ICallHierarchyService>(callHierSvc);
+
             this.searchResultsTabControl = svcFactory.CreateTabControlHost();
             sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
 
@@ -346,18 +349,18 @@ namespace Reko.Gui.Forms
                 string envName = null;
                 string sAddr = null;
                 string loader = null;
-                EntryPointElement entry = null;
+                EntryPointDefinition entry = null;
                 if (rawFileOption != null && rawFileOption.Value != null)
                 {
-                    var raw = (RawFileElement)rawFileOption.Value;
+                    var raw = (RawFileDefinition)rawFileOption.Value;
                     loader = raw.Loader;
                     archName = raw.Architecture;
                     envName = raw.Environment;
                     sAddr = raw.BaseAddress;
                     entry = raw.EntryPoint;
                 }
-                Architecture archOption = dlg.GetSelectedArchitecture();
-                OperatingEnvironment envOption = dlg.GetSelectedEnvironment();
+                ArchitectureDefinition archOption = dlg.GetSelectedArchitecture();
+                PlatformDefinition envOption = dlg.GetSelectedEnvironment();
                 archName = archName ?? archOption?.Name;
                 envName = envName ?? envOption?.Name;
                 sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();

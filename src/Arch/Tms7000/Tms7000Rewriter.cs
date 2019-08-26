@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,11 +34,11 @@ namespace Reko.Arch.Tms7000
 {
     public class Tms7000Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Tms7000Architecture arch;
-        private EndianImageReader rdr;
-        private IRewriterHost host;
-        private IStorageBinder binder;
-        private IEnumerator<Tms7000Instruction> dasm;
+        private readonly Tms7000Architecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly IRewriterHost host;
+        private readonly IStorageBinder binder;
+        private readonly IEnumerator<Tms7000Instruction> dasm;
         private Tms7000Instruction instr;
         private InstrClass rtlc;
         private RtlEmitter m;

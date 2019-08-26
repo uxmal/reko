@@ -281,10 +281,10 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_cdp()
         {
             var instr = Disassemble32(0xFECED300);
-            Assert.AreEqual("cdp2\tp3,#&C,c13,c14,c0,#0", instr.ToString());
+            Assert.AreEqual("cdp2\tp3,#&C,cr13,cr14,cr0,#0", instr.ToString());
 
             instr = Disassemble32(0x4EC4EC4F);
-            Assert.AreEqual("cdpmi\tp12,#&C,c14,c4,c15,#2", instr.ToString());
+            Assert.AreEqual("cdpmi\tp12,#&C,cr14,cr4,cr15,#2", instr.ToString());
         }
 
         [Test]
@@ -799,7 +799,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_cpsid()
         {
             Disassemble32(0xF10C0080);
-            Expect_Code("cps");
+            Expect_Code("cpsid\t#0");
         }
 
         [Test]
@@ -813,14 +813,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_mcr()
         {
             Disassemble32(0xEE070F58);
-            Expect_Code("mcr\tp15,#0,r0,c7,c8,#2");
+            Expect_Code("mcr\tp15,#0,r0,cr7,cr8,#2");
         }
 
         [Test]
         public void ArmDasm_mrc()
         {
             Disassemble32(0xEE123F10);
-            Expect_Code("mrc\tp15,#0,r3,c2,c0,#0");
+            Expect_Code("mrc\tp15,#0,r3,cr2,cr0,#0");
         }
 
         [Test]
@@ -979,6 +979,20 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_vext_64()
+        {
+            Disassemble32(0xF2F208C8);
+            Expect_Code("vext.u8\tq8,q9,q4,#8");
+        }
+
+        [Test]
+        public void ArmDasm_vshr_3()
+        {
+            Disassemble32(0xF3F340D0);
+            Expect_Code("vshr.i64\tq10,q0,#&D");
+        }
+
+        [Test]
         public void ArmDasm_vmax_s32()
         {
             Disassemble32(0xF26006E2);
@@ -1018,6 +1032,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xF2600AA0);
             Expect_Code("vpmax.s32\td16,d16,d16");
+        }
+
+        [Test]
+        public void ArmDasm_vpmax_u16()
+        {
+            Disassemble32(0xF3522AA2);
+            Expect_Code("vpmax.u16\td18,d18,d18");
         }
 
         [Test]
@@ -1257,7 +1278,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_mrrc()
         {
             Disassemble32(0xEC5F5554);
-            Expect_Code("mrrc\tp5,#5,r5,pc,c4");
+            Expect_Code("mrrc\tp5,#5,r5,pc,cr4");
         }
 
         [Test]
@@ -1348,7 +1369,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_stc()
         {
             Disassemble32(0x2C645520);
-            Expect_Code("stchs\tp5,c5,[r4],-#&80");
+            Expect_Code("stchs\tp5,cr5,[r4],-#&80");
         }
 
         [Test]
@@ -1382,15 +1403,15 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_shsub8()
         {
-            Disassemble32(0x063F01F8);
-            Expect_Code("shsub8eq\tr0,pc,r8");
+            Disassemble32(0xE63D01F8);
+            Expect_Code("shsub8\tr0,sp,r8");
         }
 
         [Test]
         public void ArmDasm_ldc()
         {
             Disassemble32(0x0CBF140F);
-            Expect_Code("ldceq\tp4,c1,[pc],#&3C");
+            Expect_Code("ldceq\tp4,cr1,[pc],#&3C");
         }
 
         [Test]
@@ -1410,8 +1431,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_uhsub8_eq()
         {
-            Disassemble32(0x06782BFF);
-            Expect_Code("uhsub8eq\tr2,r8,pc");
+            Disassemble32(0x06782BF0);
+            Expect_Code("uhsub8eq\tr2,r8,r0");
         }
 
         [Test]
@@ -1440,13 +1461,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xBD672A19);
             Expect_Code("vstmdblt\tr7!,{s5-s29}");
-        }
-
-        [Test]
-        public void ArmDasm_cps()
-        {
-            Disassemble32(0xF100BF00);
-            Expect_Code("cps\t#0");
         }
 
         [Test]
@@ -1593,21 +1607,21 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldc2l()
         {
             Disassemble32(0xFDF001A9);
-            Expect_Code("ldc2l\tp1,c0,[r0,#&2A4]!");
+            Expect_Code("ldc2l\tp1,cr0,[r0,#&2A4]!");
         }
 
         [Test]
         public void ArmDasm_mrc2()
         {
             Disassemble32(0xFEB068F8);
-            Expect_Code("mrc2\tp8,#5,r6,c0,c8,#7");
+            Expect_Code("mrc2\tp8,#5,r6,cr0,cr8,#7");
         }
 
         [Test]
         public void ArmDasm_stc2()
         {
             Disassemble32(0xFD0080EB);
-            Expect_Code("stc2\tp0,c8,[r0,-#&3AC]");
+            Expect_Code("stc2\tp0,cr8,[r0,-#&3AC]");
         }
 
         [Test]
@@ -1621,7 +1635,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_stc2l()
         {
             Disassemble32(0xFC684C25);
-            Expect_Code("stc2l\tp12,c4,[r8],-#&94");
+            Expect_Code("stc2l\tp12,cr4,[r8],-#&94");
         }
 
         [Test]
@@ -1660,17 +1674,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_vmov_indexed()
+        public void ArmDasm_vmov_u8_indexed()
         {
             Disassemble32(0xEED01B90);
-            Expect_Code("vmov.i8\tr1,d16[0]");
-        }
-
-        [Test]
-        public void ArmDasm_vext_64()
-        {
-            Disassemble32(0xF2F208C8);
-            Expect_Code("vext.u8\tq8,q9,q4,#8");
+            Expect_Code("vmov.u8\tr1,d16[0]");
         }
 
         [Test]
@@ -1698,7 +1705,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_stchs()
         {
             Disassemble32(0x2D207325);
-            Expect_Code("stchs\tp3,c7,[r0,-#&94]!");
+            Expect_Code("stchs\tp3,cr7,[r0,-#&94]!");
         }
 
         [Test]
@@ -1708,25 +1715,448 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("pld\t[r0,#&20]");
         }
 
+
+        //@@@@ make rewriters for these
+
+        [Test]
+        public void ArmDasm_vmax_f32()
+        {
+            Disassemble32(0xF2000F0B);
+            Expect_Code("vmax.f32\td0,d0,d11");
+        }
+
+        [Test]
+        public void ArmDasm_vrhadd_u8()
+        {
+            Disassemble32(0xF30DF1A5);
+            Expect_Code("vrhadd.u8\td15,d29,d21");
+        }
+
+        [Test]
+        public void ArmDasm_vext_u8()
+        {
+            Disassemble32(0xF2F5F1A5);
+            Expect_Code("vext.u8\td31,d21,d21,#1");
+        }
+
+        [Test]
+        public void ArmDasm_vshr_u8()
+        {
+            Disassemble32(0xF3882030);
+            Expect_Code("vshr.i8\td2,d16,#8");
+        }
+
+        [Test]
+        public void ArmDasm_vshr_1()
+        {
+            Disassemble32(0xF3892010);
+            Expect_Code("vshr.i8\td2,d0,#7");
+        }
+
+        [Test]
+        public void ArmDasm_vsli()
+        {
+            Disassemble32(0xF3EFA570);
+            Expect_Code("vsli.i32\tq13,q8,#&F");
+        }
+
+        [Test]
+        public void ArmDasm_4614B538()
+        {
+            Disassemble32(0x4614B538);
+            Expect_Code("sasxmi\tfp,r4,r8");
+        }
+
+        [Test]
+        public void ArmDasm_shsub16()
+        {
+            Disassemble32(0x4630447C);
+            Expect_Code("shsub16mi\tr4,r0,ip");
+        }
+
+        [Test]
+        public void ArmDasm_F3934620()
+        {
+            Disassemble32(0xF3934620);
+            Expect_Code("vrsubhn.i32\td4,q1,q8");
+        }
+
+        [Test]
+        public void ArmDasm_pkhbt()
+        {
+            Disassemble32(0xE68B9D92);
+            Expect_Code("pkhbt\tr9,fp,r2,lsl #&1B");
+        }
+
+        [Test]
+        public void ArmDasm_vfnma()
+        {
+            Disassemble32(0x0E92EBC3);
+            Expect_Code("vfnmaeq.f64\td14,d18,d3");
+        }
+
+        [Test]
+        public void ArmDasm_uadd16()
+        {
+            Disassemble32(0x4658E019);
+            Expect_Code("uadd16mi\tlr,r8,r9");
+        }
+
+        [Test]
+        public void ArmDasm_vfma()
+        {
+            Disassemble32(0x0EEDFB02);
+            Expect_Code("vfmaeq.f64\td31,d13,d2");
+        }
+
+        [Test]
+        public void ArmDasm_stl()
+        {
+            Disassemble32(0x0180F894);
+            Expect_Code("stleq\tr4,[r0]");
+        }
+
+        [Test]
+        public void ArmDasm_stlex()
+        {
+            Disassemble32(0x01850293);
+            Expect_Code("stlexeq\tr0,r3,[r5]");
+        }
+
+        [Test]
+        public void ArmDasm_ldaex()
+        {
+            Disassemble32(0x019B0293);
+            Expect_Code("ldaexeq\tr0,[fp]");
+        }
+
+        [Test]
+        public void ArmDasm_ssub16()
+        {
+            Disassemble32(0x0618D07E);
+            Expect_Code("ssub16eq\tsp,r8,lr");
+        }
+
+        [Test]
+        public void ArmDasm_yield()
+        {
+            Disassemble32(0xE320F101);
+            Expect_Code("yield");
+        }
+
+        [Test]
+        public void ArmDasm_ssat()
+        {
+            Disassemble32(0xE6B80693);
+            Expect_Code("ssat\tr0,#&18,r3,lsl #&D");
+        }
+
+        [Test]
+        public void ArmDasm_stlh()
+        {
+            Disassemble32(0xE1E4F895);
+            Expect_Code("stlh\tr5,[r4]");
+        }
+
+        [Test]
+        public void ArmDasm_sdiv()
+        {
+            Disassemble32(0xE718E014);
+            Expect_Code("sdiv\tr8,r4,r0");
+        }
+
+        [Test]
+        public void ArmDasm_smlad()
+        {
+            Disassemble32(0xE7040414);
+            Expect_Code("smlad\tr4,r4,r4,r0");
+        }
+
+        [Test]
+        public void ArmDasm_smladx()
+        {
+            Disassemble32(0xE708E03A);
+            Expect_Code("smladx\tr8,r10,r0,lr");
+        }
+
+        [Test]
+        public void ArmDasm_smlsd()
+        {
+            Disassemble32(0xE708E050);
+            Expect_Code("smlsd\tr8,r0,r0,lr");
+        }
+
+        [Test]
+        public void ArmDasm_smlsdx()
+        {
+            Disassemble32(0xE708BE78);
+            Expect_Code("smlsdx\tr8,r8,lr,fp");
+        }
+
+        [Test]
+        public void ArmDasm_smmla()
+        {
+            Disassemble32(0xE75AE016);
+            Expect_Code("smmla\tr10,r6,r0,lr");
+        }
+
+        [Test]
+        public void ArmDasm_smmlar()
+        {
+            Disassemble32(0xE750E036);
+            Expect_Code("smmlar\tr0,r6,r0,lr");
+        }
+
+        [Test]
+        public void ArmDasm_smmlsr()
+        {
+            Disassemble32(0xE75846F0);
+            Expect_Code("smmlsr\tr8,r0,r6,r4");
+        }
+
+        [Test]
+        public void ArmDasm_sxtab16()
+        {
+            Disassemble32(0xE688D379);
+            Expect_Code("sxtab16\tsp,r8,r9");
+        }
+
+        [Test]
+        public void ArmDasm_usada8()
+        {
+            Disassemble32(0xE7816818);
+            Expect_Code("usada8\tr1,r8,r8,r6");
+        }
+
+        [Test]
+        public void ArmDasm_vmov_from_2_gp_regs_to_2_single_floats()
+        {
+            Disassemble32(0xEC4B0A12);
+            Expect_Code("vmov\ts4,s5,r0,fp");
+        }
+
+        [Test]
+        public void ArmDasm_sev()
+        {
+            Disassemble32(0xE3209804);
+            Expect_Code("sev");
+        }
+
+        [Test]
+        public void ArmDasm_sevl()
+        {
+            Disassemble32(0xE3209805);
+            Expect_Code("sevl");
+        }
+
+        [Test]
+        public void ArmDasm_uhsax()
+        {
+            Disassemble32(0xE67A2652);
+            Expect_Code("uhsax\tr2,r10,r2");
+        }
+
+        [Test]
+        public void ArmDasm_shadd8()
+        {
+            Disassemble32(0xE6304999);
+            Expect_Code("shadd8\tr4,r0,r9");
+        }
+
+        [Test]
+        public void ArmDasm_shasx()
+        {
+            Disassemble32(0xE634493C);
+            Expect_Code("shasx\tr4,r4,ip");
+        }
+
+        [Test]
+        public void ArmDasm_uadd8()
+        {
+            Disassemble32(0xE6524995);
+            Expect_Code("uadd8\tr4,r2,r5");
+        }
+
+        [Test]
+        public void ArmDasm_sxtb16()
+        {
+            Disassemble32(0xE68F4979);
+            Expect_Code("sxtb16\tr4,pc,r9,ror #&10");
+        }
+
+        [Test]
+        public void ArmDasm_shsax()
+        {
+            Disassemble32(0xE6300055);
+            Expect_Code("shsax\tr0,r0,r5");
+        }
+
+        [Test]
+        public void ArmDasm_sel()
+        {
+            Disassemble32(0xE68CF6B2);
+            Expect_Code("sel");
+        }
+
+        [Test]
+        public void ArmDasm_vcvtt_f32_f16()
+        {
+            Disassemble32(0xEEB20AC0);
+            Expect_Code("vcvtt.f32.f16\ts0,s0");
+        }
+
+        [Test]
+        public void ArmDasm_vcvtb_f64_f16()
+        {
+            Disassemble32(0xEEB23B4C);
+            Expect_Code("vcvtb.f64.f16\td3,s24");
+        }
+
+        [Test]
+        public void ArmDasm_vrintx_f64()
+        {
+            Disassemble32(0xEEB71B41);
+            Expect_Code("vrintx.f64\td1,d1");
+        }
+
+        [Test]
+        public void ArmDasm_vmov_u16_indexed()
+        {
+            Disassemble32(0xEEB81B30);
+            Expect_Code("vmov.u16\tr1,d8[2]");
+        }
+
+        [Test]
+        public void ArmDasm_vmov_16_indexed()
+        {
+            Disassemble32(0xEE04EBB6);
+            Expect_Code("vmov.i16\td20[0],lr");
+        }
+
+        [Test]
+        public void ArmDasm_ldrexb()
+        {
+            Disassemble32(0xE1D64293);
+            Expect_Code("ldrexb\tr4,[r6]");
+        }
+
+        [Test]
+        public void ArmDasm_ldrexh()
+        {
+            Disassemble32(0xE1F3429D);
+            Expect_Code("ldrexh\tr4,[r3]");
+        }
+
+        [Test]
+        public void ArmDasm_vmov_from_2_floats()
+        {
+            Disassemble32(0xEC514A16);
+            Expect_Code("vmov\tr4,r1,s12,s13");
+        }
+
+        [Test]
+        public void ArmDasm_uxtab16()
+        {
+            Disassemble32(0xE6C04778);
+            Expect_Code("uxtab16\tr4,r0,r8,ror #8");
+        }
+
+        [Test]
+        public void ArmDasm_vfnms_f64()
+        {
+            Disassemble32(0xEED9EBA1);
+            Expect_Code("vfnms.f64\td30,d25,d17");
+        }
+
+        [Test]
+        public void ArmDasm_vmla_i8()
+        {
+            Disassemble32(0xF2002901);
+            Expect_Code("vmla.i8\td2,d0,d1");
+        }
+
+        [Test]
+        public void ArmDasm_vrecps_f32()
+        {
+            Disassemble32(0xF2000F7C);
+            Expect_Code("vrecps.f32\tq0,q0,q14");
+        }
+
+        [Test]
+        public void ArmDasm_vmul_i8()
+        {
+            Disassemble32(0xF2002913);
+            Expect_Code("vmul.i8\td2,d0,d3");
+        }
+
+        [Test]
+        public void ArmDasm_vfma_f32()
+        {
+            Disassemble32(0xF2002C15);
+            Expect_Code("vfma.f32\td2,d0,d5");
+        }
+
+        [Test]
+        public void ArmDasm_vrhadd()
+        {
+            Disassemble32(0xF2449100);
+            Expect_Code("vrhadd.s8\td25,d4,d0");
+        }
+
+        [Test]
+        public void ArmDasm_vqshlu_i64()
+        {
+            Disassemble32(0xF3E8F7B4);
+            Expect_Code("vqshlu.i64\td31,d20,#&28");
+        }
+
+        [Test]
+        public void ArmDasm_vabal()
+        {
+            Disassemble32(0xF2814583);
+            Expect_Code("vabal.s8\tq2,d17,d3");
+        }
+
+        [Test]
+        public void ArmDasm_vbic_i32()
+        {
+            Disassemble32(0xF2814571);
+            Expect_Code("vbic.i32\tq2,#&11000000110000");
+        }
+
+        [Test]
+        public void ArmDasm_vqshl()
+        {
+            Disassemble32(0xF2E8F710);
+            Expect_Code("vqshl.i32\td31,d0,#8");
+        }
+
+        [Test]
+        public void ArmDasm_vqadd_u8()
+        {
+            Disassemble32(0xF3058010);
+            Expect_Code("vqadd.u8\td8,d5,d0");
+        }
+
+        [Test]
+        public void ArmDasm_vhsub_u8()
+        {
+            Disassemble32(0xF3014284);
+            Expect_Code("vhsub.u8\td4,d17,d4");
+        }
+
+        [Test]
+        public void ArmDasm_vacgt_f32()
+        {
+            Disassemble32(0xF3650E3F);
+            Expect_Code("vacgt.f32\td16,d5,d31");
+        }
+
+        //////////////////////////
+
 #if BORED
         /// If you're bored and want something to do, why not implement a 
         /// A32 decoder or 10? :)
-
-        // An A32 decoder for the instruction F4E7B940 (AdvancedSimdElementLoadStore) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F4E7B940()
-        {
-            Disassemble32(0xF4E7B940);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction F3F7FF31 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F3F7FF31()
-        {
-            Disassemble32(0xF3F7FF31);
-            Expect_Code("@@@");
-        }
 
         // An A32 decoder for the instruction F4E7F270 (AdvancedSimdElementLoadStore) has not been implemented yet.
         [Test]
@@ -1736,108 +2166,19 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
+        // An A32 decoder for the instruction F4E7B940 (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F4E7B940()
+        {
+            Disassemble32(0xF4E7B940);
+            Expect_Code("@@@");
+        }
+
         // An A32 decoder for the instruction F4E7F370 (AdvancedSimdElementLoadStore) has not been implemented yet.
         [Test]
         public void ArmDasm_F4E7F370()
         {
             Disassemble32(0xF4E7F370);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction F3F7FFB5 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F3F7FFB5()
-        {
-            Disassemble32(0xF3F7FFB5);
-            Expect_Code("Invalid@@@");
-        }
-
-        // An A32 decoder for the instruction F7460422 (Preload (register)) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F7460422()
-        {
-            Disassemble32(0xF7460422);
-            Expect_Code("Invalid@@@");
-        }
-
-        // An A32 decoder for the instruction F2685369 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0011) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F2685369()
-        {
-            Disassemble32(0xF2685369);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction F3F952F0 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F3F952F0()
-        {
-            Disassemble32(0xF3F952F0);
-            Expect_Code("Invalid@@@");
-        }
-
-        // An A32 decoder for the instruction F3661A68 (AdvancedSimd_ThreeRegisters - U = 1, opc=0b1010) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F3661A68()
-        {
-            Disassemble32(0xF3661A68);
-            Expect_Code("Invalid@@@");
-        }
-
-        // An A32 decoder for the instruction F26CF8FB (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1000) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F26CF8FB()
-        {
-            Disassemble32(0xF26CF8FB);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction F2B968F8 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F2B968F8()
-        {
-            Disassemble32(0xF2B968F8);
-            Expect_Code("@@@");
-        }
-
-
-        // An A32 decoder for the instruction F2FD28F0 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F2FD28F0()
-        {
-            Disassemble32(0xF2FD28F0);
-            Expect_Code("@@@");
-        }
-
-        // Reko: a decoder for A32 instruction 2D646C2F at address 00008158 has not been implemented. (01xxxx)
-        [Test]
-        public void ArmDasm_2D646C2F()
-        {
-            Disassemble32(0x2D646C2F);
-            Expect_Code("@@@");
-        }
-
-        // Reko: a decoder for A32 instruction F3522AA2 at address 003B165C has not been implemented. (AdvancedSimd_ThreeRegisters - U = 1, opc=0b1010)
-        [Test]
-        public void ArmDasm_F3522AA2()
-        {
-            Disassemble32(0xF3522AA2);
-            Expect_Code("@@@");
-        }
-
-        // Reko: a decoder for A32 instruction 7D000000 at address 00FFFFF9 has not been implemented. (01xxxx)
-        [Test]
-        public void ArmDasm_7D000000()
-        {
-            Disassemble32(0x7D000000);
-            Expect_Code("@@@");
-        }
-
-        // Reko: a decoder for A32 instruction 06E30031 at address 00746E91 has not been implemented. (media1 - 0b01110 - 001)
-        [Test]
-        public void ArmDasm_06E30031()
-        {
-            Disassemble32(0x06E30031);
             Expect_Code("@@@");
         }
 

@@ -72,6 +72,15 @@ namespace Reko.UnitTests.Scanning
             CreateProgram(image, arch);
         }
 
+        private void Given_Image(IProcessorArchitecture arch, params byte[] bytes)
+        {
+            var image = new MemoryArea(
+                Address.Ptr32(0x10000),
+                bytes);
+            this.rd = image.Relocations;
+            CreateProgram(image, arch);
+        }
+
         private void Given_x86_Image(Action<X86Assembler> asm)
         {
             var addrBase = Address.Ptr32(0x100000);
@@ -98,6 +107,36 @@ namespace Reko.UnitTests.Scanning
                 segmentMap,
                 arch,
                 platform);
+        }
+
+        private void Given_CodeBlock(IProcessorArchitecture arch, uint uAddr, uint len)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var proc = Procedure.Create(arch, addr, new Frame(PrimitiveType.Ptr32));
+            var block = new Block(proc, $"l{addr}");
+            program.ImageMap.AddItem(addr, new ImageMapBlock {
+                Address = addr,
+                Block = block,
+                Size = len
+            });
+        }
+
+        private void Given_UnknownBlock(uint uAddr, uint len)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var item = new ImageMapItem { Address = addr, Size = len };
+            program.ImageMap.AddItem(addr, item);
+        }
+
+        private void Given_DataBlock(uint uAddr, uint len)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var item = new ImageMapItem {
+                Address = addr,
+                Size = len,
+                DataType = new ArrayType(PrimitiveType.Byte, 0) };
+            program.ImageMap.AddItem(addr, item);
+
         }
 
         private void Inst(int uAddr, int len, InstrClass rtlc)
@@ -451,6 +490,79 @@ namespace Reko.UnitTests.Scanning
             #endregion
 
             AssertBlocks(sExp, blocks);
+        }
+
+        [Test]
+        public void Shsc_FindUnscannedRanges_AUA()
+        {
+            var A = new Mock<IProcessorArchitecture>();
+            A.Setup(a => a.Name).Returns("A");
+            Given_Image(A.Object, new byte[100]);
+            Given_CodeBlock(A.Object, 0x1000, 20);
+            Given_UnknownBlock(0x1020, 20);
+            Given_CodeBlock(A.Object, 0x1040, 60);
+            CreateScanner();
+
+            var ranges = siq.FindUnscannedRanges().ToArray();
+
+            Assert.AreEqual(1, ranges.Length);
+            Assert.AreSame(A.Object, ranges[0].Item1);
+        }
+
+        [Test]
+        public void Shsc_FindUnscannedRanges_UA()
+        {
+            var A = new Mock<IProcessorArchitecture>();
+            A.Setup(a => a.Name).Returns("A");
+            Given_Image(A.Object, new byte[100]);
+            Given_UnknownBlock(0x1020, 20);
+            Given_CodeBlock(A.Object, 0x1040, 80);
+            CreateScanner();
+
+            var ranges = siq.FindUnscannedRanges().ToArray();
+
+            Assert.AreEqual(1, ranges.Length);
+            Assert.AreSame(A.Object, ranges[0].Item1);
+        }
+
+        [Test]
+        public void Shsc_FindUnscannedRanges_BUB()
+        {
+            var A = new Mock<IProcessorArchitecture>();
+            var B = new Mock<IProcessorArchitecture>();
+            A.Setup(a => a.Name).Returns("A");
+            B.Setup(a => a.Name).Returns("B");
+
+            Given_Image(A.Object, new byte[100]);
+            Given_CodeBlock(B.Object, 0x1000, 20);
+            Given_UnknownBlock(0x1020, 20);
+            Given_CodeBlock(B.Object, 0x1040, 60);
+            CreateScanner();
+
+            var ranges = siq.FindUnscannedRanges().ToArray();
+
+            Assert.AreEqual(1, ranges.Length);
+            Assert.AreSame(B.Object, ranges[0].Item1);
+        }
+
+        [Test]
+        public void Shsc_FindUnscannedRanges_AUBB()
+        {
+            var A = new Mock<IProcessorArchitecture>();
+            var B = new Mock<IProcessorArchitecture>();
+            A.Setup(a => a.Name).Returns("A");
+            B.Setup(a => a.Name).Returns("B");
+
+            Given_Image(A.Object, new byte[100]);
+            Given_CodeBlock(A.Object, 0x1000, 20);
+            Given_UnknownBlock(0x1020, 20);
+            Given_CodeBlock(B.Object, 0x1040, 60);
+            CreateScanner();
+
+            var ranges = siq.FindUnscannedRanges().ToArray();
+
+            Assert.AreEqual(1, ranges.Length);
+            Assert.AreSame(B.Object, ranges[0].Item1);
         }
     }
 }

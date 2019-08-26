@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -60,7 +60,7 @@ namespace Reko.Gui.Forms
 
         private void EnableControls()
         {
-            var rawfile = ((ListOption)dlg.RawFileTypes.SelectedValue).Value as RawFileElement;
+            var rawfile = ((ListOption)dlg.RawFileTypes.SelectedValue).Value as RawFileDefinition;
             var arch = ((ListOption)dlg.Architectures.SelectedValue)?.Value as string;
             var unknownRawFileFormat = rawfile == null;
             bool platformRequired = unknownRawFileFormat;
@@ -89,7 +89,7 @@ namespace Reko.Gui.Forms
             var platforms = new ListOption[] { noneOption }
                 .Concat(
                     dcCfg.GetEnvironments()
-                    .OfType<OperatingEnvironment>()
+                    .OfType<PlatformDefinition>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
                     .Select(p => new ListOption { Text = p.Description, Value = p }));
@@ -99,7 +99,7 @@ namespace Reko.Gui.Forms
         private void PopulateRawFiles(IConfigurationService dcCfg)
         {
             var rawFiles = dcCfg.GetRawFiles()
-                    .OfType<RawFileElement>()
+                    .OfType<RawFileDefinition>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
                     .Select(p => new ListOption { Text = p.Description, Value = p });
@@ -109,7 +109,7 @@ namespace Reko.Gui.Forms
         private void PopulateArchitectures(IConfigurationService dcCfg)
         {
             var archs = dcCfg.GetArchitectures()
-                .OfType<Architecture>()
+                .OfType<ArchitectureDefinition>()
                 .OrderBy(a => a.Description)
                 .Select(a => new ListOption { Text = a.Description, Value = a });
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());

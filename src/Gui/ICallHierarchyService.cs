@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,38 +18,18 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Core.Configuration
+namespace Reko.Gui
 {
-    public interface AssemblerElement
+    public interface ICallHierarchyService
     {
-        string Name { get; }
-        string Description { get; }
-        string TypeName { get; }
-    }
-
-    public class AssemblerElementImpl : AssemblerElement
-    {
-        /// <summary>
-        /// Short, technical name for the assembler.
-        /// the assembler.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Human friendly description of the assembler.
-        /// the assembler.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// The assembly-qualified name for the .NET type that implements
-        /// the assembler.
-        /// </summary>
-        public string TypeName { get; set; }
+        void Show(Program program, Procedure proc);
+        void AddProcedure(Program program, Procedure proc);
     }
 }

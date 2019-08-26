@@ -1,4 +1,4 @@
-﻿using Reko.Core.Machine;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +9,6 @@ namespace Reko.Core.NativeInterface
 {
     public class NativeMachineInstruction : MachineInstruction
     {
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public override int OpcodeAsInteger
         {
             get

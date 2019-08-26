@@ -52,5 +52,6 @@ namespace Reko.Gui
         IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride);
         ISymbolSourceDialog CreateSymbolSourceDialog();
         ISelectItemDialog CreateSelectItemDialog(string caption, object[] items, bool multiSelect);
+        ISegmentEditorDialog CreateSegmentEditorDialog();
     }
 }

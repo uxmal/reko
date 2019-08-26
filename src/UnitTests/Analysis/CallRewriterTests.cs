@@ -335,8 +335,6 @@ namespace Reko.UnitTests.Analysis
             SaveRunOutput(program, RunTest, "Analysis/CrwMemPreserve.txt");
         }
 
-  
-
         [Test]
         [Category(Categories.IntegrationTests)]
         public void CrwSliceReturn()

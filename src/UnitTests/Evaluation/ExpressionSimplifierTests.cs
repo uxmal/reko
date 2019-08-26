@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Evaluation
         private ProcedureBuilder m;
         private PseudoProcedure rolc_8;
         private Mock<IProcessorArchitecture> arch;
+        private SsaIdentifierCollection ssaIds;
 
         [SetUp]
         public void Setup()
@@ -61,7 +62,7 @@ namespace Reko.UnitTests.Evaluation
 
         private void Given_ExpressionSimplifier()
         {
-            var ssaIds = BuildSsaIdentifiers();
+            this.ssaIds = BuildSsaIdentifiers();
             var listener = new FakeDecompilerEventListener();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
             var importResolver = new Mock<IImportResolver>();
@@ -79,6 +80,12 @@ namespace Reko.UnitTests.Evaluation
             var src = Constant.Word32(1);
             foo = coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false).Identifier;
             return coll;
+        }
+
+        private Identifier Given_Tmp(string name, Expression defExpr)
+        {
+            var tmp = m.Procedure.Frame.CreateTemporary(name, defExpr.DataType);
+            return ssaIds.Add(tmp, new Statement(0, new Assignment(tmp, defExpr), null), defExpr, false).Identifier;
         }
 
         [Test]
@@ -205,6 +212,15 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
+        public void Exs_DistributedSlice()
+        {
+            Given_ExpressionSimplifier();
+            var w16 = PrimitiveType.Word16;
+            var expr = m.IAdd(m.Slice(w16, foo, 0), m.Slice(w16, foo, 0));
+            Assert.AreEqual("SLICE(foo_1 * 0x00000002, word16, 0)", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
         public void Exs_RedundantCast()
         {
             Given_ExpressionSimplifier();
@@ -266,6 +282,26 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var expr = m.Seq(m.Word32(0x3FF00000), m.Word32(0));
             Assert.AreEqual("0x3FF0000000000000", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_SeqOfSlices_Adjacent()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(m.Slice(foo, 8, 24), m.Slice(foo, 0, 8));
+            Assert.AreEqual("foo_1", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_SeqOfSlices_Indirect()
+        {
+            Given_ExpressionSimplifier();
+            var t1 = Given_Tmp("t1", m.Slice(PrimitiveType.Word16, foo, 16));
+            var t2 = Given_Tmp("t2", m.Slice(PrimitiveType.Word16, foo, 0));
+            ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
+            ssaIds[foo].Uses.Add(ssaIds[t2].DefStatement);
+            var expr = m.Seq(t1, t2);
+            Assert.AreEqual("foo_1", expr.Accept(simplifier).ToString());
         }
     }
 }

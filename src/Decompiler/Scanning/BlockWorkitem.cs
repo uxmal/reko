@@ -650,7 +650,7 @@ namespace Reko.Scanning
             {
                 if (c.IsValid)
                 {
-                    return arch.MakeAddressFromConstant(c);
+                    return arch.MakeAddressFromConstant(c, true);
                 }
                 else
                 {
@@ -1014,7 +1014,7 @@ namespace Reko.Scanning
             imgVector = null;
             switchExp = null;
 
-            var bwsHost = new BackwardSlicerHost(program);
+            var bwsHost = new BackwardSlicerHost(program, this.arch);
             var rtlBlock = bwsHost.GetRtlBlock(blockCur);
             var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
             var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
@@ -1179,7 +1179,7 @@ namespace Reko.Scanning
             {
                 if (!(mem.EffectiveAddress is Constant offset))
                     return null;
-                addrTarget = program.Platform.MakeAddressFromConstant(offset);
+                addrTarget = program.Platform.MakeAddressFromConstant(offset, true);
             }
             var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric.Address);
             //if (impEp != null)
@@ -1239,20 +1239,16 @@ namespace Reko.Scanning
 
         private SystemService MatchSyscallToService(RtlSideEffect side)
         {
-            var fn = side.Expression as Application;
-            if (fn == null)
+            if (!(side.Expression is Application fn))
                 return null;
-            var pc = fn.Procedure as ProcedureConstant;
-            if (pc == null)
+            if (!(fn.Procedure is ProcedureConstant pc))
                 return null;
-            var ppp = pc.Procedure as PseudoProcedure;
-            if (ppp == null)
+            if (!(pc.Procedure is PseudoProcedure ppp))
                 return null;
             if (ppp.Name != PseudoProcedure.Syscall || fn.Arguments.Length == 0)
                 return null;
 
-            var vector = fn.Arguments[0] as Constant;
-            if (vector == null)
+            if (!(fn.Arguments[0] is Constant vector))
                 return null;
             var svc = program.Platform.FindService(vector.ToInt32(), state);
             //$TODO if SVC uis null (and not-speculating) report the error.

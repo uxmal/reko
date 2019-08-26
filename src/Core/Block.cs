@@ -35,7 +35,7 @@ namespace Reko.Core
 		public Block(Procedure proc, string name)
 		{
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentException("Blocks must have a valid name.", "name");
+                throw new ArgumentException("Blocks must have a valid name.", nameof(name));
 			this.Procedure = proc;
 			this.Name = name;
 			this.Statements = new StatementList(this);

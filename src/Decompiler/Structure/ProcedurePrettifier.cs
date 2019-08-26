@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -53,8 +53,8 @@ namespace Reko.Structure
             Operator.USub,
         };
 
-        private Procedure proc;
-        private ExpressionValueComparer cmp;
+        private readonly Procedure proc;
+        private readonly ExpressionValueComparer cmp;
 
         public ProcedurePrettifier(Procedure proc)
         {

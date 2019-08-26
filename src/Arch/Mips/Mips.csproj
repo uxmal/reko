@@ -62,7 +62,7 @@
     <Compile Include="MipsRewriter.Fpu.cs" />
     <Compile Include="MipsRewriter.System.cs" />
     <Compile Include="Opcode.cs" />
-    <Compile Include="OpRec.cs" />
+    <Compile Include="Decoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

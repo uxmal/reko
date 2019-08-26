@@ -68,7 +68,7 @@ namespace Reko.Arch.M68k
                 var addr = instr.Address;
                 var len = instr.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = instr.iclass;
+                rtlc = instr.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, instr.dataWidth);
                 switch (instr.code)
@@ -246,7 +246,7 @@ VS Overflow Set 1001 V
                 case Opcode.sf: orw.RewriteMoveDst(instr.op1, instr.Address, PrimitiveType.Bool, Constant.False()); break;
                 case Opcode.stop: RewriteStop(); break;
                 case Opcode.sub: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
-                case Opcode.suba: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
+                case Opcode.suba: RewriteBinOp((s, d) => m.ISub(d, s)); break;
                 case Opcode.subi: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Opcode.subq: RewriteAddSubq((s, d) => m.ISub(d, s)); break;
                 case Opcode.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;

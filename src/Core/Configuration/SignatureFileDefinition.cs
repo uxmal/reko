@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -26,25 +26,12 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface ITypeLibraryElement
+    public class SignatureFileDefinition
     {
-        string Name { get; }
+        public string Filename { get; set; }
 
-        string Architecture { get; set; }
+        public string Label { get; set; }
 
-        string Module { get; set; }
-
-        string Loader { get; set; }
-    }
-
-    public class TypeLibraryElement : ITypeLibraryElement
-    {
-        public string Name { get; set; }
-
-        public string Architecture { get; set; }
-
-        public string Module { get; set; }
-
-        public string Loader { get; set; }
+        public string Type { get; set; }
     }
 }

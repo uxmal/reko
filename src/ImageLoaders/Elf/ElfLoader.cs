@@ -290,7 +290,7 @@ namespace Reko.ImageLoaders.Elf
             // If this is an executable file, the symbol value is
             // the virtual address.
             var addr = isExecutable
-                ? platform.MakeAddressFromLinear(sym.Value)
+                ? platform.MakeAddressFromLinear(sym.Value, true)
                 : Sections[(int) sym.SectionIndex].Address + sym.Value;
 
             var dt = GetSymbolDataType(sym);
@@ -795,7 +795,7 @@ namespace Reko.ImageLoaders.Elf
             ulong uBaseAddr = Segments
                 .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
                 .Min(ph => ph.p_vaddr);
-            return platform.MakeAddressFromLinear(uBaseAddr);
+            return platform.MakeAddressFromLinear(uBaseAddr, true);
         }
 
         public override Address CreateAddress(ulong uAddr)
@@ -997,14 +997,14 @@ namespace Reko.ImageLoaders.Elf
                 Segments
                     .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
                     .Select(p => Tuple.Create(
-                        platform.MakeAddressFromLinear(p.p_vaddr),
+                        platform.MakeAddressFromLinear(p.p_vaddr, false),
                         (uint)p.p_pmemsz)));
             foreach (var ph in Segments)
             {
-                DebugEx.Info(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                DebugEx.Inform(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
-                var vaddr = platform.MakeAddressFromLinear(ph.p_vaddr);
+                var vaddr = platform.MakeAddressFromLinear(ph.p_vaddr, false);
                 segMap.TryGetLowerBound(vaddr, out var mem);
                 if (ph.p_filesz > 0)
                     Array.Copy(
@@ -1113,7 +1113,7 @@ namespace Reko.ImageLoaders.Elf
                     Type = shdr.sh_type,
                     Flags = shdr.sh_flags,
                     Address = shdr.sh_addr != 0
-                        ? platform.MakeAddressFromLinear(shdr.sh_addr)
+                        ? platform.MakeAddressFromLinear(shdr.sh_addr, false)
                         : null,
                     FileOffset = shdr.sh_offset,
                     Size = shdr.sh_size,
@@ -1456,7 +1456,7 @@ namespace Reko.ImageLoaders.Elf
 
             foreach (var ph in Segments)
             {
-                DebugEx.Info(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                DebugEx.Inform(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = Address.Ptr32((uint)ph.p_vaddr);
@@ -1635,7 +1635,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            DebugEx.Info(ElfImageLoader.trace, "== Symbols from {0} ==", symSection.Name);
+            DebugEx.Inform(ElfImageLoader.trace, "== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();
