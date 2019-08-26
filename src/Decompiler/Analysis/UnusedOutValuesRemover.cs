@@ -138,7 +138,8 @@ namespace Reko.Analysis
             while (wl.GetWorkItem(out SsaState ssa))
             {
                 var liveOut = CollectLiveOutStorages(ssa.Procedure);
-                var changed = MergeLiveOut(dataFlow.ProcedureFlows[ssa.Procedure], liveOut);
+                var flow = dataFlow.ProcedureFlows[ssa.Procedure];
+                var changed = MergeLiveOut(flow, liveOut);
                 if (changed)
                 {
                     wl.AddRange(program.CallGraph.Callees(ssa.Procedure).Select(p => procToSsa[p]));

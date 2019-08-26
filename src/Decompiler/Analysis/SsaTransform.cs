@@ -106,11 +106,6 @@ namespace Reko.Analysis
         public SsaState Transform()
         {
             DebugEx.Inform(trace, "SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
-            if (ssa.Procedure.Name == "fn101BD733")
-            {
-                ssa.ToString();//$DEBUG
-            }
-
             this.sidsToRemove = new HashSet<SsaIdentifier>();
             foreach (var bs in blockstates.Values)
             {

@@ -652,13 +652,13 @@ namespace Reko.Evaluation
             return FuseAdjacentSlices(seq.DataType, newSeq);
         }
 
-        private Expression FuseAdjacentSlices(DataType dataType, Expression[] elements)
+        private Expression FuseAdjacentSlices(DataType dataType, Expression[] elems)
         {
-            var fused = new List<Expression> { elements[0] };
-            for (int i = 1; i < elements.Length; ++i)
+            var fused = new List<Expression> { AsSlice(elems[0]) ?? elems[0] };
+            for (int i = 1; i < elems.Length; ++i)
             {
-                var e = elements[i];
-                if (fused[fused.Count - 1] is Slice slPrev && e is Slice slNext &&
+                Slice slNext = AsSlice(elems[i]);
+                if (fused[fused.Count - 1] is Slice slPrev && slNext != null &&
                     cmp.Equals(slPrev.Expression, slNext.Expression) &&
                     slPrev.Offset == slNext.Offset + slNext.DataType.BitSize)
                 {
@@ -673,13 +673,31 @@ namespace Reko.Evaluation
                 }
                 else
                 {
-                    fused.Add(e);
+                    fused.Add(elems[i]);
                 }
             }
             if (fused.Count == 1)
                 return fused[0];
             else
                 return new MkSequence(dataType, fused.ToArray());
+        }
+
+        private Slice AsSlice(Expression e)
+        {
+            if (e is Identifier id)
+            {
+                e = ctx.GetDefiningExpression(id);
+            }
+            Slice slNext;
+            if (e is Cast c)
+            {
+                slNext = new Slice(c.DataType, c.Expression, 0);
+            }
+            else
+            {
+                slNext = e as Slice;
+            }
+            return slNext;
         }
 
         public virtual Expression VisitOutArgument(OutArgument outArg)

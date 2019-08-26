@@ -171,6 +171,7 @@ namespace Reko.Analysis
                 // a = SLICE(a', b) is also a copy, so we must chase the uses of a'.
                 var idOld = idCur;
                 var n = Classify(ssa.Identifiers[ass.Dst]);
+                n <<= slice.Offset;
                 idCur = idOld;
                 return n;
             }

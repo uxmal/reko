@@ -286,17 +286,17 @@ namespace Reko.Scanning
 
         public ValueSet VisitMkSequence(MkSequence seq, BitRange bitRange)
         {
-            if (bitRange.begin > 0)
+            if (bitRange.Lsb > 0)
             {
                 // We seldom encounter this. If we do, we write the code accordingly.
                 return ValueSet.Any;
             }
             var valuesets = new List<ValueSet>();
             int nTotalBits = 0;
-            for (int i = seq.Expressions.Length-1; i >= 0 && nTotalBits < bitRange.end; --i)
+            for (int i = seq.Expressions.Length-1; i >= 0 && nTotalBits < bitRange.Msb; --i)
             {
                 var elem = seq.Expressions[i];
-                var elemRange = new BitRange(0, Math.Min((short) elem.DataType.BitSize, (short) (bitRange.end - nTotalBits)));
+                var elemRange = new BitRange(0, Math.Min((short) elem.DataType.BitSize, (short) (bitRange.Msb - nTotalBits)));
                 var vs = elem.Accept(this, elemRange);
                 valuesets.Add(vs);
                 nTotalBits += elem.DataType.BitSize;
