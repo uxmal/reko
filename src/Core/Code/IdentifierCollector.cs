@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -33,9 +33,9 @@ namespace Reko.Core.Code
     /// </summary>
     public class IdentifierCollector : InstructionVisitorBase
     {
-        private SortedList<string, Identifier> identifiers;
+        private readonly IDictionary<string, Identifier> identifiers;
 
-        public IdentifierCollector(SortedList<string, Identifier> ids)
+        public IdentifierCollector(IDictionary<string, Identifier> ids)
         {
             this.identifiers = ids;
         }

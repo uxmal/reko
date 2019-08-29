@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,12 +41,20 @@ namespace Reko.UnitTests.Core.Output
             sb = new StringWriter();
         }
 
-        private void CompileTest(Action<ProcedureBuilder> buildMock)
+        private void CompileClassTest(Action<ProcedureBuilder> buildMock)
         {
             ProcedureBuilder m = new ProcedureBuilder();
             buildMock(m);
-            MockGenerator g = new MockGenerator(sb);
-            g.Write(m.Procedure);
+            MockGenerator g = new MockGenerator(sb, "");
+            g.WriteClass(m.Procedure);
+        }
+
+        private void CompileMethodTest(Action<ProcedureBuilder> buildMock)
+        {
+            ProcedureBuilder m = new ProcedureBuilder();
+            buildMock(m);
+            MockGenerator g = new MockGenerator(sb, "m.");
+            g.WriteMethod(m.Procedure);
         }
 
         private void VerifyTest(string sExp)
@@ -67,7 +75,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_EmptyFunction()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 m.Return();
             });
@@ -85,7 +93,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_Assign()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 var id = m.Local(PrimitiveType.Word32, "id");
                 m.Assign(id, 42);
@@ -108,7 +116,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_AddSubMul()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
                 Identifier b = m.Local(PrimitiveType.Word32, "b");
@@ -132,7 +140,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_LoadStore()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 m.MStore(m.Word32(0x123456), m.Mem(PrimitiveType.Byte, m.Word32(0x12348)));
                 m.Return();
@@ -150,9 +158,9 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void Declaration()
+        public void Mg_Declaration()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier id = m.Local16("id");
                 m.Declare(id, m.Word16(0x1234));
@@ -174,7 +182,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_Application()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier inp = m.Local32("inp");
                 Identifier outp = m.Local32("outp");
@@ -200,7 +208,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_SelectorSideEffect()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier es = m.Local(PrimitiveType.SegmentSelector, "es");
                 m.SideEffect(m.Fn("foo", es));
@@ -221,7 +229,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_Branch()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier i = m.Local(PrimitiveType.Int32, "i");
 
@@ -253,7 +261,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_ComparisonOperators()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier f = m.Local(PrimitiveType.Bool, "f");
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
@@ -293,7 +301,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_LogicalOperators()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier f = m.Local(PrimitiveType.Bool, "f");
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
@@ -318,7 +326,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_BitwiseOperators()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
                 Identifier b = m.Local(PrimitiveType.Word32, "b");
@@ -343,7 +351,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Mg_SliceDpb()
         {
-            CompileTest(m =>
+            CompileClassTest(m =>
             {
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
                 Identifier b = m.Local(PrimitiveType.Word32, "b");
@@ -360,7 +368,24 @@ namespace Reko.UnitTests.Core.Output
                 "    Assign(a, Dpb(a, Slice(PrimitiveType.Word16, b, 16), 0));" + nl +
                 "}" + nl +
                 "" + nl);
+        }
 
+        [Test]
+        public void Mg_SliceSeq()
+        {
+            CompileMethodTest(m =>
+            {
+                m.Store(m.Mem32(m.Word32(0x00123400)), m.Seq(m.Byte(1), m.Byte(2), m.Word16(0x0304)));
+            });
+            VerifyTest(
+@"RunTest(m =>
+{
+    
+    m.Label(""l1"");
+    m.MStore(m.Word32(0x123400), m.Seq(m.Byte(0x1), m.Byte(0x2), m.Word16(0x304)));
+});
+
+");
         }
     }
 }
