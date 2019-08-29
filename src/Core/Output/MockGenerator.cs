@@ -256,7 +256,7 @@ namespace Reko.Core.Output
                 writer.WriteLine(",");
                 writer.Indent();
                 writer.Write("new [] {");
-                WriteExpressions(ci.Definitions.Select(d => d.Identifier));
+                WriteExpressions(ci.Definitions.Select(d => d.Expression));
                 writer.Write("}");
                 writer.Outdent();
             }
@@ -348,14 +348,14 @@ namespace Reko.Core.Output
                 writer.Write(", ");
                 writer.Write(string.Join(",", si.Targets.Select(t => $"\"{t}\"")));
             }
-            writer.Write(");");
+            writer.WriteLine(");");
         }
 
         void InstructionVisitor.VisitUseInstruction(UseInstruction u)
         {
             Method("Use");
             u.Expression.Accept(this);
-            writer.Write(");");
+            writer.WriteLine(");");
         }
 
         #endregion

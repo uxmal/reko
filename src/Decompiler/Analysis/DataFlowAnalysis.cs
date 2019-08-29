@@ -136,8 +136,6 @@ namespace Reko.Analysis
                 eventListener);
             uvr.Transform();
 
-            DumpWatchedProcedure();
-
             // At this point, the exit blocks contain only live out registers.
             // We can create signatures from that.
             CallRewriter.Rewrite(program.Platform, ssts, this.flow, eventListener);
@@ -145,12 +143,14 @@ namespace Reko.Analysis
         }
 
         [Conditional("DEBUG")]
-        public void DumpWatchedProcedure()
+        public void DumpWatchedProcedure(string caption)
         {
+            Debug.Print("// {0} ==================", caption);
             foreach (var proc in program.Procedures.Values)
             {
-                if (proc.Name == "")
+                if (proc.Name == "fn0800_2688")
                 {
+                    MockGenerator.DumpMethod(proc);
                     proc.Dump(true);
                 }
             }
