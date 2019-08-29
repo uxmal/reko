@@ -663,13 +663,11 @@ namespace Reko.Evaluation
                     cmp.Equals(slPrev.Expression, slNext.Expression) &&
                     slPrev.Offset == slNext.Offset + slNext.DataType.BitSize)
                 {
-                    // Found two consecutive slices. Fuse them into one slice and 
-                    // un-use the shared expression.
+                    // Fuse the two consecutive slices. 
                     var newSlice = new Slice(
                         PrimitiveType.CreateWord(slPrev.DataType.BitSize + slNext.DataType.BitSize),
                         slNext.Expression,
                         slNext.Offset);
-                    ctx.RemoveExpressionUse(elems[i - 1]);
                     fused[fused.Count - 1] = newSlice.Accept(this);
                     changed = true;
                 }

@@ -4289,7 +4289,7 @@ proc1_exit:
 
         [Test]
         public void SsaIrreducibleRegion()
-            {
+        {
             var sExp =
             #region Expected
 @"r1:r1
