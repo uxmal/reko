@@ -20,9 +20,18 @@ struct Eq_n * g_ptr3D94 = &g_t4000;
 struct Eq_n * g_ptr3D98 = null;
 union Eq_n * g_ptr3D9C = &g_t10202;
 union Eq_n * g_ptr3DA0 = &g_t3030303;
-int32 g_dw3DA4 = 67372036;
-int32 g_dw3DA8 = 67372036;
-int32 g_dw3DAC = 84215045;
+Eq_n g_t3DA4 = 
+	{
+		67372036
+	};
+Eq_n g_t3DA8 = 
+	{
+		67372036
+	};
+Eq_n g_t3DAC = 
+	{
+		84215045
+	};
 word32 g_dw3DB8 = 0x05050505;
 ptr32 g_ptr3DBC = 0x06060606;
 int32 g_dw3DC0 = 101058054;

@@ -175,32 +175,33 @@ l00000740:
 	goto l00000740;
 }
 
-// 00000768: Register int64 fib(Register int64 r2, Register word64 r10, Register Eq_n r11, Register word64 r12, Register word64 r13, Register Eq_n r14, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
-int64 fib(int64 r2, word64 r10, Eq_n r11, word64 r12, word64 r13, Eq_n r14, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out)
+// 00000768: Register Eq_n fib(Register Eq_n r2, Register word64 r10, Register Eq_n r11, Register word64 r12, Register word64 r13, Register Eq_n r14, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+Eq_n fib(Eq_n r2, word64 r10, Eq_n r11, word64 r12, word64 r13, Eq_n r14, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out)
 {
-	word64 r1_n;
-	word32 dwLocA4_n = (word32) r2;
+	Eq_n r1_n;
 	Eq_n r11_n = fp - 0x0148;
-	if (DPB(r2, dwLocA4_n, 0) <= 0x01)
-		r1_n = DPB(r2, dwLocA4_n, 0);
+	word32 dwLocA4_n = (word32) r2;
+	if (r2 <= 0x01)
+		r1_n = r2;
 	else
 	{
-		word64 r10_n;
 		Eq_n r11_n;
 		word64 r12_n;
 		word64 r13_n;
+		word64 r2_n = fib((int64) (word32) SEQ(SLICE(r2, word32, 32), (word32) r2 - 0x01), r10, fp - 0x0148, r12, r13, 0x07A8, out r10_n, out r11_n, out r12_n, out r13_n);
+		word64 r1_n = SEQ(SLICE(r2_n, word32, 32), *((word64) r11_n + 0x00A4));
 		word64 r10_n;
-		word64 r2_n = fib((int64) (*((word64) r11_n.u1 + 0x00A4) - 0x02), DPB(r10_n, (word32) fib((int64) (dwLocA4_n - 0x01), r10, fp - 0x0148, r12, r13, 0x07A8, out r10_n, out r11_n, out r12_n, out r13_n), 0), r11_n, r12_n, r13_n, 1988, out r10_n, out r11_n, out r12_n, out r13_n);
-		r1_n = DPB(r2_n, (word32) (r2_n + r10_n), 0);
+		word64 r2_n = fib((int64) (word32) SEQ(SLICE(r1_n, word32, 32), (word32) r1_n - 0x02), r2_n, r11_n, r12_n, r13_n, 1988, out r10_n, out r11_n, out r12_n, out r13_n);
+		r1_n = SEQ(SLICE(r2_n, word32, 32), (word32) (r2_n + r10_n));
 	}
-	Eq_n v19_n = (word64) r11_n + 0x00F8;
+	Eq_n v26_n = (word64) r11_n + 0x00F8;
 	int64 r1_n = (int64) (word32) r1_n;
 	Eq_n r4_n = *((word64) r11_n + 0x0118);
 	Eq_n r10_n;
 	Eq_n r11_n;
 	Eq_n r12_n;
 	Eq_n r13_n;
-	int64 r2_n;
+	Eq_n r2_n;
 	r4_n();
 	r10Out = r10_n;
 	r11Out = r11_n;

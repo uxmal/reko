@@ -48,7 +48,7 @@ void __do_global_dtors_aux(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4
 		while (true)
 		{
 			*l0 = o0_n;
-			fn02800019();
+			fn02800018();
 			word32 * o0_n = *l0;
 			word32 o1_n = *o0_n;
 			g0_n = o1_n;
@@ -808,12 +808,12 @@ l00012024:
 					while (true)
 					{
 						Eq_n g0_n = o2_n - &sp_n->b0060;
-						bool C_n = SLICE(cond(g0_n), bool, 0);
+						bool C_n = (bool) cond(g0_n);
 						if (g0_n < 0x00)
 							break;
 						if ((int32) *o2_n == 0x2F)
 						{
-							C_n = SLICE(cond(o2_n - &sp_n->b0060), bool, 0);
+							C_n = (bool) cond(o2_n - &sp_n->b0060);
 							break;
 						}
 						o2_n += -0x01;
@@ -1653,7 +1653,7 @@ void seek_to_line(Eq_n o0)
 					while (true)
 					{
 						int8 * o2_n = o2_n + 0x01;
-						Eq_n C_n = SLICE(cond(o2_n - globals->dw281D0), bool, 0);
+						Eq_n C_n = (bool) cond(o2_n - globals->dw281D0);
 						globals->ptr28220 = o2_n;
 						i0_n = check_source(C_n, 0x00, out i1_n, out i2_n, out i6_n);
 						if ((int32) *globals->ptr28220 == 0x0A)
@@ -1687,7 +1687,7 @@ Eq_n forward_to_next_token_char(Eq_n o0)
 		up32 o0_n = globals->dw281D0;
 		while (true)
 		{
-			i0_n = check_source(SLICE(cond((word32) i0_n + 0x01 - o0_n), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+			i0_n = check_source((bool) cond((word32) i0_n + 0x01 - o0_n), 0x00, out i1_n, out i2_n, out i6_n);
 			if (((word32) ((word32) *i0_n + 177169) & 0x08) == 0x00)
 				break;
 			o0_n = globals->dw281D0;
@@ -1762,7 +1762,7 @@ word32 output_up_to(Eq_n o0, ptr32 & l2Out, union Eq_n & i0Out, ptr32 & i1Out, p
 // 000138F0: Register Eq_n other_variable_style_function(Register Eq_n o0, Register out ptr32 i1Out, Register out ptr32 i6Out)
 Eq_n other_variable_style_function(Eq_n o0, ptr32 & i1Out, ptr32 & i6Out)
 {
-	Eq_n o0_n = SLICE(cond(0x00 - substr(o0, &globals->b17468)), bool, 0);
+	Eq_n o0_n = (bool) cond(0x00 - substr(o0, &globals->b17468));
 	i1Out = o1;
 	i6Out = fp;
 	return o0_n;
@@ -1807,7 +1807,7 @@ l00013B7C:
 l00013BAC:
 	word32 i1_n;
 	struct Eq_n * i2_n;
-	check_source(SLICE(cond(o0_n - l1_n), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+	check_source((bool) cond(o0_n - l1_n), 0x00, out i1_n, out i2_n, out i6_n);
 	if (l0_n == 0x00)
 	{
 		ptr32 i1_n;
@@ -1818,7 +1818,7 @@ l00013BAC:
 		{
 			struct Eq_n * l1_n = l1_n + 0x01;
 			int32 o0_n;
-			check_source(SLICE(cond(globals->dw281E0 - &l1_n->bFFFFFFFF), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+			check_source((bool) cond(globals->dw281E0 - &l1_n->bFFFFFFFF), 0x00, out i1_n, out i2_n, out i6_n);
 			Eq_n l0_n = &l1_n->bFFFFFFFF;
 			if (((word32) ((word32) l1_n->bFFFFFFFF + 177169) & 0x08) != 0x00)
 			{
@@ -1826,7 +1826,7 @@ l00013BAC:
 				while (true)
 				{
 					l0_n = (word32) l0_n - 0x01;
-					check_source(SLICE(cond(o0_n - l0_n), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+					check_source((bool) cond(o0_n - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
 					if (((word32) ((word32) *l0_n + 177169) & 0x08) == 0x00)
 						break;
 					o0_n = globals->dw281E0;
@@ -1837,7 +1837,7 @@ l00013BAC:
 				o0_n = (int32) l1_n->bFFFFFFFF;
 			check_source(0x01 - ((o0_n ^ 0x29) > 0x00), l0_n, out i1_n, out i2_n, out i6_n);
 			Eq_n l0_n = (word32) l0_n - 0x01;
-			check_source(SLICE(cond(globals->dw281E0 - l0_n), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+			check_source((bool) cond(globals->dw281E0 - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
 			check_source(0x01 - (((int32) (*l0_n) ^ 0x29) > 0x00), l0_n, out i1_n, out i2_n, out i6_n);
 			if (edit_formals_lists(l0_n, out l1_n, out l2_n, out i1_n, out i2_n) != 0x00)
 			{
@@ -1863,7 +1863,7 @@ l00013BAC:
 				while (true)
 				{
 					l0_n += -0x01;
-					check_source(SLICE(cond(o0_n - l0_n), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+					check_source((bool) cond(o0_n - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
 					if (((word32) ((word32) *l0_n + 177169) & 0x08) == 0x00)
 						break;
 					o0_n = (ui32) *((word32) l2_n + 0x01E0);
@@ -1876,7 +1876,7 @@ l00013BAC:
 			while (is_id_char((int32) *l3_n) != 0x00)
 			{
 				ui32 o0_n = *((word32) l2_n + 0x01E0);
-				check_source(SLICE(cond(o0_n - l3_n), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+				check_source((bool) cond(o0_n - l3_n), 0x00, out i1_n, out i2_n, out i6_n);
 				l3_n += -0x01;
 			}
 			Eq_n l3_n = l3_n + 0x01;
@@ -2081,7 +2081,7 @@ l000145B4:
 			while (true)
 			{
 				l0_n = (word32) l0_n + 0x01;
-				check_source(SLICE(cond(l0_n - o0_n), bool, 0), i6_n->tFFFFFFEC, out i1_n, out i2_n, out i6_n);
+				check_source((bool) cond(l0_n - o0_n), i6_n->tFFFFFFEC, out i1_n, out i2_n, out i6_n);
 				if (((word32) ((word32) *l0_n + 177169) & 0x08) == 0x00)
 					break;
 				o0_n = i6_n->tFFFFFFEC;
@@ -3779,7 +3779,7 @@ l00016AEC:
 				sp_n += ~0x03;
 			}
 			struct Eq_n * i6_n;
-			fn00000001();
+			fn00000000();
 			fprintf(&globals->t2B640, "%s: ", i6_n->ptr004C);
 			fprintf(&globals->t2B640, globals->ptr28078, i6_n->ptr0044);
 			char * o0_n = globals->ptr2B760;

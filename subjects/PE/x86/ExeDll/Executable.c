@@ -153,10 +153,9 @@ l00401177:
 		*(esp_n - 0x08) = *eax_n;
 		*(esp_n - 0x0C) = *eax_n;
 		Eq_n eax_n = fn00401000(ecx_n, ebp_n, eax_n);
-		byte bl_n = (byte) ebx_n;
 		word32 ecx_n;
 		word32 eax_n = fn0040188F(out ecx_n);
-		word32 ebx_n = DPB(ebx_n, bl_n, 0);
+		byte bl_n = (byte) ebx_n;
 		Eq_n Top_n = <invalid>;
 		ptr32 esp_n = esp_n;
 		if ((byte) eax_n == 0x00)
@@ -243,13 +242,11 @@ byte fn00401474(word32 edx, word32 dwArg04)
 	if (dwArg04 == 0x00)
 		globals->b403354 = 0x01;
 	fn004019FE(edx);
-	byte al_n = fn00401C48();
-	word32 eax_n = DPB(eax_n, al_n, 0);
-	if (al_n == 0x00)
+	if (fn00401C48() == 0x00)
 		return (byte) DPB(eax_n, 0x00, 0);
 	if (fn00401C48() != 0x00)
 		return (byte) DPB(eax_n, 0x01, 0);
-	eax_n = DPB(eax_n, fn00401C48(), 0);
+	fn00401C48();
 	return (byte) DPB(eax_n, 0x00, 0);
 }
 
@@ -572,7 +569,7 @@ void fn004019FE(word32 edx)
 		globals->dw40336C = 0x01;
 		__cpuid(0x00, 0x00, &0x00, &0x01, &0x00, &edx);
 		__cpuid(0x01, 0x00, &0x01, &0x01, &0x00, &edx);
-		byte bLoc14_n = SLICE(dwLoc14 & 0x00, byte, 0);
+		byte bLoc14_n = (byte) (dwLoc14 & 0x00);
 		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (0x00 == 0x000106C0 || (0x00 == 0x00020660 || (0x00 == 0x00020670 || (0x00 == 0x00030650 || (0x00 == 0x00030660 || false))))))
 		{
 			ui32 edi_n = globals->dw403370;

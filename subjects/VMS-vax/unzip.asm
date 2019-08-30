@@ -3375,9 +3375,6 @@ fn00008EC2 proc
 	ret	
 	xfc	
 	bpt	
-
-;; fn00009746: 00009746
-fn00009746 proc
 	subl2	#00000014,sp
 	clrw	-14(fp)
 	movb	#0E,-12(fp)
@@ -3387,16 +3384,10 @@ fn00009746 proc
 	calls	#01,00018F64
 	movl	r0,r2
 	blbs	r2,0000976A
-
-l00009767:
 	brw	000098AD
-
-l0000976A:
 	movl	+10(ap),r4
 	tstl	(r4)
 	bneq	0000978D
-
-l00009772:
 	movl	+14(ap),r3
 	movzwl	#0100,(r3)
 	pushl	(r3)
@@ -3404,30 +3395,20 @@ l00009772:
 	movl	r0,(r4)
 	movzwl	#0124,r0
 	ret	
-
-l0000978D:
 	movl	@+18(ap),r8
 	pushab	-14(fp)
 	pushl	+04(ap)
 	calls	#02,00018FA7
 	movl	r0,r2
 	blbs	r2,000097A7
-
-l000097A4:
 	brw	000098A9
-
-l000097A7:
 	moval	+0014(ap),r7
-
-l000097AC:
 	movl	r8,r9
 	movzwl	-14(fp),r3
 	incl	r3
 	addl2	r3,r8
 	cmpl	r8,@+00(r7)
 	blequ	000097F2
-
-l000097BE:
 	movl	+10(ap),r4
 	movl	(r4),r5
 	movl	(r7),r3
@@ -3437,20 +3418,12 @@ l000097BE:
 	calls	#02,@000192B8
 	movl	r0,(r4)
 	bneq	000097F2
-
-l000097DF:
 	tstl	r5
 	beql	000097EC
-
-l000097E3:
 	pushl	r5
 	calls	#01,@000192B0
-
-l000097EC:
 	movzwl	#0124,r0
 	ret	
-
-l000097F2:
 	clrl	r6
 	pushab	-14(fp)
 	pushal	-0C(fp)
@@ -3461,128 +3434,177 @@ l000097F2:
 	movl	-08(fp),r4
 	cmpl	r4,#00000001
 	bleq	00009820
-
-l00009813:
 	addl3	+04(r3),r4,r3
 	subl2	#00000002,r3
 	cmpb	(r3),#22
 	beql	00009824
-
-l00009820:
 	tstl	r4
 	bneq	00009827
-
-l00009824:
 	movl	#00000001,r6
-
-l00009827:
 	movl	-10(fp),r3
 	addl3	@+10(ap),r9,r4
 	clrl	r5
 	movzwl	-14(fp),r0
 	cmpl	r5,r0
 	bgequ	00009866
-
-l0000983B:
 	nop	
-
-l0000983C:
 	tstl	r6
 	bneq	00009858
-
-l00009840:
 	cmpb	(r3),#41
 	blss	00009858
-
-l00009846:
 	cmpb	(r3),#5A
 	bgtr	00009858
-
-l0000984C:
 	cvtbl	(r3)+,r0
 	addl2	#00000020,r0
 	cvtlb	r0,(r4)+
 	brb	0000985B
-00009857                      01                                .       
-
-l00009858:
+	nop	
 	movb	(r3)+,(r4)+
-
-l0000985B:
 	incl	r5
 	movzwl	-14(fp),r0
 	cmpl	r5,r0
 	blssu	0000983C
-
-l00009866:
 	cmpl	r2,#0003FD39
 	bneq	00009884
-
-l0000986F:
 	subl3	#00000001,r8,r4
 	moval	@+10(ap),r3
 	moval	@+00(r3),r3
 	cvtlb	+0C(ap),(r3)[r4]
 	brb	00009893
-00009882       D5 50                                       .P           
-
-l00009884:
+	tstl	r0
 	subl3	#00000001,r8,r4
 	moval	@+10(ap),r3
 	moval	@+00(r3),r3
 	clrb	(r3)[r4]
-
-l00009893:
 	pushab	-14(fp)
 	pushl	+04(ap)
 	calls	#02,00018FA7
 	movl	r0,r2
 	blbc	r2,000098A9
-
-l000098A6:
 	brw	000097AC
-
-l000098A9:
 	movl	r8,@+18(ap)
-
-l000098AD:
 	cvtwl	#0001,r0
 	ret	
-000098B3          01 00 00                                  ...         
-
-;; fn000098B6: 000098B6
-fn000098B6 proc
+	nop	
+	halt	
+	halt	
 	subl2	#00000004,sp
 	pushal	@0001933C
 	calls	#01,@00019330
 	pushl	+00000004(ap)
 	calls	#01,00018F64
 	ret	
-000098D4             3C 00 C2 04 5E 9E EF 91 BB FD FF 53     <...^......S
-000098E0 9E EF EA 1A FF FF 52 D5 EF E7 DE FD FF 12 0B DD ......R.........
-000098F0 AC 04 FB 01 EF D3 F3 FF FF 04 D5 AC 04 13 05 90 ................
-00009900 01 50 11 02 94 50 98 50 55 D5 62 12 03 31 94 00 .P...P.PU.b..1..
-00009910 DD 55 DF C3 A0 02 DF C3 9F 02 DD 02 DD 02 DD 02 .U..............
-00009920 DF C3 72 01 9F C2 EB 05 9E FF A2 F9 00 00 54 FB ..r...........T.
-00009930 07 64 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 .d.P.....b..9...
-00009940 50 FB 04 60 DD 55 DF C3 B0 02 9F C2 EB 05 FB 02 P..`.U..........
-00009950 64 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 50 d.P.....b..9...P
-00009960 FB 04 60 DD 55 DF C3 35 04 9F C2 EB 05 FB 02 64 ..`.U..5.......d
-00009970 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 50 FB .P.....b..9...P.
-00009980 04 60 DD 55 DF C3 95 05 9F C2 EB 05 FB 02 64 DD .`.U..........d.
-00009990 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 50 FB 04 P.....b..9...P..
-000099A0 60 31 97 00 DD 55 DF C3 0D 06 DF C3 0C 06 DD 02 `1...U..........
-000099B0 DD 03 DD 05 DF EF C6 E4 FF FF 9F C2 EB 05 9E FF ................
-000099C0 0C F9 00 00 54 FB 07 64 DD 50 9F C2 EB 05 9F 62 ....T..d.P.....b
-000099D0 D0 E2 39 C8 00 00 50 FB 04 60 DD 55 DF C3 E2 06 ..9...P..`.U....
-000099E0 DF C3 1D 06 9F C2 EB 05 FB 03 64 DD 50 9F C2 EB ..........d.P...
-000099F0 05 9F 62 D0 E2 39 C8 00 00 50 FB 04 60 DD 55 DF ..b..9...P..`.U.
-00009A00 C3 10 07 9F C2 EB 05 FB 02 64 DD 50 9F C2 EB 05 .........d.P....
-00009A10 9F 62 D0 E2 39 C8 00 00 50 FB 04 60 DD 55 DF C3 .b..9...P..`.U..
-00009A20 BD 08 9F C2 EB 05 FB 02 64 DD 50 9F C2 EB 05 9F ........d.P.....
-00009A30 62 D0 E2 39 C8 00 00 50 FB 04 60 D5 AC 04 13 04 b..9...P..`.....
-00009A40 D0 0A 50 04 D4 50 04 00 23 3D 0A D7 70 3D D7 A3 ..P..P..#=..p=..
-00009A50 7C 00                                           |.             
+	movzwl	#0000,+5E04(r2)
+	movab	FFFE5470,r3
+	movab	FFFFB3D0,r2
+	tstl	FFFE77D4
+	bneq	000098FA
+	pushl	+04(ap)
+	calls	#01,00008CCC
+	ret	
+	tstl	+04(ap)
+	beql	00009904
+	movb	#01,r0
+	brb	00009906
+	clrb	r0
+	cvtbl	r0,r5
+	tstl	(r2)
+	bneq	00009910
+	brw	000099A4
+	pushl	r5
+	pushal	+02A0(r3)
+	pushal	+029F(r3)
+	pushl	#00000002
+	pushl	#00000002
+	pushl	#00000002
+	pushal	+0172(r3)
+	pushab	+05EB(r2)
+	movab	@000192D0,r4
+	calls	#07,(r4)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r0
+	calls	#04,(r0)
+	pushl	r5
+	pushal	+02B0(r3)
+	pushab	+05EB(r2)
+	calls	#02,(r4)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r0
+	calls	#04,(r0)
+	pushl	r5
+	pushal	+0435(r3)
+	pushab	+05EB(r2)
+	calls	#02,(r4)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r0
+	calls	#04,(r0)
+	pushl	r5
+	pushal	+0595(r3)
+	pushab	+05EB(r2)
+	calls	#02,(r4)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r0
+	calls	#04,(r0)
+	brw	00009A3B
+	pushl	r5
+	pushal	+060D(r3)
+	pushal	+060C(r3)
+	pushl	#00000002
+	pushl	#00000003
+	pushl	#00000005
+	pushal	00007E80
+	pushab	+05EB(r2)
+	movab	@000192D0,r4
+	calls	#07,(r4)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r0
+	calls	#04,(r0)
+	pushl	r5
+	pushal	+06E2(r3)
+	pushal	+061D(r3)
+	pushab	+05EB(r2)
+	calls	#03,(r4)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r0
+	calls	#04,(r0)
+	pushl	r5
+	pushal	+0710(r3)
+	pushab	+05EB(r2)
+	calls	#02,(r4)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r0
+	calls	#04,(r0)
+	pushl	r5
+	pushal	+08BD(r3)
+	pushab	+05EB(r2)
+	calls	#02,(r4)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r0
+	calls	#04,(r0)
+	tstl	+04(ap)
+	beql	00009A44
+	movl	#0000000A,r0
+	ret	
+	clrl	r0
+	ret	
+	halt	
+	subp6	#003D,#0A,@+3D70(r7),@+7CA3(r7),#0000,@(sp)+
 
 ;; fn00009A52: 00009A52
 ;;   Called from:
@@ -5009,74 +5031,15 @@ l0000AE5C:
 l0000AE5F:
 	movl	+04(sp),r0
 	ret	
-0000AE64             0C 00                                   ..         
-
-;; fn0000AE66: 0000AE66
-fn0000AE66 proc
-	subl2	#00000004,sp
-	movab	FFFE77D8,r3
-	tstl	+0140(r3)
-	beql	0000AE81
-
-l0000AE76:
-	pushl	+0140(r3)
-	calls	#01,@000192B0
-
-l0000AE81:
-	tstl	+0148(r3)
-	beql	0000AE92
-
-l0000AE87:
-	pushl	+0148(r3)
-	calls	#01,@000192B0
-
-l0000AE92:
-	tstl	+0144(r3)
-	beql	0000AEA3
-
-l0000AE98:
-	pushl	+0144(r3)
-	calls	#01,@000192B0
-
-l0000AEA3:
-	tstl	+013C(r3)
-	beql	0000AEB4
-
-l0000AEA9:
-	pushl	+013C(r3)
-	calls	#01,@000192B0
-
-l0000AEB4:
-	tstl	+0154(r3)
-	beql	0000AED5
-
-l0000AEBA:
-	tstl	r0
-
-l0000AEBC:
-	movl	+0154(r3),ap
-	movl	+04(ap),r2
-	pushl	ap
-	calls	#01,@000192B0
-	movl	r2,+0154(r3)
-	bneq	0000AEBC
-
-l0000AED5:
-	movl	+0134(r3),ap
-	beql	0000AEED
-
-l0000AEDC:
-	movab	(r3),r2
-	cmpl	ap,r2
-	beql	0000AEED
-
-l0000AEE4:
-	pushl	ap
-	calls	#01,@000192B0
-
-l0000AEED:
-	ret	
-0000AEEE                                           D5 50               .P
+0000AE64             0C 00 C2 04 5E 9E EF 69 C9 FD FF 53     ....^..i...S
+0000AE70 D5 C3 40 01 13 0B DD C3 40 01 FB 01 FF 2F E4 00 ..@.....@..../..
+0000AE80 00 D5 C3 48 01 13 0B DD C3 48 01 FB 01 FF 1E E4 ...H.....H......
+0000AE90 00 00 D5 C3 44 01 13 0B DD C3 44 01 FB 01 FF 0D ....D.....D.....
+0000AEA0 E4 00 00 D5 C3 3C 01 13 0B DD C3 3C 01 FB 01 FF .....<.....<....
+0000AEB0 FC E3 00 00 D5 C3 54 01 13 1B D5 50 D0 C3 54 01 ......T....P..T.
+0000AEC0 5C D0 AC 04 52 DD 5C FB 01 FF E2 E3 00 00 D0 52 \...R.\........R
+0000AED0 C3 54 01 12 E7 D0 C3 34 01 5C 13 11 9E 63 52 D1 .T.....4.\...cR.
+0000AEE0 5C 52 13 09 DD 5C FB 01 FF C3 E3 00 00 04 D5 50 \R...\.........P
 0000AEF0 7C 00                                           |.             
 
 ;; fn0000AEF2: 0000AEF2
@@ -8217,10 +8180,6 @@ fn0000F457 proc
 	ret	
 	nop	
 	movzwl	#0000,+5E04(r2)
-
-;; fn0000F4E2: 0000F4E2
-fn0000F4E2 proc
-	subl2	#00000004,sp
 	movab	FFFE66C4,r5
 	movab	FFFFB3D0,r2
 	movab	FFFF8684,r4
@@ -21433,9 +21392,6 @@ l00018F5E:
 00018F61    00 00 00 3C 00                                ...<.         
 
 ;; fn00018F66: 00018F66
-;;   Called from:
-;;     0000975A (in fn00009746)
-;;     000098CC (in fn000098B6)
 fn00018F66 proc
 	movab	-00A0(sp),sp
 	movc5	
@@ -21456,9 +21412,6 @@ fn00018F66 proc
 	Invalid	
 
 ;; fn00018FA9: 00018FA9
-;;   Called from:
-;;     00009797 (in fn00009746)
-;;     00009899 (in fn00009746)
 fn00018FA9 proc
 	movab	@00019320,r6
 	movab	-00A8(sp),sp

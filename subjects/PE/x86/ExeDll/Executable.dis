@@ -276,10 +276,9 @@ l0040123B:
 	Mem248[esp_238 - 8:word32] = Mem245[eax_216:word32]
 	Mem251[esp_238 - 12:word32] = Mem248[eax_233:word32]
 	word32 eax_252 = fn00401000(ecx_239, ebp_133, eax_233)
-	byte bl_272 = (byte) ebx_127
 	word32 ecx_263
 	word32 eax_262 = fn0040188F(out ecx_263)
-	word32 ebx_279 = DPB(ebx_127, bl_272, 0)
+	byte bl_272 = (byte) ebx_127
 	int8 Top_254 = <invalid>
 	word32 esp_259 = esp_238
 	branch (byte) eax_262 != 0x00 l0040126C
@@ -295,7 +294,7 @@ l0040126C:
 
 l00401270:
 	call cexit (retsize: 4;)
-		uses: eax:eax_262,ebp:ebp_218,ebx:ebx_279,ecx:ecx_263,edi:eax_216,edx:edx_242,esi:eax_252,esp:esp_238,fs:fs,Stack +0000:0x00000014,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:0x004024D8,Top:Top_254
+		uses: eax:eax_262,ebp:ebp_218,ebx:ebx_217,ecx:ecx_263,edi:eax_216,edx:edx_242,esi:eax_252,esp:esp_238,fs:fs,Stack +0000:0x00000014,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:0x004024D8,Top:Top_254
 		defs: esp:esp_276
 // DataOut:
 // DataOut (flags):
@@ -535,9 +534,7 @@ l0040147D:
 
 l00401484:
 	fn004019FE(edx)
-	byte al_20 = fn00401C48()
-	word32 eax_52 = DPB(eax_13, al_20, 0)
-	branch al_20 != 0x00 l00401496
+	branch fn00401C48() != 0x00 l00401496
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -555,13 +552,13 @@ l004014A9:
 // SymbolicIn:
 
 l0040149F:
-	eax_52 = DPB(eax_13, fn00401C48(), 0) (alias)
+	fn00401C48()
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401492:
-	return (byte) DPB(eax_52, 0x00, 0)
+	return (byte) DPB(eax_13, 0x00, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

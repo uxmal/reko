@@ -59,56 +59,56 @@ T_7: (in rArg10 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
-T_8: (in dwLoc14_59 : word32)
-  Class: Eq_8
-  DataType: word32
-  OrigDataType: word32
-T_9: (in 0x00000000 : word32)
-  Class: Eq_8
-  DataType: word32
-  OrigDataType: word32
-T_10: (in rLoc10_90 : real96)
+T_8: (in fp0_12 : real96)
   Class: Eq_5
   DataType: real96
   OrigDataType: real96
-T_11: (in 800004FC : ptr32)
-  Class: Eq_11
+T_9: (in 800004FC : ptr32)
+  Class: Eq_9
   DataType: (ptr32 real96)
-  OrigDataType: (ptr32 (struct (0 T_12 t0000)))
-T_12: (in Mem11[0x800004FC:real96] : real96)
+  OrigDataType: (ptr32 (struct (0 T_10 t0000)))
+T_10: (in Mem11[0x800004FC:real96] : real96)
   Class: Eq_5
   DataType: real96
   OrigDataType: real96
-T_13: (in 0x00000001 : word32)
+T_11: (in dwLoc14_59 : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_12: (in 0x00000000 : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_13: (in rLoc10_71 : real96)
   Class: Eq_13
-  DataType: word32
-  OrigDataType: word32
-T_14: (in dwLoc14_59 + 0x00000001 : word32)
-  Class: Eq_8
-  DataType: word32
-  OrigDataType: word32
-T_15: (in rLoc10_71 : real96)
-  Class: Eq_15
   DataType: real96
   OrigDataType: real96
-T_16: (in rLoc10_71 * rArg04 : real96)
+T_14: (in rLoc10_71 * rArg04 : real96)
   Class: Eq_5
   DataType: real96
   OrigDataType: real96
-T_17: (in SLICE(rLoc10_90, real96, 0) : real96)
-  Class: Eq_17
-  DataType: real96
-  OrigDataType: real96
-T_18: (in SLICE(rLoc10_90, real96, 32) : real96)
-  Class: Eq_18
-  DataType: real96
-  OrigDataType: real96
-T_19: (in SLICE(rLoc10_90, real96, 64) : real96)
-  Class: Eq_19
-  DataType: real96
-  OrigDataType: real96
-T_20: (in SEQ(SLICE(rLoc10_90, real96, 0), SLICE(rLoc10_90, real96, 32), SLICE(rLoc10_90, real96, 64)) : real96)
+T_15: (in 0x00000001 : word32)
   Class: Eq_15
+  DataType: word32
+  OrigDataType: word32
+T_16: (in dwLoc14_59 + 0x00000001 : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_17: (in SLICE(fp0_12, word32, 0) : word32)
+  Class: Eq_17
+  DataType: word32
+  OrigDataType: word32
+T_18: (in SLICE(fp0_12, word32, 32) : word32)
+  Class: Eq_18
+  DataType: word32
+  OrigDataType: word32
+T_19: (in SLICE(fp0_12, word32, 64) : word32)
+  Class: Eq_19
+  DataType: word32
+  OrigDataType: word32
+T_20: (in SEQ(SLICE(fp0_12, word32, 0), SLICE(fp0_12, word32, 32), SLICE(fp0_12, word32, 64)) : real96)
+  Class: Eq_13
   DataType: real96
   OrigDataType: real96
 T_21: (in (real96) dwLoc14_59 : real96)
@@ -127,64 +127,64 @@ T_24: (in rArg04 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
-T_25: (in dwLoc14_59 : int32)
-  Class: Eq_25
-  DataType: int32
-  OrigDataType: int32
-T_26: (in 1 : int32)
-  Class: Eq_25
-  DataType: int32
-  OrigDataType: int32
-T_27: (in rLoc10_90 : real96)
+T_25: (in fp0_12 : real96)
   Class: Eq_23
   DataType: real96
   OrigDataType: real96
-T_28: (in 80000508 : ptr32)
-  Class: Eq_28
+T_26: (in 80000508 : ptr32)
+  Class: Eq_26
   DataType: (ptr32 real96)
-  OrigDataType: (ptr32 (struct (0 T_29 t0000)))
-T_29: (in Mem11[0x80000508:real96] : real96)
+  OrigDataType: (ptr32 (struct (0 T_27 t0000)))
+T_27: (in Mem11[0x80000508:real96] : real96)
   Class: Eq_23
   DataType: real96
   OrigDataType: real96
-T_30: (in 0x00000001 : word32)
-  Class: Eq_30
-  DataType: word32
-  OrigDataType: word32
-T_31: (in dwLoc14_59 + 0x00000001 : word32)
-  Class: Eq_25
+T_28: (in dwLoc14_59 : int32)
+  Class: Eq_28
   DataType: int32
   OrigDataType: int32
-T_32: (in rLoc10_71 : real96)
+T_29: (in 1 : int32)
+  Class: Eq_28
+  DataType: int32
+  OrigDataType: int32
+T_30: (in rLoc10_71 : real96)
+  Class: Eq_30
+  DataType: real96
+  OrigDataType: real96
+T_31: (in (real96) dwLoc14_59 : real96)
+  Class: Eq_31
+  DataType: real96
+  OrigDataType: real96
+T_32: (in (real80) (real96) dwLoc14_59 : real80)
   Class: Eq_32
-  DataType: real96
-  OrigDataType: real96
-T_33: (in (real96) dwLoc14_59 : real96)
-  Class: Eq_33
-  DataType: real96
-  OrigDataType: real96
-T_34: (in (real80) (real96) dwLoc14_59 : real80)
-  Class: Eq_34
   DataType: real80
   OrigDataType: real80
-T_35: (in rLoc10_71 * (real80) ((real96) dwLoc14_59) : real96)
+T_33: (in rLoc10_71 * (real80) ((real96) dwLoc14_59) : real96)
   Class: Eq_23
   DataType: real96
   OrigDataType: real96
-T_36: (in SLICE(rLoc10_90, real96, 0) : real96)
+T_34: (in 0x00000001 : word32)
+  Class: Eq_34
+  DataType: word32
+  OrigDataType: word32
+T_35: (in dwLoc14_59 + 0x00000001 : word32)
+  Class: Eq_28
+  DataType: int32
+  OrigDataType: int32
+T_36: (in SLICE(fp0_12, word32, 0) : word32)
   Class: Eq_36
-  DataType: real96
-  OrigDataType: real96
-T_37: (in SLICE(rLoc10_90, real96, 32) : real96)
+  DataType: word32
+  OrigDataType: word32
+T_37: (in SLICE(fp0_12, word32, 32) : word32)
   Class: Eq_37
-  DataType: real96
-  OrigDataType: real96
-T_38: (in SLICE(rLoc10_90, real96, 64) : real96)
+  DataType: word32
+  OrigDataType: word32
+T_38: (in SLICE(fp0_12, word32, 64) : word32)
   Class: Eq_38
-  DataType: real96
-  OrigDataType: real96
-T_39: (in SEQ(SLICE(rLoc10_90, real96, 0), SLICE(rLoc10_90, real96, 32), SLICE(rLoc10_90, real96, 64)) : real96)
-  Class: Eq_32
+  DataType: word32
+  OrigDataType: word32
+T_39: (in SEQ(SLICE(fp0_12, word32, 0), SLICE(fp0_12, word32, 32), SLICE(fp0_12, word32, 64)) : real96)
+  Class: Eq_30
   DataType: real96
   OrigDataType: real96
 T_40: (in (real96) dwLoc14_59 : real96)
@@ -223,7 +223,7 @@ T_48: (in 3 : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
-T_49: (in rLoc10_146 : real96)
+T_49: (in fp1_93 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
@@ -291,40 +291,40 @@ T_65: (in (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc
   Class: Eq_44
   DataType: real96
   OrigDataType: real96
-T_66: (in 0x00000002 : word32)
+T_66: (in rLoc10_127 : real96)
   Class: Eq_66
-  DataType: word32
-  OrigDataType: word32
-T_67: (in dwLoc20_110 + 0x00000002 : word32)
-  Class: Eq_47
-  DataType: int32
-  OrigDataType: int32
-T_68: (in rLoc10_127 : real96)
-  Class: Eq_68
   DataType: real96
   OrigDataType: real96
-T_69: (in (real80) fp0_91 : real80)
-  Class: Eq_69
+T_67: (in (real80) fp0_91 : real80)
+  Class: Eq_67
   DataType: real80
   OrigDataType: real80
-T_70: (in rLoc10_127 + (real80) fp0_91 : real96)
+T_68: (in rLoc10_127 + (real80) fp0_91 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
-T_71: (in SLICE(rLoc10_146, real96, 0) : real96)
+T_69: (in 0x00000002 : word32)
+  Class: Eq_69
+  DataType: word32
+  OrigDataType: word32
+T_70: (in dwLoc20_110 + 0x00000002 : word32)
+  Class: Eq_47
+  DataType: int32
+  OrigDataType: int32
+T_71: (in SLICE(fp1_93, word32, 0) : word32)
   Class: Eq_71
-  DataType: real96
-  OrigDataType: real96
-T_72: (in SLICE(rLoc10_146, real96, 32) : real96)
+  DataType: word32
+  OrigDataType: word32
+T_72: (in SLICE(fp1_93, word32, 32) : word32)
   Class: Eq_72
-  DataType: real96
-  OrigDataType: real96
-T_73: (in SLICE(rLoc10_146, real96, 64) : real96)
+  DataType: word32
+  OrigDataType: word32
+T_73: (in SLICE(fp1_93, word32, 64) : word32)
   Class: Eq_73
-  DataType: real96
-  OrigDataType: real96
-T_74: (in SEQ(SLICE(rLoc10_146, real96, 0), SLICE(rLoc10_146, real96, 32), SLICE(rLoc10_146, real96, 64)) : real96)
-  Class: Eq_68
+  DataType: word32
+  OrigDataType: word32
+T_74: (in SEQ(SLICE(fp1_93, word32, 0), SLICE(fp1_93, word32, 32), SLICE(fp1_93, word32, 64)) : real96)
+  Class: Eq_66
   DataType: real96
   OrigDataType: real96
 T_75: (in 100 : int32)
@@ -343,40 +343,40 @@ T_78: (in rArg04 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
-T_79: (in rLoc1C_108 : real96)
-  Class: Eq_79
+T_79: (in fp0_15 : real96)
+  Class: Eq_77
   DataType: real96
   OrigDataType: real96
-T_80: (in 8000052C : ptr32)
+T_80: (in 80000520 : ptr32)
   Class: Eq_80
   DataType: (ptr32 real96)
   OrigDataType: (ptr32 (struct (0 T_81 t0000)))
-T_81: (in Mem17[0x8000052C:real96] : real96)
-  Class: Eq_79
-  DataType: real96
-  OrigDataType: real96
-T_82: (in dwLoc20_109 : int32)
-  Class: Eq_82
-  DataType: int32
-  OrigDataType: int32
-T_83: (in 2 : int32)
-  Class: Eq_82
-  DataType: int32
-  OrigDataType: int32
-T_84: (in rLoc10_146 : real96)
+T_81: (in Mem14[0x80000520:real96] : real96)
   Class: Eq_77
   DataType: real96
   OrigDataType: real96
-T_85: (in 80000520 : ptr32)
-  Class: Eq_85
+T_82: (in rLoc1C_108 : real96)
+  Class: Eq_82
+  DataType: real96
+  OrigDataType: real96
+T_83: (in 8000052C : ptr32)
+  Class: Eq_83
   DataType: (ptr32 real96)
-  OrigDataType: (ptr32 (struct (0 T_86 t0000)))
-T_86: (in Mem14[0x80000520:real96] : real96)
-  Class: Eq_77
+  OrigDataType: (ptr32 (struct (0 T_84 t0000)))
+T_84: (in Mem17[0x8000052C:real96] : real96)
+  Class: Eq_82
   DataType: real96
   OrigDataType: real96
+T_85: (in dwLoc20_109 : int32)
+  Class: Eq_85
+  DataType: int32
+  OrigDataType: int32
+T_86: (in 2 : int32)
+  Class: Eq_85
+  DataType: int32
+  OrigDataType: int32
 T_87: (in fp0_91 : real96)
-  Class: Eq_79
+  Class: Eq_82
   DataType: real96
   OrigDataType: real96
 T_88: (in fn80000132 : ptr32)
@@ -428,47 +428,47 @@ T_99: (in (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc
   DataType: real96
   OrigDataType: real96
 T_100: (in (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_109) / (real80) fn8000018E((real96) dwLoc20_109)) * rLoc1C_108 : real96)
-  Class: Eq_79
-  DataType: real96
-  OrigDataType: real96
-T_101: (in 0x00000002 : word32)
-  Class: Eq_101
-  DataType: word32
-  OrigDataType: word32
-T_102: (in dwLoc20_109 + 0x00000002 : word32)
   Class: Eq_82
-  DataType: int32
-  OrigDataType: int32
-T_103: (in rLoc10_126 : real96)
-  Class: Eq_103
   DataType: real96
   OrigDataType: real96
-T_104: (in (real80) fp0_91 : real80)
-  Class: Eq_104
+T_101: (in rLoc10_126 : real96)
+  Class: Eq_101
+  DataType: real96
+  OrigDataType: real96
+T_102: (in (real80) fp0_91 : real80)
+  Class: Eq_102
   DataType: real80
   OrigDataType: real80
-T_105: (in rLoc10_126 + (real80) fp0_91 : real96)
+T_103: (in rLoc10_126 + (real80) fp0_91 : real96)
   Class: Eq_77
   DataType: real96
   OrigDataType: real96
-T_106: (in SLICE(rLoc10_146, real96, 0) : real96)
+T_104: (in 0x00000002 : word32)
+  Class: Eq_104
+  DataType: word32
+  OrigDataType: word32
+T_105: (in dwLoc20_109 + 0x00000002 : word32)
+  Class: Eq_85
+  DataType: int32
+  OrigDataType: int32
+T_106: (in SLICE(fp0_15, word32, 0) : word32)
   Class: Eq_106
-  DataType: real96
-  OrigDataType: real96
-T_107: (in SLICE(rLoc10_146, real96, 32) : real96)
+  DataType: word32
+  OrigDataType: word32
+T_107: (in SLICE(fp0_15, word32, 32) : word32)
   Class: Eq_107
-  DataType: real96
-  OrigDataType: real96
-T_108: (in SLICE(rLoc10_146, real96, 64) : real96)
+  DataType: word32
+  OrigDataType: word32
+T_108: (in SLICE(fp0_15, word32, 64) : word32)
   Class: Eq_108
-  DataType: real96
-  OrigDataType: real96
-T_109: (in SEQ(SLICE(rLoc10_146, real96, 0), SLICE(rLoc10_146, real96, 32), SLICE(rLoc10_146, real96, 64)) : real96)
-  Class: Eq_103
+  DataType: word32
+  OrigDataType: word32
+T_109: (in SEQ(SLICE(fp0_15, word32, 0), SLICE(fp0_15, word32, 32), SLICE(fp0_15, word32, 64)) : real96)
+  Class: Eq_101
   DataType: real96
   OrigDataType: real96
 T_110: (in 100 : int32)
-  Class: Eq_82
+  Class: Eq_85
   DataType: int32
   OrigDataType: int32
 T_111: (in dwLoc20_109 > 100 : bool)

@@ -415,49 +415,50 @@ fib_entry:
 // SymbolicIn:
 
 l00000768:
-	word64 r1_68
-	word32 dwLocA4_106 = (word32) r2
+	word64 r1_74
 	word64 r11_21 = fp - 328
-	branch DPB(r2, dwLocA4_106, 0) >u 0x0000000000000001 l00000792
+	word32 dwLocA4_113 = (word32) r2
+	branch r2 >u 0x0000000000000001 l00000792
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000792:
-	word64 r10_36
-	word64 r11_37
-	word64 r12_38
-	word64 r13_39
-	word64 r10_57
-	word64 r2_62 = fib((int64) (Mem24[r11_37 + 164:word32] - 2), DPB(r10_36, (word32) fib((int64) (dwLocA4_106 - 1), r10, fp - 328, r12, r13, 0x000007A8, out r10_36, out r11_37, out r12_38, out r13_39), 0), r11_37, r12_38, r13_39, 0x000007C4, out r10_57, out r11_21, out r12_118, out r13_119)
-	r1_68 = DPB(r2_62, (word32) (r2_62 + r10_57), 0)
+	word64 r11_40
+	word64 r12_41
+	word64 r13_42
+	word64 r2_44 = fib((int64) (word32) SEQ(SLICE(r2, word32, 32), (word32) r2 - 1), r10, fp - 328, r12, r13, 0x000007A8, out r10_125, out r11_40, out r12_41, out r13_42)
+	word64 r1_52 = SEQ(SLICE(r2_44, word32, 32), Mem24[r11_40 + 164:word32])
+	word64 r10_62
+	word64 r2_67 = fib((int64) (word32) SEQ(SLICE(r1_52, word32, 32), (word32) r1_52 - 2), r2_44, r11_40, r12_41, r13_42, 0x000007C4, out r10_62, out r11_21, out r12_126, out r13_127)
+	r1_74 = SEQ(SLICE(r2_67, word32, 32), (word32) (r2_67 + r10_62))
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000078A:
-	r1_68 = DPB(r2, dwLocA4_106, 0)
+	r1_74 = r2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000007CA:
-	word64 v19_78 = r11_21 + 248
-	word64 r1_73 = (int64) (word32) r1_68
-	word64 r4_77 = Mem24[r11_21 + 280:word64]
-	word64 r10_91
-	word64 r11_92
-	word64 r12_93
-	word64 r13_94
-	word64 r2_96
-	call r4_77 (retsize: 0;)
-		uses: r1:r1_73,r10:Mem24[v19_78:word64],r11:Mem24[v19_78 + 8:word64],r12:Mem24[v19_78 + 16:word64],r13:Mem24[v19_78 + 24:word64],r14:Mem24[v19_78 + 32:word64],r15:Mem24[v19_78 + 40:word64],r2:r1_73,r4:r4_77,Stack +FFFFFF5C:dwLocA4_106,Stack +FFFFFFB0:r10,Stack +FFFFFFB8:r11,Stack +FFFFFFC0:r12,Stack +FFFFFFC8:r13,Stack +FFFFFFD0:r14,Stack +FFFFFFD8:fp - 160
-		defs: r10:r10_91,r11:r11_92,r12:r12_93,r13:r13_94,r2:r2_96
-	r10Out = r10_91
-	r11Out = r11_92
-	r12Out = r12_93
-	r13Out = r13_94
-	return r2_96
+	word64 v26_85 = r11_21 + 248
+	word64 r1_80 = (int64) (word32) r1_74
+	word64 r4_84 = Mem24[r11_21 + 280:word64]
+	word64 r10_98
+	word64 r11_99
+	word64 r12_100
+	word64 r13_101
+	word64 r2_103
+	call r4_84 (retsize: 0;)
+		uses: r1:r1_80,r10:Mem24[v26_85:word64],r11:Mem24[v26_85 + 8:word64],r12:Mem24[v26_85 + 16:word64],r13:Mem24[v26_85 + 24:word64],r14:Mem24[v26_85 + 32:word64],r15:Mem24[v26_85 + 40:word64],r2:r1_80,r4:r4_84,Stack +FFFFFF5C:dwLocA4_113,Stack +FFFFFFB0:r10,Stack +FFFFFFB8:r11,Stack +FFFFFFC0:r12,Stack +FFFFFFC8:r13,Stack +FFFFFFD0:r14,Stack +FFFFFFD8:fp - 160
+		defs: r10:r10_98,r11:r11_99,r12:r12_100,r13:r13_101,r2:r2_103
+	r10Out = r10_98
+	r11Out = r11_99
+	r12Out = r12_100
+	r13Out = r13_101
+	return r2_103
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

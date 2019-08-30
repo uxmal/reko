@@ -139,7 +139,7 @@ l0001155C:
 
 l00011568:
 	Mem47[l0:word32] = o0_44
-	call fn02800019 (retsize: 0;)
+	call fn02800018 (retsize: 0;)
 		uses: g0:g0_81,i0:i0_52,i1:i1_55,i2:i2_58,i3:i3_62,i4:i4_66,i5:i5_70,i6:i6_74,i7:i7_76,l0:l0_46,l7:l7_79,o0:o0_45,o1:Mem47[o0_45 + -4:word32],o2:o2_60,o3:o3_64,o4:o4_68,o5:o5_72,o7:0x00011570,sp:sp_50
 		defs: i0:i0_53,i1:i1_56,i2:i2_59,i3:i3_63,i4:i4_67,i5:i5_71,i6:i6_75,i7:i7_77,l0:l0_83,l7:l7_80,o2:o2_61,o3:o3_65,o4:o4_69,o5:o5_73,o7:o7_78,sp:sp_51
 	word32 o0_85 = Mem47[l0:word32]
@@ -12154,7 +12154,7 @@ l00016B84:
 
 l00016B90:
 	word32 i6_258
-	call fn00000001 (retsize: 0;)
+	call fn00000000 (retsize: 0;)
 		uses: g0:o0_156,i0:o0,i1:o1,i2:o2,i3:o3,i4:o4,i5:o5,i6:fp,i7:o7,l0:0x0002B000,l1:l1_107,o0:o0,o1:o1,o2:o0_39,o3:o3,o4:o4,o5:o5,o7:0x00016B94,sp:sp_171,Stack +0044:o0,Stack +0048:o1,Stack +004C:o2,Stack +0054:o4,Stack +0058:o5,Stack +005C:dwArg5C,Stack +FFFFFFD4:dwLoc2C_402,Stack +FFFFFFD8:dwLoc28_401,Stack +FFFFFFDC:dwLoc24_415,Stack +FFFFFFE0:o0_47,Stack +FFFFFFE4:o0_39,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
 		defs: i6:i6_258
 	fprintf(0x0002B640, 0x00017B28, Mem75[i6_258 + 76:word32])

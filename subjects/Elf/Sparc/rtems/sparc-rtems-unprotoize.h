@@ -2069,15 +2069,15 @@ Eq_3473: (union "Eq_3473" ((ptr32 int8) u0) ((ptr32 Eq_8533) u1))
 	T_3549 (in o0 : Eq_3473)
 	T_3550 (in i0_20 : Eq_3473)
 	T_3552 (in o0 + 0x00000001 : word32)
-	T_3580 (in check_source(SLICE(cond((word32) i0_20 + 1 - o0_32), bool, 0), 0x00000000, out i1_94, out i2_95, out i6_96) : word32)
-	T_3805 (in check_source(SLICE(cond(o0_42 - l1_20), bool, 0), 0x00000000, out i1_57, out i2_220, out i6_649) : word32)
-	T_3845 (in check_source(SLICE(cond(globals->dw281E0 - &l1_81->bFFFFFFFF), bool, 0), 0x00000000, out i1_650, out i2_651, out i6_652) : word32)
+	T_3580 (in check_source((bool) cond((word32) i0_20 + 1 - o0_32), 0x00000000, out i1_94, out i2_95, out i6_96) : word32)
+	T_3805 (in check_source((bool) cond(o0_42 - l1_20), 0x00000000, out i1_57, out i2_220, out i6_649) : word32)
+	T_3845 (in check_source((bool) cond(globals->dw281E0 - &l1_81->bFFFFFFFF), 0x00000000, out i1_650, out i2_651, out i6_652) : word32)
 	T_3876 (in check_source(0x00000001 - ((o0_110 ^ 0x00000029) > 0x00000000), l0_113, out i1_653, out i2_654, out i6_655) : word32)
-	T_3893 (in check_source(SLICE(cond(globals->dw281E0 - l0_168), bool, 0), 0x00000000, out i1_656, out i2_657, out i6_658) : word32)
+	T_3893 (in check_source((bool) cond(globals->dw281E0 - l0_168), 0x00000000, out i1_656, out i2_657, out i6_658) : word32)
 	T_3911 (in check_source(0x00000001 - (((int32) (*l0_168) ^ 0x00000029) > 0x00000000), l0_168, out i1_659, out i2_660, out i6_661) : word32)
-	T_3940 (in check_source(SLICE(cond(o0_112 - l0_113), bool, 0), 0x00000000, out i1_662, out i2_663, out i6_664) : word32)
-	T_4018 (in check_source(SLICE(cond(o0_303 - l0_294), bool, 0), 0x00000000, out i1_665, out i2_220, out i6_666) : word32)
-	T_4072 (in check_source(SLICE(cond(o0_353 - l3_336), bool, 0), 0x00000000, out i1_667, out i2_220, out i6_668) : word32)
+	T_3940 (in check_source((bool) cond(o0_112 - l0_113), 0x00000000, out i1_662, out i2_663, out i6_664) : word32)
+	T_4018 (in check_source((bool) cond(o0_303 - l0_294), 0x00000000, out i1_665, out i2_220, out i6_666) : word32)
+	T_4072 (in check_source((bool) cond(o0_353 - l3_336), 0x00000000, out i1_667, out i2_220, out i6_668) : word32)
 	T_4099 (in check_source(0x00000000, l3_373, out i1_669, out i2_670, out i6_671) : word32)
 	T_4164 (in i0_112 : Eq_3473)
 	T_4166 (in i0_26 + 0x00000000 : word32)
@@ -2087,7 +2087,7 @@ Eq_3473: (union "Eq_3473" ((ptr32 int8) u0) ((ptr32 Eq_8533) u1))
 	T_4401 (in i0_20 : Eq_3473)
 	T_4403 (in o0 + 0xFFFFFFFF : word32)
 	T_4439 (in check_source(0x00000001 - (((word32) i0_20 - 1) - o0_41 < 0x00000000), 0x00000000, out i1_55, out i2_56, out i6_60) : word32)
-	T_4545 (in check_source(SLICE(cond(l0_55 - o0_59), bool, 0), i6_121->tFFFFFFEC, out i1_615, out i2_616, out i6_121) : word32)
+	T_4545 (in check_source((bool) cond(l0_55 - o0_59), i6_121->tFFFFFFEC, out i1_615, out i2_616, out i6_121) : word32)
 	T_4582 (in i0_177 : Eq_3473)
 	T_4583 (in 0x00028000 : word32)
 	T_4610 (in check_source(0x00000001 - (o2_185 - o1_183 < 0x00000000), o1_183, out i1_617, out i2_618, out i6_121) : word32)
@@ -3426,11 +3426,11 @@ T_112: (in Mem47[l0 + 0x00000000:word32] : word32)
   Class: Eq_91
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_94 t0000)))
-T_113: (in fn02800019 : ptr32)
+T_113: (in fn02800018 : ptr32)
   Class: Eq_113
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_114: (in signature of fn02800019 : void)
+T_114: (in signature of fn02800018 : void)
   Class: Eq_114
   DataType: Eq_114
   OrigDataType: 
@@ -17294,7 +17294,7 @@ T_3579: (in out i6_96 : ptr32)
   Class: Eq_3465
   DataType: (ptr32 Eq_3465)
   OrigDataType: ptr32
-T_3580: (in check_source(SLICE(cond((word32) i0_20 + 1 - o0_32), bool, 0), 0x00000000, out i1_94, out i2_95, out i6_96) : word32)
+T_3580: (in check_source((bool) cond((word32) i0_20 + 1 - o0_32), 0x00000000, out i1_94, out i2_95, out i6_96) : word32)
   Class: Eq_3473
   DataType: Eq_3473
   OrigDataType: word32
@@ -18194,7 +18194,7 @@ T_3804: (in out i6_649 : ptr32)
   Class: Eq_3465
   DataType: (ptr32 Eq_3465)
   OrigDataType: ptr32
-T_3805: (in check_source(SLICE(cond(o0_42 - l1_20), bool, 0), 0x00000000, out i1_57, out i2_220, out i6_649) : word32)
+T_3805: (in check_source((bool) cond(o0_42 - l1_20), 0x00000000, out i1_57, out i2_220, out i6_649) : word32)
   Class: Eq_3473
   DataType: Eq_3473
   OrigDataType: word32
@@ -18354,7 +18354,7 @@ T_3844: (in out i6_652 : ptr32)
   Class: Eq_3465
   DataType: (ptr32 Eq_3465)
   OrigDataType: ptr32
-T_3845: (in check_source(SLICE(cond(globals->dw281E0 - &l1_81->bFFFFFFFF), bool, 0), 0x00000000, out i1_650, out i2_651, out i6_652) : word32)
+T_3845: (in check_source((bool) cond(globals->dw281E0 - &l1_81->bFFFFFFFF), 0x00000000, out i1_650, out i2_651, out i6_652) : word32)
   Class: Eq_3473
   DataType: Eq_3473
   OrigDataType: word32
@@ -18546,7 +18546,7 @@ T_3892: (in out i6_658 : ptr32)
   Class: Eq_3465
   DataType: (ptr32 Eq_3465)
   OrigDataType: ptr32
-T_3893: (in check_source(SLICE(cond(globals->dw281E0 - l0_168), bool, 0), 0x00000000, out i1_656, out i2_657, out i6_658) : word32)
+T_3893: (in check_source((bool) cond(globals->dw281E0 - l0_168), 0x00000000, out i1_656, out i2_657, out i6_658) : word32)
   Class: Eq_3473
   DataType: Eq_3473
   OrigDataType: word32
@@ -18734,7 +18734,7 @@ T_3939: (in out i6_664 : ptr32)
   Class: Eq_3465
   DataType: (ptr32 Eq_3465)
   OrigDataType: ptr32
-T_3940: (in check_source(SLICE(cond(o0_112 - l0_113), bool, 0), 0x00000000, out i1_662, out i2_663, out i6_664) : word32)
+T_3940: (in check_source((bool) cond(o0_112 - l0_113), 0x00000000, out i1_662, out i2_663, out i6_664) : word32)
   Class: Eq_3473
   DataType: Eq_3473
   OrigDataType: word32
@@ -19046,7 +19046,7 @@ T_4017: (in out i6_666 : ptr32)
   Class: Eq_3465
   DataType: (ptr32 Eq_3465)
   OrigDataType: ptr32
-T_4018: (in check_source(SLICE(cond(o0_303 - l0_294), bool, 0), 0x00000000, out i1_665, out i2_220, out i6_666) : word32)
+T_4018: (in check_source((bool) cond(o0_303 - l0_294), 0x00000000, out i1_665, out i2_220, out i6_666) : word32)
   Class: Eq_3473
   DataType: Eq_3473
   OrigDataType: word32
@@ -19262,7 +19262,7 @@ T_4071: (in out i6_668 : ptr32)
   Class: Eq_3465
   DataType: (ptr32 Eq_3465)
   OrigDataType: ptr32
-T_4072: (in check_source(SLICE(cond(o0_353 - l3_336), bool, 0), 0x00000000, out i1_667, out i2_220, out i6_668) : word32)
+T_4072: (in check_source((bool) cond(o0_353 - l3_336), 0x00000000, out i1_667, out i2_220, out i6_668) : word32)
   Class: Eq_3473
   DataType: Eq_3473
   OrigDataType: word32
@@ -21154,7 +21154,7 @@ T_4544: (in out i6_121 : ptr32)
   Class: Eq_3465
   DataType: (ptr32 Eq_3465)
   OrigDataType: (ptr32 (struct (FFFFFFEC T_4488 tFFFFFFEC)))
-T_4545: (in check_source(SLICE(cond(l0_55 - o0_59), bool, 0), i6_121->tFFFFFFEC, out i1_615, out i2_616, out i6_121) : word32)
+T_4545: (in check_source((bool) cond(l0_55 - o0_59), i6_121->tFFFFFFEC, out i1_615, out i2_616, out i6_121) : word32)
   Class: Eq_3473
   DataType: Eq_3473
   OrigDataType: word32
@@ -34774,11 +34774,11 @@ T_7949: (in i6_258 : (ptr32 Eq_7949))
   Class: Eq_7949
   DataType: (ptr32 Eq_7949)
   OrigDataType: (ptr32 (struct (44 T_7969 t0044) (4C T_7959 t004C)))
-T_7950: (in fn00000001 : ptr32)
+T_7950: (in fn00000000 : ptr32)
   Class: Eq_7950
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_7951: (in signature of fn00000001 : void)
+T_7951: (in signature of fn00000000 : void)
   Class: Eq_7951
   DataType: Eq_7951
   OrigDataType: 

@@ -37,9 +37,18 @@ struct Eq_n * g_ptr40FC = &g_t4000;
 struct Eq_n * g_ptr4100 = null;
 union Eq_n * g_ptr4104 = &g_t10202;
 union Eq_n * g_ptr4108 = &g_t3030303;
-int32 g_dw410C = 67372036;
-int32 g_dw4110 = 67372036;
-int32 g_dw4114 = 84215045;
+Eq_n g_t410C = 
+	{
+		67372036
+	};
+Eq_n g_t4110 = 
+	{
+		67372036
+	};
+Eq_n g_t4114 = 
+	{
+		84215045
+	};
 word32 g_dw4120 = 0x05050505;
 ptr32 g_ptr4124 = 0x06060606;
 int32 g_dw4128 = 101058054;

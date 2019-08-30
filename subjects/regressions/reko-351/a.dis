@@ -434,7 +434,7 @@ l80000390:
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  fp0:[0..79] Stack +0004:[0..31] Stack +000C:[0..31]
+// MayUse:  fp0:[0..79] Stack +0004:[0..63] Stack +000C:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -528,7 +528,7 @@ main_exit:
 void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0004:[0..31] Stack +000C:[0..63] Stack +0014:[0..31]
+// MayUse:  Stack +0004:[0..63] Stack +000C:[0..63] Stack +0014:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:

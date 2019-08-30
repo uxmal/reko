@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (100 Eq_697 t0100) (5A4D Eq_697 t5A4D) (400000 word16 w400000) (40003C (ptr32 Eq_697) ptr40003C) (401731 code t401731) (4020D4 (ptr32 code) ptr4020D4) (4020E0 Eq_245 t4020E0) (4020F0 Eq_245 t4020F0) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (403354 byte b403354) (403368 ui32 dw403368) (40336C ui32 dw40336C) (403370 ui32 dw403370))
+Eq_1: (struct "Globals" (100 Eq_691 t0100) (5A4D Eq_691 t5A4D) (400000 word16 w400000) (40003C (ptr32 Eq_691) ptr40003C) (401731 code t401731) (4020D4 (ptr32 code) ptr4020D4) (4020E0 Eq_245 t4020E0) (4020F0 Eq_245 t4020F0) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (403354 byte b403354) (403368 ui32 dw403368) (40336C ui32 dw40336C) (403370 ui32 dw403370))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_36: (struct "Eq_36" (0 word32 dw0000) (4 word32 dw0004))
 	T_36 (in eax_32 : (ptr32 Eq_36))
@@ -18,8 +18,8 @@ Eq_60: (struct "Eq_60" (0 ptr32 ptr0000) (8 ui32 dw0008))
 	T_148 (in fn00401980(ebx, esi, edi, dwLoc0C, 0x00000014) : word32)
 	T_205 (in ebp_133 : (ptr32 Eq_60))
 	T_305 (in ebp : (ptr32 Eq_60))
-	T_679 (in ebp_13 : (ptr32 Eq_60))
-	T_683 (in fn00401980(ebx, esi, edi, dwLoc0C, 0x00000008) : word32)
+	T_673 (in ebp_13 : (ptr32 Eq_60))
+	T_677 (in fn00401980(ebx, esi, edi, dwLoc0C, 0x00000008) : word32)
 Eq_120: (fn void ((ptr32 word32), word32, ptr32, (ptr32 word32), word32))
 	T_120 (in fn00401010 : ptr32)
 	T_121 (in signature of fn00401010 : void)
@@ -29,20 +29,20 @@ Eq_131: DWORD
 	T_302 (in 0x000000FF : word32)
 	T_460 (in eax_252 : Eq_131)
 	T_463 (in fn00401040(eax_240, ecx_239, ebp_133, eax_233) : word32)
-	T_521 (in Mem303[esp_238 - 4 + 0x00000000:word32] : word32)
-	T_821 (in GetCurrentThreadId() : DWORD)
-	T_825 (in GetCurrentProcessId() : DWORD)
-	T_871 (in ProcessorFeature : DWORD)
-	T_872 (in 0x00000017 : word32)
-	T_1056 (in 0x0000000A : word32)
+	T_519 (in Mem303[esp_238 - 4 + 0x00000000:word32] : word32)
+	T_815 (in GetCurrentThreadId() : DWORD)
+	T_819 (in GetCurrentProcessId() : DWORD)
+	T_865 (in ProcessorFeature : DWORD)
+	T_866 (in 0x00000017 : word32)
+	T_1050 (in 0x0000000A : word32)
 Eq_132: (fn void ())
 	T_132 (in fn0040165E : ptr32)
 	T_133 (in signature of fn0040165E : void)
 Eq_136: (fn (ptr32 Eq_60) (word32, Eq_139, Eq_139, word32, ui32))
 	T_136 (in fn00401980 : ptr32)
 	T_137 (in signature of fn00401980 : void)
-	T_680 (in fn00401980 : ptr32)
-Eq_139: (union "Eq_139" (byte u0) ((ptr32 Eq_1217) u1))
+	T_674 (in fn00401980 : ptr32)
+Eq_139: (union "Eq_139" (byte u0) ((ptr32 Eq_1211) u1))
 	T_139 (in esi : Eq_139)
 	T_140 (in edi : Eq_139)
 	T_144 (in esi : word32)
@@ -72,16 +72,16 @@ Eq_139: (union "Eq_139" (byte u0) ((ptr32 Eq_1217) u1))
 	T_390 (in Mem125[esp_138 + 0x00000000:word32] : word32)
 	T_398 (in Mem151[esp_138 + 0x00000000:word32] : word32)
 	T_409 (in Mem155[esp_138 - 8 + 0x00000000:word32] : word32)
-	T_484 (in Mem174[esp_118 - 4 + 0x00000000:word32] : word32)
-	T_491 (in fn0040153F(ebx_127, eax_166, edi_121, out edx_139, out ebx_127, out ebp_133, out esi_167, out edi_121) : word32)
-	T_495 (in Mem174[esp_183 + 0x00000000:word32] : word32)
-	T_503 (in Mem174[esi_167 + 0x00000000:word32] : word32)
-	T_506 (in Mem197[esp_183 + 0x00000000:word32] : word32)
-	T_512 (in Mem197[esp_198 + 0x00000000:word32] : word32)
-	T_784 (in 0x00 : byte)
-	T_997 (in Mem20[esp_14 - 8 + 0x00000000:word32] : word32)
-	T_1002 (in Mem23[esp_14 - 12 + 0x00000000:word32] : word32)
-Eq_149: (union "Eq_149" (int8 u0) ((ptr32 Eq_1218) u1))
+	T_482 (in Mem174[esp_118 - 4 + 0x00000000:word32] : word32)
+	T_489 (in fn0040153F(ebx_127, eax_166, edi_121, out edx_139, out ebx_127, out ebp_133, out esi_167, out edi_121) : word32)
+	T_493 (in Mem174[esp_183 + 0x00000000:word32] : word32)
+	T_501 (in Mem174[esi_167 + 0x00000000:word32] : word32)
+	T_504 (in Mem197[esp_183 + 0x00000000:word32] : word32)
+	T_510 (in Mem197[esp_198 + 0x00000000:word32] : word32)
+	T_778 (in 0x00 : byte)
+	T_991 (in Mem20[esp_14 - 8 + 0x00000000:word32] : word32)
+	T_996 (in Mem23[esp_14 - 12 + 0x00000000:word32] : word32)
+Eq_149: (union "Eq_149" (int8 u0) ((ptr32 Eq_1212) u1))
 	T_149 (in esp_20 : Eq_149)
 	T_150 (in <invalid> : void)
 	T_157 (in esp_36 : Eq_149)
@@ -89,9 +89,9 @@ Eq_149: (union "Eq_149" (int8 u0) ((ptr32 Eq_1218) u1))
 	T_387 (in esp_138 : Eq_149)
 	T_417 (in Top_159 : Eq_149)
 	T_418 (in esp_158 : Eq_149)
-	T_475 (in Top_254 : Eq_149)
-	T_492 (in esp_183 : Eq_149)
-	T_696 (in esp_14 : Eq_149)
+	T_473 (in Top_254 : Eq_149)
+	T_490 (in esp_183 : Eq_149)
+	T_690 (in esp_14 : Eq_149)
 Eq_158: (fn byte (word32, word32))
 	T_158 (in fn0040146F : ptr32)
 	T_159 (in signature of fn0040146F : void)
@@ -104,7 +104,7 @@ Eq_220: (fn void (word32))
 Eq_227: (struct "Eq_227" (FFFFFFFC ptr32 ptrFFFFFFFC))
 	T_227 (in esp_297 : (ptr32 Eq_227))
 	T_256 (in esp_84 + 4 : word32)
-	T_557 (in esp_284 + 4 : word32)
+	T_555 (in esp_284 + 4 : word32)
 Eq_245: PVFV
 	T_245 (in 0x004020F0 : word32)
 	T_248 (in Mem85[esp_84 + 0x00000000:word32] : word32)
@@ -129,7 +129,7 @@ Eq_283: PVFV
 Eq_303: (fn ptr32 ((ptr32 Eq_60), ptr32, ptr32, ptr32, ptr32))
 	T_303 (in fn004019C6 : ptr32)
 	T_304 (in signature of fn004019C6 : void)
-	T_772 (in fn004019C6 : ptr32)
+	T_766 (in fn004019C6 : ptr32)
 Eq_331: (fn void (Eq_139))
 	T_331 (in fn004015C9 : ptr32)
 	T_332 (in signature of fn004015C9 : void)
@@ -142,206 +142,206 @@ Eq_357: (fn Eq_139 ())
 Eq_370: (fn Eq_139 (word32, Eq_139, Eq_139, ptr32, ptr32, ptr32, ptr32, ptr32))
 	T_370 (in fn0040153F : ptr32)
 	T_371 (in signature of fn0040153F : void)
-	T_485 (in fn0040153F : ptr32)
+	T_483 (in fn0040153F : ptr32)
 Eq_414: (fn void ())
 	T_414 (in fn00401972 : ptr32)
 	T_415 (in signature of fn00401972 : void)
 Eq_461: (fn Eq_131 (word32, word32, (ptr32 Eq_60), (ptr32 word32)))
 	T_461 (in fn00401040 : ptr32)
 	T_462 (in signature of fn00401040 : void)
-Eq_468: (fn word32 (Eq_470))
-	T_468 (in fn0040188B : ptr32)
-	T_469 (in signature of fn0040188B : void)
-Eq_470: HMODULE
-	T_470 (in ecxOut : Eq_470)
-	T_471 (in out ecx_263 : ptr32)
-	T_935 (in eax_12 : Eq_470)
-	T_940 (in GetModuleHandleW(null) : HMODULE)
-	T_941 (in ecx_20 : Eq_470)
-	T_942 (in 0x00000000 : word32)
-	T_944 (in 0x00005A4D : word32)
-	T_955 (in Mem5[eax_12 + 0x0000003C:word32] + eax_12 : word32)
-	T_961 (in 0x0000010B : word32)
-	T_979 (in 0x0000010B : word32)
-Eq_522: (fn void (int32))
-	T_522 (in exit : ptr32)
-	T_523 (in signature of exit : void)
-Eq_533: (union "Eq_533" (byte u0) (word32 u1))
-	T_533 (in 0x00000000 : word32)
-	T_536 (in Mem285[esp_284 + 0x00000000:word32] : word32)
-	T_545 (in bArg08 : Eq_533)
-	T_548 (in Mem287[esp_284 + 0x00000000:byte] : byte)
-	T_797 (in 0x00 : byte)
-Eq_543: (fn void (Eq_533))
-	T_543 (in fn004015E6 : ptr32)
-	T_544 (in signature of fn004015E6 : void)
-Eq_560: (struct "Eq_560" 0028 (8 up32 dw0008) (C up32 dw000C))
-	T_560 (in eax : (ptr32 Eq_560))
-	T_563 (in edxOut : (ptr32 Eq_560))
-	T_564 (in eax_32 : (ptr32 Eq_560))
-	T_570 (in edx_16 : (ptr32 Eq_560))
-	T_577 (in ecx_13 + 0x00000018 + (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
-	T_578 (in esi_19 : (ptr32 Eq_560))
-	T_585 (in (word32) Mem11[ecx_13 + 0x00000006:word16] *s 0x00000028 + edx_16 : word32)
-	T_587 (in 0x00000000 : word32)
-	T_589 (in edx_16 + 0x00000028 : word32)
-	T_751 (in out edx : ptr32)
-Eq_561: (struct "Eq_561" (3C word32 dw003C))
-	T_561 (in dwArg04 : (ptr32 Eq_561))
-	T_744 (in Mem40[esp_14 - 8 + 0x00000000:word32] : word32)
-Eq_565: (struct "Eq_565" (6 word16 w0006) (14 word16 w0014))
-	T_565 (in ecx_13 : (ptr32 Eq_565))
-	T_569 (in Mem11[dwArg04 + 0x0000003C:word32] + dwArg04 : word32)
-Eq_605: (fn word32 ())
-	T_605 (in fn00401B98 : ptr32)
-	T_606 (in signature of fn00401B98 : void)
-	T_780 (in fn00401B98 : ptr32)
-Eq_611: (segment "Eq_611" (18 (ptr32 Eq_613) ptr0018))
-	T_611 (in fs : selector)
-Eq_613: (struct "Eq_613" (4 ptr32 ptr0004))
-	T_613 (in Mem0[fs:0x00000018:word32] : word32)
-Eq_621: (fn void ())
-	T_621 (in __lock : ptr32)
-	T_622 (in signature of __lock : void)
-Eq_625: (fn bool (word32, ptr32, word32, word32))
-	T_625 (in __cmpxchg : ptr32)
-	T_626 (in signature of __cmpxchg : void)
-Eq_648: (fn void (word32))
-	T_648 (in fn004019FE : ptr32)
-	T_649 (in signature of fn004019FE : void)
-Eq_653: (fn byte ())
-	T_653 (in fn00401C46 : ptr32)
-	T_654 (in signature of fn00401C46 : void)
-	T_664 (in fn00401C46 : ptr32)
-	T_674 (in fn00401C46 : ptr32)
-	T_793 (in fn00401C46 : ptr32)
-	T_795 (in fn00401C46 : ptr32)
-Eq_677: (struct "Eq_677" (24 int32 dw0024) (400000 word32 dw400000) (400018 word16 w400018))
-	T_677 (in eax : (ptr32 Eq_677))
-	T_678 (in eax_81 : (ptr32 Eq_677))
-	T_710 (in DPB(eax_22, 0x00, 0) : word32)
-	T_767 (in DPB(eax_22, 0x01, 0) : word32)
-Eq_697: (struct "Eq_697" (24 int32 dw0024) (400000 word32 dw400000) (400018 word16 w400018))
-	T_697 (in eax_22 : (ptr32 Eq_697))
-	T_698 (in 0x00005A4D : word32)
-	T_712 (in Mem20[0x0040003C:word32] : word32)
-	T_752 (in fn004013F6(*(esp_14 - 8), *(esp_14 - 4), out edx) : word32)
-	T_753 (in 0x00000000 : word32)
-Eq_726: (union "Eq_726" (ui32 u0) (ptr32 u1))
-	T_726 (in 0x00400000 : ptr32)
-Eq_739: (fn (ptr32 Eq_697) ((ptr32 Eq_561), up32, (ptr32 Eq_560)))
-	T_739 (in fn004013F6 : ptr32)
-	T_740 (in signature of fn004013F6 : void)
-Eq_804: (fn void (Eq_806))
-	T_804 (in GetSystemTimeAsFileTime : ptr32)
-	T_805 (in signature of GetSystemTimeAsFileTime : void)
-Eq_806: LPFILETIME
-	T_806 (in lpSystemTimeAsFileTime : LPFILETIME)
-	T_809 (in fp - 0x00000010 : word32)
-Eq_819: (fn Eq_131 ())
-	T_819 (in GetCurrentThreadId : ptr32)
-	T_820 (in signature of GetCurrentThreadId : void)
-Eq_823: (fn Eq_131 ())
-	T_823 (in GetCurrentProcessId : ptr32)
-	T_824 (in signature of GetCurrentProcessId : void)
-Eq_827: (fn Eq_832 ((ptr32 Eq_829)))
-	T_827 (in QueryPerformanceCounter : ptr32)
-	T_828 (in signature of QueryPerformanceCounter : void)
-Eq_829: LARGE_INTEGER
-	T_829 (in lpPerformanceCount : (ptr32 LARGE_INTEGER))
-	T_831 (in fp - 0x00000018 : word32)
-Eq_832: BOOL
-	T_832 (in QueryPerformanceCounter(fp - 0x00000018) : BOOL)
-	T_873 (in IsProcessorFeaturePresent(0x00000017) : BOOL)
-	T_874 (in 0x00000000 : word32)
-	T_900 (in IsDebuggerPresent() : BOOL)
-	T_901 (in 0x00000001 : word32)
-	T_1057 (in IsProcessorFeaturePresent(0x0000000A) : BOOL)
-	T_1058 (in 0x00000000 : word32)
-Eq_869: (fn Eq_832 (Eq_131))
-	T_869 (in IsProcessorFeaturePresent : ptr32)
-	T_870 (in signature of IsProcessorFeaturePresent : void)
-	T_1055 (in IsProcessorFeaturePresent : ptr32)
-Eq_879: (fn (ptr32 void) ((ptr32 void), int32, Eq_883))
-	T_879 (in memset : ptr32)
-	T_880 (in signature of memset : void)
-	T_890 (in memset : ptr32)
-Eq_883: size_t
-	T_883 (in _Size : size_t)
-	T_888 (in 0x000002CC : word32)
-	T_894 (in 0x00000050 : word32)
-Eq_898: (fn Eq_832 ())
-	T_898 (in IsDebuggerPresent : ptr32)
-	T_899 (in signature of IsDebuggerPresent : void)
-Eq_902: (union "Eq_902" (bool u0) (byte u1))
-	T_902 (in IsDebuggerPresent() == 0x00000001 : bool)
-Eq_904: (fn Eq_906 (Eq_906))
-	T_904 (in SetUnhandledExceptionFilter : ptr32)
-	T_905 (in signature of SetUnhandledExceptionFilter : void)
-Eq_906: LPTOP_LEVEL_EXCEPTION_FILTER
-	T_906 (in lpTopLevelExceptionFilter : LPTOP_LEVEL_EXCEPTION_FILTER)
-	T_907 (in 0x00000000 : word32)
-	T_908 (in SetUnhandledExceptionFilter(null) : LPTOP_LEVEL_EXCEPTION_FILTER)
-Eq_909: (fn Eq_914 ((ptr32 Eq_911)))
-	T_909 (in UnhandledExceptionFilter : ptr32)
-	T_910 (in signature of UnhandledExceptionFilter : void)
-Eq_911: (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord))
-	T_911 (in ExceptionInfo : (ptr32 (struct "_EXCEPTION_POINTERS")))
-	T_913 (in fp - 0x0000000C : word32)
-Eq_914: LONG
-	T_914 (in UnhandledExceptionFilter(fp - 0x0000000C) : LONG)
-	T_915 (in 0x00000000 : word32)
-Eq_917: (fn void (word32))
-	T_917 (in __fastfail : ptr32)
-	T_918 (in signature of __fastfail : void)
-Eq_929: (union "Eq_929" (bool u0) (ui32 u1))
-	T_929 (in -(word32) (bl_90 + 0x01) == 0x00000000 : bool)
-Eq_934: HMODULE
-	T_934 (in eax : Eq_934)
-	T_951 (in DPB(eax_12, 0x00, 0) : word32)
-	T_972 (in eax_38 : Eq_934)
-	T_978 (in DPB(eax_12, Mem5[eax_12 + 0x000000E8:word32] != 0x00000000, 0) : word32)
-Eq_936: (fn Eq_470 (Eq_938))
-	T_936 (in GetModuleHandleW : ptr32)
-	T_937 (in signature of GetModuleHandleW : void)
-Eq_938: LPCWSTR
-	T_938 (in lpModuleName : LPCWSTR)
-	T_939 (in 0x00000000 : word32)
-Eq_947: (union "Eq_947" (int32 u0) (word16 u1))
-	T_947 (in Mem5[eax_12 + 0x00000000:word16] : word16)
-	T_948 (in 0x5A4D : word16)
-Eq_953: HMODULE
-	T_953 (in eax_12 + 0x0000003C : word32)
-Eq_963: HMODULE
-	T_963 (in eax_12 + 0x00000018 : word32)
-Eq_964: (union "Eq_964" (int32 u0) (word16 u1))
-	T_964 (in Mem5[eax_12 + 0x00000018:word16] : word16)
-	T_965 (in 0x010B : word16)
+Eq_466: (fn word32 (Eq_468))
+	T_466 (in fn0040188B : ptr32)
+	T_467 (in signature of fn0040188B : void)
+Eq_468: HMODULE
+	T_468 (in ecxOut : Eq_468)
+	T_469 (in out ecx_263 : ptr32)
+	T_929 (in eax_12 : Eq_468)
+	T_934 (in GetModuleHandleW(null) : HMODULE)
+	T_935 (in ecx_20 : Eq_468)
+	T_936 (in 0x00000000 : word32)
+	T_938 (in 0x00005A4D : word32)
+	T_949 (in Mem5[eax_12 + 0x0000003C:word32] + eax_12 : word32)
+	T_955 (in 0x0000010B : word32)
+	T_973 (in 0x0000010B : word32)
+Eq_520: (fn void (int32))
+	T_520 (in exit : ptr32)
+	T_521 (in signature of exit : void)
+Eq_531: (union "Eq_531" (byte u0) (word32 u1))
+	T_531 (in 0x00000000 : word32)
+	T_534 (in Mem285[esp_284 + 0x00000000:word32] : word32)
+	T_543 (in bArg08 : Eq_531)
+	T_546 (in Mem287[esp_284 + 0x00000000:byte] : byte)
+	T_791 (in 0x00 : byte)
+Eq_541: (fn void (Eq_531))
+	T_541 (in fn004015E6 : ptr32)
+	T_542 (in signature of fn004015E6 : void)
+Eq_558: (struct "Eq_558" 0028 (8 up32 dw0008) (C up32 dw000C))
+	T_558 (in eax : (ptr32 Eq_558))
+	T_561 (in edxOut : (ptr32 Eq_558))
+	T_562 (in eax_32 : (ptr32 Eq_558))
+	T_568 (in edx_16 : (ptr32 Eq_558))
+	T_575 (in ecx_13 + 0x00000018 + (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
+	T_576 (in esi_19 : (ptr32 Eq_558))
+	T_583 (in (word32) Mem11[ecx_13 + 0x00000006:word16] *s 0x00000028 + edx_16 : word32)
+	T_585 (in 0x00000000 : word32)
+	T_587 (in edx_16 + 0x00000028 : word32)
+	T_745 (in out edx : ptr32)
+Eq_559: (struct "Eq_559" (3C word32 dw003C))
+	T_559 (in dwArg04 : (ptr32 Eq_559))
+	T_738 (in Mem40[esp_14 - 8 + 0x00000000:word32] : word32)
+Eq_563: (struct "Eq_563" (6 word16 w0006) (14 word16 w0014))
+	T_563 (in ecx_13 : (ptr32 Eq_563))
+	T_567 (in Mem11[dwArg04 + 0x0000003C:word32] + dwArg04 : word32)
+Eq_603: (fn word32 ())
+	T_603 (in fn00401B98 : ptr32)
+	T_604 (in signature of fn00401B98 : void)
+	T_774 (in fn00401B98 : ptr32)
+Eq_609: (segment "Eq_609" (18 (ptr32 Eq_611) ptr0018))
+	T_609 (in fs : selector)
+Eq_611: (struct "Eq_611" (4 ptr32 ptr0004))
+	T_611 (in Mem0[fs:0x00000018:word32] : word32)
+Eq_619: (fn void ())
+	T_619 (in __lock : ptr32)
+	T_620 (in signature of __lock : void)
+Eq_623: (fn bool (word32, ptr32, word32, word32))
+	T_623 (in __cmpxchg : ptr32)
+	T_624 (in signature of __cmpxchg : void)
+Eq_646: (fn void (word32))
+	T_646 (in fn004019FE : ptr32)
+	T_647 (in signature of fn004019FE : void)
+Eq_650: (fn byte ())
+	T_650 (in fn00401C46 : ptr32)
+	T_651 (in signature of fn00401C46 : void)
+	T_658 (in fn00401C46 : ptr32)
+	T_669 (in fn00401C46 : ptr32)
+	T_787 (in fn00401C46 : ptr32)
+	T_789 (in fn00401C46 : ptr32)
+Eq_671: (struct "Eq_671" (24 int32 dw0024) (400000 word32 dw400000) (400018 word16 w400018))
+	T_671 (in eax : (ptr32 Eq_671))
+	T_672 (in eax_81 : (ptr32 Eq_671))
+	T_704 (in DPB(eax_22, 0x00, 0) : word32)
+	T_761 (in DPB(eax_22, 0x01, 0) : word32)
+Eq_691: (struct "Eq_691" (24 int32 dw0024) (400000 word32 dw400000) (400018 word16 w400018))
+	T_691 (in eax_22 : (ptr32 Eq_691))
+	T_692 (in 0x00005A4D : word32)
+	T_706 (in Mem20[0x0040003C:word32] : word32)
+	T_746 (in fn004013F6(*(esp_14 - 8), *(esp_14 - 4), out edx) : word32)
+	T_747 (in 0x00000000 : word32)
+Eq_720: (union "Eq_720" (ui32 u0) (ptr32 u1))
+	T_720 (in 0x00400000 : ptr32)
+Eq_733: (fn (ptr32 Eq_691) ((ptr32 Eq_559), up32, (ptr32 Eq_558)))
+	T_733 (in fn004013F6 : ptr32)
+	T_734 (in signature of fn004013F6 : void)
+Eq_798: (fn void (Eq_800))
+	T_798 (in GetSystemTimeAsFileTime : ptr32)
+	T_799 (in signature of GetSystemTimeAsFileTime : void)
+Eq_800: LPFILETIME
+	T_800 (in lpSystemTimeAsFileTime : LPFILETIME)
+	T_803 (in fp - 0x00000010 : word32)
+Eq_813: (fn Eq_131 ())
+	T_813 (in GetCurrentThreadId : ptr32)
+	T_814 (in signature of GetCurrentThreadId : void)
+Eq_817: (fn Eq_131 ())
+	T_817 (in GetCurrentProcessId : ptr32)
+	T_818 (in signature of GetCurrentProcessId : void)
+Eq_821: (fn Eq_826 ((ptr32 Eq_823)))
+	T_821 (in QueryPerformanceCounter : ptr32)
+	T_822 (in signature of QueryPerformanceCounter : void)
+Eq_823: LARGE_INTEGER
+	T_823 (in lpPerformanceCount : (ptr32 LARGE_INTEGER))
+	T_825 (in fp - 0x00000018 : word32)
+Eq_826: BOOL
+	T_826 (in QueryPerformanceCounter(fp - 0x00000018) : BOOL)
+	T_867 (in IsProcessorFeaturePresent(0x00000017) : BOOL)
+	T_868 (in 0x00000000 : word32)
+	T_894 (in IsDebuggerPresent() : BOOL)
+	T_895 (in 0x00000001 : word32)
+	T_1051 (in IsProcessorFeaturePresent(0x0000000A) : BOOL)
+	T_1052 (in 0x00000000 : word32)
+Eq_863: (fn Eq_826 (Eq_131))
+	T_863 (in IsProcessorFeaturePresent : ptr32)
+	T_864 (in signature of IsProcessorFeaturePresent : void)
+	T_1049 (in IsProcessorFeaturePresent : ptr32)
+Eq_873: (fn (ptr32 void) ((ptr32 void), int32, Eq_877))
+	T_873 (in memset : ptr32)
+	T_874 (in signature of memset : void)
+	T_884 (in memset : ptr32)
+Eq_877: size_t
+	T_877 (in _Size : size_t)
+	T_882 (in 0x000002CC : word32)
+	T_888 (in 0x00000050 : word32)
+Eq_892: (fn Eq_826 ())
+	T_892 (in IsDebuggerPresent : ptr32)
+	T_893 (in signature of IsDebuggerPresent : void)
+Eq_896: (union "Eq_896" (bool u0) (byte u1))
+	T_896 (in IsDebuggerPresent() == 0x00000001 : bool)
+Eq_898: (fn Eq_900 (Eq_900))
+	T_898 (in SetUnhandledExceptionFilter : ptr32)
+	T_899 (in signature of SetUnhandledExceptionFilter : void)
+Eq_900: LPTOP_LEVEL_EXCEPTION_FILTER
+	T_900 (in lpTopLevelExceptionFilter : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_901 (in 0x00000000 : word32)
+	T_902 (in SetUnhandledExceptionFilter(null) : LPTOP_LEVEL_EXCEPTION_FILTER)
+Eq_903: (fn Eq_908 ((ptr32 Eq_905)))
+	T_903 (in UnhandledExceptionFilter : ptr32)
+	T_904 (in signature of UnhandledExceptionFilter : void)
+Eq_905: (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord))
+	T_905 (in ExceptionInfo : (ptr32 (struct "_EXCEPTION_POINTERS")))
+	T_907 (in fp - 0x0000000C : word32)
+Eq_908: LONG
+	T_908 (in UnhandledExceptionFilter(fp - 0x0000000C) : LONG)
+	T_909 (in 0x00000000 : word32)
+Eq_911: (fn void (word32))
+	T_911 (in __fastfail : ptr32)
+	T_912 (in signature of __fastfail : void)
+Eq_923: (union "Eq_923" (bool u0) (ui32 u1))
+	T_923 (in -(word32) (bl_90 + 0x01) == 0x00000000 : bool)
+Eq_928: HMODULE
+	T_928 (in eax : Eq_928)
+	T_945 (in DPB(eax_12, 0x00, 0) : word32)
+	T_966 (in eax_38 : Eq_928)
+	T_972 (in DPB(eax_12, Mem5[eax_12 + 0x000000E8:word32] != 0x00000000, 0) : word32)
+Eq_930: (fn Eq_468 (Eq_932))
+	T_930 (in GetModuleHandleW : ptr32)
+	T_931 (in signature of GetModuleHandleW : void)
+Eq_932: LPCWSTR
+	T_932 (in lpModuleName : LPCWSTR)
+	T_933 (in 0x00000000 : word32)
+Eq_941: (union "Eq_941" (int32 u0) (word16 u1))
+	T_941 (in Mem5[eax_12 + 0x00000000:word16] : word16)
+	T_942 (in 0x5A4D : word16)
+Eq_947: HMODULE
+	T_947 (in eax_12 + 0x0000003C : word32)
+Eq_957: HMODULE
+	T_957 (in eax_12 + 0x00000018 : word32)
+Eq_958: (union "Eq_958" (int32 u0) (word16 u1))
+	T_958 (in Mem5[eax_12 + 0x00000018:word16] : word16)
+	T_959 (in 0x010B : word16)
+Eq_962: HMODULE
+	T_962 (in eax_12 + 0x00000074 : word32)
+Eq_963: (union "Eq_963" (int32 u0) (up32 u1))
+	T_963 (in Mem5[eax_12 + 0x00000074:word32] : word32)
+	T_964 (in 0x0000000E : word32)
 Eq_968: HMODULE
-	T_968 (in eax_12 + 0x00000074 : word32)
-Eq_969: (union "Eq_969" (int32 u0) (up32 u1))
-	T_969 (in Mem5[eax_12 + 0x00000074:word32] : word32)
-	T_970 (in 0x0000000E : word32)
-Eq_974: HMODULE
-	T_974 (in eax_12 + 0x000000E8 : word32)
-Eq_1020: (segment "Eq_1020" (0 ptr32 ptr0000))
-	T_1020 (in fs : selector)
-Eq_1030: (segment "Eq_1030" (0 word32 dw0000))
-	T_1030 (in fs : selector)
-Eq_1031: (union "Eq_1031" (ptr32 u0) ((memptr (ptr32 Eq_1030) word32) u1))
-	T_1031 (in 0x00000000 : ptr32)
-Eq_1070: (fn void (word32, word32, (ptr32 word32), (ptr32 word32), (ptr32 word32), (ptr32 word32)))
-	T_1070 (in __cpuid : ptr32)
-	T_1071 (in signature of __cpuid : void)
-	T_1088 (in __cpuid : ptr32)
-	T_1142 (in __cpuid : ptr32)
-Eq_1176: (fn word64 (word32))
-	T_1176 (in __xgetbv : ptr32)
-	T_1177 (in signature of __xgetbv : void)
-Eq_1217: (struct "Eq_1217" (0 Eq_139 t0000))
-	T_1217
-Eq_1218: (struct "Eq_1218" 0004 (FFFFFFFC ptr32 ptrFFFFFFFC) (0 word32 dw0000))
-	T_1218
+	T_968 (in eax_12 + 0x000000E8 : word32)
+Eq_1014: (segment "Eq_1014" (0 ptr32 ptr0000))
+	T_1014 (in fs : selector)
+Eq_1024: (segment "Eq_1024" (0 word32 dw0000))
+	T_1024 (in fs : selector)
+Eq_1025: (union "Eq_1025" (ptr32 u0) ((memptr (ptr32 Eq_1024) word32) u1))
+	T_1025 (in 0x00000000 : ptr32)
+Eq_1064: (fn void (word32, word32, (ptr32 word32), (ptr32 word32), (ptr32 word32), (ptr32 word32)))
+	T_1064 (in __cpuid : ptr32)
+	T_1065 (in signature of __cpuid : void)
+	T_1082 (in __cpuid : ptr32)
+	T_1136 (in __cpuid : ptr32)
+Eq_1170: (fn word64 (word32))
+	T_1170 (in __xgetbv : ptr32)
+	T_1171 (in signature of __xgetbv : void)
+Eq_1211: (struct "Eq_1211" (0 Eq_139 t0000))
+	T_1211
+Eq_1212: (struct "Eq_1212" 0004 (FFFFFFFC ptr32 ptrFFFFFFFC) (0 word32 dw0000))
+	T_1212
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -1782,7 +1782,7 @@ T_359: (in fn00401767() : word32)
 T_360: (in esi_167 : Eq_139)
   Class: Eq_139
   DataType: Eq_139
-  OrigDataType: (ptr32 (struct (0 T_503 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_501 t0000)))
 T_361: (in 0x00000000 : word32)
   Class: Eq_361
   DataType: word32
@@ -2195,1093 +2195,1093 @@ T_463: (in fn00401040(eax_240, ecx_239, ebp_133, eax_233) : word32)
   Class: Eq_131
   DataType: Eq_131
   OrigDataType: word32
-T_464: (in bl_272 : byte)
+T_464: (in ecx_263 : word32)
   Class: Eq_464
-  DataType: byte
-  OrigDataType: byte
-T_465: (in (byte) ebx_127 : byte)
-  Class: Eq_464
-  DataType: byte
-  OrigDataType: byte
-T_466: (in ecx_263 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_465: (in eax_262 : word32)
+  Class: Eq_465
+  DataType: word32
+  OrigDataType: word32
+T_466: (in fn0040188B : ptr32)
   Class: Eq_466
-  DataType: word32
-  OrigDataType: word32
-T_467: (in eax_262 : word32)
-  Class: Eq_467
-  DataType: word32
-  OrigDataType: word32
-T_468: (in fn0040188B : ptr32)
-  Class: Eq_468
-  DataType: (ptr32 Eq_468)
-  OrigDataType: (ptr32 (fn T_472 (T_471)))
-T_469: (in signature of fn0040188B : void)
-  Class: Eq_468
-  DataType: (ptr32 Eq_468)
+  DataType: (ptr32 Eq_466)
+  OrigDataType: (ptr32 (fn T_470 (T_469)))
+T_467: (in signature of fn0040188B : void)
+  Class: Eq_466
+  DataType: (ptr32 Eq_466)
   OrigDataType: 
-T_470: (in ecxOut : Eq_470)
-  Class: Eq_470
-  DataType: Eq_470
+T_468: (in ecxOut : Eq_468)
+  Class: Eq_468
+  DataType: Eq_468
   OrigDataType: ptr32
-T_471: (in out ecx_263 : ptr32)
-  Class: Eq_470
-  DataType: Eq_470
+T_469: (in out ecx_263 : ptr32)
+  Class: Eq_468
+  DataType: Eq_468
   OrigDataType: ptr32
-T_472: (in fn0040188B(out ecx_263) : word32)
-  Class: Eq_467
+T_470: (in fn0040188B(out ecx_263) : word32)
+  Class: Eq_465
   DataType: word32
   OrigDataType: word32
-T_473: (in ebx_279 : word32)
-  Class: Eq_473
-  DataType: word32
-  OrigDataType: word32
-T_474: (in DPB(ebx_127, bl_272, 0) : word32)
-  Class: Eq_473
-  DataType: word32
-  OrigDataType: word32
-T_475: (in Top_254 : Eq_149)
+T_471: (in bl_272 : byte)
+  Class: Eq_471
+  DataType: byte
+  OrigDataType: byte
+T_472: (in (byte) ebx_127 : byte)
+  Class: Eq_471
+  DataType: byte
+  OrigDataType: byte
+T_473: (in Top_254 : Eq_149)
   Class: Eq_149
   DataType: Eq_149
   OrigDataType: int8
-T_476: (in esp_259 : ptr32)
+T_474: (in esp_259 : ptr32)
   Class: Eq_433
   DataType: ptr32
   OrigDataType: ptr32
-T_477: (in (byte) eax_262 : byte)
-  Class: Eq_477
+T_475: (in (byte) eax_262 : byte)
+  Class: Eq_475
   DataType: byte
   OrigDataType: byte
-T_478: (in 0x00 : byte)
-  Class: Eq_477
+T_476: (in 0x00 : byte)
+  Class: Eq_475
   DataType: byte
   OrigDataType: byte
-T_479: (in (byte) eax_262 != 0x00 : bool)
-  Class: Eq_479
+T_477: (in (byte) eax_262 != 0x00 : bool)
+  Class: Eq_477
   DataType: bool
   OrigDataType: bool
-T_480: (in 4 : int32)
-  Class: Eq_480
+T_478: (in 4 : int32)
+  Class: Eq_478
   DataType: int32
   OrigDataType: int32
-T_481: (in esp_118 - 4 : word32)
-  Class: Eq_481
+T_479: (in esp_118 - 4 : word32)
+  Class: Eq_479
   DataType: (ptr32 Eq_139)
-  OrigDataType: (ptr32 (struct (0 T_484 t0000)))
-T_482: (in 0x00000000 : word32)
-  Class: Eq_482
+  OrigDataType: (ptr32 (struct (0 T_482 t0000)))
+T_480: (in 0x00000000 : word32)
+  Class: Eq_480
   DataType: word32
   OrigDataType: word32
-T_483: (in esp_118 - 4 + 0x00000000 : word32)
-  Class: Eq_483
+T_481: (in esp_118 - 4 + 0x00000000 : word32)
+  Class: Eq_481
   DataType: ptr32
   OrigDataType: ptr32
-T_484: (in Mem174[esp_118 - 4 + 0x00000000:word32] : word32)
+T_482: (in Mem174[esp_118 - 4 + 0x00000000:word32] : word32)
   Class: Eq_139
   DataType: Eq_139
   OrigDataType: word32
-T_485: (in fn0040153F : ptr32)
+T_483: (in fn0040153F : ptr32)
   Class: Eq_370
   DataType: (ptr32 Eq_370)
-  OrigDataType: (ptr32 (fn T_491 (T_206, T_356, T_349, T_486, T_487, T_488, T_489, T_490)))
-T_486: (in out edx_139 : ptr32)
+  OrigDataType: (ptr32 (fn T_489 (T_206, T_356, T_349, T_484, T_485, T_486, T_487, T_488)))
+T_484: (in out edx_139 : ptr32)
   Class: Eq_375
   DataType: ptr32
   OrigDataType: ptr32
-T_487: (in out ebx_127 : ptr32)
+T_485: (in out ebx_127 : ptr32)
   Class: Eq_319
   DataType: ptr32
   OrigDataType: ptr32
-T_488: (in out ebp_133 : ptr32)
+T_486: (in out ebp_133 : ptr32)
   Class: Eq_377
   DataType: ptr32
   OrigDataType: ptr32
-T_489: (in out esi_167 : ptr32)
+T_487: (in out esi_167 : ptr32)
   Class: Eq_378
   DataType: ptr32
   OrigDataType: ptr32
-T_490: (in out edi_121 : ptr32)
+T_488: (in out edi_121 : ptr32)
   Class: Eq_379
   DataType: ptr32
   OrigDataType: ptr32
-T_491: (in fn0040153F(ebx_127, eax_166, edi_121, out edx_139, out ebx_127, out ebp_133, out esi_167, out edi_121) : word32)
+T_489: (in fn0040153F(ebx_127, eax_166, edi_121, out edx_139, out ebx_127, out ebp_133, out esi_167, out edi_121) : word32)
   Class: Eq_139
   DataType: Eq_139
   OrigDataType: word32
-T_492: (in esp_183 : Eq_149)
+T_490: (in esp_183 : Eq_149)
   Class: Eq_149
   DataType: Eq_149
   OrigDataType: (ptr32 (struct (0 T_139 t0000)))
-T_493: (in 0x00000000 : word32)
-  Class: Eq_493
+T_491: (in 0x00000000 : word32)
+  Class: Eq_491
   DataType: word32
   OrigDataType: word32
-T_494: (in esp_183 + 0x00000000 : word32)
-  Class: Eq_494
+T_492: (in esp_183 + 0x00000000 : word32)
+  Class: Eq_492
   DataType: word32
   OrigDataType: word32
-T_495: (in Mem174[esp_183 + 0x00000000:word32] : word32)
+T_493: (in Mem174[esp_183 + 0x00000000:word32] : word32)
   Class: Eq_139
   DataType: Eq_139
   OrigDataType: word32
-T_496: (in 4 : int32)
-  Class: Eq_496
+T_494: (in 4 : int32)
+  Class: Eq_494
   DataType: int32
   OrigDataType: int32
-T_497: (in esp_183 + 4 : word32)
+T_495: (in esp_183 + 4 : word32)
   Class: Eq_342
   DataType: ptr32
   OrigDataType: ptr32
-T_498: (in (byte) eax_166 : byte)
-  Class: Eq_498
+T_496: (in (byte) eax_166 : byte)
+  Class: Eq_496
   DataType: byte
   OrigDataType: byte
-T_499: (in 0x00 : byte)
-  Class: Eq_498
+T_497: (in 0x00 : byte)
+  Class: Eq_496
   DataType: byte
   OrigDataType: byte
-T_500: (in (byte) eax_166 == 0x00 : bool)
-  Class: Eq_500
+T_498: (in (byte) eax_166 == 0x00 : bool)
+  Class: Eq_498
   DataType: bool
   OrigDataType: bool
-T_501: (in 0x00000000 : word32)
-  Class: Eq_501
+T_499: (in 0x00000000 : word32)
+  Class: Eq_499
   DataType: word32
   OrigDataType: word32
-T_502: (in esi_167 + 0x00000000 : word32)
+T_500: (in esi_167 + 0x00000000 : word32)
+  Class: Eq_500
+  DataType: word32
+  OrigDataType: word32
+T_501: (in Mem174[esi_167 + 0x00000000:word32] : word32)
+  Class: Eq_139
+  DataType: Eq_139
+  OrigDataType: word32
+T_502: (in 0x00000000 : word32)
   Class: Eq_502
   DataType: word32
   OrigDataType: word32
-T_503: (in Mem174[esi_167 + 0x00000000:word32] : word32)
-  Class: Eq_139
-  DataType: Eq_139
-  OrigDataType: word32
-T_504: (in 0x00000000 : word32)
-  Class: Eq_504
-  DataType: word32
-  OrigDataType: word32
-T_505: (in esp_183 + 0x00000000 : word32)
-  Class: Eq_505
+T_503: (in esp_183 + 0x00000000 : word32)
+  Class: Eq_503
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 word32)
-T_506: (in Mem197[esp_183 + 0x00000000:word32] : word32)
+T_504: (in Mem197[esp_183 + 0x00000000:word32] : word32)
   Class: Eq_139
   DataType: Eq_149
   OrigDataType: Eq_139
-T_507: (in esp_198 : (ptr32 Eq_139))
-  Class: Eq_507
+T_505: (in esp_198 : (ptr32 Eq_139))
+  Class: Eq_505
   DataType: (ptr32 Eq_139)
-  OrigDataType: (ptr32 (struct (0 T_512 t0000)))
-T_508: (in register_thread_local_exe_atexit_callback : ptr32)
-  Class: Eq_508
+  OrigDataType: (ptr32 (struct (0 T_510 t0000)))
+T_506: (in register_thread_local_exe_atexit_callback : ptr32)
+  Class: Eq_506
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_509: (in signature of register_thread_local_exe_atexit_callback : void)
-  Class: Eq_509
-  DataType: Eq_509
+T_507: (in signature of register_thread_local_exe_atexit_callback : void)
+  Class: Eq_507
+  DataType: Eq_507
   OrigDataType: 
-T_510: (in 0x00000000 : word32)
-  Class: Eq_510
+T_508: (in 0x00000000 : word32)
+  Class: Eq_508
   DataType: word32
   OrigDataType: word32
-T_511: (in esp_198 + 0x00000000 : word32)
-  Class: Eq_511
+T_509: (in esp_198 + 0x00000000 : word32)
+  Class: Eq_509
   DataType: word32
   OrigDataType: word32
-T_512: (in Mem197[esp_198 + 0x00000000:word32] : word32)
+T_510: (in Mem197[esp_198 + 0x00000000:word32] : word32)
   Class: Eq_139
   DataType: Eq_139
   OrigDataType: word32
-T_513: (in 4 : int32)
-  Class: Eq_513
+T_511: (in 4 : int32)
+  Class: Eq_511
   DataType: int32
   OrigDataType: int32
-T_514: (in esp_198 + 4 : word32)
+T_512: (in esp_198 + 4 : word32)
   Class: Eq_342
   DataType: ptr32
   OrigDataType: ptr32
-T_515: (in 0x00 : byte)
-  Class: Eq_464
+T_513: (in 0x00 : byte)
+  Class: Eq_471
   DataType: byte
   OrigDataType: byte
-T_516: (in bl_272 != 0x00 : bool)
-  Class: Eq_516
+T_514: (in bl_272 != 0x00 : bool)
+  Class: Eq_514
   DataType: bool
   OrigDataType: bool
-T_517: (in 4 : int32)
-  Class: Eq_517
+T_515: (in 4 : int32)
+  Class: Eq_515
   DataType: int32
   OrigDataType: int32
-T_518: (in esp_238 - 4 : word32)
-  Class: Eq_518
+T_516: (in esp_238 - 4 : word32)
+  Class: Eq_516
   DataType: (ptr32 Eq_131)
-  OrigDataType: (ptr32 (struct (0 T_521 t0000)))
-T_519: (in 0x00000000 : word32)
-  Class: Eq_519
+  OrigDataType: (ptr32 (struct (0 T_519 t0000)))
+T_517: (in 0x00000000 : word32)
+  Class: Eq_517
   DataType: word32
   OrigDataType: word32
-T_520: (in esp_238 - 4 + 0x00000000 : word32)
-  Class: Eq_520
+T_518: (in esp_238 - 4 + 0x00000000 : word32)
+  Class: Eq_518
   DataType: ptr32
   OrigDataType: ptr32
-T_521: (in Mem303[esp_238 - 4 + 0x00000000:word32] : word32)
+T_519: (in Mem303[esp_238 - 4 + 0x00000000:word32] : word32)
   Class: Eq_131
   DataType: Eq_131
   OrigDataType: word32
-T_522: (in exit : ptr32)
-  Class: Eq_522
-  DataType: (ptr32 Eq_522)
-  OrigDataType: (ptr32 (fn T_529 (T_528)))
-T_523: (in signature of exit : void)
-  Class: Eq_522
-  DataType: (ptr32 Eq_522)
+T_520: (in exit : ptr32)
+  Class: Eq_520
+  DataType: (ptr32 Eq_520)
+  OrigDataType: (ptr32 (fn T_527 (T_526)))
+T_521: (in signature of exit : void)
+  Class: Eq_520
+  DataType: (ptr32 Eq_520)
   OrigDataType: 
-T_524: (in code : int32)
-  Class: Eq_524
+T_522: (in code : int32)
+  Class: Eq_522
   DataType: int32
   OrigDataType: 
-T_525: (in esp_238 - 4 : word32)
-  Class: Eq_525
+T_523: (in esp_238 - 4 : word32)
+  Class: Eq_523
   DataType: (ptr32 int32)
-  OrigDataType: (ptr32 (struct (0 T_528 t0000)))
-T_526: (in 0x00000000 : word32)
-  Class: Eq_526
+  OrigDataType: (ptr32 (struct (0 T_526 t0000)))
+T_524: (in 0x00000000 : word32)
+  Class: Eq_524
   DataType: word32
   OrigDataType: word32
-T_527: (in esp_238 - 4 + 0x00000000 : word32)
-  Class: Eq_527
+T_525: (in esp_238 - 4 + 0x00000000 : word32)
+  Class: Eq_525
   DataType: ptr32
   OrigDataType: ptr32
-T_528: (in Mem303[esp_238 - 4 + 0x00000000:int32] : int32)
-  Class: Eq_524
+T_526: (in Mem303[esp_238 - 4 + 0x00000000:int32] : int32)
+  Class: Eq_522
   DataType: int32
   OrigDataType: int32
-T_529: (in exit(*(esp_238 - 4)) : void)
-  Class: Eq_529
+T_527: (in exit(*(esp_238 - 4)) : void)
+  Class: Eq_527
   DataType: void
   OrigDataType: void
-T_530: (in esp_284 : (ptr32 Eq_533))
-  Class: Eq_530
-  DataType: (ptr32 Eq_533)
-  OrigDataType: (ptr32 (struct (0 T_533 t0000)))
-T_531: (in 4 : int32)
+T_528: (in esp_284 : (ptr32 Eq_531))
+  Class: Eq_528
+  DataType: (ptr32 Eq_531)
+  OrigDataType: (ptr32 (struct (0 T_531 t0000)))
+T_529: (in 4 : int32)
+  Class: Eq_529
+  DataType: int32
+  OrigDataType: int32
+T_530: (in esp_259 - 4 : word32)
+  Class: Eq_528
+  DataType: (ptr32 Eq_531)
+  OrigDataType: ptr32
+T_531: (in 0x00000000 : word32)
   Class: Eq_531
-  DataType: int32
-  OrigDataType: int32
-T_532: (in esp_259 - 4 : word32)
-  Class: Eq_530
-  DataType: (ptr32 Eq_533)
-  OrigDataType: ptr32
-T_533: (in 0x00000000 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_532: (in 0x00000000 : word32)
+  Class: Eq_532
+  DataType: word32
+  OrigDataType: word32
+T_533: (in esp_284 + 0x00000000 : word32)
   Class: Eq_533
-  DataType: word32
+  DataType: ptr32
+  OrigDataType: ptr32
+T_534: (in Mem285[esp_284 + 0x00000000:word32] : word32)
+  Class: Eq_531
+  DataType: Eq_531
   OrigDataType: word32
-T_534: (in 0x00000000 : word32)
-  Class: Eq_534
-  DataType: word32
-  OrigDataType: word32
-T_535: (in esp_284 + 0x00000000 : word32)
+T_535: (in 0x00000001 : word32)
   Class: Eq_535
-  DataType: ptr32
-  OrigDataType: ptr32
-T_536: (in Mem285[esp_284 + 0x00000000:word32] : word32)
-  Class: Eq_533
-  DataType: Eq_533
-  OrigDataType: word32
-T_537: (in 0x00000001 : word32)
-  Class: Eq_537
   DataType: word32
   OrigDataType: word32
-T_538: (in 4 : int32)
-  Class: Eq_538
+T_536: (in 4 : int32)
+  Class: Eq_536
   DataType: int32
   OrigDataType: int32
-T_539: (in esp_284 - 4 : word32)
-  Class: Eq_539
+T_537: (in esp_284 - 4 : word32)
+  Class: Eq_537
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_542 t0000)))
-T_540: (in 0x00000000 : word32)
-  Class: Eq_540
+  OrigDataType: (ptr32 (struct (0 T_540 t0000)))
+T_538: (in 0x00000000 : word32)
+  Class: Eq_538
   DataType: word32
   OrigDataType: word32
-T_541: (in esp_284 - 4 + 0x00000000 : word32)
-  Class: Eq_541
+T_539: (in esp_284 - 4 + 0x00000000 : word32)
+  Class: Eq_539
   DataType: ptr32
   OrigDataType: ptr32
-T_542: (in Mem287[esp_284 - 4 + 0x00000000:word32] : word32)
-  Class: Eq_537
+T_540: (in Mem287[esp_284 - 4 + 0x00000000:word32] : word32)
+  Class: Eq_535
   DataType: word32
   OrigDataType: word32
-T_543: (in fn004015E6 : ptr32)
-  Class: Eq_543
-  DataType: (ptr32 Eq_543)
-  OrigDataType: (ptr32 (fn T_549 (T_548)))
-T_544: (in signature of fn004015E6 : void)
-  Class: Eq_543
-  DataType: (ptr32 Eq_543)
+T_541: (in fn004015E6 : ptr32)
+  Class: Eq_541
+  DataType: (ptr32 Eq_541)
+  OrigDataType: (ptr32 (fn T_547 (T_546)))
+T_542: (in signature of fn004015E6 : void)
+  Class: Eq_541
+  DataType: (ptr32 Eq_541)
   OrigDataType: 
-T_545: (in bArg08 : Eq_533)
-  Class: Eq_533
-  DataType: Eq_533
+T_543: (in bArg08 : Eq_531)
+  Class: Eq_531
+  DataType: Eq_531
   OrigDataType: byte
-T_546: (in 0x00000000 : word32)
-  Class: Eq_546
+T_544: (in 0x00000000 : word32)
+  Class: Eq_544
   DataType: word32
   OrigDataType: word32
-T_547: (in esp_284 + 0x00000000 : word32)
-  Class: Eq_547
+T_545: (in esp_284 + 0x00000000 : word32)
+  Class: Eq_545
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 word32)
-T_548: (in Mem287[esp_284 + 0x00000000:byte] : byte)
-  Class: Eq_533
-  DataType: Eq_533
+T_546: (in Mem287[esp_284 + 0x00000000:byte] : byte)
+  Class: Eq_531
+  DataType: Eq_531
   OrigDataType: (union (byte u1) (word32 u0))
-T_549: (in fn004015E6(*esp_284) : void)
-  Class: Eq_549
+T_547: (in fn004015E6(*esp_284) : void)
+  Class: Eq_547
   DataType: void
   OrigDataType: void
-T_550: (in 0xFFFFFFFE : word32)
-  Class: Eq_550
+T_548: (in 0xFFFFFFFE : word32)
+  Class: Eq_548
   DataType: word32
   OrigDataType: word32
-T_551: (in 0x00000004 : word32)
-  Class: Eq_551
+T_549: (in 0x00000004 : word32)
+  Class: Eq_549
   DataType: ui32
   OrigDataType: ui32
-T_552: (in ebp_133 - 0x00000004 : word32)
-  Class: Eq_552
+T_550: (in ebp_133 - 0x00000004 : word32)
+  Class: Eq_550
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_555 t0000)))
-T_553: (in 0x00000000 : word32)
-  Class: Eq_553
+  OrigDataType: (ptr32 (struct (0 T_553 t0000)))
+T_551: (in 0x00000000 : word32)
+  Class: Eq_551
   DataType: word32
   OrigDataType: word32
-T_554: (in ebp_133 - 0x00000004 + 0x00000000 : word32)
-  Class: Eq_554
+T_552: (in ebp_133 - 0x00000004 + 0x00000000 : word32)
+  Class: Eq_552
   DataType: ptr32
   OrigDataType: ptr32
-T_555: (in Mem299[ebp_133 - 0x00000004 + 0x00000000:word32] : word32)
-  Class: Eq_550
+T_553: (in Mem299[ebp_133 - 0x00000004 + 0x00000000:word32] : word32)
+  Class: Eq_548
   DataType: word32
   OrigDataType: word32
-T_556: (in 4 : int32)
-  Class: Eq_556
+T_554: (in 4 : int32)
+  Class: Eq_554
   DataType: int32
   OrigDataType: int32
-T_557: (in esp_284 + 4 : word32)
+T_555: (in esp_284 + 4 : word32)
   Class: Eq_227
   DataType: (ptr32 Eq_227)
   OrigDataType: ptr32
-T_558: (in cexit : ptr32)
-  Class: Eq_558
+T_556: (in cexit : ptr32)
+  Class: Eq_556
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_559: (in signature of cexit : void)
-  Class: Eq_559
-  DataType: Eq_559
+T_557: (in signature of cexit : void)
+  Class: Eq_557
+  DataType: Eq_557
   OrigDataType: 
-T_560: (in eax : (ptr32 Eq_560))
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
+T_558: (in eax : (ptr32 Eq_558))
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
   OrigDataType: word32
-T_561: (in dwArg04 : (ptr32 Eq_561))
-  Class: Eq_561
-  DataType: (ptr32 Eq_561)
-  OrigDataType: (ptr32 (struct (3C T_568 t003C)))
-T_562: (in dwArg08 : up32)
-  Class: Eq_562
+T_559: (in dwArg04 : (ptr32 Eq_559))
+  Class: Eq_559
+  DataType: (ptr32 Eq_559)
+  OrigDataType: (ptr32 (struct (3C T_566 t003C)))
+T_560: (in dwArg08 : up32)
+  Class: Eq_560
   DataType: up32
   OrigDataType: up32
-T_563: (in edxOut : (ptr32 Eq_560))
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
+T_561: (in edxOut : (ptr32 Eq_558))
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
   OrigDataType: ptr32
-T_564: (in eax_32 : (ptr32 Eq_560))
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
+T_562: (in eax_32 : (ptr32 Eq_558))
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
   OrigDataType: (ptr32 (struct 0028 (8 up32 dw0008) (C up32 dw000C)))
-T_565: (in ecx_13 : (ptr32 Eq_565))
+T_563: (in ecx_13 : (ptr32 Eq_563))
+  Class: Eq_563
+  DataType: (ptr32 Eq_563)
+  OrigDataType: (ptr32 (struct (6 T_579 t0006) (14 T_573 t0014)))
+T_564: (in 0x0000003C : word32)
+  Class: Eq_564
+  DataType: word32
+  OrigDataType: word32
+T_565: (in dwArg04 + 0x0000003C : word32)
   Class: Eq_565
-  DataType: (ptr32 Eq_565)
-  OrigDataType: (ptr32 (struct (6 T_581 t0006) (14 T_575 t0014)))
-T_566: (in 0x0000003C : word32)
+  DataType: word32
+  OrigDataType: word32
+T_566: (in Mem11[dwArg04 + 0x0000003C:word32] : word32)
   Class: Eq_566
   DataType: word32
   OrigDataType: word32
-T_567: (in dwArg04 + 0x0000003C : word32)
-  Class: Eq_567
-  DataType: word32
+T_567: (in Mem11[dwArg04 + 0x0000003C:word32] + dwArg04 : word32)
+  Class: Eq_563
+  DataType: (ptr32 Eq_563)
   OrigDataType: word32
-T_568: (in Mem11[dwArg04 + 0x0000003C:word32] : word32)
-  Class: Eq_568
-  DataType: word32
-  OrigDataType: word32
-T_569: (in Mem11[dwArg04 + 0x0000003C:word32] + dwArg04 : word32)
-  Class: Eq_565
-  DataType: (ptr32 Eq_565)
-  OrigDataType: word32
-T_570: (in edx_16 : (ptr32 Eq_560))
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
+T_568: (in edx_16 : (ptr32 Eq_558))
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
   OrigDataType: (ptr32 (struct 0028 (8 up32 dw0008) (C up32 dw000C)))
-T_571: (in 0x00000018 : word32)
+T_569: (in 0x00000018 : word32)
+  Class: Eq_569
+  DataType: word32
+  OrigDataType: word32
+T_570: (in ecx_13 + 0x00000018 : word32)
+  Class: Eq_570
+  DataType: word32
+  OrigDataType: word32
+T_571: (in 0x00000014 : word32)
   Class: Eq_571
   DataType: word32
   OrigDataType: word32
-T_572: (in ecx_13 + 0x00000018 : word32)
+T_572: (in ecx_13 + 0x00000014 : word32)
   Class: Eq_572
   DataType: word32
   OrigDataType: word32
-T_573: (in 0x00000014 : word32)
+T_573: (in Mem11[ecx_13 + 0x00000014:word16] : word16)
   Class: Eq_573
-  DataType: word32
-  OrigDataType: word32
-T_574: (in ecx_13 + 0x00000014 : word32)
+  DataType: word16
+  OrigDataType: word16
+T_574: (in (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
   Class: Eq_574
   DataType: word32
   OrigDataType: word32
-T_575: (in Mem11[ecx_13 + 0x00000014:word16] : word16)
-  Class: Eq_575
-  DataType: word16
-  OrigDataType: word16
-T_576: (in (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
-  Class: Eq_576
-  DataType: word32
+T_575: (in ecx_13 + 0x00000018 + (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
   OrigDataType: word32
-T_577: (in ecx_13 + 0x00000018 + (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
-  OrigDataType: word32
-T_578: (in esi_19 : (ptr32 Eq_560))
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
+T_576: (in esi_19 : (ptr32 Eq_558))
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
   OrigDataType: int32
-T_579: (in 0x00000006 : word32)
-  Class: Eq_579
+T_577: (in 0x00000006 : word32)
+  Class: Eq_577
   DataType: word32
   OrigDataType: word32
-T_580: (in ecx_13 + 0x00000006 : word32)
-  Class: Eq_580
+T_578: (in ecx_13 + 0x00000006 : word32)
+  Class: Eq_578
   DataType: ptr32
   OrigDataType: ptr32
-T_581: (in Mem11[ecx_13 + 0x00000006:word16] : word16)
-  Class: Eq_581
+T_579: (in Mem11[ecx_13 + 0x00000006:word16] : word16)
+  Class: Eq_579
   DataType: word16
   OrigDataType: word16
-T_582: (in (word32) Mem11[ecx_13 + 0x00000006:word16] : word32)
+T_580: (in (word32) Mem11[ecx_13 + 0x00000006:word16] : word32)
+  Class: Eq_580
+  DataType: int32
+  OrigDataType: int32
+T_581: (in 0x00000028 : word32)
+  Class: Eq_581
+  DataType: int32
+  OrigDataType: int32
+T_582: (in (word32) ecx_13->w0006 *s 0x00000028 : int32)
   Class: Eq_582
   DataType: int32
   OrigDataType: int32
-T_583: (in 0x00000028 : word32)
-  Class: Eq_583
-  DataType: int32
+T_583: (in (word32) Mem11[ecx_13 + 0x00000006:word16] *s 0x00000028 + edx_16 : word32)
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
   OrigDataType: int32
-T_584: (in (word32) ecx_13->w0006 *s 0x00000028 : int32)
+T_584: (in edx_16 == esi_19 : bool)
   Class: Eq_584
-  DataType: int32
-  OrigDataType: int32
-T_585: (in (word32) Mem11[ecx_13 + 0x00000006:word16] *s 0x00000028 + edx_16 : word32)
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
-  OrigDataType: int32
-T_586: (in edx_16 == esi_19 : bool)
+  DataType: bool
+  OrigDataType: bool
+T_585: (in 0x00000000 : word32)
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
+  OrigDataType: word32
+T_586: (in 0x00000028 : word32)
   Class: Eq_586
-  DataType: bool
-  OrigDataType: bool
-T_587: (in 0x00000000 : word32)
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
+  DataType: word32
   OrigDataType: word32
-T_588: (in 0x00000028 : word32)
+T_587: (in edx_16 + 0x00000028 : word32)
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
+  OrigDataType: word32
+T_588: (in edx_16 != esi_19 : bool)
   Class: Eq_588
-  DataType: word32
-  OrigDataType: word32
-T_589: (in edx_16 + 0x00000028 : word32)
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
-  OrigDataType: word32
-T_590: (in edx_16 != esi_19 : bool)
-  Class: Eq_590
   DataType: bool
   OrigDataType: bool
-T_591: (in 0x00000008 : word32)
-  Class: Eq_591
+T_589: (in 0x00000008 : word32)
+  Class: Eq_589
   DataType: word32
   OrigDataType: word32
-T_592: (in edx_16 + 0x00000008 : word32)
+T_590: (in edx_16 + 0x00000008 : word32)
+  Class: Eq_590
+  DataType: word32
+  OrigDataType: word32
+T_591: (in Mem11[edx_16 + 0x00000008:word32] : word32)
+  Class: Eq_591
+  DataType: up32
+  OrigDataType: up32
+T_592: (in 0x0000000C : word32)
   Class: Eq_592
   DataType: word32
   OrigDataType: word32
-T_593: (in Mem11[edx_16 + 0x00000008:word32] : word32)
+T_593: (in edx_16 + 0x0000000C : word32)
   Class: Eq_593
-  DataType: up32
-  OrigDataType: up32
-T_594: (in 0x0000000C : word32)
+  DataType: word32
+  OrigDataType: word32
+T_594: (in Mem11[edx_16 + 0x0000000C:word32] : word32)
   Class: Eq_594
-  DataType: word32
-  OrigDataType: word32
-T_595: (in edx_16 + 0x0000000C : word32)
-  Class: Eq_595
-  DataType: word32
-  OrigDataType: word32
-T_596: (in Mem11[edx_16 + 0x0000000C:word32] : word32)
+  DataType: up32
+  OrigDataType: up32
+T_595: (in edx_16->dw0008 + edx_16->dw000C : word32)
+  Class: Eq_560
+  DataType: up32
+  OrigDataType: up32
+T_596: (in dwArg08 < edx_16->dw0008 + edx_16->dw000C : bool)
   Class: Eq_596
-  DataType: up32
-  OrigDataType: up32
-T_597: (in edx_16->dw0008 + edx_16->dw000C : word32)
-  Class: Eq_562
-  DataType: up32
-  OrigDataType: up32
-T_598: (in dwArg08 < edx_16->dw0008 + edx_16->dw000C : bool)
-  Class: Eq_598
   DataType: bool
   OrigDataType: bool
-T_599: (in 0x0000000C : word32)
-  Class: Eq_599
+T_597: (in 0x0000000C : word32)
+  Class: Eq_597
   DataType: word32
   OrigDataType: word32
-T_600: (in edx_16 + 0x0000000C : word32)
-  Class: Eq_600
+T_598: (in edx_16 + 0x0000000C : word32)
+  Class: Eq_598
   DataType: (ptr32 up32)
   OrigDataType: (ptr32 up32)
-T_601: (in Mem11[edx_16 + 0x0000000C:word32] : word32)
-  Class: Eq_562
+T_599: (in Mem11[edx_16 + 0x0000000C:word32] : word32)
+  Class: Eq_560
   DataType: up32
   OrigDataType: up32
-T_602: (in dwArg08 < edx_16->dw000C : bool)
-  Class: Eq_602
+T_600: (in dwArg08 < edx_16->dw000C : bool)
+  Class: Eq_600
   DataType: bool
   OrigDataType: bool
-T_603: (in al : byte)
-  Class: Eq_603
+T_601: (in al : byte)
+  Class: Eq_601
   DataType: byte
   OrigDataType: byte
-T_604: (in eax_4 : word32)
-  Class: Eq_604
+T_602: (in eax_4 : word32)
+  Class: Eq_602
   DataType: word32
   OrigDataType: word32
-T_605: (in fn00401B98 : ptr32)
-  Class: Eq_605
-  DataType: (ptr32 Eq_605)
-  OrigDataType: (ptr32 (fn T_607 ()))
-T_606: (in signature of fn00401B98 : void)
-  Class: Eq_605
-  DataType: (ptr32 Eq_605)
+T_603: (in fn00401B98 : ptr32)
+  Class: Eq_603
+  DataType: (ptr32 Eq_603)
+  OrigDataType: (ptr32 (fn T_605 ()))
+T_604: (in signature of fn00401B98 : void)
+  Class: Eq_603
+  DataType: (ptr32 Eq_603)
   OrigDataType: 
-T_607: (in fn00401B98() : word32)
-  Class: Eq_604
+T_605: (in fn00401B98() : word32)
+  Class: Eq_602
   DataType: word32
   OrigDataType: word32
-T_608: (in 0x00000000 : word32)
-  Class: Eq_604
+T_606: (in 0x00000000 : word32)
+  Class: Eq_602
   DataType: word32
   OrigDataType: word32
-T_609: (in eax_4 != 0x00000000 : bool)
-  Class: Eq_609
+T_607: (in eax_4 != 0x00000000 : bool)
+  Class: Eq_607
   DataType: bool
   OrigDataType: bool
-T_610: (in edx_19 : ptr32)
+T_608: (in edx_19 : ptr32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: word32
-T_611: (in fs : selector)
+T_609: (in fs : selector)
+  Class: Eq_609
+  DataType: (ptr32 Eq_609)
+  OrigDataType: (ptr32 (segment (18 T_611 t0018)))
+T_610: (in 0x00000018 : word32)
+  Class: Eq_610
+  DataType: (memptr (ptr32 Eq_609) (ptr32 Eq_611))
+  OrigDataType: (memptr T_609 (struct (0 T_611 t0000)))
+T_611: (in Mem0[fs:0x00000018:word32] : word32)
   Class: Eq_611
   DataType: (ptr32 Eq_611)
-  OrigDataType: (ptr32 (segment (18 T_613 t0018)))
-T_612: (in 0x00000018 : word32)
+  OrigDataType: (ptr32 (struct (4 T_614 t0004)))
+T_612: (in 0x00000004 : word32)
   Class: Eq_612
-  DataType: (memptr (ptr32 Eq_611) (ptr32 Eq_613))
-  OrigDataType: (memptr T_611 (struct (0 T_613 t0000)))
-T_613: (in Mem0[fs:0x00000018:word32] : word32)
+  DataType: word32
+  OrigDataType: word32
+T_613: (in Mem0[fs:0x00000018:word32] + 0x00000004 : word32)
   Class: Eq_613
-  DataType: (ptr32 Eq_613)
-  OrigDataType: (ptr32 (struct (4 T_616 t0004)))
-T_614: (in 0x00000004 : word32)
-  Class: Eq_614
   DataType: word32
   OrigDataType: word32
-T_615: (in Mem0[fs:0x00000018:word32] + 0x00000004 : word32)
-  Class: Eq_615
-  DataType: word32
-  OrigDataType: word32
-T_616: (in Mem17[Mem0[fs:0x00000018:word32] + 0x00000004:word32] : word32)
+T_614: (in Mem17[Mem0[fs:0x00000018:word32] + 0x00000004:word32] : word32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: word32
-T_617: (in edx : word32)
+T_615: (in edx : word32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: word32
-T_618: (in 0x00 : byte)
-  Class: Eq_618
+T_616: (in 0x00 : byte)
+  Class: Eq_616
   DataType: byte
   OrigDataType: byte
-T_619: (in DPB(eax_4, 0x00, 0) : word32)
+T_617: (in DPB(eax_4, 0x00, 0) : word32)
+  Class: Eq_617
+  DataType: word32
+  OrigDataType: word32
+T_618: (in (byte) DPB(eax_4, 0x00, 0) : byte)
+  Class: Eq_601
+  DataType: byte
+  OrigDataType: byte
+T_619: (in __lock : ptr32)
   Class: Eq_619
-  DataType: word32
-  OrigDataType: word32
-T_620: (in (byte) DPB(eax_4, 0x00, 0) : byte)
-  Class: Eq_603
-  DataType: byte
-  OrigDataType: byte
-T_621: (in __lock : ptr32)
-  Class: Eq_621
-  DataType: (ptr32 Eq_621)
-  OrigDataType: (ptr32 (fn T_623 ()))
-T_622: (in signature of __lock : void)
-  Class: Eq_621
-  DataType: (ptr32 Eq_621)
+  DataType: (ptr32 Eq_619)
+  OrigDataType: (ptr32 (fn T_621 ()))
+T_620: (in signature of __lock : void)
+  Class: Eq_619
+  DataType: (ptr32 Eq_619)
   OrigDataType: 
-T_623: (in __lock() : void)
-  Class: Eq_623
+T_621: (in __lock() : void)
+  Class: Eq_621
   DataType: void
   OrigDataType: void
-T_624: (in eax_25 : ptr32)
+T_622: (in eax_25 : ptr32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: word32
-T_625: (in __cmpxchg : ptr32)
+T_623: (in __cmpxchg : ptr32)
+  Class: Eq_623
+  DataType: (ptr32 Eq_623)
+  OrigDataType: (ptr32 (fn T_633 (T_630, T_608, T_631, T_632)))
+T_624: (in signature of __cmpxchg : void)
+  Class: Eq_623
+  DataType: (ptr32 Eq_623)
+  OrigDataType: 
+T_625: (in  : word32)
   Class: Eq_625
-  DataType: (ptr32 Eq_625)
-  OrigDataType: (ptr32 (fn T_635 (T_632, T_610, T_633, T_634)))
-T_626: (in signature of __cmpxchg : void)
-  Class: Eq_625
-  DataType: (ptr32 Eq_625)
+  DataType: word32
+  OrigDataType: 
+T_626: (in  : word32)
+  Class: Eq_193
+  DataType: ptr32
   OrigDataType: 
 T_627: (in  : word32)
   Class: Eq_627
   DataType: word32
   OrigDataType: 
 T_628: (in  : word32)
-  Class: Eq_193
-  DataType: ptr32
+  Class: Eq_628
+  DataType: word32
   OrigDataType: 
-T_629: (in  : word32)
+T_629: (in 0x00403338 : ptr32)
   Class: Eq_629
-  DataType: word32
-  OrigDataType: 
-T_630: (in  : word32)
-  Class: Eq_630
-  DataType: word32
-  OrigDataType: 
-T_631: (in 0x00403338 : ptr32)
-  Class: Eq_631
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_632 t0000)))
-T_632: (in Mem17[0x00403338:word32] : word32)
+  OrigDataType: (ptr32 (struct (0 T_630 t0000)))
+T_630: (in Mem17[0x00403338:word32] : word32)
+  Class: Eq_625
+  DataType: word32
+  OrigDataType: word32
+T_631: (in 0x00000000 : word32)
   Class: Eq_627
   DataType: word32
   OrigDataType: word32
-T_633: (in 0x00000000 : word32)
-  Class: Eq_629
+T_632: (in out eax_25 : word32)
+  Class: Eq_628
   DataType: word32
   OrigDataType: word32
-T_634: (in out eax_25 : word32)
-  Class: Eq_630
-  DataType: word32
-  OrigDataType: word32
-T_635: (in __cmpxchg(globals->dw403338, edx_19, 0x00000000, out eax_25) : bool)
-  Class: Eq_635
+T_633: (in __cmpxchg(globals->dw403338, edx_19, 0x00000000, out eax_25) : bool)
+  Class: Eq_633
   DataType: bool
   OrigDataType: bool
-T_636: (in 0x00000000 : word32)
+T_634: (in 0x00000000 : word32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: word32
-T_637: (in eax_25 != 0x00000000 : bool)
+T_635: (in eax_25 != 0x00000000 : bool)
+  Class: Eq_635
+  DataType: bool
+  OrigDataType: bool
+T_636: (in edx_19 == eax_25 : bool)
+  Class: Eq_636
+  DataType: bool
+  OrigDataType: bool
+T_637: (in 0x00 : byte)
   Class: Eq_637
-  DataType: bool
-  OrigDataType: bool
-T_638: (in edx_19 == eax_25 : bool)
+  DataType: byte
+  OrigDataType: byte
+T_638: (in DPB(eax_25, 0x00, 0) : word32)
   Class: Eq_638
-  DataType: bool
-  OrigDataType: bool
-T_639: (in 0x00 : byte)
-  Class: Eq_639
+  DataType: word32
+  OrigDataType: word32
+T_639: (in (byte) DPB(eax_25, 0x00, 0) : byte)
+  Class: Eq_601
   DataType: byte
   OrigDataType: byte
-T_640: (in DPB(eax_25, 0x00, 0) : word32)
+T_640: (in 0x01 : byte)
   Class: Eq_640
+  DataType: byte
+  OrigDataType: byte
+T_641: (in DPB(eax_25, 0x01, 0) : word32)
+  Class: Eq_641
   DataType: word32
   OrigDataType: word32
-T_641: (in (byte) DPB(eax_25, 0x00, 0) : byte)
-  Class: Eq_603
+T_642: (in (byte) DPB(eax_25, 0x01, 0) : byte)
+  Class: Eq_601
   DataType: byte
   OrigDataType: byte
-T_642: (in 0x01 : byte)
-  Class: Eq_642
-  DataType: byte
-  OrigDataType: byte
-T_643: (in DPB(eax_25, 0x01, 0) : word32)
+T_643: (in al : byte)
   Class: Eq_643
-  DataType: word32
-  OrigDataType: word32
-T_644: (in (byte) DPB(eax_25, 0x01, 0) : byte)
-  Class: Eq_603
   DataType: byte
   OrigDataType: byte
-T_645: (in al : byte)
-  Class: Eq_645
-  DataType: byte
-  OrigDataType: byte
-T_646: (in 0x00000000 : word32)
+T_644: (in 0x00000000 : word32)
   Class: Eq_161
   DataType: word32
   OrigDataType: word32
-T_647: (in dwArg04 != 0x00000000 : bool)
-  Class: Eq_647
+T_645: (in dwArg04 != 0x00000000 : bool)
+  Class: Eq_645
   DataType: bool
   OrigDataType: bool
-T_648: (in fn004019FE : ptr32)
-  Class: Eq_648
-  DataType: (ptr32 Eq_648)
-  OrigDataType: (ptr32 (fn T_651 (T_160)))
-T_649: (in signature of fn004019FE : void)
-  Class: Eq_648
-  DataType: (ptr32 Eq_648)
+T_646: (in fn004019FE : ptr32)
+  Class: Eq_646
+  DataType: (ptr32 Eq_646)
+  OrigDataType: (ptr32 (fn T_649 (T_160)))
+T_647: (in signature of fn004019FE : void)
+  Class: Eq_646
+  DataType: (ptr32 Eq_646)
   OrigDataType: 
-T_650: (in edx : word32)
+T_648: (in edx : word32)
   Class: Eq_160
   DataType: word32
   OrigDataType: word32
-T_651: (in fn004019FE(edx) : void)
-  Class: Eq_651
+T_649: (in fn004019FE(edx) : void)
+  Class: Eq_649
   DataType: void
   OrigDataType: void
-T_652: (in al_20 : byte)
-  Class: Eq_652
-  DataType: byte
-  OrigDataType: byte
-T_653: (in fn00401C46 : ptr32)
-  Class: Eq_653
-  DataType: (ptr32 Eq_653)
-  OrigDataType: (ptr32 (fn T_655 ()))
-T_654: (in signature of fn00401C46 : void)
-  Class: Eq_653
-  DataType: (ptr32 Eq_653)
+T_650: (in fn00401C46 : ptr32)
+  Class: Eq_650
+  DataType: (ptr32 Eq_650)
+  OrigDataType: (ptr32 (fn T_652 ()))
+T_651: (in signature of fn00401C46 : void)
+  Class: Eq_650
+  DataType: (ptr32 Eq_650)
   OrigDataType: 
-T_655: (in fn00401C46() : byte)
+T_652: (in fn00401C46() : byte)
   Class: Eq_652
   DataType: byte
   OrigDataType: byte
-T_656: (in eax_52 : word32)
-  Class: Eq_656
-  DataType: word32
-  OrigDataType: word32
-T_657: (in eax_13 : word32)
-  Class: Eq_657
-  DataType: word32
-  OrigDataType: word32
-T_658: (in DPB(eax_13, al_20, 0) : word32)
-  Class: Eq_656
-  DataType: word32
-  OrigDataType: word32
-T_659: (in 0x00 : byte)
+T_653: (in 0x00 : byte)
   Class: Eq_652
   DataType: byte
   OrigDataType: byte
-T_660: (in al_20 != 0x00 : bool)
-  Class: Eq_660
+T_654: (in fn00401C46() != 0x00 : bool)
+  Class: Eq_654
   DataType: bool
   OrigDataType: bool
-T_661: (in 0x01 : byte)
-  Class: Eq_661
+T_655: (in 0x01 : byte)
+  Class: Eq_655
   DataType: byte
   OrigDataType: byte
-T_662: (in 00403354 : ptr32)
-  Class: Eq_662
+T_656: (in 00403354 : ptr32)
+  Class: Eq_656
   DataType: (ptr32 byte)
-  OrigDataType: (ptr32 (struct (0 T_663 t0000)))
-T_663: (in Mem10[0x00403354:byte] : byte)
+  OrigDataType: (ptr32 (struct (0 T_657 t0000)))
+T_657: (in Mem10[0x00403354:byte] : byte)
+  Class: Eq_655
+  DataType: byte
+  OrigDataType: byte
+T_658: (in fn00401C46 : ptr32)
+  Class: Eq_650
+  DataType: (ptr32 Eq_650)
+  OrigDataType: (ptr32 (fn T_659 ()))
+T_659: (in fn00401C46() : byte)
+  Class: Eq_652
+  DataType: byte
+  OrigDataType: byte
+T_660: (in 0x00 : byte)
+  Class: Eq_652
+  DataType: byte
+  OrigDataType: byte
+T_661: (in fn00401C46() != 0x00 : bool)
   Class: Eq_661
-  DataType: byte
-  OrigDataType: byte
-T_664: (in fn00401C46 : ptr32)
-  Class: Eq_653
-  DataType: (ptr32 Eq_653)
-  OrigDataType: (ptr32 (fn T_665 ()))
-T_665: (in fn00401C46() : byte)
-  Class: Eq_652
-  DataType: byte
-  OrigDataType: byte
-T_666: (in 0x00 : byte)
-  Class: Eq_652
-  DataType: byte
-  OrigDataType: byte
-T_667: (in fn00401C46() != 0x00 : bool)
-  Class: Eq_667
   DataType: bool
   OrigDataType: bool
-T_668: (in 0x00 : byte)
-  Class: Eq_668
-  DataType: byte
-  OrigDataType: byte
-T_669: (in DPB(eax_52, 0x00, 0) : word32)
-  Class: Eq_669
+T_662: (in eax_13 : word32)
+  Class: Eq_662
   DataType: word32
   OrigDataType: word32
-T_670: (in (byte) DPB(eax_52, 0x00, 0) : byte)
-  Class: Eq_645
+T_663: (in 0x00 : byte)
+  Class: Eq_663
   DataType: byte
   OrigDataType: byte
-T_671: (in 0x01 : byte)
-  Class: Eq_671
-  DataType: byte
-  OrigDataType: byte
-T_672: (in DPB(eax_13, 0x01, 0) : word32)
-  Class: Eq_672
+T_664: (in DPB(eax_13, 0x00, 0) : word32)
+  Class: Eq_664
   DataType: word32
   OrigDataType: word32
-T_673: (in (byte) DPB(eax_13, 0x01, 0) : byte)
-  Class: Eq_645
+T_665: (in (byte) DPB(eax_13, 0x00, 0) : byte)
+  Class: Eq_643
   DataType: byte
   OrigDataType: byte
-T_674: (in fn00401C46 : ptr32)
-  Class: Eq_653
-  DataType: (ptr32 Eq_653)
-  OrigDataType: (ptr32 (fn T_675 ()))
-T_675: (in fn00401C46() : byte)
+T_666: (in 0x01 : byte)
+  Class: Eq_666
+  DataType: byte
+  OrigDataType: byte
+T_667: (in DPB(eax_13, 0x01, 0) : word32)
+  Class: Eq_667
+  DataType: word32
+  OrigDataType: word32
+T_668: (in (byte) DPB(eax_13, 0x01, 0) : byte)
+  Class: Eq_643
+  DataType: byte
+  OrigDataType: byte
+T_669: (in fn00401C46 : ptr32)
+  Class: Eq_650
+  DataType: (ptr32 Eq_650)
+  OrigDataType: (ptr32 (fn T_670 ()))
+T_670: (in fn00401C46() : byte)
   Class: Eq_652
   DataType: byte
   OrigDataType: byte
-T_676: (in DPB(eax_13, fn00401C46(), 0) : word32)
-  Class: Eq_656
-  DataType: word32
+T_671: (in eax : (ptr32 Eq_671))
+  Class: Eq_671
+  DataType: (ptr32 Eq_671)
   OrigDataType: word32
-T_677: (in eax : (ptr32 Eq_677))
-  Class: Eq_677
-  DataType: (ptr32 Eq_677)
-  OrigDataType: word32
-T_678: (in eax_81 : (ptr32 Eq_677))
-  Class: Eq_677
-  DataType: (ptr32 Eq_677)
-  OrigDataType: (ptr32 (struct (24 T_757 t0024) (400000 T_715 t400000) (400018 T_720 t400018)))
-T_679: (in ebp_13 : (ptr32 Eq_60))
+T_672: (in eax_81 : (ptr32 Eq_671))
+  Class: Eq_671
+  DataType: (ptr32 Eq_671)
+  OrigDataType: (ptr32 (struct (24 T_751 t0024) (400000 T_709 t400000) (400018 T_714 t400018)))
+T_673: (in ebp_13 : (ptr32 Eq_60))
   Class: Eq_60
   DataType: (ptr32 Eq_60)
-  OrigDataType: (ptr32 (struct (8 T_725 t0008)))
-T_680: (in fn00401980 : ptr32)
+  OrigDataType: (ptr32 (struct (8 T_719 t0008)))
+T_674: (in fn00401980 : ptr32)
   Class: Eq_136
   DataType: (ptr32 Eq_136)
-  OrigDataType: (ptr32 (fn T_683 (T_372, T_373, T_374, T_681, T_682)))
-T_681: (in dwLoc0C : word32)
+  OrigDataType: (ptr32 (fn T_677 (T_372, T_373, T_374, T_675, T_676)))
+T_675: (in dwLoc0C : word32)
   Class: Eq_141
   DataType: word32
   OrigDataType: word32
-T_682: (in 0x00000008 : word32)
+T_676: (in 0x00000008 : word32)
   Class: Eq_142
   DataType: ui32
   OrigDataType: word32
-T_683: (in fn00401980(ebx, esi, edi, dwLoc0C, 0x00000008) : word32)
+T_677: (in fn00401980(ebx, esi, edi, dwLoc0C, 0x00000008) : word32)
   Class: Eq_60
   DataType: (ptr32 Eq_60)
   OrigDataType: word32
-T_684: (in 0x00000004 : word32)
+T_678: (in 0x00000004 : word32)
+  Class: Eq_678
+  DataType: ui32
+  OrigDataType: ui32
+T_679: (in ebp_13 - 0x00000004 : word32)
+  Class: Eq_679
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_682 t0000)))
+T_680: (in 0x00000000 : word32)
+  Class: Eq_680
+  DataType: word32
+  OrigDataType: word32
+T_681: (in ebp_13 - 0x00000004 + 0x00000000 : word32)
+  Class: Eq_681
+  DataType: word32
+  OrigDataType: word32
+T_682: (in Mem7[ebp_13 - 0x00000004 + 0x00000000:word32] : word32)
+  Class: Eq_682
+  DataType: ui32
+  OrigDataType: ui32
+T_683: (in 0x00000000 : word32)
+  Class: Eq_683
+  DataType: ui32
+  OrigDataType: ui32
+T_684: (in *(ebp_13 - 0x00000004) & 0x00000000 : word32)
   Class: Eq_684
   DataType: ui32
   OrigDataType: ui32
-T_685: (in ebp_13 - 0x00000004 : word32)
+T_685: (in 0x00000004 : word32)
   Class: Eq_685
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_688 t0000)))
-T_686: (in 0x00000000 : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_686: (in ebp_13 - 0x00000004 : word32)
   Class: Eq_686
-  DataType: word32
-  OrigDataType: word32
-T_687: (in ebp_13 - 0x00000004 + 0x00000000 : word32)
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_689 t0000)))
+T_687: (in 0x00000000 : word32)
   Class: Eq_687
   DataType: word32
   OrigDataType: word32
-T_688: (in Mem7[ebp_13 - 0x00000004 + 0x00000000:word32] : word32)
+T_688: (in ebp_13 - 0x00000004 + 0x00000000 : word32)
   Class: Eq_688
-  DataType: ui32
-  OrigDataType: ui32
-T_689: (in 0x00000000 : word32)
-  Class: Eq_689
-  DataType: ui32
-  OrigDataType: ui32
-T_690: (in *(ebp_13 - 0x00000004) & 0x00000000 : word32)
-  Class: Eq_690
-  DataType: ui32
-  OrigDataType: ui32
-T_691: (in 0x00000004 : word32)
-  Class: Eq_691
-  DataType: ui32
-  OrigDataType: ui32
-T_692: (in ebp_13 - 0x00000004 : word32)
-  Class: Eq_692
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_695 t0000)))
-T_693: (in 0x00000000 : word32)
-  Class: Eq_693
-  DataType: word32
-  OrigDataType: word32
-T_694: (in ebp_13 - 0x00000004 + 0x00000000 : word32)
-  Class: Eq_694
   DataType: ptr32
   OrigDataType: ptr32
-T_695: (in Mem20[ebp_13 - 0x00000004 + 0x00000000:word32] : word32)
-  Class: Eq_690
+T_689: (in Mem20[ebp_13 - 0x00000004 + 0x00000000:word32] : word32)
+  Class: Eq_684
   DataType: ui32
   OrigDataType: word32
-T_696: (in esp_14 : Eq_149)
+T_690: (in esp_14 : Eq_149)
   Class: Eq_149
   DataType: Eq_149
-  OrigDataType: (ptr32 (struct (FFFFFFFC T_775 tFFFFFFFC)))
-T_697: (in eax_22 : (ptr32 Eq_697))
-  Class: Eq_697
-  DataType: (ptr32 Eq_697)
-  OrigDataType: (ptr32 (struct (24 T_757 t0024) (400000 T_715 t400000) (400018 T_720 t400018)))
-T_698: (in 0x00005A4D : word32)
-  Class: Eq_697
-  DataType: (ptr32 Eq_697)
+  OrigDataType: (ptr32 (struct (FFFFFFFC T_769 tFFFFFFFC)))
+T_691: (in eax_22 : (ptr32 Eq_691))
+  Class: Eq_691
+  DataType: (ptr32 Eq_691)
+  OrigDataType: (ptr32 (struct (24 T_751 t0024) (400000 T_709 t400000) (400018 T_714 t400018)))
+T_692: (in 0x00005A4D : word32)
+  Class: Eq_691
+  DataType: (ptr32 Eq_691)
   OrigDataType: word32
-T_699: (in 00400000 : ptr32)
-  Class: Eq_699
+T_693: (in 00400000 : ptr32)
+  Class: Eq_693
   DataType: (ptr32 word16)
-  OrigDataType: (ptr32 (struct (0 T_700 t0000)))
-T_700: (in Mem20[0x00400000:word16] : word16)
-  Class: Eq_700
+  OrigDataType: (ptr32 (struct (0 T_694 t0000)))
+T_694: (in Mem20[0x00400000:word16] : word16)
+  Class: Eq_694
   DataType: word16
   OrigDataType: word16
-T_701: (in 0x5A4D : word16)
-  Class: Eq_700
+T_695: (in 0x5A4D : word16)
+  Class: Eq_694
   DataType: word16
   OrigDataType: word16
-T_702: (in globals->w400000 != 0x5A4D : bool)
-  Class: Eq_702
+T_696: (in globals->w400000 != 0x5A4D : bool)
+  Class: Eq_696
   DataType: bool
   OrigDataType: bool
-T_703: (in 0xFFFFFFFE : word32)
-  Class: Eq_703
+T_697: (in 0xFFFFFFFE : word32)
+  Class: Eq_697
   DataType: word32
   OrigDataType: word32
-T_704: (in 0x00000004 : word32)
-  Class: Eq_704
+T_698: (in 0x00000004 : word32)
+  Class: Eq_698
   DataType: ui32
   OrigDataType: ui32
-T_705: (in ebp_13 - 0x00000004 : word32)
-  Class: Eq_705
+T_699: (in ebp_13 - 0x00000004 : word32)
+  Class: Eq_699
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_708 t0000)))
-T_706: (in 0x00000000 : word32)
-  Class: Eq_706
+  OrigDataType: (ptr32 (struct (0 T_702 t0000)))
+T_700: (in 0x00000000 : word32)
+  Class: Eq_700
   DataType: word32
   OrigDataType: word32
-T_707: (in ebp_13 - 0x00000004 + 0x00000000 : word32)
-  Class: Eq_707
+T_701: (in ebp_13 - 0x00000004 + 0x00000000 : word32)
+  Class: Eq_701
   DataType: ptr32
   OrigDataType: ptr32
-T_708: (in Mem58[ebp_13 - 0x00000004 + 0x00000000:word32] : word32)
-  Class: Eq_703
+T_702: (in Mem58[ebp_13 - 0x00000004 + 0x00000000:word32] : word32)
+  Class: Eq_697
   DataType: word32
   OrigDataType: word32
-T_709: (in 0x00 : byte)
-  Class: Eq_709
+T_703: (in 0x00 : byte)
+  Class: Eq_703
   DataType: byte
   OrigDataType: byte
-T_710: (in DPB(eax_22, 0x00, 0) : word32)
-  Class: Eq_677
-  DataType: (ptr32 Eq_677)
+T_704: (in DPB(eax_22, 0x00, 0) : word32)
+  Class: Eq_671
+  DataType: (ptr32 Eq_671)
   OrigDataType: word32
-T_711: (in 0040003C : ptr32)
+T_705: (in 0040003C : ptr32)
+  Class: Eq_705
+  DataType: (ptr32 (ptr32 Eq_691))
+  OrigDataType: (ptr32 (struct (0 T_706 t0000)))
+T_706: (in Mem20[0x0040003C:word32] : word32)
+  Class: Eq_691
+  DataType: (ptr32 Eq_691)
+  OrigDataType: word32
+T_707: (in 0x00400000 : word32)
+  Class: Eq_707
+  DataType: word32
+  OrigDataType: word32
+T_708: (in eax_22 + 0x00400000 : word32)
+  Class: Eq_708
+  DataType: word32
+  OrigDataType: word32
+T_709: (in Mem20[eax_22 + 0x00400000:word32] : word32)
+  Class: Eq_709
+  DataType: word32
+  OrigDataType: word32
+T_710: (in 0x00004550 : word32)
+  Class: Eq_709
+  DataType: word32
+  OrigDataType: word32
+T_711: (in eax_22->dw400000 != 0x00004550 : bool)
   Class: Eq_711
-  DataType: (ptr32 (ptr32 Eq_697))
-  OrigDataType: (ptr32 (struct (0 T_712 t0000)))
-T_712: (in Mem20[0x0040003C:word32] : word32)
-  Class: Eq_697
-  DataType: (ptr32 Eq_697)
+  DataType: bool
+  OrigDataType: bool
+T_712: (in 0x00400018 : word32)
+  Class: Eq_712
+  DataType: word32
   OrigDataType: word32
-T_713: (in 0x00400000 : word32)
+T_713: (in eax_22 + 0x00400018 : word32)
   Class: Eq_713
-  DataType: word32
-  OrigDataType: word32
-T_714: (in eax_22 + 0x00400000 : word32)
+  DataType: ptr32
+  OrigDataType: ptr32
+T_714: (in Mem20[eax_22 + 0x00400018:word16] : word16)
   Class: Eq_714
-  DataType: word32
-  OrigDataType: word32
-T_715: (in Mem20[eax_22 + 0x00400000:word32] : word32)
-  Class: Eq_715
-  DataType: word32
-  OrigDataType: word32
-T_716: (in 0x00004550 : word32)
-  Class: Eq_715
-  DataType: word32
-  OrigDataType: word32
-T_717: (in eax_22->dw400000 != 0x00004550 : bool)
+  DataType: word16
+  OrigDataType: word16
+T_715: (in 0x010B : word16)
+  Class: Eq_714
+  DataType: word16
+  OrigDataType: word16
+T_716: (in eax_22->w400018 != 0x010B : bool)
+  Class: Eq_716
+  DataType: bool
+  OrigDataType: bool
+T_717: (in 0x00000008 : word32)
   Class: Eq_717
-  DataType: bool
-  OrigDataType: bool
-T_718: (in 0x00400018 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_718: (in ebp_13 + 0x00000008 : word32)
   Class: Eq_718
-  DataType: word32
-  OrigDataType: word32
-T_719: (in eax_22 + 0x00400018 : word32)
+  DataType: ptr32
+  OrigDataType: ptr32
+T_719: (in Mem20[ebp_13 + 0x00000008:word32] : word32)
   Class: Eq_719
-  DataType: ptr32
-  OrigDataType: ptr32
-T_720: (in Mem20[eax_22 + 0x00400018:word16] : word16)
-  Class: Eq_720
-  DataType: word16
-  OrigDataType: word16
-T_721: (in 0x010B : word16)
-  Class: Eq_720
-  DataType: word16
-  OrigDataType: word16
-T_722: (in eax_22->w400018 != 0x010B : bool)
-  Class: Eq_722
-  DataType: bool
-  OrigDataType: bool
-T_723: (in 0x00000008 : word32)
-  Class: Eq_723
-  DataType: word32
-  OrigDataType: word32
-T_724: (in ebp_13 + 0x00000008 : word32)
-  Class: Eq_724
-  DataType: ptr32
-  OrigDataType: ptr32
-T_725: (in Mem20[ebp_13 + 0x00000008:word32] : word32)
-  Class: Eq_725
   DataType: ui32
   OrigDataType: ui32
-T_726: (in 0x00400000 : ptr32)
-  Class: Eq_726
+T_720: (in 0x00400000 : ptr32)
+  Class: Eq_720
   DataType: ui32
   OrigDataType: (union (ui32 u0) (ptr32 u1))
-T_727: (in ebp_13->dw0008 - 0x00400000 : word32)
-  Class: Eq_727
+T_721: (in ebp_13->dw0008 - 0x00400000 : word32)
+  Class: Eq_721
   DataType: ui32
   OrigDataType: ui32
-T_728: (in 4 : int32)
+T_722: (in 4 : int32)
+  Class: Eq_722
+  DataType: int32
+  OrigDataType: int32
+T_723: (in esp_14 - 4 : word32)
+  Class: Eq_723
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_726 t0000)))
+T_724: (in 0x00000000 : word32)
+  Class: Eq_724
+  DataType: word32
+  OrigDataType: word32
+T_725: (in esp_14 - 4 + 0x00000000 : word32)
+  Class: Eq_725
+  DataType: word32
+  OrigDataType: word32
+T_726: (in Mem38[esp_14 - 4 + 0x00000000:word32] : word32)
+  Class: Eq_721
+  DataType: ui32
+  OrigDataType: word32
+T_727: (in 0x00400000 : ptr32)
+  Class: Eq_727
+  DataType: ptr32
+  OrigDataType: ptr32
+T_728: (in 8 : int32)
   Class: Eq_728
   DataType: int32
   OrigDataType: int32
-T_729: (in esp_14 - 4 : word32)
+T_729: (in esp_14 - 8 : word32)
   Class: Eq_729
-  DataType: (ptr32 ui32)
+  DataType: (ptr32 ptr32)
   OrigDataType: (ptr32 (struct (0 T_732 t0000)))
 T_730: (in 0x00000000 : word32)
   Class: Eq_730
   DataType: word32
   OrigDataType: word32
-T_731: (in esp_14 - 4 + 0x00000000 : word32)
+T_731: (in esp_14 - 8 + 0x00000000 : word32)
   Class: Eq_731
-  DataType: word32
-  OrigDataType: word32
-T_732: (in Mem38[esp_14 - 4 + 0x00000000:word32] : word32)
-  Class: Eq_727
-  DataType: ui32
-  OrigDataType: word32
-T_733: (in 0x00400000 : ptr32)
-  Class: Eq_733
   DataType: ptr32
   OrigDataType: ptr32
-T_734: (in 8 : int32)
-  Class: Eq_734
-  DataType: int32
-  OrigDataType: int32
+T_732: (in Mem40[esp_14 - 8 + 0x00000000:word32] : word32)
+  Class: Eq_727
+  DataType: ptr32
+  OrigDataType: word32
+T_733: (in fn004013F6 : ptr32)
+  Class: Eq_733
+  DataType: (ptr32 Eq_733)
+  OrigDataType: (ptr32 (fn T_746 (T_738, T_743, T_745)))
+T_734: (in signature of fn004013F6 : void)
+  Class: Eq_733
+  DataType: (ptr32 Eq_733)
+  OrigDataType: 
 T_735: (in esp_14 - 8 : word32)
   Class: Eq_735
-  DataType: (ptr32 ptr32)
+  DataType: (ptr32 (ptr32 Eq_559))
   OrigDataType: (ptr32 (struct (0 T_738 t0000)))
 T_736: (in 0x00000000 : word32)
   Class: Eq_736
@@ -3292,1562 +3292,1562 @@ T_737: (in esp_14 - 8 + 0x00000000 : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_738: (in Mem40[esp_14 - 8 + 0x00000000:word32] : word32)
-  Class: Eq_733
-  DataType: ptr32
+  Class: Eq_559
+  DataType: (ptr32 Eq_559)
   OrigDataType: word32
-T_739: (in fn004013F6 : ptr32)
+T_739: (in 4 : int32)
   Class: Eq_739
-  DataType: (ptr32 Eq_739)
-  OrigDataType: (ptr32 (fn T_752 (T_744, T_749, T_751)))
-T_740: (in signature of fn004013F6 : void)
-  Class: Eq_739
-  DataType: (ptr32 Eq_739)
-  OrigDataType: 
-T_741: (in esp_14 - 8 : word32)
-  Class: Eq_741
-  DataType: (ptr32 (ptr32 Eq_561))
-  OrigDataType: (ptr32 (struct (0 T_744 t0000)))
-T_742: (in 0x00000000 : word32)
-  Class: Eq_742
-  DataType: word32
-  OrigDataType: word32
-T_743: (in esp_14 - 8 + 0x00000000 : word32)
-  Class: Eq_743
-  DataType: ptr32
-  OrigDataType: ptr32
-T_744: (in Mem40[esp_14 - 8 + 0x00000000:word32] : word32)
-  Class: Eq_561
-  DataType: (ptr32 Eq_561)
-  OrigDataType: word32
-T_745: (in 4 : int32)
-  Class: Eq_745
   DataType: int32
   OrigDataType: int32
-T_746: (in esp_14 - 4 : word32)
-  Class: Eq_746
+T_740: (in esp_14 - 4 : word32)
+  Class: Eq_740
   DataType: (ptr32 up32)
-  OrigDataType: (ptr32 (struct (0 T_749 t0000)))
-T_747: (in 0x00000000 : word32)
-  Class: Eq_747
+  OrigDataType: (ptr32 (struct (0 T_743 t0000)))
+T_741: (in 0x00000000 : word32)
+  Class: Eq_741
   DataType: word32
   OrigDataType: word32
-T_748: (in esp_14 - 4 + 0x00000000 : word32)
-  Class: Eq_748
+T_742: (in esp_14 - 4 + 0x00000000 : word32)
+  Class: Eq_742
   DataType: ptr32
   OrigDataType: ptr32
-T_749: (in Mem40[esp_14 - 4 + 0x00000000:word32] : word32)
-  Class: Eq_562
+T_743: (in Mem40[esp_14 - 4 + 0x00000000:word32] : word32)
+  Class: Eq_560
   DataType: up32
   OrigDataType: word32
-T_750: (in edx : word32)
+T_744: (in edx : word32)
   Class: Eq_375
   DataType: ptr32
   OrigDataType: word32
-T_751: (in out edx : ptr32)
-  Class: Eq_560
-  DataType: (ptr32 Eq_560)
+T_745: (in out edx : ptr32)
+  Class: Eq_558
+  DataType: (ptr32 Eq_558)
   OrigDataType: ptr32
-T_752: (in fn004013F6(*(esp_14 - 8), *(esp_14 - 4), out edx) : word32)
-  Class: Eq_697
-  DataType: (ptr32 Eq_697)
+T_746: (in fn004013F6(*(esp_14 - 8), *(esp_14 - 4), out edx) : word32)
+  Class: Eq_691
+  DataType: (ptr32 Eq_691)
   OrigDataType: word32
-T_753: (in 0x00000000 : word32)
-  Class: Eq_697
-  DataType: (ptr32 Eq_697)
+T_747: (in 0x00000000 : word32)
+  Class: Eq_691
+  DataType: (ptr32 Eq_691)
   OrigDataType: word32
-T_754: (in eax_22 == null : bool)
-  Class: Eq_754
+T_748: (in eax_22 == null : bool)
+  Class: Eq_748
   DataType: bool
   OrigDataType: bool
-T_755: (in 0x00000024 : word32)
-  Class: Eq_755
+T_749: (in 0x00000024 : word32)
+  Class: Eq_749
   DataType: word32
   OrigDataType: word32
-T_756: (in eax_22 + 0x00000024 : word32)
-  Class: Eq_756
+T_750: (in eax_22 + 0x00000024 : word32)
+  Class: Eq_750
   DataType: ptr32
   OrigDataType: ptr32
-T_757: (in Mem40[eax_22 + 0x00000024:word32] : word32)
-  Class: Eq_757
+T_751: (in Mem40[eax_22 + 0x00000024:word32] : word32)
+  Class: Eq_751
   DataType: int32
   OrigDataType: int32
-T_758: (in 0x00000000 : word32)
-  Class: Eq_757
+T_752: (in 0x00000000 : word32)
+  Class: Eq_751
   DataType: int32
   OrigDataType: int32
-T_759: (in eax_22->dw0024 < 0x00000000 : bool)
-  Class: Eq_759
+T_753: (in eax_22->dw0024 < 0x00000000 : bool)
+  Class: Eq_753
   DataType: bool
   OrigDataType: bool
-T_760: (in 0xFFFFFFFE : word32)
-  Class: Eq_760
+T_754: (in 0xFFFFFFFE : word32)
+  Class: Eq_754
   DataType: word32
   OrigDataType: word32
-T_761: (in 0x00000004 : word32)
-  Class: Eq_761
+T_755: (in 0x00000004 : word32)
+  Class: Eq_755
   DataType: ui32
   OrigDataType: ui32
-T_762: (in ebp_13 - 0x00000004 : word32)
-  Class: Eq_762
+T_756: (in ebp_13 - 0x00000004 : word32)
+  Class: Eq_756
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_765 t0000)))
-T_763: (in 0x00000000 : word32)
-  Class: Eq_763
+  OrigDataType: (ptr32 (struct (0 T_759 t0000)))
+T_757: (in 0x00000000 : word32)
+  Class: Eq_757
   DataType: word32
   OrigDataType: word32
-T_764: (in ebp_13 - 0x00000004 + 0x00000000 : word32)
-  Class: Eq_764
+T_758: (in ebp_13 - 0x00000004 + 0x00000000 : word32)
+  Class: Eq_758
   DataType: ptr32
   OrigDataType: ptr32
-T_765: (in Mem62[ebp_13 - 0x00000004 + 0x00000000:word32] : word32)
-  Class: Eq_760
+T_759: (in Mem62[ebp_13 - 0x00000004 + 0x00000000:word32] : word32)
+  Class: Eq_754
   DataType: word32
   OrigDataType: word32
-T_766: (in 0x01 : byte)
-  Class: Eq_766
+T_760: (in 0x01 : byte)
+  Class: Eq_760
   DataType: byte
   OrigDataType: byte
-T_767: (in DPB(eax_22, 0x01, 0) : word32)
-  Class: Eq_677
-  DataType: (ptr32 Eq_677)
-  OrigDataType: (ptr32 (struct (24 T_757 t0024) (400000 T_715 t400000) (400018 T_720 t400018)))
-T_768: (in ebp_70 : ptr32)
+T_761: (in DPB(eax_22, 0x01, 0) : word32)
+  Class: Eq_671
+  DataType: (ptr32 Eq_671)
+  OrigDataType: (ptr32 (struct (24 T_751 t0024) (400000 T_709 t400000) (400018 T_714 t400018)))
+T_762: (in ebp_70 : ptr32)
   Class: Eq_377
   DataType: ptr32
   OrigDataType: word32
-T_769: (in edi_73 : ptr32)
+T_763: (in edi_73 : ptr32)
   Class: Eq_379
   DataType: ptr32
   OrigDataType: word32
-T_770: (in esi_74 : ptr32)
+T_764: (in esi_74 : ptr32)
   Class: Eq_378
   DataType: ptr32
   OrigDataType: word32
-T_771: (in ebx_71 : ptr32)
+T_765: (in ebx_71 : ptr32)
   Class: Eq_319
   DataType: ptr32
   OrigDataType: word32
-T_772: (in fn004019C6 : ptr32)
+T_766: (in fn004019C6 : ptr32)
   Class: Eq_303
   DataType: (ptr32 Eq_303)
-  OrigDataType: (ptr32 (fn T_779 (T_679, T_775, T_776, T_777, T_778)))
-T_773: (in -4 : int32)
-  Class: Eq_773
+  OrigDataType: (ptr32 (fn T_773 (T_673, T_769, T_770, T_771, T_772)))
+T_767: (in -4 : int32)
+  Class: Eq_767
   DataType: int32
   OrigDataType: int32
-T_774: (in esp_14 + -4 : word32)
-  Class: Eq_774
+T_768: (in esp_14 + -4 : word32)
+  Class: Eq_768
   DataType: ptr32
   OrigDataType: ptr32
-T_775: (in Mem69[esp_14 + -4:word32] : word32)
+T_769: (in Mem69[esp_14 + -4:word32] : word32)
   Class: Eq_306
   DataType: ptr32
   OrigDataType: word32
-T_776: (in out ebp_70 : ptr32)
+T_770: (in out ebp_70 : ptr32)
   Class: Eq_306
   DataType: ptr32
   OrigDataType: ptr32
-T_777: (in out esi_74 : ptr32)
+T_771: (in out esi_74 : ptr32)
   Class: Eq_308
   DataType: ptr32
   OrigDataType: ptr32
-T_778: (in out edi_73 : ptr32)
+T_772: (in out edi_73 : ptr32)
   Class: Eq_309
   DataType: ptr32
   OrigDataType: ptr32
-T_779: (in fn004019C6(ebp_13, *((word32) esp_14 - 4), out ebp_70, out esi_74, out edi_73) : word32)
+T_773: (in fn004019C6(ebp_13, *((word32) esp_14 - 4), out ebp_70, out esi_74, out edi_73) : word32)
   Class: Eq_319
   DataType: ptr32
   OrigDataType: word32
-T_780: (in fn00401B98 : ptr32)
-  Class: Eq_605
-  DataType: (ptr32 Eq_605)
-  OrigDataType: (ptr32 (fn T_781 ()))
-T_781: (in fn00401B98() : word32)
-  Class: Eq_604
+T_774: (in fn00401B98 : ptr32)
+  Class: Eq_603
+  DataType: (ptr32 Eq_603)
+  OrigDataType: (ptr32 (fn T_775 ()))
+T_775: (in fn00401B98() : word32)
+  Class: Eq_602
   DataType: word32
   OrigDataType: word32
-T_782: (in 0x00000000 : word32)
-  Class: Eq_604
+T_776: (in 0x00000000 : word32)
+  Class: Eq_602
   DataType: word32
   OrigDataType: word32
-T_783: (in fn00401B98() == 0x00000000 : bool)
-  Class: Eq_783
+T_777: (in fn00401B98() == 0x00000000 : bool)
+  Class: Eq_777
   DataType: bool
   OrigDataType: bool
-T_784: (in 0x00 : byte)
+T_778: (in 0x00 : byte)
   Class: Eq_139
   DataType: byte
   OrigDataType: byte
-T_785: (in bArg04 != 0x00 : bool)
-  Class: Eq_785
+T_779: (in bArg04 != 0x00 : bool)
+  Class: Eq_779
   DataType: bool
   OrigDataType: bool
-T_786: (in 0x00000000 : word32)
-  Class: Eq_627
+T_780: (in 0x00000000 : word32)
+  Class: Eq_625
   DataType: word32
   OrigDataType: word32
-T_787: (in 0x00403338 : ptr32)
-  Class: Eq_787
+T_781: (in 0x00403338 : ptr32)
+  Class: Eq_781
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_788 t0000)))
-T_788: (in Mem23[0x00403338:word32] : word32)
-  Class: Eq_627
+  OrigDataType: (ptr32 (struct (0 T_782 t0000)))
+T_782: (in Mem23[0x00403338:word32] : word32)
+  Class: Eq_625
   DataType: word32
   OrigDataType: word32
-T_789: (in 00403354 : ptr32)
-  Class: Eq_789
+T_783: (in 00403354 : ptr32)
+  Class: Eq_783
   DataType: (ptr32 byte)
-  OrigDataType: (ptr32 (struct (0 T_790 t0000)))
-T_790: (in Mem6[0x00403354:byte] : byte)
-  Class: Eq_661
+  OrigDataType: (ptr32 (struct (0 T_784 t0000)))
+T_784: (in Mem6[0x00403354:byte] : byte)
+  Class: Eq_655
+  DataType: byte
+  OrigDataType: byte
+T_785: (in 0x00 : byte)
+  Class: Eq_655
+  DataType: byte
+  OrigDataType: byte
+T_786: (in globals->b403354 == 0x00 : bool)
+  Class: Eq_786
+  DataType: bool
+  OrigDataType: bool
+T_787: (in fn00401C46 : ptr32)
+  Class: Eq_650
+  DataType: (ptr32 Eq_650)
+  OrigDataType: (ptr32 (fn T_788 ()))
+T_788: (in fn00401C46() : byte)
+  Class: Eq_652
+  DataType: byte
+  OrigDataType: byte
+T_789: (in fn00401C46 : ptr32)
+  Class: Eq_650
+  DataType: (ptr32 Eq_650)
+  OrigDataType: (ptr32 (fn T_790 ()))
+T_790: (in fn00401C46() : byte)
+  Class: Eq_652
   DataType: byte
   OrigDataType: byte
 T_791: (in 0x00 : byte)
-  Class: Eq_661
+  Class: Eq_531
   DataType: byte
   OrigDataType: byte
-T_792: (in globals->b403354 == 0x00 : bool)
+T_792: (in bArg08 != 0x00 : bool)
   Class: Eq_792
   DataType: bool
   OrigDataType: bool
-T_793: (in fn00401C46 : ptr32)
-  Class: Eq_653
-  DataType: (ptr32 Eq_653)
-  OrigDataType: (ptr32 (fn T_794 ()))
-T_794: (in fn00401C46() : byte)
-  Class: Eq_652
-  DataType: byte
-  OrigDataType: byte
-T_795: (in fn00401C46 : ptr32)
-  Class: Eq_653
-  DataType: (ptr32 Eq_653)
-  OrigDataType: (ptr32 (fn T_796 ()))
-T_796: (in fn00401C46() : byte)
-  Class: Eq_652
-  DataType: byte
-  OrigDataType: byte
-T_797: (in 0x00 : byte)
-  Class: Eq_533
-  DataType: byte
-  OrigDataType: byte
-T_798: (in bArg08 != 0x00 : bool)
-  Class: Eq_798
-  DataType: bool
-  OrigDataType: bool
-T_799: (in eax_15 : ui32)
-  Class: Eq_799
+T_793: (in eax_15 : ui32)
+  Class: Eq_793
   DataType: ui32
   OrigDataType: ui32
-T_800: (in 00403004 : ptr32)
-  Class: Eq_800
+T_794: (in 00403004 : ptr32)
+  Class: Eq_794
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_801 t0000)))
-T_801: (in Mem13[0x00403004:word32] : word32)
-  Class: Eq_799
+  OrigDataType: (ptr32 (struct (0 T_795 t0000)))
+T_795: (in Mem13[0x00403004:word32] : word32)
+  Class: Eq_793
   DataType: ui32
   OrigDataType: word32
-T_802: (in 0xBB40E64E : word32)
-  Class: Eq_799
+T_796: (in 0xBB40E64E : word32)
+  Class: Eq_793
   DataType: ui32
   OrigDataType: word32
-T_803: (in eax_15 == 0xBB40E64E : bool)
-  Class: Eq_803
+T_797: (in eax_15 == 0xBB40E64E : bool)
+  Class: Eq_797
   DataType: bool
   OrigDataType: bool
-T_804: (in GetSystemTimeAsFileTime : ptr32)
-  Class: Eq_804
-  DataType: (ptr32 Eq_804)
-  OrigDataType: (ptr32 (fn T_810 (T_809)))
-T_805: (in signature of GetSystemTimeAsFileTime : void)
-  Class: Eq_804
-  DataType: (ptr32 Eq_804)
+T_798: (in GetSystemTimeAsFileTime : ptr32)
+  Class: Eq_798
+  DataType: (ptr32 Eq_798)
+  OrigDataType: (ptr32 (fn T_804 (T_803)))
+T_799: (in signature of GetSystemTimeAsFileTime : void)
+  Class: Eq_798
+  DataType: (ptr32 Eq_798)
   OrigDataType: 
-T_806: (in lpSystemTimeAsFileTime : LPFILETIME)
-  Class: Eq_806
-  DataType: Eq_806
+T_800: (in lpSystemTimeAsFileTime : LPFILETIME)
+  Class: Eq_800
+  DataType: Eq_800
   OrigDataType: 
-T_807: (in fp : ptr32)
-  Class: Eq_807
+T_801: (in fp : ptr32)
+  Class: Eq_801
   DataType: ptr32
   OrigDataType: ptr32
-T_808: (in 0x00000010 : word32)
+T_802: (in 0x00000010 : word32)
+  Class: Eq_802
+  DataType: ui32
+  OrigDataType: ui32
+T_803: (in fp - 0x00000010 : word32)
+  Class: Eq_800
+  DataType: Eq_800
+  OrigDataType: LPFILETIME
+T_804: (in GetSystemTimeAsFileTime(fp - 0x00000010) : void)
+  Class: Eq_804
+  DataType: void
+  OrigDataType: void
+T_805: (in v14_43 : ui32)
+  Class: Eq_805
+  DataType: ui32
+  OrigDataType: ui32
+T_806: (in dwLoc0C : word32)
+  Class: Eq_806
+  DataType: ui32
+  OrigDataType: ui32
+T_807: (in 0x00000000 : word32)
+  Class: Eq_807
+  DataType: ui32
+  OrigDataType: ui32
+T_808: (in dwLoc0C & 0x00000000 : word32)
   Class: Eq_808
   DataType: ui32
   OrigDataType: ui32
-T_809: (in fp - 0x00000010 : word32)
-  Class: Eq_806
-  DataType: Eq_806
-  OrigDataType: LPFILETIME
-T_810: (in GetSystemTimeAsFileTime(fp - 0x00000010) : void)
+T_809: (in dwLoc10 : word32)
+  Class: Eq_809
+  DataType: ui32
+  OrigDataType: ui32
+T_810: (in 0x00000000 : word32)
   Class: Eq_810
-  DataType: void
-  OrigDataType: void
-T_811: (in v14_43 : ui32)
+  DataType: ui32
+  OrigDataType: ui32
+T_811: (in dwLoc10 & 0x00000000 : word32)
   Class: Eq_811
   DataType: ui32
   OrigDataType: ui32
-T_812: (in dwLoc0C : word32)
+T_812: (in dwLoc0C & 0x00000000 ^ dwLoc10 & 0x00000000 : word32)
   Class: Eq_812
   DataType: ui32
   OrigDataType: ui32
-T_813: (in 0x00000000 : word32)
+T_813: (in GetCurrentThreadId : ptr32)
   Class: Eq_813
-  DataType: ui32
-  OrigDataType: ui32
-T_814: (in dwLoc0C & 0x00000000 : word32)
-  Class: Eq_814
-  DataType: ui32
-  OrigDataType: ui32
-T_815: (in dwLoc10 : word32)
-  Class: Eq_815
-  DataType: ui32
-  OrigDataType: ui32
-T_816: (in 0x00000000 : word32)
+  DataType: (ptr32 Eq_813)
+  OrigDataType: (ptr32 (fn T_815 ()))
+T_814: (in signature of GetCurrentThreadId : void)
+  Class: Eq_813
+  DataType: (ptr32 Eq_813)
+  OrigDataType: 
+T_815: (in GetCurrentThreadId() : DWORD)
+  Class: Eq_131
+  DataType: Eq_131
+  OrigDataType: DWORD
+T_816: (in dwLoc0C & 0x00000000 ^ dwLoc10 & 0x00000000 ^ GetCurrentThreadId() : word32)
   Class: Eq_816
   DataType: ui32
   OrigDataType: ui32
-T_817: (in dwLoc10 & 0x00000000 : word32)
+T_817: (in GetCurrentProcessId : ptr32)
   Class: Eq_817
-  DataType: ui32
-  OrigDataType: ui32
-T_818: (in dwLoc0C & 0x00000000 ^ dwLoc10 & 0x00000000 : word32)
-  Class: Eq_818
-  DataType: ui32
-  OrigDataType: ui32
-T_819: (in GetCurrentThreadId : ptr32)
-  Class: Eq_819
-  DataType: (ptr32 Eq_819)
-  OrigDataType: (ptr32 (fn T_821 ()))
-T_820: (in signature of GetCurrentThreadId : void)
-  Class: Eq_819
-  DataType: (ptr32 Eq_819)
+  DataType: (ptr32 Eq_817)
+  OrigDataType: (ptr32 (fn T_819 ()))
+T_818: (in signature of GetCurrentProcessId : void)
+  Class: Eq_817
+  DataType: (ptr32 Eq_817)
   OrigDataType: 
-T_821: (in GetCurrentThreadId() : DWORD)
+T_819: (in GetCurrentProcessId() : DWORD)
   Class: Eq_131
   DataType: Eq_131
   OrigDataType: DWORD
-T_822: (in dwLoc0C & 0x00000000 ^ dwLoc10 & 0x00000000 ^ GetCurrentThreadId() : word32)
-  Class: Eq_822
+T_820: (in dwLoc0C & 0x00000000 ^ dwLoc10 & 0x00000000 ^ GetCurrentThreadId() ^ GetCurrentProcessId() : word32)
+  Class: Eq_805
   DataType: ui32
   OrigDataType: ui32
-T_823: (in GetCurrentProcessId : ptr32)
-  Class: Eq_823
-  DataType: (ptr32 Eq_823)
-  OrigDataType: (ptr32 (fn T_825 ()))
-T_824: (in signature of GetCurrentProcessId : void)
+T_821: (in QueryPerformanceCounter : ptr32)
+  Class: Eq_821
+  DataType: (ptr32 Eq_821)
+  OrigDataType: (ptr32 (fn T_826 (T_825)))
+T_822: (in signature of QueryPerformanceCounter : void)
+  Class: Eq_821
+  DataType: (ptr32 Eq_821)
+  OrigDataType: 
+T_823: (in lpPerformanceCount : (ptr32 LARGE_INTEGER))
   Class: Eq_823
   DataType: (ptr32 Eq_823)
   OrigDataType: 
-T_825: (in GetCurrentProcessId() : DWORD)
-  Class: Eq_131
-  DataType: Eq_131
-  OrigDataType: DWORD
-T_826: (in dwLoc0C & 0x00000000 ^ dwLoc10 & 0x00000000 ^ GetCurrentThreadId() ^ GetCurrentProcessId() : word32)
-  Class: Eq_811
+T_824: (in 0x00000018 : word32)
+  Class: Eq_824
   DataType: ui32
   OrigDataType: ui32
-T_827: (in QueryPerformanceCounter : ptr32)
-  Class: Eq_827
-  DataType: (ptr32 Eq_827)
-  OrigDataType: (ptr32 (fn T_832 (T_831)))
-T_828: (in signature of QueryPerformanceCounter : void)
-  Class: Eq_827
-  DataType: (ptr32 Eq_827)
-  OrigDataType: 
-T_829: (in lpPerformanceCount : (ptr32 LARGE_INTEGER))
+T_825: (in fp - 0x00000018 : word32)
+  Class: Eq_823
+  DataType: (ptr32 Eq_823)
+  OrigDataType: (ptr32 LARGE_INTEGER)
+T_826: (in QueryPerformanceCounter(fp - 0x00000018) : BOOL)
+  Class: Eq_826
+  DataType: Eq_826
+  OrigDataType: BOOL
+T_827: (in ecx_55 : ui32)
+  Class: Eq_793
+  DataType: ui32
+  OrigDataType: ui32
+T_828: (in dwLoc14 : word32)
+  Class: Eq_828
+  DataType: word32
+  OrigDataType: word32
+T_829: (in dwLoc18 : word32)
   Class: Eq_829
-  DataType: (ptr32 Eq_829)
-  OrigDataType: 
-T_830: (in 0x00000018 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_830: (in dwLoc14 ^ dwLoc18 : word32)
   Class: Eq_830
   DataType: ui32
   OrigDataType: ui32
-T_831: (in fp - 0x00000018 : word32)
-  Class: Eq_829
-  DataType: (ptr32 Eq_829)
-  OrigDataType: (ptr32 LARGE_INTEGER)
-T_832: (in QueryPerformanceCounter(fp - 0x00000018) : BOOL)
+T_831: (in dwLoc14 ^ dwLoc18 ^ v14_43 : word32)
+  Class: Eq_831
+  DataType: ui32
+  OrigDataType: ui32
+T_832: (in 0x00000008 : word32)
   Class: Eq_832
-  DataType: Eq_832
-  OrigDataType: BOOL
-T_833: (in ecx_55 : ui32)
-  Class: Eq_799
   DataType: ui32
   OrigDataType: ui32
-T_834: (in dwLoc14 : word32)
-  Class: Eq_834
-  DataType: word32
+T_833: (in fp - 0x00000008 : word32)
+  Class: Eq_833
+  DataType: ptr32
+  OrigDataType: ptr32
+T_834: (in dwLoc14 ^ dwLoc18 ^ v14_43 ^ fp - 0x00000008 : word32)
+  Class: Eq_793
+  DataType: ui32
+  OrigDataType: ui32
+T_835: (in 0xBB40E64E : word32)
+  Class: Eq_793
+  DataType: ui32
   OrigDataType: word32
-T_835: (in dwLoc18 : word32)
-  Class: Eq_835
-  DataType: word32
-  OrigDataType: word32
-T_836: (in dwLoc14 ^ dwLoc18 : word32)
+T_836: (in ecx_55 != 0xBB40E64E : bool)
   Class: Eq_836
-  DataType: ui32
-  OrigDataType: ui32
-T_837: (in dwLoc14 ^ dwLoc18 ^ v14_43 : word32)
+  DataType: bool
+  OrigDataType: bool
+T_837: (in 0xFFFF0000 : word32)
   Class: Eq_837
   DataType: ui32
   OrigDataType: ui32
-T_838: (in 0x00000008 : word32)
+T_838: (in eax_15 & 0xFFFF0000 : word32)
   Class: Eq_838
   DataType: ui32
   OrigDataType: ui32
-T_839: (in fp - 0x00000008 : word32)
-  Class: Eq_839
-  DataType: ptr32
-  OrigDataType: ptr32
-T_840: (in dwLoc14 ^ dwLoc18 ^ v14_43 ^ fp - 0x00000008 : word32)
-  Class: Eq_799
-  DataType: ui32
-  OrigDataType: ui32
-T_841: (in 0xBB40E64E : word32)
-  Class: Eq_799
+T_839: (in 0x00000000 : word32)
+  Class: Eq_838
   DataType: ui32
   OrigDataType: word32
-T_842: (in ecx_55 != 0xBB40E64E : bool)
+T_840: (in (eax_15 & 0xFFFF0000) == 0x00000000 : bool)
+  Class: Eq_840
+  DataType: bool
+  OrigDataType: bool
+T_841: (in ~eax_15 : word32)
+  Class: Eq_841
+  DataType: ui32
+  OrigDataType: ui32
+T_842: (in 00403000 : ptr32)
   Class: Eq_842
-  DataType: bool
-  OrigDataType: bool
-T_843: (in 0xFFFF0000 : word32)
-  Class: Eq_843
-  DataType: ui32
-  OrigDataType: ui32
-T_844: (in eax_15 & 0xFFFF0000 : word32)
-  Class: Eq_844
-  DataType: ui32
-  OrigDataType: ui32
-T_845: (in 0x00000000 : word32)
-  Class: Eq_844
-  DataType: ui32
-  OrigDataType: word32
-T_846: (in (eax_15 & 0xFFFF0000) == 0x00000000 : bool)
-  Class: Eq_846
-  DataType: bool
-  OrigDataType: bool
-T_847: (in ~eax_15 : word32)
-  Class: Eq_847
-  DataType: ui32
-  OrigDataType: ui32
-T_848: (in 00403000 : ptr32)
-  Class: Eq_848
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_849 t0000)))
-T_849: (in Mem75[0x00403000:word32] : word32)
+  OrigDataType: (ptr32 (struct (0 T_843 t0000)))
+T_843: (in Mem75[0x00403000:word32] : word32)
+  Class: Eq_841
+  DataType: ui32
+  OrigDataType: word32
+T_844: (in 0xFFFF0000 : word32)
+  Class: Eq_844
+  DataType: ui32
+  OrigDataType: ui32
+T_845: (in ecx_55 & 0xFFFF0000 : word32)
+  Class: Eq_845
+  DataType: ui32
+  OrigDataType: ui32
+T_846: (in 0x00000000 : word32)
+  Class: Eq_845
+  DataType: ui32
+  OrigDataType: word32
+T_847: (in (ecx_55 & 0xFFFF0000) != 0x00000000 : bool)
   Class: Eq_847
-  DataType: ui32
-  OrigDataType: word32
-T_850: (in 0xFFFF0000 : word32)
-  Class: Eq_850
-  DataType: ui32
-  OrigDataType: ui32
-T_851: (in ecx_55 & 0xFFFF0000 : word32)
-  Class: Eq_851
-  DataType: ui32
-  OrigDataType: ui32
-T_852: (in 0x00000000 : word32)
-  Class: Eq_851
-  DataType: ui32
-  OrigDataType: word32
-T_853: (in (ecx_55 & 0xFFFF0000) != 0x00000000 : bool)
-  Class: Eq_853
   DataType: bool
   OrigDataType: bool
-T_854: (in 0xBB40E64F : word32)
-  Class: Eq_799
+T_848: (in 0xBB40E64F : word32)
+  Class: Eq_793
   DataType: ui32
   OrigDataType: word32
-T_855: (in 00403004 : ptr32)
+T_849: (in 00403004 : ptr32)
+  Class: Eq_849
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_850 t0000)))
+T_850: (in Mem71[0x00403004:word32] : word32)
+  Class: Eq_793
+  DataType: ui32
+  OrigDataType: word32
+T_851: (in ~ecx_55 : word32)
+  Class: Eq_841
+  DataType: ui32
+  OrigDataType: ui32
+T_852: (in 00403000 : ptr32)
+  Class: Eq_852
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_853 t0000)))
+T_853: (in Mem73[0x00403000:word32] : word32)
+  Class: Eq_841
+  DataType: ui32
+  OrigDataType: word32
+T_854: (in 0x00004711 : word32)
+  Class: Eq_854
+  DataType: ui32
+  OrigDataType: ui32
+T_855: (in ecx_55 | 0x00004711 : word32)
   Class: Eq_855
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_856 t0000)))
-T_856: (in Mem71[0x00403004:word32] : word32)
-  Class: Eq_799
-  DataType: ui32
-  OrigDataType: word32
-T_857: (in ~ecx_55 : word32)
-  Class: Eq_847
   DataType: ui32
   OrigDataType: ui32
-T_858: (in 00403000 : ptr32)
-  Class: Eq_858
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_859 t0000)))
-T_859: (in Mem73[0x00403000:word32] : word32)
-  Class: Eq_847
-  DataType: ui32
-  OrigDataType: word32
-T_860: (in 0x00004711 : word32)
-  Class: Eq_860
-  DataType: ui32
-  OrigDataType: ui32
-T_861: (in ecx_55 | 0x00004711 : word32)
-  Class: Eq_861
-  DataType: ui32
-  OrigDataType: ui32
-T_862: (in 0x00000010 : word32)
-  Class: Eq_862
+T_856: (in 0x00000010 : word32)
+  Class: Eq_856
   DataType: word32
   OrigDataType: word32
-T_863: (in (ecx_55 | 0x00004711) << 0x00000010 : word32)
+T_857: (in (ecx_55 | 0x00004711) << 0x00000010 : word32)
+  Class: Eq_857
+  DataType: ui32
+  OrigDataType: ui32
+T_858: (in ecx_55 | (ecx_55 | 0x00004711) << 0x00000010 : word32)
+  Class: Eq_793
+  DataType: ui32
+  OrigDataType: ui32
+T_859: (in eax : ptr32)
+  Class: Eq_859
+  DataType: ptr32
+  OrigDataType: word32
+T_860: (in 0x00403384 : ptr32)
+  Class: Eq_859
+  DataType: ptr32
+  OrigDataType: ptr32
+T_861: (in eax : ptr32)
+  Class: Eq_861
+  DataType: ptr32
+  OrigDataType: word32
+T_862: (in 0x00403380 : ptr32)
+  Class: Eq_861
+  DataType: ptr32
+  OrigDataType: ptr32
+T_863: (in IsProcessorFeaturePresent : ptr32)
   Class: Eq_863
-  DataType: ui32
-  OrigDataType: ui32
-T_864: (in ecx_55 | (ecx_55 | 0x00004711) << 0x00000010 : word32)
-  Class: Eq_799
-  DataType: ui32
-  OrigDataType: ui32
-T_865: (in eax : ptr32)
-  Class: Eq_865
-  DataType: ptr32
-  OrigDataType: word32
-T_866: (in 0x00403384 : ptr32)
-  Class: Eq_865
-  DataType: ptr32
-  OrigDataType: ptr32
-T_867: (in eax : ptr32)
-  Class: Eq_867
-  DataType: ptr32
-  OrigDataType: word32
-T_868: (in 0x00403380 : ptr32)
-  Class: Eq_867
-  DataType: ptr32
-  OrigDataType: ptr32
-T_869: (in IsProcessorFeaturePresent : ptr32)
-  Class: Eq_869
-  DataType: (ptr32 Eq_869)
-  OrigDataType: (ptr32 (fn T_873 (T_872)))
-T_870: (in signature of IsProcessorFeaturePresent : void)
-  Class: Eq_869
-  DataType: (ptr32 Eq_869)
+  DataType: (ptr32 Eq_863)
+  OrigDataType: (ptr32 (fn T_867 (T_866)))
+T_864: (in signature of IsProcessorFeaturePresent : void)
+  Class: Eq_863
+  DataType: (ptr32 Eq_863)
   OrigDataType: 
-T_871: (in ProcessorFeature : DWORD)
+T_865: (in ProcessorFeature : DWORD)
   Class: Eq_131
   DataType: Eq_131
   OrigDataType: 
-T_872: (in 0x00000017 : word32)
+T_866: (in 0x00000017 : word32)
   Class: Eq_131
   DataType: Eq_131
   OrigDataType: DWORD
-T_873: (in IsProcessorFeaturePresent(0x00000017) : BOOL)
-  Class: Eq_832
-  DataType: Eq_832
+T_867: (in IsProcessorFeaturePresent(0x00000017) : BOOL)
+  Class: Eq_826
+  DataType: Eq_826
   OrigDataType: BOOL
-T_874: (in 0x00000000 : word32)
-  Class: Eq_832
-  DataType: Eq_832
+T_868: (in 0x00000000 : word32)
+  Class: Eq_826
+  DataType: Eq_826
   OrigDataType: word32
-T_875: (in IsProcessorFeaturePresent(0x00000017) == 0x00000000 : bool)
-  Class: Eq_875
+T_869: (in IsProcessorFeaturePresent(0x00000017) == 0x00000000 : bool)
+  Class: Eq_869
   DataType: bool
   OrigDataType: bool
-T_876: (in 0x00000000 : word32)
-  Class: Eq_876
+T_870: (in 0x00000000 : word32)
+  Class: Eq_870
   DataType: ui32
   OrigDataType: word32
-T_877: (in 00403368 : ptr32)
-  Class: Eq_877
+T_871: (in 00403368 : ptr32)
+  Class: Eq_871
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_878 t0000)))
-T_878: (in Mem30[0x00403368:word32] : word32)
-  Class: Eq_876
+  OrigDataType: (ptr32 (struct (0 T_872 t0000)))
+T_872: (in Mem30[0x00403368:word32] : word32)
+  Class: Eq_870
   DataType: ui32
   OrigDataType: word32
-T_879: (in memset : ptr32)
-  Class: Eq_879
-  DataType: (ptr32 Eq_879)
-  OrigDataType: (ptr32 (fn T_889 (T_886, T_887, T_888)))
-T_880: (in signature of memset : void)
-  Class: Eq_879
-  DataType: (ptr32 Eq_879)
+T_873: (in memset : ptr32)
+  Class: Eq_873
+  DataType: (ptr32 Eq_873)
+  OrigDataType: (ptr32 (fn T_883 (T_880, T_881, T_882)))
+T_874: (in signature of memset : void)
+  Class: Eq_873
+  DataType: (ptr32 Eq_873)
   OrigDataType: 
-T_881: (in _Dst : (ptr32 void))
-  Class: Eq_881
+T_875: (in _Dst : (ptr32 void))
+  Class: Eq_875
   DataType: (ptr32 void)
   OrigDataType: 
-T_882: (in _Val : int32)
-  Class: Eq_882
+T_876: (in _Val : int32)
+  Class: Eq_876
   DataType: int32
   OrigDataType: 
-T_883: (in _Size : size_t)
-  Class: Eq_883
-  DataType: Eq_883
+T_877: (in _Size : size_t)
+  Class: Eq_877
+  DataType: Eq_877
   OrigDataType: 
-T_884: (in fp : ptr32)
-  Class: Eq_884
+T_878: (in fp : ptr32)
+  Class: Eq_878
   DataType: ptr32
   OrigDataType: ptr32
-T_885: (in 0x00000328 : word32)
+T_879: (in 0x00000328 : word32)
+  Class: Eq_879
+  DataType: ui32
+  OrigDataType: ui32
+T_880: (in fp - 0x00000328 : word32)
+  Class: Eq_875
+  DataType: (ptr32 void)
+  OrigDataType: (ptr32 void)
+T_881: (in 0x00000000 : word32)
+  Class: Eq_876
+  DataType: int32
+  OrigDataType: int32
+T_882: (in 0x000002CC : word32)
+  Class: Eq_877
+  DataType: Eq_877
+  OrigDataType: size_t
+T_883: (in memset(fp - 0x00000328, 0x00000000, 0x000002CC) : (ptr32 void))
+  Class: Eq_883
+  DataType: (ptr32 void)
+  OrigDataType: (ptr32 void)
+T_884: (in memset : ptr32)
+  Class: Eq_873
+  DataType: (ptr32 Eq_873)
+  OrigDataType: (ptr32 (fn T_889 (T_886, T_887, T_888)))
+T_885: (in 0x0000005C : word32)
   Class: Eq_885
   DataType: ui32
   OrigDataType: ui32
-T_886: (in fp - 0x00000328 : word32)
-  Class: Eq_881
+T_886: (in fp - 0x0000005C : word32)
+  Class: Eq_875
   DataType: (ptr32 void)
   OrigDataType: (ptr32 void)
 T_887: (in 0x00000000 : word32)
-  Class: Eq_882
+  Class: Eq_876
   DataType: int32
   OrigDataType: int32
-T_888: (in 0x000002CC : word32)
-  Class: Eq_883
-  DataType: Eq_883
+T_888: (in 0x00000050 : word32)
+  Class: Eq_877
+  DataType: Eq_877
   OrigDataType: size_t
-T_889: (in memset(fp - 0x00000328, 0x00000000, 0x000002CC) : (ptr32 void))
-  Class: Eq_889
+T_889: (in memset(fp - 0x0000005C, 0x00000000, 0x00000050) : (ptr32 void))
+  Class: Eq_883
   DataType: (ptr32 void)
   OrigDataType: (ptr32 void)
-T_890: (in memset : ptr32)
-  Class: Eq_879
-  DataType: (ptr32 Eq_879)
-  OrigDataType: (ptr32 (fn T_895 (T_892, T_893, T_894)))
-T_891: (in 0x0000005C : word32)
+T_890: (in bl_90 : byte)
+  Class: Eq_890
+  DataType: byte
+  OrigDataType: byte
+T_891: (in 0x00 : byte)
   Class: Eq_891
-  DataType: ui32
-  OrigDataType: ui32
-T_892: (in fp - 0x0000005C : word32)
-  Class: Eq_881
-  DataType: (ptr32 void)
-  OrigDataType: (ptr32 void)
-T_893: (in 0x00000000 : word32)
-  Class: Eq_882
-  DataType: int32
-  OrigDataType: int32
-T_894: (in 0x00000050 : word32)
-  Class: Eq_883
-  DataType: Eq_883
-  OrigDataType: size_t
-T_895: (in memset(fp - 0x0000005C, 0x00000000, 0x00000050) : (ptr32 void))
-  Class: Eq_889
-  DataType: (ptr32 void)
-  OrigDataType: (ptr32 void)
-T_896: (in bl_90 : byte)
-  Class: Eq_896
   DataType: byte
   OrigDataType: byte
-T_897: (in 0x00 : byte)
-  Class: Eq_897
-  DataType: byte
-  OrigDataType: byte
-T_898: (in IsDebuggerPresent : ptr32)
-  Class: Eq_898
-  DataType: (ptr32 Eq_898)
-  OrigDataType: (ptr32 (fn T_900 ()))
-T_899: (in signature of IsDebuggerPresent : void)
-  Class: Eq_898
-  DataType: (ptr32 Eq_898)
+T_892: (in IsDebuggerPresent : ptr32)
+  Class: Eq_892
+  DataType: (ptr32 Eq_892)
+  OrigDataType: (ptr32 (fn T_894 ()))
+T_893: (in signature of IsDebuggerPresent : void)
+  Class: Eq_892
+  DataType: (ptr32 Eq_892)
   OrigDataType: 
-T_900: (in IsDebuggerPresent() : BOOL)
-  Class: Eq_832
-  DataType: Eq_832
+T_894: (in IsDebuggerPresent() : BOOL)
+  Class: Eq_826
+  DataType: Eq_826
   OrigDataType: BOOL
-T_901: (in 0x00000001 : word32)
-  Class: Eq_832
-  DataType: Eq_832
+T_895: (in 0x00000001 : word32)
+  Class: Eq_826
+  DataType: Eq_826
   OrigDataType: word32
-T_902: (in IsDebuggerPresent() == 0x00000001 : bool)
-  Class: Eq_902
-  DataType: Eq_902
-  OrigDataType: (union (bool u0) (byte u1))
-T_903: (in 0x00 - (IsDebuggerPresent() == 0x00000001) : byte)
+T_896: (in IsDebuggerPresent() == 0x00000001 : bool)
   Class: Eq_896
+  DataType: Eq_896
+  OrigDataType: (union (bool u0) (byte u1))
+T_897: (in 0x00 - (IsDebuggerPresent() == 0x00000001) : byte)
+  Class: Eq_890
   DataType: byte
   OrigDataType: byte
-T_904: (in SetUnhandledExceptionFilter : ptr32)
-  Class: Eq_904
-  DataType: (ptr32 Eq_904)
+T_898: (in SetUnhandledExceptionFilter : ptr32)
+  Class: Eq_898
+  DataType: (ptr32 Eq_898)
+  OrigDataType: (ptr32 (fn T_902 (T_901)))
+T_899: (in signature of SetUnhandledExceptionFilter : void)
+  Class: Eq_898
+  DataType: (ptr32 Eq_898)
+  OrigDataType: 
+T_900: (in lpTopLevelExceptionFilter : LPTOP_LEVEL_EXCEPTION_FILTER)
+  Class: Eq_900
+  DataType: Eq_900
+  OrigDataType: 
+T_901: (in 0x00000000 : word32)
+  Class: Eq_900
+  DataType: Eq_900
+  OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
+T_902: (in SetUnhandledExceptionFilter(null) : LPTOP_LEVEL_EXCEPTION_FILTER)
+  Class: Eq_900
+  DataType: Eq_900
+  OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
+T_903: (in UnhandledExceptionFilter : ptr32)
+  Class: Eq_903
+  DataType: (ptr32 Eq_903)
   OrigDataType: (ptr32 (fn T_908 (T_907)))
-T_905: (in signature of SetUnhandledExceptionFilter : void)
-  Class: Eq_904
-  DataType: (ptr32 Eq_904)
+T_904: (in signature of UnhandledExceptionFilter : void)
+  Class: Eq_903
+  DataType: (ptr32 Eq_903)
   OrigDataType: 
-T_906: (in lpTopLevelExceptionFilter : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_905: (in ExceptionInfo : (ptr32 (struct "_EXCEPTION_POINTERS")))
+  Class: Eq_905
+  DataType: (ptr32 Eq_905)
+  OrigDataType: 
+T_906: (in 0x0000000C : word32)
   Class: Eq_906
-  DataType: Eq_906
-  OrigDataType: 
-T_907: (in 0x00000000 : word32)
-  Class: Eq_906
-  DataType: Eq_906
-  OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_908: (in SetUnhandledExceptionFilter(null) : LPTOP_LEVEL_EXCEPTION_FILTER)
-  Class: Eq_906
-  DataType: Eq_906
-  OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_909: (in UnhandledExceptionFilter : ptr32)
-  Class: Eq_909
-  DataType: (ptr32 Eq_909)
-  OrigDataType: (ptr32 (fn T_914 (T_913)))
-T_910: (in signature of UnhandledExceptionFilter : void)
-  Class: Eq_909
-  DataType: (ptr32 Eq_909)
-  OrigDataType: 
-T_911: (in ExceptionInfo : (ptr32 (struct "_EXCEPTION_POINTERS")))
-  Class: Eq_911
-  DataType: (ptr32 Eq_911)
-  OrigDataType: 
-T_912: (in 0x0000000C : word32)
-  Class: Eq_912
   DataType: ui32
   OrigDataType: ui32
-T_913: (in fp - 0x0000000C : word32)
-  Class: Eq_911
-  DataType: (ptr32 Eq_911)
+T_907: (in fp - 0x0000000C : word32)
+  Class: Eq_905
+  DataType: (ptr32 Eq_905)
   OrigDataType: (ptr32 (struct "_EXCEPTION_POINTERS"))
-T_914: (in UnhandledExceptionFilter(fp - 0x0000000C) : LONG)
-  Class: Eq_914
-  DataType: Eq_914
+T_908: (in UnhandledExceptionFilter(fp - 0x0000000C) : LONG)
+  Class: Eq_908
+  DataType: Eq_908
   OrigDataType: LONG
-T_915: (in 0x00000000 : word32)
-  Class: Eq_914
-  DataType: Eq_914
+T_909: (in 0x00000000 : word32)
+  Class: Eq_908
+  DataType: Eq_908
   OrigDataType: word32
-T_916: (in UnhandledExceptionFilter(fp - 0x0000000C) != 0x00000000 : bool)
-  Class: Eq_916
+T_910: (in UnhandledExceptionFilter(fp - 0x0000000C) != 0x00000000 : bool)
+  Class: Eq_910
   DataType: bool
   OrigDataType: bool
-T_917: (in __fastfail : ptr32)
-  Class: Eq_917
-  DataType: (ptr32 Eq_917)
-  OrigDataType: (ptr32 (fn T_920 (T_222)))
-T_918: (in signature of __fastfail : void)
-  Class: Eq_917
-  DataType: (ptr32 Eq_917)
+T_911: (in __fastfail : ptr32)
+  Class: Eq_911
+  DataType: (ptr32 Eq_911)
+  OrigDataType: (ptr32 (fn T_914 (T_222)))
+T_912: (in signature of __fastfail : void)
+  Class: Eq_911
+  DataType: (ptr32 Eq_911)
   OrigDataType: 
-T_919: (in ecx : word32)
+T_913: (in ecx : word32)
   Class: Eq_222
   DataType: word32
   OrigDataType: 
-T_920: (in __fastfail(dwArg04) : void)
-  Class: Eq_920
+T_914: (in __fastfail(dwArg04) : void)
+  Class: Eq_914
   DataType: void
   OrigDataType: void
-T_921: (in 00403368 : ptr32)
+T_915: (in 00403368 : ptr32)
+  Class: Eq_915
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_916 t0000)))
+T_916: (in Mem97[0x00403368:word32] : word32)
+  Class: Eq_870
+  DataType: ui32
+  OrigDataType: ui32
+T_917: (in 0x00000000 : word32)
+  Class: Eq_917
+  DataType: ui32
+  OrigDataType: ui32
+T_918: (in 0x01 : byte)
+  Class: Eq_918
+  DataType: byte
+  OrigDataType: byte
+T_919: (in bl_90 + 0x01 : byte)
+  Class: Eq_919
+  DataType: byte
+  OrigDataType: byte
+T_920: (in (word32) (bl_90 + 0x01) : word32)
+  Class: Eq_920
+  DataType: word32
+  OrigDataType: word32
+T_921: (in -(word32) (bl_90 + 0x01) : word32)
   Class: Eq_921
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_922 t0000)))
-T_922: (in Mem97[0x00403368:word32] : word32)
-  Class: Eq_876
-  DataType: ui32
-  OrigDataType: ui32
-T_923: (in 0x00000000 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_922: (in 0x00000000 : word32)
+  Class: Eq_921
+  DataType: word32
+  OrigDataType: word32
+T_923: (in -(word32) (bl_90 + 0x01) == 0x00000000 : bool)
   Class: Eq_923
-  DataType: ui32
-  OrigDataType: ui32
-T_924: (in 0x01 : byte)
-  Class: Eq_924
-  DataType: byte
-  OrigDataType: byte
-T_925: (in bl_90 + 0x01 : byte)
-  Class: Eq_925
-  DataType: byte
-  OrigDataType: byte
-T_926: (in (word32) (bl_90 + 0x01) : word32)
-  Class: Eq_926
-  DataType: word32
-  OrigDataType: word32
-T_927: (in -(word32) (bl_90 + 0x01) : word32)
-  Class: Eq_927
-  DataType: word32
-  OrigDataType: word32
-T_928: (in 0x00000000 : word32)
-  Class: Eq_927
-  DataType: word32
-  OrigDataType: word32
-T_929: (in -(word32) (bl_90 + 0x01) == 0x00000000 : bool)
-  Class: Eq_929
-  DataType: Eq_929
+  DataType: Eq_923
   OrigDataType: (union (bool u0) (ui32 u1))
-T_930: (in 0x00000000 - (-((word32) (bl_90 + 0x01)) == 0x00000000) : word32)
-  Class: Eq_930
+T_924: (in 0x00000000 - (-((word32) (bl_90 + 0x01)) == 0x00000000) : word32)
+  Class: Eq_924
   DataType: ui32
   OrigDataType: ui32
-T_931: (in globals->dw403368 & 0x00000000 - (-((word32) (bl_90 + 0x01)) == 0x00000000) : word32)
-  Class: Eq_876
+T_925: (in globals->dw403368 & 0x00000000 - (-((word32) (bl_90 + 0x01)) == 0x00000000) : word32)
+  Class: Eq_870
   DataType: ui32
   OrigDataType: ui32
-T_932: (in 00403368 : ptr32)
-  Class: Eq_932
+T_926: (in 00403368 : ptr32)
+  Class: Eq_926
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_933 t0000)))
-T_933: (in Mem108[0x00403368:word32] : word32)
-  Class: Eq_876
+  OrigDataType: (ptr32 (struct (0 T_927 t0000)))
+T_927: (in Mem108[0x00403368:word32] : word32)
+  Class: Eq_870
   DataType: ui32
   OrigDataType: word32
-T_934: (in eax : Eq_934)
-  Class: Eq_934
-  DataType: Eq_934
+T_928: (in eax : Eq_928)
+  Class: Eq_928
+  DataType: Eq_928
   OrigDataType: word32
-T_935: (in eax_12 : Eq_470)
-  Class: Eq_470
-  DataType: Eq_470
+T_929: (in eax_12 : Eq_468)
+  Class: Eq_468
+  DataType: Eq_468
   OrigDataType: HMODULE
-T_936: (in GetModuleHandleW : ptr32)
-  Class: Eq_936
-  DataType: (ptr32 Eq_936)
-  OrigDataType: (ptr32 (fn T_940 (T_939)))
-T_937: (in signature of GetModuleHandleW : void)
-  Class: Eq_936
-  DataType: (ptr32 Eq_936)
+T_930: (in GetModuleHandleW : ptr32)
+  Class: Eq_930
+  DataType: (ptr32 Eq_930)
+  OrigDataType: (ptr32 (fn T_934 (T_933)))
+T_931: (in signature of GetModuleHandleW : void)
+  Class: Eq_930
+  DataType: (ptr32 Eq_930)
   OrigDataType: 
-T_938: (in lpModuleName : LPCWSTR)
-  Class: Eq_938
-  DataType: Eq_938
+T_932: (in lpModuleName : LPCWSTR)
+  Class: Eq_932
+  DataType: Eq_932
   OrigDataType: 
-T_939: (in 0x00000000 : word32)
-  Class: Eq_938
-  DataType: Eq_938
+T_933: (in 0x00000000 : word32)
+  Class: Eq_932
+  DataType: Eq_932
   OrigDataType: LPCWSTR
-T_940: (in GetModuleHandleW(null) : HMODULE)
-  Class: Eq_470
-  DataType: Eq_470
+T_934: (in GetModuleHandleW(null) : HMODULE)
+  Class: Eq_468
+  DataType: Eq_468
   OrigDataType: HMODULE
-T_941: (in ecx_20 : Eq_470)
-  Class: Eq_470
-  DataType: Eq_470
+T_935: (in ecx_20 : Eq_468)
+  Class: Eq_468
+  DataType: Eq_468
   OrigDataType: HMODULE
-T_942: (in 0x00000000 : word32)
-  Class: Eq_470
-  DataType: Eq_470
+T_936: (in 0x00000000 : word32)
+  Class: Eq_468
+  DataType: Eq_468
   OrigDataType: word32
-T_943: (in eax_12 != null : bool)
+T_937: (in eax_12 != null : bool)
+  Class: Eq_937
+  DataType: bool
+  OrigDataType: bool
+T_938: (in 0x00005A4D : word32)
+  Class: Eq_468
+  DataType: Eq_468
+  OrigDataType: word32
+T_939: (in 0x00000000 : word32)
+  Class: Eq_939
+  DataType: word32
+  OrigDataType: word32
+T_940: (in eax_12 + 0x00000000 : word32)
+  Class: Eq_940
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
+T_941: (in Mem5[eax_12 + 0x00000000:word16] : word16)
+  Class: Eq_941
+  DataType: Eq_941
+  OrigDataType: int32
+T_942: (in 0x5A4D : word16)
+  Class: Eq_941
+  DataType: word16
+  OrigDataType: word16
+T_943: (in eax_12->unused != 0x5A4D : bool)
   Class: Eq_943
   DataType: bool
   OrigDataType: bool
-T_944: (in 0x00005A4D : word32)
-  Class: Eq_470
-  DataType: Eq_470
-  OrigDataType: word32
-T_945: (in 0x00000000 : word32)
-  Class: Eq_945
-  DataType: word32
-  OrigDataType: word32
-T_946: (in eax_12 + 0x00000000 : word32)
-  Class: Eq_946
-  DataType: (ptr32 int32)
-  OrigDataType: (ptr32 int32)
-T_947: (in Mem5[eax_12 + 0x00000000:word16] : word16)
-  Class: Eq_947
-  DataType: Eq_947
-  OrigDataType: int32
-T_948: (in 0x5A4D : word16)
-  Class: Eq_947
-  DataType: word16
-  OrigDataType: word16
-T_949: (in eax_12->unused != 0x5A4D : bool)
-  Class: Eq_949
-  DataType: bool
-  OrigDataType: bool
-T_950: (in 0x00 : byte)
-  Class: Eq_950
+T_944: (in 0x00 : byte)
+  Class: Eq_944
   DataType: byte
   OrigDataType: byte
-T_951: (in DPB(eax_12, 0x00, 0) : word32)
-  Class: Eq_934
-  DataType: Eq_934
+T_945: (in DPB(eax_12, 0x00, 0) : word32)
+  Class: Eq_928
+  DataType: Eq_928
   OrigDataType: HMODULE
-T_952: (in 0x0000003C : word32)
-  Class: Eq_952
+T_946: (in 0x0000003C : word32)
+  Class: Eq_946
   DataType: word32
   OrigDataType: word32
-T_953: (in eax_12 + 0x0000003C : word32)
-  Class: Eq_953
-  DataType: Eq_953
+T_947: (in eax_12 + 0x0000003C : word32)
+  Class: Eq_947
+  DataType: Eq_947
   OrigDataType: HMODULE
-T_954: (in Mem5[eax_12 + 0x0000003C:word32] : word32)
-  Class: Eq_954
+T_948: (in Mem5[eax_12 + 0x0000003C:word32] : word32)
+  Class: Eq_948
   DataType: int32
   OrigDataType: int32
-T_955: (in Mem5[eax_12 + 0x0000003C:word32] + eax_12 : word32)
-  Class: Eq_470
-  DataType: Eq_470
+T_949: (in Mem5[eax_12 + 0x0000003C:word32] + eax_12 : word32)
+  Class: Eq_468
+  DataType: Eq_468
   OrigDataType: int32
-T_956: (in 0x00000000 : word32)
+T_950: (in 0x00000000 : word32)
+  Class: Eq_950
+  DataType: word32
+  OrigDataType: word32
+T_951: (in eax_12 + 0x00000000 : word32)
+  Class: Eq_951
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
+T_952: (in Mem5[eax_12 + 0x00000000:word32] : word32)
+  Class: Eq_952
+  DataType: int32
+  OrigDataType: int32
+T_953: (in 0x00004550 : word32)
+  Class: Eq_952
+  DataType: int32
+  OrigDataType: word32
+T_954: (in eax_12->unused != 0x00004550 : bool)
+  Class: Eq_954
+  DataType: bool
+  OrigDataType: bool
+T_955: (in 0x0000010B : word32)
+  Class: Eq_468
+  DataType: Eq_468
+  OrigDataType: word32
+T_956: (in 0x00000018 : word32)
   Class: Eq_956
   DataType: word32
   OrigDataType: word32
-T_957: (in eax_12 + 0x00000000 : word32)
+T_957: (in eax_12 + 0x00000018 : word32)
   Class: Eq_957
-  DataType: (ptr32 int32)
-  OrigDataType: (ptr32 int32)
-T_958: (in Mem5[eax_12 + 0x00000000:word32] : word32)
+  DataType: Eq_957
+  OrigDataType: HMODULE
+T_958: (in Mem5[eax_12 + 0x00000018:word16] : word16)
   Class: Eq_958
-  DataType: int32
+  DataType: Eq_958
   OrigDataType: int32
-T_959: (in 0x00004550 : word32)
+T_959: (in 0x010B : word16)
   Class: Eq_958
-  DataType: int32
-  OrigDataType: word32
-T_960: (in eax_12->unused != 0x00004550 : bool)
+  DataType: word16
+  OrigDataType: word16
+T_960: (in (&eax_12->unused)[6] != 0x010B : bool)
   Class: Eq_960
   DataType: bool
   OrigDataType: bool
-T_961: (in 0x0000010B : word32)
-  Class: Eq_470
-  DataType: Eq_470
-  OrigDataType: word32
-T_962: (in 0x00000018 : word32)
-  Class: Eq_962
+T_961: (in 0x00000074 : word32)
+  Class: Eq_961
   DataType: word32
   OrigDataType: word32
-T_963: (in eax_12 + 0x00000018 : word32)
+T_962: (in eax_12 + 0x00000074 : word32)
+  Class: Eq_962
+  DataType: Eq_962
+  OrigDataType: HMODULE
+T_963: (in Mem5[eax_12 + 0x00000074:word32] : word32)
   Class: Eq_963
   DataType: Eq_963
-  OrigDataType: HMODULE
-T_964: (in Mem5[eax_12 + 0x00000018:word16] : word16)
-  Class: Eq_964
-  DataType: Eq_964
-  OrigDataType: int32
-T_965: (in 0x010B : word16)
-  Class: Eq_964
-  DataType: word16
-  OrigDataType: word16
-T_966: (in (&eax_12->unused)[6] != 0x010B : bool)
-  Class: Eq_966
+  OrigDataType: (union (int32 u0) (up32 u1))
+T_964: (in 0x0000000E : word32)
+  Class: Eq_963
+  DataType: up32
+  OrigDataType: up32
+T_965: (in (&eax_12->unused)[29] <= 0x0000000E : bool)
+  Class: Eq_965
   DataType: bool
   OrigDataType: bool
-T_967: (in 0x00000074 : word32)
+T_966: (in eax_38 : Eq_928)
+  Class: Eq_928
+  DataType: Eq_928
+  OrigDataType: (union (HMODULE u1))
+T_967: (in 0x000000E8 : word32)
   Class: Eq_967
   DataType: word32
   OrigDataType: word32
-T_968: (in eax_12 + 0x00000074 : word32)
+T_968: (in eax_12 + 0x000000E8 : word32)
   Class: Eq_968
   DataType: Eq_968
   OrigDataType: HMODULE
-T_969: (in Mem5[eax_12 + 0x00000074:word32] : word32)
+T_969: (in Mem5[eax_12 + 0x000000E8:word32] : word32)
   Class: Eq_969
-  DataType: Eq_969
-  OrigDataType: (union (int32 u0) (up32 u1))
-T_970: (in 0x0000000E : word32)
+  DataType: int32
+  OrigDataType: int32
+T_970: (in 0x00000000 : word32)
   Class: Eq_969
-  DataType: up32
-  OrigDataType: up32
-T_971: (in (&eax_12->unused)[29] <= 0x0000000E : bool)
+  DataType: int32
+  OrigDataType: word32
+T_971: (in (&eax_12->unused)[58] != 0x00000000 : bool)
   Class: Eq_971
   DataType: bool
   OrigDataType: bool
-T_972: (in eax_38 : Eq_934)
-  Class: Eq_934
-  DataType: Eq_934
-  OrigDataType: (union (HMODULE u1))
-T_973: (in 0x000000E8 : word32)
-  Class: Eq_973
-  DataType: word32
+T_972: (in DPB(eax_12, Mem5[eax_12 + 0x000000E8:word32] != 0x00000000, 0) : word32)
+  Class: Eq_928
+  DataType: Eq_928
+  OrigDataType: HMODULE
+T_973: (in 0x0000010B : word32)
+  Class: Eq_468
+  DataType: Eq_468
   OrigDataType: word32
-T_974: (in eax_12 + 0x000000E8 : word32)
+T_974: (in 004020D4 : ptr32)
   Class: Eq_974
-  DataType: Eq_974
-  OrigDataType: HMODULE
-T_975: (in Mem5[eax_12 + 0x000000E8:word32] : word32)
-  Class: Eq_975
-  DataType: int32
-  OrigDataType: int32
-T_976: (in 0x00000000 : word32)
-  Class: Eq_975
-  DataType: int32
-  OrigDataType: word32
-T_977: (in (&eax_12->unused)[58] != 0x00000000 : bool)
-  Class: Eq_977
-  DataType: bool
-  OrigDataType: bool
-T_978: (in DPB(eax_12, Mem5[eax_12 + 0x000000E8:word32] != 0x00000000, 0) : word32)
-  Class: Eq_934
-  DataType: Eq_934
-  OrigDataType: HMODULE
-T_979: (in 0x0000010B : word32)
-  Class: Eq_470
-  DataType: Eq_470
-  OrigDataType: word32
-T_980: (in 004020D4 : ptr32)
-  Class: Eq_980
   DataType: (ptr32 (ptr32 code))
-  OrigDataType: (ptr32 (struct (0 T_981 t0000)))
-T_981: (in Mem0[0x004020D4:word32] : word32)
-  Class: Eq_981
+  OrigDataType: (ptr32 (struct (0 T_975 t0000)))
+T_975: (in Mem0[0x004020D4:word32] : word32)
+  Class: Eq_975
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_982: (in ebp : ptr32)
-  Class: Eq_982
+T_976: (in ebp : ptr32)
+  Class: Eq_976
   DataType: ptr32
   OrigDataType: word32
-T_983: (in esp_14 : ptr32)
-  Class: Eq_983
+T_977: (in esp_14 : ptr32)
+  Class: Eq_977
   DataType: ptr32
   OrigDataType: ptr32
-T_984: (in fp : ptr32)
-  Class: Eq_984
+T_978: (in fp : ptr32)
+  Class: Eq_978
   DataType: ptr32
   OrigDataType: ptr32
-T_985: (in 8 : int32)
-  Class: Eq_985
+T_979: (in 8 : int32)
+  Class: Eq_979
   DataType: int32
   OrigDataType: int32
-T_986: (in fp - 8 : word32)
-  Class: Eq_986
+T_980: (in fp - 8 : word32)
+  Class: Eq_980
   DataType: ptr32
   OrigDataType: ptr32
-T_987: (in fp - 8 - dwArg08 : word32)
-  Class: Eq_983
+T_981: (in fp - 8 - dwArg08 : word32)
+  Class: Eq_977
   DataType: ptr32
   OrigDataType: ptr32
-T_988: (in 4 : int32)
-  Class: Eq_988
+T_982: (in 4 : int32)
+  Class: Eq_982
   DataType: int32
   OrigDataType: int32
-T_989: (in esp_14 - 4 : word32)
-  Class: Eq_989
+T_983: (in esp_14 - 4 : word32)
+  Class: Eq_983
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_992 t0000)))
-T_990: (in 0x00000000 : word32)
-  Class: Eq_990
+  OrigDataType: (ptr32 (struct (0 T_986 t0000)))
+T_984: (in 0x00000000 : word32)
+  Class: Eq_984
   DataType: word32
   OrigDataType: word32
-T_991: (in esp_14 - 4 + 0x00000000 : word32)
-  Class: Eq_991
+T_985: (in esp_14 - 4 + 0x00000000 : word32)
+  Class: Eq_985
   DataType: ptr32
   OrigDataType: ptr32
-T_992: (in Mem17[esp_14 - 4 + 0x00000000:word32] : word32)
+T_986: (in Mem17[esp_14 - 4 + 0x00000000:word32] : word32)
   Class: Eq_138
   DataType: word32
   OrigDataType: word32
-T_993: (in 8 : int32)
+T_987: (in 8 : int32)
+  Class: Eq_987
+  DataType: int32
+  OrigDataType: int32
+T_988: (in esp_14 - 8 : word32)
+  Class: Eq_988
+  DataType: (ptr32 Eq_139)
+  OrigDataType: (ptr32 (struct (0 T_991 t0000)))
+T_989: (in 0x00000000 : word32)
+  Class: Eq_989
+  DataType: word32
+  OrigDataType: word32
+T_990: (in esp_14 - 8 + 0x00000000 : word32)
+  Class: Eq_990
+  DataType: ptr32
+  OrigDataType: ptr32
+T_991: (in Mem20[esp_14 - 8 + 0x00000000:word32] : word32)
+  Class: Eq_139
+  DataType: Eq_139
+  OrigDataType: word32
+T_992: (in 12 : int32)
+  Class: Eq_992
+  DataType: int32
+  OrigDataType: int32
+T_993: (in esp_14 - 12 : word32)
   Class: Eq_993
-  DataType: int32
-  OrigDataType: int32
-T_994: (in esp_14 - 8 : word32)
+  DataType: (ptr32 Eq_139)
+  OrigDataType: (ptr32 (struct (0 T_996 t0000)))
+T_994: (in 0x00000000 : word32)
   Class: Eq_994
-  DataType: (ptr32 Eq_139)
-  OrigDataType: (ptr32 (struct (0 T_997 t0000)))
-T_995: (in 0x00000000 : word32)
+  DataType: word32
+  OrigDataType: word32
+T_995: (in esp_14 - 12 + 0x00000000 : word32)
   Class: Eq_995
-  DataType: word32
-  OrigDataType: word32
-T_996: (in esp_14 - 8 + 0x00000000 : word32)
-  Class: Eq_996
   DataType: ptr32
   OrigDataType: ptr32
-T_997: (in Mem20[esp_14 - 8 + 0x00000000:word32] : word32)
+T_996: (in Mem23[esp_14 - 12 + 0x00000000:word32] : word32)
   Class: Eq_139
   DataType: Eq_139
   OrigDataType: word32
-T_998: (in 12 : int32)
-  Class: Eq_998
-  DataType: int32
-  OrigDataType: int32
-T_999: (in esp_14 - 12 : word32)
-  Class: Eq_999
-  DataType: (ptr32 Eq_139)
-  OrigDataType: (ptr32 (struct (0 T_1002 t0000)))
-T_1000: (in 0x00000000 : word32)
-  Class: Eq_1000
-  DataType: word32
-  OrigDataType: word32
-T_1001: (in esp_14 - 12 + 0x00000000 : word32)
-  Class: Eq_1001
-  DataType: ptr32
-  OrigDataType: ptr32
-T_1002: (in Mem23[esp_14 - 12 + 0x00000000:word32] : word32)
-  Class: Eq_139
-  DataType: Eq_139
-  OrigDataType: word32
-T_1003: (in 00403004 : ptr32)
-  Class: Eq_1003
+T_997: (in 00403004 : ptr32)
+  Class: Eq_997
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1004 t0000)))
-T_1004: (in Mem23[0x00403004:word32] : word32)
-  Class: Eq_799
+  OrigDataType: (ptr32 (struct (0 T_998 t0000)))
+T_998: (in Mem23[0x00403004:word32] : word32)
+  Class: Eq_793
   DataType: ui32
   OrigDataType: word32
-T_1005: (in 0x00000008 : word32)
-  Class: Eq_1005
+T_999: (in 0x00000008 : word32)
+  Class: Eq_999
   DataType: int32
   OrigDataType: int32
-T_1006: (in fp + 0x00000008 : word32)
-  Class: Eq_1006
+T_1000: (in fp + 0x00000008 : word32)
+  Class: Eq_1000
   DataType: ptr32
   OrigDataType: ptr32
-T_1007: (in globals->dw403004 ^ fp + 0x00000008 : word32)
-  Class: Eq_1007
+T_1001: (in globals->dw403004 ^ fp + 0x00000008 : word32)
+  Class: Eq_1001
   DataType: ui32
   OrigDataType: ui32
-T_1008: (in 16 : int32)
-  Class: Eq_1008
+T_1002: (in 16 : int32)
+  Class: Eq_1002
   DataType: int32
   OrigDataType: int32
-T_1009: (in esp_14 - 16 : word32)
-  Class: Eq_1009
+T_1003: (in esp_14 - 16 : word32)
+  Class: Eq_1003
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1012 t0000)))
-T_1010: (in 0x00000000 : word32)
-  Class: Eq_1010
+  OrigDataType: (ptr32 (struct (0 T_1006 t0000)))
+T_1004: (in 0x00000000 : word32)
+  Class: Eq_1004
   DataType: word32
   OrigDataType: word32
-T_1011: (in esp_14 - 16 + 0x00000000 : word32)
-  Class: Eq_1011
+T_1005: (in esp_14 - 16 + 0x00000000 : word32)
+  Class: Eq_1005
   DataType: ptr32
   OrigDataType: ptr32
-T_1012: (in Mem32[esp_14 - 16 + 0x00000000:word32] : word32)
-  Class: Eq_1007
+T_1006: (in Mem32[esp_14 - 16 + 0x00000000:word32] : word32)
+  Class: Eq_1001
   DataType: ui32
   OrigDataType: word32
-T_1013: (in 20 : int32)
-  Class: Eq_1013
+T_1007: (in 20 : int32)
+  Class: Eq_1007
   DataType: int32
   OrigDataType: int32
-T_1014: (in esp_14 - 20 : word32)
-  Class: Eq_1014
+T_1008: (in esp_14 - 20 : word32)
+  Class: Eq_1008
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_1017 t0000)))
-T_1015: (in 0x00000000 : word32)
-  Class: Eq_1015
+  OrigDataType: (ptr32 (struct (0 T_1011 t0000)))
+T_1009: (in 0x00000000 : word32)
+  Class: Eq_1009
   DataType: word32
   OrigDataType: word32
-T_1016: (in esp_14 - 20 + 0x00000000 : word32)
-  Class: Eq_1016
+T_1010: (in esp_14 - 20 + 0x00000000 : word32)
+  Class: Eq_1010
   DataType: ptr32
   OrigDataType: ptr32
-T_1017: (in Mem36[esp_14 - 20 + 0x00000000:word32] : word32)
+T_1011: (in Mem36[esp_14 - 20 + 0x00000000:word32] : word32)
   Class: Eq_141
   DataType: word32
   OrigDataType: word32
-T_1018: (in 0x00000008 : word32)
-  Class: Eq_1018
+T_1012: (in 0x00000008 : word32)
+  Class: Eq_1012
   DataType: ui32
   OrigDataType: ui32
-T_1019: (in fp - 0x00000008 : word32)
-  Class: Eq_1019
+T_1013: (in fp - 0x00000008 : word32)
+  Class: Eq_1013
   DataType: ptr32
   OrigDataType: ptr32
-T_1020: (in fs : selector)
+T_1014: (in fs : selector)
+  Class: Eq_1014
+  DataType: (ptr32 Eq_1014)
+  OrigDataType: (ptr32 (segment (0 T_1016 t0000)))
+T_1015: (in 0x00000000 : word32)
+  Class: Eq_1015
+  DataType: (memptr (ptr32 Eq_1014) ptr32)
+  OrigDataType: (memptr T_1014 (struct (0 T_1016 t0000)))
+T_1016: (in Mem41[fs:0x00000000:word32] : word32)
+  Class: Eq_1013
+  DataType: ptr32
+  OrigDataType: word32
+T_1017: (in fp + 0x00000008 : word32)
+  Class: Eq_976
+  DataType: ptr32
+  OrigDataType: ptr32
+T_1018: (in ebx : word32)
+  Class: Eq_1018
+  DataType: word32
+  OrigDataType: word32
+T_1019: (in 0x00000010 : word32)
+  Class: Eq_1019
+  DataType: ui32
+  OrigDataType: ui32
+T_1020: (in ebp - 0x00000010 : word32)
   Class: Eq_1020
-  DataType: (ptr32 Eq_1020)
-  OrigDataType: (ptr32 (segment (0 T_1022 t0000)))
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 (struct (0 T_1023 t0000)))
 T_1021: (in 0x00000000 : word32)
   Class: Eq_1021
-  DataType: (memptr (ptr32 Eq_1020) ptr32)
-  OrigDataType: (memptr T_1020 (struct (0 T_1022 t0000)))
-T_1022: (in Mem41[fs:0x00000000:word32] : word32)
-  Class: Eq_1019
-  DataType: ptr32
+  DataType: word32
   OrigDataType: word32
-T_1023: (in fp + 0x00000008 : word32)
-  Class: Eq_982
-  DataType: ptr32
-  OrigDataType: ptr32
-T_1024: (in ebx : word32)
+T_1022: (in ebp - 0x00000010 + 0x00000000 : word32)
+  Class: Eq_1022
+  DataType: word32
+  OrigDataType: word32
+T_1023: (in Mem0[ebp - 0x00000010 + 0x00000000:word32] : word32)
+  Class: Eq_1023
+  DataType: word32
+  OrigDataType: word32
+T_1024: (in fs : selector)
   Class: Eq_1024
-  DataType: word32
-  OrigDataType: word32
-T_1025: (in 0x00000010 : word32)
+  DataType: (ptr32 Eq_1024)
+  OrigDataType: (ptr32 (segment (0 T_1026 t0000)))
+T_1025: (in 0x00000000 : ptr32)
   Class: Eq_1025
-  DataType: ui32
-  OrigDataType: ui32
-T_1026: (in ebp - 0x00000010 : word32)
-  Class: Eq_1026
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_1029 t0000)))
-T_1027: (in 0x00000000 : word32)
-  Class: Eq_1027
+  DataType: Eq_1025
+  OrigDataType: (union (ptr32 u0) ((memptr T_1024 (struct (0 word32 dw0000))) u1))
+T_1026: (in Mem8[fs:0x00000000:word32] : word32)
+  Class: Eq_1023
   DataType: word32
   OrigDataType: word32
-T_1028: (in ebp - 0x00000010 + 0x00000000 : word32)
+T_1027: (in ebp_19 : ptr32)
+  Class: Eq_306
+  DataType: ptr32
+  OrigDataType: word32
+T_1028: (in 0x00000000 : word32)
   Class: Eq_1028
   DataType: word32
   OrigDataType: word32
-T_1029: (in Mem0[ebp - 0x00000010 + 0x00000000:word32] : word32)
+T_1029: (in ebp + 0x00000000 : word32)
   Class: Eq_1029
-  DataType: word32
-  OrigDataType: word32
-T_1030: (in fs : selector)
-  Class: Eq_1030
-  DataType: (ptr32 Eq_1030)
-  OrigDataType: (ptr32 (segment (0 T_1032 t0000)))
-T_1031: (in 0x00000000 : ptr32)
-  Class: Eq_1031
-  DataType: Eq_1031
-  OrigDataType: (union (ptr32 u0) ((memptr T_1030 (struct (0 word32 dw0000))) u1))
-T_1032: (in Mem8[fs:0x00000000:word32] : word32)
-  Class: Eq_1029
-  DataType: word32
-  OrigDataType: word32
-T_1033: (in ebp_19 : ptr32)
-  Class: Eq_306
-  DataType: ptr32
-  OrigDataType: word32
-T_1034: (in 0x00000000 : word32)
-  Class: Eq_1034
-  DataType: word32
-  OrigDataType: word32
-T_1035: (in ebp + 0x00000000 : word32)
-  Class: Eq_1035
   DataType: ptr32
   OrigDataType: ptr32
-T_1036: (in Mem8[ebp + 0x00000000:word32] : word32)
+T_1030: (in Mem8[ebp + 0x00000000:word32] : word32)
   Class: Eq_306
   DataType: ptr32
   OrigDataType: word32
-T_1037: (in 0x00000000 : word32)
-  Class: Eq_1037
+T_1031: (in 0x00000000 : word32)
+  Class: Eq_1031
   DataType: word32
   OrigDataType: word32
-T_1038: (in ebp + 0x00000000 : word32)
-  Class: Eq_1038
+T_1032: (in ebp + 0x00000000 : word32)
+  Class: Eq_1032
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 word32)
-T_1039: (in Mem22[ebp + 0x00000000:word32] : word32)
+T_1033: (in Mem22[ebp + 0x00000000:word32] : word32)
   Class: Eq_306
   DataType: ptr32
   OrigDataType: word32
-T_1040: (in dwArg0C : word32)
+T_1034: (in dwArg0C : word32)
   Class: Eq_308
   DataType: ptr32
   OrigDataType: word32
-T_1041: (in dwArg08 : word32)
+T_1035: (in dwArg08 : word32)
   Class: Eq_309
   DataType: ptr32
   OrigDataType: word32
-T_1042: (in dwArg10 : word32)
-  Class: Eq_1024
+T_1036: (in dwArg10 : word32)
+  Class: Eq_1018
   DataType: word32
   OrigDataType: word32
-T_1043: (in 0040336C : ptr32)
+T_1037: (in 0040336C : ptr32)
+  Class: Eq_1037
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1038 t0000)))
+T_1038: (in Mem6[0x0040336C:word32] : word32)
+  Class: Eq_1038
+  DataType: ui32
+  OrigDataType: ui32
+T_1039: (in 0x00000000 : word32)
+  Class: Eq_1039
+  DataType: ui32
+  OrigDataType: ui32
+T_1040: (in globals->dw40336C & 0x00000000 : word32)
+  Class: Eq_1038
+  DataType: ui32
+  OrigDataType: ui32
+T_1041: (in 0040336C : ptr32)
+  Class: Eq_1041
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1042 t0000)))
+T_1042: (in Mem9[0x0040336C:word32] : word32)
+  Class: Eq_1038
+  DataType: ui32
+  OrigDataType: word32
+T_1043: (in 00403010 : ptr32)
   Class: Eq_1043
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_1044 t0000)))
-T_1044: (in Mem6[0x0040336C:word32] : word32)
+T_1044: (in Mem14[0x00403010:word32] : word32)
   Class: Eq_1044
   DataType: ui32
   OrigDataType: ui32
-T_1045: (in 0x00000000 : word32)
+T_1045: (in 0x00000001 : word32)
   Class: Eq_1045
   DataType: ui32
   OrigDataType: ui32
-T_1046: (in globals->dw40336C & 0x00000000 : word32)
+T_1046: (in globals->dw403010 | 0x00000001 : word32)
   Class: Eq_1044
   DataType: ui32
   OrigDataType: ui32
-T_1047: (in 0040336C : ptr32)
+T_1047: (in 00403010 : ptr32)
   Class: Eq_1047
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_1048 t0000)))
-T_1048: (in Mem9[0x0040336C:word32] : word32)
+T_1048: (in Mem18[0x00403010:word32] : word32)
   Class: Eq_1044
   DataType: ui32
   OrigDataType: word32
-T_1049: (in 00403010 : ptr32)
-  Class: Eq_1049
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1050 t0000)))
-T_1050: (in Mem14[0x00403010:word32] : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: ui32
-T_1051: (in 0x00000001 : word32)
-  Class: Eq_1051
-  DataType: ui32
-  OrigDataType: ui32
-T_1052: (in globals->dw403010 | 0x00000001 : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: ui32
-T_1053: (in 00403010 : ptr32)
-  Class: Eq_1053
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1054 t0000)))
-T_1054: (in Mem18[0x00403010:word32] : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: word32
-T_1055: (in IsProcessorFeaturePresent : ptr32)
-  Class: Eq_869
-  DataType: (ptr32 Eq_869)
-  OrigDataType: (ptr32 (fn T_1057 (T_1056)))
-T_1056: (in 0x0000000A : word32)
+T_1049: (in IsProcessorFeaturePresent : ptr32)
+  Class: Eq_863
+  DataType: (ptr32 Eq_863)
+  OrigDataType: (ptr32 (fn T_1051 (T_1050)))
+T_1050: (in 0x0000000A : word32)
   Class: Eq_131
   DataType: Eq_131
   OrigDataType: DWORD
-T_1057: (in IsProcessorFeaturePresent(0x0000000A) : BOOL)
-  Class: Eq_832
-  DataType: Eq_832
+T_1051: (in IsProcessorFeaturePresent(0x0000000A) : BOOL)
+  Class: Eq_826
+  DataType: Eq_826
   OrigDataType: BOOL
-T_1058: (in 0x00000000 : word32)
-  Class: Eq_832
-  DataType: Eq_832
+T_1052: (in 0x00000000 : word32)
+  Class: Eq_826
+  DataType: Eq_826
   OrigDataType: word32
-T_1059: (in IsProcessorFeaturePresent(0x0000000A) == 0x00000000 : bool)
-  Class: Eq_1059
+T_1053: (in IsProcessorFeaturePresent(0x0000000A) == 0x00000000 : bool)
+  Class: Eq_1053
   DataType: bool
   OrigDataType: bool
-T_1060: (in edi_101 : ui32)
-  Class: Eq_1060
+T_1054: (in edi_101 : ui32)
+  Class: Eq_1054
   DataType: ui32
   OrigDataType: ui32
-T_1061: (in 00403010 : ptr32)
-  Class: Eq_1061
+T_1055: (in 00403010 : ptr32)
+  Class: Eq_1055
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1062 t0000)))
-T_1062: (in Mem28[0x00403010:word32] : word32)
-  Class: Eq_1050
+  OrigDataType: (ptr32 (struct (0 T_1056 t0000)))
+T_1056: (in Mem28[0x00403010:word32] : word32)
+  Class: Eq_1044
   DataType: ui32
   OrigDataType: ui32
-T_1063: (in 0x00000002 : word32)
-  Class: Eq_1063
+T_1057: (in 0x00000002 : word32)
+  Class: Eq_1057
   DataType: ui32
   OrigDataType: ui32
-T_1064: (in globals->dw403010 | 0x00000002 : word32)
-  Class: Eq_1050
+T_1058: (in globals->dw403010 | 0x00000002 : word32)
+  Class: Eq_1044
   DataType: ui32
   OrigDataType: ui32
-T_1065: (in 00403010 : ptr32)
-  Class: Eq_1065
+T_1059: (in 00403010 : ptr32)
+  Class: Eq_1059
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1066 t0000)))
-T_1066: (in Mem32[0x00403010:word32] : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: word32
-T_1067: (in 0x00000001 : word32)
+  OrigDataType: (ptr32 (struct (0 T_1060 t0000)))
+T_1060: (in Mem32[0x00403010:word32] : word32)
   Class: Eq_1044
   DataType: ui32
   OrigDataType: word32
-T_1068: (in 0040336C : ptr32)
+T_1061: (in 0x00000001 : word32)
+  Class: Eq_1038
+  DataType: ui32
+  OrigDataType: word32
+T_1062: (in 0040336C : ptr32)
+  Class: Eq_1062
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1063 t0000)))
+T_1063: (in Mem41[0x0040336C:word32] : word32)
+  Class: Eq_1038
+  DataType: ui32
+  OrigDataType: word32
+T_1064: (in __cpuid : ptr32)
+  Class: Eq_1064
+  DataType: (ptr32 Eq_1064)
+  OrigDataType: (ptr32 (fn T_1081 (T_1072, T_1073, T_1075, T_1077, T_1079, T_1080)))
+T_1065: (in signature of __cpuid : void)
+  Class: Eq_1064
+  DataType: (ptr32 Eq_1064)
+  OrigDataType: 
+T_1066: (in  : word32)
+  Class: Eq_1066
+  DataType: word32
+  OrigDataType: 
+T_1067: (in  : word32)
+  Class: Eq_1067
+  DataType: word32
+  OrigDataType: 
+T_1068: (in  : ptr32)
   Class: Eq_1068
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1069 t0000)))
-T_1069: (in Mem41[0x0040336C:word32] : word32)
-  Class: Eq_1044
-  DataType: ui32
+  DataType: (ptr32 word32)
+  OrigDataType: 
+T_1069: (in  : ptr32)
+  Class: Eq_1069
+  DataType: (ptr32 word32)
+  OrigDataType: 
+T_1070: (in  : ptr32)
+  Class: Eq_1070
+  DataType: (ptr32 word32)
+  OrigDataType: 
+T_1071: (in  : ptr32)
+  Class: Eq_1071
+  DataType: (ptr32 word32)
+  OrigDataType: 
+T_1072: (in 0x00000000 : word32)
+  Class: Eq_1066
+  DataType: word32
   OrigDataType: word32
-T_1070: (in __cpuid : ptr32)
-  Class: Eq_1070
-  DataType: (ptr32 Eq_1070)
-  OrigDataType: (ptr32 (fn T_1087 (T_1078, T_1079, T_1081, T_1083, T_1085, T_1086)))
-T_1071: (in signature of __cpuid : void)
-  Class: Eq_1070
-  DataType: (ptr32 Eq_1070)
-  OrigDataType: 
-T_1072: (in  : word32)
-  Class: Eq_1072
+T_1073: (in 0x00000000 : word32)
+  Class: Eq_1067
   DataType: word32
-  OrigDataType: 
-T_1073: (in  : word32)
-  Class: Eq_1073
-  DataType: word32
-  OrigDataType: 
-T_1074: (in  : ptr32)
+  OrigDataType: word32
+T_1074: (in 0x00000000 : word32)
   Class: Eq_1074
+  DataType: word32
+  OrigDataType: word32
+T_1075: (in &0x00000000 : ptr32)
+  Class: Eq_1068
   DataType: (ptr32 word32)
-  OrigDataType: 
-T_1075: (in  : ptr32)
-  Class: Eq_1075
-  DataType: (ptr32 word32)
-  OrigDataType: 
-T_1076: (in  : ptr32)
+  OrigDataType: (ptr32 word32)
+T_1076: (in 0x00000001 : word32)
   Class: Eq_1076
+  DataType: word32
+  OrigDataType: word32
+T_1077: (in &0x00000001 : ptr32)
+  Class: Eq_1069
   DataType: (ptr32 word32)
-  OrigDataType: 
-T_1077: (in  : ptr32)
-  Class: Eq_1077
-  DataType: (ptr32 word32)
-  OrigDataType: 
+  OrigDataType: (ptr32 word32)
 T_1078: (in 0x00000000 : word32)
-  Class: Eq_1072
+  Class: Eq_1078
   DataType: word32
   OrigDataType: word32
-T_1079: (in 0x00000000 : word32)
-  Class: Eq_1073
-  DataType: word32
-  OrigDataType: word32
-T_1080: (in 0x00000000 : word32)
-  Class: Eq_1080
-  DataType: word32
-  OrigDataType: word32
-T_1081: (in &0x00000000 : ptr32)
-  Class: Eq_1074
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
-T_1082: (in 0x00000001 : word32)
-  Class: Eq_1082
-  DataType: word32
-  OrigDataType: word32
-T_1083: (in &0x00000001 : ptr32)
-  Class: Eq_1075
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
-T_1084: (in 0x00000000 : word32)
-  Class: Eq_1084
-  DataType: word32
-  OrigDataType: word32
-T_1085: (in &0x00000000 : ptr32)
-  Class: Eq_1076
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
-T_1086: (in &edx : ptr32)
-  Class: Eq_1077
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
-T_1087: (in __cpuid(0x00000000, 0x00000000, &0x00000000, &0x00000001, &0x00000000, &edx) : void)
-  Class: Eq_1087
-  DataType: void
-  OrigDataType: void
-T_1088: (in __cpuid : ptr32)
+T_1079: (in &0x00000000 : ptr32)
   Class: Eq_1070
-  DataType: (ptr32 Eq_1070)
-  OrigDataType: (ptr32 (fn T_1098 (T_1089, T_1090, T_1092, T_1094, T_1096, T_1097)))
-T_1089: (in 0x00000001 : word32)
-  Class: Eq_1072
-  DataType: word32
-  OrigDataType: word32
-T_1090: (in 0x00000000 : word32)
-  Class: Eq_1073
-  DataType: word32
-  OrigDataType: word32
-T_1091: (in 0x00000001 : word32)
-  Class: Eq_1091
-  DataType: word32
-  OrigDataType: word32
-T_1092: (in &0x00000001 : ptr32)
-  Class: Eq_1074
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 word32)
-T_1093: (in 0x00000001 : word32)
-  Class: Eq_1093
-  DataType: word32
-  OrigDataType: word32
-T_1094: (in &0x00000001 : ptr32)
-  Class: Eq_1075
+T_1080: (in &edx : ptr32)
+  Class: Eq_1071
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 word32)
-T_1095: (in 0x00000000 : word32)
-  Class: Eq_1095
-  DataType: word32
-  OrigDataType: word32
-T_1096: (in &0x00000000 : ptr32)
-  Class: Eq_1076
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
-T_1097: (in &edx : ptr32)
-  Class: Eq_1077
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
-T_1098: (in __cpuid(0x00000001, 0x00000000, &0x00000001, &0x00000001, &0x00000000, &edx) : void)
-  Class: Eq_1087
+T_1081: (in __cpuid(0x00000000, 0x00000000, &0x00000000, &0x00000001, &0x00000000, &edx) : void)
+  Class: Eq_1081
   DataType: void
   OrigDataType: void
-T_1099: (in bLoc14_258 : byte)
-  Class: Eq_1099
+T_1082: (in __cpuid : ptr32)
+  Class: Eq_1064
+  DataType: (ptr32 Eq_1064)
+  OrigDataType: (ptr32 (fn T_1092 (T_1083, T_1084, T_1086, T_1088, T_1090, T_1091)))
+T_1083: (in 0x00000001 : word32)
+  Class: Eq_1066
+  DataType: word32
+  OrigDataType: word32
+T_1084: (in 0x00000000 : word32)
+  Class: Eq_1067
+  DataType: word32
+  OrigDataType: word32
+T_1085: (in 0x00000001 : word32)
+  Class: Eq_1085
+  DataType: word32
+  OrigDataType: word32
+T_1086: (in &0x00000001 : ptr32)
+  Class: Eq_1068
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 word32)
+T_1087: (in 0x00000001 : word32)
+  Class: Eq_1087
+  DataType: word32
+  OrigDataType: word32
+T_1088: (in &0x00000001 : ptr32)
+  Class: Eq_1069
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 word32)
+T_1089: (in 0x00000000 : word32)
+  Class: Eq_1089
+  DataType: word32
+  OrigDataType: word32
+T_1090: (in &0x00000000 : ptr32)
+  Class: Eq_1070
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 word32)
+T_1091: (in &edx : ptr32)
+  Class: Eq_1071
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 word32)
+T_1092: (in __cpuid(0x00000001, 0x00000000, &0x00000001, &0x00000001, &0x00000000, &edx) : void)
+  Class: Eq_1081
+  DataType: void
+  OrigDataType: void
+T_1093: (in bLoc14_258 : byte)
+  Class: Eq_1093
   DataType: byte
   OrigDataType: byte
-T_1100: (in dwLoc14 : word32)
+T_1094: (in dwLoc14 : word32)
+  Class: Eq_1094
+  DataType: ui32
+  OrigDataType: ui32
+T_1095: (in 0x00000000 : word32)
+  Class: Eq_1095
+  DataType: ui32
+  OrigDataType: ui32
+T_1096: (in dwLoc14 & 0x00000000 : word32)
+  Class: Eq_1096
+  DataType: ui32
+  OrigDataType: ui32
+T_1097: (in SLICE(dwLoc14 & 0x00000000, byte, 0) : byte)
+  Class: Eq_1093
+  DataType: byte
+  OrigDataType: byte
+T_1098: (in 0x49656E69 : word32)
+  Class: Eq_1098
+  DataType: word32
+  OrigDataType: word32
+T_1099: (in edx ^ 0x49656E69 : word32)
+  Class: Eq_1099
+  DataType: ui32
+  OrigDataType: ui32
+T_1100: (in 0x6C65746E : word32)
   Class: Eq_1100
   DataType: ui32
   OrigDataType: ui32
-T_1101: (in 0x00000000 : word32)
+T_1101: (in edx ^ 0x49656E69 | 0x6C65746E : word32)
   Class: Eq_1101
   DataType: ui32
   OrigDataType: ui32
-T_1102: (in dwLoc14 & 0x00000000 : word32)
+T_1102: (in 0x756E6546 : word32)
   Class: Eq_1102
   DataType: ui32
   OrigDataType: ui32
-T_1103: (in SLICE(dwLoc14 & 0x00000000, byte, 0) : byte)
-  Class: Eq_1099
-  DataType: byte
-  OrigDataType: byte
-T_1104: (in 0x49656E69 : word32)
-  Class: Eq_1104
-  DataType: word32
+T_1103: (in edx ^ 0x49656E69 | 0x6C65746E | 0x756E6546 : word32)
+  Class: Eq_1103
+  DataType: ui32
+  OrigDataType: ui32
+T_1104: (in 0x00000000 : word32)
+  Class: Eq_1103
+  DataType: ui32
   OrigDataType: word32
-T_1105: (in edx ^ 0x49656E69 : word32)
+T_1105: (in (edx ^ 0x49656E69 | 0x6C65746E | 0x756E6546) != 0x00000000 : bool)
   Class: Eq_1105
-  DataType: ui32
-  OrigDataType: ui32
-T_1106: (in 0x6C65746E : word32)
-  Class: Eq_1106
-  DataType: ui32
-  OrigDataType: ui32
-T_1107: (in edx ^ 0x49656E69 | 0x6C65746E : word32)
-  Class: Eq_1107
-  DataType: ui32
-  OrigDataType: ui32
-T_1108: (in 0x756E6546 : word32)
-  Class: Eq_1108
-  DataType: ui32
-  OrigDataType: ui32
-T_1109: (in edx ^ 0x49656E69 | 0x6C65746E | 0x756E6546 : word32)
-  Class: Eq_1109
-  DataType: ui32
-  OrigDataType: ui32
-T_1110: (in 0x00000000 : word32)
-  Class: Eq_1109
-  DataType: ui32
-  OrigDataType: word32
-T_1111: (in (edx ^ 0x49656E69 | 0x6C65746E | 0x756E6546) != 0x00000000 : bool)
-  Class: Eq_1111
   DataType: bool
   OrigDataType: bool
+T_1106: (in 00403370 : ptr32)
+  Class: Eq_1106
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1107 t0000)))
+T_1107: (in Mem81[0x00403370:word32] : word32)
+  Class: Eq_1054
+  DataType: ui32
+  OrigDataType: word32
+T_1108: (in 0x00000000 : word32)
+  Class: Eq_1108
+  DataType: word32
+  OrigDataType: word32
+T_1109: (in 0x000106C0 : word32)
+  Class: Eq_1108
+  DataType: word32
+  OrigDataType: word32
+T_1110: (in 0x00000000 == 0x000106C0 : bool)
+  Class: Eq_1110
+  DataType: bool
+  OrigDataType: bool
+T_1111: (in edi_100 : ui32)
+  Class: Eq_1054
+  DataType: ui32
+  OrigDataType: ui32
 T_1112: (in 00403370 : ptr32)
   Class: Eq_1112
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_1113 t0000)))
 T_1113: (in Mem81[0x00403370:word32] : word32)
-  Class: Eq_1060
+  Class: Eq_1054
   DataType: ui32
   OrigDataType: word32
-T_1114: (in 0x00000000 : word32)
+T_1114: (in 0x00000001 : word32)
   Class: Eq_1114
-  DataType: word32
-  OrigDataType: word32
-T_1115: (in 0x000106C0 : word32)
-  Class: Eq_1114
-  DataType: word32
-  OrigDataType: word32
-T_1116: (in 0x00000000 == 0x000106C0 : bool)
+  DataType: ui32
+  OrigDataType: ui32
+T_1115: (in edi_100 | 0x00000001 : word32)
+  Class: Eq_1054
+  DataType: ui32
+  OrigDataType: ui32
+T_1116: (in 00403370 : ptr32)
   Class: Eq_1116
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1117 t0000)))
+T_1117: (in Mem104[0x00403370:word32] : word32)
+  Class: Eq_1054
+  DataType: ui32
+  OrigDataType: word32
+T_1118: (in edi_100 | 0x00000001 : word32)
+  Class: Eq_1054
+  DataType: ui32
+  OrigDataType: ui32
+T_1119: (in 0x00000000 : word32)
+  Class: Eq_1119
+  DataType: word32
+  OrigDataType: word32
+T_1120: (in 0x00020660 : word32)
+  Class: Eq_1119
+  DataType: word32
+  OrigDataType: word32
+T_1121: (in 0x00000000 == 0x00020660 : bool)
+  Class: Eq_1121
   DataType: bool
   OrigDataType: bool
-T_1117: (in edi_100 : ui32)
-  Class: Eq_1060
-  DataType: ui32
-  OrigDataType: ui32
-T_1118: (in 00403370 : ptr32)
-  Class: Eq_1118
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1119 t0000)))
-T_1119: (in Mem81[0x00403370:word32] : word32)
-  Class: Eq_1060
-  DataType: ui32
-  OrigDataType: word32
-T_1120: (in 0x00000001 : word32)
-  Class: Eq_1120
-  DataType: ui32
-  OrigDataType: ui32
-T_1121: (in edi_100 | 0x00000001 : word32)
-  Class: Eq_1060
-  DataType: ui32
-  OrigDataType: ui32
-T_1122: (in 00403370 : ptr32)
+T_1122: (in 0x00000000 : word32)
   Class: Eq_1122
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1123 t0000)))
-T_1123: (in Mem104[0x00403370:word32] : word32)
-  Class: Eq_1060
-  DataType: ui32
+  DataType: word32
   OrigDataType: word32
-T_1124: (in edi_100 | 0x00000001 : word32)
-  Class: Eq_1060
-  DataType: ui32
-  OrigDataType: ui32
+T_1123: (in 0x00020670 : word32)
+  Class: Eq_1122
+  DataType: word32
+  OrigDataType: word32
+T_1124: (in 0x00000000 == 0x00020670 : bool)
+  Class: Eq_1124
+  DataType: bool
+  OrigDataType: bool
 T_1125: (in 0x00000000 : word32)
   Class: Eq_1125
   DataType: word32
   OrigDataType: word32
-T_1126: (in 0x00020660 : word32)
+T_1126: (in 0x00030650 : word32)
   Class: Eq_1125
   DataType: word32
   OrigDataType: word32
-T_1127: (in 0x00000000 == 0x00020660 : bool)
+T_1127: (in 0x00000000 == 0x00030650 : bool)
   Class: Eq_1127
   DataType: bool
   OrigDataType: bool
@@ -4855,372 +4855,348 @@ T_1128: (in 0x00000000 : word32)
   Class: Eq_1128
   DataType: word32
   OrigDataType: word32
-T_1129: (in 0x00020670 : word32)
+T_1129: (in 0x00030660 : word32)
   Class: Eq_1128
   DataType: word32
   OrigDataType: word32
-T_1130: (in 0x00000000 == 0x00020670 : bool)
+T_1130: (in 0x00000000 == 0x00030660 : bool)
   Class: Eq_1130
   DataType: bool
   OrigDataType: bool
-T_1131: (in 0x00000000 : word32)
+T_1131: (in true : bool)
   Class: Eq_1131
-  DataType: word32
-  OrigDataType: word32
-T_1132: (in 0x00030650 : word32)
-  Class: Eq_1131
-  DataType: word32
-  OrigDataType: word32
-T_1133: (in 0x00000000 == 0x00030650 : bool)
+  DataType: bool
+  OrigDataType: bool
+T_1132: (in true : bool)
+  Class: Eq_1132
+  DataType: bool
+  OrigDataType: bool
+T_1133: (in 0x00000000 : word32)
   Class: Eq_1133
-  DataType: bool
-  OrigDataType: bool
+  DataType: word32
+  OrigDataType: word32
 T_1134: (in 0x00000000 : word32)
-  Class: Eq_1134
+  Class: Eq_1133
   DataType: word32
   OrigDataType: word32
-T_1135: (in 0x00030660 : word32)
-  Class: Eq_1134
+T_1135: (in 0x00000000 == 0x00000000 : bool)
+  Class: Eq_1135
+  DataType: bool
+  OrigDataType: bool
+T_1136: (in __cpuid : ptr32)
+  Class: Eq_1064
+  DataType: (ptr32 Eq_1064)
+  OrigDataType: (ptr32 (fn T_1146 (T_1137, T_1138, T_1140, T_1142, T_1144, T_1145)))
+T_1137: (in 0x00000007 : word32)
+  Class: Eq_1066
   DataType: word32
   OrigDataType: word32
-T_1136: (in 0x00000000 == 0x00030660 : bool)
-  Class: Eq_1136
-  DataType: bool
-  OrigDataType: bool
-T_1137: (in true : bool)
-  Class: Eq_1137
-  DataType: bool
-  OrigDataType: bool
-T_1138: (in true : bool)
-  Class: Eq_1138
-  DataType: bool
-  OrigDataType: bool
-T_1139: (in 0x00000000 : word32)
+T_1138: (in 0x00000000 : word32)
+  Class: Eq_1067
+  DataType: word32
+  OrigDataType: word32
+T_1139: (in 0x00000007 : word32)
   Class: Eq_1139
   DataType: word32
   OrigDataType: word32
-T_1140: (in 0x00000000 : word32)
-  Class: Eq_1139
-  DataType: word32
-  OrigDataType: word32
-T_1141: (in 0x00000000 == 0x00000000 : bool)
+T_1140: (in &0x00000007 : ptr32)
+  Class: Eq_1068
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 word32)
+T_1141: (in 0x00000001 : word32)
   Class: Eq_1141
-  DataType: bool
-  OrigDataType: bool
-T_1142: (in __cpuid : ptr32)
+  DataType: word32
+  OrigDataType: word32
+T_1142: (in &0x00000001 : ptr32)
+  Class: Eq_1069
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 word32)
+T_1143: (in 0x00000000 : word32)
+  Class: Eq_1143
+  DataType: word32
+  OrigDataType: word32
+T_1144: (in &0x00000000 : ptr32)
   Class: Eq_1070
-  DataType: (ptr32 Eq_1070)
-  OrigDataType: (ptr32 (fn T_1152 (T_1143, T_1144, T_1146, T_1148, T_1150, T_1151)))
-T_1143: (in 0x00000007 : word32)
-  Class: Eq_1072
-  DataType: word32
-  OrigDataType: word32
-T_1144: (in 0x00000000 : word32)
-  Class: Eq_1073
-  DataType: word32
-  OrigDataType: word32
-T_1145: (in 0x00000007 : word32)
-  Class: Eq_1145
-  DataType: word32
-  OrigDataType: word32
-T_1146: (in &0x00000007 : ptr32)
-  Class: Eq_1074
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 word32)
-T_1147: (in 0x00000001 : word32)
-  Class: Eq_1147
-  DataType: word32
-  OrigDataType: word32
-T_1148: (in &0x00000001 : ptr32)
-  Class: Eq_1075
+T_1145: (in &edx : ptr32)
+  Class: Eq_1071
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 word32)
-T_1149: (in 0x00000000 : word32)
-  Class: Eq_1149
-  DataType: word32
-  OrigDataType: word32
-T_1150: (in &0x00000000 : ptr32)
-  Class: Eq_1076
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
-T_1151: (in &edx : ptr32)
-  Class: Eq_1077
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
-T_1152: (in __cpuid(0x00000007, 0x00000000, &0x00000007, &0x00000001, &0x00000000, &edx) : void)
-  Class: Eq_1087
+T_1146: (in __cpuid(0x00000007, 0x00000000, &0x00000007, &0x00000001, &0x00000000, &edx) : void)
+  Class: Eq_1081
   DataType: void
   OrigDataType: void
-T_1153: (in 0x01 : byte)
-  Class: Eq_1099
+T_1147: (in 0x01 : byte)
+  Class: Eq_1093
   DataType: byte
   OrigDataType: byte
-T_1154: (in 0x00000000 : word32)
-  Class: Eq_1154
+T_1148: (in 0x00000000 : word32)
+  Class: Eq_1148
   DataType: word32
   OrigDataType: word32
-T_1155: (in 0x00000000 : word32)
-  Class: Eq_1154
+T_1149: (in 0x00000000 : word32)
+  Class: Eq_1148
   DataType: word32
   OrigDataType: word32
-T_1156: (in 0x00000000 == 0x00000000 : bool)
-  Class: Eq_1156
+T_1150: (in 0x00000000 == 0x00000000 : bool)
+  Class: Eq_1150
   DataType: bool
   OrigDataType: bool
-T_1157: (in 0x00000002 : word32)
+T_1151: (in 0x00000002 : word32)
+  Class: Eq_1151
+  DataType: ui32
+  OrigDataType: ui32
+T_1152: (in edi_101 | 0x00000002 : word32)
+  Class: Eq_1054
+  DataType: ui32
+  OrigDataType: ui32
+T_1153: (in 00403370 : ptr32)
+  Class: Eq_1153
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1154 t0000)))
+T_1154: (in Mem150[0x00403370:word32] : word32)
+  Class: Eq_1054
+  DataType: ui32
+  OrigDataType: word32
+T_1155: (in 00403010 : ptr32)
+  Class: Eq_1155
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1156 t0000)))
+T_1156: (in Mem152[0x00403010:word32] : word32)
+  Class: Eq_1044
+  DataType: ui32
+  OrigDataType: ui32
+T_1157: (in 0x00000004 : word32)
   Class: Eq_1157
   DataType: ui32
   OrigDataType: ui32
-T_1158: (in edi_101 | 0x00000002 : word32)
-  Class: Eq_1060
+T_1158: (in globals->dw403010 | 0x00000004 : word32)
+  Class: Eq_1044
   DataType: ui32
   OrigDataType: ui32
-T_1159: (in 00403370 : ptr32)
+T_1159: (in 00403010 : ptr32)
   Class: Eq_1159
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_1160 t0000)))
-T_1160: (in Mem150[0x00403370:word32] : word32)
-  Class: Eq_1060
-  DataType: ui32
-  OrigDataType: word32
-T_1161: (in 00403010 : ptr32)
-  Class: Eq_1161
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1162 t0000)))
-T_1162: (in Mem152[0x00403010:word32] : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: ui32
-T_1163: (in 0x00000004 : word32)
-  Class: Eq_1163
-  DataType: ui32
-  OrigDataType: ui32
-T_1164: (in globals->dw403010 | 0x00000004 : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: ui32
-T_1165: (in 00403010 : ptr32)
-  Class: Eq_1165
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1166 t0000)))
-T_1166: (in Mem162[0x00403010:word32] : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: word32
-T_1167: (in 0x00000002 : word32)
+T_1160: (in Mem162[0x00403010:word32] : word32)
   Class: Eq_1044
   DataType: ui32
   OrigDataType: word32
-T_1168: (in 0040336C : ptr32)
-  Class: Eq_1168
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1169 t0000)))
-T_1169: (in Mem164[0x0040336C:word32] : word32)
-  Class: Eq_1044
+T_1161: (in 0x00000002 : word32)
+  Class: Eq_1038
   DataType: ui32
   OrigDataType: word32
-T_1170: (in 0x00000000 : word32)
-  Class: Eq_1170
+T_1162: (in 0040336C : ptr32)
+  Class: Eq_1162
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1163 t0000)))
+T_1163: (in Mem164[0x0040336C:word32] : word32)
+  Class: Eq_1038
+  DataType: ui32
+  OrigDataType: word32
+T_1164: (in 0x00000000 : word32)
+  Class: Eq_1164
   DataType: word32
   OrigDataType: word32
-T_1171: (in 0x00000000 : word32)
-  Class: Eq_1170
+T_1165: (in 0x00000000 : word32)
+  Class: Eq_1164
   DataType: word32
   OrigDataType: word32
-T_1172: (in 0x00000000 == 0x00000000 : bool)
+T_1166: (in 0x00000000 == 0x00000000 : bool)
+  Class: Eq_1166
+  DataType: bool
+  OrigDataType: bool
+T_1167: (in 0x00000000 : word32)
+  Class: Eq_1167
+  DataType: word32
+  OrigDataType: word32
+T_1168: (in 0x00000000 : word32)
+  Class: Eq_1167
+  DataType: word32
+  OrigDataType: word32
+T_1169: (in 0x00000000 == 0x00000000 : bool)
+  Class: Eq_1169
+  DataType: bool
+  OrigDataType: bool
+T_1170: (in __xgetbv : ptr32)
+  Class: Eq_1170
+  DataType: (ptr32 Eq_1170)
+  OrigDataType: (ptr32 (fn T_1174 (T_1173)))
+T_1171: (in signature of __xgetbv : void)
+  Class: Eq_1170
+  DataType: (ptr32 Eq_1170)
+  OrigDataType: 
+T_1172: (in  : word32)
   Class: Eq_1172
-  DataType: bool
-  OrigDataType: bool
+  DataType: word32
+  OrigDataType: 
 T_1173: (in 0x00000000 : word32)
-  Class: Eq_1173
+  Class: Eq_1172
   DataType: word32
   OrigDataType: word32
-T_1174: (in 0x00000000 : word32)
-  Class: Eq_1173
-  DataType: word32
-  OrigDataType: word32
-T_1175: (in 0x00000000 == 0x00000000 : bool)
-  Class: Eq_1175
-  DataType: bool
-  OrigDataType: bool
-T_1176: (in __xgetbv : ptr32)
-  Class: Eq_1176
-  DataType: (ptr32 Eq_1176)
-  OrigDataType: (ptr32 (fn T_1180 (T_1179)))
-T_1177: (in signature of __xgetbv : void)
-  Class: Eq_1176
-  DataType: (ptr32 Eq_1176)
-  OrigDataType: 
-T_1178: (in  : word32)
-  Class: Eq_1178
-  DataType: word32
-  OrigDataType: 
-T_1179: (in 0x00000000 : word32)
-  Class: Eq_1178
-  DataType: word32
-  OrigDataType: word32
-T_1180: (in __xgetbv(0x00000000) : word64)
-  Class: Eq_1180
+T_1174: (in __xgetbv(0x00000000) : word64)
+  Class: Eq_1174
   DataType: word64
   OrigDataType: word64
-T_1181: (in (word32) __xgetbv(0x00000000) : word32)
-  Class: Eq_1181
+T_1175: (in (word32) __xgetbv(0x00000000) : word32)
+  Class: Eq_1175
   DataType: ui32
   OrigDataType: ui32
-T_1182: (in 0x00000006 : word32)
+T_1176: (in 0x00000006 : word32)
+  Class: Eq_1176
+  DataType: ui32
+  OrigDataType: ui32
+T_1177: (in (word32) __xgetbv(0x00000000) & 0x00000006 : word32)
+  Class: Eq_1177
+  DataType: ui32
+  OrigDataType: ui32
+T_1178: (in 0x00000006 : word32)
+  Class: Eq_1177
+  DataType: ui32
+  OrigDataType: word32
+T_1179: (in ((word32) __xgetbv(0x00000000) & 0x00000006) != 0x00000006 : bool)
+  Class: Eq_1179
+  DataType: bool
+  OrigDataType: bool
+T_1180: (in false : bool)
+  Class: Eq_1180
+  DataType: bool
+  OrigDataType: bool
+T_1181: (in eax_187 : ui32)
+  Class: Eq_1044
+  DataType: ui32
+  OrigDataType: ui32
+T_1182: (in 00403010 : ptr32)
   Class: Eq_1182
-  DataType: ui32
-  OrigDataType: ui32
-T_1183: (in (word32) __xgetbv(0x00000000) & 0x00000006 : word32)
-  Class: Eq_1183
-  DataType: ui32
-  OrigDataType: ui32
-T_1184: (in 0x00000006 : word32)
-  Class: Eq_1183
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1183 t0000)))
+T_1183: (in Mem177[0x00403010:word32] : word32)
+  Class: Eq_1044
   DataType: ui32
   OrigDataType: word32
-T_1185: (in ((word32) __xgetbv(0x00000000) & 0x00000006) != 0x00000006 : bool)
+T_1184: (in 0x00000003 : word32)
+  Class: Eq_1038
+  DataType: ui32
+  OrigDataType: word32
+T_1185: (in 0040336C : ptr32)
   Class: Eq_1185
-  DataType: bool
-  OrigDataType: bool
-T_1186: (in false : bool)
-  Class: Eq_1186
-  DataType: bool
-  OrigDataType: bool
-T_1187: (in eax_187 : ui32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: ui32
-T_1188: (in 00403010 : ptr32)
-  Class: Eq_1188
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1189 t0000)))
-T_1189: (in Mem177[0x00403010:word32] : word32)
-  Class: Eq_1050
+  OrigDataType: (ptr32 (struct (0 T_1186 t0000)))
+T_1186: (in Mem189[0x0040336C:word32] : word32)
+  Class: Eq_1038
   DataType: ui32
   OrigDataType: word32
-T_1190: (in 0x00000003 : word32)
+T_1187: (in 0x00000008 : word32)
+  Class: Eq_1187
+  DataType: ui32
+  OrigDataType: ui32
+T_1188: (in eax_187 | 0x00000008 : word32)
+  Class: Eq_1044
+  DataType: ui32
+  OrigDataType: ui32
+T_1189: (in 00403010 : ptr32)
+  Class: Eq_1189
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1190 t0000)))
+T_1190: (in Mem192[0x00403010:word32] : word32)
   Class: Eq_1044
   DataType: ui32
   OrigDataType: word32
-T_1191: (in 0040336C : ptr32)
+T_1191: (in 0x20 : byte)
   Class: Eq_1191
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1192 t0000)))
-T_1192: (in Mem189[0x0040336C:word32] : word32)
-  Class: Eq_1044
-  DataType: ui32
-  OrigDataType: word32
-T_1193: (in 0x00000008 : word32)
-  Class: Eq_1193
-  DataType: ui32
-  OrigDataType: ui32
-T_1194: (in eax_187 | 0x00000008 : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: ui32
-T_1195: (in 00403010 : ptr32)
-  Class: Eq_1195
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1196 t0000)))
-T_1196: (in Mem192[0x00403010:word32] : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: word32
-T_1197: (in 0x20 : byte)
-  Class: Eq_1197
   DataType: byte
   OrigDataType: byte
-T_1198: (in bLoc14_258 & 0x20 : byte)
-  Class: Eq_1198
+T_1192: (in bLoc14_258 & 0x20 : byte)
+  Class: Eq_1192
   DataType: byte
   OrigDataType: byte
-T_1199: (in 0x00 : byte)
-  Class: Eq_1198
+T_1193: (in 0x00 : byte)
+  Class: Eq_1192
   DataType: byte
   OrigDataType: byte
-T_1200: (in (bLoc14_258 & 0x20) == 0x00 : bool)
-  Class: Eq_1200
+T_1194: (in (bLoc14_258 & 0x20) == 0x00 : bool)
+  Class: Eq_1194
   DataType: bool
   OrigDataType: bool
-T_1201: (in 0x00000005 : word32)
-  Class: Eq_1044
+T_1195: (in 0x00000005 : word32)
+  Class: Eq_1038
   DataType: ui32
   OrigDataType: word32
-T_1202: (in 0040336C : ptr32)
-  Class: Eq_1202
+T_1196: (in 0040336C : ptr32)
+  Class: Eq_1196
   DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1203 t0000)))
-T_1203: (in Mem197[0x0040336C:word32] : word32)
+  OrigDataType: (ptr32 (struct (0 T_1197 t0000)))
+T_1197: (in Mem197[0x0040336C:word32] : word32)
+  Class: Eq_1038
+  DataType: ui32
+  OrigDataType: word32
+T_1198: (in eax_187 | 0x00000008 : word32)
+  Class: Eq_1198
+  DataType: ui32
+  OrigDataType: ui32
+T_1199: (in 0x00000020 : word32)
+  Class: Eq_1199
+  DataType: ui32
+  OrigDataType: ui32
+T_1200: (in eax_187 | 0x00000008 | 0x00000020 : word32)
+  Class: Eq_1044
+  DataType: ui32
+  OrigDataType: ui32
+T_1201: (in 00403010 : ptr32)
+  Class: Eq_1201
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1202 t0000)))
+T_1202: (in Mem198[0x00403010:word32] : word32)
   Class: Eq_1044
   DataType: ui32
   OrigDataType: word32
-T_1204: (in eax_187 | 0x00000008 : word32)
+T_1203: (in eax : word32)
+  Class: Eq_1203
+  DataType: word32
+  OrigDataType: word32
+T_1204: (in 00403014 : ptr32)
   Class: Eq_1204
-  DataType: ui32
-  OrigDataType: ui32
-T_1205: (in 0x00000020 : word32)
-  Class: Eq_1205
-  DataType: ui32
-  OrigDataType: ui32
-T_1206: (in eax_187 | 0x00000008 | 0x00000020 : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: ui32
-T_1207: (in 00403010 : ptr32)
-  Class: Eq_1207
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1208 t0000)))
-T_1208: (in Mem198[0x00403010:word32] : word32)
-  Class: Eq_1050
-  DataType: ui32
-  OrigDataType: word32
-T_1209: (in eax : word32)
-  Class: Eq_1209
-  DataType: word32
-  OrigDataType: word32
-T_1210: (in 00403014 : ptr32)
-  Class: Eq_1210
   DataType: (ptr32 word32)
-  OrigDataType: (ptr32 (struct (0 T_1211 t0000)))
-T_1211: (in Mem0[0x00403014:word32] : word32)
-  Class: Eq_1211
+  OrigDataType: (ptr32 (struct (0 T_1205 t0000)))
+T_1205: (in Mem0[0x00403014:word32] : word32)
+  Class: Eq_1205
   DataType: word32
   OrigDataType: word32
-T_1212: (in 0x00000000 : word32)
-  Class: Eq_1211
+T_1206: (in 0x00000000 : word32)
+  Class: Eq_1205
   DataType: word32
   OrigDataType: word32
-T_1213: (in globals->dw403014 != 0x00000000 : bool)
-  Class: Eq_1213
+T_1207: (in globals->dw403014 != 0x00000000 : bool)
+  Class: Eq_1207
   DataType: bool
   OrigDataType: bool
-T_1214: (in (word32) (Mem0[0x00403014:word32] != 0x00000000) : word32)
-  Class: Eq_1209
+T_1208: (in (word32) (Mem0[0x00403014:word32] != 0x00000000) : word32)
+  Class: Eq_1203
   DataType: word32
   OrigDataType: word32
-T_1215: (in al : byte)
-  Class: Eq_1215
+T_1209: (in al : byte)
+  Class: Eq_1209
   DataType: byte
   OrigDataType: byte
-T_1216: (in 0x01 : byte)
-  Class: Eq_1215
+T_1210: (in 0x01 : byte)
+  Class: Eq_1209
   DataType: byte
   OrigDataType: byte
-T_1217:
-  Class: Eq_1217
-  DataType: Eq_1217
+T_1211:
+  Class: Eq_1211
+  DataType: Eq_1211
   OrigDataType: 
-T_1218:
-  Class: Eq_1218
-  DataType: Eq_1218
+T_1212:
+  Class: Eq_1212
+  DataType: Eq_1212
   OrigDataType: 
 */
 typedef struct Globals {
-	Eq_697 t0100;	// 100
-	Eq_697 t5A4D;	// 5A4D
+	Eq_691 t0100;	// 100
+	Eq_691 t5A4D;	// 5A4D
 	word16 w400000;	// 400000
-	struct Eq_697 * ptr40003C;	// 40003C
+	struct Eq_691 * ptr40003C;	// 40003C
 	<anonymous> t401731;	// 401731
 	<anonymous> * ptr4020D4;	// 4020D4
 	Eq_245 t4020E0;	// 4020E0
@@ -5259,12 +5235,12 @@ typedef Eq_60 * (Eq_136)(word32, Eq_139, Eq_139, word32, ui32);
 
 typedef union Eq_139 {
 	byte u0;
-	struct Eq_1217 * u1;
+	struct Eq_1211 * u1;
 } Eq_139;
 
 typedef union Eq_149 {
 	int8 u0;
-	struct Eq_1218 * u1;
+	struct Eq_1212 * u1;
 } Eq_149;
 
 typedef byte (Eq_158)(word32, word32);
@@ -5301,169 +5277,169 @@ typedef void (Eq_414)();
 
 typedef DWORD (Eq_461)(word32, word32, Eq_60 *, word32 *);
 
-typedef word32 (Eq_468)(HMODULE);
+typedef word32 (Eq_466)(HMODULE);
 
-typedef HMODULE Eq_470;
+typedef HMODULE Eq_468;
 
-typedef void (Eq_522)(int32);
+typedef void (Eq_520)(int32);
 
-typedef union Eq_533 {
+typedef union Eq_531 {
 	byte u0;
 	word32 u1;
-} Eq_533;
+} Eq_531;
 
-typedef void (Eq_543)(Eq_533);
+typedef void (Eq_541)(Eq_531);
 
-typedef struct Eq_560 {	// size: 40 28
+typedef struct Eq_558 {	// size: 40 28
 	up32 dw0008;	// 8
 	up32 dw000C;	// C
-} Eq_560;
+} Eq_558;
 
-typedef struct Eq_561 {
+typedef struct Eq_559 {
 	word32 dw003C;	// 3C
-} Eq_561;
+} Eq_559;
 
-typedef struct Eq_565 {
+typedef struct Eq_563 {
 	word16 w0006;	// 6
 	word16 w0014;	// 14
-} Eq_565;
+} Eq_563;
 
-typedef word32 (Eq_605)();
+typedef word32 (Eq_603)();
+
+typedef struct Eq_609 {
+	struct Eq_611 * ptr0018;	// 18
+} Eq_609;
 
 typedef struct Eq_611 {
-	struct Eq_613 * ptr0018;	// 18
+	ptr32 ptr0004;	// 4
 } Eq_611;
 
-typedef struct Eq_613 {
-	ptr32 ptr0004;	// 4
-} Eq_613;
+typedef void (Eq_619)();
 
-typedef void (Eq_621)();
+typedef bool (Eq_623)(word32, ptr32, word32, word32);
 
-typedef bool (Eq_625)(word32, ptr32, word32, word32);
+typedef void (Eq_646)(word32);
 
-typedef void (Eq_648)(word32);
+typedef byte (Eq_650)();
 
-typedef byte (Eq_653)();
-
-typedef struct Eq_677 {
+typedef struct Eq_671 {
 	int32 dw0024;	// 24
 	word32 dw400000;	// 400000
 	word16 w400018;	// 400018
-} Eq_677;
+} Eq_671;
 
-typedef struct Eq_697 {
+typedef struct Eq_691 {
 	int32 dw0024;	// 24
 	word32 dw400000;	// 400000
 	word16 w400018;	// 400018
-} Eq_697;
+} Eq_691;
 
-typedef union Eq_726 {
+typedef union Eq_720 {
 	ui32 u0;
 	ptr32 u1;
-} Eq_726;
+} Eq_720;
 
-typedef Eq_697 * (Eq_739)(Eq_561 *, up32, Eq_560 *);
+typedef Eq_691 * (Eq_733)(Eq_559 *, up32, Eq_558 *);
 
-typedef void (Eq_804)(LPFILETIME);
+typedef void (Eq_798)(LPFILETIME);
 
-typedef LPFILETIME Eq_806;
+typedef LPFILETIME Eq_800;
 
-typedef DWORD (Eq_819)();
+typedef DWORD (Eq_813)();
 
-typedef DWORD (Eq_823)();
+typedef DWORD (Eq_817)();
 
-typedef BOOL (Eq_827)(LARGE_INTEGER *);
+typedef BOOL (Eq_821)(LARGE_INTEGER *);
 
-typedef LARGE_INTEGER Eq_829;
+typedef LARGE_INTEGER Eq_823;
 
-typedef BOOL Eq_832;
+typedef BOOL Eq_826;
 
-typedef BOOL (Eq_869)(DWORD);
+typedef BOOL (Eq_863)(DWORD);
 
-typedef void (Eq_879)(void, int32, size_t);
+typedef void (Eq_873)(void, int32, size_t);
 
-typedef size_t Eq_883;
+typedef size_t Eq_877;
 
-typedef BOOL (Eq_898)();
+typedef BOOL (Eq_892)();
 
-typedef union Eq_902 {
+typedef union Eq_896 {
 	bool u0;
 	byte u1;
-} Eq_902;
+} Eq_896;
 
-typedef LPTOP_LEVEL_EXCEPTION_FILTER (Eq_904)(LPTOP_LEVEL_EXCEPTION_FILTER);
+typedef LPTOP_LEVEL_EXCEPTION_FILTER (Eq_898)(LPTOP_LEVEL_EXCEPTION_FILTER);
 
-typedef LPTOP_LEVEL_EXCEPTION_FILTER Eq_906;
+typedef LPTOP_LEVEL_EXCEPTION_FILTER Eq_900;
 
-typedef LONG (Eq_909)(_EXCEPTION_POINTERS *);
+typedef LONG (Eq_903)(_EXCEPTION_POINTERS *);
 
 typedef struct _EXCEPTION_POINTERS {
 	PEXCEPTION_RECORD ExceptionRecord;	// 0
 	PCONTEXT ContextRecord;	// 4
-} Eq_911;
+} Eq_905;
 
-typedef LONG Eq_914;
+typedef LONG Eq_908;
 
-typedef void (Eq_917)(word32);
+typedef void (Eq_911)(word32);
 
-typedef union Eq_929 {
+typedef union Eq_923 {
 	bool u0;
 	ui32 u1;
-} Eq_929;
+} Eq_923;
 
-typedef HMODULE Eq_934;
+typedef HMODULE Eq_928;
 
-typedef HMODULE (Eq_936)(LPCWSTR);
+typedef HMODULE (Eq_930)(LPCWSTR);
 
-typedef LPCWSTR Eq_938;
+typedef LPCWSTR Eq_932;
 
-typedef union Eq_947 {
+typedef union Eq_941 {
 	int32 u0;
 	word16 u1;
-} Eq_947;
+} Eq_941;
 
-typedef HMODULE Eq_953;
+typedef HMODULE Eq_947;
 
-typedef HMODULE Eq_963;
+typedef HMODULE Eq_957;
 
-typedef union Eq_964 {
+typedef union Eq_958 {
 	int32 u0;
 	word16 u1;
-} Eq_964;
+} Eq_958;
+
+typedef HMODULE Eq_962;
+
+typedef union Eq_963 {
+	int32 u0;
+	up32 u1;
+} Eq_963;
 
 typedef HMODULE Eq_968;
 
-typedef union Eq_969 {
-	int32 u0;
-	up32 u1;
-} Eq_969;
-
-typedef HMODULE Eq_974;
-
-typedef struct Eq_1020 {
+typedef struct Eq_1014 {
 	ptr32 ptr0000;	// 0
-} Eq_1020;
+} Eq_1014;
 
-typedef struct Eq_1030 {
+typedef struct Eq_1024 {
 	word32 dw0000;	// 0
-} Eq_1030;
+} Eq_1024;
 
-typedef union Eq_1031 {
+typedef union Eq_1025 {
 	ptr32 u0;
-	word32 Eq_1030::* u1;
-} Eq_1031;
+	word32 Eq_1024::* u1;
+} Eq_1025;
 
-typedef void (Eq_1070)(word32, word32, word32 *, word32 *, word32 *, word32 *);
+typedef void (Eq_1064)(word32, word32, word32 *, word32 *, word32 *, word32 *);
 
-typedef word64 (Eq_1176)(word32);
+typedef word64 (Eq_1170)(word32);
 
-typedef struct Eq_1217 {
+typedef struct Eq_1211 {
 	Eq_139 t0000;	// 0
-} Eq_1217;
+} Eq_1211;
 
-typedef struct Eq_1218 {	// size: 4 4
+typedef struct Eq_1212 {	// size: 4 4
 	ptr32 ptrFFFFFFFC;	// FFFFFFFC
 	word32 dw0000;	// 0
-} Eq_1218;
+} Eq_1212;
 

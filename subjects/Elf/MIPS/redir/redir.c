@@ -2416,7 +2416,7 @@ Eq_n request_save_line(Eq_n r3, Eq_n r4, void * r5, Eq_n r6, ptr32 r30, word32 r
 {
 	Eq_n r7_n;
 	Eq_n r3_n;
-	byte bArg0B_n = SLICE(r6, byte, 0);
+	byte bArg0B_n = (byte) r6;
 	if (r4 == 0x00)
 		print_log((int32 *) 0x02, 0x0040A398, 0x0040A330, 0x004B, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	else if ((word32) (*((word32) r4 + 0x0558) < 0x003F) == 0x00)
@@ -3084,7 +3084,7 @@ Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, ptr32 r30, word32 ra, p
 	ptr32 r6_n;
 	ptr32 r3_n;
 	Eq_n r2_n;
-	uint16 wArg06_n = SLICE(r5, uint16, 0);
+	uint16 wArg06_n = (uint16) r5;
 	Eq_n r2_n = malloc(0x0024);
 	Eq_n r7_n = <invalid>;
 	Eq_n r6_n = <invalid>;
