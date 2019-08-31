@@ -123,9 +123,8 @@ word16 fn0483(byte b, Eq_n c, byte d, Eq_n e, word16 wArg02)
 	globals->t1662 = c;
 	globals->b1661 = SLICE(wArg02, byte, 8);
 	globals->t1660.u0 = (byte) wArg02;
-	Eq_n hl_n = globals->t1664;
 	cu8 l_n;
-	fn1326(0x07, SLICE((word16) hl_n.u1 + 0x007F, byte, 8), (byte) ((word16) hl_n.u1 + 0x007F), out l_n);
+	fn1326(0x07, (word16) globals->t1664 + 0x007F, out l_n);
 	globals->b1667 = l_n;
 	Eq_n c_n = <invalid>;
 	word16 bc_n = DPB(wArg02, c_n, 0);
@@ -179,7 +178,7 @@ word16 fn0534(byte c)
 	globals->ptr14BC + globals->w14BE = (byte *) globals->b166B;
 	int16 hl_n = globals->w14BE;
 	globals->w14BE = hl_n + 0x01;
-	if (!fn1335((byte) (hl_n + 0x01), SLICE(hl_n + 0x01, byte, 8), 0x00, 0x02))
+	if (!fn1335(hl_n + 0x01, 0x0200))
 	{
 		ptr16 hl_n = globals->ptr14BC;
 		bc_n = fn0483(SLICE(hl_n, byte, 8), (byte) hl_n, 0x02, 0x00, 0x14C0);
@@ -758,9 +757,8 @@ void fn0BE4(word16 af)
 	struct Eq_n * sp_n;
 	word16 af_n = fn082F(DPB(af, a_n + 0x30, 0), 0x00, 0x5C, 0x10, *(hl_n - 0x04), *(hl_n - 0x02), out sp_n);
 	*(sp_n - 0x02) = 0x5C;
-	word16 hl_n = fn1346(0x01, &globals->t0103);
 	cu8 l_n;
-	fn1326(0x07, SLICE(hl_n, byte, 8), (byte) hl_n, out l_n);
+	fn1326(0x07, fn1346(0x01, &globals->t0103), out l_n);
 	word16 hl_n = globals->w0108;
 	ptr16 sp_n;
 	word16 de_n = fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, l_n, sp_n->wFFFC, out sp_n);
@@ -1197,24 +1195,25 @@ void fn1315()
 {
 }
 
-// 1326: Register Eq_n fn1326(Register byte c, Register byte h, Register Eq_n l, Register out Eq_n lOut)
-Eq_n fn1326(byte c, byte h, Eq_n l, union Eq_n & lOut)
+// 1326: Register Eq_n fn1326(Register byte c, Register uint16 hl, Register out Eq_n lOut)
+Eq_n fn1326(byte c, uint16 hl, union Eq_n & lOut)
 {
+	uint16 hl_n = hl;
 	do
 	{
-		uint16 v13_n = SEQ(h, l) >> 0x01;
-		h = SLICE(v13_n, byte, 8);
-		l.u0 = (byte) v13_n;
+		uint16 v13_n = hl_n >> 0x01;
+		Eq_n l_n = (byte) v13_n;
 		--c;
+		hl_n = v13_n;
 	} while (c != 0x00);
-	lOut = l;
+	lOut = l_n;
 	return <invalid>;
 }
 
-// 1335: FlagGroup bool fn1335(Register uint8 e, Register ui8 d, Register uint8 l, Register ui8 h)
-bool fn1335(uint8 e, ui8 d, uint8 l, ui8 h)
+// 1335: FlagGroup bool fn1335(Register word16 de, Register word16 hl)
+bool fn1335(word16 de, word16 hl)
 {
-	return (bool) cond(SLICE(SEQ(d, e) - SEQ(h, l), byte, 8));
+	return (bool) cond(SLICE(de - hl, byte, 8));
 }
 
 // 133C: void fn133C()

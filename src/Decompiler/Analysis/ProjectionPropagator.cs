@@ -51,20 +51,22 @@ namespace Reko.Analysis
     /// </summary>
     public class ProjectionPropagator : InstructionTransformer
     {
-        private static readonly TraceSwitch trace = new TraceSwitch("ProjectionPropagator", "Traces projection propagator", "Warning");
+        private static readonly TraceSwitch trace = new TraceSwitch("ProjectionPropagator", "Traces projection propagator") { Level = TraceLevel.Verbose };
 
         private readonly IProcessorArchitecture arch;
+        private readonly SegmentedAccessClassifier sac;
         private readonly SsaState ssa;
 
-        public ProjectionPropagator(SsaState ssa)
+        public ProjectionPropagator(SsaState ssa, SegmentedAccessClassifier sac)
         {
             this.ssa = ssa;
+            this.sac = sac;
             this.arch = ssa.Procedure.Architecture;
         }
 
         public void Transform()
         {
-            var prjf = new ProjectionFilter(arch, ssa);
+            var prjf = new ProjectionFilter(arch, ssa, sac);
             var wl = new WorkList<Statement>(ssa.Procedure.Statements);
             while (wl.GetWorkItem(out var stm))
             {
@@ -80,11 +82,13 @@ namespace Reko.Analysis
         {
             private readonly IProcessorArchitecture arch;
             private readonly SsaState ssa;
+            private readonly SegmentedAccessClassifier sac;
 
-            public ProjectionFilter(IProcessorArchitecture arch, SsaState ssa)
+            public ProjectionFilter(IProcessorArchitecture arch, SsaState ssa, SegmentedAccessClassifier sac)
             {
                 this.arch = arch;
                 this.ssa = ssa;
+                this.sac = sac;
                 this.NewStatements = new HashSet<Statement>();
             }
 
@@ -126,6 +130,8 @@ namespace Reko.Analysis
                     return e;
 
                 if (!(accessNew.BasePointer is Identifier idSeg))
+                    return e;
+                if (sac.AssociatedIdentifier(idSeg) == null)
                     return e;
                 var sidSeg = ssa.Identifiers[idSeg];
                 if (accessNew.EffectiveAddress is Identifier idEa)
@@ -188,7 +194,9 @@ namespace Reko.Analysis
                 // Are all the definitions of the ids in the same basic block? If they're
                 // not, we give up.
 
-                if (!AllSame(sids, (a, b) => a.DefStatement.Block == b.DefStatement.Block))
+                if (!AllSame(sids, (a, b) =>
+                    a.DefStatement.Block == b.DefStatement.Block &&
+                    a.Identifier.Storage.GetType() == b.Identifier.Storage.GetType()))
                     return null;
 
                 var dtWide = PrimitiveType.CreateWord(sids.Sum(s => s.Identifier.DataType.BitSize));
@@ -204,6 +212,8 @@ namespace Reko.Analysis
                         if (AllSame(slices, (a, b) => a.Expression == b.Expression) &&
                             AllAdjacent(slices))
                         {
+                            DebugEx.Verbose(trace, "Prpr: Fusing slices in {0}", ssa.Procedure.Name);
+                            DebugEx.Verbose(trace, "{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
                             return RewriteSeqOfSlices(dtWide, sids, slices);
                         }
                     }
@@ -250,10 +260,10 @@ namespace Reko.Analysis
                     var regWide = arch.GetRegister(sd, bits);
                     idWide = ssa.Procedure.Frame.EnsureRegister(regWide);
                 }
-                //else if (sids.All(sid => sid.Identifier.Storage is StackStorage))
-                //{
-                //    idWide = CombineAdjacentStorages(sids);
-                //}
+                else if (sids.All(sid => sid.Identifier.Storage is StackStorage))
+                {
+                    idWide = CombineAdjacentStorages(sids);
+                }
                 else 
                 {
                     idWide = ssa.Procedure.Frame.EnsureSequence(
@@ -320,13 +330,14 @@ namespace Reko.Analysis
 
             private Slice AsSlice(Assignment ass)
             {
+                if (ass == null)
+                    return null;
                 if (ass.Src is Slice slice)
                     return slice;
                 if (ass.Src is Cast cast)
                     return new Slice(cast.DataType, cast.Expression, 0);
                 return null;
             }
-
 
             private Identifier RewriteSeqOfDefs(SsaIdentifier[] sids, Identifier idWide)
             {
@@ -372,6 +383,8 @@ namespace Reko.Analysis
                 //     ...SEQ(a_3,b_3)
                 // and we want 
                 //    ab_3 = PHI(ab_1, ab_2)
+                //    a_3 = SLICE(ab_3, ...)
+                //    b_3 = SLICE(ab_3, ...)
                 //    ...ab_3
 
                 foreach (var s in sids)
@@ -393,29 +406,79 @@ namespace Reko.Analysis
                     // Make a fused identifier in each predecessor block and "push"
                     // the SEQ statements into the predecessors.
                     var pred = phis[0].Src.Arguments[iBlock].Block;
-                    var stmPred = pred.Statements.Add(
-                        sids[0].DefStatement.LinearAddress,
-                        null);
-                    var sidPred = ssa.Identifiers.Add(idWide, stmPred, null, false);
-                    var phiArgs = phis.Select(p => p.Src.Arguments[iBlock].Value).ToArray();
-                    stmPred.Instruction = 
-                        new AliasAssignment(
-                            sidPred.Identifier,
-                            new MkSequence(
-                                sidPred.Identifier.DataType,
-                                phiArgs));
-                    ssa.AddUses(stmPred);
-                    sidPred.Uses.Add(stmPhi);
-                    this.NewStatements.Add(stmPred);
-
+                    var sidPred = MakeFusedIdentifierInPredecessorBlock(sids, phis, idWide, stmPhi, iBlock, pred);
                     widePhiArgs.Add(new PhiArgument(pred, sidPred.Identifier));
                 }
+
                 var sidDst = ssa.Identifiers.Add(idWide, stmPhi, null, false);
                 stmPhi.Instruction = new PhiAssignment(
-                        sidDst.Identifier,
-                        widePhiArgs.ToArray());
+                    sidDst.Identifier,
+                    widePhiArgs.ToArray());
                 sidDst.Uses.Add(this.Statement);
+
+                // Replace all the "unfused" phis with slices of the "fused" phi.
+                foreach (var sid in sids)
+                {
+                    ssa.RemoveUses(sid.DefStatement);
+                    sid.DefStatement.Instruction = new AliasAssignment(
+                        sid.Identifier,
+                        new Slice(sid.Identifier.DataType, sidDst.Identifier, idWide.Storage.OffsetOf(sid.Identifier.Storage)));
+                    sidDst.Uses.Add(sid.DefStatement);
+                }
                 return sidDst.Identifier;
+            }
+
+            /// <summary>
+            /// Given a sequence of SSA identifiers in <paramref name="sids"/>, generate
+            /// add a new SSA identifier whose definition is sid_new = SEQ(sids...) and
+            /// place it in the basic block <paramref name="pred"/>.
+            /// </summary>
+            /// <remarks>
+            /// If the SSA identifiers all all slices of the same identifier, short-circuit
+            /// the work by using the sliced identifier directly.
+            /// </remarks>
+            private SsaIdentifier MakeFusedIdentifierInPredecessorBlock(SsaIdentifier[] sids, PhiAssignment[] phis, Identifier idWide, Statement stmPhi, int iBlock, Block pred)
+            {
+                SsaIdentifier sidPred;
+                var sidPreds = phis.Select(p => ssa.Identifiers[(Identifier) p.Src.Arguments[iBlock].Value].DefStatement.Instruction as Assignment).ToArray();
+                var slices = sidPreds.Select(AsSlice).ToArray();
+                if (slices.All(s => s != null) &&
+                    AllSame(slices, (a, b) => a.Expression == b.Expression) &&
+                    AllAdjacent(slices))
+                {
+                    if (slices[0].Expression is Identifier id)
+                    {
+                        // All sids were slices of the same identifier `id`,
+                        // so just use that instead.
+                        sidPred = ssa.Identifiers[id];
+                        sidPred.Uses.Add(stmPhi);
+                        return sidPred;
+                    }
+                }
+
+                var stmPred = AddStatementToEndOfBlock(pred, sids[0].DefStatement.LinearAddress, null);
+                sidPred = ssa.Identifiers.Add(idWide, stmPred, null, false);
+                var phiArgs = phis.Select(p => p.Src.Arguments[iBlock].Value).ToArray();
+                stmPred.Instruction =
+                    new AliasAssignment(
+                        sidPred.Identifier,
+                        new MkSequence(
+                            sidPred.Identifier.DataType,
+                            phiArgs));
+                this.NewStatements.Add(stmPred);
+                ssa.AddUses(stmPred);
+
+                sidPred.Uses.Add(stmPhi);
+                return sidPred;
+            }
+
+            private Statement AddStatementToEndOfBlock(Block pred, ulong linearAddress, Instruction instr)
+            {
+                int i = pred.Statements.Count;
+                if (i > 0 && pred.Statements[i - 1].Instruction.IsControlFlow)
+                    --i;
+                var stmPred = pred.Statements.Insert(i, linearAddress, instr);
+                return stmPred;
             }
 
             private Expression RewriteSeqDefinedByCall(SsaIdentifier [] sids, CallInstruction call, Identifier idWide)

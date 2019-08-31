@@ -12,6 +12,7 @@ void fn0C00_0000(Register selector ds)
 // ds:ds
 // ax:ax
 // Top:Top
+// ds_si:Sequence ds:si
 // S:S
 // C:C
 // Z:Z
@@ -24,20 +25,24 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	si_6 = Mem0[ds:0x0200:word16]
-	ax_7 = fn0C00_0025(si_6, ds, out si_8)
-	Mem9[ds:0x0310:word16] = ax_7
-	ax_10 = fn0C00_0027(si_8, ds, out si_11)
-	Mem16[ds:0x0320:word16] = ax_10
-	ax_17 = fn0C00_002F(si_11, ds, out si_18)
-	Mem19[ds:0x0330:word16] = ax_17
-	ax_20 = fn0C00_0036(si_18, ds, out si_21)
-	Mem22[ds:0x0340:word16] = ax_20
-	Mem23[ds:0x0400:word16] = si_21
+	ds_si_7 = SEQ(ds, si_6) (alias)
+	ax_8 = fn0C00_0025(ds_si_7, out si_9)
+	Mem10[ds:0x0310:word16] = ax_8
+	ds_si_11 = SEQ(ds, si_9) (alias)
+	ax_12 = fn0C00_0027(ds_si_11, out si_13)
+	Mem18[ds:0x0320:word16] = ax_12
+	ds_si_19 = SEQ(ds, si_13) (alias)
+	ax_20 = fn0C00_002F(ds_si_19, out si_21)
+	Mem22[ds:0x0330:word16] = ax_20
+	ds_si_23 = SEQ(ds, si_21) (alias)
+	ax_24 = fn0C00_0036(ds_si_23, out si_25)
+	Mem26[ds:0x0340:word16] = ax_24
+	Mem27[ds:0x0400:word16] = si_25
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-Register word16 fn0C00_0025(Register word16 si, Register selector ds, Register out ptr16 siOut)
-// MayUse:  ds:[0..15] si:[0..15]
+Register word16 fn0C00_0025(Sequence word32 ds_si, Register out ptr16 siOut)
+// MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax si
 // Trashed: ax si Top
 // Preserved: sp
@@ -50,23 +55,24 @@ Register word16 fn0C00_0025(Register word16 si, Register selector ds, Register o
 // ds:ds
 // si:si
 // Top:Top
+// ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
-word16 fn0C00_0025(word16 si, selector ds, ptr16 & siOut)
+word16 fn0C00_0025(word32 ds_si, ptr16 & siOut)
 fn0C00_0025_entry:
-	def ds
-	def si
+	def ds_si
+	si = SLICE(ds_si, word16, 0)
 	def Mem0
 	// succ:  l0C00_0025
 l0C00_0025:
-	ax_7 = Mem0[ds:si:word16]
+	ax_7 = Mem0[ds_si:word16]
 	si_8 = si + 0x0002
 	siOut = si_8
 	return ax_7
 	// succ:  fn0C00_0025_exit
 fn0C00_0025_exit:
-Register word16 fn0C00_0027(Register word16 si, Register selector ds, Register out ptr16 siOut)
-// MayUse:  ds:[0..15] si:[0..15]
+Register word16 fn0C00_0027(Sequence word32 ds_si, Register out ptr16 siOut)
+// MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax si
 // Trashed: SCZO ax si Top
 // Preserved: sp
@@ -84,12 +90,13 @@ Register word16 fn0C00_0027(Register word16 si, Register selector ds, Register o
 // Top:Top
 // S:S
 // O:O
+// ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
-word16 fn0C00_0027(word16 si, selector ds, ptr16 & siOut)
+word16 fn0C00_0027(word32 ds_si, ptr16 & siOut)
 fn0C00_0027_entry:
-	def si
-	def ds
+	def ds_si
+	si = SLICE(ds_si, word16, 0)
 	def Mem0
 	// succ:  l0C00_0027
 l0C00_0027:
@@ -98,7 +105,7 @@ l0C00_0027:
 	branch si == 0x0000 l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:
-	ax_14 = Mem0[ds:si:word16]
+	ax_14 = Mem0[ds_si:word16]
 	si_15 = si + 0x0002
 	// succ:  l0C00_002E
 l0C00_002E:
@@ -108,8 +115,8 @@ l0C00_002E:
 	return ax_16
 	// succ:  fn0C00_0027_exit
 fn0C00_0027_exit:
-Register word16 fn0C00_002F(Register word16 si, Register selector ds, Register out ptr16 siOut)
-// MayUse:  ds:[0..15] si:[0..15]
+Register word16 fn0C00_002F(Sequence word32 ds_si, Register out ptr16 siOut)
+// MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax si
 // Trashed: ax si Top
 // Preserved: sp
@@ -122,24 +129,25 @@ Register word16 fn0C00_002F(Register word16 si, Register selector ds, Register o
 // ds:ds
 // si:si
 // Top:Top
+// ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
-word16 fn0C00_002F(word16 si, selector ds, ptr16 & siOut)
+word16 fn0C00_002F(word32 ds_si, ptr16 & siOut)
 fn0C00_002F_entry:
-	def ds
-	def si
+	def ds_si
+	si = SLICE(ds_si, word16, 0)
 	def Mem0
 	// succ:  l0C00_002F
 l0C00_002F:
-	ax_7 = Mem0[ds:si:word16]
+	ax_7 = Mem0[ds_si:word16]
 	si_8 = si + 0x0002
-	Mem9[ds:si + 0x0004:word16] = 0x0000
+	Mem9[ds_si + 0x0004:word16] = 0x0000
 	siOut = si_8
 	return ax_7
 	// succ:  fn0C00_002F_exit
 fn0C00_002F_exit:
-Register word16 fn0C00_0036(Register word16 si, Register selector ds, Register out ptr16 siOut)
-// MayUse:  ds:[0..15] si:[0..15]
+Register word16 fn0C00_0036(Sequence word32 ds_si, Register out ptr16 siOut)
+// MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax si
 // Trashed: ax si Top
 // Preserved: sp
@@ -152,16 +160,19 @@ Register word16 fn0C00_0036(Register word16 si, Register selector ds, Register o
 // ds:ds
 // si:si
 // Top:Top
+// ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
-word16 fn0C00_0036(word16 si, selector ds, ptr16 & siOut)
+word16 fn0C00_0036(word32 ds_si, ptr16 & siOut)
 fn0C00_0036_entry:
-	def ds
-	def si
+	def ds_si
+	ds = SLICE(ds_si, selector, 16)
+	si = SLICE(ds_si, word16, 0)
 	// succ:  l0C00_0036
 l0C00_0036:
-	ax_9 = fn0C00_0025(si + 0x0002, ds, out si_10)
-	siOut = si_10
-	return ax_9
+	ds_si_9 = SEQ(ds, si + 0x0002) (alias)
+	ax_10 = fn0C00_0025(ds_si_9, out si_11)
+	siOut = si_11
+	return ax_10
 	// succ:  fn0C00_0036_exit
 fn0C00_0036_exit:

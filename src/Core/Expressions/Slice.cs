@@ -33,7 +33,7 @@ namespace Reko.Core.Expressions
         public Slice(DataType dt, Expression i, int bitOffset) : base(dt)
         {
             if (bitOffset < 0)
-                throw new ArgumentOutOfRangeException("bitOffset", "Offset must be non-negative.");
+                throw new ArgumentOutOfRangeException(nameof(bitOffset), "Offset must be non-negative.");
             Expression = i;
             Offset = bitOffset;
         }

@@ -48,6 +48,11 @@ namespace Reko.Core.Expressions
             return new Identifier(reg.Name, reg.DataType, reg);
         }
 
+        public static Identifier Create(SequenceStorage seq)
+        {
+            return new Identifier(seq.Name, seq.DataType, seq);
+        }
+
         public static Identifier CreateTemporary(string name, DataType dt)
         {
             var tmp = new TemporaryStorage(name, 0, dt);

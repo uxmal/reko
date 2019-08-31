@@ -1268,6 +1268,7 @@ void fn164F(byte a, byte c, byte b, byte h, word16 ix, word16 wArg13, byte bArg1
 // Trashed: SZHVNC af bc de hl ix sp
 // Preserved:
 fn164F_entry:
+	byte bArg1B_271 = SLICE(wArg1B, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1288,7 +1289,7 @@ l164F:
 	word16 hl_72
 	word16 ix_73
 	word16 sp_74
-	word16 af_251 = DPB(fn02F4(a_40, a_22, b - v14_17 - (a_22 <u 0x00), wArg13, SLICE(DPB(DPB(DPB(wArg1B + 1, v14_17, 8), a_33, 0), a_40, 8), byte, 8), ix, SEQ(SLICE(wArg1B, byte, 0), bArg1A), out bc_70, out de_71, out hl_72, out ix_73, out sp_74), l_83, 8)
+	word16 af_251 = DPB(fn02F4(a_40, a_22, b - v14_17 - (a_22 <u 0x00), wArg13, SLICE(DPB(DPB(DPB(wArg1B + 1, v14_17, 8), a_33, 0), a_40, 8), byte, 8), ix, SEQ(bArg1B_271, bArg1A), out bc_70, out de_71, out hl_72, out ix_73, out sp_74), l_83, 8)
 	branch l_83 != 0x00 l1692
 // DataOut:
 // DataOut (flags):

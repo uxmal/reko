@@ -428,8 +428,10 @@ l00000792:
 	word64 r12_41
 	word64 r13_42
 	word64 r2_44 = fib((int64) (word32) SEQ(SLICE(r2, word32, 32), (word32) r2 - 1), r10, fp - 328, r12, r13, 0x000007A8, out r10_125, out r11_40, out r12_41, out r13_42)
+	word64 r1_52 = SEQ(SLICE(r2_44, word32, 32), Mem24[r11_40 + 164:word32])
 	word64 r10_62
-	r1_74 = SEQ(SLICE(r2_67, word32, 32), (word32) (fib((int64) (word32) SEQ(SLICE(r1_52, word32, 32), (word32) SEQ(SLICE(r2_44, word32, 32), Mem24[r11_40 + 164:word32]) - 2), r2_44, r11_40, r12_41, r13_42, 0x000007C4, out r10_62, out r11_21, out r12_126, out r13_127) + r10_62))
+	word64 r2_67 = fib((int64) (word32) SEQ(SLICE(r1_52, word32, 32), (word32) r1_52 - 2), r2_44, r11_40, r12_41, r13_42, 0x000007C4, out r10_62, out r11_21, out r12_126, out r13_127)
+	r1_74 = SEQ(SLICE(r2_67, word32, 32), (word32) (r2_67 + r10_62))
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

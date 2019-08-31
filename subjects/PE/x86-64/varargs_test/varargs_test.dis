@@ -620,7 +620,7 @@ Win32CrtStartup_entry:
 // SymbolicIn:
 
 l0000000140001434:
-	word64 rax_6 = fn000000014000186C(qwLoc20, dwLoc18, dwLoc14)
+	word64 rax_6 = fn000000014000186C(qwLoc20, qwLoc18)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -675,20 +675,20 @@ word64 fn000000014000147C(word64 rcx, word64 rbx, word64 rsi, word64 rdi, word64
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: rsp
 fn000000014000147C_entry:
+	DWORD tLoc38 = SLICE(qwLoc38, DWORD, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000014000147C:
-	word64 qwLoc38_63 = SEQ(dwLoc34, tLoc38)
-	DWORD tLoc38_68 = SLICE(qwLoc38_63, DWORD, 0)
+	DWORD tLoc38_68 = SLICE(qwLoc38, DWORD, 0)
 	branch IsProcessorFeaturePresent(tLoc38) == 0x00000000 l000000014000149A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000014000149A:
-	fn0000000140001550(0x00000001400030E0, rbx, rsi, rdi, qwLoc38_63)
+	fn0000000140001550(0x00000001400030E0, rbx, rsi, rdi, qwLoc38)
 	Mem24[0x00000001400031D8:word64] = qwArg00
 	Mem27[0x0000000140003178:word64] = fp + 0x0000000000000008
 	Mem29[0x0000000140003050:word64] = Mem27[0x00000001400031D8:word64]
@@ -1344,14 +1344,15 @@ fn0000000140001854_exit:
 
 
 
-word64 fn000000014000186C(word64 qwArg10, word32 dwArg18, word32 dwArg1C)
+word64 fn000000014000186C(word64 qwArg10, word64 qwArg18)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0010:[0..63] Stack +0018:[0..31] Stack +001C:[0..31]
+// MayUse:  Stack +0010:[0..63] Stack +0018:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rcx
 // Preserved: rbp rbx rsp
 fn000000014000186C_entry:
+	word32 dwArg18 = SLICE(qwArg18, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1367,7 +1368,7 @@ l0000000140001894:
 	GetSystemTimeAsFileTime(tLoc28)
 	word64 v14_26 = qwArg10 & 0x0000000000000000 ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId()
 	QueryPerformanceCounter(tLoc28)
-	word64 rax_35 = (uint64) dwArg18 << 0x0000000000000020 ^ SEQ(dwArg1C, dwArg18) ^ v14_26 ^ fp + 0x0000000000000008
+	word64 rax_35 = (uint64) dwArg18 << 0x0000000000000020 ^ qwArg18 ^ v14_26 ^ fp + 0x0000000000000008
 	rax_14 = rax_35 & 0x00000000FFFFFFFF
 	branch (rax_35 & 0x00000000FFFFFFFF) != 0x000000002DDFA232 l00000001400018FC
 // DataOut:
@@ -1614,15 +1615,15 @@ word64 fn0000000140001974(word32 ecx, word64 rbx, word64 rbp, word64 qwArg00, wo
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: r9 rbp rbx rsp
 fn0000000140001974_entry:
+	DWORD tLoc05C8 = SLICE(ptrLoc05C8, DWORD, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000140001974:
-	void * ptrLoc05C8_106 = SEQ(dwLoc05C4, tLoc05C8)
 	word32 ebx_99 = (word32) (uint64) ecx
-	DWORD tLoc05C8_116 = SLICE(ptrLoc05C8_106, DWORD, 0)
-	word32 dwLoc05C4_117 = SLICE(ptrLoc05C8_106, word32, 32)
+	DWORD tLoc05C8_116 = SLICE(ptrLoc05C8, DWORD, 0)
+	word32 dwLoc05C4_117 = SLICE(ptrLoc05C8, word32, 32)
 	branch IsProcessorFeaturePresent(tLoc05C8) == 0x00000000 l000000014000199D
 // DataOut:
 // DataOut (flags):
@@ -1630,8 +1631,8 @@ l0000000140001974:
 
 l000000014000199D:
 	Mem18[0x0000000140003610:word32] = Mem7[0x0000000140003610:word32] & 0x00000000
-	memset(ptrLoc05C8_106, dwLoc05C0, tLoc05B8)
-	RtlCaptureContext(ptrLoc05C8_106)
+	memset(ptrLoc05C8, dwLoc05C0, tLoc05B8)
+	RtlCaptureContext(ptrLoc05C8)
 	word64 rax_27 = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x0000000000000010, 0x0000000000000000)
 	branch rax_27 == 0x0000000000000000 l0000000140001A1A
 // DataOut:
@@ -1646,10 +1647,10 @@ l00000001400019DE:
 // SymbolicIn:
 
 l0000000140001A1A:
-	memset(ptrLoc05C8_106, dwLoc05C0, tLoc05B8)
+	memset(ptrLoc05C8, dwLoc05C0, tLoc05B8)
 	word32 eax_69 = IsDebuggerPresent()
-	SetUnhandledExceptionFilter(ptrLoc05C8_106)
-	word32 eax_80 = UnhandledExceptionFilter(ptrLoc05C8_106)
+	SetUnhandledExceptionFilter(ptrLoc05C8)
+	word32 eax_80 = UnhandledExceptionFilter(ptrLoc05C8)
 	word64 rax_141 = DPB(fp - 0x00000000000004D8, eax_80, 0)
 	branch eax_80 != 0x00000000 l0000000140001AA8
 // DataOut:

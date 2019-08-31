@@ -152,12 +152,14 @@ namespace Reko.Analysis
 
         public Expression VisitSequenceStorage(SequenceStorage seq)
         {
+            if (map.TryGetValue(seq, out var binding))
+            {
+                return binding.Expression;
+            }
             var exps = seq.Elements
                 .Select(stg => stg.Accept(this))
                 .ToArray();
-            return new MkSequence(
-                seq.DataType,
-                exps);
+            return new MkSequence(seq.DataType, exps);
         }
 
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)

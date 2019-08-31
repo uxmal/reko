@@ -1,19 +1,19 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed:  di:[0..15] ds:[0..15] si:[0..15]
+	BitsUsed:  di:[0..15] Sequence ds:si:[0..31]
 	Trashed:   SCZO ax cx Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
 fn0C00_0000_entry:
+	def ds_si
 	def di
-	def ds
-	def si
+	ds = SLICE(ds_si, selector, 16)
 l0C00_0000:
 	call fn0C00_0008 (retsize: 2;)
 		uses: cx:0x0014,di:di,ds:ds
 		defs: ax:ax_7
-	Mem13[ds:si:word16] = ax_7
+	Mem13[ds_si:word16] = ax_7
 l0C00_0006_thunk_fn0C00_0008:
 	call fn0C00_0008 (retsize: 0;)
 		uses: cx:0x0014,di:di,ds:ds

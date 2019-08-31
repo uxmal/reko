@@ -8,42 +8,41 @@ define fn0C00_0000
 fn0C00_0000_entry:
 	def ds
 l0C00_0000:
+	ds_si_6 = SEQ(ds, 0x1234) (alias)
 	call fn0C00_000B (retsize: 2;)
-		uses: ds:ds,si:0x1234
-		defs: ax:ax_6
-	Mem7[ds:0x5431:word16] = ax_6
+		uses: Sequence ds:si:ds_si_6
+		defs: ax:ax_7
+	Mem8[ds:0x5431:word16] = ax_7
 	return
 fn0C00_0000_exit:
 // fn0C00_000B /////////////////////
 	LiveOut:   ax:[0..15]
-	BitsUsed:  ds:[0..15] si:[0..15]
+	BitsUsed:  Sequence ds:si:[0..31]
 	Trashed:   ax Top
 	Preserved: si sp
 // fn0C00_000B
 define fn0C00_000B
 fn0C00_000B_entry:
-	def si
-	def ds
+	def ds_si
 l0C00_000B:
 	call fn0C00_0011 (retsize: 2;)
-		uses: ds:ds,si:si
-		defs: ax:ax_9
+		uses: Sequence ds:si:ds_si
+		defs: ax:ax_10
 	return
 fn0C00_000B_exit:
-	use ax_9
+	use ax_10
 // fn0C00_0011 /////////////////////
 	LiveOut:   ax:[0..15]
-	BitsUsed:  ds:[0..15] si:[0..15]
+	BitsUsed:  Sequence ds:si:[0..31]
 	Trashed:   ax Top
 	Preserved: sp
 // fn0C00_0011
 define fn0C00_0011
 fn0C00_0011_entry:
-	def ds
-	def si
+	def ds_si
 	def Mem0
 l0C00_0011:
-	ax_7 = Mem0[ds:si + 0x0004:word16]
+	ax_7 = Mem0[ds_si + 0x0004:word16]
 	return
 fn0C00_0011_exit:
 	use ax_7

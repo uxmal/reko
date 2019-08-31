@@ -304,7 +304,8 @@ l00001124:
 
 l0000112A:
 	d1_111 = SEQ(SLICE(d1_111, word24, 8), Mem323[a2_196:byte])
-	d2_102 = SEQ(SLICE(d2_344, word24, 8), SLICE(SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0)), byte, 0) & 0xDF)
+	word32 d2_344 = SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0))
+	d2_102 = SEQ(SLICE(d2_344, word24, 8), SLICE(d2_344, byte, 0) & 0xDF)
 	a2_196 = a2_196 + 1
 	branch SLICE(d2_102, byte, 0) != 0x4E l0000113C
 // DataOut:

@@ -11,10 +11,11 @@ l0C00_0000:
 	call fn0C00_000D (retsize: 2;)
 		uses: ds:ds
 		defs: ax:ax_5
+	ds_si_7 = SEQ(ds, ax_5) (alias)
 	call fn0C00_001A (retsize: 2;)
-		uses: ds:ds,si:ax_5
-		defs: ax:ax_7
-	Mem8[ds:0x0400:word16] = ax_7
+		uses: Sequence ds:si:ds_si_7
+		defs: ax:ax_8
+	Mem9[ds:0x0400:word16] = ax_8
 	return
 fn0C00_0000_exit:
 // fn0C00_000D /////////////////////
@@ -35,16 +36,15 @@ fn0C00_000D_exit:
 	use ax_11
 // fn0C00_001A /////////////////////
 	LiveOut:   ax:[0..15]
-	BitsUsed:  ds:[0..15] si:[0..15]
+	BitsUsed:  Sequence ds:si:[0..31]
 	Trashed:   ax Top
 	Preserved: si sp
 // fn0C00_001A
 define fn0C00_001A
 fn0C00_001A_entry:
-	def si
-	def ds
+	def ds_si
 l0C00_001A:
-	ax_9 = Mem7[ds:si:word16]
+	ax_9 = Mem7[ds_si:word16]
 	return
 fn0C00_001A_exit:
 	use ax_9

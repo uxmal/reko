@@ -136,8 +136,6 @@ namespace Reko.Analysis
                 eventListener);
             uvr.Transform();
 
-            DumpWatchedProcedure();
-
             // At this point, the exit blocks contain only live out registers.
             // We can create signatures from that.
             CallRewriter.Rewrite(program.Platform, ssts, this.flow, eventListener);
@@ -145,12 +143,14 @@ namespace Reko.Analysis
         }
 
         [Conditional("DEBUG")]
-        public void DumpWatchedProcedure()
+        public void DumpWatchedProcedure(string caption)
         {
+            Debug.Print("// {0} ==================", caption);
             foreach (var proc in program.Procedures.Values)
             {
-                if (proc.Name == "")
+                if (proc.Name == "fn0800_2688")
                 {
+                    MockGenerator.DumpMethod(proc);
                     proc.Dump(true);
                 }
             }
@@ -166,10 +166,7 @@ namespace Reko.Analysis
         {
             this.ssts = new List<SsaTransform>();
             var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), UntangleProcedureScc);
-            foreach (var procedure in program.Procedures.Values)
-            {
-                sscf.Find(procedure);
-            }
+            sscf.FindAll();
             return ssts;
         }
 
@@ -204,8 +201,10 @@ namespace Reko.Analysis
             foreach (var ssa in ssts.Select(sst => sst.SsaState))
             {
                 RemovePreservedRegistersFromIndirectCalls(ssa);
-                //var prj = new ProjectionPropagator(ssa);
-                //prj.Transform();
+                var sac = new SegmentedAccessClassifier(ssa);
+                sac.Classify();
+                var prj = new ProjectionPropagator(ssa, sac);
+                prj.Transform();
             }
 
             var uid = new UsedRegisterFinder(program.Architecture, flow, procs, this.eventListener);

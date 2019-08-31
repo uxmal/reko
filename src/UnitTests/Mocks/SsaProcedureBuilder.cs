@@ -58,8 +58,8 @@ namespace Reko.UnitTests.Mocks
 
         public Identifier Reg(string name, RegisterStorage r)
         {
-            var id = new Identifier(name, r.DataType, r);
-            return MakeSsaIdentifier(id);
+            var id = new Identifier(r.Name, r.DataType, r);
+            return MakeSsaIdentifier(id, name);
         }
 
         private Identifier Reg(string name, PrimitiveType pt)
@@ -69,32 +69,32 @@ namespace Reko.UnitTests.Mocks
 
         public Identifier Flags(string name, FlagGroupStorage flags)
         {
-            var id = new Identifier(name, flags.DataType, flags);
-            return MakeSsaIdentifier(id);
+            var id = new Identifier(flags.Name, flags.DataType, flags);
+            return MakeSsaIdentifier(id, name);
         }
 
         public Identifier SeqId(string name, DataType dt, params Storage[] storages)
         {
             var id = new Identifier(name, dt, new SequenceStorage(dt, storages));
-            return MakeSsaIdentifier(id);
+            return MakeSsaIdentifier(id, name);
         }
 
         public override Identifier Local16(string name, int offset)
         {
-            var local = base.Local16(name, offset);
-            return MakeSsaIdentifier(local);
+            var local = base.Local16(null, offset);
+            return MakeSsaIdentifier(local, name);
         }
 
         public override Identifier Local32(string name, int offset)
         {
             var local = base.Local32(name, offset);
-            return MakeSsaIdentifier(local);
+            return MakeSsaIdentifier(local, name);
         }
 
         public Identifier Temp(string name, TemporaryStorage stg)
         {
             var id = new Identifier(stg.Name, stg.DataType, stg);
-            return MakeSsaIdentifier(id);
+            return MakeSsaIdentifier(id, name);
         }
 
         public Identifier Reg32(string name)
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Mocks
         public override Identifier Reg32(string name, int number)
         {
             var id = base.Reg32(name, number);
-            return MakeSsaIdentifier(id);
+            return MakeSsaIdentifier(id, name);
         }
 
         public Identifier Reg16(string name)
@@ -125,10 +125,11 @@ namespace Reko.UnitTests.Mocks
             return stm;
         }
 
-        private Identifier MakeSsaIdentifier(Identifier id)
+        private Identifier MakeSsaIdentifier(Identifier id, string name)
         {
-            var sid = new SsaIdentifier(id, id, null, null, false);
-            Ssa.Identifiers.Add(id, sid);
+            var idNew = new Identifier(name, id.DataType, id.Storage);
+            var sid = new SsaIdentifier(idNew, id, null, null, false);
+            Ssa.Identifiers.Add(idNew, sid);
             return sid.Identifier;
         }
 
@@ -212,6 +213,26 @@ namespace Reko.UnitTests.Mocks
             var sid = new SsaIdentifier(idNew, idOld, null, null, false);
             Ssa.Identifiers.Add(idNew, sid);
             return idNew;
+        }
+
+        public override MemoryAccess Mem8(Expression ea)
+        {
+            var access = base.Mem8(ea);
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new MemoryAccess(
+                memId,
+                access.EffectiveAddress,
+                access.DataType);
+        }
+
+        public override MemoryAccess Mem16(Expression ea)
+        {
+            var access = base.Mem16(ea);
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new MemoryAccess(
+                memId,
+                access.EffectiveAddress,
+                access.DataType);
         }
 
         public override MemoryAccess Mem32(Expression ea)

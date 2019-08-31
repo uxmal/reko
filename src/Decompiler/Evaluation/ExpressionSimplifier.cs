@@ -655,6 +655,7 @@ namespace Reko.Evaluation
         private Expression FuseAdjacentSlices(DataType dataType, Expression[] elems)
         {
             var fused = new List<Expression> { AsSlice(elems[0]) ?? elems[0] };
+            bool changed = false;
             for (int i = 1; i < elems.Length; ++i)
             {
                 Slice slNext = AsSlice(elems[i]);
@@ -662,24 +663,34 @@ namespace Reko.Evaluation
                     cmp.Equals(slPrev.Expression, slNext.Expression) &&
                     slPrev.Offset == slNext.Offset + slNext.DataType.BitSize)
                 {
-                    // Found two consecutive slices. Fuse them into one slice and 
-                    // un-use the shared expression.
+                    // Fuse the two consecutive slices. 
                     var newSlice = new Slice(
                         PrimitiveType.CreateWord(slPrev.DataType.BitSize + slNext.DataType.BitSize),
                         slNext.Expression,
                         slNext.Offset);
-                    ctx.RemoveExpressionUse(slPrev);
                     fused[fused.Count - 1] = newSlice.Accept(this);
+                    changed = true;
                 }
                 else
                 {
                     fused.Add(elems[i]);
                 }
             }
-            if (fused.Count == 1)
-                return fused[0];
+            if (changed)
+            {
+                foreach (var e in elems)
+                    ctx.RemoveExpressionUse(e);
+                foreach (var f in fused)
+                    ctx.UseExpression(f);
+                if (fused.Count == 1)
+                    return fused[0];
+                else
+                    return new MkSequence(dataType, fused.ToArray());
+            }
             else
-                return new MkSequence(dataType, fused.ToArray());
+            {
+                return new MkSequence(dataType, elems);
+            }
         }
 
         private Slice AsSlice(Expression e)

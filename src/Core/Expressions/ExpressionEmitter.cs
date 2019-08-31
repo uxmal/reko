@@ -635,7 +635,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public Expression Mem8(Expression ea)
+        public virtual MemoryAccess Mem8(Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Byte);
         }
@@ -646,7 +646,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public MemoryAccess Mem16(Expression ea)
+        public virtual MemoryAccess Mem16(Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word16);
         }

@@ -304,7 +304,8 @@ l00001124:
 
 l0000112A:
 	d1_111 = SEQ(SLICE(d1_111, word24, 8), Mem323[a2_196:byte])
-	d2_102 = SEQ(SLICE(d2_344, word24, 8), SLICE(SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0)), byte, 0) & 0xDF)
+	word32 d2_344 = SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0))
+	d2_102 = SEQ(SLICE(d2_344, word24, 8), SLICE(d2_344, byte, 0) & 0xDF)
 	a2_196 = a2_196 + 1
 	branch SLICE(d2_102, byte, 0) != 0x4E l0000113C
 // DataOut:
@@ -801,14 +802,16 @@ l00001446:
 // SymbolicIn:
 
 l000013B2:
-	__swap(SEQ(SLICE(d1_64, word16, 16), SLICE(__swap(20) *u SLICE(d2_137, word16, 0) + __swap(d2_137) *u 0x0014, word16, 0)))
+	word32 d1_64 = __swap(20) *u SLICE(d2_137, word16, 0)
+	word32 a1_79 = dwArg08 + (SLICE(d2_137, word16, 0) *u 20 + SEQ(SLICE(__swap(SEQ(SLICE(d1_64, word16, 16), SLICE(d1_64 + __swap(d2_137) *u 0x0014, word16, 0))), word16, 16), 0x0000)) + (d3_139 << 0x00000002)
 	word32 d0_81 = Mem80[dwArg04 + (d4_142 << 0x00000004) + (d2_137 << 0x00000002):word32]
-	word32 d1_82 = Mem80[dwArg08 + (SLICE(d2_137, word16, 0) *u 20 + SEQ(SLICE(d1_70, word16, 16), 0x0000)) + (d3_139 << 0x00000002):word32]
-	__swap(SEQ(SLICE(d5_87, word16, 16), SLICE(__swap(d0_81) *u SLICE(d1_82, word16, 0) + __swap(d1_82) *u SLICE(d0_81, word16, 0), word16, 0)))
-	__swap(SEQ(SLICE(d5_102, word16, 16), SLICE(__swap(20) *u SLICE(d4_142, word16, 0) + __swap(d4_142) *u 0x0014, word16, 0)))
-	word32 d0_116 = d0_81 *u SLICE(d1_82, word16, 0) + SEQ(SLICE(d5_93, word16, 16), 0x0000) + Mem80[(dwArg0C + (SLICE(d4_142, word16, 0) *u 20 + SEQ(SLICE(d5_108, word16, 16), 0x0000))) + (d3_139 << 0x00000002):word32]
-	__swap(SEQ(SLICE(d5_122, word16, 16), SLICE(__swap(20) *u SLICE(d4_142, word16, 0) + __swap(d4_142) *u 0x0014, word16, 0)))
-	Mem136[dwArg0C + (SLICE(d4_142, word16, 0) *u 20 + SEQ(SLICE(d5_128, word16, 16), 0x0000)) + (d3_139 << 0x00000002):word32] = d0_116
+	word32 d1_82 = Mem80[a1_79:word32]
+	word32 d5_87 = __swap(d0_81) *u SLICE(d1_82, word16, 0)
+	word32 d0_96 = d0_81 *u SLICE(d1_82, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d5_87, word16, 16), SLICE(d5_87 + __swap(d1_82) *u SLICE(d0_81, word16, 0), word16, 0))), word16, 16), 0x0000)
+	word32 d5_102 = __swap(20) *u SLICE(d4_142, word16, 0)
+	word32 d0_116 = d0_96 + Mem80[(dwArg0C + (SLICE(d4_142, word16, 0) *u 20 + SEQ(SLICE(__swap(SEQ(SLICE(d5_102, word16, 16), SLICE(d5_102 + __swap(d4_142) *u 0x0014, word16, 0))), word16, 16), 0x0000))) + (d3_139 << 0x00000002):word32]
+	word32 d5_122 = __swap(20) *u SLICE(d4_142, word16, 0)
+	Mem136[dwArg0C + (SLICE(d4_142, word16, 0) *u 20 + SEQ(SLICE(__swap(SEQ(SLICE(d5_122, word16, 16), SLICE(d5_122 + __swap(d4_142) *u 0x0014, word16, 0))), word16, 16), 0x0000)) + (d3_139 << 0x00000002):word32] = d0_116
 	d2_137 = d2_137 + 0x00000001
 // DataOut:
 // DataOut (flags):

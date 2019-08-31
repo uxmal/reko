@@ -1098,15 +1098,15 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"r2_1:r2
+@"r2_1: orig: r2
     def:  r2_1 = Mem4[0x00220200:word32]
     uses: r4_1 = r2_1
           callee(r2_1)
-r2_2:r2
+r2_2: orig: r2
     def:  r2_2 = callee
-r4_1:r4
+r4_1: orig: r4
     def:  r4_1 = r2_1
-r25_1:r25
+r25_1: orig: r25
     def:  r25_1 = callee
 Mem4: orig: Mem0
     uses: r2_1 = Mem4[0x00220200:word32]
@@ -1196,22 +1196,22 @@ SsaProcedureBuilder_exit:
 
             var sExp =
             #region Expected
-@"d3:d3
+@"d3: orig: d3
     uses: wLoc02_2 = (word16) d3
           d3_3 = DPB(d3, 0x0003, 0)
           d3_4 = DPB(d3, 0x0004, 0)
           d3_6 = d3
-wLoc02_2:Local -0004
+wLoc02_2: orig: wLoc04
     def:  wLoc02_2 = (word16) d3
-d3_3:d3_3
+d3_3: orig: d3_3
     def:  d3_3 = DPB(d3, 0x0003, 0)
     uses: d3_5 = PHI((d3_3, m1), (d3_4, m2))
-d3_4:d3_4
+d3_4: orig: d3_4
     def:  d3_4 = DPB(d3, 0x0004, 0)
     uses: d3_5 = PHI((d3_3, m1), (d3_4, m2))
-d3_5:d3_5
+d3_5: orig: d3_5
     def:  d3_5 = PHI((d3_3, m1), (d3_4, m2))
-d3_6:d3_6
+d3_6: orig: d3_6
     def:  d3_6 = d3
 // SsaProcedureBuilder
 // Return size: 0

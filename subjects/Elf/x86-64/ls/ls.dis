@@ -16491,7 +16491,6 @@ word64 fn000000000040D8A0(word64 rcx, word64 rdx, word64 rbx, word64 rbp, word64
 // Trashed: SCZO r10 r11 r12 r13 r14 r15 r8 r9 rax rbp rbx rcx rdi rdx rsi rsp
 // Preserved: fs
 fn000000000040D8A0_entry:
-	word32 dwLocB4_2421 = SLICE(qwLocB8, word32, 32)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -16501,7 +16500,7 @@ l000000000040D8A0:
 	byte al_57 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (word32) (uint64) r9d >>u 0x00000001) & 0x00000001)
 	word64 r15_1373 = rcx
 	word32 r14d_55 = (word32) (uint64) r8d
-	word56 nLocD7_2041 = SLICE(rsi, word56, 8)
+	word56 nLocD7_2042 = SLICE(rsi, word56, 8)
 	word32 dwLocC4_1396 = r8d
 	word64 qwLoc88_1400 = qwArg10
 	word64 qwLoc90_1402 = qwArg18
@@ -16519,8 +16518,8 @@ l000000000040E280:
 // SymbolicIn:
 
 l000000000040D92D:
+	word64 qwLocD8_2040
 	word64 qwLoc98_1422
-	byte bLocD8_1423
 	word64 rdx_103
 	word64 rdi_1223
 	word64 rsi_1251
@@ -16544,9 +16543,9 @@ l000000000040DFE0:
 
 l000000000040DFE2:
 	word32 ebx_70 = (word32) (uint64) r8d
-	qwLoc88_1400 = fn000000000040D7B0((word32) (uint64) ebx_70, 0x0000000000415FF5, fs, out rcx_2987, out rdx_2988)
+	qwLoc88_1400 = fn000000000040D7B0((word32) (uint64) ebx_70, 0x0000000000415FF5, fs, out rcx_3005, out rdx_3006)
 	rax_140 = fn000000000040D7B0((word32) (uint64) ebx_70, 0x0000000000416DEA, fs, out rcx_109, out rdx_103)
-	nLocD7_2041 = SLICE(rsi, word56, 8) (alias)
+	nLocD7_2042 = SLICE(rsi, word56, 8) (alias)
 	qwLoc90_1402 = rax_140
 // DataOut:
 // DataOut (flags):
@@ -16604,17 +16603,17 @@ l000000000040E044:
 	rdi_1223 = qwLoc90_1402
 	qwLoc98_1422 = qwLoc90_1402
 	r14_150 = DPB(rax_140, strlen(qwLoc90_1402), 0)
-	bLocD8_1423 = 0x01
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x01) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040DF90:
 	bLocC5_1405 = 0x00
-	bLocD8_1423 = 0x01
 	r14_150 = 0x0000000000000000
 	qwLoc98_1422 = 0x0000000000000000
 	rbx_1016 = 0x0000000000000000
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x01) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16625,11 +16624,11 @@ l000000000040DF90:
 
 l000000000040DFB0:
 	bLocC5_1405 = 0x01
-	bLocD8_1423 = 0x01
 	r14_150 = 0x0000000000000001
 	qwLoc98_1422 = 0x0000000000415FEB
 	rbx_1016 = 0x0000000000000000
 	dwLocC4_1396 = 0x00000003
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x01) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16645,10 +16644,10 @@ l000000000040DF50:
 // SymbolicIn:
 
 l000000000040E428:
-	bLocD8_1423 = 0x01
 	r14_150 = 0x0000000000000001
 	qwLoc98_1422 = 0x0000000000415FEB
 	rbx_1016 = 0x0000000000000000
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x01) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16664,10 +16663,10 @@ l000000000040DF5B:
 // SymbolicIn:
 
 l000000000040E2B3:
-	bLocD8_1423 = 0x01
 	r14_150 = 0x0000000000000001
 	qwLoc98_1422 = 0x0000000000415FEB
 	rbx_1016 = 0x0000000000000001
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x01) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16678,10 +16677,10 @@ l000000000040E2B3:
 
 l000000000040DF64:
 	Mem191[rdi:byte] = 0x22
-	bLocD8_1423 = 0x01
 	r14_150 = 0x0000000000000001
 	qwLoc98_1422 = 0x0000000000415FEB
 	rbx_1016 = 0x0000000000000001
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x01) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16697,10 +16696,10 @@ l000000000040DF10:
 // SymbolicIn:
 
 l000000000040E408:
-	bLocD8_1423 = 0x00
 	r14_150 = 0x0000000000000001
 	qwLoc98_1422 = 0x0000000000416DEA
 	rbx_1016 = 0x0000000000000000
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x00) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16716,10 +16715,10 @@ l000000000040DF1B:
 // SymbolicIn:
 
 l000000000040E2D1:
-	bLocD8_1423 = 0x00
 	r14_150 = 0x0000000000000001
 	qwLoc98_1422 = 0x0000000000416DEA
 	rbx_1016 = 0x0000000000000001
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x00) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16730,10 +16729,10 @@ l000000000040E2D1:
 
 l000000000040DF24:
 	Mem213[rdi:byte] = 0x27
-	bLocD8_1423 = 0x00
 	r14_150 = 0x0000000000000001
 	qwLoc98_1422 = 0x0000000000416DEA
 	rbx_1016 = 0x0000000000000001
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x00) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16744,11 +16743,11 @@ l000000000040DF24:
 
 l000000000040E070:
 	bLocC5_1405 = 0x01
-	bLocD8_1423 = 0x00
 	r14_150 = 0x0000000000000001
 	qwLoc98_1422 = 0x0000000000416DEA
 	rbx_1016 = 0x0000000000000000
 	dwLocC4_1396 = 0x00000002
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x00) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16759,10 +16758,10 @@ l000000000040E070:
 
 l000000000040D940:
 	bLocC5_1405 = 0x00
-	bLocD8_1423 = 0x00
 	r14_150 = 0x0000000000000000
 	qwLoc98_1422 = 0x0000000000000000
 	rbx_1016 = 0x0000000000000000
+	qwLocD8_2040 = SEQ(nLocD7_2042, 0x00) (alias)
 	rcx_109 = rcx
 	rdi_1223 = rdi
 	rsi_1251 = rsi
@@ -16772,27 +16771,25 @@ l000000000040D940:
 // SymbolicIn:
 
 l000000000040D960:
+	word32 dwLocB4_2421
 	word64 rax_1019
 	word64 r12_1008
 	word64 r11_486
 	word64 r13_381
 	word64 rax_1320
 	word32 ecx_1307
-	word64 qwLocC0_2281
-	word64 qwLocD8_2070
+	word64 rax_250 = (uint64) ((word32) SLICE(qwLocD8_2040, byte, 0) ^ 0x00000001)
 	byte al_247 = (byte) (uint64) ((word32) bLocC5_1405 ^ 0x00000001)
-	word64 rax_250 = (uint64) ((word32) bLocD8_1423 ^ 0x00000001)
 	word64 r9_1018 = r14_150
 	word64 rbp_1012 = 0x0000000000000000
 	word64 r14_238 = rsi
 	word64 r8_245 = rdx
-	byte bLocC0_1454 = al_247
 	byte al_251 = (byte) rax_250
 	byte al_261 = rcx != 0x0000000000000000
 	word64 rax_1309 = DPB(rax_250, rcx != 0x0000000000000000, 0)
 	rax_1309 = DPB(rax_250, rcx != 0x0000000000000000, 0) (alias)
-	word64 qwLocD8_2040 = SEQ(nLocD7_2041, bLocD8_1423)
 	word64 qwLocC0_2256 = SEQ(nLocBF, al_247)
+	qwLocC0_2256 = SEQ(nLocBF, al_247) (alias)
 	r12_1008 = r12
 	branch rcx == 0xFFFFFFFFFFFFFFFF l000000000040DB76
 // DataOut:
@@ -16807,10 +16804,6 @@ l000000000040D996:
 
 l000000000040D9A0:
 	dwLocB4_2421 = SLICE(qwLocB8, word32, 32) (alias)
-	nLocBF = SLICE(qwLocC0_2256, word56, 8) (alias)
-	bLocC0_1454 = SLICE(qwLocC0_2256, byte, 0) (alias)
-	nLocD7_2041 = SLICE(qwLocD8_2040, word56, 8) (alias)
-	bLocD8_1423 = SLICE(qwLocD8_2040, byte, 0) (alias)
 	ecx_1307 = (word32) rcx_109 (alias)
 	rax_1320 = DPB(rax_1309, al_261, 0) (alias)
 	branch al_261 == 0x00 l000000000040DB86
@@ -16824,6 +16817,8 @@ l000000000040D9A8:
 	word64 r13_285
 	byte cl_272 = r9_1018 != 0x0000000000000000
 	word32 ecx_294 = DPB(ecx_1307, cl_272, 0)
+	byte bLocC0_1537 = SLICE(qwLocC0_2256, byte, 0)
+	byte bLocD8_1457 = SLICE(qwLocD8_2040, byte, 0)
 	rcx_109 = DPB(rcx_109, cl_272, 0) (alias)
 	rcx_109 = DPB(rcx_109, ecx_294, 0) (alias)
 	rcx_109 = DPB(rcx_109, ecx_294, 0) (alias)
@@ -16833,7 +16828,7 @@ l000000000040D9A8:
 // SymbolicIn:
 
 l000000000040D9B4:
-	branch bLocD8_1423 == 0x00 l000000000040E0A0
+	branch bLocD8_1457 == 0x00 l000000000040E0A0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -17025,7 +17020,7 @@ l000000000040E391:
 // SymbolicIn:
 
 l000000000040E3DB:
-	r12_2998 = r12_976
+	r12_3016 = r12_976
 	branch Mem383[r15_393:byte] != 0x00 l000000000040E3F0
 // DataOut:
 // DataOut (flags):
@@ -17039,7 +17034,7 @@ l000000000040E3F0:
 // SymbolicIn:
 
 l000000000040E3E8:
-	r12_2999 = r12_976
+	r12_3017 = r12_976
 	branch Mem383[r13_285 + rax_1312:byte] == 0x00 l000000000040E3FE
 // DataOut:
 // DataOut (flags):
@@ -17108,7 +17103,7 @@ l000000000040E260:
 
 l000000000040E1B6:
 	rdx_466 = rdx_466 + 0x0000000000000001
-	r12_2997 = r12_964
+	r12_3015 = r12_964
 	branch rdx_466 != rax_397 l000000000040E190
 // DataOut:
 // DataOut (flags):
@@ -17158,7 +17153,7 @@ l000000000040E22D:
 // SymbolicIn:
 
 l000000000040E237:
-	rdx_103 = DPB(rdx_1337, dl_550 & bLocD8_1423, 0) (alias)
+	rdx_103 = DPB(rdx_1337, dl_550 & bLocD8_1457, 0) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -17179,23 +17174,23 @@ l000000000040DE24:
 // SymbolicIn:
 
 l000000000040DE61:
-	byte dl_591 = dl_550 & bLocD8_1423
-	qwLocD8_2070 = SEQ(nLocD7_2041, bLocD8_1423) (alias)
+	byte dl_591 = dl_550 & bLocD8_1457
 	r12b_817 = (byte) r12d_1181 (alias)
 	r12b_817 = (byte) r12d_1181 (alias)
 	r12b_817 = (byte) r12d_1181 (alias)
 	r12_1375 = DPB(r12_946, r12d_1181, 0) (alias)
 	rdx_103 = DPB(rdx_1336, dl_591, 0) (alias)
-	nLocD7_2842 = SLICE(qwLocD8_2070, word56, 8) (alias)
+	qwLocD8_2070 = qwLocD8_2040 (alias)
+	nLocD7_2842 = SLICE(qwLocD8_2040, word56, 8) (alias)
 	branch dl_591 == 0x00 l000000000040DAF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040DAF8:
-	qwLocC0_2281 = SEQ(nLocBF, bLocC0_1454) (alias)
-	nLocBF_2843 = SLICE(qwLocC0_2281, word56, 8) (alias)
-	branch bLocC0_1454 == 0x00 l000000000040DB09
+	qwLocC0_2281 = qwLocC0_2256 (alias)
+	nLocBF_2843 = SLICE(qwLocC0_2256, word56, 8) (alias)
+	branch bLocC0_1537 == 0x00 l000000000040DB09
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -17383,8 +17378,6 @@ l000000000040DED1:
 // SymbolicIn:
 
 l000000000040DB54:
-	bLocC0_1454 = SLICE(qwLocC0_2281, byte, 0) (alias)
-	bLocD8_1423 = SLICE(qwLocD8_2070, byte, 0) (alias)
 	r12_1008 = DPB(r12_1007, r12b_817, 0) (alias)
 	r12_1008 = DPB(r12_1007, r12b_817, 0) (alias)
 	branch rbx_1016 >=u r14_238 l000000000040DB62
@@ -17401,11 +17394,10 @@ l000000000040DB59:
 
 l000000000040DB62:
 	al_261 = rbp_1012 != r15_1373
-	nLocD7_2041 = SLICE(qwLocD8_2070, word56, 8) (alias)
-	nLocBF = SLICE(qwLocC0_2281, word56, 8) (alias)
-	dwLocB4_2421 = SLICE(qwLocB8, word32, 32) (alias)
 	rbx_1016 = rbx_1016 + 0x0000000000000001
 	rax_1309 = DPB(rax_1312, al_261, 0) (alias)
+	qwLocD8_2040 = qwLocD8_2070
+	qwLocC0_2256 = qwLocC0_2281
 	qwLocD8_2040 = qwLocD8_2070
 	qwLocC0_2256 = qwLocC0_2281
 	branch r15_1373 != 0xFFFFFFFFFFFFFFFF l000000000040D9A0
@@ -17415,6 +17407,7 @@ l000000000040DB62:
 
 l000000000040DB76:
 	byte al_870 = Mem866[r8_245 + rbp_1012:byte] != 0x00
+	dwLocB4_2421 = SLICE(qwLocB8, word32, 32) (alias)
 	ecx_1307 = (word32) rcx_109 (alias)
 	rax_1320 = DPB(rax_1309, al_870, 0) (alias)
 	branch al_870 != 0x00 l000000000040D9A8
@@ -17443,7 +17436,7 @@ l000000000040DB98:
 // SymbolicIn:
 
 l000000000040DC46:
-	rax_1019 = fn000000000040D8A0(r15_1373, r13_381, rbx_1016, rbp_1012, r11_486, rdi, (word32) (uint64) dwLocC4_1396, (word32) (uint64) ((word32) (uint64) r9d & 0xFFFFFFFD), r10, r12_1008, r13_381, r14_238, r15_1373, fs, 0x0000000000000000, qwLoc88_1400, qwLoc90_1402, out rbx_2989, out rsp_2990, out rbp_2991, out rsi_2992, out r8_245, out r9_1018, out r10, out r12_2993, out r13_2994, out r14_2995, out r15_2996)
+	rax_1019 = fn000000000040D8A0(r15_1373, r13_381, rbx_1016, rbp_1012, r11_486, rdi, (word32) (uint64) dwLocC4_1396, (word32) (uint64) ((word32) (uint64) r9d & 0xFFFFFFFD), r10, r12_1008, r13_381, r14_238, r15_1373, fs, 0x0000000000000000, qwLoc88_1400, qwLoc90_1402, out rbx_3007, out rsp_3008, out rbp_3009, out rsi_3010, out r8_245, out r9_1018, out r10, out r12_3011, out r13_3012, out r14_3013, out r15_3014)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -17564,7 +17557,7 @@ l000000000040DA2F:
 	word64 rsi_1279
 	word64 r10_1283
 	call Mem314[rax_1186 * 0x0000000000000008 + 0x00416068:word64] (retsize: 8;)
-		uses: r10:r10_1075,r11:r11_1281,r8:r8_283,r9:r9_268,rax:rax_1186,rcx:rcx_1187,rdi:rdi_1223,rdx:rdx_572,rsi:rsi_1251,Stack +0008:qwLocF8,Stack +0010:qwLocF0,Stack +0018:qwLocE8,Stack +0028:qwLocD8_2070,Stack +0029:nLocD7_2842,Stack +0030:rdi,Stack +003B:bLocC5_1450,Stack +003C:dwLocC4_1617,Stack +0040:qwLocC0_2281,Stack +0041:nLocBF_2843,Stack +0048:qwLocB8_2429,Stack +004C:dwLocB4_2844,Stack +0050:qwLocB0_2728,Stack +0058:dwLocA8_2725,Stack +0060:qwArg08,Stack +0068:qwLoc98_2298,Stack +0070:qwLoc90_1663,Stack +0078:qwLoc88_1746,Stack +0080:rax_47,Stack +0088:qwLoc78_2503,Stack +0090:qwLoc70_2603,Stack +0098:r9d,Stack +009D:al_251,Stack +009E:bLoc62_2535,Stack +009F:bLoc61_2635,Stack +00A0:qwLoc60_2567,Stack +00B4:dwLoc4C,Stack +00B8:qwLoc48_2465,Stack +00C0:rax_43,Stack +00D0:rbx,Stack +00D8:rbp,Stack +00E0:r12,Stack +00E8:r13,Stack +00F0:r14,Stack +00F8:r15,Stack +0108:qwArg08,Stack +0110:qwArg10,Stack +0118:qwArg18
+		uses: r10:r10_1075,r11:r11_1281,r8:r8_283,r9:r9_268,rax:rax_1186,rcx:rcx_1187,rdi:rdi_1223,rdx:rdx_572,rsi:rsi_1251,Stack +0008:qwLocF8,Stack +0010:qwLocF0,Stack +0018:qwLocE8,Stack +0028:qwLocD8_2993,Stack +0029:nLocD7_2842,Stack +0030:rdi,Stack +003B:bLocC5_1450,Stack +003C:dwLocC4_1617,Stack +0040:qwLocC0_2992,Stack +0041:nLocBF_2843,Stack +0048:qwLocB8_2429,Stack +004C:dwLocB4_2844,Stack +0050:qwLocB0_2728,Stack +0058:dwLocA8_2725,Stack +0060:qwArg08,Stack +0068:qwLoc98_2298,Stack +0070:qwLoc90_1663,Stack +0078:qwLoc88_1746,Stack +0080:rax_47,Stack +0088:qwLoc78_2503,Stack +0090:qwLoc70_2603,Stack +0098:r9d,Stack +009D:al_251,Stack +009E:bLoc62_2535,Stack +009F:bLoc61_2635,Stack +00A0:qwLoc60_2567,Stack +00B4:dwLoc4C,Stack +00B8:qwLoc48_2465,Stack +00C0:rax_43,Stack +00D0:rbx,Stack +00D8:rbp,Stack +00E0:r12,Stack +00E8:r13,Stack +00F0:r14,Stack +00F8:r15,Stack +0108:qwArg08,Stack +0110:qwArg10,Stack +0118:qwArg18
 		defs: r10:r10_1283,r8:r8_1218,r9:r9_1221,rax:rax_1222,rsi:rsi_1279
 	rbxOut = rbx_1016
 	rspOut = fp - 248
@@ -19509,6 +19502,7 @@ l0000000000410F08:
 	word64 rax_65 = __errno_location()
 	Mem70[rax_65:word32] = 0x00000000
 	word64 rax_81 = DPB(rax_65, strtoul(rdi, r15_34, (uint64) r14d_68), 0)
+	word32 dwLoc4C_377 = SLICE(rax_65, word32, 32)
 	word64 r14_80 = Mem78[r15_34:word64]
 	word64 rbx_101 = rax_81
 	branch r14_80 == rdi l0000000000410FE7
@@ -19598,7 +19592,7 @@ l0000000000410F78:
 l0000000000410F94:
 	word64 rcx_172
 	word64 rax_165
-	word64 qwLoc50_379 = SEQ(SLICE(rax_65, word32, 32), edx_146)
+	word64 qwLoc50_379 = SEQ(dwLoc4C_377, edx_146)
 	word64 rbp_249 = DPB(rbp_100, ebp_117, 0)
 	word32 edx_178 = (word32) (uint64) edx_146
 	word32 dwLoc4C_470 = SLICE(qwLoc50_379, word32, 32)
@@ -19886,6 +19880,7 @@ l00000000004113D8:
 	word64 rax_65 = __errno_location()
 	Mem71[rax_65:word32] = 0x00000000
 	word64 rax_82 = DPB(rax_65, __strtoul_internal(rdi, r15_34, (uint64) r14d_69, 0x0000000000000000), 0)
+	word32 dwLoc4C_376 = SLICE(rax_65, word32, 32)
 	word64 r14_81 = Mem79[r15_34:word64]
 	word64 rbx_102 = rax_82
 	r8 = rax_65
@@ -19971,7 +19966,7 @@ l0000000000411450:
 l000000000041146C:
 	word64 rcx_173
 	word64 rax_166
-	word64 qwLoc50_378 = SEQ(SLICE(rax_65, word32, 32), edx_147)
+	word64 qwLoc50_378 = SEQ(dwLoc4C_376, edx_147)
 	word32 edx_179 = (word32) (uint64) edx_147
 	word32 dwLoc4C_471 = SLICE(qwLoc50_378, word32, 32)
 	branch strchr(r8, 0x0000000000000030) == 0x0000000000000000 l00000000004114A3

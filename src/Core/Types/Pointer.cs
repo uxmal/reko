@@ -30,7 +30,7 @@ namespace Reko.Core.Types
 	public class Pointer : DataType
 	{
 		private DataType pointee;
-		private int bitSize;
+		private readonly int bitSize;
 
 		public Pointer(DataType pointee, int bitSize)
 		{
@@ -70,8 +70,7 @@ namespace Reko.Core.Types
 			get { return pointee; }
 			set 
 			{
-				if (value == null) throw new ArgumentNullException("Pointee mustn't be null.");
-				pointee = value; 
+                pointee = value ?? throw new ArgumentNullException("Pointee mustn't be null."); 
 			}
 		}
 

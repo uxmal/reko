@@ -518,12 +518,14 @@ void fn0AF8(struct Eq_n * r3, <anonymous> ** r4, uint16 wArg00, word16 wArg02, b
 // 0B02: void fn0B02(Register (ptr16 Eq_n) r3, Register (ptr16 (ptr16 code)) r4, Stack uint16 wArg00, Stack word16 wArg02, Stack byte bArg04, Stack cup16 wArg05, Stack byte bArg07, Stack (ptr16 code) wArg08, Stack (ptr16 code) wArg0A)
 void fn0B02(struct Eq_n * r3, <anonymous> ** r4, uint16 wArg00, word16 wArg02, byte bArg04, cup16 wArg05, byte bArg07, <anonymous> * wArg08, <anonymous> * wArg0A)
 {
+	byte bArg05_n = (byte) wArg05;
 	byte bArg06_n = SLICE(wArg05, byte, 8);
-	cup16 wArg04_n = SEQ((byte) wArg05, bArg04);
+	cup16 wArg04_n = SEQ(bArg05_n, bArg04);
 	uint16 v6_n = (bool) (wArg05 - wArg04_n < 0x00) + wArg00;
 	r3->w00A4 = v6_n;
 	<anonymous> * wArg06_n = SEQ(bArg07, bArg06_n);
 	byte bArg05_n = SLICE(wArg04_n, byte, 8);
+	byte bArg06_n = (byte) wArg06_n;
 	byte bArg07_n = SLICE(wArg06_n, byte, 8);
 	if (r3->b0074 == 0x00)
 	{
@@ -558,6 +560,7 @@ void fn0B44(uint16 r0, word16 * r3, byte bArg00, byte bArg01, <anonymous> * wArg
 void fn0B60(uint16 r0, word16 * r3, byte bArg00, cup16 wArg01, byte bArg03, <anonymous> * wArg04, word16 * ptrArg06)
 {
 	byte bArg02_n = SLICE(wArg01, byte, 8);
+	byte bArg01_n = (byte) wArg01;
 	uint16 wLoc04_n = (uint16) (uint8) bArg00;
 	struct Eq_n * r3_n = globals->ptr5424;
 	if (wLoc04_n != 0x01 && wLoc04_n != 0x08)
@@ -565,13 +568,14 @@ void fn0B60(uint16 r0, word16 * r3, byte bArg00, cup16 wArg01, byte bArg03, <ano
 	word16 wArg01_n;
 	word16 * sp_n;
 	<anonymous> ** sp_n;
-	cup16 wArg00_n = SEQ((byte) wArg01, bArg00);
+	cup16 wArg00_n = SEQ(bArg01_n, bArg00);
 	uint16 v22_n = wLoc04_n + (wArg01 - wArg00_n < 0x00);
 	r3_n->w00A4 = v22_n;
 	<anonymous> * wArg02_n = SEQ(bArg03, bArg02_n);
 	byte bArg00_n = (byte) wArg00_n;
 	byte bArg01_n = SLICE(wArg00_n, byte, 8);
 	uint16 wLoc04_n = v22_n;
+	byte bArg02_n = (byte) wArg02_n;
 	byte bArg03_n = SLICE(wArg02_n, byte, 8);
 	if (r3_n->b0074 != 0x00)
 	{
@@ -580,7 +584,7 @@ void fn0B60(uint16 r0, word16 * r3, byte bArg00, cup16 wArg01, byte bArg03, <ano
 		r3_n->w005A = *wArg04;
 		r3_n->ptr007E = &globals->t0BEC;
 		sp_n = fp + 0x06;
-		wArg01_n = SEQ((byte) wArg02_n, bArg01_n);
+		wArg01_n = SEQ(bArg02_n, bArg01_n);
 l0BC6:
 		byte bArg02_n = SLICE(wArg01_n, byte, 8);
 		byte bLoc03_n = SLICE(wLoc04_n, byte, 8);
@@ -613,7 +617,7 @@ l0BC6:
 		wLoc04_n = r0;
 		ptrArg06 = r3;
 		sp_n = fp + 0x06;
-		wArg01_n = SEQ((byte) wArg02_n, bArg01_n);
+		wArg01_n = SEQ(bArg02_n, bArg01_n);
 	}
 	sp_n = sp_n + 0x01;
 	r3_n = *sp_n;

@@ -1683,27 +1683,27 @@ T_372: (in SEQ(SLICE(d1_111, word24, 8), Mem323[a2_196 + 0x00000000:byte]) : uip
   Class: Eq_73
   DataType: int32
   OrigDataType: uip32
-T_373: (in d2_344 : word32)
+T_373: (in d2_344 : uip32)
   Class: Eq_373
-  DataType: word32
-  OrigDataType: word32
-T_374: (in SLICE(d2_344, word24, 8) : word24)
+  DataType: uip32
+  OrigDataType: uip32
+T_374: (in SLICE(d2_102, word24, 8) : word24)
   Class: Eq_374
   DataType: word24
   OrigDataType: word24
-T_375: (in SLICE(d2_102, word24, 8) : word24)
+T_375: (in SLICE(d1_111, byte, 0) : byte)
   Class: Eq_375
-  DataType: word24
-  OrigDataType: word24
-T_376: (in SLICE(d1_111, byte, 0) : byte)
-  Class: Eq_376
   DataType: byte
   OrigDataType: byte
-T_377: (in SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0)) : uip32)
-  Class: Eq_377
+T_376: (in SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0)) : uip32)
+  Class: Eq_373
   DataType: uip32
   OrigDataType: uip32
-T_378: (in SLICE(SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0)), byte, 0) : byte)
+T_377: (in SLICE(d2_344, word24, 8) : word24)
+  Class: Eq_377
+  DataType: word24
+  OrigDataType: word24
+T_378: (in SLICE(d2_344, byte, 0) : byte)
   Class: Eq_378
   DataType: byte
   OrigDataType: byte
@@ -1711,11 +1711,11 @@ T_379: (in 0xDF : byte)
   Class: Eq_379
   DataType: byte
   OrigDataType: byte
-T_380: (in (byte) SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0)) & 0xDF : byte)
+T_380: (in (byte) d2_344 & 0xDF : byte)
   Class: Eq_380
   DataType: byte
   OrigDataType: byte
-T_381: (in SEQ(SLICE(d2_344, word24, 8), SLICE(SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0)), byte, 0) & 0xDF) : uip32)
+T_381: (in SEQ(SLICE(d2_344, word24, 8), SLICE(d2_344, byte, 0) & 0xDF) : uip32)
   Class: Eq_2
   DataType: int32
   OrigDataType: uip32

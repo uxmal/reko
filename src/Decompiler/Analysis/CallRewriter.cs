@@ -106,18 +106,29 @@ namespace Reko.Analysis
 			}
 		}
 
-		/// <summary>
-		/// Creates a signature for this procedure by looking at the storages
+        /// <summary>
+        /// Creates a signature for this procedure by looking at the storages
         /// modified in the exit block, and ensures that all the registers
         /// accessed by the procedure are in the procedure Frame.
-		/// </summary>
-		public void EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
-		{
+        /// </summary>
+        public void EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
+        {
             var proc = ssa.Procedure;
             // If we already have a signature, we don't need to do this work.
-			if (proc.Signature.ParametersValid)
-				return;
+            if (!proc.Signature.ParametersValid)
+            {
+                var sig = MakeSignature(ssa, frame, flow);
+                flow.Signature = sig;
+                proc.Signature = sig;
+            }
+        }
 
+        /// <summary>
+        /// Make a function signature based on the procedure flow <paramref name="flow"/>.
+        /// </summary>
+        /// <returns>A valid function signature.</returns>
+        public FunctionType MakeSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
+        {
             var allLiveOut = flow.BitsLiveOut;
 			var sb = new SignatureBuilder(frame, platform.Architecture);
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
@@ -125,10 +136,17 @@ namespace Reko.Analysis
             var liveOutFlagGroups = flow.grfLiveOut.Select(de => platform.Architecture.GetFlagGroup(de.Key, de.Value));
             AddModifiedFlags(frame, liveOutFlagGroups, sb);
 
-            var mayUse = flow.BitsUsed.Where(b =>
+            var mayUseSeqs = flow.BitsUsed.Keys.OfType<SequenceStorage>().ToHashSet();
+            var seqRegs = mayUseSeqs.SelectMany(s => s.Elements).Distinct().ToHashSet();
+
+            //$BUG: should be sorted by ABI register order.
+            foreach (var seq in mayUseSeqs.OrderBy(r => r.Name))
+            {
+                sb.AddSequenceArgument(seq);
+            }
+            var mayUseRegs = flow.BitsUsed.Where(b =>
                 {
-                    return b.Key is RegisterStorage reg && 
-                        !implicitRegs.Contains(reg);
+                    return b.Key is RegisterStorage reg && !implicitRegs.Contains(reg);
                 })
                 .ToDictionary(
                     de => platform.Architecture.GetSubregister(
@@ -139,9 +157,10 @@ namespace Reko.Analysis
             
             //$BUG: should be sorted by ABI register order. Need a new method
             // IPlatform.CreateAbiRegisterCollator().
-			foreach (var reg in mayUse.OrderBy(r => r.Key.Number))
+			foreach (var reg in mayUseRegs.OrderBy(r => r.Key.Number))
 			{
-				if (!IsSubRegisterOfRegisters(reg.Key, mayUse))
+				if (!IsSubRegisterOfRegisters(reg.Key, mayUseRegs) &&
+                    !seqRegs.Contains(reg.Key))
 				{
 					sb.AddRegisterArgument(reg.Key);
 				}
@@ -152,8 +171,8 @@ namespace Reko.Analysis
 				AddStackArgument(id.Item2, flow, sb);
 			}
 
-            foreach (var oFpu in flow.BitsUsed.
-                Where(f => f.Key is FpuStackStorage)
+            foreach (var oFpu in flow.BitsUsed
+                .Where(f => f.Key is FpuStackStorage)
                 .OrderBy(r => ((FpuStackStorage) r.Key).FpuStackOffset))
 			{
                 var fpu = (FpuStackStorage)oFpu.Key;
@@ -184,6 +203,7 @@ namespace Reko.Analysis
                     if (regOut.Storage is OutArgumentStorage && 
                         !ssa.Identifiers.TryGetValue(regOut, out var sidOut))
                     {
+                        // Ensure there are SSA identifer for 'out' registers.
                         ssa.Identifiers.Add(regOut, null, null, false);
                     }
 				}
@@ -195,10 +215,8 @@ namespace Reko.Analysis
 			}
 
             var sig = sb.BuildSignature();
-            //sig.FpuStackDelta = fpuStackDelta;
-            flow.Signature = sig;
-			proc.Signature = sig;
-		}
+            return sig;
+        }
 
         private void AddModifiedFlags(IStorageBinder frame, IEnumerable<Storage> allLiveOut, SignatureBuilder sb)
         {

@@ -11,57 +11,59 @@ fn0C00_0000_entry:
 l0C00_0000:
 	di_6 = Mem0[ds:0x0100:word16]
 	si_7 = Mem0[ds:di_6:word16]
+	ds_si_8 = SEQ(ds, si_7) (alias)
 	call fn0C00_0026 (retsize: 2;)
-		uses: ds:ds,si:si_7
-		defs: ax:ax_8
-	Mem13[ds:di_6 + 0x0002:word16] = ax_8
-	bx_14 = Mem13[ds:0x0102:word16]
-	si_15 = Mem13[ds:bx_14 + 0x0004:word16]
+		uses: Sequence ds:si:ds_si_8
+		defs: ax:ax_9
+	Mem14[ds:di_6 + 0x0002:word16] = ax_9
+	bx_15 = Mem14[ds:0x0102:word16]
+	si_16 = Mem14[ds:bx_15 + 0x0004:word16]
+	ds_si_17 = SEQ(ds, si_16) (alias)
 	call fn0C00_0026 (retsize: 2;)
-		uses: ds:ds,si:si_15
-		defs: ax:ax_16
-	Mem21[ds:bx_14 + 0x0008:word16] = ax_16
-	di_22 = Mem21[ds:0x0104:word16]
-	si_23 = Mem21[ds:di_22:word16]
+		uses: Sequence ds:si:ds_si_17
+		defs: ax:ax_18
+	Mem23[ds:bx_15 + 0x0008:word16] = ax_18
+	di_24 = Mem23[ds:0x0104:word16]
+	si_25 = Mem23[ds:di_24:word16]
+	ds_si_26 = SEQ(ds, si_25) (alias)
 	call fn0C00_0033 (retsize: 2;)
-		uses: ds:ds,si:si_23
-		defs: ax:ax_24
-	Mem29[ds:di_22 + 0x0002:word16] = ax_24
+		uses: Sequence ds:si:ds_si_26
+		defs: ax:ax_27
+	Mem32[ds:di_24 + 0x0002:word16] = ax_27
 	return
 fn0C00_0000_exit:
 // fn0C00_0026 /////////////////////
 	LiveOut:   ax:[0..15]
-	BitsUsed:  ds:[0..15] si:[0..15]
+	BitsUsed:  Sequence ds:si:[0..31]
 	Trashed:   SCZO ax Top
 	Preserved: di sp
 // fn0C00_0026
 define fn0C00_0026
 fn0C00_0026_entry:
-	def ds
-	def si
+	def ds_si
+	ds = SLICE(ds_si, selector, 16)
 l0C00_0026:
 	di_9 = Mem7[ds:0x0104:word16]
 	v6_10 = Mem7[ds:di_9 + 0x0030:word16] + 0x0001
 	Mem11[ds:di_9 + 0x0030:word16] = v6_10
 	call fn0C00_0033 (retsize: 2;)
-		uses: ds:ds,si:si
-		defs: ax:ax_14
+		uses: Sequence ds:si:ds_si
+		defs: ax:ax_15
 	return
 fn0C00_0026_exit:
-	use ax_14
+	use ax_15
 // fn0C00_0033 /////////////////////
 	LiveOut:   ax:[0..15]
-	BitsUsed:  ds:[0..15] si:[0..15]
+	BitsUsed:  Sequence ds:si:[0..31]
 	Trashed:   SCZO ax Top
 	Preserved: sp
 // fn0C00_0033
 define fn0C00_0033
 fn0C00_0033_entry:
-	def ds
-	def si
+	def ds_si
 	def Mem0
 l0C00_0033:
-	ax_7 = Mem0[ds:si:word16]
+	ax_7 = Mem0[ds_si:word16]
 	ax_8 = ax_7 * 0x0002
 	return
 fn0C00_0033_exit:

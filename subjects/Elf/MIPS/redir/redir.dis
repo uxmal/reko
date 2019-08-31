@@ -10922,21 +10922,20 @@ slist_destroy_exit:
 
 
 
-void __fixunsdfsi(word64 f12, word64 f13)
+void __fixunsdfsi(real64 f12_f13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  f12:[0..63] f13:[0..63]
+// MayUse:  Sequence f12:f13:[0..63]
 // LiveOut:
 // Trashed: cc0 f0 f1 f2 r1 r2 r25 r28 r3
 // Preserved: FCSR sp
 __fixunsdfsi_entry:
-	real64 f12_f13_13 = SEQ(f12, f13)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00407740:
-	branch !(f12_f13_13 >= 28.0F) l00407740_ds_t
+	branch !(f12_f13 >= 28.0F) l00407740_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

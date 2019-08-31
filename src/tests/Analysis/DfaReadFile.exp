@@ -10,13 +10,13 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_12 = fn0C00_0023(0x0100, 0x3000, Mem6[0x0D00:0x0300:word16], 0x0D00)
-	branch ax_12 >= 0x0000 l0C00_001A
+	word16 ax_13 = fn0C00_0023(0D00:3000, 0x0100, Mem6[0x0D00:0x0300:word16])
+	branch ax_13 >= 0x0000 l0C00_001A
 	// succ:  l0C00_0015 l0C00_001A
 l0C00_0015:
 	fn0C00_001F(0x01)
 l0C00_001A:
-	Mem19[0x0D00:0x0302:word16] = ax_12
+	Mem20[0x0D00:0x0302:word16] = ax_13
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -37,21 +37,20 @@ l0C00_001F:
 	msdos_terminate(al)
 fn0C00_001F_exit:
 
-// Register word16 fn0C00_0023(Register word16 cx, Register word16 dx, Register word16 bx, Register selector ds)
+// Register word16 fn0C00_0023(Sequence word32 ds_dx, Register word16 cx, Register word16 bx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15]
+// MayUse:  bx:[0..15] cx:[0..15] Sequence ds:dx:[0..31]
 // LiveOut: ax
 // Trashed: C ax Top
 // Preserved: sp
 // fn0C00_0023
 // Return size: 0
-word16 fn0C00_0023(word16 cx, word16 dx, word16 bx, selector ds)
+word16 fn0C00_0023(word32 ds_dx, word16 cx, word16 bx)
 fn0C00_0023_entry:
-	word32 ds_dx_9 = SEQ(ds, dx)
 	// succ:  l0C00_0023
 l0C00_0023:
 	word16 ax_10
-	branch msdos_read_file(bx, cx, ds_dx_9, out ax_10) l0C00_002C
+	branch msdos_read_file(bx, cx, ds_dx, out ax_10) l0C00_002C
 	// succ:  l0C00_0029 l0C00_002C
 l0C00_0029:
 	ax_10 = 0xFFFF

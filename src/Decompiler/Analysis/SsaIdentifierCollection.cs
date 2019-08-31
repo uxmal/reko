@@ -60,6 +60,7 @@ namespace Reko.Analysis
 
         public void Add(Identifier id, SsaIdentifier sid)
         {
+            ++serialNumber;
             sids.Add(id, sid);
         }
 

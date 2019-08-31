@@ -1,3 +1,4 @@
+
 #region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
@@ -48,6 +49,7 @@ namespace Reko.UnitTests.Analysis
         private ProcedureFlow flow;
         ProgramBuilder pb;
         private List<SsaState> ssaStates;
+        private FakeDecompilerEventListener eventListener;
 
         [SetUp]
         public void Setup()
@@ -61,6 +63,8 @@ namespace Reko.UnitTests.Analysis
             ssa = new SsaState(proc);
             pb = new ProgramBuilder();
             ssaStates = new List<SsaState>();
+            eventListener = new FakeDecompilerEventListener();
+
         }
 
         private class NestedProgram
@@ -96,7 +100,6 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
         {
-            var eventListener = new FakeDecompilerEventListener();
             var importResolver = new Mock<IImportResolver>();
 
             dfa = new DataFlowAnalysis(program, importResolver.Object, eventListener);
@@ -933,6 +936,16 @@ main_exit:
 ";
             #endregion
             AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void CrwMakeSig_Sequence_InArg()
+        {
+            flow.BitsUsed.Add(new SequenceStorage(Registers.edx, Registers.eax), new BitRange(0, 64));
+            var crw = new CallRewriter(program.Platform, new ProgramDataFlow(), eventListener);
+            var sig = crw.MakeSignature(new SsaState(proc), proc.Frame, flow);
+            Assert.AreEqual("(fn void (word64))", sig.ToString());
         }
     }
 }

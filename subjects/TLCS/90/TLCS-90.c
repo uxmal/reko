@@ -537,6 +537,7 @@ void fn0F9A()
 // 164F: void fn164F(Register cu8 a, Register byte c, Register byte b, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg13, Stack byte bArg1A, Stack (ptr16 Eq_n) wArg1B)
 void fn164F(cu8 a, byte c, byte b, byte h, struct Eq_n * ix, Eq_n wArg13, byte bArg1A, struct Eq_n * wArg1B)
 {
+	byte bArg1B_n = (byte) wArg1B;
 	ix->bFFFFFFEC = a;
 	ix->bFFFFFFED = ix->bFFFFFFF9 - h - C;
 	cu8 a_n = ix->bFFFFFFF8 - ix->bFFFFFFFC;
@@ -552,7 +553,7 @@ void fn164F(cu8 a, byte c, byte b, byte h, struct Eq_n * ix, Eq_n wArg13, byte b
 	word16 hl_n;
 	struct Eq_n * ix_n;
 	struct Eq_n * sp_n;
-	word16 af_n = DPB(fn02F4(a_n, a_n, b - v14_n - (a_n < 0x00), wArg13, SLICE(DPB(DPB(DPB(&wArg1B->b0001, v14_n, 8), a_n, 0), a_n, 8), byte, 8), ix, SEQ((byte) wArg1B, bArg1A), out bc_n, out de_n, out hl_n, out ix_n, out sp_n), l_n, 8);
+	word16 af_n = DPB(fn02F4(a_n, a_n, b - v14_n - (a_n < 0x00), wArg13, SLICE(DPB(DPB(DPB(&wArg1B->b0001, v14_n, 8), a_n, 0), a_n, 8), byte, 8), ix, SEQ(bArg1B_n, bArg1A), out bc_n, out de_n, out hl_n, out ix_n, out sp_n), l_n, 8);
 	if (l_n != 0x00)
 	{
 		struct Eq_n * v30_n = sp_n->ptr001D;

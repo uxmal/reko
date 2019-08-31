@@ -158,7 +158,8 @@ l00001116:
 						if ((byte) d1_n == 0x2A)
 						{
 							d1_n = SEQ(SLICE(d1_n, word24, 8), *a2_n);
-							d2_n = SEQ(SLICE(d2_n, word24, 8), (byte) SEQ(SLICE(d2_n, word24, 8), SLICE(d1_n, byte, 0)) & 223);
+							uip32 d2_n = SEQ(SLICE(d2_n, word24, 8), (byte) d1_n);
+							d2_n = SEQ(SLICE(d2_n, word24, 8), (byte) d2_n & 223);
 							a2_n = (union Eq_n *) ((char *) a2_n + 0x01);
 							if ((byte) d2_n == 0x4E)
 								d1_n = 0x0A;

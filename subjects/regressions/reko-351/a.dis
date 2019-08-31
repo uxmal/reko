@@ -434,11 +434,12 @@ l80000390:
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  fp0:[0..79] Stack +0004:[32..63] Stack +000C:[0..31]
+// MayUse:  fp0:[0..79] Stack +0004:[0..63] Stack +000C:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 _Z11sine_taylordi_entry:
+	word32 dwArg04_123 = SLICE(rArg04, word32, 0)
 	word32 dwArg08_125 = SLICE(rArg04, word32, 32)
 // DataOut:
 // DataOut (flags):
@@ -480,7 +481,7 @@ _Z11sine_taylordi_exit:
 // SymbolicIn:
 
 l80000438:
-	pow_int(SEQ(SLICE(rArg04, word32, 0), dwArg08_125), dwLoc08_130)
+	pow_int(SEQ(dwArg04_123, dwArg08_125), dwLoc08_130)
 	factorial(dwLoc08_130)
 	dwLoc08_130 = dwLoc08_130 + 0x00000004
 // DataOut:
@@ -488,7 +489,7 @@ l80000438:
 // SymbolicIn:
 
 l800003E0:
-	pow_int(SEQ(SLICE(rArg04, word32, 0), dwArg08_125), dwLoc08_127)
+	pow_int(SEQ(dwArg04_123, dwArg08_125), dwLoc08_127)
 	factorial(dwLoc08_127)
 	dwLoc08_127 = dwLoc08_127 + 0x00000004
 // DataOut:
@@ -527,18 +528,19 @@ main_exit:
 void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0004:[32..63] Stack +000C:[0..63] Stack +0014:[0..31]
+// MayUse:  Stack +0004:[0..63] Stack +000C:[0..63] Stack +0014:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 _Z4_sinddRi_entry:
+	word32 dwArg04_110 = SLICE(rArg04, word32, 0)
 	word32 dwArg08_112 = SLICE(rArg04, word32, 32)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l800004DE:
-	real64 rLoc0C_114 = SEQ(SLICE(rArg04, word32, 0), dwArg08_112)
+	real64 rLoc0C_114 = SEQ(dwArg04_110, dwArg08_112)
 	real64 v9_14 = (real64) ((real96) rLoc0C_114 * rLoc0C_114)
 	word32 dwLoc20_120 = 0x00000002
 	real64 rLoc14_122 = 0x3FF0000000000000

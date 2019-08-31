@@ -1,26 +1,26 @@
-// void fn0C00_0000(Register word16 si, Register selector ds)
+// void fn0C00_0000(Sequence word32 ds_si)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ds:[0..15] si:[0..15]
+// MayUse:  Sequence ds:si:[0..31]
 // LiveOut:
 // Trashed: SCZO ax Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word16 si, selector ds)
+void fn0C00_0000(word32 ds_si)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_26 = Mem0[ds:si:word16]
+	word16 ax_26 = Mem0[ds_si:word16]
 	goto l0C00_000E
 	// succ:  l0C00_000E
 l0C00_0005:
-	Mem22[ds:si + 0x0006:word16] = Mem19[ds:si + 0x0006:word16] + Mem19[ds:si + 0x0006:word16]
+	Mem22[ds_si + 0x0006:word16] = Mem19[ds_si + 0x0006:word16] + Mem19[ds_si + 0x0006:word16]
 	ax_26 = ax_26 - 0x0001
 	// succ:  l0C00_000E
 l0C00_000E:
-	Mem11[ds:si + 0x0002:word16] = ax_26
-	Mem12[ds:si + 0x0004:word16] = ax_26
-	Mem13[ds:si + 0x0008:word16] = 0x0003
+	Mem11[ds_si + 0x0002:word16] = ax_26
+	Mem12[ds_si + 0x0004:word16] = ax_26
+	Mem13[ds_si + 0x0008:word16] = 0x0003
 	branch ax_26 != 0x0000 l0C00_0005
 	// succ:  l0C00_001E l0C00_0005
 l0C00_001E:
