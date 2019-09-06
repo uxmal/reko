@@ -201,11 +201,11 @@ void fn000016D0(Eq_n d0, word32 d6, Eq_n * a5, byte * dwArg08)
 	byte * dwArg08_n = dwArg08 + 0x01;
 	if ((byte) d6_n != 0x00)
 	{
-		while (!DPB(CV, false, 0))
+		while (!DPB(VN, false, 0))
 		{
 			int32 d0_n;
 			ci8 v26_n = (byte) d6_n - 0x20;
-			CV = cond(v26_n);
+			VN = cond(v26_n);
 			if (v26_n >= 0x00 && (byte) d6_n <= 0x78)
 			{
 				int32 d0_n = (int32) (int8) SEQ(SLICE(d0, word24, 8), (byte) d6_n);
@@ -239,7 +239,7 @@ void fn000016D0(Eq_n d0, word32 d6, Eq_n * a5, byte * dwArg08)
 				bool C_n;
 				bool V_n;
 				bool Z_n;
-				byte CV_n;
+				byte VN_n;
 				byte VZN_n;
 				word32 d0_n;
 				word32 d2_n;
@@ -867,11 +867,10 @@ word32 * fn000023B4(word32 * dwArg04, Eq_n dwArg08)
 				word32 a6_n;
 				word32 d5_n;
 				byte CVZN_n;
-				byte VZ_n;
+				byte CZ_n;
 				word32 d0_n;
 				bool Z_n;
 				byte CVZNX_n;
-				byte CZ_n;
 				d0_n();
 			}
 			++d3_n;
@@ -1273,10 +1272,10 @@ l00002974:
 		a0_n->dw0030 = 0x00;
 		a0_n->dw0034 = 0x00;
 		a0_n->dw0038 = 0x00;
-		word16 v50_n = (word16) d0_n;
+		word16 v49_n = (word16) d0_n;
 		a0 = &a0_n->dw0038 + 0x01;
-		d0_n = SEQ(SLICE(d0_n, word16, 16), v50_n - 0x01);
-	} while (v50_n != 0x00);
+		d0_n = SEQ(SLICE(d0_n, word16, 16), v49_n - 0x01);
+	} while (v49_n != 0x00);
 	d5_n = a5->dwFFFFFAE0;
 	a5->dwFFFFFAE0 += 0x0020;
 	goto l000029B4;
@@ -1424,7 +1423,7 @@ int32 fn00002BB4(Eq_n * a5, Eq_n * dwArg04, up32 dwArg08)
 				word32 a5_n;
 				byte CVZNX_n;
 				word32 a1_n;
-				byte VZ_n;
+				byte CZ_n;
 				(11352 + (int32) ((int16) d0_n))();
 				return d0_n;
 			}

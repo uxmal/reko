@@ -70,9 +70,8 @@ void __do_global_dtors_aux()
 			bool Z_n;
 			word32 d0_n;
 			byte CVZNX_n;
-			byte VZ_n;
-			word32 a0_n;
 			byte CZ_n;
+			word32 a0_n;
 			a0_n();
 			d0_n = globals->dw80002726;
 		}
@@ -90,9 +89,8 @@ void __do_global_dtors_aux()
 			bool Z_n;
 			word32 d0_n;
 			byte CVZNX_n;
-			byte VZ_n;
-			word32 a0_n;
 			byte CZ_n;
+			word32 a0_n;
 			null();
 		}
 		globals->b80002724 = 0x01;

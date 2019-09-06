@@ -155,36 +155,35 @@ l800000E4:
 // LocalsOut: fp(32)
 
 l800000F4:
-	word32 d0_100 = Mem0[0x80002726:word32]
-	word32 a2_101 = 0x80002714
-	branch d0_100 >=u 0x00000000 l8000012C
+	word32 d0_116 = Mem0[0x80002726:word32]
+	word32 a2_105 = 0x80002714
+	branch d0_116 >=u 0x00000000 l8000012C
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 -12(fp):d2 -8(fp):a2 -4(fp):a6
 // LocalsOut: fp(32)
 
 l80000114:
-	word32 d0_102 = d0_100 + 0x00000001
-	Mem105[0x80002726:word32] = d0_102
-	word32 a0_107 = Mem105[a2_101 + d0_102 * 4:word32]
-	word32 a7_108
-	word32 a6_109
-	byte CVZN_111
-	word32 d2_112
-	byte ZN_113
-	bool C_114
-	bool V_115
-	bool Z_116
-	word32 d0_117
-	byte CVZNX_118
-	byte VZ_119
-	word32 a0_120
-	byte CZ_121
-	call a0_107 (retsize: 4; depth: 16)
-		uses: a0_107,a2_101,a6_5,a7_11,C_18,CVZN_106,CVZNX_103,CZ,d0_102,d2_47,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10,V_19,VZ_51,Z_17,ZN_16
-		defs: a0_120,a2_110,a6_109,a7_108,C_114,CVZN_111,CVZNX_118,CZ_121,d0_117,d2_112,V_115,VZ_119,Z_116,ZN_113
-	d0_100 = Mem105[0x80002726:word32]
-	branch d0_100 <u 0x00000000 l80000114
+	word32 d0_97 = d0_116 + 0x00000001
+	Mem100[0x80002726:word32] = d0_97
+	word32 a0_102 = Mem100[a2_105 + d0_97 * 4:word32]
+	word32 a7_103
+	word32 a6_104
+	byte CVZN_106
+	word32 d2_107
+	byte ZN_108
+	bool C_109
+	bool V_110
+	bool Z_111
+	word32 d0_112
+	byte CVZNX_113
+	byte CZ_114
+	word32 a0_115
+	call a0_102 (retsize: 4; depth: 16)
+		uses: a0_102,a2_96,a6_5,a7_11,C_18,CVZN_101,CVZNX_98,CZ_49,d0_97,d2_45,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10,V_19,Z_17,ZN_16
+		defs: a0_115,a2_105,a6_104,a7_103,C_109,CVZN_106,CVZNX_113,CZ_114,d0_112,d2_107,V_110,Z_111,ZN_108
+	d0_116 = Mem100[0x80002726:word32]
+	branch d0_116 <u 0x00000000 l80000114
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:<invalid> d2:0x00000000 a0:<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a6
@@ -199,30 +198,29 @@ l8000012C:
 // LocalsOut: fp(32)
 
 l8000013A:
-	word32 a7_85
-	word32 a6_86
-	word32 a2_87
-	byte CVZN_88
-	word32 d2_89
-	byte ZN_90
-	bool C_91
-	bool V_92
-	bool Z_93
-	word32 d0_94
-	byte CVZNX_95
-	byte VZ_96
-	word32 a0_97
-	byte CZ_98
+	word32 a7_81
+	word32 a6_82
+	word32 a2_83
+	byte CVZN_84
+	word32 d2_85
+	byte ZN_86
+	bool C_87
+	bool V_88
+	bool Z_89
+	word32 d0_90
+	byte CVZNX_91
+	byte CZ_92
+	word32 a0_93
 	call null (retsize: 4; depth: 20)
-		uses: a0_61,a2_58,a6_59,a7_83,C_64,CVZN_57,CVZNX_54,CZ_52,d0_55,d2_56,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10_84,V_65,VZ_53,Z_63,ZN_62
-		defs: a0_97,a2_87,a6_86,a7_85,C_91,CVZN_88,CVZNX_95,CZ_98,d0_94,d2_89,V_92,VZ_96,Z_93,ZN_90
+		uses: a0_58,a2_55,a6_56,a7_79,C_61,CVZN_54,CVZNX_51,CZ_50,d0_52,d2_53,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10_80,V_62,Z_60,ZN_59
+		defs: a0_93,a2_83,a6_82,a7_81,C_87,CVZN_84,CVZNX_91,CZ_92,d0_90,d2_85,V_88,Z_89,ZN_86
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -12(fp):d2 -8(fp):a2 -4(fp):a6
 // LocalsOut: fp(32)
 
 l80000144:
-	Mem81[0x80002724:byte] = 0x01
+	Mem77[0x80002724:byte] = 0x01
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -16(fp):8000065C -12(fp):d2 -8(fp):a2 -4(fp):a6
