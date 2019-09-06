@@ -33,17 +33,19 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class Unifier
 	{
-		private TypeFactory factory;
-		private IDictionary<Tuple<DataType, DataType>, bool> cache = new Dictionary<Tuple<DataType, DataType>, bool>();
+		private readonly TypeFactory factory;
+        private readonly TraceSwitch trace;
+		private readonly IDictionary<Tuple<DataType, DataType>, bool> cache = new Dictionary<Tuple<DataType, DataType>, bool>();
 
         public Unifier()
-            : this(new TypeFactory())
+            : this(new TypeFactory(), null)
         {
         }
 
-		public Unifier(TypeFactory factory)
+		public Unifier(TypeFactory factory, TraceSwitch trace)
 		{
 			this.factory = factory;
+            this.trace = trace;
         }
 
 		public bool AreCompatible(DataType a, DataType b)
@@ -55,9 +57,7 @@ namespace Reko.Core.Types
 		{
 			var typePair = new Tuple<DataType, DataType>(a, b);
 
-			bool d;
-
-			if (cache.TryGetValue(typePair, out d))
+			if (cache.TryGetValue(typePair, out bool d))
 				return d;
 
 			d = DoAreCompatible(a, b, depth);
@@ -214,9 +214,8 @@ namespace Reko.Core.Types
 		{
             if (++recDepth > 100)
             {
-               //$BUG: should emit warning in the error log.
                 --recDepth;
-                Debug.Print("Exceeded stack depth, giving up");
+                DebugEx.Error(trace, "Exceeded stack depth, giving up");
                 if (a == null && b == null)
                     return null;
                 if (a == null)
@@ -758,7 +757,7 @@ namespace Reko.Core.Types
 
 		private DataType Nyi(DataType a, DataType b)
 		{
-			throw new NotImplementedException(string.Format("Don't know how to unify {0} with {1}.", a, b));
+            throw new NotImplementedException($"Don't know how to unify {a} with {b}.");
 		}
 	}
 }

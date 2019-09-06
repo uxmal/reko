@@ -84,6 +84,8 @@ namespace Reko.Analysis
                 {
                     if (eventListener.IsCanceled())
                         return;
+                    if (stm.Block.Name.Contains("l00105050"))   //$DEBUG
+                        stm.ToString();
                     this.stmCur = stm;
                     Transform(stm);
                 }

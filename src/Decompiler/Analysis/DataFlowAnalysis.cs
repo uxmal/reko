@@ -403,6 +403,8 @@ namespace Reko.Analysis
                 // We also hope that procedure constants
                 // kept in registers are propagated to the corresponding call
                 // sites.
+                if (ssa.Procedure.Name == "_getIOPort") //$DEBUG
+                    ssa.ToString();
                 var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
                 vp.Transform();
 

@@ -119,7 +119,7 @@ namespace Reko.Typing
                     appl.Procedure, appl.Arguments.Length, sig.Parameters.Length));
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                MeetDataType(appl.Arguments[i], sig.Parameters[i].DataType);
+                 MeetDataType(appl.Arguments[i], sig.Parameters[i].DataType);
                 sig.Parameters[i].Accept(this, sig.Parameters[i].TypeVariable);
             }
         }

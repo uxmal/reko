@@ -76,20 +76,18 @@ namespace Reko.Typing
 
 		private TypeVariable GetTypeVariableForField(DataType fieldType)
 		{
-			StructureType s = fieldType as StructureType;
-			if (s != null)
-			{
-				StructureField f = s.Fields.AtOffset(0);
-				if (f == null)
-					return null;
-				return f.DataType as TypeVariable;
-			}
-			FunctionType fn = fieldType as FunctionType;
-			if (fn != null)
-			{
-				throw new NotImplementedException();
-			}
-			throw new NotImplementedException(string.Format("Don't know how to handle pointers to {0}.", fieldType));
+            if (fieldType is StructureType s)
+            {
+                StructureField f = s.Fields.AtOffset(0);
+                if (f == null)
+                    return null;
+                return f.DataType as TypeVariable;
+            }
+            if (fieldType is FunctionType fn)
+            {
+                throw new NotImplementedException();
+            }
+            throw new NotImplementedException(string.Format("Don't know how to handle pointers to {0}.", fieldType));
 		}
 
 		public Identifier Globals

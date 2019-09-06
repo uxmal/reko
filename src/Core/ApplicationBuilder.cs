@@ -152,7 +152,7 @@ namespace Reko.Core
         public List<Expression> BindVariadicArguments(FunctionType sig, ProcedureCharacteristics chr, List<Expression> actuals)
         {
             actuals.Add(Constant.Word32(0));
-            Debug.Print("Varargs are not implemented yet.");
+            Debug.Print($"{nameof(ApplicationBuilder)}: Varargs are not implemented yet.");
             return actuals;
         }
     }

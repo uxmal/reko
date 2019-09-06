@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,11 +33,13 @@ namespace Reko.Typing
 	/// Gathers type information, infers structure, union, and array types,
 	/// then rewrites the program as appropriate to incorporate the inferred
     /// types. Much of the type inference code in this namespace was inspired
-    /// by the master's thesis "Entwicklung eines Typanalysesystem für einen
+    /// by the master's thesis "Entwicklung eines Typanalysesystem fÃ¼r einen
     /// Decompiler", 2004, by Raimar Falke.
 	/// </summary>
 	public class TypeAnalyzer
 	{
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(TypeAnalyzer), "Traces the progress of the type analysis") { Level = TraceLevel.Verbose };
+
         private DecompilerEventListener eventListener;
 
 		private TypeFactory factory;
@@ -69,6 +71,7 @@ namespace Reko.Typing
 		{
             factory = program.TypeFactory;
             store = program.TypeStore;
+            var timer = new Stopwatch();
 
             aen = new ExpressionNormalizer(program.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store, eventListener);
@@ -82,23 +85,34 @@ namespace Reko.Typing
             ter = new TypedExpressionRewriter(program, eventListener);
 
             // RestrictProcedures(program, 0, 60, true); // Re-enable this for debugging
-			aen.Transform(program);
-            eqb.Build(program);
-
-            tyco.CollectTypes();
-            store.BuildEquivalenceClassDataTypes(factory);
+            Time("Normalizing expressions", () => aen.Transform(program));
+            Time("Building equivalence classes", () => eqb.Build(program));
+            Time("Collecting data types", tyco.CollectTypes);
+            Time("Build eq. class data types", () => store.BuildEquivalenceClassDataTypes(factory));
             //dpa.FollowConstantPointers(program);
-            tvr.ReplaceTypeVariables();
+            Time("Replacing type variables", tvr.ReplaceTypeVariables);
 
             eventListener.ShowStatus("Transforming datatypes.");
-			var ppr = new PtrPrimitiveReplacer(factory, store, program);
-			ppr.ReplaceAll(eventListener);
+            Time("Replace primitive types", () =>
+            {
+                var ppr = new PtrPrimitiveReplacer(factory, store, program);
+                ppr.ReplaceAll(eventListener);
+            });
 
-			trans.Transform();
-			ctn.RenameAllTypes(store);
-			ter.RewriteProgram(program);
+			Time("Transforming data types", trans.Transform);
+			Time("Renaming data types", () => ctn.RenameAllTypes(store));
+			Time("Rewriting program with type information", () => ter.RewriteProgram(program));
 		}
 
+        private void Time(string message, Action action)
+        {
+            var timer = new Stopwatch();
+            DebugEx.Inform(trace, "== {0}: {1} ======", nameof(TypeAnalyzer), message);
+            timer.Start();
+            action();
+            timer.Stop();
+            DebugEx.Inform(trace, "   {0} msec", timer.Elapsed);
+        }
         /// <summary>
         /// $DEBUG: for debugging only, only performs type analysis on the 
         /// <param name="count"/> procedures starting at

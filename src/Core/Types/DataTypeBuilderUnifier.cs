@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -30,7 +31,7 @@ namespace Reko.Core.Types
         private ITypeStore store;
 
         public DataTypeBuilderUnifier(TypeFactory factory, ITypeStore store)
-            : base(factory)
+            : base(factory, null)
         {
             this.store = store;
         }

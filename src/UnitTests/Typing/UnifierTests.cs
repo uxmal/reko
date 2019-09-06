@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Typing
 		public void Setup()
 		{
 			factory = new TypeFactory();
-			un = new Unifier(factory);
+			un = new Unifier(factory, null);
 		}
 
         private Identifier Id(string name, int regno)

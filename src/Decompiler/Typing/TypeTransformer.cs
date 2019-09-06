@@ -42,7 +42,7 @@ namespace Reko.Typing
 		private Unifier unifier;
         private DecompilerEventListener eventListener;
 
-		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types");
+		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types") { Level = TraceLevel.Verbose };
         private HashSet<DataType> visitedTypes;
 
         public TypeTransformer(TypeFactory factory, TypeStore store, Program program)
@@ -56,7 +56,7 @@ namespace Reko.Typing
 			this.store = store;
             this.program = program;
 			this.eventListener = eventListener;
-			this.unifier = new Unifier(factory);
+			this.unifier = new Unifier(factory, trace);
             this.visitedTypes = new HashSet<DataType>();
         }
 
@@ -254,7 +254,13 @@ namespace Reko.Typing
 					EquivalenceClass eq = tv.Class;
                     if (eq.DataType != null)
                     {
+                        DateTime start = DateTime.Now;
                         eq.DataType = eq.DataType.Accept(this);
+                        DateTime end = DateTime.Now;
+                        if (eq.DataType is UnionType ut)
+                        {
+                            //DebugEx.Verbose(trace, "= TT: took {2,4} msec to simplify {0} ({1})", tv.DataType, eq.DataType, (end - start).Milliseconds);
+                        }
                     }
                     if (tv.DataType != null)
                     {
