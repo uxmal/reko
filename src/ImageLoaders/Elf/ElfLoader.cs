@@ -393,9 +393,7 @@ namespace Reko.ImageLoaders.Elf
 
         public virtual ElfRelocator CreateRelocator(ElfMachine machine, SortedList<Address, ImageSymbol> symbols)
         {
-            throw new NotSupportedException(
-                string.Format("Relocator for architecture {0} not implemented yet.",
-                machine));
+            throw new NotSupportedException($"Relocator for architecture {machine} not implemented yet.");
         }
 
         public Program LoadImage(IPlatform platform, byte[] rawImage)
