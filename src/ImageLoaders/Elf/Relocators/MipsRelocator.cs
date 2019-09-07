@@ -128,8 +128,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         private void LocateLocalGotEntries(Program program, SortedList<Address, ImageSymbol> symbols)
         {
             var dynamic = loader.DynamicEntries;
-
-            var numberoflocalPointers = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_LOCAL_GOTNO].SValue;
+            if (!dynamic.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_LOCAL_GOTNO, out var dynEntry))
+                return;
+            var numberoflocalPointers = (int) dynEntry.SValue;
             var uAddrBeginningOfGot = (uint)dynamic[ElfDynamicEntry.DT_PLTGOT].UValue;
 
             var addrGot = Address.Ptr32(uAddrBeginningOfGot);
@@ -148,7 +149,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         private void LocateGlobalGotEntries(Program program, SortedList<Address, ImageSymbol> symbols)
         {
             var dynamic = loader.DynamicEntries;
-            var uAddrSymtab = (uint)dynamic[ElfDynamicEntry.DT_SYMTAB].UValue;
+            if (!dynamic.TryGetValue(ElfDynamicEntry.DT_SYMTAB, out var dynEntry))
+                return;
+            var uAddrSymtab = (uint) dynEntry.UValue;
             var allSymbols = loader.DynamicSymbols;
 
             var cLocalSymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_GOTSYM].SValue;
@@ -181,6 +184,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
         {
+            if (symbol == null)
+                return symbol;
             if (loader.Sections.Count <= symbol.SectionIndex)
                 return symbol;
             if (symbol.SectionIndex == 0)
