@@ -1885,5 +1885,14 @@ means
                 "1|L--|q10 = __vmlsl_s32(d15, d5[1])");
         }
 
+        [Test]
+        public void ArmRw_pkhtb()
+        {
+            BuildTest(0xB6847751);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(GE,NZV)) branch 00100004",
+                "2|L--|r7 = __pkhtb(r4, r1 >> 14)");
+        }
     }
 }

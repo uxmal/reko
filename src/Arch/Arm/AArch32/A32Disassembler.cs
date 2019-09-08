@@ -2541,8 +2541,8 @@ namespace Reko.Arch.Arm.AArch32
                 invalid);
 
             var PkhbtPkhtb = Mask(6, 1,
-                Instr( Opcode.pkhbt, Rnp12,Rnp16,Rnp0,Shi),
-                Instr(Opcode.pkhtb));
+                Instr(Opcode.pkhbt, Rnp12,Rnp16,Rnp0,Shi),
+                Instr(Opcode.pkhtb, Rnp12, Rnp16, Rnp0, Shi));
 
             var UnsignedSumAbsoluteDifferences = new PcDecoder("Unsigned Sum of Absolute Differences", 12,
                 Instr(Opcode.usada8, Rnp16, Rnp0, Rnp8, Rnp12),
