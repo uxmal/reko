@@ -143,16 +143,13 @@ namespace Reko.Analysis
         }
 
         [Conditional("DEBUG")]
-        public void DumpWatchedProcedure(string caption)
+        public void DumpWatchedProcedure(string caption, Procedure proc)
         {
-            Debug.Print("// {0} ==================", caption);
-            foreach (var proc in program.Procedures.Values)
+            if (proc.Name == "new_JTL")
             {
-                if (proc.Name == "fn0800_2688")
-                {
-                    MockGenerator.DumpMethod(proc);
-                    proc.Dump(true);
-                }
+                Debug.Print("// {0}: {1} ==================", proc.Name, caption);
+                MockGenerator.DumpMethod(proc);
+                proc.Dump(true);
             }
         }
 
@@ -196,6 +193,7 @@ namespace Reko.Analysis
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
+                DumpWatchedProcedure("After extra stack vars", sst.SsaState.Procedure);
             }
 
             foreach (var ssa in ssts.Select(sst => sst.SsaState))
@@ -205,6 +203,7 @@ namespace Reko.Analysis
                 sac.Classify();
                 var prj = new ProjectionPropagator(ssa, sac);
                 prj.Transform();
+                DumpWatchedProcedure("After projection propagation", ssa.Procedure);
             }
 
             var uid = new UsedRegisterFinder(program.Architecture, flow, procs, this.eventListener);
@@ -216,6 +215,7 @@ namespace Reko.Analysis
                 uid.ComputeLiveIn(ssa, true);
                 var procFlow = flow[ssa.Procedure];
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
+                DumpWatchedProcedure("After dead call argment removal", ssa.Procedure);
             }
             eventListener.Advance(procs.Count);
         }
@@ -393,6 +393,7 @@ namespace Reko.Analysis
                 // which case the the SSA treats the call as a "hell node".
                 var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
                 var ssa = sst.Transform();
+                DumpWatchedProcedure("After SSA", ssa.Procedure);
 
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
@@ -407,6 +408,7 @@ namespace Reko.Analysis
                     ssa.ToString();
                 var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
                 vp.Transform();
+                DumpWatchedProcedure("After first VP", ssa.Procedure);
 
                 // Fuse additions and subtractions that are linked by the carry flag.
                 var larw = new LongAddRewriter(ssa);
@@ -417,6 +419,7 @@ namespace Reko.Analysis
                 cce.Transform();
 
                 vp.Transform();
+                DumpWatchedProcedure("After CCE", ssa.Procedure);
 
                 // Now compute SSA for the stack-based variables as well. That is:
                 // mem[fp - 30] becomes wLoc30, while 
@@ -424,6 +427,7 @@ namespace Reko.Analysis
                 // This allows us to compute the dataflow of this procedure.
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
+                DumpWatchedProcedure("After SSA frame accesses", ssa.Procedure);
 
                 var icrw = new IndirectCallRewriter(program, ssa, eventListener);
                 while (!eventListener.IsCanceled() && icrw.Rewrite())
@@ -441,9 +445,12 @@ namespace Reko.Analysis
                 // Backpropagate stack pointer from procedure return.
                 var spBackpropagator = new StackPointerBackpropagator(ssa);
                 spBackpropagator.BackpropagateStackPointer();
+                DumpWatchedProcedure("After SP BP", ssa.Procedure);
 
                 // Propagate those newly created stack-based identifiers.
                 vp.Transform();
+                DumpWatchedProcedure("After VP2", ssa.Procedure);
+
                 return sst;
             }
             else

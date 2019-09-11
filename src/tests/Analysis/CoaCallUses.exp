@@ -15,6 +15,7 @@ r2_6: orig: r2
 r3_7: orig: r3
 r4_8: orig: r4
 r63_9: orig: r63
+r63_10: orig: r63
 // foo
 // Return size: 0
 void foo(word32 r2, word32 r3)

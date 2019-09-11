@@ -110,6 +110,7 @@ l1:
 	sp_1 = fp - 4
 	call Mem4[0x00000002:word32] (retsize: 4;)
 		uses: sp:sp_1
+	sp_2 = fp - 4
 	sp_3 = fp
 	return
 Spbp_LinearProcedure_exit:
@@ -170,11 +171,13 @@ l1:
 m_eq0:
 	call Mem9[0x00000008:word32] (retsize: 4;)
 		uses: sp:sp_1
+	sp_4 = fp - 4
 	sp_5 = fp
 	return
 m_ne0:
 	call Mem8[0x00000004:word32] (retsize: 4;)
 		uses: sp:sp_1
+	sp_2 = fp - 4
 	sp_3 = fp
 	return
 Spbp_TwoExits_exit:
@@ -232,7 +235,27 @@ Spbp_TwoExits_exit:
 
             var sExp =
             #region Expected
-                "@@@";
+@"Spbp_SpaceOnStack_entry:
+	def fp
+l1:
+	sp_2 = fp - 0x00000004
+	Mem13[sp_2:word32] = a
+	sp_3 = fp - 0x00000004
+	Mem14[sp_3:word32] = b
+	sp_4 = fp - 0x00000028
+	Mem15[sp_4:word32] = 0xDEADBABE
+	call Mem16[0x00123400:word32] (retsize: 4;)
+		uses: sp:sp_4
+	sp_5 = fp - 48
+	sp_6 = fp - 8
+	b_1 = Mem17[sp_6:word32]
+	sp_7 = fp - 4
+	a_1 = Mem18[sp_7:word32]
+	sp_8 = fp
+	return
+Spbp_SpaceOnStack_exit:
+	use sp_8
+";
             #endregion
 
             this.AssertStringsEqual(sExp, m.Ssa);

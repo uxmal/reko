@@ -365,16 +365,28 @@ namespace Reko.Core.Output
         void IExpressionVisitor.VisitAddress(Address addr)
         {
             var addr16 = addr as Address16;
-            if (addr16!= null)
+            if (addr16 != null)
+            {
                 writer.Write("Address.Ptr16(0x{0:X}", addr16.ToUInt16());
+                return;
+            }
             if (addr.Selector.HasValue)
+            {
                 writer.Write("Address.SegPtr(0x{0:X}, 0x{1:X}", addr.Selector, addr.Offset);
+                return;
+            }
             var addr32 = addr as Address32;
             if (addr32 != null)
+            {
                 writer.Write("Address.Ptr32(0x{0:X}", addr32.ToUInt32());
+                return;
+            }
             var addr64 = addr as Address64;
             if (addr64 != null)
+            {
                 writer.Write("Address.Ptr64(0x{0:X}", addr64.ToLinear());
+                return;
+            }
             throw new NotSupportedException();
         }
 

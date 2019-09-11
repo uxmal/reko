@@ -83,8 +83,6 @@ namespace Reko.Analysis
             var offset = 0;
             for (; ; )
             {
-                if (ssa.Procedure.Name == "fn00002B8C") //$DEBUG
-                    ssa.ToString();
                 var (spPrevious, delta) = MatchStackOffsetPattern(spCur);
                 if (spPrevious == null)
                     break;
@@ -152,9 +150,27 @@ namespace Reko.Analysis
             }
             else
             {
+	           // insert new stack definition
+	            InsertStackDefinition(sp, frameOffset, spDef);
                 // Remove old stack definition
                 RemoveDefinition(sp, spDef);
             }
+        }
+
+        private void InsertStackDefinition(
+            Identifier stack,
+            int frameOffset,
+            Statement stmAfter)
+        {
+            var fp = ssa.Procedure.Frame.FramePointer;
+            var pos = stmAfter.Block.Statements.IndexOf(stmAfter);
+            var src = m.AddSubSignedInt(fp, frameOffset);
+            var newStm = stmAfter.Block.Statements.Insert(
+                pos + 1,
+                stmAfter.LinearAddress,
+                new Assignment(stack, src));
+            ssa.Identifiers[stack].DefStatement = newStm;
+            ssa.AddUses(newStm);
         }
 
         private void RemoveDefinition(Identifier id, Statement defStatement)
@@ -163,7 +179,6 @@ namespace Reko.Analysis
             {
             case CallInstruction ci:
                 ci.Definitions.RemoveWhere(cb => cb.Expression == id);
-                ssa.Identifiers[id].DefStatement = null;
                 break;
             case PhiAssignment phi:
                 ssa.DeleteStatement(defStatement);
