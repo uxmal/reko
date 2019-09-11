@@ -79,12 +79,23 @@ namespace Reko.Analysis
 
         private void BackpropagateStackPointer(Identifier spAtExit)
         {
-            var (spPrevious, offset) = MatchStackOffsetPattern(spAtExit);
-            if (spPrevious == null)
-                return;
-            if (!IsTrashed(spPrevious))
-                return;
-            ReplaceStackDefinition(spPrevious, offset);
+            var spCur = spAtExit;
+            var offset = 0;
+            for (; ; )
+            {
+                if (ssa.Procedure.Name == "fn00002B8C") //$DEBUG
+                    ssa.ToString();
+                var (spPrevious, delta) = MatchStackOffsetPattern(spCur);
+                if (spPrevious == null)
+                    break;
+                ReplaceStackDefinition(spCur, spPrevious, offset);
+                offset -= delta;
+                spCur = spPrevious;
+            }
+            if (IsTrashed(spCur))
+            {
+                ReplaceStackDefinition(spCur, null, offset);
+            }
         }
 
         private bool IsTrashed(Identifier sp)
@@ -125,33 +136,25 @@ namespace Reko.Analysis
 
         /// <summary>
         /// Replace definition of '<paramref name="sp"/>' with
-        /// 'fp - <paramref name="stackOffset"/>'
+        /// 'fp - <paramref name="frameOffset"/>'
         /// </summary>
         /// <param name="sp"></param>
-        /// <param name="stackOffset"></param>
-        private void ReplaceStackDefinition(Identifier sp, int stackOffset)
+        /// <param name="frameOffset"></param>
+        private void ReplaceStackDefinition(Identifier sp, Identifier spPrev, int frameOffset)
         {
             var spDef = ssa.Identifiers[sp].DefStatement;
-            // insert new stack definition
-            InsertStackDefinition(sp, stackOffset, spDef);
-            // remove old stack definition
-            RemoveDefinition(sp, spDef);
-        }
-
-        private void InsertStackDefinition(
-            Identifier stack,
-            int stackOffset,
-            Statement stmAfter)
-        {
-            var fp = ssa.Procedure.Frame.FramePointer;
-            var pos = stmAfter.Block.Statements.IndexOf(stmAfter);
-            var src = m.AddSubSignedInt(fp, -stackOffset);
-            var newStm = stmAfter.Block.Statements.Insert(
-                pos + 1,
-                stmAfter.LinearAddress,
-                new Assignment(stack, src));
-            ssa.Identifiers[stack].DefStatement = newStm;
-            ssa.AddUses(newStm);
+            if (spDef.Instruction is Assignment ass)
+            {
+                var fp = ssa.Procedure.Frame.FramePointer;
+                ssa.Identifiers[spPrev].Uses.Remove(spDef);
+                ssa.Identifiers[fp].Uses.Add(spDef);
+                ass.Src = m.AddSubSignedInt(fp, frameOffset);
+            }
+            else
+            {
+                // Remove old stack definition
+                RemoveDefinition(sp, spDef);
+            }
         }
 
         private void RemoveDefinition(Identifier id, Statement defStatement)
@@ -160,6 +163,7 @@ namespace Reko.Analysis
             {
             case CallInstruction ci:
                 ci.Definitions.RemoveWhere(cb => cb.Expression == id);
+                ssa.Identifiers[id].DefStatement = null;
                 break;
             case PhiAssignment phi:
                 ssa.DeleteStatement(defStatement);

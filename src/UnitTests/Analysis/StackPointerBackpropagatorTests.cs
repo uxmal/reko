@@ -25,6 +25,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -36,6 +37,8 @@ namespace Reko.UnitTests.Analysis
     public class StackPointerBackpropagatorTests
     {
         private Program program;
+        private RegisterStorage sp;
+        private Identifier fp;
 
         [SetUp]
         public void Setup()
@@ -56,7 +59,7 @@ namespace Reko.UnitTests.Analysis
             var sActual = sw.ToString();
             if (sExp != sActual)
             {
-                Debug.Print("{0}", sActual);
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
         }
@@ -68,14 +71,19 @@ namespace Reko.UnitTests.Analysis
             ssa.Validate(s => Assert.Fail(s));
         }
 
+        private void Given_StackPointer(SsaProcedureBuilder m)
+        {
+            this.sp = m.RegisterStorage("sp", PrimitiveType.Word32);
+            m.Architecture.StackRegister = sp;
+        }
+
         [Test]
         public void Spbp_LinearProcedure()
         {
             var m = new SsaProcedureBuilder(nameof(Spbp_LinearProcedure));
 
             var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
-            var sp = m.RegisterStorage("sp", PrimitiveType.Word32);
-            m.Architecture.StackRegister = sp;
+            Given_StackPointer(m);
             var sp_1 = m.Reg("sp_1", m.Architecture.StackRegister);
             var sp_2 = m.Reg("sp_2", m.Architecture.StackRegister);
             var sp_3 = m.Reg("sp_3", m.Architecture.StackRegister);
@@ -102,8 +110,7 @@ l1:
 	sp_1 = fp - 4
 	call Mem4[0x00000002:word32] (retsize: 4;)
 		uses: sp:sp_1
-	sp_2 = fp - 4
-	sp_3 = sp_2 + 4
+	sp_3 = fp
 	return
 Spbp_LinearProcedure_exit:
 	use sp_3
@@ -117,9 +124,8 @@ Spbp_LinearProcedure_exit:
         {
             var m = new SsaProcedureBuilder(nameof(Spbp_TwoExits));
 
-            var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
-            var sp = m.RegisterStorage("sp", PrimitiveType.Word32);
-            m.Architecture.StackRegister = sp;
+            Given_FramePointer(m);
+            Given_StackPointer(m);
             var sp_1 = m.Reg("sp_1", m.Architecture.StackRegister);
             var sp_2 = m.Reg("sp_2", m.Architecture.StackRegister);
             var sp_3 = m.Reg("sp_3", m.Architecture.StackRegister);
@@ -164,14 +170,12 @@ l1:
 m_eq0:
 	call Mem9[0x00000008:word32] (retsize: 4;)
 		uses: sp:sp_1
-	sp_4 = fp - 4
-	sp_5 = sp_4 + 4
+	sp_5 = fp
 	return
 m_ne0:
 	call Mem8[0x00000004:word32] (retsize: 4;)
 		uses: sp:sp_1
-	sp_2 = fp - 4
-	sp_3 = sp_2 + 4
+	sp_3 = fp
 	return
 Spbp_TwoExits_exit:
 	sp_6 = PHI((sp_3, m_ne0), (sp_5, m_eq0))
@@ -181,5 +185,57 @@ Spbp_TwoExits_exit:
             AssertStringsEqual(sExp, m.Ssa);
         }
 
+        private void Given_FramePointer(SsaProcedureBuilder m)
+        {
+            this.fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
+        }
+
+        [Test]
+        public void Spbp_SpaceOnStack()
+        {
+            var m = new SsaProcedureBuilder(nameof(Spbp_SpaceOnStack));
+
+            var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
+            Given_StackPointer(m);
+            var sp_1 = m.Reg("sp_1", sp);
+            var sp_2 = m.Reg("sp_2", sp);
+            var sp_3 = m.Reg("sp_3", sp);
+            var sp_4 = m.Reg("sp_4", sp);
+            var sp_5 = m.Reg("sp_5", sp);
+            var sp_6 = m.Reg("sp_6", sp);
+            var sp_7 = m.Reg("sp_7", sp);
+            var sp_8 = m.Reg("sp_8", sp);
+            var a = m.Reg("a", new RegisterStorage("a", 1, 0, PrimitiveType.Word32));
+            var b = m.Reg("b", new RegisterStorage("b", 2, 0, PrimitiveType.Word32));
+            var a_1 = m.Reg("a_1", (RegisterStorage) a.Storage);
+            var b_1 = m.Reg("b_1", (RegisterStorage) b.Storage);
+            m.AddDefToEntryBlock(fp);
+
+            m.Assign(sp_2, m.ISub(fp, 4));  // space for a
+            m.MStore(sp_2, a);
+            m.Assign(sp_3, m.ISub(fp, 4));  // space for b
+            m.MStore(sp_3, b);
+            m.Assign(sp_4, m.ISub(fp, 40)); // 40 bytes of stack space
+            m.MStore(sp_4, m.Word32(0xDEADBABE));
+            m.Call(m.Mem32(m.Word32(0x00123400)), 4,
+                new[] { sp_4 },
+                new[] { sp_5 });
+            m.Assign(sp_6, m.IAdd(sp_5, 40));
+            m.Assign(b_1, m.Mem32(sp_6));
+            m.Assign(sp_7, m.IAdd(sp_6, 4));
+            m.Assign(a_1, m.Mem32(sp_7));
+            m.Assign(sp_8, m.IAdd(sp_7, 4));
+            m.Return();
+            m.AddUseToExitBlock(sp_8);
+
+            RunTest(m.Ssa);
+
+            var sExp =
+            #region Expected
+                "@@@";
+            #endregion
+
+            this.AssertStringsEqual(sExp, m.Ssa);
+        }
     }
 }
