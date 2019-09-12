@@ -344,15 +344,22 @@ namespace Reko.Core
         /// </summary>
         public string ResourcesDirectory { get; set; }
 
-        public void EnsureFilenames(string fileName)
+        /// <summary>
+        /// Given the absolute file name of a binary being decompiled, make sure that 
+        /// absolute file names for each of the output files.
+        /// </summary>
+        /// <param name="absFileName">Absolute file name of the binary being decompiled.</param>
+        public void EnsureFilenames(string absFileName)
         {
-            var dir = Path.GetDirectoryName(fileName) ?? "";
-            this.DisassemblyFilename = DisassemblyFilename ?? Path.ChangeExtension(fileName, ".asm");
-            this.IntermediateFilename = IntermediateFilename ?? Path.ChangeExtension(fileName, ".dis");
-            this.OutputFilename = OutputFilename ?? Path.ChangeExtension(fileName, ".c");
-            this.TypesFilename = TypesFilename ?? Path.ChangeExtension(fileName, ".h");
-            this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
-            this.ResourcesDirectory = ResourcesDirectory ?? Path.ChangeExtension(fileName, ".resources");
+            var dir = Path.GetDirectoryName(absFileName) ?? "";
+            var filename = Path.GetFileName(absFileName);
+            var outputDir = Path.Combine(dir, Path.ChangeExtension(filename, ".reko"));
+            this.DisassemblyFilename = DisassemblyFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".asm"));
+            this.IntermediateFilename = IntermediateFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".dis"));
+            this.OutputFilename = OutputFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".c"));
+            this.TypesFilename = TypesFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".h"));
+            this.GlobalsFilename = GlobalsFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".globals.c"));
+            this.ResourcesDirectory = ResourcesDirectory ?? Path.Combine(outputDir, "resources");
         }
 
         /// <summary>

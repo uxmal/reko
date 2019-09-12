@@ -37,6 +37,8 @@ namespace Reko.CmdLine
         {
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;
+            var dir = Path.GetDirectoryName(filename);
+            Directory.CreateDirectory(dir);
             return new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 

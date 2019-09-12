@@ -190,6 +190,7 @@ namespace Reko.UnitTests.Core.Serialization
   <arch>testArch</arch>
   <platform>testOS</platform>
   <input>
+    <filename>/foo/foo</filename>
     <user>
       <platform>
         <item key=""Name"">Bob</item>
@@ -229,6 +230,7 @@ namespace Reko.UnitTests.Core.Serialization
   <arch>testArch</arch>
   <platform>testOS</platform>
   <input>
+    <filename>/ff/b/foo.exe</filename>,
     <user>
       <platform>
         <list key=""Names"">
@@ -263,6 +265,7 @@ namespace Reko.UnitTests.Core.Serialization
   <arch>testArch</arch>
   <platform>testOS</platform>
   <input>
+    <filename>c:\foo\foo.exe</filename>
     <user>
       <platform>
         <dict key=""Names"">
@@ -401,6 +404,7 @@ namespace Reko.UnitTests.Core.Serialization
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
   <input>
+     <filename>/foo/foo</filename>
   </input>
 </project>";
             var ldr = new Mock<ILoader>();
@@ -467,6 +471,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "c:\\tmp\\foo\\foo.exe",
                         User = new UserData_v4
                         {
                             GlobalData =
@@ -518,6 +523,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "c:\\tmp\\foo\\foo.exe",
                         User = new UserData_v4
                         {
                             Annotations =
@@ -564,6 +570,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "c:\\tmp\\foo\\foo.exe",
                         User = new UserData_v4
                         {
                             Procedures =
@@ -636,6 +643,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "foo.exe",
                         User = new UserData_v4
                         {
                             Segments =

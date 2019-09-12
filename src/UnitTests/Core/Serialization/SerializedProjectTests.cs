@@ -463,6 +463,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "c:\\tmp\\foo\\foo.exe",
                         User = new UserData_v4
                         {
                             Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } },

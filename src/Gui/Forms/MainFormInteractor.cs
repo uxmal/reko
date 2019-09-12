@@ -212,6 +212,7 @@ namespace Reko.Gui.Forms
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;
             var fsSvc = Services.RequireService<IFileSystemService>();
+            fsSvc.CreateDirectory(Path.GetDirectoryName(filename));
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 
