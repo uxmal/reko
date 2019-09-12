@@ -189,6 +189,11 @@ namespace Reko.Analysis
             }
 
 
+            /// <summary>
+            /// Attempt to fuse together the definitions of all the identifiers in <paramref name="sids"/>.
+            /// </summary>
+            /// <param name="sids"></param>
+            /// <returns>A new expression if the fusion succeeded, otherwise null.</returns>
             private Expression FuseIdentifiers(params SsaIdentifier[] sids)
             {
                 // Are all the definitions of the ids in the same basic block? If they're

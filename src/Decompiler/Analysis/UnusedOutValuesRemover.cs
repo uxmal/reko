@@ -300,7 +300,7 @@ namespace Reko.Analysis
             }
             else
             {
-                var urf = new UsedRegisterFinder(program.Architecture, dataFlow, new Procedure[0], eventListener);
+                var urf = new UsedRegisterFinder(dataFlow, new Procedure[0], eventListener);
                 foreach (Statement stm in program.CallGraph.CallerStatements(procCallee))
                 {
                     if (!(stm.Instruction is CallInstruction ci))

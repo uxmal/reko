@@ -45,7 +45,6 @@ namespace Reko.Analysis
         InstructionVisitor<BitRange>,
         ExpressionVisitor<BitRange>
     {
-        private IProcessorArchitecture arch;
         private DecompilerEventListener eventListener;
         private ProgramDataFlow flow;
         private HashSet<Procedure> scc;
@@ -56,12 +55,10 @@ namespace Reko.Analysis
         private bool useLiveness;
 
         public UsedRegisterFinder(
-            IProcessorArchitecture arch,
             ProgramDataFlow flow,
             IEnumerable<Procedure> scc,
             DecompilerEventListener eventListener)
         {
-            this.arch = arch;
             this.flow = flow;
             this.scc = scc.ToHashSet();
             this.eventListener = eventListener;

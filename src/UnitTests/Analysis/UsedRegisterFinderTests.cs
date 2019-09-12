@@ -125,7 +125,6 @@ namespace Reko.UnitTests.Analysis
         {
             pf.ProcedureFlows[ssa.Procedure] = new ProcedureFlow(ssa.Procedure);
             var urf = new UsedRegisterFinder(
-                ssa.Procedure.Architecture,
                 pf,
                 new Procedure[] { ssa.Procedure },
                 NullDecompilerEventListener.Instance);

@@ -206,7 +206,7 @@ namespace Reko.Analysis
                 DumpWatchedProcedure("After projection propagation", ssa.Procedure);
             }
 
-            var uid = new UsedRegisterFinder(program.Architecture, flow, procs, this.eventListener);
+            var uid = new UsedRegisterFinder(flow, procs, this.eventListener);
             foreach (var sst in ssts)
             {
                 var ssa = sst.SsaState;
