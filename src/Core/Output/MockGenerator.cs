@@ -665,7 +665,10 @@ namespace Reko.Core.Output
 
         public int VisitPointer(Pointer ptr)
         {
-            throw new NotImplementedException();
+            writer.Write("new Pointer(");
+            ptr.Pointee.Accept(this);
+            writer.Write(", {0})", ptr.Size);
+            return 0;
         }
 
         public int VisitReference(ReferenceTo ptr)
@@ -680,7 +683,8 @@ namespace Reko.Core.Output
 
         public int VisitStructure(StructureType str)
         {
-            throw new NotImplementedException();
+            writer.Write("new StructureType({0})", str.Name ?? "<not-set>");
+            return 0;
         }
 
         public int VisitTypeReference(TypeReference typeref)

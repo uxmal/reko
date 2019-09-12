@@ -83,7 +83,7 @@ namespace Reko.Typing
             trans = new TypeTransformer(factory, store,program, eventListener);
             ctn = new ComplexTypeNamer();
             ter = new TypedExpressionRewriter(program, eventListener);
-
+            
             // RestrictProcedures(program, 0, 60, true); // Re-enable this for debugging
             Time("Normalizing expressions", () => aen.Transform(program));
             Time("Building equivalence classes", () => eqb.Build(program));
@@ -121,7 +121,7 @@ namespace Reko.Typing
         [Conditional("DEBUG")]
         private void RestrictProcedures(Program program, int start, int count, bool dumpProcedures)
         {
-            count = Math.Min(count, program.Procedures.Values.Count);
+            count = Math.Min(count, program.Procedures.Values.Count-start);
             Procedure[] procs = new Procedure[count];
             for (int i = 0; i < count; ++i)
             {
