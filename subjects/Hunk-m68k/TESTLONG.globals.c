@@ -22,8 +22,14 @@ Eq_n g_t3D78 =
 	{
 		0x00
 	};
-union Eq_n * g_ptr3D7C = &g_t10202;
-union Eq_n * g_ptr3D80 = &g_t3030303;
+Eq_n g_t3D7C = 
+	{
+		0x00
+	};
+Eq_n g_t3D80 = 
+	{
+		0x03
+	};
 Eq_n g_t3D84 = 
 	{
 		0x04
@@ -55,7 +61,5 @@ Eq_n g_t3ECC;
 Eq_n g_t3ED0;
 Eq_n g_t3ED8;
 Eq_n g_t4000;
-Eq_n g_t10202;
-Eq_n g_t3030303;
 Eq_n g_t6060606;
 

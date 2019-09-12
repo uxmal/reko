@@ -3,8 +3,8 @@ void fn00001000(word32 d0, word32 a0)
 
 // MayUse:  a0:[0..31] d0:[0..31]
 // LiveOut:
-// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 a7 d0 d1 d2 d3 d4 d5
-// Preserved: d7
+// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d4 d5
+// Preserved: a7 d7
 fn00001000_entry:
 // DataOut:
 // DataOut (flags):
@@ -501,8 +501,8 @@ void fn00001278(word32 dwArg04)
 
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
-// Trashed: CVZN a1 a2 a4 a5 a6 a7 d0 d1 d2
-// Preserved:
+// Trashed: CVZN a1 a2 a4 a5 a6 d0 d1 d2
+// Preserved: a7
 fn00001278_entry:
 // DataOut:
 // DataOut (flags):

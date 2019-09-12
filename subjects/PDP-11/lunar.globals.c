@@ -91,8 +91,14 @@ Eq_n g_t0072 =
 		L'\x00'
 	};
 cui16 g_w0074 = 0x0000;
-ui16 g_w0076 = 0x0000;
-ui16 g_w0078 = 0x0000;
+Eq_n g_t0076 = 
+	{
+		L'\x00'
+	};
+Eq_n g_t0078 = 
+	{
+		L'\x00'
+	};
 Eq_n g_t007A = 
 	{
 		L'\x00'
@@ -115,7 +121,7 @@ cui16 g_w008E = 0x0000;
 cui16 g_w0090 = 0x0000;
 struct Eq_n * g_ptr0092 = null;
 word16 g_w0096 = 0x00CE;
-ci16 * g_ptr009E = &g_ptr009E;
+word16 * g_ptr009E = &g_ptr009E;
 ci16 g_w00A0 = 0x0000;
 ci16 g_w00A2 = 0x0000;
 ci16 g_w00A4 = 0x0000;

@@ -444,8 +444,8 @@ void fn000016D0(word32 d0, word32 d3, word32 d4, word32 d5, word32 d6, word32 d7
 
 // MayUse:  a2:[0..31] a3:[0..31] a4:[0..31] a5:[0..31] a6:[0..31] d0:[8..31] d3:[0..31] d4:[0..31] d5:[0..31] d6:[0..31] d7:[0..31] Stack +0008:[0..31]
 // LiveOut:
-// Trashed: CVZNX a0 a2 a3 a4 a5 a6 a7 d0 d2 d3 d4 d5 d6 d7
-// Preserved:
+// Trashed: CVZNX a0 a2 a3 a4 a5 a6 d0 d2 d3 d4 d5 d6 d7
+// Preserved: a7
 fn000016D0_entry:
 // DataOut:
 // DataOut (flags):
@@ -3312,15 +3312,15 @@ l00002A20:
 	Mem84[a1_75 + 4:word32] = 0
 	word32 a2_102
 	word32 a7_106
-	word32 d5_112
-	d0_107 = fn00002A54(a3, a5, dwArg04, dwArg08, out d3_199, out d4_200, out d5_112, out a2_102, out a3, out a5, out a6_105, out a7_106)
+	word32 d5_111
+	d0_107 = fn00002A54(a3, a5, dwArg04, dwArg08, out d3_199, out d4_200, out d5_111, out a2_102, out a3, out a5, out a6_105, out a7_106)
 	branch d0_107 == 0x00000000 l00002A4C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00002A42:
-	Mem125[a7_106 + 4:word32] = d5_112
+	Mem125[a7_106 + 4:word32] = d5_111
 	fn00002AE0(a2_102, a5, Mem125[a7_106 + 4:word32])
 // DataOut:
 // DataOut (flags):
@@ -3393,36 +3393,35 @@ l00002AB4:
 
 l00002ABE:
 	Mem67[a2_25 + 4:word32] = Mem64[a2_25 + 4:word32] + d3_38
-	word32 a7_104 = a7_91 + 8
+	word32 a7_103 = fp - 0x00000014
 	word32 a3_88
-	word32 a7_91
-	word32 a6_103
-	word32 a5_102
-	branch fn00002BB4(a2_25, a3, a5, fp - 0x00000004, a1_32, d3_38, out a3_88, out a5_102, out a6_103, out a7_91) == 0x00000000 l00002AD4
+	word32 a6_102
+	word32 a5_101
+	branch fn00002BB4(a2_25, a3, a5, fp - 0x00000004, a1_32, d3_38, out a3_88, out a5_101, out a6_102) == 0x00000000 l00002AD4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00002AD0:
-	a5_102 = fn000027A0(a5_102, a6_103, out a6_103, out a7_104)
+	a5_101 = fn000027A0(a5_101, a6_102, out a6_102, out a7_103)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00002AD4:
-	word32 a7_115 = a7_104 + 4
-	word32 d4_116 = Mem76[a7_115:word32]
-	word32 d5_118 = Mem76[a7_115 + 4:word32]
-	word32 a2_120 = Mem76[a7_115 + 8:word32]
-	word32 a6_123 = Mem76[a6_103:word32]
-	d3Out = Mem76[a7_104:word32]
-	d4Out = d4_116
-	d5Out = d5_118
-	a2Out = a2_120
+	word32 a7_114 = a7_103 + 4
+	word32 d4_115 = Mem76[a7_114:word32]
+	word32 d5_117 = Mem76[a7_114 + 4:word32]
+	word32 a2_119 = Mem76[a7_114 + 8:word32]
+	word32 a6_122 = Mem76[a6_102:word32]
+	d3Out = Mem76[a7_103:word32]
+	d4Out = d4_115
+	d5Out = d5_117
+	a2Out = a2_119
 	a3Out = a3_88
-	a5Out = a5_102
-	a6Out = a6_123
-	a7Out = a6_103 + 0x00000004
+	a5Out = a5_101
+	a6Out = a6_122
+	a7Out = a6_102 + 0x00000004
 	return 0
 // DataOut:
 // DataOut (flags):
@@ -3564,13 +3563,13 @@ fn00002B18_exit:
 
 
 
-word32 fn00002BB4(word32 a2, word32 a3, word32 a5, word32 a6, word32 dwArg04, word32 dwArg08, ptr32 & a3Out, ptr32 & a5Out, ptr32 & a6Out, ptr32 & a7Out)
+word32 fn00002BB4(word32 a2, word32 a3, word32 a5, word32 a6, word32 dwArg04, word32 dwArg08, ptr32 & a3Out, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a2:[0..31] a3:[0..31] a5:[0..31] a6:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
-// LiveOut: a3 a5 a6 a7 d0
-// Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2
-// Preserved:
+// LiveOut: a3 a5 a6 d0
+// Trashed: CVZNX a0 a1 a2 a3 a5 a6 d0 d1 d2
+// Preserved: a7
 fn00002BB4_entry:
 // DataOut:
 // DataOut (flags):
@@ -3670,7 +3669,6 @@ l00002E0E:
 	a3Out = a3
 	a5Out = a5
 	a6Out = a6
-	a7Out = fp
 	return -1
 // DataOut:
 // DataOut (flags):
@@ -3731,7 +3729,6 @@ l00002DDC:
 	a3Out = a3
 	a5Out = a5
 	a6Out = a6
-	a7Out = fp
 	return 0
 // DataOut:
 // DataOut (flags):
@@ -3739,18 +3736,16 @@ l00002DDC:
 
 l00002C4E:
 	word32 d0_296 = SEQ(SLICE(d0_75 + 0x00000003, word16, 16), Mem113[0x00002C58 + (int32) ((int16) (d0_75 + 0x00000003)) * 2:word16])
-	word32 a7_298
 	word32 a6_299
 	word32 a3_301
 	word32 d0_305
 	word32 a5_307
 	call 0x00002C58 + (int32) ((int16) d0_296) (retsize: 4;)
 		uses: a0:a0_303,a1:a1_74,a2:dwArg04,a3:a3_103,a5:a5,a6:fp - 0x00000004,a7:fp - 0x00000024,d0:d0_296,d1:d1_108,d2:3,Stack +0000:fp + 0xFFFFFFF8,Stack +0004:a3,Stack +0008:a2,Stack +000C:dwLoc1C_330,Stack +0010:d0_31,Stack +0014:d0_43,Stack +0018:d0_55,Stack +001C:0,Stack +0020:dwLoc08,Stack +0024:a6,Stack +002C:dwArg04,Stack +0030:dwArg08,Stack +FFFFFFF4:dwLoc34,Stack +FFFFFFF8:dwLoc30,Stack +FFFFFFFC:dwArg04
-		defs: a3:a3_301,a5:a5_307,a6:a6_299,a7:a7_298,d0:d0_305
+		defs: a3:a3_301,a5:a5_307,a6:a6_299,d0:d0_305
 	a3Out = a3_301
 	a5Out = a5_307
 	a6Out = a6_299
-	a7Out = a7_298
 	return d0_305
 // DataOut:
 // DataOut (flags):

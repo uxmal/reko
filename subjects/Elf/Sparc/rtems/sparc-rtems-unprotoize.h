@@ -384,7 +384,7 @@ Eq_155: (union "Eq_155" (char u0) ((ptr32 char) u1) (size_t u2))
 	T_2827 (in i0_112 + 0x00000001 : word32)
 	T_2848 (in i0_108 + 0x00000001 : word32)
 	T_2854 (in out l0_120 : ptr32)
-	T_2857 (in dupnstr(i0_112, i0_108 - i0_112, out sp_128, out l0_120, out i0_112, out i6_118) : word32)
+	T_2857 (in dupnstr(i0_112, i0_108 - i0_112, out sp_315, out l0_120, out i0_112, out i6_118) : word32)
 	T_2861 (in (sp_26 + 0x00000060)[l0_120 * 0x00000004] : word32)
 	T_2901 (in o0 : Eq_155)
 	T_2905 (in i0Out : Eq_155)
@@ -14382,11 +14382,11 @@ T_2851: (in i0_108 - i0_112 : word32)
   Class: Eq_311
   DataType: (ptr32 Eq_311)
   OrigDataType: int32
-T_2852: (in sp_128 : word32)
+T_2852: (in sp_315 : word32)
   Class: Eq_2852
   DataType: word32
   OrigDataType: word32
-T_2853: (in out sp_128 : ptr32)
+T_2853: (in out sp_315 : ptr32)
   Class: Eq_312
   DataType: ptr32
   OrigDataType: ptr32
@@ -14402,7 +14402,7 @@ T_2856: (in out i6_118 : ptr32)
   Class: Eq_312
   DataType: ptr32
   OrigDataType: ptr32
-T_2857: (in dupnstr(i0_112, i0_108 - i0_112, out sp_128, out l0_120, out i0_112, out i6_118) : word32)
+T_2857: (in dupnstr(i0_112, i0_108 - i0_112, out sp_315, out l0_120, out i0_112, out i6_118) : word32)
   Class: Eq_155
   DataType: Eq_155
   OrigDataType: word32

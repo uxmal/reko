@@ -5,6 +5,11 @@
 #include "pySample.h"
 
 word32 g_dwFFFFFFFF;
+Eq_n g_t10000000 = 
+	{
+		0x5A4D,
+		0x000000F0,
+	};
 Eq_n g_t10002098 = null;
 Eq_n g_t1000209C = null;
 Eq_n g_t100020A0 = null;

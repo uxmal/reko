@@ -3,8 +3,8 @@ void fn00001000(word32 d0, word32 d7, word32 a0)
 
 // MayUse:  a0:[0..31] d0:[0..31] d7:[0..31]
 // LiveOut:
-// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
-// Preserved:
+// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d4 d5
+// Preserved: a7 d7
 fn00001000_entry:
 // DataOut:
 // DataOut (flags):
@@ -73,7 +73,7 @@ l00001066:
 // SymbolicIn:
 
 l0000106A:
-	branch Mem67[a0_722:byte] != 0x20 l00001072
+	branch Mem67[a0_734:byte] != 0x20 l00001072
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -85,9 +85,9 @@ l00001070:
 // SymbolicIn:
 
 l00001072:
-	a0_73 = a0_722 + 1
-	a0_722 = a0_73
-	branch Mem67[a0_722:byte] != 0x00 l0000106A
+	a0_73 = a0_734 + 1
+	a0_734 = a0_73
+	branch Mem67[a0_734:byte] != 0x00 l0000106A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -137,7 +137,7 @@ l00001268:
 
 l00001096:
 	word32 a0_447
-	word32 dwLoc0C_606
+	word32 dwLoc0C_602
 	Mem169[d0_112:word32] = d0_107 + 0x00000011
 	Mem173[d0_112 + 12:word32] = d4_74 - 0x00000001
 	Mem177[d0_112 + 8:word32] = d0_112 + 16 + d0_100
@@ -153,7 +153,7 @@ l00001190:
 	Mem187[0x00003E2C:word32] = d0_180
 	Mem189[0x00003E30:word32] = d0_180
 	Mem194[0x00000000:word32] = 0x00000000
-	dwLoc0C_606 = d0_180
+	dwLoc0C_602 = d0_180
 	a2_196 = d0_180
 	word32 d0_197 = Mem194[d0_180 + 36:word32]
 	branch d0_197 == 0x00000000 l000011B6
@@ -206,7 +206,7 @@ l000011CC:
 // SymbolicIn:
 
 l000011CE_thunk_fn0000127C:
-	fn0000127C(out a1_718, out a5_719)
+	fn0000127C(out a1_730, out a5_731)
 	return
 // DataOut:
 // DataOut (flags):
@@ -362,7 +362,7 @@ l00001148:
 	Mem416[0x00003E34:word32] = d0_262
 	execPrivate5()
 	Mem418[0x00003E38:word32] = d0_262
-	dwLoc0C_606 = d0_112 + 16
+	dwLoc0C_602 = d0_112 + 16
 	dwLoc10 = d3_267
 	branch Mem418[Mem418[0x00003E24:word32] + 20:word16] <u 0x0024 l0000117A
 // DataOut:
@@ -405,13 +405,13 @@ l00001186:
 l00001202:
 	Mem461[0x00003E48:word32] = a0_447
 	Mem469[0x00003E4C:word32] = fp - 16
-	fn00001354(d1_111, d2_102, d7, a0_447, a1_255, a2_196, d0_36, d0_112, dwLoc10, dwLoc0C_606)
+	fn00001354(d1_111, d2_102, d7, a0_447, a1_255, a2_196, d0_36, d0_112, dwLoc10, dwLoc0C_602)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001212_thunk_fn0000127C:
-	fn0000127C(out a1_720, out a5_721)
+	fn0000127C(out a1_732, out a5_733)
 	return
 // DataOut:
 // DataOut (flags):
@@ -429,14 +429,14 @@ l0000110C:
 // SymbolicIn:
 
 l00001116:
-	Mem552[a1_255:byte] = 0x00
+	Mem548[a1_255:byte] = 0x00
 	a1_255 = a1_255 + 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001112:
-	Mem559[a1_255:byte] = SLICE(d1_111, byte, 0)
+	Mem555[a1_255:byte] = SLICE(d1_111, byte, 0)
 	a1_255 = a1_255 + 1
 // DataOut:
 // DataOut (flags):
@@ -503,8 +503,8 @@ word32 fn00001278(word32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 
 // MayUse:  Stack +0004:[0..31]
 // LiveOut: a1 a5 d1
-// Trashed: CVZN a1 a2 a4 a5 a6 a7 d0 d1 d2
-// Preserved:
+// Trashed: CVZN a1 a2 a4 a5 a6 d0 d1 d2
+// Preserved: a7
 fn00001278_entry:
 // DataOut:
 // DataOut (flags):
@@ -642,10 +642,10 @@ l000012FA:
 l00001308:
 	word32 a1_59
 	word32 a5_62
-	word32 d1_66 = fn00001278(dwArg04, out a1_59, out a5_62)
+	word32 d1_65 = fn00001278(dwArg04, out a1_59, out a5_62)
 	a1Out = a1_59
 	a5Out = a5_62
-	return d1_66
+	return d1_65
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -721,7 +721,7 @@ void fn00001354(word32 d1, word32 d2, word32 d7, word32 a0, word32 a1, word32 a2
 
 // MayUse:  a0:[0..31] a1:[0..31] a2:[0..31] a3:[0..31] a5:[0..31] d1:[0..31] d2:[0..31] d7:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut:
-// Trashed: CVZNX a0 a1 a4 a5 a6 d0 d1 d4 d5 d6 d7
+// Trashed: CVZNX a0 a1 a4 a5 a6 d0 d1
 // Preserved: a2 a3 a7
 fn00001354_entry:
 // DataOut:
@@ -743,19 +743,19 @@ l00001366:
 // SymbolicIn:
 
 l0000136A:
-	call Mem8[a3_17:word32] (retsize: 4;)
-		uses: a0:a0_97,d0:d0_23,Stack +0000:dwLoc0C,Stack +0004:a2,Stack +0008:a3,Stack +0010:dwArg04,Stack +0014:dwArg08,Stack +FFFFFFF8:dwLoc14,Stack +FFFFFFFC:dwLoc10
-		defs: a0:a0_98,d0:d0_24
+	word32 v11_19 = Mem8[a3_17:word32]
+	call v11_19 (retsize: 4;)
+		uses: a0:a0_89,d0:d0_23,Stack +0000:dwLoc0C,Stack +0004:a2,Stack +0008:a3,Stack +0010:dwArg04,Stack +0014:dwArg08,Stack +FFFFFFF8:dwLoc14,Stack +FFFFFFFC:dwLoc10
+		defs: a0:a0_90,d0:d0_24
 	a3_17 = a3_17 + 4
+	a2 = v11_19
 	branch Mem8[a3_17:word32] != 0x00000000 l0000136A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001372:
-	word32 a2_57
-	word32 a3_58
-	fn0000131C(d2, a2_57, a3_58, fn00001390(d0_10, d1, d7, a1, a3_17, a5, out a2_57, out a3_58), out a1_130, out a5_131)
+	fn0000131C(d2, a2, a3_17, fn00001390(d0_10, d1, d7, a1, a3_17, a5), out a1_116, out a5_117)
 	return
 // DataOut:
 // DataOut (flags):
@@ -768,12 +768,12 @@ fn00001354_exit:
 
 
 
-word32 fn00001390(word32 d0, word32 d1, word32 d7, word32 a1, word32 a3, word32 a5, ptr32 & a2Out, ptr32 & a3Out)
+word32 fn00001390(word32 d0, word32 d1, word32 d7, word32 a1, word32 a3, word32 a5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a1:[0..31] a3:[0..31] a5:[0..31] d0:[0..31] d1:[0..31] d7:[0..31]
-// LiveOut: a2 a3 d0
-// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 d0 d1 d4 d5 d6 d7
+// LiveOut: d0
+// Trashed: CVZNX a0 a1 d0 d1
 // Preserved: a7 d2 d3
 fn00001390_entry:
 // DataOut:
@@ -781,124 +781,109 @@ fn00001390_entry:
 // SymbolicIn:
 
 l00001390:
-	word32 a3_26
-	word32 a1_51
-	word32 a3_53
-	word32 a5_55
-	word32 d1_58
-	word32 d7_64
-	word32 a1_78
-	word32 a3_80
-	word32 a5_82
-	word32 d1_85
-	word32 d7_91
-	word32 a3_107
-	word32 d0_111 = fn00002BF0(fn00002BF0(fn000015A4(fn00002BF0(d0, d1, d7, a1, a3, a5, 0x0000147C, out d1_308, out d7_309, out a1_310, out a3_26, out a5_311), a3_26, 0x00001480, out d1_58, out d7_64, out a1_51, out a2_312, out a3_53, out a5_55), d1_58, d7_64, a1_51, a3_53, a5_55, 0x0000149C, out d1_85, out d7_91, out a1_78, out a3_80, out a5_82), d1_85, d7_91, a1_78, a3_80, a5_82, 0x000014A0, out d1_313, out d7_314, out a1_315, out a3_107, out a5_316)
-	word32 d3_124 = 1
+	word32 a1_37
+	word32 d1_39
+	word32 d0_181 = fn00002BF0(fn00002BF0(fn000015A4(fn00002BF0(d0, d1, d7, a1, a3, a5, 0x0000147C), a3, 0x00001480, out d1_39, out a1_37), d1_39, d7, a1_37, a3, a5, 0x0000149C), d1_39, d7, a1_37, a3, a5, 0x000014A0)
+	word32 d3_167 = 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000145A:
-	branch d3_124 - dwLoc04 <= 0x00000000 l000013DE
+	branch d3_167 - dwLoc04 <= 0x00000000 l000013DE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000013DE:
-	word32 d2_133 = 1
+	word32 d2_161 = 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001452:
-	d0_111 = 40
-	branch d2_133 <= 40 l000013E2
+	d0_181 = 40
+	branch d2_161 <= 40 l000013E2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000013E2:
-	word32 d0_173
-	word32 d1_145 = dwLoc14 + dwLoc10 + d2_133
-	fn000014AC(d2_133, d1_145 >> 0x00000001, 0x0000000A)
-	branch d2_133 - (d1_145 >> 0x00000001) == 0x00000000 l0000141A
+	word32 d0_120
+	word32 d1_92 = dwLoc14 + dwLoc10 + d2_161
+	fn000014AC(d2_161, d1_92 >> 0x00000001, 0x0000000A)
+	branch d2_161 - (d1_92 >> 0x00000001) == 0x00000000 l0000141A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000141A:
-	d0_173 = 1
+	d0_120 = 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001416:
-	d0_173 = 0
+	d0_120 = 0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000141C:
-	word32 d0_188
-	branch (d0_173 | d2_133) != 0x00000000 l00001430
+	word32 d0_135
+	branch (d0_120 | d2_161) != 0x00000000 l00001430
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001430:
-	d0_188 = 0
+	d0_135 = 0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000142C:
-	d0_188 = 1
+	d0_135 = 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001432:
-	word32 d0_205
-	word32 d0_198 = d0_188 + d2_133
-	dwLoc10 = d0_198
-	branch d2_133 - d0_198 < 0x00000000 l0000144A
+	word32 d0_152
+	word32 d0_145 = d0_135 + d2_161
+	dwLoc10 = d0_145
+	branch d2_161 - d0_145 < 0x00000000 l0000144A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000144A:
-	d0_205 = 1
+	d0_152 = 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001446:
-	d0_205 = 0
+	d0_152 = 0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000144C:
-	dwLoc14 = d0_205
-	d2_133 = d2_133 + 0x00000001
+	dwLoc14 = d0_152
+	d2_161 = d2_161 + 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001458:
-	d3_124 = d3_124 + 0x00000001
+	d3_167 = d3_167 + 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001462:
-	word32 a2_237
-	word32 a3_238
-	word32 d0_242 = fn000015A4(d0_111, a3_107, 0x000014A4, out d1_317, out d7_318, out a1_319, out a2_237, out a3_238, out a5_320)
-	a2Out = a2_237
-	a3Out = a3_238
-	return d0_242
+	return fn000015A4(d0_181, a3, 0x000014A4, out d1_242, out a1_243)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1178,12 +1163,12 @@ fn0000151E_exit:
 
 
 
-word32 fn000015A4(word32 d0, word32 a3, word32 dwArg04, ptr32 & d1Out, ptr32 & d7Out, ptr32 & a1Out, ptr32 & a2Out, ptr32 & a3Out, ptr32 & a5Out)
+word32 fn000015A4(word32 d0, word32 a3, word32 dwArg04, ptr32 & d1Out, ptr32 & a1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a3:[0..31] d0:[0..31] Stack +0004:[0..31]
-// LiveOut: a1 a2 a3 a5 d0 d1 d7
-// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
+// LiveOut: a1 d0 d1
+// Trashed: CVZNX a0 a1 d0 d1
 // Preserved: a7
 fn000015A4_entry:
 // DataOut:
@@ -1191,20 +1176,12 @@ fn000015A4_entry:
 // SymbolicIn:
 
 l000015A4:
-	word32 a2_18
-	word32 a3_19
-	word32 a5_21
-	word32 d7_29
-	word32 a1_31
-	word32 d1_32
-	word32 d0_24 = fn000015C0(d0, a3, Mem10[0x00003F80:word32], dwArg04, fp + 8, out d1_32, out d7_29, out a1_31, out a2_18, out a3_19, out a5_21)
-	d1Out = d1_32
-	d7Out = d7_29
-	a1Out = a1_31
-	a2Out = a2_18
-	a3Out = a3_19
-	a5Out = a5_21
-	return d0_24
+	word32 a1_20
+	word32 d1_21
+	word32 d0_18 = fn000015C0(d0, a3, Mem10[0x00003F80:word32], dwArg04, fp + 8, out d1_21, out a1_20)
+	d1Out = d1_21
+	a1Out = a1_20
+	return d0_18
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1216,13 +1193,13 @@ fn000015A4_exit:
 
 
 
-word32 fn000015C0(word32 d0, word32 a3, word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & d1Out, ptr32 & d7Out, ptr32 & a1Out, ptr32 & a2Out, ptr32 & a3Out, ptr32 & a5Out)
+word32 fn000015C0(word32 d0, word32 a3, word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & d1Out, ptr32 & a1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a3:[0..31] d0:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
-// LiveOut: a1 a2 a3 a5 d0 d1 d7
-// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
-// Preserved:
+// LiveOut: a1 d0 d1
+// Trashed: CVZNX a0 a1 d0 d1
+// Preserved: a2 a3 a4 a5 a6 a7 d2 d3 d4 d5 d6 d7
 fn000015C0_entry:
 // DataOut:
 // DataOut (flags):
@@ -1230,7 +1207,7 @@ fn000015C0_entry:
 
 l000015C0:
 	word32 d0_1959
-	word32 a7_1608 = fp + -112
+	word32 a7_1975 = fp + -112
 	word32 d3_1484 = dwArg0C
 	word32 a5_1581 = dwArg04
 	word32 a4_1932 = dwArg08
@@ -1247,12 +1224,12 @@ l000015DC:
 // SymbolicIn:
 
 l00001EE0:
-	word32 a7_51 = a7_1608 - 4
+	word32 a7_51 = a7_1975 - 4
 	Mem54[a7_51:word32] = a5_1581
 	Mem64[a7_51 - 4:word32] = (int32) (int16) (int8) SEQ(SLICE(d0, word24, 8), Mem54[a4_1932:byte])
 	a4_1932 = a4_1932 + 1
 	d0 = fn00001F40(a3, Mem64[a7_51 - 4:word32], Mem64[a7_51:word32], out d1, out a0_67, out a1, out a5_1581)
-	a7_1608 = a7_51 + 4
+	a7_1975 = a7_51 + 4
 	branch d0 != 0xFFFFFFFF l00001EFE
 // DataOut:
 // DataOut (flags):
@@ -1271,15 +1248,15 @@ l00001EFA:
 // SymbolicIn:
 
 l000015E4:
-	Mem86[a7_1608 + 64:word32] = 0x00000000
-	Mem88[a7_1608 + 72:word32] = 0x00000000
-	Mem92[a7_1608 + 102:word32] = 0x00000000
+	Mem86[a7_1975 + 64:word32] = 0x00000000
+	Mem88[a7_1975 + 72:word32] = 0x00000000
+	Mem92[a7_1975 + 102:word32] = 0x00000000
 	word32 d5_257 = -1
 	word32 d4_377 = 105
-	a3 = a7_1608 + 76
+	a3 = a7_1975 + 76
 	word32 d7_1026 = 0
 	word32 a2_136 = a4_1932 + 1
-	word32 d2_1007 = Mem92[a7_1608 + 72:word32]
+	word32 d2_1007 = Mem92[a7_1975 + 72:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1291,7 +1268,7 @@ l00001602:
 // SymbolicIn:
 
 l00001604:
-	word32 a7_100 = a7_1608 - 4
+	word32 a7_100 = a7_1975 - 4
 	Mem103[a7_100:word32] = d0
 	d0 = Mem103[a7_100:word32]
 	branch SLICE(SEQ(SLICE(d0, word24, 8), Mem103[0x00001F18 + d1_104:byte]), byte, 0) - Mem103[a2_136:byte] != 0x00 l00001628
@@ -1326,7 +1303,7 @@ l00001632:
 l0000163A:
 	word32 a0_1449
 	word32 d0_160
-	Mem144[a7_1608 + 72:word32] = d2_1007
+	Mem144[a7_1975 + 72:word32] = d2_1007
 	branch Mem144[a2_136:byte] != 0x2A l00001678
 // DataOut:
 // DataOut (flags):
@@ -1342,13 +1319,13 @@ l00001678:
 // SymbolicIn:
 
 l00001694:
-	d2_1007 = Mem144[a7_1608 + 64:word32]
+	d2_1007 = Mem144[a7_1975 + 64:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001698:
-	Mem172[a7_1608 - 4:word32] = d3_1484
+	Mem172[a7_1975 - 4:word32] = d3_1484
 	word32 d1_178 = __swap(10) *u SLICE(d2_1007, word16, 0)
 	word32 d1_186 = SEQ(SLICE(__swap(SEQ(SLICE(d1_178, word16, 16), SLICE(d1_178 + __swap(d2_1007) *u 0x000A, word16, 0))), word16, 16), 0x0000)
 	word32 d0_187 = SLICE(d2_1007, word16, 0) *u 10 + d1_186
@@ -1356,7 +1333,7 @@ l00001698:
 	a0_1449 = 0x000028C5 + (SEQ(SLICE(d0_187, word24, 8), Mem172[a2_136:byte]) & 0x000000FF)
 	word32 d1_197 = (int32) (int16) (int8) SEQ(SLICE(d1_186, word24, 8), Mem172[a2_136:byte])
 	word32 d0_211 = (uint32) (uint8) Mem172[a0_1449:byte]
-	d3_1484 = Mem172[a7_1608 - 4:word32]
+	d3_1484 = Mem172[a7_1975 - 4:word32]
 	d1_104 = d1_197 - 0x00000030
 	d2_1007 = d1_197 - 0x00000030 + d0_187
 	d0_160 = d0_211 & 0x00000004
@@ -1366,7 +1343,7 @@ l00001698:
 // SymbolicIn:
 
 l000016E0:
-	Mem218[a7_1608 + 64:word32] = d2_1007
+	Mem218[a7_1975 + 64:word32] = d2_1007
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1374,7 +1351,7 @@ l000016E0:
 l00001644:
 	d0_160 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
 	word32 v37_233 = Mem144[d0_160:word32]
-	Mem234[a7_1608 + 44:word32] = v37_233
+	Mem234[a7_1975 + 44:word32] = v37_233
 	a2_136 = a2_136 + 1
 	d3_1484 = d0_160 + 0x00000004
 	a0_1449 = d0_160 + 0x00000004
@@ -1384,15 +1361,15 @@ l00001644:
 // SymbolicIn:
 
 l00001670:
-	Mem238[a7_1608 + 64:word32] = Mem234[a7_1608 + 44:word32]
+	Mem238[a7_1975 + 64:word32] = Mem234[a7_1975 + 44:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000165C:
-	Mem241[a7_1608 + 72:word32] = Mem234[a7_1608 + 72:word32] | 0x00000004
-	d0_160 = -Mem241[a7_1608 + 44:word32]
-	Mem246[a7_1608 + 64:word32] = d0_160
+	Mem241[a7_1975 + 72:word32] = Mem234[a7_1975 + 72:word32] | 0x00000004
+	d0_160 = -Mem241[a7_1975 + 44:word32]
+	Mem246[a7_1975 + 64:word32] = d0_160
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1421,7 +1398,7 @@ l00001712:
 // SymbolicIn:
 
 l00001730:
-	word32 a7_276 = a7_1608 - 4
+	word32 a7_276 = a7_1975 - 4
 	Mem279[a7_276:word32] = d2_1007
 	word32 d1_285 = __swap(10) *u SLICE(d5_257, word16, 0)
 	word32 d1_293 = SEQ(SLICE(__swap(SEQ(SLICE(d1_285, word16, 16), SLICE(d1_285 + __swap(d5_257) *u 0x000A, word16, 0))), word16, 16), 0x0000)
@@ -1442,7 +1419,7 @@ l00001730:
 l000016F4:
 	d0_160 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
 	word32 v45_334 = Mem249[d0_160:word32]
-	Mem336[a7_1608 + 44:word32] = v45_334
+	Mem336[a7_1975 + 44:word32] = v45_334
 	a2_136 = a2_136 + 1
 	d3_1484 = d0_160 + 0x00000004
 	a0_1449 = d0_160 + 0x00000004
@@ -1452,13 +1429,13 @@ l000016F4:
 // SymbolicIn:
 
 l0000170C:
-	d5_257 = Mem336[a7_1608 + 44:word32]
+	d5_257 = Mem336[a7_1975 + 44:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001778:
-	word32 a7_1467 = a7_1608
+	word32 a7_1467 = a7_1975
 	branch Mem342[a2_136:byte] == 0x68 l0000179C
 // DataOut:
 // DataOut (flags):
@@ -1586,7 +1563,7 @@ l000017E4:
 // SymbolicIn:
 
 l00001C6C:
-	Mem466[a7_1608 + 102:word32] = 0x00000001
+	Mem466[a7_1975 + 102:word32] = 0x00000001
 	a3 = 0x00001F14
 	d5_1483 = 0
 // DataOut:
@@ -1628,7 +1605,7 @@ l00001BF4:
 l00001C1A:
 	a0_1449 = (d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002) + 0x00000004
 	d3_1484 = (d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002) + 0x00000004
-	Mem526[a7_1608 + 102:word32] = 0x00000001
+	Mem526[a7_1975 + 102:word32] = 0x00000001
 	d5_1483 = 0
 // DataOut:
 // DataOut (flags):
@@ -1647,7 +1624,7 @@ l00001804:
 // SymbolicIn:
 
 l0000180A:
-	Mem536[a7_1608 + 44:byte] = SLICE(d0_1473, byte, 0)
+	Mem536[a7_1975 + 44:byte] = SLICE(d0_1473, byte, 0)
 	branch SLICE(d0_1473, byte, 0) == 0x6E l00001C7E
 // DataOut:
 // DataOut (flags):
@@ -1720,14 +1697,14 @@ l00001C86:
 
 l00001D0E:
 	d3_1484 = (d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002) + 0x00000004
-	Mem632[a7_1608 + 64:word32] = 0x00000000
+	Mem632[a7_1975 + 64:word32] = 0x00000000
 	d5_1483 = 0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001816:
-	word32 d0_639 = SEQ(SLICE(d0_1473, word24, 8), Mem536[a7_1608 + 44:byte])
+	word32 d0_639 = SEQ(SLICE(d0_1473, word24, 8), Mem536[a7_1975 + 44:byte])
 	word32 d0_642 = SEQ(SLICE(d0_639, word24, 8), SLICE(d0_639, byte, 0) - 0x6F)
 	branch SLICE(d0_642, byte, 0) <=u 0x01 l0000183E
 // DataOut:
@@ -1735,7 +1712,7 @@ l00001816:
 // SymbolicIn:
 
 l00001824:
-	word32 d0_649 = SEQ(SLICE(d0_642, word24, 8), Mem536[a7_1608 + 44:byte])
+	word32 d0_649 = SEQ(SLICE(d0_642, word24, 8), Mem536[a7_1975 + 44:byte])
 	branch SLICE(d0_649, byte, 0) == 0x73 l00001C28
 // DataOut:
 // DataOut (flags):
@@ -1744,7 +1721,7 @@ l00001824:
 l00001C28:
 	d0_1473 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
 	a3 = Mem536[d0_1473:word32]
-	Mem663[a7_1608 + 102:word32] = 0x00000000
+	Mem663[a7_1975 + 102:word32] = 0x00000000
 	d3_1484 = d0_1473 + 0x00000004
 	a0_1449 = d0_1473 + 0x00000004
 	a1 = a3
@@ -1754,7 +1731,7 @@ l00001C28:
 // SymbolicIn:
 
 l00001C44:
-	branch d5_257 - Mem663[a7_1608 + 102:word32] <=u 0x00000000 l00001C66
+	branch d5_257 - Mem663[a7_1975 + 102:word32] <=u 0x00000000 l00001C66
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1766,7 +1743,7 @@ l00001C4A:
 // SymbolicIn:
 
 l00001C4E:
-	d0_1473 = Mem663[a7_1608 + 102:word32]
+	d0_1473 = Mem663[a7_1975 + 102:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1792,7 +1769,7 @@ l00001C5E:
 // SymbolicIn:
 
 l00001C62:
-	Mem721[a7_1608 + 102:word32] = d0_1473
+	Mem721[a7_1975 + 102:word32] = d0_1473
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1829,8 +1806,8 @@ l00001D1A:
 
 l00001D1C:
 	d0_1473 = a2_1899 - a4_1932
-	Mem758[a7_1608 + 102:word32] = d0_1473
-	Mem760[a7_1608 + 64:word32] = 0x00000000
+	Mem758[a7_1975 + 102:word32] = d0_1473
+	Mem760[a7_1975 + 64:word32] = 0x00000000
 	a3 = a4_1932
 	d5_1483 = 0
 // DataOut:
@@ -1844,7 +1821,7 @@ l0000183E:
 // SymbolicIn:
 
 l00001844:
-	Mem774[a7_1608 + 72:word32] = Mem772[a7_1608 + 72:word32] | 0x00000001
+	Mem774[a7_1975 + 72:word32] = Mem772[a7_1975 + 72:word32] | 0x00000001
 	d4_377 = 108
 	d1 = 120
 // DataOut:
@@ -1880,8 +1857,8 @@ l000019CC:
 
 l000019EE:
 	d0_798 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
-	Mem806[a7_1608 + 60:word32] = Mem803[d0_798:word32]
-	Mem807[a7_1608 + 56:word32] = 0x00000000
+	Mem806[a7_1975 + 60:word32] = Mem803[d0_798:word32]
+	Mem807[a7_1975 + 56:word32] = 0x00000000
 	d3_1052 = d0_798 + 0x00000004
 // DataOut:
 // DataOut (flags):
@@ -1889,8 +1866,8 @@ l000019EE:
 
 l000019D4:
 	d0_798 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
-	Mem821[a7_1608 + 60:word32] = Mem803[d0_798:word32]
-	Mem822[a7_1608 + 56:word32] = 0x00000000
+	Mem821[a7_1975 + 60:word32] = Mem803[d0_798:word32]
+	Mem822[a7_1975 + 56:word32] = 0x00000000
 	d3_1052 = d0_798 + 0x00000004
 // DataOut:
 // DataOut (flags):
@@ -1898,8 +1875,8 @@ l000019D4:
 
 l000019B0:
 	d0_798 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
-	Mem836[a7_1608 + 60:word32] = Mem803[d0_798 + 0x00000004:word32]
-	Mem838[a7_1608 + 56:word32] = Mem836[d0_798:word32]
+	Mem836[a7_1975 + 60:word32] = Mem803[d0_798 + 0x00000004:word32]
+	Mem838[a7_1975 + 56:word32] = Mem836[d0_798:word32]
 	d3_1052 = d0_798 + 0x00000008
 // DataOut:
 // DataOut (flags):
@@ -1912,8 +1889,8 @@ l00001A06:
 // SymbolicIn:
 
 l00001A0E:
-	d0_798 = SEQ(SLICE(d0_798, word16, 16), Mem845[a7_1608 + 62:word16])
-	word32 a7_850 = a7_1608 - 4
+	d0_798 = SEQ(SLICE(d0_798, word16, 16), Mem845[a7_1975 + 62:word16])
+	word32 a7_850 = a7_1975 - 4
 	Mem853[a7_850:word32] = d1
 	Mem859[a7_850 + 64:word32] = (uint32) (uint16) SLICE(d0_798, word16, 0)
 	Mem860[a7_850 + 60:word32] = 0x00000000
@@ -1929,8 +1906,8 @@ l00001A22:
 // SymbolicIn:
 
 l00001A2A:
-	word32 d0_874 = SEQ(SLICE(d0_798, word24, 8), Mem870[a7_1608 + 63:byte])
-	word32 a7_875 = a7_1608 - 4
+	word32 d0_874 = SEQ(SLICE(d0_798, word24, 8), Mem870[a7_1975 + 63:byte])
+	word32 a7_875 = a7_1975 - 4
 	Mem878[a7_875:word32] = d1
 	Mem884[a7_875 + 64:word32] = (uint32) (uint8) SLICE(d0_874, byte, 0)
 	Mem885[a7_875 + 60:word32] = 0x00000000
@@ -1940,9 +1917,9 @@ l00001A2A:
 // SymbolicIn:
 
 l00001A3E:
-	word32 d0_893 = Mem892[a7_1608 + 72:word32] & 1
-	Mem896[a7_1608 + 44:byte] = SLICE(d1, byte, 0)
-	a7_1022 = a7_1608
+	word32 d0_893 = Mem892[a7_1975 + 72:word32] & 1
+	Mem896[a7_1975 + 44:byte] = SLICE(d1, byte, 0)
+	a7_1022 = a7_1975
 	branch d0_893 == 0x00000000 l00001ADC
 // DataOut:
 // DataOut (flags):
@@ -1961,7 +1938,7 @@ l00001A54:
 // SymbolicIn:
 
 l00001A58:
-	word32 a7_913 = a7_1608 - 4
+	word32 a7_913 = a7_1975 - 4
 	Mem915[a7_913:word32] = d0_893
 	Mem918[a7_913 - 4:word32] = d1
 	word32 d0_919 = Mem918[a7_913 + 64:word32]
@@ -1976,29 +1953,29 @@ l00001A58:
 // SymbolicIn:
 
 l00001A7E:
-	Mem977[a7_1608 + 106:byte] = 0x30
+	Mem977[a7_1975 + 106:byte] = 0x30
 	d7_1026 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001A8A:
-	a7_1022 = a7_1608
+	a7_1022 = a7_1975
 	branch SLICE(d1, byte, 0) == 0x78 l00001A9A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001A90:
-	Mem986[a7_1608 + 44:byte] = SLICE(d1, byte, 0)
+	Mem986[a7_1975 + 44:byte] = SLICE(d1, byte, 0)
 	branch SLICE(d1, byte, 0) != 0x58 l00001ADC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001A9A:
-	Mem993[a7_1608 + 44:byte] = SLICE(d1, byte, 0)
-	word32 a7_994 = a7_1608 - 4
+	Mem993[a7_1975 + 44:byte] = SLICE(d1, byte, 0)
+	word32 a7_994 = a7_1975 - 4
 	Mem999[a7_994:word32] = d0_893
 	Mem1002[a7_994 - 4:word32] = d1
 	word32 d0_1003 = Mem1002[a7_994 + 64:word32]
@@ -2037,8 +2014,8 @@ l00001884:
 l000018B0:
 	word32 d0_1050 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
 	word32 d0_1055 = Mem803[d0_1050:word32]
-	Mem1058[a7_1608 + 52:word32] = d0_1055
-	word32 a7_1059 = a7_1608 - 4
+	Mem1058[a7_1975 + 52:word32] = d0_1055
+	word32 a7_1059 = a7_1975 - 4
 	Mem1062[a7_1059:word32] = d1
 	Mem1067[a7_1059 + 52:word32] = d0_1055 >> 31
 	word32 v237_1068 = Mem1067[a7_1059:word32]
@@ -2070,8 +2047,8 @@ l000018F6:
 // SymbolicIn:
 
 l000018FE:
-	word32 d0_1110 = SEQ(SLICE(d0_1064, word24, 8), Mem1106[a7_1608 + 55:byte])
-	word32 a7_1111 = a7_1608 - 4
+	word32 d0_1110 = SEQ(SLICE(d0_1064, word24, 8), Mem1106[a7_1975 + 55:byte])
+	word32 a7_1111 = a7_1975 - 4
 	Mem1114[a7_1111:word32] = d1
 	word32 d1_1119 = (int32) (int16) (int8) SEQ(SLICE(d1, word24, 8), SLICE(d0_1110, byte, 0))
 	Mem1121[a7_1111 + 56:word32] = d1_1119
@@ -2086,8 +2063,8 @@ l000018FE:
 l0000188C:
 	word32 d0_1140 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
 	word32 d0_1144 = Mem803[d0_1140:word32]
-	Mem1146[a7_1608 + 52:word32] = d0_1144
-	word32 a7_1147 = a7_1608 - 4
+	Mem1146[a7_1975 + 52:word32] = d0_1144
+	word32 a7_1147 = a7_1975 - 4
 	Mem1149[a7_1147:word32] = d1
 	Mem1154[a7_1147 + 52:word32] = d0_1144 >> 31
 	d3_1052 = d0_1140 + 0x00000004
@@ -2099,16 +2076,16 @@ l0000188C:
 
 l00001866:
 	d0_1064 = d3_1484 + 0x00000003 >>u 0x00000002 << 0x00000002
-	Mem1168[a7_1608 + 52:word32] = Mem803[d0_1064 + 0x00000004:word32]
-	Mem1170[a7_1608 + 48:word32] = Mem1168[d0_1064:word32]
+	Mem1168[a7_1975 + 52:word32] = Mem803[d0_1064 + 0x00000004:word32]
+	Mem1170[a7_1975 + 48:word32] = Mem1168[d0_1064:word32]
 	d3_1052 = d0_1064 + 0x00000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000191C:
-	Mem1175[a7_1608 + 44:byte] = SLICE(d1, byte, 0)
-	word32 a7_1176 = a7_1608 - 4
+	Mem1175[a7_1975 + 44:byte] = SLICE(d1, byte, 0)
+	word32 a7_1176 = a7_1975 - 4
 	Mem1179[a7_1176:word32] = d0_1064
 	Mem1182[a7_1176 - 4:word32] = d1
 	word32 d0_1183 = Mem1182[a7_1176 + 56:word32]
@@ -2366,7 +2343,6 @@ l00001D86:
 	Mem1583[a7_1580:word32] = a5_1581
 	Mem1595[a7_1580 - 4:word32] = (int32) (int16) (int8) SEQ(SLICE(d0_1568, word24, 8), Mem1583[a7_1580 + 110 + d2_1573:byte])
 	d0_1568 = fn00001F40(a3, Mem1595[a7_1580 - 4:word32], Mem1595[a7_1580:word32], out d1, out a0_1449, out a1, out a5_1581)
-	a7_1608 = a7_1580 + 4
 	branch d0_1568 != 0xFFFFFFFF l00001DAC
 // DataOut:
 // DataOut (flags):
@@ -2423,7 +2399,6 @@ l00001DD4:
 
 l00001DDE:
 	Mem1657[a7_1467 - 8:word32] = a0_1650
-	a7_1608 = a7_1467
 	branch fn00001F40(a3, Mem1657[a7_1467 - 8:word32], Mem1657[a7_1467 - 4:word32], out d1, out a0_1449, out a1, out a5_1581) != 0xFFFFFFFF l00001DF6
 // DataOut:
 // DataOut (flags):
@@ -2462,8 +2437,7 @@ l00001E14:
 	word32 a7_1711 = a7_1467 - 4
 	Mem1714[a7_1711:word32] = a5_1581
 	Mem1726[a7_1711 - 4:word32] = (int32) (int16) (int8) SEQ(SLICE(d0_1696, word24, 8), Mem1714[a7_1711 + 110 + d2_1701:byte])
-	d0_1696 = fn00001F40(a3, Mem1726[a7_1711 - 4:word32], Mem1726[a7_1711:word32], out d1, out a0_2269, out a1, out a5_1581)
-	a7_1608 = a7_1711 + 4
+	d0_1696 = fn00001F40(a3, Mem1726[a7_1711 - 4:word32], Mem1726[a7_1711:word32], out d1, out a0_2925, out a1, out a5_1581)
 	branch d0_1696 != 0xFFFFFFFF l00001E3A
 // DataOut:
 // DataOut (flags):
@@ -2488,8 +2462,7 @@ l00001E4C:
 	word32 a7_1767 = a7_1467 - 4
 	Mem1770[a7_1767:word32] = a5_1581
 	Mem1773[a7_1767 - 0x00000004:word32] = 0x00000030
-	d0_1696 = fn00001F40(a3, Mem1773[a7_1767 - 0x00000004:word32], Mem1773[a7_1767:word32], out d1, out a0_2270, out a1, out a5_1581)
-	a7_1608 = a7_1767 + 0x00000004
+	d0_1696 = fn00001F40(a3, Mem1773[a7_1767 - 0x00000004:word32], Mem1773[a7_1767:word32], out d1, out a0_2926, out a1, out a5_1581)
 	branch d0_1696 != 0xFFFFFFFF l00001E68
 // DataOut:
 // DataOut (flags):
@@ -2520,8 +2493,7 @@ l00001E7C:
 	word32 a7_1807 = a7_1467 - 4
 	Mem1810[a7_1807:word32] = a5_1581
 	Mem1822[a7_1807 - 4:word32] = (int32) (int16) (int8) SEQ(SLICE(d0_1696, word24, 8), Mem1810[a3 + d2_1798:byte])
-	d0_1696 = fn00001F40(a3, Mem1822[a7_1807 - 4:word32], Mem1822[a7_1807:word32], out d1, out a0_2271, out a1, out a5_1581)
-	a7_1608 = a7_1807 + 4
+	d0_1696 = fn00001F40(a3, Mem1822[a7_1807 - 4:word32], Mem1822[a7_1807:word32], out d1, out a0_2927, out a1, out a5_1581)
 	branch d0_1696 != 0xFFFFFFFF l00001E9E
 // DataOut:
 // DataOut (flags):
@@ -2559,8 +2531,7 @@ l00001EBA:
 	word32 a7_1861 = a7_1467 - 4
 	Mem1864[a7_1861:word32] = a5_1581
 	Mem1867[a7_1861 - 0x00000004:word32] = 0x00000020
-	d0 = fn00001F40(a3, Mem1867[a7_1861 - 0x00000004:word32], Mem1867[a7_1861:word32], out d1, out a0_2272, out a1, out a5_1581)
-	a7_1608 = a7_1861 + 0x00000004
+	d0 = fn00001F40(a3, Mem1867[a7_1861 - 0x00000004:word32], Mem1867[a7_1861:word32], out d1, out a0_2928, out a1, out a5_1581)
 	branch d0 != 0xFFFFFFFF l00001ED4
 // DataOut:
 // DataOut (flags):
@@ -2575,7 +2546,7 @@ l00001ED4:
 // SymbolicIn:
 
 l00001EDC:
-	a7_1608 = a7_1467
+	a7_1975 = a7_1467
 	a4_1932 = a2_1899
 // DataOut:
 // DataOut (flags):
@@ -2630,17 +2601,8 @@ l00001DA6:
 // SymbolicIn:
 
 l00001F08:
-	word32 a7_1980 = a7_1608 + 4
-	word32 d7_1989 = Mem1977[a7_1980 + 16:word32]
-	word32 a2_1991 = Mem1977[a7_1980 + 20:word32]
-	word32 a3_1993 = Mem1977[a7_1980 + 24:word32]
-	word32 a5_1997 = Mem1977[a7_1980 + 32:word32]
 	d1Out = d1
-	d7Out = d7_1989
 	a1Out = a1
-	a2Out = a2_1991
-	a3Out = a3_1993
-	a5Out = a5_1997
 	return d0_1959
 // DataOut:
 // DataOut (flags):
@@ -4303,12 +4265,12 @@ fn00002BAC_exit:
 
 
 
-word32 fn00002BF0(word32 d0, word32 d1, word32 d7, word32 a1, word32 a3, word32 a5, word32 dwArg04, ptr32 & d1Out, ptr32 & d7Out, ptr32 & a1Out, ptr32 & a3Out, ptr32 & a5Out)
+word32 fn00002BF0(word32 d0, word32 d1, word32 d7, word32 a1, word32 a3, word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a1:[0..31] a3:[0..31] a5:[0..31] d0:[0..31] d1:[0..31] d7:[0..31] Stack +0004:[0..31]
-// LiveOut: a1 a3 a5 d0 d1 d7
-// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d4 d5 d6 d7
+// LiveOut: d0
+// Trashed: CVZN a0 d0
 // Preserved: a7
 fn00002BF0_entry:
 // DataOut:
@@ -4316,18 +4278,7 @@ fn00002BF0_entry:
 // SymbolicIn:
 
 l00002BF0:
-	word32 a3_23
-	word32 a5_25
-	word32 d7_33
-	word32 a1_35
-	word32 d1_36
-	word32 d0_28 = fn00002C3C(d0, d1, d7, a1, a3, a5, Mem10[0x00003F7C:word32], dwArg04, fp + 8, out d1_36, out d7_33, out a1_35, out a3_23, out a5_25)
-	d1Out = d1_36
-	d7Out = d7_33
-	a1Out = a1_35
-	a3Out = a3_23
-	a5Out = a5_25
-	return d0_28
+	return fn00002C3C(d0, d1, d7, a1, a3, a5, Mem10[0x00003F7C:word32], dwArg04, fp + 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4391,13 +4342,13 @@ fn00002C0C_exit:
 
 
 
-word32 fn00002C3C(word32 d0, word32 d1, word32 d7, word32 a1, word32 a3, word32 a5, word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & d1Out, ptr32 & d7Out, ptr32 & a1Out, ptr32 & a3Out, ptr32 & a5Out)
+word32 fn00002C3C(word32 d0, word32 d1, word32 d7, word32 a1, word32 a3, word32 a5, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a1:[0..31] a3:[0..31] a5:[0..31] d0:[8..31] d1:[0..31] d7:[8..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
-// LiveOut: a1 a3 a5 d0 d1 d7
-// Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
-// Preserved:
+// LiveOut: d0
+// Trashed: CVZN d0
+// Preserved: X a0 a1 a2 a3 a4 a5 a6 a7 d1 d2 d3 d4 d5 d6 d7
 fn00002C3C_entry:
 // DataOut:
 // DataOut (flags):
@@ -4514,7 +4465,7 @@ l00003B58:
 l00003B82:
 	word32 a7_182 = a7_1338 - 4
 	Mem184[a7_182:word32] = a2_1021
-	d0_191 = fn00003CE0(d2_1384, a3, Mem184[a7_182:word32], out d1_4165, out a1, out a5)
+	d0_191 = fn00003CE0(d2_1384, a3, Mem184[a7_182:word32], out d1_5419, out a1, out a5)
 	d1 = d0_191
 // DataOut:
 // DataOut (flags):
@@ -4846,7 +4797,7 @@ l00002DC4:
 l00002DEE:
 	word32 a7_537 = a7_1338 - 4
 	Mem539[a7_537:word32] = a2_1021
-	d0_546 = fn00003CE0(d2_1384, a3, Mem539[a7_537:word32], out d1_4164, out a1, out a5)
+	d0_546 = fn00003CE0(d2_1384, a3, Mem539[a7_537:word32], out d1_5418, out a1, out a5)
 	d1 = d0_546
 // DataOut:
 // DataOut (flags):
@@ -5219,7 +5170,7 @@ l000030DC:
 l00003106:
 	word32 a7_1188 = a7_1338 - 4
 	Mem1190[a7_1188:word32] = a2_1021
-	d0 = fn00003CE0(d2_1384, a3, Mem1190[a7_1188:word32], out d1_4170, out a1, out a5)
+	d0 = fn00003CE0(d2_1384, a3, Mem1190[a7_1188:word32], out d1_5424, out a1, out a5)
 	d1 = d0
 // DataOut:
 // DataOut (flags):
@@ -5366,7 +5317,7 @@ l00002EA4:
 	word32 a7_1407 = a7_1338 - 4
 	Mem1409[a7_1407:word32] = a2_1021
 	Mem1411[a7_1407 + 48:word32] = a1_1406
-	d0 = fn00003CE0(d2_1384, a3, Mem1411[a7_1407:word32], out d1, out a1_4167, out a5)
+	d0 = fn00003CE0(d2_1384, a3, Mem1411[a7_1407:word32], out d1, out a1_5421, out a5)
 	Mem1427[a7_1407 + 56:word32] = d0
 	Mem1430[a7_1407 + 48:word32] = Mem1427[a7_1407 + 48:word32]
 // DataOut:
@@ -5439,7 +5390,7 @@ l00002EEE:
 l00002F18:
 	word32 a7_1522 = a7_1338 - 4
 	Mem1524[a7_1522:word32] = a2_1021
-	d0 = fn00003CE0(d2_1384, a3, Mem1524[a7_1522:word32], out d1_4168, out a1, out a5)
+	d0 = fn00003CE0(d2_1384, a3, Mem1524[a7_1522:word32], out d1_5422, out a1, out a5)
 	d1 = d0
 // DataOut:
 // DataOut (flags):
@@ -5682,7 +5633,7 @@ l000031D4:
 l000031FE:
 	word32 a7_1821 = a7_1338 - 4
 	Mem1823[a7_1821:word32] = a2_1021
-	d0 = fn00003CE0(d2_1384, a3, Mem1823[a7_1821:word32], out d1_4166, out a1, out a5)
+	d0 = fn00003CE0(d2_1384, a3, Mem1823[a7_1821:word32], out d1_5420, out a1, out a5)
 	d1 = d0
 // DataOut:
 // DataOut (flags):
@@ -6479,7 +6430,7 @@ l00003886:
 
 l000038D8:
 	Mem3166[a7_1338 - 4:word32] = a2_1021
-	d0_3175 = fn00003CE0(v466_3148, a3, Mem3166[a7_1338 - 4:word32], out d1_4169, out a1, out a5)
+	d0_3175 = fn00003CE0(v466_3148, a3, Mem3166[a7_1338 - 4:word32], out d1_5423, out a1, out a5)
 	d1 = d0_3175
 // DataOut:
 // DataOut (flags):
@@ -6833,13 +6784,13 @@ l00003C3E:
 // SymbolicIn:
 
 l00003C46:
-	branch Mem3700[a7_1338 + 60:word32] != 0x00000000 l00003C50
+	branch false l00003C50
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00003C50:
-	d0_3707 = Mem3700[a7_1338 + 60:word32]
+	d0_3707 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6851,15 +6802,6 @@ l00003C4C:
 // SymbolicIn:
 
 l00003C54:
-	word32 a7_3714 = a7_1338 + 4
-	word32 d7_3723 = Mem3700[a7_3714 + 16:word32]
-	word32 a3_3727 = Mem3700[a7_3714 + 24:word32]
-	word32 a5_3731 = Mem3700[a7_3714 + 32:word32]
-	d1Out = d1
-	d7Out = d7_3723
-	a1Out = a1
-	a3Out = a3_3727
-	a5Out = a5_3731
 	return d0_3707
 // DataOut:
 // DataOut (flags):

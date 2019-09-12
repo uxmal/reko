@@ -4384,7 +4384,7 @@ l00012CD4:
 
 l00012CD8:
 	word32 l0_120
-	Mem140[sp_26 + 0x00000060 + (l0_120 << 0x00000002):word32] = dupnstr(i0_112, i0_108 - i0_112, out sp_128, out l0_120, out i0_112, out i6_118)
+	Mem140[sp_26 + 0x00000060 + (l0_120 << 0x00000002):word32] = dupnstr(i0_112, i0_108 - i0_112, out sp_315, out l0_120, out i0_112, out i6_118)
 	l0_141 = l0_120 + 0x00000001
 	g2_143 = l0_120 + 0x00000001 << 0x00000002
 	branch (int32) Mem140[i0_112:int8] != 0x00000000 l00012CD8_ds_t
@@ -7178,8 +7178,8 @@ word32 main(word32 o1)
 
 // MayUse:  o1:[0..31]
 // LiveOut: o0
-// Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
-// Preserved:
+// Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7
+// Preserved: sp
 main_entry:
 // DataOut:
 // DataOut (flags):

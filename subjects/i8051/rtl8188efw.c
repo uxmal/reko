@@ -9,7 +9,6 @@ void fn0000(byte R1)
 {
 	globals->b001D = 0x00;
 	byte A_n = *(byte *) 0x80F0;
-	byte SP_n;
 	byte R1_n;
 	byte R7_n;
 	fn4EF3();

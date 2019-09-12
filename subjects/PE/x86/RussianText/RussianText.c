@@ -21,17 +21,12 @@ void fn0040110B(word32 eax)
 	if (globals->dw40208B >= 0x00)
 	{
 		uint32 v5_n = globals->dw40208B;
-		ptr32 esp_n;
 		word32 eax_n;
 		int8 Top_n;
 		__CRTL_TLS_GetValue();
 		if (eax_n != 0x00)
 		{
-			*(esp_n - 0x04) = eax_n;
-			*(esp_n - 0x08) = 0x08;
-			*(esp_n - 0x0C) = (HANDLE *) GetProcessHeap();
-			Eq_n eax_n = HeapFree(*(esp_n - 0x0C), *(esp_n - 0x08), *(esp_n - 0x04));
-			*(esp_n - 0x04) = globals->dw40208B;
+			Eq_n eax_n = GetProcessHeap();
 			__CRTL_TLS_ExitThread();
 		}
 	}
@@ -60,29 +55,23 @@ void fn00401180()
 {
 }
 
-// 004011B0: void fn004011B0(Stack word32 dwArg04)
-void fn004011B0(word32 dwArg04)
+// 004011B0: void fn004011B0(Stack (ptr32 void) dwArg04)
+void fn004011B0(void * dwArg04)
 {
-	ptr32 esp_n = fp + ~0x0F;
-	word32 ebx_n = dwArg04;
-	if (dwArg04 == 0x00 && dwArg04 == 0x00)
+	void * ebx_n = dwArg04;
+	if (dwArg04 == null && dwArg04 == null)
 	{
 		fn004011FC(fp - 0x0C);
-		esp_n = fp + ~0x0B;
 		ebx_n = dwLoc08;
 	}
-	size_t * esp_n = esp_n - 0x04;
-	*esp_n = (uint32) 0x9C;
-	*(esp_n - 0x04) = ebx_n;
-	*(esp_n - 0x08) = fn00401158();
-	memcpy(*(esp_n - 0x08), *(esp_n - 0x04), *esp_n);
+	memcpy(fn00401158(), ebx_n, 0x9C);
 	_InitTermAndUnexPtrs();
 }
 
 // 004011FC: void fn004011FC(Stack (ptr32 Eq_n) dwArg04)
 void fn004011FC(struct Eq_n * dwArg04)
 {
-	globals->dw4020F8 = fn00401158() + 0x1C;
+	globals->dw4020F8 = (char *) fn00401158() + 0x001C;
 	dwArg04->dw0000 = 0x82727349;
 	dwArg04->ptr0004 = 0x004020E4;
 }

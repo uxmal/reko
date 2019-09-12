@@ -4,7 +4,9 @@
 
 #include "hello_ppc.h"
 
+Eq_n g_tFFFFFF98;
 Eq_n g_tFFFFFFA0;
+Eq_n g_tFFFFFFBF;
 Eq_n g_tFFFFFFFD;
 Eq_n g_tFFFFFFFE;
 <anonymous> * g_ptrFFFFFFFF;

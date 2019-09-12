@@ -217,8 +217,8 @@ void frame_dummy(word32 d0, word32 a1, word32 a6)
 
 // MayUse:  a1:[0..31] a6:[0..31] d0:[0..31]
 // LiveOut:
-// Trashed: CVZNX a0 a1 a6 a7 d0
-// Preserved:
+// Trashed: CVZNX a0 a1 a6 d0
+// Preserved: a7
 frame_dummy_entry:
 // DataOut:
 // DataOut (flags):

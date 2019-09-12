@@ -1643,12 +1643,11 @@ int32 fn00002A54(ptr32 a3, struct Eq_n * a5, ui32 dwArg04, up32 dwArg08, ptr32 &
 		a1_n = a2_n->dw0000 + a2_n->dw0004;
 	}
 	a2_n->dw0004 += d3_n;
-	ptr32 * a7_n = a7_n + 0x08;
+	ptr32 * a7_n = fp - 0x14;
 	ptr32 a3_n;
-	word32 a7_n;
 	word32 ** a6_n;
 	struct Eq_n * a5_n;
-	if (fn00002BB4(a2_n, a3, a5, fp - 0x04, a1_n, d3_n, out a3_n, out a5_n, out a6_n, out a7_n) != 0x00)
+	if (fn00002BB4(a2_n, a3, a5, fp - 0x04, a1_n, d3_n, out a3_n, out a5_n, out a6_n) != 0x00)
 		a5_n = fn000027A0(a5_n, a6_n, out a6_n, out a7_n);
 	struct Eq_n * a7_n = a7_n + 0x01;
 	Eq_n d4_n = a7_n->t0000;
@@ -1699,8 +1698,8 @@ void fn00002B18(struct Eq_n * a5, Eq_n dwArg04)
 	}
 }
 
-// 00002BB4: Register int32 fn00002BB4(Register (ptr32 Eq_n) a2, Register ptr32 a3, Register (ptr32 Eq_n) a5, Register ptr32 a6, Stack (ptr32 Eq_n) dwArg04, Stack up32 dwArg08, Register out ptr32 a3Out, Register out (ptr32 Eq_n) a5Out, Register out ptr32 a6Out, Register out ptr32 a7Out)
-int32 fn00002BB4(struct Eq_n * a2, ptr32 a3, struct Eq_n * a5, ptr32 a6, struct Eq_n * dwArg04, up32 dwArg08, ptr32 & a3Out, struct Eq_n & a5Out, ptr32 & a6Out, ptr32 & a7Out)
+// 00002BB4: Register int32 fn00002BB4(Register (ptr32 Eq_n) a2, Register ptr32 a3, Register (ptr32 Eq_n) a5, Register ptr32 a6, Stack (ptr32 Eq_n) dwArg04, Stack up32 dwArg08, Register out ptr32 a3Out, Register out (ptr32 Eq_n) a5Out, Register out ptr32 a6Out)
+int32 fn00002BB4(struct Eq_n * a2, ptr32 a3, struct Eq_n * a5, ptr32 a6, struct Eq_n * dwArg04, up32 dwArg08, ptr32 & a3Out, struct Eq_n & a5Out, ptr32 & a6Out)
 {
 	struct Eq_n *** dwLoc1C_n = fp + ~0x17;
 	struct Eq_n * a0_n;
@@ -1741,7 +1740,6 @@ int32 fn00002BB4(struct Eq_n * a2, ptr32 a3, struct Eq_n * a5, ptr32 a6, struct 
 			if (d0_n + 0x03 <= 0x03)
 			{
 				uipr32 d0_n = SEQ(SLICE(d0_n + 0x03, word16, 16), globals->a2C58[(int32) (int16) (d0_n + 0x03) * 0x02]);
-				ptr32 a7_n;
 				ptr32 a6_n;
 				ptr32 a3_n;
 				int32 d0_n;
@@ -1750,7 +1748,6 @@ int32 fn00002BB4(struct Eq_n * a2, ptr32 a3, struct Eq_n * a5, ptr32 a6, struct 
 				a3Out = a3_n;
 				a5Out = a5_n;
 				a6Out = a6_n;
-				a7Out = a7_n;
 				return d0_n;
 			}
 			if ((dwLoc08->ptr0004 & 0x03) == 0x02)
@@ -1778,7 +1775,6 @@ int32 fn00002BB4(struct Eq_n * a2, ptr32 a3, struct Eq_n * a5, ptr32 a6, struct 
 				a3Out = a3;
 				a5Out = a5;
 				a6Out = a6;
-				a7Out = fp;
 				return 0x00;
 			}
 		}
@@ -1797,7 +1793,6 @@ l00002DE8:
 	a3Out = a3;
 	a5Out = a5;
 	a6Out = a6;
-	a7Out = fp;
 	return -0x01;
 }
 

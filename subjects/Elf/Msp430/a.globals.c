@@ -64,19 +64,19 @@ Eq_n g_t021E =
 		0x0000
 	};
 ptr16 g_ptr0220 = 0x0000;
-Eq_n g_t0222 = 
+Eq_n g_a0222[] = 
 	{
 	};
-Eq_n g_t0226 = 
+Eq_n g_a0226[] = 
 	{
 	};
 ptr16 g_ptr0282 = 0x0000;
 ptr16 g_ptr0284 = 0x0000;
-struct <anonymous> * g_ptr028A = null;
-struct <anonymous> * g_ptr029A = null;
+struct Eq_n * g_ptr028A = null;
+struct Eq_n * g_ptr029A = null;
 Eq_n g_t09B2 = 
 	{
 		0x0000
 	};
-Eq_n g_a5B78[];
+byte g_a5B78[];
 

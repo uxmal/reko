@@ -80,8 +80,8 @@ word64 fn00000001400011B0(Eq_n rcx, word64 rbx, word64 rsi, word64 rdi, word64 q
 	return rax_n;
 }
 
-// 00000001400011D4: void fn00000001400011D4(Register word64 rax, Register word64 rdx, Register word64 rbx, Register ptr64 rbp, Register word64 rsi, Register word64 rdi, Register ui64 r8, Register ptr64 r9, Register Eq_n xmm0, Register Eq_n xmm1)
-void fn00000001400011D4(word64 rax, word64 rdx, word64 rbx, ptr64 rbp, word64 rsi, word64 rdi, ui64 r8, ptr64 r9, Eq_n xmm0, Eq_n xmm1)
+// 00000001400011D4: void fn00000001400011D4(Register word64 rax, Register word64 rdx, Register Eq_n rbx, Register ptr64 rbp, Register word64 rsi, Register word64 rdi, Register ui64 r8, Register ptr64 r9, Register Eq_n xmm0, Register Eq_n xmm1, Stack word64 qwArg08)
+void fn00000001400011D4(word64 rax, word64 rdx, Eq_n rbx, ptr64 rbp, word64 rsi, word64 rdi, ui64 r8, ptr64 r9, Eq_n xmm0, Eq_n xmm1, word64 qwArg08)
 {
 	set_app_type();
 	fn0000000140001920();
@@ -108,7 +108,7 @@ void fn00000001400011D4(word64 rax, word64 rdx, word64 rbx, ptr64 rbp, word64 rs
 		configure_narrow_argv();
 		if ((word32) rax_n == 0x00)
 		{
-			fn0000000140001928(qwLoc30);
+			fn0000000140001928(rbx);
 			if ((word32) (word64) fn0000000140001958() != 0x00)
 				__setusermatherr(&globals->t40001ABC);
 			fn0000000140001DD0();
@@ -130,10 +130,10 @@ void fn00000001400011D4(word64 rax, word64 rdx, word64 rbx, ptr64 rbp, word64 rs
 	}
 	else
 	{
-		fn0000000140001974(0x07, rbx_n, rbp_n, qwLoc30, qwLoc20, out rcx_n, out rdx_n, out r8_n);
+		fn0000000140001974(0x07, rbx_n, rbp_n, rbx, qwArg08, out rcx_n, out rdx_n, out r8_n);
 		int3();
 	}
-	fn0000000140001974(0x07, rbx_n, rbp_n, qwLoc30, qwLoc20, out rcx_n, out rdx_n, out r8_n);
+	fn0000000140001974(0x07, rbx_n, rbp_n, rbx, qwArg08, out rcx_n, out rdx_n, out r8_n);
 	int3();
 	int3();
 	fn0000000140001290();

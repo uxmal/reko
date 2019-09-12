@@ -171,7 +171,7 @@ T_22: (in call_gmon_start(r10, lr, pc, out lr_8, out pc_9) : word32)
   Class: Eq_8
   DataType: ptr32
   OrigDataType: word32
-T_23: (in r0_17 : word32)
+T_23: (in r0_16 : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
@@ -191,7 +191,7 @@ T_27: (in frame_dummy(pc_9) : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
-T_28: (in pc_25 : ptr32)
+T_28: (in pc_24 : ptr32)
   Class: Eq_9
   DataType: ptr32
   OrigDataType: word32
@@ -219,11 +219,11 @@ T_34: (in pcOut : ptr32)
   Class: Eq_11
   DataType: ptr32
   OrigDataType: ptr32
-T_35: (in out pc_25 : ptr32)
+T_35: (in out pc_24 : ptr32)
   Class: Eq_11
   DataType: ptr32
   OrigDataType: ptr32
-T_36: (in __do_global_ctors_aux(r4, lr_8, pc_9, out pc_25) : word32)
+T_36: (in __do_global_ctors_aux(r4, lr_8, pc_9, out pc_24) : word32)
   Class: Eq_7
   DataType: ptr32
   OrigDataType: word32

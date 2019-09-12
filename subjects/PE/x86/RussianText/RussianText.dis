@@ -74,25 +74,20 @@ l0040110B:
 
 l00401114:
 	word32 v5_7 = Mem0[0x0040208B:word32]
-	word32 esp_10
 	word32 eax_12
 	int8 Top_13
 	call __CRTL_TLS_GetValue (retsize: 4;)
 		uses: eax:eax,esp:fp - 4,Stack +0004:v5_7,Top:0
-		defs: eax:eax_12,esp:esp_10,Top:Top_13
+		defs: eax:eax_12,Top:Top_13
 	branch eax_12 == 0x00000000 l0040113C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401123:
-	Mem20[esp_10 - 4:word32] = eax_12
-	Mem22[esp_10 - 8:word32] = 0x00000008
-	Mem25[esp_10 - 12:word32] = GetProcessHeap()
-	word32 eax_26 = HeapFree(Mem25[esp_10 - 12:HANDLE], Mem25[esp_10 - 8:DWORD], Mem25[esp_10 - 4:LPVOID])
-	Mem30[esp_10 - 4:word32] = Mem25[0x0040208B:word32]
+	word32 eax_23 = GetProcessHeap()
 	call __CRTL_TLS_ExitThread (retsize: 4;)
-		uses: eax:eax_26,esp:esp_10 - 4,Stack +0000:v5_7,Top:Top_13
+		uses: eax:HeapFree(eax_23, 0x00000008, eax_12),esp:fp - 4,Stack +0000:v5_7,Stack +0004:Mem25[0x0040208B:word32],Stack +FFFFFFFC:eax_23,Top:Top_13
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -216,15 +211,14 @@ void fn004011B0(word32 dwArg04)
 
 // MayUse:  fs:[0..15] Stack +0004:[0..31]
 // LiveOut:
-// Trashed: SCZO eax ebp ebx ecx edx esp Top
-// Preserved:
+// Trashed: SCZO eax ecx edx Top
+// Preserved: ebp ebx esp
 fn004011B0_entry:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004011B0:
-	word32 esp_37 = fp + 0xFFFFFFF0
 	word32 ebx_12 = dwArg04
 	branch dwArg04 != 0x00000000 l004011D7
 // DataOut:
@@ -239,18 +233,13 @@ l004011C6:
 
 l004011CA:
 	fn004011FC(fp - 0x0000000C)
-	esp_37 = fp + 0xFFFFFFF4
 	ebx_12 = dwLoc08
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004011D7:
-	word32 esp_40 = esp_37 - 4
-	Mem41[esp_40:word32] = 0x0000009C
-	Mem44[esp_40 - 4:word32] = ebx_12
-	Mem50[esp_40 - 8:word32] = fn00401158()
-	memcpy(Mem50[esp_40 - 8:(ptr32 void)], Mem50[esp_40 - 4:(ptr32 void)], Mem50[esp_40:size_t])
+	memcpy(fn00401158(), ebx_12, 0x0000009C)
 	_InitTermAndUnexPtrs()
 	return
 // DataOut:

@@ -217,13 +217,13 @@ fn00000001400011B0_exit:
 
 
 
-void fn00000001400011D4(word64 rax, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0, word128 xmm1)
+void fn00000001400011D4(word64 rax, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0, word128 xmm1, word64 qwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63] r9:[0..63] rax:[0..63] rbp:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] xmm0:[0..127] xmm1:[0..127]
+// MayUse:  r8:[0..63] r9:[0..63] rax:[0..63] rbp:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] Stack +0008:[0..63] xmm0:[0..127] xmm1:[0..127]
 // LiveOut:
-// Trashed: SCZO r8 r9 rax rbp rbx rcx rdx rsp xmm0 xmm1
-// Preserved:
+// Trashed: SCZO r8 r9 rax rbp rbx rcx rdx xmm0 xmm1
+// Preserved: rsp
 fn00000001400011D4_entry:
 // DataOut:
 // DataOut (flags):
@@ -250,7 +250,7 @@ l00000001400011D4:
 // SymbolicIn:
 
 l0000000140001279:
-	fn0000000140001974(0x00000007, rbx_38, rbp_37, qwLoc30, qwLoc20, out rcx_208, out rdx_209, out r8_210)
+	fn0000000140001974(0x00000007, rbx_38, rbp_37, rbx, qwArg08, out rcx_209, out rdx_210, out r8_211)
 	int3()
 // DataOut:
 // DataOut (flags):
@@ -265,7 +265,7 @@ l000000014000120D:
 	word64 rdx_83
 	word64 r9_84
 	call configure_narrow_argv (retsize: 8;)
-		uses: r8:r8_34,r9:r9_35,rax:rax_77,rbp:rbp_37,rbx:rbx_38,rcx:(uint64) (word32) rax_77,rdi:rdi,rdx:rdx_72,rsi:rsi,rsp:fp - 40,Stack +0000:rbx,Stack +0008:dwLoc28,Stack +0010:qwLoc20,Stack +0028:rbx,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
+		uses: r8:r8_34,r9:r9_35,rax:rax_77,rbp:rbp_37,rbx:rbx_38,rcx:(uint64) (word32) rax_77,rdi:rdi,rdx:rdx_72,rsi:rsi,rsp:fp,Stack +0000:rbx,Stack +0010:qwArg08,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
 		defs: r8:r8_82,r9:r9_84,rax:rax_81,rdx:rdx_83
 	branch (word32) rax_81 != 0x00000000 l0000000140001284
 // DataOut:
@@ -273,7 +273,7 @@ l000000014000120D:
 // SymbolicIn:
 
 l0000000140001284:
-	fn0000000140001974(0x00000007, rbx_38, rbp_37, qwLoc30, qwLoc20, out rcx_211, out rdx_212, out r8_213)
+	fn0000000140001974(0x00000007, rbx_38, rbp_37, rbx, qwArg08, out rcx_212, out rdx_213, out r8_214)
 	int3()
 	int3()
 // DataOut:
@@ -288,7 +288,7 @@ l000000014000128F_thunk_fn0000000140001290:
 // SymbolicIn:
 
 l000000014000122E:
-	fn0000000140001928(qwLoc30)
+	fn0000000140001928(rbx)
 	branch (word32) (word64) fn0000000140001958() == 0x00000000 l0000000140001248
 // DataOut:
 // DataOut (flags):
@@ -310,7 +310,7 @@ l0000000140001248:
 	word64 rdx_136
 	word64 r9_139
 	call configthreadlocale (retsize: 8;)
-		uses: r8:r8_82,r9:r9_84,rax:rax_120,rbp:rbp_37,rbx:rbx_38,rcx:(uint64) (word32) rax_120,rdi:rdi,rdx:rdx_83,rsi:rsi,rsp:fp - 40,Stack +0000:rbx,Stack +0008:dwLoc28,Stack +0010:qwLoc20,Stack +0028:rbx,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
+		uses: r8:r8_82,r9:r9_84,rax:rax_120,rbp:rbp_37,rbx:rbx_38,rcx:(uint64) (word32) rax_120,rdi:rdi,rdx:rdx_83,rsi:rsi,rsp:fp,Stack +0000:rbx,Stack +0010:qwArg08,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
 		defs: r8:r8_133,r9:r9_139,rax:rax_130,rcx:rcx_129,rdx:rdx_136
 	byte al_143 = fn0000000140001938()
 	word64 rax_148 = DPB(rax_130, al_143, 0)
@@ -321,7 +321,7 @@ l0000000140001248:
 
 l0000000140001267:
 	call initialize_narrow_environment (retsize: 8;)
-		uses: r8:r8_133,r9:r9_139,rax:rax_148,rbp:rbp_37,rbx:rbx_38,rcx:rcx_129,rdi:rdi,rdx:rdx_136,rsi:rsi,rsp:fp - 40,Stack +0000:rbx,Stack +0008:dwLoc28,Stack +0010:qwLoc20,Stack +0028:rbx,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
+		uses: r8:r8_133,r9:r9_139,rax:rax_148,rbp:rbp_37,rbx:rbx_38,rcx:rcx_129,rdi:rdi,rdx:rdx_136,rsi:rsi,rsp:fp,Stack +0000:rbx,Stack +0010:qwArg08,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

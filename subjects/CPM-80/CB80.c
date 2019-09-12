@@ -4,14 +4,12 @@
 
 #include "CB80.h"
 
-// 0387: Register word16 fn0387(Register out ptr16 spOut)
-word16 fn0387(ptr16 & spOut)
+// 0387: Register word16 fn0387()
+word16 fn0387()
 {
 	<anonymous> * hl_n = globals->ptr1648;
-	ptr16 sp_n;
 	word16 hl_n;
 	hl_n();
-	spOut = sp_n;
 	return hl_n;
 }
 
@@ -154,7 +152,7 @@ word16 fn0483(byte b, Eq_n c, byte d, Eq_n e, word16 wArg02)
 			}
 			fn0473((word16) *globals->t1660 + 0x0060);
 			fn0473(0x3A);
-			fn0387(out sp_n);
+			fn0387();
 			Eq_n c_n = <invalid>;
 			bc_n = DPB(bc_n, c_n, 0);
 		}
@@ -283,7 +281,7 @@ bool fn061B(byte b, Eq_n c, byte d, Eq_n e)
 	fn05CE(SLICE(hl_n, byte, 8), (byte) hl_n);
 	Eq_n hl_n = globals->t1674;
 	bool C_n = fn05EF(SLICE(hl_n, byte, 8), (byte) hl_n, out f_n, out bc_n, out de_n);
-	fn0387(out sp_n);
+	fn0387();
 	return C_n;
 }
 
@@ -367,8 +365,8 @@ void fn0745(cu8 c)
 		fn056B(0x20, out f_n, out bc_n);
 }
 
-// 075C: Register word16 fn075C(Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Register out ptr16 deOut, Register out ptr16 hlOut, Register out ptr16 spOut)
-word16 fn075C(byte b, Eq_n c, byte d, Eq_n e, ptr16 & deOut, ptr16 & hlOut, ptr16 & spOut)
+// 075C: Register word16 fn075C(Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Register out ptr16 deOut, Register out ptr16 hlOut)
+word16 fn075C(byte b, Eq_n c, byte d, Eq_n e, ptr16 & deOut, ptr16 & hlOut)
 {
 	globals->b1686 = d;
 	globals->t1685 = e;
@@ -394,11 +392,9 @@ word16 fn075C(byte b, Eq_n c, byte d, Eq_n e, ptr16 & deOut, ptr16 & hlOut, ptr1
 		Eq_n hl_n = globals->t1685;
 		bc_n = fn06CE(SLICE(hl_n, byte, 8), (byte) hl_n, out de_n);
 	}
-	ptr16 sp_n;
-	ptr16 hl_n = fn0387(out sp_n);
+	ptr16 hl_n = fn0387();
 	deOut = de_n;
 	hlOut = hl_n;
-	spOut = sp_n;
 	return bc_n;
 }
 
@@ -438,8 +434,8 @@ void fn0814()
 		fn07B3();
 }
 
-// 082F: Register word16 fn082F(Register word16 af, Register byte b, Register Eq_n c, Register cu8 e, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 spOut)
-word16 fn082F(word16 af, byte b, Eq_n c, cu8 e, word16 wArg02, word16 wArg04, ptr16 & spOut)
+// 082F: Register word16 fn082F(Register word16 af, Register byte b, Register Eq_n c, Register cu8 e, Stack word16 wArg02, Stack word16 wArg04)
+word16 fn082F(word16 af, byte b, Eq_n c, cu8 e, word16 wArg02, word16 wArg04)
 {
 	globals->b168D = e;
 	globals->b168C = b;
@@ -491,43 +487,24 @@ word16 fn082F(word16 af, byte b, Eq_n c, cu8 e, word16 wArg02, word16 wArg04, pt
 		if (a_n >= 0x00)
 		{
 			if (__rcr(globals->b168F, 0x01, C_n) >= 0x00)
-			{
-				ptr16 sp_n;
-				word16 af_n = DPB(af_n, fn0920(out sp_n), 0);
-				spOut = sp_n;
-				return af_n;
-			}
-			else if (globals->b1520 == 0x00)
+				return DPB(af_n, fn0920(), 0);
+			if (globals->b1520 == 0x00)
 			{
 				*globals->t168B = globals->b151F;
-				ptr16 sp_n;
-				word16 af_n = DPB(af_n, fn0920(out sp_n), 0);
-				spOut = sp_n;
-				return af_n;
+				return DPB(af_n, fn0920(), 0);
 			}
 			else
 			{
 				*globals->t168B = globals->b1520;
-				ptr16 sp_n;
-				word16 af_n = DPB(af_n, fn0920(out sp_n), 0);
-				spOut = sp_n;
-				return af_n;
+				return DPB(af_n, fn0920(), 0);
 			}
-		}
-		else if (globals->b151E == 0x00)
-		{
-			*globals->t168B = globals->b151F;
-			ptr16 sp_n;
-			word16 af_n = DPB(af_n, fn08FD(out sp_n), 0);
-			spOut = sp_n;
-			return af_n;
 		}
 		else
 		{
-			ptr16 sp_n;
-			word16 af_n = DPB(af_n, fn08EC(out sp_n), 0);
-			spOut = sp_n;
-			return af_n;
+			if (globals->b151E != 0x00)
+				return DPB(af_n, fn08EC(), 0);
+			*globals->t168B = globals->b151F;
+			return DPB(af_n, fn08FD(), 0);
 		}
 	}
 	else
@@ -539,36 +516,26 @@ word16 fn082F(word16 af, byte b, Eq_n c, cu8 e, word16 wArg02, word16 wArg04, pt
 			else
 				*globals->t168B = globals->b151D;
 		}
-		ptr16 sp_n;
-		word16 af_n = DPB(af_n, fn0920(out sp_n), 0);
-		spOut = sp_n;
-		return af_n;
+		return DPB(af_n, fn0920(), 0);
 	}
 }
 
-// 08EC: Register byte fn08EC(Register out ptr16 spOut)
-byte fn08EC(ptr16 & spOut)
+// 08EC: Register byte fn08EC()
+byte fn08EC()
 {
 	*globals->t168B = globals->b151E;
-	ptr16 sp_n;
-	byte f_n = fn08FD(out sp_n);
-	spOut = sp_n;
-	return f_n;
+	return fn08FD();
 }
 
-// 08FD: Register byte fn08FD(Register out ptr16 spOut)
-byte fn08FD(ptr16 & spOut)
+// 08FD: Register byte fn08FD()
+byte fn08FD()
 {
-	ptr16 sp_n;
-	byte f_n = fn0920(out sp_n);
-	spOut = sp_n;
-	return f_n;
+	return fn0920();
 }
 
-// 0920: Register byte fn0920(Register out ptr16 spOut)
-byte fn0920(ptr16 & spOut)
+// 0920: Register byte fn0920()
+byte fn0920()
 {
-	ptr16 sp_n = fp;
 	byte f_n;
 	F_DMAOFF(0x80);
 	if (globals->b168D == 0x00)
@@ -599,7 +566,6 @@ byte fn0920(ptr16 & spOut)
 			fn061B(0x02, 0x87, SLICE(hl_n, byte, 8), (byte) hl_n);
 		}
 	}
-	spOut = sp_n;
 	return f_n;
 }
 
@@ -754,22 +720,20 @@ void fn0BE4(word16 af)
 	globals->b1645 = a_n + 0x30;
 	*(hl_n - 0x02) = 0x0231;
 	*(hl_n - 0x04) = 0x1642;
-	struct Eq_n * sp_n;
-	word16 af_n = fn082F(DPB(af, a_n + 0x30, 0), 0x00, 0x5C, 0x10, *(hl_n - 0x04), *(hl_n - 0x02), out sp_n);
-	*(sp_n - 0x02) = 0x5C;
+	word16 af_n = fn082F(DPB(af, a_n + 0x30, 0), 0x00, 0x5C, 0x10, *(hl_n - 0x04), *(hl_n - 0x02));
+	*(hl_n - 0x06) = 0x5C;
 	cu8 l_n;
 	fn1326(0x07, fn1346(0x01, &globals->t0103), out l_n);
 	word16 hl_n = globals->w0108;
 	ptr16 sp_n;
-	word16 de_n = fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, l_n, sp_n->wFFFC, out sp_n);
+	word16 de_n = fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, l_n, *(hl_n - 0x08), out sp_n);
 	*(sp_n - 0x02) = DPB(af_n, 0x00 - (globals->b138A < 0x01), 0);
 	word16 bc_n = *(sp_n - 0x02);
 	byte b_n = SLICE(bc_n, byte, 8);
 	word16 hl_n = 5002;
-	ptr16 sp_n = sp_n;
 	word16 bc_n = DPB(bc_n, b_n, 0);
 	if ((0x00 - (globals->b138A > 0x03) | b_n) >> 0x01 < 0x00)
-		bc_n = fn075C(0x00, 0x01, 0x00, 0x00, out de_n, out hl_n, out sp_n);
+		bc_n = fn075C(0x00, 0x01, 0x00, 0x00, out de_n, out hl_n);
 	cu8 a_n = globals->b138A;
 	word16 af_n = DPB(af_n, a_n, 0);
 	if (a_n != 0x01)
@@ -814,7 +778,7 @@ void fn0D6F()
 void fn0D84()
 {
 	if (__rcr((byte) fn0D64(), 0x01, C) < 0x00)
-		fn075C(0x00, 0x02, 0x00, 0x00, out de_n, out hl_n, out sp_n);
+		fn075C(0x00, 0x02, 0x00, 0x00, out de_n, out hl_n);
 	struct Eq_n * hl_n = globals->ptr1521;
 	hl_n->b0009 |= 0x01;
 }
@@ -883,11 +847,8 @@ void fn0FB8()
 // 100A: void fn100A(Register word16 af)
 void fn100A(word16 af)
 {
-	while (true)
+	while ((0x00 - (globals->b14FF < 0x0E) & SLICE(DPB(af, 0x00 - (globals->t16A8 < ~0x00) & SLICE(DPB(af, 0x00 - (globals->t16A8 < 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8)) >> 0x01 < 0x00)
 	{
-		ptr16 sp_n = fp;
-		if ((0x00 - (globals->b14FF < 0x0E) & SLICE(DPB(af, 0x00 - (globals->t16A8 < ~0x00) & SLICE(DPB(af, 0x00 - (globals->t16A8 < 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8)) >> 0x01 >= 0x00)
-			break;
 		cu8 a_n = globals->b14FF;
 		globals->b14FF = a_n + 0x01;
 		DPB(DPB(af, a_n + 0x01, 0), 0x00, 8) + 0x14FF = (word16) globals->t16A8;
@@ -899,15 +860,10 @@ void fn100A(word16 af)
 	if (a_n == 0x00)
 	{
 		af_n = DPB(af, fn05CE(0x03, 0x69), 0);
-		fn0387(out sp_n);
+		fn0387();
 	}
-	while (true)
+	while ((0x00 - (globals->t16A8 < ~0x00) & SLICE(DPB(af_n, 0x00 - (globals->t16A8 < 0x03), 0), byte, 8)) >> 0x01 < 0x00)
 	{
-		struct Eq_n * sp_n = sp_n - 0x02;
-		sp_n->w0000 = DPB(af_n, 0x00 - (globals->t16A8 < 0x03), 0);
-		sp_n = (char *) &sp_n->t0001 + 0x01;
-		if ((0x00 - (globals->t16A8 < ~0x00) & sp_n->t0001) >> 0x01 >= 0x00)
-			break;
 		byte f_n = fn045B();
 		globals->t16A8 = (byte) f_n;
 		af_n = DPB(af_n, f_n, 0);
@@ -916,13 +872,8 @@ void fn100A(word16 af)
 	byte f_n = fn045B();
 	globals->t16A8 = (byte) f_n;
 	word16 af_n = DPB(af_n, f_n, 0);
-	while (true)
+	while ((0x00 - (globals->t16A8 < ~0x00) & SLICE(DPB(af_n, 0x00 - (globals->t16A8 < 0x01), 0), byte, 8)) >> 0x01 < 0x00)
 	{
-		struct Eq_n * sp_n = sp_n - 0x02;
-		sp_n->w0000 = DPB(af_n, 0x00 - (globals->t16A8 < 0x01), 0);
-		sp_n = (char *) &sp_n->t0001 + 0x01;
-		if ((0x00 - (globals->t16A8 < ~0x00) & sp_n->t0001) >> 0x01 >= 0x00)
-			break;
 		if (globals->t16A8 == 0x20)
 			fn1262();
 		Eq_n a_n = globals->t16A8;
@@ -935,7 +886,7 @@ void fn100A(word16 af)
 			word16 af_n = DPB(af_n, a_n, 0);
 			if (a_n == 0x43)
 			{
-				byte f_n = fn12D8(af_n, out sp_n);
+				byte f_n = fn12D8(af_n);
 				globals->b151D = (byte) f_n;
 				af_n = DPB(af_n, f_n, 0);
 			}
@@ -945,7 +896,7 @@ void fn100A(word16 af)
 				word16 af_n = DPB(af_n, a_n, 0);
 				if (a_n == 0x44)
 				{
-					af_n = fn1279(af_n, out sp_n);
+					af_n = fn1279(af_n);
 					globals->b138B = (byte) af_n;
 				}
 				else
@@ -966,7 +917,7 @@ void fn100A(word16 af)
 							word16 af_n = DPB(af_n, a_n, 0);
 							if (a_n == 0x4C)
 							{
-								af_n = fn1279(af_n, out sp_n);
+								af_n = fn1279(af_n);
 								globals->b14F7 = (byte) af_n;
 							}
 							else
@@ -993,7 +944,7 @@ void fn100A(word16 af)
 											word16 af_n = DPB(af_n, a_n, 0);
 											if (a_n == 0x52)
 											{
-												byte f_n = fn12D8(af_n, out sp_n);
+												byte f_n = fn12D8(af_n);
 												globals->b1520 = (byte) f_n;
 												af_n = DPB(af_n, f_n, 0);
 											}
@@ -1027,7 +978,7 @@ void fn100A(word16 af)
 																word16 af_n = DPB(af_n, a_n, 0);
 																if (a_n == 0x57)
 																{
-																	af_n = fn1279(af_n, out sp_n);
+																	af_n = fn1279(af_n);
 																	globals->b14F8 = (byte) af_n;
 																}
 																else
@@ -1036,12 +987,12 @@ void fn100A(word16 af)
 																	word16 af_n = DPB(af_n, a_n, 0);
 																	if (a_n == 88)
 																	{
-																		byte f_n = fn12D8(af_n, out sp_n);
+																		byte f_n = fn12D8(af_n);
 																		globals->b151E = (byte) f_n;
 																		af_n = DPB(af_n, f_n, 0);
 																	}
 																	else
-																		af_n = DPB(af_n, fn1229(out sp_n), 0);
+																		af_n = DPB(af_n, fn1229(), 0);
 																}
 															}
 														}
@@ -1099,8 +1050,8 @@ void fn100A(word16 af)
 	__hlt();
 }
 
-// 1229: Register Eq_n fn1229(Register out ptr16 spOut)
-Eq_n fn1229(ptr16 & spOut)
+// 1229: Register Eq_n fn1229()
+Eq_n fn1229()
 {
 	globals->b14F3 = 0x02;
 	fn05CE(0x02, 0xD1);
@@ -1118,9 +1069,7 @@ Eq_n fn1229(ptr16 & spOut)
 			globals->t16A8 = (byte) fn045B();
 		}
 	}
-	ptr16 sp_n;
-	fn0387(out sp_n);
-	spOut = sp_n;
+	fn0387();
 	return a_n;
 }
 
@@ -1137,57 +1086,45 @@ void fn1262()
 	}
 }
 
-// 1279: Register word16 fn1279(Register word16 af, Register out ptr16 spOut)
-word16 fn1279(word16 af, ptr16 & spOut)
+// 1279: Register word16 fn1279(Register word16 af)
+word16 fn1279(word16 af)
 {
-	ptr16 sp_n = fp;
 	globals->t16A8 = (byte) fn045B();
 	fn1262();
 	Eq_n a_n = globals->t16A8;
 	word16 af_n = DPB(af, a_n, 0);
 	if (a_n != 0x28)
-		af_n = DPB(af, fn1229(out sp_n), 0);
+		af_n = DPB(af, fn1229(), 0);
 	globals->b16AA = 0x00;
 	while (true)
 	{
 		cu8 a_n = (byte) fn045B();
 		globals->b16A9 = a_n;
-		ptr16 sp_n = sp_n;
 		if (a_n > 0x39 || a_n < 0x30)
 			break;
-		struct Eq_n * sp_n = sp_n - 0x02;
-		sp_n->w0000 = DPB(af_n, globals->b16AA * 0x08, 0);
-		sp_n->w0000 = DPB(af_n, (word16) sp_n->t0001 + globals->b16AA * 0x02, 0);
-		bui8 a_n = (word16) sp_n->t0001 + (globals->b16A9 + 0x0F);
+		bui8 a_n = globals->b16A9 + 0x0F + SLICE(DPB(af_n, globals->b16AA * 0x02 + SLICE(DPB(af_n, globals->b16AA * 0x08, 0), byte, 8), 0), byte, 8);
 		globals->b16AA = a_n;
 		af_n = DPB(af_n, a_n, 0);
 	}
 	if (globals->b16A9 == 0x20)
 		fn1262();
 	if (globals->b16A9 != 0x29)
-		fn1229(out sp_n);
-	word16 af_n = DPB(af_n, globals->b16AA, 0);
-	spOut = sp_n;
-	return af_n;
+		fn1229();
+	return DPB(af_n, globals->b16AA, 0);
 }
 
-// 12D8: Register cu8 fn12D8(Register word16 af, Register out ptr16 spOut)
-cu8 fn12D8(word16 af, ptr16 & spOut)
+// 12D8: Register byte fn12D8(Register word16 af)
+byte fn12D8(word16 af)
 {
-	ptr16 sp_n = fp;
 	globals->t16A8 = (byte) fn045B();
 	fn1262();
 	if (globals->t16A8 == 0x28)
 		globals->b16AB = (byte) fn045B() + 0x1F;
 	else
-		fn1229(out sp_n);
-	struct Eq_n * sp_n = sp_n - 0x02;
-	sp_n->w0000 = DPB(af, 0x00 - ((byte) fn045B() < 0x2A), 0);
-	ptr16 sp_n = (char *) &sp_n->t0001 + 0x01;
-	if ((0x00 - (globals->b16AB > 0x10) | sp_n->t0001) >> 0x01 < 0x00)
-		fn1229(out sp_n);
-	spOut = sp_n;
-	return globals->b16AB;
+		fn1229();
+	if ((0x00 - (globals->b16AB > 0x10) | SLICE(DPB(af, 0x00 - ((byte) fn045B() < 0x2A), 0), byte, 8)) >> 0x01 < 0x00)
+		fn1229();
+	return (byte) DPB(af, globals->b16AB, 0);
 }
 
 // 1315: void fn1315()

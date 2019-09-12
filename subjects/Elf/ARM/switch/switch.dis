@@ -14,12 +14,12 @@ l000082F0:
 	word32 lr_8
 	word32 pc_9
 	word32 r10_10 = call_gmon_start(r10, lr, pc, out lr_8, out pc_9)
-	word32 r0_17 = frame_dummy(pc_9)
-	word32 pc_25
-	r4Out = __do_global_ctors_aux(r4, lr_8, pc_9, out pc_25)
+	word32 r0_16 = frame_dummy(pc_9)
+	word32 pc_24
+	r4Out = __do_global_ctors_aux(r4, lr_8, pc_9, out pc_24)
 	r10Out = r10_10
-	pcOut = pc_25
-	return r0_17
+	pcOut = pc_24
+	return r0_16
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -103,8 +103,8 @@ word32 call_gmon_start(word32 r10, word32 lr, word32 pc, ptr32 & lrOut, ptr32 & 
 
 // MayUse:  lr:[0..31] pc:[0..31] r10:[0..31]
 // LiveOut: lr pc r10
-// Trashed: NZCV lr pc r10 r3 sp
-// Preserved:
+// Trashed: NZCV lr pc r10 r3
+// Preserved: sp
 call_gmon_start_entry:
 // DataOut:
 // DataOut (flags):
@@ -152,8 +152,8 @@ void __do_global_dtors_aux(word32 r4, word32 r5, word32 lr, word32 pc)
 
 // MayUse:  lr:[0..31] pc:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
-// Trashed: NZCV lr pc r2 r3 r4 r5 sp
-// Preserved:
+// Trashed: NZCV lr pc r2 r3 r4 r5
+// Preserved: sp
 __do_global_dtors_aux_entry:
 // DataOut:
 // DataOut (flags):
@@ -768,8 +768,8 @@ void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 r10, word32 lr, wor
 
 // MayUse:  lr:[0..31] pc:[0..31] r10:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
-// Trashed: NZCV lr pc r0 r1 r10 r2 r3 r4 r5 r6 sp
-// Preserved:
+// Trashed: NZCV lr pc r0 r1 r10 r2 r3 r4 r5 r6
+// Preserved: sp
 __libc_csu_init_entry:
 // DataOut:
 // DataOut (flags):
@@ -814,8 +814,8 @@ void __libc_csu_fini(word32 r4, word32 r5, word32 r10, word32 lr, word32 pc)
 
 // MayUse:  lr:[0..31] pc:[0..31] r10:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
-// Trashed: NZCV lr pc r1 r10 r2 r3 r4 r5 sp
-// Preserved:
+// Trashed: NZCV lr pc r1 r10 r2 r3 r4 r5
+// Preserved: sp
 __libc_csu_fini_entry:
 // DataOut:
 // DataOut (flags):
@@ -864,8 +864,8 @@ word32 __do_global_ctors_aux(word32 r4, word32 lr, word32 pc, ptr32 & pcOut)
 
 // MayUse:  lr:[0..31] pc:[0..31] r4:[0..31]
 // LiveOut: pc r4
-// Trashed: NZCV lr pc r2 r3 r4 sp
-// Preserved:
+// Trashed: NZCV lr pc r2 r3 r4
+// Preserved: sp
 __do_global_ctors_aux_entry:
 // DataOut:
 // DataOut (flags):

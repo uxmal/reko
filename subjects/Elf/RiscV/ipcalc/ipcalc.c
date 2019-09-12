@@ -472,7 +472,7 @@ l00000000000155FC:
 			if ((int64) sp_n->dw001C != 0x00)
 			{
 l0000000000015604:
-				a0_n = fn00000000000175BC(gp, t1, s1_n, sp_n + 0x07, s0_n, fa3, fa4, fa5, out a1_n, out a2_n, out a3_n, out a4_n);
+				a0_n = fn00000000000175BC(gp, t1, s1_n, a5_n, sp_n + 0x07, s0_n, fa3, fa4, fa5, out a1_n, out a2_n, out a3_n, out a4_n);
 			}
 			else
 				a0_n = fn0000000000016D74(ra, gp, s1_n, a5_n, sp_n + 0x07, s0_n, s4_n, s7_n, fa3, fa4, fa5, out a1_n, out a2_n, out a4_n);
@@ -890,13 +890,13 @@ word64 fn0000000000015FCC(struct Eq_n * gp, Eq_n a0, ptr64 & a2Out, ptr64 & a3Ou
 	}
 }
 
-// 00000000000163B0: Register ptr64 fn00000000000163B0(Register (ptr64 Eq_n) gp, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 s2Out, Register out ptr64 s4Out, Register out ptr64 s5Out, Register out ptr64 s6Out, Register out ptr64 s7Out, Register out ptr64 s8Out, Register out ptr64 s9Out)
-ptr64 fn00000000000163B0(struct Eq_n * gp, ptr64 & s0Out, ptr64 & a0Out, ptr64 & s2Out, ptr64 & s4Out, ptr64 & s5Out, ptr64 & s6Out, ptr64 & s7Out, ptr64 & s8Out, ptr64 & s9Out)
+// 00000000000163B0: Register Eq_n fn00000000000163B0(Register (ptr64 Eq_n) gp)
+Eq_n fn00000000000163B0(struct Eq_n * gp)
 {
+	Eq_n a5_n = gp->tFFFFF870;
 	__sprintf_chk((word64) (fp + -232), 0x01, 0x80, "%.2x", 0x00);
 	Eq_n s3_n = 0x0010;
 	Eq_n s0_n = 0x01;
-	ptr64 sp_n = fp + ~0xF7;
 	struct Eq_n * s1_n = fp + ~0xED;
 	Eq_n s6_n = 0x0080;
 	Eq_n s5_n = 0x01;
@@ -907,7 +907,6 @@ ptr64 fn00000000000163B0(struct Eq_n * gp, ptr64 & s0Out, ptr64 & a0Out, ptr64 &
 		do
 		{
 			__sprintf_chk((word64) s1_n, (word64) s5_n, (word64) s6_n, "%.2x", 0x00);
-			sp_n += ~0x07;
 			struct Eq_n * a4_n = s1_n + 0x01;
 			if ((s0_n & 0x01) != 0x00)
 			{
@@ -925,30 +924,10 @@ ptr64 fn00000000000163B0(struct Eq_n * gp, ptr64 & s0Out, ptr64 & a0Out, ptr64 &
 		} while (s0_n != s3_n);
 	}
 	s1_n->b0000 = 0x00;
-	__strdup((word64) (sp_n + 0x08));
-	struct Eq_n * sp_n = sp_n + ~0x07;
-	if (sp_n->t0088 != gp->tFFFFF870)
-		__stack_chk_fail();
-	else
-	{
-		ptr64 s2_n = sp_n->ptr00D0;
-		ptr64 s4_n = sp_n->ptr00C0;
-		ptr64 s5_n = sp_n->ptr00B8;
-		ptr64 s6_n = sp_n->ptr00B0;
-		ptr64 s7_n = sp_n->ptr00A8;
-		ptr64 s8_n = sp_n->ptr00A0;
-		ptr64 s9_n = sp_n->ptr0098;
-		s0Out = sp_n->ptr00E0;
-		a0Out = <invalid>;
-		s2Out = s2_n;
-		s4Out = s4_n;
-		s5Out = s5_n;
-		s6Out = s6_n;
-		s7Out = s7_n;
-		s8Out = s8_n;
-		s9Out = s9_n;
-		return &sp_n->ptr00E0 + 0x02;
-	}
+	Eq_n a0_n = __strdup((word64) (fp - 224));
+	if (a5_n == gp->tFFFFF870)
+		return a0_n;
+	__stack_chk_fail();
 }
 
 // 00000000000164D0: Register Eq_n fn00000000000164D0(Register Eq_n a0, Register Eq_n a1, Register out ptr64 a1Out, Register out ptr64 a2Out)
@@ -1621,7 +1600,7 @@ l000000000001716C:
 			a2->b0060 = (byte) (int64) a5_n->b0000;
 			a2->b0061 = (byte) (int64) a5_n->b0001;
 			if (a3 << 0x11 < 0x00)
-				sp_n = fn0000000000017B40(ra, gp, t1_n, s0_n, s1_n, (int64) sp_n->dw0008, &a2->qw0038 + 0x01, &a2->qw0038 + 0x02, &a2->qw0038 + 0x03, &a2->qw0038 + 0x04, s2_n, a0_n, s4, s5_n, a2, s7, fa3, fa4, fa5, out gp, out a1_n, out a2_n, out s6_n);
+				gp = fn0000000000017B40(ra, gp, t1_n, s0_n, s1_n, (int64) sp_n->dw0008, &a2->qw0038 + 0x01, &a2->qw0038 + 0x02, &a2->qw0038 + 0x03, &a2->qw0038 + 0x04, s2_n, a0_n, s4, s5_n, a2, s7, fa3, fa4, fa5, out a1_n, out a2_n, out s6_n);
 			if ((a3 & 0x01) == 0x00)
 			{
 l000000000001718C:
@@ -1659,8 +1638,8 @@ l0000000000017074:
 	goto l0000000000016E20;
 }
 
-// 000000000001730C: Register Eq_n fn000000000001730C(Register (ptr64 Eq_n) gp, Register Eq_n a0, Register word64 a1, Register out ptr64 a1Out)
-Eq_n fn000000000001730C(struct Eq_n * gp, Eq_n a0, word64 a1, ptr64 & a1Out)
+// 000000000001730C: Register Eq_n fn000000000001730C(Register (ptr64 Eq_n) gp, Register Eq_n a0, Register ptr64 a1, Register out ptr64 a1Out)
+Eq_n fn000000000001730C(struct Eq_n * gp, Eq_n a0, ptr64 a1, ptr64 & a1Out)
 {
 	Eq_n a0_n;
 	Eq_n a4_n = gp->tFFFFF870;
@@ -1695,12 +1674,11 @@ l000000000001739C:
 	goto l000000000001739C;
 }
 
-// 00000000000173D4: Register ptr64 fn00000000000173D4(Register (ptr64 Eq_n) a0, Register Eq_n a1, Register out (ptr64 word64) spOut, Register out ptr64 s0Out, Register out ptr64 s1Out, Register out ptr64 a0Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
-ptr64 fn00000000000173D4(struct Eq_n * a0, Eq_n a1, word64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a0Out, ptr64 & s2Out, ptr64 & s3Out)
+// 00000000000173D4: Register ptr64 fn00000000000173D4(Register (ptr64 Eq_n) a0, Register Eq_n a1, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 s1Out, Register out ptr64 a0Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
+ptr64 fn00000000000173D4(struct Eq_n * a0, Eq_n a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a0Out, ptr64 & s2Out, ptr64 & s3Out)
 {
 	void * a0_n = (word64) a0;
 	ptr64 a0_n;
-	ptr64 sp_n = fp + -0x06;
 	Eq_n s2_n = (int64) a0->b0000;
 	int64 s3_n = (int64) a0->b0001;
 	if (a1 != 0x0080)
@@ -1712,7 +1690,7 @@ ptr64 fn00000000000173D4(struct Eq_n * a0, Eq_n a1, word64 & spOut, ptr64 & s0Ou
 	{
 		if ((word64) memcmp(a0_n, &globals->v10880, 0x10) == 0x00)
 		{
-			spOut = fp + -0x01;
+			spOut = fp + ~0x07;
 			s0Out = s1;
 			s1Out = s2;
 			a0Out = 0x00011858;
@@ -1720,58 +1698,41 @@ ptr64 fn00000000000173D4(struct Eq_n * a0, Eq_n a1, word64 & spOut, ptr64 & s0Ou
 			s3Out = qwLoc30;
 			return s0;
 		}
-		sp_n = fp + -0x08;
 		if ((word64) memcmp((word64) a0, &globals->v10898, 0x10) == 0x00)
 		{
 			a0_n = 0x00011870;
 			goto l0000000000017458;
 		}
 	}
-	struct Eq_n * sp_n = sp_n + ~0x07;
 	if ((word64) memcmp((word64) a0, &globals->v108B0, 0x0C) == 0x00)
 	{
-		ptr64 ra_n = sp_n->ptr0028;
-		ptr64 s0_n = sp_n->ptr0020;
-		ptr64 s1_n = sp_n->ptr0018;
-		ptr64 s2_n = sp_n->ptr0010;
-		ptr64 s3_n = sp_n->ptr0008;
-		spOut = (word64 *) (&sp_n->ptr0028 + 0x01);
-		s0Out = s0_n;
-		s1Out = s1_n;
+		spOut = fp;
+		s0Out = qwArg00;
+		s1Out = ra;
 		a0Out = 0x00011888;
-		s2Out = s2_n;
-		s3Out = s3_n;
-		return ra_n;
+		s2Out = s0;
+		s3Out = s1;
+		return qwArg08;
 	}
 	if ((word64) memcmp((word64) a0, &globals->v108C0, 0x0C) == 0x00)
 	{
-		ptr64 ra_n = sp_n->ptr0020;
-		ptr64 s0_n = sp_n->ptr0018;
-		ptr64 s1_n = sp_n->ptr0010;
-		ptr64 s2_n = sp_n->ptr0008;
-		ptr64 s3_n = sp_n->ptr0000;
-		spOut = (word64 *) &sp_n->ptr0028;
-		s0Out = s0_n;
-		s1Out = s1_n;
+		spOut = fp;
+		s0Out = ra;
+		s1Out = s0;
 		a0Out = 0x000118A0;
-		s2Out = s2_n;
-		s3Out = s3_n;
-		return ra_n;
+		s2Out = s1;
+		s3Out = s2;
+		return qwArg00;
 	}
 	if ((word64) memcmp((word64) a0, &globals->v108D0, 0x0C) == 0x00)
 	{
-		ptr64 ra_n = sp_n->ptr0018;
-		ptr64 s0_n = sp_n->ptr0010;
-		ptr64 s1_n = sp_n->ptr0008;
-		ptr64 s2_n = sp_n->ptr0000;
-		ptr64 s3_n = sp_n->ptrFFFFFFF8;
-		spOut = (word64 *) &sp_n->ptr0020;
-		s0Out = s0_n;
-		s1Out = s1_n;
+		spOut = fp;
+		s0Out = s0;
+		s1Out = s1;
 		a0Out = 0x000118B8;
-		s2Out = s2_n;
-		s3Out = s3_n;
-		return ra_n;
+		s2Out = s2;
+		s3Out = s3;
+		return ra;
 	}
 l0000000000017408:
 	ui64 a5_n = s2_n << 0x08 | s3_n;
@@ -1808,12 +1769,14 @@ l0000000000017458:
 	return ra;
 }
 
-// 00000000000175BC: Register Eq_n fn00000000000175BC(Register (ptr64 Eq_n) gp, Register word64 t1, Register Eq_n a0, Register ptr64 a2, Register Eq_n a3, Register word64 fa3, Register word64 fa4, Register word64 fa5, Register out ptr64 a1Out, Register out ptr64 a2Out, Register out ptr64 a3Out, Register out Eq_n a4Out)
-Eq_n fn00000000000175BC(struct Eq_n * gp, word64 t1, Eq_n a0, ptr64 a2, Eq_n a3, word64 fa3, word64 fa4, word64 fa5, ptr64 & a1Out, ptr64 & a2Out, ptr64 & a3Out, union Eq_n & a4Out)
+// 00000000000175BC: Register Eq_n fn00000000000175BC(Register (ptr64 Eq_n) gp, Register word64 t1, Register Eq_n a0, Register Eq_n a1, Register (ptr64 Eq_n) a2, Register Eq_n a3, Register word64 fa3, Register word64 fa4, Register word64 fa5, Register out ptr64 a1Out, Register out ptr64 a2Out, Register out ptr64 a3Out, Register out Eq_n a4Out)
+Eq_n fn00000000000175BC(struct Eq_n * gp, word64 t1, Eq_n a0, Eq_n a1, struct Eq_n * a2, Eq_n a3, word64 fa3, word64 fa4, word64 fa5, ptr64 & a1Out, ptr64 & a2Out, ptr64 & a3Out, union Eq_n & a4Out)
 {
 	Eq_n a0_n;
 	Eq_n a5_n = gp->tFFFFF870;
 	memset((word64) a2, 0x00, 200);
+	Eq_n s2_n = a1;
+	Eq_n s6_n = a3;
 	if ((word64) inet_pton(0x0A, (word64) a0, (word64) (fp + ~0x019F)) <= 0x00)
 	{
 		if ((int64) gp->dwFFFFF814 != 0x00)
@@ -1822,12 +1785,8 @@ Eq_n fn00000000000175BC(struct Eq_n * gp, word64 t1, Eq_n a0, ptr64 a2, Eq_n a3,
 		a0_n.u0 = -0x01;
 		goto l0000000000017774;
 	}
-	word64 a0_n;
-	struct Eq_n * s0_n;
-	Eq_n s2_n;
-	word64 sp_n = fn00000000000163B0(gp, out s0_n, out a0_n, out s2_n, out s4_n, out s5_n, out s6_n, out s7_n, out s8_n, out s9_n);
-	s0_n->qw0008 = a0_n;
-	if ((word64) inet_ntop(0x0A, (word64) (sp_n + 0x08), (word64) (sp_n + 0x0038), 0xFA) == 0x00)
+	a2->qw0008 = fn00000000000163B0(gp);
+	if ((word64) inet_ntop(0x0A, (word64) (fp + ~0x01A7), (word64) (fp + ~0x0177), 0xFA) == 0x00)
 	{
 l0000000000017768:
 		if ((int64) gp->dwFFFFF814 != 0x00)
@@ -1838,50 +1797,44 @@ l0000000000017768:
 	}
 	else
 	{
-		s0_n->qw0000 = (word64) __strdup((word64) (sp_n + 0x0038));
+		a2->qw0000 = (word64) __strdup((word64) (fp + ~0x0177));
 		Eq_n s5_n = 0x0080;
-		if (s5_n >= s2_n)
+		if (s5_n >= a1)
 		{
-			if (s2_n >= 0x00)
-				s5_n = s2_n;
-			s0_n->dw00A0 = (word32) s5_n;
-			word64 a0_n = fn000000000001730C(gp, s5_n, sp_n + 0x08, out a1_n);
-			s0_n->qw0030 = a0_n;
+			if (a1 >= 0x00)
+				s5_n = a1;
+			else
+				s2_n = s5_n;
+			a2->dw00A0 = (word32) s5_n;
+			word64 a0_n = fn000000000001730C(gp, s5_n, fp + ~0x01A7, out a1_n);
+			a2->qw0030 = a0_n;
 			if (a0_n != 0x00)
 			{
+				struct Eq_n * s8_n = fp + ~0x0197;
 				byte * a5_n;
-				byte * a2_n = sp_n + 0x18;
-				byte * a3_n = sp_n + 0x08;
+				byte * s9_n = fp + ~0x01A7;
+				byte * a2_n = fp + ~0x0197;
+				byte * a3_n = fp + ~0x01A7;
 				do
 				{
 					*a2_n = (byte) ((int64) *a5_n & (int64) (*a3_n));
 					++a5_n;
 					++a3_n;
 					++a2_n;
-				} while (sp_n + 0x08 != a5_n);
-				if ((word64) inet_ntop(0x0A, (word64) (sp_n + 0x18), (word64) (sp_n + 0x0038), 0xFA) != 0x00)
+				} while (fp + ~0x01A7 != a5_n);
+				if ((word64) inet_ntop(0x0A, (word64) (fp + ~0x0197), (word64) (fp + ~0x0177), 0xFA) != 0x00)
 				{
 					Eq_n s2_n;
 					char * a0_n;
-					s0_n->qw0020 = (word64) __strdup((word64) (sp_n + 0x0038));
-					word64 a0_n;
-					struct Eq_n * s0_n;
-					Eq_n s2_n;
-					word64 s4_n;
-					uint64 s5_n;
-					word64 s7_n;
-					byte * s9_n;
-					struct Eq_n * s8_n;
-					Eq_n s6_n;
-					word64 sp_n = fn00000000000163B0(gp, out s0_n, out a0_n, out s2_n, out s4_n, out s5_n, out s6_n, out s7_n, out s8_n, out s9_n);
-					s0_n->qw0010 = a0_n;
+					a2->qw0020 = (word64) __strdup((word64) (fp + ~0x0177));
+					a2->qw0010 = fn00000000000163B0(gp);
 					word64 a0_n;
 					word64 s1_n;
 					Eq_n s2_n;
 					word64 sp_n;
 					struct Eq_n * s0_n;
 					struct Eq_n * s3_n;
-					word64 ra_n = fn00000000000173D4(sp_n + 0x0028, s2_n, out sp_n, out s0_n, out s1_n, out a0_n, out s2_n, out s3_n);
+					word64 ra_n = fn00000000000173D4(fp + ~0x01A7, s2_n, out sp_n, out s0_n, out s1_n, out a0_n, out s2_n, out s3_n);
 					s0_n->qw00B8 = a0_n;
 					s0_n->qw0018 = fn0000000000018118(gp, sp_n + 0x0028, s5_n);
 					if (s2_n == 0x0080)
@@ -1914,8 +1867,8 @@ l0000000000017728:
 l0000000000017740:
 						snprintf(a0_n, 0x40, "%s", 0x00);
 						word64 sp_n = sp_n + ~0x07;
-						if (s6_n << 0x11 < 0x00)
-							sp_n = fn0000000000017D10(ra_n, gp, t1, s0_n, s1_n, sp_n + 0x08, &s0_n->qw0038 + 0x01, &s0_n->qw0038 + 0x02, &s0_n->qw0038 + 0x03, &s0_n->qw0038 + 0x04, s2_n, s3_n, s4_n, s5_n, s6_n, s7_n, fa3, fa4, fa5, out gp, out s0_n, out a1_n, out a2_n, out a3_n, out s3_n, out s6_n);
+						if (a3 << 0x11 < 0x00)
+							gp = fn0000000000017D10(ra_n, gp, t1, s0_n, s1_n, sp_n + 0x08, &s0_n->qw0038 + 0x01, &s0_n->qw0038 + 0x02, &s0_n->qw0038 + 0x03, &s0_n->qw0038 + 0x04, s2_n, s3_n, a0, s5_n, a3, fp + ~0x01A7, fa3, fa4, fa5, out s0_n, out a1_n, out a2_n, out a3_n, out s3_n, out s6_n);
 						if ((s6_n & 0x01) == 0x00)
 						{
 l0000000000017760:
@@ -2038,8 +1991,8 @@ l0000000000017970:
 	goto l0000000000017970;
 }
 
-// 0000000000017B40: Register ptr64 fn0000000000017B40(Register word64 ra, Register (ptr64 Eq_n) gp, Register word64 t1, Register Eq_n s0, Register Eq_n s1, Register Eq_n a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3, Register ptr64 a4, Register Eq_n s2, Register word64 s3, Register Eq_n s4, Register Eq_n s5, Register (ptr64 Eq_n) s6, Register Eq_n s7, Register word64 fa3, Register word64 fa4, Register word64 fa5, Register out (ptr64 Eq_n) gpOut, Register out ptr64 a1Out, Register out ptr64 a2Out, Register out (ptr64 Eq_n) s6Out)
-ptr64 fn0000000000017B40(word64 ra, struct Eq_n * gp, word64 t1, Eq_n s0, Eq_n s1, Eq_n a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, Eq_n s2, word64 s3, Eq_n s4, Eq_n s5, struct Eq_n * s6, Eq_n s7, word64 fa3, word64 fa4, word64 fa5, struct Eq_n & gpOut, ptr64 & a1Out, ptr64 & a2Out, struct Eq_n & s6Out)
+// 0000000000017B40: Register (ptr64 Eq_n) fn0000000000017B40(Register word64 ra, Register (ptr64 Eq_n) gp, Register word64 t1, Register Eq_n s0, Register Eq_n s1, Register Eq_n a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3, Register ptr64 a4, Register Eq_n s2, Register word64 s3, Register Eq_n s4, Register Eq_n s5, Register (ptr64 Eq_n) s6, Register Eq_n s7, Register word64 fa3, Register word64 fa4, Register word64 fa5, Register out ptr64 a1Out, Register out ptr64 a2Out, Register out (ptr64 Eq_n) s6Out)
+struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, word64 t1, Eq_n s0, Eq_n s1, Eq_n a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, Eq_n s2, word64 s3, Eq_n s4, Eq_n s5, struct Eq_n * s6, Eq_n s7, word64 fa3, word64 fa4, word64 fa5, ptr64 & a1Out, ptr64 & a2Out, struct Eq_n & s6Out)
 {
 	word64 a1_n = (word64) a1_n;
 	word64 a2_n = (word64) a2_n;
@@ -2257,29 +2210,26 @@ ptr64 fn0000000000017B40(word64 ra, struct Eq_n * gp, word64 t1, Eq_n s0, Eq_n s
 			}
 		}
 		<anonymous> * t1_n = gp_n->ptrFFFFF848;
-		ptr64 sp_n;
 		struct Eq_n * s6_n;
 		struct Eq_n * gp_n;
 		t1_n();
-		gpOut = gp_n;
 		a1Out = <invalid>;
 		a2Out = <invalid>;
 		s6Out = s6_n;
-		return sp_n;
+		return gp_n;
 	}
 	else
 	{
 l0000000000017B84:
-		gpOut = gp;
 		a1Out = <invalid>;
 		a2Out = <invalid>;
 		s6Out = s6;
-		return fp;
+		return gp;
 	}
 }
 
-// 0000000000017D10: Register ptr64 fn0000000000017D10(Register word64 ra, Register (ptr64 Eq_n) gp, Register word64 t1, Register (ptr64 Eq_n) s0, Register word64 s1, Register word64 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3, Register ptr64 a4, Register Eq_n s2, Register (ptr64 Eq_n) s3, Register word64 s4, Register uint64 s5, Register Eq_n s6, Register word64 s7, Register word64 fa3, Register word64 fa4, Register word64 fa5, Register out (ptr64 Eq_n) gpOut, Register out (ptr64 Eq_n) s0Out, Register out ptr64 a1Out, Register out ptr64 a2Out, Register out ptr64 a3Out, Register out (ptr64 Eq_n) s3Out, Register out Eq_n s6Out)
-ptr64 fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 t1, struct Eq_n * s0, word64 s1, word64 a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, Eq_n s2, struct Eq_n * s3, word64 s4, uint64 s5, Eq_n s6, word64 s7, word64 fa3, word64 fa4, word64 fa5, struct Eq_n & gpOut, struct Eq_n & s0Out, ptr64 & a1Out, ptr64 & a2Out, ptr64 & a3Out, struct Eq_n & s3Out, union Eq_n & s6Out)
+// 0000000000017D10: Register (ptr64 Eq_n) fn0000000000017D10(Register word64 ra, Register (ptr64 Eq_n) gp, Register word64 t1, Register (ptr64 Eq_n) s0, Register word64 s1, Register word64 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3, Register ptr64 a4, Register Eq_n s2, Register (ptr64 Eq_n) s3, Register Eq_n s4, Register Eq_n s5, Register Eq_n s6, Register ptr64 s7, Register word64 fa3, Register word64 fa4, Register word64 fa5, Register out (ptr64 Eq_n) s0Out, Register out ptr64 a1Out, Register out ptr64 a2Out, Register out ptr64 a3Out, Register out (ptr64 Eq_n) s3Out, Register out Eq_n s6Out)
+struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 t1, struct Eq_n * s0, word64 s1, word64 a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, Eq_n s2, struct Eq_n * s3, Eq_n s4, Eq_n s5, Eq_n s6, ptr64 s7, word64 fa3, word64 fa4, word64 fa5, struct Eq_n & s0Out, ptr64 & a1Out, ptr64 & a2Out, ptr64 & a3Out, struct Eq_n & s3Out, union Eq_n & s6Out)
 {
 	word64 a1_n;
 	word64 a2_n;
@@ -2505,33 +2455,30 @@ ptr64 fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 t1, struct Eq_n * s
 			}
 		}
 		<anonymous> * t1_n = gp_n->ptrFFFFF848;
-		ptr64 sp_n;
 		struct Eq_n * s0_n;
 		struct Eq_n * s3_n;
 		Eq_n s6_n;
 		ptr64 a3_n;
 		struct Eq_n * gp_n;
 		t1_n();
-		gpOut = gp_n;
 		s0Out = s0_n;
 		a1Out = <invalid>;
 		a2Out = <invalid>;
 		a3Out = a3_n;
 		s3Out = s3_n;
 		s6Out = s6_n;
-		return sp_n;
+		return gp_n;
 	}
 	else
 	{
 l0000000000017D54:
-		gpOut = gp;
 		s0Out = s0;
 		a1Out = <invalid>;
 		a2Out = <invalid>;
 		a3Out = a3_n;
 		s3Out = s3;
 		s6Out = s6;
-		return fp;
+		return gp;
 	}
 }
 
@@ -2605,8 +2552,8 @@ l0000000000017F84:
 	goto l0000000000017F88;
 }
 
-// 0000000000018118: Register Eq_n fn0000000000018118(Register (ptr64 Eq_n) gp, Register Eq_n a0, Register uint64 a1)
-Eq_n fn0000000000018118(struct Eq_n * gp, Eq_n a0, uint64 a1)
+// 0000000000018118: Register Eq_n fn0000000000018118(Register (ptr64 Eq_n) gp, Register Eq_n a0, Register Eq_n a1)
+Eq_n fn0000000000018118(struct Eq_n * gp, Eq_n a0, Eq_n a1)
 {
 	Eq_n a0_n;
 	Eq_n a5_n = gp->tFFFFF870;

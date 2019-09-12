@@ -377,5 +377,4 @@ word16 g_w5864 = 0x0000;
 word16 g_w586E = 0x0000;
 word16 g_w5874 = 0x0000;
 word16 g_w5AA2 = 0x0000;
-word16 g_wFFFF;
 

@@ -21,8 +21,14 @@ Eq_n g_t288D =
 ptr32 g_ptr3E70 = 0x00000000;
 struct Eq_n * g_ptr3E74 = &g_t4000;
 struct Eq_n * g_ptr3E78 = null;
-union Eq_n * g_ptr3E7C = &g_t10202;
-union Eq_n * g_ptr3E80 = &g_t3030303;
+Eq_n g_t3E7C = 
+	{
+		0x00
+	};
+Eq_n g_t3E80 = 
+	{
+		0x03
+	};
 Eq_n g_t3E84 = 
 	{
 		67372036
@@ -54,7 +60,5 @@ Eq_n g_t3FCC;
 Eq_n g_t3FD0;
 Eq_n g_t3FD8;
 Eq_n g_t4000;
-Eq_n g_t10202;
-Eq_n g_t3030303;
 Eq_n g_t6060606;
 
