@@ -234,7 +234,7 @@
     <Compile Include="Evaluation\Shl_add_Rule.cs" />
     <Compile Include="Evaluation\SliceSegmentedPointer_Rule.cs" />
     <Compile Include="Loading\DccSignatureLoader.cs" />
-    <Compile Include="Decompiler.cs">
+    <Compile Include="IDecompiledFileService.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DecompilerHost.cs">
