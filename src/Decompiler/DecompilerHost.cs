@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,11 @@ namespace Reko
 	/// </summary>
 	public interface DecompilerHost
 	{
-        void WriteDisassembly(Program program, Action<Formatter> writer);
-        void WriteIntermediateCode(Program program, Action<TextWriter> writer);
-        void WriteTypes(Program program, Action<TextWriter> writer);
-        void WriteDecompiledCode(Program program, Action<TextWriter> writer);
-        void WriteGlobals(Program program, Action<TextWriter> writer);
+        void WriteDisassembly(Program program, Action<string, Formatter> writer);
+        void WriteIntermediateCode(Program program, Action<string, TextWriter> writer);
+        void WriteTypes(Program program, Action<string, TextWriter> writer);
+        void WriteDecompiledCode(Program program, Action<string, TextWriter> writer);
+        void WriteGlobals(Program program, Action<string, TextWriter> writer);
 
         IConfigurationService Configuration { get; }
 	}
@@ -59,31 +59,67 @@ namespace Reko
             get { throw new NotImplementedException(); }
         }
 
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
         {
-            writer(new NullFormatter());
+            writer("",new NullFormatter());
         }
 
-        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
         {
-            writer(TextWriter.Null);
+            writer("", TextWriter.Null);
         }
 
-        public void WriteTypes(Program program, Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<string,TextWriter> writer)
         {
-            writer(TextWriter.Null);
+            writer("", TextWriter.Null);
         }
 
-        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
         {
-            writer(TextWriter.Null);
+            writer("", TextWriter.Null);
         }
 
-        public void WriteGlobals(Program program, Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
-            writer(TextWriter.Null);
+            writer("", TextWriter.Null);
         }
 
         #endregion
+    }
+
+    public class FileSystemDecompilerHost : DecompilerHost
+    {
+        public IConfigurationService Configuration
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteGlobals(Program program, Action<string, TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteTypes(Program program, Action<string, TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

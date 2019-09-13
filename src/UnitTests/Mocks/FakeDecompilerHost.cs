@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -52,29 +52,29 @@ namespace Reko.UnitTests.Mocks
             get { return config; }
         }
 
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
         {
-            writer(new TextFormatter(disassembly));
+            writer("test.asm", new TextFormatter(disassembly));
         }
 
-        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
         {
-            writer(intermediate);
+            writer("test.dis", intermediate);
         }
 
-        public void WriteTypes(Program program, Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<string, TextWriter> writer)
         {
-            writer(typesWriter);
+            writer("test.h", typesWriter);
         }
 
-        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
         {
-            writer(decompiled);
+            writer("test.c", decompiled);
         }
 
-        public void WriteGlobals(Program program, Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
-            writer(globalsWriter);
+            writer("test.globals.c", globalsWriter);
         }
 
         // probing methods.

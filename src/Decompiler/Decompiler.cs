@@ -125,12 +125,12 @@ namespace Reko
                     dfa.UntangleProcedures();
                 }
                 dfa.BuildExpressionTrees();
-                host.WriteIntermediateCode(program, writer => { EmitProgram(program, dfa, writer); });
+                host.WriteIntermediateCode(program, (name, writer) => { EmitProgram(program, dfa, name, writer); });
             }
             eventListener.ShowStatus("Interprocedural analysis complete.");
         }
 
-        public void DumpAssembler(Program program, Formatter wr)
+        public void DumpAssembler(Program program, string filename, Formatter wr)
         {
             if (wr == null || program.Architecture == null)
                 return;
@@ -142,7 +142,7 @@ namespace Reko
             dump.Dump(wr);
         }
 
-        private void EmitProgram(Program program, DataFlowAnalysis dfa, TextWriter output)
+        private void EmitProgram(Program program, DataFlowAnalysis dfa, string filename, TextWriter output)
         {
             if (output == null)
                 return;
@@ -279,7 +279,7 @@ namespace Reko
         protected Project CreateDefaultProject(string fileNameWithPath, Program program)
         {
             program.Filename = fileNameWithPath;
-            program.EnsureFilenames(fileNameWithPath);
+            program.EnsureDirectoryNames(fileNameWithPath);
             program.User.ExtractResources = true;
             var project = new Project
             {
@@ -424,10 +424,11 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledProcedures(Program program, TextWriter w)
+        public void WriteDecompiledProcedures(Program program, string filename, TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(program.OutputFilename), program, w);
-            w.WriteLine("#include \"{0}\"", Path.GetFileName(program.TypesFilename));
+            var headerfile = Path.ChangeExtension(filename, ".h");
+            WriteHeaderComment(filename, program, w);
+            w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
             foreach (var de in program.Procedures)
@@ -447,19 +448,20 @@ namespace Reko
             }
         }
 
-        public void WriteGlobals(Program program, TextWriter w)
+        public void WriteGlobals(Program program, string filename, TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(program.OutputFilename), program, w);
-            w.WriteLine("#include \"{0}\"", Path.GetFileName(program.TypesFilename));
+            var headerfile = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
+            WriteHeaderComment(filename, program, w);
+            w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var gdw = new GlobalDataWriter(program, services);
             gdw.WriteGlobals(new TextFormatter(w));
             w.WriteLine();
         }
     
-        public void WriteDecompiledTypes(Program program, TextWriter w)
+        public void WriteDecompiledTypes(Program program, string headerFilename, TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(program.TypesFilename), program, w);
+            WriteHeaderComment(headerFilename, program, w);
             w.WriteLine("/*"); program.TypeStore.Write(w); w.WriteLine("*/");
             var tf = new TextFormatter(w)
             {
@@ -529,8 +531,8 @@ namespace Reko
             finally
             {
                 eventListener.ShowStatus("Writing .asm and .dis files.");
-                host.WriteDisassembly(program, w => DumpAssembler(program, w));
-                host.WriteIntermediateCode(program, w => EmitProgram(program, null, w));
+                host.WriteDisassembly(program, (n, w) => DumpAssembler(program, n, w));
+                host.WriteIntermediateCode(program, (n, w) => EmitProgram(program, null, n, w));
             }
         }
 
@@ -603,9 +605,9 @@ namespace Reko
 		{
             foreach (var program in Project.Programs)
             {
-                host.WriteTypes(program, w => WriteDecompiledTypes(program, w));
-                host.WriteDecompiledCode(program, w => WriteDecompiledProcedures(program, w));
-                host.WriteGlobals(program, w => WriteGlobals(program, w));
+                host.WriteTypes(program, (n, w) => WriteDecompiledTypes(program, n, w));
+                host.WriteDecompiledCode(program, (n, w) => WriteDecompiledProcedures(program, n, w));
+                host.WriteGlobals(program, (n, w) => WriteGlobals(program, n, w));
             }
 		}
 

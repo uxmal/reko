@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -92,14 +93,13 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SudWrite()
         {
-            Project_v4 ud = new Project_v4
+            Project_v5 ud = new Project_v5
             {
                 Inputs =
                 {
-                    new DecompilerInput_v4
+                    new DecompilerInput_v5
                     {
-                        DisassemblyFilename = "foo.asm",
-                        IntermediateFilename = "foo.cod",
+                        DisassemblyDirectory = "",
                         User = new UserData_v4 {
                             ExtractResources = true,
                             Procedures =
@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Core.Serialization
 			{
 			    var writer = new FilteringXmlWriter(fut.TextWriter);
 				writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v5(typeof(Project_v5));
 				ser.Serialize(writer, ud);
 				fut.AssertFilesEqual();
 			}
@@ -188,8 +188,7 @@ namespace Reko.UnitTests.Core.Serialization
                         Architecture = arch.Object,
                         Platform = platform.Object,
                         SegmentMap = new SegmentMap(Address.SegPtr(0x1000, 0)), //, new byte[100]),
-                        DisassemblyFilename = "foo.asm",
-                        IntermediateFilename = "foo.cod",
+                        DisassemblyDirectory = "",
                         User = new UserData
                         {
                             Loader = "CustomLoader",
@@ -270,7 +269,7 @@ namespace Reko.UnitTests.Core.Serialization
                             JumpTables =
                             {
                                 { jumpTable.Address, jumpTable }
-                            }
+                            },
                         }
                     }
                 }
@@ -280,8 +279,8 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
-                Project_v4 ud = new ProjectSaver(sc).Serialize("/var/foo/foo.proj", project);
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v5(typeof(Project_v5));
+                Project_v5 ud = new ProjectSaver(sc).Serialize("/var/foo/foo.proj", project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -521,7 +520,7 @@ namespace Reko.UnitTests.Core.Serialization
         
             var pSaver = new ProjectSaver(sc);
             var file = pSaver.VisitProgram("foo.proj", program);
-            var ip = (DecompilerInput_v4)file;
+            var ip = (DecompilerInput_v5)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
             Assert.AreEqual("windows-1251", ip.User.TextEncoding);
         }
@@ -529,13 +528,13 @@ namespace Reko.UnitTests.Core.Serialization
         private void When_SaveToTextWriter(Program program, TextWriter sw)
         {
             var saver = new ProjectSaver(sc);
-            var sProj = new Project_v4
+            var sProj = new Project_v5
             {
                 Inputs = { saver.VisitProgram("foo.exe", program) }
             };
             var writer = new FilteringXmlWriter(sw);
             writer.Formatting = System.Xml.Formatting.Indented;
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v5(typeof(Project_v5));
             ser.Serialize(writer, sProj);
         }
 
@@ -566,7 +565,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <input>
     <user>
       <platform>
@@ -602,7 +601,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <input>
     <user>
       <platform>
@@ -648,7 +647,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <input>
     <user>
       <platform>
@@ -665,7 +664,7 @@ namespace Reko.UnitTests.Core.Serialization
   </input>
 </project>";
             if (sw.ToString() != sExp)
-                Debug.Print("{0}", sw.ToString());
+                Console.WriteLine("{0}", sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -698,7 +697,7 @@ namespace Reko.UnitTests.Core.Serialization
             When_SaveToTextWriter(program, sw);
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <input>
     <user>
       <global>

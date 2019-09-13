@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Typing
 	/// Gathers type information, infers structure, union, and array types,
 	/// then rewrites the program as appropriate to incorporate the inferred
     /// types. Much of the type inference code in this namespace was inspired
-    /// by the master's thesis "Entwicklung eines Typanalysesystem für einen
+    /// by the master's thesis "Entwicklung eines Typanalysesystem fÃ¼r einen
     /// Decompiler", 2004, by Raimar Falke.
 	/// </summary>
 	public class TypeAnalyzer
@@ -128,7 +128,7 @@ namespace Reko.Typing
             }
         }
 
-		public void WriteTypes(TextWriter output)
+		public void WriteTypes(string filename, TextWriter output)
 		{
 		}
 	}

@@ -212,7 +212,9 @@ namespace Reko.Gui.Forms
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;
             var fsSvc = Services.RequireService<IFileSystemService>();
-            fsSvc.CreateDirectory(Path.GetDirectoryName(filename));
+            var dir = Path.GetDirectoryName(filename);
+            if (!string.IsNullOrEmpty(dir))
+                fsSvc.CreateDirectory(dir);
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 
@@ -974,43 +976,53 @@ namespace Reko.Gui.Forms
             return new StreamWriter(fileName, false, new UTF8Encoding(false));
         }
 
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
         {
-            using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
+            var dasmFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".asm");
+            var dasmPath = Path.Combine(program.DisassemblyDirectory, dasmFilename);
+            using (TextWriter output = CreateTextWriter(dasmPath))
             {
-                writer(new TextFormatter(output));
+                writer(dasmFilename, new TextFormatter(output));
             }
         }
 
-        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(program.IntermediateFilename))
+            var irFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".dis");
+            var irPath = Path.Combine(program.SourceDirectory, irFilename);
+            using (TextWriter output = CreateTextWriter(program.SourceDirectory))
             {
-                writer(output);
+                writer(irFilename, output);
             }
         }
 
-        public void WriteTypes(Program program, Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<string, TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(program.TypesFilename))
+            var incFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
+            var incPath = Path.Combine(program.IncludeDirectory, incFilename);
+            using (TextWriter output = CreateTextWriter(incPath))
             {
-                writer(output);
+                writer(incFilename, output);
             }
         }
 
-        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(program.OutputFilename))
+            var srcFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".c");
+            var srcPath = Path.Combine(program.SourceDirectory, srcFilename);
+            using (TextWriter output = CreateTextWriter(srcPath))
             {
-                writer(output);
+                writer(srcFilename, output);
             }
         }
 
-        public void WriteGlobals(Program program, Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(program.GlobalsFilename))
+            var globalsFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), "globals.c");
+            var globalsPath = Path.Combine(program.SourceDirectory, globalsFilename);
+            using (TextWriter output = CreateTextWriter(globalsPath))
             {
-                writer(output);
+                writer(globalsPath, output);
             }
         }
 

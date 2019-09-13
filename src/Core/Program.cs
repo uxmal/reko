@@ -315,29 +315,19 @@ namespace Reko.Core
         public UserData User { get; set; }
 
         /// <summary>
-        /// The name of the file in which disassemblies are dumped.
+        /// The name of the directory into which disassemblies are dumped.
         /// </summary>
-        public string DisassemblyFilename { get; set; }
+        public string DisassemblyDirectory { get; set; }
 
         /// <summary>
-        /// The nsame of the file in which intermediate results are stored.
+        /// The name of the directory into which final source code is stored
         /// </summary>
-        public string IntermediateFilename { get; set; }
+        public string SourceDirectory { get; set; }
 
         /// <summary>
-        /// The name of the file in which final output is stored
+        /// The name of the directory into which type definitions are stored.
         /// </summary>
-        public string OutputFilename { get; set; }
-
-        /// <summary>
-        /// The name of the file in which recovered types are written.
-        /// </summary>
-        public string TypesFilename { get; set; }
-
-        /// <summary>
-        /// The name of the file in which the global variables are written.
-        /// </summary>
-        public string GlobalsFilename { get; set; }
+        public string IncludeDirectory { get; set; }
 
         /// <summary>
         /// The name of the directory in which embedded resources will be written.
@@ -346,19 +336,17 @@ namespace Reko.Core
 
         /// <summary>
         /// Given the absolute file name of a binary being decompiled, make sure that 
-        /// absolute file names for each of the output files.
+        /// absolute file names for each of the output directories.
         /// </summary>
         /// <param name="absFileName">Absolute file name of the binary being decompiled.</param>
-        public void EnsureFilenames(string absFileName)
+        public void EnsureDirectoryNames(string absFileName)
         {
             var dir = Path.GetDirectoryName(absFileName) ?? "";
             var filename = Path.GetFileName(absFileName);
             var outputDir = Path.Combine(dir, Path.ChangeExtension(filename, ".reko"));
-            this.DisassemblyFilename = DisassemblyFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".asm"));
-            this.IntermediateFilename = IntermediateFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".dis"));
-            this.OutputFilename = OutputFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".c"));
-            this.TypesFilename = TypesFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".h"));
-            this.GlobalsFilename = GlobalsFilename ?? Path.Combine(outputDir, Path.ChangeExtension(filename, ".globals.c"));
+            this.DisassemblyDirectory = DisassemblyDirectory ?? outputDir;
+            this.SourceDirectory = SourceDirectory ?? outputDir;
+            this.IncludeDirectory = IncludeDirectory ?? outputDir;
             this.ResourcesDirectory = ResourcesDirectory ?? Path.Combine(outputDir, "resources");
         }
 

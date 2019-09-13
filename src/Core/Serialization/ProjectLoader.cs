@@ -153,7 +153,38 @@ namespace Reko.Core.Serialization
             public Project VisitProject_v2(Project_v2 sProject) { return outer.LoadProject(filename, sProject); }
             public Project VisitProject_v3(Project_v3 sProject) { return outer.LoadProject(filename, sProject); }
             public Project VisitProject_v4(Project_v4 sProject) { return outer.LoadProject(filename, sProject); }
+            public Project VisitProject_v5(Project_v5 sProject) { return outer.LoadProject(filename, sProject); }
         }
+
+        /// <summary>
+        /// Loads a Project object from its serialized representation. First loads the
+        /// common architecture and platform then metadata, and finally any programs.
+        /// </summary>
+        /// <param name="sp"></param>
+        /// <returns></returns>
+        public Project LoadProject(string filename, Project_v5 sp)
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
+            if (arch == null)
+                throw new ApplicationException(
+                    string.Format("Unknown architecture '{0}' in project file.",
+                        sp.ArchitectureName ?? "(null)"));
+            var env = cfgSvc.GetEnvironment(sp.PlatformName);
+            if (env == null)
+                throw new ApplicationException(
+                    string.Format("Unknown operating environment '{0}' in project file.",
+                        sp.PlatformName ?? "(null)"));
+            this.platform = env.Load(Services, arch);
+            this.project.LoadedMetadata = this.platform.CreateMetadata();
+            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
+            var programs = sp.Inputs.OfType<DecompilerInput_v5>().Select(s => VisitInputFile(filename, s));
+            sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
+            project.MetadataFiles.AddRange(typelibs);
+            project.Programs.AddRange(programs);
+            return this.project;
+        }
+
 
         /// <summary>
         /// Loads a Project object from its serialized representation. First loads the
@@ -229,6 +260,50 @@ namespace Reko.Core.Serialization
             return this.project;
         }
 
+        public Program VisitInputFile(string projectFilePath, DecompilerInput_v5 sInput)
+        {
+            var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
+            var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
+            var sUser = sInput.User ?? new UserData_v4
+            {
+                ExtractResources = true,
+            };
+            var address = LoadAddress(sUser, this.arch);
+            var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
+            Program program;
+            if (!string.IsNullOrEmpty(sUser.Loader))
+            {
+                // The presence of an explicit loader name prompts us to
+                // use the LoadRawImage path.
+                var arch = sUser.Processor.Name;
+                var platform = sUser.PlatformOptions?.Name;
+                program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
+                {
+                    LoaderName = sUser.Loader,
+                    ArchitectureName = arch,
+                    ArchitectureOptions = archOptions,
+                    PlatformName = platform,
+                    LoadAddress = sUser.LoadAddress,
+                });
+            }
+            else
+            {
+                program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address)
+                    ?? new Program();   // A previous save of the project was able to read the file, 
+                                        // but now we can't...
+            }
+            LoadUserData(sUser, program, program.User);
+            program.Filename = binAbsPath;
+            program.DisassemblyDirectory = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyDirectory);
+            program.SourceDirectory = ConvertToAbsolutePath(projectFilePath, sInput.SourceDirectory);
+            program.IncludeDirectory = ConvertToAbsolutePath(projectFilePath, sInput.IncludeDirectory);
+            program.ResourcesDirectory = ConvertToAbsolutePath(projectFilePath, sInput.ResourcesDirectory);
+            program.EnsureDirectoryNames(program.Filename);
+            program.User.LoadAddress = address;
+            ProgramLoaded.Fire(this, new ProgramEventArgs(program));
+            return program;
+        }
+
         public Program VisitInputFile(string projectFilePath, DecompilerInput_v4 sInput)
         {
             var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
@@ -263,13 +338,11 @@ namespace Reko.Core.Serialization
             }
             LoadUserData(sUser, program, program.User);
             program.Filename = binAbsPath;
-            program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
-            program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
-            program.OutputFilename = ConvertToAbsolutePath(projectFilePath, sInput.OutputFilename);
-            program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
-            program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
+            program.DisassemblyDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.DisassemblyFilename));
+            program.SourceDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.OutputFilename));
+            program.IncludeDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.TypesFilename));
             program.ResourcesDirectory = ConvertToAbsolutePath(projectFilePath, sInput.ResourcesDirectory);
-            program.EnsureFilenames(program.Filename);
+            program.EnsureDirectoryNames(program.Filename);
             program.User.LoadAddress = address;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
@@ -304,12 +377,10 @@ namespace Reko.Core.Serialization
             }
             this.platform = program.Platform;
             program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
-            program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
-            program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
-            program.OutputFilename = ConvertToAbsolutePath(projectFilePath, sInput.OutputFilename);
-            program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
-            program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
-            program.EnsureFilenames(program.Filename);
+            program.DisassemblyDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.DisassemblyFilename));
+            program.SourceDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.OutputFilename));
+            program.IncludeDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.TypesFilename));
+            program.EnsureDirectoryNames(program.Filename);
             LoadUserData(sUser, program, program.User);
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
@@ -647,12 +718,10 @@ namespace Reko.Core.Serialization
             this.platform = program.Platform;
             LoadUserData(sInput, program, program.User);
 
-            program.DisassemblyFilename = sInput.DisassemblyFilename;
-            program.IntermediateFilename = sInput.IntermediateFilename;
-            program.OutputFilename = sInput.OutputFilename;
-            program.TypesFilename = sInput.TypesFilename;
-            program.GlobalsFilename = sInput.GlobalsFilename;
-            program.EnsureFilenames(sInput.Filename);
+            program.DisassemblyDirectory = Path.GetDirectoryName(sInput.DisassemblyFilename);
+            program.SourceDirectory = Path.GetDirectoryName(sInput.OutputFilename);
+            program.IncludeDirectory = Path.GetDirectoryName(sInput.TypesFilename);
+            program.EnsureDirectoryNames(sInput.Filename);
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }

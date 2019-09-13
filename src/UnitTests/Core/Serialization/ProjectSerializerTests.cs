@@ -208,16 +208,124 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(1, inputFile.User.IndirectJumps.Count);
             var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
             Assert.AreSame(jumpTable, indJump.Table);
-
         }
 
         [Test]
-        public void Save_v4()
+        public void Ps_Load_v5()
         {
-            var sp = new Project_v4
+            var bytes = new byte[100];
+            loader.Setup(l => l.LoadImageBytes(
+                It.IsAny<string>(),
+                It.IsAny<int>())).
+                Returns(bytes);
+            loader.Setup(l => l.LoadExecutable(
+                It.IsAny<string>(),
+                It.IsAny<byte[]>(),
+                It.IsAny<string>(),
+                It.IsAny<Address>())).Returns(
+                new Program { Architecture = arch.Object });
+            Given_Architecture();
+            Given_TestOS_Platform();
+            Given_Platform_Address("113800", 0x113800);
+            Given_Platform_Address("114000", 0x114000);
+            Given_Platform_Address("115000", 0x115000);
+            Given_Platform_Address("115012", 0x115012);
+            Given_Platform_Address("11504F", 0x11504F);
+            arch.Setup(a => a.GetRegister("r1")).Returns(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+
+            var sp = new Project_v5
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                Inputs = {
+                    new DecompilerInput_v5
+                    {
+                        Filename = "f.exe",
+                        User = new UserData_v4
+                        {
+                            Procedures =
+                            {
+                                new Procedure_v1 {
+                                    Name = "Fn",
+                                    Decompile = true,
+                                    Characteristics = new ProcedureCharacteristics
+                                    {
+                                        Terminates = true,
+                                    },
+                                    Address = "113300",
+                                    Signature = new SerializedSignature {
+                                        ReturnValue = new Argument_v1 {
+                                            Type = new PrimitiveType_v1(Domain.SignedInt, 4),
+                                        },
+                                        Arguments = new Argument_v1[] {
+                                            new Argument_v1
+                                            {
+                                                Name = "a",
+                                                Kind = new StackVariable_v1(),
+                                                Type = new PrimitiveType_v1(Domain.Character, 2)
+                                            },
+                                            new Argument_v1
+                                            {
+                                                Name = "b",
+                                                Kind = new StackVariable_v1(),
+                                                Type = new PointerType_v1 { DataType = new PrimitiveType_v1(Domain.Character, 2) }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            IndirectJumps =
+                            {
+                                new IndirectJump_v4
+                                {
+                                    InstructionAddress = "113800",
+                                    IndexRegister = "r1",
+                                    TableAddress = "114000",
+                                }
+                            },
+                            JumpTables =
+                            {
+                                new JumpTable_v4
+                                {
+                                    TableAddress = "114000",
+                                    Destinations = new []
+                                    {
+                                        "115000",
+                                        "115012",
+                                        "11504F",
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var ps = new ProjectLoader(sc, loader.Object, listener.Object);
+            var p = ps.LoadProject("c:\\tmp\\fproj.proj", sp);
+            Assert.AreEqual(1, p.Programs.Count);
+            var inputFile = p.Programs[0];
+            Assert.AreEqual(1, inputFile.User.Procedures.Count);
+            Assert.AreEqual("Fn", inputFile.User.Procedures.First().Value.Name);
+
+            Assert.AreEqual(1, inputFile.User.JumpTables.Count);
+            var jumpTable = inputFile.User.JumpTables[Address.Ptr32(0x114000)];
+            Assert.AreEqual(Address.Ptr32(0x00115000), jumpTable.Addresses[0]);
+            Assert.AreEqual(Address.Ptr32(0x00115012), jumpTable.Addresses[1]);
+            Assert.AreEqual(Address.Ptr32(0x0011504F), jumpTable.Addresses[2]);
+
+            Assert.AreEqual(1, inputFile.User.IndirectJumps.Count);
+            var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
+            Assert.AreSame(jumpTable, indJump.Table);
+        }
+
+
+        [Test]
+        public void Save_v5()
+        {
+            var sp = new Project_v5
             {
                 Inputs = {
-                    new DecompilerInput_v4 {
+                    new DecompilerInput_v5 {
                         Filename ="foo.exe",
                         User = new UserData_v4 {
                             Heuristics = {

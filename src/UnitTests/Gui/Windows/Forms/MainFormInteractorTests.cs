@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             diagnosticSvc.Setup(d => d.Error(
                 It.IsNotNull<ICodeLocation>(),
                 It.IsNotNull<string>()));
-            diagnosticSvc.Expect(d => d.ClearDiagnostics()).Verifiable();
+            diagnosticSvc.Setup(d => d.ClearDiagnostics()).Verifiable();
             brSvc.Setup(b => b.Clear());
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_XmlWriter();
             fsSvc.Setup(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Returns("foo.exe");
             fsSvc.Setup(f => f.MakeRelativePath("foo.dcproject", null)).Returns((string)null);
-            uiSvc.Expect(u => u.ShowSaveFileDialog("foo.dcproject")).Returns("foo.dcproject");
+            uiSvc.Setup(u => u.ShowSaveFileDialog("foo.dcproject")).Returns("foo.dcproject").Verifiable();
 
             When_CreateMainFormInteractor();
             Assert.IsNotNull(loader);
@@ -281,7 +281,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             interactor.Save();
             string s =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <arch>x86-protected-32</arch>
   <platform>TestPlatform</platform>
   <input>

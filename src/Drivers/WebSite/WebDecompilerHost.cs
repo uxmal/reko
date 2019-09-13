@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,27 +95,27 @@ namespace Reko.WebSite
 			writer.WriteLine("<br />");
 		}
 
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteTypes(Program program, Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<string, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteGlobals(Program program, Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
