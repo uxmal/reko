@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Gui.Forms
                 It.IsAny<string>(),
                 It.IsAny<int>())).Returns(bytes);
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             this.decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr.Object, sc);
             decSvc.Decompiler.Load("test.exe");

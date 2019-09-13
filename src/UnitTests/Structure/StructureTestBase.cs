@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Structure
             env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(cfgSvc.Object);
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);

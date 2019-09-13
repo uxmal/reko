@@ -29,7 +29,7 @@ using System.Threading;
 
 namespace Reko.UnitTests.Mocks
 {
-    public class FakeDecompilerHost : DecompilerHost
+    public class FakeDecompiledFileService : IDecompiledFileService
     {
         private StringWriter disassembly = new StringWriter();
         private StringWriter intermediate = new StringWriter();
@@ -38,18 +38,13 @@ namespace Reko.UnitTests.Mocks
         private StringWriter globalsWriter = new StringWriter();
         private IConfigurationService config = new FakeDecompilerConfiguration();
 
-        public FakeDecompilerHost()
+        public FakeDecompiledFileService()
         {
         }
 
         public TextWriter CreateDecompiledCodeWriter(string file)
         {
             return decompiled;
-        }
-
-        IConfigurationService DecompilerHost.Configuration
-        {
-            get { return config; }
         }
 
         public void WriteDisassembly(Program program, Action<string, Formatter> writer)

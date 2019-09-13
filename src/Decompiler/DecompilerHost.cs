@@ -24,40 +24,35 @@ using System;
 using System.IO;
 using System.Threading;
 using Reko.Core.Output;
+using Reko.Core.Services;
+using System.Text;
 
 namespace Reko
 {
-	/// <summary>
-	/// Interface used by the decompiler's components to talk to the outside world.
-	/// </summary>
-	public interface DecompilerHost
-	{
+    /// <summary>
+    /// Interface used by the decompiler's components to write outputs.
+    /// </summary>
+    public interface IDecompiledFileService
+    {
         void WriteDisassembly(Program program, Action<string, Formatter> writer);
         void WriteIntermediateCode(Program program, Action<string, TextWriter> writer);
         void WriteTypes(Program program, Action<string, TextWriter> writer);
         void WriteDecompiledCode(Program program, Action<string, TextWriter> writer);
         void WriteGlobals(Program program, Action<string, TextWriter> writer);
-
-        IConfigurationService Configuration { get; }
-	}
+    }
 
 	/// <summary>
-	/// Used when no host is required.
+	/// Used when no actual output is required.
 	/// </summary>
-	public class NullDecompilerHost : DecompilerHost
+	public class NullDecompiledFileService : IDecompiledFileService
 	{
-        public static readonly DecompilerHost Instance = new NullDecompilerHost();
+        public static readonly IDecompiledFileService Instance = new NullDecompiledFileService();
 
-        public NullDecompilerHost()
+        public NullDecompiledFileService()
         {
         }
 
 		#region DecompilerHost Members
-
-        public IConfigurationService Configuration
-        {
-            get { throw new NotImplementedException(); }
-        }
 
         public void WriteDisassembly(Program program, Action<string, Formatter> writer)
         {
@@ -87,39 +82,73 @@ namespace Reko
         #endregion
     }
 
-    public class FileSystemDecompilerHost : DecompilerHost
+    public class DecompiledFileService : IDecompiledFileService
     {
-        public IConfigurationService Configuration
+        private readonly IFileSystemService fsSvc;
+
+        public DecompiledFileService(IFileSystemService fsSvc)
         {
-            get
+            this.fsSvc = fsSvc;
+        }
+
+        private TextWriter CreateTextWriter(string filename)
+        {
+            if (string.IsNullOrEmpty(filename))
+                return StreamWriter.Null;
+            var dir = Path.GetDirectoryName(filename);
+            if (!string.IsNullOrEmpty(dir))
+                fsSvc.CreateDirectory(dir);
+            return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
+        }
+
+        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        {
+            var dasmFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".asm");
+            var dasmPath = Path.Combine(program.DisassemblyDirectory, dasmFilename);
+            using (TextWriter output = CreateTextWriter(dasmPath))
             {
-                throw new NotImplementedException();
+                writer(dasmFilename, new TextFormatter(output));
+            }
+        }
+
+        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
+        {
+            var irFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".dis");
+            var irPath = Path.Combine(program.SourceDirectory, irFilename);
+            using (TextWriter output = CreateTextWriter(irPath))
+            {
+                writer(irFilename, output);
+            }
+        }
+
+        public void WriteTypes(Program program, Action<string, TextWriter> writer)
+        {
+            var incFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
+            var incPath = Path.Combine(program.IncludeDirectory, incFilename);
+            using (TextWriter output = CreateTextWriter(incPath))
+            {
+                writer(incFilename, output);
             }
         }
 
         public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
         {
-            throw new NotImplementedException();
-        }
-
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
-        {
-            throw new NotImplementedException();
+            var srcFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".c");
+            var srcPath = Path.Combine(program.SourceDirectory, srcFilename);
+            using (TextWriter output = CreateTextWriter(srcPath))
+            {
+                writer(srcFilename, output);
+            }
         }
 
         public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
-            throw new NotImplementedException();
-        }
-
-        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WriteTypes(Program program, Action<string, TextWriter> writer)
-        {
-            throw new NotImplementedException();
+            var globalsFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), "globals.c");
+            var globalsPath = Path.Combine(program.SourceDirectory, globalsFilename);
+            using (TextWriter output = CreateTextWriter(globalsPath))
+            {
+                writer(globalsPath, output);
+            }
         }
     }
 }

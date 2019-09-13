@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Arch.Intel
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
             env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
             env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);

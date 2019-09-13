@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Gui.Forms
         private Mock<IProjectBrowserService> browserSvc;
         private Mock<ILoader> loader;
         private Mock<IDecompiler> dec;
-        private Mock<DecompilerHost> host;
+        private Mock<IDecompiledFileService> host;
         private Mock<ILowLevelViewService> memSvc;
         private Mock<IFileSystemService> fsSvc;
         private Program program;
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Gui.Forms
             dec = new Mock<IDecompiler>();
             sc = new ServiceContainer();
             uiSvc = new FakeShellUiService();
-            host = new Mock<DecompilerHost>();
+            host = new Mock<IDecompiledFileService>();
             memSvc = new Mock<ILowLevelViewService>();
             fsSvc = new Mock<IFileSystemService>();
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[1000]);
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<IProjectBrowserService>(browserSvc.Object);
             sc.AddService<ILowLevelViewService>(memSvc.Object);
             sc.AddService<ILoader>(loader.Object);
-            sc.AddService<DecompilerHost>(host.Object);
+            sc.AddService<IDecompiledFileService>(host.Object);
             sc.AddService<IFileSystemService>(fsSvc.Object);
 
             i = new TestInitialPageInteractor(sc, dec.Object);

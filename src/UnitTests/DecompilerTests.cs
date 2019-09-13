@@ -49,12 +49,12 @@ namespace Reko.UnitTests
             fsSvc = new Mock<IFileSystemService>();
             var cfgSvc = new Mock<IConfigurationService>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
-            var host = new FakeDecompilerHost();
+            var host = new FakeDecompiledFileService();
             sc = new ServiceContainer();
             loader = new Mock<ILoader>();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            sc.AddService<DecompilerHost>(host);
+            sc.AddService<IDecompiledFileService>(host);
             sc.AddService<IConfigurationService>((IConfigurationService)cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             decompiler = new TestDecompiler(loader.Object, sc);

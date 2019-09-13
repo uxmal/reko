@@ -62,7 +62,7 @@ namespace Reko
 	/// </remarks>
 	public class DecompilerDriver : IDecompiler
 	{
-		private DecompilerHost host;
+		private IDecompiledFileService host;
 		private readonly ILoader loader;
 		private IScanner scanner;
         private DecompilerEventListener eventListener;
@@ -72,7 +72,7 @@ namespace Reko
         {
             this.loader = ldr ?? throw new ArgumentNullException("ldr");
             this.services = services ?? throw new ArgumentNullException("services");
-            this.host = services.RequireService<DecompilerHost>();
+            this.host = services.RequireService<IDecompiledFileService>();
             this.eventListener = services.RequireService<DecompilerEventListener>();
         }
 

@@ -43,8 +43,7 @@ namespace Reko.Gui.Forms
     /// code. This will make it easier to port to other GUI platforms.
     /// </summary>
     public class MainFormInteractor :
-        ICommandTarget,
-        DecompilerHost
+        ICommandTarget
     {
         private IDecompilerShellUiService uiSvc;
         private IMainForm form;
@@ -131,7 +130,7 @@ namespace Reko.Gui.Forms
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
-            sc.AddService<DecompilerHost>(this);
+            sc.AddService<IDecompiledFileService>(svcFactory.CreateDecompiledFileService());
 
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
@@ -963,70 +962,6 @@ namespace Reko.Gui.Forms
             }
         }
         #endregion
-
-        #region DecompilerHost Members //////////////////////////////////
-
-        public IConfigurationService Configuration
-        {
-            get { return config; }
-        }
-
-        public TextWriter CreateDecompiledCodeWriter(string fileName)
-        {
-            return new StreamWriter(fileName, false, new UTF8Encoding(false));
-        }
-
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
-        {
-            var dasmFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".asm");
-            var dasmPath = Path.Combine(program.DisassemblyDirectory, dasmFilename);
-            using (TextWriter output = CreateTextWriter(dasmPath))
-            {
-                writer(dasmFilename, new TextFormatter(output));
-            }
-        }
-
-        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
-        {
-            var irFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".dis");
-            var irPath = Path.Combine(program.SourceDirectory, irFilename);
-            using (TextWriter output = CreateTextWriter(program.SourceDirectory))
-            {
-                writer(irFilename, output);
-            }
-        }
-
-        public void WriteTypes(Program program, Action<string, TextWriter> writer)
-        {
-            var incFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
-            var incPath = Path.Combine(program.IncludeDirectory, incFilename);
-            using (TextWriter output = CreateTextWriter(incPath))
-            {
-                writer(incFilename, output);
-            }
-        }
-
-        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
-        {
-            var srcFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".c");
-            var srcPath = Path.Combine(program.SourceDirectory, srcFilename);
-            using (TextWriter output = CreateTextWriter(srcPath))
-            {
-                writer(srcFilename, output);
-            }
-        }
-
-        public void WriteGlobals(Program program, Action<string, TextWriter> writer)
-        {
-            var globalsFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), "globals.c");
-            var globalsPath = Path.Combine(program.SourceDirectory, globalsFilename);
-            using (TextWriter output = CreateTextWriter(globalsPath))
-            {
-                writer(globalsPath, output);
-            }
-        }
-
-        #endregion ////////////////////////////////////////////////////
 
         // Event handlers //////////////////////////////
 

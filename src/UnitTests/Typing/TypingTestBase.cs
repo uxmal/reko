@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Typing
             var config = new FakeDecompilerConfiguration();
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IConfigurationService>(config);
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var arch = new X86ArchitectureReal("x86-real-16");
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Typing
             var eventListener = new FakeDecompilerEventListener();
             svc.AddService<IConfigurationService>(cfg);
             svc.AddService<DecompilerEventListener>(eventListener);
-            svc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            svc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             ILoader ldr = new Loader(svc);
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var program = imgLoader.Load(null);

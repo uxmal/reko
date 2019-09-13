@@ -28,7 +28,7 @@ using System.Web.UI.WebControls;
 
 namespace Reko.WebSite
 {
-	public class WebDecompilerHost : DecompilerHost
+	public class WebDecompilerHost : IDecompiledFileService
 	{
 		private StringWriter assembler;
 		private StringWriter writer; 
@@ -118,11 +118,6 @@ namespace Reko.WebSite
         public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
             throw new NotImplementedException();
-        }
-
-        public Reko.Core.Configuration.IConfigurationService Configuration
-        {
-            get { throw new NotImplementedException(); }
         }
     }
 }

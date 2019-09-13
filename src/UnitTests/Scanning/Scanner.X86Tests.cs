@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Scanning
             var sc = new ServiceContainer();
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var entryPoints = new List<ImageSymbol>();
             var asm = new X86Assembler(sc, platform, addrBase, entryPoints);

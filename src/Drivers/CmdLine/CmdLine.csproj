@@ -112,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CmdLineDiagnosticsService.cs" />
-    <Compile Include="CmdLineHost.cs" />
     <Compile Include="CmdLineListener.cs" />
     <Compile Include="CmdLineDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IStatusBarService>(new FakeStatusBarService());
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
 
