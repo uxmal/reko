@@ -39,7 +39,7 @@ namespace Reko.UnitTests
     public class DecompilerTests
     {
         private Mock<ILoader>loader;
-        TestDecompiler decompiler;
+        DecompilerDriver decompiler;
         private ServiceContainer sc;
         private Mock<IFileSystemService> fsSvc;
 
@@ -57,7 +57,7 @@ namespace Reko.UnitTests
             sc.AddService<IDecompiledFileService>(host);
             sc.AddService<IConfigurationService>((IConfigurationService)cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
-            decompiler = new TestDecompiler(loader.Object, sc);
+            decompiler = new DecompilerDriver(loader.Object, sc);
         }
 
         [Test]
@@ -88,14 +88,6 @@ namespace Reko.UnitTests
 
             FunctionType ps = sigs[Address.SegPtr(0x0C32, 0x3200)];
             Assert.IsNotNull(ps, "Expected a call signature for address");
-        }
-    }
-
-    public class TestDecompiler : DecompilerDriver
-    {
-        public TestDecompiler(ILoader loader, IServiceProvider sp)
-            : base(loader, sp)
-        {
         }
     }
 }
