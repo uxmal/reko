@@ -493,6 +493,8 @@ namespace Reko.Arch.X86
                 case Opcode.sysret: RewriteSysret(); break;
                 case Opcode.ucomiss: RewriteComis(PrimitiveType.Real32); break;
                 case Opcode.ucomisd: RewriteComis(PrimitiveType.Real64); break;
+                case Opcode.ud0: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Opcode.ud1: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.ud2: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.unpcklpd: RewritePackedBinop("__unpcklpd", PrimitiveType.Real64); break;
                 case Opcode.unpcklps: RewritePackedBinop("__unpcklps", PrimitiveType.Real32); break;

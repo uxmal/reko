@@ -588,9 +588,6 @@ l0000000000400E2D: warning: Non-integral switch expression
 0800:1AE8: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:092E: warning: x86 instruction 'jmpe' is not supported yet.
 0800:0956: warning: x86 instruction 'jmpe' is not supported yet.
-0800:0E6B: warning: x86 instruction 'ud0' is not supported yet.
-09DB:020C: warning: x86 instruction 'ud0' is not supported yet.
-09DB:0211: warning: x86 instruction 'ud0' is not supported yet.
 0800:01F8: error: An error occurred while processing instruction at address 0800:01F8.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1311,8 +1308,6 @@ Borland C v3 runtime detected
 0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1483:1390: warning: x86 instruction 'vblendvpdv' is not supported yet.
 1483:1DB0: warning: x86 instruction 'phsubsw' is not supported yet.
-1483:254A: warning: x86 instruction 'ud0' is not supported yet.
-1483:254F: warning: x86 instruction 'ud0' is not supported yet.
 1483:0D6F: warning: Call target address 1483:8A82 is invalid.
 1483:0DCF: warning: Procedure fn1483_0D3F previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0DFC: warning: Call target address 1483:E62A is invalid.
@@ -1497,4 +1492,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 60.89 seconds ---
+Decompiled 56 binaries in 62.23 seconds ---

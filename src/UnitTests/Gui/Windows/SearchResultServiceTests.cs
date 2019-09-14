@@ -74,15 +74,15 @@ namespace Reko.UnitTests.Gui.Windows
         public void SRS_ShowSingleItem()
         {
             var result = new Mock<ISearchResult>();
-            result.Expect(s => s.ContextMenuID).Returns(0);
-            result.Expect(s => s.Count).Returns(1);
-            result.Expect(s => s.CreateColumns());
-            result.Expect(s => s.Count).Returns(1);
-            result.Expect(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
-            result.Expect(s => s.Count).Returns(1);
-            result.Expect(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
-            result.Expect(s => s.Count).Returns(1);
-            result.Expect(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
+            result.Setup(s => s.ContextMenuID).Returns(0).Verifiable();
+            result.Setup(s => s.Count).Returns(1).Verifiable();
+            result.Setup(s => s.CreateColumns()).Verifiable();
+            result.Setup(s => s.Count).Returns(1).Verifiable();
+            result.Setup(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 }).Verifiable();
+            result.Setup(s => s.Count).Returns(1).Verifiable();
+            result.Setup(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 }).Verifiable();
+            result.Setup(s => s.Count).Returns(1).Verifiable();
+            result.Setup(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 }).Verifiable();
 
             CreateUI();
             form.Show();
@@ -102,9 +102,9 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var result = new Mock<ISearchResult>();
             //result.Expect(s => s.View = Arg<ISearchResultView>.Is.NotNull);
-            result.Expect(s => s.ContextMenuID).Returns(0);
-            result.Expect(s => s.Count).Returns(0);
-            result.Expect(s => s.CreateColumns());
+            result.Setup(s => s.ContextMenuID).Returns(0).Verifiable();
+            result.Setup(s => s.Count).Returns(0).Verifiable();
+            result.Setup(s => s.CreateColumns()).Verifiable();
 
             CreateUI();
             form.Show();
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Gui.Windows
         public void DoubleClickShouldNavigate()
         {
             var result = new Mock<ISearchResult>();
-            result.Expect(s => s.NavigateTo(1)).Verifiable();
+            result.Setup(s => s.NavigateTo(1)).Verifiable();
 
             CreateUI();
             form.Show();
@@ -133,10 +133,11 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var result = new Mock<ISearchResult>();
             var uiSvc = new Mock<IDecompilerShellUiService>();
-            result.Expect(r => r.ContextMenuID).Returns(42);
-            uiSvc.Expect(u => u.SetContextMenu(
+            result.Setup(r => r.ContextMenuID).Returns(42);
+            uiSvc.Setup(u => u.SetContextMenu(
                 It.IsNotNull<object>(),
-                42));
+                42))
+                .Verifiable();
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc.Object);
 
             CreateUI();
@@ -144,6 +145,7 @@ namespace Reko.UnitTests.Gui.Windows
             svc.ShowSearchResults(result.Object);
 
             result.VerifyAll();
+            uiSvc.VerifyAll();
         }
     }
 }

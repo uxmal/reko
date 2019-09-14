@@ -40,47 +40,66 @@ namespace Reko.UnitTests.Arch
 
         public abstract Address LoadAddress { get; }
 
-        protected virtual IEnumerable<RtlInstructionCluster>GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             yield break;
         }
 
         public class RewriterHost : IRewriterHost
         {
-            private IProcessorArchitecture arch;
+            private readonly IProcessorArchitecture arch;
+            private readonly Dictionary<Address, ImportReference> importThunks;
+            private readonly Dictionary<string, PseudoProcedure> ppp;
 
-            public RewriterHost(IProcessorArchitecture arch)
+            public RewriterHost(IProcessorArchitecture arch) : this(arch, new Dictionary<Address, ImportReference>())
+            {
+            }
+
+            public RewriterHost(IProcessorArchitecture arch, Dictionary<Address, ImportReference> imports)
             {
                 this.arch = arch;
+                this.importThunks = imports;
+                this.ppp = new Dictionary<string, PseudoProcedure>();
             }
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
             {
-                return new PseudoProcedure(name, returnType, arity);
+                if (ppp.TryGetValue(name, out var p))
+                    return p;
+                p = new PseudoProcedure(name, returnType, arity);
+                ppp.Add(name, p);
+                return p;
             }
 
+            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            {
+                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                return new Application(
+                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
+                    returnType,
+                    args);
+            }
+
+            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            {
+                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                ppp.Characteristics = c;
+                return new Application(
+                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
+                    returnType,
+                    args);
+            }
             public Expression GetImport(Address addrThunk, Address addrInstr)
             {
                 return null;
             }
 
-            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
+            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstruction)
             {
-                throw new NotImplementedException();
-            }
-
-            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
-            {
-                return PseudoProcedure(name, new ProcedureCharacteristics(), returnType, args);
-            }
-
-            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
-            {
-                var ppp = new PseudoProcedure(name, returnType, args.Length);
-                return new Application(
-                    new ProcedureConstant(arch.PointerType, ppp),
-                    returnType,
-                    args);
+                if (importThunks.TryGetValue(addrThunk, out var p))
+                    throw new NotImplementedException();
+                else
+                    return null;
             }
 
             public virtual IProcessorArchitecture GetArchitecture(string archLabel)
@@ -159,6 +178,5 @@ namespace Reko.UnitTests.Arch
             return PlatformDefinition.LoadHexBytes(hexPattern)
                 .ToArray();
         }
-
     }
 }

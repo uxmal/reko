@@ -285,14 +285,14 @@ namespace Reko.UnitTests.Scanning
                     It.IsAny<IRewriterHost>())).Returns(trace);
                 scanner.Setup(x => x.FindContainingBlock(
                     It.IsAny<Address>())).Returns(block);
-            scanner.Expect(x => x.EnqueueJumpTarget(
+            scanner.Setup(x => x.EnqueueJumpTarget(
                 It.IsNotNull<Address>(),
                 It.Is<Address>(arg => arg.Offset == 0x00100004),
                 block.Procedure,
                 It.Is<ProcessorState>(arg => StashArg(ref s1, arg))))
                 .Returns(blockElse)
                 .Verifiable();
-                scanner.Expect(x => x.EnqueueJumpTarget(
+            scanner.Setup(x => x.EnqueueJumpTarget(
                     It.IsNotNull<Address>(),
                     It.Is<Address>(arg => arg.Offset == 0x00104000),
                     block.Procedure,
@@ -956,12 +956,13 @@ testProc_exit:
                 It.IsAny<IProcessorArchitecture>(),
                 It.IsAny<Address>(),
                 It.IsAny<Address>())).Returns((ExternalProcedure) null);
-            scanner.Expect(s => s.ScanProcedure(
+            scanner.Setup(s => s.ScanProcedure(
                 It.IsNotNull<IProcessorArchitecture>(),
                 Address.Ptr32(0x00123400),
                 null,
-                It.IsNotNull<ProcessorState>())).
-                Returns(new ExternalProcedure("fn00123400", new FunctionType()));
+                It.IsNotNull<ProcessorState>()))
+                .Returns(new ExternalProcedure("fn00123400", new FunctionType()))
+                .Verifiable();
             program.Procedures.Add(addrStart + 4, Procedure.Create(arch.Object, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
 
             var wi = CreateWorkItem(addrStart);

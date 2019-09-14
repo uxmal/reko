@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Arch.Intel
             arch = arch16;
             baseAddr = baseAddr16;
             var asm = new X86Assembler(sc, new MsdosPlatform(sc, arch), baseAddr16, new List<ImageSymbol>());
-            host = new RewriterHost(asm.ImportReferences);
+            host = new RewriterHost(arch, asm.ImportReferences);
             return asm;
         }
 
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Arch.Intel
             arch = arch32;
             baseAddr = baseAddr32;
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), baseAddr32, new List<ImageSymbol>());
-            host = new RewriterHost(asm.ImportReferences);
+            host = new RewriterHost(arch, asm.ImportReferences);
             return asm;
         }
 
@@ -121,88 +121,6 @@ namespace Reko.UnitTests.Arch.Intel
         private ImmediateOperand Imm16(ushort u) { return new ImmediateOperand(Constant.Word16(u)); }
 
         private PrimitiveType Word16 { get { return PrimitiveType.Word16; } }
-
-
-        private class RewriterHost : IRewriterHost
-        {
-            private Dictionary<string, PseudoProcedure> ppp;
-            private Dictionary<Address, ImportReference> importThunks;
-
-            public RewriterHost(Dictionary<Address, ImportReference> importThunks)
-            {
-                this.importThunks = importThunks ?? new Dictionary<Address, ImportReference>();
-                this.ppp = new Dictionary<string, PseudoProcedure>();
-            }
-
-            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
-            {
-                if (ppp.TryGetValue(name, out var p))
-                    return p;
-                p = new PseudoProcedure(name, returnType, arity);
-                ppp.Add(name, p);
-                return p;
-            }
-
-            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
-            {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
-                    returnType,
-                    args);
-            }
-
-            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
-            {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                ppp.Characteristics = c;
-                return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
-                    returnType,
-                    args);
-            }
-
-            public IProcessorArchitecture GetArchitecture(string archLabel)
-            {
-                throw new NotImplementedException();
-            }
-
-
-            public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression GetImport(Address addrThunk, Address addrInstruction)
-            {
-                return null;
-            }
-
-            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstruction)
-            {
-                if (importThunks.TryGetValue(addrThunk, out var p))
-                    throw new NotImplementedException();
-                else
-                    return null;
-            }
-
-
-            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Error(Address address, string format, params object[] args)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Warn(Address address, string format, params object[] args)
-            {
-                Debug.Write($"W: {address}: ");
-                Debug.Print(format, args);
-            }
-        }
 
         private void Run16bitTest(Action<X86Assembler> fn)
         {
