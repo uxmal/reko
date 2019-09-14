@@ -223,6 +223,7 @@
     <Compile Include="Analysis\WebBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DecompilerDriver.cs" />
     <Compile Include="Evaluation\DistributedCastRule.cs" />
     <Compile Include="Evaluation\DistributedSliceRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -235,9 +236,6 @@
     <Compile Include="Evaluation\SliceSegmentedPointer_Rule.cs" />
     <Compile Include="Loading\DccSignatureLoader.cs" />
     <Compile Include="IDecompiledFileService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DecompilerHost.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Evaluation\AddTwoIdsRule.cs" />
