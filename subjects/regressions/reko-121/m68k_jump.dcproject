@@ -14,6 +14,9 @@
       <loader>raw</loader>
       <processor name="m68k" />
       <platform name="sega-genesis" />
+      <procedure>
+        <address>0000C02A</address>
+      </procedure>
     </user>
   </input>
 </project>

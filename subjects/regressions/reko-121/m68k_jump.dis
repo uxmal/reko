@@ -1,0 +1,92 @@
+void fn0000C02A(word32 a0, word32 a1)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a0 a1
+// LiveOut:
+// Trashed: CVZNX
+// Preserved: a0 a1 a2 a3 a4 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
+fn0000C02A_entry:
+// DataOut: a0 a1
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+// LocalsOut: fp(32)
+
+l0000C02A:
+	Mem54[0x00FF0F08:word32] = Mem0[a0:word32]
+	Mem57[0x00FF0F04:word32] = 0
+	word32 a6_127 = a1
+	word32 a4_105 = 0
+// DataOut: a2 a4 a6
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+// LocalsOut: fp(32)
+
+l0000C3DE:
+	branch Mem57[0x00FF0F04:word32] - Mem57[0x00FF0F08:word32] < 0x00000000 l0000C050
+// DataOut: a2 a4 a6
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 60 a2:a0 + 4 a6:<invalid> d0:<invalid> d6:0 a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C050:
+	word32 d3_108 = SEQ(SLICE(a4_105, word24, 8), Mem57[a0 + 4 + a4_105:byte])
+	word32 d0_113 = SEQ(SLICE(d3_108 & 0x000000FF, word16, 16), SLICE(d3_108 & 0x000000FF, word16, 0) & 0x00F0)
+	word32 d0_116 = SEQ(SLICE(d0_113, word24, 8), SLICE(d0_113, byte, 0) >>u 0x02)
+	a4_105 = a4_105 + 1
+	branch SLICE(d0_116, word16, 0) > 0x002C l0000C3DE
+// DataOut: a2 a4 a6 d0 d3
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 60 a2:a0 + 4 a6:<invalid> d0:<invalid> d6:0 a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C06A:
+	switch (SLICE(d0_116, word16, 0)) { l0000C0A0 }
+// DataOut: a2 a4 a6 d3
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 60 a2:a0 + 4 a6:<invalid> d0:<invalid> d6:0 a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0A0:
+	word32 d3_123 = (d3_108 & 0x000000FF & 15) + 0x00000001
+// DataOut: a2 a4 a6 d3
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 60 a2:a0 + 4 a6:<invalid> d0:<invalid> d6:0 a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0AE:
+	word16 v36_128 = SLICE(d3_123, word16, 0)
+	d3_123 = SEQ(SLICE(d3_123, word16, 16), v36_128 - 1)
+	branch v36_128 != 0x0000 l0000C0A6
+// DataOut: a2 a4 a6 d3
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 60 a2:a0 + 4 a6:<invalid> d0:<invalid> d6:0 a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0A6:
+	Mem133[a6_127:word32] = 0
+	Mem136[0x00FF0F04:word32] = Mem133[0x00FF0F04:word32] + 0x00000004
+	a6_127 = a6_127 + 4
+// DataOut: a2 a4 a6 d3
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 60 a2:a0 + 4 a6:<invalid> d0:<invalid> d6:0 a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C0B2:
+// DataOut: a2 a4 a6
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 60 a2:a0 + 4 a6:<invalid> d0:<invalid> d6:0 a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+// LocalsOut: fp(32)
+
+l0000C3EE:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 60 a2:a0 + 4 a6:<invalid> d0:<invalid> d6:0 a4:<invalid> d2:15 d7:0x000000FF d3:<invalid> a5:<invalid> -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+
+fn0000C02A_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:fp a2:a2 a6:a6 d0:d0 d6:d6 a4:a4 d2:d2 d7:d7 d1:d1 d3:d3 d4:d4 d5:d5 a0:a0 a1:a1 a3:a3 a5:a5 -60(fp):d0 -56(fp):d1 -52(fp):d2 -48(fp):d3 -44(fp):d4 -40(fp):d5 -36(fp):d6 -32(fp):d7 -28(fp):a0 -24(fp):a1 -20(fp):a2 -16(fp):a3 -12(fp):a4 -8(fp):a5 -4(fp):a6
+
+
+
