@@ -424,17 +424,16 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledProcedures(Program program, string filename, TextWriter w)
+        public void WriteDecompiledProcedures(Program program, string filename, IEnumerable<Procedure> procs, TextWriter w)
         {
             var headerfile = Path.ChangeExtension(filename, ".h");
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
-            foreach (var de in program.Procedures)
+            foreach (var proc in procs)
             {
-                w.WriteLine("// {0}: {1}", de.Key, de.Value);
-                var proc = de.Value;
+                w.WriteLine("// {0}: {1}", proc.EntryAddress, proc);
                 try
                 {
                     fmt.Write(proc);
@@ -606,7 +605,7 @@ namespace Reko
             foreach (var program in Project.Programs)
             {
                 host.WriteTypes(program, (n, w) => WriteDecompiledTypes(program, n, w));
-                host.WriteDecompiledCode(program, (n, w) => WriteDecompiledProcedures(program, n, w));
+                host.WriteDecompiledCode(program, (n, p, w) => WriteDecompiledProcedures(program, n, p, w));
                 host.WriteGlobals(program, (n, w) => WriteGlobals(program, n, w));
             }
 		}

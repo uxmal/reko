@@ -688,5 +688,46 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(0x0C00, u.Segments[1].Offset);
             Assert.AreEqual(AccessMode.ReadWrite, u.Segments[1].AccessMode);
         }
+        
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void Prld_Procedure_Placement()
+        {
+            var sProject = new Project_v5
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                Inputs =
+                {
+                    new DecompilerInput_v5
+                    {
+                        Filename = Path.Combine("foo", "bar.exe"),
+                        User = new UserData_v4
+                        {
+                            Procedures =
+                            {
+                                new Procedure_v1
+                                {
+                                    Address = "00123400",
+                                    OutputFile = "src/bar.c"
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var ldr = mockFactory.CreateLoader();
+            Given_TestArch();
+            Given_TestOS();
+            Address addr = Address.Ptr32(0x00123400);
+            platform.Setup(p => p.TryParseAddress("00123400", out addr)).Returns(true);
+
+            var prld = new ProjectLoader(sc, ldr, listener.Object);
+            var prj = prld.LoadProject(Path.Combine("c:\\foo\\foo.dcproject"), sProject);
+
+            var u = prj.Programs[0].User;
+            var placement = u.ProcedureSourceFiles[addr];
+            Assert.AreEqual("c:\\foo\\src\\bar.c", placement);
+        }
     }
 }

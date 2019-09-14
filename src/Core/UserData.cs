@@ -44,6 +44,7 @@ namespace Reko.Core
             this.TextEncoding = Encoding.ASCII;
             this.RegisterValues = new SortedList<Address, List<UserRegisterValue>>();
             this.Segments = new List<UserSegment>();
+            this.ProcedureSourceFiles = new Dictionary<Address, string>();
         }
 
         // 'Oracular' information provided by the user.
@@ -93,6 +94,15 @@ namespace Reko.Core
         /// If set, extract any embedded resources.
         /// </summary>
         public bool ExtractResources { get; set; }
+
+        /// <summary>
+        /// Optionally maps a procedure (address) to the source code file in which its output 
+        /// is to be placed.
+        /// </summary>
+        /// <remarks>
+        /// The source file names are absolute paths.
+        /// </remarks>
+        public Dictionary<Address, string> ProcedureSourceFiles { get; set; }
     }
 
     public class Annotation

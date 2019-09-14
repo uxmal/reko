@@ -25,7 +25,9 @@ using System.IO;
 using System.Threading;
 using Reko.Core.Output;
 using Reko.Core.Services;
+using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Reko
 {
@@ -37,7 +39,7 @@ namespace Reko
         void WriteDisassembly(Program program, Action<string, Formatter> writer);
         void WriteIntermediateCode(Program program, Action<string, TextWriter> writer);
         void WriteTypes(Program program, Action<string, TextWriter> writer);
-        void WriteDecompiledCode(Program program, Action<string, TextWriter> writer);
+        void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer);
         void WriteGlobals(Program program, Action<string, TextWriter> writer);
     }
 
@@ -69,9 +71,9 @@ namespace Reko
             writer("", TextWriter.Null);
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
         {
-            writer("", TextWriter.Null);
+            writer("", program.Procedures.Values, TextWriter.Null);
         }
 
         public void WriteGlobals(Program program, Action<string, TextWriter> writer)
@@ -131,13 +133,29 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
         {
-            var srcFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".c");
-            var srcPath = Path.Combine(program.SourceDirectory, srcFilename);
-            using (TextWriter output = CreateTextWriter(srcPath))
+            var defaultFileName = Path.ChangeExtension(Path.GetFileName(program.Filename), ".c");
+            var defaultPath = Path.Combine(program.SourceDirectory, defaultFileName);
+            var procFiles =
+               (from proc in program.Procedures.Values
+                join file in program.User.ProcedureSourceFiles on proc.EntryAddress equals file.Key into files
+                from file in files.DefaultIfEmpty()
+                select new { file = file.Value ?? defaultPath, proc } into files
+                group files by files.file into g
+                select new {
+                    file = g.Key,
+                    procs = g
+                        .Select(gg => gg.proc)
+                        .OrderBy(gg => gg.EntryAddress)
+                }).ToList();
+
+            foreach (var item in procFiles)
             {
-                writer(srcFilename, output);
+                using (TextWriter output = CreateTextWriter(item.file))
+                {
+                    writer(defaultFileName, item.procs, output);
+                }
             }
         }
 
@@ -147,7 +165,7 @@ namespace Reko
             var globalsPath = Path.Combine(program.SourceDirectory, globalsFilename);
             using (TextWriter output = CreateTextWriter(globalsPath))
             {
-                writer(globalsPath, output);
+                writer(globalsFilename, output);
             }
         }
     }

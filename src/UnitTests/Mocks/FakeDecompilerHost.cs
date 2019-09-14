@@ -62,9 +62,9 @@ namespace Reko.UnitTests.Mocks
             writer("test.h", typesWriter);
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
         {
-            writer("test.c", decompiled);
+            writer("test.c", new Procedure[0], decompiled);
         }
 
         public void WriteGlobals(Program program, Action<string, TextWriter> writer)

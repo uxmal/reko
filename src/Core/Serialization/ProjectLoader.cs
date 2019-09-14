@@ -292,7 +292,7 @@ namespace Reko.Core.Serialization
                     ?? new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
             }
-            LoadUserData(sUser, program, program.User);
+            LoadUserData(sUser, program, program.User, projectFilePath);
             program.Filename = binAbsPath;
             program.DisassemblyDirectory = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyDirectory);
             program.SourceDirectory = ConvertToAbsolutePath(projectFilePath, sInput.SourceDirectory);
@@ -307,7 +307,7 @@ namespace Reko.Core.Serialization
         public Program VisitInputFile(string projectFilePath, DecompilerInput_v4 sInput)
         {
             var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
-            var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
+            var bytes = loader.LoadImageBytes(binAbsPath, 0);
             var sUser = sInput.User ?? new UserData_v4
             {
                 ExtractResources = true,
@@ -336,7 +336,7 @@ namespace Reko.Core.Serialization
                     ?? new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
             }
-            LoadUserData(sUser, program, program.User);
+            LoadUserData(sUser, program, program.User, projectFilePath);
             program.Filename = binAbsPath;
             program.DisassemblyDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.DisassemblyFilename));
             program.SourceDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.OutputFilename));
@@ -412,7 +412,7 @@ namespace Reko.Core.Serialization
         /// <param name="sUser"></param>
         /// <param name="program"></param>
         /// <param name="user"></param>
-        public void LoadUserData(UserData_v4 sUser, Program program, UserData user)
+        public void LoadUserData(UserData_v4 sUser, Program program, UserData user, string projectFilePath)
         {
             if (sUser == null)
                 return;
@@ -437,6 +437,9 @@ namespace Reko.Core.Serialization
                     .Select(sup => LoadUserProcedure_v1(program, sup))
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
+                user.ProcedureSourceFiles = user.Procedures
+                    .Where(kv => !string.IsNullOrEmpty(kv.Value.OutputFile))
+                    .ToDictionary(kv => kv.Key, kv => ConvertToAbsolutePath(projectFilePath, kv.Value.OutputFile));
             }
             if (sUser.GlobalData != null)
             {

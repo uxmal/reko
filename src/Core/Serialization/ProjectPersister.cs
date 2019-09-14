@@ -41,9 +41,9 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public string ConvertToAbsolutePath(string projectAbsPath, string projectRelative)
         {
-            if (string.IsNullOrEmpty(projectRelative))
-                return projectRelative;
             var dir = Path.GetDirectoryName(projectAbsPath);
+            if (string.IsNullOrEmpty(projectRelative))
+                return dir;
             var combined = Path.Combine(dir, projectRelative);
             return Path.GetFullPath(combined);
         }

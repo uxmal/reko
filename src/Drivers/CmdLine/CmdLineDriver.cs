@@ -149,7 +149,9 @@ namespace Reko.CmdLine
             pArgs.TryGetValue("--loader", out object loader);
             try
             {
-                if (!decompiler.Load((string) pArgs["filename"], (string) loader))
+                var fileName = (string) pArgs["filename"];
+                var filePath = Path.GetFullPath(fileName);
+                if (!decompiler.Load(filePath, (string) loader))
                     return;
 
                 decompiler.Project.Programs[0].User.ExtractResources =

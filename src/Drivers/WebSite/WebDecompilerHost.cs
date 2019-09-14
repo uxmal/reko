@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Output;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Web;
@@ -110,7 +111,7 @@ namespace Reko.WebSite
             throw new NotImplementedException();
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
