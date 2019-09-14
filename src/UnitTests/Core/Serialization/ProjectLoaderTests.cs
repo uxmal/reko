@@ -60,7 +60,22 @@ namespace Reko.UnitTests.Core.Serialization
             this.sc = new ServiceContainer();
             this.cfgSvc = new Mock<IConfigurationService>();
             this.listener = new Mock<DecompilerEventListener>();
-            this.sc.AddService<IConfigurationService>(cfgSvc.Object);
+            this.sc.AddService(cfgSvc.Object);
+        }
+
+        private string AbsolutePathEndingWith(params string [] dirs)
+        {
+            var relativePath = Path.Combine(dirs);
+            if (Path.DirectorySeparatorChar == '/')
+            {
+                // Un*x
+                return $"/{relativePath.Replace('\\', '/')}";
+            }
+            else
+            {
+                // Windows
+                return $@"c:\{relativePath}";
+            }
         }
 
         private void Given_TestArch()
@@ -709,7 +724,7 @@ namespace Reko.UnitTests.Core.Serialization
                                 new Procedure_v1
                                 {
                                     Address = "00123400",
-                                    OutputFile = "src/bar.c"
+                                    OutputFile = Path.Combine("src","bar.c")
                                 }
                             }
                         }
@@ -723,11 +738,11 @@ namespace Reko.UnitTests.Core.Serialization
             platform.Setup(p => p.TryParseAddress("00123400", out addr)).Returns(true);
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var prj = prld.LoadProject(Path.Combine("c:\\foo\\foo.dcproject"), sProject);
+            var prj = prld.LoadProject(this.AbsolutePathEndingWith("foo","foo.dcproject"), sProject);
 
             var u = prj.Programs[0].User;
             var placement = u.ProcedureSourceFiles[addr];
-            Assert.AreEqual("c:\\foo\\src\\bar.c", placement);
+            Assert.AreEqual(this.AbsolutePathEndingWith("foo","src","bar.c"), placement);
         }
     }
 }
