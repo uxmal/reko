@@ -37,6 +37,8 @@ namespace Reko.Core.Machine
 
         public BitfieldDecoder(Bitfield[] bitfields, string tag, Decoder<TDasm, TMnemonic, TInstr>[] decoders)
         {
+            Debug.Assert(1 << bitfields.Sum(b => b.Length) == decoders.Length,
+                $"Expected {1 << bitfields.Sum(b => b.Length)} decoders but found {decoders.Length}.");
             this.bitfields = bitfields;
             this.decoders = decoders;
             this.tag = tag;
