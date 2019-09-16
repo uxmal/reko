@@ -32,8 +32,6 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.PaRisc
 {
-    using Decoder = Decoder<PaRiscDisassembler, Opcode, PaRiscInstruction>;
-
     public class PaRiscDisassembler : DisassemblerBase<PaRiscInstruction>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
@@ -1270,7 +1268,39 @@ namespace Reko.Arch.PaRisc
         private static readonly Func<bool, uint, Bitfield[], uint> low_sign_ext5 = low_sign_ext(5);
         private static readonly Func<bool, uint, Bitfield[], uint> low_sign_ext11 = low_sign_ext(11);
 
-        private class InstrDecoder : Decoder<PaRiscDisassembler, Opcode, PaRiscInstruction>
+        /// <summary>
+        /// Decoders analyze the 32-bit instruction word and generate a disassembled instruction.
+        /// </summary>
+        private abstract class Decoder
+        {
+            public abstract PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm);
+
+            public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
+            {
+                var hibit = 0x80000000u;
+                var sb = new StringBuilder();
+                for (int i = 0; i < 32; ++i)
+                {
+                    if ((shMask & hibit) != 0)
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
+                    }
+                    else
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
+                    }
+                    shMask <<= 1;
+                    wInstr <<= 1;
+                }
+                if (!string.IsNullOrEmpty(tag))
+                {
+                    sb.AppendFormat(" {0}", tag);
+                }
+                Debug.Print(sb.ToString());
+            }
+        }
+
+        private class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
             private readonly Opcode opcode;
@@ -1327,6 +1357,31 @@ namespace Reko.Arch.PaRisc
                 DumpMaskedInstruction(uInstr, bitfield.Mask << bitfield.Position, "");
                 uint code = bitfield.Read(uInstr);
                 return decoders[code].Decode(uInstr, dasm);
+            }
+        }
+
+        private class ConditionalDecoder : Decoder
+        {
+            private readonly Bitfield field;
+            private readonly Predicate<uint> predicate;
+            private readonly Decoder trueDecoder;
+            private readonly Decoder falseDecoder;
+
+            public ConditionalDecoder(int bitPos, int bitLength, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
+            {
+                this.field = BeField(bitPos, bitLength);
+                this.predicate = predicate;
+                this.trueDecoder = trueDecoder;
+                this.falseDecoder = falseDecoder;
+            }
+
+            public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
+            {
+                DumpMaskedInstruction(uInstr, field.Mask << field.Position, "");
+                var u = field.Read(uInstr);
+                var cond = predicate(u);
+                var decoder = cond ? trueDecoder : falseDecoder;
+                return decoder.Decode(uInstr, dasm);
             }
         }
 
@@ -1412,15 +1467,14 @@ namespace Reko.Arch.PaRisc
             return new MaskDecoder(BeField(bitPos, bitLength), decoders);
         }
 
-        private static ConditionalDecoder<PaRiscDisassembler, Opcode, PaRiscInstruction> Cond(
+        private static ConditionalDecoder Cond(
             int bitPos,
             int bitLength,
             Predicate<uint> predicate,
             Decoder trueDecoder,
             Decoder falseDecoder)
         {
-            var fields = new[] { new Bitfield(bitPos, bitLength) };
-            return new ConditionalDecoder<PaRiscDisassembler, Opcode, PaRiscInstruction>(fields, predicate, "", trueDecoder, falseDecoder);
+            return new ConditionalDecoder(bitPos, bitLength, predicate, trueDecoder, falseDecoder);
         }
 
         private static NyiDecoder Nyi(string message)
