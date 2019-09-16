@@ -30,196 +30,16 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
 {
+    using Decoder = Reko.Core.Machine.Decoder<T32Disassembler, Opcode, AArch32Instruction>;
+
     public partial class T32Disassembler
     {
         #region Decoder classes
 
         /// <summary>
-        /// A decoder is responsible for picking apart the bits of a machine language instruction
-        /// and interpreting in the correct way.
-        /// </summary>
-        private abstract class Decoder
-        {
-            public abstract AArch32Instruction Decode(T32Disassembler dasm, uint wInstr);
-
-            [Conditional("DEBUG")]
-            protected void DumpMaskedInstruction(uint wInstr, uint shMask, Opcode opcode)
-            {
-                TraceDecoder(wInstr, shMask, opcode.ToString());
-            }
-
-            [Conditional("DEBUG")]
-            public static void TraceDecoder(uint wInstr, Bitfield[] bitfields, string debugString)
-            {
-                var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
-                TraceDecoder(wInstr, shMask, debugString);
-            }
-
-            [Conditional("DEBUG")]
-            public static void TraceDecoder(uint wInstr, int shift, uint mask, string debugString)
-            {
-                var shMask = mask << shift;
-                TraceDecoder(wInstr, shMask, debugString);
-            }
-
-            [Conditional("DEBUG")]
-            public static void TraceDecoder(uint wInstr, uint shMask, string debugString)
-            {
-                //return;
-                var hibit = 0x80000000u;
-                var sb = new StringBuilder();
-                for (int i = 0; i < 32; ++i)
-                {
-                    if ((shMask & hibit) != 0)
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
-                    }
-                    else
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
-                    }
-                    shMask <<= 1;
-                    wInstr <<= 1;
-                }
-                if (!string.IsNullOrEmpty(debugString))
-                {
-                    sb.AppendFormat(" {0}", debugString);
-                }
-                Debug.Print(sb.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Shifts the machine code instruction by a given shift amount and masks it
-        /// with a bit mask. The result extracted bitfield is then used as an index into
-        /// sub-decoders. 
-        /// </summary>
-        private class MaskDecoder : Decoder
-        {
-            private readonly Decoder[] decoders;
-            private readonly int shift;
-            private readonly uint mask;
-            private readonly string debugString;
-
-            public MaskDecoder(int shift, uint mask, params Decoder[] decoders)
-            {
-                Debug.Assert(decoders == null || (int)(mask + 1) == decoders.Length, $"shift: {shift}, mask: {mask}, decoders: {decoders.Length}");
-                this.shift = shift;
-                this.mask = mask;
-                this.decoders = decoders;
-            }
-
-            public MaskDecoder(int shift, uint mask, string debugString, params Decoder[] decoders) 
-                : this(shift, mask, decoders)
-            {
-                this.debugString = debugString;
-            }
-
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
-            {
-                TraceDecoder(wInstr, shift, mask, debugString);
-                var op = (wInstr >> shift) & mask;
-                return decoders[op].Decode(dasm, wInstr);
-            }
-        }
-
-        private class BitFieldsDecoder : Decoder
-        {
-            private readonly Bitfield[] bitfields;
-            private readonly Decoder[] decoders;
-            private readonly string tag;
-
-            public BitFieldsDecoder(Bitfield [] bitfields, string tag, params Decoder[] decoders)
-            {
-                this.bitfields = bitfields;
-                this.tag = tag;
-                this.decoders = decoders;
-            }
-
-            public BitFieldsDecoder(string fieldSpecifier, params Decoder[] decoders)
-            {
-                this.decoders = decoders;
-
-                int i = 0;
-                var list = new List<Bitfield>();
-                do
-                {
-                    int pos = ReadDecimal(fieldSpecifier, ref i);
-                    Expect(':', fieldSpecifier, ref i); ;
-                    int size = ReadDecimal(fieldSpecifier, ref i);
-                    var subMask = (1u << size) - 1u;
-                    list.Add(new Bitfield(pos, size));
-                } while (PeekAndDiscard(':', fieldSpecifier, ref i));
-                this.bitfields = list.ToArray();
-            }
-
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
-            {
-                TraceDecoder(wInstr, bitfields, tag);
-                var val = Bitfield.ReadFields(this.bitfields, wInstr);
-                return decoders[val].Decode(dasm, wInstr);
-            }
-        }
-
-        /// <summary>
-        /// This decoder selected one of two sub-decoders based on the outcome of the predicate.
-        /// </summary>
-        private class SelectDecoder : Decoder
-        {
-            private readonly Func<uint, bool> predicate;
-            private readonly Decoder trueDecoder;
-            private readonly Decoder falseDecoder;
-
-            public SelectDecoder(Func<uint, bool> predicate,
-                Decoder trueDecoder,
-                Decoder falseDecoder)
-            {
-                this.predicate = predicate;
-                this.trueDecoder = trueDecoder;
-                this.falseDecoder = falseDecoder;
-            }
-
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
-            {
-                return (predicate(wInstr) ? trueDecoder : falseDecoder).Decode(dasm, wInstr);
-            }
-        }
-
-        private class SelectFieldDecoder : Decoder
-        {
-            private readonly Bitfield[] fieldSpecifier;
-            private readonly Func<uint, bool> predicate;
-            private readonly Decoder trueDecoder;
-            private readonly Decoder falseDecoder;
-            private readonly string tag;
-
-            public SelectFieldDecoder(
-                Bitfield[] fieldSpecifier,
-                Func<uint, bool> predicate,
-                string tag,
-                Decoder trueDecoder,
-                Decoder falseDecoder)
-            {
-                this.fieldSpecifier = fieldSpecifier;
-                this.predicate = predicate;
-                this.tag = tag;
-                this.trueDecoder = trueDecoder;
-                this.falseDecoder = falseDecoder;
-            }
-
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
-            {
-                TraceDecoder(wInstr, fieldSpecifier, tag);
-                var n = Bitfield.ReadFields(fieldSpecifier, wInstr);
-                var decoder = (predicate(n) ? trueDecoder : falseDecoder);
-                return decoder.Decode(dasm, wInstr);
-            }
-        }
-
-        /// <summary>
         /// Reads in the extra 16 bits needed for a 32-bit T32 instruction.
         /// </summary>
-        private class LongDecoder : Decoder
+        private class LongDecoder : Decoder<T32Disassembler, Opcode, AArch32Instruction>
         {
             private readonly Decoder[] decoders;
 
@@ -228,13 +48,13 @@ namespace Reko.Arch.Arm.AArch32
                 this.decoders = decoders;
             }
 
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadLeUInt16(out var wNext))
                     return null;
                 wInstr = (wInstr << 16) | wNext;
-                TraceDecoder(wInstr, 9 + 16, 0xF, null);
-                return decoders[SBitfield(wInstr, 9 + 16, 4)].Decode(dasm, wInstr);
+                DumpMaskedInstruction(wInstr, 0xF << (9 + 16), "");
+                return decoders[SBitfield(wInstr, 9 + 16, 4)].Decode(wInstr, dasm);
             }
         }
 
@@ -259,7 +79,7 @@ namespace Reko.Arch.Arm.AArch32
                 this.mutators = mutators;
             }
 
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 DumpMaskedInstruction(wInstr, 0, this.opcode);
                 dasm.state.opcode = this.opcode;
@@ -280,7 +100,7 @@ namespace Reko.Arch.Arm.AArch32
         // Decodes the T1 BL instruction
         private class BlDecoder : Decoder
         {
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 var s = SBitfield(wInstr, 10 + 16, 1);
                 var i1 = 1 & ~(SBitfield(wInstr, 13, 1) ^ s);
@@ -301,7 +121,7 @@ namespace Reko.Arch.Arm.AArch32
         // Decodes 16-bit LDM* STM* instructions
         private class LdmStmDecoder16 : Decoder
         {
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 var rn = Registers.GpRegs[SBitfield(wInstr, 8, 3)];
                 var registers = (byte)wInstr;
@@ -331,7 +151,7 @@ namespace Reko.Arch.Arm.AArch32
                 this.opcode = opcode;
             }
 
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 var rn = Registers.GpRegs[SBitfield(wInstr, 16, 4)];
                 var registers = (ushort)wInstr;
@@ -373,9 +193,9 @@ namespace Reko.Arch.Arm.AArch32
             {
             }
 
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
-                var instr = base.Decode(dasm, wInstr);
+                var instr = base.Decode(wInstr, dasm);
                 if (instr.ops[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
                 {
                     instr.opcode = Opcode.mov;
@@ -387,7 +207,7 @@ namespace Reko.Arch.Arm.AArch32
         // Decodes IT instructions
         private class ItDecoder : Decoder
         {
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 var instr = new T32Instruction
                 {
@@ -411,10 +231,10 @@ namespace Reko.Arch.Arm.AArch32
             {
             }
 
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 // A hack -- we patch up the output of the regular decoder.
-                var instr = base.Decode(dasm, wInstr);
+                var instr = base.Decode(wInstr, dasm);
                 ImmediateOperand opLsb;
                 ImmediateOperand opMsb;
                 if (instr.ops.Length > 3)
@@ -433,22 +253,6 @@ namespace Reko.Arch.Arm.AArch32
                 else
                     instr.ops[2] = opWidth;
                 return instr;
-            }
-        }
-
-        private class NyiDecoder : Decoder
-        {
-            private readonly string message;
-
-            public NyiDecoder(string message)
-            {
-                this.message = message;
-            }
-
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
-            {
-                Debug.Print("NYI: {0}", message);
-                return dasm.NotYetImplemented(message, wInstr);
             }
         }
 

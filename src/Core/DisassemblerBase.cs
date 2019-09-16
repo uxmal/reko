@@ -36,6 +36,7 @@ namespace Reko.Core
     /// </summary>
     /// <typeparam name="TInstr"></typeparam>
     public abstract class DisassemblerBase<TInstr> : IDisposable, IEnumerable<TInstr>
+        where TInstr : MachineInstruction
     {
         public IEnumerator<TInstr> GetEnumerator()
         {
@@ -130,6 +131,89 @@ namespace Reko.Core
         }
 
         protected abstract TInstr CreateInvalidInstruction();
+
+        // Utility functions 
+
+        protected static MaskDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm, TMnemonic>(int bitPos, int bitLength, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
+            where TDasm : DisassemblerBase<TInstr>
+        {
+            return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPos, bitLength, "", decoders);
+        }
+
+        protected static MaskDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm, TMnemonic>(int bitPos, int bitLength, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
+            where TDasm : DisassemblerBase<TInstr>
+        {
+            return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPos, bitLength, tag, decoders);
+        }
+
+        protected static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm, TMnemonic>(int p1, int l1, int p2, int l2, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
+        {
+            return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(Bf((p1, l1), (p2, l2)), tag, decoders);
+        }
+
+        protected static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm, TMnemonic>(Bitfield[] bitfields, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
+        {
+            return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(bitfields, tag, decoders);
+        }
+
+        protected static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm, TMnemonic>(
+            Predicate<uint> predicate,
+            Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
+            Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
+        {
+            var fields = new[]
+            {
+                new Bitfield(0, 32, 0xFFFFFFFF)
+            };
+            return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, "", decoderTrue, decoderFalse);
+        }
+
+        protected static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm, TMnemonic>(
+            (int, int) fieldSpecifier, 
+            Predicate<uint> predicate, 
+            string tag, 
+            Decoder<TDasm, TMnemonic, TInstr> decoderTrue, 
+            Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
+        {
+            var fields = new[]
+            {
+                new Bitfield(fieldSpecifier.Item1, fieldSpecifier.Item2)
+            };
+            return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, tag, decoderTrue, decoderFalse);
+        }
+
+        protected static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm, TMnemonic>(
+            (int, int) fieldSpecifier, 
+            Predicate<uint> predicate,
+            Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
+            Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
+        {
+            var fields = new[]
+            {
+                new Bitfield(fieldSpecifier.Item1, fieldSpecifier.Item2)
+            };
+            return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, "", decoderTrue, decoderFalse);
+        }
+
+        protected static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm, TMnemonic>(
+            Bitfield[] fields,
+            Predicate<uint> predicate,
+            Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
+            Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
+        {
+            return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, "", decoderTrue, decoderFalse);
+        }
+
+        protected static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm, TMnemonic>(
+             Bitfield[] fields,
+             Predicate<uint> predicate,
+             string tag,
+             Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
+             Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
+        {
+            return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, tag, decoderTrue, decoderFalse);
+        }
+
 
         /// <summary>
         /// Compact way of creating an array of <see cref="Bitfield"/>.
