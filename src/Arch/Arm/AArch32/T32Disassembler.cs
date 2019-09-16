@@ -3064,7 +3064,6 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSimdLdStSingleStructureOneLane = Mask(Bf((5 + 16, 1), (10, 2), (8, 2)), "Advanced SIMD load/store single structure to one lane",
                 Instr(Opcode.vst1, vi10BHW_, DlistIdx1_7_1, MsingleElem),
-                Instr(Opcode.vst1, vi10BHW_, DlistIdx1_7_1, MsingleElem),
                 Instr(Opcode.vst2, nyi("single 2-element structure from one lane - T1")),
                 Instr(Opcode.vst3, nyi("single 3-element structure from one lane - T1")),
                 Instr(Opcode.vst4, nyi("single 4-element structure from one lane - T1")),
@@ -3350,7 +3349,6 @@ namespace Reko.Arch.Arm.AArch32
                     Select(Bf((10, 1), (8, 1), (4, 1)), n => n == 0, "op1:op2=0b1011",
                         Nyi("VCMLA"),
                         Coproc),
-                    Nyi("op1:op2=0b1011"),
 
                     Nyi("op1:op2=0b1100"),
                     Nyi("op1:op2=0b1101"),

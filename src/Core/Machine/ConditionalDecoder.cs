@@ -52,7 +52,7 @@ namespace Reko.Core.Machine
 
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
-            base.DumpMaskedInstruction(wInstr, this.bitfields, tag);
+            DumpMaskedInstruction(wInstr, this.bitfields, tag);
             uint n = Bitfield.ReadFields(bitfields, wInstr);
             var decoder = predicate(n) ? trueDecoder : falseDecoder;
             return decoder.Decode(wInstr, dasm);

@@ -39,18 +39,20 @@ namespace Reko.Core.Machine
         public abstract TInstr Decode(uint wInstr, TDasm dasm);
 
         [Conditional("DEBUG")]
-        protected void DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic)
+        public static void DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic)
         {
             DumpMaskedInstruction(wInstr, shMask, mnemonic.ToString());
         }
 
-        protected void DumpMaskedInstruction(uint wInstr, Bitfield[] bitfields, string tag)
+        [Conditional("DEBUG")]
+        public static void DumpMaskedInstruction(uint wInstr, Bitfield[] bitfields, string tag)
         {
             var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
             DumpMaskedInstruction(wInstr, shMask, tag);
         }
 
-        protected void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
+        [Conditional("DEBUG")]
+        public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
         {
             //return;
             var hibit = 0x80000000u;

@@ -278,7 +278,7 @@ namespace Reko.Arch.RiscV
 
         private static HashSet<uint> seen = new HashSet<uint>();
 
-        private RiscVInstruction NotYetImplemented(uint instr, string message)
+        private new RiscVInstruction NotYetImplemented(uint instr, string message)
         {
             if (!seen.Contains(instr))
             {
