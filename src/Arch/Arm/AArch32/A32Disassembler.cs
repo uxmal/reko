@@ -29,11 +29,12 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using static Reko.Arch.Arm.AArch32.A32Disassembler.Decoder;
 using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
 namespace Reko.Arch.Arm.AArch32
 {
+    using Decoder = Reko.Core.Machine.Decoder<A32Disassembler, Opcode, AArch32Instruction>;
+
     public partial class A32Disassembler : DisassemblerBase<AArch32Instruction>
     {
         private static readonly Decoder rootDecoder;
@@ -1521,118 +1522,6 @@ namespace Reko.Arch.Arm.AArch32
             return new InstrDecoder(opcode, InstrClass.Linear, vec, mutators);
         }
 
-        private static NyiDecoder nyi(string str)
-        {
-            return new NyiDecoder(str);
-        }
-
-        private static Decoder Mask(int sh, uint mask, params Decoder []decoders)
-        { 
-            return new MaskDecoder("", sh, mask, decoders);
-        }
-
-        private static Decoder Mask(int sh, uint mask, string tag, params Decoder[] decoders)
-        {
-            return new MaskDecoder(tag, sh, mask, decoders);
-        }
-
-        /// <summary>
-        /// Create a decoder for 2 bitfields.
-        /// </summary>
-        private static Decoder Mask(
-            int sh1, int len1,
-            int sh2, int len2,
-            string tag,
-            params Decoder[] decoders)
-        {
-            return new BitfieldDecoder(
-                tag,
-                new Bitfield[] {
-                    new Bitfield(sh1, len1),
-                    new Bitfield(sh2, len2),
-                }, decoders);
-        }
-
-        private static Decoder Mask(
-            int sh1, int len1,
-            int sh2, int len2,
-            params Decoder[] decoders)
-        {
-            return new BitfieldDecoder(
-                "",
-                new Bitfield[] {
-                    new Bitfield(sh1, len1),
-                    new Bitfield(sh2, len2),
-                }, decoders);
-        }
-
-        /// <summary>
-        /// Create a decoder for 3 bitfields.
-        /// </summary>
-        private static Decoder Mask(
-            int sh1, int len1,
-            int sh2, int len2,
-            int sh3, int len3,
-            params Decoder[] decoders)
-        {
-            return new BitfieldDecoder(
-                "",
-                new Bitfield[] {
-                    new Bitfield(sh1, len1),
-                    new Bitfield(sh2, len2),
-                    new Bitfield(sh3, len3),
-                }, decoders);
-        }
-
-        /// <summary>
-        /// Create a decoder for 3 bitfields.
-        /// </summary>
-        private static Decoder Mask(
-            int sh1, int len1,
-            int sh2, int len2,
-            int sh3, int len3,
-            string tag,
-            params Decoder[] decoders)
-        {
-            return new BitfieldDecoder(
-                tag,
-                new Bitfield[] {
-                    new Bitfield(sh1, len1),
-                    new Bitfield(sh2, len2),
-                    new Bitfield(sh3, len3),
-                }, decoders);
-        }
-
-        /// <summary>
-        /// Create a decoder for 4 bitfields.
-        /// </summary>
-        private static Decoder Mask(
-            int sh1, int len1, 
-            int sh2, int len2,
-            int sh3, int len3,
-            int sh4, int len4,
-            params Decoder [] decoders)
-        {
-            return new BitfieldDecoder(
-                "",
-                new Bitfield[] {
-                    new Bitfield(sh1, len1),
-                    new Bitfield(sh2, len2),
-                    new Bitfield(sh3, len3),
-                    new Bitfield(sh4, len4)
-                }, decoders);
-        }
-
-        private static Decoder SparseMask(int shift, uint mask, Dictionary<uint, Decoder> decoders)
-        {
-            return new SparseMaskDecoder(shift, mask, decoders, invalid);
-        }
-
-        private static Decoder SparseMask(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default)
-        {
-            return new SparseMaskDecoder(shift, mask, decoders, @default);
-        }
-
         private static Decoder Select(string tag, int shift, uint mask, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
         {
             return new SelectDecoder(tag, shift, mask, predicate, trueDecoder, falseDecoder);
@@ -1641,6 +1530,11 @@ namespace Reko.Arch.Arm.AArch32
         private static Decoder Select(int shift, uint mask, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
         {
             return new SelectDecoder("", shift, mask, predicate, trueDecoder, falseDecoder);
+        }
+
+        protected static NyiDecoder<A32Disassembler, Opcode, AArch32Instruction> nyi(string str)
+        {
+            return new NyiDecoder<A32Disassembler, Opcode, AArch32Instruction>(str);
         }
 
         static A32Disassembler()
@@ -1765,7 +1659,7 @@ namespace Reko.Arch.Arm.AArch32
             var Smull = Instr(Opcode.smull, s,r(3),r(4),r(0),r(2));
             var Smlal = Instr(Opcode.smlal, s,r(3),r(4),r(0),r(2));
 
-            var MultiplyAndAccumulate = new MaskDecoder(20, 0xF,
+            var MultiplyAndAccumulate = Mask(20, 4,
                Mul,
                Mul,
                Mla,
@@ -1798,35 +1692,35 @@ namespace Reko.Arch.Arm.AArch32
             var StrhRegister = Instr(Opcode.strh, r(3),M_(w2));
             var Strht = Instr(Opcode.strht, r(3),Mh(w2));
 
-            var LoadStoreDualHalfSbyteRegister = new MaskDecoder(24, 1,
-                new MaskDecoder(20, 0x3,
-                   new MaskDecoder(5, 3,
+            var LoadStoreDualHalfSbyteRegister = Mask(24, 1,
+                Mask(20, 2,
+                   Mask(5, 2,
                         invalid,
                         StrhRegister,
                         LdrdRegister,
                         StrdRegister),
-                    new MaskDecoder(5, 3,
+                    Mask(5, 2,
                         invalid,
                         LdrhRegister,
                         LdrsbRegister,
                         LdrshRegister),
-                    new MaskDecoder(5, 3,
+                    Mask(5, 2,
                         invalid,
                         Strht,
                         invalid,
                         invalid),
-                    new MaskDecoder(5, 3,
+                    Mask(5, 2,
                         invalid,
                         Ldrht,
                         Ldrsbt,
                         Ldrsht)),
-                new MaskDecoder(20, 1,
-                    new MaskDecoder(5, 3,
+                Mask(20, 1,
+                    Mask(5, 2,
                         invalid,
                         StrhRegister,
                         LdrdRegister,
                         StrdRegister),
-                    new MaskDecoder(5, 3,
+                    Mask(5, 2,
                         invalid,
                         LdrhRegister,
                         LdrsbRegister,
@@ -1843,43 +1737,43 @@ namespace Reko.Arch.Arm.AArch32
             var LdrsbImmediate = Instr(Opcode.ldrsb, r(3),Mh(s1));
             var LdrshImmediate = Instr(Opcode.ldrsh, r(3),Mh(s2));
 
-            var LoadStoreDualHalfSbyteImmediate = Mask(24, 1, 20, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1"LoadStoreDualHalfSbyteImmediate",
-                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=000 op2
+            var LoadStoreDualHalfSbyteImmediate = Mask(Bf((24, 1), (20, 2)), // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1"LoadStoreDualHalfSbyteImmediate",
+                    Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=000 op2
                         invalid,
                         StrhImmediate,
                         new PcDecoder(16, LdrdImmediate, LdrdLiteral),
                         StrdImmediate),
-                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=001 op2
+                    Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=001 op2
                         invalid,
                         new PcDecoder(16, LdrhImmediate, LdrhLiteral),
                         new PcDecoder(16, LdrsbImmediate, LdrsbLiteral),
                         new PcDecoder(16, LdrshImmediate, LdrshLiteral)),
-                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=010 op2
+                    Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=010 op2
                         invalid,
                         Strht,
                         new PcDecoder(16, LdrdImmediate, LdrdLiteral),
                         invalid),
-                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=011 op2
+                    Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=011 op2
                         invalid,
                         Ldrht,
                         Ldrsbt,
                         Ldrsht),
-                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=100 op2
+                    Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=100 op2
                         invalid,
                         StrhImmediate,
                         new PcDecoder(16, LdrdImmediate, LdrdLiteral),
                         StrdImmediate),
-                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=101 op2
+                    Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=101 op2
                         invalid,
                         new PcDecoder(16, LdrhImmediate, LdrhLiteral),
                         new PcDecoder(16, LdrsbImmediate, LdrsbLiteral),
                         new PcDecoder(16, LdrshImmediate, LdrshLiteral)),
-                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=110 op2
+                    Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=110 op2
                         invalid,
                         StrhImmediate,
                         new PcDecoder(16, LdrdImmediate, LdrdLiteral),
                         new PcDecoder(16, LdrshImmediate, LdrshLiteral)),
-                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=111 op2
+                    Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=111 op2
                         invalid,
                         new PcDecoder(16, LdrhImmediate, LdrhLiteral),
                         new PcDecoder(16, LdrsbImmediate, LdrsbLiteral),
@@ -1902,7 +1796,7 @@ namespace Reko.Arch.Arm.AArch32
                     {
                         if (pw != 1)
                         {
-                            new MaskDecoder(5, 3,
+                            Mask(5, 2,
                                 invalid,
                                 LdrhLiteral,
                                 LdrsbLiteral,
@@ -1917,49 +1811,49 @@ namespace Reko.Arch.Arm.AArch32
                 switch ((pw << 1) | o1)
                 {
                 case 0:
-                    return new MaskDecoder(5, 3,
+                    return Mask(5, 2,
                         invalid,
                         StrhImmediate,
                         LdrdImmediate,
                         StrdImmediate);
                 case 1:
-                    return new MaskDecoder(5, 3,
+                    return Mask(5, 2,
                         invalid,
                         LdrhImmediate,
                         LdrsbImmediate,
                         LdrshImmediate);
                 case 2:
-                    return new MaskDecoder(5, 3,
+                    return Mask(5, 2,
                         invalid,
                         Strht,
                         invalid,
                         invalid);
                 case 3:
-                    return new MaskDecoder(5, 3,
+                    return Mask(5, 2,
                         invalid,
                         Strht,
                         invalid,
                         invalid);
                 case 4:
-                    return new MaskDecoder(5, 3,
+                    return Mask(5, 2,
                         invalid,
                         StrhImmediate,
                         LdrdImmediate,
                         StrdImmediate);
                 case 5:
-                    return new MaskDecoder(5, 3,
+                    return Mask(5, 2,
                         invalid,
                         LdrhImmediate,
                         LdrsbImmediate,
                         LdrshImmediate);
                 case 6:
-                    return new MaskDecoder(5, 3,
+                    return Mask(5, 2,
                         invalid,
                         StrhImmediate,
                         LdrdImmediate,
                         StrdImmediate);
                 case 7:
-                    return new MaskDecoder(5, 3,
+                    return Mask(5, 2,
                         invalid,
                         LdrhImmediate,
                         LdrsbImmediate,
@@ -1968,7 +1862,7 @@ namespace Reko.Arch.Arm.AArch32
                 throw new InvalidOperationException("Impossible");
             });
 
-            var ExtraLoadStore = new MaskDecoder("ExtraLoadStore", 22, 1,
+            var ExtraLoadStore = Mask(22, 1, "ExtraLoadStore",
                 LoadStoreDualHalfSbyteRegister,
                 LoadStoreDualHalfSbyteImmediate);
 
@@ -1976,22 +1870,22 @@ namespace Reko.Arch.Arm.AArch32
             var Msr = Instr(Opcode.msr, SR,r(0));
             var MrsBanked = Instr(Opcode.mrs, rb(22,1,8,1,16,4), r(0));
             var MsrBanked = Instr(Opcode.msr, rb(22,1,8,1,16,4), r(0));
-            var MoveSpecialRegister = new MaskDecoder(21, 1,
-                new MaskDecoder(9, 1,
+            var MoveSpecialRegister = Mask(21, 1,
+                Mask(9, 1,
                     Mrs,
                     MrsBanked),
-                new MaskDecoder(9, 1,
+                Mask(9, 1,
                     Msr,
                     MsrBanked));
 
-            var CyclicRedundancyCheck = new MaskDecoder(21, 3,
-                new MaskDecoder(9, 1,
+            var CyclicRedundancyCheck = Mask(21, 2,
+                Mask(9, 1,
                     Instr(Opcode.crc32b, Rnp12, Rnp16, Rnp0),
                     Instr(Opcode.crc32cb, Rnp12, Rnp16, Rnp0)),
-                new MaskDecoder(9, 1,
+                Mask(9, 1,
                     Instr(Opcode.crc32h, Rnp12, Rnp16, Rnp0),
                     Instr(Opcode.crc32ch, Rnp12, Rnp16, Rnp0)),
-                new MaskDecoder(9, 1,
+                Mask(9, 1,
                     Instr(Opcode.crc32w, Rnp12, Rnp16, Rnp0),
                     Instr(Opcode.crc32cw, Rnp12, Rnp16, Rnp0)),
                 invalid);
@@ -2000,7 +1894,7 @@ namespace Reko.Arch.Arm.AArch32
             var Qsub = Instr(Opcode.qsub, r(3),r(0),r(4));
             var Qdadd = Instr(Opcode.qdadd, r(3),r(0),r(4));
             var Qdsub = Instr(Opcode.qdsub, r(3),r(0),r(4));
-            var IntegerSaturatingArithmetic = new MaskDecoder(21, 3,
+            var IntegerSaturatingArithmetic = Mask(21, 2,
                 Qadd,
                 Qsub,
                 Qdadd,
@@ -2010,7 +1904,7 @@ namespace Reko.Arch.Arm.AArch32
             var Bkpt = Instr(Opcode.bkpt, i(8,12,0,4));
             var Hvc = Instr(Opcode.hvc, i(8,12,0,4));
             var Smc = Instr(Opcode.smc, i(0,4));
-            var ExceptionGeneration = new MaskDecoder(21, 3,
+            var ExceptionGeneration = Mask(21, 2,
                 Hlt,
                 Bkpt,
                 Hvc,
@@ -2022,8 +1916,8 @@ namespace Reko.Arch.Arm.AArch32
             var Clz = Instr(Opcode.clz, r(3),r(0));
             var Eret = Instr(Opcode.eret, InstrClass.Transfer);
 
-            var ChangeProcessState = new MaskDecoder("Change Process State", 16, 1, // op
-                Mask(17, 0b111, "  imod:M",
+            var ChangeProcessState = Mask(16, 1, "Change Process State", 
+                Mask(17, 3, "  imod:M",
                     invalid,
                     Instr(Opcode.cps, i(0, 5)),
                     invalid,
@@ -2035,13 +1929,13 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.cpsid, i(0, 5))),
                 Select(4, 1, n => n == 0, Instr(Opcode.setend, E(9,1)), invalid));
 
-            var UncMiscellaneous = new MaskDecoder(22, 7,   // op0
+            var UncMiscellaneous = Mask(22, 3,   // op0
                 invalid,
                 invalid,
                 invalid,
                 invalid,
 
-                new MaskDecoder(20, 3,
+                Mask(20, 2,
                     Select(5, 1, n => n == 0, ChangeProcessState, invalid),
                     Select(4, 0xF, n => n == 0, Instr(Opcode.setpan, x("")), invalid),
                     invalid,
@@ -2050,8 +1944,8 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
-        var Miscellaneous = new MaskDecoder(21, 3,   // op0
-            new MaskDecoder(4, 7, // op1
+        var Miscellaneous = Mask(21, 2,   // op0
+            Mask(4, 3, // op1
                 MoveSpecialRegister,
                 invalid,
                 invalid,
@@ -2061,7 +1955,7 @@ namespace Reko.Arch.Arm.AArch32
                 IntegerSaturatingArithmetic,
                 invalid,
                 ExceptionGeneration),
-            new MaskDecoder(4, 7, // op1
+            Mask(4, 3, // op1
                 MoveSpecialRegister,
                 Bx,
                 Bxj,
@@ -2071,7 +1965,7 @@ namespace Reko.Arch.Arm.AArch32
                 IntegerSaturatingArithmetic,
                 invalid,
                 ExceptionGeneration),
-            new MaskDecoder(4, 7, // op1
+            Mask(4, 3, // op1
                 MoveSpecialRegister,
                 invalid,
                 invalid,
@@ -2081,7 +1975,7 @@ namespace Reko.Arch.Arm.AArch32
                 IntegerSaturatingArithmetic,
                 invalid,
                 ExceptionGeneration),
-            new MaskDecoder(4, 7, // op1
+            Mask(4, 3, // op1
                 MoveSpecialRegister,
                 Clz,
                 invalid,
@@ -2092,29 +1986,29 @@ namespace Reko.Arch.Arm.AArch32
                 Eret,
                 ExceptionGeneration));
 
-            var HalfwordMultiplyAndAccumulate = new MaskDecoder(21, 0x3,
-                Mask(5, 3,      // M:N
+            var HalfwordMultiplyAndAccumulate = Mask(21, 2,
+                Mask(5, 2,      // M:N
                     Instr(Opcode.smlabb, r(4),r(0),r(2),r(3)),
                     Instr(Opcode.smlatb, r(4),r(0),r(2),r(3)),
                     Instr(Opcode.smlabt, r(4),r(0),r(2),r(3)),
                     Instr(Opcode.smlatt, r(4),r(0),r(2),r(3))),
-                Mask(5, 3,
+                Mask(5, 2,
                     Instr(Opcode.smlawb, r(4),r(0),r(2),r(3)),
                     Instr(Opcode.smulwb, r(4),r(0),r(2)),
                     Instr(Opcode.smlawt, r(4),r(0),r(2),r(3)),
                     Instr(Opcode.smulwt, r(4),r(0),r(2))),
-                Mask(5, 3,
+                Mask(5, 2,
                     Instr(Opcode.smlalbb, r(3),r(4),r(0),r(2)),
                     Instr(Opcode.smlaltb, r(3),r(4),r(0),r(2)),
                     Instr(Opcode.smlalbt, r(3),r(4),r(0),r(2)),
                     Instr(Opcode.smlaltt, r(3),r(4),r(0),r(2))),
-                Mask(5, 3,
+                Mask(5, 2,
                     Instr(Opcode.smulbb, r(4),r(0),r(2)),
                     Instr(Opcode.smultb, r(4),r(0),r(2)),
                     Instr(Opcode.smulbt, r(4),r(0),r(2)),
                     Instr(Opcode.smultt, r(4),r(0),r(2))));
 
-            var IntegerDataProcessingImmShift = new MaskDecoder(21, 7,
+            var IntegerDataProcessingImmShift = Mask(21, 3,
                 Instr(Opcode.and, s,r(3),r(4),r(0),Shi),
                 Instr(Opcode.eor, s,r(3),r(4),r(0),Shi),
                 Instr(Opcode.sub, s,r(3),r(4),r(0),Shi),
@@ -2124,25 +2018,25 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.sbc, s,r(3),r(4),r(0),Shi),
                 Instr(Opcode.rsc, s,r(3),r(4),r(0),Shi));
 
-            var IntegerTestAndCompareImmShift = new MaskDecoder(21, 3,
+            var IntegerTestAndCompareImmShift = Mask(21, 2,
                 Instr(Opcode.tst, r(4),r(0),Shi),
                 Instr(Opcode.teq, r(4),r(0),Shi),
                 Instr(Opcode.cmp, r(4),r(0),Shi),
                 Instr(Opcode.cmn, r(4),r(0),Shi));
 
-            var LogicalArithmeticImmShift = new MaskDecoder(21, 3,
+            var LogicalArithmeticImmShift = Mask(21, 2,
                 Instr(Opcode.orr, s,r(3),r(4),r(0),Shi),
                 Instr(Opcode.mov, s,r(3),r(0),Shi,MovToShift),
                 Instr(Opcode.bic, s,r(3),r(4),r(0),Shi),
                 Instr(Opcode.mvn, s,r(3),r(0),Shi));
 
-            var DataProcessingImmediateShift = new MaskDecoder(23, 3,
+            var DataProcessingImmediateShift = Mask(23, 2,
                 IntegerDataProcessingImmShift, // 3 reg, imm shift
                 IntegerDataProcessingImmShift,
                 IntegerTestAndCompareImmShift,
                 LogicalArithmeticImmShift);
 
-            var IntegerDataProcessingRegShift = new MaskDecoder(21, 7,
+            var IntegerDataProcessingRegShift = Mask(21, 3,
                Instr(Opcode.and, s,r(3),r(4),r(0),Shr),
                Instr(Opcode.eor, s,r(3),r(4),r(0),Shr),
                Instr(Opcode.sub, s,r(3),r(4),r(0),Shr),
@@ -2152,25 +2046,25 @@ namespace Reko.Arch.Arm.AArch32
                Instr(Opcode.sbc, s,r(3),r(4),r(0),Shr),
                Instr(Opcode.rsc, s,r(3),r(4),r(0),Shr));
 
-            var IntegerTestAndCompareRegShift = new MaskDecoder(21, 3,
+            var IntegerTestAndCompareRegShift = Mask(21, 2,
                 Instr(Opcode.tst, r(4),r(0),Shr),
                 Instr(Opcode.teq, r(4),r(0),Shr),
                 Instr(Opcode.cmp, r(4),r(0),Shr),
                 Instr(Opcode.cmn, r(4),r(0),Shr));
 
-            var LogicalArithmeticRegShift = new MaskDecoder(21, 3,
+            var LogicalArithmeticRegShift = Mask(21, 2,
                 Instr(Opcode.orr, s,r(3),r(4),r(0),Shr),
                 Instr(Opcode.mov, s,r(4),r(0),Shr),
                 Instr(Opcode.bic, s,r(3),r(4),r(0),Shr),
                 Instr(Opcode.mvn, s,r(4),r(0),Shr));
 
-            var DataProcessingRegisterShift = new MaskDecoder(23, 3,
+            var DataProcessingRegisterShift = Mask(23, 2,
                 IntegerDataProcessingRegShift,
                 IntegerDataProcessingRegShift,
                 IntegerTestAndCompareRegShift,
                 LogicalArithmeticRegShift);
 
-            var IntegerDataProcessingTwoRegImm = new MaskDecoder(21, 7,
+            var IntegerDataProcessingTwoRegImm = Mask(21, 3,
                 Instr(Opcode.and, s,r(3),r(4),I),
                 Instr(Opcode.eor, s,r(3),r(4),I),
                 Instr(Opcode.sub, s,r(3),r(4),I),
@@ -2180,17 +2074,17 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.sbc, s,r(3),r(4),I),
                 Instr(Opcode.rsc, s,r(3),r(4),I));
 
-            var LogicalArithmeticTwoRegImm = new MaskDecoder(21, 3,
+            var LogicalArithmeticTwoRegImm = Mask(21, 2,
                 Instr(Opcode.orr, s,r(3),r(4),I),
                 Instr(Opcode.mov, s,r(3),I),
                 Instr(Opcode.bic, s,r(3),r(4),I),
                 Instr(Opcode.mvn, s,r(3),I));
 
-            var MoveHalfwordImm = new MaskDecoder(22, 1,
+            var MoveHalfwordImm = Mask(22, 1,
                Instr(Opcode.mov, r(3),Y),
                Instr(Opcode.movt, r(3),Yh));
 
-            var IntegerTestAndCompareOneRegImm = new MaskDecoder(21, 3,
+            var IntegerTestAndCompareOneRegImm = Mask(21, 2,
                 Instr(Opcode.tst, r(4),I),
                 Instr(Opcode.teq, r(4),I),
                 Instr(Opcode.cmp, r(4),I),
@@ -2238,10 +2132,10 @@ namespace Reko.Arch.Arm.AArch32
                 }
             });
 
-            var DataProcessingImmediate = Mask(23, 3, "Data processing immediate",
+            var DataProcessingImmediate = Mask(23, 2, "Data processing immediate",
                 IntegerDataProcessingTwoRegImm,
                 IntegerDataProcessingTwoRegImm,
-                new MaskDecoder(20, 3,
+                Mask(20, 2,
                     MoveHalfwordImm,
                     IntegerTestAndCompareOneRegImm,
                     MoveSpecialRegisterAndHints,
@@ -2259,7 +2153,7 @@ namespace Reko.Arch.Arm.AArch32
                     Select(20, 0b11001, n => n == 0b10000,
                         HalfwordMultiplyAndAccumulate,
                         DataProcessingImmediateShift),
-                    Mask(5, 3, "  op2:op4=11 op3",
+                    Mask(5, 2, "  op2:op4=11 op3",
                         Mask(24, 1, // DataProcessingAndMisc op0=0 op2=1 op4=1 op3=0b00 op1
                             MultiplyAndAccumulate,
                             SynchronizationPrimitives),
@@ -2275,7 +2169,7 @@ namespace Reko.Arch.Arm.AArch32
             var StrbImm = Instr(Opcode.strb, r(3),Mo(w1));
             var LdrbImm = Instr(Opcode.ldrb, r(3),Mo(w1));
             
-            var LoadStoreWordUnsignedByteImmLit = Mask(24, 1, 21, 1, 22, 1, 20, 1,
+            var LoadStoreWordUnsignedByteImmLit = Mask(Bf((24, 1),(21, 1), (22, 1), (20, 1)),
                 // PW=0b00 00
                 Instr(Opcode.str, r(3),Mo(w4)),
                 Select(16, 0xF, n => n != 0xF,
@@ -2317,7 +2211,7 @@ namespace Reko.Arch.Arm.AArch32
             var LdrtReg = Instr(Opcode.strt, r(3),Mx(w4));
             var StrbtReg = Instr(Opcode.strbt, r(3),Mx(w1));
             var LdrbtReg = Instr(Opcode.strbt, r(3),Mx(w1));
-            var LoadStoreWordUnsignedByteRegister = Mask(24, 1, 20, 3,  // P:o2:W:o1
+            var LoadStoreWordUnsignedByteRegister = Mask(Bf((24, 1), (20, 3)),  // P:o2:W:o1
                  StrReg,
                  LdrReg,
                  StrtReg,
@@ -2375,9 +2269,9 @@ namespace Reko.Arch.Arm.AArch32
             var Uhadd8 = Instr(Opcode.uhadd8, Rnp12, Rnp16, Rnp0);
             var Uhsub8 = Instr(Opcode.uhsub8, Rnp12, Rnp16, Rnp0);
 
-            var ParallelArithmetic = Mask(20, 7, "Parallel arithmetic",
+            var ParallelArithmetic = Mask(20, 3, "Parallel arithmetic",
                 invalid,
-                Mask(5, 7, "  001",
+                Mask(5, 3, "  001",
                     Sadd16,
                     Sasx,
                     Ssax,
@@ -2387,7 +2281,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid,
                     Ssub8),
-                Mask(5, 7, "  010",
+                Mask(5, 3, "  010",
                     Qadd16,
                     Qasx,
                     Qsax,
@@ -2397,7 +2291,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid,
                     QSub8),
-                Mask(5, 7, "  011",
+                Mask(5, 3, "  011",
                     Shadd16,
                     Shasx,
                     Shsax,
@@ -2408,7 +2302,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     Shsub8),
                 invalid,
-                Mask(5, 7, "  101",
+                Mask(5, 3, "  101",
                     Uadd16,
                     Uasx,
                     Usax,
@@ -2418,7 +2312,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid,
                     Usub8),
-                Mask(5, 7, "  110",
+                Mask(5, 3, "  110",
                     Uqadd16,
                     Uqasx,
                     Uqsax,
@@ -2428,7 +2322,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid,
                     Uqsub8),
-                Mask(5, 7, "  111",
+                Mask(5, 3, "  111",
                     Uhadd16,
                     Uhasx,
                     Uhsax,
@@ -2455,7 +2349,7 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.ssat, Rnp12, i(16, 5), Rnp0, Shi),
                 Instr(Opcode.usat, Rnp12, i(16, 5), Rnp0, Shi));
 
-            var ExtendAndAdd = Mask(20, 7, "Extend and add",
+            var ExtendAndAdd = Mask(20, 3, "Extend and add",
                 Select(16, 0xF, n => n != 0xF, 
                     Instr(Opcode.sxtab16, Rnp12,R16,Rnp0,ShR(10,2)), 
                     Instr(Opcode.sxtb16, Rnp12, R16, Rnp0, ShR(10, 2))),
@@ -2479,9 +2373,9 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.udf),
                 invalid);
 
-            var SignedMultiplyDivide = Mask(20, 0x7, "Signed multiply, Divide",
+            var SignedMultiplyDivide = Mask(20, 3, "Signed multiply, Divide",
                 new PcDecoder(12, 
-                    Mask(5, 0x7,
+                    Mask(5, 3,
                         Instr(Opcode.smlad, Rnp16,Rnp0,Rnp8,Rnp12),
                         Instr(Opcode.smladx, Rnp16, Rnp0, Rnp8, Rnp12),
                         Instr(Opcode.smlsd, Rnp16, Rnp0, Rnp8, Rnp12),
@@ -2491,7 +2385,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         invalid),
-                    Mask(5, 0x7,
+                    Mask(5, 3,
                         Instr(Opcode.smuad, Rnp16, Rnp0, Rnp8),
                         Instr(Opcode.smuadx, Rnp16, Rnp0, Rnp8),
                         Instr(Opcode.smusd, Rnp16, Rnp0, Rnp8),
@@ -2505,7 +2399,7 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 Select(5, 0x7, n => n != 0, invalid, Instr(Opcode.udiv, Rnp16, Rnp0, Rnp8)),
 
-                Mask(5, 0x7,
+                Mask(5, 3,
                     Instr(Opcode.smlald, Rnp16, Rnp0, Rnp8, Rnp12),
                     Instr(Opcode.smlaldx, Rnp16, Rnp0, Rnp8, Rnp12),
                     Instr(Opcode.smlsld, Rnp16, Rnp0, Rnp8, Rnp12),
@@ -2515,7 +2409,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid,
                     invalid),
-                Mask(5, 0x7,
+                Mask(5, 3,
                     new PcDecoder(12, 
                         Instr(Opcode.smmla, Rnp16, Rnp0, Rnp8, Rnp12), 
                         Instr(Opcode.smmul, Rnp16, Rnp0, Rnp8)),
@@ -2540,10 +2434,10 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.usada8, Rnp16, Rnp0, Rnp8, Rnp12),
                 Instr(Opcode.usad8, Rnp16,Rnp0,Rnp8));
 
-            var Media = Mask(23, 3, "Media",
+            var Media = Mask(23, 2, "Media",
                 ParallelArithmetic,
-                Mask(20, 7, "  op0=01",
-                    Mask(5, 7,  // op0=0b01_000
+                Mask(20, 3, "  op0=01",
+                    Mask(5, 3,  // op0=0b01_000
                         PkhbtPkhtb,
                         invalid,
                         PkhbtPkhtb,
@@ -2553,7 +2447,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.sel),
                         PkhbtPkhtb,
                         invalid),
-                    Mask(5, 7, "  0b01001",
+                    Mask(5, 3, "  0b01001",
                         invalid,
                         invalid,
                         invalid,
@@ -2563,7 +2457,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         invalid),
-                    Mask(5, 7,  // op0=0b01_010
+                    Mask(5, 3,  // op0=0b01_010
                         Saturate32Bit,
                         Saturate16Bit,
                         Saturate32Bit,
@@ -2573,7 +2467,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         Saturate32Bit,
                         invalid),
-                    Mask(5, 7,  // media op0=0b01011
+                    Mask(5, 3,  // media op0=0b01011
                         Saturate32Bit,
                         ReverseBitByte,
                         Saturate32Bit,
@@ -2584,7 +2478,7 @@ namespace Reko.Arch.Arm.AArch32
                         Saturate32Bit,
                         invalid),
 
-                    Mask(5, 7, "  op0=0b01100",
+                    Mask(5, 3, "  op0=0b01100",
                         Saturate32Bit,
                         Saturate16Bit,
                         Saturate32Bit,
@@ -2595,7 +2489,7 @@ namespace Reko.Arch.Arm.AArch32
                         Saturate32Bit,
                         invalid),
 
-                    Mask(5, 7, "media - 0b01101",
+                    Mask(5, 3, "media - 0b01101",
                         invalid,
                         invalid, 
                         invalid,
@@ -2605,7 +2499,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         invalid),
-                    Mask(5, 7, "media - 0b01110",
+                    Mask(5, 3, "media - 0b01110",
                         Saturate32Bit,
                         Saturate16Bit,
                         Saturate32Bit,
@@ -2615,7 +2509,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         Saturate32Bit,
                         invalid),
-                    Mask(5, 7,
+                    Mask(5, 3,
                         Saturate32Bit,
                         ReverseBitByte,
                         Saturate32Bit,
@@ -2626,8 +2520,8 @@ namespace Reko.Arch.Arm.AArch32
                         Saturate32Bit,
                         invalid)),
                 SignedMultiplyDivide,
-                Mask(20, 7, "  0b11???",
-                    Mask(5, 7, "media - 0b11000",
+                Mask(20, 3, "  0b11???",
+                    Mask(5, 3, "media - 0b11000",
                         UnsignedSumAbsoluteDifferences,
                         invalid,
                         invalid,
@@ -2637,7 +2531,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         invalid),
-                    Mask(5, 7, "  0b11001",
+                    Mask(5, 3, "  0b11001",
                         invalid,
                         invalid,
                         invalid,
@@ -2647,7 +2541,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         invalid),
-                    Mask(5, 7, "  0b11010",
+                    Mask(5, 3, "  0b11010",
                         invalid,
                         invalid,
                         BitfieldExtract,
@@ -2657,7 +2551,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         BitfieldExtract,
                         invalid),
-                    Mask(5, 7, "media - 0b11011",
+                    Mask(5, 3, "media - 0b11011",
                         invalid,
                         invalid,
                         BitfieldExtract,
@@ -2667,7 +2561,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         BitfieldExtract,
                         invalid),
-                    Mask(5, 7, "media - 0b11100",
+                    Mask(5, 3, "media - 0b11100",
                         BitfieldInsert,
                         invalid,
                         invalid,
@@ -2677,7 +2571,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         invalid),
-                    Mask(5, 7, "media - 0b11101",
+                    Mask(5, 3, "media - 0b11101",
                         BitfieldInsert,
                         invalid,
                         invalid,
@@ -2687,7 +2581,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         invalid),
-                    Mask(5, 7,
+                    Mask(5, 3,
                         invalid,
                         invalid,
                         BitfieldExtract,
@@ -2697,7 +2591,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         BitfieldExtract,
                         invalid),
-                    Mask(5, 7, // media - 0b11111
+                    Mask(5, 3, // media - 0b11111
                         invalid,
                         invalid,
                         BitfieldExtract,
@@ -2718,17 +2612,17 @@ namespace Reko.Arch.Arm.AArch32
             var LdmdbLDmea = Instr(Opcode.ldmdb, w(21), r(4),Mr(0,16));
             var StmibStmfa = Instr(Opcode.stmib, w(21), r(4),Mr(0,16));
             var LdmibLdmed = Instr(Opcode.ldmib, w(21), r(4),Mr(0,16));
-            var StmUser = Mask(23, 0b11,
+            var StmUser = Mask(23, 2,
                 Instr(Opcode.stmda, r(4), Mr(0, 16), u),
                 Instr(Opcode.stmdb, r(4), Mr(0, 16), u),
                 Instr(Opcode.stm, r(4), Mr(0, 16), u),
                 Instr(Opcode.stmib, r(4), Mr(0, 16), u));
-            var LdmUser = Mask(23, 0b11,
+            var LdmUser = Mask(23, 2,
                 Instr(Opcode.ldmda, r(4), Mr(0, 16), u),
                 Instr(Opcode.ldmdb, r(4), Mr(0, 16), u),
                 Instr(Opcode.ldm, r(4), Mr(0, 16), u),
                 Instr(Opcode.ldmib, r(4), Mr(0, 16), u));
-            var LoadStoreMultiple = Mask(22, 3, 20, 1, // P U op L
+            var LoadStoreMultiple = Mask(Bf((22, 3),(20, 1)), // P U op L
                     StmdaStmed,
                     LdmdaLdmfa,
                     Stm,
@@ -2758,41 +2652,40 @@ namespace Reko.Arch.Arm.AArch32
 
             bool validRfe(uint n) => n == 0x0A00;
 
-            var ExceptionSaveRestore = Mask(22, 7, // PUS"Exception Save/Restore",
-                new MaskDecoder(20, 1, // L
+            var ExceptionSaveRestore = Mask(22, 3, // PUS"Exception Save/Restore",
+                Mask(20, 1, // L
                     invalid,
                     Select(0, 0xFFFF, validRfe, Instr(Opcode.rfeda, w(21), Rnp16), invalid)),
-                new MaskDecoder(20, 1, // L
+                Mask(20, 1, // L
                     SrcSrsda,
                     invalid),
-                new MaskDecoder(20, 1, // L
+                Mask(20, 1, // L
                     invalid,
                     Select(0, 0xFFFF, validRfe, Instr(Opcode.rfeia, w(21), Rnp16), invalid)),
-                new MaskDecoder(20, 1, // L
+                Mask(20, 1, // L
                     SrcSrsda,
                     invalid),
 
-                new MaskDecoder(20, 1, // L
+                Mask(20, 1, // L
                     invalid,
                     Select(0, 0xFFFF, validRfe, Instr(Opcode.rfedb, w(21), Rnp16), invalid)),
-                new MaskDecoder(20, 1, // L
+                Mask(20, 1, // L
                     SrcSrsda,
                     invalid),
-                new MaskDecoder(20, 1, // L
+                Mask(20, 1, // L
                     invalid,
                     Select(0, 0xFFFF, validRfe, Instr(Opcode.rfeib, w(21), Rnp16), invalid)),
-                new MaskDecoder(20, 1, // L
+                Mask(20, 1, // L
                     SrcSrsda,
                     invalid));
 
             var BranchImmediate = new PcDecoder(28,
-                new MaskDecoder(24, 1,
+                Mask(24, 1,
                     Instr(Opcode.b, J),
                     Instr(Opcode.bl, J)),
                 Instr(Opcode.blx, X));
 
-            var Branch_BranchLink_BlockDataTransfer = new MaskDecoder("Branch_BranchLink_BlockDataTransfer",
-                25, 1,
+            var Branch_BranchLink_BlockDataTransfer = Mask(25, 1, "Branch_BranchLink_BlockDataTransfer",
                 new PcDecoder(28,
                     LoadStoreMultiple,
                     ExceptionSaveRestore),
@@ -2826,7 +2719,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.stc, CP(8),CR(12),Mi8(2,w4)),
                         nyi("SystemRegister_LdSt puw=110"),
                         nyi("SystemRegister_LdSt puw=111")),
-                    Mask(23, 2, 21, 1,
+                    Mask(Bf((23, 2), (21, 1)),
                         invalid,
                         nyi("SystemRegister_LdSt puw=001"),
                         Instr(Opcode.ldc, CP(8),CR(12),Mi8(2,w4)),
@@ -2843,19 +2736,19 @@ namespace Reko.Arch.Arm.AArch32
 
             var FloatingPointConvertToFixed =
                 Mask(16, 1, "1 10x signed",
-                    Mask(7, 3, "unsigned size:rounding",
+                    Mask(7, 2, "unsigned size:rounding",
                         Instr(Opcode.vcvt, U32F32, S12_22, S0_5),
                         Instr(Opcode.vcvtr, U32F32, S12_22, S0_5),
                         Instr(Opcode.vcvt, U32F64, S12_22, D5_0),
                         Instr(Opcode.vcvtr, U32F64, S12_22, D5_0)),
-                    Mask(7, 3, "signed size:rounding",
+                    Mask(7, 2, "signed size:rounding",
                         Instr(Opcode.vcvt, S32F32, S12_22, S0_5),
                         Instr(Opcode.vcvtr, S32F32, S12_22, S0_5),
                         Instr(Opcode.vcvt, S32F64, S12_22, D5_0),
                         Instr(Opcode.vcvtr, S32F64, S12_22, D5_0)));
 
-            var FloatingPointDataProcessing2regs = Mask(16, 0b1111, "Floating point data processing (2 registers)",
-                Mask(7, 0b111,  // size:o3
+            var FloatingPointDataProcessing2regs = Mask(16, 4, "Floating point data processing (2 registers)",
+                Mask(7, 3,  // size:o3
                     invalid,
                     invalid,
                     invalid,
@@ -2866,51 +2759,51 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vmov, F64, D22_12, D5_0),
                     Instr(Opcode.vabs, F64, D22_12, D5_0)),
                 Mask(7, 1,
-                    Mask(8, 3,
+                    Mask(8, 2,
                         invalid,
                         Instr(Opcode.vneg, F16, S12_22, S0_5),
                         Instr(Opcode.vneg, F32, S12_22, S0_5),
                         Instr(Opcode.vneg, F64, D22_12, D5_0)),
-                    Mask(8, 3,
+                    Mask(8, 2,
                         invalid,
                         Instr(Opcode.vsqrt, F16, S12_22, S0_5),
                         Instr(Opcode.vsqrt, F32, S12_22, S0_5),
                         Instr(Opcode.vsqrt, F64, D22_12, D5_0))),
 
-                Mask(7, 0b11, "  sz:o3",
+                Mask(7, 2, "  sz:o3",
                     Instr(Opcode.vcvtb, F32F16, S12_22, S0_5),
                     Instr(Opcode.vcvtt, F32F16, S12_22, S0_5),
                     Instr(Opcode.vcvtb, F64F16, D22_12, S0_5),
                     Instr(Opcode.vcvtt, F64F16, D22_12, S0_5)),
 
-                Mask(7, 0b11, "  sz:o3",
+                Mask(7, 2, "  sz:o3",
                     Instr(Opcode.vcvtb, F16F32, S12_22, S0_5),
                     Instr(Opcode.vcvtt, F16F32, S12_22, S0_5),
                     Instr(Opcode.vcvtb, F16F64, D22_12, S0_5),
                     Instr(Opcode.vcvtt, F16F64, D22_12, S0_5)),
 
                 Mask(7, 1,
-                    Mask(8, 3,
+                    Mask(8, 2,
                         invalid,
                         Instr(Opcode.vcmp, F16, S12_22, S0_5),
                         Instr(Opcode.vcmp, F32, S12_22, S0_5),
                         Instr(Opcode.vcmp, F64, D22_12, D5_0)),
-                    Mask(8, 3, 
+                    Mask(8, 2, 
                         invalid,
                         Instr(Opcode.vcmpe, F16, S12_22, S0_5),
                         Instr(Opcode.vcmpe, F32, S12_22, S0_5),
                         Instr(Opcode.vcmpe, F64, D22_12, D5_0))),
                 Select("vcmpe #0", 0, 0xF, u => u == 0,
-                    Mask(7, 0b11, "0101",
+                    Mask(7, 2, "0101",
                         Instr(Opcode.vcmp, F32, S12_22, Imm0_r32),
                         Instr(Opcode.vcmpe, F32, S12_22, Imm0_r32),
                         Instr(Opcode.vcmp, F64, D22_12, Imm0_r64),
                         Instr(Opcode.vcmpe, F64, D22_12, Imm0_r64)),
                     invalid),
                 nyi("Floating-point data-procesing (two registers) 0 110"),
-                Mask(6, 3, "Floating-point data-procesing (two registers) 0 111 - op3",
+                Mask(6, 2, "Floating-point data-procesing (two registers) 0 111 - op3",
                     invalid,
-                    Mask(8, 3, 
+                    Mask(8, 2, 
                         invalid,
                         Instr(Opcode.vrintx, F16, S12_22, S0_5),
                         Instr(Opcode.vrintx, F32, S12_22, S0_5),
@@ -2921,12 +2814,12 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vcvt, F32F64, S12_22, D5_0))),
 
                 Mask(7, 1,
-                    Mask(8, 3, 
+                    Mask(8, 2, 
                         invalid,
                         Instr(Opcode.vcvt, F16U16, S12_22, S0_5),
                         Instr(Opcode.vcvt, F32U32, S12_22, S0_5),
                         Instr(Opcode.vcvt, F64U32, D22_12, S0_5)),
-                    Mask(8, 3,
+                    Mask(8, 2,
                         invalid,
                         Instr(Opcode.vcvt, F16S16, S12_22, S0_5),
                         Instr(Opcode.vcvt, F32S32, S12_22, S0_5),
@@ -2940,72 +2833,72 @@ namespace Reko.Arch.Arm.AArch32
                 nyi("Floating-point data-procesing (two registers) 1 110"),
                 nyi("Floating-point data-procesing (two registers) 1 111"));
 
-            var FloatingPointDataProcessing3regs = Mask(23, 1, 20, 2, 6, 1, "Floating-point data-processing (three registers)",
-                Mask(8, 0x3,
+            var FloatingPointDataProcessing3regs = Mask(Bf((23, 1), (20, 2), (6, 1)), "Floating-point data-processing (three registers)",
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vmla, F16, S12_22, S16_7, S0_5),
                     Instr(Opcode.vmla, F32, S12_22, S16_7, S0_5),
                     Instr(Opcode.vmla, F64, D22_12,D7_16,D5_0)),
-                Mask(8, 0x3,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vmls, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vmls, F32, S12_22, S16_7,S0_5),
                     Instr(Opcode.vmls, F64, D22_12,D7_16,D5_0)),
-                Mask(8, 0x3,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vnmls, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmls, F32, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmls, F64, D22_12,D7_16,D5_0)),
-                Mask(8, 0x3,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vnmla, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmla, F32, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmla, F64, D22_12, D7_16, D5_0)),
 
-                Mask(8, 0x3, 
+                Mask(8, 2, 
                     invalid,
                     Instr(Opcode.vmul, F16, S12_22, S16_7, S0_5),
                     Instr(Opcode.vmul, F32, S12_22, S16_7, S0_5),
                     Instr(Opcode.vmul, F64, D22_12, D7_16, D5_0)),
-                Mask(8, 0x3,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vnmul, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmul, F32, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmul, F64, D22_12, D7_16, D5_0)),
-                Mask(8, 0x3,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vadd, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vadd, F32, S12_22, S16_7,S0_5),
                     Instr(Opcode.vadd, F64, D22_12, D7_16, D5_0)),
-                Mask(8, 0x3,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vsub, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vsub, F32, S12_22, S16_7,S0_5),
                     Instr(Opcode.vsub, F64, D22_12, D7_16, D5_0)),
 
-                Mask(8, 0x3,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vdiv, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vdiv, F32, S12_22, S16_7,S0_5),
                     Instr(Opcode.vdiv, F64, D22_12,D7_16,D5_0)),
                 invalid,
-                Mask(8, 0b11,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vfnms, F16, S12_22, S16_7, S0_5),
                     Instr(Opcode.vfnms, F32, S12_22, S16_7, S0_5),
                     Instr(Opcode.vfnms, F64, D22_12, D7_16, D5_0)),
-                Mask(8, 0b11,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vfnma, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vfnma, F32, S12_22, S16_7,S0_5),
                     Instr(Opcode.vfnma, F64, D22_12, D7_16, D5_0)),
 
-                Mask(8, 0b11,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vfma, F16, S12_22, S16_7, S0_5),
                     Instr(Opcode.vfma, F32, S12_22, S16_7, S0_5),
                     Instr(Opcode.vfma, F64, D22_12, D7_16, D5_0)),
-                Mask(8, 0b11,
+                Mask(8, 2,
                     invalid,
                     Instr(Opcode.vfms, F16, S12_22, S16_7, S0_5),
                     Instr(Opcode.vfms, F32, S12_22, S16_7, S0_5),
@@ -3102,7 +2995,7 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.vmrs, r(3), i(16,4)));
 
             var AdvancedSIMDandFloatingPoint32bitMove = Mask(8, 1, "Advanced SIMD and floating-point 32-bit move",
-                    Mask(21, 7,
+                    Mask(21, 3,
                         Instr(Opcode.vmov, S16_7,r(3)),
                         invalid,
                         invalid,
@@ -3122,22 +3015,22 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid,
 
-                Mask(8, 3, "PUWL: 0b0100",
+                Mask(8, 2, "PUWL: 0b0100",
                     invalid,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0100 size: 0b01"),
                     Instr(Opcode.vstmia, w(21), r(4), Ms(0, 16)),
                     Instr(Opcode.vstmia, w(21), r(4), Md(0, 16))),
-                Mask(8, 3, "PUWL: 0b0101",
+                Mask(8, 2, "PUWL: 0b0101",
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b01"),
                     Instr(Opcode.vldmia, w(21), r(4), Ms(0,16)),
                     Instr(Opcode.vldmia, w(21), r(4), Md(0,16))),
-                Mask(8, 3, "PUWL: 0b0110",
+                Mask(8, 2, "PUWL: 0b0110",
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b01"),
                     Instr(Opcode.vstmia, w(21), r(4), Ms(0,16)),
                     Instr(Opcode.vstmia, w(21), r(4), Md(0,16))),
-                Mask(8, 3, "PUWL: 0b0111",
+                Mask(8, 2, "PUWL: 0b0111",
                     invalid,
                     invalid,
                     Instr(Opcode.vldmia, w(21), r(4), Ms(0,16)),
@@ -3145,24 +3038,24 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vldmia, w(21), r(4), Md(0,16)),
                         FldmdbxFldmiax)),
 
-                Mask(8, 3, // size
+                Mask(8, 2, // size
                     invalid,
                     Instr(Opcode.vstr, I16, S12_22, Mi8(1, w2)),
                     Instr(Opcode.vstr, S12_22, Mi8(2, w4)),
                     Instr(Opcode.vstr, D22_12, Mi8(2, w8))),
-                Mask(8, 3, // size"AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1001",
+                Mask(8, 2, // size"AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1001",
                     invalid,
                     Instr(Opcode.vldr, I16, S12_22, Mi8(1, w2)),
                     Instr(Opcode.vldr, S12_22, Mi8(2, w4)),
                     Instr(Opcode.vldr, D22_12, Mi8(2, w8))),
-                Mask(8, 3, "   PUWL: 0b1010",
+                Mask(8, 2, "   PUWL: 0b1010",
                     invalid,
                     invalid,
                     Instr(Opcode.vstmdb, w(21), r(4), Ms(0,16)),
                     Mask(0, 1,
                         Instr(Opcode.vstmdb, w(21), r(4), Md(0,16)),
                         FldmdbxFldmiax)),
-                Mask(8, 3, // AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1011 size
+                Mask(8, 2, // AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1011 size
                     invalid,
                     invalid,
                     Instr(Opcode.vstmdb, w(21), r(4), Ms(0, 16)),
@@ -3170,12 +3063,12 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vldmdb, w(21), r(4), Md(0, 16)),
                         FldmdbxFldmiax)),
 
-                Mask(8, 3, // size
+                Mask(8, 2, // size
                     invalid,    
                     Instr(Opcode.vstr, I16, S12_22, Mi8(1,w2)),
                     Instr(Opcode.vstr, S12_22, Mi8(2,w4)),
                     Instr(Opcode.vstr, D22_12,Mi8(2,w8))),
-                Mask(8, 3, // size
+                Mask(8, 2, // size
                     invalid,
                     Instr(Opcode.vldr, I16, S12_22, Mi8(1,w2)),
                     Instr(Opcode.vldr, S12_22, Mi8(2,w4)),
@@ -3190,12 +3083,12 @@ namespace Reko.Arch.Arm.AArch32
                     Select("  opc2", 6, 0x3, n => n != 0,
                         invalid,
                         Mask(20, 1, "  op",
-                            Mask(8, 3, "  size",
+                            Mask(8, 2, "  size",
                                 invalid,
                                 invalid,
                                 Instr(Opcode.vmov, S_pair(0, 5), Rnp12, Rnp16),
                                 Instr(Opcode.vmov, D5_0, Rnp12, Rnp16)),
-                            Mask(8, 3, "  size",
+                            Mask(8, 2, "  size",
                                 invalid,
                                 invalid,
                                 Instr(Opcode.vmov, Rnp12, Rnp16, S_pair(0,5)),
@@ -3219,11 +3112,11 @@ namespace Reko.Arch.Arm.AArch32
             var Vaba = Instr(Opcode.vaba, viBHW_BHW_, q6, W22_12, W7_16, W5_0);
 
             var AdvancedSimd_ThreeRegisters = Mask(24, 1, "Advanced SIMD three registers of the same length",
-                Mask(8, 0b1111, "  U = 0",
+                Mask(8, 4, "  U = 0",
                     Mask(4, 1, "opc=0b0000 o1",
                         Instr(Opcode.vhadd, viBHW_BHW_, q6, W22_12, W7_16, W5_0),
                         Instr(Opcode.vqadd, viBHW_BHW_, q6, W22_12, W7_16, W5_0)),
-                    Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001
+                    Mask(20, 2, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=00 o1
                             Instr(Opcode.vrhadd, q6,viBHW_BHW_, W22_12, W7_16, W5_0),
                             Instr(Opcode.vand, q6, W22_12, W7_16, W5_0)),
@@ -3252,7 +3145,7 @@ namespace Reko.Arch.Arm.AArch32
                         Vaba),
 
                     Mask(4, 1, "  U = 0, opc=0b1000",
-                        Mask(20, 3,
+                        Mask(20, 2,
                             Instr(Opcode.vadd, I8, q6, W22_12, W7_16, W5_0),
                             Instr(Opcode.vadd, I16, q6, W22_12, W7_16, W5_0),
                             Instr(Opcode.vadd, I32, q6, W22_12, W7_16, W5_0),
@@ -3265,12 +3158,12 @@ namespace Reko.Arch.Arm.AArch32
 
                     Mask(6, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 
-                            Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=0
+                            Mask(20, 2, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=0
                                 Instr(Opcode.vpmax, S8, D22_12,D7_16,D5_0),
                                 Instr(Opcode.vpmax, S16, D22_12,D7_16,D5_0),
                                 Instr(Opcode.vpmax, S32, D22_12,D7_16,D5_0),
                                 invalid),
-                            Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=1
+                            Mask(20, 2, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=1
                                 Instr(Opcode.vpmin, S8, D22_12,D7_16,D5_0),
                                 Instr(Opcode.vpmin, S16, D22_12,D7_16,D5_0),
                                 Instr(Opcode.vpmin, S32, D22_12,D7_16,D5_0),
@@ -3280,7 +3173,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vqdmulh, q6, vis_HW_, W22_12,W7_16,W5_0),
                         Instr(Opcode.vpadd, I8, viBHW_, D22_12,D7_16,D5_0)),
 
-                    Mask(20, 0b11, "AdvancedSimd_ThreeRegisters - U = 0, opc=0b1100",
+                    Mask(20, 2, "AdvancedSimd_ThreeRegisters - U = 0, opc=0b1100",
                         Mask(4, 1, "  size=0x",
                             Instr(Opcode.sha1c, x("*")),
                             Vfma),
@@ -3305,11 +3198,11 @@ namespace Reko.Arch.Arm.AArch32
                             nyi("VMIN (floating point)"),
                             nyi("VRSQRTS")))),
 
-                Mask(8, 0xF, "  U = 1",
+                Mask(8, 4, "  U = 1",
                     Mask(4, 1, "  opc=0b0000 o1",
                         Instr(Opcode.vhadd, viBHW_BHW_, q6, W22_12, W7_16, W5_0),
                         Instr(Opcode.vqadd, viBHW_BHW_, q6, W22_12, W7_16, W5_0)),
-                    Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001
+                    Mask(20, 2, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1
                             Instr(Opcode.vrhadd, q6, viu(), W22_12, W7_16, W5_0),
                             Instr(Opcode.veor, q6, W22_12 ,W7_16,W5_0)),
@@ -3324,24 +3217,24 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vcge, viBHW_BHW_, q6,W22_12,W7_16,W5_0)),
 
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0100
-                        Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=0
+                        Mask(20, 2, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=0
                             Instr(Opcode.vshl, U8, q6, W22_12 ,W5_0,W7_16),
                             Instr(Opcode.vshl, U16, q6, W22_12 ,W5_0,W7_16),
                             Instr(Opcode.vshl, U32, q6, W22_12 ,W5_0,W7_16),
                             Instr(Opcode.vshl, U64, q6, W22_12 ,W5_0,W7_16)),
-                        Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=1
+                        Mask(20, 2, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=1
                             Instr(Opcode.vqshl, U8, q6, W22_12 ,W7_16,W5_0),
                             Instr(Opcode.vqshl, U16, q6, W22_12 ,W7_16,W5_0),
                             Instr(Opcode.vqshl, U32, q6, W22_12 ,W7_16,W5_0),
                             Instr(Opcode.vqshl, U64, q6, W22_12 ,W7_16,W5_0))),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0101"),
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110
-                        Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110 max
+                        Mask(20, 2, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110 max
                             Instr(Opcode.vmax, U8, q6, W22_12, W7_16, W5_0),
                             Instr(Opcode.vmax, U16, q6, W22_12, W7_16, W5_0),
                             Instr(Opcode.vmax, U32, q6, W22_12, W7_16, W5_0),
                             invalid),
-                        Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110 min
+                        Mask(20, 2, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110 min
                             Instr(Opcode.vmin, U8, q6, W22_12 ,W7_16,W5_0),
                             Instr(Opcode.vmin, U16, q6, W22_12 ,W7_16,W5_0),
                             Instr(Opcode.vmin, U32, q6, W22_12 ,W7_16,W5_0),
@@ -3351,7 +3244,7 @@ namespace Reko.Arch.Arm.AArch32
                         Vaba),
 
                     Mask(4, 1, "AdvancedSimd_ThreeRegisters - U = 1, opc=0b1000",
-                        Mask(20, 3,
+                        Mask(20, 2,
                             Instr(Opcode.vsub, I8, q6, W22_12, W7_16, W5_0),
                             Instr(Opcode.vsub, I16, q6, W22_12, W7_16, W5_0),
                             Instr(Opcode.vsub, I32, q6, W22_12, W7_16, W5_0),
@@ -3391,7 +3284,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var CoprocessorInstructionsAndSupervisorCall = Select("CoprocessorInstructionsAndSupervisorCall coproc=???x", 9, 0b111,
                 u => u == 5,
-                Mask(24, 0b11, "coproc=101x op1=??xxxx",
+                Mask(24, 2, "coproc=101x op1=??xxxx",
                     Select("op1=00?x?x", 21, 0b101, u => u == 0,
                         AdvancedSimd_LdSt_64bitmove,
                         AdvancedSimd_and_floatingpoint_LdSt),
@@ -3400,7 +3293,7 @@ namespace Reko.Arch.Arm.AArch32
                         FloatingPointDataProcessing,
                         AdvancedSIMDandFloatingPoint32bitMove),
                     Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0,24))),
-                Mask(24, 0b11, "coproc!=101x ??xxxx",
+                Mask(24, 2, "coproc!=101x ??xxxx",
                     Select("op1=00?x?x", 21, 0b101, u => u == 0,
                         SystemRegister_64bitMove,
                         Mask(20, 1,
@@ -3418,7 +3311,7 @@ namespace Reko.Arch.Arm.AArch32
                             Instr(Opcode.mrc, CP(8), i(21,3), r(3), CR(16), CR(0), i(5,3)))),
                     Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0,24))));
 
-            Decoder SystemRegister_AdvancedSimd_FloatingPoint = Mask(24, 3, "SystemRegister_AdvancedSimd_FloatingPoint",
+            Decoder SystemRegister_AdvancedSimd_FloatingPoint = Mask(24, 2, "SystemRegister_AdvancedSimd_FloatingPoint",
                 Select(9, 7, n => n == 7,
                     SystemRegister_LdSt_64bitMove,
                     new PcDecoder(28, 
@@ -3444,11 +3337,11 @@ namespace Reko.Arch.Arm.AArch32
                         Select(10, 3, n => n == 2, AdvancedSimd_TwoRegistersScalarExtension, invalid))),
                     Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0,24)));
 
-            var ConditionalDecoder = new CondMaskDecoder(25, 0x7,
+            var ConditionalDecoder = new CondMaskDecoder(25, 3, "",
                 DataProcessingAndMisc,
                 DataProcessingAndMisc,
                 LoadStoreWordUnsignedByteImmLit,
-                new MaskDecoder(4, 1,
+                Mask(4, 1,
                     LoadStoreWordUnsignedByteRegister,
                     Media),
                 Branch_BranchLink_BlockDataTransfer,
@@ -3458,7 +3351,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var VmullIntegerPolynomial = nyi("VmullIntegerPolynomial");
 
-            var AdvanceSimd_ThreeRegistersDifferentLength = Mask(8, 0xF, "AdvanceSimd_ThreeRegistersDifferentLength",
+            var AdvanceSimd_ThreeRegistersDifferentLength = Mask(8, 4, "AdvanceSimd_ThreeRegistersDifferentLength",
                     Instr(Opcode.vaddl, viBHW_BHW_, Q22_12, D7_16, D5_0),
                     Instr(Opcode.vaddw, viBHW_BHW_, Q22_12, D7_16, D5_0),
                     Instr(Opcode.vsubl, viBHW_BHW_, Q22_12, D7_16, D5_0),
@@ -3491,12 +3384,12 @@ namespace Reko.Arch.Arm.AArch32
 
             var VmlaByScalar = Instr(Opcode.vmla, q(24),W22_12, vi_HW_f_HS_, W22_12,W7_16,W5_0,Ix(5,1));
             var VmlsByScalar = Instr(Opcode.vmls, q(24),W22_12, vi_HW_f_HS_, W22_12,W7_16,W5_0,Ix(5,1));
-            var VmlalByScalar = Mask(20, 0b11, "vmlsl",
+            var VmlalByScalar = Mask(20, 2, "vmlsl",
                 invalid,
                 Instr(Opcode.vmlal, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 3), Ix((5, 1), (3, 1))),
                 Instr(Opcode.vmlal, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 4), Ix((5, 1))),
                 invalid);
-            var VmlslByScalar = Mask(20, 0b11, "vmlsl",
+            var VmlslByScalar = Mask(20, 2, "vmlsl",
                 invalid,
                 Instr(Opcode.vmlsl, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 3), Ix((5, 1), (3, 1))),
                 Instr(Opcode.vmlsl, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 4), Ix((5, 1))),
@@ -3511,7 +3404,7 @@ namespace Reko.Arch.Arm.AArch32
             var Vqrdmlah = nyi("vqrdmlah");
             var Vqrdmlsh = nyi("vqrdmlsh");
 
-            var AdvanceSimd_TwoRegistersScalar = Mask(8, 0b1111, "Advanced SIMD two registers and a scalar",
+            var AdvanceSimd_TwoRegistersScalar = Mask(8, 4, "Advanced SIMD two registers and a scalar",
                 VmlaByScalar,
                 VmlaByScalar,
                 VmlalByScalar,
@@ -3550,8 +3443,8 @@ namespace Reko.Arch.Arm.AArch32
             var Vcvt_between_fp_and_int = nyi("VCVT(between floating - point and integer, Advanced SIMD)");
 
 
-            var AdvancedSimd_TwoRegistersMisc = Mask(16, 0b11, "Advanced SIMD two registers misc",
-                Mask(7, 0b1111, "  opc1=00",
+            var AdvancedSimd_TwoRegistersMisc = Mask(16, 2, "Advanced SIMD two registers misc",
+                Mask(7, 4, "  opc1=00",
                     Instr(Opcode.vrev64, x("*")),
                     Instr(Opcode.vrev32, x("*")),
                     Instr(Opcode.vrev16, viBHW_, q6, W22_12,W5_0),
@@ -3575,7 +3468,7 @@ namespace Reko.Arch.Arm.AArch32
                     Vpadal,
                     Instr(Opcode.vqabs, x("*")),
                     Instr(Opcode.vqneg, x("*"))),
-                Mask(7, 0b111, "  opc1=01",
+                Mask(7, 3, "  opc1=01",
                     Instr(Opcode.vcgt, x("(immediate 0)")),
                     Instr(Opcode.vcge, x("(immediate 0)")),
                     Instr(Opcode.vceq, x("(immediate 0)")),
@@ -3590,7 +3483,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vabs, x("*")),
                     Instr(Opcode.vneg, x("*"))),
 
-                Mask(7, 0b1111, "  opc1=10",
+                Mask(7, 4, "  opc1=10",
                     Select("  size", 18, 0b11, n => n == 0,
                         Instr(Opcode.vswp, x("*")),
                         invalid),
@@ -3623,7 +3516,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid),
                     Instr(Opcode.vrintp, x("*"))),
 
-                Mask(7, 0b1111, "  opc1=11",
+                Mask(7, 4, "  opc1=11",
                     Vcvta,
                     Vcvta,
                     Vcvtn,
@@ -3655,7 +3548,7 @@ namespace Reko.Arch.Arm.AArch32
                 n => n == 0b11,
                 Mask(24, 1, "  op1=0b11",
                     Instr(Opcode.vext, U8, q6, W22_12, W7_16, W5_0, i(8, 4)),
-                    Mask(10, 0b11, "  op0=1",
+                    Mask(10, 2, "  op0=1",
                         AdvancedSimd_TwoRegistersMisc,
                         AdvancedSimd_TwoRegistersMisc,
                         Vtbl_vtbx,
@@ -3730,7 +3623,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vcvt, U32F32, q6, W22_12, W5_0, fbits)),
                 invalid);
 
-            var AdvancedSimd_TwoRegisterShiftAmount = Mask(8, 0b1111, "Advanced SIMD two registers and shift amount",
+            var AdvancedSimd_TwoRegisterShiftAmount = Mask(8, 4, "Advanced SIMD two registers and shift amount",
                 Instr(Opcode.vshr, q6, vsh_HWDD_size, W22_12, W5_0, vsh_HWDD_rev),
                 Instr(Opcode.vsra, q6, vsh_HWDD_size, W22_12, W5_0, vsh_HWDD_rev),
                 Mask(6, 1, "  Q",
@@ -3784,7 +3677,7 @@ namespace Reko.Arch.Arm.AArch32
                     AdvancedSimd_ShiftsAndImmediate));
 
             var AdvancedSimdLdStMultipleStructures = Mask(21, 1, "Advanced SIMD load/ store multiple structures",
-                Mask(8, 0b1111, "  L=0 type",
+                Mask(8, 4, "  L=0 type",
                     nyi("VST4(multiple 4 - element structures)"),
                     nyi("VST4(multiple 4 - element structures)"),
                     nyi("VST1(multiple single elements)"),
@@ -3804,7 +3697,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid,
                     invalid),
-                Mask(8, 0b1111, "  L=1 type",
+                Mask(8, 4, "  L=1 type",
                     Instr(Opcode.vld4, vi_ld4, Vel(4,1), Mve),
                     Instr(Opcode.vld4, vi_ld4, Vel(4,1), Mve),
                     nyi("VLD1(multiple single elements)"),
@@ -3826,44 +3719,44 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
             var AdvancedSimdLdStStoreSingleOneLane = Mask(21, 1, "Advanced SIMD load / store single structure to one lane",
-                Mask(8, 0b11, "  L=0",
-                    Mask(10, 0b11, "  N=00 size",
+                Mask(8, 2, "  L=0",
+                    Mask(10, 2, "  N=00 size",
                         Instr(Opcode.vst1, x("single element - A1")),
                         Instr(Opcode.vst1, x("single element - A2")),
                         Instr(Opcode.vst1, x("single element - A3")),
                         invalid),
-                    Mask(10, 0b11, "  N=01 size",
+                    Mask(10, 2, "  N=01 size",
                         nyi("VST2 (single 2-element structure from one lane) - A1"),
                         nyi("VST2 (single 2-element structure from one lane) - A2"),
                         nyi("VST2 (single 2-element structure from one lane) - A3"),
                         invalid),
-                    Mask(10, 0b11, "  N=10 size",
+                    Mask(10, 2, "  N=10 size",
                         nyi("VST3 (single 3-element structure from one lane) - A1"),
                         nyi("VST3 (single 3-element structure from one lane) - A2"),
                         nyi("VST3 (single 3-element structure from one lane) - A3"),
                         invalid),
-                    Mask(10, 0b11, "  N=11 size",
+                    Mask(10, 2, "  N=11 size",
                         nyi("VST4 (single 4-element structure from one lane) - A1"),
                         nyi("VST4 (single 4-element structure from one lane) - A2"),
                         nyi("VST4 (single 4-element structure from one lane) - A3"),
                         invalid)),
-                Mask(8, 0b11, "  L=1",
-                    Mask(10, 0b11, "  N=00 size",
+                Mask(8, 2, "  L=1",
+                    Mask(10, 2, "  N=00 size",
                         Instr(Opcode.vst1, x("single element - A1")),
                         Instr(Opcode.vst1, x("single element - A2")),
                         Instr(Opcode.vst1, x("single element - A3")),
                         invalid),
-                    Mask(10, 0b11, "  N=01 size",
+                    Mask(10, 2, "  N=01 size",
                         nyi("VLD2 (single 2-element structure from one lane) - A1"),
                         nyi("VLD2 (single 2-element structure from one lane) - A2"),
                         nyi("VLD2 (single 2-element structure from one lane) - A3"),
                         invalid),
-                    Mask(10, 0b11, "  N=10 size",
+                    Mask(10, 2, "  N=10 size",
                         nyi("VLD3 (single 3-element structure from one lane) - A1"),
                         nyi("VLD3 (single 3-element structure from one lane) - A2"),
                         nyi("VLD3 (single 3-element structure from one lane) - A3"),
                         invalid),
-                    Mask(10, 0b11, "  N=11 size",
+                    Mask(10, 2, "  N=11 size",
                         nyi("VLD4 (single 4-element structure from one lane) - A1"),
                         nyi("VLD4 (single 4-element structure from one lane) - A2"),
                         nyi("VLD4 (single 4-element structure from one lane) - A3"),
@@ -3871,7 +3764,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSimdLdSingleStructureToAllLanes = Mask(21, 1, "Advanced SIMD load single structure to all lanes",
                 invalid,
-                Mask(8, 0b11, "  L=1 N",
+                Mask(8, 2, "  L=1 N",
                     nyi("VLD1(single element to all lanes)"),
                     nyi("VLD2(single 2 - element structure to all lanes)"),
                     Mask(4, 1, "  N=10 a",
@@ -3881,14 +3774,14 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSimdElementLoadStore = Mask(23, 1, "Advanced SIMD element or structure load/store",
                 AdvancedSimdLdStMultipleStructures,
-                Mask(10, 0b11, "  op1",
+                Mask(10, 2, "  op1",
                     AdvancedSimdLdStStoreSingleOneLane,
                     AdvancedSimdLdStStoreSingleOneLane,
                     AdvancedSimdLdStStoreSingleOneLane,
                     AdvancedSimdLdSingleStructureToAllLanes));
 
             var AdvancedSimdElementLoadStoreDead = Mask(23, 1, "AdvancedSimdElementLoadStore A=?",
-                Mask(8, 0b1111, "AdvancedSimdElementLoadStore A=0 B=????",
+                Mask(8, 4, "AdvancedSimdElementLoadStore A=0 B=????",
                     Mask(21, 1,
                         Instr(Opcode.vst4, vi_ld4, Vel(4,1), Mve),
                         Instr(Opcode.vld4, vi_ld4, Vel(4,1), Mve)),
@@ -3922,7 +3815,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid,
                     invalid),
-                Mask(8, 0b1111, "AdvancedSimdElementLoadStore A=1 B=????",
+                Mask(8, 4, "AdvancedSimdElementLoadStore A=1 B=????",
                     Mask(21, 1,
                         Instr(Opcode.vst1, vi_ld1, Vel(1, 1), Mve),
                         Instr(Opcode.vld1, vi_ld1, Vel(1, 1), Mve)),
@@ -3945,7 +3838,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid));
 
-            var Barriers = Mask(4, 0xF,
+            var Barriers = Mask(4, 4,
                 invalid,
                 Select(0, 0xFFFFFu, n => n == 0xFF01Fu, Instr(Opcode.clrex), invalid),
                 invalid,
@@ -3979,7 +3872,7 @@ namespace Reko.Arch.Arm.AArch32
             var MemoryHintsAndBarriers = Mask(25, 1, "Memory hints and barriers",
                 Mask(21, 1,
                     PreloadImmediate,
-                    Mask(22, 7,
+                    Mask(22, 3,
                         invalid,
                         invalid,
                         invalid,
@@ -4003,7 +3896,7 @@ namespace Reko.Arch.Arm.AArch32
                     AdvancedSimd_TwoRegisterOrThreeRegisters,
                     AdvancedSimd_ShiftsAndImmediate));
 
-            var MemoryHintsAdvancedSimdMiscellaneous = Mask(24, 0b111, "Memory hints, Advanced SIMD instructions, and miscellaneous instructions",
+            var MemoryHintsAdvancedSimdMiscellaneous = Mask(24, 3, "Memory hints, Advanced SIMD instructions, and miscellaneous instructions",
                 invalid,
                 Select("op1=001????", 20, 0b1111, u => u == 0,
                     Mask(16, 1, "Rn=xxx?",
@@ -4016,7 +3909,7 @@ namespace Reko.Arch.Arm.AArch32
                 AdvancedSimdDataProcessing,
                 AdvancedSimdDataProcessing,
 
-                Mask(20, 0b111, "op1=100x???",
+                Mask(20, 3, "op1=100x???",
                     AdvancedSimdElementLoadStore,
                     Instr(Opcode.nop, InstrClass.Linear|InstrClass.Padding),    // Unallocated memory hint (treat as NOP)
                     AdvancedSimdElementLoadStore,
@@ -4030,7 +3923,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     MemoryHintsAndBarriers),
                 invalid,
-                Mask(24, 0b1111, "  op1=111xxxx",
+                Mask(24, 4, "  op1=111xxxx",
                     nyi("op1=1110000"),
                     nyi("op1=1110001"),
                     nyi("op1=1110010"),
@@ -4051,7 +3944,7 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("op1=1111110"),
                     invalid));
 
-            var SystemRegisterAccessAdvancedSimd = Mask(24, 0b11, "System register access, Advanced SIMD, floating-point, and Supervisor call",
+            var SystemRegisterAccessAdvancedSimd = Mask(24, 2, "System register access, Advanced SIMD, floating-point, and Supervisor call",
                 Select("  op0=0b00", 9, 0b111, n => n == 0b111,
                     SystemRegister_LdSt_64bitMove,
                     invalid),
@@ -4062,7 +3955,7 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0, 24)));
 
             // Note: this decoder is ARM7. ARM8 looks different.
-            var UnconditionalDecoder = Mask(25, 0b111, "Unconditional instructions",
+            var UnconditionalDecoder = Mask(25, 3, "Unconditional instructions",
                 MemoryHintsAdvancedSimdMiscellaneous,
                 MemoryHintsAdvancedSimdMiscellaneous,
                 MemoryHintsAdvancedSimdMiscellaneous,
@@ -4071,7 +3964,7 @@ namespace Reko.Arch.Arm.AArch32
                 ExceptionSaveRestore,
                 Branch_BranchLink_BlockDataTransfer,
                 new PcDecoder(28,
-                    Mask(20, 7, "Unconditional op1=0b110x?x??",
+                    Mask(20, 3, "Unconditional op1=0b110x?x??",
                         Instr(Opcode.stc, CP(8), CR(12), Mi8(2, w4)),
                         Instr(Opcode.ldc, CP(8), CR(12), Mi8(2, w4)),
                         Instr(Opcode.stc, CP(8), CR(12), Mi8(2, w4)),
@@ -4081,7 +3974,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.ldcl, CP(8), CR(12), Mi8(2, w4)),
                         Instr(Opcode.stcl, CP(8), CR(12), Mi8(2, w4)),
                         Instr(Opcode.ldcl, CP(8), CR(12), Mi8(2, w4))),
-                    Mask(20, 7, "Unconditional op1=0b110x?x??",
+                    Mask(20, 3, "Unconditional op1=0b110x?x??",
                         Instr(Opcode.stc2, CP(8), CR(12), Mi8(2, w4)),
                         Instr(Opcode.ldc2, CP(8), CR(12), Mi8(2, w4)),
                         Instr(Opcode.stc2, CP(8), CR(12), Mi8(2, w4)),
@@ -4100,7 +3993,7 @@ namespace Reko.Arch.Arm.AArch32
                             Instr(Opcode.mrc2, CP(8), i(21,3), r(3), CR(16), CR(0), i(5,3)))),
                     invalid));
 
-            rootDecoder = Mask(28, 0x0F,
+            rootDecoder = Mask(28, 4,
                 ConditionalDecoder,
                 ConditionalDecoder,
                 ConditionalDecoder,

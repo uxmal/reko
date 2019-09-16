@@ -30,138 +30,13 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
+    using Decoder = Reko.Core.Machine.Decoder<A32Disassembler, Opcode, AArch32Instruction>;
+
     public partial class A32Disassembler
     {
-        /// <summary>
-        /// Machine instruction decoder. 
-        /// </summary>
-        public abstract class Decoder
+        public static uint bitmask(uint u, int shift, uint mask)
         {
-            public abstract AArch32Instruction Decode(uint wInstr, A32Disassembler dasm);
-
-            public static uint bitmask(uint u, int shift, uint mask)
-            {
-                return (u >> shift) & mask;
-            }
-
-            [Conditional("DEBUG")]
-            protected void DumpMaskedInstruction(uint wInstr, uint shMask, Opcode opcode)
-            {
-                DumpMaskedInstruction(wInstr, shMask, opcode.ToString());
-            }
-
-            protected void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
-            {
-                //return;
-                var hibit = 0x80000000u;
-                var sb = new StringBuilder();
-                for (int i = 0; i < 32; ++i)
-                {
-                    if ((shMask & hibit) != 0)
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
-                    }
-                    else
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
-                    }
-                    shMask <<= 1;
-                    wInstr <<= 1;
-                }
-                if (!string.IsNullOrEmpty(tag))
-                {
-                    sb.AppendFormat(" {0}", tag);
-                }
-                Debug.Print(sb.ToString());
-            }
-        }
-
-        public class MaskDecoder : Decoder
-        {
-            private readonly string tag;
-            private readonly int shift;
-            private readonly uint mask;
-            private readonly Decoder[] decoders;
-
-            public MaskDecoder(string tag, int shift, uint mask, params Decoder[] decoders)
-            {
-                this.tag = tag;
-                this.shift = shift;
-                this.mask = mask;
-                Debug.Assert(decoders.Length == mask + 1, $"Inconsistent number of decoders {decoders.Length} (shift {shift} mask {mask:X})");
-                this.decoders = decoders;
-            }
-
-            public MaskDecoder(int shift, uint mask, params Decoder[] decoders): this("", shift, mask, decoders)
-            {
-            }
-
-            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
-            {
-                TraceDecoder(wInstr);
-                uint op = (wInstr >> shift) & mask;
-                return decoders[op].Decode(wInstr, dasm);
-            }
-
-            [Conditional("DEBUG")]
-            public void TraceDecoder(uint wInstr)
-            {
-                var shMask = this.mask << shift;
-                DumpMaskedInstruction(wInstr, shMask, tag);
-            }
-        }
-
-        public class BitfieldDecoder : Decoder
-        {
-            private readonly string tag;
-            private readonly Bitfield [] bitfields;
-            private readonly Decoder[] decoders;
-
-            public BitfieldDecoder(string tag, Bitfield[] bitfields, Decoder[] decoders)
-            {
-                this.tag = tag;
-                this.bitfields = bitfields;
-                this.decoders = decoders;
-            }
-
-            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
-            {
-                TraceDecoder(wInstr, tag);
-                uint n = Bitfield.ReadFields(bitfields, wInstr);
-                return this.decoders[n].Decode(wInstr, dasm);
-            }
-
-
-            [Conditional("DEBUG")]
-            public void TraceDecoder(uint wInstr, string tag = "")
-            {
-                var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
-                DumpMaskedInstruction(wInstr, shMask, tag);
-            }
-        }
-
-        public class SparseMaskDecoder : Decoder
-        {
-            private readonly int shift;
-            private readonly uint mask;
-            private readonly Dictionary<uint, Decoder> decoders;
-            private readonly Decoder @default;
-
-            public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default)
-            {
-                this.shift = shift;
-                this.mask = mask;
-                this.decoders = decoders;
-                this.@default = @default;
-            }
-
-            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
-            {
-                var op = (wInstr >> shift) & mask;
-                if (!decoders.TryGetValue(op, out Decoder decoder))
-                    decoder = @default;
-                return decoder.Decode(wInstr, dasm);
-            }
+            return (u >> shift) & mask;
         }
 
         public class NyiDecoder : Decoder
@@ -219,10 +94,10 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private class CondMaskDecoder : MaskDecoder
+        private class CondMaskDecoder : MaskDecoder<A32Disassembler, Opcode, AArch32Instruction>
         {
-            public CondMaskDecoder(int shift, uint mask, params Decoder[] decoders)
-                : base(shift, mask, decoders)
+            public CondMaskDecoder(int bitPos, int bitLength, string tag, params Decoder[] decoders)
+                : base(bitPos, bitLength, tag, decoders)
             { }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)

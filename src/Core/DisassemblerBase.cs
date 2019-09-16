@@ -151,9 +151,19 @@ namespace Reko.Core
             return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(Bf((p1, l1), (p2, l2)), tag, decoders);
         }
 
-        protected static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm, TMnemonic>(Bitfield[] bitfields, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
+        protected static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm, TMnemonic>(
+            Bitfield[] bitfields,
+            string tag, 
+            params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
         {
             return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(bitfields, tag, decoders);
+        }
+
+        protected static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm, TMnemonic>(
+            Bitfield[] bitfields,
+            params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
+        {
+            return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(bitfields, "", decoders);
         }
 
         protected static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm, TMnemonic>(
@@ -220,7 +230,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="fields"></param>
         /// <returns></returns>
-        public static Bitfield[] Bf(params (int pos, int len)[] fields)
+        protected static Bitfield[] Bf(params (int pos, int len)[] fields)
         {
             return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
         }
