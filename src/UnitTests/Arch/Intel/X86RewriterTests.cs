@@ -2693,26 +2693,23 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Ignore("Find docs from Intel")]
         public void X86rw_vmread()
         {
             Run32bitTest(0x0F, 0x78, 0x42, 0x42);    // vmread\t[edx+42],eax
             AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|S--|10000000(4): 1 instructions",
+                "1|L--|Mem0[edx + 0x00000042:word32] = __vmread(eax)");
         }
 
 
         [Test]
-        [Ignore("Find docs from Intel")]
         public void X86rw_vmwrite()
         {
             Run32bitTest(0x0F, 0x79, 0x42, 0x42);    // vmwrite\teax,[edx+42]
             AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|S--|10000000(4): 1 instructions",
+                "1|L--|__vmwrite(eax, Mem0[edx + 0x00000042:word32])");
         }
-
 
 
         [Test]

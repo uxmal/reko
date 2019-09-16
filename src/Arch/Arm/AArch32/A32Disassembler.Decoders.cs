@@ -32,6 +32,9 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class A32Disassembler
     {
+        /// <summary>
+        /// Machine instruction decoder. 
+        /// </summary>
         public abstract class Decoder
         {
             public abstract AArch32Instruction Decode(uint wInstr, A32Disassembler dasm);

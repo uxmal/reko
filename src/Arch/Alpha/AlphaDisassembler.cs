@@ -62,7 +62,7 @@ namespace Reko.Arch.Alpha
             return new RegisterOperand(Registers.FpuRegisters[n & 0x1F]);
         }
 
-        private AlphaInstruction Invalid()
+        protected override AlphaInstruction CreateInvalidInstruction()
         {
             return new AlphaInstruction { Opcode = Opcode.invalid, InstructionClass = InstrClass.Invalid };
         }
@@ -87,7 +87,7 @@ namespace Reko.Arch.Alpha
                 w.WriteLine("    var instr = DisassembleWord(0x{0:X8});", uInstr);
                 w.WriteLine("    AssertCode(\"AlphaDis_{1}\", 0x{0:X8}, \"@@@\", instr.ToString());", uInstr, instrHex);
             });
-            return Invalid();
+            return CreateInvalidInstruction();
         }
 
         private abstract class Decoder
@@ -270,7 +270,7 @@ namespace Reko.Arch.Alpha
             {
                 var functionCode = ((int)uInstr >> 5) & 0x7F;
                 if (!decoders.TryGetValue(functionCode, out var decoder))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 else
                     return decoder.Decode(uInstr, dasm);
             }
@@ -332,7 +332,7 @@ namespace Reko.Arch.Alpha
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
                 if (!opcodes.TryGetValue(uInstr & 0x0000FFFF, out var opcode))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 return new AlphaInstruction {
                     Opcode = opcode.Item1,
                     InstructionClass = opcode.Item2
@@ -366,7 +366,7 @@ namespace Reko.Arch.Alpha
         {
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                return dasm.Invalid();
+                return dasm.CreateInvalidInstruction();
             }
         }
 
@@ -374,7 +374,7 @@ namespace Reko.Arch.Alpha
         {
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                return dasm.Invalid();
+                return dasm.CreateInvalidInstruction();
             }
         }
 

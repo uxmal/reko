@@ -136,7 +136,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smmlar:
                 case Opcode.smmlsr:
                 case Opcode.smmulr:
-                case Opcode.smuad:
                 case Opcode.smuadx:
                 case Opcode.smusdx:
                 case Opcode.srsda:
@@ -163,7 +162,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.uhsub16:
                 case Opcode.uhsub8:
                 case Opcode.usad8:
-                case Opcode.usada8:
                 case Opcode.uxtab16:
                 case Opcode.uxtb16:
                 case Opcode.vabal:
@@ -231,8 +229,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vrsqrte:
                 case Opcode.vrsqrts:
                 case Opcode.vshrn:
-                case Opcode.vsli:
-                case Opcode.vsri:
                 case Opcode.vst1:
                 case Opcode.vst2:
                 case Opcode.vst3:
@@ -388,6 +384,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smmla: RewriteSmml(m.IAdd); break;
                 case Opcode.smmls: RewriteSmml(m.ISub); break;
                 case Opcode.smmul: RewriteSmmul(); break;
+                case Opcode.smuad: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
                 case Opcode.smulbb: RewriteMulbb(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smulbt: RewriteMulbb(false, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smulwb: RewriteMulw(false); break;
@@ -397,7 +394,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.smusd: RewriteSmusd(); break;
                 case Opcode.ssat: RewriteSsat(); break;
-                case Opcode.ssat16: RewriteSat16(PrimitiveType.Int16); break;
+                case Opcode.ssat16: RewriteSat16(PrimitiveType.Int16, "__ssat16"); break;
                 case Opcode.ssub16: RewriteVectorBinOp("__ssub16", ArmVectorData.S16); break;
                 case Opcode.ssub8: RewriteVectorBinOp("__ssub8", ArmVectorData.S8); break;
                 case Opcode.stc2l: RewriteStc("__stc2l"); break;
@@ -445,9 +442,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.uqsax: RewriteVectorBinOp("__uqsax_{0}", ArmVectorData.U16); break;
                 case Opcode.uqsub16: RewriteVectorBinOp("__uqsub_{0}", ArmVectorData.U16); break;
                 case Opcode.uqsub8: RewriteVectorBinOp("__uqsub_{0}", ArmVectorData.U8); break;
-
+                case Opcode.usada8: RewriteUsada8(); break;
                 case Opcode.usat: RewriteUsat(); break;
-                case Opcode.usat16: RewriteSat16(PrimitiveType.UInt16); break;
+                case Opcode.usat16: RewriteSat16(PrimitiveType.UInt16, "__usat16"); break;
                 case Opcode.usax: RewriteUsax(); break;
                 case Opcode.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
                 case Opcode.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
@@ -467,7 +464,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
                 case Opcode.vand: RewriteVecBinOp(m.And); break;
                 case Opcode.vcmp: RewriteVcmp(); break;
-                case Opcode.vbif: RewriteVectorBinOp("__vbif"); break;
+                case Opcode.vbif: RewriteIntrinsic("__vbif", Domain.UnsignedInt); break;
                 case Opcode.vbit: RewriteIntrinsic("__vbit", Domain.UnsignedInt); break;
                 case Opcode.vceq: RewriteVectorBinOp("__vceq_{0}"); break;
                 case Opcode.vcge: RewriteVectorBinOp("__vcge_{0}"); break;
@@ -525,7 +522,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vshl: RewriteVectorBinOp("__vshl_{0}"); break;
                 case Opcode.vshll: RewriteVectorBinOp("__vshll_{0}"); break;
                 case Opcode.vshr: RewriteVectorBinOp("__vshr_{0}"); break;
+                case Opcode.vsli: RewriteVectorBinOp("__vsli_{0}"); break;
                 case Opcode.vsra: RewriteVectorBinOp("__vsra_{0}"); break;
+                case Opcode.vsri: RewriteVectorBinOp("__vsri_{0}"); break;
                 case Opcode.vstr: RewriteVstr(); break;
                 case Opcode.vsub: RewriteVectorBinOp("__vsub_{0}"); break;
                 case Opcode.vsubl: RewriteVectorBinOp("__vsubl_{0}"); break;

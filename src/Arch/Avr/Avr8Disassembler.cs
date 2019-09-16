@@ -64,6 +64,16 @@ namespace Reko.Arch.Avr
             return instr;
         }
 
+        protected override AvrInstruction CreateInvalidInstruction()
+        {
+            return new AvrInstruction
+            {
+                InstructionClass = InstrClass.Invalid,
+                opcode = Opcode.invalid,
+                operands = new MachineOperand[0]
+            };
+        }
+
         #region Mutators
 
         private static Mutator<Avr8Disassembler> Inc(RegisterStorage reg)

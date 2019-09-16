@@ -324,6 +324,8 @@ namespace Reko.Arch.X86
                 case Opcode.movaps:
                 case Opcode.vmovapd:
                 case Opcode.vmovaps: RewriteMov(); break;
+                case Opcode.vmread: RewriteVmread(); break;
+                case Opcode.vmwrite: RewriteVmwrite(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
                 case Opcode.movhpd: RewritePackedUnaryop("__movhpd", PrimitiveType.Real64, PrimitiveType.Real64); break;

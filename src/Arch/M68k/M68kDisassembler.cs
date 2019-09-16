@@ -83,11 +83,11 @@ namespace Reko.Arch.M68k
                 };
                 instr = handler.UseDecodeMethod(this);
                 if (instr == null)
-                    instr = Invalid();
+                    instr = CreateInvalidInstruction();
             }
             catch
             {
-                instr = Invalid();
+                instr = CreateInvalidInstruction();
             }
             ops.Clear();
             instr.Address = addr;
@@ -196,7 +196,7 @@ namespace Reko.Arch.M68k
         private static bool EXT_OUTER_DISPLACEMENT_WORD(uint A) { return (((A) & 3) == 2 && ((A) & 0x47) < 0x44); }
         private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
 
-        private static M68kInstruction Invalid()
+        protected override M68kInstruction CreateInvalidInstruction()
         {
             return new M68kInstruction
             {
@@ -256,7 +256,7 @@ namespace Reko.Arch.M68k
                 foreach (var m in mutators)
                 {
                     if (!m(dasm))
-                        return Invalid();
+                        return dasm.CreateInvalidInstruction();
                 }
                 if (dasm.ops.Count > 0)
                 {
@@ -759,26 +759,6 @@ namespace Reko.Arch.M68k
             }
             this.instr.code = Opcode.illegal;
             return null;
-        }
-
-        private static M68kInstruction CreateInstruction(
-            Opcode code,
-            InstrClass iclass,
-            PrimitiveType width,
-            MachineOperand op1,
-            MachineOperand op2)
-        {
-            if (op1 == null || op2 == null)
-                return Invalid();
-
-            return new M68kInstruction
-            {
-                code = code,
-                InstructionClass = iclass,
-                dataWidth = width,
-                op1 = op1,
-                op2 = op2,
-            };
         }
 
         /* ======================================================================== */

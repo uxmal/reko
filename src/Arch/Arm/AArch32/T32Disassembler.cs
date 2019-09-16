@@ -283,10 +283,11 @@ namespace Reko.Arch.Arm.AArch32
             return null;
         }
 
-        private T32Instruction Invalid()
+        protected override AArch32Instruction CreateInvalidInstruction()
         {
             return new T32Instruction
             {
+                InstructionClass = InstrClass.Invalid,
                 opcode = Opcode.Invalid,
                 ops = new MachineOperand[0]
             };
@@ -319,7 +320,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 Console.WriteLine("    Expect_Code(\"@@@\");");
             });
-            return Invalid();
+            return CreateInvalidInstruction();
         }
 
 
@@ -532,11 +533,7 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
-        //$REFACTOR: a lot of shared features btw T32 and A32
-        private static Bitfield[] Bf(params (int pos, int len)[] fields)
-        {
-            return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
-        }
+
 
         /// <summary>
         /// This is the wide form of an ARM Thumb instruction.
@@ -2097,11 +2094,6 @@ namespace Reko.Arch.Arm.AArch32
             return new MaskDecoder(shift, mask, debugString, decoders);
         }
 
-        private static BitFieldsDecoder Bitfields(string fieldSpecifier, params Decoder[] decoders)
-        {
-            return new BitFieldsDecoder(fieldSpecifier, decoders);
-        }
-
         private static BitFieldsDecoder Mask(int p1, int l1, int p2, int l2, string tag, params Decoder[] decoders)
         {
             return new BitFieldsDecoder(Bf((p1,l1), (p2,l2)), tag, decoders);
@@ -2751,7 +2743,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     Select((22,1), n => n != 0,
                         invalid,
-                        Bitfields("23:2:20:2", // PU-WL 
+                        Mask(Bf((23,2),(20,2)), "  PU-WL",
                             invalid,
                             invalid,
                             Instr(Opcode.stc, nyi("*post-indexed")),
@@ -3018,13 +3010,11 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.vmov, F32, FP12, vfpImm32(16, 4, 0, 4)),
                 Instr(Opcode.vmov, F64, FP12, vfpImm64(16, 4, 0, 4)));
 
-            var FloatingPointConditionalSelect = Select((8,2), n => n == 1,
-                invalid,
-                Mask(20, 3,
-                    Instr(Opcode.vseleq, F64, D22_12,D7_16,D5_0),
-                    Instr(Opcode.vselvs, F64, D22_12,D7_16,D5_0),
-                    Instr(Opcode.vselge, F64, D22_12,D7_16,D5_0),
-                    Instr(Opcode.vselgt, F64, D22_12,D7_16,D5_0)));
+            var FloatingPointConditionalSelect = Mask(20, 3, "Floating-point conditional select",
+                Instr(Opcode.vseleq, vf8_HSD, FP12, FP16, FP0),
+                Instr(Opcode.vselvs, vf8_HSD, FP12, FP16, FP0),
+                Instr(Opcode.vselge, vf8_HSD, FP12, FP16, FP0),
+                Instr(Opcode.vselgt, vf8_HSD, FP12, FP16, FP0));
 
             var FloatingPointMinNumMaxNum =
                 Mask(6, 1,
@@ -3247,8 +3237,8 @@ namespace Reko.Arch.Arm.AArch32
                                 Instr(Opcode.veor, D22_12,D7_16,D5_0),
                                 Instr(Opcode.veor, Q22_12,Q7_16,Q5_0)),
                             Instr(Opcode.vbsl, nyi("*register")),
-                            Instr(Opcode.vbit, nyi("*register")),
-                            Instr(Opcode.vbif, nyi("*register"))))),
+                            Instr(Opcode.vbit, q6, W22_12, W7_16, W5_0),
+                            Instr(Opcode.vbif, q6, W22_12, W7_16, W5_0)))),
                 Mask(4, 1, // o1
                     Mask(6, 1,
                         Instr(Opcode.vhsub, viuBHW_, D22_12,D7_16,D5_0),
@@ -3706,7 +3696,9 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.vrshr, q6, VshImmSizeSU7_16, W22_12, W5_0, VshImmRev),
                 Instr(Opcode.vrsra, q6, VshImmSizeSU7_16, W22_12, W5_0, VshImmRev),
 
-                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc4"),
+                Mask(12 + 16, 1, "  U", 
+                    Nyi("U=0"),
+                    Instr(Opcode.vsri, VshImmSize, q6, W22_12, W5_0, VshImmRev)), 
                 Mask(12 + 16, 1,   // U
                     Instr(Opcode.vshl, VshImmSize, q6, W22_12, W5_0, VshImm),
                     Instr(Opcode.vsli, VshImmSize, q6, W22_12, W5_0, VshImm)),
@@ -3751,7 +3743,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
 
-            var AdvancedSimdShiftImm = Select(Bf((19,3),(7,1)), n => n == 0,
+            var AdvancedSimdShiftImm = Select(Bf((19,3),(7,1)), n => n == 0, "Advanced SIMD shifts and immediate generation",
                 AdvancedSimdOneRegisterAndModifiedImmediate,
                 AdvancedSimdTwoRegistersAndShiftAmount);
 

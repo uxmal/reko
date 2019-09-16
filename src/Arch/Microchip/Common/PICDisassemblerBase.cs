@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work from:
@@ -125,7 +125,14 @@ namespace Reko.Arch.MicrochipPIC.Common
                 default:
                     throw new NotImplementedException($"Disassembly of '{regn.SubtypeOfMemory}' memory region is not yet implemented.");
             }
+        }
 
+        protected override PICInstruction CreateInvalidInstruction()
+        {
+            return new PICInstructionNoOpnd(Opcode.invalid)
+            {
+                InstructionClass = InstrClass.Invalid
+            };
         }
 
         #region Classes/Methods defined for derived classes

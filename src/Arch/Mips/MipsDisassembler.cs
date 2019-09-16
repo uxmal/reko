@@ -61,7 +61,7 @@ namespace Reko.Arch.Mips
             try
             {
                 if (decoder == null)
-                    instrCur = new MipsInstruction { opcode = Opcode.illegal };
+                    instrCur = CreateInvalidInstruction();
                 else
                     instrCur = decoder.Decode(wInstr, this);
             }
@@ -71,12 +71,17 @@ namespace Reko.Arch.Mips
             }
             if (instrCur == null)
             {
-                instrCur = new MipsInstruction { opcode = Opcode.illegal };
+                instrCur = CreateInvalidInstruction();
             }
             EmitUnitTest(wInstr, instrCur);
             instrCur.Address = this.addr;
             instrCur.Length = 4;
             return instrCur;
+        }
+
+        protected override MipsInstruction CreateInvalidInstruction()
+        {
+            return new MipsInstruction { opcode = Opcode.illegal };
         }
 
         [Conditional("DEBUG")]

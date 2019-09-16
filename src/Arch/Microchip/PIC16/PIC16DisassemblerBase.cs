@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work from:
@@ -42,7 +42,6 @@ namespace Reko.Arch.MicrochipPIC.PIC16
     /// </summary>
     public class PIC16DisassemblerBase : PICDisassemblerBase
     {
-
         /// <summary>
         /// Instantiates a base PIC16 disassembler.
         /// </summary>

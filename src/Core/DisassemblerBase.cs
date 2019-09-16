@@ -18,12 +18,14 @@
  */
 #endregion
 
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -79,6 +81,12 @@ namespace Reko.Core
 
         }
 
+
+        public virtual TInstr NotYetImplemented(uint wInstr, string message)
+        {
+            return CreateInvalidInstruction();
+        }
+
         private static Dictionary<string, HashSet<string>> seen =
             new Dictionary<string, HashSet<string>>();
 
@@ -119,6 +127,18 @@ namespace Reko.Core
             writer.WriteLine("}");
 
             Console.Out.WriteLine(writer.ToString());
+        }
+
+        protected abstract TInstr CreateInvalidInstruction();
+
+        /// <summary>
+        /// Compact way of creating an array of <see cref="Bitfield"/>.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public static Bitfield[] Bf(params (int pos, int len)[] fields)
+        {
+            return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
         }
     }
 }

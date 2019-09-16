@@ -17,41 +17,30 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
-using Reko.Core;
-using Reko.Core.Machine;
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Mocks
+namespace Reko.Core.Machine
 {
-    public class FakeDisassembler : DisassemblerBase<MachineInstruction>
+    public class NyiDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
+        where TInstr : MachineInstruction
+        where TDasm : DisassemblerBase<TInstr>
     {
-        private IEnumerator<MachineInstruction> instrs;
-        private Address addr;
-        private MachineInstruction instr;
+        private readonly string message;
 
-        public FakeDisassembler(Address a, IEnumerator<MachineInstruction> e)
+        public NyiDecoder(string message)
         {
-            this.addr = a;
-            this.instrs = e;
+            this.message = message;
         }
 
-        public override MachineInstruction DisassembleInstruction()
+        public override TInstr Decode(uint wInstr, TDasm dasm)
         {
-            if (!instrs.MoveNext())
-                return null;
-            instr = instrs.Current;
-            instr.Address = addr;
-            instr.Length = 4;
-            addr += 4;
-            return instr;
-        }
-
-        protected override MachineInstruction CreateInvalidInstruction()
-        {
-            throw new NotImplementedException();
+            return dasm.NotYetImplemented(wInstr, message);
         }
     }
+
 }

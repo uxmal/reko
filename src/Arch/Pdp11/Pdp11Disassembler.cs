@@ -74,6 +74,15 @@ namespace Reko.Arch.Pdp11
             return instrCur;
         }
 
+        protected override Pdp11Instruction CreateInvalidInstruction()
+        {
+            return new Pdp11Instruction
+            {
+                Opcode = Opcode.illegal,
+                InstructionClass = InstrClass.Invalid,
+            };
+        }
+
         #region Mutators
         private static bool b(uint uInstr, Pdp11Disassembler dasm)
         {
@@ -166,11 +175,7 @@ namespace Reko.Arch.Pdp11
                 foreach (var m in mutators)
                 {
                     if (!m(opcode, dasm))
-                        return new Pdp11Instruction
-                        {
-                            Opcode = Opcode.illegal,
-                            InstructionClass = InstrClass.Invalid,
-                        };
+                        return dasm.CreateInvalidInstruction();
                 }
                 var instr = new Pdp11Instruction
                 {

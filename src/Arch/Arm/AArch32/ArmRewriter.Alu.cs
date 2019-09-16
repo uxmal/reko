@@ -919,6 +919,21 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private void RewriteUsada8()
+        {
+            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
+            var opSrc1 = this.Operand(Src1());
+            var opSrc2 = this.Operand(Src2());
+            var opAcc = this.Operand(Src3());
+            var ab_4 = new ArrayType(PrimitiveType.Byte, 4);
+            var vSrc1 = binder.CreateTemporary(ab_4);
+            var vSrc2 = binder.CreateTemporary(ab_4);
+            m.Assign(vSrc1, opSrc1);
+            m.Assign(vSrc2, opSrc2);
+            var intrinsic = host.PseudoProcedure("__usada8", PrimitiveType.Word32, vSrc1, vSrc2);
+            m.Assign(opDst, intrinsic);
+        }
+
         private void RewriteUsat()
         {
             var dst = this.Operand(Dst());
@@ -929,7 +944,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(Q(), m.Cond(dst));
         }
 
-        private void RewriteSat16(PrimitiveType elemType)
+        private void RewriteSat16(PrimitiveType elemType, string intrinsicName)
         {
             var dst = this.Operand(Dst());
             var src1 = this.Operand(Src1());
@@ -937,7 +952,7 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(elemType, 2);
             var arrDst = new ArrayType(elemType, 2);
 
-            var intrinsic = host.PseudoProcedure("__usat16", arrDst, src1, src2);
+            var intrinsic = host.PseudoProcedure(intrinsicName, arrDst, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }

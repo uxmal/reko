@@ -1243,7 +1243,7 @@ namespace Reko.Arch.Arm.AArch64
                 else
                     m = $"{op} - {message}";
                 d.NotYetImplemented(m, u);
-                d.Invalid();
+                d.CreateInvalidInstruction();
                 return false;
             };
         }
@@ -1614,13 +1614,14 @@ namespace Reko.Arch.Arm.AArch64
                 Console.WriteLine($"    Expect_Code(\"@@@\");");
                 Console.WriteLine();
             });
-            return Invalid();
+            return CreateInvalidInstruction();
         }
 
-        private AArch64Instruction Invalid()
+        protected override AArch64Instruction CreateInvalidInstruction()
         {
             return new AArch64Instruction
             {
+                InstructionClass = InstrClass.Invalid,
                 opcode = Opcode.Invalid,
                 ops = new MachineOperand[0]
             };

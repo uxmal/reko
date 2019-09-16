@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work from:
@@ -82,8 +82,16 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 throw new AddressCorrelatedException(addrCur, ex, $"An exception occurred when disassembling {InstructionSetID.ToString()} binary code 0x{uInstr:X4}.");
             }
-
             return instrCur;
+        }
+
+
+        protected override PICInstruction CreateInvalidInstruction()
+        {
+            return new PICInstructionNoOpnd(Opcode.invalid)
+            {
+                InstructionClass = InstrClass.Invalid
+            };
         }
 
         /// <summary>

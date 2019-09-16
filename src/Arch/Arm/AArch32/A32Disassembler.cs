@@ -115,15 +115,6 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        /// <summary>
-        /// Construct an array of bit fields.
-        /// </summary>
-        //$REFACTOR: a lot of shared features btw T32 and A32
-        private static Bitfield[] Bf(params (int pos, int len)[] fields)
-        {
-            return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
-        }
-
         private ArmVectorData VectorElementInteger(int bitSize)
         {
             switch (bitSize)
@@ -292,13 +283,14 @@ namespace Reko.Arch.Arm.AArch32
                 w.WriteLine($"    Disassemble32(0x{hexBytes});");
                 w.WriteLine($"    Expect_Code(\"@@@\");");
             });
-            return Invalid();
+            return CreateInvalidInstruction();
         }
 
-        private AArch32Instruction Invalid()
+        protected override AArch32Instruction CreateInvalidInstruction()
         {
             return new A32Instruction
             {
+                InstructionClass = InstrClass.Invalid,
                 opcode = Opcode.Invalid,
                 ops = new MachineOperand[0]
             };
@@ -1440,7 +1432,7 @@ namespace Reko.Arch.Arm.AArch32
                 else
                     m = $"{op} - {message}";
                 d.NotYetImplemented(m, u);
-                d.Invalid();
+                d.CreateInvalidInstruction();
                 return false;
             };
         }

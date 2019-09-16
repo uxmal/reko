@@ -62,6 +62,14 @@ namespace Reko.Arch.PowerPC
             return instrCur;
         }
 
+        protected override PowerPcInstruction CreateInvalidInstruction()
+        {
+            return new PowerPcInstruction(Opcode.illegal)
+            {
+                InstructionClass = InstrClass.Invalid
+            };
+        }
+
         private PowerPcInstruction MakeInstruction(InstrClass iclass, Opcode opcode)
         {
             return new PowerPcInstruction(opcode)

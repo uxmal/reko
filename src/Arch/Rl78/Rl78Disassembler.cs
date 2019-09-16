@@ -62,7 +62,7 @@ namespace Reko.Arch.Rl78
             return instr;
         }
 
-        private Rl78Instruction Invalid()
+        protected override Rl78Instruction CreateInvalidInstruction()
         {
             return new Rl78Instruction
             {
@@ -369,7 +369,7 @@ namespace Reko.Arch.Rl78
                 foreach (var m in mutators)
                 {
                     if (!m(uInstr, dasm))
-                        return dasm.Invalid();
+                        return dasm.CreateInvalidInstruction();
                 }
                 var instr = new Rl78Instruction
                 {
@@ -394,7 +394,7 @@ namespace Reko.Arch.Rl78
             public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadByte(out byte op))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 return decoders[op].Decode(op, dasm);
             }
         }
@@ -404,7 +404,7 @@ namespace Reko.Arch.Rl78
             public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadByte(out byte op))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 dasm.prefix = Registers.es;
                 return s_decoders[op].Decode(op, dasm);
             }
@@ -422,7 +422,7 @@ namespace Reko.Arch.Rl78
             public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
             {
                 dasm.EmitUnitTest(message);
-                return dasm.Invalid();
+                return dasm.CreateInvalidInstruction();
             }
         }
 
