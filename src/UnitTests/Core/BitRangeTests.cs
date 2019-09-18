@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -85,6 +85,24 @@ namespace Reko.UnitTests.Core
         {
             var a = new BitRange(0, 64);
             Assert.AreEqual(~0ul, a.BitMask());
+        }
+
+        [Test]
+        public void Bitr_Overlaps()
+        {
+            var a = new BitRange(0, 16);
+            var b = new BitRange(15, 32);
+            Assert.IsTrue(a.Overlaps(b));
+            Assert.IsTrue(b.Overlaps(a));
+        }
+
+        [Test]
+        public void Bitr_DoesntOverlap()
+        {
+            var a = new BitRange(0, 16);
+            var b = new BitRange(16, 32);
+            Assert.IsFalse(a.Overlaps(b));
+            Assert.IsFalse(b.Overlaps(a));
         }
     }
 }

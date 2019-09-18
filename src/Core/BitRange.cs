@@ -64,6 +64,11 @@ namespace Reko.Core
             return (this.Msb - this.Lsb) - (that.Msb - that.Lsb);
         }
 
+        public bool Covers(BitRange that)
+        {
+            return this.Lsb <= that.Lsb && this.Msb >= that.Msb;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj != null && obj is BitRange that)
@@ -78,6 +83,11 @@ namespace Reko.Core
             if (IsEmpty)
                 return 0;
             return Lsb.GetHashCode() ^ Msb.GetHashCode() * 5;
+        }
+
+        public bool Overlaps(BitRange that)
+        {
+            return that.Lsb < this.Msb && this.Lsb < that.Msb;
         }
 
         public static BitRange operator | (BitRange a, BitRange b)
@@ -139,5 +149,7 @@ namespace Reko.Core
             else
                 return string.Format("[{0}..{1}]", Lsb, Msb - 1);
         }
+
+
     }
 }
