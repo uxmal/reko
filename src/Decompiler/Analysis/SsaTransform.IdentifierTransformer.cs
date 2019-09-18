@@ -37,7 +37,6 @@ namespace Reko.Analysis
         public abstract class IdentifierTransformer
         {
             protected Identifier id;
-            protected BitRange liveBits;
             protected readonly Statement stm;
             protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
@@ -46,7 +45,6 @@ namespace Reko.Analysis
             public IdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;
-                this.liveBits = id.Storage.GetBitRange();
                 this.stm = stm;
                 this.ssaIds = outer.ssa.Identifiers;
                 this.blockstates = outer.blockstates;
@@ -148,72 +146,6 @@ namespace Reko.Analysis
             }
 
             /// <summary>
-            /// If <paramref name="idTo"/> is smaller than <paramref name="sidFrom" />, then
-            /// it doesn't cover it completely. Therefore, we must generate a SLICE / cast 
-            /// statement.
-            /// </summary>
-            /// <param name="idTo"></param>
-            /// <param name="sidFrom"></param>
-            /// <returns></returns>
-            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasDef, SsaBlockState bsUse)
-            {
-                var sidDef = aliasDef.SsaId;
-                var blockDef = sidDef.DefStatement.Block;
-                var stgDef = sidDef.Identifier.Storage;
-                var stgTo = id.Storage;
-                DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement({0},{1})", sidDef.Identifier.Name, id.Name);
-
-                if (stgDef == stgTo)
-                {
-                    aliasDef.Aliases[id] = sidDef;
-                    return aliasDef.SsaId;
-                }
-
-                Expression e = null;
-                SsaIdentifier sidUse;
-                if (stgDef.Covers(stgTo))
-                {
-                    // Defined identifier is "wider" than the storage being 
-                    // read. The reader gets a slice of the defined identifier.
-                    int offset = stgDef.OffsetOf(stgTo);
-                    e = new Slice(id.DataType, sidDef.Identifier, offset);
-                    sidUse = aliasDef.SsaId;
-                }
-                else
-                {
-                    // The defined identifier only writes some of the bits of the 
-                    // read identifier, so we have to proceed to the previous alias
-                    if (aliasDef.PrevState != null && aliasDef.PrevState.SsaId.DefStatement != null)
-                    {
-                        // There is a previous alias, try using that.
-                        sidUse = MaybeGenerateAliasStatement(aliasDef.PrevState, bsUse);
-                    }
-                    else
-                    {
-                        this.liveBits = this.liveBits - stgDef.GetBitRange();
-                        DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockDef.Name);
-                        sidUse = ReadVariableRecursive(bsUse);
-                    }
-                    e = DepositBits(sidUse, aliasDef.SsaId, (int) stgDef.BitAddress);
-                }
-
-                // Insert an alias assignment. 
-                var ass = new AliasAssignment(id, e);
-                var sidAlias = InsertAfterDefinition(sidDef.DefStatement, ass);
-                sidUse.Uses.Add(sidAlias.DefStatement);
-                if (e is DepositBits)
-                    sidDef.Uses.Add(sidAlias.DefStatement);
-                aliasDef.Aliases[id] = sidAlias;
-                return sidAlias;
-            }
-
-            private Expression DepositBits(SsaIdentifier sidUse, SsaIdentifier sidFrom, int bitAddress)
-            {
-                var e = new DepositBits(sidUse.Identifier, sidFrom.Identifier, bitAddress);
-                return e;
-            }
-
-            /// <summary>
             /// Inserts the assignment <paramref name="ass"/> before the statement
             /// <paramref name="stm"/> if it is in the same block. Otherwise append
             /// it to the end of the statements in the block.
@@ -244,7 +176,7 @@ namespace Reko.Analysis
                         }
                         uAddr = block.Statements[i].LinearAddress;
                     }
-                    stmNew = block.Statements.Insert(i+1, uAddr, ass);
+                    stmNew = block.Statements.Insert(i + 1, uAddr, ass);
                 }
 
                 var sidTo = ssaIds.Add(ass.Dst, stmNew, ass.Src, false);
@@ -532,9 +464,12 @@ namespace Reko.Analysis
 
         public class RegisterTransformer : IdentifierTransformer
         {
+            protected BitRange liveBits;
+
             public RegisterTransformer(Identifier id, Statement stm, SsaTransform outer)
                 : base(id, stm, outer)
             {
+                this.liveBits = id.Storage.GetBitRange();
             }
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
@@ -567,6 +502,71 @@ namespace Reko.Analysis
                     }
                 }
                 return null;
+            }
+
+            /// <summary>
+            /// If <paramref name="idTo"/> is smaller than <paramref name="sidFrom" />, then
+            /// it doesn't cover it completely. Therefore, we must generate a SLICE expression.
+            /// </summary>
+            /// <param name="idTo"></param>
+            /// <param name="sidFrom"></param>
+            /// <returns></returns>
+            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasDef, SsaBlockState bsUse)
+            {
+                var sidDef = aliasDef.SsaId;
+                var blockDef = sidDef.DefStatement.Block;
+                var stgDef = sidDef.Identifier.Storage;
+                var stgTo = id.Storage;
+                DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement({0},{1})", sidDef.Identifier.Name, id.Name);
+
+                if (stgDef == stgTo)
+                {
+                    aliasDef.Aliases[id] = sidDef;
+                    return aliasDef.SsaId;
+                }
+
+                Expression e = null;
+                SsaIdentifier sidUse;
+                if (stgDef.Covers(stgTo))
+                {
+                    // Defined identifier is "wider" than the storage being 
+                    // read. The reader gets a slice of the defined identifier.
+                    int offset = stgDef.OffsetOf(stgTo);
+                    e = new Slice(id.DataType, sidDef.Identifier, offset);
+                    sidUse = aliasDef.SsaId;
+                }
+                else
+                {
+                    // The defined identifier only writes some of the bits of the 
+                    // read identifier, so we have to proceed to the previous alias.
+                    if (aliasDef.PrevState != null && aliasDef.PrevState.SsaId.DefStatement != null)
+                    {
+                        // There is a previous alias, try using that.
+                        sidUse = MaybeGenerateAliasStatement(aliasDef.PrevState, bsUse);
+                    }
+                    else
+                    {
+                        this.liveBits = this.liveBits - stgDef.GetBitRange();
+                        DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockDef.Name);
+                        sidUse = ReadVariableRecursive(bsUse);
+                    }
+                    e = DepositBits(sidUse, aliasDef.SsaId, (int) stgDef.BitAddress);
+                }
+
+                // Insert an alias assignment. 
+                var ass = new AliasAssignment(id, e);
+                var sidAlias = InsertAfterDefinition(sidDef.DefStatement, ass);
+                sidUse.Uses.Add(sidAlias.DefStatement);
+                if (e is DepositBits)
+                    sidDef.Uses.Add(sidAlias.DefStatement);
+                aliasDef.Aliases[id] = sidAlias;
+                return sidAlias;
+            }
+
+            private Expression DepositBits(SsaIdentifier sidUse, SsaIdentifier sidFrom, int bitAddress)
+            {
+                var e = new DepositBits(sidUse.Identifier, sidFrom.Identifier, bitAddress);
+                return e;
             }
         }
 
@@ -655,7 +655,6 @@ namespace Reko.Analysis
                     }
                     else
                     {
-                        this.liveBits = this.liveBits - stgFrom.GetBitRange();
                         sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block]);
                     }
 
