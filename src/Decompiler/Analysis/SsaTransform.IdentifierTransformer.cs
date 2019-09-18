@@ -155,60 +155,55 @@ namespace Reko.Analysis
             /// <param name="idTo"></param>
             /// <param name="sidFrom"></param>
             /// <returns></returns>
-            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom, SsaBlockState bsTo)
+            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasDef, SsaBlockState bsUse)
             {
-                var sidFrom = aliasFrom.SsaId;
-                var blockFrom = sidFrom.DefStatement.Block;
-                var stgFrom = sidFrom.Identifier.Storage;
+                var sidDef = aliasDef.SsaId;
+                var blockDef = sidDef.DefStatement.Block;
+                var stgDef = sidDef.Identifier.Storage;
                 var stgTo = id.Storage;
-                DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement({0},{1})", sidFrom.Identifier.Name, id.Name);
+                DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement({0},{1})", sidDef.Identifier.Name, id.Name);
 
-                if (stgFrom == stgTo)
+                if (stgDef == stgTo)
                 {
-                    aliasFrom.Aliases[id] = sidFrom;
-                    return aliasFrom.SsaId;
+                    aliasDef.Aliases[id] = sidDef;
+                    return aliasDef.SsaId;
                 }
 
                 Expression e = null;
                 SsaIdentifier sidUse;
-                if (stgFrom.Covers(stgTo))
+                if (stgDef.Covers(stgTo))
                 {
                     // Defined identifier is "wider" than the storage being 
                     // read. The reader gets a slice of the defined identifier.
-                    int offset = stgFrom.OffsetOf(stgTo);
-                    //$TODO: should always be slicing here. Casts should only be used 
-                    // when type conversions (e.g. int => float) are done.
-                    if (offset > 0)
-                        e = new Slice(id.DataType, sidFrom.Identifier, offset);
-                    else
-                        e = new Cast(id.DataType, sidFrom.Identifier);
-                    sidUse = aliasFrom.SsaId;
+                    int offset = stgDef.OffsetOf(stgTo);
+                    e = new Slice(id.DataType, sidDef.Identifier, offset);
+                    sidUse = aliasDef.SsaId;
                 }
                 else
                 {
                     // The defined identifier only writes some of the bits of the 
                     // read identifier, so we have to proceed to the previous alias
-                    if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
+                    if (aliasDef.PrevState != null && aliasDef.PrevState.SsaId.DefStatement != null)
                     {
                         // There is a previous alias, try using that.
-                        sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState, bsTo);
+                        sidUse = MaybeGenerateAliasStatement(aliasDef.PrevState, bsUse);
                     }
                     else
                     {
-                        this.liveBits = this.liveBits - stgFrom.GetBitRange();
-                        DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockFrom.Name);
-                        sidUse = ReadVariableRecursive(bsTo);
+                        this.liveBits = this.liveBits - stgDef.GetBitRange();
+                        DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockDef.Name);
+                        sidUse = ReadVariableRecursive(bsUse);
                     }
-                    e = DepositBits(sidUse, aliasFrom.SsaId, (int) stgFrom.BitAddress);
+                    e = DepositBits(sidUse, aliasDef.SsaId, (int) stgDef.BitAddress);
                 }
 
                 // Insert an alias assignment. 
                 var ass = new AliasAssignment(id, e);
-                var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
+                var sidAlias = InsertAfterDefinition(sidDef.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
                 if (e is DepositBits)
-                    sidFrom.Uses.Add(sidAlias.DefStatement);
-                aliasFrom.Aliases[id] = sidAlias;
+                    sidDef.Uses.Add(sidAlias.DefStatement);
+                aliasDef.Aliases[id] = sidAlias;
                 return sidAlias;
             }
 
@@ -929,7 +924,7 @@ namespace Reko.Analysis
                     sids[0].DefStatement.Instruction is AliasAssignment aassHead &&
                     sids[1].DefStatement.Instruction is AliasAssignment aassTail)
                 {
-                    if (aassHead.Src is Slice eHead && aassTail.Src is Cast eTail)
+                    if (aassHead.Src is Slice eHead && aassTail.Src is Slice eTail)
                     {
                         return ssaIds[(Identifier) eHead.Expression];
                     }
@@ -956,9 +951,9 @@ namespace Reko.Analysis
                     sids[0].DefStatement.Instruction is Assignment assHead &&
                     sids[1].DefStatement.Instruction is Assignment assTail)
                 {
-                    // If x_2 = Slice(y_3); z_4 = (cast) y_3 return y_3
+                    // If x_2 = Slice(y_3); z_4 = (Slice) y_3 return y_3
                     if (assHead.Src is Slice slHead &&
-                        assTail.Src is Cast caTail &&
+                        assTail.Src is Slice caTail &&
                         slHead.Expression == caTail.Expression &&
                         slHead.Expression is Identifier id)
                     {

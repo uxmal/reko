@@ -50,7 +50,7 @@ es_5: orig: es
 bx_6: orig: bx
     def:  bx_6 = 0x0FFF
     uses: bh_40 = SLICE(bx_6, byte, 8) (alias)
-          bl_42 = (byte) bx_6 (alias)
+          bl_42 = SLICE(bx_6, byte, 0) (alias)
           bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
 bh_7: orig: bh
     def:  bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
@@ -91,7 +91,7 @@ ax_18: orig: ax
     def:  ax_18 = ax_16 << 0x0004
     uses: SCZO_19 = cond(ax_18)
           ah_24 = SLICE(ax_18, byte, 8) (alias)
-          al_28 = (byte) ax_18 (alias)
+          al_28 = SLICE(ax_18, byte, 0) (alias)
           ax_44 = DPB(ax_18, al_29, 0) (alias)
 SCZO_19: orig: SCZO
     def:  SCZO_19 = cond(ax_18)
@@ -117,7 +117,7 @@ SZO_26: orig: SZO
 C_27: orig: C
     def:  C_27 = false
 al_28: orig: al
-    def:  al_28 = (byte) ax_18 (alias)
+    def:  al_28 = SLICE(ax_18, byte, 0) (alias)
     uses: al_29 = al_28 | ah_24
 al_29: orig: al
     def:  al_29 = al_28 | ah_24
@@ -148,7 +148,7 @@ bx_37: orig: bx
     def:  bx_37 = bx_35 - 0x0001
     uses: SZO_38 = cond(bx_37)
           bh_41 = SLICE(bx_37, byte, 8) (alias)
-          bl_43 = (byte) bx_37 (alias)
+          bl_43 = SLICE(bx_37, byte, 0) (alias)
           bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
           use bx_37
 SZO_38: orig: SZO
@@ -167,10 +167,10 @@ bh_41: orig: bh
     def:  bh_41 = SLICE(bx_37, byte, 8) (alias)
     uses: bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
 bl_42: orig: bl
-    def:  bl_42 = (byte) bx_6 (alias)
+    def:  bl_42 = SLICE(bx_6, byte, 0) (alias)
     uses: bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
 bl_43: orig: bl
-    def:  bl_43 = (byte) bx_37 (alias)
+    def:  bl_43 = SLICE(bx_37, byte, 0) (alias)
     uses: bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
 O_45: orig: O
     def:  O_45 = SLICE(SZO_38, bool, 4) (alias)
@@ -191,7 +191,7 @@ l0C00_0004:
 	es_5 = ax_4
 	bx_6 = 0x0FFF
 	bh_40 = SLICE(bx_6, byte, 8) (alias)
-	bl_42 = (byte) bx_6 (alias)
+	bl_42 = SLICE(bx_6, byte, 0) (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
 	bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
@@ -210,7 +210,7 @@ l0C00_000C:
 	SCZO_17 = cond(ax_16)
 	ax_18 = ax_16 << 0x0004
 	ah_24 = SLICE(ax_18, byte, 8) (alias)
-	al_28 = (byte) ax_18 (alias)
+	al_28 = SLICE(ax_18, byte, 0) (alias)
 	SCZO_19 = cond(ax_18)
 	al_20 = bl_11
 	al_21 = al_20 & 0xF0
@@ -226,7 +226,7 @@ l0C00_000C:
 	Mem36[es_5:bx_35:byte] = al_29
 	bx_37 = bx_35 - 0x0001
 	bh_41 = SLICE(bx_37, byte, 8) (alias)
-	bl_43 = (byte) bx_37 (alias)
+	bl_43 = SLICE(bx_37, byte, 0) (alias)
 	SZO_38 = cond(bx_37)
 	S_39 = SLICE(SZO_38, bool, 0) (alias)
 	O_45 = SLICE(SZO_38, bool, 4) (alias)

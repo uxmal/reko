@@ -23,10 +23,10 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_5 = DPB(0x0000, fn0C00_0015(0x0003), 0)
-	al_11 = (byte) ax_5 (alias)
+	al_11 = SLICE(ax_5, byte, 0) (alias)
 	Mem13[ds:0x0300:byte] = al_11
 	ax_15 = DPB(0x0000, fn0C00_0020(0x0003), 0)
-	al_21 = (byte) ax_15 (alias)
+	al_21 = SLICE(ax_15, byte, 0) (alias)
 	Mem22[ds:0x0301:byte] = al_21
 	return
 	// succ:  fn0C00_0000_exit

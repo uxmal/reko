@@ -72,7 +72,7 @@ bx_20: orig: bx
 bx_21: orig: bx
     def:  bx_21 = bx_20 + bx_20
     uses: SCZO_22 = cond(bx_21)
-          bl_23 = (byte) bx_21 (alias)
+          bl_23 = SLICE(bx_21, byte, 0) (alias)
           bx_28 = PHI((bx_19, l0C00_0023), (bx_21, l0C00_001B), (bx_21, l0C00_001F), (bx_21, l0C00_0017))
           bx_28 = PHI((bx_19, l0C00_0023), (bx_21, l0C00_001B), (bx_21, l0C00_001F), (bx_21, l0C00_0017))
           bx_28 = PHI((bx_19, l0C00_0023), (bx_21, l0C00_001B), (bx_21, l0C00_001F), (bx_21, l0C00_0017))
@@ -83,7 +83,7 @@ SCZO_22: orig: SCZO
           S_38 = SLICE(SCZO_22, bool, 0) (alias)
           Z_43 = SLICE(SCZO_22, bool, 2) (alias)
 bl_23: orig: bl
-    def:  bl_23 = (byte) bx_21 (alias)
+    def:  bl_23 = SLICE(bx_21, byte, 0) (alias)
     uses: switch (bl_23) { l0C00_0017 l0C00_001B l0C00_001F }
 ax_24: orig: ax
     def:  ax_24 = 0x0003
@@ -177,7 +177,7 @@ l0C00_0009:
 	SZO_16 = cond(bh_15)
 	C_17 = false
 	bx_21 = bx_20 + bx_20
-	bl_23 = (byte) bx_21 (alias)
+	bl_23 = SLICE(bx_21, byte, 0) (alias)
 	SCZO_22 = cond(bx_21)
 	C_31 = SLICE(SCZO_22, bool, 1) (alias)
 	O_35 = SLICE(SCZO_22, bool, 4) (alias)

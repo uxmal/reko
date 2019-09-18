@@ -25,7 +25,7 @@ l0C00_0000:
 	Mem8[ds:0x0202:word16] = ax_7
 	ds_si_10 = SEQ(ds, 0x0300) (alias)
 	ax_11 = fn0C00_0015(ds_si_10)
-	al_12 = (byte) ax_11 (alias)
+	al_12 = SLICE(ax_11, byte, 0) (alias)
 	Mem13[ds:0x0302:byte] = al_12
 	return
 	// succ:  fn0C00_0000_exit

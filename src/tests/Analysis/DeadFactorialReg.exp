@@ -28,10 +28,10 @@ Top_19: orig: Top
 SCZO_20: orig: SCZO
 dx_ax_21: orig: dx_ax
     def:  dx_ax_21 = cx *s ax_18
-    uses: ax_23 = (word16) dx_ax_21 (alias)
+    uses: ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
 dx_22: orig: dx
 ax_23: orig: ax
-    def:  ax_23 = (word16) dx_ax_21 (alias)
+    def:  ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
     uses: ax_32 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
 SCZO_24: orig: SCZO
 dx_31: orig: dx
@@ -71,7 +71,7 @@ l0C00_000B:
 l0C00_0011:
 	ax_18 = fn0C00_000B(cx - 0x0001)
 	dx_ax_21 = cx *s ax_18
-	ax_23 = (word16) dx_ax_21 (alias)
+	ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:

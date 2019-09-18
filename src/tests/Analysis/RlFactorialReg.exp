@@ -30,7 +30,7 @@ l0C00_0011:
 		uses: cx:cx - 0x0001
 		defs: ax:ax_18
 	dx_ax_21 = cx *s ax_18
-	ax_23 = (word16) dx_ax_21 (alias)
+	ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
 l0C00_001C:
 	ax_11 = 0x0001
 l0C00_001F:

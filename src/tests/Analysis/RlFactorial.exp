@@ -30,7 +30,7 @@ l0C00_0018:
 		uses: Stack +0002:wArg02 - 0x0001
 		defs: ax:ax_17
 	dx_ax_25 = wArg02 *s ax_17
-	ax_27 = (word16) dx_ax_25 (alias)
+	ax_27 = SLICE(dx_ax_25, word16, 0) (alias)
 l0C00_0026:
 	ax_13 = 0x0001
 l0C00_0029:

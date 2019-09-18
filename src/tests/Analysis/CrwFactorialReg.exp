@@ -63,7 +63,7 @@ l0C00_000B:
 l0C00_0011:
 	ax_18 = fn0C00_000B(cx - 0x0001)
 	dx_ax_21 = cx *s ax_18
-	ax_23 = (word16) dx_ax_21 (alias)
+	ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:

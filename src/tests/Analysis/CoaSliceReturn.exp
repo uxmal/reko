@@ -5,9 +5,9 @@ si_4: orig: si
 ds:ds
     def:  def ds
     uses: Mem8[ds:0x0202:word16] = fn0C00_0015(SEQ(ds, 0x0200))
-          Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(SEQ(ds, 0x0300))
+          Mem13[ds:0x0302:byte] = SLICE(fn0C00_0015(SEQ(ds, 0x0300)), byte, 0)
           Mem8[ds:0x0202:word16] = fn0C00_0015(SEQ(ds, 0x0200))
-          Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(SEQ(ds, 0x0300))
+          Mem13[ds:0x0302:byte] = SLICE(fn0C00_0015(SEQ(ds, 0x0300)), byte, 0)
 ds_si_6: orig: ds_si
 ax_7: orig: ax
 Mem8: orig: Mem0
@@ -17,7 +17,7 @@ ds_si_10: orig: ds_si
 ax_11: orig: ax
 al_12: orig: al
 Mem13: orig: Mem0
-    def:  Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(SEQ(ds, 0x0300))
+    def:  Mem13[ds:0x0302:byte] = SLICE(fn0C00_0015(SEQ(ds, 0x0300)), byte, 0)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -26,7 +26,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	Mem8[ds:0x0202:word16] = fn0C00_0015(SEQ(ds, 0x0200))
-	Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(SEQ(ds, 0x0300))
+	Mem13[ds:0x0302:byte] = SLICE(fn0C00_0015(SEQ(ds, 0x0300)), byte, 0)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

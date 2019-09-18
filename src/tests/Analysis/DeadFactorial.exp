@@ -28,10 +28,10 @@ sp_23: orig: sp
 dx_24: orig: dx
 dx_ax_25: orig: dx_ax
     def:  dx_ax_25 = wArg02 *s ax_17
-    uses: ax_27 = (word16) dx_ax_25 (alias)
+    uses: ax_27 = SLICE(dx_ax_25, word16, 0) (alias)
 dx_26: orig: dx
 ax_27: orig: ax
-    def:  ax_27 = (word16) dx_ax_25 (alias)
+    def:  ax_27 = SLICE(dx_ax_25, word16, 0) (alias)
     uses: ax_37 = PHI((ax_27, l0C00_0018), (ax_13, l0C00_0026))
 SCZO_28: orig: SCZO
 wLoc02_34: orig: wLoc02
@@ -74,7 +74,7 @@ l0C00_000F:
 l0C00_0018:
 	ax_17 = fn0C00_000F(wArg02 - 0x0001)
 	dx_ax_25 = wArg02 *s ax_17
-	ax_27 = (word16) dx_ax_25 (alias)
+	ax_27 = SLICE(dx_ax_25, word16, 0) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:

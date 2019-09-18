@@ -22,7 +22,7 @@ l0C00_002A:
 l0C00_002C:
 	Mem28[ds:bx + 0x0009:byte] = al_19
 	word32 dx_ax_30 = Mem28[ds:bx + 0x000C:word16] *s Mem28[ds:bx + 0x000A:word16]
-	Mem34[ds:bx + 0x000E:word16] = (word16) dx_ax_30
+	Mem34[ds:bx + 0x000E:word16] = SLICE(dx_ax_30, word16, 0)
 	Mem35[ds:bx + 0x0010:word16] = SLICE(dx_ax_30, word16, 16)
 	return
 	// succ:  fn0C00_0000_exit
@@ -208,7 +208,7 @@ T_40: (in Mem28[ds:bx + 0x000C:word16] *s Mem28[ds:bx + 0x000A:word16] : int32)
   Class: Eq_33
   DataType: int32
   OrigDataType: int32
-T_41: (in (word16) dx_ax_30 : word16)
+T_41: (in SLICE(dx_ax_30, word16, 0) : word16)
   Class: Eq_41
   DataType: word16
   OrigDataType: word16

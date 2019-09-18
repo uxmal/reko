@@ -203,13 +203,13 @@ dx_26: orig: dx
 dx_ax_27: orig: dx_ax
     def:  dx_ax_27 = dx_26 *s ax_17
     uses: dx_28 = SLICE(dx_ax_27, word16, 16) (alias)
-          ax_29 = (word16) dx_ax_27 (alias)
+          ax_29 = SLICE(dx_ax_27, word16, 0) (alias)
           SCZO_30 = cond(dx_ax_27)
 dx_28: orig: dx
     def:  dx_28 = SLICE(dx_ax_27, word16, 16) (alias)
     uses: dx_40 = PHI((dx_28, l0C00_0018), (dx, l0C00_0026))
 ax_29: orig: ax
-    def:  ax_29 = (word16) dx_ax_27 (alias)
+    def:  ax_29 = SLICE(dx_ax_27, word16, 0) (alias)
     uses: ax_36 = PHI((ax_29, l0C00_0018), (ax_13, l0C00_0026))
 SCZO_30: orig: SCZO
     def:  SCZO_30 = cond(dx_ax_27)
@@ -309,7 +309,7 @@ l0C00_0018:
 	dx_26 = Mem15[ss:bp_8 + 0x0004:word16]
 	dx_ax_27 = dx_26 *s ax_17
 	dx_28 = SLICE(dx_ax_27, word16, 16) (alias)
-	ax_29 = (word16) dx_ax_27 (alias)
+	ax_29 = SLICE(dx_ax_27, word16, 0) (alias)
 	SCZO_30 = cond(dx_ax_27)
 	C_38 = SLICE(SCZO_30, bool, 1) (alias)
 	O_42 = SLICE(SCZO_30, bool, 4) (alias)

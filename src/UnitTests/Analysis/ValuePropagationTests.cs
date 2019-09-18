@@ -600,7 +600,7 @@ namespace Reko.UnitTests.Analysis
             m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
-            m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
+            m.Assign(bx_3, m.Slice(PrimitiveType.Word16, es_bx_1, 0));
             var instr = m.Assign(bx_4, m.SegMem(PrimitiveType.Word16, es_2, m.IAdd(bx_3, 4)));
             RunValuePropagator();
             Assert.AreEqual("bx_4 = Mem8[es_bx_1 + 0x0004:word16]", instr.ToString());
@@ -806,7 +806,7 @@ ProcedureBuilder_exit:
 
             m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es, m.Slice(PrimitiveType.Word16, es_bx, 16));
-            m.Assign(bx, m.Cast(PrimitiveType.Word16, es_bx));
+            m.Assign(bx, m.Slice(PrimitiveType.Word16, es_bx, 0));
             m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
 
             var ssa = RunTest(m);
@@ -825,18 +825,18 @@ Mem0:Mem
 es_bx_4: orig: es_bx
     def:  es_bx_4 = Mem0[es:bx:word32]
     uses: es_5 = SLICE(es_bx_4, word16, 16) (alias)
-          bx_6 = (word16) es_bx_4 (alias)
+          bx_6 = SLICE(es_bx_4, word16, 0) (alias)
           es_7 = SLICE(es_bx_4, word16, 16)
-          bx_8 = (word16) es_bx_4
+          bx_8 = SLICE(es_bx_4, word16, 0)
           Mem9[es_bx_4 + 0x0004:byte] = 0x03
 es_5: orig: es
     def:  es_5 = SLICE(es_bx_4, word16, 16) (alias)
 bx_6: orig: bx
-    def:  bx_6 = (word16) es_bx_4 (alias)
+    def:  bx_6 = SLICE(es_bx_4, word16, 0) (alias)
 es_7: orig: es
     def:  es_7 = SLICE(es_bx_4, word16, 16)
 bx_8: orig: bx
-    def:  bx_8 = (word16) es_bx_4
+    def:  bx_8 = SLICE(es_bx_4, word16, 0)
 Mem9: orig: Mem0
     def:  Mem9[es_bx_4 + 0x0004:byte] = 0x03
 // ProcedureBuilder
@@ -850,9 +850,9 @@ ProcedureBuilder_entry:
 l1:
 	es_bx_4 = Mem0[es:bx:word32]
 	es_5 = SLICE(es_bx_4, word16, 16) (alias)
-	bx_6 = (word16) es_bx_4 (alias)
+	bx_6 = SLICE(es_bx_4, word16, 0) (alias)
 	es_7 = SLICE(es_bx_4, word16, 16)
-	bx_8 = (word16) es_bx_4
+	bx_8 = SLICE(es_bx_4, word16, 0)
 	Mem9[es_bx_4 + 0x0004:byte] = 0x03
 ProcedureBuilder_exit:
 ";
@@ -1050,7 +1050,7 @@ ProcedureBuilder_exit:
             m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
-            m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
+            m.Assign(bx_3, m.Slice(PrimitiveType.Word16, es_bx_1, 0));
             var instr = m.Assign(bx_4, m.SegMem(PrimitiveType.Word16, es_2, bx_3));
             RunValuePropagator();
             Assert.AreEqual("bx_4 = Mem8[es_bx_1:word16]", instr.ToString());

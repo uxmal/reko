@@ -73,8 +73,8 @@ dx_18: orig: dx
 es_cx_19: orig: es_cx
     def:  es_cx_19 = Mem16[ds:0x0214:segptr32]
     uses: es_20 = SLICE(es_cx_19, selector, 16) (alias)
-          cx_22 = (word16) es_cx_19 (alias)
-          cx_46 = (word16) es_cx_19 (alias)
+          cx_22 = SLICE(es_cx_19, word16, 0) (alias)
+          cx_46 = SLICE(es_cx_19, word16, 0) (alias)
 es_20: orig: es
     def:  es_20 = SLICE(es_cx_19, selector, 16) (alias)
     uses: bx_21 = es_20
@@ -84,7 +84,7 @@ bx_21: orig: bx
     uses: dx_27 = dx_18 - bx_21 - C_26
           use bx_21
 cx_22: orig: cx
-    def:  cx_22 = (word16) es_cx_19 (alias)
+    def:  cx_22 = SLICE(es_cx_19, word16, 0) (alias)
     uses: ax_23 = ax_17 - cx_22
 ax_23: orig: ax
     def:  ax_23 = ax_17 - cx_22
@@ -164,7 +164,7 @@ C_45: orig: C
     def:  C_45 = SLICE(SCZO_43, bool, 1) (alias)
     uses: use C_45
 cx_46: orig: cx
-    def:  cx_46 = (word16) es_cx_19 (alias)
+    def:  cx_46 = SLICE(es_cx_19, word16, 0) (alias)
     uses: cx_47 = DPB(cx_46, cl_38, 0) (alias)
 cx_47: orig: cx
     def:  cx_47 = DPB(cx_46, cl_38, 0) (alias)
@@ -204,8 +204,8 @@ l0C00_0000:
 	dx_18 = Mem16[ds:0x0212:word16]
 	es_cx_19 = Mem16[ds:0x0214:segptr32]
 	es_20 = SLICE(es_cx_19, selector, 16) (alias)
-	cx_22 = (word16) es_cx_19 (alias)
-	cx_46 = (word16) es_cx_19 (alias)
+	cx_22 = SLICE(es_cx_19, word16, 0) (alias)
+	cx_46 = SLICE(es_cx_19, word16, 0) (alias)
 	bx_21 = es_20
 	ax_23 = ax_17 - cx_22
 	SCZO_24 = cond(ax_23)

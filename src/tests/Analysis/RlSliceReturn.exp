@@ -17,7 +17,7 @@ l0C00_0000:
 	call fn0C00_0015 (retsize: 2;)
 		uses: Sequence ds:si:ds_si_10
 		defs: ax:ax_11
-	al_12 = (byte) ax_11 (alias)
+	al_12 = SLICE(ax_11, byte, 0) (alias)
 	Mem13[ds:0x0302:byte] = al_12
 	return
 fn0C00_0000_exit:

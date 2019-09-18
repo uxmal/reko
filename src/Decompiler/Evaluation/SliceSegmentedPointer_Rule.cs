@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -84,7 +84,7 @@ namespace Reko.Evaluation
 
         /// <summary>
         /// Try to find an original 32-bit segmented pointer that may have 
-        /// been SLICE'd and cast to a segment and offset register.
+        /// been SLICE'd to a segment and offset register.
         /// </summary>
         /// <param name="seg"></param>
         /// <param name="off"></param>
@@ -92,7 +92,7 @@ namespace Reko.Evaluation
         private Identifier SlicedSegPointer(Identifier seg, Identifier off)
         {
             var defSeg = ctx.GetDefiningExpression(seg) as Slice;
-            var defOff = ctx.GetDefiningExpression(off) as Cast;
+            var defOff = ctx.GetDefiningExpression(off) as Slice;
             if (defSeg == null || defOff == null)
                 return null;
             if (defSeg.Expression == defOff.Expression)

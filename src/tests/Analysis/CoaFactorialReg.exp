@@ -37,8 +37,8 @@ Mem7: orig: Mem0
 cx:cx
     def:  def cx
     uses: branch cx <= 0x0001 l0C00_001C
-          ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
-          ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+          ax_23 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
+          ax_23 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
 SCZO_9: orig: SCZO
 SZO_10: orig: SZO
 ax_11: orig: ax
@@ -56,7 +56,7 @@ SCZO_20: orig: SCZO
 dx_ax_21: orig: dx_ax
 dx_22: orig: dx
 ax_23: orig: ax
-    def:  ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+    def:  ax_23 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
     uses: ax_32 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
 SCZO_24: orig: SCZO
 dx_31: orig: dx
@@ -94,7 +94,7 @@ l0C00_000B:
 	branch cx <= 0x0001 l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+	ax_23 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:

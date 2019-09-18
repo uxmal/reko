@@ -1528,18 +1528,18 @@ proc1_exit:
     uses: edx_2 = Mem0[0x00543200:word32]
 edx_2: orig: edx
     def:  edx_2 = Mem0[0x00543200:word32]
-    uses: dl_3 = (byte) edx_2 (alias)
+    uses: dl_3 = SLICE(edx_2, byte, 0) (alias)
 dl_3: orig: dl
-    def:  dl_3 = (byte) edx_2 (alias)
+    def:  dl_3 = SLICE(edx_2, byte, 0) (alias)
     uses: Mem4[0x00642300:byte] = dl_3
 Mem4: orig: Mem0
     def:  Mem4[0x00642300:byte] = dl_3
     uses: edx_5 = Mem4[0x00543208:word32]
 edx_5: orig: edx
     def:  edx_5 = Mem4[0x00543208:word32]
-    uses: dl_6 = (byte) edx_5 (alias)
+    uses: dl_6 = SLICE(edx_5, byte, 0) (alias)
 dl_6: orig: dl
-    def:  dl_6 = (byte) edx_5 (alias)
+    def:  dl_6 = SLICE(edx_5, byte, 0) (alias)
     uses: Mem7[0x00642308:byte] = dl_6
 Mem7: orig: Mem0
     def:  Mem7[0x00642308:byte] = dl_6
@@ -1551,10 +1551,10 @@ proc1_entry:
 	// succ:  l1
 l1:
 	edx_2 = Mem0[0x00543200:word32]
-	dl_3 = (byte) edx_2 (alias)
+	dl_3 = SLICE(edx_2, byte, 0) (alias)
 	Mem4[0x00642300:byte] = dl_3
 	edx_5 = Mem4[0x00543208:word32]
-	dl_6 = (byte) edx_5 (alias)
+	dl_6 = SLICE(edx_5, byte, 0) (alias)
 	Mem7[0x00642308:byte] = dl_6
 	return
 	// succ:  proc1_exit
@@ -1637,13 +1637,13 @@ Mem0:Mem
 es_bx_4: orig: es_bx
     def:  es_bx_4 = Mem0[es:bx:word32]
     uses: es_5 = SLICE(es_bx_4, word16, 16) (alias)
-          bx_6 = (word16) es_bx_4 (alias)
+          bx_6 = SLICE(es_bx_4, word16, 0) (alias)
           bx_7 = Mem0[es_bx_4 + 0x0010:word32]
 es_5: orig: es
     def:  es_5 = SLICE(es_bx_4, word16, 16) (alias)
     uses: use es_5
 bx_6: orig: bx
-    def:  bx_6 = (word16) es_bx_4 (alias)
+    def:  bx_6 = SLICE(es_bx_4, word16, 0) (alias)
 bx_7: orig: bx
     def:  bx_7 = Mem0[es_bx_4 + 0x0010:word32]
     uses: use bx_7
@@ -1658,7 +1658,7 @@ proc1_entry:
 l1:
 	es_bx_4 = Mem0[es:bx:word32]
 	es_5 = SLICE(es_bx_4, word16, 16) (alias)
-	bx_6 = (word16) es_bx_4 (alias)
+	bx_6 = SLICE(es_bx_4, word16, 0) (alias)
 	bx_7 = Mem0[es_bx_4 + 0x0010:word32]
 	return
 	// succ:  proc1_exit
@@ -1694,9 +1694,9 @@ Mem0:Mem
     uses: eax_3 = Mem0[eax:word32]
 eax_3: orig: eax
     def:  eax_3 = Mem0[eax:word32]
-    uses: al_4 = (byte) eax_3 (alias)
+    uses: al_4 = SLICE(eax_3, byte, 0) (alias)
 al_4: orig: al
-    def:  al_4 = (byte) eax_3 (alias)
+    def:  al_4 = SLICE(eax_3, byte, 0) (alias)
     uses: Mem5[0x00123100:byte] = al_4
           Mem6[0x00123108:byte] = al_4
 Mem5: orig: Mem0
@@ -1712,7 +1712,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	eax_3 = Mem0[eax:word32]
-	al_4 = (byte) eax_3 (alias)
+	al_4 = SLICE(eax_3, byte, 0) (alias)
 	Mem5[0x00123100:byte] = al_4
 	Mem6[0x00123108:byte] = al_4
 proc1_exit:
@@ -1897,13 +1897,13 @@ Mem3: orig: Mem0
     uses: es_cx_4 = Mem3[0x00001238:word32]
 es_cx_4: orig: es_cx
     def:  es_cx_4 = Mem3[0x00001238:word32]
-    uses: cx_6 = (word16) es_cx_4 (alias)
+    uses: cx_6 = SLICE(es_cx_4, word16, 0) (alias)
           es_8 = SLICE(es_cx_4, word16, 16) (alias)
 cl_5: orig: cl
     def:  cl_5 = 0x2D
     uses: cx_7 = DPB(cx_6, cl_5, 0) (alias)
 cx_6: orig: cx
-    def:  cx_6 = (word16) es_cx_4 (alias)
+    def:  cx_6 = SLICE(es_cx_4, word16, 0) (alias)
     uses: cx_7 = DPB(cx_6, cl_5, 0) (alias)
 cx_7: orig: cx
     def:  cx_7 = DPB(cx_6, cl_5, 0) (alias)
@@ -1921,7 +1921,7 @@ m0:
 	cx_2 = Mem0[0x1234:word16]
 	Mem3[0x00001236:word16] = cx_2
 	es_cx_4 = Mem3[0x00001238:word32]
-	cx_6 = (word16) es_cx_4 (alias)
+	cx_6 = SLICE(es_cx_4, word16, 0) (alias)
 	es_8 = SLICE(es_cx_4, word16, 16) (alias)
 	cl_5 = 0x2D
 	cx_7 = DPB(cx_6, cl_5, 0) (alias)
@@ -2302,7 +2302,7 @@ proc1_exit:
           r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
 r2_r1_2: orig: r2_r1
     def:  r2_r1_2 = r1 *s 1431655765
-    uses: r1_5 = (word32) r2_r1_2 (alias)
+    uses: r1_5 = SLICE(r2_r1_2, word32, 0) (alias)
 r2_3: orig: r2
     def:  r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
     uses: Mem4[0x00040000:word32] = r2_3
@@ -2310,7 +2310,7 @@ r2_3: orig: r2
 Mem4: orig: Mem0
     def:  Mem4[0x00040000:word32] = r2_3
 r1_5: orig: r1
-    def:  r1_5 = (word32) r2_r1_2 (alias)
+    def:  r1_5 = SLICE(r2_r1_2, word32, 0) (alias)
     uses: use r1_5
 // proc1
 // Return size: 0
@@ -2321,7 +2321,7 @@ proc1_entry:
 l1:
 	r2_r1_2 = r1 *s 1431655765
 	r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
-	r1_5 = (word32) r2_r1_2 (alias)
+	r1_5 = SLICE(r2_r1_2, word32, 0) (alias)
 	Mem4[0x00040000:word32] = r2_3
 	return
 	// succ:  proc1_exit
@@ -4186,7 +4186,7 @@ si_3: orig: si
     uses: use si_3
 es_bx_4: orig: es_bx
     def:  es_bx_4 = ptrArg02_7
-    uses: bx_8 = (word16) es_bx_4 (alias)
+    uses: bx_8 = SLICE(es_bx_4, word16, 0) (alias)
           es_9 = SLICE(es_bx_4, word16, 16) (alias)
 wArg02:Stack +0002
     def:  def wArg02
@@ -4199,7 +4199,7 @@ ptrArg02_7: orig: ptrArg02
     def:  ptrArg02_7 = SEQ(wArg04, wArg02) (alias)
     uses: es_bx_4 = ptrArg02_7
 bx_8: orig: bx
-    def:  bx_8 = (word16) es_bx_4 (alias)
+    def:  bx_8 = SLICE(es_bx_4, word16, 0) (alias)
     uses: use bx_8
 es_9: orig: es
     def:  es_9 = SLICE(es_bx_4, word16, 16) (alias)
@@ -4219,7 +4219,7 @@ l1:
 	// succ:  m1
 m1:
 	es_bx_4 = ptrArg02_7
-	bx_8 = (word16) es_bx_4 (alias)
+	bx_8 = SLICE(es_bx_4, word16, 0) (alias)
 	es_9 = SLICE(es_bx_4, word16, 16) (alias)
 	return
 	// succ:  proc1_exit

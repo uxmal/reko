@@ -10,7 +10,7 @@ l0C00_0005:
 	ax = ax - 0x0003 >> 0x0001
 	// succ:  l0C00_000A
 l0C00_000A:
-	word16 ax_13 = (word16) (ax *s ax)
+	word16 ax_13 = SLICE(ax *s ax, word16, 0)
 	ax = ax_13
 	branch ax_13 != 0x0000 l0C00_0005
 	// succ:  l0C00_0011 l0C00_0005
@@ -27,7 +27,7 @@ void fn0C00_0000(word16 ax, selector ds)
 l0C00_0005:
 		ax = ax - 0x0003 >> 0x0001;
 	}
-	word16 ax_13 = (word16) (ax *s ax);
+	word16 ax_13 = SLICE(ax *s ax, word16, 0);
 	ax = ax_13;
 	if (ax_13 == 0x0000)
 	{
