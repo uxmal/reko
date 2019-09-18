@@ -37,6 +37,7 @@ namespace Reko.Analysis
         public abstract class IdentifierTransformer
         {
             protected Identifier id;
+            protected BitRange liveBits;
             protected readonly Statement stm;
             protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
@@ -45,6 +46,7 @@ namespace Reko.Analysis
             public IdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;
+                this.liveBits = id.Storage.GetBitRange();
                 this.stm = stm;
                 this.ssaIds = outer.ssa.Identifiers;
                 this.blockstates = outer.blockstates;
@@ -464,12 +466,9 @@ namespace Reko.Analysis
 
         public class RegisterTransformer : IdentifierTransformer
         {
-            protected BitRange liveBits;
-
             public RegisterTransformer(Identifier id, Statement stm, SsaTransform outer)
                 : base(id, stm, outer)
             {
-                this.liveBits = id.Storage.GetBitRange();
             }
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
@@ -534,26 +533,30 @@ namespace Reko.Analysis
                     int offset = stgDef.OffsetOf(stgTo);
                     e = new Slice(id.DataType, sidDef.Identifier, offset);
                     sidUse = aliasDef.SsaId;
+                    return InsertAliasAssignment(aliasDef, sidDef, e, sidUse);
+                }
+
+                // The defined identifier only writes some of the bits of the 
+                // read identifier, so we have to proceed to the previous 
+                // aliases and combine them together in a sequence.
+                var sids = new List<SsaIdentifier>();
+                if (aliasDef.PrevState != null && aliasDef.PrevState.SsaId.DefStatement != null)
+                {
+                    // There is a previous alias, try using that.
+                    sidUse = MaybeGenerateAliasStatement(aliasDef.PrevState, bsUse);
                 }
                 else
                 {
-                    // The defined identifier only writes some of the bits of the 
-                    // read identifier, so we have to proceed to the previous alias.
-                    if (aliasDef.PrevState != null && aliasDef.PrevState.SsaId.DefStatement != null)
-                    {
-                        // There is a previous alias, try using that.
-                        sidUse = MaybeGenerateAliasStatement(aliasDef.PrevState, bsUse);
-                    }
-                    else
-                    {
-                        this.liveBits = this.liveBits - stgDef.GetBitRange();
-                        DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockDef.Name);
-                        sidUse = ReadVariableRecursive(bsUse);
-                    }
-                    e = DepositBits(sidUse, aliasDef.SsaId, (int) stgDef.BitAddress);
+                    this.liveBits = this.liveBits - stgDef.GetBitRange();
+                    DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockDef.Name);
+                    sidUse = ReadVariableRecursive(bsUse);
                 }
+                e = DepositBits(sidUse, aliasDef.SsaId, (int) stgDef.BitAddress);
+                return InsertAliasAssignment(aliasDef, sidDef, e, sidUse);
+            }
 
-                // Insert an alias assignment. 
+            private SsaIdentifier InsertAliasAssignment(AliasState aliasDef, SsaIdentifier sidDef, Expression e, SsaIdentifier sidUse)
+            {
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(sidDef.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
@@ -655,6 +658,7 @@ namespace Reko.Analysis
                     }
                     else
                     {
+                        this.liveBits = this.liveBits - stgFrom.GetBitRange();
                         sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block]);
                     }
 
