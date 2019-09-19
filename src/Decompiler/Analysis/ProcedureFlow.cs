@@ -248,7 +248,7 @@ namespace Reko.Analysis
                     if (binding.BitRange.Extent > regRange.Extent)
                     {
                         var dt = PrimitiveType.CreateWord(regCallee.DataType.BitSize);
-                        var exp = new Cast(dt, binding.Expression);
+                        var exp = new Slice(dt, binding.Expression, regRange.Lsb);
                         return new CallBinding(regCallee, exp);
                     }
                 }

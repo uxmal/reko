@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Analysis
             var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses)
                 .ToArray();
             Assert.AreEqual(1, bindings.Length);
-            Assert.AreEqual("bx:(word16) ebx", bindings[0].ToString());
+            Assert.AreEqual("bx:SLICE(ebx, word16, 0)", bindings[0].ToString());
         }
 
         [Test]

@@ -13,10 +13,7 @@ Eq_n g_t0103 =
 		0x5A,
 	};
 word16 g_w0108 = 0x1700;
-Eq_n g_t02A3 = 
-	{
-		0x64
-	};
+char g_b02A3 = 'd';
 ptr16 g_ptr1388 = 0x0000;
 cu8 g_b138A = 0x00;
 byte g_b138B = 0x00;
@@ -24,6 +21,7 @@ Eq_n g_t138C =
 	{
 		0x00
 	};
+byte g_b138D = 0x00;
 ptr16 g_ptr14BC = 0x0000;
 int16 g_w14BE = 0;
 byte g_b14EF = 0x01;
@@ -84,10 +82,7 @@ Eq_n g_t165C =
 	};
 byte g_b165D = 0x1A;
 cu8 g_b165E = 0x1A;
-Eq_n g_t165F = 
-	{
-		0x1A
-	};
+char g_b165F = '\x1A';
 Eq_n g_t1660 = 
 	{
 		0x1A
@@ -104,19 +99,13 @@ Eq_n g_t1664 =
 	};
 byte g_b1665 = 0x1A;
 cu8 g_b1667 = 0x1A;
-union Eq_n * g_ptr1668 = &g_t1A1A;
-Eq_n g_t166A = 
-	{
-		0x1A
-	};
+char * g_ptr1668 = &g_t1A1A;
+char g_b166A = '\x1A';
 Eq_n g_t166B = 
 	{
 		0x1A
 	};
-Eq_n g_t166C = 
-	{
-		0x1A
-	};
+char g_b166C = '\x1A';
 Eq_n g_t166D = 
 	{
 		0x1A
@@ -129,7 +118,7 @@ Eq_n g_t166F =
 byte g_b1670 = 0x1A;
 Eq_n g_t1671 = 
 	{
-		0x1A
+		6682
 	};
 Eq_n g_t1672 = 
 	{
@@ -210,21 +199,15 @@ Eq_n g_t1696 =
 	};
 Eq_n g_t1697 = 
 	{
-		0xB7
+		-15689
 	};
 byte g_b16A6 = 0x23;
 Eq_n g_t16A7 = 
 	{
 		0x7E
 	};
-Eq_n g_t16A8 = 
-	{
-		0x23
-	};
-Eq_n g_t16A9 = 
-	{
-		0x56
-	};
+cu8 g_b16A8 = 0x23;
+cu8 g_b16A9 = 0x56;
 bui8 g_b16AA = 0x2A;
 cu8 g_b16AB = 0xE5;
 Eq_n g_t1A1A;

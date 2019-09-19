@@ -317,6 +317,7 @@ fn0528_entry:
 
 l0528:
 	word16 r3_8
+	word16 r3_56
 	word16 r0_17 = fn051A(fn051A(r0, 0x0028, out r3_8), 0x0028, out r3_56)
 	word16 r3_25 = 0x0003
 // DataOut:
@@ -1101,10 +1102,10 @@ fn0AAE_exit:
 
 
 
-void fn0AC4(byte bArg00, byte bArg01, word16 wArg02, word16 wArg04)
+void fn0AC4(word16 r3, word16 r4, byte bArg00, byte bArg01, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0000:[0..7] Stack +0001:[0..7] Stack +0002:[0..15] Stack +0004:[0..15]
+// MayUse:  r3:[0..15] r4:[0..15] Stack +0000:[0..7] Stack +0001:[0..7] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: NZVC r3 r4
 // Preserved: sp
@@ -1114,13 +1115,13 @@ fn0AC4_entry:
 // SymbolicIn:
 
 l0AC4:
-	word16 wLoc01_18 = SEQ(bArg00, 0x01)
+	word16 wLoc01_20 = SEQ(bArg00, 0x01)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0AC8_thunk_fn0AE6:
-	fn0AE6(0x01, wLoc01_18, bArg01, wArg02, wArg04)
+	fn0AE6(r3, r4, 0x01, wLoc01_20, bArg01, wArg02, wArg04)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1133,10 +1134,10 @@ fn0AC4_exit:
 
 
 
-void fn0AE2(byte bArg00, byte bArg01, word16 wArg02, word16 wArg04)
+void fn0AE2(word16 r3, word16 r4, byte bArg00, byte bArg01, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0000:[0..7] Stack +0001:[0..7] Stack +0002:[0..15] Stack +0004:[0..15]
+// MayUse:  r3:[0..15] r4:[0..15] Stack +0000:[0..7] Stack +0001:[0..7] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: NZVC r3 r4
 // Preserved: sp
@@ -1146,13 +1147,13 @@ fn0AE2_entry:
 // SymbolicIn:
 
 l0AE2:
-	word16 wLoc01_18 = SEQ(bArg00, 0x02)
+	word16 wLoc01_20 = SEQ(bArg00, 0x02)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0AE2_thunk_fn0AE6:
-	fn0AE6(0x02, wLoc01_18, bArg01, wArg02, wArg04)
+	fn0AE6(r3, r4, 0x02, wLoc01_20, bArg01, wArg02, wArg04)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1165,59 +1166,35 @@ fn0AE2_exit:
 
 
 
-void fn0AE6(byte bArg00, word16 wArg01, byte bArg03, word16 wArg04, word16 wArg06)
+void fn0AE6(word16 r3, word16 r4, byte bArg00, word16 wArg01, byte bArg03, word16 wArg04, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0000:[0..7] Stack +0001:[0..15] Stack +0003:[0..7] Stack +0004:[0..15] Stack +0006:[0..15]
+// MayUse:  r3:[0..15] r4:[0..15] Stack +0000:[0..7] Stack +0001:[0..15] Stack +0003:[0..7] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: NZVC r3 r4 sp
 // Preserved:
-l0AE6:
-	Mem4[sp - 0x0002:word16] = r3
-	r3_5 = Mem4[0x5424:word16]
-	Mem7[sp - 0x0004:word16] = 0x0000
-	Mem9[sp - 0x0004:byte] = Mem7[sp:byte]
-	branch Mem9[sp - 0x0004:word16] == 0x0001 l0B02
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0AF6_thunk_fn0B02:
-	fn0B02(r3_5, r4, Mem9[sp - 0x0004:word16], Mem9[sp - 0x0002:word16], Mem9[sp:byte], Mem9[sp + 0x0001:word16], Mem9[sp + 0x0003:byte], Mem9[sp + 0x0004:word16], Mem9[sp + 0x0006:word16])
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0AF6_thunk_fn0AF8:
-	fn0AF8(r3_5, r4, Mem9[sp - 0x0004:word16], Mem9[sp - 0x0002:word16], Mem9[sp:byte], Mem9[sp + 0x0001:word16], Mem9[sp + 0x0003:byte], Mem9[sp + 0x0004:word16], Mem9[sp + 0x0006:word16])
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0AE6_entry:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0AE6:
-	wLoc04_57 = (uint16) (uint8) bArg00 (alias)
-	r3_31 = Mem30[0x5424:word16]
-	branch wLoc04_57 == 0x0001 l0AF6_thunk_fn0B02
+	word16 wLoc04_56 = (uint16) (uint8) bArg00
+	word16 r3_27 = Mem26[0x5424:word16]
+	branch wLoc04_56 == 0x0001 l0AF6_thunk_fn0B02
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0AF6_thunk_fn0B02:
-	fn0B02(r3_31, r4, wLoc04_57, r3, bArg00, wArg01, bArg03, wArg04, wArg06)
+	fn0B02(r3_27, r4, wLoc04_56, r3, bArg00, wArg01, bArg03, wArg04, wArg06)
 	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0AF6_thunk_fn0AF8:
-	fn0AF8(r3_31, r4, wLoc04_57, r3, bArg00, wArg01, bArg03, wArg04, wArg06)
+	fn0AF8(r3_27, r4, wLoc04_56, r3, bArg00, wArg01, bArg03, wArg04, wArg06)
 	return
 // DataOut:
 // DataOut (flags):
@@ -2545,6 +2522,7 @@ l12FA:
 // SymbolicIn:
 
 l1326:
+	word16 r2_93
 	fn1366(r0_23, r3, r4_10, out r2_93, out r3, out r4_10)
 // DataOut:
 // DataOut (flags):
@@ -2563,6 +2541,7 @@ l134C:
 // SymbolicIn:
 
 l1352:
+	word16 r2_183
 	fn1370((int16) Mem101[r1_11:byte], r3, r4_10, out r2_183, out r3, out r4_10)
 	r1_11 = r1_11 + 0x0001
 // DataOut:
@@ -2780,40 +2759,40 @@ l142A:
 // SymbolicIn:
 
 l142C:
-	word16 v14_20 = Mem0[r3 + 0x0004:word16]
-	word16 r1_25 = v14_20
+	word16 v14_19 = Mem0[r3 + 0x0004:word16]
+	word16 r1_24 = v14_19
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1432:
-	r1_25 = r1_25 + 0x0002
-	branch Mem24[r1_25:word16] - r2 == 0x0000 l144A
+	r1_24 = r1_24 + 0x0002
+	branch Mem23[r1_24:word16] - r2 == 0x0000 l144A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1436:
-	branch Mem24[r3 + 0x0002:word16] - r1_25 <u 0x0000 l1432
+	branch Mem23[r3 + 0x0002:word16] - r1_24 <u 0x0000 l1432
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l143C:
-	r1_25 = v14_20
+	r1_24 = v14_19
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l143E:
-	r1_25 = r1_25 + 0x0002
-	branch Mem24[r1_25:word16] == 0x0000 l144A
+	r1_24 = r1_24 + 0x0002
+	branch Mem23[r1_24:word16] == 0x0000 l144A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1442:
-	branch Mem24[r3 + 0x0002:word16] - r1_25 <u 0x0000 l143E
+	branch Mem23[r3 + 0x0002:word16] - r1_24 <u 0x0000 l143E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2825,25 +2804,25 @@ l1448:
 // SymbolicIn:
 
 l144A:
-	word16 r1_59 = r1_25 - 0x0002
-	Mem62[r1_59:word16] = r2
-	word16 r0_64 = Mem62[r3 + 0x0006:word16]
-	word16 r1_69 = r1_59 - v14_20
-	branch r1_69 == 0x0000 l145C
+	word16 r1_58 = r1_24 - 0x0002
+	Mem61[r1_58:word16] = r2
+	word16 r0_63 = Mem61[r3 + 0x0006:word16]
+	word16 r1_68 = r1_58 - v14_19
+	branch r1_68 == 0x0000 l145C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1454:
-	r0_64 = r0_64 + 0x0020
-	r1_69 = r1_69 - 0x0001
-	branch r1_69 != 0x0000 l1454
+	r0_63 = r0_63 + 0x0020
+	r1_68 = r1_68 - 0x0001
+	branch r1_68 != 0x0000 l1454
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l145C:
-	return r0_64
+	return r0_63
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3020,6 +2999,7 @@ l150E:
 // SymbolicIn:
 
 l1518:
+	word16 r2_346
 	r0_102 = fn1836(r0_102, r3_101, r4_100, out r2_346, out r3_101, out r4_100)
 // DataOut:
 // DataOut (flags):
@@ -3187,6 +3167,7 @@ l1594:
 // SymbolicIn:
 
 l14F6:
+	word16 r2_345
 	r0_102 = fn1836(r0_102, r3_101, r4_100, out r2_345, out r3_101, out r4_100)
 	sp_130 = <invalid>
 // DataOut:
@@ -3283,6 +3264,7 @@ l16E6:
 // SymbolicIn:
 
 l16EC:
+	word16 r2_84
 	r0 = fn1836(r0, r3, r4, out r2_84, out r3, out r4)
 	Mem25[r4 + 0x0018:word16] = 0x0000
 	Mem28[r4:word16] = Mem25[r4:word16] & ~0x0002
@@ -4074,6 +4056,7 @@ l1D3E:
 // SymbolicIn:
 
 l1D80:
+	word16 r2_107
 	r0 = fn1836(r0, r3, r0, out r2_107, out r3, out r4_100)
 // DataOut:
 // DataOut (flags):

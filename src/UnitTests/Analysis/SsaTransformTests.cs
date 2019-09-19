@@ -1404,21 +1404,24 @@ proc1_exit:
           branch Mem0[0x00010042:bool] mBranch2
 ecx_2: orig: ecx
     def:  ecx_2 = Mem0[0x00542300:word32]
-    uses: ecx_6 = DPB(ecx_2, cl_4, 0) (alias)
+    uses: ecx_24_8_6 = SLICE(ecx_2, word24, 8) (alias)
 ecx_3: orig: ecx
     def:  ecx_3 = 0x00000020
-    uses: ecx_5 = PHI((ecx_6, mBranch1), (ecx_3, mBranch2))
+    uses: ecx_5 = PHI((ecx_7, mBranch1), (ecx_3, mBranch2))
 cl_4: orig: cl
     def:  cl_4 = 0x2A
-    uses: ecx_6 = DPB(ecx_2, cl_4, 0) (alias)
+    uses: ecx_7 = SEQ(ecx_24_8_6, cl_4) (alias)
 ecx_5: orig: ecx
-    def:  ecx_5 = PHI((ecx_6, mBranch1), (ecx_3, mBranch2))
-    uses: Mem7[0x00010232:word32] = ecx_5
-ecx_6: orig: ecx
-    def:  ecx_6 = DPB(ecx_2, cl_4, 0) (alias)
-    uses: ecx_5 = PHI((ecx_6, mBranch1), (ecx_3, mBranch2))
-Mem7: orig: Mem0
-    def:  Mem7[0x00010232:word32] = ecx_5
+    def:  ecx_5 = PHI((ecx_7, mBranch1), (ecx_3, mBranch2))
+    uses: Mem8[0x00010232:word32] = ecx_5
+ecx_24_8_6: orig: ecx_24_8
+    def:  ecx_24_8_6 = SLICE(ecx_2, word24, 8) (alias)
+    uses: ecx_7 = SEQ(ecx_24_8_6, cl_4) (alias)
+ecx_7: orig: ecx
+    def:  ecx_7 = SEQ(ecx_24_8_6, cl_4) (alias)
+    uses: ecx_5 = PHI((ecx_7, mBranch1), (ecx_3, mBranch2))
+Mem8: orig: Mem0
+    def:  Mem8[0x00010232:word32] = ecx_5
 // proc1
 // Return size: 0
 define proc1
@@ -1427,29 +1430,32 @@ proc1_entry:
 	// succ:  l1
 l1:
 	ecx_2 = Mem0[0x00542300:word32]
+	ecx_24_8_6 = SLICE(ecx_2, word24, 8) (alias)
 	branch Mem0[0x00010042:bool] mBranch2
 	// succ:  mBranch1 mBranch2
 mBranch1:
 	cl_4 = 0x2A
-	ecx_6 = DPB(ecx_2, cl_4, 0) (alias)
+	ecx_7 = SEQ(ecx_24_8_6, cl_4) (alias)
 	goto mCommon
 	// succ:  mCommon
 mBranch2:
 	ecx_3 = 0x00000020
 	// succ:  mCommon
 mCommon:
-	ecx_5 = PHI((ecx_6, mBranch1), (ecx_3, mBranch2))
-	Mem7[0x00010232:word32] = ecx_5
+	ecx_5 = PHI((ecx_7, mBranch1), (ecx_3, mBranch2))
+	Mem8[0x00010232:word32] = ecx_5
 	return
 	// succ:  proc1_exit
 proc1_exit:
 ======
 ";
             #endregion
+
+            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
             RunTest(sExp, m =>
             {
-                var ecx = m.Frame.EnsureRegister(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
-                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 1, 0, PrimitiveType.Byte));
+                var ecx = m.Register(Registers.ecx);
+                var cl = m.Register(Registers.cl);
 
                 m.Assign(ecx, m.Mem32(m.Word32(0x542300)));
                 m.BranchIf(m.Mem(PrimitiveType.Bool, m.Word32(0x10042)), "mBranch2");
@@ -1881,6 +1887,7 @@ proc1_exit:
                 m.Return(eax);      // forces liveness of eax.
             });
         }
+
         [Test]
         public void SsaAliasedSequence()
         {
@@ -1897,19 +1904,19 @@ Mem3: orig: Mem0
     uses: es_cx_4 = Mem3[0x00001238:word32]
 es_cx_4: orig: es_cx
     def:  es_cx_4 = Mem3[0x00001238:word32]
-    uses: cx_6 = SLICE(es_cx_4, word16, 0) (alias)
-          es_8 = SLICE(es_cx_4, word16, 16) (alias)
+    uses: ch_6 = SLICE(es_cx_4, byte, 8) (alias)
+          es_8 = SLICE(es_cx_4, selector, 16) (alias)
 cl_5: orig: cl
     def:  cl_5 = 0x2D
-    uses: cx_7 = DPB(cx_6, cl_5, 0) (alias)
-cx_6: orig: cx
-    def:  cx_6 = SLICE(es_cx_4, word16, 0) (alias)
-    uses: cx_7 = DPB(cx_6, cl_5, 0) (alias)
+    uses: cx_7 = SEQ(ch_6, cl_5) (alias)
+ch_6: orig: ch
+    def:  ch_6 = SLICE(es_cx_4, byte, 8) (alias)
+    uses: cx_7 = SEQ(ch_6, cl_5) (alias)
 cx_7: orig: cx
-    def:  cx_7 = DPB(cx_6, cl_5, 0) (alias)
+    def:  cx_7 = SEQ(ch_6, cl_5) (alias)
     uses: use cx_7
 es_8: orig: es
-    def:  es_8 = SLICE(es_cx_4, word16, 16) (alias)
+    def:  es_8 = SLICE(es_cx_4, selector, 16) (alias)
     uses: use es_8
 // proc1
 // Return size: 0
@@ -1921,10 +1928,10 @@ m0:
 	cx_2 = Mem0[0x1234:word16]
 	Mem3[0x00001236:word16] = cx_2
 	es_cx_4 = Mem3[0x00001238:word32]
-	cx_6 = SLICE(es_cx_4, word16, 0) (alias)
-	es_8 = SLICE(es_cx_4, word16, 16) (alias)
+	ch_6 = SLICE(es_cx_4, byte, 8) (alias)
+	es_8 = SLICE(es_cx_4, selector, 16) (alias)
 	cl_5 = 0x2D
-	cx_7 = DPB(cx_6, cl_5, 0) (alias)
+	cx_7 = SEQ(ch_6, cl_5) (alias)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1934,11 +1941,13 @@ proc1_exit:
 ";
             #endregion
 
+            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+
             RunTest_FrameAccesses(sExp, m =>
             {
-                var es = m.Reg16("es", 2);
-                var cx = m.Reg16("cx", 1);
-                var cl = m.Reg8("cl", 1);
+                var es = m.Register(Registers.es);
+                var cx = m.Register(Registers.cx);
+                var cl = m.Register(Registers.cl);
                 var es_cx = m.Frame.EnsureSequence(PrimitiveType.SegPtr32, es.Storage, cx.Storage);
 
                 m.Label("m0");
@@ -2024,49 +2033,40 @@ proc1_exit:
     uses: bl_2 = Mem0[0x1234:word16]
 bl_2: orig: bl
     def:  bl_2 = Mem0[0x1234:word16]
-    uses: bx_5 = DPB(bx, bl_2, 0) (alias)
+    uses: bx_4 = SEQ(bh_3, bl_2) (alias)
 bh_3: orig: bh
     def:  bh_3 = 0x00
-bx:bx
-    def:  def bx
-    uses: bx_5 = DPB(bx, bl_2, 0) (alias)
-bx_5: orig: bx
-    def:  bx_5 = DPB(bx, bl_2, 0) (alias)
-    uses: bx_6 = DPB(bx_5, 0x00, 8) (alias)
-bx_6: orig: bx
-    def:  bx_6 = DPB(bx_5, 0x00, 8) (alias)
-    uses: Mem7[0x1236:word16] = bx_6
-          use bx_6
-Mem7: orig: Mem0
-    def:  Mem7[0x1236:word16] = bx_6
+    uses: bx_4 = SEQ(bh_3, bl_2) (alias)
+bx_4: orig: bx
+    def:  bx_4 = SEQ(bh_3, bl_2) (alias)
+    uses: Mem5[0x1236:word16] = bx_4
+Mem5: orig: Mem0
+    def:  Mem5[0x1236:word16] = bx_4
 // proc1
 // Return size: 0
 define proc1
 proc1_entry:
 	def Mem0
-	def bx
 	// succ:  m0
 m0:
 	bl_2 = Mem0[0x1234:word16]
-	bx_5 = DPB(bx, bl_2, 0) (alias)
 	// succ:  m1
 m1:
 	bh_3 = 0x00
-	bx_6 = DPB(bx_5, 0x00, 8) (alias)
-	Mem7[0x1236:word16] = bx_6
+	bx_4 = SEQ(bh_3, bl_2) (alias)
+	Mem5[0x1236:word16] = bx_4
 	return
 	// succ:  proc1_exit
 proc1_exit:
-	use bx_6
 ======
 ";
             #endregion
-
-            RunTest_FrameAccesses(sExp, m =>
+            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            RunTest(sExp, m =>
             {
-                var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
-                var bh = m.Frame.EnsureRegister(new RegisterStorage("bh", 3, 8, PrimitiveType.Byte));
-                var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
+                var bx = m.Frame.EnsureRegister(Registers.bx);
+                var bh = m.Frame.EnsureRegister(Registers.bh);
+                var bl = m.Frame.EnsureRegister(Registers.bl);
 
                 m.Label("m0");
                 m.Assign(bl, m.Mem16(m.Word16(0x1234)));
@@ -2084,64 +2084,66 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: bl_2 = Mem0[0x1234:word16]
+    uses: bl_2 = Mem0[0x1234:byte]
 bl_2: orig: bl
-    def:  bl_2 = Mem0[0x1234:word16]
+    def:  bl_2 = Mem0[0x1234:byte]
     uses: branch bl_2 > 3 m2
-          bx_5 = DPB(bx, bl_2, 0) (alias)
+          bx_4 = (uint16) (uint8) bl_2 (alias)
+          bx_8 = SEQ(bh, bl_2) (alias)
 bh_3: orig: bh
     def:  bh_3 = 0x00
-bx:bx
-    def:  def bx
-    uses: bx_5 = DPB(bx, bl_2, 0) (alias)
-bx_5: orig: bx
-    def:  bx_5 = DPB(bx, bl_2, 0) (alias)
-    uses: bx_6 = DPB(bx_5, 0x00, 8) (alias)
-          bx_8 = PHI((bx_5, m0), (bx_6, m1))
+bx_4: orig: bx
+    def:  bx_4 = (uint16) (uint8) bl_2 (alias)
+    uses: Mem5[0x1236:word16] = bx_4
+          bx_6 = PHI((bx_8, m0), (bx_4, m1))
+Mem5: orig: Mem0
+    def:  Mem5[0x1236:word16] = bx_4
 bx_6: orig: bx
-    def:  bx_6 = DPB(bx_5, 0x00, 8) (alias)
-    uses: Mem7[0x1236:word16] = bx_6
-          bx_8 = PHI((bx_5, m0), (bx_6, m1))
-Mem7: orig: Mem0
-    def:  Mem7[0x1236:word16] = bx_6
+    def:  bx_6 = PHI((bx_8, m0), (bx_4, m1))
+    uses: use bx_6
+bh:bh
+    def:  def bh
+    uses: bx_8 = SEQ(bh, bl_2) (alias)
 bx_8: orig: bx
-    def:  bx_8 = PHI((bx_5, m0), (bx_6, m1))
-    uses: use bx_8
+    def:  bx_8 = SEQ(bh, bl_2) (alias)
+    uses: bx_6 = PHI((bx_8, m0), (bx_4, m1))
 // proc1
 // Return size: 0
 define proc1
 proc1_entry:
 	def Mem0
-	def bx
+	def bh
 	// succ:  m0
 m0:
-	bl_2 = Mem0[0x1234:word16]
-	bx_5 = DPB(bx, bl_2, 0) (alias)
+	bl_2 = Mem0[0x1234:byte]
+	bx_8 = SEQ(bh, bl_2) (alias)
 	branch bl_2 > 3 m2
 	// succ:  m1 m2
 m1:
 	bh_3 = 0x00
-	bx_6 = DPB(bx_5, 0x00, 8) (alias)
-	Mem7[0x1236:word16] = bx_6
+	bx_4 = (uint16) (uint8) bl_2 (alias)
+	Mem5[0x1236:word16] = bx_4
 	// succ:  m2
 m2:
-	bx_8 = PHI((bx_5, m0), (bx_6, m1))
+	bx_6 = PHI((bx_8, m0), (bx_4, m1))
 	return
 	// succ:  proc1_exit
 proc1_exit:
-	use bx_8
+	use bx_6
 ======
 ";
             #endregion
 
+            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+
             RunTest_FrameAccesses(sExp, m =>
             {
-                var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
-                var bh = m.Frame.EnsureRegister(new RegisterStorage("bh", 3, 8, PrimitiveType.Byte));
-                var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
+                var bx = m.Register(Registers.bx);
+                var bh = m.Register(Registers.bh);
+                var bl = m.Register(Registers.bl);
 
                 m.Label("m0");
-                m.Assign(bl, m.Mem16(m.Word16(0x1234)));
+                m.Assign(bl, m.Mem8(m.Word16(0x1234)));
                 m.BranchIf(m.Gt(bl, 3), "m2");
 
                 m.Label("m1");
@@ -2157,6 +2159,7 @@ proc1_exit:
         public void SsaAlias2()
         {
             var sExp =
+            #region Expected
 @"si:si
     def:  def si
     uses: bl_3 = Mem0[si:byte]
@@ -2166,47 +2169,39 @@ Mem0:Mem
 bl_3: orig: bl
     def:  bl_3 = Mem0[si:byte]
     uses: SCZO_4 = cond(bl_3 - 0x02)
-          bx_7 = DPB(bx, bl_3, 0) (alias)
+          bx_6 = SEQ(bh_5, bl_3) (alias)
 SCZO_4: orig: SCZO
     def:  SCZO_4 = cond(bl_3 - 0x02)
     uses: branch Test(UGT,SCZO_4) m2
 bh_5: orig: bh
     def:  bh_5 = 0x00
-    uses: bx_8 = DPB(bx_7, bh_5, 8) (alias)
-bx:bx
-    def:  def bx
-    uses: bx_7 = DPB(bx, bl_3, 0) (alias)
+    uses: bx_6 = SEQ(bh_5, bl_3) (alias)
+bx_6: orig: bx
+    def:  bx_6 = SEQ(bh_5, bl_3) (alias)
+    uses: bx_7 = bx_6 + bx_6
+          bx_7 = bx_6 + bx_6
 bx_7: orig: bx
-    def:  bx_7 = DPB(bx, bl_3, 0) (alias)
-    uses: bx_8 = DPB(bx_7, bh_5, 8) (alias)
-bx_8: orig: bx
-    def:  bx_8 = DPB(bx_7, bh_5, 8) (alias)
-    uses: bx_9 = bx_8 + bx_8
-          bx_9 = bx_8 + bx_8
-bx_9: orig: bx
-    def:  bx_9 = bx_8 + bx_8
-    uses: Mem10[bx_9:word16] = 0x0000
-Mem10: orig: Mem0
-    def:  Mem10[bx_9:word16] = 0x0000
+    def:  bx_7 = bx_6 + bx_6
+    uses: Mem8[bx_7:word16] = 0x0000
+Mem8: orig: Mem0
+    def:  Mem8[bx_7:word16] = 0x0000
 // proc1
 // Return size: 0
 define proc1
 proc1_entry:
 	def si
 	def Mem0
-	def bx
 	// succ:  m0
 m0:
 	bl_3 = Mem0[si:byte]
-	bx_7 = DPB(bx, bl_3, 0) (alias)
 	SCZO_4 = cond(bl_3 - 0x02)
 	branch Test(UGT,SCZO_4) m2
 	// succ:  m1 m2
 m1:
 	bh_5 = 0x00
-	bx_8 = DPB(bx_7, bh_5, 8) (alias)
-	bx_9 = bx_8 + bx_8
-	Mem10[bx_9:word16] = 0x0000
+	bx_6 = SEQ(bh_5, bl_3) (alias)
+	bx_7 = bx_6 + bx_6
+	Mem8[bx_7:word16] = 0x0000
 	// succ:  m2
 m2:
 	return
@@ -2214,12 +2209,15 @@ m2:
 proc1_exit:
 ======
 ";
+            #endregion
+
+            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
             RunTest(sExp, m =>
             {
-                var bl = m.Reg8("bl", 3, 0);
-                var bh = m.Reg8("bh", 3, 8);
-                var bx = m.Reg16("bx", 3);
-                var si = m.Reg16("si", 6);
+                var bl = m.Register(Registers.bl);
+                var bh = m.Register(Registers.bh);
+                var bx = m.Register(Registers.bx);
+                var si = m.Register(Registers.si);
                 var SCZO = m.Flags("SCZO");
 
                 m.Label("m0");
@@ -2423,21 +2421,20 @@ ax_2: orig: ax
 bx_3: orig: bx
     def:  bx_3 = Mem0[0x00002002:word16]
     uses: bh_8 = SLICE(bx_3, byte, 8) (alias)
-          bx_6 = PHI((bx_3, l1), (bx_7, m0))
+          bl_9 = SLICE(bx_3, byte, 0) (alias)
 al_5: orig: al
     def:  al_5 = bh_8
     uses: return al_5
-bx_6: orig: bx
-    def:  bx_6 = PHI((bx_3, l1), (bx_7, m0))
-    uses: bx_7 = DPB(bx_6, bh_8, 8) (alias)
 bx_7: orig: bx
-    def:  bx_7 = DPB(bx_6, bh_8, 8) (alias)
+    def:  bx_7 = SEQ(bh_8, bl_9) (alias)
     uses: branch bx_7 >= 0x0000 m0
-          bx_6 = PHI((bx_3, l1), (bx_7, m0))
 bh_8: orig: bh
     def:  bh_8 = SLICE(bx_3, byte, 8) (alias)
     uses: al_5 = bh_8
-          bx_7 = DPB(bx_6, bh_8, 8) (alias)
+          bx_7 = SEQ(bh_8, bl_9) (alias)
+bl_9: orig: bl
+    def:  bl_9 = SLICE(bx_3, byte, 0) (alias)
+    uses: bx_7 = SEQ(bh_8, bl_9) (alias)
 // proc1
 // Return size: 0
 define proc1
@@ -2448,11 +2445,11 @@ l1:
 	ax_2 = Mem0[0x00002000:word16]
 	bx_3 = Mem0[0x00002002:word16]
 	bh_8 = SLICE(bx_3, byte, 8) (alias)
+	bl_9 = SLICE(bx_3, byte, 0) (alias)
 	// succ:  m0
 m0:
-	bx_6 = PHI((bx_3, l1), (bx_7, m0))
-	bx_7 = DPB(bx_6, bh_8, 8) (alias)
 	al_5 = bh_8
+	bx_7 = SEQ(bh_8, bl_9) (alias)
 	branch bx_7 >= 0x0000 m0
 	// succ:  m1 m0
 m1:
@@ -2463,14 +2460,15 @@ proc1_exit:
 ";
             #endregion
 
+            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
             RunTest(sExp, m =>
             {
-                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
-                var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
-                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
-                var bh = m.Frame.EnsureRegister(new RegisterStorage("bh", 3, 8, PrimitiveType.Byte));
-                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-                var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
+                var al = m.Register(Registers.al);
+                var bl = m.Register(Registers.bl);
+                var ah = m.Register(Registers.ah);
+                var bh = m.Register(Registers.bh);
+                var ax = m.Register(Registers.ax);
+                var bx = m.Register(Registers.bx);
 
                 m.Assign(ax, m.Mem(ax.DataType, m.Word32(0x2000)));
                 m.Assign(bx, m.Mem(bx.DataType, m.Word32(0x2002)));
@@ -2908,17 +2906,13 @@ proc1_exit:
         // W1: [----------]
         // W2: [----]
         // R:  [----------]
-        // R = DPB(W1, W2)
+        // R = SEQ(W2, SLICE(W1))
 
         // W1:       [----------]
         // W2: [----------]
         // R:        [----------]
-        // R = DPB(W1, SLICE(W2))
+        // R = SEQ(SLICE(W2), SLICE(W1))
 
-        // W1:       [----------]
-        // W2:  [----------]
-        // W3:      [---------]
-        // R      [
 
         [Test(Description = "Ignore dead storage")]
         [Category(Categories.UnitTests)]
@@ -2938,7 +2932,6 @@ Mem0:Mem
 ax_4: orig: ax
     def:  ax_4 = Mem0[0x00123400:word16]
     uses: Mem5[0x00123402:word16] = ax_4
-          ax_10 = DPB(ax_4, al_6, 8) (alias)
 Mem5: orig: Mem0
     def:  Mem5[0x00123402:word16] = ax_4
     uses: al_6 = Mem5[0x00123404:byte]
@@ -2946,21 +2939,18 @@ Mem5: orig: Mem0
 al_6: orig: al
     def:  al_6 = Mem5[0x00123404:byte]
     uses: Mem8[0x00123406:byte] = al_6
-          ax_10 = DPB(ax_4, al_6, 8) (alias)
+          ax_10 = SEQ(ah_7, al_6) (alias)
 ah_7: orig: ah
     def:  ah_7 = Mem5[0x00123405:byte]
     uses: Mem9[0x00123407:byte] = ah_7
-          ax_11 = DPB(ax_10, ah_7, 0) (alias)
+          ax_10 = SEQ(ah_7, al_6) (alias)
 Mem8: orig: Mem0
     def:  Mem8[0x00123406:byte] = al_6
 Mem9: orig: Mem0
     def:  Mem9[0x00123407:byte] = ah_7
 ax_10: orig: ax
-    def:  ax_10 = DPB(ax_4, al_6, 8) (alias)
-    uses: ax_11 = DPB(ax_10, ah_7, 0) (alias)
-ax_11: orig: ax
-    def:  ax_11 = DPB(ax_10, ah_7, 0) (alias)
-    uses: use ax_11
+    def:  ax_10 = SEQ(ah_7, al_6) (alias)
+    uses: use ax_10
 // proc1
 // Return size: 0
 define proc1
@@ -2973,15 +2963,14 @@ l1:
 	ax_4 = Mem0[0x00123400:word16]
 	Mem5[0x00123402:word16] = ax_4
 	al_6 = Mem5[0x00123404:byte]
-	ax_10 = DPB(ax_4, al_6, 8) (alias)
 	ah_7 = Mem5[0x00123405:byte]
-	ax_11 = DPB(ax_10, ah_7, 0) (alias)
 	Mem8[0x00123406:byte] = al_6
 	Mem9[0x00123407:byte] = ah_7
+	ax_10 = SEQ(ah_7, al_6) (alias)
 	return
 	// succ:  proc1_exit
 proc1_exit:
-	use ax_11
+	use ax_10
 	use r63_2
 ======
 ";
@@ -2991,8 +2980,8 @@ proc1_exit:
             {
                 var sp = m.Register(m.Architecture.StackRegister);
                 var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 0, PrimitiveType.Byte));
-                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 8, PrimitiveType.Byte));
+                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
+                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(ax, m.Mem16(m.Word32(0x00123400)));
                 m.MStore(m.Word32(0x00123402), ax);
@@ -3015,93 +3004,84 @@ proc1_exit:
             #region Expected
 @"eax_1: orig: eax
     def:  eax_1 = 0x00000004
-    uses: eax_13 = DPB(eax_1, al_3, 8) (alias)
+    uses: eax_24_8_13 = SLICE(eax_1, word24, 8) (alias)
 Mem2: orig: Mem0
     def:  Mem2[0x00123400:word32] = 0x00000004
     uses: al_3 = Mem2[0x00123408:byte]
 al_3: orig: al
     def:  al_3 = Mem2[0x00123408:byte]
-    uses: SZC_4 = cond(al_3 - 0x30)
-          SZC_5 = cond(al_3 - 0x39)
-          eax_13 = DPB(eax_1, al_3, 8) (alias)
-          eax_14 = DPB(eax_13, al_3, 8) (alias)
-SZC_4: orig: SZC
-    def:  SZC_4 = cond(al_3 - 0x30)
-    uses: branch Test(LT,SZC_4) m4_not_number
-          C_11 = SLICE(SZC_4, bool, 2) (alias)
-          S_21 = SLICE(SZC_4, bool, 0) (alias)
-          Z_25 = SLICE(SZC_4, bool, 1) (alias)
-SZC_5: orig: SZC
-    def:  SZC_5 = cond(al_3 - 0x39)
-    uses: branch Test(GT,SZC_5) m4_not_number
-          C_9 = SLICE(SZC_5, bool, 2) (alias)
-          S_19 = SLICE(SZC_5, bool, 0) (alias)
-          Z_23 = SLICE(SZC_5, bool, 1) (alias)
+    uses: SCZ_4 = cond(al_3 - 0x30)
+          SCZ_5 = cond(al_3 - 0x39)
+SCZ_4: orig: SCZ
+    def:  SCZ_4 = cond(al_3 - 0x30)
+    uses: branch Test(LT,SCZ_4) m4_not_number
+          C_11 = SLICE(SCZ_4, bool, 1) (alias)
+          S_20 = SLICE(SCZ_4, bool, 0) (alias)
+          Z_24 = SLICE(SCZ_4, bool, 2) (alias)
+SCZ_5: orig: SCZ
+    def:  SCZ_5 = cond(al_3 - 0x39)
+    uses: branch Test(GT,SCZ_5) m4_not_number
+          C_9 = SLICE(SCZ_5, bool, 1) (alias)
+          S_18 = SLICE(SCZ_5, bool, 0) (alias)
+          Z_22 = SLICE(SCZ_5, bool, 2) (alias)
 al_6: orig: al
     def:  al_6 = 0x00
-    uses: eax_17 = DPB(eax_16, al_6, 8) (alias)
+    uses: eax_16 = SEQ(eax_24_8_13, al_6) (alias)
 al_7: orig: al
     def:  al_7 = 0x01
-    uses: eax_15 = DPB(eax_14, al_7, 8) (alias)
+    uses: eax_14 = SEQ(eax_24_8_13, al_7) (alias)
 C_8: orig: C
     def:  C_8 = PHI((C_9, m2_number), (C_10, m4_not_number))
     uses: use C_8
 C_9: orig: C
-    def:  C_9 = SLICE(SZC_5, bool, 2) (alias)
+    def:  C_9 = SLICE(SCZ_5, bool, 1) (alias)
     uses: C_10 = PHI((C_11, l1), (C_9, m1_maybe_number))
           C_8 = PHI((C_9, m2_number), (C_10, m4_not_number))
 C_10: orig: C
     def:  C_10 = PHI((C_11, l1), (C_9, m1_maybe_number))
     uses: C_8 = PHI((C_9, m2_number), (C_10, m4_not_number))
 C_11: orig: C
-    def:  C_11 = SLICE(SZC_4, bool, 2) (alias)
+    def:  C_11 = SLICE(SCZ_4, bool, 1) (alias)
     uses: C_10 = PHI((C_11, l1), (C_9, m1_maybe_number))
 eax_12: orig: eax
-    def:  eax_12 = PHI((eax_15, m2_number), (eax_17, m4_not_number))
+    def:  eax_12 = PHI((eax_14, m2_number), (eax_16, m4_not_number))
     uses: use eax_12
-eax_13: orig: eax
-    def:  eax_13 = DPB(eax_1, al_3, 8) (alias)
-    uses: eax_14 = DPB(eax_13, al_3, 8) (alias)
-          eax_16 = PHI((eax_13, l1), (eax_14, m1_maybe_number))
+eax_24_8_13: orig: eax_24_8
+    def:  eax_24_8_13 = SLICE(eax_1, word24, 8) (alias)
+    uses: eax_14 = SEQ(eax_24_8_13, al_7) (alias)
+          eax_16 = SEQ(eax_24_8_13, al_6) (alias)
 eax_14: orig: eax
-    def:  eax_14 = DPB(eax_13, al_3, 8) (alias)
-    uses: eax_15 = DPB(eax_14, al_7, 8) (alias)
-          eax_16 = PHI((eax_13, l1), (eax_14, m1_maybe_number))
-eax_15: orig: eax
-    def:  eax_15 = DPB(eax_14, al_7, 8) (alias)
-    uses: eax_12 = PHI((eax_15, m2_number), (eax_17, m4_not_number))
+    def:  eax_14 = SEQ(eax_24_8_13, al_7) (alias)
+    uses: eax_12 = PHI((eax_14, m2_number), (eax_16, m4_not_number))
 eax_16: orig: eax
-    def:  eax_16 = PHI((eax_13, l1), (eax_14, m1_maybe_number))
-    uses: eax_17 = DPB(eax_16, al_6, 8) (alias)
-eax_17: orig: eax
-    def:  eax_17 = DPB(eax_16, al_6, 8) (alias)
-    uses: eax_12 = PHI((eax_15, m2_number), (eax_17, m4_not_number))
+    def:  eax_16 = SEQ(eax_24_8_13, al_6) (alias)
+    uses: eax_12 = PHI((eax_14, m2_number), (eax_16, m4_not_number))
+S_17: orig: S
+    def:  S_17 = PHI((S_18, m2_number), (S_19, m4_not_number))
+    uses: use S_17
 S_18: orig: S
-    def:  S_18 = PHI((S_19, m2_number), (S_20, m4_not_number))
-    uses: use S_18
+    def:  S_18 = SLICE(SCZ_5, bool, 0) (alias)
+    uses: S_19 = PHI((S_20, l1), (S_18, m1_maybe_number))
+          S_17 = PHI((S_18, m2_number), (S_19, m4_not_number))
 S_19: orig: S
-    def:  S_19 = SLICE(SZC_5, bool, 0) (alias)
-    uses: S_20 = PHI((S_21, l1), (S_19, m1_maybe_number))
-          S_18 = PHI((S_19, m2_number), (S_20, m4_not_number))
+    def:  S_19 = PHI((S_20, l1), (S_18, m1_maybe_number))
+    uses: S_17 = PHI((S_18, m2_number), (S_19, m4_not_number))
 S_20: orig: S
-    def:  S_20 = PHI((S_21, l1), (S_19, m1_maybe_number))
-    uses: S_18 = PHI((S_19, m2_number), (S_20, m4_not_number))
-S_21: orig: S
-    def:  S_21 = SLICE(SZC_4, bool, 0) (alias)
-    uses: S_20 = PHI((S_21, l1), (S_19, m1_maybe_number))
+    def:  S_20 = SLICE(SCZ_4, bool, 0) (alias)
+    uses: S_19 = PHI((S_20, l1), (S_18, m1_maybe_number))
+Z_21: orig: Z
+    def:  Z_21 = PHI((Z_22, m2_number), (Z_23, m4_not_number))
+    uses: use Z_21
 Z_22: orig: Z
-    def:  Z_22 = PHI((Z_23, m2_number), (Z_24, m4_not_number))
-    uses: use Z_22
+    def:  Z_22 = SLICE(SCZ_5, bool, 2) (alias)
+    uses: Z_23 = PHI((Z_24, l1), (Z_22, m1_maybe_number))
+          Z_21 = PHI((Z_22, m2_number), (Z_23, m4_not_number))
 Z_23: orig: Z
-    def:  Z_23 = SLICE(SZC_5, bool, 1) (alias)
-    uses: Z_24 = PHI((Z_25, l1), (Z_23, m1_maybe_number))
-          Z_22 = PHI((Z_23, m2_number), (Z_24, m4_not_number))
+    def:  Z_23 = PHI((Z_24, l1), (Z_22, m1_maybe_number))
+    uses: Z_21 = PHI((Z_22, m2_number), (Z_23, m4_not_number))
 Z_24: orig: Z
-    def:  Z_24 = PHI((Z_25, l1), (Z_23, m1_maybe_number))
-    uses: Z_22 = PHI((Z_23, m2_number), (Z_24, m4_not_number))
-Z_25: orig: Z
-    def:  Z_25 = SLICE(SZC_4, bool, 1) (alias)
-    uses: Z_24 = PHI((Z_25, l1), (Z_23, m1_maybe_number))
+    def:  Z_24 = SLICE(SCZ_4, bool, 2) (alias)
+    uses: Z_23 = PHI((Z_24, l1), (Z_22, m1_maybe_number))
 // proc1
 // Return size: 0
 define proc1
@@ -3109,54 +3089,54 @@ proc1_entry:
 	// succ:  l1
 l1:
 	eax_1 = 0x00000004
+	eax_24_8_13 = SLICE(eax_1, word24, 8) (alias)
 	Mem2[0x00123400:word32] = 0x00000004
 	al_3 = Mem2[0x00123408:byte]
-	eax_13 = DPB(eax_1, al_3, 8) (alias)
-	eax_14 = DPB(eax_13, al_3, 8) (alias)
-	SZC_4 = cond(al_3 - 0x30)
-	C_11 = SLICE(SZC_4, bool, 2) (alias)
-	S_21 = SLICE(SZC_4, bool, 0) (alias)
-	Z_25 = SLICE(SZC_4, bool, 1) (alias)
-	branch Test(LT,SZC_4) m4_not_number
+	SCZ_4 = cond(al_3 - 0x30)
+	C_11 = SLICE(SCZ_4, bool, 1) (alias)
+	S_20 = SLICE(SCZ_4, bool, 0) (alias)
+	Z_24 = SLICE(SCZ_4, bool, 2) (alias)
+	branch Test(LT,SCZ_4) m4_not_number
 	// succ:  m1_maybe_number m4_not_number
 m1_maybe_number:
-	SZC_5 = cond(al_3 - 0x39)
-	C_9 = SLICE(SZC_5, bool, 2) (alias)
-	S_19 = SLICE(SZC_5, bool, 0) (alias)
-	Z_23 = SLICE(SZC_5, bool, 1) (alias)
-	branch Test(GT,SZC_5) m4_not_number
+	SCZ_5 = cond(al_3 - 0x39)
+	C_9 = SLICE(SCZ_5, bool, 1) (alias)
+	S_18 = SLICE(SCZ_5, bool, 0) (alias)
+	Z_22 = SLICE(SCZ_5, bool, 2) (alias)
+	branch Test(GT,SCZ_5) m4_not_number
 	// succ:  m2_number m4_not_number
 m2_number:
 	al_7 = 0x01
-	eax_15 = DPB(eax_14, al_7, 8) (alias)
+	eax_14 = SEQ(eax_24_8_13, al_7) (alias)
 	return
 	// succ:  proc1_exit
 m4_not_number:
-	Z_24 = PHI((Z_25, l1), (Z_23, m1_maybe_number))
-	S_20 = PHI((S_21, l1), (S_19, m1_maybe_number))
-	eax_16 = PHI((eax_13, l1), (eax_14, m1_maybe_number))
+	Z_23 = PHI((Z_24, l1), (Z_22, m1_maybe_number))
+	S_19 = PHI((S_20, l1), (S_18, m1_maybe_number))
 	C_10 = PHI((C_11, l1), (C_9, m1_maybe_number))
 	al_6 = 0x00
-	eax_17 = DPB(eax_16, al_6, 8) (alias)
+	eax_16 = SEQ(eax_24_8_13, al_6) (alias)
 	return
 	// succ:  proc1_exit
 proc1_exit:
-	Z_22 = PHI((Z_23, m2_number), (Z_24, m4_not_number))
-	S_18 = PHI((S_19, m2_number), (S_20, m4_not_number))
-	eax_12 = PHI((eax_15, m2_number), (eax_17, m4_not_number))
+	Z_21 = PHI((Z_22, m2_number), (Z_23, m4_not_number))
+	S_17 = PHI((S_18, m2_number), (S_19, m4_not_number))
+	eax_12 = PHI((eax_14, m2_number), (eax_16, m4_not_number))
 	C_8 = PHI((C_9, m2_number), (C_10, m4_not_number))
 	use C_8
 	use eax_12
-	use S_18
-	use Z_22
+	use S_17
+	use Z_21
 ======
 ";
             #endregion
+            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
-                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 8, PrimitiveType.Byte));
+                var eax = m.Register(Registers.eax);
+                var al = m.Register(Registers.al);
                 var SZC = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZC"));
 
                 m.Assign(eax, 4);
@@ -3791,13 +3771,11 @@ Ssa96BitStackLocal_exit:
             #region Expected
 @"SsaDpb_entry:
 	def Mem0
-	def bx
 l1:
 	bl_2 = Mem0[0x1234:byte]
-	bx_5 = DPB(bx, bl_2, 0) (alias)
 	bh_3 = Mem0[0x1235:byte]
-	bx_6 = DPB(bx_5, bh_3, 8) (alias)
-	Mem7[bx_6:word16] = 0x0042
+	bx_4 = SEQ(bh_3, bl_2) (alias)
+	Mem5[bx_4:word16] = 0x0042
 	return
 SsaDpb_exit:
 ";

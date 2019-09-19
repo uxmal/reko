@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void TtranFactorialReg()
         {
             RunTest16("Fragments/factorial_reg.asm", "Typing/TtranFactorialReg.txt");

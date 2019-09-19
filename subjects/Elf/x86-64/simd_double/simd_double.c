@@ -146,6 +146,7 @@ void main(Eq_n xmm0)
 // 0000000000000A70: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
+	word32 edi = (word32) rdi;
 	word32 r15d_n = (word32) (uint64) edi;
 	int64 rbp_n = 0x00200DF0 - 2100712;
 	word64 rax_n = _init();

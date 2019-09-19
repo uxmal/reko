@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,6 +57,8 @@ namespace Reko.Core
 
         public void RemoveEdge(Block nodeFrom, Block nodeTo)
         {
+            if (nodeTo.Name == "l00000000004061A2_thunk_fn00000000004061B0")    //$DEBUG
+                nodeTo.ToString();
             if (nodeFrom.Succ.Contains(nodeTo) && nodeTo.Pred.Contains(nodeFrom))
             {
                 nodeFrom.Succ.Remove(nodeTo);

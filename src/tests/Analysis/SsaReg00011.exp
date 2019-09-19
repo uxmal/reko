@@ -45,17 +45,16 @@ ax_4: orig: ax
     uses: es_5 = ax_4
 es_5: orig: es
     def:  es_5 = ax_4
-    uses: Mem36[es_5:bx_35:byte] = al_29
+    uses: Mem33[es_5:bx_32:byte] = al_28
           use es_5
 bx_6: orig: bx
     def:  bx_6 = 0x0FFF
-    uses: bh_40 = SLICE(bx_6, byte, 8) (alias)
-          bl_42 = SLICE(bx_6, byte, 0) (alias)
-          bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
+    uses: bh_37 = SLICE(bx_6, byte, 8) (alias)
+          bl_39 = SLICE(bx_6, byte, 0) (alias)
 bh_7: orig: bh
-    def:  bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
+    def:  bh_7 = PHI((bh_37, l0C00_0004), (bh_38, l0C00_000C))
     uses: al_8 = bh_7
-          bx_34 = DPB(bx_33, bh_7, 8) (alias)
+          bx_32 = SEQ(bh_7, bl_11) (alias)
 al_8: orig: al
     def:  al_8 = bh_7
     uses: al_9 = al_8 + 0x01
@@ -66,10 +65,10 @@ al_9: orig: al
 SZO_10: orig: SZO
     def:  SZO_10 = cond(al_9)
 bl_11: orig: bl
-    def:  bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
+    def:  bl_11 = PHI((bl_39, l0C00_0004), (bl_40, l0C00_000C))
     uses: ah_12 = bl_11
           al_20 = bl_11
-          bx_35 = DPB(bx_34, bl_11, 0) (alias)
+          bx_32 = SEQ(bh_7, bl_11) (alias)
 ah_12: orig: ah
     def:  ah_12 = bl_11
     uses: ah_13 = ah_12 & 0x0F
@@ -91,8 +90,6 @@ ax_18: orig: ax
     def:  ax_18 = ax_16 << 0x0004
     uses: SCZO_19 = cond(ax_18)
           ah_24 = SLICE(ax_18, byte, 8) (alias)
-          al_28 = SLICE(ax_18, byte, 0) (alias)
-          ax_44 = DPB(ax_18, al_29, 0) (alias)
 SCZO_19: orig: SCZO
     def:  SCZO_19 = cond(ax_18)
 al_20: orig: al
@@ -101,6 +98,7 @@ al_20: orig: al
 al_21: orig: al
     def:  al_21 = al_20 & 0xF0
     uses: SZO_22 = cond(al_21)
+          al_28 = al_21 | ah_25
 SZO_22: orig: SZO
     def:  SZO_22 = cond(al_21)
 C_23: orig: C
@@ -108,76 +106,67 @@ C_23: orig: C
 ah_24: orig: ah
     def:  ah_24 = SLICE(ax_18, byte, 8) (alias)
     uses: ah_25 = ah_24 & 0x0F
-          al_29 = al_28 | ah_24
 ah_25: orig: ah
     def:  ah_25 = ah_24 & 0x0F
     uses: SZO_26 = cond(ah_25)
+          al_28 = al_21 | ah_25
+          ax_41 = SEQ(ah_25, al_28) (alias)
 SZO_26: orig: SZO
     def:  SZO_26 = cond(ah_25)
 C_27: orig: C
     def:  C_27 = false
 al_28: orig: al
-    def:  al_28 = SLICE(ax_18, byte, 0) (alias)
-    uses: al_29 = al_28 | ah_24
-al_29: orig: al
-    def:  al_29 = al_28 | ah_24
-    uses: SZO_30 = cond(al_29)
-          Mem36[es_5:bx_35:byte] = al_29
-          ax_44 = DPB(ax_18, al_29, 0) (alias)
-SZO_30: orig: SZO
-    def:  SZO_30 = cond(al_29)
-C_31: orig: C
-    def:  C_31 = false
-    uses: use C_31
-ax_44: orig: ax
-    def:  ax_44 = DPB(ax_18, al_29, 0) (alias)
-    uses: use ax_44
-bx_33: orig: bx
-    def:  bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
-    uses: bx_34 = DPB(bx_33, bh_7, 8) (alias)
+    def:  al_28 = al_21 | ah_25
+    uses: SZO_29 = cond(al_28)
+          Mem33[es_5:bx_32:byte] = al_28
+          ax_41 = SEQ(ah_25, al_28) (alias)
+SZO_29: orig: SZO
+    def:  SZO_29 = cond(al_28)
+C_30: orig: C
+    def:  C_30 = false
+    uses: use C_30
+ax_41: orig: ax
+    def:  ax_41 = SEQ(ah_25, al_28) (alias)
+    uses: use ax_41
+bx_32: orig: bx
+    def:  bx_32 = SEQ(bh_7, bl_11) (alias)
+    uses: Mem33[es_5:bx_32:byte] = al_28
+          bx_34 = bx_32 - 0x0001
+Mem33: orig: Mem0
+    def:  Mem33[es_5:bx_32:byte] = al_28
 bx_34: orig: bx
-    def:  bx_34 = DPB(bx_33, bh_7, 8) (alias)
-    uses: bx_35 = DPB(bx_34, bl_11, 0) (alias)
-bx_35: orig: bx
-    def:  bx_35 = DPB(bx_34, bl_11, 0) (alias)
-    uses: Mem36[es_5:bx_35:byte] = al_29
-          bx_37 = bx_35 - 0x0001
-Mem36: orig: Mem0
-    def:  Mem36[es_5:bx_35:byte] = al_29
-bx_37: orig: bx
-    def:  bx_37 = bx_35 - 0x0001
-    uses: SZO_38 = cond(bx_37)
-          bh_41 = SLICE(bx_37, byte, 8) (alias)
-          bl_43 = SLICE(bx_37, byte, 0) (alias)
-          bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
-          use bx_37
-SZO_38: orig: SZO
-    def:  SZO_38 = cond(bx_37)
-    uses: S_39 = SLICE(SZO_38, bool, 0) (alias)
-          O_45 = SLICE(SZO_38, bool, 4) (alias)
-          Z_48 = SLICE(SZO_38, bool, 2) (alias)
-S_39: orig: S
-    def:  S_39 = SLICE(SZO_38, bool, 0) (alias)
-    uses: branch Test(NS,S_39) l0C00_000C
-          use S_39
-bh_40: orig: bh
-    def:  bh_40 = SLICE(bx_6, byte, 8) (alias)
-    uses: bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
-bh_41: orig: bh
-    def:  bh_41 = SLICE(bx_37, byte, 8) (alias)
-    uses: bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
-bl_42: orig: bl
-    def:  bl_42 = SLICE(bx_6, byte, 0) (alias)
-    uses: bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
-bl_43: orig: bl
-    def:  bl_43 = SLICE(bx_37, byte, 0) (alias)
-    uses: bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
-O_45: orig: O
-    def:  O_45 = SLICE(SZO_38, bool, 4) (alias)
-    uses: use O_45
-Z_48: orig: Z
-    def:  Z_48 = SLICE(SZO_38, bool, 2) (alias)
-    uses: use Z_48
+    def:  bx_34 = bx_32 - 0x0001
+    uses: SZO_35 = cond(bx_34)
+          bh_38 = SLICE(bx_34, byte, 8) (alias)
+          bl_40 = SLICE(bx_34, byte, 0) (alias)
+          use bx_34
+SZO_35: orig: SZO
+    def:  SZO_35 = cond(bx_34)
+    uses: S_36 = SLICE(SZO_35, bool, 0) (alias)
+          O_42 = SLICE(SZO_35, bool, 4) (alias)
+          Z_45 = SLICE(SZO_35, bool, 2) (alias)
+S_36: orig: S
+    def:  S_36 = SLICE(SZO_35, bool, 0) (alias)
+    uses: branch Test(NS,S_36) l0C00_000C
+          use S_36
+bh_37: orig: bh
+    def:  bh_37 = SLICE(bx_6, byte, 8) (alias)
+    uses: bh_7 = PHI((bh_37, l0C00_0004), (bh_38, l0C00_000C))
+bh_38: orig: bh
+    def:  bh_38 = SLICE(bx_34, byte, 8) (alias)
+    uses: bh_7 = PHI((bh_37, l0C00_0004), (bh_38, l0C00_000C))
+bl_39: orig: bl
+    def:  bl_39 = SLICE(bx_6, byte, 0) (alias)
+    uses: bl_11 = PHI((bl_39, l0C00_0004), (bl_40, l0C00_000C))
+bl_40: orig: bl
+    def:  bl_40 = SLICE(bx_34, byte, 0) (alias)
+    uses: bl_11 = PHI((bl_39, l0C00_0004), (bl_40, l0C00_000C))
+O_42: orig: O
+    def:  O_42 = SLICE(SZO_35, bool, 4) (alias)
+    uses: use O_42
+Z_45: orig: Z
+    def:  Z_45 = SLICE(SZO_35, bool, 2) (alias)
+    uses: use Z_45
 // fn0C00_0004
 // Return size: 2
 define fn0C00_0004
@@ -190,15 +179,12 @@ l0C00_0004:
 	ax_4 = 0x4DE1
 	es_5 = ax_4
 	bx_6 = 0x0FFF
-	bh_40 = SLICE(bx_6, byte, 8) (alias)
-	bl_42 = SLICE(bx_6, byte, 0) (alias)
+	bh_37 = SLICE(bx_6, byte, 8) (alias)
+	bl_39 = SLICE(bx_6, byte, 0) (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
-	bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
-	bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
-	bx_35 = DPB(bx_34, bl_11, 0) (alias)
-	bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
-	bx_34 = DPB(bx_33, bh_7, 8) (alias)
+	bl_11 = PHI((bl_39, l0C00_0004), (bl_40, l0C00_000C))
+	bh_7 = PHI((bh_37, l0C00_0004), (bh_38, l0C00_000C))
 	al_8 = bh_7
 	al_9 = al_8 + 0x01
 	SZO_10 = cond(al_9)
@@ -210,7 +196,6 @@ l0C00_000C:
 	SCZO_17 = cond(ax_16)
 	ax_18 = ax_16 << 0x0004
 	ah_24 = SLICE(ax_18, byte, 8) (alias)
-	al_28 = SLICE(ax_18, byte, 0) (alias)
 	SCZO_19 = cond(ax_18)
 	al_20 = bl_11
 	al_21 = al_20 & 0xF0
@@ -219,31 +204,32 @@ l0C00_000C:
 	ah_25 = ah_24 & 0x0F
 	SZO_26 = cond(ah_25)
 	C_27 = false
-	al_29 = al_28 | ah_24
-	ax_44 = DPB(ax_18, al_29, 0) (alias)
-	SZO_30 = cond(al_29)
-	C_31 = false
-	Mem36[es_5:bx_35:byte] = al_29
-	bx_37 = bx_35 - 0x0001
-	bh_41 = SLICE(bx_37, byte, 8) (alias)
-	bl_43 = SLICE(bx_37, byte, 0) (alias)
-	SZO_38 = cond(bx_37)
-	S_39 = SLICE(SZO_38, bool, 0) (alias)
-	O_45 = SLICE(SZO_38, bool, 4) (alias)
-	Z_48 = SLICE(SZO_38, bool, 2) (alias)
-	branch Test(NS,S_39) l0C00_000C
+	al_28 = al_21 | ah_25
+	SZO_29 = cond(al_28)
+	C_30 = false
+	bx_32 = SEQ(bh_7, bl_11) (alias)
+	Mem33[es_5:bx_32:byte] = al_28
+	bx_34 = bx_32 - 0x0001
+	bh_38 = SLICE(bx_34, byte, 8) (alias)
+	bl_40 = SLICE(bx_34, byte, 0) (alias)
+	SZO_35 = cond(bx_34)
+	S_36 = SLICE(SZO_35, bool, 0) (alias)
+	ax_41 = SEQ(ah_25, al_28) (alias)
+	O_42 = SLICE(SZO_35, bool, 4) (alias)
+	Z_45 = SLICE(SZO_35, bool, 2) (alias)
+	branch Test(NS,S_36) l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return
 	// succ:  fn0C00_0004_exit
 fn0C00_0004_exit:
-	use ax_44
-	use bx_37
-	use C_31
+	use ax_41
+	use bx_34
+	use C_30
 	use es_5
-	use O_45
-	use S_39
+	use O_42
+	use S_36
 	use sp_2
 	use Top_3
-	use Z_48
+	use Z_45
 

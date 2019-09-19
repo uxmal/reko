@@ -692,6 +692,9 @@ namespace Reko.Core
         public SequenceStorage(string name, DataType dt, params Storage [] elements)
             : base("Sequence", dt)
         {
+            //$DEBUG
+            if (dt.BitSize != elements.Sum(e => (int) e.BitSize))
+                throw new ArgumentException();
             this.Elements = elements;
             this.BitSize = (ulong) dt.BitSize;
             this.Name = name;

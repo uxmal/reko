@@ -115,6 +115,7 @@ word32 bazulate(ptr32 * r0, ptr32 * r1)
 	word32 * fp_n = frobulate(r0, r1, out sp_n);
 	word32 r0_n = __divsi3(r0 + r1, r0);
 	ptr32 * r0_n = *(fp_n - 0x0018);
+	word32 sp_n;
 	word32 * fp_n = frobulate(r0_n, *sp_n, out sp_n);
 	__divsi3(r0_n, r0_n);
 	return *fp_n;
@@ -132,6 +133,7 @@ word32 switcheroo(ptr32 * r0)
 	case 0x02:
 	case 0x03:
 	case 0x04:
+		word32 sp_n;
 		fp_n = frobulate(r0, r0, out sp_n);
 		break;
 	case 0x05:
@@ -140,6 +142,7 @@ l00008540:
 		fp_n = bazulate(null, null);
 		break;
 	case 0x06:
+		word32 sp_n;
 		fp_n = frobulate(r0 - 0x03, r0, out sp_n);
 		break;
 	case 0x08:

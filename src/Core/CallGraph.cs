@@ -63,8 +63,18 @@ namespace Reko.Core
 			graphStms.AddNode(proc);
 		}
 
+        public void RemoveCaller(Statement stm)
+        {
+            if (!graphStms.Nodes.Contains(stm))
+                return;
+            var callees = this.Callees(stm).ToArray();
+            foreach (var callee in callees)
+            {
+                graphStms.RemoveEdge(stm, callee);
+            }
+        }
 
-		public IEnumerable<object> Callees(Statement stm)
+        public IEnumerable<object> Callees(Statement stm)
 		{
             return graphStms.Successors(stm);
 		}
@@ -89,7 +99,8 @@ namespace Reko.Core
 		{
             if (!graphStms.Nodes.Contains(proc))
                 return Array.Empty<Statement>();
-            return graphStms.Predecessors(proc).OfType<Statement>();
+            return graphStms.Predecessors(proc).OfType<Statement>()
+                .Where(s => s.Block.Procedure != null);
 		}
 
 		public void Write(TextWriter wri)
@@ -114,5 +125,6 @@ namespace Reko.Core
                 }
             }
 		}
-	}
+
+    }
 }

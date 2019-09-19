@@ -362,8 +362,7 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                var dreg = instr.op2 as DoubleRegisterOperand;
-                if (dreg != null)
+                if (instr.op2 is DoubleRegisterOperand dreg)
                 {
                     rem = binder.EnsureRegister(dreg.Register1);
                     quot = binder.EnsureRegister(dreg.Register2);
@@ -373,7 +372,8 @@ namespace Reko.Arch.M68k
                     }
                     else
                     {
-                        dividend = binder.EnsureSequence(instr.dataWidth, dreg.Register1, dreg.Register2);
+                        var dtDividend = PrimitiveType.CreateWord((int) (dreg.Register1.BitSize + dreg.Register2.BitSize));
+                        dividend = binder.EnsureSequence(dtDividend, dreg.Register1, dreg.Register2);
                     }
                     m.Assign(rem, m.Remainder(dividend, src));
                     m.Assign(quot, op(dividend, src));

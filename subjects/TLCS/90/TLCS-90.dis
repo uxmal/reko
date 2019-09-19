@@ -29,25 +29,23 @@ fn0000_exit:
 
 
 
-word16 fn02F4(byte a, byte c, byte b, word16 de, byte h, word16 ix, word16 wArg24, ptr32 & bcOut, ptr32 & deOut, ptr32 & hlOut, ptr32 & ixOut)
+word16 fn02F4(byte a, byte c, byte b, word16 de, byte h, word16 ix, word16 wArg24, ptr32 & deOut, ptr32 & hlOut, ptr32 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a:[0..7] b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] Stack +0024:[0..15]
-// LiveOut: af bc de hl ix
+// LiveOut: bc de hl ix
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn02F4_entry:
-	word16 hl_115 = DPB(hl, h, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l02F4:
 	byte a_8 = a + Mem0[ix + -28:byte] + C
-	byte a_15 = h + Mem0[ix + -27:byte] + (a_8 <u 0x00)
-	byte a_29 = a_8 ^ Mem0[ix + -4:byte]
-	byte a_33 = a_15 ^ Mem0[ix + -3:byte]
 	byte a_25 = b ^ Mem0[ix + -5:byte]
+	byte a_29 = a_8 ^ Mem0[ix + -4:byte]
+	byte a_33 = h + Mem0[ix + -27:byte] + (a_8 <u 0x00) ^ Mem0[ix + -3:byte]
 	byte a_37 = Mem0[ix + -10:byte] + (c ^ Mem0[ix + -6:byte])
 	Mem39[ix + -10:byte] = a_37
 	byte a_43 = Mem39[ix + -9:byte] + a_25 + (a_37 <u 0x00)
@@ -55,43 +53,41 @@ l02F4:
 	byte a_49 = Mem45[ix + -8:byte] + a_29 + (a_43 <u 0x00)
 	Mem51[ix + -8:byte] = a_49
 	Mem58[ix + -7:byte] = Mem51[ix + -7:byte] + a_33 + (a_49 <u 0x00)
-	byte c_65 = Mem63[ix + -10:byte]
-	byte b_67 = Mem63[ix + -9:byte]
-	word16 hl_121 = DPB(DPB(DPB(DPB(DPB(DPB(hl_115, a_8, 0), a_15, 8), a_29, 0), a_33, 8), Mem63[ix + -8:byte], 0), Mem63[ix + -7:byte], 8)
-	byte a_74 = 0x04
+	byte c_64 = Mem62[ix + -10:byte]
+	byte b_66 = Mem62[ix + -9:byte]
+	byte a_73 = 0x04
+	word16 hl_113 = SEQ(Mem62[ix + -7:byte], Mem62[ix + -8:byte])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0341:
-	c_65 = c_65 << 1
-	b_67 = __rcl(b_67, 0x01, SLICE(cond(c_65), bool, 0))
-	hl_121 = hl_121 * 0x0002 + (b_67 <u 0x00)
-	byte h_98 = SLICE(hl_121, byte, 8)
-	byte l_99 = SLICE(hl_121, byte, 0)
-	a_74 = a_74 - 1
-	branch a_74 != 0x00 l0341
+	c_64 = c_64 << 1
+	b_66 = __rcl(b_66, 0x01, SLICE(cond(c_64), bool, 0))
+	hl_113 = hl_113 * 0x0002 + (b_66 <u 0x00)
+	byte h_97 = SLICE(hl_113, byte, 8)
+	byte l_98 = SLICE(hl_113, byte, 0)
+	a_73 = a_73 - 1
+	branch a_73 != 0x00 l0341
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l034A:
-	byte a_95 = c_65 + Mem63[ix + -34:byte]
+	byte a_94 = c_64 + Mem62[ix + -34:byte]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l034B_thunk_fn034E:
-	word16 bc_104
-	word16 de_105
-	word16 hl_106
-	word16 ix_107
-	word16 af_103 = fn034E(a_95, b_67, c_65, de, h_98, l_99, ix, wArg24, out bc_104, out de_105, out hl_106, out ix_107)
-	bcOut = bc_104
-	deOut = de_105
-	hlOut = hl_106
-	ixOut = ix_107
-	return af_103
+	word16 de_104
+	word16 hl_105
+	word16 ix_106
+	word16 bc_103 = fn034E(a_94, b_66, c_64, de, h_97, l_98, ix, wArg24, out de_104, out hl_105, out ix_106)
+	deOut = de_104
+	hlOut = hl_105
+	ixOut = ix_106
+	return bc_103
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -103,11 +99,11 @@ fn02F4_exit:
 
 
 
-word16 fn034E(byte a, byte b, byte c, word16 de, byte h, byte l, word16 ix, word16 wArg24, ptr32 & bcOut, ptr32 & deOut, ptr32 & hlOut, ptr32 & ixOut)
+word16 fn034E(byte a, byte b, byte c, word16 de, byte h, byte l, word16 ix, word16 wArg24, ptr32 & deOut, ptr32 & hlOut, ptr32 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a:[0..7] b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0024:[0..15]
-// LiveOut: af bc de hl ix
+// LiveOut: bc de hl ix
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn034E_entry:
@@ -122,16 +118,14 @@ l034E:
 // SymbolicIn:
 
 l034E_thunk_fn03B2:
-	word16 bc_12
 	word16 de_13
 	word16 hl_14
 	word16 ix_15
-	word16 af_11 = fn03B2(a, b, c, de, h, l, ix, wArg24, out bc_12, out de_13, out hl_14, out ix_15)
-	bcOut = bc_12
+	word16 bc_12 = fn03B2(a, b, c, de, h, l, ix, wArg24, out de_13, out hl_14, out ix_15)
 	deOut = de_13
 	hlOut = hl_14
 	ixOut = ix_15
-	return af_11
+	return bc_12
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -157,16 +151,19 @@ fn039D_entry:
 
 l039D:
 	Mem12[ix + -3:byte] = a ^ h
-	byte v12_18 = Mem17[ix + -10:byte]
-	byte v14_20 = Mem17[ix + -9:byte]
-	byte v16_22 = Mem17[ix + -8:byte]
-	byte v18_24 = Mem17[ix + -7:byte]
+	byte v12_17 = Mem16[ix + -10:byte]
+	byte v14_19 = Mem16[ix + -9:byte]
+	byte v16_21 = Mem16[ix + -8:byte]
+	byte v18_23 = Mem16[ix + -7:byte]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l03B0_thunk_fn03B2:
-	fn03B2(0x05, v14_20, v12_18, de, v18_24, v16_22, ix, wArg24, out bc_44, out de_45, out hl_46, out ix_47)
+	word16 de_43
+	word16 hl_44
+	word16 ix_45
+	fn03B2(0x05, v14_19, v12_17, de, v18_23, v16_21, ix, wArg24, out de_43, out hl_44, out ix_45)
 	return
 // DataOut:
 // DataOut (flags):
@@ -204,15 +201,14 @@ l03AA:
 
 
 
-word16 fn03B2(byte a, byte b, byte c, word16 de, byte h, byte l, word16 ix, word16 wArg24, ptr32 & bcOut, ptr32 & deOut, ptr32 & hlOut, ptr32 & ixOut)
+word16 fn03B2(byte a, byte b, byte c, word16 de, byte h, byte l, word16 ix, word16 wArg24, ptr32 & deOut, ptr32 & hlOut, ptr32 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a:[0..7] b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0024:[0..15]
-// LiveOut: af bc de hl ix
+// LiveOut: bc de hl ix
 // Trashed: SZHVNC af bc de hl ix sp
 // Preserved:
 fn03B2_entry:
-	word16 af_186 = DPB(af, a, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -221,10 +217,8 @@ l03B2:
 	h = h >>u 1
 	l = __rcr(l, 0x01, SLICE(cond(h), bool, 0))
 	b = __rcr(b, 0x01, SLICE(cond(l), bool, 0))
-	a = a - 1
 	c = __rcr(c, 0x01, SLICE(cond(b), bool, 0))
-	af_186 = DPB(af_273, a, 8) (alias)
-	af_273 = af_186
+	a = a - 1
 	branch a != 0x00 l03B2
 // DataOut:
 // DataOut (flags):
@@ -252,9 +246,7 @@ l03BD:
 	Mem108[ix + -21:byte] = a_93
 	Mem109[ix + -20:byte] = a_99
 	Mem110[ix + -19:byte] = a_105
-	byte a_114 = a_105 | a_99 | a_93 | v30_85 + 0xFF
-	word16 af_188 = DPB(af_273, a_114, 8)
-	branch a_114 != 0x00 l0350
+	branch (a_105 | a_99 | a_93 | v30_85 + 0xFF) != 0x00 l0350
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -273,58 +265,56 @@ l0350:
 	Mem170[ix + -5:byte] = Mem166[ix + -5:byte] ^ a_147
 	Mem174[ix + -4:byte] = Mem170[ix + -4:byte] ^ a_154
 	Mem183[ix + -3:byte] = Mem174[ix + -3:byte] ^ a_161
-	c = Mem190[ix + -10:byte]
-	b = Mem190[ix + -9:byte]
-	l = Mem190[ix + -8:byte]
-	h = Mem190[ix + -7:byte]
+	c = Mem188[ix + -10:byte]
+	b = Mem188[ix + -9:byte]
+	l = Mem188[ix + -8:byte]
+	h = Mem188[ix + -7:byte]
 	a = 0x05
-	af_186 = DPB(af_273, 0x05, 8) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0434:
-	word16 hl_203 = fp + 0x001C
-	word16 bc_206 = 0x0004
+	word16 hl_201 = fp + 0x001C
+	word16 bc_204 = 0x0004
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l043C:
-	Mem211[de:byte] = Mem208[hl_203:byte]
-	hl_203 = hl_203 + 1
+	Mem209[de:byte] = Mem206[hl_201:byte]
+	hl_201 = hl_201 + 1
 	de = de + 1
-	bc_206 = bc_206 - 1
-	branch bc_206 != 0x0000 l043C
+	bc_204 = bc_204 - 1
+	branch bc_204 != 0x0000 l043C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l043E:
-	word16 de_222 = wArg24
-	word16 hl_224 = fp + 0x0018
-	word16 bc_227 = 0x0004
+	word16 de_220 = wArg24
+	word16 hl_222 = fp + 0x0018
+	word16 bc_225 = 0x0004
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l044B:
-	Mem232[de_222:byte] = Mem229[hl_224:byte]
-	hl_224 = hl_224 + 1
-	de_222 = de_222 + 1
-	bc_227 = bc_227 - 1
-	branch bc_227 != 0x0000 l044B
+	Mem230[de_220:byte] = Mem227[hl_222:byte]
+	hl_222 = hl_222 + 1
+	de_220 = de_220 + 1
+	bc_225 = bc_225 - 1
+	branch bc_225 != 0x0000 l044B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l044D:
-	word16 ix_243 = Mem232[ix:word16]
-	bcOut = bc_227
-	deOut = de_222
-	hlOut = hl_224
-	ixOut = ix_243
-	return af_188
+	word16 ix_241 = Mem230[ix:word16]
+	deOut = de_220
+	hlOut = hl_222
+	ixOut = ix_241
+	return bc_225
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -354,8 +344,8 @@ l04EE:
 	Mem8[ix + -35:byte] = 0xC6
 	byte c_14 = Mem12[ix + -26:byte]
 	byte b_16 = Mem12[ix + -25:byte]
-	word16 hl_303 = DPB(DPB(hl, Mem12[ix + -24:byte], 0), Mem12[ix + -23:byte], 8)
 	byte a_23 = 0x04
+	word16 hl_297 = SEQ(Mem12[ix + -23:byte], Mem12[ix + -24:byte])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -363,10 +353,9 @@ l04EE:
 l050B:
 	c_14 = c_14 << 1
 	b_16 = __rcl(b_16, 0x01, SLICE(cond(c_14), bool, 0))
-	hl_303 = hl_303 * 0x0002 + (b_16 <u 0x00)
-	byte l_53 = SLICE(hl_303, byte, 0)
-	byte h_60 = SLICE(hl_303, byte, 8)
-	word16 hl_306 = DPB(DPB(hl_303, l_53, 0), h_60, 8)
+	hl_297 = hl_297 * 0x0002 + (b_16 <u 0x00)
+	byte l_53 = SLICE(hl_297, byte, 0)
+	byte h_60 = SLICE(hl_297, byte, 8)
 	a_23 = a_23 - 1
 	branch a_23 != 0x00 l050B
 // DataOut:
@@ -389,80 +378,76 @@ l0514:
 	Mem99[ix + -3:byte] = Mem95[ix + -3:byte] ^ a_76
 	Mem103[ix + -2:byte] = Mem99[ix + -2:byte] ^ a_83
 	Mem112[ix + -1:byte] = Mem103[ix + -1:byte] ^ a_90
-	byte v42_124 = Mem119[ix + -24:byte]
-	byte c_121 = Mem119[ix + -26:byte]
-	byte b_123 = Mem119[ix + -25:byte]
-	byte l_125 = v42_124
-	word16 hl_309 = DPB(DPB(DPB(hl_306, a_83, 0), a_90, 8), v42_124, 0)
-	byte h_127 = Mem119[ix + -23:byte]
-	byte a_130 = 0x05
+	byte c_119 = Mem117[ix + -26:byte]
+	byte b_121 = Mem117[ix + -25:byte]
+	byte l_123 = Mem117[ix + -24:byte]
+	byte h_125 = Mem117[ix + -23:byte]
+	byte a_128 = 0x05
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l057C:
-	h_127 = h_127 >>u 1
-	l_125 = __rcr(l_125, 0x01, SLICE(cond(h_127), bool, 0))
-	b_123 = __rcr(b_123, 0x01, SLICE(cond(l_125), bool, 0))
-	word16 hl_311 = DPB(hl_309, h_127, 8)
-	c_121 = __rcr(c_121, 0x01, SLICE(cond(b_123), bool, 0))
-	a_130 = a_130 - 1
-	branch a_130 != 0x00 l057C
+	h_125 = h_125 >>u 1
+	l_123 = __rcr(l_123, 0x01, SLICE(cond(h_125), bool, 0))
+	b_121 = __rcr(b_121, 0x01, SLICE(cond(l_123), bool, 0))
+	c_119 = __rcr(c_119, 0x01, SLICE(cond(b_121), bool, 0))
+	a_128 = a_128 - 1
+	branch a_128 != 0x00 l057C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0587:
-	byte a_155 = c_121 + Mem119[ix + -22:byte]
-	byte a_161 = b_123 + Mem119[ix + -21:byte] + (a_155 <u 0x00)
-	byte a_167 = l_125 + Mem119[ix + -20:byte] + (a_161 <u 0x00)
-	byte a_173 = h_127 + Mem119[ix + -19:byte] + (a_167 <u 0x00)
-	byte a_185 = a_167 ^ Mem119[ix + -2:byte]
-	byte a_189 = a_173 ^ Mem119[ix + -1:byte]
-	byte a_181 = a_161 ^ Mem119[ix + -3:byte]
-	byte a_193 = Mem119[ix + -34:byte] - (a_155 ^ Mem119[ix + -4:byte])
-	Mem195[ix + -34:byte] = a_193
-	byte a_199 = Mem195[ix + -33:byte] - a_181 - (a_193 <u 0x00)
-	Mem201[ix + -33:byte] = a_199
-	byte a_205 = Mem201[ix + -32:byte] - a_185 - (a_199 <u 0x00)
-	Mem207[ix + -32:byte] = a_205
-	Mem214[ix + -31:byte] = Mem207[ix + -31:byte] - a_189 - (a_205 <u 0x00)
-	byte c_223 = Mem221[ix + -34:byte]
-	byte b_225 = Mem221[ix + -33:byte]
-	word16 hl_240 = DPB(DPB(DPB(DPB(DPB(DPB(hl_311, a_167, 0), a_173, 8), a_185, 0), a_189, 8), Mem221[ix + -32:byte], 0), Mem221[ix + -31:byte], 8)
-	byte a_232 = 0x04
+	byte a_153 = c_119 + Mem117[ix + -22:byte]
+	byte a_159 = b_121 + Mem117[ix + -21:byte] + (a_153 <u 0x00)
+	byte a_165 = l_123 + Mem117[ix + -20:byte] + (a_159 <u 0x00)
+	byte a_179 = a_159 ^ Mem117[ix + -3:byte]
+	byte a_183 = a_165 ^ Mem117[ix + -2:byte]
+	byte a_187 = h_125 + Mem117[ix + -19:byte] + (a_165 <u 0x00) ^ Mem117[ix + -1:byte]
+	byte a_191 = Mem117[ix + -34:byte] - (a_153 ^ Mem117[ix + -4:byte])
+	Mem193[ix + -34:byte] = a_191
+	byte a_197 = Mem193[ix + -33:byte] - a_179 - (a_191 <u 0x00)
+	Mem199[ix + -33:byte] = a_197
+	byte a_203 = Mem199[ix + -32:byte] - a_183 - (a_197 <u 0x00)
+	Mem205[ix + -32:byte] = a_203
+	Mem212[ix + -31:byte] = Mem205[ix + -31:byte] - a_187 - (a_203 <u 0x00)
+	byte c_219 = Mem217[ix + -34:byte]
+	byte b_221 = Mem217[ix + -33:byte]
+	byte a_228 = 0x04
+	word16 hl_236 = SEQ(Mem217[ix + -31:byte], Mem217[ix + -32:byte])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l05DF:
-	c_223 = c_223 << 1
-	b_225 = __rcl(b_225, 0x01, SLICE(cond(c_223), bool, 0))
-	hl_240 = hl_240 * 0x0002 + (b_225 <u 0x00)
-	byte l_262 = SLICE(hl_240, byte, 0)
-	byte h_269 = SLICE(hl_240, byte, 8)
-	a_232 = a_232 - 1
-	branch a_232 != 0x00 l05DF
+	c_219 = c_219 << 1
+	b_221 = __rcl(b_221, 0x01, SLICE(cond(c_219), bool, 0))
+	hl_236 = hl_236 * 0x0002 + (b_221 <u 0x00)
+	byte l_258 = SLICE(hl_236, byte, 0)
+	byte h_265 = SLICE(hl_236, byte, 8)
+	a_228 = a_228 - 1
+	branch a_228 != 0x00 l05DF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l05E8:
-	byte a_253 = c_223 + Mem221[ix + -18:byte]
-	Mem255[ix + -4:byte] = a_253
-	byte a_259 = b_225 + Mem255[ix + -17:byte] + (a_253 <u 0x00)
-	Mem261[ix + -3:byte] = a_259
-	byte a_266 = l_262 + Mem261[ix + -16:byte] + (a_259 <u 0x00)
-	Mem268[ix + -2:byte] = a_266
-	Mem274[ix + -1:byte] = h_269 + Mem268[ix + -15:byte] + (a_266 <u 0x00)
-	byte a_278 = Mem274[ix + -34:byte] + Mem274[ix + -38:byte]
-	byte v66_282 = Mem274[ix + -33:byte]
+	byte a_249 = c_219 + Mem217[ix + -18:byte]
+	Mem251[ix + -4:byte] = a_249
+	byte a_255 = b_221 + Mem251[ix + -17:byte] + (a_249 <u 0x00)
+	Mem257[ix + -3:byte] = a_255
+	byte a_262 = l_258 + Mem257[ix + -16:byte] + (a_255 <u 0x00)
+	Mem264[ix + -2:byte] = a_262
+	Mem270[ix + -1:byte] = h_265 + Mem264[ix + -15:byte] + (a_262 <u 0x00)
+	byte a_274 = Mem270[ix + -34:byte] + Mem270[ix + -38:byte]
+	byte v66_278 = Mem270[ix + -33:byte]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l060B_thunk_fn060E:
-	fn060E(v66_282, a_278, de, ix, wArg20)
+	fn060E(v66_278, a_274, de, ix, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -717,10 +702,10 @@ fn0823_exit:
 
 
 
-void fn0C1D(word16 de, word16 ix, byte bArg00, word16 wArg22)
+void fn0C1D(word16 de, word16 ix, word16 wArg22)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  de:[0..15] ix:[0..15] Stack +0000:[0..7] Stack +0022:[0..15]
+// MayUse:  de:[0..15] ix:[0..15] Stack +0022:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix sp
 // Preserved:
@@ -732,8 +717,8 @@ fn0C1D_entry:
 l0C1D:
 	byte c_16 = Mem0[ix + -26:byte]
 	byte b_19 = Mem0[ix + -25:byte]
-	word16 hl_23 = DPB(DPB(hl, Mem0[ix + -24:byte], 0), Mem0[ix + -23:byte], 8)
 	byte a_15 = 0x04
+	word16 hl_23 = SEQ(Mem0[ix + -23:byte], Mem0[ix + -24:byte])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -742,17 +727,16 @@ l0C2C:
 	c_16 = c_16 << 1
 	b_19 = __rcl(b_19, 0x01, SLICE(cond(c_16), bool, 0))
 	hl_23 = hl_23 * 0x0002 + (b_19 <u 0x00)
-	a_15 = a_15 - 1
 	byte l_33 = SLICE(hl_23, byte, 0)
 	byte h_34 = SLICE(hl_23, byte, 8)
-	word16 af_37 = DPB(wArg00, a_15, 8)
+	a_15 = a_15 - 1
 	branch a_15 != 0x00 l0C2C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0C33_thunk_fn0C35:
-	fn0C35(af_37, c_16, b_19, de, l_33, h_34, ix, wArg22)
+	fn0C35(c_16, b_19, de, l_33, h_34, ix, wArg22)
 	return
 // DataOut:
 // DataOut (flags):
@@ -765,15 +749,14 @@ fn0C1D_exit:
 
 
 
-void fn0C35(word16 af, byte c, byte b, word16 de, byte l, byte h, word16 ix, word16 wArg20)
+void fn0C35(byte c, byte b, word16 de, byte l, byte h, word16 ix, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  af:[0..7] b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
+// MayUse:  b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn0C35_entry:
-	word16 hl_99 = DPB(DPB(DPB(DPB(hl, l, 0), h, 8), l, 0), h, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -796,14 +779,14 @@ l0C35:
 	Mem77[ix + -1:byte] = Mem68[ix + -1:byte] ^ a_55
 	byte v32_82 = Mem81[ix + -26:byte]
 	byte v33_84 = Mem81[ix + -25:byte]
-	word16 hl_103 = DPB(DPB(DPB(DPB(hl_99, a_48, 0), a_55, 8), Mem81[ix + -24:byte], 0), Mem81[ix + -23:byte], 8)
-	word16 af_93 = DPB(af, 0x05, 8)
+	byte v34_86 = Mem81[ix + -24:byte]
+	byte v35_88 = Mem81[ix + -23:byte]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0C9B_thunk_fn0C9D:
-	fn0C9D(af_93, v33_84, v32_82, de, hl_103, ix, wArg20)
+	fn0C9D(0x05, v33_84, v32_82, de, v35_88, v34_86, ix, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -816,10 +799,10 @@ fn0C35_exit:
 
 
 
-void fn0C39(word16 af, byte b, word16 de, byte l, byte h, word16 ix, word16 wArg20)
+void fn0C39(byte a, byte b, word16 de, byte l, byte h, word16 ix, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a:[0..7] af:[0..7] b:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
+// MayUse:  a:[0..7] b:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
@@ -841,13 +824,13 @@ l0C39:
 	byte a_50 = Mem25[ix + -23:byte] + Mem25[ix + -35:byte] + (a_43 <u 0x00)
 	Mem55[ix + -4:byte] = Mem25[ix + -4:byte] ^ a_29
 	Mem64[ix + -3:byte] = Mem55[ix + -3:byte] ^ a_36
-	word16 af_70 = DPB(af, Mem64[ix + -2:byte], 8)
+	byte v28_65 = Mem64[ix + -2:byte]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0C7D_thunk_fn0C80:
-	fn0C80(af_70, de, a_43, a_50, ix, wArg20)
+	fn0C80(v28_65, de, a_43, a_50, ix, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -860,15 +843,14 @@ fn0C39_exit:
 
 
 
-void fn0C80(word16 af, word16 de, byte l, byte h, word16 ix, word16 wArg20)
+void fn0C80(byte a, word16 de, byte l, byte h, word16 ix, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a:[0..7] af:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
+// MayUse:  a:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn0C80_entry:
-	word16 hl_40 = DPB(DPB(DPB(DPB(hl, l, 0), h, 8), l, 0), h, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -876,16 +858,16 @@ fn0C80_entry:
 l0C80:
 	Mem7[ix + -2:byte] = a ^ l
 	Mem17[ix + -1:byte] = Mem7[ix + -1:byte] ^ h
-	byte v14_23 = Mem22[ix + -26:byte]
-	byte v16_25 = Mem22[ix + -25:byte]
-	word16 hl_42 = DPB(DPB(hl_40, Mem22[ix + -24:byte], 0), Mem22[ix + -23:byte], 8)
-	word16 af_34 = DPB(af, 0x05, 8)
+	byte v14_22 = Mem21[ix + -26:byte]
+	byte v16_24 = Mem21[ix + -25:byte]
+	byte v18_26 = Mem21[ix + -24:byte]
+	byte v19_28 = Mem21[ix + -23:byte]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0C9B_thunk_fn0C9D:
-	fn0C9D(af_34, v16_25, v14_23, de, hl_42, ix, wArg20)
+	fn0C9D(0x05, v16_24, v14_22, de, v19_28, v18_26, ix, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -898,29 +880,25 @@ fn0C80_exit:
 
 
 
-void fn0C9D(word16 af, byte b, byte c, word16 de, word16 hl, word16 ix, word16 wArg20)
+void fn0C9D(byte a, byte b, byte c, word16 de, byte h, byte l, word16 ix, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  af:[0..15] b:[0..7] c:[0..7] de:[0..15] hl:[0..15] ix:[0..15] Stack +0020:[0..15]
+// MayUse:  a:[0..7] b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn0C9D_entry:
-	byte a_135 = SLICE(af, byte, 8)
-	byte h_131 = SLICE(hl, byte, 8)
-	byte l_132 = SLICE(hl, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0C9D:
-	h_131 = h_131 >>u 1
-	l_132 = __rcr(l_132, 0x01, SLICE(cond(h_131), bool, 0))
-	b = __rcr(b, 0x01, SLICE(cond(l_132), bool, 0))
-	word16 hl_112 = DPB(hl, h_131, 8)
+	h = h >>u 1
+	l = __rcr(l, 0x01, SLICE(cond(h), bool, 0))
+	b = __rcr(b, 0x01, SLICE(cond(l), bool, 0))
 	c = __rcr(c, 0x01, SLICE(cond(b), bool, 0))
-	a_135 = a_135 - 1
-	branch a_135 != 0x00 l0C9D
+	a = a - 1
+	branch a != 0x00 l0C9D
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -928,11 +906,10 @@ l0C9D:
 l0CA8:
 	byte a_29 = c + Mem0[ix + -22:byte]
 	byte a_35 = b + Mem0[ix + -21:byte] + (a_29 <u 0x00)
-	byte a_41 = l_132 + Mem0[ix + -20:byte] + (a_35 <u 0x00)
-	byte a_47 = h_131 + Mem0[ix + -19:byte] + (a_41 <u 0x00)
-	byte a_59 = a_41 ^ Mem0[ix + -2:byte]
-	byte a_63 = a_47 ^ Mem0[ix + -1:byte]
+	byte a_41 = l + Mem0[ix + -20:byte] + (a_35 <u 0x00)
 	byte a_55 = a_35 ^ Mem0[ix + -3:byte]
+	byte a_59 = a_41 ^ Mem0[ix + -2:byte]
+	byte a_63 = h + Mem0[ix + -19:byte] + (a_41 <u 0x00) ^ Mem0[ix + -1:byte]
 	byte a_67 = Mem0[ix + -34:byte] - (a_29 ^ Mem0[ix + -4:byte])
 	Mem69[ix + -34:byte] = a_67
 	byte a_73 = Mem69[ix + -33:byte] - a_55 - (a_67 <u 0x00)
@@ -940,16 +917,15 @@ l0CA8:
 	byte a_79 = Mem75[ix + -32:byte] - a_59 - (a_73 <u 0x00)
 	Mem81[ix + -32:byte] = a_79
 	Mem88[ix + -31:byte] = Mem81[ix + -31:byte] - a_63 - (a_79 <u 0x00)
-	byte v31_96 = Mem95[ix + -34:byte]
-	byte v32_98 = Mem95[ix + -33:byte]
-	word16 hl_119 = DPB(DPB(DPB(DPB(DPB(DPB(hl_112, a_41, 0), a_47, 8), a_59, 0), a_63, 8), Mem95[ix + -32:byte], 0), Mem95[ix + -31:byte], 8)
-	word16 af_107 = DPB(af, 0x04, 8)
+	byte v31_95 = Mem94[ix + -34:byte]
+	byte v32_97 = Mem94[ix + -33:byte]
+	word16 hl_108 = SEQ(Mem94[ix + -31:byte], Mem94[ix + -32:byte])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0CFE_thunk_fn0D00:
-	fn0D00(af_107, v31_96, v32_98, de, hl_119, ix, wArg20)
+	fn0D00(0x04, v31_95, v32_97, de, hl_108, ix, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -962,24 +938,22 @@ fn0C9D_exit:
 
 
 
-void fn0CB7(word16 af, byte c, byte b, word16 de, byte h, byte l, word16 ix, word16 wArg20)
+void fn0CB7(byte c, byte b, word16 de, byte h, byte l, word16 ix, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  af:[0..7] b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
+// MayUse:  b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn0CB7_entry:
-	word16 hl_73 = DPB(DPB(hl, h, 8), l, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0CB7:
-	byte a_9 = h + Mem0[ix + -19:byte] + C
-	byte a_24 = l ^ Mem0[ix + -2:byte]
-	byte a_28 = a_9 ^ Mem0[ix + -1:byte]
 	byte a_19 = b ^ Mem0[ix + -3:byte]
+	byte a_24 = l ^ Mem0[ix + -2:byte]
+	byte a_28 = h + Mem0[ix + -19:byte] + C ^ Mem0[ix + -1:byte]
 	byte a_32 = Mem0[ix + -34:byte] - (c ^ Mem0[ix + -4:byte])
 	Mem34[ix + -34:byte] = a_32
 	byte a_38 = Mem34[ix + -33:byte] - a_19 - (a_32 <u 0x00)
@@ -989,14 +963,13 @@ l0CB7:
 	Mem53[ix + -31:byte] = Mem46[ix + -31:byte] - a_28 - (a_44 <u 0x00)
 	byte v25_58 = Mem57[ix + -34:byte]
 	byte v26_60 = Mem57[ix + -33:byte]
-	word16 hl_78 = DPB(DPB(DPB(DPB(DPB(hl_73, a_9, 8), a_24, 0), a_28, 8), Mem57[ix + -32:byte], 0), Mem57[ix + -31:byte], 8)
-	word16 af_69 = DPB(af, 0x04, 8)
+	word16 hl_70 = SEQ(Mem57[ix + -31:byte], Mem57[ix + -32:byte])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0CFE_thunk_fn0D00:
-	fn0D00(af_69, v25_58, v26_60, de, hl_78, ix, wArg20)
+	fn0D00(0x04, v25_58, v26_60, de, hl_70, ix, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1009,15 +982,14 @@ fn0CB7_exit:
 
 
 
-void fn0D00(word16 af, byte c, byte b, word16 de, word16 hl, word16 ix, word16 wArg20)
+void fn0D00(byte a, byte c, byte b, word16 de, word16 hl, word16 ix, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  af:[8..15] b:[0..7] c:[0..7] de:[0..15] hl:[0..15] ix:[0..15] Stack +0020:[0..15]
+// MayUse:  a:[0..7] b:[0..7] c:[0..7] de:[0..15] hl:[0..15] ix:[0..15] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn0D00_entry:
-	byte a_14 = SLICE(af, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1028,8 +1000,8 @@ l0D00:
 	hl = hl * 0x0002 + (b <u 0x00)
 	byte l_34 = SLICE(hl, byte, 0)
 	byte h_41 = SLICE(hl, byte, 8)
-	a_14 = a_14 - 1
-	branch a_14 != 0x00 l0D00
+	a = a - 1
+	branch a != 0x00 l0D00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1050,63 +1022,63 @@ l0D09:
 	Mem80[ix + -3:byte] = Mem76[ix + -3:byte] ^ a_57
 	Mem84[ix + -2:byte] = Mem80[ix + -2:byte] ^ a_64
 	Mem93[ix + -1:byte] = Mem84[ix + -1:byte] ^ a_71
-	byte c_102 = Mem100[ix + -34:byte]
-	byte b_104 = Mem100[ix + -33:byte]
-	byte l_106 = Mem100[ix + -32:byte]
-	byte h_108 = Mem100[ix + -31:byte]
-	byte a_111 = 0x05
+	byte c_101 = Mem99[ix + -34:byte]
+	byte b_103 = Mem99[ix + -33:byte]
+	byte l_105 = Mem99[ix + -32:byte]
+	byte h_107 = Mem99[ix + -31:byte]
+	byte a_110 = 0x05
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0D71:
-	h_108 = h_108 >>u 1
-	l_106 = __rcr(l_106, 0x01, SLICE(cond(h_108), bool, 0))
-	b_104 = __rcr(b_104, 0x01, SLICE(cond(l_106), bool, 0))
-	c_102 = __rcr(c_102, 0x01, SLICE(cond(b_104), bool, 0))
-	a_111 = a_111 - 1
-	branch a_111 != 0x00 l0D71
+	h_107 = h_107 >>u 1
+	l_105 = __rcr(l_105, 0x01, SLICE(cond(h_107), bool, 0))
+	b_103 = __rcr(b_103, 0x01, SLICE(cond(l_105), bool, 0))
+	c_101 = __rcr(c_101, 0x01, SLICE(cond(b_103), bool, 0))
+	a_110 = a_110 - 1
+	branch a_110 != 0x00 l0D71
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0D7C:
-	byte a_136 = c_102 + Mem100[ix + -14:byte]
-	byte a_142 = b_104 + Mem100[ix + -13:byte] + (a_136 <u 0x00)
-	byte a_148 = l_106 + Mem100[ix + -12:byte] + (a_142 <u 0x00)
-	byte a_162 = a_142 ^ Mem100[ix + -3:byte]
-	byte a_166 = a_148 ^ Mem100[ix + -2:byte]
-	byte a_170 = h_108 + Mem100[ix + -11:byte] + (a_148 <u 0x00) ^ Mem100[ix + -1:byte]
-	byte a_174 = Mem100[ix + -26:byte] - (a_136 ^ Mem100[ix + -4:byte])
-	Mem176[ix + -26:byte] = a_174
-	byte a_180 = Mem176[ix + -25:byte] - a_162 - (a_174 <u 0x00)
-	Mem182[ix + -25:byte] = a_180
-	byte a_186 = Mem182[ix + -24:byte] - a_166 - (a_180 <u 0x00)
-	Mem188[ix + -24:byte] = a_186
-	Mem193[ix + -23:byte] = Mem188[ix + -23:byte] - a_170 - (a_186 <u 0x00)
-	byte v52_194 = Mem193[ix + -38:byte]
-	Mem198[ix + -38:byte] = v52_194 + 0x47
-	byte a_202 = Mem198[ix + -37:byte] + 0x86 + (v52_194 <u 0x47)
-	Mem204[ix + -37:byte] = a_202
-	byte a_208 = Mem204[ix + -36:byte] + 0xC8 + (a_202 <u 0x00)
-	Mem210[ix + -36:byte] = a_208
-	Mem215[ix + -35:byte] = Mem210[ix + -35:byte] + 0x61 + (a_208 <u 0x00)
-	byte v56_216 = Mem215[ix + -30:byte]
-	byte a_224 = Mem215[ix + -29:byte] + 0xFF + (v56_216 <u 0xFF)
-	byte a_230 = Mem215[ix + -28:byte] + 0xFF + (a_224 <u 0x00)
-	byte a_236 = Mem215[ix + -27:byte] + 0xFF + (a_230 <u 0x00)
-	Mem238[ix + -30:byte] = v56_216 + 0xFF
-	Mem239[ix + -29:byte] = a_224
-	Mem240[ix + -28:byte] = a_230
-	Mem241[ix + -27:byte] = a_236
-	byte a_245 = a_236 | a_230 | a_224 | v56_216 + 0xFF
-	branch a_245 != 0x00 l0E0F_thunk_fn060E
+	byte a_135 = c_101 + Mem99[ix + -14:byte]
+	byte a_141 = b_103 + Mem99[ix + -13:byte] + (a_135 <u 0x00)
+	byte a_147 = l_105 + Mem99[ix + -12:byte] + (a_141 <u 0x00)
+	byte a_161 = a_141 ^ Mem99[ix + -3:byte]
+	byte a_165 = a_147 ^ Mem99[ix + -2:byte]
+	byte a_169 = h_107 + Mem99[ix + -11:byte] + (a_147 <u 0x00) ^ Mem99[ix + -1:byte]
+	byte a_173 = Mem99[ix + -26:byte] - (a_135 ^ Mem99[ix + -4:byte])
+	Mem175[ix + -26:byte] = a_173
+	byte a_179 = Mem175[ix + -25:byte] - a_161 - (a_173 <u 0x00)
+	Mem181[ix + -25:byte] = a_179
+	byte a_185 = Mem181[ix + -24:byte] - a_165 - (a_179 <u 0x00)
+	Mem187[ix + -24:byte] = a_185
+	Mem192[ix + -23:byte] = Mem187[ix + -23:byte] - a_169 - (a_185 <u 0x00)
+	byte v52_193 = Mem192[ix + -38:byte]
+	Mem197[ix + -38:byte] = v52_193 + 0x47
+	byte a_201 = Mem197[ix + -37:byte] + 0x86 + (v52_193 <u 0x47)
+	Mem203[ix + -37:byte] = a_201
+	byte a_207 = Mem203[ix + -36:byte] + 0xC8 + (a_201 <u 0x00)
+	Mem209[ix + -36:byte] = a_207
+	Mem214[ix + -35:byte] = Mem209[ix + -35:byte] + 0x61 + (a_207 <u 0x00)
+	byte v56_215 = Mem214[ix + -30:byte]
+	byte a_223 = Mem214[ix + -29:byte] + 0xFF + (v56_215 <u 0xFF)
+	byte a_229 = Mem214[ix + -28:byte] + 0xFF + (a_223 <u 0x00)
+	byte a_235 = Mem214[ix + -27:byte] + 0xFF + (a_229 <u 0x00)
+	Mem237[ix + -30:byte] = v56_215 + 0xFF
+	Mem238[ix + -29:byte] = a_223
+	Mem239[ix + -28:byte] = a_229
+	Mem240[ix + -27:byte] = a_235
+	byte a_244 = a_235 | a_229 | a_223 | v56_215 + 0xFF
+	branch a_244 != 0x00 l0E0F_thunk_fn060E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0E0F_thunk_fn060E:
-	fn060E(a_245, v56_216 + 0xFF, de, ix, wArg20)
+	fn060E(a_244, v56_215 + 0xFF, de, ix, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1263,10 +1235,10 @@ void fn164F(byte a, byte c, byte b, byte h, word16 ix, word16 wArg0C, byte bArg0
 // Trashed: SZHVNC af bc de hl ix sp
 // Preserved:
 fn164F_entry:
-	byte bArg1B_266 = SLICE(wArg1B, byte, 0)
-	byte bArg1C_284 = SLICE(wArg1B, byte, 8)
+	byte bArg1B_250 = SLICE(wArg1B, byte, 0)
+	byte bArg1C_268 = SLICE(wArg1B, byte, 8)
 	byte bArg1A = SLICE(wArg19, byte, 8)
-	byte bArg1F_287 = SLICE(wArg1F, byte, 0)
+	byte bArg1F_271 = SLICE(wArg1F, byte, 0)
 	byte bArg19 = SLICE(wArg19, byte, 0)
 // DataOut:
 // DataOut (flags):
@@ -1275,53 +1247,46 @@ fn164F_entry:
 l164F:
 	Mem5[ix + -20:byte] = a
 	Mem11[ix + -19:byte] = Mem5[ix + -7:byte] - h - C
-	byte a_33 = Mem11[ix + -8:byte] - Mem11[ix + -4:byte]
-	byte v14_17 = Mem11[wArg1B + 1:byte]
 	byte a_22 = c - Mem11[wArg1B:byte]
-	byte a_40 = Mem11[ix + -7:byte] - Mem11[ix + -3:byte] - (a_33 <u 0x00)
-	byte l_82 = SLICE(hl_72, byte, 0)
-	byte c_244 = SLICE(bc_70, byte, 0)
-	byte b_245 = SLICE(bc_70, byte, 8)
-	byte h_246 = SLICE(hl_72, byte, 8)
-	word16 bc_70
-	word16 de_71
-	word16 hl_72
-	word16 ix_73
-	word16 af_247 = DPB(fn02F4(a_40, a_22, b - v14_17 - (a_22 <u 0x00), wArg13, SLICE(DPB(DPB(DPB(wArg1B + 1, v14_17, 8), a_33, 0), a_40, 8), byte, 8), ix, SEQ(bArg1B_266, bArg1A), out bc_70, out de_71, out hl_72, out ix_73), l_82, 8)
-	word16 wArg1C_285 = SEQ(bArg1D, bArg1C_284)
-	word16 wArg1E_288 = SEQ(bArg1F_287, bArg1E)
-	branch l_82 != 0x00 l1692
+	byte a_40 = Mem11[ix + -7:byte] - Mem11[ix + -3:byte] - (Mem11[ix + -8:byte] - Mem11[ix + -4:byte] <u 0x00)
+	word16 de_65
+	word16 hl_66
+	word16 ix_67
+	word16 bc_64 = fn02F4(a_40, a_22, b - Mem11[wArg1B + 1:byte] - (a_22 <u 0x00), wArg13, a_40, ix, SEQ(bArg1B_250, bArg1A), out de_65, out hl_66, out ix_67)
+	byte c_229 = SLICE(bc_64, byte, 0)
+	byte b_230 = SLICE(bc_64, byte, 8)
+	byte h_231 = SLICE(hl_66, byte, 8)
+	word16 wArg1C_269 = SEQ(bArg1D, bArg1C_268)
+	word16 wArg1E_272 = SEQ(bArg1F_271, bArg1E)
+	branch SLICE(hl_66, byte, 0) != 0x00 l1692
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1692:
-	byte v34_100 = Mem67[wArg13:byte]
-	byte v31_93 = Mem67[wArg15:byte]
-	byte v36_103 = Mem67[wArg13 + 1:byte]
-	byte v32_96 = Mem67[wArg15 + 1:byte]
-	byte a_106 = v31_93 - v34_100
-	Mem108[ix_73 + -20:byte] = a_106
-	Mem112[ix_73 + -19:byte] = v32_96 - v36_103 - (a_106 <u 0x00)
-	byte v39_115 = Mem112[wArg1F:byte]
-	byte v40_118 = Mem112[wArg1F + 1:byte]
-	byte v43_125 = Mem112[wArg0C + 1:byte]
-	byte a_129 = v39_115 - Mem112[wArg0C:byte]
-	Mem131[ix_73 + -22:byte] = a_129
-	Mem135[ix_73 + -21:byte] = v40_118 - v43_125 - (a_129 <u 0x00)
-	byte a_161 = v39_115 - Mem135[wArg23:byte]
-	byte a_145 = v31_93 - Mem135[wArg19:byte]
-	byte a_166 = v40_118 - Mem135[wArg23 + 1:byte] - (a_161 <u 0x00)
-	byte l_206 = SLICE(hl_196, byte, 0)
-	byte c_216 = SLICE(bc_194, byte, 0)
-	byte b_217 = SLICE(bc_194, byte, 8)
-	byte h_218 = SLICE(hl_196, byte, 8)
-	word16 bc_194
-	word16 de_195
-	word16 hl_196
-	word16 ix_197
-	word16 af_219 = DPB(fn02F4(a_166, a_145, v32_96 - Mem135[wArg19 + 1:byte] - (a_145 <u 0x00), DPB(DPB(DPB(DPB(DPB(DPB(de_71, v34_100, 0), v36_103, 8), v39_115, 0), v40_118, 8), a_161, 0), a_166, 8), SLICE(wArg0F, byte, 8), ix_73, SEQ(bArg19, bArg18), out bc_194, out de_195, out hl_196, out ix_197), l_206, 8)
-	branch l_206 != 0x00 l1707
+	byte v31_87 = Mem61[wArg15:byte]
+	byte v32_90 = Mem61[wArg15 + 1:byte]
+	byte v36_97 = Mem61[wArg13 + 1:byte]
+	byte a_100 = v31_87 - Mem61[wArg13:byte]
+	Mem102[ix_67 + -20:byte] = a_100
+	Mem106[ix_67 + -19:byte] = v32_90 - v36_97 - (a_100 <u 0x00)
+	byte v39_109 = Mem106[wArg1F:byte]
+	byte v40_112 = Mem106[wArg1F + 1:byte]
+	byte v43_119 = Mem106[wArg0C + 1:byte]
+	byte a_123 = v39_109 - Mem106[wArg0C:byte]
+	Mem125[ix_67 + -22:byte] = a_123
+	Mem129[ix_67 + -21:byte] = v40_112 - v43_119 - (a_123 <u 0x00)
+	byte a_155 = v39_109 - Mem129[wArg23:byte]
+	byte a_139 = v31_87 - Mem129[wArg19:byte]
+	byte a_160 = v40_112 - Mem129[wArg23 + 1:byte] - (a_155 <u 0x00)
+	word16 de_181
+	word16 hl_182
+	word16 ix_183
+	word16 bc_180 = fn02F4(a_160, a_139, v32_90 - Mem129[wArg19 + 1:byte] - (a_139 <u 0x00), SEQ(a_160, a_155), SLICE(wArg0F, byte, 8), ix_67, SEQ(bArg19, bArg18), out de_181, out hl_182, out ix_183)
+	byte c_202 = SLICE(bc_180, byte, 0)
+	byte b_203 = SLICE(bc_180, byte, 8)
+	byte h_204 = SLICE(hl_182, byte, 8)
+	branch SLICE(hl_182, byte, 0) != 0x00 l1707
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1332,7 +1297,7 @@ l1707:
 // SymbolicIn:
 
 l1709_thunk_fn0C35:
-	fn0C35(af_219, c_216, b_217, de_195, 0x00, h_218, ix_197, wArg1C_285)
+	fn0C35(c_202, b_203, de_181, 0x00, h_204, ix_183, wArg1C_269)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1344,7 +1309,7 @@ l1702:
 // SymbolicIn:
 
 l1704_thunk_fn0C35:
-	fn0C35(af_219, c_216, b_217, de_195, 0x03, h_218, ix_197, wArg1C_285)
+	fn0C35(c_202, b_203, de_181, 0x03, h_204, ix_183, wArg1C_269)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1356,7 +1321,7 @@ l168D:
 // SymbolicIn:
 
 l168F_thunk_fn0C35:
-	fn0C35(af_247, c_244, b_245, de_71, 0x03, h_246, ix_73, wArg1E_288)
+	fn0C35(c_229, b_230, de_65, 0x03, h_231, ix_67, wArg1E_272)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1369,10 +1334,10 @@ fn164F_exit:
 
 
 
-void fn1873(word16 af, byte c, byte b, word16 de, word16 ix, word16 wArg13, word16 wArg20)
+void fn1873(byte c, byte b, word16 de, word16 ix, word16 wArg13, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  af:[0..15] b:[0..7] c:[0..7] de:[0..15] ix:[0..15] Stack +0013:[0..15] Stack +0020:[0..15]
+// MayUse:  b:[0..7] c:[0..7] de:[0..15] ix:[0..15] Stack +0013:[0..15] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
@@ -1390,7 +1355,7 @@ l1873:
 // SymbolicIn:
 
 l187D_thunk_fn0C35:
-	fn0C35(af, c, b, de, 0x02, h_14, ix, wArg20)
+	fn0C35(c, b, de, 0x02, h_14, ix, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1403,45 +1368,20 @@ fn1873_exit:
 
 
 
-void fn1BA4(word16 bc, word16 de)
+void fn1BA4()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  bc:[0..7] de:[0..15]
+// MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
-l1BCF:
-	switch (a) { l1BD8_thunk_fn0000 }
-	def a
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l1BD8_thunk_fn0000:
-	fn0000(a)
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l1BCD_thunk_fn1BF9:
-	fn1BF9(bc_40, de, ix)
-	return
-	def ix
-	def b
-	bc_40 = DPB(bc, b, 8) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Terminates process
 fn1BA4_exit:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 fn1BA4_entry:
-	def de
-	def bc
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1454,15 +1394,14 @@ l1BA4:
 
 
 
-void fn1BDE(word16 bc, word16 de, word16 ix)
+void fn1BDE(byte b, byte c, word16 de, word16 ix)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  b:[0..7] bc:[0..7] de:[0..15] ix:[0..15]
+// MayUse:  b:[0..7] c:[0..7] de:[0..15] ix:[0..15]
 // LiveOut:
 // Trashed: SZHVNC a bc de hl
 // Preserved: sp
 fn1BDE_entry:
-	word16 bc_19 = DPB(bc, b, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1480,7 +1419,7 @@ l1BE9:
 // SymbolicIn:
 
 l1BF2_thunk_fn1BF9:
-	fn1BF9(bc_19, de, ix)
+	fn1BF9(b, c, de, ix)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1493,10 +1432,10 @@ fn1BDE_exit:
 
 
 
-void fn1BF9(word16 bc, word16 de, word16 ix)
+void fn1BF9(byte b, byte c, word16 de, word16 ix)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  b:[0..7] bc:[0..7] de:[0..15] ix:[0..15]
+// MayUse:  b:[0..7] c:[0..7] de:[0..15] ix:[0..15]
 // LiveOut:
 // Trashed: SZHVNC a bc de hl
 // Preserved: sp
@@ -1515,8 +1454,8 @@ l1BF9:
 // SymbolicIn:
 
 l0E3B:
-	word16 bc_33 = DPB(bc, b + 1, 8)
 	word16 hl_25 = 0x0823
+	word16 bc_33 = SEQ(b + 1, c)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1585,20 +1524,14 @@ fn1C89_exit:
 
 
 
-void fn22A6(word16 bc, word16 hl, word16 ix, word16 wArg05, word16 wArg10)
+void fn22A6(word16 bc, word16 ix, word16 wArg05, word16 wArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  bc:[0..15] hl:[0..15] ix:[0..15] Stack +0005:[0..15] Stack +0010:[0..15]
+// MayUse:  bc:[0..15] ix:[0..15] Stack +0005:[0..15] Stack +0010:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
-l152A_in_fn22A6:
-	Mem188[hl + 1:byte] = b
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Terminates process
 fn22A6_exit:
 // DataOut:
 // DataOut (flags):
@@ -1612,11 +1545,10 @@ fn22A6_entry:
 l22A6:
 	Mem7[ix + -4:byte] = Mem0[ix + -9:byte]
 	Mem8[ix + -3:byte] = 0x00
-	word16 hl_20 = wArg10 + (wArg05 + 1)
-	byte v15_21 = Mem8[hl_20:byte]
-	word16 hl_35 = DPB(DPB(hl_20, v15_21, 0), 0x00, 8) * 0x0008 + DPB(DPB(wArg05 + 1, v15_21, 0), 0x00, 8) + bc
-	Mem43[ix + -8:byte] = Mem36[hl_35 + 2:byte]
-	Mem47[ix + -7:byte] = Mem43[hl_35 + 3:byte]
+	byte v15_21 = Mem8[wArg10 + (wArg05 + 1):byte]
+	word16 hl_33 = (uint16) (uint8) v15_21 * 0x0008 + (uint16) ((uint8) v15_21) + bc
+	Mem41[ix + -8:byte] = Mem34[hl_33 + 2:byte]
+	Mem45[ix + -7:byte] = Mem41[hl_33 + 3:byte]
 	fn03AA()
 // DataOut:
 // DataOut (flags):
@@ -1624,20 +1556,14 @@ l22A6:
 
 
 
-void fn3E2D(word16 bc, word16 hl, word16 ix, word16 wArg05, word16 wArg10)
+void fn3E2D(word16 bc, word16 ix, word16 wArg05, word16 wArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  bc:[0..15] hl:[0..15] ix:[0..15] Stack +0005:[0..15] Stack +0010:[0..15]
+// MayUse:  bc:[0..15] ix:[0..15] Stack +0005:[0..15] Stack +0010:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
-l152A:
-	Mem188[hl + 1:byte] = b
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Terminates process
 fn3E2D_exit:
 // DataOut:
 // DataOut (flags):
@@ -1651,11 +1577,10 @@ fn3E2D_entry:
 l3E2D:
 	Mem7[ix + -4:byte] = Mem0[ix + -9:byte]
 	Mem8[ix + -3:byte] = 0x00
-	word16 hl_20 = wArg10 + (wArg05 + 1)
-	byte v15_21 = Mem8[hl_20:byte]
-	word16 hl_35 = DPB(DPB(hl_20, v15_21, 0), 0x00, 8) * 0x0008 + DPB(DPB(wArg05 + 1, v15_21, 0), 0x00, 8) + bc
-	Mem43[ix + -8:byte] = Mem36[hl_35 + 2:byte]
-	Mem47[ix + -7:byte] = Mem43[hl_35 + 3:byte]
+	byte v15_21 = Mem8[wArg10 + (wArg05 + 1):byte]
+	word16 hl_33 = (uint16) (uint8) v15_21 * 0x0008 + (uint16) ((uint8) v15_21) + bc
+	Mem41[ix + -8:byte] = Mem34[hl_33 + 2:byte]
+	Mem45[ix + -7:byte] = Mem41[hl_33 + 3:byte]
 	fn03AA()
 // DataOut:
 // DataOut (flags):

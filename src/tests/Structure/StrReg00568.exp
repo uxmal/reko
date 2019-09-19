@@ -21,7 +21,6 @@ fn0C00_000B_entry:
 l0C00_000B:
 	word16 dx_38 = 0x0000
 	word16 cx_17 = 0x0000
-	word16 ax_48 = DPB(ax, 0x00, 8)
 	branch Mem0[ds:si:byte] != 0x2D l0C00_001B
 	// succ:  l0C00_0016 l0C00_001B
 l0C00_0016:
@@ -41,14 +40,14 @@ l0C00_0021:
 	branch al_22 == 0x00 l0C00_003C
 	// succ:  l0C00_0026 l0C00_003C
 l0C00_0026:
-	ax_48 = DPB(ax_48, al_22 - 0x30, 0) (alias)
 	branch al_22 <u 0x30 l0C00_003C
 	// succ:  l0C00_002A l0C00_003C
 l0C00_002A:
+	word16 ax_49 = (uint16) (uint8) (al_22 - 0x30)
 	branch al_22 >u 0x39 l0C00_003C
 	// succ:  l0C00_002E l0C00_003C
 l0C00_002E:
-	dx_38 = dx_38 * 0x000A + ax_48
+	dx_38 = dx_38 * 0x000A + ax_49
 	goto l0C00_0021
 	// succ:  l0C00_0021
 l0C00_003C:
@@ -66,7 +65,6 @@ word16 fn0C00_000B(word16 si, selector ds)
 {
 	word16 dx_38 = 0x0000;
 	word16 cx_17 = 0x0000;
-	word16 ax_48 = DPB(ax, 0x00, 8);
 	if (Mem0[ds:si:byte] == 0x2D)
 	{
 		++si;
@@ -78,12 +76,12 @@ word16 fn0C00_000B(word16 si, selector ds)
 	{
 		byte al_22 = Mem0[ds:si:byte];
 		++si;
-		if (al_22 == 0x00)
+		if (al_22 == 0x00 || al_22 <u 0x30)
 			break;
-		ax_48 = DPB(ax_48, al_22 - 0x30, 0);
-		if (al_22 <u 0x30 || al_22 >u 0x39)
+		word16 ax_49 = (uint16) (uint8) (al_22 - 0x30);
+		if (al_22 >u 0x39)
 			break;
-		dx_38 = dx_38 * 0x000A + ax_48;
+		dx_38 = dx_38 * 0x000A + ax_49;
 	}
 	if (cx_17 < 0x0000)
 		dx_38 = -dx_38;

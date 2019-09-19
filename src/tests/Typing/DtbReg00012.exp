@@ -16,11 +16,11 @@ void fn0C00_0007(word16 cx, selector ds)
 fn0C00_0007_entry:
 	// succ:  l0C00_0007
 l0C00_0007:
-	word16 di_18 = 0x5388
+	word16 di_21 = 0x5388
 	// succ:  l0C00_000A
 l0C00_000A:
-	fn0C00_003D(Mem0[ds:di_18 + 0x0000:word16], 0x2D, ds)
-	di_18 = di_18 + 0x0002
+	fn0C00_003D(0x2D, Mem7[ds:di_21 + 0x0000:word16], ds)
+	di_21 = di_21 + 0x0002
 	cx = cx - 0x0001
 	branch cx != 0x0000 l0C00_000A
 	// succ:  l0C00_001C l0C00_000A
@@ -41,7 +41,7 @@ l0C00_0023:
 	branch bx >= Mem0[ds:0x53B8:word16] l0C00_003C
 	// succ:  l0C00_0029 l0C00_003C
 l0C00_0029:
-	Mem17[ds:0x53BA:word16] = bx
+	Mem11[ds:0x53BA:word16] = bx
 	fn0C00_0046(0x4400, SEQ(ds, 0x5388)[bx * 0x0002], 0x0000, ds)
 	// succ:  l0C00_003C
 l0C00_003C:
@@ -51,12 +51,12 @@ fn0C00_001D_exit:
 
 // fn0C00_003D
 // Return size: 0
-void fn0C00_003D(word16 dx, byte ah, selector ds)
+void fn0C00_003D(byte ah, word16 dx, selector ds)
 fn0C00_003D_entry:
 	// succ:  l0C00_003D
 l0C00_003D:
-	Mem3[ds:0x0110:byte] = ah
-	Mem6[ds:0x0112:word16] = dx
+	Mem6[ds:0x0110:byte] = ah
+	Mem8[ds:0x0112:word16] = dx
 	return
 	// succ:  fn0C00_003D_exit
 fn0C00_003D_exit:
@@ -67,9 +67,9 @@ void fn0C00_0046(word16 ax, word16 dx, word16 bx, selector ds)
 fn0C00_0046_entry:
 	// succ:  l0C00_0046
 l0C00_0046:
-	Mem3[ds:0x0114:word16] = ax
-	Mem6[ds:0x0116:word16] = bx
-	Mem8[ds:0x0118:word16] = dx
+	Mem6[ds:0x0114:word16] = ax
+	Mem8[ds:0x0116:word16] = bx
+	Mem10[ds:0x0118:word16] = dx
 	return
 	// succ:  fn0C00_0046_exit
 fn0C00_0046_exit:

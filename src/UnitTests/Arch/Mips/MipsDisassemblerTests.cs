@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -1052,7 +1052,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("mtc1\tr12,f1", instr.ToString());
             Assert.AreEqual(Opcode.mtc1, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r12, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.f1, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.f1, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1061,7 +1061,7 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleWord(0xE7AC0030);
             Assert.AreEqual("swc1\tf12,0030(sp)", instr.ToString());
             Assert.AreEqual(Opcode.swc1, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.f12, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op1, Registers.f12, PrimitiveType.Word32);
             VerifyIndirectOperand(instr.op2, Registers.sp, 0x30, PrimitiveType.Word32);
         }
 

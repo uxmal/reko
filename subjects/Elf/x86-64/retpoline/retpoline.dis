@@ -281,11 +281,12 @@ my2_exit:
 void branches(word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  edi:[0..31] esi:[0..31]
+// MayUse:  esi:[0..31] rdi:[0..31]
 // LiveOut:
 // Trashed: SCZO edx rax rcx rdi rsi
 // Preserved: rbp rsp
 branches_entry:
+	word32 edi = SLICE(rdi, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -317,7 +318,7 @@ l00000000004005EE:
 l0000000000400602:
 	word64 rax_59 = (uint64) SLICE((uint64) esi, word32, 0)
 	word32 eax_66 = (int32) ((int64) SLICE(rax_59, word32, 0) / 0x00000002)
-	word64 rax_84 = DPB(rax_59, eax_66, 0)
+	word64 rax_84 = SEQ(SLICE(rax_59, word32, 32), eax_66)
 	branch SLICE((uint64) (int32) ((int64) SLICE((uint64) SLICE((uint64) edi, word32, 0), word32, 0) / 0x00000002), word32, 0) >= eax_66 l000000000040064F
 // DataOut:
 // DataOut (flags):
@@ -434,11 +435,12 @@ fn0000000000400700_exit:
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  edi:[0..31] r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] rbp:[0..63] rbx:[0..63] rdx:[0..63] rsi:[0..63]
+// MayUse:  r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] rbp:[0..63] rbx:[0..63] rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rdi rdx rsi
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
+	word32 edi = SLICE(rdi, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

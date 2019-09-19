@@ -291,47 +291,48 @@ verify_entry:
 // SymbolicIn:
 
 l0000000000400520:
-	word32 dwLoc0C_103 = 0x00000000
+	word32 dwLoc0C_104 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004005A1:
-	word64 rax_112
-	word64 rax_16 = rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0)
+	word64 rax_113
+	word64 rax_16 = rdi + (int64) SLICE((uint64) dwLoc0C_104, word32, 0)
+	word32 rax_32_32_114 = SLICE(rax_16, word32, 32)
 	branch SLICE((word32) Mem11[rax_16:byte], byte, 0) != 0x00 l0000000000400531
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000400531:
-	byte al_33 = SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ SLICE((uint64) ((word32) Mem11[rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0):byte]), word32, 0)), byte, 0)
-	word64 rax_74 = (uint64) dwLoc0C_103
-	branch SLICE((word32) Mem73[DPB(rax_74, (int16) SLICE(rax_74, byte, 0), 0) + 0x0000000000601020:byte], byte, 0) == SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) al_33 >> SLICE((uint64) SLICE((uint64) (0x00000008 - SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ 0x00000009), word32, 0) & 0x00000003), word32, 0), word32, 0)), word32, 0), byte, 0)), word32, 0), word32, 0) | SLICE((uint64) SLICE((uint64) SLICE((uint64) ((word32) al_33 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ 0x00000009), word32, 0) & 0x00000003), word32, 0), byte, 0)), word32, 0), word32, 0), word32, 0)), byte, 0) + 0x08 l000000000040059D
+	byte al_33 = SLICE((uint64) (SLICE((uint64) dwLoc0C_104, word32, 0) ^ SLICE((uint64) ((word32) Mem11[rdi + (int64) SLICE((uint64) dwLoc0C_104, word32, 0):byte]), word32, 0)), byte, 0)
+	word64 rax_74 = (uint64) dwLoc0C_104
+	branch SLICE((word32) Mem73[SEQ(SLICE(rax_74, word48, 16), (int16) SLICE(rax_74, byte, 0)) + 0x0000000000601020:byte], byte, 0) == SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) al_33 >> SLICE((uint64) SLICE((uint64) (0x00000008 - SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_104, word32, 0) ^ 0x00000009), word32, 0) & 0x00000003), word32, 0), word32, 0)), word32, 0), byte, 0)), word32, 0), word32, 0) | SLICE((uint64) SLICE((uint64) SLICE((uint64) ((word32) al_33 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_104, word32, 0) ^ 0x00000009), word32, 0) & 0x00000003), word32, 0), byte, 0)), word32, 0), word32, 0), word32, 0)), byte, 0) + 0x08 l000000000040059D
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040059D:
-	dwLoc0C_103 = dwLoc0C_103 + 0x00000001
+	dwLoc0C_104 = dwLoc0C_104 + 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000400596:
-	rax_112 = 0x0000000000000000
+	rax_113 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004005B9:
-	rax_112 = DPB(rax_16, (word32) (dwLoc0C_103 == 0x00000017), 0) (alias)
+	rax_113 = SEQ(rax_32_32_114, (word32) (dwLoc0C_104 == 0x00000017)) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004005C3:
-	return (word32) rax_112
+	return (word32) rax_113
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -406,11 +407,12 @@ main_exit:
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  edi:[0..31] r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] rbp:[0..63] rbx:[0..63] rdx:[0..63] rsi:[0..63]
+// MayUse:  r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] rbp:[0..63] rbx:[0..63] rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rdi rdx rsi
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
+	word32 edi = SLICE(rdi, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -219,7 +219,6 @@ namespace Reko.UnitTests.Typing
 
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void TycoReg00014()
         {
             RunTest32("Fragments/regressions/r00014.asm", "Typing/TycoReg00014.txt");
@@ -339,7 +338,6 @@ namespace Reko.UnitTests.Typing
 
         [Test]
         [Category(Categories.IntegrationTests)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void TycoReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/TycoReg00011.txt");
@@ -347,7 +345,6 @@ namespace Reko.UnitTests.Typing
 
         [Test]
         [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void TycoReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/TycoReg00012.txt");

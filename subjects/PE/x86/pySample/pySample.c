@@ -218,6 +218,7 @@ l1000147A:
 		*esp_n = (LPVOID *) ecx;
 		*(esp_n - 0x04) = (union Eq_n *) edx;
 		*(esp_n - 0x08) = (_onexit_t *) ebx_n;
+		word32 ecx_n;
 		ui32 eax_n = fn100011E9(edx_n, ebx_n, ebp_n, edx, ecx, *(esp_n - 0x08), *(esp_n - 0x04), *esp_n, out ecx_n, out edx, out ebx_n, out esi_n, out edi_n);
 		*(ebp_n - 0x1C) = eax_n;
 		esp_n = (struct Eq_n *) ((char *) esp_n + 0x04);
@@ -382,15 +383,15 @@ void fn10001680(word32 esi, word32 edi)
 	}
 }
 
-// 100016D0: Register word32 fn100016D0(Stack (ptr32 Eq_n) dwArg04)
-word32 fn100016D0(struct Eq_n * dwArg04)
+// 100016D0: Register uint32 fn100016D0(Stack (ptr32 Eq_n) dwArg04)
+uint32 fn100016D0(struct Eq_n * dwArg04)
 {
 	if (dwArg04->w0000 != 23117)
 		return 0x00;
 	struct Eq_n * eax_n = dwArg04 + dwArg04->dw003C / 0x0040;
 	if (eax_n->dw0000 != 0x4550)
 		return 0x00;
-	return (word32) (eax_n->w0018 == 0x010B);
+	return (uint32) (uint8) (eax_n->w0018 == 0x010B);
 }
 
 // 10001700: Register (ptr32 Eq_n) fn10001700(Stack (ptr32 Eq_n) dwArg04, Stack uint32 dwArg08, Register out ptr32 edxOut)

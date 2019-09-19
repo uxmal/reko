@@ -725,7 +725,7 @@ namespace Reko.Arch.Z80
             Instr(Opcode.jz, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
             new CbPrefixDecoder(),
             Instr(Opcode.illegal, Opcode.call, C, A,InstrClass.ConditionalTransfer|InstrClass.Call),
-            Instr( Opcode.illegal, Opcode.call, A, InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.call, A, InstrClass.Transfer|InstrClass.Call),
             Instr(Opcode.aci, Opcode.adc, a,Ib),
             Instr(Opcode.illegal, Opcode.rst, x(0x08), InstrClass.Transfer|InstrClass.Call),
 

@@ -5,94 +5,76 @@ void fn0000802E(word32 r0, word32 r2, word32 r4, word32 ap, word32 fp)
 // LiveOut:
 // Trashed:
 // Preserved: sp
-l00008098:
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0000809C:
-	Mem95[sp - 0x00000004:uint32] = 0x0000005D
-	Mem98[sp - 0x00000008:word32] = Mem95[Mem95[ap + 8:word32]:word32]
-	call Mem98[0x000192DC:word32] + 2 (retsize: 4;)
-		uses: ap:ap,fp:fp,r0:r0,r2:r2,r3:r3,r4:r4,sp:sp - 0x00000008,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: r0:r0_108,sp:sp_102
-	branch r0_108 != 0x00000000 l000080B8
-	def sp
-	def r3
-	def dwLoc08
-	def dwLoc0C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000080B8:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000080AF:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000080BA:
-	Mem124[sp_102 - 0x00000004:word32] = 0x00000007
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Terminates process
 fn0000802E_exit:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 fn0000802E_entry:
-	def fp
-	def r4
-	def ap
-	def r2
-	def r0
-	def fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000802E:
-	r3_9 = Mem8[0x000192E0:word32]
+	word32 r3_9 = Mem8[0x000192E0:word32]
+	word32 sp_13
+	word32 r4_14
+	word32 r3_15
+	word32 ap_17
+	word32 r2_19
+	word32 r0_21
+	word32 fp_23
 	call r3_9 + 2 (retsize: 4;)
 		uses: ap:ap,fp:fp,r0:r0,r2:r2,r3:r3_9,r4:r4,sp:fp - 0x0000000C,Stack +0004:0x00000002,Stack +0008:r4
 		defs: ap:ap_17,fp:fp_23,r0:r0_21,r2:r2_19,r3:r3_15,r4:r4_14,sp:sp_13
 	Mem26[sp_13 - 0x00000004:word32] = r4_14
 	Mem28[sp_13 - 0x00000008:word32] = 0x0000000F
+	word32 sp_32
+	word32 r4_33
+	word32 r3_34
+	word32 ap_35
+	word32 r2_36
+	word32 r0_37
+	word32 fp_38
 	call r3_15 + 2 (retsize: 4;)
 		uses: ap:ap_17,fp:fp_23,r0:r0_21,r2:r2_19,r3:r3_15,r4:r4_14,sp:sp_13 - 0x00000008,Stack +FFFFFFF8:0x00000002,Stack +FFFFFFFC:r4
 		defs: ap:ap_35,fp:fp_38,r0:r0_37,r2:r2_36,r3:r3_34,r4:r4_33,sp:sp_32
 	Mem41[sp_32 - 0x00000004:word32] = r4_33
 	Mem43[sp_32 - 0x00000008:word32] = 0x0000000A
+	word32 sp_47
+	word32 r4_48
+	word32 r3_49
+	word32 ap_50
+	word32 r2_51
+	word32 r0_52
+	word32 fp_53
 	call r3_34 + 2 (retsize: 4;)
 		uses: ap:ap_35,fp:fp_38,r0:r0_37,r2:r2_36,r3:r3_34,r4:r4_33,sp:sp_32 - 0x00000008,Stack +FFFFFFF8:0x00000002,Stack +FFFFFFFC:r4
 		defs: ap:ap_50,fp:fp_53,r0:r0_52,r2:r2_51,r3:r3_49,r4:r4_48,sp:sp_47
 	Mem56[sp_47 - 0x00000004:word32] = r4_48
 	Mem58[sp_47 - 0x00000008:word32] = 0x0000000B
+	word32 sp_62
+	word32 ap_65
+	word32 r2_66
+	word32 fp_68
 	call r3_49 + 2 (retsize: 4;)
 		uses: ap:ap_50,fp:fp_53,r0:r0_52,r2:r2_51,r3:r3_49,r4:r4_48,sp:sp_47 - 0x00000008,Stack +FFFFFFF8:0x00000002,Stack +FFFFFFFC:r4
 		defs: ap:ap_65,fp:fp_68,r2:r2_66,sp:sp_62
-	r3_70 = 0x00000000
+	word32 r3_70 = 0x00000000
 	branch Mem58[ap_65 + 4:word32] != 0x00000001 l00008081
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000807F:
-	r3_74 = 0x00000001
+	r3_70 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008081:
-	r3_76 = PHI((r3_70, l0000802E), (r3_74, l0000807F))
-	Mem79[r2_66 + 96:word32] = r3_76
+	Mem79[r2_66 + 96:word32] = r3_70
 	Mem84[sp_62 - 0x00000004:word32] = ap_65 + 8
 	Mem87[sp_62 - 0x00000008:word32] = ap_65 + 4
 	fn00008EC2(fp_68)
@@ -2094,6 +2076,11 @@ l0000B21D:
 l0000B20E:
 	Mem129[sp_91 - 0x00000004:word32] = r1_105
 	Mem132[sp_91 - 0x00000008:word32] = r4_96 + 1011
+	word32 fp_137
+	word32 r3_205
+	word32 r4_206
+	word32 ap_207
+	word32 sp_208
 	fn0000C022(r0_101, r2_92, r3_98, r4_96, ap_102, fp_108, out r3_205, out r4_206, out ap_207, out fp_137, out sp_208)
 	return
 // DataOut:
@@ -2103,6 +2090,11 @@ l0000B20E:
 l0000B1CA:
 	Mem155[sp_21 - 0x00000004:word32] = r3
 	Mem158[sp_21 - 0x00000008:word32] = r4 + 968
+	word32 fp_163
+	word32 r3_209
+	word32 r4_210
+	word32 ap_211
+	word32 sp_212
 	fn0000C022(r0, r2, r3, r4, ap, fp, out r3_209, out r4_210, out ap_211, out fp_163, out sp_212)
 	return
 // DataOut:
@@ -2205,6 +2197,11 @@ l0000B8D1:
 	word32 r0_142 = Mem127[r2_134 + 312:word32]
 	Mem145[sp_137 - 0x00000004:word32] = Mem127[r0_142 + 12:word32]
 	Mem148[sp_137 - 0x00000008:word32] = r3_135 + 1258
+	word32 fp_153
+	word32 r4_189
+	word32 r3_188
+	word32 ap_190
+	word32 sp_191
 	fn0000C022(r0_142, r2_134, r3_135, r4_136, ap_131, fp_132, out r3_188, out r4_189, out ap_190, out fp_153, out sp_191)
 	return
 // DataOut:
@@ -2308,6 +2305,11 @@ l0000B992:
 	word32 r0_139 = Mem124[r3_132 + 312:word32]
 	Mem142[sp_134 - 0x00000004:word32] = Mem124[r0_139 + 12:word32]
 	Mem145[sp_134 - 0x00000008:word32] = r4_133 + 1329
+	word32 fp_150
+	word32 ap_258
+	word32 r4_257
+	word32 r3_256
+	word32 sp_259
 	fn0000C022(r0_139, r2_131, r3_132, r4_133, ap_128, fp_129, out r3_256, out r4_257, out ap_258, out fp_150, out sp_259)
 	return
 // DataOut:
@@ -2412,10 +2414,10 @@ fn0000B9BA_exit:
 
 
 
-word32 fn0000BBB2(word32 r5, word32 r9, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
+word32 fn0000BBB2(word32 r5, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31] r5:[0..31] r9:[8..31]
+// MayUse:  ap:[0..31] fp:[0..31] r5:[0..31]
 // LiveOut: ap fp r0 r1 r2 r3 r4 r6 r7 r8 r9 sp
 // Trashed: CVZN ap fp r0 r1 r2 r3 r4 r6 r7 r8 r9 sp
 // Preserved:
@@ -2473,10 +2475,10 @@ l0000BC28:
 
 
 
-word32 fn0000BC8A(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r9, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & apOut, ptr32 & fpOut)
+word32 fn0000BC8A(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & apOut, ptr32 & fpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r9:[0..31]
+// MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut: ap fp r0 r1 r3 r4 r5 r6 r7 r8 r9
 // Trashed: CVZN ap fp r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
@@ -2493,15 +2495,15 @@ l0000BC8A:
 	word32 ap_17
 	word32 r2_19
 	word32 r4_21
-	word32 r5_109
-	word32 r9_110
-	word32 r3_111
-	word32 r6_112
-	word32 r7_113
-	word32 r8_114
+	word32 r5_108
+	word32 r3_109
+	word32 r6_110
+	word32 r7_111
+	word32 r8_112
+	word32 r9_113
 	call Mem5[0x000192A0:word32] + 2 (retsize: 4;)
-		uses: ap:ap,fp:fp,r0:r0,r1:r1,r2:r2,r3:r3_73,r4:r4,r5:r5,r6:r6_75,r7:r7_76,r8:r8_77,r9:r9_78,sp:fp - 0x0000000C,Stack +0004:0x00000000
-		defs: ap:ap_17,fp:fp_13,r0:r0_11,r1:r1_15,r2:r2_19,r3:r3_111,r4:r4_21,r5:r5_109,r6:r6_112,r7:r7_113,r8:r8_114,r9:r9_110,sp:sp_9
+		uses: ap:ap,fp:fp,r0:r0,r1:r1,r2:r2,r3:r3_72,r4:r4,r5:r5,r6:r6_74,r7:r7_75,r8:r8_76,r9:r9_77,sp:fp - 0x0000000C,Stack +0004:0x00000000
+		defs: ap:ap_17,fp:fp_13,r0:r0_11,r1:r1_15,r2:r2_19,r3:r3_109,r4:r4_21,r5:r5_108,r6:r6_110,r7:r7_111,r8:r8_112,r9:r9_113,sp:sp_9
 	Mem24[fp_13 + -8:word32] = r0_11
 	Mem27[sp_9 - 0x00000004:word32] = fp_13 + -8
 	word32 sp_31
@@ -2509,7 +2511,7 @@ l0000BC8A:
 	word32 fp_33
 	word32 ap_35
 	call Mem27[0x000192A4:word32] + 2 (retsize: 4;)
-		uses: ap:ap_17,fp:fp_13,r0:r0_11,r1:r1_15,r2:r2_19,r3:r3_111,r4:r4_21,r5:r5_109,r6:r6_112,r7:r7_113,r8:r8_114,r9:r9_110,sp:sp_9 - 0x00000004,Stack +FFFFFFF8:0x00000000
+		uses: ap:ap_17,fp:fp_13,r0:r0_11,r1:r1_15,r2:r2_19,r3:r3_109,r4:r4_21,r5:r5_108,r6:r6_110,r7:r7_111,r8:r8_112,r9:r9_113,sp:sp_9 - 0x00000004,Stack +FFFFFFF8:0x00000000
 		defs: ap:ap_35,fp:fp_33,r0:r0_32,sp:sp_31
 	word32 r2_40 = Mem27[ap_35 + 4:word32]
 	Mem44[r0_32 + 20:word32] = ((uint32) SLICE(r2_40, ui23, 9) & ~0xFFFFFF80) + 0x00000050
@@ -2520,42 +2522,46 @@ l0000BC8A:
 	Mem57[r0_32 + 4:word32] = (uint32) SLICE(r2_51, ui27, 5) & ~0xFFFFFFC0
 	Mem60[r0_32:word32] = Mem57[ap_35 + 8:word32] << 1 & ~0xFFFFFFC1
 	Mem62[sp_31 - 0x00000004:word32] = r0_32
-	word32 ap_68
-	word32 fp_69
-	word32 r3_73
-	word32 r6_75
-	word32 r7_76
-	word32 r8_77
-	word32 r9_78
-	word32 r0_70 = fn0000BBB2(r5, r9, ap_35, fp_33, out r1_131, out r2_132, out r3_73, out r4_133, out r6_75, out r7_76, out r8_77, out r9_78, out ap_68, out fp_69, out sp_134)
-	Mem87[fp_69 + 0xFFFFFFF8:word32] = r0_70
+	word32 ap_67
+	word32 fp_68
+	word32 r3_72
+	word32 r6_74
+	word32 r7_75
+	word32 r8_76
+	word32 r9_77
+	word32 r1_130
+	word32 r2_131
+	word32 r4_132
+	word32 sp_133
+	word32 r0_69 = fn0000BBB2(r5, ap_35, fp_33, out r1_130, out r2_131, out r3_72, out r4_132, out r6_74, out r7_75, out r8_76, out r9_77, out ap_67, out fp_68, out sp_133)
+	Mem86[fp_68 + 0xFFFFFFF8:word32] = r0_69
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000BD15_thunk_fn0000BD1C:
-	word32 ap_91
-	word32 fp_92
-	word32 r1_94
-	word32 r3_96
-	word32 r4_97
-	word32 r5_98
-	word32 r6_99
-	word32 r7_100
-	word32 r8_101
-	word32 r9_102
-	word32 r0_93 = fn0000BD1C(r0_70, 0x00000003, r0_70, r5, r9_78, ap_68, fp_69, out r1_94, out r3_96, out r4_97, out r5_98, out r6_99, out r7_100, out r8_101, out r9_102, out ap_91, out fp_92)
-	r1Out = r1_94
-	r3Out = r3_96
-	r4Out = r4_97
-	r5Out = r5_98
-	r6Out = r6_99
-	r7Out = r7_100
-	r8Out = r8_101
-	r9Out = r9_102
-	apOut = ap_91
-	fpOut = fp_92
-	return r0_93
+	word32 ap_90
+	word32 fp_91
+	word32 r1_93
+	word32 r3_95
+	word32 r4_96
+	word32 r5_97
+	word32 r6_98
+	word32 r7_99
+	word32 r8_100
+	word32 r9_101
+	word32 r0_92 = fn0000BD1C(r0_69, 0x00000003, r0_69, r5, ap_67, fp_68, out r1_93, out r3_95, out r4_96, out r5_97, out r6_98, out r7_99, out r8_100, out r9_101, out ap_90, out fp_91)
+	r1Out = r1_93
+	r3Out = r3_95
+	r4Out = r4_96
+	r5Out = r5_97
+	r6Out = r6_98
+	r7Out = r7_99
+	r8Out = r8_100
+	r9Out = r9_101
+	apOut = ap_90
+	fpOut = fp_91
+	return r0_92
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2567,10 +2573,10 @@ fn0000BC8A_exit:
 
 
 
-void fn0000BD08(word32 r5, word32 r9, word32 ap, word32 fp)
+void fn0000BD08(word32 r5, word32 ap, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31] r5:[0..31] r9:[0..31]
+// MayUse:  ap:[0..31] fp:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: CVZN ap fp r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
@@ -2580,17 +2586,35 @@ fn0000BD08_entry:
 // SymbolicIn:
 
 l0000BD08:
-	word32 ap_13
-	word32 fp_14
-	word32 r9_23
-	word32 r0_15 = fn0000BBB2(r5, r9, ap, fp, out r1_54, out r2_55, out r3_56, out r4_57, out r6_58, out r7_59, out r8_60, out r9_23, out ap_13, out fp_14, out sp_61)
-	Mem32[fp_14 + 0xFFFFFFF8:word32] = r0_15
+	word32 ap_12
+	word32 fp_13
+	word32 r1_53
+	word32 r2_54
+	word32 r3_55
+	word32 r4_56
+	word32 r6_57
+	word32 r7_58
+	word32 r8_59
+	word32 r9_60
+	word32 sp_61
+	word32 r0_14 = fn0000BBB2(r5, ap, fp, out r1_53, out r2_54, out r3_55, out r4_56, out r6_57, out r7_58, out r8_59, out r9_60, out ap_12, out fp_13, out sp_61)
+	Mem31[fp_13 + 0xFFFFFFF8:word32] = r0_14
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000BD15_thunk_fn0000BD1C:
-	fn0000BD1C(r0_15, 0x00000003, r0_15, r5, r9_23, ap_13, fp_14, out r1_62, out r3_63, out r4_64, out r5_65, out r6_66, out r7_67, out r8_68, out r9_69, out ap_70, out fp_71)
+	word32 r1_62
+	word32 r3_63
+	word32 r4_64
+	word32 r5_65
+	word32 r6_66
+	word32 r7_67
+	word32 r8_68
+	word32 r9_69
+	word32 ap_70
+	word32 fp_71
+	fn0000BD1C(r0_14, 0x00000003, r0_14, r5, ap_12, fp_13, out r1_62, out r3_63, out r4_64, out r5_65, out r6_66, out r7_67, out r8_68, out r9_69, out ap_70, out fp_71)
 	return
 // DataOut:
 // DataOut (flags):
@@ -2603,10 +2627,10 @@ fn0000BD08_exit:
 
 
 
-word32 fn0000BD1C(word32 r0, word32 r2, word32 r4, word32 r5, word32 r9, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & apOut, ptr32 & fpOut)
+word32 fn0000BD1C(word32 r0, word32 r2, word32 r4, word32 r5, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & apOut, ptr32 & fpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r9:[0..31]
+// MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r2:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut: ap fp r0 r1 r3 r4 r5 r6 r7 r8 r9
 // Trashed: CVZN ap fp r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
@@ -2623,68 +2647,70 @@ l0000BD1C:
 	word32 fp_12
 	word32 r0_14
 	word32 ap_20
-	word32 r3_84
-	word32 r1_83
-	word32 r6_85
-	word32 r7_86
-	word32 r8_87
+	word32 r6_82
+	word32 r3_81
+	word32 r1_80
+	word32 r7_83
+	word32 r8_84
+	word32 r9_85
 	call Mem7[0x000192A4:word32] + 2 (retsize: 4;)
-		uses: ap:ap_19,fp:fp_5,r0:r0_13,r1:r1_32,r2:r2_17,r3:r3_34,r4:r4_15,r5:r5,r6:r6_36,r7:r7_37,r8:r8_38,r9:r9_39,sp:sp_4
-		defs: ap:ap_20,fp:fp_12,r0:r0_14,r1:r1_83,r3:r3_84,r5:r5_81,r6:r6_85,r7:r7_86,r8:r8_87,r9:r9_82,sp:sp_11
+		uses: ap:ap_19,fp:fp_5,r0:r0_13,r1:r1_31,r2:r2_17,r3:r3_33,r4:r4_15,r5:r5,r6:r6_35,r7:r7_36,r8:r8_37,r9:r9_38,sp:sp_4
+		defs: ap:ap_20,fp:fp_12,r0:r0_14,r1:r1_80,r3:r3_81,r5:r5_79,r6:r6_82,r7:r7_83,r8:r8_84,r9:r9_85,sp:sp_11
 	Mem23[sp_11 - 0x00000004:word32] = r0_14
-	word32 r1_32
-	word32 r2_33
-	word32 r3_34
-	word32 r6_36
-	word32 r7_37
-	word32 r8_38
-	r0 = r4 - fn0000BBB2(r5, r9, ap_20, fp_12, out r1_32, out r2_33, out r3_34, out r4, out r6_36, out r7_37, out r8_38, out r9, out ap, out fp, out sp_2)
+	word32 r1_31
+	word32 r2_32
+	word32 r3_33
+	word32 r6_35
+	word32 r7_36
+	word32 r8_37
+	word32 r9_38
+	r0 = r4 - fn0000BBB2(r5, ap_20, fp_12, out r1_31, out r2_32, out r3_33, out r4, out r6_35, out r7_36, out r8_37, out r9_38, out ap, out fp, out sp_2)
 	branch r0 == 0x00000000 l0000BD3B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000BD33:
-	Mem49[fp + -8:word32] = Mem23[fp + -8:word32] + r0
-	r2 = r2_33 - 0x00000001
-	branch r2_33 > 0x00000001 l0000BD1C
+	Mem48[fp + -8:word32] = Mem23[fp + -8:word32] + r0
+	r2 = r2_32 - 0x00000001
+	branch r2_32 > 0x00000001 l0000BD1C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000BD3B:
-	branch Mem54[ap + 4:word32] <u 0x00007432 l0000BD53
+	branch Mem53[ap + 4:word32] <u 0x00007432 l0000BD53
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000BD45:
-	branch Mem54[fp + -8:word32] >=u 0x70000000 l0000BD53
+	branch Mem53[fp + -8:word32] >=u 0x70000000 l0000BD53
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000BD4F:
-	Mem63[fp + -8:word32] = -0x00000001
+	Mem62[fp + -8:word32] = -0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000BD53:
-	word32 r0_67 = Mem66[fp + -8:word32]
-	word32 fp_72 = Mem66[fp + 0x0000000C:word32]
-	word32 ap_73 = Mem66[fp + 0x00000008:word32]
-	r1Out = r1_83
-	r3Out = r3_84
+	word32 r0_66 = Mem65[fp + -8:word32]
+	word32 fp_71 = Mem65[fp + 0x0000000C:word32]
+	word32 ap_72 = Mem65[fp + 0x00000008:word32]
+	r1Out = r1_80
+	r3Out = r3_81
 	r4Out = r4
 	r5Out = r5
-	r6Out = r6_85
-	r7Out = r7_86
-	r8Out = r8_87
-	r9Out = r9
-	apOut = ap_73
-	fpOut = fp_72
-	return r0_67
+	r6Out = r6_82
+	r7Out = r7_83
+	r8Out = r8_84
+	r9Out = r9_85
+	apOut = ap_72
+	fpOut = fp_71
+	return r0_66
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2971,11 +2997,11 @@ fn0000C1FE_exit:
 
 
 
-word32 fn0000C6FA(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 ap, word32 fp, word32 pc, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut, ptr32 & pcOut)
+void fn0000C6FA(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 ap, word32 fp, word32 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ap:[0..31] fp:[0..31] pc:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: ap fp pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9 sp
+// LiveOut:
 // Trashed: CVZN ap fp pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn0000C6FA_entry:
@@ -3038,62 +3064,19 @@ l0000C7A5:
 	Mem81[sp_54 - 0x00000004:word32] = fp_58 + -8
 	Mem84[sp_54 - 0x00000008:word32] = fp_58 + -40
 	Mem87[sp_54 - 0x0000000C:word32] = fp_58 + -48
-	word32 r10_94
-	word32 r9_96
-	word32 fp_97
-	word32 r6_98
 	word32 r0_99
 	word32 r2_100
-	word32 pc_101
-	word32 r7_102
-	word32 r3_103
-	word32 r8_104
-	word32 r4_789
-	word32 r1_788
-	word32 r5_787
 	call Mem87[pc_65:word32] + 2 (retsize: 4;)
 		uses: ap:ap_56,fp:fp_58,pc:pc_65 + 0x00000004,r0:r0_61,r1:r1_785,r10:r10_55,r2:r2_75,r3:r3_69,r4:r4_786,r5:r5_784,r6:r6_59,r7:r7_67,r8:r8_71,r9:r9_57,sp:sp_54 - 0x0000000C,Stack +FFFFFF18:dwLocEC,Stack +FFFFFF1C:dwLocE8,Stack +FFFFFF20:v30_49
-		defs: fp:fp_97,pc:pc_101,r0:r0_99,r1:r1_788,r10:r10_94,r2:r2_100,r3:r3_103,r4:r4_789,r5:r5_787,r6:r6_98,r7:r7_102,r8:r8_104,r9:r9_96
+		defs: r0:r0_99,r2:r2_100
 	Mem107[Mem87[r0_99 + 20483:word32]:word32] = __ashift(0x00000004, Mem87[r2_100 + 0x50E87FFE:word32])
-	word32 fp_111 = Mem107[fp_97 + 0x0000000C:word32]
-	word32 ap_112 = Mem107[fp_97 + 0x00000008:word32]
-	r1Out = r1_788
-	r2Out = r2_100
-	r3Out = r3_103
-	r4Out = r4_789
-	r5Out = r5_787
-	r6Out = r6_98
-	r7Out = r7_102
-	r8Out = r8_104
-	r9Out = r9_96
-	r10Out = r10_94
-	apOut = ap_112
-	fpOut = fp_111
-	spOut = fp_97 - 0x00000004
-	pcOut = pc_101
-	return r0_99
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000C7A1:
-	word32 fp_118 = Mem74[fp_58 + 0x0000000C:word32]
-	word32 ap_119 = Mem74[fp_58 + 0x00000008:word32]
-	r1Out = r1_785
-	r2Out = r2_75
-	r3Out = r3_69
-	r4Out = r4_786
-	r5Out = r5_784
-	r6Out = r6_59
-	r7Out = r7_67
-	r8Out = r8_71
-	r9Out = r9_57
-	r10Out = r10_55
-	apOut = ap_119
-	fpOut = fp_118
-	spOut = fp_58 - 0x00000004
-	pcOut = pc_65
-	return 0x00000004
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3110,22 +3093,11 @@ l0000C919:
 // SymbolicIn:
 
 l0000C921:
-	word32 r10_130
-	word32 r9_132
-	word32 fp_133
 	word32 r6_134
 	word32 r0_135
-	word32 r2_136
-	word32 pc_137
-	word32 r7_138
-	word32 r3_139
-	word32 r8_140
-	word32 r4_793
-	word32 r1_792
-	word32 r5_791
 	call Mem125[0x000192C4:word32] + 2 (retsize: 4;)
 		uses: ap:ap,fp:fp,pc:pc,r0:r0,r1:r1,r10:r10_5,r2:r2,r3:r3,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,r9:r9_7,sp:fp + 0xFFFFFF1C,Stack +0000:dwLocE8,Stack +0004:r7 + 0x0000C701,Stack +FFFFFFFC:dwLocEC
-		defs: fp:fp_133,pc:pc_137,r0:r0_135,r1:r1_792,r10:r10_130,r2:r2_136,r3:r3_139,r4:r4_793,r5:r5_791,r6:r6_134,r7:r7_138,r8:r8_140,r9:r9_132
+		defs: r0:r0_135,r6:r6_134
 	branch r0_135 + Mem125[r6_134 + 0x00010CE8:word32] <=u 0x000000F2 l0000C945
 // DataOut:
 // DataOut (flags):
@@ -3170,53 +3142,20 @@ l0000C98B:
 // SymbolicIn:
 
 l0000C99F:
-	r2_167 = Mem179[r6_134 + 0x00010CDC:word32]
-	Mem186[r2_167 + -1:byte] = 0x2E
+	Mem186[Mem179[r6_134 + 0x00010CDC:word32] + -1:byte] = 0x2E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000C9AA:
 	Mem193[Mem192[r6_134 + 0x00010CDC:word32]:byte] = 0x00
-	word32 fp_203 = Mem193[fp_133 + 0x0000000C:word32]
-	word32 ap_204 = Mem193[fp_133 + 0x00000008:word32]
-	r1Out = r1_792
-	r2Out = r2_167
-	r3Out = r3_139
-	r4Out = r4_793
-	r5Out = r5_791
-	r6Out = r6_134
-	r7Out = r7_138
-	r8Out = r8_140
-	r9Out = r9_132
-	r10Out = r10_130
-	apOut = ap_204
-	fpOut = fp_203
-	spOut = fp_133 - 0x00000004
-	pcOut = pc_137
-	return 0x00000000
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000C941:
-	word32 fp_210 = Mem125[fp_133 + 0x0000000C:word32]
-	word32 ap_211 = Mem125[fp_133 + 0x00000008:word32]
-	r1Out = r1_792
-	r2Out = r2_136
-	r3Out = r3_139
-	r4Out = r4_793
-	r5Out = r5_791
-	r6Out = r6_134
-	r7Out = r7_138
-	r8Out = r8_140
-	r9Out = r9_132
-	r10Out = r10_130
-	apOut = ap_211
-	fpOut = fp_210
-	spOut = fp_133 - 0x00000004
-	pcOut = pc_137
-	return 0x00000004
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3235,22 +3174,21 @@ l0000C9B3:
 l0000C9BB:
 	word32 v46_216 = Mem0[ap + 4:word32]
 	word32 sp_221
-	word32 ap_223
-	word32 r0_227
 	word32 r10_222
-	word32 r1_796
-	word32 pc_229
-	word32 r6_226
+	word32 ap_223
+	word32 r9_224
 	word32 fp_225
-	word32 r4_797
-	word32 r5_795
+	word32 r0_227
+	word32 pc_229
 	word32 r7_230
 	word32 r8_232
-	word32 r9_224
+	word32 r4_797
+	word32 r1_796
+	word32 r5_795
+	word32 r6_226
 	call Mem217[0x000192C4:word32] + 2 (retsize: 4;)
 		uses: ap:ap,fp:fp,pc:pc,r0:r0,r1:r1,r10:r10_5,r2:r2,r3:r3,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,r9:r9_7,sp:fp + 0xFFFFFF1C,Stack +0000:dwLocE8,Stack +0004:v46_216,Stack +FFFFFFFC:dwLocEC
 		defs: ap:ap_223,fp:fp_225,pc:pc_229,r0:r0_227,r1:r1_796,r10:r10_222,r4:r4_797,r5:r5_795,r6:r6_226,r7:r7_230,r8:r8_232,r9:r9_224,sp:sp_221
-	word32 r3_234 = r0_227
 	branch Mem217[r6_226 + 0x00010CE0:word32] == 0x00000000 l0000C9FB
 // DataOut:
 // DataOut (flags):
@@ -3320,10 +3258,11 @@ l0000CA3C:
 l0000CA58:
 	Mem304[sp_221 - 0x00000004:word32] = Mem270[ap_223 + 4:word32]
 	Mem307[sp_221 - 0x00000008:word32] = Mem304[r6_226 + 0x00010CDC:word32]
+	word32 r3_345
 	call Mem307[0x000192BC:word32] + 2 (retsize: 4;)
 		uses: ap:ap_223,fp:fp_225,pc:pc_229,r0:r0_227,r1:r1_796,r10:r10_222,r2:r2_293,r3:r0_227,r4:r4_797,r5:r5_795,r6:r6_226,r7:r7_230,r8:r8_232,r9:r9_224,sp:sp_221 - 0x00000008,Stack +FFFFFF18:dwLocEC,Stack +FFFFFF1C:dwLocE8,Stack +FFFFFF20:v46_216
-		defs: fp:fp_327,pc:pc_339,r1:r1_807,r10:r10_316,r3:r3_345,r4:r4_812,r5:r5_802,r6:r6_328,r7:r7_344,r8:r8_350,r9:r9_322
-	Mem353[r6_226 + 0x00010CDC:word32] = Mem307[r6_226 + 0x00010CDC:word32] + r3_234
+		defs: r3:r3_345,r6:r6_328
+	Mem353[r6_226 + 0x00010CDC:word32] = Mem307[r6_226 + 0x00010CDC:word32] + r3_345
 	Mem355[Mem353[r6_226 + 0x00010CDC:word32]:byte] = 0x2E
 	Mem357[r6_226 + 0x00010CDC:word32] = Mem355[r6_226 + 0x00010CDC:word32] + 0x00000001
 // DataOut:
@@ -3331,23 +3270,7 @@ l0000CA58:
 // SymbolicIn:
 
 l0000CA54:
-	word32 fp_364 = Mem270[fp_225 + 0x0000000C:word32]
-	word32 ap_365 = Mem270[fp_225 + 0x00000008:word32]
-	r1Out = r1_796
-	r2Out = r2_293
-	r3Out = r0_227
-	r4Out = r4_797
-	r5Out = r5_795
-	r6Out = r6_226
-	r7Out = r7_230
-	r8Out = r8_232
-	r9Out = r9_224
-	r10Out = r10_222
-	apOut = ap_365
-	fpOut = fp_364
-	spOut = fp_225 - 0x00000004
-	pcOut = pc_229
-	return 0x00000004
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3367,24 +3290,7 @@ l0000CA7C:
 	word32 r2_381 = Mem380[r6_226 + 0x00010CDC:word32]
 	Mem383[r6_226 + 0x00010CD0:word32] = r2_381 - Mem380[r6_226 + 0x00010CC4:word32]
 	Mem385[r2_381:byte] = 0x00
-	word32 sp_392 = fp_225 - 0x00000004
-	word32 fp_393 = Mem385[sp_392 + 0x00000010:word32]
-	word32 ap_394 = Mem385[sp_392 + 0x0000000C:word32]
-	r1Out = r1_796
-	r2Out = r2_381
-	r3Out = r3_234
-	r4Out = r4_797
-	r5Out = r5_795
-	r6Out = r6_226
-	r7Out = r7_230
-	r8Out = r8_232
-	r9Out = r9_224
-	r10Out = r10_222
-	apOut = ap_394
-	fpOut = fp_393
-	spOut = sp_392
-	pcOut = pc_229
-	return 0x00000000
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3610,62 +3516,19 @@ l0000CC54:
 		uses: ap:ap_619,fp:fp_623,pc:pc_631,r0:r0_648,r1:r1_641,r10:r10_618,r2:r2_647,r3:r3_635,r4:r4_644,r5:r5_639,r6:r6_625,r7:r7_633,r8:r8_637,r9:r9_621,sp:sp_616 - 0x00000008,Stack +FFFFFF18:dwLocEC_836,Stack +FFFFFF1C:dwLocE8_835,Stack +FFFFFF20:dwLocE4_834
 		defs: ap:ap_663,fp:fp_665,pc:pc_669,r0:r0_667,r1:r1_674,r10:r10_662,r2:r2_668,r3:r3_671,r4:r4_675,r5:r5_673,r6:r6_666,r7:r7_670,r8:r8_672,r9:r9_664,sp:sp_661
 	Mem679[sp_661 - 0x00000004:word32] = Mem657[ap_663 + 4:word32]
-	word32 r10_684
-	word32 r9_686
-	word32 fp_687
 	word32 r6_688
 	word32 r0_689
-	word32 r2_690
-	word32 pc_691
-	word32 r7_692
-	word32 r3_693
-	word32 r8_694
-	word32 r5_695
-	word32 r1_696
-	word32 r4_697
 	call Mem679[0x000192C4:word32] + 2 (retsize: 4;)
 		uses: ap:ap_663,fp:fp_665,pc:pc_669,r0:r0_667,r1:r1_674,r10:r10_662,r2:r2_668,r3:r3_671,r4:r4_675,r5:r5_673,r6:r6_666,r7:r7_670,r8:r8_672,r9:r9_664,sp:sp_661 - 0x00000004,Stack +FFFFFF18:dwLocEC_836,Stack +FFFFFF1C:dwLocE8_835,Stack +FFFFFF20:dwLocE4_834
-		defs: fp:fp_687,pc:pc_691,r0:r0_689,r1:r1_696,r10:r10_684,r2:r2_690,r3:r3_693,r4:r4_697,r5:r5_695,r6:r6_688,r7:r7_692,r8:r8_694,r9:r9_686
+		defs: r0:r0_689,r6:r6_688
 	Mem700[r6_688 + 0x00010CDC:word32] = Mem679[r6_688 + 0x00010CDC:word32] + r0_689
-	word32 fp_707 = Mem700[fp_687 + 0x0000000C:word32]
-	word32 ap_708 = Mem700[fp_687 + 0x00000008:word32]
-	r1Out = r1_696
-	r2Out = r2_690
-	r3Out = r3_693
-	r4Out = r4_697
-	r5Out = r5_695
-	r6Out = r6_688
-	r7Out = r7_692
-	r8Out = r8_694
-	r9Out = r9_686
-	r10Out = r10_684
-	apOut = ap_708
-	fpOut = fp_707
-	spOut = fp_687 - 0x00000004
-	pcOut = pc_691
-	return 0x00000000
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000CC50:
-	word32 fp_714 = Mem612[fp_623 + 0x0000000C:word32]
-	word32 ap_715 = Mem612[fp_623 + 0x00000008:word32]
-	r1Out = r1_641
-	r2Out = r2_647
-	r3Out = r3_635
-	r4Out = r4_644
-	r5Out = r5_639
-	r6Out = r6_625
-	r7Out = r7_633
-	r8Out = r8_637
-	r9Out = r9_621
-	r10Out = r10_618
-	apOut = ap_715
-	fpOut = fp_714
-	spOut = fp_623 - 0x00000004
-	pcOut = pc_631
-	return 0x00000001
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3688,45 +3551,13 @@ l0000CCA2:
 // SymbolicIn:
 
 l0000CCAA:
-	word32 fp_727 = Mem0[fp + 0x0000000C:word32]
-	word32 ap_728 = Mem0[fp + 0x00000008:word32]
-	r1Out = r1
-	r2Out = r2
-	r3Out = r3
-	r4Out = r4
-	r5Out = r5
-	r6Out = r6
-	r7Out = r7
-	r8Out = r8
-	r9Out = r9_7
-	r10Out = r10_414
-	apOut = ap_728
-	fpOut = fp_727
-	spOut = fp - 0x00000004
-	pcOut = pc
-	return 0x00000063
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000CCA7:
-	word32 fp_735 = Mem0[fp + 0x0000000C:word32]
-	word32 ap_736 = Mem0[fp + 0x00000008:word32]
-	r1Out = r1
-	r2Out = r2
-	r3Out = r3
-	r4Out = r4
-	r5Out = r5
-	r6Out = r6
-	r7Out = r7
-	r8Out = r8
-	r9Out = r9_7
-	r10Out = r10_414
-	apOut = ap_736
-	fpOut = fp_735
-	spOut = fp - 0x00000004
-	pcOut = pc
-	return 0x00000000
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3739,60 +3570,15 @@ l0000CC7D:
 
 l0000CC89:
 	Mem742[Mem0[r6 + 0x00010CDC:word32]:byte] = 0x00
-	word32 r10_753
-	word32 r9_755
-	word32 fp_756
-	word32 r6_757
-	word32 r2_759
-	word32 pc_760
-	word32 r7_761
-	word32 r3_762
-	word32 r8_763
-	word32 r5_764
-	word32 r1_765
-	word32 r4_766
 	call Mem748[0x000192BC:word32] + 2 (retsize: 4;)
 		uses: ap:ap,fp:fp,pc:pc,r0:r0,r1:r1,r10:r10_5,r2:r2,r3:r3,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,r9:r9_7,sp:fp + 0xFFFFFF18,Stack +0000:dwLocEC,Stack +0004:Mem745[ap + 4:word32],Stack +0008:r6 + 0x00010ABC
-		defs: fp:fp_756,pc:pc_760,r1:r1_765,r10:r10_753,r2:r2_759,r3:r3_762,r4:r4_766,r5:r5_764,r6:r6_757,r7:r7_761,r8:r8_763,r9:r9_755
-	word32 fp_774 = Mem748[fp_756 + 0x0000000C:word32]
-	word32 ap_775 = Mem748[fp_756 + 0x00000008:word32]
-	r1Out = r1_765
-	r2Out = r2_759
-	r3Out = r3_762
-	r4Out = r4_766
-	r5Out = r5_764
-	r6Out = r6_757
-	r7Out = r7_761
-	r8Out = r8_763
-	r9Out = r9_755
-	r10Out = r10_753
-	apOut = ap_775
-	fpOut = fp_774
-	spOut = fp_756 - 0x00000004
-	pcOut = pc_760
-	return 0x00000000
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000CC85:
-	word32 fp_781 = Mem0[fp + 0x0000000C:word32]
-	word32 ap_782 = Mem0[fp + 0x00000008:word32]
-	r1Out = r1
-	r2Out = r2
-	r3Out = r3
-	r4Out = r4
-	r5Out = r5
-	r6Out = r6
-	r7Out = r7
-	r8Out = r8
-	r9Out = r9_7
-	r10Out = r10_414
-	apOut = ap_782
-	fpOut = fp_781
-	spOut = fp - 0x00000004
-	pcOut = pc
-	return 0x00000003
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4101,7 +3887,7 @@ l0000CFCA:
 	word32 r1_118
 	word32 r2_110
 	word32 r4_117
-	word32 r0_20 = fn0000D39E(r0, r1, r2_7, r3_6, r4, r5, r6, ap, fp, out r1_118, out r2_110, out r3_24, out r4_117, out r5_187, out r6_27, out ap_18, out fp_19, out sp_188)
+	word32 r0_20 = fn0000D39E(r0, r1, r2_7, r3_6, r4, r5, r6, ap, fp, out r1_118, out r2_110, out r3_24, out r4_117, out r6_27, out ap_18, out fp_19)
 	word32 r3_115 = r3_24 ^ 0xFFFFFFFF
 	branch Mem0[ap_18 + 12:word32] >=u 0x00000008 l0000CFE4
 // DataOut:
@@ -4614,11 +4400,11 @@ fn0000D0D6_exit:
 
 
 
-word32 fn0000D39E(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
+word32 fn0000D39E(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r6Out, ptr32 & apOut, ptr32 & fpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: ap fp r0 r1 r2 r3 r4 r5 r6 sp
+// LiveOut: ap fp r0 r1 r2 r3 r4 r6
 // Trashed: CVZN ap fp r0 r1 r2 r3 r4 r5 r6 sp
 // Preserved:
 fn0000D39E_entry:
@@ -4637,7 +4423,6 @@ l0000D3AC:
 	call Mem12[0x000192B4:word32] + 2 (retsize: 4;)
 		uses: ap:ap,fp:fp,r0:r0,r1:r1,r2:r2,r3:r3,r4:r4,r5:r5,r6:r6,sp:fp - 0x00000008,Stack +0004:0x00000400
 		defs: fp:fp_33,r0:r0_19,r1:r1_29,r2:r2_27,r3:r3_25,r4:r4_23,r6:r6_17
-	r5 = r0_19
 	branch r0_19 == 0x00000000 l0000D3FD
 // DataOut:
 // DataOut (flags):
@@ -4709,11 +4494,9 @@ l0000D3FD:
 	r2Out = r2
 	r3Out = r3
 	r4Out = r4
-	r5Out = r5
 	r6Out = r6
 	apOut = ap_107
 	fpOut = fp_106
-	spOut = sp_105
 	return r0_96
 // DataOut:
 // DataOut (flags):
@@ -4726,11 +4509,11 @@ fn0000D39E_exit:
 
 
 
-word32 fn0000D406(word32 ap, word32 fp, ptr32 & fpOut, ptr32 & spOut)
+void fn0000D406(word32 ap, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ap:[0..31] fp:[0..31]
-// LiveOut: ap fp sp
+// LiveOut:
 // Trashed: CVZN ap fp sp
 // Preserved:
 fn0000D406_entry:
@@ -4748,18 +4531,14 @@ l0000D414:
 	word32 ap_17
 	call Mem12[0x000192B0:word32] + 2 (retsize: 4;)
 		uses: ap:ap,fp:fp,sp:fp - 0x00000008,Stack +0004:Mem0[ap:word32]
-		defs: ap:ap_17,fp:fp_19
+		defs: ap:ap_17
 	Mem22[ap_17:word32] = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000D41F:
-	word32 sp_28 = fp - 0x00000004
-	word32 ap_31 = Mem29[sp_28 + 0x0000000C:word32]
-	fpOut = Mem29[sp_28 + 0x00000010:word32]
-	spOut = sp_28
-	return ap_31
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5562,10 +5341,10 @@ fn0000E276_exit:
 
 
 
-word32 fn0000E2A6(word32 r2, word32 r5, word32 r7, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
+word32 fn0000E2A6(word32 r7, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31] r2:[8..31] r5:[8..31] r7:[0..31]
+// MayUse:  ap:[0..31] fp:[0..31] r7:[0..31]
 // LiveOut: ap fp r0 r1 r2 r5 r6 sp
 // Trashed: CVZN ap fp r0 r1 r2 r4 r5 r6 sp
 // Preserved: r3
@@ -7040,978 +6819,56 @@ fn00010892_exit:
 
 
 
-void fn000108D2(word32 r0, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 ap, word32 fp, word32 pc)
+void fn000108D2(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 ap, word32 fp, word32 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31] pc:[0..31] r0:[0..31] r10:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
+// MayUse:  ap:[0..31] fp:[0..31] pc:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: CVZN ap fp pc r0 r1 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
-l00010A95:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000109EC:
-	def r11
-	def sp
-	def Mem0
-	def r1
-	def r3
-	def dwLoc08
-	def dwLoc0C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A98:
-	ap_347 = r6 + r8 + r7
-	branch ap_347 == 0x00000000 l00010AA4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AA4:
-	ap_350 = r4 + r9
-	branch ap_350 == 0x00000001 l00010AB0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AB0:
-	branch r11 != 0x00000000 l00010AB7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AB7:
-	branch Mem0[sp:word32] != 0x00000009 l00010AC2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AC0:
-	Mem367[sp:word32] = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AC2:
-	Mem375 = PHI((Mem0, l00010AB7), (Mem367, l00010AC0))
-	Mem377[sp - 0x00000004:word32] = Mem375[r2 + 0x0000C60F:word32]
-	r0_387 = fn00018F22(r1, ap_350, fp, out r1_389, out ap_385, out fp_386, out sp_388)
-	branch r0_387 == 0x00000000 l00010B18
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B18:
-	Mem400[sp_388 - 0x00000004:word32] = r11
-	call Mem400[0x000192C4:word32] + 2 (retsize: 4;)
-		uses: ap:ap_385,fp:fp_386,pc:pc,r0:r0_387,r1:r1_389,r10:r10,r11:r11,r2:r2,r3:r3,r4:0x00000000,r5:r5,r6:r6,r7:r7,r8:r8,r9:0x00000000,sp:sp_388 - 0x00000004,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_413,fp:fp_414,pc:pc_428,r0:r0_409,r1:r1_429,r10:r10_412,r11:r11_405,r2:r2_410,r3:r3_408,r4:r4_418,r5:r5_416,r6:r6_420,r7:r7_422,r8:r8_424,r9:r9_426,sp:sp_404
-	Mem433[r2_410 + 0x0000C613:word32] = r11_405
-	Mem436[sp_404 - 0x00000004:word32] = r5_416 + 11
-	r0_431 = r0_409 + r11_405
-	Mem438[sp_404 - 0x00000008:word32] = r0_431
-	call Mem438[0x000192BC:word32] + 2 (retsize: 4;)
-		uses: ap:ap_413,fp:fp_414,pc:pc_428,r0:r0_431,r1:r1_429,r10:r10_412,r11:r11_405,r2:r2_410,r3:r3_408,r4:r4_418,r5:r5_416,r6:r6_420,r7:r7_422,r8:r8_424,r9:r9_426,sp:sp_404 - 0x00000008,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_448,fp:fp_449,pc:pc_456,r1:r1_457,r10:r10_447,r2:r2_446,r3:r3_444,r4:r4_451,r6:r6_452,r7:r7_453,r9:r9_455,sp:sp_442
-	Mem460[sp_442 - 0x00000004:word32] = 0x00000001
-	r0_466 = fn00010E6A(r1_457, r2_446, r3_444, r4_451, r6_452, r7_453, r9_455, ap_448, fp_449, out r1_467, out r2_469, out r3_470, out r4_471, out r5_472, out r6_473, out r7_474, out r8_475, out r9_476, out r11_468, out ap_464, out fp_465, out sp_477)
-	branch r0_466 != 0x00000001 l00010B48
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B48:
-	branch r0_466 != 0x0000004C l00010B58
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B58:
-	branch r0_466 == 0x00000009 l00010B6A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B5D:
-	branch r0_466 == 0x00000000 l00010B68
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B68:
-	r8_495 = r8_475 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B61:
-	r7_497 = r7_474 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B51:
-	r9_499 = r9_476 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B43:
-	r6_501 = r6_473 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B6A:
-	r9_768 = PHI((r9_476, l00010B43), (r9_499, l00010B51), (r9_476, l00010B58), (r9_476, l00010B61), (r9_476, l00010B68))
-	r8_662 = PHI((r8_475, l00010B43), (r8_475, l00010B51), (r8_475, l00010B58), (r8_475, l00010B61), (r8_495, l00010B68))
-	r6_656 = PHI((r6_501, l00010B43), (r6_473, l00010B51), (r6_473, l00010B58), (r6_473, l00010B61), (r6_473, l00010B68))
-	r7_652 = PHI((r7_474, l00010B43), (r7_474, l00010B51), (r7_474, l00010B58), (r7_497, l00010B61), (r7_474, l00010B68))
-	branch r0_466 <= Mem460[sp_477:word32] l00010B72
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B6F:
-	Mem510[sp_477:word32] = r0_466
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AD3:
-	Mem516[sp_388 - 0x00000004:uint32] = 0x00000401
-	Mem519[sp_388 - 0x00000008:word32] = Mem516[r2 + 0x0000C60F:word32]
-	branch Mem519[r2:word32] == 0x00000000 l00010AEC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AEC:
-	r3_524 = r10 + 456
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AE2:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AF1:
-	r3_533 = PHI((r3, l00010AE2), (r3_524, l00010AEC))
-	Mem534[sp_388 - 0x0000000C:word32] = r3_533
-	Mem538[sp_388 - 0x00000010:word32] = r10 + 277
-	Mem542[sp_388 - 0x00000014:word32] = r2 + 1515
-	call Mem542[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_385,fp:fp_386,pc:pc,r0:r0_387,r1:r1_389,r10:r10,r11:r11,r2:r2,r3:r3_533,r4:0x00000000,r5:r5,r6:r6,r7:r7,r8:r8,r9:0x00000000,sp:sp_388 - 0x00000014,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_557,pc:pc_571,r0:r0_551,r1:r1_573,r10:r10_553,r11:r11_548,r2:r2_552,r3:r3_549,r4:r4_561,r5:r5_559,r6:r6_563,r7:r7_565,r8:r8_567,r9:r9_569,sp:sp_546
-	Mem576[sp_546 - 0x00000004:word32] = r0_551
-	Mem579[sp_546 - 0x00000008:word32] = r2_552 + 1515
-	Mem581[sp_546 - 0x0000000C:word32] = r2_552
-	ap_582 = Mem581[r2_552 + 0x0000C839:word32]
-	call ap_582 + 2 (retsize: 4;)
-		uses: ap:ap_582,fp:fp_557,pc:pc_571,r0:r0_551,r1:r1_573,r10:r10_553,r11:r11_548,r2:r2_552,r3:r3_549,r4:r4_561,r5:r5_559,r6:r6_563,r7:r7_565,r8:r8_567,r9:r9_569,sp:sp_546 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_592,fp:fp_593,pc:pc_600,r1:r1_601,r10:r10_591,r11:r11_587,r2:r2_590,r3:r3_588,r4:r4_595,r5:r5_594,r6:r6_596,r7:r7_597,r8:r8_598,r9:r9_599,sp:sp_586
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AB4:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AAD:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010AA1:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B72:
-	pc_774 = PHI((pc, l00010AA1), (pc, l00010AAD), (pc, l00010AB4), (pc_600, l00010AF1), (pc_456, l00010B6A), (pc_456, l00010B6F))
-	r9_767 = PHI((r9, l00010AA1), (r9, l00010AAD), (r9, l00010AB4), (r9_599, l00010AF1), (r9_768, l00010B6A), (r9_768, l00010B6F))
-	r10_737 = PHI((r10, l00010AA1), (r10, l00010AAD), (r10, l00010AB4), (r10_591, l00010AF1), (r10_447, l00010B6A), (r10_447, l00010B6F))
-	r3_724 = PHI((r3, l00010AA1), (r3, l00010AAD), (r3, l00010AB4), (r3_588, l00010AF1), (r3_470, l00010B6A), (r3_470, l00010B6F))
-	r11_717 = PHI((r11, l00010AA1), (r11, l00010AAD), (r11, l00010AB4), (r11_587, l00010AF1), (r11_468, l00010B6A), (r11_468, l00010B6F))
-	r5_701 = PHI((r5, l00010AA1), (r5, l00010AAD), (r5, l00010AB4), (r5_594, l00010AF1), (r5_472, l00010B6A), (r5_472, l00010B6F))
-	r8_661 = PHI((r8, l00010AA1), (r8, l00010AAD), (r8, l00010AB4), (r8_598, l00010AF1), (r8_662, l00010B6A), (r8_662, l00010B6F))
-	r6_655 = PHI((r6, l00010AA1), (r6, l00010AAD), (r6, l00010AB4), (r6_596, l00010AF1), (r6_656, l00010B6A), (r6_656, l00010B6F))
-	r7_651 = PHI((r7, l00010AA1), (r7, l00010AAD), (r7, l00010AB4), (r7_597, l00010AF1), (r7_652, l00010B6A), (r7_652, l00010B6F))
-	r4_648 = PHI((r4, l00010AA1), (r4, l00010AAD), (r4, l00010AB4), (r4_595, l00010AF1), (r4_471, l00010B6A), (r4_471, l00010B6F))
-	r1_617 = PHI((r1, l00010AA1), (r1, l00010AAD), (r1, l00010AB4), (r1_601, l00010AF1), (r1_467, l00010B6A), (r1_467, l00010B6F))
-	fp_615 = PHI((fp, l00010AA1), (fp, l00010AAD), (fp, l00010AB4), (fp_593, l00010AF1), (fp_465, l00010B6A), (fp_465, l00010B6F))
-	ap_613 = PHI((ap_347, l00010AA1), (ap_350, l00010AAD), (ap_350, l00010AB4), (ap_592, l00010AF1), (ap_464, l00010B6A), (ap_464, l00010B6F))
-	Mem607 = PHI((Mem0, l00010AA1), (Mem0, l00010AAD), (Mem0, l00010AB4), (Mem581, l00010AF1), (Mem460, l00010B6A), (Mem510, l00010B6F))
-	r2_605 = PHI((r2, l00010AA1), (r2, l00010AAD), (r2, l00010AB4), (r2_590, l00010AF1), (r2_469, l00010B6A), (r2_469, l00010B6F))
-	sp_603 = PHI((sp, l00010AA1), (sp, l00010AAD), (sp, l00010AB4), (sp_586, l00010AF1), (sp_477, l00010B6A), (sp_477, l00010B6F))
-	Mem609[sp_603 - 0x00000004:word32] = Mem607[r2_605 + 0x0000C60F:word32]
-	r0_621 = fn00018F22(r1_617, ap_613, fp_615, out r1_623, out ap_1854, out fp_620, out sp_622)
-	branch r0_621 != 0x00000000 l00010B86
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B86:
-	branch Mem609[r2_605 + 64:word32] < 0x00000003 l00010B8F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B8F:
-	branch Mem609[r2_605 + 72:word32] == 0x00000000 l00010BA0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B94:
-	branch Mem609[r2_605 + 64:word32] == 0x00000000 l00010BA0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B99:
-	branch Mem609[r2_605:word32] != 0x00000000 l00010BA0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BA0:
-	ap_657 = r4_648 + r7_651 + r6_655
-	branch ap_657 > 0x00000000 l00010BAE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BA9:
-	branch r8_661 == 0x00000001 l00010BD8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BAE:
-	branch Mem609[r2_605 + 72:word32] == 0x00000000 l00010BB7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BB3:
-	branch Mem609[r2_605:word32] == 0x00000000 l00010BD8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BB7:
-	branch Mem609[r2_605 + 68:word32] == 0x00000000 l00010BC2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BBC:
-	branch Mem609[r2_605 + 64:word32] > 0x00000001 l00010BD8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BC2:
-	Mem693[sp_622 - 0x00000004:uint32] = 0x00000401
-	Mem695[sp_622 - 0x00000008:word32] = 0x00000001
-	Mem704[sp_622 - 0x0000000C:word32] = r5_701 + 16
-	Mem707[sp_622 - 0x00000010:word32] = r2_605
-	ap_708 = Mem707[r2_605 + 0x0000C839:word32]
-	call ap_708 + 2 (retsize: 4;)
-		uses: ap:ap_708,fp:fp_620,pc:pc_774,r0:r0_621,r1:r1_623,r10:r10_737,r11:r11_717,r2:r2_605,r3:r3_724,r4:r4_648,r5:r5_701,r6:r6_655,r7:r7_651,r8:r8_661,r9:r9_767,sp:sp_622 - 0x00000010,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_740,fp:fp_745,pc:pc_776,r0:r0_731,r1:r1_781,r10:r10_739,r11:r11_719,r2:r2_732,r3:r3_726,r4:r4_750,r5:r5_746,r6:r6_754,r7:r7_758,r8:r8_762,r9:r9_769,sp:sp_712
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BD8:
-	r3_1261 = PHI((r3_724, l00010BA9), (r3_724, l00010BB3), (r3_724, l00010BBC), (r3_726, l00010BC2))
-	r1_881 = PHI((r1_623, l00010BA9), (r1_623, l00010BB3), (r1_623, l00010BBC), (r1_781, l00010BC2))
-	pc_877 = PHI((pc_774, l00010BA9), (pc_774, l00010BB3), (pc_774, l00010BBC), (pc_776, l00010BC2))
-	fp_858 = PHI((fp_620, l00010BA9), (fp_620, l00010BB3), (fp_620, l00010BBC), (fp_745, l00010BC2))
-	ap_852 = PHI((ap_657, l00010BA9), (ap_657, l00010BB3), (ap_657, l00010BBC), (ap_740, l00010BC2))
-	r0_846 = PHI((r0_621, l00010BA9), (r0_621, l00010BB3), (r0_621, l00010BBC), (r0_731, l00010BC2))
-	r11_841 = PHI((r11_717, l00010BA9), (r11_717, l00010BB3), (r11_717, l00010BBC), (r11_719, l00010BC2))
-	r2_832 = PHI((r2_605, l00010BA9), (r2_605, l00010BB3), (r2_605, l00010BBC), (r2_732, l00010BC2))
-	r10_826 = PHI((r10_737, l00010BA9), (r10_737, l00010BB3), (r10_737, l00010BBC), (r10_739, l00010BC2))
-	r5_807 = PHI((r5_701, l00010BA9), (r5_701, l00010BB3), (r5_701, l00010BBC), (r5_746, l00010BC2))
-	sp_798 = PHI((sp_622, l00010BA9), (sp_622, l00010BB3), (sp_622, l00010BBC), (sp_712, l00010BC2))
-	r6_793 = PHI((r6_655, l00010BA9), (r6_655, l00010BB3), (r6_655, l00010BBC), (r6_754, l00010BC2))
-	r7_791 = PHI((r7_651, l00010BA9), (r7_651, l00010BB3), (r7_651, l00010BBC), (r7_758, l00010BC2))
-	r9_789 = PHI((r9_767, l00010BA9), (r9_767, l00010BB3), (r9_767, l00010BBC), (r9_769, l00010BC2))
-	r4_788 = PHI((r4_648, l00010BA9), (r4_648, l00010BB3), (r4_648, l00010BBC), (r4_750, l00010BC2))
-	r8_783 = PHI((r8_661, l00010BA9), (r8_661, l00010BB3), (r8_661, l00010BBC), (r8_762, l00010BC2))
-	branch r8_783 > 0x00000001 l00010BEB
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BDD:
-	branch r8_783 != 0x00000001 l00010C24
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BDF:
-	ap_794 = r4_788 + r9_789 + r7_791 + r6_793
-	branch ap_794 <= 0x00000000 l00010C24
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BEB:
-	ap_851 = PHI((ap_852, l00010BD8), (ap_794, l00010BDF))
-	sp_799 = sp_798 - 0x00000004
-	Mem801[sp_799:uint32] = 0x00000401
-	branch r8_783 != 0x00000001 l00010BFC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BFC:
-	r3_808 = r5_807 + 18
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010BF5:
-	r3_812 = r5_807 + 25
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C00:
-	r3_818 = PHI((r3_812, l00010BF5), (r3_808, l00010BFC))
-	Mem819[sp_799 - 0x00000004:word32] = r3_818
-	Mem822[sp_799 - 0x00000008:word32] = r8_783
-	Mem828[sp_799 - 0x0000000C:word32] = r10_826 + 39
-	Mem834[sp_799 - 0x00000010:word32] = r2_832 + 1515
-	call Mem834[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_851,fp:fp_858,pc:pc_877,r0:r0_846,r1:r1_881,r10:r10_826,r11:r11_841,r2:r2_832,r3:r3_818,r4:r4_788,r5:r5_807,r6:r6_793,r7:r7_791,r8:r8_783,r9:r9_789,sp:sp_799 - 0x00000010,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_859,pc:pc_878,r0:r0_847,r1:r1_882,r10:r10_849,r11:r11_842,r2:r2_848,r3:r3_843,r4:r4_864,r5:r5_861,r6:r6_867,r7:r7_870,r8:r8_871,r9:r9_874,sp:sp_838
-	Mem885[sp_838 - 0x00000004:word32] = r0_847
-	Mem888[sp_838 - 0x00000008:word32] = r2_848 + 1515
-	Mem890[sp_838 - 0x0000000C:word32] = r2_848
-	ap_891 = Mem890[r2_848 + 0x0000C839:word32]
-	call ap_891 + 2 (retsize: 4;)
-		uses: ap:ap_891,fp:fp_859,pc:pc_878,r0:r0_847,r1:r1_882,r10:r10_849,r11:r11_842,r2:r2_848,r3:r3_843,r4:r4_864,r5:r5_861,r6:r6_867,r7:r7_870,r8:r8_871,r9:r9_874,sp:sp_838 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_901,fp:fp_902,pc:pc_909,r0:r0_898,r1:r1_910,r10:r10_900,r11:r11_896,r2:r2_899,r3:r3_897,r4:r4_904,r5:r5_903,r6:r6_905,r7:r7_906,r8:r8_907,r9:r9_908,sp:sp_895
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C24:
-	r3_1260 = PHI((r3_1261, l00010BDD), (r3_1261, l00010BDF), (r3_897, l00010C00))
-	r1_987 = PHI((r1_881, l00010BDD), (r1_881, l00010BDF), (r1_910, l00010C00))
-	pc_984 = PHI((pc_877, l00010BDD), (pc_877, l00010BDF), (pc_909, l00010C00))
-	r9_981 = PHI((r9_789, l00010BDD), (r9_789, l00010BDF), (r9_908, l00010C00))
-	r8_978 = PHI((r8_783, l00010BDD), (r8_783, l00010BDF), (r8_907, l00010C00))
-	r7_975 = PHI((r7_791, l00010BDD), (r7_791, l00010BDF), (r7_906, l00010C00))
-	r4_971 = PHI((r4_788, l00010BDD), (r4_788, l00010BDF), (r4_904, l00010C00))
-	fp_966 = PHI((fp_858, l00010BDD), (fp_858, l00010BDF), (fp_902, l00010C00))
-	ap_963 = PHI((ap_852, l00010BDD), (ap_794, l00010BDF), (ap_901, l00010C00))
-	r0_958 = PHI((r0_846, l00010BDD), (r0_846, l00010BDF), (r0_898, l00010C00))
-	r11_954 = PHI((r11_841, l00010BDD), (r11_841, l00010BDF), (r11_896, l00010C00))
-	r2_946 = PHI((r2_832, l00010BDD), (r2_832, l00010BDF), (r2_899, l00010C00))
-	r10_941 = PHI((r10_826, l00010BDD), (r10_826, l00010BDF), (r10_900, l00010C00))
-	r5_923 = PHI((r5_807, l00010BDD), (r5_807, l00010BDF), (r5_903, l00010C00))
-	sp_916 = PHI((sp_798, l00010BDD), (sp_798, l00010BDF), (sp_895, l00010C00))
-	r6_912 = PHI((r6_793, l00010BDD), (r6_793, l00010BDF), (r6_905, l00010C00))
-	branch r6_912 <= 0x00000000 l00010C60
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C28:
-	sp_917 = sp_916 - 0x00000004
-	Mem919[sp_917:uint32] = 0x00000401
-	branch r6_912 != 0x00000001 l00010C38
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C38:
-	r3_924 = r5_923 + 30
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C32:
-	r3_928 = r5_923 + 32
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C3C:
-	r3_934 = PHI((r3_928, l00010C32), (r3_924, l00010C38))
-	Mem935[sp_917 - 0x00000004:word32] = r3_934
-	Mem938[sp_917 - 0x00000008:word32] = r6_912
-	Mem943[sp_917 - 0x0000000C:word32] = r10_941 + 77
-	Mem948[sp_917 - 0x00000010:word32] = r2_946 + 1515
-	call Mem948[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_963,fp:fp_966,pc:pc_984,r0:r0_958,r1:r1_987,r10:r10_941,r11:r11_954,r2:r2_946,r3:r3_934,r4:r4_971,r5:r5_923,r6:r6_912,r7:r7_975,r8:r8_978,r9:r9_981,sp:sp_917 - 0x00000010,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_967,pc:pc_985,r0:r0_959,r1:r1_988,r10:r10_961,r11:r11_955,r2:r2_960,r3:r3_956,r4:r4_972,r5:r5_969,r6:r6_973,r7:r7_976,r8:r8_979,r9:r9_982,sp:sp_952
-	Mem991[sp_952 - 0x00000004:word32] = r0_959
-	Mem994[sp_952 - 0x00000008:word32] = r2_960 + 1515
-	Mem996[sp_952 - 0x0000000C:word32] = r2_960
-	ap_997 = Mem996[r2_960 + 0x0000C839:word32]
-	call ap_997 + 2 (retsize: 4;)
-		uses: ap:ap_997,fp:fp_967,pc:pc_985,r0:r0_959,r1:r1_988,r10:r10_961,r11:r11_955,r2:r2_960,r3:r3_956,r4:r4_972,r5:r5_969,r6:r6_973,r7:r7_976,r8:r8_979,r9:r9_982,sp:sp_952 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_1007,fp:fp_1008,pc:pc_1015,r0:r0_1004,r1:r1_1016,r10:r10_1006,r11:r11_1002,r2:r2_1005,r3:r3_1003,r4:r4_1010,r5:r5_1009,r6:r6_1011,r7:r7_1012,r8:r8_1013,r9:r9_1014,sp:sp_1001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C60:
-	r3_1259 = PHI((r3_1260, l00010C24), (r3_1003, l00010C3C))
-	r1_1093 = PHI((r1_987, l00010C24), (r1_1016, l00010C3C))
-	pc_1090 = PHI((pc_984, l00010C24), (pc_1015, l00010C3C))
-	r9_1087 = PHI((r9_981, l00010C24), (r9_1014, l00010C3C))
-	r8_1084 = PHI((r8_978, l00010C24), (r8_1013, l00010C3C))
-	r6_1080 = PHI((r6_912, l00010C24), (r6_1011, l00010C3C))
-	r4_1077 = PHI((r4_971, l00010C24), (r4_1010, l00010C3C))
-	fp_1072 = PHI((fp_966, l00010C24), (fp_1008, l00010C3C))
-	ap_1069 = PHI((ap_963, l00010C24), (ap_1007, l00010C3C))
-	r0_1064 = PHI((r0_958, l00010C24), (r0_1004, l00010C3C))
-	r11_1060 = PHI((r11_954, l00010C24), (r11_1002, l00010C3C))
-	r2_1052 = PHI((r2_946, l00010C24), (r2_1005, l00010C3C))
-	r10_1047 = PHI((r10_941, l00010C24), (r10_1006, l00010C3C))
-	r5_1029 = PHI((r5_923, l00010C24), (r5_1009, l00010C3C))
-	sp_1022 = PHI((sp_916, l00010C24), (sp_1001, l00010C3C))
-	r7_1018 = PHI((r7_975, l00010C24), (r7_1012, l00010C3C))
-	branch r7_1018 <= 0x00000000 l00010C9C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C64:
-	sp_1023 = sp_1022 - 0x00000004
-	Mem1025[sp_1023:uint32] = 0x00000401
-	branch r7_1018 != 0x00000001 l00010C74
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C74:
-	r3_1030 = r5_1029 + 33
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C6E:
-	r3_1034 = r5_1029 + 35
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C78:
-	r3_1040 = PHI((r3_1034, l00010C6E), (r3_1030, l00010C74))
-	Mem1041[sp_1023 - 0x00000004:word32] = r3_1040
-	Mem1044[sp_1023 - 0x00000008:word32] = r7_1018
-	Mem1049[sp_1023 - 0x0000000C:word32] = r10_1047 + 125
-	Mem1054[sp_1023 - 0x00000010:word32] = r2_1052 + 1515
-	call Mem1054[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1069,fp:fp_1072,pc:pc_1090,r0:r0_1064,r1:r1_1093,r10:r10_1047,r11:r11_1060,r2:r2_1052,r3:r3_1040,r4:r4_1077,r5:r5_1029,r6:r6_1080,r7:r7_1018,r8:r8_1084,r9:r9_1087,sp:sp_1023 - 0x00000010,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_1073,pc:pc_1091,r0:r0_1065,r1:r1_1094,r10:r10_1067,r11:r11_1061,r2:r2_1066,r3:r3_1062,r4:r4_1078,r5:r5_1075,r6:r6_1081,r7:r7_1082,r8:r8_1085,r9:r9_1088,sp:sp_1058
-	Mem1097[sp_1058 - 0x00000004:word32] = r0_1065
-	Mem1100[sp_1058 - 0x00000008:word32] = r2_1066 + 1515
-	Mem1102[sp_1058 - 0x0000000C:word32] = r2_1066
-	ap_1103 = Mem1102[r2_1066 + 0x0000C839:word32]
-	call ap_1103 + 2 (retsize: 4;)
-		uses: ap:ap_1103,fp:fp_1073,pc:pc_1091,r0:r0_1065,r1:r1_1094,r10:r10_1067,r11:r11_1061,r2:r2_1066,r3:r3_1062,r4:r4_1078,r5:r5_1075,r6:r6_1081,r7:r7_1082,r8:r8_1085,r9:r9_1088,sp:sp_1058 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_1113,fp:fp_1114,pc:pc_1121,r0:r0_1110,r1:r1_1122,r10:r10_1112,r11:r11_1108,r2:r2_1111,r3:r3_1109,r4:r4_1116,r5:r5_1115,r6:r6_1117,r7:r7_1118,r8:r8_1119,r9:r9_1120,sp:sp_1107
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010C9C:
-	r3_1258 = PHI((r3_1259, l00010C60), (r3_1109, l00010C78))
-	r1_1199 = PHI((r1_1093, l00010C60), (r1_1122, l00010C78))
-	pc_1196 = PHI((pc_1090, l00010C60), (pc_1121, l00010C78))
-	r9_1193 = PHI((r9_1087, l00010C60), (r9_1120, l00010C78))
-	r8_1190 = PHI((r8_1084, l00010C60), (r8_1119, l00010C78))
-	r7_1187 = PHI((r7_1018, l00010C60), (r7_1118, l00010C78))
-	r6_1184 = PHI((r6_1080, l00010C60), (r6_1117, l00010C78))
-	fp_1178 = PHI((fp_1072, l00010C60), (fp_1114, l00010C78))
-	ap_1175 = PHI((ap_1069, l00010C60), (ap_1113, l00010C78))
-	r0_1170 = PHI((r0_1064, l00010C60), (r0_1110, l00010C78))
-	r11_1166 = PHI((r11_1060, l00010C60), (r11_1108, l00010C78))
-	r2_1158 = PHI((r2_1052, l00010C60), (r2_1111, l00010C78))
-	r10_1153 = PHI((r10_1047, l00010C60), (r10_1112, l00010C78))
-	r5_1135 = PHI((r5_1029, l00010C60), (r5_1115, l00010C78))
-	sp_1128 = PHI((sp_1022, l00010C60), (sp_1107, l00010C78))
-	r4_1124 = PHI((r4_1077, l00010C60), (r4_1116, l00010C78))
-	branch r4_1124 <= 0x00000000 l00010CD9
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010CA0:
-	sp_1129 = sp_1128 - 0x00000004
-	Mem1131[sp_1129:uint32] = 0x00000401
-	branch r4_1124 != 0x00000001 l00010CB0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010CB0:
-	r3_1136 = r5_1135 + 36
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010CAA:
-	r3_1140 = r5_1135 + 38
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010CB4:
-	r3_1146 = PHI((r3_1140, l00010CAA), (r3_1136, l00010CB0))
-	Mem1147[sp_1129 - 0x00000004:word32] = r3_1146
-	Mem1150[sp_1129 - 0x00000008:word32] = r4_1124
-	Mem1155[sp_1129 - 0x0000000C:word32] = r10_1153 + 157
-	Mem1160[sp_1129 - 0x00000010:word32] = r2_1158 + 1515
-	call Mem1160[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1175,fp:fp_1178,pc:pc_1196,r0:r0_1170,r1:r1_1199,r10:r10_1153,r11:r11_1166,r2:r2_1158,r3:r3_1146,r4:r4_1124,r5:r5_1135,r6:r6_1184,r7:r7_1187,r8:r8_1190,r9:r9_1193,sp:sp_1129 - 0x00000010,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_1179,pc:pc_1197,r0:r0_1171,r1:r1_1200,r10:r10_1173,r11:r11_1167,r2:r2_1172,r3:r3_1168,r4:r4_1182,r5:r5_1181,r6:r6_1185,r7:r7_1188,r8:r8_1191,r9:r9_1194,sp:sp_1164
-	Mem1203[sp_1164 - 0x00000004:word32] = r0_1171
-	Mem1206[sp_1164 - 0x00000008:word32] = r2_1172 + 1515
-	Mem1208[sp_1164 - 0x0000000C:word32] = r2_1172
-	ap_1209 = Mem1208[r2_1172 + 0x0000C839:word32]
-	call ap_1209 + 2 (retsize: 4;)
-		uses: ap:ap_1209,fp:fp_1179,pc:pc_1197,r0:r0_1171,r1:r1_1200,r10:r10_1173,r11:r11_1167,r2:r2_1172,r3:r3_1168,r4:r4_1182,r5:r5_1181,r6:r6_1185,r7:r7_1188,r8:r8_1191,r9:r9_1194,sp:sp_1164 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_1219,fp:fp_1220,pc:pc_1227,r0:r0_1216,r1:r1_1228,r10:r10_1218,r11:r11_1214,r2:r2_1217,r3:r3_1215,r4:r4_1222,r5:r5_1221,r6:r6_1223,r7:r7_1224,r8:r8_1225,r9:r9_1226,sp:sp_1213
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010CD9:
-	r1_1284 = PHI((r1_1199, l00010C9C), (r1_1228, l00010CB4))
-	pc_1282 = PHI((pc_1196, l00010C9C), (pc_1227, l00010CB4))
-	r8_1279 = PHI((r8_1190, l00010C9C), (r8_1225, l00010CB4))
-	r7_1277 = PHI((r7_1187, l00010C9C), (r7_1224, l00010CB4))
-	r6_1275 = PHI((r6_1184, l00010C9C), (r6_1223, l00010CB4))
-	r4_1273 = PHI((r4_1124, l00010C9C), (r4_1222, l00010CB4))
-	r5_1271 = PHI((r5_1135, l00010C9C), (r5_1221, l00010CB4))
-	fp_1269 = PHI((fp_1178, l00010C9C), (fp_1220, l00010CB4))
-	ap_1267 = PHI((ap_1175, l00010C9C), (ap_1219, l00010CB4))
-	r0_1263 = PHI((r0_1170, l00010C9C), (r0_1216, l00010CB4))
-	r3_1257 = PHI((r3_1258, l00010C9C), (r3_1215, l00010CB4))
-	r11_1255 = PHI((r11_1166, l00010C9C), (r11_1214, l00010CB4))
-	r2_1248 = PHI((r2_1158, l00010C9C), (r2_1217, l00010CB4))
-	r10_1244 = PHI((r10_1153, l00010C9C), (r10_1218, l00010CB4))
-	sp_1237 = PHI((sp_1128, l00010C9C), (sp_1213, l00010CB4))
-	r9_1230 = PHI((r9_1193, l00010C9C), (r9_1226, l00010CB4))
-	branch r9_1230 != 0x00000001 l00010D08
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010D08:
-	branch r9_1230 <= 0x00000000 l00010D34
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010D0C:
-	sp_1238 = sp_1237 - 0x00000004
-	Mem1240[sp_1238:uint32] = 0x00000401
-	Mem1242[sp_1238 - 0x00000004:word32] = r9_1230
-	Mem1246[sp_1238 - 0x00000008:word32] = r10_1244 + 224
-	Mem1250[sp_1238 - 0x0000000C:word32] = r2_1248 + 1515
-	call Mem1250[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1267,fp:fp_1269,pc:pc_1282,r0:r0_1263,r1:r1_1284,r10:r10_1244,r11:r11_1255,r2:r2_1248,r3:r3_1257,r4:r4_1273,r5:r5_1271,r6:r6_1275,r7:r7_1277,r8:r8_1279,r9:r9_1230,sp:sp_1238 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_1270,pc:pc_1283,r0:r0_1264,r1:r1_1285,r10:r10_1266,r11:r11_1256,r2:r2_1265,r3:r3_1262,r4:r4_1274,r5:r5_1272,r6:r6_1276,r7:r7_1278,r8:r8_1280,r9:r9_1281,sp:sp_1254
-	Mem1288[sp_1254 - 0x00000004:word32] = r0_1264
-	Mem1291[sp_1254 - 0x00000008:word32] = r2_1265 + 1515
-	Mem1293[sp_1254 - 0x0000000C:word32] = r2_1265
-	ap_1294 = Mem1293[r2_1265 + 0x0000C839:word32]
-	call ap_1294 + 2 (retsize: 4;)
-		uses: ap:ap_1294,fp:fp_1270,pc:pc_1283,r0:r0_1264,r1:r1_1285,r10:r10_1266,r11:r11_1256,r2:r2_1265,r3:r3_1262,r4:r4_1274,r5:r5_1272,r6:r6_1276,r7:r7_1278,r8:r8_1280,r9:r9_1281,sp:sp_1254 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_1305,pc:pc_1312,r0:r0_1301,r1:r1_1313,r10:r10_1303,r11:r11_1299,r2:r2_1302,r3:r3_1300,r4:r4_1307,r5:r5_1306,r6:r6_1308,r7:r7_1309,r8:r8_1310,r9:r9_1311,sp:sp_1298
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010CDE:
-	sp_1315 = sp_1237 - 0x00000004
-	Mem1317[sp_1315:uint32] = 0x00000401
-	Mem1320[sp_1315 - 0x00000004:word32] = r10_1244 + 194
-	Mem1323[sp_1315 - 0x00000008:word32] = r2_1248 + 1515
-	call Mem1323[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1267,fp:fp_1269,pc:pc_1282,r0:r0_1263,r1:r1_1284,r10:r10_1244,r11:r11_1255,r2:r2_1248,r3:r3_1257,r4:r4_1273,r5:r5_1271,r6:r6_1275,r7:r7_1277,r8:r8_1279,r9:r9_1230,sp:sp_1315 - 0x00000008,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_1334,pc:pc_1341,r0:r0_1330,r1:r1_1342,r10:r10_1332,r11:r11_1328,r2:r2_1331,r3:r3_1329,r4:r4_1336,r5:r5_1335,r6:r6_1337,r7:r7_1338,r8:r8_1339,r9:r9_1340,sp:sp_1327
-	Mem1345[sp_1327 - 0x00000004:word32] = r0_1330
-	Mem1348[sp_1327 - 0x00000008:word32] = r2_1331 + 1515
-	Mem1350[sp_1327 - 0x0000000C:word32] = r2_1331
-	ap_1351 = Mem1350[r2_1331 + 0x0000C839:word32]
-	call ap_1351 + 2 (retsize: 4;)
-		uses: ap:ap_1351,fp:fp_1334,pc:pc_1341,r0:r0_1330,r1:r1_1342,r10:r10_1332,r11:r11_1328,r2:r2_1331,r3:r3_1329,r4:r4_1336,r5:r5_1335,r6:r6_1337,r7:r7_1338,r8:r8_1339,r9:r9_1340,sp:sp_1327 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_1362,pc:pc_1369,r0:r0_1358,r1:r1_1370,r10:r10_1360,r11:r11_1356,r2:r2_1359,r3:r3_1357,r4:r4_1364,r5:r5_1363,r6:r6_1365,r7:r7_1366,r8:r8_1367,r9:r9_1368,sp:sp_1355
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010D34:
-	r1_1417 = PHI((r1_1370, l00010CDE), (r1_1284, l00010D08), (r1_1313, l00010D0C))
-	pc_1415 = PHI((pc_1369, l00010CDE), (pc_1282, l00010D08), (pc_1312, l00010D0C))
-	r9_1413 = PHI((r9_1368, l00010CDE), (r9_1230, l00010D08), (r9_1311, l00010D0C))
-	r4_1408 = PHI((r4_1364, l00010CDE), (r4_1273, l00010D08), (r4_1307, l00010D0C))
-	r5_1406 = PHI((r5_1363, l00010CDE), (r5_1271, l00010D08), (r5_1306, l00010D0C))
-	fp_1404 = PHI((fp_1362, l00010CDE), (fp_1269, l00010D08), (fp_1305, l00010D0C))
-	r0_1399 = PHI((r0_1358, l00010CDE), (r0_1263, l00010D08), (r0_1301, l00010D0C))
-	r3_1397 = PHI((r3_1357, l00010CDE), (r3_1257, l00010D08), (r3_1300, l00010D0C))
-	r11_1395 = PHI((r11_1356, l00010CDE), (r11_1255, l00010D08), (r11_1299, l00010D0C))
-	r2_1388 = PHI((r2_1359, l00010CDE), (r2_1248, l00010D08), (r2_1302, l00010D0C))
-	r10_1384 = PHI((r10_1360, l00010CDE), (r10_1244, l00010D08), (r10_1303, l00010D0C))
-	sp_1379 = PHI((sp_1355, l00010CDE), (sp_1237, l00010D08), (sp_1298, l00010D0C))
-	r6_1375 = PHI((r6_1365, l00010CDE), (r6_1275, l00010D08), (r6_1308, l00010D0C))
-	r8_1373 = PHI((r8_1367, l00010CDE), (r8_1279, l00010D08), (r8_1310, l00010D0C))
-	r7_1372 = PHI((r7_1366, l00010CDE), (r7_1277, l00010D08), (r7_1309, l00010D0C))
-	ap_1376 = r7_1372 + r8_1373 + r6_1375
-	branch ap_1376 != 0x00000000 l00010D63
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010D3D:
-	sp_1380 = sp_1379 - 0x00000004
-	Mem1382[sp_1380:uint32] = 0x00000401
-	Mem1386[sp_1380 - 0x00000004:word32] = r10_1384 + 257
-	Mem1390[sp_1380 - 0x00000008:word32] = r2_1388 + 1515
-	call Mem1390[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1376,fp:fp_1404,pc:pc_1415,r0:r0_1399,r1:r1_1417,r10:r10_1384,r11:r11_1395,r2:r2_1388,r3:r3_1397,r4:r4_1408,r5:r5_1406,r6:r6_1375,r7:r7_1372,r8:r8_1373,r9:r9_1413,sp:sp_1380 - 0x00000008,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_1405,pc:pc_1416,r0:r0_1400,r1:r1_1418,r10:r10_1402,r11:r11_1396,r2:r2_1401,r3:r3_1398,r4:r4_1409,r5:r5_1407,r6:r6_1410,r7:r7_1411,r8:r8_1412,r9:r9_1414,sp:sp_1394
-	Mem1421[sp_1394 - 0x00000004:word32] = r0_1400
-	Mem1424[sp_1394 - 0x00000008:word32] = r2_1401 + 1515
-	Mem1426[sp_1394 - 0x0000000C:word32] = r2_1401
-	ap_1427 = Mem1426[r2_1401 + 0x0000C839:word32]
-	call ap_1427 + 2 (retsize: 4;)
-		uses: ap:ap_1427,fp:fp_1405,pc:pc_1416,r0:r0_1400,r1:r1_1418,r10:r10_1402,r11:r11_1396,r2:r2_1401,r3:r3_1398,r4:r4_1409,r5:r5_1407,r6:r6_1410,r7:r7_1411,r8:r8_1412,r9:r9_1414,sp:sp_1394 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: fp:fp_1438,pc:pc_1445,r0:r0_1434,r1:r1_1446,r11:r11_1432,r3:r3_1433,r5:r5_1439,r6:r6_1441,r7:r7_1442,r8:r8_1443
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B9D:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B8C:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010B83:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010D63:
-	r11_1526 = PHI((r11_717, l00010B83), (r11_717, l00010B8C), (r11_717, l00010B9D), (r11_1395, l00010D34), (r11_1432, l00010D3D))
-	r1_1474 = PHI((r1_623, l00010B83), (r1_623, l00010B8C), (r1_623, l00010B9D), (r1_1417, l00010D34), (r1_1446, l00010D3D))
-	r5_1473 = PHI((r5_701, l00010B83), (r5_701, l00010B8C), (r5_701, l00010B9D), (r5_1406, l00010D34), (r5_1439, l00010D3D))
-	r8_1472 = PHI((r8_661, l00010B83), (r8_661, l00010B8C), (r8_661, l00010B9D), (r8_1373, l00010D34), (r8_1443, l00010D3D))
-	r7_1471 = PHI((r7_651, l00010B83), (r7_651, l00010B8C), (r7_651, l00010B9D), (r7_1372, l00010D34), (r7_1442, l00010D3D))
-	pc_1470 = PHI((pc_774, l00010B83), (pc_774, l00010B8C), (pc_774, l00010B9D), (pc_1415, l00010D34), (pc_1445, l00010D3D))
-	r6_1469 = PHI((r6_655, l00010B83), (r6_655, l00010B8C), (r6_655, l00010B9D), (r6_1375, l00010D34), (r6_1441, l00010D3D))
-	fp_1450 = PHI((fp_620, l00010B83), (fp_620, l00010B8C), (fp_620, l00010B9D), (fp_1404, l00010D34), (fp_1438, l00010D3D))
-	r0_1449 = PHI((r0_621, l00010B83), (r0_621, l00010B8C), (r0_621, l00010B9D), (r0_1399, l00010D34), (r0_1434, l00010D3D))
-	r3_1448 = PHI((r3_724, l00010B83), (r3_724, l00010B8C), (r3_724, l00010B9D), (r3_1397, l00010D34), (r3_1433, l00010D3D))
-	r0_1453 = fn0001872A(r0_1449, r3_1448, fp_1450, out r2_1456, out r3_1457, out r4_1455, out ap_1451, out fp_1452, out sp_1454)
-	Mem1463[sp_1454 - 0x00000004:word32] = 0x00000005
-	Mem1465[sp_1454 - 0x00000008:word32] = 0x00000000
-	r0_1478 = fn0000C6FA(r0_1453, r1_1474, r2_1456, r3_1457, r4_1455, r5_1473, r6_1469, r7_1471, r8_1472, ap_1451, fp_1452, pc_1470, out r1_1479, out r2_1481, out r3_1482, out r4_1483, out r5_1484, out r6_1485, out r7_1486, out r8_1487, out r9_1488, out r10_1480, out ap_1475, out fp_1476, out sp_1489, out pc_1477)
-	branch Mem1465[r2_1481 + 0x0000C5EB:word32] == 0x00000000 l00010D8A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010D7D:
-	ap_1498 = fn0000D406(ap_1475, fp_1476, out fp_1499, out sp_1500)
-	Mem1506[r2_1481 + 0x0000C5EB:word32] = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010D8A:
-	fp_1537 = PHI((fp_1476, l00010D63), (fp_1499, l00010D7D))
-	ap_1535 = PHI((ap_1475, l00010D63), (ap_1498, l00010D7D))
-	sp_1517 = PHI((sp_1489, l00010D63), (sp_1500, l00010D7D))
-	Mem1512 = PHI((Mem1465, l00010D63), (Mem1506, l00010D7D))
-	branch Mem1512[r2_1481 + 0x0000C815:word32] == 0x00000000 l00010DA5
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010D92:
-	sp_1518 = sp_1517 - 0x00000004
-	Mem1520[sp_1518:word32] = Mem1512[r2_1481 + 0x0000C815:word32]
-	call Mem1520[0x000192B0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1535,fp:fp_1537,pc:pc_1477,r0:r0_1478,r1:r1_1479,r10:r10_1480,r11:r11_1526,r2:r2_1481,r3:r3_1482,r4:r4_1483,r5:r5_1484,r6:r6_1485,r7:r7_1486,r8:r8_1487,r9:r9_1488,sp:sp_1518,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_1536,fp:fp_1538,pc:pc_1552,r0:r0_1531,r1:r1_1554,r10:r10_1534,r11:r11_1527,r2:r2_1532,r3:r3_1529,r4:r4_1542,r5:r5_1540,r6:r6_1544,r7:r7_1546,r8:r8_1548,r9:r9_1550,sp:sp_1524
-	Mem1557[r2_1532 + 0x0000C815:word32] = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010DA5:
-	r1_1603 = PHI((r1_1479, l00010D8A), (r1_1554, l00010D92))
-	pc_1601 = PHI((pc_1477, l00010D8A), (pc_1552, l00010D92))
-	r9_1599 = PHI((r9_1488, l00010D8A), (r9_1550, l00010D92))
-	r8_1597 = PHI((r8_1487, l00010D8A), (r8_1548, l00010D92))
-	r7_1595 = PHI((r7_1486, l00010D8A), (r7_1546, l00010D92))
-	r6_1593 = PHI((r6_1485, l00010D8A), (r6_1544, l00010D92))
-	r4_1591 = PHI((r4_1483, l00010D8A), (r4_1542, l00010D92))
-	r5_1589 = PHI((r5_1484, l00010D8A), (r5_1540, l00010D92))
-	fp_1587 = PHI((fp_1537, l00010D8A), (fp_1538, l00010D92))
-	ap_1585 = PHI((ap_1535, l00010D8A), (ap_1536, l00010D92))
-	r10_1583 = PHI((r10_1480, l00010D8A), (r10_1534, l00010D92))
-	r0_1580 = PHI((r0_1478, l00010D8A), (r0_1531, l00010D92))
-	r3_1578 = PHI((r3_1482, l00010D8A), (r3_1529, l00010D92))
-	r11_1576 = PHI((r11_1526, l00010D8A), (r11_1527, l00010D92))
-	sp_1568 = PHI((sp_1517, l00010D8A), (sp_1524, l00010D92))
-	Mem1563 = PHI((Mem1512, l00010D8A), (Mem1557, l00010D92))
-	r2_1562 = PHI((r2_1481, l00010D8A), (r2_1532, l00010D92))
-	branch Mem1563[r2_1562 + 0x0000C6F1:word32] == 0x00000000 l00010DBA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010DAD:
-	sp_1569 = sp_1568 - 0x00000004
-	Mem1571[sp_1569:word32] = Mem1563[r2_1562 + 0x0000C6F1:word32]
-	call Mem1571[0x000192B0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1585,fp:fp_1587,pc:pc_1601,r0:r0_1580,r1:r1_1603,r10:r10_1583,r11:r11_1576,r2:r2_1562,r3:r3_1578,r4:r4_1591,r5:r5_1589,r6:r6_1593,r7:r7_1595,r8:r8_1597,r9:r9_1599,sp:sp_1569,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_1586,fp:fp_1588,pc:pc_1602,r0:r0_1581,r1:r1_1604,r10:r10_1584,r11:r11_1577,r2:r2_1582,r3:r3_1579,r4:r4_1592,r5:r5_1590,r6:r6_1594,r7:r7_1596,r8:r8_1598,r9:r9_1600,sp:sp_1575
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010DBA:
-	r1_1647 = PHI((r1_1603, l00010DA5), (r1_1604, l00010DAD))
-	pc_1645 = PHI((pc_1601, l00010DA5), (pc_1602, l00010DAD))
-	r9_1643 = PHI((r9_1599, l00010DA5), (r9_1600, l00010DAD))
-	r8_1641 = PHI((r8_1597, l00010DA5), (r8_1598, l00010DAD))
-	r7_1639 = PHI((r7_1595, l00010DA5), (r7_1596, l00010DAD))
-	r6_1637 = PHI((r6_1593, l00010DA5), (r6_1594, l00010DAD))
-	r4_1635 = PHI((r4_1591, l00010DA5), (r4_1592, l00010DAD))
-	r5_1633 = PHI((r5_1589, l00010DA5), (r5_1590, l00010DAD))
-	fp_1631 = PHI((fp_1587, l00010DA5), (fp_1588, l00010DAD))
-	ap_1629 = PHI((ap_1585, l00010DA5), (ap_1586, l00010DAD))
-	r10_1627 = PHI((r10_1583, l00010DA5), (r10_1584, l00010DAD))
-	r0_1624 = PHI((r0_1580, l00010DA5), (r0_1581, l00010DAD))
-	r3_1622 = PHI((r3_1578, l00010DA5), (r3_1579, l00010DAD))
-	r11_1620 = PHI((r11_1576, l00010DA5), (r11_1577, l00010DAD))
-	sp_1612 = PHI((sp_1568, l00010DA5), (sp_1575, l00010DAD))
-	Mem1607 = PHI((Mem1563, l00010DA5), (Mem1571, l00010DAD))
-	r2_1606 = PHI((r2_1562, l00010DA5), (r2_1582, l00010DAD))
-	branch Mem1607[r2_1606 + 0x0000C5F3:word32] == 0x00000000 l00010DCF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010DC2:
-	sp_1613 = sp_1612 - 0x00000004
-	Mem1615[sp_1613:word32] = Mem1607[r2_1606 + 0x0000C5F3:word32]
-	call Mem1615[0x000192B0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1629,fp:fp_1631,pc:pc_1645,r0:r0_1624,r1:r1_1647,r10:r10_1627,r11:r11_1620,r2:r2_1606,r3:r3_1622,r4:r4_1635,r5:r5_1633,r6:r6_1637,r7:r7_1639,r8:r8_1641,r9:r9_1643,sp:sp_1613,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: r2:r2_1626
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010DCF:
-	r2_1651 = PHI((r2_1606, l00010DBA), (r2_1626, l00010DC2))
-	Mem1652[r2_1651 + 0x0000C6F1:word32] = 0x00000000
-	Mem1654[r2_1651 + 0x0000C5F3:word32] = 0x00000000
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000109EF:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000109F0:
-	r11_174 = Mem0[r2 + 0x0000C613:word32]
-	branch Mem0[r2 + 64:word32] != 0x00000000 l00010A32
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000109FC:
-	branch r3 == 0x00000009 l00010A32
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A01:
-	branch r3 == 0x0000004C l00010A32
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A0A:
-	branch Mem0[r2 + 72:word32] == 0x00000000 l00010A13
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A0F:
-	branch Mem0[r2:word32] == 0x00000000 l00010A32
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A13:
-	ap_204 = r7 + r8 + r6 + r4
-	branch ap_204 <= 0x00000000 l00010A32
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A1F:
-	Mem210[sp - 0x00000004:word32] = 0x00000000
-	Mem212[sp - 0x00000008:word32] = 0x00000001
-	Mem217[sp - 0x0000000C:word32] = r5 + 9
-	Mem220[sp - 0x00000010:word32] = r2
-	ap_221 = Mem220[r2 + 0x0000C839:word32]
-	call ap_221 + 2 (retsize: 4;)
-		uses: ap:ap_221,fp:fp,pc:pc,r0:r0,r1:r1,r10:r10,r11:r11_174,r2:r2,r3:r3,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,r9:r9,sp:sp - 0x00000010,Stack +FFFFFFF8:dwLoc0C,Stack +FFFFFFFC:dwLoc08
-		defs: ap:ap_237,fp:fp_240,pc:pc_251,r2:r2_233,r3:r3_229,r4:r4_242,r6:r6_243,r7:r7_244,r9:r9_248,sp:sp_225
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A32:
-	pc_345 = PHI((pc, l000109FC), (pc, l00010A01), (pc, l00010A0F), (pc, l00010A13), (pc_251, l00010A1F), (pc, l000109F0))
-	r9_270 = PHI((r9, l000109FC), (r9, l00010A01), (r9, l00010A0F), (r9, l00010A13), (r9_248, l00010A1F), (r9, l000109F0))
-	r6_269 = PHI((r6, l000109FC), (r6, l00010A01), (r6, l00010A0F), (r6, l00010A13), (r6_243, l00010A1F), (r6, l000109F0))
-	r4_268 = PHI((r4, l000109FC), (r4, l00010A01), (r4, l00010A0F), (r4, l00010A13), (r4_242, l00010A1F), (r4, l000109F0))
-	r7_267 = PHI((r7, l000109FC), (r7, l00010A01), (r7, l00010A0F), (r7, l00010A13), (r7_244, l00010A1F), (r7, l000109F0))
-	r3_266 = PHI((r3, l000109FC), (r3, l00010A01), (r3, l00010A0F), (r3, l00010A13), (r3_229, l00010A1F), (r3, l000109F0))
-	fp_262 = PHI((fp, l000109FC), (fp, l00010A01), (fp, l00010A0F), (fp, l00010A13), (fp_240, l00010A1F), (fp, l000109F0))
-	ap_260 = PHI((ap, l000109FC), (ap, l00010A01), (ap, l00010A0F), (ap_204, l00010A13), (ap_237, l00010A1F), (ap, l000109F0))
-	r2_259 = PHI((r2, l000109FC), (r2, l00010A01), (r2, l00010A0F), (r2, l00010A13), (r2_233, l00010A1F), (r2, l000109F0))
-	sp_253 = PHI((sp, l000109FC), (sp, l00010A01), (sp, l00010A0F), (sp, l00010A13), (sp_225, l00010A1F), (sp, l000109F0))
-	Mem255[sp_253 - 0x00000004:word32] = 0x00000000
-	r0_273 = fn00010E6A(r1, r2_259, r3_266, r4_268, r6_269, r7_267, r9_270, ap_260, fp_262, out r1_1845, out r2_276, out r3_1846, out r4_1847, out r5_1848, out r6_280, out r7_1849, out r8_1850, out r9_1851, out r11_1852, out ap_271, out fp_1853, out sp_284)
-	branch r0_273 != 0x00000001 l00010A48
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A48:
-	branch r0_273 != 0x0000004C l00010A58
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A58:
-	branch r0_273 != 0x00000009 l00010A64
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A64:
-	branch r0_273 == 0x00000000 l00010A6C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A6C:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A68:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A5D:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A51:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A41:
-	r6_311 = r6_280 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A6E:
-	r6_338 = PHI((r6_311, l00010A41), (r6_280, l00010A51), (r6_280, l00010A5D), (r6_280, l00010A68), (r6_280, l00010A6C))
-	branch r0_273 == 0x0000004C l00010A7F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A77:
-	branch r0_273 <= Mem255[sp_284:word32] l00010A7F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A7C:
-	Mem323[sp_284:word32] = r0_273
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010A7F:
-	Mem331 = PHI((Mem255, l00010A6E), (Mem255, l00010A77), (Mem323, l00010A7C))
-	Mem333[sp_284 - 0x00000004:word32] = Mem331[r2_276 + 0x0000C60F:word32]
-	fn0000C0CE(r0_273, r6_338, ap_271, pc_345)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000108D2_entry:
-	def fp
-	def r0
-	def r2
-	def r10
-	def ap
-	def fp
-	def r5
-	def r4
-	def r6
-	def r7
-	def r8
-	def r9
-	def pc
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000108D2:
+	word32 sp_14
+	word32 r11_15
+	word32 r3_16
+	word32 r0_18
+	word32 r2_20
+	word32 r10_22
+	word32 ap_24
+	word32 fp_26
+	word32 r5_28
+	word32 r4_30
+	word32 r6_32
+	word32 r7_34
+	word32 r8_36
+	word32 r9_38
+	word32 r1_1754
+	word32 pc_1753
 	call Mem10[0x000192B4:word32] + 2 (retsize: 4;)
 		uses: ap:ap,fp:fp,pc:pc,r0:r0,r1:r1,r10:r10,r11:0x00000000,r2:r2,r3:0x00000000,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,r9:r9,sp:fp - 0x0000000C,Stack +0004:0x00002004,Stack +0008:0x00000000
-		defs: ap:ap_24,fp:fp_26,pc:pc_1746,r0:r0_18,r1:r1_1747,r10:r10_22,r11:r11_15,r2:r2_20,r3:r3_16,r4:r4_30,r5:r5_28,r6:r6_32,r7:r7_34,r8:r8_36,r9:r9_38,sp:sp_14
+		defs: ap:ap_24,fp:fp_26,pc:pc_1753,r0:r0_18,r1:r1_1754,r10:r10_22,r11:r11_15,r2:r2_20,r3:r3_16,r4:r4_30,r5:r5_28,r6:r6_32,r7:r7_34,r8:r8_36,r9:r9_38,sp:sp_14
 	Mem41[r2_20 + 0x0000C5F3:word32] = r0_18
 	Mem44[sp_14 - 0x00000004:uint32] = 0x00008001
+	word32 sp_48
+	word32 r11_49
+	word32 r3_50
+	word32 r0_51
+	word32 r2_52
+	word32 r10_53
+	word32 ap_54
+	word32 fp_55
+	word32 r5_56
+	word32 r4_57
+	word32 r6_58
+	word32 r7_59
+	word32 r8_60
+	word32 r9_61
 	call Mem44[0x000192B4:word32] + 2 (retsize: 4;)
-		uses: ap:ap_24,fp:fp_26,pc:pc_1746,r0:r0_18,r1:r1_1747,r10:r10_22,r11:r11_15,r2:r2_20,r3:r3_16,r4:r4_30,r5:r5_28,r6:r6_32,r7:r7_34,r8:r8_36,r9:r9_38,sp:sp_14 - 0x00000004,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
+		uses: ap:ap_24,fp:fp_26,pc:pc_1753,r0:r0_18,r1:r1_1754,r10:r10_22,r11:r11_15,r2:r2_20,r3:r3_16,r4:r4_30,r5:r5_28,r6:r6_32,r7:r7_34,r8:r8_36,r9:r9_38,sp:sp_14 - 0x00000004,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
 		defs: ap:ap_54,fp:fp_55,r0:r0_51,r10:r10_53,r11:r11_49,r2:r2_52,r3:r3_50,r4:r4_57,r5:r5_56,r6:r6_58,r7:r7_59,r8:r8_60,r9:r9_61,sp:sp_48
 	Mem64[r2_52 + 0x0000C6F1:word32] = r0_51
 	Mem66[r2_52 + 0x0000C6F5:word32] = r0_51
@@ -8036,19 +6893,53 @@ l00010955:
 	Mem88[r2_52 + 0x0000C635:byte] = 0x4B
 	Mem90[sp_48 - 0x00000004:word32] = r5_56
 	Mem94[sp_48 - 0x00000008:word32] = r2_52 + 0x0000C631
-	r4_95 = Mem94[0x000192BC:word32]
+	word32 r4_95 = Mem94[0x000192BC:word32]
+	word32 sp_99
+	word32 r11_100
+	word32 r3_101
+	word32 r0_102
+	word32 r2_103
+	word32 r10_104
+	word32 fp_106
+	word32 r5_107
+	word32 r4_108
+	word32 r6_109
+	word32 r7_110
+	word32 r8_111
+	word32 r9_112
+	word32 r1_1758
+	word32 pc_1757
 	call r4_95 + 2 (retsize: 4;)
 		uses: ap:r2_52 + 0x0000C62F,fp:fp_55,pc:pc,r0:r0_51,r1:r1,r10:r10_53,r11:r11_49,r2:r2_52,r3:r3_50,r4:r4_95,r5:r5_56,r6:r6_58,r7:r7_59,r8:r8_60,r9:r9_61,sp:sp_48 - 0x00000008,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
-		defs: fp:fp_106,pc:pc_1750,r0:r0_102,r1:r1_1751,r10:r10_104,r11:r11_100,r2:r2_103,r3:r3_101,r4:r4_108,r5:r5_107,r6:r6_109,r7:r7_110,r8:r8_111,r9:r9_112,sp:sp_99
+		defs: fp:fp_106,pc:pc_1757,r0:r0_102,r1:r1_1758,r10:r10_104,r11:r11_100,r2:r2_103,r3:r3_101,r4:r4_108,r5:r5_107,r6:r6_109,r7:r7_110,r8:r8_111,r9:r9_112,sp:sp_99
 	Mem116[sp_99 - 0x00000004:word32] = r5_107 + 3
 	Mem120[sp_99 - 0x00000008:word32] = r2_103 + 0x0000C636
+	word32 sp_122
+	word32 r11_123
+	word32 r3_124
+	word32 r0_125
+	word32 r2_126
+	word32 r10_127
+	word32 fp_129
+	word32 r5_130
+	word32 r4_131
+	word32 r6_132
+	word32 r7_133
+	word32 r8_134
+	word32 r9_135
+	word32 r1_1760
+	word32 pc_1759
 	call r4_108 + 2 (retsize: 4;)
-		uses: ap:r2_103 + 0x0000C634,fp:fp_106,pc:pc_1750,r0:r0_102,r1:r1_1751,r10:r10_104,r11:r11_100,r2:r2_103,r3:r3_101,r4:r4_108,r5:r5_107,r6:r6_109,r7:r7_110,r8:r8_111,r9:r9_112,sp:sp_99 - 0x00000008,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
-		defs: fp:fp_129,pc:pc_1752,r0:r0_125,r1:r1_1753,r10:r10_127,r11:r11_123,r2:r2_126,r3:r3_124,r4:r4_131,r5:r5_130,r6:r6_132,r7:r7_133,r8:r8_134,r9:r9_135,sp:sp_122
+		uses: ap:r2_103 + 0x0000C634,fp:fp_106,pc:pc_1757,r0:r0_102,r1:r1_1758,r10:r10_104,r11:r11_100,r2:r2_103,r3:r3_101,r4:r4_108,r5:r5_107,r6:r6_109,r7:r7_110,r8:r8_111,r9:r9_112,sp:sp_99 - 0x00000008,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
+		defs: fp:fp_129,pc:pc_1759,r0:r0_125,r1:r1_1760,r10:r10_127,r11:r11_123,r2:r2_126,r3:r3_124,r4:r4_131,r5:r5_130,r6:r6_132,r7:r7_133,r8:r8_134,r9:r9_135,sp:sp_122
 	Mem139[sp_122 - 0x00000004:word32] = r5_130 + 6
 	Mem143[sp_122 - 0x00000008:word32] = r2_126 + 0x0000C63B
+	word32 sp_145
+	word32 r0_148
+	word32 r2_149
+	word32 ap_151
 	call r4_131 + 2 (retsize: 4;)
-		uses: ap:r2_126 + 0x0000C639,fp:fp_129,pc:pc_1752,r0:r0_125,r1:r1_1753,r10:r10_127,r11:r11_123,r2:r2_126,r3:r3_124,r4:r4_131,r5:r5_130,r6:r6_132,r7:r7_133,r8:r8_134,r9:r9_135,sp:sp_122 - 0x00000008,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
+		uses: ap:r2_126 + 0x0000C639,fp:fp_129,pc:pc_1759,r0:r0_125,r1:r1_1760,r10:r10_127,r11:r11_123,r2:r2_126,r3:r3_124,r4:r4_131,r5:r5_130,r6:r6_132,r7:r7_133,r8:r8_134,r9:r9_135,sp:sp_122 - 0x00000008,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
 		defs: ap:ap_151,r0:r0_148,r2:r2_149,sp:sp_145
 	Mem166[sp_145 - 0x00000004:word32] = Mem143[r2_149 + 0x0000C60F:word32]
 	fn0000C0CE(r0_148, 0x00000000, ap_151, pc)
@@ -8057,18 +6948,33 @@ l00010955:
 // SymbolicIn:
 
 l0001092D:
-	Mem1667[sp_48 - 0x00000004:uint32] = 0x00000401
-	Mem1670[sp_48 - 0x00000008:word32] = r10_53
-	Mem1674[sp_48 - 0x0000000C:word32] = r2_52 + 1515
-	call Mem1674[0x000192D0:word32] + 2 (retsize: 4;)
+	Mem1670[sp_48 - 0x00000004:uint32] = 0x00000401
+	Mem1673[sp_48 - 0x00000008:word32] = r10_53
+	Mem1677[sp_48 - 0x0000000C:word32] = r2_52 + 1515
+	word32 sp_1681
+	word32 r11_1683
+	word32 r3_1685
+	word32 r0_1687
+	word32 r2_1688
+	word32 r10_1689
+	word32 fp_1693
+	word32 r5_1695
+	word32 r4_1697
+	word32 r6_1699
+	word32 r7_1701
+	word32 r8_1703
+	word32 r9_1705
+	word32 pc_1707
+	word32 r1_1710
+	call Mem1677[0x000192D0:word32] + 2 (retsize: 4;)
 		uses: ap:ap_54,fp:fp_55,pc:pc,r0:r0_51,r1:r1,r10:r10_53,r11:r11_49,r2:r2_52,r3:r3_50,r4:r4_57,r5:r5_56,r6:r6_58,r7:r7_59,r8:r8_60,r9:r9_61,sp:sp_48 - 0x0000000C,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
-		defs: fp:fp_1690,pc:pc_1704,r0:r0_1684,r1:r1_1706,r10:r10_1686,r11:r11_1680,r2:r2_1685,r3:r3_1682,r4:r4_1694,r5:r5_1692,r6:r6_1696,r7:r7_1698,r8:r8_1700,r9:r9_1702,sp:sp_1678
-	Mem1709[sp_1678 - 0x00000004:word32] = r0_1684
-	Mem1712[sp_1678 - 0x00000008:word32] = r2_1685 + 1515
-	Mem1714[sp_1678 - 0x0000000C:word32] = r2_1685
-	ap_1715 = Mem1714[r2_1685 + 0x0000C839:word32]
-	call ap_1715 + 2 (retsize: 4;)
-		uses: ap:ap_1715,fp:fp_1690,pc:pc_1704,r0:r0_1684,r1:r1_1706,r10:r10_1686,r11:r11_1680,r2:r2_1685,r3:r3_1682,r4:r4_1694,r5:r5_1692,r6:r6_1696,r7:r7_1698,r8:r8_1700,r9:r9_1702,sp:sp_1678 - 0x0000000C,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
+		defs: fp:fp_1693,pc:pc_1707,r0:r0_1687,r1:r1_1710,r10:r10_1689,r11:r11_1683,r2:r2_1688,r3:r3_1685,r4:r4_1697,r5:r5_1695,r6:r6_1699,r7:r7_1701,r8:r8_1703,r9:r9_1705,sp:sp_1681
+	Mem1713[sp_1681 - 0x00000004:word32] = r0_1687
+	Mem1716[sp_1681 - 0x00000008:word32] = r2_1688 + 1515
+	Mem1718[sp_1681 - 0x0000000C:word32] = r2_1688
+	word32 ap_1719 = Mem1718[r2_1688 + 0x0000C839:word32]
+	call ap_1719 + 2 (retsize: 4;)
+		uses: ap:ap_1719,fp:fp_1693,pc:pc_1707,r0:r0_1687,r1:r1_1710,r10:r10_1689,r11:r11_1683,r2:r2_1688,r3:r3_1685,r4:r4_1697,r5:r5_1695,r6:r6_1699,r7:r7_1701,r8:r8_1703,r9:r9_1705,sp:sp_1681 - 0x0000000C,Stack +FFFFFFF8:0x00002004,Stack +FFFFFFFC:0x00000000
 	return
 // DataOut:
 // DataOut (flags):
@@ -8081,1103 +6987,89 @@ fn000108D2_exit:
 
 
 
-word32 fn00010E6A(word32 r1, word32 r2, word32 r3, word32 r4, word32 r6, word32 r7, word32 r9, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r11Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
+void fn00010E6A(word32 r2, word32 r3, word32 r4, word32 r6, word32 r7, word32 r9, word32 ap, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r6:[0..31] r7:[0..31] r9:[0..31]
-// LiveOut: ap fp r0 r1 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
+// MayUse:  ap:[0..31] fp:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r6:[0..31] r7:[0..31] r9:[0..31]
+// LiveOut:
 // Trashed: CVZN ap fp r0 r1 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
-l00011771:
-	Mem1524[sp - 0x00000004:uint32] = 0x00000201
-	Mem1527[sp - 0x00000008:word32] = Mem1524[r2 + 0x0000C613:word32]
-	Mem1530[sp - 0x0000000C:word32] = r7 + 85
-	Mem1533[sp - 0x00000010:word32] = r2 + 1515
-	call Mem1533[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap,fp:fp,r0:r0,r1:r1,r11:r11,r2:r2,r3:r3,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,r9:r9,sp:sp - 0x00000010,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1543,fp:fp_1544,r0:r0_1541,r1:r1_1542,r11:r11_1550,r2:r2_1540,r3:r3_1545,r4:r4_1547,r5:r5_1539,r6:r6_1548,r7:r7_1546,r8:r8_1538,r9:r9_1549,sp:sp_1537
-	Mem1553[sp_1537 - 0x00000004:word32] = r0_1541
-	Mem1556[sp_1537 - 0x00000008:word32] = r2_1540 + 1515
-	Mem1558[sp_1537 - 0x0000000C:word32] = r2_1540
-	r0_1559 = Mem1558[r2_1540 + 0x0000C839:word32]
-	call r0_1559 + 2 (retsize: 4;)
-		uses: ap:ap_1543,fp:fp_1544,r0:r0_1559,r1:r1_1542,r11:r11_1550,r2:r2_1540,r3:r3_1545,r4:r4_1547,r5:r5_1539,r6:r6_1548,r7:r7_1546,r8:r8_1538,r9:r9_1549,sp:sp_1537 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: fp:fp_1570,r1:r1_1568,r11:r11_1576,r2:r2_1566,r3:r3_1571,r4:r4_1573,r5:r5_1565,r6:r6_1574,r7:r7_1572,r8:r8_1564,r9:r9_1575
-	branch r9_1575 > 0x00000000 l000117A3
-	def dwLoc10
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000117A0:
-	r9_1581 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010FD0:
-	fp_1694 = Mem0[fp + 0x0000000C:word32]
-	ap_1695 = Mem0[fp + 0x00000008:word32]
-	r1Out = r1
-	r2Out = r2
-	r3Out = r3
-	r4Out = r4
-	r5Out = r5
-	r6Out = r6
-	r7Out = r7
-	r8Out = r8
-	r9Out = r9
-	r11Out = r11
-	apOut = ap_1695
-	fpOut = fp_1694
-	spOut = fp - 0x00000004
-	return 0x00000009
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010FD4:
-	branch Mem0[r2 + 0x0000C5EB:word32] != 0x00000000 l00010FF0
-	def r0
-	def r5
-	def sp
-	def r8
-	def r11
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010FDC:
-	r0_346 = fn0000D39E(r0, r1, r2, r3, r4, r5, r6, ap, fp, out r1_348, out r2_349, out r3_350, out r4_351, out r5_352, out r6_353, out ap_344, out fp_345, out sp_347)
-	Mem359[r2_349 + 0x0000C5EB:word32] = r0_346
-	branch r0_346 != 0x00000000 l00010FF0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010FF0:
-	r6_418 = PHI((r6, l00010FD4), (r6_353, l00010FDC))
-	r4_416 = PHI((r4, l00010FD4), (r4_351, l00010FDC))
-	r3_413 = PHI((r3, l00010FD4), (r3_350, l00010FDC))
-	fp_411 = PHI((fp, l00010FD4), (fp_345, l00010FDC))
-	ap_409 = PHI((ap, l00010FD4), (ap_344, l00010FDC))
-	r1_407 = PHI((r1, l00010FD4), (r1_348, l00010FDC))
-	r0_405 = PHI((r0, l00010FD4), (r0_346, l00010FDC))
-	r5_402 = PHI((r5, l00010FD4), (r5_352, l00010FDC))
-	sp_381 = PHI((sp, l00010FD4), (sp_347, l00010FDC))
-	r2_365 = PHI((r2, l00010FD4), (r2_349, l00010FDC))
-	Mem366[r2_365 + 0x0000C61F:word32] = 0x00000000
-	Mem368[r2_365 + 0x0000C5F7:word32] = Mem366[r2_365 + 0x0000C5F3:word32]
-	branch Mem368[r2_365:word32] != 0x00000000 l00011037
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011005:
-	branch Mem368[r2_365 + 64:word32] != 0x00000000 l00011037
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001100A:
-	branch Mem368[r2_365 + 72:word32] != 0x00000000 l00011037
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001100F:
-	sp_383 = sp_381 - 0x00000004
-	Mem384[sp_383:word32] = 0x00000000
-	Mem387[sp_383 - 0x00000004:word32] = Mem384[r2_365 + 0x0000C613:word32]
-	Mem391[sp_383 - 0x00000008:word32] = r7 + 43
-	Mem394[sp_383 - 0x0000000C:word32] = r2_365 + 1515
-	call Mem394[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_409,fp:fp_411,r0:r0_405,r1:r1_407,r11:r11,r2:r2_365,r3:r3_413,r4:r4_416,r5:r5_402,r6:r6_418,r7:r7,r8:r8,r9:r9,sp:sp_383 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_410,fp:fp_412,r0:r0_406,r1:r1_408,r11:r11_1703,r2:r2_404,r3:r3_414,r4:r4_417,r5:r5_403,r6:r6_419,r7:r7_415,r8:r8_401,r9:r9_421,sp:sp_398
-	Mem424[sp_398 - 0x00000004:word32] = r0_406
-	Mem427[sp_398 - 0x00000008:word32] = r2_404 + 1515
-	Mem429[sp_398 - 0x0000000C:word32] = r2_404
-	r0_430 = Mem429[r2_404 + 0x0000C839:word32]
-	call r0_430 + 2 (retsize: 4;)
-		uses: ap:ap_410,fp:fp_412,r0:r0_430,r1:r1_408,r11:r11_1703,r2:r2_404,r3:r3_414,r4:r4_417,r5:r5_403,r6:r6_419,r7:r7_415,r8:r8_401,r9:r9_421,sp:sp_398 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_440,fp:fp_441,r0:r0_438,r1:r1_439,r2:r2_437,r3:r3_442,r4:r4_444,r5:r5_436,r6:r6_445,r7:r7_443,r8:r8_435,r9:r9_446,sp:sp_434
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011037:
-	r4_1613 = PHI((r4_416, l00010FF0), (r4_416, l00011005), (r4_416, l0001100A), (r4_444, l0001100F))
-	r5_775 = PHI((r5_402, l00010FF0), (r5_402, l00011005), (r5_402, l0001100A), (r5_436, l0001100F))
-	r1_469 = PHI((r1_407, l00010FF0), (r1_407, l00011005), (r1_407, l0001100A), (r1_439, l0001100F))
-	r7_468 = PHI((r7, l00010FF0), (r7, l00011005), (r7, l0001100A), (r7_443, l0001100F))
-	r6_467 = PHI((r6_418, l00010FF0), (r6_418, l00011005), (r6_418, l0001100A), (r6_445, l0001100F))
-	r9_466 = PHI((r9, l00010FF0), (r9, l00011005), (r9, l0001100A), (r9_446, l0001100F))
-	ap_465 = PHI((ap_409, l00010FF0), (ap_409, l00011005), (ap_409, l0001100A), (ap_440, l0001100F))
-	fp_464 = PHI((fp_411, l00010FF0), (fp_411, l00011005), (fp_411, l0001100A), (fp_441, l0001100F))
-	r3_463 = PHI((r3_413, l00010FF0), (r3_413, l00011005), (r3_413, l0001100A), (r3_442, l0001100F))
-	r8_462 = PHI((r8, l00010FF0), (r8, l00011005), (r8, l0001100A), (r8_435, l0001100F))
-	r0_461 = PHI((r0_405, l00010FF0), (r0_405, l00011005), (r0_405, l0001100A), (r0_438, l0001100F))
-	sp_454 = PHI((sp_381, l00010FF0), (sp_381, l00011005), (sp_381, l0001100A), (sp_434, l0001100F))
-	Mem449 = PHI((Mem368, l00010FF0), (Mem368, l00011005), (Mem368, l0001100A), (Mem429, l0001100F))
-	r2_448 = PHI((r2_365, l00010FF0), (r2_365, l00011005), (r2_365, l0001100A), (r2_437, l0001100F))
-	branch Mem449[r2_448:word32] == 0x00000000 l00011060
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001103B:
-	Mem457[sp_454 - 0x00000004:word32] = Mem449[r2_448 + 0x0000C61B:word32]
-	r0_472 = fn000117AA(r0_461, r1_469, r2_448, r3_463, r6_467, r7_468, r8_462, r9_466, ap_465, fp_464, out r1_482, out r2_473, out r3_474, out r4_475, out r5_476, out r6_477, out r7_478, out r8_479, out ap_470, out fp_471, out sp_481)
-	r9_487 = r0_472
-	branch r0_472 == 0x00000000 l0001104E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001104E:
-	r0_497 = fn00012A2A(r0_472, r2_473, r3_474, r4_475, r5_476, r6_477, r7_478, r11, ap_470, fp_471, out r2_499, out r3_500, out r4_501, out r5_502, out r6_503, out r7_504, out r8_505, out r11_498, out ap_495, out fp_496, out sp_506)
-	r9_511 = r0_497
-	branch r0_497 <= 0x00000001 l00011060
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011060:
-	r4_1612 = PHI((r4_1613, l00011037), (r4_501, l0001104E))
-	r11_815 = PHI((r11, l00011037), (r11_498, l0001104E))
-	r0_782 = PHI((r0_461, l00011037), (r0_497, l0001104E))
-	r5_774 = PHI((r5_775, l00011037), (r5_502, l0001104E))
-	r3_705 = PHI((r3_463, l00011037), (r3_500, l0001104E))
-	r1_556 = PHI((r1_469, l00011037), (r1_482, l0001104E))
-	r7_554 = PHI((r7_468, l00011037), (r7_504, l0001104E))
-	r6_552 = PHI((r6_467, l00011037), (r6_503, l0001104E))
-	r9_550 = PHI((r9_466, l00011037), (r9_511, l0001104E))
-	ap_548 = PHI((ap_465, l00011037), (ap_495, l0001104E))
-	fp_546 = PHI((fp_464, l00011037), (fp_496, l0001104E))
-	r8_544 = PHI((r8_462, l00011037), (r8_505, l0001104E))
-	sp_534 = PHI((sp_454, l00011037), (sp_506, l0001104E))
-	Mem516 = PHI((Mem449, l00011037), (Mem457, l0001104E))
-	r2_515 = PHI((r2_448, l00011037), (r2_499, l0001104E))
-	branch Mem516[r2_515:word32] == 0x00000000 l00011067
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011067:
-	r0_521 = Mem516[r2_515 + 0x0000C61B:word32]
-	branch r0_521 >= 0x000101D0 l0001107C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001107C:
-	r3_525 = 0x000101D0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011077:
-	r3_529 = r0_521
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011083:
-	r3_536 = PHI((r3_529, l00011077), (r3_525, l0001107C))
-	Mem537[sp_534 - 0x00000004:word32] = r3_536
-	r0_559 = fn000117AA(r0_521, r1_556, r2_515, r3_536, r6_552, r7_554, r8_544, r9_550, ap_548, fp_546, out r1_569, out r2_560, out r3_561, out r4_562, out r5_563, out r6_564, out r7_565, out r8_566, out ap_557, out fp_558, out sp_568)
-	r9_574 = r0_559
-	branch r0_559 != 0x00000000 l000110EF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001108F:
-	r4_579 = 0x00000000
-	branch Mem537[r2_560 + 0x0000C692:word16] == 0x0000 l000110E7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011099:
-	branch Mem537[r2_560 + 92:word32] > 0x00000000 l000110AA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001109E:
-	branch Mem537[r2_560 + 92:word32] != 0x00000000 l000110E7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000110A0:
-	branch Mem537[r2_560 + 72:word32] != 0x00000000 l000110E7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000110A5:
-	branch Mem537[r2_560 + 64:word32] != 0x00000000 l000110E7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000110AA:
-	Mem598[sp_568 - 0x00000004:word32] = 0x00000001
-	Mem602[sp_568 - 0x00000008:uint32] = (uint32) Mem598[r2_560 + 0x0000C692:word16]
-	r0_610 = fn0000DC76(ap_557, fp_558, out r11_611, out ap_608, out fp_609, out sp_612)
-	branch r0_610 == 0x00000000 l000110E7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000110BE:
-	Mem623[sp_612 - 0x00000004:uint32] = 0x00000401
-	Mem627[sp_612 - 0x00000008:word32] = r6_564 + 1864
-	Mem630[sp_612 - 0x0000000C:word32] = r2_560 + 1515
-	call Mem630[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_608,fp:fp_609,r0:r0_610,r1:r1_569,r11:r11_611,r2:r2_560,r3:r3_561,r4:0x00000000,r5:r5_563,r6:r6_564,r7:r7_565,r8:r8_566,r9:r0_559,sp:sp_612 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_643,fp:fp_644,r0:r0_640,r1:r1_642,r11:r11_654,r2:r2_639,r3:r3_646,r4:r4_650,r5:r5_638,r6:r6_651,r7:r7_648,r8:r8_636,r9:r9_653,sp:sp_634
-	Mem657[sp_634 - 0x00000004:word32] = r0_640
-	Mem660[sp_634 - 0x00000008:word32] = r2_639 + 1515
-	Mem662[sp_634 - 0x0000000C:word32] = r2_639
-	r0_663 = Mem662[r2_639 + 0x0000C839:word32]
-	call r0_663 + 2 (retsize: 4;)
-		uses: ap:ap_643,fp:fp_644,r0:r0_663,r1:r1_642,r11:r11_654,r2:r2_639,r3:r3_646,r4:r4_650,r5:r5_638,r6:r6_651,r7:r7_648,r8:r8_636,r9:r9_653,sp:sp_634 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_673,fp:fp_674,r0:r0_671,r1:r1_672,r11:r11_680,r2:r2_670,r3:r3_675,r5:r5_669,r6:r6_678,r7:r7_676,r8:r8_668,sp:sp_667
-	r4_682 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000110E7:
-	r11_816 = PHI((r11_815, l0001108F), (r11_815, l0001109E), (r11_815, l000110A0), (r11_815, l000110A5), (r11_611, l000110AA), (r11_680, l000110BE))
-	r7_804 = PHI((r7_565, l0001108F), (r7_565, l0001109E), (r7_565, l000110A0), (r7_565, l000110A5), (r7_565, l000110AA), (r7_676, l000110BE))
-	fp_798 = PHI((fp_558, l0001108F), (fp_558, l0001109E), (fp_558, l000110A0), (fp_558, l000110A5), (fp_609, l000110AA), (fp_674, l000110BE))
-	ap_793 = PHI((ap_557, l0001108F), (ap_557, l0001109E), (ap_557, l000110A0), (ap_557, l000110A5), (ap_608, l000110AA), (ap_673, l000110BE))
-	r1_788 = PHI((r1_569, l0001108F), (r1_569, l0001109E), (r1_569, l000110A0), (r1_569, l000110A5), (r1_569, l000110AA), (r1_672, l000110BE))
-	r0_783 = PHI((r0_559, l0001108F), (r0_559, l0001109E), (r0_559, l000110A0), (r0_559, l000110A5), (r0_610, l000110AA), (r0_671, l000110BE))
-	r5_776 = PHI((r5_563, l0001108F), (r5_563, l0001109E), (r5_563, l000110A0), (r5_563, l000110A5), (r5_563, l000110AA), (r5_669, l000110BE))
-	r8_769 = PHI((r8_566, l0001108F), (r8_566, l0001109E), (r8_566, l000110A0), (r8_566, l000110A5), (r8_566, l000110AA), (r8_668, l000110BE))
-	r6_756 = PHI((r6_564, l0001108F), (r6_564, l0001109E), (r6_564, l000110A0), (r6_564, l000110A5), (r6_564, l000110AA), (r6_678, l000110BE))
-	sp_739 = PHI((sp_568, l0001108F), (sp_568, l0001109E), (sp_568, l000110A0), (sp_568, l000110A5), (sp_612, l000110AA), (sp_667, l000110BE))
-	r3_706 = PHI((r3_561, l0001108F), (r3_561, l0001109E), (r3_561, l000110A0), (r3_561, l000110A5), (r3_561, l000110AA), (r3_675, l000110BE))
-	Mem694 = PHI((Mem537, l0001108F), (Mem537, l0001109E), (Mem537, l000110A0), (Mem537, l000110A5), (Mem602, l000110AA), (Mem662, l000110BE))
-	r2_692 = PHI((r2_560, l0001108F), (r2_560, l0001109E), (r2_560, l000110A0), (r2_560, l000110A5), (r2_560, l000110AA), (r2_670, l000110BE))
-	r4_686 = PHI((r4_579, l0001108F), (r4_579, l0001109E), (r4_579, l000110A0), (r4_579, l000110A5), (r4_579, l000110AA), (r4_682, l000110BE))
-	r9_687 = r4_686
-	branch r4_686 <= 0x00000001 l00011110
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011064:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011110:
-	r4_1611 = PHI((r4_1612, l00011064), (r4_686, l000110E7))
-	r11_814 = PHI((r11_815, l00011064), (r11_816, l000110E7))
-	r9_810 = PHI((r9_550, l00011064), (r9_687, l000110E7))
-	r7_803 = PHI((r7_554, l00011064), (r7_804, l000110E7))
-	fp_797 = PHI((fp_546, l00011064), (fp_798, l000110E7))
-	ap_792 = PHI((ap_548, l00011064), (ap_793, l000110E7))
-	r1_787 = PHI((r1_556, l00011064), (r1_788, l000110E7))
-	r0_781 = PHI((r0_782, l00011064), (r0_783, l000110E7))
-	r5_773 = PHI((r5_774, l00011064), (r5_776, l000110E7))
-	r8_768 = PHI((r8_544, l00011064), (r8_769, l000110E7))
-	r6_755 = PHI((r6_552, l00011064), (r6_756, l000110E7))
-	sp_738 = PHI((sp_534, l00011064), (sp_739, l000110E7))
-	r3_704 = PHI((r3_705, l00011064), (r3_706, l000110E7))
-	Mem693 = PHI((Mem516, l00011064), (Mem694, l000110E7))
-	r2_691 = PHI((r2_515, l00011064), (r2_692, l000110E7))
-	branch Mem693[r2_691 + 92:word32] <= 0x00000000 l0001112A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011115:
-	branch Mem693[r2_691:word32] != 0x00000000 l0001112A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001112A:
-	v60_707 = SLICE(r3_704, word24, 8)
-	r3_708 = SEQ(v60_707, 0x00)
-	branch Mem693[r2_691:word32] != 0x00000000 l0001113B
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011130:
-	r0_715 = (uint32) Mem693[r2_691 + 0x0000C682:word16]
-	branch r0_715 == 0x00000000 l0001113B
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011139:
-	r3_722 = SEQ(v60_707, (byte) r3_708 + 0x01)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001113B:
-	r0_779 = PHI((r0_781, l0001112A), (r0_715, l00011130), (r0_715, l00011139))
-	r3_724 = PHI((r3_708, l0001112A), (r3_708, l00011130), (r3_722, l00011139))
-	r4_725 = (int32) (int8) r3_724
-	branch Mem693[r2_691:word32] != 0x00000000 l00011145
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011145:
-	branch Mem693[r2_691 + 0x0000C682:word16] != Mem693[r2_691 + 0x0000C684:word16] l00011155
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011155:
-	branch Mem693[r2_691 + 0x0000C682:word16] <=u Mem693[r2_691 + 0x0000C684:word16] l0001119C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001119C:
-	sp_740 = sp_738 - 0x00000004
-	Mem742[sp_740:uint32] = 0x00000401
-	Mem745[sp_740 - 0x00000004:uint32] = (uint32) Mem742[r2_691 + 0x0000C684:word16]
-	Mem748[sp_740 - 0x00000008:uint32] = (uint32) Mem745[r2_691 + 0x0000C682:word16]
-	Mem751[sp_740 - 0x0000000C:word32] = Mem748[r2_691 + 0x0000C613:word32]
-	Mem758[sp_740 - 0x00000010:word32] = r6_755 + 662
-	Mem761[sp_740 - 0x00000014:word32] = r2_691 + 1515
-	call Mem761[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_792,fp:fp_797,r0:r0_779,r1:r1_787,r11:r11_814,r2:r2_691,r3:r3_724,r4:r4_725,r5:r5_773,r6:r6_755,r7:r7_803,r8:r8_768,r9:r9_810,sp:sp_740 - 0x00000014,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_794,fp:fp_799,r0:r0_784,r1:r1_789,r11:r11_818,r2:r2_778,r3:r3_800,r4:r4_806,r5:r5_777,r6:r6_807,r7:r7_805,r8:r8_770,r9:r9_811,sp:sp_765
-	Mem821[sp_765 - 0x00000004:word32] = r0_784
-	Mem824[sp_765 - 0x00000008:word32] = r2_778 + 1515
-	Mem826[sp_765 - 0x0000000C:word32] = r2_778
-	r0_827 = Mem826[r2_778 + 0x0000C839:word32]
-	call r0_827 + 2 (retsize: 4;)
-		uses: ap:ap_794,fp:fp_799,r0:r0_827,r1:r1_789,r11:r11_818,r2:r2_778,r3:r3_800,r4:r4_806,r5:r5_777,r6:r6_807,r7:r7_805,r8:r8_770,r9:r9_811,sp:sp_765 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_837,fp:fp_838,r0:r0_835,r1:r1_836,r11:r11_844,r2:r2_834,r3:r3_839,r4:r4_841,r5:r5_833,r6:r6_842,r7:r7_840,r8:r8_832,sp:sp_831
-	r9_846 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011157:
-	sp_850 = sp_738 - 0x00000004
-	Mem852[sp_850:uint32] = 0x00000401
-	Mem855[sp_850 - 0x00000004:uint32] = (uint32) Mem852[r2_691 + 0x0000C684:word16]
-	Mem858[sp_850 - 0x00000008:uint32] = (uint32) Mem855[r2_691 + 0x0000C682:word16]
-	Mem861[sp_850 - 0x0000000C:word32] = Mem858[r2_691 + 0x0000C613:word32]
-	Mem864[sp_850 - 0x00000010:word32] = r6_755 + 515
-	Mem867[sp_850 - 0x00000014:word32] = r2_691 + 1515
-	call Mem867[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_792,fp:fp_797,r0:r0_779,r1:r1_787,r11:r11_814,r2:r2_691,r3:r3_724,r4:r4_725,r5:r5_773,r6:r6_755,r7:r7_803,r8:r8_768,r9:r9_810,sp:sp_850 - 0x00000014,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_877,fp:fp_878,r0:r0_875,r1:r1_876,r11:r11_884,r2:r2_874,r3:r3_879,r4:r4_881,r5:r5_873,r6:r6_882,r7:r7_880,r8:r8_872,r9:r9_883,sp:sp_871
-	Mem887[sp_871 - 0x00000004:word32] = r0_875
-	Mem890[sp_871 - 0x00000008:word32] = r2_874 + 1515
-	Mem892[sp_871 - 0x0000000C:word32] = r2_874
-	r0_893 = Mem892[r2_874 + 0x0000C839:word32]
-	call r0_893 + 2 (retsize: 4;)
-		uses: ap:ap_877,fp:fp_878,r0:r0_893,r1:r1_876,r11:r11_884,r2:r2_874,r3:r3_879,r4:r4_881,r5:r5_873,r6:r6_882,r7:r7_880,r8:r8_872,r9:r9_883,sp:sp_871 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_903,fp:fp_904,r0:r0_901,r1:r1_902,r11:r11_910,r2:r2_900,r3:r3_905,r4:r4_907,r5:r5_899,r6:r6_908,r7:r7_906,sp:sp_897
-	r9_912 = 0x0000000B
-	r8_913 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011152:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011142:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000111D9:
-	Mem1001 = PHI((Mem693, l00011142), (Mem693, l00011152), (Mem892, l00011157), (Mem826, l0001119C))
-	r11_966 = PHI((r11_814, l00011142), (r11_814, l00011152), (r11_910, l00011157), (r11_844, l0001119C))
-	r9_964 = PHI((r9_810, l00011142), (r9_810, l00011152), (r9_912, l00011157), (r9_846, l0001119C))
-	r7_960 = PHI((r7_803, l00011142), (r7_803, l00011152), (r7_906, l00011157), (r7_840, l0001119C))
-	r3_958 = PHI((r3_724, l00011142), (r3_724, l00011152), (r3_905, l00011157), (r3_839, l0001119C))
-	fp_956 = PHI((fp_797, l00011142), (fp_797, l00011152), (fp_904, l00011157), (fp_838, l0001119C))
-	ap_954 = PHI((ap_792, l00011142), (ap_792, l00011152), (ap_903, l00011157), (ap_837, l0001119C))
-	r1_952 = PHI((r1_787, l00011142), (r1_787, l00011152), (r1_902, l00011157), (r1_836, l0001119C))
-	r0_950 = PHI((r0_779, l00011142), (r0_779, l00011152), (r0_901, l00011157), (r0_835, l0001119C))
-	r5_947 = PHI((r5_773, l00011142), (r5_773, l00011152), (r5_899, l00011157), (r5_833, l0001119C))
-	r6_936 = PHI((r6_755, l00011142), (r6_755, l00011152), (r6_908, l00011157), (r6_842, l0001119C))
-	r2_932 = PHI((r2_691, l00011142), (r2_691, l00011152), (r2_900, l00011157), (r2_834, l0001119C))
-	sp_927 = PHI((sp_738, l00011142), (sp_738, l00011152), (sp_897, l00011157), (sp_831, l0001119C))
-	r4_922 = PHI((r4_725, l00011142), (r4_725, l00011152), (r4_907, l00011157), (r4_841, l0001119C))
-	r8_917 = PHI((r8_768, l00011142), (r8_768, l00011152), (r8_913, l00011157), (r8_832, l0001119C))
-	branch r8_917 == 0x00000000 l000111E0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000111E0:
-	branch r4_922 == 0x00000000 l00011213
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000111E4:
-	sp_928 = sp_927 - 0x00000004
-	Mem930[sp_928:uint32] = 0x00000401
-	Mem934[sp_928 - 0x00000004:word32] = Mem930[r2_932 + 0x0000C613:word32]
-	Mem938[sp_928 - 0x00000008:word32] = r6_936 + 844
-	Mem941[sp_928 - 0x0000000C:word32] = r2_932 + 1515
-	call Mem941[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_954,fp:fp_956,r0:r0_950,r1:r1_952,r11:r11_966,r2:r2_932,r3:r3_958,r4:r4_922,r5:r5_947,r6:r6_936,r7:r7_960,r8:r8_917,r9:r9_964,sp:sp_928 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_955,fp:fp_957,r0:r0_951,r1:r1_953,r11:r11_967,r2:r2_949,r3:r3_959,r4:r4_962,r5:r5_948,r6:r6_963,r7:r7_961,r8:r8_946,r9:r9_965,sp:sp_945
-	Mem970[sp_945 - 0x00000004:word32] = r0_951
-	Mem973[sp_945 - 0x00000008:word32] = r2_949 + 1515
-	Mem975[sp_945 - 0x0000000C:word32] = r2_949
-	r0_976 = Mem975[r2_949 + 0x0000C839:word32]
-	call r0_976 + 2 (retsize: 4;)
-		uses: ap:ap_955,fp:fp_957,r0:r0_976,r1:r1_953,r11:r11_967,r2:r2_949,r3:r3_959,r4:r4_962,r5:r5_948,r6:r6_963,r7:r7_961,r8:r8_946,r9:r9_965,sp:sp_945 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_986,fp:fp_987,r0:r0_984,r1:r1_985,r11:r11_993,r2:r2_983,r3:r3_988,r5:r5_982,r6:r6_991,r7:r7_989,r8:r8_981,sp:sp_980
-	r9_995 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011213:
-	r3_1156 = PHI((r3_958, l000111E0), (r3_988, l000111E4))
-	r11_1100 = PHI((r11_966, l000111E0), (r11_993, l000111E4))
-	r9_1096 = PHI((r9_964, l000111E0), (r9_995, l000111E4))
-	fp_1087 = PHI((fp_956, l000111E0), (fp_987, l000111E4))
-	ap_1083 = PHI((ap_954, l000111E0), (ap_986, l000111E4))
-	r1_1079 = PHI((r1_952, l000111E0), (r1_985, l000111E4))
-	r0_1075 = PHI((r0_950, l000111E0), (r0_984, l000111E4))
-	r5_1070 = PHI((r5_947, l000111E0), (r5_982, l000111E4))
-	r8_1066 = PHI((r8_917, l000111E0), (r8_981, l000111E4))
-	r6_1054 = PHI((r6_936, l000111E0), (r6_991, l000111E4))
-	r7_1030 = PHI((r7_960, l000111E0), (r7_989, l000111E4))
-	sp_1021 = PHI((sp_927, l000111E0), (sp_980, l000111E4))
-	Mem1000 = PHI((Mem1001, l000111E0), (Mem975, l000111E4))
-	r2_999 = PHI((r2_932, l000111E0), (r2_983, l000111E4))
-	Mem1003[r2_999 + 0x0000C623:word32] = Mem1000[r2_999 + 124:word32] - Mem1000[r2_999 + 128:word32]
-	r4_1004 = Mem1003[r2_999 + 0x0000C623:word32]
-	branch r4_1004 >= 0x00000000 l0001125C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001125C:
-	branch r4_1004 > 0x00000000 l00011263
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011263:
-	branch Mem1003[r2_999 + 0x0000C68E:word32] != 0x00000000 l000112B8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001126B:
-	branch Mem1003[r2_999 + 0x0000C68A:word32] == 0x00000000 l000112B8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000112B8:
-	sp_1022 = sp_1021 - 0x00000004
-	Mem1024[sp_1022:uint32] = 0x00000401
-	branch r4_1004 != 0x00000001 l000112C8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000112C8:
-	r3_1031 = r7_1030 + 57
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000112C2:
-	r3_1035 = r7_1030 + 59
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000112CC:
-	r3_1041 = PHI((r3_1035, l000112C2), (r3_1031, l000112C8))
-	Mem1042[sp_1022 - 0x00000004:word32] = r3_1041
-	Mem1045[sp_1022 - 0x00000008:word32] = r4_1004
-	Mem1050[sp_1022 - 0x0000000C:word32] = Mem1045[r2_999 + 0x0000C613:word32]
-	Mem1056[sp_1022 - 0x00000010:word32] = r6_1054 + 1102
-	Mem1059[sp_1022 - 0x00000014:word32] = r2_999 + 1515
-	call Mem1059[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1083,fp:fp_1087,r0:r0_1075,r1:r1_1079,r11:r11_1100,r2:r2_999,r3:r3_1041,r4:r4_1004,r5:r5_1070,r6:r6_1054,r7:r7_1030,r8:r8_1066,r9:r9_1096,sp:sp_1022 - 0x00000014,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1084,fp:fp_1088,r0:r0_1076,r1:r1_1080,r11:r11_1101,r2:r2_1072,r3:r3_1089,r4:r4_1092,r5:r5_1071,r6:r6_1093,r7:r7_1091,r8:r8_1067,r9:r9_1097,sp:sp_1063
-	Mem1104[sp_1063 - 0x00000004:word32] = r0_1076
-	Mem1107[sp_1063 - 0x00000008:word32] = r2_1072 + 1515
-	Mem1109[sp_1063 - 0x0000000C:word32] = r2_1072
-	r0_1110 = Mem1109[r2_1072 + 0x0000C839:word32]
-	call r0_1110 + 2 (retsize: 4;)
-		uses: ap:ap_1084,fp:fp_1088,r0:r0_1110,r1:r1_1080,r11:r11_1101,r2:r2_1072,r3:r3_1089,r4:r4_1092,r5:r5_1071,r6:r6_1093,r7:r7_1091,r8:r8_1067,r9:r9_1097,sp:sp_1063 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1120,fp:fp_1121,r0:r0_1118,r1:r1_1119,r11:r11_1127,r2:r2_1117,r3:r3_1122,r4:r4_1124,r5:r5_1116,r6:r6_1125,r7:r7_1123,r8:r8_1115,sp:sp_1114
-	r9_1129 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011273:
-	sp_1133 = sp_1021 - 0x00000004
-	Mem1135[sp_1133:uint32] = 0x00000401
-	Mem1138[sp_1133 - 0x00000004:word32] = Mem1135[r2_999 + 0x0000C613:word32]
-	Mem1141[sp_1133 - 0x00000008:word32] = r6_1054 + 1275
-	Mem1144[sp_1133 - 0x0000000C:word32] = r2_999 + 1515
-	call Mem1144[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1083,fp:fp_1087,r0:r0_1075,r1:r1_1079,r11:r11_1100,r2:r2_999,r3:r3_1156,r4:r4_1004,r5:r5_1070,r6:r6_1054,r7:r7_1030,r8:r8_1066,r9:r9_1096,sp:sp_1133 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1154,fp:fp_1155,r0:r0_1152,r1:r1_1153,r11:r11_1162,r2:r2_1151,r3:r3_1157,r4:r4_1159,r5:r5_1150,r6:r6_1160,r7:r7_1158,r8:r8_1149,r9:r9_1161,sp:sp_1148
-	Mem1165[sp_1148 - 0x00000004:word32] = r0_1152
-	Mem1168[sp_1148 - 0x00000008:word32] = r2_1151 + 1515
-	Mem1170[sp_1148 - 0x0000000C:word32] = r2_1151
-	r0_1171 = Mem1170[r2_1151 + 0x0000C839:word32]
-	call r0_1171 + 2 (retsize: 4;)
-		uses: ap:ap_1154,fp:fp_1155,r0:r0_1171,r1:r1_1153,r11:r11_1162,r2:r2_1151,r3:r3_1157,r4:r4_1159,r5:r5_1150,r6:r6_1160,r7:r7_1158,r8:r8_1149,r9:r9_1161,sp:sp_1148 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1181,fp:fp_1182,r0:r0_1179,r1:r1_1180,r11:r11_1188,r2:r2_1178,r3:r3_1183,r4:r4_1185,r5:r5_1177,r6:r6_1186,r7:r7_1184,r8:r8_1176,sp:sp_1175
-	Mem1191[r2_1178 + 0x0000C68E:word32] = Mem1170[r2_1178 + 0x0000C623:word32]
-	Mem1193[r2_1178 + 0x0000C623:word32] = 0x00000000
-	r9_1194 = 0x00000002
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011260:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011227:
-	sp_1198 = sp_1021 - 0x00000004
-	Mem1200[sp_1198:uint32] = 0x00000401
-	Mem1203[sp_1198 - 0x00000004:word32] = -r4_1004
-	Mem1206[sp_1198 - 0x00000008:word32] = Mem1203[r2_999 + 0x0000C613:word32]
-	Mem1209[sp_1198 - 0x0000000C:word32] = r6_1054 + 1199
-	Mem1212[sp_1198 - 0x00000010:word32] = r2_999 + 1515
-	call Mem1212[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1083,fp:fp_1087,r0:r0_1075,r1:r1_1079,r11:r11_1100,r2:r2_999,r3:r3_1156,r4:r4_1004,r5:r5_1070,r6:r6_1054,r7:r7_1030,r8:r8_1066,r9:r9_1096,sp:sp_1198 - 0x00000010,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1222,fp:fp_1223,r0:r0_1220,r1:r1_1221,r11:r11_1229,r2:r2_1219,r3:r3_1224,r4:r4_1226,r5:r5_1218,r6:r6_1227,r7:r7_1225,r8:r8_1217,r9:r9_1228,sp:sp_1216
-	Mem1232[sp_1216 - 0x00000004:word32] = r0_1220
-	Mem1235[sp_1216 - 0x00000008:word32] = r2_1219 + 1515
-	Mem1237[sp_1216 - 0x0000000C:word32] = r2_1219
-	r0_1238 = Mem1237[r2_1219 + 0x0000C839:word32]
-	call r0_1238 + 2 (retsize: 4;)
-		uses: ap:ap_1222,fp:fp_1223,r0:r0_1238,r1:r1_1221,r11:r11_1229,r2:r2_1219,r3:r3_1224,r4:r4_1226,r5:r5_1218,r6:r6_1227,r7:r7_1225,r8:r8_1217,r9:r9_1228,sp:sp_1216 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1248,fp:fp_1249,r0:r0_1246,r1:r1_1247,r11:r11_1255,r2:r2_1245,r3:r3_1250,r4:r4_1252,r5:r5_1244,r6:r6_1253,r7:r7_1251,r8:r8_1243,sp:sp_1242
-	r9_1257 = 0x00000002
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000112FA:
-	r11_1315 = PHI((r11_1255, l00011227), (r11_1100, l00011260), (r11_1188, l00011273), (r11_1127, l000112CC))
-	r9_1313 = PHI((r9_1257, l00011227), (r9_1096, l00011260), (r9_1194, l00011273), (r9_1129, l000112CC))
-	r4_1310 = PHI((r4_1252, l00011227), (r4_1004, l00011260), (r4_1185, l00011273), (r4_1124, l000112CC))
-	r7_1308 = PHI((r7_1251, l00011227), (r7_1030, l00011260), (r7_1184, l00011273), (r7_1123, l000112CC))
-	r3_1306 = PHI((r3_1250, l00011227), (r3_1156, l00011260), (r3_1183, l00011273), (r3_1122, l000112CC))
-	fp_1304 = PHI((fp_1249, l00011227), (fp_1087, l00011260), (fp_1182, l00011273), (fp_1121, l000112CC))
-	ap_1302 = PHI((ap_1248, l00011227), (ap_1083, l00011260), (ap_1181, l00011273), (ap_1120, l000112CC))
-	r1_1300 = PHI((r1_1247, l00011227), (r1_1079, l00011260), (r1_1180, l00011273), (r1_1119, l000112CC))
-	r0_1298 = PHI((r0_1246, l00011227), (r0_1075, l00011260), (r0_1179, l00011273), (r0_1118, l000112CC))
-	r5_1295 = PHI((r5_1244, l00011227), (r5_1070, l00011260), (r5_1177, l00011273), (r5_1116, l000112CC))
-	r8_1293 = PHI((r8_1243, l00011227), (r8_1066, l00011260), (r8_1176, l00011273), (r8_1115, l000112CC))
-	r6_1283 = PHI((r6_1253, l00011227), (r6_1054, l00011260), (r6_1186, l00011273), (r6_1125, l000112CC))
-	sp_1275 = PHI((sp_1242, l00011227), (sp_1021, l00011260), (sp_1175, l00011273), (sp_1114, l000112CC))
-	Mem1262 = PHI((Mem1237, l00011227), (Mem1003, l00011260), (Mem1193, l00011273), (Mem1109, l000112CC))
-	r2_1261 = PHI((r2_1245, l00011227), (r2_999, l00011260), (r2_1178, l00011273), (r2_1117, l000112CC))
-	branch Mem1262[r2_1261 + 128:word32] == 0x00000000 l00011303
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011303:
-	branch Mem1262[r2_1261 + 0x0000C68A:word32] == 0x00000000 l0001130E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001130E:
-	branch Mem1262[r2_1261:word32] == 0x00000000 l00011348
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011348:
-	sp_1276 = sp_1275 - 0x00000004
-	Mem1278[sp_1276:uint32] = 0x00000401
-	Mem1281[sp_1276 - 0x00000004:word32] = Mem1278[r2_1261 + 0x0000C613:word32]
-	Mem1285[sp_1276 - 0x00000008:word32] = r6_1283 + 1352
-	Mem1288[sp_1276 - 0x0000000C:word32] = r2_1261 + 1515
-	call Mem1288[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1302,fp:fp_1304,r0:r0_1298,r1:r1_1300,r11:r11_1315,r2:r2_1261,r3:r3_1306,r4:r4_1310,r5:r5_1295,r6:r6_1283,r7:r7_1308,r8:r8_1293,r9:r9_1313,sp:sp_1276 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1303,fp:fp_1305,r0:r0_1299,r1:r1_1301,r11:r11_1316,r2:r2_1297,r3:r3_1307,r4:r4_1311,r5:r5_1296,r6:r6_1312,r7:r7_1309,r8:r8_1294,r9:r9_1314,sp:sp_1292
-	Mem1319[sp_1292 - 0x00000004:word32] = r0_1299
-	Mem1322[sp_1292 - 0x00000008:word32] = r2_1297 + 1515
-	Mem1324[sp_1292 - 0x0000000C:word32] = r2_1297
-	r0_1325 = Mem1324[r2_1297 + 0x0000C839:word32]
-	call r0_1325 + 2 (retsize: 4;)
-		uses: ap:ap_1303,fp:fp_1305,r0:r0_1325,r1:r1_1301,r11:r11_1316,r2:r2_1297,r3:r3_1307,r4:r4_1311,r5:r5_1296,r6:r6_1312,r7:r7_1309,r8:r8_1294,r9:r9_1314,sp:sp_1292 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1335,fp:fp_1336,r0:r0_1333,r1:r1_1334,r11:r11_1342,r2:r2_1332,r3:r3_1337,r4:r4_1339,r5:r5_1331,r6:r6_1340,r7:r7_1338,r8:r8_1330,r9:r9_1341,sp:sp_1329
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011312:
-	sp_1344 = sp_1275 - 0x00000004
-	Mem1345[sp_1344:word32] = 0x00000000
-	branch Mem1345[r2_1261 + 36:word32] <= 0x00000009 l00011320
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011320:
-	r3_1349 = r7_1308 + 78
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001131A:
-	r3_1353 = r7_1308 + 79
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011324:
-	r3_1359 = PHI((r3_1353, l0001131A), (r3_1349, l00011320))
-	Mem1360[sp_1344 - 0x00000004:word32] = r3_1359
-	Mem1364[sp_1344 - 0x00000008:word32] = r7_1308 + 60
-	Mem1368[sp_1344 - 0x0000000C:word32] = r2_1261 + 1515
-	call Mem1368[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1302,fp:fp_1304,r0:r0_1298,r1:r1_1300,r11:r11_1315,r2:r2_1261,r3:r3_1359,r4:r4_1310,r5:r5_1295,r6:r6_1283,r7:r7_1308,r8:r8_1293,r9:r9_1313,sp:sp_1344 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1383,fp:fp_1385,r0:r0_1379,r1:r1_1381,r11:r11_1395,r2:r2_1377,r3:r3_1386,r4:r4_1389,r5:r5_1376,r6:r6_1391,r7:r7_1387,r8:r8_1374,r9:r9_1393,sp:sp_1372
-	Mem1398[sp_1372 - 0x00000004:word32] = r0_1379
-	Mem1401[sp_1372 - 0x00000008:word32] = r2_1377 + 1515
-	Mem1403[sp_1372 - 0x0000000C:word32] = r2_1377
-	r0_1404 = Mem1403[r2_1377 + 0x0000C839:word32]
-	call r0_1404 + 2 (retsize: 4;)
-		uses: ap:ap_1383,fp:fp_1385,r0:r0_1404,r1:r1_1381,r11:r11_1395,r2:r2_1377,r3:r3_1386,r4:r4_1389,r5:r5_1376,r6:r6_1391,r7:r7_1387,r8:r8_1374,r9:r9_1393,sp:sp_1372 - 0x0000000C,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1414,fp:fp_1415,r0:r0_1412,r1:r1_1413,r11:r11_1421,r2:r2_1411,r3:r3_1416,r4:r4_1418,r5:r5_1410,r6:r6_1419,r7:r7_1417,r8:r8_1409,r9:r9_1420,sp:sp_1408
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011374:
-	r11_1456 = PHI((r11_1421, l00011324), (r11_1342, l00011348))
-	r9_1454 = PHI((r9_1420, l00011324), (r9_1341, l00011348))
-	r6_1452 = PHI((r6_1419, l00011324), (r6_1340, l00011348))
-	r4_1450 = PHI((r4_1418, l00011324), (r4_1339, l00011348))
-	r7_1448 = PHI((r7_1417, l00011324), (r7_1338, l00011348))
-	r3_1446 = PHI((r3_1416, l00011324), (r3_1337, l00011348))
-	fp_1444 = PHI((fp_1415, l00011324), (fp_1336, l00011348))
-	ap_1442 = PHI((ap_1414, l00011324), (ap_1335, l00011348))
-	r1_1440 = PHI((r1_1413, l00011324), (r1_1334, l00011348))
-	r0_1438 = PHI((r0_1412, l00011324), (r0_1333, l00011348))
-	r5_1435 = PHI((r5_1410, l00011324), (r5_1331, l00011348))
-	r8_1433 = PHI((r8_1409, l00011324), (r8_1330, l00011348))
-	Mem1426 = PHI((Mem1403, l00011324), (Mem1324, l00011348))
-	r2_1425 = PHI((r2_1411, l00011324), (r2_1332, l00011348))
-	sp_1423 = PHI((sp_1408, l00011324), (sp_1329, l00011348))
-	sp_1424 = sp_1423 - 0x00000004
-	Mem1428[sp_1424:word32] = Mem1426[r2_1425 + 0x0000C617:word32]
-	call Mem1428[0x0001925C:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1442,fp:fp_1444,r0:r0_1438,r1:r1_1440,r11:r11_1456,r2:r2_1425,r3:r3_1446,r4:r4_1450,r5:r5_1435,r6:r6_1452,r7:r7_1448,r8:r8_1433,r9:r9_1454,sp:sp_1424,Stack +FFFFFFF4:dwLoc10
-		defs: fp:fp_1445,r1:r1_1441,r11:r11_1457,r2:r2_1437,r3:r3_1447,r4:r4_1451,r5:r5_1436,r6:r6_1453,r7:r7_1449,r8:r8_1434,r9:r9_1455
-	branch r9_1455 <= 0x00000001 l0001138C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001138C:
-	fp_1467 = Mem1428[fp_1445 + 0x0000000C:word32]
-	ap_1468 = Mem1428[fp_1445 + 0x00000008:word32]
-	r1Out = r1_1441
-	r2Out = r2_1437
-	r3Out = r3_1447
-	r4Out = r4_1451
-	r5Out = r5_1436
-	r6Out = r6_1453
-	r7Out = r7_1449
-	r8Out = r8_1434
-	r9Out = r9_1455
-	r11Out = r11_1457
-	apOut = ap_1468
-	fpOut = fp_1467
-	spOut = fp_1445 - 0x00000004
-	return 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011386:
-	fp_1474 = Mem1428[fp_1445 + 0x0000000C:word32]
-	ap_1475 = Mem1428[fp_1445 + 0x00000008:word32]
-	r1Out = r1_1441
-	r2Out = r2_1437
-	r3Out = r3_1447
-	r4Out = r4_1451
-	r5Out = r5_1436
-	r6Out = r6_1453
-	r7Out = r7_1449
-	r8Out = r8_1434
-	r9Out = r9_1455
-	r11Out = r11_1457
-	apOut = ap_1475
-	fpOut = fp_1474
-	spOut = fp_1445 - 0x00000004
-	return r9_1455
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001130B:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011300:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011390:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000111DD:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011742:
-	sp_1480 = sp_927 - 0x00000004
-	Mem1482[sp_1480:word32] = Mem1001[r2_932 + 0x0000C617:word32]
-	call Mem1482[0x0001925C:word32] + 2 (retsize: 4;)
-		uses: ap:ap_954,fp:fp_956,r0:r0_950,r1:r1_952,r11:r11_966,r2:r2_932,r3:r3_958,r4:r4_922,r5:r5_947,r6:r6_936,r7:r7_960,r8:r8_917,r9:r9_964,sp:sp_1480,Stack +FFFFFFF4:dwLoc10
-		defs: fp:fp_1493,r1:r1_1491,r11:r11_1499,r2:r2_1489,r3:r3_1494,r4:r4_1496,r5:r5_1488,r6:r6_1497,r7:r7_1495,r8:r8_1487,r9:r9_1498,sp:sp_1486
-	branch Mem1482[r2_1489 + 72:word32] == 0x00000000 l000117A3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011754:
-	branch Mem1482[r2_1489:word32] != 0x00000000 l000117A3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011758:
-	branch Mem1482[fp_1493 + -12:word32] == 0x00000000 l000117A3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000117A3:
-	r8_1768 = PHI((r8_1487, l00011742), (r8_1487, l00011754), (r8_1487, l00011758), (r8_1564, l00011771), (r8_1564, l000117A0))
-	r7_1764 = PHI((r7_1495, l00011742), (r7_1495, l00011754), (r7_1495, l00011758), (r7_1572, l00011771), (r7_1572, l000117A0))
-	r6_1760 = PHI((r6_1497, l00011742), (r6_1497, l00011754), (r6_1497, l00011758), (r6_1574, l00011771), (r6_1574, l000117A0))
-	r5_1756 = PHI((r5_1488, l00011742), (r5_1488, l00011754), (r5_1488, l00011758), (r5_1565, l00011771), (r5_1565, l000117A0))
-	r4_1753 = PHI((r4_1496, l00011742), (r4_1496, l00011754), (r4_1496, l00011758), (r4_1573, l00011771), (r4_1573, l000117A0))
-	r3_1749 = PHI((r3_1494, l00011742), (r3_1494, l00011754), (r3_1494, l00011758), (r3_1571, l00011771), (r3_1571, l000117A0))
-	r2_1745 = PHI((r2_1489, l00011742), (r2_1489, l00011754), (r2_1489, l00011758), (r2_1566, l00011771), (r2_1566, l000117A0))
-	r11_1741 = PHI((r11_1499, l00011742), (r11_1499, l00011754), (r11_1499, l00011758), (r11_1576, l00011771), (r11_1576, l000117A0))
-	r1_1737 = PHI((r1_1491, l00011742), (r1_1491, l00011754), (r1_1491, l00011758), (r1_1568, l00011771), (r1_1568, l000117A0))
-	Mem1592 = PHI((Mem1482, l00011742), (Mem1482, l00011754), (Mem1482, l00011758), (Mem1558, l00011771), (Mem1558, l000117A0))
-	fp_1590 = PHI((fp_1493, l00011742), (fp_1493, l00011754), (fp_1493, l00011758), (fp_1570, l00011771), (fp_1570, l000117A0))
-	r9_1585 = PHI((r9_1498, l00011742), (r9_1498, l00011754), (r9_1498, l00011758), (r9_1575, l00011771), (r9_1581, l000117A0))
-	sp_1591 = fp_1590 - 0x00000004
-	fp_1593 = Mem1592[sp_1591 + 0x00000010:word32]
-	ap_1594 = Mem1592[sp_1591 + 0x0000000C:word32]
-	r1Out = r1_1737
-	r2Out = r2_1745
-	r3Out = r3_1749
-	r4Out = r4_1753
-	r5Out = r5_1756
-	r6Out = r6_1760
-	r7Out = r7_1764
-	r8Out = r8_1768
-	r9Out = r9_1585
-	r11Out = r11_1741
-	apOut = ap_1594
-	fpOut = fp_1593
-	spOut = sp_1591
-	return r9_1585
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001175D:
-	Mem1515[sp_1486 - 0x00000004:word32] = Mem1482[fp_1493 + -8:word32]
-	Mem1518[sp_1486 - 0x00000008:word32] = Mem1515[r2_1489 + 0x0000C613:word32]
-	fn0000BDC2()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011119:
-	sp_1595 = sp_738 - 0x00000004
-	Mem1597[sp_1595:word32] = Mem693[r2_691 + 0x0000C617:word32]
-	call Mem1597[0x0001925C:word32] + 2 (retsize: 4;)
-		uses: ap:ap_792,fp:fp_797,r0:r0_781,r1:r1_787,r11:r11_814,r2:r2_691,r3:r3_704,r4:r4_1611,r5:r5_773,r6:r6_755,r7:r7_803,r8:r8_768,r9:r9_810,sp:sp_1595,Stack +FFFFFFF4:dwLoc10
-		defs: fp:fp_1608,r1:r1_1606,r11:r11_1617,r2:r2_1604,r3:r3_1609,r4:r4_1614,r5:r5_1603,r6:r6_1615,r7:r7_1610,r8:r8_1602,r9:r9_1616
-	fp_1624 = Mem1597[fp_1608 + 0x0000000C:word32]
-	ap_1625 = Mem1597[fp_1608 + 0x00000008:word32]
-	r1Out = r1_1606
-	r2Out = r2_1604
-	r3Out = r3_1609
-	r4Out = r4_1614
-	r5Out = r5_1603
-	r6Out = r6_1615
-	r7Out = r7_1610
-	r8Out = r8_1602
-	r9Out = r9_1616
-	r11Out = r11_1617
-	apOut = ap_1625
-	fpOut = fp_1624
-	spOut = fp_1608 - 0x00000004
-	return r9_1616
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001105D:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0001104B:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000110EF:
-	r11_1659 = PHI((r11, l0001104B), (r11_498, l0001105D), (r11_815, l00011083), (r11_816, l000110E7))
-	r9_1657 = PHI((r9_487, l0001104B), (r9_511, l0001105D), (r9_574, l00011083), (r9_687, l000110E7))
-	r6_1655 = PHI((r6_477, l0001104B), (r6_503, l0001105D), (r6_564, l00011083), (r6_756, l000110E7))
-	r4_1653 = PHI((r4_475, l0001104B), (r4_501, l0001105D), (r4_562, l00011083), (r4_686, l000110E7))
-	r7_1651 = PHI((r7_478, l0001104B), (r7_504, l0001105D), (r7_565, l00011083), (r7_804, l000110E7))
-	r3_1649 = PHI((r3_474, l0001104B), (r3_500, l0001105D), (r3_561, l00011083), (r3_706, l000110E7))
-	fp_1647 = PHI((fp_471, l0001104B), (fp_496, l0001105D), (fp_558, l00011083), (fp_798, l000110E7))
-	ap_1645 = PHI((ap_470, l0001104B), (ap_495, l0001105D), (ap_557, l00011083), (ap_793, l000110E7))
-	r1_1643 = PHI((r1_482, l0001104B), (r1_482, l0001105D), (r1_569, l00011083), (r1_788, l000110E7))
-	r0_1641 = PHI((r0_472, l0001104B), (r0_497, l0001105D), (r0_559, l00011083), (r0_783, l000110E7))
-	r5_1638 = PHI((r5_476, l0001104B), (r5_502, l0001105D), (r5_563, l00011083), (r5_776, l000110E7))
-	r8_1636 = PHI((r8_479, l0001104B), (r8_505, l0001105D), (r8_566, l00011083), (r8_769, l000110E7))
-	Mem1629 = PHI((Mem457, l0001104B), (Mem457, l0001105D), (Mem537, l00011083), (Mem694, l000110E7))
-	r2_1628 = PHI((r2_473, l0001104B), (r2_499, l0001105D), (r2_560, l00011083), (r2_692, l000110E7))
-	sp_1626 = PHI((sp_481, l0001104B), (sp_506, l0001105D), (sp_568, l00011083), (sp_739, l000110E7))
-	sp_1627 = sp_1626 - 0x00000004
-	Mem1631[sp_1627:word32] = Mem1629[r2_1628 + 0x0000C617:word32]
-	call Mem1631[0x0001925C:word32] + 2 (retsize: 4;)
-		uses: ap:ap_1645,fp:fp_1647,r0:r0_1641,r1:r1_1643,r11:r11_1659,r2:r2_1628,r3:r3_1649,r4:r4_1653,r5:r5_1638,r6:r6_1655,r7:r7_1651,r8:r8_1636,r9:r9_1657,sp:sp_1627,Stack +FFFFFFF4:dwLoc10
-		defs: ap:ap_1646,fp:fp_1648,r1:r1_1644,r11:r11_1660,r2:r2_1640,r3:r3_1650,r4:r4_1654,r5:r5_1639,r6:r6_1656,r7:r7_1652,r8:r8_1637,r9:r9_1658
-	branch Mem1631[ap_1646 + 4:word32] == 0x00000000 l00011105
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011105:
-	Mem1667[r2_1640 + 0x0000C6E9:word32] = 0x00000001
-	fp_1673 = Mem1667[fp_1648 + 0x0000000C:word32]
-	ap_1674 = Mem1667[fp_1648 + 0x00000008:word32]
-	r1Out = r1_1644
-	r2Out = r2_1640
-	r3Out = r3_1650
-	r4Out = r4_1654
-	r5Out = r5_1639
-	r6Out = r6_1656
-	r7Out = r7_1652
-	r8Out = r8_1637
-	r9Out = r9_1658
-	r11Out = r11_1660
-	apOut = ap_1674
-	fpOut = fp_1673
-	spOut = fp_1648 - 0x00000004
-	return 0x00000009
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00011101:
-	fp_1680 = Mem1631[fp_1648 + 0x0000000C:word32]
-	ap_1681 = Mem1631[fp_1648 + 0x00000008:word32]
-	r1Out = r1_1644
-	r2Out = r2_1640
-	r3Out = r3_1650
-	r4Out = r4_1654
-	r5Out = r5_1639
-	r6Out = r6_1656
-	r7Out = r7_1652
-	r8Out = r8_1637
-	r9Out = r9_1658
-	r11Out = r11_1660
-	apOut = ap_1681
-	fpOut = fp_1680
-	spOut = fp_1648 - 0x00000004
-	return r9_1658
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010FEC:
-	fp_1687 = Mem359[fp_345 + 0x0000000C:word32]
-	ap_1688 = Mem359[fp_345 + 0x00000008:word32]
-	r1Out = r1_348
-	r2Out = r2_349
-	r3Out = r3_350
-	r4Out = r4_351
-	r5Out = r5_352
-	r6Out = r6_353
-	r7Out = r7
-	r8Out = r8
-	r9Out = r9
-	r11Out = r11
-	apOut = ap_1688
-	fpOut = fp_1687
-	spOut = fp_345 - 0x00000004
-	return 0x00000004
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010FC1:
-	fp_1701 = Mem0[fp + 0x0000000C:word32]
-	ap_1702 = Mem0[fp + 0x00000008:word32]
-	r1Out = r1
-	r2Out = r2
-	r3Out = r3
-	r4Out = r4
-	r5Out = r5
-	r6Out = r6
-	r7Out = r7
-	r8Out = r8
-	r9Out = r9
-	r11Out = r11
-	apOut = ap_1702
-	fpOut = fp_1701
-	spOut = fp - 0x00000004
-	return 0x00000002
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00010FC5:
-	fn0000D4A2()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00010E6A_entry:
-	def r2
-	def Mem0
-	def ap
-	def fp
-	def r1
-	def r3
-	def r7
-	def r4
-	def r6
-	def r9
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010E6A:
-	v12_9 = Mem0[r2 + 0x0000C613:word32]
-	r8_4 = 0x00000000
-	r5_5 = 0x00000000
-	r0_19 = fn00018F22(r1, ap, fp, out r1_21, out ap_17, out fp_18, out sp_20)
-	branch r0_19 != 0x00000000 l00010EDF
+	word32 r11
+	word32 v12_9 = Mem0[r2 + 0x0000C613:word32]
+	word32 r8_132 = 0x00000000
+	word32 r5_136 = 0x00000000
+	word32 ap_16
+	word32 sp_19
+	word32 r1_144
+	word32 fp_149
+	word32 r0_140 = fn00018F22(ap, fp, out r1_144, out ap_16, out fp_149, out sp_19)
+	branch r0_140 != 0x00000000 l00010EDF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010EA5:
-	Mem32[sp_20 - 0x00000004:word32] = r2 + 0x0000C694
-	Mem35[sp_20 - 0x00000008:word32] = Mem32[r2 + 0x0000C613:word32]
-	call Mem35[0x000192A8:word32] + 2 (retsize: 4;)
-		uses: ap:ap_17,fp:fp_18,r0:r0_19,r1:r1_21,r11:r11,r2:r2,r3:r3,r4:r4,r5:0x00000000,r6:r6,r7:r7,r8:0x00000000,r9:r9,sp:sp_20 - 0x00000008,Stack +FFFFFFF4:v12_9
-		defs: ap:ap_45,fp:fp_46,r0:r0_43,r1:r1_44,r11:r11_1706,r2:r2_42,r3:r3_48,r4:r4_52,r5:r5_41,r6:r6_54,r7:r7_50,r8:r8_40,r9:r9_56,sp:sp_39
-	branch r0_43 != 0x00000000 l00010EDF
+	Mem31[sp_19 - 0x00000004:word32] = r2 + 0x0000C694
+	Mem34[sp_19 - 0x00000008:word32] = Mem31[r2 + 0x0000C613:word32]
+	call Mem34[0x000192A8:word32] + 2 (retsize: 4;)
+		uses: ap:ap_16,fp:fp_17,r0:r0_18,r1:r1_20,r11:r11,r2:r2,r3:r3,r4:r4,r5:0x00000000,r6:r6,r7:r7,r8:0x00000000,r9:r9,sp:sp_19 - 0x00000008,Stack +FFFFFFF4:v12_9
+		defs: ap:ap_44,fp:fp_45,r0:r0_42,r1:r1_43,r11:r11_1657,r2:r2_41,r3:r3_47,r4:r4_51,r5:r5_40,r6:r6_53,r7:r7_49,r8:r8_39,r9:r9_55,sp:sp_38
+	branch r0_140 != 0x00000000 l00010EDF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010EBC:
-	r0_63 = (uint32) Mem35[r2_42 + 0x0000C69E:word16] & ~0xFFFF0FFF
-	r1_64 = 0x00000000
-	branch r0_63 != 0x00004000 l00010ED7
+	r0_140 = (uint32) Mem34[r2 + 0x0000C69E:word16] & ~0xFFFF0FFF
+	r1_144 = 0x00000000
+	branch r0_140 != 0x00004000 l00010ED7
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010ED5:
-	r1_68 = 0x00000001
+	r1_144 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010ED7:
-	r1_70 = PHI((r1_64, l00010EBC), (r1_68, l00010ED5))
-	r5_71 = r1_70
-	branch r1_70 != 0x00000000 l00010EDF
+	r5_136 = r1_144
+	branch r1_144 != 0x00000000 l00010EDF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010EDF:
-	r11_1708 = PHI((r11, l00010E6A), (r11_1706, l00010EA5), (r11_1706, l00010ED7))
-	r9_164 = PHI((r9, l00010E6A), (r9_56, l00010EA5), (r9_56, l00010ED7))
-	r4_159 = PHI((r4, l00010E6A), (r4_52, l00010EA5), (r4_52, l00010ED7))
-	r7_155 = PHI((r7, l00010E6A), (r7_50, l00010EA5), (r7_50, l00010ED7))
-	fp_150 = PHI((fp_18, l00010E6A), (fp_46, l00010EA5), (fp_46, l00010ED7))
-	r1_145 = PHI((r1_21, l00010E6A), (r1_44, l00010EA5), (r1_70, l00010ED7))
-	r0_141 = PHI((r0_19, l00010E6A), (r0_43, l00010EA5), (r0_63, l00010ED7))
-	r5_137 = PHI((r5_5, l00010E6A), (r5_41, l00010EA5), (r5_71, l00010ED7))
-	r8_133 = PHI((r8_4, l00010E6A), (r8_40, l00010EA5), (r8_40, l00010ED7))
-	r3_117 = PHI((r3, l00010E6A), (r3_48, l00010EA5), (r3_48, l00010ED7))
-	r6_105 = PHI((r6, l00010E6A), (r6_54, l00010EA5), (r6_54, l00010ED7))
-	sp_90 = PHI((sp_20, l00010E6A), (sp_39, l00010EA5), (sp_39, l00010ED7))
-	r2_84 = PHI((r2, l00010E6A), (r2_42, l00010EA5), (r2_42, l00010ED7))
-	Mem78 = PHI((Mem10, l00010E6A), (Mem35, l00010EA5), (Mem35, l00010ED7))
-	ap_76 = PHI((ap_17, l00010E6A), (ap_45, l00010EA5), (ap_45, l00010ED7))
-	branch Mem78[ap_76 + 4:word32] != 0x00000000 l00010EE7
+	branch Mem77[ap_16 + 4:word32] != 0x00000000 l00010EE7
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010EE7:
-	branch Mem78[r2_84 + 0x0000C6E9:word32] == 0x00000000 l00010F50
+	branch Mem77[r2 + 0x0000C6E9:word32] == 0x00000000 l00010F50
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010F50:
-	sp_92 = sp_90 - 0x00000004
-	Mem94[sp_92:uint32] = 0x00000401
-	Mem97[sp_92 - 0x00000004:word32] = Mem94[r2_84 + 0x0000C613:word32]
-	Mem100[sp_92 - 0x00000008:word32] = Mem97[r2_84 + 0x0000C60F:word32]
-	branch Mem100[r2_84:word32] == 0x00000000 l00010F70
+	word32 sp_91 = sp_19 - 0x00000004
+	Mem93[sp_91:uint32] = 0x00000401
+	Mem96[sp_91 - 0x00000004:word32] = Mem93[r2 + 0x0000C613:word32]
+	Mem99[sp_91 - 0x00000008:word32] = Mem96[r2 + 0x0000C60F:word32]
+	branch Mem99[r2:word32] == 0x00000000 l00010F70
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010F70:
-	r3_107 = r6_105 + 456
+	r3 = r6 + 456
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9188,57 +7080,70 @@ l00010F65:
 // SymbolicIn:
 
 l00010F75:
-	r3_116 = PHI((r3_117, l00010F65), (r3_107, l00010F70))
-	Mem119[sp_92 - 0x0000000C:word32] = r3_116
-	Mem123[sp_92 - 0x00000010:word32] = r6_105 + 421
-	Mem127[sp_92 - 0x00000014:word32] = r2_84 + 1515
-	call Mem127[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_76,fp:fp_150,r0:r0_141,r1:r1_145,r11:r11_1708,r2:r2_84,r3:r3_116,r4:r4_159,r5:r5_137,r6:r6_105,r7:r7_155,r8:r8_133,r9:r9_164,sp:sp_92 - 0x00000014,Stack +FFFFFFF4:v12_9
-		defs: ap:ap_148,fp:fp_152,r0:r0_143,r1:r1_146,r11:r11_1710,r2:r2_139,r3:r3_153,r4:r4_161,r5:r5_138,r6:r6_162,r7:r7_157,r8:r8_135,r9:r9_166,sp:sp_131
-	Mem169[sp_131 - 0x00000004:word32] = r0_143
-	Mem172[sp_131 - 0x00000008:word32] = r2_139 + 1515
-	Mem174[sp_131 - 0x0000000C:word32] = r2_139
-	r0_175 = Mem174[r2_139 + 0x0000C839:word32]
-	call r0_175 + 2 (retsize: 4;)
-		uses: ap:ap_148,fp:fp_152,r0:r0_175,r1:r1_146,r11:r11_1710,r2:r2_139,r3:r3_153,r4:r4_161,r5:r5_138,r6:r6_162,r7:r7_157,r8:r8_135,r9:r9_166,sp:sp_131 - 0x0000000C,Stack +FFFFFFF4:v12_9
-		defs: fp:fp_186,r1:r1_184,r11:r11_1714,r2:r2_182,r3:r3_187,r4:r4_189,r5:r5_181,r6:r6_190,r7:r7_188,r8:r8_180,r9:r9_191
+	Mem118[sp_91 - 0x0000000C:word32] = r3
+	Mem122[sp_91 - 0x00000010:word32] = r6 + 421
+	Mem126[sp_91 - 0x00000014:word32] = r2 + 1515
+	word32 sp_130
+	word32 r8_134
+	word32 r5_137
+	word32 r2_138
+	word32 r0_142
+	word32 r1_145
+	word32 ap_147
+	word32 fp_151
+	word32 r3_152
+	word32 r7_156
+	word32 r4_160
+	word32 r6_161
+	word32 r9_165
+	word32 r11_1661
+	call Mem126[0x000192D0:word32] + 2 (retsize: 4;)
+		uses: ap:ap_75,fp:fp_149,r0:r0_140,r1:r1_144,r11:r11_1659,r2:r2_83,r3:r3_115,r4:r4_158,r5:r5_136,r6:r6_104,r7:r7_154,r8:r8_132,r9:r9_163,sp:sp_91 - 0x00000014,Stack +FFFFFFF4:v12_9
+		defs: ap:ap_147,fp:fp_151,r0:r0_142,r1:r1_145,r11:r11_1661,r2:r2_138,r3:r3_152,r4:r4_160,r5:r5_137,r6:r6_161,r7:r7_156,r8:r8_134,r9:r9_165,sp:sp_130
+	Mem168[sp_130 - 0x00000004:word32] = r0_142
+	Mem171[sp_130 - 0x00000008:word32] = r2_138 + 1515
+	Mem173[sp_130 - 0x0000000C:word32] = r2_138
+	word32 r0_174 = Mem173[r2_138 + 0x0000C839:word32]
+	call r0_174 + 2 (retsize: 4;)
+		uses: ap:ap_147,fp:fp_151,r0:r0_174,r1:r1_145,r11:r11_1661,r2:r2_138,r3:r3_152,r4:r4_160,r5:r5_137,r6:r6_161,r7:r7_156,r8:r8_134,r9:r9_165,sp:sp_130 - 0x0000000C,Stack +FFFFFFF4:v12_9
+		defs: r5:r5_180
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010EEF:
-	sp_193 = sp_90 - 0x00000004
-	Mem195[sp_193:uint32] = 0x00000401
-	Mem198[sp_193 - 0x00000004:word32] = Mem195[r2_84 + 0x0000C613:word32]
-	r3_199 = Mem198[r2_84:word32]
-	branch r3_199 == 0x00000000 l00010F08
+	word32 r4_203
+	word32 sp_192 = sp_19 - 0x00000004
+	Mem194[sp_192:uint32] = 0x00000401
+	Mem197[sp_192 - 0x00000004:word32] = Mem194[r2 + 0x0000C613:word32]
+	word32 r3_198 = Mem197[r2:word32]
+	branch r3_198 == 0x00000000 l00010F08
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010F08:
-	r4_204 = r7_155 + 39
+	r4_203 = r7 + 39
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010EFF:
-	r4_208 = r7_155 + 40
+	r4_203 = r7 + 40
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010F0C:
-	r4_214 = PHI((r4_208, l00010EFF), (r4_204, l00010F08))
-	Mem215[sp_193 - 0x00000008:word32] = r4_214
-	Mem219[sp_193 - 0x0000000C:word32] = Mem215[r2_84 + 0x0000C60F:word32]
-	branch r3_199 == 0x00000000 l00010F24
+	Mem214[sp_192 - 0x00000008:word32] = r4_203
+	Mem218[sp_192 - 0x0000000C:word32] = Mem214[r2 + 0x0000C60F:word32]
+	branch r3_198 == 0x00000000 l00010F24
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010F24:
-	r3_226 = r6_105 + 456
+	r3_198 = r6 + 456
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9249,20 +7154,33 @@ l00010F18:
 // SymbolicIn:
 
 l00010F29:
-	r3_235 = PHI((r3_199, l00010F18), (r3_226, l00010F24))
-	Mem236[sp_193 - 0x00000010:word32] = r3_235
-	Mem240[sp_193 - 0x00000014:word32] = r6_105 + 340
-	Mem244[sp_193 - 0x00000018:word32] = r2_84 + 1515
-	call Mem244[0x000192D0:word32] + 2 (retsize: 4;)
-		uses: ap:ap_76,fp:fp_150,r0:r0_141,r1:r1_145,r11:r11_1708,r2:r2_84,r3:r3_235,r4:r4_214,r5:r5_137,r6:r6_105,r7:r7_155,r8:r8_133,r9:r9_164,sp:sp_193 - 0x00000018,Stack +FFFFFFF4:v12_9
-		defs: ap:ap_264,fp:fp_267,r0:r0_258,r1:r1_261,r11:r11_1717,r2:r2_255,r3:r3_268,r4:r4_273,r5:r5_254,r6:r6_274,r7:r7_271,r8:r8_251,r9:r9_277,sp:sp_248
-	Mem280[sp_248 - 0x00000004:word32] = r0_258
-	Mem283[sp_248 - 0x00000008:word32] = r2_255 + 1515
-	Mem285[sp_248 - 0x0000000C:word32] = r2_255
-	r0_286 = Mem285[r2_255 + 0x0000C839:word32]
-	call r0_286 + 2 (retsize: 4;)
-		uses: ap:ap_264,fp:fp_267,r0:r0_286,r1:r1_261,r11:r11_1717,r2:r2_255,r3:r3_268,r4:r4_273,r5:r5_254,r6:r6_274,r7:r7_271,r8:r8_251,r9:r9_277,sp:sp_248 - 0x0000000C,Stack +FFFFFFF4:v12_9
-		defs: fp:fp_297,r1:r1_295,r11:r11_1720,r2:r2_293,r3:r3_298,r4:r4_300,r5:r5_292,r6:r6_301,r7:r7_299,r8:r8_291,r9:r9_302
+	Mem235[sp_192 - 0x00000010:word32] = r3_198
+	Mem239[sp_192 - 0x00000014:word32] = r6 + 340
+	Mem243[sp_192 - 0x00000018:word32] = r2 + 1515
+	word32 sp_247
+	word32 r8_250
+	word32 r5_253
+	word32 r2_254
+	word32 r0_257
+	word32 r1_260
+	word32 ap_263
+	word32 fp_266
+	word32 r3_267
+	word32 r7_270
+	word32 r4_272
+	word32 r6_273
+	word32 r9_276
+	word32 r11_1668
+	call Mem243[0x000192D0:word32] + 2 (retsize: 4;)
+		uses: ap:ap_75,fp:fp_149,r0:r0_140,r1:r1_144,r11:r11_1659,r2:r2_83,r3:r3_234,r4:r4_213,r5:r5_136,r6:r6_104,r7:r7_154,r8:r8_132,r9:r9_163,sp:sp_192 - 0x00000018,Stack +FFFFFFF4:v12_9
+		defs: ap:ap_263,fp:fp_266,r0:r0_257,r1:r1_260,r11:r11_1668,r2:r2_254,r3:r3_267,r4:r4_272,r5:r5_253,r6:r6_273,r7:r7_270,r8:r8_250,r9:r9_276,sp:sp_247
+	Mem279[sp_247 - 0x00000004:word32] = r0_257
+	Mem282[sp_247 - 0x00000008:word32] = r2_254 + 1515
+	Mem284[sp_247 - 0x0000000C:word32] = r2_254
+	word32 r0_285 = Mem284[r2_254 + 0x0000C839:word32]
+	call r0_285 + 2 (retsize: 4;)
+		uses: ap:ap_263,fp:fp_266,r0:r0_285,r1:r1_260,r11:r11_1668,r2:r2_254,r3:r3_267,r4:r4_272,r5:r5_253,r6:r6_273,r7:r7_270,r8:r8_250,r9:r9_276,sp:sp_247 - 0x0000000C,Stack +FFFFFFF4:v12_9
+		defs: r5:r5_291
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9273,54 +7191,23 @@ l00010EE4:
 // SymbolicIn:
 
 l00010F98:
-	r9_1771 = PHI((r9_164, l00010EE4), (r9_191, l00010F75), (r9_302, l00010F29))
-	r8_1767 = PHI((r8_133, l00010EE4), (r8_180, l00010F75), (r8_291, l00010F29))
-	r7_1763 = PHI((r7_155, l00010EE4), (r7_188, l00010F75), (r7_299, l00010F29))
-	r6_1759 = PHI((r6_105, l00010EE4), (r6_190, l00010F75), (r6_301, l00010F29))
-	r4_1752 = PHI((r4_159, l00010EE4), (r4_189, l00010F75), (r4_300, l00010F29))
-	r3_1748 = PHI((r3_117, l00010EE4), (r3_187, l00010F75), (r3_298, l00010F29))
-	r2_1744 = PHI((r2_84, l00010EE4), (r2_182, l00010F75), (r2_293, l00010F29))
-	r11_1740 = PHI((r11_1708, l00010EE4), (r11_1714, l00010F75), (r11_1720, l00010F29))
-	Mem330 = PHI((Mem78, l00010EE4), (Mem174, l00010F75), (Mem285, l00010F29))
-	fp_327 = PHI((fp_150, l00010EE4), (fp_186, l00010F75), (fp_297, l00010F29))
-	r1_310 = PHI((r1_145, l00010EE4), (r1_184, l00010F75), (r1_295, l00010F29))
-	r5_304 = PHI((r5_137, l00010EE4), (r5_181, l00010F75), (r5_292, l00010F29))
-	branch r5_304 == 0x00000000 l00010FA4
+	branch r5_136 == 0x00000000 l00010FA4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010FA4:
-	r1_312 = SEQ(SLICE(r1_310, word24, 8), 0x09)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010F9C:
-	r1_318 = SEQ(SLICE(r1_310, word24, 8), 0x4C)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00010FA7:
-	r1_322 = PHI((r1_318, l00010F9C), (r1_312, l00010FA4))
-	sp_328 = fp_327 - 0x00000004
-	fp_331 = Mem330[sp_328 + 0x00000010:word32]
-	ap_332 = Mem330[sp_328 + 0x0000000C:word32]
-	r1Out = r1_322
-	r2Out = r2_1744
-	r3Out = r3_1748
-	r4Out = r4_1752
-	r5Out = r5_304
-	r6Out = r6_1759
-	r7Out = r7_1763
-	r8Out = r8_1767
-	r9Out = r9_1771
-	r11Out = r11_1740
-	apOut = ap_332
-	fpOut = fp_331
-	spOut = sp_328
-	return (int32) (int8) r1_322
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9336,7 +7223,7 @@ l00010EDC:
 // SymbolicIn:
 
 l00010FAB:
-	Mem334[r2_42 + 0x0000C61B:word32] = Mem35[r2_42 + 0x0000C6AE:word32]
+	Mem333[r2 + 0x0000C61B:word32] = Mem34[r2 + 0x0000C6AE:word32]
 	fn00009A52()
 // DataOut:
 // DataOut (flags):
@@ -9344,11 +7231,11 @@ l00010FAB:
 
 
 
-word32 fn000117AA(word32 r0, word32 r1, word32 r2, word32 r3, word32 r6, word32 r7, word32 r8, word32 r9, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
+void fn000117AA(word32 r0, word32 r1, word32 r2, word32 r3, word32 r6, word32 r7, word32 r8, word32 r9, word32 ap, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
-// LiveOut: ap fp r0 r1 r2 r3 r4 r5 r6 r7 r8 sp
+// LiveOut:
 // Trashed: CVZN ap fp r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 fn000117AA_entry:
@@ -9550,7 +7437,6 @@ l00011B1D:
 		defs: ap:ap_238,fp:fp_237,r0:r0_234,r1:r1_516,r2:r2_232,r3:r3_236,r4:r4_231,r5:r5_233,r6:r6_240,r7:r7_241,r8:r8_235,r9:r9_239,sp:sp_230
 	Mem244[r2_232 + 0x0000C686:word16] = (word16) r0_234
 	Mem247[sp_230 - 0x00000004:word32] = fp_237 + -16
-	word32 r1_517
 	word32 sp_251
 	word32 r4_252
 	word32 r2_253
@@ -9565,14 +7451,15 @@ l00011B1D:
 	word32 r7_262
 	call fn00000002 (retsize: 4;)
 		uses: ap:ap_238,fp:fp_237,r0:r0_234,r1:r1_516,r2:r2_232,r3:r3_236,r4:r4_231,r5:r5_233,r6:r6_240,r7:r7_241,r8:r8_235,r9:r9_239,sp:sp_230 - 0x00000004,Stack +FFFFFFDC:v14_15,Stack +FFFFFFE0:0x0000000000000000
-		defs: ap:ap_259,fp:fp_258,r0:r0_255,r1:r1_517,r2:r2_253,r3:r3_257,r4:r4_252,r5:r5_254,r6:r6_261,r7:r7_262,r8:r8_256,r9:r9_260,sp:sp_251
+		defs: ap:ap_259,fp:fp_258,r0:r0_255,r2:r2_253,r3:r3_257,r4:r4_252,r5:r5_254,r6:r6_261,r7:r7_262,r8:r8_256,r9:r9_260,sp:sp_251
 	Mem265[r2_253 + 0x0000C688:word16] = (word16) r0_255
 	Mem268[sp_251 - 0x00000004:word32] = fp_258 + -14
 	word32 ap_272
 	word32 fp_273
 	word32 r2_276
 	word32 sp_277
-	Mem283[r2_276 + 0x0000C68A:word32] = fn0000E276(ap_259, fp_258, out r1_554, out r2_276, out ap_272, out fp_273, out sp_277)
+	word32 r1_543
+	Mem283[r2_276 + 0x0000C68A:word32] = fn0000E276(ap_259, fp_258, out r1_543, out r2_276, out ap_272, out fp_273, out sp_277)
 	Mem286[sp_277 - 0x00000004:word32] = fp_273 + -10
 	word32 ap_290
 	word32 fp_291
@@ -9582,54 +7469,21 @@ l00011B1D:
 	word32 r0_292 = fn0000E276(ap_272, fp_273, out r1_293, out r2_294, out ap_290, out fp_291, out sp_295)
 	Mem301[r2_294 + 0x0000C68E:word32] = r0_292
 	Mem304[sp_295 - 0x00000004:word32] = fp_291 + -6
-	word32 r4_309
 	word32 r2_310
-	word32 r5_311
 	word32 r0_312
-	word32 r8_313
-	word32 r3_314
-	word32 fp_315
-	word32 r6_318
-	word32 r7_319
 	word32 r1_320
 	call fn00000002 (retsize: 4;)
 		uses: ap:ap_290,fp:fp_291,r0:r0_292,r1:r1_293,r2:r2_294,r3:r3_257,r4:r4_252,r5:r5_254,r6:r6_261,r7:r7_262,r8:r8_256,r9:r9_260,sp:sp_295 - 0x00000004,Stack +FFFFFFDC:v14_15,Stack +FFFFFFE0:0x0000000000000000
-		defs: fp:fp_315,r0:r0_312,r1:r1_320,r2:r2_310,r3:r3_314,r4:r4_309,r5:r5_311,r6:r6_318,r7:r7_319,r8:r8_313
+		defs: r0:r0_312,r1:r1_320,r2:r2_310
 	Mem323[r2_310 + 0x0000C692:word16] = (word16) r0_312
 	Mem325[r2_310 + 128:word32] = Mem323[r2_310 + 0x0000C68A:word32] + Mem323[r2_310 + 0x0000C68E:word32]
-	word32 fp_332 = Mem325[fp_315 + 0x0000000C:word32]
-	word32 ap_333 = Mem325[fp_315 + 0x00000008:word32]
-	r1Out = r1_517
-	r2Out = r2_310
-	r3Out = r3_314
-	r4Out = r4_309
-	r5Out = r5_311
-	r6Out = r6_318
-	r7Out = r7_319
-	r8Out = r8_313
-	apOut = ap_333
-	fpOut = fp_332
-	spOut = fp_315 - 0x00000004
-	return 0x00000000
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00011B19:
-	word32 fp_339 = Mem146[fp_161 + 0x0000000C:word32]
-	word32 ap_340 = Mem146[fp_161 + 0x00000008:word32]
-	r1Out = r1
-	r2Out = r2_163
-	r3Out = r3_164
-	r4Out = r4_165
-	r5Out = r5_166
-	r6Out = r6_167
-	r7Out = r7_168
-	r8Out = r8_100
-	apOut = ap_340
-	fpOut = fp_339
-	spOut = fp_161 - 0x00000004
-	return 0x00000033
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9702,32 +7556,9 @@ l00011ACA:
 	Mem469[sp_441 - 0x00000008:word32] = r2_444 + 1515
 	Mem471[sp_441 - 0x0000000C:word32] = r2_444
 	word32 r3_472 = Mem471[r2_444 + 0x0000C839:word32]
-	word32 r4_477
-	word32 r2_478
-	word32 r5_479
-	word32 r8_481
-	word32 r3_482
-	word32 fp_483
-	word32 r6_486
-	word32 r7_487
-	word32 r1_488
 	call r3_472 + 2 (retsize: 4;)
 		uses: ap:ap_456,fp:fp_454,r0:r0_448,r1:r1_463,r2:r2_444,r3:r3_472,r4:r4_443,r5:r5_446,r6:r6_459,r7:r7_461,r8:r8_450,r9:r9_457,sp:sp_441 - 0x0000000C,Stack +FFFFFFDC:v14_15,Stack +FFFFFFE0:0x0000000000000000
-		defs: fp:fp_483,r1:r1_488,r2:r2_478,r3:r3_482,r4:r4_477,r5:r5_479,r6:r6_486,r7:r7_487,r8:r8_481
-	word32 fp_495 = Mem471[fp_483 + 0x0000000C:word32]
-	word32 ap_496 = Mem471[fp_483 + 0x00000008:word32]
-	r1Out = r1_488
-	r2Out = r2_478
-	r3Out = r3_482
-	r4Out = r4_477
-	r5Out = r5_479
-	r6Out = r6_486
-	r7Out = r7_487
-	r8Out = r8_481
-	apOut = ap_496
-	fpOut = fp_495
-	spOut = fp_483 - 0x00000004
-	return 0x00000002
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10334,13 +8165,12 @@ l00012206:
 	word32 ap_75
 	word32 r0_76
 	word32 fp_79
-	word32 r5_80
 	word32 r7_82
 	word32 r9_84
 	word32 r8_85
 	call Mem69[0x000192B4:word32] + 2 (retsize: 4;)
 		uses: ap:ap_55,fp:fp_59,r0:r0_56 + 0x00000001,r1:r1_61,r2:r2_58,r3:r3_54,r4:r4_57,r5:r5_60,r6:r6_63,r7:r7_62,r8:r8_65,r9:r9_64,sp:sp_53 - 0x00000004,Stack +FFFFFFF8:v10_11,Stack +FFFFFFFC:v8_7
-		defs: ap:ap_75,fp:fp_79,r0:r0_76,r3:r3_74,r5:r5_80,r7:r7_82,r8:r8_85,r9:r9_84,sp:sp_73
+		defs: ap:ap_75,fp:fp_79,r0:r0_76,r3:r3_74,r7:r7_82,r8:r8_85,r9:r9_84,sp:sp_73
 	branch r0_76 != 0x00000000 l00012227
 // DataOut:
 // DataOut (flags):
@@ -10356,7 +8186,7 @@ l00012227:
 	word32 r5_106
 	word32 r6_107
 	word32 sp_108
-	word32 r0_102 = fn0000E2A6(r0_76, r5_80, r7_82, ap_75, fp_79, out r1_103, out r2_104, out r5_106, out r6_107, out ap_100, out fp_101, out sp_108)
+	word32 r0_102 = fn0000E2A6(r7_82, ap_75, fp_79, out r1_103, out r2_104, out r5_106, out r6_107, out ap_100, out fp_101, out sp_108)
 	Mem114[sp_108 - 0x00000004:word32] = r0_102
 	Mem117[sp_108 - 0x00000008:word32] = Mem114[ap_100 + 4:word32]
 	word32 ap_121
@@ -10675,36 +8505,21 @@ void fn000125CA(word32 r0, word32 r2, word32 ap, word32 pc)
 // Trashed:
 // Preserved: sp
 // Terminates process
-l000125EE:
-	def sp
-	def fp
-	def dwLoc0C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000125F0:
-	pc_37 = PHI((pc, l000125EE), (pc_38, l000125F0))
-	r0_35 = PHI((r0, l000125EE), (r0_36, l000125F0))
-	ap_32 = PHI((ap, l000125EE), (ap_33, l000125F0))
-	r2_24 = PHI((r2, l000125EE), (r2_34, l000125F0))
-	fp_20 = PHI((fp, l000125EE), (fp_31, l000125F0))
-	sp_16 = PHI((sp, l000125EE), (sp_30, l000125F0))
-	sp_17 = sp_16 - 0x00000004
-	Mem18[sp_17:word32] = 0x00000001
-	Mem22[sp_17 - 0x00000004:word32] = fp_20 + -6
-	Mem26[sp_17 - 0x00000008:word32] = Mem22[r2_24:word32]
-	call Mem26[0x00019270:word32] + 2 (retsize: 4;)
-		uses: ap:ap_32,fp:fp_20,pc:pc_37,r0:r0_35,r2:r2_24,sp:sp_17 - 0x00000008,Stack +FFFFFFF8:dwLoc0C
-		defs: ap:ap_33,fp:fp_31,pc:pc_38,r0:r0_36,r2:r2_34,sp:sp_30
-	branch Mem26[fp_31 + -6:byte] != 0x0A l000125F0
+	Mem15[sp_27 - 0x00000004:word32] = 0x00000001
+	Mem19[sp_27 - 0x00000008:word32] = fp_28 + -6
+	Mem23[sp_27 - 0x0000000C:word32] = Mem19[r2_31:word32]
+	call Mem23[0x00019270:word32] + 2 (retsize: 4;)
+		uses: ap:ap_30,fp:fp_28,pc:pc_35,r0:r0_33,r2:r2_31,sp:sp_27 - 0x0000000C,Stack +FFFFFFF8:dwLoc0C
+		defs: ap:ap_30,fp:fp_28,pc:pc_35,r0:r0_33,r2:r2_31,sp:sp_27
+	branch Mem23[fp_28 + -6:byte] != 0x0A l000125F0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00012604:
-	Mem44[sp_30 - 0x00000004:word32] = 0x00000001
-	fn000124FE(r0_36, r2_34, ap_33, pc_38)
+	Mem41[sp_27 - 0x00000004:word32] = 0x00000001
+	fn000124FE(r0_33, r2_31, ap_30, pc_35)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10715,10 +8530,6 @@ fn000125CA_exit:
 // SymbolicIn:
 
 fn000125CA_entry:
-	def r2
-	def pc
-	def r0
-	def ap
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11209,11 +9020,11 @@ l0001296B:
 
 
 
-word32 fn00012A2A(word32 r0, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r11, word32 ap, word32 fp, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r11Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
+void fn00012A2A(word32 r0, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r11, word32 ap, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ap:[0..31] fp:[0..31] r0:[0..31] r11:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: ap fp r0 r11 r2 r3 r4 r5 r6 r7 r8 sp
+// LiveOut:
 // Trashed: CVZN ap fp r0 r11 r2 r3 r4 r5 r6 r7 r8 sp
 // Preserved:
 fn00012A2A_entry:
@@ -11223,7 +9034,7 @@ fn00012A2A_entry:
 
 l00012A2A:
 	word32 sp_123 = fp - 0x00000004
-	word32 r8_1032 = 0x00000000
+	word32 r8_124 = 0x00000000
 	branch Mem0[r2 + 28:word32] == 0x00000000 l00012AAB
 // DataOut:
 // DataOut (flags):
@@ -11813,20 +9624,29 @@ l00012CEF:
 	Mem826[sp_799 - 0x0000000C:word32] = r2_802
 	word32 ap_827 = Mem826[r2_802 + 0x0000C839:word32]
 	word32 sp_831
+	word32 r8_832
+	word32 r2_833
 	word32 r0_834
+	word32 r4_835
+	word32 r6_836
+	word32 r3_837
 	word32 ap_838
+	word32 r7_839
+	word32 r5_840
+	word32 fp_841
+	word32 r11_842
 	call ap_827 + 2 (retsize: 4;)
 		uses: ap:ap_827,fp:fp_816,r0:r0_804,r11:r11_818,r2:r2_802,r3:r3_808,r4:r4_805,r5:r5_814,r6:r6_807,r7:r7_812,r8:r8_801,sp:sp_799 - 0x0000000C,Stack +FFFFFFE8:dwLoc1C_1073,Stack +FFFFFFEC:dwLoc18_1071,Stack +FFFFFFF0:dwLoc14_1069,Stack +FFFFFFF4:dwLoc10_1067,Stack +FFFFFFF8:dwLoc0C_1065,Stack +FFFFFFFC:dwLoc08_1063
 		defs: ap:ap_838,fp:fp_841,r0:r0_834,r11:r11_842,r2:r2_833,r3:r3_837,r4:r4_835,r5:r5_840,r6:r6_836,r7:r7_839,r8:r8_832,sp:sp_831
-	branch r8_1032 == 0x00000000 l00012D7E
+	branch r8_832 == 0x00000000 l00012D7E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00012D12:
 	Mem849[sp_831 - 0x00000004:word32] = 0x00000000
-	Mem852[sp_831 - 0x00000008:word32] = r4 + 1184
-	Mem855[sp_831 - 0x0000000C:word32] = r2 + 1515
+	Mem852[sp_831 - 0x00000008:word32] = r4_835 + 1184
+	Mem855[sp_831 - 0x0000000C:word32] = r2_833 + 1515
 	word32 sp_859
 	word32 r8_860
 	word32 r2_861
@@ -11838,7 +9658,7 @@ l00012D12:
 	word32 r5_868
 	word32 fp_869
 	word32 r11_870
-	call r3 + 2 (retsize: 4;)
+	call r3_837 + 2 (retsize: 4;)
 		uses: ap:ap_838,fp:fp_841,r0:r0_834,r11:r11_842,r2:r2_833,r3:r3_837,r4:r4_835,r5:r5_840,r6:r6_836,r7:r7_839,r8:r8_832,sp:sp_831 - 0x0000000C,Stack +FFFFFFE8:dwLoc1C_1073,Stack +FFFFFFEC:dwLoc18_1071,Stack +FFFFFFF0:dwLoc14_1069,Stack +FFFFFFF4:dwLoc10_1067,Stack +FFFFFFF8:dwLoc0C_1065,Stack +FFFFFFFC:dwLoc08_1063
 		defs: fp:fp_869,r0:r0_862,r11:r11_870,r2:r2_861,r3:r3_865,r4:r4_863,r5:r5_868,r6:r6_864,r7:r7_867,r8:r8_860,sp:sp_859
 	Mem873[sp_859 - 0x00000004:word32] = r0_862
@@ -11847,7 +9667,6 @@ l00012D12:
 	word32 ap_879 = Mem878[r2_861 + 0x0000C839:word32]
 	call ap_879 + 2 (retsize: 4;)
 		uses: ap:ap_879,fp:fp_869,r0:r0_862,r11:r11_870,r2:r2_861,r3:r3_865,r4:r4_863,r5:r5_868,r6:r6_864,r7:r7_867,r8:r8_860,sp:sp_859 - 0x0000000C,Stack +FFFFFFE8:dwLoc1C_1073,Stack +FFFFFFEC:dwLoc18_1071,Stack +FFFFFFF0:dwLoc14_1069,Stack +FFFFFFF4:dwLoc10_1067,Stack +FFFFFFF8:dwLoc0C_1065,Stack +FFFFFFFC:dwLoc08_1063
-		defs: fp:fp_893,r11:r11_894,r2:r2_885,r3:r3_889,r4:r4_887,r5:r5_892,r6:r6_888,r7:r7_891,r8:r8_884
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11877,7 +9696,6 @@ l00012C64:
 	word32 ap_936 = Mem935[r2_909 + 0x0000C839:word32]
 	call ap_936 + 2 (retsize: 4;)
 		uses: ap:ap_936,fp:fp_918,r0:r0_910,r11:r11_927,r2:r2_909,r3:r3_914,r4:r4_911,r5:r5_917,r6:r6_912,r7:r7_916,r8:r8_908,sp:sp_907 - 0x0000000C,Stack +FFFFFFE8:dwLoc1C_1073,Stack +FFFFFFEC:dwLoc18_1071,Stack +FFFFFFF0:dwLoc14_1069,Stack +FFFFFFF4:dwLoc10_1067,Stack +FFFFFFF8:dwLoc0C_1065,Stack +FFFFFFFC:dwLoc08_1063
-		defs: fp:fp_950,r11:r11_951,r2:r2_942,r3:r3_946,r4:r4_944,r5:r5_949,r6:r6_945,r7:r7_948,r8:r8_941
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11904,8 +9722,10 @@ l00012D41:
 	Mem962[sp_961:word32] = 0x00000001
 	Mem965[sp_961 - 0x00000004:uint32] = (uint32) Mem962[r2 + 0x0000C692:word16]
 	word32 ap_969
+	word32 fp_970
+	word32 r11_972
 	word32 sp_973
-	word32 r0_971 = fn0000DC76(ap, fp, out r11, out ap_969, out fp, out sp_973)
+	word32 r0_971 = fn0000DC76(ap, fp, out r11_972, out ap_969, out fp_970, out sp_973)
 	branch r0_971 == 0x00000000 l00012D7E
 // DataOut:
 // DataOut (flags):
@@ -11935,28 +9755,12 @@ l00012D55:
 	word32 ap_1015 = Mem1014[r2_996 + 0x0000C839:word32]
 	call ap_1015 + 2 (retsize: 4;)
 		uses: ap:ap_1015,fp:fp_1005,r0:r0_997,r11:r11_1006,r2:r2_996,r3:r3_1000,r4:r4_998,r5:r5_1004,r6:r6_999,r7:r7_1003,r8:r8_995,sp:sp_994 - 0x0000000C,Stack +FFFFFFE8:dwLoc1C_1073,Stack +FFFFFFEC:dwLoc18_1071,Stack +FFFFFFF0:dwLoc14_1069,Stack +FFFFFFF4:dwLoc10_1067,Stack +FFFFFFF8:dwLoc0C_1065,Stack +FFFFFFFC:dwLoc08_1063
-		defs: fp:fp_1029,r11:r11_1030,r2:r2_1021,r3:r3_1025,r4:r4_1023,r5:r5_1028,r6:r6_1024,r7:r7_1027
-	r8_1032 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00012D7E:
-	word32 sp_1042 = fp - 0x00000004
-	word32 fp_1044 = Mem1043[sp_1042 + 0x00000010:word32]
-	word32 ap_1045 = Mem1043[sp_1042 + 0x0000000C:word32]
-	r2Out = r2
-	r3Out = r3
-	r4Out = r4
-	r5Out = r5
-	r6Out = r6
-	r7Out = r7
-	r8Out = r8_1032
-	r11Out = r11
-	apOut = ap_1045
-	fpOut = fp_1044
-	spOut = sp_1042
-	return r8_1032
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -17631,6 +15435,9 @@ l00015256:
 // SymbolicIn:
 
 l0001527C:
+	word32 r4_216
+	word32 r5_217
+	word32 sp_218
 	r0_112 = fn0000D69A(r0, r1, r2, r3, r4, r5, r6, ap, fp, pc, out r1, out r2, out r3, out r4_216, out r5_217, out r6, out ap, out fp, out sp_218, out pc)
 	r5_34 = r0_112
 // DataOut:
@@ -17661,6 +15468,10 @@ l0001528C:
 // SymbolicIn:
 
 l000152A8:
+	word32 r3_219
+	word32 r5_220
+	word32 r6_221
+	word32 sp_222
 	r5_34 = fn0000D69A(r0_112, r1, r2, r3, r4_100, r5_34, r6, ap, fp, pc, out r1, out r2, out r3_219, out r4_100, out r5_220, out r6_221, out ap, out fp, out sp_222, out pc)
 // DataOut:
 // DataOut (flags):
@@ -17874,66 +15685,17 @@ l000162E6:
 void fn000167AA(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r8, word32 r9, word32 r10, word32 r11, word32 fp, word32 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  fp:[0..31] pc:[0..31] r0:[0..31] r1:[0..31] r10:[0..31] r11:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r8:[0..31] r9:[0..31]
+// MayUse:  fp:[0..31] pc:[0..31] r0:[8..31] r1:[0..31] r10:[0..31] r11:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r8:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: CVZN ap fp pc r0 r1 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
-l0001698D:
-	Mem444[sp - 0x00000004:word32] = Mem0[fp + -16:word32]
-	call ap + 2 (retsize: 4;)
-		uses: ap:ap,fp:fp,pc:pc,r0:r0,r1:r1,r10:r10,r11:r11,r2:r2,r3:r3,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,r9:r9,sp:sp - 0x00000004,Stack +FFFFFBE0:dwLoc0424,Stack +FFFFFBE4:dwLoc0420
-		defs: ap:ap_452,fp:fp_450,pc:pc_458,r0:r0_453,r1:r1_459,r10:r10_463,r11:r11_462,r2:r2_455,r3:r3_454,r4:r4_451,r5:r5_456,r6:r6_457,r7:r7_461,r8:r8_465,r9:r9_464,sp:sp_449
-	Mem469[sp_449 - 0x00000004:word32] = Mem444[fp_450 + -12:word32]
-	call ap_452 + 2 (retsize: 4;)
-		uses: ap:ap_452,fp:fp_450,pc:pc_458,r0:r0_453,r1:r1_459,r10:r10_463,r11:r11_462,r2:r2_455,r3:r3_454,r4:r4_451,r5:r5_456,r6:r6_457,r7:r7_461,r8:r8_465,r9:r9_464,sp:sp_449 - 0x00000004,Stack +FFFFFBE0:dwLoc0424,Stack +FFFFFBE4:dwLoc0420
-		defs: ap:ap_476,fp:fp_474,pc:pc_482,r0:r0_477,r1:r1_483,r10:r10_486,r11:r11_485,r2:r2_479,r3:r3_478,r4:r4_475,r5:r5_480,r6:r6_481,r7:r7_484,r8:r8_488,r9:r9_487,sp:sp_473
-	Mem492[sp_473 - 0x00000004:word32] = Mem469[fp_474 + -8:word32]
-	call ap_476 + 2 (retsize: 4;)
-		uses: ap:ap_476,fp:fp_474,pc:pc_482,r0:r0_477,r1:r1_483,r10:r10_486,r11:r11_485,r2:r2_479,r3:r3_478,r4:r4_475,r5:r5_480,r6:r6_481,r7:r7_484,r8:r8_488,r9:r9_487,sp:sp_473 - 0x00000004,Stack +FFFFFBE0:dwLoc0424,Stack +FFFFFBE4:dwLoc0420
-	def sp
-	def Mem0
-	def ap
-	def r7
-	def dwLoc0420
-	def dwLoc0424
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00016AC5:
-	Mem953[sp - 0x00000004:word32] = Mem0[fp + -16:word32]
-	r0_959 = fn00018BF6(r0, ap, fp, out r3_1262, out ap_957, out fp_958, out sp_961)
-	Mem969[sp_961 - 0x00000004:word32] = Mem953[fp_958 + -12:word32]
-	fn00018BF6(r0_959, ap_957, fp_958, out r3_978, out ap_1263, out fp_974, out sp_1264)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00016AD9:
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000167AA_entry:
-	def fp
-	def r4
-	def r0
-	def r2
-	def r3
-	def r5
-	def r6
-	def pc
-	def r1
-	def r11
-	def r10
-	def r9
-	def r8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000167AA:
+	word32 r0_15
 	Mem6[fp + -24:word32] = 0x00000007
 	branch Mem6[r4 + 0x0000C5FB:word32] + Mem6[r4 + 132:word32] <= 0x00030D40 l000167DC
 // DataOut:
@@ -17947,16 +15709,15 @@ l000167DC:
 // SymbolicIn:
 
 l000167D4:
-	r0_21 = SEQ(SLICE(r0, word24, 8), 0x08)
+	r0_15 = SEQ(SLICE(r0, word24, 8), 0x08)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000167DF:
-	r0_25 = PHI((r0_21, l000167D4), (r0_15, l000167DC))
-	Mem28[fp + -28:int32] = (int32) (int8) r0_25
+	Mem28[fp + -28:int32] = (int32) (int8) r0_15
 	Mem31[r4 + 0x0000C819:word32] = 0x00000000
-	ap_32 = (uint32) Mem31[r4 + 0x0000C640:word16]
+	word32 ap_32 = (uint32) Mem31[r4 + 0x0000C640:word16]
 	branch (ap_32 & 0x00000004) != 0x00000000 l000167F7
 // DataOut:
 // DataOut (flags):
@@ -17964,7 +15725,17 @@ l000167DF:
 
 l000167F7:
 	Mem37[fp + -20:word32] = 0x00000009
-	r0_63 = fn00015256(r0_25, r1, r2, r3, r4, r5, r6, ap_32, fp, pc, out r1_64, out r2_1218, out r4_67, out r5_68, out r6_69, out r7_70, out ap_60, out fp_61, out sp_71, out pc_62)
+	word32 ap_60
+	word32 fp_61
+	word32 pc_62
+	word32 r1_64
+	word32 r4_67
+	word32 r5_68
+	word32 r6_69
+	word32 r7_70
+	word32 sp_71
+	word32 r2_1099
+	word32 r0_63 = fn00015256(r0_15, r1, r2, r3, r4, r5, r6, ap_32, fp, pc, out r1_64, out r2_1099, out r4_67, out r5_68, out r6_69, out r7_70, out ap_60, out fp_61, out sp_71, out pc_62)
 	branch r0_63 == 0x00000000 l00016812
 // DataOut:
 // DataOut (flags):
@@ -17977,7 +15748,20 @@ l00016812:
 	Mem92[sp_71 - 0x00000014:uint32] = 0x00000100
 	Mem95[sp_71 - 0x00000018:uint32] = 0x00000100
 	Mem98[sp_71 - 0x0000001C:word32] = fp_61 + -1052
-	r0_112 = fn0001878E(r0_63, r4_67, r5_68, r6_69, r7_70, r8, r9, r10, r11, ap_60, fp_61, out r2_115, out r3_1219, out r4_117, out r5_118, out r6_119, out r7_1220, out r8_121, out r9_122, out r10_113, out r11_114, out ap_110, out fp_111, out sp_123)
+	word32 ap_110
+	word32 fp_111
+	word32 r10_113
+	word32 r11_114
+	word32 r2_115
+	word32 r4_117
+	word32 r5_118
+	word32 r6_119
+	word32 r8_121
+	word32 r9_122
+	word32 sp_123
+	word32 r7_1101
+	word32 r3_1100
+	word32 r0_112 = fn0001878E(r0_63, r4_67, r5_68, r6_69, r7_70, r8, r9, r10, r11, ap_60, fp_61, out r2_115, out r3_1100, out r4_117, out r5_118, out r6_119, out r7_1101, out r8_121, out r9_122, out r10_113, out r11_114, out ap_110, out fp_111, out sp_123)
 	branch r0_112 == 0x00000000 l00016847
 // DataOut:
 // DataOut (flags):
@@ -17986,7 +15770,17 @@ l00016812:
 l00016847:
 	Mem135[sp_123 - 0x00000004:uint32] = 0x00000040
 	Mem138[sp_123 - 0x00000008:word32] = fp_111 + -1052
-	r0_145 = fn00015256(r0_112, r1_64, r2_115, r0_112, r4_117, r5_118, r6_119, ap_110, fp_111, pc_62, out r1_146, out r2_147, out r4_149, out r5_150, out r6_151, out r7_152, out ap_142, out fp_143, out sp_153, out pc_144)
+	word32 ap_142
+	word32 fp_143
+	word32 pc_144
+	word32 r1_146
+	word32 r2_147
+	word32 r4_149
+	word32 r5_150
+	word32 r6_151
+	word32 r7_152
+	word32 sp_153
+	word32 r0_145 = fn00015256(r0_112, r1_64, r2_115, r0_112, r4_117, r5_118, r6_119, ap_110, fp_111, pc_62, out r1_146, out r2_147, out r4_149, out r5_150, out r6_151, out r7_152, out ap_142, out fp_143, out sp_153, out pc_144)
 	branch r0_145 == 0x00000000 l0001685D
 // DataOut:
 // DataOut (flags):
@@ -18000,7 +15794,20 @@ l0001685D:
 	Mem176[sp_153 - 0x00000014:word32] = 0x00000000
 	Mem179[sp_153 - 0x00000018:uint32] = 0x00000040
 	Mem182[sp_153 - 0x0000001C:word32] = fp_143 + -1052
-	r0_188 = fn0001878E(r0_145, r4_149, r5_150, r6_151, r7_152, r8_121, r9_122, r10_113, r11_114, ap_142, fp_143, out r2_191, out r3_1234, out r4_193, out r5_194, out r6_195, out r7_1235, out r8_197, out r9_198, out r10_189, out r11_190, out ap_186, out fp_187, out sp_199)
+	word32 r10_189
+	word32 r11_190
+	word32 r2_191
+	word32 r4_193
+	word32 r5_194
+	word32 r6_195
+	word32 r8_197
+	word32 r9_198
+	word32 r7_1116
+	word32 r3_1115
+	word32 sp_199
+	word32 fp_187
+	word32 ap_186
+	word32 r0_188 = fn0001878E(r0_145, r4_149, r5_150, r6_151, r7_152, r8_121, r9_122, r10_113, r11_114, ap_142, fp_143, out r2_191, out r3_1115, out r4_193, out r5_194, out r6_195, out r7_1116, out r8_197, out r9_198, out r10_189, out r11_190, out ap_186, out fp_187, out sp_199)
 	branch r0_188 == 0x00000000 l0001689E
 // DataOut:
 // DataOut (flags):
@@ -18009,14 +15816,24 @@ l0001685D:
 l0001689E:
 	Mem211[sp_199 - 0x00000004:uint32] = 0x00000040
 	Mem214[sp_199 - 0x00000008:word32] = fp_187 + -1052
-	r0_221 = fn00015256(r0_188, r1_146, r2_191, r0_188, r4_193, r5_194, r6_195, ap_186, fp_187, pc_144, out r1_1265, out r2_223, out r4_225, out r5_226, out r6_227, out r7_228, out ap_1266, out fp_219, out sp_229, out pc_1267)
+	word32 fp_219
+	word32 r2_223
+	word32 r4_225
+	word32 r5_226
+	word32 r6_227
+	word32 r7_228
+	word32 sp_229
+	word32 pc_1145
+	word32 ap_1144
+	word32 r1_1143
+	word32 r0_221 = fn00015256(r0_188, r1_146, r2_191, r0_188, r4_193, r5_194, r6_195, ap_186, fp_187, pc_144, out r1_1143, out r2_223, out r4_225, out r5_226, out r6_227, out r7_228, out ap_1144, out fp_219, out sp_229, out pc_1145)
 	branch r0_221 == 0x00000000 l000168B4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000168B4:
-	ap_239 = (uint32) Mem214[r4_225 + 0x0000C640:word16]
+	word32 ap_239 = (uint32) Mem214[r4_225 + 0x0000C640:word16]
 	branch (ap_239 & 0x00000002) == 0x00000000 l00016928
 // DataOut:
 // DataOut (flags):
@@ -18030,7 +15847,20 @@ l00016928:
 	Mem256[sp_229 - 0x00000014:word32] = 0x00000000
 	Mem259[sp_229 - 0x00000018:uint32] = 0x00000040
 	Mem262[sp_229 - 0x0000001C:word32] = fp_219 + -1052
-	r0_268 = fn0001878E(r0_221, r4_225, r5_226, r6_227, r7_228, r8_197, r9_198, r10_189, r11_190, ap_239, fp_219, out r2_1271, out r3_1272, out r4_1273, out r5_1274, out r6_1275, out r7_1276, out r8_1277, out r9_1278, out r10_1279, out r11_1280, out ap_266, out fp_267, out sp_279)
+	word32 r11_1158
+	word32 r10_1157
+	word32 r9_1156
+	word32 r8_1155
+	word32 r7_1154
+	word32 r6_1153
+	word32 r5_1152
+	word32 r4_1151
+	word32 r3_1150
+	word32 r2_1149
+	word32 sp_279
+	word32 fp_267
+	word32 ap_266
+	word32 r0_268 = fn0001878E(r0_221, r4_225, r5_226, r6_227, r7_228, r8_197, r9_198, r10_189, r11_190, ap_239, fp_219, out r2_1149, out r3_1150, out r4_1151, out r5_1152, out r6_1153, out r7_1154, out r8_1155, out r9_1156, out r10_1157, out r11_1158, out ap_266, out fp_267, out sp_279)
 	branch r0_268 == 0x00000000 l00016973
 // DataOut:
 // DataOut (flags):
@@ -18056,21 +15886,25 @@ l0001694C:
 
 l00016951:
 	Mem315[sp_279 - 0x00000004:word32] = Mem262[fp_267 + -16:word32]
-	r0_321 = fn00018BF6(r0_268, ap_266, fp_267, out r3_1298, out ap_319, out fp_320, out sp_323)
+	word32 r3_1176
+	r0_268 = fn00018BF6(r0_268, ap_266, fp_267, out r3_1176, out ap_266, out fp_267, out sp_279)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001695B:
-	r0_339 = PHI((r0_268, l0001694C), (r0_321, l00016951))
-	ap_338 = PHI((ap_266, l0001694C), (ap_319, l00016951))
-	Mem332 = PHI((Mem262, l0001694C), (Mem315, l00016951))
-	fp_331 = PHI((fp_267, l0001694C), (fp_320, l00016951))
-	sp_329 = PHI((sp_279, l0001694C), (sp_323, l00016951))
-	Mem334[sp_329 - 0x00000004:word32] = Mem332[fp_331 + -12:word32]
-	r0_342 = fn00018BF6(r0_339, ap_338, fp_331, out r3_1295, out ap_340, out fp_341, out sp_344)
+	Mem334[sp_279 - 0x00000004:word32] = Mem332[fp_267 + -12:word32]
+	word32 ap_340
+	word32 fp_341
+	word32 sp_344
+	word32 r3_1173
+	word32 r0_342 = fn00018BF6(r0_268, ap_266, fp_267, out r3_1173, out ap_340, out fp_341, out sp_344)
 	Mem352[sp_344 - 0x00000004:word32] = Mem334[fp_341 + -8:word32]
-	fn00018BF6(r0_342, ap_340, fp_341, out r3_361, out ap_1296, out fp_357, out sp_1297)
+	word32 fp_357
+	word32 r3_361
+	word32 ap_1174
+	word32 sp_1175
+	fn00018BF6(r0_342, ap_340, fp_341, out r3_361, out ap_1174, out fp_357, out sp_1175)
 	return
 // DataOut:
 // DataOut (flags):
@@ -18084,7 +15918,20 @@ l000168BF:
 	Mem386[sp_229 - 0x00000014:word32] = 0x00000000
 	Mem389[sp_229 - 0x00000018:uint32] = 0x00000040
 	Mem392[sp_229 - 0x0000001C:word32] = fp_219 + -1052
-	r0_398 = fn0001878E(r0_221, r4_225, r5_226, r6_227, r7_228, r8_197, r9_198, r10_189, r11_190, ap_239, fp_219, out r2_1281, out r3_1282, out r4_1283, out r5_1284, out r6_1285, out r7_1286, out r8_1287, out r9_1288, out r10_1289, out r11_1290, out ap_396, out fp_397, out sp_409)
+	word32 r11_1168
+	word32 r10_1167
+	word32 r9_1166
+	word32 r8_1165
+	word32 r7_1164
+	word32 r6_1163
+	word32 r5_1162
+	word32 r4_1161
+	word32 r3_1160
+	word32 r2_1159
+	word32 sp_409
+	word32 fp_397
+	word32 ap_396
+	word32 r0_398 = fn0001878E(r0_221, r4_225, r5_226, r6_227, r7_228, r8_197, r9_198, r10_189, r11_190, ap_239, fp_219, out r2_1159, out r3_1160, out r4_1161, out r5_1162, out r6_1163, out r7_1164, out r8_1165, out r9_1166, out r10_1167, out r11_1168, out ap_396, out fp_397, out sp_409)
 	branch r0_398 == 0x00000000 l0001690A
 // DataOut:
 // DataOut (flags):
@@ -18109,22 +15956,26 @@ l000168E3:
 // SymbolicIn:
 
 l000168E8:
-	Mem518[sp_409 - 0x00000004:word32] = Mem392[fp_397 + -16:word32]
-	r0_524 = fn00018BF6(r0_398, ap_396, fp_397, out r3_1294, out ap_522, out fp_523, out sp_526)
+	Mem445[sp_409 - 0x00000004:word32] = Mem392[fp_397 + -16:word32]
+	word32 r3_1172
+	r0_398 = fn00018BF6(r0_398, ap_396, fp_397, out r3_1172, out ap_396, out fp_397, out sp_409)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000168F2:
-	r0_542 = PHI((r0_398, l000168E3), (r0_524, l000168E8))
-	ap_541 = PHI((ap_396, l000168E3), (ap_522, l000168E8))
-	Mem535 = PHI((Mem392, l000168E3), (Mem518, l000168E8))
-	fp_534 = PHI((fp_397, l000168E3), (fp_523, l000168E8))
-	sp_532 = PHI((sp_409, l000168E3), (sp_526, l000168E8))
-	Mem537[sp_532 - 0x00000004:word32] = Mem535[fp_534 + -12:word32]
-	r0_545 = fn00018BF6(r0_542, ap_541, fp_534, out r3_1291, out ap_543, out fp_544, out sp_547)
-	Mem555[sp_547 - 0x00000004:word32] = Mem537[fp_544 + -8:word32]
-	fn00018BF6(r0_545, ap_543, fp_544, out r3_564, out ap_1292, out fp_560, out sp_1293)
+	Mem464[sp_409 - 0x00000004:word32] = Mem462[fp_397 + -12:word32]
+	word32 ap_470
+	word32 fp_471
+	word32 sp_474
+	word32 r3_1169
+	word32 r0_472 = fn00018BF6(r0_398, ap_396, fp_397, out r3_1169, out ap_470, out fp_471, out sp_474)
+	Mem482[sp_474 - 0x00000004:word32] = Mem464[fp_471 + -8:word32]
+	word32 fp_487
+	word32 r3_491
+	word32 ap_1170
+	word32 sp_1171
+	fn00018BF6(r0_472, ap_470, fp_471, out r3_491, out ap_1170, out fp_487, out sp_1171)
 	return
 // DataOut:
 // DataOut (flags):
@@ -18143,20 +15994,20 @@ l00016881:
 // SymbolicIn:
 
 l00016886:
-	Mem588[sp_199 - 0x00000004:word32] = Mem182[fp_187 + -12:word32]
-	r0_594 = fn00018BF6(r0_188, ap_186, fp_187, out r3_1270, out ap_592, out fp_593, out sp_596)
+	Mem515[sp_199 - 0x00000004:word32] = Mem182[fp_187 + -12:word32]
+	word32 r3_1148
+	r0_188 = fn00018BF6(r0_188, ap_186, fp_187, out r3_1148, out ap_186, out fp_187, out sp_199)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016890:
-	r0_612 = PHI((r0_188, l00016881), (r0_594, l00016886))
-	ap_611 = PHI((ap_186, l00016881), (ap_592, l00016886))
-	Mem605 = PHI((Mem182, l00016881), (Mem588, l00016886))
-	fp_604 = PHI((fp_187, l00016881), (fp_593, l00016886))
-	sp_602 = PHI((sp_199, l00016881), (sp_596, l00016886))
-	Mem607[sp_602 - 0x00000004:word32] = Mem605[fp_604 + -8:word32]
-	fn00018BF6(r0_612, ap_611, fp_604, out r3_618, out ap_1268, out fp_614, out sp_1269)
+	Mem534[sp_199 - 0x00000004:word32] = Mem532[fp_187 + -8:word32]
+	word32 fp_541
+	word32 r3_545
+	word32 sp_1147
+	word32 ap_1146
+	fn00018BF6(r0_188, ap_186, fp_187, out r3_545, out ap_1146, out fp_541, out sp_1147)
 	return
 // DataOut:
 // DataOut (flags):
@@ -18175,8 +16026,12 @@ l00016834:
 // SymbolicIn:
 
 l00016839:
-	Mem642[sp_123 - 0x00000004:word32] = Mem98[fp_111 + -8:word32]
-	fn00018BF6(r0_112, ap_110, fp_111, out r3_1223, out ap_1224, out fp_1225, out sp_1226)
+	Mem569[sp_123 - 0x00000004:word32] = Mem98[fp_111 + -8:word32]
+	word32 sp_1107
+	word32 fp_1106
+	word32 ap_1105
+	word32 r3_1104
+	fn00018BF6(r0_112, ap_110, fp_111, out r3_1104, out ap_1105, out fp_1106, out sp_1107)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18199,137 +16054,196 @@ l000167F4:
 // SymbolicIn:
 
 l000169AC:
-	r0_685 = fn00015256(r0_25, r1, r2, r3, r4, r5, r6, ap_32, fp, pc, out r1_686, out r2_687, out r4_689, out r5_690, out r6_691, out r7_692, out ap_682, out fp_683, out sp_693, out pc_684)
-	branch r0_685 == 0x00000000 l000169C2
+	word32 ap_609
+	word32 fp_610
+	word32 pc_611
+	word32 r1_613
+	word32 r2_614
+	word32 r4_616
+	word32 r5_617
+	word32 r6_618
+	word32 r7_619
+	word32 sp_620
+	word32 r0_612 = fn00015256(r0_15, r1, r2, r3, r4, r5, r6, ap_32, fp, pc, out r1_613, out r2_614, out r4_616, out r5_617, out r6_618, out r7_619, out ap_609, out fp_610, out sp_620, out pc_611)
+	branch r0_612 == 0x00000000 l000169C2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000169C2:
-	Mem705[sp_693 - 0x00000004:word32] = fp_683 + -24
-	Mem708[sp_693 - 0x00000008:word32] = fp_683 + -12
-	Mem711[sp_693 - 0x0000000C:word32] = r2_687 + 256
-	Mem713[sp_693 - 0x00000010:word32] = r2_687
-	Mem715[sp_693 - 0x00000014:word32] = 0x00000000
-	Mem718[sp_693 - 0x00000018:uint32] = 0x00000040
-	Mem721[sp_693 - 0x0000001C:word32] = fp_683 + -1052
-	r0_727 = fn0001878E(r0_685, r4_689, r5_690, r6_691, r7_692, r8, r9, r10, r11, ap_682, fp_683, out r2_730, out r3_1221, out r4_732, out r5_733, out r6_734, out r7_1222, out r8_736, out r9_737, out r10_728, out r11_729, out ap_725, out fp_726, out sp_738)
-	branch r0_727 == 0x00000000 l000169F7
+	Mem632[sp_620 - 0x00000004:word32] = fp_610 + -24
+	Mem635[sp_620 - 0x00000008:word32] = fp_610 + -12
+	Mem638[sp_620 - 0x0000000C:word32] = r2_614 + 256
+	Mem640[sp_620 - 0x00000010:word32] = r2_614
+	Mem642[sp_620 - 0x00000014:word32] = 0x00000000
+	Mem645[sp_620 - 0x00000018:uint32] = 0x00000040
+	Mem648[sp_620 - 0x0000001C:word32] = fp_610 + -1052
+	word32 ap_652
+	word32 fp_653
+	word32 r10_655
+	word32 r11_656
+	word32 r2_657
+	word32 r4_659
+	word32 r5_660
+	word32 r6_661
+	word32 r8_663
+	word32 r9_664
+	word32 sp_665
+	word32 r7_1103
+	word32 r3_1102
+	word32 r0_654 = fn0001878E(r0_612, r4_616, r5_617, r6_618, r7_619, r8, r9, r10, r11, ap_609, fp_610, out r2_657, out r3_1102, out r4_659, out r5_660, out r6_661, out r7_1103, out r8_663, out r9_664, out r10_655, out r11_656, out ap_652, out fp_653, out sp_665)
+	branch r0_654 == 0x00000000 l000169F7
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000169F7:
-	Mem750[sp_738 - 0x00000004:uint32] = 0x00000040
-	Mem753[sp_738 - 0x00000008:word32] = fp_726 + -1052
-	r0_760 = fn00015256(r0_727, r1_686, r2_730, r0_727, r4_732, r5_733, r6_734, ap_725, fp_726, pc_684, out r1_1227, out r2_762, out r4_764, out r5_765, out r6_766, out r7_767, out ap_1228, out fp_758, out sp_768, out pc_1229)
-	branch r0_760 == 0x00000000 l00016A0D
+	Mem677[sp_665 - 0x00000004:uint32] = 0x00000040
+	Mem680[sp_665 - 0x00000008:word32] = fp_653 + -1052
+	word32 fp_685
+	word32 r2_689
+	word32 r4_691
+	word32 r5_692
+	word32 r6_693
+	word32 r7_694
+	word32 sp_695
+	word32 pc_1110
+	word32 ap_1109
+	word32 r1_1108
+	word32 r0_687 = fn00015256(r0_654, r1_613, r2_657, r0_654, r4_659, r5_660, r6_661, ap_652, fp_653, pc_611, out r1_1108, out r2_689, out r4_691, out r5_692, out r6_693, out r7_694, out ap_1109, out fp_685, out sp_695, out pc_1110)
+	branch r0_687 == 0x00000000 l00016A0D
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A0D:
-	ap_778 = (uint32) Mem753[r4_764 + 0x0000C640:word16]
-	branch (ap_778 & 0x00000002) == 0x00000000 l00016A70
+	word32 ap_705 = (uint32) Mem680[r4_691 + 0x0000C640:word16]
+	branch (ap_705 & 0x00000002) == 0x00000000 l00016A70
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A70:
-	Mem784[sp_768 - 0x00000004:word32] = fp_758 + -28
-	Mem787[sp_768 - 0x00000008:word32] = fp_758 + -16
-	Mem790[sp_768 - 0x0000000C:word32] = r2_762 + 256
-	Mem793[sp_768 - 0x00000010:word32] = r2_762 + 384
-	Mem795[sp_768 - 0x00000014:word32] = 0x00000000
-	Mem798[sp_768 - 0x00000018:uint32] = 0x00000040
-	Mem801[sp_768 - 0x0000001C:word32] = fp_758 + -1052
-	r0_807 = fn0001878E(r0_760, r4_764, r5_765, r6_766, r7_767, r8_736, r9_737, r10_728, r11_729, ap_778, fp_758, out r2_1236, out r3_1237, out r4_1238, out r5_1239, out r6_1240, out r7_1241, out r8_1242, out r9_1243, out r10_1244, out r11_1245, out ap_805, out fp_806, out sp_818)
-	branch r0_807 == 0x00000000 l00016AB1
+	Mem711[sp_695 - 0x00000004:word32] = fp_685 + -28
+	Mem714[sp_695 - 0x00000008:word32] = fp_685 + -16
+	Mem717[sp_695 - 0x0000000C:word32] = r2_689 + 256
+	Mem720[sp_695 - 0x00000010:word32] = r2_689 + 384
+	Mem722[sp_695 - 0x00000014:word32] = 0x00000000
+	Mem725[sp_695 - 0x00000018:uint32] = 0x00000040
+	Mem728[sp_695 - 0x0000001C:word32] = fp_685 + -1052
+	word32 r11_1126
+	word32 r10_1125
+	word32 r9_1124
+	word32 r8_1123
+	word32 r7_1122
+	word32 r6_1121
+	word32 r5_1120
+	word32 r4_1119
+	word32 r3_1118
+	word32 r2_1117
+	word32 sp_745
+	word32 fp_733
+	word32 ap_732
+	word32 r0_734 = fn0001878E(r0_687, r4_691, r5_692, r6_693, r7_694, r8_663, r9_664, r10_655, r11_656, ap_705, fp_685, out r2_1117, out r3_1118, out r4_1119, out r5_1120, out r6_1121, out r7_1122, out r8_1123, out r9_1124, out r10_1125, out r11_1126, out ap_732, out fp_733, out sp_745)
+	branch r0_734 == 0x00000000 l00016AB1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016AB1:
-	Mem830[sp_818 - 0x00000004:word32] = Mem801[fp_806 + -28:word32]
-	Mem833[sp_818 - 0x00000008:word32] = Mem830[fp_806 + -24:word32]
-	Mem836[sp_818 - 0x0000000C:word32] = Mem833[fp_806 + -16:word32]
-	Mem839[sp_818 - 0x00000010:word32] = Mem836[fp_806 + -12:word32]
+	Mem757[sp_745 - 0x00000004:word32] = Mem728[fp_733 + -28:word32]
+	Mem760[sp_745 - 0x00000008:word32] = Mem757[fp_733 + -24:word32]
+	Mem763[sp_745 - 0x0000000C:word32] = Mem760[fp_733 + -16:word32]
+	Mem766[sp_745 - 0x00000010:word32] = Mem763[fp_733 + -12:word32]
 	fn000162E6()
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A94:
-	branch r0_807 != 0x00000001 l00016AA3
+	branch r0_734 != 0x00000001 l00016AA3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A99:
-	Mem848[sp_818 - 0x00000004:word32] = Mem801[fp_806 + -16:word32]
-	r0_854 = fn00018BF6(r0_807, ap_805, fp_806, out r3_1261, out ap_852, out fp_853, out sp_856)
+	Mem775[sp_745 - 0x00000004:word32] = Mem728[fp_733 + -16:word32]
+	word32 r3_1142
+	r0_734 = fn00018BF6(r0_734, ap_732, fp_733, out r3_1142, out ap_732, out fp_733, out sp_745)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016AA3:
-	r0_872 = PHI((r0_807, l00016A94), (r0_854, l00016A99))
-	ap_871 = PHI((ap_805, l00016A94), (ap_852, l00016A99))
-	Mem865 = PHI((Mem801, l00016A94), (Mem848, l00016A99))
-	fp_864 = PHI((fp_806, l00016A94), (fp_853, l00016A99))
-	sp_862 = PHI((sp_818, l00016A94), (sp_856, l00016A99))
-	Mem867[sp_862 - 0x00000004:word32] = Mem865[fp_864 + -12:word32]
-	fn00018BF6(r0_872, ap_871, fp_864, out r3_878, out ap_1259, out fp_874, out sp_1260)
+	Mem794[sp_745 - 0x00000004:word32] = Mem792[fp_733 + -12:word32]
+	word32 fp_801
+	word32 r3_805
+	word32 sp_1141
+	word32 ap_1140
+	fn00018BF6(r0_734, ap_732, fp_733, out r3_805, out ap_1140, out fp_801, out sp_1141)
 	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A18:
-	Mem892[sp_768 - 0x00000004:word32] = fp_758 + -28
-	Mem895[sp_768 - 0x00000008:word32] = fp_758 + -16
-	Mem898[sp_768 - 0x0000000C:word32] = r2_762 + 256
-	Mem901[sp_768 - 0x00000010:word32] = r2_762 + 512
-	Mem903[sp_768 - 0x00000014:word32] = 0x00000000
-	Mem906[sp_768 - 0x00000018:uint32] = 0x00000040
-	Mem909[sp_768 - 0x0000001C:word32] = fp_758 + -1052
-	r0_915 = fn0001878E(r0_760, r4_764, r5_765, r6_766, r7_767, r8_736, r9_737, r10_728, r11_729, ap_778, fp_758, out r2_1246, out r3_1247, out r4_1248, out r5_1249, out r6_1250, out r7_1251, out r8_1252, out r9_1253, out r10_1254, out r11_1255, out ap_913, out fp_914, out sp_926)
-	branch r0_915 == 0x00000000 l00016A59
+	Mem819[sp_695 - 0x00000004:word32] = fp_685 + -28
+	Mem822[sp_695 - 0x00000008:word32] = fp_685 + -16
+	Mem825[sp_695 - 0x0000000C:word32] = r2_689 + 256
+	Mem828[sp_695 - 0x00000010:word32] = r2_689 + 512
+	Mem830[sp_695 - 0x00000014:word32] = 0x00000000
+	Mem833[sp_695 - 0x00000018:uint32] = 0x00000040
+	Mem836[sp_695 - 0x0000001C:word32] = fp_685 + -1052
+	word32 r11_1136
+	word32 r10_1135
+	word32 r9_1134
+	word32 r8_1133
+	word32 r7_1132
+	word32 r6_1131
+	word32 r5_1130
+	word32 r4_1129
+	word32 r3_1128
+	word32 r2_1127
+	word32 sp_853
+	word32 fp_841
+	word32 ap_840
+	word32 r0_842 = fn0001878E(r0_687, r4_691, r5_692, r6_693, r7_694, r8_663, r9_664, r10_655, r11_656, ap_705, fp_685, out r2_1127, out r3_1128, out r4_1129, out r5_1130, out r6_1131, out r7_1132, out r8_1133, out r9_1134, out r10_1135, out r11_1136, out ap_840, out fp_841, out sp_853)
+	branch r0_842 == 0x00000000 l00016A59
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A59:
-	Mem938[sp_926 - 0x00000004:word32] = Mem909[fp_914 + -28:word32]
-	Mem941[sp_926 - 0x00000008:word32] = Mem938[fp_914 + -24:word32]
-	Mem944[sp_926 - 0x0000000C:word32] = Mem941[fp_914 + -16:word32]
-	Mem947[sp_926 - 0x00000010:word32] = Mem944[fp_914 + -12:word32]
+	Mem865[sp_853 - 0x00000004:word32] = Mem836[fp_841 + -28:word32]
+	Mem868[sp_853 - 0x00000008:word32] = Mem865[fp_841 + -24:word32]
+	Mem871[sp_853 - 0x0000000C:word32] = Mem868[fp_841 + -16:word32]
+	Mem874[sp_853 - 0x00000010:word32] = Mem871[fp_841 + -12:word32]
 	fn00015E22()
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A3C:
-	branch r0_915 != 0x00000001 l00016A4B
+	branch r0_842 != 0x00000001 l00016A4B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A41:
-	Mem998[sp_926 - 0x00000004:word32] = Mem909[fp_914 + -16:word32]
-	r0_1004 = fn00018BF6(r0_915, ap_913, fp_914, out r3_1258, out ap_1002, out fp_1003, out sp_1006)
+	Mem893[sp_853 - 0x00000004:word32] = Mem836[fp_841 + -16:word32]
+	word32 r3_1139
+	r0_842 = fn00018BF6(r0_842, ap_840, fp_841, out r3_1139, out ap_840, out fp_841, out sp_853)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A4B:
-	r0_1022 = PHI((r0_915, l00016A3C), (r0_1004, l00016A41))
-	ap_1021 = PHI((ap_913, l00016A3C), (ap_1002, l00016A41))
-	Mem1015 = PHI((Mem909, l00016A3C), (Mem998, l00016A41))
-	fp_1014 = PHI((fp_914, l00016A3C), (fp_1003, l00016A41))
-	sp_1012 = PHI((sp_926, l00016A3C), (sp_1006, l00016A41))
-	Mem1017[sp_1012 - 0x00000004:word32] = Mem1015[fp_1014 + -12:word32]
-	fn00018BF6(r0_1022, ap_1021, fp_1014, out r3_1028, out ap_1256, out fp_1024, out sp_1257)
+	Mem912[sp_853 - 0x00000004:word32] = Mem910[fp_841 + -12:word32]
+	word32 fp_919
+	word32 r3_923
+	word32 sp_1138
+	word32 ap_1137
+	fn00018BF6(r0_842, ap_840, fp_841, out r3_923, out ap_1137, out fp_919, out sp_1138)
 	return
 // DataOut:
 // DataOut (flags):
@@ -18342,14 +16256,18 @@ l00016A09:
 // SymbolicIn:
 
 l000169E4:
-	branch r0_727 != 0x00000001 l000169F3
+	branch r0_654 != 0x00000001 l000169F3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000169E9:
-	Mem1052[sp_738 - 0x00000004:word32] = Mem721[fp_726 + -12:word32]
-	fn00018BF6(r0_727, ap_725, fp_726, out r3_1230, out ap_1231, out fp_1232, out sp_1233)
+	Mem947[sp_665 - 0x00000004:word32] = Mem648[fp_653 + -12:word32]
+	word32 sp_1114
+	word32 fp_1113
+	word32 ap_1112
+	word32 r3_1111
+	fn00018BF6(r0_654, ap_652, fp_653, out r3_1111, out ap_1112, out fp_1113, out sp_1114)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18693,7 +16611,7 @@ l000175A0:
 	word32 sp_531 = sp_204 - 0x00000004
 	Mem537[sp_531:uint32] = (uint32) Mem534[r3 + 0x0000C660:word16]
 	Mem540[sp_531 - 0x00000004:uint32] = (uint32) Mem537[r3 + 0x0000C662:word16]
-	r0 = fn0000BC8A(r0, r1, r2_217, r4, r5, r9, ap, fp, out r1, out r3, out r4, out r5, out r6_206, out r7_221, out r8_215, out r9, out ap, out fp)
+	r0 = fn0000BC8A(r0, r1, r2_217, r4, r5, ap, fp, out r1, out r3, out r4, out r5, out r6_206, out r7_221, out r8_215, out r9, out ap, out fp)
 	sp_204 = sp_531 - 0x00000004
 	r2_217 = Mem540[ap + 4:word32]
 	branch Mem540[r2_217:word32] >=u r0 l000175C1
@@ -18702,29 +16620,29 @@ l000175A0:
 // SymbolicIn:
 
 l000175BE:
-	Mem577[r2_217:word32] = r0
+	Mem575[r2_217:word32] = r0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000175C1:
-	Mem584[Mem582[ap + 8:word32]:word32] = Mem582[ap + 8:word32] + 0x00000001
+	Mem582[Mem580[ap + 8:word32]:word32] = Mem580[ap + 8:word32] + 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000175C4:
-	branch Mem588[r3 + 0x0000C674:word16] == 0x0000 l000175E5
+	branch Mem586[r3 + 0x0000C674:word16] == 0x0000 l000175E5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000175CC:
-	word32 sp_595 = sp_204 - 0x00000004
-	Mem596[sp_595:word32] = 0x00000000
-	Mem599[sp_595 - 0x00000004:uint32] = (uint32) Mem596[r3 + 0x0000C674:word16]
+	word32 sp_593 = sp_204 - 0x00000004
+	Mem594[sp_593:word32] = 0x00000000
+	Mem597[sp_593 - 0x00000004:uint32] = (uint32) Mem594[r3 + 0x0000C674:word16]
 	call r9 + 2 (retsize: 4;)
-		uses: ap:ap_616,fp:fp_618,r0:r0_630,r1:r1_650,r10:r10_638,r11:r11_611,r2:r2_627,r3:r3_586,r4:r4_647,r5:r5_644,r6:r6_606,r7:r7_633,r8:r8_622,r9:r9_603,sp:sp_595 - 0x00000004
+		uses: ap:ap_616,fp:fp_618,r0:r0_630,r1:r1_650,r10:r10_638,r11:r11_611,r2:r2_627,r3:r3_584,r4:r4_647,r5:r5_644,r6:r6_606,r7:r7_633,r8:r8_622,r9:r9_601,sp:sp_593 - 0x00000004
 		defs: ap:ap_617,fp:fp_620,r0:r0_632,r1:r1_652,r10:r10_642,r11:r11_615,r3:r3_621,r4:r4_649,r5:r5_646,r6:r6_610,r8:r8_626,r9:r9_643,sp:sp_605
 	branch r0 == 0x00000000 l000175E5
 // DataOut:
@@ -19176,6 +17094,7 @@ l00017772:
 	word32 r2_19
 	word32 r3_20
 	word32 sp_21
+	word32 ap_92
 	word32 r0_18 = fn00010892(ap, fp, out r2_19, out r3_20, out ap_92, out fp_17, out sp_21)
 	Mem28[sp_21 - 0x00000004:word32] = 0x00000000
 	Mem30[sp_21 - 0x00000008:word32] = r0_18
@@ -19288,29 +17207,6 @@ word32 fn00017DEE(word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 
 // LiveOut: fp r0 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9
 // Trashed: CVZN ap fp r0 r10 r11 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
-l00017F44:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00017F46:
-	word32 fp_367 = Mem0[fp + 0x0000000C:word32]
-	r2Out = r2 + 0x00000001
-	r3Out = r3
-	r4Out = r4
-	r5Out = r5
-	r6Out = r6
-	r7Out = r7
-	r8Out = r8
-	r9Out = r9
-	r10Out = r10
-	r11Out = r11
-	fpOut = fp_367
-	return r2 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00017DEE_entry:
 // DataOut:
 // DataOut (flags):
@@ -19442,6 +17338,9 @@ l00017EC2:
 	Mem233[sp_194 - 0x00000014:word32] = 0x00000000
 	Mem235[sp_194 - 0x00000018:word32] = 0x0000001E
 	Mem239[sp_194 - 0x0000001C:word32] = fp_182 + -1156
+	word32 r4_430
+	word32 ap_432
+	word32 r6_431
 	word32 r2_256
 	word32 r5_259
 	word32 r11_255
@@ -19450,7 +17349,7 @@ l00017EC2:
 	word32 r8_262
 	word32 r7_261
 	word32 fp_252
-	word32 r0_253 = fn0001878E(r0_203, r4_188, r5_189, r6_190, r7_191, r8_192, r9_193, r10_184, r11_185, ap_181, fp_182, out r2_256, out r3, out r4_431, out r5_259, out r6_432, out r7_261, out r8_262, out r9_263, out r10_254, out r11_255, out ap_433, out fp_252, out sp_264)
+	word32 r0_253 = fn0001878E(r0_203, r4_188, r5_189, r6_190, r7_191, r8_192, r9_193, r10_184, r11_185, ap_181, fp_182, out r2_256, out r3, out r4_430, out r5_259, out r6_431, out r7_261, out r8_262, out r9_263, out r10_254, out r11_255, out ap_432, out fp_252, out sp_264)
 	word32 r6_269 = r0_253
 	branch r0_253 <= 0x00000001 l00017F1F
 // DataOut:
@@ -19570,6 +17469,8 @@ l00017F74:
 // SymbolicIn:
 
 l00017F90:
+	word32 r6_741
+	word32 r4_740
 	r0 = fn0000D69A(r0, r1, r2_21, r3_22, r4, r5, r6, ap, fp, pc, out r1, out r2_21, out r3_22, out r4_740, out r5, out r6_741, out ap, out fp, out sp_103, out pc)
 	r6 = r0
 // DataOut:
@@ -19623,6 +17524,8 @@ l00017FD8:
 // SymbolicIn:
 
 l00017FF4:
+	word32 r4_742
+	word32 r6_743
 	r0 = fn0000D69A(r0, r1, r2_124, r3_126, r4_125, r5, r6, ap, fp, pc, out r1, out r2_124, out r3_126, out r4_742, out r5, out r6_743, out ap, out fp, out sp_103, out pc)
 	r6 = r0
 // DataOut:
@@ -19676,6 +17579,8 @@ l00018038:
 // SymbolicIn:
 
 l00018054:
+	word32 r4_744
+	word32 r6_745
 	r0 = fn0000D69A(r0, r1, r2_141, r3_139, r4_133, r5, r6, ap, fp, pc, out r1, out r2_141, out r3_139, out r4_744, out r5, out r6_745, out ap, out fp, out sp_103, out pc)
 	r6 = r0
 // DataOut:
@@ -19819,6 +17724,8 @@ l00018130:
 	Mem368[sp_358 - 0x00000010:word32] = 0x00000013
 	Mem370[sp_358 - 0x00000014:word32] = 0x00000013
 	Mem373[sp_358 - 0x00000018:word32] = fp + -1300
+	word32 r8_746
+	word32 ap_747
 	word32 r4_475
 	word32 sp_481
 	word32 r5_476
@@ -20043,6 +17950,8 @@ l000185CC:
 // SymbolicIn:
 
 l000185E8:
+	word32 r5_328
+	word32 sp_329
 	r5 = fn0000D69A(r0, r1, r2_20, r3_21, r4, r5, r6, ap, fp, pc, out r1, out r2_20, out r3_21, out r4, out r5_328, out r6, out ap, out fp, out sp_329, out pc)
 // DataOut:
 // DataOut (flags):
@@ -20094,6 +18003,8 @@ l00018628:
 // SymbolicIn:
 
 l00018644:
+	word32 r5_330
+	word32 sp_331
 	r5 = fn0000D69A(r0, r1, r2_104, r3_105, r4, r5, r6, ap, fp, pc, out r1, out r2_104, out r3_105, out r4, out r5_330, out r6, out ap, out fp, out sp_331, out pc)
 // DataOut:
 // DataOut (flags):
@@ -20391,11 +18302,11 @@ fn000186B2_exit:
 
 
 
-word32 fn0001872A(word32 r0, word32 r3, word32 fp, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
+void fn0001872A(word32 r0, word32 r3, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  fp:[0..31] r0:[0..31] r3:[0..31]
-// LiveOut: ap fp r0 r2 r3 r4 sp
+// LiveOut:
 // Trashed: CVZN ap fp r0 r2 r3 r4 sp
 // Preserved:
 fn0001872A_entry:
@@ -20423,19 +18334,20 @@ l00018748:
 	word32 r2_19 = Mem18[ap_17 + 2:word32]
 	word32 sp_21 = sp_103 - 0x00000004
 	Mem22[sp_21:word32] = ap_17
+	word32 r2_32
 	call Mem22[0x000192B0:word32] + 2 (retsize: 4;)
 		uses: ap:ap_17,fp:fp_35,r0:r0_33,r2:r2_19,r3:r3_27,r4:r4_29,sp:sp_21
 		defs: fp:fp_36,r0:r0_34,r2:r2_32,r3:r3_28,r4:r4_30,sp:sp_26
-	ap_11 = r2
-	branch r2 != 0x00000000 l00018748
+	ap_11 = r2_32
+	branch r2_32 != 0x00000000 l00018748
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001875D:
-	r4 = Mem44[r3 + 0x0000C81D:word32]
-	word32 ap_46 = r4
-	branch r4 == 0x00000000 l00018781
+	word32 r4_45 = Mem44[r3 + 0x0000C81D:word32]
+	word32 ap_46 = r4_45
+	branch r4_45 == 0x00000000 l00018781
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -20450,11 +18362,12 @@ l0001876C:
 	word32 r2_59 = Mem58[ap_57 + 2:word32]
 	word32 sp_61 = sp_103 - 0x00000004
 	Mem62[sp_61:word32] = ap_57
+	word32 r2_72
 	call Mem62[0x000192B0:word32] + 2 (retsize: 4;)
 		uses: ap:ap_57,fp:fp_75,r0:r0_73,r2:r2_59,r3:r3_67,r4:r4_69,sp:sp_61
 		defs: fp:fp_76,r0:r0_74,r2:r2_72,r3:r3_68,r4:r4_70,sp:sp_66
-	ap_46 = r2
-	branch r2 != 0x00000000 l0001876C
+	ap_46 = r2_72
+	branch r2_72 != 0x00000000 l0001876C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -20466,16 +18379,7 @@ l00018781:
 // SymbolicIn:
 
 l00018787:
-	word32 sp_99 = fp - 0x00000004
-	word32 fp_101 = Mem100[sp_99 + 0x00000010:word32]
-	word32 ap_102 = Mem100[sp_99 + 0x0000000C:word32]
-	r2Out = r2
-	r3Out = r3
-	r4Out = r4
-	apOut = ap_102
-	fpOut = fp_101
-	spOut = sp_99
-	return 0x00000000
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21573,6 +19477,8 @@ l00018E28:
 	Mem375[sp_373:word32] = Mem353[ap + 12:word32]
 	Mem378[sp_373 - 0x00000004:word32] = Mem375[ap + 8:word32] + 0x00000001
 	Mem383[sp_373 - 0x00000008:word32] = r7_1140 + 0x00000001
+	word32 ap_1254
+	word32 sp_1255
 	r2_417 = fn00018C3A(r0, r1, r3_102, r5_100, r6_1133, r7_1140, r8_1147, r9_1051, r11, ap, fp, out r1, out r3_102, out r5_100, out r6_1133, out r7_1140, out r8_1147, out r9_1051, out r11, out ap_1254, out fp, out sp_1255)
 // DataOut:
 // DataOut (flags):
@@ -21652,6 +19558,8 @@ l00018E5F:
 	Mem494[sp_490:word32] = Mem492[ap + 12:word32]
 	Mem497[sp_490 - 0x00000004:word32] = Mem494[ap + 8:word32] + 0x00000001
 	Mem501[sp_490 - 0x00000008:word32] = r7_1140 + 0x00000001
+	word32 ap_1252
+	word32 sp_1253
 	r2_474 = fn00018C3A(r0, r1, r3_102, r5_100, r6_1133, r7_1140, r8_1147, r9_1051, r11, ap, fp, out r1, out r3_102, out r5_100, out r6_1133, out r7_1140, out r8_1147, out r9_1051, out r11, out ap_1252, out fp, out sp_1253)
 // DataOut:
 // DataOut (flags):
@@ -21844,6 +19752,8 @@ l00018F01:
 	Mem817[ap + 8:word32] = Mem815[ap + 8:word32] + 0x00000001
 	Mem820[sp_809 - 0x00000004:word32] = Mem817[ap + 8:word32]
 	Mem823[sp_809 - 0x00000008:word32] = Mem820[ap + 4:word32]
+	word32 sp_1251
+	word32 ap_1250
 	r2_802 = fn00018C3A(r0, r1, r3, r5_1125, r6, r7, r8, r9, r11, ap, fp, out r1, out r3, out r5_1125, out r6, out r7, out r8, out r9, out r11, out ap_1250, out fp, out sp_1251)
 // DataOut:
 // DataOut (flags):
@@ -21995,6 +19905,8 @@ l00018C80:
 // SymbolicIn:
 
 l00018C6D:
+	word32 sp_1249
+	word32 ap_1248
 	r2_1017 = fn00018C3A(r0, r1, r3, r5, r6, r7, r8, r9, r11, ap, fp, out r1, out r3, out r5, out r6, out r7, out r8, out r9, out r11, out ap_1248, out fp, out sp_1249)
 // DataOut:
 // DataOut (flags):
@@ -22059,10 +19971,10 @@ fn00018C3A_exit:
 
 
 
-word32 fn00018F22(word32 r1, word32 ap, word32 fp, ptr32 & r1Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
+word32 fn00018F22(word32 ap, word32 fp, ptr32 & r1Out, ptr32 & apOut, ptr32 & fpOut, ptr32 & spOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31] r1:[8..31]
+// MayUse:  ap:[0..31] fp:[0..31]
 // LiveOut: ap fp r0 r1 sp
 // Trashed: CVZN ap fp r0 r1 sp
 // Preserved:

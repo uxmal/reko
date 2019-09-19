@@ -844,7 +844,7 @@ Constants: cl:0x00
         {
             var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
             Given_Architecture(arch);
-            Expect("main", "Preserved: esp", "Trashed: cl", "");
+            Expect("main", "Preserved: esp", "Trashed: ecx", "");
             builder.Add("main", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
@@ -852,7 +852,7 @@ Constants: cl:0x00
                 var cl = m.Frame.EnsureRegister(arch.GetRegister("cl"));
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(cl, m.Mem8(m.Word32(0x00123400)));
-                m.Assign(ecx, m.Dpb(ecx, cl, 0));
+                m.Assign(ecx, m.Seq(m.Slice(ecx, 8, 24), cl));
                 m.Return();
             });
             RunTest();

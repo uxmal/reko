@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -502,22 +502,22 @@ namespace Reko.Arch.X86
             // For each register storage domain, arrange the registers in order of size.
             SubRegisters = new Dictionary<StorageDomain, RegisterStorage[]>
             {
-                { rax.Domain, new [] { eax, ax, al, ah,  } },
-                { rcx.Domain, new [] { ecx, cx, cl, ch,  } },
-                { rdx.Domain, new [] { edx, dx, dl, dh,  } },
-                { rbx.Domain, new [] { ebx, bx, bl, bh,  } },
-                { rsp.Domain, new [] { esp, sp, spl, } },
-                { rbp.Domain, new [] { ebp, bp, bpl, } },
-                { rsi.Domain, new [] { esi, si, sil, } },
-                { rdi.Domain, new [] { edi, di, dil, } },
-                { r8.Domain, new []  { r8d, r8w, r8b, } },
-                { r9.Domain, new []  { r9d, r9w, r9b, } },
-                { r10.Domain, new [] { r10d, r10w, r10b, } },
-                { r11.Domain, new [] { r11d, r11w, r11b, } },
-                { r12.Domain, new [] { r12d, r12w, r12b, } },
-                { r13.Domain, new [] { r13d, r13w, r13b, } },
-                { r14.Domain, new [] { r14d, r14w, r14b, } },
-                { r15.Domain, new [] { r15d, r15w, r15b, } },
+                { rax.Domain, new [] { rax, eax, ax, al, ah,  } },
+                { rcx.Domain, new [] { rcx, ecx, cx, cl, ch,  } },
+                { rdx.Domain, new [] { rdx, edx, dx, dl, dh,  } },
+                { rbx.Domain, new [] { rbx, ebx, bx, bl, bh,  } },
+                { rsp.Domain, new [] { rsp, esp, sp, spl, } },
+                { rbp.Domain, new [] { rbp, ebp, bp, bpl, } },
+                { rsi.Domain, new [] { rsi, esi, si, sil, } },
+                { rdi.Domain, new [] { rdi, edi, di, dil, } },
+                { r8.Domain, new []  { r8,  r8d, r8w, r8b, } },
+                { r9.Domain, new []  { r9,  r9d, r9w, r9b, } },
+                { r10.Domain, new [] { r10, r10d, r10w, r10b, } },
+                { r11.Domain, new [] { r11, r11d, r11w, r11b, } },
+                { r12.Domain, new [] { r12, r12d, r12w, r12b, } },
+                { r13.Domain, new [] { r13, r13d, r13w, r13b, } },
+                { r14.Domain, new [] { r14, r14d, r14w, r14b, } },
+                { r15.Domain, new [] { r15, r15d, r15w, r15b, } },
                 { ymm0.Domain, new [] { xmm0 } },
                 { ymm1.Domain, new [] { xmm1 } },
                 { ymm2.Domain, new [] { xmm2 } },

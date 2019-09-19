@@ -103,6 +103,11 @@ namespace Reko.UnitTests.Mocks
             return MakeSsaIdentifier(id, name);
         }
 
+        public Identifier Reg64(string name)
+        {
+            return Reg(name, PrimitiveType.Word64);
+        }
+
         public Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);

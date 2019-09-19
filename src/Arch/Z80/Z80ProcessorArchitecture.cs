@@ -233,7 +233,7 @@ namespace Reko.Arch.Z80
         public static readonly RegisterStorage e = new RegisterStorage("e", 2, 0, PrimitiveType.Byte);
         public static readonly RegisterStorage h = new RegisterStorage("h", 3, 8, PrimitiveType.Byte);
         public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 8, PrimitiveType.Byte);
 
         public static readonly RegisterStorage bc = new RegisterStorage("bc", 1, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage de = new RegisterStorage("de", 2, 0, PrimitiveType.Word16);
@@ -305,9 +305,7 @@ namespace Reko.Arch.Z80
                 i,  r,   null, null, bc_, de_, hl_, af_,
             };
 
-            SubRegisters = new Dictionary<
-                StorageDomain, 
-                RegisterStorage[]>
+            SubRegisters = new Dictionary<StorageDomain, RegisterStorage[]>
             {
                 {
                     af.Domain, new [] { Registers.a, Registers.f }

@@ -134,8 +134,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaMutualTest()
 		{
 			RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/DfaMutualTest.txt");
@@ -229,8 +228,14 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
+        public void DfaReg00005()
+        {
+            RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/DfaReg00005.txt");
+        }
+
+        [Test]
+        [Category(Categories.IntegrationTests)]
         public void DfaReg00007()
         {
             RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/DfaReg00007.txt");
@@ -258,7 +263,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.IntegrationTests)]
         public void DfaReg00015()
         {

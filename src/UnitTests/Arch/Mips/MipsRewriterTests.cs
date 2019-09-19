@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -422,7 +422,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xE7AC0030, // swc1\tf12,0030(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x00000030:word32] = (word32) f12");
+                "1|L--|Mem0[sp + 0x00000030:word32] = f12");
         }
 
         [Test]
@@ -666,7 +666,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xc4240000, // lwc1 $f4,0(at)
             "0|L--|00100000(4): 1 instructions",
-            "1|L--|f4 = (word32) Mem0[r1:real32]");
+            "1|L--|f4 = Mem0[r1:real32]");
         }
 
         [Test]

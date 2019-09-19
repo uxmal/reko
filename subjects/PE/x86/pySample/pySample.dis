@@ -584,6 +584,7 @@ l100013E7:
 	Mem82[esp_80:word32] = ecx
 	Mem85[esp_80 - 4:word32] = edx
 	Mem88[esp_80 - 8:word32] = ebx_115
+	word32 ecx_320
 	word32 eax_91 = fn100011E9(edx_64, ebx_115, ebp_13, edx, ecx, Mem88[esp_80 - 8:word32], Mem88[esp_80 - 4:word32], Mem88[esp_80:word32], out ecx_320, out edx, out ebx_115, out esi_112, out edi_109)
 	Mem103[ebp_13 - 0x0000001C:word32] = eax_91
 	esp_102 = esp_80 + 0x00000004
@@ -1011,7 +1012,7 @@ l100016DE:
 // SymbolicIn:
 
 l100016EB:
-	return (word32) (Mem0[eax_9 + 0x00000018:word16] == 0x010B)
+	return (uint32) (uint8) (Mem0[eax_9 + 0x00000018:word16] == 0x010B)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -142,17 +142,6 @@ namespace Reko.Analysis
             return ssts;
         }
 
-        [Conditional("DEBUG")]
-        public static void DumpWatchedProcedure(string caption, Procedure proc)
-        {
-            if (proc.Name == "branches")
-            {
-                Debug.Print("// {0}: {1} ==================", proc.Name, caption);
-                MockGenerator.DumpMethod(proc);
-                proc.Dump(true);
-            }
-        }
-
         /// <summary>
         /// Traverses the call graph, and for each strongly connected
         /// component (SCC) performs SSA transformation and detection of 
@@ -215,7 +204,7 @@ namespace Reko.Analysis
                 uid.ComputeLiveIn(ssa, true);
                 var procFlow = flow[ssa.Procedure];
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
-                DumpWatchedProcedure("After dead call argment removal", ssa.Procedure);
+                DumpWatchedProcedure("After dead call argument removal", ssa.Procedure);
             }
             eventListener.Advance(procs.Count);
         }
@@ -327,19 +316,22 @@ namespace Reko.Analysis
                 var ssa = sst.SsaState;
                 try
                 {
+                    DumpWatchedProcedure("Before expression coalescing", ssa.Procedure);
+
                     // Procedures should be untangled from each other. Now process
                     // each one separately.
                     DeadCode.Eliminate(ssa);
 
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
-
                     var coa = new Coalescer(ssa);
                     coa.Transform();
                     DeadCode.Eliminate(ssa);
 
                     var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver,  eventListener);
                     vp.Transform();
+
+                    DumpWatchedProcedure("After expression coalescing", ssa.Procedure);
 
                     var liv = new LinearInductionVariableFinder(
                         ssa,
@@ -354,15 +346,15 @@ namespace Reko.Analysis
                         str.ClassifyUses();
                         str.ModifyUses();
                     }
-
-                    //var opt = new OutParameterTransformer(proc, ssa.Identifiers);
-                    //opt.Transform();
                     DeadCode.Eliminate(ssa);
+                    DumpWatchedProcedure("After strength reduction", ssa.Procedure);
 
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
                     var web = new WebBuilder(program, ssa, program.InductionVariables, eventListener);
                     web.Transform();
                     ssa.ConvertBack(false);
+
+                    DumpWatchedProcedure("After data flow analysis", ssa.Procedure);
                 }
                 catch (Exception ex)
                 {
@@ -458,5 +450,16 @@ namespace Reko.Analysis
                 return sst;
             }
         }
-	}
+
+        [Conditional("DEBUG")]
+        public static void DumpWatchedProcedure(string caption, Procedure proc)
+        {
+            if (proc.Name == "fn0C00_0000")
+            {
+                Debug.Print("// {0}: {1} ==================", proc.Name, caption);
+                MockGenerator.DumpMethod(proc);
+                proc.Dump(true);
+            }
+        }
+    }
 }

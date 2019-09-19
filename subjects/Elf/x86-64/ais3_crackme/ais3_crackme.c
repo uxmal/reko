@@ -72,20 +72,21 @@ word32 verify(Eq_n rdi[])
 	word32 dwLoc0C_n = 0x00;
 	while (true)
 	{
-		byte * rax_n;
+		uint64 rax_n;
 		byte * rax_n = (rdi + (int64) ((word32) ((uint64) dwLoc0C_n)))->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000;
+		word32 rax_32_32_n = SLICE(rax_n, word32, 32);
 		if ((byte) (word32) *rax_n == 0x00)
 			break;
 		byte al_n = (byte) (uint64) ((word32) (uint64) dwLoc0C_n ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_n))].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000)[0x00])));
 		uint64 rax_n = (uint64) dwLoc0C_n;
-		if ((byte) (word32) (DPB(rax_n, (int16) (byte) rax_n, 0) + 0x00601020) != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) + 0x08)
+		if ((byte) (word32) SEQ(SLICE(rax_n, word48, 16), (int16) (byte) rax_n)->b601020 != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) + 0x08)
 		{
-			rax_n = null;
+			rax_n = 0x00;
 			return (word32) rax_n;
 		}
 		++dwLoc0C_n;
 	}
-	rax_n = DPB(rax_n, (word32) (dwLoc0C_n == 0x17), 0);
+	rax_n = SEQ(rax_32_32_n, (word32) (dwLoc0C_n == 0x17));
 	return (word32) rax_n;
 }
 
@@ -103,6 +104,7 @@ void main(struct Eq_n * rsi, word32 edi)
 // 0000000000400620: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
+	word32 edi = (word32) rdi;
 	int64 rbp_n = 0x00600E00 - 0x00600DF8;
 	word32 r13d_n = (word32) (uint64) edi;
 	word64 rax_n = _init();

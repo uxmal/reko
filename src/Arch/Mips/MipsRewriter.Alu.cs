@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -112,15 +112,17 @@ namespace Reko.Arch.Mips
             m.Assign(dst, ctor(src, sh));
         }
 
-        private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall)
+        private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType dtSmall64 = null)
         {
             var opSrc = RewriteOperand(instr.op2);
             var opDst = RewriteOperand(instr.op1);
+            opSrc.DataType = (arch.WordWidth.BitSize == 64)
+                ? dtSmall64 ?? dtSmall
+                : dtSmall;
             if (opDst.DataType.Size != opSrc.DataType.Size)
             {
                 // If the source is smaller than the destination register,
-                // perform a sign/zero extension.
-                opSrc.DataType = dtSmall;
+                // perform a sign/zero extension/conversion.
                 opSrc = m.Cast(arch.WordWidth, opSrc);
             }
             m.Assign(opDst, opSrc);

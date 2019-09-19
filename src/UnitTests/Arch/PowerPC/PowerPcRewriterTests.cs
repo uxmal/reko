@@ -1473,6 +1473,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_lq()
         {
+            Given_PowerPcBe64();
             AssertCode(0xE0030000,   // lq	r0,0(r3)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r0_r1 = Mem0[r3 + 0:word128]");

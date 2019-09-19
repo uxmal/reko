@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
+using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -67,6 +68,17 @@ namespace Reko.UnitTests.Analysis
         private Procedure RunTest(string sExp, string fnName, Action<ProcedureBuilder> builder)
         {
             var pb = new ProcedureBuilder(fnName);
+            return RunTest(sExp, pb.Architecture, () =>
+            {
+                builder(pb);
+                progBuilder.Add(pb);
+                return pb.Procedure;
+            });
+        }
+
+        private Procedure RunTest(string sExp, IProcessorArchitecture arch, Action<ProcedureBuilder> builder)
+        {
+            var pb = new ProcedureBuilder(arch);
             return RunTest(sExp, pb.Architecture, () =>
             {
                 builder(pb);
@@ -314,17 +326,13 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfDpb2()
         {
-            var sExp = "Used: [bx, [0..15]],[cx, [0..7]]";
-            RunTest(sExp, m =>
+            var sExp = "Used: [bx, [0..15]],[cl, [0..7]]";
+            RunTest(sExp, new X86ArchitectureFlat32(""), m =>
             {
-                var _bx = new RegisterStorage("bx", 3, 0, PrimitiveType.Word16);
-                var _cx = new RegisterStorage("cx", 1, 0, PrimitiveType.Word16);
-                var _cl = new RegisterStorage("cl", 1, 0, PrimitiveType.Byte);
-                var _ch = new RegisterStorage("ch", 1, 8, PrimitiveType.Byte);
-                var bx = m.Frame.EnsureRegister(_bx);
-                var cx = m.Frame.EnsureRegister(_cx);
-                var cl = m.Frame.EnsureRegister(_cl);
-                var ch = m.Frame.EnsureRegister(_ch);
+                var bx = m.Frame.EnsureRegister(Registers.bx);
+                var cx = m.Frame.EnsureRegister(Registers.cx);
+                var cl = m.Frame.EnsureRegister(Registers.cl);
+                var ch = m.Frame.EnsureRegister(Registers.ch);
                 m.Label("m1Loop");
                 m.Assign(ch, m.Mem8(bx));
                 m.MStore(m.IAdd(bx, 40), cx);
@@ -347,6 +355,39 @@ namespace Reko.UnitTests.Analysis
                 m.AddDefToEntryBlock(r1_r2);
                 m.MStore(m.Word32(0x00123400), m.Slice(r2.DataType, r1_r2, 32));
                 m.Return();
+            });
+        }
+
+        [Test]
+        public void UrfMkSequence()
+        {
+            var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
+            RunSsaTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
+                var r3 = m.Reg64("r3");
+
+                m.AddDefToEntryBlock(r1);
+                m.AddDefToEntryBlock(r2);
+                m.Assign(r3, m.Seq(r1, r2));
+                m.MStore(m.Word32(0x00123400), r3);
+            });
+        }
+
+        [Test]
+        public void UrfMkSequence_unused()
+        {
+            var sExp = "Used: ";
+            RunSsaTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
+                var r3 = m.Reg64("r3");
+
+                m.AddDefToEntryBlock(r1);
+                m.AddDefToEntryBlock(r2);
+                m.Assign(r3, m.Seq(r1, r2));
             });
         }
     }

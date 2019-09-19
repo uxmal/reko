@@ -836,6 +836,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_regression7()
         {
+            Given_PowerPcBe64();
             AssertCode(0x7CA464AA, "lswi\tr5,r4,0C");
             AssertCode(0x7CA965AA, "stswi\tr5,r9,0C");
             AssertCode(0x7C0018AC, "dcbf\tr0,r3");

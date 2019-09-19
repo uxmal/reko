@@ -172,7 +172,7 @@ namespace Reko.Arch.Mips
                 case Opcode.ll: RewriteLoadLinked32(instr); break;
                 case Opcode.lld: RewriteLoadLinked64(instr); break;
                 case Opcode.lui: RewriteLui(instr); break;
-                case Opcode.lw: RewriteLoad(instr, PrimitiveType.Int32); break;
+                case Opcode.lw: RewriteLoad(instr, PrimitiveType.Word32, PrimitiveType.Int32); break;
                 case Opcode.lwc1: RewriteLoad(instr, PrimitiveType.Real32); break;
                 case Opcode.lwl: RewriteLwl(instr); break;
                 case Opcode.lwr: RewriteLwr(instr); break;

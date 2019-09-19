@@ -127,7 +127,7 @@ namespace Reko.Analysis
         {
             var totalSize = PrimitiveType.Create(
                 Domain.SignedInt | Domain.UnsignedInt,
-                loCandidate.Dst.DataType.BitSize + loCandidate.Dst.DataType.BitSize);
+                loCandidate.Dst.DataType.BitSize + hiCandidate.Dst.DataType.BitSize);
             var left = CreateCandidate(loCandidate.Left, hiCandidate.Left, totalSize);
             var right = CreateCandidate(loCandidate.Right, hiCandidate.Right, totalSize);
             this.dst = CreateCandidate(loCandidate.Dst, hiCandidate.Dst, totalSize);

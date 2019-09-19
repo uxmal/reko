@@ -26,7 +26,7 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Represents a bit range within a register as two shorts.
+    /// Represents a semi-open bit range within a register as two shorts.
     /// </summary>
     public struct BitRange : IComparable<BitRange>
     {
@@ -83,6 +83,23 @@ namespace Reko.Core
             if (IsEmpty)
                 return 0;
             return Lsb.GetHashCode() ^ Msb.GetHashCode() * 5;
+        }
+
+        public bool Contains(int bitpos)
+        {
+            return Lsb <= bitpos && bitpos < Msb;
+        }
+
+        public BitRange Intersect(BitRange that)
+        {
+            int lsb = Math.Max(this.Lsb, that.Lsb);
+            int msb = Math.Min(this.Msb, that.Msb);
+            return new BitRange(lsb, msb);
+        }
+
+        public BitRange Offset(int offset)
+        {
+            return new BitRange(this.Lsb + offset, this.Msb + offset);
         }
 
         public bool Overlaps(BitRange that)
@@ -149,7 +166,5 @@ namespace Reko.Core
             else
                 return string.Format("[{0}..{1}]", Lsb, Msb - 1);
         }
-
-
     }
 }

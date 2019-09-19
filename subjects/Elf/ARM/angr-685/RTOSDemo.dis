@@ -394,6 +394,7 @@ l00000204:
 l00000246:
 	word32 lr_58
 	word32 r0_59
+	word32 r7_403
 	prvCopyDataToQueue(r0, r1, r3, r3_42, r3, lr, out r0_59, out r7_403, out lr_58)
 	branch Mem40[r0 + 36:word32] != 0x00000000 l00000290
 // DataOut:
@@ -569,6 +570,8 @@ l000002A4:
 l000002C6:
 	word32 r5_27
 	word32 r6_28
+	word32 r7_56
+	word32 lr_57
 	Mem30[prvCopyDataFromQueue(r0, r1, r0, r5_13, Mem11[r0 + 12:word32], r7, lr, out r5_27, out r6_28, out r7_56, out lr_57) + 12:word32] = r6_28
 	__msr(cpsr, r5_27)
 	return
@@ -621,6 +624,7 @@ l000003B0:
 	word32 lr_51
 	word32 r5_56
 	word32 r6_57
+	word32 r7_483
 	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12:word32], r6_41, 0x00000000, lr, out r5_56, out r6_57, out r7_483, out lr_51)
 	branch r3 != 0x00000000 l000003E8
 // DataOut:
@@ -937,6 +941,8 @@ l00000476:
 
 l00000482:
 	word32 r4_32 = (int32) (int8) (word32) Mem15[r0 + 69:byte]
+	word32 r0_162
+	word32 lr_39
 	word32 r7_44
 	branch prvCopyDataToQueue(r0, r1, r3, r3, r2, lr, out r0_162, out r7_44, out lr_39) l000004A6
 // DataOut:
@@ -1110,6 +1116,7 @@ l00000524:
 // SymbolicIn:
 
 l0000054A:
+	word32 lr_28
 	word32 r5_33
 	word32 r7_35
 	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, (int32) (int8) (word32) Mem15[r0 + 68:byte], r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_28)
@@ -1318,6 +1325,7 @@ l000005FA:
 // SymbolicIn:
 
 l000005E4:
+	word32 lr_92
 	branch xQueueGenericReceive(r0, 0x00000000, r1, 0x00000000, lr, cpsr, out lr_92) == 0x00000000 l000005F8
 // DataOut:
 // DataOut (flags):
@@ -6314,6 +6322,9 @@ l00008388:
 // SymbolicIn:
 
 l000083C0:
+	word32 lr_73
+	word32 r7_78
+	word32 r0_161
 	Z_157 = prvCopyDataToQueue(r0, r1, 0x00000000, r3_66, r7, lr, out r0_161, out r7_78, out lr_73)
 	branch Mem11[r0 + 36:word32] != 0x00000000 l000083EE
 // DataOut:
@@ -6426,6 +6437,7 @@ l00008464_1:
 
 l00008466:
 	word32 r4_60
+	word32 r5_190
 	Z = memcpy(r1, r1_30, r2_22, r3_27 + 0xFFFFFFFF, r0, r5_16, r6, r7, lr, out r4_60, out r5_190, out r6, out r7, out lr)
 	branch Mem68[r4_60 + 16:word32] != 0x00000000 l00008478
 // DataOut:
@@ -6532,6 +6544,9 @@ l000084A0:
 // SymbolicIn:
 
 l000084B0:
+	word32 lr_23
+	word32 r7_28
+	word32 r0_97
 	prvCopyDataToQueue(r0, r1, 0x00000000, r3_13, r7, lr, out r0_97, out r7_28, out lr_23)
 	branch r2 != 0x00000000 l000084AC
 // DataOut:
@@ -6545,6 +6560,7 @@ l000084BC:
 // SymbolicIn:
 
 l000084C2:
+	word32 r0_39
 	branch xCoRoutineRemoveFromEventList(r0 + 0x00000024, out r0_39) l000084D0
 // DataOut:
 // DataOut (flags):
@@ -6630,8 +6646,11 @@ l000084FA_1:
 
 l000084FC:
 	Mem56[r0 + 56:word32] = r7_35 + 0xFFFFFFFF
+	word32 r6_153
 	word32 r4_64
 	word32 r5_65
+	word32 r7_154
+	word32 lr_155
 	memcpy(r1, r3_38, lr_26, r3_38, r0, r2, r1, r7_35 + 0xFFFFFFFF, lr_26, out r4_64, out r5_65, out r6_153, out r7_154, out lr_155)
 	branch Mem56[r5_65:word32] != 0x00000000 l00008510
 // DataOut:

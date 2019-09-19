@@ -109,6 +109,7 @@ namespace Reko.Core.Expressions
                 default: return new ConstantUInt32(p, (uint) value);
                 }
             case 36:        // PDP-10 <3
+            case 48:
             case 56:
                 value &= (long)Bits.Mask(0, bitSize);
                 goto case 64;
@@ -135,7 +136,7 @@ namespace Reko.Core.Expressions
                 //$TODO: if we encounter less common bit sizes, do them in a cascading if statement.
                 break;
             }
-            throw new NotSupportedException(string.Format("Constants of type {0} are not supported.", dt));
+            throw new NotSupportedException($"Constants of type {dt} are not supported.");
         }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)

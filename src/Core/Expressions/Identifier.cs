@@ -84,7 +84,7 @@ namespace Reko.Core.Expressions
         /// byte value on a PowerPC would be stored in a 32-bit register 
         /// 'r6'.
         /// </remarks>
-        public Storage Storage { get; private set; }
+        public Storage Storage { get; }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

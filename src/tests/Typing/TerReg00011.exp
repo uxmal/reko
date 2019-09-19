@@ -23,7 +23,7 @@ l0C00_000C:
 	bx_16 = bx_16 - 0x0001
 	bh_17 = SLICE(bx_16, byte, 8) (alias)
 	bl_18 = (byte) bx_16 (alias)
-	branch bx_16 >= 0x0000 l0C00_000C
+	branch bx_39 >= 0x0000 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return
@@ -55,7 +55,7 @@ l0C00_000C:
 	bx_16 = bx_16 - 0x0001;
 	bh_17 = SLICE(bx_16, byte, 8);
 	bl_18 = (byte) bx_16;
-	branch bx_16 >= 0x0000 l0C00_000C
+	branch bx_39 >= 0x0001 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return

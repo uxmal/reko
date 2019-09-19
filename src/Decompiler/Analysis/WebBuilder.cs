@@ -78,15 +78,25 @@ namespace Reko.Analysis
 
 		public void InsertDeclarations()
 		{
-			DeclarationInserter deci = new DeclarationInserter(ssaIds, doms);
+			var deci = new DeclarationInserter(ssaIds, doms);
 			foreach (Web web in this.webs)
 			{
-                if (web.Uses.Count > 0 &&
-                    !web.Uses.All(u => u.Instruction is PhiAssignment) &&
-                    !(web.Identifier is MemoryIdentifier)
-                    || web.DefExprs.OfType<OutArgument>().Count() > 0)
+                if (web.Identifier.Name == "dx_11") //$DEBUG
+                    web.ToString();
+                bool isLive = web.Uses.Count > 0;
+                bool isOnlyUsedByPhis = web.Uses.All(u => u.Instruction is PhiAssignment);
+                bool isMemoryId = web.Identifier is MemoryIdentifier;
+                if (isLive && !isOnlyUsedByPhis && !isMemoryId)
                 {
                     deci.InsertDeclaration(web);
+                }
+                else
+                {
+                    var isDefinedByOutArg = OutDefinitionFinder.Find(web.Members);
+                    if (isDefinedByOutArg)
+                    {
+                        deci.InsertDeclaration(web);
+                    }
                 }
 			}
 		}
@@ -223,5 +233,36 @@ namespace Reko.Analysis
 					return a;
 			}
 		}
+
+        public class OutDefinitionFinder : InstructionVisitorBase
+        {
+            private readonly Identifier id;
+            private bool usedAsOutArgument;
+
+            public static bool Find(IEnumerable<SsaIdentifier> sids)
+            {
+                foreach (var sid in sids)
+                {
+                    if (sid.DefStatement != null)
+                    {
+                        var odf = new OutDefinitionFinder(sid.Identifier);
+                        sid.DefStatement.Instruction.Accept(odf);
+                        if (odf.usedAsOutArgument)
+                            return true;
+                    }
+                }
+                return false;
+            }
+
+            public OutDefinitionFinder(Identifier id)
+            {
+                this.id = id;
+            }
+
+            public override void VisitOutArgument(OutArgument outArg)
+            {
+                usedAsOutArgument |= (outArg.Expression is Identifier id && this.id == id);
+            }
+        }
 	}
 }

@@ -41,9 +41,9 @@ Eq_135: (fn (ptr32 ptr32) ((ptr32 ptr32), (ptr32 ptr32)))
 Eq_150: (fn (ptr32 word32) ((ptr32 ptr32), (ptr32 ptr32), ptr32))
 	T_150 (in frobulate : ptr32)
 	T_151 (in signature of frobulate : void)
-	T_165 (in frobulate : ptr32)
-	T_182 (in frobulate : ptr32)
-	T_191 (in frobulate : ptr32)
+	T_166 (in frobulate : ptr32)
+	T_183 (in frobulate : ptr32)
+	T_192 (in frobulate : ptr32)
 Eq_186: (fn (ptr32 word32) ((ptr32 ptr32), (ptr32 ptr32)))
 	T_186 (in bazulate : ptr32)
 	T_187 (in signature of bazulate : void)
@@ -674,7 +674,7 @@ T_147: (in r1 : (ptr32 ptr32))
 T_148: (in sp_29 : (ptr32 (ptr32 ptr32)))
   Class: Eq_148
   DataType: (ptr32 (ptr32 ptr32))
-  OrigDataType: (ptr32 (struct (0 T_168 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_169 t0000)))
 T_149: (in fp_24 : (ptr32 word32))
   Class: Eq_149
   DataType: (ptr32 word32)
@@ -735,29 +735,29 @@ T_163: (in Mem19[fp_24 - 24 + 0x00000000:word32] : word32)
   Class: Eq_131
   DataType: (ptr32 ptr32)
   OrigDataType: word32
-T_164: (in fp_48 : (ptr32 word32))
+T_164: (in sp_82 : word32)
+  Class: Eq_164
+  DataType: word32
+  OrigDataType: word32
+T_165: (in fp_48 : (ptr32 word32))
   Class: Eq_149
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_176 t0000)))
-T_165: (in frobulate : ptr32)
+T_166: (in frobulate : ptr32)
   Class: Eq_150
   DataType: (ptr32 Eq_150)
-  OrigDataType: (ptr32 (fn T_171 (T_158, T_168, T_170)))
-T_166: (in 0x00000000 : word32)
-  Class: Eq_166
-  DataType: word32
-  OrigDataType: word32
-T_167: (in sp_29 + 0x00000000 : word32)
+  OrigDataType: (ptr32 (fn T_171 (T_158, T_169, T_170)))
+T_167: (in 0x00000000 : word32)
   Class: Eq_167
   DataType: word32
   OrigDataType: word32
-T_168: (in Mem19[sp_29 + 0x00000000:word32] : word32)
+T_168: (in sp_29 + 0x00000000 : word32)
+  Class: Eq_168
+  DataType: word32
+  OrigDataType: word32
+T_169: (in Mem19[sp_29 + 0x00000000:word32] : word32)
   Class: Eq_131
   DataType: (ptr32 ptr32)
-  OrigDataType: word32
-T_169: (in sp_82 : word32)
-  Class: Eq_169
-  DataType: word32
   OrigDataType: word32
 T_170: (in out sp_82 : ptr32)
   Class: Eq_134
@@ -807,14 +807,14 @@ T_181: (in r0 > (ptr32 *) 0x00000006 : bool)
   Class: Eq_181
   DataType: bool
   OrigDataType: bool
-T_182: (in frobulate : ptr32)
+T_182: (in sp_96 : word32)
+  Class: Eq_182
+  DataType: word32
+  OrigDataType: word32
+T_183: (in frobulate : ptr32)
   Class: Eq_150
   DataType: (ptr32 Eq_150)
   OrigDataType: (ptr32 (fn T_185 (T_178, T_178, T_184)))
-T_183: (in sp_96 : word32)
-  Class: Eq_183
-  DataType: word32
-  OrigDataType: word32
 T_184: (in out sp_96 : ptr32)
   Class: Eq_134
   DataType: ptr32
@@ -843,22 +843,22 @@ T_190: (in bazulate(null, null) : word32)
   Class: Eq_149
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_191: (in frobulate : ptr32)
+T_191: (in sp_97 : word32)
+  Class: Eq_191
+  DataType: word32
+  OrigDataType: word32
+T_192: (in frobulate : ptr32)
   Class: Eq_150
   DataType: (ptr32 Eq_150)
-  OrigDataType: (ptr32 (fn T_196 (T_193, T_178, T_195)))
-T_192: (in 0x00000003 : word32)
-  Class: Eq_192
+  OrigDataType: (ptr32 (fn T_196 (T_194, T_178, T_195)))
+T_193: (in 0x00000003 : word32)
+  Class: Eq_193
   DataType: up32
   OrigDataType: up32
-T_193: (in r0 - 0x00000003 : word32)
+T_194: (in r0 - 0x00000003 : word32)
   Class: Eq_131
   DataType: (ptr32 ptr32)
   OrigDataType: up32
-T_194: (in sp_97 : word32)
-  Class: Eq_194
-  DataType: word32
-  OrigDataType: word32
 T_195: (in out sp_97 : ptr32)
   Class: Eq_134
   DataType: ptr32

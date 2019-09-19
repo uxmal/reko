@@ -1,19 +1,19 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed:  ax:[0..15] ds:[0..15]
+	BitsUsed:  ds:[0..15]
 	Trashed:   SCZO ax bx cx di es Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
 fn0C00_0000_entry:
 	def ds
-	def ax
 l0C00_0000:
 	call fn0C00_000C (retsize: 2;)
-		uses: ax:ax,ds:ds
-		defs: bx:bx_7,cl:cl_16
-	Mem15[ds:0x0300:word16] = bx_7
-	Mem17[ds:0x0302:byte] = cl_16
+		uses: ds:ds
+		defs: bx:bx_6,cx:cx_7
+	cl_15 = SLICE(cx_7, byte, 0) (alias)
+	Mem14[ds:0x0300:word16] = bx_6
+	Mem16[ds:0x0302:byte] = cl_15
 	return
 fn0C00_0000_exit:
 // fn0C00_000C /////////////////////
@@ -25,48 +25,43 @@ fn0C00_0000_exit:
 define fn0C00_000C
 fn0C00_000C_entry:
 	def ds
-	def ax
 	def Mem0
 l0C00_000C:
 	di_7 = 0x7E0F
 	cx_8 = 0x000C
-	ax_36 = DPB(ax, 0x00, 0) (alias)
 	SZO_10 = cond(0x00)
 	Z_23 = SLICE(SZO_10, bool, 2) (alias)
 l0C00_0019:
-	ax_34 = PHI(ax_36, ax_37)
-	Z_22 = PHI(Z_23, Z_20)
-	di_15 = PHI(di_7, di_18)
-	ax_37 = DPB(ax_34, 0x00, 0) (alias)
-	ax_38 = DPB(ax_34, 0x00, 0) (alias)
-	cx_12 = PHI(cx_8, cx_19)
+	Z_22 = PHI((Z_23, l0C00_000C), (Z_20, l0C00_0019_1))
+	di_15 = PHI((di_7, l0C00_000C), (di_18, l0C00_0019_1))
+	cx_12 = PHI((cx_8, l0C00_000C), (cx_19, l0C00_0019_1))
+	ch_51 = SLICE(cx_12, byte, 8) (alias)
 	branch cx_12 == 0x0000 l0C00_001B
 l0C00_0019_1:
 	SCZO_17 = cond(0x00 - Mem0[ds:di_15:byte])
 	Z_20 = SLICE(SCZO_17, bool, 2) (alias)
 	di_18 = di_15 + 0x0001
 	cx_19 = cx_12 - 0x0001
-	branch 0x00 != Mem0[ds:di_15:byte] l0C00_0019
+	ch_52 = SLICE(cx_19, byte, 8) (alias)
+	branch Mem0[ds:di_15:byte] != 0x00 l0C00_0019
 l0C00_001B:
-	cx_51 = PHI(cx_12, cx_19)
-	ax_33 = PHI(ax_38, ax_37)
-	di_30 = PHI(di_15, di_18)
-	Z_21 = PHI(Z_22, Z_20)
+	ch_50 = PHI((ch_51, l0C00_0019), (ch_52, l0C00_0019_1))
+	di_30 = PHI((di_15, l0C00_0019), (di_18, l0C00_0019_1))
+	Z_21 = PHI((Z_22, l0C00_0019), (Z_20, l0C00_0019_1))
 	branch Z_21 l0C00_002D
 l0C00_001D:
 	ah_32 = Mem0[ds:di_30 + 0x0001:byte]
-	ax_39 = DPB(ax_33, ah_32, 8) (alias)
-	cx_40 = __bsr(ax_39)
-	cx_41 = cx_40 - 0x0008
-	bx_43 = di_30 - 0x7E03
+	ax_34 = SEQ(ah_32, 0x00) (alias)
+	cx_35 = __bsr(ax_34)
+	cx_36 = cx_35 - 0x0008
+	bx_38 = di_30 - 0x7E03
 	return
 l0C00_002D:
 	bx_24 = 0x0000
-	cx_52 = DPB(cx_51, 0x00, 0) (alias)
+	cx_53 = SEQ(ch_50, 0x00) (alias)
 	return
 fn0C00_000C_exit:
-	cx_50 = PHI(cx_41, cx_52)
-	bx_47 = PHI(bx_43, bx_24)
-	cl_51 = (byte) cx_50
-	use bx_47
-	use cl_51
+	cx_49 = PHI((cx_36, l0C00_001D), (cx_53, l0C00_002D))
+	bx_46 = PHI((bx_38, l0C00_001D), (bx_24, l0C00_002D))
+	use bx_46
+	use cx_49

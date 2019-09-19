@@ -353,6 +353,7 @@ l00008470:
 	word32 fp_24 = frobulate(r0, r1, out sp_29)
 	word32 r0_38 = __divsi3(r0 + r1, r0)
 	word32 r0_47 = Mem19[fp_24 - 24:word32]
+	word32 sp_82
 	word32 fp_48 = frobulate(r0_47, Mem19[sp_29:word32], out sp_82)
 	__divsi3(r0_38, r0_47)
 	return Mem19[fp_48:word32]
@@ -394,12 +395,14 @@ l00008534:
 // SymbolicIn:
 
 l00008520:
+	word32 sp_97
 	fp_35 = frobulate(r0 - 0x00000003, r0, out sp_97)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008514:
+	word32 sp_96
 	fp_35 = frobulate(r0, r0, out sp_96)
 // DataOut:
 // DataOut (flags):

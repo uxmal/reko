@@ -354,14 +354,12 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void TerReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/TerReg00011.txt");
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void TerReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/TerReg00012.txt");
@@ -515,14 +513,12 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void TerReg00016()
         {
             RunHexTest("fragments/regressions/r00016.dchex", "Typing/TerReg00016.txt");
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void TerReg00017()
         {
             RunTest32("Fragments/regressions/r00017.asm", "Typing/TerReg00017.txt");

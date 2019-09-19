@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Analysis
 {
     /// <summary>
     /// Inserts declaration statements for local variables so they appear
-    /// as close to all theuses and definitions. If a single definition
+    /// as close to all their uses and definitions. If a single definition
     /// dominates all others, then it is enough to use one definition.
     /// </summary>
 	public class DeclarationInserter

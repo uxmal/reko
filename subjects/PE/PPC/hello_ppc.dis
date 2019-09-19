@@ -63,6 +63,11 @@ l00400268:
 	word32 r3_100
 	word32 r30_101
 	word32 r31_102
+	word32 r25_164
+	word32 r26_165
+	word32 r27_166
+	word32 r28_167
+	word32 r29_168
 	word32 r2_125 = fn00400430(fn004004B4(fn004002F8(r2, r31_34 + 32, r25, r26, r27, r28, r29, r30, r31_34 + 32, out r3_45, out r25_55, out r26_56, out r27_57, out r28_58, out r29_59, out r31_46), r31_46, r3, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_55, r26_56, r27_57, r28_58, r29_59, r3_45, r31_46, lr, out r3_100, out r25_164, out r26_165, out r27_166, out r28_167, out r29_168, out r30_101, out r31_102), r30_101, r31_102, r3_100, r30_101)
 	r29Out = dwLoc10
 	r30Out = dwLoc0C
@@ -257,6 +262,10 @@ l00400488:
 // SymbolicIn:
 
 l00400494:
+	word32 r3_108
+	word32 r29_109
+	word32 r30_110
+	word32 r31_111
 	r2 = fn004012B0(r2, r4, r29, r30, r4, out r3_108, out r29_109, out r30_110, out r31_111)
 // DataOut:
 // DataOut (flags):
@@ -270,6 +279,9 @@ l0040044C:
 
 l00400458:
 	word32 r31_48
+	word32 r3_105
+	word32 r29_106
+	word32 r30_107
 	r2 = fn004012B0(r2, r4, r29, r30, r4, out r3_105, out r29_106, out r30_107, out r31_48)
 	word32 r4_61 = Mem11[r31_48 + 12:word32]
 	Mem63[r31_48 + 24:word32] = 0
@@ -931,6 +943,7 @@ l0040109C:
 // SymbolicIn:
 
 l004010B4:
+	word32 r29_235
 	r2 = fn00401AB4(r2, r29_52, r30_114, out r29_235, out r30_114)
 // DataOut:
 // DataOut (flags):
@@ -1253,6 +1266,9 @@ fn0040135C_entry:
 // SymbolicIn:
 
 l0040135C:
+	word32 r3_32
+	word32 r29_33
+	word32 r30_34
 	fn00401380(r2, 1, r27, r28, r29, r30, r31, out r3_32, out r29_33, out r30_34)
 	return
 // DataOut:
@@ -1731,6 +1747,7 @@ l00401688:
 
 l0040170C:
 	word32 r3_184
+	word32 r30_466
 	r2 = fn00402248(r2, r30_151, fp + -24, 1, 1, r30_151, r4, out r3_184, out r29_193, out r30_466, out r31_195)
 	r28_148 = r3_184
 // DataOut:
@@ -1762,6 +1779,7 @@ l004016E8:
 
 l004016B8:
 	word32 r3_247
+	word32 r30_467
 	r2 = fn00402248(r2, r30_151, Mem209[r4 + 8:word32], r29_193, r29_193, r30_151, r4, out r3_247, out r29_193, out r30_467, out r31_195)
 	r28_148 = r3_247
 // DataOut:
@@ -2316,6 +2334,10 @@ l00401D78:
 	word32 r3_91
 	word32 r30_92
 	word32 r31_93
+	word32 r29_217
+	word32 r28_216
+	word32 r27_215
+	word32 r26_214
 	word32 r2_86 = fn00401DD8(dwLoc34, r3, r4, r26, r27, r28, r4, r3, r31_24, out r3_91, out r26_214, out r27_215, out r28_216, out r29_217, out r30_92, out r31_93)
 	branch r3_91 == 0x00000000 l00401DA8
 // DataOut:
@@ -2411,6 +2433,8 @@ l00401E88:
 // SymbolicIn:
 
 l00401EB4:
+	word32 r29_211
+	word32 r30_212
 	r2_106 = fn00401AB4(r2_106, r29_88, r30_90, out r29_211, out r30_212)
 // DataOut:
 // DataOut (flags):
@@ -3021,6 +3045,7 @@ l00402404:
 	word32 r2_23 = fn0040262C(r2, Mem0[r2 + 168:word32], Mem0[r2 + 172:word32], r29, r30, r31, out r29_17, out r30_18, out r31_19)
 	word32 r29_28
 	word32 r30_29
+	word32 r31_89
 	fn00404044(fn0040262C(r2_23, Mem13[r2_23 + 176:word32], Mem13[r2_23 + 180:word32], r29_17, r30_18, r31_19, out r29_28, out r30_29, out r31_89))
 	fn00404044(dwLoc2C)
 	branch 0xFFFFF90E == 0x00000000 l00402480
@@ -3502,6 +3527,7 @@ l0040298C:
 	word32 r3_36
 	word32 r30_37
 	word32 r31_38
+	word32 r29_100
 	word32 r2_30 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30, r3, out r3_36, out r25_31, out r26_32, out r27_33, out r28_34, out r29_100, out r30_37, out r31_38)
 	Mem49[r31_38 + 8:word32] = r3_36
 	branch r3_36 == 0x00000000 l004029E4
@@ -3610,6 +3636,7 @@ l00402B04:
 // SymbolicIn:
 
 l00402B4C:
+	word32 r3_414
 	word32 r29_129
 	word32 r3_130
 	word32 r30_131
@@ -3620,6 +3647,7 @@ l00402B4C:
 // SymbolicIn:
 
 l00402B0C:
+	word32 r3_415
 	word32 r2_181 = fn004032FC(dwLoc0244, Mem33[dwLoc0244 + 216:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, fp + -536, lr, out r3_415, out r29_155, out r30_156, out r31_157)
 	fn004032AC(r31_157)
 	fn00403FCC(r2_181)
@@ -3643,8 +3671,12 @@ l00402A60:
 
 l00402A7C:
 	word32 r30_257 = r31_216 + 64
+	word32 r27_411
+	word32 r28_412
+	word32 r3_410
 	word32 r29_296
 	word32 r30_298
+	word32 r31_413
 	r2_154 = fn004011FC(fn004033C4(r2, r30_257, Mem33[r2 + 216:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27_231, r28_22, r29_233, r30_257, r31_216, lr, out r29_296, out r30_298, out r31_157), r30_298, r29_296, r30_298, out r3_410, out r27_411, out r28_412, out r29_155, out r30_156, out r31_413)
 // DataOut:
 // DataOut (flags):
@@ -3761,6 +3793,7 @@ l00402C4C:
 	word32 r31_24
 	word32 r29_42
 	word32 r30_44
+	word32 r31_70
 	word32 r2_41 = fn00403618(fn004035CC(r2, r29, r30, r3, out r29_21, out r30_23, out r31_24), r31_24, r29_21, r30_23, r31_24, out r29_42, out r30_44, out r31_70)
 	fn00403F10(r2_41, Mem9[Mem9[r2_41 + 224:word32]:word32])
 	r29Out = r29_42
@@ -4176,6 +4209,7 @@ l004031B4:
 	word32 r29_52
 	word32 r30_54
 	word32 r3_67
+	word32 r30_240
 	r2 = fn00403898(fn00403A0C(fn004012B0(r2, r3, r29, -1, r3, out r3_29, out r29_28, out r30_240, out r31_31), r31_31, r29_28, r3_29, out r29_52, out r30_54), Mem19[r31_31 + 16:word32], r28, r29_52, r30_54, r31_31, out r3_67, out r28, out r29, out r30_112, out r31_113)
 	branch r3_67 >= 0x00000000 l004031F0
 // DataOut:
@@ -4300,6 +4334,8 @@ l0040326C:
 	word32 r30_35
 	word32 r31_36
 	word32 r29_41
+	word32 r29_64
+	word32 r31_65
 	fn004035A0(fn00403B08(fn00403618(r2, 10, r29, r30, r31, out r29_21, out r30_23, out r31_24), 22, r29_21, r30_23, r31_24, out r29_41, out r30_35, out r31_36), 3, r29_41, r30_35, r31_36, out r29_64, out r31_65)
 	return
 // DataOut:
@@ -4408,6 +4444,7 @@ l004032FC:
 	word32 r28_77
 	word32 r3_79
 	word32 r31_81
+	word32 r30_197
 	word32 r29_108
 	word32 r2_115 = fn004004B4(r2, fp + -40, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, fp + -40, lr, out r3_79, out r25_74, out r26_75, out r27_76, out r28_77, out r29_108, out r30_197, out r31_81)
 	word32 r4_95 = Mem42[r31_81 + 4:word32]
@@ -4419,6 +4456,12 @@ l004032FC:
 // SymbolicIn:
 
 l0040339C:
+	word32 r27_106
+	word32 r28_107
+	word32 r26_121
+	word32 r25_122
+	word32 r31_199
+	word32 r3_198
 	r2_115 = fn00401598(r2_115, 0, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, out r3_198, out r25_122, out r26_121, out r27_106, out r28_107, out r29_108, out r30_110, out r31_199)
 // DataOut:
 // DataOut (flags):
@@ -4474,6 +4517,11 @@ l004033C4:
 	word32 r3_99
 	word32 r30_100
 	word32 r31_101
+	word32 r25_163
+	word32 r26_164
+	word32 r27_165
+	word32 r28_166
+	word32 r29_167
 	word32 r2_124 = fn00400430(fn004004B4(fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, out r3_44, out r25_54, out r26_55, out r27_56, out r28_57, out r29_58, out r31_45), r31_45, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_54, r26_55, r27_56, r28_57, r29_58, r3_44, r31_45, lr, out r3_99, out r25_163, out r26_164, out r27_165, out r28_166, out r29_167, out r30_100, out r31_101), r30_100, r31_101, r3_99, r30_100)
 	r29Out = dwLoc10
 	r30Out = dwLoc0C
@@ -4542,6 +4590,7 @@ l004034B4:
 	word32 r29_48
 	word32 r30_50
 	word32 r30_73
+	word32 r3_294
 	word32 r29_121
 	word32 r31_112
 	word32 r2_104 = fn00403A0C(fn004012B0(r2, r3, r4, r5, r3, out r3_294, out r29_48, out r30_50, out r31_112), r31_112, r29_48, r30_50, out r29_121, out r30_73)
@@ -4566,6 +4615,9 @@ l00403540:
 
 l00403500:
 	word32 r3_110
+	word32 r30_297
+	word32 r29_296
+	word32 r27_295
 	r2_104 = fn00400F9C(r2_104, r6, r25, r26, 0, r6, r29_121, r30_73 & 0x00000004, r31_112, out r3_110, out r25, out r26, out r27_295, out r28_108, out r29_296, out r30_297, out r31_112)
 	r29_121 = r3_110
 	branch r3_110 != 0x00000000 l00403530
@@ -4647,6 +4699,8 @@ fn00403574_entry:
 // SymbolicIn:
 
 l00403574:
+	word32 r29_33
+	word32 r31_34
 	fn004024F0(r2, r3, 0, 0, r29, r30, r31, out r29_33, out r31_34)
 	return
 // DataOut:
@@ -4796,6 +4850,7 @@ l00403684:
 // SymbolicIn:
 
 l00403694:
+	word32 r3_145
 	r2 = fn00402248(r2, 2, r4_34, r5_40, r29, r30, r31, out r3_145, out r29, out r30, out r31)
 // DataOut:
 // DataOut (flags):

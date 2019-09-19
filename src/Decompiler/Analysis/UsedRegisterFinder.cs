@@ -141,36 +141,64 @@ namespace Reko.Analysis
 
         public BitRange VisitAssignment(Assignment ass)
         {
-            if (ass.Src == idCur) 
+            switch (ass.Src)
             {
-                // A simple assignment a = b is a copy, and so we must chase
-                // the uses of a.
-                var idOld = idCur;
-                idCur = ass.Dst;
-                var n = Classify(ssa.Identifiers[ass.Dst]);
-                idCur = idOld;
-                return n;
-            }
-            else if (ass.Src is DepositBits dpb)
-            {
-                // a = DPB(a', b) is also a copy, so we must chase the uses of a'.
-                var idOld = idCur;
-                idCur = ass.Dst;
-                var n = Classify(ssa.Identifiers[ass.Dst]);
-                idCur = idOld;
-                n -= new BitRange(
-                    dpb.BitPosition,
-                    dpb.InsertedBits.DataType.BitSize + dpb.BitPosition);
-                return n;
-            }
-            else if (ass.Src is Slice slice)
-            {
-                // a = SLICE(a', b) is also a copy, so we must chase the uses of a'.
-                var idOld = idCur;
-                var n = Classify(ssa.Identifiers[ass.Dst]);
-                n <<= slice.Offset;
-                idCur = idOld;
-                return n;
+            case Identifier id when id == idCur:
+                {
+                    // A simple assignment a = b is a copy, and so we must chase
+                    // the uses of a.
+                    var idOld = idCur;
+                    idCur = ass.Dst;
+                    var n = Classify(ssa.Identifiers[ass.Dst]);
+                    idCur = idOld;
+                    return n;
+                }
+            case DepositBits dpb:
+                {
+                    // a = DPB(a', b) is also a copy, so we must chase the uses of a'.
+                    var idOld = idCur;
+                    idCur = ass.Dst;
+                    var n = Classify(ssa.Identifiers[ass.Dst]);
+                    idCur = idOld;
+                    n -= new BitRange(
+                        dpb.BitPosition,
+                        dpb.InsertedBits.DataType.BitSize + dpb.BitPosition);
+                    return n;
+                }
+            case Slice slice:
+                {
+                    // a = SLICE(a', b) is also a copy, so we must chase the uses of a'.
+                    var idOld = idCur;
+                    var n = Classify(ssa.Identifiers[ass.Dst]);
+                    n <<= slice.Offset;
+                    idCur = idOld;
+                    return n;
+                }
+            case MkSequence seq:
+                {
+                    // First verify that we are indeed using the sequence.
+                    var idOld = idCur;
+                    var n = Classify(ssa.Identifiers[ass.Dst]);
+                    idCur = idOld;
+                    if (n.IsEmpty)
+                        return n;
+                    // Now check the elements of the sequence.
+                    int offset = seq.DataType.BitSize;
+                    var total = new BitRange();
+                    foreach (var elem in seq.Expressions)
+                    {
+                        var bitsElem = elem.DataType.BitSize;
+                        offset -= bitsElem;
+                        var rangeElem = new BitRange(offset, offset+bitsElem);
+                        var intersect = n.Intersect(rangeElem);
+                        if (!intersect.IsEmpty)
+                        {
+                            var r = elem.Accept(this);
+                            total |= (r & intersect.Offset(-offset));
+                        }
+                    }
+                    return total;
+                }
             }
             return ass.Src.Accept(this);
         }

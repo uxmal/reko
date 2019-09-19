@@ -70,7 +70,7 @@ ecx_20: orig: ecx
     def:  ecx_20 = 0x00000000 - C_19
     uses: SCZO_21 = cond(ecx_20)
           Mem22[ds:0x0308:word32] = ecx_20
-          ecx_35 = DPB(ecx_20, cx_31, 0) (alias)
+          ecx_16_16_35 = SLICE(ecx_20, word16, 16) (alias)
 SCZO_21: orig: SCZO
     def:  SCZO_21 = cond(ecx_20)
 Mem22: orig: Mem0
@@ -105,29 +105,32 @@ cx_31: orig: cx
     uses: SCZO_32 = cond(cx_31)
           C_33 = cx_31 == 0x0000
           Mem34[ds:0x0306:word16] = cx_31
-          ecx_35 = DPB(ecx_20, cx_31, 0) (alias)
+          ecx_36 = SEQ(ecx_16_16_35, cx_31) (alias)
 SCZO_32: orig: SCZO
     def:  SCZO_32 = cond(cx_31)
-    uses: O_36 = SLICE(SCZO_32, bool, 4) (alias)
-          S_37 = SLICE(SCZO_32, bool, 0) (alias)
-          Z_38 = SLICE(SCZO_32, bool, 2) (alias)
+    uses: O_37 = SLICE(SCZO_32, bool, 4) (alias)
+          S_38 = SLICE(SCZO_32, bool, 0) (alias)
+          Z_39 = SLICE(SCZO_32, bool, 2) (alias)
 C_33: orig: C
     def:  C_33 = cx_31 == 0x0000
     uses: use C_33
 Mem34: orig: Mem0
     def:  Mem34[ds:0x0306:word16] = cx_31
-ecx_35: orig: ecx
-    def:  ecx_35 = DPB(ecx_20, cx_31, 0) (alias)
-    uses: use ecx_35
-O_36: orig: O
-    def:  O_36 = SLICE(SCZO_32, bool, 4) (alias)
-    uses: use O_36
-S_37: orig: S
-    def:  S_37 = SLICE(SCZO_32, bool, 0) (alias)
-    uses: use S_37
-Z_38: orig: Z
-    def:  Z_38 = SLICE(SCZO_32, bool, 2) (alias)
-    uses: use Z_38
+ecx_16_16_35: orig: ecx_16_16
+    def:  ecx_16_16_35 = SLICE(ecx_20, word16, 16) (alias)
+    uses: ecx_36 = SEQ(ecx_16_16_35, cx_31) (alias)
+ecx_36: orig: ecx
+    def:  ecx_36 = SEQ(ecx_16_16_35, cx_31) (alias)
+    uses: use ecx_36
+O_37: orig: O
+    def:  O_37 = SLICE(SCZO_32, bool, 4) (alias)
+    uses: use O_37
+S_38: orig: S
+    def:  S_38 = SLICE(SCZO_32, bool, 0) (alias)
+    uses: use S_38
+Z_39: orig: Z
+    def:  Z_39 = SLICE(SCZO_32, bool, 2) (alias)
+    uses: use Z_39
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -155,6 +158,7 @@ l0C00_0000:
 	SCZO_18 = cond(v8_16)
 	C_19 = v8_16 == 0x0000
 	ecx_20 = 0x00000000 - C_19
+	ecx_16_16_35 = SLICE(ecx_20, word16, 16) (alias)
 	SCZO_21 = cond(ecx_20)
 	Mem22[ds:0x0308:word32] = ecx_20
 	bx_24 = ~bx
@@ -165,23 +169,23 @@ l0C00_0000:
 	cx_29 = cx_28 - 0x03E8
 	SCZO_30 = cond(cx_29)
 	cx_31 = -cx_29
-	ecx_35 = DPB(ecx_20, cx_31, 0) (alias)
 	SCZO_32 = cond(cx_31)
-	O_36 = SLICE(SCZO_32, bool, 4) (alias)
-	S_37 = SLICE(SCZO_32, bool, 0) (alias)
-	Z_38 = SLICE(SCZO_32, bool, 2) (alias)
+	O_37 = SLICE(SCZO_32, bool, 4) (alias)
+	S_38 = SLICE(SCZO_32, bool, 0) (alias)
+	Z_39 = SLICE(SCZO_32, bool, 2) (alias)
 	C_33 = cx_31 == 0x0000
 	Mem34[ds:0x0306:word16] = cx_31
+	ecx_36 = SEQ(ecx_16_16_35, cx_31) (alias)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	use bx_24
 	use C_33
 	use eax_8
-	use ecx_35
-	use O_36
-	use S_37
+	use ecx_36
+	use O_37
+	use S_38
 	use sp_2
 	use Top_3
-	use Z_38
+	use Z_39
 

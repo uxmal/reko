@@ -310,6 +310,11 @@ namespace Reko.Arch.PowerPC
             return true;
         }
 
+        internal static bool Is64Bit(uint wInstr, PowerPcDisassembler dasm)
+        {
+            return dasm.defaultWordWidth.BitSize == 64;
+        }
+
         #endregion
 
         private MachineOperand MemOff(uint reg, uint wInstr)

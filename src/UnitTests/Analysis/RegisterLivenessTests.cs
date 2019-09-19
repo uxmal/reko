@@ -240,7 +240,6 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Category(Categories.IntegrationTests)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void RlReg00005()
         {
             RunFileTest_x86_real("Fragments/regressions/r00005.asm", "Analysis/RlReg00005.txt");
@@ -261,8 +260,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.UnitTests)]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void RlReg00015()
         {
             RunFileTest_x86_real("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");

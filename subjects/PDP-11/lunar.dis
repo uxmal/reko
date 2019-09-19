@@ -583,294 +583,25 @@ void fn053A()
 
 // MayUse: 
 // LiveOut:
-// Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
-// Preserved:
-l05E2:
-	fn03CE(0x3588)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l05F2:
-	Mem72[0x34C2:word16] = 0x0000
-	def sp
-	def r2
-	def r3
-	def r1
-	def r0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l05F6:
-	r4_80 = Mem72[0x0072:word16]
-	branch r4_80 < 0x0000 l0668
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l05FC:
-	branch r4_80 >= 0x000A l0668
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0668:
-	r0_87 = 0x000D
-	r1_88 = 0x1FFC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0602:
-	branch r4_80 <= 0x037A l0672
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0672:
-	r0_94 = 0x0377
-	r1_95 = 0x201C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0608:
-	r4_98 = Mem72[0x005E:word16]
-	branch r4_98 < 0x0000 l06B4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l060E:
-	branch r4_98 <= 0x61A8 l067C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l067C:
-	r0_105 = r4_98
-	r1_106 = 0x2062
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0682:
-	r1_117 = PHI((r1_88, l0668), (r1_106, l067C), (r1_95, l0672))
-	r0_109 = PHI((r0_87, l0668), (r0_105, l067C), (r0_94, l0672))
-	Mem116[0x005C:word16] = (r0_109 << 5) - 0x5780
-	Mem118[0x34CA:word16] = r1_117
-	Mem119[0x0068:word16] = 0x0000
-	Mem120[0x0054:word16] = 0x0000
-	r3_121 = Mem120[0x005E:word16]
-	r3_123 = r3_121 >> 2
-	branch r3_121 >> 2 < 0x0000 l06AC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l06AA:
-	r3_126 = -(r3_121 >> 2)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l06AC:
-	r3_128 = PHI((r3_123, l0682), (r3_126, l06AA))
-	Mem129[0x0058:word16] = r3_128
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0614:
-	branch r4_98 >= 0x01C2 l06B4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l06B4:
-	branch Mem72[sp:word16] - Mem72[0x009E:word16] == 0x0000 l0792
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0792:
-	r0_142 = Mem72[0x005C:word16] - Mem72[0x0076:word16]
-	branch r0_142 >= 0x001E l07AE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l07AE:
-	r0_147 = Mem72[0x0072:word16] - 0x0011
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l07A0:
-	branch r0_142 > 0x0244 l06E8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l06E8:
-	r3_184 = r0_142 * 0x0003 >> 1
-	Mem185[0x34B4:word16] = r3_184
-	r2_191 = fn126C(0x0030, 0x0000, r3_184, out r3_192)
-	r3_197 = r3_192 + Mem185[0x0074:word16]
-	Mem198[0x0078:word16] = r3_197
-	fn123A(0x0030 - r2_191, Mem198[(r3_197 << 1) + 0x28F0:word16], out r2_396, out r3_209)
-	Mem217[sp - 0x0002:word16] = r3_209
-	fn123A(r2_191, Mem217[(r3_197 << 1) + 0x28F2:word16], out r2_397, out r3_223)
-	r3_234 = r3_223 + Mem217[sp - 0x0002:word16]
-	branch r3_234 > 0x0000 l073A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l073A:
-	fn126C(0x0030, 0x0000, r3_234, out r3_238)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0730:
-	fn126C(0x0030, 0x0000, -r3_234, out r3_246)
-	r3_251 = -r3_246
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l073E:
-	r3_253 = PHI((r3_251, l0730), (r3_238, l073A))
-	Mem258[0x007C:word16] = r3_253 >> 2
-	r4_261 = fn100C(r3_253)
-	Mem266[0x007A:word16] = r4_261
-	r3_271 = Mem266[0x005E:word16] * 0x0003 >> 1
-	Mem273[0x34B6:word16] = r3_271 + 0x0017
-	Mem275[0x34B6:word16] = Mem273[0x34B6:word16] + 0x0018
-	r3_276 = r3_271 + 0x0017 - r4_261
-	branch r3_276 > 0x0000 l0772
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0770:
-	r3_282 = -r3_276
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0772:
-	r3_286 = PHI((r3_276, l073E), (r3_282, l0770))
-	fn126C(0x0003, 0x0000, r3_286 << 1, out r3_290)
-	branch r3_276 > 0x0000 l0784
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0782:
-	r3_302 = -r3_290
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0784:
-	r3_304 = PHI((r3_290, l0772), (r3_302, l0782))
-	Mem305[0x007E:word16] = r3_304
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	stackArg0 = <invalid>
-	fn0856(stackArg0)
-	fn0A0A()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l078C_thunk_fn0790:
-	fn0790()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l07A6:
-	r0_153 = Mem72[0x0072:word16] - 0x0001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l06BA:
-	r0_156 = Mem72[0x0072:word16] - 0x0009
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l06C2:
-	r0_158 = PHI((r0_156, l06BA), (r0_153, l07A6), (r0_147, l07AE))
-	Mem159[0x0074:word16] = r0_158
-	r0_165 = (r0_158 << 5) - 0x5780
-	Mem167[0x0076:word16] = r0_165
-	fn0F04(r0_165, r1, r2, r3, r4_98)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l061A:
-	Mem340[0x34B4:word16] = Mem72[0x0072:word16]
-	r4_346 = (r4_98 >> 5) + 0x002B
-	Mem347[0x34B6:word16] = r4_346
-	branch Mem347[0x009E:word16] == 0x0000 l0640
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0640:
-	fn1578()
-	branch Mem347[0x007E:word16] > 0x0010 l0666
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0666:
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l064E:
-	r0_366 = fn0E06(0x0280, out r1_367, out r3_368, out r4_369)
-	Mem375[0x009E:word16] = sp
-	fn0CEC(r0_366, r1_367, r2, r3_368, r4_369)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0638:
-	fn0CEC(r0, r1, r2, r3, r4_346)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Trashed:
+// Preserved: sp
+// Terminates process
 fn053A_exit:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 fn053A_entry:
-	def fp
-	sp_2 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l053A:
-	sp_67 = PHI((sp_2, fn053A_entry), (sp, l06AC))
 	Mem3[0x0084:word16] = 0xFFC0
-	r5_4 = Mem3[0x0044:word16]
+	word16 r5_4 = Mem3[0x0044:word16]
 	Mem5[0x0044:word16] = 0x0000
-	r0_7 = Mem5[0x006E:word16]
-	r1_8 = r5_4
+	word16 r0_7 = Mem5[0x006E:word16]
+	word16 r1_12 = r5_4
 	branch r5_4 > 0x0000 l0552
 // DataOut:
 // DataOut (flags):
@@ -883,30 +614,29 @@ l0550:
 // SymbolicIn:
 
 l0552:
-	r1_15 = PHI((r1_8, l053A), (r1_12, l0550))
-	fn114A(r0_7, r1_15, out r2_16, out r3_17)
-	r3_24 = r3_17 + Mem5[0x0048:word16]
-	r2_29 = fn126C(0x003C, r2_16 + (r3_24 <u 0x0000), r3_24, out r3_30)
+	word16 r2_16
+	word16 r3_17
+	fn114A(r0_7, r1_12, out r2_16, out r3_17)
+	word16 r3_24 = r3_17 + Mem5[0x0048:word16]
+	word16 r3_30
+	word16 r2_29 = fn126C(0x003C, r2_16 + (r3_24 <u 0x0000), r3_24, out r3_30)
 	branch r5_4 > 0x0000 l056A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0568:
-	r3_42 = -r3_30
+	r3_30 = -r3_30
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l056A:
-	r3_45 = PHI((r3_30, l0552), (r3_42, l0568))
-	Mem47[0x0046:word16] = Mem5[0x0046:word16] + r3_45
+	Mem47[0x0046:word16] = Mem5[0x0046:word16] + r3_30
 	Mem50[0x0048:word16] = r2_29
 	fn0444()
 	Mem59[0x0092:word16] = Mem50[0x0092:word16] + 0x0002
-	r1_63 = Mem59[(Mem59[0x0092:word16] & ~0xFFFD) + 0x34AC:word16]
-	Mem69[sp_67 - 0x0002:word16] = r1_63
-	fn0242(0x26D8, r1_63)
+	fn0242(0x26D8, Mem59[(Mem59[0x0092:word16] & ~0xFFFD) + 0x34AC:word16])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -920,11 +650,6 @@ void fn0790()
 // LiveOut:
 // Trashed:
 // Preserved: sp
-l0790:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0790_entry:
 // DataOut:
 // DataOut (flags):
@@ -943,50 +668,13 @@ fn0790_exit:
 
 
 
-void fn0856(word16 wArg00)
+void fn0856(word16 r2, word16 r3, word16 r4, word16 wArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0000:[0..15]
+// MayUse:  r2:[0..15] r3:[0..15] r4:[0..15] Stack +0000:[0..15]
 // LiveOut:
-// Trashed: NZVC r0 r1 r4 r5
-// Preserved: sp
-l083E_thunk_fn0790:
-	fn0790()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0824_thunk_fn0790:
-	fn0790()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0826:
-	branch Mem0[0x0066:word16] == 0x0000 l0790
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l082A_thunk_fn0790:
-	fn0790()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l082C:
-	Mem335[sp - 0x0002:word16] = 0x0000
-	Mem339[sp - 0x0004:word16] = r0
-	fn0C90(Mem339[sp - 0x0004:word16], Mem339[sp - 0x0002:word16])
-	Mem347[0x34CA:word16] = 0x23B8
-	fn0F04(r0, r1, r2, r3, r4)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Trashed: NZVC r0 r1 r5
+// Preserved: r4 sp
 fn0856_entry:
 // DataOut:
 // DataOut (flags):
@@ -1334,20 +1022,20 @@ l084C:
 
 l07FA:
 	Mem296[0x34CA:word16] = 0x237E
-	word16 wLoc02_382 = 0x0003
+	word16 wLoc02_376 = 0x0003
 	branch Mem298[0x0054:word16] < 0x0000 l080C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l080A:
-	wLoc02_382 = 0x0004
+	wLoc02_376 = 0x0004
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l080C:
-	fn0C90(r0_85, wLoc02_382)
+	fn0C90(r0_85, wLoc02_376)
 	Mem320[0x34B6:word16] = Mem311[0x34B6:word16] - 0x0010
 	fn0F04(r0_85, r0_85 << 1, r2, r3, r4)
 // DataOut:
@@ -1487,6 +1175,7 @@ l0B00_in_fn0A0A:
 l0A82:
 	word16 r4_105 = 0x0096 - r4_75
 	word16 r3_111
+	word16 r2_157
 	fn114A(r4_105, Mem94[0x0064:word16], out r2_157, out r3_111)
 // DataOut:
 // DataOut (flags):
@@ -1513,11 +1202,6 @@ void fn0A94(word16 r3, word16 r4, word16 r5)
 // LiveOut:
 // Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
-l0A94:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0A94_entry:
 // DataOut:
 // DataOut (flags):
@@ -1633,6 +1317,26 @@ void fn0B06(word16 r3, word16 r4, word16 r5)
 // LiveOut:
 // Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
+l0BA6:
+	Mem103[0x34CA:word16] = 0x0000
+	Mem104[0x0046:word16] = 0x0000
+	Mem105[0x0054:word16] = 0x0000
+	Mem107[0x0060:word16] = 0x001E
+	fn0128()
+	branch Mem107[0x009E:word16] != 0x0000 l0BA6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0BC2:
+	Mem126[0x34BA:word16] = 0x0000
+	Mem127[0x34C2:word16] = 0x0000
+	fn13AA(wLoc02)
+	__bpt()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0B06_entry:
 // DataOut:
 // DataOut (flags):
@@ -1653,6 +1357,11 @@ l0B0A_thunk_fn0A94:
 // DataOut (flags):
 // SymbolicIn:
 
+fn0B06_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B0C:
 	Mem23[0x267A:word16] = Mem0[0x34B4:word16]
 // DataOut:
@@ -1660,9 +1369,9 @@ l0B0C:
 // SymbolicIn:
 
 l0B12:
-	Mem28[0x267C:word16] = Mem26[0x34B6:word16]
+	Mem28[0x267C:word16] = Mem23[0x34B6:word16]
 	Mem29[0x34D2:word16] = 0x2678
-	word16 sp_141 = fp
+	word16 sp_100 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1681,6 +1390,32 @@ l0B26:
 // DataOut (flags):
 // SymbolicIn:
 
+l0BD0:
+	word16 sp_136 = sp_100 - 0x0002
+	Mem137[sp_136:word16] = 0x0001
+	Mem140[sp_136 - 0x0002:word16] = Mem137[0x0078:word16]
+	fn0C90(Mem140[sp_136 - 0x0002:word16], Mem140[sp_136:word16])
+	word16 r5_150 = Mem140[0x0070:word16]
+	word16 sp_143 = <invalid>
+	word16 r3_149 = 0x0030
+	branch __ror(r5_150, r5_150) >=u 0x0000 l0BEE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0BEC:
+	r3_149 = -0x0030
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0BEE:
+	Mem159[sp_143 - 0x0002:word16] = r3_149
+	fn0C36(0xFFE8, r3_149)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B2C:
 	word16 r3_45 = Mem34[0x2610:word16] - Mem34[0x34B4:word16]
 	word16 r2_47 = Mem34[0x2612:word16] - Mem34[0x267C:word16]
@@ -1689,138 +1424,14 @@ l0B2C:
 // DataOut (flags):
 // SymbolicIn:
 
+l0B48:
+	fn0C36(0x0000, Mem53[0x2610:word16] - Mem53[0x267A:word16] + 0x0019)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B44:
 	fn0C36(r2_47 + 0x0003, r3_45)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0B48:
-	word16 r3_59 = Mem53[0x2610:word16] - Mem53[0x267A:word16]
-	fn0C36(0x0000, r3_59 + 0x0019)
-	Mem69[0x34CA:word16] = 0x24A2
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	ptr16 stackArg0 = <invalid>
-	fn13AA(stackArg0)
-	0x0B68 = 0x0B69
-	branch 0x0B68 != 0x0000 l0AF8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0B66_thunk_fn0AF6:
-	fn0AF6()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0B68:
-	Mem94[0x34CA:word16] = 0x0000
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	ptr16 stackArg0 = <invalid>
-	fn13AA(stackArg0)
-	0x0B72 = 0x0B73
-	branch 0x0B72 != 0x0000 l0AF6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0B70_thunk_fn0AF6:
-	fn0AF6()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-fn0B06_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0B72:
-	word16 v31_106 = -(r3_59 + 0x0019)
-	fn0C36(0x0000, v31_106)
-	word16 r2_120 = -(r2_47 + 0x0003)
-	branch r2_120 == 0x0000 l0B88
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0B84:
-	fn0C36(r2_120, v31_106)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0B88:
-	fn13AA(r2_47 + 0x0003)
-	0x0B8E = 0x0B8F
-	branch 0x0B8E != 0x0000 l0B12
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0B8E:
-	Mem135[0x005E:word16] = Mem107[0x005E:word16] + 0x0004
-	Mem137[0x0068:word16] = Mem135[0x0068:word16] + 0x07D0
-	Mem138[0x0058:word16] = 0x0000
-	Mem139[0x006C:word16] = 0x0000
-	sp_141 = 0x3FFE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0BA6:
-	Mem144[0x34CA:word16] = 0x0000
-	Mem145[0x0046:word16] = 0x0000
-	Mem146[0x0054:word16] = 0x0000
-	Mem148[0x0060:word16] = 0x001E
-	fn0128()
-	branch Mem148[0x009E:word16] != 0x0000 l0BA6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0BC2:
-	Mem167[0x34BA:word16] = 0x0000
-	Mem168[0x34C2:word16] = 0x0000
-	fn13AA(r2_47 + 0x0003)
-	__bpt()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0BD0:
-	word16 sp_177 = sp_141 - 0x0002
-	Mem178[sp_177:word16] = 0x0001
-	Mem181[sp_177 - 0x0002:word16] = Mem178[0x0078:word16]
-	fn0C90(Mem181[sp_177 - 0x0002:word16], Mem181[sp_177:word16])
-	word16 r5_191 = Mem181[0x0070:word16]
-	word16 sp_184 = <invalid>
-	word16 r3_190 = 0x0030
-	branch __ror(r5_191, r5_191) >=u 0x0000 l0BEE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0BEC:
-	r3_190 = -0x0030
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l0BEE:
-	Mem200[sp_184 - 0x0002:word16] = r3_190
-	fn0C36(0xFFE8, r3_190)
-	fn0C36(0x0000, Mem200[sp_184 - 0x0002:word16])
-	Mem213[0x26AC:word16] = Mem200[0x267A:word16]
-	Mem215[0x26AE:word16] = Mem213[0x267C:word16]
-	Mem217[0x26AC:word16] = Mem215[0x26AC:word16] + 0x0014
-	Mem219[0x34C2:word16] = 0x26A8
-	fn0C72()
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1834,12 +1445,7 @@ void fn0C36(word16 r2, word16 r3)
 // LiveOut:
 // Trashed:
 // Preserved: sp
-l0C70:
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Terminates process
 fn0C36_exit:
 // DataOut:
 // DataOut (flags):
@@ -2380,6 +1986,7 @@ l0E92:
 // SymbolicIn:
 
 l0E96_thunk_fn0E98:
+	word16 r5_68
 	return fn0E98(r5_39 + 0x0002, out r5_68)
 // DataOut:
 // DataOut (flags):
@@ -3222,6 +2829,7 @@ fn125E_entry:
 
 l125E:
 	word16 r2_5
+	word16 r3_6
 	word16 r0_8 = fn123A(r0, r1, out r2_5, out r3_6)
 	word16 r2_14 = __rol(r2_5, r2_5)
 	r2Out = __rol(r2_14, r2_14)
@@ -3787,11 +3395,6 @@ word16 fn15F2(word16 r0, word16 r1)
 // LiveOut: r1
 // Trashed: NZVC r0 r1 r2 r3
 // Preserved: sp
-l15F2:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn15F2_entry:
 // DataOut:
 // DataOut (flags):
@@ -3858,6 +3461,8 @@ l1608:
 l161A:
 	word16 r3_66
 	word16 r3_83
+	word16 r3_110
+	word16 r3_111
 	return fn1658(fn1658(fn1658(fn1658(r1 + 0x0002, r3_39, ptrLoc02_100, out r3_66), r3_66, ptrLoc02_100, out r3_110), (r2_38 << 1) + 0x2814, ptrLoc02_100, out r3_83), r3_83, 0x1630, out r3_111)
 // DataOut:
 // DataOut (flags):

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -673,19 +673,21 @@ const eax:<invalid>
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void TrfMergeSubregisterRegister()
         {
-            Given_Contexts();
-            var cl = frame.EnsureRegister(Registers.cl);
-            var cx = frame.EnsureRegister(Registers.cx);
-            trf.RegisterSymbolicValues[cl.Storage] = Constant.Zero(cl.DataType);
-            blockflow.SymbolicIn.SetValue(cx, Constant.Invalid);
-            trf.MergeDataFlow(blockflow);
-
-            var sw = new StringWriter();
-            DataFlow.EmitRegisterValues("", blockflow.SymbolicIn.RegisterState, sw);
-            Assert.AreEqual("cx:<invalid>", sw.ToString());
+            var sExp = 
+@"main
+    main_entry esp:fp
+    l1 esp:fp
+    main_exit";
+            p.Add("main", m =>
+            {
+                var cl = m.Register(Registers.cl);
+                var cx = m.Register(Registers.cx);
+                m.Assign(cl, 0);
+                m.Assign(cx, m.Mem16(m.Word32(0x00123400)));
+            });
+            RunTest(p, sExp);
         }
 
         private void Given_Contexts()

@@ -69,6 +69,7 @@ namespace Reko.Core.Output
                 { Operator.USub, "USub" },
                 { Operator.SDiv, "SDiv" },
                 { Operator.UDiv, "UDiv" },
+
                 { Operator.Shl, "Shl" },
                 { Operator.Shr, "Shr" },
                 { Operator.Sar, "Sar" },
@@ -78,9 +79,22 @@ namespace Reko.Core.Output
                 { Operator.Ult, "Ult" },
                 { Operator.Xor, "Xor" },
 
+                { Operator.FAdd, "FAdd" },
+                { Operator.FSub, "FSub" },
+                { Operator.FMul, "FMul" },
+                { Operator.FDiv, "FDiv" },
+                { Operator.Feq, "FEq" },
+                { Operator.Fne, "FNe" },
+                { Operator.Flt, "FLt" },
+                { Operator.Fle, "FLe" },
+                { Operator.Fge, "FGe" },
+                { Operator.Fgt, "FGt" },
+
+
                 { Operator.AddrOf, "AddrOf" },
                 { Operator.Comp, "Comp" },
                 { Operator.Neg, "Neg" },
+                { Operator.Not, "Not" }
 
             };
             this.prefix = prefix;
@@ -586,7 +600,10 @@ namespace Reko.Core.Output
 
         public int VisitArray(ArrayType at)
         {
-            throw new NotImplementedException();
+            writer.Write("new ArrayType(");
+            at.ElementType.Accept(this);
+            writer.Write(", {0})", at.Length);
+            return 0;
         }
 
         public int VisitClass(ClassType ct)
@@ -612,7 +629,26 @@ namespace Reko.Core.Output
 
         public int VisitFunctionType(FunctionType ft)
         {
-            throw new NotImplementedException();
+            void writeArg(Identifier arg)
+            {
+                writer.Write("new Identifier(\"{0}\", ", arg.Name);
+                arg.DataType.Accept(this);
+                //$TODO: storage
+                writer.Write(")");
+            }
+
+            writer.Write("new FunctionType(");
+            if (ft.ReturnValue == null)
+            {
+                writer.Write("null");
+            }
+            else
+            {
+                writeArg(ft.ReturnValue);
+            }
+            WriteList(ft.Parameters, ", ", writeArg);
+            writer.Write(")");
+            return 0;
         }
 
         public int VisitPrimitive(PrimitiveType pt)
@@ -689,7 +725,10 @@ namespace Reko.Core.Output
 
         public int VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            writer.Write("new TypeReference(");
+            typeref.Referent.Accept(this);
+            writer.Write(")");
+            return 0;
         }
 
         public int VisitTypeVariable(TypeVariable tv)
@@ -738,6 +777,17 @@ namespace Reko.Core.Output
         private void Method(string methodName)
         {
             writer.Write("{0}{1}(", prefix, methodName);
+        }
+
+        private void WriteList<T>(IEnumerable<T> items, string separator, Action<T> w)
+        {
+            var s = "";
+            foreach (var item in items)
+            {
+                writer.Write(s);
+                s = separator;
+                w(item);
+            }
         }
     }
 }

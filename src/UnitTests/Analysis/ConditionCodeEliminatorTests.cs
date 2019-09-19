@@ -131,47 +131,45 @@ namespace Reko.UnitTests.Analysis
         }
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CceAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
+        [Category(Categories.IntegrationTests)]
         public void CceAddSubCarries()
 		{
 			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CceAddSubCarries.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CceAdcMock()
-		{
+        {
 			RunFileTest(new AdcMock(), "Analysis/CceAdcMock.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CceCmpMock()
-		{
+        {
 			RunFileTest(new CmpMock(), "Analysis/CceCmpMock.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CceFrame32()
         {
 			RunFileTest_x86_32("Fragments/multiple/frame32.asm", "Analysis/CceFrame32.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CceWhileLoop()
-		{
+        {
 			RunFileTest_x86_real("Fragments/while_loop.asm", "Analysis/CceWhileLoop.txt");
-		}
-
-		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        public void CceReg00005()
-		{
-			RunFileTest_x86_real("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
 		}
 
         [Test]
@@ -190,6 +188,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         [Ignore("Wait until we see this in real code? If we do, we have to move the logic for FPUF into an architecture specific branch.")]
         public void CceFstswTestAxWithConstantBl()
         {
@@ -207,6 +206,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceFstswEq()
         {
             var program = RewriteCodeFragment(@"
@@ -226,6 +226,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceFstswNe()
         {
             var program = RewriteCodeFragment(@"
@@ -245,6 +246,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceFstswGe()
         {
             var program = RewriteCodeFragment(@"
@@ -266,6 +268,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceFstswGt()
         {
             var program = RewriteCodeFragment(@"
@@ -287,6 +290,7 @@ done:
          }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceFstswLe()
         {
             var program = RewriteCodeFragment(@"
@@ -308,6 +312,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceFstswLt()
         {
             var program = RewriteCodeFragment(@"
@@ -328,6 +333,7 @@ done:
         }
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void CceEqId()
 		{
 			Identifier r = Reg32("r");
@@ -348,6 +354,7 @@ done:
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void CceSetnz()
 		{
 			Identifier r = Reg32("r");
@@ -366,6 +373,7 @@ done:
 		}
 
         [Test]
+        [Category(Categories.UnitTests)]
 		public void Cce_SignedIntComparisonFromConditionCode()
         {
             Given_ConditionCodeEliminator();
@@ -377,6 +385,7 @@ done:
 
 
         [Test]
+        [Category(Categories.UnitTests)]
 		public void Cce_RealComparisonFromConditionCode()
 		{
             Given_ConditionCodeEliminator();
@@ -387,6 +396,7 @@ done:
 		}
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void Cce_TypeReferenceComparisonFromConditionCode()
         {
             Given_ConditionCodeEliminator();
@@ -405,6 +415,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceAddAdcPattern()
         {
             var p = new ProgramBuilder(new FakeArchitecture());
@@ -429,6 +440,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceShrRcrPattern()
         {
             var p = new ProgramBuilder(new FakeArchitecture());
@@ -452,6 +464,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceShlRclPattern()
         {
             var p = new ProgramBuilder();
@@ -475,14 +488,15 @@ done:
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Ignore("//$TODO: This is difficult code, so we leave it for later")]
+        [Category(Categories.IntegrationTests)]
         public void CceIsqrt()
         {
             RunFileTest_x86_real("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CceFCmp()
         {
             var p = new ProgramBuilder();
@@ -491,6 +505,7 @@ done:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CceUnsignedRange()
         {
             var sExp =
@@ -545,6 +560,7 @@ ProcedureBuilder_exit:
         }
 
         [Test(Description = "Handle x86-style test/jbe sequence")]
+        [Category(Categories.UnitTests)]
         public void CceTestBe()
         {
             var SZO = m.Flags("SZO");
@@ -577,6 +593,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CceUInt64()
         {
             var sExp =
@@ -630,6 +647,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CceRorcWithIntermediateCopy()
         {
             var sExp =
@@ -725,6 +743,7 @@ RorChainFragment_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CceUnorderedComparison()
         {
             var sExp =

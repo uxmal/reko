@@ -1045,7 +1045,7 @@ Conventions:
             }
             else
             {
-                return Instr(Opcode.lq, r1,E2);
+                return Instr(Opcode.lq, Is64Bit, r1,E2);
             }
         }
 

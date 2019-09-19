@@ -230,6 +230,7 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 	}
 	Eq_n lr_n;
 	word32 r0_n;
+	word32 r7_n;
 	prvCopyDataToQueue(r0, r1, r3, r3_n, r3, lr, out r0_n, out r7_n, out lr_n);
 	if (*((word32) r0 + 0x0024) == 0x00)
 	{
@@ -257,6 +258,8 @@ void xQueuePeekFromISR(Eq_n r0, Eq_n r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 	{
 		Eq_n r5_n;
 		word32 r6_n;
+		word32 r7_n;
+		word32 lr_n;
 		prvCopyDataFromQueue(r0, r1, r0, r5_n, *((word32) r0 + 0x0C), r7, lr, out r5_n, out r6_n, out r7_n, out lr_n)->dw000C = r6_n;
 		__msr(cpsr, r5_n);
 	}
@@ -334,6 +337,7 @@ l000003A4:
 	Eq_n lr_n;
 	word32 r5_n;
 	word32 r6_n;
+	word32 r7_n;
 	struct Eq_n * r4_n = prvCopyDataFromQueue(r0, r1, r0, *((word32) r0 + 0x0C), r6_n, 0x00, lr, out r5_n, out r6_n, out r7_n, out lr_n);
 	if (r3 == 0x00)
 	{
@@ -392,6 +396,8 @@ void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32
 	if (*((word32) r0 + 0x0038) < *((word32) r0 + 0x003C) || r3 == 0x02)
 	{
 		int32 r4_n = (int32) (int8) (word32) *((word32) r0 + 0x0045);
+		word32 r0_n;
+		word32 lr_n;
 		word32 * r7_n;
 		if (!prvCopyDataToQueue(r0, r1, r3, r3, r2, lr, out r0_n, out r7_n, out lr_n))
 			((word32) r0 + 0x0045)->u0 = (byte) (int32) (int8) (r4_n + 0x01);
@@ -446,6 +452,7 @@ void xQueueReceiveFromISR(Eq_n r0, Eq_n r1, word32 * r2, Eq_n lr, ptr32 cpsr)
 	Eq_n r4_n = *((word32) r0 + 0x0038);
 	if (r4_n != 0x00)
 	{
+		word32 lr_n;
 		word32 r5_n;
 		struct Eq_n * r7_n;
 		struct Eq_n * r4_n = prvCopyDataFromQueue(r0, r1, r4_n, (int32) (int8) (word32) *((word32) r0 + 0x0044), r6_n, r0, lr, out r5_n, out r6_n, out r7_n, out lr_n);
@@ -498,8 +505,12 @@ void xQueueTakeMutexRecursive(Eq_n r0, up32 r1, Eq_n lr, ptr32 cpsr)
 {
 	if (*((word32) r0 + 0x04) == xTaskGetCurrentTaskHandle())
 		*((word32) r0 + 0x0C) = (word32) *((word32) r0 + 0x0C) + 0x01;
-	else if (xQueueGenericReceive(r0, 0x00, r1, 0x00, lr, cpsr, out lr_n) != 0x00)
-		*((word32) r0 + 0x0C) = (word32) *((word32) r0 + 0x0C) + 0x01;
+	else
+	{
+		word32 lr_n;
+		if (xQueueGenericReceive(r0, 0x00, r1, 0x00, lr, cpsr, out lr_n) != 0x00)
+			*((word32) r0 + 0x0C) = (word32) *((word32) r0 + 0x0C) + 0x01;
+	}
 }
 
 // 00000604: void xQueueGiveMutexRecursive(Register Eq_n r0, Register Eq_n lr, Register ptr32 cpsr)
@@ -2275,6 +2286,9 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 	bool Z_n = SLICE(cond(r2_n - r3_n), bool, 2);
 	if (r2_n < r3_n)
 	{
+		word32 lr_n;
+		word32 r7_n;
+		word32 r0_n;
 		Z_n = prvCopyDataToQueue(r0, r1, 0x00, r3_n, r7, lr, out r0_n, out r7_n, out lr_n);
 		if (*((word32) r0 + 0x0024) != 0x00)
 		{
@@ -2351,6 +2365,7 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 		if (r1_n >= r3_n)
 			*((word32) r0 + 0x0C) = r1_n;
 		struct Eq_n * r4_n;
+		word32 r5_n;
 		Z = memcpy(r1, r1_n, r2_n, (word32) r3_n - 0x01, r0, r5_n, r6, r7, lr, out r4_n, out r5_n, out r6, out r7, out lr);
 		if (r4_n->dw0010 != 0x00)
 		{
@@ -2389,9 +2404,15 @@ void xQueueCRSendFromISR(Eq_n r0, Eq_n r1, word32 r2, Eq_n r7, Eq_n lr)
 	Eq_n r3_n = *((word32) r0 + 0x003C);
 	if (*((word32) r0 + 0x0038) < r3_n)
 	{
+		word32 lr_n;
+		word32 r7_n;
+		word32 r0_n;
 		prvCopyDataToQueue(r0, r1, 0x00, r3_n, r7, lr, out r0_n, out r7_n, out lr_n);
 		if (r2 == 0x00 && *((word32) r0 + 0x0024) != 0x00)
+		{
+			word32 r0_n;
 			xCoRoutineRemoveFromEventList((word32) r0 + 0x0024, out r0_n);
+		}
 	}
 }
 
@@ -2412,8 +2433,11 @@ void xQueueCRReceiveFromISR(Eq_n r0, Eq_n r1, Eq_n r2)
 	if (r3_n >= r4_n)
 		*((word32) r0 + 0x0C) = r3_n;
 	*((word32) r0 + 0x0038) = (word32) r7_n - 0x01;
+	word32 r6_n;
 	struct Eq_n * r4_n;
 	word32 * r5_n;
+	word32 r7_n;
+	word32 lr_n;
 	memcpy(r1, r3_n, lr_n, r3_n, r0, r2, r1, (word32) r7_n - 0x01, lr_n, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
 	if (*r5_n != 0x00 || r4_n->dw0010 == 0x00)
 		return;

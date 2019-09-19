@@ -420,9 +420,12 @@ l00000792:
 	word64 r11_40
 	word64 r12_41
 	word64 r13_42
+	word64 r10_128
 	word64 r2_44 = fib((int64) (word32) SEQ(v12_25, (word32) r2 - 1), r10, fp - 328, r12, r13, 0x000007A8, out r10_128, out r11_40, out r12_41, out r13_42)
 	word32 v18_51 = SLICE(r2_44, word32, 32)
 	word64 r10_62
+	word64 r12_129
+	word64 r13_130
 	word64 r2_67 = fib((int64) (word32) SEQ(v18_51, (word32) SEQ(v18_51, Mem24[r11_40 + 164:word32]) - 2), r2_44, r11_40, r12_41, r13_42, 0x000007C4, out r10_62, out r11_21, out r12_129, out r13_130)
 	r1_74 = SEQ(SLICE(r2_67, word32, 32), (word32) (r2_67 + r10_62))
 // DataOut:
@@ -478,6 +481,8 @@ main_entry:
 l000007E0:
 	word64 r10_29
 	word64 r11_30
+	word64 r12_71
+	word64 r13_72
 	word64 r1_39 = (int64) (word32) fib(0x000000000000000A, r10, fp - 336, r12, r13, 0x00000806, out r10_29, out r11_30, out r12_71, out r13_72)
 	word64 r4_41 = Mem24[r11_30 + 288:word64]
 	call r4_41 (retsize: 0;)

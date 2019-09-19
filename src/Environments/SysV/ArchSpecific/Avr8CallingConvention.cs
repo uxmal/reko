@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -128,7 +128,7 @@ Arguments of varargs functions are passed on the stack. This applies even to the
 */
             ccr.LowLevelDetails(1, 2);
 
-            if (dtRet != null || dtRet == VoidType.Instance)
+            if (dtRet != null && dtRet != VoidType.Instance)
             {
                 GenerateReturnValue(dtRet, ccr);
             }
@@ -194,19 +194,13 @@ Arguments of varargs functions are passed on the stack. This applies even to the
                     return;
                 }
 
-                SequenceStorage seq = null;
+                var retRegs = new List<RegisterStorage> { reg };
                 for (int r = iReg + 1, i = 1; i < dtRet.Size; ++i, ++r)
                 {
                     var regNext = argRegs[r - 8];
-                    if (seq != null)
-                    {
-                        seq = new SequenceStorage(PrimitiveType.Word32, regNext, seq);
-                    }
-                    else
-                    {
-                        seq = new SequenceStorage(PrimitiveType.Word32, regNext, reg);
-                    }
+                    retRegs.Insert(0, regNext);
                 }
+                var seq = new SequenceStorage(retRegs.ToArray());
                 ccr.SequenceReturn(seq);
             }
             else

@@ -6,11 +6,9 @@
 
 Eq_n g_t0001;
 Eq_n g_t0002;
-Eq_n g_t0003;
 Eq_n g_t0004;
 Eq_n g_t0007;
 Eq_n g_t004F;
-Eq_n g_t0063;
 Eq_n g_a0974[];
 word32 g_dw0A20;
 word32 g_dw0A38;
@@ -102,7 +100,6 @@ ptr32 g_ptr1924C = 0x0000006C;
 ptr32 g_ptr19250 = 0x0000003C;
 word32 g_dw19254 = 0x00000054;
 word32 g_dw19258 = 0x00000084;
-ptr32 g_ptr1925C = 0x00000014;
 ptr32 g_ptr19260 = 0x0000027C;
 ptr32 g_ptr19268 = 0x00000074;
 ptr32 g_ptr1926C = 0x000000EC;
@@ -126,7 +123,6 @@ ptr32 g_ptr192CC = 0x000001E4;
 ptr32 g_ptr192D0 = 0x00000144;
 ptr32 g_ptr192D4 = 0x00000284;
 ptr32 g_ptr192D8 = 0x000002AC;
-ptr32 g_ptr192DC = 0x000002C4;
 ptr32 g_ptr192E0 = 0x00000444;
 ptr32 g_ptr192E4 = 0x000000DC;
 word32 g_dw192F0 = 0x00002000;

@@ -520,17 +520,17 @@ namespace Reko.Arch.X86
                 case 2:
                     multiplicator = orw.AluRegister(Registers.ax);
                     product = binder.EnsureSequence(
-PrimitiveType.Word32, Registers.dx, multiplicator.Storage);
+                        PrimitiveType.Word32, Registers.dx, multiplicator.Storage);
                     break;
                 case 4:
                     multiplicator = orw.AluRegister(Registers.eax);
                     product = binder.EnsureSequence(
-PrimitiveType.Word64, Registers.edx, multiplicator.Storage);
+                        PrimitiveType.Word64, Registers.edx, multiplicator.Storage);
                     break;
                 case 8:
                     multiplicator = orw.AluRegister(Registers.rax);
                     product = binder.EnsureSequence(
-PrimitiveType.Word64, Registers.rdx, multiplicator.Storage);
+                        PrimitiveType.Word128, Registers.rdx, multiplicator.Storage);
                     break;
                 default:
                     throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
@@ -623,9 +623,11 @@ PrimitiveType.Word64, Registers.rdx, multiplicator.Storage);
                 mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.addrWidth, 0));
             }
 
+            var ptr = PrimitiveType.Create(Domain.Pointer, seg.DataType.BitSize + reg.Width.BitSize);
+            var segptr = PrimitiveType.Create(Domain.SegPointer, seg.DataType.BitSize + reg.Width.BitSize);
             m.Assign(
-                binder.EnsureSequence(PrimitiveType.Ptr32, seg, reg.Register),
-                SrcOp(mem, PrimitiveType.SegPtr32));
+                binder.EnsureSequence(ptr, seg, reg.Register),
+                SrcOp(mem, segptr));
         }
 
         private void RewriteMov()

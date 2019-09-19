@@ -5,7 +5,6 @@
 #include "Executable.h"
 
 Eq_n g_t0100;
-Eq_n g_t5A4D;
 word16 g_w400000 = 0x5A4D;
 struct Eq_n * g_ptr40003C = &g_t0100;
 LONG g_t4018DF(struct _EXCEPTION_POINTERS * ExceptionInfo) = Unexpected function type (fn LONG ((ptr32 (struct "_EXCEPTION_POINTERS"))))
@@ -21,7 +20,7 @@ ui32 g_dw403000 = 0x44BF19B1;
 ui32 g_dw403004 = 0xBB40E64E;
 ui32 g_dw403010 = 0x00000001;
 word32 g_dw403014 = 0x00000001;
-word32 g_dw403334 = 0x00000000;
+uip32 g_dw403334 = 0x00000000;
 word32 g_dw403338 = 0x00000000;
 ui32 g_dw40333C = 0x00000000;
 ui32 g_dw403340 = 0x00000000;

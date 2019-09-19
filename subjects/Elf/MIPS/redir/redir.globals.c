@@ -5,7 +5,7 @@
 #include "redir.h"
 
 <anonymous> g_tFFFFFFFF;
-int32 g_dw0004;
+Eq_n g_t0004;
 FILE * g_ptr01C4;
 Eq_n g_t0695;
 <anonymous> g_t400620 = <code>;
@@ -93,7 +93,7 @@ Eq_n g_t10000010 =
 		0
 	};
 int32 g_dw10000014 = 0;
-Eq_n g_t10000018 = &g_dw0004;
+Eq_n g_t10000018 = &g_t0004;
 int32 g_dw1000001C = 204800;
 Eq_n g_t10000020 = 0;
 Eq_n g_t10000024 = 
@@ -105,7 +105,7 @@ Eq_n g_t10000024 =
 		0x00000C39,
 		0x000023F2,
 		0x23F2,
-		&g_dw0004,
+		&g_t0004,
 		0x00000000,
 		
 		{

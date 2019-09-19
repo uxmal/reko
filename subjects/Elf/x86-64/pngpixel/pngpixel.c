@@ -62,12 +62,13 @@ void frame_dummy(word64 rbp, word64 rsi)
 // 0000000000400DC6: Register word32 component(Register Eq_n ecx, Register word32 edx, Register word32 esi, Register word64 rdi, Register int32 r8d, Register out Eq_n rcxOut)
 word32 component(Eq_n ecx, word32 edx, word32 esi, word64 rdi, int32 r8d, union Eq_n & rcxOut)
 {
-	Eq_n rcx_n = DPB(rcx, ecx, 0);
+	Eq_n ecx = (word32) rcx;
 	ui32 eax_n = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (edx + (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F)) *s r8d))) *s ecx);
 	struct Eq_n * v16_n = rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x06)) *s r8d)) *s ecx))) << 0x03) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_n) >> 0x03)));
+	Eq_n rcx_n = rcx;
 	if (ecx > 0x10)
 		goto l0000000000400EC1;
-	byte * rax_n;
+	uint64 rax_n;
 	switch (ecx)
 	{
 	case 0x00:
@@ -98,7 +99,7 @@ l0000000000400EC1:
 		rax_n = (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) v16_n->b0000 >> (byte) rcx_n) & 0x0F);
 		break;
 	case 0x08:
-		rax_n = (byte *) DPB(v16_n, (word32) (byte) (word32) v16_n->b0000, 0);
+		rax_n = SEQ(SLICE(v16_n, word32, 32), (word32) (byte) (word32) v16_n->b0000);
 		break;
 	case 0x10:
 		rax_n = (uint64) ((word32) (byte) (word32) v16_n->b0001 + (word32) ((uint64) ((word32) ((uint64) ((word32) ((byte) ((word32) v16_n->b0000)) << 0x08)))));
@@ -111,7 +112,7 @@ l0000000000400EC1:
 // 0000000000400EE9: Register Eq_n print_pixel(Register Eq_n rcx, Register word64 rdx, Register word64 rbx, Register ptr64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r8, Register word64 r9, Register word64 r12, Register word64 r13, Register (ptr32 Eq_n) fs, Register out Eq_n r8Out, Register out Eq_n r9Out)
 Eq_n print_pixel(Eq_n rcx, word64 rdx, word64 rbx, ptr64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word64 r12, word64 r13, struct Eq_n * fs, union Eq_n & r8Out, union Eq_n & r9Out)
 {
-	word64 rcx_n = DPB(rcx, ecx, 0);
+	word32 ecx = (word32) rcx;
 	Eq_n r8_n;
 	Eq_n rcx_n;
 	word64 rax_n = fs->qw0028;
@@ -133,7 +134,7 @@ Eq_n print_pixel(Eq_n rcx, word64 rdx, word64 rbx, ptr64 rbp, word64 rsi, word64
 	switch (globals->a401958[(uint64) eax_n])
 	{
 	case 0x00:
-		printf("GRAY %u\n", (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01, out rcx_n));
+		printf("GRAY %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01, out rcx_n));
 		r8_n.u1 = 0x01;
 		break;
 	case 0x01:
@@ -142,12 +143,16 @@ l00000000004012C9:
 		png_error();
 		break;
 	case 0x02:
-		rcx_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x03, out rcx_n);
-		printf("RGB %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x03, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x03, out rcx_n), rcx_n);
+		word64 rcx_n;
+		rcx_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x03, out rcx_n);
+		word64 rcx_n;
+		word64 rcx_n;
+		printf("RGB %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x03, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x03, out rcx_n), rcx_n);
 		r8_n.u1 = 0x03;
 		break;
 	case 0x03:
-		up32 eax_n = (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01, out rcx_n);
+		word64 rcx_n;
+		up32 eax_n = (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01, out rcx_n);
 		word64 rax_n;
 		png_get_PLTE();
 		if ((word32) (uint64) ((word32) rax_n & 0x08) != 0x00 && (false && 0x00 != 0x00))
@@ -162,30 +167,35 @@ l00000000004012C9:
 				else
 					esi_n = 0xFF;
 				uint64 rdx_n = (uint64) eax_n;
-				rcx_n = (word64) (word32) (byte) (word32) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000;
 				r9_n.u1 = (uint64) esi_n;
 				r8_n.u1 = (uint64) (word32) (byte) (word32) ((Eq_n[]) 0x02)[(uint64) eax_n].b0000;
-				printf("INDEXED %u = %d %d %d %d\n", (uint64) (word32) (uint64) eax_n, DPB(rdx_n, (word32) (byte) (word32) null[rdx_n].b0000, 0), rcx_n, r8_n, r9_n);
+				rcx_n.u1 = (uint64) (uint32) (word32) (byte) (word32) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000;
+				printf("INDEXED %u = %d %d %d %d\n", (uint64) (word32) (uint64) eax_n, SEQ(SLICE(rdx_n, word32, 32), (word32) (byte) (word32) null[rdx_n].b0000), rcx_n, r8_n, r9_n);
 			}
 			else
 			{
 				uint64 rdx_n = (uint64) eax_n;
-				rcx_n = (word64) (word32) (byte) (word32) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000;
 				r8_n.u1 = (uint64) (word32) (byte) (word32) ((Eq_n[]) 0x02)[(uint64) eax_n];
-				printf("INDEXED %u = %d %d %d\n", (uint64) (word32) (uint64) eax_n, DPB(rdx_n, (word32) (byte) (word32) null[rdx_n].b0000, 0), rcx_n, r8_n);
+				rcx_n.u1 = (uint64) (uint32) (word32) (byte) (word32) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000;
+				printf("INDEXED %u = %d %d %d\n", (uint64) (word32) (uint64) eax_n, SEQ(SLICE(rdx_n, word32, 32), (word32) (byte) (word32) null[rdx_n].b0000), rcx_n, r8_n);
 			}
 		}
 		else
 			printf("INDEXED %u = invalid index\n", (uint64) (word32) (uint64) eax_n);
 		break;
 	case 0x04:
-		printf("GRAY+ALPHA %u %u\n", (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x02, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x02, out rcx_n));
+		word64 rcx_n;
+		printf("GRAY+ALPHA %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x02, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x02, out rcx_n));
 		r8_n.u1 = 0x02;
 		break;
 	case 0x06:
-		r8_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x03, (word32) (uint64) ecx, rdx, 0x04, out rcx_n);
-		rcx_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x04, out rcx_n);
-		printf("RGBA %u %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x04, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x04, out rcx_n), rcx_n, r8_n);
+		word64 rcx_n;
+		r8_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x03, (word32) (uint64) ecx, rdx, 0x04, out rcx_n);
+		word64 rcx_n;
+		rcx_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x04, out rcx_n);
+		word64 rcx_n;
+		word64 rcx_n;
+		printf("RGBA %u %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x04, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x04, out rcx_n), rcx_n, r8_n);
 		break;
 	}
 	if ((rax_n ^ fs->qw0028) == 0x00)
@@ -208,9 +218,9 @@ void main(word64 rbx, word64 rbp, struct Eq_n * rsi, word32 edi, word64 r8, word
 		goto l000000000040175D;
 	}
 	char * rax_n = rsi->ptr0008;
-	uint64 rax_n = DPB(rax_n, atol(rax_n), 0);
+	uint64 rax_n = SEQ(SLICE(rax_n, word32, 32), atol(rax_n));
 	char * rax_n = rsi->ptr0010;
-	uint64 rax_n = DPB(rax_n, atol(rax_n), 0);
+	uint64 rax_n = SEQ(SLICE(rax_n, word32, 32), atol(rax_n));
 	FILE * rax_n = fopen(rsi->ptr0018, "rb");
 	word64 qwLoc48_n = 0x00;
 	if (rax_n == null)
@@ -367,6 +377,7 @@ l000000000040175D:
 // 0000000000401780: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
+	word32 edi = (word32) rdi;
 	word32 r15d_n = (word32) (uint64) edi;
 	int64 rbp_n = 0x00601E08 - 0x00601E00;
 	word64 rax_n = _init();

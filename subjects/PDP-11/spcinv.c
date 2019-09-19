@@ -164,6 +164,9 @@ l03E6:
 			word16 r5_n;
 			Eq_n r0_n = fn0AB6(r0_n, r4_n, r5_n, out r4_n, out r5_n);
 			*(sp_n - 0x03) = r5_n;
+			word16 r5_n;
+			word16 r0_n;
+			word16 r4_n;
 			fn0AE8(r0_n, r4_n, &globals->ptr0420, *(sp_n - 0x03), out r0_n, out r4_n, out r5_n);
 			return;
 		}
@@ -191,6 +194,7 @@ Eq_n fn0470(Eq_n r0, byte * r4, union Eq_n * r5, ptr16 & r4Out)
 	Eq_n r0_n = fn0AB6(r0, r4, r5, out r4_n, out r5_n);
 	Eq_n r0_n;
 	ptr16 r4_n;
+	word16 r5_n;
 	fn0AE8(r0_n, r4_n, &globals->ptr0482, r5_n, out r0_n, out r4_n, out r5_n);
 	r4Out = r4_n;
 	return r0_n;
@@ -322,6 +326,7 @@ l0524:
 								} while (r2_n >= &globals->t000A);
 								union Eq_n ** sp_n = sp_n - 0x02;
 								*sp_n = (union Eq_n **) r5_n;
+								word16 r0_n;
 								byte * r4_n;
 								union Eq_n * r5_n;
 								fn0AE8(r0_n, r4, &globals->ptr05B8, *sp_n, out r0_n, out r4_n, out r5_n);
@@ -526,6 +531,8 @@ byte * fn06D6(byte * r4, union Eq_n * r5, struct Eq_n * pc)
 					globals->w0EFC = 0x05;
 					globals->ptr0F1A = globals->w0F18 - 0x01;
 					byte * r4_n;
+					word16 r0_n;
+					word16 r5_n;
 					fn0AE8(r0_n, r4_n, &globals->ptr077E, r5_n, out r0_n, out r4_n, out r5_n);
 					return r4_n;
 				}
@@ -533,6 +540,8 @@ l078A:
 				union Eq_n ** sp_n = sp_n - 0x02;
 				*sp_n = (union Eq_n **) r5;
 				byte * r4_n;
+				word16 r0_n;
+				word16 r5_n;
 				fn0AE8(r0_n, r4, &globals->ptr078E, *sp_n, out r0_n, out r4_n, out r5_n);
 				return r4_n;
 			}
@@ -678,7 +687,7 @@ l08B2:
 					do
 					{
 						r0_n -= 0x02;
-						word16 r3_n = Mem323[r0_n + 0x00:word16] + r1_n;
+						word16 r3_n = Mem321[r0_n + 0x00:word16] + r1_n;
 					} while (*r3_n <= 0x00);
 					r2_n[0x0EE6] = (struct Eq_n) ((int16) *r3_n + 0x02);
 					r2_n[0x0EE9] = (struct Eq_n) *((byte) r0_n.u0 + 0x0C);
@@ -922,6 +931,7 @@ byte * fn0B1A(byte * r4, union Eq_n * r5, struct Eq_n & r5Out)
 	Eq_n r0_n = fn0AB6(globals->t0B5A, r4, r5, out r4_n, out r5_n);
 	byte * r4_n;
 	struct Eq_n * r5_n;
+	word16 r0_n;
 	fn0AE8(r0_n, r4_n, &globals->ptr0B34, r5_n, out r0_n, out r4_n, out r5_n);
 	r5Out = r5_n;
 	return r4_n;
@@ -1053,6 +1063,7 @@ word16 fn0C20(union Eq_n * r5, struct Eq_n * pc, ptr16 & r5Out)
 	pc->w025C = v17_n;
 	if (v17_n == 0x00)
 		pc->w0256 >>= 0x01;
+	word16 r0_n;
 	word16 r4_n;
 	ptr16 r5_n;
 	fn0AE8(r0_n, &globals->b1178, &globals->ptr0CC2, r5, out r0_n, out r4_n, out r5_n);

@@ -49,7 +49,7 @@ namespace Reko.Analysis
     [DebuggerDisplay("{SsaState.Procedure.Name}")]
     public partial class SsaTransform : InstructionTransformer 
     {
-        private static readonly TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
+        private static readonly TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Warning };
 
         private readonly IProcessorArchitecture arch;
         private readonly Program program;
@@ -111,31 +111,39 @@ namespace Reko.Analysis
             {
                 bs.Visited = false;
             }
+            if (ssa.Procedure.Name == "fn0000000000410C40") //$DEBUG
+                ssa.ToString();
 
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
 
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
+                // TerminateBlockAfterStatement may be orphaned blocks. Detect these early and bail.
+                if (b != b.Procedure.EntryBlock && b.Pred.Count == 0)
+                    continue;
+
                 DebugEx.Verbose(trace, "SsaTransform:   {0} ({1} statements)", b.Name, b.Statements.Count);
                 this.block = b;
+                blockstates[b].Terminates = false;
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stmCur = s;
                     DebugEx.Verbose(trace, "SsaTransform:     {0:X4} {1}", s.LinearAddress, s);
                     s.Instruction = s.Instruction.Accept(this);
-                    if (blockstates[b].terminates)
+                    if (blockstates[b].Terminates)
                     {
                         TerminateBlockAfterStatement(b, s);
+                        blockstates[b].Terminates = true;
                         break;
                     }
                 }
                 blockstates[b].Visited = true;
-                blockstates[b].terminates = false;
             }
             ProcessIncompletePhis();
             RemoveRedundantPhis();
             RemoveDeadSsaIdentifiers();
+            RemoveOrphanedBasicBlocks();
             return ssa;
         }
 
@@ -151,6 +159,72 @@ namespace Reko.Analysis
                 sid.DefExpression = null;
                 ssa.Identifiers.Remove(sid);
             }
+        }
+
+        public void RemoveOrphanedBasicBlocks()
+        {
+            var orphans = ssa.Procedure.ControlGraph.Blocks
+                .Where(b => b.Pred.Count == 0 && b != b.Procedure.EntryBlock)
+                .ToHashSet();
+            if (orphans.Count == 0)
+                return;
+            var wl = new WorkList<Block>(ssa.Procedure.ControlGraph.Blocks.Except(orphans));
+            while (wl.GetWorkItem(out var item))
+            {
+                var allPredsOrphan = item.Pred.All(p => orphans.Contains(p));
+                if (allPredsOrphan && item != item.Procedure.EntryBlock)
+                {
+                    orphans.Add(item);
+                    wl.AddRange(item.Succ.Where(s => !orphans.Contains(s)));
+                }
+            }
+
+            foreach (var stm in ssa.Procedure.Statements)
+            {
+                if (stm.Instruction is PhiAssignment phi)
+                {
+                    var orphanedArgs = phi.Src.Arguments
+                        .Where(a => orphans.Contains(a.Block));
+                    foreach (var arg in orphanedArgs)
+                    {
+                        ssa.Identifiers[(Identifier) arg.Value].Uses.Remove(stm);
+                    }
+                    var newArgs = phi.Src.Arguments
+                        .Where(a => !orphans.Contains(a.Block))
+                        .ToArray();
+
+                    stm.Instruction = new PhiAssignment(phi.Dst, newArgs);
+                }
+            }
+            var cfg = ssa.Procedure.ControlGraph;
+
+            foreach (var orphan in orphans)
+            {
+                foreach (var stm in orphan.Statements.ToList())
+                {
+                    if (stm.Instruction is CallInstruction)
+                    {
+                        program.CallGraph.RemoveCaller(stm);
+                    }
+                    ssa.DeleteStatement(stm);
+                }
+                if (orphan != orphan.Procedure.ExitBlock)
+                {
+                    var ps = orphan.Pred.ToArray();
+                    var ss = orphan.Succ.ToArray();
+                    foreach (var p in ps)
+                    {
+                        cfg.RemoveEdge(p, orphan);
+                    }
+                    foreach (var s in ss)
+                    {
+                        cfg.RemoveEdge(orphan, s);
+                    }
+                    orphan.Procedure.RemoveBlock(orphan);
+                    orphan.Procedure = null;
+                }
+            }
+            orphans.Count.ToString();
         }
 
         /// <summary>
@@ -534,7 +608,7 @@ namespace Reko.Analysis
                 if (calleeFlow.TerminatesProcess)
                 {
                     // We just discovered this basic block doesn't terminate.
-                    this.blockstates[block].terminates = true;
+                    this.blockstates[block].Terminates = true;
                     return;
                 }
 
@@ -822,7 +896,7 @@ namespace Reko.Analysis
             appl.Procedure = appl.Procedure.Accept(this);
             if (appl.Procedure is ProcedureConstant pc)
             {
-                blockstates[block].terminates |= ProcedureTerminates(pc.Procedure);
+                blockstates[block].Terminates |= ProcedureTerminates(pc.Procedure);
             }
             return appl;
         }
@@ -891,7 +965,7 @@ namespace Reko.Analysis
             var sid = ssa.Identifiers.Add(idOld, stmCur, src, isSideEffect);
             var bs = blockstates[block];
             var x = factory.Create(idOld, stmCur);
-            return x.NewDef(bs, sid);
+            return x.WriteVariable(bs, sid);
         }
 
         private Expression NewUse(Identifier id, Statement stm, bool force)
@@ -899,8 +973,12 @@ namespace Reko.Analysis
             if (RenameFrameAccesses && !force)
                 return id;
             var bs = blockstates[block];
+            if (id.Name == "_Py_NoneStruct") //$DEBUG
+                id.ToString();
             var x = factory.Create(id, stm);
-            return x.NewUse(bs);
+            var sid = x.ReadVariable(bs);
+            sid.Uses.Add(stm);
+            return sid.Identifier;
         }
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
@@ -984,7 +1062,7 @@ namespace Reko.Analysis
             {
                 var sid = ssa.Identifiers.Add(memId, this.stmCur, null, false);
                 var ss = new RegisterTransformer(memId, stmCur, this);
-                return (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid, false);
+                return (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid);
             }
             else
             {
@@ -1024,34 +1102,39 @@ namespace Reko.Analysis
 
         private void ProcessIncompletePhis()
         {
-            foreach (var phi in incompletePhis)
+            while (incompletePhis.Count > 0)
             {
-                var phiBlock = phi.DefStatement.Block;
-                var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
-                x.AddPhiOperands(phi);
+                var work = incompletePhis.ToArray();
+                incompletePhis.Clear();
+                foreach (var phi in work)
+                {
+                    var phiBlock = phi.DefStatement.Block;
+                    var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
+                    x.AddPhiOperands(phi);
+                }
             }
-            incompletePhis.Clear();
         }
 
         public class SsaBlockState
         {
             public readonly Block Block;
             public readonly Dictionary<StorageDomain, AliasState> currentDef;
-            public readonly IntervalTree<int, AliasState> currentStackDef;
-            public readonly Dictionary<int, SsaIdentifier> currentFpuDef;
+            public readonly IntervalTree<int, Alias> currentStackDef;
+            public readonly Dictionary<StorageDomain, FlagAliasState> currentFlagDef;
+            public readonly Dictionary<Storage, SsaIdentifier> currentSimpleDef;
             public bool Visited;
-            internal bool terminates;
+            public bool Terminates;
 
             public SsaBlockState(Block block)
             {
                 this.Block = block;
                 this.Visited = false;
                 this.currentDef = new Dictionary<StorageDomain, AliasState>();
-                this.currentStackDef = new IntervalTree<int, AliasState>();
-                this.currentFpuDef = new Dictionary<int, SsaIdentifier>();
+                this.currentStackDef = new IntervalTree<int, Alias>();
+                this.currentFlagDef = new Dictionary<StorageDomain, FlagAliasState>();
+                this.currentSimpleDef = new Dictionary<Storage, SsaIdentifier>();
             }
 
-#if DEBUG
             public override string ToString()
             {
                 var sb = new StringBuilder();
@@ -1061,37 +1144,46 @@ namespace Reko.Analysis
                     string.Join(",", currentDef.Keys.Select(k => ((int)k).ToString())));
                 return sb.ToString();
             }
-#endif
         }
 
         /// <summary>
-        /// Describes a set of identifiers that alias each other.
+        /// Describes a set of register identifiers that alias each other in a particular block.
         /// </summary>
         public class AliasState
         {
-            public SsaIdentifier SsaId;        // The id that actually was modified.
-            public readonly AliasState PrevState;
-            public readonly IDictionary<Identifier, SsaIdentifier> Aliases;     // Other ids that were affected by this stm.
+            /// <summary>
+            /// List of defined identifiers, in chronological order (i.e. the
+            /// most recent definition is last in the list.
+            /// </summary>
+            public List<(SsaIdentifier, BitRange, int)> Definitions;
 
-            public AliasState(SsaIdentifier ssaId, AliasState prevState)
-            {
-                this.SsaId = ssaId;
-                this.PrevState = prevState;
-                this.Aliases = new Dictionary<Identifier, SsaIdentifier>();
-            }
+            /// <summary>
+            /// Exact aliases are used to speed up lookups.
+            /// </summary>
+            public Dictionary<Storage, SsaIdentifier> ExactAliases;
 
-#if DEBUG
-            public override string ToString()
+            public AliasState()
             {
-                var sb = new StringBuilder();
-                sb.AppendFormat("Alias: {0}", SsaId.Identifier.Name);
-                if (Aliases.Count > 0)
-                {
-                    sb.AppendFormat(" = {0}", string.Join(", ", Aliases.Values.Select(v => v.Identifier.Name).OrderBy(v => v)));
-                }
-                return sb.ToString();
+                this.Definitions = new List<(SsaIdentifier, BitRange, int)>();
+                this.ExactAliases = new Dictionary<Storage, SsaIdentifier>();
             }
-#endif
+        }
+
+        public class FlagAliasState
+        {
+            public List<(SsaIdentifier, uint)> Definitions;
+            public Dictionary<Identifier, SsaIdentifier> ExactAliases;
+
+            public FlagAliasState()
+            {
+                this.Definitions = new List<(SsaIdentifier, uint)>();
+                this.ExactAliases = new Dictionary<Identifier, SsaIdentifier>();
+            }
+        }
+
+        public class Alias
+        {
+            public SsaIdentifier SsaId;
         }
 
         public class TransformerFactory : StorageVisitor<IdentifierTransformer>
@@ -1119,7 +1211,7 @@ namespace Reko.Analysis
 
             public IdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
             {
-                return new FpuStackTransformer(id, fpu, stm, transform);
+                return new SimpleTransformer(id, fpu, stm, transform);
             }
 
             public IdentifierTransformer VisitMemoryStorage(MemoryStorage global)
@@ -1154,7 +1246,7 @@ namespace Reko.Analysis
 
             public IdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
             {
-                return new RegisterTransformer(id, stm, transform);
+                return new SimpleTransformer(id, temp, stm, transform);
             }
         }
     }

@@ -226,7 +226,7 @@ namespace Reko.Arch.Mips
                     string.Format("f{0}", i),
                     i + 64,
                     0,
-                    PrimitiveType.Word64))
+                    PrimitiveType.Word32))
                 .ToArray();
         }
 
