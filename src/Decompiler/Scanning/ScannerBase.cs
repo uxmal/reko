@@ -73,6 +73,10 @@ namespace Reko.Scanning
             parsedProc = new Procedure_v1()
             {
                 Name = sProc.Name,
+                Signature = new SerializedSignature
+                {
+                    ParametersValid = false,
+                },
             };
             noDecompiledProcs[addr] = parsedProc;
             if (string.IsNullOrEmpty(sProc.CSignature))
