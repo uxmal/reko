@@ -619,6 +619,27 @@ fn00001000_exit:
         }
 
         [Test]
+        public void Scanner_NoDecompiledProcedure_NullSignature()
+        {
+            Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x2000),
+                new Procedure_v1()
+                {
+                    CSignature = null,
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateScanner(program);
+            var proc = sc.ScanProcedure(
+                arch,
+                Address.Ptr32(0x2000),
+                "fn000020", arch.CreateProcessorState());
+            Assert.False(proc.Signature.ParametersValid);
+        }
+
+        [Test]
         public void Scanner_EnqueueUserProcedure()
         {
             Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
