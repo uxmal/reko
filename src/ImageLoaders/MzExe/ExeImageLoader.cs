@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,18 +52,15 @@ namespace Reko.ImageLoaders.MzExe
 
 		public ushort   e_lfaRelocations;			 // 0018 - File address of relocation table
 		public ushort   e_ovno;                      // 001A - Overlay number
-		public ushort [] e_res;                      // 001C - Reserved words
-		public ushort   e_oemid;                     // 0024 - OEM identifier (for e_oeminfo)
-		public ushort   e_oeminfo;                   // 0026 - OEM information; e_oemid specific
-		public ushort [] e_res2;                     // 0028 - Reserved words
-		public uint     e_lfanew;                    // 003C - File address of new exe header
 
 		private const int MarkZbikowski = (('Z' << 8) | 'M');		// 'MZ' magic number expressed in little-endian.
-
 		public const int CbPsp = 0x0100;			// Program segment prefix size in bytes.
 		public const int CbPageSize = 0x0200;		// MSDOS pages are 512 bytes.
+        private const int e_lfanewOffset = 0x003C;      // offset of the field where the LFA to a new
+                                                        // EXE format header is located. This field is only valid
+                                                        // if the e_lfaRelocations field >= 0x40
 
-		public ExeImageLoader(IServiceProvider services, string filename, byte [] image) : base(services, filename, image)
+        public ExeImageLoader(IServiceProvider services, string filename, byte [] image) : base(services, filename, image)
 		{
             this.services = services;
             ReadCommonExeFields();	
@@ -79,19 +76,14 @@ namespace Reko.ImageLoaders.MzExe
             return ldrDeferred;
         }
 
-		public bool IsNewExecutable
+		public bool IsNewExecutable(uint e_lfanew)
 		{
-			get { return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew+1] == 'E'; }
+			return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew+1] == 'E';
 		}
 
-		public bool IsRealModeExecutable
+		public bool IsPortableExecutable(uint e_lfanew)
 		{
-			get { return e_lfanew == 0; }
-		}
-
-		public bool IsPortableExecutable
-		{
-			get { return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'P' && RawImage[e_lfanew+1] == 'E'; }
+			return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'P' && RawImage[e_lfanew+1] == 'E';
 		}
 
 		/// <summary>
@@ -111,33 +103,57 @@ namespace Reko.ImageLoaders.MzExe
             // provide us with an image loader that knows how to do unpacking.
 
             var loaderSvc = services.RequireService<IUnpackerService>();
-            if (IsPortableExecutable)
-            {
-                var peLdr = new PeImageLoader(services, Filename, base.RawImage, e_lfanew);
-                uint entryPointOffset = peLdr.ReadEntryPointRva();
 
-                var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, entryPointOffset);
-                if (unpacker != null)
-                    return unpacker;
-                return peLdr;
+            uint? e_lfanew = LoadLfaToNewHeader();
+            if (e_lfanew.HasValue)
+            { 
+                // It seems this file could have a new header.
+                if (IsPortableExecutable(e_lfanew.Value))
+                {
+                    var peLdr = new PeImageLoader(services, Filename, base.RawImage, e_lfanew.Value);
+                    uint peEntryPointOffset = peLdr.ReadEntryPointRva();
+
+                    var peUnpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, peEntryPointOffset);
+                    if (peUnpacker != null)
+                        return peUnpacker;
+                    return peLdr;
+                }
+                else if (IsNewExecutable(e_lfanew.Value))
+                {
+                    // http://support.microsoft.com/kb/65122
+                    var neLdr = new NeImageLoader(services, Filename, base.RawImage, e_lfanew.Value);
+                    return neLdr;
+                }
             }
-            else if (IsNewExecutable)
-            {
-                // http://support.microsoft.com/kb/65122
-                var neLdr = new NeImageLoader(services, Filename, base.RawImage, e_lfanew);
-                return neLdr;
-            }
-            else
-            {
-                var entryPointOffset = (((e_cparHeader + e_cs) << 4) + e_ip) & 0xFFFFF;
-                var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, (uint) entryPointOffset);
-                if (unpacker != null)
-                    return unpacker;
-                return new MsdosImageLoader(services, Filename, this);
-            }
+
+            // Fall back to loading real-mode MS-DOS program.
+            var msdosEntryPointOffset = (((e_cparHeader + e_cs) << 4) + e_ip) & 0xFFFFF;
+            var msdosUnpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, (uint) msdosEntryPointOffset);
+            if (msdosUnpacker != null)
+                return msdosUnpacker;
+            return new MsdosImageLoader(services, Filename, this);
         }
 
-		public override Address PreferredBaseAddress
+        /// <summary>
+        /// Attempt to load the linear file address of the new header.
+        /// </summary>
+        /// <remarks>
+        /// Windows will happily load PE executables even if e_lfaRelocations is 
+        /// 0. So we fall back to first making sure we can read the lfanew field, and then
+        /// make sure it doesn't point outside the image.
+        /// </remarks>
+        public uint? LoadLfaToNewHeader()
+        {
+            if (RawImage.Length < e_lfanewOffset + 4)
+                return null;
+            
+            uint e_lfanew = MemoryArea.ReadLeUInt32(base.RawImage, e_lfanewOffset);
+            if (e_lfanew == 0 || e_lfanew + 4 >= RawImage.Length)
+                return null;
+            return e_lfanew;
+        }
+
+        public override Address PreferredBaseAddress
 		{
 			get { return GetDeferredLoader().PreferredBaseAddress; }
             set { throw new NotImplementedException(); }
@@ -161,19 +177,6 @@ namespace Reko.ImageLoaders.MzExe
 			e_cs = rdr.ReadLeUInt16();
 			e_lfaRelocations = rdr.ReadLeUInt16();
 			e_ovno = rdr.ReadLeUInt16();
-			e_res = new ushort[4];
-			for (int i = 0; i != 4; ++i)
-			{
-				e_res[i] = rdr.ReadLeUInt16();
-			}
-			e_oemid = rdr.ReadLeUInt16();
-			e_oeminfo = rdr.ReadLeUInt16();
-			e_res2 = new ushort[10];
-			for (int i = 0; i != 10; ++i)
-			{
-				e_res2[i] = rdr.ReadLeUInt16();
-			}
-			e_lfanew = rdr.ReadLeUInt32();
 		}
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
