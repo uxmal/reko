@@ -43,7 +43,7 @@ Eq_n Win32CrtStartup()
 	fn00401663();
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x14);
 	word32 * esp_n = fp - 0x08;
-	if ((byte) (word32) fn00401474(edx, 0x01) == 0x00)
+	if ((byte) (uint32) (uint8) fn00401474(edx, 0x01) == 0x00)
 	{
 l00401177:
 		esp_n -= 0x04;
@@ -53,7 +53,7 @@ l00401177:
 	*(ebp_n - 0x19) = 0x00;
 	*(ebp_n - 0x04) &= 0x00;
 	word32 edx_n;
-	*(ebp_n - 0x24) = (byte) (word32) fn0040143F(out edx_n);
+	*(ebp_n - 0x24) = (byte) (uint32) (uint8) fn0040143F(out edx_n);
 	int8 Top_n = 0x00;
 	struct Eq_n * ebp_n = ebp_n;
 	word32 ebx_n = DPB(ebx, 0x00, 0);
@@ -149,9 +149,10 @@ l00401177:
 		*(esp_n - 0x08) = *eax_n;
 		*(esp_n - 0x0C) = *eax_n;
 		Eq_n eax_n = fn00401000(ecx_n, ebp_n, eax_n);
+		byte bl_n = (byte) ebx_n;
 		word32 ecx_n;
 		word32 eax_n = fn0040188F(out ecx_n);
-		byte bl_n = (byte) ebx_n;
+		word32 ebx_n = DPB(ebx_n, bl_n, 0);
 		int8 Top_n = <invalid>;
 		ptr32 esp_n = esp_n;
 		if ((byte) eax_n == 0x00)

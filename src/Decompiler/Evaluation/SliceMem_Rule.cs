@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,8 +64,16 @@ namespace Reko.Evaluation
 			if (0 <= bitBegin && bitEnd <= acc.DataType.BitSize)
 			{
 				offset = op.ApplyConstants(offset, Constant.Create(acc.EffectiveAddress.DataType, slice.Offset / 8));
-				b = new MemoryAccess(acc.MemoryId, new BinaryExpression(op, offset.DataType, b, offset), slice.DataType);
-				return true;
+                var newEa = new BinaryExpression(op, offset.DataType, b, offset);
+                if (acc is SegmentedAccess seg)
+                {
+                    b = new SegmentedAccess(seg.MemoryId, seg.BasePointer, newEa, slice.DataType);
+                }
+                else
+                {
+                    b = new MemoryAccess(acc.MemoryId, newEa, slice.DataType);
+                }
+                return true;
 			}
 			return false;
 		}

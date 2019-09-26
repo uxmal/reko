@@ -94,7 +94,7 @@ void main(struct Eq_n * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");
-	else if ((word32) (word64) verify(rsi->ptr0008) != 0x00)
+	else if ((word32) (uint64) (uint32) verify(rsi->ptr0008) != 0x00)
 		puts("Correct! that is the secret key!");
 	else
 		puts("I'm sorry, that's the wrong secret key!");

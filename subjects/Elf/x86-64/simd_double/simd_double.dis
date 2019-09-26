@@ -284,7 +284,7 @@ l0000000000000765:
 	call posix_memalign (retsize: 8;)
 		uses: rax:fp - 0x0000000000000010,rbp:fp - 8,rcx:qwLoc28_55,rdi:fp - 0x0000000000000010,rdx:rdi,rsi:qwLoc28_55,rsp:fp - 0x0000000000000028,Stack +0008:qwLoc28_55,Stack +0010:rdi,Stack +0020:qwLoc10,Stack +0028:rbp
 		defs: rax:rax_31
-	branch (word32) rax_31 != 0x00000000 l0000000000000786
+	branch SLICE(rax_31, word32, 0) != 0x00000000 l0000000000000786
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -418,7 +418,7 @@ l000000000000093F:
 
 l00000000000008FD:
 	word64 rcx_54 = qwLoc10_198 * 0x0000000000000008 + rax_14
-	word32 eax_61 = (word32) qwLoc10_198
+	word32 eax_61 = SLICE(qwLoc10_198, word32, 0)
 	branch qwLoc10_198 < 0x0000000000000000 l0000000000000921
 // DataOut:
 // DataOut (flags):
@@ -457,7 +457,7 @@ l0000000000000998:
 // SymbolicIn:
 
 l0000000000000953:
-	word32 eax_97 = (word32) (qwLoc18_204 + 0x0000000000000001)
+	word32 eax_97 = SLICE(qwLoc18_204 + 0x0000000000000001, word32, 0)
 	word64 rcx_91 = qwLoc18_204 * 0x0000000000000008 + rax_26
 	branch qwLoc18_204 < 0x0000000000000001 l000000000000097A
 // DataOut:
@@ -553,7 +553,7 @@ __libc_csu_init_entry:
 // SymbolicIn:
 
 l0000000000000A70:
-	word32 r15d_83 = (word32) (uint64) edi
+	word32 r15d_83 = SLICE((uint64) edi, word32, 0)
 	word64 rbp_29 = 0x0000000000200DF0 - 0x0000000000200DE8
 	word64 rax_33 = _init()
 	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l0000000000000AC6

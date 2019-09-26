@@ -3059,7 +3059,6 @@ void log_string(word32 r1, FILE * r4, word32 r5, word32 r7, word32 r16, word32 r
 	fprintf(r4, "%s:%s.%03d:%s\n", 0x00);
 	fflush(r4);
 	++globals->ptr10000878->dw0824;
-	word32 lo_n = (word32) (dwLoc24 *s 274877907);
 	int32 r2_n = (SLICE(dwLoc24 *s 274877907, word32, 32) >> 0x06) - (dwLoc24 >> 0x1F);
 	if (*globals->ptr10000A28 != 0x00)
 	{
@@ -3906,17 +3905,17 @@ l004087D0:
 	up32 lo_n = (word32) hi_lo_n;
 	up32 lo_n = (word32) hi_lo_n;
 	up32 r21_n = lo_n + lo_n;
-	uint32 r24_n = SLICE(hi_lo_n, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s dwLoc78) + (word32) ((dwLoc74 + -0x01) *s 0x00);
+	uint32 r24_n = SLICE(hi_lo_n, word32, 32) + (dwLoc60 >> 0x00) *s dwLoc78 + (dwLoc74 + -0x01) *s 0x00;
 	Eq_n hi_lo_n = (dwLoc5C + -0x01) * (dwLoc74 + -0x01);
 	Eq_n hi_lo_n = (dwLoc60 >> 0x00) * (dwLoc78 >> 0x00);
-	word32 lo_n = (word32) ((dwLoc78 >> 0x00) *s 0x00);
-	uint32 r20_n = r24_n + ((SLICE(hi_lo_n, word32, 32) + (word32) ((dwLoc5C + -0x01) *s 0x00)) + (word32) ((dwLoc78 >> 0x00) *s dwLoc60)) + (word32) (r21_n < lo_n);
+	int32 lo_n = (dwLoc78 >> 0x00) *s 0x00;
+	uint32 r20_n = r24_n + ((SLICE(hi_lo_n, word32, 32) + (dwLoc5C + -0x01) *s 0x00) + (dwLoc78 >> 0x00) *s dwLoc60) + (word32) (r21_n < lo_n);
 	int32 dwLoc30_n = 0x00;
 	Eq_n lo_n = (word32) hi_lo_n;
-	word32 r16_n = SLICE(hi_lo_n, word32, 32) + (word32) ((dwLoc5C + -0x01) *s dwLoc78);
+	word32 r16_n = SLICE(hi_lo_n, word32, 32) + (dwLoc5C + -0x01) *s dwLoc78;
 	uint32 lo_n = (word32) hi_lo_n;
-	word32 r18_n = SLICE(hi_lo_n, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s 0x00) + lo_n;
-	word32 lo_n = (word32) ((dwLoc74 + -0x01) *s dwLoc60);
+	word32 r18_n = SLICE(hi_lo_n, word32, 32) + (dwLoc60 >> 0x00) *s 0x00 + lo_n;
+	int32 lo_n = (dwLoc74 + -0x01) *s dwLoc60;
 	if ((word32) (r20_n < r24_n) != 0x00)
 	{
 		r16_n = r16_n + lo_n;

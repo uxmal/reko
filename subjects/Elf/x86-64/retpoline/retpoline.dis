@@ -291,34 +291,34 @@ branches_entry:
 // SymbolicIn:
 
 l00000000004005B0:
-	branch (word32) (uint64) edi >= esi l000000000040064F
+	branch SLICE((uint64) edi, word32, 0) >= esi l000000000040064F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004005CA:
-	branch (word32) (uint64) ((word32) (uint64) edi << 0x00000001) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x00000001)) l000000000040064F
+	branch SLICE((uint64) (SLICE((uint64) edi, word32, 0) << 0x00000001), word32, 0) >= SLICE((uint64) (SLICE((uint64) esi, word32, 0) << 0x00000001), word32, 0) l000000000040064F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004005DE:
-	branch (word32) (uint64) (edi *s 0x00000003) >= (word32) ((uint64) (esi *s 0x00000003)) l000000000040064F
+	branch SLICE((uint64) (edi *s 0x00000003), word32, 0) >= SLICE((uint64) (esi *s 0x00000003), word32, 0) l000000000040064F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004005EE:
-	branch (word32) (uint64) ((word32) (uint64) edi << 0x00000002) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x00000002)) l000000000040064F
+	branch SLICE((uint64) (SLICE((uint64) edi, word32, 0) << 0x00000002), word32, 0) >= SLICE((uint64) (SLICE((uint64) esi, word32, 0) << 0x00000002), word32, 0) l000000000040064F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000400602:
-	word64 rax_59 = (uint64) (word32) (uint64) esi
-	word32 eax_66 = (int32) ((int64) (word32) rax_59 / 0x00000002)
+	word64 rax_59 = (uint64) SLICE((uint64) esi, word32, 0)
+	word32 eax_66 = (int32) ((int64) SLICE(rax_59, word32, 0) / 0x00000002)
 	word64 rax_84 = DPB(rax_59, eax_66, 0)
-	branch (word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi / 0x00000002) >= eax_66 l000000000040064F
+	branch SLICE((uint64) (int32) ((int64) SLICE((uint64) SLICE((uint64) edi, word32, 0), word32, 0) / 0x00000002), word32, 0) >= eax_66 l000000000040064F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -329,7 +329,7 @@ l000000000040064F:
 // SymbolicIn:
 
 l000000000040062B:
-	my1((word32) (uint64) esi, (word32) (uint64) edi)
+	my1(SLICE((uint64) esi, word32, 0), SLICE((uint64) edi, word32, 0))
 	free(rax_84)
 // DataOut:
 // DataOut (flags):
@@ -444,7 +444,7 @@ __libc_csu_init_entry:
 // SymbolicIn:
 
 l0000000000400710:
-	word32 r15d_83 = (word32) (uint64) edi
+	word32 r15d_83 = SLICE((uint64) edi, word32, 0)
 	word64 rbp_29 = 0x0000000000600E18 - 0x0000000000600E10
 	word64 rax_33 = _init()
 	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l0000000000400766

@@ -113,7 +113,7 @@ l004012CE:
 l0040115F:
 	word32 ebp_19 = fn00401980(ebx, esi, edi, dwLoc0C, 0x00000014)
 	word32 esp_35 = fp - 8
-	branch (byte) (word32) fn00401474(edx, 0x00000001) != 0x00 l0040117E
+	branch SLICE((uint32) (uint8) fn00401474(edx, 0x00000001), byte, 0) != 0x00 l0040117E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -130,7 +130,7 @@ l0040117E:
 	Mem53[ebp_19 - 0x00000019:byte] = 0x00
 	Mem55[ebp_19 - 0x00000004:word32] = Mem53[ebp_19 - 0x00000004:word32] & 0x00000000
 	word32 edx_137
-	Mem68[ebp_19 - 0x00000024:byte] = (byte) (word32) fn0040143F(out edx_137)
+	Mem68[ebp_19 - 0x00000024:byte] = SLICE((uint32) (uint8) fn0040143F(out edx_137), byte, 0)
 	int8 Top_160 = 0
 	word32 ebp_132 = ebp_19
 	word32 ebx_126 = DPB(ebx, 0x00, 0)
@@ -194,7 +194,7 @@ l00401203:
 	word32 eax_131 = fn00401544(ebx_126, eax_118, 0x00000000, out edx_137, out ebx_126, out ebp_132, out esi_136, out edi_120)
 	ecx_116 = Mem124[esp_108:word32]
 	esp_117 = esp_108 + 4
-	branch (byte) eax_131 == 0x00 l0040121D
+	branch SLICE(eax_131, byte, 0) == 0x00 l0040121D
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -227,7 +227,7 @@ l00401228:
 	eax_163 = fn00401544(ebx_126, eax_163, edi_120, out edx_137, out ebx_126, out ebp_132, out esi_164, out edi_120)
 	ecx_116 = Mem171[esp_170:word32]
 	esp_117 = esp_170 + 4
-	branch (byte) eax_163 == 0x00 l0040123B
+	branch SLICE(eax_163, byte, 0) == 0x00 l0040123B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -272,12 +272,13 @@ l0040123B:
 	Mem244[esp_234 - 8:word32] = Mem241[eax_212:word32]
 	Mem247[esp_234 - 12:word32] = Mem244[eax_229:word32]
 	word32 eax_248 = fn00401000(ecx_235, ebp_132, eax_229)
+	byte bl_268 = SLICE(ebx_126, byte, 0)
 	word32 ecx_259
 	word32 eax_258 = fn0040188F(out ecx_259)
-	byte bl_268 = (byte) ebx_126
+	word32 ebx_275 = DPB(ebx_126, bl_268, 0)
 	int8 Top_250 = <invalid>
 	word32 esp_255 = esp_234
-	branch (byte) eax_258 != 0x00 l0040126C
+	branch SLICE(eax_258, byte, 0) != 0x00 l0040126C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -290,7 +291,7 @@ l0040126C:
 
 l00401270:
 	call cexit (retsize: 4;)
-		uses: eax:eax_258,ebp:ebp_214,ebx:ebx_213,ecx:ecx_259,edi:eax_212,edx:edx_238,esi:eax_248,esp:esp_234,fs:fs,Stack +0000:0x00000014,Stack +FFFFFFF8:0x00000001,Stack +FFFFFFFC:0x004024D8,Top:Top_250
+		uses: eax:eax_258,ebp:ebp_214,ebx:ebx_275,ecx:ecx_259,edi:eax_212,edx:edx_238,esi:eax_248,esp:esp_234,fs:fs,Stack +0000:0x00000014,Stack +FFFFFFF8:0x00000001,Stack +FFFFFFFC:0x004024D8,Top:Top_250
 		defs: esp:esp_272
 // DataOut:
 // DataOut (flags):
@@ -619,7 +620,7 @@ l004014C9:
 
 l004014F3:
 	word32 eax_55 = Mem11[0x00403004:word32]
-	word32 eax_76 = __ror(eax_55 & 0x0000001F | 0xFFFFFFFF, (byte) (0x00000020 - (eax_55 & 0x0000001F))) ^ Mem68[0x00403004:word32]
+	word32 eax_76 = __ror(eax_55 & 0x0000001F | 0xFFFFFFFF, SLICE(0x00000020 - (eax_55 & 0x0000001F), byte, 0)) ^ Mem68[0x00403004:word32]
 	Mem83[0x0040333C:word32] = eax_76
 	Mem87[0x00403340:word32] = eax_76
 	Mem91[0x00403344:word32] = eax_76
@@ -858,7 +859,7 @@ fn00401613_entry:
 l00401613:
 	word32 eax_23
 	word32 eax_8 = Mem6[0x00403004:word32]
-	word32 eax_17 = __ror(eax_8 ^ Mem6[0x0040333C:word32], (byte) (eax_8 & 0x0000001F))
+	word32 eax_17 = __ror(eax_8 ^ Mem6[0x0040333C:word32], SLICE(eax_8 & 0x0000001F, byte, 0))
 	branch eax_17 != 0xFFFFFFFF l00401637
 // DataOut:
 // DataOut (flags):
@@ -1710,7 +1711,7 @@ l00401B3C:
 // SymbolicIn:
 
 l00401B43:
-	branch ((word32) __xgetbv(0x00000000) & 0x00000006) != 0x00000006 l00401B91
+	branch (SLICE(__xgetbv(0x00000000), word32, 0) & 0x00000006) != 0x00000006 l00401B91
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

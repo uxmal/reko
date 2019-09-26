@@ -102,13 +102,15 @@ namespace Reko.Core
             }
             else if (expOut is Identifier idOut)
             {
-                if (expOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
+                int extraBits = expOut.DataType.BitSize - sigCallee.ReturnValue.DataType.BitSize;
+                if (extraBits > 0)
                 {
                     // The non-live bits of expOut can safely be replaced with anything,
                     // since they won't be used. Later stages of the decompilation
                     // process should remove the unused bits.
-                    var unused = Constant.Create(idOut.Storage.DataType, 0);
-                    appl = new DepositBits(unused, appl, 0);
+                    var dtUnused = PrimitiveType.CreateWord(extraBits);
+                    var unused = Constant.Create(dtUnused, 0);
+                    appl = new MkSequence(expOut.DataType, unused, appl);
                 }
                 return new Assignment(idOut, appl);
             }

@@ -255,13 +255,13 @@ l000010E6:
 // SymbolicIn:
 
 l000010EA:
-	branch SLICE(d1_111, byte, 0) == 0x20 l000010E6
+	branch v40_292 == 0x20 l000010E6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000010F0:
-	branch SLICE(d1_111, byte, 0) == 0x09 l000010E6
+	branch v40_292 == 0x09 l000010E6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -276,44 +276,45 @@ l000010FC:
 	Mem313[a6_266:word32] = a1_255
 	a6_266 = a6_266 + 4
 	d3_267 = SEQ(SLICE(d3_267, word16, 16), SLICE(d3_267, word16, 0) + 0x0001)
-	branch SLICE(d1_111, byte, 0) == 0x22 l0000111A
+	branch v40_292 == 0x22 l0000111A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000111A:
 	byte v71_324 = Mem323[a2_196:byte]
+	word24 v72_327 = SLICE(d1_111, word24, 8)
 	a2_196 = a2_196 + 1
-	d1_111 = SEQ(SLICE(d1_111, word24, 8), v71_324)
+	d1_111 = SEQ(v72_327, v71_324)
 	branch v71_324 == 0x00 l00001148
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000111E:
-	branch SLICE(d1_111, byte, 0) == 0x22 l00001116
+	branch v71_324 == 0x22 l00001116
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00001124:
-	branch SLICE(d1_111, byte, 0) != 0x2A l00001144
+	branch v71_324 != 0x2A l00001144
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000112A:
-	d1_111 = SEQ(SLICE(d1_111, word24, 8), Mem323[a2_196:byte])
-	word32 d2_344 = SEQ(SLICE(d2_102, word24, 8), SLICE(d1_111, byte, 0))
-	d2_102 = SEQ(SLICE(d2_344, word24, 8), SLICE(d2_344, byte, 0) & 0xDF)
+	byte v75_337 = Mem323[a2_196:byte]
 	a2_196 = a2_196 + 1
-	branch SLICE(d2_102, byte, 0) != 0x4E l0000113C
+	d1_111 = SEQ(v72_327, v75_337)
+	d2_102 = SEQ(SLICE(d2_102, word24, 8), v75_337 & 0xDF)
+	branch (v75_337 & 0xDF) != 0x4E l0000113C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000113C:
-	branch SLICE(d2_102, byte, 0) != 0x45 l00001144
+	branch (v75_337 & 0xDF) != 0x45 l00001144
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -338,7 +339,7 @@ l00001144:
 // SymbolicIn:
 
 l00001106:
-	Mem366[a1_255:byte] = SLICE(d1_111, byte, 0)
+	Mem366[a1_255:byte] = v40_292
 	a1_255 = a1_255 + 1
 // DataOut:
 // DataOut (flags):
@@ -421,7 +422,7 @@ fn00001000_exit:
 // SymbolicIn:
 
 l0000110C:
-	branch SLICE(d1_111, byte, 0) == 0x20 l00001116
+	branch v50_371 == 0x20 l00001116
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -434,7 +435,7 @@ l00001116:
 // SymbolicIn:
 
 l00001112:
-	Mem524[a1_255:byte] = SLICE(d1_111, byte, 0)
+	Mem524[a1_255:byte] = v50_371
 	a1_255 = a1_255 + 1
 // DataOut:
 // DataOut (flags):

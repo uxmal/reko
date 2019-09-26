@@ -113,7 +113,7 @@ namespace Reko.Analysis
 
             segMemOffset = new ExpressionMatcher(
                 new SegmentedAccess(
-                    null,
+                    MemoryIdentifier.GlobalMemory,
                     ExpressionMatcher.AnyId(),
                     new BinaryExpression(
                         ExpressionMatcher.AnyOperator("op"),

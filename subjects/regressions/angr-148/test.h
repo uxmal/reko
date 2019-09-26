@@ -467,7 +467,7 @@ T_102: (in (uint64) edi : uint64)
   Class: Eq_102
   DataType: uint64
   OrigDataType: uint64
-T_103: (in (word32) (uint64) edi : word32)
+T_103: (in SLICE((uint64) edi, word32, 0) : word32)
   Class: Eq_101
   DataType: word32
   OrigDataType: word32

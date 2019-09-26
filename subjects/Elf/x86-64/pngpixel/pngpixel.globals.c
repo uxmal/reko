@@ -19,7 +19,7 @@ char g_str4018EA[] = "INDEXED %u = invalid index\n";
 char g_str401906[] = "RGB %u %u %u\n";
 char g_str401914[] = "GRAY+ALPHA %u %u\n";
 char g_str401926[] = "RGBA %u %u %u %u\n";
-word64 g_a401958[] = 
+Eq_n g_a401958[] = 
 	{
 	};
 char g_str401990[] = "rb";

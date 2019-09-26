@@ -31,7 +31,7 @@ T_6: (in (uint64) Mem0[rdi + 0x0000000000000000:word32] : uint64)
   Class: Eq_6
   DataType: uint64
   OrigDataType: uint64
-T_7: (in (word32) (uint64) Mem0[rdi + 0x0000000000000000:word32] : word32)
+T_7: (in SLICE((uint64) Mem0[rdi + 0x0000000000000000:word32], word32, 0) : word32)
   Class: Eq_7
   DataType: int32
   OrigDataType: int32

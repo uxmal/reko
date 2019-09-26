@@ -571,5 +571,14 @@ namespace Reko.UnitTests.Typing
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(memptr (ptr16 (segment)) int32)", un.Unify(t1, t2).ToString());
         }
+
+        [Test]
+        public void Unify_Ptr32_up32()
+        {
+            var t1 = PrimitiveType.Create(Domain.Pointer | Domain.UnsignedInt, 32);
+            var t2 = new Pointer(PrimitiveType.Int32, 32);
+            Assert.IsTrue(un.AreCompatible(t1, t2));
+            Assert.AreEqual("(ptr32 int32)", un.Unify(t1, t2).ToString());
+        }
     }
 }

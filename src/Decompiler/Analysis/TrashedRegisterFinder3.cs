@@ -312,7 +312,8 @@ namespace Reko.Analysis
             {
                 if (!blockCtx.TryGetValue(s, out var succCtx))
                 {
-                    blockCtx.Add(s, ctx.Clone());
+                    var ctxClone = ctx.Clone();
+                    blockCtx.Add(s, ctxClone);
                     worklist.Add(s);
                 }
                 else if (bf.IsDirty)

@@ -549,7 +549,7 @@ T_107: (in signature of posix_memalign : void)
   Class: Eq_107
   DataType: Eq_107
   OrigDataType: 
-T_108: (in (word32) rax_31 : word32)
+T_108: (in SLICE(rax_31, word32, 0) : word32)
   Class: Eq_108
   DataType: word32
   OrigDataType: word32
@@ -765,7 +765,7 @@ T_161: (in eax_61 : ui32)
   Class: Eq_161
   DataType: ui32
   OrigDataType: ui32
-T_162: (in (word32) qwLoc10_198 : word32)
+T_162: (in SLICE(qwLoc10_198, word32, 0) : word32)
   Class: Eq_161
   DataType: ui32
   OrigDataType: word32
@@ -877,7 +877,7 @@ T_189: (in qwLoc18_204 + 0x0000000000000001 : word64)
   Class: Eq_189
   DataType: up64
   OrigDataType: up64
-T_190: (in (word32) (qwLoc18_204 + 0x0000000000000001) : word32)
+T_190: (in SLICE(qwLoc18_204 + 0x0000000000000001, word32, 0) : word32)
   Class: Eq_187
   DataType: ui32
   OrigDataType: word32
@@ -1185,7 +1185,7 @@ T_266: (in (uint64) edi : uint64)
   Class: Eq_266
   DataType: uint64
   OrigDataType: uint64
-T_267: (in (word32) (uint64) edi : word32)
+T_267: (in SLICE((uint64) edi, word32, 0) : word32)
   Class: Eq_265
   DataType: word32
   OrigDataType: word32

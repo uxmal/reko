@@ -22,10 +22,10 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_5 = DPB(0x0000, fn0C00_0015(0x0003), 0)
+	ax_5 = SEQ(0x00, fn0C00_0015(0x0003))
 	al_11 = SLICE(ax_5, byte, 0) (alias)
 	Mem13[ds:0x0300:byte] = al_11
-	ax_15 = DPB(0x0000, fn0C00_0020(0x0003), 0)
+	ax_15 = SEQ(0x00, fn0C00_0020(0x0003))
 	al_21 = SLICE(ax_15, byte, 0) (alias)
 	Mem22[ds:0x0301:byte] = al_21
 	return
@@ -61,7 +61,7 @@ l0C00_0015:
 l0C00_0019:
 	// succ:  l0C00_001A_thunk_fn0C00_0020
 l0C00_001A_thunk_fn0C00_0020:
-	ax_13 = DPB(0x0000, fn0C00_0020(ax - 0x0001), 0)
+	ax_13 = SEQ(0x00, fn0C00_0020(ax - 0x0001))
 	SCZO_15 = <invalid>
 	return (byte) ax_13
 	// succ:  fn0C00_0015_exit
@@ -100,7 +100,7 @@ l0C00_0020:
 l0C00_0024:
 	// succ:  l0C00_0025_thunk_fn0C00_0015
 l0C00_0025_thunk_fn0C00_0015:
-	ax_15 = DPB(0x0000, fn0C00_0015(ax - 0x0001), 0)
+	ax_15 = SEQ(0x00, fn0C00_0015(ax - 0x0001))
 	SCZO_17 = <invalid>
 	return (byte) ax_15
 	// succ:  fn0C00_0020_exit

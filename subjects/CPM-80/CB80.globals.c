@@ -24,7 +24,6 @@ Eq_n g_t138C =
 	{
 		0x00
 	};
-byte g_b138D = 0x00;
 ptr16 g_ptr14BC = 0x0000;
 int16 g_w14BE = 0;
 byte g_b14EF = 0x01;
@@ -62,7 +61,10 @@ Eq_n g_t1654 =
 	};
 byte g_b1655 = 0x1A;
 byte g_b1656 = 0x1A;
-cu8 g_b1657 = 0x1A;
+Eq_n g_t1657 = 
+	{
+		0x1A
+	};
 Eq_n g_t1658 = 
 	{
 		0x1A
@@ -107,7 +109,10 @@ Eq_n g_t166A =
 	{
 		0x1A
 	};
-byte g_b166B = 0x1A;
+Eq_n g_t166B = 
+	{
+		0x1A
+	};
 Eq_n g_t166C = 
 	{
 		0x1A
@@ -216,7 +221,10 @@ Eq_n g_t16A8 =
 	{
 		0x23
 	};
-cu8 g_b16A9 = 0x56;
+Eq_n g_t16A9 = 
+	{
+		0x56
+	};
 bui8 g_b16AA = 0x2A;
 cu8 g_b16AB = 0xE5;
 Eq_n g_t1A1A;

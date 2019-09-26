@@ -82,10 +82,10 @@ namespace Reko.Analysis
                 Changed = false;
                 foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
+                    if (ssa.Procedure.Name == "branches" && stm.ToString().StartsWith("eax_44")) //$DEBUG
+                        ssa.Procedure.Name.ToString();
                     if (eventListener.IsCanceled())
                         return;
-                    if (stm.Block.Name.Contains("l00105050"))   //$DEBUG
-                        stm.ToString();
                     this.stmCur = stm;
                     Transform(stm);
                 }

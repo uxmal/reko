@@ -109,6 +109,7 @@ namespace Reko.Core.Expressions
                 default: return new ConstantUInt32(p, (uint) value);
                 }
             case 36:        // PDP-10 <3
+            case 56:
                 value &= (long)Bits.Mask(0, bitSize);
                 goto case 64;
             case 64:

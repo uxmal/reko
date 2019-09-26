@@ -19,7 +19,7 @@ T_3: (in al_5 : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte
-T_4: (in (byte) eax : byte)
+T_4: (in SLICE(eax, byte, 0) : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte

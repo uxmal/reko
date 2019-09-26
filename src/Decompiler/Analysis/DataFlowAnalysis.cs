@@ -143,9 +143,9 @@ namespace Reko.Analysis
         }
 
         [Conditional("DEBUG")]
-        public void DumpWatchedProcedure(string caption, Procedure proc)
+        public static void DumpWatchedProcedure(string caption, Procedure proc)
         {
-            if (proc.Name == "new_JTL")
+            if (proc.Name == "branches")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 MockGenerator.DumpMethod(proc);
@@ -404,8 +404,6 @@ namespace Reko.Analysis
                 // We also hope that procedure constants
                 // kept in registers are propagated to the corresponding call
                 // sites.
-                if (ssa.Procedure.Name == "_getIOPort") //$DEBUG
-                    ssa.ToString();
                 var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
                 vp.Transform();
                 DumpWatchedProcedure("After first VP", ssa.Procedure);

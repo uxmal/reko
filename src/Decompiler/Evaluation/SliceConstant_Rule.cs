@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 
@@ -41,12 +42,12 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
-			return Constant.Create(slice.DataType, Slice(c.ToInt32()));
+			return Constant.Create(slice.DataType, Slice(c.ToUInt64()));
 		}
 
-		public int Slice(int val)
+		public ulong Slice(ulong val)
 		{
-			int mask = ((1 << slice.DataType.BitSize) - 1) << slice.Offset;
+            ulong mask = Bits.Mask(slice.Offset, slice.DataType.BitSize);
 			return (val & mask) >> slice.Offset;
 		}
 	}

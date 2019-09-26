@@ -11,7 +11,7 @@ foo_entry:
 // SymbolicIn:
 
 l0000000000000F9E:
-	branch ((byte) (uint64) ((word32) (uint64) Mem0[rdi:word32] >>u 0x0000000A) ^ sil) == 0x00 l0000000000000FB4
+	branch (SLICE((uint64) (SLICE((uint64) Mem0[rdi:word32], word32, 0) >>u 0x0000000A), byte, 0) ^ sil) == 0x00 l0000000000000FB4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

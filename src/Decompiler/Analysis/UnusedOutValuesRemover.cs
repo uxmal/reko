@@ -82,7 +82,9 @@ namespace Reko.Analysis
                     var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
                     vp.Transform();
                     change |= RemoveUnusedDefinedValues(ssa, wl);
+                    DataFlowAnalysis.DumpWatchedProcedure("After RemoveUnusedDefinedValues", ssa.Procedure);
                     change |= RemoveLiveInStorages(ssa.Procedure, dataFlow[ssa.Procedure], wl);
+                    DataFlowAnalysis.DumpWatchedProcedure("After RemoveLiveInStorages", ssa.Procedure);
                 }
             } while (change);
             foreach (var proc in procToSsa.Keys)

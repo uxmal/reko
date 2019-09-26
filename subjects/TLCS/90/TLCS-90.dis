@@ -68,7 +68,7 @@ l0341:
 	b_67 = __rcl(b_67, 0x01, SLICE(cond(c_65), bool, 0))
 	hl_121 = hl_121 * 0x0002 + (b_67 <u 0x00)
 	byte h_98 = SLICE(hl_121, byte, 8)
-	byte l_99 = (byte) hl_121
+	byte l_99 = SLICE(hl_121, byte, 0)
 	a_74 = a_74 - 1
 	branch a_74 != 0x00 l0341
 // DataOut:
@@ -364,9 +364,9 @@ l050B:
 	c_14 = c_14 << 1
 	b_16 = __rcl(b_16, 0x01, SLICE(cond(c_14), bool, 0))
 	hl_303 = hl_303 * 0x0002 + (b_16 <u 0x00)
+	byte l_53 = SLICE(hl_303, byte, 0)
 	byte h_60 = SLICE(hl_303, byte, 8)
-	byte l_53 = (byte) hl_303
-	word16 hl_306 = DPB(hl_303, h_60, 8)
+	word16 hl_306 = DPB(DPB(hl_303, l_53, 0), h_60, 8)
 	a_23 = a_23 - 1
 	branch a_23 != 0x00 l050B
 // DataOut:
@@ -439,7 +439,7 @@ l05DF:
 	c_223 = c_223 << 1
 	b_225 = __rcl(b_225, 0x01, SLICE(cond(c_223), bool, 0))
 	hl_240 = hl_240 * 0x0002 + (b_225 <u 0x00)
-	byte l_262 = (byte) hl_240
+	byte l_262 = SLICE(hl_240, byte, 0)
 	byte h_269 = SLICE(hl_240, byte, 8)
 	a_232 = a_232 - 1
 	branch a_232 != 0x00 l05DF
@@ -743,7 +743,7 @@ l0C2C:
 	b_19 = __rcl(b_19, 0x01, SLICE(cond(c_16), bool, 0))
 	hl_23 = hl_23 * 0x0002 + (b_19 <u 0x00)
 	a_15 = a_15 - 1
-	byte l_33 = (byte) hl_23
+	byte l_33 = SLICE(hl_23, byte, 0)
 	byte h_34 = SLICE(hl_23, byte, 8)
 	word16 af_37 = DPB(wArg00, a_15, 8)
 	branch a_15 != 0x00 l0C2C
@@ -908,7 +908,7 @@ void fn0C9D(word16 af, byte b, byte c, word16 de, word16 hl, word16 ix, word16 w
 fn0C9D_entry:
 	byte a_135 = SLICE(af, byte, 8)
 	byte h_131 = SLICE(hl, byte, 8)
-	byte l_132 = (byte) hl
+	byte l_132 = SLICE(hl, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1026,7 +1026,7 @@ l0D00:
 	c = c << 1
 	b = __rcl(b, 0x01, SLICE(cond(c), bool, 0))
 	hl = hl * 0x0002 + (b <u 0x00)
-	byte l_34 = (byte) hl
+	byte l_34 = SLICE(hl, byte, 0)
 	byte h_41 = SLICE(hl, byte, 8)
 	a_14 = a_14 - 1
 	branch a_14 != 0x00 l0D00
@@ -1267,6 +1267,7 @@ fn164F_entry:
 	byte bArg1C_284 = SLICE(wArg1B, byte, 8)
 	byte bArg1A = SLICE(wArg19, byte, 8)
 	byte bArg1F_287 = SLICE(wArg1F, byte, 0)
+	byte bArg19 = SLICE(wArg19, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1278,8 +1279,8 @@ l164F:
 	byte v14_17 = Mem11[wArg1B + 1:byte]
 	byte a_22 = c - Mem11[wArg1B:byte]
 	byte a_40 = Mem11[ix + -7:byte] - Mem11[ix + -3:byte] - (a_33 <u 0x00)
-	byte l_82 = (byte) hl_72
-	byte c_244 = (byte) bc_70
+	byte l_82 = SLICE(hl_72, byte, 0)
+	byte c_244 = SLICE(bc_70, byte, 0)
 	byte b_245 = SLICE(bc_70, byte, 8)
 	byte h_246 = SLICE(hl_72, byte, 8)
 	word16 bc_70
@@ -1287,7 +1288,6 @@ l164F:
 	word16 hl_72
 	word16 ix_73
 	word16 af_247 = DPB(fn02F4(a_40, a_22, b - v14_17 - (a_22 <u 0x00), wArg13, SLICE(DPB(DPB(DPB(wArg1B + 1, v14_17, 8), a_33, 0), a_40, 8), byte, 8), ix, SEQ(bArg1B_266, bArg1A), out bc_70, out de_71, out hl_72, out ix_73), l_82, 8)
-	byte bArg19_281 = SLICE(wArg19, byte, 0)
 	word16 wArg1C_285 = SEQ(bArg1D, bArg1C_284)
 	word16 wArg1E_288 = SEQ(bArg1F_287, bArg1E)
 	branch l_82 != 0x00 l1692
@@ -1312,15 +1312,15 @@ l1692:
 	byte a_161 = v39_115 - Mem135[wArg23:byte]
 	byte a_145 = v31_93 - Mem135[wArg19:byte]
 	byte a_166 = v40_118 - Mem135[wArg23 + 1:byte] - (a_161 <u 0x00)
-	byte l_206 = (byte) hl_196
-	byte c_216 = (byte) bc_194
+	byte l_206 = SLICE(hl_196, byte, 0)
+	byte c_216 = SLICE(bc_194, byte, 0)
 	byte b_217 = SLICE(bc_194, byte, 8)
 	byte h_218 = SLICE(hl_196, byte, 8)
 	word16 bc_194
 	word16 de_195
 	word16 hl_196
 	word16 ix_197
-	word16 af_219 = DPB(fn02F4(a_166, a_145, v32_96 - Mem135[wArg19 + 1:byte] - (a_145 <u 0x00), DPB(DPB(DPB(DPB(DPB(DPB(de_71, v34_100, 0), v36_103, 8), v39_115, 0), v40_118, 8), a_161, 0), a_166, 8), SLICE(wArg0F, byte, 8), ix_73, SEQ(bArg19_281, bArg18), out bc_194, out de_195, out hl_196, out ix_197), l_206, 8)
+	word16 af_219 = DPB(fn02F4(a_166, a_145, v32_96 - Mem135[wArg19 + 1:byte] - (a_145 <u 0x00), DPB(DPB(DPB(DPB(DPB(DPB(de_71, v34_100, 0), v36_103, 8), v39_115, 0), v40_118, 8), a_161, 0), a_166, 8), SLICE(wArg0F, byte, 8), ix_73, SEQ(bArg19, bArg18), out bc_194, out de_195, out hl_196, out ix_197), l_206, 8)
 	branch l_206 != 0x00 l1707
 // DataOut:
 // DataOut (flags):

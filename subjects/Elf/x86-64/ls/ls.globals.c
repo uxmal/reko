@@ -470,7 +470,10 @@ Eq_n g_t61B178 =
 byte g_b61B17C = 0x00;
 byte g_b61B17D = 0x00;
 int64 g_qw61B180 = 0;
-word64 g_qw61B188 = 0x0000000000000000;
+Eq_n g_t61B188 = 
+	{
+		0
+	};
 Eq_n g_t61B190 = 
 	{
 		0x00

@@ -346,7 +346,7 @@ namespace Reko.Typing
             {
                 //$REVIEW: here we convert SLICE(xxx, yy, 0) to the cast (yy) xxx.
                 // Should SLICE(xxx, yy, nn) be cast to (yy) (xxx >> nn) as well?
-                return new Cast(slice.DataType, slice.Expression)
+                return new Cast(newSlice.DataType, newSlice.Expression)
                 {
                     TypeVariable = slice.TypeVariable
                 };

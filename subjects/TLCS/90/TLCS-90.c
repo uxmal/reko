@@ -104,9 +104,9 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 		c_n <<= 0x01;
 		b_n = __rcl(b_n, 0x01, (bool) cond(c_n));
 		hl_n = hl_n * 0x02 + (b_n < 0x00);
-		byte h_n = SLICE(hl_n, byte, 8);
 		byte l_n = (byte) hl_n;
-		ui16 hl_n = DPB(hl_n, h_n, 8);
+		byte h_n = SLICE(hl_n, byte, 8);
+		ui16 hl_n = DPB(DPB(hl_n, l_n, 0), h_n, 8);
 	}
 	uint8 a_n = c_n + ix->bFFFFFFF6;
 	ix->bFFFFFFFC = a_n;
@@ -537,6 +537,7 @@ void fn164F(cu8 a, byte c, byte b, byte h, struct Eq_n * ix, struct Eq_n * wArg0
 	byte bArg1C_n = SLICE(wArg1B, byte, 8);
 	byte bArg1A = SLICE(wArg19, byte, 8);
 	byte bArg1F_n = (byte) wArg1F;
+	byte bArg19 = (byte) wArg19;
 	ix->bFFFFFFEC = a;
 	ix->bFFFFFFED = ix->bFFFFFFF9 - h - C;
 	cu8 a_n = ix->bFFFFFFF8 - ix->bFFFFFFFC;
@@ -552,7 +553,6 @@ void fn164F(cu8 a, byte c, byte b, byte h, struct Eq_n * ix, struct Eq_n * wArg0
 	word16 hl_n;
 	struct Eq_n * ix_n;
 	word16 af_n = DPB(fn02F4(a_n, a_n, b - v14_n - (a_n < 0x00), wArg13, SLICE(DPB(DPB(DPB(&wArg1B->b0001, v14_n, 8), a_n, 0), a_n, 8), byte, 8), ix, SEQ(bArg1B_n, bArg1A), out bc_n, out de_n, out hl_n, out ix_n), l_n, 8);
-	byte bArg19_n = (byte) wArg19;
 	Eq_n wArg1C_n = SEQ(bArg1D, bArg1C_n);
 	Eq_n wArg1E_n = SEQ(bArg1F_n, bArg1E);
 	if (l_n != 0x00)
@@ -581,7 +581,7 @@ void fn164F(cu8 a, byte c, byte b, byte h, struct Eq_n * ix, struct Eq_n * wArg0
 		Eq_n de_n;
 		word16 hl_n;
 		struct Eq_n * ix_n;
-		word16 af_n = DPB(fn02F4(a_n, a_n, v32_n - wArg19->b0001 - (a_n < 0x00), DPB(DPB(DPB(DPB(DPB(DPB(de_n, v34_n, 0), v36_n, 8), v39_n, 0), v40_n, 8), a_n, 0), a_n, 8), SLICE(wArg0F, byte, 8), ix_n, SEQ(bArg19_n, bArg18), out bc_n, out de_n, out hl_n, out ix_n), l_n, 8);
+		word16 af_n = DPB(fn02F4(a_n, a_n, v32_n - wArg19->b0001 - (a_n < 0x00), DPB(DPB(DPB(DPB(DPB(DPB(de_n, v34_n, 0), v36_n, 8), v39_n, 0), v40_n, 8), a_n, 0), a_n, 8), SLICE(wArg0F, byte, 8), ix_n, SEQ(bArg19, bArg18), out bc_n, out de_n, out hl_n, out ix_n), l_n, 8);
 		if (l_n != 0x00)
 			fn0C35(af_n, c_n, b_n, de_n, 0x00, h_n, ix_n, wArg1C_n);
 		else

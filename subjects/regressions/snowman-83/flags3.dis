@@ -11,7 +11,7 @@ foo_entry:
 // SymbolicIn:
 
 l0000000000000FA8:
-	branch (word32) (uint64) Mem0[rdi:word32] < 0x00000101 l0000000000000FB7
+	branch SLICE((uint64) Mem0[rdi:word32], word32, 0) < 0x00000101 l0000000000000FB7
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

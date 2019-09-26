@@ -81,6 +81,7 @@ namespace Reko.Core.Lib
             ulong m = (1Lu << b) - 1;
             return w & m;
         }
+
         public static ulong Mask(int lsb, int bitsize)
         {
             return ((1ul << bitsize) - 1) << lsb;

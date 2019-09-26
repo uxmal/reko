@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
         }
 
-        [Test(Description="The byte is smaller than the target register, so we expect a 'DPB' instruction")]
+        [Test(Description="The byte is smaller than the target register, so we expect a 'SEQ' instruction")]
         public void AppBld_BindByteToRegister()
         {
             var callee = new Procedure(arch, "callee", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Core
                 new Identifier("foo", PrimitiveType.Ptr32, null));
             var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(sig, null);
-            Assert.AreEqual("eax = DPB(0x00000000, foo(), 0)", instr.ToString());
+            Assert.AreEqual("eax = SEQ(0x000000, foo())", instr.ToString());
         }
 
         [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]

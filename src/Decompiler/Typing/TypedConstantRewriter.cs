@@ -73,11 +73,20 @@ namespace Reko.Typing
         {
             this.c = c;
             DataType dtInferred = c.DataType;
-            this.pOrig = c.DataType as PrimitiveType;
-            if (c.TypeVariable != null)
+            if (dtInferred == null)
             {
+                eventListener.Warn(new NullCodeLocation(""),
+                    $"The equivalence class {c.TypeVariable.Name} has a null data type");
                 dtInferred = c.TypeVariable.DataType;
-                this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
+            }
+            else
+            {
+                this.pOrig = c.DataType as PrimitiveType;
+                if (c.TypeVariable != null)
+                {
+                    dtInferred = c.TypeVariable.DataType;
+                    this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
+                }
             }
             var dt = dtInferred.ResolveAs<DataType>();
             this.dereferenced = dereferenced;

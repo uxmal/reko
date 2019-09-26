@@ -317,7 +317,7 @@ __libc_csu_init_entry:
 // SymbolicIn:
 
 l0000000000400550:
-	word32 r15d_80 = (word32) (uint64) edi
+	word32 r15d_80 = SLICE((uint64) edi, word32, 0)
 	word64 rbp_29 = 0x0000000000600E18 - 0x0000000000600E10
 	word64 rbx_30 = 0x0000000000000000
 	word64 rax_34 = _init()

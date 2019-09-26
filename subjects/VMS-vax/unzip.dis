@@ -377,7 +377,8 @@ fn00009C8A_entry:
 // SymbolicIn:
 
 l00009C8A:
-	word32 r3_117 = SEQ(SLICE(r3, word24, 8), 0x01)
+	word24 v8_6 = SLICE(r3, word24, 8)
+	word32 r3_117 = SEQ(v8_6, 0x01)
 	word32 r2_10 = Mem0[r7 + 1511:word32]
 	branch (Mem0[r2_10 + 20:word32] & 0x00000008) != 0x00000000 l00009CB8
 // DataOut:
@@ -391,7 +392,7 @@ l00009CB1:
 // SymbolicIn:
 
 l00009CB6:
-	r3_117 = SEQ(SLICE(r3_117, word24, 8), 0x00)
+	r3_117 = SEQ(v8_6, 0x00)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4360,15 +4361,16 @@ l0000D177:
 
 l0000D188:
 	byte v28_243 = Mem216[r2_233:byte]
+	word24 v29_245 = SLICE(r0_223, word24, 8)
 	r6_234 = r6_234 + 0x00000001
-	r0_223 = SEQ(SLICE(r0_223, word24, 8), v28_243)
+	r0_223 = SEQ(v29_245, v28_243)
 	branch v28_243 == 0x00 l0000D1AF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000D18F:
-	r0_223 = (int32) (int8) SEQ(SLICE(r0_223, word24, 8), (byte) r0_223 & ~0x80)
+	r0_223 = (int32) (int8) SEQ(v29_245, (byte) r0_223 & ~0x80)
 	branch (Mem216[r4_221 + r0_223 * 4:word32] & 0x00000008) != 0x00000000 l0000D1AF
 // DataOut:
 // DataOut (flags):
@@ -4382,14 +4384,15 @@ l0000D19B:
 l0000D19C:
 	r2_233 = r2_233 + 0x00000001
 	byte v32_261 = Mem216[r2_233:byte]
-	r0_223 = SEQ(SLICE(r0_223, word24, 8), v32_261)
+	word24 v33_263 = SLICE(r0_223, word24, 8)
+	r0_223 = SEQ(v33_263, v32_261)
 	branch v32_261 == 0x00 l0000D1AF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000D1A3:
-	r0_223 = (int32) (int8) SEQ(SLICE(r0_223, word24, 8), (byte) r0_223 & ~0x80)
+	r0_223 = (int32) (int8) SEQ(v33_263, (byte) r0_223 & ~0x80)
 	branch (Mem216[r4_221 + r0_223 * 4:word32] & 0x00000008) == 0x00000000 l0000D19C
 // DataOut:
 // DataOut (flags):
@@ -8402,7 +8405,8 @@ l00011115:
 // SymbolicIn:
 
 l0001112A:
-	r3_708 = SEQ(SLICE(r3_704, word24, 8), 0x00)
+	v60_707 = SLICE(r3_704, word24, 8)
+	r3_708 = SEQ(v60_707, 0x00)
 	branch Mem693[r2_691:word32] != 0x00000000 l0001113B
 // DataOut:
 // DataOut (flags):
@@ -8416,7 +8420,7 @@ l00011130:
 // SymbolicIn:
 
 l00011139:
-	r3_722 = SEQ(SLICE(r3_708, word24, 8), (byte) r3_708 + 0x01)
+	r3_722 = SEQ(v60_707, (byte) r3_708 + 0x01)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10894,14 +10898,15 @@ l000126A4:
 	call r5_225 + 2 (retsize: 4;)
 		uses: ap:ap_250,fp:fp_248,r0:r0_245,r1:r1_265,r10:r10_263,r11:r11_254,r2:r2_261,r3:r3_259,r4:r4_257,r5:r5_239,r6:r6_234,r7:r7_241,r8:r8_243,r9:r9_252,sp:sp_233,Stack +FFFFFFF0:0x00000000,Stack +FFFFFFF4:r8 + 12
 		defs: ap:ap_251,fp:fp_249,r0:r0_246,r1:r1_266,r10:r10_264,r11:r11_255,r2:r2_262,r3:r3_260,r4:r4_258,r5:r5_256,r6:r6_247,r7:r7_242,r8:r8_244,r9:r9_253,sp:sp_240
-	r1_230 = SEQ(SLICE(r1_266, word24, 8), (int8) r0_219)
+	word24 v32_269 = SLICE(r1_266, word24, 8)
+	r1_230 = SEQ(v32_269, (int8) r0_219)
 	branch (byte) r1_230 != 0x0D l000126B4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000126B1:
-	r1_230 = SEQ(SLICE(r1_230, word24, 8), 0x0A)
+	r1_230 = SEQ(v32_269, 0x0A)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21054,7 +21059,8 @@ l00018901:
 
 l00018BDA:
 	Mem773[Mem770[ap_259 + 28:word32]:word32] = Mem770[Mem770[sp_250 + 36:word32]:word32]
-	word32 r3_780 = SEQ(SLICE(r3_262, word24, 8), 0x00)
+	word24 v60_779 = SLICE(r3_262, word24, 8)
+	word32 r3_780 = SEQ(v60_779, 0x00)
 	branch Mem773[sp_250 + 4:word32] == 0x00000000 l00018BEE
 // DataOut:
 // DataOut (flags):
@@ -21067,7 +21073,7 @@ l00018BE6:
 // SymbolicIn:
 
 l00018BEC:
-	r3_780 = SEQ(SLICE(r3_780, word24, 8), (byte) r3_780 + 0x01)
+	r3_780 = SEQ(v60_779, (byte) r3_780 + 0x01)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21272,8 +21278,9 @@ l00018CCA:
 // SymbolicIn:
 
 l00018CD3:
+	word24 v28_32 = SLICE(r6, word24, 8)
 	word32 r5_29 = Mem9[ap + 4:word32]
-	word32 r6_1133 = SEQ(SLICE(r6, word24, 8), 0x01)
+	word32 r6_1133 = SEQ(v28_32, 0x01)
 	word32 r2_34 = (uint32) Mem9[r5_29:byte]
 	branch r2_34 == 0x00000021 l00018CED
 // DataOut:
@@ -21287,7 +21294,7 @@ l00018CE2:
 // SymbolicIn:
 
 l00018CEB:
-	r6_1133 = SEQ(SLICE(r6_1133, word24, 8), 0x00)
+	r6_1133 = SEQ(v28_32, 0x00)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

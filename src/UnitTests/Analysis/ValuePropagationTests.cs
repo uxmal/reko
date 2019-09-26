@@ -1273,5 +1273,37 @@ SsaProcedureBuilder_exit:
             #endregion
             AssertStringsEqual(sExp, m.Ssa);
         }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void VpSliceConst()
+        {
+            var t1 = m.Temp(PrimitiveType.Word64, "t1");
+            var t2 = m.Temp(PrimitiveType.Word32, "t2");
+
+            m.Assign(t1, m.Word64(2));
+            m.Assign(t2, m.Slice(PrimitiveType.Word32, t1, 0));
+
+            RunValuePropagator();
+
+            var sExp =
+            #region Expected
+@"t1: orig: t1
+    def:  t1 = 0x0000000000000002
+t2: orig: t2
+    def:  t2 = 0x00000002
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	t1 = 0x0000000000000002
+	t2 = 0x00000002
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            AssertStringsEqual(sExp, m.Ssa);
+        }
     }
 }

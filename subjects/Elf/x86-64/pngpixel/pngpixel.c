@@ -101,7 +101,7 @@ l0000000000400EC1:
 		rax_n = (byte *) DPB(v16_n, (word32) (byte) (word32) v16_n->b0000, 0);
 		break;
 	case 0x10:
-		rax_n = (uint64) (word32) ((byte) (word32) v16_n->b0001 + (uint64) ((word32) ((uint64) ((word32) ((byte) ((word32) v16_n->b0000)) << 0x08))));
+		rax_n = (uint64) ((word32) (byte) (word32) v16_n->b0001 + (word32) ((uint64) ((word32) ((uint64) ((word32) ((byte) ((word32) v16_n->b0000)) << 0x08)))));
 		break;
 	}
 	rcxOut = rcx_n;
@@ -130,10 +130,10 @@ Eq_n print_pixel(Eq_n rcx, word64 rdx, word64 rbx, ptr64 rbp, word64 rsi, word64
 	up32 eax_n = (word32) (byte) rax_n;
 	if (eax_n > 0x06)
 		goto l00000000004012C9;
-	switch ((word32) globals->a401958[(uint64) eax_n * 0x08])
+	switch (globals->a401958[(uint64) eax_n])
 	{
 	case 0x00:
-		printf("GRAY %u\n", (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01, out rcx_n));
+		printf("GRAY %u\n", (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01, out rcx_n));
 		r8_n.u1 = 0x01;
 		break;
 	case 0x01:
@@ -142,12 +142,12 @@ l00000000004012C9:
 		png_error();
 		break;
 	case 0x02:
-		rcx_n.u1 = (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x03, out rcx_n);
-		printf("RGB %u %u %u\n", (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x03, out rcx_n), (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x03, out rcx_n), rcx_n);
+		rcx_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x03, out rcx_n);
+		printf("RGB %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x03, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x03, out rcx_n), rcx_n);
 		r8_n.u1 = 0x03;
 		break;
 	case 0x03:
-		up32 eax_n = (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01, out rcx_n);
+		up32 eax_n = (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01, out rcx_n);
 		word64 rax_n;
 		png_get_PLTE();
 		if ((word32) (uint64) ((word32) rax_n & 0x08) != 0x00 && (false && 0x00 != 0x00))
@@ -179,13 +179,13 @@ l00000000004012C9:
 			printf("INDEXED %u = invalid index\n", (uint64) (word32) (uint64) eax_n);
 		break;
 	case 0x04:
-		printf("GRAY+ALPHA %u %u\n", (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x02, out rcx_n), (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x02, out rcx_n));
+		printf("GRAY+ALPHA %u %u\n", (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x02, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x02, out rcx_n));
 		r8_n.u1 = 0x02;
 		break;
 	case 0x06:
-		r8_n.u1 = (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x03, (word32) (uint64) ecx, rdx, 0x04, out rcx_n);
-		rcx_n.u1 = (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x04, out rcx_n);
-		printf("RGBA %u %u %u %u\n", (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x04, out rcx_n), (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x04, out rcx_n), rcx_n, r8_n);
+		r8_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x03, (word32) (uint64) ecx, rdx, 0x04, out rcx_n);
+		rcx_n.u1 = (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x04, out rcx_n);
+		printf("RGBA %u %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x04, out rcx_n), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((word32) (uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x04, out rcx_n), rcx_n, r8_n);
 		break;
 	}
 	if ((rax_n ^ fs->qw0028) == 0x00)

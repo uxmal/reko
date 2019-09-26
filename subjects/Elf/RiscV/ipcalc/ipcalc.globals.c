@@ -137,6 +137,12 @@ char g_str12BD8[] = "%u.in-addr.arpa.";
 char g_str12BF0[] = "%u-%u.%u.%u.%u.in-addr.arpa.";
 char g_str12C10[] = "%u-%u.%u.%u.in-addr.arpa.";
 char g_str12C30[] = "%u-%u.%u.in-addr.arpa.";
+int32 g_t15180(int32 a0, char ** a1, char ** a2) = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
+;
+void g_t182E8() = Unexpected function type (fn void ())
+;
+void g_t18378() = Unexpected function type (fn void ())
+;
 word64 g_qw19E18 = 0x0000000000015F94;
 word64 g_qw19E28 = 0x0000000000000000;
 

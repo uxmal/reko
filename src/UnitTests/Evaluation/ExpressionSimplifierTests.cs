@@ -303,5 +303,18 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Seq(t1, t2);
             Assert.AreEqual("foo_1", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_Slice_of_segaccess()
+        {
+            Given_ExpressionSimplifier();
+            var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
+            ssaIds.Add(ds, null, null, false);
+            var expr = m.Slice(
+                PrimitiveType.Word16, 
+                m.SegMem(PrimitiveType.SegPtr32, ds, m.Word16(0x1234)),
+                0);
+            Assert.AreEqual("Mem0[ds:0x1234 + 0x0000:word16]", expr.Accept(simplifier).ToString());
+        }
     }
 }

@@ -10037,13 +10037,12 @@ l0040697C:
 	word32 r5_30 = <invalid>
 	word32 r2_47
 	call gmtime (retsize: 0;)
-		uses: hi:hi,lo:lo_93,r1:r1,r16:r5,r17:r7,r2:fp + -40,r25:gmtime,r28:0x10008860,r3:r3_36,r30:fp + -104,r4:fp + -40,r5:r5_30,r6:r6_32,r7:r7_34,ra:ra,sp:fp + -104,Stack +0010:r2_77,Stack +0014:r7,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0048:dwLoc20,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
+		uses: hi:hi,lo:dwLoc24 *s 0x10624DD3,r1:r1,r16:r5,r17:r7,r2:fp + -40,r25:gmtime,r28:0x10008860,r3:r3_36,r30:fp + -104,r4:fp + -40,r5:r5_30,r6:r6_32,r7:r7_34,ra:ra,sp:fp + -104,Stack +0010:r2_77,Stack +0014:r7,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0048:dwLoc20,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
 		defs: r2:r2_47
 	strftime(fp + -72, 28, 0x0040A74C, r2_47)
 	fprintf(r4, 0x0040A760, 0x00000000)
 	fflush(r4)
 	Mem111[Mem79[0x10000878:word32] + 2084:word32] = Mem79[Mem79[0x10000878:word32] + 2084:word32] + 1
-	word32 lo_93 = (word32) (dwLoc24 *s 0x10624DD3)
 	word32 r2_77 = (SLICE(dwLoc24 *s 0x10624DD3, word32, 32) >> 0x06) - (dwLoc24 >> 0x1F)
 	branch Mem111[Mem111[0x10000A28:word32]:word32] == 0x00000000 l0040697C_ds_t
 // DataOut:
@@ -11646,7 +11645,7 @@ l00407CA8:
 	word32 r4_112
 	uint64 hi_lo_63 = dwLoc3C *u dwLoc2C
 	word32 hi_73 = SLICE(hi_lo_63, word32, 32)
-	word32 lo_75 = (word32) hi_lo_63
+	word32 lo_75 = SLICE(hi_lo_63, word32, 0)
 	word32 r6_104 = hi_73 >> 0x00
 	branch hi_73 >> 0x00 >= 0x00000000 l00407CA8_ds_t
 // DataOut:
@@ -13324,20 +13323,20 @@ l004087EC:
 	word32 r16_176
 	int64 hi_lo_126 = (dwLoc60 >>u 0x00) *u (dwLoc74 + -1)
 	int64 hi_lo_132 = (dwLoc5C + -1) *u (dwLoc78 >>u 0x00)
-	word32 lo_129 = (word32) hi_lo_126
-	word32 lo_135 = (word32) hi_lo_132
+	word32 lo_129 = SLICE(hi_lo_126, word32, 0)
+	word32 lo_135 = SLICE(hi_lo_132, word32, 0)
 	word32 r21_146 = lo_129 + lo_135
-	word32 r24_141 = SLICE(hi_lo_126, word32, 32) + (word32) ((dwLoc60 >>u 0x00) *s dwLoc78) + (word32) ((dwLoc74 + -1) *s 0x00000000)
+	word32 r24_141 = SLICE(hi_lo_126, word32, 32) + (dwLoc60 >>u 0x00) *s dwLoc78 + (dwLoc74 + -1) *s 0x00000000
 	int64 hi_lo_157 = (dwLoc5C + -1) *u (dwLoc74 + -1)
 	int64 hi_lo_163 = (dwLoc60 >>u 0x00) *u (dwLoc78 >>u 0x00)
-	word32 lo_170 = (word32) ((dwLoc78 >>u 0x00) *s 0x00000000)
-	word32 r20_150 = r24_141 + ((SLICE(hi_lo_132, word32, 32) + (word32) ((dwLoc5C + -1) *s 0x00000000)) + (word32) ((dwLoc78 >>u 0x00) *s dwLoc60)) + (word32) (r21_146 <u lo_135)
+	word32 lo_170 = (dwLoc78 >>u 0x00) *s 0x00000000
+	word32 r20_150 = r24_141 + ((SLICE(hi_lo_132, word32, 32) + (dwLoc5C + -1) *s 0x00000000) + (dwLoc78 >>u 0x00) *s dwLoc60) + (word32) (r21_146 <u lo_135)
 	word32 dwLoc30_807 = 0x00000000
-	word32 lo_160 = (word32) hi_lo_157
-	word32 r16_162 = SLICE(hi_lo_157, word32, 32) + (word32) ((dwLoc5C + -1) *s dwLoc78)
-	word32 lo_166 = (word32) hi_lo_163
-	word32 r18_172 = SLICE(hi_lo_163, word32, 32) + (word32) ((dwLoc60 >>u 0x00) *s 0x00000000) + lo_170
-	word32 lo_174 = (word32) ((dwLoc74 + -1) *s dwLoc60)
+	word32 lo_160 = SLICE(hi_lo_157, word32, 0)
+	word32 r16_162 = SLICE(hi_lo_157, word32, 32) + (dwLoc5C + -1) *s dwLoc78
+	word32 lo_166 = SLICE(hi_lo_163, word32, 0)
+	word32 r18_172 = SLICE(hi_lo_163, word32, 32) + (dwLoc60 >>u 0x00) *s 0x00000000 + lo_170
+	word32 lo_174 = (dwLoc74 + -1) *s dwLoc60
 	branch (word32) (r20_150 <u r24_141) != 0x00000000 l004087EC_ds_t
 // DataOut:
 // DataOut (flags):
