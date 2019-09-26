@@ -91,6 +91,12 @@ namespace Reko.UnitTests.Mocks
             return MakeSsaIdentifier(local, name);
         }
 
+        public override Identifier Temp(DataType type, string name)
+        {
+            var id = base.Temp(type, name);
+            return MakeSsaIdentifier(id, name);
+        }
+
         public Identifier Temp(string name, TemporaryStorage stg)
         {
             var id = new Identifier(stg.Name, stg.DataType, stg);

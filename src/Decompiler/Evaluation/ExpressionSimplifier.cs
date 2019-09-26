@@ -69,6 +69,7 @@ namespace Reko.Evaluation
         private DistributedSliceRule distributedSlice;
         private MkSeqFromSlices_Rule mkSeqFromSlicesRule;
         private ComparisonConstOnLeft constOnLeft;
+        private SliceSequence sliceSeq;
 
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
@@ -103,6 +104,7 @@ namespace Reko.Evaluation
             this.distributedSlice = new DistributedSliceRule();
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
             this.constOnLeft = new ComparisonConstOnLeft();
+            this.sliceSeq = new SliceSequence(ctx);
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -833,6 +835,11 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 return sliceShift.Transform();
+            }
+            if (sliceSeq.Match(slice))
+            {
+                Changed = true;
+                return sliceSeq.Transform();
             }
             return slice;
         }

@@ -223,6 +223,7 @@
     <Compile Include="Evaluation\ComparisonConstOnLeft.cs" />
     <Compile Include="Evaluation\DistributedCastRule.cs" />
     <Compile Include="Evaluation\DistributedSliceRule.cs" />
+    <Compile Include="Evaluation\SliceSequence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -234,7 +234,7 @@ namespace Reko.Core
         /// <summary>
         /// Generate a temporary identifier named <paramref name="name"/> with the data type <paramref name="type"/>.
         /// </summary>
-        public Identifier Temp(DataType type, string name)
+        public virtual Identifier Temp(DataType type, string name)
         {
             return Frame.CreateTemporary(name, type);
         }

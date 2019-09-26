@@ -1236,5 +1236,42 @@ SsaProcedureBuilder_exit:
             #endregion
             AssertStringsEqual(sExp, m.Ssa);
         }
+
+        [Test]
+        public void VpSliceSeq()
+        {
+            var t1 = m.Temp(PrimitiveType.Word16, "t1");
+            var t2 = m.Temp(PrimitiveType.Word32, "t2");
+            var t3 = m.Temp(PrimitiveType.Word16, "t3");
+
+            m.Assign(t2, m.Seq(t1, m.Mem16(m.Word32(0x00123400))));
+            m.Assign(t3, m.Slice(PrimitiveType.Word16, t2, 16));
+
+            RunValuePropagator();
+
+            var sExp =
+            #region Expected
+@"t1: orig: t1
+    uses: t2 = SEQ(t1, Mem3[0x00123400:word16])
+          t3 = t1
+t2: orig: t2
+    def:  t2 = SEQ(t1, Mem3[0x00123400:word16])
+t3: orig: t3
+    def:  t3 = t1
+Mem3: orig: Mem0
+    uses: t2 = SEQ(t1, Mem3[0x00123400:word16])
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	t2 = SEQ(t1, Mem3[0x00123400:word16])
+	t3 = t1
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            AssertStringsEqual(sExp, m.Ssa);
+        }
     }
 }
