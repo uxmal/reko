@@ -454,7 +454,7 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public static void DumpWatchedProcedure(string caption, Procedure proc)
         {
-            if (proc.Name == "fn0C00_0000")
+            if (proc.Name == "fn0C00_000C")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 MockGenerator.DumpMethod(proc);

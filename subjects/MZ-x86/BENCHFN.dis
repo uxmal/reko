@@ -1503,7 +1503,6 @@ void _fseek(selector ds, word16 wArg02, ui32 dwArg04, word16 wArg08)
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp si sp
 fn0800_06A2_entry:
-	word16 wArg06 = SLICE(dwArg04, word16, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1515,23 +1514,19 @@ l0800_06A2:
 // SymbolicIn:
 
 l0800_06B7:
-	ui32 dwArg04_182 = dwArg04
 	branch wArg08 != 0x0001 l0800_06CD
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_06BD:
-	dwArg04_182 = dwArg04 (alias)
 	branch Mem14[ds:wArg02:word16] <= 0x0000 l0800_06CD
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_06C2:
-	ui32 v16_v14_111 = SEQ(wArg06, v14_45) - (int32) fn0800_065B(ds, wArg02)
-	word16 v14_45 = (word16) v16_v14_111
-	dwArg04_182 = v16_v14_111 (alias)
+	dwArg04 = dwArg04 - (int32) fn0800_065B(ds, wArg02) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1541,7 +1536,7 @@ l0800_06CD:
 	Mem60[ds:wArg02:word16] = 0x0000
 	Mem62[ds:wArg02 + 0x000A:word16] = Mem60[ds:wArg02 + 0x0008:word16]
 	word16 dx_82
-	word16 ax_79 = _lseek(ds, (int16) Mem74[ds:wArg02 + 0x0004:byte], dwArg04_182, SLICE(wArg08, byte, 0), out dx_82)
+	word16 ax_79 = _lseek(ds, (int16) Mem74[ds:wArg02 + 0x0004:byte], dwArg04, SLICE(wArg08, byte, 0), out dx_82)
 	branch dx_82 != 0xFFFF l0800_06FF
 // DataOut:
 // DataOut (flags):
@@ -6866,8 +6861,8 @@ l0800_1CB4:
 	ui32 di_si_579 = di_ax_862 + dx_ax_331
 	ax_199 = SLICE(dx_ax_331, word16, 0) (alias)
 	dx = SLICE(dx_ax_331, word16, 16) (alias)
-	si_138 = (word16) di_si_579
-	di_140 = SLICE(di_si_579, word16, 16)
+	si_138 = SLICE(di_si_579, word16, 0) (alias)
+	di_140 = SLICE(di_si_579, word16, 16) (alias)
 	branch di_140 != 0x0000 l0800_1CEA
 // DataOut:
 // DataOut (flags):
@@ -6907,7 +6902,7 @@ l0800_1CD9:
 	word16 ax_402 = SLICE(ax_si_582, word16, 16)
 	byte dl_410 = SLICE(dx_ax_397, byte, 16) + SLICE(dx_ax_397, byte, 24) + (ax_402 <u 0x0000)
 	cx = SLICE(dx_ax_388, word16, 16)
-	si_138 = (word16) ax_si_582
+	si_138 = SLICE(ax_si_582, word16, 0) (alias)
 	ax_199 = SLICE(dx_ax_388, word16, 0)
 	di_140 = ax_402
 	dx = SEQ(SLICE(dx_ax_397, byte, 24), dl_410) (alias)

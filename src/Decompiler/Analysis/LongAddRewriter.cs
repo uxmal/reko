@@ -133,10 +133,9 @@ namespace Reko.Analysis
             this.dst = CreateCandidate(loCandidate.Dst, hiCandidate.Dst, totalSize);
             var stmts = hiCandidate.Statement.Block.Statements;
             var linAddr = hiCandidate.Statement.LinearAddress;
-            var iStm = stmts.IndexOf(hiCandidate.Statement);
-
+            var iStm = FindInsertPosition(loCandidate, hiCandidate, stmts);
             Statement stmMkLeft = null;
-            if (!(left is MkSequence))
+            if (left is Identifier)
             {
                 stmMkLeft = stmts.Insert(
                     iStm++,
@@ -146,7 +145,7 @@ namespace Reko.Analysis
             }
 
             Statement stmMkRight = null;
-            if (!(right is MkSequence))
+            if (right is Identifier)
             {
                 stmMkRight = stmts.Insert(
                     iStm++,
@@ -184,8 +183,8 @@ namespace Reko.Analysis
             var sidDstLo = GetSsaIdentifierOf(loCandidate.Dst);
             if (sidDstLo != null)
             {
-                var cast = new Cast(loCandidate.Dst.DataType, dst);
-                var stmCastLo = stmts.Insert(iStm++, linAddr, new Assignment(
+                var cast = new Slice(loCandidate.Dst.DataType, dst, 0);
+                var stmCastLo = stmts.Insert(iStm++, linAddr, new AliasAssignment(
                     sidDstLo.Identifier, cast));
                 var stmDeadLo = sidDstLo.DefStatement;
                 sidDstLo.DefExpression = cast;
@@ -193,7 +192,7 @@ namespace Reko.Analysis
 
                 var sidDstHi = GetSsaIdentifierOf(hiCandidate.Dst);
                 var slice = new Slice(hiCandidate.Dst.DataType, dst, loCandidate.Dst.DataType.BitSize);
-                var stmSliceHi = stmts.Insert(iStm++, linAddr, new Assignment(
+                var stmSliceHi = stmts.Insert(iStm++, linAddr, new AliasAssignment(
                     sidDstHi.Identifier, slice));
                 var stmDeadHi = sidDstHi.DefStatement;
                 sidDstHi.DefExpression = slice;
@@ -210,6 +209,25 @@ namespace Reko.Analysis
                 ssa.DeleteStatement(stmDeadLo);
                 ssa.DeleteStatement(stmDeadHi);
             }
+        }
+
+        /// <summary>
+        /// Find a statement index appropriate for insert the new
+        /// long addition statements.
+        /// </summary>
+        /// <returns></returns>
+        private int FindInsertPosition(AddSubCandidate loCandidate, AddSubCandidate hiCandidate, StatementList stmts)
+        {
+            int iStm = stmts.IndexOf(hiCandidate.Statement);
+            if (loCandidate.Dst is Identifier idLow)
+            {
+                int iFirstLowUsage = ssa.Identifiers[idLow].Uses
+                    .Select(u => stmts.IndexOf(u))
+                    .Where(i => i >= 0)
+                    .Min();
+                iStm = Math.Min(iStm, iFirstLowUsage);
+            }
+            return iStm;
         }
 
         private Expression ReplaceDstWithSsaIdentifier(Expression dst, BinaryExpression src, Statement stmLong)
@@ -255,6 +273,10 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Look for add/adc or sub/sbc pairs that look like long additions
+        /// by scanning the statements from the beginning of the block to the end.
+        /// </summary>
         public void ReplaceLongAdditions(Block block)
         {
             var stmtsOrig = block.Statements.ToList();
@@ -266,7 +288,6 @@ namespace Reko.Analysis
                 var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst);
                 if (cond == null)
                     continue;
-
                 var hiInstr = FindUsingInstruction(cond.FlagGroup, loInstr);
                 if (hiInstr == null)
                     continue;
@@ -356,23 +377,17 @@ namespace Reko.Analysis
 
         private Expression CreateCandidate(Expression expLo, Expression expHi, DataType totalSize)
         {
-            var idLo = expLo as Identifier;
-            var idHi = expHi as Identifier;
-            if (idLo != null && idHi != null)
+            if (expLo is Identifier idLo && expHi is Identifier idHi)
             {
                 return ssa.Procedure.Frame.EnsureSequence(totalSize, idHi.Storage, idLo.Storage);
             }
-            var memDstLo = expLo as MemoryAccess;
-            var memDstHi = expHi as MemoryAccess;
-            if (memDstLo != null && memDstHi != null && MemoryOperandsAdjacent(memDstLo, memDstHi))
+            if (expLo is MemoryAccess memDstLo && expHi is MemoryAccess memDstHi && MemoryOperandsAdjacent(memDstLo, memDstHi))
             {
                 return CreateMemoryAccess(memDstLo, totalSize);
             }
-            var immLo = expLo as Constant;
-            var immHi = expHi as Constant;
-            if (immLo != null && immHi != null)
+            if (expLo is Constant immLo && expHi is Constant immHi)
             {
-                return Constant.Create(totalSize, ((ulong)immHi.ToUInt32() << expLo.DataType.BitSize) | immLo.ToUInt32());
+                return Constant.Create(totalSize, (immHi.ToUInt64() << expLo.DataType.BitSize) | immLo.ToUInt32());
             }
             return new MkSequence(totalSize, expHi, expLo);
         }
@@ -399,12 +414,11 @@ namespace Reko.Analysis
 
         public bool MemoryOperandsAdjacent(MemoryAccess m1, MemoryAccess m2)
         {
-            //$TODO: endianness?
             var off1 = GetOffset(m1);
             var off2 = GetOffset(m2);
             if (off1 == null || off2 == null)
                 return false;
-            return off1.ToInt32() + m1.DataType.Size == off2.ToInt32();
+            return ssa.Procedure.Architecture.Endianness.OffsetsAdjacent(off1.ToInt32(), off2.ToInt32(), m1.DataType.Size);
         }
 
         private Constant GetOffset(MemoryAccess access)
@@ -465,30 +479,6 @@ namespace Reko.Analysis
         {
             return (op == Operator.IAdd || op == Operator.ISub);
         }
-
-        public IEnumerable<CarryLinkedInstructions> FindCarryLinkedInstructions(Block block)
-        {
-            for (var i = block.Statements.Count - 1; i >= 0; --i)
-            {
-                //FindUseCarryFlagInAddition(stm);
-                //FindDefOfCarry(stm);
-
-            }
-            yield break;
-        }
-
-        public static void TestCondition()
-        {
-            //LongAddRewriter larw = new LongAddRewriter(this.frame, state);
-            //int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
-            //if (iUse >= 0 && larw.Match(instrCur, instrs[iUse]))
-            //{
-            //    instrs[iUse].code = Opcode.nop;
-            //    larw.EmitInstruction(op, emitter);
-            //    return larw.Dst;
-            //}
-        }
-
     }
 
     public class AddSubCandidate

@@ -29,6 +29,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using Moq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -43,6 +44,7 @@ namespace Reko.UnitTests.Analysis
         private Identifier bx;
         private Identifier cx;
         private Identifier dx;
+        private Identifier es;
         private Identifier SCZ;
         private Identifier CF;
         private ProcedureBuilder m;
@@ -69,6 +71,7 @@ namespace Reko.UnitTests.Analysis
             bx = binder.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
             cx = binder.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
             dx = binder.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
+            es = binder.EnsureRegister(new RegisterStorage("es", 14, 0, PrimitiveType.Word16));
             SCZ = binder.EnsureFlagGroup(arch.GetFlagGroup("SCZ"));
             CF = binder.EnsureFlagGroup(arch.GetFlagGroup("C"));
         }
@@ -129,11 +132,12 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(Action<ProcedureBuilder> builder)
         {
             builder(m);
+            var importResolver = new Mock<IImportResolver>();
             var sst = new SsaTransform(
                 program, 
                 m.Procedure,
                 new HashSet<Procedure>(),
-                null,
+                importResolver.Object,
                 new ProgramDataFlow());
             sst.Transform();
             sst.RenameFrameAccesses = true;
@@ -143,6 +147,36 @@ namespace Reko.UnitTests.Analysis
 
             rw = new LongAddRewriter(sst.SsaState);
             this.ssa = sst.SsaState;
+        }
+
+        private void RunTest(string sExp, Action<ProcedureBuilder> builder)
+        {
+            builder(m);
+            var importResolver = new Mock<IImportResolver>();
+            var sst = new SsaTransform(
+                program,
+                m.Procedure,
+                new HashSet<Procedure>(),
+                importResolver.Object,
+                new ProgramDataFlow());
+            sst.Transform();
+            sst.RenameFrameAccesses = true;
+            sst.Transform();
+            sst.AddUsesToExitBlock();
+            sst.RemoveDeadSsaIdentifiers();
+
+            rw = new LongAddRewriter(sst.SsaState);
+            this.ssa = sst.SsaState;
+
+            rw.Transform();
+            var sb = new StringWriter();
+            block.Write(sb);
+            var sActual = sb.ToString();
+            if (sExp != sActual)
+            {
+                Console.WriteLine(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
         }
 
         [Test]
@@ -182,29 +216,18 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void Match_AddRegMem()
-        {
-            RunTest(m =>
-            {
-                m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
-                m.Assign(
-                    dx,
-                    m.IAdd(
-                        m.IAdd(
-                            dx,
-                        m.Mem32(m.IAdd(bx, 0x302))),
-                        CF));
-                block = m.Block;
-                m.Return();
-            });
-            CreateLongInstruction(block.Statements[0], block.Statements[1]);
-            Assert.AreEqual("dx_ax_9 = dx_ax_8 + Mem0[bx + 0x0300:ui32]", block.Statements[2].ToString());
-        }
-
-        [Test]
         public void Larw_Match_AddRecConst()
         {
-            RunTest(m =>
+            var sExp =
+@"l1:
+	dx_ax_6 = SEQ(dx, ax)
+	dx_ax_7 = dx_ax_6 + 0x12345678
+	ax_2 = SLICE(dx_ax_7, word16, 0) (alias)
+	dx_5 = SLICE(dx_ax_7, word16, 16) (alias)
+	C_3 = cond(ax_2)
+	return
+";
+            RunTest(sExp, m =>
             {
                 m.Assign(ax, m.IAdd(ax, 0x5678));
                 m.Assign(CF, m.Cond(ax));
@@ -212,14 +235,21 @@ namespace Reko.UnitTests.Analysis
                 block = m.Block;
                 m.Return();
             });
-            CreateLongInstruction(block.Statements[0], block.Statements[2]);
-            Assert.AreEqual("dx_ax_7 = dx_ax_6 + 0x12345678", block.Statements[3].ToString());
         }
 
         [Test]
         public void Larw_Match_AddConstant()
         {
-            RunTest(m =>
+            var sExp =
+@"l1:
+	dx_ax_6 = SEQ(dx, ax)
+	dx_ax_7 = dx_ax_6 + 0x00000001
+	ax_2 = SLICE(dx_ax_7, word16, 0) (alias)
+	dx_5 = SLICE(dx_ax_7, word16, 16) (alias)
+	C_3 = cond(ax_2)
+	return
+";
+            RunTest(sExp, m =>
             {
                 m.Assign(ax, m.IAdd(ax, 1));
                 m.Assign(CF, m.Cond(ax));
@@ -227,28 +257,6 @@ namespace Reko.UnitTests.Analysis
                 block = m.Block;
                 m.Return();
             });
-            CreateLongInstruction(block.Statements[0], block.Statements[2]);
-            Assert.AreEqual("dx_ax_7 = dx_ax_6 + 0x00000001", block.Statements[3].ToString());
-        }
-
-        [Test]
-        public void Larw_Match_RegMem()
-        {
-            RunTest(m =>
-            {
-                m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
-                m.Assign(
-                    dx,
-                    m.IAdd(
-                        m.IAdd(
-                            dx,
-                        m.Mem16(m.IAdd(bx, 0x302))),
-                        CF));
-                block = m.Block;
-                m.Return();
-            });
-            CreateLongInstruction(block.Statements[0], block.Statements[1]);
-            Assert.AreEqual("dx_ax_9 = dx_ax_8 + Mem0[bx + 0x0300:ui32]", block.Statements[2].ToString());
         }
 
         [Test]
@@ -282,32 +290,25 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Larw_Replace_AddReg()
         {
-            RunTest(m =>
+            var sExp =
+@"l1:
+	dx_ax_9 = SEQ(dx, ax)
+	dx_ax_10 = dx_ax_9 + Mem0[bx + 0x0300:ui32]
+	ax_4 = SLICE(dx_ax_10, word16, 0) (alias)
+	dx_7 = SLICE(dx_ax_10, word16, 16) (alias)
+	C_5 = cond(ax_4)
+	C_8 = cond(dx_7)
+	return
+";
+            RunTest(sExp, m =>
             {
                 m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
                 m.Assign(CF, m.Cond(ax));
-            m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 0x302))), CF));
+                m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 0x302))), CF));
                 m.Assign(CF, m.Cond(dx));
                 block = m.Block;
                 m.Return();
             });
-
-            rw.ReplaceLongAdditions(block);
-
-            //$TODO: remove the C = cond(ax)
-            var sExp = @"l1:
-	C_5 = cond(ax_4)
-	dx_ax_9 = SEQ(dx, ax)
-	Mem0[bx + 0x0300:ui32] = SEQ(Mem0[bx + 0x0302:word16], Mem0[bx + 0x0300:word16])
-	dx_ax_10 = dx_ax_9 + Mem0[bx + 0x0300:ui32]
-	ax_4 = (word16) dx_ax_10
-	dx_7 = SLICE(dx_ax_10, word16, 16)
-	C_8 = cond(dx_7)
-	return
-";
-            var sb = new StringWriter();
-            block.Write(sb);
-            Assert.AreEqual(sExp, sb.ToString());
         }
 
         [Test(Description = "Avoid building long adds if the instructions shouldn't be paired")]
@@ -347,6 +348,43 @@ namespace Reko.UnitTests.Analysis
             var sb = new StringWriter();
             block.Write(sb);
             Assert.AreEqual(sExp, sb.ToString());
+        }
+
+        [Test]
+        public void Larw_InterleavedMemoryAccesses()
+        {
+            var sExp =
+@"l1:
+	ax_2 = Mem0[0x0210:word16]
+	dx_3 = Mem0[0x0212:word16]
+	es_cx_4 = Mem0[0x0214:word32]
+	es_5 = SLICE(es_cx_4, word16, 16) (alias)
+	cx_7 = SLICE(es_cx_4, word16, 0) (alias)
+	bx_6 = es_5
+	dx_ax_14 = SEQ(dx_3, ax_2)
+	bx_cx_15 = SEQ(bx_6, cx_7)
+	dx_ax_16 = dx_ax_14 - bx_cx_15
+	ax_8 = SLICE(dx_ax_16, word16, 0) (alias)
+	dx_12 = SLICE(dx_ax_16, word16, 16) (alias)
+	SCZ_9 = cond(ax_8)
+	C_11 = SLICE(SCZ_9, bool, 2) (alias)
+	Mem10[0x0218:word16] = ax_8
+	Mem13[0x021A:word16] = dx_12
+";
+            RunTest(sExp, m =>
+            {
+                var es_cx = m.Procedure.Frame.EnsureSequence(PrimitiveType.Word32, es.Storage, cx.Storage);
+                m.Assign(ax, m.Mem16(m.Word16(0x210)));
+                m.Assign(dx, m.Mem16(m.Word16(0x212)));
+                m.Assign(es_cx, m.Mem32(m.Word16(0x214)));
+                m.Assign(bx, es);
+                m.Assign(ax, m.ISub(ax, cx));
+                m.Assign(this.SCZ, m.Cond(ax));
+                m.MStore(m.Word16(0x218), ax);
+                m.Assign(dx, m.ISub(m.ISub(dx, bx), this.CF));
+                m.MStore(m.Word16(0x21A), dx);
+                block = m.Block;
+            });
         }
     }
 }

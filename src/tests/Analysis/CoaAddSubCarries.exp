@@ -1,111 +1,90 @@
+fp:fp
+sp_2: orig: sp
+Top_3: orig: Top
+ds:ds
+    def:  def ds
+    uses: Mem14[ds:0x0208:word16] = SLICE(dx_ax_42, word16, 0)
+          Mem15[ds:0x020A:word16] = SLICE(dx_ax_42, word16, 16)
+          Mem24[ds:0x0218:word16] = SLICE(dx_ax_45, word16, 0)
+          Mem27[ds:0x021A:word16] = SLICE(dx_ax_45, word16, 16)
+          Mem39[ds:0x0222:word16] = SLICE(cond(Mem27[ds:0x0220:byte] - 0x30), bool, 1) * 0x0002 + (Mem27[ds:0x0221:byte] >=u 0x3A)
+          dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+          dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+          dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+          dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+          dx_ax_45 = SEQ(Mem15[ds:0x0212:word16], Mem15[ds:0x0210:word16]) - Mem15[ds:0x0214:segptr32]
+          dx_ax_45 = SEQ(Mem15[ds:0x0212:word16], Mem15[ds:0x0210:word16]) - Mem15[ds:0x0214:segptr32]
+          dx_ax_45 = SEQ(Mem15[ds:0x0212:word16], Mem15[ds:0x0210:word16]) - Mem15[ds:0x0214:segptr32]
+          Mem39[ds:0x0222:word16] = SLICE(cond(Mem27[ds:0x0220:byte] - 0x30), bool, 1) * 0x0002 + (Mem27[ds:0x0221:byte] >=u 0x3A)
+          Mem39[ds:0x0222:word16] = SLICE(cond(Mem27[ds:0x0220:byte] - 0x30), bool, 1) * 0x0002 + (Mem27[ds:0x0221:byte] >=u 0x3A)
 Mem0:Mem
     def:  def Mem0
-    uses: dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-          dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-          cx_19 = Mem0[ds:0x0204:word16]
-          dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-fp:Temporary
-ds:Register ds
-    def:  def ds
-    uses: dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-          dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-          cx_19 = Mem0[ds:0x0204:word16]
-          dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-          Mem26[ds:0x0208:word16] = (word16) dx_ax_22
-          Mem27[ds:0x020A:word16] = SLICE(dx_ax_22, word16, 16)
-          dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-          dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-          dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-          Mem39[ds:0x0218:word16] = (word16) dx_ax_35
-          Mem40[ds:0x021A:word16] = SLICE(dx_ax_35, word16, 16)
-          Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
-          Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
-          Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
-ax:Register ax
-dx:Register dx
-cx:Register cx
-bx:Register bx
-bx_cx:Sequence bx:cx
-dx_ax:Sequence dx:ax
-SCZO:Flags
-es:Register es
-es_cx:Sequence es:cx
-cl:Register cl
-v13:Temporary
-C:Flags
-v15:Temporary
+    uses: dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+          dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+          dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+          dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+ax_6: orig: ax
+dx_7: orig: dx
+cx_8: orig: cx
+bx_9: orig: bx
+ax_10: orig: ax
+SCZO_11: orig: SCZO
+C_12: orig: C
+dx_13: orig: dx
+Mem14: orig: Mem0
+    def:  Mem14[ds:0x0208:word16] = SLICE(dx_ax_42, word16, 0)
+Mem15: orig: Mem0
+    def:  Mem15[ds:0x020A:word16] = SLICE(dx_ax_42, word16, 16)
+    uses: dx_ax_45 = SEQ(Mem15[ds:0x0212:word16], Mem15[ds:0x0210:word16]) - Mem15[ds:0x0214:segptr32]
+          dx_ax_45 = SEQ(Mem15[ds:0x0212:word16], Mem15[ds:0x0210:word16]) - Mem15[ds:0x0214:segptr32]
+          dx_ax_45 = SEQ(Mem15[ds:0x0212:word16], Mem15[ds:0x0210:word16]) - Mem15[ds:0x0214:segptr32]
 ax_16: orig: ax
 dx_17: orig: dx
-dx_ax_18: orig: dx_ax
-    uses: dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-cx_19: orig: cx
-    def:  cx_19 = Mem0[ds:0x0204:word16]
-    uses: dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-          dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
+es_cx_18: orig: es_cx
+es_19: orig: es
 bx_20: orig: bx
-bx_cx_21: orig: bx_cx
-    uses: dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-dx_ax_22: orig: dx_ax
-    def:  dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-    uses: Mem26[ds:0x0208:word16] = (word16) dx_ax_22
-          Mem27[ds:0x020A:word16] = SLICE(dx_ax_22, word16, 16)
-ax_23: orig: ax
-    uses: Mem26[ds:0x0208:word16] = (word16) dx_ax_22
-dx_24: orig: dx
-    uses: Mem27[ds:0x020A:word16] = SLICE(dx_ax_22, word16, 16)
-SCZO_25: orig: SCZO
-Mem26: orig: Mem0
-    def:  Mem26[ds:0x0208:word16] = (word16) dx_ax_22
+cx_21: orig: cx
+ax_22: orig: ax
+SCZO_23: orig: SCZO
+Mem24: orig: Mem0
+    def:  Mem24[ds:0x0218:word16] = SLICE(dx_ax_45, word16, 0)
+C_25: orig: C
+dx_26: orig: dx
 Mem27: orig: Mem0
-    def:  Mem27[ds:0x020A:word16] = SLICE(dx_ax_22, word16, 16)
-    uses: dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-          dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-          dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
+    def:  Mem27[ds:0x021A:word16] = SLICE(dx_ax_45, word16, 16)
+    uses: Mem39[ds:0x0222:word16] = SLICE(cond(Mem27[ds:0x0220:byte] - 0x30), bool, 1) * 0x0002 + (Mem27[ds:0x0221:byte] >=u 0x3A)
+          Mem39[ds:0x0222:word16] = SLICE(cond(Mem27[ds:0x0220:byte] - 0x30), bool, 1) * 0x0002 + (Mem27[ds:0x0221:byte] >=u 0x3A)
 ax_28: orig: ax
-dx_29: orig: dx
-dx_ax_30: orig: dx_ax
-    uses: dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-es_cx_31: orig: es_cx
-es_32: orig: es
-bx_33: orig: bx
-bx_cx_34: orig: bx_cx
-    uses: dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-dx_ax_35: orig: dx_ax
-    def:  dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-    uses: Mem39[ds:0x0218:word16] = (word16) dx_ax_35
-          Mem40[ds:0x021A:word16] = SLICE(dx_ax_35, word16, 16)
-ax_36: orig: ax
-    uses: Mem39[ds:0x0218:word16] = (word16) dx_ax_35
-dx_37: orig: dx
-    uses: Mem40[ds:0x021A:word16] = SLICE(dx_ax_35, word16, 16)
+cl_29: orig: cl
+SCZO_30: orig: SCZO
+C_31: orig: C
+ax_32: orig: ax
+cl_33: orig: cl
+SCZO_34: orig: SCZO
+C_35: orig: C
+C_36: orig: C
+ax_37: orig: ax
 SCZO_38: orig: SCZO
 Mem39: orig: Mem0
-    def:  Mem39[ds:0x0218:word16] = (word16) dx_ax_35
-Mem40: orig: Mem0
-    def:  Mem40[ds:0x021A:word16] = SLICE(dx_ax_35, word16, 16)
-    uses: Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
-          Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
-ax_41: orig: ax
-cl_42: orig: cl
-SCZO_43: orig: SCZO
-C_44: orig: C
-v13_45: orig: v13
-ax_46: orig: ax
-cl_47: orig: cl
+    def:  Mem39[ds:0x0222:word16] = SLICE(cond(Mem27[ds:0x0220:byte] - 0x30), bool, 1) * 0x0002 + (Mem27[ds:0x0221:byte] >=u 0x3A)
+dx_ax_40: orig: dx_ax
+bx_cx_41: orig: bx_cx
+dx_ax_42: orig: dx_ax
+    def:  dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
+    uses: Mem14[ds:0x0208:word16] = SLICE(dx_ax_42, word16, 0)
+          Mem15[ds:0x020A:word16] = SLICE(dx_ax_42, word16, 16)
+dx_ax_43: orig: dx_ax
+es_cx_44: orig: es_cx
+dx_ax_45: orig: dx_ax
+    def:  dx_ax_45 = SEQ(Mem15[ds:0x0212:word16], Mem15[ds:0x0210:word16]) - Mem15[ds:0x0214:segptr32]
+    uses: Mem24[ds:0x0218:word16] = SLICE(dx_ax_45, word16, 0)
+          Mem27[ds:0x021A:word16] = SLICE(dx_ax_45, word16, 16)
+C_46: orig: C
+ch_47: orig: ch
 cx_48: orig: cx
-bx_cx_49: orig: bx_cx
-es_cx_50: orig: es_cx
-SCZO_51: orig: SCZO
-C_52: orig: C
-C_53: orig: C
-v15_54: orig: v15
-ax_55: orig: ax
-    uses: Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
-dx_ax_56: orig: dx_ax
-SCZO_57: orig: SCZO
-C_58: orig: C
-Mem59: orig: Mem0
-    def:  Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
+O_49: orig: O
+S_50: orig: S
+Z_51: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -115,12 +94,12 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	dx_ax_42 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], Mem0[ds:0x0204:word16])
-	Mem14[ds:0x0208:word16] = (word16) dx_ax_42
+	Mem14[ds:0x0208:word16] = SLICE(dx_ax_42, word16, 0)
 	Mem15[ds:0x020A:word16] = SLICE(dx_ax_42, word16, 16)
-	dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-	Mem39[ds:0x0218:word16] = (word16) dx_ax_35
+	dx_ax_45 = SEQ(Mem15[ds:0x0212:word16], Mem15[ds:0x0210:word16]) - Mem15[ds:0x0214:segptr32]
+	Mem24[ds:0x0218:word16] = SLICE(dx_ax_45, word16, 0)
 	Mem27[ds:0x021A:word16] = SLICE(dx_ax_45, word16, 16)
-	Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (Mem27[ds:0x0221:byte] >=u 0x3A)
+	Mem39[ds:0x0222:word16] = (word16) (Mem27[ds:0x0220:byte] <u 0x30) * 0x0002 + (Mem27[ds:0x0221:byte] >=u 0x3A)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

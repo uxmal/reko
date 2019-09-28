@@ -103,6 +103,15 @@ namespace Reko.Core
         public abstract Slice MakeSlice(DataType dataType, Expression expr, int loOffset);
 
         /// <summary>
+        /// Given two offsets and a size, determines whether the
+        /// offsets are adjacent in memory.
+        /// </summary>
+        /// <param name="oLsb">Possible MSB offset</param>
+        /// <param name="oMsb">Possible LSB offset</param>
+        /// <param name="size">Spacing between offsets</param>
+        public abstract bool OffsetsAdjacent(long oLsb, long oMsb, long size);
+
+        /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
         /// instead of ImageWriter when random access of memory is requored.
         /// </summary>
@@ -155,6 +164,11 @@ namespace Reko.Core
                 return new Slice(dataType, expr, loOffset);
             }
 
+            public override bool OffsetsAdjacent(long oLsb, long oMsb, long size)
+            {
+                return oLsb + size == oMsb;
+            }
+
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
             {
                 return mem.TryReadLe(addr, dt, out value);
@@ -204,6 +218,11 @@ namespace Reko.Core
             public override Slice MakeSlice(DataType dataType, Expression expr, int bitOffset)
             {
                 return new Slice(dataType, expr, expr.DataType.BitSize - (dataType.BitSize + bitOffset));
+            }
+
+            public override bool OffsetsAdjacent(long oLsb, long oMsb, long size)
+            {
+                return oMsb + size == oLsb;
             }
 
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

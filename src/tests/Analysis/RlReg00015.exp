@@ -1,97 +1,53 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	MayUseIn:  ax dx bx ss
-	BypassIn: 
+	BitsUsed:  ax:[0..15] bx:[0..15] dx:[0..15] ss:[0..15]
 	Trashed:  
 	Preserved:
 // fn0C00_0000
-void fn0C00_0000()
-// SymbolicIn: sp:fp
+define fn0C00_0000
 fn0C00_0000_entry:
-// DataOut: ax dx bx ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	def bx
+	def ss
+	def ax
+	def dx
 l0C00_0000:
-	sp = fp
-	sp = fp - 0x0002
-	Mem0[ss:fp - 0x0002:word16] = bx
-	sp = 0x06B4
-	Mem0[ss:0x06B4:word16] = ax
-	sp = 0x06B2
-	Mem0[ss:0x06B2:word16] = dx
-	dx = 0x0800
-	ds = 0x0800
-	dx = 0x0887
-	ax = 0x3D01
-	C = msdos_open_file(ds_dx, al, out ax)
-	bx = ax
-	ds = Mem0[ss:0x06B2:selector]
-	sp = 0x06B4
-	dx = Mem0[ss:0x06B4:word16]
-	sp = 0x06B6
-	si = dx
-// DataOut: dx bx si ss ds
-// DataOut (flags): 
-// SymbolicIn: sp:0x06B6 dx:<invalid> ds:<invalid> ax:<invalid> bx:<invalid> si:<invalid> al:<invalid>
+	Mem8[ss:0x06B6:word16] = bx
+	Mem11[ss:0x06B4:word16] = ax
+	Mem14[ss:0x06B2:word16] = dx
+	msdos_open_file(0800:0887, 0x01, out ax_21)
+	ds_24 = Mem14[ss:0x06B2:selector]
+	dx_26 = Mem14[ss:0x06B4:word16]
+	si_28 = dx_26
 l0C00_0019:
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	SCZO = cond(al - 0x00)
-	branch Test(NE,Z) l0C00_0019
-// DataOut: dx bx si ss ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:0x06B6 dx:<invalid> ds:<invalid> ax:<invalid> bx:<invalid> si:<invalid> al:<invalid>
+	si_30 = PHI((si_28, l0C00_0000), (si_33, l0C00_0019))
+	al_32 = Mem14[ds_24:si_30:byte]
+	si_33 = si_30 + 0x0001
+	branch al_32 != 0x00 l0C00_0019
 l0C00_001E:
-	cx = si
-	cx = cx - dx
-	SCZO = cond(cx)
-	cx = cx - 0x0001
-	SZO = cond(cx)
-	ah = 0x40
-	C = msdos_write_file(bx, cx, ds_dx, out ax)
-	ax = Mem0[ss:0x06B6:word16]
-	sp = 0x06B8
-	sp = 0x06B6
-	Mem0[ss:0x06B6:word16] = ax
-	ax = 0x0000
-	dx = 0x00FF
-	call fn0C00_0037 (retsize: 2; depth: 2)
-	ax = Mem0[ss:0x06B6:word16]
-	sp = 0x06B8
-	ah = 0x4C
-	msdos_terminate(al)
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn:
+	cx_38 = si_33 - dx_26
+	ds_dx_43 = SEQ(ds_24, dx_26) (alias)
+	msdos_write_file(ax_21, cx_38 - 0x0001, ds_dx_43, out ax_44)
+	ax_48 = Mem14[ss:0x06B6:word16]
+	Mem51[ss:0x06B6:word16] = ax_48
+	call fn0C00_0037 (retsize: 2;)
+		uses: ax:0x0000,ds:ds_24,dx:0x00FF
+	ax_54 = Mem51[ss:0x06B6:word16]
+	al_57 = SLICE(ax_54, byte, 0) (alias)
+	msdos_terminate(al_57)
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0037 /////////////////////
-	LiveOut:   ss
-	MayUseIn:  ax dx ds
-	BypassIn: 
-	Trashed:  
+	LiveOut:  
+	BitsUsed:  ax:[0..15] ds:[0..15] dx:[0..15]
+	Trashed:   Top
 	Preserved: sp
 // fn0C00_0037
-void fn0C00_0037()
-// SymbolicIn: sp:fp
+define fn0C00_0037
 fn0C00_0037_entry:
-// DataOut: ax dx ss ds
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	def ax
+	def ds
+	def dx
 l0C00_0037:
-	Mem0[ds:0x0300:word16] = ax
-	Mem0[ds:0x0302:word16] = dx
+	Mem6[ds:0x0300:word16] = ax
+	Mem8[ds:0x0302:word16] = dx
 	return
-// DataOut: ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
 fn0C00_0037_exit:
-// DataOut: ss
-// DataOut (flags):

@@ -5,7 +5,7 @@ r2:r2
     def:  def r2
     uses: r4_r2_12 = SEQ(r4, r2)
 r1_3: orig: r1
-    def:  r1_3 = (word32) r3_r1_13
+    def:  r1_3 = SLICE(r3_r1_13, word32, 0) (alias)
     uses: Mem9[0x00444400:word32] = r1_3
 SZC_4: orig: SZC
 r3:r3
@@ -16,7 +16,7 @@ r4:r4
     uses: r4_r2_12 = SEQ(r4, r2)
 C_7: orig: C
 r3_8: orig: r3
-    def:  r3_8 = SLICE(r3_r1_13, word32, 32)
+    def:  r3_8 = SLICE(r3_r1_13, word32, 32) (alias)
     uses: Mem10[0x00444404:word32] = r3_8
 Mem9: orig: Mem0
     def:  Mem9[0x00444400:word32] = r1_3
@@ -30,8 +30,8 @@ r4_r2_12: orig: r4_r2
     uses: r3_r1_13 = r3_r1_11 + r4_r2_12
 r3_r1_13: orig: r3_r1
     def:  r3_r1_13 = r3_r1_11 + r4_r2_12
-    uses: r1_3 = (word32) r3_r1_13
-          r3_8 = SLICE(r3_r1_13, word32, 32)
+    uses: r1_3 = SLICE(r3_r1_13, word32, 0) (alias)
+          r3_8 = SLICE(r3_r1_13, word32, 32) (alias)
 // main
 // Return size: 0
 define main
@@ -45,8 +45,8 @@ l1:
 	r3_r1_11 = SEQ(r3, r1)
 	r4_r2_12 = SEQ(r4, r2)
 	r3_r1_13 = r3_r1_11 + r4_r2_12
-	r1_3 = (word32) r3_r1_13
-	r3_8 = SLICE(r3_r1_13, word32, 32)
+	r1_3 = SLICE(r3_r1_13, word32, 0) (alias)
+	r3_8 = SLICE(r3_r1_13, word32, 32) (alias)
 	Mem9[0x00444400:word32] = r1_3
 	Mem10[0x00444404:word32] = r3_8
 	return

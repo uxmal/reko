@@ -576,25 +576,15 @@ ci16 fn0800-065B(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 // 0800:06A2: void _fseek(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack ui32 dwArg04, Stack word16 wArg08)
 void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, ui32 dwArg04, word16 wArg08)
 {
-	ui16 wArg06 = SLICE(dwArg04, word16, 16);
 	if (_fflush(ds, wArg02) == 0x00)
 	{
-		ui32 dwArg04_n = dwArg04;
-		if (wArg08 == 0x01)
-		{
-			dwArg04_n = dwArg04;
-			if ((ds->*wArg02).w0000 > 0x00)
-			{
-				ui32 v16_v14_n = SEQ(wArg06, v14_n) - (int32) fn0800-065B(ds, wArg02);
-				uint16 v14_n = (word16) v16_v14_n;
-				dwArg04_n = v16_v14_n;
-			}
-		}
+		if (wArg08 == 0x01 && (ds->*wArg02).w0000 > 0x00)
+			dwArg04 -= (int32) fn0800-065B(ds, wArg02);
 		(ds->*wArg02).w0002 &= ~0x01A0;
 		(ds->*wArg02).w0000 = 0x00;
 		(ds->*wArg02).t000A = (ds->*wArg02).t0008;
 		word16 dx_n;
-		word16 ax_n = _lseek(ds, (int16) (ds->*wArg02).b0004, dwArg04_n, (byte) wArg08, out dx_n);
+		word16 ax_n = _lseek(ds, (int16) (ds->*wArg02).b0004, dwArg04, (byte) wArg08, out dx_n);
 		if (dx_n != ~0x00 || ax_n != ~0x00)
 			;
 	}

@@ -2098,21 +2098,16 @@ l0800_0B47:
 	word16 di_165
 	word16 si_270
 	fn0800_B2EF(ax_52, dx_74, bx_124, ds, SEQ(ds, 0x0827), out si_270, out di_165)
-	word16 ax_173 = Mem160[ds:0x2A09:word16]
-	word16 dx_174 = Mem160[ds:0x2A07:word16]
-	Mem176[ds:0x29F3:word16] = v30_175
-	ui32 v31_v30_200 = SEQ(Mem176[ds:0x29F5:word16], Mem160[ds:0x29F3:word16]) + SEQ(ax_173, dx_174)
+	ui32 v31_v30_200 = SEQ(Mem176[ds:0x29F5:word16], Mem160[ds:0x29F3:word16]) + SEQ(Mem160[ds:0x2A09:word16], Mem160[ds:0x2A07:word16])
+	Mem176[ds:0x29F3:word16] = SLICE(v31_v30_200, word16, 0)
 	Mem180[ds:0x29F5:word16] = SLICE(v31_v30_200, word16, 16)
-	word16 ax_181 = Mem180[ds:0x2A05:word16]
 	word16 dx_182 = Mem180[ds:0x2A03:word16]
-	Mem184[ds:0x29EF:word16] = v32_183
-	ui32 v33_v32_202 = SEQ(Mem184[ds:0x29F1:word16], Mem180[ds:0x29EF:word16]) + SEQ(ax_181, dx_182)
+	ui32 v33_v32_202 = SEQ(Mem184[ds:0x29F1:word16], Mem180[ds:0x29EF:word16]) + SEQ(Mem180[ds:0x2A05:word16], dx_182)
+	Mem184[ds:0x29EF:word16] = SLICE(v33_v32_202, word16, 0)
 	Mem188[ds:0x29F1:word16] = SLICE(v33_v32_202, word16, 16)
 	Mem191[ds:0x2A13:word16] = Mem188[ds:0x2A13:word16] + 0x0001
 	dxOut = dx_182
 	diOut = di_165
-	word16 v30_175 = (word16) v31_v30_200
-	word16 v32_183 = (word16) v33_v32_202
 	return ax_52
 // DataOut:
 // DataOut (flags):
@@ -2155,8 +2150,8 @@ l0800_0B84:
 // SymbolicIn:
 
 l0800_0B8C:
+	ui32 dwArg06_158 = dwArg06
 	word32 dwArg02_204 = dwArg02
-	ui32 dwArg06_208 = dwArg06
 	branch wArg04 >u wArg08 l0800_0BCE
 // DataOut:
 // DataOut (flags):
@@ -2170,19 +2165,18 @@ l0800_0B97:
 
 l0800_0B99:
 	dwArg02_204 = dwArg02 (alias)
-	dwArg06_208 = dwArg06 (alias)
 	branch wArg02 >u wArg06 l0800_0BCE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_0BCE:
-	ui32 ax_dx_148 = dwArg02_204 - dwArg06_208
-	word16 wArg06_159 = SLICE(dwArg06_208, word16, 0)
-	word16 wArg08_158 = SLICE(dwArg06_208, word16, 16)
+	ui32 ax_dx_148 = dwArg02_204 - dwArg06_158
+	word16 wArg08_164 = SLICE(dwArg06_158, word16, 16)
+	word16 wArg06_166 = SLICE(dwArg06_158, word16, 0)
 	word16 wArg02_157 = SLICE(dwArg02_204, word16, 0)
 	word16 wArg04_156 = SLICE(dwArg02_204, word16, 16)
-	word16 dx_31 = (word16) ax_dx_148
+	word16 dx_31 = SLICE(ax_dx_148, word16, 0)
 	word16 ax_34 = SLICE(ax_dx_148, word16, 16)
 	branch ax_34 >u 0x0006 l0800_0BA2
 // DataOut:
@@ -2208,21 +2202,23 @@ l0800_0BA2:
 	Mem54[ss:sp_46 - 4:word16] = wArg04_156
 	Mem57[ss:sp_46 - 6:word16] = wArg02_157
 	word16 dx_61
-	word16 cx_214
-	word16 bx_215
-	word16 ax_58 = fn0800_8BC2(Mem57[ss:sp_46 - 6:word32], Mem57[ss:sp_46 - 2:word16], Mem57[ss:sp_46:word16], out cx_214, out dx_61, out bx_215)
+	word16 cx_210
+	word16 bx_211
+	word16 ax_58 = fn0800_8BC2(Mem57[ss:sp_46 - 6:word32], Mem57[ss:sp_46 - 2:word16], Mem57[ss:sp_46:word16], out cx_210, out dx_61, out bx_211)
 	word16 sp_62 = <invalid>
 	Mem75[ss:sp_62 + 0x0006:word16] = 0x0000
 	Mem77[ss:sp_62 + 0x0004:word16] = 0x000A
-	Mem80[ss:sp_62 + 0x0002:word16] = wArg08_158
-	Mem83[ss:sp_62:word16] = wArg06_159
+	Mem80[ss:sp_62 + 0x0002:word16] = wArg08_164
+	Mem83[ss:sp_62:word16] = wArg06_166
+	word16 cx_212
+	word16 dx_213
+	word16 bx_214
+	fn0800_8BC2(Mem83[ss:sp_62:word32], Mem83[ss:sp_62 + 4:word16], Mem83[ss:sp_62 + 6:word16], out cx_212, out dx_213, out bx_214)
 	word16 sp_88 = <invalid>
+	word32 dx_ax_208 = <invalid>
 	sp_4 = sp_88 + 0x0008
+	dwArg06_158 = dx_ax_208 (alias)
 	dwArg02_204 = SEQ(dx_61, ax_58) (alias)
-	word16 dx_87
-	word16 cx_216
-	word16 bx_217
-	dwArg06_208 = SEQ(dx_87, fn0800_8BC2(Mem83[ss:sp_62:word32], Mem83[ss:sp_62 + 4:word16], Mem83[ss:sp_62 + 6:word16], out cx_216, out dx_87, out bx_217)) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2231,16 +2227,16 @@ l0800_0BE7:
 	word16 sp_101 = sp_4 - 2
 	Mem102[ss:sp_101:word16] = wArg04_156
 	Mem105[ss:sp_101 - 2:word16] = wArg02_157
-	ui32 cx_bx_150 = dwArg02_204 - dwArg06_208
+	ui32 cx_bx_150 = dwArg02_204 - dwArg06_158
 	word16 dx_117
-	byte ch_218
-	word16 ax_116 = fn0800_8F18(0x2710, SLICE(cx_bx_150, word16, 16), 0x0000, (word16) cx_bx_150, out ch_218, out dx_117)
+	byte ch_215
+	word16 ax_116 = fn0800_8F18(0x2710, SLICE(cx_bx_150, word16, 16), 0x0000, SLICE(cx_bx_150, word16, 0), out ch_215, out dx_117)
 	Mem124[ss:sp_101 - 4:word16] = dx_117
 	Mem126[ss:sp_101 - 6:word16] = ax_116
-	word16 cx_219
-	word16 dx_220
-	word16 bx_221
-	return fn0800_8BC2(Mem126[ss:sp_101 - 6:word32], Mem126[ss:sp_101 - 2:word16], Mem126[ss:sp_101:word16], out cx_219, out dx_220, out bx_221)
+	word16 cx_216
+	word16 dx_217
+	word16 bx_218
+	return fn0800_8BC2(Mem126[ss:sp_101 - 6:word32], Mem126[ss:sp_101 - 2:word16], Mem126[ss:sp_101:word16], out cx_216, out dx_217, out bx_218)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6861,7 +6857,7 @@ l0800_249F:
 	word16 bp_382
 	selector ds_386
 	word16 si_389
-	byte ch_565 = SLICE((uint16) (uint8) fn0800_3C99(si_26, di_280, ds_24, SEQ(Mem354[ds_24:0x29D1:word16], Mem357[ds_24:0x29CF:word16]), (word16) ax_dx_455, SLICE(ax_dx_455, word16, 16), out bp_382, out si_389, out ds_386), byte, 8)
+	byte ch_565 = SLICE((uint16) (uint8) fn0800_3C99(si_26, di_280, ds_24, SEQ(Mem354[ds_24:0x29D1:word16], Mem357[ds_24:0x29CF:word16]), SLICE(ax_dx_455, word16, 0), SLICE(ax_dx_455, word16, 16), out bp_382, out si_389, out ds_386), byte, 8)
 	word16 sp_390 = <invalid>
 	Mem400[ss:sp_390 + 0x000A:word16] = Mem360[ss:bp_382 - 0x0002:word16]
 	Mem403[ss:sp_390 + 0x0008:word16] = Mem400[ss:bp_382 - 0x0004:word16]
@@ -7236,14 +7232,14 @@ l0800_2688:
 	word16 sp_106 = fp - 0x0012
 	word16 dx_23 = Mem7[ds:0x2E53:word16]
 	word16 bx_24 = SLICE(es_bx_11, word16, 0) + (((uint16) ((uint8) Mem7[es_bx_11 + 0x0004:byte]) << 0x08) + (uint16) ((uint8) Mem7[es_bx_11 + 0x0005:byte]))
-	segptr32 ptrLoc06_411 = SEQ(Mem26[ds:0x2E53:word16], Mem26[ds:0x2E51:word16] + 0x0008)
+	segptr32 ptrLoc06_400 = SEQ(Mem26[ds:0x2E53:word16], Mem26[ds:0x2E51:word16] + 0x0008)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_27B3:
-	word16 wLoc06_264 = SLICE(ptrLoc06_411, word16, 0)
-	word16 wLoc04_263 = SLICE(ptrLoc06_411, word16, 16)
+	word16 wLoc06_264 = SLICE(ptrLoc06_400, word16, 0)
+	word16 wLoc04_263 = SLICE(ptrLoc06_400, word16, 16)
 	branch wLoc04_263 == dx_23 l0800_27C1
 // DataOut:
 // DataOut (flags):
@@ -7262,10 +7258,9 @@ l0800_27C9:
 // SymbolicIn:
 
 l0800_27D1:
-	Mem51[ds:0x45A6:word16] = v22_50
 	ui32 v23_v22_251 = SEQ(Mem51[ds:0x45A8:word16], Mem35[ds:0x45A6:word16]) + dwArg02
+	Mem51[ds:0x45A6:word16] = SLICE(v23_v22_251, word16, 0)
 	Mem55[ds:0x45A8:word16] = SLICE(v23_v22_251, word16, 16)
-	word16 v22_50 = (word16) v23_v22_251
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7298,11 +7293,11 @@ l0800_26C3:
 // SymbolicIn:
 
 l0800_26D3:
-	ptrLoc06_278 = SEQ(wLoc04_341, wLoc06_279 + 0x0001) (alias)
-	word16 wLoc06_279 = SLICE(ptrLoc06_418, word16, 0)
-	word16 wLoc04_341 = SLICE(ptrLoc06_418, word16, 16)
-	ptrLoc06_418 = ptrLoc06_278
-	branch Mem78[ptrLoc06_418:byte] != 0x00 l0800_26D3
+	ptrLoc06_278 = SEQ(wLoc04_333, wLoc06_279 + 0x0001) (alias)
+	word16 wLoc06_279 = SLICE(ptrLoc06_406, word16, 0)
+	word16 wLoc04_333 = SLICE(ptrLoc06_406, word16, 16)
+	ptrLoc06_406 = ptrLoc06_278
+	branch Mem78[ptrLoc06_406:byte] != 0x00 l0800_26D3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7313,8 +7308,9 @@ l0800_26DF:
 // SymbolicIn:
 
 l0800_277D:
+	byte bArg02_303 = SLICE(dwArg02, byte, 0)
 	word16 wLoc06_282 = SLICE(ptrLoc06_278, word16, 0)
-	word16 wLoc04_317 = SLICE(ptrLoc06_278, word16, 16)
+	word16 wLoc04_307 = SLICE(ptrLoc06_278, word16, 16)
 	branch Mem85[ptrLoc06_278:byte] == 0x00 l0800_2789
 // DataOut:
 // DataOut (flags):
@@ -7322,11 +7318,11 @@ l0800_277D:
 
 l0800_2789:
 	word16 ax_96 = wLoc06_282 + 0x0001 - Mem92[ds:0x2E51:word16]
-	word16 dx_415
-	Mem115[ptrLoc06_411:byte] = SLICE(fn0800_8C8A(ax_96, 0x08, 0x0000 - (ax_96 <u 0x0000), out dx_415), byte, 0)
-	Mem124[ptrLoc06_411 + 0x0001:byte] = SLICE(wLoc06_282 + 0x0001 - Mem115[ds:0x2E51:word16], byte, 0)
+	word16 dx_403
+	Mem115[ptrLoc06_400:byte] = SLICE(fn0800_8C8A(ax_96, 0x08, 0x0000 - (ax_96 <u 0x0000), out dx_403), byte, 0)
+	Mem124[ptrLoc06_400 + 0x0001:byte] = SLICE(wLoc06_282 + 0x0001 - Mem115[ds:0x2E51:word16], byte, 0)
 	sp_106 = <invalid>
-	ptrLoc06_411 = SEQ(wLoc04_317, wLoc06_282 + 0x0001) (alias)
+	ptrLoc06_400 = SEQ(wLoc04_307, wLoc06_282 + 0x0001) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7337,11 +7333,11 @@ l0800_2786:
 // SymbolicIn:
 
 l0800_26E2:
-	word16 wLoc06_286 = SLICE(ptrLoc06_419, word16, 0)
-	word16 wLoc04_288 = SLICE(ptrLoc06_419, word16, 16)
+	word16 wLoc06_286 = SLICE(ptrLoc06_407, word16, 0)
+	word16 wLoc04_288 = SLICE(ptrLoc06_407, word16, 16)
 	ptrLoc06_278 = SEQ(wLoc04_288, wLoc06_286 + 0x0001) (alias)
-	ptrLoc06_419 = ptrLoc06_278
-	branch Mem130[ptrLoc06_419:byte] != 0x00 l0800_26E2
+	ptrLoc06_407 = ptrLoc06_278
+	branch Mem130[ptrLoc06_407:byte] != 0x00 l0800_26E2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7352,7 +7348,7 @@ l0800_26EE:
 	word16 ax_157 = ((int16) Mem150[ptrLoc06_278 + 0x0002:byte] << 0x08) + (uint16) ((uint8) Mem150[ptrLoc06_278 + 0x0003:byte])
 	sp_106 = sp_149 + 2
 	word16 ax_163 = Mem150[ss:sp_149:word16] + (ax_157 <u 0x0000)
-	byte bLoc12_312 = SLICE(ax_157, byte, 0)
+	byte bLoc12_302 = SLICE(ax_157, byte, 0)
 	branch ax_163 < wArg08 l0800_2779
 // DataOut:
 // DataOut (flags):
@@ -7372,13 +7368,13 @@ l0800_2729:
 
 l0800_272E:
 	int32 dx_ax_182 = (int32) SLICE(SEQ(ax_163, ax_157) + dwArg02, word16, 16)
-	word16 dx_416
-	Mem199[ptrLoc06_278:byte] = SLICE(fn0800_8C8A(SLICE(dx_ax_182, word16, 0), 0x08, SLICE(dx_ax_182, word16, 16), out dx_416), byte, 0)
+	word16 dx_404
+	Mem199[ptrLoc06_278:byte] = SLICE(fn0800_8C8A(SLICE(dx_ax_182, word16, 0), 0x08, SLICE(dx_ax_182, word16, 16), out dx_404), byte, 0)
 	Mem208[ptrLoc06_278 + 0x0001:byte] = SLICE((int32) SLICE(SEQ(ax_163, ax_157) + dwArg02, word16, 16), byte, 0)
 	int32 dx_ax_257 = SEQ(ax_163, ax_157) + dwArg02
-	word16 dx_417
-	Mem230[ptrLoc06_278 + 0x0002:byte] = SLICE(fn0800_8C8A((word16) dx_ax_257, 0x08, SLICE(dx_ax_257, word16, 16), out dx_417), byte, 0)
-	Mem234[ptrLoc06_278 + 0x0003:byte] = bLoc12_312 + SLICE(dwArg02, byte, 0)
+	word16 dx_405
+	Mem230[ptrLoc06_278 + 0x0002:byte] = SLICE(fn0800_8C8A(SLICE(dx_ax_257, word16, 0), 0x08, SLICE(dx_ax_257, word16, 16), out dx_405), byte, 0)
+	Mem234[ptrLoc06_278 + 0x0003:byte] = bLoc12_302 + bArg02_303
 	sp_106 = <invalid>
 // DataOut:
 // DataOut (flags):
@@ -8763,13 +8759,9 @@ l0800_2D55:
 	byte cl_248
 	word16 dx_249
 	si_151 = fn0800_2CCF(ds_114, Mem140[ss:sp_31 - 0x0004:segptr32], Mem140[ss:sp_31:word16], Mem140[ss:sp_31 + 0x0002:word16], out cl_248, out dx_249)
-	word16 ax_152 = Mem140[ss:bp_23 - 0x0006:word16]
-	word16 dx_153 = Mem140[ss:bp_23 - 0x0008:word16]
-	Mem155[ss:bp_23 + 0x0008:word16] = v29_154
-	Mem140[ss:bp_23 + 0x0008:ui32] = SEQ(Mem155[ss:bp_23 + 0x000A:word16], Mem140[ss:bp_23 + 0x0008:word16])
-	ui32 v30_v29_214 = Mem140[ss:bp_23 + 0x0008:ui32] - SEQ(ax_152, dx_153)
+	ui32 v30_v29_214 = Mem140[ss:bp_23 + 0x0008:ui32] - SEQ(Mem140[ss:bp_23 - 0x0006:word16], Mem140[ss:bp_23 - 0x0008:word16])
+	Mem155[ss:bp_23 + 0x0008:word16] = SLICE(v30_v29_214, word16, 0)
 	Mem159[ss:bp_23 + 0x000A:word16] = SLICE(v30_v29_214, word16, 16)
-	word16 v29_154 = (word16) v30_v29_214
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12075,13 +12067,9 @@ l0800_3B6B:
 	Mem150[ss:sp_58 - 0x0006:word16] = Mem147[ss:bp_194 - 0x0002:word16]
 	Mem153[ss:sp_58 - 0x0008:word16] = Mem150[ss:bp_194 - 0x0004:word16]
 	fn0800_4152(ds_126, Mem153[ss:sp_58 - 0x0008:word32], Mem153[ss:sp_58 - 0x0004:word16], Mem153[ss:sp_58 - 0x0002:word16], Mem153[ss:sp_58:word32], out si, out di, out ds_120)
-	word16 ax_167 = Mem153[ss:bp_194 - 0x0006:word16]
-	word16 dx_168 = Mem153[ss:bp_194 - 0x0008:word16]
-	Mem170[ss:bp_194 + 0x000C:word16] = v27_169
-	Mem153[ss:bp_194 + 0x000C:ui32] = SEQ(Mem170[ss:bp_194 + 0x000E:word16], Mem153[ss:bp_194 + 0x000C:word16])
-	ui32 v28_v27_201 = Mem153[ss:bp_194 + 0x000C:ui32] - SEQ(ax_167, dx_168)
+	ui32 v28_v27_201 = Mem153[ss:bp_194 + 0x000C:ui32] - SEQ(Mem153[ss:bp_194 - 0x0006:word16], Mem153[ss:bp_194 - 0x0008:word16])
+	Mem170[ss:bp_194 + 0x000C:word16] = SLICE(v28_v27_201, word16, 0)
 	Mem174[ss:bp_194 + 0x000E:word16] = SLICE(v28_v27_201, word16, 16)
-	word16 v27_169 = (word16) v28_v27_201
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12160,11 +12148,9 @@ l0800_3BC3:
 	Mem147[ss:sp_135 + 0x0008:word16] = Mem144[ds_131:0x29D3:word16]
 	fn0800_BA67(ds_131, Mem147[ss:sp_135 + 0x0008:segptr32])
 	Mem159[ss:sp_135 + 0x000A:word16] = 0x0000
-	ui32 ax_dx_257 = SEQ(Mem159[ss:bp_127 + 0x000A:word16], Mem159[ss:bp_127 + 0x0008:word16])
-	Mem159[ss:bp_127 + 0x000C:ui32] = SEQ(Mem159[ss:bp_127 + 0x000E:word16], Mem159[ss:bp_127 + 0x000C:word16])
-	ui32 ax_dx_258 = ax_dx_257 + Mem159[ss:bp_127 + 0x000C:ui32]
+	ui32 ax_dx_258 = SEQ(Mem159[ss:bp_127 + 0x000A:word16], Mem159[ss:bp_127 + 0x0008:word16]) + Mem159[ss:bp_127 + 0x000C:ui32]
 	Mem168[ss:sp_135 + 0x0008:word16] = SLICE(ax_dx_258, word16, 16)
-	Mem170[ss:sp_135 + 0x0006:word16] = (word16) ax_dx_258
+	Mem170[ss:sp_135 + 0x0006:word16] = SLICE(ax_dx_258, word16, 0)
 	Mem173[ss:sp_135 + 0x0004:word16] = Mem170[ss:bp_127 + 0x0006:word16]
 	Mem176[ss:sp_135 + 0x0002:word16] = Mem173[ss:bp_127 + 0x0004:word16]
 	word16 cx_310
@@ -12274,11 +12260,9 @@ l0800_3CC6:
 	fn0800_3B0A(ds_79, wArg06, wArg08, out dx_486, out bp_136, out si_487, out di_488, out ds_140)
 	word16 sp_144 = <invalid>
 	Mem152[ss:sp_144 + 0x000A:word16] = 0x0000
-	ui32 ax_dx_410 = SEQ(Mem152[ss:bp_136 + 0x000A:word16], Mem152[ss:bp_136 + 0x0008:word16])
-	Mem152[ss:bp_136 + 0x000C:ui32] = SEQ(Mem152[ss:bp_136 + 0x000E:word16], Mem152[ss:bp_136 + 0x000C:word16])
-	ui32 ax_dx_411 = ax_dx_410 + Mem152[ss:bp_136 + 0x000C:ui32]
+	ui32 ax_dx_411 = SEQ(Mem152[ss:bp_136 + 0x000A:word16], Mem152[ss:bp_136 + 0x0008:word16]) + Mem152[ss:bp_136 + 0x000C:ui32]
 	Mem161[ss:sp_144 + 0x0008:word16] = SLICE(ax_dx_411, word16, 16)
-	Mem163[ss:sp_144 + 0x0006:word16] = (word16) ax_dx_411
+	Mem163[ss:sp_144 + 0x0006:word16] = SLICE(ax_dx_411, word16, 0)
 	Mem166[ss:sp_144 + 0x0004:word16] = Mem163[ss:bp_136 + 0x0006:word16]
 	Mem169[ss:sp_144 + 0x0002:word16] = Mem166[ss:bp_136 + 0x0004:word16]
 	word16 cx_489
@@ -12288,12 +12272,10 @@ l0800_3CC6:
 	Mem183[ss:sp_144 + 0x000A:word16] = Mem169[ss:bp_136 + 0x0006:word16]
 	Mem186[ss:sp_144 + 0x0008:word16] = Mem183[ss:bp_136 + 0x0004:word16]
 	fn0800_4194(ds_140, Mem186[ss:sp_144 + 0x0008:word32])
-	ui32 bx_cx_412 = SEQ(Mem186[ss:bp_136 + 0x000A:word16], Mem186[ss:bp_136 + 0x0008:word16])
-	Mem186[ss:bp_136 + 0x000C:ui32] = SEQ(Mem186[ss:bp_136 + 0x000E:word16], Mem186[ss:bp_136 + 0x000C:word16])
 	ui32 dx_ax_476 = <invalid>
-	ui32 dx_ax_416 = dx_ax_476 - (bx_cx_412 + Mem186[ss:bp_136 + 0x000C:ui32])
+	ui32 dx_ax_416 = dx_ax_476 - (SEQ(Mem186[ss:bp_136 + 0x000A:word16], Mem186[ss:bp_136 + 0x0008:word16]) + Mem186[ss:bp_136 + 0x000C:ui32])
 	Mem206[ss:bp_136 + 0x000E:word16] = SLICE(dx_ax_416, word16, 16)
-	word16 ax_201 = (word16) dx_ax_416
+	word16 ax_201 = SLICE(dx_ax_416, word16, 0)
 	Mem207[ss:bp_136 + 0x000C:word16] = ax_201
 	Mem210[ss:sp_144 + 0x000A:word16] = Mem207[ss:bp_136 + 0x000E:word16]
 	Mem212[ss:sp_144 + 0x0008:word16] = ax_201
@@ -13664,11 +13646,9 @@ l0800_4478:
 	word16 ax_133 = SLICE(Mem94[ds:0x4658:word16] *s 0x000C, word16, 0)
 	word16 bx_137 = wArg02_314 + ax_133
 	word16 ax_148 = SLICE(Mem142[ds:0x465A:word16] *s 0x000C, word16, 0)
-	word16 ax_139 = Mem94[psegArg04_313:bx_137 + 0x0002:word16]
-	word16 dx_140 = Mem94[psegArg04_313:bx_137:word16]
+	ui32 v24_v23_248 = SEQ(Mem155[psegArg04_313:bx_151 + 0x0002:word16], Mem146[psegArg04_313:bx_151:word16]) + SEQ(Mem94[psegArg04_313:bx_137 + 0x0002:word16], Mem94[psegArg04_313:bx_137:word16])
 	word16 bx_151 = wArg02_314 + ax_148
-	Mem155[psegArg04_313:bx_151:word16] = v23_154
-	ui32 v24_v23_248 = SEQ(Mem155[psegArg04_313:bx_151 + 0x0002:word16], Mem146[psegArg04_313:bx_151:word16]) + SEQ(ax_139, dx_140)
+	Mem155[psegArg04_313:bx_151:word16] = SLICE(v24_v23_248, word16, 0)
 	Mem161[psegArg04_313:bx_151 + 0x0002:word16] = SLICE(v24_v23_248, word16, 16)
 	word16 bx_163 = wArg02_314 + ax_133
 	Mem164[psegArg04_313:bx_163 + 0x0002:word16] = 0x0000
@@ -13677,7 +13657,6 @@ l0800_4478:
 	Mem170[psegArg04_313:bx_167 + 0x000A:word16] = Mem165[psegArg04_313:bx_167 + 0x000A:word16] + 0x0001
 	word16 cx_134 = ax_133
 	word16 dx_149 = ax_148
-	word16 v23_154 = (word16) v24_v23_248
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13758,10 +13737,9 @@ fn0800_4550_entry:
 
 l0800_4550:
 	word16 sp_114 = fp - 0x0010
-	word16 wLoc04_128 = 0x0000
-	word16 wLoc06_129 = 0x0000
 	word16 wLoc0C_132 = 0x0001
 	word32 dwLoc0A_213 = 0x80000000
+	word32 dwLoc06_216 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13783,6 +13761,8 @@ l0800_4573:
 // SymbolicIn:
 
 l0800_457D:
+	word16 wLoc06_141 = SLICE(dwLoc06_216, word16, 0)
+	word16 wLoc04_140 = SLICE(dwLoc06_216, word16, 16)
 	branch Mem33[psegArg04:si_28 + 0x000A:word16] != wLoc0C_132 l0800_45BA
 // DataOut:
 // DataOut (flags):
@@ -13793,12 +13773,12 @@ l0800_4589:
 	Mem42[ss:sp_41:word16] = wLoc0C_132
 	Mem45[ss:sp_41 - 2:word16] = wLoc08_150
 	Mem48[ss:sp_41 - 4:word16] = wLoc0A_153
-	Mem51[ss:sp_41 - 6:word16] = wLoc04_128
-	Mem54[ss:sp_41 - 8:word16] = wLoc06_129
+	Mem51[ss:sp_41 - 6:word16] = wLoc04_140
+	Mem54[ss:sp_41 - 8:word16] = wLoc06_141
 	word16 dx_58
-	word16 bx_217
-	word16 cx_216
-	word16 ax_55 = fn0800_8BC2(Mem54[ss:sp_41 - 8:word32], Mem54[ss:sp_41 - 4:word16], Mem54[ss:sp_41 - 2:word16], out cx_216, out dx_58, out bx_217)
+	word16 cx_225
+	word16 bx_226
+	word16 ax_55 = fn0800_8BC2(Mem54[ss:sp_41 - 8:word32], Mem54[ss:sp_41 - 4:word16], Mem54[ss:sp_41 - 2:word16], out cx_225, out dx_58, out bx_226)
 	word16 sp_59 = <invalid>
 	Mem66[ss:sp_59 + 0x0006:word16] = dx_58
 	Mem68[ss:sp_59 + 0x0004:word16] = ax_55
@@ -13806,11 +13786,8 @@ l0800_4589:
 	word16 ax_69 = fn0800_45E2(Mem68[ss:sp_59 + 0x0004:word16], Mem68[ss:sp_59 + 0x0006:word16], Mem68[ss:sp_59 + 0x0008:word16], out dx_71)
 	Mem78[psegArg04:si_28 + 0x0008:word16] = dx_71
 	Mem79[psegArg04:si_28 + 0x0006:word16] = ax_69
-	ui32 v21_v20_124 = SEQ(wLoc04_128, v20_82) + dwLoc0A_213
-	word16 v20_82 = (word16) v21_v20_124
 	sp_114 = sp_59 + 0x000A
-	wLoc06_129 = v20_82
-	wLoc04_128 = SLICE(v21_v20_124, word16, 16)
+	dwLoc06_216 = dwLoc06_216 + dwLoc0A_213 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14513,7 +14490,7 @@ l0800_4AC4:
 	ui32 dx_ax_1566 = <invalid>
 	ui32 dx_ax_1405 = dx_ax_1566 - SEQ(Mem1169[ss:bp_1100 - 0x0002:word16], Mem1169[ss:bp_1100 - 0x0004:word16])
 	Mem1184[ss:sp_1108 - 2:word16] = SLICE(dx_ax_1405, word16, 16)
-	Mem1186[ss:sp_1108 - 4:word16] = (word16) dx_ax_1405
+	Mem1186[ss:sp_1108 - 4:word16] = SLICE(dx_ax_1405, word16, 0)
 	Mem1189[ss:sp_1108 - 6:word16] = Mem1186[ds_1104:0x29E1:word16]
 	Mem1192[ss:sp_1108 - 8:word16] = Mem1189[ds_1104:0x29DF:word16]
 	Mem1195[ss:sp_1108 - 10:word16] = Mem1192[ds_1104:0x29E5:word16]
@@ -14899,7 +14876,7 @@ l0800_4CF4:
 	fn0800_ACB3(ds_316, SEQ(Mem353[ds_316:0x29E5:word16], Mem356[ds_316:0x29E3:word16]), 0x00000004, 0x0001, out cx_923, out dx_924, out bx_925)
 	ui32 ax_dx_685 = SEQ(dx_253, ax_210) - SEQ(dx_233, ax_210)
 	word16 ax_267 = SLICE(ax_dx_685, word16, 16)
-	word16 dx_264 = (word16) ax_dx_685
+	word16 dx_264 = SLICE(ax_dx_685, word16, 0)
 	word16 wLoc04_761 = ax_267
 	word16 wLoc06_762 = dx_264
 // DataOut:
@@ -15385,7 +15362,7 @@ l0800_50E6:
 	Mem660[ss:sp_652 - 2:word16] = 0x0000
 	ui32 ax_dx_696 = SEQ(Mem660[ss:bp_644 - 0x0018:word16], Mem660[ss:bp_644 - 0x001A:word16]) + SEQ(Mem660[ss:bp_644 - 0x0010:word16], Mem660[ss:bp_644 - 0x0012:word16])
 	Mem669[ss:sp_652 - 4:word16] = SLICE(ax_dx_696, word16, 16)
-	Mem671[ss:sp_652 - 6:word16] = (word16) ax_dx_696
+	Mem671[ss:sp_652 - 6:word16] = SLICE(ax_dx_696, word16, 0)
 	Mem674[ss:sp_652 - 8:word16] = Mem671[ds_648:0x29E5:word16]
 	Mem677[ss:sp_652 - 10:word16] = Mem674[ds_648:0x29E3:word16]
 	word16 cx_793
@@ -15706,7 +15683,7 @@ l0800_5301:
 	ui32 dx_ax_574 = <invalid>
 	ui32 bx_cx_537 = SEQ(Mem429[ss:sp_18 - 0x0002:word16], Mem429[ss:sp_18:word16]) - dx_ax_574
 	Mem450[ss:sp_18:word16] = SLICE(bx_cx_537, word16, 16)
-	Mem452[ss:sp_18 - 2:word16] = (word16) bx_cx_537
+	Mem452[ss:sp_18 - 2:word16] = SLICE(bx_cx_537, word16, 0)
 	Mem455[ss:sp_18 - 4:word16] = Mem452[ds:0x29E1:word16]
 	Mem458[ss:sp_18 - 6:word16] = Mem455[ds:0x29DF:word16]
 	Mem461[ss:sp_18 - 8:word16] = Mem458[ds:0x29E5:word16]
@@ -16024,7 +16001,7 @@ l0800_557C:
 	Mem451[ss:sp_227 + 0x0002:word16] = 0x0000
 	ui32 ax_dx_553 = SEQ(Mem451[ss:bp_219 - 0x000A:word16], Mem451[ss:bp_219 - 0x000C:word16]) + SEQ(Mem451[ds_435:0x2A05:word16], Mem451[ds_435:0x2A03:word16])
 	Mem460[ss:sp_227:word16] = SLICE(ax_dx_553, word16, 16)
-	Mem462[ss:sp_227 - 0x0002:word16] = (word16) ax_dx_553
+	Mem462[ss:sp_227 - 0x0002:word16] = SLICE(ax_dx_553, word16, 0)
 	Mem465[ss:sp_227 - 0x0004:word16] = Mem462[ds_435:0x29E5:word16]
 	Mem468[ss:sp_227 - 0x0006:word16] = Mem465[ds_435:0x29E3:word16]
 	word16 dx_472
@@ -16298,13 +16275,13 @@ l0800_5688:
 	word16 sp_308 = <invalid>
 	word16 dx_307
 	byte cl_480
-	Mem314[ss:sp_308 - 2:word16] = fn0800_8C69((word16) dx_ax_435, Mem288[ds:0x2E45:byte], SLICE(dx_ax_435, word16, 16), out cl_480, out dx_307)
+	Mem314[ss:sp_308 - 2:word16] = fn0800_8C69(SLICE(dx_ax_435, word16, 0), Mem288[ds:0x2E45:byte], SLICE(dx_ax_435, word16, 16), out cl_480, out dx_307)
 	word16 ax_317 = 0x0001 << Mem314[ds:0x2E45:byte]
 	Mem320[ss:sp_308 - 4:word16] = dx_307
 	int32 dx_ax_321 = (int32) (ax_317 - 0x0001)
 	ui32 ax_dx_438 = SEQ(Mem320[ss:sp_308 - 4:word16], Mem320[ss:sp_308 - 2:word16]) + SEQ(Mem320[ds:0x29FD:word16] & SLICE(dx_ax_321, word16, 16), Mem320[ds:0x29FB:word16] & SLICE(dx_ax_321, word16, 0))
 	Mem337[ds:0x29FD:word16] = SLICE(ax_dx_438, word16, 16)
-	Mem338[ds:0x29FB:word16] = (word16) ax_dx_438
+	Mem338[ds:0x29FB:word16] = SLICE(ax_dx_438, word16, 0)
 	sp_153 = sp_308
 // DataOut:
 // DataOut (flags):
@@ -16941,8 +16918,8 @@ fn0800_5B15_entry:
 
 l0800_5B15:
 	word16 ax_11 = Mem7[ds:0x2E73:word16]
-	byte ah_288 = SLICE(ax_11, byte, 8)
-	ah_288 = SLICE(ax_11, byte, 8) (alias)
+	byte ah_290 = SLICE(ax_11, byte, 8)
+	ah_290 = SLICE(ax_11, byte, 8) (alias)
 	word16 dx_12 = Mem7[ds:0x2E71:word16]
 	branch ax_11 == Mem7[ds:0x2E6F:word16] l0800_5B2E
 // DataOut:
@@ -16956,13 +16933,13 @@ l0800_5B2E:
 // SymbolicIn:
 
 l0800_5B37:
-	ui32 dx_ax_328
+	ui32 dx_ax_330
 	fn0800_4194(ds, SEQ(Mem7[ds:0x29E5:word16], Mem20[ds:0x29E3:word16]))
-	word16 dx_334
-	fn0800_AD2F(ds, SEQ(Mem36[ds:0x29E5:word16], Mem39[ds:0x29E3:word16]), out dx_334)
-	ui32 dx_ax_327 = <invalid>
-	ui32 bx_cx_231 = SEQ(dx_12 + 0xFFFD, ax_11) - dx_ax_327
-	word16 cx_57 = (word16) bx_cx_231
+	word16 dx_336
+	fn0800_AD2F(ds, SEQ(Mem36[ds:0x29E5:word16], Mem39[ds:0x29E3:word16]), out dx_336)
+	ui32 dx_ax_329 = <invalid>
+	ui32 bx_cx_231 = SEQ(dx_12 + 0xFFFD, ax_11) - dx_ax_329
+	word16 cx_57 = SLICE(bx_cx_231, word16, 0)
 	word16 bx_60 = SLICE(bx_cx_231, word16, 16)
 	branch bx_60 <u 0x0000 l0800_5B76
 // DataOut:
@@ -16982,13 +16959,13 @@ l0800_5B69:
 // SymbolicIn:
 
 l0800_5B76:
-	dx_ax_328 = bx_cx_231 (alias)
+	dx_ax_330 = bx_cx_231 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_5B6F:
-	dx_ax_328 = 0x0000FFFD (alias)
+	dx_ax_330 = 0x0000FFFD (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -17000,16 +16977,16 @@ l0800_5B7C:
 	word16 dx_103 = Mem101[ds:0x2E71:word16]
 	Mem104[ds:0x2E6F:word16] = ax_102
 	Mem105[ds:0x2E6D:word16] = dx_103
-	word16 ax_83 = SLICE(dx_ax_328, word16, 0)
+	word16 ax_83 = SLICE(dx_ax_330, word16, 0)
 	selector ds_114
-	word16 di_336
-	word16 si_335
-	fn0800_4110(ds, SEQ(ax_102, dx_103), ax_83, SLICE(dx_ax_328, word16, 16), SEQ(v23_88, v24_94), out si_335, out di_336, out ds_114)
-	ui32 v27_v26_233 = SEQ(bx_60, v26_125) - dx_ax_328
-	word16 v26_125 = (word16) v27_v26_233
+	word16 di_338
+	word16 si_337
+	fn0800_4110(ds, SEQ(ax_102, dx_103), ax_83, SLICE(dx_ax_330, word16, 16), SEQ(v23_88, v24_94), out si_337, out di_338, out ds_114)
+	ui32 v27_v26_233 = bx_cx_231 - dx_ax_330
+	word16 v26_125 = SLICE(v27_v26_233, word16, 0)
 	word16 v27_130 = SLICE(v27_v26_233, word16, 16)
-	word16 wLoc06_257 = v26_125
-	word16 wLoc04_260 = v27_130
+	word16 wLoc06_261 = v26_125
+	word16 wLoc04_262 = v27_130
 	branch Test(ULT,false) l0800_5BCB
 // DataOut:
 // DataOut (flags):
@@ -17028,19 +17005,19 @@ l0800_5BBC:
 // SymbolicIn:
 
 l0800_5BC1:
-	wLoc04_260 = 0x0000
-	wLoc06_257 = 0x0002
+	wLoc04_262 = 0x0000
+	wLoc06_261 = 0x0002
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_5BCB:
-	fn0800_4110(ds_114, SEQ(Mem162[ds_114:0x2E73:word16], Mem162[ds_114:0x2E71:word16] + ax_83), wLoc06_257, wLoc04_260, SEQ(Mem146[ds_114:0x29E5:word16], Mem152[ds_114:0x29E3:word16]), out si, out di, out ds)
-	word16 dx_190 = -wLoc06_257
-	word16 bx_339
-	word16 dx_338
-	word16 cx_337
-	ah_288 = SLICE(fn0800_ACB3(ds, SEQ(Mem197[ds:0x29E5:word16], Mem200[ds:0x29E3:word16]), SEQ(-wLoc04_260 - (dx_190 == 0x0000), dx_190), 0x0001, out cx_337, out dx_338, out bx_339), byte, 8) (alias)
+	fn0800_4110(ds_114, SEQ(Mem162[ds_114:0x2E73:word16], Mem162[ds_114:0x2E71:word16] + ax_83), wLoc06_261, wLoc04_262, SEQ(Mem146[ds_114:0x29E5:word16], Mem152[ds_114:0x29E3:word16]), out si, out di, out ds)
+	word16 dx_190 = -wLoc06_261
+	word16 bx_341
+	word16 dx_340
+	word16 cx_339
+	ah_290 = SLICE(fn0800_ACB3(ds, SEQ(Mem197[ds:0x29E5:word16], Mem200[ds:0x29E3:word16]), SEQ(-wLoc04_262 - (dx_190 == 0x0000), dx_190), 0x0001, out cx_339, out dx_340, out bx_341), byte, 8) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -17058,11 +17035,11 @@ l0800_5B2B:
 l0800_5C0B:
 	ptr32 es_bx_217 = Mem216[ds:0x2E6D:segptr32]
 	Mem219[ds:0x2E6D:word16] = Mem216[ds:0x2E6D:word16] + 0x0001
-	word16 ax_292 = SEQ(ah_288, Mem219[es_bx_217:byte])
+	word16 ax_294 = SEQ(ah_290, Mem219[es_bx_217:byte])
 	siOut = si
 	diOut = di
 	dsOut = ds
-	return ax_292
+	return ax_294
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -17936,11 +17913,10 @@ l0800_6150:
 	selector es_820 = Mem819[ss:bp_1042 - 0x000A:selector]
 	ui32 ax_dx_2179 = SEQ(Mem819[es_820:di_806 + 0x0002:word16], Mem819[es_820:di_806:word16]) - SEQ(Mem819[ss:bp_1042 - 0x000E:word16], Mem819[ss:bp_1042 - 0x0010:word16])
 	Mem828[ss:bp_1042 - 0x0016:word16] = SLICE(ax_dx_2179, word16, 16)
-	Mem829[ss:bp_1042 - 0x0018:word16] = (word16) ax_dx_2179
-	Mem831[ss:bp_1042 - 0x0010:word16] = v101_830
+	Mem829[ss:bp_1042 - 0x0018:word16] = SLICE(ax_dx_2179, word16, 0)
 	ui32 v102_v101_2181 = SEQ(Mem831[ss:bp_1042 - 0x000E:word16], Mem829[ss:bp_1042 - 0x0010:word16]) + ax_dx_2179
+	Mem831[ss:bp_1042 - 0x0010:word16] = SLICE(v102_v101_2181, word16, 0)
 	Mem835[ss:bp_1042 - 0x000E:word16] = SLICE(v102_v101_2181, word16, 16)
-	word16 v101_830 = (word16) v102_v101_2181
 	branch Mem835[ss:bp_1042 - 0x0016:word16] >u 0x0000 l0800_61B9
 // DataOut:
 // DataOut (flags):
@@ -17961,7 +17937,7 @@ l0800_6174:
 l0800_617B:
 	ui32 ax_dx_2177 = SEQ(Mem835[ss:bp_1042 - 0x000E:word16], Mem835[ss:bp_1042 - 0x0010:word16]) - SEQ(Mem835[ss:bp_1042 - 0x0012:word16], Mem835[ss:bp_1042 - 0x0014:word16])
 	word16 ax_849 = SLICE(ax_dx_2177, word16, 16)
-	word16 dx_846 = (word16) ax_dx_2177
+	word16 dx_846 = SLICE(ax_dx_2177, word16, 0)
 	byte ah_877 = SLICE(ax_849, byte, 8)
 	branch ax_849 >u 0x0000 l0800_61B9
 // DataOut:
@@ -18188,7 +18164,7 @@ l0800_6333:
 	word16 di_2523
 	fn0800_40BF(ds_1328, Mem1359[ss:sp_1350 - 2:word16], Mem1359[ss:sp_1350:word32], out dx_2522, out di_2523, out ds_1364)
 	ui32 ax_dx_2173 = SEQ(Mem1359[ss:bp_1137 - 0x0002:word16], Mem1359[ss:bp_1137 - 0x0004:word16]) - SEQ(Mem1359[ds_1364:0x2A05:word16], Mem1359[ds_1364:0x2A03:word16]) + SEQ(Mem1359[ds_1364:0x4E8A:word16], Mem1359[ds_1364:0x4E88:word16])
-	word16 dx_1378 = (word16) ax_dx_2173
+	word16 dx_1378 = SLICE(ax_dx_2173, word16, 0)
 	Mem1386[ss:bp_1137 - 0x0006:word16] = SLICE(ax_dx_2173, word16, 16) + (dx_1378 <u 0x0080)
 	Mem1387[ss:bp_1137 - 0x0008:word16] = dx_1378 + 0x0080
 	branch Mem1387[ds_1364:0x2A1D:word16] == 0x0000 l0800_6398
@@ -18245,7 +18221,7 @@ l0800_63A8:
 	Mem1486[ss:bp_1137 - 0x001E:word16] = dx_1479
 	Mem1487[ss:bp_1137 - 0x0020:word16] = ax_1476
 	ui32 dx_bx_2175 = SEQ(Mem1487[ds_1364:0x2A09:word16], Mem1487[ds_1364:0x2A07:word16]) - SEQ(Mem1487[ss:bp_1137 - 0x0002:word16], Mem1487[ss:bp_1137 - 0x0004:word16])
-	word16 bx_1497 = (word16) dx_bx_2175 - (Mem1487[ss:bp_1137 - 0x0026:word16] << 0x04)
+	word16 bx_1497 = SLICE(dx_bx_2175, word16, 0) - (Mem1487[ss:bp_1137 - 0x0026:word16] << 0x04)
 	Mem1503[ss:sp_1350 + 0x0002:word16] = SLICE(dx_bx_2175, word16, 16) - (bx_1497 <u 0x0000)
 	Mem1505[ss:sp_1350:word16] = bx_1497
 	Mem1508[ss:sp_1350 - 2:word16] = Mem1505[ds_1364:0x29E1:word16]
@@ -18403,18 +18379,15 @@ l0800_656E:
 	word16 cx_1894 = Mem1846[ss:bp_1519 - 0x0020:word16]
 	word16 bx_1889 = Mem1846[ss:bp_1519 - 0x0004:word16] + (Mem1846[ss:bp_1519 - 0x0028:word16] << 0x04)
 	word16 cx_1899 = cx_1894 - 0x0020 + Mem1846[ss:bp_1519 - 0x0008:word16]
-	ui32 dx_bx_2185 = SEQ(Mem1846[ss:bp_1519 - 0x0002:word16] + (bx_1889 <u 0x0000), bx_1889) - SEQ(((Mem1846[ss:bp_1519 - 0x001E:word16] - (cx_1894 <u 0x0020)) + Mem1846[ss:bp_1519 - 0x0006:word16]) + (cx_1899 <u 0x0000), cx_1899)
-	Mem1908[ss:bp_1519 - 0x0008:word16] = v151_1907
-	ui32 v152_v151_2187 = SEQ(Mem1908[ss:bp_1519 - 0x0006:word16], Mem1846[ss:bp_1519 - 0x0008:word16]) + dx_bx_2185
+	ui32 v152_v151_2187 = SEQ(Mem1908[ss:bp_1519 - 0x0006:word16], Mem1846[ss:bp_1519 - 0x0008:word16]) + (SEQ(Mem1846[ss:bp_1519 - 0x0002:word16] + (bx_1889 <u 0x0000), bx_1889) - SEQ(((Mem1846[ss:bp_1519 - 0x001E:word16] - (cx_1894 <u 0x0020)) + Mem1846[ss:bp_1519 - 0x0006:word16]) + (cx_1899 <u 0x0000), cx_1899))
+	Mem1908[ss:bp_1519 - 0x0008:word16] = SLICE(v152_v151_2187, word16, 0)
 	Mem1912[ss:bp_1519 - 0x0006:word16] = SLICE(v152_v151_2187, word16, 16)
-	word16 v151_1907 = (word16) v152_v151_2187
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_659C:
-	0x00000010 = 0x00000010
-	word16 v157_1924 = Mem1918[ss:bp_1519 - 0x0008:word16] + ((word16) (0x00000010 - SEQ(Mem1918[ss:bp_1519 - 0x0006:word16], Mem1918[ss:bp_1519 - 0x0008:word16])) & 0x000F)
+	word16 v157_1924 = Mem1918[ss:bp_1519 - 0x0008:word16] + (SLICE(0x00000010 - SEQ(Mem1918[ss:bp_1519 - 0x0006:word16], Mem1918[ss:bp_1519 - 0x0008:word16]), word16, 0) & 0x000F)
 	Mem1925[ss:bp_1519 - 0x0008:word16] = v157_1924
 	Mem1929[ss:bp_1519 - 0x0006:word16] = Mem1925[ss:bp_1519 - 0x0006:word16] + (v157_1924 <u 0x0000)
 	word16 dx_2582
@@ -18448,7 +18421,7 @@ l0800_65DC:
 	word16 dx_2585
 	fn0800_40BF(ds_1958, Mem1984[ss:sp_1938 - 6:word16], Mem1984[ss:sp_1938 - 4:word32], out dx_2585, out di_2586, out ds_1989)
 	ui32 dx_ax_2189 = SEQ(Mem1984[ss:bp_1519 - 0x0002:word16], Mem1984[ss:bp_1519 - 0x0004:word16]) + SEQ(Mem1984[ds_1989:0x4E8A:word16], Mem1984[ds_1989:0x4E88:word16])
-	word16 ax_1999 = (word16) dx_ax_2189
+	word16 ax_1999 = SLICE(dx_ax_2189, word16, 0)
 	word16 dx_2587
 	word16 ax_2009 = fn0800_8CAA(ax_1999 + 0x0020, 0x04, SLICE(dx_ax_2189, word16, 16) + (ax_1999 <u 0x0020), out dx_2587)
 	Mem2018[ss:bp_1519 - 0x002C:word16] = ax_2009
@@ -18493,7 +18466,7 @@ l0800_663B:
 	word16 di_2591
 	fn0800_40BF(ds_2031, Mem2065[ss:sp_2013 - 6:word16], Mem2065[ss:sp_2013 - 4:word32], out dx_2590, out di_2591, out ds_2070)
 	ui32 dx_bx_2191 = SEQ(Mem2065[ds_2070:0x2A09:word16], Mem2065[ds_2070:0x2A07:word16]) - SEQ(Mem2065[ss:bp_1519 - 0x0002:word16], Mem2065[ss:bp_1519 - 0x0004:word16])
-	word16 bx_2087 = (word16) dx_bx_2191 - (Mem2065[ss:bp_1519 - 0x0026:word16] << 0x04)
+	word16 bx_2087 = SLICE(dx_bx_2191, word16, 0) - (Mem2065[ss:bp_1519 - 0x0026:word16] << 0x04)
 	word16 dx_2090 = SLICE(dx_bx_2191, word16, 16) - (bx_2087 <u 0x0000)
 	branch (bx_2087 | dx_2090) == 0x0000 l0800_6673
 // DataOut:
@@ -18959,7 +18932,7 @@ l0800_6839:
 	word16 dx_276 = Mem259[ds_265:0x2A07:word16]
 	word16 dx_281 = dx_276 - 0x001C - Mem259[ds_265:0x2A03:word16]
 	ui32 ax_dx_805 = SEQ(Mem259[ds_265:0x2A09:word16] - (dx_276 <u 0x001C) - Mem259[ds_265:0x2A05:word16] - (dx_281 <u 0x0000), dx_281) + SEQ(Mem259[ds_265:0x4E8A:word16], Mem259[ds_265:0x4E88:word16])
-	word16 dx_285 = (word16) ax_dx_805
+	word16 dx_285 = SLICE(ax_dx_805, word16, 0)
 	Mem294[ss:bp_261 - 0x0006:word16] = SLICE(ax_dx_805, word16, 16) + (dx_285 <u 0x000E)
 	Mem295[ss:bp_261 - 0x0008:word16] = dx_285 + 0x000E
 	word16 sp_269 = <invalid>
@@ -18986,7 +18959,7 @@ l0800_68F1:
 	word16 di_994
 	fn0800_75EA(ds_312, Mem356[ds_312:0x2A07:word16], Mem353[ds_312:0x2A09:word16], Mem350[ds_312:0x2A07:word16], Mem336[ds_312:0x2A09:word16], out bp_261, out si_368, out di_994, out ds_265)
 	ui32 ax_dx_809 = SEQ(Mem359[ds_265:0x2A09:word16], Mem359[ds_265:0x2A07:word16]) - SEQ(Mem359[ds_265:0x2A05:word16], Mem359[ds_265:0x2A03:word16]) + SEQ(Mem359[ds_265:0x4E8A:word16], Mem359[ds_265:0x4E88:word16])
-	word16 dx_381 = (word16) ax_dx_809
+	word16 dx_381 = SLICE(ax_dx_809, word16, 0)
 	Mem390[ss:bp_261 - 0x0006:word16] = SLICE(ax_dx_809, word16, 16) + (dx_381 <u 0x000E)
 	Mem391[ss:bp_261 - 0x0008:word16] = dx_381 + 0x000E
 	word16 sp_369 = <invalid>
@@ -19052,9 +19025,8 @@ l0800_6988:
 	Mem532[ss:sp_452 - 2:word16] = Mem529[ds_469:0x29DF:word16]
 	selector ds_536
 	word16 di_1001
-	word16 dx_537 = fn0800_3F58(ds_469, Mem532[ss:sp_452 - 2:word32], out di_1001, out ds_536)
-	Mem546[ss:bp_261 - 0x0008:word16] = v60_545
-	ui32 v61_v60_811 = SEQ(Mem546[ss:bp_261 - 0x0006:word16], Mem532[ss:bp_261 - 0x0008:word16]) - SEQ(dx_537, ax_516)
+	ui32 v61_v60_811 = SEQ(Mem546[ss:bp_261 - 0x0006:word16], Mem532[ss:bp_261 - 0x0008:word16]) - SEQ(fn0800_3F58(ds_469, Mem532[ss:sp_452 - 2:word32], out di_1001, out ds_536), ax_516)
+	Mem546[ss:bp_261 - 0x0008:word16] = SLICE(v61_v60_811, word16, 0)
 	Mem550[ss:bp_261 - 0x0006:word16] = SLICE(v61_v60_811, word16, 16)
 	Mem554[ss:sp_452:word16] = Mem550[ds_536:0x29E1:word16]
 	Mem557[ss:sp_452 - 2:word16] = Mem554[ds_536:0x29DF:word16]
@@ -19075,7 +19047,6 @@ l0800_6988:
 	fn0800_ACB3(ds_568, Mem590[ss:sp_452 - 8:segptr32], Mem590[ss:sp_452 - 4:ui32], Mem590[ss:sp_452:word16], out cx_1004, out dx_1005, out bx_1006)
 	Mem604[ss:sp_452:word16] = Mem590[ds_568:0x29E5:word16]
 	Mem607[ss:sp_452 - 2:word16] = Mem604[ds_568:0x29E3:word16]
-	word16 v60_545 = (word16) v61_v60_811
 	word16 cx_1007
 	word16 dx_1008
 	word16 di_1009
@@ -19100,7 +19071,7 @@ l0800_6A1E:
 	word16 di_1015
 	ui32 bx_cx_814 = SEQ(Mem649[ss:sp_452 - 0x0002:word16], Mem649[ss:sp_452:word16]) + SEQ(fn0800_3E5D(ds_631, Mem649[ss:sp_452 - 6:word32], out di_1015, out ds_653), ax_608)
 	Mem670[ss:bp_261 - 0x0002:word16] = SLICE(bx_cx_814, word16, 16)
-	Mem671[ss:bp_261 - 0x0004:word16] = (word16) bx_cx_814
+	Mem671[ss:bp_261 - 0x0004:word16] = SLICE(bx_cx_814, word16, 0)
 	Mem674[ss:sp_452:word16] = Mem671[ds_653:0x29E5:word16]
 	Mem677[ss:sp_452 - 2:word16] = Mem674[ds_653:0x29E3:word16]
 	word16 di_1016
@@ -19108,9 +19079,9 @@ l0800_6A1E:
 	Mem690[ss:bp_261 - 0x000C:word16] = ax_608
 	ui32 ax_dx_816 = SEQ(Mem690[ss:bp_261 - 0x0002:word16], Mem690[ss:bp_261 - 0x0004:word16]) + SEQ(Mem690[ss:bp_261 - 0x000A:word16], Mem690[ss:bp_261 - 0x000C:word16])
 	ui32 bx_cx_818 = SEQ(Mem690[ds_612:0x2A05:word16], Mem690[ds_612:0x2A03:word16]) + SEQ(Mem690[ss:bp_261 - 0x0006:word16], Mem690[ss:bp_261 - 0x0008:word16])
-	word16 dx_693 = (word16) ax_dx_816
+	word16 dx_693 = SLICE(ax_dx_816, word16, 0)
 	word16 ax_696 = SLICE(ax_dx_816, word16, 16)
-	word16 cx_699 = (word16) bx_cx_818
+	word16 cx_699 = SLICE(bx_cx_818, word16, 0)
 	word16 bx_702 = SLICE(bx_cx_818, word16, 16)
 	branch ax_696 <u bx_702 l0800_6AA4
 // DataOut:
@@ -19130,11 +19101,9 @@ l0800_6A7C:
 // SymbolicIn:
 
 l0800_6A80:
-	ui32 ax_dx_825 = SEQ(Mem690[ss:bp_261 - 0x0002:word16], Mem690[ss:bp_261 - 0x0004:word16]) + SEQ(Mem690[ss:bp_261 - 0x000A:word16], Mem690[ss:bp_261 - 0x000C:word16]) - (SEQ(Mem690[ds_612:0x2A05:word16], Mem690[ds_612:0x2A03:word16]) + SEQ(Mem690[ss:bp_261 - 0x0006:word16], Mem690[ss:bp_261 - 0x0008:word16]))
-	Mem729[ss:bp_261 - 0x0008:word16] = v79_728
-	ui32 v80_v79_827 = SEQ(Mem729[ss:bp_261 - 0x0006:word16], Mem690[ss:bp_261 - 0x0008:word16]) + ax_dx_825
+	ui32 v80_v79_827 = SEQ(Mem729[ss:bp_261 - 0x0006:word16], Mem690[ss:bp_261 - 0x0008:word16]) + ((SEQ(Mem690[ss:bp_261 - 0x0002:word16], Mem690[ss:bp_261 - 0x0004:word16]) + SEQ(Mem690[ss:bp_261 - 0x000A:word16], Mem690[ss:bp_261 - 0x000C:word16])) - (SEQ(Mem690[ds_612:0x2A05:word16], Mem690[ds_612:0x2A03:word16]) + SEQ(Mem690[ss:bp_261 - 0x0006:word16], Mem690[ss:bp_261 - 0x0008:word16])))
+	Mem729[ss:bp_261 - 0x0008:word16] = SLICE(v80_v79_827, word16, 0)
 	Mem733[ss:bp_261 - 0x0006:word16] = SLICE(v80_v79_827, word16, 16)
-	word16 v79_728 = (word16) v80_v79_827
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -19315,7 +19284,7 @@ l0800_6B9E:
 	Mem407[ds_381:0x4E8E:word16] = dx_399
 	Mem408[ds_381:0x4E8C:word16] = ax_396
 	ui32 ax_dx_650 = SEQ(dx_274, ax_231) - SEQ(dx_254, ax_231)
-	word16 dx_285 = (word16) ax_dx_650
+	word16 dx_285 = SLICE(ax_dx_650, word16, 0)
 	word16 ax_292 = SLICE(ax_dx_650, word16, 16) + (dx_285 <u 0x0001)
 	word16 wLoc04_727 = ax_292
 	word16 wLoc06_728 = dx_285 + 0x0001
@@ -19670,7 +19639,7 @@ l0800_6FE3:
 	ui32 dx_ax_1199 = dx_ax_1317 - dx_ax_1318
 	word16 dx_248 = SLICE(dx_ax_1199, word16, 16)
 	Mem252[ds_101:0x2A05:word16] = dx_248
-	word16 ax_245 = (word16) dx_ax_1199
+	word16 ax_245 = SLICE(dx_ax_1199, word16, 0)
 	Mem253[ds_101:0x2A03:word16] = ax_245
 	Mem256[ss:sp_92:word16] = Mem253[ds_101:0x29E1:word16]
 	Mem259[ss:sp_92 - 2:word16] = Mem256[ds_101:0x29DF:word16]
@@ -19978,7 +19947,7 @@ l0800_7105:
 l0800_724D:
 	ui32 ax_dx_1201 = SEQ(Mem522[ss:bp_500 - 0x0016:word16], Mem522[ss:bp_500 - 0x0018:word16]) + SEQ(Mem522[ds_270:0x4E8A:word16], Mem522[ds_270:0x4E88:word16])
 	Mem889[ss:bp_500 - 0x0002:word16] = SLICE(ax_dx_1201, word16, 16)
-	Mem890[ss:bp_500 - 0x0004:word16] = (word16) ax_dx_1201
+	Mem890[ss:bp_500 - 0x0004:word16] = SLICE(ax_dx_1201, word16, 0)
 	branch (Mem890[ds_270:0x2A03:word16] & 0x0003) == 0x0000 l0800_7274
 // DataOut:
 // DataOut (flags):
@@ -20422,7 +20391,7 @@ l0800_758F:
 	ui32 dx_ax_523 = <invalid>
 	ui32 bx_cx_502 = SEQ(Mem395[ds:0x2A09:word16], Mem395[ds:0x2A07:word16]) - dx_ax_523
 	Mem414[ss:sp_18:word16] = SLICE(bx_cx_502, word16, 16)
-	Mem416[ss:sp_18 - 2:word16] = (word16) bx_cx_502
+	Mem416[ss:sp_18 - 2:word16] = SLICE(bx_cx_502, word16, 0)
 	Mem419[ss:sp_18 - 4:word16] = Mem416[ds:0x29E1:word16]
 	Mem422[ss:sp_18 - 6:word16] = Mem419[ds:0x29DF:word16]
 	Mem425[ss:sp_18 - 8:word16] = Mem422[ds:0x29E5:word16]
@@ -20795,7 +20764,7 @@ l0800_785E:
 l0800_7877:
 	Mem543[ds_385:0x2E4F:word16] = Mem507[ss:bp_177 - 0x0002:word16]
 	ui32 ax_dx_956 = SEQ(Mem543[ds_385:0x4680:word16], Mem543[ds_385:0x467E:word16]) - SEQ(Mem543[ds_385:0x2A05:word16], Mem543[ds_385:0x2A03:word16])
-	word16 dx_546 = (word16) ax_dx_956
+	word16 dx_546 = SLICE(ax_dx_956, word16, 0)
 	word16 ax_549 = SLICE(ax_dx_956, word16, 16)
 	branch ax_549 >u Mem543[ds_385:0x4E8A:word16] l0800_78B3
 // DataOut:
@@ -20822,11 +20791,9 @@ l0800_78B3:
 // SymbolicIn:
 
 l0800_789A:
-	ui32 ax_dx_958 = SEQ(Mem543[ds_385:0x4680:word16], Mem543[ds_385:0x467E:word16]) - SEQ(Mem543[ds_385:0x2A05:word16], Mem543[ds_385:0x2A03:word16])
-	Mem567[ds_385:0x4E88:word16] = v34_566
-	ui32 v35_v34_960 = SEQ(Mem567[ds_385:0x4E8A:word16], Mem543[ds_385:0x4E88:word16]) - ax_dx_958
+	ui32 v35_v34_960 = SEQ(Mem567[ds_385:0x4E8A:word16], Mem543[ds_385:0x4E88:word16]) - (SEQ(Mem543[ds_385:0x4680:word16], Mem543[ds_385:0x467E:word16]) - SEQ(Mem543[ds_385:0x2A05:word16], Mem543[ds_385:0x2A03:word16]))
+	Mem567[ds_385:0x4E88:word16] = SLICE(v35_v34_960, word16, 0)
 	Mem571[ds_385:0x4E8A:word16] = SLICE(v35_v34_960, word16, 16)
-	word16 v34_566 = (word16) v35_v34_960
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -20853,7 +20820,7 @@ l0800_78D0:
 	int32 dx_ax_1038 = <invalid>
 	int32 dx_ax_962 = dx_ax_1038 - SEQ(Mem599[ds_385:0x4660:word16], Mem599[ds_385:0x465E:word16])
 	Mem614[ds_385:0x2A05:word16] = SLICE(dx_ax_962, word16, 16)
-	Mem615[ds_385:0x2A03:word16] = (word16) dx_ax_962
+	Mem615[ds_385:0x2A03:word16] = SLICE(dx_ax_962, word16, 0)
 	Mem618[ss:sp_185 + 0x0002:word16] = 0x0000
 	word16 dx_620 = Mem618[ds_385:0x465E:word16]
 	Mem627[ss:sp_185:word16] = Mem618[ds_385:0x4660:word16] + (dx_620 <u 0x0008)
@@ -20912,7 +20879,7 @@ l0800_78D0:
 	Mem769[ss:sp_185 + 0x0002:word16] = 0x0000
 	ui32 ax_dx_964 = SEQ(Mem769[ds_761:0x4660:word16], Mem769[ds_761:0x465E:word16]) + SEQ(Mem769[ds_761:0x2A05:word16], Mem769[ds_761:0x2A03:word16])
 	Mem778[ss:sp_185:word16] = SLICE(ax_dx_964, word16, 16)
-	Mem780[ss:sp_185 - 0x0002:word16] = (word16) ax_dx_964
+	Mem780[ss:sp_185 - 0x0002:word16] = SLICE(ax_dx_964, word16, 0)
 	Mem783[ss:sp_185 - 0x0004:word16] = Mem780[ds_761:0x29E1:word16]
 	Mem786[ss:sp_185 - 0x0006:word16] = Mem783[ds_761:0x29DF:word16]
 	word16 cx_1093
@@ -20922,7 +20889,7 @@ l0800_78D0:
 	Mem799[ss:sp_185 + 0x0002:word16] = 0x0000
 	ui32 ax_dx_966 = SEQ(Mem799[ds_761:0x4664:word16], Mem799[ds_761:0x4662:word16]) + SEQ(Mem799[ds_761:0x4680:word16], Mem799[ds_761:0x467E:word16])
 	Mem808[ss:sp_185:word16] = SLICE(ax_dx_966, word16, 16)
-	Mem810[ss:sp_185 - 0x0002:word16] = (word16) ax_dx_966
+	Mem810[ss:sp_185 - 0x0002:word16] = SLICE(ax_dx_966, word16, 0)
 	Mem813[ss:sp_185 - 0x0004:word16] = Mem810[ds_761:0x29E5:word16]
 	Mem816[ss:sp_185 - 0x0006:word16] = Mem813[ds_761:0x29E3:word16]
 	word16 cx_1096
@@ -21846,7 +21813,7 @@ l0800_82AA:
 l0800_8042:
 	word16 dx_94 = 0xFFFF - Mem79[ds:0x2E31:word16]
 	ui32 ax_dx_628 = SEQ(0x0000 - (dx_94 <u 0x0000), dx_94) - SEQ(Mem79[ds:0x4674:word16], Mem79[ds:0x4672:word16])
-	word16 dx_98 = (word16) ax_dx_628
+	word16 dx_98 = SLICE(ax_dx_628, word16, 0)
 	word16 ax_101 = SLICE(ax_dx_628, word16, 16)
 	word16 ax_108 = Mem107[ds:0x4678:word16]
 	word16 dx_109 = Mem107[ds:0x4676:word16]
@@ -21890,11 +21857,11 @@ l0800_807C:
 	word16 si_163
 	word16 di_822
 	fn0800_4110(ds, Mem155[ss:sp_135 - 10:word32], Mem155[ss:sp_135 - 6:word16], Mem155[ss:sp_135 - 4:word16], Mem155[ss:sp_135 - 2:word32], out si_163, out di_822, out ds)
-	Mem172[ds:0x4676:word16] = v27_171
 	ui32 v28_v27_630 = SEQ(Mem172[ds:0x4678:word16], Mem155[ds:0x4676:word16]) - dwLoc06_812
+	Mem172[ds:0x4676:word16] = SLICE(v28_v27_630, word16, 0)
 	Mem176[ds:0x4678:word16] = SLICE(v28_v27_630, word16, 16)
-	Mem178[ds:0x4672:word16] = v29_177
 	ui32 v30_v29_632 = SEQ(Mem178[ds:0x4674:word16], Mem176[ds:0x4672:word16]) + dwLoc06_812
+	Mem178[ds:0x4672:word16] = SLICE(v30_v29_632, word16, 0)
 	Mem182[ds:0x4674:word16] = SLICE(v30_v29_632, word16, 16)
 	word16 ax_183 = Mem182[ds:0x2E6F:word16]
 	word16 dx_185 = Mem182[ds:0x2E6D:word16] + Mem182[ds:0x4672:word16]
@@ -21903,8 +21870,6 @@ l0800_807C:
 	Mem188[ds:0x2E6B:word16] = ax_183
 	Mem189[ds:0x2E69:word16] = dx_185
 	word16 sp_168 = sp_135 + 0x0002
-	word16 v27_171 = (word16) v28_v27_630
-	word16 v29_177 = (word16) v30_v29_632
 	word16 ax_190 = Mem189[ds:0x4670:word16]
 	word16 dx_191 = Mem189[ds:0x466E:word16]
 	branch ax_190 <=u Mem189[ds:0x4674:word16] l0800_80ED
@@ -22197,10 +22162,9 @@ fn0800_7FDC_exit:
 // SymbolicIn:
 
 l0800_8293:
-	Mem614[ds:0x466E:word16] = v36_613
 	ui32 v37_v36_634 = SEQ(Mem614[ds:0x4670:word16], Mem484[ds:0x466E:word16]) - SEQ(dx_450, ax_447)
+	Mem614[ds:0x466E:word16] = SLICE(v37_v36_634, word16, 0)
 	Mem618[ds:0x4670:word16] = SLICE(v37_v36_634, word16, 16)
-	word16 v36_613 = (word16) v37_v36_634
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -22576,7 +22540,7 @@ l0800_84F9:
 
 l0800_84FF:
 	ui32 ax_dx_180 = SEQ(Mem94[ds:0x2A01:word16], Mem94[ds:0x29FF:word16]) - SEQ(Mem94[ds:0x2A05:word16], Mem94[ds:0x2A03:word16])
-	word16 dx_135 = (word16) ax_dx_180
+	word16 dx_135 = SLICE(ax_dx_180, word16, 0)
 	word16 ax_138 = SLICE(ax_dx_180, word16, 16)
 	branch ax_138 <u Mem94[ds:0x4E8A:word16] l0800_8532
 // DataOut:
@@ -22598,7 +22562,7 @@ l0800_8516:
 l0800_851C:
 	ui32 ax_dx_182 = SEQ(Mem94[ds:0x2A01:word16], Mem94[ds:0x29FF:word16]) - SEQ(Mem94[ds:0x2A05:word16], Mem94[ds:0x2A03:word16])
 	Mem153[ds:0x4E8A:word16] = SLICE(ax_dx_182, word16, 16)
-	Mem154[ds:0x4E88:word16] = (word16) ax_dx_182
+	Mem154[ds:0x4E88:word16] = SLICE(ax_dx_182, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -22724,7 +22688,7 @@ l0800_85AE:
 
 l0800_85B4:
 	ui32 ax_dx_165 = SEQ(Mem79[ds:0x2A01:word16], Mem79[ds:0x29FF:word16]) - SEQ(Mem79[ds:0x2A05:word16], Mem79[ds:0x2A03:word16])
-	word16 dx_120 = (word16) ax_dx_165
+	word16 dx_120 = SLICE(ax_dx_165, word16, 0)
 	word16 ax_123 = SLICE(ax_dx_165, word16, 16)
 	branch ax_123 <u Mem79[ds:0x4E8A:word16] l0800_85E7
 // DataOut:
@@ -22746,7 +22710,7 @@ l0800_85CB:
 l0800_85D1:
 	ui32 ax_dx_167 = SEQ(Mem79[ds:0x2A01:word16], Mem79[ds:0x29FF:word16]) - SEQ(Mem79[ds:0x2A05:word16], Mem79[ds:0x2A03:word16])
 	Mem138[ds:0x4E8A:word16] = SLICE(ax_dx_167, word16, 16)
-	Mem139[ds:0x4E88:word16] = (word16) ax_dx_167
+	Mem139[ds:0x4E88:word16] = SLICE(ax_dx_167, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -24579,8 +24543,8 @@ l0800_8C31:
 
 l0800_8C35:
 	ui32 di_si_198 = SEQ(di_111, si_107) - cx_bx_272
-	si_107 = (word16) di_si_198
-	di_111 = SLICE(di_si_198, word16, 16)
+	si_107 = SLICE(di_si_198, word16, 0) (alias)
+	di_111 = SLICE(di_si_198, word16, 16) (alias)
 	ax_100 = ax_100 + 0x0001
 // DataOut:
 // DataOut (flags):
@@ -27546,8 +27510,8 @@ l0800_95AB:
 	ui32 di_si_610 = SEQ(di_147, bx_338) + dx_ax_350
 	ax_211 = SLICE(dx_ax_350, word16, 0) (alias)
 	dx = SLICE(dx_ax_350, word16, 16) (alias)
-	si_145 = (word16) di_si_610
-	di_147 = SLICE(di_si_610, word16, 16)
+	si_145 = SLICE(di_si_610, word16, 0) (alias)
+	di_147 = SLICE(di_si_610, word16, 16) (alias)
 	branch di_147 != 0x0000 l0800_95E5
 // DataOut:
 // DataOut (flags):
@@ -27589,7 +27553,7 @@ l0800_95D4:
 	word16 ax_427 = SLICE(ax_si_613, word16, 16)
 	byte dl_435 = SLICE(dx_ax_422, byte, 16) + SLICE(dx_ax_422, byte, 24) + (ax_427 <u 0x0000)
 	cx = SLICE(dx_ax_413, word16, 16)
-	si_145 = (word16) ax_si_613
+	si_145 = SLICE(ax_si_613, word16, 0) (alias)
 	ax_211 = SLICE(dx_ax_413, word16, 0)
 	di_147 = ax_427
 	dx = SEQ(SLICE(dx_ax_422, byte, 24), dl_435) (alias)
@@ -27788,11 +27752,11 @@ fn0800_9764_exit:
 
 
 
-word16 fn0800_97B6(selector ds, word16 wArg02, ptr16 & dxOut)
+void fn0800_97B6(selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
-// LiveOut: ax dx
+// LiveOut:
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
 fn0800_97B6_entry:
@@ -27802,11 +27766,10 @@ fn0800_97B6_entry:
 
 l0800_97B6:
 	word16 dx_26
-	word16 cx_48
-	word16 bx_49
-	word16 ax_23 = fn0800_8E29(ds, wArg02, 0x00000000, 0x01, out cx_48, out dx_26, out bx_49)
-	dxOut = dx_26
-	return ax_23
+	word16 cx_47
+	word16 bx_48
+	fn0800_8E29(ds, wArg02, 0x00000000, 0x01, out cx_47, out dx_26, out bx_48)
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30391,8 +30354,8 @@ word16 fn0800_A215(selector ds, ui32 dwArg02, ptr16 & dxOut)
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_A215_entry:
-	word16 wArg04 = SLICE(dwArg02, word16, 16)
-	word16 wArg02 = SLICE(dwArg02, word16, 0)
+	word16 wArg04_124 = SLICE(dwArg02, word16, 16)
+	word16 wArg02_126 = SLICE(dwArg02, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30404,7 +30367,7 @@ l0800_A215:
 	word16 dx_19
 	word16 ax_25 = fn0800_8C69(Mem7[ds:0x008D:word16], 0x04, 0x0000, out cl_18, out dx_19) + Mem7[ds:0x008B:word16]
 	ui32 dx_ax_120 = SEQ(dx_19 + (ax_25 <u 0x0000), ax_25) + dwArg02
-	word16 ax_29 = (word16) dx_ax_120
+	word16 ax_29 = SLICE(dx_ax_120, word16, 0)
 	word16 dx_32 = SLICE(dx_ax_120, word16, 16)
 	branch dx_32 < 0x000F l0800_A246
 // DataOut:
@@ -30425,12 +30388,12 @@ l0800_A239:
 
 l0800_A246:
 	word16 dx_48
-	byte ch_170
-	word16 ax_46 = fn0800_8CCB(Mem7[ds:0x008B:word16], wArg04, Mem7[ds:0x008D:word16], wArg02, out ch_170, out dx_48)
+	byte ch_167
+	word16 ax_46 = fn0800_8CCB(Mem7[ds:0x008B:word16], wArg04_124, Mem7[ds:0x008D:word16], wArg02_126, out ch_167, out dx_48)
 	word16 bx_62
 	word16 cx_63
-	word16 dx_171
-	fn0800_8F2F(ax_46, Mem57[ds:0x0089:word16], dx_48, Mem57[ds:0x0087:word16], out cx_63, out dx_171, out bx_62)
+	word16 dx_168
+	fn0800_8F2F(ax_46, Mem57[ds:0x0089:word16], dx_48, Mem57[ds:0x0087:word16], out cx_63, out dx_168, out bx_62)
 	word16 sp_50 = <invalid>
 	bool C_66 = <invalid>
 	branch C_66 l0800_A23E
@@ -30439,10 +30402,10 @@ l0800_A246:
 // SymbolicIn:
 
 l0800_A26C:
-	word16 cx_172
-	word16 dx_173
-	word16 bx_174
-	fn0800_8F2F(ax_46, Mem57[ds:0x0091:word16], dx_48, Mem57[ds:0x008F:word16], out cx_172, out dx_173, out bx_174)
+	word16 cx_169
+	word16 dx_170
+	word16 bx_171
+	fn0800_8F2F(ax_46, Mem57[ds:0x0091:word16], dx_48, Mem57[ds:0x008F:word16], out cx_169, out dx_170, out bx_171)
 	bool Z_79 = <invalid>
 	bool C_78 = <invalid>
 	branch Z_79 | C_78 l0800_A23E
@@ -30455,10 +30418,10 @@ l0800_A27F:
 	word16 dx_83 = Mem57[ds:0x008B:word16]
 	Mem88[ss:sp_50 - 2:word16] = dx_48
 	Mem91[ss:sp_50 - 4:word16] = ax_46
-	word16 cx_175
-	word16 dx_176
-	word16 bx_177
-	branch fn0800_A162(ds, Mem91[ss:sp_50 - 4:word16], Mem91[ss:sp_50 - 2:word16], out cx_175, out dx_176, out bx_177) == 0x0000 l0800_A23E
+	word16 cx_172
+	word16 dx_173
+	word16 bx_174
+	branch fn0800_A162(ds, Mem91[ss:sp_50 - 4:word16], Mem91[ss:sp_50 - 2:word16], out cx_172, out dx_173, out bx_174) == 0x0000 l0800_A23E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30868,7 +30831,7 @@ l0800_A4AC:
 	int32 dx_ax_66 = ax_113 *u 0x000A
 	ui24 dl_ax_172 = SLICE(dx_ax_66, word24, 0) + SEQ(SLICE(dx_ax_66, byte, 24), bx_70)
 	byte dl_76 = SLICE(dl_ax_172, byte, 16)
-	ax_113 = (word16) dl_ax_172
+	ax_113 = SLICE(dl_ax_172, word16, 0) (alias)
 	dx_116 = SEQ(SLICE(dx_ax_66, byte, 24), dl_76) (alias)
 	branch dl_76 == 0x00 l0800_A49E
 // DataOut:
@@ -30898,8 +30861,8 @@ l0800_A4D1:
 l0800_A4B6:
 	int32 dx_ax_93 = ax_113 *u 0x000A
 	int32 dx_ax_175 = SEQ(SLICE(dx_116 *u 0x000A, word16, 0), SLICE(dx_ax_93, word16, 0)) + SEQ(SLICE(dx_ax_93, word16, 16), bx_112)
-	ax_113 = (word16) dx_ax_175
-	dx_116 = SLICE(dx_ax_175, word16, 16)
+	ax_113 = SLICE(dx_ax_175, word16, 0) (alias)
+	dx_116 = SLICE(dx_ax_175, word16, 16) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32681,7 +32644,6 @@ word16 fn0800_ACB3(selector ds, segptr32 ptrArg02, ui32 dwArg06, word16 wArg0A, 
 // Preserved: bp si sp
 fn0800_ACB3_entry:
 	word16 wArg04 = SLICE(ptrArg02, word16, 16)
-	word16 wArg08 = SLICE(dwArg06, word16, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32697,23 +32659,19 @@ l0800_ACB3:
 // SymbolicIn:
 
 l0800_ACCE:
-	ui32 dwArg06_198 = dwArg06
 	branch wArg0A != 0x0001 l0800_ACEA
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_ACD3:
-	dwArg06_198 = dwArg06 (alias)
 	branch Mem18[ptrArg02:word16] <= 0x0000 l0800_ACEA
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_ACDC:
-	ui32 v21_v19_128 = SEQ(wArg08, v19_61) - (int32) fn0800_AC31(ptrArg02)
-	word16 v19_61 = (word16) v21_v19_128
-	dwArg06_198 = v21_v19_128 (alias)
+	dwArg06 = dwArg06 - (int32) fn0800_AC31(ptrArg02) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32724,7 +32682,7 @@ l0800_ACEA:
 	word16 dx_81 = Mem79[ptrArg02 + 0x0008:word16]
 	Mem82[ptrArg02 + 0x000E:word16] = Mem79[ptrArg02 + 0x000A:word16]
 	Mem83[ptrArg02 + 0x000C:word16] = dx_81
-	word16 ax_99 = fn0800_8E29(ds, (int16) Mem93[ptrArg02 + 0x0004:byte], dwArg06_198, SLICE(wArg0A, byte, 0), out cx_101, out dx_102, out bx_100)
+	word16 ax_99 = fn0800_8E29(ds, (int16) Mem93[ptrArg02 + 0x0004:byte], dwArg06, SLICE(wArg0A, byte, 0), out cx_101, out dx_102, out bx_100)
 	branch dx_102 != 0xFFFF l0800_AD2A
 // DataOut:
 // DataOut (flags):
@@ -32783,8 +32741,10 @@ fn0800_AD2F_entry:
 // SymbolicIn:
 
 l0800_AD2F:
-	word16 dx_22
-	word16 ax_19 = fn0800_97B6(ds, (int16) Mem7[ptrArg02 + 0x0004:byte], out dx_22)
+	fn0800_97B6(ds, (int16) Mem7[ptrArg02 + 0x0004:byte])
+	int32 dx_ax_163 = <invalid>
+	word16 dx_22 = SLICE(dx_ax_163, word16, 16)
+	word16 ax_19 = SLICE(dx_ax_163, word16, 0)
 	word16 wLoc04_110 = dx_22
 	word16 wLoc06_111 = ax_19
 	branch dx_22 != 0xFFFF l0800_AD52
@@ -32805,18 +32765,16 @@ l0800_AD52:
 // SymbolicIn:
 
 l0800_AD6B:
-	ui32 v23_v22_104 = SEQ(dx_22, v22_62) - (int32) fn0800_AC31(ptrArg02)
-	word16 v22_62 = (word16) v23_v22_104
-	wLoc06_111 = v22_62
+	ui32 v23_v22_104 = dx_ax_163 - (int32) fn0800_AC31(ptrArg02)
+	wLoc06_111 = SLICE(v23_v22_104, word16, 0)
 	wLoc04_110 = SLICE(v23_v22_104, word16, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_AD5B:
-	ui32 v19_v17_106 = SEQ(dx_22, v17_87) + (int32) fn0800_AC31(ptrArg02)
-	word16 v17_87 = (word16) v19_v17_106
-	wLoc06_111 = v17_87
+	ui32 v19_v17_106 = dx_ax_163 + (int32) fn0800_AC31(ptrArg02)
+	wLoc06_111 = SLICE(v19_v17_106, word16, 0)
 	wLoc04_110 = SLICE(v19_v17_106, word16, 16)
 // DataOut:
 // DataOut (flags):
@@ -36631,33 +36589,27 @@ fn0800_C04F_entry:
 l0800_C04F:
 	fn0800_C379(ds)
 	word16 si_36 = Mem32[ptrArg02:word16]
+	word16 dx_26 = Mem13[ds:0x26E2:word16]
 	int32 dx_ax_42 = (int32) (si_36 + 0xF844 >> 0x0002)
-	word16 ax_30 = Mem13[ds:0x26E4:word16] + 0x12CE + (Mem13[ds:0x26E2:word16] <u 0xA600)
-	byte ch_442
-	word16 dx_443
-	fn0800_8F18(0x1F80, SLICE(dx_ax_42, word16, 16), 0x0786, SLICE(dx_ax_42, word16, 0), out ch_442, out dx_443)
-	int32 dx_ax_436 = <invalid>
+	word16 ax_30 = Mem13[ds:0x26E4:word16] + 0x12CE + (dx_26 <u 0xA600)
+	byte ch_449
+	word16 dx_450
+	fn0800_8F18(0x1F80, SLICE(dx_ax_42, word16, 16), 0x0786, SLICE(dx_ax_42, word16, 0), out ch_449, out dx_450)
 	int32 dx_ax_72 = (int32) (si_36 + 0xF844 & 0x0003)
-	byte ch_444
-	word16 dx_445
-	fn0800_8F18(0x3380, SLICE(dx_ax_72, word16, 16), 0x01E1, SLICE(dx_ax_72, word16, 0), out ch_444, out dx_445)
-	ui32 v17_v16_306 = SEQ(ax_30, v16_62) + dx_ax_436
-	int32 dx_ax_437 = <invalid>
-	ui32 v20_v19_308 = SEQ(SLICE(v17_v16_306, word16, 16), v19_92) + dx_ax_437
-	word16 v20_96 = SLICE(v20_v19_308, word16, 16)
-	word16 v16_62 = (word16) v17_v16_306
-	word16 v19_92 = (word16) v20_v19_308
-	word16 wLoc04_329 = v20_96
+	word16 dx_452
+	byte ch_451
+	fn0800_8F18(0x3380, SLICE(dx_ax_72, word16, 16), 0x01E1, SLICE(dx_ax_72, word16, 0), out ch_451, out dx_452)
+	int32 dx_ax_440 = <invalid>
+	int32 dx_ax_441 = <invalid>
+	ui32 v20_v19_308 = SEQ(ax_30, dx_26 + 0xA600) + dx_ax_440 + dx_ax_441
+	word32 dwLoc06_443 = v20_v19_308
 	branch (si_36 + 0xF844 & 0x0003) == 0x0000 l0800_C0B9
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C0B0:
-	0x00015180 = 0x005180
-	ui32 v23_v22_309 = SEQ(v20_96, v22_101) + 0x00015180
-	word16 v22_101 = (word16) v23_v22_309
-	wLoc04_329 = SLICE(v23_v22_309, word16, 16)
+	dwLoc06_443 = v20_v19_308 + 0x00015180 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36723,22 +36675,19 @@ l0800_C127:
 
 l0800_C128:
 	int32 dx_ax_210 = (int32) si_171
-	byte ch_446
-	word16 dx_447
-	fn0800_8F18(0x0E10, SLICE(dx_ax_210, word16, 16), 0x0000, SLICE(dx_ax_210, word16, 0), out ch_446, out dx_447)
-	int32 dx_ax_438 = <invalid>
+	byte ch_453
+	word16 dx_454
+	fn0800_8F18(0x0E10, SLICE(dx_ax_210, word16, 16), 0x0000, SLICE(dx_ax_210, word16, 0), out ch_453, out dx_454)
 	int32 dx_ax_247 = (int32) (uint16) (uint8) Mem240[ptrArg06:byte]
-	byte ch_448
-	word16 dx_449
-	fn0800_8F18(0x003C, SLICE(dx_ax_247, word16, 16), 0x0000, SLICE(dx_ax_247, word16, 0), out ch_448, out dx_449)
-	int32 dx_ax_439 = <invalid>
-	ui32 v27_v26_311 = SEQ(wLoc04_329, v26_235) + dx_ax_438
-	ui32 bx_cx_314 = dx_ax_439 + (int32) ((uint16) ((uint8) Mem253[ptrArg06 + 0x0003:byte]))
-	cxOut = (word16) bx_cx_314
+	word16 dx_456
+	byte ch_455
+	fn0800_8F18(0x003C, SLICE(dx_ax_247, word16, 16), 0x0000, SLICE(dx_ax_247, word16, 0), out ch_455, out dx_456)
+	int32 dx_ax_446 = <invalid>
+	ui32 bx_cx_314 = dx_ax_446 + (int32) ((uint16) ((uint8) Mem253[ptrArg06 + 0x0003:byte]))
+	cxOut = SLICE(bx_cx_314, word16, 0)
 	dxOut = <invalid>
-	word16 v30_291 = (word16) (SEQ(SLICE(v27_v26_311, word16, 16), v30_291) + bx_cx_314)
-	word16 v26_235 = (word16) v27_v26_311
-	return v30_291
+	int32 dx_ax_442 = <invalid>
+	return SLICE(dwLoc06_443 + dx_ax_442 + bx_cx_314, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36750,10 +36699,10 @@ fn0800_C04F_exit:
 
 
 
-void fn0800_C177(selector ds, word16 wArg04, segptr32 ptrArg06, segptr32 ptrArg0A)
+void fn0800_C177(selector ds, ui32 dwArg02, segptr32 ptrArg06, segptr32 ptrArg0A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] ss:[0..15] Stack +0004:[0..15] Stack +0006:[0..31] Stack +000A:[0..31]
+// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax bx cx edx es Top
 // Preserved: bp sp
@@ -36766,44 +36715,43 @@ l0800_C177:
 	fn0800_C379(ds)
 	ax_25 = Mem7[ds:0x26E4:word16] + 0x12CE + (Mem7[ds:0x26E2:word16] <u 0xA600)
 	Mem35[ptrArg0A + 0x0002:byte] = 0x00
-	ui32 v11_v10_533 = SEQ(wArg04, v10_26) - SEQ(ax_25, dx_21 + 0xA600)
-	word16 dx_719
-	Mem63[ptrArg0A + 0x0003:byte] = SLICE(fn0800_8BCA(v11_v10_533, 0x003C, 0x0000, out dx_719), byte, 0)
+	ui32 v11_v10_533 = dwArg02 - SEQ(ax_25, dx_21 + 0xA600)
+	word16 dx_724
+	Mem63[ptrArg0A + 0x0003:byte] = SLICE(fn0800_8BCA(v11_v10_533, 0x003C, 0x0000, out dx_724), byte, 0)
 	word16 sp_54 = <invalid>
 	Mem69[ss:sp_54 - 2:word16] = 0x0000
 	Mem71[ss:sp_54 - 4:word16] = 0x003C
 	Mem74[ss:sp_54 - 6:word16] = SLICE(v11_v10_533, word16, 16)
-	word16 v10_26 = (word16) v11_v10_533
-	Mem77[ss:sp_54 - 8:word16] = v10_26
+	Mem77[ss:sp_54 - 8:word16] = SLICE(v11_v10_533, word16, 0)
 	word16 dx_81
-	word16 cx_720
-	word16 bx_721
-	word16 ax_78 = fn0800_8BBB(Mem77[ss:sp_54 - 8:word32], Mem77[ss:sp_54 - 4:word16], Mem77[ss:sp_54 - 2:word16], out cx_720, out dx_81, out bx_721)
+	word16 bx_726
+	word16 cx_725
+	word16 ax_78 = fn0800_8BBB(Mem77[ss:sp_54 - 8:word32], Mem77[ss:sp_54 - 4:word16], Mem77[ss:sp_54 - 2:word16], out cx_725, out dx_81, out bx_726)
 	word16 sp_82 = <invalid>
 	Mem94[ss:sp_82 - 2:word16] = 0x0000
 	Mem96[ss:sp_82 - 4:word16] = 0x003C
 	Mem99[ss:sp_82 - 6:word16] = dx_81
 	Mem102[ss:sp_82 - 8:word16] = ax_78
-	word16 dx_722
-	Mem116[ptrArg0A:byte] = SLICE(fn0800_8BCA(Mem102[ss:sp_82 - 8:word32], Mem102[ss:sp_82 - 4:word16], Mem102[ss:sp_82 - 2:word16], out dx_722), byte, 0)
+	word16 dx_727
+	Mem116[ptrArg0A:byte] = SLICE(fn0800_8BCA(Mem102[ss:sp_82 - 8:word32], Mem102[ss:sp_82 - 4:word16], Mem102[ss:sp_82 - 2:word16], out dx_727), byte, 0)
 	word16 sp_107 = <invalid>
 	Mem122[ss:sp_107 - 2:word16] = 0x0000
 	Mem124[ss:sp_107 - 4:word16] = 0x003C
 	Mem127[ss:sp_107 - 6:word16] = dx_81
 	Mem130[ss:sp_107 - 8:word16] = ax_78
 	word16 dx_134
-	word16 bx_724
-	word16 cx_723
-	word16 ax_131 = fn0800_8BBB(Mem130[ss:sp_107 - 8:word32], Mem130[ss:sp_107 - 4:word16], Mem130[ss:sp_107 - 2:word16], out cx_723, out dx_134, out bx_724)
+	word16 cx_728
+	word16 bx_729
+	word16 ax_131 = fn0800_8BBB(Mem130[ss:sp_107 - 8:word32], Mem130[ss:sp_107 - 4:word16], Mem130[ss:sp_107 - 2:word16], out cx_728, out dx_134, out bx_729)
 	word16 sp_135 = <invalid>
 	Mem147[ss:sp_135 - 2:word16] = 0x0000
 	Mem149[ss:sp_135 - 4:word16] = 0x88F8
 	Mem152[ss:sp_135 - 6:word16] = dx_134
 	Mem155[ss:sp_135 - 8:word16] = ax_131
-	word16 dx_726
-	word16 cx_725
-	word16 bx_727
-	Mem171[ptrArg06:word16] = (fn0800_8BBB(Mem155[ss:sp_135 - 8:word32], Mem155[ss:sp_135 - 4:word16], Mem155[ss:sp_135 - 2:word16], out cx_725, out dx_726, out bx_727) << 0x0002) + 0x07BC
+	word16 cx_730
+	word16 bx_732
+	word16 dx_731
+	Mem171[ptrArg06:word16] = (fn0800_8BBB(Mem155[ss:sp_135 - 8:word32], Mem155[ss:sp_135 - 4:word16], Mem155[ss:sp_135 - 2:word16], out cx_730, out dx_731, out bx_732) << 0x0002) + 0x07BC
 	word16 sp_160 = <invalid>
 	Mem177[ss:sp_160 - 2:word16] = 0x0000
 	Mem179[ss:sp_160 - 4:word16] = 0x88F8
@@ -36812,8 +36760,8 @@ l0800_C177:
 	word16 dx_189
 	word16 ax_186 = fn0800_8BCA(Mem185[ss:sp_160 - 8:word32], Mem185[ss:sp_160 - 4:word16], Mem185[ss:sp_160 - 2:word16], out dx_189)
 	word16 sp_190 = <invalid>
-	word16 wArg04_553 = dx_189
-	word16 wArg02_554 = ax_186
+	word16 wArg04_551 = dx_189
+	word16 wArg02_552 = ax_186
 	branch dx_189 < 0x0000 l0800_C26F
 // DataOut:
 // DataOut (flags):
@@ -36838,19 +36786,19 @@ l0800_C234:
 	word16 v32_209 = dx_189 - (ax_186 <u 0x2250)
 	Mem227[ss:sp_190 - 6:word16] = v32_209
 	Mem230[ss:sp_190 - 8:word16] = ax_186 - 0x2250
-	word16 dx_729
-	word16 bx_730
-	word16 cx_728
-	Mem244[ptrArg06:word16] = Mem230[ptrArg06:word16] + fn0800_8BBB(Mem230[ss:sp_190 - 8:word32], Mem230[ss:sp_190 - 4:word16], Mem230[ss:sp_190 - 2:word16], out cx_728, out dx_729, out bx_730)
+	word16 cx_733
+	word16 dx_734
+	word16 bx_735
+	Mem244[ptrArg06:word16] = Mem230[ptrArg06:word16] + fn0800_8BBB(Mem230[ss:sp_190 - 8:word32], Mem230[ss:sp_190 - 4:word16], Mem230[ss:sp_190 - 2:word16], out cx_733, out dx_734, out bx_735)
 	word16 sp_235 = <invalid>
 	Mem250[ss:sp_235 - 2:word16] = 0x0000
 	Mem252[ss:sp_235 - 4:word16] = 0x2238
 	Mem255[ss:sp_235 - 6:word16] = v32_209
 	Mem258[ss:sp_235 - 8:word16] = ax_186 - 0x2250
 	sp_190 = <invalid>
-	wArg04_553 = dx_262
+	wArg04_551 = dx_262
 	word16 dx_262
-	wArg02_554 = fn0800_8BCA(Mem258[ss:sp_235 - 8:word32], Mem258[ss:sp_235 - 4:word16], Mem258[ss:sp_235 - 2:word16], out dx_262)
+	wArg02_552 = fn0800_8BCA(Mem258[ss:sp_235 - 8:word32], Mem258[ss:sp_235 - 4:word16], Mem258[ss:sp_235 - 2:word16], out dx_262)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36865,20 +36813,20 @@ l0800_C276:
 	word16 sp_280 = sp_190 - 2
 	Mem282[ss:sp_280:word16] = 0x0000
 	Mem284[ss:sp_280 - 2:word16] = 0x0018
-	Mem288[ss:sp_280 - 4:word16] = wArg04_553
-	Mem291[ss:sp_280 - 6:word16] = wArg02_554
+	Mem288[ss:sp_280 - 4:word16] = wArg04_551
+	Mem291[ss:sp_280 - 6:word16] = wArg02_552
 	word16 sp_296 = <invalid>
-	word16 dx_734
-	Mem302[ss:sp_296 - 2:word16] = fn0800_8BCA(Mem291[ss:sp_280 - 6:word32], Mem291[ss:sp_280 - 2:word16], Mem291[ss:sp_280:word16], out dx_734)
+	word16 dx_739
+	Mem302[ss:sp_296 - 2:word16] = fn0800_8BCA(Mem291[ss:sp_280 - 6:word32], Mem291[ss:sp_280 - 2:word16], Mem291[ss:sp_280:word16], out dx_739)
 	Mem308[ss:sp_296 - 4:word16] = 0x0000
 	Mem310[ss:sp_296 - 6:word16] = 0x0018
-	Mem313[ss:sp_296 - 8:word16] = wArg04_553
-	Mem316[ss:sp_296 - 10:word16] = wArg02_554
+	Mem313[ss:sp_296 - 8:word16] = wArg04_551
+	Mem316[ss:sp_296 - 10:word16] = wArg02_552
 	word16 sp_321 = <invalid>
-	word16 dx_736
-	word16 bx_737
-	word16 cx_735
-	Mem327[ss:sp_321 - 2:word16] = fn0800_8BBB(Mem316[ss:sp_296 - 10:word32], Mem316[ss:sp_296 - 6:word16], Mem316[ss:sp_296 - 4:word16], out cx_735, out dx_736, out bx_737)
+	word16 cx_740
+	word16 bx_742
+	word16 dx_741
+	Mem327[ss:sp_321 - 2:word16] = fn0800_8BBB(Mem316[ss:sp_296 - 10:word32], Mem316[ss:sp_296 - 6:word16], Mem316[ss:sp_296 - 4:word16], out cx_740, out dx_741, out bx_742)
 	Mem330[ss:sp_321 - 4:word16] = 0x0000
 	Mem338[ss:sp_321 - 6:word16] = Mem330[ptrArg06:word16] + 0xF84E
 	sp_190 = sp_321 + 0x0002
@@ -36888,9 +36836,9 @@ l0800_C276:
 // SymbolicIn:
 
 l0800_C2AC:
-	word16 v43_352 = wArg02_554 + 0x0001
-	wArg02_554 = v43_352
-	wArg04_553 = wArg04_553 + (v43_352 <u 0x0000)
+	word16 v43_352 = wArg02_552 + 0x0001
+	wArg02_552 = v43_352
+	wArg04_551 = wArg04_551 + (v43_352 <u 0x0000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36899,22 +36847,21 @@ l0800_C2B4:
 	word16 sp_364 = sp_190 - 2
 	Mem366[ss:sp_364:word16] = 0x0000
 	Mem368[ss:sp_364 - 2:word16] = 0x0018
-	Mem372[ss:sp_364 - 4:word16] = wArg04_553
-	Mem375[ss:sp_364 - 6:word16] = wArg02_554
-	word16 dx_731
-	Mem389[ptrArg0A + 0x0001:byte] = SLICE(fn0800_8BCA(Mem375[ss:sp_364 - 6:word32], Mem375[ss:sp_364 - 2:word16], Mem375[ss:sp_364:word16], out dx_731), byte, 0)
+	Mem372[ss:sp_364 - 4:word16] = wArg04_551
+	Mem375[ss:sp_364 - 6:word16] = wArg02_552
+	word16 dx_736
+	Mem389[ptrArg0A + 0x0001:byte] = SLICE(fn0800_8BCA(Mem375[ss:sp_364 - 6:word32], Mem375[ss:sp_364 - 2:word16], Mem375[ss:sp_364:word16], out dx_736), byte, 0)
 	word16 sp_380 = <invalid>
 	Mem395[ss:sp_380 - 2:word16] = 0x0000
 	Mem397[ss:sp_380 - 4:word16] = 0x0018
-	Mem400[ss:sp_380 - 6:word16] = wArg04_553
-	Mem403[ss:sp_380 - 8:word16] = wArg02_554
+	Mem400[ss:sp_380 - 6:word16] = wArg04_551
+	Mem403[ss:sp_380 - 8:word16] = wArg02_552
 	word16 dx_407
-	word16 bx_733
-	word16 cx_732
-	word16 ax_404 = fn0800_8BBB(Mem403[ss:sp_380 - 8:word32], Mem403[ss:sp_380 - 4:word16], Mem403[ss:sp_380 - 2:word16], out cx_732, out dx_407, out bx_733)
+	word16 cx_737
+	word16 bx_738
+	word16 ax_404 = fn0800_8BBB(Mem403[ss:sp_380 - 8:word32], Mem403[ss:sp_380 - 4:word16], Mem403[ss:sp_380 - 2:word16], out cx_737, out dx_407, out bx_738)
 	word16 v50_419 = dx_407 + (ax_404 <u 0x0001)
-	word16 wArg02_574 = ax_404 + 0x0001
-	word16 wArg04_575 = v50_419
+	ui32 dwArg02_719 = SEQ(v50_419, ax_404 + 0x0001)
 	branch (Mem420[ptrArg06:word16] & 0x0003) != 0x0000 l0800_C326
 // DataOut:
 // DataOut (flags):
@@ -36939,12 +36886,14 @@ l0800_C2FB:
 // SymbolicIn:
 
 l0800_C30B:
+	dwArg02_719 = SEQ(v50_419, ax_404 + 0x0001) (alias)
 	branch v50_419 != 0x0000 l0800_C326
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C311:
+	dwArg02_719 = SEQ(v50_419, ax_404 + 0x0001) (alias)
 	branch ax_404 != 0xFFC5 l0800_C326
 // DataOut:
 // DataOut (flags):
@@ -36958,53 +36907,53 @@ l0800_C317:
 // SymbolicIn:
 
 l0800_C301:
-	wArg02_574 = ax_404
-	wArg04_575 = v50_419 - (ax_404 <u 0x0000)
+	dwArg02_719 = SEQ(v50_419 - (ax_404 <u 0x0000), ax_404) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C326:
 	Mem460[ptrArg06 + 0x0003:byte] = 0x00
+	ui32 dwArg02_716 = dwArg02_719
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C34D:
+	word16 wArg02_586 = SLICE(dwArg02_716, word16, 0)
 	int32 dx_ax_473 = (int32) (int16) Mem463[ds:(int16) Mem463[ptrArg06 + 0x0003:byte] + 0x26B4:byte]
-	byte bArg02_597 = SLICE(wArg02_574, byte, 0)
+	byte bArg02_595 = SLICE(wArg02_586, byte, 0)
+	word16 wArg04_585 = SLICE(dwArg02_716, word16, 16)
 	word16 dx_474 = SLICE(dx_ax_473, word16, 16)
 	word16 ax_478 = SLICE(dx_ax_473, word16, 0)
-	branch dx_474 < wArg04_575 l0800_C330
+	branch dx_474 < wArg04_585 l0800_C330
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C362:
-	branch dx_474 != wArg04_575 l0800_C369
+	branch dx_474 != wArg04_585 l0800_C369
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C364:
-	branch ax_478 <u wArg02_574 l0800_C330
+	branch ax_478 <u wArg02_586 l0800_C330
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C330:
-	ui32 v57_v56_535 = SEQ(wArg04_575, v56_495) - (int32) ((int16) Mem463[ds:(int16) Mem463[ptrArg06 + 0x0003:byte] + 0x26B4:byte])
+	ui32 v57_v56_535 = dwArg02_716 - (int32) ((int16) Mem463[ds:(int16) Mem463[ptrArg06 + 0x0003:byte] + 0x26B4:byte])
 	Mem505[ptrArg06 + 0x0003:byte] = Mem501[ptrArg06 + 0x0003:byte] + 0x01
-	word16 v56_495 = (word16) v57_v56_535
-	wArg02_574 = v56_495 (alias)
-	wArg04_575 = SLICE(v57_v56_535, word16, 16)
+	dwArg02_716 = v57_v56_535 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C369:
 	Mem514[ptrArg06 + 0x0003:byte] = Mem463[ptrArg06 + 0x0003:byte] + 0x01
-	Mem517[ptrArg06 + 0x0002:byte] = bArg02_597
+	Mem517[ptrArg06 + 0x0002:byte] = bArg02_595
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37828,7 +37777,7 @@ l1483_0C6C:
 	word16 cx_191
 	ui24 dh_ax_147 = SEQ(SLICE(dx_62, byte, 8), fn1483_1BB8(ds_si, 0x55, 0x19, cx - 0x0001, ecx_16_16, 0x8000, bx_40, bp, di, es, out cx_191, out dx_62, out bx_59, out si_65, out di_60, out es_64, out ds_61)) + SEQ(Mem41[ds_61:si_65 + 0x147C:byte], Mem41[ds_61:bx_59 + 0x3303:word16])
 	word16 di_72 = di_60 + Mem41[ds_61:bx_59:word16]
-	word16 ax_73 = (word16) dh_ax_147
+	word16 ax_73 = SLICE(dh_ax_147, word16, 0)
 	word16 v23_92 = Mem41[ds_61:ax_73 + 0x020E + di_72:word16] + di_72
 	Mem93[ds_61:ax_73 + 0x020E + di_72:word16] = v23_92
 	word32 ss_bp_190 = <invalid>
@@ -38293,10 +38242,11 @@ l1483_0D40_thunk_fn1483_0CFA:
 // SymbolicIn:
 
 l1483_0D42:
-	ui24 ax_ch_500 = SEQ(SEQ(ah_19, al_17 + ch_35), ch_35) - SEQ(0xFC68, Mem7[ds:(bx_38 + 0x0002) + si:byte])
+	ui24 ax_ch_500 = SEQ(ax_41, ch_35) - SEQ(0xFC68, Mem7[ds:(bx_38 + 0x0002) + si:byte])
 	word16 ax_43 = SLICE(ax_ch_500, word16, 8)
 	word16 bx_38 = SEQ(bh, 0xB4)
-	byte ch_39 = (byte) ax_ch_500
+	byte ch_39 = SLICE(ax_ch_500, byte, 0)
+	word16 ax_41 = SEQ(ah_19, al_17 + ch_35)
 	byte ah_70 = SLICE(ax_43, byte, 8)
 	byte al_99 = SLICE(ax_43, byte, 0)
 	word16 dx_55 = SEQ(dh_46 ^ 0x17, dl_54)
@@ -38335,8 +38285,8 @@ l1483_0D68_1:
 // SymbolicIn:
 
 l1483_0D69:
-	word16 cx_706
 	word16 cx_712
+	word16 cx_706
 	selector ds_408
 	word16 di_400
 	bool S_401
@@ -38449,10 +38399,10 @@ l1483_0E35:
 	byte al_230 = Mem229[bx_204:si_164:byte]
 	byte ah_247 = ah_246 ^ Mem245[bx_204:(bx_204 + 0x0002) + (si_164 + 0x0001):byte]
 	Mem255[bx_204:si_164 + 0x6347:byte] = Mem251[bx_204:si_164 + 0x6347:byte] ^ cl_253
-	ui16 v57_v56_501 = SEQ(bArg02C1, v56_237) + SEQ(0xE8, dl_236)
+	ui16 v57_v56_501 = SEQ(bArg02C1, bArg0FA0) + SEQ(0xE8, dl_236)
 	word16 si_231 = si_164 + 0x0001
 	word16 di_233 = 0x0000
-	byte v56_237 = (byte) v57_v56_501
+	byte v56_237 = SLICE(v57_v56_501, byte, 0)
 	byte v57_244 = SLICE(v57_v56_501, byte, 8)
 	byte al_260 = al_230 | ch_259
 	word16 cx_264 = SEQ(ch_259, cl_253)
@@ -38706,15 +38656,15 @@ fn1483_1B91_entry:
 // SymbolicIn:
 
 l1483_1B91:
+	word16 ax_7 = SEQ(ah, al - 0x28)
 	Mem19[ds:bx + 0x10F8 + di:word16] = ~Mem0[ds:bx + 0x10F8 + di:word16]
 	word16 v18_34 = Mem29[psegArg00:bx + 0x3201 + di:word16]
 	Mem35[psegArg00:bx + 0x3201 + di:word16] = di
-	word16 ax_7 = SEQ(ah, al - 0x28)
 	__inb(0x41)
 	__sti()
 	Mem45[psegArg00:0xFF1F:word16] = Mem35[psegArg00:0xFF1F:word16] + 0x0001
 	ui24 ax_al_61 = SEQ(cx, SLICE(ax_7 ^ 0x2EF9, byte, 0)) - SEQ(0xA587, bh)
-	word16 ax_21 = SEQ(SLICE(ax_7 ^ 0x2EF9, byte, 8), (byte) ax_al_61)
+	word16 ax_21 = SEQ(SLICE(ax_7 ^ 0x2EF9, byte, 8), SLICE(ax_al_61, byte, 0))
 	word16 ax_53 = SEQ(SLICE(SLICE(ax_al_61, word16, 8), byte, 8), __inb(fp) - 0xF8 & 0x0A)
 // DataOut:
 // DataOut (flags):

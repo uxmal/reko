@@ -440,7 +440,7 @@ l0000000000400F4C: warning: Non-integral switch expression
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0800:1358: error: An error occurred while processing the statement word16 di_329 = di_314 - (fp - 0x008A).
-    Not handling (memptr T_2094 (struct (0 T_3058 t0000))) and mp16 yet.
+    Not handling (memptr T_2087 (struct (0 T_3051 t0000))) and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1044,7 +1044,7 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 336
 0800:36CE: error: An error occurred while processing the statement branch Mem71[ptrLoc0A_322 - 0x0001 + 0x0000:byte] != 0x3A l0800_3732.
-    Not handling (ptr32 (struct (0 T_14160 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
+    Not handling (ptr32 (struct (0 T_14144 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1058,7 +1058,7 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 0800:9A95: error: An error occurred while processing the statement word16 di_327 = di_313 - (fp - 0x0048).
-    Not handling (memptr T_40292 (struct (0 T_41038 t0000))) and mp16 yet.
+    Not handling (memptr T_40215 (struct (0 T_40961 t0000))) and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1066,7 +1066,7 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0800:BBF7: error: An error occurred while processing the statement branch Mem7[ptrArg02 - 0x0001 + 0x0000:byte] != 0x2E l0800_BBFC.
-    Not handling (ptr32 (struct (0 T_46144 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
+    Not handling (ptr32 (struct (0 T_46058 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1079,7 +1079,7 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 1483:0C7D: error: An error occurred while processing the statement word16 ax_88 = bx_59 - 0x0903 - (SLICE(dh_ax_147, byte, 16) <u 0x00).
-    Not handling (memptr T_48207 (struct (0 T_48258 t0000) (3303 T_48252 t3303))) and bool yet.
+    Not handling (memptr T_48106 (struct (0 T_48157 t0000) (3303 T_48151 t3303))) and bool yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1087,7 +1087,7 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 1483:0DF5: error: An error occurred while processing the statement CZ_185 = SLICE(cond(fp + 0x8FAA - (fp + 0x018A)), bool, 2) (alias).
-    Not handling (memptr T_48744 <unknown>) and (memptr T_48744 <unknown>) yet.
+    Not handling (memptr T_48643 <unknown>) and (memptr T_48643 <unknown>) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1103,4 +1103,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 74.36 seconds ---
+Decompiled 56 binaries in 73.92 seconds ---
