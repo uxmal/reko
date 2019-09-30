@@ -355,11 +355,6 @@ namespace Reko.Analysis
                     outer.ssa.AddUses(stmCopy);
                     return sidCopy;
                 }
-                if (outer.ssa.Procedure.Name == "fn0000000000405ED0" &&
-                    (id.Name == "rdi" || id.Name == "edi"))   //$DEBUG
-                {
-                    id.ToString();
-                }
                 return outer.ssa.EnsureDefInstruction(id, b);
             }
 
@@ -482,8 +477,6 @@ namespace Reko.Analysis
             /// <returns>The new SSA identifier</returns>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
-                if (sid.Identifier.Name == "f12_f13_27")    //$DEBUG
-                    sid.ToString();
                 DebugEx.Verbose(trace, "  WriteBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var aliasState))
                 {
@@ -1006,8 +999,6 @@ namespace Reko.Analysis
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
                 var offset = seq.BitSize;
-                if (outer.stmCur.LinearAddress == 0x00000000004077a0)
-                    outer.stmCur.ToString();    //$DEBUG
                 foreach (var stg in seq.Elements)
                 {
                     offset -= stg.BitSize;

@@ -46,8 +46,6 @@ namespace Reko.Analysis
 			{
 				idNew = idOld;
 			}
-            if (idNew.Name == "rdi_554")    //$DEBUG
-                idNew.ToString();
 			var sid = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
 			sids.Add(idNew, sid);
 			return sid;

@@ -57,8 +57,6 @@ namespace Reko.Core
 
         public void RemoveEdge(Block nodeFrom, Block nodeTo)
         {
-            if (nodeTo.Name == "l00000000004061A2_thunk_fn00000000004061B0")    //$DEBUG
-                nodeTo.ToString();
             if (nodeFrom.Succ.Contains(nodeTo) && nodeTo.Pred.Contains(nodeFrom))
             {
                 nodeFrom.Succ.Remove(nodeTo);

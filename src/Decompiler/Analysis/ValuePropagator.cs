@@ -82,8 +82,6 @@ namespace Reko.Analysis
                 Changed = false;
                 foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
-                    if (ssa.Procedure.Name == "branches" && stm.ToString().StartsWith("eax_44")) //$DEBUG
-                        ssa.Procedure.Name.ToString();
                     if (eventListener.IsCanceled())
                         return;
                     this.stmCur = stm;
