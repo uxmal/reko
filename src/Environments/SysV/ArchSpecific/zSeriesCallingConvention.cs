@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,6 +73,25 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 ccr.RegReturn(iregs[0]);
             }
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return iregs.Contains(reg) || fregs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return reg == iregs[0] || reg == fregs[0];
+            }
+            return false;
         }
     }
 }

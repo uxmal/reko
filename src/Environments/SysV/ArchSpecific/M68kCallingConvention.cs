@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -57,6 +57,16 @@ namespace Reko.Environments.SysV.ArchSpecific
                 ccr.StackParam(dtParam);
             }
             ccr.CallerCleanup(arch.PointerType.Size);
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            return stg is StackStorage;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            return this.d0 == stg;
         }
     }
 }

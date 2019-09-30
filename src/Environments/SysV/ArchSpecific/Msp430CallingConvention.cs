@@ -572,14 +572,7 @@ register,
 based
 on its
 type and size.
-For MSP430
-and MSP430X,
-the return
-value
-is placed
-in R12,
-R12:13,
-or R12::R15.
+For MSP430 and MSP430X, the return value is placed in R12, R12:13, or R12::R15.
 Return
 values
 with a
@@ -624,48 +617,12 @@ than
 32 bits are passed
 and returned
 by reference.
-To
-pass
-a structure
-or union
-by reference,
-the caller
-places
-its address
-in the appropriate
-location:
-either
-in a
-register
-or on the stack,
-according
-to its position
-in the argument
-list. To preserve
-pass-by-value
-semantics
-(required
-for C and C++),
-the callee
-may need
-to make
-its own copy
-of the pointed-to
-object.
-In
-some
-cases,
-the callee
-need
-not make
-a copy,
-such
-as if the callee
-is a leaf and it does
-not modify
-the
-pointed-to
-object.
+To pass a structure or union by reference, the caller places its address in
+the appropriate location: either in a register or on the stack, according
+to its position in the argument list. To preserve pass-by-value semantics
+(required for C and C++), the callee may need to make its own copy of the
+pointed-to object. In some cases, the callee need not make a copy, such as if
+the callee is a leaf and it does not modify the pointed-to object.
 If the called
 function
 returns
@@ -769,6 +726,25 @@ register*/
                     ccr.StackParam(dtParams[i]);
                 }
             }
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return iregs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return iregs.Contains(reg);
+            }
+            return false;
         }
     }
 }

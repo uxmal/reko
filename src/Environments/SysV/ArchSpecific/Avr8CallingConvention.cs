@@ -208,5 +208,25 @@ Arguments of varargs functions are passed on the stack. This applies even to the
                 throw new NotImplementedException("Large AVR8 return values not implemented yet.");
             }
         }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return argRegs.Contains(reg);
+            }
+            //$TODO: stack vars?
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                var n = reg.Number;
+                return 18 <= n && n <= 25;
+            }
+            return false;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -158,6 +158,26 @@ namespace Reko.Environments.Windows
                 return;
             }
             throw new NotImplementedException();
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return iregs.Contains(reg) || fregs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return reg == iretLo || reg == iretHi ||
+                    reg == fret;
+            }
+            return false;
         }
     }
 }

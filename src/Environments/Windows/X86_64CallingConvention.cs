@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,8 +18,10 @@
  */
 #endregion
 
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Arch.X86;
@@ -97,6 +99,27 @@ namespace Reko.Environments.Windows
                 }
             }
             ccr.CallerCleanup(8);
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return iRegs.Contains(reg) || fRegs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return
+                    reg.Domain == Registers.eax.Domain ||
+                    reg.Domain == Registers.eax.Domain;
+            }
+            return false;
         }
     }
 }

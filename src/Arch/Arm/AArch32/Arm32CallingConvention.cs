@@ -98,5 +98,23 @@ namespace Reko.Arch.Arm.AArch32
                 throw new NotSupportedException(string.Format("Return values of {0} bits are not supported.", bitSize));
         }
 
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return argRegs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return argRegs[0] == reg || argRegs[1] == reg;
+            }
+            return false;
+        }
     }
 }

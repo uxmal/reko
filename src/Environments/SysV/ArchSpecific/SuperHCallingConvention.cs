@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -35,6 +35,9 @@ namespace Reko.Environments.SysV.ArchSpecific
         private RegisterStorage[] iregs;
         private RegisterStorage[] fregs;
         private RegisterStorage[] dregs;
+        private RegisterStorage iret;
+        private RegisterStorage fret;
+        private RegisterStorage dret;
 
         public SuperHCallingConvention(IProcessorArchitecture arch)
         {
@@ -42,6 +45,10 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.iregs = NamesToRegs("r4", "r5", "r6", "r7");
             this.fregs = NamesToRegs("fr4", "fr5", "fr6", "fr7");
             this.dregs = NamesToRegs("dr4", "dr6");
+            this.iret = arch.GetRegister("r0");
+            this.fret = arch.GetRegister("fr0");
+            this.dret = arch.GetRegister("dr0");
+
         }
 
         private RegisterStorage[] NamesToRegs(params string [] regNames)
@@ -58,16 +65,15 @@ namespace Reko.Environments.SysV.ArchSpecific
             if (dtRet != null && !(dtRet is VoidType))
             {
                 RegisterStorage reg;
-                var pt = dtRet as PrimitiveType;
-                if (pt != null && pt.Domain == Domain.Real)
+                if (dtRet is PrimitiveType pt && pt.Domain == Domain.Real)
                 {
                     if (pt.Size == 4)
                     {
-                        reg = arch.GetRegister("fr0");
+                        reg = fret;
                     }
                     else
                     {
-                        reg = arch.GetRegister("dr0");
+                        reg = dret;
                     }
                     ccr.RegReturn(reg);
                 }
@@ -79,7 +85,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     }
                     else
                     {
-                        ccr.RegReturn(arch.GetRegister("r0"));
+                        ccr.RegReturn(iret);
                     }
                 }
             }
@@ -131,6 +137,21 @@ namespace Reko.Environments.SysV.ArchSpecific
                     ++ir;
                 }
             }
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return dregs.Contains(reg) || fregs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            return iret == stg || fret == stg || dret == stg;
         }
     }
 }

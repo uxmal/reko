@@ -144,5 +144,20 @@ namespace Reko.Environments.SysV.ArchSpecific
                 ccr.RegReturn(iret);
             }
         }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return iregs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            return iret == stg && fret == stg;
+        }
     }
 }

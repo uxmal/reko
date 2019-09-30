@@ -305,6 +305,7 @@
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
     <Compile Include="ImageLoaders\Llvm\ProgramBuilderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\Borland\SymbolLoaderTests.cs" />
+    <Compile Include="Mocks\FakeCallingConvention.cs" />
     <Compile Include="Mocks\FakeFrameApplicationBuilder.cs" />
     <Compile Include="Mocks\FakeTextBox.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />

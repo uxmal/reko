@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -81,6 +81,25 @@ r31         zero        reads as zero       N/A         Writes are ignored.
                     ccr.StackParam(PrimitiveType.Word64);
                 }
             }
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return iRegs.Contains(reg) || fRegs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return iRet.Equals(reg);
+            }
+            return false;
         }
     }
 }

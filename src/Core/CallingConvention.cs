@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -35,7 +35,19 @@ namespace Reko.Core
     /// </summary>
     public interface CallingConvention
     {
+
         void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams);
+
+        /// <summary>
+        /// Can <paramref name="stg"/> be used as a parameter in this calling convention?
+        /// </summary>
+        bool IsArgument(Storage stg);
+
+        /// <summary>
+        /// Can <paramref name="stg" /> be used to return a value in this calling convention?
+        /// </summary>
+        /// <param name="stg"></param>
+        bool IsOutArgument(Storage stg);
     }
 
     public interface ICallingConventionEmitter

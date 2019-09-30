@@ -41,5 +41,17 @@ namespace Reko.Environments.Windows
         {
             //$TODO: make this happen
         }
+
+        public bool IsArgument(Storage stg)
+        {
+            //$TODO: make this correct
+            return stg is RegisterStorage;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            //$TODO: make this correct
+            return false;
+        }
     }
 }

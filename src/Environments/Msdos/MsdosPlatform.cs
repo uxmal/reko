@@ -87,14 +87,12 @@ namespace Reko.Environments.Msdos
         {
             if (!signature.HasVoidReturn)
             {
-                var reg = signature.ReturnValue.Storage as RegisterStorage;
-                if (reg != null)
+                if (signature.ReturnValue.Storage is RegisterStorage reg)
                 {
                     if (reg != Registers.al && reg != Registers.ax)
                         return null;
                 }
-                var seq = signature.ReturnValue.Storage as SequenceStorage;
-                if (seq != null && seq.Elements.Length == 2)
+                if (signature.ReturnValue.Storage is SequenceStorage seq && seq.Elements.Length == 2)
                 {
                     if (seq.Elements[0] != Registers.dx || seq.Elements[1] != Registers.ax)
                         return null;

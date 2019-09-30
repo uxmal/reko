@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -97,6 +97,26 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
             else
                 throw new NotSupportedException(string.Format("Return values of {0} bits are not supported.", bitSize));
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return argRegs.Contains(reg);
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return argRegs[0] == reg || argRegs[1] == reg;
+            }
+            //$TODO: handle stack args.
+            return false;
         }
     }
 }

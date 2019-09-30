@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -60,6 +60,16 @@ namespace Reko.Environments.AtariTOS
             // AFAIK the calling convention on Atari TOS is caller-cleanup, 
             // so the only thing we clean up is the return value on the stack.
             ccr.CallerCleanup(4);
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            return stg is StackStorage;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            return Registers.d0 == stg;
         }
     }
 }

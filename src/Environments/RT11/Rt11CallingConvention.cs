@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -57,6 +57,24 @@ namespace Reko.Environments.RT11
         public void SetReturnRegisters(ICallingConventionEmitter ccr, DataType dtRet)
         {
             ccr.RegReturn(arch.GetRegister("r0"));
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                //$TODO: need more info here.
+                return true;
+            }
+            //$TODO: handle stack args.
+            return false;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+                return reg.Number == 0;
+            return false;
         }
     }
 }

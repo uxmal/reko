@@ -19,45 +19,39 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Reko.Core.Types;
 
-namespace Reko.Environments.Windows
+namespace Reko.UnitTests.Mocks
 {
-    public class PowerPcCallingConvention : CallingConvention
+    public class FakeCallingConvention : CallingConvention
     {
-        private IProcessorArchitecture arch;
+        private Storage[] argRegisters;
+        private Storage[] returnRegisters;
 
-        public PowerPcCallingConvention(IProcessorArchitecture arch)
+        public FakeCallingConvention(Storage[] argRegisters, Storage[] returnRegisters)
         {
-            this.arch = arch;
+            this.argRegisters = argRegisters;
+            this.returnRegisters = returnRegisters;
         }
 
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            //$TODO: finding it hard to locate information about the calling
- 			// convention on PowerPC Win32. May have to reverse engineer it.
+            throw new NotImplementedException();
         }
 
         public bool IsArgument(Storage stg)
         {
-            if (stg is RegisterStorage reg)
-            {
-                //$TODO: see comment above.
-                return true;
-            }
-            //$TODO: handle stack args.
-            return false;
+            return argRegisters.Contains(stg);
         }
-
+        
         public bool IsOutArgument(Storage stg)
         {
-            //$TODO
-            return false;
+            return returnRegisters.Contains(stg);
         }
     }
 }

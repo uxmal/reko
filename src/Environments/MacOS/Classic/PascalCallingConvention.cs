@@ -58,5 +58,15 @@ namespace Reko.Environments.MacOS.Classic
                 ccr.StackReturn(dtRet);
             }
         }
+
+        public bool IsArgument(Storage stg)
+        {
+            return stg is StackStorage;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            return false;
+        }
     }
 }

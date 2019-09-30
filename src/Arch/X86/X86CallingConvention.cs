@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -134,6 +134,23 @@ namespace Reko.Arch.X86
                 ccr.RegReturn(Registers.al);
                 return;
             }
+        }
+
+        public bool IsArgument(Storage stg)
+        {
+            return stg is StackStorage;
+        }
+
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return
+                    reg.Domain == Registers.eax.Domain ||
+                    reg.Domain == Registers.eax.Domain;
+            }
+            return false;
         }
     }
 }

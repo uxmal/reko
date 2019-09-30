@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,5 +20,19 @@ namespace Reko.Environments.Windows
 		public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
 		{
 		}
-	}
+
+        public bool IsArgument(Storage stg)
+        {
+            return stg is StackStorage;
+        }
+
+        public bool IsOutArgument(Storage stg)
+        {
+            if (stg is RegisterStorage reg)
+            {
+                return reg.Number == 0;
+            }
+            return false;
+        }
+    }
 }
