@@ -1,8 +1,8 @@
-word64 _init()
+void _init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: rax
+// LiveOut:
 // Trashed: SCZO rax
 // Preserved: rsp
 _init_entry:
@@ -11,7 +11,6 @@ _init_entry:
 // SymbolicIn:
 
 l00000000004003E0:
-	word64 rax_15 = __gmon_start__
 	branch __gmon_start__ == 0x0000000000000000 l00000000004003F5
 // DataOut:
 // DataOut (flags):
@@ -19,14 +18,12 @@ l00000000004003E0:
 
 l00000000004003F0:
 	call __gmon_start__ (retsize: 8;)
-		uses: rax:__gmon_start__,rsp:fp - 0x0000000000000008
-		defs: rax:rax_8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004003F5:
-	return rax_15
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -66,10 +63,10 @@ l0000000000400440:
 
 
 
-void deregister_tm_clones(word64 rbp, word64 r8)
+void deregister_tm_clones(word64 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63] rbp:[0..63]
+// MayUse:  r8:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 rax rdi
 // Preserved: rbp rsp
@@ -92,7 +89,7 @@ l0000000000400487:
 
 l0000000000400491:
 	call 0x0000000000000000 (retsize: 8;)
-		uses: r8:r8 - 6295616,rax:0x0000000000000000,rdi:0x0000000000601040,Stack +0000:rbp
+		uses: r8:r8 - 6295616,rdi:0x0000000000601040
 	return
 // DataOut:
 // DataOut (flags):
@@ -111,10 +108,10 @@ deregister_tm_clones_exit:
 
 
 
-void register_tm_clones(word64 rbp, word64 r8)
+void register_tm_clones(word64 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63] rbp:[0..63]
+// MayUse:  r8:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 rax rdi rdx rsi
 // Preserved: rbp rsp
@@ -137,7 +134,7 @@ l00000000004004C4:
 
 l00000000004004CE:
 	call 0x0000000000000000 (retsize: 8;)
-		uses: r8:r8 - 6295616,rax:393476,rdi:0x0000000000601040,rdx:0x0000000000000000,rsi:393476,Stack +0000:rbp
+		uses: r8:r8 - 6295616,rdi:0x0000000000601040,rsi:393476
 	return
 // DataOut:
 // DataOut (flags):
@@ -175,7 +172,7 @@ l00000000004004E0:
 // SymbolicIn:
 
 l00000000004004E9:
-	deregister_tm_clones(fp - 8, r8)
+	deregister_tm_clones(r8)
 	Mem20[0x0000000000601040:byte] = 0x01
 // DataOut:
 // DataOut (flags):
@@ -194,10 +191,10 @@ __do_global_dtors_aux_exit:
 
 
 
-void frame_dummy(word64 rdx, word64 rbp, word64 rsi, word64 r8)
+void frame_dummy(word64 rbp, word64 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63] rbp:[0..63] rdx:[0..63] rsi:[0..63]
+// MayUse:  r8:[0..63] rbp:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 rax rdi rdx rsi
 // Preserved: rbp rsp
@@ -224,23 +221,23 @@ l0000000000400528:
 // SymbolicIn:
 
 l0000000000400528_thunk_register_tm_clones:
-	register_tm_clones(rbp, r8)
+	register_tm_clones(r8)
 	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000400514:
-	word64 r8_29
+	word64 r8_28
 	call fn0000000000000000 (retsize: 8;)
-		uses: r8:r8,rax:0x0000000000000000,rbp:fp - 8,rdi:0x0000000000600E20,rdx:rdx,rsi:rsi,rsp:fp - 8,Stack +0008:rbp
-		defs: r8:r8_29
+		uses: r8:r8,rbp:fp - 8,rdi:0x0000000000600E20,rsp:fp - 8,Stack +0008:rbp
+		defs: r8:r8_28
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000400520_thunk_register_tm_clones:
-	register_tm_clones(rbp, r8_29)
+	register_tm_clones(r8_28)
 	return
 // DataOut:
 // DataOut (flags):
@@ -304,10 +301,10 @@ main_exit:
 
 
 
-void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
+void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] rbp:[0..63] rbx:[0..63] rdi:[0..31] rdx:[0..63] rsi:[0..63]
+// MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rdi rdx rsi
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
@@ -318,10 +315,10 @@ __libc_csu_init_entry:
 // SymbolicIn:
 
 l0000000000400550:
-	word32 r15d_80 = SLICE((uint64) edi, word32, 0)
+	_init()
+	word32 r15d_79 = SLICE((uint64) edi, word32, 0)
 	word64 rbp_29 = 0x0000000000600E18 - 0x0000000000600E10
 	word64 rbx_30 = 0x0000000000000000
-	word64 rax_34 = _init()
 	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6
 // DataOut:
 // DataOut (flags):
@@ -334,8 +331,7 @@ l0000000000400588:
 
 l0000000000400590:
 	call Mem28[0x0000000000600E10 + rbx_30 * 0x0000000000000008:word64] (retsize: 8;)
-		uses: rax:rax_58,rdi:(uint64) r15d_80,rdx:rdx,rsi:rsi,Stack +0010:rbx,Stack +0018:rbp,Stack +0020:r12,Stack +0028:r13,Stack +0030:r14,Stack +0038:r15
-		defs: rax:rax_59
+		uses: rdi:(uint64) r15d_79,rdx:rdx,rsi:rsi
 	rbx_30 = rbx_30 + 0x0000000000000001
 	branch rbx_30 != rbp_29 >> 0x0000000000000003 l0000000000400590
 // DataOut:

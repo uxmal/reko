@@ -15,14 +15,12 @@ void fn00401084()
 {
 }
 
-// 0040110B: void fn0040110B(Register word32 eax)
-void fn0040110B(word32 eax)
+// 0040110B: void fn0040110B()
+void fn0040110B()
 {
 	if (globals->dw40208B >= 0x00)
 	{
-		uint32 v5_n = globals->dw40208B;
 		word32 eax_n;
-		int8 Top_n;
 		__CRTL_TLS_GetValue();
 		if (eax_n != 0x00)
 		{

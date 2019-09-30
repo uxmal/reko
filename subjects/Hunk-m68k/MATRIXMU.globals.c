@@ -11,8 +11,8 @@ ui32 g_a0010[];
 ptr32 g_ptr1494 = 0x00000000;
 struct Eq_n * g_ptr1498 = null;
 struct Eq_n * g_ptr149C = null;
-union Eq_n * g_ptr14A0 = null;
-union Eq_n * g_ptr14A4 = null;
+struct Eq_n * g_ptr14A0 = null;
+struct Eq_n * g_ptr14A4 = null;
 Eq_n g_t14A8 = 
 	{
 		0

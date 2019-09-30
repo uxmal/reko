@@ -10,6 +10,21 @@ struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b16B0 = 0x65;
+struct Eq_n g_t16CC = 
+	{
+		0x25,
+		0x6C,
+	};
+struct Eq_n g_t16EC = 
+	{
+		0x25,
+		0x64,
+	};
+struct Eq_n g_t16F0 = 
+	{
+		0x25,
+		0x64,
+	};
 Eq_n g_t2B15 = 
 	{
 		
@@ -35,14 +50,8 @@ Eq_n g_t4000 =
 ptr32 g_ptr40F8 = 0x00000000;
 struct Eq_n * g_ptr40FC = &g_t4000;
 struct Eq_n * g_ptr4100 = null;
-Eq_n g_t4104 = 
-	{
-		0x00
-	};
-Eq_n g_t4108 = 
-	{
-		0x03
-	};
+struct Eq_n * g_ptr4104 = &g_t10202;
+struct Eq_n * g_ptr4108 = &g_t3030303;
 Eq_n g_t410C = 
 	{
 		67372036
@@ -71,7 +80,9 @@ Eq_n g_t4240;
 word32 g_dw4244;
 struct Eq_n * g_ptr4250;
 Eq_n g_t4254;
-Eq_n g_t4258;
-Eq_n g_t4260;
+struct Eq_n * g_ptr4258;
+struct Eq_n * g_ptr4260;
+Eq_n g_t10202;
+Eq_n g_t3030303;
 Eq_n g_t6060606;
 

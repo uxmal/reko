@@ -59,8 +59,8 @@ void prvUnlockQueue(Eq_n r0, ptr32 cpsr)
 	vPortExitCritical(cpsr);
 }
 
-// 000000EC: FlagGroup bool prvCopyDataToQueue(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r7, Register Eq_n lr, Register out Eq_n r0Out, Register out Eq_n r7Out, Register out Eq_n lrOut)
-bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r7, Eq_n lr, union Eq_n & r0Out, union Eq_n & r7Out, union Eq_n & lrOut)
+// 000000EC: FlagGroup bool prvCopyDataToQueue(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r7, Register Eq_n lr, Register out Eq_n r0Out, Register out Eq_n r7Out, Register out Eq_n lrOut)
+bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, union Eq_n & r0Out, union Eq_n & r7Out, union Eq_n & lrOut)
 {
 	bool Z_n;
 	Eq_n r5_n;
@@ -92,7 +92,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r7, Eq_n lr, un
 			word32 r5_n;
 			Eq_n r6_n;
 			Eq_n r7_n;
-			memcpy(*((word32) r0 + 0x08), r1, r0_n, r3, r0, r5_n, r2, r7, lr, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
+			memcpy(*((word32) r0 + 0x08), r1, r0_n, r0, r5_n, r2, r7, lr, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
 			up32 r2_n = r4_n->dw0004;
 			up32 r3_n = r4_n->dw0008 + r4_n->dw0040;
 			r4_n->dw0008 = r3_n;
@@ -115,7 +115,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r7, Eq_n lr, un
 			}
 		}
 		word32 r6_n;
-		memcpy(*((word32) r0 + 0x0C), r1, r0_n, r3, r0, r5_n, r2, r7, lr, out r4_n, out r5_n, out r6_n, out r7, out lr);
+		memcpy(*((word32) r0 + 0x0C), r1, r0_n, r0, r5_n, r2, r7, lr, out r4_n, out r5_n, out r6_n, out r7, out lr);
 		Eq_n r3_n = *((word32) r4_n + 0x0C);
 		Eq_n r1_n = *r4_n;
 		*((word32) r4_n + 0x0C) = r3_n;
@@ -166,7 +166,7 @@ Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, 
 		Eq_n r5_n;
 		Eq_n r6_n;
 		Eq_n r7_n;
-		memcpy(r1, r1_n, r2_n, r1, r4, r5, r6, r7, lr, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
+		memcpy(r1, r1_n, r2_n, r4, r5, r6, r7, lr, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
 		r5Out = r5_n;
 		r6Out = r6_n;
 		r7Out = r7_n;
@@ -183,8 +183,7 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 	while (true)
 	{
 		vPortEnterCritical(cpsr);
-		Eq_n r3_n = *((word32) r0 + 0x003C);
-		if (*((word32) r0 + 0x0038) < r3_n || r3 == 0x02)
+		if (*((word32) r0 + 0x0038) < *((word32) r0 + 0x003C) || r3 == 0x02)
 			break;
 		if (r2 == 0x00)
 		{
@@ -231,7 +230,7 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 	Eq_n lr_n;
 	word32 r0_n;
 	word32 r7_n;
-	prvCopyDataToQueue(r0, r1, r3, r3_n, r3, lr, out r0_n, out r7_n, out lr_n);
+	prvCopyDataToQueue(r0, r1, r3, r3, lr, out r0_n, out r7_n, out lr_n);
 	if (*((word32) r0 + 0x0024) == 0x00)
 	{
 		if (r0_n == 0x00)
@@ -399,7 +398,7 @@ void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32
 		word32 r0_n;
 		word32 lr_n;
 		word32 * r7_n;
-		if (!prvCopyDataToQueue(r0, r1, r3, r3, r2, lr, out r0_n, out r7_n, out lr_n))
+		if (!prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_n, out r7_n, out lr_n))
 			((word32) r0 + 0x0045)->u0 = (byte) (int32) (int8) (r4_n + 0x01);
 		else if (*((word32) r0 + 0x0024) != 0x00 && (xTaskRemoveFromEventList((word32) r0 + 0x0024) != 0x00 && r7_n != null))
 		{
@@ -2136,12 +2135,12 @@ word32 prvSetAndCheckRegisters(ptr32 cpsr, ptr32 & r4Out, ptr32 & r5Out, ptr32 &
 	}
 }
 
-// 00008210: void vApplicationIdleHook(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 pc, Register ptr32 cpsr)
-void vApplicationIdleHook(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 pc, ptr32 cpsr)
+// 00008210: void vApplicationIdleHook(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 cpsr)
+void vApplicationIdleHook(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 cpsr)
 {
 	while (true)
 	{
-		lr = vCoRoutineSchedule(r0, r4, r5, r6, r7, r8, lr, pc, cpsr, out pc, out cpsr);
+		lr = vCoRoutineSchedule(r0, r4, r5, r6, r7, r8, lr, cpsr, out cpsr);
 		r0 = prvSetAndCheckRegisters(cpsr, out r4, out r5, out r6, out r7, out r8);
 	}
 }
@@ -2289,7 +2288,7 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 		word32 lr_n;
 		word32 r7_n;
 		word32 r0_n;
-		Z_n = prvCopyDataToQueue(r0, r1, 0x00, r3_n, r7, lr, out r0_n, out r7_n, out lr_n);
+		Z_n = prvCopyDataToQueue(r0, r1, 0x00, r7, lr, out r0_n, out r7_n, out lr_n);
 		if (*((word32) r0 + 0x0024) != 0x00)
 		{
 			word32 r0_n;
@@ -2366,7 +2365,7 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 			*((word32) r0 + 0x0C) = r1_n;
 		struct Eq_n * r4_n;
 		word32 r5_n;
-		Z = memcpy(r1, r1_n, r2_n, (word32) r3_n - 0x01, r0, r5_n, r6, r7, lr, out r4_n, out r5_n, out r6, out r7, out lr);
+		Z = memcpy(r1, r1_n, r2_n, r0, r5_n, r6, r7, lr, out r4_n, out r5_n, out r6, out r7, out lr);
 		if (r4_n->dw0010 != 0x00)
 		{
 			word32 r0_n;
@@ -2401,13 +2400,12 @@ l00008440:
 // 000084A0: void xQueueCRSendFromISR(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register Eq_n r7, Register Eq_n lr)
 void xQueueCRSendFromISR(Eq_n r0, Eq_n r1, word32 r2, Eq_n r7, Eq_n lr)
 {
-	Eq_n r3_n = *((word32) r0 + 0x003C);
-	if (*((word32) r0 + 0x0038) < r3_n)
+	if (*((word32) r0 + 0x0038) < *((word32) r0 + 0x003C))
 	{
 		word32 lr_n;
 		word32 r7_n;
 		word32 r0_n;
-		prvCopyDataToQueue(r0, r1, 0x00, r3_n, r7, lr, out r0_n, out r7_n, out lr_n);
+		prvCopyDataToQueue(r0, r1, 0x00, r7, lr, out r0_n, out r7_n, out lr_n);
 		if (r2 == 0x00 && *((word32) r0 + 0x0024) != 0x00)
 		{
 			word32 r0_n;
@@ -2438,7 +2436,7 @@ void xQueueCRReceiveFromISR(Eq_n r0, Eq_n r1, Eq_n r2)
 	word32 * r5_n;
 	word32 r7_n;
 	word32 lr_n;
-	memcpy(r1, r3_n, lr_n, r3_n, r0, r2, r1, (word32) r7_n - 0x01, lr_n, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
+	memcpy(r1, r3_n, lr_n, r0, r2, r1, (word32) r7_n - 0x01, lr_n, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
 	if (*r5_n != 0x00 || r4_n->dw0010 == 0x00)
 		return;
 	word32 r0_n;
@@ -2448,10 +2446,10 @@ void xQueueCRReceiveFromISR(Eq_n r0, Eq_n r1, Eq_n r2)
 	*r5_n = 0x01;
 }
 
-// 0000852C: void prvIdleTask(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 pc, Register ptr32 cpsr)
-void prvIdleTask(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 pc, ptr32 cpsr)
+// 0000852C: void prvIdleTask(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 cpsr)
+void prvIdleTask(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 cpsr)
 {
-	vApplicationIdleHook(r0, r4, r5, r6, r7, r8, lr, pc, cpsr);
+	vApplicationIdleHook(r0, r4, r5, r6, r7, r8, lr, cpsr);
 }
 
 // 00008534: void xTaskNotifyStateClear(Register (ptr32 Eq_n) r0, Register ptr32 cpsr)
@@ -3085,8 +3083,8 @@ bool vCoRoutineAddToDelayedList(Eq_n r0, struct Eq_n * r1)
 	return vListInsert(r1, &r1_n->dw0004 + 0x05);
 }
 
-// 00008F2C: Register word32 vCoRoutineSchedule(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 pc, Register ptr32 cpsr, Register out ptr32 pcOut, Register out ptr32 cpsrOut)
-word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 pc, ptr32 cpsr, ptr32 & pcOut, ptr32 & cpsrOut)
+// 00008F2C: Register word32 vCoRoutineSchedule(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 cpsr, Register out ptr32 cpsrOut)
+word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 cpsr, ptr32 & cpsrOut)
 {
 	struct Eq_n * r5_n = globals->ptr9088;
 	while (r5_n->dw0054 != 0x00)
@@ -3165,7 +3163,6 @@ l00008F94:
 	{
 		if (r1_n == 0x00)
 		{
-			pcOut = pc;
 			cpsrOut = cpsr;
 			return lr;
 		}
@@ -3177,7 +3174,6 @@ l00008F94:
 			{
 l00009046:
 				r5_n->dw0070 = r2_n;
-				pcOut = pc;
 				cpsrOut = cpsr;
 				return lr;
 			}
@@ -3205,10 +3201,9 @@ l00009046:
 	r5_n->ptr0000 = r0_n;
 	<anonymous> * r3_n = *r0_n;
 	word32 lr_n;
-	ptr32 pc_n;
+	word32 pc_n;
 	ptr32 cpsr_n;
 	r3_n();
-	pcOut = pc_n;
 	cpsrOut = cpsr_n;
 	return lr_n;
 }
@@ -4689,8 +4684,8 @@ void I2CSlaveDataGet()
 {
 }
 
-// 0000A5C4: FlagGroup bool memcpy(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n lr, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 lrOut)
-bool memcpy(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
+// 0000A5C4: FlagGroup bool memcpy(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n lr, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 lrOut)
+bool memcpy(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 {
 	Eq_n r5_n = r0;
 	if (r2 > 0x0F)
@@ -4699,12 +4694,12 @@ bool memcpy(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n 
 		{
 			r5_n = r0;
 l0000A630:
-			r3.u0 = 0x00;
+			Eq_n r3_n = 0x00;
 			do
 			{
-				Mem100[r5_n + r3:byte] = (byte) (word32) Mem97[r1 + r3:byte];
-				r3.u0 = (byte) r3.u0 + 0x01;
-			} while (r3 != r2);
+				Mem100[r5_n + r3_n:byte] = (byte) (word32) Mem97[r1 + r3_n:byte];
+				r3_n = (word32) r3_n + 0x01;
+			} while (r3_n != r2);
 l0000A63C:
 			ptr32 r4_n;
 			ptr32 r5_n;
@@ -4735,7 +4730,6 @@ l0000A63C:
 		ui32 r6_n = r2 - 0x10 & ~0x0F;
 		r5_n = (word32) r0 + (r6_n + 0x10);
 		r1 = (word32) r1 + (r6_n + 0x10);
-		r3 = r2 & 0x0F;
 		if ((r2 & 0x0F) > 0x03)
 		{
 			uint32 r6_n = (r2 & 0x0F) - 0x04;
@@ -4746,8 +4740,7 @@ l0000A63C:
 				*((word32) r5_n + r3_n) = *((word32) r1 + r3_n);
 				r3_n += 0x04;
 			} while (r3_n != r4_n << 0x02);
-			Eq_n r6_n = r6_n & ~0x03;
-			r3 = r6_n + 0x04;
+			union Eq_n * r6_n = r6_n & ~0x03;
 			r2 &= 0x03;
 			r1 += r6_n + 0x04;
 			r5_n += r6_n + 0x04;

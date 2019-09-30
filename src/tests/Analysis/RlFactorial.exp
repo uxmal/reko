@@ -29,12 +29,12 @@ l0C00_0018:
 	call fn0C00_000F (retsize: 2;)
 		uses: Stack +0002:wArg02 - 0x0001
 		defs: ax:ax_17
-	dx_ax_25 = wArg02 *s ax_17
-	ax_27 = SLICE(dx_ax_25, word16, 0) (alias)
+	dx_ax_24 = wArg02 *s ax_17
+	ax_26 = SLICE(dx_ax_24, word16, 0) (alias)
 l0C00_0026:
 	ax_13 = 0x0001
 l0C00_0029:
-	ax_37 = PHI((ax_27, l0C00_0018), (ax_13, l0C00_0026))
+	ax_36 = PHI((ax_26, l0C00_0018), (ax_13, l0C00_0026))
 	return
 fn0C00_000F_exit:
-	use ax_37
+	use ax_36

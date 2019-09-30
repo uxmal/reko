@@ -4,6 +4,8 @@
 
 #include "space.h"
 
+word16 g_wFFFF8000;
+word16 g_wFFFF95B3;
 word16 g_w001E = 0x0000;
 word16 g_w0020 = 0x1DAE;
 ptr16 g_ptr0022 = 0x0200;
@@ -46,10 +48,71 @@ byte g_b0601 = 0x20;
 <anonymous> g_t0D7E = <code>;
 <anonymous> g_t0DCC = <code>;
 <anonymous> g_t0FE2 = <code>;
+Eq_n g_t101E = 
+	{
+		
+		{
+			0x00
+		},
+		&g_wFFFF8000,
+		0x1DC4,
+		0x0109,
+		0x1D,
+		0x002A,
+		0x158C,
+		0x15B6,
+		0x0002,
+	};
+Eq_n g_t1020 = 
+	{
+		
+		{
+			0x00
+		},
+		&g_w1DC4,
+		0x4400,
+		0x1DC4,
+		0x43,
+		0x158C,
+		0x15B6,
+		0x0002,
+		0x15B6,
+	};
 <anonymous> g_t11EC = <code>;
 char g_b138E = '\x80';
+Eq_n g_t151E = 
+	{
+		
+		{
+			0x20
+		},
+		&g_wFFFF95B3,
+		0x00A2,
+		0x0004,
+		0x0C,
+		0x35CC,
+		0x0001,
+		0x0302,
+		0xE5C2,
+	};
+Eq_n g_t1520 = 
+	{
+		
+		{
+			0xB3
+		},
+		&g_w00A2,
+		0x1584,
+		0x0CC5,
+		0x1D,
+		0x0001,
+		0x0302,
+		0xE5C2,
+		0x0200,
+	};
 <anonymous> g_t15FF = <code>;
 <anonymous> * g_ptr1DAA = fn14A8;
+word16 g_w1DC4 = 0x3660;
 struct Eq_n g_t243E = 
 	{
 		&g_t4968,
@@ -223,127 +286,109 @@ Eq_n g_a47E4[] =
 	};
 Eq_n g_t4968 = 
 	{
-		0x4BC9,
-		0x8A48,
+		0x4B,
 		0x0001,
 		&g_w5506,
 	};
 Eq_n g_t4DAA = 
 	{
-		0x3A84,
-		0x72D8,
+		0x3A,
 		0x0000,
 		&g_w56B2,
 	};
 Eq_n g_t507E = 
 	{
-		0x12F6,
-		0x59E6,
+		0x12,
 		0x0001,
 		&g_w56C4,
 	};
 Eq_n g_t50B2 = 
 	{
-		0x0CBB,
-		0x1F40,
+		0x0C,
 		0x0000,
 		&g_w56DE,
 	};
 Eq_n g_t512C = 
 	{
-		0x4634,
-		0x4B00,
+		0x46,
 		0x0001,
 		&g_w56FE,
 	};
 Eq_n g_t517E = 
 	{
-		0x0EE5,
-		0x0C80,
+		0x0E,
 		0x0002,
 		&g_w571E,
 	};
 Eq_n g_t51DC = 
 	{
-		0x19C9,
-		0x1900,
+		0x19,
 		0x0000,
 		&g_w575A,
 	};
 Eq_n g_t526E = 
 	{
-		0x553B,
-		0x7DDA,
+		0x55,
 		0x0000,
 		&g_w5784,
 	};
 Eq_n g_t52E2 = 
 	{
-		0x780C,
-		0x7DDA,
+		0x78,
 		0x0000,
 		&g_w57AC,
 	};
 Eq_n g_t530A = 
 	{
-		0x2310,
-		0x4D5C,
+		0x23,
 		0x0002,
 		&g_w57C0,
 	};
 Eq_n g_t5330 = 
 	{
-		0x14A5,
-		0x0910,
+		0x14,
 		0x0000,
 		&g_w57D4,
 	};
 Eq_n g_t5344 = 
 	{
-		0x666B,
-		0x3B6E,
+		0x66,
 		0x0002,
 		&g_w57D8,
 	};
 Eq_n g_t5354 = 
 	{
-		0x2E91,
-		0x6549,
+		0x2E,
 		0x0001,
 		&g_w57E4,
 	};
 Eq_n g_t5368 = 
 	{
-		0x70B6,
-		0x79E0,
+		0x70,
 		0x0000,
 		&g_w57E8,
 	};
 Eq_n g_t537A = 
 	{
-		0x666B,
-		0x6040,
+		0x66,
 		0x0004,
 		&g_w5808,
 	};
 Eq_n g_t53B0 = 
 	{
-		0x6040,
-		0x0000,
+		0x60,
 		0x0002,
 		&g_w5864,
 	};
 Eq_n g_t53C0 = 
 	{
-		0x8CC3,
-		0xC800,
+		0x8C,
 		0x0000,
 		&g_w586E,
 	};
 Eq_n g_t53D8 = 
 	{
-		0x8CBF,
-		0xC030,
+		0x8C,
 		0x0000,
 		&g_w5874,
 	};

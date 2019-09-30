@@ -1,8 +1,8 @@
-word32 _init(word32 r4, word32 r10, word32 lr, word32 pc, ptr32 & r4Out, ptr32 & r10Out, ptr32 & pcOut)
+word32 _init(ptr32 & r10Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] pc:[0..31] r10:[0..31] r4:[0..31]
-// LiveOut: pc r0 r10 r4
+// MayUse: 
+// LiveOut: r10 r4
 // Trashed: NZCV lr pc r0 r10 r2 r3 r4
 // Preserved: sp
 _init_entry:
@@ -11,15 +11,11 @@ _init_entry:
 // SymbolicIn:
 
 l000082F0:
-	word32 lr_8
-	word32 pc_9
-	word32 r10_10 = call_gmon_start(r10, lr, pc, out lr_8, out pc_9)
-	word32 r0_16 = frame_dummy(pc_9)
-	word32 pc_24
-	r4Out = __do_global_ctors_aux(r4, lr_8, pc_9, out pc_24)
-	r10Out = r10_10
-	pcOut = pc_24
-	return r0_16
+	word32 r10_8 = call_gmon_start()
+	frame_dummy()
+	word32 r4_24 = __do_global_ctors_aux()
+	r10Out = r10_8
+	return r4_24
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -98,11 +94,11 @@ l00008334:
 
 
 
-word32 call_gmon_start(word32 r10, word32 lr, word32 pc, ptr32 & lrOut, ptr32 & pcOut)
+word32 call_gmon_start()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] pc:[0..31] r10:[0..31]
-// LiveOut: lr pc r10
+// MayUse: 
+// LiveOut: r10
 // Trashed: NZCV lr pc r10 r3
 // Preserved: sp
 call_gmon_start_entry:
@@ -120,21 +116,16 @@ l0000836C:
 
 l00008388:
 	word32 r10_16
-	word32 lr_17
-	word32 pc_19
+	word32 pc_18
 	call r3_11 (retsize: 0;)
-		uses: lr:0x00008390,pc:pc,r10:r10_10,r3:r3_11,sp:fp - 8,Stack +0000:r10,Stack +0004:lr
-		defs: lr:lr_17,pc:pc_19,r10:r10_16
-	lrOut = lr_17
-	pcOut = pc_19
+		uses: lr:0x00008390,pc:pc_18,r10:r10_10
+		defs: pc:pc_18,r10:r10_16
 	return r10_16
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008384_1:
-	lrOut = lr
-	pcOut = pc
 	return r10
 // DataOut:
 // DataOut (flags):
@@ -147,10 +138,10 @@ call_gmon_start_exit:
 
 
 
-void __do_global_dtors_aux(word32 r4, word32 r5, word32 lr, word32 pc)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] pc:[0..31] r4:[0..31] r5:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: NZCV lr pc r2 r3 r4 r5
 // Preserved: sp
@@ -184,8 +175,11 @@ l000083E8:
 l000083C4:
 	word32 r3_24 = Mem8[r4_14:word32]
 	Mem26[r4_14:word32] = r3_24 + 0x00000004
+	word32 pc_32
+	word32 r2_34
 	call r2_16 (retsize: 0;)
-		uses: lr:0x000083D8,pc:pc,r2:r2_16,r3:r3_24 + 0x00000004,r4:r4_14,r5:r5_10,sp:fp - 12,Stack +0000:r4,Stack +0004:r5,Stack +0008:lr
+		uses: lr:0x000083D8,pc:pc_32,r2:r2_34,r3:r3_24 + 0x00000004,r4:r4_14,r5:r5_10
+		defs: pc:pc_32,r2:r2_34
 	return
 // DataOut:
 // DataOut (flags):
@@ -229,11 +223,11 @@ call___do_global_dtors_aux_exit:
 
 
 
-word32 frame_dummy(word32 pc)
+void frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..31]
-// LiveOut: r0
+// MayUse: 
+// LiveOut:
 // Trashed: NZCV r0 r3
 // Preserved: pc sp
 frame_dummy_entry:
@@ -242,37 +236,35 @@ frame_dummy_entry:
 // SymbolicIn:
 
 l00008404:
-	word32 r0_4 = Mem0[0x00008424:word32]
-	branch Mem0[r0_4:word32] != 0x00000000 l00008414
+	branch Mem0[Mem0[0x00008424:word32]:word32] != 0x00000000 l00008414
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008414:
-	word32 r3_8 = Mem0[0x00008428:word32]
-	branch r3_8 != 0x00000000 l00008420
+	branch Mem0[0x00008428:word32] != 0x00000000 l00008420
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008420:
-	word32 r0_12
+	word32 pc_13
 	call fn00000000 (retsize: 0;)
-		uses: pc:pc,r0:r0_4,r3:r3_8,sp:fp
-		defs: r0:r0_12
-	return r0_12
+		uses: pc:pc_13
+		defs: pc:pc_13
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000841C_1:
-	return r0_4
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008410_1:
-	return r0_4
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -766,10 +758,10 @@ __div0_exit:
 
 
 
-void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 r10, word32 lr, word32 pc)
+void __libc_csu_init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] pc:[0..31] r10:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: NZCV lr pc r0 r1 r10 r2 r3 r4 r5 r6
 // Preserved: sp
@@ -779,21 +771,18 @@ __libc_csu_init_entry:
 // SymbolicIn:
 
 l00008654:
-	word32 pc_19
-	word32 r10_21
-	word32 r4_24
-	word32 r0_20 = _init(0x00000000, 0x00008668 + Mem12[0x000086A4:word32], lr, pc, out r4_24, out r10_21, out pc_19)
-	word32 r2_30 = Mem12[0x000086AC:word32]
-	word32 r1_31 = Mem12[r10_21 + Mem12[0x000086A8:word32]:word32]
-	word32 r3_33 = Mem12[r10_21 + r2_30:word32] - r1_31
-	branch r4_24 <u r3_33 >> 2 l00008684
+	word32 r10_20
+	word32 r4_23 = _init(out r10_20)
+	word32 r1_30 = Mem12[r10_20 + Mem12[0x000086A8:word32]:word32]
+	word32 r3_32 = Mem12[r10_20 + Mem12[0x000086AC:word32]:word32] - r1_30
+	branch r4_23 <u r3_32 >> 2 l00008684
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008684:
-	call Mem12[r1_31 + (r4_24 << 2):word32] (retsize: 0;)
-		uses: lr:0x00008694,pc:pc_19,r0:r0_20,r1:r1_31,r10:r10_21,r2:r2_30,r3:r3_33,r4:r4_24,r5:r3_33,r6:r1_31,sp:fp - 20,Stack +0000:r4,Stack +0004:r5,Stack +0008:r6,Stack +000C:r10,Stack +0010:lr
+	call Mem12[r1_30 + (r4_23 << 2):word32] (retsize: 0;)
+		uses: lr:0x00008694,r10:r10_20,r4:r4_23,r5:r3_32,r6:r1_30
 	return
 // DataOut:
 // DataOut (flags):
@@ -812,10 +801,10 @@ __libc_csu_init_exit:
 
 
 
-void __libc_csu_fini(word32 r4, word32 r5, word32 r10, word32 lr, word32 pc)
+void __libc_csu_fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] pc:[0..31] r10:[0..31] r4:[0..31] r5:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: NZCV lr pc r1 r10 r2 r3 r4 r5
 // Preserved: sp
@@ -826,9 +815,8 @@ __libc_csu_fini_entry:
 
 l000086B0:
 	word32 r10_15 = 0x000086C8 + Mem10[0x00008700:word32]
-	word32 r2_14 = Mem10[0x00008708:word32]
 	word32 r1_16 = Mem10[r10_15 + Mem10[0x00008704:word32]:word32]
-	word32 r3_18 = Mem10[r10_15 + r2_14:word32] - r1_16
+	word32 r3_18 = Mem10[r10_15 + Mem10[0x00008708:word32]:word32] - r1_16
 	word32 r4_21 = (r3_18 >> 2) - 0x00000001
 	branch r3_18 >> 2 == 0x00000000 l000086F8
 // DataOut:
@@ -841,7 +829,7 @@ l000086F8:
 // SymbolicIn:
 
 l000086FC_thunk__fini:
-	_fini(r4, r5, lr, pc)
+	_fini()
 	return
 // DataOut:
 // DataOut (flags):
@@ -849,7 +837,7 @@ l000086FC_thunk__fini:
 
 l000086E0:
 	call Mem10[r1_16 + (r4_21 << 2):word32] (retsize: 0;)
-		uses: lr:0x000086EC,pc:pc,r1:r1_16,r10:r10_15,r2:r2_14,r3:r3_18,r4:r4_21,r5:r1_16,sp:fp - 16,Stack +0000:r4,Stack +0004:r5,Stack +0008:r10,Stack +000C:lr
+		uses: lr:0x000086EC,r10:r10_15,r4:r4_21,r5:r1_16
 	return
 // DataOut:
 // DataOut (flags):
@@ -862,11 +850,11 @@ __libc_csu_fini_exit:
 
 
 
-word32 __do_global_ctors_aux(word32 r4, word32 lr, word32 pc, ptr32 & pcOut)
+word32 __do_global_ctors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] pc:[0..31] r4:[0..31]
-// LiveOut: pc r4
+// MayUse: 
+// LiveOut: r4
 // Trashed: NZCV lr pc r2 r3 r4
 // Preserved: sp
 __do_global_ctors_aux_entry:
@@ -884,18 +872,16 @@ l0000870C:
 
 l00008724:
 	word32 r4_16
-	word32 pc_20
+	word32 pc_19
 	call r2_9 (retsize: 0;)
-		uses: lr:0x00008730,pc:pc,r2:r2_9,r3:r2_9,r4:r3_8 - 0x00000004,sp:fp - 8,Stack +0000:r4,Stack +0004:lr
-		defs: pc:pc_20,r4:r4_16
-	pcOut = pc_20
+		uses: lr:0x00008730,pc:pc_19,r3:r2_9,r4:r3_8 - 0x00000004
+		defs: pc:pc_19,r4:r4_16
 	return r4_16
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008720_1:
-	pcOut = pc
 	return r4
 // DataOut:
 // DataOut (flags):
@@ -933,10 +919,10 @@ call___do_global_ctors_aux_exit:
 
 
 
-void _fini(word32 r4, word32 r5, word32 lr, word32 pc)
+void _fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] pc:[0..31] r4:[0..31] r5:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: NZCV lr pc r2 r3 r4 r5
 // Preserved: sp
@@ -946,7 +932,7 @@ _fini_entry:
 // SymbolicIn:
 
 l0000874C:
-	__do_global_dtors_aux(r4, r5, lr, pc)
+	__do_global_dtors_aux()
 	return
 // DataOut:
 // DataOut (flags):

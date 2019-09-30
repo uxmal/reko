@@ -4,4 +4,7 @@
 
 #include "IncorrectUserSignature.h"
 
+cdecl_class * g_ptrBADDCAFE;
+int32 g_dwBADDCB02;
+int32 g_dwBADDCB06;
 

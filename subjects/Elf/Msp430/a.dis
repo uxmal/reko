@@ -537,14 +537,14 @@ l000043D6:
 // SymbolicIn:
 
 l000043AC:
-	word20 r15_27
+	word20 r15_26
 	branch 0x0200 != 0x0000 l000043CA
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000043CA:
-	sr = x_putchar(pc, sr, 0x0064, r11_12, out r15_27)
+	sr = x_putchar(pc, sr, 0x0064, r11_12, out r15_26)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -556,14 +556,14 @@ l000043B2:
 // SymbolicIn:
 
 l000043B8:
-	Mem39[0x007F:ptr16] = r11_12
-	r15_27 = 0x0001
+	Mem38[0x007F:ptr16] = r11_12
+	r15_26 = 0x0001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000043BE:
-	branch r15_27 == 0x00000 l000043C6
+	branch r15_26 == 0x00000 l000043C6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

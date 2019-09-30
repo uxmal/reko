@@ -4,18 +4,15 @@
 
 #include "test.h"
 
-// 00000588: Register word32 _init(Register word32 ra)
-word32 _init(word32 ra)
+// 00000588: void _init(Register word32 ra)
+void _init(word32 ra)
 {
 	if (__gmon_start__ == 0x00)
 	{
 		ptr32 r25_n = *(ptr32 *) 0x00020A4C;
-		word32 r2_n;
 		(r25_n + 2004)();
 		ptr32 r25_n = *(ptr32 *) 0x00020A4C;
-		word32 r2_n;
 		(r25_n + 0x0970)();
-		return r2_n;
 	}
 	else
 		__gmon_start__();
@@ -34,8 +31,7 @@ void __start(word32 r2, word32 dwArg00)
 // 00000670: void deregister_tm_clones()
 void deregister_tm_clones()
 {
-	Eq_n r2_n = globals->t10AA4;
-	if (r2_n == 68228)
+	if (globals->t10AA4 == 68228)
 		return;
 	<anonymous> * r25_n = globals->ptr10AE4;
 	if (r25_n == null)
@@ -47,8 +43,7 @@ void deregister_tm_clones()
 void register_tm_clones()
 {
 	Eq_n r5_n = globals->t10AA4 - 68228 >> 0x02;
-	Eq_n r5_n = (word32) r5_n + (r5_n >> 0x1F);
-	if (r5_n >> 0x01 == 0x00)
+	if ((r5_n >>u 0x1F) + r5_n >> 0x01 == 0x00)
 		return;
 	<anonymous> * r25_n = globals->ptr10AD4;
 	if (r25_n == null)
@@ -56,14 +51,15 @@ void register_tm_clones()
 	r25_n();
 }
 
-// 000006F4: void __do_global_dtors_aux(Register word32 r3, Register word32 r4, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 ra)
-void __do_global_dtors_aux(word32 r3, word32 r4, word32 r16, word32 r17, word32 r18, word32 r19, word32 ra)
+// 000006F4: void __do_global_dtors_aux(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra)
+void __do_global_dtors_aux(word32 r16, word32 r17, word32 r18, word32 ra)
 {
 	if ((word32) globals->b10AF0 == 0x00)
 	{
 		if (__cxa_finalize != 0x00)
 		{
 			word32 r2_n = globals->dw10AAC;
+			word32 r3_n;
 			__cxa_finalize();
 		}
 		Eq_n r2_n = globals->t10AF4;
@@ -74,6 +70,7 @@ void __do_global_dtors_aux(word32 r3, word32 r4, word32 r16, word32 r17, word32 
 			globals->t10AF4 = r2_n;
 			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
 			<anonymous> * r25_n = *r2_n;
+			word32 r4_n;
 			r25_n();
 			r2_n = globals->t10AF4;
 		}
@@ -102,10 +99,10 @@ void main()
 	r2_n = r2_n;
 }
 
-// 000008C0: void __libc_csu_init(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 ra)
-void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 ra)
+// 000008C0: void __libc_csu_init(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 ra)
+void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 ra)
 {
-	word32 r2_n = _init(ra);
+	_init(ra);
 	word32 * r16_n = globals->ptr10ABC;
 	int32 r18_n = globals->ptr10ABC - r16_n;
 	if (r18_n >> 0x02 != 0x00)
@@ -128,11 +125,9 @@ void __libc_csu_fini()
 {
 }
 
-// 00000970: void __do_global_ctors_aux(Register word32 r16, Register word32 r17, Register word32 ra)
-void __do_global_ctors_aux(word32 r16, word32 r17, word32 ra)
+// 00000970: void __do_global_ctors_aux()
+void __do_global_ctors_aux()
 {
-	ptr32 r3_n = 0x00010000;
-	int32 r2_n = -0x01;
 	<anonymous> * r25_n = globals->ptr10A60;
 	if (r25_n != (<anonymous> *) -0x01)
 	{

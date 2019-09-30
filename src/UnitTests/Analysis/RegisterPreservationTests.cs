@@ -357,7 +357,7 @@ test:
         }
 
         [Test(Description = "Processes a self-recursive program")]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.UnitTests)]
         public void Regp_Factorial()
         {
             program = Factorial.BuildSample();
@@ -385,25 +385,25 @@ l2:
 	Mem8[r63_7:word32] = r2_4
 	r1_9 = r2_4 - r1_5
 	call fact (retsize: 0;)
-		uses: r1:r1_9,r2:r2_4,r3:r3,r63:r63_7
-		defs: cc:cc_15,r1:r1_11,r2:r2_12,r3:r3_14,r63:r63_10
-	r2_16 = Mem8[r63_10:word32]
-	r63_17 = r63_10 + 0x00000004
-	r1_18 = r1_11 * r2_16
+		uses: r1:r1_9,r63:r63_7
+		defs: cc:cc_14,r1:r1_11,r2:r2_12,r3:r3_13,r63:r63_10
+	r2_15 = Mem8[r63_10:word32]
+	r63_16 = r63_10 + 0x00000004
+	r1_17 = r1_11 * r2_15
 	// succ:  m_done
 m_done:
-	r63_23 = PHI((r63_2, l1), (r63_17, l2))
-	r3_22 = PHI((r3, l1), (r3_14, l2))
-	r2_21 = PHI((r2_4, l1), (r2_16, l2))
-	r1_20 = PHI((r1_5, l1), (r1_18, l2))
-	cc_19 = PHI((cc_6, l1), (cc_15, l2))
+	r63_23 = PHI((r63_2, l1), (r63_16, l2))
+	r3_21 = PHI((r3, l1), (r3_13, l2))
+	r2_20 = PHI((r2_4, l1), (r2_15, l2))
+	r1_19 = PHI((r1_5, l1), (r1_17, l2))
+	cc_18 = PHI((cc_6, l1), (cc_14, l2))
 	return
 	// succ:  fact_exit
 fact_exit:
-	use cc_19
-	use r1_20
-	use r2_21
-	use r3_22
+	use cc_18
+	use r1_19
+	use r2_20
+	use r3_21
 	use r63_23
 
 fact:

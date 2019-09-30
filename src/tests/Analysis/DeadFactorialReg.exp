@@ -7,58 +7,56 @@ ss:ss
 Mem7: orig: Mem0
 cx:cx
     def:  def cx
-    uses: dx_ax_21 = cx *s ax_18
+    uses: dx_ax_20 = cx *s ax_17
           branch cx <= 0x0001 l0C00_001C
-          ax_18 = fn0C00_000B(cx - 0x0001)
+          ax_17 = fn0C00_000B(cx - 0x0001)
 SCZO_9: orig: SCZO
 SZO_10: orig: SZO
 ax_11: orig: ax
     def:  ax_11 = 0x0001
-    uses: ax_32 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
+    uses: ax_31 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
 si_12: orig: si
 cx_13: orig: cx
 SZO_14: orig: SZO
 sp_15: orig: sp
 cx_16: orig: cx
-ax:ax
-ax_18: orig: ax
-    def:  ax_18 = fn0C00_000B(cx - 0x0001)
-    uses: dx_ax_21 = cx *s ax_18
-Top_19: orig: Top
-SCZO_20: orig: SCZO
-dx_ax_21: orig: dx_ax
-    def:  dx_ax_21 = cx *s ax_18
-    uses: ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
-dx_22: orig: dx
-ax_23: orig: ax
-    def:  ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
-    uses: ax_32 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
-SCZO_24: orig: SCZO
-dx_31: orig: dx
-sp_26: orig: sp
-wLoc02_30: orig: wLoc02
-si_28: orig: si
-sp_29: orig: sp
-ax_32: orig: ax
-    def:  ax_32 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
-    uses: return ax_32
+ax_17: orig: ax
+    def:  ax_17 = fn0C00_000B(cx - 0x0001)
+    uses: dx_ax_20 = cx *s ax_17
+Top_18: orig: Top
+SCZO_19: orig: SCZO
+dx_ax_20: orig: dx_ax
+    def:  dx_ax_20 = cx *s ax_17
+    uses: ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
+dx_21: orig: dx
+ax_22: orig: ax
+    def:  ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
+    uses: ax_31 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
+SCZO_23: orig: SCZO
+dx_30: orig: dx
+sp_25: orig: sp
+wLoc02_29: orig: wLoc02
+si_27: orig: si
+sp_28: orig: sp
+ax_31: orig: ax
+    def:  ax_31 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
+    uses: return ax_31
+C_32: orig: C
 C_33: orig: C
 C_34: orig: C
-C_35: orig: C
-cx_36: orig: cx
-dx_37: orig: dx
+cx_35: orig: cx
+dx_36: orig: dx
 dx:dx
+O_38: orig: O
 O_39: orig: O
 O_40: orig: O
-O_41: orig: O
+S_41: orig: S
 S_42: orig: S
 S_43: orig: S
-S_44: orig: S
-Top_45: orig: Top
+Top_44: orig: Top
+Z_45: orig: Z
 Z_46: orig: Z
 Z_47: orig: Z
-Z_48: orig: Z
-sp_49: orig: sp
 // fn0C00_000B
 // Return size: 0
 word16 fn0C00_000B(word16 cx)
@@ -69,17 +67,17 @@ l0C00_000B:
 	branch cx <= 0x0001 l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	ax_18 = fn0C00_000B(cx - 0x0001)
-	dx_ax_21 = cx *s ax_18
-	ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
+	ax_17 = fn0C00_000B(cx - 0x0001)
+	dx_ax_20 = cx *s ax_17
+	ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
 	ax_11 = 0x0001
 	// succ:  l0C00_001F
 l0C00_001F:
-	ax_32 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
-	return ax_32
+	ax_31 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
+	return ax_31
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
 fp:fp
@@ -88,19 +86,18 @@ Top_3: orig: Top
 cx_4: orig: cx
 ax_5: orig: ax
     def:  ax_5 = fn0C00_000B(0x0005)
-    uses: Mem14[ds:0x0064:word16] = ax_5
+    uses: Mem13[ds:0x0064:word16] = ax_5
 Top_6: orig: Top
 cx_7: orig: cx
-dx_8: orig: dx
-S_9: orig: S
-C_10: orig: C
-Z_11: orig: Z
-O_12: orig: O
+S_8: orig: S
+C_9: orig: C
+Z_10: orig: Z
+O_11: orig: O
 ds:ds
     def:  def ds
-    uses: Mem14[ds:0x0064:word16] = ax_5
-Mem14: orig: Mem0
-    def:  Mem14[ds:0x0064:word16] = ax_5
+    uses: Mem13[ds:0x0064:word16] = ax_5
+Mem13: orig: Mem0
+    def:  Mem13[ds:0x0064:word16] = ax_5
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -109,7 +106,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_5 = fn0C00_000B(0x0005)
-	Mem14[ds:0x0064:word16] = ax_5
+	Mem13[ds:0x0064:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

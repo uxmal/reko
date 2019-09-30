@@ -56,7 +56,7 @@ fn00401050 proc
 l00401061:
 	push	ebx
 	push	esi
-	mov	esi,[esp+10]
+	mov	esi,[esp+0x10]
 	jmp	l00401070
 
 l00401070:

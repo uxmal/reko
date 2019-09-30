@@ -10,11 +10,9 @@ void fn0000(byte R1)
 	globals->b001D = 0x00;
 	byte A_n = *(byte *) 0x80F0;
 	byte R1_n;
-	byte R7_n;
 	fn4EF3();
 	globals->b0157 = 0x05;
-	bcu8 A_n = *(bcu8 *) 33002;
-	if ((A_n >> 0x02 & 0x01) == 0x00)
+	if ((*(bcu8 *) 33002 >> 0x02 & 0x01) == 0x00)
 		fn4AC0();
 }
 

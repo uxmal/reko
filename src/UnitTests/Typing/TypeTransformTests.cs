@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void TtranFactorial()
         {
             RunTest16("Fragments/factorial.asm", "Typing/TtranFactorial.txt");

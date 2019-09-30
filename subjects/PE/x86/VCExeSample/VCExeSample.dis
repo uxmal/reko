@@ -256,13 +256,13 @@ l004011E2:
 // SymbolicIn:
 
 l004011F2:
-	Mem43[Mem43[Mem43[0x00403024:word32]:word32]:word32](Mem43[0x00403024:word32], rArg04)
+	Mem42[Mem42[Mem42[0x00403024:word32]:word32]:word32](Mem42[0x00403024:word32], rArg04)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040120D:
-	test6(Mem59[0x00403018:word32], 0x00000006, 0x00000007)
+	test6(Mem58[0x00403018:word32], 0x00000006, 0x00000007)
 	return
 // DataOut:
 // DataOut (flags):
@@ -288,13 +288,13 @@ loop_test9_entry:
 // SymbolicIn:
 
 l00401230:
-	word32 dwLoc08_67 = 0x00000000
+	word32 dwLoc08_65 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401248:
-	branch Mem25[Mem25[Mem25[0x00403024:word32]:word32] + 0x00000004:word32](Mem25[0x00403024:word32], dwLoc08_67, (real64) rArg04) <= (real64) dwLoc08_67 l00401294
+	branch Mem25[Mem25[Mem25[0x00403024:word32]:word32] + 0x00000004:word32](Mem25[0x00403024:word32], dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 l00401294
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -311,13 +311,13 @@ loop_test9_exit:
 // SymbolicIn:
 
 l00401278:
-	Mem49[Mem49[Mem49[0x00403024:word32]:word32]:word32](Mem49[0x00403024:word32], (real64) rArg04)
+	Mem48[Mem48[Mem48[0x00403024:word32]:word32]:word32](Mem48[0x00403024:word32], (real64) rArg04)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040123F:
-	dwLoc08_67 = dwLoc08_67 + 0x00000001
+	dwLoc08_65 = dwLoc08_65 + 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

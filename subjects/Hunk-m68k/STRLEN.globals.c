@@ -12,8 +12,8 @@ byte g_b13A4 = 0x74;
 ptr32 g_ptr13C8 = 0x00000000;
 struct Eq_n * g_ptr13CC = null;
 struct Eq_n * g_ptr13D0 = null;
-union Eq_n * g_ptr13D4 = null;
-union Eq_n * g_ptr13D8 = null;
+struct Eq_n * g_ptr13D4 = null;
+struct Eq_n * g_ptr13D8 = null;
 Eq_n g_t13DC = 
 	{
 		0

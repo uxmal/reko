@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Analysis
                 null,
                 new Identifier(
                     "a", 
-                    new Pointer(argType, 4),
+                    new Pointer(argType, 32),
                     new StackArgumentStorage(4, PrimitiveType.Word32)));
         }
 

@@ -5,7 +5,6 @@
 #include "ls.h"
 
 word32 g_dwFFBED370;
-Eq_n g_t0001;
 Eq_n g_t4021F0 = Unexpected function type (fn void ((ptr64 void)))
 ;
 Eq_n g_t402640 = Unexpected function type (fn (ptr64 void) (int32))
@@ -13,7 +12,6 @@ Eq_n g_t402640 = Unexpected function type (fn (ptr64 void) (int32))
 Eq_n g_t4028C0 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
 <anonymous> g_t404990 = <code>;
-int32 g_dw4049D0 = -2614295;
 <anonymous> g_t409E40 = <code>;
 Eq_n g_t40A200 = Unexpected function type (fn void ((ptr64 void)))
 ;
@@ -120,7 +118,31 @@ char g_str415BC8[] = "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1";
 char g_str415C58[] = "sizeof (struct dev_ino) <= __extension__ ({ struct obstack const *__o = (&dev_ino_obstack); (unsigned) (__o->next_free - __o->object_base); })";
 char g_str415D68[] = "hash_get_n_entries (active_dir_set) == 0";
 char g_str415E6A[] = "POSIX";
-int32 g_dw415EE0 = 0;
+Eq_n g_t415EE0 = 
+	{
+		
+		{
+			0.0F
+		},
+		
+		{
+			
+			{
+				0x00, 0x00, 0x80, 0x3F, 0xCD, 0xCC, 0x4C, 0x3F, 0xF4, 0xFD, 0xB4, 0x3F, 0x00, 0x00, 0x00, 0x00, 
+			}
+		},
+		
+		{
+			
+			{
+				0xCD, 0xCC, 0x4C, 0x3F, 0xF4, 0xFD, 0xB4, 0x3F, 0x00, 0x00, 0x00, 0x00, 0xCD, 0xCC, 0xCC, 0x3D, 
+			}
+		},
+		
+		{
+			1.414F
+		},
+	};
 Eq_n g_t415EF4 = 
 	{
 		
@@ -207,67 +229,56 @@ byte g_b61A3C0 = 0x01;
 word32 g_dw61A3C4 = 0xFFFFFFFF;
 Eq_n g_t61A3D0 = 
 	{
-		0xF1
+		'ñ'
 	};
 Eq_n g_t61A3D8 = 
 	{
-		0xFB
+		'û'
 	};
 word64 g_qw61A3E0 = 0x0000000000000002;
 Eq_n g_t61A3E8 = 
 	{
-		0xE1
+		'á'
 	};
 word64 g_qw61A3F0 = 0x0000000000000001;
 byte * g_ptr61A3F8 = &g_b413C07;
-struct Eq_n g_t61A400 = 
-	{
-		
-		{
-			0x00
-		},
-		
-		{
-			0x00
-		},
-	};
 word64 g_qw61A408 = 0x0000000000000000;
 struct Eq_n g_t61A410 = 
 	{
 		
 		{
-			0x01
+			'\x01'
 		},
 		
 		{
-			0x34
+			'4'
 		},
 	};
 struct Eq_n g_t61A420 = 
 	{
 		
 		{
-			0x00
+			'\x00'
 		},
 		
 		{
-			0x00
+			'\x00'
 		},
 	};
 word64 g_qw61A450 = 0x0000000000000005;
 Eq_n g_t61A458 = 
 	{
-		0x0F
+		'\x0F'
 	};
 struct Eq_n g_t61A550 = 
 	{
 		
 		{
-			0x03
+			'\x03'
 		},
 		
 		{
-			0x4B
+			'K'
 		},
 	};
 Eq_n g_t61A560 = 
@@ -281,73 +292,77 @@ word32 g_dw61A56C = 0x00000001;
 uint64 g_qw61A570 = 0x0000000000415DF8;
 <anonymous> * g_ptr61A578 = &g_t409E40;
 word32 g_dw61A580 = 0x00000001;
+Eq_n g_t61A5A0 = 
+	{
+		0x00000006,
+		0x00000000,
+		
+		{
+			'\x00'
+		},
+		
+		{
+			'\x00'
+		},
+	};
 Eq_n g_t61A5D8 = 
 	{
-		0xE0
+		'à'
 	};
 word64 g_qw61A5E0 = 0x0000000000000100;
-word64 g_qw61A5E8 = 0x000000000061B220;
+Eq_n g_t61A5E8 = 
+	{
+		' '
+	};
 Eq_n g_t61A5F0 = 
 	{
 		1
 	};
-Eq_n g_t61A600 = 
-	{
-		&g_strC34C00
-	};
+char * g_ptr61A600 = &g_strC34C00;
 FILE * g_ptr61A610 = &g_tC34C10;
 word32 g_dw61A620 = 0x00C34C20;
 Eq_n g_t61A640 = 
 	{
-		0x40
+		'@'
 	};
 Eq_n g_t61A648 = 
 	{
-		0x48
+		'H'
 	};
 FILE * g_ptr61A650 = &g_tC34C50;
 Eq_n g_t61A660 = 
 	{
-		0x00
+		'\x00'
 	};
 word64 g_qw61A668 = 0x0000000000000000;
 word64 g_qw61A670 = 0x0000000000000000;
 word64 g_qw61A678 = 0x0000000000000000;
-Eq_n g_t61A748 = 
-	{
-		0x00
-	};
+up64 g_qw61A748 = 0x0000000000000000;
 Eq_n g_t61AF00 = 
 	{
 	};
 word64 g_qw61AF10 = 0x0000000000000000;
-Eq_n g_t61AF18 = 
-	{
-		0x00
-	};
+union Eq_n * g_ptr61AF18 = null;
 int64 g_qw61AF20 = 0;
 Eq_n g_t61AF60 = 
 	{
 	};
-Eq_n g_t61AF78 = 
-	{
-		0x00
-	};
+union Eq_n * g_ptr61AF78 = null;
 word64 * g_ptr61AF80 = null;
 Eq_n g_t61AFC0 = 
 	{
 	};
 Eq_n g_t61B018 = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t61B020 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B028 = 
 	{
-		0x00
+		'\x00'
 	};
 word32 g_dw61B030 = 0x00000000;
 word32 g_dw61B034 = 0x00000000;
@@ -359,26 +374,20 @@ byte g_b61B0C0 = 0x00;
 byte g_b61B0C1 = 0x00;
 Eq_n g_t61B0C8 = 
 	{
-		0x00
+		'\x00'
 	};
 byte g_b61B0D0 = 0x00;
 uint64 g_qw61B0D8 = 0x0000000000000000;
-Eq_n g_t61B0E0 = 
-	{
-		0x00
-	};
-Eq_n g_t61B0E8 = 
-	{
-		0x00
-	};
+struct Eq_n * g_ptr61B0E0 = null;
+struct Eq_n * g_ptr61B0E8 = null;
 byte g_b61B0F0 = 0x00;
 Eq_n g_t61B0F8 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B100 = 
 	{
-		0x00
+		'\x00'
 	};
 word32 g_dw61B108 = 0x00000000;
 byte g_b61B10C = 0x00;
@@ -389,11 +398,11 @@ byte g_b61B114 = 0x00;
 byte g_b61B115 = 0x00;
 Eq_n g_t61B118 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B120 = 
 	{
-		0x00
+		'\x00'
 	};
 byte g_b61B128 = 0x00;
 byte g_b61B129 = 0x00;
@@ -418,27 +427,27 @@ Eq_n g_t61B154 =
 	};
 Eq_n g_t61B158 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B15C = 
 	{
-		0x00
+		'\x00'
 	};
 int32 g_dw61B160 = 0;
 int32 g_dw61B164 = 0;
 int32 g_dw61B168 = 0;
 Eq_n g_t61B16C = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B170 = 
 	{
-		0x00
+		'\x00'
 	};
 int32 g_dw61B174 = 0;
 Eq_n g_t61B178 = 
 	{
-		0x00
+		'\x00'
 	};
 byte g_b61B17C = 0x00;
 byte g_b61B17D = 0x00;
@@ -449,49 +458,61 @@ Eq_n g_t61B188 =
 	};
 Eq_n g_t61B190 = 
 	{
-		0x00
+		'\x00'
 	};
 byte g_b61B198 = 0x00;
 Eq_n g_t61B1A0 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B1A8 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B1B0 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B1B8 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B1C0 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B1C8 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B1E8 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B1F8 = 
 	{
-		0x00
+		'\x00'
 	};
 Eq_n g_t61B200 = 
 	{
-		0x00
+		'\x00'
 	};
-word32 g_dw61B320 = 0x00000000;
+Eq_n g_t61B320 = 
+	{
+		0x00000000,
+		0x00000000,
+		
+		{
+			'\x00'
+		},
+		
+		{
+			'\x00'
+		},
+	};
 Eq_n g_t61B358 = 
 	{
-		0x00
+		'\x00'
 	};
 char g_strC34C00[];
 Eq_n g_tC34C10;

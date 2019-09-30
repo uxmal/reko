@@ -54,10 +54,10 @@ fn00401084_exit:
 
 
 
-void fn0040110B(word32 eax)
+void fn0040110B()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  eax:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: SCZO eax Top
 // Preserved: esp
@@ -73,21 +73,19 @@ l0040110B:
 // SymbolicIn:
 
 l00401114:
-	word32 v5_7 = Mem0[0x0040208B:word32]
-	word32 eax_12
-	int8 Top_13
+	word32 eax_11
 	call __CRTL_TLS_GetValue (retsize: 4;)
-		uses: eax:eax,esp:fp - 4,Stack +0004:v5_7,Top:0
-		defs: eax:eax_12,Top:Top_13
-	branch eax_12 == 0x00000000 l0040113C
+		uses: eax:eax_11,esp:fp - 4,Stack +0004:Mem0[0x0040208B:word32]
+		defs: eax:eax_11
+	branch eax_11 == 0x00000000 l0040113C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401123:
-	word32 eax_23 = GetProcessHeap()
+	word32 eax_22 = GetProcessHeap()
 	call __CRTL_TLS_ExitThread (retsize: 4;)
-		uses: eax:HeapFree(eax_23, 0x00000008, eax_12),esp:fp - 4,Stack +0000:v5_7,Stack +0004:Mem25[0x0040208B:word32],Stack +FFFFFFFC:eax_23,Top:Top_13
+		uses: eax:HeapFree(eax_22, 0x00000008, eax_11),esp:fp - 4,Stack +0000:0x00000008,Stack +0004:Mem24[0x0040208B:word32],Stack +FFFFFFFC:eax_22
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

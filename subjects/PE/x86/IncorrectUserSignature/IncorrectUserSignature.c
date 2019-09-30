@@ -10,8 +10,11 @@ void test6(cdecl_class * c, int32 a, int32 b)
 	// Incorrect user-defined signature
 	// "void sum(int, int)" is set instead of "int sum(int, int)"
 	// Reko should emit code which gives chance for user to find this mistake
-	c->vtbl->sum(c, a, b);
-	word32 eax_n = <invalid>;
-	c->vtbl->method04(c, eax_n);
+	c->vtbl->sum(*(cdecl_class **) ~0x45223501, *(int32 *) ~0x452234FD, *(int32 *) ~0x452234F9);
+	struct Eq_n * eax_n = (struct Eq_n *) <invalid>;
+	struct Eq_n * esp_n = (struct Eq_n *) <invalid>;
+	esp_n->ptr0008 = eax_n;
+	esp_n->ptr0004 = c;
+	c->vtbl->method04(*(struct Eq_n *) <invalid>, *(struct Eq_n *) <invalid>);
 }
 

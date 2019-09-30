@@ -93,7 +93,7 @@ l02A2:
 				union Eq_n * r5_n;
 				Eq_n r0_n = fn0486(r0_n, r4_n, r5, out r4_n, out r5_n);
 				globals->w0F16 = 0x02;
-				r0_n = fn0470(r0_n, r4_n, r5_n, out r4_n);
+				r4_n = fn0470(r0_n, r4_n, r5_n);
 				globals->w0F18 = 0x78;
 			}
 			if (globals->w0EF8 == 0x00)
@@ -164,9 +164,9 @@ l03E6:
 			word16 r5_n;
 			Eq_n r0_n = fn0AB6(r0_n, r4_n, r5_n, out r4_n, out r5_n);
 			*(sp_n - 0x03) = r5_n;
-			word16 r5_n;
 			word16 r0_n;
 			word16 r4_n;
+			word16 r5_n;
 			fn0AE8(r0_n, r4_n, &globals->ptr0420, *(sp_n - 0x03), out r0_n, out r4_n, out r5_n);
 			return;
 		}
@@ -186,18 +186,17 @@ l0392:
 	(*((char *) globals->a02CC + (r1_n - 711) * 0x02))();
 }
 
-// 0470: Register Eq_n fn0470(Register Eq_n r0, Register (ptr16 byte) r4, Register (ptr16 Eq_n) r5, Register out ptr16 r4Out)
-Eq_n fn0470(Eq_n r0, byte * r4, union Eq_n * r5, ptr16 & r4Out)
+// 0470: Register (ptr16 byte) fn0470(Register Eq_n r0, Register (ptr16 byte) r4, Register (ptr16 Eq_n) r5)
+byte * fn0470(Eq_n r0, byte * r4, union Eq_n * r5)
 {
 	byte * r4_n;
 	union Eq_n * r5_n;
 	Eq_n r0_n = fn0AB6(r0, r4, r5, out r4_n, out r5_n);
-	Eq_n r0_n;
-	ptr16 r4_n;
+	byte * r4_n;
+	word16 r0_n;
 	word16 r5_n;
 	fn0AE8(r0_n, r4_n, &globals->ptr0482, r5_n, out r0_n, out r4_n, out r5_n);
-	r4Out = r4_n;
-	return r0_n;
+	return r4_n;
 }
 
 // 0486: Register Eq_n fn0486(Register Eq_n r0, Register (ptr16 byte) r4, Register (ptr16 Eq_n) r5, Register out ptr16 r4Out, Register out ptr16 r5Out)

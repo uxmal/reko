@@ -5,12 +5,14 @@
 #include "unzip.h"
 
 Eq_n g_t0001;
-Eq_n g_t0002;
+word16 g_w0002;
 Eq_n g_t0004;
 Eq_n g_t0007;
+Eq_n g_t0033;
 Eq_n g_t004F;
-Eq_n g_a0974[];
-word32 g_dw0A20;
+Eq_n g_t0050;
+byte g_b0100;
+ui32 g_a0974[];
 word32 g_dw0A38;
 byte g_b1001 = 0x00;
 byte g_b1601 = 0x4D;
@@ -19,86 +21,10 @@ byte g_b1A01 = 0x00;
 byte g_b1C01 = 0x69;
 byte g_b1E01 = 0x72;
 byte g_b2001 = 0x74;
-struct Eq_n g_t4001 = 
-	{
-		0x00,
-		0x00,
-		
-		{
-			0x00
-		},
-		0x00,
-		
-		{
-			0x00
-		},
-		0x0000,
-	};
-struct Eq_n g_t4341 = 
-	{
-		0x00,
-		0x00,
-		
-		{
-			0x00
-		},
-		0x00,
-		
-		{
-			0x00
-		},
-		0x0000,
-	};
-struct Eq_n g_t4453 = 
-	{
-		0x00,
-		0x00,
-		
-		{
-			0x00
-		},
-		0x00,
-		
-		{
-			0x00
-		},
-		0x0000,
-	};
-struct Eq_n g_t4704 = 
-	{
-		0x00,
-		0x00,
-		
-		{
-			0x00
-		},
-		0x00,
-		
-		{
-			0x00
-		},
-		0x0000,
-	};
-struct Eq_n g_t470F = 
-	{
-		0x00,
-		0x00,
-		
-		{
-			0x00
-		},
-		0x00,
-		
-		{
-			0x00
-		},
-		0x0000,
-	};
 ui32 * g_ptr13206 = &g_dw3C301267;
 ptr32 g_ptr19248 = 0x0000040C;
 ptr32 g_ptr1924C = 0x0000006C;
 ptr32 g_ptr19250 = 0x0000003C;
-word32 g_dw19254 = 0x00000054;
 word32 g_dw19258 = 0x00000084;
 ptr32 g_ptr19260 = 0x0000027C;
 ptr32 g_ptr19268 = 0x00000074;
@@ -133,8 +59,7 @@ word32 g_dw19300 = 0x00001800;
 word32 g_dw19304 = 0x00001600;
 word32 g_dw1930C = 0x00001000;
 ptr32 g_ptr1932C = 0x00000908;
-Eq_n (* g_ptr1934C)[] = &g_a0974;
-word32 g_dw19350 = 0x00000A2C;
+ui32 (* g_ptr1934C)[] = &g_a0974;
 byte * g_ptr19354 = &g_b1001;
 byte * g_ptr19358 = &g_b1601;
 byte * g_ptr1935C = &g_b1C01;
@@ -142,7 +67,6 @@ byte * g_ptr19360 = &g_b1A01;
 byte * g_ptr19364 = &g_b1801;
 byte * g_ptr19368 = &g_b2001;
 byte * g_ptr1936C = &g_b1E01;
-word32 * g_ptr19370 = &g_dw0A20;
 word32 * g_ptr19374 = &g_dw0A38;
 ui32 g_dw3C301267;
 

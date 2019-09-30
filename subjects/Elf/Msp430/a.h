@@ -154,7 +154,7 @@ Eq_93: (union "Eq_93" (byte u0) (ptr16 u1) (word20 u2))
 	T_455 (in 0x000A : word16)
 	T_458 (in 0x000D : word16)
 	T_470 (in r15 : Eq_93)
-	T_481 (in Mem39[0x007F:ptr16] : ptr16)
+	T_481 (in Mem38[0x007F:ptr16] : ptr16)
 	T_518 (in Mem58[0x007F:ptr16] : ptr16)
 	T_613 (in bLoc0A : byte)
 	T_615 (in Mem34[0x007F:ptr16] : ptr16)
@@ -582,7 +582,7 @@ Eq_444: (union "Eq_444" (cup16 u0) ((ptr24 Eq_3879) u1) (Eq_3880 u2))
 	T_3560 (in r12_136 + 0x0001 : word20)
 	T_3562 (in r13_13 + 0x0001 : word20)
 Eq_461: (union "Eq_461" (word20 u0) (word16 u1))
-	T_461 (in r15_27 : Eq_461)
+	T_461 (in r15_26 : Eq_461)
 	T_482 (in 0x0001 : word16)
 	T_484 (in 0x00000 : word20)
 Eq_465: (fn ui20 ((ptr20 Eq_2), ui20, Eq_443, Eq_93, Eq_471))
@@ -590,7 +590,7 @@ Eq_465: (fn ui20 ((ptr20 Eq_2), ui20, Eq_443, Eq_93, Eq_471))
 	T_466 (in signature of x_putchar : void)
 Eq_471: (union "Eq_471" (ptr16 u0) (word20 u1))
 	T_471 (in r15Out : Eq_471)
-	T_473 (in out r15_27 : word16)
+	T_473 (in out r15_26 : word16)
 	T_542 (in 0x0001 : word16)
 Eq_475: (union "Eq_475" (cui16 u0) (ptr16 u1))
 	T_475 (in 0079 : ptr16)
@@ -4144,7 +4144,7 @@ T_460: (in putchar(pc, sr, 0x000D, out r11_12) : word20)
   Class: Eq_3
   DataType: ui20
   OrigDataType: word20
-T_461: (in r15_27 : Eq_461)
+T_461: (in r15_26 : Eq_461)
   Class: Eq_461
   DataType: Eq_461
   OrigDataType: word16
@@ -4192,11 +4192,11 @@ T_472: (in 0x0064 : word16)
   Class: Eq_443
   DataType: word20
   OrigDataType: (union (word20 u1) (word16 u0))
-T_473: (in out r15_27 : word16)
+T_473: (in out r15_26 : word16)
   Class: Eq_471
   DataType: Eq_471
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_474: (in x_putchar(pc, sr, 0x0064, r11_12, out r15_27) : word20)
+T_474: (in x_putchar(pc, sr, 0x0064, r11_12, out r15_26) : word20)
   Class: Eq_3
   DataType: ui20
   OrigDataType: word20
@@ -4224,7 +4224,7 @@ T_480: (in 007F : ptr16)
   Class: Eq_480
   DataType: (ptr16 Eq_93)
   OrigDataType: (ptr16 (struct (0 T_481 t0000)))
-T_481: (in Mem39[0x007F:ptr16] : ptr16)
+T_481: (in Mem38[0x007F:ptr16] : ptr16)
   Class: Eq_93
   DataType: Eq_93
   OrigDataType: ptr16
@@ -4240,7 +4240,7 @@ T_484: (in 0x00000 : word20)
   Class: Eq_461
   DataType: word20
   OrigDataType: word20
-T_485: (in r15_27 == 0x00000 : bool)
+T_485: (in r15_26 == 0x00000 : bool)
   Class: Eq_485
   DataType: bool
   OrigDataType: bool

@@ -132,13 +132,6 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.IntegrationTests)]
-		public void CceAsciiHex()
-		{
-			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
-		}
-
-		[Test]
-        [Category(Categories.IntegrationTests)]
         public void CceAddSubCarries()
 		{
 			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CceAddSubCarries.txt");

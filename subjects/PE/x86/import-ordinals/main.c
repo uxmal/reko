@@ -10,12 +10,11 @@ ptr32 fn00401000()
 	return 0x00403378;
 }
 
-// 00401010: void fn00401010(Register (ptr32 word32) eax, Register word32 ecx, Register ptr32 ebp, Register (ptr32 word32) esi, Stack word32 dwArg04)
-void fn00401010(word32 * eax, word32 ecx, ptr32 ebp, word32 * esi, word32 dwArg04)
+// 00401010: void fn00401010(Register ptr32 ebp, Register (ptr32 word32) esi, Stack word32 dwArg04)
+void fn00401010(ptr32 ebp, word32 * esi, word32 dwArg04)
 {
 	ptr32 * esp_n;
 	word32 eax_n;
-	int8 Top_n;
 	_acrt_iob_func();
 	*esp_n = fp + 0x08;
 	*(esp_n - 0x04) = 0x00;
@@ -27,31 +26,24 @@ void fn00401010(word32 * eax, word32 ecx, ptr32 ebp, word32 * esi, word32 dwArg0
 	_stdio_common_vfprintf();
 }
 
-// 00401040: Register word32 fn00401040(Register word32 eax, Register word32 ecx, Register (ptr32 Eq_n) ebp, Register (ptr32 word32) esi)
-word32 fn00401040(word32 eax, word32 ecx, struct Eq_n * ebp, word32 * esi)
+// 00401040: Register word32 fn00401040(Register word32 ecx, Register (ptr32 Eq_n) ebp, Register (ptr32 word32) esi)
+word32 fn00401040(word32 ecx, struct Eq_n * ebp, word32 * esi)
 {
 	ptr32 esp_n;
-	word32 eax_n;
-	int8 Top_n;
 	driver.dll!Ordinal_n();
 	*(esp_n - 0x04) = 0x03;
 	ptr32 esp_n;
-	word32 eax_n;
-	int8 Top_n;
 	driver.dll!Ordinal_n();
 	*(esp_n - 0x04) = 0x01;
 	ptr32 esp_n;
-	word32 eax_n;
-	int8 Top_n;
 	driver.dll!Ordinal_n();
 	*(esp_n - 0x04) = 0x05;
 	ptr32 esp_n;
-	word32 ecx_n;
 	driver.dll!Ordinal_n();
 	*(esp_n - 0x04) = ecx;
 	*(esp_n - 0x08) = *driver.dll!Ordinal_n;
 	*(esp_n - 0x0C) = 0x00402118;
-	fn00401010(driver.dll!Ordinal_n, ecx_n, fp - 0x04, esi, *(esp_n - 0x0C));
+	fn00401010(fp - 0x04, esi, *(esp_n - 0x0C));
 	return 0x00;
 }
 
@@ -73,14 +65,13 @@ l00401172:
 	*(ebp_n - 0x04) &= 0x00;
 	word32 edx_n;
 	*(ebp_n - 0x24) = (byte) (uint32) (uint8) fn0040143A(out edx_n);
-	int8 Top_n = 0x00;
 	struct Eq_n * ebp_n = ebp_n;
 	uip32 eax_n = globals->dw403334;
 	word32 ebx_n = SEQ(ebx_24_8_n, 0x00);
 	if (eax_n != 0x01)
 	{
-		struct Eq_n * esp_n;
 		Eq_n eax_n;
+		struct Eq_n * esp_n;
 		if (eax_n == 0x00)
 		{
 			globals->dw403334 = 0x01;
@@ -107,25 +98,21 @@ l00401172:
 		union Eq_n * esp_n = esp_n - 0x04;
 		*esp_n = *(ebp_n - 0x24);
 		fn004015C9(*esp_n);
-		Eq_n ecx_n = *esp_n;
 		ptr32 esp_n = (char *) esp_n + 0x04;
 		Eq_n eax_n = fn00401761();
 		Eq_n edi_n = 0x00;
 		if (*eax_n != 0x00)
 		{
 			*esp_n = (union Eq_n *) eax_n;
-			<anonymous> ** esi_n;
-			Eq_n eax_n = fn0040153F(ebx_n, eax_n, 0x00, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n);
-			ecx_n = *esp_n;
 			esp_n = (char *) esp_n + 0x04;
-			if ((byte) eax_n != 0x00)
+			<anonymous> ** esi_n;
+			if ((byte) (uint32) (uint8) fn0040153F(ebx_n, eax_n, 0x00, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
 				*esp_n = (union Eq_n *) edi_n;
 				*(esp_n - 0x04) = 0x02;
 				*(esp_n - 0x08) = (union Eq_n *) edi_n;
 				<anonymous> * esi_n = *esi_n;
 				fn00401972();
-				int8 Top_n = <invalid>;
 				esi_n();
 			}
 		}
@@ -135,28 +122,16 @@ l00401172:
 		{
 			union Eq_n * esp_n = esp_n - 0x04;
 			*esp_n = (union Eq_n *) eax_n;
-			eax_n = fn0040153F(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n);
-			ecx_n = *esp_n;
-			esp_n = (char *) esp_n + 0x04;
-			if ((byte) eax_n != 0x00)
+			if ((byte) (uint32) (uint8) fn0040153F(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
 				*esp_n = (union Eq_n *) *esi_n;
-				union Eq_n * esp_n;
 				register_thread_local_exe_atexit_callback();
-				ecx_n = *esp_n;
-				esp_n = (char *) esp_n + 0x04;
 			}
 		}
-		word32 esp_n;
-		word32 ecx_n;
 		word32 * eax_n;
-		int8 Top_n;
 		word32 edx_n;
 		_p___argv();
-		word32 esp_n;
-		word32 ecx_n;
 		word32 * eax_n;
-		int8 Top_n;
 		word32 edx_n;
 		_p___argc();
 		ptr32 esp_n;
@@ -167,13 +142,10 @@ l00401172:
 		*(esp_n - 0x04) = eax_n;
 		*(esp_n - 0x08) = *eax_n;
 		*(esp_n - 0x0C) = *eax_n;
-		Eq_n eax_n = fn00401040(eax_n, ecx_n, ebp_n, eax_n);
-		word32 ecx_n;
-		word32 eax_n = fn0040188B(out ecx_n);
+		Eq_n eax_n = fn00401040(ecx_n, ebp_n, eax_n);
 		byte bl_n = (byte) ebx_n;
-		int8 Top_n = <invalid>;
 		ptr32 esp_n = esp_n;
-		if ((byte) eax_n == 0x00)
+		if ((byte) (uint32) (uint8) fn0040188B() == 0x00)
 		{
 			*(esp_n - 0x04) = (uint32) eax_n;
 			exit(*(esp_n - 0x04));
@@ -264,8 +236,8 @@ byte fn0040146F(word32 edx, word32 dwArg04)
 	return (byte) SEQ(eax_24_8_n, 0x00);
 }
 
-// 0040153F: Register word32 fn0040153F(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
-word32 fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+// 0040153F: Register byte fn0040153F(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+byte fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	word32 eax_n;
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x08);
@@ -297,7 +269,7 @@ l004015C3:
 				ebpOut = ebp_n;
 				esiOut = esi_n;
 				ediOut = edi_n;
-				return eax_n;
+				return (byte) eax_n;
 			}
 		}
 	}
@@ -373,36 +345,24 @@ void fn0040176D(word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188B: Register word32 fn0040188B(Register out Eq_n ecxOut)
-word32 fn0040188B(HMODULE & ecxOut)
+// 0040188B: Register byte fn0040188B()
+byte fn0040188B()
 {
 	Eq_n eax_n = GetModuleHandleW(null);
 	word24 eax_24_8_n = SLICE(eax_n, word24, 8);
-	Eq_n ecx_n = eax_n;
-	if (eax_n != null)
-	{
-		eax_24_8_n = 0x5A;
-		if (eax_n->unused == 23117)
-		{
-			struct Eq_n * eax_n = eax_n + (&eax_n->unused)[0x0F] / 0x04;
-			eax_24_8_n = SLICE(eax_n, word24, 8);
-			eax_24_8_n = SLICE(eax_n, word24, 8);
-			eax_24_8_n = SLICE(eax_n, word24, 8);
-			word24 eax_24_8_n = SLICE(eax_n, word24, 8);
-			if (eax_n->dw0000 == 0x4550)
-			{
-				ecx_n = (struct HINSTANCE__ *) 0x010B;
-				if (eax_n->w0018 == 0x010B && eax_n->dw0074 > 0x0E)
-				{
-					word32 eax_n = SEQ(eax_24_8_n, eax_n->dw00E8 != 0x00);
-					ecxOut = (struct HINSTANCE__ *) 0x010B;
-					return eax_n;
-				}
-			}
-		}
-	}
-	ecxOut = ecx_n;
-	return SEQ(eax_24_8_n, 0x00);
+	if (eax_n == null)
+		return (byte) SEQ(eax_24_8_n, 0x00);
+	eax_24_8_n = 0x5A;
+	if (eax_n->unused != 23117)
+		return (byte) SEQ(eax_24_8_n, 0x00);
+	struct Eq_n * eax_n = eax_n + eax_n->dw003C / 0x0040;
+	eax_24_8_n = SLICE(eax_n, word24, 8);
+	eax_24_8_n = SLICE(eax_n, word24, 8);
+	eax_24_8_n = SLICE(eax_n, word24, 8);
+	word24 eax_24_8_n = SLICE(eax_n, word24, 8);
+	if (eax_n->dw0000 != 0x4550 || (eax_n->w0018 != 0x010B || eax_n->dw0074 <= 0x0E))
+		return (byte) SEQ(eax_24_8_n, 0x00);
+	return (byte) SEQ(eax_24_8_n, eax_n->dw00E8 != 0x00);
 }
 
 // 00401972: void fn00401972()

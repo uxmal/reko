@@ -282,10 +282,10 @@ void fn0856(word16 r2, int16 r3, Eq_n r4, word16 wArg00)
 l0856:
 	fn1578();
 	ptr16 sp_n = fp;
-	word16 * r5_n = globals->ptr007E;
-	if (r5_n >= null)
+	ci16 r5_n = globals->w007E;
+	if (r5_n >= 0x00)
 	{
-		if (r5_n < &globals->w0003)
+		if (r5_n < 0x03)
 		{
 			r4 = globals->t0058;
 			if (r4 <= 64936)
@@ -314,7 +314,7 @@ l0888:
 				fn0790();
 				return;
 			case 0x01:
-				if (r5_n < &globals->w001A)
+				if (r5_n < 0x1A)
 				{
 					fn0790();
 					return;
@@ -341,13 +341,13 @@ l0888:
 			}
 		}
 	}
-	else if (r5_n >= (word16 *) ~0x09)
+	else if (r5_n >= ~0x09)
 		goto l0904;
 	globals->w0060 = 0x00;
 	globals->w25AA = 0x01C2;
 	globals->w34C2 = 0x00;
 	globals->w34D2 = 0x00;
-	if (r5_n != null && r5_n > null)
+	if (r5_n != 0x00 && r5_n > 0x00)
 		goto l0888;
 	Eq_n r4_n = globals->t0058;
 	if (r4_n < 64936)
@@ -389,7 +389,7 @@ l0964:
 					r2_n = -r0_n;
 				if (r2_n > 0x30)
 				{
-					fn0B06(r3, r4_n, r5_n);
+					fn0B06(r3, r4_n, r5);
 					sp_n = fp + 0x02;
 					goto l0964;
 				}
@@ -443,7 +443,7 @@ l0904:
 // 0A0A: void fn0A0A()
 void fn0A0A()
 {
-	if (globals->ptr007E <= &globals->w0096)
+	if (globals->w007E <= 0x96)
 		globals->w34D2 = 0x00;
 	else
 	{
@@ -531,7 +531,10 @@ void fn0AF6()
 // 0B06: void fn0B06(Register int16 r3, Register Eq_n r4, Register (ptr16 word16) r5)
 void fn0B06(int16 r3, Eq_n r4, word16 * r5)
 {
-	fn13AA(wLoc02);
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	ci16 * stackArg0 = (ci16 *) <invalid>;
+	fn13AA(stackArg0);
 	2828 = 0x0B0D;
 	if (2828 != 0x00)
 	{

@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_Signature(string name, FunctionType signature)
         {
-            foreach(var ssa in ssaStates)
+            foreach (var ssa in ssaStates)
             {
                 if (ssa.Procedure.Name == name)
                 {
@@ -241,21 +241,21 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwEvenOdd()
         {
             RunFileTest_x86_real("Fragments/multiple/even_odd.asm", "Analysis/CrwEvenOdd.txt");
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwFactorial()
         {
             RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwFactorialReg()
         {
             RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
@@ -276,7 +276,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwStackVariables()
         {
             RunFileTest_x86_real("Fragments/stackvars.asm", "Analysis/CrwStackVariables.txt");
@@ -304,25 +304,28 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CrwIpLiveness()
         {
             RunFileTest_x86_real("Fragments/multiple/ipliveness.asm", "Analysis/CrwIpLiveness.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CrwVoidFunctions()
         {
             RunFileTest_x86_real("Fragments/multiple/voidfunctions.asm", "Analysis/CrwVoidFunctions.txt");
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwMutual()
         {
             RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/CrwMutual.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CrwMemPreserve()
         {
             Program program = RewriteMsdosAssembler("Fragments/multiple/mempreserve.asm", p =>
@@ -350,14 +353,14 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
-
+        [Category(Categories.IntegrationTests)]
         public void CrwFibonacci()
         {
             RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwRegisterArgument()
         {
             flow.BitsUsed.Add(Registers.eax, new BitRange(0, 32));
@@ -366,6 +369,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwRegisterOutArgument()
         {
             Given_ExitBlockStatement(new Identifier("eax", PrimitiveType.Word32, Registers.eax));
@@ -377,6 +381,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwFpuArgument()
         {
             flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
@@ -385,6 +390,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwFpuOutArgument()
         {
             flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
@@ -406,6 +412,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void GcrStackArguments()
         {
             Frame f = program.Architecture.CreateFrame();
@@ -433,6 +440,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwSinglePredecessorToExitBlock()
         {
             var m = new ProcedureBuilder("CrwSinglePredecessorToExitBlock");
@@ -481,6 +489,7 @@ CrwSinglePredecessorToExitBlock_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwManyPredecessorsToExitBlock()
         {
             var m = new ProcedureBuilder("CrwManyPredecessorsToExitBlock");
@@ -558,6 +567,7 @@ CrwManyPredecessorsToExitBlock_exit:
         }
 
         [Test(Description = "Pops three values off FPU stack and places one back.")]
+        [Category(Categories.UnitTests)]
         public void CrwFpuMultiplyAdd()
         {
             var dt = PrimitiveType.Real64;
@@ -662,6 +672,7 @@ FpuMultiplyAdd_exit:
         }
 
         [Test(Description = "Handle procedure with out parameters")]
+        [Category(Categories.UnitTests)]
         public void CrwOutParameter()
         {
             var pb = new ProgramBuilder();
@@ -770,6 +781,7 @@ fnOutParam_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwStackArgumentNotFound()
         {
             var ssa = Given_Procedure("main", m =>
@@ -806,6 +818,7 @@ main_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwRegisterArgumentNotFound()
         {
             var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
@@ -845,6 +858,7 @@ main_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwExcessRegisterUse()
         {
             var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
@@ -873,6 +887,7 @@ main_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwExcessRegisterDefinition()
         {
             var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
@@ -902,6 +917,7 @@ main_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CrwReturnRegisterNotFound()
         {
             var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
@@ -946,6 +962,40 @@ main_exit:
             var crw = new CallRewriter(program.Platform, new ProgramDataFlow(), eventListener);
             var sig = crw.MakeSignature(new SsaState(proc), proc.Frame, flow);
             Assert.AreEqual("(fn void (word64))", sig.ToString());
+        }
+
+        [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        public void CrwIndirectCall()
+        {
+            var ssa = Given_Procedure("main", m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var r2_1 = m.Reg32("r2_1", 2);
+                var r3 = m.Reg32("r3", 3);
+                m.Label("body");
+                m.Call(r1, 0,
+                    new[] { r2, r3 },
+                    new[] { r2_1 });
+                m.MStore(m.Word32(0x00123400), r2_1);
+                m.Return();
+            });
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	r2_1 = r1(r2, r3)
+	Mem4[0x00123400:word32] = r2_1
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+
         }
     }
 }

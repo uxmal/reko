@@ -4,10 +4,8 @@
 
 #include "lunar.h"
 
-word16 g_w0003 = 0x0000;
 word16 g_w0004 = 0x0200;
 word16 g_w0006 = 0x00E0;
-word16 g_w001A = 0x00E0;
 Eq_n g_t0044 = 
 	{
 		0
@@ -74,7 +72,7 @@ Eq_n g_t0078 =
 		0
 	};
 word16 g_w007A = 0x0000;
-word16 * g_ptr007E = null;
+ci16 g_w007E = 0x0000;
 word16 g_w0080 = 0x0000;
 Eq_n g_t0082 = 
 	{
@@ -90,7 +88,6 @@ cui16 g_w008C = 0x0000;
 cui16 g_w008E = 0x0000;
 cui16 g_w0090 = 0x0000;
 struct Eq_n * g_ptr0092 = null;
-word16 g_w0096 = 0x00CE;
 word16 g_w009E = 0x009E;
 ci16 g_w00A0 = 0x0000;
 ci16 g_w00A2 = 0x0000;
@@ -185,6 +182,5 @@ word16 g_wF402;
 ci8 g_bFB8C;
 word16 g_wFB8E;
 word16 g_wFF66;
-word16 g_wFFF6;
 word16 g_wFFFE;
 

@@ -19,8 +19,8 @@ void fn0000000000400480(void (* rdx)(), Eq_n qwArg00)
 	__hlt();
 }
 
-// 00000000004004B0: void fn00000000004004B0(Register word64 rbp, Register word64 r8)
-void fn00000000004004B0(word64 rbp, word64 r8)
+// 00000000004004B0: void fn00000000004004B0(Register word64 r8)
+void fn00000000004004B0(word64 r8)
 {
 	if (r8 == 0x00601040 || 0x00 == 0x00)
 		return;

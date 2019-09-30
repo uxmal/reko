@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Structure
 		}
 
 		[Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
 		public void CccAsciiHex()
 		{
 			RunTest("Fragments/ascii_hex.asm", "Structure/CccAsciiHex.txt");

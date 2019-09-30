@@ -27,18 +27,14 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 bx_23 = 0x0FFF
-	byte bh_30 = 0x0F
-	byte bl_10 = 0xFF
+	word16 bx_36 = 0x0FFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	word16 ax_13 = (bl_10 & 0x0F) *u (bh_30 + 0x01)
-	word16 bx_25 = DPB(DPB(bx_23, bh_30, 8), bl_10, 0)
-	Mem26[0x4DE1:bx_25:byte] = SLICE(ax_13 << 0x0004, byte, 0) | SLICE(ax_13 << 0x0004, byte, 8)
-	bx_23 = bx_25 - 0x0001
-	bh_30 = SLICE(bx_25 - 0x0001, byte, 8) (alias)
-	bl_10 = SLICE(bx_25 - 0x0001, byte, 0) (alias)
-	branch bx_25 >= 0x0001 l0C00_000C
+	byte bl_10 = SLICE(bx_39, byte, 0)
+	Mem23[0x4DE1:bx_39:byte] = bl_10 & 0xF0 | SLICE((bl_10 & 0x0F) *u (SLICE(bx_39, byte, 8) + 0x01) << 0x0004, byte, 8) & 0x0F
+	bx_36 = bx_39 - 0x0001 (alias)
+	bx_39 = bx_36
+	branch bx_39 >= 0x0001 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return

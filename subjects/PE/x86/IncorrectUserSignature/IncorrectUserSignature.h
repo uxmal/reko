@@ -4,12 +4,13 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals")
+Eq_1: (struct "Globals" (BADDCAFE (ptr32 Eq_13) ptrBADDCAFE) (BADDCB02 int32 dwBADDCB02) (BADDCB06 int32 dwBADDCB06))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: cdecl_class
 	T_2 (in c : (ptr32 Eq_2))
 Eq_5: cdecl_class
 	T_5 (in c : (ptr32 cdecl_class))
+	T_27 (in Mem37[esp_23 + 0x00000004:word32] : word32)
 Eq_7: cdecl_class_vtbl
 	T_7 (in c + 0x00000000 : word32)
 Eq_8: cdecl_class_vtbl
@@ -18,10 +19,23 @@ Eq_10: (fn void ((ptr32 cdecl_class), int32, int32))
 	T_10 (in Mem19[c + 0x00000000:word32] + 0x00000008 : word32)
 Eq_11: (fn void ((ptr32 cdecl_class), int32, int32))
 	T_11 (in Mem19[Mem19[c + 0x00000000:word32] + 0x00000008:word32] : word32)
-Eq_19: (struct "Eq_19" (4 (ptr32 Eq_22) ptr0004))
-	T_19 (in Mem37[c + 0x00000000:word32] : word32)
-Eq_22: (fn void ((ptr32 Eq_5), word32))
-	T_22 (in Mem37[Mem37[c + 0x00000000:word32] + 0x00000004:word32] : word32)
+Eq_13: cdecl_class
+	T_13 (in Mem64[0xBADDCAFE:(ptr32 cdecl_class)] : (ptr32 cdecl_class))
+Eq_19: (struct "Eq_19" (4 (ptr32 Eq_5) ptr0004) (8 (ptr32 Eq_19) ptr0008))
+	T_19 (in eax_25 : (ptr32 Eq_19))
+	T_20 (in <invalid> : void)
+	T_21 (in esp_23 : (ptr32 Eq_19))
+	T_24 (in Mem34[esp_23 + 0x00000008:word32] : word32)
+Eq_29: cdecl_class_vtbl
+	T_29 (in c + 0x00000000 : word32)
+Eq_30: cdecl_class_vtbl
+	T_30 (in Mem37[c + 0x00000000:word32] : word32)
+Eq_32: (fn void ((ptr32 cdecl_class), int32))
+	T_32 (in Mem37[c + 0x00000000:word32] + 0x00000004 : word32)
+Eq_33: (fn void ((ptr32 cdecl_class), int32))
+	T_33 (in Mem37[Mem37[c + 0x00000000:word32] + 0x00000004:word32] : word32)
+Eq_34: cdecl_class
+	T_34 (in Mem67[<invalid>:(ptr32 cdecl_class)] : (ptr32 cdecl_class))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -66,57 +80,112 @@ T_10: (in Mem19[c + 0x00000000:word32] + 0x00000008 : word32)
 T_11: (in Mem19[Mem19[c + 0x00000000:word32] + 0x00000008:word32] : word32)
   Class: Eq_11
   DataType: (ptr32 Eq_11)
-  OrigDataType: (ptr32 (fn T_14 ((ptr32 cdecl_class), int32, int32)))
-T_12: (in a : int32)
+  OrigDataType: (ptr32 (fn T_18 ((ptr32 cdecl_class), int32, int32)))
+T_12: (in 0xBADDCAFE : word32)
   Class: Eq_12
-  DataType: int32
-  OrigDataType: int32
-T_13: (in b : int32)
+  DataType: (ptr32 (ptr32 Eq_13))
+  OrigDataType: (ptr32 (struct (0 T_13 t0000)))
+T_13: (in Mem64[0xBADDCAFE:(ptr32 cdecl_class)] : (ptr32 cdecl_class))
   Class: Eq_13
+  DataType: (ptr32 Eq_13)
+  OrigDataType: (ptr32 cdecl_class)
+T_14: (in 0xBADDCB02 : word32)
+  Class: Eq_14
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 (struct (0 T_15 t0000)))
+T_15: (in Mem65[0xBADDCB02:int32] : int32)
+  Class: Eq_15
   DataType: int32
   OrigDataType: int32
-T_14: (in c->vtbl->sum(c, a, b) : void)
-  Class: Eq_14
+T_16: (in 0xBADDCB06 : word32)
+  Class: Eq_16
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 (struct (0 T_17 t0000)))
+T_17: (in Mem66[0xBADDCB06:int32] : int32)
+  Class: Eq_17
+  DataType: int32
+  OrigDataType: int32
+T_18: (in c->vtbl->sum(*(cdecl_class **) 0xBADDCAFE, *(int32 *) 0xBADDCB02, *(int32 *) 0xBADDCB06) : void)
+  Class: Eq_18
   DataType: void
   OrigDataType: void
-T_15: (in eax_25 : word32)
-  Class: Eq_15
-  DataType: word32
-  OrigDataType: word32
-T_16: (in <invalid> : void)
-  Class: Eq_15
-  DataType: word32
-  OrigDataType: void
-T_17: (in 0x00000000 : word32)
-  Class: Eq_17
-  DataType: word32
-  OrigDataType: word32
-T_18: (in c + 0x00000000 : word32)
-  Class: Eq_18
-  DataType: ptr32
-  OrigDataType: ptr32
-T_19: (in Mem37[c + 0x00000000:word32] : word32)
+T_19: (in eax_25 : (ptr32 Eq_19))
   Class: Eq_19
   DataType: (ptr32 Eq_19)
-  OrigDataType: (ptr32 (struct (4 T_22 t0004)))
-T_20: (in 0x00000004 : word32)
-  Class: Eq_20
-  DataType: word32
   OrigDataType: word32
-T_21: (in Mem37[c + 0x00000000:word32] + 0x00000004 : word32)
-  Class: Eq_21
-  DataType: word32
-  OrigDataType: word32
-T_22: (in Mem37[Mem37[c + 0x00000000:word32] + 0x00000004:word32] : word32)
+T_20: (in <invalid> : void)
+  Class: Eq_19
+  DataType: (ptr32 Eq_19)
+  OrigDataType: void
+T_21: (in esp_23 : (ptr32 Eq_19))
+  Class: Eq_19
+  DataType: (ptr32 Eq_19)
+  OrigDataType: (ptr32 (struct (4 T_27 t0004) (8 T_24 t0008)))
+T_22: (in 0x00000008 : word32)
   Class: Eq_22
-  DataType: (ptr32 Eq_22)
-  OrigDataType: (ptr32 (fn T_23 (T_5, T_15)))
-T_23: (in c->vtbl->method04(c, eax_25) : void)
+  DataType: word32
+  OrigDataType: word32
+T_23: (in esp_23 + 0x00000008 : word32)
   Class: Eq_23
+  DataType: word32
+  OrigDataType: word32
+T_24: (in Mem34[esp_23 + 0x00000008:word32] : word32)
+  Class: Eq_19
+  DataType: (ptr32 Eq_19)
+  OrigDataType: word32
+T_25: (in 0x00000004 : word32)
+  Class: Eq_25
+  DataType: word32
+  OrigDataType: word32
+T_26: (in esp_23 + 0x00000004 : word32)
+  Class: Eq_26
+  DataType: ptr32
+  OrigDataType: ptr32
+T_27: (in Mem37[esp_23 + 0x00000004:word32] : word32)
+  Class: Eq_5
+  DataType: (ptr32 Eq_5)
+  OrigDataType: word32
+T_28: (in 0x00000000 : word32)
+  Class: Eq_28
+  DataType: word32
+  OrigDataType: word32
+T_29: (in c + 0x00000000 : word32)
+  Class: Eq_29
+  DataType: (ptr32 (ptr32 Eq_29))
+  OrigDataType: (ptr32 (ptr32 cdecl_class_vtbl))
+T_30: (in Mem37[c + 0x00000000:word32] : word32)
+  Class: Eq_30
+  DataType: (ptr32 Eq_30)
+  OrigDataType: (ptr32 (union (cdecl_class_vtbl u1)))
+T_31: (in 0x00000004 : word32)
+  Class: Eq_31
+  DataType: word32
+  OrigDataType: word32
+T_32: (in Mem37[c + 0x00000000:word32] + 0x00000004 : word32)
+  Class: Eq_32
+  DataType: (ptr32 (ptr32 Eq_32))
+  OrigDataType: (ptr32 (ptr32 (fn void ((ptr32 cdecl_class), int32))))
+T_33: (in Mem37[Mem37[c + 0x00000000:word32] + 0x00000004:word32] : word32)
+  Class: Eq_33
+  DataType: (ptr32 Eq_33)
+  OrigDataType: (ptr32 (fn void ((ptr32 cdecl_class), int32)))
+T_34: (in Mem67[<invalid>:(ptr32 cdecl_class)] : (ptr32 cdecl_class))
+  Class: Eq_34
+  DataType: (ptr32 Eq_34)
+  OrigDataType: (ptr32 cdecl_class)
+T_35: (in Mem68[<invalid>:int32] : int32)
+  Class: Eq_35
+  DataType: int32
+  OrigDataType: int32
+T_36: (in c->vtbl->method04(*(struct Eq_19 *) <invalid>, *(struct Eq_19 *) <invalid>) : void)
+  Class: Eq_36
   DataType: void
   OrigDataType: void
 */
 typedef struct Globals {
+	cdecl_class * ptrBADDCAFE;	// BADDCAFE
+	int32 dwBADDCB02;	// BADDCB02
+	int32 dwBADDCB06;	// BADDCB06
 } Eq_1;
 
 typedef cdecl_class Eq_2;
@@ -131,9 +200,20 @@ typedef void (Eq_10)(cdecl_class * ptrArg04, int32 dwArg08, int32 dwArg0C);
 
 typedef void (Eq_11)(cdecl_class *, int32, int32);
 
+typedef cdecl_class Eq_13;
+
 typedef struct Eq_19 {
-	void (* ptr0004)(cdecl_class *, word32);	// 4
+	cdecl_class * ptr0004;	// 4
+	struct Eq_19 * ptr0008;	// 8
 } Eq_19;
 
-typedef void (Eq_22)(cdecl_class *, word32);
+typedef cdecl_class_vtbl Eq_29;
+
+typedef cdecl_class_vtbl Eq_30;
+
+typedef void (Eq_32)(cdecl_class * ptrArg04, int32 dwArg08);
+
+typedef void (Eq_33)(cdecl_class * ptrArg04, int32 dwArg08);
+
+typedef cdecl_class Eq_34;
 

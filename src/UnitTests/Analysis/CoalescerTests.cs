@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CoaFactorialReg()
         {
             RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CoaFactorialReg.txt");
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.IntegrationTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void CoaAddSubCarries()
         {
             RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
@@ -177,7 +177,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.IntegrationTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void CoaCallUses()
         {
             var m = new ProcedureBuilder("foo");
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.IntegrationTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void CoaCallCallee()
         {
             var m = new ProcedureBuilder("foo");

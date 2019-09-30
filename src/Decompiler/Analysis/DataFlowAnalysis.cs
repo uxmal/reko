@@ -43,10 +43,10 @@ namespace Reko.Analysis
 	/// </summary>
 	public class DataFlowAnalysis
 	{
-		private Program program;
-		private DecompilerEventListener eventListener;
-        private IImportResolver importResolver;
-		private ProgramDataFlow flow;
+		private readonly Program program;
+		private readonly DecompilerEventListener eventListener;
+        private readonly IImportResolver importResolver;
+		private readonly ProgramDataFlow flow;
         private List<SsaTransform> ssts;
         private HashSet<Procedure> sccProcs;
 
@@ -454,7 +454,7 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public static void DumpWatchedProcedure(string caption, Procedure proc)
         {
-            if (proc.Name == "fn0C00_000C")
+            if (proc.Name == "fn00100000")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 MockGenerator.DumpMethod(proc);

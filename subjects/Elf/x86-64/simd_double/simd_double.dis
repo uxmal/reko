@@ -1,8 +1,8 @@
-word64 _init()
+void _init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: rax
+// LiveOut:
 // Trashed: SCZO rax
 // Preserved: rsp
 _init_entry:
@@ -11,7 +11,6 @@ _init_entry:
 // SymbolicIn:
 
 l00000000000005A0:
-	word64 rax_15 = __gmon_start__
 	branch __gmon_start__ == 0x0000000000000000 l00000000000005B2
 // DataOut:
 // DataOut (flags):
@@ -19,14 +18,12 @@ l00000000000005A0:
 
 l00000000000005B0:
 	call __gmon_start__ (retsize: 8;)
-		uses: rax:__gmon_start__,rsp:fp - 0x0000000000000008
-		defs: rax:rax_8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000005B2:
-	return rax_15
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -98,7 +95,7 @@ l0000000000000680:
 
 l0000000000000673:
 	call _ITM_deregisterTMCloneTable (retsize: 8;)
-		uses: rax:_ITM_deregisterTMCloneTable,rbp:rbp,rdi:0x0000000000201048,rsp:fp,Stack +0000:rbp
+		uses: rbp:rbp,rsp:fp
 	return
 // DataOut:
 // DataOut (flags):
@@ -125,8 +122,7 @@ register_tm_clones_entry:
 
 l0000000000000690:
 	word64 rsi_8 = 0x0000000000201048 - 0x0000000000201048
-	word64 rsi_13 = (rsi_8 >> 0x0000000000000003) + ((rsi_8 >> 0x0000000000000003) >>u 0x000000000000003F)
-	branch rsi_13 >> 0x0000000000000001 == 0x0000000000000000 l00000000000006D0
+	branch (rsi_8 >> 0x0000000000000003) + ((rsi_8 >> 0x0000000000000003) >>u 0x000000000000003F) >> 0x0000000000000001 == 0x0000000000000000 l00000000000006D0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -145,7 +141,7 @@ l00000000000006D0:
 
 l00000000000006C4:
 	call _ITM_registerTMCloneTable (retsize: 8;)
-		uses: rax:_ITM_registerTMCloneTable,rbp:rbp,rdi:0x0000000000201048,rsi:rsi_13 >> 0x0000000000000001,rsp:fp,Stack +0000:rbp
+		uses: rbp:rbp,rsp:fp
 	return
 // DataOut:
 // DataOut (flags):
@@ -158,10 +154,10 @@ register_tm_clones_exit:
 
 
 
-void __do_global_dtors_aux(word64 rax, word64 rbp)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rax:[0..63] rbp:[0..63]
+// MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi
 // Preserved: rbp rsp
@@ -189,8 +185,10 @@ l00000000000006E9:
 // SymbolicIn:
 
 l00000000000006F7:
+	word64 rax_27
 	call __cxa_finalize (retsize: 8;)
-		uses: rax:rax,rbp:fp - 8,rdi:Mem9[0x0000000000201040:word64],rsp:fp - 8,Stack +0008:rbp
+		uses: rax:rax_27,rbp:fp - 8,rdi:Mem9[0x0000000000201040:word64]
+		defs: rax:rax_27
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -241,10 +239,10 @@ frame_dummy_exit:
 
 
 
-word64 _mm_malloc(word64 rbp, word64 rsi, word64 rdi)
+word64 _mm_malloc(word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rbp:[0..63] rdi:[0..63] rsi:[0..63]
+// MayUse:  rdi:[0..63] rsi:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rdi
 // Preserved: rbp rcx rdi rdx rsi rsp
@@ -254,8 +252,8 @@ _mm_malloc_entry:
 // SymbolicIn:
 
 l000000000000072A:
-	word64 rax_39
-	word64 qwLoc28_51 = rsi
+	word64 rax_37
+	word64 qwLoc28_49 = rsi
 	branch rsi != 0x0000000000000001 l000000000000074F
 // DataOut:
 // DataOut (flags):
@@ -274,41 +272,41 @@ l0000000000000756:
 // SymbolicIn:
 
 l000000000000075D:
-	qwLoc28_51 = 0x0000000000000008
+	qwLoc28_49 = 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000765:
-	word64 rax_31
+	word64 rax_29
 	call posix_memalign (retsize: 8;)
-		uses: rax:fp - 0x0000000000000010,rbp:fp - 8,rcx:qwLoc28_55,rdi:fp - 0x0000000000000010,rdx:rdi,rsi:qwLoc28_55,rsp:fp - 0x0000000000000028,Stack +0008:qwLoc28_55,Stack +0010:rdi,Stack +0020:qwLoc10,Stack +0028:rbp
-		defs: rax:rax_31
-	branch SLICE(rax_31, word32, 0) != 0x00000000 l0000000000000786
+		uses: rax:fp - 0x0000000000000010,rbp:fp - 8,rcx:qwLoc28_53,rdi:fp - 0x0000000000000010,rdx:rdi,rsi:qwLoc28_53,Stack +FFFFFFF8:qwLoc10
+		defs: rax:rax_29
+	branch SLICE(rax_29, word32, 0) != 0x00000000 l0000000000000786
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000786:
-	rax_39 = 0x0000000000000000
+	rax_37 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000780:
-	rax_39 = qwLoc10
+	rax_37 = qwLoc10
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000741:
-	rax_39 = malloc(rdi)
+	rax_37 = malloc(rdi)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000000078B:
-	return rax_39
+	return rax_37
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -402,9 +400,9 @@ main_entry:
 // SymbolicIn:
 
 l0000000000000898:
-	word64 rax_14 = _mm_malloc(fp - 8, 0x0000000000000020, 0x0000000000002000)
-	word64 rax_26 = _mm_malloc(fp - 8, 0x0000000000000020, 0x0000000000002000)
-	word64 rax_38 = _mm_malloc(fp - 8, 0x0000000000000020, 0x0000000000002000)
+	word64 rax_14 = _mm_malloc(0x0000000000000020, 0x0000000000002000)
+	word64 rax_26 = _mm_malloc(0x0000000000000020, 0x0000000000002000)
+	word64 rax_38 = _mm_malloc(0x0000000000000020, 0x0000000000002000)
 	word64 qwLoc10_198 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
@@ -540,10 +538,10 @@ main_exit:
 
 
 
-void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
+void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] rbp:[0..63] rbx:[0..63] rdi:[0..31] rdx:[0..63] rsi:[0..63]
+// MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rdi rdx rsi
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
@@ -554,9 +552,9 @@ __libc_csu_init_entry:
 // SymbolicIn:
 
 l0000000000000A70:
-	word32 r15d_83 = SLICE((uint64) edi, word32, 0)
+	_init()
+	word32 r15d_82 = SLICE((uint64) edi, word32, 0)
 	word64 rbp_29 = 0x0000000000200DF0 - 0x0000000000200DE8
-	word64 rax_33 = _init()
 	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l0000000000000AC6
 // DataOut:
 // DataOut (flags):
@@ -570,8 +568,7 @@ l0000000000000AA6:
 
 l0000000000000AB0:
 	call Mem24[0x0000000000200DE8 + rbx_41 * 0x0000000000000008:word64] (retsize: 8;)
-		uses: rax:rax_61,rdi:(uint64) r15d_83,rdx:rdx,rsi:rsi,Stack +0010:rbx,Stack +0018:rbp,Stack +0020:r12,Stack +0028:r13,Stack +0030:r14,Stack +0038:r15
-		defs: rax:rax_62
+		uses: rdi:(uint64) r15d_82,rdx:rdx,rsi:rsi
 	rbx_41 = rbx_41 + 0x0000000000000001
 	branch rbp_29 >> 0x0000000000000003 != rbx_41 l0000000000000AB0
 // DataOut:

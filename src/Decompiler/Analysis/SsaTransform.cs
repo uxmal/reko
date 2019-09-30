@@ -111,8 +111,6 @@ namespace Reko.Analysis
             {
                 bs.Visited = false;
             }
-            if (ssa.Procedure.Name == "fn0000000000410C40") //$DEBUG
-                ssa.ToString();
 
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
@@ -710,11 +708,24 @@ namespace Reko.Analysis
                 .Select(d => d.Storage)
                 .ToHashSet();
             var trashedRegisters = program.Platform.CreateTrashedRegisters();
+            var stackDepth = this.GetStackDepthAtCall(ssa.Procedure, ci);
+            var frame = ssa.Procedure.Frame;
 
             // Hell node implementation - use and define all variables.
-            var frame = ssa.Procedure.Frame;
-            var stackDepth = this.GetStackDepthAtCall(ssa.Procedure, ci);
-            var ids = CollectFlagGroups(frame.Identifiers, frame, arch);
+
+            // We're making a guess here. Take all registers defined in the 
+            // current basic block prior to the call, then keep only those
+            // which are used in the calling convention. 
+            // If the guess is wrong, the user can correct it with a 
+            // decompilation directive.
+
+            var ids = GuessParameterIdentifiers(ci, stmCur, stackDepth)
+                .Concat(ssa.Procedure.EntryBlock.Statements
+                    .Select(s => s.Instruction)
+                    .OfType<DefInstruction>()
+                    .Select(d => d.Identifier)
+                    .Where(i => ssa.Identifiers[i].Uses.Count > 0));
+            ids = CollectFlagGroups(ids, frame, arch);
             foreach (Identifier id in ResolveOverlaps(ids))
             {
                 var calleeStg = FrameShift(ci, id.Storage, stackDepth);
@@ -722,11 +733,17 @@ namespace Reko.Analysis
                     (calleeStg is RegisterStorage ||
                      calleeStg is StackArgumentStorage))
                 {
-                    ci.Uses.Add(new CallBinding(
-                        calleeStg,
-                        NewUse(id, stmCur, true)));
+                    var idNew = NewUse(id, stmCur, true);
+                    ci.Uses.Add(new CallBinding(calleeStg, idNew));
                     existingUses.Add(calleeStg);
                 }
+            }
+
+            ids = SeparateSequences(frame.Identifiers);
+            ids = CollectFlagGroups(frame.Identifiers, frame, arch);
+            foreach (Identifier id in ResolveOverlaps(ids))
+            {
+                var calleeStg = FrameShift(ci, id.Storage, stackDepth);
                 if (!existingDefs.Contains(calleeStg) &&
                     (IsTrashed(trashedRegisters, calleeStg)
                     || calleeStg is FlagGroupStorage))
@@ -737,6 +754,53 @@ namespace Reko.Analysis
                     existingDefs.Add(calleeStg);
                 }
             }
+        }
+
+        /// <summary>
+        /// Make an informed guess of what identifiers are being used an input 
+        /// parameters. The tactic is to walk backwards from the call point and 
+        /// collect assignments to processor registers or stack locations until
+        /// we reach the beginning of the block or an instruction that isn't 
+        /// an assignment or store.
+        /// </summary>
+        /// <remarks>
+        /// This is just a guess; we can't do much better without more information from the user.
+        /// </remarks>
+        /// <param name="procedure"></param>
+        /// <param name="stmCall"></param>
+        /// <returns></returns>
+        public IEnumerable<Identifier> GuessParameterIdentifiers(CallInstruction call, Statement stmCall, int stackDepth)
+        {
+            var ids = new List<Identifier>();
+            var stms = stmCall.Block.Statements;
+            var i = stms.IndexOf(stmCall) - 1;
+            for (; i >= 0; --i)
+            {
+                var stm = stms[i];
+                switch (stm.Instruction)
+                {
+                case Assignment ass:
+                    switch (ass.Dst.Storage)
+                    {
+                    case RegisterStorage reg:
+                        ids.Add(ass.Dst);
+                        break;
+                    case SequenceStorage seq:
+                        ids.Add(ass.Dst);
+                        break;
+                    case StackStorage stk:
+                        var calleeStg = FrameShift(call, stk, stackDepth);
+                        ids.Add(ass.Dst);
+                        break;
+                    }
+                    break;
+                case Store store:
+                    break;
+                default:
+                    return ids;
+                }
+            }
+            return ids;
         }
 
         private int GetStackDepthAtCall(Procedure proc, CallInstruction call)
@@ -973,8 +1037,6 @@ namespace Reko.Analysis
             if (RenameFrameAccesses && !force)
                 return id;
             var bs = blockstates[block];
-            if (id.Name == "_Py_NoneStruct") //$DEBUG
-                id.ToString();
             var x = factory.Create(id, stm);
             var sid = x.ReadVariable(bs);
             sid.Uses.Add(stm);

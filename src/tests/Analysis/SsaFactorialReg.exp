@@ -3,58 +3,51 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
 Top_3: orig: Top
     def:  Top_3 = 0
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
 cx_4: orig: cx
     def:  cx_4 = 0x0005
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
+    uses: call fn0C00_000B (retsize: 2;)	uses: cx:cx_4	defs: ax:ax_7,cx:cx_6,sp:sp_5,Top:Top_8
 sp_5: orig: sp
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_4	defs: ax:ax_7,cx:cx_6,sp:sp_5,Top:Top_8
     uses: use sp_5
 cx_6: orig: cx
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_4	defs: ax:ax_7,cx:cx_6,sp:sp_5,Top:Top_8
     uses: use cx_6
+ax_7: orig: ax
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_4	defs: ax:ax_7,cx:cx_6,sp:sp_5,Top:Top_8
+    uses: Mem10[ds:0x0064:word16] = ax_7
+          use ax_7
+Top_8: orig: Top
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_4	defs: ax:ax_7,cx:cx_6,sp:sp_5,Top:Top_8
+    uses: use Top_8
 ds:ds
     def:  def ds
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
-          Mem11[ds:0x0064:word16] = ax_9
-ax:ax
-    def:  def ax
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
-ax_9: orig: ax
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
-    uses: Mem11[ds:0x0064:word16] = ax_9
-          use ax_9
-Top_10: orig: Top
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
-    uses: use Top_10
-Mem11: orig: Mem0
-    def:  Mem11[ds:0x0064:word16] = ax_9
+    uses: Mem10[ds:0x0064:word16] = ax_7
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0064:word16] = ax_7
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ds
-	def ax
 	sp_2 = fp
 	Top_3 = 0
 	// succ:  l0C00_0000
 l0C00_0000:
 	cx_4 = 0x0005
 	call fn0C00_000B (retsize: 2;)
-		uses: ax:ax,cx:cx_4,ds:ds,sp:sp_2,Top:Top_3
-		defs: ax:ax_9,cx:cx_6,sp:sp_5,Top:Top_10
-	Mem11[ds:0x0064:word16] = ax_9
+		uses: cx:cx_4
+		defs: ax:ax_7,cx:cx_6,sp:sp_5,Top:Top_8
+	Mem10[ds:0x0064:word16] = ax_7
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	use ax_9
+	use ax_7
 	use cx_6
 	use sp_5
-	use Top_10
+	use Top_8
 
 fp:fp
     def:  def fp
@@ -64,148 +57,143 @@ sp_2: orig: sp
     uses: sp_4 = sp_2 - 2
 Top_3: orig: Top
     def:  Top_3 = 0
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-          Top_43 = PHI((Top_19, l0C00_0011), (Top_3, l0C00_001C))
+    uses: Top_42 = PHI((Top_18, l0C00_0011), (Top_3, l0C00_001C))
 sp_4: orig: sp
     def:  sp_4 = sp_2 - 2
     uses: Mem7[ss:sp_4:word16] = si
-          call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-          sp_26 = PHI((sp_15, l0C00_0011), (sp_4, l0C00_001C))
+          sp_25 = PHI((sp_15, l0C00_0011), (sp_4, l0C00_001C))
 si:si
     def:  def si
     uses: Mem7[ss:sp_4:word16] = si
 ss:ss
     def:  def ss
     uses: Mem7[ss:sp_4:word16] = si
-          call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-          si_28 = Mem7[ss:sp_26:word16]
+          call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,ss:ss	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
+          si_27 = Mem7[ss:sp_25:word16]
 Mem7: orig: Mem0
     def:  Mem7[ss:sp_4:word16] = si
-    uses: si_28 = Mem7[ss:sp_26:word16]
+    uses: si_27 = Mem7[ss:sp_25:word16]
 cx:cx
     def:  def cx
     uses: SCZO_9 = cond(cx - 0x0001)
           si_12 = cx
           cx_13 = cx - 0x0001
-          cx_34 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
+          cx_33 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(cx - 0x0001)
     uses: SZO_10 = SLICE(SCZO_9, bool, 4) (alias)
-          C_33 = SLICE(SCZO_9, bool, 1) (alias)
-          O_39 = SLICE(SCZO_9, bool, 4) (alias)
-          S_42 = SLICE(SCZO_9, bool, 0) (alias)
-          Z_46 = SLICE(SCZO_9, bool, 2) (alias)
+          C_32 = SLICE(SCZO_9, bool, 1) (alias)
+          O_38 = SLICE(SCZO_9, bool, 4) (alias)
+          S_41 = SLICE(SCZO_9, bool, 0) (alias)
+          Z_45 = SLICE(SCZO_9, bool, 2) (alias)
 SZO_10: orig: SZO
     def:  SZO_10 = SLICE(SCZO_9, bool, 4) (alias)
     uses: branch Test(LE,SZO_10) l0C00_001C
 ax_11: orig: ax
     def:  ax_11 = 0x0001
-    uses: ax_30 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
+    uses: ax_29 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
 si_12: orig: si
     def:  si_12 = cx
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-          dx_ax_21 = si_12 *s ax_18
+    uses: call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,ss:ss	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
+          dx_ax_20 = si_12 *s ax_17
 cx_13: orig: cx
     def:  cx_13 = cx - 0x0001
     uses: SZO_14 = cond(cx_13)
-          call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
+          call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,ss:ss	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
 SZO_14: orig: SZO
     def:  SZO_14 = cond(cx_13)
 sp_15: orig: sp
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-    uses: sp_26 = PHI((sp_15, l0C00_0011), (sp_4, l0C00_001C))
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,ss:ss	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
+    uses: sp_25 = PHI((sp_15, l0C00_0011), (sp_4, l0C00_001C))
 cx_16: orig: cx
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-    uses: cx_34 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
-ax:ax
-    def:  def ax
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-ax_18: orig: ax
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-    uses: dx_ax_21 = si_12 *s ax_18
-Top_19: orig: Top
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-    uses: Top_43 = PHI((Top_19, l0C00_0011), (Top_3, l0C00_001C))
-SCZO_20: orig: SCZO
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-dx_ax_21: orig: dx_ax
-    def:  dx_ax_21 = si_12 *s ax_18
-    uses: dx_22 = SLICE(dx_ax_21, word16, 16) (alias)
-          ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
-          SCZO_24 = cond(dx_ax_21)
-dx_22: orig: dx
-    def:  dx_22 = SLICE(dx_ax_21, word16, 16) (alias)
-    uses: dx_35 = PHI((dx_22, l0C00_0011), (dx, l0C00_001C))
-ax_23: orig: ax
-    def:  ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
-    uses: ax_30 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
-SCZO_24: orig: SCZO
-    def:  SCZO_24 = cond(dx_ax_21)
-    uses: C_32 = SLICE(SCZO_24, bool, 1) (alias)
-          O_38 = SLICE(SCZO_24, bool, 4) (alias)
-          S_41 = SLICE(SCZO_24, bool, 0) (alias)
-          Z_45 = SLICE(SCZO_24, bool, 2) (alias)
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,ss:ss	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
+    uses: cx_33 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
+ax_17: orig: ax
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,ss:ss	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
+    uses: dx_ax_20 = si_12 *s ax_17
+Top_18: orig: Top
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,ss:ss	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
+    uses: Top_42 = PHI((Top_18, l0C00_0011), (Top_3, l0C00_001C))
+SCZO_19: orig: SCZO
+    def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,ss:ss	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
+dx_ax_20: orig: dx_ax
+    def:  dx_ax_20 = si_12 *s ax_17
+    uses: dx_21 = SLICE(dx_ax_20, word16, 16) (alias)
+          ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
+          SCZO_23 = cond(dx_ax_20)
+dx_21: orig: dx
+    def:  dx_21 = SLICE(dx_ax_20, word16, 16) (alias)
+    uses: dx_34 = PHI((dx_21, l0C00_0011), (dx, l0C00_001C))
+ax_22: orig: ax
+    def:  ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
+    uses: ax_29 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
+SCZO_23: orig: SCZO
+    def:  SCZO_23 = cond(dx_ax_20)
+    uses: C_31 = SLICE(SCZO_23, bool, 1) (alias)
+          O_37 = SLICE(SCZO_23, bool, 4) (alias)
+          S_40 = SLICE(SCZO_23, bool, 0) (alias)
+          Z_44 = SLICE(SCZO_23, bool, 2) (alias)
+C_30: orig: C
+    def:  C_30 = PHI((C_31, l0C00_0011), (C_32, l0C00_001C))
+    uses: use C_30
+sp_25: orig: sp
+    def:  sp_25 = PHI((sp_15, l0C00_0011), (sp_4, l0C00_001C))
+    uses: si_27 = Mem7[ss:sp_25:word16]
+          sp_28 = sp_25 + 2
+ax_29: orig: ax
+    def:  ax_29 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
+    uses: use ax_29
+si_27: orig: si
+    def:  si_27 = Mem7[ss:sp_25:word16]
+    uses: use si_27
+sp_28: orig: sp
+    def:  sp_28 = sp_25 + 2
+    uses: use sp_28
 C_31: orig: C
-    def:  C_31 = PHI((C_32, l0C00_0011), (C_33, l0C00_001C))
-    uses: use C_31
-sp_26: orig: sp
-    def:  sp_26 = PHI((sp_15, l0C00_0011), (sp_4, l0C00_001C))
-    uses: si_28 = Mem7[ss:sp_26:word16]
-          sp_29 = sp_26 + 2
-ax_30: orig: ax
-    def:  ax_30 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
-    uses: use ax_30
-si_28: orig: si
-    def:  si_28 = Mem7[ss:sp_26:word16]
-    uses: use si_28
-sp_29: orig: sp
-    def:  sp_29 = sp_26 + 2
-    uses: use sp_29
+    def:  C_31 = SLICE(SCZO_23, bool, 1) (alias)
+    uses: C_30 = PHI((C_31, l0C00_0011), (C_32, l0C00_001C))
 C_32: orig: C
-    def:  C_32 = SLICE(SCZO_24, bool, 1) (alias)
-    uses: C_31 = PHI((C_32, l0C00_0011), (C_33, l0C00_001C))
-C_33: orig: C
-    def:  C_33 = SLICE(SCZO_9, bool, 1) (alias)
-    uses: C_31 = PHI((C_32, l0C00_0011), (C_33, l0C00_001C))
-cx_34: orig: cx
-    def:  cx_34 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
-    uses: use cx_34
-dx_35: orig: dx
-    def:  dx_35 = PHI((dx_22, l0C00_0011), (dx, l0C00_001C))
-    uses: use dx_35
+    def:  C_32 = SLICE(SCZO_9, bool, 1) (alias)
+    uses: C_30 = PHI((C_31, l0C00_0011), (C_32, l0C00_001C))
+cx_33: orig: cx
+    def:  cx_33 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
+    uses: use cx_33
+dx_34: orig: dx
+    def:  dx_34 = PHI((dx_21, l0C00_0011), (dx, l0C00_001C))
+    uses: use dx_34
 dx:dx
     def:  def dx
-    uses: dx_35 = PHI((dx_22, l0C00_0011), (dx, l0C00_001C))
+    uses: dx_34 = PHI((dx_21, l0C00_0011), (dx, l0C00_001C))
+O_36: orig: O
+    def:  O_36 = PHI((O_37, l0C00_0011), (O_38, l0C00_001C))
+    uses: use O_36
 O_37: orig: O
-    def:  O_37 = PHI((O_38, l0C00_0011), (O_39, l0C00_001C))
-    uses: use O_37
+    def:  O_37 = SLICE(SCZO_23, bool, 4) (alias)
+    uses: O_36 = PHI((O_37, l0C00_0011), (O_38, l0C00_001C))
 O_38: orig: O
-    def:  O_38 = SLICE(SCZO_24, bool, 4) (alias)
-    uses: O_37 = PHI((O_38, l0C00_0011), (O_39, l0C00_001C))
-O_39: orig: O
-    def:  O_39 = SLICE(SCZO_9, bool, 4) (alias)
-    uses: O_37 = PHI((O_38, l0C00_0011), (O_39, l0C00_001C))
+    def:  O_38 = SLICE(SCZO_9, bool, 4) (alias)
+    uses: O_36 = PHI((O_37, l0C00_0011), (O_38, l0C00_001C))
+S_39: orig: S
+    def:  S_39 = PHI((S_40, l0C00_0011), (S_41, l0C00_001C))
+    uses: use S_39
 S_40: orig: S
-    def:  S_40 = PHI((S_41, l0C00_0011), (S_42, l0C00_001C))
-    uses: use S_40
+    def:  S_40 = SLICE(SCZO_23, bool, 0) (alias)
+    uses: S_39 = PHI((S_40, l0C00_0011), (S_41, l0C00_001C))
 S_41: orig: S
-    def:  S_41 = SLICE(SCZO_24, bool, 0) (alias)
-    uses: S_40 = PHI((S_41, l0C00_0011), (S_42, l0C00_001C))
-S_42: orig: S
-    def:  S_42 = SLICE(SCZO_9, bool, 0) (alias)
-    uses: S_40 = PHI((S_41, l0C00_0011), (S_42, l0C00_001C))
-Top_43: orig: Top
-    def:  Top_43 = PHI((Top_19, l0C00_0011), (Top_3, l0C00_001C))
-    uses: use Top_43
+    def:  S_41 = SLICE(SCZO_9, bool, 0) (alias)
+    uses: S_39 = PHI((S_40, l0C00_0011), (S_41, l0C00_001C))
+Top_42: orig: Top
+    def:  Top_42 = PHI((Top_18, l0C00_0011), (Top_3, l0C00_001C))
+    uses: use Top_42
+Z_43: orig: Z
+    def:  Z_43 = PHI((Z_44, l0C00_0011), (Z_45, l0C00_001C))
+    uses: use Z_43
 Z_44: orig: Z
-    def:  Z_44 = PHI((Z_45, l0C00_0011), (Z_46, l0C00_001C))
-    uses: use Z_44
+    def:  Z_44 = SLICE(SCZO_23, bool, 2) (alias)
+    uses: Z_43 = PHI((Z_44, l0C00_0011), (Z_45, l0C00_001C))
 Z_45: orig: Z
-    def:  Z_45 = SLICE(SCZO_24, bool, 2) (alias)
-    uses: Z_44 = PHI((Z_45, l0C00_0011), (Z_46, l0C00_001C))
-Z_46: orig: Z
-    def:  Z_46 = SLICE(SCZO_9, bool, 2) (alias)
-    uses: Z_44 = PHI((Z_45, l0C00_0011), (Z_46, l0C00_001C))
+    def:  Z_45 = SLICE(SCZO_9, bool, 2) (alias)
+    uses: Z_43 = PHI((Z_44, l0C00_0011), (Z_45, l0C00_001C))
 // fn0C00_000B
 // Return size: 2
 define fn0C00_000B
@@ -214,7 +202,6 @@ fn0C00_000B_entry:
 	def si
 	def ss
 	def cx
-	def ax
 	def dx
 	sp_2 = fp
 	Top_3 = 0
@@ -224,10 +211,10 @@ l0C00_000B:
 	Mem7[ss:sp_4:word16] = si
 	SCZO_9 = cond(cx - 0x0001)
 	SZO_10 = SLICE(SCZO_9, bool, 4) (alias)
-	C_33 = SLICE(SCZO_9, bool, 1) (alias)
-	O_39 = SLICE(SCZO_9, bool, 4) (alias)
-	S_42 = SLICE(SCZO_9, bool, 0) (alias)
-	Z_46 = SLICE(SCZO_9, bool, 2) (alias)
+	C_32 = SLICE(SCZO_9, bool, 1) (alias)
+	O_38 = SLICE(SCZO_9, bool, 4) (alias)
+	S_41 = SLICE(SCZO_9, bool, 0) (alias)
+	Z_45 = SLICE(SCZO_9, bool, 2) (alias)
 	branch Test(LE,SZO_10) l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
@@ -235,44 +222,44 @@ l0C00_0011:
 	cx_13 = cx - 0x0001
 	SZO_14 = cond(cx_13)
 	call fn0C00_000B (retsize: 2;)
-		uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3
-		defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
-	dx_ax_21 = si_12 *s ax_18
-	dx_22 = SLICE(dx_ax_21, word16, 16) (alias)
-	ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
-	SCZO_24 = cond(dx_ax_21)
-	C_32 = SLICE(SCZO_24, bool, 1) (alias)
-	O_38 = SLICE(SCZO_24, bool, 4) (alias)
-	S_41 = SLICE(SCZO_24, bool, 0) (alias)
-	Z_45 = SLICE(SCZO_24, bool, 2) (alias)
+		uses: cx:cx_13,si:si_12,ss:ss
+		defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
+	dx_ax_20 = si_12 *s ax_17
+	dx_21 = SLICE(dx_ax_20, word16, 16) (alias)
+	ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
+	SCZO_23 = cond(dx_ax_20)
+	C_31 = SLICE(SCZO_23, bool, 1) (alias)
+	O_37 = SLICE(SCZO_23, bool, 4) (alias)
+	S_40 = SLICE(SCZO_23, bool, 0) (alias)
+	Z_44 = SLICE(SCZO_23, bool, 2) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
 	ax_11 = 0x0001
 	// succ:  l0C00_001F
 l0C00_001F:
-	Z_44 = PHI((Z_45, l0C00_0011), (Z_46, l0C00_001C))
-	Top_43 = PHI((Top_19, l0C00_0011), (Top_3, l0C00_001C))
-	S_40 = PHI((S_41, l0C00_0011), (S_42, l0C00_001C))
-	O_37 = PHI((O_38, l0C00_0011), (O_39, l0C00_001C))
-	dx_35 = PHI((dx_22, l0C00_0011), (dx, l0C00_001C))
-	cx_34 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
-	C_31 = PHI((C_32, l0C00_0011), (C_33, l0C00_001C))
-	ax_30 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
-	sp_26 = PHI((sp_15, l0C00_0011), (sp_4, l0C00_001C))
-	si_28 = Mem7[ss:sp_26:word16]
-	sp_29 = sp_26 + 2
+	Z_43 = PHI((Z_44, l0C00_0011), (Z_45, l0C00_001C))
+	Top_42 = PHI((Top_18, l0C00_0011), (Top_3, l0C00_001C))
+	S_39 = PHI((S_40, l0C00_0011), (S_41, l0C00_001C))
+	O_36 = PHI((O_37, l0C00_0011), (O_38, l0C00_001C))
+	dx_34 = PHI((dx_21, l0C00_0011), (dx, l0C00_001C))
+	cx_33 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
+	C_30 = PHI((C_31, l0C00_0011), (C_32, l0C00_001C))
+	ax_29 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
+	sp_25 = PHI((sp_15, l0C00_0011), (sp_4, l0C00_001C))
+	si_27 = Mem7[ss:sp_25:word16]
+	sp_28 = sp_25 + 2
 	return
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
-	use ax_30
-	use C_31
-	use cx_34
-	use dx_35
-	use O_37
-	use S_40
-	use si_28
-	use sp_29
-	use Top_43
-	use Z_44
+	use ax_29
+	use C_30
+	use cx_33
+	use dx_34
+	use O_36
+	use S_39
+	use si_27
+	use sp_28
+	use Top_42
+	use Z_43
 

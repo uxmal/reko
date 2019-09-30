@@ -4,13 +4,11 @@
 
 #include "test.h"
 
-// 00000000004003E0: Register ptr64 _init()
-ptr64 _init()
+// 00000000004003E0: void _init()
+void _init()
 {
-	ptr64 rax_n = __gmon_start__;
 	if (__gmon_start__ != 0x00)
 		__gmon_start__();
-	return rax_n;
 }
 
 // 0000000000400440: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
@@ -21,16 +19,16 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 	__hlt();
 }
 
-// 0000000000400470: void deregister_tm_clones(Register ptr64 rbp, Register word64 r8)
-void deregister_tm_clones(ptr64 rbp, word64 r8)
+// 0000000000400470: void deregister_tm_clones(Register word64 r8)
+void deregister_tm_clones(word64 r8)
 {
 	if (true || 0x00 == 0x00)
 		return;
 	null();
 }
 
-// 00000000004004A0: void register_tm_clones(Register word64 rbp, Register word64 r8)
-void register_tm_clones(word64 rbp, word64 r8)
+// 00000000004004A0: void register_tm_clones(Register word64 r8)
+void register_tm_clones(word64 r8)
 {
 	if (false || 0x00 == 0x00)
 		return;
@@ -42,21 +40,21 @@ void __do_global_dtors_aux(word64 r8)
 {
 	if (globals->b601040 == 0x00)
 	{
-		deregister_tm_clones(fp - 0x08, r8);
+		deregister_tm_clones(r8);
 		globals->b601040 = 0x01;
 	}
 }
 
-// 0000000000400500: void frame_dummy(Register word64 rdx, Register word64 rbp, Register word64 rsi, Register word64 r8)
-void frame_dummy(word64 rdx, word64 rbp, word64 rsi, word64 r8)
+// 0000000000400500: void frame_dummy(Register word64 rbp, Register word64 r8)
+void frame_dummy(word64 rbp, word64 r8)
 {
 	if (globals->qw600E20 == 0x00 || 0x00 == 0x00)
-		register_tm_clones(rbp, r8);
+		register_tm_clones(r8);
 	else
 	{
 		word64 r8_n;
 		fn0000000000000000();
-		register_tm_clones(rbp, r8_n);
+		register_tm_clones(r8_n);
 	}
 }
 
@@ -72,14 +70,14 @@ void main()
 	f();
 }
 
-// 0000000000400550: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
-void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
+// 0000000000400550: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
+void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
 	word32 edi = (word32) rdi;
+	_init();
 	word32 r15d_n = (word32) (uint64) edi;
 	int64 rbp_n = 0x00600E18 - 0x00600E10;
 	Eq_n rbx_n = 0x00;
-	word64 rax_n = _init();
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		do

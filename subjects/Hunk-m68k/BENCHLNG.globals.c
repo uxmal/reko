@@ -9,6 +9,21 @@ Eq_n g_t0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
+struct Eq_n g_t147C = 
+	{
+		0x25,
+		0x6C,
+	};
+struct Eq_n g_t149C = 
+	{
+		0x25,
+		0x6C,
+	};
+struct Eq_n g_t14A0 = 
+	{
+		0x25,
+		0x6C,
+	};
 Eq_n g_t28C5 = 
 	{
 		
@@ -21,14 +36,8 @@ Eq_n g_t3E28 =
 	{
 		0x00
 	};
-Eq_n g_t3E2C = 
-	{
-		0x00
-	};
-Eq_n g_t3E30 = 
-	{
-		0x03
-	};
+struct Eq_n * g_ptr3E2C = &g_t10202;
+struct Eq_n * g_ptr3E30 = &g_t3030303;
 Eq_n g_t3E34 = 
 	{
 		0x04
@@ -57,8 +66,10 @@ Eq_n g_t3F68;
 word32 g_dw3F6C;
 struct Eq_n * g_ptr3F78;
 Eq_n g_t3F7C;
-Eq_n g_t3F80;
-Eq_n g_t3F88;
+struct Eq_n * g_ptr3F80;
+struct Eq_n * g_ptr3F88;
 Eq_n g_t4000;
+Eq_n g_t10202;
+Eq_n g_t3030303;
 Eq_n g_t6060606;
 

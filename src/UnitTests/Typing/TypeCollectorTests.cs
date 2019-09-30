@@ -217,14 +217,15 @@ namespace Reko.UnitTests.Typing
             RunTest(mock, "Typing/TycoFramePointer.txt");
         }
 
-
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void TycoReg00014()
         {
             RunTest32("Fragments/regressions/r00014.asm", "Typing/TycoReg00014.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void TycoReg00300()
         {
             buildEquivalenceClasses = true;
@@ -237,7 +238,7 @@ namespace Reko.UnitTests.Typing
 
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void TycoCallFunctionWithArraySize()
         {
             var m = new ProcedureBuilder();
@@ -323,14 +324,14 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void TycoFactorial()
         {
             RunTest16("Fragments/factorial.asm", "Typing/TycoFactorial.txt");
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void TycoFactorialReg()
         {
             RunTest16("Fragments/factorial_reg.asm", "Typing/TycoFactorialReg.txt");
@@ -344,7 +345,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void TycoReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/TycoReg00012.txt");

@@ -218,6 +218,59 @@ namespace Reko.Analysis
             return sig;
         }
 
+        /// <summary>
+        /// Make a function signature based on use and def information.
+        /// </summary>
+        /// <param name="ssa"></param>
+        /// <param name="uses"></param>
+        /// <param name="definitions"></param>
+        /// <returns></returns>
+        public FunctionType MakeSignature(SsaState ssa, IEnumerable<CallBinding> uses, IEnumerable<CallBinding> definitions)
+        {
+            var implicitRegs = platform.CreateImplicitArgumentRegisters();
+
+            var arch = ssa.Procedure.Architecture;
+            var frame = arch.CreateFrame();
+            var sb = new SignatureBuilder(frame, arch);
+
+            var seqs = uses.Select(u => u.Storage as SequenceStorage)
+                .Where(s => s != null)
+                .OrderBy(s => s.Name);
+            foreach (var seq in seqs)
+            {
+                sb.AddSequenceArgument(seq);
+            }
+
+            //$TODO: sort these by some ABI order?
+            var regs = uses.Select(u => u.Storage as RegisterStorage)
+                .Where(r => r != null && !implicitRegs.Contains(r))
+                .OrderBy(r => r.Number);
+            foreach (var reg in regs)
+            {
+                sb.AddRegisterArgument(reg);
+            }
+
+            var stargs = uses.Select(u => u.Storage as StackStorage)
+                .Where(s => s != null)
+                .OrderBy(r => r.StackOffset);
+            foreach (var arg in stargs)
+            {
+                var id = frame.EnsureIdentifier(arg);
+                sb.AddInParam(id);
+            }
+
+            var outs = definitions.Select(d => d.Storage)
+                .Where(d => d is RegisterStorage r && !implicitRegs.Contains(r))
+                .OrderBy(r => r.Number);
+            foreach (var o in outs)
+            {
+                var id = frame.EnsureIdentifier(o);
+                sb.AddOutParam(id);
+            }
+            var sig = sb.BuildSignature();
+            return sig;
+        }
+
         private void AddModifiedFlags(IStorageBinder frame, IEnumerable<Storage> allLiveOut, SignatureBuilder sb)
         {
             foreach (var grf in allLiveOut
@@ -290,7 +343,7 @@ namespace Reko.Analysis
 			return false;
 		}
 
-        private ApplicationBuilder CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn)
+        private ApplicationBuilder CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, Expression fn)
         {
             return new CallApplicationBuilder(ssaCaller, stmCaller, call, fn);
         }
@@ -320,23 +373,39 @@ namespace Reko.Analysis
         /// <param name="ssaCaller">SSA state of the procedure in which the CALL instruction exists</param>
         /// <param name="stm">The particular statement of the call instruction</param>
         /// <param name="call">The actuall CALL instruction.</param>
-        /// <returns>True if the conversion was possible, false if the procedure didn't have
-        /// a signature yet.</returns>
         public bool RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call)
         {
-            if (!(call.Callee is ProcedureConstant callee))
-                return false;          //$REVIEW: what happens with indirect calls?
-            var procCallee = callee.Procedure;
-            var sigCallee = procCallee.Signature;
-            var fn = new ProcedureConstant(platform.PointerType, procCallee);
-            if (sigCallee == null || !sigCallee.ParametersValid)
+            if (call.Callee is ProcedureConstant callee)
+            {
+                var procCallee = callee.Procedure;
+                var sigCallee = procCallee.Signature;
+                var fn = new ProcedureConstant(platform.PointerType, procCallee);
+                if (sigCallee == null || !sigCallee.ParametersValid)
+                    return false;
+                ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
+                var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
+                stm.Instruction = instr;
+                var ssam = new SsaMutator(ssaCaller);
+                ssam.AdjustSsa(stm, call);
+                return true;
+            }
+            else
+            {
                 return false;
-            ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
-            var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
-            stm.Instruction = instr;
-            var ssam = new SsaMutator(ssaCaller);
-            ssam.AdjustSsa(stm, call);
-            return true;
+#if NOT_READY_YET       //$TODO
+                // We have an indirect call with an unknown signature. 
+                // Use the guessed `uses` and `defs` to construct a signature.
+                // It's likely going to be wrong, but it can be overridden with
+                // user-provided metadata.
+                var sigCallee = MakeSignature(ssaCaller, call.Uses, call.Definitions);
+                var ab = CreateApplicationBuilder(ssaCaller, stm, call, call.Callee);
+                var instr = ab.CreateInstruction(sigCallee, Core.Serialization.DefaultProcedureCharacteristics.Instance);
+                stm.Instruction = instr;
+                var ssam = new SsaMutator(ssaCaller);
+                ssam.AdjustSsa(stm, call);
+                return true;
+#endif
+            }
         }
 
         /// <summary>

@@ -18,7 +18,6 @@ l0000000000400428:
 
 l0000000000400438:
 	call __gmon_start__ (retsize: 8;)
-		uses: rax:__gmon_start__,rsp:fp - 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -64,10 +63,10 @@ l0000000000400480:
 
 
 
-void fn00000000004004B0(word64 rbp, word64 r8)
+void fn00000000004004B0(word64 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63] rbp:[0..63]
+// MayUse:  r8:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 rax rdi
 // Preserved: rbp rsp
@@ -96,7 +95,7 @@ l00000000004004D8:
 
 l00000000004004CB:
 	call 0x0000000000000000 (retsize: 8;)
-		uses: r8:r8,rax:0x0000000000000000,rdi:0x0000000000601040,Stack +0000:rbp
+		uses: r8:r8,rdi:0x0000000000601040
 	return
 // DataOut:
 // DataOut (flags):

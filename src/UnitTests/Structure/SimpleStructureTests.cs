@@ -175,79 +175,91 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrIf()
         {
             RunTest("Fragments/if.asm", "Structure/StrIf.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrFactorialReg()
         {
             RunTest("Fragments/factorial_reg.asm", "Structure/StrFactorialReg.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrFactorial()
         {
             RunTest("Fragments/factorial.asm", "Structure/StrFactorial.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrWhileBreak()
         {
             RunTest("Fragments/while_break.asm", "Structure/StrWhileBreak.txt");
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void StrWhileRepeat()
         {
             RunTest("Fragments/while_repeat.asm", "Structure/StrWhileRepeat.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrForkInLoop()
         {
             RunTest("Fragments/forkedloop.asm", "Structure/StrForkInLoop.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrNestedIf()
         {
             RunTest("Fragments/nested_ifs.asm", "Structure/StrNestedIf.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrNestedLoops()
         {
             RunTest("Fragments/matrix_addition.asm", "Structure/StrNestedLoop.txt");
         }
 
         [Test]
+        [Ignore(Categories.IntegrationTests)]
         public void StrReg00006()
         {
             RunTest32("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrNonreducible()
         {
             RunTest("Fragments/nonreducible.asm", "Structure/StrNonreducible.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrWhileGoto()
         {
             RunTest("Fragments/while_goto.asm", "Structure/StrWhileGoto.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrIfElseIf()
         {
             RunTest(new MockIfElseIf(), "Structure/StrIfElseIf.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrReg00011()
         {
             RunTest(new Reg00011Mock(), "Structure/StrReg00011.txt");
@@ -261,6 +273,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void StrManyIncrements()
         {
             RunTest(new ManyIncrements(), "Structure/StrManyIncrements.txt");
@@ -294,7 +307,7 @@ ret
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.UnitTests)]
         public void StrReg00001()
         {
             var program = RewriteX86_32Fragment(
@@ -332,6 +345,7 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void StrInfiniteLoop()
         {
             var pm = new ProgramBuilder();

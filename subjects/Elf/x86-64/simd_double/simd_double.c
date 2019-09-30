@@ -4,13 +4,11 @@
 
 #include "simd_double.h"
 
-// 00000000000005A0: Register ptr64 _init()
-ptr64 _init()
+// 00000000000005A0: void _init()
+void _init()
 {
-	ptr64 rax_n = __gmon_start__;
 	if (__gmon_start__ != 0x00)
 		__gmon_start__();
-	return rax_n;
 }
 
 // 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
@@ -33,19 +31,21 @@ void deregister_tm_clones(ptr64 rbp)
 void register_tm_clones(word64 rbp)
 {
 	int64 rsi_n = 2101320 - 2101320;
-	Eq_n rsi_n = (rsi_n >> 0x03) + ((rsi_n >> 0x03) >> 0x3F);
-	if (rsi_n >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
+	if ((rsi_n >> 0x03) + ((rsi_n >> 0x03) >>u 0x3F) >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
 	_ITM_registerTMCloneTable();
 }
 
-// 00000000000006E0: void __do_global_dtors_aux(Register word64 rax, Register word64 rbp)
-void __do_global_dtors_aux(word64 rax, word64 rbp)
+// 00000000000006E0: void __do_global_dtors_aux()
+void __do_global_dtors_aux()
 {
 	if (globals->b201048 != 0x00)
 		return;
 	if (__cxa_finalize != 0x00)
+	{
+		word64 rax_n;
 		__cxa_finalize();
+	}
 	deregister_tm_clones(fp - 0x08);
 	globals->b201048 = 0x01;
 }
@@ -56,8 +56,8 @@ void frame_dummy(word64 rbp)
 	register_tm_clones(rbp);
 }
 
-// 000000000000072A: Register (ptr64 void) _mm_malloc(Register ptr64 rbp, Register uint64 rsi, Register Eq_n rdi)
-void * _mm_malloc(ptr64 rbp, uint64 rsi, Eq_n rdi)
+// 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_n rdi)
+void * _mm_malloc(uint64 rsi, Eq_n rdi)
 {
 	void * rax_n;
 	uint64 qwLoc28_n = rsi;
@@ -95,9 +95,9 @@ void vec_add(word64 rdi)
 // 0000000000000898: void main(Register Eq_n xmm0)
 void main(Eq_n xmm0)
 {
-	real64 rax_n[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
-	real64 rax_n[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
-	real64 rax_n[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
+	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
+	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
+	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
 	Eq_n qwLoc10_n = 0x00;
 	while (qwLoc10_n < 0x0400)
 	{
@@ -143,13 +143,13 @@ void main(Eq_n xmm0)
 	_mm_free(rax_n);
 }
 
-// 0000000000000A70: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
-void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
+// 0000000000000A70: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
+void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
 	word32 edi = (word32) rdi;
+	_init();
 	word32 r15d_n = (word32) (uint64) edi;
 	int64 rbp_n = 0x00200DF0 - 2100712;
-	word64 rax_n = _init();
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		Eq_n rbx_n = 0x00;

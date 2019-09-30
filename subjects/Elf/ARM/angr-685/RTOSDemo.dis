@@ -128,10 +128,10 @@ prvUnlockQueue_exit:
 
 
 
-bool prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32 lr, ptr32 & r0Out, ptr32 & r7Out, ptr32 & lrOut)
+bool prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, word32 r7, word32 lr, ptr32 & r0Out, ptr32 & r7Out, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r7:[0..31]
+// MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r7:[0..31]
 // LiveOut: Z lr r0 r7
 // Trashed: NZCV lr r0 r1 r2 r3 r7
 // Preserved: r4 r5 r6 sp
@@ -142,11 +142,11 @@ prvCopyDataToQueue_entry:
 
 l000000EC:
 	bool Z_201
-	word32 r5_115
-	word32 r4_122 = r0
-	word32 r0_107 = Mem11[r0 + 64:word32]
+	word32 r5_114
+	word32 r4_121 = r0
+	word32 r0_106 = Mem11[r0 + 64:word32]
 	word32 r5_15 = Mem11[r0 + 56:word32]
-	branch r0_107 != 0x00000000 l00000102
+	branch r0_106 != 0x00000000 l00000102
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -158,119 +158,119 @@ l00000102:
 // SymbolicIn:
 
 l00000128:
-	word32 r6_30
-	memcpy(Mem11[r0 + 12:word32], r1, r0_107, r3, r0, r5_15, r2, r7, lr, out r4_122, out r5_115, out r6_30, out r7, out lr)
-	word32 r3_37 = Mem11[r4_122 + 12:word32]
-	word32 r1_39 = Mem11[r4_122:word32]
-	Mem42[r4_122 + 12:word32] = r3_37
-	branch r3_37 >=u r1_39 l00000144
+	word32 r6_29
+	memcpy(Mem11[r0 + 12:word32], r1, r0_106, r0, r5_15, r2, r7, lr, out r4_121, out r5_114, out r6_29, out r7, out lr)
+	word32 r3_36 = Mem11[r4_121 + 12:word32]
+	word32 r1_38 = Mem11[r4_121:word32]
+	Mem41[r4_121 + 12:word32] = r3_36
+	branch r3_36 >=u r1_38 l00000144
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000013E:
-	Mem47[r4_122 + 12:word32] = Mem42[r4_122 + 4:word32]
+	Mem46[r4_121 + 12:word32] = Mem41[r4_121 + 4:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000144:
-	Z_201 = SLICE(cond(r6_30 - 0x00000002), bool, 2) (alias)
-	branch r6_30 == 0x00000002 l00000158
+	Z_201 = SLICE(cond(r6_29 - 0x00000002), bool, 2) (alias)
+	branch r6_29 == 0x00000002 l00000158
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000158:
-	branch r5_115 != 0x00000000 l0000015C
+	branch r5_114 != 0x00000000 l0000015C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000015A:
-	r5_115 = 0x00000001
+	r5_114 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000015C:
-	r0_107 = 0x00000000
+	r0_106 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000148:
-	Mem58[r4_122 + 56:word32] = r5_115 + 0x00000001
+	Mem57[r4_121 + 56:word32] = r5_114 + 0x00000001
 	r0Out = 0x00000000
 	r7Out = r7
 	lrOut = lr
-	return SLICE(cond(r5_115 + 0x00000001), bool, 2)
+	return SLICE(cond(r5_114 + 0x00000001), bool, 2)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000108:
-	word32 lr_65
-	word32 r4_70
-	word32 r5_71
-	word32 r6_72
-	word32 r7_73
-	memcpy(Mem11[r0 + 8:word32], r1, r0_107, r3, r0, r5_15, r2, r7, lr, out r4_70, out r5_71, out r6_72, out r7_73, out lr_65)
-	word32 r2_80 = Mem11[r4_70 + 4:word32]
-	word32 r3_81 = Mem11[r4_70 + 8:word32] + Mem11[r4_70 + 64:word32]
-	Mem83[r4_70 + 8:word32] = r3_81
-	branch r3_81 <u r2_80 l00000150
+	word32 lr_64
+	word32 r4_69
+	word32 r5_70
+	word32 r6_71
+	word32 r7_72
+	memcpy(Mem11[r0 + 8:word32], r1, r0_106, r0, r5_15, r2, r7, lr, out r4_69, out r5_70, out r6_71, out r7_72, out lr_64)
+	word32 r2_79 = Mem11[r4_69 + 4:word32]
+	word32 r3_80 = Mem11[r4_69 + 8:word32] + Mem11[r4_69 + 64:word32]
+	Mem82[r4_69 + 8:word32] = r3_80
+	branch r3_80 <u r2_79 l00000150
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000150:
-	Mem88[r4_70 + 56:word32] = r5_71 + 0x00000001
-	r0Out = r6_72
-	r7Out = r7_73
-	lrOut = lr_65
-	return SLICE(cond(r5_71 + 0x00000001), bool, 2)
+	Mem87[r4_69 + 56:word32] = r5_70 + 0x00000001
+	r0Out = r6_71
+	r7Out = r7_72
+	lrOut = lr_64
+	return SLICE(cond(r5_70 + 0x00000001), bool, 2)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000011C:
-	Mem97[r4_70 + 8:word32] = Mem83[r4_70:word32]
-	Mem98[r4_70 + 56:word32] = r5_71 + 0x00000001
-	r0Out = r6_72
-	r7Out = r7_73
-	lrOut = lr_65
-	return SLICE(cond(r5_71 + 0x00000001), bool, 2)
+	Mem96[r4_69 + 8:word32] = Mem82[r4_69:word32]
+	Mem97[r4_69 + 56:word32] = r5_70 + 0x00000001
+	r0Out = r6_71
+	r7Out = r7_72
+	lrOut = lr_64
+	return SLICE(cond(r5_70 + 0x00000001), bool, 2)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000F6:
-	word32 r6_103 = Mem11[r0:word32]
-	branch r6_103 == 0x00000000 l00000160
+	word32 r6_102 = Mem11[r0:word32]
+	branch r6_102 == 0x00000000 l00000160
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000160:
-	r0_107 = xTaskPriorityDisinherit(Mem11[r0 + 4:word32], out lr)
-	Mem117[r0 + 4:word32] = r6_103
-	r5_115 = r5_15 + 0x00000001
+	r0_106 = xTaskPriorityDisinherit(Mem11[r0 + 4:word32], out lr)
+	Mem116[r0 + 4:word32] = r6_102
+	r5_114 = r5_15 + 0x00000001
 	Z_201 = SLICE(cond(r5_15 + 0x00000001), bool, 2) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000FC:
-	r5_115 = r5_15 + 0x00000001
+	r5_114 = r5_15 + 0x00000001
 	Z_201 = SLICE(cond(r5_15 + 0x00000001), bool, 2) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000FE:
-	Mem124[r4_122 + 56:word32] = r5_115
-	r0Out = r0_107
+	Mem123[r4_121 + 56:word32] = r5_114
+	r0Out = r0_106
 	r7Out = r7
 	lrOut = lr
 	return Z_201
@@ -341,7 +341,7 @@ l00000188_thunk_memcpy:
 	word32 r5_41
 	word32 r6_42
 	word32 r7_43
-	memcpy(r1, r1_13, r2_5, r1, r4, r5, r6, r7, lr, out r4_40, out r5_41, out r6_42, out r7_43, out lr_35)
+	memcpy(r1, r1_13, r2_5, r4, r5, r6, r7, lr, out r4_40, out r5_41, out r6_42, out r7_43, out lr_35)
 	r5Out = r5_41
 	r6Out = r6_42
 	r7Out = r7_43
@@ -371,7 +371,7 @@ xQueueGenericSend_entry:
 // SymbolicIn:
 
 l00000190:
-	word32 r5_125 = 0x00000000
+	word32 r5_124 = 0x00000000
 	word32 r9_31 = Mem27[0x000002A0:word32]
 // DataOut:
 // DataOut (flags):
@@ -379,8 +379,7 @@ l00000190:
 
 l000001F8:
 	vPortEnterCritical(cpsr)
-	word32 r3_42 = Mem40[r0 + 60:word32]
-	branch Mem40[r0 + 56:word32] <u r3_42 l00000246
+	branch Mem40[r0 + 56:word32] <u Mem40[r0 + 60:word32] l00000246
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -392,10 +391,10 @@ l00000204:
 // SymbolicIn:
 
 l00000246:
-	word32 lr_58
-	word32 r0_59
-	word32 r7_403
-	prvCopyDataToQueue(r0, r1, r3, r3_42, r3, lr, out r0_59, out r7_403, out lr_58)
+	word32 lr_57
+	word32 r0_58
+	word32 r7_402
+	prvCopyDataToQueue(r0, r1, r3, r3, lr, out r0_58, out r7_402, out lr_57)
 	branch Mem40[r0 + 36:word32] != 0x00000000 l00000290
 // DataOut:
 // DataOut (flags):
@@ -413,13 +412,13 @@ l0000029C:
 // SymbolicIn:
 
 l00000254:
-	branch r0_59 == 0x00000000 l00000266
+	branch r0_58 == 0x00000000 l00000266
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000256:
-	Mem83[Mem40[0x000002A0:word32]:word32] = 0x10000000
+	Mem82[Mem40[0x000002A0:word32]:word32] = 0x10000000
 	__dsb_sy()
 	__isb_sy()
 // DataOut:
@@ -428,7 +427,7 @@ l00000256:
 
 l00000266:
 	vPortExitCritical(cpsr)
-	return lr_58
+	return lr_57
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -447,7 +446,7 @@ l00000272:
 // SymbolicIn:
 
 l0000020C:
-	branch r5_125 != 0x00000000 l000001A8
+	branch r5_124 != 0x00000000 l000001A8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -468,19 +467,19 @@ l000001A8:
 // SymbolicIn:
 
 l000001BC_1:
-	Mem157[r0 + 68:byte] = 0x00
+	Mem156[r0 + 68:byte] = 0x00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000001C0:
-	branch (word32) Mem159[r0 + 69:byte] != 0x000000FF l000001CC
+	branch (word32) Mem158[r0 + 69:byte] != 0x000000FF l000001CC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000001C8_1:
-	Mem164[r0 + 69:byte] = 0x00
+	Mem163[r0 + 69:byte] = 0x00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -507,7 +506,7 @@ xQueueGenericSend_exit:
 
 l000001DC:
 	vPortEnterCritical(cpsr)
-	branch Mem207[r0 + 56:word32] == Mem207[r0 + 60:word32] l00000218
+	branch Mem206[r0 + 56:word32] == Mem206[r0 + 60:word32] l00000218
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -522,7 +521,7 @@ l00000218:
 // SymbolicIn:
 
 l00000234:
-	Mem265[r9_31:word32] = 0x10000000
+	Mem264[r9_31:word32] = 0x10000000
 	__dsb_sy()
 	__isb_sy()
 // DataOut:
@@ -538,7 +537,7 @@ l000001E8:
 // SymbolicIn:
 
 l000001F6:
-	r5_125 = 0x00000001
+	r5_124 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -944,7 +943,7 @@ l00000482:
 	word32 r0_162
 	word32 lr_39
 	word32 r7_44
-	branch prvCopyDataToQueue(r0, r1, r3, r3, r2, lr, out r0_162, out r7_44, out lr_39) l000004A6
+	branch prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_162, out r7_44, out lr_39) l000004A6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5955,10 +5954,10 @@ prvSetAndCheckRegisters_exit:
 
 
 
-void vApplicationIdleHook(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, word32 pc, word32 cpsr)
+void vApplicationIdleHook(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] lr:[0..31] pc:[0..31] r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -5979,7 +5978,7 @@ l00008210:
 // SymbolicIn:
 
 l00008212:
-	lr = vCoRoutineSchedule(r0, r4, r5, r6, r7, r8, lr, pc, cpsr, out pc, out cpsr)
+	lr = vCoRoutineSchedule(r0, r4, r5, r6, r7, r8, lr, cpsr, out cpsr)
 	r0 = prvSetAndCheckRegisters(cpsr, out r4, out r5, out r6, out r7, out r8)
 // DataOut:
 // DataOut (flags):
@@ -6325,7 +6324,7 @@ l000083C0:
 	word32 lr_73
 	word32 r7_78
 	word32 r0_161
-	Z_157 = prvCopyDataToQueue(r0, r1, 0x00000000, r3_66, r7, lr, out r0_161, out r7_78, out lr_73)
+	Z_157 = prvCopyDataToQueue(r0, r1, 0x00000000, r7, lr, out r0_161, out r7_78, out lr_73)
 	branch Mem11[r0 + 36:word32] != 0x00000000 l000083EE
 // DataOut:
 // DataOut (flags):
@@ -6392,7 +6391,7 @@ l00008400:
 // SymbolicIn:
 
 l00008424:
-	word32 r0_159
+	word32 r0_158
 	__msr(cpsr, 0x00000000)
 	__msr(cpsr, 0x000000BF)
 	__isb_sy()
@@ -6436,25 +6435,25 @@ l00008464_1:
 // SymbolicIn:
 
 l00008466:
-	word32 r4_60
-	word32 r5_190
-	Z = memcpy(r1, r1_30, r2_22, r3_27 + 0xFFFFFFFF, r0, r5_16, r6, r7, lr, out r4_60, out r5_190, out r6, out r7, out lr)
-	branch Mem68[r4_60 + 16:word32] != 0x00000000 l00008478
+	word32 r4_59
+	word32 r5_189
+	Z = memcpy(r1, r1_30, r2_22, r0, r5_16, r6, r7, lr, out r4_59, out r5_189, out r6, out r7, out lr)
+	branch Mem67[r4_59 + 16:word32] != 0x00000000 l00008478
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008478:
-	word32 r0_71
-	xCoRoutineRemoveFromEventList(r4_60 + 0x00000010, out r0_71)
-	Z = SLICE(cond(r0_71), bool, 2) (alias)
-	branch r0_71 == 0x00000000 l0000846E
+	word32 r0_70
+	xCoRoutineRemoveFromEventList(r4_59 + 0x00000010, out r0_70)
+	Z = SLICE(cond(r0_70), bool, 2) (alias)
+	branch r0_70 == 0x00000000 l0000846E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008484:
-	r0_159 = ~0x00000004
+	r0_158 = ~0x00000004
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6471,14 +6470,14 @@ l0000846E:
 // SymbolicIn:
 
 l0000843E:
-	r0_159 = r2_19
+	r0_158 = r2_19
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008440:
 	__msr(cpsr, 0x00000000)
-	r0Out = r0_159
+	r0Out = r0_158
 	r6Out = r6
 	r7Out = r7
 	lrOut = lr
@@ -6488,20 +6487,20 @@ l00008440:
 // SymbolicIn:
 
 l00008418:
-	bool Z_106 = SLICE(cond(r2), bool, 2)
+	bool Z_105 = SLICE(cond(r2), bool, 2)
 	branch r2 != 0x00000000 l0000848A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000848A:
-	bool Z_114 = vCoRoutineAddToDelayedList(r2, r0 + 0x00000024)
+	bool Z_113 = vCoRoutineAddToDelayedList(r2, r0 + 0x00000024)
 	__msr(cpsr, r5_16)
 	r0Out = ~0x00000003
 	r6Out = r6
 	r7Out = r7
 	lrOut = lr
-	return Z_114
+	return Z_113
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6512,7 +6511,7 @@ l0000841C:
 	r6Out = r6
 	r7Out = r7
 	lrOut = lr
-	return Z_106
+	return Z_105
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6537,8 +6536,7 @@ xQueueCRSendFromISR_entry:
 // SymbolicIn:
 
 l000084A0:
-	word32 r3_13 = Mem11[r0 + 60:word32]
-	branch Mem11[r0 + 56:word32] <u r3_13 l000084B0
+	branch Mem11[r0 + 56:word32] <u Mem11[r0 + 60:word32] l000084B0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6547,7 +6545,7 @@ l000084B0:
 	word32 lr_23
 	word32 r7_28
 	word32 r0_97
-	prvCopyDataToQueue(r0, r1, 0x00000000, r3_13, r7, lr, out r0_97, out r7_28, out lr_23)
+	prvCopyDataToQueue(r0, r1, 0x00000000, r7, lr, out r0_97, out r7_28, out lr_23)
 	branch r2 != 0x00000000 l000084AC
 // DataOut:
 // DataOut (flags):
@@ -6651,7 +6649,7 @@ l000084FC:
 	word32 r5_65
 	word32 r7_154
 	word32 lr_155
-	memcpy(r1, r3_38, lr_26, r3_38, r0, r2, r1, r7_35 + 0xFFFFFFFF, lr_26, out r4_64, out r5_65, out r6_153, out r7_154, out lr_155)
+	memcpy(r1, r3_38, lr_26, r0, r2, r1, r7_35 + 0xFFFFFFFF, lr_26, out r4_64, out r5_65, out r6_153, out r7_154, out lr_155)
 	branch Mem56[r5_65:word32] != 0x00000000 l00008510
 // DataOut:
 // DataOut (flags):
@@ -6691,10 +6689,10 @@ xQueueCRReceiveFromISR_exit:
 
 
 
-void prvIdleTask(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, word32 pc, word32 cpsr)
+void prvIdleTask(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] lr:[0..31] pc:[0..31] r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -6715,7 +6713,7 @@ l0000852C:
 // SymbolicIn:
 
 l0000852E:
-	vApplicationIdleHook(r0, r4, r5, r6, r7, r8, lr, pc, cpsr)
+	vApplicationIdleHook(r0, r4, r5, r6, r7, r8, lr, cpsr)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9076,11 +9074,11 @@ vCoRoutineAddToDelayedList_exit:
 
 
 
-word32 vCoRoutineSchedule(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, word32 pc, word32 cpsr, ptr32 & pcOut, ptr32 & cpsrOut)
+word32 vCoRoutineSchedule(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, word32 cpsr, ptr32 & cpsrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] lr:[0..31] pc:[0..31] r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
-// LiveOut: cpsr lr pc
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
+// LiveOut: cpsr lr
 // Trashed: NZCV cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8
 // Preserved: sp
 vCoRoutineSchedule_entry:
@@ -9267,7 +9265,6 @@ l00009026:
 // SymbolicIn:
 
 l00009080:
-	pcOut = pc
 	cpsrOut = cpsr
 	return lr
 // DataOut:
@@ -9337,22 +9334,20 @@ l00009072_1:
 l00009074:
 	Mem252[r5_16:word32] = r0_245
 	word32 r3_253 = Mem252[r0_245:word32]
-	word32 lr_272
-	word32 pc_285
-	word32 cpsr_295
+	word32 lr_280
+	word32 pc_281
+	word32 cpsr_283
 	call r3_253 (retsize: 0;)
-		uses: cpsr:cpsr,lr:lr,pc:pc,r0:r0_245,r1:Mem252[r0_245 + 48:word32],r2:r2_243,r3:r3_253,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,sp:fp,Stack +FFFFFFE8:r4,Stack +FFFFFFEC:r5,Stack +FFFFFFF0:r6,Stack +FFFFFFF4:r7,Stack +FFFFFFF8:r8,Stack +FFFFFFFC:lr
-		defs: cpsr:cpsr_295,lr:lr_272,pc:pc_285
-	pcOut = pc_285
-	cpsrOut = cpsr_295
-	return lr_272
+		uses: cpsr:cpsr,lr:lr,pc:pc_281,r0:r0_245,r1:Mem252[r0_245 + 48:word32],r3:r3_253,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,sp:fp
+		defs: cpsr:cpsr_283,lr:lr_280,pc:pc_281
+	cpsrOut = cpsr_283
+	return lr_280
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00009046:
-	Mem303[r5_16 + 112:word32] = r2_197
-	pcOut = pc
+	Mem290[r5_16 + 112:word32] = r2_197
 	cpsrOut = cpsr
 	return lr
 // DataOut:
@@ -15044,10 +15039,10 @@ I2CSlaveDataGet_exit:
 
 
 
-bool memcpy(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
+bool memcpy(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
+// MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
 // LiveOut: Z lr r4 r5 r6 r7
 // Trashed: NZCV lr r0 r1 r2 r3 r4 r5 r6 r7
 // Preserved: sp
@@ -15057,7 +15052,7 @@ memcpy_entry:
 // SymbolicIn:
 
 l0000A5C4:
-	word32 r5_149 = r0
+	word32 r5_146 = r0
 	branch r2 <=u 0x0000000F l0000A62C
 // DataOut:
 // DataOut (flags):
@@ -15070,7 +15065,7 @@ l0000A5CC:
 // SymbolicIn:
 
 l0000A642:
-	r5_149 = r0
+	r5_146 = r0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15097,9 +15092,8 @@ l0000A5E4:
 
 l0000A5FC:
 	word32 r6_54 = r2 - 0x00000010 & ~0x0000000F
-	r5_149 = r0 + (r6_54 + 0x00000010)
+	r5_146 = r0 + (r6_54 + 0x00000010)
 	r1 = r1 + (r6_54 + 0x00000010)
-	r3 = r2 & 0x0000000F
 	branch (r2 & 0x0000000F) <=u 0x00000003 l0000A646
 // DataOut:
 // DataOut (flags):
@@ -15120,7 +15114,7 @@ l0000A60C:
 // SymbolicIn:
 
 l0000A616:
-	Mem77[r5_149 + r3_66:word32] = Mem74[r1 + r3_66:word32]
+	Mem77[r5_146 + r3_66:word32] = Mem74[r1 + r3_66:word32]
 	r3_66 = r3_66 + 0x00000004
 	branch r3_66 != r4_68 << 2 l0000A616
 // DataOut:
@@ -15129,10 +15123,9 @@ l0000A616:
 
 l0000A620:
 	word32 r6_84 = r6_65 & ~0x00000003
-	r3 = r6_84 + 0x00000004
 	r2 = r2 & 0x00000003
 	r1 = r1 + (r6_84 + 0x00000004)
-	r5_149 = r5_149 + (r6_84 + 0x00000004)
+	r5_146 = r5_146 + (r6_84 + 0x00000004)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15144,35 +15137,35 @@ l0000A62C:
 // SymbolicIn:
 
 l0000A630:
-	r3 = 0x00000000
+	word32 r3_101 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000A632:
-	Mem100[r5_149 + r3:byte] = (byte) (word32) Mem97[r1 + r3:byte]
-	r3 = r3 + 0x00000001
-	branch r3 != r2 l0000A632
+	Mem100[r5_146 + r3_101:byte] = (byte) (word32) Mem97[r1 + r3_101:byte]
+	r3_101 = r3_101 + 0x00000001
+	branch r3_101 != r2 l0000A632
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000A63C:
-	word32 r4_121
-	word32 r5_122
-	word32 r6_123
-	word32 r7_124
-	word32 lr_131
-	byte NZCV_145
+	word32 r4_133
+	word32 r5_134
+	word32 r6_135
+	word32 r7_136
+	word32 lr_137
+	byte NZCV_142
 	call lr (retsize: 0;)
-		uses: lr:lr,r0:r0,r1:lr,r2:r2_138,r3:r3_141,r4:r4,r5:r5,r6:r6,r7:r7,sp:fp,Stack +FFFFFFEC:r4,Stack +FFFFFFF0:r5,Stack +FFFFFFF4:r6,Stack +FFFFFFF8:r7,Stack +FFFFFFFC:lr
-		defs: lr:lr_131,NZCV:NZCV_145,r4:r4_121,r5:r5_122,r6:r6_123,r7:r7_124
-	r4Out = r4_121
-	r5Out = r5_122
-	r6Out = r6_123
-	r7Out = r7_124
-	lrOut = lr_131
-	return SLICE(NZCV_145, bool, 2)
+		uses: lr:lr,r0:r0,r1:lr,r2:r2_131,r4:r4,r5:r5,r6:r6,r7:r7,sp:fp
+		defs: lr:lr_137,NZCV:NZCV_142,r4:r4_133,r5:r5_134,r6:r6_135,r7:r7_136
+	r4Out = r4_133
+	r5Out = r5_134
+	r6Out = r6_135
+	r7Out = r7_136
+	lrOut = lr_137
+	return SLICE(NZCV_142, bool, 2)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

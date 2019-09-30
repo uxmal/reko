@@ -5,16 +5,17 @@ void fn00100000()
 fn00100000_entry:
 	// succ:  l00100000
 l00100000:
-	word32 ebx_24 = 0x00100027
-	branch Mem0[0x00100027:word32] == 0xFFFFFFFF l00100020
+	word32 ebx_11 = 0x00100027
+	branch Mem10[0x00100027:word32] == 0xFFFFFFFF l00100020
 	// succ:  l00100012 l00100020
 l00100012:
 	// succ:  l00100014
 l00100014:
-	word32 eax_25 = Mem0[ebx_24:word32]
-	call eax_25 (retsize: 4; depth: 12)
-	ebx_24 = ebx_24 + 0xFFFFFFFC
-	branch Mem0[ebx_24:word32] != 0xFFFFFFFF l00100014
+	word32 eax_18 = Mem10[ebx_11:word32]
+	call eax_18 (retsize: 4;)
+		uses: eax:eax_18
+	ebx_11 = ebx_11 + 0xFFFFFFFC
+	branch Mem10[ebx_11:word32] != 0xFFFFFFFF l00100014
 	// succ:  l00100020 l00100014
 l00100020:
 	return
@@ -28,16 +29,16 @@ void fn00100000()
 fn00100000_entry:
 	// succ:  l00100000
 l00100000:
-	Eq_2 * ebx_24 = &globals->dw100027
+	Eq_2 * ebx_11 = &globals->dw100027
 	branch globals->dw100027 == 0xFFFFFFFF l00100020
 	// succ:  l00100012 l00100020
 l00100012:
 	// succ:  l00100014
 l00100014:
 	void (*eax_25)() = *ebx_24
-	eax_25()
-	ebx_24 = ebx_24 - 1
-	branch *ebx_24 != 0xFFFFFFFF l00100014
+	eax_18()
+	ebx_11 = ebx_11 - 1
+	branch *ebx_11 != 0xFFFFFFFF l00100014
 	// succ:  l00100020 l00100014
 l00100020:
 	return

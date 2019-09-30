@@ -50,6 +50,8 @@ namespace Reko.UnitTests.Analysis
         private bool addUseInstructions;
         private Mock<IImportResolver> importResolver;
         private SsaTransform sst;
+        private CallingConvention fakeCc;
+        private HashSet<RegisterStorage> trashedRegs;
 
         private Identifier r1;
         private Identifier r2;
@@ -59,14 +61,26 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            Given_Architecture(new FakeArchitecture());
- 
             this.addUseInstructions = false;
             this.importResolver = new Mock<IImportResolver>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
             this.r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             this.r3 = new Identifier("r3", PrimitiveType.Word32, new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
             this.r4 = new Identifier("r4", PrimitiveType.Word32, new RegisterStorage("r4", 4, 0, PrimitiveType.Word32));
+
+            var arch = new FakeArchitecture();
+            Given_Architecture(arch);
+
+            this.fakeCc = new FakeCallingConvention(
+                    new[] { r1.Storage, r2.Storage },
+                    new[] { r2.Storage, r3.Storage });
+            this.trashedRegs = new HashSet<RegisterStorage> {
+                    (RegisterStorage)r2.Storage,
+                    (RegisterStorage)r3.Storage
+                };
+
+
+
             this.programFlow = new ProgramDataFlow();
         }
 
@@ -93,6 +107,8 @@ namespace Reko.UnitTests.Analysis
             var listener = new FakeDecompilerEventListener();
             var arch = new FakeArchitecture();
             var platform = new FakePlatform(null, arch);
+            platform.Test_GetCallingConvention = s => fakeCc;
+            platform.Test_CreateTrashedRegisters = () => trashedRegs;
 
             // Register r1 is assumed to always be implicit when calling
             // another procedure.
@@ -158,7 +174,8 @@ namespace Reko.UnitTests.Analysis
                     (RegisterStorage)r3.Storage,
                     (RegisterStorage)r4.Storage,
                     program.Architecture.StackRegister,
-                }
+                },
+                Test_GetCallingConvention = s => fakeCc
             };
             program.Platform = platform;
             var writer = new StringWriter();
@@ -1018,36 +1035,28 @@ proc1_exit:
 @"r1:r1
     def:  def r1
     uses: branch r1 true
-          call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
+          call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
 r2_2: orig: r2
     def:  r2_2 = 0x00000010
-    uses: r2_7 = PHI((r2, l1), (r2_2, l2))
 r3:r3
     def:  def r3
-    uses: call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
-          call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
+    uses: call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
+          call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
 r1_6: orig: r1
-    def:  call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
+    def:  call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
     uses: use r1_6
 r2_7: orig: r2
-    def:  r2_7 = PHI((r2, l1), (r2_2, l2))
-    uses: call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
-r2:r2
-    def:  def r2
-    uses: r2_7 = PHI((r2, l1), (r2_2, l2))
-r2_9: orig: r2
-    def:  call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
-    uses: use r2_9
-r3_10: orig: r3
-    def:  call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
-    uses: use r3_10
+    def:  call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
+    uses: use r2_7
+r3_8: orig: r3
+    def:  call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
+    uses: use r3_8
 // proc1
 // Return size: 0
 define proc1
 proc1_entry:
 	def r1
 	def r3
-	def r2
 	// succ:  l1
 l1:
 	branch r1 true
@@ -1056,16 +1065,15 @@ l2:
 	r2_2 = 0x00000010
 	// succ:  true
 true:
-	r2_7 = PHI((r2, l1), (r2_2, l2))
 	call r3 (retsize: 4;)
-		uses: r1:r1,r2:r2_7,r3:r3
-		defs: r1:r1_6,r2:r2_9,r3:r3_10
+		uses: r1:r1,r3:r3
+		defs: r1:r1_6,r2:r2_7,r3:r3_8
 	return
 	// succ:  proc1_exit
 proc1_exit:
 	use r1_6
-	use r2_9
-	use r3_10
+	use r2_7
+	use r3_8
 ======
 ";
             #endregion
@@ -1092,61 +1100,60 @@ proc1_exit:
     def:  def fp
     uses: r63_2 = fp
           r63_7 = fp - 0x00000004
-          call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r63_2: orig: r63
     def:  r63_2 = fp
-    uses: r63_19 = PHI((r63_14, m0Induction), (r63_2, m1Base))
+    uses: r63_19 = PHI((r63_13, m0Induction), (r63_2, m1Base))
 Mem0:Mem
     def:  def Mem0
-    uses: r4_6 = Mem0[r4_4 + 0x00000004:word32]
-r4_4: orig: r4
-    def:  r4_4 = dwArg04
-    uses: branch r4_4 == 0x00000000 m1Base
-          r4_6 = Mem0[r4_4 + 0x00000004:word32]
-r4_5: orig: r4
-    def:  r4_5 = 0x00000000
-    uses: r4_18 = PHI((r4_13, m0Induction), (r4_5, m1Base))
-r4_6: orig: r4
-    def:  r4_6 = Mem0[r4_4 + 0x00000004:word32]
-    uses: dwLoc04_16 = r4_6
-          call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+    uses: r2_6 = Mem0[r2_4 + 0x00000004:word32]
+r2_4: orig: r2
+    def:  r2_4 = dwArg04
+    uses: branch r2_4 == 0x00000000 m1Base
+          r2_6 = Mem0[r2_4 + 0x00000004:word32]
+r2_5: orig: r2
+    def:  r2_5 = 0x00000000
+    uses: r2_16 = PHI((r2_12, m0Induction), (r2_5, m1Base))
+r2_6: orig: r2
+    def:  r2_6 = Mem0[r2_4 + 0x00000004:word32]
+    uses: dwLoc04_15 = r2_6
+          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r63_7: orig: r63
     def:  r63_7 = fp - 0x00000004
 Mem8: orig: Mem0
 r63_9: orig: r63
-    def:  call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
-    uses: r63_14 = r63_9 + 0x00000004
-r3:r3
-    def:  def r3
-    uses: call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
-          r3_17 = PHI((r3_11, m0Induction), (r3, m1Base))
-r3_11: orig: r3
-    def:  call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
-    uses: r3_17 = PHI((r3_11, m0Induction), (r3, m1Base))
-r4_12: orig: r4
-    def:  call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
-    uses: r4_13 = r4_12 + 0x00000001
-r4_13: orig: r4
-    def:  r4_13 = r4_12 + 0x00000001
-    uses: r4_18 = PHI((r4_13, m0Induction), (r4_5, m1Base))
-r63_14: orig: r63
-    def:  r63_14 = r63_9 + 0x00000004
-    uses: r63_19 = PHI((r63_14, m0Induction), (r63_2, m1Base))
+    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    uses: r63_13 = r63_9 + 0x00000004
+r3_10: orig: r3
+    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    uses: r3_17 = PHI((r3_10, m0Induction), (r3, m1Base))
+r2_11: orig: r2
+    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    uses: r2_12 = r2_11 + 0x00000001
+r2_12: orig: r2
+    def:  r2_12 = r2_11 + 0x00000001
+    uses: r2_16 = PHI((r2_12, m0Induction), (r2_5, m1Base))
+r63_13: orig: r63
+    def:  r63_13 = r63_9 + 0x00000004
+    uses: r63_19 = PHI((r63_13, m0Induction), (r63_2, m1Base))
 dwArg04:Stack +0004
     def:  def dwArg04
-    uses: r4_4 = dwArg04
-          call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
-dwLoc04_16: orig: dwLoc04
-    def:  dwLoc04_16 = r4_6
-    uses: call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+    uses: r2_4 = dwArg04
+          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+dwLoc04_15: orig: dwLoc04
+    def:  dwLoc04_15 = r2_6
+    uses: call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+r2_16: orig: r2
+    def:  r2_16 = PHI((r2_12, m0Induction), (r2_5, m1Base))
+    uses: use r2_16
 r3_17: orig: r3
-    def:  r3_17 = PHI((r3_11, m0Induction), (r3, m1Base))
+    def:  r3_17 = PHI((r3_10, m0Induction), (r3, m1Base))
     uses: use r3_17
-r4_18: orig: r4
-    def:  r4_18 = PHI((r4_13, m0Induction), (r4_5, m1Base))
-    uses: use r4_18
+r3:r3
+    def:  def r3
+    uses: r3_17 = PHI((r3_10, m0Induction), (r3, m1Base))
 r63_19: orig: r63
-    def:  r63_19 = PHI((r63_14, m0Induction), (r63_2, m1Base))
+    def:  r63_19 = PHI((r63_13, m0Induction), (r63_2, m1Base))
     uses: use r63_19
 // proc1
 // Return size: 0
@@ -1154,37 +1161,37 @@ define proc1
 proc1_entry:
 	def fp
 	def Mem0
-	def r3
 	def dwArg04
+	def r3
 	// succ:  l1
 l1:
 	r63_2 = fp
-	r4_4 = dwArg04
-	branch r4_4 == 0x00000000 m1Base
+	r2_4 = dwArg04
+	branch r2_4 == 0x00000000 m1Base
 	// succ:  m0Induction m1Base
 m0Induction:
-	r4_6 = Mem0[r4_4 + 0x00000004:word32]
+	r2_6 = Mem0[r2_4 + 0x00000004:word32]
 	r63_7 = fp - 0x00000004
-	dwLoc04_16 = r4_6
+	dwLoc04_15 = r2_6
 	call proc1 (retsize: 0;)
-		uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04
-		defs: r3:r3_11,r4:r4_12,r63:r63_9
-	r4_13 = r4_12 + 0x00000001
-	r63_14 = r63_9 + 0x00000004
+		uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04
+		defs: r2:r2_11,r3:r3_10,r63:r63_9
+	r2_12 = r2_11 + 0x00000001
+	r63_13 = r63_9 + 0x00000004
 	goto m2Done
 	// succ:  m2Done
 m1Base:
-	r4_5 = 0x00000000
+	r2_5 = 0x00000000
 	// succ:  m2Done
 m2Done:
-	r63_19 = PHI((r63_14, m0Induction), (r63_2, m1Base))
-	r4_18 = PHI((r4_13, m0Induction), (r4_5, m1Base))
-	r3_17 = PHI((r3_11, m0Induction), (r3, m1Base))
+	r63_19 = PHI((r63_13, m0Induction), (r63_2, m1Base))
+	r3_17 = PHI((r3_10, m0Induction), (r3, m1Base))
+	r2_16 = PHI((r2_12, m0Induction), (r2_5, m1Base))
 	return
 	// succ:  proc1_exit
 proc1_exit:
+	use r2_16
 	use r3_17
-	use r4_18
 	use r63_19
 ======
 ";
@@ -1193,24 +1200,24 @@ proc1_exit:
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var r3 = m.Reg32("r3", 3);
-                var r4 = m.Reg32("r4", 4);
+                var r3 = m.Register((RegisterStorage)this.r3.Storage);
+                var r2 = m.Register((RegisterStorage)this.r2.Storage);
                 m.Assign(sp, m.Frame.FramePointer);   // Establish frame.
-                m.Assign(r4, m.Mem32(m.IAdd(sp, 4)));
-                m.BranchIf(m.Eq0(r4), "m1Base");
+                m.Assign(r2, m.Mem32(m.IAdd(sp, 4)));
+                m.BranchIf(m.Eq0(r2), "m1Base");
 
                 m.Label("m0Induction");
-                m.Assign(r4, m.Mem32(m.IAdd(r4, 4)));
+                m.Assign(r2, m.Mem32(m.IAdd(r2, 4)));
                 m.Assign(sp, m.ISub(sp, 4));
-                m.MStore(sp, r4);
+                m.MStore(sp, r2);
                 m.Call(m.Procedure, 0);
-                m.Assign(r4, m.IAdd(r4, 1));
+                m.Assign(r2, m.IAdd(r2, 1));
                 m.Assign(sp, m.IAdd(sp, 4));
 
                 m.Goto("m2Done");
 
                 m.Label("m1Base");
-                m.Assign(r4, 0);
+                m.Assign(r2, 0);
 
                 m.Label("m2Done");
                 m.Return();
@@ -4333,6 +4340,55 @@ proc1_exit:
                 m.Label("m2");
                 m.MStore(r2, r1);
                 m.Goto("m1");
+            });
+        }
+
+        [Test]
+        public void SsaHell_Registers()
+        {
+            var sExp =
+            #region Expected
+@"r2_1: orig: r2
+    def:  r2_1 = 0x00123400
+    uses: call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
+r4_2: orig: r4
+    def:  r4_2 = 0x00BCDE00
+    uses: call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
+r1:r1
+    def:  def r1
+    uses: call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
+          call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
+r2_4: orig: r2
+    def:  call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r1
+	// succ:  l1
+l1:
+	r2_1 = 0x00123400
+	r4_2 = 0x00BCDE00
+	call r1 (retsize: 0;)
+		uses: r1:r1,r2:r2_1,r4:r4_2
+		defs: r2:r2_4
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                m.Frame.EnsureIdentifier(r1.Storage);
+                m.Frame.EnsureIdentifier(r2.Storage);
+                m.Frame.EnsureIdentifier(r4.Storage);
+
+                m.Assign(r2, m.Word32(0x00123400));
+                m.Assign(r4, m.Word32(0x00BCDE00));
+                m.Call(r1, 0);
+                m.Return();
             });
         }
     }

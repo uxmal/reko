@@ -4,18 +4,14 @@
 
 #include "switch.h"
 
-// 000082F0: Register word32 _init(Register word32 r4, Register ptr32 r10, Register ptr32 lr, Register ptr32 pc, Register out ptr32 r4Out, Register out ptr32 r10Out, Register out ptr32 pcOut)
-word32 _init(word32 r4, ptr32 r10, ptr32 lr, ptr32 pc, ptr32 & r4Out, ptr32 & r10Out, ptr32 & pcOut)
+// 000082F0: Register word32 _init(Register out ptr32 r10Out)
+word32 _init(ptr32 & r10Out)
 {
-	word32 lr_n;
-	ptr32 pc_n;
-	ptr32 r10_n = call_gmon_start(r10, lr, pc, out lr_n, out pc_n);
-	word32 r0_n = frame_dummy(pc_n);
-	ptr32 pc_n;
-	r4Out = __do_global_ctors_aux(r4, lr_n, pc_n, out pc_n);
+	ptr32 r10_n = call_gmon_start();
+	frame_dummy();
+	word32 r4_n = __do_global_ctors_aux();
 	r10Out = r10_n;
-	pcOut = pc_n;
-	return r0_n;
+	return r4_n;
 }
 
 // 00008314: void abort()
@@ -35,31 +31,21 @@ void _start(int32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrA
 	abort();
 }
 
-// 0000836C: Register ptr32 call_gmon_start(Register ptr32 r10, Register ptr32 lr, Register ptr32 pc, Register out ptr32 lrOut, Register out ptr32 pcOut)
-ptr32 call_gmon_start(ptr32 r10, ptr32 lr, ptr32 pc, ptr32 & lrOut, ptr32 & pcOut)
+// 0000836C: Register word32 call_gmon_start()
+word32 call_gmon_start()
 {
 	ptr32 r10_n = 0x8380 + globals->dw8394;
 	<anonymous> * r3_n = r10_n + globals->dw8398;
-	if (r3_n != null)
-	{
-		ptr32 r10_n;
-		ptr32 lr_n;
-		ptr32 pc_n;
-		r3_n();
-		lrOut = lr_n;
-		pcOut = pc_n;
-		return r10_n;
-	}
-	else
-	{
-		lrOut = lr;
-		pcOut = pc;
+	if (r3_n == null)
 		return r10;
-	}
+	word32 r10_n;
+	word32 pc_n;
+	r3_n();
+	return r10_n;
 }
 
-// 0000839C: void __do_global_dtors_aux(Register word32 r4, Register word32 r5, Register word32 lr, Register word32 pc)
-void __do_global_dtors_aux(word32 r4, word32 r5, word32 lr, word32 pc)
+// 0000839C: void __do_global_dtors_aux()
+void __do_global_dtors_aux()
 {
 	byte * r5_n = globals->ptr83F4;
 	if ((word32) *r5_n != 0x00)
@@ -72,6 +58,8 @@ void __do_global_dtors_aux(word32 r4, word32 r5, word32 lr, word32 pc)
 	{
 		<anonymous> ** r3_n = *r4_n;
 		*r4_n = (<anonymous> ***) ((char *) r3_n + 0x04);
+		word32 pc_n;
+		word32 r2_n;
 		r2_n();
 	}
 }
@@ -81,18 +69,15 @@ void call___do_global_dtors_aux()
 {
 }
 
-// 00008404: Register (ptr32 word32) frame_dummy(Register ptr32 pc)
-word32 * frame_dummy(ptr32 pc)
+// 00008404: void frame_dummy()
+void frame_dummy()
 {
-	word32 * r0_n = globals->ptr8424;
-	if (*r0_n == 0x00)
-		return r0_n;
-	word32 r3_n = globals->dw8428;
-	if (r3_n == 0x00)
-		return r0_n;
-	word32 * r0_n;
+	if (*globals->ptr8424 == 0x00)
+		return;
+	if (globals->dw8428 == 0x00)
+		return;
+	word32 pc_n;
 	fn00000000();
-	return r0_n;
 }
 
 // 0000842C: void call_frame_dummy()
@@ -249,53 +234,42 @@ void __div0(ptr32 * r0)
 	__syscall(0x00900025);
 }
 
-// 00008654: void __libc_csu_init(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r10, Register ptr32 lr, Register ptr32 pc)
-void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 r10, ptr32 lr, ptr32 pc)
+// 00008654: void __libc_csu_init()
+void __libc_csu_init()
 {
-	word32 pc_n;
 	ptr32 r10_n;
-	Eq_n r4_n;
-	word32 r0_n = _init(0x00, 0x8668 + globals->dw86A4, lr, pc, out r4_n, out r10_n, out pc_n);
-	int32 r2_n = globals->dw86AC;
+	Eq_n r4_n = _init(out r10_n);
 	<anonymous> * r1_n[] = r10_n + globals->dw86A8;
-	int32 r3_n = r10_n + r2_n - r1_n;
+	int32 r3_n = r10_n + globals->dw86AC - r1_n;
 	if (r4_n >= r3_n >> 0x02)
 		return;
 	r1_n[r4_n]();
 }
 
-// 000086B0: void __libc_csu_fini(Register word32 r4, Register word32 r5, Register word32 r10, Register word32 lr, Register word32 pc)
-void __libc_csu_fini(word32 r4, word32 r5, word32 r10, word32 lr, word32 pc)
+// 000086B0: void __libc_csu_fini()
+void __libc_csu_fini()
 {
 	ptr32 r10_n = 0x86C8 + globals->dw8700;
-	int32 r2_n = globals->dw8708;
 	<anonymous> * r1_n[] = r10_n + globals->dw8704;
-	int32 r3_n = r10_n + r2_n - r1_n;
+	int32 r3_n = r10_n + globals->dw8708 - r1_n;
 	int32 r4_n = (r3_n >> 0x02) - 0x01;
 	if (r3_n >> 0x02 == 0x00)
-		_fini(r4, r5, lr, pc);
+		_fini();
 	else
 		r1_n[r4_n]();
 }
 
-// 0000870C: Register word32 __do_global_ctors_aux(Register word32 r4, Register word32 lr, Register ptr32 pc, Register out ptr32 pcOut)
-word32 __do_global_ctors_aux(word32 r4, word32 lr, ptr32 pc, ptr32 & pcOut)
+// 0000870C: Register word32 __do_global_ctors_aux()
+word32 __do_global_ctors_aux()
 {
 	ptr32 r3_n = globals->ptr8740;
 	<anonymous> * r2_n = *(r3_n - 0x04);
-	if (r2_n != (<anonymous> *) 0x01)
-	{
-		word32 r4_n;
-		ptr32 pc_n;
-		r2_n();
-		pcOut = pc_n;
-		return r4_n;
-	}
-	else
-	{
-		pcOut = pc;
+	if (r2_n == (<anonymous> *) 0x01)
 		return r4;
-	}
+	word32 r4_n;
+	word32 pc_n;
+	r2_n();
+	return r4_n;
 }
 
 // 00008744: void call___do_global_ctors_aux()
@@ -303,9 +277,9 @@ void call___do_global_ctors_aux()
 {
 }
 
-// 0000874C: void _fini(Register word32 r4, Register word32 r5, Register word32 lr, Register word32 pc)
-void _fini(word32 r4, word32 r5, word32 lr, word32 pc)
+// 0000874C: void _fini()
+void _fini()
 {
-	__do_global_dtors_aux(r4, r5, lr, pc);
+	__do_global_dtors_aux();
 }
 

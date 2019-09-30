@@ -124,14 +124,14 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DeadFactorialReg()
 		{
 			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/DeadFactorialReg.txt");
 		}
 
 		[Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DeadFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/DeadFactorial.txt");

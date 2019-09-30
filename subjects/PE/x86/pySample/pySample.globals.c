@@ -37,10 +37,7 @@ word32 g_a100021D8[1] =
 	};
 ui32 g_dw10003000 = 0xBB40E64E;
 ui32 g_dw10003004 = 0x44BF19B1;
-Eq_n g_t10003008 = 
-	{
-		0xFFFFFFFF
-	};
+Eq_n g_t10003008 = 0xFFFFFFFF;
 PyMethodDef g_methods[5] = 
 	{
 		
