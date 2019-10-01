@@ -390,5 +390,24 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(r3, m.Seq(r1, r2));
             });
         }
+
+        [Test]
+        public void UrfArray()
+        {
+            var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
+            RunSsaTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
+                var r3 = m.Reg64("r3");
+
+                m.AddDefToEntryBlock(r1);
+                m.AddDefToEntryBlock(r2);
+
+                m.Assign(r3, m.ARef(PrimitiveType.Word32, r1, m.IAdd(r2, 1)));
+
+                m.AddUseToExitBlock(r3);
+            });
+        }
     }
 }

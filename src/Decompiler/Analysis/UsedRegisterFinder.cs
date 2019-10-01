@@ -314,7 +314,9 @@ namespace Reko.Analysis
 
         public BitRange VisitArrayAccess(ArrayAccess acc)
         {
-            throw new NotImplementedException();
+            var arr = acc.Array.Accept(this);
+            var idx = acc.Index.Accept(this);
+            return arr | idx;
         }
 
         public BitRange VisitBinaryExpression(BinaryExpression binExp)
