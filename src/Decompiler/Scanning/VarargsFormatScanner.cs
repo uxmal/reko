@@ -67,8 +67,7 @@ namespace Reko.Scanning
             CallSite site,
             ProcedureCharacteristics chr)
         {
-            var pc = callee as ProcedureConstant;
-            if (pc != null)
+            if (callee is ProcedureConstant pc)
                 pc.Procedure.Signature = this.expandedSig;
             var ab = arch.CreateFrameApplicationBuilder(frame, site, callee);
             return ab.CreateInstruction(this.expandedSig, chr);

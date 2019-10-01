@@ -671,11 +671,8 @@ namespace Reko.Scanning
             var sig = new FunctionType();
             ProcedureCharacteristics chr = null;
             var name = NamingPolicy.Instance.ProcedureName(addr);
-            EmitCall(
-                CreateProcedureConstant(new ExternalProcedure(name, sig)),
-                sig,
-                chr,
-                site);
+            var pc = CreateProcedureConstant(new ExternalProcedure(name, sig));
+            EmitCall(pc, sig, chr, site);
             return OnAfterCall(sig, chr);
         }
 
