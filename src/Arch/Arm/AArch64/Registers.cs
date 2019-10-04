@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -51,6 +51,7 @@ namespace Reko.Arch.Arm.AArch64
         public static readonly RegisterStorage fpsr;
 
         public static readonly Dictionary<string, RegisterStorage> ByName;
+        public static readonly RegisterStorage[][] SubRegisters;
 
         internal static bool IsIntegerRegister(RegisterStorage reg)
         {
@@ -60,43 +61,44 @@ namespace Reko.Arch.Arm.AArch64
 
         static Registers()
         {
-            GpRegs64 = Enumerable.Range(0, 32)
-                .Select(n => new RegisterStorage($"x{n}", n, 0, PrimitiveType.Word64))
-                .ToArray();
-            GpRegs32 = Enumerable.Range(0, 32)
-                .Select(n => new RegisterStorage($"w{n}", n, 0, PrimitiveType.Word32))
+            var stg = new StorageFactory();
+
+            // 'x' and 'w' registers share the same storage.
+            GpRegs64 = stg.RangeOfReg64(32, "x{0}");
+            GpRegs32 = GpRegs64
+                .Select((r, i) => new RegisterStorage($"w{i}", r.Number, 0, PrimitiveType.Word32))
                 .ToArray();
             AddrRegs64 = GpRegs64.ToArray();
             AddrRegs32 = GpRegs32.ToArray();
 
-            SimdRegs128 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"q{n-32}", n, 0, PrimitiveType.Word128))
+            // 'v', 'q', 'd', 's', 'h', b' regsters overlap
+            SimdRegs128 = stg.RangeOfReg(32, n => $"q{n}", PrimitiveType.Word128);
+            SimdRegs64 = SimdRegs128
+                .Select((r, i) => new RegisterStorage($"d{i}", r.Number, 0, PrimitiveType.Word64))
                 .ToArray();
-            SimdRegs64 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"d{n-32}", n, 0, PrimitiveType.Word64))
+            SimdRegs32 = SimdRegs128
+                .Select((r, i) => new RegisterStorage($"s{i}", r.Number, 0, PrimitiveType.Word32))
                 .ToArray();
-            SimdRegs32 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"s{n-32}", n, 0, PrimitiveType.Word32))
+            SimdRegs16 = SimdRegs128
+                .Select((r, i) => new RegisterStorage($"h{i}", r.Number, 0, PrimitiveType.Word16))
                 .ToArray();
-            SimdRegs16 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"h{n-32}", n, 0, PrimitiveType.Word16))
-                .ToArray();
-            SimdRegs8 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"b{n-32}", n, 0, PrimitiveType.Byte))
-                .ToArray();
-
-            SimdVectorReg128 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"v{n-32}", n, 0, PrimitiveType.Word128))
+            SimdRegs8 = SimdRegs128
+                .Select((r, i) => new RegisterStorage($"b{i}", r.Number, 0, PrimitiveType.Byte))
                 .ToArray();
 
-            sp = new RegisterStorage("sp", 64, 0, PrimitiveType.Word64);
-            wsp = new RegisterStorage("wsp", 64, 0, PrimitiveType.Word32);
+            SimdVectorReg128 = SimdRegs128
+                .Select((r, i) => new RegisterStorage($"v{i}", r.Number, 0, PrimitiveType.Word128))
+                .ToArray();
+
+            // The stack register can only be accessed via effective address.
+            sp = stg.Reg64("sp");
+            wsp = new RegisterStorage("wsp", sp.Number, 0, PrimitiveType.Word32);
             AddrRegs64[31] = sp;
             AddrRegs32[31] = wsp;
 
-            pstate = new RegisterStorage("pstate", 65, 0, PrimitiveType.Word32);
-            fpcr = new RegisterStorage("fpcr", 65, 0, PrimitiveType.Word32);
-            fpsr = new RegisterStorage("fpsr", 66, 0, PrimitiveType.Word32);
+            pstate = stg.Reg32("pstate");
+            fpcr = stg.Reg32("fpcr");
+            fpsr = stg.Reg32("fpsr");
 
             ByName = GpRegs64
                 .Concat(GpRegs32)
@@ -114,6 +116,19 @@ namespace Reko.Arch.Arm.AArch64
                     fpsr,
                 })
                 .ToDictionary(r => r.Name, StringComparer.OrdinalIgnoreCase);
+
+            SubRegisters = 
+                Enumerable.Range(0, 32)
+                    .Select(i => new[] { GpRegs64[i], GpRegs32[i] })
+                .Concat(Enumerable.Range(0, 32)
+                    .Select(i => new[] { SimdRegs128[i], SimdRegs64[i], SimdRegs32[i], SimdRegs16[i], SimdRegs8[i] }))
+                .Concat(new RegisterStorage[][]
+                {
+                    new [] { sp, wsp },
+                    new [] { pstate },
+                    new [] { fpcr },
+                    new [] { fpsr },
+                }).ToArray();
         }
     }
 }

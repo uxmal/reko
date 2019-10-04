@@ -223,7 +223,7 @@ namespace Reko.Arch.Arm
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.ByName.TryGetValue(name, out reg);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
