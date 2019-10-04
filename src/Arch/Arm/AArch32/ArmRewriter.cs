@@ -778,7 +778,7 @@ namespace Reko.Arch.Arm.AArch32
                             switch (mop.ShiftType)
                             {
                             case Opcode.Invalid:
-                                ea = ireg;
+                                ea = m.IAdd(ea, ireg);
                                 break;
                             case Opcode.lsl:
                                 ea = m.IAdd(ea, m.IMul(ireg, Constant.Int32(1 << mop.Shift)));
