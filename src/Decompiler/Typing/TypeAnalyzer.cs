@@ -142,7 +142,7 @@ namespace Reko.Typing
             }
         }
 
-		public void WriteTypes(TextWriter output)
+		public void WriteTypes(string filename, TextWriter output)
 		{
 		}
 	}

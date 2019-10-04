@@ -58,13 +58,13 @@ namespace Reko.Arch.Z80
             var decoder = decoders[op];
             instr = decoder.Decode(this, op);
             if (instr == null)
-                return Invalid();
+                return CreateInvalidInstruction();
             instr.Address = this.addr;
             instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
-        private Z80Instruction Invalid()
+        protected override Z80Instruction CreateInvalidInstruction()
         {
             return new Z80Instruction
             {
@@ -124,7 +124,7 @@ namespace Reko.Arch.Z80
                 foreach (var m in mutators)
                 {
                     if (!m(op, disasm))
-                        return disasm.Invalid();
+                        return disasm.CreateInvalidInstruction();
                 }
                 instr.InstructionClass = IClass;
                 instr.Code = Z80Opcode;
@@ -206,7 +206,7 @@ namespace Reko.Arch.Z80
             public override Z80Instruction Decode(Z80Disassembler dasm, byte op2)
             {
                 if (!dasm.rdr.TryReadByte(out var op))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
 
                 dasm.instr.InstructionClass = InstrClass.Linear;
                 var y = (byte) ((op >> 3) & 0x07);
@@ -230,7 +230,7 @@ namespace Reko.Arch.Z80
                     break;
                 }
                 if (!cbFormats[op & 0x07](op, dasm))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 dasm.instr.Op1 = dasm.ops[0];
                 dasm.instr.Op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null;
                 return dasm.instr;
@@ -242,14 +242,14 @@ namespace Reko.Arch.Z80
             public override Z80Instruction Decode(Z80Disassembler disasm, byte op)
             {
                 if (!disasm.rdr.TryReadByte(out var op2))
-                    return disasm.Invalid();
+                    return disasm.CreateInvalidInstruction();
                 Decoder decoder = null;
                 if (0x40 <= op2 && op2 < 0x80)
                     decoder = edDecoders[op2 - 0x40];
                 else if (0xA0 <= op2 && op2 < 0xC0)
                     decoder = edDecoders[op2 - 0x60];
                 else
-                    return disasm.Invalid();
+                    return disasm.CreateInvalidInstruction();
                 return decoder.Decode(disasm, op2);
             }
         }

@@ -57,10 +57,11 @@ namespace Reko.Arch.SuperH
             return instr;
         }
 
-        private SuperHInstruction Invalid()
+        protected override SuperHInstruction CreateInvalidInstruction()
         {
             return new SuperHInstruction
             {
+                InstructionClass = InstrClass.Invalid,
                 Opcode = Opcode.invalid
             };
         }
@@ -107,7 +108,7 @@ namespace Reko.Arch.SuperH
             {
                 w.WriteLine($"    AssertCode(\"@@@\", \"{instrHex}\");");
             });
-            return Invalid();
+            return CreateInvalidInstruction();
         }
 
         // Mutators
@@ -597,7 +598,7 @@ namespace Reko.Arch.SuperH
                 foreach (var mutator in this.mutators)
                 {
                     if (!mutator(uInstr, dasm))
-                        return dasm.Invalid();
+                        return dasm.CreateInvalidInstruction();
                 }
                 return dasm.state.MakeInstruction();
             }

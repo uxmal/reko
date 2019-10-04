@@ -43,6 +43,15 @@ namespace Reko.Arch.Mos6502
             this.ops = new List<Operand>();
         }
 
+        protected override Instruction CreateInvalidInstruction()
+        {
+            return new Instruction
+            {
+                InstructionClass = InstrClass.Invalid,
+                Code = Opcode.illegal,
+            };
+        }
+
         public override Instruction DisassembleInstruction()
         {
             var addr = rdr.Address;

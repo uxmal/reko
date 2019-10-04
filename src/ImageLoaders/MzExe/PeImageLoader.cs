@@ -41,6 +41,8 @@ namespace Reko.ImageLoaders.MzExe
     /// </summary>
 	public class PeImageLoader : ImageLoader
 	{
+        internal static TraceSwitch trace = new TraceSwitch(nameof(PeImageLoader), "Traces the progress of loading PE binary images") { Level = TraceLevel.Verbose };
+
         private const ushort MACHINE_x86_64 = (ushort) 0x8664u;
 		private const ushort MACHINE_m68k = (ushort)0x0268;
         private const ushort MACHINE_UNKNOWN = 0x0;         // The contents of this field are assumed to be applicable to any machine type
@@ -746,6 +748,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 #endif
         public void ApplyRelocations(uint rvaReloc, uint size, Address baseOfImage, RelocationDictionary relocations)
 		{
+            DebugEx.Inform(trace, "PELdr: applying relocations {0:X8}", rvaReloc);
 			EndianImageReader rdr = new LeImageReader(RawImage, rvaReloc);
 			uint rvaStop = rvaReloc + size;
 			while (rdr.Offset < rvaStop)

@@ -278,7 +278,7 @@ namespace Reko.Arch.RiscV
 
         private static HashSet<uint> seen = new HashSet<uint>();
 
-        private RiscVInstruction NotYetImplemented(uint instr, string message)
+        private new RiscVInstruction NotYetImplemented(uint instr, string message)
         {
             if (!seen.Contains(instr))
             {
@@ -288,7 +288,7 @@ namespace Reko.Arch.RiscV
                     w.WriteLine("    AssertCode(\"@@@\", 0x{0:X8});", instr);
                 });
             }
-            return MakeInvalid();
+            return CreateInvalidInstruction();
         }
 
         public RiscVInstruction MakeInstruction()
@@ -316,7 +316,7 @@ namespace Reko.Arch.RiscV
             return i;
         }
 
-        internal RiscVInstruction MakeInvalid()
+        protected override RiscVInstruction CreateInvalidInstruction()
         {
             return new RiscVInstruction
             {
@@ -376,7 +376,7 @@ namespace Reko.Arch.RiscV
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
-                        return dasm.MakeInvalid();
+                        return dasm.CreateInvalidInstruction();
                 }
                 return dasm.MakeInstruction();
             }
@@ -407,7 +407,7 @@ namespace Reko.Arch.RiscV
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
-                        return dasm.MakeInvalid();
+                        return dasm.CreateInvalidInstruction();
                 }
                 return dasm.MakeInstruction();
             }
@@ -432,7 +432,7 @@ namespace Reko.Arch.RiscV
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
-                        return dasm.MakeInvalid();
+                        return dasm.CreateInvalidInstruction();
                 }
                 return dasm.MakeInstruction();
             }
@@ -476,7 +476,7 @@ namespace Reko.Arch.RiscV
                 var slot = (int)((wInstr >> shift) & mask);
                 if (!subcodes.TryGetValue(slot, out Decoder decoder))
                 {
-                    return dasm.MakeInvalid();
+                    return dasm.CreateInvalidInstruction();
                 }
                 return decoder.Decode(dasm, wInstr);
             }
@@ -488,7 +488,7 @@ namespace Reko.Arch.RiscV
             {
                 if (!dasm.rdr.TryReadUInt16(out ushort hiword))
                 {
-                    return dasm.MakeInvalid();
+                    return dasm.CreateInvalidInstruction();
                 }
                 uint wInstr = (uint)hiword << 16;
                 wInstr |= hInstr;

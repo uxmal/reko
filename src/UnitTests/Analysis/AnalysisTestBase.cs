@@ -236,7 +236,7 @@ namespace Reko.UnitTests.Analysis
             sc.AddService<IDiagnosticsService>(fakeDiagnosticsService);
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var loader = new Loader(sc);
             var project = string.IsNullOrEmpty(configFile)
@@ -267,7 +267,7 @@ namespace Reko.UnitTests.Analysis
             sc.AddService<IDiagnosticsService>(fakeDiagnosticsService);
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            //sc.AddService<IDecompiledFileService>(new FakeDecompilerHost());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var loader = new Loader(sc);
             var project = new Project

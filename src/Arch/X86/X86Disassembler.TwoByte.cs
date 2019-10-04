@@ -321,14 +321,16 @@ namespace Reko.Arch.X86
                     dec66:Instr(Opcode.pcmpeqd, Vx,Wx)),
                 Instr(Opcode.emms, InstrClass.System),
 
-				Instr(Opcode.vmread, Ey,Gy),
-				Instr(Opcode.vmwrite, Gy,Ey),
+				new PrefixedDecoder(
+                    dec:Instr(Opcode.vmread, InstrClass.System, Ey,Gy)),
+				new PrefixedDecoder(
+                    dec:Instr(Opcode.vmwrite, InstrClass.System, Gy,Ey)),
 				s_invalid,
 				s_invalid,
 
                 new PrefixedDecoder(
                     dec:s_invalid,
-                    dec66:Instr(Opcode.vhaddpd, Vpd,Hpd,Wpd),
+                    dec66:Instr(Opcode.vhaddpd,  Vpd,Hpd,Wpd),
                     decF2:Instr(Opcode.vhaddps, Vps,Hps,Wps)),
                 new PrefixedDecoder(
                     dec:s_invalid,
@@ -569,7 +571,7 @@ namespace Reko.Arch.X86
                     s_invalid,
                     decF2:Instr(Opcode.vlddqu, Vx,Mx)),
                 new PrefixedDecoder(
-                    Instr(Opcode.psllw, Pq,Qq),
+                    Instr(Opcode.psllw, Pq,Qq), 
                     dec66:Instr(Opcode.vpsllw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Opcode.pslld, Pq,Qq),

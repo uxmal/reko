@@ -60,7 +60,22 @@ namespace Reko.UnitTests.Core.Serialization
             this.sc = new ServiceContainer();
             this.cfgSvc = new Mock<IConfigurationService>();
             this.listener = new Mock<DecompilerEventListener>();
-            this.sc.AddService<IConfigurationService>(cfgSvc.Object);
+            this.sc.AddService(cfgSvc.Object);
+        }
+
+        private string AbsolutePathEndingWith(params string [] dirs)
+        {
+            var relativePath = Path.Combine(dirs);
+            if (Path.DirectorySeparatorChar == '/')
+            {
+                // Un*x
+                return $"/{relativePath.Replace('\\', '/')}";
+            }
+            else
+            {
+                // Windows
+                return $@"c:\{relativePath}";
+            }
         }
 
         private void Given_TestArch()
@@ -190,6 +205,7 @@ namespace Reko.UnitTests.Core.Serialization
   <arch>testArch</arch>
   <platform>testOS</platform>
   <input>
+    <filename>/foo/foo</filename>
     <user>
       <platform>
         <item key=""Name"">Bob</item>
@@ -229,6 +245,7 @@ namespace Reko.UnitTests.Core.Serialization
   <arch>testArch</arch>
   <platform>testOS</platform>
   <input>
+    <filename>/ff/b/foo.exe</filename>,
     <user>
       <platform>
         <list key=""Names"">
@@ -263,6 +280,7 @@ namespace Reko.UnitTests.Core.Serialization
   <arch>testArch</arch>
   <platform>testOS</platform>
   <input>
+    <filename>c:\foo\foo.exe</filename>
     <user>
       <platform>
         <dict key=""Names"">
@@ -401,6 +419,7 @@ namespace Reko.UnitTests.Core.Serialization
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
   <input>
+     <filename>/foo/foo</filename>
   </input>
 </project>";
             var ldr = new Mock<ILoader>();
@@ -467,6 +486,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "c:\\tmp\\foo\\foo.exe",
                         User = new UserData_v4
                         {
                             GlobalData =
@@ -518,6 +538,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "c:\\tmp\\foo\\foo.exe",
                         User = new UserData_v4
                         {
                             Annotations =
@@ -564,6 +585,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "c:\\tmp\\foo\\foo.exe",
                         User = new UserData_v4
                         {
                             Procedures =
@@ -636,6 +658,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v4
                     {
+                        Filename = "foo.exe",
                         User = new UserData_v4
                         {
                             Segments =
@@ -679,6 +702,47 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(0x1200, u.Segments[1].Length);
             Assert.AreEqual(0x0C00, u.Segments[1].Offset);
             Assert.AreEqual(AccessMode.ReadWrite, u.Segments[1].AccessMode);
+        }
+        
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void Prld_Procedure_Placement()
+        {
+            var sProject = new Project_v5
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                Inputs =
+                {
+                    new DecompilerInput_v5
+                    {
+                        Filename = Path.Combine("foo", "bar.exe"),
+                        User = new UserData_v4
+                        {
+                            Procedures =
+                            {
+                                new Procedure_v1
+                                {
+                                    Address = "00123400",
+                                    OutputFile = Path.Combine("src","bar.c")
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var ldr = mockFactory.CreateLoader();
+            Given_TestArch();
+            Given_TestOS();
+            Address addr = Address.Ptr32(0x00123400);
+            platform.Setup(p => p.TryParseAddress("00123400", out addr)).Returns(true);
+
+            var prld = new ProjectLoader(sc, ldr, listener.Object);
+            var prj = prld.LoadProject(this.AbsolutePathEndingWith("foo","foo.dcproject"), sProject);
+
+            var u = prj.Programs[0].User;
+            var placement = u.ProcedureSourceFiles[addr];
+            Assert.AreEqual(this.AbsolutePathEndingWith("foo","src","bar.c"), placement);
         }
     }
 }

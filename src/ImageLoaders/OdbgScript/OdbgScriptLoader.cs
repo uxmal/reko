@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -124,7 +124,10 @@ namespace Reko.ImageLoaders.OdbgScript
         public virtual PeImageLoader CreatePeImageLoader()
         {
             ExeImageLoader mz = new ExeImageLoader(Services, Filename, RawImage);
-            PeImageLoader pe = new PeImageLoader(Services, Filename, RawImage, mz.e_lfanew);
+            var e_lfanew = mz.LoadLfaToNewHeader();
+            if (!e_lfanew.HasValue)
+                throw new BadImageFormatException();
+            PeImageLoader pe = new PeImageLoader(Services, Filename, RawImage, e_lfanew.Value);
             return pe;
         }
 

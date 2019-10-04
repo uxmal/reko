@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,7 +84,15 @@ namespace Reko.Core.Serialization
         /// in C syntax, with the [[reko::arg(register,{name})]] extension for specifying
         /// values passed or returned in parameters.
         /// </summary>
+        [XmlElement("CSignature")]
         public string CSignature;
+
+        /// <summary>
+        /// Project-relative path into which this procedure should be written. If 
+        /// no path is specified, the procedure is written into a default output file.
+        /// </summary>
+        [XmlElement("OutputFile")]
+        public string OutputFile;
     }
 
     public class RegisterValue_v2

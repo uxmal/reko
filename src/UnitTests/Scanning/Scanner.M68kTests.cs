@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Scanning
             sc = new ServiceContainer();
             listener = new Mock<DecompilerEventListener>();
             sc.AddService<DecompilerEventListener>(listener.Object);
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
         }
 
         private void BuildTest32(Action<M68kAssembler> asmProg)

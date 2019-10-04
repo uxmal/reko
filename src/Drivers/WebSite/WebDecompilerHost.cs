@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Output;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Web;
@@ -28,7 +29,7 @@ using System.Web.UI.WebControls;
 
 namespace Reko.WebSite
 {
-	public class WebDecompilerHost : DecompilerHost
+	public class WebDecompilerHost : IDecompiledFileService
 	{
 		private StringWriter assembler;
 		private StringWriter writer; 
@@ -95,34 +96,29 @@ namespace Reko.WebSite
 			writer.WriteLine("<br />");
 		}
 
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteTypes(Program program, Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<string, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteGlobals(Program program, Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
             throw new NotImplementedException();
-        }
-
-        public Reko.Core.Configuration.IConfigurationService Configuration
-        {
-            get { throw new NotImplementedException(); }
         }
     }
 }

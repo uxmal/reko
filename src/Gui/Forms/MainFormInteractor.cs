@@ -43,8 +43,7 @@ namespace Reko.Gui.Forms
     /// code. This will make it easier to port to other GUI platforms.
     /// </summary>
     public class MainFormInteractor :
-        ICommandTarget,
-        DecompilerHost
+        ICommandTarget
     {
         private IDecompilerShellUiService uiSvc;
         private IMainForm form;
@@ -131,7 +130,7 @@ namespace Reko.Gui.Forms
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
-            sc.AddService<DecompilerHost>(this);
+            sc.AddService<IDecompiledFileService>(svcFactory.CreateDecompiledFileService());
 
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
@@ -212,6 +211,9 @@ namespace Reko.Gui.Forms
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;
             var fsSvc = Services.RequireService<IFileSystemService>();
+            var dir = Path.GetDirectoryName(filename);
+            if (!string.IsNullOrEmpty(dir))
+                fsSvc.CreateDirectory(dir);
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 
@@ -960,60 +962,6 @@ namespace Reko.Gui.Forms
             }
         }
         #endregion
-
-        #region DecompilerHost Members //////////////////////////////////
-
-        public IConfigurationService Configuration
-        {
-            get { return config; }
-        }
-
-        public TextWriter CreateDecompiledCodeWriter(string fileName)
-        {
-            return new StreamWriter(fileName, false, new UTF8Encoding(false));
-        }
-
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
-        {
-            using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
-            {
-                writer(new TextFormatter(output));
-            }
-        }
-
-        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
-        {
-            using (TextWriter output = CreateTextWriter(program.IntermediateFilename))
-            {
-                writer(output);
-            }
-        }
-
-        public void WriteTypes(Program program, Action<TextWriter> writer)
-        {
-            using (TextWriter output = CreateTextWriter(program.TypesFilename))
-            {
-                writer(output);
-            }
-        }
-
-        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
-        {
-            using (TextWriter output = CreateTextWriter(program.OutputFilename))
-            {
-                writer(output);
-            }
-        }
-
-        public void WriteGlobals(Program program, Action<TextWriter> writer)
-        {
-            using (TextWriter output = CreateTextWriter(program.GlobalsFilename))
-            {
-                writer(output);
-            }
-        }
-
-        #endregion ////////////////////////////////////////////////////
 
         // Event handlers //////////////////////////////
 

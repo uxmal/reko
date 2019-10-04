@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -29,7 +29,7 @@ using System.Threading;
 
 namespace Reko.UnitTests.Mocks
 {
-    public class FakeDecompilerHost : DecompilerHost
+    public class FakeDecompiledFileService : IDecompiledFileService
     {
         private StringWriter disassembly = new StringWriter();
         private StringWriter intermediate = new StringWriter();
@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Mocks
         private StringWriter globalsWriter = new StringWriter();
         private IConfigurationService config = new FakeDecompilerConfiguration();
 
-        public FakeDecompilerHost()
+        public FakeDecompiledFileService()
         {
         }
 
@@ -47,34 +47,29 @@ namespace Reko.UnitTests.Mocks
             return decompiled;
         }
 
-        IConfigurationService DecompilerHost.Configuration
+        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
         {
-            get { return config; }
+            writer("test.asm", new TextFormatter(disassembly));
         }
 
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
         {
-            writer(new TextFormatter(disassembly));
+            writer("test.dis", intermediate);
         }
 
-        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<string, TextWriter> writer)
         {
-            writer(intermediate);
+            writer("test.h", typesWriter);
         }
 
-        public void WriteTypes(Program program, Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
         {
-            writer(typesWriter);
+            writer("test.c", new Procedure[0], decompiled);
         }
 
-        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
-            writer(decompiled);
-        }
-
-        public void WriteGlobals(Program program, Action<TextWriter> writer)
-        {
-            writer(globalsWriter);
+            writer("test.globals.c", globalsWriter);
         }
 
         // probing methods.

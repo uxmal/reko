@@ -14,6 +14,7 @@
       <procedure name="py_unused">
         <address>10001140</address>
         <CSignature>PyObject *py_unused(PyObject *self, PyObject *args)</CSignature>
+        <OutputFile>unused.c</OutputFile>
       </procedure>
       <global>
         <Address>10003010</Address>

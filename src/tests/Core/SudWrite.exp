@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://schemata.jklnet.org/Reko/v4">
+<project xmlns="http://schemata.jklnet.org/Reko/v5">
   <input>
-    <disassembly>foo.asm</disassembly>
-    <intermediate-code>foo.cod</intermediate-code>
+    <asmDir />
     <user>
       <address>1000:0000</address>
       <procedure name="foo">

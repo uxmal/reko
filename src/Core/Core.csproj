@@ -352,7 +352,12 @@
     <Compile Include="Lib\UbjsonMarker.cs" />
     <Compile Include="Lib\UbjsonWriter.cs" />
     <Compile Include="Lib\WildPatternMatcher.cs" />
+    <Compile Include="Machine\BitfieldDecoder.cs" />
+    <Compile Include="Machine\ConditionalDecoder.cs" />
+    <Compile Include="Machine\Decoder.cs" />
+    <Compile Include="Machine\MaskDecoder.cs" />
     <Compile Include="Machine\Mutator.cs" />
+    <Compile Include="Machine\NyiDecoder.cs" />
     <Compile Include="NativeInterface\CustomAnsiStringMarshaler.cs" />
     <Compile Include="NativeInterface\ILibraryLoader.cs" />
     <Compile Include="NativeInterface\INativeArchitecture.cs" />
@@ -473,6 +478,7 @@
     <Compile Include="Serialization\Project_v3.cs" />
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\ArrayType_v1.cs" />
+    <Compile Include="Serialization\Project_v5.cs" />
     <Compile Include="Serialization\Project_v4.cs" />
     <Compile Include="Serialization\ReferenceType_v1.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />

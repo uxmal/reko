@@ -321,14 +321,14 @@ namespace Reko.Arch.X86
             }
             else 
             {
-                instr = Illegal();
+                instr = CreateInvalidInstruction();
             }
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
-        private X86Instruction Illegal()
+        protected override X86Instruction CreateInvalidInstruction()
         {
             return new X86Instruction(Opcode.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
         }

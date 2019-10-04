@@ -104,6 +104,11 @@ namespace Reko.Arch.Sparc
             return instrCur;
         }
 
+        protected override SparcInstruction CreateInvalidInstruction()
+        {
+            return invalid.Decode(this, 0);
+        }
+
         private class Decoder
         {
             public Opcode code;

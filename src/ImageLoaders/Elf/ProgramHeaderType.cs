@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,6 +34,7 @@ namespace Reko.ImageLoaders.Elf
         PT_NOTE = 4,
         PT_SHLIB = 5,
         PT_PHDR = 6,
+        PT_TLS = 7,             // The thread-local storage template.
 
         PT_GNU_EH_FRAME = 0x6474e550,
         PT_GNU_STACK = 0x6474E551,

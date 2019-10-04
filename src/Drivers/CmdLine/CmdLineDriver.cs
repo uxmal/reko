@@ -49,12 +49,13 @@ namespace Reko.CmdLine
             var listener = new CmdLineListener();
             var config = RekoConfigurationService.Load();
             var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
+            var fsSvc = new FileSystemServiceImpl();
             services.AddService<DecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);
             services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
             services.AddService<IDiagnosticsService>(diagnosticSvc);
-            services.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            services.AddService<DecompilerHost>(new CmdLineHost());
+            services.AddService<IFileSystemService>(fsSvc);
+            services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc));
             var ldr = new Loader(services);
             var decompiler = new DecompilerDriver(ldr, services);
             var driver = new CmdLineDriver(services, ldr, decompiler, listener);
@@ -148,7 +149,9 @@ namespace Reko.CmdLine
             pArgs.TryGetValue("--loader", out object loader);
             try
             {
-                if (!decompiler.Load((string) pArgs["filename"], (string) loader))
+                var fileName = (string) pArgs["filename"];
+                var filePath = Path.GetFullPath(fileName);
+                if (!decompiler.Load(filePath, (string) loader))
                     return;
 
                 decompiler.Project.Programs[0].User.ExtractResources =

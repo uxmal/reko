@@ -1357,7 +1357,15 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmov\td1,r0,r1");
         }
 
+        [Test]
+        public void ThumbDis_vsri()
+        {
+            Given_Instructions(0xFFEC, 0x0431);
+            Expect_Code("vsri.i32\td16,d17,#&14");
+        }
+
 #if BORED
+
         [Test]
         public void ThumbDis_vld4_single()
         {

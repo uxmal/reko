@@ -140,6 +140,21 @@ namespace Reko.Arch.X86
             m.SideEffect(host.PseudoProcedure("__sfence", VoidType.Instance));
         }
 
+        public void RewriteVmread()
+        {
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure("__vmread", instrCur.op1.Width, SrcOp(instrCur.op2)));
+        }
+
+        public void RewriteVmwrite()
+        {
+            m.SideEffect(host.PseudoProcedure("__vmwrite", VoidType.Instance,
+                SrcOp(instrCur.op1),
+                SrcOp(instrCur.op2)));
+        }
+
+
         private void RewriteWbinvd()
         {
             rtlc = InstrClass.System;

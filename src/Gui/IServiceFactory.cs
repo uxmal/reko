@@ -63,5 +63,6 @@ namespace Reko.Gui
         ISelectionService CreateSelectionService();
         IProcedureListService CreateProcedureListService();
         ICallHierarchyService CreateCallHierarchyService();
+        IDecompiledFileService CreateDecompiledFileService();
     }
 }

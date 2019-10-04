@@ -54,6 +54,15 @@ namespace Reko.Arch.i8051
             return decoders[b].Decode(b, this);
         }
 
+        protected override i8051Instruction CreateInvalidInstruction()
+        {
+            return new i8051Instruction
+            {
+                Opcode = Opcode.Invalid,
+                InstructionClass = InstrClass.Invalid,
+            };
+        }
+
         private i8051Instruction Decode(Opcode opcode, byte uInstr, string fmt)
         {
             byte b;
@@ -342,11 +351,7 @@ $@"    [Test]
                 {
                     if (!m(op, dasm))
                     {
-                        return new i8051Instruction
-                        {
-                            Opcode = Opcode.Invalid,
-                            InstructionClass = InstrClass.Invalid,
-                        };
+                        return dasm.CreateInvalidInstruction();
                     }
                 }
                 return new i8051Instruction
@@ -359,6 +364,7 @@ $@"    [Test]
                     Operand3 = dasm.ops.Count >= 3 ? dasm.ops[2] : null,
                 };
             }
+
         }
 
         private static InstrDecoder Instr(Opcode opcode, params Mutator<i8051Disassembler>[] mutators)

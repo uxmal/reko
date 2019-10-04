@@ -501,9 +501,12 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private Msp430Instruction Invalid()
+        protected override Msp430Instruction CreateInvalidInstruction()
         {
-            return new Msp430Instruction { opcode = Opcode.invalid };
+            return new Msp430Instruction {
+                InstructionClass = InstrClass.Invalid,
+                opcode = Opcode.invalid
+            };
         }
 
         private static InstrDecoder Instr(Opcode opcode, params Mutator<Msp430Disassembler>[] mutators)
@@ -544,7 +547,7 @@ namespace Reko.Arch.Msp430
                 foreach (var m in mutators)
                 {
                     if (!m(uInstr, dasm))
-                        return dasm.Invalid();
+                        return dasm.CreateInvalidInstruction();
                 }
 
                 int rep = (dasm.uExtension & 0x0F);
@@ -567,7 +570,7 @@ namespace Reko.Arch.Msp430
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
                 if (!J(uInstr, dasm))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
 
                 int rep = (dasm.uExtension & 0x0F);
                 var jj = jmps[(uInstr >> 10) & 7];
@@ -603,7 +606,7 @@ namespace Reko.Arch.Msp430
             {
                 var key = (uInstr >> sh) & mask;
                 if (!decoders.TryGetValue(key, out Decoder decoder))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 return decoder.Decode(dasm, uInstr);
             }
         }
@@ -642,7 +645,7 @@ namespace Reko.Arch.Msp430
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
                 if (!dasm.rdr.TryReadLeUInt16(out ushort u))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 dasm.uExtension = uInstr;
                 uInstr = u;
                 return this.decoders[uInstr >> 12].Decode(dasm, uInstr);
@@ -676,7 +679,7 @@ namespace Reko.Arch.Msp430
                     {
                         w.WriteLine($"    AssertCode(\"@@@\", \"{hexBytes}\");");
                     });
-                return dasm.Invalid();
+                return dasm.CreateInvalidInstruction();
             }
         }
 

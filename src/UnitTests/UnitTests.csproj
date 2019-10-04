@@ -102,6 +102,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -160,6 +161,7 @@
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
     <Compile Include="Arch\Arm\A64RewriterTests.cs" />
+    <Compile Include="Arch\Arm\Arm64ArchitectureTests.cs" />
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
@@ -269,6 +271,7 @@
     <Compile Include="Core\StridedIntervalTests.cs" />
     <Compile Include="Core\TypedDataDumperTests.cs" />
     <Compile Include="Core\Types\DataTypeComparerTests.cs" />
+    <Compile Include="DecompiledFileServiceTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\MacOS\Classic\MacOSClassicTests.cs" />
     <Compile Include="Environments\MacOS\Classic\MacsBugSymbolScannerTests.cs" />
@@ -296,6 +299,8 @@
     <Compile Include="Gui\Windows\CallHierarchyInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
+    <Compile Include="ImageLoaders\Elf\Relocators\AArch32RelocatorTests.cs" />
+    <Compile Include="ImageLoaders\Elf\Relocators\ElfRelocatorTestBase.cs" />
     <Compile Include="ImageLoaders\Elf\Relocators\x86RelocatorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyLang.Tests.cs" />

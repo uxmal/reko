@@ -48,7 +48,7 @@ namespace Reko.Arch.Tms7000
             Tms7000Instruction instr;
             if (!decoders.TryGetValue(b, out var instrDecoder))
             {
-                instr = Invalid();
+                instr = CreateInvalidInstruction();
             }
             else
             {
@@ -142,7 +142,7 @@ namespace Reko.Arch.Tms7000
         
         #endregion
 
-        private static Tms7000Instruction Invalid()
+        protected override Tms7000Instruction CreateInvalidInstruction()
         {
             return new Tms7000Instruction
             {
@@ -172,7 +172,7 @@ namespace Reko.Arch.Tms7000
                 foreach (var m in mutators)
                 {
                     if (!m(b, dasm))
-                        return Invalid();
+                        return dasm.CreateInvalidInstruction();
                 }
                 var instr = new Tms7000Instruction
                 {

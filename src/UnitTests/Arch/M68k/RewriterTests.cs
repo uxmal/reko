@@ -1701,7 +1701,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x5DCA, 0x4EF9);    // dblt d2,$0016B6AB
             AssertCode(
                 "0|T--|00010000(4): 6 instructions",
-                "1|T--|if (Test(LT,CV)) branch 00010004",
+                "1|T--|if (Test(LT,VN)) branch 00010004",
                 "2|L--|v4 = SLICE(d2, word16, 0)",
                 "3|L--|v4 = v4 - 1",
                 "4|L--|v5 = SLICE(d2, word16, 16)",

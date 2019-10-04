@@ -324,6 +324,8 @@ namespace Reko.Arch.X86
                 case Opcode.movaps:
                 case Opcode.vmovapd:
                 case Opcode.vmovaps: RewriteMov(); break;
+                case Opcode.vmread: RewriteVmread(); break;
+                case Opcode.vmwrite: RewriteVmwrite(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
                 case Opcode.movhpd: RewritePackedUnaryop("__movhpd", PrimitiveType.Real64, PrimitiveType.Real64); break;
@@ -493,6 +495,8 @@ namespace Reko.Arch.X86
                 case Opcode.sysret: RewriteSysret(); break;
                 case Opcode.ucomiss: RewriteComis(PrimitiveType.Real32); break;
                 case Opcode.ucomisd: RewriteComis(PrimitiveType.Real64); break;
+                case Opcode.ud0: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Opcode.ud1: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.ud2: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.unpcklpd: RewritePackedBinop("__unpcklpd", PrimitiveType.Real64); break;
                 case Opcode.unpcklps: RewritePackedBinop("__unpcklps", PrimitiveType.Real32); break;

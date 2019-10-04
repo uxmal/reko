@@ -276,7 +276,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    DebugEx.Verbose(ElfImageLoader.trace, "  {0}: symbol {1} type: {2}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info));
+                    DebugEx.Verbose(ElfImageLoader.trace, "  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info), relocation.Addend);
                     relocator.RelocateEntry(program, elfSym, null, relocation);
                     symbols.Add(elfSym);
                 }
@@ -360,25 +360,25 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 if (relSection.Type == SectionHeaderType.SHT_REL)
                 {
-                    var sectionSymbols = loader.Symbols[relSection.LinkedSection.FileOffset];
+                    loader.Symbols.TryGetValue(relSection.LinkedSection.FileOffset, out var sectionSymbols);
                     var referringSection = relSection.RelocatedSection;
                     var rdr = loader.CreateReader(relSection.FileOffset);
                     for (uint i = 0; i < relSection.EntryCount(); ++i)
                     {
                         var rel = loader.LoadRelEntry(rdr);
-                        var sym = sectionSymbols[rel.SymbolIndex];
+                        var sym = sectionSymbols?[rel.SymbolIndex];
                         RelocateEntry(program, sym, referringSection, rel);
                     }
                 }
                 else if (relSection.Type == SectionHeaderType.SHT_RELA)
                 {
-                    var sectionSymbols = loader.Symbols[relSection.LinkedSection.FileOffset];
+                    loader.Symbols.TryGetValue(relSection.LinkedSection.FileOffset, out var sectionSymbols);
                     var referringSection = relSection.RelocatedSection;
                     var rdr = loader.CreateReader(relSection.FileOffset);
                     for (uint i = 0; i < relSection.EntryCount(); ++i)
                     {
                         var rela = loader.LoadRelaEntry(rdr);
-                        var sym = sectionSymbols[rela.SymbolIndex];
+                        var sym = sectionSymbols?[rela.SymbolIndex];
                         RelocateEntry(program, sym, referringSection, rela);
                     }
                 }
@@ -395,7 +395,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     section.FileOffset,
                     section.LinkedSection.Name,
                     section.RelocatedSection.Name);
-                var symbols = loader.Symbols[section.LinkedSection.FileOffset];
+                loader.Symbols.TryGetValue(section.LinkedSection.FileOffset, out var symbols);
                 var rdr = loader.CreateReader(section.FileOffset);
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
@@ -404,7 +404,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         "  off:{0:X8} type:{1,-16} {3,3} {2}",
                         rel.r_offset,
                         RelocationTypeToString(rel.r_info & 0xFF),
-                        symbols[(int)(rel.r_info >> 8)].Name,
+                        symbols!=null ? symbols[(int)(rel.r_info >> 8)].Name : "<nosym>",
                         (int)(rel.r_info >> 8));
                 }
             }

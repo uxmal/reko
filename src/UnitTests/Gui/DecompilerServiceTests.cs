@@ -48,8 +48,8 @@ namespace Reko.UnitTests.Gui
         public void DecSvc_NotifyOnChangedDecompiler()
         {
             var loader = new Mock<ILoader>();
-            var host = new Mock<DecompilerHost>();
-            sc.AddService<DecompilerHost>(host.Object);
+            var host = new Mock<IDecompiledFileService>();
+            sc.AddService<IDecompiledFileService>(host.Object);
 
             DecompilerDriver d = new DecompilerDriver(loader.Object, sc);
             bool decompilerChangedEventFired = true;
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Gui
         {
             IDecompilerService svc = new DecompilerService();
             var loader = new Mock<ILoader>();
-            var host = new Mock<DecompilerHost>();
+            var host = new Mock<IDecompiledFileService>();
             var arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             var platform = new Mock<IPlatform>();
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Gui
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var program = new Program(imageMap, arch.Object, platform.Object);
-            sc.AddService<DecompilerHost>(host.Object);
+            sc.AddService<IDecompiledFileService>(host.Object);
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             loader.Setup(l => l.LoadImageBytes(fileName, 0)).Returns(bytes);
             loader.Setup(l => l.LoadExecutable(fileName, bytes, null, null)).Returns(program);

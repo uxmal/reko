@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -47,6 +47,11 @@ namespace Reko.UnitTests.Mocks
             instr.Length = 4;
             addr += 4;
             return instr;
+        }
+
+        protected override MachineInstruction CreateInvalidInstruction()
+        {
+            throw new NotImplementedException();
         }
     }
 }

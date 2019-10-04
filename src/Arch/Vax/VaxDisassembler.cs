@@ -56,10 +56,7 @@ namespace Reko.Arch.Vax
             }
             catch
             {
-                instr = new VaxInstruction {
-                    Opcode = Opcode.Invalid,
-                    InstructionClass = InstrClass.Invalid,
-                    Operands = new MachineOperand[0] };
+                instr = CreateInvalidInstruction();
             }
             if (instr == null)
                 return null;
@@ -67,6 +64,16 @@ namespace Reko.Arch.Vax
             instr.Length = (int)(rdr.Address - addr);
             ops.Clear();
             return instr;
+        }
+
+        protected override VaxInstruction CreateInvalidInstruction()
+        {
+            return new VaxInstruction
+            {
+                InstructionClass = InstrClass.Invalid,
+                Opcode = Opcode.Invalid,
+                Operands = new MachineOperand[0]
+            };
         }
 
         private bool TryDecodeOperand(PrimitiveType width, out MachineOperand op)
@@ -254,12 +261,7 @@ namespace Reko.Arch.Vax
                 {
                     if (!m(dasm))
                     {
-                        return new VaxInstruction
-                        {
-                            Opcode = Opcode.Invalid,
-                            InstructionClass = InstrClass.Invalid,
-                            Operands = new MachineOperand[0]
-                        };
+                        return dasm.CreateInvalidInstruction();
                     }
                 }
                 var instr = new VaxInstruction

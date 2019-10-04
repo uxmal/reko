@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -32,69 +32,26 @@ using System.ComponentModel.Design;
 namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 {
     [TestFixture]
-    public class x86RelocatorTests
+    public class x86RelocatorTests : ElfRelocatorTestBase
     {
-        private x86Relocator relocator;
-        private Program program;
-        private Dictionary<int, ElfSymbol> symbols;
-        private ElfLoader32 loader;
-
-        [SetUp]
-        public void Setup()
+        protected override Address GetLoadAddress()
         {
-            this.program = new Program();
-            this.program.SegmentMap = new SegmentMap(Address.Ptr32(0x1000));
-            this.program.Architecture = new Reko.Arch.X86.X86ArchitectureFlat32("x86-flat-32");
-            this.symbols = new Dictionary<int, ElfSymbol>();
-            var services = new ServiceContainer();
-            var elfImgLoader = new ElfImageLoader(services, "foo.elf", new byte[0]);
-            this.loader = new ElfLoader32();
-            loader.Sections.Add(new ElfSection { Name = "" });   // section 0
+            return Address.Ptr32(0x1000);
         }
 
-        private void Given_x86Relocator()
+        protected override IProcessorArchitecture GetArchitecture()
         {
-            this.relocator = new x86Relocator(loader, new SortedList<Address, ImageSymbol>());
+            return new Reko.Arch.X86.X86ArchitectureFlat32("x86-flat-32");
         }
 
-        private ElfRelocation Given_rel(uint uAddrRelocate, int sym, i386Rt type)
+        protected override ElfRelocator CreateRelocator(ElfLoader loader, SortedList<Address, ImageSymbol> imageSymbols)
         {
-            var rel = new ElfRelocation
-            {
-                Offset = uAddrRelocate,
-                Info = (uint)type,
-                SymbolIndex = sym,
-            };
-            return rel;
+            return new x86Relocator((ElfLoader32) loader, imageSymbols);
         }
 
-        private ImageWriter Given_section(string name, uint uAddress, int len)
+        protected override ElfLoader CreateLoader()
         {
-            var addr = Address.Ptr32(uAddress);
-            var mem = new MemoryArea(addr, new byte[len]);
-            var writer = new LeImageWriter(mem, 0);
-            var section = new ElfSection
-            {
-                Name = name,
-                Address = Address.Ptr32(uAddress)
-            };
-            loader.Sections.Add(section);
-            var seg = new ImageSegment(section.Name, mem, AccessMode.ReadWriteExecute);
-            program.SegmentMap.AddSegment(seg);
-            return writer;
-        }
-
-        private ElfSymbol Given_symbol(int index, string name, ElfSymbolType type, uint iSection, uint uAddr)
-        {
-            var sym = new ElfSymbol
-            {
-                Name = name,
-                Value = uAddr,
-                Type = type,
-                SectionIndex = iSection,
-            };
-            symbols.Add(index, sym);
-            return sym;
+            return new ElfLoader32();
         }
 
         [Test]
@@ -115,7 +72,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
             var rel = Given_rel(0x400C, sym: 3, type: i386Rt.R_386_JMP_SLOT);
 
-            Given_x86Relocator();
+            Given_Relocator();
 
             var symNew = relocator.RelocateEntry(program, sym, null, rel);
 

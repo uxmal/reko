@@ -100,8 +100,8 @@ namespace Reko.Core.Types
             if (x is VoidType)
                 return 0;
 
-            if (x is UnknownType && y is UnknownType)
-                return 0;
+            if (x is UnknownType unkX && y is UnknownType unkY)
+                return unkX.Size.CompareTo(unkY.Size);
             if (x is UnknownType)
                 return -1;
             if (y is UnknownType)

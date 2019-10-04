@@ -892,5 +892,14 @@ namespace Reko.Arch.Cil
             instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
+
+        protected override CilInstruction CreateInvalidInstruction()
+        {
+            return new CilInstruction
+            {
+                InstructionClass = InstrClass.Invalid,
+                Opcode = default(OpCode),
+            };
+        }
     }
 }

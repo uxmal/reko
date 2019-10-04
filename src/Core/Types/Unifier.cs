@@ -152,7 +152,17 @@ namespace Reko.Core.Types
             {
                 return true;
             }
-			return a is UnknownType || b is UnknownType;
+            if (a is UnknownType unkA)
+            {
+                if (unkA.Size == 0 || a.Size == b.Size)
+                    return true;
+            }
+            if (b is UnknownType unkB)
+            {
+                if (unkB.Size == 0 || a.Size == b.Size)
+                    return true;
+            }
+            return false;
 		}
 
 		private bool AreCompatible(StructureType a, StructureType b)
@@ -239,10 +249,16 @@ namespace Reko.Core.Types
 			if (a == b)
 				return a;
 
-			if (a is UnknownType)
-				return b;
-			if (b is UnknownType)
-				return a;
+            if (a is UnknownType)
+            {
+                if (a.Size == 0 || a.Size == b.Size)
+                    return b;
+            }
+            if (b is UnknownType)
+            {
+                if (b.Size == 0 || a.Size == b.Size)
+                    return a;
+            }
 
             if (a is VoidType)
                 return b;

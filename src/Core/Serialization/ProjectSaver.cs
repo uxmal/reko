@@ -34,24 +34,24 @@ namespace Reko.Core.Serialization
         {
         }
 
-        public void Save(Project_v4 sProject, XmlWriter xw)
+        public void Save(Project_v5 sProject, XmlWriter xw)
         {
-            var ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
+            var ser = SerializedLibrary.CreateSerializer_v5(typeof(Project_v5));
             ser.Serialize(xw, sProject);
         }
 
         /// <summary>
-        /// Given a <see cref="Project"/> serializes it into a <see cref="Project_v4"/>. 
+        /// Given a <see cref="Project"/> serializes it into a <see cref="Project_v5"/>. 
         /// </summary>
         /// <param name="projectAbsPath"></param>
         /// <param name="project"></param>
         /// <returns></returns>
-        public Project_v4 Serialize(string projectAbsPath, Project project)
+        public Project_v5 Serialize(string projectAbsPath, Project project)
         {
             var inputs = new List<ProjectFile_v3>();
             inputs.AddRange(project.Programs.Select(p => VisitProgram(projectAbsPath, p)));
             inputs.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
-            var sp = new Project_v4
+            var sp = new Project_v5
             {
                 // ".Single()" because there can be only one Architecture and Platform, realistically.
                 ArchitectureName = project.Programs.Select(p => p.Architecture.Name).Distinct().SingleOrDefault(),
@@ -63,7 +63,7 @@ namespace Reko.Core.Serialization
 
         public ProjectFile_v3 VisitProgram(string projectAbsPath, Program program)
         {
-            return new DecompilerInput_v4
+            return new DecompilerInput_v5
             {
                 Filename = ConvertToProjectRelativePath(projectAbsPath, program.Filename),
                 User = new UserData_v4
@@ -99,12 +99,10 @@ namespace Reko.Core.Serialization
                     ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
                     ExtractResources = program.User.ExtractResources,
                 },
-                DisassemblyFilename =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyFilename),
-                IntermediateFilename = ConvertToProjectRelativePath(projectAbsPath, program.IntermediateFilename),
-                OutputFilename =       ConvertToProjectRelativePath(projectAbsPath, program.OutputFilename),
-                TypesFilename =        ConvertToProjectRelativePath(projectAbsPath, program.TypesFilename),
-                GlobalsFilename =      ConvertToProjectRelativePath(projectAbsPath, program.GlobalsFilename),
-                ResourcesDirectory =   ConvertToProjectRelativePath(projectAbsPath, program.ResourcesDirectory),
+                DisassemblyDirectory =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyDirectory),
+                SourceDirectory =       ConvertToProjectRelativePath(projectAbsPath, program.SourceDirectory),
+                IncludeDirectory =      ConvertToProjectRelativePath(projectAbsPath, program.IncludeDirectory),
+                ResourcesDirectory =    ConvertToProjectRelativePath(projectAbsPath, program.ResourcesDirectory),
             };
         }
 
@@ -244,13 +242,13 @@ namespace Reko.Core.Serialization
                 return null;
             if (value is string sValue)
             {
-                var el = doc.CreateElement("item", SerializedLibrary.Namespace_v4);
+                var el = doc.CreateElement("item", SerializedLibrary.Namespace_v5);
                 el.InnerXml = (string)value;
                 return el;
             }
             if (value is IDictionary dict)
             {
-                var el = doc.CreateElement("dict", SerializedLibrary.Namespace_v4);
+                var el = doc.CreateElement("dict", SerializedLibrary.Namespace_v5);
                 foreach (DictionaryEntry de in dict)
                 {
                     var sub = SerializeValue(de.Value, doc);
@@ -261,7 +259,7 @@ namespace Reko.Core.Serialization
             }
             if (value is IEnumerable ienum)
             {
-                var el = doc.CreateElement("list", SerializedLibrary.Namespace_v4);
+                var el = doc.CreateElement("list", SerializedLibrary.Namespace_v5);
                 foreach (var oValue in ienum)
                 {
                     el.AppendChild(SerializeValue(oValue, doc));

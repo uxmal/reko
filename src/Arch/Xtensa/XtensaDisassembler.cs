@@ -110,11 +110,19 @@ namespace Reko.Arch.Xtensa
             {
                 Debug.Print("instr: {0:X2} {1:X2} {2:X2}", b0, b1, b2);
                 Debug.Print("{0}", state);
-                instr = new XtensaInstruction { Opcode = Opcodes.invalid };
+                instr = CreateInvalidInstruction();
             };
             instr.Address = state.addr;
             instr.Length = (int)(this.rdr.Address - state.addr);
             return instr;
+        }
+
+        protected override XtensaInstruction CreateInvalidInstruction()
+        {
+            return new XtensaInstruction {
+                InstructionClass = InstrClass.Invalid,
+                Opcode = Opcodes.invalid
+            };
         }
 
         private XtensaInstruction DecodeOperands(Opcodes opcode, string fmt)

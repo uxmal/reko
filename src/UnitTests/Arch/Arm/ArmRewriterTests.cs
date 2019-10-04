@@ -1885,5 +1885,23 @@ means
                 "1|L--|q10 = __vmlsl_s32(d15, d5[1])");
         }
 
+        [Test]
+        public void ArmRw_pkhtb()
+        {
+            BuildTest(0xB6847751);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(GE,NZV)) branch 00100004",
+                "2|L--|r7 = __pkhtb(r4, r1 >> 14)");
+        }
+
+        [Test]
+        public void ArmRw_ldr_pcindexed()
+        {
+            BuildTest(0xE79F3003); // ldr r3,[pc, r3]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = Mem0[0x00100008 + r3:word32]");
+        }
     }
 }

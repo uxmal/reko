@@ -199,5 +199,12 @@ namespace Reko.UserInterfaces.WindowsForms
             var svc = new CallHierarchyInteractor(mainForm.CallHierarchy);
             return svc;
         }
+
+        public IDecompiledFileService CreateDecompiledFileService()
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var svc = new DecompiledFileService(fsSvc);
+            return svc;
+        }
     }
 }

@@ -68,6 +68,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return instr;
         }
 
+        protected override Tlcs90Instruction CreateInvalidInstruction()
+        {
+            return new Tlcs90Instruction
+            {
+                Opcode = Opcode.invalid,
+                InstructionClass = InstrClass.Invalid
+            };
+        }
+
         #region Mutators
 
         private static bool a(uint b, Tlcs90Disassembler dasm) {
@@ -270,11 +279,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 foreach (var m in mutators)
                 {
                     if (!m(b, dasm))
-                        return new Tlcs90Instruction
-                        {
-                            Opcode = Opcode.invalid,
-                            InstructionClass = InstrClass.Invalid
-                        };
+                        return dasm.CreateInvalidInstruction();
                 }
                 return new Tlcs90Instruction
                 {

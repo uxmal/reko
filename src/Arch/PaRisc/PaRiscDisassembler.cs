@@ -89,6 +89,11 @@ namespace Reko.Arch.PaRisc
             return instr;
         }
 
+        protected override PaRiscInstruction CreateInvalidInstruction()
+        {
+            return invalid.Decode(0, this);
+        }
+
         /// <summary>
         /// Create a Reko bitfield using PA Risc bit position and bit length.
         /// </summary>

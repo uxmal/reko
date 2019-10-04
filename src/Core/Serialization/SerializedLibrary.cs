@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace_v1)]
     public class SerializedLibrary
     {
+        public const string Namespace_v5 = "http://schemata.jklnet.org/Reko/v5";
         public const string Namespace_v4 = "http://schemata.jklnet.org/Reko/v4";
         public const string Namespace_v3 = "http://schemata.jklnet.org/Reko/v3";
         public const string Namespace_v2 = "http://schemata.jklnet.org/Decompiler/v2";
@@ -84,6 +85,11 @@ namespace Reko.Core.Serialization
             return new XmlSerializer(rootType, attrOverrides);
         }
 
+        public static XmlSerializer CreateSerializer_v5(Type rootType)
+        {
+            return CreateSerializer(rootType, Namespace_v5);
+        }
+
         public static XmlSerializer CreateSerializer_v4(Type rootType)
         {
             return CreateSerializer(rootType, Namespace_v4);
@@ -122,7 +128,7 @@ namespace Reko.Core.Serialization
             typeof(MemoryMap_v1),
             typeof(Argument_v1),
             typeof(GlobalVariable_v1),
-            typeof(GlobalDataItem_v2)
+            typeof(GlobalDataItem_v2),
         };
     }
 

@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Scanning
             var r1 = fakeArch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
             this.sc = new ServiceContainer();
-            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
@@ -616,6 +616,27 @@ fn00001000_exit:
             Assert.AreEqual(1, proc.Signature.Parameters.Length);
             Assert.AreEqual("real64", proc.Signature.Parameters[0].DataType.ToString());
             Assert.AreEqual("dVal", proc.Signature.Parameters[0].Name);
+        }
+
+        [Test]
+        public void Scanner_NoDecompiledProcedure_NullSignature()
+        {
+            Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x2000),
+                new Procedure_v1()
+                {
+                    CSignature = null,
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateScanner(program);
+            var proc = sc.ScanProcedure(
+                arch,
+                Address.Ptr32(0x2000),
+                "fn000020", arch.CreateProcessorState());
+            Assert.False(proc.Signature.ParametersValid);
         }
 
         [Test]

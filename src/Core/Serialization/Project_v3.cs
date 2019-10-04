@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -68,6 +68,7 @@ namespace Reko.Core.Serialization
     {
         T VisitInputFile(DecompilerInput_v3 input);
         T VisitInputFile(DecompilerInput_v4 input);
+        T VisitInputFile(DecompilerInput_v5 input);
         T VisitMetadataFile(MetadataFile_v3 metadata);
         T VisitAssemblerFile(AssemblerFile_v3 asm);
     }

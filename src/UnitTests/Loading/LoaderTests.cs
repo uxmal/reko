@@ -177,7 +177,7 @@ namespace Reko.UnitTests.Loading
                     TypeName = typeof(FakeImageLoader).AssemblyQualifiedName,
                 }
             };
-            cfgSvc.Expect(c => c.GetImageLoaders()).Returns(ldrs);
+            cfgSvc.Setup(c => c.GetImageLoaders()).Returns(ldrs).Verifiable();
         }
 
         [Test]
