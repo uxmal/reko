@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Core.Types
 	public class TypeFactory
 	{
 		private int typeVars;
-		private Dictionary<PrimitiveType,PrimitiveType> primitives = new Dictionary<PrimitiveType,PrimitiveType>();
+		private readonly Dictionary<PrimitiveType,PrimitiveType> primitives = new Dictionary<PrimitiveType,PrimitiveType>();
 
 		public TypeFactory()
 		{
@@ -108,6 +108,12 @@ namespace Reko.Core.Types
 		{
 			return new UnknownType();
 		}
+
+        public UnknownType CreateUnknown(int size)
+        {
+            //$TODO: consider caching these, like PrimitiveType does.
+            return new UnknownType(size);
+        }
 
 		public UnionType CreateUnionType(string name, DataType preferred)
 		{

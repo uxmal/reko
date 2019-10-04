@@ -207,7 +207,9 @@ namespace Reko.Scanning
         private Tuple<IProcessorArchitecture, MemoryArea, Address, uint> CreateUnscannedArea((ImageMapItem, ImageMapItem, ImageMapItem) triple)
         {
             var (prev, item, next) = triple;
-            if (!(item.DataType is UnknownType))
+            if (!(item.DataType is UnknownType unk))
+                return null;
+            if (unk.Size > 0)
                 return null;
             if (!this.program.SegmentMap.TryFindSegment(item.Address, out ImageSegment seg))
                 return null;

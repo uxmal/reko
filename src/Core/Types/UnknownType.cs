@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,18 @@ using System.IO;
 
 namespace Reko.Core.Types
 {
+    /// <summary>
+    /// Models an unknown type. If <see cref="Size"/> is non-zero,
+    /// only the size of the type is known. If the Size is zero, we
+    /// don't even known what size the type is.
+    /// </summary>
 	public class UnknownType : DataType
 	{
+        private readonly int size;
+
 		public UnknownType(int size = 0)
 		{
+            this.size = size;
 		}
 
         public override void Accept(IDataTypeVisitor v)
@@ -47,7 +55,7 @@ namespace Reko.Core.Types
 
 		public override int Size
 		{
-			get { return 0; }
+			get { return size; }
 			set { ThrowBadSize(); }
 		}
 	}

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -299,7 +299,10 @@ namespace Reko.Core.Types
 
         public Formatter VisitUnknownType(UnknownType ut)
         {
-            writer.Write("<unknown>");
+            if (ut.BitSize == 0)
+                writer.Write("<unknown>");
+            else
+                writer.Write($"<unknown{ut.BitSize}>");
             return writer;
         }
 

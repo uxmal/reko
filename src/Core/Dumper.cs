@@ -115,7 +115,7 @@ namespace Reko.Core
                 var segLast = segment.Address + segment.Size;
                 var size = segLast - i.Address;
                 size = Math.Min(i.Size, size);
-                if (i.DataType == null || i.DataType is UnknownType ||
+                if (i.DataType == null || (i.DataType is UnknownType && i.DataType.Size == 0) ||
                     i.DataType is CodeType)
                 {
                     DumpData(program.SegmentMap, program.Architecture, i.Address, size, formatter);
