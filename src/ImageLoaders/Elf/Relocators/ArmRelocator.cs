@@ -30,9 +30,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
     public class ArmRelocator : ElfRelocator32
     {
         IProcessorArchitecture archThumb;
+        private uint currentTlsSlotOffset;
 
         public ArmRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
+            this.currentTlsSlotOffset = 0x0000000;
         }
 
         public override ImageSymbol AdjustImageSymbol(ImageSymbol sym)
@@ -105,10 +107,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 A = S = 0;
                 break;
             case Arm32Rt.R_ARM_ABS32:
-                break;
             case Arm32Rt.R_ARM_GLOB_DAT:
             case Arm32Rt.R_ARM_JUMP_SLOT:
-                A = S = 0;
+                // Add sym + rel.a
                 break;
             case Arm32Rt.R_ARM_RELATIVE:
                 // From the docs:
@@ -123,6 +124,23 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 // Reko always loads objects at their specified physical address, 
                 // so this relocation is a no-op;
                 A = S = 0;
+                break;
+            case Arm32Rt.R_ARM_TLS_TPOFF32:
+                // Allocates a 32 bit TLS slot
+                //$REVIEW: the documentation is unreadable, but this is a
+                // guess.
+                uint tlsSlotOffset = AllocateTlsSlot();
+                A += tlsSlotOffset;
+                break;
+            case Arm32Rt.R_ARM_TLS_DTPMOD32:
+                //$REVIEW: this seems to refer to the modules
+                // used when creating the binary. My guess is
+                // that it wont be necessary for a fruitful
+                // decompilation -jkl
+                A = S = 0;
+                break;
+            case Arm32Rt.R_ARM_TLS_DTPOFF32:
+                //$NYI
                 break;
             default:
                 throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
@@ -141,6 +159,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
             relW.WriteLeUInt32(w);
 
             return symbol;
+        }
+
+        private uint AllocateTlsSlot()
+        {
+            var tlsSlotOffset = this.currentTlsSlotOffset;
+            this.currentTlsSlotOffset += (uint) loader.Architecture.PointerType.Size;
+            return tlsSlotOffset;
         }
 
         public override string RelocationTypeToString(uint type)
@@ -163,6 +188,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_ARM_ABS8 = 8,
         R_ARM_SBREL32 = 9,
 
+        R_ARM_TLS_DTPMOD32 = 17,
+        R_ARM_TLS_DTPOFF32 = 18,
+        R_ARM_TLS_TPOFF32 = 19,
         R_ARM_COPY = 20,
         R_ARM_GLOB_DAT = 21,
         R_ARM_JUMP_SLOT = 22,

@@ -282,6 +282,7 @@
     <Compile Include="Gui\Windows\CallHierarchyInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
+    <Compile Include="ImageLoaders\Elf\Relocators\AArch32RelocatorTests.cs" />
     <Compile Include="ImageLoaders\Elf\Relocators\ElfRelocatorTestBase.cs" />
     <Compile Include="ImageLoaders\Elf\Relocators\x86RelocatorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />

@@ -323,13 +323,13 @@ namespace Reko.ImageLoaders.Elf
             {
                 return new FunctionType();
             }
-            else if (sym.Size == 0)
+            else if ((int) sym.Size == Architecture.PointerType.Size)
             {
-                return new UnknownType();
-        }
+                return PrimitiveType.CreateWord(DataType.BitsPerByte * (int) sym.Size);
+            }
             else
             {
-                return PrimitiveType.CreateWord(DataType.BitsPerByte * (int)sym.Size);
+                return new UnknownType((int) sym.Size);
             }
         }
 
