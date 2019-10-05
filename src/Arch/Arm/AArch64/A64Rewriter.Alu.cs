@@ -38,11 +38,8 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteAdrp()
         {
             var dst = RewriteOp(instr.ops[0]);
-            var imm = ((ImmediateOperand)instr.ops[1]).Value;
-            var wBase = instr.Address.ToLinear();
-            wBase &= ~0xFFFul;        // Mask out lowest 12 bits.
-            wBase = (ulong)((long)wBase + imm.ToInt64());
-            m.Assign(dst, Address.Ptr64(wBase));
+            var addr = ((AddressOperand)instr.ops[1]).Address;
+            m.Assign(dst, addr);
         }
 
         private void RewriteMaybeSimdBinary(

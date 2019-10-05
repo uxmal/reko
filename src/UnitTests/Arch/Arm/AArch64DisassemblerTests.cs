@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_adrp()
         {
             Given_Instruction(0xF00000E2);
-            Expect_Code("adrp\tx2,#&1F000");
+            Expect_Code("adrp\tx2,#&11F000");
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_adrp_00001()
         {
             Given_Instruction(0xB0000001);
-            Expect_Code("adrp\tx1,#&1000");
+            Expect_Code("adrp\tx1,#&101000");
         }
 
         [Test]

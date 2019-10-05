@@ -703,8 +703,8 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        // Shifted immediate
-        private static Mutator<AArch64Disassembler> I(int pos1, int len1, int pos2, int len2, PrimitiveType dt, int sh)
+        // Shifted immediate page address
+        private static Mutator<AArch64Disassembler> Ip(int pos1, int len1, int pos2, int len2, PrimitiveType dt, int sh)
         {
             var fields = new[]
             {
@@ -713,8 +713,9 @@ namespace Reko.Arch.Arm.AArch64
             };
             return (u, d) =>
             {
-                var i = d.DecodeSignedImmediateOperand(u, fields, dt, sh);
-                d.state.ops.Add(i);
+                long sPageOffset = Bitfield.ReadSignedFields(fields, u) << sh;
+                ulong uAddrPage = d.addr.ToLinear() & ~0xFFFul;
+                d.state.ops.Add(AddressOperand.Ptr64(uAddrPage + (ulong) sPageOffset));
                 return true;
             };
         }
@@ -2220,7 +2221,7 @@ namespace Reko.Arch.Arm.AArch64
 
             var PcRelativeAddressing = Mask(31, 1,
                 Instr(Opcode.adr, X_0, PcRel(5,19,29,2)),
-                Instr(Opcode.adrp, X_0, I(5,19,29,2,i32,12)));
+                Instr(Opcode.adrp, X_0, Ip(5,19,29,2,i32,12)));
 
             Decoder Bitfield;
             {

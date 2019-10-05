@@ -45,6 +45,7 @@ namespace Reko.Arch.Arm
 
         public Arm64Architecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 32;
             this.FramePointerType = PrimitiveType.Ptr64;
             this.PointerType = PrimitiveType.Ptr64;
