@@ -250,7 +250,7 @@ namespace Reko.ImageLoaders.MzExe
             {
             case MACHINE_ALPHA: return new AlphaRelocator(Services, program);
             case MACHINE_ARM: return new ArmRelocator(program);
-            case MACHINE_ARM64: return new Arm64Relocator(program);
+            case MACHINE_ARM64: return new Arm64Relocator(Services, program);
             case MACHINE_ARMNT: return new ArmRelocator(program);
             case MACHINE_I386: return new i386Relocator(Services, program);
             case MACHINE_R4000: return new MipsRelocator(Services, program);
