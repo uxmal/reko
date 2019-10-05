@@ -66,7 +66,7 @@ namespace Reko.Arch.Arm.AArch64
             // 'x' and 'w' registers share the same storage.
             GpRegs64 = stg.RangeOfReg64(32, "x{0}");
             GpRegs32 = GpRegs64
-                .Select(r => new RegisterStorage($"w{r.Number}", r.Number, 0, PrimitiveType.Word32))
+                .Select((r, i) => new RegisterStorage($"w{i}", r.Number, 0, PrimitiveType.Word32))
                 .ToArray();
             AddrRegs64 = GpRegs64.ToArray();
             AddrRegs32 = GpRegs32.ToArray();
@@ -74,20 +74,20 @@ namespace Reko.Arch.Arm.AArch64
             // 'v', 'q', 'd', 's', 'h', b' regsters overlap
             SimdRegs128 = stg.RangeOfReg(32, n => $"q{n}", PrimitiveType.Word128);
             SimdRegs64 = SimdRegs128
-                .Select(r => new RegisterStorage($"d{r.Number}", r.Number, 0, PrimitiveType.Word64))
+                .Select((r, i) => new RegisterStorage($"d{i}", r.Number, 0, PrimitiveType.Word64))
                 .ToArray();
             SimdRegs32 = SimdRegs128
-                .Select(r => new RegisterStorage($"s{r.Number}", r.Number, 0, PrimitiveType.Word32))
+                .Select((r, i) => new RegisterStorage($"s{i}", r.Number, 0, PrimitiveType.Word32))
                 .ToArray();
             SimdRegs16 = SimdRegs128
-                .Select(r => new RegisterStorage($"h{r.Number}", r.Number, 0, PrimitiveType.Word16))
+                .Select((r, i) => new RegisterStorage($"h{i}", r.Number, 0, PrimitiveType.Word16))
                 .ToArray();
             SimdRegs8 = SimdRegs128
-                .Select(r => new RegisterStorage($"b{r.Number}", r.Number, 0, PrimitiveType.Byte))
+                .Select((r, i) => new RegisterStorage($"b{i}", r.Number, 0, PrimitiveType.Byte))
                 .ToArray();
 
             SimdVectorReg128 = SimdRegs128
-                .Select(r => new RegisterStorage($"v{r.Number}", r.Number, 0, PrimitiveType.Word128))
+                .Select((r, i) => new RegisterStorage($"v{i}", r.Number, 0, PrimitiveType.Word128))
                 .ToArray();
 
             // The stack register can only be accessed via effective address.

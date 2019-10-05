@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,13 +30,39 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class Arm64Relocator : Relocator
     {
-        public Arm64Relocator(Program program) : base(program)
+        private DecompilerEventListener eventListener;
+
+        public Arm64Relocator(IServiceProvider services, Program program) : base(program)
         {
+            this.eventListener = services.RequireService<DecompilerEventListener>();
         }
 
+        // https://docs.microsoft.com/en-us/windows/win32/debug/pe-format
         public override void ApplyRelocation(Address baseOfImage, uint page, EndianImageReader rdr, RelocationDictionary relocations)
         {
-            rdr.ReadUInt16();
+            ushort fixup = rdr.ReadLeUInt16();
+            var rt = (Arm64Rt) (fixup >> 12);
+            Address offset = baseOfImage + page + (fixup & 0x0FFFu);
+            DebugEx.Verbose(PeImageLoader.trace, "  {0:X4} {1}", fixup, rt);
+            var imgR = program.CreateImageReader(program.Architecture, offset);
+            var imgW = program.CreateImageWriter(program.Architecture, offset);
+            switch (rt)
+            {
+            case Arm64Rt.IMAGE_REL_ARM64_ABSOLUTE:
+                break;
+            case Arm64Rt.IMAGE_REL_ARM64_SECREL_HIGH12A:
+                var uInstr = imgR.ReadLeUInt32();
+                break;
+            default:
+                eventListener.Warn(
+                    eventListener.CreateAddressNavigator(program, offset),
+                    string.Format(
+                        "Unsupported AArch64 PE fixup type: {0:X}",
+                        fixup >> 12));
+                break;
+
+
+            }
         }
 
         public enum Arm64Rt : short

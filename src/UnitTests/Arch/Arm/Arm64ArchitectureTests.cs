@@ -19,7 +19,9 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch64;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +39,15 @@ namespace Reko.UnitTests.Arch.Arm
             for (int i = 0; i < Registers.SubRegisters.Length; ++i)
             {
                 Assert.AreEqual(i, Registers.SubRegisters[i][0].Number);
+                Assert.AreEqual(i, (int) Registers.SubRegisters[i][0].Domain);
             }
+        }
+
+        [Test]
+        public void Arm64Arch_GetRegister()
+        {
+            var arch = new Arm64Architecture("aarch64");
+            Assert.AreSame(Registers.GpRegs32[3], arch.GetRegister((StorageDomain) 3, new BitRange(16, 32)));
         }
     }
 }

@@ -45,7 +45,6 @@ namespace Reko.Arch.Arm
 
         public Arm64Architecture(string archId) : base(archId)
         {
-            this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 32;
             this.FramePointerType = PrimitiveType.Ptr64;
             this.PointerType = PrimitiveType.Ptr64;
@@ -162,7 +161,21 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(StorageDomain dom, BitRange range)
         {
-            throw new NotImplementedException();
+            var i = (int) dom;
+            if (0 <= i && i < Registers.SubRegisters.Length)
+            {
+                var subregs = Registers.SubRegisters[i];
+                var reg = subregs[0];
+                for (int j = 0; j < subregs.Length; ++j)
+                {
+                    var subreg = subregs[j];
+                    if ((short) subreg.BitSize < range.Msb)
+                        break;
+                    reg = subreg;
+                }
+                return reg;
+            }
+            return null;
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -187,6 +200,15 @@ namespace Reko.Arch.Arm
             return reg;
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.NF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.NF);
+            if ((grf & (uint) FlagM.ZF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.ZF);
+            if ((grf & (uint) FlagM.CF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.CF);
+            if ((grf & (uint) FlagM.VF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.VF);
+        }
+
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             var s = new StringBuilder();
@@ -199,7 +221,7 @@ namespace Reko.Arch.Arm
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.ByName.TryGetValue(name, out reg);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
