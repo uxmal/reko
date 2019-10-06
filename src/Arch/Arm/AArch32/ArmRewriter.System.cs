@@ -166,8 +166,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMrs()
         {
-            var ppp = host.PseudoProcedure("__mrs", PrimitiveType.Word32, Operand(Src1()));
-            m.Assign(Operand(Dst()), ppp);
+            var intrinsic = host.PseudoProcedure("__mrs", PrimitiveType.Word32, Operand(Src1()));
+            m.Assign(Operand(Dst()), intrinsic);
         }
 
         private void RewriteMsr()

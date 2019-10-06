@@ -1865,5 +1865,71 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[x30 + x27:word128] = q8");
         }
+
+        [Test]
+        public void A64Rw_svc()
+        {
+            Given_Instruction(0xD41B7B61);	// svc	#&DBDB
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__supervisor_call(0xDBDB)");
+        }
+
+        [Test]
+        public void A64Rw_mrs()
+        {
+            Given_Instruction(0xD53B0020);	// mrs	x0,CTR_EL0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x0 = __mrs(CTR_EL0)");
+        }
+
+        [Test]
+        public void A64Rw_dsb()
+        {
+            Given_Instruction(0xD5033F9F);	// dsb	#&F
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__dsb_sy()");
+        }
+
+        [Test]
+        public void A64Rw_isb()
+        {
+            Given_Instruction(0xD5033FDF);	// isb	#&F
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__isb_sy()");
+        }
+
+        [Test]
+        public void A64Rw_smc()
+        {
+            Given_Instruction(0xD4000003);	// smc	#0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__secure_monitor_call(0x0000)");
+        }
+
+        [Test]
+        public void A64Rw_msr()
+        {
+            Given_Instruction(0xD50343DF);	// msr	pstate,#3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__msr(pstate, 0x03)");
+        }
+
+        [Test]
+        public void A64Rw_ccmn()
+        {
+            Given_Instruction(0x3A4D09C0);	// ccmn	w14,#&D,#0,EQ
+            AssertCode(
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v3 = Test(NE,Z)",
+                "2|L--|NZCV = 0x00",
+                "3|T--|if (v3) branch 00100004",
+                "4|L--|NZCV = cond(w14 + 0x0000000D)");
+        }
     }
 }

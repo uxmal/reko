@@ -80,7 +80,7 @@ namespace Reko.Arch.Arm.AArch64
 
         public override MachineOperand GetOperand(int i)
         {
-            throw new NotImplementedException();
+            return 0 <= i && i < ops.Length ? ops[i] : null;
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

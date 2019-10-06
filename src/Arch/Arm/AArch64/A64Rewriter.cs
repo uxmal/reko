@@ -92,6 +92,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.br: RewriteBr(); break;
                 case Opcode.cbnz: RewriteCb(m.Ne0); break;
                 case Opcode.cbz: RewriteCb(m.Eq0); break;
+                case Opcode.ccmn: RewriteCcmn(); break;
                 case Opcode.ccmp: RewriteCcmp(); break;
                 case Opcode.clz: RewriteClz(); break;
                 case Opcode.cmp: RewriteCmp(); break;
@@ -100,6 +101,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.csinc: RewriteCsinc(); break;
                 case Opcode.csinv: RewriteCsinv(); break;
                 case Opcode.csneg: RewriteCsneg(); break;
+                case Opcode.dsb: RewriteDsb(); break;
                 case Opcode.dup: RewriteDup(); break;
                 case Opcode.eor: RewriteBinary(m.Xor); break;
                 case Opcode.fabs: RewriteFabs(); break;
@@ -121,6 +123,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.fnmul: RewriteFnmul(); break;
                 case Opcode.fsqrt: RewriteFsqrt(); break;
                 case Opcode.fsub: RewriteMaybeSimdBinary(m.FSub, "__fsub_{0}", Domain.Real); break;
+                case Opcode.isb: RewriteIsb(); break;
                 case Opcode.ld1r: RewriteLdNr("__ld1r"); break;
                 case Opcode.ld2: RewriteLdN("__ld2"); break;
                 case Opcode.ld3: RewriteLdN("__ld3"); break;
@@ -151,6 +154,8 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.movk: RewriteMovk(); break;
                 case Opcode.movn: RewriteMovn(); break;
                 case Opcode.movz: RewriteMovz(); break;
+                case Opcode.mrs: RewriteMrs(); break;
+                case Opcode.msr: RewriteMsr(); break;
                 case Opcode.mul: RewriteMaybeSimdBinary(m.IMul, "__mul_{0}"); break;
                 case Opcode.mvn: RewriteUnary(m.Comp); break;
                 case Opcode.nop: m.Nop(); break;
@@ -170,6 +175,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.smaddl: RewriteMaddl(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.smax: RewriteSmax(); break;
                 case Opcode.smaxv: RewriteSmaxv(); break;
+                case Opcode.smc: RewriteSmc(); break;
                 case Opcode.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.st1: RewriteStN("__st1"); break;
                 case Opcode.st2: RewriteStN("__st2"); break;
@@ -184,6 +190,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.sturh: RewriteStr(PrimitiveType.Word16); break;
                 case Opcode.sub: RewriteBinary(m.ISub); break;
                 case Opcode.subs: RewriteBinary(m.ISub, NZCV); break;
+                case Opcode.svc: RewriteSvc(); break;
                 case Opcode.sxtb: RewriteUSxt(Domain.SignedInt, 8); break;
                 case Opcode.sxth: RewriteUSxt(Domain.SignedInt, 16); break;
                 case Opcode.sxtl: RewriteSimdUnary("__sxtl_{0}", Domain.SignedInt); break;
