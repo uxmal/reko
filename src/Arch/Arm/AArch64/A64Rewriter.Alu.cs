@@ -126,6 +126,19 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, host.PseudoProcedure("__bfm", dst.DataType, src1, src2, src3));
         }
 
+        private void RewriteCcmn()
+        {
+            var nzcv = NZCV();
+            var tmp = binder.CreateTemporary(PrimitiveType.Bool);
+            var cond = Invert(((ConditionOperand) instr.ops[3]).Condition);
+            m.Assign(tmp, this.TestCond(cond));
+            m.Assign(nzcv, RewriteOp(instr.ops[2]));
+            m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
+            var left = RewriteOp(instr.ops[0]);
+            var right = RewriteOp(instr.ops[1]);
+            m.Assign(nzcv, m.Cond(m.IAdd(left, right)));
+        }
+
         private void RewriteCcmp()
         {
             var nzcv = NZCV();

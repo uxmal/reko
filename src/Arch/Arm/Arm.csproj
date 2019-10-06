@@ -77,12 +77,14 @@
     <Compile Include="AArch32\BarrierOperand.cs" />
     <Compile Include="AArch32\T32Disassembler.Decoder.cs" />
     <Compile Include="AArch64.cs" />
+    <Compile Include="AArch64\A64Rewriter.System.cs" />
     <Compile Include="AArch64\A64Rewriter.Vector.cs" />
     <Compile Include="AArch64\AArch64Disassembler.cs" />
     <Compile Include="AArch64\AArch64Disassembler.Decoders.cs" />
     <Compile Include="AArch64\AArch64Instruction.cs" />
     <Compile Include="AArch64\Arm64State.cs" />
     <Compile Include="AArch64\A64Rewriter.Fpu.cs" />
+    <Compile Include="AArch64\BarrierOperand.cs" />
     <Compile Include="AArch64\ConditionOperand.cs" />
     <Compile Include="AArch64\FlagM.cs" />
     <Compile Include="AArch64\MemoryOperand.cs" />

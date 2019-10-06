@@ -1234,6 +1234,14 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
+        private static Bitfield barrierField = new Bitfield(8, 4);
+        private static bool Barrier(uint uInstr, AArch64Disassembler dasm)
+        {
+            var barrierType = new BarrierOperand((BarrierOption)barrierField.Read(uInstr));
+            dasm.state.ops.Add(barrierType);
+            return true;
+        }
+
         private static Mutator<AArch64Disassembler> x(string message)
         {
             return (u, d) =>
@@ -1372,21 +1380,17 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 var uSysreg = Bitfield.ReadFields(bitfields, u);
-                if (!sysregisters.TryGetValue(uSysreg, out var sreg))
+                if (!Registers.SystemRegisters.TryGetValue(uSysreg, out var sreg))
                 {
                     var sregName = "sysreg" + string.Join("_", bitfields.Select(bf => bf.Read(u)));
                     Debug.Print("AArch64Dis: unknown system register {0} {1:X}", sregName, uSysreg);
                     sreg = RegisterStorage.Sysreg(sregName, (int)uSysreg, w64);
-                    //$BUG: race condition: modifying global state.
-                    sysregisters[uSysreg] = sreg;
                 }
                 d.state.ops.Add(new RegisterOperand(sreg));
                 return true;
             };
         }
 
-        private static Dictionary<uint, RegisterStorage> sysregisters;
-        
         private static PrimitiveType i8 => PrimitiveType.SByte;
         private static PrimitiveType i16 => PrimitiveType.Int16;
         private static PrimitiveType i32 => PrimitiveType.Int32;
@@ -1545,7 +1549,7 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder LdStRegUImm;
             {
-                LdStRegUImm = Mask(Bf((30,2), (26,1), (22,2)), // size V opc
+                LdStRegUImm = Mask(Bf((30,2), (26,1), (22,2)), "Load/store register (unsigned immediate)",
                     Instr(Opcode.strb, W_0, Mo(i8,5, 10,12)),
                     Instr(Opcode.ldrb, W_0, Mo(i8,5, 10,12)),
                     Instr(Opcode.ldrsb, X_0, Mo(i8,5, 10,12)),
@@ -1578,7 +1582,7 @@ namespace Reko.Arch.Arm.AArch64
                     // 11 0 00
                     Instr(Opcode.str, X_0, Mo(w64, 5, 10, 12)),
                     Instr(Opcode.ldr, X_0, Mo(w64, 5, 10, 12)),
-                    Instr(Opcode.prfm, x("*")),
+                    Instr(Opcode.prfm, U(0,5, w8), Mo(w64, 5, 10, 12)),
                     invalid,
                     // 11 1 00
                     Instr(Opcode.str, D(0,5), Mo(w64, 5, 10, 12)),
@@ -1630,7 +1634,7 @@ namespace Reko.Arch.Arm.AArch64
                         // LoadStoreRegisterRegOff sz:V:opc=11 0 00
                         Instr(Opcode.str, X_0,Mr(w64)),
                         Instr(Opcode.ldr, X_0,Mr(w64)),
-                        Instr(Opcode.prfm, x("register")),
+                        Instr(Opcode.prfm, U(0,5, w8), Mr(w64)),
                         invalid,
 
                         // LoadStoreRegisterRegOff sz:V:opc=11 1 00
@@ -1775,7 +1779,7 @@ namespace Reko.Arch.Arm.AArch64
                     // LdStRegUnscaledImm size=11 V=0 opc=00
                     Instr(Opcode.stur, X_0, Mu(w64,5,12,9)),
                     Instr(Opcode.ldur, X_0, Mu(w64,5,12,9)),
-                    Instr(Opcode.prfm, x("unscaled offset")),
+                    Instr(Opcode.prfm, U(0,5, w8), Mu(w64, 5, 12, 9)),
                     invalid,
 
                     // LdStRegUnscaledImm size=11 V=0 opc=00
@@ -1883,7 +1887,7 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Opcode.ldr, D(0,5), Mlit(w64)),
                         Instr(Opcode.ldrsw, X_0, Mlit(i32)),
                         Instr(Opcode.ldr, Q(0,5), Mlit(w128)),
-                        Instr(Opcode.prfm, U(0,5,PrimitiveType.Byte),Mlit(w32)),
+                        Instr(Opcode.prfm, U(0,5, w8),Mlit(w32)),
                         invalid);
                 }
 
@@ -2087,7 +2091,7 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 111110"),
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 111111"));
 
-                LoadsAndStores = Mask(31, 1, "LoadsAndStores",
+                LoadsAndStores = Mask(31, 1, "Loads and stores",
                     Mask(28, 2, "LdSt op0 = 0",          // op0 = 0 
                         Mask(26, 1, "LdSt op0 = 0, op1:00",      // op0 = 0 op1 = 0
                             Mask(23, 2, "LdSt op0=0 op1=00 op2=0",  // op0 = 0 op1 = 00 op2 = 0
@@ -2129,7 +2133,7 @@ namespace Reko.Arch.Arm.AArch64
                                     LdStRegisterRegOff,
                                     Nyi("*LoadStoreRegister PAC"))),
                             LdStRegUImm)),
-                    Mask(28, 2,          // op0 = 1 
+                    Mask(28, 2, "  op0=1 op1",
                         Mask(26, 1, "LdSt op0=1 op1=00 op2=?",
                             Mask(23, 2, "LdSt op0=1 op1=00 op2=0 op3=??",
                                 LoadStoreExclusive,
@@ -2147,7 +2151,7 @@ namespace Reko.Arch.Arm.AArch64
                             LdStRegPairPost,
                             LdStRegPairOffset,
                             LdStRegPairPre),
-                        Mask(24, 1,      // op1 = 3, high bit of op3
+                        Mask(24, 1,  "  op1=11 op3=?x", 
                             Mask(21, 1,     // high bit of op4
                                 Mask(10, 2, // LoadsAndStores op1 = 3, op3 = 0x, op4=0xxxx
                                     LdStRegUnscaledImm,
@@ -2397,9 +2401,9 @@ namespace Reko.Arch.Arm.AArch64
                             Select((0, 5), Is31, Nyi("clrex"), invalid),
                             invalid,
 
-                            Select((0, 5), Is31, Instr(Opcode.dsb, U(8, 4, PrimitiveType.Byte)), invalid), //$TODO: use barrier options
-                            Select((0, 5), Is31, Instr(Opcode.dmb, U(8, 4, PrimitiveType.Byte)), invalid), //$TODO: use barrier options
-                            Select((0, 5), Is31, Instr(Opcode.isb, U(8, 4, PrimitiveType.Byte)), invalid),//$TODO: only 0b1111 = SY barrier allowed
+                            Select((0, 5), Is31, Instr(Opcode.dsb, Barrier), invalid), //$TODO: use barrier options
+                            Select((0, 5), Is31, Instr(Opcode.dmb, Barrier), invalid), //$TODO: use barrier options
+                            Select((0, 5), Is31, Instr(Opcode.isb, Barrier), invalid),//$TODO: only 0b1111 = SY barrier allowed
                             invalid),
 
                         Select((0, 5), Is31, msr_imm, Nyi("System L:op0 = 0b000 op1=0b011 crN=0100 Rt!=11111")),
@@ -2656,15 +2660,15 @@ namespace Reko.Arch.Arm.AArch64
             }
             Decoder ConditionalCompareImm;
             {
-                ConditionalCompareImm = Select(Bf((10, 1), (4, 1)), n => n != 0,
+                ConditionalCompareImm = Select(Bf((10, 1), (4, 1)), n => n != 0, "Conditional compare (immediate)",
                     invalid,
                     Mask(29, 3,
                         invalid,
-                        Instr(Opcode.ccmn, x("* 32=bit")),
+                        Instr(Opcode.ccmn, W_5, I(16,5,w32), U(0,4,w8), C(12,4)),
                         invalid,
                         Instr(Opcode.ccmp, W_5, I(16,5,w32), U(0,4,w8), C(12,4)),
                         invalid,
-                        Instr(Opcode.ccmn, x("* - 64-bit")),
+                        Instr(Opcode.ccmn, X_5, I(16,5,w64), U(0,4,w8), C(12,4)),
                         invalid,
                         Instr(Opcode.ccmp, X_5, I(16,5,w64), U(0,4,w8), C(12,4))));
             }
@@ -4036,11 +4040,6 @@ namespace Reko.Arch.Arm.AArch64
                 LoadsAndStores,
                 DataProcessingScalarFpAdvancedSimd);
 
-            sysregisters = new[]
-            {
-                (0b11_000_0001_0000_001u, "actlr_el1", w64),
-                (0b11_000_1101_0000_100u, "tpidr_el1", w64),
-            }.ToDictionary(sr => sr.Item1, sr => RegisterStorage.Sysreg(sr.Item2, (int)sr.Item1, sr.Item3));
         }
     }
 }

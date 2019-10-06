@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -58,7 +58,7 @@ namespace Reko.Arch.Arm.AArch64
                 var off = Offset.ToInt32();
                 if (off < 0)
                 {
-                    writer.WriteFormat("-#&{0:X}", -off);
+                    writer.WriteFormat("#-&{0:X}", -off);
                 }
                 else
                 {

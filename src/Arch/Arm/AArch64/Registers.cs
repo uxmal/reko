@@ -50,6 +50,8 @@ namespace Reko.Arch.Arm.AArch64
         public static readonly RegisterStorage fpcr;
         public static readonly RegisterStorage fpsr;
 
+        public static readonly Dictionary<uint, RegisterStorage> SystemRegisters;
+
         public static readonly Dictionary<string, RegisterStorage> ByName;
         public static readonly RegisterStorage[][] SubRegisters;
 
@@ -99,6 +101,47 @@ namespace Reko.Arch.Arm.AArch64
             pstate = stg.Reg32("pstate");
             fpcr = stg.Reg32("fpcr");
             fpsr = stg.Reg32("fpsr");
+
+            var sys = new StorageFactory(StorageDomain.SystemRegister);
+            SystemRegisters = new[] {
+                (0b11_000_0001_0000_001u, sys.Reg64("ACTLR_EL1")),
+                (0b11_000_1101_0000_100u, sys.Reg64("TPIDR_EL1")),
+                (0b11_011_1110_0000_000u, sys.Reg32("CNTFRQ_EL0")),
+                (0b11_000_1110_0001_000u, sys.Reg32("CNTKCTL_EL1")),
+                (0b11_101_1110_0001_000u, sys.Reg32("CNTKCTL_EL12")),
+                (0b11_011_1110_0010_001u, sys.Reg32("CNTP_CTL_EL0")),
+                (0b11_101_1110_0010_001u, sys.Reg32("CNTP_CTL_EL02")),
+                (0b11_011_1110_0010_010u, sys.Reg64("CNTP_CVAL_EL0")),
+                (0b11_101_1110_0010_010u, sys.Reg64("CNTP_CVAL_EL02")),
+                (0b11_011_1110_0010_000u, sys.Reg32("CNTP_TVAL_EL0")),
+                (0b11_101_1110_0010_000u, sys.Reg32("CNTP_TVAL_EL02")),
+                (0b11_011_1110_0000_001u, sys.Reg64("CNTPCT_EL0")),
+                (0b11_011_1110_0011_001u, sys.Reg32("CNTV_CTL_EL0")),
+                (0b11_101_1110_0011_001u, sys.Reg32("CNTV_CTL_EL02")),
+                (0b11_011_1110_0011_010u, sys.Reg64("CNTV_CVAL_EL0")),
+                (0b11_101_1110_0011_010u, sys.Reg64("CNTV_CVAL_EL02")),
+                (0b11_011_1110_0011_000u, sys.Reg32("CNTV_TVAL_EL0")),
+                (0b11_101_1110_0011_000u, sys.Reg32("CNTV_TVAL_EL02")),
+                (0b11_011_1110_0000_010u, sys.Reg64("CNTVCT_EL0")),
+
+                (0b11_100_1110_0000_011u, sys.Reg64("CNTVOFF_EL2")),
+                (0b11_011_0000_0000_001u, sys.Reg32("CTR_EL0")),
+                (0b11_000_0100_0010_010u, sys.Reg32("CurrentEL")),
+                (0b11_011_0100_0010_001u, sys.Reg32("DAIF")),
+
+                (0b11_011_0000_0000_111u, sys.Reg32("DCZID_EL0")),
+                (0b11_000_0001_0000_000u, sys.Reg32("SCTLR_EL1")),
+                (0b11_101_0001_0000_000u, sys.Reg32("SCTLR_EL12")),
+                (0b11_100_0001_0000_000u, sys.Reg32("SCTLR_EL2")),
+                (0b11_110_0001_0000_000u, sys.Reg32("SCTLR_EL3")),
+                (0b11_000_0010_0000_010u, sys.Reg64("TCR_EL1")),
+                (0b11_101_0010_0000_010u, sys.Reg64("TCR_EL12")),
+                (0b11_100_0010_0000_010u, sys.Reg64("TCR_EL2")),
+                (0b11_110_0010_0000_010u, sys.Reg32("TCR_EL3")),
+                (0b11_000_0010_0000_000u, sys.Reg64("TTBR0_EL1")),
+                (0b11_101_0010_0000_000u, sys.Reg64("TTBR0_EL12")),
+                (0b11_100_0010_0000_000u, sys.Reg64("TTBR0_EL2")),
+            }.ToDictionary(sr => sr.Item1, sr => sr.Item2);
 
             ByName = GpRegs64
                 .Concat(GpRegs32)
