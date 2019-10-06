@@ -1849,12 +1849,12 @@ namespace Reko.UnitTests.Arch.Arm
         public void A64Rw_ccmp_reg()
         {
             Given_Instruction(0x7A42D020);
-            AssertCode(     // ccmp\tw1,w5,#0,LE
+            AssertCode(     // ccmp\tw1,w2,#0,LE
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v3 = Test(GT,NZV)",
                 "2|L--|NZCV = 0x00",
                 "3|T--|if (v3) branch 00100004",
-                "4|L--|NZCV = cond(w1 - w5)");
+                "4|L--|NZCV = cond(w1 - w2)");
         }
 
         [Test]

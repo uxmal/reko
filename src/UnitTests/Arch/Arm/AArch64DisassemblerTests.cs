@@ -1264,7 +1264,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_ccmp_reg()
         {
             Given_Instruction(0x7A42D020);
-            Expect_Code("ccmp\tw1,w5,#0,LE");
+            Expect_Code("ccmp\tw1,w2,#0,LE");
         }
 
         [Test]
@@ -1617,6 +1617,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x3A4D09C0);
             Expect_Code("ccmn\tw14,#&D,#0,EQ");
+        }
+
+        [Test]
+        public void AArch64Dis_ccmp_reg2()
+        {
+            Given_Instruction(0xFA482002);
+            Expect_Code("ccmp\tx0,x8,#2,HS");
         }
 
         /*
