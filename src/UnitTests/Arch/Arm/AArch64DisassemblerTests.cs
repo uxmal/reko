@@ -1264,7 +1264,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_ccmp_reg()
         {
             Given_Instruction(0x7A42D020);
-            Expect_Code("ccmp\tw1,w5,#0,LE");
+            Expect_Code("ccmp\tw1,w2,#0,LE");
         }
 
         [Test]
