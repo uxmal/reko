@@ -1619,6 +1619,13 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ccmn\tw14,#&D,#0,EQ");
         }
 
+        [Test]
+        public void AArch64Dis_ccmp_reg2()
+        {
+            Given_Instruction(0xFA482002);
+            Expect_Code("ccmp\tx0,x8,#2,HS");
+        }
+
         /*
          * //$BORED: amuse yourself by making these tests pass.
         [Test]

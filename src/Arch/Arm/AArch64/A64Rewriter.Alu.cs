@@ -474,16 +474,16 @@ namespace Reko.Arch.Arm.AArch64
         private void RewritePrfm()
         {
             var imm = ((ImmediateOperand)instr.ops[0]).Value;
-            var eMem = RewriteOp(instr.ops[1]);
             Expression ea;
-            if (eMem is Address addr)
+            if (instr.ops[1] is AddressOperand aOp)
             {
-                ea = addr;
+                ea = aOp.Address;
             }
-            else if (eMem is MemoryAccess mem)
+            else if (instr.ops[1] is MemoryOperand mem)
             {
-                ea = mem.EffectiveAddress;
-            } else
+                (ea, _) = RewriteEffectiveAddress(mem);
+            }
+            else
                 throw new AddressCorrelatedException(instr.Address, "Expected an address as the second operand of prfm.");
             m.SideEffect(host.PseudoProcedure("__prfm", VoidType.Instance, imm, ea));
         }
