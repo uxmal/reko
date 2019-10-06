@@ -2642,18 +2642,17 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder ConditionalCompareReg;
             {
-                ConditionalCompareReg = Mask(Bf((10,1),(4,1)),   // o2:o3
+                ConditionalCompareReg = Mask(Bf((10,1),(4,1)), "Conditional compare (register)",  // o2:o3
                     Mask(29, 3,
                         invalid,
-                        Nyi("ConditionalCompareReg sf:op:S=001"),
+                        Instr(Opcode.ccmn, W_5,W_16,U(0,4,w8),C(12,4)),
                         invalid,
-                        Mask(31, 1,
-                            Instr(Opcode.ccmp, W_5,W(15,5),U(0,4,w8),C(12,4)),
-                            Instr(Opcode.ccmp, X_5,X(15,5),U(0,4,w8),C(12,4))),
+                        Instr(Opcode.ccmp, W_5,W_16,U(0,4,w8),C(12,4)),
+
                         invalid,
-                        Nyi("ConditionalCompareReg sf:op:S=101"),
+                        Instr(Opcode.ccmn, X_5,X_16,U(0,4,w8),C(12,4)),
                         invalid,
-                        Nyi("ConditionalCompareReg sf:op:S=111")),
+                        Instr(Opcode.ccmp, X_5,X_16,U(0,4,w8),C(12,4))),
                     invalid,
                     invalid,
                     invalid);
@@ -2797,7 +2796,7 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder DataProcessingReg;
             {
-                DataProcessingReg =  Mask(28, 1,         // op1
+                DataProcessingReg =  Mask(28, 1, "Data processing - register",        // op1
                     Mask(21, 4,           //op1=0 op2
                         LogicalShiftedRegister,
                         LogicalShiftedRegister,
@@ -4039,7 +4038,6 @@ namespace Reko.Arch.Arm.AArch64
                 DataProcessingReg,
                 LoadsAndStores,
                 DataProcessingScalarFpAdvancedSimd);
-
         }
     }
 }

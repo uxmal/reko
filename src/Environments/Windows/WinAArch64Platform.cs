@@ -31,18 +31,26 @@ namespace Reko.Environments.Windows
 {
     public class WinAArch64Platform : Platform
     {
+        private RegisterStorage framePointer;
+        private RegisterStorage linkRegister;
+
         public WinAArch64Platform(IServiceProvider services, IProcessorArchitecture arch) :
             base(services, arch, "winArm64")
         {
+            this.framePointer = arch.GetRegister("x29");
+            this.linkRegister = arch.GetRegister("x30");
         }
 
         public override string DefaultCallingConvention => "";
 
 
-
+        // https://docs.microsoft.com/en-us/cpp/build/arm64-windows-abi-conventions?view=vs-2019
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>
+            {
+                framePointer, linkRegister
+            };
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
