@@ -337,7 +337,7 @@ namespace Reko.Analysis
 
         public BitRange VisitConditionalExpression(ConditionalExpression c)
         {
-            throw new NotImplementedException();
+            return c.Condition.Accept(this);
         }
 
         public BitRange VisitConditionOf(ConditionOf cof)
