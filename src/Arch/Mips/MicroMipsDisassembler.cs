@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -80,6 +81,8 @@ namespace Reko.Arch.Mips
             return base.NotYetImplemented(wInstr, message);
         }
 
+        // Factory methods for decoders
+
         private static Decoder Instr(Opcode opcode, params Mutator<MicroMipsDisassembler> [] mutators)
         {
             return new InstrDecoder(InstrClass.Linear, opcode, mutators);
@@ -89,6 +92,15 @@ namespace Reko.Arch.Mips
         {
             return new InstrDecoder(iclass, opcode, mutators);
         }
+
+        //
+        private static Decoder Low16(Decoder decoder)
+        {
+            return new ReadLow16Decoder(decoder);
+        }
+
+        /// 
+        /// 
 
         private static Decoder Nyi(string message)
         {
@@ -129,26 +141,186 @@ namespace Reko.Arch.Mips
             }
         }
 
+        private class ReadLow16Decoder : Decoder
+        {
+            private readonly Decoder decoder;
+
+            public ReadLow16Decoder(Decoder decoder)
+            {
+                this.decoder = decoder;
+            }
+
+            public override MipsInstruction Decode(uint wInstr, MicroMipsDisassembler dasm)
+            {
+                if (!dasm.rdr.TryReadUInt16(out ushort uLow16Bits))
+                    return dasm.CreateInvalidInstruction();
+                uint uInstrNew = (wInstr << 16) | uLow16Bits;
+                return decoder.Decode(uInstrNew, dasm);
+            }
+        }
+
         private static readonly int[] threeBitRegisterEncodings = new int[8] { 16, 17, 2, 3, 4, 5, 6, 7 };
+        private static readonly int[] threeBitRegisterEncodingsWithZero = new int[8] { 0, 17, 2, 3, 4, 5, 6, 7 };
         private static readonly int[] encodedByteOffsets = new int[16] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -1 };
 
+        // R - 5-bit register encoding.
+        private static Mutator<MicroMipsDisassembler> R(int bitpos)
+        {
+            var field = new Bitfield(bitpos, 5);
+            return (u, d) =>
+            {
+                var iReg = (int)field.Read(u);
+                d.ops.Add(new RegisterOperand(d.arch.GetRegister(iReg)));
+                return true;
+            };
+        }
+        private static readonly Mutator<MicroMipsDisassembler> R16 = R(16);
+        private static readonly Mutator<MicroMipsDisassembler> R21 = R(21);
+
         // r - 3-bit register encoding.
-        private static Mutator<MicroMipsDisassembler> r(int bitpos)
+        private static Mutator<MicroMipsDisassembler> r(int bitpos, int [] encoding)
         {
             var field = new Bitfield(bitpos, 3);
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                var iReg32 = threeBitRegisterEncodings[iReg];
+                var iReg32 = encoding[iReg];
                 d.ops.Add(new RegisterOperand(d.arch.GetRegister(iReg32)));
                 return true;
             };
         }
 
-        private static readonly Mutator<MicroMipsDisassembler> r7 = r(7);
+        private static readonly Mutator<MicroMipsDisassembler> r7 = r(7, threeBitRegisterEncodings);
+        private static readonly Mutator<MicroMipsDisassembler> rz7 = r(7, threeBitRegisterEncodingsWithZero);
 
-        // m - memory access: base + offset
-        private static Mutator<MicroMipsDisassembler> m(PrimitiveType dt, int [] encodedOffsets)
+        // F - 5-bit floating point register encoding.
+        private static Mutator<MicroMipsDisassembler> F(int bitpos)
+        {
+            var field = new Bitfield(bitpos, 5);
+            return (u, d) =>
+            {
+                var iReg = (int) field.Read(u);
+                d.ops.Add(new RegisterOperand(d.arch.fpuRegs[iReg]));
+                return true;
+            };
+        }
+        private static readonly Mutator<MicroMipsDisassembler> F21 = F(21);
+
+
+        // SI - signed immediate
+        private static Mutator<MicroMipsDisassembler> SI(int bitPos, int length)
+        {
+            var field = new Bitfield(bitPos, length);
+            return (u, d) =>
+            {
+                var i = field.ReadSigned(u);
+                var imm = new ImmediateOperand(Constant.Create(d.arch.WordWidth, i));
+                d.ops.Add(imm);
+                return true;
+            };
+        }
+        private static readonly Mutator<MicroMipsDisassembler> SI16 = SI(0, 16);
+
+        // UI - unsigned immediate
+        private static Mutator<MicroMipsDisassembler> UI(int bitPos, int length)
+        {
+            var field = new Bitfield(bitPos, length);
+            return (u, d) =>
+            {
+                var i = field.Read(u);
+                var imm = new ImmediateOperand(Constant.Create(d.arch.WordWidth, i));
+                d.ops.Add(imm);
+                return true;
+            };
+        }
+        private static readonly Mutator<MicroMipsDisassembler> UI16 = UI(0, 16);
+
+        // UIs - unsigned immediate, then shifted left.
+        private static Mutator<MicroMipsDisassembler> UIs(int bitPos, int length, int shift)
+        {
+            var field = new Bitfield(bitPos, length);
+            return (u, d) =>
+            {
+                var i = field.Read(u) << shift;
+                var imm = new ImmediateOperand(Constant.Create(d.arch.WordWidth, i));
+                d.ops.Add(imm);
+                return true;
+            };
+        }
+        private static readonly Mutator<MicroMipsDisassembler> UIs5_sh2 = UIs(5, 5, 2);
+
+        // pcRel - short PC-relative
+        private static Mutator<MicroMipsDisassembler> pcRel(int bitLength)
+        {
+            var field = new Bitfield(0, bitLength);
+            return (u, d) =>
+            {
+                var offset = field.ReadSigned(u);
+                offset <<= 1;
+                var addrDst = d.rdr.Address + offset;
+                d.ops.Add(AddressOperand.Create(addrDst));
+                return true;
+            };
+        }
+        private static readonly Mutator<MicroMipsDisassembler> pcRel7 = pcRel(7);
+        private static readonly Mutator<MicroMipsDisassembler> pcRel10 = pcRel(10);
+        private static readonly Mutator<MicroMipsDisassembler> pcRel26 = pcRel(26);
+
+        // Ms - memory access: base + offset with 5-bit register encodings; offset scaled
+        private static Bitfield baseField = new Bitfield(16, 5);
+        private static Bitfield offsetField = new Bitfield(0, 16);
+
+        private static Mutator<MicroMipsDisassembler> Ms(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var iBase = (int) baseField.Read(u);
+                var baseReg =  d.arch.GetRegister(iBase);
+
+                var offset = offsetField.ReadSigned(u) * dt.Size;
+                var mop = new IndirectOperand(dt, offset, baseReg);
+                d.ops.Add(mop);
+                return true;
+            };
+        }
+        private static readonly Mutator<MicroMipsDisassembler> Mb = Ms(PrimitiveType.Byte);
+        private static readonly Mutator<MicroMipsDisassembler> Mh = Ms(PrimitiveType.Word16);
+
+        // M - memory access: base + offset with 5-bit register encodings
+
+        private static Mutator<MicroMipsDisassembler> M(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var iBase = (int) baseField.Read(u);
+                var baseReg = d.arch.GetRegister(iBase);
+                var offset = offsetField.ReadSigned(u);
+                var mop = new IndirectOperand(dt, offset, baseReg);
+                d.ops.Add(mop);
+                return true;
+            };
+        }
+        private static readonly Mutator<MicroMipsDisassembler> Mw = M(PrimitiveType.Word32);
+        private static readonly Mutator<MicroMipsDisassembler> Mq = M(PrimitiveType.Word64);
+        private static readonly Mutator<MicroMipsDisassembler> Md = M(PrimitiveType.Real64);
+
+        private static readonly Bitfield baseField16 = new Bitfield(4, 3);
+        private static readonly Bitfield offsetField16 = new Bitfield(0, 4);
+
+        // m - memory access: base + offset with 3-bit register encoding
+        private static bool mb(uint uInstr, MicroMipsDisassembler dasm)
+        {
+            var encodedBase = baseField16.Read(uInstr);
+            var iBase = threeBitRegisterEncodings[encodedBase];
+            var baseReg = dasm.arch.GetRegister(iBase);
+            var encOffset = offsetField16.Read(uInstr);
+            var offset = encodedByteOffsets[encOffset];
+            var mop = new IndirectOperand(PrimitiveType.Byte, offset, baseReg);
+            dasm.ops.Add(mop);
+            return true;
+        }
+
+        private static Mutator<MicroMipsDisassembler> m(PrimitiveType dt)
         {
             var baseField = new Bitfield(4, 3);
             var offsetField = new Bitfield(0, 4);
@@ -157,33 +329,194 @@ namespace Reko.Arch.Mips
                 var iBase = baseField.Read(u);
                 var iBase32 = threeBitRegisterEncodings[iBase];
                 var baseReg = d.arch.GetRegister(iBase32);
-                var encOffset = offsetField.Read(u);
-                var offset = encodedOffsets[encOffset];
+                var offset = offsetField.ReadSigned(u) * dt.Size;
                 var mop = new IndirectOperand(dt, offset, baseReg);
                 d.ops.Add(mop);
                 return true;
             };
         }
-        private static readonly Mutator<MicroMipsDisassembler> mb = m(PrimitiveType.Byte, encodedByteOffsets);
+        private static readonly Mutator<MicroMipsDisassembler> mw = m(PrimitiveType.Word32);
+
+        private static bool Is64Bit(uint uInstr, MicroMipsDisassembler dasm)
+        {
+            return dasm.arch.WordWidth.BitSize == 64;
+        }
 
         static MicroMipsDisassembler()
         {
             var invalid = Instr(Opcode.illegal, InstrClass.Invalid);
 
+            var pool16a = Nyi("pool16a");
+            var pool16b = Nyi("pool16b");
+            var pool16c = Mask(0, 6, "POOL16c",
+                Nyi("not16"),
+                Nyi("and16"),
+                Nyi("lwm16"),
+                Nyi("jrc16"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+
+                Nyi("xor16"),
+                Nyi("or16"),
+                Nyi("swm16"),
+                Nyi("jalrc16"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                
+                // 10
+                Nyi("not16"),
+                Nyi("and16"),
+                Nyi("lwm16"),
+                Instr(Opcode.jrcaddiusp, UIs5_sh2),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+
+                Nyi("xor16"),
+                Nyi("or16"),
+                Nyi("swm16"),
+                Nyi("break16"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+
+                // 20
+                Nyi("not16"),
+                Nyi("and16"),
+                Nyi("lwm16"),
+                Nyi("jrc16"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+
+                Nyi("xor16"),
+                Nyi("or16"),
+                Nyi("swm16"),
+                Nyi("jalrc16"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+
+                // 30
+                Nyi("not16"),
+                Nyi("and16"),
+                Nyi("lwm16"),
+                Instr(Opcode.jrcaddiusp, UIs5_sh2),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+
+                Nyi("xor16"),
+                Nyi("or16"),
+                Nyi("swm16"),
+                Nyi("sdbbp16"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"),
+                Nyi("movep"));
+
+            var pool16d = Nyi("pool16d");
+
+            var pool16e = Mask(0, 1,
+                Nyi("addiur2"),
+                Instr(Opcode.addiur1sp, r7,UIs(1, 6, 2)));
+
+            var pool16f = Mask(0, 1,
+                invalid,
+                invalid);
+
+            var pool32a = Nyi("pool32a");
+
+            var pool32b = Mask(15, 4, "POOL32B",
+                Nyi("lwc2"),
+                Nyi("lwp"),
+                Nyi("ldc2"),
+                invalid,
+
+                Nyi("ldp"),
+                Nyi("lwm32"),
+                Nyi("cache"),
+                Nyi("ldm"),
+
+                Nyi("swc2"),
+                Nyi("swp"),
+                Nyi("sdc2"),
+                invalid,
+
+                Nyi("sdp"),
+                Nyi("swm32"),
+                invalid,
+                Nyi("sdm"));
+
+            var pool32c = Nyi("pool32c");
+            var pool32f = Nyi("pool32f");
+
+            var pool32i = Mask(21, 5, "POOL32i",
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                Nyi("bc1eqz"),
+                Nyi("bc1nezc"),
+                Nyi("bc2eqzc"),
+                Nyi("bc2nezc"),
+
+                Nyi("synci"),
+                invalid,
+                invalid,
+                invalid,
+
+                Nyi("dati"),
+                Nyi("dahi"),
+                Nyi("bnz.v"),
+                Nyi("bz.v"),
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid);
+
+            var pool32s = Nyi("pool32s");
+
             rootDecoder = Mask(10, 6,
-                Nyi("pool32a"),
-                Nyi("pool16a"),
+                pool32a,
+                pool16a,
                 Instr(Opcode.lbu16, r7, mb),
                 Nyi("move16 "),
 
-                Nyi("aui / lui"),
-                Nyi("lbu32"),
-                Nyi("sb32"),
+                Low16(Instr(Opcode.aui, R21, R16, SI16)),
+                Low16(Instr(Opcode.lbu32, R21, Mb)),
+                Low16(Instr(Opcode.sb32, R21, Mb)),
                 Nyi("lb32"),
 
                 // 
-                Nyi("pool32b"),
-                Nyi("pool16b"),
+                Low16(pool32b),
+                pool16b,
                 Nyi("lhu16"),
                 Nyi("andi16"),
 
@@ -193,69 +526,69 @@ namespace Reko.Arch.Mips
                 Nyi("lh32"),
 
                 // 10
-                Nyi("pool32i"),
-                Nyi("pool16c"),
+                Low16(pool32i),
+                pool16c,
                 Nyi("lwsp16"),
-                Nyi("pool16d"),
+                pool16d,
 
-                Nyi("ori32"),
-                Nyi("pool32f"),
-                Nyi("pool32s"),
+                Low16(Instr(Opcode.ori32, R21, R16, UI16)),
+                pool32f,
+                pool32s,
                 Nyi("daddiu32"),
 
                 //
-                Nyi("pool32c"),
+                pool32c,
                 Nyi("lwgp"),
                 Nyi("lw16"),
-                Nyi("pool16e"),
+                pool16e,
 
-                Nyi("xori32"),
+                Low16(Instr(Opcode.xori32, R21, R16, UI16)),
                 Nyi("bovc /beqzalc /beqc"),
                 Nyi("addiupc /auipc / aluipc / ldpc /lwpc / lwupc"),
                 Nyi("bnvc /bnezalc /bnec"),
-                
+
                 // 20
                 Nyi("beqzc/jic"),
-                Nyi("pool16f"),
+                pool16f,
                 Nyi("sb16"),
                 Nyi("beqzc16"),
 
                 Nyi("slti32"),
-                Nyi("bc"),
+                Low16(Instr(Opcode.bc, pcRel26)),
                 Nyi("swc132"),
                 Nyi("lwc132"),
 
                 //
-                Nyi("bnezc/jialc"),
+                Instr(Opcode.bnezc16, r7, pcRel7),
                 invalid,
-                Nyi("sh16"),
+                Instr(Opcode.sh16, rz7, Mh),
                 Nyi("bnezc16"),
 
                 Nyi("sltiu32"),
                 Nyi("balc"),
-                Nyi("sdc132"),
-                Nyi("ldc132"),
+                Low16(Instr(Opcode.sdc132,F21,Md)),
+                Low16(Instr(Opcode.ldc132,F21,Md)),
 
                 // 30
 
                 Nyi("blezalc/bgezalc/bgeuc"),
                 invalid,
                 Nyi("swsp16"),
-                Nyi("bc16"),
+                Instr(Opcode.bc16, InstrClass.Transfer, pcRel10),
 
-                Nyi("andi32"),
+                Low16(Instr(Opcode.andi32, R21,R16,UI16)),
                 Nyi("bgtzc /bltzc /bltc"),
-                Nyi("sd32 - 64bit"),
-                Nyi("ld32 - 64bit "),
+                Low16(Instr(Opcode.sd32, Is64Bit, R21,Mq)),
+                Low16(Instr(Opcode.ld32, Is64Bit, R21,Mq)),
 
                 Nyi("bgtzalc/bltzalc/bltuc"),
                 invalid,
-                Nyi("sw16"),
+                Instr(Opcode.sw16, rz7, mw),
                 Nyi("li16"),
 
                 Nyi("daui"),
                 Nyi("blezc /bgezc /bgec"),
-                Nyi("sw32"),
+                Low16(Instr(Opcode.sw32, R21,Mw)),
                 Nyi("lw32"));
         }
     }
