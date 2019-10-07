@@ -224,6 +224,39 @@ namespace Reko.Core
             return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, tag, decoderTrue, decoderFalse);
         }
 
+        /// <summary>
+        /// Creates a sparsely populated <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}"/> where 
+        /// most of the decoders are <paramref name="defaultDecoder"/>.
+        /// </summary>
+        protected static MaskDecoder<TDasm, TMnemonic, TInstr> Sparse<TDasm, TMnemonic>(
+            int bitPosition, int bits, string tag,
+            Decoder<TDasm, TMnemonic, TInstr> defaultDecoder,  
+            params (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
+            where TDasm : DisassemblerBase<TInstr>
+        {
+            var decoders = new Decoder<TDasm, TMnemonic, TInstr>[1 << bits];
+            foreach (var (code, decoder) in sparseDecoders)
+            {
+                Debug.Assert(0 <= code && code < decoders.Length);
+                Debug.Assert(decoders[code] == null);
+                decoders[code] = decoder;
+            }
+            for (int i = 0; i < decoders.Length; ++i)
+            {
+                if (decoders[i] == null)
+                    decoders[i] = defaultDecoder;
+            }
+            return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPosition, bits, tag, decoders);
+        }
+
+        protected static MaskDecoder<TDasm, TMnemonic, TInstr> Sparse<TDasm, TMnemonic>(
+            int bitPosition, int bits,
+            Decoder<TDasm, TMnemonic, TInstr> defaultDecoder,
+            params (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
+            where TDasm : DisassemblerBase<TInstr>
+        {
+            return Sparse(bitPosition, bits, "", defaultDecoder, sparseDecoders);
+        }
 
         /// <summary>
         /// Compact way of creating an array of <see cref="Bitfield"/>.
