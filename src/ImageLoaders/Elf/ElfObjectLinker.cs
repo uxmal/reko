@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -36,6 +36,7 @@ namespace Reko.ImageLoaders.Elf
         protected IProcessorArchitecture arch;
         private ElfLoader loader;
         protected byte[] rawImage;
+        protected ElfSection rekoExtfn;
 
         public ElfObjectLinker(ElfLoader loader, IProcessorArchitecture arch, byte[] rawImage)
         {
@@ -106,7 +107,7 @@ namespace Reko.ImageLoaders.Elf
                     mpToSegment.Add(section.Flags, segment);
                     Segments.Add(segment);
                 }
-                segment.p_pmemsz = Align(segment.p_pmemsz, (uint)section.Alignment);
+                segment.p_pmemsz = Align(segment.p_pmemsz, (uint) section.Alignment);
 
                 mpSectionToSegment.Add(section, segment);
                 if (section.Type != SectionHeaderType.SHT_NOBITS)
@@ -139,7 +140,7 @@ namespace Reko.ImageLoaders.Elf
                 FileOffset = 0,
                 Size = 0,
             };
-            foreach (var sym in loader.GetAllSymbols().Where(s => s.SectionIndex == 0xFFF2))
+            foreach (var sym in loader.GetAllSymbols().Where(s => s.SectionIndex == ElfSection.SHN_COMMON))
             {
                 rekoCommon.Size = Align(rekoCommon.Size, sym.Value);
                 sym.Value = (uint) rekoCommon.Size;
@@ -158,7 +159,7 @@ namespace Reko.ImageLoaders.Elf
         /// </summary>
         private void CollectUndefinedSymbolsIntoSection()
         {
-            var rekoExtfn = new ElfSection
+            this.rekoExtfn = new ElfSection
             {
                 Name = ".reko.externs",
                 Number = (uint) loader.Sections.Count,
@@ -168,13 +169,13 @@ namespace Reko.ImageLoaders.Elf
                 Size = 0,
                 Alignment = 0x10,
             };
-            foreach (var sym in loader.GetAllSymbols().Where(s => 
+            foreach (var sym in loader.GetAllSymbols().Where(s =>
                 s.Type == ElfSymbolType.STT_NOTYPE &&
                 !string.IsNullOrEmpty(s.Name)))
             {
                 rekoExtfn.Size = Align(rekoExtfn.Size, 0x10);
                 sym.Value = (uint) rekoExtfn.Size;
-                sym.SectionIndex = (uint)loader.Sections.Count;
+                sym.SectionIndex = (uint) loader.Sections.Count;
                 rekoExtfn.Size += 0x10;
             }
             if (rekoExtfn.Size > 0)
@@ -207,12 +208,12 @@ namespace Reko.ImageLoaders.Elf
             return segFlags;
         }
 
-        public SegmentMap CreateSegments(Address addrBase, Dictionary<ElfSection,Elf32_PHdr> mpSections)
+        public SegmentMap CreateSegments(Address addrBase, Dictionary<ElfSection, Elf32_PHdr> mpSections)
         {
             var addr = addrBase;
             foreach (var segment in Segments)
             {
-                segment.p_paddr = (uint)addr.ToLinear();
+                segment.p_paddr = (uint) addr.ToLinear();
                 //$REVIEW: 4096 byte alignment should be enough for everyone - Bill Gates III
                 addr = (addr + segment.p_pmemsz).Align(0x1000);
             }
@@ -227,13 +228,13 @@ namespace Reko.ImageLoaders.Elf
                 section.Address = Address.Ptr32(psegAlloc[segment]);
                 if (section.Type != SectionHeaderType.SHT_NOBITS)
                 {
-                    psegMem[segment].WriteBytes(rawImage, (uint)section.FileOffset, (uint)section.Size);
+                    psegMem[segment].WriteBytes(rawImage, (uint) section.FileOffset, (uint) section.Size);
                 }
                 else
                 {
-                    psegMem[segment].WriteBytes(0, (uint)section.Size);
+                    psegMem[segment].WriteBytes(0, (uint) section.Size);
                 }
-                psegAlloc[segment] += (uint)section.Size;
+                psegAlloc[segment] += (uint) section.Size;
             }
 
             var mpMemoryAreas = psegMem.ToDictionary(
@@ -255,15 +256,22 @@ namespace Reko.ImageLoaders.Elf
         public void LoadExternalProcedures(Dictionary<Address, ExternalProcedure> interceptedCalls)
         {
             // Find all unresolved symbols and add them as external procedures.
-            foreach (var sym in loader.GetAllSymbols().Where(s =>
-                s.Type == ElfSymbolType.STT_NOTYPE &&
-                !string.IsNullOrEmpty(s.Name)))
+            foreach (var sym in loader.GetAllSymbols().Where(IsExternalSymbol))
             {
                 var addr =
-                    loader.Sections[(int)sym.SectionIndex].Address +
+                    loader.Sections[(int) sym.SectionIndex].Address +
                     sym.Value;
-                interceptedCalls.Add(addr, new ExternalProcedure(sym.Name, null));
+                //$TODO: try guessing the signature based on the symbol name.
+                var sig = new FunctionType();
+                interceptedCalls.Add(addr, new ExternalProcedure(sym.Name, sig));
             }
+        }
+
+        private bool IsExternalSymbol(ElfSymbol s)
+        {
+            return s.Type == ElfSymbolType.STT_NOTYPE &&
+                !string.IsNullOrEmpty(s.Name) &&
+                s.SectionIndex == this.rekoExtfn.Number;
         }
     }
 }

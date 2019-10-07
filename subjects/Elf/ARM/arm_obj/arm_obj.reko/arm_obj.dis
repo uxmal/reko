@@ -1,0 +1,84 @@
+void my_using_code()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Z
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+l08048024_1:
+// DataOut: r0
+// DataOut (flags): 
+// SymbolicIn:
+
+l08048028:
+// DataOut: r0
+// DataOut (flags): 
+// SymbolicIn:
+
+l08048024_then:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+my_using_code_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+my_using_code_entry:
+// DataOut:
+// DataOut (flags): Z
+// SymbolicIn: sp:fp
+
+l08048000:
+// DataOut: r0
+// DataOut (flags): Z
+// SymbolicIn: sp:fp
+
+l08048010:
+	branch Z l08048024
+// DataOut: r0
+// DataOut (flags): Z
+// SymbolicIn: sp:fp r0:~0x00000029
+
+l08048010_1:
+// DataOut: r0
+// DataOut (flags): Z
+// SymbolicIn: sp:fp r0:~0x00000029
+
+l08048014_1:
+// DataOut: r0
+// DataOut (flags): Z
+// SymbolicIn: sp:fp r0:~0x00000029 & ~0x00000029
+
+l08048018_1:
+// DataOut: r0
+// DataOut (flags): Z
+// SymbolicIn: sp:fp r0:~0x00000029 & ~0x00000029 & (~0x00000029 & ~0x00000029)
+
+l0804801C_1:
+// DataOut: r0
+// DataOut (flags): Z
+// SymbolicIn: sp:fp r0:~0x00000029 & ~0x00000029 & (~0x00000029 & ~0x00000029) & ((~0x00000029 & ~0x00000029) & (~0x00000029 & ~0x00000029))
+
+l08048020_1:
+// DataOut:
+// DataOut (flags): Z
+// SymbolicIn: sp:fp r0:~0x00000029 & ~0x00000029 & (~0x00000029 & ~0x00000029) & ((~0x00000029 & ~0x00000029) & (~0x00000029 & ~0x00000029)) & (((~0x00000029 & ~0x00000029) & (~0x00000029 & ~0x00000029)) & ((~0x00000029 & ~0x00000029) & (~0x00000029 & ~0x00000029)))
+
+l08048024:
+	branch Z l08048024_then
+	word32 sp_4
+	word32 r0_5
+	byte Z_6
+	call fn08048028 (retsize: 0;)
+		uses: r0_2,sp_1,Z
+		defs: r0_5,sp_4,Z_6
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r0:<invalid>
+
+
+

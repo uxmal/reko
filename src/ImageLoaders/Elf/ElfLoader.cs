@@ -602,8 +602,8 @@ namespace Reko.ImageLoaders.Elf
             {
                 switch (st_shndx)
                 {
-                case 0xFFF1: return "SHN_ABS";
-                case 0xFFF2: return "SHN_COMMON";
+                case ElfSection.SHN_ABS: return "SHN_ABS";
+                case ElfSection.SHN_COMMON: return "SHN_COMMON";
                 default: return st_shndx.ToString("X4");
                 }
             }

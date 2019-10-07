@@ -28,6 +28,13 @@ namespace Reko.ImageLoaders.Elf
 {
     public class ElfSection
     {
+        public const ushort SHN_LORESERVE = 0xFF00;
+        public const ushort SHN_LOPROC    = 0xFF00;
+        public const ushort SHN_HIPROC    = 0xFF1F;
+        public const ushort SHN_ABS       = 0xFFF1;
+        public const ushort SHN_COMMON    = 0xFFF2;
+        public const ushort SHN_HIRESERVE = 0xFFFF;
+
         public string Name;
         public uint Number;
         public SectionHeaderType Type;
