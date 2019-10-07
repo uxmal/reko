@@ -1211,6 +1211,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void MipsDis_seh()
+        {
+            AssertCode("seh\tr2,r2", 0x7C021620);
+        }
+
+        [Test]
         [Ignore("Requires MIPS processor option support")]
         public void MipsDis_lwxc1()
         {

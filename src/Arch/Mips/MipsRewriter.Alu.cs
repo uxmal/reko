@@ -304,6 +304,16 @@ namespace Reko.Arch.Mips
                     opSrc));
         }
 
+        private void RewriteSignExtend(MipsInstruction instr, PrimitiveType dt)
+        {
+            var opDst = RewriteOperand(instr.op2);
+            var opSrc = RewriteOperand(instr.op1);
+            var tmp = binder.CreateTemporary(dt);
+            var dtDst = PrimitiveType.Create(Domain.SignedInt, opDst.DataType.BitSize);
+            m.Assign(tmp, m.Slice(dt, opSrc, 0));
+            m.Assign(opDst, m.Cast(dtDst, tmp));
+        }
+
         private void RewriteSll(MipsInstruction instr)
         {
             var opDst = RewriteOperand0(instr.op1);

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -151,6 +151,8 @@ namespace Reko.Arch.Mips
         sdc1,
         sdl,
         sdr,
+        seb,
+        seh,
         sh,
         sll,
         sllv,
@@ -177,22 +179,23 @@ namespace Reko.Arch.Mips
         teq,
         tlt,
         tltu,
+        teqi,
         tge,
+        tgei,
+        tgeiu,
         tgeu,
         tlbp,
         tlbr,
         tlbwi,
         tlbwr,
+        tltiu,
+        tlti,
         tne,
+        tnei,
         wait,
+        wsbh,
 
         xor,
         xori,
-        tgei,
-        tgeiu,
-        tltiu,
-        teqi,
-        tlti,
-        tnei,
     }
 }
