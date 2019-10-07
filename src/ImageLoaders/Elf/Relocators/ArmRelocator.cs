@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,6 +99,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint S = (uint) symbol.Value;
             uint mask = ~0u;
             int sh = 0;
+            var addr = referringSection != null
+                ? referringSection.Address + rela.Offset
+                : loader.CreateAddress(rela.Offset);
             var rt = (Arm32Rt)(rela.Info & 0xFF);
             switch (rt)
             {
@@ -142,13 +146,87 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case Arm32Rt.R_ARM_TLS_DTPOFF32:
                 //$NYI
                 break;
+            case Arm32Rt.R_ARM_CALL:
+            case Arm32Rt.R_ARM_PC24:
+            case Arm32Rt.R_ARM_JUMP24:
+                {
+                    if ((symbol.Value & 0b11) != 0)
+                    {
+                        var eventListener = loader.Services.RequireService<DecompilerEventListener>();
+                        var loc = eventListener.CreateAddressNavigator(program, addr);
+                        eventListener.Warn(loc, "Section {0}: unsupported interworking call (ARM -> Thumb)", referringSection?.Name ?? "<null>");
+                        return symbol;
+                    }
+
+                    var relInstr = program.CreateImageReader(program.Architecture, addr);
+                    var uInstr = relInstr.ReadUInt32();
+                    var offset = uInstr;
+                    offset = (offset & 0x00ffffff) << 2;
+                    if ((offset & 0x02000000) != 0)
+                        offset -= 0x04000000;
+
+                    offset += (uint) symbol.Value - addr.ToUInt32() + program.SegmentMap.BaseAddress.ToUInt32();
+
+#if NOT_YET
+                /*
+                 * Route through a PLT entry if 'offset' exceeds the
+                 * supported range. Note that 'offset + loc + 8'
+                 * contains the absolute jump target, i.e.,
+                 * @sym + addend, corrected for the +8 PC bias.
+                 */
+                if (IS_ENABLED(CONFIG_ARM_MODULE_PLTS) &&
+                    (offset <= (s32) 0xfe000000 ||
+                     offset >= (s32) 0x02000000))
+                    offset = get_module_plt(module, loc,
+                                offset + loc + 8)
+                         - loc - 8;
+#endif
+
+                    if ((int)offset <= -0x02000000 || (int)offset >= 0x02000000)
+                    {
+                        var eventListener = loader.Services.RequireService<DecompilerEventListener>();
+                        var loc = eventListener.CreateAddressNavigator(program, addr);
+                        eventListener.Warn(loc, "section {0} relocation at {1} out of range", referringSection?.Name ?? "<null>", addr);
+                        return symbol;
+                    }
+
+                    offset >>= 2;
+                    offset &= 0x00ffffff;
+
+                    uInstr &= 0xFF000000;
+                    uInstr |= offset;
+
+                    var relWriter = program.CreateImageWriter(program.Architecture, addr);
+                    relWriter.WriteUInt32(uInstr);
+
+                    return symbol;
+                }
+            case Arm32Rt.R_ARM_MOVW_ABS_NC:
+            case Arm32Rt.R_ARM_MOVT_ABS:
+                {
+                    //var instr = program.CreateDisassembler(program.Architecture, addr).First();
+
+                    var relInstr = program.CreateImageReader(program.Architecture, addr);
+                    var uInstr = relInstr.ReadUInt32();
+                    var offset = uInstr;
+                    offset = ((offset & 0xf0000) >> 4) | (offset & 0xfff);
+                    offset = (offset ^ 0x8000) - 0x8000;
+
+                    offset += (uint) symbol.Value;
+                    if (rt == Arm32Rt.R_ARM_MOVT_ABS)
+                        offset >>= 16;
+
+                    var tmp = uInstr & 0xfff0f000;
+                    tmp |= ((offset & 0xf000) << 4) |
+                        (offset & 0x0fff);
+
+                    var relWriter= program.CreateImageWriter(program.Architecture, addr);
+                    relWriter.WriteUInt32(tmp);
+                    return symbol;
+                }
             default:
                 throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
             }
-
-            var addr = referringSection != null
-                    ? referringSection.Address + rela.Offset
-                    : loader.CreateAddress(rela.Offset);
 
             var arch = program.Architecture;
             var relR = program.CreateImageReader(arch, addr);
@@ -195,5 +273,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_ARM_GLOB_DAT = 21,
         R_ARM_JUMP_SLOT = 22,
         R_ARM_RELATIVE = 23,
+
+        R_ARM_CALL = 28,
+        R_ARM_JUMP24 = 29,
+
+        R_ARM_MOVW_ABS_NC = 43,
+        R_ARM_MOVT_ABS = 44,
     }
 }
