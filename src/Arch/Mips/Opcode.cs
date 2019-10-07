@@ -197,5 +197,8 @@ namespace Reko.Arch.Mips
 
         xor,
         xori,
+
+        // Micro mips opcodes.
+        lbu16,
     }
 }

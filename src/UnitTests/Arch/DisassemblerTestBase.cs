@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -63,8 +63,13 @@ namespace Reko.UnitTests.Arch
 
         public TInstruction Disassemble(MemoryArea img)
         {
-            var dasm = Architecture.CreateDisassembler(Architecture.CreateImageReader(img, 0U));
+            var dasm = this.CreateDisassembler(Architecture.CreateImageReader(img, 0U));
             return (TInstruction) dasm.First();
+        }
+
+        protected virtual IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+        {
+            return Architecture.CreateDisassembler(rdr);
         }
     }
 }

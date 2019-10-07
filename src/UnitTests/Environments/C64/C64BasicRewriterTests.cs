@@ -35,7 +35,7 @@ using Reko.Arch.Mos6502;
 namespace Reko.UnitTests.Environments.C64
 {
     [TestFixture]
-    public class C64BasicRewriterTests : ArchTestBase
+    public class C64BasicRewriterTests : RewriterTestBase
     {
         private BasicProcessor m;
         private C64Basic arch;

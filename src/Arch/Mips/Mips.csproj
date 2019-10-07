@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IndirectOperand.cs" />
+    <Compile Include="MicroMipsDisassembler.cs" />
     <Compile Include="MipsDisassembler.cs" />
     <Compile Include="MipsInstruction.cs" />
     <Compile Include="MipsInstructionComparer.cs" />
