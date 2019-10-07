@@ -181,7 +181,7 @@ namespace Reko.Arch.Mips
                 case Opcode.mfc1: RewriteMfc1(instr); break;
                 case Opcode.mfhi: RewriteMf(instr, arch.hi); break;
                 case Opcode.mflo: RewriteMf(instr, arch.lo); break;
-                    case Opcode.mtc0: RewriteMtc0(instr); break;
+                case Opcode.mtc0: RewriteMtc0(instr); break;
                 case Opcode.mthi: RewriteMt(instr, arch.hi); break;
                 case Opcode.mtlo: RewriteMt(instr, arch.lo); break;
                 case Opcode.movf: RewriteMovft(instr, false); break;
@@ -209,6 +209,8 @@ namespace Reko.Arch.Mips
                 case Opcode.sdc1: RewriteStore(instr); break;
                 case Opcode.sdl: RewriteSdl(instr); break;
                 case Opcode.sdr: RewriteSdr(instr); break;
+                case Opcode.seb: RewriteSignExtend(instr, PrimitiveType.Byte); break;
+                case Opcode.seh: RewriteSignExtend(instr, PrimitiveType.Word16); break;
                 case Opcode.sh: RewriteStore(instr); break;
                 case Opcode.sll:
                 case Opcode.sllv:

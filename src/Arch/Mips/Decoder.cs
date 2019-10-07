@@ -257,6 +257,50 @@ namespace Reko.Arch.Mips
 
     class Special3Decoder : Decoder
     {
+        private static MaskDecoder bshfl = new MaskDecoder(6, 0b11111,
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.wsbh, x("")),
+            new InstrDecoder(Opcode.illegal),
+
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+
+            // 10
+            new InstrDecoder(Opcode.seb, R3,R2),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+
+            new InstrDecoder(Opcode.seh, R3,R2),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal));
+
+
+
         private static Decoder[] specialDecoders = new Decoder[]
         {
             // 00
@@ -298,7 +342,7 @@ namespace Reko.Arch.Mips
             new InstrDecoder(Opcode.illegal),
 
             // 20
-            new InstrDecoder(Opcode.illegal),
+            bshfl,
             new InstrDecoder(Opcode.illegal),
             new InstrDecoder(Opcode.illegal),
             new InstrDecoder(Opcode.illegal),

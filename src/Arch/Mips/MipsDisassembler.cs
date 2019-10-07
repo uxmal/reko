@@ -804,6 +804,15 @@ namespace Reko.Arch.Mips
             return true;
         }
 
+        internal static Mutator<MipsDisassembler> x(string message)
+        {
+            return (u, d) =>
+            {
+                d.NotYetImplemented(u, message);
+                return false;
+            };
+        }
+
         private RegisterOperand Reg(uint regNumber)
         {
             return new RegisterOperand(arch.GetRegister((int) regNumber & 0x1F));

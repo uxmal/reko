@@ -880,5 +880,14 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|ra = 00100008");
         }
+
+        [Test]
+        public void MipsRw_seh()
+        {
+            AssertCode(0x7C021620, // seh\tr2,r2"
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r2, word16, 0)",
+                "2|L--|r2 = (int32) v3");
+        }
     }
 }
