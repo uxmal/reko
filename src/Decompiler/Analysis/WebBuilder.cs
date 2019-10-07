@@ -81,8 +81,6 @@ namespace Reko.Analysis
 			var deci = new DeclarationInserter(ssaIds, doms);
 			foreach (Web web in this.webs)
 			{
-                if (web.Identifier.Name == "dx_11") //$DEBUG
-                    web.ToString();
                 bool isLive = web.Uses.Count > 0;
                 bool isOnlyUsedByPhis = web.Uses.All(u => u.Instruction is PhiAssignment);
                 bool isMemoryId = web.Identifier is MemoryIdentifier;

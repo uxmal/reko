@@ -288,8 +288,11 @@ namespace Reko.Core.Output
         {
             Method("Declare");
             writer.Write(decl.Identifier.Name);
-            writer.Write(", ");
-            decl.Expression.Accept(this);
+            if (decl.Expression != null)
+            {
+                writer.Write(", ");
+                decl.Expression.Accept(this);
+            }
             writer.WriteLine(");");
         }
 
