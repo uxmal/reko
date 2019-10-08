@@ -76,6 +76,7 @@ namespace Reko.Arch.Mips
                     op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
                     op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
+                    op4 = dasm.ops.Count > 3 ? dasm.ops[3] : null,
                 };
             }
         }

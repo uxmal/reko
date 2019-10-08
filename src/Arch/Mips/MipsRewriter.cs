@@ -255,6 +255,10 @@ namespace Reko.Arch.Mips
                 case Opcode.xori:
                     RewriteXor(instr); break;
                 case Opcode.rdhwr: RewriteReadHardwareRegister(instr); break;
+
+                // Nano instructions
+                case Opcode.restore_jrc: RewriteRestore(instr, true); break;
+                case Opcode.save: RewriteSave(instr); break;
                 }
                 yield return new RtlInstructionCluster(
                     instr.Address,

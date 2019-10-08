@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -276,6 +276,55 @@ namespace Reko.Arch.Mips
                     VoidType.Instance,
                     binder.EnsureRegister(opSrc.Base),
                     m.Int32(opSrc.Offset)));
+        }
+
+        private void RewriteRestore(MipsInstruction instr, bool ret)
+        {
+            var sp = binder.EnsureRegister(arch.GetRegister(29));
+            int count = -1;
+            int i = 0;
+            bool gp = false;
+            int rt = -1;
+            int u = -1;
+            while (i != count)
+            {
+                var this_rt = (gp && (i + 1 == count))
+                    ? 28
+                    : rt + i < 32
+                        ? rt + i
+                        : rt + i - 16;
+                var this_offset = u - ((i + 1) << 2);
+                var ea = m.Mem32(m.IAddS(sp, this_offset));
+                var reg = binder.EnsureRegister(arch.GetRegister(rt));
+                m.Assign(reg, ea);
+                ++i;
+            }
+            m.Assign(sp, m.IAddS(sp, u));
+            if (ret)
+                m.Return(0, 0);
+        }
+
+        private void RewriteSave(MipsInstruction instr)
+        {
+            var sp = binder.EnsureRegister(arch.GetRegister(29));
+            int count = -1;
+            int rt = -1;
+            int u = -1;
+            bool gp = false;
+            int i = 0;
+            while (i != count)
+            {
+                var this_rt = (gp && (i + 1 == count)) ? 28
+                    : rt + i < 32
+                        ? rt + i
+                        : rt + i - 16;
+                var reg = binder.EnsureRegister(arch.GetRegister(this_rt));
+                var this_offset = -((i + 1) << 2);
+                var ea = m.Mem32(m.IAddS(sp, this_offset));
+                m.Assign(ea, reg);
+                ++i;
+            }
+            m.Assign(sp, m.ISubS(sp, u));
         }
 
         private void RewriteSdl(MipsInstruction instr)

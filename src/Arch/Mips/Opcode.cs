@@ -198,7 +198,7 @@ namespace Reko.Arch.Mips
         xor,
         xori,
 
-        // Micro MIPS opcodes.
+        // Micro MIPS mnemonics.
         andi32,
         and16,
         aui,
@@ -229,5 +229,36 @@ namespace Reko.Arch.Mips
         sw32,
         sdc132,
         addiur1sp,
+
+        // Nano mnemonics
+        balc,
+        bnec,
+        bnezc,
+        bbeqzc,
+        bbnezc,
+        beqc,
+        beqzc,
+        bgec,
+        bltc,
+        bltuc,
+        clo,
+        clz,
+        ext,
+        ins,
+        jrc,
+        li,
+        lwxs,
+        move,
+        not,
+        restore_jrc,
+        save,
+        sigrie,
+        beqic,
+        bgeic,
+        bgeiuc,
+        bneiuc,
+        bltic,
+        bltiuc,
+        aluipc,
     }
 }

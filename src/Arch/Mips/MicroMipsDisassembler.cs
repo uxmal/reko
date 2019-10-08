@@ -135,6 +135,7 @@ namespace Reko.Arch.Mips
                     op1 = ops.Count > 0 ? ops[0] : null,
                     op2 = ops.Count > 1 ? ops[1] : null,
                     op3 = ops.Count > 2 ? ops[2] : null,
+                    op4 = ops.Count > 3 ? ops[3] : null,
                 };
                 ops.Clear();
                 return instr;
