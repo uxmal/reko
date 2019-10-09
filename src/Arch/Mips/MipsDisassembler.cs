@@ -870,17 +870,6 @@ namespace Reko.Arch.Mips
                 new A64Decoder(Opcode.sd, R2,El));
         }
 
-        //public MipsInstruction DecodeOperands(uint wInstr, Opcode opcode, InstrClass iclass, string opFmt)
-        //{
-        //    var ops = new List<MachineOperand>();
-        //    MachineOperand op = null;
-        //    for (int i = 0; i < opFmt.Length; ++i)
-        //    {
-        //        switch (opFmt[i])
-        //        {
-        //        default: throw new NotImplementedException(string.Format("Operator format {0}", opFmt[i]));
-        //        case ',':
-        //            continue;
         internal static Mutator<MipsDisassembler> R(int offset)
         {
             return (u, d) =>
