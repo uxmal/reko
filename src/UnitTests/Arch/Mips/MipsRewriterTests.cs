@@ -555,7 +555,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_trap()
         {
             AssertCode(0x00000034, // teq zero, zero	 
-                "0|L--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|L--|__trap(0x0000)");
         }
 
@@ -930,14 +930,194 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("nanoMips")]
         public void MipsRw_lwxs()
         {
             Given_NanoDecoder();
             RewriteCode("50CB");
             AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r5 = Mem0[r17 + r4 * 0x00000004:word32]");
+        }
+
+        [Test]
+        public void MipsRw_sw_4x4()
+        {
+            Given_NanoDecoder();
+            RewriteCode("F4C0"); 
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|Mem0[r8:word32] = r6");
+        }
+
+        [Test]
+        public void MipsRw_move()
+        {
+            Given_NanoDecoder();
+            RewriteCode("106B");   // move	r3,r11
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r3 = r11");
+        }
+
+        [Test]
+        public void MipsRw_bnezc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("BBA4");   // bnezc	r7,08048340
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (r7 != 0x00000000) branch 00100026");
+        }
+
+        [Test]
+        public void MipsRw_beqc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("88E03D3D");   // beqc	r0,r7,08048052
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (0x00000000 == r7) branch 000FFD40");
+        }
+
+        [Test]
+        public void MipsRw_bbeqzc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("C904B812");   // bbeqzc	r8,00000017,00100016
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (__bit(r8, 0x00000017)) branch 00100016");
+        }
+
+        [Test]
+        public void MipsRw_bc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("1BB1");   // bc	000FFFB2
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|goto 000FFFB2");
+        }
+
+        [Test]
+        public void MipsRw_bgeic()
+        {
+            Given_NanoDecoder();
+            RewriteCode("C8E9C86C");   // bgeic	r7,00000039,00100070
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r7 >= 0x00000039) branch 00100070");
+        }
+
+        [Test]
+        public void MipsRw_beqic()
+        {
+            Given_NanoDecoder();
+            RewriteCode("C8E025DB");   // beqic	r7,00000004,08048064
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r7 == 0x00000004) branch 000FFDDE");
+        }
+
+
+        [Test]
+        public void MipsRw_ins()
+        {
+            Given_NanoDecoder();
+            RewriteCode("8100E5D7");   // ins	r8,r0,00000007,00000001
+            AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r8 = __ins(r8, 0x00000000, 0x00000007, 0x00000001)");
+        }
+
+        [Test]
+        public void MipsRw_clz()
+        {
+            Given_NanoDecoder();
+            RewriteCode("20E45B3F");   // clz	r7,r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = __clz(r4)");
+        }
+
+        [Test]
+        public void MipsRw_li()
+        {
+            Given_NanoDecoder();
+            RewriteCode("D3A0");   // li	r7,00000020
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r7 = 0x00000020");
+        }
+
+        [Test]
+        public void MipsRw_beqzc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("9BB6");   // beqzc	r7,080484D2
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (r7 == 0x00000000) branch 00100038");
+        }
+
+        [Test]
+        public void MipsRw_bbnezc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("C9349820");   // bbnezc	r9,00000013,0804851A
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (!__bit(r9, 0x00000013)) branch 00100024");
+        }
+
+        [Test]
+        public void MipsRw_movep()
+        {
+            Given_NanoDecoder();
+            RewriteCode("FFFE");   // movep	r22,r23,r7,r8
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r22_r23 = r7_r8");
+        }
+
+        [Test]
+        public void MipsRw_not()
+        {
+            Given_NanoDecoder();
+            RewriteCode("5050");   // not	r16,r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r16 = ~r5");
+        }
+
+        [Test]
+        public void MipsRw_balc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("3810");
+            AssertCode(   // balc	080485E2
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|goto 00100012");
+        }
+
+        [Test]
+        public void MipsRw_bltc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("A9AA806C");   // bltc	r10,r13,080485E2
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r10 < r13) branch 00100070");
+        }
+
+        [Test]
+        public void MipsRw_sigrie()
+        {
+            Given_NanoDecoder();
+            RewriteCode("00000000");   // sigrie	00000000
+            AssertCode(
+                "0|H--|00100000(4): 1 instructions",
+                "1|L--|__reserved_instruction(0x00000000)");
         }
     }
 }

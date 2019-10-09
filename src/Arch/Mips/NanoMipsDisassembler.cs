@@ -106,6 +106,17 @@ namespace Reko.Arch.Mips
         private static readonly Mutator<NanoMipsDisassembler> R16 = R(16);
         private static readonly Mutator<NanoMipsDisassembler> R21 = R(21);
 
+        // Rn: hard-wired register number.
+        private static Mutator<NanoMipsDisassembler> Rn(int regNumber)
+        {
+            return (u, d) =>
+            {
+                var reg = d.arch.GetRegister(regNumber);
+                d.ops.Add(new RegisterOperand(reg));
+                return true;
+            };
+        }
+
         // Rw: 5-bit register identifier from a wide instruction
         private static WideMutator<NanoMipsDisassembler> Rw(int pos)
         {
@@ -319,6 +330,20 @@ namespace Reko.Arch.Mips
             };
         }
         private static readonly Mutator<NanoMipsDisassembler> Mspu5w = Mspu(PrimitiveType.Word32, 5);
+        
+        // Memory reference from GP register
+        private static Mutator<NanoMipsDisassembler> Mgpw()
+        {
+            var offsetField = new Bitfield(2, 19);
+            return (u, d) =>
+            {
+                var offset = (int) offsetField.Read(u);
+                offset *= 4;
+                d.ops.Add(new IndirectOperand(PrimitiveType.Word32, offset, d.arch.GetRegister(28)));
+                return true;
+            };
+        }
+
 
         // mx: compact memory access - indexed
         private static Mutator<NanoMipsDisassembler> mx(PrimitiveType dt)
@@ -367,9 +392,31 @@ namespace Reko.Arch.Mips
             };
         }
 
-    #endregion
+        /// <summary>
+        /// Mutator used for the LW[4x4] and SW[4x4] encodings.
+        /// </summary>
+        /// <returns></returns>
+        private static Mutator<NanoMipsDisassembler> Mut4x4()
+        {
+            var rtFields = Bf((9, 1), (5, 3));
+            var rsFields = Bf((4, 1), (0, 3));
+            var offFields = Bf((3, 1), (8, 1));
+            return (u, d) =>
+            {
+                var iRtCode = (int) Bitfield.ReadFields(rtFields, u);
+                var iRsCode = (int) Bitfield.ReadFields(rsFields, u);
+                var offset = (int) Bitfield.ReadFields(offFields, u);
+                var rt = d.arch.GetRegister(gpr4_encoding[iRtCode]);
+                var rs = d.arch.GetRegister(gpr4_encoding[iRsCode]);
+                d.ops.Add(new RegisterOperand(rt));
+                d.ops.Add(new IndirectOperand(PrimitiveType.Word32, offset, rs));
+                return true;
+            };
+        }
 
-    #region Predicates
+        #endregion
+
+        #region Predicates
     private static bool Eq0(uint u)
         {
             return u == 0;
@@ -570,7 +617,7 @@ namespace Reko.Arch.Mips
                     Instr(Opcode.lwxs, r1, mxw),
                     invalid,
                     Instr(Opcode.lwxs, r1, mxw)),
-                Nyi("lw[gp16]"),
+                Instr(Opcode.lw, Mut4x4()),
                 invalid,
                 Nyi("p16.lb"),
 
@@ -609,7 +656,7 @@ namespace Reko.Arch.Mips
                 invalid,
 
                 Nyi("andi[16]"),
-                Nyi("sw[4x4]"),
+                Instr(Opcode.sw, Mut4x4()),
                 invalid,
                 Instr(Opcode.movep,
                     rf(Bf((4, 1), (0, 3)), gpr4_encoding),
@@ -766,7 +813,12 @@ namespace Reko.Arch.Mips
                     Instr(Opcode.balc, InstrClass.Transfer|InstrClass.Call, pcrel_0_24)),
                 invalid,
 
-                Nyi("p.gp.w"),
+                Mask(0, 2, "  P.GP.W",
+                    Instr(Opcode.addiu, R21, Rn(28), U(0, 21)),
+                    invalid,    // (MIPS64)
+                    Instr(Opcode.lw, R21, Mgpw()),
+                    Instr(Opcode.sw, R21, Mgpw())),
+
                 Nyi("p.gp.bh"),
                 Nyi("p.j"),
                 invalid,
@@ -838,7 +890,7 @@ namespace Reko.Arch.Mips
                     Instr(Opcode.bgeuc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13)),
                 invalid,
 
-                Nyi("invalid(cp1)"),
+                invalid, // (CP1)
                 Nyi("p.ls.s9"),
                 Mask(14, 2, "  P.BR2",
                     Instr(Opcode.bnec, InstrClass.ConditionalTransfer, R16,R21, pcrel_0_13),
@@ -847,7 +899,7 @@ namespace Reko.Arch.Mips
                     Instr(Opcode.bltuc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13)),
                 invalid,
 
-                Nyi("invalid(mips64)"),
+                invalid, // (MIPS64)
                 invalid,
                 Mask(18, 3, "  P.BRI",
                     Instr(Opcode.beqic, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
@@ -872,6 +924,5 @@ namespace Reko.Arch.Mips
                 new Read32Decoder(p32Pool),
                 p16Pool);
         }
-
     }
 }

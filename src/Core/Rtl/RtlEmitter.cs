@@ -105,6 +105,25 @@ namespace Reko.Core.Rtl
         /// </summary>
         /// <param name="target">Destination of the call.</param>
         /// <param name="retSize">Size in bytes of return address on stack</param>
+        /// <param name="iclass">The <see cref="InstrClass" /> of the call.</param>
+        /// <returns>A reference to this RtlEmitter.</returns>
+        public RtlEmitter Call(Expression target, byte retSize, InstrClass iclass)
+        {
+            var requiredBits = InstrClass.Transfer | InstrClass.Call;
+            if ((iclass & ~requiredBits) != requiredBits)
+                throw new ArgumentException(nameof(iclass), "InstrClass bits must be consistent with a call.");
+            Instructions.Add(new RtlCall(target, retSize, iclass));
+            return this;
+        }
+
+        /// <summary>
+        /// Called to generate a RtlCall instruction with no delay slot. The
+        /// <paramref name="retSize"/> is the size of the return value as placed on
+        /// the stack. It will be 0 on machines which use link registers to store 
+        /// the return address at a function call.
+        /// </summary>
+        /// <param name="target">Destination of the call.</param>
+        /// <param name="retSize">Size in bytes of return address on stack</param>
         /// <returns>A reference to this RtlEmitter.</returns>
         public RtlEmitter Call(Expression target, byte retSize)
         {
@@ -206,6 +225,25 @@ namespace Reko.Core.Rtl
         public RtlEmitter Nop()
         {
             Instructions.Add(new RtlNop { Class = InstrClass.Linear });
+            return this;
+        }
+
+        /// <summary>
+        /// Generates an RTL Return instruction with the specified instruction class
+        /// </summary>
+        /// <param name="returnAddressBytes">How large the return address is on the stack.</param>
+        /// <param name="extraBytesPopped">Some architectures (like x86) pop the caller's extra
+        /// bytes off the stack.</param>
+        /// <param name="iclass">Instruction class of the created return statement</param>
+        /// <returns>A reference to this RtlEmitter.</returns>
+        public RtlEmitter Return(
+            int returnAddressBytes,
+            int extraBytesPopped,
+            InstrClass iclass)
+        {
+            if ((iclass & InstrClass.Transfer) != InstrClass.Transfer)
+                throw new ArgumentException(nameof(iclass), "Instruction class must be a transfer.");
+            Instructions.Add(new RtlReturn(returnAddressBytes, extraBytesPopped, iclass));
             return this;
         }
 

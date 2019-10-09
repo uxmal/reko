@@ -171,6 +171,7 @@ Parameter name: index
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\DecompilerDriver.cs:line 588
 00017540: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
+=== Elf\nanoMips\adddf3\adddf3.o
 === Elf\x86-64\ais3_crackme\ais3_crackme
 === Elf\x86-64\ls\ls
 *** Elf\x86-64\ls\ls
@@ -1492,4 +1493,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 69.24 seconds ---
+Decompiled 57 binaries in 95.09 seconds ---

@@ -63,6 +63,13 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, opSrc);
         }
 
+        private void RewriteClz(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand0(instr.op1);
+            var opSrc = RewriteOperand0(instr.op2);
+            m.Assign(opDst, host.PseudoProcedure("__clz", PrimitiveType.Int32, opSrc));
+        }
+
         private void RewriteDshiftC(MipsInstruction instr, Func<Expression,Expression,Expression> fn, int offset)
         {
             var opDst = RewriteOperand0(instr.op1);
@@ -110,6 +117,24 @@ namespace Reko.Arch.Mips
             var src = RewriteOperand(instr.op2);
             var sh = m.IAdd(RewriteOperand(instr.op3), 32);
             m.Assign(dst, ctor(src, sh));
+        }
+
+        private void RewriteExt(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            var pos = RewriteOperand(instr.op3);
+            var size = RewriteOperand(instr.op4);
+            m.Assign(dst, host.PseudoProcedure("__ext", dst.DataType, src, pos, size));
+        }
+
+        private void RewriteIns(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand0(instr.op2);
+            var pos = RewriteOperand(instr.op3);
+            var size = RewriteOperand(instr.op4);
+            m.Assign(dst, host.PseudoProcedure("__ins", dst.DataType, dst, src, pos, size));
         }
 
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall)
@@ -184,6 +209,16 @@ namespace Reko.Arch.Mips
             m.Assign(opDstFloat, opSrcMem);
         }
 
+        private void RewriteLwxs(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand0(instr.op1);
+            var idx = (IndexedOperand) instr.op2;
+            var idBase = binder.EnsureRegister(idx.Base);
+            var idIndex = binder.EnsureRegister(idx.Index);
+            m.Assign(opDst, m.Mem32(m.IAdd(idBase, m.IMul(idIndex, 4))));
+        }
+
+
         private void RewriteMf(MipsInstruction instr, RegisterStorage reg)
         {
             var opDst = RewriteOperand0(instr.op1);
@@ -206,6 +241,32 @@ namespace Reko.Arch.Mips
                 instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
             m.Assign(opDst, opSrc);
+        }
+
+        private void RewriteMove(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand0(instr.op2);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteMovep(MipsInstruction instr)
+        {
+            var dstHi = (RegisterOperand) instr.op1;
+            var dstLo = (RegisterOperand) instr.op2;
+            var srcHi = (RegisterOperand) instr.op3;
+            var srcLo = (RegisterOperand) instr.op4;
+            var dst = binder.EnsureSequence(dstHi.Register, dstLo.Register, PrimitiveType.Word64);
+            Expression src;
+            if (srcHi.Register.Number == 0 || srcLo.Register.Number == 0)
+            {
+                src = m.Seq(RewriteOperand(srcHi), RewriteOperand(srcLo));
+            }
+            else
+            {
+                src = binder.EnsureSequence(srcHi.Register, srcLo.Register, PrimitiveType.Word64);
+            }
+            m.Assign(dst, src);
         }
 
         private void RewriteMul(MipsInstruction instr, Func<Expression, Expression, Expression> ctor, PrimitiveType dt)
@@ -237,6 +298,17 @@ namespace Reko.Arch.Mips
                 opSrc = m.Or(opLeft, opRight);
             var opDst = RewriteOperand0(instr.op1);
             m.Assign(opDst, m.Comp(opSrc));
+        }
+
+        private void RewriteNot(MipsInstruction instr)
+        {
+            var src = RewriteOperand0(instr.op2);
+            if (src is Constant c)
+                src = Operator.Comp.ApplyConstant(c);
+            else
+                src = m.Comp(src);
+            var dst = RewriteOperand0(instr.op1);
+            m.Assign(dst, src);
         }
 
         private void RewriteOr(MipsInstruction instr)

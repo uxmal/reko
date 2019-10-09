@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,15 @@ namespace Reko.Arch.Mips
             RewriteBranch0(instr, m.Ge, false);
         }
 
+        private void RewriteBb(MipsInstruction instr, Func<Expression, Expression> condOp)
+        {
+            var reg = RewriteOperand0(instr.op1);
+            var bit = RewriteOperand(instr.op2);
+            var addr = (Address) RewriteOperand0(instr.op3);
+            var test = condOp(host.PseudoProcedure("__bit", PrimitiveType.Bool, reg, bit));
+            m.Branch(test, addr, instr.InstructionClass);
+        }
+
         private void RewriteBranch(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
         {
             if (!link)
@@ -70,11 +80,11 @@ namespace Reko.Arch.Mips
                     ((RegisterOperand)instr.op1).Register ==
                     ((RegisterOperand)instr.op2).Register)
                 {
-                    m.GotoD(addr);
+                    m.Goto(addr, instr.InstructionClass & ~InstrClass.Conditional);
                 }
                 else
                 {
-                    m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
+                    m.Branch(cond, addr, instr.InstructionClass);
                 }
             }
             else
@@ -103,7 +113,22 @@ namespace Reko.Arch.Mips
                 }
             }
             var cond = condOp(reg, Constant.Zero(reg.DataType));
-            m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
+            m.Branch(cond, addr, instr.InstructionClass);
+        }
+
+        private void RewriteBranchImm(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
+        {
+            if (link)
+            {
+                m.Assign(
+                    binder.EnsureRegister(arch.LinkRegister),
+                    instr.Address + 8);
+            }
+            var reg = RewriteOperand0(instr.op1);
+            var imm = RewriteOperand(instr.op2);
+            var addr = (Address) RewriteOperand0(instr.op3);
+            var cond = condOp(reg, imm);
+            m.Branch(cond, addr, instr.InstructionClass);
         }
 
         private void RewriteBranchLikely(MipsInstruction instr, Func<Expression, Expression, Expression> condOp)
@@ -133,6 +158,13 @@ namespace Reko.Arch.Mips
             rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
             m.Branch(cond, addr, rtlc);
         }
+
+        private void RewriteCall(MipsInstruction instr)
+        {
+            var dst = RewriteOperand0(instr.op1);
+            m.Call(dst, 0, instr.InstructionClass);
+        }
+
 
         private void RewriteEret(MipsInstruction instr)
         {
@@ -176,18 +208,28 @@ namespace Reko.Arch.Mips
             var reg = (RegisterStorage)((Identifier)dst).Storage;
             if (reg == arch.LinkRegister)
             {
-                m.ReturnD(0, 0);
+                m.Return(0, 0, rtlc);
             }
 			else
             {
-                m.GotoD(dst);
+                m.Goto(dst, rtlc);
             }
         }
 
         private void RewriteJump(MipsInstruction instr)
         {
             var dst = RewriteOperand0(instr.op1);
-            m.GotoD(dst);
+            m.Goto(dst, instr.InstructionClass);
+        }
+        
+        private void RewriteSigrie(MipsInstruction instr)
+        {
+            var chr = new ProcedureCharacteristics
+            {
+                Terminates = true
+            };
+            m.SideEffect(host.PseudoProcedure("__reserved_instruction", chr,
+                VoidType.Instance, RewriteOperand(instr.op1)));
         }
     }
 }
