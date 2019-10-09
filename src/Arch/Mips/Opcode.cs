@@ -260,5 +260,6 @@ namespace Reko.Arch.Mips
         bltic,
         bltiuc,
         aluipc,
+        bgeuc,
     }
 }

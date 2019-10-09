@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -27,6 +27,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Types;
+using Reko.Core.Machine;
+using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Arch.Mips
 {
@@ -34,8 +36,9 @@ namespace Reko.UnitTests.Arch.Mips
     public class MipsRewriterTests : RewriterTestBase
     {
         private MipsProcessorArchitecture arch = new MipsBe32Architecture("mips-be-32");
+        private Func<EndianImageReader, IEnumerable<MipsInstruction>> mkDasm;
         private BeImageReader rdr;
-        private MipsDisassembler dasm;
+        private IEnumerable<MipsInstruction> dasm;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
@@ -45,6 +48,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void Setup()
         {
             this.arch = new MipsBe32Architecture("mips-be-32");
+            this.mkDasm = rdr => new MipsDisassembler(arch, rdr, false);
         }
 
         private void RunTest(params string[] bitStrings)
@@ -52,10 +56,17 @@ namespace Reko.UnitTests.Arch.Mips
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte)(u >> 24), (byte)(u >> 16), (byte)(u >> 8), (byte)u })
                 .ToArray();
-            dasm = new MipsDisassembler(
-                arch,
-                new BeImageReader(new MemoryArea(Address.Ptr32(0x00100000), bytes), 0),
-                false);
+            dasm = mkDasm(new BeImageReader(new MemoryArea(Address.Ptr32(0x00100000), bytes), 0));
+        }
+
+        protected override MemoryArea RewriteCode(string hexBytes)
+        {
+            var bytes = PlatformDefinition.LoadHexBytes(hexBytes)
+                           .ToArray();
+            var image = new MemoryArea(LoadAddress, bytes);
+            this.rdr = image.CreateBeReader(0);
+            this.dasm = mkDasm(rdr);
+            return image;
         }
 
         private void AssertCode(uint instr, params string[] sExp)
@@ -67,6 +78,12 @@ namespace Reko.UnitTests.Arch.Mips
         private void Given_Mips64_Architecture()
         {
             arch = new MipsBe64Architecture("mips-be-64");
+            mkDasm = rdr => new MipsDisassembler(arch, rdr, false);
+        }
+
+        private void Given_NanoDecoder()
+        {
+            mkDasm = rdr => new NanoMipsDisassembler(arch, rdr);
         }
 
         protected override MemoryArea RewriteCode(uint[] words)
@@ -80,7 +97,7 @@ namespace Reko.UnitTests.Arch.Mips
             }).ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
             this.rdr = image.CreateBeReader(LoadAddress);
-            dasm = new MipsDisassembler(arch, rdr, false);
+            dasm = mkDasm(rdr);
             return image;
         }
 
@@ -192,7 +209,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("000111 00011 00000 1111111111111110");
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (r3 > 0x00000000) branch 000FFFFC");
         }
 
@@ -201,7 +218,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("000010 11111111111111111111111111");
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|goto 0FFFFFFC");
         }
 
@@ -226,7 +243,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_jal()
         {
             AssertCode(0x0C009B2C,
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|call 00026CB0 (0)");
         }
 
@@ -304,7 +321,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_jr()
         {
             AssertCode(0x01000008,// jr t0	      
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|goto r8");
         }
 
@@ -320,7 +337,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_jalr()
         {
             AssertCode(0x0120f809,  // jalr t1
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|call r9 (0)");
         }
 
@@ -336,7 +353,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_jr_returns()
         {
             AssertCode(0x03E00008, // jr ra
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|return (0,0)");
         }
 
@@ -352,7 +369,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_tge()
         {
             AssertCode(0x00F000F0,  // tge a3,s0,0x3
-                "0|T--|00100000(4): 2 instructions",
+                "0|TD-|00100000(4): 2 instructions",
                 "1|T--|if (r7 < r16) branch 00100004",
                 "2|L--|__trap(0x0003)");
         }
@@ -867,7 +884,7 @@ namespace Reko.UnitTests.Arch.Mips
             // It's a silicon hack, but we have to deal
             // with it....
             AssertCode(0x0411FF66,      // bgezal   r0,xxxx
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|call 000FFD9C (0)");
         }
 
@@ -888,6 +905,39 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v3 = SLICE(r2, word16, 0)",
                 "2|L--|r2 = (int32) v3");
+        }
+
+        [Test]
+        [Ignore("nanoMips")]
+        public void MipsRw_save16()
+        {
+            Given_NanoDecoder();
+            RewriteCode("1CAA");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("nanoMips")]
+        public void MipsRw_restore16()
+        {
+            Given_NanoDecoder();
+            RewriteCode("1D72");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("nanoMips")]
+        public void MipsRw_lwxs()
+        {
+            Given_NanoDecoder();
+            RewriteCode("50CB");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
         }
     }
 }

@@ -32,6 +32,10 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsDisassembler : DisassemblerBase<MipsInstruction>
     {
+        private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass CTD = InstrClass.Call | InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass DCT = InstrClass.ConditionalTransfer | InstrClass.Delay;
+
         private static readonly MaskDecoder<MipsDisassembler, Opcode, MipsInstruction> rootDecoder;
 
         private readonly MipsProcessorArchitecture arch;
@@ -461,30 +465,30 @@ namespace Reko.Arch.Mips
             );
 
             var condDecoders = Mask(16, 5, "CondDecoders",
-                new InstrDecoder(Opcode.bltz, R1, j),
-                new InstrDecoder(Opcode.bgez, R1, j),
-                new InstrDecoder(Opcode.bltzl, R1, j),
-                new InstrDecoder(Opcode.bgezl, R1, j),
+                new InstrDecoder(DCT, Opcode.bltz, R1, j),
+                new InstrDecoder(DCT, Opcode.bgez, R1, j),
+                new InstrDecoder(DCT, Opcode.bltzl, R1, j),
+                new InstrDecoder(DCT, Opcode.bgezl, R1, j),
 
                 invalid,
                 invalid,
                 invalid,
                 invalid,
 
-                new InstrDecoder(Opcode.tgei, R1, I),
-                new InstrDecoder(Opcode.tgeiu, R1, I),
-                new InstrDecoder(Opcode.tlti, R1, I),
-                new InstrDecoder(Opcode.tltiu, R1, I),
+                new InstrDecoder(CTD, Opcode.tgei, R1, I),
+                new InstrDecoder(CTD, Opcode.tgeiu, R1, I),
+                new InstrDecoder(CTD, Opcode.tlti, R1, I),
+                new InstrDecoder(CTD, Opcode.tltiu, R1, I),
 
-                new InstrDecoder(Opcode.teqi, R1, I),
+                new InstrDecoder(CTD, Opcode.teqi, R1, I),
                 invalid,
-                new InstrDecoder(Opcode.tnei, R1, I),
+                new InstrDecoder(CTD, Opcode.tnei, R1, I),
                 invalid,
 
-                new InstrDecoder(Opcode.bltzal, R1, j),
-                new InstrDecoder(Opcode.bgezal, R1, j),
-                new InstrDecoder(Opcode.bltzall, R1, j),
-                new InstrDecoder(Opcode.bgezall, R1, j),
+                new InstrDecoder(CTD, Opcode.bltzal, R1, j),
+                new InstrDecoder(CTD, Opcode.bgezal, R1, j),
+                new InstrDecoder(CTD, Opcode.bltzall, R1, j),
+                new InstrDecoder(CTD, Opcode.bgezall, R1, j),
 
                 invalid,
                 invalid,
@@ -640,8 +644,8 @@ namespace Reko.Arch.Mips
                 new InstrDecoder(Opcode.srlv, R3, R2, R1),
                 new InstrDecoder(Opcode.srav, R3, R2, R1),
 
-                new InstrDecoder(Opcode.jr, R1),
-                new InstrDecoder(Opcode.jalr, R3, R1),
+                new InstrDecoder(TD, Opcode.jr, R1),
+                new InstrDecoder(CTD, Opcode.jalr, R3, R1),
                 new InstrDecoder(Opcode.movz, R3, R1, R2),
                 new InstrDecoder(Opcode.movn, R3, R1, R2),
                 new InstrDecoder(Opcode.syscall, B),
@@ -685,13 +689,13 @@ namespace Reko.Arch.Mips
                 new A64Decoder(Opcode.dsub, R3, R1, R2),
                 new A64Decoder(Opcode.dsubu, R3, R1, R2),
                 // 30
-                new InstrDecoder(Opcode.tge, R1, R2, T),
-                new InstrDecoder(Opcode.tgeu, R1, R2, T),
-                new InstrDecoder(Opcode.tlt, R1, R2, T),
-                new InstrDecoder(Opcode.tltu, R1, R2, T),
-                new InstrDecoder(Opcode.teq, R1, R2, T),
+                new InstrDecoder(CTD, Opcode.tge, R1, R2, T),
+                new InstrDecoder(CTD, Opcode.tgeu, R1, R2, T),
+                new InstrDecoder(CTD, Opcode.tlt, R1, R2, T),
+                new InstrDecoder(CTD, Opcode.tltu, R1, R2, T),
+                new InstrDecoder(CTD, Opcode.teq, R1, R2, T),
                 new InstrDecoder(Opcode.illegal),
-                new InstrDecoder(Opcode.tne, R1, R2, T),
+                new InstrDecoder(CTD, Opcode.tne, R1, R2, T),
                 new InstrDecoder(Opcode.illegal),
 
                 new A64Decoder(Opcode.dsll, R3, R2, s),
@@ -707,12 +711,12 @@ namespace Reko.Arch.Mips
         rootDecoder = Mask(26, 6,
                 special,
                 condDecoders,
-                new InstrDecoder(Opcode.j, J),
-                new InstrDecoder(Opcode.jal, J),
-                new InstrDecoder(Opcode.beq, R1,R2,j),
-                new InstrDecoder(Opcode.bne, R1,R2,j),
-                new InstrDecoder(Opcode.blez, R1,j),
-                new InstrDecoder(Opcode.bgtz, R1,j),
+                new InstrDecoder(TD, Opcode.j, J),
+                new InstrDecoder(CTD, Opcode.jal, J),
+                new InstrDecoder(DCT, Opcode.beq, R1,R2,j),
+                new InstrDecoder(DCT, Opcode.bne, R1,R2,j),
+                new InstrDecoder(DCT, Opcode.blez, R1,j),
+                new InstrDecoder(DCT, Opcode.bgtz, R1,j),
 
                 new InstrDecoder(Opcode.addi, R2,R1,I),
                 new InstrDecoder(Opcode.addiu, R2,R1,I),
@@ -800,10 +804,10 @@ namespace Reko.Arch.Mips
                     invalid,
                     invalid),
                 null,   // COP1X
-                new InstrDecoder(Opcode.beql, R1,R2,j),
-                new InstrDecoder(Opcode.bnel, R1,R2,j),
-                new InstrDecoder(Opcode.blezl, R1,j),
-                new InstrDecoder(Opcode.bgtzl, R1,j),
+                new InstrDecoder(DCT, Opcode.beql, R1,R2,j),
+                new InstrDecoder(DCT, Opcode.bnel, R1,R2,j),
+                new InstrDecoder(DCT, Opcode.blezl, R1,j),
+                new InstrDecoder(DCT, Opcode.bgtzl, R1,j),
 
                 new A64Decoder(Opcode.daddi, R2,R1,I),
                 new A64Decoder(Opcode.daddiu, R2,R1,I),

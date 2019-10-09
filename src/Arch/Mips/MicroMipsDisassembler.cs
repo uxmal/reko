@@ -555,12 +555,12 @@ namespace Reko.Arch.Mips
                 Nyi("beqzc16"),
 
                 Nyi("slti32"),
-                Low16(Instr(Opcode.bc, pcRel26)),
+                Low16(Instr(Opcode.bc, InstrClass.Transfer, pcRel26)),
                 Nyi("swc132"),
                 Nyi("lwc132"),
 
                 //
-                Instr(Opcode.bnezc16, r7, pcRel7),
+                Instr(Opcode.bnezc16, InstrClass.ConditionalTransfer, r7, pcRel7),
                 invalid,
                 Instr(Opcode.sh16, rz7, Mh),
                 Nyi("bnezc16"),

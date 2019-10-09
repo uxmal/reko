@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -80,7 +80,6 @@ namespace Reko.Arch.Mips
             var op2 = RewriteOperand(instr.op2);
             if (op != m.Eq || !cmp.Equals(op1, op2))
             {
-                this.rtlc = InstrClass.ConditionalTransfer;
                 m.BranchInMiddleOfInstruction(
                         op(op1, op2).Invert(),
                         instr.Address + instr.Length,

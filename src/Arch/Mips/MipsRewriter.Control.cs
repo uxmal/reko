@@ -45,12 +45,12 @@ namespace Reko.Arch.Mips
                 var dst = ((AddressOperand)instr.op2).Address;
                 if (instr.Address.ToLinear() + 8 == dst.ToLinear())
                 {
+                    rtlc = InstrClass.Linear;
                     var ra = binder.EnsureRegister(arch.LinkRegister);
                     m.Assign(ra, dst);
                 }
                 else
                 {
-                    rtlc = InstrClass.Transfer;
                     m.CallD(dst, 0);
                 }
                 return;
@@ -70,12 +70,10 @@ namespace Reko.Arch.Mips
                     ((RegisterOperand)instr.op1).Register ==
                     ((RegisterOperand)instr.op2).Register)
                 {
-                    rtlc = InstrClass.Transfer | InstrClass.Delay;
                     m.GotoD(addr);
                 }
                 else
                 {
-                    rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
                     m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
                 }
             }
@@ -100,11 +98,11 @@ namespace Reko.Arch.Mips
                 // r0 has been replaced with '0'.
                 if (condOp == m.Lt)
                 {
+                    rtlc = InstrClass.Linear;
                     return; // Branch will never be taken
                 }
             }
             var cond = condOp(reg, Constant.Zero(reg.DataType));
-            rtlc = InstrClass.ConditionalTransfer;
             m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
         }
 
@@ -118,12 +116,10 @@ namespace Reko.Arch.Mips
                 ((RegisterOperand)instr.op1).Register ==
                 ((RegisterOperand)instr.op2).Register)
             {
-                rtlc = InstrClass.Transfer | InstrClass.Delay;
                 m.GotoD(addr);
             }
             else
             {
-                rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
                 m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
             }
         }
@@ -151,7 +147,6 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            rtlc = InstrClass.Transfer;
             m.CallD(RewriteOperand0(instr.op1), 0);
         }
 
@@ -160,7 +155,6 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            rtlc = InstrClass.Transfer;
             var dst = RewriteOperand0(instr.op2);
             var lr = ((RegisterOperand)instr.op1).Register;
             if (lr == arch.LinkRegister)
@@ -172,12 +166,11 @@ namespace Reko.Arch.Mips
             {
                 m.Assign(binder.EnsureRegister(lr), instr.Address + 8);
                 m.GotoD(dst);
-        }
+            }
         }
 
         private void RewriteJr(MipsInstruction instr)
         {
-            rtlc = InstrClass.Transfer;
             var dst = RewriteOperand(instr.op1);
 
             var reg = (RegisterStorage)((Identifier)dst).Storage;
@@ -194,7 +187,6 @@ namespace Reko.Arch.Mips
         private void RewriteJump(MipsInstruction instr)
         {
             var dst = RewriteOperand0(instr.op1);
-            rtlc = InstrClass.Transfer;
             m.GotoD(dst);
         }
     }

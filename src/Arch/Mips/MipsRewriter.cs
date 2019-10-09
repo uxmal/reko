@@ -63,7 +63,7 @@ namespace Reko.Arch.Mips
             {
                 var instr = dasm.Current;
                 var rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = InstrClass.Linear;
+                this.rtlc = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (instr.opcode)
                 {
