@@ -97,6 +97,7 @@
     <Compile Include="Relocators\M68kRelocator.cs" />
     <Compile Include="Relocators\MipsRelocator.cs" />
     <Compile Include="Relocators\Msp430Relocator.cs" />
+    <Compile Include="Relocators\NanoMipsRelocator.cs" />
     <Compile Include="Relocators\PpcRelocator.cs" />
     <Compile Include="Relocators\RiscVRelocator.cs" />
     <Compile Include="Relocators\SparcRelocator.cs" />

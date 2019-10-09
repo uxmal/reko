@@ -203,6 +203,7 @@ namespace Reko.ImageLoaders.Elf
         protected virtual IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
+            var options = new Dictionary<string, object>();
             string arch;
             string stackRegName = null;
             switch ((ElfMachine)machineType)
@@ -257,11 +258,22 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
                 arch = "zSeries";
                 break;
-
+            case ElfMachine.EM_NANOMIPS:
+                if (endianness == ELFDATA2LSB)
+                {
+                    arch = "mips-le-32";
+                }
+                else
+                {
+                    arch = "mips-be-32";
+                }
+                options["decoder"] = "nano";
+                break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
             var a = cfgSvc.GetArchitecture(arch);
+            a.LoadUserOptions(options);
             if (stackRegName != null)
             {
                 a.StackRegister = a.GetRegister(stackRegName);
@@ -694,7 +706,7 @@ namespace Reko.ImageLoaders.Elf
                 s.Type == SectionHeaderType.SHT_SYMTAB ||
                 s.Type == SectionHeaderType.SHT_DYNSYM)
                 .ToList();
-                foreach (var section in symbolSections)
+            foreach (var section in symbolSections)
             {
                 var symtab = LoadSymbolsSection(section);
                 Symbols[section.FileOffset] = symtab;
@@ -1269,6 +1281,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
+            case ElfMachine.EM_NANOMIPS: return new NanoMipsRelocator(this, imageSymbols);
             case ElfMachine.EM_MSP430: return new Msp430Relocator(this, imageSymbols);
             case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
             case ElfMachine.EM_SPARC32PLUS:
