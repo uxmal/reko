@@ -191,13 +191,13 @@ namespace Reko.Arch.Mips
             var lr = ((RegisterOperand)instr.op1).Register;
             if (lr == arch.LinkRegister)
             {
-                m.CallD(dst, 0);
+                m.Call(dst, 0, instr.InstructionClass);
                 return;
             }
             else
             {
                 m.Assign(binder.EnsureRegister(lr), instr.Address + 8);
-                m.GotoD(dst);
+                m.Goto(dst, instr.InstructionClass & ~InstrClass.Call);
             }
         }
 
@@ -221,7 +221,16 @@ namespace Reko.Arch.Mips
             var dst = RewriteOperand0(instr.op1);
             m.Goto(dst, instr.InstructionClass);
         }
-        
+
+        private void RewriteMoveBalc(MipsInstruction instr)
+        {
+            var dst = RewriteOperand0(instr.op1);
+            var src = RewriteOperand0(instr.op2);
+            m.Assign(dst, src);
+            var addr = RewriteOperand(instr.op3);
+            m.Call(addr, 0);
+        }
+
         private void RewriteSigrie(MipsInstruction instr)
         {
             var chr = new ProcedureCharacteristics

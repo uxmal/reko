@@ -100,12 +100,36 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_addiu_r1_sp()
+        {
+            AssertCode("addiu\tr5,sp,00000004", "72C1");
+        }
+
+        [Test]
+        public void NanoMipsDis_addiu_r2()
+        {
+            AssertCode("addiu\tr17,r17,00000008", "9092");
+        }
+
+        [Test]
         public void NanoMipsDis_addiu_rs5()
         {
             AssertCode("addiu\tr10,r10,00000001", "9149");
             AssertCode("addiu\tr10,r10,00000007", "914F");
             AssertCode("addiu\tr10,r10,FFFFFFFF", "915F");
             AssertCode("addiu\tr10,r10,FFFFFFF8", "9158");
+        }
+
+        [Test]
+        public void NanoMipsDis_addiupc_32()
+        {
+            AssertCode("addiupc\tr4,00000000", "04800000");
+        }
+
+        [Test]
+        public void NanoMipsDis_addiupc_48()
+        {
+            AssertCode("addiupc\tr7,80000000", "60E300008000");
         }
 
         [Test]
@@ -118,6 +142,19 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_addu32()
         {
             AssertCode("addu\tr6,r12,r6", "20CC3150");
+        }
+
+        [Test]
+        public void NanoMipsDis_and_32()
+        {
+            AssertCode("and\tr10,r7,r5", "20A75250");
+        }
+
+        [Test]
+        public void NanoMipsDis_andi_16()
+        {
+            AssertCode("andi\tr5,r7,000000FF", "F2FC");
+            AssertCode("andi\tr5,r7,0000FFFF", "F2FD");
         }
 
         [Test]
@@ -159,6 +196,12 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("bc\t00100002", "29FFFFFF");
             AssertCode("bc\t000FFA56", "29FFFA53");
+        }
+
+        [Test]
+        public void NanoMipsDis_beqc_16()
+        {
+            AssertCode("beqc\tr17,r6,00100020", "DB1F");
         }
 
         [Test]
@@ -217,11 +260,16 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_div()
+        {
+            AssertCode("div\tr10,r7,r5", "20A75118");
+        }
+
+        [Test]
         public void NanoMipsDis_ext()
         {
             AssertCode("ext\tr10,r5,00000000,00000014", "8145F4C0");
         }
-
 
         [Test]
         public void NanoMipsDis_ins()
@@ -230,9 +278,70 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_jalrc()
+        {
+            AssertCode("jalrc\tra,r16", "DA10");
+        }
+
+
+        [Test]
         public void NanoMipsDis_jrc()
         {
             AssertCode("jrc\tra", "DBE0");
+        }
+
+        [Test]
+        public void NanoMipsDis_lb_u12()
+        {
+            AssertCode("lb\tr10,0001(r4)", "85440001");
+        }
+
+        [Test]
+        public void NanoMipsDis_lbu_16()
+        {
+            AssertCode("lbu\tr5,0001(r4)", "5EC9");
+        }
+
+        [Test]
+        public void NanoMipsDis_lbu_gp()
+        {
+            AssertCode("lbu\tr15,2D0A6(r28)", "45EAD0A6");
+        }
+
+        [Test]
+        public void NanoMipsDis_lbu_s9()
+        {
+            AssertCode("lbu\tr7,-0001(r4)", "A4E490FF");
+        }
+
+        [Test]
+        public void NanoMipsDis_lbu_u12()
+        {
+            AssertCode("lbu\tr6,0027(r21)", "84D52027");
+        }
+
+        [Test]
+        public void NanoMipsDis_lbux()
+        {
+            AssertCode("lbux\tr5,r5(r4)", "20852907");
+        }
+
+        [Test]
+        public void NanoMipsDis_lh_gp16()
+        {
+            AssertCode("lh\tr18,0000(r16)", "7D00");
+        }
+
+        [Test]
+        public void NanoMipsDis_lhu_gp()
+        {
+            AssertCode("lhu\tr24,4F24(r28)", "47104F25");
+        }
+
+        [Test]
+        public void NanoMipsDis_lhu_gp16()
+        {
+            AssertCode("lhu\tr17,0004(r16)", "7C8C");
         }
 
         [Test]
@@ -248,6 +357,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_lsa()
+        {
+            AssertCode("lsa\tr4,r5,r4,00000002", "2085240F");
+        }
+
+        [Test]
         public void NanoMipsDis_lui()
         {
             AssertCode("lui\tr6,00000080", "E0C80000");
@@ -257,6 +372,24 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_lw_16()
         {
             AssertCode("lw\tr19,0008(r19)", "15B2");
+        }
+
+        [Test]
+        public void NanoMipsDis_lw_4x4()
+        {
+            AssertCode("lw\tr4,0002(r21)", "749D");
+        }
+
+        [Test]
+        public void NanoMipsDis_lw_gp16()
+        {
+            AssertCode("lw\tr16,01FC(r28)", "547F");
+        }
+
+        [Test]
+        public void NanoMipsDis_lw_s9()
+        {
+            AssertCode("lw\tr4,-0100(r6)", "A486C000");
         }
 
         [Test]
@@ -272,9 +405,51 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void NanoMipsDis_lwxs()
+        public void NanoMipsDis_lw_u12()
+        {
+            AssertCode("lw\tr2,0300(r4)", "84448300");
+        }
+
+        [Test]
+        public void NanoMipsDis_lwe()
+        {
+            AssertCode("lwe\tr30,-0002(r24)", "A7D8C2FE");
+        }
+
+        [Test]
+        public void NanoMipsDis_lwpc()
+        {
+            AssertCode("lwpc\tr1,000FFFFC", "602BFFF6FFFF");
+        }
+
+        [Test]
+        public void NanoMipsDis_lwx()
+        {
+            AssertCode("lwx\tr7,r16(r18)", "22503C07");
+        }
+
+        [Test]
+        public void NanoMipsDis_lwxs_16()
         {
             AssertCode("lwxs\tr18,r19(r4)", "5235");
+        }
+
+        [Test]
+        public void NanoMipsDis_lwxs_32()
+        {
+            AssertCode("lwxs\tr4,r11(r4)", "208B2447");
+        }
+
+        [Test]
+        public void NanoMipsDis_modu()
+        {
+            AssertCode("modu\tr10,r7,r5", "20A751D8");
+        }
+
+        [Test]
+        public void NanoMipsDis_move_balc()
+        {
+            AssertCode("move_balc\tr4,r10,00100004", "08400000");
         }
 
         [Test]
@@ -290,9 +465,21 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_movn()
+        {
+            AssertCode("movn\tr7,r0,r16", "22003E10");
+        }
+
+        [Test]
         public void NanoMipsDis_movz()
         {
             AssertCode("movz\tr4,r0,r6", "20C02210");
+        }
+
+        [Test]
+        public void NanoMipsDis_mul_32()
+        {
+            AssertCode("mul\tr10,r7,r5", "20A75018");
         }
 
         [Test]
@@ -313,17 +500,89 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode("or\tr9,r9,r7", "20E94A90");
         }
 
+        [Test]
+        public void NanoMipsDis_ori()
+        {
+            AssertCode("ori\tr5,r7,00000002", "80A70002");
+        }
 
         [Test]
-        public void NanoMipsDis_restore16()
+        public void NanoMipsDis_restore_16()
         {
             AssertCode("restore_jrc\t00000060,ra,00000006", "1F66");
         }
 
         [Test]
-        public void NanoMipsDis_save16()
+        public void NanoMipsDis_restore_32()
+        {
+            AssertCode("restore\t000007E0,r30,0000000A", "83CA37E2");
+        }
+
+        [Test]
+        public void NanoMipsDis_restore_jrc()
+        {
+            AssertCode("restore_jrc\t00000A20,r30,0000000A", "83CA3A23");
+        }
+
+        [Test]
+        public void NanoMipsDis_save_16()
         {
             AssertCode("save\t000000F0,r30,0000000A", "1CFA");
+        }
+
+        [Test]
+        public void NanoMipsDis_save_32()
+        {
+            AssertCode("save\t000007E0,r30,0000000A", "83CA37E0");
+        }
+
+        [Test]
+        public void NanoMipsDis_sb_16()
+        {
+            AssertCode("sb\tr0,0000(r19)", "5C34");
+        }
+
+        [Test]
+        public void NanoMipsDis_sb_gp()
+        {
+            AssertCode("sb\tr6,1EC08(r28)", "44C5EC08");
+        }
+
+        [Test]
+        public void NanoMipsDis_sb_u12()
+        {
+            AssertCode("sb\tr0,0335(r4)", "84041335");
+        }
+
+        [Test]
+        public void NanoMipsDis_seb()
+        {
+            AssertCode("seb\tr7,r7", "20E70008");
+        }
+
+        [Test]
+        public void NanoMipsDis_seh()
+        {
+            AssertCode("seh\tr7,r7", "20E70048");
+        }
+
+
+        [Test]
+        public void NanoMipsDis_sh_gp16()
+        {
+            AssertCode("sh\tr7,0002(r18)", "7FA2");
+        }
+
+        [Test]
+        public void NanoMipsDis_sh_gp()
+        {
+            AssertCode("sh\tr0,1CB1C(r28)", "4415CB1C");
+        }
+
+        [Test]
+        public void NanoMipsDis_sh_u12()
+        {
+            AssertCode("sh\tr7,0304(r16)", "84F05304");
         }
 
         [Test]
@@ -352,6 +611,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_slt()
+        {
+            AssertCode("slt\tr10,r7,r5", "20A75350");
+        }
+
+        [Test]
         public void NanoMipsDis_slti()
         {
             AssertCode("slti\tr6,r6,00000020", "80C64020");
@@ -361,6 +626,18 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_sltu()
         {
             AssertCode("sltu\tr10,r12,r4", "208C5390");
+        }
+
+        [Test]
+        public void NanoMipsDis_sra()
+        {
+            AssertCode("sra\tr7,r10,0000001F", "80EAC09F");
+        }
+
+        [Test]
+        public void NanoMipsDis_srav()
+        {
+            AssertCode("srav\tr10,r7,r5", "20A75090");
         }
 
         [Test]
@@ -394,9 +671,21 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_sw_16()
+        {
+            AssertCode("sw\tr5,0020(sp)", "9688");
+        }
+
+        [Test]
         public void NanoMipsDis_sw_4x4()
         {
             AssertCode("sw\tr6,0000(r8)", "F4C0");
+        }
+
+        [Test]
+        public void NanoMipsDis_sw_gp16()
+        {
+            AssertCode("sw\tr0,0108(r28)", "D442");
         }
 
         [Test]
@@ -406,9 +695,47 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void NanoMipsDis_xor16()
+        public void NanoMipsDis_sw_s9()
+        {
+            AssertCode("sw\tr4,00FC(r5)", "A48548FC");
+            AssertCode("sw\tr4,-0004(r5)", "A485C8FC");
+            AssertCode("sw\tr4,-0100(r5)", "A485C800");
+        }
+
+        [Test]
+        public void NanoMipsDis_sw_sp()
+        {
+            AssertCode("sw\tr5,007C(sp)", "B4BF");
+        }
+
+        [Test]
+        public void NanoMipsDis_sw_u12()
+        {
+            AssertCode("sw\tr0,02F8(r17)", "841192F8");
+        }
+
+        [Test]
+        public void NanoMipsDis_swxs()
+        {
+            AssertCode("swxs\tr6,r5(r4)", "208534C7");
+        }
+
+        [Test]
+        public void NanoMipsDis_ualwm()
+        {
+            AssertCode("ualwm\tr7,0001(r4),00000001", "A4E41501");
+        }
+
+        [Test]
+        public void NanoMipsDis_xor_16()
         {
             AssertCode("xor\tr5,r5,r16", "5284");
+        }
+
+        [Test]
+        public void NanoMipsDis_xor_32()
+        {
+            AssertCode("xor\tr10,r7,r5", "20A75310");
         }
 
         [Test]
@@ -417,644 +744,6 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode("xori\tr0,r8,00000142", "80081142");
         }
 
-#if BORED
-        // Reko: a decoder for nanoMips instruction A1E5D0DC at address 0010000E has not been implemented. (invalid(cp1))
-        [Test]
-        public void NanoMipsDis_A1E5D0DC()
-        {
-            AssertCode("@@@", "A1E5D0DC");
-        }
-
-        // Reko: a decoder for nanoMips instruction 45EAD0A6 at address 00100014 has not been implemented. (p.gp.bh)
-        [Test]
-        public void NanoMipsDis_45EAD0A6()
-        {
-            AssertCode("@@@", "45EAD0A6");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00009688 at address 00100018 has not been implemented. (sw[16])
-        [Test]
-        public void NanoMipsDis_00009688()
-        {
-            AssertCode("@@@", "00009688");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D9FB at address 00100026 has not been implemented. (P16.BR1)
-        [Test]
-        public void NanoMipsDis_0000D9FB()
-        {
-            AssertCode("@@@", "0000D9FB");
-        }
-
-        // Reko: a decoder for nanoMips instruction 86300045 at address 0010002C has not been implemented. (p.ls.u12)
-        [Test]
-        public void NanoMipsDis_86300045()
-        {
-            AssertCode("@@@", "86300045");
-        }
-
-        // Reko: a decoder for nanoMips instruction 000091B7 at address 00100030 has not been implemented. (ADDIU[R2])
-        [Test]
-        public void NanoMipsDis_000091B7()
-        {
-            AssertCode("@@@", "000091B7");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0A0F30A3 at address 00100032 has not been implemented. (move.balc)
-        [Test]
-        public void NanoMipsDis_0A0F30A3()
-        {
-            AssertCode("@@@", "0A0F30A3");
-        }
-
-        // Reko: a decoder for nanoMips instruction 097B47FD at address 00100038 has not been implemented. (move.balc)
-        [Test]
-        public void NanoMipsDis_097B47FD()
-        {
-            AssertCode("@@@", "097B47FD");
-        }
-
-        // Reko: a decoder for nanoMips instruction 896170A8 at address 00100040 has not been implemented. (P.BR3A)
-        [Test]
-        public void NanoMipsDis_896170A8()
-        {
-            AssertCode("@@@", "896170A8");
-        }
-
-        // Reko: a decoder for nanoMips instruction 87795088 at address 00100050 has not been implemented. (p.ls.u12)
-        [Test]
-        public void NanoMipsDis_87795088()
-        {
-            AssertCode("@@@", "87795088");
-        }
-
-        // Reko: a decoder for nanoMips instruction 47104F25 at address 00100060 has not been implemented. (p.gp.bh)
-        [Test]
-        public void NanoMipsDis_47104F25()
-        {
-            AssertCode("@@@", "47104F25");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00005CE0 at address 00100070 has not been implemented. (p16.lb)
-        [Test]
-        public void NanoMipsDis_00005CE0()
-        {
-            AssertCode("@@@", "00005CE0");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007589 at address 00100072 has not been implemented. (lw[4x4])
-        [Test]
-        public void NanoMipsDis_00007589()
-        {
-            AssertCode("@@@", "00007589");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00009325 at address 0010007E has not been implemented. (ADDIU[R2])
-        [Test]
-        public void NanoMipsDis_00009325()
-        {
-            AssertCode("@@@", "00009325");
-        }
-
-        // Reko: a decoder for nanoMips instruction A7F9A72F at address 00100084 has not been implemented. (p.ls.s9)
-        [Test]
-        public void NanoMipsDis_A7F9A72F()
-        {
-            AssertCode("@@@", "A7F9A72F");
-        }
-
-        // Reko: a decoder for nanoMips instruction A78DFBDC at address 001000A2 has not been implemented. (p.ls.s9)
-        [Test]
-        public void NanoMipsDis_A78DFBDC()
-        {
-            AssertCode("@@@", "A78DFBDC");
-        }
-
-        // Reko: a decoder for nanoMips instruction A26394ED at address 001000AA has not been implemented. (invalid(cp1))
-        [Test]
-        public void NanoMipsDis_A26394ED()
-        {
-            AssertCode("@@@", "A26394ED");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000F2FC at address 001000D0 has not been implemented. (andi[16])
-        [Test]
-        public void NanoMipsDis_0000F2FC()
-        {
-            AssertCode("@@@", "0000F2FC");
-        }
-
-        // Reko: a decoder for nanoMips instruction 858D5581 at address 001000DE has not been implemented. (p.ls.u12)
-        [Test]
-        public void NanoMipsDis_858D5581()
-        {
-            AssertCode("@@@", "858D5581");
-        }
-
-        // Reko: a decoder for nanoMips instruction 8B486407 at address 001000EE has not been implemented. (P.BR3A)
-        [Test]
-        public void NanoMipsDis_8B486407()
-        {
-            AssertCode("@@@", "8B486407");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0A4ACFF2 at address 001000F8 has not been implemented. (move.balc)
-        [Test]
-        public void NanoMipsDis_0A4ACFF2()
-        {
-            AssertCode("@@@", "0A4ACFF2");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D886 at address 001000FC has not been implemented. (P16.BR1)
-        [Test]
-        public void NanoMipsDis_0000D886()
-        {
-            AssertCode("@@@", "0000D886");
-        }
-
-        // Reko: a decoder for nanoMips instruction 602B1D92 at address 00100106 has not been implemented. (LWPC[48])
-        [Test]
-        public void NanoMipsDis_602B1D92()
-        {
-            AssertCode("@@@", "602B1D92");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D70E at address 0010010A has not been implemented. (sw[gp16])
-        [Test]
-        public void NanoMipsDis_0000D70E()
-        {
-            AssertCode("@@@", "0000D70E");
-        }
-
-        // Reko: a decoder for nanoMips instruction 05C5AF45 at address 00100120 has not been implemented. (addiupc[32])
-        [Test]
-        public void NanoMipsDis_05C5AF45()
-        {
-            AssertCode("@@@", "05C5AF45");
-        }
-
-        // Reko: a decoder for nanoMips instruction A7D8C2FE at address 00100128 has not been implemented. (p.ls.s9)
-        [Test]
-        public void NanoMipsDis_A7D8C2FE()
-        {
-            AssertCode("@@@", "A7D8C2FE");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007341 at address 0010012E has not been implemented. (p16.a1)
-        [Test]
-        public void NanoMipsDis_00007341()
-        {
-            AssertCode("@@@", "00007341");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007443 at address 00100130 has not been implemented. (lw[4x4])
-        [Test]
-        public void NanoMipsDis_00007443()
-        {
-            AssertCode("@@@", "00007443");
-        }
-
-        // Reko: a decoder for nanoMips instruction 09772075 at address 0010013A has not been implemented. (move.balc)
-        [Test]
-        public void NanoMipsDis_09772075()
-        {
-            AssertCode("@@@", "09772075");
-        }
-
-        // Reko: a decoder for nanoMips instruction 000076B3 at address 00100152 has not been implemented. (lw[4x4])
-        [Test]
-        public void NanoMipsDis_000076B3()
-        {
-            AssertCode("@@@", "000076B3");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007731 at address 0010015E has not been implemented. (lw[4x4])
-        [Test]
-        public void NanoMipsDis_00007731()
-        {
-            AssertCode("@@@", "00007731");
-        }
-
-        // Reko: a decoder for nanoMips instruction A4911CE3 at address 00100160 has not been implemented. (p.ls.s9)
-        [Test]
-        public void NanoMipsDis_A4911CE3()
-        {
-            AssertCode("@@@", "A4911CE3");
-        }
-
-        // Reko: a decoder for nanoMips instruction 88A965BD at address 00100168 has not been implemented. (P.BR3A)
-        [Test]
-        public void NanoMipsDis_88A965BD()
-        {
-            AssertCode("@@@", "88A965BD");
-        }
-
-        // Reko: a decoder for nanoMips instruction 084CD35A at address 0010016C has not been implemented. (move.balc)
-        [Test]
-        public void NanoMipsDis_084CD35A()
-        {
-            AssertCode("@@@", "084CD35A");
-        }
-
-        // Reko: a decoder for nanoMips instruction 000072D3 at address 00100176 has not been implemented. (p16.a1)
-        [Test]
-        public void NanoMipsDis_000072D3()
-        {
-            AssertCode("@@@", "000072D3");
-        }
-
-        // Reko: a decoder for nanoMips instruction A2924FB8 at address 0010017C has not been implemented. (invalid(cp1))
-        [Test]
-        public void NanoMipsDis_A2924FB8()
-        {
-            AssertCode("@@@", "A2924FB8");
-        }
-
-        // Reko: a decoder for nanoMips instruction A15DF251 at address 00100180 has not been implemented. (invalid(cp1))
-        [Test]
-        public void NanoMipsDis_A15DF251()
-        {
-            AssertCode("@@@", "A15DF251");
-        }
-
-        // Reko: a decoder for nanoMips instruction 4B1149E0 at address 001001B4 has not been implemented. (p.j)
-        [Test]
-        public void NanoMipsDis_4B1149E0()
-        {
-            AssertCode("@@@", "4B1149E0");
-        }
-
-        // Reko: a decoder for nanoMips instruction A12D737B at address 001001E4 has not been implemented. (invalid(cp1))
-        [Test]
-        public void NanoMipsDis_A12D737B()
-        {
-            AssertCode("@@@", "A12D737B");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000B653 at address 001001E8 has not been implemented. (sw[sp])
-        [Test]
-        public void NanoMipsDis_0000B653()
-        {
-            AssertCode("@@@", "0000B653");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000761D at address 001001F2 has not been implemented. (lw[4x4])
-        [Test]
-        public void NanoMipsDis_0000761D()
-        {
-            AssertCode("@@@", "0000761D");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0B452C20 at address 001001F4 has not been implemented. (move.balc)
-        [Test]
-        public void NanoMipsDis_0B452C20()
-        {
-            AssertCode("@@@", "0B452C20");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00005ED8 at address 00100208 has not been implemented. (p16.lb)
-        [Test]
-        public void NanoMipsDis_00005ED8()
-        {
-            AssertCode("@@@", "00005ED8");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D9BA at address 0010020A has not been implemented. (P16.BR1)
-        [Test]
-        public void NanoMipsDis_0000D9BA()
-        {
-            AssertCode("@@@", "0000D9BA");
-        }
-
-        // Reko: a decoder for nanoMips instruction A19E0DF9 at address 00100216 has not been implemented. (invalid(cp1))
-        [Test]
-        public void NanoMipsDis_A19E0DF9()
-        {
-            AssertCode("@@@", "A19E0DF9");
-        }
-
-        // Reko: a decoder for nanoMips instruction 000095FF at address 0010021C has not been implemented. (sw[16])
-        [Test]
-        public void NanoMipsDis_000095FF()
-        {
-            AssertCode("@@@", "000095FF");
-        }
-
-        // Reko: a decoder for nanoMips instruction C05DC481 at address 00100222 has not been implemented. (invalid(mips64))
-        [Test]
-        public void NanoMipsDis_C05DC481()
-        {
-            AssertCode("@@@", "C05DC481");
-        }
-
-        // Reko: a decoder for nanoMips instruction 207BCB4F at address 00100234 has not been implemented. (LSA)
-        [Test]
-        public void NanoMipsDis_207BCB4F()
-        {
-            AssertCode("@@@", "207BCB4F");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00005C5F at address 0010023E has not been implemented. (p16.lb)
-        [Test]
-        public void NanoMipsDis_00005C5F()
-        {
-            AssertCode("@@@", "00005C5F");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00005D43 at address 00100248 has not been implemented. (p16.lb)
-        [Test]
-        public void NanoMipsDis_00005D43()
-        {
-            AssertCode("@@@", "00005D43");
-        }
-
-        // Reko: a decoder for nanoMips instruction C0D2D697 at address 00100282 has not been implemented. (invalid(mips64))
-        [Test]
-        public void NanoMipsDis_C0D2D697()
-        {
-            AssertCode("@@@", "C0D2D697");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00009310 at address 00100292 has not been implemented. (ADDIU[R2])
-        [Test]
-        public void NanoMipsDis_00009310()
-        {
-            AssertCode("@@@", "00009310");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007644 at address 0010029E has not been implemented. (lw[4x4])
-        [Test]
-        public void NanoMipsDis_00007644()
-        {
-            AssertCode("@@@", "00007644");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007FA2 at address 001002AC has not been implemented. (p16.lh)
-        [Test]
-        public void NanoMipsDis_00007FA2()
-        {
-            AssertCode("@@@", "00007FA2");
-        }
-
-        // Reko: a decoder for nanoMips instruction A0BBE873 at address 001002BA has not been implemented. (invalid(cp1))
-        [Test]
-        public void NanoMipsDis_A0BBE873()
-        {
-            AssertCode("@@@", "A0BBE873");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D442 at address 001002BE has not been implemented. (sw[gp16])
-        [Test]
-        public void NanoMipsDis_0000D442()
-        {
-            AssertCode("@@@", "0000D442");
-        }
-
-        // Reko: a decoder for nanoMips instruction A7CC8EE0 at address 001002C0 has not been implemented. (p.ls.s9)
-        [Test]
-        public void NanoMipsDis_A7CC8EE0()
-        {
-            AssertCode("@@@", "A7CC8EE0");
-        }
-
-        // Reko: a decoder for nanoMips instruction 44C5EC08 at address 001002C4 has not been implemented. (p.gp.bh)
-        [Test]
-        public void NanoMipsDis_44C5EC08()
-        {
-            AssertCode("@@@", "44C5EC08");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000F1CE at address 001002D0 has not been implemented. (andi[16])
-        [Test]
-        public void NanoMipsDis_0000F1CE()
-        {
-            AssertCode("@@@", "0000F1CE");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00005E61 at address 001002D6 has not been implemented. (p16.lb)
-        [Test]
-        public void NanoMipsDis_00005E61()
-        {
-            AssertCode("@@@", "00005E61");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007F0F at address 001002DE has not been implemented. (p16.lh)
-        [Test]
-        public void NanoMipsDis_00007F0F()
-        {
-            AssertCode("@@@", "00007F0F");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0AB31349 at address 001002E2 has not been implemented. (move.balc)
-        [Test]
-        public void NanoMipsDis_0AB31349()
-        {
-            AssertCode("@@@", "0AB31349");
-        }
-
-        // Reko: a decoder for nanoMips instruction 000096F1 at address 001002FC has not been implemented. (sw[16])
-        [Test]
-        public void NanoMipsDis_000096F1()
-        {
-            AssertCode("@@@", "000096F1");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00005D8C at address 001002FE has not been implemented. (p16.lb)
-        [Test]
-        public void NanoMipsDis_00005D8C()
-        {
-            AssertCode("@@@", "00005D8C");
-        }
-
-        // Reko: a decoder for nanoMips instruction 60A37E55 at address 00100316 has not been implemented. (ADDIUPC[48])
-        [Test]
-        public void NanoMipsDis_60A37E55()
-        {
-            AssertCode("@@@", "60A37E55");
-        }
-
-        // Reko: a decoder for nanoMips instruction 45E6FAC4 at address 0010031A has not been implemented. (p.gp.bh)
-        [Test]
-        public void NanoMipsDis_45E6FAC4()
-        {
-            AssertCode("@@@", "45E6FAC4");
-        }
-
-        // Reko: a decoder for nanoMips instruction C0890D8D at address 00100320 has not been implemented. (invalid(mips64))
-        [Test]
-        public void NanoMipsDis_C0890D8D()
-        {
-            AssertCode("@@@", "C0890D8D");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D9C8 at address 0010032E has not been implemented. (P16.BR1)
-        [Test]
-        public void NanoMipsDis_0000D9C8()
-        {
-            AssertCode("@@@", "0000D9C8");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D81F at address 00100330 has not been implemented. (P16.BR1)
-        [Test]
-        public void NanoMipsDis_0000D81F()
-        {
-            AssertCode("@@@", "0000D81F");
-        }
-
-        // Reko: a decoder for nanoMips instruction 06C47647 at address 00100334 has not been implemented. (addiupc[32])
-        [Test]
-        public void NanoMipsDis_06C47647()
-        {
-            AssertCode("@@@", "06C47647");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007651 at address 00100342 has not been implemented. (lw[4x4])
-        [Test]
-        public void NanoMipsDis_00007651()
-        {
-            AssertCode("@@@", "00007651");
-        }
-
-        // Reko: a decoder for nanoMips instruction 000097C7 at address 00100344 has not been implemented. (sw[16])
-        [Test]
-        public void NanoMipsDis_000097C7()
-        {
-            AssertCode("@@@", "000097C7");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007C8C at address 0010034C has not been implemented. (p16.lh)
-        [Test]
-        public void NanoMipsDis_00007C8C()
-        {
-            AssertCode("@@@", "00007C8C");
-        }
-
-        // Reko: a decoder for nanoMips instruction 000097FB at address 00100356 has not been implemented. (sw[16])
-        [Test]
-        public void NanoMipsDis_000097FB()
-        {
-            AssertCode("@@@", "000097FB");
-        }
-
-        // Reko: a decoder for nanoMips instruction 8B01757B at address 0010035E has not been implemented. (P.BR3A)
-        [Test]
-        public void NanoMipsDis_8B01757B()
-        {
-            AssertCode("@@@", "8B01757B");
-        }
-
-        // Reko: a decoder for nanoMips instruction C082CB92 at address 0010036C has not been implemented. (invalid(mips64))
-        [Test]
-        public void NanoMipsDis_C082CB92()
-        {
-            AssertCode("@@@", "C082CB92");
-        }
-
-        // Reko: a decoder for nanoMips instruction 85D25953 at address 00100374 has not been implemented. (p.ls.u12)
-        [Test]
-        public void NanoMipsDis_85D25953()
-        {
-            AssertCode("@@@", "85D25953");
-        }
-
-        // Reko: a decoder for nanoMips instruction 00007D00 at address 00100382 has not been implemented. (p16.lh)
-        [Test]
-        public void NanoMipsDis_00007D00()
-        {
-            AssertCode("@@@", "00007D00");
-        }
-
-        // Reko: a decoder for nanoMips instruction 87F34BFD at address 00100386 has not been implemented. (p.ls.u12)
-        [Test]
-        public void NanoMipsDis_87F34BFD()
-        {
-            AssertCode("@@@", "87F34BFD");
-        }
-
-        // Reko: a decoder for nanoMips instruction 495FB9DF at address 0010039C has not been implemented. (p.j)
-        [Test]
-        public void NanoMipsDis_495FB9DF()
-        {
-            AssertCode("@@@", "495FB9DF");
-        }
-
-        // Reko: a decoder for nanoMips instruction 05CB553E at address 001003A4 has not been implemented. (addiupc[32])
-        [Test]
-        public void NanoMipsDis_05CB553E()
-        {
-            AssertCode("@@@", "05CB553E");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D70D at address 001003A8 has not been implemented. (sw[gp16])
-        [Test]
-        public void NanoMipsDis_0000D70D()
-        {
-            AssertCode("@@@", "0000D70D");
-        }
-
-        // Reko: a decoder for nanoMips instruction 0000D87B at address 001003B2 has not been implemented. (P16.BR1)
-        [Test]
-        public void NanoMipsDis_0000D87B()
-        {
-            AssertCode("@@@", "0000D87B");
-        }
-
-        // Reko: a decoder for nanoMips instruction 86D9DE40 at address 001003B8 has not been implemented. (p.ls.u12)
-        [Test]
-        public void NanoMipsDis_86D9DE40()
-        {
-            AssertCode("@@@", "86D9DE40");
-        }
-
-        // Reko: a decoder for nanoMips instruction 4415CB1C at address 001003C0 has not been implemented. (p.gp.bh)
-        [Test]
-        public void NanoMipsDis_4415CB1C()
-        {
-            AssertCode("@@@", "4415CB1C");
-        }
-
-        // Reko: a decoder for nanoMips instruction C17D8B2E at address 001003C4 has not been implemented. (invalid(mips64))
-        [Test]
-        public void NanoMipsDis_C17D8B2E()
-        {
-            AssertCode("@@@", "C17D8B2E");
-        }
-
-        // Reko: a decoder for nanoMips instruction 8729425C at address 001003C8 has not been implemented. (p.ls.u12)
-        [Test]
-        public void NanoMipsDis_8729425C()
-        {
-            AssertCode("@@@", "8729425C");
-        }
-
-        // Reko: a decoder for nanoMips instruction 000091F3 at address 001003CC has not been implemented. (ADDIU[R2])
-        [Test]
-        public void NanoMipsDis_000091F3()
-        {
-            AssertCode("@@@", "000091F3");
-        }
-
-        // Reko: a decoder for nanoMips instruction 859C873E at address 001003D2 has not been implemented. (p.ls.u12)
-        [Test]
-        public void NanoMipsDis_859C873E()
-        {
-            AssertCode("@@@", "859C873E");
-        }
-
-        // Reko: a decoder for nanoMips instruction 636B43C8 at address 001003E0 has not been implemented. (LWPC[48])
-        [Test]
-        public void NanoMipsDis_636B43C8()
-        {
-            AssertCode("@@@", "636B43C8");
-        }
-
-        // Reko: a decoder for nanoMips instruction A39D06C1 at address 001003E4 has not been implemented. (invalid(cp1))
-        [Test]
-        public void NanoMipsDis_A39D06C1()
-        {
-            AssertCode("@@@", "A39D06C1");
-        }
-#endif
-
+ 
     }
 }

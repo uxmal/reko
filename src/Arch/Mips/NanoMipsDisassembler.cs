@@ -43,6 +43,7 @@ namespace Reko.Arch.Mips
 
         private readonly MipsProcessorArchitecture arch;
         private readonly EndianImageReader rdr;
+        private readonly RegisterStorage gp;
         private readonly List<MachineOperand> ops;
         private Address addr;
 
@@ -51,6 +52,7 @@ namespace Reko.Arch.Mips
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.gp = arch.GetRegister(28);
         }
 
         public override MipsInstruction DisassembleInstruction()
@@ -134,7 +136,7 @@ namespace Reko.Arch.Mips
 
         private static readonly int[] gpr3_encoding = new[] { 16, 17, 18, 19, 4, 5, 6, 7 };
         private static readonly int[] gpr3_store_encoding = new[] { 0, 17, 18, 19, 4, 5, 6, 7 };
-        private static readonly int[] gpr1 = new[] { 4, 5 };
+        private static readonly int[] gpr1_encoding = new[] { 4, 5 };
         private static readonly int[] gpr2_reg1_encoding = new[] { 4, 5, 6, 7 };
         private static readonly int[] gpr2_reg2_encoding = new[] { 5, 6, 7, 8 };
         private static readonly int[] gpr4_encoding = new[] { 8, 9, 10, 11, 4, 5, 6, 7, 16, 17, 18, 19, 20, 21, 22, 23 };
@@ -157,6 +159,7 @@ namespace Reko.Arch.Mips
         private static readonly Mutator<NanoMipsDisassembler> r1 = r(1, 3, gpr3_encoding);
         private static readonly Mutator<NanoMipsDisassembler> r4 = r(4, 3, gpr3_encoding);
         private static readonly Mutator<NanoMipsDisassembler> r7 = r(7, 3, gpr3_encoding);
+        private static readonly Mutator<NanoMipsDisassembler> r7_st = r(7, 3, gpr3_store_encoding);
 
         // rf: encoded register identifier in multiple fields.
         private static Mutator<NanoMipsDisassembler> rf(Bitfield[] fields, int[] gprEncoding)
@@ -259,8 +262,8 @@ namespace Reko.Arch.Mips
             };
         }
 
-        // eu: encoded unsigned
-        private static Mutator<NanoMipsDisassembler> eu()
+        // euLi: encoded unsigned for li[16]
+        private static Mutator<NanoMipsDisassembler> euLi()
         {
             var encField = new Bitfield(0, 7);
             return (u, d) =>
@@ -268,6 +271,22 @@ namespace Reko.Arch.Mips
                 var uVal = encField.Read(u);
                 if (uVal == 0x7F)
                     uVal = ~0u;
+                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                return true;
+            };
+        }
+
+        // euAndi: encoded unsigned for andi[16]
+        private static Mutator<NanoMipsDisassembler> euAndi()
+        {
+            var encField = new Bitfield(0, 4);
+            return (u, d) =>
+            {
+                var uVal = encField.Read(u);
+                if (uVal == 12)
+                    uVal = 0x00FF;
+                else if (uVal == 13)
+                    uVal = 0xFFFF;
                 d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
                 return true;
             };
@@ -283,6 +302,17 @@ namespace Reko.Arch.Mips
                 return true;
             };
         }
+        // Sf_w: signed immediate extracted from fields
+        private static WideMutator<NanoMipsDisassembler> Sf_w(Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var uVal = Bitfield.ReadSignedFields(fields, (uint) u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                return true;
+            };
+        }
+
 
         // Ie: integer immediate, encoded
         private static Mutator<NanoMipsDisassembler> Ie(PrimitiveType dt, int pos, int len, int [] encoding)
@@ -298,24 +328,28 @@ namespace Reko.Arch.Mips
         }
         // immediate shift amount encoded in the LSB's.
         private static readonly Mutator<NanoMipsDisassembler> Ish3 = Ie(PrimitiveType.Int32, 0, 3, new[] { 8, 1, 2, 3, 4, 5, 6, 7 });
-
+        private static readonly Mutator<NanoMipsDisassembler> Ilswm3 = Ie(PrimitiveType.Int32, 12, 3, new[] { 8, 1, 2, 3, 4, 5, 6, 7 });
 
         // ms: compact memory access with shifted offset.
-        private static Mutator<NanoMipsDisassembler> ms(PrimitiveType dt, int length)
+        private static Mutator<NanoMipsDisassembler> ms(PrimitiveType dt,  int offset, int length)
         {
             var baseField = new Bitfield(4, 3);
-            var offsetField = new Bitfield(0, length);
+            var offsetField = new Bitfield(offset, length);
             return (u, d) =>
             {
                 var iEncodedReg = (int) baseField.Read(u);
                 var iReg = gpr3_encoding[iEncodedReg];
                 var baseReg = d.arch.GetRegister(iReg);
-                var offset = offsetField.Read(u) * dt.Size;
-                d.ops.Add(new IndirectOperand(dt, (int) offset, baseReg));
+                var nOffset = offsetField.Read(u) * dt.Size;
+                d.ops.Add(new IndirectOperand(dt, (int) nOffset, baseReg));
                 return true;
             };
         }
-        private static readonly Mutator<NanoMipsDisassembler> msw = ms(PrimitiveType.Word32, 4);
+        private static readonly Mutator<NanoMipsDisassembler> msw = ms(PrimitiveType.Word32, 0, 4);
+        private static readonly Mutator<NanoMipsDisassembler> msh = ms(PrimitiveType.Int16, 1, 2);
+        private static readonly Mutator<NanoMipsDisassembler> mshu = ms(PrimitiveType.Word16, 1, 2);
+        private static readonly Mutator<NanoMipsDisassembler> msb = ms(PrimitiveType.SByte, 0, 2);
+        private static readonly Mutator<NanoMipsDisassembler> msbu = ms(PrimitiveType.Byte, 0, 2);
 
         // Mspu: memory access - shifted unsigned offset from stack register
         private static Mutator<NanoMipsDisassembler> Mspu(PrimitiveType dt, int length)
@@ -332,18 +366,90 @@ namespace Reko.Arch.Mips
         private static readonly Mutator<NanoMipsDisassembler> Mspu5w = Mspu(PrimitiveType.Word32, 5);
         
         // Memory reference from GP register
-        private static Mutator<NanoMipsDisassembler> Mgpw()
+        private static Mutator<NanoMipsDisassembler> Mgp(PrimitiveType dt, int pos, int len)
         {
-            var offsetField = new Bitfield(2, 19);
+            var offsetField = new Bitfield(pos, len);
             return (u, d) =>
             {
                 var offset = (int) offsetField.Read(u);
-                offset *= 4;
-                d.ops.Add(new IndirectOperand(PrimitiveType.Word32, offset, d.arch.GetRegister(28)));
+                offset *= dt.Size;
+                d.ops.Add(new IndirectOperand(dt, offset, d.gp));
+                return true;
+            };
+        }
+        private static readonly Mutator<NanoMipsDisassembler> Mgpw = Mgp(PrimitiveType.Word32, 2, 19);
+        private static readonly Mutator<NanoMipsDisassembler> Mgph = Mgp(PrimitiveType.Int16, 1, 17);
+        private static readonly Mutator<NanoMipsDisassembler> Mgphu = Mgp(PrimitiveType.Word16, 1, 17);
+        private static readonly Mutator<NanoMipsDisassembler> Mgpb = Mgp(PrimitiveType.SByte, 0, 18);
+        private static readonly Mutator<NanoMipsDisassembler> Mgpbu = Mgp(PrimitiveType.Byte, 0, 18);
+
+
+        // mgp: compact memory reference from GP register
+        private static Mutator<NanoMipsDisassembler> mgp(PrimitiveType dt, int pos, int len)
+        {
+            var offsetField = new Bitfield(pos, len);
+            return (u, d) =>
+            {
+                var offset = (int) offsetField.Read(u);
+                offset *= dt.Size;
+                d.ops.Add(new IndirectOperand(dt, offset, d.gp));
+                return true;
+            };
+        }
+        private static readonly Mutator<NanoMipsDisassembler> mgpw = mgp(PrimitiveType.Word32, 0, 7);
+
+        // Mu: memory access - unsigned offset
+        private static Mutator<NanoMipsDisassembler> Mu(PrimitiveType dt, int posBase, int lenOffset)
+        {
+            var baseField = new Bitfield(posBase, 5);
+            var offsetField = new Bitfield(0, lenOffset);
+            return (u, d) =>
+            {
+                var iBase = (int) baseField.Read(u);
+                var off = (int)offsetField.Read(u);
+                var rBase = d.arch.GetRegister(iBase);
+                d.ops.Add(new IndirectOperand(dt, off, rBase));
                 return true;
             };
         }
 
+        // Ms: memory access - signed offset
+        private static Mutator<NanoMipsDisassembler> Ms(PrimitiveType dt, int posBase, Bitfield[] offsetFields)
+        {
+            var baseField = new Bitfield(posBase, 5);
+            return (u, d) =>
+            {
+                var iBase = (int) baseField.Read(u);
+                var off = Bitfield.ReadSignedFields(offsetFields, u);
+                var rBase = d.arch.GetRegister(iBase);
+                d.ops.Add(new IndirectOperand(dt, off, rBase));
+                return true;
+            };
+        }
+        private static readonly Mutator<NanoMipsDisassembler> Msw9 = Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8)));
+        private static readonly Mutator<NanoMipsDisassembler> Msh9 = Ms(PrimitiveType.Int16, 16, Bf((15, 1), (0, 8)));
+        private static readonly Mutator<NanoMipsDisassembler> Mshu9 = Ms(PrimitiveType.Word16, 16, Bf((15, 1), (0, 8)));
+        private static readonly Mutator<NanoMipsDisassembler> Msb9 = Ms(PrimitiveType.SByte, 16, Bf((15, 1), (0, 8)));
+        private static readonly Mutator<NanoMipsDisassembler> Msbu9 = Ms(PrimitiveType.Byte, 16, Bf((15, 1), (0, 8)));
+
+        // Mx: memory access - indexed
+        private static Mutator<NanoMipsDisassembler> Mx(PrimitiveType dt, int posBase, int posIdx)
+        {
+            var baseField = new Bitfield(posBase, 5);
+            var idxField = new Bitfield(posIdx, 5);
+            return (u, d) =>
+            {
+                var iBase = (int) baseField.Read(u);
+                var iIndex = (int) idxField.Read(u);
+                var rBase = d.arch.GetRegister(iBase);
+                var rIndex = d.arch.GetRegister(iIndex);
+                d.ops.Add(new IndexedOperand(dt, rBase, rIndex));
+                return true;
+            };
+        }
+        private static readonly Mutator<NanoMipsDisassembler> Mxbu = Mx(PrimitiveType.Byte, 21, 16);
+        private static readonly Mutator<NanoMipsDisassembler> Mxh = Mx(PrimitiveType.Word16, 21, 16);
+        private static readonly Mutator<NanoMipsDisassembler> Mxw = Mx(PrimitiveType.Word32, 21, 16);
 
         // mx: compact memory access - indexed
         private static Mutator<NanoMipsDisassembler> mx(PrimitiveType dt)
@@ -362,7 +468,7 @@ namespace Reko.Arch.Mips
         }
         private static readonly Mutator<NanoMipsDisassembler> mxw = mx(PrimitiveType.Word32);
 
-        // pcRel: PC-relative displacement (used in branches / calls)
+        // pcRel: PC-relative signed displacement (used in branches / calls)
         private static Mutator<NanoMipsDisassembler> pcrel(Bitfield[] offsetfields)
         {
             return (u, d) =>
@@ -377,7 +483,33 @@ namespace Reko.Arch.Mips
         private static readonly Mutator<NanoMipsDisassembler> pcrel_0_9 = pcrel(Bf((0, 1), (1, 9)));
         private static readonly Mutator<NanoMipsDisassembler> pcrel_0_10 = pcrel(Bf((0, 1), (1, 10)));
         private static readonly Mutator<NanoMipsDisassembler> pcrel_0_13 = pcrel(Bf((0, 1), (1, 13)));
+        private static readonly Mutator<NanoMipsDisassembler> pcrel_0_20 = pcrel(Bf((0, 1), (1, 20)));
         private static readonly Mutator<NanoMipsDisassembler> pcrel_0_24 = pcrel(Bf((0, 1), (1, 24)));
+
+        // pcRel_w: PC-relative signed displacement (used in branches / calls) - wide version
+        private static WideMutator<NanoMipsDisassembler> pcrel_w(Bitfield[] offsetfields)
+        {
+            return (u, d) =>
+            {
+                var offset = Bitfield.ReadSignedFields(offsetfields, u);
+                var addr = d.rdr.Address + offset;
+                d.ops.Add(AddressOperand.Create(addr));
+                return true;
+            };
+        }
+
+        // pcRelu: PC-relative unsigned displacement (used in branches / calls)
+        private static Mutator<NanoMipsDisassembler> pcrelu(Bitfield[] offsetfields)
+        {
+            return (u, d) =>
+            {
+                var offset = Bitfield.ReadFields(offsetfields, u) << 1;
+                var addr = d.rdr.Address + offset;
+                d.ops.Add(AddressOperand.Create(addr));
+                return true;
+            };
+        }
+        private static readonly Mutator<NanoMipsDisassembler> pcrelu_0_4 = pcrelu(Bf((0, 4)));
 
         private static Mutator<NanoMipsDisassembler> Aluipc()
         {
@@ -421,6 +553,16 @@ namespace Reko.Arch.Mips
         {
             return u == 0;
         }
+
+        private static readonly Bitfield rs3Field = new Bitfield(4, 3);
+        private static readonly Bitfield rt3Field = new Bitfield(7, 3);
+        private static bool Rs3LtRt3(uint u)
+        {
+            var rs3 = rs3Field.Read(u);
+            var rt3 = rt3Field.Read(u);
+            return rs3 < rt3;
+        }
+
         #endregion
 
         #region Decoder subclasses
@@ -601,15 +743,15 @@ namespace Reko.Arch.Mips
                     Instr(Opcode.sll, r7, r4, Ish3),
                     Instr(Opcode.srl, r7, r4, Ish3)),
                 Instr(Opcode.lw, r7, Mspu5w),
-                Instr(Opcode.balc, InstrClass.Transfer|InstrClass.Call, pcrel_0_9),
+                Instr(Opcode.balc, InstrClass.Transfer | InstrClass.Call, pcrel_0_9),
                 Mask(Bf((8, 1), (3, 1)), "P16.4x4",
                     Instr(Opcode.addu, rf5, rf5, rf0),
                     Instr(Opcode.mul, rf5, rf5, rf0),
                     invalid,
                     invalid),
 
-                Mask(0, 2, "P16C",
-                    Mask(2, 2, "POOL16C_00",
+                Mask(0, 2, "  P16C",
+                    Mask(2, 2, "  POOL16C_00",
                         Instr(Opcode.not, r7, r4),
                         Instr(Opcode.xor, r7, r7, r4),
                         Instr(Opcode.and, r7, r7, r4),
@@ -617,28 +759,38 @@ namespace Reko.Arch.Mips
                     Instr(Opcode.lwxs, r1, mxw),
                     invalid,
                     Instr(Opcode.lwxs, r1, mxw)),
+                Instr(Opcode.lw, r7, mgpw),
+                invalid,
+                Mask(2, 2, "  P16.LB",
+                    Instr(Opcode.lb, r7, msb),
+                    Instr(Opcode.sb, r7_st, msbu),
+                    Instr(Opcode.lbu, r7, msbu),
+                    invalid),
+
+                Mask(6, 1, "  P16.A1",
+                    invalid,
+                    Instr(Opcode.addiu, r7, Rn(29), Us(0, 6, 2))),
                 Instr(Opcode.lw, Mut4x4()),
                 invalid,
-                Nyi("p16.lb"),
-
-                Nyi("p16.a1"),
-                Nyi("lw[4x4]"),
-                invalid,
-                Nyi("p16.lh"),
+                Mask(Bf((3, 1), (1, 1)), "  P16.LH",
+                    Instr(Opcode.lh, r7, msh),
+                    Instr(Opcode.sh, r7_st, mshu),
+                    Instr(Opcode.lhu, r7, mshu),
+                    invalid),
 
                 Mask(3, 1, "  P16.A2",
-                    Nyi("ADDIU[R2]"),
+                    Instr(Opcode.addiu, r7, r4, Us(0, 3, 2)),
                     Select((5, 5), Eq0, "  P.ADDIU[RS5]",
                         Instr(Opcode.nop),
                         Instr(Opcode.addiu, R5, R5, sf(Bf((4, 1), (0, 3)))))),
-                Nyi("sw[16]"),
+                Instr(Opcode.sw, r7_st, Mspu5w),
                 Instr(Opcode.beqzc, InstrClass.ConditionalTransfer, r7, pcrel_0_6),
                 invalid,
 
                 Mask(0, 1, "  P16.ADDU",
                     Instr(Opcode.addu, r1, r4, r7),
                     Instr(Opcode.subu, r1, r4, r7)),
-                Nyi("sw[sp]"),
+                Instr(Opcode.sw, R5, Mspu5w),
                 Instr(Opcode.bnezc, InstrClass.ConditionalTransfer, r7, pcrel_0_6),
                 Instr(Opcode.movep,
                     rf(Bf((3, 1), (8, 1)), gpr2_reg1_encoding),
@@ -646,16 +798,18 @@ namespace Reko.Arch.Mips
                     rf(Bf((4, 1), (0, 3)), gpr4_zero_encoding),
                     rf(Bf((9, 1), (5, 3)), gpr4_zero_encoding)),
 
-                Instr(Opcode.li, r7, eu()),
-                Nyi("sw[gp16]"),
+                Instr(Opcode.li, r7, euLi()),
+                Instr(Opcode.sw, r7_st, mgpw),
                 Select((0, 4), Eq0, "P16.BR",
                     Mask(4, 1, "P16.JRC",
                         Instr(Opcode.jrc, InstrClass.Transfer, R5),
-                        Nyi("jalrc")),
-                    Nyi("P16.BR1")),
+                        Instr(Opcode.jalrc, InstrClass.Transfer|InstrClass.Call, Rn(31), R5)),
+                    Select(Rs3LtRt3, //"  P16.BR1",
+                        Instr(Opcode.beqc, r4,r7, pcrelu_0_4),
+                        Instr(Opcode.bnec, r7,r4, pcrelu_0_4))),
                 invalid,
 
-                Nyi("andi[16]"),
+                Instr(Opcode.andi, r7,r4, euAndi()),
                 Instr(Opcode.sw, Mut4x4()),
                 invalid,
                 Instr(Opcode.movep,
@@ -666,18 +820,18 @@ namespace Reko.Arch.Mips
 
             var pool32a0_0 = Mask(Bf((6, 4), (3, 2)), "  POOL32A0_0",
                 Nyi("P.TRAP"),
-                Nyi("SEB"),
+                Instr(Opcode.seb, R21,R16),
                 Instr(Opcode.sllv, R11,R16,R21), 
-                Nyi("MUL[32]"),
+                Instr(Opcode.mul, R11,R16,R21),
 
                 invalid,
-                Nyi("SEH"),
+                Instr(Opcode.seh, R21,R16),
                 Instr(Opcode.srlv, R11,R16,R21), 
                 Nyi("MUH"),
 
                 invalid,
                 invalid,
-                Nyi("SRAV"),
+                Instr(Opcode.srav, R11, R16, R21),
                 Nyi("MULU"),
 
                 invalid,
@@ -685,10 +839,11 @@ namespace Reko.Arch.Mips
                 Nyi("ROTRV"),
                 Nyi("MUHU"),
 
+                // 10
                 invalid,
                 invalid,
                 Nyi("ADD"),
-                Nyi("DIV"),
+                Instr(Opcode.div, R11,R16,R21),
 
                 invalid,
                 invalid,
@@ -703,18 +858,19 @@ namespace Reko.Arch.Mips
                 Nyi("RDHWR"),
                 invalid,
                 Instr(Opcode.subu, R11,R16,R21),
-                Nyi("MODU"),
+                Instr(Opcode.modu, R11,R16,R21),
 
+                // 20
                 invalid,
                 invalid,
                 Mask(10, 1, "  P.CMOVE",
                     Instr(Opcode.movz, R11,R16,R21),
-                    Nyi("MOVN")),
+                    Instr(Opcode.movn, R11,R16,R21)),
                 invalid,
 
                 invalid,
                 invalid,
-                Nyi("AND[32]"),
+                Instr(Opcode.and, R11,R16,R21),
                 invalid,
 
                 invalid,
@@ -727,14 +883,15 @@ namespace Reko.Arch.Mips
                 Instr(Opcode.nor, R11,R16,R21),
                 invalid,
  
+                // 30
                 invalid,
                 invalid,
-                Nyi("XOR[32]"),
+                Instr(Opcode.xor, R11,R16,R21),
                 invalid,
  
                 invalid,
                 invalid,
-                Nyi("SLT"),
+                Instr(Opcode.slt, R11,R16,R21),
                 invalid,
 
                 invalid,
@@ -770,9 +927,113 @@ namespace Reko.Arch.Mips
                 (0, new Read48Decoder(WInstr(Opcode.li, R37w, Uf_w(Bf((0,16),(16,16)))))),
                 (1, Nyi("ADDIU[48]")),
                 (2, Nyi("ADDIU[GP48]")),
-                (3, Nyi("ADDIUPC[48]")),
-                (0b010_11, Nyi("LWPC[48]")),
+                (3, new Read48Decoder(WInstr(Opcode.addiupc, R37w, Sf_w(Bf((0,16),(16,16)))))),
+                (0b010_11, new Read48Decoder(WInstr(Opcode.lwpc, R37w, pcrel_w(Bf((0,16),(16,16)))))),
                 (0b011_11, Nyi("SWPC[48]")));
+
+            var p_lsx = Mask(6, 1, "  P.LSX",
+                Mask(7, 4,
+                    Nyi("LBX"),
+                    Nyi("SBX"),
+                    Instr(Opcode.lbux, R11, Mxbu),
+                    invalid,
+
+                    Nyi("LHX"),
+                    Nyi("SHX"),
+                    Nyi("LHUX"),
+                    invalid, // (MIPS64)
+
+                    Instr(Opcode.lwx, R11, Mxw),
+                    Instr(Opcode.swx, R11, Mxw),
+                    invalid,    // (CP1)
+                    invalid,    // (CP1)
+
+                    invalid,    // (MIPS64)
+                    invalid,    // (MIPS64)
+                    invalid,    // (CP1)
+                    invalid),   // (CP1)
+
+                Mask(7, 4, "  PP.LSXS",
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    Nyi("LHXS"),
+                    Nyi("SHXS"),
+                    Nyi("LHUXS"),
+                    invalid,    // (MIPS64)
+
+                    Instr(Opcode.lwxs,R11,Mxw),
+                    Instr(Opcode.swxs,R11,Mxw),
+                    invalid,    // (CP1)
+                    invalid,    // (CP1)
+
+                    invalid,    // (MIPS64)
+                    invalid,    // (MIPS64)
+                    invalid,    // (CP1)
+                    invalid));  // (CP1)
+
+            var p_ls_s9 = Mask(8, 3, "  P.LS.S9",
+                Mask(11, 4, "  P.LS.S0",
+                    Instr(Opcode.lb, R21, Msb9),
+                    Instr(Opcode.sb, R21, Msb9),
+                    Instr(Opcode.lbu, R21, Msbu9),
+                    Nyi("P.PREF[s9]"),
+
+                    Instr(Opcode.lh, R21, Msh9),
+                    Instr(Opcode.sh, R21, Msh9),
+                    Instr(Opcode.lhu, R21, Mshu9),
+                    invalid,    // (MIPS64)
+
+                    Instr(Opcode.lw, R21, Msw9),
+                    Instr(Opcode.sw, R21, Msw9),
+                    invalid,    // (CP1)
+                    invalid,    // (CP1)
+
+                    invalid,    // (MIPS64)
+                    invalid,    // (MIPS64)
+                    invalid,    // (CP1)
+                    invalid),  // (CP1)
+                Nyi("P.LS.S1"),
+                Mask(11, 4, "  P.LS.E0",
+                    Nyi("LBE"),
+                    Nyi("SBE"),
+                    Nyi("LBUE"),
+                    Nyi("P.PREFE"),
+
+                    Instr(Opcode.lhe, R21,Ms(PrimitiveType.Int16, 16, Bf((15,1), (0, 8)))),
+                    Nyi("SHE"),
+                    Nyi("LHUE"),
+                    Nyi("CACHEE"),
+
+                    Instr(Opcode.lwe, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8)))),
+                    Nyi("SWE"),
+                    Nyi("P.LLE"),
+                    Nyi("P.SCE"),
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid),
+                invalid,
+
+                Mask(11, 1, "  P.LS.WM",
+                    Instr(Opcode.lwm, R21,Ms(PrimitiveType.Word32, 16, Bf((15,1),(0,8))), Ilswm3),
+                    Instr(Opcode.swm, R21,Ms(PrimitiveType.Word32, 16, Bf((15,1),(0,8))), Ilswm3)),
+                Mask(11, 1, "  P.LS.UAWM",
+                    Instr(Opcode.ualwm, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8))), Ilswm3),
+                    Instr(Opcode.uaswm, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8))), Ilswm3)),
+                invalid,    // (MIPS64)
+                invalid);   // (MIPS64)
+
+            var p_br3a = Sparse(16, 5, "  P.BR3A",
+                invalid,
+                (0, invalid), // (CP1)
+                (1, invalid), // (CP1)
+                (2, invalid), // (CP2)
+                (3, invalid), // (CP2)
+                (4, invalid)); // (DSP)
 
             var p32Pool = Mask(Bf((29, 3), (26, 2)), "P32 Pool",
                 Select((0, 21), Eq0, "  P.ADDIU",
@@ -782,8 +1043,11 @@ namespace Reko.Arch.Mips
                         Nyi("BREAK[32]"),
                         Nyi("SDBBP[32]")),
                     Instr(Opcode.addiu, R21, R16, U(0, 16))),
-                Nyi("addiupc[32]"),
-                Nyi("move.balc"),
+                Instr(Opcode.addiupc, R21, sf(Bf((0,1),(1,20)))),
+                Instr(Opcode.move_balc, InstrClass.Transfer|InstrClass.Call,
+                    r(24,1,gpr1_encoding),
+                    rf(Bf((25,1),(21,3)), gpr4_zero_encoding),
+                    pcrel_0_20),
                 invalid,
 
                 Mask(0, 3, "  P32A",
@@ -798,8 +1062,8 @@ namespace Reko.Arch.Mips
                     invalid, // (DSP)
                     invalid,
                     Mask(3, 3, "  _POOL32A7",
-                        Nyi("P.LSX"),
-                        Nyi("LSA"),
+                        p_lsx,
+                        Instr(Opcode.lsa, R11,R16,R21,U(9,2)),
                         invalid,
                         Nyi("EXTW"),
 
@@ -816,11 +1080,27 @@ namespace Reko.Arch.Mips
                 Mask(0, 2, "  P.GP.W",
                     Instr(Opcode.addiu, R21, Rn(28), U(0, 21)),
                     invalid,    // (MIPS64)
-                    Instr(Opcode.lw, R21, Mgpw()),
-                    Instr(Opcode.sw, R21, Mgpw())),
+                    Instr(Opcode.lw, R21, Mgpw),
+                    Instr(Opcode.sw, R21, Mgpw)),
+                Mask(18, 3, "  P.GP.BH",
+                    Instr(Opcode.lb, R21, Mgpb),
+                    Instr(Opcode.sb, R21, Mgpbu),
+                    Instr(Opcode.lbu, R21, Mgpbu),
+                    Nyi("ADDIU[GP.B]"),
 
-                Nyi("p.gp.bh"),
-                Nyi("p.j"),
+                    Mask(0, 1, "  P.GP.LH",
+                        Instr(Opcode.lh, R21, Mgph),
+                        Instr(Opcode.lhu, R21, Mgphu)),
+                    Mask(0, 1, "  P.GP.SH",
+                        Instr(Opcode.sh, R21, Mgphu),
+                        invalid),
+                    invalid,    // (CP1)
+                    invalid),   // (MIPS64)
+                Sparse(12, 4, "  P.J",
+                    invalid,
+                    (0, Nyi("JALRC[32]")),
+                    (1, Nyi("JALRC.HB")),
+                    (8, Nyi("P.BALRSC"))),
                 invalid,
 
                 p48i,
@@ -829,10 +1109,16 @@ namespace Reko.Arch.Mips
                 invalid,
 
                 Mask(12, 4, "  P.U12",
-                    Nyi("ORI "),
+                    Instr(Opcode.ori, R21, R16, U(0, 12)),
                     Instr(Opcode.xori, R21, R16, U(0, 12)),
                     Instr(Opcode.andi, R21, R16, U(0, 12)),
-                    Nyi("P.SR"),
+                    Mask(20, 1, "  P.SR",
+                        Mask(0, 2, "  PP.SR",
+                            Instr(Opcode.save,Us(3, 9, 3),R21,U(16,4)),
+                            invalid,
+                            Instr(Opcode.restore,Us(3, 9, 3),R21,U(16,4)),
+                            Instr(Opcode.restore_jrc,Us(3, 9, 3),R21,U(16,4))),
+                        invalid),   // (CR1)
 
                     Instr(Opcode.slti, R21, R16, U(0, 12)),
                     Instr(Opcode.sltiu, R21, R16, U(0, 12)),
@@ -856,7 +1142,7 @@ namespace Reko.Arch.Mips
                         Instr(Opcode.srl, R21,R16, U(0,5)),
                         invalid,
 
-                        Nyi("SRA"),
+                        Instr(Opcode.sra, R21,R16, U(0,5)),
                         invalid,
                         Nyi("ROTR"),
                         invalid,
@@ -882,16 +1168,36 @@ namespace Reko.Arch.Mips
                         invalid, // (MIPS64)
                         invalid, // (MIPS64)
                         invalid)), // (MIPS64)
-                Nyi("p.ls.u12"),
+                Mask(12, 4, "  P.LS.U12",
+                    Instr(Opcode.lb, R21,Mu(PrimitiveType.Byte,16,12)),
+                    Instr(Opcode.sb, R21,Mu(PrimitiveType.Byte,16,12)),
+                    Instr(Opcode.lbu, R21,Mu(PrimitiveType.Byte,16,12)),
+                    Nyi("P.PREF[U12]"),
+
+                    Instr(Opcode.lh, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Opcode.sh, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Opcode.lhu, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    invalid,    // (MIPS64)
+
+                    Instr(Opcode.lw, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Opcode.sw, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    invalid,    // (CP1)
+                    invalid,    // (CP1)
+
+                    invalid,    // (MIPS64)
+                    invalid,    // (MIPS64)
+                    invalid,    // (CP1)
+                    invalid),    // (CP1)
+
                 Mask(14, 2, "P.BR1",
                     Instr(Opcode.beqc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13),
-                    Nyi("P.BR3A"),
+                    p_br3a,
                     Instr(Opcode.bgec, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13),
                     Instr(Opcode.bgeuc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13)),
                 invalid,
 
                 invalid, // (CP1)
-                Nyi("p.ls.s9"),
+                p_ls_s9,
                 Mask(14, 2, "  P.BR2",
                     Instr(Opcode.bnec, InstrClass.ConditionalTransfer, R16,R21, pcrel_0_13),
                     invalid,
@@ -920,7 +1226,7 @@ namespace Reko.Arch.Mips
                 invalid,
                 invalid);
 
-            rootDecoder = Mask(12, 1,
+            rootDecoder = Mask(12, 1, "nanoMips",
                 new Read32Decoder(p32Pool),
                 p16Pool);
         }

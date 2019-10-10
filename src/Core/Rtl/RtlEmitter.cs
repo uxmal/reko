@@ -110,7 +110,7 @@ namespace Reko.Core.Rtl
         public RtlEmitter Call(Expression target, byte retSize, InstrClass iclass)
         {
             var requiredBits = InstrClass.Transfer | InstrClass.Call;
-            if ((iclass & ~requiredBits) != requiredBits)
+            if ((iclass & requiredBits) != requiredBits)
                 throw new ArgumentException(nameof(iclass), "InstrClass bits must be consistent with a call.");
             Instructions.Add(new RtlCall(target, retSize, iclass));
             return this;

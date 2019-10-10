@@ -908,25 +908,44 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("nanoMips")]
         public void MipsRw_save16()
         {
             Given_NanoDecoder();
             RewriteCode("1CAA");
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(2): 11 instructions",
+                "1|L--|Mem0[sp + -4:word32] = r30",
+                "2|L--|Mem0[sp + -8:word32] = ra",
+                "3|L--|Mem0[sp + -12:word32] = r16",
+                "4|L--|Mem0[sp + -16:word32] = r17",
+                "5|L--|Mem0[sp + -20:word32] = r18",
+                "6|L--|Mem0[sp + -24:word32] = r19",
+                "7|L--|Mem0[sp + -28:word32] = r20",
+                "8|L--|Mem0[sp + -32:word32] = r21",
+                "9|L--|Mem0[sp + -36:word32] = r22",
+                "10|L--|Mem0[sp + -40:word32] = r23",
+                "11|L--|sp = sp - 160");
         }
 
         [Test]
-        [Ignore("nanoMips")]
         public void MipsRw_restore16()
         {
             Given_NanoDecoder();
-            RewriteCode("1D72");
+            RewriteCode("1DAA");
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(2): 12 instructions",
+                "1|L--|r30 = Mem0[sp + 156:word32]",
+                "2|L--|ra = Mem0[sp + 152:word32]",
+                "3|L--|r16 = Mem0[sp + 148:word32]",
+                "4|L--|r17 = Mem0[sp + 144:word32]",
+                "5|L--|r18 = Mem0[sp + 140:word32]",
+                "6|L--|r19 = Mem0[sp + 136:word32]",
+                "7|L--|r20 = Mem0[sp + 132:word32]",
+                "8|L--|r21 = Mem0[sp + 128:word32]",
+                "9|L--|r22 = Mem0[sp + 124:word32]",
+                "10|L--|r23 = Mem0[sp + 120:word32]",
+                "11|L--|sp = sp + 160",
+                "12|T--|return (0,0)");
         }
 
         [Test]
@@ -1111,6 +1130,16 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void MipsRw_bgeiuc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("C8ED080A");   // bgeiuc	r7,00000021,08048096
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r7 >=u 0x00000021) branch 0010000E");
+        }
+
+        [Test]
         public void MipsRw_sigrie()
         {
             Given_NanoDecoder();
@@ -1118,6 +1147,158 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 "0|H--|00100000(4): 1 instructions",
                 "1|L--|__reserved_instruction(0x00000000)");
+        }
+
+        [Test]
+        public void MipsRw_addiupc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("04C00000");   // addiupc	r6,00000000
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = 00100004");
+        }
+
+        [Test]
+        public void MipsRw_jalrc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("DA30");   // jalrc	ra,r17
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|call r17 (0)");
+        }
+
+        [Test]
+        public void MipsRw_restore()
+        {
+            Given_NanoDecoder();
+            RewriteCode("83CA37E2");   // restore	000007E0,r30,0000000A
+            AssertCode(
+                "0|L--|00100000(4): 11 instructions",
+                "1|L--|r30 = Mem0[sp + 2012:word32]",
+                "2|L--|ra = Mem0[sp + 2008:word32]",
+                "3|L--|r16 = Mem0[sp + 2004:word32]",
+                "4|L--|r17 = Mem0[sp + 2000:word32]",
+                "5|L--|r18 = Mem0[sp + 1996:word32]",
+                "6|L--|r19 = Mem0[sp + 1992:word32]",
+                "7|L--|r20 = Mem0[sp + 1988:word32]",
+                "8|L--|r21 = Mem0[sp + 1984:word32]",
+                "9|L--|r22 = Mem0[sp + 1980:word32]",
+                "10|L--|r23 = Mem0[sp + 1976:word32]",
+                "11|L--|sp = sp + 2016");
+        }
+
+        [Test]
+        public void MipsRw_move_balc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("09E00000");   // move_balc	r5,r7,08049546
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|r5 = r7",
+                "2|T--|call 00100004 (0)");
+        }
+
+        [Test]
+        public void MipsRw_lwm()
+        {
+            Given_NanoDecoder();
+            RewriteCode("A4D02400");   // lwm	r6,0000(r16),00000002
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r6 = Mem0[r16 + 0:word32]",
+                "2|L--|r7 = Mem0[r16 + 4:word32]");
+        }
+
+        [Test]
+        public void MipsRw_swxs()
+        {
+            Given_NanoDecoder();
+            RewriteCode("208534C7");   // swxs	r6,r5(r4)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r4 + r5 * 0x00000004:word32] = r6");
+        }
+
+        [Test]
+        public void MipsRw_lsa()
+        {
+            Given_NanoDecoder();
+            RewriteCode("2205860F");   // lsa	r16,r5,r16,00000003
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r16 = r16 + (r5 << 0x03)");
+        }
+
+        [Test]
+        public void MipsRw_ualwm()
+        {
+            Given_NanoDecoder();
+            RewriteCode("A5441501");   // ualwm	r10,0001(r4),00000001
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r10 = Mem0[r4 + 1:word32]");
+        }
+
+        [Test]
+        public void MipsRw_bltuc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("A8E5C000");   // bltuc	r5,r7,08048186
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r5 <u r7) branch 00100004");
+        }
+
+        [Test]
+        public void MipsRw_aluipc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("E0C00002");   // aluipc	r6,00008048
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = 0x00000100");
+        }
+
+        [Test]
+        public void MipsRw_bltiuc()
+        {
+            Given_NanoDecoder();
+            RewriteCode("C97C9000");  // bltiuc	r11,00000012,08048770
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r11 <u 0x00000012) branch 00100004");
+        }
+
+        [Test]
+        public void MipsRw_bltic()
+        {
+            Given_NanoDecoder();
+            RewriteCode("CA581800");  // bltic	r18,00000003,0804879E
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r18 < 0x00000003) branch 00100004");
+        }
+
+        [Test]
+        public void MipsRw_lbux()
+        {
+            Given_NanoDecoder();
+            RewriteCode("20C73107");  // lbux	r6,r7(r6)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = (word32) Mem0[r6 + r7:byte]");
+        }
+
+        [Test]
+        public void MipsRw_lwx()
+        {
+            Given_NanoDecoder();
+            RewriteCode("22472407");  // lwx	r4,r7(r18)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = Mem0[r18 + r7:word32]");
         }
     }
 }
