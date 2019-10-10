@@ -63,7 +63,7 @@ namespace Reko.Arch.Mips
             {
                 var instr = dasm.Current;
                 var rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = InstrClass.Linear;
+                this.rtlc = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (instr.opcode)
                 {
@@ -255,10 +255,52 @@ namespace Reko.Arch.Mips
                 case Opcode.xori:
                     RewriteXor(instr); break;
                 case Opcode.rdhwr: RewriteReadHardwareRegister(instr); break;
+
+                // Nano instructions
+                case Opcode.addiupc: RewriteAddiupc(instr); break;
+                case Opcode.aluipc: RewriteAluipc(instr); break;
+                case Opcode.balc: RewriteJump(instr); break;
+                case Opcode.bbeqzc: RewriteBb(instr, e => e); break;
+                case Opcode.bbnezc: RewriteBb(instr, m.Not); break;
+                case Opcode.bc: RewriteJump(instr); break;
+                case Opcode.beqc: RewriteBranch(instr, m.Eq, false); break;
+                case Opcode.beqic: RewriteBranchImm(instr, m.Eq, false); break;
+                case Opcode.beqzc: RewriteBranch0(instr, m.Eq, false); break;
+                case Opcode.bgec: RewriteBranch(instr, m.Ge, false); break;
+                case Opcode.bgeic: RewriteBranchImm(instr, m.Ge, false); break;
+                case Opcode.bgeiuc: RewriteBranchImm(instr, m.Uge, false); break;
+                case Opcode.bltc: RewriteBranch(instr, m.Lt, false); break;
+                case Opcode.bltic: RewriteBranchImm(instr, m.Lt, false); break;
+                case Opcode.bltiuc: RewriteBranchImm(instr, m.Ult, false); break;
+                case Opcode.bltuc: RewriteBranch(instr, m.Ult, false); break;
+                case Opcode.bnec: RewriteBranch(instr, m.Ne, false); break;
+                case Opcode.bneiuc: RewriteBranchImm(instr, m.Ne, false); break;
+                case Opcode.bnezc: RewriteBranch0(instr, m.Ne, false); break;
+                case Opcode.clz: RewriteClz(instr); break;
+                case Opcode.ext: RewriteExt(instr); break;
+                case Opcode.ins: RewriteIns(instr); break;
+                case Opcode.jalrc: RewriteJalr(instr); break;
+                case Opcode.jrc: RewriteJr(instr); break;
+                case Opcode.lbux: RewriteLx(instr, PrimitiveType.Byte); break;
+                case Opcode.lwx: RewriteLx(instr, PrimitiveType.Word32); break;
+                case Opcode.li: RewriteMove(instr); break;
+                case Opcode.lsa: RewriteLsa(instr); break;
+                case Opcode.lwm: RewriteLwm(instr); break;
+                case Opcode.lwxs: RewriteLwxs(instr); break;
+                case Opcode.move: RewriteMove(instr); break;
+                case Opcode.move_balc: RewriteMoveBalc(instr); break;
+                case Opcode.movep: RewriteMovep(instr); break;
+                case Opcode.not: RewriteNot(instr); break;
+                case Opcode.restore: RewriteRestore(instr, false); break;
+                case Opcode.restore_jrc: RewriteRestore(instr, true); break;
+                case Opcode.save: RewriteSave(instr); break;
+                case Opcode.sigrie: RewriteSigrie(instr); break;
+                case Opcode.swxs: RewriteSwxs(instr); break;
+                case Opcode.ualwm: RewriteLwm(instr); break;
                 }
                 yield return new RtlInstructionCluster(
                     instr.Address,
-                    4,
+                    instr.Length,
                     rtlInstructions.ToArray())
                 {
                     Class = rtlc
@@ -281,13 +323,14 @@ namespace Reko.Arch.Mips
             seen.Add(dasm.Current.opcode);
 
             var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var uInstr = r2.ReadUInt32();
+            int cbInstr = dasm.Current.Length;
+            r2.Offset -= cbInstr;
+            var uInstr = cbInstr == 2 ? r2.ReadUInt16() : r2.ReadUInt32();
             Debug.WriteLine("        [Test]");
             Debug.WriteLine("        public void MipsRw_{0}()", dasm.Current.opcode);
             Debug.WriteLine("        {");
             Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
+            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", cbInstr);
             Debug.WriteLine("                \"1|L--|@@@\");");
             Debug.WriteLine("        }");
             Debug.WriteLine("");

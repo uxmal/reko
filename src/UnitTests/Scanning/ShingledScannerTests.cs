@@ -208,25 +208,28 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Shsc_Return_DelaySlot()
         {
-            Given_Mips_Image(0x03E00008, 0);
+            Given_Mips_Image(
+                0x03E00008,     // jr ra
+                0,              // nop is in the delay slot, so it's safe
+                0);             // this nop falls off the end of the segment, it's unsafe.
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
             var scseg = sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
-            Assert.AreEqual(new byte[] { 1, 0 }, TakeEach(scseg, 4));
+            Assert.AreEqual(new byte[] { 1, 1, 0 }, TakeEach(scseg, 4));
         }
 
         [Test]
         public void Shsc_CondJump()
         {
             Given_Mips_Image(
-                0x1C60FFFF,     // 
-                0,
+                0x1C60FFFF,     // branch
+                0,              // nop
                 0x03e00008,     // jr ra
-                0);             // nop
+                0);             // nop is in delay slot, so it's safe.
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
             var scseg = sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
-            Assert.AreEqual(new byte[] { 1, 1, 1, 0, }, TakeEach(scseg, 4));
+            Assert.AreEqual(new byte[] { 1, 1, 1, 1, }, TakeEach(scseg, 4));
         }
 
         [Test]

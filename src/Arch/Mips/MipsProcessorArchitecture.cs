@@ -48,6 +48,7 @@ namespace Reko.Arch.Mips
         public RegisterStorage LinkRegister;
         public RegisterStorage hi;
         public RegisterStorage lo;
+        private string instructionSetEncoding;
         private Dictionary<string, RegisterStorage> mpNameToReg;
 
         public MipsProcessorArchitecture(string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize) : base(archId)
@@ -78,14 +79,13 @@ namespace Reko.Arch.Mips
                 .Concat(ccRegs)
                 .Concat(new[] { hi, lo })
                 .ToDictionary(k => k.Name);
+        }
 
-    }
-
-    /// <summary>
-    /// If the architecture name contains "v6" we are a MIPS v6, which
-    /// has different instruction encodings.
-    /// </summary>
-    private bool IsVersion6OrLater
+        /// <summary>
+        /// If the architecture name contains "v6" we are a MIPS v6, which
+        /// has different instruction encodings.
+        /// </summary>
+        private bool IsVersion6OrLater
         {
             get { return this.Name.Contains("v6"); }
         }
@@ -94,7 +94,17 @@ namespace Reko.Arch.Mips
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new MipsDisassembler(this, imageReader, this.IsVersion6OrLater);
+            return CreateDisassemblerInternal(imageReader);
+        }
+
+        private IEnumerable<MipsInstruction> CreateDisassemblerInternal(EndianImageReader imageReader)
+        {
+            switch (this.instructionSetEncoding)
+            {
+            case "micro": return new MicroMipsDisassembler(this, imageReader);
+            case "nano": return new NanoMipsDisassembler(this, imageReader);
+            default: return new MipsDisassembler(this, imageReader, this.IsVersion6OrLater);
+            }
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -112,7 +122,7 @@ namespace Reko.Arch.Mips
             return new MipsRewriter(
                 this,
                 rdr,
-                new MipsDisassembler(this, rdr, IsVersion6OrLater),
+                CreateDisassemblerInternal(rdr),
                 binder,
                 host);
         }
@@ -176,6 +186,26 @@ namespace Reko.Arch.Mips
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
+        }
+
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            if (options.TryGetValue("decoder", out var oDecoderName) && 
+                oDecoderName is string decoderName)
+            {
+                this.instructionSetEncoding = decoderName;
+                switch (decoderName)
+                {
+                case "micro":
+                case "nano":
+                    this.InstructionBitSize = 16;
+                    break;
+                default:
+                    this.InstructionBitSize = 32;
+                    break;
+                }
+            }
+            base.LoadUserOptions(options);
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

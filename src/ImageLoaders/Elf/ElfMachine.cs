@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -212,6 +212,10 @@ namespace Reko.ImageLoaders.Elf
         EM_CSR_KALIMBA = 219,    // CSR Kalimba architecture family
         EM_AMDGPU = 224,         // AMD GPU architecture
         EM_RISCV = 243,          // RISC-V
+        EM_BPF = 247,            // Linux BPF -- in-kernel virtual machine
+
+        EM_NANOMIPS = 249,       //$REVIEW: a guess?
+
         EM_ALPHA = 0x9026,       // Alpha (written in the absence of an ABI) 
     }
 }

@@ -93,6 +93,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             this.arch = new Mock<IProcessorArchitecture>();
             this.arch.Setup(a => a.CreateImageWriter()).Returns(() => new BeImageWriter());
+            cfgSvc.Setup(d => d.GetArchitecture("sparc32")).Returns(arch.Object);
         }
 
         protected int Given_SegName(string segname)

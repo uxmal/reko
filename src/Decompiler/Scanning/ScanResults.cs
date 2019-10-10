@@ -195,8 +195,7 @@ namespace Reko.Scanning
 
             public override bool Equals(object obj)
             {
-                var that = obj as link;
-                if (that == null)
+                if (!(obj is link that))
                     return false;
                 return that.first == this.first && that.second == this.second;
             }

@@ -58,6 +58,7 @@ namespace Reko.Arch.Mips
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
+        public MachineOperand op4;
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
@@ -68,6 +69,7 @@ namespace Reko.Arch.Mips
             case 0: return op1;
             case 1: return op2;
             case 2: return op3;
+            case 3: return op4;
             default: return null;
             }
         }
@@ -80,21 +82,22 @@ namespace Reko.Arch.Mips
             }
             writer.WriteOpcode(name);
 
-            if (op1 != null)
-            {
-                writer.Tab();
-                op1.Write(writer, options);
-                if (op2 != null)
-                {
-                    writer.WriteChar(',');
-                    op2.Write(writer, options);
-                    if (op3 != null)
-                    {
-                        writer.WriteChar(',');
-                        op3.Write(writer, options);
-                    }
-                }
-            }
+            if (op1 == null)
+                return;
+            writer.Tab();
+            op1.Write(writer, options);
+            if (op2 == null)
+                return;
+            writer.WriteChar(',');
+            op2.Write(writer, options);
+            if (op3 == null)
+                return;
+            writer.WriteChar(',');
+            op3.Write(writer, options);
+            if (op4 == null)
+                return;
+            writer.WriteChar(',');
+            op4.Write(writer, options);
         }
     }
 }

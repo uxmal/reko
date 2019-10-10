@@ -48,6 +48,21 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, opSrc);
         }
 
+        private void RewriteAddiupc(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var offset = ((ImmediateOperand) instr.op2).Value.ToUInt32();
+            var addr = instr.Address + (instr.Length + offset);
+            m.Assign(dst, addr);
+        }
+
+        private void RewriteAluipc(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            m.Assign(dst, src);
+        }
+
         private void RewriteAnd(MipsInstruction instr)
         {
             var opLeft = RewriteOperand0(instr.op2);
@@ -61,6 +76,13 @@ namespace Reko.Arch.Mips
                 opSrc = m.IAdd(opLeft, opRight);
             var opDst = RewriteOperand0(instr.op1);
             m.Assign(opDst, opSrc);
+        }
+
+        private void RewriteClz(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand0(instr.op1);
+            var opSrc = RewriteOperand0(instr.op2);
+            m.Assign(opDst, host.PseudoProcedure("__clz", PrimitiveType.Int32, opSrc));
         }
 
         private void RewriteDshiftC(MipsInstruction instr, Func<Expression,Expression,Expression> fn, int offset)
@@ -112,6 +134,24 @@ namespace Reko.Arch.Mips
             m.Assign(dst, ctor(src, sh));
         }
 
+        private void RewriteExt(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            var pos = RewriteOperand(instr.op3);
+            var size = RewriteOperand(instr.op4);
+            m.Assign(dst, host.PseudoProcedure("__ext", dst.DataType, src, pos, size));
+        }
+
+        private void RewriteIns(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand0(instr.op2);
+            var pos = RewriteOperand(instr.op3);
+            var size = RewriteOperand(instr.op4);
+            m.Assign(dst, host.PseudoProcedure("__ins", dst.DataType, dst, src, pos, size));
+        }
+
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType dtSmall64 = null)
         {
             var opSrc = RewriteOperand(instr.op2);
@@ -156,6 +196,15 @@ namespace Reko.Arch.Mips
             m.Assign(opReg, host.PseudoProcedure("__store_conditional_64", PrimitiveType.Word64, opMem, opReg));
         }
 
+        private void RewriteLsa(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var rs = RewriteOperand(instr.op2);
+            var rt = RewriteOperand(instr.op3);
+            var sh = ((ImmediateOperand) instr.op4).Value.ToInt32();
+            m.Assign(dst, m.IAdd(rt, m.Shl(rs, sh)));
+        }
+
         private void RewriteLui(MipsInstruction instr)
         {
             var immOp = (ImmediateOperand)instr.op2;
@@ -186,6 +235,53 @@ namespace Reko.Arch.Mips
             m.Assign(opDstFloat, opSrcMem);
         }
 
+        private void RewriteLwm(MipsInstruction instr)
+        {
+            int i = 0;
+            int rt = ((RegisterOperand) instr.op1).Register.Number;
+            var mem = ((IndirectOperand) instr.op2);
+            var rs = binder.EnsureRegister(mem.Base);
+            int offset = mem.Offset;
+            int count = ((ImmediateOperand) instr.op3).Value.ToInt32();
+            while (i != count)
+            {
+                int this_rt = (rt + i < 32) ? rt + i : rt + i - 16;
+                int this_offset = offset + (i << 2);
+                var dst = binder.EnsureRegister(arch.GetRegister(this_rt));
+                m.Assign(dst, m.Mem32(m.IAddS(rs, this_offset)));
+
+                // if this_rt == rs and i != count - 1:
+                // raise UNPREDICTABLE()
+                ++i;
+            }
+        }
+
+        private void RewriteLwxs(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand0(instr.op1);
+            var idx = (IndexedOperand) instr.op2;
+            var idBase = binder.EnsureRegister(idx.Base);
+            var idIndex = binder.EnsureRegister(idx.Index);
+            m.Assign(opDst, m.Mem32(m.IAdd(idBase, m.IMul(idIndex, 4))));
+        }
+
+        private void RewriteLx(MipsInstruction instr, PrimitiveType dt)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var idx = (IndexedOperand) instr.op2;
+            var idBase = binder.EnsureRegister(idx.Base);
+            var idIndex = binder.EnsureRegister(idx.Index);
+            Expression src = m.Mem32(m.IAdd(idBase, idIndex));
+            if (dst.DataType.Size != dt.Size)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension.
+                src.DataType = dt;
+                src = m.Cast(dst.DataType, src);
+            }
+            m.Assign(dst, src);
+        }
+
         private void RewriteMf(MipsInstruction instr, RegisterStorage reg)
         {
             var opDst = RewriteOperand0(instr.op1);
@@ -208,6 +304,32 @@ namespace Reko.Arch.Mips
                 instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
             m.Assign(opDst, opSrc);
+        }
+
+        private void RewriteMove(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand0(instr.op2);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteMovep(MipsInstruction instr)
+        {
+            var dstHi = (RegisterOperand) instr.op1;
+            var dstLo = (RegisterOperand) instr.op2;
+            var srcHi = (RegisterOperand) instr.op3;
+            var srcLo = (RegisterOperand) instr.op4;
+            var dst = binder.EnsureSequence(PrimitiveType.Word64, dstHi.Register, dstLo.Register);
+            Expression src;
+            if (srcHi.Register.Number == 0 || srcLo.Register.Number == 0)
+            {
+                src = m.Seq(RewriteOperand(srcHi), RewriteOperand(srcLo));
+            }
+            else
+            {
+                src = binder.EnsureSequence(PrimitiveType.Word64, srcHi.Register, srcLo.Register);
+            }
+            m.Assign(dst, src);
         }
 
         private void RewriteMul(MipsInstruction instr, Func<Expression, Expression, Expression> ctor, PrimitiveType dt)
@@ -239,6 +361,17 @@ namespace Reko.Arch.Mips
                 opSrc = m.Or(opLeft, opRight);
             var opDst = RewriteOperand0(instr.op1);
             m.Assign(opDst, m.Comp(opSrc));
+        }
+
+        private void RewriteNot(MipsInstruction instr)
+        {
+            var src = RewriteOperand0(instr.op2);
+            if (src is Constant c)
+                src = Operator.Comp.ApplyConstant(c);
+            else
+                src = m.Comp(src);
+            var dst = RewriteOperand0(instr.op1);
+            m.Assign(dst, src);
         }
 
         private void RewriteOr(MipsInstruction instr)
@@ -278,6 +411,55 @@ namespace Reko.Arch.Mips
                     VoidType.Instance,
                     binder.EnsureRegister(opSrc.Base),
                     m.Int32(opSrc.Offset)));
+        }
+
+        private void RewriteRestore(MipsInstruction instr, bool ret)
+        {
+            var sp = binder.EnsureRegister(arch.GetRegister(29));
+            int count = ((ImmediateOperand) instr.op3).Value.ToInt32();
+            int rt = ((RegisterOperand) instr.op2).Register.Number;
+            int u = ((ImmediateOperand) instr.op1).Value.ToInt32();
+            int i = 0;
+            bool gp = false;
+            while (i != count)
+            {
+                var this_rt = (gp && (i + 1 == count))
+                    ? 28
+                    : rt + i < 32
+                        ? rt + i
+                        : rt + i - 16;
+                var this_offset = u - ((i + 1) << 2);
+                var ea = m.Mem32(m.IAddS(sp, this_offset));
+                var reg = binder.EnsureRegister(arch.GetRegister(this_rt));
+                m.Assign(reg, ea);
+                ++i;
+            }
+            m.Assign(sp, m.IAddS(sp, u));
+            if (ret)
+                m.Return(0, 0);
+        }
+
+        private void RewriteSave(MipsInstruction instr)
+        {
+            var sp = binder.EnsureRegister(arch.GetRegister(29));
+            int count = ((ImmediateOperand) instr.op3).Value.ToInt32();
+            int rt = ((RegisterOperand) instr.op2).Register.Number;
+            int u = ((ImmediateOperand) instr.op1).Value.ToInt32();
+            bool gp = false;
+            int i = 0;
+            while (i != count)
+            {
+                var this_rt = (gp && (i + 1 == count)) ? 28
+                    : rt + i < 32
+                        ? rt + i
+                        : rt + i - 16;
+                var reg = binder.EnsureRegister(arch.GetRegister(this_rt));
+                var this_offset = -((i + 1) << 2);
+                var ea = m.Mem32(m.IAddS(sp, this_offset));
+                m.Assign(ea, reg);
+                ++i;
+            }
+            m.Assign(sp, m.ISubS(sp, u));
         }
 
         private void RewriteSdl(MipsInstruction instr)
@@ -374,6 +556,15 @@ namespace Reko.Arch.Mips
             var opDst = RewriteOperand0(instr.op2);
             var opSrc = RewriteOperand0(instr.op1);
             m.Assign(opDst, host.PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, opDst, opSrc));
+        }
+
+        private void RewriteSwxs(MipsInstruction instr)
+        {
+            var src = RewriteOperand0(instr.op1);
+            var idx = (IndexedOperand) instr.op2;
+            var idBase = binder.EnsureRegister(idx.Base);
+            var idIndex = binder.EnsureRegister(idx.Index);
+            m.Assign(m.Mem32(m.IAdd(idBase, m.IMul(idIndex, 4))), src);
         }
 
         private void RewriteSxx(MipsInstruction instr, Func<Expression, Expression, Expression> op)

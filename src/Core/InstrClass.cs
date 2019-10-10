@@ -27,8 +27,8 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Classifies an instruction based on certain architectural features involving
-    /// delay slots on architectures like MIPS and SPARC.
+    /// Classifies an instruction based on general execution properties. The properties can be used
+    /// by tools without knowing the exact details of a specific instruction set.
     /// </summary>
     [Flags]
     [NativeInterop]
@@ -37,8 +37,8 @@ namespace Reko.Core
         None,
         Linear  = 1,            // ALU instruction, computational (like ADD, SHR, or MOVE)
         Transfer = 2,           // Control flow transfer like JMP, CALL
-        Conditional = 4,        // Conditionally executed  (like branches or CMOV instructions)
-        Call = 8,               // Instruction saves its continuation.
+        Conditional = 4,        // Conditionally executed (like branches or CMOV instructions)
+        Call = 8,               // Instruction saves its continuation, and may resume execution to the following instruction.
         Delay = 16,             // The following instruction is in a delay slot.
         Annul = 32,             // The following instruction is anulled.
         Terminates = 64,        // Instruction terminates execution.

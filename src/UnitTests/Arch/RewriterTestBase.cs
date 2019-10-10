@@ -59,5 +59,26 @@ namespace Reko.UnitTests.Arch
         {
             return new RewriterHost(this.Architecture);
         }
+
+        protected void AssertCode(params string[] expected)
+        {
+            int i = 0;
+            var frame = Architecture.CreateFrame();
+            var host = CreateRewriterHost();
+            var rewriter = GetInstructionStream(frame, host).GetEnumerator();
+            while (i < expected.Length && rewriter.MoveNext())
+            {
+                Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(rewriter.Current.Class), rewriter.Current));
+                ++i;
+                var ee = rewriter.Current.Instructions.OfType<RtlInstruction>().GetEnumerator();
+                while (i < expected.Length && ee.MoveNext())
+                {
+                    Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(ee.Current.Class), ee.Current));
+                    ++i;
+                }
+            }
+            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.");
+            Assert.IsFalse(rewriter.MoveNext(), "More instructions were emitted than were expected.");
+        }
     }
 }

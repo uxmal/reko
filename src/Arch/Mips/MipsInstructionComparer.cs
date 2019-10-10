@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -37,7 +37,8 @@ namespace Reko.Arch.Mips
             var b = (MipsInstruction)y;
             return Compare(a.op1, b.op1) &&
                    Compare(a.op2, b.op2) &&
-                   Compare(a.op3, b.op3);
+                   Compare(a.op3, b.op3) &&
+                   Compare(a.op4, b.op4);
         }
 
         private bool Compare(MachineOperand a, MachineOperand b)
@@ -92,6 +93,7 @@ namespace Reko.Arch.Mips
             h = h*23 ^ GetHashCode(instr.op1);
             h = h*23 ^ GetHashCode(instr.op2);
             h = h*23 ^ GetHashCode(instr.op3);
+            h = h*23 ^ GetHashCode(instr.op4);
             return h;
         }
 

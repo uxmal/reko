@@ -50,7 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IndexedOperand.cs" />
     <Compile Include="IndirectOperand.cs" />
+    <Compile Include="MicroMipsDisassembler.cs" />
     <Compile Include="MipsDisassembler.cs" />
     <Compile Include="MipsInstruction.cs" />
     <Compile Include="MipsInstructionComparer.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="MipsRewriter.cs" />
     <Compile Include="MipsRewriter.Fpu.cs" />
     <Compile Include="MipsRewriter.System.cs" />
+    <Compile Include="NanoMipsDisassembler.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Decoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
