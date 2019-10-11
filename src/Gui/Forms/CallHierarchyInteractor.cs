@@ -20,18 +20,19 @@
 
 using Reko.Core;
 using Reko.Gui;
+using Reko.Gui.Forms;
 using System;
 using System.ComponentModel.Design;
 using System.Linq;
 
-namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.Gui.Forms
 {
     public class CallHierarchyInteractor : ICallHierarchyService, ICommandTarget, IWindowPane
     {
-        private CallHierarchyView view;
+        private ICallHierarchyView view;
         private ITreeNodeDesignerHost host;
 
-        public CallHierarchyInteractor(CallHierarchyView view)
+        public CallHierarchyInteractor(ICallHierarchyView view)
         {
             this.view = view;
             this.view.DeleteButton.Click += DeleteButton_Click;

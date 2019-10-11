@@ -26,8 +26,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Reko.UserInterfaces.WindowsForms;
-using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +38,7 @@ namespace Reko.UnitTests.Gui.Windows
     [Category(Categories.UserInterface)]
     public class CallHierarchyInteractorTests
     {
-        private CallHierarchyView view;
+        private ICallHierarchyView view;
         private Mock<IProcessorArchitecture> arch;
         private Procedure proc1;
         private Procedure proc2;
@@ -73,7 +71,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_CallHierarchyView()
         {
-            this.view = new CallHierarchyView();
+            this.view = new Mock<ICallHierarchyView>().Object;
         }
 
         private void Given_CallHierarchyInteractor()
