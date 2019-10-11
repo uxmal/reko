@@ -37,7 +37,7 @@ namespace Reko.Core.Code
         public GotoInstruction(Expression target)
         {
             this.Target = target;
-            this.condition = Constant.Invalid;
+            this.Condition = Constant.Invalid;
         }
 
         public override Instruction Accept(InstructionTransformer xform)
@@ -59,11 +59,7 @@ namespace Reko.Core.Code
 
         public override bool IsControlFlow { get { return true; } }
 
-        public Expression Condition
-        {
-            get { return condition; }
-            set { condition = value; }
-        }
+        public Expression Condition { get; set; }
 
         /// <summary>
         /// The target of the goto instruction. Either a Constant, in which case it should 

@@ -197,7 +197,7 @@ namespace Reko.Arch.Arm
         public override RegisterStorage GetRegister(string name)
         {
             if (Registers.RegistersByName.TryGetValue(name, out var reg))
-                return reg;
+            return reg;
             else
                 return null;
         }
@@ -260,6 +260,11 @@ namespace Reko.Arch.Arm
             var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
+        }
+
+        public override FlagGroupStorage GetFlagGroup( uint grf)
+        {
+            return GetFlagGroup(Registers.cpsr; grf);
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)

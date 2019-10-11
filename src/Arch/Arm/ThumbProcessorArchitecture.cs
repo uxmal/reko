@@ -210,6 +210,11 @@ namespace Reko.Arch.Arm
             return fl;
         }
 
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
+        {
+            return GetFlagGroup(Registers.pstate, grf);
+        }
+
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

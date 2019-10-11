@@ -34,11 +34,6 @@ namespace Reko.Core
     {
         private int iReg;
 
-        public StorageFactory(StorageDomain domain = StorageDomain.Register)
-        {
-            this.iReg = (int) domain;
-        }
-
         public Dictionary<string, RegisterStorage> NamesToRegisters { get; } = new Dictionary<string, RegisterStorage>();
         public Dictionary<StorageDomain, RegisterStorage> DomainsToRegisters { get; } = new Dictionary<StorageDomain, RegisterStorage>();
 

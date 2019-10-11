@@ -247,6 +247,12 @@ namespace Reko.Arch.Arm
             return fl;
         }
 
+        public override FlagGroupStorage GetFlagGroup(uint grf)
+        {
+            return GetFlagGroup( Registers.ByName["pstate"], grf);
+        }
+
+
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

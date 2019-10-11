@@ -144,6 +144,11 @@ namespace Reko.Arch.M68k
             return fl;
         }
 
+        public override FlagGroupStorage GetFlagGroup(uint grf)
+        {
+            return GetFlagGroup(Registers.ccr; , grf);
+        }
+
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             FlagM grf = 0;

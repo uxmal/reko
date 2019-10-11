@@ -402,6 +402,7 @@ namespace Reko.Core
         /// </remarks>
         public virtual int ReturnAddressOnStack => PointerType.Size; //$TODO: deal with near/far calls in x86-realmode
         public int InstructionBitSize { get; protected set; }
+        public EndianServices Endianness { get; protected set; }
 
         /// <summary>
         /// The stack register used by the architecture.

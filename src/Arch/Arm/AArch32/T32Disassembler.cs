@@ -560,7 +560,7 @@ namespace Reko.Arch.Arm.AArch32
         };
 
         private static readonly ArmVectorData[] unsigned_bhwd = new[]
-        {
+ {
             ArmVectorData.U8,
             ArmVectorData.U16,
             ArmVectorData.U32,
@@ -1942,7 +1942,6 @@ namespace Reko.Arch.Arm.AArch32
         {
             return new NyiDecoder<T32Disassembler, Mnemonic, AArch32Instruction>(msg);
         }
-
 
         static T32Disassembler()
         {

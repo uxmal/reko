@@ -146,6 +146,11 @@ namespace Reko.Arch.Mos6502
             return fstg;
         }
 
+        public override FlagGroupStorage GetFlagGroup(uint grf)
+        {
+            return GetFlagGroup(Registers.P, grf);
+        }
+
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
@@ -172,7 +177,7 @@ namespace Reko.Arch.Mos6502
             if (rdr.TryReadLeUInt16(out var uaddr))
             {
                 return Address.Ptr16(uaddr);
-            }
+        }
             else
             {
                 return null;

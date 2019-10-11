@@ -94,6 +94,11 @@ namespace Reko.Arch.Tms7000
             throw new NotImplementedException();
         }
 
+        public override FlagGroupStorage GetFlagGroup(uint grf)
+        {
+            return GetFlagGroup(this.st, grf);
+        }
+
         public override SortedList<string, int> GetMnemonicNames()
         {
             throw new NotImplementedException();

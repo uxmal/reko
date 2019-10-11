@@ -328,6 +328,11 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException("This shouldn't happen.");
         }
 
+        public override FlagGroupStorage GetFlagGroup(uint grf)
+        {
+            return GetFlagGroup(null, grf);
+        }
+
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

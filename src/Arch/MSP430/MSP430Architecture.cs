@@ -101,6 +101,11 @@ namespace Reko.Arch.Msp430
             return fl;
         }
 
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
+        {
+            return GetFlagGroup(Registers.sr, grf);
+        }
+
         public override SortedList<string, int> GetMnemonicNames()
         {
             throw new NotImplementedException();

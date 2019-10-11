@@ -437,7 +437,7 @@ namespace Reko.Arch.zSeries
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
                 if (!dasm.rdr.TryReadBeUInt16(out ushort uLowWord))
-                    return dasm.CreateInvalidInstruction();
+                    return dasm.Invalid();
                 ulong uInstrExt = (uInstr << 16) | uLowWord;
                 return base.Decode(uInstrExt, dasm);
             }
@@ -452,7 +452,7 @@ namespace Reko.Arch.zSeries
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
                 if (!dasm.rdr.TryReadBeUInt32(out uint uLowWord))
-                    return dasm.CreateInvalidInstruction();
+                    return dasm.Invalid();
                 ulong uInstrExt = (uInstr << 32) | uLowWord;
                 return base.Decode(uInstrExt, dasm);
             }
@@ -522,7 +522,7 @@ namespace Reko.Arch.zSeries
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
                 if (!dasm.rdr.TryReadBeUInt16(out ushort uLowWord))
-                    return dasm.CreateInvalidInstruction();
+                    return dasm.Invalid();
                 ulong uInstrExt = (uInstr << 16) | uLowWord;
                 var op = this.bitfield.Read((uint)uInstrExt);
                 return this.decoders[op].Decode(uInstrExt, dasm);
@@ -561,7 +561,7 @@ namespace Reko.Arch.zSeries
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
                 if (!dasm.rdr.TryReadBeUInt32(out uint uLowWord))
-                    return dasm.CreateInvalidInstruction();
+                    return dasm.Invalid();
                 ulong uInstrExt = (uInstr << 32) | uLowWord;
                 var op = this.bitfield.Read(uInstrExt);
                 return this.decoders[op].Decode(uInstrExt, dasm);

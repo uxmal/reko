@@ -74,7 +74,12 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage GetFlagGroup(uint grf)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override FlagGroupStorage GetFlagGroup(string name)
 		{
 			throw new NotImplementedException();
 		}

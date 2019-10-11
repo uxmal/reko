@@ -104,6 +104,11 @@ namespace Reko.Arch.i8051
             return grfStg;
         }
 
+        public override FlagGroupStorage GetFlagGroup(uint grf)
+        {
+            return GetFlagGroup(Registers.PSW, grf);
+        }
+
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

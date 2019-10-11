@@ -260,7 +260,7 @@ namespace Reko.Arch.Alpha
             {
                 var functionCode = ((int)uInstr >> 5) & 0x7F;
                 if (!decoders.TryGetValue(functionCode, out var decoder))
-                    return dasm.CreateInvalidInstruction();
+                    return dasm.Invalid();
                 else
                     return decoder.Decode(uInstr, dasm);
             }
@@ -320,7 +320,7 @@ namespace Reko.Arch.Alpha
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
                 if (!mnemonics.TryGetValue(uInstr & 0x0000FFFF, out var opcode))
-                    return dasm.CreateInvalidInstruction();
+                    return dasm.Invalid();
                 return new AlphaInstruction {
                     Mnemonic = opcode.Item1,
                     InstructionClass = opcode.Item2,
@@ -355,7 +355,7 @@ namespace Reko.Arch.Alpha
         {
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                return dasm.CreateInvalidInstruction();
+                return dasm.Invalid();
             }
         }
 
@@ -363,7 +363,7 @@ namespace Reko.Arch.Alpha
         {
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                return dasm.CreateInvalidInstruction();
+                return dasm.Invalid();
             }
         }
 

@@ -454,8 +454,8 @@ namespace Reko.Arch.PowerPC
                 instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
-                host.PseudoProcedure(
-                    "__trap",
+                    host.PseudoProcedure(
+                        "__trap",
                     VoidType.Instance));
         }
     }

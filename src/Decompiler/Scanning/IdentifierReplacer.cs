@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -95,9 +95,8 @@ namespace Reko.Scanning
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
             var idSeq = id;
-            var newHead = seq.Head.Accept(this);
-            var newTail = seq.Tail.Accept(this);
-            return frame.EnsureSequence(newHead.Storage, newTail.Storage, idSeq.DataType);
+            var newElems = seq.Elements.Select(e => e.Accept(this).Storage);
+            return frame.EnsureSequence(idSeq.DataType, newElems.ToArray());
         }
 
         public Identifier VisitOutArgumentStorage(OutArgumentStorage ost)

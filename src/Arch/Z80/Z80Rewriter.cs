@@ -438,7 +438,6 @@ namespace Reko.Arch.Z80
             m.Assign(dst, m.IAdd(src, 1));
             AssignCond(FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
-
         private void RewriteJp(Z80Instruction instr)
         {
             switch (instr.Operands[0])
@@ -447,13 +446,13 @@ namespace Reko.Arch.Z80
                 EmitBranch(cOp, ((AddressOperand)instr.Operands[1]).Address);
                 break;
             case AddressOperand target:
-                m.Goto(target.Address);
+                    m.Goto(target.Address);
                 break;
             case MemoryOperand mTarget:
                 m.Goto(binder.EnsureRegister(mTarget.Base!));
                 break;
+                }
             }
-        }
 
         private void RewriteJr()
         {
@@ -521,8 +520,8 @@ namespace Reko.Arch.Z80
                     {
                         int s = memOp.Offset.ToInt32();
                         return m.Mem(memOp.Width, m.AddSubSignedInt(bReg, s));
-                    }
-                }
+                        }
+                        }
             default:
                 throw new NotImplementedException(string.Format("Rewriting of Z80 operand type {0} is not implemented yet.", op.GetType().FullName));
             }

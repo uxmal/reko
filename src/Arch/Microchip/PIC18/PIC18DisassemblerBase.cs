@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
