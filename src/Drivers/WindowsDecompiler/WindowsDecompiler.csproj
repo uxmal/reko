@@ -67,14 +67,10 @@
       <Name>OpenRISC</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\PaRisc\PaRisc.csproj">
-      <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>
-      <Name>PaRisc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\PowerPC.Design\PowerPC.Design.csproj">
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Rl78\Rl78.csproj">
-      <Project>{54029784-c8a6-43f5-9d00-62ec8da04fa1}</Project>
-      <Name>Rl78</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\SuperH\SuperH.csproj">
     </ProjectReference>
@@ -88,40 +84,14 @@
     <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj" />
     <ProjectReference Include="..\..\Environments\SysV\SysV.csproj" />
     <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj" />
-    <ProjectReference Include="..\..\ImageLoaders\BinHex\BinHex.csproj">
-      <Project>{3f73b4eb-4ee6-45df-aa07-06ecdefa5bd9}</Project>
-      <Name>BinHex</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\Coff\Coff.csproj">
-      <Project>{02595a47-2592-441d-b44d-8ea8c19ee5e2}</Project>
-      <Name>Coff</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\HpSom\HpSom.csproj">
-      <Project>{6faa0b0c-f6c2-4091-9cc8-1dc2cf708bc2}</Project>
-      <Name>HpSom</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\IntelHex\IntelHex.csproj">
-      <Project>{72641087-68d2-41e7-9b29-bc9d4213940a}</Project>
-      <Name>IntelHex</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\Nro\Nro.csproj">
-      <Project>{0ab0aab7-292e-4827-a480-a32561b07fd7}</Project>
-      <Name>Nro</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\Native\NativeProxy.csproj">
-    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\HpSom\HpSom.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj" />
+    <ProjectReference Include="..\..\Native\NativeProxy.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj" />

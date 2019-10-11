@@ -437,8 +437,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                     SegmentMap = new SegmentMap(
                         mem.BaseAddress,
                         new ImageSegment(".text", mem, AccessMode.ReadExecute)),
-                    Platform = platform.Object,
-                    Architecture = platform.Object.Architecture,
+                    Platform = platform,
+                    Architecture = platform.Architecture,
                 }
                 }
             };

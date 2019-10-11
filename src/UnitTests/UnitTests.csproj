@@ -52,6 +52,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Arch\Tlcs\Tlcs.csproj">
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Tms7000\Tms7000.csproj" />
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\X86\X86.csproj">
@@ -136,6 +137,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Python\Python.csproj" />
 
     <ProjectReference Include="..\Native\NativeProxy.csproj" />
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj" />
