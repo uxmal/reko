@@ -65,11 +65,11 @@ l0C00_0019:
 l0C00_001A_thunk_fn0C00_0020:
 	ax_13 = SEQ(0x00, fn0C00_0020(ax - 0x0001))
 	SCZO_15 = <invalid>
-	return (byte) ax_13
+	return SLICE(ax_13, byte, 0)
 	// succ:  fn0C00_0015_exit
 l0C00_001D:
 	ax_18 = SEQ(ah_17, 0x01) (alias)
-	return (byte) ax_18
+	return SLICE(ax_18, byte, 0)
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:
 Register byte fn0C00_0020(Register word16 ax)
@@ -106,10 +106,10 @@ l0C00_0024:
 l0C00_0025_thunk_fn0C00_0015:
 	ax_15 = SEQ(0x00, fn0C00_0015(ax - 0x0001))
 	SCZO_17 = <invalid>
-	return (byte) ax_15
+	return SLICE(ax_15, byte, 0)
 	// succ:  fn0C00_0020_exit
 l0C00_0028:
 	ax_20 = SEQ(ah_19, 0x00) (alias)
-	return (byte) ax_20
+	return SLICE(ax_20, byte, 0)
 	// succ:  fn0C00_0020_exit
 fn0C00_0020_exit:
