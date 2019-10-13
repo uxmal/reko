@@ -956,6 +956,43 @@ main_exit:
 
         [Test]
         [Category(Categories.UnitTests)]
+        public void CrwSliceReturnRegister()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var reth = new RegisterStorage("reth", 1, 16, PrimitiveType.Word16);
+            var ssa = Given_Procedure("main", m =>
+            {
+                var result = m.Reg("ret", ret);
+                m.Label("body");
+                m.Assign(result, 0x12345678);
+                m.AddUseToExitBlock(result);
+                m.Return();
+            });
+            Given_Signature(
+                "main",
+                FunctionType.Func(
+                    new Identifier(
+                        "reth",
+                        PrimitiveType.Word16,
+                        reth)));
+
+            When_RewriteReturns(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	ret = 0x12345678
+	return SLICE(ret, word16, 16)
+main_exit:
+	use ret
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
         public void CrwMakeSig_Sequence_InArg()
         {
             flow.BitsUsed.Add(new SequenceStorage(Registers.edx, Registers.eax), new BitRange(0, 64));
