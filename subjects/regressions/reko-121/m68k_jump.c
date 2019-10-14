@@ -5,7 +5,7 @@
 #include "m68k_jump.h"
 
 // 0000C02A: void fn0000C02A(Register (ptr32 Eq_n) a0, Register (ptr32 word32) a1)
-void fn0000C02A(Eq_n * a0, word32 * a1)
+void fn0000C02A(struct Eq_n * a0, word32 * a1)
 {
 	globals->dwFF0F08 = a0->dw0000;
 	globals->dwFF0F04 = 0x00;

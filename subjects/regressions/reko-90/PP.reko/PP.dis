@@ -6208,7 +6208,7 @@ l0800_21C1:
 	Mem415[es_bx_411 + 0x0004:byte] = SLICE(ax_28 + (cx_50 + 0x0004) >>u 0x08, byte, 0)
 	Mem418[es_bx_411 + 0x0005:byte] = bLoc0C_618 + bLoc0E_619
 	fn0800_2688(ds, (uint32) (uint16) (cx_50 + 0x0004), 0x0000, 0x0000)
-	return (byte) SEQ(ch_729, cl_453)
+	return ch_729
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6758,7 +6758,7 @@ l0800_249F:
 	bpOut = Mem394[ss:bp_362:word16]
 	siOut = si_369
 	dsOut = ds_366
-	return (byte) SEQ(ch_545, cl_397)
+	return ch_545
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12191,7 +12191,7 @@ l0800_3DB2:
 	bpOut = Mem378[ss:bp_226:word16]
 	siOut = si_381
 	dsOut = ds_366
-	return (byte) cx_365
+	return SLICE(cx_365, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12797,7 +12797,7 @@ l0800_4150:
 	siOut = si_134
 	diOut = di_124
 	dsOut = ds
-	return (byte) cx_121
+	return SLICE(cx_121, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12852,7 +12852,7 @@ l0800_417A:
 l0800_4192:
 	siOut = si_134
 	dsOut = ds
-	return (byte) ax_116
+	return SLICE(ax_116, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -20529,7 +20529,7 @@ l0800_7C65:
 
 l0800_7C73:
 	dsOut = ds
-	return (byte) ax_53
+	return SLICE(ax_53, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -20809,7 +20809,7 @@ l0800_7EA0:
 
 l0800_7EAA:
 	dsOut = ds
-	return (byte) ax_53
+	return SLICE(ax_53, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21726,7 +21726,7 @@ l0800_8359:
 	Mem46[ds_24:0x29FF:word16] = v17_45
 	Mem50[ds_24:0x2A01:word16] = Mem46[ds_24:0x2A01:word16] + (v17_45 <u 0x0000)
 	dsOut = ds_24
-	return (byte) SEQ(SLICE(ax_43, byte, 8), al_30)
+	return al_30
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -22293,7 +22293,7 @@ l0800_863C:
 l0800_8678:
 	diOut = di
 	dsOut = ds
-	return (byte) ax_10
+	return SLICE(ax_10, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27091,7 +27091,7 @@ l0800_97D7:
 
 l0800_97F6:
 	dxOut = wArg02
-	return (byte) ax_26
+	return SLICE(ax_26, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30290,7 +30290,7 @@ l0800_A565:
 
 l0800_A57D:
 	dxOut = wArg02
-	return (byte) ax_20
+	return SLICE(ax_20, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30336,7 +30336,7 @@ l0800_A58B:
 // SymbolicIn:
 
 l0800_A59B:
-	return (byte) ax_17
+	return SLICE(ax_17, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30578,7 +30578,7 @@ l0800_A6B2:
 	cxOut = cx
 	dxOut = dx
 	dsOut = ds
-	return (byte) si_105
+	return SLICE(si_105, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -33313,7 +33313,7 @@ l0800_B197:
 
 l0800_B29A:
 	cxOut = cx_110
-	return (byte) ax_325
+	return SLICE(ax_325, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36981,7 +36981,7 @@ l1483_0C53_thunk_fn1483_0C55:
 	int8 Top_27
 	word32 eax_25 = fn1483_0C55(out Top_27)
 	TopOut = Top_27
-	return (word16) eax_25
+	return SLICE(eax_25, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37022,9 +37022,9 @@ l1483_0C6C:
 l1483_0C85_thunk_fn1483_0CA0:
 	int8 Top_104
 	word16 di_191
-	word32 eax_162 = SEQ(ebx_16_16, fn1483_0CA0(SEQ(es_60, di_68), ss_bp_187, al_96, ah_97, ax_69, si_61, ds_57, out di_191, out Top_104))
+	eax_162 = SEQ(ebx_16_16, fn1483_0CA0(SEQ(es_60, di_68), ss_bp_187, al_96, ah_97, ax_69, si_61, ds_57, out di_191, out Top_104)) (alias)
 	TopOut = Top_104
-	return (word16) eax_162
+	return fn1483_0CA0(SEQ(es_60, di_68), ss_bp_187, al_96, ah_97, ax_69, si_61, ds_57, out di_191, out Top_104)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37045,7 +37045,7 @@ l1483_0C8F_thunk_fn1483_0C91:
 	selector es_194
 	word32 eax_130 = (uint32) (uint16) fn1483_0C91(SEQ(ds, bx), SEQ(ss, bp), ax, cx_91 - 0x0001, si_61 + 0x0001, di_68 + 0x0001, stackArg0, out di_193, out es_194, out Top_132)
 	TopOut = Top_132
-	return (word16) eax_130
+	return SLICE(eax_130, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

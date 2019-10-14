@@ -454,11 +454,7 @@ namespace Reko.Analysis
                     var idStg = reachingBlock.Value
                         .Where(cb => cb.Storage.Covers(idRet.Storage))
                         .FirstOrDefault();
-                    SetReturnExpression(
-                        ssa,
-                        block,
-                        idRet,
-                        idStg?.Expression ?? Constant.Invalid);
+                    SetReturnExpression(ssa, block, idRet, idStg);
                 }
                 int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
                 Debug.Assert(insertPos >= 0);
@@ -483,8 +479,9 @@ namespace Reko.Analysis
             SsaState ssa,
             Block block,
             Identifier idRet,
-            Expression e)
+            CallBinding idStg)
         {
+            var e = idStg?.Expression ?? Constant.Invalid;
             for (int i = block.Statements.Count-1; i >=0; --i)
             {
                 var stm = block.Statements[i];
@@ -492,7 +489,8 @@ namespace Reko.Analysis
                 {
                     if (idRet.DataType.BitSize < e.DataType.BitSize)
                     {
-                        e = new Cast(idRet.DataType, e);
+                        int offset = idStg.Storage.OffsetOf(idRet.Storage);
+                        e = new Slice(idRet.DataType, e, offset);
                     }
                     ret.Expression = e;
                     ssa.AddUses(stm);

@@ -1126,7 +1126,7 @@ T_233: (in (uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000001:b
   Class: Eq_141
   DataType: uint64
   OrigDataType: uint64
-T_234: (in (word32) rax_112 : word32)
+T_234: (in SLICE(rax_112, word32, 0) : word32)
   Class: Eq_73
   DataType: word32
   OrigDataType: word32

@@ -3077,7 +3077,7 @@ byte fn0800-2085(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 	*((word32) es_bx_n + 0x04) = (byte) (ax_n + (cx_n + 0x04) >> 0x08);
 	*((word32) es_bx_n + 0x05) = bLoc0C_n + bLoc0E_n;
 	fn0800-2688(ds, (uint32) (uint16) (cx_n + 0x04), 0x00, 0x00);
-	return (byte) SEQ(ch_n, cl_n);
+	return ch_n;
 }
 
 // 0800:2201: void fn0800-2201(Register Eq_n ds, Stack Eq_n ptrArg02)
@@ -3318,7 +3318,7 @@ byte fn0800-23EC(Eq_n ds, Eq_n ptrArg02, union Eq_n & bpOut, ptr16 & siOut, unio
 	bpOut = ss->*bp_n;
 	siOut = si_n;
 	dsOut = ds_n;
-	return (byte) SEQ(ch_n, cl_n);
+	return ch_n;
 }
 
 // 0800:24FE: Register Eq_n fn0800-24FE(Register Eq_n ds, Stack Eq_n ptrArg02)
@@ -5780,7 +5780,7 @@ byte fn0800-3C99(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, union Eq_n & b
 	bpOut = ss->*bp_n;
 	siOut = si_n;
 	dsOut = ds_n;
-	return (byte) cx_n;
+	return SLICE(cx_n, byte, 8);
 }
 
 // 0800:3DCF: Register word16 fn0800-3DCF(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n chOut, Register out ptr16 dxOut, Register out ptr16 diOut, Register out Eq_n dsOut)
@@ -6079,7 +6079,7 @@ byte fn0800-4110(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, 
 	siOut = si_n;
 	diOut = di_n;
 	dsOut = ds;
-	return (byte) cx_n;
+	return SLICE(cx_n, byte, 8);
 }
 
 // 0800:4152: Register byte fn0800-4152(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n dwArg0A, Register out ptr16 siOut, Register out Eq_n dsOut)
@@ -6101,7 +6101,7 @@ byte fn0800-4152(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, 
 	}
 	siOut = si_n;
 	dsOut = ds;
-	return (byte) ax_n;
+	return SLICE(ax_n, byte, 8);
 }
 
 // 0800:4194: void fn0800-4194(Register Eq_n ds, Stack Eq_n dwArg02)
@@ -10492,7 +10492,7 @@ l0800_nC57:
 				ax_n = (uint16) (uint8) fn0800-8624(ds, (byte) (*((word32) ds + 11843) >> 0x08), out di_n, out ds);
 			}
 			dsOut = ds;
-			return (byte) ax_n;
+			return SLICE(ax_n, byte, 8);
 		}
 	}
 	word16 di_n;
@@ -10614,7 +10614,7 @@ byte fn0800-7C78(Eq_n ds, union Eq_n & dsOut)
 		{
 l0800_nEAA:
 			dsOut = ds;
-			return (byte) ax_n;
+			return SLICE(ax_n, byte, 8);
 		}
 	}
 	word16 di_n;
@@ -10924,7 +10924,7 @@ byte fn0800-8359(Eq_n ds, struct Eq_n & dsOut)
 	ds_n->w29FF = v17_n;
 	ds_n->w2A01 = (word16) ((bool) (v17_n < 0x00) + ds_n->w2A01);
 	dsOut = ds_n;
-	return (byte) SEQ(SLICE(ax_n, byte, 8), al_n);
+	return al_n;
 }
 
 // 0800:83A1: void fn0800-83A1(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06)
@@ -11112,7 +11112,7 @@ byte fn0800-8624(Eq_n ds, Eq_n bArg02, union Eq_n & diOut, union Eq_n & dsOut)
 	}
 	diOut = di;
 	dsOut = ds;
-	return (byte) ax_n;
+	return SLICE(ax_n, byte, 8);
 }
 
 // 0800:867A: Register word16 fn0800-867A(Stack Eq_n wArg04, Stack Eq_n psegArg06, Stack Eq_n wArg08, Stack Eq_n psegArg0A, Register out (ptr16 Eq_n) dsOut)
@@ -17146,9 +17146,9 @@ Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, Eq_n al, word16 cx, Eq_n bx, Eq_n
 		{
 			Eq_n Top_n;
 			word16 di_n;
-			word32 eax_n = SEQ(ebx_16_n, fn1483-0CA0(di_n, ss_bp_n, al_n, ah_n, ax_n, si_n, ds_n, out di_n, out Top_n));
+			eax_n = SEQ(ebx_16_n, fn1483-0CA0(di_n, ss_bp_n, al_n, ah_n, ax_n, si_n, ds_n, out di_n, out Top_n));
 			TopOut = Top_n;
-			return (word16) eax_n;
+			return fn1483-0CA0(di_n, ss_bp_n, al_n, ah_n, ax_n, si_n, ds_n, out di_n, out Top_n);
 		}
 		else
 		{

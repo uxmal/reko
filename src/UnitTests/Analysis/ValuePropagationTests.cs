@@ -1275,6 +1275,22 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
+        public void VpSliceSeq_SameInstruction()
+        {
+            var t1 = m.Temp(PrimitiveType.Word16, "t1");
+            var t2 = m.Temp(PrimitiveType.Word16, "t2");
+
+            var instr = m.Assign(t2, m.Slice(
+                PrimitiveType.Word16,
+                m.Seq(t1, m.Mem16(m.Word32(0x00123400))),
+                16));
+
+            RunValuePropagator();
+
+            Assert.AreEqual("t2 = t1", instr.ToString());
+        }
+
+        [Test]
         [Category(Categories.UnitTests)]
         public void VpSliceConst()
         {

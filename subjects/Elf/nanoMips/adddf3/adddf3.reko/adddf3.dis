@@ -1,1110 +1,1110 @@
 void __adddf3(word32 r4, word32 r5, word32 r6, word32 r7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4 r5 r6 r7
+// MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
 // LiveOut:
 // Trashed: r10 r11 r12 r13 r14 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __adddf3_entry:
-// DataOut: r4 r5 r6 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048000:
-	word32 r10_4 = __ext(r5, 0x00000000, 0x00000014)
-	word32 r9_6 = __ext(r7, 0x00000000, 0x00000014)
-	word32 r13_10 = __ext(r5, 0x00000004, 0x0000000B)
-	word32 r10_104 = __ext(r7, 0x00000004, 0x0000000B)
-	word32 r8_106 = r4 >>u 0x0000001D | r10_4 << 0x00000003
-	word32 r3_12 = r7 >>u 0x0000001F
-	word32 r5_128 = r5 >>u 0x0000001F
-	word32 r12_105 = r4 << 0x00000003
-	word32 r9_20 = r6 >>u 0x0000001D | r9_6 << 0x00000003
-	word32 r11_25 = r13_10 - r10_104
+	word32 r10_5 = __ext(r5, 0x00000000, 0x00000014)
+	word32 r9_7 = __ext(r7, 0x00000000, 0x00000014)
+	word32 r13_11 = __ext(r5, 0x00000004, 0x0000000B)
+	word32 r10_14 = __ext(r7, 0x00000004, 0x0000000B)
+	word32 r8_12 = r4 >>u 0x0000001D | r10_5 << 0x00000003
+	word32 r3_13 = r7 >>u 0x0000001F
+	word32 r5_133 = r5 >>u 0x0000001F
+	word32 r12_116 = r4 << 0x00000003
+	word32 r9_150 = r6 >>u 0x0000001D | r9_7 << 0x00000003
+	word32 r11_22 = r13_11 - r10_14
 	branch r5 >>u 0x0000001F != r7 >>u 0x0000001F l08048304
-// DataOut: r10 r11 r12 r13 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048304:
-	word32 r4_439
-	word32 r11_438
-	word32 r14_434 = r11_25
-	branch 0x00000000 >= r11_25 l080483BE
-// DataOut: r10 r11 r12 r13 r14 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r11_209
+	word32 r4_207
+	word32 r14_24 = r11_22
+	branch r11_22 <= 0x00000000 l080483BE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483BE:
-	branch 0x00000000 == r11_25 l0804846E
-// DataOut: r10 r11 r12 r13 r14 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r11_22 == 0x00000000 l0804846E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804846E:
-	branch r13_10 >= 0x000007FE l08048524
-// DataOut: r12 r13 r14 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r13_11 >= 0x000007FE l08048524
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048524:
-	r11_438 = (r4 << 0x00000003) - (r6 << 0x00000003)
-	r4_439 = r8_106 - r9_20 - (word32) (r4 << 0x00000003 <u r11_438)
-	branch __bit(r4_439, 0x00000017) l080485A4
-// DataOut: r11 r12 r13 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r11_209 = (r4 << 0x00000003) - (r6 << 0x00000003)
+	r4_207 = r8_12 - r9_150 - (word32) (r4 << 0x00000003 <u r11_209)
+	branch __bit(r4_207, 0x00000017) l080485A4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485A4:
-	r12_105 = r11_438 | r4_439
-	branch 0x00000000 != r12_105 l08048548
-// DataOut: r11 r12 r13 r4 r5
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:(r4 << 0x00000003) - (r6 << 0x00000006) r2:0x000007FF r14:<invalid> r4:<invalid>
+	r12_116 = r11_209 | r4_207
+	branch r12_116 != 0x00000000 l08048548
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048536:
-	r11_438 = (r6 << 0x00000003) - (r4 << 0x00000003)
-	r5_128 = r7 >>u 0x0000001F
-	r4_439 = r9_20 - r8_106 - (word32) (r6 << 0x00000003 <u r11_438)
-// DataOut: r11 r13 r4 r5
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:(r4 << 0x00000003) - (r6 << 0x00000006) r2:0x000007FF r14:<invalid> r4:<invalid>
+	r11_209 = (r6 << 0x00000003) - (r4 << 0x00000003)
+	r5_133 = r7 >>u 0x0000001F
+	r4_207 = r9_150 - r8_12 - (word32) (r6 << 0x00000003 <u r11_209)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804847A:
-	r10_104 = r8_106 | r4 << 0x00000003
-	word32 r7_722 = r9_20 | r6 << 0x00000003
-	branch 0x00000000 != r13_10 l080484D6
-// DataOut: r10 r12 r14 r3 r4 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r10_14 = r8_12 | r4 << 0x00000003
+	word32 r7_38 = r9_150 | r6 << 0x00000003
+	branch r13_11 != 0x00000000 l080484D6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484D6:
-	branch 0x00000000 != r10_104 l080484E4
-// DataOut: r12 r14 r3 r4 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r10_14 != 0x00000000 l080484E4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484E4:
-	r10_104 = 0x000007FF
-	branch 0x00000000 == r7_722 l0804827A
-// DataOut: r10 r12 r14 r4 r5 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r10_14 = 0x000007FF
+	branch r7_38 == 0x00000000 l0804827A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484EA:
-	word32 r4_765
-	word32 r7_758 = r8_106 >>u 0x00000003
-	branch !__bit(r9_20 >>u 0x00000003 | r8_106 >>u 0x00000003, 0x00000013) l0804851A
-// DataOut: r14 r4 r5 r7 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x000007FF r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r4_44
+	word32 r7_40 = r8_12 >>u 0x00000003
+	branch !__bit(r9_150 >>u 0x00000003 | r8_12 >>u 0x00000003, 0x00000013) l0804851A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804851A:
-	r7_758 = 0x000FFFFF
-	r4_765 = 0xFFFFFFFF
-// DataOut: r14 r4 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x000007FF r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r7_40 = 0x000FFFFF
+	r4_44 = 0xFFFFFFFF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484FA:
-	r4_765 = r8_106 << 0x0000001D | __ext(r4, 0x00000000, 0x0000001D)
-	r14_434 = r5 >>u 0x0000001F
-// DataOut: r14 r4 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x000007FF r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r4_44 = r8_12 << 0x0000001D | __ext(r4, 0x00000000, 0x0000001D)
+	r14_24 = r5 >>u 0x0000001F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048508:
-	r8_106 = r4_765 >>u 0x0000001D | r7_758 << 0x00000003
-	r12_105 = r4_765 << 0x00000003
-	r5_128 = r14_434
-// DataOut: r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x000007FF r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r8_12 = r4_44 >>u 0x0000001D | r7_40 << 0x00000003
+	r12_116 = r4_44 << 0x00000003
+	r5_133 = r14_24
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484DA:
-	branch 0x00000000 == r7_722 l08048600
-// DataOut: r3 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r7_38 == 0x00000000 l08048600
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048600:
-	r5_128 = 0x00000000
-	r8_106 = 0x007FFFFF
-	r12_105 = 0xFFFFFFF8
-	r10_104 = 0x000007FF
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r5_133 = 0x00000000
+	r8_12 = 0x007FFFFF
+	r12_116 = 0xFFFFFFF8
+	r10_14 = 0x000007FF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484DE:
-	r8_106 = r9_20
-	r12_105 = r6 << 0x00000003
-// DataOut: r12 r3 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r8_12 = r9_150
+	r12_116 = r6 << 0x00000003
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048486:
-	branch 0x00000000 != r10_104 l0804849A
-// DataOut: r10 r12 r3 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r10_14 != 0x00000000 l0804849A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804849A:
-	branch r7_722 == 0x00000000 l080484D2
-// DataOut: r12 r3 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r7_38 == 0x00000000 l080484D2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804849C:
-	word32 r4_728 = (r4 << 0x00000003) - (r6 << 0x00000003)
-	word32 r7_732 = r8_106 - r9_20 - (word32) (r4 << 0x00000003 <u r4_728)
-	branch __bit(r7_732, 0x00000017) l080484C6
-// DataOut: r12 r3 r4 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r4_63 = (r4 << 0x00000003) - (r6 << 0x00000003)
+	word32 r7_66 = r8_12 - r9_150 - (word32) (r4 << 0x00000003 <u r4_63)
+	branch __bit(r7_66, 0x00000017) l080484C6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484C6:
-	r12_105 = r4_728 | r7_732
-	branch 0x00000000 == r12_105 l080485AC
-// DataOut: r12 r4 r5 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:(r4 << 0x00000003) - (r6 << 0x00000006)
+	r12_116 = r4_63 | r7_66
+	branch r12_116 == 0x00000000 l080485AC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485AC:
-// DataOut: r12 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484CE:
-	r8_106 = r7_732
-	r12_105 = r4_728
-// DataOut: r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:(r4 << 0x00000003) - (r6 << 0x00000006)
+	r8_12 = r7_66
+	r12_116 = r4_63
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484B0:
-	r12_105 = (r6 << 0x00000003) - (r4 << 0x00000003)
-	r10_104 = 0x00000000
-	r8_106 = r9_20 - r8_106 - (word32) (r6 << 0x00000003 <u r12_105)
-// DataOut: r10 r12 r3 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:(r4 << 0x00000003) - (r6 << 0x00000006)
+	r12_116 = (r6 << 0x00000003) - (r4 << 0x00000003)
+	r10_14 = 0x00000000
+	r8_12 = r9_150 - r8_12 - (word32) (r6 << 0x00000003 <u r12_116)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804848A:
-	branch 0x00000000 != r7_722 l080483D8
-// DataOut: r10 r3 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r7_38 != 0x00000000 l080483D8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804848E:
-	r12_105 = 0x00000000
-// DataOut: r12 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r12_116 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048492:
-	r8_106 = 0x00000000
-	r10_104 = 0x00000000
-	r5_128 = 0x00000000
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:0x00000000 r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r8_12 = 0x00000000
+	r10_14 = 0x00000000
+	r5_133 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483C2:
-	word32 r11_636
-	word32 r8_628
-	branch 0x00000000 != r13_10 l08048430
-// DataOut: r10 r11 r12 r3 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r8_122
+	word32 r11_81
+	branch r13_11 != 0x00000000 l08048430
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048430:
-	branch r10_104 == 0x000007FF l080483D0
-// DataOut: r10 r11 r12 r3 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r10_14 == 0x000007FF l080483D0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048434:
-	r11_636 = -r11_25
-	r8_106 = r8_106 | 0x08000000
-// DataOut: r10 r11 r12 r3 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r11_81 = -r11_22
+	r8_12 = r8_12 | 0x08000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483C6:
-	branch (r8_106 | r4 << 0x00000003) != 0x00000000 l080483DE
-// DataOut: r10 r11 r12 r3 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l080483DE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483DE:
-	r11_636 = ~r11_25
-	branch 0x00000000 != r11_636 l080483FA
-// DataOut: r10 r11 r12 r3 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r11_81 = ~r11_22
+	branch r11_81 != 0x00000000 l080483FA
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483FA:
-	branch r10_104 == 0x000007FF l080483D0
-// DataOut: r10 r11 r12 r3 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r10_14 == 0x000007FF l080483D0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483FE:
-	word32 r12_645
-	word32 r11_643
-	branch r11_636 >= 0x00000039 l08048464
-// DataOut: r10 r11 r12 r3 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r11_100
+	word32 r12_109
+	branch r11_81 >= 0x00000039 l08048464
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048464:
-	r12_645 = (word32) (0x00000000 <u (r8_106 | r4 << 0x00000003))
-// DataOut: r10 r12 r3 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r12_109 = (word32) ((r8_12 | r4 << 0x00000003) >u 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048402:
-	branch r11_636 >= 0x00000020 l08048442
-// DataOut: r10 r11 r12 r3 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r11_81 >= 0x00000020 l08048442
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048442:
-	word32 r5_669 = r8_106 >>u r11_636
-	word32 r7_671 = 0x00000000
-	branch r11_636 == 0x00000020 l08048454
-// DataOut: r10 r11 r12 r3 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r5_90 = r8_12 >>u r11_81
+	word32 r7_91 = 0x00000000
+	branch r11_81 == 0x00000020 l08048454
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804844C:
-	r7_671 = r8_106 << -r11_636
-// DataOut: r10 r12 r3 r5 r6 r7 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:0x00000000 r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r7_91 = r8_12 << -r11_81
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048454:
-	r12_645 = r5_669 | (word32) (0x00000000 <u (r7_671 | r4 << 0x00000003))
-// DataOut: r10 r12 r3 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r12_109 = r5_90 | (word32) ((r7_91 | r4 << 0x00000003) >u 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048460:
-	r11_643 = 0x00000000
-// DataOut: r10 r11 r12 r3 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r11_100 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048406:
-	word32 r7_661 = 0x00000020 - r11_636
-	r11_643 = r8_106 >>u r11_636
-	r12_645 = r8_106 << r7_661 | (r4 << 0x00000003) >>u r11_636 | (word32) (0x00000000 <u (r4 << 0x00000003) << r7_661)
-// DataOut: r10 r11 r12 r3 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r7_103 = 0x00000020 - r11_81
+	r11_100 = r8_12 >>u r11_81
+	r12_109 = r8_12 << r7_103 | (r4 << 0x00000003) >>u r11_81 | (word32) ((r4 << 0x00000003) << r7_103 >u 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048426:
-	r12_105 = (r6 << 0x00000003) - r12_645
-	r8_628 = r9_20 - r11_643
-// DataOut: r10 r12 r3 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r12_116 = (r6 << 0x00000003) - r12_109
+	r8_122 = r9_150 - r11_100
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483E6:
-	r12_105 = (r6 << 0x00000003) - (r4 << 0x00000003)
-	r8_628 = r9_20 - r8_106
-// DataOut: r10 r12 r3 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r12_116 = (r6 << 0x00000003) - (r4 << 0x00000003)
+	r8_122 = r9_150 - r8_12
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483EE:
-	r5_128 = r7 >>u 0x0000001F
-	r8_106 = r8_628 - (word32) (r6 << 0x00000003 <u r12_105)
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r5_133 = r7 >>u 0x0000001F
+	r8_12 = r8_122 - (word32) (r6 << 0x00000003 <u r12_116)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483CC:
-	branch r10_104 != 0x000007FF l080483D8
-// DataOut: r10 r3 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r10_14 != 0x000007FF l080483D8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483D0:
-	r12_105 = r9_20 | r6 << 0x00000003
-	branch 0x00000000 == r12_105 l080485F8
-// DataOut: r10 r12 r3 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r12_116 = r9_150 | r6 << 0x00000003
+	branch r12_116 == 0x00000000 l080485F8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485F8:
-	r8_106 = 0x00000000
-	r5_128 = r7 >>u 0x0000001F
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r8_12 = 0x00000000
+	r5_133 = r7 >>u 0x0000001F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483D8:
-	r8_106 = r9_20
-	r12_105 = r6 << 0x00000003
-// DataOut: r10 r12 r3 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r8_12 = r9_150
+	r12_116 = r6 << 0x00000003
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484C2:
-	r5_128 = r7 >>u 0x0000001F
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:(r4 << 0x00000003) - (r6 << 0x00000006)
+	r5_133 = r7 >>u 0x0000001F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804830A:
-	word32 r7_527
-	branch 0x00000000 != r10_104 l08048384
-// DataOut: r11 r12 r13 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r7_151
+	branch r10_14 != 0x00000000 l08048384
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048384:
-	branch r13_10 == 0x000007FF l08048112
-// DataOut: r11 r12 r13 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r13_11 == 0x000007FF l08048112
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048388:
-	r9_20 = r9_20 | 0x08000000
-	r7_527 = r11_25
-// DataOut: r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r9_150 = r9_150 | 0x08000000
+	r7_151 = r11_22
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804830E:
-	branch 0x00000000 == (r9_20 | r6 << 0x00000003) l08048052
-// DataOut: r11 r12 r13 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch (r9_150 | r6 << 0x00000003) == 0x00000000 l08048052
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048316:
-	r7_527 = r11_25 + 0xFFFFFFFF
-	branch r11_25 != 0xFFFFFFFF l08048340
-// DataOut: r11 r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r7_151 = r11_22 + 0xFFFFFFFF
+	branch r11_22 != 0xFFFFFFFF l08048340
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048340:
-	branch r11_25 == 0x000007FF l080480FE
-// DataOut: r11 r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r11_22 == 0x000007FF l080480FE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048344:
-	word32 r6_534
-	word32 r7_533
-	branch r7_527 >= 0x00000039 l080483B4
-// DataOut: r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r7_169
+	word32 r6_158
+	branch r7_151 >= 0x00000039 l080483B4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483B4:
-	r6_534 = (word32) (0x00000000 <u (r9_20 | r6 << 0x00000003))
-// DataOut: r12 r13 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r6_158 = (word32) ((r9_150 | r6 << 0x00000003) >u 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048348:
-	branch r7_527 >= 0x00000020 l08048394
-// DataOut: r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch r7_151 >= 0x00000020 l08048394
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048394:
-	word32 r4_562 = r9_20 >>u r7_527
-	word32 r10_564 = 0x00000000
-	branch r7_527 == 0x00000020 l080483A6
-// DataOut: r10 r12 r13 r4 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r4_159 = r9_150 >>u r7_151
+	word32 r10_160 = 0x00000000
+	branch r7_151 == 0x00000020 l080483A6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804839E:
-	r10_564 = r9_20 << -r7_527
-// DataOut: r10 r12 r13 r4 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x00000000 r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r10_160 = r9_150 << -r7_151
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483A6:
-	r6_534 = (word32) (0x00000000 <u (r10_564 | r6 << 0x00000003)) | r4_562
-// DataOut: r12 r13 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r6_158 = (word32) ((r10_160 | r6 << 0x00000003) >u 0x00000000) | r4_159
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080483B0:
-	r7_533 = 0x00000000
-// DataOut: r12 r13 r5 r6 r7 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r7_169 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804834C:
-	word32 r10_553 = 0x00000020 - r7_527
-	r7_533 = r9_20 >>u r7_527
-	r6_534 = (word32) (0x00000000 <u (r6 << 0x00000003) << r10_553) | (r9_20 << r10_553 | (r6 << 0x00000003) >>u r7_527)
-// DataOut: r12 r13 r5 r6 r7 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r10_172 = 0x00000020 - r7_151
+	r7_169 = r9_150 >>u r7_151
+	r6_158 = (word32) (r6 << 0x00000003 << r10_172 >u 0x00000000) | (r9_150 << r10_172 | (r6 << 0x00000003) >>u r7_151)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804836E:
-	word32 r6_537 = (r4 << 0x00000003) - r6_534
-	r10_104 = r13_10
-	r8_106 = r8_106 - r7_533 - (word32) (r4 << 0x00000003 <u r6_537)
-	r12_105 = r6_537
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	word32 r6_185 = (r4 << 0x00000003) - r6_158
+	r10_14 = r13_11
+	r8_12 = r8_12 - r7_169 - (word32) (r4 << 0x00000003 <u r6_185)
+	r12_116 = r6_185
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804831C:
-	word32 r6_581 = (r4 << 0x00000003) - (r6 << 0x00000003)
-	r10_104 = 0x00000001
-	r8_106 = r8_106 - r9_20 - (word32) (r4 << 0x00000003 <u r6_581)
-	r12_105 = r6_581
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	word32 r6_200 = (r4 << 0x00000003) - (r6 << 0x00000003)
+	r10_14 = 0x00000001
+	r8_12 = r8_12 - r9_150 - (word32) (r4 << 0x00000003 <u r6_200)
+	r12_116 = r6_200
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048332:
-	branch __bit(r8_106, 0x00000017) l0804827A
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	branch __bit(r8_12, 0x00000017) l0804827A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048336:
-	r4_439 = __ext(r8_106, 0x00000000, 0x00000017)
-	r11_438 = r12_105
-	r13_10 = r10_104
-// DataOut: r11 r13 r4 r5
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r4_207 = __ext(r8_12, 0x00000000, 0x00000017)
+	r11_209 = r12_116
+	r13_11 = r10_14
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048548:
-	word32 r7_447 = __clz(r4_439)
-	branch r4_439 != 0x00000000 l08048556
-// DataOut: r11 r13 r4 r5 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	word32 r7_218 = __clz(r4_207)
+	branch r4_207 != 0x00000000 l08048556
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804854E:
-	r7_447 = __clz(r11_438) + 0x00000020
-// DataOut: r11 r13 r4 r5 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r7_218 = __clz(r11_209) + 0x00000020
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048556:
-	word32 r8_454
-	word32 r10_451 = r7_447 + 0xFFFFFFF8
-	branch r10_451 >= 0x00000020 l080485B0
-// DataOut: r10 r11 r13 r4 r5 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	word32 r8_227
+	word32 r10_223 = r7_218 + 0xFFFFFFF8
+	branch r10_223 >= 0x00000020 l080485B0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485B0:
-	r12_105 = 0x00000000
-	r8_454 = r11_438 << r7_447 + 0xFFFFFFD8
-// DataOut: r10 r12 r13 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r12_116 = 0x00000000
+	r8_227 = r11_209 << r7_218 + 0xFFFFFFD8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804855E:
-	r12_105 = r11_438 << r10_451
-	r8_454 = r11_438 >>u -r10_451 | r4_439 << r10_451
-// DataOut: r10 r12 r13 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r12_116 = r11_209 << r10_223
+	r8_227 = r11_209 >>u -r10_223 | r4_207 << r10_223
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048572:
-	branch r10_451 < r13_10 l080485E2
-// DataOut: r10 r12 r13 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	branch r10_223 < r13_11 l080485E2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485E2:
-	r10_104 = r13_10 - r10_451
-	r8_106 = __ins(r8_454, 0x00000000, 0x00000007, 0x00000001)
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r10_14 = r13_11 - r10_223
+	r8_12 = __ins(r8_227, 0x00000000, 0x00000007, 0x00000001)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048576:
-	word32 r10_458 = r10_451 - r13_10
-	branch r10_458 >= 0xFFFFFFE1 l080485BC
-// DataOut: r10 r12 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	word32 r10_241 = r10_223 - r13_11
+	branch r10_241 >= 0xFFFFFFE1 l080485BC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485BC:
-	word32 r7_474 = 0x00000000
-	word32 r10_476 = r8_454 >>u r10_458 + 0xFFFFFFE1
-	branch r10_458 == 0xFFFFFFE1 l080485D2
-// DataOut: r10 r12 r5 r6 r7 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	word32 r7_244 = 0x00000000
+	word32 r10_245 = r8_227 >>u r10_241 + 0xFFFFFFE1
+	branch r10_241 == 0xFFFFFFE1 l080485D2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485CA:
-	r7_474 = r8_454 << -(r10_458 + 0x00000001)
-// DataOut: r10 r12 r5 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:0x00000000 r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r7_244 = r8_227 << -(r10_241 + 0x00000001)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485D2:
-	r12_105 = r10_476 | (word32) (0x00000000 <u (r12_105 | r7_474))
-	r8_106 = 0x00000000
-// DataOut: r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r12_116 = r10_245 | (word32) ((r12_116 | r7_244) >u 0x00000000)
+	r8_12 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048582:
-	word32 r7_463 = 0x00000020 - (r10_458 + 0x00000001)
-	r12_105 = r8_454 << r7_463 | r12_105 >>u r10_458 + 0x00000001 | (word32) (0x00000000 <u r12_105 << r7_463)
-	r8_106 = r8_454 >>u r10_458 + 0x00000001
-// DataOut: r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	word32 r7_258 = 0x00000020 - (r10_241 + 0x00000001)
+	r12_116 = r8_227 << r7_258 | r12_116 >>u r10_241 + 0x00000001 | (word32) (r12_116 << r7_258 >u 0x00000000)
+	r8_12 = r8_227 >>u r10_241 + 0x00000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048042:
-	r3_12 = r11_25
-	branch 0x00000000 >= r11_25 l08048192
-// DataOut: r10 r11 r12 r13 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:r7 >>u 0x0000001F r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r3_13 = r11_22
+	branch r11_22 <= 0x00000000 l08048192
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048192:
-	branch 0x00000000 == r11_25 l08048240
-// DataOut: r10 r11 r12 r13 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r11_22 == 0x00000000 l08048240
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048240:
-	r10_104 = r13_10 + 0x00000001
-	branch r13_10 >= 0x000007FE l080482E2
-// DataOut: r10 r12 r13 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r10_14 = r13_11 + 0x00000001
+	branch r13_11 >= 0x000007FE l080482E2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080482E2:
-	branch r13_10 == 0xFFFFF802 l08048060
-// DataOut: r10 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r13_11 == 0xFFFFF802 l08048060
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080482E6:
-	word32 r6_424 = (r4 << 0x00000003) + (r6 << 0x00000003)
-	word32 r2_428 = r8_106 + r9_20 + (word32) (r6_424 <u r4 << 0x00000003)
-	r12_105 = r2_428 << 0x0000001F | r6_424 >>u 0x00000001
-	r8_106 = r2_428 >>u 0x00000001
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r6_268 = (r4 << 0x00000003) + (r6 << 0x00000003)
+	word32 r2_272 = r8_12 + r9_150 + (word32) (r6_268 <u r4 << 0x00000003)
+	r12_116 = r2_272 << 0x0000001F | r6_268 >>u 0x00000001
+	r8_12 = r2_272 >>u 0x00000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804824C:
-	word32 r7_374 = r8_106 | r4 << 0x00000003
-	branch 0x00000000 != r13_10 l08048298
-// DataOut: r12 r3 r4 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r7_276 = r8_12 | r4 << 0x00000003
+	branch r13_11 != 0x00000000 l08048298
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048298:
-	branch 0x00000000 == r7_374 l080485F2
-// DataOut: r12 r3 r4 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r7_276 == 0x00000000 l080485F2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485F2:
-	r8_106 = r9_20
-	r12_105 = r6 << 0x00000003
-// DataOut: r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r8_12 = r9_150
+	r12_116 = r6 << 0x00000003
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804829C:
-	r10_104 = 0x000007FF
-	branch (r9_20 | r6 << 0x00000003) == 0x00000000 l0804827A
-// DataOut: r10 r12 r3 r4 r5 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r10_14 = 0x000007FF
+	branch (r9_150 | r6 << 0x00000003) == 0x00000000 l0804827A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080482A4:
-	word32 r7_404
-	word32 r10_396 = r8_106 >>u 0x00000003
-	branch !__bit(r9_20 >>u 0x00000003 | r8_106 >>u 0x00000003, 0x00000013) l080482D8
-// DataOut: r10 r3 r4 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x000007FF r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:<invalid> r11:<invalid> r2:0x000007FF
+	word32 r7_285
+	word32 r10_281 = r8_12 >>u 0x00000003
+	branch !__bit(r9_150 >>u 0x00000003 | r8_12 >>u 0x00000003, 0x00000013) l080482D8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080482D8:
-	r10_396 = 0x000FFFFF
-	r7_404 = 0xFFFFFFFF
-// DataOut: r10 r3 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:<invalid> r11:<invalid> r2:0x000007FF
+	r10_281 = 0x000FFFFF
+	r7_285 = 0xFFFFFFFF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080482B4:
-	r7_404 = r8_106 << 0x0000001D | __ext(r4, 0x00000000, 0x0000001D)
-	r3_12 = r5 >>u 0x0000001F
-// DataOut: r10 r3 r7
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:<invalid> r11:<invalid> r2:0x000007FF
+	r7_285 = r8_12 << 0x0000001D | __ext(r4, 0x00000000, 0x0000001D)
+	r3_13 = r5 >>u 0x0000001F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080482C0:
-	r8_106 = r7_404 >>u 0x0000001D | r10_396 << 0x00000003
-	r12_105 = r7_404 << 0x00000003
-// DataOut: r12 r3 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:<invalid> r11:<invalid> r2:0x000007FF r4:<invalid>
+	r8_12 = r7_285 >>u 0x0000001D | r10_281 << 0x00000003
+	r12_116 = r7_285 << 0x00000003
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080482D0:
-	r5_128 = r3_12
-// DataOut: r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r5_133 = r3_13
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048254:
-	branch 0x00000000 == r7_374 l080485EC
-// DataOut: r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r7_276 == 0x00000000 l080485EC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080485EC:
-	r8_106 = r9_20
-	r12_105 = r6 << 0x00000003
-// DataOut: r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r8_12 = r9_150
+	r12_116 = r6 << 0x00000003
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080484D2:
-	r10_104 = 0x00000000
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r10_14 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048258:
-	r10_104 = 0x00000000
-	branch (r9_20 | r6 << 0x00000003) == 0x00000000 l0804827A
-// DataOut: r10 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r10_14 = 0x00000000
+	branch (r9_150 | r6 << 0x00000003) == 0x00000000 l0804827A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048260:
-	word32 r6_379 = (r4 << 0x00000003) + (r6 << 0x00000003)
-	r12_105 = r6_379
-	r8_106 = r8_106 + r9_20 + (word32) (r6_379 <u r4 << 0x00000003)
-	branch __bit(r8_106, 0x00000017) l0804827A
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x00000000 r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r6_304 = (r4 << 0x00000003) + (r6 << 0x00000003)
+	r12_116 = r6_304
+	r8_12 = r8_12 + r9_150 + (word32) (r6_304 <u r4 << 0x00000003)
+	branch __bit(r8_12, 0x00000017) l0804827A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048272:
-	r8_106 = __ins(r8_106, 0x00000000, 0x00000007, 0x00000001)
-	r10_104 = 0x00000001
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x00000000 r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:(r4 << 0x00000003) + (r6 << 0x00000006) r6:(r4 << 0x00000003) + (r6 << 0x00000006) r11:<invalid> r2:0x000007FF
+	r8_12 = __ins(r8_12, 0x00000000, 0x00000007, 0x00000001)
+	r10_14 = 0x00000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048196:
-	word32 r11_309
-	word32 r8_302
-	branch 0x00000000 != r13_10 l08048202
-// DataOut: r10 r11 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r8_353
+	word32 r11_312
+	branch r13_11 != 0x00000000 l08048202
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048202:
-	branch r10_104 == 0x000007FF l080481A4
-// DataOut: r10 r11 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r10_14 == 0x000007FF l080481A4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048206:
-	r11_309 = -r11_25
-	r8_106 = r8_106 | 0x08000000
-// DataOut: r10 r11 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r11_312 = -r11_22
+	r8_12 = r8_12 | 0x08000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804819A:
-	branch (r8_106 | r4 << 0x00000003) != 0x00000000 l080481B4
-// DataOut: r10 r11 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l080481B4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481B4:
-	r11_309 = ~r11_25
-	branch 0x00000000 != r11_309 l080481CA
-// DataOut: r10 r11 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r11_312 = ~r11_22
+	branch r11_312 != 0x00000000 l080481CA
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481CA:
-	branch r10_104 == 0x000007FF l080481A4
-// DataOut: r10 r11 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r10_14 == 0x000007FF l080481A4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481CE:
-	word32 r12_318
-	word32 r11_315
-	branch r11_309 >= 0x00000039 l08048236
-// DataOut: r10 r11 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r11_331
+	word32 r12_320
+	branch r11_312 >= 0x00000039 l08048236
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048236:
-	r12_318 = (word32) (0x00000000 <u (r8_106 | r4 << 0x00000003))
-// DataOut: r10 r12 r5 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r12_320 = (word32) ((r8_12 | r4 << 0x00000003) >u 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481D2:
-	branch r11_309 >= 0x00000020 l08048214
-// DataOut: r10 r11 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r11_312 >= 0x00000020 l08048214
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048214:
-	word32 r4_343 = r8_106 >>u r11_309
-	word32 r7_345 = 0x00000000
-	branch r11_309 == 0x00000020 l08048226
-// DataOut: r10 r11 r12 r4 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r4_321 = r8_12 >>u r11_312
+	word32 r7_322 = 0x00000000
+	branch r11_312 == 0x00000020 l08048226
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804821E:
-	r7_345 = r8_106 << -r11_309
-// DataOut: r10 r12 r4 r5 r6 r7 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:0x00000000 r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r4:<invalid>
+	r7_322 = r8_12 << -r11_312
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048226:
-	r12_318 = r4_343 | (word32) (0x00000000 <u (r7_345 | r4 << 0x00000003))
-// DataOut: r10 r12 r5 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r4:<invalid>
+	r12_320 = r4_321 | (word32) ((r7_322 | r4 << 0x00000003) >u 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048232:
-	r11_315 = 0x00000000
-// DataOut: r10 r11 r12 r5 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r4:<invalid>
+	r11_331 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481D6:
-	word32 r7_334 = 0x00000020 - r11_309
-	r11_315 = r8_106 >>u r11_309
-	r12_318 = r8_106 << r7_334 | (r4 << 0x00000003) >>u r11_309 | (word32) (0x00000000 <u (r4 << 0x00000003) << r7_334)
-// DataOut: r10 r11 r12 r5 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r7_334 = 0x00000020 - r11_312
+	r11_331 = r8_12 >>u r11_312
+	r12_320 = r8_12 << r7_334 | (r4 << 0x00000003) >>u r11_312 | (word32) ((r4 << 0x00000003) << r7_334 >u 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481F8:
-	r12_105 = r12_318 + (r6 << 0x00000003)
-	r8_302 = r11_315 + r9_20
-// DataOut: r10 r12 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:<invalid> r4:<invalid>
+	r12_116 = r12_320 + (r6 << 0x00000003)
+	r8_353 = r11_331 + r9_150
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481BC:
-	r12_105 = (r4 << 0x00000003) + (r6 << 0x00000003)
-	r8_302 = r8_106 + r9_20
-// DataOut: r10 r12 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r12_116 = (r4 << 0x00000003) + (r6 << 0x00000003)
+	r8_353 = r8_12 + r9_150
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481C2:
-	r8_106 = r8_302 + (word32) (r12_105 <u r6 << 0x00000003)
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:<invalid> r4:<invalid>
+	r8_12 = r8_353 + (word32) (r12_116 <u r6 << 0x00000003)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481A0:
-	branch r10_104 != 0x000007FF l080481AE
-// DataOut: r10 r5 r6 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r10_14 != 0x000007FF l080481AE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481A4:
-	r12_105 = r9_20 | r6 << 0x00000003
-	r8_106 = 0x00000000
-	branch 0x00000000 == r12_105 l08048064
-// DataOut: r10 r12 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r12_116 = r9_150 | r6 << 0x00000003
+	r8_12 = 0x00000000
+	branch r12_116 == 0x00000000 l08048064
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080481AE:
-	r8_106 = r9_20
-	r12_105 = r6 << 0x00000003
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r8_12 = r9_150
+	r12_116 = r6 << 0x00000003
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048048:
-	word32 r7_215
-	branch 0x00000000 != r10_104 l0804810E
-// DataOut: r11 r12 r13 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r7_371
+	branch r10_14 != 0x00000000 l0804810E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804810E:
-	branch r13_10 != 0x000007FF l08048122
-// DataOut: r11 r12 r13 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r13_11 != 0x000007FF l08048122
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048122:
-	r9_20 = r9_20 | 0x08000000
-	r7_215 = r11_25
-// DataOut: r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r9_150 = r9_150 | 0x08000000
+	r7_371 = r11_22
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048112:
-	branch 0x00000000 != (r8_106 | r4 << 0x00000003) l080482D2
-// DataOut: r12 r13 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l080482D2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804811A:
-	r8_106 = 0x00000000
-	r12_105 = 0x00000000
-	r10_104 = r13_10
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r8_12 = 0x00000000
+	r12_116 = 0x00000000
+	r10_14 = r13_11
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804804C:
-	branch (r9_20 | r6 << 0x00000003) != 0x00000000 l080480B4
-// DataOut: r11 r12 r13 r5 r6 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch (r9_150 | r6 << 0x00000003) != 0x00000000 l080480B4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080480B4:
-	r7_215 = r11_25 + 0xFFFFFFFF
-	branch r11_25 != 0xFFFFFFFF l080480FA
-// DataOut: r11 r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r7_371 = r11_22 + 0xFFFFFFFF
+	branch r11_22 != 0xFFFFFFFF l080480FA
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080480FA:
-	branch r11_25 != 0x000007FF l0804812C
-// DataOut: r11 r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r11_22 != 0x000007FF l0804812C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804812C:
-	word32 r6_222
-	word32 r7_221
-	branch r7_215 >= 0x00000039 l08048188
-// DataOut: r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r7_396
+	word32 r6_385
+	branch r7_371 >= 0x00000039 l08048188
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048188:
-	r6_222 = (word32) (0x00000000 <u (r9_20 | r6 << 0x00000003))
-// DataOut: r12 r13 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	r6_385 = (word32) ((r9_150 | r6 << 0x00000003) >u 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048130:
-	branch r7_215 >= 0x00000020 l08048168
-// DataOut: r12 r13 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	branch r7_371 >= 0x00000020 l08048168
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048168:
-	word32 r4_250 = r9_20 >>u r7_215
-	word32 r10_252 = 0x00000000
-	branch r7_215 == 0x00000020 l0804817A
-// DataOut: r10 r12 r13 r4 r5 r6 r7 r8 r9
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r4_386 = r9_150 >>u r7_371
+	word32 r10_387 = 0x00000000
+	branch r7_371 == 0x00000020 l0804817A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048172:
-	r10_252 = r9_20 << -r7_215
-// DataOut: r10 r12 r13 r4 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:0x00000000 r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r4:<invalid>
+	r10_387 = r9_150 << -r7_371
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804817A:
-	r6_222 = (word32) (0x00000000 <u (r10_252 | r6 << 0x00000003)) | r4_250
-// DataOut: r12 r13 r5 r6 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r4:<invalid>
+	r6_385 = (word32) ((r10_387 | r6 << 0x00000003) >u 0x00000000) | r4_386
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048184:
-	r7_221 = 0x00000000
-// DataOut: r12 r13 r5 r6 r7 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:<invalid> r11:<invalid> r2:0x000007FF r4:<invalid>
+	r7_396 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048134:
-	word32 r10_241 = 0x00000020 - r7_215
-	r7_221 = r9_20 >>u r7_215
-	r6_222 = (word32) (0x00000000 <u (r6 << 0x00000003) << r10_241) | (r9_20 << r10_241 | (r6 << 0x00000003) >>u r7_215)
-// DataOut: r12 r13 r5 r6 r7 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r10_399 = 0x00000020 - r7_371
+	r7_396 = r9_150 >>u r7_371
+	r6_385 = (word32) (r6 << 0x00000003 << r10_399 >u 0x00000000) | (r9_150 << r10_399 | (r6 << 0x00000003) >>u r7_371)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048156:
-	word32 r6_225 = r6_222 + (r4 << 0x00000003)
-	r10_104 = r13_10
-	r8_106 = (word32) (r6_225 <u r4 << 0x00000003) + (r7_221 + r8_106)
-	r12_105 = r6_225
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:<invalid> r11:<invalid> r2:0x000007FF r4:<invalid>
+	word32 r6_412 = r6_385 + (r4 << 0x00000003)
+	r10_14 = r13_11
+	r8_12 = (word32) (r6_412 <u r4 << 0x00000003) + (r7_396 + r8_12)
+	r12_116 = r6_412
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080480FE:
-	branch 0x00000000 != (r8_106 | r4 << 0x00000003) l080482D2
-// DataOut: r11 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l080482D2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080482D2:
-	r10_104 = 0x000007FF
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:0x000007FF r14:<invalid> r4:<invalid>
+	r10_14 = 0x000007FF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048106:
-	r8_106 = 0x00000000
-	r12_105 = 0x00000000
-	r10_104 = r11_25
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r8_12 = 0x00000000
+	r12_116 = 0x00000000
+	r10_14 = r11_22
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080480BA:
-	word32 r6_269 = (r4 << 0x00000003) + (r6 << 0x00000003)
-	r10_104 = 0x00000001
-	r8_106 = r8_106 + r9_20 + (word32) (r6_269 <u r4 << 0x00000003)
-	r12_105 = r6_269
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF
+	word32 r6_435 = (r4 << 0x00000003) + (r6 << 0x00000003)
+	r10_14 = 0x00000001
+	r8_12 = r8_12 + r9_150 + (word32) (r6_435 <u r4 << 0x00000003)
+	r12_116 = r6_435
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080480CC:
-	branch __bit(r8_106, 0x00000017) l0804827A
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r4:<invalid>
+	branch __bit(r8_12, 0x00000017) l0804827A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080480D0:
-	r10_104 = r10_104 + 0x00000001
-	branch r10_104 == 0x000007FF l08048060
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r4:<invalid>
+	r10_14 = r10_14 + 0x00000001
+	branch r10_14 == 0x000007FF l08048060
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080480DA:
-	word32 r6_206 = __ins(r8_106, 0x00000000, 0x00000007, 0x00000001)
-	r12_105 = r6_206 << 0x0000001F | (r12_105 >>u 0x00000001 | r12_105 + 0x00000001)
-	r8_106 = r6_206 >>u 0x00000001
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:0x000007FF r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r4:<invalid>
+	word32 r6_453 = __ins(r8_12, 0x00000000, 0x00000007, 0x00000001)
+	r12_116 = r6_453 << 0x0000001F | (r12_116 >>u 0x00000001 | r12_116 + 0x00000001)
+	r8_12 = r6_453 >>u 0x00000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048052:
-	r10_104 = r11_25
-	branch r11_25 != 0x000007FF l0804827A
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	r10_14 = r11_22
+	branch r11_22 != 0x000007FF l0804827A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048058:
-	branch 0x00000000 != (r8_106 | r4 << 0x00000003) l0804827A
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:r4 << 0x00000003 r6:r6 << 0x00000003 r11:<invalid> r2:0x000007FF r14:<invalid>
+	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l0804827A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804827A:
-	branch 0x00000000 == r12_105 + 0x00000007 l08048064
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	branch r12_116 == 0x00000007 l08048064
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048282:
-	branch r12_105 == 0x0000000B l08048064
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	branch r12_116 == 0x0000000B l08048064
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804828A:
-	word32 r6_114 = r12_105 + 0x00000004
-	r12_105 = r6_114
-	r8_106 = r8_106 + (word32) (r6_114 <u r12_105)
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	word32 r6_472 = r12_116 + 0x00000004
+	r12_116 = r6_472
+	r8_12 = r8_12 + (word32) (r6_472 <u r12_116)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048060:
-	r8_106 = 0x00000000
-	r12_105 = 0x00000000
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:r5 >>u 0x0000001F r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	r8_12 = 0x00000000
+	r12_116 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048064:
-	branch __bit(r8_106, 0x00000017) l0804807A
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	branch __bit(r8_12, 0x00000017) l0804807A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048068:
-	r10_104 = r10_104 + 0x00000001
-	r8_106 = __ins(r8_106, 0x00000000, 0x00000007, 0x00000001)
-	branch r10_104 != 0x000007FF l0804807A
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	r10_14 = r10_14 + 0x00000001
+	r8_12 = __ins(r8_12, 0x00000000, 0x00000007, 0x00000001)
+	branch r10_14 != 0x000007FF l0804807A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048076:
-	r8_106 = 0x00000000
-	r12_105 = 0x00000000
-// DataOut: r10 r12 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:0x000007FF r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	r8_12 = 0x00000000
+	r12_116 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0804807A:
-	word32 r7_49 = r12_105 >>u 0x00000003 | r8_106 << 0x0000001D
-	word32 r8_52 = r8_106 >>u 0x00000003
-	branch r10_104 != 0x000007FF l080480A0
-// DataOut: r10 r5 r7 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	word32 r7_505 = r12_116 >>u 0x00000003 | r8_12 << 0x0000001D
+	word32 r8_507 = r8_12 >>u 0x00000003
+	branch r10_14 != 0x000007FF l080480A0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048090:
-	branch 0x00000000 == (r7_49 | r8_52) l08048612
-// DataOut: r10 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:0x000007FF r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	branch (r7_505 | r8_507) == 0x00000000 l08048612
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048612:
-	r8_52 = 0x00000000
-// DataOut: r10 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	r8_507 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l08048098:
-	r8_52 = r8_52 | 0x00800000
-// DataOut: r10 r5 r8
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+	r8_507 = r8_507 | 0x00800000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l080480A0:
-	__ins(__ins(__ins(0x00000000, r8_52, 0x00000000, 0x00000001), r10_104, 0x00000004, 0x00000001), r5_128, 0x0000000F, 0x00000001)
+	__ins(__ins(__ins(0x00000000, r8_507, 0x00000000, 0x00000001), r10_14, 0x00000004, 0x00000001), r5_133, 0x0000000F, 0x00000001)
 	return
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> r4:<invalid>
+// DataOut (flags):
+// SymbolicIn:
 
 __adddf3_exit:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp r25:0x08048000 r10:<invalid> r9:<invalid> r8:<invalid> r13:<invalid> r3:<invalid> r5:<invalid> r7:<invalid> r12:<invalid> r6:<invalid> r11:<invalid> r2:<invalid> r14:<invalid> Sequence r8:r9:r6_r7 Sequence r4:r5:r9_r8 r4:<invalid>
+// DataOut (flags):
+// SymbolicIn:
 
 
 

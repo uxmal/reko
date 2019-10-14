@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Analysis
             var sActual = sw.ToString();
             if (sExp != sActual)
             {
-                Debug.WriteLine(sActual);
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
         }
@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Analysis
             var actual = writer.ToString();
             if (actual != expected)
             {
-                Debug.Print(actual);
+                Console.WriteLine(actual);
             }
             Assert.AreEqual(expected, actual);
         }
@@ -949,6 +949,43 @@ body:
 	out = <invalid>
 	return <invalid>
 main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void CrwSliceReturnRegister()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var reth = new RegisterStorage("reth", 1, 16, PrimitiveType.Word16);
+            var ssa = Given_Procedure("main", m =>
+            {
+                var result = m.Reg("ret", ret);
+                m.Label("body");
+                m.Assign(result, 0x12345678);
+                m.AddUseToExitBlock(result);
+                m.Return();
+            });
+            Given_Signature(
+                "main",
+                FunctionType.Func(
+                    new Identifier(
+                        "reth",
+                        PrimitiveType.Word16,
+                        reth)));
+
+            When_RewriteReturns(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	ret = 0x12345678
+	return SLICE(ret, word16, 16)
+main_exit:
+	use ret
 ";
             #endregion
             AssertProcedureCode(sExp, ssa);

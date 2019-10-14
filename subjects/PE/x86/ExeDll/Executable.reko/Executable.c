@@ -191,7 +191,6 @@ l00401438:
 byte fn0040143F(ptr32 & edxOut)
 {
 	word32 eax_n = fn00401B98();
-	word24 eax_24_8_n = SLICE(eax_n, word24, 8);
 	if (eax_n != 0x00)
 	{
 		ptr32 edx_n = fs->ptr0018->ptr0004;
@@ -200,21 +199,19 @@ byte fn0040143F(ptr32 & edxOut)
 			__lock();
 			ptr32 eax_n;
 			__cmpxchg(globals->dw403338, edx_n, 0x00, out eax_n);
-			word24 eax_24_8_n = SLICE(eax_n, word24, 8);
-			word24 eax_24_8_n = SLICE(eax_n, word24, 8);
 			if (eax_n == 0x00)
 			{
 				edxOut = edx_n;
-				return (byte) SEQ(eax_24_8_n, 0x00);
+				return 0x00;
 			}
 		} while (edx_n != eax_n);
 		edxOut = edx_n;
-		return (byte) SEQ(eax_24_8_n, 0x01);
+		return 0x01;
 	}
 	else
 	{
 		edxOut = edx;
-		return (byte) SEQ(eax_24_8_n, 0x00);
+		return 0x00;
 	}
 }
 
@@ -224,13 +221,12 @@ byte fn00401474(word32 edx, word32 dwArg04)
 	if (dwArg04 == 0x00)
 		globals->b403354 = 0x01;
 	fn004019FE(edx);
-	word24 eax_24_8_n = SLICE(eax_n, word24, 8);
 	if (fn00401C48() == 0x00)
-		return (byte) SEQ(eax_24_8_n, 0x00);
+		return 0x00;
 	if (fn00401C48() != 0x00)
-		return (byte) SEQ(eax_24_8_n, 0x01);
+		return 0x01;
 	fn00401C48();
-	return (byte) SEQ(eax_24_8_n, 0x00);
+	return 0x00;
 }
 
 // 004014AD: void fn004014AD(Register word32 ebx, Register Eq_n edi, Stack Eq_n dwArg04)
@@ -464,19 +460,12 @@ void fn00401774(word32 dwArg04)
 byte fn0040188F()
 {
 	Eq_n eax_n = GetModuleHandleW(null);
-	word24 eax_24_8_n = SLICE(eax_n, word24, 8);
-	if (eax_n == null)
-		return (byte) SEQ(eax_24_8_n, 0x00);
-	eax_24_8_n = 0x5A;
-	if (eax_n->unused != 23117)
-		return (byte) SEQ(eax_24_8_n, 0x00);
+	if (eax_n == null || eax_n->unused != 23117)
+		return 0x00;
 	struct Eq_n * eax_n = eax_n + eax_n->dw003C / 0x0040;
-	eax_24_8_n = SLICE(eax_n, word24, 8);
-	eax_24_8_n = SLICE(eax_n, word24, 8);
-	eax_24_8_n = SLICE(eax_n, word24, 8);
 	word24 eax_24_8_n = SLICE(eax_n, word24, 8);
 	if (eax_n->dw0000 != 0x4550 || (eax_n->w0018 != 0x010B || eax_n->dw0074 <= 0x0E))
-		return (byte) SEQ(eax_24_8_n, 0x00);
+		return 0x00;
 	return (byte) SEQ(eax_24_8_n, eax_n->dw00E8 != 0x00);
 }
 

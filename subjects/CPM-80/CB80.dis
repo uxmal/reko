@@ -656,7 +656,7 @@ l05D4:
 // SymbolicIn:
 
 l05EE:
-	return (byte) bc_20
+	return SLICE(bc_20, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -880,7 +880,7 @@ l06CE:
 	byte b_35
 	fn05EF(0x162C, out b_35)
 	word16 bc_28 = <invalid>
-	return (byte) bc_28
+	return SLICE(bc_28, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

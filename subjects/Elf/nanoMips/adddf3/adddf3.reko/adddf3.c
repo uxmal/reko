@@ -20,10 +20,10 @@ void __adddf3(Eq_n r4, Eq_n r5, uint32 r6, Eq_n r7)
 	if (r5 >> 0x1F == r7 >> 0x1F)
 	{
 		r3_n = r11_n;
-		if (0x00 < r11_n)
+		if (r11_n > 0x00)
 		{
 			Eq_n r7_n;
-			if (0x00 == r10_n)
+			if (r10_n == 0x00)
 			{
 				if ((r9_n | r6 << 0x03) == 0x00)
 					goto l08048052;
@@ -39,7 +39,7 @@ void __adddf3(Eq_n r4, Eq_n r5, uint32 r6, Eq_n r7)
 				if (r11_n == 0x07FF)
 				{
 l080480FE:
-					if (0x00 == (r8_n | r4 << 0x03))
+					if ((r8_n | r4 << 0x03) == 0x00)
 					{
 						r8_n.u0 = 0x00;
 						r12_n.u0 = 0x00;
@@ -49,25 +49,25 @@ l080480FE:
 					goto l080482D2;
 				}
 l0804812C:
-				ui32 r6_n;
 				uint32 r7_n;
+				ui32 r6_n;
 				if (r7_n < 0x39)
 				{
 					if (r7_n < 0x20)
 					{
 						word32 r10_n = 0x20 - r7_n;
 						r7_n = r9_n >> r7_n;
-						r6_n = (word32) (0x00 < (r6 << 0x03) << r10_n) | (r9_n << r10_n | (r6 << 0x03) >> r7_n);
+						r6_n = (word32) (r6 << 0x03 << r10_n > 0x00) | (r9_n << r10_n | (r6 << 0x03) >> r7_n);
 						goto l08048156;
 					}
 					uint32 r4_n = r9_n >> r7_n;
 					ui32 r10_n = 0x00;
 					if (r7_n != 0x20)
 						r10_n = r9_n << -r7_n;
-					r6_n = (word32) (0x00 < (r10_n | r6 << 0x03)) | r4_n;
+					r6_n = (word32) ((r10_n | r6 << 0x03) > 0x00) | r4_n;
 				}
 				else
-					r6_n = (word32) (0x00 < (r9_n | r6 << 0x03));
+					r6_n = (word32) ((r9_n | r6 << 0x03) > 0x00);
 				r7_n = 0x00;
 l08048156:
 				Eq_n r6_n = r6_n + (r4 << 0x03);
@@ -83,7 +83,7 @@ l08048156:
 				goto l0804812C;
 			}
 l08048112:
-			if (0x00 != (r8_n | r4 << 0x03))
+			if ((r8_n | r4 << 0x03) != 0x00)
 				goto l080482D2;
 			r8_n.u0 = 0x00;
 			r12_n.u0 = 0x00;
@@ -103,7 +103,7 @@ l08048064:
 			Eq_n r8_n = r8_n >> 0x03;
 			if (r10_n == 0x07FF)
 			{
-				if (0x00 != (r7_n | r8_n))
+				if ((r7_n | r8_n) != 0x00)
 					r8_n |= 0x00800000;
 				else
 					r8_n.u0 = 0x00;
@@ -111,11 +111,11 @@ l08048064:
 			__ins(__ins(__ins(0x00, r8_n, 0x00, 0x01), r10_n, 0x04, 0x01), r5_n, 0x0F, 0x01);
 			return;
 		}
-		if (0x00 != r11_n)
+		if (r11_n != 0x00)
 		{
-			int32 r11_n;
 			uint32 r8_n;
-			if (0x00 == r13_n)
+			int32 r11_n;
+			if (r13_n == 0x00)
 			{
 				if ((r8_n | r4 << 0x03) == 0x00)
 				{
@@ -124,7 +124,7 @@ l08048064:
 					goto l080481A4;
 				}
 				r11_n = ~r11_n;
-				if (0x00 == r11_n)
+				if (r11_n == 0x00)
 				{
 					r12_n = (r4 << 0x03) + (r6 << 0x03);
 					r8_n = r8_n + r9_n;
@@ -150,7 +150,7 @@ l080480CC:
 l080481A4:
 					r12_n = r9_n | r6 << 0x03;
 					r8_n.u0 = 0x00;
-					if (0x00 == r12_n)
+					if (r12_n == 0x00)
 						goto l08048064;
 l080481AE:
 					r8_n = r9_n;
@@ -165,25 +165,25 @@ l080481AE:
 				r11_n = -r11_n;
 				r8_n |= 0x08000000;
 			}
-			ui32 r12_n;
 			uint32 r11_n;
+			ui32 r12_n;
 			if (r11_n < 0x39)
 			{
 				if (r11_n < 0x20)
 				{
 					word32 r7_n = 0x20 - r11_n;
 					r11_n = r8_n >> r11_n;
-					r12_n = r8_n << r7_n | (r4 << 0x03) >> r11_n | (word32) (0x00 < (r4 << 0x03) << r7_n);
+					r12_n = r8_n << r7_n | (r4 << 0x03) >> r11_n | (word32) ((r4 << 0x03) << r7_n > 0x00);
 					goto l080481F8;
 				}
 				uint32 r4_n = r8_n >> r11_n;
 				ui32 r7_n = 0x00;
 				if (r11_n != 0x20)
 					r7_n = r8_n << -r11_n;
-				r12_n = r4_n | (word32) (0x00 < (r7_n | r4 << 0x03));
+				r12_n = r4_n | (word32) ((r7_n | r4 << 0x03) > 0x00);
 			}
 			else
-				r12_n = (word32) (0x00 < (r8_n | r4 << 0x03));
+				r12_n = (word32) ((r8_n | r4 << 0x03) > 0x00);
 			r11_n = 0x00;
 l080481F8:
 			r12_n = r12_n + (r6 << 0x03);
@@ -205,7 +205,7 @@ l08048060:
 			r12_n = r2_n << 0x1F | r6_n >> 0x01;
 			r8_n = r2_n >> 0x01;
 l0804827A:
-			if (0x00 != (word32) r12_n.u1 + 0x07 && r12_n != 11)
+			if (r12_n != 0x07 && r12_n != 11)
 			{
 				Eq_n r6_n = (word32) r12_n.u0 + 0x04;
 				r12_n = r6_n;
@@ -214,9 +214,9 @@ l0804827A:
 			goto l08048064;
 		}
 		ui32 r7_n = r8_n | r4 << 0x03;
-		if (0x00 == r13_n)
+		if (r13_n == 0x00)
 		{
-			if (0x00 != r7_n)
+			if (r7_n != 0x00)
 			{
 				r10_n.u0 = 0x00;
 				if ((r9_n | r6 << 0x03) != 0x00)
@@ -238,7 +238,7 @@ l080484D2:
 			r10_n.u0 = 0x00;
 			goto l0804827A;
 		}
-		if (0x00 != r7_n)
+		if (r7_n != 0x00)
 		{
 			r10_n.u0 = 0x07FF;
 			if ((r9_n | r6 << 0x03) != 0x00)
@@ -267,19 +267,19 @@ l080482D2:
 		r10_n.u0 = 0x07FF;
 		goto l0804827A;
 	}
-	Eq_n r4_n;
 	Eq_n r11_n;
+	Eq_n r4_n;
 	Eq_n r14_n = r11_n;
-	if (0x00 < r11_n)
+	if (r11_n > 0x00)
 	{
 		Eq_n r7_n;
-		if (0x00 == r10_n)
+		if (r10_n == 0x00)
 		{
-			if (0x00 == (r9_n | r6 << 0x03))
+			if ((r9_n | r6 << 0x03) == 0x00)
 			{
 l08048052:
 				r10_n = r11_n;
-				if (r11_n == 0x07FF && 0x00 == (r8_n | r4 << 0x03))
+				if (r11_n == 0x07FF && (r8_n | r4 << 0x03) == 0x00)
 					goto l08048060;
 				goto l0804827A;
 			}
@@ -302,25 +302,25 @@ l08048052:
 			r9_n |= 0x08000000;
 			r7_n = r11_n;
 		}
-		ui32 r6_n;
 		uint32 r7_n;
+		ui32 r6_n;
 		if (r7_n < 0x39)
 		{
 			if (r7_n < 0x20)
 			{
 				word32 r10_n = 0x20 - r7_n;
 				r7_n = r9_n >> r7_n;
-				r6_n = (word32) (0x00 < (r6 << 0x03) << r10_n) | (r9_n << r10_n | (r6 << 0x03) >> r7_n);
+				r6_n = (word32) (r6 << 0x03 << r10_n > 0x00) | (r9_n << r10_n | (r6 << 0x03) >> r7_n);
 				goto l0804836E;
 			}
 			uint32 r4_n = r9_n >> r7_n;
 			ui32 r10_n = 0x00;
 			if (r7_n != 0x20)
 				r10_n = r9_n << -r7_n;
-			r6_n = (word32) (0x00 < (r10_n | r6 << 0x03)) | r4_n;
+			r6_n = (word32) ((r10_n | r6 << 0x03) > 0x00) | r4_n;
 		}
 		else
-			r6_n = (word32) (0x00 < (r9_n | r6 << 0x03));
+			r6_n = (word32) ((r9_n | r6 << 0x03) > 0x00);
 		r7_n = 0x00;
 l0804836E:
 		Eq_n r6_n = (r4 << 0x03) - r6_n;
@@ -329,11 +329,11 @@ l0804836E:
 		r12_n = r6_n;
 		goto l08048332;
 	}
-	if (0x00 != r11_n)
+	if (r11_n != 0x00)
 	{
-		int32 r11_n;
 		uint32 r8_n;
-		if (0x00 == r13_n)
+		int32 r11_n;
+		if (r13_n == 0x00)
 		{
 			if ((r8_n | r4 << 0x03) == 0x00)
 			{
@@ -342,7 +342,7 @@ l0804836E:
 				goto l080483D0;
 			}
 			r11_n = ~r11_n;
-			if (0x00 == r11_n)
+			if (r11_n == 0x00)
 			{
 				r12_n = (r6 << 0x03) - (r4 << 0x03);
 				r8_n = r9_n - r8_n;
@@ -352,7 +352,7 @@ l0804836E:
 			{
 l080483D0:
 				r12_n = r9_n | r6 << 0x03;
-				if (0x00 == r12_n)
+				if (r12_n == 0x00)
 				{
 					r8_n.u0 = 0x00;
 					r5_n = r7 >> 0x1F;
@@ -368,25 +368,25 @@ l080483D0:
 			r11_n = -r11_n;
 			r8_n |= 0x08000000;
 		}
-		ui32 r12_n;
 		uint32 r11_n;
+		ui32 r12_n;
 		if (r11_n < 0x39)
 		{
 			if (r11_n < 0x20)
 			{
 				word32 r7_n = 0x20 - r11_n;
 				r11_n = r8_n >> r11_n;
-				r12_n = r8_n << r7_n | (r4 << 0x03) >> r11_n | (word32) (0x00 < (r4 << 0x03) << r7_n);
+				r12_n = r8_n << r7_n | (r4 << 0x03) >> r11_n | (word32) ((r4 << 0x03) << r7_n > 0x00);
 				goto l08048426;
 			}
 			uint32 r5_n = r8_n >> r11_n;
 			ui32 r7_n = 0x00;
 			if (r11_n != 0x20)
 				r7_n = r8_n << -r11_n;
-			r12_n = r5_n | (word32) (0x00 < (r7_n | r4 << 0x03));
+			r12_n = r5_n | (word32) ((r7_n | r4 << 0x03) > 0x00);
 		}
 		else
-			r12_n = (word32) (0x00 < (r8_n | r4 << 0x03));
+			r12_n = (word32) ((r8_n | r4 << 0x03) > 0x00);
 		r11_n = 0x00;
 l08048426:
 		r12_n = (r6 << 0x03) - r12_n;
@@ -426,7 +426,7 @@ l08048548:
 		if (r10_n < ~0x1E)
 		{
 			word32 r7_n = 0x20 - (r10_n + 0x01);
-			r12_n = r8_n << r7_n | r12_n >> r10_n + 0x01 | (word32) (0x00 < r12_n << r7_n);
+			r12_n = r8_n << r7_n | r12_n >> r10_n + 0x01 | (word32) (r12_n << r7_n > 0x00);
 			r8_n = r8_n >> r10_n + 0x01;
 		}
 		else
@@ -435,7 +435,7 @@ l08048548:
 			uint32 r10_n = r8_n >> r10_n + ~0x1E;
 			if (r10_n != ~0x1E)
 				r7_n = r8_n << -(r10_n + 0x01);
-			r12_n = r10_n | (word32) (0x00 < (r12_n | r7_n));
+			r12_n = r10_n | (word32) ((r12_n | r7_n) > 0x00);
 			r8_n.u0 = 0x00;
 		}
 		goto l080484D2;
@@ -444,11 +444,11 @@ l08048548:
 	{
 		r10_n = r8_n | r4 << 0x03;
 		ui32 r7_n = r9_n | r6 << 0x03;
-		if (0x00 != r13_n)
+		if (r13_n != 0x00)
 		{
-			if (0x00 == r10_n)
+			if (r10_n == 0x00)
 			{
-				if (0x00 == r7_n)
+				if (r7_n == 0x00)
 				{
 					r5_n.u0 = 0x00;
 					r8_n.u0 = 0x007FFFFF;
@@ -463,7 +463,7 @@ l080482D0:
 				goto l080482D2;
 			}
 			r10_n.u0 = 0x07FF;
-			if (0x00 == r7_n)
+			if (r7_n == 0x00)
 				goto l0804827A;
 			uint32 r4_n;
 			uint32 r7_n = r8_n >> 0x03;
@@ -482,9 +482,9 @@ l080482D0:
 			r5_n = r14_n;
 			goto l080482D2;
 		}
-		if (0x00 == r10_n)
+		if (r10_n == 0x00)
 		{
-			if (0x00 != r7_n)
+			if (r7_n != 0x00)
 			{
 l080483D8:
 				r8_n = r9_n;
@@ -512,7 +512,7 @@ l080484C2:
 			goto l0804827A;
 		}
 		r12_n = r4_n | r7_n;
-		if (0x00 != r12_n)
+		if (r12_n != 0x00)
 		{
 			r8_n = r7_n;
 			r12_n = r4_n;
@@ -531,7 +531,7 @@ l080484C2:
 			goto l08048548;
 		}
 		r12_n = r11_n | r4_n;
-		if (0x00 != r12_n)
+		if (r12_n != 0x00)
 			goto l08048548;
 	}
 	goto l08048492;

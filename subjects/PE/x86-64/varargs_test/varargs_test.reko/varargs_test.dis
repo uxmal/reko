@@ -559,7 +559,7 @@ l000000014000132D:
 // SymbolicIn:
 
 l0000000140001423:
-	return (word32) rax_224
+	return SLICE(rax_224, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -590,7 +590,7 @@ l0000000140001434:
 // SymbolicIn:
 
 l0000000140001441_thunk_fn00000001400012BC:
-	return (DWORD) (uint64) (uint32) fn00000001400012BC(rax_6, rsi, rdi)
+	return SLICE((uint64) (uint32) fn00000001400012BC(rax_6, rsi, rdi), DWORD, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -897,7 +897,7 @@ l0000000140001717_thunk_fn0000000140001718:
 	rbxOut = rbx_11
 	r8Out = r8_24
 	xmm1Out = xmm1
-	return (byte) rax_25
+	return SLICE(rax_25, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -963,7 +963,7 @@ l00000001400016FF:
 	rbxOut = rbx
 	r8Out = r8_100
 	xmm1Out = xmm1
-	return (byte) rax_146
+	return SLICE(rax_146, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1486,7 +1486,7 @@ fn0000000140001958_entry:
 // SymbolicIn:
 
 l0000000140001958:
-	return (word32) (uint64) (uint8) (Mem0[0x0000000140003014:word32] == 0x00000000)
+	return SLICE((uint64) (uint8) (Mem0[0x0000000140003014:word32] == 0x00000000), word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2139,7 +2139,7 @@ fn0000000140001DC4_entry:
 // SymbolicIn:
 
 l0000000140001DC4:
-	return (word32) (uint64) (uint8) (Mem0[0x0000000140003030:word32] != 0x00000000)
+	return SLICE((uint64) (uint8) (Mem0[0x0000000140003030:word32] != 0x00000000), word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

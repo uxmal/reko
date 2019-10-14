@@ -32,7 +32,7 @@ namespace Reko.Evaluation
     {
         private EvaluationContext ctx;
         private Expression result;
-        private Identifier idOld;
+        private Expression eOld;
 
         public SliceSequence(EvaluationContext ctx)
         {
@@ -42,8 +42,7 @@ namespace Reko.Evaluation
         public bool Match(Slice slice)
         {
             var e = slice.Expression;
-            if (e is Identifier id &&
-                ctx.GetDefiningExpression(id) is MkSequence seq)
+            if (IsSequence(e, out var seq))
             {
                 var bitsUsed = slice.DataType.BitSize;
                 int bitoffset = seq.DataType.BitSize;
@@ -53,7 +52,7 @@ namespace Reko.Evaluation
                     bitoffset -= bitsElem;
                     if (slice.Offset == bitoffset && bitsElem == bitsUsed)
                     {
-                        this.idOld = id;
+                        this.eOld = e;
                         this.result = elem;
                         return true;
                     }
@@ -64,9 +63,22 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            ctx.RemoveIdentifierUse(idOld);
+            ctx.RemoveExpressionUse(eOld);
             ctx.UseExpression(result);
             return result;
+        }
+
+        private bool IsSequence(Expression e, out MkSequence sequence)
+        {
+            if (e is Identifier id)
+            {
+                sequence = ctx.GetDefiningExpression(id) as MkSequence;
+            }
+            else
+            {
+                sequence = e as MkSequence;
+            }
+            return sequence != null;
         }
     }
 }
