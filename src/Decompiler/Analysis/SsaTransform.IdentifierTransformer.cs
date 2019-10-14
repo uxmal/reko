@@ -373,7 +373,8 @@ namespace Reko.Analysis
                 var dt = PrimitiveType.CreateWord((int) stg.BitSize);
                 if (param.Storage.Covers(stg))
                 {
-                    return outer.m.Slice(dt, idParam, idParam.Storage.OffsetOf(stg));
+                    var slice = this.outer.arch.Endianness.MakeSlice(dt, idParam, idParam.Storage.OffsetOf(stg));
+                    return slice;
                 }
                 else
                 {

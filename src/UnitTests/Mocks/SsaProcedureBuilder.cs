@@ -79,6 +79,12 @@ namespace Reko.UnitTests.Mocks
             return MakeSsaIdentifier(id, name);
         }
 
+        public Identifier Local(PrimitiveType primitiveType, string name, int offset)
+        {
+            var local = base.Local(primitiveType, name);
+            return MakeSsaIdentifier(local, name);
+        }
+
         public override Identifier Local16(string name, int offset)
         {
             var local = base.Local16(null, offset);

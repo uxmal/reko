@@ -91,6 +91,16 @@ namespace Reko.UnitTests.Analysis
             this.importReferences = pb.Program.ImportReferences;
         }
 
+        private void Given_BigEndianArchitecture()
+        {
+            var arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Big);
+            arch.Setup(a => a.Name).Returns("fake-be-arch");
+            arch.Setup(a => a.CreateFrame()).Returns(() => new Frame(PrimitiveType.Ptr32));
+            Given_Architecture(arch.Object);
+        }
+
+
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
             var proc = pb.Add("proc1", builder);
@@ -4389,6 +4399,57 @@ proc1_exit:
                 m.Assign(r4, m.Word32(0x00BCDE00));
                 m.Call(r1, 0);
                 m.Return();
+            });
+        }
+
+        [Test]
+        public void Ssa_BigEndianSlicing_Parameter()
+        {
+            var sExp =
+            #region Expected
+@"fp:fp
+    def:  def fp
+Mem0:Mem
+    def:  def Mem0
+Mem3: orig: Mem0
+    def:  Mem3[0x00123400:word32] = dwArg08_6
+Mem4: orig: Mem0
+    def:  Mem4[0x00123404:word32] = dwArg0C_7
+rArg08:Stack +0008
+    def:  def rArg08
+    uses: dwArg08_6 = SLICE(rArg08, word32, 32)
+          dwArg0C_7 = SLICE(rArg08, word32, 0)
+dwArg08_6: orig: dwArg08
+    def:  dwArg08_6 = SLICE(rArg08, word32, 32)
+    uses: Mem3[0x00123400:word32] = dwArg08_6
+dwArg0C_7: orig: dwArg0C
+    def:  dwArg0C_7 = SLICE(rArg08, word32, 0)
+    uses: Mem4[0x00123404:word32] = dwArg0C_7
+// proc1
+// Return size: 0
+void proc1(real64 rArg08)
+proc1_entry:
+	def fp
+	def Mem0
+	def rArg08
+	dwArg08_6 = SLICE(rArg08, word32, 32)
+	dwArg0C_7 = SLICE(rArg08, word32, 0)
+	// succ:  l1
+l1:
+	Mem3[0x00123400:word32] = dwArg08_6
+	Mem4[0x00123404:word32] = dwArg0C_7
+proc1_exit:
+======
+";
+            #endregion 
+            Given_BigEndianArchitecture();
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                m.Procedure.Signature = FunctionType.Action(
+                    new Identifier("rArg08", PrimitiveType.Real64, new StackArgumentStorage(8, PrimitiveType.Word64)));
+                // Slices the little-endian high word of rArg08
+                m.MStore(m.Word32(0x00123400), m.Mem32(m.IAddS(m.Procedure.Frame.FramePointer, 8)));
+                m.MStore(m.Word32(0x00123404), m.Mem32(m.IAddS(m.Procedure.Frame.FramePointer, 12)));
             });
         }
     }
