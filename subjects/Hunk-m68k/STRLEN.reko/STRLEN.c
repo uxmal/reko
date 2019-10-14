@@ -14,12 +14,11 @@ void fn00001000(int32 d0, byte * a0)
 	{
 		word32 * a0_n = &globals->ptr13C8;
 		uint32 d0_n;
-		do
+		for (d0_n = 0x0C; d0_n != 0x00; --d0_n)
 		{
 			*a0_n = 0x00;
 			++a0_n;
-			--d0_n;
-		} while (d0_n != 0x00);
+		}
 	}
 	globals->ptr13C8 = fp;
 	globals->ptr13CC = a6_n;

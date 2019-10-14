@@ -26,7 +26,7 @@ l0000100A:
 
 l00001020:
 	word32 a0_13 = 0x000013C8
-	word32 d0_16 = 0x000093EE >>u 0x00000002
+	word32 d0_16 = 0x0000000C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
