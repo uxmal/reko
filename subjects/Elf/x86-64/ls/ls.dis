@@ -3197,7 +3197,7 @@ l0000000000404B35:
 	rbpOut = rcx
 	r8Out = r8_210
 	r12Out = 0x0000000000000000
-	return (byte) rax_212
+	return SLICE(rax_212, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3272,7 +3272,7 @@ l0000000000404A38:
 	rbpOut = rbp
 	r8Out = r8_116
 	r12Out = r12
-	return (byte) rax_269
+	return SLICE(rax_269, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9417,7 +9417,7 @@ l0000000000409CFE:
 // SymbolicIn:
 
 l0000000000409CDC:
-	return (word32) rax_38
+	return SLICE(rax_38, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11863,7 +11863,7 @@ l000000000040B890:
 	r8Out = r8
 	xmm0Out = xmm0
 	xmm1Out = <invalid>
-	return (word32) (uint64) ebp_170
+	return SLICE((uint64) ebp_170, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11892,7 +11892,7 @@ l000000000040B84B:
 	r8Out = r8
 	xmm0Out = xmm0
 	xmm1Out = <invalid>
-	return (word32) (uint64) ebp_170
+	return SLICE((uint64) ebp_170, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12181,7 +12181,7 @@ l000000000040B92A:
 	xmm0Out = xmm0
 	xmm1Out = xmm1
 	xmm2Out = xmm2
-	return (word32) rax_263
+	return SLICE(rax_263, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13870,7 +13870,7 @@ l000000000040C894:
 	r9Out = r9_270
 	r14bOut = <invalid>
 	r15Out = r15
-	return (word32) rax_100
+	return SLICE(rax_100, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -16957,7 +16957,7 @@ l000000000040E638_1:
 // SymbolicIn:
 
 l000000000040E63C:
-	return (word32) (uint64) Mem0[rax_6:word32]
+	return SLICE((uint64) Mem0[rax_6:word32], word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18584,7 +18584,7 @@ l0000000000410FDD:
 	r12Out = r8
 	r13bOut = <invalid>
 	word32 r9_32_32_325 = SLICE(r9_266, word32, 32)
-	return (word32) rax_261
+	return SLICE(rax_261, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18597,7 +18597,7 @@ l0000000000410F4F:
 	r9Out = r9_54
 	r12Out = r12
 	r13bOut = <invalid>
-	return (word32) (uint64) ebp_120
+	return SLICE((uint64) ebp_120, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18615,7 +18615,7 @@ l0000000000410EF5:
 	r9Out = r9_54
 	r12Out = r12
 	r13bOut = <invalid>
-	return (word32) rax_214
+	return SLICE(rax_214, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18951,7 +18951,7 @@ l00000000004114B5:
 	r14bOut = <invalid>
 	r15Out = r15_34
 	word32 r9_32_32_324 = SLICE(r9_265, word32, 32)
-	return (word32) rax_260
+	return SLICE(rax_260, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18967,7 +18967,7 @@ l0000000000411422:
 	r13Out = r13
 	r14bOut = <invalid>
 	r15Out = r15
-	return (word32) (uint64) ebp_121
+	return SLICE((uint64) ebp_121, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18988,7 +18988,7 @@ l00000000004113C5:
 	r13Out = r13
 	r14bOut = <invalid>
 	r15Out = r15
-	return (word32) rax_215
+	return SLICE(rax_215, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -19077,7 +19077,7 @@ l00000000004117DC:
 // SymbolicIn:
 
 l00000000004117BF:
-	return (word32) rax_10
+	return SLICE(rax_10, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -19108,7 +19108,7 @@ l0000000000411820:
 // SymbolicIn:
 
 l000000000041182F_thunk_fn00000000004117B0:
-	return (word32) (uint64) (uint32) fn00000000004117B0(rsi, rdi_11)
+	return SLICE((uint64) (uint32) fn00000000004117B0(rsi, rdi_11), word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -19139,7 +19139,7 @@ l0000000000411840:
 // SymbolicIn:
 
 l000000000041184F_thunk_fn00000000004117B0:
-	return (word32) (uint64) (uint32) fn00000000004117B0(rsi, rdi_11)
+	return SLICE((uint64) (uint32) fn00000000004117B0(rsi, rdi_11), word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

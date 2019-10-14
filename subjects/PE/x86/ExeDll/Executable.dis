@@ -433,7 +433,6 @@ fn0040143F_entry:
 
 l0040143F:
 	word32 eax_4 = fn00401B98()
-	word24 eax_24_8_49 = SLICE(eax_4, word24, 8)
 	branch eax_4 != 0x00000000 l0040144B
 // DataOut:
 // DataOut (flags):
@@ -449,8 +448,6 @@ l00401460:
 	__lock()
 	word32 eax_25
 	__cmpxchg(Mem17[0x00403338:word32], edx_19, 0x00000000, out eax_25)
-	word24 eax_24_8_51 = SLICE(eax_25, word24, 8)
-	word24 eax_24_8_53 = SLICE(eax_25, word24, 8)
 	branch eax_25 != 0x00000000 l0040145C
 // DataOut:
 // DataOut (flags):
@@ -464,21 +461,21 @@ l0040145C:
 
 l00401470:
 	edxOut = edx_19
-	return (byte) SEQ(eax_24_8_53, 0x01)
+	return 0x01
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040146C:
 	edxOut = edx_19
-	return (byte) SEQ(eax_24_8_51, 0x00)
+	return 0x00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401448:
 	edxOut = edx
-	return (byte) SEQ(eax_24_8_49, 0x00)
+	return 0x00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -516,7 +513,6 @@ l0040147D:
 
 l00401484:
 	fn004019FE(edx)
-	word24 eax_24_8_53 = SLICE(eax_13, word24, 8)
 	branch fn00401C48() != 0x00 l00401496
 // DataOut:
 // DataOut (flags):
@@ -529,7 +525,7 @@ l00401496:
 // SymbolicIn:
 
 l004014A9:
-	return (byte) SEQ(eax_24_8_53, 0x01)
+	return 0x01
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -541,7 +537,7 @@ l0040149F:
 // SymbolicIn:
 
 l00401492:
-	return (byte) SEQ(eax_24_8_53, 0x00)
+	return 0x00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -739,7 +735,7 @@ l004015C8:
 	ebpOut = ebp_69
 	esiOut = esi_73
 	ediOut = edi_72
-	return (byte) eax_84
+	return SLICE(eax_84, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1343,14 +1339,12 @@ fn0040188F_entry:
 
 l0040188F:
 	word32 eax_6 = GetModuleHandleW(0x00000000)
-	word24 eax_24_8_36 = SLICE(eax_6, word24, 8)
 	branch eax_6 != 0x00000000 l004018A0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004018A0:
-	eax_24_8_36 = 0x00005A (alias)
 	branch Mem5[eax_6:word16] != 0x5A4D l0040189D
 // DataOut:
 // DataOut (flags):
@@ -1358,9 +1352,6 @@ l004018A0:
 
 l004018AA:
 	word32 eax_17 = Mem5[eax_6 + 0x0000003C:word32] + eax_6
-	eax_24_8_36 = SLICE(eax_17, word24, 8) (alias)
-	eax_24_8_36 = SLICE(eax_17, word24, 8) (alias)
-	eax_24_8_36 = SLICE(eax_17, word24, 8) (alias)
 	word24 eax_24_8_43 = SLICE(eax_17, word24, 8)
 	branch Mem5[eax_17:word32] != 0x00004550 l0040189D
 // DataOut:
@@ -1380,13 +1371,13 @@ l004018C2:
 // SymbolicIn:
 
 l004018C8:
-	return (byte) SEQ(eax_24_8_43, Mem5[eax_17 + 0x000000E8:word32] != 0x00000000)
+	return SLICE(SEQ(eax_24_8_43, Mem5[eax_17 + 0x000000E8:word32] != 0x00000000), byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040189D:
-	return (byte) SEQ(eax_24_8_36, 0x00)
+	return 0x00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

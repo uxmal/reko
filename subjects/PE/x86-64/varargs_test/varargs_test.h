@@ -220,7 +220,7 @@ Eq_429: (fn void (byte))
 	T_430 (in signature of fn00000001400017D8 : void)
 Eq_437: (union "Eq_437" (DWORD u0) (UINT u1))
 	T_437 (in eax : Eq_437)
-	T_453 (in (DWORD) (uint64) (uint32) fn00000001400012BC(rax_6, rsi, rdi) : DWORD)
+	T_453 (in SLICE((uint64) (uint32) fn00000001400012BC(rax_6, rsi, rdi), DWORD, 0) : DWORD)
 	T_455 (in tArg08 : Eq_437)
 	T_471 (in uExitCode : UINT)
 	T_474 (in tLoc38 : Eq_437)
@@ -1707,7 +1707,7 @@ T_311: (in 0x00000000000000FF : uint64)
   Class: Eq_289
   DataType: uint64
   OrigDataType: uint64
-T_312: (in (word32) rax_224 : word32)
+T_312: (in SLICE(rax_224, word32, 0) : word32)
   Class: Eq_243
   DataType: word32
   OrigDataType: word32
@@ -2271,7 +2271,7 @@ T_452: (in (uint64) (uint32) fn00000001400012BC(rax_6, rsi, rdi) : uint64)
   Class: Eq_452
   DataType: uint64
   OrigDataType: uint64
-T_453: (in (DWORD) (uint64) (uint32) fn00000001400012BC(rax_6, rsi, rdi) : DWORD)
+T_453: (in SLICE((uint64) (uint32) fn00000001400012BC(rax_6, rsi, rdi), DWORD, 0) : DWORD)
   Class: Eq_437
   DataType: Eq_437
   OrigDataType: DWORD
@@ -3283,7 +3283,7 @@ T_705: (in rbx : word64)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word64
-T_706: (in (byte) rax_146 : byte)
+T_706: (in SLICE(rax_146, byte, 0) : byte)
   Class: Eq_618
   DataType: byte
   OrigDataType: byte
@@ -3307,7 +3307,7 @@ T_711: (in fn0000000140001718(rcx_18, out r8_24) : word64)
   Class: Eq_149
   DataType: (ptr64 (ptr64 code))
   OrigDataType: word64
-T_712: (in (byte) rax_25 : byte)
+T_712: (in SLICE(rax_25, byte, 0) : byte)
   Class: Eq_618
   DataType: byte
   OrigDataType: byte
@@ -4271,7 +4271,7 @@ T_952: (in (uint64) (uint8) (Mem0[0x0000000140003014:word32] == 0x00000000) : ui
   Class: Eq_952
   DataType: uint64
   OrigDataType: uint64
-T_953: (in (word32) (uint64) (uint8) (Mem0[0x0000000140003014:word32] == 0x00000000) : word32)
+T_953: (in SLICE((uint64) (uint8) (Mem0[0x0000000140003014:word32] == 0x00000000), word32, 0) : word32)
   Class: Eq_946
   DataType: word32
   OrigDataType: word32
@@ -5955,7 +5955,7 @@ T_1373: (in (uint64) (uint8) (Mem0[0x0000000140003030:word32] != 0x00000000) : u
   Class: Eq_1373
   DataType: uint64
   OrigDataType: uint64
-T_1374: (in (word32) (uint64) (uint8) (Mem0[0x0000000140003030:word32] != 0x00000000) : word32)
+T_1374: (in SLICE((uint64) (uint8) (Mem0[0x0000000140003030:word32] != 0x00000000), word32, 0) : word32)
   Class: Eq_1367
   DataType: word32
   OrigDataType: word32

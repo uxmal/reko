@@ -330,7 +330,7 @@ l00000000004005B9:
 // SymbolicIn:
 
 l00000000004005C3:
-	return (word32) rax_113
+	return SLICE(rax_113, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

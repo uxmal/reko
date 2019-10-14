@@ -773,7 +773,7 @@ T_176: (in 0x0000000000000000 : uint64)
   Class: Eq_80
   DataType: uint64
   OrigDataType: uint64
-T_177: (in (word32) rax_113 : word32)
+T_177: (in SLICE(rax_113, word32, 0) : word32)
   Class: Eq_76
   DataType: word32
   OrigDataType: word32

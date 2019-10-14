@@ -236,7 +236,7 @@ byte fn05CE(Eq_n bc)
 		fn056B(SEQ(b_n, *globals->t166D), out bc_n);
 		globals->t166D = (word16) globals->t166D + 0x01;
 	}
-	return (byte) bc_n;
+	return SLICE(bc_n, byte, 8);
 }
 
 // 05EF: FlagGroup bool fn05EF(Register Eq_n bc, Register out Eq_n bOut)
@@ -333,7 +333,7 @@ byte fn06CE(byte b, Eq_n c)
 	byte b_n;
 	fn05EF(5676, out b_n);
 	Eq_n bc_n = <invalid>;
-	return (byte) bc_n;
+	return SLICE(bc_n, byte, 8);
 }
 
 // 0722: void fn0722(Register cu8 c, Register byte b)

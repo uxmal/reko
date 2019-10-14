@@ -2850,7 +2850,7 @@ T_481: (in bc_20 : Eq_473)
   Class: Eq_473
   DataType: Eq_473
   OrigDataType: word16
-T_482: (in (byte) bc_20 : byte)
+T_482: (in SLICE(bc_20, byte, 8) : byte)
   Class: Eq_472
   DataType: byte
   OrigDataType: byte
@@ -3950,7 +3950,7 @@ T_756: (in bc_28 : Eq_230)
   Class: Eq_230
   DataType: Eq_230
   OrigDataType: word16
-T_757: (in (byte) bc_28 : byte)
+T_757: (in SLICE(bc_28, byte, 8) : byte)
   Class: Eq_735
   DataType: byte
   OrigDataType: byte
