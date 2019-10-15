@@ -42,14 +42,14 @@ namespace Reko.Scanning
     /// </remarks>
     public class BlockConflictResolver
     {
-        private static TraceSwitch trace = new TraceSwitch("HeuristicProcedureScanner", "Display progress of scanner", "Error");
+        private static readonly TraceSwitch trace = new TraceSwitch("HeuristicProcedureScanner", "Display progress of scanner") { Level = TraceLevel.Error };
 
-        private Program program;
-        private IRewriterHost host;
-        private ScanResults sr;
-        private DiGraph<RtlBlock> blocks;
-        private Func<Address, bool> isAddressValid;
-        private HashSet<Tuple<RtlBlock, RtlBlock>> conflicts;
+        private readonly Program program;
+        private readonly IRewriterHost host;
+        private readonly ScanResults sr;
+        private readonly DiGraph<RtlBlock> blocks;
+        private readonly Func<Address, bool> isAddressValid;
+        private HashSet<(RtlBlock, RtlBlock)> conflicts;
 
         public BlockConflictResolver(
             Program program,
@@ -90,8 +90,8 @@ namespace Reko.Scanning
 
         private void Dump(string message)
         {
-            DebugEx.Inform(trace, message);
-            DebugEx.Inform(trace, "  icfg nodes: {0}, conflicts: {1}", sr.ICFG.Nodes.Count, conflicts.Count);
+            trace.Inform(message);
+            trace.Inform("  icfg nodes: {0}, conflicts: {1}", sr.ICFG.Nodes.Count, conflicts.Count);
         }
 
         /// <summary>
@@ -143,9 +143,9 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="blocks"></param>
         /// <returns></returns>
-        public static HashSet<Tuple<RtlBlock, RtlBlock>> BuildConflictGraph(IEnumerable<RtlBlock> blocks)
+        public static HashSet<(RtlBlock, RtlBlock)> BuildConflictGraph(IEnumerable<RtlBlock> blocks)
         {
-            var conflicts = new HashSet<Tuple<RtlBlock, RtlBlock>>(new CollisionComparer());
+            var conflicts = new HashSet<(RtlBlock, RtlBlock)>(new CollisionComparer());
             // Find all conflicting blocks: pairs that overlap.
             var blockMap = blocks.OrderBy(n => n.Address).ToList();
             for (int i = 0; i < blockMap.Count; ++i)
@@ -157,7 +157,7 @@ namespace Reko.Scanning
                     var v = blockMap[j];
                     if (v.Address >= uEnd)
                         break;
-                    conflicts.Add(Tuple.Create(u, v));
+                    conflicts.Add((u, v));
                 }
             }
             return conflicts;
@@ -199,7 +199,7 @@ namespace Reko.Scanning
 
         private void RemoveBlockFromGraph(RtlBlock n)
         {
-            //Debug.Print("Removing block: {0}", n.Address);
+            trace.Verbose("Removing block: {0}", n.Address);
             blocks.Nodes.Remove(n);
             foreach (var i in n.Instructions)
             {
@@ -297,15 +297,13 @@ namespace Reko.Scanning
             }
         }
 
-        private bool Remaining(Tuple<RtlBlock, RtlBlock> c)
+        private bool Remaining((RtlBlock, RtlBlock) c)
         {
             var nodes = blocks.Nodes;
             return 
                 nodes.Contains(c.Item1) &&
                 nodes.Contains(c.Item2);
         }
-        
-
 
         private void RemoveParentsOfConflictingBlocks()
         {
@@ -322,14 +320,14 @@ namespace Reko.Scanning
             }
         }
 
-        private IEnumerable<Tuple<Address, Address>> GetGaps()
+        private IEnumerable<(Address, Address)> GetGaps()
         {
             var blockMap = blocks.Nodes.OrderBy(n => n.Address).ToList();
             var addrLastEnd = blockMap[0].Address;
             foreach (var b in blockMap)
             {
                 if (addrLastEnd < b.Address)
-                    yield return Tuple.Create(addrLastEnd, b.Address);
+                    yield return (addrLastEnd, b.Address);
                 addrLastEnd = b.GetEndAddress();
             }
         }
@@ -348,7 +346,7 @@ namespace Reko.Scanning
             foreach (var gap in GetGaps())
             {
                 int bestScore = 0;
-                Tuple<Address, Address> bestSequence = null;
+                var bestSequence = default((Address, Address));
                 foreach (var sequence in GetValidSequences(gap))
                 {
                     int score = ScoreSequence(sequence);
@@ -368,7 +366,7 @@ namespace Reko.Scanning
         /// (ii) its last instruction is a non intra-procedural control 
         /// transfer instruction.
         /// </summary>
-        private IEnumerable<Tuple<Address,Address>> GetValidSequences(Tuple<Address, Address> gap)
+        private IEnumerable<(Address,Address)> GetValidSequences((Address, Address) gap)
         {
             int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
             for (Address addr = gap.Item1; addr < gap.Item2; addr = addr + instrByteGranularity)
@@ -394,7 +392,7 @@ namespace Reko.Scanning
                     }
                 }
                 if (isValid)
-                    yield return Tuple.Create(addrStart, addr);
+                    yield return (addrStart, addr);
             }
         }
 
@@ -411,7 +409,7 @@ namespace Reko.Scanning
         /// calculate instruction scores using statistical techniques
         /// and heuristics to identify improbable instructions.
         /// </summary>    
-        private int ScoreSequence(Tuple<Address,Address> sequence)
+        private int ScoreSequence((Address,Address) sequence)
         {
             return 0;
         }
@@ -473,15 +471,15 @@ namespace Reko.Scanning
             return ancestors;
             }
 
-        private class CollisionComparer : IEqualityComparer<Tuple<RtlBlock, RtlBlock>>
+        private class CollisionComparer : IEqualityComparer<(RtlBlock, RtlBlock)>
         {
-            public bool Equals(Tuple<RtlBlock, RtlBlock> x, Tuple<RtlBlock, RtlBlock> y)
+            public bool Equals((RtlBlock, RtlBlock) x, (RtlBlock, RtlBlock) y)
             {
                 return x.Item1 == y.Item1 && x.Item2 == y.Item2 ||
                        x.Item1 == y.Item2 && x.Item2 == y.Item1;
             }
 
-            public int GetHashCode(Tuple<RtlBlock, RtlBlock> obj)
+            public int GetHashCode((RtlBlock, RtlBlock) obj)
             {
                 return obj.Item1.GetHashCode() ^ obj.Item2.GetHashCode();
             }

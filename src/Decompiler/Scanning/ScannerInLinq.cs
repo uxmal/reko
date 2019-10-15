@@ -53,8 +53,9 @@ namespace Reko.Scanning
 
         public ScanResults ScanImage(ScanResults sr)
         {
-            // sr.WatchedAddresses.Add(Address.Ptr32(0x00404F5C)); //$DEBUG
-
+            sr.WatchedAddresses.Add(Address.Ptr32(0x001126FC)); //$DEBUG
+            sr.WatchedAddresses.Add(Address.Ptr32(0x00112762)); //$DEBUG
+            
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
             // have hopefully a bunch of procedure addresses to
@@ -138,7 +139,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void DumpRanges(List<Tuple<IProcessorArchitecture, MemoryArea, Address, uint>> ranges)
+        private void DumpRanges(List<(IProcessorArchitecture, MemoryArea, Address, uint)> ranges)
         {
             foreach (var range in ranges)
             {
@@ -157,11 +158,12 @@ namespace Reko.Scanning
         /// been identified as code/data yet.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Tuple<IProcessorArchitecture, MemoryArea, Address, uint>> FindUnscannedRanges()
+        public IEnumerable<(IProcessorArchitecture, MemoryArea, Address, uint)> FindUnscannedRanges()
         {
             return MakeTriples(program.ImageMap.Items.Values)
                 .Select(triple => CreateUnscannedArea(triple))
-                .Where(triple => triple != null);
+                .Where(triple => triple.HasValue)
+                .Select(triple => triple.Value);
         }
 
         /// <summary>
@@ -204,7 +206,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="triple"></param>
         /// <returns></returns>
-        private Tuple<IProcessorArchitecture, MemoryArea, Address, uint> CreateUnscannedArea((ImageMapItem, ImageMapItem, ImageMapItem) triple)
+        private (IProcessorArchitecture, MemoryArea, Address, uint)? CreateUnscannedArea((ImageMapItem, ImageMapItem, ImageMapItem) triple)
         {
             var (prev, item, next) = triple;
             if (!(item.DataType is UnknownType unk))
@@ -247,7 +249,7 @@ namespace Reko.Scanning
                 }
             }
 
-            return Tuple.Create(
+            return (
                 arch,
                 seg.MemoryArea,
                 item.Address,
@@ -259,19 +261,6 @@ namespace Reko.Scanning
             return (item is ImageMapBlock imb)
                 ? imb.Block.Procedure.Architecture
                 : null;
-        }
-
-        private Tuple<IProcessorArchitecture, MemoryArea, Address, uint> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
-        {
-            if (!this.program.SegmentMap.TryFindSegment(de.Key, out ImageSegment seg))
-                return null;
-            if (!seg.IsExecutable)
-                return null;
-            return Tuple.Create(
-                program.Architecture,
-                seg.MemoryArea,
-                de.Key,
-                de.Value.Size);
         }
 
         private void BuildWeaklyConnectedComponents(ScanResults sr, Dictionary<long, block> the_blocks)
@@ -414,9 +403,12 @@ namespace Reko.Scanning
                 (from i in sr.FlatInstructions.Values
                  where i.type == (ushort)InstrClass.Invalid
                  select i.block_id).ToHashSet();
+            if (bad_blocks.FirstOrDefault(b => b.ToLinear() == 0x00112762) != null)
+                bad_blocks.Count.ToString();//$DEBUG
             var new_bad = bad_blocks;
             var preds = sr.FlatEdges.ToLookup(e => e.second);
             //Debug.Print("Bad {0}",
+
             //    string.Join(
             //        "\r\n      ",
             //        bad_blocks

@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Scanning
             Link(addr, next);
         }
 
-        private void Call(int uAddr, int len, int next)
+        private void Call(int uAddr, int len, int next, int uAddrDst)
         {
             var addr = Address.Ptr32((uint)uAddr);
             sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
@@ -415,7 +415,7 @@ namespace Reko.UnitTests.Scanning
         {
             Lin(0x1000, 3, 0x1003);
             Lin(0x1003, 2, 0x1005);
-            Call(0x1005, 5, 0x100A);
+            Call(0x1005, 5, 0x100A, 0x1010);
             End(0x100A, 1);
 
             CreateScanner();
@@ -436,7 +436,7 @@ namespace Reko.UnitTests.Scanning
         {
             Lin(0x1000, 3, 0x1003);
             Lin(0x1003, 2, 0x1005);
-            Call(0x1005, 5, 0x100A);
+            Call(0x1005, 5, 0x100A, 0x1010);
             Bad(0x100A, 1);
 
             CreateScanner();
