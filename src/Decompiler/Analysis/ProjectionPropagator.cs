@@ -217,13 +217,13 @@ namespace Reko.Analysis
                         if (AllSame(slices, (a, b) => a.Expression == b.Expression) &&
                             AllAdjacent(slices))
                         {
-                            DebugEx.Verbose(trace, "Prpr: Fusing slices in {0}", ssa.Procedure.Name);
-                            DebugEx.Verbose(trace, "{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
+                            trace.Verbose("Prpr: Fusing slices in {0}", ssa.Procedure.Name);
+                            trace.Verbose("{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
                             return RewriteSeqOfSlices(dtWide, sids, slices);
                         }
                     }
-                    DebugEx.Warn(trace, "Prpr: Couldn't fuse assignments in {0}", ssa.Procedure.Name);
-                    DebugEx.Warn(trace, "{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
+                    trace.Warn("Prpr: Couldn't fuse assignments in {0}", ssa.Procedure.Name);
+                    trace.Warn("{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
                     return null;
                 }
 

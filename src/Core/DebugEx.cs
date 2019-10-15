@@ -29,7 +29,7 @@ namespace Reko.Core
     public static class DebugEx
     {
         [Conditional("DEBUG")]
-        public static void Error(TraceSwitch trace, string message, params object[] args)
+        public static void Error(this TraceSwitch trace, string message, params object[] args)
         {
             if (trace != null && trace.TraceError)
             {
@@ -38,7 +38,7 @@ namespace Reko.Core
         }
 
         [Conditional("DEBUG")]
-        public static void Warn(TraceSwitch trace, string message, params object[] args)
+        public static void Warn(this TraceSwitch trace, string message, params object[] args)
         {
             if (trace != null && trace.TraceWarning)
             {
@@ -47,7 +47,7 @@ namespace Reko.Core
         }
 
         [Conditional("DEBUG")]
-        public static void Inform(TraceSwitch trace, string message, params object[] args)
+        public static void Inform(this TraceSwitch trace, string message, params object[] args)
         {
             if (trace != null && trace.TraceInfo)
             {
@@ -56,7 +56,7 @@ namespace Reko.Core
         }
 
         [Conditional("DEBUG")]
-        public static void Verbose(TraceSwitch trace, string message, params object[]args)
+        public static void Verbose(this TraceSwitch trace, string message, params object[]args)
         {
             if (trace != null && trace.TraceVerbose)
             {
