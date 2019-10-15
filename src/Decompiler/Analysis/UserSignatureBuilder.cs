@@ -40,7 +40,7 @@ namespace Reko.Analysis
     /// </summary>
     public class UserSignatureBuilder
     {
-        private Program program;
+        private readonly Program program;
 
         public UserSignatureBuilder(Program program)
         {

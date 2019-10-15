@@ -406,7 +406,7 @@ namespace Reko.Scanning
 
         private Block CloneBlockIntoOtherProcedure(Block block, Procedure proc)
         {
-            Debug.Print("Cloning {0} to {1}", block.Name, proc);
+            trace.Verbose("Cloning {0} to {1}", block.Name, proc);
             var clonedBlock = new BlockCloner(block, proc, Program.CallGraph).Execute();
             return clonedBlock;
         }
@@ -1020,7 +1020,7 @@ namespace Reko.Scanning
                 // 
                 // When this gets merged into analyis-development phase, fold 
                 // Procedure construction into SSA construction.
-                foreach (var rtlProc in procs.Where(p => FilterRtlProcedure(p)))
+                foreach (var rtlProc in procs.Where(FilterRtlProcedure))
                 {
                     var addrProc = rtlProc.Entry.Address;
                     TerminateAnyBlockAt(addrProc);

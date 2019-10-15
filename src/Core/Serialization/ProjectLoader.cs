@@ -43,11 +43,11 @@ namespace Reko.Core.Serialization
     {
         public event EventHandler<ProgramEventArgs> ProgramLoaded;
 
-        private ILoader loader;
-        private Project project;
-        private IProcessorArchitecture arch;
+        private readonly ILoader loader;
+        private readonly Project project;
+        private readonly DecompilerEventListener listener;
         private IPlatform platform;
-        private DecompilerEventListener listener;
+        private IProcessorArchitecture arch;
 
         public ProjectLoader(IServiceProvider services, ILoader loader, DecompilerEventListener listener)
             : this(services, loader, new Project(), listener)

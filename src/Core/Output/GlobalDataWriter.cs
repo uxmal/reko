@@ -33,16 +33,16 @@ namespace Reko.Core.Output
     /// </summary>
     public class GlobalDataWriter : IDataTypeVisitor<CodeFormatter>
     {
-        private Program program;
+        private readonly Program program;
+        private readonly IServiceProvider services;
+        private readonly DataTypeComparer cmp;
         private EndianImageReader rdr;
         private CodeFormatter codeFormatter;
         private StructureType globals;
-        private IServiceProvider services;
         private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
         private Formatter formatter;
         private TypeReferenceFormatter tw;
         private Queue<StructureField> queue;
-        private DataTypeComparer cmp;
 
         public GlobalDataWriter(Program program, IServiceProvider services)
         {
