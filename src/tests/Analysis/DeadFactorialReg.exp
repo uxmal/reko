@@ -57,6 +57,7 @@ Top_44: orig: Top
 Z_45: orig: Z
 Z_46: orig: Z
 Z_47: orig: Z
+sp_48: orig: sp
 // fn0C00_000B
 // Return size: 0
 word16 fn0C00_000B(word16 cx)

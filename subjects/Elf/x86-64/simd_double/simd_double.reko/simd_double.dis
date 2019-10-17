@@ -18,6 +18,7 @@ l00000000000005A0:
 
 l00000000000005B0:
 	call __gmon_start__ (retsize: 8;)
+		uses: rsp:fp - 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -187,7 +188,7 @@ l00000000000006E9:
 l00000000000006F7:
 	word64 rax_27
 	call __cxa_finalize (retsize: 8;)
-		uses: rax:rax_27,rbp:fp - 8,rdi:Mem9[0x0000000000201040:word64]
+		uses: rax:rax_27,rbp:fp - 8,rdi:Mem9[0x0000000000201040:word64],rsp:fp - 8
 		defs: rax:rax_27
 // DataOut:
 // DataOut (flags):
@@ -252,8 +253,8 @@ _mm_malloc_entry:
 // SymbolicIn:
 
 l000000000000072A:
-	word64 rax_37
-	word64 qwLoc28_49 = rsi
+	word64 rax_39
+	word64 qwLoc28_51 = rsi
 	branch rsi != 0x0000000000000001 l000000000000074F
 // DataOut:
 // DataOut (flags):
@@ -272,41 +273,41 @@ l0000000000000756:
 // SymbolicIn:
 
 l000000000000075D:
-	qwLoc28_49 = 0x0000000000000008
+	qwLoc28_51 = 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000765:
-	word64 rax_29
+	word64 rax_31
 	call posix_memalign (retsize: 8;)
-		uses: rax:fp - 0x0000000000000010,rbp:fp - 8,rcx:qwLoc28_53,rdi:fp - 0x0000000000000010,rdx:rdi,rsi:qwLoc28_53,Stack +FFFFFFF8:qwLoc10
-		defs: rax:rax_29
-	branch SLICE(rax_29, word32, 0) != 0x00000000 l0000000000000786
+		uses: rax:fp - 0x0000000000000010,rbp:fp - 8,rcx:qwLoc28_55,rdi:fp - 0x0000000000000010,rdx:rdi,rsi:qwLoc28_55,rsp:fp - 0x0000000000000028,Stack +0020:qwLoc10
+		defs: rax:rax_31
+	branch SLICE(rax_31, word32, 0) != 0x00000000 l0000000000000786
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000786:
-	rax_37 = 0x0000000000000000
+	rax_39 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000780:
-	rax_37 = qwLoc10
+	rax_39 = qwLoc10
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000741:
-	rax_37 = malloc(rdi)
+	rax_39 = malloc(rdi)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000000078B:
-	return rax_37
+	return rax_39
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

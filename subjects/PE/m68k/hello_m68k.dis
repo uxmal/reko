@@ -533,7 +533,7 @@ l00001750:
 	word32 d0_154 = SEQ(SLICE(d0, word16, 16), Mem108[0x00001758 + (int32) ((int16) d0) * 2:word16])
 	word32 d2_189
 	call 0x00001758 + (int32) ((int16) d0_154) (retsize: 4;)
-		uses: a2:a5 + -2072,a3:a5 + -2040,a4:dwLoc1C,a5:a5,a6:fp - 0x00000004,d0:d0_154,d2:d2_189,d3:dwLoc10,d4:dwLoc14,d5:dwLoc18,d6:d6_64,d7:dwLoc20,Stack +000C:dwArg08_216,Stack +FFFFFFE4:dwLoc20,Stack +FFFFFFE8:dwLoc1C,Stack +FFFFFFEC:dwLoc18,Stack +FFFFFFF0:dwLoc14,Stack +FFFFFFF4:dwLoc10
+		uses: a2:a5 + -2072,a3:a5 + -2040,a4:dwLoc1C,a5:a5,a6:fp - 0x00000004,a7:fp - 0x00000244,d0:d0_154,d2:d2_189,d3:dwLoc10,d4:dwLoc14,d5:dwLoc18,d6:d6_64,d7:dwLoc20,Stack +0228:dwLoc20,Stack +022C:dwLoc1C,Stack +0230:dwLoc18,Stack +0234:dwLoc14,Stack +0238:dwLoc10,Stack +0250:dwArg08_216
 		defs: d2:d2_189
 	return
 // DataOut:
@@ -2013,9 +2013,9 @@ l00002386:
 	word32 a7_61 = a7_40 - 0x00000004
 	Mem63[a7_61:word32] = a5 + -720
 	Mem65[a7_61 - 0x00000004:word32] = a5 + -724
-	word32 a7_136
-	word32 a6_102 = fn000023B4(Mem65[a7_61 - 0x00000004:word32], Mem65[a7_61:word32], out a7_136)
-	branch Mem65[a6_102 + 16:word32] != 0x00000000 l000023AE
+	word32 a7_71
+	word32 a6_103 = fn000023B4(Mem65[a7_61 - 0x00000004:word32], Mem65[a7_61:word32], out a7_71)
+	branch Mem65[a6_103 + 16:word32] != 0x00000000 l000023AE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2027,21 +2027,21 @@ l0000239A:
 // SymbolicIn:
 
 l000023A0:
-	Mem89[Mem65[a5 + -1376:word32] + 14:word32] = Mem65[a6_102 + 8:word32]
+	Mem89[Mem65[a5 + -1376:word32] + 14:word32] = Mem65[a6_103 + 8:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000023AA:
 	call a5 + 98 (retsize: 4;)
-		uses: a5:a5,a6:a6_70,Stack +000C:dwArg08,Stack +0013:bArg0F
-		defs: a6:a6_94
+		uses: a5:a5,a6:a6_70,a7:a7_71 + 8,Stack +000C:dwArg08,Stack +0013:bArg0F
+		defs: a6:a6_95
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000023AE:
-	return Mem104[a6_102:word32]
+	return Mem105[a6_103:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2067,6 +2067,7 @@ fn000023B4_entry:
 
 l000023B4:
 	word32 a6_34 = fp - 0x00000004
+	word32 a7_14 = fp - 0x00000010
 	word32 d5_17 = -1
 	word32 d4_18 = dwArg08
 	word32 d3_19 = dwArg04
@@ -2089,10 +2090,10 @@ l000023D0:
 // SymbolicIn:
 
 l000023D4:
-	word32 d0_42
+	word32 d0_43
 	call d0_26 (retsize: 4;)
-		uses: a0:d0_26,a6:a6_34,d0:d0_42,d3:d3_23,d4:d4_35,d5:d5_29,Stack +0008:dwArg04,Stack +000C:dwArg08
-		defs: a6:a6_37,d0:d0_42,d3:d3_40,d4:d4_39,d5:d5_38
+		uses: a0:d0_26,a6:a6_34,a7:a7_36,d0:d0_43,d3:d3_23,d4:d4_35,d5:d5_29,Stack +0008:dwArg04,Stack +000C:dwArg08
+		defs: a6:a6_38,a7:a7_37,d0:d0_43,d3:d3_41,d4:d4_40,d5:d5_39
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2180,7 +2181,7 @@ l00002418:
 
 l0000242E:
 	call a0_26 (retsize: 4;)
-		uses: a5:a5_17,a6:a6_18
+		uses: a5:a5_17,a6:a6_18,a7:a7_19 + 4
 		defs: a5:a5_32,a7:a7_30
 // DataOut:
 // DataOut (flags):
@@ -3634,7 +3635,7 @@ l00002C4E:
 	word32 a5_306
 	word32 a1_307
 	call 0x00002C58 + (int32) ((int16) d0_296) (retsize: 4;)
-		uses: a1:a1_307,a2:dwArg04,a3:a3_103,a5:a5,a6:fp - 0x00000004,d0:d0_296,Stack +0008:dwArg04,Stack +000C:dwArg08,Stack +FFFFFFFC:dwLoc08
+		uses: a1:a1_307,a2:dwArg04,a3:a3_103,a5:a5,a6:fp - 0x00000004,a7:fp - 0x00000024,d0:d0_296,Stack +0020:dwLoc08,Stack +002C:dwArg04,Stack +0030:dwArg08
 		defs: a1:a1_307,a5:a5_306,a6:a6_299,d0:d0_304
 	a5Out = a5_306
 	a6Out = a6_299

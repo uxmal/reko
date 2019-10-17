@@ -164,9 +164,9 @@ l03E6:
 			word16 r5_n;
 			Eq_n r0_n = fn0AB6(r0_n, r4_n, r5_n, out r4_n, out r5_n);
 			*(sp_n - 0x03) = r5_n;
+			word16 r5_n;
 			word16 r0_n;
 			word16 r4_n;
-			word16 r5_n;
 			fn0AE8(r0_n, r4_n, &globals->ptr0420, *(sp_n - 0x03), out r0_n, out r4_n, out r5_n);
 			return;
 		}

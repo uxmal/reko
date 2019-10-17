@@ -1970,6 +1970,7 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, Eq_n a0, ptr64 a1,
 		word64 a4_n;
 		Eq_n a0_n = fn00000000000182B4(a0, out a3_n, out a4_n);
 		<anonymous> * a5_n = gp->ptrFFFFF868;
+		word64 sp_n;
 		word64 s0_n;
 		word64 s1_n;
 		word64 s2_n;
@@ -2002,6 +2003,7 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, Eq_n a0, ptr64 a1,
 		word64 a2_n;
 		word64 a3_n;
 		word64 a4_n;
+		word64 sp_n;
 		a5_n();
 		struct Eq_n * s0_n = a0_n;
 		if (a0_n != null)
@@ -2009,6 +2011,7 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, Eq_n a0, ptr64 a1,
 			<anonymous> * a5_n = gp_n->ptrFFFFF838;
 			Eq_n a4_n = 0x01;
 			a0_n->dw004C = (word32) a4_n;
+			word64 sp_n;
 			word64 s0_n;
 			word64 s1_n;
 			word64 s2_n;
@@ -2048,9 +2051,13 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, Eq_n a0, ptr64 a1,
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
+			word64 sp_n;
 			a5_n();
 			if (a0_n != null)
+			{
 				*s3_n = (union Eq_n *) __strdup(a0_n);
+				sp_n += ~0x07;
+			}
 			<anonymous> * a5_n = gp_n->ptrFFFFF850;
 			word64 s0_n;
 			word64 s1_n;
@@ -2071,9 +2078,13 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, Eq_n a0, ptr64 a1,
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
+			word64 sp_n;
 			a5_n();
 			if (a0_n != null)
+			{
 				*s2_n = (union Eq_n *) __strdup(a0_n);
+				sp_n += ~0x07;
+			}
 			<anonymous> * a5_n = gp_n->ptrFFFFF848;
 			word64 fa4_n;
 			word64 fa5_n;
@@ -2098,6 +2109,7 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, Eq_n a0, ptr64 a1,
 		struct Eq_n * a0_n;
 		word64 a2_n;
 		word64 a3_n;
+		word64 sp_n;
 		a5_n();
 		struct Eq_n * s0_n = a0_n;
 		if (a0_n == null)
@@ -2176,6 +2188,7 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 s1, word64 
 	if (a0_n == 0x00)
 	{
 		<anonymous> * a5_n = gp->ptrFFFFF868;
+		word64 sp_n;
 		word64 s0_n;
 		word64 s2_n;
 		word64 s3_n;
@@ -2208,6 +2221,7 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 s1, word64 
 		word64 a2_n;
 		word64 a3_n;
 		word64 a4_n;
+		word64 sp_n;
 		a5_n();
 		struct Eq_n * s1_n = a0_n;
 		if (a0_n != null)
@@ -2219,6 +2233,7 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 s1, word64 
 			<anonymous> * a3_n = gp_n->ptrFFFFF830;
 			Eq_n a6_n = 0x01;
 			a0_n->dw004C = (word32) a6_n;
+			word64 sp_n;
 			word64 s0_n;
 			word64 s2_n;
 			word64 s3_n;
@@ -2258,9 +2273,13 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 s1, word64 
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
+			word64 sp_n;
 			a5_n();
 			if (a0_n != null)
+			{
 				*s4_n = (union Eq_n *) __strdup(a0_n);
+				sp_n += ~0x07;
+			}
 			<anonymous> * a5_n = gp_n->ptrFFFFF850;
 			word64 s0_n;
 			word64 s2_n;
@@ -2281,9 +2300,13 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 s1, word64 
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
+			word64 sp_n;
 			a5_n();
 			if (a0_n != null)
+			{
 				*s3_n = (union Eq_n *) __strdup(a0_n);
+				sp_n += ~0x07;
+			}
 			<anonymous> * a5_n = gp_n->ptrFFFFF848;
 			word64 fa4_n;
 			word64 fa5_n;
@@ -2308,6 +2331,7 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, word64 s1, word64 
 		word64 s6_n;
 		word64 s7_n;
 		struct Eq_n * a0_n;
+		word64 sp_n;
 		a5_n();
 		struct Eq_n * s1_n = a0_n;
 		if (a0_n == null)
@@ -2530,6 +2554,7 @@ Eq_n fn00000000000182B4(Eq_n a0, union Eq_n & a3Out, union Eq_n & a4Out)
 void fn00000000000182E8(word64 ra, word64 a0, word64 a1, word64 a2)
 {
 	int64 s2_n = 106016 - 106008;
+	ptr64 sp_n = fp + -0x0040;
 	word64 * s0_n = &globals->qw19E18;
 	Eq_n s2_n = s2_n >> 0x03;
 	if (s2_n >> 0x03 != 0x00)

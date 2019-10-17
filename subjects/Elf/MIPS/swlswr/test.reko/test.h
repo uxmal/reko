@@ -505,7 +505,7 @@ T_109: (in Mem50[r2_52 + 0x00000000:word32] : word32)
   Class: Eq_106
   DataType: (ptr32 code)
   OrigDataType: word32
-T_110: (in r4_59 : word32)
+T_110: (in r4_60 : word32)
   Class: Eq_110
   DataType: word32
   OrigDataType: word32

@@ -121,6 +121,7 @@ __do_global_dtors_aux_entry:
 
 l800000E4:
 	word32 a6_38 = fp - 0x00000004
+	word32 a7_12 = fp - 0x0000000C
 	branch Mem15[0x80002724:byte] != 0x00 l8000014C
 // DataOut:
 // DataOut (flags):
@@ -139,10 +140,10 @@ l80000114:
 	word32 d0_31 = d0_21 + 0x00000001
 	Mem34[0x80002726:word32] = d0_31
 	word32 a0_37 = Mem34[a2_20 + d0_31 * 4:word32]
-	word32 d1_94
+	word32 d1_95
 	call a0_37 (retsize: 4;)
-		uses: a0:a0_37,a2:a2_36,a6:a6_38,d0:d0_31,d1:d1_94,d2:d2_39
-		defs: a2:a2_42,a6:a6_41,d1:d1_94,d2:d2_43
+		uses: a0:a0_37,a2:a2_36,a6:a6_38,a7:a7_40,d0:d0_31,d1:d1_95,d2:d2_39
+		defs: a2:a2_43,a6:a6_42,a7:a7_41,d1:d1_95,d2:d2_44
 	d0_21 = Mem34[0x80002726:word32]
 	branch d2_25 - d0_21 >u 0x00000000 l80000114
 // DataOut:
@@ -150,27 +151,27 @@ l80000114:
 // SymbolicIn:
 
 l8000012C:
-	word32 a7_55
-	word32 a6_54 = deregister_tm_clones(out a7_55)
+	word32 a7_56
+	word32 a6_55 = deregister_tm_clones(out a7_56)
 	branch null == 0x00000000 l80000144
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l8000013A:
-	Mem67[a7_55 - 0x00000004:word32] = 0x8000065C
-	word32 d0_74
-	word32 a0_75
-	word32 d1_76
+	Mem68[a7_56 - 0x00000004:word32] = 0x8000065C
+	word32 d0_75
+	word32 a0_76
+	word32 d1_77
 	call null (retsize: 4;)
-		uses: a0:a0_75,a2:a2_68,a6:a6_54,a7:a7_55 - 0x00000004,d0:d0_74,d1:d1_76,d2:d2_69
-		defs: a0:a0_75,d0:d0_74,d1:d1_76
+		uses: a0:a0_76,a2:a2_69,a6:a6_55,a7:a7_56 - 0x00000004,d0:d0_75,d1:d1_77,d2:d2_70
+		defs: a0:a0_76,d0:d0_75,d1:d1_77
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l80000144:
-	Mem80[0x80002724:byte] = 0x01
+	Mem81[0x80002724:byte] = 0x01
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -586,6 +587,7 @@ __do_global_ctors_aux_entry:
 l80000624:
 	word32 a0_12 = Mem11[0x8000270C:word32]
 	word32 a6_19 = fp - 0x00000004
+	word32 a7_21 = fp - 0x00000008
 	word32 a2_13 = 0x8000270C
 	branch a0_12 == -1 l80000646
 // DataOut:
@@ -593,12 +595,12 @@ l80000624:
 // SymbolicIn:
 
 l8000063C:
-	word32 a2_23
+	word32 a2_24
 	call a0_12 (retsize: 4;)
-		uses: a2:a2_20,a6:a6_19
-		defs: a2:a2_23,a6:a6_22
-	a0_12 = Mem11[a2_23 - 4:word32]
-	a2_13 = a2_23 - 4
+		uses: a2:a2_20,a6:a6_19,a7:a7_21
+		defs: a2:a2_24,a6:a6_23,a7:a7_22
+	a0_12 = Mem11[a2_24 - 4:word32]
+	a2_13 = a2_24 - 4
 	branch a0_12 != -1 l8000063C
 // DataOut:
 // DataOut (flags):

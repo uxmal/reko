@@ -38,7 +38,7 @@ Eq_5: (union "Eq_5" (char u0) ((ptr16 (ptr16 code)) u1) (Eq_4018 u2))
 	T_191 (in v15_23 : Eq_5)
 	T_193 (in __rol(wLoc02_37, wLoc02_37) : word16)
 	T_206 (in wArg02 : Eq_5)
-	T_217 (in wArg00_67 : Eq_5)
+	T_217 (in wArg00_68 : Eq_5)
 	T_218 (in 0x0000 : word16)
 	T_219 (in r1_15 : Eq_5)
 	T_220 (in 0x0000 : word16)
@@ -56,7 +56,7 @@ Eq_5: (union "Eq_5" (char u0) ((ptr16 (ptr16 code)) u1) (Eq_4018 u2))
 	T_245 (in wLoc02 : word16)
 	T_246 (in __ror(wLoc02, v17_26) : word16)
 	T_248 (in __ror(r1_43, r1_43) : word16)
-	T_254 (in SEQ(__ror(bArg03_88, bArg03_88), bArg02_90) : word16)
+	T_254 (in SEQ(__ror(bArg03_89, bArg03_89), bArg02_91) : word16)
 	T_258 (in __rol(r1_15, r1_15) : word16)
 	T_259 (in 0x0000 : word16)
 	T_261 (in r5 : Eq_5)
@@ -2003,7 +2003,7 @@ T_206: (in wArg02 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ci16
-T_207: (in bArg03_88 : byte)
+T_207: (in bArg03_89 : byte)
   Class: Eq_207
   DataType: byte
   OrigDataType: byte
@@ -2011,7 +2011,7 @@ T_208: (in SLICE(wArg02, byte, 8) : byte)
   Class: Eq_207
   DataType: byte
   OrigDataType: byte
-T_209: (in bArg02_90 : byte)
+T_209: (in bArg02_91 : byte)
   Class: Eq_209
   DataType: byte
   OrigDataType: byte
@@ -2043,7 +2043,7 @@ T_216: (in Mem9[r4_4 + 0x002A:word16] : word16)
   Class: Eq_205
   DataType: (ptr16 code)
   OrigDataType: word16
-T_217: (in wArg00_67 : Eq_5)
+T_217: (in wArg00_68 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16
@@ -2187,11 +2187,11 @@ T_252: (in  : byte)
   Class: Eq_207
   DataType: byte
   OrigDataType: 
-T_253: (in __ror(bArg03_88, bArg03_88) : byte)
+T_253: (in __ror(bArg03_89, bArg03_89) : byte)
   Class: Eq_253
   DataType: byte
   OrigDataType: byte
-T_254: (in SEQ(__ror(bArg03_88, bArg03_88), bArg02_90) : word16)
+T_254: (in SEQ(__ror(bArg03_89, bArg03_89), bArg02_91) : word16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16
@@ -6903,7 +6903,7 @@ T_1431: (in r4_14 - 0x0001 + 0x0000 : word16)
   Class: Eq_1431
   DataType: word16
   OrigDataType: word16
-T_1432: (in Mem44[r4_14 - 0x0001 + 0x0000:byte] : byte)
+T_1432: (in Mem45[r4_14 - 0x0001 + 0x0000:byte] : byte)
   Class: Eq_1427
   DataType: byte
   OrigDataType: byte
@@ -6915,7 +6915,7 @@ T_1434: (in r3_6 + 0x0066 : word16)
   Class: Eq_1434
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 word16)
-T_1435: (in Mem44[r3_6 + 0x0066:word16] : word16)
+T_1435: (in Mem45[r3_6 + 0x0066:word16] : word16)
   Class: Eq_1389
   DataType: word16
   OrigDataType: word16
@@ -6935,7 +6935,7 @@ T_1439: (in r3_6 + 0x0066 : word16)
   Class: Eq_1439
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 word16)
-T_1440: (in Mem47[r3_6 + 0x0066:word16] : word16)
+T_1440: (in Mem48[r3_6 + 0x0066:word16] : word16)
   Class: Eq_1389
   DataType: word16
   OrigDataType: word16
@@ -12939,7 +12939,7 @@ T_2940: (in r3 + 0x0056 : word16)
   Class: Eq_2940
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 word16)
-T_2941: (in Mem22[r3 + 0x0056:word16] : word16)
+T_2941: (in Mem23[r3 + 0x0056:word16] : word16)
   Class: Eq_2926
   DataType: word16
   OrigDataType: word16
@@ -12951,7 +12951,7 @@ T_2943: (in r3 + 0x0014 : word16)
   Class: Eq_2943
   DataType: ptr16
   OrigDataType: ptr16
-T_2944: (in Mem22[r3 + 0x0014:ptr16] : ptr16)
+T_2944: (in Mem23[r3 + 0x0014:ptr16] : ptr16)
   Class: Eq_2944
   DataType: (ptr16 ci8)
   OrigDataType: (ptr16 (struct (0 T_2947 t0000)))
@@ -12959,11 +12959,11 @@ T_2945: (in 0x0000 : word16)
   Class: Eq_2945
   DataType: word16
   OrigDataType: word16
-T_2946: (in Mem22[r3 + 0x0014:ptr16] + 0x0000 : word16)
+T_2946: (in Mem23[r3 + 0x0014:ptr16] + 0x0000 : word16)
   Class: Eq_2946
   DataType: ptr16
   OrigDataType: ptr16
-T_2947: (in Mem22[Mem22[r3 + 0x0014:ptr16] + 0x0000:byte] : byte)
+T_2947: (in Mem23[Mem23[r3 + 0x0014:ptr16] + 0x0000:byte] : byte)
   Class: Eq_2947
   DataType: ci8
   OrigDataType: ci8
@@ -13015,7 +13015,7 @@ T_2959: (in r3 + 0x0054 : word16)
   Class: Eq_2959
   DataType: ptr16
   OrigDataType: ptr16
-T_2960: (in Mem29[r3 + 0x0054:word16] : word16)
+T_2960: (in Mem30[r3 + 0x0054:word16] : word16)
   Class: Eq_2957
   DataType: word16
   OrigDataType: word16

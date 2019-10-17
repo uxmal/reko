@@ -468,11 +468,11 @@ T_86: (in rdi : Eq_86)
   Class: Eq_86
   DataType: Eq_86
   OrigDataType: (union (word64 u0) (size_t u1))
-T_87: (in rax_37 : (ptr64 void))
+T_87: (in rax_39 : (ptr64 void))
   Class: Eq_84
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_88: (in qwLoc28_49 : uint64)
+T_88: (in qwLoc28_51 : uint64)
   Class: Eq_85
   DataType: uint64
   OrigDataType: word64
@@ -520,7 +520,7 @@ T_99: (in rsi != 0x0000000000000004 : bool)
   Class: Eq_99
   DataType: bool
   OrigDataType: bool
-T_100: (in rax_29 : word64)
+T_100: (in rax_31 : word64)
   Class: Eq_100
   DataType: word64
   OrigDataType: word64
@@ -532,7 +532,7 @@ T_102: (in signature of posix_memalign : void)
   Class: Eq_102
   DataType: Eq_102
   OrigDataType: 
-T_103: (in SLICE(rax_29, word32, 0) : word32)
+T_103: (in SLICE(rax_31, word32, 0) : word32)
   Class: Eq_103
   DataType: word32
   OrigDataType: word32
@@ -540,7 +540,7 @@ T_104: (in 0x00000000 : word32)
   Class: Eq_103
   DataType: word32
   OrigDataType: word32
-T_105: (in (word32) rax_29 != 0x00000000 : bool)
+T_105: (in (word32) rax_31 != 0x00000000 : bool)
   Class: Eq_105
   DataType: bool
   OrigDataType: bool

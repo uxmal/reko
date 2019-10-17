@@ -974,6 +974,7 @@ word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 word32 fn000023B4(word32 * dwArg04, Eq_n dwArg08, ptr32 & a7Out)
 {
 	word32 * a6_n = fp - 0x04;
+	ptr32 a7_n = fp - 0x10;
 	int32 d5_n = -0x01;
 	Eq_n d4_n = dwArg08;
 	word32 * d3_n = dwArg04;

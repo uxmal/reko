@@ -875,9 +875,9 @@ void main(Eq_n r4, Eq_n r5[], int32 * r16, word32 ra)
 	*globals->ptr1000090C = (int32) globals->ptr10000A40->t05EC;
 	__xpg_basename();
 	*globals->ptr10000A28 >= 0x00;
-	word32 r7_n;
-	word32 r5_n;
 	word32 r6_n;
+	word32 r5_n;
+	word32 r7_n;
 	print_log(0x03, 4234832, ra, out r5_n, out r6_n, out r7_n);
 	word32 r4_n;
 	word32 r5_n;
@@ -982,9 +982,9 @@ void main(Eq_n r4, Eq_n r5[], int32 * r16, word32 ra)
 						continue;
 					r16 = __errno_location();
 					strerror(*__errno_location());
-					word32 r5_n;
 					word32 r7_n;
 					word32 r6_n;
+					word32 r5_n;
 					print_log(0x00, 0x00409EB0, ra, out r5_n, out r6_n, out r7_n);
 					exit(-0x01);
 					r5_n = r5_n;
@@ -1005,8 +1005,8 @@ void main(Eq_n r4, Eq_n r5[], int32 * r16, word32 ra)
 							if (clist_add(r2_n, r2_n, out r5_n) == 0x00)
 							{
 								word32 r5_n;
-								word32 r6_n;
 								word32 r7_n;
+								word32 r6_n;
 								print_log(0x01, 0x00409ECC, ra, out r5_n, out r6_n, out r7_n);
 								r5_n = client_destroy(r2_n, ra);
 								r28_n = 0x10008860;
@@ -1372,7 +1372,7 @@ void * add_to_request(Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra, union E
 	}
 	else if (r6 != null && r7 > 0x00)
 	{
-		Mem50[r4 + 0x0FAC:word32] = Mem21[r4 + 0x0FAC:word32] + r7;
+		Mem51[r4 + 0x0FAC:word32] = Mem21[r4 + 0x0FAC:word32] + r7;
 		if ((word32) (*((word32) r4 + 0x0FAC) < 2000) != 0x00)
 		{
 			memcpy(r5, r6, r7);
@@ -2943,13 +2943,7 @@ void __fixsfsi(word32 ra, word32 f12)
 void __extendsfdf2(word32 ra, word32 f12)
 {
 	__unpack_f(fp + -0x0010, fp + -0x0020);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg16 = <invalid>;
-	Eq_n stackArg20 = <invalid>;
-	__make_dp(dwLoc1C, dwLoc18, ra, stackArg16, stackArg20);
+	__make_dp(dwLoc1C, dwLoc18, ra, dwLoc14 >> 0x02, dwLoc14 << 0x1E);
 }
 
 // 00408180: void _fpadd_parts(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r6)
@@ -3469,8 +3463,8 @@ void __negdf2(word32 ra, word32 f12, word32 f13)
 	__pack_d(fp + -0x0028);
 }
 
-// 004092D0: void __make_dp(Register word32 r5, Register word32 r6, Register word32 ra, Stack Eq_n dwArg10, Stack Eq_n dwArg14)
-void __make_dp(word32 r5, word32 r6, word32 ra, Eq_n dwArg10, Eq_n dwArg14)
+// 004092D0: void __make_dp(Register word32 r5, Register word32 r6, Register word32 ra, Stack uint32 dwArg10, Stack ui32 dwArg14)
+void __make_dp(word32 r5, word32 r6, word32 ra, uint32 dwArg10, ui32 dwArg14)
 {
 	__pack_d(fp + -0x0020);
 }

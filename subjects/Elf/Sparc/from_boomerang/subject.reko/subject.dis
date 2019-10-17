@@ -731,7 +731,7 @@ l00010C90_ds_f:
 
 l00010CA8:
 	call fn81C7E008 (retsize: 0;)
-		uses: i0:i0,i1:i1,i2:i2,i3:i3,i4:i4,i5:i5,i6:i6,i7:i7,o7:0x00010CA8
+		uses: i0:i0,i1:i1,i2:i2,i3:i3,i4:i4,i5:i5,i6:i6,i7:i7,o7:0x00010CA8,sp:fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -806,7 +806,7 @@ l00010CC8_ds_f:
 
 l00010CE0:
 	call l0_7 (retsize: 0;)
-		uses: i0:i0,i1:i1,i2:i2,i3:i3,i4:i4,i5:i5,i6:i6,i7:i7,o7:0x00010CE0
+		uses: i0:i0,i1:i1,i2:i2,i3:i3,i4:i4,i5:i5,i6:i6,i7:i7,o7:0x00010CE0,sp:fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

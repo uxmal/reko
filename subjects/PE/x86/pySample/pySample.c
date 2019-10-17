@@ -49,6 +49,7 @@ void initpySample()
 // 100011E9: Register word32 fn100011E9(Stack word32 dwArg04, Stack word32 dwArg08, Stack Eq_n dwArg0C, Register out (ptr32 word32) ecxOut, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
 word32 fn100011E9(word32 dwArg04, word32 dwArg08, Eq_n dwArg0C, word32 & ecxOut, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
+	int8 Top_n = 0x00;
 	word32 eax_n;
 	Eq_n ebp_n = 0x00;
 	if (dwArg08 == 0x00)
@@ -203,8 +204,8 @@ l1000147A:
 		*esp_n = (LPVOID *) ecx;
 		*(esp_n - 0x04) = (uint32) edx;
 		*(esp_n - 0x08) = (_onexit_t *) ebx_n;
-		word32 ecx_n;
 		word32 edx_n;
+		word32 ecx_n;
 		ui32 eax_n = fn100011E9(*(esp_n - 0x08), *(esp_n - 0x04), *esp_n, out ecx_n, out edx_n, out ebx_n, out esi_n, out edi_n);
 		*(ebp_n - 0x1C) = eax_n;
 		esp_n = (struct Eq_n *) ((char *) esp_n + 0x04);
@@ -230,6 +231,7 @@ l1000147A:
 		word32 ecx_n;
 		word32 edx_n;
 		fn100011E9(*(esp_n - 0x08), *(esp_n - 0x04), *esp_n, out ecx_n, out edx_n, out ebx_n, out esi_n, out edi_n);
+		int8 Top_n = <invalid>;
 		esp_n = (struct Eq_n *) ((char *) esp_n + 0x04);
 		if (globals->dw100020CC != 0x00)
 		{
@@ -251,6 +253,7 @@ l1000147A:
 		Eq_n edi_n;
 		word32 edx_n;
 		ui32 eax_n = fn100011E9(*(esp_n - 0x08), *(esp_n - 0x04), *esp_n, out ecx_n, out edx_n, out ebx_n, out esi_n, out edi_n);
+		int8 Top_n = <invalid>;
 		esp_n = (struct Eq_n *) ((char *) esp_n + 0x04);
 		if (eax_n == 0x00)
 			*(ebp_n - 0x1C) &= eax_n;
@@ -297,6 +300,7 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 	else
 	{
 		word32 ** esp_n;
+		int8 Top_n;
 		lock();
 		word32 * ecx_n = *esp_n;
 		*(ebp_n - 0x04) &= 0x00;
@@ -312,6 +316,7 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		*(esp_n - 0x0014) = *(ebp_n - 0x1C);
 		ptr32 esp_n;
 		word32 * eax_n;
+		int8 Top_n;
 		encode_pointer();
 		globals->ptr100033B4 = eax_n;
 		*(esp_n - 0x04) = *(ebp_n - 0x20);
@@ -343,6 +348,8 @@ void fn1000166E(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 // 10001680: void fn10001680()
 void fn10001680()
 {
+	int8 Top_n = 0x00;
+	ptr32 esp_n = fp - 0x08;
 	word32 * esi_n = globals->a100021D8;
 	if (false)
 	{

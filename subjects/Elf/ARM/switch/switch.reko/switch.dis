@@ -118,7 +118,7 @@ l00008388:
 	word32 r10_16
 	word32 pc_18
 	call r3_11 (retsize: 0;)
-		uses: lr:0x00008390,pc:pc_18,r10:r10_10
+		uses: lr:0x00008390,pc:pc_18,r10:r10_10,sp:fp - 8
 		defs: pc:pc_18,r10:r10_16
 	return r10_16
 // DataOut:
@@ -178,7 +178,7 @@ l000083C4:
 	word32 pc_32
 	word32 r2_34
 	call r2_16 (retsize: 0;)
-		uses: lr:0x000083D8,pc:pc_32,r2:r2_34,r3:r3_24 + 0x00000004,r4:r4_14,r5:r5_10
+		uses: lr:0x000083D8,pc:pc_32,r2:r2_34,r3:r3_24 + 0x00000004,r4:r4_14,r5:r5_10,sp:fp - 12
 		defs: pc:pc_32,r2:r2_34
 	return
 // DataOut:
@@ -250,7 +250,7 @@ l00008414:
 l00008420:
 	word32 pc_13
 	call fn00000000 (retsize: 0;)
-		uses: pc:pc_13
+		uses: pc:pc_13,sp:fp
 		defs: pc:pc_13
 	return
 // DataOut:
@@ -782,7 +782,7 @@ l00008654:
 
 l00008684:
 	call Mem12[r1_30 + (r4_23 << 2):word32] (retsize: 0;)
-		uses: lr:0x00008694,r10:r10_20,r4:r4_23,r5:r3_32,r6:r1_30
+		uses: lr:0x00008694,r10:r10_20,r4:r4_23,r5:r3_32,r6:r1_30,sp:fp - 20
 	return
 // DataOut:
 // DataOut (flags):
@@ -837,7 +837,7 @@ l000086FC_thunk__fini:
 
 l000086E0:
 	call Mem10[r1_16 + (r4_21 << 2):word32] (retsize: 0;)
-		uses: lr:0x000086EC,r10:r10_15,r4:r4_21,r5:r1_16
+		uses: lr:0x000086EC,r10:r10_15,r4:r4_21,r5:r1_16,sp:fp - 16
 	return
 // DataOut:
 // DataOut (flags):
@@ -874,7 +874,7 @@ l00008724:
 	word32 r4_16
 	word32 pc_19
 	call r2_9 (retsize: 0;)
-		uses: lr:0x00008730,pc:pc_19,r3:r2_9,r4:r3_8 - 0x00000004
+		uses: lr:0x00008730,pc:pc_19,r3:r2_9,r4:r3_8 - 0x00000004,sp:fp - 8
 		defs: pc:pc_19,r4:r4_16
 	return r4_16
 // DataOut:

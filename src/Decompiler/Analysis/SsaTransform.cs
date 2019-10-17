@@ -724,7 +724,14 @@ namespace Reko.Analysis
                     .Select(s => s.Instruction)
                     .OfType<DefInstruction>()
                     .Select(d => d.Identifier)
-                    .Where(i => ssa.Identifiers[i].Uses.Count > 0));
+                    .Where(i => ssa.Identifiers[i].Uses.Count > 0))
+                // Stack pointers should be added to uses list.
+                // They are required for reconstruction of signature of
+                // indirect calls by IndirectCallRewriter
+                .Concat(
+                    frame.Identifiers.Where(id =>
+                        id.Storage == arch.StackRegister ||
+                        id.Storage == arch.FpuStackRegister));
             ids = CollectFlagGroups(ids, frame, arch);
             foreach (Identifier id in ResolveOverlaps(ids))
             {

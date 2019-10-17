@@ -18,6 +18,7 @@ l0000000000402168:
 
 l0000000000402178:
 	call __gmon_start__ (retsize: 8;)
+		uses: rsp:fp - 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2941,7 +2942,7 @@ l00000000004049E0:
 // SymbolicIn:
 
 l0000000000404A06:
-	word64 rax_269
+	word64 rax_272
 	byte al_142
 	word32 eax_123
 	word32 eax_175
@@ -3179,25 +3180,25 @@ l0000000000404BBD:
 // SymbolicIn:
 
 l0000000000404B4D:
-	rax_269 = SEQ(0x00000000, SLICE(eax_175, word24, 8), eax_175 != 0x00000006) (alias)
+	rax_272 = SEQ(0x00000000, SLICE(eax_175, word24, 8), eax_175 != 0x00000006) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000404B35:
 	word64 rcx_191 = SEQ(rcx_32_32_190, (word32) al_162)
-	word64 r8_210
-	word64 rax_212
-	byte dl_218
+	word64 r8_213
+	word64 rax_215
+	byte dl_221
 	call Mem159[rcx_191 * 0x0000000000000008 + 0x00411F40:word64] (retsize: 8;)
-		uses: dl:dl_218,rcx:rcx_191,rdi:rdi,rsi:rsi
-		defs: dl:dl_218,r8:r8_210,rax:rax_212
+		uses: dl:dl_221,rcx:rcx_191,rdi:rdi,rsi:rsi
+		defs: dl:dl_221,r8:r8_213,rax:rax_215
 	ebxOut = <invalid>
 	rspOut = fp - 32
 	rbpOut = rcx
-	r8Out = r8_210
+	r8Out = r8_213
 	r12Out = 0x0000000000000000
-	return SLICE(rax_212, byte, 0)
+	return SLICE(rax_215, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3223,11 +3224,11 @@ l0000000000404A9E:
 // SymbolicIn:
 
 l0000000000404AA0:
-	word64 rax_231 = (uint64) (eax_123 & 0x0000001F)
-	Mem238[r9_10:byte] = SLICE(rax_231, byte, 0)
+	word64 rax_234 = (uint64) (eax_123 & 0x0000001F)
+	Mem241[r9_10:byte] = SLICE(rax_234, byte, 0)
 	r8_116 = r8_116 + 0x0000000000000001
-	al_142 = SLICE((word32) Mem238[r8_116:byte], byte, 0) (alias)
-	rax_32_32_124 = SLICE(rax_231, word32, 32) (alias)
+	al_142 = SLICE((word32) Mem241[r8_116:byte], byte, 0) (alias)
+	rax_32_32_124 = SLICE(rax_234, word32, 32) (alias)
 	r10_107 = r10_107 + 0x0000000000000001
 	r9_10 = r9_10 + 0x0000000000000001
 	SZO_145 = SLICE(cond(al_142 - 0x3D), bool, 4) (alias)
@@ -3243,7 +3244,7 @@ l0000000000404ABA:
 // SymbolicIn:
 
 l0000000000404B60:
-	Mem259[r9_10:byte] = al_142
+	Mem262[r9_10:byte] = al_142
 	r8_116 = r8_116 + 0x0000000000000001
 	r10_107 = r10_107 + 0x0000000000000001
 	r9_10 = r9_10 + 0x0000000000000001
@@ -3252,27 +3253,27 @@ l0000000000404B60:
 // SymbolicIn:
 
 l0000000000404AC2:
-	rax_269 = 0x0000000000000001
+	rax_272 = 0x0000000000000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000404A36:
-	rax_269 = 0x0000000000000000
+	rax_272 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000404A38:
-	Mem289[rdi:word64] = r9_10
-	Mem306[rsi:word64] = r8_116
-	Mem322[rcx:word64] = r10_107
+	Mem292[rdi:word64] = r9_10
+	Mem309[rsi:word64] = r8_116
+	Mem325[rcx:word64] = r10_107
 	ebxOut = <invalid>
 	rspOut = fp
 	rbpOut = rbp
 	r8Out = r8_116
 	r12Out = r12
-	return SLICE(rax_269, byte, 0)
+	return SLICE(rax_272, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10909,15 +10910,15 @@ l000000000040ACB0:
 	Mem33[rdx:word64] = rax_26
 	byte r13b_133 = SLICE(r13_12, byte, 0)
 	r13b_133 = SLICE(r13_12, byte, 0) (alias)
-	word64 rsi_100 = Mem33[rax_26:word64]
+	word64 rsi_101 = Mem33[rax_26:word64]
 	word64 rbx_114 = rax_26
-	branch rsi_100 == 0x0000000000000000 l000000000040AD4F
+	branch rsi_101 == 0x0000000000000000 l000000000040AD4F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040ACD7:
-	branch rsi == rsi_100 l000000000040ACE9
+	branch rsi == rsi_101 l000000000040ACE9
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10939,8 +10940,8 @@ l000000000040ACDC:
 
 l000000000040AD46:
 	word32 ecx_69 = SLICE(rcx_267, word32, 0)
-	byte r13b_84 = SLICE(r13_12, byte, 0)
-	r13b_84 = SLICE(r13_12, byte, 0) (alias)
+	byte r13b_85 = SLICE(r13_12, byte, 0)
+	r13b_85 = SLICE(r13_12, byte, 0) (alias)
 	word64 rax_56 = Mem33[rbx_114 + 0x0000000000000008:word64]
 	branch rax_56 != 0x0000000000000000 l000000000040AD30
 // DataOut:
@@ -10948,45 +10949,45 @@ l000000000040AD46:
 // SymbolicIn:
 
 l000000000040AD30:
-	rsi_100 = Mem33[rax_56:word64]
-	branch rsi_100 == rsi l000000000040AD67
+	rsi_101 = Mem33[rax_56:word64]
+	branch rsi_101 == rsi l000000000040AD67
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AD38:
-	word64 rax_74
-	word64 r9_75
-	word64 r10_76
+	word64 rax_75
+	word64 r9_76
+	word64 r10_77
 	call Mem33[rdi + 0x0000000000000038:word64] (retsize: 8;)
-		uses: ecx:ecx_69,r10:r10_76,r9:r9_75,rcx_32_32:rcx_32_32_237,rdi:rsi,rdx:rdx_67,rsi:rsi_60
-		defs: r10:r10_76,r9:r9_75,rax:rax_74,rcx:rcx_71,rdx:rdx_70
+		uses: ecx:ecx_69,r10:r10_77,r9:r9_76,rcx_32_32:rcx_32_32_237,rdi:rsi,rdx:rdx_67,rsi:rsi_60
+		defs: r10:r10_77,r9:r9_76,rax:rax_75,rcx:rcx_72,rdx:rdx_71
 	word32 rcx_32_32_237 = SLICE(rcx_267, word32, 32)
-	branch SLICE(rax_74, byte, 0) != 0x00 l000000000040AD60
+	branch SLICE(rax_75, byte, 0) != 0x00 l000000000040AD60
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AD60:
 	rax_56 = Mem33[rbx_114 + 0x0000000000000008:word64]
-	rsi_100 = Mem33[rax_56:word64]
+	rsi_101 = Mem33[rax_56:word64]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AD67:
-	branch r13b_84 == 0x00 l000000000040AD1C
+	branch r13b_85 == 0x00 l000000000040AD1C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AD6C:
-	Mem94[rbx_114 + 0x0000000000000008:word64] = Mem33[rax_56 + 0x0000000000000008:word64]
-	Mem95[rax_56:word64] = 0x0000000000000000
-	Mem98[rax_56 + 0x0000000000000008:word64] = Mem95[rdi + 0x0000000000000048:word64]
-	Mem99[rdi + 0x0000000000000048:word64] = rax_56
-	rsiOut = rsi_100
-	return rsi_100
+	Mem95[rbx_114 + 0x0000000000000008:word64] = Mem33[rax_56 + 0x0000000000000008:word64]
+	Mem96[rax_56:word64] = 0x0000000000000000
+	Mem99[rax_56 + 0x0000000000000008:word64] = Mem96[rdi + 0x0000000000000048:word64]
+	Mem100[rdi + 0x0000000000000048:word64] = rax_56
+	rsiOut = rsi_101
+	return rsi_101
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11005,7 +11006,7 @@ l000000000040AD4F:
 // SymbolicIn:
 
 l000000000040ACE6:
-	rsi_100 = Mem33[rax_26:word64]
+	rsi_101 = Mem33[rax_26:word64]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11041,8 +11042,8 @@ l000000000040ACFB:
 // SymbolicIn:
 
 l000000000040AD1C:
-	rsiOut = rsi_100
-	return rsi_100
+	rsiOut = rsi_101
+	return rsi_101
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11575,7 +11576,7 @@ fn000000000040B640_entry:
 // SymbolicIn:
 
 l000000000040B640:
-	word64 rax_44
+	word64 rax_45
 	branch Mem13[rdi + 0x0000000000000040:word64] == 0x0000000000000000 l000000000040B655
 // DataOut:
 // DataOut (flags):
@@ -11608,10 +11609,10 @@ l000000000040B6D0:
 // SymbolicIn:
 
 l000000000040B6E3:
-	word64 rax_34
+	word64 rax_35
 	call Mem13[rdi + 0x0000000000000040:word64] (retsize: 8;)
-		uses: rax:rax_34,rdi:rdi_31
-		defs: rax:rax_34
+		uses: rax:rax_35,rdi:rdi_31
+		defs: rax:rax_35
 	rbx_24 = Mem13[rbx_24 + 0x0000000000000008:word64]
 	branch rbx_24 != 0x0000000000000000 l000000000040B6E0
 // DataOut:
@@ -11630,9 +11631,9 @@ l000000000040B6DC:
 // SymbolicIn:
 
 l000000000040B6EF:
-	rax_44 = Mem13[rdi + 0x0000000000000008:word64]
+	rax_45 = Mem13[rdi + 0x0000000000000008:word64]
 	r12_18 = r12_18 + 0x0000000000000010
-	branch rax_44 >u r12_18 l000000000040B6D0
+	branch rax_45 >u r12_18 l000000000040B6D0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11643,14 +11644,14 @@ l000000000040B6FC:
 // SymbolicIn:
 
 l000000000040B655:
-	rax_44 = Mem13[rdi + 0x0000000000000008:word64]
+	rax_45 = Mem13[rdi + 0x0000000000000008:word64]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040B659:
-	word64 r12_54 = Mem13[rdi:word64] + 0x0000000000000008
-	branch r12_54 >=u rax_44 l000000000040B693
+	word64 r12_55 = Mem13[rdi:word64] + 0x0000000000000008
+	branch r12_55 >=u rax_45 l000000000040B693
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11661,22 +11662,22 @@ l000000000040B662:
 // SymbolicIn:
 
 l000000000040B668:
-	word64 rdi_60 = Mem13[r12_54 + 0x0000000000000000:word64]
-	branch rdi_60 != 0x0000000000000000 l000000000040B67B
+	word64 rdi_61 = Mem13[r12_55 + 0x0000000000000000:word64]
+	branch rdi_61 != 0x0000000000000000 l000000000040B67B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040B67B:
-	word64 rbx_66 = Mem13[rdi_60 + 0x0000000000000008:word64]
-	free(rdi_60)
-	branch rbx_66 != 0x0000000000000000 l000000000040B678
+	word64 rbx_67 = Mem13[rdi_61 + 0x0000000000000008:word64]
+	free(rdi_61)
+	branch rbx_67 != 0x0000000000000000 l000000000040B678
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040B678:
-	rdi_60 = rbx_66
+	rdi_61 = rbx_67
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11687,29 +11688,29 @@ l000000000040B672:
 // SymbolicIn:
 
 l000000000040B689:
-	r12_54 = r12_54 + 0x0000000000000010
-	branch Mem13[rdi + 0x0000000000000008:word64] >u r12_54 l000000000040B668
+	r12_55 = r12_55 + 0x0000000000000010
+	branch Mem13[rdi + 0x0000000000000008:word64] >u r12_55 l000000000040B668
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040B693:
-	word64 rdi_82 = Mem13[rdi + 0x0000000000000048:word64]
-	branch rdi_82 != 0x0000000000000000 l000000000040B6A3
+	word64 rdi_83 = Mem13[rdi + 0x0000000000000048:word64]
+	branch rdi_83 != 0x0000000000000000 l000000000040B6A3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040B6A3:
-	word64 rbx_88 = Mem13[rdi_82 + 0x0000000000000008:word64]
-	free(rdi_82)
-	branch rbx_88 != 0x0000000000000000 l000000000040B6A0
+	word64 rbx_89 = Mem13[rdi_83 + 0x0000000000000008:word64]
+	free(rdi_83)
+	branch rbx_89 != 0x0000000000000000 l000000000040B6A0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040B6A0:
-	rdi_82 = rbx_88
+	rdi_83 = rbx_89
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15052,9 +15053,9 @@ l000000000040D4C5:
 	word64 rsi_419
 	fn000000000040D450(rcx, qwLoc48, rdi, qwLoc58 - (rsi >>u 0x0000000000000003), r13_61, out rdx_418, out rsi_419)
 	word64 rsi_420
-	word64 rdx_102
-	rcx = fn000000000040D450(rcx, qwLoc48, rdi, rsi >>u 0x0000000000000003, rdi, out rdx_102, out rsi_420)
-	word64 r14_108 = rsi >>u 0x0000000000000003
+	word64 rdx_103
+	rcx = fn000000000040D450(rcx, qwLoc48, rdi, rsi >>u 0x0000000000000003, rdi, out rdx_103, out rsi_420)
+	word64 r14_109 = rsi >>u 0x0000000000000003
 	word64 r15_206 = qwLoc48 + 0x0000000000000008
 	word64 r12_204 = Mem65[rdi:word64]
 	word64 r13_114 = Mem65[r13_61:word64]
@@ -15064,25 +15065,25 @@ l000000000040D4C5:
 // SymbolicIn:
 
 l000000000040D53B:
-	word64 rax_103
+	word64 rax_104
 	call rcx (retsize: 8;)
-		uses: rax:rax_103,rcx:rcx_96,rdi:r12_91,rdx:rdx_98,rsi:r13_89,Stack +FFFFFFB0:qwLoc58,Stack +FFFFFFC0:qwLoc48,Stack +FFFFFFD0:qwLoc38
-		defs: rax:rax_103,rcx:rcx_99,rdx:rdx_102
-	branch SLICE(rax_103, word32, 0) > 0x00000000 l000000000040D520
+		uses: rax:rax_104,rcx:rcx_96,rdi:r12_91,rdx:rdx_98,rsi:r13_89,Stack +0000:qwLoc58,Stack +0010:qwLoc48,Stack +0020:qwLoc38
+		defs: rax:rax_104,rcx:rcx_100,rdx:rdx_103
+	branch SLICE(rax_104, word32, 0) > 0x00000000 l000000000040D520
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040D520:
 	Mem112[r15_206 - 0x0000000000000008:word64] = r13_114
-	r14_108 = r14_108 + 0x0000000000000001
-	branch qwLoc48 == r14_108 l000000000040D634
+	r14_109 = r14_109 + 0x0000000000000001
+	branch qwLoc48 == r14_109 l000000000040D634
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040D533:
-	r13_114 = Mem112[rdi + r14_108 * 0x0000000000000008:word64]
+	r13_114 = Mem112[rdi + r14_109 * 0x0000000000000008:word64]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15097,7 +15098,7 @@ l000000000040D547:
 // SymbolicIn:
 
 l000000000040D625:
-	qwLoc40_288 = r14_108
+	qwLoc40_288 = r14_109
 	qwLoc30_284 = qwLoc48
 // DataOut:
 // DataOut (flags):
@@ -15121,11 +15122,11 @@ l000000000040D57B:
 // SymbolicIn:
 
 l000000000040D5B7:
-	word64 rax_159
+	word64 rax_160
 	call rcx (retsize: 8;)
-		uses: rax:rax_159,rcx:rcx_152,rdi:r12_147,rdx:rdx_154,rsi:r13_145,Stack +FFFFFFB0:qwLoc58,Stack +FFFFFFC0:qwLoc48,Stack +FFFFFFD0:qwLoc38
-		defs: rax:rax_159,rcx:rcx_155,rdx:rdx_158,rsi:rsi_157
-	branch SLICE(rax_159, word32, 0) > 0x00000000 l000000000040D5A0
+		uses: rax:rax_160,rcx:rcx_152,rdi:r12_147,rdx:rdx_154,rsi:r13_145,Stack +0018:qwLoc58,Stack +0028:qwLoc48,Stack +0038:qwLoc38,Stack +FFFFFFB0:qwLoc58,Stack +FFFFFFC0:qwLoc48
+		defs: rax:rax_160,rcx:rcx_156,rdx:rdx_159,rsi:rsi_158
+	branch SLICE(rax_160, word32, 0) > 0x00000000 l000000000040D5A0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -15198,7 +15199,7 @@ l000000000040D660:
 	word64 r12_210 = Mem30[rdi:word64]
 	word64 rax_217
 	call rcx (retsize: 8;)
-		uses: rax:rax_217,rcx:rcx,rdi:r12_210,rdx:rdx,rsi:r13_209,Stack +FFFFFFB0:qwLoc58,Stack +FFFFFFC0:qwLoc48,Stack +FFFFFFD0:qwLoc38
+		uses: rax:rax_217,rcx:rcx,rdi:r12_210,rdx:rdx,rsi:r13_209,Stack +0018:qwLoc58,Stack +0028:qwLoc48,Stack +0038:qwLoc38
 		defs: rax:rax_217,rcx:rcx_213,rdx:rdx_216,rsi:rsi_215
 	branch SLICE(rax_217, word32, 0) <= 0x00000000 l000000000040D479
 // DataOut:
@@ -15720,7 +15721,7 @@ l000000000040DFE2:
 l000000000040E012:
 	rbx_1060 = 0x0000000000000000
 	word64 rcx_2609 = rcx_2624
-	qwLoc88_1429 = rdx_2629 (alias)
+	word64 rdx_2616 = rdx_2629
 	branch al_58 != 0x00 l000000000040E044
 // DataOut:
 // DataOut (flags):
@@ -15729,6 +15730,7 @@ l000000000040E012:
 l000000000040E01B:
 	byte al_106 = SLICE((word32) Mem101[qwLoc88_1429:byte], byte, 0)
 	rcx_2609 = rcx_2624 (alias)
+	rdx_2616 = qwLoc88_1429
 	branch al_106 == 0x00 l000000000040E044
 // DataOut:
 // DataOut (flags):
@@ -15755,6 +15757,7 @@ l000000000040E038:
 	rbx_1060 = rbx_1060 + 0x0000000000000001
 	al_106 = SLICE((word32) Mem122[qwLoc88_1429 + rbx_1060:byte], byte, 0) (alias)
 	rcx_2609 = rdi (alias)
+	rdx_2616 = qwLoc88_1429
 	branch al_106 != 0x00 l000000000040E030
 // DataOut:
 // DataOut (flags):
@@ -15766,7 +15769,7 @@ l000000000040E044:
 	r14_149 = SEQ(rax_32_32_142, strlen(qwLoc90_1431))
 	bLocD8_1452 = 0x01
 	rcx_2588 = rcx_2609 (alias)
-	rdx_2592 = qwLoc88_1429 (alias)
+	rdx_2592 = rdx_2616 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -16601,7 +16604,7 @@ l000000000040DC46:
 	word64 r15_2657
 	word64 r12_2654
 	word64 rbx_2650
-	rax_1037 = fn000000000040D8A0(r15_1408, r13_380, r11_486, rdi, SLICE((uint64) dwLocC4_1425, word32, 0), SLICE((uint64) (SLICE((uint64) r9d, word32, 0) & 0xFFFFFFFD), word32, 0), fs, 0x0000000000000000, qwArg08, qwArg10, out rbx_2650, out rsp_2651, out rbp_2652, out rsi_2653, out r8_1034, out r9_1036, out r12_2654, out r13_2655, out r14_2656, out r15_2657)
+	rax_1037 = fn000000000040D8A0(r15_1408, r13_380, r11_486, rdi, SLICE((uint64) dwLocC4_1425, word32, 0), SLICE((uint64) (SLICE((uint64) r9d, word32, 0) & 0xFFFFFFFD), word32, 0), fs, 0x0000000000000000, qwLoc88_1429, qwLoc90_1431, out rbx_2650, out rsp_2651, out rbp_2652, out rsi_2653, out r8_1034, out r9_1036, out r12_2654, out r13_2655, out r14_2656, out r15_2657)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -16720,7 +16723,7 @@ l000000000040DA2F:
 	word64 rsi_1277
 	word64 r10_1279
 	call Mem313[rax_1130 * 0x0000000000000008 + 0x00416068:word64] (retsize: 8;)
-		uses: r10:r10_1279,r8d:r8d_1167,r9d:r9d_1211,rax:rax_1130,rcx:rcx_1131,rdi:rdi_1212,rdx:rdx_2572,rsi:rsi_1243,Stack +0010:qwArg08,Stack +0018:qwArg10,Stack +0020:qwArg18,Stack +FFFFFFBC:dwLoc4C
+		uses: r10:r10_1279,r8d:r8d_1167,r9d:r9d_1211,rax:rax_1130,rcx:rcx_1131,rdi:rdi_1212,rdx:rdx_2572,rsi:rsi_1243,Stack +00B4:dwLoc4C,Stack +0108:qwArg08,Stack +0110:qwArg10,Stack +0118:qwArg18
 		defs: r10:r10_1279,r8:r8_1272,r9:r9_1274,rax:rax_1275,rsi:rsi_1277
 	rbxOut = rbx_1060
 	rspOut = fp - 248
@@ -18572,25 +18575,25 @@ l0000000000411028:
 
 l0000000000410FDD:
 	word64 rdx_220 = SEQ(rdx_32_32_219, (word32) dl_186)
-	word64 rax_261
-	word64 r9_266
+	word64 rax_264
+	word64 r9_269
 	call Mem154[rdx_220 * 0x0000000000000008 + 0x00416C18:word64] (retsize: 8;)
 		uses: r8:r8,r9_32_32:r9_32_32_325,rcx:rcx_250,rdi:r8,rdx:rdx_220,rsi:0x0000000000000030
-		defs: r9:r9_266,rax:rax_261
+		defs: r9:r9_269,rax:rax_264
 	ebxOut = <invalid>
 	rspOut = fp - 0x0000000000000058
 	rbpOut = rbp_243
-	r9Out = r9_266
+	r9Out = r9_269
 	r12Out = r8
 	r13bOut = <invalid>
-	word32 r9_32_32_325 = SLICE(r9_266, word32, 32)
-	return SLICE(rax_261, word32, 0)
+	word32 r9_32_32_325 = SLICE(r9_269, word32, 32)
+	return SLICE(rax_264, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000410F4F:
-	Mem270[rcx:word64] = rax_82
+	Mem273[rcx:word64] = rax_82
 	ebxOut = <invalid>
 	rspOut = fp
 	rbpOut = rbp
@@ -18935,29 +18938,29 @@ l0000000000411500:
 
 l00000000004114B5:
 	word64 rdx_221 = SEQ(rdx_32_32_220, (word32) dl_187)
-	word64 rax_260
-	word64 r8_264
-	word64 r9_265
+	word64 rax_263
+	word64 r8_267
+	word64 r9_268
 	call Mem155[rdx_221 * 0x0000000000000008 + 0x00416E38:word64] (retsize: 8;)
 		uses: r8:rax_65,r9_32_32:r9_32_32_324,rcx:rcx_251,rdi:r8,rdx:rdx_221,rsi:0x0000000000000030
-		defs: r8:r8_264,r9:r9_265,rax:rax_260
+		defs: r8:r8_267,r9:r9_268,rax:rax_263
 	rbxOut = rbx_104
 	rspOut = fp - 0x0000000000000058
 	ebpOut = <invalid>
-	r8Out = r8_264
-	r9Out = r9_265
+	r8Out = r8_267
+	r9Out = r9_268
 	r12Out = r8
 	r13Out = rcx
 	r14bOut = <invalid>
 	r15Out = r15_34
-	word32 r9_32_32_324 = SLICE(r9_265, word32, 32)
-	return SLICE(rax_260, word32, 0)
+	word32 r9_32_32_324 = SLICE(r9_268, word32, 32)
+	return SLICE(rax_263, word32, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000411422:
-	Mem269[rcx:word64] = rax_83
+	Mem272[rcx:word64] = rax_83
 	rbxOut = rbx
 	rspOut = fp
 	ebpOut = <invalid>
