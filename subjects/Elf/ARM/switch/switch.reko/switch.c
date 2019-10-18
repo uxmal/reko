@@ -267,6 +267,7 @@ word32 __do_global_ctors_aux()
 	if (r2_n == (<anonymous> *) 0x01)
 		return r4;
 	word32 r4_n;
+	word32 r3_n;
 	word32 pc_n;
 	r2_n();
 	return r4_n;

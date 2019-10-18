@@ -83,6 +83,7 @@ namespace Reko.Analysis
             private readonly IProcessorArchitecture arch;
             private readonly SsaState ssa;
             private readonly SegmentedAccessClassifier sac;
+            private readonly ExpressionValueComparer cmp;
 
             public ProjectionFilter(IProcessorArchitecture arch, SsaState ssa, SegmentedAccessClassifier sac)
             {
@@ -90,6 +91,7 @@ namespace Reko.Analysis
                 this.ssa = ssa;
                 this.sac = sac;
                 this.NewStatements = new HashSet<Statement>();
+                this.cmp = new ExpressionValueComparer();
             }
 
             public HashSet<Statement> NewStatements{ get; }
@@ -214,7 +216,7 @@ namespace Reko.Analysis
                     var slices = ass.Select(AsSlice).ToArray();
                     if (slices.All(s => s != null))
                     {
-                        if (AllSame(slices, (a, b) => a.Expression == b.Expression) &&
+                        if (AllSame(slices, (a, b) => cmp.Equals(a.Expression, b.Expression)) &&
                             AllAdjacent(slices))
                         {
                             trace.Verbose("Prpr: Fusing slices in {0}", ssa.Procedure.Name);
@@ -319,18 +321,25 @@ namespace Reko.Analysis
                 }
                 var totalSliceSize = slices.Sum(s => s.DataType.BitSize);
                 var totalSliceOffset = slices[slices.Length - 1].Offset;
-                var idWide = (Identifier) slices[0].Expression;
-                var sidWide = ssa.Identifiers[idWide];
-                sidWide.Uses.Add(this.Statement);
-                if ((int) idWide.Storage.BitAddress == totalSliceOffset &&
-                    (int) idWide.Storage.BitSize == totalSliceSize)
+                var expWide = slices[0].Expression;
+                var ua = new InstructionUseAdder(this.Statement, ssa.Identifiers);
+                expWide.Accept(ua);
+                if (expWide is Identifier idWide)
                 {
-                    return idWide;
+                    if ((int) idWide.Storage.BitAddress == totalSliceOffset &&
+                    (int) idWide.Storage.BitSize == totalSliceSize)
+                    {
+                        return idWide;
+                    }
                 }
                 else
                 {
-                    return new Slice(dtSequence, idWide, totalSliceOffset);
+                    if (expWide.DataType.BitSize == totalSliceSize)
+                    {
+                        return expWide;
+                    }
                 }
+                return new Slice(dtSequence, expWide, totalSliceOffset);
             }
 
             private Slice AsSlice(Assignment ass)
@@ -447,8 +456,9 @@ namespace Reko.Analysis
                 SsaIdentifier sidPred;
                 var sidPreds = phis.Select(p => ssa.Identifiers[(Identifier) p.Src.Arguments[iBlock].Value].DefStatement.Instruction as Assignment).ToArray();
                 var slices = sidPreds.Select(AsSlice).ToArray();
+                var aliases = sidPreds.Select(s => s as AliasAssignment).ToArray();
                 if (slices.All(s => s != null) &&
-                    AllSame(slices, (a, b) => a.Expression == b.Expression) &&
+                    AllSame(slices, (a, b) => this.cmp.Equals(a.Expression, b.Expression)) &&
                     AllAdjacent(slices))
                 {
                     if (slices[0].Expression is Identifier id)

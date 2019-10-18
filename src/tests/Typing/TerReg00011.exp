@@ -54,6 +54,7 @@ l0C00_000C:
 	byte bl_10 = (byte) bx_39
 	0x4DE1->*bx_39 = bl_10 & 0xF0 | SLICE((bl_10 & 0x0F) * (SLICE(bx_39, byte, 8) + 0x01) << 0x0004, byte, 8) & 0x0F
 	bx_36 = bx_39 - 0x0001
+	bx_39 = bx_36
 	branch bx_39 >= 0x0001 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:

@@ -80,9 +80,9 @@ Eq_288: (fn Eq_287 (ptr32))
 Eq_336: (fn void ())
 	T_336 (in _fini : ptr32)
 	T_337 (in signature of _fini : void)
-Eq_353: (fn void ())
-	T_353 (in __do_global_dtors_aux : ptr32)
-	T_354 (in signature of __do_global_dtors_aux : void)
+Eq_354: (fn void ())
+	T_354 (in __do_global_dtors_aux : ptr32)
+	T_355 (in signature of __do_global_dtors_aux : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -1251,7 +1251,7 @@ T_291: (in _init(out r10_20) : word32)
 T_292: (in r1_30 : (arr (ptr32 code)))
   Class: Eq_292
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_356) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_357) a0000)))
 T_293: (in 000086A8 : ptr32)
   Class: Eq_293
   DataType: (ptr32 int32)
@@ -1339,7 +1339,7 @@ T_313: (in 0x000086C8 + globals->dw8700 : word32)
 T_314: (in r1_16 : (arr (ptr32 code)))
   Class: Eq_314
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_357) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_358) a0000)))
 T_315: (in 00008704 : ptr32)
   Class: Eq_315
   DataType: (ptr32 int32)
@@ -1488,28 +1488,32 @@ T_351: (in r4_16 : word32)
   Class: Eq_339
   DataType: word32
   OrigDataType: word32
-T_352: (in pc_19 : word32)
+T_352: (in r3_18 : word32)
   Class: Eq_352
   DataType: word32
   OrigDataType: word32
-T_353: (in __do_global_dtors_aux : ptr32)
+T_353: (in pc_19 : word32)
   Class: Eq_353
-  DataType: (ptr32 Eq_353)
-  OrigDataType: (ptr32 (fn T_355 ()))
-T_354: (in signature of __do_global_dtors_aux : void)
-  Class: Eq_353
-  DataType: (ptr32 Eq_353)
+  DataType: word32
+  OrigDataType: word32
+T_354: (in __do_global_dtors_aux : ptr32)
+  Class: Eq_354
+  DataType: (ptr32 Eq_354)
+  OrigDataType: (ptr32 (fn T_356 ()))
+T_355: (in signature of __do_global_dtors_aux : void)
+  Class: Eq_354
+  DataType: (ptr32 Eq_354)
   OrigDataType: 
-T_355: (in __do_global_dtors_aux() : void)
-  Class: Eq_355
+T_356: (in __do_global_dtors_aux() : void)
+  Class: Eq_356
   DataType: void
   OrigDataType: void
-T_356:
-  Class: Eq_356
-  DataType: (ptr32 code)
-  OrigDataType: (struct 0004 (0 T_308 t0000))
 T_357:
   Class: Eq_357
+  DataType: (ptr32 code)
+  OrigDataType: (struct 0004 (0 T_308 t0000))
+T_358:
+  Class: Eq_358
   DataType: (ptr32 code)
   OrigDataType: (struct 0004 (0 T_335 t0000))
 */
@@ -1594,5 +1598,5 @@ typedef Eq_287 (Eq_288)(ptr32);
 
 typedef void (Eq_336)();
 
-typedef void (Eq_353)();
+typedef void (Eq_354)();
 

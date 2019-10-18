@@ -177,7 +177,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CoaCallUses()
         {
             var m = new ProcedureBuilder("foo");
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CoaCallCallee()
         {
             var m = new ProcedureBuilder("foo");

@@ -9333,12 +9333,11 @@ l00009072_1:
 
 l00009074:
 	Mem252[r5_16:word32] = r0_245
-	word32 r3_253 = Mem252[r0_245:word32]
 	word32 lr_280
 	word32 pc_281
 	word32 cpsr_283
-	call r3_253 (retsize: 0;)
-		uses: cpsr:cpsr,lr:lr,pc:pc_281,r0:r0_245,r1:Mem252[r0_245 + 48:word32],r3:r3_253,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,sp:fp
+	call Mem252[r0_245:word32] (retsize: 0;)
+		uses: cpsr:cpsr,lr:lr,pc:pc_281,r0:r0_245,r1:Mem252[r0_245 + 48:word32],r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,sp:fp
 		defs: cpsr:cpsr_283,lr:lr_280,pc:pc_281
 	cpsrOut = cpsr_283
 	return lr_280

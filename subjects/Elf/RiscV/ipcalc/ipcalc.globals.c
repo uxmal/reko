@@ -146,6 +146,6 @@ void g_t182E8() = Unexpected function type (fn void ())
 ;
 void g_t18378() = Unexpected function type (fn void ())
 ;
-word64 g_qw19E18 = 0x0000000000015F94;
+<anonymous> * g_ptr19E18 = fn0000000000015F94;
 word64 g_qw19E28 = 0x0000000000000000;
 

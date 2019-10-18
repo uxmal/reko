@@ -48,9 +48,9 @@ void __do_global_dtors_aux()
 			{
 				uint32 d0_n = d0_n + 0x01;
 				globals->dw80002726 = d0_n;
-				<anonymous> * a0_n = a2_n[d0_n];
+				word32 a0_n;
 				word32 d1_n;
-				a0_n();
+				a2_n[d0_n]();
 				d0_n = globals->dw80002726;
 			} while (d2_n - d0_n > 0x00);
 		}

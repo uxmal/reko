@@ -2090,10 +2090,11 @@ l000023D0:
 // SymbolicIn:
 
 l000023D4:
+	word32 a0_42
 	word32 d0_43
 	call d0_26 (retsize: 4;)
-		uses: a0:d0_26,a6:a6_34,a7:a7_36,d0:d0_43,d3:d3_23,d4:d4_35,d5:d5_29,Stack +0008:dwArg04,Stack +000C:dwArg08
-		defs: a6:a6_38,a7:a7_37,d0:d0_43,d3:d3_41,d4:d4_40,d5:d5_39
+		uses: a0:a0_42,a6:a6_34,a7:a7_36,d0:d0_43,d3:d3_23,d4:d4_35,d5:d5_29,Stack +0008:dwArg04,Stack +000C:dwArg08
+		defs: a0:a0_42,a6:a6_38,a7:a7_37,d0:d0_43,d3:d3_41,d4:d4_40,d5:d5_39
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2141,9 +2142,8 @@ l000023F8:
 	word32 a7_36
 	word32 a5_34 = fn0000243C(a5_12, Mem26[a7_14 - 4:word32], out a6_35, out a7_36)
 	Mem44[a7_36:word32] = 0x000000FF
-	word32 a0_45 = Mem44[a5_34 + -1288:word32]
-	call a0_45 (retsize: 4;)
-		uses: a0:a0_45,a5:a5_34,a6:a6_35,a7:a7_36
+	call Mem44[a5_34 + -1288:word32] (retsize: 4;)
+		uses: a5:a5_34,a6:a6_35,a7:a7_36
 	return
 // DataOut:
 // DataOut (flags):

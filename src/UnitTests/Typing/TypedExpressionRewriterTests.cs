@@ -349,7 +349,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void TerReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/TerReg00011.txt");

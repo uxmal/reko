@@ -31,7 +31,6 @@ namespace Reko.Evaluation
     public class DpbDpbRule
     {
         private EvaluationContext ctx;
-        private DepositBits dpbDef;
         private DepositBits dpbUse;
         private Identifier idDef;
         private Identifier idSrc;

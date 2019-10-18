@@ -139,11 +139,11 @@ l800000F4:
 l80000114:
 	word32 d0_31 = d0_21 + 0x00000001
 	Mem34[0x80002726:word32] = d0_31
-	word32 a0_37 = Mem34[a2_20 + d0_31 * 4:word32]
+	word32 a0_46
 	word32 d1_95
-	call a0_37 (retsize: 4;)
-		uses: a0:a0_37,a2:a2_36,a6:a6_38,a7:a7_40,d0:d0_31,d1:d1_95,d2:d2_39
-		defs: a2:a2_43,a6:a6_42,a7:a7_41,d1:d1_95,d2:d2_44
+	call Mem34[a2_20 + d0_31 * 4:word32] (retsize: 4;)
+		uses: a0:a0_46,a2:a2_36,a6:a6_38,a7:a7_40,d0:d0_31,d1:d1_95,d2:d2_39
+		defs: a0:a0_46,a2:a2_43,a6:a6_42,a7:a7_41,d1:d1_95,d2:d2_44
 	d0_21 = Mem34[0x80002726:word32]
 	branch d2_25 - d0_21 >u 0x00000000 l80000114
 // DataOut:

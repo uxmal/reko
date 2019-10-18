@@ -872,10 +872,11 @@ l0000870C:
 
 l00008724:
 	word32 r4_16
+	word32 r3_18
 	word32 pc_19
 	call r2_9 (retsize: 0;)
-		uses: lr:0x00008730,pc:pc_19,r3:r2_9,r4:r3_8 - 0x00000004,sp:fp - 8
-		defs: pc:pc_19,r4:r4_16
+		uses: lr:0x00008730,pc:pc_19,r3:r3_18,r4:r3_8 - 0x00000004,sp:fp - 8
+		defs: pc:pc_19,r3:r3_18,r4:r4_16
 	return r4_16
 // DataOut:
 // DataOut (flags):

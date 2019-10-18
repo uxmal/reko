@@ -1002,7 +1002,7 @@ main_exit:
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.UnitTests)]
         public void CrwIndirectCall()
         {
             var ssa = Given_Procedure("main", m =>
@@ -1025,14 +1025,15 @@ main_exit:
             #region Expected
 @"main_entry:
 body:
-	r2_1 = r1(r2, r3)
+	call r1 (retsize: 0;)
+		uses: r2:r2,r3:r3
+		defs: r2_1:r2_1
 	Mem4[0x00123400:word32] = r2_1
 	return
 main_exit:
 ";
             #endregion
             AssertProcedureCode(sExp, ssa);
-
         }
     }
 }

@@ -15,15 +15,17 @@ void _init(word32 ra)
 		(r25_n + 0x0970)();
 	}
 	else
+	{
+		word32 r25_n;
 		__gmon_start__();
+	}
 }
 
 // 00000610: void __start(Register word32 r2, Stack word32 dwArg00)
 void __start(word32 r2, word32 dwArg00)
 {
 	word32 r8_n = *(word32 *) 0x00020A60;
-	<anonymous> * r25_n = *(<anonymous> **) 0x00020A24;
-	r25_n();
+	(*(<anonymous> **) 0x00020A24)();
 	while (true)
 		;
 }
@@ -59,6 +61,7 @@ void __do_global_dtors_aux(word32 r16, word32 r17, word32 r18, word32 ra)
 		if (__cxa_finalize != 0x00)
 		{
 			word32 r2_n = globals->dw10AAC;
+			word32 r25_n;
 			word32 r3_n;
 			__cxa_finalize();
 		}
@@ -69,9 +72,8 @@ void __do_global_dtors_aux(word32 r16, word32 r17, word32 r18, word32 ra)
 			Eq_n r2_n = (word32) r2_n + 0x01;
 			globals->t10AF4 = r2_n;
 			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
-			<anonymous> * r25_n = *r2_n;
 			word32 r4_n;
-			r25_n();
+			(*r2_n)();
 			r2_n = globals->t10AF4;
 		}
 		deregister_tm_clones();
@@ -103,19 +105,18 @@ void main()
 void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 ra)
 {
 	_init(ra);
-	word32 * r16_n = globals->ptr10ABC;
+	<anonymous> ** r16_n = globals->ptr10ABC;
 	int32 r18_n = globals->ptr10ABC - r16_n;
 	if (r18_n >> 0x02 != 0x00)
 	{
 		int32 r17_n = 0x00;
 		while (true)
 		{
-			<anonymous> * r25_n = *r16_n;
-			r25_n();
+			(*r16_n)();
 			++r17_n;
 			if (r18_n >> 0x02 == r17_n)
 				break;
-			++r16_n;
+			r16_n = (<anonymous> **) ((char *) r16_n + 0x04);
 		}
 	}
 }
@@ -144,22 +145,19 @@ void __do_global_ctors_aux()
 // 000009D0: void __libc_start_main(Register ptr32 r28, Register word32 ra)
 void __libc_start_main(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_n = *(r28 - 0x7FF0);
-	r25_n();
+	(*(r28 - 0x7FF0))();
 }
 
 // 000009E0: void memset(Register ptr32 r28, Register word32 ra)
 void memset(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_n = *(r28 - 0x7FF0);
-	r25_n();
+	(*(r28 - 0x7FF0))();
 }
 
 // 000009F0: void calloc(Register ptr32 r28, Register word32 ra)
 void calloc(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_n = *(r28 - 0x7FF0);
-	r25_n();
+	(*(r28 - 0x7FF0))();
 	_fini(ra);
 }
 

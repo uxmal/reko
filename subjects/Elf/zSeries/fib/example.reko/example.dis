@@ -29,7 +29,6 @@ l0000058E:
 
 l00000590:
 	word64 v16_57 = r15_33 + 208
-	word64 r4_56 = Mem34[r15_33 + 272:word64]
 	word64 r6_78
 	word64 r8_80
 	word64 r9_81
@@ -39,8 +38,8 @@ l00000590:
 	word64 r13_85
 	word64 r1_87
 	byte CC_89
-	call r4_56 (retsize: 0;)
-		uses: r10:Mem34[v16_57 + 32:word64],r11:Mem34[v16_57 + 40:word64],r12:Mem34[v16_57 + 48:word64],r13:Mem34[v16_57 + 56:word64],r14:Mem34[v16_57 + 64:word64],r15:Mem34[v16_57 + 72:word64],r4:r4_56,r6:Mem34[v16_57:word64],r7:Mem34[v16_57 + 8:word64],r8:Mem34[v16_57 + 16:word64],r9:Mem34[v16_57 + 24:word64]
+	call Mem34[r15_33 + 272:word64] (retsize: 0;)
+		uses: r10:Mem34[v16_57 + 32:word64],r11:Mem34[v16_57 + 40:word64],r12:Mem34[v16_57 + 48:word64],r13:Mem34[v16_57 + 56:word64],r14:Mem34[v16_57 + 64:word64],r15:Mem34[v16_57 + 72:word64],r6:Mem34[v16_57:word64],r7:Mem34[v16_57 + 8:word64],r8:Mem34[v16_57 + 16:word64],r9:Mem34[v16_57 + 24:word64]
 		defs: CC:CC_89,r1:r1_87,r10:r10_82,r11:r11_83,r12:r12_84,r13:r13_85,r6:r6_78,r8:r8_80,r9:r9_81
 	r1Out = r1_87
 	r6Out = r6_78
@@ -317,9 +316,8 @@ l00000708:
 
 l00000712:
 	word64 v12_53 = r15_18 + 248
-	word64 r4_52 = Mem51[r15_18 + 272:word64]
-	call r4_52 (retsize: 0;)
-		uses: r1:r1_63,r11:Mem51[v12_53:word64],r12:Mem51[v12_53 + 8:word64],r13:Mem51[v12_53 + 16:word64],r14:Mem51[v12_53 + 24:word64],r15:Mem51[v12_53 + 32:word64],r2:r2_65,r4:r4_52,r5:r5_64
+	call Mem51[r15_18 + 272:word64] (retsize: 0;)
+		uses: r1:r1_63,r11:Mem51[v12_53:word64],r12:Mem51[v12_53 + 8:word64],r13:Mem51[v12_53 + 16:word64],r14:Mem51[v12_53 + 24:word64],r15:Mem51[v12_53 + 32:word64],r2:r2_65,r5:r5_64
 	return
 // DataOut:
 // DataOut (flags):
@@ -439,12 +437,11 @@ l0000078A:
 l000007CA:
 	word64 v26_84 = r11_21 + 248
 	word64 r1_79 = (int64) (word32) r1_73
-	word64 r4_83 = Mem24[r11_21 + 280:word64]
 	word64 r10_97
 	word64 r11_98
 	word64 r2_102
-	call r4_83 (retsize: 0;)
-		uses: r1:r1_79,r10:Mem24[v26_84:word64],r11:Mem24[v26_84 + 8:word64],r12:Mem24[v26_84 + 16:word64],r13:Mem24[v26_84 + 24:word64],r14:Mem24[v26_84 + 32:word64],r15:Mem24[v26_84 + 40:word64],r2:r1_79,r4:r4_83
+	call Mem24[r11_21 + 280:word64] (retsize: 0;)
+		uses: r1:r1_79,r10:Mem24[v26_84:word64],r11:Mem24[v26_84 + 8:word64],r12:Mem24[v26_84 + 16:word64],r13:Mem24[v26_84 + 24:word64],r14:Mem24[v26_84 + 32:word64],r15:Mem24[v26_84 + 40:word64],r2:r1_79
 		defs: r10:r10_97,r11:r11_98,r2:r2_102
 	r10Out = r10_97
 	r11Out = r11_98
@@ -476,9 +473,8 @@ l000007E0:
 	word64 r11_29
 	word64 r10_70
 	word64 r1_38 = (int64) (word32) fib(0x000000000000000A, out r10_70, out r11_29)
-	word64 r4_40 = Mem24[r11_29 + 288:word64]
-	call r4_40 (retsize: 0;)
-		uses: r1:r1_38,r11:Mem24[r11_29 + 264:word64],r12:Mem24[r11_29 + 272:word64],r13:Mem24[r11_29 + 280:word64],r14:Mem24[r11_29 + 288:word64],r15:Mem24[r11_29 + 296:word64],r2:r1_38,r3:r3,r4:r4_40
+	call Mem24[r11_29 + 288:word64] (retsize: 0;)
+		uses: r1:r1_38,r11:Mem24[r11_29 + 264:word64],r12:Mem24[r11_29 + 272:word64],r13:Mem24[r11_29 + 280:word64],r14:Mem24[r11_29 + 288:word64],r15:Mem24[r11_29 + 296:word64],r2:r1_38,r3:r3
 	return
 // DataOut:
 // DataOut (flags):
@@ -527,10 +523,9 @@ l00000856:
 // SymbolicIn:
 
 l0000085A:
-	word64 r1_58 = Mem28[r7_55:word64]
 	word64 r11_78
-	call r1_58 (retsize: 0;)
-		uses: r1:r1_58,r10:r10_63,r11:r11_68,r12:r12_69,r13:r13_70,r14:0x00000872,r15:r15_72,r2:r10_63,r3:r9_61,r4:r8_59,r6:r6_71,r7:r7_56 + 8,r8:r8_59,r9:r9_61
+	call Mem28[r7_55:word64] (retsize: 0;)
+		uses: r10:r10_63,r11:r11_68,r12:r12_69,r13:r13_70,r14:0x00000872,r15:r15_72,r2:r10_63,r3:r9_61,r4:r8_59,r6:r6_71,r7:r7_56 + 8,r8:r8_59,r9:r9_61
 		defs: r10:r10_77,r11:r11_78,r12:r12_79,r13:r13_80,r15:r15_73,r2:r2_82,r3:r3_83,r6:r6_86,r7:r7_74,r8:r8_75,r9:r9_76
 	r11_54 = r11_78 - 1
 	branch r11_78 != 0x0000000000000001 l0000085A
@@ -595,8 +590,10 @@ _fini_entry:
 // SymbolicIn:
 
 l00000890:
+	word64 r4_68
 	call r14 (retsize: 0;)
-		uses: r1:fp - 160,r10:r10,r11:r11,r12:r12,r13:r13,r14:r14,r15:fp - 160,r4:r14,r6:r6,r7:r7,r8:r8,r9:r9,Stack +0030:r6,Stack +0038:r7,Stack +0040:r8,Stack +0048:r9,Stack +0050:r10,Stack +0058:r11,Stack +0060:r12,Stack +0068:r13,Stack +0070:r14,Stack +0078:fp - 160,Stack +FFFFFEC0:fp - 160,Stack +FFFFFF60:fp - 160,Stack +FFFFFF90:r6,Stack +FFFFFF98:r7,Stack +FFFFFFA0:r8,Stack +FFFFFFA8:r9,Stack +FFFFFFB0:r10,Stack +FFFFFFB8:r11,Stack +FFFFFFC0:r12,Stack +FFFFFFC8:r13,Stack +FFFFFFD0:r14,Stack +FFFFFFD8:fp - 160
+		uses: r1:fp - 160,r10:r10,r11:r11,r12:r12,r13:r13,r14:r14,r15:fp - 160,r4:r4_68,r6:r6,r7:r7,r8:r8,r9:r9,Stack +0030:r6,Stack +0038:r7,Stack +0040:r8,Stack +0048:r9,Stack +0050:r10,Stack +0058:r11,Stack +0060:r12,Stack +0068:r13,Stack +0070:r14,Stack +0078:fp - 160,Stack +FFFFFEC0:fp - 160,Stack +FFFFFF60:fp - 160,Stack +FFFFFF90:r6,Stack +FFFFFF98:r7,Stack +FFFFFFA0:r8,Stack +FFFFFFA8:r9,Stack +FFFFFFB0:r10,Stack +FFFFFFB8:r11,Stack +FFFFFFC0:r12,Stack +FFFFFFC8:r13,Stack +FFFFFFD0:r14,Stack +FFFFFFD8:fp - 160
+		defs: r4:r4_68
 	return
 // DataOut:
 // DataOut (flags):

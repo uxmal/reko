@@ -985,6 +985,7 @@ word32 fn000023B4(word32 * dwArg04, Eq_n dwArg08, ptr32 & a7Out)
 			<anonymous> * d0_n = *d3_n;
 			if (d0_n != null && d0_n - d5_n != 0x00)
 			{
+				word32 a0_n;
 				word32 d0_n;
 				d0_n();
 			}
@@ -1007,8 +1008,7 @@ void fn000023F8(Eq_n a5)
 	ptr32 * a7_n;
 	Eq_n a5_n = fn0000243C(a5_n, *(a7_n - 0x04), out a6_n, out a7_n);
 	*a7_n = 0xFF;
-	<anonymous> * a0_n = *((word32) a5_n - 1288);
-	a0_n();
+	(*((word32) a5_n - 1288))();
 }
 
 // 00002418: Register Eq_n fn00002418(Register Eq_n a5, Register out ptr32 a6Out, Register out ptr32 a7Out)

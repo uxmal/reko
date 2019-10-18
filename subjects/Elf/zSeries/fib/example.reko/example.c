@@ -13,7 +13,6 @@ byte _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, w
 	if (r1_n != 0x00)
 		r1_n();
 	Eq_n v16_n = (word64) r15_n + 0x00D0;
-	Eq_n r4_n = *((word64) r15_n + 0x0110);
 	Eq_n r6_n;
 	Eq_n r8_n;
 	Eq_n r9_n;
@@ -23,7 +22,7 @@ byte _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, w
 	Eq_n r13_n;
 	Eq_n r1_n;
 	byte CC_n;
-	r4_n();
+	(*((word64) r15_n + 0x0110))();
 	r1Out = r1_n;
 	r6Out = r6_n;
 	r8Out = r8_n;
@@ -137,8 +136,7 @@ void __do_global_dtors_aux(word64 r1, word64 r2, word64 r5, word64 r11, word64 r
 		*r11_n = 0x01;
 	}
 	Eq_n v12_n = (word64) r15_n + 0x00F8;
-	Eq_n r4_n = *((word64) r15_n + 0x0110);
-	r4_n();
+	(*((word64) r15_n + 0x0110))();
 }
 
 // 00000720: void frame_dummy(Register Eq_n r1, Register word64 r2, Register word64 r3, Register word64 r13)
@@ -193,11 +191,10 @@ Eq_n fib(Eq_n r2, union Eq_n & r10Out, union Eq_n & r11Out)
 	}
 	Eq_n v26_n = (word64) r11_n + 0x00F8;
 	int64 r1_n = (int64) (word32) r1_n;
-	Eq_n r4_n = *((word64) r11_n + 0x0118);
 	Eq_n r10_n;
 	Eq_n r11_n;
 	Eq_n r2_n;
-	r4_n();
+	(*((word64) r11_n + 0x0118))();
 	r10Out = r10_n;
 	r11Out = r11_n;
 	return r2_n;
@@ -209,8 +206,7 @@ void main(word64 r3)
 	struct Eq_n * r11_n;
 	word64 r10_n;
 	int64 r1_n = (int64) (word32) fib(0x0A, out r10_n, out r11_n);
-	Eq_n r4_n = r11_n->t0120;
-	r4_n();
+	r11_n->t0120();
 }
 
 // 00000820: void __libc_csu_init(Register word64 r2, Register word64 r3, Register word64 r4, Register word64 r6, Register word64 r7, Register word64 r11, Register word64 r12, Register word64 r13)
@@ -232,9 +228,8 @@ void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word
 		union Eq_n * r7_n = r1_n;
 		do
 		{
-			Eq_n r1_n = *r7_n;
 			word64 r11_n;
-			r1_n();
+			(*r7_n)();
 			r11_n = r11_n - 0x01;
 		} while (r11_n != 0x01);
 	}
@@ -252,6 +247,7 @@ void __libc_csu_fini(Eq_n r14)
 // 00000890: void _fini(Register word64 r6, Register word64 r7, Register word64 r8, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r12, Register word64 r13, Register Eq_n r14)
 void _fini(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r12, word64 r13, Eq_n r14)
 {
+	word64 r4_n;
 	r14();
 }
 

@@ -38244,9 +38244,9 @@ fn1483_1C50_entry:
 // SymbolicIn:
 
 l1483_1C50:
-	word16 ax_7 = SEQ(ah, __inb(dx))
-	call ax_7 (retsize: 2;)
-		uses: ax:ax_7,dx:dx,sp:fp,Top:0
+	byte al_5 = __inb(dx)
+	call SEQ(ah, al_5) (retsize: 2;)
+		uses: ah:ah,al:al_5,dx:dx,sp:fp,Top:0
 	return
 // DataOut:
 // DataOut (flags):

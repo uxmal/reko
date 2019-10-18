@@ -3199,11 +3199,10 @@ l00009046:
 	if (r2_n == r3_n)
 		r1_n->ptr0008 = r2_n;
 	r5_n->ptr0000 = r0_n;
-	<anonymous> * r3_n = *r0_n;
 	word32 lr_n;
 	word32 pc_n;
 	ptr32 cpsr_n;
-	r3_n();
+	(*r0_n)();
 	cpsrOut = cpsr_n;
 	return lr_n;
 }

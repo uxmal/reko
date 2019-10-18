@@ -787,6 +787,12 @@ namespace Reko.Analysis
                 switch (stm.Instruction)
                 {
                 case Assignment ass:
+                    // Avoid using the callee as an argument,
+                    // it's unlikely that real code ever does this,
+                    // and currently causes the type inference phase 
+                    // serious problems (deeply recursive function pointers)
+                    if (call.Callee == ass.Dst)
+                        continue;
                     switch (ass.Dst.Storage)
                     {
                     case RegisterStorage reg:

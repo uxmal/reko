@@ -403,8 +403,6 @@ namespace Reko.Scanning
                 (from i in sr.FlatInstructions.Values
                  where i.type == (ushort)InstrClass.Invalid
                  select i.block_id).ToHashSet();
-            if (bad_blocks.FirstOrDefault(b => b.ToLinear() == 0x00112762) != null)
-                bad_blocks.Count.ToString();//$DEBUG
             var new_bad = bad_blocks;
             var preds = sr.FlatEdges.ToLookup(e => e.second);
             //Debug.Print("Bad {0}",

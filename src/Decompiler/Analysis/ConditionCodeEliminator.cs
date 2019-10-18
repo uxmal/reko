@@ -79,15 +79,15 @@ namespace Reko.Analysis
                 var uses = new HashSet<Statement>();
                 this.aliases = new HashSet<Identifier>();
                 ClosureOfUsingStatements(sidGrf, uses, aliases);
-                if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
+                trace.Inform("Tracing {0}", sidGrf.DefStatement.Instruction);
 
                 foreach (var u in uses)
                 {
                     useStm = u;
 
-                    if (trace.TraceInfo) Debug.WriteLine(string.Format("   used {0}", useStm.Instruction));
+                    trace.Inform("   used {0}", useStm.Instruction);
                     useStm.Instruction.Accept(this);
-                    if (trace.TraceInfo) Debug.WriteLine(string.Format("    now {0}", useStm.Instruction));
+                    trace.Inform("    now {0}", useStm.Instruction);
                 }
             }
         }

@@ -2572,6 +2572,7 @@ void fn00403ED4(struct Eq_n * r2, word32 r3)
 void fn00403F10(Eq_n r2, <anonymous> ** r12)
 {
 	<anonymous> * r0_n = *r12;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2580,6 +2581,7 @@ void fn00403F24(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 336);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2588,6 +2590,7 @@ void fn00403F3C(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x011C);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2596,6 +2599,7 @@ void fn00403F54(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 332);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2604,6 +2608,7 @@ void fn00403F6C(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0148);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2612,6 +2617,7 @@ void fn00403F84(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0104);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2620,6 +2626,7 @@ void fn00403F9C(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0128);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2628,6 +2635,7 @@ void fn00403FB4(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0144);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2636,6 +2644,7 @@ void fn00403FCC(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0140);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2644,6 +2653,7 @@ void fn00403FE4(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x013C);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2652,6 +2662,7 @@ void fn00403FFC(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0138);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2660,6 +2671,7 @@ void fn00404014(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0134);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2668,6 +2680,7 @@ void fn0040402C(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0130);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2676,6 +2689,7 @@ void fn00404044(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 300);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2684,6 +2698,7 @@ void fn0040405C(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 292);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2692,6 +2707,7 @@ void fn00404074(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 288);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2700,6 +2716,7 @@ void fn0040408C(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0114);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2708,6 +2725,7 @@ void fn004040A4(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0108);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2716,6 +2734,7 @@ void fn004040BC(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0100);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2724,6 +2743,7 @@ void fn004040D4(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0110);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2732,6 +2752,7 @@ void fn004040EC(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x010C);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2740,6 +2761,7 @@ void fn00404104(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 252);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2748,6 +2770,7 @@ void fn0040411C(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x0118);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 
@@ -2756,6 +2779,7 @@ void fn00404134(Eq_n r2)
 {
 	<anonymous> ** r12_n = *((word32) r2 + 0x00F8);
 	<anonymous> * r0_n = *r12_n;
+	word32 ctr_n;
 	r0_n();
 }
 

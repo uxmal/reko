@@ -303,26 +303,26 @@ T_67: (in Mem34[0x80002726:word32] : word32)
   Class: Eq_45
   DataType: uint32
   OrigDataType: word32
-T_68: (in a0_37 : (ptr32 code))
+T_68: (in a0_46 : word32)
   Class: Eq_68
-  DataType: (ptr32 code)
-  OrigDataType: (ptr32 code)
-T_69: (in 4 : int32)
-  Class: Eq_69
-  DataType: int32
-  OrigDataType: int32
-T_70: (in d0_31 * 4 : word32)
-  Class: Eq_70
-  DataType: ui32
-  OrigDataType: ui32
-T_71: (in a2_20[d0_31 * 4] : word32)
-  Class: Eq_68
-  DataType: (ptr32 code)
-  OrigDataType: word32
-T_72: (in d1_95 : word32)
-  Class: Eq_72
   DataType: word32
   OrigDataType: word32
+T_69: (in d1_95 : word32)
+  Class: Eq_69
+  DataType: word32
+  OrigDataType: word32
+T_70: (in 4 : int32)
+  Class: Eq_70
+  DataType: int32
+  OrigDataType: int32
+T_71: (in d0_31 * 4 : word32)
+  Class: Eq_71
+  DataType: ui32
+  OrigDataType: ui32
+T_72: (in a2_20[d0_31 * 4] : word32)
+  Class: Eq_72
+  DataType: (ptr32 code)
+  OrigDataType: (ptr32 code)
 T_73: (in 80002726 : ptr32)
   Class: Eq_73
   DataType: (ptr32 uint32)
@@ -1094,7 +1094,7 @@ T_264: (in a0_12 != (<anonymous> *) -1 : bool)
 T_265:
   Class: Eq_265
   DataType: (ptr32 code)
-  OrigDataType: (struct 0004 (0 T_71 t0000))
+  OrigDataType: (struct 0004 (0 T_72 t0000))
 */
 typedef struct Globals {
 	<anonymous> * ptr8000270C;	// 8000270C

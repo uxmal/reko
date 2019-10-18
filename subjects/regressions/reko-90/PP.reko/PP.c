@@ -17843,7 +17843,7 @@ Eq_n fn1483-1BB9(Eq_n ax, word16 cx, mp16 dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di
 // 1483:1C50: void fn1483-1C50(Register byte ah, Register mp16 dx)
 void fn1483-1C50(byte ah, mp16 dx)
 {
-	Eq_n ax_n = SEQ(ah, __inb(dx));
-	ax_n();
+	byte al_n = __inb(dx);
+	SEQ(ah, al_n)();
 }
 
