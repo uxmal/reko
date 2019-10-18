@@ -26,6 +26,7 @@ void fn00401060(struct Eq_n * ebp, word32 * esi, word32 dwArg04)
 {
 	ptr32 * esp_n;
 	word32 eax_n;
+	int8 Top_n;
 	_acrt_iob_func();
 	*esp_n = fp + 0x08;
 	*(esp_n - 0x04) = 0x00;
@@ -55,6 +56,7 @@ l00401177:
 	*(ebp_n - 0x04) &= 0x00;
 	word32 edx_n;
 	*(ebp_n - 0x24) = (byte) (uint32) (uint8) fn0040143F(out edx_n);
+	int8 Top_n = 0x00;
 	struct Eq_n * ebp_n = ebp_n;
 	uip32 eax_n = globals->dw403334;
 	word32 ebx_n = SEQ(ebx_24_8_n, 0x00);
@@ -103,6 +105,7 @@ l00401177:
 				*(esp_n - 0x08) = (union Eq_n *) edi_n;
 				<anonymous> * esi_n = *esi_n;
 				fn00401976();
+				int8 Top_n = <invalid>;
 				esi_n();
 			}
 		}
@@ -112,16 +115,23 @@ l00401177:
 		{
 			union Eq_n * esp_n = esp_n - 0x04;
 			*esp_n = (union Eq_n *) eax_n;
+			esp_n = (char *) esp_n + 0x04;
 			if ((byte) (uint32) (uint8) fn00401544(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
 				*esp_n = (union Eq_n *) *esi_n;
+				word32 esp_n;
 				register_thread_local_exe_atexit_callback();
+				esp_n = esp_n + 0x04;
 			}
 		}
+		word32 esp_n;
 		word32 * eax_n;
+		int8 Top_n;
 		word32 edx_n;
 		_p___argv();
+		word32 esp_n;
 		word32 * eax_n;
+		int8 Top_n;
 		word32 edx_n;
 		_p___argc();
 		ptr32 esp_n;
@@ -133,6 +143,7 @@ l00401177:
 		*(esp_n - 0x0C) = *eax_n;
 		Eq_n eax_n = fn00401000(ebp_n, eax_n);
 		byte bl_n = (byte) ebx_n;
+		int8 Top_n = <invalid>;
 		ptr32 esp_n = esp_n;
 		if ((byte) (uint32) (uint8) fn0040188F() == 0x00)
 		{
@@ -238,6 +249,7 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 		{
 			word32 * esp_n;
 			word32 eax_n;
+			int8 Top_n;
 			word32 edx_n;
 			initialize_onexit_table();
 			if (eax_n == 0x00)
@@ -263,11 +275,11 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 	{
 		fn00401774(0x05);
 		int3();
-		word32 edi_n;
-		word32 ebp_n;
 		word32 esi_n;
-		word32 edx_n;
+		word32 edi_n;
 		word32 ebx_n;
+		word32 ebp_n;
+		word32 edx_n;
 		fn00401544(ebx, dwArg04, edi, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n);
 	}
 }
@@ -481,12 +493,14 @@ void fn00401920()
 	word32 * esi_n = globals->a4024C8;
 	if (false)
 	{
+		ptr32 esp_n = fp - 0x0C;
 		do
 		{
 			word32 edi_n = *esi_n;
 			if (edi_n != 0x00)
 			{
 				fn00401976();
+				int8 Top_n = <invalid>;
 				word32 ecx_n;
 				fn00000000();
 			}

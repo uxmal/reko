@@ -1304,8 +1304,8 @@ l00401380:
 	word32 r27_22 = Mem19[r2 + 108:word32]
 	word32 r31_25 = r4_23
 	word32 r30_30 = r3
-	word32 r29_100 = 0
-	word32 r28_102 = 0
+	word32 r29_101 = 0
+	word32 r28_104 = 0
 	branch Mem19[r27_22:word32] < r4_23 l00401418
 // DataOut:
 // DataOut (flags):
@@ -1336,29 +1336,29 @@ l004013E8:
 // SymbolicIn:
 
 l004013F4:
-	word32 r3_70
-	r2 = fn004011FC(r2, r31_25, r29_100, r30_30, out r3_70, out r27_22, out r28_102, out r29_100, out r30_30, out r31_25)
-	branch r3_70 != -1 l00401408
+	word32 r3_72
+	r2 = fn004011FC(r2, r31_25, r29_101, r30_30, out r3_72, out r27_22, out r28_104, out r29_101, out r30_30, out r31_25)
+	branch r3_72 != -1 l00401408
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401404:
-	r28_102 = -1
+	r28_104 = -1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004013C8:
-	word32 r3_86
-	r2 = fn004011FC(r2, r31_25, r29_100, r30_30, out r3_86, out r27_22, out r28_102, out r29_100, out r30_30, out r31_25)
-	branch r3_86 == -1 l00401408
+	word32 r3_88
+	r2 = fn004011FC(r2, r31_25, r29_101, r30_30, out r3_88, out r27_22, out r28_104, out r29_101, out r30_30, out r31_25)
+	branch r3_88 == -1 l00401408
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004013D8:
-	r29_100 = r29_100 + 1
+	r29_101 = r29_101 + 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1371,20 +1371,20 @@ l00401408:
 // SymbolicIn:
 
 l00401418:
-	word32 r3_101 = r29_100
+	word32 r3_103 = r29_101
 	branch r30_30 == 1 l00401428
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401424:
-	r3_101 = r28_102
+	r3_103 = r28_104
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401428:
-	r3Out = r3_101
+	r3Out = r3_103
 	r29Out = dwLoc10
 	r30Out = dwLoc0C
 	return r2
@@ -5721,7 +5721,7 @@ fn00403F10_entry:
 l00403F10:
 	word32 r0_5 = Mem0[r12:word32]
 	call r0_5 (retsize: 0;)
-		uses: ctr:r0_5,r0:r0_5,r12:r12,r2:Mem7[r12 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_5,r0:r0_5,r1:fp,r12:r12,r2:Mem7[r12 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5750,7 +5750,7 @@ l00403F24:
 	word32 r12_5 = Mem0[r2 + 336:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5779,7 +5779,7 @@ l00403F3C:
 	word32 r12_5 = Mem0[r2 + 284:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5808,7 +5808,7 @@ l00403F54:
 	word32 r12_5 = Mem0[r2 + 332:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5837,7 +5837,7 @@ l00403F6C:
 	word32 r12_5 = Mem0[r2 + 328:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5866,7 +5866,7 @@ l00403F84:
 	word32 r12_5 = Mem0[r2 + 260:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5895,7 +5895,7 @@ l00403F9C:
 	word32 r12_5 = Mem0[r2 + 296:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5924,7 +5924,7 @@ l00403FB4:
 	word32 r12_5 = Mem0[r2 + 324:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5953,7 +5953,7 @@ l00403FCC:
 	word32 r12_5 = Mem0[r2 + 320:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -5982,7 +5982,7 @@ l00403FE4:
 	word32 r12_5 = Mem0[r2 + 316:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6011,7 +6011,7 @@ l00403FFC:
 	word32 r12_5 = Mem0[r2 + 312:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6040,7 +6040,7 @@ l00404014:
 	word32 r12_5 = Mem0[r2 + 308:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6069,7 +6069,7 @@ l0040402C:
 	word32 r12_5 = Mem0[r2 + 304:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6098,7 +6098,7 @@ l00404044:
 	word32 r12_5 = Mem0[r2 + 300:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6127,7 +6127,7 @@ l0040405C:
 	word32 r12_5 = Mem0[r2 + 292:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6156,7 +6156,7 @@ l00404074:
 	word32 r12_5 = Mem0[r2 + 288:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6185,7 +6185,7 @@ l0040408C:
 	word32 r12_5 = Mem0[r2 + 276:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6214,7 +6214,7 @@ l004040A4:
 	word32 r12_5 = Mem0[r2 + 264:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6243,7 +6243,7 @@ l004040BC:
 	word32 r12_5 = Mem0[r2 + 256:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6272,7 +6272,7 @@ l004040D4:
 	word32 r12_5 = Mem0[r2 + 272:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6301,7 +6301,7 @@ l004040EC:
 	word32 r12_5 = Mem0[r2 + 268:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6330,7 +6330,7 @@ l00404104:
 	word32 r12_5 = Mem0[r2 + 252:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6359,7 +6359,7 @@ l0040411C:
 	word32 r12_5 = Mem0[r2 + 280:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):
@@ -6388,7 +6388,7 @@ l00404134:
 	word32 r12_5 = Mem0[r2 + 248:word32]
 	word32 r0_6 = Mem0[r12_5:word32]
 	call r0_6 (retsize: 0;)
-		uses: ctr:r0_6,r0:r0_6,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
+		uses: ctr:r0_6,r0:r0_6,r1:fp,r12:r12_5,r2:Mem7[r12_5 + 4:word32],Stack +0014:r2
 	return
 // DataOut:
 // DataOut (flags):

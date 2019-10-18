@@ -2097,7 +2097,7 @@ l000000000001522C:
 	word64 t1_1601
 	word64 t3_1602
 	call a5_1573 (retsize: 0;)
-		uses: a0:a0_60,a1:a1,a4:0x00000000000102A0,a5:a5_1573,a6:a6_1599,a7:a7_1600,gp:gp,ra:ra,s0:s0_42,s1:0x00000000000108E0,s10:s10_45,s11:s11,s2:a1,s3:a0,s4:0x0000000000012000,s5:s5,s6:s6_43,s7:s7_49,s8:0x0000000000001000,s9:s9_44,t1:t1_1601,t3:t3_1602
+		uses: a0:a0_60,a1:a1,a4:0x00000000000102A0,a5:a5_1573,a6:a6_1599,a7:a7_1600,gp:gp,ra:ra,s0:s0_42,s1:0x00000000000108E0,s10:s10_45,s11:s11,s2:a1,s3:a0,s4:0x0000000000012000,s5:s5,s6:s6_43,s7:s7_49,s8:0x0000000000001000,s9:s9_44,sp:sp_62,t1:t1_1601,t3:t3_1602
 		defs: a6:a6_1599,a7:a7_1600,t1:t1_1601,t3:t3_1602
 	return
 // DataOut:
@@ -2171,7 +2171,7 @@ l0000000000015F18:
 	word64 t1_16
 	word64 ra_17
 	call 0x0000000000000000 (retsize: 0;)
-		uses: a0:0x00000000000102A0,ra:ra_17,t1:t1_16
+		uses: a0:0x00000000000102A0,ra:ra_17,sp:fp,t1:t1_16
 		defs: ra:ra_17,t1:t1_16
 	return
 // DataOut:
@@ -2218,7 +2218,7 @@ l0000000000015F60:
 l0000000000015F58:
 	word64 t1_19
 	call 0x0000000000000000 (retsize: 0;)
-		uses: a0:0x00000000000102A0,t1:t1_19
+		uses: a0:0x00000000000102A0,sp:fp,t1:t1_19
 		defs: t1:t1_19
 	return
 // DataOut:
@@ -4836,6 +4836,7 @@ l0000000000017BB0:
 	word64 a4_43
 	word64 a0_41 = fn00000000000182B4(a0, out a3_42, out a4_43)
 	word64 a5_45 = Mem21[gp + -1944:word64]
+	word64 sp_47
 	word64 s0_48
 	word64 s1_49
 	word64 s2_50
@@ -4850,39 +4851,41 @@ l0000000000017BB0:
 	word64 a4_61
 	word64 gp_63
 	call a5_45 (retsize: 0;)
-		uses: a0:a0_41,a1:a1_34,a2:a2_35,a3:a3_42,a4:a4_43,a5:a5_45,fa3:fa3_92,fa4:fa4_89,fa5:fa5_90,gp:gp,ra:ra,s0:a0,s1:a3,s2:a2,s3:a1,s4:a4,s5:s5,s6:s6,s7:a0_41,t1:t1_91
-		defs: a2:a2_59,a3:a3_60,a4:a4_61,gp:gp_63,ra:ra_53,s0:s0_48,s1:s1_49,s2:s2_50,s3:s3_51,s4:s4_52,s5:s5_54,s6:s6_55,s7:s7_56
+		uses: a0:a0_41,a1:a1_34,a2:a2_35,a3:a3_42,a4:a4_43,a5:a5_45,fa3:fa3_92,fa4:fa4_89,fa5:fa5_90,gp:gp,ra:ra,s0:a0,s1:a3,s2:a2,s3:a1,s4:a4,s5:s5,s6:s6,s7:a0_41,sp:fp + -80,t1:t1_91
+		defs: a2:a2_59,a3:a3_60,a4:a4_61,gp:gp_63,ra:ra_53,s0:s0_48,s1:s1_49,s2:s2_50,s3:s3_51,s4:s4_52,s5:s5_54,s6:s6_55,s7:s7_56,sp:sp_47
 	word64 a5_69 = Mem21[gp_63 + -1952:word64]
 	word64 a0_82
 	word64 fa4_89
 	word64 fa5_90
 	word64 t1_91
 	word64 fa3_92
-	word64 gp_226
-	word64 s1_212
-	word64 s2_213
-	word64 s3_214
-	word64 s4_215
-	word64 ra_216
-	word64 s5_217
-	word64 s6_218
-	word64 s7_219
-	word64 a2_222
-	word64 a3_223
-	word64 a4_224
+	word64 gp_228
+	word64 s1_214
+	word64 s2_215
+	word64 s3_216
+	word64 s4_217
+	word64 ra_218
+	word64 s5_219
+	word64 s6_220
+	word64 s7_221
+	word64 a2_224
+	word64 a3_225
+	word64 a4_226
+	word64 sp_212
 	call a5_69 (retsize: 0;)
-		uses: a0:1,a1:16,a2:a2_59,a3:a3_60,a4:a4_61,a5:a5_69,fa3:fa3_92,fa4:fa4_89,fa5:fa5_90,gp:gp_63,ra:ra_53,s0:s0_48,s1:s1_49,s2:s2_50,s3:s3_51,s4:s4_52,s5:s5_54,s6:s6_55,s7:s7_56,t1:t1_91
-		defs: a0:a0_82,a2:a2_84,a3:a3_85,a4:a4_86,fa3:fa3_92,fa4:fa4_89,fa5:fa5_90,gp:gp_88,ra:ra_78,s1:s1_74,s2:s2_75,s3:s3_76,s4:s4_77,s5:s5_79,s6:s6_80,s7:s7_81,t1:t1_91
-	word64 s0_211 = a0_82
+		uses: a0:1,a1:16,a2:a2_59,a3:a3_60,a4:a4_61,a5:a5_69,fa3:fa3_92,fa4:fa4_89,fa5:fa5_90,gp:gp_63,ra:ra_53,s0:s0_48,s1:s1_49,s2:s2_50,s3:s3_51,s4:s4_52,s5:s5_54,s6:s6_55,s7:s7_56,sp:sp_47,t1:t1_91
+		defs: a0:a0_82,a2:a2_84,a3:a3_85,a4:a4_86,fa3:fa3_92,fa4:fa4_89,fa5:fa5_90,gp:gp_88,ra:ra_78,s1:s1_74,s2:s2_75,s3:s3_76,s4:s4_77,s5:s5_79,s6:s6_80,s7:s7_81,sp:sp_72,t1:t1_91
+	word64 s0_213 = a0_82
 	branch a0_82 == 0x0000000000000000 l0000000000017C3C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017BDC:
-	word64 a5_95 = Mem21[gp_226 + -1992:word64]
+	word64 a5_95 = Mem21[gp_228 + -1992:word64]
 	word64 a4_96 = 1
 	Mem98[a0_82 + 76:word32] = (word32) a4_96
+	word64 sp_100
 	word64 s0_101
 	word64 s1_102
 	word64 s2_103
@@ -4900,8 +4903,8 @@ l0000000000017BDC:
 	word64 t1_119
 	word64 fa3_120
 	call a5_95 (retsize: 0;)
-		uses: a0:a0_82,a1:s7_81 << 0x00000000 >>u 0x00000000,a2:a2_84,a3:a3_85,a4:a4_96,a5:a5_95,fa3:fa3_120,fa4:fa4_117,fa5:fa5_118,gp:gp_88,ra:ra_78,s0:a0_82,s1:s1_74,s2:s2_75,s3:s3_76,s4:s4_77,s5:s5_79,s6:s6_80,s7:s7_81,t1:t1_119
-		defs: a0:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,fa3:fa3_120,fa4:fa4_117,fa5:fa5_118,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_102,s2:s2_103,s3:s3_104,s4:s4_105,s5:s5_107,s7:s7_109,t1:t1_119
+		uses: a0:a0_82,a1:s7_81 << 0x00000000 >>u 0x00000000,a2:a2_84,a3:a3_85,a4:a4_96,a5:a5_95,fa3:fa3_120,fa4:fa4_117,fa5:fa5_118,gp:gp_88,ra:ra_78,s0:a0_82,s1:s1_74,s2:s2_75,s3:s3_76,s4:s4_77,s5:s5_79,s6:s6_80,s7:s7_81,sp:sp_72,t1:t1_119
+		defs: a0:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,fa3:fa3_120,fa4:fa4_117,fa5:fa5_118,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_102,s2:s2_103,s3:s3_104,s4:s4_105,s5:s5_107,s7:s7_109,sp:sp_100,t1:t1_119
 	branch a0_110 < 0x0000000000000000 l0000000000017B84
 // DataOut:
 // DataOut (flags):
@@ -4928,9 +4931,10 @@ l0000000000017BFC:
 	word64 fa5_144
 	word64 t1_145
 	word64 fa3_146
+	word64 sp_126
 	call a5_123 (retsize: 0;)
-		uses: a0:s0_101,a1:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,a5:a5_123,fa3:fa3_146,fa4:fa4_143,fa5:fa5_144,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_102,s2:s2_103,s3:s3_104,s4:s4_105,s5:s5_107,s6:a0_110,s7:s7_109,t1:t1_145
-		defs: a0:a0_136,a1:a1_137,a2:a2_138,a3:a3_139,a4:a4_140,fa3:fa3_146,fa4:fa4_143,fa5:fa5_144,gp:gp_142,ra:ra_132,s0:s0_127,s1:s1_128,s2:s2_129,s3:s3_130,s4:s4_131,s5:s5_133,s6:s6_134,s7:s7_135,t1:t1_145
+		uses: a0:s0_101,a1:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,a5:a5_123,fa3:fa3_146,fa4:fa4_143,fa5:fa5_144,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_102,s2:s2_103,s3:s3_104,s4:s4_105,s5:s5_107,s6:a0_110,s7:s7_109,sp:sp_100,t1:t1_145
+		defs: a0:a0_136,a1:a1_137,a2:a2_138,a3:a3_139,a4:a4_140,fa3:fa3_146,fa4:fa4_143,fa5:fa5_144,gp:gp_142,ra:ra_132,s0:s0_127,s1:s1_128,s2:s2_129,s3:s3_130,s4:s4_131,s5:s5_133,s6:s6_134,s7:s7_135,sp:sp_126,t1:t1_145
 	branch a0_136 == 0x0000000000000000 l0000000000017C18
 // DataOut:
 // DataOut (flags):
@@ -4938,96 +4942,100 @@ l0000000000017BFC:
 
 l0000000000017C10:
 	Mem150[s3_130:word64] = __strdup(a0_136)
+	sp_126 = sp_126 + 0xFFFFFFFFFFFFFFF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017C18:
 	word64 a5_153 = Mem152[gp_142 + -1968:word64]
-	word64 s0_169
-	word64 s1_170
-	word64 s2_171
-	word64 s3_172
-	word64 s4_173
-	word64 ra_174
-	word64 s5_175
-	word64 s6_176
-	word64 s7_177
-	word64 a0_178
-	word64 a1_179
-	word64 a2_180
-	word64 a3_181
-	word64 a4_182
-	word64 gp_184
-	word64 fa4_185
-	word64 fa5_186
-	word64 t1_187
-	word64 fa3_188
+	word64 s0_170
+	word64 s1_171
+	word64 s2_172
+	word64 s3_173
+	word64 s4_174
+	word64 ra_175
+	word64 s5_176
+	word64 s6_177
+	word64 s7_178
+	word64 a0_179
+	word64 a1_180
+	word64 a2_181
+	word64 a3_182
+	word64 a4_183
+	word64 gp_185
+	word64 fa4_186
+	word64 fa5_187
+	word64 t1_188
+	word64 fa3_189
+	word64 sp_169
 	call a5_153 (retsize: 0;)
-		uses: a0:s6_134,a1:a1_137,a2:a2_138,a3:a3_139,a4:a4_140,a5:a5_153,fa3:fa3_188,fa4:fa4_185,fa5:fa5_186,gp:gp_142,ra:ra_132,s0:s0_127,s1:s1_128,s2:s2_129,s3:s3_130,s4:s4_131,s5:s5_133,s6:s6_134,s7:s7_135,t1:t1_187
-		defs: a0:a0_178,a1:a1_179,a2:a2_180,a3:a3_181,a4:a4_182,fa3:fa3_188,fa4:fa4_185,fa5:fa5_186,gp:gp_184,ra:ra_174,s0:s0_169,s1:s1_170,s2:s2_171,s3:s3_172,s4:s4_173,s5:s5_175,s6:s6_176,s7:s7_177,t1:t1_187
-	branch a0_178 == 0x0000000000000000 l0000000000017C30
+		uses: a0:s6_134,a1:a1_137,a2:a2_138,a3:a3_139,a4:a4_140,a5:a5_153,fa3:fa3_189,fa4:fa4_186,fa5:fa5_187,gp:gp_142,ra:ra_132,s0:s0_127,s1:s1_128,s2:s2_129,s3:s3_130,s4:s4_131,s5:s5_133,s6:s6_134,s7:s7_135,sp:sp_168,t1:t1_188
+		defs: a0:a0_179,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,fa3:fa3_189,fa4:fa4_186,fa5:fa5_187,gp:gp_185,ra:ra_175,s0:s0_170,s1:s1_171,s2:s2_172,s3:s3_173,s4:s4_174,s5:s5_176,s6:s6_177,s7:s7_178,sp:sp_169,t1:t1_188
+	branch a0_179 == 0x0000000000000000 l0000000000017C30
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017C28:
-	Mem192[s2_171:word64] = __strdup(a0_178)
+	Mem193[s2_172:word64] = __strdup(a0_179)
+	sp_169 = sp_169 + 0xFFFFFFFFFFFFFFF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017C30:
-	word64 a5_195 = Mem194[gp_184 + -1976:word64]
-	word64 fa4_227
-	word64 fa5_228
-	word64 t1_229
-	word64 fa3_230
-	call a5_195 (retsize: 0;)
-		uses: a0:s0_169,a1:a1_179,a2:a2_180,a3:a3_181,a4:a4_182,a5:a5_195,fa3:fa3_230,fa4:fa4_227,fa5:fa5_228,gp:gp_184,ra:ra_174,s0:s0_169,s1:s1_170,s2:s2_171,s3:s3_172,s4:s4_173,s5:s5_175,s6:s6_176,s7:s7_177,t1:t1_229
-		defs: a2:a2_222,a3:a3_223,a4:a4_224,fa3:fa3_230,fa4:fa4_227,fa5:fa5_228,gp:gp_226,ra:ra_216,s0:s0_211,s1:s1_212,s2:s2_213,s3:s3_214,s4:s4_215,s5:s5_217,s6:s6_218,s7:s7_219,t1:t1_229
+	word64 a5_196 = Mem195[gp_185 + -1976:word64]
+	word64 fa4_229
+	word64 fa5_230
+	word64 t1_231
+	word64 fa3_232
+	call a5_196 (retsize: 0;)
+		uses: a0:s0_170,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,a5:a5_196,fa3:fa3_232,fa4:fa4_229,fa5:fa5_230,gp:gp_185,ra:ra_175,s0:s0_170,s1:s1_171,s2:s2_172,s3:s3_173,s4:s4_174,s5:s5_176,s6:s6_177,s7:s7_178,sp:sp_211,t1:t1_231
+		defs: a2:a2_224,a3:a3_225,a4:a4_226,fa3:fa3_232,fa4:fa4_229,fa5:fa5_230,gp:gp_228,ra:ra_218,s0:s0_213,s1:s1_214,s2:s2_215,s3:s3_216,s4:s4_217,s5:s5_219,s6:s6_220,s7:s7_221,sp:sp_212,t1:t1_231
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017C3C:
-	word64 a5_234 = Mem233[gp_226 + -1952:word64]
-	word64 a4_263
-	word64 fa4_266
-	word64 fa5_267
-	word64 t1_268
-	word64 fa3_269
-	word64 s7_258
-	word64 s1_251
-	word64 s2_252
-	word64 s3_253
-	word64 s4_254
-	word64 ra_255
-	word64 s5_256
-	word64 s6_257
-	word64 a0_259
-	word64 a2_261
-	word64 a3_262
-	call a5_234 (retsize: 0;)
-		uses: a0:2,a1:16,a2:a2_246,a3:a3_247,a4:a4_248,a5:a5_234,fa3:fa3_269,fa4:fa4_266,fa5:fa5_267,gp:gp_232,ra:ra_242,s0:s0_237,s1:s1_238,s2:s2_239,s3:s3_240,s4:s4_241,s5:s5_243,s6:s6_244,s7:s7_245,t1:t1_268
-		defs: a0:a0_259,a2:a2_261,a3:a3_262,a4:a4_263,fa3:fa3_269,fa4:fa4_266,fa5:fa5_267,gp:gp_265,ra:ra_255,s1:s1_251,s2:s2_252,s3:s3_253,s4:s4_254,s5:s5_256,s6:s6_257,s7:s7_258,t1:t1_268
-	word64 s0_271 = a0_259
-	branch a0_259 == 0x0000000000000000 l0000000000017CF4
+	word64 a5_236 = Mem235[gp_228 + -1952:word64]
+	word64 a4_266
+	word64 fa4_269
+	word64 fa5_270
+	word64 t1_271
+	word64 fa3_272
+	word64 s7_261
+	word64 s1_254
+	word64 s2_255
+	word64 s3_256
+	word64 s4_257
+	word64 ra_258
+	word64 s5_259
+	word64 s6_260
+	word64 a0_262
+	word64 a2_264
+	word64 a3_265
+	word64 sp_252
+	call a5_236 (retsize: 0;)
+		uses: a0:2,a1:16,a2:a2_248,a3:a3_249,a4:a4_250,a5:a5_236,fa3:fa3_272,fa4:fa4_269,fa5:fa5_270,gp:gp_234,ra:ra_244,s0:s0_239,s1:s1_240,s2:s2_241,s3:s3_242,s4:s4_243,s5:s5_245,s6:s6_246,s7:s7_247,sp:sp_251,t1:t1_271
+		defs: a0:a0_262,a2:a2_264,a3:a3_265,a4:a4_266,fa3:fa3_272,fa4:fa4_269,fa5:fa5_270,gp:gp_268,ra:ra_258,s1:s1_254,s2:s2_255,s3:s3_256,s4:s4_257,s5:s5_259,s6:s6_260,s7:s7_261,sp:sp_252,t1:t1_271
+	word64 s0_274 = a0_262
+	branch a0_262 == 0x0000000000000000 l0000000000017CF4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017CF4:
-	word64 a5_272 = Mem233[gp + -1952:word64]
-	word64 fa4_292
-	word64 fa5_293
-	word64 t1_294
-	word64 fa3_295
-	call a5_272 (retsize: 0;)
-		uses: a0:6,a1:16,a2:a2_261,a3:a3_262,a4:a4_263,a5:a5_272,fa3:fa3_295,fa4:fa4_292,fa5:fa5_293,gp:gp_265,ra:ra_255,s0:a0_259,s1:s1_251,s2:s2_252,s3:s3_253,s4:s4_254,s5:s5_256,s6:s6_257,s7:s7_258,t1:t1_294
-		defs: a0:a0_285,a2:a2_287,a3:a3_288,fa3:fa3_295,fa4:fa4_292,fa5:fa5_293,gp:gp_291,ra:ra_281,s1:s1_277,s2:s2_278,s3:s3_279,s4:s4_280,s5:s5_282,s6:s6_283,s7:s7_284,t1:t1_294
-	s0_271 = a0_259
-	branch a0_259 != 0x0000000000000000 l0000000000017C54
+	word64 a5_275 = Mem235[gp + -1952:word64]
+	word64 fa4_295
+	word64 fa5_296
+	word64 t1_297
+	word64 fa3_298
+	call a5_275 (retsize: 0;)
+		uses: a0:6,a1:16,a2:a2_264,a3:a3_265,a4:a4_266,a5:a5_275,fa3:fa3_298,fa4:fa4_295,fa5:fa5_296,gp:gp_268,ra:ra_258,s0:a0_262,s1:s1_254,s2:s2_255,s3:s3_256,s4:s4_257,s5:s5_259,s6:s6_260,s7:s7_261,sp:sp_252,t1:t1_297
+		defs: a0:a0_288,a2:a2_290,a3:a3_291,fa3:fa3_298,fa4:fa4_295,fa5:fa5_296,gp:gp_294,ra:ra_284,s1:s1_280,s2:s2_281,s3:s3_282,s4:s4_283,s5:s5_285,s6:s6_286,s7:s7_287,sp:sp_278,t1:t1_297
+	s0_274 = a0_262
+	branch a0_262 != 0x0000000000000000 l0000000000017C54
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5038,72 +5046,72 @@ l0000000000017D0C:
 // SymbolicIn:
 
 l0000000000017C54:
-	word64 a5_300 = Mem233[gp + -1984:word64]
-	word64 a4_301 = 1
-	Mem305[s0_271 + 76:word32] = (word32) a4_301
-	word64 s0_318
-	word64 s1_319
-	word64 s4_322
-	word64 a0_327
-	word64 a3_330
-	word64 a4_331
-	word64 gp_333
-	word64 fa4_334
-	word64 fa5_335
-	word64 t1_336
-	word64 fa3_337
-	word64 sp_317
-	word64 a1_328
-	word64 a2_329
-	call a5_300 (retsize: 0;)
-		uses: a0:a0_314,a1:s7_302 << 0x00000000 >>u 0x00000000,a2:a2_315,a3:a3_316,a4:a4_301,a5:a5_300,fa3:fa3_337,fa4:fa4_334,fa5:fa5_335,gp:gp_298,ra:ra_311,s0:s0_304,s1:s1_307,s2:s2_308,s3:s3_309,s4:s4_310,s5:s5_312,s6:s6_313,s7:s7_302,t1:t1_336
-		defs: a0:a0_327,a1:a1_328,a2:a2_329,a3:a3_330,a4:a4_331,fa3:fa3_337,fa4:fa4_334,fa5:fa5_335,gp:gp_333,s0:s0_318,s1:s1_319,s4:s4_322,sp:sp_317,t1:t1_336
-	branch a0_327 == 0x0000000000000000 l0000000000017C94
+	word64 a5_303 = Mem235[gp + -1984:word64]
+	word64 a4_304 = 1
+	Mem308[s0_274 + 76:word32] = (word32) a4_304
+	word64 s0_322
+	word64 s1_323
+	word64 s4_326
+	word64 a0_331
+	word64 a3_334
+	word64 a4_335
+	word64 gp_337
+	word64 fa4_338
+	word64 fa5_339
+	word64 t1_340
+	word64 fa3_341
+	word64 sp_321
+	word64 a1_332
+	word64 a2_333
+	call a5_303 (retsize: 0;)
+		uses: a0:a0_317,a1:s7_305 << 0x00000000 >>u 0x00000000,a2:a2_318,a3:a3_319,a4:a4_304,a5:a5_303,fa3:fa3_341,fa4:fa4_338,fa5:fa5_339,gp:gp_301,ra:ra_314,s0:s0_307,s1:s1_310,s2:s2_311,s3:s3_312,s4:s4_313,s5:s5_315,s6:s6_316,s7:s7_305,sp:sp_320,t1:t1_340
+		defs: a0:a0_331,a1:a1_332,a2:a2_333,a3:a3_334,a4:a4_335,fa3:fa3_341,fa4:fa4_338,fa5:fa5_339,gp:gp_337,s0:s0_322,s1:s1_323,s4:s4_326,sp:sp_321,t1:t1_340
+	branch a0_331 == 0x0000000000000000 l0000000000017C94
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017C74:
-	word64 a0_340 = Mem305[a0_327 + 32:word64]
-	branch a0_340 == 0x0000000000000000 l0000000000017C84
+	word64 a0_344 = Mem308[a0_331 + 32:word64]
+	branch a0_344 == 0x0000000000000000 l0000000000017C84
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017C7C:
-	Mem343[s1_319:word64] = __strdup(a0_340)
-	sp_317 = sp_317 + 0xFFFFFFFFFFFFFFF8
+	Mem347[s1_323:word64] = __strdup(a0_344)
+	sp_321 = sp_321 + 0xFFFFFFFFFFFFFFF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017C84:
-	branch (word64) ((real32) Mem345[a0_327 + 52:real32] == (real32) 0x0000000000000000) == 0x0000000000000000 l0000000000017CC8
+	branch (word64) ((real32) Mem349[a0_331 + 52:real32] == (real32) 0x0000000000000000) == 0x0000000000000000 l0000000000017CC8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017CC8:
-	a1_328 = 1
-	__asprintf_chk(s4_322, a1_328, 0x0000000000012B80, 0x00000000)
-	a2_329 = 0x0000000000012B80
-	sp_317 = sp_317 + 0xFFFFFFFFFFFFFFF8
+	a1_332 = 1
+	__asprintf_chk(s4_326, a1_332, 0x0000000000012B80, 0x00000000)
+	a2_333 = 0x0000000000012B80
+	sp_321 = sp_321 + 0xFFFFFFFFFFFFFFF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017C94:
-	word64 t1_378 = Mem366[gp_333 + -1976:word64]
-	word64 s6_395
-	word64 gp_403
-	word64 fa4_404
-	word64 fa5_405
-	word64 fa3_407
-	call t1_378 (retsize: 0;)
-		uses: a0:s0_318,a1:a1_380,a2:a2_382,a3:a3_330,a4:a4_331,fa3:fa3_407,fa4:fa4_404,fa5:fa5_405,gp:gp_333,ra:Mem366[sp_365 + 72:word64],s0:Mem366[sp_365 + 64:word64],s1:Mem366[sp_365 + 56:word64],s2:Mem366[sp_365 + 48:word64],s3:Mem366[sp_365 + 40:word64],s4:Mem366[sp_365 + 32:word64],s5:Mem366[sp_365 + 24:word64],s6:Mem366[sp_365 + 16:word64],s7:Mem366[sp_365 + 8:word64],sp:sp_365 + 80,t1:t1_378
-		defs: fa3:fa3_407,fa4:fa4_404,fa5:fa5_405,gp:gp_403,s6:s6_395
-	s6Out = s6_395
-	return gp_403
+	word64 t1_382 = Mem370[gp_337 + -1976:word64]
+	word64 s6_399
+	word64 gp_407
+	word64 fa4_408
+	word64 fa5_409
+	word64 fa3_411
+	call t1_382 (retsize: 0;)
+		uses: a0:s0_322,a1:a1_384,a2:a2_386,a3:a3_334,a4:a4_335,fa3:fa3_411,fa4:fa4_408,fa5:fa5_409,gp:gp_337,ra:Mem370[sp_369 + 72:word64],s0:Mem370[sp_369 + 64:word64],s1:Mem370[sp_369 + 56:word64],s2:Mem370[sp_369 + 48:word64],s3:Mem370[sp_369 + 40:word64],s4:Mem370[sp_369 + 32:word64],s5:Mem370[sp_369 + 24:word64],s6:Mem370[sp_369 + 16:word64],s7:Mem370[sp_369 + 8:word64],sp:sp_369 + 80,t1:t1_382
+		defs: fa3:fa3_411,fa4:fa4_408,fa5:fa5_409,gp:gp_407,s6:s6_399
+	s6Out = s6_399
+	return gp_407
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5148,6 +5156,7 @@ l0000000000017D10:
 
 l0000000000017D80:
 	word64 a5_40 = Mem21[gp + -1944:word64]
+	word64 sp_41
 	word64 s0_42
 	word64 s2_43
 	word64 s3_44
@@ -5162,43 +5171,45 @@ l0000000000017D80:
 	word64 a4_55
 	word64 gp_57
 	call a5_40 (retsize: 0;)
-		uses: a0:a0_33,a1:a1_34,a2:a2_35,a3:a3_36,a4:a4_37,a5:a5_40,fa3:fa3_87,fa4:fa4_84,fa5:fa5_85,gp:gp,ra:ra,s0:a0,s1:s1,s2:a3,s3:a2,s4:a1,s5:a4,s6:s6,s7:s7,t1:t1_86
-		defs: a2:a2_53,a3:a3_54,a4:a4_55,gp:gp_57,ra:ra_47,s0:s0_42,s1:s1_48,s2:s2_43,s3:s3_44,s4:s4_45,s5:s5_46,s6:s6_49,s7:s7_50
+		uses: a0:a0_33,a1:a1_34,a2:a2_35,a3:a3_36,a4:a4_37,a5:a5_40,fa3:fa3_87,fa4:fa4_84,fa5:fa5_85,gp:gp,ra:ra,s0:a0,s1:s1,s2:a3,s3:a2,s4:a1,s5:a4,s6:s6,s7:s7,sp:fp + -80,t1:t1_86
+		defs: a2:a2_53,a3:a3_54,a4:a4_55,gp:gp_57,ra:ra_47,s0:s0_42,s1:s1_48,s2:s2_43,s3:s3_44,s4:s4_45,s5:s5_46,s6:s6_49,s7:s7_50,sp:sp_41
 	word64 a5_63 = Mem21[gp_57 + -1952:word64]
 	word64 a0_76
 	word64 fa4_84
 	word64 fa5_85
 	word64 t1_86
 	word64 fa3_87
-	word64 gp_226
-	word64 s0_211
-	word64 s2_212
-	word64 s3_213
-	word64 s4_214
-	word64 s5_215
-	word64 ra_216
-	word64 s6_218
-	word64 s7_219
-	word64 a2_222
-	word64 a3_223
-	word64 a4_224
+	word64 gp_228
+	word64 s0_213
+	word64 s2_214
+	word64 s3_215
+	word64 s4_216
+	word64 s5_217
+	word64 ra_218
+	word64 s6_220
+	word64 s7_221
+	word64 a2_224
+	word64 a3_225
+	word64 a4_226
+	word64 sp_212
 	call a5_63 (retsize: 0;)
-		uses: a0:12,a1:16,a2:a2_53,a3:a3_54,a4:a4_55,a5:a5_63,fa3:fa3_87,fa4:fa4_84,fa5:fa5_85,gp:gp_57,ra:ra_47,s0:s0_42,s1:s1_48,s2:s2_43,s3:s3_44,s4:s4_45,s5:s5_46,s6:s6_49,s7:s7_50,t1:t1_86
-		defs: a0:a0_76,a2:a2_78,a3:a3_79,a4:a4_80,fa3:fa3_87,fa4:fa4_84,fa5:fa5_85,gp:gp_82,ra:ra_72,s0:s0_67,s2:s2_68,s3:s3_69,s4:s4_70,s5:s5_71,s6:s6_74,s7:s7_75,t1:t1_86
-	word64 s1_217 = a0_76
+		uses: a0:12,a1:16,a2:a2_53,a3:a3_54,a4:a4_55,a5:a5_63,fa3:fa3_87,fa4:fa4_84,fa5:fa5_85,gp:gp_57,ra:ra_47,s0:s0_42,s1:s1_48,s2:s2_43,s3:s3_44,s4:s4_45,s5:s5_46,s6:s6_49,s7:s7_50,sp:sp_41,t1:t1_86
+		defs: a0:a0_76,a2:a2_78,a3:a3_79,a4:a4_80,fa3:fa3_87,fa4:fa4_84,fa5:fa5_85,gp:gp_82,ra:ra_72,s0:s0_67,s2:s2_68,s3:s3_69,s4:s4_70,s5:s5_71,s6:s6_74,s7:s7_75,sp:sp_66,t1:t1_86
+	word64 s1_219 = a0_76
 	branch a0_76 == 0x0000000000000000 l0000000000017E18
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017DA0:
-	word64 a4_89 = (int64) Mem21[s0_211 + 4:uint32]
-	word64 a5_90 = (int64) Mem21[s0_211 + 12:uint32]
-	word64 a1_91 = (int64) Mem21[s0_211:uint32]
-	word64 a2_92 = (int64) Mem21[s0_211 + 8:uint32]
-	word64 a3_93 = Mem21[gp_226 + -2000:word64]
+	word64 a4_89 = (int64) Mem21[s0_213 + 4:uint32]
+	word64 a5_90 = (int64) Mem21[s0_213 + 12:uint32]
+	word64 a1_91 = (int64) Mem21[s0_213:uint32]
+	word64 a2_92 = (int64) Mem21[s0_213 + 8:uint32]
+	word64 a3_93 = Mem21[gp_228 + -2000:word64]
 	word64 a6_96 = 1
 	Mem97[a0_76 + 76:word32] = (word32) a6_96
+	word64 sp_100
 	word64 s0_101
 	word64 s2_102
 	word64 s3_103
@@ -5216,8 +5227,8 @@ l0000000000017DA0:
 	word64 t1_120
 	word64 fa3_121
 	call a3_93 (retsize: 0;)
-		uses: a0:a0_76,a1:a4_89 << 0x00000000 | a1_91,a2:a5_90 << 0x00000000 | a2_92,a3:a3_93,a4:a4_89 << 0x00000000,a5:a5_90 << 0x00000000,a6:a6_96,fa3:fa3_121,fa4:fa4_118,fa5:fa5_119,gp:gp_82,ra:ra_72,s0:s0_67,s1:a0_76,s2:s2_68,s3:s3_69,s4:s4_70,s5:s5_71,s6:s6_74,s7:s7_75,t1:t1_120
-		defs: a0:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,fa3:fa3_121,fa4:fa4_118,fa5:fa5_119,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_107,s2:s2_102,s3:s3_103,s4:s4_104,s5:s5_105,s6:s6_108,t1:t1_120
+		uses: a0:a0_76,a1:a4_89 << 0x00000000 | a1_91,a2:a5_90 << 0x00000000 | a2_92,a3:a3_93,a4:a4_89 << 0x00000000,a5:a5_90 << 0x00000000,a6:a6_96,fa3:fa3_121,fa4:fa4_118,fa5:fa5_119,gp:gp_82,ra:ra_72,s0:s0_67,s1:a0_76,s2:s2_68,s3:s3_69,s4:s4_70,s5:s5_71,s6:s6_74,s7:s7_75,sp:sp_66,t1:t1_120
+		defs: a0:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,fa3:fa3_121,fa4:fa4_118,fa5:fa5_119,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_107,s2:s2_102,s3:s3_103,s4:s4_104,s5:s5_105,s6:s6_108,sp:sp_100,t1:t1_120
 	branch a0_110 < 0x0000000000000000 l0000000000017D54
 // DataOut:
 // DataOut (flags):
@@ -5244,9 +5255,10 @@ l0000000000017DD8:
 	word64 fa5_145
 	word64 t1_146
 	word64 fa3_147
+	word64 sp_126
 	call a5_123 (retsize: 0;)
-		uses: a0:s1_107,a1:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,a5:a5_123,fa3:fa3_147,fa4:fa4_144,fa5:fa5_145,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_107,s2:s2_102,s3:s3_103,s4:s4_104,s5:s5_105,s6:s6_108,s7:a0_110,t1:t1_146
-		defs: a0:a0_136,a1:a1_137,a2:a2_138,a3:a3_139,a4:a4_140,fa3:fa3_147,fa4:fa4_144,fa5:fa5_145,gp:gp_142,ra:ra_132,s0:s0_127,s1:s1_133,s2:s2_128,s3:s3_129,s4:s4_130,s5:s5_131,s6:s6_134,s7:s7_135,t1:t1_146
+		uses: a0:s1_107,a1:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,a5:a5_123,fa3:fa3_147,fa4:fa4_144,fa5:fa5_145,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_107,s2:s2_102,s3:s3_103,s4:s4_104,s5:s5_105,s6:s6_108,s7:a0_110,sp:sp_100,t1:t1_146
+		defs: a0:a0_136,a1:a1_137,a2:a2_138,a3:a3_139,a4:a4_140,fa3:fa3_147,fa4:fa4_144,fa5:fa5_145,gp:gp_142,ra:ra_132,s0:s0_127,s1:s1_133,s2:s2_128,s3:s3_129,s4:s4_130,s5:s5_131,s6:s6_134,s7:s7_135,sp:sp_126,t1:t1_146
 	branch a0_136 == 0x0000000000000000 l0000000000017DF4
 // DataOut:
 // DataOut (flags):
@@ -5254,96 +5266,100 @@ l0000000000017DD8:
 
 l0000000000017DEC:
 	Mem150[s4_130:word64] = __strdup(a0_136)
+	sp_126 = sp_126 + 0xFFFFFFFFFFFFFFF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017DF4:
 	word64 a5_153 = Mem152[gp_142 + -1968:word64]
-	word64 s0_169
-	word64 s2_170
-	word64 s3_171
-	word64 s4_172
-	word64 s5_173
-	word64 ra_174
-	word64 s1_175
-	word64 s6_176
-	word64 s7_177
-	word64 a0_178
-	word64 a1_179
-	word64 a2_180
-	word64 a3_181
-	word64 a4_182
-	word64 gp_184
-	word64 fa4_186
-	word64 fa5_187
-	word64 t1_188
-	word64 fa3_189
+	word64 s0_170
+	word64 s2_171
+	word64 s3_172
+	word64 s4_173
+	word64 s5_174
+	word64 ra_175
+	word64 s1_176
+	word64 s6_177
+	word64 s7_178
+	word64 a0_179
+	word64 a1_180
+	word64 a2_181
+	word64 a3_182
+	word64 a4_183
+	word64 gp_185
+	word64 fa4_187
+	word64 fa5_188
+	word64 t1_189
+	word64 fa3_190
+	word64 sp_169
 	call a5_153 (retsize: 0;)
-		uses: a0:s7_135,a1:a1_137,a2:a2_138,a3:a3_139,a4:a4_140,a5:a5_153,fa3:fa3_189,fa4:fa4_186,fa5:fa5_187,gp:gp_142,ra:ra_132,s0:s0_127,s1:s1_133,s2:s2_128,s3:s3_129,s4:s4_130,s5:s5_131,s6:s6_134,s7:s7_135,t1:t1_188
-		defs: a0:a0_178,a1:a1_179,a2:a2_180,a3:a3_181,a4:a4_182,fa3:fa3_189,fa4:fa4_186,fa5:fa5_187,gp:gp_184,ra:ra_174,s0:s0_169,s1:s1_175,s2:s2_170,s3:s3_171,s4:s4_172,s5:s5_173,s6:s6_176,s7:s7_177,t1:t1_188
-	branch a0_178 == 0x0000000000000000 l0000000000017E0C
+		uses: a0:s7_135,a1:a1_137,a2:a2_138,a3:a3_139,a4:a4_140,a5:a5_153,fa3:fa3_190,fa4:fa4_187,fa5:fa5_188,gp:gp_142,ra:ra_132,s0:s0_127,s1:s1_133,s2:s2_128,s3:s3_129,s4:s4_130,s5:s5_131,s6:s6_134,s7:s7_135,sp:sp_168,t1:t1_189
+		defs: a0:a0_179,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,fa3:fa3_190,fa4:fa4_187,fa5:fa5_188,gp:gp_185,ra:ra_175,s0:s0_170,s1:s1_176,s2:s2_171,s3:s3_172,s4:s4_173,s5:s5_174,s6:s6_177,s7:s7_178,sp:sp_169,t1:t1_189
+	branch a0_179 == 0x0000000000000000 l0000000000017E0C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017E04:
-	Mem192[s3_171:word64] = __strdup(a0_178)
+	Mem193[s3_172:word64] = __strdup(a0_179)
+	sp_169 = sp_169 + 0xFFFFFFFFFFFFFFF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017E0C:
-	word64 a5_195 = Mem194[gp_184 + -1976:word64]
-	word64 fa4_228
-	word64 fa5_229
-	word64 t1_230
-	word64 fa3_231
-	call a5_195 (retsize: 0;)
-		uses: a0:s1_175,a1:a1_179,a2:a2_180,a3:a3_181,a4:a4_182,a5:a5_195,fa3:fa3_231,fa4:fa4_228,fa5:fa5_229,gp:gp_184,ra:ra_174,s0:s0_169,s1:s1_175,s2:s2_170,s3:s3_171,s4:s4_172,s5:s5_173,s6:s6_176,s7:s7_177,t1:t1_230
-		defs: a2:a2_222,a3:a3_223,a4:a4_224,fa3:fa3_231,fa4:fa4_228,fa5:fa5_229,gp:gp_226,ra:ra_216,s0:s0_211,s1:s1_217,s2:s2_212,s3:s3_213,s4:s4_214,s5:s5_215,s6:s6_218,s7:s7_219,t1:t1_230
+	word64 a5_196 = Mem195[gp_185 + -1976:word64]
+	word64 fa4_230
+	word64 fa5_231
+	word64 t1_232
+	word64 fa3_233
+	call a5_196 (retsize: 0;)
+		uses: a0:s1_176,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,a5:a5_196,fa3:fa3_233,fa4:fa4_230,fa5:fa5_231,gp:gp_185,ra:ra_175,s0:s0_170,s1:s1_176,s2:s2_171,s3:s3_172,s4:s4_173,s5:s5_174,s6:s6_177,s7:s7_178,sp:sp_211,t1:t1_232
+		defs: a2:a2_224,a3:a3_225,a4:a4_226,fa3:fa3_233,fa4:fa4_230,fa5:fa5_231,gp:gp_228,ra:ra_218,s0:s0_213,s1:s1_219,s2:s2_214,s3:s3_215,s4:s4_216,s5:s5_217,s6:s6_220,s7:s7_221,sp:sp_212,t1:t1_232
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017E18:
-	word64 a5_234 = Mem233[gp_226 + -1952:word64]
-	word64 a2_261
-	word64 a3_262
-	word64 a4_263
-	word64 fa4_267
-	word64 fa5_268
-	word64 t1_269
-	word64 fa3_270
-	word64 s0_250
-	word64 s2_251
-	word64 s3_252
-	word64 s4_253
-	word64 s5_254
-	word64 ra_255
-	word64 s6_257
-	word64 s7_258
-	word64 a0_259
-	call a5_234 (retsize: 0;)
-		uses: a0:30,a1:16,a2:a2_246,a3:a3_247,a4:a4_248,a5:a5_234,fa3:fa3_270,fa4:fa4_267,fa5:fa5_268,gp:gp_232,ra:ra_242,s0:s0_237,s1:s1_243,s2:s2_238,s3:s3_239,s4:s4_240,s5:s5_241,s6:s6_244,s7:s7_245,t1:t1_269
-		defs: a0:a0_259,a2:a2_261,a3:a3_262,a4:a4_263,fa3:fa3_270,fa4:fa4_267,fa5:fa5_268,gp:gp_265,ra:ra_255,s0:s0_250,s2:s2_251,s3:s3_252,s4:s4_253,s5:s5_254,s6:s6_257,s7:s7_258,t1:t1_269
-	word64 s1_271 = a0_259
-	branch a0_259 == 0x0000000000000000 l0000000000017EE8
+	word64 a5_236 = Mem235[gp_228 + -1952:word64]
+	word64 a2_264
+	word64 a3_265
+	word64 a4_266
+	word64 fa4_270
+	word64 fa5_271
+	word64 t1_272
+	word64 fa3_273
+	word64 s0_253
+	word64 s2_254
+	word64 s3_255
+	word64 s4_256
+	word64 s5_257
+	word64 ra_258
+	word64 s6_260
+	word64 s7_261
+	word64 a0_262
+	word64 sp_252
+	call a5_236 (retsize: 0;)
+		uses: a0:30,a1:16,a2:a2_248,a3:a3_249,a4:a4_250,a5:a5_236,fa3:fa3_273,fa4:fa4_270,fa5:fa5_271,gp:gp_234,ra:ra_244,s0:s0_239,s1:s1_245,s2:s2_240,s3:s3_241,s4:s4_242,s5:s5_243,s6:s6_246,s7:s7_247,sp:sp_251,t1:t1_272
+		defs: a0:a0_262,a2:a2_264,a3:a3_265,a4:a4_266,fa3:fa3_273,fa4:fa4_270,fa5:fa5_271,gp:gp_268,ra:ra_258,s0:s0_253,s2:s2_254,s3:s3_255,s4:s4_256,s5:s5_257,s6:s6_260,s7:s7_261,sp:sp_252,t1:t1_272
+	word64 s1_274 = a0_262
+	branch a0_262 == 0x0000000000000000 l0000000000017EE8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017EE8:
-	word64 a5_272 = Mem233[gp + -1952:word64]
-	word64 fa4_293
-	word64 fa5_294
-	word64 t1_295
-	word64 fa3_296
-	call a5_272 (retsize: 0;)
-		uses: a0:31,a1:16,a2:a2_261,a3:a3_262,a4:a4_263,a5:a5_272,fa3:fa3_296,fa4:fa4_293,fa5:fa5_294,gp:gp_265,ra:ra_255,s0:s0_250,s1:a0_259,s2:s2_251,s3:s3_252,s4:s4_253,s5:s5_254,s6:s6_257,s7:s7_258,t1:t1_295
-		defs: a0:a0_285,fa3:fa3_296,fa4:fa4_293,fa5:fa5_294,gp:gp_291,ra:ra_281,s0:s0_276,s2:s2_277,s3:s3_278,s4:s4_279,s5:s5_280,s6:s6_283,s7:s7_284,t1:t1_295
-	s1_271 = a0_259
-	branch a0_259 != 0x0000000000000000 l0000000000017E30
+	word64 a5_275 = Mem235[gp + -1952:word64]
+	word64 fa4_296
+	word64 fa5_297
+	word64 t1_298
+	word64 fa3_299
+	call a5_275 (retsize: 0;)
+		uses: a0:31,a1:16,a2:a2_264,a3:a3_265,a4:a4_266,a5:a5_275,fa3:fa3_299,fa4:fa4_296,fa5:fa5_297,gp:gp_268,ra:ra_258,s0:s0_253,s1:a0_262,s2:s2_254,s3:s3_255,s4:s4_256,s5:s5_257,s6:s6_260,s7:s7_261,sp:sp_252,t1:t1_298
+		defs: a0:a0_288,fa3:fa3_299,fa4:fa4_296,fa5:fa5_297,gp:gp_294,ra:ra_284,s0:s0_279,s2:s2_280,s3:s3_281,s4:s4_282,s5:s5_283,s6:s6_286,s7:s7_287,sp:sp_278,t1:t1_298
+	s1_274 = a0_262
+	branch a0_262 != 0x0000000000000000 l0000000000017E30
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5354,80 +5370,80 @@ l0000000000017F00:
 // SymbolicIn:
 
 l0000000000017E30:
-	word64 a4_300 = (int64) Mem233[s0_250 + 4:uint32]
-	word64 a5_301 = (int64) Mem233[s0_250 + 12:uint32]
-	word64 a1_302 = (int64) Mem233[s0_250:uint32]
-	word64 a2_303 = (int64) Mem233[s0_250 + 8:uint32]
-	word64 a3_305 = Mem233[gp + -2008:word64]
-	word64 a6_308 = 1
-	Mem310[s1_271 + 76:word32] = (word32) a6_308
-	word64 s2_323
-	word64 s5_326
-	word64 s1_328
-	word64 a0_331
-	word64 a3_334
-	word64 a4_335
-	word64 gp_337
-	word64 fa4_339
-	word64 fa5_340
-	word64 t1_341
-	word64 fa3_342
-	word64 sp_321
-	word64 a1_332
-	word64 a2_333
-	call a3_305 (retsize: 0;)
-		uses: a0:a0_320,a1:a4_300 << 0x00000000 | a1_302,a2:a5_301 << 0x00000000 | a2_303,a3:a3_305,a4:a4_300 << 0x00000000,a5:a5_301 << 0x00000000,a6:a6_308,fa3:fa3_342,fa4:fa4_339,fa5:fa5_340,gp:gp_304,ra:ra_317,s0:s0_298,s1:s1_309,s2:s2_313,s3:s3_314,s4:s4_315,s5:s5_316,s6:s6_318,s7:s7_319,t1:t1_341
-		defs: a0:a0_331,a1:a1_332,a2:a2_333,a3:a3_334,a4:a4_335,fa3:fa3_342,fa4:fa4_339,fa5:fa5_340,gp:gp_337,s1:s1_328,s2:s2_323,s5:s5_326,sp:sp_321,t1:t1_341
-	branch a0_331 == 0x0000000000000000 l0000000000017E88
+	word64 a4_303 = (int64) Mem235[s0_253 + 4:uint32]
+	word64 a5_304 = (int64) Mem235[s0_253 + 12:uint32]
+	word64 a1_305 = (int64) Mem235[s0_253:uint32]
+	word64 a2_306 = (int64) Mem235[s0_253 + 8:uint32]
+	word64 a3_308 = Mem235[gp + -2008:word64]
+	word64 a6_311 = 1
+	Mem313[s1_274 + 76:word32] = (word32) a6_311
+	word64 s2_327
+	word64 s5_330
+	word64 s1_332
+	word64 a0_335
+	word64 a3_338
+	word64 a4_339
+	word64 gp_341
+	word64 fa4_343
+	word64 fa5_344
+	word64 t1_345
+	word64 fa3_346
+	word64 sp_325
+	word64 a1_336
+	word64 a2_337
+	call a3_308 (retsize: 0;)
+		uses: a0:a0_323,a1:a4_303 << 0x00000000 | a1_305,a2:a5_304 << 0x00000000 | a2_306,a3:a3_308,a4:a4_303 << 0x00000000,a5:a5_304 << 0x00000000,a6:a6_311,fa3:fa3_346,fa4:fa4_343,fa5:fa5_344,gp:gp_307,ra:ra_320,s0:s0_301,s1:s1_312,s2:s2_316,s3:s3_317,s4:s4_318,s5:s5_319,s6:s6_321,s7:s7_322,sp:sp_324,t1:t1_345
+		defs: a0:a0_335,a1:a1_336,a2:a2_337,a3:a3_338,a4:a4_339,fa3:fa3_346,fa4:fa4_343,fa5:fa5_344,gp:gp_341,s1:s1_332,s2:s2_327,s5:s5_330,sp:sp_325,t1:t1_345
+	branch a0_335 == 0x0000000000000000 l0000000000017E88
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017E68:
-	word64 a0_344 = Mem310[a0_331 + 32:word64]
-	branch a0_344 == 0x0000000000000000 l0000000000017E78
+	word64 a0_348 = Mem313[a0_335 + 32:word64]
+	branch a0_348 == 0x0000000000000000 l0000000000017E78
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017E70:
-	Mem347[s2_323:word64] = __strdup(a0_344)
-	sp_321 = sp_321 + 0xFFFFFFFFFFFFFFF8
+	Mem351[s2_327:word64] = __strdup(a0_348)
+	sp_325 = sp_325 + 0xFFFFFFFFFFFFFFF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017E78:
-	branch (word64) ((real32) Mem349[a0_331 + 52:real32] == (real32) 0x0000000000000000) == 0x0000000000000000 l0000000000017EBC
+	branch (word64) ((real32) Mem353[a0_335 + 52:real32] == (real32) 0x0000000000000000) == 0x0000000000000000 l0000000000017EBC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017EBC:
-	a1_332 = 1
-	__asprintf_chk(s5_326, a1_332, 0x0000000000012B80, 0x00000000)
-	a2_333 = 0x0000000000012B80
-	sp_321 = sp_321 + 0xFFFFFFFFFFFFFFF8
+	a1_336 = 1
+	__asprintf_chk(s5_330, a1_336, 0x0000000000012B80, 0x00000000)
+	a2_337 = 0x0000000000012B80
+	sp_325 = sp_325 + 0xFFFFFFFFFFFFFFF8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000017E88:
-	word64 t1_382 = Mem370[gp_337 + -1976:word64]
-	word64 s0_392
-	word64 s3_394
-	word64 s6_399
-	word64 gp_407
-	word64 fa4_409
-	word64 fa5_410
-	word64 fa3_412
-	call t1_382 (retsize: 0;)
-		uses: a0:s1_328,a1:a1_384,a2:a2_386,a3:a3_334,a4:a4_335,fa3:fa3_412,fa4:fa4_409,fa5:fa5_410,gp:gp_337,ra:Mem370[sp_369 + 72:word64],s0:Mem370[sp_369 + 64:word64],s1:Mem370[sp_369 + 56:word64],s2:Mem370[sp_369 + 48:word64],s3:Mem370[sp_369 + 40:word64],s4:Mem370[sp_369 + 32:word64],s5:Mem370[sp_369 + 24:word64],s6:Mem370[sp_369 + 16:word64],s7:Mem370[sp_369 + 8:word64],sp:sp_369 + 80,t1:t1_382
-		defs: fa3:fa3_412,fa4:fa4_409,fa5:fa5_410,gp:gp_407,s0:s0_392,s3:s3_394,s6:s6_399
-	s0Out = s0_392
-	s3Out = s3_394
-	s6Out = s6_399
-	return gp_407
+	word64 t1_386 = Mem374[gp_341 + -1976:word64]
+	word64 s0_396
+	word64 s3_398
+	word64 s6_403
+	word64 gp_411
+	word64 fa4_413
+	word64 fa5_414
+	word64 fa3_416
+	call t1_386 (retsize: 0;)
+		uses: a0:s1_332,a1:a1_388,a2:a2_390,a3:a3_338,a4:a4_339,fa3:fa3_416,fa4:fa4_413,fa5:fa5_414,gp:gp_341,ra:Mem374[sp_373 + 72:word64],s0:Mem374[sp_373 + 64:word64],s1:Mem374[sp_373 + 56:word64],s2:Mem374[sp_373 + 48:word64],s3:Mem374[sp_373 + 40:word64],s4:Mem374[sp_373 + 32:word64],s5:Mem374[sp_373 + 24:word64],s6:Mem374[sp_373 + 16:word64],s7:Mem374[sp_373 + 8:word64],sp:sp_373 + 80,t1:t1_386
+		defs: fa3:fa3_416,fa4:fa4_413,fa5:fa5_414,gp:gp_411,s0:s0_396,s3:s3_398,s6:s6_403
+	s0Out = s0_396
+	s3Out = s3_398
+	s6Out = s6_403
+	return gp_411
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5795,6 +5811,7 @@ fn00000000000182E8_entry:
 
 l00000000000182E8:
 	word64 s2_12 = 0x0000000000019E20 - 0x0000000000019E18
+	word64 sp_3 = fp + -64
 	word64 s0_31 = 0x0000000000019E18
 	word64 s2_23 = s2_12 >> 0x00000003
 	branch s2_12 >> 0x00000003 == 0x0000000000000000 l0000000000018354
@@ -5813,11 +5830,11 @@ l0000000000018324:
 
 l0000000000018334:
 	word64 a5_33 = Mem22[s0_31:word64]
-	word64 s0_45
+	word64 s0_46
 	call a5_33 (retsize: 0;)
-		uses: a0:s5_38,a1:s4_36,a2:s3_34,a5:a5_33,ra:ra_43,s0:s0_31,s1:s1_40 + 1,s2:s2_42,s3:s3_34,s4:s4_36,s5:s5_38
-		defs: ra:ra_47,s0:s0_45,s1:s1_48,s2:s2_46,s3:s3_49,s4:s4_50,s5:s5_51
-	s0_31 = s0_45 + 8
+		uses: a0:s5_38,a1:s4_36,a2:s3_34,a5:a5_33,ra:ra_43,s0:s0_31,s1:s1_40 + 1,s2:s2_42,s3:s3_34,s4:s4_36,s5:s5_38,sp:sp_44
+		defs: ra:ra_48,s0:s0_46,s1:s1_49,s2:s2_47,s3:s3_50,s4:s4_51,s5:s5_52,sp:sp_45
+	s0_31 = s0_46 + 8
 	branch s2_23 != s1_30 l0000000000018334
 // DataOut:
 // DataOut (flags):

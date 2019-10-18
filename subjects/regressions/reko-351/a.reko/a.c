@@ -36,6 +36,7 @@ void register_tm_clones()
 void __do_global_dtors_aux()
 {
 	ptr32 a6_n = fp - 0x04;
+	ptr32 a7_n = fp - 0x0C;
 	if (globals->b80002724 == 0x00)
 	{
 		uint32 d0_n = globals->dw80002726;
@@ -170,6 +171,7 @@ void __do_global_ctors_aux()
 {
 	<anonymous> * a0_n = globals->ptr8000270C;
 	ptr32 a6_n = fp - 0x04;
+	ptr32 a7_n = fp - 0x08;
 	ptr32 a2_n = 0x8000270C;
 	while (a0_n != (<anonymous> *) -0x01)
 	{

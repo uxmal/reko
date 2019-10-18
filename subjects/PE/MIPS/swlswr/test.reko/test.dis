@@ -161,11 +161,11 @@ l000111E4_ds_t:
 // SymbolicIn:
 
 l0001120C:
-	word32 r2_15
+	word32 r2_16
 	call COREDLL.dll!Ordinal_2696 (retsize: 0;)
-		uses: r2:r2_15,ra:ra
-		defs: r2:r2_15
-	word32 r8_24 = r2_15 >>u 0x10 ^ r2_15 + 0x0000FFFF
+		uses: r2:r2_16,ra:ra,sp:fp + -32
+		defs: r2:r2_16
+	word32 r8_24 = r2_16 >>u 0x10 ^ r2_16 + 0x0000FFFF
 	word32 dwLoc0C_50 = r8_24
 	branch r8_24 != 0x00000000 l0001120C_ds_t
 // DataOut:
@@ -558,7 +558,7 @@ l000114A0_ds_f:
 
 l000114B0:
 	call fn00000000 (retsize: 0;)
-		uses: r4:r4,r5:r5,r8:Mem11[dwArg00_34:word32],ra:ra
+		uses: r4:r4,r5:r5,r8:Mem11[dwArg00_34:word32],ra:ra,sp:fp + -24
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -639,7 +639,7 @@ l000115A0:
 	word32 r2_30
 	word32 r5_31
 	call msize (retsize: 0;)
-		uses: r4:r8_10,r5:r5_31,ra:ra
+		uses: r4:r8_10,r5:r5_31,ra:ra,sp:fp + -56
 		defs: r2:r2_30,r5:r5_31
 	dwLoc20_115 = r2_30
 // DataOut:

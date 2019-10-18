@@ -1956,7 +1956,7 @@ l0C8F:
 
 l0105:
 	call fn1729 (retsize: 2;)
-		uses: f:f_190
+		uses: f:f_190,sp:sp_136
 	return
 // DataOut:
 // DataOut (flags):
@@ -1969,7 +1969,7 @@ l0C84:
 
 l0224:
 	call fn177D (retsize: 2;)
-		uses: f:f_190
+		uses: f:f_190,sp:sp_136
 	return
 // DataOut:
 // DataOut (flags):
@@ -1982,7 +1982,7 @@ l0C79:
 
 l020A:
 	call fn172D (retsize: 2;)
-		uses: f:f_190
+		uses: f:f_190,sp:sp_136
 	return
 // DataOut:
 // DataOut (flags):

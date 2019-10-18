@@ -87,6 +87,7 @@ __do_global_dtors_aux_entry:
 
 l00011514:
 	word32 l7_23 = fn0001150C(o7, 0x00016660)
+	word32 sp_129 = fp + 0xFFFFFF90
 	branch Mem0[Mem0[l7_23 + 0x00000008:word32]:word32] != 0x00000000 l00011514_ds_t
 // DataOut:
 // DataOut (flags):
@@ -103,8 +104,8 @@ l00011514_ds_f:
 // SymbolicIn:
 
 l00011540:
-	word32 o2_123 = Mem0[l7_23 + 0x00000004:word32]
-	branch Mem0[Mem0[o2_123:word32]:word32] == 0x00000000 l00011540_ds_t
+	word32 o2_124 = Mem0[l7_23 + 0x00000004:word32]
+	branch Mem0[Mem0[o2_124:word32]:word32] == 0x00000000 l00011540_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -120,8 +121,8 @@ l00011540_ds_f:
 // SymbolicIn:
 
 l0001155C:
-	word32 l0_42 = o2_123
-	word32 o0_44 = Mem0[o2_123:word32] + 0x00000004
+	word32 l0_42 = o2_124
+	word32 o0_44 = Mem0[o2_124:word32] + 0x00000004
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -129,16 +130,16 @@ l0001155C:
 l00011568:
 	Mem47[l0_42:word32] = o0_44
 	call fn02800018 (retsize: 0;)
-		uses: l0:l0_72,o0:o0_45,o1:Mem47[o0_45 + -4:word32],o2:o2_50,o3:o3_51,o4:o4_52,o5:o5_53,o7:0x00011570
-		defs: l0:l0_72,l7:l7_70,o2:o2_60,o3:o3_62,o4:o4_64,o5:o5_66,o7:o7_69
-	word32 o0_74 = Mem47[l0_42:word32]
-	branch Mem47[o0_74:word32] != 0x00000000 l00011568_ds_t
+		uses: l0:l0_73,o0:o0_45,o1:Mem47[o0_45 + -4:word32],o2:o2_50,o3:o3_51,o4:o4_52,o5:o5_53,o7:0x00011570,sp:sp_54
+		defs: l0:l0_73,l7:l7_71,o2:o2_61,o3:o3_63,o4:o4_65,o5:o5_67,o7:o7_70,sp:sp_55
+	word32 o0_75 = Mem47[l0_42:word32]
+	branch Mem47[o0_75:word32] != 0x00000000 l00011568_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00011568_ds_t:
-	o0_44 = o0_74 + 0x00000004
+	o0_44 = o0_75 + 0x00000004
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -154,7 +155,7 @@ l0001158C:
 // SymbolicIn:
 
 l00011590:
-	branch Mem85[l7_23 + 0x0000001C:word32] == 0x00000000 l00011590_ds_t
+	branch Mem86[l7_23 + 0x0000001C:word32] == 0x00000000 l00011590_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -165,7 +166,7 @@ l00011590_ds_t:
 // SymbolicIn:
 
 l000115B0:
-	Mem95[Mem85[l7_23 + 0x00000008:word32]:word32] = 0x00000001
+	Mem96[Mem86[l7_23 + 0x00000008:word32]:word32] = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -187,10 +188,10 @@ l00011590_ds_f:
 // SymbolicIn:
 
 l000115A4:
-	word32 l0_146
+	word32 l0_148
 	call __deregister_frame_info (retsize: 0;)
-		uses: l0:l0_146,o0:Mem85[l7_84 + 0x0000000C:word32],o1:0x0000000C,o2:o2_123,o3:o3_124,o4:o4_125,o5:o5_126,o7:o7_127
-		defs: l0:l0_146
+		uses: l0:l0_148,o0:Mem86[l7_85 + 0x0000000C:word32],o1:0x0000000C,o2:o2_124,o3:o3_125,o4:o4_126,o5:o5_127,o7:o7_128,sp:sp_129
+		defs: l0:l0_148
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -264,7 +265,7 @@ l000115D8_ds_f:
 
 l00011600:
 	call __register_frame_info (retsize: 0;)
-		uses: o0:Mem0[l7_23 + 0x0000000C:word32],o1:Mem0[l7_23 + 0x00000010:word32],o2:0x00000010,o3:o3,o4:o4,o5:o5,o7:o7
+		uses: o0:Mem0[l7_23 + 0x0000000C:word32],o1:Mem0[l7_23 + 0x00000010:word32],o2:0x00000010,o3:o3,o4:o4,o5:o5,o7:o7,sp:fp + 0xFFFFFF90
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5909,9 +5910,9 @@ l00013B90:
 
 l00013BAC:
 	word32 i1_57
-	word32 i6_632
-	word32 i2_235
-	check_source(SLICE(cond(o0_42 - l1_20), bool, 0), 0x00000000, out i1_57, out i2_235, out i6_632)
+	word32 i6_634
+	word32 i2_240
+	check_source(SLICE(cond(o0_42 - l1_20), bool, 0), 0x00000000, out i1_57, out i2_240, out i6_634)
 	branch l0_21 != 0x00000000 l00013BAC_ds_t
 // DataOut:
 // DataOut (flags):
@@ -5924,23 +5925,23 @@ l00013BAC_ds_t:
 // SymbolicIn:
 
 l00013BC8:
-	word32 i1_233
-	word32 i0_448
-	word32 l1_246
-	bool Z_259
+	word32 i1_238
+	word32 i0_450
+	word32 l1_251
+	bool Z_264
 	branch i1_57 == 0xFFFFFFFF l00013BC8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013BC8_ds_t:
-	l1_246 = l1_20 + 0x00000001
+	l1_251 = l1_20 + 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013CA4:
-	Z_259 = SLICE(cond(i1_57 + 0xFFFFFFFF), bool, 2) (alias)
+	Z_264 = SLICE(cond(i1_57 + 0xFFFFFFFF), bool, 2) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5953,10 +5954,10 @@ l00013BC8_ds_f:
 
 l00013BD4:
 	word32 o0_110
-	word32 i2_634
-	word32 i6_635
-	word32 i1_633
-	check_source(SLICE(cond(Mem0[0x000281E0:word32] - (l1_81 + 0xFFFFFFFF)), bool, 0), 0x00000000, out i1_633, out i2_634, out i6_635)
+	word32 i6_637
+	word32 i1_635
+	word32 i2_636
+	check_source(SLICE(cond(Mem0[0x000281E0:word32] - (l1_81 + 0xFFFFFFFF)), bool, 0), 0x00000000, out i1_635, out i2_636, out i6_637)
 	word32 l0_113 = l1_81 + 0xFFFFFFFF
 	branch ((word32) Mem0[(word32) Mem0[l1_81 + -1:byte] + 0x0002B411:byte] & 0x00000008) == 0x00000000 l00013BD4_ds_t
 // DataOut:
@@ -5977,10 +5978,10 @@ l00013C08:
 
 l00013C10:
 	l0_113 = l0_113 + 0xFFFFFFFF
-	word32 i1_645
-	word32 i2_646
-	word32 i6_647
-	check_source(SLICE(cond(o0_112 - l0_113), bool, 0), 0x00000000, out i1_645, out i2_646, out i6_647)
+	word32 i1_647
+	word32 i2_648
+	word32 i6_649
+	check_source(SLICE(cond(o0_112 - l0_113), bool, 0), 0x00000000, out i1_647, out i2_648, out i6_649)
 	branch ((word32) Mem0[(word32) Mem0[l0_113:byte] + 0x0002B411:byte] & 0x00000008) != 0x00000000 l00013C10_ds_t
 // DataOut:
 // DataOut (flags):
@@ -5999,32 +6000,32 @@ l00013C38:
 // SymbolicIn:
 
 l00013C3C:
-	word32 i2_637
-	word32 i6_638
-	word32 i1_636
-	check_source(0x00000001 - ((o0_110 ^ 0x00000029) >u 0x00000000), l0_113, out i1_636, out i2_637, out i6_638)
+	word32 i2_639
+	word32 i6_640
+	word32 i1_638
+	check_source(0x00000001 - ((o0_110 ^ 0x00000029) >u 0x00000000), l0_113, out i1_638, out i2_639, out i6_640)
 	word32 l0_168 = l0_113 + 0xFFFFFFFF
-	word32 i2_640
-	word32 i6_641
-	word32 i1_639
-	check_source(SLICE(cond(Mem0[0x000281E0:word32] - l0_168), bool, 0), 0x00000000, out i1_639, out i2_640, out i6_641)
-	word32 i2_643
-	word32 i1_642
-	word32 i6_644
-	check_source(0x00000001 - (((int32) Mem0[l0_168:int8] ^ 0x00000029) >u 0x00000000), l0_168, out i1_642, out i2_643, out i6_644)
-	branch edit_formals_lists(l0_168, out l1_246, out l2_22, out i1_233, out i2_235) == 0x00000000 l00013C3C_ds_t
+	word32 i2_642
+	word32 i6_643
+	word32 i1_641
+	check_source(SLICE(cond(Mem0[0x000281E0:word32] - l0_168), bool, 0), 0x00000000, out i1_641, out i2_642, out i6_643)
+	word32 i2_645
+	word32 i1_644
+	word32 i6_646
+	check_source(0x00000001 - (((int32) Mem0[l0_168:int8] ^ 0x00000029) >u 0x00000000), l0_168, out i1_644, out i2_645, out i6_646)
+	branch edit_formals_lists(l0_168, out l1_251, out l2_22, out i1_238, out i2_240) == 0x00000000 l00013C3C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013C3C_ds_t:
-	Z_259 = SLICE(cond(i1_233), bool, 2) (alias)
+	Z_264 = SLICE(cond(i1_238), bool, 2) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013CA8:
-	branch Z_259 l00013CA8_ds_t
+	branch Z_264 l00013CA8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6040,44 +6041,44 @@ l00013CA8_ds_f:
 // SymbolicIn:
 
 l00013CB0:
-	word32 l5_275
-	word32 o1_269 = Mem0[i2_235 + 16:word32]
-	word32 l0_270 = l1_246 + 0xFFFFFFFF
-	branch ((word32) Mem0[(word32) Mem0[l1_246 + -1:byte] + 0x0002B411:byte] & 0x00000008) == 0x00000000 l00013CB0_ds_t
+	word32 l5_280
+	word32 o1_274 = Mem0[i2_240 + 16:word32]
+	word32 l0_275 = l1_251 + 0xFFFFFFFF
+	branch ((word32) Mem0[(word32) Mem0[l1_251 + -1:byte] + 0x0002B411:byte] & 0x00000008) == 0x00000000 l00013CB0_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013CB0_ds_t:
-	l5_275 = Mem0[o1_269 + 4:word32]
+	l5_280 = Mem0[o1_274 + 4:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013CB0_ds_f:
-	l5_275 = Mem0[o1_269 + 4:word32]
+	l5_280 = Mem0[o1_274 + 4:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013CD0:
-	word32 o0_279 = Mem0[l2_22 + 480:word32]
+	word32 o0_284 = Mem0[l2_22 + 480:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013CD8:
-	l0_270 = l0_270 + 0xFFFFFFFF
-	word32 i1_648
-	word32 i6_649
-	check_source(SLICE(cond(o0_279 - l0_270), bool, 0), 0x00000000, out i1_648, out i2_235, out i6_649)
-	branch ((word32) Mem0[(word32) Mem0[l0_270:byte] + 0x0002B411:byte] & 0x00000008) != 0x00000000 l00013CD8_ds_t
+	l0_275 = l0_275 + 0xFFFFFFFF
+	word32 i1_650
+	word32 i6_651
+	check_source(SLICE(cond(o0_284 - l0_275), bool, 0), 0x00000000, out i1_650, out i2_240, out i6_651)
+	branch ((word32) Mem0[(word32) Mem0[l0_275:byte] + 0x0002B411:byte] & 0x00000008) != 0x00000000 l00013CD8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013CD8_ds_t:
-	o0_279 = Mem0[l2_22 + 480:word32]
+	o0_284 = Mem0[l2_22 + 480:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6088,37 +6089,37 @@ l00013CD8_ds_f:
 // SymbolicIn:
 
 l00013D00:
-	word32 l3_312 = l0_270
-	word32 l0_313 = l0_270 + 0x00000001
+	word32 l3_317 = l0_275
+	word32 l0_318 = l0_275 + 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013D20:
-	branch is_id_char((int32) Mem0[l3_312:int8]) != 0x00000000 l00013D20_ds_t
+	branch is_id_char((int32) Mem0[l3_317:int8]) != 0x00000000 l00013D20_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013D20_ds_t:
-	word32 o0_329 = Mem0[l2_22 + 480:word32]
+	word32 o0_334 = Mem0[l2_22 + 480:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013D0C:
-	word32 i1_650
-	word32 i6_651
-	check_source(SLICE(cond(o0_329 - l3_312), bool, 0), 0x00000000, out i1_650, out i2_235, out i6_651)
-	l3_312 = l3_312 + 0xFFFFFFFF
+	word32 i1_652
+	word32 i6_653
+	check_source(SLICE(cond(o0_334 - l3_317), bool, 0), 0x00000000, out i1_652, out i2_240, out i6_653)
+	l3_317 = l3_317 + 0xFFFFFFFF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013D34:
-	word32 l3_349 = l3_312 + 0x00000001
-	word32 l4_351 = l0_313 - l3_349
-	branch l4_351 != 0x00000000 l00013D34_ds_t
+	word32 l3_354 = l3_317 + 0x00000001
+	word32 l4_356 = l0_318 - l3_354
+	branch l4_356 != 0x00000000 l00013D34_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6129,20 +6130,20 @@ l00013D34_ds_t:
 // SymbolicIn:
 
 l00013D4C:
-	word32 o0_373
-	branch l4_351 - strlen(l5_275) != 0x00000000 l00013D4C_ds_t
+	word32 o0_375
+	branch l4_356 - strlen(l5_280) != 0x00000000 l00013D4C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013D4C_ds_t:
-	o0_373 = Mem0[i2_235 + 4:word32]
+	o0_375 = Mem0[i2_240 + 4:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013D60:
-	branch strncmp(l3_349, l5_275, l4_351) == 0x00000000 l00013D60_ds_t
+	branch strncmp(l3_354, l5_280, l4_356) == 0x00000000 l00013D60_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6153,16 +6154,16 @@ l00013D60_ds_t:
 // SymbolicIn:
 
 l00013DD4:
-	word32 o0_415
-	word32 i0_387
-	l1_246 = output_up_to(l1_246, out l2_22, out i0_387, out i1_233, out i2_235)
-	branch i1_233 != 0x00000000 l00013DD4_ds_t
+	word32 o0_417
+	word32 i0_389
+	l1_251 = output_up_to(l1_251, out l2_22, out i0_389, out i1_238, out i2_240)
+	branch i1_238 != 0x00000000 l00013DD4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013DD4_ds_t:
-	o0_415 = i0_387 + 0xFFFFFFFF
+	o0_417 = i0_389 + 0xFFFFFFFF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6173,16 +6174,16 @@ l00013DD4_ds_f:
 // SymbolicIn:
 
 l00013DE8:
-	word32 i0_420
-	l1_246 = output_string(Mem0[i2_235 + 36:word32], out l2_22, out i0_420, out i1_233, out i2_235)
-	o0_415 = i0_420 + 0xFFFFFFFF
+	word32 i0_422
+	l1_251 = output_string(Mem0[i2_240 + 36:word32], out l2_22, out i0_422, out i1_238, out i2_240)
+	o0_417 = i0_422 + 0xFFFFFFFF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013DF4:
-	Mem447[l2_22 + 480:word32] = o0_415
-	i0_448 = 0x00000000
+	Mem449[l2_22 + 480:word32] = o0_417
+	i0_450 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6193,27 +6194,27 @@ l00013D60_ds_f:
 // SymbolicIn:
 
 l00013D7C:
-	o0_373 = Mem0[i2_235 + 4:word32]
+	o0_375 = Mem0[i2_240 + 4:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013D80:
-	word32 l3_462
-	word32 l4_463
-	word32 l0_655
-	word32 l2_656
-	word32 i0_657
-	l2_22 = shortpath(0x00000000, Mem0[Mem0[o0_373:word32] + 4:word32], out l0_655, out l2_656, out l3_462, out l4_463, out i0_657)
-	l1_246 = identify_lineno(l3_462)
-	word32 l0_499
-	word32 sp_658
+	word32 l3_464
+	word32 l4_465
+	word32 l0_657
+	word32 l2_658
 	word32 i0_659
-	word32 i6_660
-	dupnstr(l3_462, l4_463, out sp_658, out l0_499, out i0_659, out i6_660)
-	word32 i6_661
-	notice(l0_499, out i1_233, out i2_235, out i6_661)
-	i0_448 = 0x00000001
+	l2_22 = shortpath(0x00000000, Mem0[Mem0[o0_375:word32] + 4:word32], out l0_657, out l2_658, out l3_464, out l4_465, out i0_659)
+	l1_251 = identify_lineno(l3_464)
+	word32 l0_501
+	word32 sp_660
+	word32 i0_661
+	word32 i6_662
+	dupnstr(l3_464, l4_465, out sp_660, out l0_501, out i0_661, out i6_662)
+	word32 i6_663
+	notice(l0_501, out i1_238, out i2_240, out i6_663)
+	i0_450 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6224,10 +6225,10 @@ l00013D34_ds_f:
 // SymbolicIn:
 
 l00013D44:
-	word32 i1_652
-	word32 i2_653
-	word32 i6_654
-	check_source(0x00000000, l3_349, out i1_652, out i2_653, out i6_654)
+	word32 i1_654
+	word32 i2_655
+	word32 i6_656
+	check_source(0x00000000, l3_354, out i1_654, out i2_655, out i6_656)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6238,17 +6239,17 @@ l00013C3C_ds_f:
 // SymbolicIn:
 
 l00013C9C:
-	i0_448 = 0x00000001
+	i0_450 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00013DFC:
-	l1Out = l1_246
+	l1Out = l1_251
 	l2Out = l2_22
-	i1Out = i1_233
-	i2Out = i2_235
-	return i0_448
+	i1Out = i1_238
+	i2Out = i2_240
+	return i0_450
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7983,12 +7984,13 @@ l000153D4_ds_t:
 // SymbolicIn:
 
 l000153E0:
-	word32 o5_145
-	word32 o4_144
-	word32 o3_143
-	word32 o2_142
-	word32 i0_107
-	word32 i1_102
+	word32 sp_148
+	word32 o5_147
+	word32 o4_146
+	word32 o3_145
+	word32 o2_144
+	word32 i0_109
+	word32 i1_104
 	word32 o1_36 = Mem0[o0 + 40:word32] & ~0x80000000
 	Mem42[o0 + 32:word32] = o4
 	word32 o2_39 = i2_23 + 0xFFFFFFFF
@@ -8007,53 +8009,53 @@ l000153E0_ds_t:
 // SymbolicIn:
 
 l00015420:
-	word32 o0_63
+	word32 o0_65
 	call o3 (retsize: 0;)
-		uses: o0:i1_49,o1:o1_36,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x00015420
-		defs: i0:i0_62,o0:o0_63,o2:o2_67,o3:o3_69,o4:o4_71,o5:o5_73
-	i1_102 = o0_63
+		uses: o0:i1_49,o1:o1_36,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x00015420,sp:fp + 0xFFFFFF90
+		defs: i0:i0_64,o0:o0_65,o2:o2_69,o3:o3_71,o4:o4_73,o5:o5_75,sp:sp_63
+	i1_104 = o0_65
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000153E0_ds_f:
-	Mem80[o0 + 40:word32] = o1_36
+	Mem82[o0 + 40:word32] = o1_36
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001540C:
-	word32 o0_86
+	word32 o0_88
 	call o3 (retsize: 0;)
-		uses: o0:Mem80[o0 + 36:word32],o1:i1_49,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x00015410
-		defs: i0:i0_85,o0:o0_86,o2:o2_90,o3:o3_92,o4:o4_94,o5:o5_96
-	i1_102 = o0_86
+		uses: o0:Mem82[o0 + 36:word32],o1:i1_49,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x00015410,sp:fp + 0xFFFFFF90
+		defs: i0:i0_87,o0:o0_88,o2:o2_92,o3:o3_94,o4:o4_96,o5:o5_98,sp:sp_86
+	i1_104 = o0_88
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001542C:
-	branch i1_102 != 0x00000000 l0001542C_ds_t
+	branch i1_104 != 0x00000000 l0001542C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001542C_ds_t:
-	Mem108[i0_107 + 4:word32] = i1_102
+	Mem110[i0_109 + 4:word32] = i1_104
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015448:
-	word32 o0_109 = Mem108[i0_107:word32]
-	word32 o1_110 = i1_102 + 0x00000008
-	Mem111[i0_107 + 12:word32] = o1_110
-	Mem112[i0_107 + 8:word32] = o1_110
-	word32 o0_113 = i1_102 + o0_109
-	Mem114[i1_102:word32] = o0_113
-	Mem115[i0_107 + 16:word32] = o0_113
-	Mem116[i1_102 + 4:word32] = 0x00000000
-	Mem122[i0_107 + 40:word32] = Mem116[i0_107 + 40:word32] & ~0x40000000 & ~0x20000000
+	word32 o0_111 = Mem110[i0_109:word32]
+	word32 o1_112 = i1_104 + 0x00000008
+	Mem113[i0_109 + 12:word32] = o1_112
+	Mem114[i0_109 + 8:word32] = o1_112
+	word32 o0_115 = i1_104 + o0_111
+	Mem116[i1_104:word32] = o0_115
+	Mem117[i0_109 + 16:word32] = o0_115
+	Mem118[i1_104 + 4:word32] = 0x00000000
+	Mem124[i0_109 + 40:word32] = Mem118[i0_109 + 40:word32] & ~0x40000000 & ~0x20000000
 	return
 // DataOut:
 // DataOut (flags):
@@ -8065,14 +8067,14 @@ _obstack_begin_exit:
 // SymbolicIn:
 
 l0001542C_ds_f:
-	Mem138[i0_107 + 4:word32] = i1_102
+	Mem140[i0_109 + 4:word32] = i1_104
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015438:
 	call fn00000FE8 (retsize: 0;)
-		uses: o0:0x00028000,o1:Mem138[0x0002802C:word32],o2:o2_142,o3:o3_143,o4:o4_144,o5:o5_145,o7:0x00015440
+		uses: o0:0x00028000,o1:Mem140[0x0002802C:word32],o2:o2_144,o3:o3_145,o4:o4_146,o5:o5_147,o7:0x00015440,sp:sp_148
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8118,12 +8120,13 @@ l00015498_ds_t:
 // SymbolicIn:
 
 l000154A4:
-	word32 o5_148
-	word32 o4_147
-	word32 o3_146
-	word32 o2_145
-	word32 i0_110
-	word32 i1_105
+	word32 sp_151
+	word32 o5_101
+	word32 o4_149
+	word32 o3_148
+	word32 o2_147
+	word32 i0_112
+	word32 i1_107
 	word32 o0_34 = Mem0[o0 + 40:word32]
 	Mem42[o0 + 32:word32] = o4
 	word32 o2_39 = i2_23 + 0xFFFFFFFF
@@ -8143,53 +8146,53 @@ l000154A4_ds_t:
 // SymbolicIn:
 
 l000154E8:
-	word32 o0_66
+	word32 o0_68
 	call o3 (retsize: 0;)
-		uses: o0:i1_49,o1:0x80000000,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x000154E8
-		defs: i0:i0_65,o0:o0_66,o2:o2_70,o3:o3_72,o4:o4_74,o5:o5_76
-	i1_105 = o0_66
+		uses: o0:i1_49,o1:0x80000000,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x000154E8,sp:fp + 0xFFFFFF90
+		defs: i0:i0_67,o0:o0_68,o2:o2_72,o3:o3_74,o4:o4_76,o5:o5_78,sp:sp_66
+	i1_107 = o0_68
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000154A4_ds_f:
-	Mem83[o0 + 40:word32] = o0_34 | 0x80000000
+	Mem85[o0 + 40:word32] = o0_34 | 0x80000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000154D4:
-	word32 o0_89
+	word32 o0_91
 	call o3 (retsize: 0;)
-		uses: o0:o5,o1:i1_49,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x000154D8
-		defs: i0:i0_88,o0:o0_89,o2:o2_93,o3:o3_95,o4:o4_97,o5:o5_99
-	i1_105 = o0_89
+		uses: o0:o5,o1:i1_49,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x000154D8,sp:fp + 0xFFFFFF90
+		defs: i0:i0_90,o0:o0_91,o2:o2_95,o3:o3_97,o4:o4_99,o5:o5_101,sp:sp_89
+	i1_107 = o0_91
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000154F4:
-	branch i1_105 != 0x00000000 l000154F4_ds_t
+	branch i1_107 != 0x00000000 l000154F4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000154F4_ds_t:
-	Mem111[i0_110 + 4:word32] = i1_105
+	Mem113[i0_112 + 4:word32] = i1_107
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015510:
-	word32 o0_112 = Mem111[i0_110:word32]
-	word32 o1_113 = i1_105 + 0x00000008
-	Mem114[i0_110 + 12:word32] = o1_113
-	Mem115[i0_110 + 8:word32] = o1_113
-	word32 o0_116 = i1_105 + o0_112
-	Mem117[i1_105:word32] = o0_116
-	Mem118[i0_110 + 16:word32] = o0_116
-	Mem119[i1_105 + 4:word32] = 0x00000000
-	Mem125[i0_110 + 40:word32] = Mem119[i0_110 + 40:word32] & ~0x40000000 & ~0x20000000
+	word32 o0_114 = Mem113[i0_112:word32]
+	word32 o1_115 = i1_107 + 0x00000008
+	Mem116[i0_112 + 12:word32] = o1_115
+	Mem117[i0_112 + 8:word32] = o1_115
+	word32 o0_118 = i1_107 + o0_114
+	Mem119[i1_107:word32] = o0_118
+	Mem120[i0_112 + 16:word32] = o0_118
+	Mem121[i1_107 + 4:word32] = 0x00000000
+	Mem127[i0_112 + 40:word32] = Mem121[i0_112 + 40:word32] & ~0x40000000 & ~0x20000000
 	return
 // DataOut:
 // DataOut (flags):
@@ -8201,14 +8204,14 @@ _obstack_begin_1_exit:
 // SymbolicIn:
 
 l000154F4_ds_f:
-	Mem141[i0_110 + 4:word32] = i1_105
+	Mem143[i0_112 + 4:word32] = i1_107
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015500:
 	call fn00000FE8 (retsize: 0;)
-		uses: o0:0x00028000,o1:Mem141[0x0002802C:word32],o2:o2_145,o3:o3_146,o4:o4_147,o5:o5_148,o7:0x00015508
+		uses: o0:0x00028000,o1:Mem143[0x0002802C:word32],o2:o2_147,o3:o3_148,o4:o4_149,o5:o5_150,o7:0x00015508,sp:sp_151
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8254,15 +8257,16 @@ l00015580:
 // SymbolicIn:
 
 l00015584:
-	word32 i0_103
-	word32 l2_129
-	word32 o2_109
-	word32 o5_112
-	word32 o4_111
-	word32 l1_131
-	word32 i1_116
-	word32 l0_132
-	word32 o3_110
+	word32 i0_104
+	word32 l2_131
+	word32 o2_110
+	word32 sp_114
+	word32 o5_113
+	word32 o4_112
+	word32 l1_133
+	word32 i1_118
+	word32 l0_100
+	word32 o3_111
 	branch Mem0[o0 + 40:word32] >= 0x00000000 l00015584_ds_t
 // DataOut:
 // DataOut (flags):
@@ -8275,57 +8279,57 @@ l00015584_ds_t:
 // SymbolicIn:
 
 l000155AC:
-	word32 o0_51
+	word32 o0_52
 	call o1_41 (retsize: 0;)
-		uses: o0:i1_43,o1:o1_41,o2:o2_26,o3:o3,o4:o4,o5:o5,o7:0x000155AC
-		defs: i0:i0_50,i1:i1_52,l1:l1_67,l2:l2_65,o0:o0_51,o2:o2_55,o3:o3_57,o4:o4_59,o5:o5_61
-	l0_132 = o0_51
+		uses: o0:i1_43,o1:o1_41,o2:o2_26,o3:o3,o4:o4,o5:o5,o7:0x000155AC,sp:fp + 0xFFFFFF90
+		defs: i0:i0_51,i1:i1_53,l1:l1_68,l2:l2_66,o0:o0_52,o2:o2_56,o3:o3_58,o4:o4_60,o5:o5_62,sp:sp_50
+	l0_100 = o0_52
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015594:
-	word32 o2_72 = Mem0[o0 + 28:word32]
-	word32 o0_78
-	call o2_72 (retsize: 0;)
-		uses: o0:Mem0[o0 + 36:word32],o1:i1_43,o2:o2_72,o3:o3,o4:o4,o5:o5,o7:0x0001559C
-		defs: i0:i0_77,i1:i1_79,l1:l1_94,l2:l2_92,o0:o0_78,o2:o2_82,o3:o3_84,o4:o4_86,o5:o5_88
-	l0_132 = o0_78
+	word32 o2_73 = Mem0[o0 + 28:word32]
+	word32 o0_79
+	call o2_73 (retsize: 0;)
+		uses: o0:Mem0[o0 + 36:word32],o1:i1_43,o2:o2_73,o3:o3,o4:o4,o5:o5,o7:0x0001559C,sp:fp + 0xFFFFFF90
+		defs: i0:i0_78,i1:i1_80,l1:l1_95,l2:l2_93,o0:o0_79,o2:o2_83,o3:o3_85,o4:o4_87,o5:o5_89,sp:sp_77
+	l0_100 = o0_79
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000155B8:
-	branch l0_132 != 0x00000000 l000155B8_ds_t
+	branch l0_100 != 0x00000000 l000155B8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000155B8_ds_t:
-	Mem104[i0_103 + 4:word32] = l0_132
+	Mem105[i0_104 + 4:word32] = l0_100
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000155C4:
-	word32 o1_107 = Mem0[0x0002802C:word32]
-	call o1_107 (retsize: 0;)
-		uses: o0:0x00028000,o1:o1_107,o2:o2_109,o3:o3_110,o4:o4_111,o5:o5_112,o7:0x000155CC
-		defs: i0:i0_114,i1:i1_116,l0:l0_132,l1:l1_131,l2:l2_129,o2:o2_119,o4:o4_123,o5:o5_125
-	Mem135[i0_103 + 4:word32] = l0_132
+	word32 o1_108 = Mem0[0x0002802C:word32]
+	call o1_108 (retsize: 0;)
+		uses: o0:0x00028000,o1:o1_108,o2:o2_110,o3:o3_111,o4:o4_112,o5:o5_113,o7:0x000155CC,sp:sp_114
+		defs: i0:i0_116,i1:i1_118,l0:l0_134,l1:l1_133,l2:l2_131,o2:o2_121,o4:o4_125,o5:o5_127,sp:sp_115
+	Mem137[i0_104 + 4:word32] = l0_100
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000155D8:
-	word32 i1_155
-	word32 g2_156
-	word32 o0_154
-	Mem142[l0_132 + 4:word32] = l1_131
-	word32 o1_139 = l0_132 + i1_116
-	Mem144[i0_103 + 16:word32] = o1_139
-	Mem145[l0_132:word32] = o1_139
-	branch Mem145[i0_103 + 24:word32] <= 0x00000006 l000155D8_ds_t
+	word32 i1_157
+	word32 g2_158
+	word32 o0_156
+	Mem144[l0_100 + 4:word32] = l1_133
+	word32 o1_141 = l0_100 + i1_118
+	Mem146[i0_104 + 16:word32] = o1_141
+	Mem147[l0_100:word32] = o1_141
+	branch Mem147[i0_104 + 24:word32] <= 0x00000006 l000155D8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8336,186 +8340,186 @@ l000155D8_ds_t:
 // SymbolicIn:
 
 l00015654:
-	o0_154 = 0x00000000
-	i1_155 = l0_132 + 0x00000008
-	g2_156 = l1_131 + 0x00000008
+	o0_156 = 0x00000000
+	i1_157 = l0_100 + 0x00000008
+	g2_158 = l1_133 + 0x00000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000155D8_ds_f:
-	word32 o0_157 = l2_129 >>u 0x00000002
+	word32 o0_159 = l2_131 >>u 0x00000002
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000155FC:
-	o5_112 = o0_157
-	i1_155 = l0_132 + 0x00000008
-	word32 o3_160 = o0_157 + 0xFFFFFFFF
-	branch o0_157 < 0xFFFFFFFF l000155FC_ds_t
+	o5_113 = o0_159
+	i1_157 = l0_100 + 0x00000008
+	word32 o3_162 = o0_159 + 0xFFFFFFFF
+	branch o0_159 < 0xFFFFFFFF l000155FC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000155FC_ds_t:
-	g2_156 = l1_131 + 0x00000008
+	g2_158 = l1_133 + 0x00000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000155FC_ds_f:
-	g2_156 = l1_131 + 0x00000008
+	g2_158 = l1_133 + 0x00000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015610:
-	word32 o4_167 = (o0_157 + 0xFFFFFFFF << 0x00000002) + 0x00000008 + l0_132
+	word32 o4_169 = (o0_159 + 0xFFFFFFFF << 0x00000002) + 0x00000008 + l0_100
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001561C:
-	o2_109 = Mem169[Mem169[i0_103 + 8:word32] + (o3_160 << 0x00000002):word32]
-	Mem177[o4_167:word32] = o2_109
-	o3_160 = o3_160 + 0xFFFFFFFF
-	branch o3_160 >= 0x00000000 l0001561C_ds_t
+	o2_110 = Mem171[Mem171[i0_104 + 8:word32] + (o3_162 << 0x00000002):word32]
+	Mem179[o4_169:word32] = o2_110
+	o3_162 = o3_162 + 0xFFFFFFFF
+	branch o3_162 >= 0x00000000 l0001561C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001561C_ds_t:
-	o4_167 = o4_167 + 0xFFFFFFFC
+	o4_169 = o4_169 + 0xFFFFFFFC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001561C_ds_f:
-	o4_111 = o4_167 + 0xFFFFFFFC
+	o4_112 = o4_169 + 0xFFFFFFFC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015638:
-	o0_154 = o0_157 << 0x00000002
+	o0_156 = o0_159 << 0x00000002
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015660:
-	word32 o0_196
-	word32 o3_185 = o0_154
-	branch o0_154 - l2_129 >= 0x00000000 l00015660_ds_t
+	word32 o0_198
+	word32 o3_187 = o0_156
+	branch o0_156 - l2_131 >= 0x00000000 l00015660_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015660_ds_t:
-	o0_196 = Mem194[i0_103 + 8:word32]
+	o0_198 = Mem196[i0_104 + 8:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015660_ds_f:
-	word32 o0_197 = Mem194[i0_103 + 8:word32]
+	word32 o0_199 = Mem196[i0_104 + 8:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015670:
-	o2_109 = i1_155
+	o2_110 = i1_157
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015674:
-	Mem207[i1_155 + o3_185:byte] = (byte) (word32) Mem204[o0_197 + o3_185:byte]
-	o3_185 = o3_185 + 0x00000001
-	branch o3_185 - l2_129 < 0x00000000 l00015674_ds_t
+	Mem209[i1_157 + o3_187:byte] = (byte) (word32) Mem206[o0_199 + o3_187:byte]
+	o3_187 = o3_187 + 0x00000001
+	branch o3_187 - l2_131 < 0x00000000 l00015674_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015674_ds_t:
-	o0_197 = Mem207[i0_103 + 8:word32]
+	o0_199 = Mem209[i0_104 + 8:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015674_ds_f:
-	o0_196 = Mem207[i0_103 + 8:word32]
+	o0_198 = Mem209[i0_104 + 8:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001568C:
-	word32 o0_227
-	branch o0_196 - g2_156 != 0x00000000 l0001568C_ds_t
+	word32 o0_229
+	branch o0_198 - g2_158 != 0x00000000 l0001568C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001568C_ds_t:
-	o0_227 = Mem226[i0_103 + 40:word32]
+	o0_229 = Mem228[i0_104 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001568C_ds_f:
-	word32 o0_228 = Mem226[i0_103 + 40:word32]
+	word32 o0_230 = Mem228[i0_104 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015698:
-	branch (o0_228 >>u 0x0000001E & 0x00000001) != 0x00000000 l00015698_ds_t
+	branch (o0_230 >>u 0x0000001E & 0x00000001) != 0x00000000 l00015698_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015698_ds_t:
-	o0_227 = Mem226[i0_103 + 40:word32]
+	o0_229 = Mem228[i0_104 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000156A8:
-	Mem245[l0_132 + 4:word32] = Mem226[l1_131 + 4:word32]
-	branch Mem245[i0_103 + 40:word32] < 0x00000000 l000156A8_ds_t
+	Mem247[l0_100 + 4:word32] = Mem228[l1_133 + 4:word32]
+	branch Mem247[i0_104 + 40:word32] < 0x00000000 l000156A8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000156A8_ds_t:
-	word32 o2_250 = Mem245[i0_103 + 32:word32]
+	word32 o2_252 = Mem247[i0_104 + 32:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015640:
-	call o2_250 (retsize: 0;)
-		uses: o0:Mem245[i0_143 + 36:word32],o1:l1_140,o2:o2_250,o3:o3_254,o4:o4_256,o5:o5_261,o7:0x00015644
-		defs: i0:i0_265,i1:i1_267,l2:l2_280
-	o0_227 = Mem245[i0_103 + 40:word32]
+	call o2_252 (retsize: 0;)
+		uses: o0:Mem247[i0_145 + 36:word32],o1:l1_142,o2:o2_252,o3:o3_256,o4:o4_258,o5:o5_263,o7:0x00015644,sp:sp_269
+		defs: i0:i0_273,i1:i1_275,l2:l2_288
+	o0_229 = Mem247[i0_104 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000156C0:
-	word32 o1_287 = Mem245[i0_103 + 32:word32]
-	call o1_287 (retsize: 0;)
-		uses: o0:l1_140,o1:o1_287,o2:o2_290,o3:o3_254,o4:o4_256,o5:o5_261,o7:0x000156C4
-		defs: i0:i0_295,i1:i1_297,l2:l2_310
-	o0_227 = Mem245[i0_103 + 40:word32]
+	word32 o1_295 = Mem247[i0_104 + 32:word32]
+	call o1_295 (retsize: 0;)
+		uses: o0:l1_142,o1:o1_295,o2:o2_298,o3:o3_256,o4:o4_258,o5:o5_263,o7:0x000156C4,sp:sp_269
+		defs: i0:i0_303,i1:i1_305,l2:l2_318
+	o0_229 = Mem247[i0_104 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000156D0:
-	Mem327[i0_103 + 40:word32] = o0_227 & ~0x40000000
-	Mem328[i0_103 + 12:word32] = i1_155 + l2_129
-	Mem329[i0_103 + 8:word32] = i1_155
+	Mem335[i0_104 + 40:word32] = o0_229 & ~0x40000000
+	Mem336[i0_104 + 12:word32] = i1_157 + l2_131
+	Mem337[i0_104 + 8:word32] = i1_157
 	return
 // DataOut:
 // DataOut (flags):
@@ -8613,15 +8617,16 @@ _obstack_free_entry:
 // SymbolicIn:
 
 l00015724:
-	word32 i0_107 = o0
-	word32 i1_159 = o1
-	word32 o3_106 = Mem0[o0 + 4:word32]
+	word32 i0_109 = o0
+	word32 i1_161 = o1
+	word32 sp_165 = fp + 0xFFFFFF90
+	word32 o3_108 = Mem0[o0 + 4:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015774:
-	branch o3_106 == 0x00000000 l00015774_ds_t
+	branch o3_108 == 0x00000000 l00015774_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8632,7 +8637,7 @@ l00015774_ds_t:
 // SymbolicIn:
 
 l00015774_ds_f:
-	word32 g0_29 = o3_106 - i1_159
+	word32 g0_29 = o3_108 - i1_161
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8645,27 +8650,27 @@ l00015780:
 // SymbolicIn:
 
 l00015780_ds_t:
-	o0_34 = Mem33[i0_107 + 40:word32]
+	o0_34 = Mem33[i0_109 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015788:
-	branch Mem33[o3_106:word32] - i1_159 <u 0x00000000 l00015788_ds_t
+	branch Mem33[o3_108:word32] - i1_161 <u 0x00000000 l00015788_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015788_ds_t:
-	o0_34 = Mem33[i0_107 + 40:word32]
+	o0_34 = Mem33[i0_109 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015730:
-	word32 o1_101
-	word32 l0_99
-	word32 l0_74
+	word32 o1_103
+	word32 l0_101
+	word32 l0_76
 	branch o0_34 >= 0x00000000 l00015730_ds_t
 // DataOut:
 // DataOut (flags):
@@ -8677,12 +8682,12 @@ l00015730_ds_t:
 // SymbolicIn:
 
 l00015754:
-	word32 o1_48 = Mem33[i0_107 + 32:word32]
+	word32 o1_48 = Mem33[i0_109 + 32:word32]
 	call o1_48 (retsize: 0;)
-		uses: l0:l0_74,o0:o3_22,o1:o1_48,o2:o2_52,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015758
-		defs: i0:i0_58,i1:i1_60,l0:l0_74,o2:o2_63,o4:o4_67,o5:o5_69
-	o1_101 = Mem33[i0_107 + 40:word32]
-	l0_105 = l0_74
+		uses: l0:l0_76,o0:o3_22,o1:o1_48,o2:o2_52,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015758,sp:sp_58
+		defs: i0:i0_60,i1:i1_62,l0:l0_76,o2:o2_65,o4:o4_69,o5:o5_71,sp:sp_59
+	o1_103 = Mem33[i0_109 + 40:word32]
+	l0_107 = l0_76
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8693,26 +8698,26 @@ l00015730_ds_f:
 // SymbolicIn:
 
 l0001573C:
-	word32 o2_78 = Mem33[i0_107 + 32:word32]
-	call o2_78 (retsize: 0;)
-		uses: l0:l0_99,o0:Mem33[i0_32 + 36:word32],o1:o3_22,o2:o2_78,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015744
-		defs: i0:i0_83,i1:i1_85,l0:l0_99,o2:o2_88,o4:o4_92,o5:o5_94
-	o1_101 = Mem33[i0_107 + 40:word32]
-	l0_105 = l0_99
+	word32 o2_80 = Mem33[i0_109 + 32:word32]
+	call o2_80 (retsize: 0;)
+		uses: l0:l0_101,o0:Mem33[i0_32 + 36:word32],o1:o3_22,o2:o2_80,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015744,sp:sp_58
+		defs: i0:i0_85,i1:i1_87,l0:l0_101,o2:o2_90,o4:o4_94,o5:o5_96,sp:sp_84
+	o1_103 = Mem33[i0_109 + 40:word32]
+	l0_107 = l0_101
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015764:
-	word32 l0_105
-	Mem108[i0_107 + 40:word32] = o1_101 | 0x40000000
-	o3_106 = l0_105
+	word32 l0_107
+	Mem110[i0_109 + 40:word32] = o1_103 | 0x40000000
+	o3_108 = l0_107
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015798:
-	branch o3_106 == 0x00000000 l00015798_ds_t
+	branch o3_108 == 0x00000000 l00015798_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8723,7 +8728,7 @@ l00015798_ds_t:
 // SymbolicIn:
 
 l000157BC:
-	branch i1_159 == 0x00000000 l000157BC_ds_t
+	branch i1_161 == 0x00000000 l000157BC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8750,11 +8755,11 @@ l00015798_ds_f:
 // SymbolicIn:
 
 l000157A4:
-	Mem120[i0_107 + 8:word32] = i1_159
-	Mem121[i0_107 + 12:word32] = i1_159
-	word32 o0_122 = Mem121[o3_106:word32]
-	Mem123[i0_107 + 4:word32] = o3_106
-	Mem124[i0_107 + 16:word32] = o0_122
+	Mem122[i0_109 + 8:word32] = i1_161
+	Mem123[i0_109 + 12:word32] = i1_161
+	word32 o0_124 = Mem123[o3_108:word32]
+	Mem125[i0_109 + 4:word32] = o3_108
+	Mem126[i0_109 + 16:word32] = o0_124
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8785,15 +8790,16 @@ obstack_free_entry:
 // SymbolicIn:
 
 l000157D4:
-	word32 i0_107 = o0
-	word32 i1_159 = o1
-	word32 o3_106 = Mem0[o0 + 4:word32]
+	word32 i0_109 = o0
+	word32 i1_161 = o1
+	word32 sp_165 = fp + 0xFFFFFF90
+	word32 o3_108 = Mem0[o0 + 4:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015824:
-	branch o3_106 == 0x00000000 l00015824_ds_t
+	branch o3_108 == 0x00000000 l00015824_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8804,7 +8810,7 @@ l00015824_ds_t:
 // SymbolicIn:
 
 l00015824_ds_f:
-	word32 g0_29 = o3_106 - i1_159
+	word32 g0_29 = o3_108 - i1_161
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8817,27 +8823,27 @@ l00015830:
 // SymbolicIn:
 
 l00015830_ds_t:
-	o0_34 = Mem33[i0_107 + 40:word32]
+	o0_34 = Mem33[i0_109 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015838:
-	branch Mem33[o3_106:word32] - i1_159 <u 0x00000000 l00015838_ds_t
+	branch Mem33[o3_108:word32] - i1_161 <u 0x00000000 l00015838_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015838_ds_t:
-	o0_34 = Mem33[i0_107 + 40:word32]
+	o0_34 = Mem33[i0_109 + 40:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000157E0:
-	word32 o1_101
-	word32 l0_99
-	word32 l0_74
+	word32 o1_103
+	word32 l0_101
+	word32 l0_76
 	branch o0_34 >= 0x00000000 l000157E0_ds_t
 // DataOut:
 // DataOut (flags):
@@ -8849,12 +8855,12 @@ l000157E0_ds_t:
 // SymbolicIn:
 
 l00015804:
-	word32 o1_48 = Mem33[i0_107 + 32:word32]
+	word32 o1_48 = Mem33[i0_109 + 32:word32]
 	call o1_48 (retsize: 0;)
-		uses: l0:l0_74,o0:o3_22,o1:o1_48,o2:o2_52,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015808
-		defs: i0:i0_58,i1:i1_60,l0:l0_74,o2:o2_63,o4:o4_67,o5:o5_69
-	o1_101 = Mem33[i0_107 + 40:word32]
-	l0_105 = l0_74
+		uses: l0:l0_76,o0:o3_22,o1:o1_48,o2:o2_52,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015808,sp:sp_58
+		defs: i0:i0_60,i1:i1_62,l0:l0_76,o2:o2_65,o4:o4_69,o5:o5_71,sp:sp_59
+	o1_103 = Mem33[i0_109 + 40:word32]
+	l0_107 = l0_76
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8865,26 +8871,26 @@ l000157E0_ds_f:
 // SymbolicIn:
 
 l000157EC:
-	word32 o2_78 = Mem33[i0_107 + 32:word32]
-	call o2_78 (retsize: 0;)
-		uses: l0:l0_99,o0:Mem33[i0_32 + 36:word32],o1:o3_22,o2:o2_78,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x000157F4
-		defs: i0:i0_83,i1:i1_85,l0:l0_99,o2:o2_88,o4:o4_92,o5:o5_94
-	o1_101 = Mem33[i0_107 + 40:word32]
-	l0_105 = l0_99
+	word32 o2_80 = Mem33[i0_109 + 32:word32]
+	call o2_80 (retsize: 0;)
+		uses: l0:l0_101,o0:Mem33[i0_32 + 36:word32],o1:o3_22,o2:o2_80,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x000157F4,sp:sp_58
+		defs: i0:i0_85,i1:i1_87,l0:l0_101,o2:o2_90,o4:o4_94,o5:o5_96,sp:sp_84
+	o1_103 = Mem33[i0_109 + 40:word32]
+	l0_107 = l0_101
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015814:
-	word32 l0_105
-	Mem108[i0_107 + 40:word32] = o1_101 | 0x40000000
-	o3_106 = l0_105
+	word32 l0_107
+	Mem110[i0_109 + 40:word32] = o1_103 | 0x40000000
+	o3_108 = l0_107
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00015848:
-	branch o3_106 == 0x00000000 l00015848_ds_t
+	branch o3_108 == 0x00000000 l00015848_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8895,7 +8901,7 @@ l00015848_ds_t:
 // SymbolicIn:
 
 l0001586C:
-	branch i1_159 == 0x00000000 l0001586C_ds_t
+	branch i1_161 == 0x00000000 l0001586C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8922,11 +8928,11 @@ l00015848_ds_f:
 // SymbolicIn:
 
 l00015854:
-	Mem120[i0_107 + 8:word32] = i1_159
-	Mem121[i0_107 + 12:word32] = i1_159
-	word32 o0_122 = Mem121[o3_106:word32]
-	Mem123[i0_107 + 4:word32] = o3_106
-	Mem124[i0_107 + 16:word32] = o0_122
+	Mem122[i0_109 + 8:word32] = i1_161
+	Mem123[i0_109 + 12:word32] = i1_161
+	word32 o0_124 = Mem123[o3_108:word32]
+	Mem125[i0_109 + 4:word32] = o3_108
+	Mem126[i0_109 + 16:word32] = o0_124
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12094,6 +12100,7 @@ pexecute_entry:
 
 l000169F8:
 	word32 o0_31
+	word32 sp_126 = fp + 0xFFFFFF70
 	branch (dwArg5C & 0x00000004) == 0x00000000 l000169F8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -12144,8 +12151,8 @@ l00016A3C:
 // SymbolicIn:
 
 l00016A44:
-	word32 dwLoc24_353
-	word32 i0_262
+	word32 dwLoc24_354
+	word32 i0_263
 	word32 o0_114
 	word32 o0_47 = Mem46[0x0002B310:word32]
 	branch (dwArg5C & 0x00000002) != 0x00000000 l00016A44_ds_t
@@ -12160,7 +12167,7 @@ l00016A44_ds_t:
 
 l00016A8C:
 	Mem55[0x0002B310:word32] = 0x00000000
-	dwLoc24_353 = 0x00000001
+	dwLoc24_354 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12171,6 +12178,7 @@ l00016A44_ds_f:
 // SymbolicIn:
 
 l00016A58:
+	sp_126 = fp + 0xFFFFFF6C
 	branch pipe(fp + 0xFFFFFFE8) >= 0x00000000 l00016A58_ds_t
 // DataOut:
 // DataOut (flags):
@@ -12183,14 +12191,14 @@ l00016A58_ds_t:
 
 l00016A7C:
 	Mem68[0x0002B310:word32] = dwLoc18
-	dwLoc24_353 = dwLoc14
+	dwLoc24_354 = dwLoc14
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016A98:
-	word32 dwLoc2C_362 = 0x00000001
-	word32 dwLoc28_363 = 0x00000000
+	word32 dwLoc2C_363 = 0x00000001
+	word32 dwLoc28_364 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12198,7 +12206,7 @@ l00016A98:
 l00016AC8:
 	bool Z_104
 	word32 g0_83
-	branch dwLoc28_363 > 0x00000003 l00016AC8_ds_t
+	branch dwLoc28_364 > 0x00000003 l00016AC8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12217,6 +12225,7 @@ l00016AC8_ds_f:
 
 l00016AD8:
 	word32 o0_85 = vfork()
+	sp_126 = sp_126 + 0xFFFFFFFC
 	l1 = o0_85
 	branch o0_85 < 0x00000000 l00016AD8_ds_t
 // DataOut:
@@ -12229,9 +12238,10 @@ l00016AD8_ds_t:
 // SymbolicIn:
 
 l00016AA8:
-	sleep(dwLoc2C_362)
-	dwLoc2C_362 = dwLoc2C_362 << 0x00000001
-	dwLoc28_363 = dwLoc28_363 + 0x00000001
+	sleep(dwLoc2C_363)
+	sp_126 = sp_126 + 0xFFFFFFFC
+	dwLoc2C_363 = dwLoc2C_363 << 0x00000001
+	dwLoc28_364 = dwLoc28_364 + 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12295,12 +12305,13 @@ l00016B30:
 	close(0x00000000)
 	dup(o0_47)
 	close(o0_47)
+	sp_126 = sp_126 + 0xFFFFFFF4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016B4C:
-	branch dwLoc24_353 == 0x00000001 l00016B4C_ds_t
+	branch dwLoc24_354 == 0x00000001 l00016B4C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12317,8 +12328,9 @@ l00016B4C_ds_f:
 
 l00016B58:
 	close(0x00000001)
-	dup(dwLoc24_353)
-	close(dwLoc24_353)
+	dup(dwLoc24_354)
+	close(dwLoc24_354)
+	sp_126 = sp_126 + 0xFFFFFFF4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12337,20 +12349,21 @@ l00016B74_ds_t:
 
 l00016B84:
 	close(o0_156)
+	sp_126 = sp_126 + 0xFFFFFFFC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016B90:
-	word32 i6_209
+	word32 i6_210
 	call fn00000000 (retsize: 0;)
-		uses: l1:0x0002B640,o0:o0,o1:o1,o2:o0_39,o3:o3,o4:o4,o5:o5,o7:0x00016B94,Stack +005C:dwArg5C,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i6:i6_209
-	fprintf(0x0002B640, 0x00017B28, Mem75[i6_209 + 76:word32])
-	fprintf(0x0002B640, Mem75[0x00028078:word32], Mem75[i6_209 + 68:word32])
-	word32 o0_231 = Mem75[0x0002B760:word32]
-	xstrerror(o0_231)
-	fprintf(0x0002B640, 0x00017B30, o0_231)
+		uses: l1:0x0002B640,o0:o0,o1:o1,o2:o0_39,o3:o3,o4:o4,o5:o5,o7:0x00016B94,sp:sp_196,Stack +005C:dwArg5C,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i6:i6_210
+	fprintf(0x0002B640, 0x00017B28, Mem75[i6_210 + 76:word32])
+	fprintf(0x0002B640, Mem75[0x00028078:word32], Mem75[i6_210 + 68:word32])
+	word32 o0_232 = Mem75[0x0002B760:word32]
+	xstrerror(o0_232)
+	fprintf(0x0002B640, 0x00017B30, o0_232)
 	exit(0xFFFFFFFF)
 // DataOut:
 // DataOut (flags):
@@ -12389,13 +12402,13 @@ l00016C00:
 // SymbolicIn:
 
 l00016C0C:
-	branch dwLoc24_353 == 0x00000001 l00016C0C_ds_t
+	branch dwLoc24_354 == 0x00000001 l00016C0C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016C0C_ds_t:
-	i0_262 = l1
+	i0_263 = l1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12406,8 +12419,8 @@ l00016C0C_ds_f:
 // SymbolicIn:
 
 l00016C18:
-	close(dwLoc24_353)
-	i0_262 = l1
+	close(dwLoc24_354)
+	i0_263 = l1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12419,9 +12432,9 @@ l00016A6C:
 // SymbolicIn:
 
 l00016B10:
-	Mem274[o4:word32] = o0_114
-	Mem278[o5:word32] = 0x00000000
-	i0_262 = 0xFFFFFFFF
+	Mem275[o4:word32] = o0_114
+	Mem279[o5:word32] = 0x00000000
+	i0_263 = 0xFFFFFFFF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12429,7 +12442,7 @@ l00016B10:
 l00016C24:
 	l0Out = 0x0002B000
 	i6Out = fp
-	return i0_262
+	return i0_263
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12482,7 +12495,7 @@ mkstemps_entry:
 // SymbolicIn:
 
 l00016C40:
-	word32 i0_432
+	word32 i0_433
 	word32 o0_21 = strlen(o0)
 	branch o0_21 - (o1 + 0x00000006) < 0x00000000 l00016C40_ds_t
 // DataOut:
@@ -12515,134 +12528,147 @@ l00016C94:
 	gettimeofday(fp + 0xFFFFFFE8, 0x00000000)
 	word32 o0_45 = getpid()
 	word32 o1_54 = dwLoc14 >> 0x0000001F << 0x00000010
-	word32 o5_407 = dwLoc14 << 0x00000010 ^ dwLoc18 ^ o0_45
-	word32 o4_405 = (dwLoc14 >>u 0x00000010 | o1_54) ^ dwLoc18 >> 0x0000001F ^ o0_45 >> 0x0000001F
-	Mem75[0x0002B400:word64] = Mem0[0x0002B400:word64] + o4_405 + (o1_54 + o5_407 <u 0x00000000)
-	word32 l1_415 = dwLoc18
-	word32 o7_410 = 0x0002B400
-	word32 l4_417 = 0x0002B400
+	word32 o5_408 = dwLoc14 << 0x00000010 ^ dwLoc18 ^ o0_45
+	word32 o4_406 = (dwLoc14 >>u 0x00000010 | o1_54) ^ dwLoc18 >> 0x0000001F ^ o0_45 >> 0x0000001F
+	Mem75[0x0002B400:word64] = Mem0[0x0002B400:word64] + o4_406 + (o1_54 + o5_408 <u 0x00000000)
+	word32 sp_428 = fp + 0xFFFFFF78
+	word32 l1_416 = dwLoc18
+	word32 o7_411 = 0x0002B400
+	word32 l4_418 = 0x0002B400
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016D0C:
-	word32 l0_78 = Mem77[l4_417:word64]
-	word32 i1_90
-	word32 o1_91
-	word32 o4_97
-	word32 o5_99
-	word32 o7_102
-	word32 l1_107
-	word32 l0_108
-	word32 l2_111
+	word32 l0_78 = Mem77[l4_418:word64]
+	word32 sp_88
+	word32 i1_91
+	word32 o1_92
+	word32 o4_98
+	word32 o5_100
+	word32 o7_103
+	word32 l1_108
+	word32 l0_109
+	word32 l2_112
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:l0_78,l1:l1_415,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:l0_78,o1:l1_82,o2:0x00000000,o3:0x0000003E,o4:o4_84,o5:o5_85,o7:o7_86,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_90,l0:l0_108,l1:l1_107,l2:l2_111,o1:o1_91,o4:o4_97,o5:o5_99,o7:o7_102
-	Mem114[i1_90:byte] = (byte) (word32) Mem77[l2_111 + o1_91:byte]
-	word32 o0_121
-	word32 o1_123
-	word32 o4_129
-	word32 o5_131
-	word32 o7_134
+		uses: g2:g2_415,g3:g3_414,l0:l0_78,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_78,o1:l1_82,o2:0x00000000,o3:0x0000003E,o4:o4_84,o5:o5_85,o7:o7_86,sp:sp_87,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_91,l0:l0_109,l1:l1_108,l2:l2_112,o1:o1_92,o4:o4_98,o5:o5_100,o7:o7_103,sp:sp_88
+	Mem115[i1_91:byte] = (byte) (word32) Mem77[l2_112 + o1_92:byte]
+	word32 sp_120
+	word32 o0_122
+	word32 o1_124
+	word32 o4_130
+	word32 o5_132
+	word32 o7_135
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:l0_416,l1:l1_415,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:l0_108,o1:l1_107,o2:0x00000000,o3:0x0000003E,o4:o4_97,o5:o5_99,o7:o7_102,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_121,o1:o1_123,o4:o4_129,o5:o5_131,o7:o7_134
-	word32 i1_152
-	word32 o1_153
-	word32 o4_159
-	word32 o5_161
-	word32 o7_164
-	word32 l1_169
-	word32 l0_170
-	word32 l2_173
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_109,o1:l1_108,o2:0x00000000,o3:0x0000003E,o4:o4_98,o5:o5_100,o7:o7_103,sp:sp_88,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_122,o1:o1_124,o4:o4_130,o5:o5_132,o7:o7_135,sp:sp_120
+	word32 sp_150
+	word32 i1_153
+	word32 o1_154
+	word32 o4_160
+	word32 o5_162
+	word32 o7_165
+	word32 l1_170
+	word32 l0_171
+	word32 l2_174
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:o0_121,l1:o1_123,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:o0_121,o1:o1_123,o2:0x00000000,o3:0x0000003E,o4:o4_129,o5:o5_131,o7:o7_134,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_152,l0:l0_170,l1:l1_169,l2:l2_173,o1:o1_153,o4:o4_159,o5:o5_161,o7:o7_164
-	Mem176[i1_152 + 1:byte] = (byte) (word32) Mem114[l2_173 + o1_153:byte]
-	word32 o0_183
-	word32 o1_185
-	word32 o4_191
-	word32 o5_193
-	word32 o7_196
+		uses: g2:g2_415,g3:g3_414,l0:o0_122,l1:o1_124,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_122,o1:o1_124,o2:0x00000000,o3:0x0000003E,o4:o4_130,o5:o5_132,o7:o7_135,sp:sp_120,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_153,l0:l0_171,l1:l1_170,l2:l2_174,o1:o1_154,o4:o4_160,o5:o5_162,o7:o7_165,sp:sp_150
+	Mem177[i1_153 + 1:byte] = (byte) (word32) Mem115[l2_174 + o1_154:byte]
+	word32 sp_182
+	word32 o0_184
+	word32 o1_186
+	word32 o4_192
+	word32 o5_194
+	word32 o7_197
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:l0_416,l1:l1_415,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:l0_170,o1:l1_169,o2:0x00000000,o3:0x0000003E,o4:o4_159,o5:o5_161,o7:o7_164,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_183,o1:o1_185,o4:o4_191,o5:o5_193,o7:o7_196
-	word32 i1_214
-	word32 o1_215
-	word32 o4_221
-	word32 o5_223
-	word32 o7_226
-	word32 l1_231
-	word32 l0_232
-	word32 l2_235
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_171,o1:l1_170,o2:0x00000000,o3:0x0000003E,o4:o4_160,o5:o5_162,o7:o7_165,sp:sp_150,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_184,o1:o1_186,o4:o4_192,o5:o5_194,o7:o7_197,sp:sp_182
+	word32 sp_212
+	word32 i1_215
+	word32 o1_216
+	word32 o4_222
+	word32 o5_224
+	word32 o7_227
+	word32 l1_232
+	word32 l0_233
+	word32 l2_236
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:o0_183,l1:o1_185,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:o0_183,o1:o1_185,o2:0x00000000,o3:0x0000003E,o4:o4_191,o5:o5_193,o7:o7_196,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_214,l0:l0_232,l1:l1_231,l2:l2_235,o1:o1_215,o4:o4_221,o5:o5_223,o7:o7_226
-	Mem238[i1_214 + 2:byte] = (byte) (word32) Mem176[l2_235 + o1_215:byte]
-	word32 o0_245
-	word32 o1_247
-	word32 o4_253
-	word32 o5_255
-	word32 o7_258
+		uses: g2:g2_415,g3:g3_414,l0:o0_184,l1:o1_186,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_184,o1:o1_186,o2:0x00000000,o3:0x0000003E,o4:o4_192,o5:o5_194,o7:o7_197,sp:sp_182,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_215,l0:l0_233,l1:l1_232,l2:l2_236,o1:o1_216,o4:o4_222,o5:o5_224,o7:o7_227,sp:sp_212
+	Mem239[i1_215 + 2:byte] = (byte) (word32) Mem177[l2_236 + o1_216:byte]
+	word32 sp_244
+	word32 o0_246
+	word32 o1_248
+	word32 o4_254
+	word32 o5_256
+	word32 o7_259
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:l0_416,l1:l1_415,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:l0_232,o1:l1_231,o2:0x00000000,o3:0x0000003E,o4:o4_221,o5:o5_223,o7:o7_226,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_245,o1:o1_247,o4:o4_253,o5:o5_255,o7:o7_258
-	word32 i1_276
-	word32 o1_277
-	word32 o4_283
-	word32 o5_285
-	word32 o7_288
-	word32 l1_293
-	word32 l0_294
-	word32 l2_297
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_233,o1:l1_232,o2:0x00000000,o3:0x0000003E,o4:o4_222,o5:o5_224,o7:o7_227,sp:sp_212,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_246,o1:o1_248,o4:o4_254,o5:o5_256,o7:o7_259,sp:sp_244
+	word32 sp_274
+	word32 i1_277
+	word32 o1_278
+	word32 o4_284
+	word32 o5_286
+	word32 o7_289
+	word32 l1_294
+	word32 l0_295
+	word32 l2_298
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:o0_245,l1:o1_247,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:o0_245,o1:o1_247,o2:0x00000000,o3:0x0000003E,o4:o4_253,o5:o5_255,o7:o7_258,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_276,l0:l0_294,l1:l1_293,l2:l2_297,o1:o1_277,o4:o4_283,o5:o5_285,o7:o7_288
-	Mem300[i1_276 + 3:byte] = (byte) (word32) Mem238[l2_297 + o1_277:byte]
-	word32 o0_307
-	word32 o1_309
-	word32 o4_315
-	word32 o5_317
-	word32 o7_320
+		uses: g2:g2_415,g3:g3_414,l0:o0_246,l1:o1_248,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_246,o1:o1_248,o2:0x00000000,o3:0x0000003E,o4:o4_254,o5:o5_256,o7:o7_259,sp:sp_244,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_277,l0:l0_295,l1:l1_294,l2:l2_298,o1:o1_278,o4:o4_284,o5:o5_286,o7:o7_289,sp:sp_274
+	Mem301[i1_277 + 3:byte] = (byte) (word32) Mem239[l2_298 + o1_278:byte]
+	word32 sp_306
+	word32 o0_308
+	word32 o1_310
+	word32 o4_316
+	word32 o5_318
+	word32 o7_321
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:l0_416,l1:l1_415,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:l0_294,o1:l1_293,o2:0x00000000,o3:0x0000003E,o4:o4_283,o5:o5_285,o7:o7_288,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_307,o1:o1_309,o4:o4_315,o5:o5_317,o7:o7_320
-	word32 i1_338
-	word32 o1_339
-	word32 o4_345
-	word32 o5_347
-	word32 o7_350
-	word32 l1_355
-	word32 l0_356
-	word32 l2_359
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_295,o1:l1_294,o2:0x00000000,o3:0x0000003E,o4:o4_284,o5:o5_286,o7:o7_289,sp:sp_274,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_308,o1:o1_310,o4:o4_316,o5:o5_318,o7:o7_321,sp:sp_306
+	word32 sp_336
+	word32 i1_339
+	word32 o1_340
+	word32 o4_346
+	word32 o5_348
+	word32 o7_351
+	word32 l1_356
+	word32 l0_357
+	word32 l2_360
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:o0_307,l1:o1_309,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:o0_307,o1:o1_309,o2:0x00000000,o3:0x0000003E,o4:o4_315,o5:o5_317,o7:o7_320,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_338,l0:l0_356,l1:l1_355,l2:l2_359,o1:o1_339,o4:o4_345,o5:o5_347,o7:o7_350
-	Mem362[i1_338 + 4:byte] = (byte) (word32) Mem300[l2_359 + o1_339:byte]
-	word32 o0_369
-	word32 o1_371
-	word32 o4_377
-	word32 o5_379
-	word32 o7_382
+		uses: g2:g2_415,g3:g3_414,l0:o0_308,l1:o1_310,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_308,o1:o1_310,o2:0x00000000,o3:0x0000003E,o4:o4_316,o5:o5_318,o7:o7_321,sp:sp_306,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_339,l0:l0_357,l1:l1_356,l2:l2_360,o1:o1_340,o4:o4_346,o5:o5_348,o7:o7_351,sp:sp_336
+	Mem363[i1_339 + 4:byte] = (byte) (word32) Mem301[l2_360 + o1_340:byte]
+	word32 sp_368
+	word32 o0_370
+	word32 o1_372
+	word32 o4_378
+	word32 o5_380
+	word32 o7_383
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:l0_416,l1:l1_415,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:l0_356,o1:l1_355,o2:0x00000000,o3:0x0000003E,o4:o4_345,o5:o5_347,o7:o7_350,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_369,o1:o1_371,o4:o4_377,o5:o5_379,o7:o7_382
-	word32 i0_396
-	word32 i1_398
-	word32 o1_399
-	word32 o3_403
-	word32 l3_412
-	word32 g3_413
-	word32 g2_414
-	word32 l0_416
-	word32 l5_418
-	word32 l2_419
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_357,o1:l1_356,o2:0x00000000,o3:0x0000003E,o4:o4_346,o5:o5_348,o7:o7_351,sp:sp_336,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_370,o1:o1_372,o4:o4_378,o5:o5_380,o7:o7_383,sp:sp_368
+	word32 sp_396
+	word32 i0_397
+	word32 i1_399
+	word32 o1_400
+	word32 o3_404
+	word32 l3_413
+	word32 g3_414
+	word32 g2_415
+	word32 l0_417
+	word32 l5_419
+	word32 l2_420
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_414,g3:g3_413,l0:l0_416,l1:l1_415,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o0:o0_369,o1:o1_371,o2:0x00000000,o3:0x0000003E,o4:o4_377,o5:o5_379,o7:o7_382,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: g2:g2_414,g3:g3_413,i0:i0_396,i1:i1_398,l0:l0_416,l1:l1_415,l2:l2_419,l3:l3_412,l4:l4_417,l5:l5_418,o1:o1_399,o3:o3_403,o4:o4_405,o5:o5_407,o7:o7_410
-	Mem422[i1_398 + 5:byte] = (byte) (word32) Mem362[l2_419 + o1_399:byte]
-	word32 o0_426 = open(i0_396, 0x00000502)
-	branch o0_426 >= 0x00000000 l00016C94_ds_t
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_370,o1:o1_372,o2:0x00000000,o3:0x0000003E,o4:o4_378,o5:o5_380,o7:o7_383,sp:sp_368,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: g2:g2_415,g3:g3_414,i0:i0_397,i1:i1_399,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o1:o1_400,o3:o3_404,o4:o4_406,o5:o5_408,o7:o7_411,sp:sp_396
+	Mem423[i1_399 + 5:byte] = (byte) (word32) Mem363[l2_420 + o1_400:byte]
+	word32 o0_427 = open(i0_397, 0x00000502)
+	sp_428 = sp_396 + 0xFFFFFFFC
+	branch o0_427 >= 0x00000000 l00016C94_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12653,44 +12679,44 @@ l00016C94_ds_t:
 // SymbolicIn:
 
 l00016C8C:
-	i0_432 = o0_426
+	i0_433 = o0_427
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016C94_ds_f:
-	word32 o2_433 = Mem422[l4_417:word64]
+	word32 o2_434 = Mem423[l4_418:word64]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016E30:
-	word32 o2_440 = o2_433 + (o3_403 <u 0x00001E61)
-	branch l3_412 + 0x00000001 - l5_418 <= 0x00000000 l00016E30_ds_t
+	word32 o2_441 = o2_434 + (o3_404 <u 0x00001E61)
+	branch l3_413 + 0x00000001 - l5_419 <= 0x00000000 l00016E30_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016E30_ds_t:
-	Mem445[l4_417:word64] = o2_440
+	Mem446[l4_418:word64] = o2_441
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016E30_ds_f:
-	Mem446[l4_417:word64] = o2_440
+	Mem447[l4_418:word64] = o2_441
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016E54:
-	Mem447[i0_396:byte] = 0x00
+	Mem448[i0_397:byte] = 0x00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016E58:
-	i0_432 = 0xFFFFFFFF
+	i0_433 = 0xFFFFFFFF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12701,13 +12727,13 @@ l00016C60_ds_f:
 // SymbolicIn:
 
 l00016C84:
-	i0_432 = 0xFFFFFFFF
+	i0_433 = 0xFFFFFFFF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00016E5C:
-	return i0_432
+	return i0_433
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12759,6 +12785,7 @@ __do_global_ctors_aux_entry:
 l00016E6C:
 	word32 l0_31
 	word32 o1_26 = Mem0[fn00016E64(o7, 0x00010D08) + 0x00000014:word32]
+	word32 sp_19 = fp + 0xFFFFFF90
 	word32 o2_27 = Mem0[o1_26 + -4:word32]
 	branch o2_27 == 0xFFFFFFFF l00016E6C_ds_t
 // DataOut:
@@ -12779,8 +12806,8 @@ l00016E6C_ds_f:
 
 l00016E98:
 	call fn00000014 (retsize: 0;)
-		uses: l0:l0_33 + 0xFFFFFFFC,o0:Mem0[l0_33:word32],o1:o1_38,o2:o2_39,o3:o3_40,o4:o4_41,o5:o5_42,o7:0x00016E9C
-		defs: l0:l0_61,o1:o1_47,o2:o2_49,o3:o3_51,o4:o4_53,o5:o5_55
+		uses: l0:l0_33 + 0xFFFFFFFC,o0:Mem0[l0_33:word32],o1:o1_38,o2:o2_39,o3:o3_40,o4:o4_41,o5:o5_42,o7:0x00016E9C,sp:sp_43
+		defs: l0:l0_62,o1:o1_48,o2:o2_50,o3:o3_52,o4:o4_54,o5:o5_56,sp:sp_44
 	branch Mem0[l0_31:word32] != 0xFFFFFFFF l00016E98_ds_t
 // DataOut:
 // DataOut (flags):

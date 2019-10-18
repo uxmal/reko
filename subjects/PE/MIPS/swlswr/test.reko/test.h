@@ -590,7 +590,7 @@ T_106: (in r8_7 == 0x00000000 : bool)
   Class: Eq_106
   DataType: bool
   OrigDataType: bool
-T_107: (in r2_15 : uint32)
+T_107: (in r2_16 : uint32)
   Class: Eq_107
   DataType: uint32
   OrigDataType: uint32
@@ -610,7 +610,7 @@ T_111: (in 0x10 : byte)
   Class: Eq_111
   DataType: byte
   OrigDataType: byte
-T_112: (in r2_15 >> 0x10 : word32)
+T_112: (in r2_16 >> 0x10 : word32)
   Class: Eq_112
   DataType: uint32
   OrigDataType: uint32
@@ -618,11 +618,11 @@ T_113: (in 0x0000FFFF : word32)
   Class: Eq_113
   DataType: word32
   OrigDataType: word32
-T_114: (in r2_15 + 0x0000FFFF : word32)
+T_114: (in r2_16 + 0x0000FFFF : word32)
   Class: Eq_114
   DataType: word32
   OrigDataType: word32
-T_115: (in r2_15 >> 0x10 ^ r2_15 + 0x0000FFFF : word32)
+T_115: (in r2_16 >> 0x10 ^ r2_16 + 0x0000FFFF : word32)
   Class: Eq_102
   DataType: ui32
   OrigDataType: ui32

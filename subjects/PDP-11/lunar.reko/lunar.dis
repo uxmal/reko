@@ -1318,19 +1318,19 @@ void fn0B06(word16 r3, word16 r4, word16 r5)
 // Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 l0BA6:
-	Mem95[0x34CA:word16] = 0x0000
-	Mem96[0x0046:word16] = 0x0000
-	Mem97[0x0054:word16] = 0x0000
-	Mem99[0x0060:word16] = 0x001E
+	Mem96[0x34CA:word16] = 0x0000
+	Mem97[0x0046:word16] = 0x0000
+	Mem98[0x0054:word16] = 0x0000
+	Mem100[0x0060:word16] = 0x001E
 	fn0128()
-	branch Mem99[0x009E:word16] != 0x0000 l0BA6
+	branch Mem100[0x009E:word16] != 0x0000 l0BA6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0BC2:
-	Mem113[0x34BA:word16] = 0x0000
-	Mem114[0x34C2:word16] = 0x0000
+	Mem115[0x34BA:word16] = 0x0000
+	Mem116[0x34C2:word16] = 0x0000
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	ptr16 stackArg0 = <invalid>
@@ -1377,7 +1377,7 @@ l0B0C:
 l0B12:
 	Mem25[0x267C:word16] = Mem20[0x34B6:word16]
 	Mem26[0x34D2:word16] = 0x2678
-	word16 sp_122 = fp
+	word16 sp_124 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1397,27 +1397,27 @@ l0B26:
 // SymbolicIn:
 
 l0BD0:
-	word16 sp_124 = sp_122 - 0x0002
-	Mem125[sp_124:word16] = 0x0001
-	Mem128[sp_124 - 0x0002:word16] = Mem125[0x0078:word16]
-	fn0C90(Mem128[sp_124 - 0x0002:word16], Mem128[sp_124:word16])
-	word16 r5_138 = Mem128[0x0070:word16]
-	word16 sp_131 = <invalid>
-	word16 r3_137 = 0x0030
-	branch __ror(r5_138, r5_138) >=u 0x0000 l0BEE
+	word16 sp_125 = sp_124 - 0x0002
+	Mem126[sp_125:word16] = 0x0001
+	Mem129[sp_125 - 0x0002:word16] = Mem126[0x0078:word16]
+	fn0C90(Mem129[sp_125 - 0x0002:word16], Mem129[sp_125:word16])
+	word16 r5_139 = Mem129[0x0070:word16]
+	word16 sp_132 = <invalid>
+	word16 r3_138 = 0x0030
+	branch __ror(r5_139, r5_139) >=u 0x0000 l0BEE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0BEC:
-	r3_137 = -0x0030
+	r3_138 = -0x0030
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0BEE:
-	Mem147[sp_131 - 0x0002:word16] = r3_137
-	fn0C36(0xFFE8, r3_137)
+	Mem148[sp_132 - 0x0002:word16] = r3_138
+	fn0C36(0xFFE8, r3_138)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3293,7 +3293,7 @@ l0122:
 // SymbolicIn:
 
 l011E:
-	Mem88[v23_78:word16] = Mem77[r0_79:word16]
+	Mem89[v23_78:word16] = Mem77[r0_79:word16]
 	r0_73 = r0_79 + 0x0002
 // DataOut:
 // DataOut (flags):

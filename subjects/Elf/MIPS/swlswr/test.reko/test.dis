@@ -45,7 +45,7 @@ l00000588_ds_f:
 
 l000005AC:
 	call __gmon_start__ (retsize: 0;)
-		uses: r25:__gmon_start__,ra:ra
+		uses: r25:__gmon_start__,ra:ra,sp:fp + -32
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -265,7 +265,7 @@ l0000072C_ds_f:
 l00000734:
 	word32 r3_30
 	call __cxa_finalize (retsize: 0;)
-		uses: r16:r16,r17:r17,r18:r18,r19:0x00010000,r25:__cxa_finalize,r3:r3_30,r4:Mem19[r2_24:word32],ra:ra
+		uses: r16:r16,r17:r17,r18:r18,r19:0x00010000,r25:__cxa_finalize,r3:r3_30,r4:Mem19[r2_24:word32],ra:ra,sp:fp + -48
 		defs: r3:r3_30
 // DataOut:
 // DataOut (flags):
@@ -294,10 +294,10 @@ l00000774:
 	Mem50[0x00010AF4:word32] = r2_47
 	word32 r2_52 = (r2_47 << 0x02) + 0x00010A68
 	word32 r25_53 = Mem50[r2_52:word32]
-	word32 r4_59
+	word32 r4_60
 	call r25_53 (retsize: 0;)
-		uses: r2:r2_52,r25:r25_53,r3:r2_47 << 0x02,r4:r4_59
-		defs: r4:r4_59
+		uses: r2:r2_52,r25:r25_53,r3:r2_47 << 0x02,r4:r4_60
+		defs: r4:r4_60
 	r2_40 = Mem50[0x00010AF4:word32]
 	branch (word32) (r2_40 <u r16_42) != 0x00000000 l00000774_ds_t
 // DataOut:

@@ -15,6 +15,7 @@ void fn00401010(ptr32 ebp, word32 * esi, word32 dwArg04)
 {
 	ptr32 * esp_n;
 	word32 eax_n;
+	int8 Top_n;
 	_acrt_iob_func();
 	*esp_n = fp + 0x08;
 	*(esp_n - 0x04) = 0x00;
@@ -30,12 +31,15 @@ void fn00401010(ptr32 ebp, word32 * esi, word32 dwArg04)
 word32 fn00401040(word32 ecx, struct Eq_n * ebp, word32 * esi)
 {
 	ptr32 esp_n;
+	int8 Top_n;
 	driver.dll!Ordinal_n();
 	*(esp_n - 0x04) = 0x03;
 	ptr32 esp_n;
+	int8 Top_n;
 	driver.dll!Ordinal_n();
 	*(esp_n - 0x04) = 0x01;
 	ptr32 esp_n;
+	int8 Top_n;
 	driver.dll!Ordinal_n();
 	*(esp_n - 0x04) = 0x05;
 	ptr32 esp_n;
@@ -65,6 +69,7 @@ l00401172:
 	*(ebp_n - 0x04) &= 0x00;
 	word32 edx_n;
 	*(ebp_n - 0x24) = (byte) (uint32) (uint8) fn0040143A(out edx_n);
+	int8 Top_n = 0x00;
 	struct Eq_n * ebp_n = ebp_n;
 	uip32 eax_n = globals->dw403334;
 	word32 ebx_n = SEQ(ebx_24_8_n, 0x00);
@@ -113,6 +118,7 @@ l00401172:
 				*(esp_n - 0x08) = (union Eq_n *) edi_n;
 				<anonymous> * esi_n = *esi_n;
 				fn00401972();
+				int8 Top_n = <invalid>;
 				esi_n();
 			}
 		}
@@ -122,16 +128,23 @@ l00401172:
 		{
 			union Eq_n * esp_n = esp_n - 0x04;
 			*esp_n = (union Eq_n *) eax_n;
+			esp_n = (char *) esp_n + 0x04;
 			if ((byte) (uint32) (uint8) fn0040153F(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
 				*esp_n = (union Eq_n *) *esi_n;
+				word32 esp_n;
 				register_thread_local_exe_atexit_callback();
+				esp_n = esp_n + 0x04;
 			}
 		}
+		word32 esp_n;
 		word32 * eax_n;
+		int8 Top_n;
 		word32 edx_n;
 		_p___argv();
+		word32 esp_n;
 		word32 * eax_n;
+		int8 Top_n;
 		word32 edx_n;
 		_p___argc();
 		ptr32 esp_n;
@@ -144,6 +157,7 @@ l00401172:
 		*(esp_n - 0x0C) = *eax_n;
 		Eq_n eax_n = fn00401040(ecx_n, ebp_n, eax_n);
 		byte bl_n = (byte) ebx_n;
+		int8 Top_n = <invalid>;
 		ptr32 esp_n = esp_n;
 		if ((byte) (uint32) (uint8) fn0040188B() == 0x00)
 		{
