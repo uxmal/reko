@@ -1095,7 +1095,7 @@ test_exit:
             {
                 var foo = Identifier.Global("foo", new UnknownType());
                 var r1 = m.Reg32("r1", 1);
-                m.Declare(r1, m.AddrOf(foo));
+                m.Declare(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
@@ -1118,7 +1118,7 @@ test_exit:
                 });
                 var foo = Identifier.Global("foo", str);
                 var r1 = m.Reg32("r1", 1);
-                m.Declare(r1, m.AddrOf(foo));
+                m.Declare(r1, m.AddrOf(PrimitiveType.Ptr32, foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();

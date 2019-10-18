@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Fragments
             Identifier frame = Declare(new StructureType("frame_t", 0), "frame");
             Identifier framep = Local32("framep");
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
-            Assign(framep, AddrOf(frame));
+            Assign(framep, AddrOf(PrimitiveType.Ptr32, frame));
             MStore(IAdd(framep, 4), Mem(PrimitiveType.Word32, IAdd(framep, 8)));
         }
     }

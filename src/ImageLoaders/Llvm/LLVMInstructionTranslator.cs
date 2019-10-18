@@ -55,7 +55,7 @@ namespace Reko.ImageLoaders.LLVM
             }
             var stk = m.AllocateStackVariable(type, count);
             var dst = m.CreateLocalId("loc", type);
-            m.Assign(dst, m.AddrOf(stk));
+            m.Assign(dst, m.AddrOf(m.Procedure.Architecture.PointerType, stk));
             return 0;
         }
 
@@ -226,7 +226,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             var e = GetElementPtr(get.PtrType, get.PtrValue, get.Indices);
             var dst = m.CreateLocalId("loc", VoidType.Instance);
-            m.Assign(dst, m.AddrOf(e));
+            m.Assign(dst, m.AddrOf(m.Procedure.Architecture.PointerType, e));
             return 0;
         }
 

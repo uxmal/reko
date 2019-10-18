@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Structure
 {
@@ -410,7 +411,7 @@ namespace Reko.UnitTests.Structure
 
                 m.Label("Branch_b");
                     Identifier ax_96 = m.Local16("ax_96");
-                    m.SideEffect(m.Fn("fn02A9", m.AddrOf(ax_96)));
+                    m.SideEffect(m.Fn("fn02A9", m.AddrOf(PrimitiveType.Ptr32, ax_96)));
                     m.Return(ax_96);
 
                 m.Label("branch_c");

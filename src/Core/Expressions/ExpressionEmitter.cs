@@ -112,11 +112,12 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Takes the address of the expression (which must be an l-value).
         /// </summary>
-        /// <param name="e">L-value </param>
+        /// <param name="e">L-value</param>
+        /// <param name="ptType">Type of the resulting pointer.</param>
         /// <returns>A unary expresssion representing the address-of operation.</returns>
-        public UnaryExpression AddrOf(Expression e)
+        public UnaryExpression AddrOf(DataType ptType, Expression e)
         {
-            return new UnaryExpression(UnaryOperator.AddrOf, PrimitiveType.Ptr32, e);
+            return new UnaryExpression(UnaryOperator.AddrOf, ptType, e);
         }
 
         /// <summary>

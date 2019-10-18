@@ -293,7 +293,7 @@ namespace Reko.UnitTests.Analysis
         public void TrfOutParameters()
         {
             var edx = m.Register("edx");
-            var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(edx)));
+            var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(PrimitiveType.Ptr32, edx)));
 
             trf = CreateTrashedRegisterFinder();
             trf.EnsureEvaluationContext(CreateBlockFlow(m.Block, m.Frame));

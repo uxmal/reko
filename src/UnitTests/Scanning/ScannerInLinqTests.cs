@@ -564,5 +564,28 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(1, ranges.Length);
             Assert.AreSame(B.Object, ranges[0].Item1);
         }
+
+        [Test(Description = "Stop tracing invalid blocks at call boundaries")]
+        public void Siq_CallThen_()
+        {
+            Call(0x1000, 4, 0x1004, 0x1010);
+            Bra(0x1004, 4, 0x1008, 0x100C);
+            Bad(0x1008, 4);
+            Bad(0x100C, 4);
+
+            Lin(0x1010, 4, 0x1014);
+            Bad(0x1014, 4);
+
+            CreateScanner();
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
+            blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
+
+            var sExp =
+            #region Expected
+@"00001000-00001004 (4): Cal 
+";
+            #endregion
+            AssertBlocks(sExp, blocks);
+        }
     }
 }

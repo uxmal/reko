@@ -306,7 +306,7 @@ namespace Reko.Arch.M68k
             m.Assign(
                 orw.FlagGroup(FlagM.CVZN),
                 host.PseudoProcedure("atomic_compare_exchange_weak", PrimitiveType.Bool,
-                    m.AddrOf(orw.RewriteSrc(instr.op3, instr.Address)),
+                    m.AddrOf(PrimitiveType.Ptr32, orw.RewriteSrc(instr.op3, instr.Address)),
                     orw.RewriteSrc(instr.op2, instr.Address),
                     orw.RewriteSrc(instr.op1, instr.Address)));
         }

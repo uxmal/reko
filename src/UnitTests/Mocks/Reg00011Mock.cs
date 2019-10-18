@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Mocks
 			Identifier cx_37 = Local16("cx_37");
 			Identifier bx_38 = Local16("bx_38 ");
 			Identifier ax_36 = Local16("ax_36");
-			BranchIf(Fn("fn1B96_3CA2", AddrOf(ax_36), AddrOf(cx_37), AddrOf(bx_38)), "block7");
+			BranchIf(Fn("fn1B96_3CA2", AddrOf(PrimitiveType.Ptr32, ax_36), AddrOf(PrimitiveType.Ptr32, cx_37), AddrOf(PrimitiveType.Ptr32, bx_38)), "block7");
 			// succ:  3 7
 
 			// DataOut: eax ecx edx esi ax cx bx sp bp di es cs ss ds fs
@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Mocks
 			// LocalsOut: loc02(16)l1B96_2DC2:		// block 5, pred: 4
 			Identifier dx_49 = Local16("dx_49");
 			Identifier bx_50 = Local16("bx_50");
-			SideEffect(Fn("fn1B96_0540", LoadW(0x7E52), ds, AddrOf(dx_49), AddrOf(bx_50)));
+			SideEffect(Fn("fn1B96_0540", LoadW(0x7E52), ds, AddrOf(PrimitiveType.Ptr32, dx_49), AddrOf(PrimitiveType.Ptr32, bx_50)));
 			// succ:  6
 
 			// DataOut: eax ecx edx esi ax cx sp bp di es cs ss ds fs
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Mocks
 			// DataOut: eax ecx edx esi ax dx bx sp bp di al dl dh es cs ss ds fsl1B96_2E15_branch:		// block 10, pred: 9
 			Identifier ax_96 = Local16("ax_96");
 			Identifier bx_97 = Local16("bx_97");
-			SideEffect(Fn("fn1B96_02A9", ds, AddrOf(ax_96)));
+			SideEffect(Fn("fn1B96_02A9", ds, AddrOf(PrimitiveType.Ptr32, ax_96)));
 			Return(ax_96);
 			// DataOut: eax ecx edx esi ax dx bx sp bp di al dl dh es cs ss fsl1B96_2E19:		// block 11, pred: 9 8
 			Label("block11");

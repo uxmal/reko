@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Core.Output
                 Identifier inp = m.Local32("inp");
                 Identifier outp = m.Local32("outp");
                 m.Assign(inp, 0);
-                m.Assign(inp, m.Fn("foo", inp, m.AddrOf(outp)));
+                m.Assign(inp, m.Fn("foo", inp, m.AddrOf(PrimitiveType.Ptr32, outp)));
                 m.Return();
             });
             string sExp =

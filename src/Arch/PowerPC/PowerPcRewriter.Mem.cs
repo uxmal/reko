@@ -231,7 +231,7 @@ namespace Reko.Arch.PowerPC
             }
             m.Assign(
                 dst,
-                host.PseudoProcedure(intrinsic, dt, m.AddrOf(m.Mem(dt, rb))));
+                host.PseudoProcedure(intrinsic, dt, m.AddrOf(arch.PointerType, m.Mem(dt, rb))));
         }
 
         private void RewriteLwbrx()
@@ -387,7 +387,7 @@ namespace Reko.Arch.PowerPC
                 host.PseudoProcedure(
                     intrinsic,
                     VoidType.Instance,
-                    m.AddrOf(m.Mem(dataType, ea)),
+                    m.AddrOf(arch.PointerType, m.Mem(dataType, ea)),
                     MaybeNarrow(dataType, s)));
         }
 

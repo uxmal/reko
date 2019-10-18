@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Typing
         public void ExaAddrOf()
         {
             var p = Id("p", PrimitiveType.Real64);
-            RunTest(m.AddrOf(p),
+            RunTest(m.AddrOf(PrimitiveType.Ptr32, p),
                 "Typing/ExaAddrOf.txt");
         }
 
