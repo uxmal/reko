@@ -11635,7 +11635,6 @@ void fn0800-8ACF(word16 cx, Eq_n ds, word16 * ptrArg06)
 word16 fn0800-8B0D(Eq_n ds, Eq_n wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut)
 {
 	int8 Top_n = 0x00;
-	mp16 sp_n = fp - 0x04;
 	if (wArg06 == 0x00)
 	{
 		while (*((word32) ds + 0x0000224E) != 0x00)
@@ -11663,7 +11662,6 @@ word16 fn0800-8B0D(Eq_n ds, Eq_n wArg02, word16 wArg04, word16 wArg06, ptr16 & d
 	{
 		if (wArg06 == 0x00)
 		{
-			word16 sp_n;
 			int8 Top_n;
 			(seg0800->**((word32) ds + 9044))();
 			word16 cx_n;
@@ -17259,7 +17257,6 @@ Eq_n fn1483-0C91(ptr32 ds_bx, Eq_n ss_bp, Eq_n ax, Eq_n cx, Eq_n si, Eq_n di, Eq
 word16 fn1483-0CA0(byte * es_di, Eq_n ss_bp, byte al, byte ah, struct Eq_n Eq_n::* bx, Eq_n si, struct Eq_n * ds, union Eq_n & diOut, union Eq_n & TopOut)
 {
 	Eq_n di = (word16) es_di;
-	word16 sp_n;
 	word16 ax_n;
 	byte Eq_n::* bx_n;
 	int8 Top_n;

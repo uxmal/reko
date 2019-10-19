@@ -21,7 +21,7 @@ l0800_0121:
 	__restorezero(ds_5)
 	word16 sp_9
 	call SEQ(0x0800, Mem0[ds_5:0x05DC:word16]) (retsize: 2;)
-		uses: sp:fp - 2,Top:0
+		uses: Top:0
 		defs: sp:sp_9
 	byte al_21 = 0x00
 	byte ah_27 = 0x00
@@ -503,7 +503,6 @@ fn0800_0301_entry:
 // SymbolicIn:
 
 l0800_0301:
-	word16 sp_23 = fp - 2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -519,26 +518,24 @@ l0800_0310:
 l0800_0306:
 	word16 bx_18 = Mem13[ds:0x023E:word16]
 	call SEQ(0x0800, Mem13[ds:(bx_18 << 0x0001) + 0x05E8:word16]) (retsize: 2;)
-		uses: bx:bx_18 << 0x0001,sp:sp_23,Stack +0004:wArg02,Top:Top_24
-		defs: sp:sp_25,Top:Top_29
+		uses: bx:bx_18 << 0x0001,Stack +0004:wArg02,Top:Top_24
+		defs: Top:Top_29
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_031B:
-	word16 sp_31
 	int8 Top_35
 	call SEQ(0x0800, Mem13[ds:0x0234:word16]) (retsize: 2;)
-		uses: sp:sp_23,Stack +0004:wArg02,Top:Top_24
-		defs: sp:sp_31,Top:Top_35
-	word16 sp_37
+		uses: Stack +0004:wArg02,Top:Top_24
+		defs: Top:Top_35
 	int8 Top_41
 	call SEQ(0x0800, Mem13[ds:0x0236:word16]) (retsize: 2;)
-		uses: sp:sp_31,Stack +0004:wArg02,Top:Top_35
-		defs: sp:sp_37,Top:Top_41
+		uses: Stack +0004:wArg02,Top:Top_35
+		defs: Top:Top_41
 	word16 sp_43
 	call SEQ(0x0800, Mem13[ds:0x0238:word16]) (retsize: 2;)
-		uses: sp:sp_37,Stack +0004:wArg02,Top:Top_41
+		uses: Stack +0004:wArg02,Top:Top_41
 		defs: sp:sp_43
 	Mem51[ss:sp_43 - 2:word16] = wArg02
 	__exit()
@@ -686,21 +683,19 @@ l0800_03E7_thunk__abort:
 
 l0800_0401:
 	Mem138[ds_126:0x0086:word16] = bp_133
-	bp_142 = bp_133
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_0407:
-	word16 bp_142
 	branch cx_125 == 0x0000 l0800_0417
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_0409:
-	Mem143[ss:bp_142:word16] = si_131
-	bp_142 = bp_142 + 0x0002
+	Mem143[ss:bp_133:word16] = si_131
+	bp_133 = bp_133 + 0x0002
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -721,9 +716,9 @@ l0800_0415:
 // SymbolicIn:
 
 l0800_0417:
-	Mem164[ss:bp_142:word16] = 0x0000
+	Mem164[ss:bp_133:word16] = 0x0000
 	call Mem164[0x0800:0x0330:word16] (retsize: 2;)
-		uses: ax:0x0000,bx:bx_130,sp:bp_133,Stack +0002:wArg00,Top:0
+		uses: ax:0x0000,bx:bx_130,Stack +0002:wArg00,Top:0
 	return
 // DataOut:
 // DataOut (flags):
@@ -3179,7 +3174,7 @@ fn0800_1044_entry:
 
 l0800_1044:
 	call Mem0[ds:0x05E0:word16] (retsize: 2;)
-		uses: sp:fp,Top:0
+		uses: Top:0
 	return
 // DataOut:
 // DataOut (flags):
@@ -4431,7 +4426,7 @@ l0800_10A1:
 	word16 di_20 = di - (bp - 0x0054)
 	word16 ax_34
 	call SEQ(0x0800, Mem29[ss_bp + 0x000A:word16]) (retsize: 2;)
-		uses: ax:bp - 0x0054,bx:bx,cx:cx,dx:dx,sp:fp - 14,Stack +0002:Mem26[ss_bp + 0x0008:word16],Stack +0004:di_20,Stack +0006:bp - 0x0054,Stack +0008:es,Stack +000A:dx,Stack +000C:cx,Stack +000E:bx,Top:0
+		uses: ax:bp - 0x0054,bx:bx,cx:cx,dx:dx,Stack +0002:Mem26[ss_bp + 0x0008:word16],Stack +0004:di_20,Stack +0006:bp - 0x0054,Stack +0008:es,Stack +000A:dx,Stack +000C:cx,Stack +000E:bx,Top:0
 		defs: ax:ax_34
 	branch ax_34 != 0x0000 l0800_10BE
 // DataOut:
@@ -5055,7 +5050,7 @@ l0800_1A7A:
 	word16 ax_222
 	word16 bx_224
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: bx:bx_224,cx:wArg06,dx:dx_225,sp:fp - 4,Stack +0002:wArg06,Stack +0004:es_214,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:si_173,Stack +FFFFFFDA:v66_209,Stack +FFFFFFDE:v66_209,Stack +FFFFFFE0:wLoc26,Top:Top_220
+		uses: bx:bx_224,cx:wArg06,dx:dx_225,Stack +0002:wArg06,Stack +0004:es_214,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:si_173,Stack +FFFFFFDA:v66_209,Stack +FFFFFFDE:v66_209,Stack +FFFFFFE0:wLoc26,Top:Top_220
 		defs: ax:ax_222,bx:bx_224,dx:dx_225,Top:Top_226
 	wLoc28_1058 = v66_209
 	es_126 = es
@@ -5161,7 +5156,7 @@ l0800_1AB6:
 	word16 sp_341
 	word16 ax_342
 	call SEQ(0x0800, wArg04) (retsize: 2;)
-		uses: ax:ax_342,bx:bx_344,cx:cx_350,dx:dx_345,sp:fp - 6,Stack +0002:ax_222,Stack +0004:wArg06,Stack +0006:es_214,Stack +000A:wArg02,Stack +000C:wArg04,Stack +000E:wArg06,Stack +0010:si_173,Stack +FFFFFFE2:wLoc26,Top:Top_226
+		uses: ax:ax_342,bx:bx_344,cx:cx_350,dx:dx_345,Stack +0002:ax_222,Stack +0004:wArg06,Stack +0006:es_214,Stack +000A:wArg02,Stack +000C:wArg04,Stack +000E:wArg06,Stack +0010:si_173,Stack +FFFFFFE2:wLoc26,Top:Top_226
 		defs: ax:ax_342,bx:bx_344,dx:dx_345,sp:sp_341,Top:Top_346
 	word16 cx_350 = Mem337[ss:sp_341 + 2:word16]
 	es = Mem337[ss:sp_341 + 4:selector]
@@ -5535,7 +5530,7 @@ l0800_19DD:
 	word16 v49_671 = wLoc28_1058 + 0x0001
 	word16 ax_685
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: bx:bx_687,cx:wArg06,dx:dx_688,sp:fp - 4,Stack +0002:wArg06,Stack +0004:es_1018,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:si_58,Stack +FFFFFFDA:v49_671,Stack +FFFFFFDE:v49_671,Stack +FFFFFFE0:wLoc26,Top:Top_683
+		uses: bx:bx_687,cx:wArg06,dx:dx_688,Stack +0002:wArg06,Stack +0004:es_1018,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:si_58,Stack +FFFFFFDA:v49_671,Stack +FFFFFFDE:v49_671,Stack +FFFFFFE0:wLoc26,Top:Top_683
 		defs: ax:ax_685,bx:bx_687,dx:dx_688,Top:Top_689
 	wLoc28_1058 = v49_671
 	byte al_698 = SLICE(ax_685, byte, 0)
@@ -5661,7 +5656,7 @@ l0800_172F:
 	word16 sp_808
 	word16 ax_809
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: ax:di_786,bx:bx_811,cx:cx_815,dx:dx_812,sp:fp - 2,Stack +0002:wArg06,Stack +0006:wArg02,Stack +0008:wArg04,Stack +000A:wArg06,Stack +000C:wArg08_1489,Stack +FFFFFFDA:v17_793,Stack +FFFFFFDC:v17_793,Stack +FFFFFFDE:wLoc26,Top:Top_806
+		uses: ax:di_786,bx:bx_811,cx:cx_815,dx:dx_812,Stack +0002:wArg06,Stack +0006:wArg02,Stack +0008:wArg04,Stack +000A:wArg06,Stack +000C:wArg08_1489,Stack +FFFFFFDA:v17_793,Stack +FFFFFFDC:v17_793,Stack +FFFFFFDE:wLoc26,Top:Top_806
 		defs: ax:ax_809,bx:bx_811,dx:dx_812,sp:sp_808,Top:Top_813
 	word16 ax_784 = (int16) al_32
 	wLoc28_1058 = v17_793
@@ -5700,7 +5695,7 @@ l0800_1779:
 	word16 bx_847
 	word16 dx_848
 	call SEQ(0x0800, wArg04) (retsize: 2;)
-		uses: bx:bx_847,cx:wArg06,dx:dx_848,sp:sp_808 - 2,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_1489,Stack +FFFFFFDC:wLoc26,Top:Top_813
+		uses: bx:bx_847,cx:wArg06,dx:dx_848,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_1489,Stack +FFFFFFDC:wLoc26,Top:Top_813
 		defs: bx:bx_847,dx:dx_848
 // DataOut:
 // DataOut (flags):
@@ -5735,7 +5730,7 @@ l0800_1767:
 	Mem898[ss:sp_894 - 2:word16] = ax_817
 	word16 sp_907
 	call SEQ(0x0800, wArg04) (retsize: 2;)
-		uses: bx:bx_910,cx:cx_916,dx:dx_911,sp:sp_894 - 2,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_1489,Stack +FFFFFFDC:wLoc26,Top:Top_906
+		uses: bx:bx_910,cx:cx_916,dx:dx_911,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_1489,Stack +FFFFFFDC:wLoc26,Top:Top_906
 		defs: bx:bx_910,dx:dx_911,sp:sp_907,Top:Top_912
 	word16 cx_916 = Mem898[ss:sp_907 + 2:word16]
 	wLoc28_1058 = wLoc28_1058 - 0x0001
@@ -5746,13 +5741,12 @@ l0800_1767:
 // SymbolicIn:
 
 l0800_1756:
+	Mem926[ss:sp_816 - 2:word16] = wArg06
 	word16 v25_921 = wLoc28_1058 + 0x0001
-	word16 sp_925 = sp_816 - 2
-	Mem926[ss:sp_925:word16] = wArg06
 	word16 sp_927
 	word16 ax_928
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: bx:bx_930,cx:cx_934,dx:dx_931,sp:sp_925,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_1489,Stack +FFFFFFDA:v25_921,Stack +FFFFFFDC:wLoc26,Top:Top_906
+		uses: bx:bx_930,cx:cx_934,dx:dx_931,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_1489,Stack +FFFFFFDA:v25_921,Stack +FFFFFFDC:wLoc26,Top:Top_906
 		defs: ax:ax_928,bx:bx_930,dx:dx_931,sp:sp_927,Top:Top_932
 	wLoc28_1058 = v25_921
 	word16 cx_934 = Mem926[ss:sp_927:word16]
@@ -5976,7 +5970,7 @@ fn0800_1AEB_entry:
 
 l0800_1AEB:
 	call SEQ(0x0800, Mem12[ss_bp + 0x0006:word16]) (retsize: 2;)
-		uses: ax:0xFFFF,sp:fp - 4,Stack +0002:0xFFFF,Stack +0004:Mem0[ss_bp + 0x0008:word16],Top:0
+		uses: ax:0xFFFF,Stack +0002:0xFFFF,Stack +0004:Mem0[ss_bp + 0x0008:word16],Top:0
 	Mem25[ss_bp - 0x0028:word16] = Mem12[ss_bp - 0x0028:word16] - (Mem12[ss_bp - 0x0028:word16] <u 0x0001)
 // DataOut:
 // DataOut (flags):
@@ -6048,12 +6042,11 @@ fn0800_1B06_entry:
 
 l0800_1B06:
 	Mem8[ss_bp - 0x0026:word16] = Mem6[ss_bp - 0x0026:word16] + 0x0001
-	word16 sp_12 = sp_11 - 2
-	Mem13[ss:sp_12:word16] = Mem8[ss_bp + 0x0008:word16]
+	Mem13[ss:sp_11 - 2:word16] = Mem8[ss_bp + 0x0008:word16]
 	word16 ax_18
 	word16 bx_19
 	call SEQ(0x0800, Mem13[ss_bp + 0x0004:word16]) (retsize: 2;)
-		uses: sp:sp_12,Top:Top_14
+		uses: Top:Top_14
 		defs: ax:ax_18,bx:bx_19,Top:Top_16
 	sp_11 = fp - 2
 	byte al_41 = SLICE(ax_18, byte, 0)
@@ -6097,7 +6090,7 @@ l0800_1B18:
 l0800_1B21:
 	word16 bx_69
 	call wLoc02 + 0x0003 (retsize: 2;)
-		uses: cx:wLoc02 + 0x0003,sp:fp,Top:Top_16
+		uses: cx:wLoc02 + 0x0003,Top:Top_16
 		defs: bx:bx_69
 	bpOut = bp
 	esOut = es
@@ -6158,7 +6151,7 @@ l0800_1B36:
 	word16 sp_30
 	word16 ax_33
 	call SEQ(0x0800, Mem28[ss_bp + 0x0004:word16]) (retsize: 2;)
-		uses: sp:sp_17 - 4,Top:Top_29
+		uses: Top:Top_29
 		defs: ax:ax_33,sp:sp_30,Top:Top_34
 	cl_45 = Mem28[ss:sp_30 + 0x0002:byte] (alias)
 	word16 dx_40 = Mem28[ss:sp_30 + 4:word16]
@@ -6236,7 +6229,7 @@ l0800_1B89_thunk_fn0800_1AEB:
 
 l0800_1B82:
 	call wLoc02 + 0x0003 (retsize: 2;)
-		uses: cx:wLoc02 + 0x0003,sp:fp,Top:Top_92
+		uses: cx:wLoc02 + 0x0003,Top:Top_92
 	return
 // DataOut:
 // DataOut (flags):
@@ -6276,7 +6269,7 @@ fn0800_1B92_entry:
 
 l0800_1B92:
 	call Mem0[ds:0x05E2:word16] (retsize: 2;)
-		uses: sp:fp,Top:0
+		uses: Top:0
 	return
 // DataOut:
 // DataOut (flags):
@@ -6304,7 +6297,7 @@ fn0800_1B96_entry:
 l0800_1B96:
 	int8 Top_7
 	call Mem0[ds:0x05E4:word16] (retsize: 2;)
-		uses: sp:fp,Top:0
+		uses: Top:0
 		defs: Top:Top_7
 	return Top_7
 // DataOut:
@@ -6333,7 +6326,7 @@ fn0800_1B9A_entry:
 l0800_1B9A:
 	int8 Top_7
 	call Mem0[ds:0x05E6:word16] (retsize: 2;)
-		uses: sp:fp,Top:0
+		uses: Top:0
 		defs: Top:Top_7
 	return Top_7
 // DataOut:
@@ -6459,13 +6452,12 @@ l0800_1BE6:
 	word16 dx_388
 	word16 wLoc04_565
 	word16 ax_478
+	Mem33[ss:sp_115 - 2:word16] = wArg06
 	word16 v9_27 = wLoc06_542 + 0x0001
-	word16 sp_32 = sp_115 - 2
-	Mem33[ss:sp_32:word16] = wArg06
 	word16 sp_38
 	word16 ax_40
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: sp:sp_32,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:wArg0A,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v9_27,Top:Top_37
+		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:wArg0A,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v9_27,Top:Top_37
 		defs: ax:ax_40,sp:sp_38,Top:Top_43
 	wLoc06_542 = v9_27
 	sp_115 = sp_38 + 2
@@ -6528,7 +6520,7 @@ l0800_1C16:
 	Mem98[ss:sp_38:word16] = wArg06
 	word16 sp_107
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: sp:sp_38,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:wArg0A - 0x0002,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v9_27 + 0x0001,Top:Top_43
+		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:wArg0A - 0x0002,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v9_27 + 0x0001,Top:Top_43
 		defs: ax:ax_109,sp:sp_107,Top:Top_112
 	wLoc06_542 = v9_27 + 0x0001
 	sp_115 = sp_107 + 2
@@ -6571,13 +6563,12 @@ l0800_1C84:
 // SymbolicIn:
 
 l0800_1C89:
+	Mem145[ss:sp_115 - 2:word16] = wArg06
 	word16 v63_139 = wLoc06_542 + 0x0001
-	word16 sp_144 = sp_115 - 2
-	Mem145[ss:sp_144:word16] = wArg06
 	word16 sp_148
 	word16 ax_150
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: sp:sp_144,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:0x000A,Stack +000C:v62_135,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v63_139,Top:Top_147
+		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:0x000A,Stack +000C:v62_135,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v63_139,Top:Top_147
 		defs: ax:ax_150,sp:sp_148,Top:Top_153
 	wLoc06_542 = v63_139
 	byte al_158 = SLICE(ax_150, byte, 0)
@@ -6640,7 +6631,7 @@ l0800_1C66:
 	Mem218[ss:sp_207 - 2:word16] = ax_116
 	word16 sp_235
 	call SEQ(0x0800, wArg04) (retsize: 2;)
-		uses: sp:sp_207 - 2,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_599,Stack +000C:wArg0A_595,Stack +000E:wArg0C,Stack +0010:wArg0E,Top:Top_231
+		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_599,Stack +000C:wArg0A_595,Stack +000E:wArg0C,Stack +0010:wArg0E,Top:Top_231
 		defs: sp:sp_235,Top:Top_240
 	sp_115 = sp_235 + 4
 	wLoc06_542 = wLoc06_542 - 0x0001
@@ -6676,13 +6667,12 @@ l0800_1C78:
 // SymbolicIn:
 
 l0800_1C45:
+	Mem265[ss:sp_115 - 2:word16] = wArg06
 	word16 v31_260 = wLoc06_542 + 0x0001
-	word16 sp_264 = sp_115 - 2
-	Mem265[ss:sp_264:word16] = wArg06
 	word16 sp_266
 	word16 ax_268
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: sp:sp_264,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:v30_256,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v31_260,Top:Top_147
+		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:v30_256,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v31_260,Top:Top_147
 		defs: ax:ax_268,sp:sp_266,Top:Top_271
 	wLoc06_542 = v31_260
 	byte al_275 = SLICE(ax_268, byte, 0)
@@ -6736,13 +6726,12 @@ l0800_1CEA:
 // SymbolicIn:
 
 l0800_1CEF:
-	word16 sp_323 = sp_115 - 2
-	Mem324[ss:sp_323:word16] = wArg06
+	Mem324[ss:sp_115 - 2:word16] = wArg06
 	word16 v48_318 = wLoc06_542 + 0x0001
 	word16 sp_329
 	word16 ax_331
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: sp:sp_323,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_609,Stack +000C:v47_314,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v48_318,Top:Top_328
+		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_609,Stack +000C:v47_314,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v48_318,Top:Top_328
 		defs: ax:ax_331,sp:sp_329,Top:Top_334
 	wLoc06_542 = v48_318
 	sp_115 = sp_329 + 2
@@ -6782,13 +6771,12 @@ l0800_1CBE:
 // SymbolicIn:
 
 l0800_1CC3:
+	Mem410[ss:sp_115 - 2:word16] = wArg06
 	word16 v40_401 = wLoc06_542 + 0x0001
-	word16 sp_409 = sp_115 - 2
-	Mem410[ss:sp_409:word16] = wArg06
 	word16 sp_425
 	word16 ax_427
 	call SEQ(0x0800, wArg02) (retsize: 2;)
-		uses: sp:sp_409,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_640,Stack +000C:v39_397,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v40_401,Top:Top_421
+		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_640,Stack +000C:v39_397,Stack +000E:wArg0C,Stack +0010:wArg0E,Stack +FFFFFFFC:v40_401,Top:Top_421
 		defs: ax:ax_427,sp:sp_425,Top:Top_430
 	wLoc06_542 = v40_401
 	sp_115 = sp_425 + 2
@@ -6808,7 +6796,7 @@ l0800_1D03:
 	Mem443[ss:sp_439 - 2:word16] = ax_295
 	word16 sp_448
 	call SEQ(0x0800, wArg04) (retsize: 2;)
-		uses: sp:sp_439 - 2,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_609,Stack +000C:wArg0A_648,Stack +000E:wArg0C,Stack +0010:wArg0E,Top:Top_447
+		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08_609,Stack +000C:wArg0A_648,Stack +000E:wArg0C,Stack +0010:wArg0E,Top:Top_447
 		defs: sp:sp_448,Top:Top_453
 	sp_115 = sp_448 + 4
 	wLoc06_542 = wLoc06_542 - 0x0001
