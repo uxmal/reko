@@ -186,7 +186,6 @@ l0800_nD8:
 // 0800:0301: void _exit(Register (ptr16 Eq_n) ds, Stack word16 wArg02)
 void _exit(struct Eq_n * ds, word16 wArg02)
 {
-	int8 Top_n = 0x00;
 	while (true)
 	{
 		ui16 ax_n = ds->w023E;
@@ -196,9 +195,7 @@ void _exit(struct Eq_n * ds, word16 wArg02)
 		ui16 bx_n = ds->w023E;
 		(0x0800->*(ds->a05E8)[bx_n])();
 	}
-	int8 Top_n;
 	(0x0800->*ds->ptr0234)();
-	int8 Top_n;
 	(0x0800->*ds->ptr0236)();
 	word16 Eq_n::* sp_n;
 	(0x0800->*ds->ptr0238)();
@@ -1774,7 +1771,6 @@ word16 _scanf(Eq_n di, struct Eq_n * es, Eq_n ds, struct Eq_n Eq_n::* wArg02, pt
 // 0800:16F3: Register word16 __scanner(Register Eq_n di, Register (ptr16 Eq_n) es, Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack Eq_n wArg06, Stack (memptr Eq_n Eq_n) wArg08, Register out Eq_n bxOut, Register out ptr16 bpOut, Register out (ptr16 Eq_n) esOut)
 word16 __scanner(Eq_n di, struct Eq_n * es, Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04, Eq_n wArg06, struct Eq_n Eq_n::* wArg08, union Eq_n & bxOut, ptr16 & bpOut, struct Eq_n & esOut)
 {
-	int8 Top_n = 0x00;
 	word16 wLoc28_n = 0x00;
 l0800_n:
 	struct Eq_n Eq_n::* si_n = wArg08;
@@ -1892,11 +1888,11 @@ l0800_nE6:
 					if (wLoc26 > 0x00)
 					{
 						if ((bLoc2B_n & 0x01) != 0x00)
-							Top_n = __scanpop(ds);
+							__scanpop(ds);
 						else
 						{
 							di = fn0800-1708(&(ss->*(fp - 0x02)).t0000, ds, out es);
-							Top_n = __scanrslt(ds);
+							__scanrslt(ds);
 						}
 						goto l0800_n;
 					}
@@ -2100,7 +2096,7 @@ l0800_nAD3:
 l0800_n:
 					if ((ax_n & 0x20) == 0x00)
 						bLoc2B_n |= 0x04;
-					ax_n = __scantol(ds, wArg02, wArg04, wArg06, si_n, wLoc24_n & 0x7FFF, fp - 0x28, fp - 0x26, out dx, out bx, out di, out es, out Top_n);
+					ax_n = __scantol(ds, wArg02, wArg04, wArg06, si_n, wLoc24_n & 0x7FFF, fp - 0x28, fp - 0x26, out dx, out bx, out di, out es);
 					if (wLoc26 > 0x00)
 					{
 						if ((bLoc2B_n & 0x01) == 0x00)
@@ -2310,7 +2306,6 @@ word16 fn0800-1B06(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut, struct Eq_n & es
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
 	ptr16 bp = (word16) ss_bp;
 	word16 Eq_n::* sp_n = fp;
-	int8 Top_n = 0x00;
 	do
 	{
 		++*(ss_bp - 0x26);
@@ -2342,7 +2337,6 @@ void fn0800-1B2C(struct Eq_n * ss_bp)
 {
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
 	struct Eq_n Eq_n::* sp_n = fp;
-	int8 Top_n = 0x00;
 	word16 dx_n = 0x00;
 	word16 cx_n = 0x04;
 	while (true)
@@ -2403,20 +2397,16 @@ void __scantod(Eq_n ds)
 	(*((word16) ds + 0x05E2))();
 }
 
-// 0800:1B96: Register int8 __scanrslt(Register Eq_n ds)
-int8 __scanrslt(Eq_n ds)
+// 0800:1B96: void __scanrslt(Register Eq_n ds)
+void __scanrslt(Eq_n ds)
 {
-	int8 Top_n;
 	(*((word16) ds + 0x05E4))();
-	return Top_n;
 }
 
-// 0800:1B9A: Register int8 __scanpop(Register Eq_n ds)
-int8 __scanpop(Eq_n ds)
+// 0800:1B9A: void __scanpop(Register Eq_n ds)
+void __scanpop(Eq_n ds)
 {
-	int8 Top_n;
 	(*((word16) ds + 1510))();
-	return Top_n;
 }
 
 // 0800:1B9E: FlagGroup bool fn0800-1B9E(Register cu8 cl, Register Eq_n bl)
@@ -2449,10 +2439,9 @@ l0800_nBC7:
 	return C_n;
 }
 
-// 0800:1BCC: Register Eq_n __scantol(Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack Eq_n wArg06, Stack uint16 wArg08, Stack ci16 wArg0A, Stack (memptr Eq_n word16) wArg0C, Stack (memptr Eq_n Eq_n) wArg0E, Register out Eq_n dxOut, Register out Eq_n bxOut, Register out Eq_n diOut, Register out Eq_n esOut, Register out Eq_n TopOut)
-Eq_n __scantol(Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04, Eq_n wArg06, uint16 wArg08, ci16 wArg0A, word16 Eq_n::* wArg0C, union Eq_n Eq_n::* wArg0E, union Eq_n & dxOut, union Eq_n & bxOut, union Eq_n & diOut, union Eq_n & esOut, union Eq_n & TopOut)
+// 0800:1BCC: Register Eq_n __scantol(Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack Eq_n wArg06, Stack uint16 wArg08, Stack ci16 wArg0A, Stack (memptr Eq_n word16) wArg0C, Stack (memptr Eq_n Eq_n) wArg0E, Register out Eq_n dxOut, Register out Eq_n bxOut, Register out Eq_n diOut, Register out Eq_n esOut)
+Eq_n __scantol(Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04, Eq_n wArg06, uint16 wArg08, ci16 wArg0A, word16 Eq_n::* wArg0C, union Eq_n Eq_n::* wArg0E, union Eq_n & dxOut, union Eq_n & bxOut, union Eq_n & diOut, union Eq_n & esOut)
 {
-	Eq_n Top_n = 0x00;
 	byte bLoc07_n = 0x00;
 	word16 wLoc06_n = 0x00;
 	union Eq_n Eq_n::* sp_n = fp - 0x0E;
@@ -2611,7 +2600,6 @@ l0800_nD1F:
 							bxOut = wLoc04_n;
 							diOut = di_n;
 							esOut = es_n;
-							TopOut = Top_n;
 							return ax_n;
 						}
 l0800_nCBE:

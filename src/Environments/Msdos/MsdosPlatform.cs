@@ -50,10 +50,11 @@ namespace Reko.Environments.Msdos
         {
             return new HashSet<RegisterStorage>
             {
-            Registers.cs,
-            Registers.ss,
-            Registers.sp,
-            Registers.esp,
+                Registers.cs,
+                Registers.ss,
+                Registers.sp,
+                Registers.esp,
+                Registers.Top,
             };
         }
 

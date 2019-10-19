@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -57,7 +57,10 @@ namespace Reko.Environments.Cpm
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return new HashSet<RegisterStorage>();
+            return new HashSet<RegisterStorage>()
+            {
+                Architecture.StackRegister,
+            };
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

@@ -540,7 +540,10 @@ namespace Reko.Core
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return new HashSet<RegisterStorage>();
+            return new HashSet<RegisterStorage>()
+            {
+                Architecture.StackRegister,
+            };
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
