@@ -83,6 +83,15 @@ namespace Reko.Arch.RiscV
             this.StackRegister = regs[2];       // sp
         }
 
+        /// <summary>
+        /// The size of the return address (in bytes) if pushed on stack.
+        /// </summary>
+        /// <remarks>
+        /// Return address is not pushed directly on a stack in memory on
+        /// RISC-V.
+        /// </remarks>
+        public override int ReturnAddressOnStack => 0;
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new RiscVDisassembler(this, imageReader);

@@ -273,7 +273,11 @@ namespace Reko.Core
         string Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
-		PrimitiveType WordWidth { get; }					// Processor's native word size
+        PrimitiveType WordWidth { get; }                    // Processor's native word size
+        /// <summary>
+        /// The size of the return address (in bytes) if pushed on stack.
+        /// </summary>
+        int ReturnAddressOnStack { get; }
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
         RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
         RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
@@ -352,6 +356,14 @@ namespace Reko.Core
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
+        /// <summary>
+        /// The size of the return address (in bytes) if pushed on stack.
+        /// </summary>
+        /// <remarks>
+        /// Size of the return address equals to pointer size on the most of
+        /// architectures.
+        /// </remarks>
+        public virtual int ReturnAddressOnStack => PointerType.Size; //$TODO: deal with near/far calls in x86-realmode
         public int InstructionBitSize { get; protected set; }
         public EndianServices Endianness { get; protected set; }
 

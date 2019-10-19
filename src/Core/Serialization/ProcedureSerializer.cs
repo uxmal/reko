@@ -86,7 +86,7 @@ namespace Reko.Core.Serialization
         {
             if (ss == null)
                 return null;
-            var retAddrSize = this.Architecture.PointerType.Size;   //$TODO: deal with near/far calls in x86-realmode
+            var retAddrSize = this.Architecture.ReturnAddressOnStack;
             if (!ss.ParametersValid)
             {
                 return new FunctionType

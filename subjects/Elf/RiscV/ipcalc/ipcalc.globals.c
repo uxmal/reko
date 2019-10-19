@@ -4,6 +4,7 @@
 
 #include "ipcalc.h"
 
+byte g_b0000;
 void g_v10880 = ??void??;
 void g_v10898 = ??void??;
 void g_v108B0 = ??void??;
