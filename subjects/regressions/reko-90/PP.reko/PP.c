@@ -17258,10 +17258,7 @@ Eq_n fn1483-0C91(ptr32 ds_bx, Eq_n ss_bp, Eq_n ax, Eq_n cx, Eq_n si, Eq_n di, Eq
 // 1483:0CA0: Register word16 fn1483-0CA0(Sequence (ptr32 byte) es_di, Sequence Eq_n ss_bp, Register byte al, Register byte ah, Register (memptr (ptr16 Eq_n) Eq_n) bx, Register Eq_n si, Register (ptr16 Eq_n) ds, Register out Eq_n diOut, Register out Eq_n TopOut)
 word16 fn1483-0CA0(byte * es_di, Eq_n ss_bp, byte al, byte ah, struct Eq_n Eq_n::* bx, Eq_n si, struct Eq_n * ds, union Eq_n & diOut, union Eq_n & TopOut)
 {
-	word16 bp = (word16) ss_bp;
 	Eq_n di = (word16) es_di;
-	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
-	struct Eq_n * es = SLICE(es_di, selector, 16);
 	word16 sp_n;
 	word16 ax_n;
 	byte Eq_n::* bx_n;
@@ -17571,7 +17568,6 @@ real64 * fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl,
 				--cx_n;
 				ds_bx_n = SEQ(bx_n, bx_n + 0x01);
 			}
-			ptr32 ds_bp_n = Mem188[ss:bp_n + di:segptr32];
 			real64 * Top_n;
 			fn1483_E62A();
 			return Top_n;

@@ -18,7 +18,6 @@ l0000000000402168:
 
 l0000000000402178:
 	call __gmon_start__ (retsize: 8;)
-		uses: rsp:fp - 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -187,7 +187,7 @@ namespace Reko.Analysis
 
             foreach (var ssa in ssts.Select(sst => sst.SsaState))
             {
-                RemovePreservedRegistersFromIndirectCalls(ssa);
+                RemovePreservedRegistersFromHellNodes(ssa);
                 var sac = new SegmentedAccessClassifier(ssa);
                 sac.Classify();
                 var prj = new ProjectionPropagator(ssa, sac);
@@ -209,22 +209,25 @@ namespace Reko.Analysis
             eventListener.Advance(procs.Count);
         }
 
-        private void RemovePreservedRegistersFromIndirectCalls(SsaState ssa)
+        private void RemovePreservedRegistersFromHellNodes(SsaState ssa)
         {
             foreach (var stm in ssa.Procedure.Statements)
             {
-                RemovePreservedRegistersFromIndirectCall(ssa, stm);
+                RemovePreservedRegistersFromHellNode(ssa, stm);
             }
         }
 
-        private void RemovePreservedRegistersFromIndirectCall(
+        private void RemovePreservedRegistersFromHellNode(
             SsaState ssa,
             Statement stm)
         {
             if (!(stm.Instruction is CallInstruction ci))
                 return;
-            if (ci.Callee is ProcedureConstant)
-                return;
+            if (ci.Callee is ProcedureConstant pc)
+            {
+                if (!(pc.Procedure is ExternalProcedure))
+                    return;
+            }
             var trashedRegisters = program.Platform.CreateTrashedRegisters();
             foreach (var use in ci.Uses.ToList())
             {

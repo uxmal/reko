@@ -123,15 +123,16 @@ l00401172:
 			}
 		}
 		Eq_n eax_n = fn00401767();
-		Eq_n esi_n = eax_n;
 		if (*eax_n != edi_n)
 		{
 			union Eq_n * esp_n = esp_n - 0x04;
 			*esp_n = (union Eq_n *) eax_n;
 			esp_n = (char *) esp_n + 0x04;
+			union Eq_n * esi_n;
+			word32 edi_n;
 			if ((byte) (uint32) (uint8) fn0040153F(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
-				*esp_n = (union Eq_n *) *esi_n;
+				*esp_n = *esi_n;
 				word32 esp_n;
 				register_thread_local_exe_atexit_callback();
 				esp_n = esp_n + 0x04;

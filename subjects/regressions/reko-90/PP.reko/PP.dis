@@ -37226,10 +37226,7 @@ word16 fn1483_0CA0(word32 es_di, word32 ss_bp, byte al, byte ah, word16 bx, word
 // Trashed: SCZO ax bp bx cx di dx Top
 // Preserved: sp
 fn1483_0CA0_entry:
-	word16 bp = SLICE(ss_bp, word16, 0)
 	word16 di = SLICE(es_di, word16, 0)
-	selector ss = SLICE(ss_bp, selector, 16)
-	selector es = SLICE(es_di, selector, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37240,7 +37237,7 @@ l1483_0CA0:
 	word16 bx_87
 	int8 Top_90
 	call fn1483_FD4E (retsize: 2;)
-		uses: ah:ah + Mem0[ds:bx + si:byte],al:al & Mem0[ds:0x3101:byte],bp:bp,bx:bx,di:di,ds:ds,es:es,si:si,sp:fp,ss:ss,Top:0
+		uses: ah:ah + Mem0[ds:bx + si:byte],al:al & Mem0[ds:0x3101:byte],bx:bx,sp:fp,Top:0
 		defs: ax:ax_86,bx:bx_87,sp:sp_85,Top:Top_90
 	byte bl_101 = SLICE(bx_87, byte, 0)
 	byte ah_102 = SLICE(ax_86, byte, 8)
@@ -37266,7 +37263,7 @@ l1483_0CA9_in_fn1483_0CA0:
 	word16 bx_141
 	int8 Top_144
 	call fn1483_4FE0 (retsize: 2;)
-		uses: ax:v30,bp:bp - 0x0001,bx:bx_128,cx:di + 0x0001 - si,di:di + 0x0001,ds:ds,dx:dx_94,es:es,si:si,sp:sp_85,ss:ss,Top:Top_90
+		uses: ax:v30,bx:bx_128,cx:di + 0x0001 - si,dx:dx_94,sp:sp_85,Top:Top_90
 		defs: bx:bx_141,Top:Top_144
 	Mem148[ds:0xF7E3:word16] = v31
 	Mem152[ds:bx_141 + (di + 0x0001):word16] = v32
@@ -37577,7 +37574,7 @@ l1483_0D69:
 	int8 Top_118
 	byte SCZDOP_119
 	call fn1483_8A82 (retsize: 2;)
-		uses: ax:ax_98,bh:bh,bl:0xB4,bp:v19_76,cs:cs,cx:SEQ(ch_39, cl_101),di:di,ds:ds,dx:dx_55,es:es,FPUF:FPUF,fs:fs,si:si,sp:fp + 0x0008,ss:ss,Stack +0000:wArg06,Stack +0006:wArg0C,Stack +FFFFFFFC:wArg02,Top:0
+		uses: ax:ax_98,bh:bh,bl:0xB4,cx:SEQ(ch_39, cl_101),dx:dx_55,sp:fp + 0x0008,Stack +0000:wArg06,Stack +0006:wArg0C,Stack +FFFFFFFC:wArg02,Top:0
 		defs: ax:ax_114,bx:bx_116,cx:cx_115,dx:dx_117,SCZDOP:SCZDOP_119,sp:sp_113,Top:Top_118
 	Mem122[ss:sp_113 - 2:word16] = ax_114
 	Mem124[ss:sp_113 - 4:word16] = cx_115
@@ -37705,7 +37702,7 @@ l1483_0EEE:
 	Mem277[bx_203:0x8602:word16] = Mem274[bx_203:0x8602:word16] + dx_117
 	int8 Top_296
 	call fn3024_8E10 (retsize: 4;)
-		uses: ax:Mem277[bx_203:si_270:word16],bh:bh_498,bl:bl_496,bp:fp + 0x018A,cs:cs,cx:cx_265,di:di_283,ds:bx_203,dx:dx_117,es:psegArg01A4,FPUF:FPUF,fs:fs,si:si_270 + 0x0002,sp:fp + 0x0002,ss:ss,Stack +0004:wArg02,Stack +0006:wArg02,Stack +0008:wArg06,Stack +000A:wArg06,Stack +000E:wArg0C,Stack +0010:wArg0C,Stack +02C3:v57_243,Stack +0FA2:v56_236,Top:Top_118
+		uses: ax:Mem277[bx_203:si_270:word16],bh:bh_498,bl:bl_496,cx:cx_265,dx:dx_117,sp:fp + 0x0002,Stack +0004:wArg02,Stack +0006:wArg02,Stack +0008:wArg06,Stack +000A:wArg06,Stack +000E:wArg0C,Stack +0010:wArg0C,Stack +02C3:v57_243,Stack +0FA2:v56_236,Top:Top_118
 		defs: Top:Top_296
 	return Top_296
 // DataOut:
@@ -37770,10 +37767,9 @@ l1483_0E72:
 // SymbolicIn:
 
 l1483_0DF9:
-	ptr32 ds_bp_359 = Mem188[ss:bp_186 + di:segptr32]
 	int8 Top_377
 	call fn1483_E62A (retsize: 2;)
-		uses: ax:ax_363,bh:bh_370,bl:bl_369,bp:SLICE(ds_bp_359, word16, 0),cs:cs,cx:cx_677,di:di,ds:SLICE(ds_bp_359, selector, 16),dx:dx_117,es:es_361,FPUF:FPUF,fs:fs,si:si_213,sp:fp + 418,ss:ss,Stack +0002:es_361,Stack +0004:wArg02,Stack +0008:wArg06,Stack +000E:wArg0C,Stack +0121:bArg02C1,Stack +0E00:bArg0FA0,Stack +FFFFFE62:wArg02,Stack +FFFFFE66:wArg06,Stack +FFFFFE6C:wArg0C,Top:Top_118
+		uses: ax:ax_363,bh:bh_370,bl:bl_369,cx:cx_677,dx:dx_117,sp:fp + 418,Stack +0002:es_361,Stack +0004:wArg02,Stack +0008:wArg06,Stack +000E:wArg0C,Stack +0121:bArg02C1,Stack +0E00:bArg0FA0,Stack +FFFFFE62:wArg02,Stack +FFFFFE66:wArg06,Stack +FFFFFE6C:wArg0C,Top:Top_118
 		defs: Top:Top_377
 	return Top_377
 // DataOut:

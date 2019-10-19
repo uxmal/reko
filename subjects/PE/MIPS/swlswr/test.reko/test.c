@@ -4,31 +4,29 @@
 
 #include "test.h"
 
-// 00011000: Register word32 fn00011000(Register out ptr32 raOut)
-word32 fn00011000(ptr32 & raOut)
+// 00011000: Register word32 fn00011000()
+word32 fn00011000()
 {
 	memset(fp + -0x0014, 0x00, 0x05);
 	memcpy(calloc(0x01, 0x05), fp + ~0x1B, 0x05);
 	dwLoc24->b0000 = 0x0C;
 	dwLoc24->dw0001 = 0x00;
-	raOut = dwLoc14;
 	return 0x00;
 }
 
 // 000110A0: Register Eq_n Win32CrtStartup()
 Eq_n Win32CrtStartup()
 {
-	fn000111C4(ra);
-	return fn000110E8(ra);
+	fn000111C4();
+	return fn000110E8();
 }
 
-// 000110E8: Register Eq_n fn000110E8(Register word32 ra)
-Eq_n fn000110E8(word32 ra)
+// 000110E8: Register Eq_n fn000110E8()
+Eq_n fn000110E8()
 {
-	fn000114E4(ra);
-	word32 ra_n;
-	Eq_n r2_n = fn00011000(out ra_n);
-	fn00011278(r2_n, ra_n);
+	fn000114E4();
+	Eq_n r2_n = fn00011000();
+	fn00011278(r2_n);
 	return r2_n;
 }
 
@@ -43,8 +41,8 @@ void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 r30, word32 ra)
 	XcptFilter();
 }
 
-// 000111C4: void fn000111C4(Register word32 ra)
-void fn000111C4(word32 ra)
+// 000111C4: void fn000111C4()
+void fn000111C4()
 {
 	ui32 r8_n = globals->dw13030;
 	if (r8_n != 0x00 && r8_n != 0xB064)
@@ -62,19 +60,19 @@ void fn000111C4(word32 ra)
 	}
 }
 
-// 00011278: void fn00011278(Register Eq_n r4, Register word32 ra)
-void fn00011278(Eq_n r4, word32 ra)
+// 00011278: void fn00011278(Register Eq_n r4)
+void fn00011278(Eq_n r4)
 {
-	fn000112A8(r4, 0x00, 0x00, ra);
+	fn000112A8(r4, 0x00, 0x00);
 }
 
-// 000112A8: void fn000112A8(Register Eq_n r4, Register int32 r5, Register int32 r6, Register word32 ra)
-void fn000112A8(Eq_n r4, int32 r5, int32 r6, word32 ra)
+// 000112A8: void fn000112A8(Register Eq_n r4, Register int32 r5, Register int32 r6)
+void fn000112A8(Eq_n r4, int32 r5, int32 r6)
 {
 	globals->b13038 = (byte) (r6 << 0x18 >> 0x18);
 	if (r5 != 0x00)
 	{
-		fn0001147C(&globals->dw12018, &globals->dw1201C, ra);
+		fn0001147C(&globals->dw12018, &globals->dw1201C);
 		if (r6 != 0x00)
 			return;
 		TerminateProcess(fn00011460(), r4);
@@ -82,7 +80,7 @@ void fn000112A8(Eq_n r4, int32 r5, int32 r6, word32 ra)
 	else if (globals->t13040 == 0x00)
 	{
 l00011374:
-		fn0001147C(&globals->dw12010, &globals->dw12014, ra);
+		fn0001147C(&globals->dw12010, &globals->dw12014);
 	}
 	else
 	{
@@ -102,22 +100,22 @@ l00011374:
 	}
 }
 
-// 000113D8: void fn000113D8(Register Eq_n r4, Register word32 ra)
-void fn000113D8(Eq_n r4, word32 ra)
+// 000113D8: void fn000113D8(Register Eq_n r4)
+void fn000113D8(Eq_n r4)
 {
-	fn000112A8(r4, 0x01, 0x00, ra);
+	fn000112A8(r4, 0x01, 0x00);
 }
 
-// 00011408: void fn00011408(Register word32 ra)
-void fn00011408(word32 ra)
+// 00011408: void fn00011408()
+void fn00011408()
 {
-	fn000112A8(0x00, 0x00, 0x01, ra);
+	fn000112A8(0x00, 0x00, 0x01);
 }
 
-// 00011434: void fn00011434(Register word32 ra)
-void fn00011434(word32 ra)
+// 00011434: void fn00011434()
+void fn00011434()
 {
-	fn000112A8(0x00, 0x01, 0x01, ra);
+	fn000112A8(0x00, 0x01, 0x01);
 }
 
 // 00011460: Register int32 fn00011460()
@@ -126,8 +124,8 @@ int32 fn00011460()
 	return 66;
 }
 
-// 0001147C: void fn0001147C(Register (ptr32 word32) r4, Register (ptr32 word32) r5, Register word32 ra)
-void fn0001147C(word32 * r4, word32 * r5, word32 ra)
+// 0001147C: void fn0001147C(Register (ptr32 word32) r4, Register (ptr32 word32) r5)
+void fn0001147C(word32 * r4, word32 * r5)
 {
 	word32 * dwArg00_n = r4;
 	while ((word32) (dwArg00_n < r5) != 0x00)
@@ -138,15 +136,15 @@ void fn0001147C(word32 * r4, word32 * r5, word32 ra)
 	}
 }
 
-// 000114E4: void fn000114E4(Register word32 ra)
-void fn000114E4(word32 ra)
+// 000114E4: void fn000114E4()
+void fn000114E4()
 {
-	fn0001147C(&globals->dw12008, &globals->dw1200C, ra);
-	fn0001147C(&globals->dw12000, &globals->dw12004, ra);
+	fn0001147C(&globals->dw12008, &globals->dw1200C);
+	fn0001147C(&globals->dw12000, &globals->dw12004);
 }
 
-// 0001152C: Register word32 fn0001152C(Register word32 ra)
-word32 fn0001152C(word32 ra)
+// 0001152C: Register word32 fn0001152C()
+word32 fn0001152C()
 {
 	Eq_n r8_n = globals->t13040;
 	struct Eq_n * sp_n = fp + -0x0038;
@@ -206,9 +204,9 @@ word32 fn0001152C(word32 ra)
 	}
 }
 
-// 000116FC: void fn000116FC(Register word32 ra)
-void fn000116FC(word32 ra)
+// 000116FC: void fn000116FC()
+void fn000116FC()
 {
-	fn0001152C(ra) == 0x00;
+	fn0001152C() == 0x00;
 }
 
