@@ -2,7 +2,7 @@ word32 fn00401000(word32 ebp, word32 esi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebp:[0..31] esi:[0..31]
-// LiveOut: eax Top
+// LiveOut: eax
 // Trashed: SCZO eax ecx Top
 // Preserved: esp
 fn00401000_entry:
@@ -57,7 +57,7 @@ void fn00401060(word32 ebp, word32 esi, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebp:[0..31] esi:[0..31] Stack +0004:[0..31]
-// LiveOut: Top
+// LiveOut:
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esi esp
 fn00401060_entry:
@@ -68,10 +68,9 @@ fn00401060_entry:
 l00401060:
 	word32 esp_14
 	word32 eax_16
-	int8 Top_17
 	call _acrt_iob_func (retsize: 4;)
-		uses: ebp:fp - 4,esi:dwArg04,esp:fp - 12,Stack +0004:0x00000001,Stack +0008:esi,Stack +000C:ebp,Stack +0014:dwArg04,Top:0
-		defs: eax:eax_16,esp:esp_14,Top:Top_17
+		uses: Stack +0004:0x00000001,Stack +0008:esi,Stack +000C:ebp,Stack +0014:dwArg04
+		defs: eax:eax_16,esp:esp_14
 	Mem23[esp_14:word32] = fp + 0x00000008
 	Mem25[esp_14 - 4:word32] = 0x00000000
 	Mem27[esp_14 - 8:word32] = dwArg04
@@ -80,7 +79,7 @@ l00401060:
 	Mem33[esp_14 - 16:word32] = Mem29[eax_30 + 0x00000004:word32]
 	Mem36[esp_14 - 20:word32] = Mem33[eax_30:word32]
 	call _stdio_common_vfprintf (retsize: 4;)
-		uses: ebp:fp - 4,esi:dwArg04,esp:esp_14 - 20,Stack +0008:dwArg04,Top:Top_17
+		uses: Stack +0008:dwArg04
 	return
 // DataOut:
 // DataOut (flags):
@@ -133,7 +132,6 @@ l0040117E:
 	Mem55[ebp_19 - 0x00000004:word32] = Mem53[ebp_19 - 0x00000004:word32] & 0x00000000
 	word32 edx_140
 	Mem68[ebp_19 - 0x00000024:byte] = SLICE((uint32) (uint8) fn0040143F(out edx_140), byte, 0)
-	int8 Top_163 = 0
 	word32 ebp_135 = ebp_19
 	word32 eax_69 = Mem68[0x00403334:word32]
 	word32 ebx_127 = SEQ(ebx_24_8_129, 0x00)
@@ -204,17 +202,15 @@ l0040120E:
 	Mem156[esp_109 - 8:word32] = edi_121
 	word32 esi_157 = Mem156[esi_139:word32]
 	fn00401976()
-	int8 Top_159 = <invalid>
 	call esi_157 (retsize: 4;)
-		uses: edx:edx_140,esp:esp_109 - 8,Stack +FFFFFFF8:0x00000001,Top:Top_159
-		defs: edx:edx_164,esp:esp_160,Top:Top_163
+		uses: edx:edx_140,Stack +FFFFFFF8:0x00000001
+		defs: edx:edx_164,esp:esp_160
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040121D:
 	word32 eax_166 = fn0040176E()
-	word32 esi_167 = eax_166
 	branch Mem168[eax_166:word32] == edi_121 l0040123B
 // DataOut:
 // DataOut (flags):
@@ -223,50 +219,44 @@ l0040121D:
 l00401228:
 	word32 esp_173 = esp_118 - 4
 	Mem174[esp_173:word32] = eax_166
-	esp_118 = esp_173 + 4
-	branch SLICE((uint32) (uint8) fn00401544(ebx_127, eax_166, edi_121, out edx_140, out ebx_127, out ebp_135, out esi_167, out edi_121), byte, 0) == 0x00 l0040123B
+	word32 esi_182
+	word32 edi_346
+	branch SLICE((uint32) (uint8) fn00401544(ebx_127, eax_166, edi_121, out edx_140, out ebx_127, out ebp_135, out esi_182, out edi_346), byte, 0) == 0x00 l0040123B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401233:
-	Mem196[esp_173:word32] = Mem174[esi_167:word32]
-	word32 esp_201
+	Mem196[esp_173:word32] = Mem174[esi_182:word32]
 	call register_thread_local_exe_atexit_callback (retsize: 4;)
-		uses: ebx:ebx_179,edi:edi_181,edx:edx_183,esi:esi_182,esp:esp_173,fs:fs,Stack +FFFFFFF8:0x00000001,Top:Top_197
-		defs: edx:edx_205,esp:esp_201,Top:Top_204
-	esp_118 = esp_201 + 4
+		uses: edx:edx_183,Stack +FFFFFFF8:0x00000001
+		defs: edx:edx_205
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040123B:
-	word32 esp_218
 	word32 eax_220
-	int8 Top_221
 	word32 edx_222
 	call _p___argv (retsize: 4;)
-		uses: ebx:ebx_210,edi:edi_212,edx:edx_213,esi:esi_211,esp:esp_216,fs:fs,Stack +FFFFFFF8:0x00000001,Top:Top_217
-		defs: eax:eax_220,edx:edx_222,esp:esp_218,Top:Top_221
-	word32 esp_225
+		uses: edx:edx_213,Stack +FFFFFFF8:0x00000001
+		defs: eax:eax_220,edx:edx_222
 	word32 eax_227
-	int8 Top_228
 	word32 edx_229
 	call _p___argc (retsize: 4;)
-		uses: ebx:ebx_210,edi:eax_220,edx:edx_222,esi:esi_211,esp:esp_218,fs:fs,Stack +FFFFFFF8:0x00000001,Top:Top_221
-		defs: eax:eax_227,edx:edx_229,esp:esp_225,Top:Top_228
+		uses: edx:edx_222,Stack +FFFFFFF8:0x00000001
+		defs: eax:eax_227,edx:edx_229
 	word32 esp_232
 	word32 eax_234
 	word32 edx_236
 	call get_initial_narrow_environment (retsize: 4;)
-		uses: ebx:ebx_210,edi:eax_220,edx:edx_229,esi:eax_227,esp:esp_225,fs:fs,Stack +FFFFFFF8:0x00000001,Top:Top_228
+		uses: edx:edx_229,Stack +FFFFFFF8:0x00000001
 		defs: eax:eax_234,edx:edx_236,esp:esp_232
 	Mem239[esp_232 - 4:word32] = eax_234
 	Mem242[esp_232 - 8:word32] = Mem239[eax_220:word32]
 	Mem245[esp_232 - 12:word32] = Mem242[eax_227:word32]
 	word32 eax_248 = fn00401000(ebp_135, eax_227)
 	byte bl_268 = SLICE(ebx_127, byte, 0)
-	int8 Top_250 = <invalid>
 	word32 esp_255 = esp_232
 	branch SLICE((uint32) (uint8) fn0040188F(), byte, 0) != 0x00 l0040126C
 // DataOut:
@@ -281,7 +271,7 @@ l0040126C:
 
 l00401270:
 	call cexit (retsize: 4;)
-		uses: ebx:ebx_210,edi:eax_220,edx:edx_236,esi:eax_248,esp:esp_232,fs:fs,Stack +FFFFFFF8:0x00000001,Top:Top_250
+		uses: edx:edx_236,Stack +FFFFFFF8:0x00000001
 		defs: esp:esp_274
 // DataOut:
 // DataOut (flags):
@@ -631,11 +621,10 @@ l004014F3:
 l004014CD:
 	word32 esp_116
 	word32 eax_117
-	int8 Top_119
 	word32 edx_120
 	call initialize_onexit_table (retsize: 4;)
-		uses: ebp:fp - 4,ebx:ebx,edi:edi,edx:edx_120,esi:dwArg04,esp:fp - 0x00000018,fs:fs,Stack +0004:0x0040333C,Stack +0020:dwArg04,Top:0
-		defs: eax:eax_117,edx:edx_120,esp:esp_116,Top:Top_119
+		uses: edx:edx_120,Stack +0004:0x0040333C,Stack +0020:dwArg04
+		defs: eax:eax_117,edx:edx_120,esp:esp_116
 	branch eax_117 == 0x00000000 l004014E0
 // DataOut:
 // DataOut (flags):
@@ -645,7 +634,7 @@ l004014E0:
 	Mem128[esp_116:word32] = 0x00403348
 	word32 edx_133
 	call initialize_onexit_table (retsize: 4;)
-		uses: ebp:fp - 4,ebx:ebx,edi:edi,edx:edx_133,esi:dwArg04,esp:esp_116,fs:fs,Stack +0008:dwArg04,Top:Top_119
+		uses: edx:edx_133,Stack +0008:dwArg04
 		defs: edx:edx_133
 // DataOut:
 // DataOut (flags):
@@ -868,7 +857,7 @@ l00401613:
 
 l00401637:
 	call register_onexit_function (retsize: 4;)
-		uses: ebp:fp - 4,esp:fp - 12,Stack +0004:0x0040333C,Stack +0014:dwArg04,Top:0
+		uses: Stack +0004:0x0040333C,Stack +0014:dwArg04
 		defs: eax:eax_23
 // DataOut:
 // DataOut (flags):
@@ -876,7 +865,7 @@ l00401637:
 
 l00401630:
 	call crt_atexit (retsize: 4;)
-		uses: ebp:fp - 4,esp:fp - 8,Stack +0010:dwArg04,Top:0
+		uses: Stack +0010:dwArg04
 		defs: eax:eax_30
 // DataOut:
 // DataOut (flags):
@@ -1116,7 +1105,7 @@ fn00401718_entry:
 l00401718:
 	word32 eax_11
 	call controlfp_s (retsize: 4;)
-		uses: esp:fp - 12,Stack +0004:0x00000000,Stack +0008:0x00010000,Stack +000C:0x00030000,Top:0
+		uses: Stack +0004:0x00000000,Stack +0008:0x00010000,Stack +000C:0x00030000
 		defs: eax:eax_11
 	branch eax_11 != 0x00000000 l00401731
 // DataOut:
@@ -1447,25 +1436,22 @@ l00401920:
 // SymbolicIn:
 
 l00401930:
-	word32 esp_14 = fp - 12
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401931:
-	word32 edi_19 = Mem16[esi_10:word32]
-	branch edi_19 == 0x00000000 l00401940
+	branch Mem16[esi_10:word32] == 0x00000000 l00401940
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401937:
 	fn00401976()
-	int8 Top_24 = <invalid>
 	word32 ecx_28
 	call fn00000000 (retsize: 4;)
-		uses: ebx:0x004024C8,ecx:ecx_28,edi:edi_19,esi:esi_17,esp:esp_26,Top:Top_24
-		defs: ecx:ecx_28,esp:esp_27
+		uses: ecx:ecx_28
+		defs: ecx:ecx_28
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1499,7 +1485,7 @@ void fn00401976()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: Top
+// LiveOut:
 // Trashed: Top
 // Preserved: esp
 fn00401976_entry:
@@ -1509,7 +1495,6 @@ fn00401976_entry:
 
 l00401976:
 	call Mem0[0x004020D0:word32] (retsize: 4;)
-		uses: esp:fp,Top:0
 	return
 // DataOut:
 // DataOut (flags):

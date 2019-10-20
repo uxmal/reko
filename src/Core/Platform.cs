@@ -234,7 +234,13 @@ namespace Reko.Core
         /// Some architectures define global registers that are preserved 
         /// across calls; these should also be present in this set.
         /// </remarks>
-        public abstract HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
+        public virtual HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        {
+            return new HashSet<RegisterStorage>()
+            {
+                Architecture.StackRegister,
+            };
+        }
 
         /// <summary>
         /// Creates a set of registers that the "standard" ABI cannot 
@@ -536,11 +542,6 @@ namespace Reko.Core
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

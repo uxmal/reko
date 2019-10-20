@@ -30,7 +30,7 @@ l077A:
 l0791:
 	byte R1_20
 	call fn4EF3 (retsize: 2;)
-		uses: A:Mem7[0x80EF:byte] + A_11,DPH:0x80,DPL:0xEF,R1:R1 + 0x01,R7:A_11,SP:fp
+		uses: A:Mem7[0x80EF:byte] + A_11,DPH:0x80,DPL:0xEF,R1:R1 + 0x01,R7:A_11
 		defs: R1:R1_20
 	Mem30[0x0157:byte] = 0x05
 	branch (Mem30[0x80EA:byte] >>u 0x02 & 0x01) != 0x00 l07AA
@@ -40,7 +40,7 @@ l0791:
 
 l07A7:
 	call fn4AC0 (retsize: 2;)
-		uses: R1:R1_20,SP:fp
+		uses: R1:R1_20
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

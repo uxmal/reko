@@ -18,7 +18,6 @@ l00000000004003E0:
 
 l00000000004003F0:
 	call __gmon_start__ (retsize: 8;)
-		uses: rsp:fp - 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -231,7 +230,7 @@ l0000000000400528_thunk_register_tm_clones:
 l0000000000400514:
 	word64 r8_28
 	call fn0000000000000000 (retsize: 8;)
-		uses: r8:r8,rbp:fp - 8,rdi:0x0000000000600E20,rsp:fp - 8,Stack +0008:rbp
+		uses: r8:r8,rdi:0x0000000000600E20,Stack +0008:rbp
 		defs: r8:r8_28
 // DataOut:
 // DataOut (flags):

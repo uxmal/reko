@@ -13,7 +13,7 @@ fn0387_entry:
 l0387:
 	word16 hl_6 = Mem5[0x1648:word16]
 	call hl_6 (retsize: 2;)
-		uses: hl:hl_6,sp:fp - 0x0002,Stack +0002:0x038F
+		uses: hl:hl_6,Stack +0002:0x038F
 	return
 // DataOut:
 // DataOut (flags):
@@ -26,7 +26,7 @@ fn0387_exit:
 
 
 
-word16 fn0390(byte b, byte c, byte e, byte bArg02)
+void fn0390(byte b, byte c, byte e, byte bArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7]
@@ -56,7 +56,7 @@ l039D:
 // SymbolicIn:
 
 l03BA:
-	return fp + 0x0002
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -198,7 +198,7 @@ fn0400_exit:
 
 
 
-word16 fn040D(byte b, byte c, byte e, word16 wArg02)
+void fn040D(byte b, byte c, byte e, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..15]
@@ -227,7 +227,7 @@ l041C:
 // SymbolicIn:
 
 l045A:
-	return fp + 0x0002
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1551,10 +1551,11 @@ l0990:
 	Mem11[0x1693:byte] = b
 	Mem14[0x1692:byte] = c
 	word16 hl_19 = Mem18[0x168B:word16]
-	word16 sp_31 = fn0390(SLICE(hl_19 + 0x0001, byte, 8), SLICE(hl_19 + 0x0001, byte, 0), 0x20, SEQ(b, 0x0B))
+	fn0390(SLICE(hl_19 + 0x0001, byte, 8), SLICE(hl_19 + 0x0001, byte, 0), 0x20, SEQ(b, 0x0B))
 	Mem38[0x1696:byte] = Mem18[Mem18[0x1692:word16]:byte]
 	word16 hl_39 = Mem38[0x1692:word16]
 	Mem41[0x1692:word16] = hl_39 + 0x0001
+	word16 sp_31 = <invalid>
 	branch Mem41[hl_39 + 0x0002:byte] != 0x3A l0A0C
 // DataOut:
 // DataOut (flags):
@@ -1911,7 +1912,8 @@ l0C1A:
 	fn1326(0x07, fn1346(0x0108, 0x0103), out l_245)
 	word16 hl_244 = <invalid>
 	word16 hl_126 = Mem101[0x0108:word16]
-	word16 sp_136 = fn040D(SLICE(hl_126, byte, 8), SLICE(hl_126, byte, 0), SLICE(hl_244, byte, 0), Mem101[hl_73 - 0x0008:word16])
+	fn040D(SLICE(hl_126, byte, 8), SLICE(hl_126, byte, 0), SLICE(hl_244, byte, 0), Mem101[hl_73 - 0x0008:word16])
+	word16 sp_136 = <invalid>
 	Mem148[sp_136 - 0x0002:word16] = af_91
 	byte f_190 = SLICE(af_91, byte, 0)
 	branch (0x00 - (Mem148[0x138A:byte] >u 0x03) | Mem148[sp_136 + 0x0003:byte]) >>u 0x01 >=u 0x00 l0C71
@@ -1956,7 +1958,7 @@ l0C8F:
 
 l0105:
 	call fn1729 (retsize: 2;)
-		uses: f:f_190,sp:sp_136
+		uses: f:f_190
 	return
 // DataOut:
 // DataOut (flags):
@@ -1969,7 +1971,7 @@ l0C84:
 
 l0224:
 	call fn177D (retsize: 2;)
-		uses: f:f_190,sp:sp_136
+		uses: f:f_190
 	return
 // DataOut:
 // DataOut (flags):
@@ -1982,7 +1984,7 @@ l0C79:
 
 l020A:
 	call fn172D (retsize: 2;)
-		uses: f:f_190,sp:sp_136
+		uses: f:f_190
 	return
 // DataOut:
 // DataOut (flags):

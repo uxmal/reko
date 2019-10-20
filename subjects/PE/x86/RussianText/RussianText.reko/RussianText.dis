@@ -74,10 +74,9 @@ l0040110B:
 
 l00401114:
 	word32 eax_11
-	int8 Top_12
 	call __CRTL_TLS_GetValue (retsize: 4;)
-		uses: eax:eax_11,esp:fp - 4,Stack +0004:Mem0[0x0040208B:word32],Top:0
-		defs: eax:eax_11,Top:Top_12
+		uses: eax:eax_11,Stack +0004:Mem0[0x0040208B:word32]
+		defs: eax:eax_11
 	branch eax_11 == 0x00000000 l0040113C
 // DataOut:
 // DataOut (flags):
@@ -86,7 +85,7 @@ l00401114:
 l00401123:
 	word32 eax_22 = GetProcessHeap()
 	call __CRTL_TLS_ExitThread (retsize: 4;)
-		uses: eax:HeapFree(eax_22, 0x00000008, eax_11),esp:fp - 4,Stack +0000:0x00000008,Stack +0004:Mem24[0x0040208B:word32],Stack +FFFFFFFC:eax_22,Top:Top_12
+		uses: eax:HeapFree(eax_22, 0x00000008, eax_11),Stack +0000:0x00000008,Stack +0004:Mem24[0x0040208B:word32],Stack +FFFFFFFC:eax_22
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

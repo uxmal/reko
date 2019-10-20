@@ -53,17 +53,15 @@ word64 fn00000001400011B0(ui64 rcx, word64 qwArg00)
 	return fn000000014000147C(rcx, qwArg00);
 }
 
-// 00000001400011D4: void fn00000001400011D4(Register Eq_n rbx, Register ui64 r8, Register Eq_n xmm1, Stack word64 qwArg08)
-void fn00000001400011D4(Eq_n rbx, ui64 r8, Eq_n xmm1, word64 qwArg08)
+// 00000001400011D4: void fn00000001400011D4(Register Eq_n rbx, Register ui64 r8, Stack word64 qwArg08)
+void fn00000001400011D4(Eq_n rbx, ui64 r8, word64 qwArg08)
 {
 	set_app_type();
 	fn0000000140001920();
 	_set_fmode(dwLoc28);
 	*__p__commode() = (word32) (uint64) (uint32) fn0000000140001ABC();
 	word64 r8_n;
-	word64 rbx_n;
-	word128 xmm1_n;
-	if ((byte) (uint64) (uint8) fn000000014000164C(0x01, r8, xmm1, out rbx_n, out r8_n, out xmm1_n) != 0x00)
+	if ((byte) (uint64) (uint8) fn000000014000164C(0x01, r8, out r8_n) != 0x00)
 	{
 		fn0000000140001B5C();
 		fn0000000140001854(0x140001BA8);
@@ -114,8 +112,8 @@ void fn00000001400012A0()
 	set_new_mode();
 }
 
-// 00000001400012BC: Register word32 fn00000001400012BC(Register (ptr64 (ptr64 code)) rax, Register word64 rsi, Register word64 rdi)
-word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi, word64 rdi)
+// 00000001400012BC: Register word32 fn00000001400012BC(Register (ptr64 (ptr64 code)) rax, Register word64 rsi)
+word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi)
 {
 	word56 rsi_56_8_n = SLICE(rsi, word56, 8);
 	byte al = (byte) rax;
@@ -223,7 +221,7 @@ word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi, word64 rdi)
 Eq_n Win32CrtStartup()
 {
 	<anonymous> ** rax_n = fn000000014000186C(qwLoc20, qwLoc18);
-	return (DWORD) (uint64) (uint32) fn00000001400012BC(rax_n, rsi, rdi);
+	return (DWORD) (uint64) (uint32) fn00000001400012BC(rax_n, rsi);
 }
 
 // 0000000140001448: void fn0000000140001448(Stack Eq_n tArg00, Stack Eq_n tArg08)
@@ -311,11 +309,10 @@ void fn0000000140001600(word32 ecx, word32 edx)
 	fn0000000140001938();
 }
 
-// 000000014000164C: Register byte fn000000014000164C(Register up32 ecx, Register ui64 r8, Register Eq_n xmm1, Register out Eq_n rbxOut, Register out Eq_n r8Out, Register out Eq_n xmm1Out)
-byte fn000000014000164C(up32 ecx, ui64 r8, Eq_n xmm1, union Eq_n & rbxOut, union Eq_n & r8Out, union Eq_n & xmm1Out)
+// 000000014000164C: Register byte fn000000014000164C(Register up32 ecx, Register ui64 r8, Register out Eq_n r8Out)
+byte fn000000014000164C(up32 ecx, ui64 r8, union Eq_n & r8Out)
 {
-	Eq_n rbx_n = (uint64) ecx;
-	word32 ebx_n = (word32) rbx_n;
+	word32 ebx_n = (word32) (uint64) ecx;
 	if (ecx > 0x01)
 	{
 		<anonymous> ** rcx_n;
@@ -326,9 +323,7 @@ byte fn000000014000164C(up32 ecx, ui64 r8, Eq_n xmm1, union Eq_n & rbxOut, union
 		int3();
 		Eq_n r8_n;
 		<anonymous> ** rax_n = fn0000000140001718(rcx_n, out r8_n);
-		rbxOut = rbx_n;
 		r8Out = r8_n;
-		xmm1Out = xmm1;
 		return (byte) rax_n;
 	}
 	else
@@ -360,12 +355,9 @@ byte fn000000014000164C(up32 ecx, ui64 r8, Eq_n xmm1, union Eq_n & rbxOut, union
 			globals->t400035D0 = r8_n;
 			globals->ow400035D8 = SEQ(r8_n, r8_n);
 			globals->t400035E8 = r8_n;
-			xmm1 = DPB(xmm1, r8_n, 0);
 			rax_n = SEQ(SLICE(rax_n, word56, 8), 0x01);
 		}
-		rbxOut = rbx;
 		r8Out = r8_n;
-		xmm1Out = xmm1;
 		return (byte) rax_n;
 	}
 }
@@ -759,8 +751,8 @@ void fn0000000140001F10(<anonymous> * rax)
 	rax();
 }
 
-// 0000000140001F12: void fn0000000140001F12(Register (ptr64 word64) rcx, Register word64 rdx, Register word64 rbp)
-void fn0000000140001F12(word64 * rcx, word64 rdx, word64 rbp)
+// 0000000140001F12: void fn0000000140001F12(Register (ptr64 word64) rcx, Register word64 rbp)
+void fn0000000140001F12(word64 * rcx, word64 rbp)
 {
 	word64 rax_n = *rcx;
 	seh_filter_exe();

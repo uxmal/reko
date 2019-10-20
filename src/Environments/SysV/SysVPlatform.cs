@@ -110,11 +110,6 @@ namespace Reko.Environments.SysV
             }
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return this.trashedRegs.ToHashSet();

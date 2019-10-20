@@ -60,10 +60,10 @@ l00400284:
 
 
 
-void strcpy(word32 r1, word32 r28, word32 ra)
+void strcpy(word32 r28, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r1:[0..31] r28:[0..31] ra:[0..31]
+// MayUse:  r28:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r1 r15 r2 r24 r25 r28 r3
 // Preserved: sp
@@ -190,7 +190,7 @@ l00400290:
 // SymbolicIn:
 
 l0040061C_thunk___do_global_dtors_aux:
-	__do_global_dtors_aux(r1, ra)
+	__do_global_dtors_aux()
 	return
 // DataOut:
 // DataOut (flags):
@@ -284,10 +284,10 @@ l004002C0:
 
 
 
-void strerror(word32 r1, word32 r28, word32 ra)
+void strerror(word32 r28, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r1:[0..31] r28:[0..31] ra:[0..31]
+// MayUse:  r28:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r1 r15 r2 r24 r25 r28 r3
 // Preserved: sp
@@ -406,7 +406,7 @@ l004002D0:
 // SymbolicIn:
 
 l0040061C_thunk___do_global_dtors_aux:
-	__do_global_dtors_aux(r1, ra)
+	__do_global_dtors_aux()
 	return
 // DataOut:
 // DataOut (flags):
@@ -608,10 +608,10 @@ l00400340:
 
 
 
-void vsnprintf(word32 r1, word32 r28, word32 ra)
+void vsnprintf(word32 r28, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r1:[0..31] r28:[0..31] ra:[0..31]
+// MayUse:  r28:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r1 r15 r2 r24 r25 r28 r3
 // Preserved: sp
@@ -714,7 +714,7 @@ l00400350:
 // SymbolicIn:
 
 l0040061C_thunk___do_global_dtors_aux:
-	__do_global_dtors_aux(r1, ra)
+	__do_global_dtors_aux()
 	return
 // DataOut:
 // DataOut (flags):
@@ -1132,10 +1132,10 @@ l00400440:
 
 
 
-void read(word32 r1, word32 r28, word32 ra)
+void read(word32 r28, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r1:[0..31] r28:[0..31] ra:[0..31]
+// MayUse:  r28:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r1 r15 r2 r24 r25 r28 r3
 // Preserved: sp
@@ -1206,7 +1206,7 @@ l00400450:
 // SymbolicIn:
 
 l0040061C_thunk___do_global_dtors_aux:
-	__do_global_dtors_aux(r1, ra)
+	__do_global_dtors_aux()
 	return
 // DataOut:
 // DataOut (flags):
@@ -1921,10 +1921,10 @@ l004005F0:
 
 
 
-void free(word32 r1, word32 r28, word32 ra)
+void free(word32 r28, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r1:[0..31] r28:[0..31] ra:[0..31]
+// MayUse:  r28:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r1 r15 r2 r24 r25 r28 r3
 // Preserved: sp
@@ -1941,7 +1941,7 @@ l00400600:
 // SymbolicIn:
 
 l0040061C_thunk___do_global_dtors_aux:
-	__do_global_dtors_aux(r1, ra)
+	__do_global_dtors_aux()
 	return
 // DataOut:
 // DataOut (flags):
@@ -1954,10 +1954,10 @@ free_exit:
 
 
 
-void __do_global_dtors_aux(word32 r1, word32 ra)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r1:[0..31] ra:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r1 r2 r25 r28 r3
 // Preserved: r4 ra sp
@@ -2001,15 +2001,13 @@ l00400650_ds_f:
 // SymbolicIn:
 
 l00400674:
-	word32 r1_25 = Mem22[0x10000878:word32]
 	word32 r25_23 = Mem22[r3_17:word32]
-	Mem28[r1_25 + 4:word32] = r2_20
+	Mem28[Mem22[0x10000878:word32] + 4:word32] = r2_20
 	word32 r4_34
 	call r25_23 (retsize: 0;)
 		uses: r3:r3_38,r4:r4_34
 		defs: r4:r4_34
 	r3_17 = Mem28[Mem28[0x10000878:word32] + 4:word32]
-	r1 = r1_25 + 4
 	branch Mem28[r3_17:word32] != 0x00000000 l00400674_ds_t
 // DataOut:
 // DataOut (flags):
@@ -2045,7 +2043,7 @@ l004006B8_ds_f:
 l004006C8:
 	word32 r3_53
 	call __deregister_frame_info (retsize: 0;)
-		uses: r1:r1_91,r3:r3_53,r4:Mem43[0x10000878:word32] + 2128,ra:ra,sp:fp + -32
+		uses: r3:r3_53,r4:Mem43[0x10000878:word32] + 2128
 		defs: r3:r3_53
 // DataOut:
 // DataOut (flags):
@@ -2095,10 +2093,10 @@ fini_dummy_exit:
 
 
 
-void frame_dummy(word32 ra)
+void frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ra:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r25 r28
 // Preserved: r4 r5 ra sp
@@ -2125,7 +2123,7 @@ l0040072C_ds_f:
 
 l00400750:
 	call __register_frame_info (retsize: 0;)
-		uses: r4:Mem12[0x10000878:word32] + 2128,r5:Mem12[0x10000878:word32] + 2736,ra:ra,sp:fp + -32
+		uses: r4:Mem12[0x10000878:word32] + 2128,r5:Mem12[0x10000878:word32] + 2736
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2185,7 +2183,7 @@ l004007B0:
 	word32 r6_45
 	word32 r7_46
 	word32 r25_47
-	print_log(3, 0x00409DD4, ra, out r5_44, out r6_45, out r7_46, out r25_47)
+	print_log(3, 0x00409DD4, out r5_44, out r6_45, out r7_46, out r25_47)
 	Mem34[Mem17[0x100008C0:word32]:word32] = 1
 	return
 // DataOut:
@@ -2216,7 +2214,7 @@ l0040083C:
 	word32 r6_50
 	word32 r7_51
 	word32 r25_52
-	print_log(3, 0x00409E04, ra, out r5_49, out r6_50, out r7_51, out r25_52)
+	print_log(3, 0x00409E04, out r5_49, out r6_50, out r7_51, out r25_52)
 	log_rotate(ra)
 	return
 // DataOut:
@@ -2273,7 +2271,7 @@ l004009BC:
 	word32 r25_74
 	word32 r2_77
 	call fork (retsize: 0;)
-		uses: r16:r16,r25:r25_74,r30:fp + -416,r4:r4_64,r5:r5_65,ra:ra,sp:fp + -416
+		uses: r25:r25_74,r4:r4_64,r5:r5_65
 		defs: r2:r2_77,r25:r25_74
 	branch r2_77 == 0x00000000 l004009BC_ds_t
 // DataOut:
@@ -2358,7 +2356,7 @@ l00400B20:
 	Mem207[Mem203[0x1000090C:word32]:word32] = Mem203[Mem203[0x10000A40:word32] + 0x000005EC:word32]
 	word32 r25_228
 	call __xpg_basename (retsize: 0;)
-		uses: r16:r16,r2:r5,r25:r25_228,r28:0x10008860,r30:fp + -416,r4:Mem207[r5:word32],r5:open_log(0x00409E4C, ra),ra:ra,sp:fp + -416
+		uses: r2:r5,r25:r25_228,r4:Mem207[r5:word32],r5:open_log(0x00409E4C, ra)
 		defs: r25:r25_228
 	branch Mem257[Mem257[0x10000A28:word32]:word32] >= 0x00000000 l00400B20_ds_t
 // DataOut:
@@ -2385,7 +2383,7 @@ l00400C88:
 	word32 r5_286
 	word32 r7_1499
 	word32 r25_1500
-	print_log(3, 0x00409E50, ra, out r5_286, out r6_1498, out r7_1499, out r25_1500)
+	print_log(3, 0x00409E50, out r5_286, out r6_1498, out r7_1499, out r25_1500)
 	word32 r4_294
 	word32 r5_295
 	word32 r2_296 = clist_new(ra, out r4_294, out r5_295)
@@ -2423,7 +2421,7 @@ l00400D6C:
 	word32 r7_430
 	word32 r5_1005
 	call inet_addr (retsize: 0;)
-		uses: r16:r16,r2:r2_419,r25:r25_424,r28:0x10008860,r3:r3_429,r30:fp + -416,r4:Mem420[0x10000A40:word32] + 469,r5:r5_410,r6:r6_428,r7:r7_430,ra:ra,sp:fp + -416,Stack +0058:0x0002,Stack +005A:(word16) r2_419
+		uses: r2:r2_419,r25:r25_424,r3:r3_429,r4:Mem420[0x10000A40:word32] + 469,r5:r5_410,r6:r6_428,r7:r7_430,Stack +0058:0x0002,Stack +005A:(word16) r2_419
 		defs: r25:r25_424,r3:r3_429,r5:r5_426,r6:r6_428,r7:r7_430
 	word32 dwLoc0150_1279 = Mem432[r2_325 + 0x00000008:word32]
 // DataOut:
@@ -2443,7 +2441,7 @@ l00400D6C_ds_t:
 // SymbolicIn:
 
 l00400EBC:
-	branch server_open(dwLoc0150_1279, r16, ra, out r5_1005) != 0x00000000 l00400EBC_ds_t
+	branch server_open(dwLoc0150_1279, ra, out r5_1005) != 0x00000000 l00400EBC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2795,7 +2793,7 @@ l00401358:
 	word32 r25_717
 	word32 r2_720
 	call select (retsize: 0;)
-		uses: r16:r16_478,r2:dwLoc0160_1313 + 1,r25:r25_717,r3:fp + -304,r30:fp + -416,r4:dwLoc0160_1313 + 1,r5:fp + -304,r6:0x00000000,r7:0x00000000,ra:ra,sp:fp + -416,Stack +0010:0x00000000
+		uses: r2:dwLoc0160_1313 + 1,r25:r25_717,r3:fp + -304,r4:dwLoc0160_1313 + 1,r5:fp + -304,r6:0x00000000,r7:0x00000000,Stack +0010:0x00000000
 		defs: r2:r2_720,r25:r25_717,r5:r5_719
 	branch r2_720 >= 0x00000000 l00401358_ds_t
 // DataOut:
@@ -2879,7 +2877,7 @@ l00401548:
 	word32 r5_853
 	word32 r6_1505
 	word32 r7_1506
-	print_log(1, 0x00409ECC, ra, out r5_853, out r6_1505, out r7_1506, out r25_1507)
+	print_log(1, 0x00409ECC, out r5_853, out r6_1505, out r7_1506, out r25_1507)
 	r5_1005 = client_destroy(r2_826, ra)
 	r28_1010 = 0x10008860
 // DataOut:
@@ -3489,13 +3487,13 @@ l00401398_ds_t:
 // SymbolicIn:
 
 l004013C4:
-	r16 = __errno_location()
+	__errno_location()
 	strerror(Mem684[__errno_location():word32])
 	word32 r25_1504
 	word32 r6_1502
 	word32 r7_1503
 	word32 r5_1501
-	print_log(0x00000000, 0x00409EB0, ra, out r5_1501, out r6_1502, out r7_1503, out r25_1504)
+	print_log(0x00000000, 0x00409EB0, out r5_1501, out r6_1502, out r7_1503, out r25_1504)
 	exit(-1)
 	r5_1005 = r5_783
 // DataOut:
@@ -3654,12 +3652,12 @@ l00401BFC_ds_t:
 
 l00401DDC:
 	call inet_ntoa (retsize: 0;)
-		uses: r2:r2_29,r25:r25_194,r30:fp + -72,r4:Mem108[r2_29 + 0x0000179C:word32],r5:r5_100,r6:r6_101,r7:r7_102,ra:ra,sp:fp + -72
+		uses: r2:r2_29,r25:r25_194,r4:Mem108[r2_29 + 0x0000179C:word32],r5:r5_100,r6:r6_101,r7:r7_102
 	word32 r5_342
 	word32 r6_343
 	word32 r7_344
 	word32 r25_345
-	print_log(3, 0x00409F60, ra, out r5_342, out r6_343, out r7_344, out r25_345)
+	print_log(3, 0x00409F60, out r5_342, out r6_343, out r7_344, out r25_345)
 	Mem145[r2_29 + 0x000007D8:word32] = 0x00000000
 	Mem147[r2_29 + 0x00000FAC:word32] = 0x00000000
 	Mem149[r2_29 + 0x0000178C:word32] = 0x00000000
@@ -3743,7 +3741,7 @@ l00401D48:
 	word32 r6_347
 	word32 r7_348
 	word32 r25_349
-	print_log(1, 0x00409F28, ra, out r5_346, out r6_347, out r7_348, out r25_349)
+	print_log(1, 0x00409F28, out r5_346, out r6_347, out r7_348, out r25_349)
 	close(Mem247[r2_29:word32])
 	free(r2_29)
 // DataOut:
@@ -3760,7 +3758,7 @@ l00401BCC:
 	word32 r5_292
 	word32 r6_293
 	word32 r7_294
-	print_log(0x00000000, 0x00409F00, ra, out r5_292, out r6_293, out r7_294, out r25_290)
+	print_log(0x00000000, 0x00409F00, out r5_292, out r6_293, out r7_294, out r25_290)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3792,13 +3790,11 @@ client_prepare_connect_entry:
 
 l00402028:
 	call getsockopt (retsize: 0;)
-		uses: r16:r16,r2:fp + -24,r25:r25_74,r28:0x10008860,r3:r4,r30:fp + -320,r4:Mem24[r4:word32],r5:0x00000000,r6:80,r7:r4 + 6040,ra:ra,sp:fp + -320,Stack +0010:fp + -24,Stack +0020:0x10008860,Stack +0128:16,Stack +0134:r16,Stack +0138:r30,Stack +013C:ra,Stack +0140:r4
-	word32 r2_42
+		uses: r2:fp + -24,r25:r25_74,r3:r4,r4:Mem24[r4:word32],r5:0x00000000,r6:80,r7:r4 + 6040,Stack +0010:fp + -24,Stack +0020:0x10008860,Stack +0128:16,Stack +0134:r16,Stack +0138:r30,Stack +013C:ra,Stack +0140:r4
 	call inet_ntoa (retsize: 0;)
-		uses: r16:r16,r2:r4,r25:r25_74,r28:0x10008860,r30:fp + -320,r4:Mem24[r4 + 0x0000179C:word32],ra:ra,sp:fp + -320
-		defs: r2:r2_42
+		uses: r2:r4,r25:r25_74,r4:Mem24[r4 + 0x0000179C:word32]
 	call inet_ntoa (retsize: 0;)
-		uses: r16:r2_42,r2:r4,r25:r25_74,r28:0x10008860,r30:fp + -320,r4:Mem24[r4 + 0x0000179C:word32],ra:ra,sp:fp + -320
+		uses: r2:r4,r25:r25_74,r4:Mem24[r4 + 0x0000179C:word32]
 	word32 r2_76 = snprintf(fp + -280, 256, 0x00409F94, 0x00000000)
 	word32 r25_74 = <invalid>
 	word32 dwLoc18_124 = r2_76
@@ -4083,7 +4079,7 @@ l004026B8:
 	word32 r6_700
 	word32 r7_701
 	word32 r25_702
-	print_log(2, 0x00409FC4, ra, out r5_699, out r6_700, out r7_701, out r25_702)
+	print_log(2, 0x00409FC4, out r5_699, out r6_700, out r7_701, out r25_702)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4098,7 +4094,7 @@ l00402614:
 	word32 r5_274
 	word32 r6_275
 	word32 r7_277
-	print_log(2, 0x0040A0B4, ra, out r5_274, out r6_275, out r7_277, out r25_271)
+	print_log(2, 0x0040A0B4, out r5_274, out r6_275, out r7_277, out r25_271)
 	Mem280[r4 + 0x00001794:word32] = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -4354,7 +4350,7 @@ l00402428:
 	word32 r7_674
 	word32 r6_673
 	word32 r5_672
-	print_log(4, 0x0040A008, ra, out r5_672, out r6_673, out r7_674, out r25_675)
+	print_log(4, 0x0040A008, out r5_672, out r6_673, out r7_674, out r25_675)
 	word32 r2_413 = Mem76[r4 + 0x00000FB4:word32]
 	dwLoc20_525 = r2_413
 	branch request_parse_line(r2_413, fp + -2064, ra) != 0x00000000 l00402428_ds_t
@@ -4377,7 +4373,7 @@ l0040249C:
 	word32 r6_677
 	word32 r25_679
 	word32 r7_678
-	print_log(4, 0x0040A03C, ra, out r5_676, out r6_677, out r7_678, out r25_679)
+	print_log(4, 0x0040A03C, out r5_676, out r6_677, out r7_678, out r25_679)
 	request_destroy(r2_413)
 	dwLoc20_525 = 0x00000000
 // DataOut:
@@ -4401,7 +4397,7 @@ l00402550:
 	word32 r25_689
 	word32 r6_687
 	word32 r5_686
-	print_log(3, 0x0040A074, ra, out r5_686, out r6_687, out r7_688, out r25_689)
+	print_log(3, 0x0040A074, out r5_686, out r6_687, out r7_688, out r25_689)
 	word32 r7_692
 	word32 r6_691
 	word32 r5_690
@@ -4522,7 +4518,7 @@ l00402AF0_ds_t:
 
 l00402B08:
 	word32 r25_134
-	print_log(2, 0x0040A124, ra, out r5_128, out r6_129, out r7_130, out r25_134)
+	print_log(2, 0x0040A124, out r5_128, out r6_129, out r7_130, out r25_134)
 	r2_103 = r5
 // DataOut:
 // DataOut (flags):
@@ -4552,7 +4548,7 @@ l00402B4C_ds_t:
 
 l00402BC0:
 	word32 r25_135
-	print_log(1, 0x0040A148, ra, out r5_128, out r6_129, out r7_130, out r25_135)
+	print_log(1, 0x0040A148, out r5_128, out r6_129, out r7_130, out r25_135)
 	Mem71[r4 + 0x00000FAC:word32] = 0x00000000
 	r2_103 = 0x00000000
 // DataOut:
@@ -4581,7 +4577,7 @@ l00402A60_ds_f:
 
 l00402AA0:
 	word32 r25_95
-	print_log(1, 0x0040A0E4, ra, out r5_128, out r6_129, out r7_130, out r25_95)
+	print_log(1, 0x0040A0E4, out r5_128, out r6_129, out r7_130, out r25_95)
 	r2_103 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -4839,7 +4835,7 @@ l00402E44:
 	word32 r25_37
 	word32 r2_39
 	call recv (retsize: 0;)
-		uses: r2:r4 + 8,r25:r25_37,r28:0x10008860,r3:r4,r30:fp + -40,r4:Mem28[r4:word32],r5:r4 + 8,r6:1744,r7:16384,ra:ra,sp:fp + -40,Stack +0010:0x10008860,Stack +001C:r30,Stack +0020:ra,Stack +0028:r4
+		uses: r2:r4 + 8,r25:r25_37,r3:r4,r4:Mem28[r4:word32],r5:r4 + 8,r6:1744,r7:16384,Stack +0010:0x10008860,Stack +001C:r30,Stack +0020:ra,Stack +0028:r4
 		defs: r2:r2_39,r25:r25_37
 	Mem47[r4 + 0x000007D8:word32] = r2_39
 	return
@@ -4883,7 +4879,7 @@ l00402EF8_ds_t:
 l00402F68:
 	word32 r2_42
 	call send (retsize: 0;)
-		uses: r2:r4,r25:r25_40,r3:r4,r30:fp + -56,r4:Mem29[r4 + 0x00000004:word32],r5:Mem29[r4 + 0x00000FB0:word32],r6:Mem29[r4 + 0x00000FAC:word32],r7:0x00000000,ra:ra,sp:fp + -56
+		uses: r2:r4,r25:r25_40,r3:r4,r4:Mem29[r4 + 0x00000004:word32],r5:Mem29[r4 + 0x00000FB0:word32],r6:Mem29[r4 + 0x00000FAC:word32],r7:0x00000000
 		defs: r2:r2_42,r25:r25_40,r5:r5_45
 	branch r2_42 != Mem48[r4 + 0x00000FAC:word32] l00402F68_ds_t
 // DataOut:
@@ -4900,7 +4896,7 @@ l00402FDC:
 	Mem63[r4 + 0x00000FAC:word32] = Mem57[r4 + 0x00000FAC:word32] - r2_42
 	word32 r6_77
 	word32 r7_79
-	print_log(4, 0x0040A174, ra, out r5_118, out r6_77, out r7_79, out r25_110)
+	print_log(4, 0x0040A174, out r5_118, out r6_77, out r7_79, out r25_110)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5009,7 +5005,7 @@ l00403184_ds_t:
 // SymbolicIn:
 
 l004031AC:
-	client_copy_reply(r4, ra)
+	client_copy_reply(r4)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5047,10 +5043,10 @@ client_parse_reply_exit:
 
 
 
-void client_copy_reply(word32 r4, word32 ra)
+void client_copy_reply(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3
 // Preserved: r30 r4 r5 r6 r7 ra sp
@@ -5075,7 +5071,7 @@ l00403220:
 	word32 r25_39
 	word32 r2_41
 	call send (retsize: 0;)
-		uses: r2:r4,r25:r25_39,r28:0x10008860,r3:r4,r30:fp + -48,r4:Mem30[r4:word32],r5:Mem30[r4 + 0x00001788:word32],r6:Mem30[r4 + 0x0000178C:word32],r7:0x00000000,ra:ra,sp:fp + -48
+		uses: r2:r4,r25:r25_39,r3:r4,r4:Mem30[r4:word32],r5:Mem30[r4 + 0x00001788:word32],r6:Mem30[r4 + 0x0000178C:word32],r7:0x00000000
 		defs: r2:r2_41,r25:r25_39
 	branch r2_41 != Mem47[r4 + 0x0000178C:word32] l00403220_ds_t
 // DataOut:
@@ -5762,7 +5758,7 @@ l004038C8:
 	word32 r6_169
 	word32 r7_170
 	word32 r25_171
-	print_log(3, 0x0040A1B0, ra, out r5_168, out r6_169, out r7_170, out r25_171)
+	print_log(3, 0x0040A1B0, out r5_168, out r6_169, out r7_170, out r25_171)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5788,7 +5784,7 @@ l00403978:
 	word32 r6_173
 	word32 r7_174
 	word32 r25_175
-	print_log(3, 0x0040A1F4, ra, out r5_172, out r6_173, out r7_174, out r25_175)
+	print_log(3, 0x0040A1F4, out r5_172, out r6_173, out r7_174, out r25_175)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5863,7 +5859,7 @@ l00403B3C:
 	__errno_location()
 	strerror(Mem30[__errno_location():word32])
 	word32 r25_175
-	print_log(1, 0x0040A268, ra, out r5_137, out r6_138, out r7_141, out r25_175)
+	print_log(1, 0x0040A268, out r5_137, out r6_138, out r7_141, out r25_175)
 	r2_143 = -1
 // DataOut:
 // DataOut (flags):
@@ -5878,7 +5874,7 @@ l00403A78:
 	__errno_location()
 	strerror(Mem30[__errno_location():word32])
 	word32 r25_135
-	print_log(1, 0x0040A224, ra, out r5_137, out r6_138, out r7_141, out r25_135)
+	print_log(1, 0x0040A224, out r5_137, out r6_138, out r7_141, out r25_135)
 	r2_143 = -1
 // DataOut:
 // DataOut (flags):
@@ -5945,7 +5941,7 @@ l00403C4C:
 	word32 r25_36
 	word32 r6_63
 	word32 r7_64
-	r4_17 = print_log(0x00000000, 0x0040A2A0, ra, out r5_19, out r6_63, out r7_64, out r25_36)
+	r4_17 = print_log(0x00000000, 0x0040A2A0, out r5_19, out r6_63, out r7_64, out r25_36)
 	r2_30 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -6544,7 +6540,7 @@ l00404290:
 	word32 r5_66
 	word32 r6_99
 	word32 r7_100
-	print_log(0x00000000, 0x0040A308, ra, out r5_66, out r6_99, out r7_100, out r25_63)
+	print_log(0x00000000, 0x0040A308, out r5_66, out r6_99, out r7_100, out r25_63)
 	r2_56 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -6685,7 +6681,7 @@ l004045DC:
 	word32 r6_169
 	word32 r7_170
 	word32 r25_171
-	print_log(2, 0x0040A364, ra, out r5_168, out r6_169, out r7_170, out r25_171)
+	print_log(2, 0x0040A364, out r5_168, out r6_169, out r7_170, out r25_171)
 	Mem104[r4 + 0x00000558:word32] = Mem48[r4 + 0x00000558:word32] + -1
 // DataOut:
 // DataOut (flags):
@@ -6701,7 +6697,7 @@ l004044F0:
 	word32 r6_165
 	word32 r7_166
 	word32 r25_167
-	print_log(2, 0x0040A344, ra, out r5_164, out r6_165, out r7_166, out r25_167)
+	print_log(2, 0x0040A344, out r5_164, out r6_165, out r7_166, out r25_167)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6716,7 +6712,7 @@ l00404494:
 	word32 r5_132
 	word32 r6_133
 	word32 r7_135
-	print_log(2, 0x0040A398, ra, out r5_132, out r6_133, out r7_135, out r25_130)
+	print_log(2, 0x0040A398, out r5_132, out r6_133, out r7_135, out r25_130)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6817,7 +6813,7 @@ l004046F8:
 	word32 r5_117
 	word32 r6_118
 	word32 r7_119
-	print_log(2, 0x0040A3C4, ra, out r5_117, out r6_118, out r7_119, out r25_114)
+	print_log(2, 0x0040A3C4, out r5_117, out r6_118, out r7_119, out r25_114)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6997,7 +6993,7 @@ get_method_entry:
 l00404B34:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:r25_34,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:0x0040A464,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A464,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	word32 r5_36 = <invalid>
@@ -7030,7 +7026,7 @@ get_uri_entry:
 l00404BC8:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:r25_34,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:0x0040A464,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A464,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	word32 r25_34 = <invalid>
@@ -7061,7 +7057,7 @@ get_version_entry:
 l00404C5C:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:r25_34,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:0x0040A468,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A468,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	word32 r25_34 = <invalid>
@@ -7121,7 +7117,7 @@ l00404F6C:
 	word32 r5_35
 	word32 r6_38
 	word32 r7_39
-	print_log(2, 0x0040A4F0, ra, out r5_35, out r6_38, out r7_39, out r25_33)
+	print_log(2, 0x0040A4F0, out r5_35, out r6_38, out r7_39, out r25_33)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7248,7 +7244,7 @@ l00404EB0:
 	word32 r5_241
 	word32 r25_244
 	word32 r7_243
-	print_log(2, 0x0040A4D0, ra, out r5_241, out r6_242, out r7_243, out r25_244)
+	print_log(2, 0x0040A4D0, out r5_241, out r6_242, out r7_243, out r25_244)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7263,7 +7259,7 @@ l00404E54:
 	word32 r6_238
 	word32 r5_237
 	word32 r25_240
-	print_log(2, 0x0040A4AC, ra, out r5_237, out r6_238, out r7_239, out r25_240)
+	print_log(2, 0x0040A4AC, out r5_237, out r6_238, out r7_239, out r25_240)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7278,7 +7274,7 @@ l00404D70:
 	word32 r5_173
 	word32 r6_176
 	word32 r7_177
-	print_log(2, 0x0040A470, ra, out r5_173, out r6_176, out r7_177, out r25_171)
+	print_log(2, 0x0040A470, out r5_173, out r6_176, out r7_177, out r25_171)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7340,7 +7336,7 @@ l00405210:
 	word32 r5_35
 	word32 r6_38
 	word32 r7_39
-	print_log(2, 0x0040A538, ra, out r5_35, out r6_38, out r7_39, out r25_33)
+	print_log(2, 0x0040A538, out r5_35, out r6_38, out r7_39, out r25_33)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7466,7 +7462,7 @@ l00405180:
 	word32 r5_233
 	word32 r25_236
 	word32 r7_235
-	print_log(2, 0x0040A4D0, ra, out r5_233, out r6_234, out r7_235, out r25_236)
+	print_log(2, 0x0040A4D0, out r5_233, out r6_234, out r7_235, out r25_236)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7481,7 +7477,7 @@ l00405124:
 	word32 r6_230
 	word32 r5_229
 	word32 r25_232
-	print_log(2, 0x0040A4AC, ra, out r5_229, out r6_230, out r7_231, out r25_232)
+	print_log(2, 0x0040A4AC, out r5_229, out r6_230, out r7_231, out r25_232)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7496,7 +7492,7 @@ l00405040:
 	word32 r5_165
 	word32 r6_168
 	word32 r7_169
-	print_log(2, 0x0040A564, ra, out r5_165, out r6_168, out r7_169, out r25_163)
+	print_log(2, 0x0040A564, out r5_165, out r6_168, out r7_169, out r25_163)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7711,7 +7707,7 @@ l00405468:
 	word32 r5_49
 	word32 r6_50
 	word32 r7_53
-	print_log(2, 0x0040A590, ra, out r5_49, out r6_50, out r7_53, out r25_47)
+	print_log(2, 0x0040A590, out r5_49, out r6_50, out r7_53, out r25_47)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7918,7 +7914,7 @@ l00405800:
 	word32 r25_202
 	word32 r2_205
 	call strspn (retsize: 0;)
-		uses: r25:r25_202,r30:fp + -368,r4:r2_151,r5:0x0040A640,ra:ra,sp:fp + -368
+		uses: r25:r25_202,r4:r2_151,r5:0x0040A640
 		defs: r2:r2_205,r25:r25_202
 	word32 r2_212 = r2_151 + r2_205
 	branch (word32) Mem213[r2_212:int8] != 0x00000000 l00405800_ds_t
@@ -7934,7 +7930,7 @@ l00405800_ds_t:
 l00405858:
 	word32 r2_225
 	call strcspn (retsize: 0;)
-		uses: r2:r2_212,r25:r25_239,r30:fp + -368,r4:r2_212,r5:0x0040A644,ra:ra,sp:fp + -368,Stack +014C:r2_212
+		uses: r2:r2_212,r25:r25_239,r4:r2_212,r5:0x0040A644,Stack +014C:r2_212
 		defs: r2:r2_225
 	word32 r2_232 = r2_212 + r2_225
 	word32 r2_242 = strchr(r2_232, 61)
@@ -7952,13 +7948,13 @@ l00405858_ds_t:
 l00405920:
 	word32 r2_259
 	call strspn (retsize: 0;)
-		uses: r2:r2_242 + 1,r25:r25_274,r30:fp + -368,r4:r2_242 + 1,r5:0x0040A640,ra:ra,sp:fp + -368,Stack +0128:r2_242 + 1
+		uses: r2:r2_242 + 1,r25:r25_274,r4:r2_242 + 1,r5:0x0040A640,Stack +0128:r2_242 + 1
 		defs: r2:r2_259
 	word32 r2_266 = r2_242 + 1 + r2_259
 	word32 r25_274
 	word32 r2_277
 	call strcspn (retsize: 0;)
-		uses: r2:r2_266,r25:r25_274,r28:0x10008860,r3:r2_259,r30:fp + -368,r4:r2_266,r5:0x0040A640,ra:ra,sp:fp + -368,Stack +0128:r2_266,Stack +0154:r2_266
+		uses: r2:r2_266,r25:r25_274,r3:r2_259,r4:r2_266,r5:0x0040A640,Stack +0128:r2_266,Stack +0154:r2_266
 		defs: r2:r2_277,r25:r25_274
 	Mem287[r2_266 + r2_277:byte] = 0x00
 	Mem289[r2_232:byte] = 0x00
@@ -8016,7 +8012,7 @@ l00405C50:
 	word32 r25_634
 	word32 r5_631
 	word32 r6_632
-	print_log(1, 0x0040A5C4, ra, out r5_631, out r6_632, out r7_633, out r25_634)
+	print_log(1, 0x0040A5C4, out r5_631, out r6_632, out r7_633, out r25_634)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8135,7 +8131,7 @@ l004058D8:
 	word32 r25_630
 	word32 r5_627
 	word32 r6_628
-	print_log(2, 0x0040A648, ra, out r5_627, out r6_628, out r7_629, out r25_630)
+	print_log(2, 0x0040A648, out r5_627, out r6_628, out r7_629, out r25_630)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8176,7 +8172,7 @@ l004056D0:
 	word32 r7_625
 	word32 r25_626
 	word32 r5_623
-	print_log(1, 0x0040A618, ra, out r5_623, out r6_624, out r7_625, out r25_626)
+	print_log(1, 0x0040A618, out r5_623, out r6_624, out r7_625, out r25_626)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8191,7 +8187,7 @@ l004055B4:
 	word32 r5_619
 	word32 r6_620
 	word32 r7_621
-	print_log(1, 0x0040A5EC, ra, out r5_619, out r6_620, out r7_621, out r25_622)
+	print_log(1, 0x0040A5EC, out r5_619, out r6_620, out r7_621, out r25_622)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8407,7 +8403,7 @@ l004061EC:
 	word32 r2_139 = (word32) bLoc1C_368
 	call Mem142[r28_125 - 0x00007E74:word32] (retsize: 0;)
 		uses: r2:r2_139,r4:1,r5:Mem142[r28_125 - 0x00007FE0:word32] + -22924,r6:Mem142[r28_125 - 0x00007FE0:word32] + -22900,r7:200,Stack +0010:r2_139
-	properties_print_usage(Mem142[r5:word32], ra)
+	properties_print_usage(Mem142[r5:word32])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8456,14 +8452,13 @@ l00405F80:
 	call Mem116[r28_125 - 0x00007F9C:word32] (retsize: 0;)
 		uses: r2:r2_199,r4:r2_199,r5:r5_202,r6:r6_230,r7:r7_231
 		defs: r2:r2_206,r5:r5_205
-	word32 r1_221 = Mem116[0x10000A40:word32] + ((dwLoc24_383 * 0x00000014 - dwLoc24_383 << 0x03) + 8)
-	word32 r2_222 = (word32) Mem116[r1_221 + 0x00000004:int8]
+	word32 r2_222 = (word32) Mem116[Mem116[0x10000A40:word32] + ((dwLoc24_383 * 0x00000014 - dwLoc24_383 << 0x03) + 8) + 0x00000004:int8]
 	word32 r25_225
 	word32 r2_228
 	word32 r6_230
 	word32 r7_231
 	call toupper (retsize: 0;)
-		uses: r1:r1_221,r16:r2_206,r2:r2_222,r25:r25_225,r28:0x10008860,r3:dwLoc24_384,r30:fp + -72,r4:r2_222,r5:r5_205,r6:r6_230,r7:r7_231,ra:ra,sp:fp + -72
+		uses: r2:r2_222,r25:r25_225,r3:dwLoc24_384,r4:r2_222,r5:r5_205,r6:r6_230,r7:r7_231
 		defs: r2:r2_228,r25:r25_225,r5:r5_227,r6:r6_230,r7:r7_231
 	r28_125 = 0x10008860
 	branch r2_206 == r2_228 l00405F80_ds_t
@@ -8624,10 +8619,10 @@ properties_parse_command_line_exit:
 
 
 
-void properties_print_usage(word32 r4, word32 ra)
+void properties_print_usage(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r1 r2 r25 r28 r3 r4 r5 r6
 // Preserved: r30 ra sp
@@ -8731,11 +8726,10 @@ l004063B4_ds_t:
 // SymbolicIn:
 
 l00406474:
-	word32 r1_135 = Mem48[0x10000A40:word32] + ((dwLoc18_226 * 0x00000014 - dwLoc18_226 << 0x03) + 8)
-	word32 r2_136 = (word32) Mem48[r1_135 + 0x00000004:int8]
+	word32 r2_136 = (word32) Mem48[Mem48[0x10000A40:word32] + ((dwLoc18_226 * 0x00000014 - dwLoc18_226 << 0x03) + 8) + 0x00000004:int8]
 	word32 r25_139
 	call toupper (retsize: 0;)
-		uses: r1:r1_135,r2:r2_136,r25:r25_139,r3:dwLoc18_227,r30:fp + -48,r4:r2_136,ra:ra,sp:fp + -48
+		uses: r2:r2_136,r25:r25_139,r3:dwLoc18_227,r4:r2_136
 		defs: r25:r25_139
 // DataOut:
 // DataOut (flags):
@@ -8747,11 +8741,10 @@ l004063B4_ds_f:
 // SymbolicIn:
 
 l0040641C:
-	word32 r1_156 = Mem48[0x10000A40:word32] + ((dwLoc18_226 * 0x00000014 - dwLoc18_226 << 0x03) + 8)
-	word32 r2_157 = (word32) Mem48[r1_156 + 0x00000004:int8]
+	word32 r2_157 = (word32) Mem48[Mem48[0x10000A40:word32] + ((dwLoc18_226 * 0x00000014 - dwLoc18_226 << 0x03) + 8) + 0x00000004:int8]
 	word32 r25_160
 	call tolower (retsize: 0;)
-		uses: r1:r1_156,r2:r2_157,r25:r25_160,r3:dwLoc18_227,r30:fp + -48,r4:r2_157,ra:ra,sp:fp + -48
+		uses: r2:r2_157,r25:r25_160,r3:dwLoc18_227,r4:r2_157
 		defs: r25:r25_160
 // DataOut:
 // DataOut (flags):
@@ -8793,10 +8786,10 @@ properties_print_usage_exit:
 
 
 
-word32 print_log(word32 r4, word32 r5, word32 ra, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r25Out)
+word32 print_log(word32 r4, word32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r25Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..31] r5:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r25 r4 r5 r6 r7
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
@@ -8825,7 +8818,7 @@ l00406610_ds_f:
 l00406664:
 	word32 r2_40
 	call vsnprintf (retsize: 0;)
-		uses: r2:fp + -1048,r25:r25_52,r30:fp + -1080,r4:fp + -1048,r5:1023,r6:r5,r7:fp + 8,ra:ra,sp:fp + -1080,Stack +0018:fp + 8
+		uses: r2:fp + -1048,r25:r25_52,r4:fp + -1048,r5:1023,r6:r5,r7:fp + 8,Stack +0018:fp + 8
 		defs: r2:r2_40
 	call 0x0040697C (retsize: 0;)
 		uses: r2:fp + -1048,r25:0x0040697C,r4:Mem43[Mem43[0x10000A20:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048,Stack +0420:r2_40
@@ -8927,7 +8920,7 @@ l00406798:
 	word32 r6_99
 	word32 r7_100
 	word32 r25_101
-	print_log(0x00000000, 0x0040A704, ra, out r5_41, out r6_99, out r7_100, out r25_101)
+	print_log(0x00000000, 0x0040A704, out r5_41, out r6_99, out r7_100, out r25_101)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8997,7 +8990,7 @@ l004068CC:
 	word32 r2_56
 	word32 r3_57
 	call rename (retsize: 0;)
-		uses: r2:r2_56,r25:r25_54,r28:0x10008860,r3:r3_57,r30:fp + -296,r4:Mem12[Mem12[0x100008A0:word32]:word32],r5:fp + -272,ra:ra,sp:fp + -296
+		uses: r2:r2_56,r25:r25_54,r3:r3_57,r4:Mem12[Mem12[0x100008A0:word32]:word32],r5:fp + -272
 		defs: r2:r2_56,r25:r25_54,r3:r3_57
 // DataOut:
 // DataOut (flags):
@@ -9035,7 +9028,7 @@ l0040697C:
 	word32 r5_30 = <invalid>
 	word32 r2_43
 	call gmtime (retsize: 0;)
-		uses: r16:r5,r17:r7,r2:fp + -40,r25:r25_92,r28:0x10008860,r3:r3_98,r30:fp + -104,r4:fp + -40,r5:r5_30,r6:r6_95,r7:r7_33,ra:ra,sp:fp + -104,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
+		uses: r2:fp + -40,r25:r25_92,r3:r3_98,r4:fp + -40,r5:r5_30,r6:r6_95,r7:r7_33,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
 		defs: r2:r2_43
 	strftime(fp + -72, 28, 0x0040A74C, r2_43)
 	fprintf(r4, 0x0040A760, 0x00000000)
@@ -9182,7 +9175,7 @@ l00406C7C:
 	word32 r25_69
 	word32 r2_74
 	call inet_addr (retsize: 0;)
-		uses: r2:r2_65,r25:r25_69,r28:0x10008860,r3:r2_29,r30:fp + -48,r4:r4,r5:r5_55,r6:r6_56,r7:r7_57,ra:ra,sp:fp + -48
+		uses: r2:r2_65,r25:r25_69,r3:r2_29,r4:r4,r5:r5_55,r6:r6_56,r7:r7_57
 		defs: r2:r2_74,r25:r25_69
 	Mem79[r2_29 + 0x0000000C:word32] = r2_74
 	r2_114 = r2_29
@@ -9200,7 +9193,7 @@ l00406C4C:
 	word32 r5_88
 	word32 r6_89
 	word32 r7_90
-	print_log(0x00000000, 0x0040A770, ra, out r5_88, out r6_89, out r7_90, out r25_86)
+	print_log(0x00000000, 0x0040A770, out r5_88, out r6_89, out r7_90, out r25_86)
 	r2_114 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -9219,10 +9212,10 @@ server_new_exit:
 
 
 
-word32 server_open(word32 r4, word32 r16, word32 ra, ptr32 & r5Out)
+word32 server_open(word32 r4, word32 ra, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r16:[0..31] r4:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r2 r5
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r30 ra sp
@@ -9260,7 +9253,7 @@ l00406F0C:
 	word32 r25_50
 	word32 r2_54
 	call listen (retsize: 0;)
-		uses: r16:r16,r2:r4,r25:r25_50,r30:fp + -56,r4:r2_26,r5:Mem30[r4 + 0x00000004:word32],ra:ra,sp:fp + -56
+		uses: r2:r4,r25:r25_50,r4:r2_26,r5:Mem30[r4 + 0x00000004:word32]
 		defs: r2:r2_54,r25:r25_50,r5:r5_52
 	branch r2_54 >= 0x00000000 l00406F0C_ds_t
 // DataOut:
@@ -9290,7 +9283,7 @@ l00406F34:
 	word32 r6_243
 	word32 r7_244
 	word32 r25_245
-	print_log(1, 0x0040A7FC, ra, out r5_104, out r6_243, out r7_244, out r25_245)
+	print_log(1, 0x0040A7FC, out r5_104, out r6_243, out r7_244, out r25_245)
 	r2_110 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -9307,7 +9300,7 @@ l00406E74:
 	word32 r6_240
 	word32 r7_241
 	word32 r25_242
-	print_log(1, 0x0040A7D4, ra, out r5_104, out r6_240, out r7_241, out r25_242)
+	print_log(1, 0x0040A7D4, out r5_104, out r6_240, out r7_241, out r25_242)
 	r2_110 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -9324,7 +9317,7 @@ l00406DA8:
 	word32 r25_200
 	word32 r6_203
 	word32 r7_206
-	print_log(1, 0x0040A79C, ra, out r5_104, out r6_203, out r7_206, out r25_200)
+	print_log(1, 0x0040A79C, out r5_104, out r6_203, out r7_206, out r25_200)
 	r2_110 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -9425,7 +9418,7 @@ l0040708C:
 	word32 r6_61
 	word32 r7_62
 	word32 r25_63
-	print_log(4, 0x0040A81C, ra, out r5_60, out r6_61, out r7_62, out r25_63)
+	print_log(4, 0x0040A81C, out r5_60, out r6_61, out r7_62, out r25_63)
 	server_close(r4)
 	free(r4)
 	return
@@ -9484,7 +9477,7 @@ l0040719C:
 	word32 r5_39
 	word32 r6_61
 	word32 r7_62
-	print_log(0x00000000, 0x0040A850, ra, out r5_39, out r6_61, out r7_62, out r25_36)
+	print_log(0x00000000, 0x0040A850, out r5_39, out r6_61, out r7_62, out r25_36)
 	r2_30 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -9765,7 +9758,7 @@ l004074AC:
 	word32 r6_63
 	word32 r7_64
 	word32 r25_65
-	print_log(2, 0x0040A87C, ra, out r5_39, out r6_63, out r7_64, out r25_65)
+	print_log(2, 0x0040A87C, out r5_39, out r6_63, out r7_64, out r25_65)
 	server_destroy(r5, ra)
 	return
 // DataOut:

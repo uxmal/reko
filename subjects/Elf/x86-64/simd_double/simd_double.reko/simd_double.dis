@@ -18,7 +18,6 @@ l00000000000005A0:
 
 l00000000000005B0:
 	call __gmon_start__ (retsize: 8;)
-		uses: rsp:fp - 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -64,10 +63,10 @@ l0000000000000620:
 
 
 
-void deregister_tm_clones(word64 rbp)
+void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rbp:[0..63]
+// MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi
 // Preserved: rbp rsp
@@ -96,7 +95,6 @@ l0000000000000680:
 
 l0000000000000673:
 	call _ITM_deregisterTMCloneTable (retsize: 8;)
-		uses: rbp:rbp,rsp:fp
 	return
 // DataOut:
 // DataOut (flags):
@@ -109,10 +107,10 @@ deregister_tm_clones_exit:
 
 
 
-void register_tm_clones(word64 rbp)
+void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rbp:[0..63]
+// MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi rsi
 // Preserved: rbp rsp
@@ -142,7 +140,6 @@ l00000000000006D0:
 
 l00000000000006C4:
 	call _ITM_registerTMCloneTable (retsize: 8;)
-		uses: rbp:rbp,rsp:fp
 	return
 // DataOut:
 // DataOut (flags):
@@ -186,17 +183,17 @@ l00000000000006E9:
 // SymbolicIn:
 
 l00000000000006F7:
-	word64 rax_27
+	word64 rax_26
 	call __cxa_finalize (retsize: 8;)
-		uses: rax:rax_27,rbp:fp - 8,rdi:Mem9[0x0000000000201040:word64],rsp:fp - 8
-		defs: rax:rax_27
+		uses: rax:rax_26,rdi:Mem9[0x0000000000201040:word64]
+		defs: rax:rax_26
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000703:
-	deregister_tm_clones(fp - 8)
-	Mem22[0x0000000000201048:byte] = 0x01
+	deregister_tm_clones()
+	Mem21[0x0000000000201048:byte] = 0x01
 	return
 // DataOut:
 // DataOut (flags):
@@ -209,10 +206,10 @@ __do_global_dtors_aux_exit:
 
 
 
-void frame_dummy(word64 rbp)
+void frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rbp:[0..63]
+// MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi rsi
 // Preserved: rbp rsp
@@ -227,7 +224,7 @@ l0000000000000720:
 // SymbolicIn:
 
 l0000000000000725_thunk_register_tm_clones:
-	register_tm_clones(rbp)
+	register_tm_clones()
 	return
 // DataOut:
 // DataOut (flags):
@@ -281,7 +278,7 @@ l000000000000075D:
 l0000000000000765:
 	word64 rax_31
 	call posix_memalign (retsize: 8;)
-		uses: rax:fp - 0x0000000000000010,rbp:fp - 8,rcx:qwLoc28_55,rdi:fp - 0x0000000000000010,rdx:rdi,rsi:qwLoc28_55,rsp:fp - 0x0000000000000028,Stack +0020:qwLoc10
+		uses: rax:fp - 0x0000000000000010,rcx:qwLoc28_55,rdi:fp - 0x0000000000000010,rdx:rdi,rsi:qwLoc28_55,Stack +0020:qwLoc10
 		defs: rax:rax_31
 	branch SLICE(rax_31, word32, 0) != 0x00000000 l0000000000000786
 // DataOut:

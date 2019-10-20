@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,13 +20,6 @@ namespace Reko.Environments.Windows
 		public override string DefaultCallingConvention
 		{
 			get { return ""; }
-		}
-
-		public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-		{
-			return new HashSet<RegisterStorage>
-			{
-			};
 		}
 
 		public override HashSet<RegisterStorage> CreateTrashedRegisters()

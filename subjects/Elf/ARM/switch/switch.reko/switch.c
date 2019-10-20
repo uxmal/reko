@@ -85,29 +85,27 @@ void call_frame_dummy()
 {
 }
 
-// 00008434: Register (ptr32 ptr32) frobulate(Register (ptr32 ptr32) r0, Stack (ptr32 ptr32) dwArg00, Register out ptr32 spOut)
-ptr32 * frobulate(ptr32 * r0, ptr32 * dwArg00, ptr32 & spOut)
+// 00008434: Register Eq_n frobulate(Register Eq_n r0, Stack Eq_n dwArg00)
+Eq_n frobulate(Eq_n r0, Eq_n dwArg00)
 {
-	__divsi3(r0 * r0, (ptr32 *) 1337);
-	spOut = *dwArg00;
+	__divsi3(r0 * r0, 1337);
 	return dwArg00;
 }
 
-// 00008470: Register word32 bazulate(Register (ptr32 ptr32) r0, Register (ptr32 ptr32) r1)
-word32 bazulate(ptr32 * r0, ptr32 * r1)
+// 00008470: Register word32 bazulate(Register Eq_n r0, Register Eq_n r1)
+word32 bazulate(Eq_n r0, Eq_n r1)
 {
-	ptr32 ** sp_n;
-	word32 * fp_n = frobulate(r0, r1, out sp_n);
+	word32 * fp_n = frobulate(r0, r1);
 	word32 r0_n = __divsi3(r0 + r1, r0);
-	ptr32 * r0_n = *(fp_n - 0x0018);
-	word32 sp_n;
-	word32 * fp_n = frobulate(r0_n, *sp_n, out sp_n);
+	union Eq_n * sp_n = (union Eq_n *) <invalid>;
+	Eq_n r0_n = *(fp_n - 0x0018);
+	word32 * fp_n = frobulate(r0_n, *sp_n);
 	__divsi3(r0_n, r0_n);
 	return *fp_n;
 }
 
-// 000084D4: Register word32 switcheroo(Register (ptr32 ptr32) r0)
-word32 switcheroo(ptr32 * r0)
+// 000084D4: Register word32 switcheroo(Register Eq_n r0)
+word32 switcheroo(Eq_n r0)
 {
 	word32 * fp_n;
 	switch (r0)
@@ -118,17 +116,15 @@ word32 switcheroo(ptr32 * r0)
 	case 0x02:
 	case 0x03:
 	case 0x04:
-		word32 sp_n;
-		fp_n = frobulate(r0, r0, out sp_n);
+		fp_n = frobulate(r0, r0);
 		break;
 	case 0x05:
 	case 0x07:
 l00008540:
-		fp_n = bazulate(null, null);
+		fp_n = bazulate(0x00, 0x00);
 		break;
 	case 0x06:
-		word32 sp_n;
-		fp_n = frobulate(r0 - 0x03, r0, out sp_n);
+		fp_n = frobulate(r0 - 0x03, r0);
 		break;
 	case 0x08:
 		bazulate(r0, r0);
@@ -137,37 +133,37 @@ l00008540:
 	return *(fp_n - -0x04);
 }
 
-// 0000855C: void main(Register (ptr32 ptr32) r0)
-void main(ptr32 * r0)
+// 0000855C: void main(Register Eq_n r0)
+void main(Eq_n r0)
 {
 	switcheroo(r0);
 }
 
-// 00008588: Register (ptr32 ptr32) __divsi3(Register (ptr32 ptr32) r0, Register (ptr32 ptr32) r1)
-ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
+// 00008588: Register Eq_n __divsi3(Register Eq_n r0, Register Eq_n r1)
+Eq_n __divsi3(Eq_n r0, Eq_n r1)
 {
-	ptr32 * r1_n;
+	Eq_n r1_n;
 	int32 ip_n = r0 ^ r1;
 	Eq_n r3_n = 0x01;
-	ptr32 * r2_n = null;
+	Eq_n r2_n = 0x00;
 	r1_n = r1;
-	if (r1 < null)
+	if (r1 < 0x00)
 		r1_n = 0x00 - r1;
-	if (r1 == null)
+	if (r1 == 0x00)
 	{
 		__div0(r0);
-		return null;
+		return 0x00;
 	}
 	else
 	{
-		if (r0 < null)
+		if (r0 < 0x00)
 			r0 = 0x00 - r0;
 		if (r0 >= r1_n)
 		{
 			do
 			{
-				bool C_n = SLICE(cond(r1_n - (ptr32 *) 0x10000000), bool, 1);
-				if (r1_n < (ptr32 *) 0x10000000)
+				bool C_n = SLICE(cond(r1_n - 0x10000000), bool, 1);
+				if (r1_n < 0x10000000)
 					C_n = SLICE(cond(r1_n - r0), bool, 1);
 				if (!C_n)
 				{
@@ -177,8 +173,8 @@ ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
 			} while (C_n);
 			do
 			{
-				bool C_n = SLICE(cond(r1_n - (ptr32 *) 0x80000000), bool, 1);
-				if (r1_n < (ptr32 *) 0x80000000)
+				bool C_n = SLICE(cond(r1_n - 0x80000000), bool, 1);
+				if (r1_n < 0x80000000)
 					C_n = SLICE(cond(r1_n - r0), bool, 1);
 				if (!C_n)
 				{
@@ -209,7 +205,7 @@ ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
 					r2_n |= r3_n >> 0x03;
 				}
 				bool Z_n = SLICE(cond(r0), bool, 2);
-				if (r0 != null)
+				if (r0 != 0x00)
 				{
 					r3_n >>= 0x04;
 					Z_n = SLICE(cond(r3_n), bool, 2);
@@ -218,18 +214,18 @@ ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
 					r1_n >>= 0x04;
 			} while (Z_n);
 		}
-		ptr32 * r0_n = r2_n;
+		Eq_n r0_n = r2_n;
 		if (ip_n < 0x00)
 			r0_n = 0x00 - r2_n;
 		return r0_n;
 	}
 }
 
-// 00008638: void __div0(Register (ptr32 ptr32) r0)
-void __div0(ptr32 * r0)
+// 00008638: void __div0(Register Eq_n r0)
+void __div0(Eq_n r0)
 {
 	__syscall(0x00900014);
-	if (r0 >= (ptr32 *) 1000)
+	if (r0 >= 1000)
 		return;
 	__syscall(0x00900025);
 }

@@ -4,8 +4,8 @@
 
 #include "test.h"
 
-// 00000588: void _init(Register word32 ra)
-void _init(word32 ra)
+// 00000588: void _init()
+void _init()
 {
 	if (__gmon_start__ == 0x00)
 	{
@@ -53,8 +53,8 @@ void register_tm_clones()
 	r25_n();
 }
 
-// 000006F4: void __do_global_dtors_aux(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra)
-void __do_global_dtors_aux(word32 r16, word32 r17, word32 r18, word32 ra)
+// 000006F4: void __do_global_dtors_aux()
+void __do_global_dtors_aux()
 {
 	if ((word32) globals->b10AF0 == 0x00)
 	{
@@ -101,10 +101,10 @@ void main()
 	r2_n = r2_n;
 }
 
-// 000008C0: void __libc_csu_init(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 ra)
-void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 ra)
+// 000008C0: void __libc_csu_init(Register word32 r4, Register word32 r5, Register word32 r6)
+void __libc_csu_init(word32 r4, word32 r5, word32 r6)
 {
-	_init(ra);
+	_init();
 	<anonymous> ** r16_n = globals->ptr10ABC;
 	int32 r18_n = globals->ptr10ABC - r16_n;
 	if (r18_n >> 0x02 != 0x00)

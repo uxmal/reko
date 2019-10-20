@@ -1,7 +1,7 @@
-void _init(word32 ra)
+void _init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ra:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r2 r25 r28
 // Preserved: ra sp
@@ -46,7 +46,7 @@ l00000588_ds_f:
 l000005AC:
 	word32 r25_31
 	call __gmon_start__ (retsize: 0;)
-		uses: r25:r25_31,ra:ra,sp:fp + -32
+		uses: r25:r25_31
 		defs: r25:r25_31
 // DataOut:
 // DataOut (flags):
@@ -218,10 +218,10 @@ register_tm_clones_exit:
 
 
 
-void __do_global_dtors_aux(word32 r16, word32 r17, word32 r18, word32 ra)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r16:[0..31] r17:[0..31] r18:[0..31] ra:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4
 // Preserved: r16 r17 r18 r19 ra sp
@@ -267,7 +267,7 @@ l00000734:
 	word32 r25_27
 	word32 r3_30
 	call __cxa_finalize (retsize: 0;)
-		uses: r16:r16,r17:r17,r18:r18,r19:0x00010000,r25:r25_27,r3:r3_30,r4:Mem19[r2_24:word32],ra:ra,sp:fp + -48
+		uses: r25:r25_27,r3:r3_30,r4:Mem19[r2_24:word32]
 		defs: r25:r25_27,r3:r3_30
 // DataOut:
 // DataOut (flags):
@@ -405,10 +405,10 @@ main_exit:
 
 
 
-void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 ra)
+void __libc_csu_init(word32 r4, word32 r5, word32 r6)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r16 r17 r18 r19 r20 r21 ra sp
@@ -418,7 +418,7 @@ __libc_csu_init_entry:
 // SymbolicIn:
 
 l000008C0:
-	_init(ra)
+	_init()
 	word32 r16_35 = Mem30[0x00010ABC:word32]
 	word32 r18_37 = Mem30[0x00010ABC:word32] - r16_35
 	branch r18_37 >> 0x02 == 0x00000000 l000008C0_ds_t

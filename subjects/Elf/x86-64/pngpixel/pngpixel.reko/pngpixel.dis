@@ -18,7 +18,6 @@ l0000000000400AE8:
 
 l0000000000400AF8:
 	call __gmon_start__ (retsize: 8;)
-		uses: rsp:fp - 0x0000000000000008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -218,7 +217,7 @@ l0000000000400DB0:
 
 l0000000000400DBA:
 	call fn0000000000000000 (retsize: 8;)
-		uses: rbp:fp - 8,rsp:fp - 8,Stack +0008:rbp
+		uses: Stack +0008:rbp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -344,14 +343,14 @@ l0000000000400EE9:
 	word64 rcx_39
 	word64 rax_40
 	call png_get_bit_depth (retsize: 8;)
-		uses: ecx:ecx,fs:fs,r12:r12,r13:r13,rax:rdi,rbp:fp - 8,rbx:rbx,rdi:rdi,rdx:rsi,rsi:rsi,rsp:fp - 0x0000000000000078,Stack +000C:ecx,Stack +0010:rdx,Stack +0018:rsi,Stack +0020:rdi,Stack +0050:rax_26,Stack +0060:rbx,Stack +0068:r12,Stack +0070:r13,Stack +0078:rbp
+		uses: ecx:ecx,rax:rdi,rdi:rdi,rdx:rsi,rsi:rsi,Stack +000C:ecx,Stack +0010:rdx,Stack +0018:rsi,Stack +0020:rdi,Stack +0050:rax_26,Stack +0060:rbx,Stack +0068:r12,Stack +0070:r13,Stack +0078:rbp
 		defs: rax:rax_40,rcx:rcx_39
 	word32 eax_45 = (word32) SLICE(rax_40, byte, 0)
 	word64 rdx_54
 	word64 rcx_55
 	word64 rax_56
 	call png_get_color_type (retsize: 8;)
-		uses: ecx:SLICE(rcx_39, word32, 0),fs:fs,r12:r12,r13:r13,rax:rdi,rbp:fp - 8,rbx:rbx,rdi:rdi,rdx:rsi,rsi:rsi,rsp:fp - 0x0000000000000078,Stack +0038:eax_45
+		uses: ecx:SLICE(rcx_39, word32, 0),rax:rdi,rdi:rdi,rdx:rsi,rsi:rsi,Stack +0038:eax_45
 		defs: rax:rax_56,rcx:rcx_55,rdx:rdx_54
 	word32 ecx_462 = SLICE(rcx_55, word32, 0)
 	word32 eax_61 = (word32) SLICE(rax_56, byte, 0)
@@ -382,7 +381,7 @@ l0000000000400F8D:
 	word32 eax_219 = SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000000, SLICE((uint64) ecx, word32, 0), rdx, 0x00000001), word32, 0)
 	word64 rax_232
 	call png_get_PLTE (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,rax:rdi,rbp:fp - 8,rbx:rbx,rcx:fp - 0x0000000000000050,rdi:rdi,rdx:fp - 0x0000000000000040,rsi:rsi,rsp:fp - 0x0000000000000078,Stack +0030:0x00000000,Stack +003C:eax_219,Stack +0040:0x0000000000000000
+		uses: rax:rdi,rcx:fp - 0x0000000000000050,rdi:rdi,rdx:fp - 0x0000000000000040,rsi:rsi,Stack +0030:0x00000000,Stack +003C:eax_219,Stack +0040:0x0000000000000000
 		defs: rax:rax_232
 	branch SLICE((uint64) (SLICE(rax_232, word32, 0) & 0x00000008), word32, 0) == 0x00000000 l0000000000401137
 // DataOut:
@@ -410,7 +409,7 @@ l0000000000401137:
 l0000000000400FF9:
 	word64 rax_270
 	call png_get_tRNS (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:0x0000000000000000,rax:rdi,rbp:fp - 8,rbx:rbx,rcx:fp - 0x000000000000004C,rdi:rdi,rdx:fp - 0x0000000000000038,rsi:rsi,rsp:fp - 0x0000000000000078,Stack +0034:0x00000000,Stack +0048:0x0000000000000000
+		uses: r8:0x0000000000000000,rax:rdi,rcx:fp - 0x000000000000004C,rdi:rdi,rdx:fp - 0x0000000000000038,rsi:rsi,Stack +0034:0x00000000,Stack +0048:0x0000000000000000
 		defs: rax:rax_270
 	branch SLICE((uint64) (SLICE(rax_270, word32, 0) & 0x00000010), word32, 0) == 0x00000000 l00000000004010D1
 // DataOut:
@@ -475,7 +474,7 @@ l0000000000401155:
 
 l00000000004012C9:
 	call png_error (retsize: 8;)
-		uses: ecx:ecx_462,fs:fs,r12:r12,r13:r13,rax:rdi,rbp:fp - 8,rbx:rbx,rdi:rdi,rdx:rdx_54,rsi:0x0000000000401938,rsp:fp - 0x0000000000000078
+		uses: ecx:ecx_462,rax:rdi,rdi:rdi,rdx:rdx_54,rsi:0x0000000000401938
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -559,7 +558,7 @@ l000000000040139D:
 	word64 r9_69
 	word64 r8_70
 	call png_create_read_struct (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_70,r9:r9_69,rbp:fp - 8,rbx:rbx,rcx:0x0000000000000000,rdi:0x0000000000401993,rdx:0x0000000000000000,rsi:0x0000000000000000,rsp:fp - 168,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
+		uses: r8:r8_70,r9:r9_69,rcx:0x0000000000000000,rdi:0x0000000000401993,rdx:0x0000000000000000,rsi:0x0000000000000000,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_70,r9:r9_69,rax:rax_66,rsi:rsi_65
 	branch rax_66 == 0x0000000000000000 l00000000004016F6
 // DataOut:
@@ -578,7 +577,7 @@ l00000000004013C7:
 	word64 r9_90
 	word64 r8_91
 	call png_create_info_struct (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_91,r9:r9_90,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_88,rdi:rax_66,rsi:rsi_65,rsp:fp - 168,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
+		uses: r8:r8_91,r9:r9_90,rax:rax_66,rcx:rcx_88,rdi:rax_66,rsi:rsi_65,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_91,r9:r9_90,rax:rax_87,rcx:rcx_88
 	branch rax_87 == 0x0000000000000000 l00000000004016C0
 // DataOut:
@@ -587,16 +586,16 @@ l00000000004013C7:
 
 l00000000004013E4:
 	call png_init_io (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_173,r9:r9_172,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_170,rdi:rax_66,rdx:rax_46,rsi:rax_46,rsp:fp - 168,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
+		uses: r8:r8_173,r9:r9_172,rax:rax_66,rcx:rcx_170,rdi:rax_66,rdx:rax_46,rsi:rax_46,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 	call png_read_info (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_173,r9:r9_172,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_170,rdi:rax_66,rdx:rax_87,rsi:rax_87,rsp:fp - 168,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
+		uses: r8:r8_173,r9:r9_172,rax:rax_66,rcx:rcx_170,rdi:rax_66,rdx:rax_87,rsi:rax_87,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 	word64 rax_128
 	call png_get_rowbytes (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_173,r9:r9_172,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_170,rdi:rax_66,rdx:rax_87,rsi:rax_87,rsp:fp - 168,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
+		uses: r8:r8_173,r9:r9_172,rax:rax_66,rcx:rcx_170,rdi:rax_66,rdx:rax_87,rsi:rax_87,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: rax:rax_128
 	word64 rax_140
 	call png_malloc (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_173,r9:r9_172,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_170,rdi:rax_66,rdx:rax_128,rsi:rax_128,rsp:fp - 168,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
+		uses: r8:r8_173,r9:r9_172,rax:rax_66,rcx:rcx_170,rdi:rax_66,rdx:rax_128,rsi:rax_128,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: rax:rax_140
 	word64 rax_169
 	word64 rcx_170
@@ -604,7 +603,7 @@ l00000000004013E4:
 	word64 r8_173
 	word64 rsi_168
 	call png_get_IHDR (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:fp - 0x0000000000000080,r9:fp - 0x000000000000007C,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:fp - 0x0000000000000084,rdi:rax_66,rdx:fp - 0x0000000000000088,rsi:rax_87,rsp:fp - 0x00000000000000C8,Stack +0008:fp - 0x0000000000000078,Stack +0010:fp - 0x0000000000000074,Stack +0018:fp - 0x0000000000000070,Stack +0048:dwLoc88,Stack +004C:dwLoc84,Stack +0058:dwLoc78,Stack +0064:dwLoc6C,Stack +0088:rax_140,Stack +00B8:rax_140
+		uses: r8:fp - 0x0000000000000080,r9:fp - 0x000000000000007C,rax:rax_66,rcx:fp - 0x0000000000000084,rdi:rax_66,rdx:fp - 0x0000000000000088,rsi:rax_87,Stack +0008:fp - 0x0000000000000078,Stack +0010:fp - 0x0000000000000074,Stack +0018:fp - 0x0000000000000070,Stack +0048:dwLoc88,Stack +004C:dwLoc84,Stack +0058:dwLoc78,Stack +0064:dwLoc6C,Stack +0088:rax_140,Stack +00B8:rax_140
 		defs: r8:r8_173,r9:r9_172,rax:rax_169,rcx:rcx_170,rsi:rsi_168
 	branch SLICE(rax_169, word32, 0) == 0x00000000 l00000000004016AF
 // DataOut:
@@ -616,7 +615,7 @@ l00000000004016AF:
 	word64 r9_188
 	word64 r8_189
 	call png_error (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_189,r9:r9_188,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_186,rdi:rax_66,rsi:0x00000000004019C3,rsp:fp - 0x00000000000000A8,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
+		uses: r8:r8_189,r9:r9_188,rax:rax_66,rcx:rcx_186,rdi:rax_66,rsi:0x00000000004019C3,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_189,r9:r9_188,rcx:rcx_186
 // DataOut:
 // DataOut (flags):
@@ -663,7 +662,7 @@ l000000000040149A:
 	word64 r9_215
 	word64 r8_216
 	call png_error (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_216,r9:r9_215,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_213,rdi:rax_66,rsi:0x000000000040199A,rsp:fp - 0x00000000000000A8,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
+		uses: r8:r8_216,r9:r9_215,rax:rax_66,rcx:rcx_213,rdi:rax_66,rsi:0x000000000040199A,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_216,r9:r9_215,rcx:rcx_213,rsi:rsi_211
 // DataOut:
 // DataOut (flags):
@@ -674,7 +673,7 @@ l00000000004014AB:
 	word64 r9_230
 	word64 r8_231
 	call png_start_read_image (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_231,r9:r9_230,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_228,rdi:rax_66,rsi:rsi_222,rsp:fp - 0x00000000000000A8,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_753
+		uses: r8:r8_231,r9:r9_230,rax:rax_66,rcx:rcx_228,rdi:rax_66,rsi:rsi_222,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_753
 		defs: r8:r8_231,r9:r9_230,rcx:rcx_228
 	word32 dwLoc68_634 = 0x00000000
 // DataOut:
@@ -801,7 +800,7 @@ l00000000004015F0:
 	word64 r9_450
 	word64 r8_451
 	call png_read_row (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_451,r9:r9_450,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rax_140,rdi:rax_66,rdx:0x0000000000000000,rsi:rax_140,rsp:fp - 0x00000000000000A8,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_753
+		uses: r8:r8_451,r9:r9_450,rax:rax_66,rcx:rax_140,rdi:rax_66,rdx:0x0000000000000000,rsi:rax_140,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_753
 		defs: r8:r8_451,r9:r9_450
 	branch (uint64) dwLoc54_652 != rax_39 l000000000040165E
 // DataOut:
@@ -859,12 +858,12 @@ l000000000040166F:
 
 l000000000040167F:
 	call png_free (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_547,r9:r9_546,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_544,rdi:rax_66,rdx:rax_140,rsi:rax_140,rsp:fp - 0x00000000000000A8,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_753,Stack +0068:0x0000000000000000
+		uses: r8:r8_547,r9:r9_546,rax:rax_66,rcx:rcx_544,rdi:rax_66,rdx:rax_140,rsi:rax_140,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_753,Stack +0068:0x0000000000000000
 	word64 rcx_544
 	word64 r9_546
 	word64 r8_547
 	call png_destroy_info_struct (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_547,r9:r9_546,rax:rax_66,rbp:fp - 8,rbx:rbx,rcx:rcx_544,rdi:rax_66,rdx:fp - 0x0000000000000038,rsi:fp - 0x0000000000000038,rsp:fp - 0x00000000000000A8,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_753
+		uses: r8:r8_547,r9:r9_546,rax:rax_66,rcx:rcx_544,rdi:rax_66,rdx:fp - 0x0000000000000038,rsi:fp - 0x0000000000000038,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_753
 		defs: r8:r8_547,r9:r9_546,rcx:rcx_544
 // DataOut:
 // DataOut (flags):
@@ -875,7 +874,7 @@ l00000000004016DE:
 	word64 r9_564
 	word64 r8_565
 	call png_destroy_read_struct (retsize: 8;)
-		uses: fs:fs,r12:r12,r13:r13,r8:r8_565,r9:r9_564,rax:fp - 0x0000000000000040,rbp:fp - 8,rbx:rbx,rcx:rcx_562,rdi:fp - 0x0000000000000040,rdx:0x0000000000000000,rsi:0x0000000000000000,rsp:fp - 0x00000000000000A8,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_841
+		uses: r8:r8_565,r9:r9_564,rax:fp - 0x0000000000000040,rcx:rcx_562,rdi:fp - 0x0000000000000040,rdx:0x0000000000000000,rsi:0x0000000000000000,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_841
 		defs: r8:r8_565,r9:r9_564,rcx:rcx_562
 // DataOut:
 // DataOut (flags):

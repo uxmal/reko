@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -53,11 +53,6 @@ namespace Reko.Environments.Cpm
         {
             get { return base.MemoryMap; }
             set { base.MemoryMap = value; OnMemoryMapChanged(); }
-        }
-
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

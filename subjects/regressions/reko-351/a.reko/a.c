@@ -4,8 +4,8 @@
 
 #include "a.h"
 
-// 80000080: Register word32 deregister_tm_clones(Register out ptr32 a7Out)
-word32 deregister_tm_clones(ptr32 & a7Out)
+// 80000080: Register word32 deregister_tm_clones()
+word32 deregister_tm_clones()
 {
 	word32 * a6_n = fp - 0x04;
 	if (false && 0x00 != 0x00)
@@ -13,9 +13,7 @@ word32 deregister_tm_clones(ptr32 & a7Out)
 		word32 a0_n;
 		null();
 	}
-	word32 a6_n = *a6_n;
-	a7Out = a6_n + 0x01;
-	return a6_n;
+	return *a6_n;
 }
 
 // 800000AE: void register_tm_clones()
@@ -36,7 +34,6 @@ void register_tm_clones()
 void __do_global_dtors_aux()
 {
 	ptr32 a6_n = fp - 0x04;
-	ptr32 a7_n = fp - 0x0C;
 	if (globals->b80002724 == 0x00)
 	{
 		uint32 d0_n = globals->dw80002726;
@@ -54,8 +51,8 @@ void __do_global_dtors_aux()
 				d0_n = globals->dw80002726;
 			} while (d2_n - d0_n > 0x00);
 		}
-		ptr32 a7_n;
-		word32 a6_n = deregister_tm_clones(out a7_n);
+		word32 a6_n = deregister_tm_clones();
+		ptr32 a7_n = <invalid>;
 		if (0x00 != 0x00)
 		{
 			*(a7_n - 0x04) = 0x8000065C;
@@ -87,8 +84,7 @@ void frame_dummy()
 	}
 	if (globals->dw8000271C != 0x00 && 0x00 != 0x00)
 	{
-		ptr32 * a7_n = a7_n - 0x04;
-		*a7_n = 0x8000271C;
+		*(a7_n - 0x04) = 0x8000271C;
 		word32 a1_n;
 		null();
 		register_tm_clones();
@@ -171,7 +167,6 @@ void __do_global_ctors_aux()
 {
 	<anonymous> * a0_n = globals->ptr8000270C;
 	ptr32 a6_n = fp - 0x04;
-	ptr32 a7_n = fp - 0x08;
 	ptr32 a2_n = 0x8000270C;
 	while (a0_n != (<anonymous> *) -0x01)
 	{
