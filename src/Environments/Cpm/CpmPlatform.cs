@@ -55,14 +55,6 @@ namespace Reko.Environments.Cpm
             set { base.MemoryMap = value; OnMemoryMapChanged(); }
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>()
-            {
-                Architecture.StackRegister,
-            };
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>();

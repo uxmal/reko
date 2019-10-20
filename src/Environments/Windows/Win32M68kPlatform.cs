@@ -22,14 +22,6 @@ namespace Reko.Environments.Windows
 			get { return ""; }
 		}
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>
-            {
-                Architecture.StackRegister,
-            };
-        }
-
 		public override HashSet<RegisterStorage> CreateTrashedRegisters()
 		{
 			return new HashSet<RegisterStorage>();
