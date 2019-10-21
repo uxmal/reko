@@ -4,8 +4,8 @@
 
 #include "redir.h"
 
-// 004001BC: void _init(Register word32 ra)
-void _init(word32 ra)
+// 004001BC: void _init()
+void _init()
 {
 	globals->t40072C();
 	globals->t409C10();
@@ -947,7 +947,7 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 					*((word32) r2_n + 0x000017C4) = client_parse_reply;
 					word32 r6_n;
 					word32 r7_n;
-					client_prepare_connect(r2_n, r16, fp + -0x0048, ra, out r6_n, out r7_n);
+					client_prepare_connect(r2_n, ra, out r6_n, out r7_n);
 					word32 r25_n;
 					client_send_request(r2_n, ra, out r25_n);
 				}
@@ -961,8 +961,8 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 	}
 }
 
-// 00402028: Register word32 client_prepare_connect(Register Eq_n r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Register out ptr32 r6Out, Register out ptr32 r7Out)
-word32 client_prepare_connect(Eq_n r4, word32 r16, ptr32 r30, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
+// 00402028: Register word32 client_prepare_connect(Register Eq_n r4, Register word32 ra, Register out ptr32 r6Out, Register out ptr32 r7Out)
+word32 client_prepare_connect(Eq_n r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
 {
 	getsockopt();
 	inet_ntoa();
@@ -1211,8 +1211,8 @@ int8 * get_a_line(byte * r4, int8 * r5, int32 * r6)
 	return dwArg04_n;
 }
 
-// 00402E44: void client_read_request(Register (ptr32 Eq_n) r4, Register word32 r30, Register word32 ra)
-void client_read_request(struct Eq_n * r4, word32 r30, word32 ra)
+// 00402E44: void client_read_request(Register (ptr32 Eq_n) r4)
+void client_read_request(struct Eq_n * r4)
 {
 	r4->t17CC = time(null);
 	word32 r25_n;
@@ -1575,12 +1575,12 @@ int32 request_parse_line(Eq_n r4, ptr32 r5, word32 ra)
 {
 	int32 r2_n;
 	word32 r5_n;
-	word32 r2_n = get_method(r4, r5, fp + -0x0030, ra, out r5_n);
+	word32 r2_n = get_method(r4, r5, out r5_n);
 	if (is_a_method(r4) == 0x00)
 		r2_n = 0x00;
 	else
 	{
-		get_version((word32) r4 + 788, get_uri((word32) r4 + 0x0114, r2_n, fp + -0x0030, ra), fp + -0x0030, ra);
+		get_version((word32) r4 + 788, get_uri((word32) r4 + 0x0114, r2_n));
 		r2_n = 0x01;
 	}
 	return r2_n;
@@ -1685,8 +1685,8 @@ void * request_add_lines(Eq_n r4, Eq_n r5, void * r6)
 	return dwArg08_n;
 }
 
-// 00404B34: Register ptr32 get_method(Register Eq_n r4, Register ptr32 r5, Register ptr32 r30, Register word32 ra, Register out Eq_n r5Out)
-ptr32 get_method(Eq_n r4, ptr32 r5, ptr32 r30, word32 ra, union Eq_n & r5Out)
+// 00404B34: Register ptr32 get_method(Register Eq_n r4, Register ptr32 r5, Register out Eq_n r5Out)
+ptr32 get_method(Eq_n r4, ptr32 r5, union Eq_n & r5Out)
 {
 	union Eq_n * r2_n;
 	strsep();
@@ -1697,8 +1697,8 @@ ptr32 get_method(Eq_n r4, ptr32 r5, ptr32 r30, word32 ra, union Eq_n & r5Out)
 	return r5;
 }
 
-// 00404BC8: Register word32 get_uri(Register Eq_n r4, Register word32 r5, Register ptr32 r30, Register word32 ra)
-word32 get_uri(Eq_n r4, word32 r5, ptr32 r30, word32 ra)
+// 00404BC8: Register word32 get_uri(Register Eq_n r4, Register word32 r5)
+word32 get_uri(Eq_n r4, word32 r5)
 {
 	union Eq_n * r2_n;
 	strsep();
@@ -1707,8 +1707,8 @@ word32 get_uri(Eq_n r4, word32 r5, ptr32 r30, word32 ra)
 	return r5;
 }
 
-// 00404C5C: void get_version(Register Eq_n r4, Register word32 r5, Register ptr32 r30, Register word32 ra)
-void get_version(Eq_n r4, word32 r5, ptr32 r30, word32 ra)
+// 00404C5C: void get_version(Register Eq_n r4, Register word32 r5)
+void get_version(Eq_n r4, word32 r5)
 {
 	union Eq_n * r2_n;
 	strsep();
@@ -2190,8 +2190,8 @@ void log_rotate(word32 ra)
 	open_log("w", ra);
 }
 
-// 0040697C: void log_string(Register (ptr32 Eq_n) r4, Register word32 r5, Register word32 r7, Register word32 r16, Register word32 r17, Register word32 r30, Register word32 ra)
-void log_string(FILE * r4, word32 r5, word32 r7, word32 r16, word32 r17, word32 r30, word32 ra)
+// 0040697C: void log_string(Register (ptr32 Eq_n) r4, Register word32 r5, Register word32 r7, Register word32 ra)
+void log_string(FILE * r4, word32 r5, word32 r7, word32 ra)
 {
 	gettimeofday(fp + -0x0028, null);
 	Eq_n r7_n = <invalid>;
@@ -3605,8 +3605,8 @@ void init_dummy()
 {
 }
 
-// 00409CB0: void _fini(Register word32 ra)
-void _fini(word32 ra)
+// 00409CB0: void _fini()
+void _fini()
 {
 	globals->t400620();
 }

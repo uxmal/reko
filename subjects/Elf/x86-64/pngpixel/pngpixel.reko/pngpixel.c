@@ -45,8 +45,8 @@ void __do_global_dtors_aux(word64 r8)
 	}
 }
 
-// 0000000000400DA0: void frame_dummy(Register word64 rbp)
-void frame_dummy(word64 rbp)
+// 0000000000400DA0: void frame_dummy()
+void frame_dummy()
 {
 	if (globals->qw601E10 != 0x00 && 0x00 != 0x00)
 	{
@@ -102,8 +102,8 @@ l0000000000400EC1:
 	return (word32) rax_n;
 }
 
-// 0000000000400EE9: void print_pixel(Register word32 ecx, Register word64 rdx, Register word64 rbx, Register ptr64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r12, Register word64 r13, Register (ptr32 Eq_n) fs)
-void print_pixel(word32 ecx, word64 rdx, word64 rbx, ptr64 rbp, word64 rsi, word64 rdi, word64 r12, word64 r13, struct Eq_n * fs)
+// 0000000000400EE9: void print_pixel(Register word32 ecx, Register word64 rdx, Register word64 rsi, Register word64 rdi, Register (ptr32 Eq_n) fs)
+void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * fs)
 {
 	word64 rax_n = fs->qw0028;
 	word64 rcx_n;
@@ -170,8 +170,8 @@ l00000000004012C9:
 	__stack_chk_fail();
 }
 
-// 00000000004012F9: void main(Register word64 rbx, Register (ptr64 Eq_n) rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register (ptr32 Eq_n) fs)
-void main(word64 rbx, struct Eq_n * rsi, word32 edi, word64 r12, word64 r13, struct Eq_n * fs)
+// 00000000004012F9: void main(Register (ptr64 Eq_n) rsi, Register word32 edi, Register (ptr32 Eq_n) fs)
+void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 {
 	word64 rax_n = fs->qw0028;
 	if (edi != 0x04)
@@ -293,7 +293,7 @@ void main(word64 rbx, struct Eq_n * rsi, word32 edi, word64 r12, word64 r13, str
 						{
 							if ((uint64) dwLoc50_n == rax_n)
 							{
-								print_pixel((word32) (uint64) dwLoc4C_n, rax_n, rbx, fp - 0x08, rax_n, rax_n, r12, r13, fs);
+								print_pixel((word32) (uint64) dwLoc4C_n, rax_n, rax_n, rax_n, fs);
 								goto l000000000040167F;
 							}
 							++dwLoc4C_n;

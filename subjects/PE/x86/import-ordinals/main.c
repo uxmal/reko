@@ -10,8 +10,8 @@ ptr32 fn00401000()
 	return 0x00403378;
 }
 
-// 00401010: void fn00401010(Register ptr32 ebp, Register (ptr32 word32) esi, Stack word32 dwArg04)
-void fn00401010(ptr32 ebp, word32 * esi, word32 dwArg04)
+// 00401010: void fn00401010(Stack word32 dwArg04)
+void fn00401010(word32 dwArg04)
 {
 	ptr32 * esp_n;
 	word32 eax_n;
@@ -26,8 +26,8 @@ void fn00401010(ptr32 ebp, word32 * esi, word32 dwArg04)
 	_stdio_common_vfprintf();
 }
 
-// 00401040: Register word32 fn00401040(Register word32 ecx, Register (ptr32 Eq_n) ebp, Register (ptr32 word32) esi)
-word32 fn00401040(word32 ecx, struct Eq_n * ebp, word32 * esi)
+// 00401040: Register word32 fn00401040(Register word32 ecx)
+word32 fn00401040(word32 ecx)
 {
 	ptr32 esp_n;
 	driver.dll!Ordinal_n();
@@ -43,7 +43,7 @@ word32 fn00401040(word32 ecx, struct Eq_n * ebp, word32 * esi)
 	*(esp_n - 0x04) = ecx;
 	*(esp_n - 0x08) = *driver.dll!Ordinal_n;
 	*(esp_n - 0x0C) = 0x00402118;
-	fn00401010(fp - 0x04, esi, *(esp_n - 0x0C));
+	fn00401010(*(esp_n - 0x0C));
 	return 0x00;
 }
 
@@ -143,7 +143,7 @@ l00401172:
 		*(esp_n - 0x04) = eax_n;
 		*(esp_n - 0x08) = *eax_n;
 		*(esp_n - 0x0C) = *eax_n;
-		Eq_n eax_n = fn00401040(ecx_n, ebp_n, eax_n);
+		Eq_n eax_n = fn00401040(ecx_n);
 		byte bl_n = (byte) ebx_n;
 		ptr32 esp_n = esp_n;
 		if ((byte) (uint32) (uint8) fn0040188B() == 0x00)

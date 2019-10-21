@@ -4,12 +4,12 @@
 
 #include "varargs_test.h"
 
-// 0000000140001000: Register word64 fn0000000140001000(Register word64 rbx, Register word64 rsi, Register word64 rdi)
-word64 fn0000000140001000(word64 rbx, word64 rsi, word64 rdi)
+// 0000000140001000: Register word64 fn0000000140001000()
+word64 fn0000000140001000()
 {
 	ui64 rax_n = globals->qw40003000 ^ fp - 200;
-	fn0000000140001140(0x140002210, 0x03, rbx, rsi, rdi, 0x140002250, 0x140002240);
-	fn00000001400010D0(0x140002228, fp - 0x7C, rbx, rsi, rdi, fp - 0x70, fp - 0x50);
+	fn0000000140001140(0x140002210, 0x03, 0x140002250, 0x140002240);
+	fn00000001400010D0(0x140002228, fp - 0x7C, fp - 0x70, fp - 0x50);
 	return fn00000001400011B0(rax_n ^ fp - 200, qwLocD0);
 }
 
@@ -19,8 +19,8 @@ ptr64 fn00000001400010C0()
 	return 0x140003628;
 }
 
-// 00000001400010D0: void fn00000001400010D0(Register ptr64 rcx, Register ptr64 rdx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Register ptr64 r8, Register ptr64 r9)
-void fn00000001400010D0(ptr64 rcx, ptr64 rdx, word64 rbx, word64 rsi, word64 rdi, ptr64 r8, ptr64 r9)
+// 00000001400010D0: void fn00000001400010D0(Register ptr64 rcx, Register ptr64 rdx, Register ptr64 r8, Register ptr64 r9)
+void fn00000001400010D0(ptr64 rcx, ptr64 rdx, ptr64 r8, ptr64 r9)
 {
 	word64 rax_n;
 	_acrt_iob_func();
@@ -33,8 +33,8 @@ ptr64 fn0000000140001130()
 	return 0x140003620;
 }
 
-// 0000000140001140: void fn0000000140001140(Register ptr64 rcx, Register uint64 rdx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Register ptr64 r8, Register ptr64 r9)
-void fn0000000140001140(ptr64 rcx, uint64 rdx, word64 rbx, word64 rsi, word64 rdi, ptr64 r8, ptr64 r9)
+// 0000000140001140: void fn0000000140001140(Register ptr64 rcx, Register uint64 rdx, Register ptr64 r8, Register ptr64 r9)
+void fn0000000140001140(ptr64 rcx, uint64 rdx, ptr64 r8, ptr64 r9)
 {
 	word64 rax_n;
 	_acrt_iob_func();
@@ -112,8 +112,8 @@ void fn00000001400012A0()
 	set_new_mode();
 }
 
-// 00000001400012BC: Register word32 fn00000001400012BC(Register (ptr64 (ptr64 code)) rax, Register word64 rsi)
-word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi)
+// 00000001400012BC: Register word32 fn00000001400012BC(Register (ptr64 (ptr64 code)) rax)
+word32 fn00000001400012BC(<anonymous> ** rax)
 {
 	word56 rsi_56_8_n = SLICE(rsi, word56, 8);
 	byte al = (byte) rax;
@@ -193,7 +193,7 @@ word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi)
 	word64 rax_n;
 	_p___argc();
 	get_initial_narrow_environment();
-	word64 rax_n = fn0000000140001000(rax_n, rsi_n, rax_n);
+	word64 rax_n = fn0000000140001000();
 	fn0000000140001AC0(rax_32_n);
 	uint64 rbx_n = (uint64) (word32) rax_n;
 	byte al_n = (byte) rax_n;
@@ -221,7 +221,7 @@ word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi)
 Eq_n Win32CrtStartup()
 {
 	<anonymous> ** rax_n = fn000000014000186C(qwLoc20, qwLoc18);
-	return (DWORD) (uint64) (uint32) fn00000001400012BC(rax_n, rsi);
+	return (DWORD) (uint64) (uint32) fn00000001400012BC(rax_n);
 }
 
 // 0000000140001448: void fn0000000140001448(Stack Eq_n tArg00, Stack Eq_n tArg08)
@@ -751,8 +751,8 @@ void fn0000000140001F10(<anonymous> * rax)
 	rax();
 }
 
-// 0000000140001F12: void fn0000000140001F12(Register (ptr64 word64) rcx, Register word64 rbp)
-void fn0000000140001F12(word64 * rcx, word64 rbp)
+// 0000000140001F12: void fn0000000140001F12(Register (ptr64 word64) rcx)
+void fn0000000140001F12(word64 * rcx)
 {
 	word64 rax_n = *rcx;
 	seh_filter_exe();

@@ -233,12 +233,32 @@ namespace Reko.Analysis
             foreach (var use in ci.Uses.ToList())
             {
                 if (IsPreservedRegister(trashedRegisters, use.Storage) ||
+                    IsStackStorageOfPreservedRegister(
+                        ssa,
+                        trashedRegisters,
+                        use) ||
                     implicitRegs.Contains(use.Storage))
                 {
                     ci.Uses.Remove(use);
                     ssa.RemoveUses(stm, use.Expression);
                 }
             }
+        }
+
+        private bool IsStackStorageOfPreservedRegister(
+            SsaState ssa,
+            HashSet<RegisterStorage> trashedRegisters,
+            CallBinding use)
+        {
+            if (!(use.Storage is StackStorage))
+                return false;
+            if (!(use.Expression is Identifier id))
+                return false;
+            if (!(ssa.Identifiers[id].IsOriginal))
+                return false;
+            if (!IsPreservedRegister(trashedRegisters, id.Storage))
+                return false;
+            return true;
         }
 
         private bool IsPreservedRegister(

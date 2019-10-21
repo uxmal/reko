@@ -10854,10 +10854,10 @@ fn000000000040ABC0_exit:
 
 
 
-word64 fn000000000040AC80(word64 rbx, word64 rsi, word64 rdi)
+word64 fn000000000040AC80(word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rbx:[0..63] rdi:[0..63] rsi:[0..63]
+// MayUse:  rdi:[0..63] rsi:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rdi rsi
 // Preserved: rbx rsp
@@ -10869,7 +10869,7 @@ fn000000000040AC80_entry:
 l000000000040AC80:
 	word64 rax_13
 	call Mem5[rdi + 0x0000000000000030:word64] (retsize: 8;)
-		uses: rdi:rsi,rsi:Mem5[rdi + 0x0000000000000010:word64],Stack +0008:rbx
+		uses: rdi:rsi,rsi:Mem5[rdi + 0x0000000000000010:word64]
 		defs: rax:rax_13
 	branch rax_13 >=u Mem5[rdi + 0x0000000000000010:word64] l000000000040AC9D
 // DataOut:
@@ -10895,10 +10895,10 @@ fn000000000040AC80_exit:
 
 
 
-word64 fn000000000040ACB0(word32 ecx, word64 rdx, word64 rbx, word64 rsi, word64 rdi, ptr64 & rsiOut)
+word64 fn000000000040ACB0(word32 ecx, word64 rdx, word64 rsi, word64 rdi, ptr64 & rsiOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rbx:[0..63] rcx:[0..31] rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// MayUse:  rcx:[0..31] rdi:[0..63] rdx:[0..63] rsi:[0..63]
 // LiveOut: rax rsi
 // Trashed: SCZO r10 r9 rax rcx rdi rdx rsi
 // Preserved: r12 r13 r14 rbp rbx rsp
@@ -10910,7 +10910,7 @@ fn000000000040ACB0_entry:
 
 l000000000040ACB0:
 	word64 r13_12 = (uint64) ecx
-	word64 rax_26 = fn000000000040AC80(rbx, rsi, rdi)
+	word64 rax_26 = fn000000000040AC80(rsi, rdi)
 	Mem33[rdx:word64] = rax_26
 	byte r13b_133 = SLICE(r13_12, byte, 0)
 	r13b_133 = SLICE(r13_12, byte, 0) (alias)
@@ -11176,9 +11176,9 @@ fn000000000040AE40_entry:
 // SymbolicIn:
 
 l000000000040AE40:
-	byte r15b_196 = SLICE((uint64) edx, byte, 0)
-	word64 r13_165 = Mem26[rsi:word64]
-	branch r13_165 >=u Mem26[rsi + 0x0000000000000008:word64] l000000000040AEEF
+	byte r15b_194 = SLICE((uint64) edx, byte, 0)
+	word64 r13_163 = Mem26[rsi:word64]
+	branch r13_163 >=u Mem26[rsi + 0x0000000000000008:word64] l000000000040AEEF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11189,14 +11189,14 @@ l000000000040AE64:
 // SymbolicIn:
 
 l000000000040AE68:
-	word64 rbp_33 = Mem32[r13_165:word64]
+	word64 rbp_33 = Mem32[r13_163:word64]
 	branch rbp_33 == 0x0000000000000000 l000000000040AEE1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AE71:
-	word64 rbx_37 = Mem32[r13_165 + 0x0000000000000008:word64]
+	word64 rbx_37 = Mem32[r13_163 + 0x0000000000000008:word64]
 	branch rbx_37 != 0x0000000000000000 l000000000040AE94
 // DataOut:
 // DataOut (flags):
@@ -11204,7 +11204,7 @@ l000000000040AE71:
 
 l000000000040AE94:
 	word64 rbp_43 = Mem42[rbx_37:word64]
-	word64 rax_47 = fn000000000040AC80(rbx_37, rbp_43, rdi)
+	word64 rax_47 = fn000000000040AC80(rbp_43, rdi)
 	word64 rdx_55 = Mem42[rbx_37 + 0x0000000000000008:word64]
 	branch Mem42[rax_47:word64] != 0x0000000000000000 l000000000040AE80
 // DataOut:
@@ -11242,7 +11242,7 @@ l000000000040AECF:
 // SymbolicIn:
 
 l000000000040AED0:
-	rbp_33 = Mem78[r13_165:word64]
+	rbp_33 = Mem78[r13_163:word64]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11253,36 +11253,36 @@ l000000000040AE7A:
 // SymbolicIn:
 
 l000000000040AED4:
-	Mem88[r13_165 + 0x0000000000000008:word64] = 0x0000000000000000
-	branch r15b_196 == 0x00 l000000000040AF08
+	Mem88[r13_163 + 0x0000000000000008:word64] = 0x0000000000000000
+	branch r15b_194 == 0x00 l000000000040AF08
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AF08:
-	word64 rax_98 = fn000000000040AC80(rbx_37, rbp_33, rdi)
-	branch Mem88[rax_98:word64] == 0x0000000000000000 l000000000040AF5B
+	word64 rax_96 = fn000000000040AC80(rbp_33, rdi)
+	branch Mem88[rax_96:word64] == 0x0000000000000000 l000000000040AF5B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AF5B:
-	Mem108[rax_98:word64] = rbp_33
-	Mem110[rdi + 0x0000000000000018:word64] = Mem108[rdi + 0x0000000000000018:word64] + 0x0000000000000001
+	Mem106[rax_96:word64] = rbp_33
+	Mem108[rdi + 0x0000000000000018:word64] = Mem106[rdi + 0x0000000000000018:word64] + 0x0000000000000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AF1C:
-	word64 rax_112 = Mem88[rdi + 0x0000000000000048:word64]
-	branch rax_112 == 0x0000000000000000 l000000000040AF66
+	word64 rax_110 = Mem88[rdi + 0x0000000000000048:word64]
+	branch rax_110 == 0x0000000000000000 l000000000040AF66
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AF66:
-	rax_112 = malloc(0x0000000000000010)
-	branch rax_112 != 0x0000000000000000 l000000000040AF2F
+	rax_110 = malloc(0x0000000000000010)
+	branch rax_110 != 0x0000000000000000 l000000000040AF2F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11294,25 +11294,25 @@ l000000000040AF75:
 // SymbolicIn:
 
 l000000000040AF26:
-	Mem144[rdi + 0x0000000000000048:word64] = Mem88[rax_112 + 0x0000000000000008:word64]
+	Mem142[rdi + 0x0000000000000048:word64] = Mem88[rax_110 + 0x0000000000000008:word64]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AF2F:
-	word64 rdx_147 = Mem146[rax_98 + 0x0000000000000008:word64]
-	Mem150[rax_112:word64] = rbp_33
-	Mem151[rax_112 + 0x0000000000000008:word64] = rdx_147
-	Mem152[rax_98 + 0x0000000000000008:word64] = rax_112
+	word64 rdx_145 = Mem144[rax_96 + 0x0000000000000008:word64]
+	Mem148[rax_110:word64] = rbp_33
+	Mem149[rax_110 + 0x0000000000000008:word64] = rdx_145
+	Mem150[rax_96 + 0x0000000000000008:word64] = rax_110
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040AF3E:
-	Mem155[r13_165:word64] = 0x0000000000000000
-	Mem164[rsi + 0x0000000000000018:word64] = Mem155[rsi + 0x0000000000000018:word64] - 0x0000000000000001
-	r13_165 = r13_165 + 0x0000000000000010
-	branch Mem164[rsi + 0x0000000000000008:word64] >u r13_165 l000000000040AE68
+	Mem153[r13_163:word64] = 0x0000000000000000
+	Mem162[rsi + 0x0000000000000018:word64] = Mem153[rsi + 0x0000000000000018:word64] - 0x0000000000000001
+	r13_163 = r13_163 + 0x0000000000000010
+	branch Mem162[rsi + 0x0000000000000008:word64] >u r13_163 l000000000040AE68
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11323,8 +11323,8 @@ l000000000040AF59:
 // SymbolicIn:
 
 l000000000040AEE1:
-	r13_165 = r13_165 + 0x0000000000000010
-	branch Mem171[rsi + 0x0000000000000008:word64] >u r13_165 l000000000040AE68
+	r13_163 = r13_163 + 0x0000000000000010
+	branch Mem169[rsi + 0x0000000000000008:word64] >u r13_163 l000000000040AE68
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11930,7 +11930,7 @@ l000000000040B8F0:
 l000000000040B904:
 	word64 rax_263
 	word64 rsi_30
-	word64 rax_27 = fn000000000040ACB0(0x0000000000000000, fp - 0x0000000000000020, rdi, rsi, rdi, out rsi_30)
+	word64 rax_27 = fn000000000040ACB0(0x0000000000000000, fp - 0x0000000000000020, rsi, rdi, out rsi_30)
 	word32 rsi_32_32_189 = SLICE(rsi_30, word32, 32)
 	branch rax_27 == 0x0000000000000000 l000000000040B938
 // DataOut:
@@ -12091,7 +12091,7 @@ l000000000040BA3C:
 
 l000000000040BA4C:
 	word64 rsi_504
-	branch fn000000000040ACB0(0x0000000000000000, fp - 0x0000000000000020, rdi, rsi, rdi, out rsi_504) == 0x0000000000000000 l000000000040B96A
+	branch fn000000000040ACB0(0x0000000000000000, fp - 0x0000000000000020, rsi, rdi, out rsi_504) == 0x0000000000000000 l000000000040B96A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -12272,7 +12272,7 @@ fn000000000040BB90_entry:
 
 l000000000040BB90:
 	word64 rsi_22
-	word64 rax_19 = fn000000000040ACB0(0x0000000000000001, fp - 0x0000000000000020, rdi, rsi, rdi, out rsi_22)
+	word64 rax_19 = fn000000000040ACB0(0x0000000000000001, fp - 0x0000000000000020, rsi, rdi, out rsi_22)
 	word32 rsi_32_32_188 = SLICE(rsi_22, word32, 32)
 	branch rax_19 == 0x0000000000000000 l000000000040BD08
 // DataOut:

@@ -51,8 +51,8 @@ void __do_global_dtors_aux(word64 r8)
 	}
 }
 
-// 00000000004004F0: void frame_dummy(Register word64 rbp, Register word64 r8)
-void frame_dummy(word64 rbp, word64 r8)
+// 00000000004004F0: void frame_dummy(Register word64 r8)
+void frame_dummy(word64 r8)
 {
 	if (globals->qw600E08 == 0x00 || 0x00 == 0x00)
 		register_tm_clones(r8);
