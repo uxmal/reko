@@ -1530,7 +1530,9 @@ namespace Reko.UnitTests.Arch.Intel
             Run64bitTest(0x33, 0xC0);
             AssertCode(
                "0|L--|0000000140000000(2): 3 instructions",
-               "1|L--|rax = (uint64) (eax ^ eax)");
+               "1|L--|rax = (uint64) (eax ^ eax)",
+               "2|L--|SZO = cond(eax)",
+               "3|L--|C = false");
         }
 
         [Test]
