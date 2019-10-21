@@ -67,6 +67,10 @@ namespace Reko.Arch.Alpha
             return new AlphaRewriter(this, rdr, binder, host);
         }
 
+        // Alpha uses a link register
+        public override int ReturnAddressOnStack => 0;
+
+
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

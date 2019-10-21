@@ -133,6 +133,9 @@ namespace Reko.Arch.Mips
             return new MipsPointerScanner32(rdr, knownLinAddresses, flags).Select(l => Address.Ptr32(l));
         }
 
+        // MIPS uses a link register
+        public override int ReturnAddressOnStack => 0;
+
         public override SortedList<string, int> GetOpcodeNames()
         {
             return Enum.GetValues(typeof(Opcode))

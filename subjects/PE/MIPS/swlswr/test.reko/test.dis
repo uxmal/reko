@@ -3,8 +3,8 @@ word32 fn00011000()
 
 // MayUse: 
 // LiveOut: r2
-// Trashed: r2 r4 r5 r6 r8 ra sp
-// Preserved:
+// Trashed: r2 r4 r5 r6 r8
+// Preserved: ra sp
 fn00011000_entry:
 // DataOut:
 // DataOut (flags):
@@ -12,9 +12,10 @@ fn00011000_entry:
 
 l00011000:
 	memset(fp + -20, 0x00000000, 5)
-	memcpy(calloc(1, 5), fp + 0xFFFFFFE4, 5)
-	Mem31[dwLoc24:byte] = 0x0C
-	Mem35[dwLoc24 + 1:word32] = 0x00000000
+	word32 r2_20 = calloc(1, 5)
+	memcpy(r2_20, fp + -20, 5)
+	Mem28[r2_20:byte] = 0x0C
+	Mem32[r2_20 + 1:word32] = 0x00000000
 	return 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -86,13 +87,13 @@ fn000110E8_exit:
 
 
 
-void fn0001116C(word32 r2, word32 r4, word32 r30, word32 ra)
+void fn0001116C(word32 r2, word32 r4, word32 r30, word32 ra, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r2:[0..31] r30:[0..31] r4:[0..31] ra:[0..31]
+// MayUse:  r2:[0..31] r30:[0..31] r4:[0..31] ra:[0..31] Stack +0000:[0..31]
 // LiveOut:
-// Trashed: r2 r4 r5 r8
-// Preserved: r30 ra sp
+// Trashed: r2 r30 r4 r5 r8 ra sp
+// Preserved:
 fn0001116C_entry:
 // DataOut:
 // DataOut (flags):
@@ -105,7 +106,7 @@ l0001116C:
 	word32 r8_18 = Mem17[r2 + 0xFFFFFFF4:word32]
 	Mem19[r2 + 0xFFFFFFE8:word32] = r8_18
 	call XcptFilter (retsize: 0;)
-		uses: r2:r2,r4:Mem19[r2 + 0xFFFFFFE8:word32],r5:Mem19[r2 + 0xFFFFFFF0:word32],r8:r8_18,Stack +0010:r30,Stack +0014:ra
+		uses: r2:r2,r4:Mem19[r2 + 0xFFFFFFE8:word32],r5:Mem19[r2 + 0xFFFFFFF0:word32],r8:r8_18,Stack +0010:r30,Stack +0014:ra,Stack +0018:dwArg00
 	return
 // DataOut:
 // DataOut (flags):
@@ -323,8 +324,8 @@ l000112DC_ds_f:
 // SymbolicIn:
 
 l000112EC:
-	Mem40[0x0001303C:word32] = Mem36[0x0001303C:word32] + -4
-	branch (word32) (Mem40[0x0001303C:word32] <u Mem40[0x00013040:word32]) != 0x00000000 l000112EC_ds_t
+	Mem39[0x0001303C:word32] = Mem35[0x0001303C:word32] + -4
+	branch (word32) (Mem39[0x0001303C:word32] <u Mem39[0x00013040:word32]) != 0x00000000 l000112EC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -335,9 +336,9 @@ l000112EC_ds_t:
 // SymbolicIn:
 
 l0001134C:
-	free(Mem40[0x00013040:word32])
-	Mem51[0x0001303C:word32] = 0x00000000
-	Mem55[0x00013040:word32] = Mem51[0x0001303C:word32]
+	free(Mem39[0x00013040:word32])
+	Mem48[0x0001303C:word32] = 0x00000000
+	Mem52[0x00013040:word32] = Mem48[0x0001303C:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -354,7 +355,7 @@ l000112EC_ds_f:
 // SymbolicIn:
 
 l0001131C:
-	branch Mem40[Mem40[0x0001303C:word32]:word32] == 0x00000000 l0001131C_ds_t
+	branch Mem39[Mem39[0x0001303C:word32]:word32] == 0x00000000 l0001131C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -375,9 +376,9 @@ l0001131C_ds_f:
 // SymbolicIn:
 
 l00011330:
-	word32 r8_67 = Mem40[Mem40[0x0001303C:word32]:word32]
-	call r8_67 (retsize: 0;)
-		uses: r4:r4,r5:r5,r6:r6,r8:r8_67
+	word32 r8_64 = Mem39[Mem39[0x0001303C:word32]:word32]
+	call r8_64 (retsize: 0;)
+		uses: r4:r4,r5:r5,r6:r6,r8:r8_64
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -605,9 +606,7 @@ fn0001152C_entry:
 l0001152C:
 	word32 r8_10 = Mem8[0x00013040:word32]
 	word32 sp_3 = fp + -56
-	word32 dwLoc20_115 = 0x00000000
-	word32 r8_19 = Mem11[0x0001303C:word32] - r8_10
-	branch r8_19 >= 0x00000000 l0001152C_ds_t
+	branch Mem11[0x0001303C:word32] - r8_10 >= 0x00000000 l0001152C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -634,18 +633,17 @@ l00011588_ds_f:
 // SymbolicIn:
 
 l000115A0:
-	word32 r2_30
 	word32 r5_31
 	call msize (retsize: 0;)
 		uses: r4:r8_10,r5:r5_31
-		defs: r2:r2_30,r5:r5_31
-	dwLoc20_115 = r2_30
+		defs: r5:r5_31
+	sp_3 = fp + 0xFFFFFFCC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000115B0:
-	branch (word32) (dwLoc20_115 <u r8_19 + 4) == 0x00000000 l000115B0_ds_t
+	branch (word32) (Mem35[sp_3 + 0x00000018:word32] <u Mem35[sp_3 + 0x00000024:word32]) == 0x00000000 l000115B0_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -661,7 +659,7 @@ l000115B0_ds_f:
 // SymbolicIn:
 
 l000115C4:
-	branch r8_10 != 0x00000000 l000115C4_ds_t
+	branch Mem35[sp_3 + 0x0000001C:word32] != 0x00000000 l000115C4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -672,8 +670,8 @@ l000115C4_ds_t:
 // SymbolicIn:
 
 l000115E8:
-	word32 dwLoc18_123 = dwLoc20_115 << 0x01
-	branch (word32) (dwLoc20_115 <u 513) != 0x00000000 l000115E8_ds_t
+	Mem42[sp_3 + 0x00000020:word32] = Mem35[sp_3 + 0x00000018:word32] << 0x01
+	branch (word32) (Mem42[sp_3 + 0x00000018:word32] <u 513) != 0x00000000 l000115E8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -689,13 +687,13 @@ l000115E8_ds_f:
 // SymbolicIn:
 
 l00011604:
-	dwLoc18_123 = dwLoc20_115 + 512
+	Mem47[sp_3 + 0x00000020:word32] = Mem42[sp_3 + 0x00000018:word32] + 512
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00011610:
-	branch (word32) (dwLoc20_115 <u dwLoc18_123) == 0x00000000 l00011610_ds_t
+	branch (word32) (Mem49[sp_3 + 0x00000018:word32] <u Mem49[sp_3 + 0x00000020:word32]) == 0x00000000 l00011610_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -711,8 +709,7 @@ l00011610_ds_f:
 // SymbolicIn:
 
 l00011624:
-	realloc(r8_10, dwLoc18_123)
-	sp_3 = fp + 0xFFFFFFC4
+	Mem56[sp_3 + 0x00000014:word32] = realloc(Mem49[sp_3 + 0x0000001C:word32], Mem49[sp_3 + 0x00000020:word32])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -750,8 +747,7 @@ l00011644_ds_f:
 // SymbolicIn:
 
 l00011658:
-	sp_3 = sp_3 + 0xFFFFFFFC
-	Mem67[sp_3 + 0x00000014:word32] = realloc(Mem58[sp_3 + 0x0000001C:word32], Mem58[sp_3 + 0x00000024:word32])
+	Mem66[sp_3 + 0x00000014:word32] = realloc(Mem58[sp_3 + 0x0000001C:word32], Mem58[sp_3 + 0x00000024:word32])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -762,14 +758,13 @@ l000115C4_ds_f:
 // SymbolicIn:
 
 l000115D0:
-	malloc(16)
-	sp_3 = fp + 0xFFFFFFC4
+	Mem69[sp_3 + 0x00000014:word32] = malloc(16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0001166C:
-	branch Mem73[sp_3 + 0x00000014:word32] != 0x00000000 l0001166C_ds_t
+	branch Mem71[sp_3 + 0x00000014:word32] != 0x00000000 l0001166C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -780,18 +775,18 @@ l0001166C_ds_t:
 // SymbolicIn:
 
 l00011688:
-	Mem82[sp_3 + 0x00000028:word32] = Mem73[sp_3 + 0x00000014:word32] + ((Mem73[sp_3 + 0x00000028:word32] - Mem73[sp_3 + 0x0000001C:word32] >> 0x02) << 0x02)
-	Mem84[sp_3 + 0x0000001C:word32] = Mem82[sp_3 + 0x00000014:word32]
+	Mem80[sp_3 + 0x00000028:word32] = Mem71[sp_3 + 0x00000014:word32] + ((Mem71[sp_3 + 0x00000028:word32] - Mem71[sp_3 + 0x0000001C:word32] >> 0x02) << 0x02)
+	Mem82[sp_3 + 0x0000001C:word32] = Mem80[sp_3 + 0x00000014:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000116B0:
-	Mem89[Mem86[sp_3 + 0x00000028:word32]:word32] = Mem86[sp_3 + 0x00000038:word32]
-	Mem92[sp_3 + 0x00000028:word32] = Mem89[sp_3 + 0x00000028:word32] + 4
-	Mem95[0x0001303C:word32] = Mem92[sp_3 + 0x00000028:word32]
-	Mem98[0x00013040:word32] = Mem95[sp_3 + 0x0000001C:word32]
-	Mem100[sp_3 + 0x0000002C:word32] = Mem98[sp_3 + 0x00000038:word32]
+	Mem87[Mem84[sp_3 + 0x00000028:word32]:word32] = Mem84[sp_3 + 0x00000038:word32]
+	Mem90[sp_3 + 0x00000028:word32] = Mem87[sp_3 + 0x00000028:word32] + 4
+	Mem93[0x0001303C:word32] = Mem90[sp_3 + 0x00000028:word32]
+	Mem96[0x00013040:word32] = Mem93[sp_3 + 0x0000001C:word32]
+	Mem98[sp_3 + 0x0000002C:word32] = Mem96[sp_3 + 0x00000038:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -802,7 +797,7 @@ l0001166C_ds_f:
 // SymbolicIn:
 
 l00011678:
-	Mem102[sp_3 + 0x0000002C:word32] = 0x00000000
+	Mem100[sp_3 + 0x0000002C:word32] = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

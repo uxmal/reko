@@ -8,9 +8,10 @@
 word32 fn00011000()
 {
 	memset(fp + -0x0014, 0x00, 0x05);
-	memcpy(calloc(0x01, 0x05), fp + ~0x1B, 0x05);
-	dwLoc24->b0000 = 0x0C;
-	dwLoc24->dw0001 = 0x00;
+	struct Eq_n * r2_n = calloc(0x01, 0x05);
+	memcpy(r2_n, fp + -0x0014, 0x05);
+	r2_n->b0000 = 0x0C;
+	r2_n->dw0001 = 0x00;
 	return 0x00;
 }
 
@@ -30,8 +31,8 @@ Eq_n fn000110E8()
 	return r2_n;
 }
 
-// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4, Register word32 r30, Register word32 ra)
-void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 r30, word32 ra)
+// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
+void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 r30, word32 ra, word32 dwArg00)
 {
 	r2->ptrFFFFFFEC = r4;
 	r2->ptrFFFFFFF0 = r2->ptrFFFFFFEC;
@@ -148,39 +149,27 @@ word32 fn0001152C()
 {
 	Eq_n r8_n = globals->t13040;
 	struct Eq_n * sp_n = fp + -0x0038;
-	Eq_n dwLoc20_n = 0x00;
-	Eq_n r8_n = globals->t1303C - r8_n;
-	if (r8_n >= 0x00)
+	if (globals->t1303C - r8_n >= 0x00)
 	{
 		if (r8_n != 0x00)
 		{
-			Eq_n r2_n;
 			word32 r5_n;
 			msize();
-			dwLoc20_n = r2_n;
+			sp_n = fp + ~0x33;
 		}
-		if ((word32) (dwLoc20_n < (word32) r8_n + 0x04) != 0x00)
+		if ((word32) (sp_n->t0018 < sp_n->t0024) != 0x00)
 		{
-			if (r8_n == 0x00)
-			{
-				malloc(0x0010);
-				sp_n = fp + ~0x3B;
-			}
+			if (sp_n->t001C == 0x00)
+				sp_n->t0014 = malloc(0x0010);
 			else
 			{
-				Eq_n dwLoc18_n = dwLoc20_n << 0x01;
-				if ((word32) (dwLoc20_n < 0x0201) == 0x00)
-					dwLoc18_n = (word32) dwLoc20_n + 0x0200;
-				if ((word32) (dwLoc20_n < dwLoc18_n) != 0x00)
-				{
-					realloc(r8_n, dwLoc18_n);
-					sp_n = fp + ~0x3B;
-				}
+				sp_n->t0020 = sp_n->t0018 << 0x01;
+				if ((word32) (sp_n->t0018 < 0x0201) == 0x00)
+					sp_n->t0020 = (word32) sp_n->t0018 + 0x0200;
+				if ((word32) (sp_n->t0018 < sp_n->t0020) != 0x00)
+					sp_n->t0014 = realloc(sp_n->t001C, sp_n->t0020);
 				if (sp_n->t0014 == 0x00 && (word32) (sp_n->t0018 < sp_n->t0024) != 0x00)
-				{
-					sp_n = (struct Eq_n *) ((char *) sp_n - 0x04);
 					sp_n->t0014 = realloc(sp_n->t001C, sp_n->t0024);
-				}
 			}
 			if (sp_n->t0014 == 0x00)
 			{

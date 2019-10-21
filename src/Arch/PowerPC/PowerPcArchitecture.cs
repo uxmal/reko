@@ -240,6 +240,9 @@ namespace Reko.Arch.PowerPC
             return new PowerPcState(this);
         }
 
+        // PowerPC uses a link register
+        public override int ReturnAddressOnStack => 0;
+
         private PowerPcDisassembler.Decoder[] EnsureDecoders()
         {
             if (this.primaryDecoders == null)

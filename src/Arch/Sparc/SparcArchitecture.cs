@@ -74,6 +74,9 @@ namespace Reko.Arch.Sparc
             throw new NotImplementedException();
         }
 
+        // Sparc uses a link register
+        public override int ReturnAddressOnStack => 0;
+
         public override SortedList<string, int> GetOpcodeNames()
         {
             return Enum.GetValues(typeof(Opcode))

@@ -70,6 +70,9 @@ namespace Reko.Arch.PaRisc
             return new PaRiscRewriter(this, rdr, state, binder, host);
         }
 
+        // PA-RISC uses a link register
+        public override int ReturnAddressOnStack => 0;
+
         public override FlagGroupStorage GetFlagGroup(RegisterStorage reg, uint grf)
         {
             throw new NotImplementedException();

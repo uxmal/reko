@@ -33,6 +33,7 @@ using BindingFlags = System.Reflection.BindingFlags;
 namespace Reko.Arch.SuperH
 {
     // NetBSD for dreamcast? http://ftp.netbsd.org/pub/pkgsrc/packages/NetBSD/dreamcast/7.0/All/
+    // RaymondC says: https://devblogs.microsoft.com/oldnewthing/20190820-00/?p=102792
     public abstract class SuperHArchitecture : ProcessorArchitecture
     {
         public SuperHArchitecture(string archId, EndianServices endianness) : base(archId)
@@ -69,6 +70,10 @@ namespace Reko.Arch.SuperH
         {
             return new SuperHRewriter(this, rdr, (SuperHState)state, binder, host);
         }
+
+        // SuperH uses a link register
+        public override int ReturnAddressOnStack => 0;
+
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {

@@ -69,6 +69,9 @@ namespace Reko.Arch.zSeries
             return new zSeriesRewriter(this, rdr, state, binder, host);
         }
 
+        // zSeries uses a link register
+        public override int ReturnAddressOnStack => 0;
+
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {

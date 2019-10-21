@@ -158,6 +158,9 @@ namespace Reko.Arch.Xtensa
             return new XtensaRewriter(this, rdr, state, binder, host);
         }
 
+        // Xtensa uses a link register
+        public override int ReturnAddressOnStack => 0;
+
         public RegisterStorage GetAluRegister(int i)
         {
             return aregs[i];
