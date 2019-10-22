@@ -73,15 +73,6 @@ namespace Reko.UnitTests.Analysis
             };
         }
 
-        private Identifier Reg32(string name)
-        {
-            var mr = new RegisterStorage(name, m.Ssa.Identifiers.Count, 0, PrimitiveType.Word32);
-            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            m.Ssa.Identifiers.Add(id, sid);
-            return sid.Identifier;
-        }
-
         private ExternalProcedure CreateExternalProcedure(
             string name,
             int stackDelta,
@@ -340,63 +331,45 @@ namespace Reko.UnitTests.Analysis
             // y = x - 2
             // if (x == 2)
 
-            ProcedureBuilder m = new ProcedureBuilder();
-			Identifier x = m.Reg32("x", 0);
-			Identifier y = m.Reg32("y", 1);
-            m.Assign(x, m.Mem32(Constant.Word32(0x1000300)));
-            m.Assign(y, m.ISub(x, 2));
-			m.BranchIf(m.Eq(y, 0), "test");
-            m.Return();
-            m.Label("test");
-            m.Return();
-            var importResolver = new Mock<IImportResolver>();
-            var sst = new SsaTransform(
-                program, 
-                m.Procedure, 
-                new HashSet<Procedure>(),
-                importResolver.Object, 
-                new ProgramDataFlow());
-            sst.Transform();
+            var x = m.Reg32("x");
+			var y = m.Reg32("y");
+            var stmX = m.Assign(x, m.Mem32(Constant.Word32(0x1000300)));
+            var stmY = m.Assign(y, m.ISub(x, 2));
+			var stm = m.BranchIf(m.Eq(y, 0), "test");
+			Assert.AreEqual("x = Mem2[0x01000300:word32]", stmX.ToString());
+			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
+			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
-            var vp = new ValuePropagator(segmentMap, sst.SsaState, program.CallGraph, importResolver.Object, listener);
-            var stm = m.Procedure.EntryBlock.Succ[0].Statements.Last;
-			vp.Transform(stm);
-			Assert.AreEqual("branch x_2 == 0x00000002 test", stm.Instruction.ToString());
+            RunValuePropagator();
+
+			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
 		}
 
 		[Test]
         [Category(Categories.UnitTests)]
 		public void VpCopyPropagate()
 		{
-			Identifier x_2 = Reg32("x_2");
-			Identifier y_3 = Reg32("y_3");
-			Identifier z_4 = Reg32("z_4");
-			Identifier w_5 = Reg32("w_5");
-            m.Assign(x_2, m.Mem32(m.Word32(0x10004000)));
-            m.Assign(y_3, x_2);
-            m.Assign(z_4, m.IAdd(y_3, 2));
-            m.Assign(w_5, y_3);
-
-            var importResolver = new Mock<IImportResolver>();
-
-            var stms = m.Procedure.EntryBlock.Succ[0].Statements;
-			Assert.AreEqual("x_2 = Mem4[0x10004000:word32]", stms[0].ToString());
-			Assert.AreEqual("y_3 = x_2", stms[1].ToString());
-			Assert.AreEqual("z_4 = y_3 + 0x00000002", stms[2].ToString());
-			Assert.AreEqual("w_5 = y_3", stms[3].ToString());
-            m.Ssa.Dump(true);
+			var x = m.Reg32("x");
+            var y = m.Reg32("y");
+            var z = m.Reg32("z");
+            var w = m.Reg32("w");
+            var stmX = m.Assign(x, m.Mem32(Constant.Word32(0x10004000)));
+            var stmY = m.Assign(y, x);
+            var stmZ = m.Assign(z, m.IAdd(y, Constant.Word32(2)));
+            var stmW = m.Assign(w, y);
+            Assert.AreEqual("x = Mem4[0x10004000:word32]", stmX.ToString());
+			Assert.AreEqual("y = x", stmY.ToString());
+			Assert.AreEqual("z = y + 0x00000002", stmZ.ToString());
+			Assert.AreEqual("w = y", stmW.ToString());
 
             RunValuePropagator();
 
-			Assert.AreEqual("x_2 = Mem4[0x10004000:word32]", stms[0].ToString());
-			Assert.AreEqual("y_3 = x_2", stms[1].ToString());
-			Assert.AreEqual("z_4 = x_2 + 0x00000002", stms[2].ToString());
-			Assert.AreEqual("w_5 = x_2", stms[3].ToString());
-
-            m.Ssa.Dump(true);
-
-			Assert.AreEqual(0, m.Ssa.Identifiers.Single(i => i.Identifier.Name == "y_3").Uses.Count);
-            Assert.AreEqual(3, m.Ssa.Identifiers.Single(i => i.Identifier.Name == "x_2").Uses.Count);
+			Assert.AreEqual("x = Mem4[0x10004000:word32]", stmX.ToString());
+			Assert.AreEqual("y = x", stmY.ToString());
+			Assert.AreEqual("z = x + 0x00000002", stmZ.ToString());
+			Assert.AreEqual("w = x", stmW.ToString());
+			Assert.AreEqual(3, m.Ssa.Identifiers[x].Uses.Count);
+			Assert.AreEqual(0, m.Ssa.Identifiers[y].Uses.Count);
 		}
 
 		[Test]
