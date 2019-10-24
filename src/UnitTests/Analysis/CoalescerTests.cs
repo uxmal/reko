@@ -177,36 +177,50 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.IntegrationTests)]
+        [Category(Categories.UnitTests)]
         public void CoaCallUses()
         {
-            var m = new ProcedureBuilder("foo");
-            var r2 = m.Register("r2");
-            var r3 = m.Register("r3");
-            var r4 = m.Register("r4");
-            m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
+            var r2 = m.Reg32("r2");
+            var r3 = m.Reg32("r3");
+            var r4 = m.Reg32("r4");
             m.Assign(r4, m.Fn(r2));
-            m.Call(r3, 4);
-            m.Return();
-            RunFileTest(m, "Analysis/CoaCallUses.txt");
+            var uses = new Identifier[] { r2, r3, r4 };
+            var defines = new Identifier[] { };
+            m.Call(r3, 4, uses, defines);
+
+            RunCoalescer();
+
+            var expected =
+@"
+call r3 (retsize: 4;)
+	uses: r2:r2,r3:r3,r4:r2()
+";
+            AssertProcedureCode(expected);
         }
 
         [Test]
-        [Category(Categories.IntegrationTests)]
+        [Category(Categories.UnitTests)]
         public void CoaCallCallee()
         {
-            var m = new ProcedureBuilder("foo");
-            var r2 = m.Register("r2");
-            var r3 = m.Register("r3");
-            m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
+            var r2 = m.Reg32("r2");
+            var r3 = m.Reg32("r3");
             m.Assign(r3, m.Fn(r2));
-            m.Assign(r3, m.IAdd(r3, 4));
-            m.Call(r3, 4);
-            m.Return();
-            RunFileTest(m, "Analysis/CoaCallCallee.txt");
+            var uses = new Identifier[] { r2 };
+            var defines = new Identifier[] { };
+            m.Call(m.IAdd(r3, 4), 4, uses, defines);
+
+            RunCoalescer();
+
+            var expected =
+@"
+call r2() + 0x00000004 (retsize: 4;)
+	uses: r2:r2
+";
+            AssertProcedureCode(expected);
         }
 
         [Test(Description = "Avoid coalescing of invalid constant")]
+        [Category(Categories.UnitTests)]
         public void CoaDoNotCoalesceInvalidConstant()
         {
             var a = m.Reg32("a");
@@ -225,6 +239,7 @@ b = a + 0x00000004
         }
 
         [Test(Description = "Coalescense should work across a comment.")]
+        [Category(Categories.UnitTests)]
         public void CoaAcrossComment()
         {
             var a = m.Reg32("a");
