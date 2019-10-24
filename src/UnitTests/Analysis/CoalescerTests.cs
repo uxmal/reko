@@ -166,6 +166,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CoaCallUses()
         {
             var r2 = m.Reg32("r2");
@@ -188,6 +189,7 @@ call r3 (retsize: 4;)
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void CoaCallCallee()
         {
             var r2 = m.Reg32("r2");
@@ -208,6 +210,7 @@ call r2() + 0x00000004 (retsize: 4;)
         }
 
         [Test(Description = "Avoid coalescing of invalid constant")]
+        [Category(Categories.UnitTests)]
         public void CoaDoNotCoalesceInvalidConstant()
         {
             var a = m.Reg32("a");
@@ -226,6 +229,7 @@ b = a + 0x00000004
         }
 
         [Test(Description = "Coalescense should work across a comment.")]
+        [Category(Categories.UnitTests)]
         public void CoaAcrossComment()
         {
             var a = m.Reg32("a");
