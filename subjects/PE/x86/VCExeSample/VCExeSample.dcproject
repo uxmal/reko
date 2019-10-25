@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
   <arch>x86-protected-32</arch>
   <platform>win32</platform>
   <input>
     <filename>VCExeSample.exe</filename>
-    <disassembly>VCExeSample.asm</disassembly>
-    <intermediate-code>VCExeSample.dis</intermediate-code>
-    <output>VCExeSample.c</output>
-    <types-file>VCExeSample.h</types-file>
-    <global-vars>VCExeSample.globals.c</global-vars>
+    <asmDir>.</asmDir>
+    <srcDir>.</srcDir>
+    <includeDir>.</includeDir>
+    <resources>.</resources>
     <user>
       <processor />
       <procedure name="main">
@@ -78,6 +77,7 @@
       </global>
       <onLoad Enabled="false" />
       <registerValues />
+      <extractResources>false</extractResources>
     </user>
   </input>
   <metadata>
