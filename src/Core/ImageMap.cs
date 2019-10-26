@@ -109,8 +109,6 @@ namespace Reko.Core
             }
 		}
 
-	    public bool EventHandlerPaused { get; set; }
-
         public void AddItemWithSize(Address addr, ImageMapItem itemNew)
         {
             if (!TryFindItem(addr, out var item))
