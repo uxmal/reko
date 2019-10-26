@@ -157,5 +157,6 @@ namespace Reko.UnitTests.Arch
             return PlatformDefinition.LoadHexBytes(hexPattern)
                 .ToArray();
         }
+
     }
 }
