@@ -29,9 +29,9 @@ using System.Linq;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Provides an interface for simple generation of intermediate code.
-	/// </summary>
+    /// <summary>
+    /// Provides an interface for simple generation of intermediate code.
+    /// </summary>
     public abstract class CodeEmitter : ExpressionEmitter
     {
         private int localStackOffset;

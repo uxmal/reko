@@ -95,7 +95,7 @@ namespace Reko.Arch.Arm
                     var reg = new RegisterStorage(n, i, a, PrimitiveType.CreateWord(b));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg.Number, reg);
-        }
+                }
                 aRegs += cb;
                 --cRegs;
             }
@@ -192,7 +192,7 @@ namespace Reko.Arch.Arm
         public override RegisterStorage GetRegister(string name)
         {
             if (Registers.RegistersByName.TryGetValue(name, out var reg))
-            return reg;
+                return reg;
             else
                 return null;
         }

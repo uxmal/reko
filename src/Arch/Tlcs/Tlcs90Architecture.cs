@@ -190,7 +190,7 @@ namespace Reko.Arch.Tlcs
                 case 'V': grf |= Registers.V.FlagGroupBits; break;
                 case 'N': grf |= Registers.N.FlagGroupBits; break;
                 case 'C': grf |= Registers.C.FlagGroupBits; break;
-        }
+                }
             }
             return GetFlagGroup(Registers.f, grf);
         }

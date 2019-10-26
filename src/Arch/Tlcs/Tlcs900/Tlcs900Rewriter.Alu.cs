@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -230,11 +230,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-            var op1 = RewriteSrc(this.instr.op1);
+                var op1 = RewriteSrc(this.instr.op1);
                 value = RewriteDst(this.instr.op2, op1, shift);
-        }
+            }
             EmitCc(value, flags);
-    }
+        }
 
         private void RewriteZcf()
         {

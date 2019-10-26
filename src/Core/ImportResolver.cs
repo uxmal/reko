@@ -226,7 +226,7 @@ namespace Reko.Core
                 if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out var sym))
                 {
                     return CreateReferenceToImport(sym);
-            }
+                }
             }
             return platform.ResolveImportByOrdinal(moduleName, ordinal);
         }
@@ -236,7 +236,7 @@ namespace Reko.Core
             if (sym.Type == SymbolType.ExternalProcedure)
             {
                 throw new NotImplementedException();
-        }
+            }
             else if (sym.Type == SymbolType.Procedure)
             {
                 throw new NotImplementedException();
@@ -246,7 +246,7 @@ namespace Reko.Core
                 var id = Identifier.Global(sym.Name, sym.DataType);
                 return new UnaryExpression(Operator.AddrOf, program.Platform.PointerType, id);
             }
-    }
+        }
 
         public Expression ResolveToImportedValue(Statement stm, Constant c)
         {

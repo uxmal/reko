@@ -261,7 +261,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         ea = m.IAdd(
                             ea,
                             m.Cast(PrimitiveType.Int16, idx));
-                }
+                    }
                     else if (mem.Offset != null)
                     {
                         ea = m.IAdd(
@@ -285,8 +285,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     var tmp = binder.CreateTemporary(ea.DataType);
                     m.Assign(tmp, src);
                     m.Assign(m.Mem(mem.Width, ea), tmp);
-                return tmp;
-            }
+                    return tmp;
+                }
             }
             throw new NotImplementedException(op.GetType().Name);
         }

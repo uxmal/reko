@@ -90,7 +90,7 @@ namespace Reko.Arch.Arm.AArch32
             var offset = (int)rdr.Offset;
             var addr = rdr.Address.ToLinear();
             return new Enumerator(regs, this);
-                }
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -133,14 +133,14 @@ namespace Reko.Arch.Arm.AArch32
                     rtlEmitter,
                     ntf,
                     host);
-        }
+            }
 
             public RtlInstructionCluster Current { get; private set; }
 
             object IEnumerator.Current { get { return Current; } }
 
             private IntPtr GetCOMInterface(object o, Guid iid)
-        {
+            {
                 var iUnknown = Marshal.GetIUnknownForObject(o);
                 IntPtr intf;
                 var hr2 = Marshal.QueryInterface(iUnknown, ref iid, out intf);
@@ -148,45 +148,45 @@ namespace Reko.Arch.Arm.AArch32
             }
 
             public void Dispose()
-        {
-                if (this.native != null)
             {
+                if (this.native != null)
+                {
                     int n = native.GetCount();
                     Marshal.ReleaseComObject(this.native);
                     this.native = null;
-            }
+                }
                 if (iHost != null)
-            {
+                {
                     Marshal.Release(iHost);
-            }
+                }
                 if (iNtf != null)
-            {
+                {
                     Marshal.Release(iNtf);
-            }
+                }
                 if (iRtlEmitter != null)
                 {
                     Marshal.Release(iRtlEmitter);
-        }
+                }
                 if (this.hBytes != null && this.hBytes.IsAllocated)
-        {
+                {
                     this.hBytes.Free();
+                }
             }
-        }
 
-        public bool MoveNext()
-        {
+            public bool MoveNext()
+            {
                 m.Instructions = new List<RtlInstruction>();
                 int n = native.GetCount();
                 if (native.Next() == 1)
                     return false;
                 this.Current = this.rtlEmitter.ExtractCluster();
                 return true;
-        }
+            }
 
             public void Reset()
-        {
+            {
                 throw new NotSupportedException();
-        }
+            }
         }
 
         static ThumbRewriterRetired()
@@ -195,11 +195,11 @@ namespace Reko.Arch.Arm.AArch32
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;
             IID_INativeTypeFactory = typeof(INativeTypeFactory).GUID;
             IID_IRtlEmitter = typeof(INativeRtlEmitter).GUID;
-            }
+        }
 
         private static Guid IID_INativeRewriter;
         private static Guid IID_INativeRewriterHost;
         private static Guid IID_IRtlEmitter;
         private static Guid IID_INativeTypeFactory;
-            }
+    }
 }

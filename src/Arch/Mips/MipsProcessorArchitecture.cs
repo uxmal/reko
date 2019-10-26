@@ -292,10 +292,10 @@ namespace Reko.Arch.Mips
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-                var uAddr = c.ToUInt32();
-                if (codeAlign)
-                    uAddr &= ~3u;
-                return Address.Ptr32(uAddr);
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
     }
 

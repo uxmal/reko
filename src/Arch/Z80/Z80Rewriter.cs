@@ -439,7 +439,7 @@ namespace Reko.Arch.Z80
             m.Assign(dst, m.IAdd(src, 1));
             AssignCond(FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
- 
+
         private void RewriteJp(Z80Instruction instr)
         {
             switch (instr.Op1)
@@ -448,13 +448,13 @@ namespace Reko.Arch.Z80
                 EmitBranch(cOp, ((AddressOperand)instr.Op2).Address);
                 break;
             case AddressOperand target:
-                    m.Goto(target.Address);
+                m.Goto(target.Address);
                 break;
             case MemoryOperand mTarget:
-                    m.Goto(binder.EnsureRegister(mTarget.Base));
+                m.Goto(binder.EnsureRegister(mTarget.Base));
                 break;
-                }
             }
+        }
 
         private void RewriteJr()
         {

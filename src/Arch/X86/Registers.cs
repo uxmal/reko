@@ -247,7 +247,7 @@ namespace Reko.Arch.X86
             rsi = new RegisterStorage("rsi", 6, 0, PrimitiveType.Word64);
             rdi = new RegisterStorage("rdi", 7, 0, PrimitiveType.Word64);
             r8 = new RegisterStorage("r8",   8, 0, PrimitiveType.Word64);
-            r9 = new RegisterStorage("r9",   9, 0, PrimitiveType.Word64);
+            r9 = new RegisterStorage("r9", 9, 0, PrimitiveType.Word64);
             r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word64);
             r11 = new RegisterStorage("r11", 11, 0, PrimitiveType.Word64);
             r12 = new RegisterStorage("r12", 12, 0, PrimitiveType.Word64);
@@ -497,7 +497,7 @@ namespace Reko.Arch.X86
                  ymm13,
                  ymm14,
                  ymm15,
-			};
+            };
 
             // For each register storage domain, arrange the registers in order of size.
             SubRegisters = new Dictionary<StorageDomain, RegisterStorage[]>

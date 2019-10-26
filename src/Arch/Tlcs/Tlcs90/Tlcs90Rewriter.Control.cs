@@ -96,11 +96,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 if (addrOp != null)
                 {
                     m.Branch(cc, addrOp.Address, InstrClass.ConditionalTransfer);
-                return;
-            }
+                    return;
+                }
                 m.Branch(cc.Invert(), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
                 op = instr.op2;
-        }
+            }
             else
             {
                 op = instr.op1;
@@ -128,7 +128,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             m.Assign(af, m.Mem16(sp));
             m.Assign(sp, m.IAddS(sp, 2));
             m.Return(2, 0);
-    }
+        }
 
         private void RewriteSwi()
         {

@@ -166,7 +166,7 @@ namespace Reko.Arch.Mos6502
             if (rdr.TryReadLeUInt16(out var uaddr))
             {
                 return Address.Ptr16(uaddr);
-        }
+            }
             else
             {
                 return null;
