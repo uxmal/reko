@@ -140,6 +140,10 @@
       <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>
       <Name>PaRisc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\RiscV\RiscV.csproj">
+      <Project>{e0697f4c-5f5e-4037-9f0e-7a9064a55b4d}</Project>
+      <Name>RiscV</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
       <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
       <Name>zSeries</Name>

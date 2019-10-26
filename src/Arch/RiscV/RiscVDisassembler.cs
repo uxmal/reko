@@ -968,7 +968,9 @@ namespace Reko.Arch.RiscV
             var system = Sparse(20, 12, "system",
                 Nyi("system"),
                 (0, Instr(Opcode.ecall)),
-                (1, Instr(Opcode.ebreak)),
+                (1, Instr(Opcode.ebreak)));
+
+
             w32decoders = Mask(2, 5, "w32decoders", 
                 // 00
                 Mask(12, 3, "loads", loads),
