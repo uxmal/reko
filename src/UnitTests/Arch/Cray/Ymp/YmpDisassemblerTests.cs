@@ -28,18 +28,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Arch.Cray.Cray1
+namespace Reko.UnitTests.Arch.Cray.Ymp
 {
     [TestFixture]
-    public class Cray1DisassemblerTests : DisassemblerTestBase<CrayInstruction>
+    public class YmpDisassemblerTests : DisassemblerTestBase<CrayInstruction>
     {
-        private Cray1Architecture arch;
+        private CrayYmpArchitecture arch;
         private Address addr;
 
         [SetUp]
         public void Setup()
         {
-            this.arch = new Cray1Architecture("cray1");
+            this.arch = new CrayYmpArchitecture("crayYmp");
             this.addr = Address.Ptr32(0x00100000);
         }
 
@@ -90,9 +90,9 @@ namespace Reko.UnitTests.Arch.Cray.Cray1
         }
 
         [Test]
-        public void Cray1dis_ErrorExit()
+        public void YmpDis_S_and()
         {
-            AssertCode("err", "000000");
+            AssertCode("S1\tS2&S3", "044123");
         }
     }
 }

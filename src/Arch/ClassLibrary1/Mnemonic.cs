@@ -18,11 +18,12 @@
  */
 #endregion
 
-namespace Reko.Arch.Cray.Cray1
+namespace Reko.Arch.Cray
 {
     public enum Mnemonic
     {
         Invalid,
         err,
+        _and,
     }
 }

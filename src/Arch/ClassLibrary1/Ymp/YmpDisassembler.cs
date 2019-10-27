@@ -18,27 +18,26 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
 
-namespace Reko.Arch.Cray.Cray1
+namespace Reko.Arch.Cray.Ymp
 {
-    using Decoder = Reko.Core.Machine.Decoder<Cray1Disassembler, Mnemonic, CrayInstruction>;
+    using Decoder = Reko.Core.Machine.Decoder<YmpDisassembler, Mnemonic, CrayInstruction>;
 
-    public class Cray1Disassembler : DisassemblerBase<CrayInstruction>
+    public class YmpDisassembler : DisassemblerBase<CrayInstruction>
     {
         private static readonly Decoder rootDecoder;
+        
+        private CrayYmpArchitecture arch;
+        private EndianImageReader rdr;
+        private List<MachineOperand>  ops;
 
-        private readonly Cray1Architecture arch;
-        private readonly EndianImageReader rdr;
-        private Address addr;
-        private List<MachineOperand> ops;
-
-
-        public Cray1Disassembler(Cray1Architecture arch, EndianImageReader rdr)
+        public YmpDisassembler(CrayYmpArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -47,7 +46,7 @@ namespace Reko.Arch.Cray.Cray1
 
         public override CrayInstruction DisassembleInstruction()
         {
-            this.addr = rdr.Address;
+            var addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out ushort hInstr))
                 return null;
             ops.Clear();
@@ -66,22 +65,39 @@ namespace Reko.Arch.Cray.Cray1
             };
         }
 
-        #region Decoders
+        #region Mutators
+        private static Mutator<YmpDisassembler> S(int bitOffset)
+        {
+            var field = new Bitfield(bitOffset, 3);
+            return (u, d) =>
+            {
+                var iReg = field.Read(u);
+                var reg = Registers.SRegs[iReg];
+                d.ops.Add(new RegisterOperand(reg));
+                return true;
+            };
+        }
+        private static readonly Mutator<YmpDisassembler> Si = S(6);
+        private static readonly Mutator<YmpDisassembler> Sj = S(3);
+        private static readonly Mutator<YmpDisassembler> Sk = S(0);
 
+        #endregion
+
+        #region Decoders
         private class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
             private readonly Mnemonic mnemonic;
-            private readonly Mutator<Cray1Disassembler>[] mutators;
+            private readonly Mutator<YmpDisassembler>[] mutators;
 
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<Cray1Disassembler>[] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<YmpDisassembler>[] mutators)
             {
                 this.iclass = iclass;
                 this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
-            public override CrayInstruction Decode(uint wInstr, Cray1Disassembler dasm)
+            public override CrayInstruction Decode(uint wInstr, YmpDisassembler dasm)
             {
                 foreach (var m in mutators)
                 {
@@ -90,24 +106,32 @@ namespace Reko.Arch.Cray.Cray1
                 }
                 var instr = new CrayInstruction
                 {
-                    InstructionClass = this.iclass,
-                    Mnemonic = this.mnemonic,
-                    Operands = dasm.ops.ToArray(),
+                    InstructionClass = iclass,
+                    Mnemonic = mnemonic,
+                    Operands = dasm.ops.ToArray()
                 };
                 return instr;
             }
         }
 
-        private static InstrDecoder Instr(Mnemonic mn, params Mutator<Cray1Disassembler> [] mutators)
+        private static InstrDecoder Instr(Mnemonic mnemonic, params Mutator<YmpDisassembler>[] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, mn, mutators);
+            return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
         }
+
+        protected static NyiDecoder<YmpDisassembler, Mnemonic, CrayInstruction> Nyi(string message)
+        {
+            return new NyiDecoder<YmpDisassembler, Mnemonic, CrayInstruction>(message);
+        }
+
 
         #endregion
 
-        static Cray1Disassembler()
+        static YmpDisassembler()
         {
-            rootDecoder = Instr(Mnemonic.err);
+            rootDecoder = Sparse(9, 7, "YMP",
+                Nyi("YMP"),
+                (0x24, Instr(Mnemonic._and, Si, Sj, Sk)));
         }
     }
 }

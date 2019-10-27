@@ -23,9 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.Cray.Cray1
+namespace Reko.Arch.Cray
 {
-    public class Cray1Instruction : MachineInstruction
+    public class CrayInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
         public MachineOperand[] Operands { get; set; }
@@ -40,6 +40,16 @@ namespace Reko.Arch.Cray.Cray1
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            switch (Mnemonic)
+            {
+            case Mnemonic._and:
+                RenderOperand(Operands[0],writer);
+                writer.Tab();
+                RenderOperand(Operands[1],writer);
+                writer.WriteString("&");
+                RenderOperand(Operands[2], writer);
+                return;
+            }
             writer.WriteOpcode(this.Mnemonic.ToString());
             if (Operands.Length == 0)
                 return;
