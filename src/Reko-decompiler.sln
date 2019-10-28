@@ -432,7 +432,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HpSom", "ImageLoaders\HpSom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hpux", "Environments\Hpux\Hpux.csproj", "{3488C24E-187C-4477-A310-D2292892D257}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cray", "Arch\Cray\Cray.csproj", "{47B16677-2BFC-4A5C-A830-E1683C574AEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cray", "Arch\Cray\Cray.csproj", "{47B16677-2BFC-4A5C-A830-E1683C574AEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2598,6 +2598,30 @@ Global
 		{3488C24E-187C-4477-A310-D2292892D257}.UnixRelease|x64.Build.0 = Release|Any CPU
 		{3488C24E-187C-4477-A310-D2292892D257}.UnixRelease|x86.ActiveCfg = Release|Any CPU
 		{3488C24E-187C-4477-A310-D2292892D257}.UnixRelease|x86.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Debug|x64.Build.0 = Debug|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Debug|x86.Build.0 = Debug|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Release|x64.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Release|x64.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Release|x86.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.Release|x86.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.TravisRelease|x64.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.TravisRelease|x64.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.UnixRelease|x64.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.UnixRelease|x64.Build.0 = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.UnixRelease|x86.ActiveCfg = Release|Any CPU
+		{47B16677-2BFC-4A5C-A830-E1683C574AEC}.UnixRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -33,37 +33,17 @@ namespace Reko.Arch.Cray
     {
         public Cray1Architecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Big;
+            this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
+            this.PointerType = PrimitiveType.Ptr32;
+            this.StackRegister = null; //$TODO: Ax?
+            this.WordWidth = PrimitiveType.Word64;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Cray1.Cray1Disassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new BeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new BeImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -86,7 +66,7 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -106,12 +86,12 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }
@@ -121,7 +101,7 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -142,11 +122,6 @@ namespace Reko.Arch.Cray
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
         {
             throw new NotImplementedException();
         }
