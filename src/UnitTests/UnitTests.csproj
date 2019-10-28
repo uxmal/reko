@@ -167,6 +167,7 @@
     <Compile Include="Arch\M6800\M6812RewriterTests.cs" />
     <Compile Include="Arch\Mips\MicroMipsDisassemblerTests.cs" />
     <Compile Include="Arch\Mips\NanoMipsDisassemblerTests.cs" />
+    <Compile Include="Arch\OpenRISC\OpenRISCDisassemblerTests.cs" />
     <Compile Include="Arch\PaRisc\PaRiscDisassemblerTests.cs" />
     <Compile Include="Arch\PaRisc\PaRiscRewriterTests.cs" />
     <Compile Include="Arch\Pdp11\Pdp11ArchitectureTests.cs" />
@@ -840,6 +841,10 @@
     <ProjectReference Include="..\Arch\MSP430\MSP430.csproj">
       <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
       <Name>MSP430</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\OpenRISC\OpenRISC.csproj">
+      <Project>{A2D0EB22-6807-4C6F-9974-3B9721980F06}</Project>
+      <Name>OpenRISC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\PaRisc\PaRisc.csproj">
       <Project>{C57B1AD7-336A-4CE6-8A8C-836760029EBB}</Project>

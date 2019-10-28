@@ -129,6 +129,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\OpenRISC\OpenRISC.csproj">
+      <Name>OpenRISC</Name>
+      <Project>{a2d0eb22-6807-4c6f-9974-3b9721980f06}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\arch\PaRisc\PaRisc.csproj">
       <Name>PaRisc</Name>
       <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>
