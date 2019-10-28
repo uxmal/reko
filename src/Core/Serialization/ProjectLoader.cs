@@ -113,6 +113,7 @@ namespace Reko.Core.Serialization
 
         private static readonly Tuple<Type, string>[] supportedProjectFileFormats =
         {
+            Tuple.Create(typeof(Project_v5), SerializedLibrary.Namespace_v5),
             Tuple.Create(typeof(Project_v4), SerializedLibrary.Namespace_v4),
             Tuple.Create(typeof(Project_v3), SerializedLibrary.Namespace_v3),
             Tuple.Create(typeof(Project_v2), SerializedLibrary.Namespace_v2),

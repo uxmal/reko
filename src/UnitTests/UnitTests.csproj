@@ -162,6 +162,9 @@
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
     <Compile Include="Arch\Arm\A64RewriterTests.cs" />
     <Compile Include="Arch\Arm\Arm64ArchitectureTests.cs" />
+    <Compile Include="Arch\Cray\Cray1\Cray1DisassemblerTests.cs" />
+    <Compile Include="Arch\Cray\Ymp\YmpDisassemblerTests.cs" />
+    <Compile Include="Arch\Cray\Ymp\YmpRewriterTests.cs" />
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
@@ -814,6 +817,10 @@
     <ProjectReference Include="..\Arch\Cil\Cil.csproj">
       <Project>{F6F2225D-B778-4FD2-9BA9-A8E2B58ACCCC}</Project>
       <Name>Cil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Cray\Cray.csproj">
+      <Project>{47B16677-2BFC-4A5C-A830-E1683C574AEC}</Project>
+      <Name>Cray</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\i8051\i8051.csproj">
       <Project>{AB5DDEB2-87C0-42C7-8CD3-72CB2B1282FB}</Project>

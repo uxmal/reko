@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             return image;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             return new Tms7000Rewriter(arch, new BeImageReader(this.image, 0), new Tms7000State(arch), binder, host);
         }

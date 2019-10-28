@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             var state = (SuperHState)arch.CreateProcessorState();
             return new SuperHRewriter(arch, new LeImageReader(image, 0), state, binder, host);

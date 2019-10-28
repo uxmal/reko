@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void RunTest(params string[] bitStrings)
         {
-            var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
+            var bytes = bitStrings.Select(bits => base.BitStringToUInt32(bits))
                 .SelectMany(u => new byte[] { (byte)(u >> 24), (byte)(u >> 16), (byte)(u >> 8), (byte)u })
                 .ToArray();
             dasm = new AlphaDisassembler(
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Arch.Mips
             return image;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             return new AlphaRewriter(
                 arch, 

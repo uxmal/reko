@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Arch
             int i = 0;
             var frame = Architecture.CreateFrame();
             var host = CreateRewriterHost();
-            var rewriter = GetInstructionStream(frame, host).GetEnumerator();
+            var rewriter = GetRtlStream(frame, host).GetEnumerator();
             while (i < expected.Length && rewriter.MoveNext())
             {
                 Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(rewriter.Current.Class), rewriter.Current));

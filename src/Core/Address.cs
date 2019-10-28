@@ -281,7 +281,7 @@ namespace Reko.Core
 
     internal class Address16 : Address
     {
-        private ushort uValue;
+        private readonly ushort uValue;
 
         public Address16(ushort addr)
             : base(PrimitiveType.Ptr16)
@@ -346,7 +346,7 @@ namespace Reko.Core
 
     public class Address32 : Address
     {
-        private uint uValue;
+        private readonly uint uValue;
 		public static readonly Address NULL = Address32.Ptr32(0);
 
         public Address32(uint addr)
@@ -413,8 +413,8 @@ namespace Reko.Core
 
     public class RealSegmentedAddress : Address
     {
-        private ushort uSegment;
-        private ushort uOffset;
+        private readonly ushort uSegment;
+        private readonly ushort uOffset;
 
         public RealSegmentedAddress(ushort segment, ushort offset)
             : base(PrimitiveType.SegPtr32)
@@ -495,8 +495,8 @@ namespace Reko.Core
     /// </remarks>
     public class ProtectedSegmentedAddress : Address
     {
-        private ushort uSelector;
-        private ushort uOffset;
+        private readonly ushort uSelector;
+        private readonly ushort uOffset;
 
         public ProtectedSegmentedAddress(ushort segment, ushort offset)
             : base(PrimitiveType.SegPtr32)

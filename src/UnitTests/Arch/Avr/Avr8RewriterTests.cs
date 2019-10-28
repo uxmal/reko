@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.Avr
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             var state = (Avr8State)arch.CreateProcessorState();
             return new Avr8Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.FramePointerType), host);

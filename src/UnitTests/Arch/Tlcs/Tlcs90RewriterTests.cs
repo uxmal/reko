@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             Tlcs90State state = (Tlcs90State)arch.CreateProcessorState();
             return new Tlcs90Rewriter(arch, new LeImageReader(image, 0), state, binder, host);

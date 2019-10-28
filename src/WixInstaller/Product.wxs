@@ -143,6 +143,7 @@
         <File Source="$(var.Alpha.TargetPath)" />
         <File Source="$(var.Arm.TargetPath)" />
         <File Source="$(var.Avr.TargetPath)" />
+        <File Source="$(var.Cray.TargetPath)" />
         <File Source="$(var.M6800.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
         <File Source="$(var.M68k.Design.TargetPath)" />

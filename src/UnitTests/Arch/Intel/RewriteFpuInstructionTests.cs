@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Intel
             return new FakeRewriterHost(null);
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             return new X86Rewriter(
                 arch,

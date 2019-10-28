@@ -16,6 +16,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Alpha\bin\$(Configuration)\Reko.Arch.Alpha.*" />
     <Architectures Include="$(SolutionDir)Arch\Arm\bin\$(Configuration)\Reko.Arch.Arm.*" />
     <Architectures Include="$(SolutionDir)Arch\Avr\bin\$(Configuration)\Reko.Arch.Avr.*" />
+    <Architectures Include="$(SolutionDir)Arch\Cray\bin\$(Configuration)\Reko.Arch.Cray.*" />
     <Architectures Include="$(SolutionDir)Arch\i8051\bin\$(Configuration)\Reko.Arch.i8051.*" />
     <Architectures Include="$(SolutionDir)Arch\M6800\bin\$(Configuration)\Reko.Arch.M6800.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\bin\$(Configuration)\Reko.Arch.M68k.*" />

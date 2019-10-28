@@ -432,6 +432,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HpSom", "ImageLoaders\HpSom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hpux", "Environments\Hpux\Hpux.csproj", "{3488C24E-187C-4477-A310-D2292892D257}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cray", "Arch\Cray\Cray.csproj", "{47B16677-2BFC-4A5C-A830-E1683C574AEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

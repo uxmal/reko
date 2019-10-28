@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Arch.Msp430
             this.image = new MemoryArea(LoadAddress, bytes);
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             var rdr = image.CreateLeReader(image.BaseAddress);
             return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
