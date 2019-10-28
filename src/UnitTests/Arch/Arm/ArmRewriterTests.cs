@@ -45,14 +45,14 @@ namespace Reko.UnitTests.Arch.Arm
             get { return baseAddress; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(new LeImageReader(image, 0), new AArch32ProcessorState(arch), binder, host);
         }
 
         private void BuildTest(params string[] bitStrings)
         {
-            var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
+            var bytes = bitStrings.Select(bits => base.BitStringToUInt32(bits))
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
             image = new MemoryArea(Address.Ptr32(0x00100000), bytes);

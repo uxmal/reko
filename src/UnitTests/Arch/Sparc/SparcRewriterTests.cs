@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.Sparc
             return host.Object;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             return e;
         }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Cray.Ymp;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -29,10 +30,25 @@ using System.Text;
 
 namespace Reko.Arch.Cray
 {
+    /// <summary>
+    /// Architecture support for CrayYMP.
+    /// </summary>
+    /// <remarks>
+    /// What's odd about this architecture? Well:
+    /// - Memory is not byte-addressable, but word-addressable (where words are 64 bits)
+    /// - But program memory is addressable by 16-bit "parcels"; 
+    /// This presents a special challenge when decompiling to a byte-addressable 
+    /// abstract machine.
+    /// </remarks>
     public class CrayYmpArchitecture : ProcessorArchitecture
     {
         public CrayYmpArchitecture(string archId) : base(archId)
         {
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.InstructionBitSize = 16;
+            this.PointerType = PrimitiveType.Ptr32;
+            this.StackRegister = null; //$TODO: Ax?
+            this.WordWidth = PrimitiveType.Word64;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -42,12 +58,12 @@ namespace Reko.Arch.Cray
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new BeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new BeImageReader(img, addrBegin, addrEnd);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
@@ -57,12 +73,12 @@ namespace Reko.Arch.Cray
 
         public override ImageWriter CreateImageWriter()
         {
-            throw new NotImplementedException();
+            return new BeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new BeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -77,12 +93,12 @@ namespace Reko.Arch.Cray
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new CrayProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new YmpRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)

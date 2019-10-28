@@ -61,38 +61,38 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         protected CrayInstruction DisassembleOctBytes(string octalBytes)
         {
             var img = new MemoryArea(LoadAddress, new byte[256]);
-            byte[] bytes = ParseOctPattern(octalBytes);
+            byte[] bytes = OctalStringToBytes(octalBytes);
             return DisassembleBytes(bytes);
-        }
-
-        private byte[] ParseOctPattern(string octalBytes)
-        {
-            var w = new BeImageWriter();
-            int h = 0;
-            for (int i = 0; i < octalBytes.Length; ++i)
-            {
-                var digit = octalBytes[i] - '0';
-                if (0 <= digit && digit <= 9)
-                {
-                    h = h * 8 + digit;
-                    if ((i + 1) % 6 == 0)
-                    {
-                        w.WriteBeUInt16((ushort) h);
-                        h = 0;
-                    }
-                }
-                else
-                {
-                    break;
-                }
-            }
-            return w.Bytes;
         }
 
         [Test]
         public void YmpDis_S_and()
         {
-            AssertCode("S1\tS2&S3", "044123");
+            AssertCode("S1\tS2&S3", "043123");
+        }
+
+        [Test]
+        public void YmpDis_mov_Ai_Sj()
+        {
+            AssertCode("A7\tS1", "023710");
+        }
+
+        [Test]
+        public void YmpDis_mov_Si_Vj_Ak()
+        {
+            AssertCode("S1\tV2,A3", "076123");
+        }
+
+        [Test]
+        public void YmpDis_fmul_Sj_Sk()
+        {
+            AssertCode("S1\tS2*FS3", "064123");
+        }
+
+        [Test]
+        public void YmpDis_j_Bjk()
+        {
+            AssertCode("j\tB63", "005077");
         }
     }
 }

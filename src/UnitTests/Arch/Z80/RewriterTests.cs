@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Z80
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             var state = (Z80ProcessorState)arch.CreateProcessorState();
             return new Z80Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);

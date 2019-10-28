@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch
 
         public abstract Address LoadAddress { get; }
 
-        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected virtual IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             yield break;
         }
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Arch
             return new RewriterHost(Architecture);
         }
 
-        public uint ParseBitPattern(string bitPattern)
+        public uint BitStringToUInt32(string bitPattern)
         {
             int cBits = 0;
             uint instr = 0;
@@ -152,10 +152,36 @@ namespace Reko.UnitTests.Arch
             return instr;
         }
 
-        public byte[] ParseHexPattern(string hexPattern)
+        public byte[] HexStringToBytes(string hexPattern)
         {
             return PlatformDefinition.LoadHexBytes(hexPattern)
                 .ToArray();
+        }
+
+        public static byte[] OctalStringToBytes(string octalBytes)
+        {
+            var w = new BeImageWriter();
+            int h = 0;
+            for (int i = 0; i < octalBytes.Length; ++i)
+            {
+                var digit = octalBytes[i] - '0';
+                if (0 <= digit && digit <= 9)
+                {
+                    h = h * 8 + digit;
+                    if ((i + 1) % 6 == 0)
+                    {
+                        w.WriteBeUInt16((ushort) h);
+                        h = 0;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            var aOut = new byte[w.Position];
+            Array.Copy(w.Bytes, aOut, aOut.Length);
+            return aOut;
         }
 
     }

@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Rl78
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             var state = (Rl78ProcessorState) arch.CreateProcessorState();
             return new Rl78Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);

@@ -25,5 +25,8 @@ namespace Reko.Arch.Cray
         Invalid,
         err,
         _and,
+        _fmul,
+        _mov,
+        j,
     }
 }

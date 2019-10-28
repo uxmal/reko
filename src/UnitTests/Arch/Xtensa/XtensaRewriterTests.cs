@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             var state = (XtensaProcessorState)arch.CreateProcessorState();
             return new XtensaRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);

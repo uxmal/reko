@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Arch.M68k
             get { return addrBase; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             var state = arch.CreateProcessorState();
             return arch.CreateRewriter(mem.CreateBeReader(0), state, arch.CreateFrame(), host);

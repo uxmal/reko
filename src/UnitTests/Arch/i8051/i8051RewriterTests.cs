@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.i8051
             return image;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             return new i8051Rewriter(arch, new BeImageReader(this.image, 0), new i8051State(arch), binder, host);
         }

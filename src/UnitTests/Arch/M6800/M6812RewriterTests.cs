@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.M6800
             return image;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(
                 new BeImageReader(image, image.BaseAddress),

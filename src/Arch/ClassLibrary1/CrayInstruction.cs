@@ -43,10 +43,18 @@ namespace Reko.Arch.Cray
             switch (Mnemonic)
             {
             case Mnemonic._and:
-                RenderOperand(Operands[0],writer);
+                Render3("&", writer);
+                return;
+            case Mnemonic._fmul:
+                Render3("*F", writer);
+                return;
+            case Mnemonic._mov:
+                RenderOperand(Operands[0], writer);
                 writer.Tab();
-                RenderOperand(Operands[1],writer);
-                writer.WriteString("&");
+                RenderOperand(Operands[1], writer);
+                if (Operands.Length == 2)
+                    return;
+                writer.WriteString(",");
                 RenderOperand(Operands[2], writer);
                 return;
             }
@@ -65,6 +73,14 @@ namespace Reko.Arch.Cray
             RenderOperand(Operands[2], writer);
         }
 
+        private void Render3(string infix, MachineInstructionWriter writer)
+        {
+            RenderOperand(Operands[0], writer);
+            writer.Tab();
+            RenderOperand(Operands[1], writer);
+            writer.WriteString(infix);
+            RenderOperand(Operands[2], writer);
+        }
 
         private void RenderOperand(MachineOperand op, MachineInstructionWriter writer)
         {

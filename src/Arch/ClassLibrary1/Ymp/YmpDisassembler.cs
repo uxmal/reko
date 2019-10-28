@@ -29,6 +29,8 @@ namespace Reko.Arch.Cray.Ymp
 {
     using Decoder = Reko.Core.Machine.Decoder<YmpDisassembler, Mnemonic, CrayInstruction>;
 
+    // Based on "Cray Y-MP Computer Systems Function Description Manual (HR-04001-0C)
+
     public class YmpDisassembler : DisassemblerBase<CrayInstruction>
     {
         private static readonly Decoder rootDecoder;
@@ -61,25 +63,39 @@ namespace Reko.Arch.Cray.Ymp
             return new CrayInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Mnemonic = Mnemonic.Invalid
+                Mnemonic = Mnemonic.Invalid,
+                Operands = new MachineOperand[0]
             };
         }
 
         #region Mutators
-        private static Mutator<YmpDisassembler> S(int bitOffset)
+
+        private static Mutator<YmpDisassembler> Reg(int bitOffset, int bitSize, RegisterStorage[] regs)
         {
-            var field = new Bitfield(bitOffset, 3);
+            var field = new Bitfield(bitOffset, bitSize);
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                var reg = Registers.SRegs[iReg];
+                var reg = regs[iReg];
                 d.ops.Add(new RegisterOperand(reg));
                 return true;
             };
         }
-        private static readonly Mutator<YmpDisassembler> Si = S(6);
-        private static readonly Mutator<YmpDisassembler> Sj = S(3);
-        private static readonly Mutator<YmpDisassembler> Sk = S(0);
+        private static readonly Mutator<YmpDisassembler> Si = Reg(6, 3, Registers.SRegs);
+        private static readonly Mutator<YmpDisassembler> Sj = Reg(3, 3, Registers.SRegs);
+        private static readonly Mutator<YmpDisassembler> Sk = Reg(0, 3, Registers.SRegs);
+
+        private static readonly Mutator<YmpDisassembler> Ai = Reg(6, 3, Registers.ARegs);
+        private static readonly Mutator<YmpDisassembler> Aj = Reg(3, 3, Registers.ARegs);
+        private static readonly Mutator<YmpDisassembler> Ak = Reg(0, 3, Registers.ARegs);
+
+        private static readonly Mutator<YmpDisassembler> Bjk = Reg(0, 6, Registers.BRegs);
+
+
+        private static readonly Mutator<YmpDisassembler> Vi = Reg(6, 3, Registers.VRegs);
+        private static readonly Mutator<YmpDisassembler> Vj = Reg(3, 3, Registers.VRegs);
+        private static readonly Mutator<YmpDisassembler> Vk = Reg(0, 3, Registers.VRegs);
+
 
         #endregion
 
@@ -119,19 +135,33 @@ namespace Reko.Arch.Cray.Ymp
             return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
         }
 
+
+        private static InstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<YmpDisassembler>[] mutators)
+        {
+            return new InstrDecoder(iclass, mnemonic, mutators);
+        }
+
         protected static NyiDecoder<YmpDisassembler, Mnemonic, CrayInstruction> Nyi(string message)
         {
             return new NyiDecoder<YmpDisassembler, Mnemonic, CrayInstruction>(message);
         }
 
-
         #endregion
 
         static YmpDisassembler()
         {
+            var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
+            
             rootDecoder = Sparse(9, 7, "YMP",
                 Nyi("YMP"),
-                (0x24, Instr(Mnemonic._and, Si, Sj, Sk)));
+                (0x05, Select((6, 3), u => u == 0, "  005x",
+                    Instr(Mnemonic.j, InstrClass.Transfer, Bjk),
+                    invalid)),
+                (0x13, Instr(Mnemonic._mov, Ai, Sj)),       // 0o023
+                (0x23, Instr(Mnemonic._and, Si, Sj, Sk)),   // 0o043
+                (0x34, Instr(Mnemonic._fmul, Si, Sj, Sk)),  // 0o064
+                (0x3E, Instr(Mnemonic._mov, Si, Vj, Ak))    // 0o076
+                );
         }
     }
 }

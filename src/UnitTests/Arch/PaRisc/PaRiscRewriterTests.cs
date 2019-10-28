@@ -47,11 +47,11 @@ namespace Reko.UnitTests.Arch.PaRisc
 
         private void BuildTest(string hexBytes)
         {
-            var bytes = base.ParseHexPattern(hexBytes);
+            var bytes = base.HexStringToBytes(hexBytes);
             this.mem = new MemoryArea(LoadAddress, bytes);
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
         {
             return new PaRiscRewriter(
                 arch,
