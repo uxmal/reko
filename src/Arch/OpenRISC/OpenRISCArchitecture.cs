@@ -139,7 +139,7 @@ namespace Reko.Arch.OpenRISC
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.GpRegs;
         }
 
         public override string GrfToString(uint grf)

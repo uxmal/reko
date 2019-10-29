@@ -97,6 +97,7 @@ namespace Reko.Arch.OpenRISC
                 case Mnemonic.l_movhi: RewriteMovhi(); break;
                 case Mnemonic.l_mfspr: RewriteMfspr(); break;
                 case Mnemonic.l_mtspr: RewriteMtspr(); break;
+                case Mnemonic.l_mul: RewriteAluV(m.SMul); break;
 
                 case Mnemonic.l_nop: m.Nop(); break;
                 case Mnemonic.l_or: RewriteBinOp(m.Or); break;
@@ -125,8 +126,11 @@ namespace Reko.Arch.OpenRISC
                 case Mnemonic.l_sfne:   RewriteSf(m.Ne); break;
                 case Mnemonic.l_sfnei:  RewriteSfi(m.Ne); break;
 
+                case Mnemonic.l_sll: RewriteBinOp(m.Shl); break;
                 case Mnemonic.l_slli: RewriteBinOpImm(m.Shl); break;
+                case Mnemonic.l_sra: RewriteBinOp(m.Sar); break;
                 case Mnemonic.l_srai: RewriteBinOpImm(m.Sar); break;
+                case Mnemonic.l_srl: RewriteBinOp(m.Shr); break;
                 case Mnemonic.l_srli: RewriteBinOpImm(m.Shr); break;
                 case Mnemonic.l_sub: RewriteAluCV(m.ISub); break;
                 case Mnemonic.l_sys: RewriteSys(); break;
@@ -135,7 +139,8 @@ namespace Reko.Arch.OpenRISC
 
                 }
                 yield return new RtlInstructionCluster(instrCur.Address, instrCur.Length, rtls.ToArray())
-                {                    Class = this.iclass
+                {
+                    Class = this.iclass
                 };
             }
         }
@@ -223,13 +228,28 @@ namespace Reko.Arch.OpenRISC
             m.Assign(cv, m.Cond(dst));
         }
 
-        private void RewriteAluCV(Func<Expression, Expression, BinaryExpression> fn)
+        private void V(Identifier dst)
+        {
+            var v = binder.EnsureFlagGroup(arch.GetFlagGroup((uint) FlagM.OV));
+            m.Assign(v, m.Cond(dst));
+        }
+
+        private void RewriteAluCV(Func<Expression, Expression, Expression> fn)
         {
             var dst = Reg(instrCur.Operands[0]);
             var src1 = Reg0(instrCur.Operands[1]);
             var src2 = Reg0(instrCur.Operands[2]);
             m.Assign(dst, fn(src1, src2));
             CV(dst);
+        }
+
+        private void RewriteAluV(Func<Expression, Expression, Expression> fn)
+        {
+            var dst = Reg(instrCur.Operands[0]);
+            var src1 = Reg0(instrCur.Operands[1]);
+            var src2 = Reg0(instrCur.Operands[2]);
+            m.Assign(dst, fn(src1, src2));
+            V(dst);
         }
 
         private void RewriteAddc()

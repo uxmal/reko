@@ -11,8 +11,10 @@
       <address>00000000</address>
       <loader>raw</loader>
       <processor name="openRisc">
-        <item key="Endianness">le</item>
+        <item key="Endianness">be</item>
       </processor>
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
       <registerValues />
     </user>
   </input>

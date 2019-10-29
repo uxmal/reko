@@ -599,5 +599,42 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r6 = r6 ^ 0x0000FFFF");
         }
+
+        [Test]
+        public void OpenRiscRw_l_sll()
+        {
+            BuildTest("E0EB3808");	// l.sll	r7,r11,r7
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = r11 << r7");
+        }
+
+        [Test]
+        public void OpenRiscRw_l_mul()
+        {
+            BuildTest("E2028306");	// l.mul	r16,r2,r16
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r16 = r2 *s r16",
+                "2|L--|V = cond(r16)");
+        }
+
+        [Test]
+        public void OpenRiscRw_l_srl()
+        {
+            BuildTest("E0AB2848");	// l.srl	r5,r11,r5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = r11 >>u r5");
+        }
+
+        [Test]
+        public void OpenRiscRw_l_sra()
+        {
+            BuildTest("E16B7088");	// l.sra	r11,r11,r14
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r11 = r11 >> r14");
+        }
     }
 }

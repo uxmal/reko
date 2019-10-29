@@ -48,6 +48,7 @@
 ;;   Called from:
 ;;     0000495C (in fn0000490C)
 ;;     00004A8C (in fn00004A6C)
+;;     00004BC4 (in fn00004B44)
 fn000043D0 proc
 	l.sw	-4(r1),r9
 	l.sw	-8(r1),r2
@@ -180,7 +181,7 @@ l00004590:
 	l.sw	0(r1),r7
 	l.lwz	r8,0(r1)
 	l.lwz	r7,0(r5)
-	Invalid
+	l.sll	r7,r11,r7
 	l.or	r7,r7,r8
 	l.sw	0(r1),r7
 	l.lwz	r7,0(r1)
@@ -241,8 +242,8 @@ l00004640:
 
 l00004658:
 	l.addi	r11,r0,+00000000
-	Invalid
-	Invalid
+	l.sll	r6,r6,r3
+	l.sll	r3,r4,r3
 	l.xori	r6,r6,0000FFFF
 	l.and	r6,r6,r7
 	l.sw	0(r1),r6
@@ -253,19 +254,10 @@ l00004658:
 	l.sw	0(r5),r3
 	l.jr	r9
 	l.addi	r1,r1,+00000004
-	l.movhi	r3,000001F0
-	l.addi	r1,r1,-00000004
-	l.ori	r3,r3,00001E80
-	l.addi	r11,r0,+00000000
-	l.lwz	r4,0(r3)
-	l.sw	0(r1),r4
-	l.lwz	r4,0(r1)
-	l.ori	r4,r4,00000001
-	l.sw	0(r1),r4
-	l.lwz	r4,0(r1)
-	l.sw	0(r3),r4
-	l.jr	r9
-	l.addi	r1,r1,+00000004
+0000468C                                     18 60 01 F0             .`..
+00004690 9C 21 FF FC A8 63 1E 80 9D 60 00 00 84 83 00 00 .!...c...`......
+000046A0 D4 01 20 00 84 81 00 00 A8 84 00 01 D4 01 20 00 .. ........... .
+000046B0 84 81 00 00 D4 03 20 00 44 00 48 00 9C 21 00 04 ...... .D.H..!..
 
 ;; fn000046C0: 000046C0
 ;;   Called from:
@@ -548,6 +540,7 @@ fn000049C0 proc
 ;; fn00004A00: 00004A00
 ;;   Called from:
 ;;     00004B1C (in fn00004A6C)
+;;     00004BB4 (in fn00004B44)
 fn00004A00 proc
 	l.slli	r3,r3,00000004
 	l.sw	-4(r1),r2
@@ -560,10 +553,10 @@ fn00004A00 proc
 	l.sw	0(r1),r6
 	l.addi	r6,r0,+00000001
 	l.lwz	r7,0(r1)
-	Invalid
+	l.sll	r6,r6,r4
 	l.srai	r5,r5,00000018
 	l.xori	r6,r6,0000FFFF
-	Invalid
+	l.sll	r4,r5,r4
 	l.and	r6,r6,r7
 	l.sw	0(r1),r6
 	l.lwz	r6,0(r1)
@@ -649,7 +642,7 @@ fn00004B44 proc
 	l.addi	r18,r0,+00000001
 	l.sw	-32(r1),r14
 	l.add	r14,r22,r2
-	Invalid
+	l.sll	r2,r18,r4
 	l.lwz	r5,0(r14)
 	l.sw	-20(r1),r20
 	l.xori	r20,r2,0000FFFF
@@ -722,16 +715,20 @@ fn00004C48 proc
 	l.addi	r3,r4,+00000010
 	l.addi	r4,r0,+00000001
 	l.sw	-4(r1),r9
-	Invalid
+	l.sll	r3,r4,r3
 	l.sw	-12(r1),r16
 	l.addi	r1,r1,-00000014
+
+l00004C84:
 	l.lwz	r4,0(r5)
 	l.and	r4,r3,r4
 	l.sfeqi	r4,00000000
 	l.bf	00004C84
 	l.movhi	r4,00000170
+
+l00004C98:
 	l.addi	r3,r0,+00000001
-	Invalid
+	l.sll	r5,r3,r2
 	l.ori	r4,r4,00000020
 	l.xori	r16,r5,0000FFFF
 	l.lwz	r6,0(r4)
@@ -783,7 +780,7 @@ fn00004C48 proc
 
 ;; fn00004D60: 00004D60
 ;;   Called from:
-;;     0000694C (in fn00006880)
+;;     0000694C (in fn000073EC)
 fn00004D60 proc
 	l.lwz	r5,84(r3)
 	l.lwz	r4,88(r3)
@@ -1173,7 +1170,7 @@ l000052D0:
 l000052DC:
 	l.addi	r16,r0,+00000032
 	l.addi	r4,r0,+000003E8
-	Invalid
+	l.mul	r16,r2,r16
 	l.jal	0001003C
 	l.ori	r3,r16,00000000
 	l.sub	r4,r0,r11
@@ -1202,8 +1199,12 @@ l000052DC:
 	l.sfleui	r5,00000001
 	l.bnf	00005360
 	l.sw	8(r1),r5
+
+l00005358:
 	l.addi	r3,r0,+00000002
 	l.sw	8(r1),r3
+
+l00005360:
 	l.slli	r16,r2,00000004
 	l.addi	r4,r0,+000003E8
 	l.sub	r16,r16,r2
@@ -1212,7 +1213,7 @@ l000052DC:
 	l.ori	r3,r16,00000000
 	l.addi	r16,r0,+00000035
 	l.sub	r6,r0,r11
-	Invalid
+	l.mul	r16,r2,r16
 	l.or	r6,r6,r11
 	l.addi	r4,r0,+000003E8
 	l.jal	0000FEDC
@@ -1247,13 +1248,21 @@ l000052DC:
 	l.sfleui	r6,00000001
 	l.bf	00006280
 	l.sw	0(r1),r6
+
+l0000540C:
 	l.ori	r18,r6,00000000
 	l.sw	16(r1),r6
+
+l00005414:
 	l.lwz	r4,4(r1)
 	l.sfleui	r4,00000001
 	l.bf	00005428
 	l.addi	r16,r0,+00000002
+
+l00005424:
 	l.ori	r16,r4,00000000
+
+l00005428:
 	l.slli	r7,r2,00000005
 	l.add	r8,r2,r2
 	l.addi	r4,r0,+000003E8
@@ -1261,10 +1270,10 @@ l000052DC:
 	l.addi	r20,r0,+00001E78
 	l.add	r3,r7,r2
 	l.jal	0001003C
-	Invalid
+	l.mul	r20,r2,r20
 	l.addi	r7,r0,+00000026
 	l.sub	r4,r0,r11
-	Invalid
+	l.mul	r3,r2,r7
 	l.or	r4,r4,r11
 	l.srli	r22,r4,0000001F
 	l.jal	0000FEDC
@@ -1278,7 +1287,7 @@ l000052DC:
 	l.ori	r3,r20,00000000
 	l.addi	r20,r0,+0000015E
 	l.sub	r8,r0,r11
-	Invalid
+	l.mul	r20,r2,r20
 	l.or	r8,r8,r11
 	l.addi	r4,r0,+000003E8
 	l.jal	0000FEDC
@@ -1310,7 +1319,7 @@ l000054E8:
 l000054F0:
 	l.addi	r16,r0,+00000032
 	l.addi	r4,r0,+000003E8
-	Invalid
+	l.mul	r16,r2,r16
 	l.ori	r3,r16,00000000
 	l.jal	0001003C
 	l.add	r20,r2,r2
@@ -1397,7 +1406,7 @@ l000054F0:
 	l.ori	r3,r20,00000000
 	l.addi	r20,r0,+00001E78
 	l.sub	r4,r0,r11
-	Invalid
+	l.mul	r20,r2,r20
 	l.or	r4,r4,r11
 	l.andi	r16,r16,000000FF
 	l.srli	r22,r4,0000001F
@@ -1412,7 +1421,7 @@ l000054F0:
 	l.ori	r3,r20,00000000
 	l.addi	r20,r0,+00000148
 	l.sub	r8,r0,r11
-	Invalid
+	l.mul	r20,r2,r20
 	l.or	r8,r8,r11
 	l.addi	r4,r0,+000003E8
 	l.jal	0000FEDC
@@ -1446,7 +1455,7 @@ l000056F8:
 l00005700:
 	l.addi	r16,r0,+00000032
 	l.addi	r4,r0,+000003E8
-	Invalid
+	l.mul	r16,r2,r16
 	l.jal	0000FEDC
 	l.ori	r3,r16,00000000
 	l.addi	r4,r0,+000003E8
@@ -1461,8 +1470,12 @@ l00005700:
 	l.sfleui	r11,00000003
 	l.bnf	0000574C
 	l.sw	20(r1),r11
+
+l00005744:
 	l.addi	r3,r0,+00000004
 	l.sw	20(r1),r3
+
+l0000574C:
 	l.slli	r5,r2,00000003
 	l.add	r16,r2,r2
 	l.addi	r4,r0,+000003E8
@@ -1481,8 +1494,12 @@ l00005700:
 	l.sfeqi	r5,00000000
 	l.bnf	0000579C
 	l.sw	8(r1),r5
+
+l00005794:
 	l.addi	r4,r0,+00000001
 	l.sw	8(r1),r4
+
+l0000579C:
 	l.add	r16,r2,r2
 	l.addi	r4,r0,+000003E8
 	l.add	r16,r16,r2
@@ -1501,11 +1518,15 @@ l00005700:
 	l.sfleui	r6,00000001
 	l.bnf	000057EC
 	l.sw	4(r1),r6
+
+l000057E4:
 	l.addi	r6,r0,+00000002
 	l.sw	4(r1),r6
+
+l000057EC:
 	l.addi	r16,r0,+00000046
 	l.addi	r4,r0,+000003E8
-	Invalid
+	l.mul	r16,r2,r16
 	l.jal	0001003C
 	l.ori	r3,r16,00000000
 	l.sub	r7,r0,r11
@@ -1532,11 +1553,17 @@ l00005700:
 	l.sfeqi	r6,00000000
 	l.bf	00006294
 	l.sw	0(r1),r6
+
+l00005860:
 	l.sfleui	r6,00000001
 	l.bf	000062A0
 	l.addi	r18,r0,+00000002
+
+l0000586C:
 	l.ori	r18,r6,00000000
 	l.sw	16(r1),r6
+
+l00005874:
 	l.slli	r20,r2,00000004
 	l.addi	r4,r0,+000003E8
 	l.sub	r20,r20,r2
@@ -1554,7 +1581,11 @@ l00005700:
 	l.sfleui	r16,00000001
 	l.bnf	000058BC
 	l.add	r20,r2,r2
+
+l000058B8:
 	l.addi	r16,r0,+00000002
+
+l000058BC:
 	l.addi	r4,r0,+000003E8
 	l.add	r20,r20,r2
 	l.slli	r7,r20,00000003
@@ -1573,8 +1604,12 @@ l00005700:
 	l.sfleui	r7,00000001
 	l.bnf	0000590C
 	l.sw	12(r1),r7
+
+l00005904:
 	l.addi	r3,r0,+00000002
 	l.sw	12(r1),r3
+
+l0000590C:
 	l.add	r20,r2,r2
 	l.addi	r4,r0,+000003E8
 	l.add	r20,r20,r2
@@ -1586,7 +1621,7 @@ l00005700:
 	l.ori	r3,r20,00000000
 	l.addi	r20,r0,+00000F3C
 	l.addi	r4,r0,+000003E8
-	Invalid
+	l.mul	r20,r2,r20
 	l.jal	0001003C
 	l.ori	r22,r11,00000000
 	l.sub	r8,r0,r11
@@ -1601,7 +1636,7 @@ l00005700:
 	l.ori	r3,r20,00000000
 	l.addi	r20,r0,+000000D2
 	l.sub	r8,r0,r11
-	Invalid
+	l.mul	r20,r2,r20
 	l.or	r7,r8,r11
 	l.addi	r4,r0,+000003E8
 	l.jal	0000FEDC
@@ -1629,7 +1664,7 @@ l000059C4:
 l000059CC:
 	l.addi	r16,r0,+00000032
 	l.addi	r4,r0,+000003E8
-	Invalid
+	l.mul	r16,r2,r16
 	l.jal	0000FEDC
 	l.ori	r3,r16,00000000
 	l.addi	r4,r0,+000003E8
@@ -1644,8 +1679,12 @@ l000059CC:
 	l.sfleui	r11,00000003
 	l.bnf	00005A18
 	l.sw	20(r1),r11
+
+l00005A10:
 	l.addi	r4,r0,+00000004
 	l.sw	20(r1),r4
+
+l00005A18:
 	l.slli	r5,r2,00000003
 	l.add	r16,r2,r2
 	l.addi	r4,r0,+000003E8
@@ -1664,8 +1703,12 @@ l000059CC:
 	l.sfeqi	r5,00000000
 	l.bnf	00005A68
 	l.sw	8(r1),r5
+
+l00005A60:
 	l.addi	r6,r0,+00000001
 	l.sw	8(r1),r6
+
+l00005A68:
 	l.add	r16,r2,r2
 	l.addi	r4,r0,+000003E8
 	l.add	r16,r16,r2
@@ -1684,11 +1727,15 @@ l000059CC:
 	l.sfleui	r6,00000001
 	l.bnf	00005AB8
 	l.sw	4(r1),r6
+
+l00005AB0:
 	l.addi	r3,r0,+00000002
 	l.sw	4(r1),r3
+
+l00005AB8:
 	l.addi	r16,r0,+00000046
 	l.addi	r4,r0,+000003E8
-	Invalid
+	l.mul	r16,r2,r16
 	l.jal	0001003C
 	l.ori	r3,r16,00000000
 	l.sub	r7,r0,r11
@@ -1715,8 +1762,12 @@ l000059CC:
 	l.sfleui	r11,00000001
 	l.bf	000062A8
 	l.sw	0(r1),r11
+
+l00005B2C:
 	l.ori	r18,r11,00000000
 	l.sw	16(r1),r11
+
+l00005B34:
 	l.slli	r20,r2,00000004
 	l.addi	r4,r0,+000003E8
 	l.sub	r20,r20,r2
@@ -1734,7 +1785,11 @@ l000059CC:
 	l.sfleui	r16,00000001
 	l.bnf	00005B7C
 	l.add	r20,r2,r2
+
+l00005B78:
 	l.addi	r16,r0,+00000002
+
+l00005B7C:
 	l.addi	r4,r0,+000003E8
 	l.add	r20,r20,r2
 	l.slli	r7,r20,00000003
@@ -1753,8 +1808,12 @@ l000059CC:
 	l.sfleui	r7,00000001
 	l.bnf	00005BCC
 	l.sw	12(r1),r7
+
+l00005BC4:
 	l.addi	r4,r0,+00000002
 	l.sw	12(r1),r4
+
+l00005BCC:
 	l.add	r20,r2,r2
 	l.addi	r4,r0,+000003E8
 	l.add	r20,r20,r2
@@ -1766,7 +1825,7 @@ l000059CC:
 	l.ori	r3,r20,00000000
 	l.addi	r20,r0,+00000F3C
 	l.addi	r4,r0,+000003E8
-	Invalid
+	l.mul	r20,r2,r20
 	l.jal	0001003C
 	l.ori	r22,r11,00000000
 	l.sub	r7,r0,r11
@@ -1781,7 +1840,7 @@ l000059CC:
 	l.ori	r3,r20,00000000
 	l.addi	r20,r0,+000000D2
 	l.sub	r8,r0,r11
-	Invalid
+	l.mul	r20,r2,r20
 	l.or	r11,r8,r11
 	l.addi	r4,r0,+000003E8
 	l.jal	0000FEDC
@@ -1800,6 +1859,8 @@ l000059CC:
 	l.sub	r13,r0,r11
 	l.or	r6,r13,r11
 	l.srli	r13,r6,0000001F
+
+l00005C80:
 	l.add	r12,r22,r13
 	l.andi	r12,r12,0000FFFF
 	l.j	00005CE0
@@ -1826,6 +1887,8 @@ l00005C90:
 	l.sw	24(r1),r3
 	l.sw	4(r1),r4
 	l.sw	8(r1),r18
+
+l00005CE0:
 	l.lwz	r4,4(r1)
 	l.lwz	r6,24(r1)
 	l.movhi	r3,00000040
@@ -1894,19 +1957,19 @@ l00005DA4:
 
 l00005DAC:
 	l.addi	r4,r0,+0000000F
-	Invalid
+	l.mul	r2,r14,r2
 	l.jal	0000FEDC
 	l.addi	r2,r2,+00000001
 	l.sw	40(r1),r2
 	l.addi	r2,r0,+000001F4
 	l.andi	r11,r11,000000FF
-	Invalid
+	l.mul	r3,r14,r2
 	l.addi	r4,r0,+000003E8
 	l.jal	0000FEDC
 	l.sw	44(r1),r11
 	l.addi	r13,r0,+000000C8
 	l.addi	r19,r0,+00000003
-	Invalid
+	l.mul	r13,r14,r13
 	l.addi	r15,r18,+00000005
 	l.addi	r22,r0,+00000000
 	l.addi	r12,r13,+00000001
@@ -1934,19 +1997,19 @@ l00005E3C:
 	l.ori	r3,r2,00000000
 	l.addi	r2,r0,+000001F4
 	l.addi	r4,r0,+0000000F
-	Invalid
+	l.mul	r2,r14,r2
 	l.jal	0000FEDC
 	l.addi	r2,r2,+00000001
 	l.sw	40(r1),r2
 	l.addi	r2,r0,+00000168
 	l.andi	r11,r11,000000FF
-	Invalid
+	l.mul	r3,r14,r2
 	l.addi	r4,r0,+000003E8
 	l.jal	0000FEDC
 	l.sw	44(r1),r11
 	l.addi	r13,r0,+000000C8
 	l.addi	r7,r0,+00000004
-	Invalid
+	l.mul	r13,r14,r13
 	l.addi	r15,r18,+00000006
 	l.addi	r16,r16,+00000006
 	l.addi	r17,r0,+00000005
@@ -1974,7 +2037,7 @@ l00005ED4:
 	l.ori	r3,r2,00000000
 	l.addi	r2,r0,+000000C8
 	l.addi	r4,r0,+0000001E
-	Invalid
+	l.mul	r2,r14,r2
 	l.jal	0000FEDC
 	l.addi	r2,r2,+00000001
 	l.sw	40(r1),r2
@@ -2013,7 +2076,7 @@ l00005ED4:
 
 l00005F70:
 	l.addi	r4,r0,+0000001E
-	Invalid
+	l.mul	r2,r14,r2
 	l.jal	0000FEDC
 	l.addi	r2,r2,+00000001
 	l.sw	40(r1),r2
@@ -2049,6 +2112,8 @@ l00005F70:
 	l.addi	r13,r0,+00000002
 	l.ori	r5,r17,00000000
 	l.addi	r24,r0,+0000000A
+
+l00006004:
 	l.addi	r26,r0,+000000C3
 	l.j	0000606C
 	l.addi	r21,r0,+00000000
@@ -2077,6 +2142,8 @@ l00006010:
 	l.ori	r12,r22,00000000
 	l.ori	r8,r22,00000000
 	l.sw	40(r1),r22
+
+l0000606C:
 	l.lhz	r30,24(r28)
 	l.sfnei	r30,00000000
 	l.bf	00006080
@@ -2226,12 +2293,33 @@ l000060BC:
 	l.lwz	r28,-12(r1)
 	l.jr	r9
 	l.lwz	r30,-8(r1)
-00006280 9C 80 00 02 D4 01 20 00 AA 44 00 00 03 FF FC 62 ...... ..D.....b
-00006290 D4 01 20 10 9C C0 00 01 D4 01 30 00 9E 40 00 02 .. .......0..@..
-000062A0 03 FF FD 75 D4 01 90 10 9C 60 00 02 D4 01 18 00 ...u.....`......
-000062B0 AA 43 00 00 03 FF FE 20 D4 01 18 10             .C..... ....   
+
+l00006280:
+	l.addi	r4,r0,+00000002
+	l.sw	0(r1),r4
+	l.ori	r18,r4,00000000
+	l.j	00005414
+	l.sw	16(r1),r4
+
+l00006294:
+	l.addi	r6,r0,+00000001
+	l.sw	0(r1),r6
+	l.addi	r18,r0,+00000002
+
+l000062A0:
+	l.j	00005874
+	l.sw	16(r1),r18
+
+l000062A8:
+	l.addi	r3,r0,+00000002
+	l.sw	0(r1),r3
+	l.ori	r18,r3,00000000
+	l.j	00005B34
+	l.sw	16(r1),r3
 
 ;; fn000062BC: 000062BC
+;;   Called from:
+;;     000064B8 (in fn00006394)
 fn000062BC proc
 	l.lwz	r3,92(r3)
 	l.sw	-4(r1),r9
@@ -2250,14 +2338,31 @@ l000062DC:
 	l.lwz	r3,0(r3)
 	l.jr	r3
 	l.nop
-000062F8                         18 80 E4 86 00 00 00 0C         ........
-00006300 A8 84 CC CC 18 80 E9 06 00 00 00 09 A8 84 99 99 ................
-00006310 18 80 ED 86 00 00 00 06 A8 84 66 66 00 00 00 04 ..........ff....
-00006320 18 80 F5 86                                     ....           
+
+l000062F8:
+	l.movhi	r4,0000E486
+	l.j	0000632C
+	l.ori	r4,r4,0000CCCC
+
+l00006304:
+	l.movhi	r4,0000E906
+	l.j	0000632C
+	l.ori	r4,r4,00009999
+
+l00006310:
+	l.movhi	r4,0000ED86
+	l.j	0000632C
+	l.ori	r4,r4,00006666
+
+l0000631C:
+	l.j	0000632C
+	l.movhi	r4,0000F586
 
 l00006324:
 	l.movhi	r4,0000F206
 	l.ori	r4,r4,00003333
+
+l0000632C:
 	l.movhi	r3,000001C2
 	l.movhi	r2,00000100
 	l.ori	r3,r3,00000290
@@ -2283,6 +2388,8 @@ l00006360:
 l00006378:
 	l.jal	0000C8A0
 	l.addi	r3,r0,+00000014
+
+l00006380:
 	l.addi	r1,r1,+00000008
 	l.addi	r11,r0,+00000001
 	l.lwz	r9,-4(r1)
@@ -2375,7 +2482,7 @@ l0000646C:
 	l.slli	r5,r5,00000008
 	l.lwz	r4,0(r3)
 	l.addi	r4,r2,-00000001
-	Invalid
+	l.mul	r2,r14,r2
 	l.slli	r4,r4,00000004
 	l.movhi	r6,00008000
 	l.add	r14,r2,r2
@@ -2572,9 +2679,11 @@ l0000671C:
 	l.addi	r4,r0,+00000000
 	l.ori	r7,r7,00002000
 	l.ori	r8,r4,00000000
+
+l00006738:
 	l.addi	r5,r4,+0000000C
 	l.lwz	r6,0(r7)
-	Invalid
+	l.srl	r5,r11,r5
 	l.addi	r2,r0,-00001000
 	l.andi	r5,r5,00000001
 	l.and	r6,r6,r2
@@ -2582,41 +2691,63 @@ l0000671C:
 	l.or	r6,r6,r15
 	l.or	r5,r6,r5
 	l.addi	r6,r4,+00000004
-	Invalid
+	l.srl	r6,r11,r6
 	l.andi	r6,r6,000000FF
 	l.addi	r6,r6,-00000001
 	l.slli	r6,r6,00000004
 	l.andi	r6,r6,000000FF
 	l.or	r5,r5,r6
-	Invalid
+	l.srl	r6,r11,r4
 	l.andi	r6,r6,0000000F
 	l.sfeqi	r6,00000002
 	l.bf	000067C8
 	l.sfgtui	r6,00000002
+
+l0000678C:
 	l.bf	000067A8
 	l.sfeqi	r6,00000004
+
+l00006794:
 	l.sfeqi	r6,00000001
 	l.bnf	000067D0
 	l.nop
+
+l000067A0:
 	l.j	000067D4
 	l.ori	r5,r5,00000700
+
+l000067A8:
 	l.bf	000067C0
 	l.sfeqi	r6,00000008
+
+l000067B0:
 	l.bnf	000067D0
 	l.nop
+
+l000067B8:
 	l.j	000067D4
 	l.ori	r5,r5,00000A00
+
+l000067C0:
 	l.j	000067D4
 	l.ori	r5,r5,00000900
+
+l000067C8:
 	l.j	000067D4
 	l.ori	r5,r5,00000800
+
+l000067D0:
 	l.ori	r5,r5,00000600
+
+l000067D4:
 	l.sw	0(r7),r5
 	l.addi	r8,r8,+00000001
 	l.addi	r7,r7,+00000004
 	l.sfltu	r8,r13
 	l.bf	00006738
 	l.addi	r4,r4,+00000010
+
+l000067EC:
 	l.movhi	r4,000001C6
 	l.addi	r5,r0,+00000201
 	l.ori	r4,r4,00002000
@@ -2625,16 +2756,24 @@ l0000671C:
 	l.sfeqi	r4,00000000
 	l.bf	00006810
 	l.movhi	r4,000001C6
+
+l0000680C:
 	l.addi	r5,r0,+00000303
+
+l00006810:
 	l.sfeqi	r12,00000000
 	l.ori	r6,r4,00003120
 	l.sw	0(r6),r5
 	l.bf	00006834
 	l.ori	r5,r4,00003444
+
+l00006824:
 	l.addi	r2,r0,+00000000
 	l.ori	r4,r4,000034C4
 	l.sw	0(r5),r2
 	l.sw	0(r4),r2
+
+l00006834:
 	l.lwz	r4,56(r3)
 	l.movhi	r5,000001C6
 	l.andi	r3,r4,00000003
@@ -2655,10 +2794,7 @@ l0000671C:
 	l.jr	r9
 	l.lwz	r2,-4(r1)
 
-;; fn00006880: 00006880
-;;   Called from:
-;;     00007420 (in fn000073EC)
-fn00006880 proc
+l00006880:
 	l.movhi	r3,000001C6
 	l.sw	-24(r1),r2
 	l.ori	r2,r4,00000000
@@ -3145,7 +3281,7 @@ fn00006E54 proc
 	l.add	r11,r11,r5
 	l.addi	r5,r0,+00000001
 	l.bf	00006ED8
-	Invalid
+	l.sll	r11,r5,r11
 
 l00006E98:
 	l.ori	r4,r4,00002004
@@ -3165,7 +3301,7 @@ l00006EB4:
 	l.add	r3,r6,r3
 	l.addi	r3,r3,-0000000E
 	l.add	r3,r3,r4
-	Invalid
+	l.sll	r3,r5,r3
 
 l00006ED8:
 	l.jr	r9
@@ -3412,7 +3548,7 @@ l0000717C:
 	l.addi	r4,r4,+0000000B
 	l.add	r3,r4,r3
 	l.movhi	r4,00001234
-	Invalid
+	l.sll	r3,r2,r3
 	l.ori	r4,r4,0000ABCD
 	l.add	r3,r3,r5
 	l.sw	0(r3),r4
@@ -3425,6 +3561,8 @@ l0000717C:
 	l.sfeqi	r3,00000000
 	l.bf	0000728C
 	l.ori	r4,r18,00003448
+
+l000071E4:
 	l.ori	r2,r18,00003348
 	l.ori	r3,r18,000033C8
 	l.lwz	r2,0(r2)
@@ -3445,31 +3583,49 @@ l0000717C:
 	l.sfeqi	r2,00000000
 	l.bf	0000726C
 	l.and	r5,r5,r16
+
+l00007234:
 	l.sfeqi	r3,00000000
 	l.bf	00007298
 	l.ori	r2,r3,00000000
+
+l00007240:
 	l.sfeqi	r4,00000000
 	l.bf	00007298
 	l.ori	r2,r4,00000000
+
+l0000724C:
 	l.sfeqi	r5,00000000
 	l.bf	00007298
 	l.ori	r2,r5,00000000
+
+l00007258:
 	l.movhi	r3,0000FFFF
 	l.lwz	r2,20(r14)
 	l.ori	r3,r3,00000FFF
 	l.j	00007280
 	l.and	r2,r2,r3
+
+l0000726C:
 	l.sfnei	r3,00000000
 	l.bf	00007298
 	l.nop
+
+l00007278:
 	l.lwz	r2,20(r14)
 	l.ori	r2,r2,00001000
+
+l00007280:
 	l.sw	20(r14),r2
 	l.j	00007298
 	l.ori	r2,r16,00000000
+
+l0000728C:
 	l.lwz	r3,20(r14)
 	l.ori	r3,r3,00001000
 	l.sw	20(r14),r3
+
+l00007298:
 	l.movhi	r16,000001C6
 	l.movhi	r4,0000FBFF
 	l.ori	r14,r16,00003100
@@ -3905,46 +4061,74 @@ l00007798:
 	l.ori	r4,r4,000006F0
 	l.sw	0(r3),r4
 	l.addi	r14,r6,+0000000B
+
+l000077B4:
 	l.addi	r8,r0,+00000000
-	Invalid
+	l.sll	r14,r13,r14
 	l.ori	r12,r15,00000000
 	l.ori	r4,r8,00000000
 	l.add	r14,r14,r5
+
+l000077C8:
 	l.andi	r16,r4,00000001
 	l.sfeqi	r16,00000000
 	l.bf	000077DC
 	l.ori	r21,r12,00000000
+
+l000077D8:
 	l.add	r21,r8,r5
+
+l000077DC:
 	l.add	r16,r8,r14
 	l.lwz	r16,0(r16)
 	l.sfeq	r21,r16
 	l.bf	0000780C
 	l.addi	r4,r4,+00000001
+
+l000077F0:
 	l.addi	r4,r4,-00000001
 	l.sfeqi	r4,00000040
 	l.bnf	00007824
 	l.addi	r6,r6,+00000001
+
+l00007800:
 	l.addi	r6,r6,-00000001
 	l.j	00007838
 	l.sfgtui	r6,0000000F
+
+l0000780C:
 	l.addi	r8,r8,+00000004
 	l.sfnei	r4,00000040
 	l.bf	000077C8
 	l.addi	r12,r12,-00000004
+
+l0000781C:
 	l.j	00007838
 	l.sfgtui	r6,0000000F
+
+l00007824:
 	l.sfnei	r6,00000011
 	l.bf	000077B4
 	l.addi	r14,r6,+0000000B
+
+l00007830:
 	l.j	00007844
 	l.addi	r6,r0,+00000010
+
+l00007838:
 	l.bnf	00007848
 	l.addi	r4,r7,+00000004
+
+l00007840:
 	l.addi	r6,r0,+00000010
+
+l00007844:
 	l.addi	r4,r7,+00000004
+
+l00007848:
 	l.lwz	r14,16(r2)
-	Invalid
-	Invalid
+	l.sll	r8,r6,r4
+	l.sll	r4,r31,r4
 	l.ori	r12,r15,00000000
 	l.xori	r4,r4,0000FFFF
 	l.and	r14,r4,r14
@@ -3956,26 +4140,36 @@ l00007798:
 	l.ori	r4,r4,000006A4
 	l.sw	0(r3),r4
 	l.addi	r4,r0,+00000000
+
+l00007880:
 	l.andi	r16,r4,00000001
 	l.sfnei	r16,00000000
 	l.bf	00007894
 	l.ori	r21,r8,00000000
+
+l00007890:
 	l.ori	r21,r12,00000000
+
+l00007894:
 	l.lwz	r16,2048(r8)
 	l.sfne	r21,r16
 	l.bf	000078B4
 	l.addi	r8,r8,+00000004
+
+l000078A4:
 	l.addi	r4,r4,+00000001
 	l.sfnei	r4,00000040
 	l.bf	00007880
 	l.addi	r12,r12,-00000004
+
+l000078B4:
 	l.xori	r4,r4,00000040
 	l.sub	r27,r0,r4
 	l.or	r4,r27,r4
 	l.srli	r27,r4,0000001F
 	l.addi	r4,r7,+0000000C
-	Invalid
-	Invalid
+	l.sll	r8,r27,r4
+	l.sll	r4,r25,r4
 	l.xori	r4,r4,0000FFFF
 	l.and	r14,r14,r4
 	l.lwz	r4,0(r3)
@@ -3985,50 +4179,84 @@ l00007798:
 	l.ori	r4,r4,00000AA0
 	l.sw	0(r3),r4
 	l.addi	r4,r0,+00000009
-	Invalid
+	l.sll	r16,r13,r4
+
+l000078F8:
 	l.addi	r12,r0,+00000000
 	l.ori	r21,r15,00000000
 	l.add	r16,r16,r5
 	l.ori	r8,r12,00000000
+
+l00007908:
 	l.andi	r18,r8,00000001
 	l.sfeqi	r18,00000000
 	l.bf	0000791C
 	l.ori	r29,r21,00000000
+
+l00007918:
 	l.add	r29,r12,r5
+
+l0000791C:
 	l.add	r18,r12,r16
 	l.lwz	r18,0(r18)
 	l.sfeq	r29,r18
 	l.bf	0000794C
 	l.addi	r8,r8,+00000001
+
+l00007930:
 	l.addi	r8,r8,-00000001
 	l.sfeqi	r8,00000040
 	l.bnf	00007964
 	l.addi	r4,r4,+00000001
+
+l00007940:
 	l.addi	r4,r4,-00000001
 	l.j	00007978
 	l.sfgtui	r4,0000000C
+
+l0000794C:
 	l.addi	r12,r12,+00000004
 	l.sfnei	r8,00000040
 	l.bf	00007908
 	l.addi	r21,r21,-00000004
+
+l0000795C:
 	l.j	00007978
 	l.sfgtui	r4,0000000C
+
+l00007964:
 	l.sfnei	r4,0000000E
 	l.bf	000078F8
-	Invalid
+	l.sll	r16,r13,r4
+
+l00007970:
 	l.j	00007994
 	l.addi	r4,r0,+0000000D
+
+l00007978:
 	l.bf	00007990
 	l.sfeqi	r4,00000009
+
+l00007980:
 	l.bf	0000799C
 	l.addi	r12,r0,+00000000
+
+l00007988:
 	l.j	00007998
 	l.addi	r12,r4,-0000000A
+
+l00007990:
 	l.addi	r4,r0,+0000000D
+
+l00007994:
 	l.addi	r12,r4,-0000000A
-	Invalid
-	Invalid
-	Invalid
+
+l00007998:
+	l.sll	r12,r13,r12
+
+l0000799C:
+	l.sll	r15,r25,r7
+	l.sll	r12,r12,r7
 	l.addi	r17,r17,+00000001
 	l.xori	r15,r15,0000FFFF
 	l.addi	r7,r7,+00000010
@@ -4037,12 +4265,14 @@ l00007798:
 	l.or	r8,r12,r8
 	l.bf	000079F4
 	l.sw	16(r2),r8
+
+l000079C4:
 	l.addi	r19,r19,+00000002
 	l.add	r19,r19,r6
 	l.add	r19,r19,r27
 	l.add	r19,r19,r4
 	l.addi	r4,r19,+00000001
-	Invalid
+	l.sll	r4,r13,r4
 	l.add	r5,r5,r4
 
 l000079E0:
@@ -4051,9 +4281,25 @@ l000079E0:
 	l.ori	r6,r15,00000000
 	l.j	0000776C
 	l.addi	r4,r0,+00000000
-000079F4             BC 0B 00 01 10 00 00 0A B8 68 00 50     .........h.P
-00007A00 9C 80 F0 FF A5 08 FF FF E4 23 40 00 0C 00 00 03 .........#@.....
-00007A10 E0 77 20 03 A8 63 01 00 D4 02 18 14 9D 60 00 01 .w ..c.......`..
+
+l000079F4:
+	l.sfeqi	r11,00000001
+	l.bf	00007A20
+	l.srli	r3,r8,00000010
+
+l00007A00:
+	l.addi	r4,r0,-00000F01
+	l.andi	r8,r8,0000FFFF
+	l.sfne	r3,r8
+	l.bnf	00007A18
+	l.and	r3,r23,r4
+
+l00007A14:
+	l.ori	r3,r3,00000100
+
+l00007A18:
+	l.sw	20(r2),r3
+	l.addi	r11,r0,+00000001
 
 l00007A20:
 	l.addi	r1,r1,+00000014
@@ -4502,12 +4748,12 @@ fn00008030 proc
 	l.slli	r4,r4,00000018
 	l.addi	r6,r0,+00000001
 	l.movhi	r5,000001C6
-	Invalid
+	l.sll	r6,r6,r3
 	l.ori	r5,r5,00002094
 	l.srai	r4,r4,00000018
 	l.lwz	r7,0(r5)
 	l.xori	r6,r6,0000FFFF
-	Invalid
+	l.sll	r3,r4,r3
 	l.and	r6,r6,r7
 	l.sw	-4(r1),r9
 	l.or	r3,r6,r3
@@ -4543,8 +4789,8 @@ fn00008080 proc
 	l.sw	0(r1),r6
 	l.addi	r6,r0,+00000001
 	l.lwz	r7,0(r1)
-	Invalid
-	Invalid
+	l.sll	r6,r6,r3
+	l.sll	r3,r4,r3
 	l.xori	r6,r6,0000FFFF
 	l.and	r6,r6,r7
 	l.sw	0(r1),r6
@@ -4581,8 +4827,8 @@ fn000080EC proc
 	l.sw	0(r1),r6
 	l.addi	r6,r0,+00000001
 	l.lwz	r7,0(r1)
-	Invalid
-	Invalid
+	l.sll	r6,r6,r3
+	l.sll	r3,r4,r3
 	l.xori	r6,r6,0000FFFF
 	l.and	r6,r6,r7
 	l.sw	0(r1),r6
@@ -4594,90 +4840,28 @@ fn000080EC proc
 	l.addi	r1,r1,+00000008
 	l.jr	r9
 	l.lwz	r2,-4(r1)
-	l.sw	-16(r1),r2
-	l.movhi	r2,000001C1
-	l.sw	-12(r1),r14
-	l.sw	-8(r1),r16
-	l.sw	-4(r1),r9
-	l.ori	r16,r2,00007144
-	l.addi	r1,r1,-00000014
-	l.j	000081E8
-	l.ori	r14,r2,00007184
-	l.lwz	r2,0(r14)
-	l.sw	0(r1),r2
-	l.lwz	r3,0(r1)
-	l.jal	0000F874
-	l.nop
-	l.ori	r3,r11,00000000
-	l.jal	0000F154
-	l.ori	r2,r11,00000000
-	l.sfeqi	r11,00000000
-	l.bf	000081E8
-	l.nop
-	l.lbz	r3,0(r2)
-	l.sfnei	r3,00000005
-	l.bf	000081DC
-	l.addi	r4,r0,+00000003
-	l.addi	r3,r0,+00000006
-	l.addi	r4,r0,+00000001
-	l.sb	0(r2),r3
-	l.addi	r3,r0,+00000000
-	l.sw	32(r2),r3
-	l.sw	36(r2),r4
-	l.j	000081E8
-	l.nop
-	l.ori	r3,r2,00000000
-	l.jal	0000F444
-	l.sb	0(r2),r4
-	l.lwz	r3,0(r16)
-	l.sfnei	r3,00000000
-	l.bf	00008180
-	l.movhi	r2,000001C1
-	l.ori	r3,r2,00007050
-	l.addi	r4,r0,+00000004
-	l.sw	0(r3),r4
-	l.ori	r3,r2,00007150
-	l.lwz	r3,0(r3)
-	l.sfeqi	r3,00000000
-	l.bf	00008280
-	l.ori	r2,r2,00007190
-	l.lwz	r2,0(r2)
-	l.sw	0(r1),r2
-	l.lwz	r3,0(r1)
-	l.jal	0000F874
-	l.nop
-	l.ori	r3,r11,00000000
-	l.jal	0000F154
-	l.ori	r2,r11,00000000
-	l.sfeqi	r11,00000000
-	l.bf	00008280
-	l.nop
-	l.lbz	r3,0(r2)
-	l.sfnei	r3,00000005
-	l.bf	00008274
-	l.addi	r4,r0,+00000003
-	l.addi	r3,r0,+00000006
-	l.addi	r4,r0,+00000001
-	l.sb	0(r2),r3
-	l.addi	r3,r0,+00000000
-	l.sw	32(r2),r3
-	l.sw	36(r2),r4
-	l.j	00008284
-	l.movhi	r2,000001C1
-	l.ori	r3,r2,00000000
-	l.jal	0000F444
-	l.sb	0(r2),r4
-	l.movhi	r2,000001C1
-	l.addi	r3,r0,+00000100
-	l.ori	r2,r2,00007050
-	l.addi	r11,r0,+00000001
-	l.sw	0(r2),r3
-	l.addi	r1,r1,+00000014
-	l.lwz	r9,-4(r1)
-	l.lwz	r2,-16(r1)
-	l.lwz	r14,-12(r1)
-	l.jr	r9
-	l.lwz	r16,-8(r1)
+0000815C                                     D7 E1 17 F0             ....
+00008160 18 40 01 C1 D7 E1 77 F4 D7 E1 87 F8 D7 E1 4F FC .@....w.......O.
+00008170 AA 02 71 44 9C 21 FF EC 00 00 00 1C A9 C2 71 84 ..qD.!........q.
+00008180 84 4E 00 00 D4 01 10 00 84 61 00 00 04 00 1D BA .N.......a......
+00008190 15 00 00 00 A8 6B 00 00 04 00 1B EF A8 4B 00 00 .....k.......K..
+000081A0 BC 0B 00 00 10 00 00 11 15 00 00 00 8C 62 00 00 .............b..
+000081B0 BC 23 00 05 10 00 00 0A 9C 80 00 03 9C 60 00 06 .#...........`..
+000081C0 9C 80 00 01 D8 02 18 00 9C 60 00 00 D4 02 18 20 .........`..... 
+000081D0 D4 02 20 24 00 00 00 05 15 00 00 00 A8 62 00 00 .. $.........b..
+000081E0 04 00 1C 99 D8 02 20 00 84 70 00 00 BC 23 00 00 ...... ..p...#..
+000081F0 13 FF FF E4 18 40 01 C1 A8 62 70 50 9C 80 00 04 .....@...bpP....
+00008200 D4 03 20 00 A8 62 71 50 84 63 00 00 BC 03 00 00 .. ..bqP.c......
+00008210 10 00 00 1C A8 42 71 90 84 42 00 00 D4 01 10 00 .....Bq..B......
+00008220 84 61 00 00 04 00 1D 94 15 00 00 00 A8 6B 00 00 .a...........k..
+00008230 04 00 1B C9 A8 4B 00 00 BC 0B 00 00 10 00 00 11 .....K..........
+00008240 15 00 00 00 8C 62 00 00 BC 23 00 05 10 00 00 0A .....b...#......
+00008250 9C 80 00 03 9C 60 00 06 9C 80 00 01 D8 02 18 00 .....`..........
+00008260 9C 60 00 00 D4 02 18 20 D4 02 20 24 00 00 00 06 .`..... .. $....
+00008270 18 40 01 C1 A8 62 00 00 04 00 1C 73 D8 02 20 00 .@...b.....s.. .
+00008280 18 40 01 C1 9C 60 01 00 A8 42 70 50 9D 60 00 01 .@...`...BpP.`..
+00008290 D4 02 18 00 9C 21 00 14 85 21 FF FC 84 41 FF F0 .....!...!...A..
+000082A0 85 C1 FF F4 44 00 48 00 86 01 FF F8             ....D.H.....   
 
 ;; fn000082AC: 000082AC
 ;;   Called from:
@@ -4690,7 +4874,7 @@ fn000082AC proc
 	l.add	r3,r3,r3
 	l.lwz	r5,0(r4)
 	l.addi	r1,r1,-00000004
-	Invalid
+	l.sll	r3,r6,r3
 	l.sw	0(r1),r5
 	l.addi	r11,r0,+00000000
 	l.lwz	r5,0(r1)
@@ -5212,20 +5396,28 @@ l00008884:
 	l.movhi	r5,0000001E
 	l.ori	r5,r5,00008480
 	l.ori	r6,r6,00006040
-	Invalid
+	l.mul	r4,r14,r5
 	l.add	r5,r2,r6
 	l.j	000088B8
 	l.slli	r5,r5,00000002
+
+l000088A0:
 	l.bf	000088B8
 	l.addi	r4,r4,-00000001
+
+l000088A8:
 	l.jal	0000E740
 	l.addi	r4,r4,+00000001
 	l.j	000088E4
 	l.addi	r5,r0,-00000023
+
+l000088B8:
 	l.lwz	r6,0(r5)
 	l.sfeqi	r6,00000001
 	l.bf	000088A0
 	l.sfnei	r4,00000000
+
+l000088C8:
 	l.movhi	r3,00000001
 	l.slli	r2,r2,00000003
 	l.ori	r3,r3,000037E8
@@ -5356,10 +5548,7 @@ fn00008A20 proc
 	l.jr	r9
 	l.lwz	r2,-4(r1)
 
-;; fn00008A48: 00008A48
-;;   Called from:
-;;     00008B70 (in fn00008B60)
-fn00008A48 proc
+l00008A48:
 	l.sfnei	r3,00000000
 	l.bf	00008A64
 	l.movhi	r4,00000001
@@ -5374,7 +5563,7 @@ l00008A64:
 	l.movhi	r4,00000001
 	l.addi	r6,r0,+00000001
 	l.ori	r4,r4,00003828
-	Invalid
+	l.sll	r3,r6,r3
 	l.lwz	r4,0(r4)
 	l.addi	r11,r0,+00000000
 	l.lwz	r5,64(r4)
@@ -5383,14 +5572,11 @@ l00008A64:
 	l.jr	r9
 	l.nop
 
-;; fn00008A90: 00008A90
-;;   Called from:
-;;     00008B88 (in fn00008B78)
-fn00008A90 proc
+l00008A90:
 	l.movhi	r4,00000001
 	l.addi	r6,r0,+00000001
 	l.ori	r4,r4,00003828
-	Invalid
+	l.sll	r3,r6,r3
 	l.lwz	r4,0(r4)
 	l.addi	r11,r0,+00000000
 	l.lwz	r5,64(r4)
@@ -5453,6 +5639,7 @@ l00008B34:
 ;;     000083D0 (in fn000082FC)
 ;;     00009140 (in fn00009290)
 ;;     0000A680 (in fn0000A664)
+;;     0000C62C (in fn0000C588)
 ;;     0000F6B0 (in fn0000F444)
 ;;     000106D4 (in fn00010570)
 fn00008B60 proc
@@ -5549,7 +5736,7 @@ fn00008C74 proc
 	l.movhi	r4,00000001
 	l.addi	r5,r0,+00000001
 	l.ori	r4,r4,00003828
-	Invalid
+	l.sll	r3,r5,r3
 	l.lwz	r4,0(r4)
 	l.addi	r1,r1,-00000004
 	l.lwz	r4,16(r4)
@@ -5572,7 +5759,7 @@ fn00008CA4 proc
 	l.movhi	r4,00000001
 	l.addi	r5,r0,+00000001
 	l.ori	r4,r4,00003828
-	Invalid
+	l.sll	r3,r5,r3
 	l.lwz	r4,0(r4)
 	l.addi	r11,r0,+00000000
 	l.sw	16(r4),r3
@@ -6251,7 +6438,7 @@ l000094F0:
 
 l000094F8:
 	l.bf	00009504
-	Invalid
+	l.sll	r3,r12,r5
 
 l00009500:
 	l.or	r2,r2,r3
@@ -6506,8 +6693,8 @@ fn00009744 proc
 	l.sw	0(r1),r6
 	l.addi	r6,r0,+00000007
 	l.lwz	r7,0(r1)
-	Invalid
-	Invalid
+	l.sll	r6,r6,r4
+	l.sll	r4,r5,r4
 	l.xori	r6,r6,0000FFFF
 	l.and	r6,r6,r7
 	l.sw	0(r1),r6
@@ -6544,8 +6731,8 @@ fn000097BC proc
 	l.sw	0(r1),r6
 	l.addi	r6,r0,+00000003
 	l.lwz	r7,0(r1)
-	Invalid
-	Invalid
+	l.sll	r6,r6,r4
+	l.sll	r4,r5,r4
 	l.xori	r6,r6,0000FFFF
 	l.and	r6,r6,r7
 	l.sw	0(r1),r6
@@ -6586,8 +6773,8 @@ fn00009834 proc
 	l.sw	0(r1),r6
 	l.addi	r6,r0,+00000003
 	l.lwz	r7,0(r1)
-	Invalid
-	Invalid
+	l.sll	r6,r6,r4
+	l.sll	r4,r5,r4
 	l.xori	r6,r6,0000FFFF
 	l.and	r6,r6,r7
 	l.sw	0(r1),r6
@@ -6632,8 +6819,8 @@ fn000098AC proc
 	l.sw	0(r1),r6
 	l.addi	r6,r0,+00000001
 	l.lwz	r7,0(r1)
-	Invalid
-	Invalid
+	l.sll	r6,r6,r4
+	l.sll	r4,r5,r4
 	l.xori	r6,r6,0000FFFF
 	l.and	r6,r6,r7
 	l.sw	0(r1),r6
@@ -6665,7 +6852,7 @@ fn00009918 proc
 	l.sw	0(r1),r3
 	l.lwz	r3,0(r1)
 	l.addi	r1,r1,+00000008
-	Invalid
+	l.srl	r4,r3,r4
 	l.lwz	r2,-4(r1)
 	l.jr	r9
 	l.andi	r11,r4,00000001
@@ -6866,7 +7053,11 @@ l00009BC8:
 
 ;; fn00009C2C: 00009C2C
 ;;   Called from:
+;;     0000E22C (in fn0000E1AC)
+;;     0000E32C (in fn0000E1AC)
 ;;     0000F6F4 (in fn0000F444)
+;;     000102C4 (in fn000101A8)
+;;     00010470 (in fn000103C0)
 fn00009C2C proc
 	l.sw	-16(r1),r2
 	l.sw	-4(r1),r9
@@ -7012,7 +7203,10 @@ l00009DC4:
 ;; fn00009DDC: 00009DDC
 ;;   Called from:
 ;;     0000E160 (in fn0000E110)
+;;     0000E268 (in fn0000E1AC)
+;;     0000E348 (in fn0000E1AC)
 ;;     0000F704 (in fn0000F444)
+;;     000102B4 (in fn000101A8)
 fn00009DDC proc
 	l.sw	-8(r1),r2
 	l.sw	-4(r1),r9
@@ -7077,7 +7271,7 @@ l00009E8C:
 	l.lhz	r3,0(r4)
 	l.lhz	r2,4(r2)
 	l.j	00009EBC
-	Invalid
+	l.mul	r11,r11,r3
 
 l00009E9C:
 	l.bf	00009EAC
@@ -7090,7 +7284,7 @@ l00009EA4:
 l00009EAC:
 	l.lhz	r2,16(r2)
 	l.sub	r11,r11,r3
-	Invalid
+	l.mul	r11,r11,r2
 	l.lhz	r2,0(r4)
 
 l00009EBC:
@@ -7105,6 +7299,8 @@ l00009EC0:
 ;; fn00009ED0: 00009ED0
 ;;   Called from:
 ;;     0000F718 (in fn0000F444)
+;;     00010364 (in fn000101A8)
+;;     00010514 (in fn000103C0)
 fn00009ED0 proc
 	l.sw	-20(r1),r2
 	l.sw	-4(r1),r9
@@ -7135,8 +7331,8 @@ l00009EF8:
 	l.lhz	r18,0(r6)
 	l.addi	r5,r0,+00000001
 	l.lbz	r4,2(r1)
-	Invalid
-	Invalid
+	l.sll	r3,r5,r18
+	l.sll	r18,r2,r18
 	l.xori	r3,r3,000000FF
 	l.and	r3,r3,r4
 	l.ori	r4,r14,00000000
@@ -7147,6 +7343,8 @@ l00009EF8:
 	l.sfnei	r2,00000001
 	l.bf	0000A050
 	l.nop
+
+l00009F6C:
 	l.jal	0000C768
 	l.ori	r3,r2,00000000
 	l.j	0000A054
@@ -7177,12 +7375,12 @@ l00009FB4:
 
 l00009FB8:
 	l.movhi	r4,00000001
-	Invalid
+	l.sll	r5,r3,r6
 	l.ori	r4,r4,00003498
 	l.and	r2,r2,r3
 	l.lwz	r7,0(r4)
 	l.xori	r5,r5,0000FFFF
-	Invalid
+	l.sll	r6,r2,r6
 	l.and	r5,r5,r7
 	l.sw	0(r4),r5
 	l.lwz	r5,0(r4)
@@ -7233,6 +7431,8 @@ l0000A048:
 
 l0000A050:
 	l.addi	r1,r1,+00000018
+
+l0000A054:
 	l.addi	r11,r0,+00000000
 	l.lwz	r9,-4(r1)
 	l.lwz	r2,-20(r1)
@@ -7266,14 +7466,18 @@ l0000A088:
 	l.jal	0000D214
 	l.lhz	r14,0(r2)
 	l.lbz	r11,2(r1)
-	Invalid
+	l.sra	r11,r11,r14
 	l.andi	r11,r11,00000001
 	l.sfeqi	r11,00000000
 	l.bf	0000A0DC
 	l.addi	r3,r0,+00000001
+
+l0000A0D0:
 	l.addi	r11,r0,+00000001
 	l.j	0000A188
 	l.sb	2(r2),r3
+
+l0000A0DC:
 	l.j	0000A188
 	l.sb	2(r2),r11
 
@@ -7300,7 +7504,7 @@ l0000A118:
 	l.movhi	r2,00000001
 	l.ori	r2,r2,00003498
 	l.lwz	r11,0(r2)
-	Invalid
+	l.srl	r11,r11,r3
 	l.j	0000A188
 	l.andi	r11,r11,00000001
 
@@ -7602,22 +7806,26 @@ l0000A3CC:
 	l.lwz	r7,44(r2)
 	l.lwz	r6,48(r2)
 	l.lwz	r5,52(r2)
+
+l0000A548:
 	l.lbz	r11,0(r4)
-	Invalid
+	l.sll	r11,r11,r3
 	l.or	r8,r8,r11
 	l.lbz	r11,4(r4)
-	Invalid
+	l.sll	r11,r11,r3
 	l.or	r7,r7,r11
 	l.lbz	r11,8(r4)
-	Invalid
+	l.sll	r11,r11,r3
 	l.or	r6,r6,r11
 	l.lbz	r11,12(r4)
-	Invalid
+	l.sll	r11,r11,r3
 	l.addi	r3,r3,+00000008
 	l.addi	r4,r4,+00000001
 	l.sfnei	r3,00000020
 	l.bf	0000A548
 	l.or	r5,r5,r11
+
+l0000A588:
 	l.addi	r3,r0,-00000001
 	l.sw	52(r2),r5
 	l.sw	40(r2),r8
@@ -8165,12 +8373,12 @@ l0000ACBC:
 	l.addi	r4,r0,+00005DC0
 	l.sub	r3,r18,r16
 	l.jal	0000FEDC
-	Invalid
+	l.mul	r14,r11,r4
 	l.ori	r3,r14,00000000
 	l.jal	0000FEDC
 	l.ori	r4,r11,00000000
 	l.addi	r3,r0,+000003E8
-	Invalid
+	l.mul	r11,r11,r3
 	l.movhi	r3,00000001
 	l.ori	r3,r3,00003098
 	l.sw	0(r3),r11
@@ -8281,6 +8489,7 @@ l0000AE24:
 ;;     00004B24 (in fn00004A6C)
 ;;     00007FF8 (in fn00007FD0)
 ;;     00008028 (in fn00008000)
+;;     00008078 (in fn00008030)
 ;;     0000E99C (in fn0000E98C)
 ;;     0000E9AC (in fn0000E98C)
 ;;     0000E9BC (in fn0000E98C)
@@ -8385,10 +8594,28 @@ l0000AF30:
 	l.lwz	r3,0(r3)
 	l.jr	r3
 	l.nop
-0000AF4C                                     00 00 00 37             ...7
-0000AF50 9D 60 00 11 18 60 00 01 18 40 00 01 A8 63 39 48 .`...`...@...c9H
-0000AF60 A8 42 25 DC 84 63 00 00 84 63 00 00 B8 63 00 4E .B%..c...c...c.N
-0000AF70 00 00 00 28 A4 63 00 0C 18 60 01 C2 18 40 00 01 ...(.c...`...@..
+
+;; fn0000AF4C: 0000AF4C
+;;   Called from:
+;;     000062F0 (in fn000062BC)
+fn0000AF4C proc
+	l.j	0000B028
+	l.addi	r11,r0,+00000011
+
+;; fn0000AF54: 0000AF54
+;;   Called from:
+;;     000062F0 (in fn000062BC)
+fn0000AF54 proc
+	l.movhi	r3,00000001
+	l.movhi	r2,00000001
+	l.ori	r3,r3,00003948
+	l.ori	r2,r2,000025DC
+	l.lwz	r3,0(r3)
+	l.lwz	r3,0(r3)
+	l.srli	r3,r3,0000000E
+	l.j	0000B010
+	l.andi	r3,r3,0000000C
+0000AF78                         18 60 01 C2 18 40 00 01         .`...@..
 0000AF80 A8 63 00 50 A8 42 25 EC 84 63 00 00 B8 63 00 4E .c.P.B%..c...c.N
 0000AF90 00 00 00 20 A4 63 00 0C 18 60 01 C2 18 40 00 01 ... .c...`...@..
 0000AFA0 A8 63 00 54 A8 42 25 FC 84 63 00 00 B8 63 00 4A .c.T.B%..c...c.J
@@ -8398,7 +8625,11 @@ l0000AF30:
 0000AFE0 18 60 00 01 9D 60 00 00 A8 63 39 48 84 63 00 00 .`...`...c9H.c..
 0000AFF0 84 63 00 54 B8 63 00 58 A4 63 00 03 BC 43 00 01 .c.T.c.X.c...C..
 0000B000 10 00 00 0A B8 63 00 02 18 40 00 01 A8 42 26 1C .....c...@...B&.
-0000B010 E0 63 10 00 00 00 00 05 85 63 00 00             .c.......c..   
+
+l0000B010:
+	l.add	r3,r3,r2
+	l.j	0000B028
+	l.lwz	r11,0(r3)
 
 l0000B01C:
 	l.j	0000B028
@@ -8457,7 +8688,7 @@ l0000B094:
 	l.sw	0(r4),r6
 
 l0000B0A0:
-	Invalid
+	l.srl	r3,r3,r6
 	l.addi	r11,r0,+00000000
 	l.sw	0(r5),r3
 
@@ -8469,6 +8700,8 @@ l0000B0AC:
 ;; fn0000B0B8: 0000B0B8
 ;;   Called from:
 ;;     000090C8 (in fn00009290)
+;;     0000E2AC (in fn0000E1AC)
+;;     0000E2F0 (in fn0000E1AC)
 ;;     000100E0 (in fn000100B8)
 ;;     000111DC (in fn00010570)
 ;;     000118E4 (in fn00010570)
@@ -8619,6 +8852,8 @@ l0000B23C:
 ;;     00009068 (in fn00009290)
 ;;     0000C0BC (in fn0000BF88)
 ;;     0000E170 (in fn0000E110)
+;;     0000E2B4 (in fn0000E1AC)
+;;     0000E2F8 (in fn0000E1AC)
 fn0000B250 proc
 	l.sw	-4(r1),r2
 	l.addi	r3,r3,-00000001
@@ -9424,6 +9659,8 @@ fn0000BDC8 proc
 	l.lwz	r2,-8(r1)
 
 ;; fn0000BE00: 0000BE00
+;;   Called from:
+;;     0000E2C8 (in fn0000E1AC)
 fn0000BE00 proc
 	l.sw	-8(r1),r14
 	l.sw	-4(r1),r9
@@ -9552,6 +9789,7 @@ l0000BF70:
 ;;     0000D6CC (in fn0000D640)
 ;;     0000D9A4 (in fn0000D95C)
 ;;     0000E124 (in fn0000E110)
+;;     0000E2D4 (in fn0000E1AC)
 fn0000BF88 proc
 	l.sw	-4(r1),r9
 	l.sw	-8(r1),r2
@@ -9612,12 +9850,12 @@ l0000BFEC:
 	l.addi	r5,r5,+00000001
 	l.addi	r3,r6,+00000001
 	l.addi	r4,r4,+00000001
-	Invalid
+	l.mul	r5,r5,r3
 	l.movhi	r3,0000016E
-	Invalid
+	l.sll	r4,r4,r2
 	l.ori	r3,r3,00003600
 	l.j	0000C0CC
-	Invalid
+	l.mul	r3,r5,r3
 
 l0000C03C:
 	l.movhi	r2,00000001
@@ -9694,8 +9932,8 @@ l0000C0DC:
 	l.andi	r2,r2,00000003
 	l.addi	r11,r11,+00000001
 	l.addi	r2,r2,+00000001
-	Invalid
-	Invalid
+	l.mul	r11,r11,r2
+	l.mul	r11,r11,r3
 	l.j	0000C12C
 	l.srai	r11,r11,00000001
 
@@ -9922,16 +10160,20 @@ fn0000C588 proc
 l0000C5B4:
 	l.lwz	r3,12(r2)
 	l.lwz	r6,24(r2)
-	Invalid
+	l.mul	r4,r4,r3
 	l.sw	4(r6),r4
 	l.lwz	r3,0(r6)
 	l.ori	r3,r3,00000002
 	l.sw	0(r6),r3
+
+l0000C5D0:
 	l.lwz	r14,0(r6)
 	l.andi	r14,r14,00000002
 	l.sfnei	r14,00000000
 	l.bf	0000C5D0
 	l.nop
+
+l0000C5E4:
 	l.lwz	r3,0(r6)
 	l.addi	r4,r0,-00000081
 	l.slli	r5,r5,00000007
@@ -9944,7 +10186,7 @@ l0000C5B4:
 	l.sw	0(r6),r5
 	l.lwz	r5,0(r2)
 	l.ori	r3,r3,00003958
-	Invalid
+	l.sll	r4,r4,r5
 	l.lwz	r3,0(r3)
 	l.sw	4(r3),r4
 	l.lwz	r5,0(r3)
@@ -9992,6 +10234,7 @@ l0000C648:
 ;;     000085A8 (in fn00008574)
 ;;     00008618 (in fn00008574)
 ;;     00009BB4 (in fn00009B80)
+;;     00009F6C (in fn00009ED0)
 ;;     0000A7B4 (in fn0000A708)
 ;;     0000A7DC (in fn0000A708)
 ;;     0000A7F4 (in fn0000A708)
@@ -10003,6 +10246,8 @@ l0000C648:
 ;;     0000BB94 (in fn0000BB60)
 ;;     0000BBBC (in fn0000BB60)
 ;;     0000BEEC (in fn0000BE00)
+;;     0000E260 (in fn0000E1AC)
+;;     0000E340 (in fn0000E1AC)
 ;;     000100D4 (in fn000100B8)
 ;;     000100F4 (in fn000100B8)
 ;;     0001011C (in fn000100B8)
@@ -10040,30 +10285,38 @@ l0000C790:
 	l.lwz	r5,0(r4)
 	l.lwz	r6,12(r5)
 	l.lwz	r4,24(r5)
-	Invalid
+	l.mul	r3,r3,r6
 	l.sw	4(r4),r3
 	l.lwz	r3,0(r4)
 	l.ori	r3,r3,00000002
 	l.sw	0(r4),r3
+
+l0000C7B4:
 	l.lwz	r3,0(r4)
 	l.andi	r3,r3,00000002
 	l.sfnei	r3,00000000
 	l.bf	0000C7B4
 	l.movhi	r3,00000001
+
+l0000C7C8:
 	l.lwz	r5,0(r5)
 	l.addi	r6,r0,+00000001
 	l.ori	r3,r3,00003958
-	Invalid
+	l.sll	r5,r6,r5
 	l.lwz	r3,0(r3)
 	l.sw	4(r3),r5
 	l.lwz	r6,0(r4)
 	l.ori	r6,r6,00000001
 	l.sw	0(r4),r6
+
+l0000C7EC:
 	l.lwz	r6,4(r3)
 	l.and	r6,r5,r6
 	l.sfeqi	r6,00000000
 	l.bf	0000C7EC
 	l.nop
+
+l0000C800:
 	l.lwz	r6,0(r4)
 	l.addi	r2,r0,-00000002
 	l.and	r6,r6,r2
@@ -10132,26 +10385,30 @@ l0000C88C:
 ;;     000044A4 (in fn000043D0)
 ;;     00004FDC (in fn00004D60)
 ;;     00006378 (in fn000062BC)
+;;     000064B0 (in fn00006394)
 ;;     00006590 (in fn000064DC)
 ;;     000065B8 (in fn000064DC)
 ;;     000065C8 (in fn000064DC)
 ;;     00006634 (in fn000064DC)
 ;;     00006644 (in fn000064DC)
-;;     00006AD8 (in fn00006880)
-;;     00006B44 (in fn00006880)
-;;     00006B64 (in fn00006880)
-;;     00006BA4 (in fn00006880)
-;;     00006BEC (in fn00006880)
-;;     00006C20 (in fn00006880)
-;;     00006C64 (in fn00006880)
-;;     00006CF8 (in fn00006880)
-;;     00006D3C (in fn00006880)
-;;     00006DA8 (in fn00006880)
-;;     00006DC4 (in fn00006880)
-;;     00006DE0 (in fn00006880)
+;;     00006AD8 (in fn000073EC)
+;;     00006B44 (in fn000073EC)
+;;     00006B64 (in fn000073EC)
+;;     00006BA4 (in fn000073EC)
+;;     00006BEC (in fn000073EC)
+;;     00006C20 (in fn000073EC)
+;;     00006C64 (in fn000073EC)
+;;     00006CF8 (in fn000073EC)
+;;     00006D3C (in fn000073EC)
+;;     00006DA8 (in fn000073EC)
+;;     00006DC4 (in fn000073EC)
+;;     00006DE0 (in fn000073EC)
 ;;     00007034 (in fn00006FE8)
 ;;     00007100 (in fn00006FE8)
 ;;     00007138 (in fn00006FE8)
+;;     000071C4 (in fn00006FE8)
+;;     000072B8 (in fn00006FE8)
+;;     000072F0 (in fn00006FE8)
 ;;     00007E24 (in fn00007E04)
 ;;     00007E58 (in fn00007E04)
 ;;     00007E74 (in fn00007E04)
@@ -10159,6 +10416,7 @@ l0000C88C:
 ;;     00007F8C (in fn00007E04)
 ;;     00007FE8 (in fn00007FD0)
 ;;     00008018 (in fn00008000)
+;;     00008068 (in fn00008030)
 ;;     00009DB8 (in fn00009C2C)
 ;;     0000D5D4 (in fn0000D49C)
 ;;     0000F658 (in fn0000F444)
@@ -10185,7 +10443,7 @@ l0000C8B8:
 l0000C8CC:
 	l.jal	0000BF88
 	l.addi	r3,r0,+00000011
-	Invalid
+	l.mul	r2,r11,r2
 	l.movhi	r4,0000000F
 	l.ori	r4,r4,0000423F
 	l.add	r3,r2,r4
@@ -11066,8 +11324,10 @@ l0000D274:
 ;;     00009A10 (in fn0000998C)
 ;;     00009A54 (in fn0000998C)
 ;;     00009D64 (in fn00009C2C)
+;;     00009F58 (in fn00009ED0)
 ;;     0000A34C (in fn0000A300)
 ;;     0000A3A4 (in fn0000A364)
+;;     0000A5B0 (in fn0000A364)
 ;;     0000A764 (in fn0000A708)
 ;;     0000A9E0 (in fn0000A92C)
 ;;     0000AA10 (in fn0000A92C)
@@ -11138,12 +11398,12 @@ l0000D348:
 l0000D350:
 	l.lwz	r5,44(r2)
 	l.j	0000D368
-	Invalid
+	l.srl	r5,r5,r3
 
 l0000D35C:
 	l.addi	r5,r3,-00000020
 	l.lwz	r7,48(r2)
-	Invalid
+	l.srl	r5,r7,r5
 
 l0000D368:
 	l.sb	0(r6),r5
@@ -11172,7 +11432,7 @@ l0000D3A4:
 	l.lbz	r5,0(r4)
 
 l0000D3B0:
-	Invalid
+	l.sll	r5,r5,r3
 	l.lwz	r7,52(r2)
 	l.or	r5,r7,r5
 	l.j	0000D3D8
@@ -11180,10 +11440,12 @@ l0000D3B0:
 
 l0000D3C4:
 	l.addi	r7,r3,-00000020
-	Invalid
+	l.sll	r5,r5,r7
 	l.lwz	r7,56(r2)
 	l.or	r5,r7,r5
 	l.sw	56(r2),r5
+
+l0000D3D8:
 	l.addi	r6,r6,+00000001
 	l.addi	r4,r4,+00000001
 	l.addi	r3,r3,+00000008
@@ -11220,19 +11482,21 @@ l0000D428:
 
 l0000D430:
 	l.lwz	r11,44(r3)
-	Invalid
+	l.srl	r11,r11,r4
 	l.sb	0(r8),r11
 	l.lwz	r11,52(r3)
 	l.j	0000D460
-	Invalid
+	l.srl	r11,r11,r4
 
 l0000D448:
 	l.addi	r11,r4,-00000020
 	l.lwz	r12,48(r3)
-	Invalid
+	l.srl	r12,r12,r11
 	l.sb	0(r8),r12
 	l.lwz	r12,56(r3)
-	Invalid
+	l.srl	r11,r12,r11
+
+l0000D460:
 	l.sb	0(r7),r11
 	l.addi	r6,r6,+00000001
 	l.addi	r4,r4,+00000008
@@ -11284,25 +11548,27 @@ l0000D4EC:
 
 l0000D4F4:
 	l.lwz	r5,44(r3)
-	Invalid
+	l.srl	r5,r5,r4
 	l.sb	0(r8),r5
 	l.lwz	r5,52(r3)
-	Invalid
+	l.srl	r5,r5,r4
 	l.sb	0(r7),r5
 	l.lwz	r5,60(r3)
 	l.j	0000D53C
-	Invalid
+	l.srl	r5,r5,r4
 
 l0000D518:
 	l.addi	r5,r4,-00000020
 	l.lwz	r11,48(r3)
-	Invalid
+	l.srl	r11,r11,r5
 	l.sb	0(r8),r11
 	l.lwz	r11,56(r3)
-	Invalid
+	l.srl	r11,r11,r5
 	l.sb	0(r7),r11
 	l.lwz	r11,64(r3)
-	Invalid
+	l.srl	r5,r11,r5
+
+l0000D53C:
 	l.sb	0(r6),r5
 	l.addi	r2,r2,+00000001
 	l.addi	r4,r4,+00000008
@@ -11354,7 +11620,7 @@ l0000D5B4:
 
 l0000D5D4:
 	l.jal	0000C8A0
-	Invalid
+	l.mul	r3,r5,r22
 
 l0000D5DC:
 	l.addi	r14,r14,+00000001
@@ -11570,6 +11836,9 @@ l0000D864:
 0000D8D0 44 00 48 00 15 00 00 00                         D.H.....       
 
 ;; fn0000D8D8: 0000D8D8
+;;   Called from:
+;;     0000EF44 (in fn0000EDF4)
+;;     0000F0FC (in fn0000EDF4)
 fn0000D8D8 proc
 	l.sw	-8(r1),r2
 	l.ori	r2,r3,00000000
@@ -11736,6 +12005,7 @@ l0000DA60:
 ;;     0000BEE4 (in fn0000BE00)
 ;;     0000BF20 (in fn0000BE00)
 ;;     0000BF68 (in fn0000BE00)
+;;     0000C8FC (in fn0000C8A0)
 ;;     0001082C (in fn00010570)
 fn0000DB28 proc
 	l.sfnei	r3,00000000
@@ -11748,6 +12018,8 @@ l0000DB34:
 	l.nop
 
 ;; fn0000DB40: 0000DB40
+;;   Called from:
+;;     0000EFE4 (in fn0000EDF4)
 fn0000DB40 proc
 	l.sw	-32(r1),r2
 	l.sw	-28(r1),r14
@@ -11853,6 +12125,8 @@ l0000DC44:
 	l.lwz	r24,-8(r1)
 
 ;; fn0000DC70: 0000DC70
+;;   Called from:
+;;     0000F004 (in fn0000EDF4)
 fn0000DC70 proc
 	l.sw	-28(r1),r2
 	l.sw	-24(r1),r14
@@ -11990,6 +12264,9 @@ l0000DDE4:
 	l.lwz	r16,-8(r1)
 
 ;; fn0000DE08: 0000DE08
+;;   Called from:
+;;     0000F00C (in fn0000EDF4)
+;;     0000F07C (in fn0000EDF4)
 fn0000DE08 proc
 	l.ori	r4,r3,00000000
 
@@ -12007,6 +12284,8 @@ l0000DE1C:
 ;; fn0000DE28: 0000DE28
 ;;   Called from:
 ;;     0000EAE8 (in fn0000E98C)
+;;     0000F034 (in fn0000EDF4)
+;;     0000F074 (in fn0000EDF4)
 fn0000DE28 proc
 	l.addi	r5,r0,+00000000
 
@@ -12262,7 +12541,7 @@ fn0000E1AC proc
 	l.addi	r2,r0,+000003E8
 	l.lwz	r18,40(r3)
 	l.sw	-4(r1),r9
-	Invalid
+	l.mul	r18,r18,r2
 	l.movhi	r2,00000001
 	l.sw	-24(r1),r14
 	l.ori	r2,r2,000034CC
@@ -12272,12 +12551,18 @@ fn0000E1AC proc
 	l.lwz	r2,0(r2)
 	l.j	0000E1EC
 	l.addi	r1,r1,-0000001C
+
+l0000E1E8:
 	l.ori	r2,r3,00000000
+
+l0000E1EC:
 	l.addi	r3,r2,+0000000C
 	l.lwz	r4,0(r3)
 	l.sfgeu	r4,r18
 	l.bf	0000E1E8
 	l.nop
+
+l0000E200:
 	l.movhi	r3,00000001
 	l.lwz	r20,4(r2)
 	l.ori	r3,r3,00003960
@@ -12285,6 +12570,8 @@ fn0000E1AC proc
 	l.sfleu	r20,r22
 	l.bf	0000E280
 	l.addi	r14,r0,+00000000
+
+l0000E21C:
 	l.movhi	r14,00000001
 	l.ori	r4,r20,00000000
 	l.ori	r14,r14,0000395C
@@ -12294,6 +12581,8 @@ fn0000E1AC proc
 	l.sfnei	r11,00000000
 	l.bf	0000E380
 	l.sub	r3,r20,r22
+
+l0000E240:
 	l.jal	0000FEDC
 	l.addi	r4,r0,+00000014
 	l.slli	r3,r11,00000003
@@ -12310,22 +12599,30 @@ fn0000E1AC proc
 	l.sfne	r11,r3
 	l.bf	0000E380
 	l.ori	r14,r11,00000000
+
+l0000E280:
 	l.movhi	r16,00000001
 	l.ori	r16,r16,00003960
 	l.lwz	r3,0(r16)
 	l.sfeq	r18,r3
 	l.bf	0000E308
 	l.movhi	r3,00000001
+
+l0000E298:
 	l.lwz	r4,8(r2)
 	l.lwz	r3,8(r16)
 	l.sfleu	r4,r3
 	l.bf	0000E2C0
 	l.nop
+
+l0000E2AC:
 	l.jal	0000B0B8
 	l.addi	r3,r0,+00000014
 	l.jal	0000B250
 	l.addi	r3,r0,+00000014
 	l.sw	8(r16),r11
+
+l0000E2C0:
 	l.ori	r4,r18,00000000
 	l.addi	r3,r0,+00000006
 	l.jal	0000BE00
@@ -12338,18 +12635,26 @@ fn0000E1AC proc
 	l.sfgeu	r4,r3
 	l.bf	0000E304
 	l.sw	0(r16),r11
+
+l0000E2F0:
 	l.jal	0000B0B8
 	l.addi	r3,r0,+00000014
 	l.jal	0000B250
 	l.addi	r3,r0,+00000014
 	l.sw	8(r16),r11
+
+l0000E304:
 	l.movhi	r3,00000001
+
+l0000E308:
 	l.lwz	r4,4(r2)
 	l.ori	r3,r3,00003960
 	l.lwz	r3,4(r3)
 	l.sfgeu	r4,r3
 	l.bf	0000E364
 	l.movhi	r3,00000001
+
+l0000E320:
 	l.movhi	r14,00000001
 	l.addi	r16,r0,-00000024
 	l.ori	r14,r14,0000395C
@@ -12358,6 +12663,8 @@ fn0000E1AC proc
 	l.sfnei	r11,00000000
 	l.bf	0000E380
 	l.nop
+
+l0000E340:
 	l.jal	0000C768
 	l.addi	r3,r0,+00000001
 	l.jal	00009DDC
@@ -12366,14 +12673,22 @@ fn0000E1AC proc
 	l.sfne	r11,r3
 	l.bf	0000E380
 	l.ori	r14,r11,00000000
+
+l0000E360:
 	l.movhi	r3,00000001
+
+l0000E364:
 	l.lwz	r2,4(r2)
 	l.ori	r3,r3,00003960
 	l.lwz	r4,4(r3)
 	l.sfeq	r2,r4
 	l.bf	0000E380
 	l.addi	r16,r0,+00000000
+
+l0000E37C:
 	l.sw	4(r3),r14
+
+l0000E380:
 	l.addi	r1,r1,+0000001C
 	l.ori	r11,r16,00000000
 	l.lwz	r9,-4(r1)
@@ -12593,6 +12908,7 @@ fn0000E6E4 proc
 ;;     00008848 (in fn00008834)
 ;;     0000C4C4 (in fn0000C48C)
 ;;     0000CD38 (in fn0000CCA8)
+;;     0000EE40 (in fn0000EDF4)
 ;;     0000F258 (in fn0000F250)
 ;;     0000F38C (in fn0000F368)
 ;;     0000F45C (in fn0000F444)
@@ -12611,10 +12927,12 @@ fn0000E718 proc
 
 ;; fn0000E740: 0000E740
 ;;   Called from:
+;;     000088A8 (in fn00008834)
 ;;     0000892C (in fn000088FC)
 ;;     00008960 (in fn000088FC)
 ;;     0000C51C (in fn0000C48C)
 ;;     0000D1D8 (in fn0000CCA8)
+;;     0000F104 (in fn0000EDF4)
 ;;     0000F2BC (in fn0000F250)
 ;;     0000F428 (in fn0000F368)
 ;;     0000F850 (in fn0000F444)
@@ -12624,8 +12942,7 @@ fn0000E740 proc
 	l.mtspr	r4,r3,VR
 	l.jr	r9
 	l.nop
-	l.j	0000E750
-	l.nop
+0000E750 00 00 00 00 15 00 00 00                         ........       
 
 ;; fn0000E758: 0000E758
 fn0000E758 proc
@@ -12701,6 +13018,7 @@ l0000E80C:
 ;; fn0000E8BC: 0000E8BC
 ;;   Called from:
 ;;     0000EB64 (in fn0000E98C)
+;;     0000EE60 (in fn0000EDF4)
 fn0000E8BC proc
 	l.movhi	r3,00000001
 	l.ori	r3,r3,0000376C
@@ -13034,6 +13352,8 @@ fn0000ECE8 proc
 	l.lwz	r11,16(r3)
 
 ;; fn0000ECF8: 0000ECF8
+;;   Called from:
+;;     0000F020 (in fn0000EDF4)
 fn0000ECF8 proc
 	l.sw	-24(r1),r2
 	l.sw	-20(r1),r14
@@ -13132,7 +13452,7 @@ fn0000EDF4 proc
 	l.addi	r2,r0,+000000F0
 	l.addi	r11,r11,+00000001
 	l.sw	-28(r1),r14
-	Invalid
+	l.sra	r11,r2,r11
 	l.sw	-20(r1),r18
 	l.sw	-16(r1),r20
 	l.sw	-12(r1),r22
@@ -13142,6 +13462,8 @@ fn0000EDF4 proc
 	l.sfeqi	r11,00000000
 	l.bf	0000F118
 	l.ori	r16,r4,00000000
+
+l0000EE40:
 	l.jal	0000E718
 	l.movhi	r2,00000001
 	l.ori	r2,r2,00003154
@@ -13150,6 +13472,8 @@ fn0000EDF4 proc
 	l.sfeqi	r2,00000000
 	l.bf	0000EF4C
 	l.nop
+
+l0000EE60:
 	l.jal	0000E8BC
 	l.addi	r2,r0,+0000005B
 	l.add	r20,r11,r11
@@ -13174,6 +13498,8 @@ fn0000EDF4 proc
 	l.addi	r24,r1,+00000015
 	l.ori	r18,r11,00000000
 	l.addi	r2,r0,+000003E8
+
+l0000EEC0:
 	l.ori	r3,r18,00000000
 	l.jal	0000FEDC
 	l.ori	r4,r2,00000000
@@ -13190,6 +13516,8 @@ fn0000EDF4 proc
 	l.sfne	r14,r24
 	l.bf	0000EEC0
 	l.ori	r2,r11,00000000
+
+l0000EF00:
 	l.ori	r3,r20,00000000
 	l.jal	0001003C
 	l.addi	r4,r0,+000003E8
@@ -13209,12 +13537,18 @@ fn0000EDF4 proc
 	l.addi	r2,r11,+00000030
 	l.jal	0000D8D8
 	l.sb	23(r1),r2
+
+l0000EF4C:
 	l.movhi	r2,00000001
 	l.addi	r6,r1,+0000003C
 	l.j	0000F0B4
 	l.ori	r2,r2,00003984
+
+l0000EF5C:
 	l.bf	0000F0A8
 	l.nop
+
+l0000EF64:
 	l.addi	r16,r16,+00000001
 	l.lbs	r4,0(r16)
 	l.addi	r3,r4,-00000031
@@ -13222,41 +13556,69 @@ fn0000EDF4 proc
 	l.sfgtui	r3,00000008
 	l.bf	0000EF8C
 	l.addi	r18,r0,+00000000
+
+l0000EF80:
 	l.addi	r18,r4,-00000030
 	l.addi	r16,r16,+00000001
 	l.lbs	r4,0(r16)
+
+l0000EF8C:
 	l.sfeqi	r4,00000070
 	l.bf	0000EFF4
 	l.sfgtsi	r4,+00000070
+
+l0000EF98:
 	l.bf	0000EFBC
 	l.sfeqi	r4,00000075
+
+l0000EFA0:
 	l.sfeqi	r4,00000063
 	l.bf	0000F05C
 	l.sfeqi	r4,00000064
+
+l0000EFAC:
 	l.bnf	0000F090
 	l.nop
+
+l0000EFB4:
 	l.j	0000EFDC
 	l.lwz	r3,0(r6)
+
+l0000EFBC:
 	l.bf	0000F048
 	l.sfeqi	r4,00000078
+
+l0000EFC4:
 	l.bf	0000EFF4
 	l.sfeqi	r4,00000073
+
+l0000EFCC:
 	l.bnf	0000F090
 	l.nop
+
+l0000EFD4:
 	l.j	0000F06C
 	l.lwz	r18,0(r6)
+
+l0000EFDC:
 	l.ori	r4,r1,00000000
 	l.addi	r5,r0,+0000000A
 	l.jal	0000DB40
 	l.addi	r24,r6,+00000004
 	l.j	0000F00C
 	l.nop
+
+l0000EFF4:
 	l.addi	r24,r6,+00000004
 	l.lwz	r3,0(r6)
 	l.ori	r4,r1,00000000
 	l.addi	r5,r0,+00000010
+
+l0000F004:
 	l.jal	0000DC70
 	l.nop
+
+l0000F00C:
 	l.jal	0000DE08
 	l.ori	r3,r1,00000000
 	l.ori	r5,r18,00000000
@@ -13272,15 +13634,21 @@ fn0000EDF4 proc
 	l.add	r2,r2,r20
 	l.j	0000F0B0
 	l.ori	r6,r24,00000000
+
+l0000F048:
 	l.addi	r24,r6,+00000004
 	l.lwz	r3,0(r6)
 	l.ori	r4,r1,00000000
 	l.j	0000F004
 	l.addi	r5,r0,+0000000A
+
+l0000F05C:
 	l.lwz	r3,0(r6)
 	l.addi	r6,r6,+00000004
 	l.j	0000F0B0
 	l.sb	0(r2),r3
+
+l0000F06C:
 	l.ori	r3,r2,00000000
 	l.ori	r4,r18,00000000
 	l.jal	0000DE28
@@ -13290,30 +13658,46 @@ fn0000EDF4 proc
 	l.ori	r6,r20,00000000
 	l.j	0000F0B0
 	l.add	r2,r2,r11
+
+l0000F090:
 	l.addi	r3,r0,+00000025
 	l.sb	0(r2),r3
 	l.lbz	r3,0(r16)
 	l.sb	1(r2),r3
 	l.j	0000F0B0
 	l.addi	r2,r2,+00000002
+
+l0000F0A8:
 	l.sb	0(r2),r4
 	l.addi	r2,r2,+00000001
+
+l0000F0B0:
 	l.addi	r16,r16,+00000001
+
+l0000F0B4:
 	l.lbs	r4,0(r16)
 	l.sfnei	r4,00000000
 	l.bf	0000EF5C
 	l.sfnei	r4,00000025
+
+l0000F0C4:
 	l.lbs	r3,-1(r2)
 	l.movhi	r5,00000001
 	l.sfnei	r3,0000000A
 	l.bf	0000F0E8
 	l.ori	r5,r5,00003154
+
+l0000F0D8:
 	l.addi	r3,r0,+00000001
 	l.sw	0(r5),r3
 	l.j	0000F0F0
 	l.addi	r3,r0,+00000000
+
+l0000F0E8:
 	l.sw	0(r5),r4
 	l.addi	r3,r0,+00000000
+
+l0000F0F0:
 	l.sb	0(r2),r3
 	l.movhi	r3,00000001
 	l.addi	r2,r2,+00000001
@@ -13324,6 +13708,8 @@ fn0000EDF4 proc
 	l.movhi	r3,00000001
 	l.ori	r3,r3,00003984
 	l.sub	r11,r2,r3
+
+l0000F118:
 	l.addi	r1,r1,+0000003C
 	l.lwz	r9,-4(r1)
 	l.lwz	r2,-32(r1)
@@ -14509,6 +14895,51 @@ fn0000FA94 proc
 
 ;; fn0000FEDC: 0000FEDC
 ;;   Called from:
+;;     00005300 (in fn000051E8)
+;;     0000533C (in fn000051E8)
+;;     0000538C (in fn000051E8)
+;;     000053C0 (in fn000051E8)
+;;     000053F0 (in fn000051E8)
+;;     0000545C (in fn000051E8)
+;;     00005494 (in fn000051E8)
+;;     000054C8 (in fn000051E8)
+;;     0000551C (in fn000051E8)
+;;     00005550 (in fn000051E8)
+;;     00005590 (in fn000051E8)
+;;     000055C8 (in fn000051E8)
+;;     000055FC (in fn000051E8)
+;;     00005620 (in fn000051E8)
+;;     00005664 (in fn000051E8)
+;;     0000569C (in fn000051E8)
+;;     000056B8 (in fn000051E8)
+;;     0000570C (in fn000051E8)
+;;     0000575C (in fn000051E8)
+;;     000057AC (in fn000051E8)
+;;     00005814 (in fn000051E8)
+;;     00005844 (in fn000051E8)
+;;     00005880 (in fn000051E8)
+;;     000058CC (in fn000051E8)
+;;     00005924 (in fn000051E8)
+;;     00005980 (in fn000051E8)
+;;     0000599C (in fn000051E8)
+;;     000059D8 (in fn000051E8)
+;;     00005A28 (in fn000051E8)
+;;     00005A78 (in fn000051E8)
+;;     00005AE0 (in fn000051E8)
+;;     00005B10 (in fn000051E8)
+;;     00005B40 (in fn000051E8)
+;;     00005B8C (in fn000051E8)
+;;     00005BE4 (in fn000051E8)
+;;     00005C40 (in fn000051E8)
+;;     00005C5C (in fn000051E8)
+;;     00005DB4 (in fn000051E8)
+;;     00005DD0 (in fn000051E8)
+;;     00005E4C (in fn000051E8)
+;;     00005E68 (in fn000051E8)
+;;     00005EE4 (in fn000051E8)
+;;     00005F18 (in fn000051E8)
+;;     00005F78 (in fn000051E8)
+;;     00005FAC (in fn000051E8)
 ;;     000063F0 (in fn00006394)
 ;;     00006460 (in fn00006394)
 ;;     00009CBC (in fn00009C2C)
@@ -14517,6 +14948,7 @@ fn0000FA94 proc
 ;;     0000AD54 (in fn0000AC84)
 ;;     0000AD60 (in fn0000AC84)
 ;;     0000B904 (in fn0000B8D8)
+;;     0000C8E8 (in fn0000C8A0)
 ;;     0000CA08 (in fn0000C9C8)
 ;;     0000CA28 (in fn0000C9C8)
 ;;     0000CA40 (in fn0000C9C8)
@@ -14524,6 +14956,13 @@ fn0000FA94 proc
 ;;     0000D6E4 (in fn0000D640)
 ;;     0000D9C4 (in fn0000D95C)
 ;;     0000DCE8 (in fn0000DC70)
+;;     0000E240 (in fn0000E1AC)
+;;     0000E258 (in fn0000E1AC)
+;;     0000EE9C (in fn0000EDF4)
+;;     0000EEC4 (in fn0000EDF4)
+;;     0000EEEC (in fn0000EDF4)
+;;     0000EF14 (in fn0000EDF4)
+;;     0000EF34 (in fn0000EDF4)
 ;;     00010014 (in fn0000FFD8)
 ;;     00010044 (in fn0001003C)
 ;;     00010090 (in fn0001005C)
@@ -14671,10 +15110,51 @@ l0001002C:
 
 ;; fn0001003C: 0001003C
 ;;   Called from:
+;;     000052E8 (in fn000051E8)
+;;     00005324 (in fn000051E8)
+;;     0000536C (in fn000051E8)
+;;     000053A4 (in fn000051E8)
+;;     000053D8 (in fn000051E8)
+;;     00005440 (in fn000051E8)
+;;     00005474 (in fn000051E8)
+;;     000054B0 (in fn000051E8)
+;;     00005500 (in fn000051E8)
+;;     00005538 (in fn000051E8)
+;;     00005578 (in fn000051E8)
+;;     000055B0 (in fn000051E8)
+;;     000055E4 (in fn000051E8)
+;;     0000560C (in fn000051E8)
+;;     00005640 (in fn000051E8)
+;;     0000567C (in fn000051E8)
+;;     000056C8 (in fn000051E8)
+;;     0000571C (in fn000051E8)
+;;     0000576C (in fn000051E8)
+;;     000057BC (in fn000051E8)
+;;     000057F8 (in fn000051E8)
+;;     0000582C (in fn000051E8)
+;;     00005890 (in fn000051E8)
+;;     000058DC (in fn000051E8)
+;;     0000593C (in fn000051E8)
+;;     00005960 (in fn000051E8)
+;;     000059AC (in fn000051E8)
+;;     000059E8 (in fn000051E8)
+;;     00005A38 (in fn000051E8)
+;;     00005A88 (in fn000051E8)
+;;     00005AC4 (in fn000051E8)
+;;     00005AF8 (in fn000051E8)
+;;     00005B50 (in fn000051E8)
+;;     00005B9C (in fn000051E8)
+;;     00005BFC (in fn000051E8)
+;;     00005C20 (in fn000051E8)
+;;     00005C6C (in fn000051E8)
 ;;     00006418 (in fn00006394)
 ;;     00006444 (in fn00006394)
 ;;     0000DCC8 (in fn0000DC70)
 ;;     0000EB70 (in fn0000E98C)
+;;     0000EEAC (in fn0000EDF4)
+;;     0000EEDC (in fn0000EDF4)
+;;     0000EF04 (in fn0000EDF4)
+;;     0000EF28 (in fn0000EDF4)
 fn0001003C proc
 	l.addi	r1,r1,-00000004
 	l.sw	0(r1),r9
@@ -14847,20 +15327,28 @@ l00010214:
 	l.ori	r28,r28,00003938
 	l.jal	0000DFCC
 	l.ori	r24,r24,00003934
+
+l00010258:
 	l.lwz	r2,0(r26)
-	Invalid
+	l.srl	r2,r2,r18
 	l.andi	r2,r2,00000001
 	l.sfeqi	r2,00000000
 	l.bf	000102E0
 	l.nop
+
+l00010270:
 	l.j	000102D0
 	l.lwz	r2,0(r28)
+
+l00010278:
 	l.lwz	r3,0(r20)
-	Invalid
+	l.srl	r3,r3,r2
 	l.andi	r3,r3,00000001
 	l.sfeqi	r3,00000000
 	l.bf	000102CC
 	l.nop
+
+l00010290:
 	l.movhi	r4,00000001
 	l.ori	r4,r4,00003744
 	l.add	r3,r2,r4
@@ -14870,23 +15358,33 @@ l00010214:
 	l.sfeqi	r3,00000000
 	l.bf	000102CC
 	l.nop
+
+l000102B4:
 	l.jal	00009DDC
 	l.ori	r3,r2,00000000
 	l.ori	r3,r2,00000000
 	l.sh	0(r22),r11
 	l.jal	00009C2C
 	l.lwz	r4,0(r14)
+
+l000102CC:
 	l.addi	r2,r2,+00000001
+
+l000102D0:
 	l.lwz	r3,0(r24)
 	l.sfleu	r2,r3
 	l.bf	00010278
 	l.nop
+
+l000102E0:
 	l.addi	r18,r18,-00000001
 	l.addi	r20,r20,-00000004
 	l.addi	r14,r14,-00000004
 	l.sfnei	r18,FFFFFFFF
 	l.bf	00010258
 	l.addi	r22,r22,-00000002
+
+l000102F8:
 	l.movhi	r20,00000001
 	l.movhi	r22,00000001
 	l.movhi	r18,00000001
@@ -14894,37 +15392,55 @@ l00010214:
 	l.ori	r20,r20,000034D4
 	l.ori	r22,r22,00003938
 	l.ori	r18,r18,00003934
+
+l00010314:
 	l.lwz	r3,0(r20)
-	Invalid
+	l.srl	r3,r3,r2
 	l.andi	r3,r3,00000001
 	l.sfnei	r3,00000000
 	l.bf	00010380
 	l.nop
+
+l0001032C:
 	l.j	00010370
 	l.lwz	r14,0(r22)
+
+l00010334:
 	l.lwz	r3,0(r16)
-	Invalid
+	l.srl	r3,r3,r14
 	l.andi	r3,r3,00000001
 	l.sfeqi	r3,00000000
 	l.bf	0001036C
 	l.movhi	r4,00000001
+
+l0001034C:
 	l.ori	r4,r4,00003744
 	l.add	r3,r14,r4
 	l.lbs	r4,0(r3)
 	l.sfnei	r4,00000000
 	l.bf	0001036C
 	l.nop
+
+l00010364:
 	l.jal	00009ED0
 	l.ori	r3,r14,00000000
+
+l0001036C:
 	l.addi	r14,r14,+00000001
+
+l00010370:
 	l.lwz	r3,0(r18)
 	l.sfleu	r14,r3
 	l.bf	00010334
 	l.nop
+
+l00010380:
 	l.addi	r2,r2,-00000001
 	l.sfnei	r2,FFFFFFFF
 	l.bf	00010314
 	l.addi	r16,r16,-00000004
+
+l00010390:
 	l.addi	r1,r1,+00000028
 	l.lwz	r9,-4(r1)
 	l.lwz	r2,-40(r1)
@@ -14967,38 +15483,56 @@ fn000103C0 proc
 	l.ori	r26,r26,000034D0
 	l.ori	r28,r28,00003938
 	l.ori	r24,r24,00003934
+
+l00010424:
 	l.lwz	r2,0(r26)
-	Invalid
+	l.srl	r2,r2,r16
 	l.andi	r2,r2,00000001
 	l.sfeqi	r2,00000000
 	l.bf	0001048C
 	l.nop
+
+l0001043C:
 	l.lwz	r2,0(r20)
 	l.sfeqi	r2,00000000
 	l.bf	0001048C
 	l.nop
+
+l0001044C:
 	l.j	0001047C
 	l.lwz	r2,0(r28)
+
+l00010454:
 	l.lwz	r3,0(r18)
-	Invalid
+	l.srl	r3,r3,r2
 	l.andi	r3,r3,00000001
 	l.sfeqi	r3,00000000
 	l.bf	00010478
 	l.nop
+
+l0001046C:
 	l.lhz	r4,0(r22)
 	l.jal	00009C2C
 	l.ori	r3,r2,00000000
+
+l00010478:
 	l.addi	r2,r2,+00000001
+
+l0001047C:
 	l.lwz	r3,0(r24)
 	l.sfleu	r2,r3
 	l.bf	00010454
 	l.nop
+
+l0001048C:
 	l.addi	r16,r16,+00000001
 	l.addi	r20,r20,+00000004
 	l.addi	r18,r18,+00000004
 	l.sfnei	r16,00000014
 	l.bf	00010424
 	l.addi	r22,r22,+00000002
+
+l000104A4:
 	l.movhi	r20,00000001
 	l.movhi	r22,00000001
 	l.movhi	r18,00000001
@@ -15006,20 +15540,28 @@ fn000103C0 proc
 	l.ori	r20,r20,000034D4
 	l.ori	r22,r22,00003938
 	l.ori	r18,r18,00003934
+
+l000104C0:
 	l.lwz	r2,0(r20)
-	Invalid
+	l.srl	r2,r2,r16
 	l.andi	r2,r2,00000001
 	l.sfnei	r2,00000000
 	l.bf	00010530
 	l.nop
+
+l000104D8:
 	l.j	00010520
 	l.lwz	r2,0(r22)
+
+l000104E0:
 	l.lwz	r3,0(r14)
-	Invalid
+	l.srl	r3,r3,r2
 	l.andi	r3,r3,00000001
 	l.sfeqi	r3,00000000
 	l.bf	0001051C
 	l.nop
+
+l000104F8:
 	l.movhi	r4,00000001
 	l.ori	r4,r4,00003744
 	l.add	r3,r2,r4
@@ -15027,17 +15569,27 @@ fn000103C0 proc
 	l.sfnei	r3,00000000
 	l.bf	0001051C
 	l.ori	r3,r2,00000000
+
+l00010514:
 	l.jal	00009ED0
 	l.addi	r4,r0,+00000001
+
+l0001051C:
 	l.addi	r2,r2,+00000001
+
+l00010520:
 	l.lwz	r3,0(r18)
 	l.sfleu	r2,r3
 	l.bf	000104E0
 	l.nop
+
+l00010530:
 	l.addi	r16,r16,+00000001
 	l.sfnei	r16,00000014
 	l.bf	000104C0
 	l.addi	r14,r14,+00000004
+
+l00010540:
 	l.addi	r1,r1,+00000028
 	l.lwz	r9,-4(r1)
 	l.lwz	r2,-40(r1)
@@ -17502,9 +18054,16 @@ l00012418:
 00012440 2E 0A 00 77 61 69 74 20 61 63 33 32 37 20 72 65 ...wait ac327 re
 00012450 73 75 6D 65 2E 2E 2E 0A 00 25 78 20 72 65 74 75 sume.....%x retu
 00012460 72 6E 0A 00 72 65 73 65 74 20 73 79 73 74 65 6D rn..reset system
-00012470 20 6E 6F 77 0A 00 00 00 00 00 63 80 00 00 62 F8  now......c...b.
-00012480 00 00 63 04 00 00 63 10 00 00 63 24 00 00 63 1C ..c...c...c$..c.
-00012490 00 00 AF 54 00 00 AF 4C 00 00 B0 24 00 00 AF 78 ...T...L...$...x
+00012470 20 6E 6F 77 0A 00 00 00                          now....       
+l00012478	dd	0x00006380
+l0001247C	dd	0x000062F8
+l00012480	dd	0x00006304
+l00012484	dd	0x00006310
+l00012488	dd	0x00006324
+l0001248C	dd	0x0000631C
+l00012490	dd	0x0000AF54
+l00012494	dd	0x0000AF4C
+00012498                         00 00 B0 24 00 00 AF 78         ...$...x
 000124A0 00 00 B0 1C 00 00 B0 1C 00 00 B0 1C 00 00 B0 1C ................
 000124B0 00 00 B0 1C 00 00 AF 98 00 00 B0 1C 00 00 AF 98 ................
 000124C0 00 00 AF B8 00 00 B0 1C 00 00 B0 1C 00 00 B0 1C ................
@@ -18345,21 +18904,27 @@ l000188C4:
 fn000188CC proc
 	l.slli	r6,r6,00000002
 	l.addi	r7,r5,-00000001
-	Invalid
+	l.mul	r7,r6,r7
 	l.add	r4,r4,r7
 	l.slli	r7,r5,00000002
 	l.sub	r8,r0,r6
 	l.addi	r7,r7,-00000004
 	l.j	00018904
 	l.add	r3,r3,r7
+
+l000188F0:
 	l.add	r7,r4,r6
 	l.addi	r5,r5,-00000001
 	l.lwz	r7,0(r7)
 	l.sw	0(r3),r7
 	l.addi	r3,r3,-00000004
+
+l00018904:
 	l.sfnei	r5,00000000
 	l.bf	000188F0
 	l.add	r4,r4,r8
+
+l00018910:
 	l.jr	r9
 	l.nop
 
@@ -18377,17 +18942,23 @@ fn00018918 proc
 	l.sub	r8,r0,r6
 	l.add	r4,r4,r7
 	l.addi	r7,r5,-00000001
-	Invalid
+	l.mul	r7,r6,r7
 	l.j	00018950
 	l.add	r3,r3,r7
+
+l0001893C:
 	l.lwz	r11,0(r4)
 	l.add	r7,r3,r6
 	l.addi	r5,r5,-00000001
 	l.sw	0(r7),r11
 	l.addi	r4,r4,-00000004
+
+l00018950:
 	l.sfnei	r5,00000000
 	l.bf	0001893C
 	l.add	r3,r3,r8
+
+l0001895C:
 	l.jr	r9
 	l.nop
 
@@ -18633,7 +19204,7 @@ l00018C40:
 	l.movhi	r4,000001F0
 	l.addi	r6,r0,+00000001
 	l.ori	r4,r4,00000C40
-	Invalid
+	l.sll	r3,r6,r3
 	l.lwz	r5,0(r4)
 	l.addi	r11,r0,+00000000
 	l.or	r3,r3,r5
@@ -18648,7 +19219,7 @@ l00018C40:
 fn00018C68 proc
 	l.addi	r6,r0,+00000001
 	l.movhi	r4,000001F0
-	Invalid
+	l.sll	r3,r6,r3
 	l.ori	r4,r4,00000C40
 	l.addi	r11,r0,+00000000
 	l.lwz	r5,0(r4)
@@ -18657,165 +19228,46 @@ fn00018C68 proc
 	l.sw	0(r4),r3
 	l.jr	r9
 	l.nop
-	l.sw	-8(r1),r2
-	l.sw	-4(r1),r9
-	l.addi	r1,r1,-00000008
-	l.jal	00018964
-	l.ori	r2,r3,00000000
-	l.lwz	r3,0(r2)
-	l.movhi	r4,00000008
-	l.and	r3,r3,r4
-	l.sfeqi	r3,00000000
-	l.bf	00018CD4
-	l.movhi	r3,00000000
-	l.addi	r4,r0,+00000000
-	l.jal	00018F10
-	l.ori	r3,r3,00008FD0
-	l.jal	00018C24
-	l.addi	r3,r0,+00000005
-	l.lwz	r3,0(r2)
-	l.movhi	r5,00000010
-	l.and	r3,r3,r5
-	l.sfeqi	r3,00000000
-	l.bf	00018CF4
-	l.nop
-	l.jal	00018C24
-	l.addi	r3,r0,+00000008
-	l.lwz	r3,0(r2)
-	l.movhi	r4,00000020
-	l.and	r3,r3,r4
-	l.sfeqi	r3,00000000
-	l.bf	00018D14
-	l.nop
-	l.jal	00018C24
-	l.addi	r3,r0,+00000009
-	l.lwz	r3,0(r2)
-	l.movhi	r5,00000040
-	l.and	r3,r3,r5
-	l.sfeqi	r3,00000000
-	l.bf	00018D38
-	l.movhi	r3,00000000
-	l.addi	r4,r0,+00000000
-	l.jal	00018F10
-	l.ori	r3,r3,0000C924
-	l.lwz	r3,0(r2)
-	l.movhi	r4,00000100
-	l.and	r3,r3,r4
-	l.sfeqi	r3,00000000
-	l.bf	00018D70
-	l.movhi	r3,000001F0
-	l.ori	r3,r3,00000CC8
-	l.lwz	r4,0(r3)
-	l.ori	r4,r4,00003F80
-	l.sw	0(r3),r4
-	l.jal	00018C24
-	l.addi	r3,r0,+0000001B
-	l.jal	00018C24
-	l.addi	r3,r0,+0000001C
-	l.lwz	r3,0(r2)
-	l.movhi	r5,00000A00
-	l.and	r4,r3,r5
-	l.sfeqi	r4,00000000
-	l.bf	00018DE0
-	l.movhi	r4,00000800
-	l.and	r3,r3,r4
-	l.sfeqi	r3,00000000
-	l.bf	00018DAC
-	l.movhi	r3,000001F0
-	l.movhi	r5,00002000
-	l.ori	r3,r3,00000CC0
-	l.lwz	r4,0(r3)
-	l.or	r4,r4,r5
-	l.sw	0(r3),r4
-	l.lwz	r2,0(r2)
-	l.movhi	r3,00000200
-	l.and	r2,r2,r3
-	l.sfeqi	r2,00000000
-	l.bf	00018DD8
-	l.movhi	r4,00004000
-	l.movhi	r2,000001F0
-	l.ori	r2,r2,00000CC0
-	l.lwz	r3,0(r2)
-	l.or	r3,r3,r4
-	l.sw	0(r2),r3
-	l.jal	00018C24
-	l.addi	r3,r0,+00000016
-	l.addi	r1,r1,+00000008
-	l.addi	r11,r0,+00000000
-	l.lwz	r9,-4(r1)
-	l.jr	r9
-	l.lwz	r2,-8(r1)
-	l.sw	-8(r1),r2
-	l.movhi	r4,00000008
-	l.ori	r2,r3,00000000
-	l.lwz	r3,0(r3)
-	l.sw	-4(r1),r9
-	l.and	r3,r3,r4
-	l.sfeqi	r3,00000000
-	l.bf	00018E30
-	l.addi	r1,r1,-00000008
-	l.movhi	r3,00000000
-	l.addi	r4,r0,+00000000
-	l.jal	00018F10
-	l.ori	r3,r3,0000916C
-	l.jal	00018C68
-	l.addi	r3,r0,+00000005
-	l.lwz	r3,0(r2)
-	l.movhi	r5,00000040
-	l.and	r3,r3,r5
-	l.sfeqi	r3,00000000
-	l.bf	00018E54
-	l.movhi	r3,00000000
-	l.addi	r4,r0,+00000000
-	l.jal	00018F10
-	l.ori	r3,r3,0000C92C
-	l.jal	00018A60
-	l.ori	r3,r2,00000000
-	l.movhi	r4,00003087
-	l.lwz	r3,0(r2)
-	l.ori	r4,r4,0000F000
-	l.and	r3,r3,r4
-	l.sfeqi	r3,00000000
-	l.bf	00018E80
-	l.nop
-	l.jal	000190F8
-	l.nop
-	l.lwz	r3,0(r2)
-	l.movhi	r5,00000100
-	l.and	r3,r3,r5
-	l.sfeqi	r3,00000000
-	l.bf	00018EBC
-	l.movhi	r3,000001F0
-	l.addi	r5,r0,-00003F81
-	l.ori	r3,r3,00000CC8
-	l.lwz	r4,0(r3)
-	l.and	r4,r4,r5
-	l.sw	0(r3),r4
-	l.jal	00018C68
-	l.addi	r3,r0,+0000001B
-	l.jal	00018C68
-	l.addi	r3,r0,+0000001C
-	l.lwz	r2,0(r2)
-	l.movhi	r3,00000A00
-	l.and	r2,r2,r3
-	l.sfeqi	r2,00000000
-	l.bf	00018EEC
-	l.addi	r4,r0,+00000000
-	l.movhi	r2,000001F0
-	l.ori	r2,r2,00000CC0
-	l.addi	r3,r0,+00000016
-	l.sw	0(r2),r4
-	l.jal	00018C68
-	l.nop
-	l.movhi	r3,00000000
-	l.addi	r4,r0,+00000000
-	l.jal	00018F10
-	l.ori	r3,r3,00008D18
-	l.addi	r1,r1,+00000008
-	l.addi	r11,r0,+00000000
-	l.lwz	r9,-4(r1)
-	l.jr	r9
-	l.lwz	r2,-8(r1)
+00018C94             D7 E1 17 F8 D7 E1 4F FC 9C 21 FF F8     ......O..!..
+00018CA0 07 FF FF 31 A8 43 00 00 84 62 00 00 18 80 00 08 ...1.C...b......
+00018CB0 E0 63 20 03 BC 03 00 00 10 00 00 07 18 60 00 00 .c ..........`..
+00018CC0 9C 80 00 00 04 00 00 93 A8 63 8F D0 07 FF FF D6 .........c......
+00018CD0 9C 60 00 05 84 62 00 00 18 A0 00 10 E0 63 28 03 .`...b.......c(.
+00018CE0 BC 03 00 00 10 00 00 04 15 00 00 00 07 FF FF CE ................
+00018CF0 9C 60 00 08 84 62 00 00 18 80 00 20 E0 63 20 03 .`...b..... .c .
+00018D00 BC 03 00 00 10 00 00 04 15 00 00 00 07 FF FF C6 ................
+00018D10 9C 60 00 09 84 62 00 00 18 A0 00 40 E0 63 28 03 .`...b.....@.c(.
+00018D20 BC 03 00 00 10 00 00 05 18 60 00 00 9C 80 00 00 .........`......
+00018D30 04 00 00 78 A8 63 C9 24 84 62 00 00 18 80 01 00 ...x.c.$.b......
+00018D40 E0 63 20 03 BC 03 00 00 10 00 00 0A 18 60 01 F0 .c ..........`..
+00018D50 A8 63 0C C8 84 83 00 00 A8 84 3F 80 D4 03 20 00 .c........?... .
+00018D60 07 FF FF B1 9C 60 00 1B 07 FF FF AF 9C 60 00 1C .....`.......`..
+00018D70 84 62 00 00 18 A0 0A 00 E0 83 28 03 BC 04 00 00 .b........(.....
+00018D80 10 00 00 18 18 80 08 00 E0 63 20 03 BC 03 00 00 .........c .....
+00018D90 10 00 00 07 18 60 01 F0 18 A0 20 00 A8 63 0C C0 .....`.... ..c..
+00018DA0 84 83 00 00 E0 84 28 04 D4 03 20 00 84 42 00 00 ......(... ..B..
+00018DB0 18 60 02 00 E0 42 18 03 BC 02 00 00 10 00 00 07 .`...B..........
+00018DC0 18 80 40 00 18 40 01 F0 A8 42 0C C0 84 62 00 00 ..@..@...B...b..
+00018DD0 E0 63 20 04 D4 02 18 00 07 FF FF 93 9C 60 00 16 .c ..........`..
+00018DE0 9C 21 00 08 9D 60 00 00 85 21 FF FC 44 00 48 00 .!...`...!..D.H.
+00018DF0 84 41 FF F8 D7 E1 17 F8 18 80 00 08 A8 43 00 00 .A...........C..
+00018E00 84 63 00 00 D7 E1 4F FC E0 63 20 03 BC 03 00 00 .c....O..c .....
+00018E10 10 00 00 08 9C 21 FF F8 18 60 00 00 9C 80 00 00 .....!...`......
+00018E20 04 00 00 3C A8 63 91 6C 07 FF FF 90 9C 60 00 05 ...<.c.l.....`..
+00018E30 84 62 00 00 18 A0 00 40 E0 63 28 03 BC 03 00 00 .b.....@.c(.....
+00018E40 10 00 00 05 18 60 00 00 9C 80 00 00 04 00 00 31 .....`.........1
+00018E50 A8 63 C9 2C 07 FF FF 03 A8 62 00 00 18 80 30 87 .c.,.....b....0.
+00018E60 84 62 00 00 A8 84 F0 00 E0 63 20 03 BC 03 00 00 .b.......c .....
+00018E70 10 00 00 04 15 00 00 00 04 00 00 A0 15 00 00 00 ................
+00018E80 84 62 00 00 18 A0 01 00 E0 63 28 03 BC 03 00 00 .b.......c(.....
+00018E90 10 00 00 0B 18 60 01 F0 9C A0 C0 7F A8 63 0C C8 .....`.......c..
+00018EA0 84 83 00 00 E0 84 28 03 D4 03 20 00 07 FF FF 6F ......(... ....o
+00018EB0 9C 60 00 1B 07 FF FF 6D 9C 60 00 1C 84 42 00 00 .`.....m.`...B..
+00018EC0 18 60 0A 00 E0 42 18 03 BC 02 00 00 10 00 00 08 .`...B..........
+00018ED0 9C 80 00 00 18 40 01 F0 A8 42 0C C0 9C 60 00 16 .....@...B...`..
+00018EE0 D4 02 20 00 07 FF FF 61 15 00 00 00 18 60 00 00 .. ....a.....`..
+00018EF0 9C 80 00 00 04 00 00 07 A8 63 8D 18 9C 21 00 08 .........c...!..
+00018F00 9D 60 00 00 85 21 FF FC 44 00 48 00 84 41 FF F8 .`...!..D.H..A..
 
 ;; fn00018F10: 00018F10
 ;;   Called from:
