@@ -31,6 +31,9 @@ namespace Reko.Arch.OpenRISC
 
     public class OpenRISCDisassembler : DisassemblerBase<OpenRISCInstruction>
     {
+        private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass TDC = InstrClass.Transfer | InstrClass.Delay | InstrClass.Call;
+
         private static readonly Decoder rootDecoder;
 
         private readonly OpenRISCArchitecture arch;
@@ -52,6 +55,10 @@ namespace Reko.Arch.OpenRISC
                 return null;
             this.ops.Clear();
             var instr = rootDecoder.Decode(wInstr, this);
+            if (wInstr == 0)
+            {
+                instr.InstructionClass = InstrClass.Terminates | InstrClass.Padding | InstrClass.Zero;
+            }
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
             return instr;
@@ -79,6 +86,7 @@ namespace Reko.Arch.OpenRISC
         }
 
         #region Mutators
+
         private static Mutator<OpenRISCDisassembler> R(int bitPos, int bitLength)
         {
             var field = new Bitfield(bitPos, bitLength);
@@ -94,6 +102,23 @@ namespace Reko.Arch.OpenRISC
         private static readonly Mutator<OpenRISCDisassembler> RD = R(21, 5);
         private static readonly Mutator<OpenRISCDisassembler> RA = R(16, 5);
         private static readonly Mutator<OpenRISCDisassembler> RB = R(11, 5);
+
+        private static Mutator<OpenRISCDisassembler> Spr(Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var iSpr = (int) Bitfield.ReadFields(fields, u);
+                if (Registers.SpecialRegisters.TryGetValue(iSpr, out var spr))
+                {
+                    d.ops.Add(new RegisterOperand(spr));
+                }
+                else
+                {
+                    d.ops.Add(ImmediateOperand.UInt32((uint) iSpr));
+                }
+                return true;
+            };
+        }
 
         private static Mutator<OpenRISCDisassembler> Is(int bitPos, int bitLength)
         {
@@ -285,14 +310,14 @@ namespace Reko.Arch.OpenRISC
 
             rootDecoder = Mask(26, 6, "OpenRISC",
                 // 00
-                Instr(Mnemonic.l_j, InstrClass.Transfer, Pc26),
-                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, Pc26),
+                Instr(Mnemonic.l_j, TD, Pc26),
+                Instr(Mnemonic.l_jal, TDC, Pc26),
                 Instr64(
                     Instr(Mnemonic.l_adrp, RD,Page(19)),
                     Instr(Mnemonic.l_adrp, RD,Page(21))),
-                Instr(Mnemonic.l_bnf, InstrClass.ConditionalTransfer, Pc26),
+                Instr(Mnemonic.l_bnf, TD | InstrClass.Conditional, Pc26),
 
-                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, Pc26),
+                Instr(Mnemonic.l_bf, TD | InstrClass.Conditional, Pc26),
                 Instr(Mnemonic.l_nop, InstrClass.Linear | InstrClass.Padding),
                 Mask(16, 1, "  0x06",
                     Instr(Mnemonic.l_movhi, RD,Iu16),
@@ -302,7 +327,7 @@ namespace Reko.Arch.OpenRISC
                 Sparse(16, 10, "  0x08", invalid,
                     (0x000, Instr(Mnemonic.l_sys, Iu16)),
                     (0x100, Instr(Mnemonic.l_trap, Iu16))),
-                Instr(Mnemonic.l_rfe),
+                Instr(Mnemonic.l_rfe, TD),
                 Nyi("0x0A"),
                 invalid,
 
@@ -313,8 +338,8 @@ namespace Reko.Arch.OpenRISC
 
                 // 10
                 invalid,
-                Instr(Mnemonic.l_jr, RB),
-                Instr(Mnemonic.l_jalr, RB),
+                Instr(Mnemonic.l_jr, TD, RB),
+                Instr(Mnemonic.l_jalr, TDC, RB),
                 Instr(Mnemonic.l_maci, RA,Is16),
 
                 invalid,
@@ -351,7 +376,7 @@ namespace Reko.Arch.OpenRISC
                 Instr(Mnemonic.l_xori, RD,RA,Iu16),
 
                 Instr(Mnemonic.l_muli, RD,RA,Is16),
-                Instr(Mnemonic.l_mfspr, RD,RA,Iu16),
+                Instr(Mnemonic.l_mfspr, RD,RA,Spr(Bf((0, 16)))),
                 Mask(6, 2, "  0x2E",
                     Instr(Mnemonic.l_slli, RD,RA, Iu6),
                     Instr(Mnemonic.l_srli, RD,RA, Iu6),
@@ -371,7 +396,7 @@ namespace Reko.Arch.OpenRISC
                     (0xD, Instr(Mnemonic.l_sflesi, RA,Is16))),
 
                 // 30
-                Instr(Mnemonic.l_mtspr, RA,RB,Iu(Bf((21, 5),(0, 11)))),
+                Instr(Mnemonic.l_mtspr, RA,RB,Spr(Bf((21, 5),(0, 11)))),
                 Nyi("0x31"),
                 Nyi("0x32"),
                 Nyi("0x33"),
@@ -383,26 +408,42 @@ namespace Reko.Arch.OpenRISC
                 Instr(Mnemonic.l_sb, Mo(16, Bf((21,5),(0, 11)), PrimitiveType.Byte), RB),
                 Instr(Mnemonic.l_sh, Mo(16, Bf((21,5),(0, 11)), PrimitiveType.Word16), RB),
 
-                Mask(0, 4, "  0x38",
-                    Instr(Mnemonic.l_add, RD,RA,RB),
-                    Instr(Mnemonic.l_addc, RD,RA,RB),
-                    Instr(Mnemonic.l_sub, RD,RA,RB),
-                    Instr(Mnemonic.l_and, RD,RA,RB),
+                Mask(8, 2, "  0x38",
+                    Mask(0, 4, "  0x38-0",
+                        Instr(Mnemonic.l_add, RD,RA,RB),
+                        Instr(Mnemonic.l_addc, RD,RA,RB),
+                        Instr(Mnemonic.l_sub, RD,RA,RB),
+                        Instr(Mnemonic.l_and, RD,RA,RB),
 
-                    Instr(Mnemonic.l_or, RD,RA,RB),
-                    Instr(Mnemonic.l_xor, RD,RA,RB),
-                    invalid,
-                    invalid,
+                        Instr(Mnemonic.l_or, RD,RA,RB),
+                        Instr(Mnemonic.l_xor, RD,RA,RB),
+                        invalid,
+                        invalid,
 
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
+                        Mask(6, 2, " 0x30-0-8",
+                            Instr(Mnemonic.l_sll, RD,RA,RB),
+                            Instr(Mnemonic.l_srl, RD,RA,RB),
+                            Instr(Mnemonic.l_sra, RD,RA,RB),
+                            Instr(Mnemonic.l_ror, RD,RA,RB)),
+                        invalid,
+                        invalid,
+                        invalid,
 
-                    invalid,
-                    invalid,
-                    Instr(Mnemonic.l_cmov, RD,RA,RB),
-                    Instr(Mnemonic.l_ff1, RD,RA)),
+                        Nyi("  0x38-0-C"),
+                        Nyi("  0x38-0-D"),
+                        Instr(Mnemonic.l_cmov, RD,RA,RB),
+                        Instr(Mnemonic.l_ff1, RD,RA)),
+                    Sparse(0, 4, "  0x38-1", invalid,
+                        (0xF, Instr(Mnemonic.l_fl1, RD,RA))),
+                    Nyi("  0x38-2"),
+                    Sparse(0, 4, "  0x38-3",
+                        invalid,
+                        (0x6, Instr(Mnemonic.l_mul, RD,RA,RB)),
+                        (0x7, Instr(Mnemonic.l_muld, RA,RB)),
+                        (0x9, Instr(Mnemonic.l_div, RD,RA,RB)),
+                        (0xA, Instr(Mnemonic.l_divu, RD,RA,RB)),
+                        (0xB, Instr(Mnemonic.l_mulu, RD,RA,RB)),
+                        (0xC, Instr(Mnemonic.l_muldu, RA,RB)))),
                 Sparse(21, 5, "  0x39", Nyi("0x39"),
                     (0x0, Instr(Mnemonic.l_sfeq, RA,RB)),
                     (0x1, Instr(Mnemonic.l_sfne, RA,RB)),

@@ -19,17 +19,68 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.OpenRISC
 {
     public static class Registers
     {
         public static readonly RegisterStorage[] GpRegs;
+        public static readonly RegisterStorage sr;
+        public static readonly RegisterStorage machi;
+        public static readonly RegisterStorage maclo;
+        public static readonly Dictionary<int, RegisterStorage> SpecialRegisters;
+
+
+        public static readonly FlagGroupStorage F;
 
         static Registers()
         {
             var factory = new StorageFactory();
+            var sprFactory = new StorageFactory(StorageDomain.SystemRegister);
+
             GpRegs = factory.RangeOfReg32(32, "r{0}");
+            SpecialRegisters = new (int, string)[]
+            {
+                ( 0, "VR"), // Version register
+                ( 1, "UPR"), //Unit Present register
+                ( 2, "CPUCFGR"), //CPU Configuration register
+                ( 3, "DMMUCFGR"), //Data MMU Configuration register
+                ( 4, "IMMUCFGR"), //Instruction MMU Configuration register
+                ( 5, "DCCFGR"), //Data Cache Configuration register
+                ( 6, "ICCFGR"), //Instruction Cache Configuration register
+                ( 7, "DCFGR"), //Debug Configuration register
+                ( 8, "PCCFGR"), // Performance Counters Configuration register
+                ( 9, "VR2"), // Version register 2
+                ( 10, "AVR"), //  Architecture version register 
+                ( 11, "EVBAR"), // R/W Exception vector base address register
+                ( 12, "AECR"), // R/W Arithmetic Exception Control Register
+                ( 13, "AESR"), // R/W Arithmetic Exception Status Register
+                ( 16, "NPC"), // R/W PC mapped to SPR space (next PC)
+                ( 17, "SR"),// R/W Supervision register 
+                ( 18, "PPC"),// R PC mapped to SPR space (previous PC)
+                ( 20, "FPCSR"), // R/W FP Control Status register
+
+                ( (5 << 11) + 1, "MACLO" ),
+                ( (5 << 11) + 2, "MACHI" )
+            }.ToDictionary(e => e.Item1, e=> sprFactory.Reg32(e.Item2));
+
+            sr = SpecialRegisters[17];
+            maclo = SpecialRegisters[(5 << 11) + 1];
+            machi = SpecialRegisters[(5 << 11) + 2];
+
+            F = new FlagGroupStorage(sr, (uint)FlagM.F, "F", PrimitiveType.Bool);
         }
+    }
+
+    [Flags]
+    public enum FlagM : uint
+    {
+        F = 1 << 9,
+        CY = 1 << 10,
+        OV = 1 << 11,
     }
 }

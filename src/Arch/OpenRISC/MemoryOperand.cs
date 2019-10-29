@@ -26,8 +26,8 @@ namespace Reko.Arch.OpenRISC
 {
     public class MemoryOperand : MachineOperand
     {
-        private RegisterStorage Base;
-        private int Offset;
+        public readonly RegisterStorage Base;
+        public readonly int Offset;
 
         public MemoryOperand(RegisterStorage registerStorage, int offset, PrimitiveType dt) : base(dt)
         {

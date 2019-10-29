@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -31,6 +32,8 @@ namespace Reko.Arch.OpenRISC
 {
     public class OpenRISCArchitecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups = new Dictionary<uint, FlagGroupStorage>();
+
         public OpenRISCArchitecture(string archId) : base(archId)
         {
             this.Endianness = EndianServices.Big;
@@ -38,6 +41,7 @@ namespace Reko.Arch.OpenRISC
             this.InstructionBitSize = 32;
             this.PointerType = PrimitiveType.Ptr32;
             this.SignedWordWidth = PrimitiveType.Int32;
+            this.StackRegister = Registers.GpRegs[1];
             this.WordWidth = PrimitiveType.Word32;
         }
 
@@ -87,17 +91,24 @@ namespace Reko.Arch.OpenRISC
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new OpenRISCState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new OpenRISCRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            if (this.flagGroups.TryGetValue(grf, out var stg))
+                return stg;
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var flagregister = Registers.sr;
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -133,7 +144,10 @@ namespace Reko.Arch.OpenRISC
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            if ((grf & (uint) FlagM.CY) != 0) s.Append('C');
+            if ((grf & (uint) FlagM.OV) != 0) s.Append('V');
+            return s.ToString();
         }
 
         public override void LoadUserOptions(Dictionary<string, object> options)
@@ -146,7 +160,10 @@ namespace Reko.Arch.OpenRISC
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

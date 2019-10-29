@@ -241,7 +241,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void OpenRiscDis_mtspr()
         {
-            AssertCode("l.mtspr\tr0,r5,00000011", "C0002811");
+            AssertCode("l.mtspr\tr0,r5,SR", "C0002811");
         }
 
         [Test]
@@ -250,7 +250,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode("l.mtspr\tr0,r4,00002002", "C0802002");
         }
 
-        //////////////////////////////////
-
+        [Test]
+        public void OpenRiscDis_mul()
+        {
+            AssertCode("l.mul\tr14,r11,r4", "E1CB2306");
+        }
     }
 }

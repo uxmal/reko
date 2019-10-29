@@ -171,6 +171,15 @@ namespace Reko.UnitTests.Arch.Intel
 			throw new NotImplementedException();
 		}
 
+        public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+        {
+            var ppp = program.EnsurePseudoProcedure(name, fnType);
+            return new Application(
+                new ProcedureConstant(PrimitiveType.Ptr32, ppp),
+                fnType.ReturnValue.DataType,
+                args);
+        }
+
         public Expression PseudoProcedure(string name , DataType returnType, params Expression[] args)
         {
             var ppp = program.EnsurePseudoProcedure(name, returnType, args);

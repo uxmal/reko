@@ -71,6 +71,19 @@ namespace Reko.UnitTests.Arch
                 return p;
             }
 
+            public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+            {
+                if (!ppp.TryGetValue(name, out var intrinsic))
+                {
+                    intrinsic = new PseudoProcedure(name, fnType);
+                    ppp.Add(name, intrinsic);
+                }
+                return new Application(
+                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
+                    intrinsic.ReturnType,
+                    args);
+            }
+
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);

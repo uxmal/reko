@@ -168,6 +168,7 @@
     <Compile Include="Arch\Mips\MicroMipsDisassemblerTests.cs" />
     <Compile Include="Arch\Mips\NanoMipsDisassemblerTests.cs" />
     <Compile Include="Arch\OpenRISC\OpenRISCDisassemblerTests.cs" />
+    <Compile Include="Arch\OpenRISC\OpenRISCRewriterTests.cs" />
     <Compile Include="Arch\PaRisc\PaRiscDisassemblerTests.cs" />
     <Compile Include="Arch\PaRisc\PaRiscRewriterTests.cs" />
     <Compile Include="Arch\Pdp11\Pdp11ArchitectureTests.cs" />
