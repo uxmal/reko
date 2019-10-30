@@ -59,7 +59,7 @@ namespace Reko.Arch.MicroBlaze
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
-            writer.WriteString(Mnemonic.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
         }
 
         private void RenderOperand(MachineOperand op, MachineInstructionWriter writer)

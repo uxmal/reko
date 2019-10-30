@@ -37,7 +37,7 @@ namespace Reko.Arch.MicroBlaze
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 32;
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null; //$TODO
+            this.StackRegister = Registers.GpRegs[1];
             this.WordWidth = PrimitiveType.Word32;
         }
 
@@ -123,7 +123,7 @@ namespace Reko.Arch.MicroBlaze
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

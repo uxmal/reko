@@ -85,6 +85,16 @@ namespace Reko.Arch.MicroBlaze
             };
         }
 
+        public override MicroBlazeInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            var hex = $"{wInstr:X8}";
+            EmitUnitTest("MicroBlaze", hex, message, "MicroBlazeDis", this.addr, w =>
+            {
+                w.WriteLine("AssertCode(\"@@@\", \"{0}\");", hex);
+            });
+            return CreateInvalidInstruction();
+        }
+
         #region Mutators
 
         private static Mutator<MicroBlazeDisassembler> Reg(int bePos, int len)
@@ -99,9 +109,52 @@ namespace Reko.Arch.MicroBlaze
             };
         }
 
-        private static Mutator<MicroBlazeDisassembler> RD = Reg(6, 5);
-        private static Mutator<MicroBlazeDisassembler> RA = Reg(11, 5);
-        private static Mutator<MicroBlazeDisassembler> RB = Reg(16, 5);
+        private static readonly Mutator<MicroBlazeDisassembler> Rd = Reg(6, 5);
+        private static readonly Mutator<MicroBlazeDisassembler> Ra = Reg(11, 5);
+        private static readonly Mutator<MicroBlazeDisassembler> Rb = Reg(16, 5);
+
+        private static Mutator<MicroBlazeDisassembler> ImmS(int bePos, int len)
+        {
+            var field = BeField(bePos, len);
+            return (u, d) =>
+            {
+                var n = field.ReadSigned(u);
+                d.ops.Add(ImmediateOperand.Word32(n));
+                return true;
+            };
+        }
+
+        private static readonly Mutator<MicroBlazeDisassembler> Is16 = ImmS(16, 16);
+
+
+        private static Mutator<MicroBlazeDisassembler> ImmU(int bePos, int len)
+        {
+            var field = BeField(bePos, len);
+            return (u, d) =>
+            {
+                var n = field.Read(u);
+                d.ops.Add(ImmediateOperand.Word32(n));
+                return true;
+            };
+        }
+
+        private static readonly Mutator<MicroBlazeDisassembler> Iu16 = ImmU(16, 16);
+
+
+
+        private static Mutator<MicroBlazeDisassembler> PcRel(int bePos, int len)
+        {
+            var field = BeField(bePos, len);
+            return (u, d) =>
+            {
+                var n = field.ReadSigned(u);
+                var addr = d.addr + n;
+                d.ops.Add(AddressOperand.Create(addr));
+                return true;
+            };
+        }
+
+        private static readonly Mutator<MicroBlazeDisassembler> Pc16 = PcRel(16, 16);
 
         #endregion
 
@@ -152,10 +205,16 @@ namespace Reko.Arch.MicroBlaze
             return new NyiDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction>(message);
         }
 
-        protected static MaskDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction> MaskBe(int bitPos, int bitLength, string tag, params Decoder[] decoders)
+        protected static MaskDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction> MaskBe(int beBitPos, int bitLength, string tag, params Decoder[] decoders)
         {
-            var pos = 32 - (bitPos + bitLength);
+            var pos = 32 - (beBitPos + bitLength);
             return new MaskDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction>(pos, bitLength, tag, decoders);
+        }
+
+        protected static MaskDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction> SparseBe(int beBitPos, int bitLength, string tag, Decoder defaultDecoder, params (uint,Decoder)[] decoders)
+        {
+            var pos = 32 - (beBitPos + bitLength);
+            return Sparse(pos, bitLength, tag, defaultDecoder, decoders);
         }
 
         #endregion
@@ -165,72 +224,132 @@ namespace Reko.Arch.MicroBlaze
         {
             var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
             rootDecoder = MaskBe(0, 6, "",
-                Nyi("0x00"),
-                Nyi("0x01"),
-                Nyi("0x02"),
-                Nyi("0x03"),
-                Nyi("0x04"),
-                Nyi("0x05"),
+                Instr(Mnemonic.add, Rd, Ra, Rb),
+                Instr(Mnemonic.rsub, Rd, Ra, Rb),
+                Instr(Mnemonic.addc, Rd, Ra, Rb),
+                Instr(Mnemonic.rsubc, Rd, Ra, Rb),
+
+                Instr(Mnemonic.addk, Rd, Ra, Rb),
+                MaskBe(30, 2, "rsubk",
+                    Instr(Mnemonic.rsubk, Rd, Ra, Rb),
+                    Instr(Mnemonic.cmp, Rd, Ra, Rb),
+                    invalid,
+                    Instr(Mnemonic.cmpu, Rd, Ra, Rb)),
                 Nyi("0x06"),
                 Nyi("0x07"),
-                Nyi("0x08"),
-                Nyi("0x09"),
-                Nyi("0x0A"),
-                Nyi("0x0B"),
-                Nyi("0x0C"),
-                Nyi("0x0D"),
-                Nyi("0x0E"),
-                Nyi("0x0F"),
 
-                Nyi("0x10"),
+                Instr(Mnemonic.addi, Rd,Ra, Is16),
+                Instr(Mnemonic.rsubi, Rd,Ra, Is16),
+                Instr(Mnemonic.addic, Rd, Ra, Is16),
+                Instr(Mnemonic.rsubic, Rd, Ra, Is16),
+
+                Instr(Mnemonic.addik, Rd, Ra, Is16),
+                Instr(Mnemonic.rsubik, Rd, Ra, Is16),
+                Instr(Mnemonic.addikc, Rd, Ra, Is16),
+                Instr(Mnemonic.rsubikc, Rd, Ra, Is16),
+
+                // 10
+                MaskBe(30, 2, "  0x10",
+                    Instr(Mnemonic.mul, Rd, Ra, Rb),
+                    Instr(Mnemonic.mulh, Rd, Ra, Rb),
+                    Instr(Mnemonic.mulhsu, Rd, Ra, Rb),
+                    Instr(Mnemonic.mulhu, Rd, Ra, Rb)),
                 Nyi("0x11"),
                 Nyi("0x12"),
                 Nyi("0x13"),
+
                 Nyi("0x14"),
                 Nyi("0x15"),
                 Nyi("0x16"),
                 Nyi("0x17"),
+
                 Nyi("0x18"),
                 Nyi("0x19"),
                 Nyi("0x1A"),
                 Nyi("0x1B"),
+
                 Nyi("0x1C"),
                 Nyi("0x1D"),
                 Nyi("0x1E"),
                 Nyi("0x1F"),
 
-                Nyi("0x20"),
-                Nyi("0x21"),
-                Instr(Mnemonic.xor, RD, RA, RB), //$TODO zero?
-                Nyi("0x23"),
-                Nyi("0x24"),
-                Nyi("0x25"),
-                Nyi("0x26"),
-                Nyi("0x27"),
-                Nyi("0x28"),
-                Nyi("0x29"),
-                Nyi("0x2A"),
-                Nyi("0x2B"),
-                Nyi("0x2C"),
-                Nyi("0x2D"),
-                Nyi("0x2E"),
-                Nyi("0x2F"),
+                // 20
+                Instr(Mnemonic.or, Rd, Ra, Rb),
+                Instr(Mnemonic.and, Rd, Ra, Rb),
+                Instr(Mnemonic.xor, Rd, Ra, Rb),
+                Instr(Mnemonic.andn, Rd, Ra, Rb),
 
-                Nyi("0x30"),
-                Nyi("0x31"),
-                Nyi("0x32"),
+                MaskBe(31, 1, "  0x24",
+                    Instr(Mnemonic.sext8, Rd,Ra),
+                    Mask(5, 2, "  0x24 ...1",
+                        Instr(Mnemonic.sra, Rd,Ra),
+                        Instr(Mnemonic.src, Rd,Ra),
+                        Instr(Mnemonic.srl, Rd,Ra),
+                        Instr(Mnemonic.sext16, Rd,Ra))),
+                Nyi("0x25"),
+                SparseBe(11, 5, "0x26", invalid,
+                    (0x00, Instr(Mnemonic.br, InstrClass.Transfer, Rb)),
+                    (0x08, Instr(Mnemonic.bra, InstrClass.Transfer, Rb)),
+                    (0x0C, Instr(Mnemonic.brk, InstrClass.Transfer | InstrClass.Delay, Rd, Rb)),
+                    (0x10, Instr(Mnemonic.brd, InstrClass.Transfer| InstrClass.Delay, Rb)),
+                    (0x14, Instr(Mnemonic.brld, InstrClass.Transfer| InstrClass.Delay, Rd, Rb)),
+                    (0x18, Instr(Mnemonic.brad, InstrClass.Transfer | InstrClass.Delay, Rb)),
+                    (0x1C, Instr(Mnemonic.brald, InstrClass.Transfer | InstrClass.Delay, Rd, Rb))),
+                Nyi("0x27"),
+
+                Instr(Mnemonic.ori, Rd,Ra,Is16),
+                Instr(Mnemonic.andi, Rd,Ra,Is16),
+                Instr(Mnemonic.xori, Rd,Ra,Is16),
+                Instr(Mnemonic.andni, Rd,Ra,Is16),
+
+                Instr(Mnemonic.imm, Iu16),
+                SparseBe(6, 5, "0x2D", invalid,
+                    (0x10, Instr(Mnemonic.rtsd, Ra,Is16)),
+                    (0x11, Instr(Mnemonic.rtid, Ra,Iu16)),
+                    (0x12, Instr(Mnemonic.rtbd, Ra,Iu16)),
+                    (0x14, Instr(Mnemonic.rted, Ra,Iu16))),
+                SparseBe(11, 5, "0x2E", invalid,
+                    (0x00, Instr(Mnemonic.bri, InstrClass.Transfer, Pc16)),
+                    (0x08, Instr(Mnemonic.brai, InstrClass.Transfer, Rb)),
+                    (0x0C, Instr(Mnemonic.brki, InstrClass.Transfer | InstrClass.Delay, Rd, Pc16)),
+                    (0x10, Instr(Mnemonic.brid, InstrClass.Transfer | InstrClass.Delay, Pc16)),
+                    (0x14, Instr(Mnemonic.brlid, InstrClass.Transfer | InstrClass.Delay, Rd, Pc16)),
+                    (0x18, Instr(Mnemonic.braid, InstrClass.Transfer | InstrClass.Delay, Pc16)),
+                    (0x1C, Instr(Mnemonic.bralid, InstrClass.Transfer | InstrClass.Delay, Rd, Pc16))),
+                SparseBe(6, 5, "  0x2F", invalid,
+                    (0x00, Instr(Mnemonic.beqi, Ra, Pc16)),
+                    (0x01, Instr(Mnemonic.bnei, Ra, Pc16)),
+                    (0x02, Instr(Mnemonic.blti, Ra, Pc16)),
+                    (0x03, Instr(Mnemonic.blei, Ra, Pc16)),
+                    (0x04, Instr(Mnemonic.bgti, Ra, Pc16)),
+                    (0x05, Instr(Mnemonic.bgei, Ra, Pc16)),
+
+                    (0x10, Instr(Mnemonic.beqid, Ra, Pc16)),
+                    (0x11, Instr(Mnemonic.bneid, Ra, Pc16)),
+                    (0x12, Instr(Mnemonic.bltid, Ra, Pc16)),
+                    (0x13, Instr(Mnemonic.bleid, Ra, Pc16)),
+                    (0x14, Instr(Mnemonic.bgtid, Ra, Pc16)),
+                    (0x15, Instr(Mnemonic.bgeid, Ra, Pc16))),
+
+                // 30
+                Instr(Mnemonic.lbu, Rd,Ra,Rb),
+                Instr(Mnemonic.lhu, Rd,Ra,Rb),
+                Instr(Mnemonic.lw, Rd,Ra,Rb),
                 Nyi("0x33"),
-                Nyi("0x34"),
-                Nyi("0x35"),
-                Nyi("0x36"),
+
+                Instr(Mnemonic.sb, Rd, Ra, Rb),
+                Instr(Mnemonic.sh, Rd, Ra, Rb),
+                Instr(Mnemonic.sw, Rd, Ra, Rb),
                 Nyi("0x37"),
-                Nyi("0x38"),
-                Nyi("0x39"),
-                Nyi("0x3A"),
+
+                Instr(Mnemonic.lbui, Rd, Ra, Is16),
+                Instr(Mnemonic.lhui, Rd, Ra, Is16),
+                Instr(Mnemonic.lwi, Rd, Ra,  Is16),
                 Nyi("0x3B"),
-                Nyi("0x3C"),
-                Nyi("0x3D"),
-                Nyi("0x3E"),
+
+                Instr(Mnemonic.sbi, Rd, Ra, Is16),
+                Instr(Mnemonic.shi, Rd, Ra, Is16),
+                Instr(Mnemonic.swi, Rd, Ra, Is16),
                 Nyi("0x3F"));
         }
     }
