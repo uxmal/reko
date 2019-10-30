@@ -16,6 +16,7 @@
       <heuristic name="shingle" />
       <onLoad Enabled="false" />
       <registerValues />
+      <extractResources>false</extractResources>
     </user>
   </input>
 </project>

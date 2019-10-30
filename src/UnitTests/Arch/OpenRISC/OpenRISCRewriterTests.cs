@@ -636,5 +636,23 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r11 = r11 >> r14");
         }
+
+        [Test]
+        public void OpenRiscRw_csync()
+        {
+            BuildTest("23000000");  // l.csync
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__csync()");
+        }
+
+        [Test]
+        public void OpenRiscRw_psync()
+        {
+            BuildTest("22800000");  // l.psync
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__psync()");
+        }
     }
 }

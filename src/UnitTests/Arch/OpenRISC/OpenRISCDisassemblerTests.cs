@@ -255,5 +255,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             AssertCode("l.mul\tr14,r11,r4", "E1CB2306");
         }
+
+        [Test]
+        public void OpenRiscDis_csync()
+        {
+            AssertCode("l.csync", "23000000");
+        }
+
+        [Test]
+        public void OpenRiscDis_psync()
+        {
+            AssertCode("l.psync", "22800000");
+        }
     }
 }

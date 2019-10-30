@@ -49,6 +49,7 @@
 ;;     0000495C (in fn0000490C)
 ;;     00004A8C (in fn00004A6C)
 ;;     00004BC4 (in fn00004B44)
+;;     00004D28 (in fn00004C48)
 fn000043D0 proc
 	l.sw	-4(r1),r9
 	l.sw	-8(r1),r2
@@ -673,7 +674,7 @@ fn00004B44 proc
 	l.lwz	r3,0(r22)
 	l.and	r20,r20,r3
 	l.sw	0(r22),r20
-	Invalid
+	l.csync
 	l.jal	0000C8A0
 	l.ori	r3,r18,00000000
 	l.lwz	r3,0(r16)
@@ -740,7 +741,7 @@ l00004C98:
 	l.lwz	r6,0(r4)
 	l.or	r5,r6,r5
 	l.sw	0(r4),r5
-	Invalid
+	l.csync
 	l.jal	0000C8A0
 	l.nop
 	l.movhi	r4,00000170
@@ -765,18 +766,9 @@ l00004C98:
 	l.lwz	r16,-12(r1)
 	l.j	000043D0
 	l.lwz	r18,-8(r1)
-	l.sw	-4(r1),r9
-	l.addi	r1,r1,-00000004
-	l.addi	r1,r1,+00000004
-	l.lwz	r9,-4(r1)
-	l.j	0000C8A0
-	l.nop
-	l.lwz	r6,0(r3)
-	l.xori	r4,r4,0000FFFF
-	l.and	r4,r4,r6
-	l.or	r5,r4,r5
-	l.jr	r9
-	l.sw	0(r3),r5
+00004D30 D7 E1 4F FC 9C 21 FF FC 9C 21 00 04 85 21 FF FC ..O..!...!...!..
+00004D40 00 00 1E D8 15 00 00 00 84 C3 00 00 AC 84 FF FF ................
+00004D50 E0 84 30 03 E0 A4 28 04 44 00 48 00 D4 03 28 00 ..0...(.D.H...(.
 
 ;; fn00004D60: 00004D60
 ;;   Called from:
@@ -10383,6 +10375,8 @@ l0000C88C:
 ;;     00004450 (in fn000043D0)
 ;;     00004460 (in fn000043D0)
 ;;     000044A4 (in fn000043D0)
+;;     00004BE8 (in fn00004B44)
+;;     00004CD0 (in fn00004C48)
 ;;     00004FDC (in fn00004D60)
 ;;     00006378 (in fn000062BC)
 ;;     000064B0 (in fn00006394)
@@ -14622,8 +14616,8 @@ fn0000FA94 proc
 	l.sw	-8(r1),r3
 	l.sw	-12(r1),r4
 	l.sw	-16(r1),r5
-	Invalid
-	Invalid
+	l.msync
+	l.csync
 	l.addi	r3,r0,+00000010
 	l.addi	r4,r0,+00000000
 	l.addi	r5,r0,+00001000
@@ -14631,7 +14625,7 @@ fn0000FA94 proc
 	l.sfne	r4,r5
 	l.bf	0000FAB8
 	l.add	r4,r4,r3
-	Invalid
+	l.psync
 	l.lwz	r9,-4(r1)
 	l.lwz	r3,-8(r1)
 	l.lwz	r4,-12(r1)

@@ -101,6 +101,8 @@ namespace Reko.Arch.OpenRISC
         l_trap,
         l_xor,
         l_xori,
-
+        l_msync,
+        l_psync,
+        l_csync,
     }
 }

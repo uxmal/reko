@@ -79,6 +79,7 @@ namespace Reko.Arch.OpenRISC
                 case Mnemonic.l_bf: RewriteBranch(false); break;
                 case Mnemonic.l_bnf: RewriteBranch(true); break;
                 case Mnemonic.l_cmov: RewriteCmov(); break;
+                case Mnemonic.l_csync: RewriteCsync(); break;
                 case Mnemonic.l_j: RewriteJ(); break;
                 case Mnemonic.l_jal: RewriteJal(); break;
                 case Mnemonic.l_jalr: RewriteJalr(); break;
@@ -102,6 +103,7 @@ namespace Reko.Arch.OpenRISC
                 case Mnemonic.l_nop: m.Nop(); break;
                 case Mnemonic.l_or: RewriteBinOp(m.Or); break;
                 case Mnemonic.l_ori: RewriteBinOpImm(m.Or); break;
+                case Mnemonic.l_psync: RewritePsync(); break;
                 case Mnemonic.l_rfe: RewriteRfe(); break;
                 case Mnemonic.l_sb: RewriteStore(); break;
                 case Mnemonic.l_sh: RewriteStore(); break;
@@ -331,6 +333,11 @@ namespace Reko.Arch.OpenRISC
             m.Assign(dst, m.Conditional(dst.DataType, f, a, b));
         }
 
+        private void RewriteCsync()
+        {
+            m.SideEffect(host.PseudoProcedure("__csync", VoidType.Instance));
+        }
+
         private void RewriteJ()
         {
             m.GotoD(Addr(instrCur.Operands[0]));
@@ -431,6 +438,11 @@ namespace Reko.Arch.OpenRISC
             var src = Reg(instrCur.Operands[1]);
             var spr = Spr(instrCur.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__mtspr", VoidType.Instance, spr, src));
+        }
+
+        private void RewritePsync()
+        {
+            m.SideEffect(host.PseudoProcedure("__psync", VoidType.Instance));
         }
 
         private void RewriteRfe()

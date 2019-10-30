@@ -69,7 +69,7 @@ namespace Reko.Core
 		public PseudoProcedure(string name, FunctionType sig) : base(name)
 		{
 			this.sig = sig;
-            this.returnType = sig.ReturnValue.DataType;
+            this.returnType = sig.ReturnValue?.DataType;
 		}
 
 		public int Arity

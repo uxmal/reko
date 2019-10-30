@@ -621,6 +621,27 @@ l0800_112E: warning: Non-integral switch expression
 === Microchip\C18\PIC18\PIC18Legacy.hex
 *** Microchip\C18\PIC18\PIC18Legacy.hex
 00013A: error: PIC Hardware stack underflow.
+=== OpenRISC\sunxi\blob.dcproject
+*** OpenRISC\sunxi\blob.dcproject
+error: An error occurred during decompilation. System.IO.FileNotFoundException: Could not load file or assembly 'Reko.Arch.OpenRISC' or one of its dependencies. The system cannot find the file specified.
+File name: 'Reko.Arch.OpenRISC'
+   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   at System.Type.GetType(String typeName, Boolean throwOnError)
+   at Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(String archLabel) in D:\dev\uxmal\reko\master\src\Core\Configuration\RekoConfigurationService.cs:line 338
+   at Reko.Core.Serialization.ProjectLoader.LoadProject(String filename, Project_v5 sp) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 169
+   at Reko.Core.Serialization.ProjectLoader.Deserializer.VisitProject_v5(Project_v5 sProject) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 157
+   at Reko.Core.Serialization.Project_v5.Accept[T](ISerializedProjectVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Serialization\Project_v5.cs:line 64
+   at Reko.Core.Serialization.ProjectLoader.LoadProject(String filename, Stream stm) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 138
+   at Reko.Core.Serialization.ProjectLoader.LoadProject(String fileName, Byte[] image) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 82
+   at Reko.DecompilerDriver.Load(String fileName, String loaderName) in D:\dev\uxmal\reko\master\src\Decompiler\DecompilerDriver.cs:line 199
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 154
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
 === PDP-11\lunar.lda
 *** PDP-11\lunar.lda
 168A: warning: Procedure fn1674 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
@@ -1493,4 +1514,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 57 binaries in 77.58 seconds ---
+Decompiled 58 binaries in 74.41 seconds ---
