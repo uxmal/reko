@@ -18,23 +18,18 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
-using Reko.Core.Configuration;
 
-namespace Reko.ImageLoaders.MachO.Arch
+namespace Reko.Arch.MicroBlaze
 {
-    public class X86Specific : ArchSpecific
+    public class Registers
     {
-        public X86Specific(IProcessorArchitecture arch) : base(arch) { }
+        public static readonly RegisterStorage[] GpRegs;
 
-        public override Address ReadStub(Address addrStub, MemoryArea mem)
+        static Registers()
         {
-            throw new NotImplementedException();
+            var factory = new StorageFactory();
+            GpRegs = factory.RangeOfReg32(32, "r{0}");
         }
     }
 }

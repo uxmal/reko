@@ -166,6 +166,7 @@
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
     <Compile Include="Arch\M6800\M6812DisassemblerTests.cs" />
     <Compile Include="Arch\M6800\M6812RewriterTests.cs" />
+    <Compile Include="Arch\MicroBlaze\MicroBlazeDisassemblerTests.cs" />
     <Compile Include="Arch\Mips\MicroMipsDisassemblerTests.cs" />
     <Compile Include="Arch\Mips\NanoMipsDisassemblerTests.cs" />
     <Compile Include="Arch\OpenRISC\OpenRISCDisassemblerTests.cs" />
@@ -831,6 +832,10 @@
     <ProjectReference Include="..\Arch\M68k\M68k.csproj">
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\MicroBlaze\MicroBlaze.csproj">
+      <Project>{9E952B82-A52F-4221-BC4A-DD9D8B9F7854}</Project>
+      <Name>MicroBlaze</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Microchip\MicrochipPIC.csproj">
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>

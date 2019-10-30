@@ -18,23 +18,12 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core;
-using Reko.Core.Configuration;
 
-namespace Reko.ImageLoaders.MachO.Arch
+namespace Reko.Arch.MicroBlaze
 {
-    public class X86Specific : ArchSpecific
+    public enum Mnemonic
     {
-        public X86Specific(IProcessorArchitecture arch) : base(arch) { }
-
-        public override Address ReadStub(Address addrStub, MemoryArea mem)
-        {
-            throw new NotImplementedException();
-        }
+        Invalid,
+        xor,
     }
 }
