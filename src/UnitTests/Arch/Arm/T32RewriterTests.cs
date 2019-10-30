@@ -81,6 +81,11 @@ namespace Reko.UnitTests.Arch.Arm
                 return new PseudoProcedure(name, returnType, arity);
             }
 
+            public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+            {
+                throw new NotImplementedException();
+            }
+
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
                 throw new NotImplementedException();

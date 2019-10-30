@@ -152,6 +152,7 @@
         <File Source="$(var.Mips.TargetPath)" />
         <File Source="$(var.Mos6502.TargetPath)" />
         <File Source="$(var.MSP430.TargetPath)" />
+        <File Source="$(var.OpenRISC.TargetPath)" />
         <File Source="$(var.PaRisc.TargetPath)" />
         <File Source="$(var.Pdp11.TargetPath)" />
         <File Source="$(var.PowerPC.TargetPath)" />

@@ -103,13 +103,24 @@ namespace Reko.UnitTests.Scanning
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
             {
-                PseudoProcedure p;
-                if (!pprocs.TryGetValue(name, out p))
+                if (!pprocs.TryGetValue(name, out PseudoProcedure p))
                 {
                     p = new PseudoProcedure(name, returnType, arity);
                     pprocs.Add(name, p);
                 }
                 return p;
+            }
+
+            public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+            {
+                if (!pprocs.TryGetValue(name, out var intrinsic))
+                {
+                    intrinsic = new PseudoProcedure(name, fnType);
+                    pprocs.Add(name, intrinsic);
+                }
+                return new Application(
+                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
+                    intrinsic.ReturnType, args);
             }
 
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)

@@ -40,8 +40,8 @@ namespace Reko.Loading
     /// </summary>
     public class Loader : ILoader
     {
-        private IConfigurationService cfgSvc;
-        private UnpackingService unpackerSvc;
+        private readonly IConfigurationService cfgSvc;
+        private readonly UnpackingService unpackerSvc;
 
         public Loader(IServiceProvider services)
         {

@@ -36,6 +36,7 @@ namespace Reko.Core
         /// <param name="args"></param>
         /// <returns>An Application expression.</returns>
         Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
+        Expression CallIntrinsic(string name, FunctionType fnType, params Expression [] args);
         Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
 

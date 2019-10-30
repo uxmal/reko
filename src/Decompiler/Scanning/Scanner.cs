@@ -809,6 +809,15 @@ namespace Reko.Scanning
             return ppp;
         }
 
+        public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+        {
+            var intrinsic = Program.EnsurePseudoProcedure(name, fnType);
+            return new Application(
+                new ProcedureConstant(Program.Architecture.PointerType, intrinsic),
+                fnType.ReturnValue.DataType,
+                args);
+        }
+
         public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
         {
             var ppp = Program.EnsurePseudoProcedure(name, returnType, args);

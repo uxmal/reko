@@ -192,6 +192,10 @@
       <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
       <Name>Arm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Cray\Cray.csproj">
+      <Project>{47b16677-2bfc-4a5c-a830-e1683c574aec}</Project>
+      <Name>Cray</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\i8051\i8051.csproj">
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
       <Name>i8051</Name>
@@ -219,6 +223,10 @@
     <ProjectReference Include="..\..\Arch\MSP430\MSP430.csproj">
       <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
       <Name>MSP430</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\OpenRISC\OpenRISC.csproj">
+      <Project>{a2d0eb22-6807-4c6f-9974-3b9721980f06}</Project>
+      <Name>OpenRISC</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\PaRisc\PaRisc.csproj">
       <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>

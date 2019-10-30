@@ -83,6 +83,19 @@ namespace Reko.Core.Rtl
         }
 
         /// <summary>
+        /// Generates a non-delayed RtlBranch instruction which jumps to the address <paramref name="target"/>
+        /// if the boolean expression <paramref name="condition" /> is true. 
+        /// </summary>
+        /// <param name="condition">Boolean expression</param>
+        /// <param name="target">Control goes to this address if condition is true</param>
+        /// <returns>A reference to this RtlEmitter.</returns>
+        public RtlEmitter Branch(Expression condition, Address target)
+        {
+            Instructions.Add(new RtlBranch(condition, target, InstrClass.ConditionalTransfer));
+            return this;
+        }
+
+        /// <summary>
         /// Called when we need to generate an RtlBranch in the middle of an operation.
         /// Normally, branches are at the end of the Rtl's of a translated instruction,
         /// but in some cases, they are not.

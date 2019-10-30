@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>openRisc</arch>
+  <input>
+    <filename>blob.bin</filename>
+    <asmDir>blob.reko</asmDir>
+    <srcDir>blob.reko</srcDir>
+    <includeDir>blob.reko</includeDir>
+    <resources>blob.reko\resources</resources>
+    <user>
+      <address>00000000</address>
+      <loader>raw</loader>
+      <processor name="openRisc">
+        <item key="Endianness">be</item>
+      </processor>
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+    </user>
+  </input>
+</project>
