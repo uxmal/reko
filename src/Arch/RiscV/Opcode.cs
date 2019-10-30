@@ -141,5 +141,7 @@ namespace Reko.Arch.RiscV
         c_fsd,
         remw,
         divuw,
+        ecall,
+        ebreak,
     }
 }

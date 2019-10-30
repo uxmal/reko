@@ -160,6 +160,7 @@
     <Compile Include="Analysis\StackPointerBackpropagatorTests.cs" />
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
+    <Compile Include="Arch\Arc\ArcDisassemblerTests.cs" />
     <Compile Include="Arch\Arm\A64RewriterTests.cs" />
     <Compile Include="Arch\Arm\Arm64ArchitectureTests.cs" />
     <Compile Include="Arch\Cray\Cray1\Cray1DisassemblerTests.cs" />
@@ -807,6 +808,10 @@
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
       <Project>{C4C56725-BFD0-405A-802C-2C66FCD0EF06}</Project>
       <Name>Alpha</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Arc\Arc.csproj">
+      <Project>{F9C628DF-EB23-46D7-9580-3A2B749E8BDA}</Project>
+      <Name>Arc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Arm\Arm.csproj">
       <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
