@@ -18,6 +18,7 @@ namespace Reko.Arch.Tms7000
         
         public Tms7000Architecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Big;
             this.GpRegs = Enumerable.Range(0, 256)
                 .Select(n => RegisterStorage.Reg8($"r{n}", n))
                 .ToArray();
@@ -45,31 +46,6 @@ namespace Reko.Arch.Tms7000
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Tms7000Disassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new BeImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -165,11 +141,6 @@ namespace Reko.Arch.Tms7000
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
         {
             throw new NotImplementedException();
         }

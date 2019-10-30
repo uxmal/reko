@@ -278,74 +278,9 @@ namespace Reko.Arch.Mips
 
     public class MipsBe32Architecture : MipsProcessorArchitecture
     {
-        public MipsBe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
+        public MipsBe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Ptr32)
         {
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new BeImageWriter(mem, addr);
-        }
-
-        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
-        {
-                var uAddr = c.ToUInt32();
-                if (codeAlign)
-                    uAddr &= ~3u;
-                return Address.Ptr32(uAddr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadBe(addr, dt, out value);
-        }
-    }
-
-    public class MipsLe32Architecture : MipsProcessorArchitecture
-    {
-        public MipsLe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
+            Endianness = EndianServices.Big;
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -355,41 +290,29 @@ namespace Reko.Arch.Mips
                 uAddr &= ~3u;
             return Address.Ptr32(uAddr);
         }
+    }
 
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+    public class MipsLe32Architecture : MipsProcessorArchitecture
+    {
+        public MipsLe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Ptr32)
         {
-            return mem.TryReadLe(addr, dt, out value);
+            Endianness = EndianServices.Little;
+        }
+
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
+        {
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
     }
 
     public class MipsBe64Architecture : MipsProcessorArchitecture
     {
         public MipsBe64Architecture(string archId) : base(archId, PrimitiveType.Word64, PrimitiveType.Ptr64)
-        { }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new BeImageWriter(mem, addr);
+            Endianness = EndianServices.Big;
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -398,11 +321,6 @@ namespace Reko.Arch.Mips
             if (codeAlign)
                 uAddr &= ~3u;
             return Address.Ptr64(uAddr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadBe(addr, dt, out value);
         }
     }
 
@@ -410,31 +328,7 @@ namespace Reko.Arch.Mips
     {
         public MipsLe64Architecture(string archId) : base(archId, PrimitiveType.Word64, PrimitiveType.Ptr64)
         {
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
+            Endianness = EndianServices.Little;
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -443,11 +337,6 @@ namespace Reko.Arch.Mips
             if (codeAlign)
                 uAddr &= ~3u;
             return Address.Ptr64(uAddr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

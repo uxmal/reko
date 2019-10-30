@@ -33,37 +33,13 @@ namespace Reko.Arch.Cray
     {
         public Cray1Architecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Cray1.Cray1Disassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new BeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new BeImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -142,11 +118,6 @@ namespace Reko.Arch.Cray
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
         {
             throw new NotImplementedException();
         }

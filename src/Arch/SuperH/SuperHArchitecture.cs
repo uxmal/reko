@@ -138,36 +138,7 @@ namespace Reko.Arch.SuperH
     {
         public SuperHLeArchitecture(string archId) : base(archId)
         {
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new LeImageWriter(img, addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
+            Endianness = EndianServices.Little;
         }
     }
 
@@ -175,36 +146,7 @@ namespace Reko.Arch.SuperH
     {
         public SuperHBeArchitecture(string arch) : base(arch)
         {
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new BeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new BeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new BeImageWriter(img, addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadBe(addr, dt, out value);
+            Endianness = EndianServices.Big;
         }
     }
 }

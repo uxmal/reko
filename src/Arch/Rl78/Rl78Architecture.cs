@@ -38,6 +38,7 @@ namespace Reko.Arch.Rl78
 
         public Rl78Architecture(string archId) : base(archId)
         {
+            Endianness = EndianServices.Little;
             InstructionBitSize = 8;
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
@@ -52,31 +53,6 @@ namespace Reko.Arch.Rl78
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Rl78Disassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -168,11 +144,6 @@ namespace Reko.Arch.Rl78
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Reko.Environments.C64
         public C64Basic(SortedList<ushort, C64BasicInstruction> program) : base("c64Basic")
         {
             this.Description = "Commodore 64 Basic";
+            this.Endianness = EndianServices.Little;
             this.program = program;
             this.PointerType = PrimitiveType.Ptr16;
             this.InstructionBitSize = 8;
@@ -60,31 +61,6 @@ namespace Reko.Environments.C64
             {
                 yield return program.Values[i];
             }
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea mem, ulong off)
-        {
-            return new LeImageReader(mem, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -182,11 +158,6 @@ namespace Reko.Environments.C64
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
 
         public class C64BasicState : ProcessorState

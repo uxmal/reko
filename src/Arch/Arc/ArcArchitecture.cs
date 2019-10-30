@@ -33,6 +33,7 @@ namespace Reko.Arch.Arc
     {
         public ArcArchitecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             base.FramePointerType = PrimitiveType.Ptr32;
             base.InstructionBitSize = 16;
             base.PointerType = PrimitiveType.Ptr32;
@@ -42,31 +43,6 @@ namespace Reko.Arch.Arc
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new ArcDisassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -129,6 +105,15 @@ namespace Reko.Arch.Arc
             throw new NotImplementedException();
         }
 
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            Endianness = (options.TryGetValue("Endianness", out var oEndian)
+                && oEndian is string sEndian
+                && string.Compare(sEndian, "be") == 0)
+                ? EndianServices.Big
+                : EndianServices.Little;
+        }
+
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             throw new NotImplementedException();
@@ -145,11 +130,6 @@ namespace Reko.Arch.Arc
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
         {
             throw new NotImplementedException();
         }

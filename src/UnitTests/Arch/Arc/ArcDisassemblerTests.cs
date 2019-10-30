@@ -43,6 +43,10 @@ namespace Reko.UnitTests.Arch.Arc
         public void Setup()
         {
             this.arch = new ArcArchitecture("arc");
+            arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { "Endianness", "be" }
+            });
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -61,9 +65,9 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        public void ArcDasm_xx()
+        public void ArcDasm_unimp_s()
         {
-
+            AssertCode("unimp_s", "79E0");
         }
     }
 }

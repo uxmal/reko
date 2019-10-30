@@ -55,6 +55,7 @@ namespace Reko.Arch.RiscV
 
         public RiscVArchitecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 16;
             //$TODO: what about 32-bit version of arch?
             this.PointerType = PrimitiveType.Ptr64;
@@ -85,31 +86,6 @@ namespace Reko.Arch.RiscV
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new RiscVDisassembler(this, imageReader);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -199,11 +175,6 @@ namespace Reko.Arch.RiscV
         {
             //$TODO: what if 32-bit?
             return Address.TryParse64(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

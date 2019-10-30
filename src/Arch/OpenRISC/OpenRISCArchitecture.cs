@@ -45,38 +45,11 @@ namespace Reko.Arch.OpenRISC
             this.WordWidth = PrimitiveType.Word32;
         }
 
-        public EndianServices Endianness { get; set; }
-
         public PrimitiveType SignedWordWidth { get; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new OpenRISCDisassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return Endianness.CreateImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return Endianness.CreateImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return Endianness.CreateImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return Endianness.CreateImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return Endianness.CreateImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -192,11 +165,6 @@ namespace Reko.Arch.OpenRISC
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return Endianness.TryRead(mem, addr, dt, out value);
         }
     }
 }

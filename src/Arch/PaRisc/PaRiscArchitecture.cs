@@ -35,6 +35,7 @@ namespace Reko.Arch.PaRisc
     {
         public PaRiscArchitecture(string archId) : base(archId)
         {
+            Endianness = EndianServices.Big;
             InstructionBitSize = 32;
             StackRegister = Registers.GpRegs[30];
             Options = new Dictionary<string, object>();
@@ -47,31 +48,6 @@ namespace Reko.Arch.PaRisc
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new PaRiscDisassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new BeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new BeImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new BeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -207,11 +183,6 @@ namespace Reko.Arch.PaRisc
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            throw new NotImplementedException();
         }
     }
 }

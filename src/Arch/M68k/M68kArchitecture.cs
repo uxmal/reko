@@ -41,6 +41,7 @@ namespace Reko.Arch.M68k
 
         public M68kArchitecture(string archId) : base(archId)
         {
+            Endianness = EndianServices.Big;
             InstructionBitSize = 16;
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
@@ -74,31 +75,6 @@ namespace Reko.Arch.M68k
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new M68kPointerScanner(rdr, knownLinAddresses, flags).Select(li => Address.Ptr32(li));
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new BeImageWriter(mem, addr);
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -221,11 +197,6 @@ namespace Reko.Arch.M68k
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadBe(addr, dt, out value);
         }
     }
 }

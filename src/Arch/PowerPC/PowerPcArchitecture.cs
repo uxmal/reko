@@ -364,20 +364,15 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            //$TODO: PPC is bi-endian
-            return mem.TryReadLe(addr, dt, out value);
-        }
-
-
         #endregion
     }
 
     public class PowerPcBe32Architecture : PowerPcArchitecture
     {
         public PowerPcBe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Int32)
-        { }
+        {
+            Endianness = EndianServices.Big;
+        }
 
         public override IEnumerable<Address> CreatePointerScanner(
             SegmentMap map, 
@@ -400,31 +395,6 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr32(uAddr);
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new BeImageWriter(mem, addr);
-        }
-
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
@@ -435,37 +405,12 @@ namespace Reko.Arch.PowerPC
     {
         public PowerPcLe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Int32)
         {
-
+            this.Endianness = EndianServices.Little;
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addrs, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -486,7 +431,9 @@ namespace Reko.Arch.PowerPC
     {
         public PowerPcBe64Architecture(string archId)
             : base(archId, PrimitiveType.Word64, PrimitiveType.Int64)
-        { }
+        {
+            Endianness = EndianServices.Big;
+        }
 
         public override IEnumerable<Address> CreatePointerScanner(
             SegmentMap map,
@@ -507,36 +454,6 @@ namespace Reko.Arch.PowerPC
             if (codeAlign)
                 uAddr &= ~3u;
             return Address.Ptr64(uAddr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageWriter(mem, addr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

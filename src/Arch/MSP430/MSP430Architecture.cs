@@ -39,6 +39,7 @@ namespace Reko.Arch.Msp430
 
         public Msp430Architecture(string archName) : base(archName)
         {
+            this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 16;
             this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word16;
@@ -50,31 +51,6 @@ namespace Reko.Arch.Msp430
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new Msp430Disassembler(this, imageReader);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea mem, ulong off)
-        {
-            return new LeImageReader(mem, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -179,11 +155,6 @@ namespace Reko.Arch.Msp430
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

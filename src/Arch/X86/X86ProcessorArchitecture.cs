@@ -62,6 +62,7 @@ namespace Reko.Arch.X86
         {
             this.mode = mode;
             this.flagGroups = new List<FlagGroupStorage>();
+            this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;
             this.CarryFlagMask = (uint)FlagM.CF;
             this.PointerType = mode.PointerType;
@@ -86,31 +87,6 @@ namespace Reko.Arch.X86
         public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
             return mode.CreateDisassembler(imageReader, Options);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -335,11 +311,6 @@ namespace Reko.Arch.X86
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return mode.TryParseAddress(txtAddress, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 

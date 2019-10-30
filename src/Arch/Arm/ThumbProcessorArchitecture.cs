@@ -46,6 +46,7 @@ namespace Reko.Arch.Arm
 
         public ThumbArchitecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
@@ -132,31 +133,6 @@ namespace Reko.Arch.Arm
         {
             return new ThumbRewriter(this, rdr, host, binder);
             //return new ThumbRewriterRetired(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -260,11 +236,6 @@ namespace Reko.Arch.Arm
             if (codeAlign)
                 uAddr &= ~1u;
             return Address.Ptr32(uAddr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

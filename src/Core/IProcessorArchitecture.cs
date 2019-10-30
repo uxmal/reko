@@ -309,6 +309,7 @@ namespace Reko.Core
 
         public string Name { get; }
         public string Description { get; set; }
+        public EndianServices Endianness { get; protected set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
@@ -340,11 +341,32 @@ namespace Reko.Core
 
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addr);
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, ulong off);
-        public abstract ImageWriter CreateImageWriter();
-        public abstract ImageWriter CreateImageWriter(MemoryArea img, Address addr);
+
+        public EndianImageReader CreateImageReader(MemoryArea img, Address addr)
+        {
+            return Endianness.CreateImageReader(img, addr);
+        }
+
+        public EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
+        {
+            return Endianness.CreateImageReader(img, addrBegin, addrEnd);
+        }
+
+        public EndianImageReader CreateImageReader(MemoryArea img, ulong off)
+        {
+            return Endianness.CreateImageReader(img, off);
+        }
+
+        public ImageWriter CreateImageWriter()
+        {
+            return Endianness.CreateImageWriter();
+        }
+
+        public ImageWriter CreateImageWriter(MemoryArea img, Address addr)
+        {
+            return Endianness.CreateImageWriter(img, addr);
+        }
+
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
@@ -434,7 +456,11 @@ namespace Reko.Core
         public virtual Dictionary<string, object> SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
-        public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
+
+        public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return Endianness.TryRead(mem, addr, dt, out value);
+        }
     }
 
 }

@@ -59,16 +59,10 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
 20000000: warning: Expected sizes of arrays to have been determined by now
 0000A2A4: warning: Expected sizes of arrays to have been determined by now
 0000A554: warning: Expected sizes of arrays to have been determined by now
-error: An error occurred during decompilation. System.IO.IOException: The requested operation cannot be performed on a file with a user-mapped section open.
-
-   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
-   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
-   at Reko.Core.Services.FileSystemServiceImpl.CreateFileStream(String filename, FileMode mode, FileAccess access) in D:\dev\uxmal\reko\master\src\Core\Services\IFileSystemService.cs:line 70
-   at Reko.DecompiledFileService.CreateTextWriter(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 103
-   at Reko.DecompiledFileService.WriteDecompiledCode(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 155
-   at Reko.DecompilerDriver.WriteDecompilerProducts() in D:\dev\uxmal\reko\master\src\Decompiler\DecompilerDriver.cs:line 608
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 187
+0000A284: warning: Expected sizes of arrays to have been determined by now
+0000A2A4: warning: Expected sizes of arrays to have been determined by now
+0000A554: warning: Expected sizes of arrays to have been determined by now
+20000000: warning: Expected sizes of arrays to have been determined by now
 === Elf\ARM\switch\switch
 === Elf\MIPS\redir\redir
 *** Elf\MIPS\redir\redir
@@ -140,19 +134,6 @@ error: An error occurred during decompilation. System.IO.IOException: The reques
 00000222: warning: Expected sizes of arrays to have been determined by now
 00000226: warning: Expected sizes of arrays to have been determined by now
 === Elf\RiscV\ipcalc\ipcalc.dcproject
-*** Elf\RiscV\ipcalc\ipcalc.dcproject
-error: An error occurred during decompilation. System.TypeLoadException: Method 'CreateImageReader' in type 'Reko.Arch.RiscV.RiscVArchitecture' from assembly 'Reko.Arch.RiscV, Version=0.8.2.0, Culture=neutral, PublicKeyToken=null' does not have an implementation.
-   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
-   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
-   at System.Type.GetType(String typeName, Boolean throwOnError)
-   at Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(String archLabel) in D:\dev\uxmal\reko\master\src\Core\Configuration\RekoConfigurationService.cs:line 338
-   at Reko.Core.Serialization.ProjectLoader.LoadProject(String filename, Project_v4 sp) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 199
-   at Reko.Core.Serialization.ProjectLoader.Deserializer.VisitProject_v4(Project_v4 sProject) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 156
-   at Reko.Core.Serialization.Project_v4.Accept[T](ISerializedProjectVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Serialization\Project_v4.cs:line 62
-   at Reko.Core.Serialization.ProjectLoader.LoadProject(String filename, Stream stm) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 138
-   at Reko.Core.Serialization.ProjectLoader.LoadProject(String fileName, Byte[] image) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 82
-   at Reko.DecompilerDriver.Load(String fileName, String loaderName) in D:\dev\uxmal\reko\master\src\Decompiler\DecompilerDriver.cs:line 199
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 154
 === Elf\Sparc\from_boomerang\subject.exe
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
@@ -1533,4 +1514,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 58 binaries in 85.05 seconds ---
+Decompiled 58 binaries in 81.02 seconds ---

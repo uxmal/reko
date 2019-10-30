@@ -50,6 +50,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public PICArchitecture(string archId) : base(archId)
         {
             flagGroups = new Dictionary<uint, FlagGroupStorage>();
+            Endianness = EndianServices.Little;
             FramePointerType = PrimitiveType.Offset16;
             InstructionBitSize = 8;
             PointerType = PrimitiveType.Ptr32;
@@ -305,21 +306,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             return dict;
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-            => new LeImageReader(image, addr);
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-            => new LeImageReader(image, addrBegin, addrEnd);
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-            => new LeImageReader(image, offset);
-
-        public override ImageWriter CreateImageWriter()
-            => new LeImageWriter();
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-            => new LeImageWriter(mem, addr);
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
             => ProcessorModel.CreateRewriter(this, ProcessorModel.CreateDisassembler(this, rdr), (PICProcessorState)state, frame, host);
 
@@ -343,9 +329,6 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
             => Address.TryParse32(txtAddress, out addr);
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-            => mem.TryReadLe(addr, dt, out value);
 
         public override void PostprocessProgram(Program program)
             => ProcessorModel.PostprocessProgram(program, this);

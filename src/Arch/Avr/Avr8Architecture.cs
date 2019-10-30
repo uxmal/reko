@@ -39,6 +39,7 @@ namespace Reko.Arch.Avr
 
         public Avr8Architecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.PointerType = PrimitiveType.Ptr16;
             this.WordWidth = PrimitiveType.Word16;
             this.FramePointerType = PrimitiveType.UInt8;
@@ -89,31 +90,6 @@ namespace Reko.Arch.Avr
 		public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Avr8Disassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -223,11 +199,6 @@ namespace Reko.Arch.Avr
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
 
 
