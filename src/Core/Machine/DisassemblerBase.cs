@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Lib;
-using Reko.Core.Machine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +26,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Reko.Core
+namespace Reko.Core.Machine
 {
     /// <summary>
     /// A disassembler can be considered an enumerator of disassembled

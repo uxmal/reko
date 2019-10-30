@@ -21,6 +21,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Libraries.Microchip;
 using System;
 

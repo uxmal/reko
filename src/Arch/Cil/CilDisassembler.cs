@@ -19,12 +19,12 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
-
 
 namespace Reko.Arch.Cil
 {
