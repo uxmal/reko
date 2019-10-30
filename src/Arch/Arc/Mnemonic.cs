@@ -7,6 +7,7 @@ namespace Reko.Arch.Arc
     public enum Mnemonic
     {
         Invalid,
-
+        nop,
+        unimp_s,
     }
 }

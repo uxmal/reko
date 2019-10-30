@@ -105,6 +105,15 @@ namespace Reko.Arch.Arc
             throw new NotImplementedException();
         }
 
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            Endianness = (options.TryGetValue("Endianness", out var oEndian)
+                && oEndian is string sEndian
+                && string.Compare(sEndian, "be") == 0)
+                ? EndianServices.Big
+                : EndianServices.Little;
+        }
+
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             throw new NotImplementedException();

@@ -353,6 +353,7 @@ namespace Reko.Core
 
         public string Name { get; }
         public string Description { get; set; }
+        public EndianServices Endianness { get; protected set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
@@ -365,7 +366,6 @@ namespace Reko.Core
         /// </remarks>
         public virtual int ReturnAddressOnStack => PointerType.Size; //$TODO: deal with near/far calls in x86-realmode
         public int InstructionBitSize { get; protected set; }
-        public EndianServices Endianness { get; protected set; }
 
         /// <summary>
         /// The stack register used by the architecture.
@@ -513,5 +513,4 @@ namespace Reko.Core
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
     }
-
 }
