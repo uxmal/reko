@@ -19,17 +19,27 @@
 #endregion
 
 using Reko.Core;
+using System;
 
 namespace Reko.Arch.MicroBlaze
 {
     public class Registers
     {
         public static readonly RegisterStorage[] GpRegs;
+        public static readonly RegisterStorage msr;
 
         static Registers()
         {
             var factory = new StorageFactory();
             GpRegs = factory.RangeOfReg32(32, "r{0}");
+
+            msr = factory.Reg32("msr");
         }
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        CY = 1 << 2, // 29
     }
 }

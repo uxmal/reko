@@ -11,7 +11,10 @@
       <address>00000000</address>
       <loader>raw</loader>
       <processor name="microBlaze" />
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
       <registerValues />
+      <extractResources>false</extractResources>
     </user>
   </input>
 </project>

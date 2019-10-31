@@ -172,6 +172,12 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         }
 
         [Test]
+        public void MicroBlazeDis_brai()
+        {
+            AssertCode("brai\t00002E40", "B8082E40");
+        }
+
+        [Test]
         public void MicroBlazeDis_bri()
         {
             AssertCode("bri\t000FFE40", "B800FE40");

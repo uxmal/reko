@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -31,6 +32,8 @@ namespace Reko.Arch.MicroBlaze
 {
     public class MicroBlazeArchitecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups = new Dictionary<uint, FlagGroupStorage>();
+
         public MicroBlazeArchitecture(string archId) : base(archId)
         {
             this.Endianness = EndianServices.Big;
@@ -58,17 +61,26 @@ namespace Reko.Arch.MicroBlaze
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new MicroBlazeState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new MicroBlazeRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var flagregister = Registers.msr;
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -98,17 +110,22 @@ namespace Reko.Arch.MicroBlaze
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.GpRegs;
         }
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            if ((grf & (uint) FlagM.CY) != 0) s.Append('C');
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            var uAddr = c.ToUInt32();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr32(uAddr);
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

@@ -140,6 +140,19 @@ namespace Reko.Arch.MicroBlaze
 
         private static readonly Mutator<MicroBlazeDisassembler> Iu16 = ImmU(16, 16);
 
+        private static Mutator<MicroBlazeDisassembler> Abs(int bePos, int len)
+        {
+            var field = BeField(bePos, len);
+            return (u, d) =>
+            {
+                var n = (uint) field.ReadSigned(u);
+                var addr = Address.Ptr32(n);
+                d.ops.Add(AddressOperand.Create(addr));
+                return true;
+            };
+        }
+
+        private static readonly Mutator<MicroBlazeDisassembler> Abs16 = Abs(16, 16);
 
 
         private static Mutator<MicroBlazeDisassembler> PcRel(int bePos, int len)
@@ -274,7 +287,9 @@ namespace Reko.Arch.MicroBlaze
                 Nyi("0x1F"),
 
                 // 20
-                Instr(Mnemonic.or, Rd, Ra, Rb),
+                Select(u => u == 0x80000000,
+                    Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding), 
+                    Instr(Mnemonic.or, Rd, Ra, Rb)),
                 Instr(Mnemonic.and, Rd, Ra, Rb),
                 Instr(Mnemonic.xor, Rd, Ra, Rb),
                 Instr(Mnemonic.andn, Rd, Ra, Rb),
@@ -290,11 +305,11 @@ namespace Reko.Arch.MicroBlaze
                 SparseBe(11, 5, "0x26", invalid,
                     (0x00, Instr(Mnemonic.br, InstrClass.Transfer, Rb)),
                     (0x08, Instr(Mnemonic.bra, InstrClass.Transfer, Rb)),
-                    (0x0C, Instr(Mnemonic.brk, InstrClass.Transfer | InstrClass.Delay, Rd, Rb)),
+                    (0x0C, Instr(Mnemonic.brk, InstrClass.Transfer | InstrClass.Delay | InstrClass.Call, Rd, Rb)),
                     (0x10, Instr(Mnemonic.brd, InstrClass.Transfer| InstrClass.Delay, Rb)),
-                    (0x14, Instr(Mnemonic.brld, InstrClass.Transfer| InstrClass.Delay, Rd, Rb)),
+                    (0x14, Instr(Mnemonic.brld, InstrClass.Transfer| InstrClass.Delay | InstrClass.Call, Rd, Rb)),
                     (0x18, Instr(Mnemonic.brad, InstrClass.Transfer | InstrClass.Delay, Rb)),
-                    (0x1C, Instr(Mnemonic.brald, InstrClass.Transfer | InstrClass.Delay, Rd, Rb))),
+                    (0x1C, Instr(Mnemonic.brald, InstrClass.Transfer | InstrClass.Delay | InstrClass.Call, Rd, Rb))),
                 Nyi("0x27"),
 
                 Instr(Mnemonic.ori, Rd,Ra,Is16),
@@ -304,32 +319,32 @@ namespace Reko.Arch.MicroBlaze
 
                 Instr(Mnemonic.imm, Iu16),
                 SparseBe(6, 5, "0x2D", invalid,
-                    (0x10, Instr(Mnemonic.rtsd, Ra,Is16)),
-                    (0x11, Instr(Mnemonic.rtid, Ra,Iu16)),
-                    (0x12, Instr(Mnemonic.rtbd, Ra,Iu16)),
-                    (0x14, Instr(Mnemonic.rted, Ra,Iu16))),
+                    (0x10, Instr(Mnemonic.rtsd, InstrClass.Transfer | InstrClass.Delay, Ra,Is16)),
+                    (0x11, Instr(Mnemonic.rtid, InstrClass.Transfer | InstrClass.Delay, Ra,Iu16)),
+                    (0x12, Instr(Mnemonic.rtbd, InstrClass.Transfer | InstrClass.Delay, Ra,Iu16)),
+                    (0x14, Instr(Mnemonic.rted, InstrClass.Transfer | InstrClass.Delay, Ra,Iu16))),
                 SparseBe(11, 5, "0x2E", invalid,
                     (0x00, Instr(Mnemonic.bri, InstrClass.Transfer, Pc16)),
-                    (0x08, Instr(Mnemonic.brai, InstrClass.Transfer, Rb)),
-                    (0x0C, Instr(Mnemonic.brki, InstrClass.Transfer | InstrClass.Delay, Rd, Pc16)),
+                    (0x08, Instr(Mnemonic.brai, InstrClass.Transfer, Abs16)),
+                    (0x0C, Instr(Mnemonic.brki, InstrClass.Transfer | InstrClass.Delay, Rd, Abs16)),
                     (0x10, Instr(Mnemonic.brid, InstrClass.Transfer | InstrClass.Delay, Pc16)),
-                    (0x14, Instr(Mnemonic.brlid, InstrClass.Transfer | InstrClass.Delay, Rd, Pc16)),
-                    (0x18, Instr(Mnemonic.braid, InstrClass.Transfer | InstrClass.Delay, Pc16)),
-                    (0x1C, Instr(Mnemonic.bralid, InstrClass.Transfer | InstrClass.Delay, Rd, Pc16))),
+                    (0x14, Instr(Mnemonic.brlid, InstrClass.Transfer | InstrClass.Delay | InstrClass.Call, Rd, Pc16)),
+                    (0x18, Instr(Mnemonic.braid, InstrClass.Transfer | InstrClass.Delay, Abs16)),
+                    (0x1C, Instr(Mnemonic.bralid, InstrClass.Transfer | InstrClass.Delay | InstrClass.Call, Rd, Abs16))),
                 SparseBe(6, 5, "  0x2F", invalid,
-                    (0x00, Instr(Mnemonic.beqi, Ra, Pc16)),
-                    (0x01, Instr(Mnemonic.bnei, Ra, Pc16)),
-                    (0x02, Instr(Mnemonic.blti, Ra, Pc16)),
-                    (0x03, Instr(Mnemonic.blei, Ra, Pc16)),
-                    (0x04, Instr(Mnemonic.bgti, Ra, Pc16)),
-                    (0x05, Instr(Mnemonic.bgei, Ra, Pc16)),
+                    (0x00, Instr(Mnemonic.beqi, InstrClass.Transfer, Ra, Pc16)),
+                    (0x01, Instr(Mnemonic.bnei, InstrClass.Transfer, Ra, Pc16)),
+                    (0x02, Instr(Mnemonic.blti, InstrClass.Transfer, Ra, Pc16)),
+                    (0x03, Instr(Mnemonic.blei, InstrClass.Transfer, Ra, Pc16)),
+                    (0x04, Instr(Mnemonic.bgti, InstrClass.Transfer, Ra, Pc16)),
+                    (0x05, Instr(Mnemonic.bgei, InstrClass.Transfer, Ra, Pc16)),
 
-                    (0x10, Instr(Mnemonic.beqid, Ra, Pc16)),
-                    (0x11, Instr(Mnemonic.bneid, Ra, Pc16)),
-                    (0x12, Instr(Mnemonic.bltid, Ra, Pc16)),
-                    (0x13, Instr(Mnemonic.bleid, Ra, Pc16)),
-                    (0x14, Instr(Mnemonic.bgtid, Ra, Pc16)),
-                    (0x15, Instr(Mnemonic.bgeid, Ra, Pc16))),
+                    (0x10, Instr(Mnemonic.beqid, InstrClass.Transfer | InstrClass.Delay, Ra, Pc16)),
+                    (0x11, Instr(Mnemonic.bneid, InstrClass.Transfer | InstrClass.Delay, Ra, Pc16)),
+                    (0x12, Instr(Mnemonic.bltid, InstrClass.Transfer | InstrClass.Delay, Ra, Pc16)),
+                    (0x13, Instr(Mnemonic.bleid, InstrClass.Transfer | InstrClass.Delay, Ra, Pc16)),
+                    (0x14, Instr(Mnemonic.bgtid, InstrClass.Transfer | InstrClass.Delay, Ra, Pc16)),
+                    (0x15, Instr(Mnemonic.bgeid, InstrClass.Transfer | InstrClass.Delay, Ra, Pc16))),
 
                 // 30
                 Instr(Mnemonic.lbu, Rd,Ra,Rb),

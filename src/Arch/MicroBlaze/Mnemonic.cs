@@ -100,5 +100,6 @@ namespace Reko.Arch.MicroBlaze
         rsubik,
         addikc,
         rsubikc,
+        nop,
     }
 }
