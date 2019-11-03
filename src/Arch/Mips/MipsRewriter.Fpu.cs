@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -60,6 +60,59 @@ namespace Reko.Arch.Mips
             var src2 = GetFpuRegPair(instr.op3);
             m.Assign(dst, ctor(src1, src2));
         }
+
+        private void RewriteMac_real(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var acc = RewriteOperand(instr.op2);
+            var src1 = RewriteOperand(instr.op3);
+            var src2 = RewriteOperand(instr.op4);
+            var product = m.FMul(src1, src2);
+            product.DataType = dt;
+            var sum = ctor(acc, product);
+            sum.DataType = dt;
+            m.Assign(dst, sum);
+        }
+
+        private void RewriteMac_vec(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var acc = RewriteOperand(instr.op2);
+            var src1 = RewriteOperand(instr.op3);
+            var src2 = RewriteOperand(instr.op4);
+            var product = m.FMul(src1, src2);
+            product.DataType = new ArrayType(dt, src1.DataType.BitSize / dt.BitSize);
+            var sum = ctor(acc, product);
+            sum.DataType = product.DataType;
+            m.Assign(dst, sum);
+        }
+
+        private void RewriteNmac_real(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var acc = RewriteOperand(instr.op2);
+            var src1 = RewriteOperand(instr.op3);
+            var src2 = RewriteOperand(instr.op4);
+            var product = m.FMul(src1, src2);
+            product.DataType = dt;
+            var sum = ctor(acc, product);
+            sum.DataType = dt;
+            m.Assign(dst, m.FNeg(sum));
+        }
+
+        private void RewriteNmac_vec(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var acc = RewriteOperand(instr.op2);
+            var src1 = RewriteOperand(instr.op3);
+            var src2 = RewriteOperand(instr.op4);
+            var product = m.FMul(src1, src2);
+            product.DataType = new ArrayType(dt, src1.DataType.BitSize / dt.BitSize);
+            var sum = ctor(acc, product);
+            sum.DataType = product.DataType;
+            m.Assign(dst, m.FNeg(sum));
+        }
+
 
         private void RewriteMovft(MipsInstruction instr, bool checkIfClear)
         {

@@ -85,7 +85,15 @@ namespace Reko.Arch.Mips
                         instr.Address + instr.Length,
                         InstrClass.ConditionalTransfer);
             }
-            var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
+            Expression trap;
+            if (instr.op3 != null)
+            {
+                trap = host.PseudoProcedure("__trap_code", VoidType.Instance, RewriteOperand(instr.op3));
+            }
+            else
+            {
+                trap = host.PseudoProcedure("__trap", VoidType.Instance);
+            }
             m.SideEffect(trap);
         }
 

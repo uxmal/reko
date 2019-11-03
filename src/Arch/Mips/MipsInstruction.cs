@@ -27,33 +27,6 @@ namespace Reko.Arch.Mips
 {
     public class MipsInstruction : MachineInstruction
     {
-        private static readonly Dictionary<Opcode, string> instrNames = new Dictionary<Opcode, string>
-        {
-            { Opcode.add_d,     "add.d" },
-            { Opcode.add_s,     "add.s" },
-            { Opcode.c_eq_d,    "c.eq.d" },
-            { Opcode.c_eq_s,    "c.eq.s" },
-            { Opcode.c_le_d,    "c.le.d" },
-            { Opcode.c_le_s,    "c.le.s" },
-            { Opcode.c_lt_d,    "c.lt.d" },
-            { Opcode.c_lt_s,    "c.lt.s" },
-            { Opcode.cvt_d_l,   "cvt.d.l" },
-            { Opcode.cvt_s_d,   "cvt.s.d" },
-            { Opcode.cvt_s_l,   "cvt.s.l" },
-            { Opcode.cvt_w_d,   "cvt.w.d" },
-            { Opcode.div_d,     "div.d" },
-            { Opcode.div_s,     "div.s" },
-            { Opcode.mov_d,     "mov.d" },
-            { Opcode.mov_s,     "mov.s" },
-            { Opcode.mul_d,     "mul.d" },
-            { Opcode.mul_s,     "mul.s" },
-            { Opcode.neg_d,     "neg.d" },
-            { Opcode.neg_s,     "neg.s" },
-            { Opcode.sub_d,     "sub.d" },
-            { Opcode.sub_s,     "sub.s" },
-            { Opcode.trunc_l_d, "trunc.l.d" },
-        };
-
         public Opcode opcode;
         public MachineOperand op1;
         public MachineOperand op2;
@@ -76,11 +49,7 @@ namespace Reko.Arch.Mips
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (!instrNames.TryGetValue(opcode, out string name))
-            {
-                name = opcode.ToString();
-            }
-            writer.WriteOpcode(name);
+            WriteMnemonic(writer);
 
             if (op1 == null)
                 return;
@@ -98,6 +67,12 @@ namespace Reko.Arch.Mips
                 return;
             writer.WriteChar(',');
             op4.Write(writer, options);
+        }
+
+        private void WriteMnemonic(MachineInstructionWriter writer)
+        {
+            var name = this.opcode.ToString().Replace('_', '.');
+            writer.WriteOpcode(name);
         }
     }
 }

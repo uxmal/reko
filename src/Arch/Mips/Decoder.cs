@@ -37,20 +37,20 @@ namespace Reko.Arch.Mips
         public class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Opcode opcode;
+            private readonly Opcode mnemonic;
             private readonly Mutator<MipsDisassembler>[] mutators;
 
             public InstrDecoder(Opcode opcode, params Mutator<MipsDisassembler>[] mutators)
             {
                 this.iclass = InstrClass.Linear;
-                this.opcode = opcode;
+                this.mnemonic = opcode;
                 this.mutators = mutators;
             }
 
             public InstrDecoder(InstrClass iclass, Opcode opcode, params Mutator<MipsDisassembler>[] mutators)
             {
                 this.iclass = iclass;
-                this.opcode = opcode;
+                this.mnemonic = opcode;
                 this.mutators = mutators;
             }
 
@@ -69,7 +69,7 @@ namespace Reko.Arch.Mips
                 }
                 return new MipsInstruction
                 {
-                    opcode = opcode,
+                    opcode = mnemonic,
                     InstructionClass = iclass,
                     Address = dasm.addr,
                     Length = 4,

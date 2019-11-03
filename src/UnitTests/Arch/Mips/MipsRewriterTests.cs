@@ -371,7 +371,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x00F000F0,  // tge a3,s0,0x3
                 "0|TD-|00100000(4): 2 instructions",
                 "1|T--|if (r7 < r16) branch 00100004",
-                "2|L--|__trap(0x0003)");
+                "2|L--|__trap_code(0x0003)");
         }
 
         [Test]
@@ -556,7 +556,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x00000034, // teq zero, zero	 
                 "0|TD-|00100000(4): 1 instructions",
-                "1|L--|__trap(0x0000)");
+                "1|L--|__trap_code(0x0000)");
         }
 
         [Test]
@@ -682,8 +682,10 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_lwc1()
         {
             AssertCode(0xc4240000, // lwc1 $f4,0(at)
-            "0|L--|00100000(4): 1 instructions",
-            "1|L--|f4 = (word32) Mem0[r1:real32]");
+            "0|L--|00100000(4): 3 instructions",
+            "1|L--|v4 = Mem0[r1:word32]",
+            "2|L--|v5 = SLICE(f4, word32, 32)",
+            "3|L--|f4 = SEQ(v5, v4)");
         }
 
         [Test]
@@ -1299,6 +1301,181 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = Mem0[r18 + r7:word32]");
+        }
+
+        [Test]
+        public void MipsRw_cache()
+        {
+            AssertCode(0xBCC80000,   // cache	08,0000(r6)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__cache(0x08, Mem0[r6:word32])");
+        }
+
+        [Test]
+        public void MipsRw_madd_s()
+        {
+            AssertCode(0x4C804F60,   // madd.s	f29,f4,f9,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f29 = f4 + f9 * f0");
+        }
+
+        [Test]
+        public void MipsRw_madd()
+        {
+            AssertCode(0x71A60000,   // madd	r13,r6
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|hi_lo = hi_lo + r13 * r6");
+        }
+
+        [Test]
+        public void MipsRw_msub()
+        {
+            AssertCode(0x71670004,   // msub	r11,r7
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|hi_lo = hi_lo - r11 * r7");
+        }
+
+        [Test]
+        public void MipsRw_tgei()
+        {
+            AssertCode(0x04080420,   // tgei	r0,+00000420
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (r0 < 1056) branch 00100004",
+                "2|L--|__trap()");
+        }
+
+        [Test]
+        public void MipsRw_nmadd_s()
+        {
+            AssertCode(0x4C11DB70,   // nmadd_s	f13,f0,f27,f17
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f13 = -(f0 + f27 * f17)");
+        }
+
+        [Test]
+        public void MipsRw_ldc2()
+        {
+            AssertCode(0xD9714B49,   // ldc2	r17,4B49(r11)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__write_cpr2(0x11, Mem0[r11 + 0x00004B49:word64])");
+        }
+
+        [Test]
+        public void MipsRw_lwc2()
+        {
+            AssertCode(0xCA753D95,   // lwc2	r21,3D95(r19)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__write_cpr2(0x15, Mem0[r19 + 0x00003D95:word64])");
+        }
+
+        [Test]
+        public void MipsRw_sdc2()
+        {
+            AssertCode(0xFBB8BB46,   // sdc2	r24,-44BA(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[sp - 0x000044BA:word64] = __read_cpr2(0x18)");
+        }
+
+        [Test]
+        public void MipsRw_swc2()
+        {
+            AssertCode(0xE8BCCD9A,   // swc2	r28,-3266(r5)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r5 - 0x00003266:word32] = __read_cpr2(0x1C)");
+        }
+
+        [Test]
+        public void MipsRw_tltiu()
+        {
+            AssertCode(0x054BF6A4,   // tltiu	r10,-0000095C
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (r10 >=u -2396) branch 00100004",
+                "2|L--|__trap()");
+        }
+
+        [Test]
+        public void MipsRw_luxc1()
+        {
+            AssertCode(0x4E8EE645,   // luxc1	f25,r14(r20)
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v5 = Mem0[r20 + r14:word32]",
+                "2|L--|v6 = SLICE(f25, word32, 32)",
+                "3|L--|f25 = SEQ(v6, v5)");
+        }
+
+        [Test]
+        public void MipsRw_msub_s()
+        {
+            AssertCode(0x4D453A28,   // msub.s	f8,f10,f7,f5
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f8 = f10 - f7 * f5");
+        }
+
+        [Test]
+        public void MipsRw_teqi()
+        {
+            AssertCode(0x058CF428,   // teqi	r12,-00000BD8
+                "0|TD-|00100000(4): 2 instructions",
+                "1|T--|if (r12 != -3032) branch 00100004",
+                "2|L--|__trap()");
+        }
+
+        [Test]
+        public void MipsRw_ldxc1()
+        {
+            AssertCode(0x4D455441,   // ldxc1	f10,r5(r10)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f10 = Mem0[r10 + r5:word64]");
+        }
+
+        [Test]
+        public void MipsRw_lwxc1()
+        {
+            AssertCode(0x4F000000,   // lwxc1	f0,r0(r24)
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = Mem0[r24:word32]",
+                "2|L--|v5 = SLICE(f0, word32, 32)",
+                "3|L--|f0 = SEQ(v5, v4)");
+        }
+
+        [Test]
+        public void MipsRw_clo()
+        {
+            AssertCode(0x73E0C9A1,   // clo	r25,ra
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r25 = __clo(ra)");
+        }
+
+        [Test]
+        public void MipsRw_nmsub_d()
+        {
+            AssertCode(0x4E989AF9,   // nmsub_d	f11,f20,f19,f24
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f11 = -(f20 - f19 * f24)");
+        }
+
+        [Test]
+        public void MipsRw_nmsub_ps()
+        {
+            AssertCode(0x4DF99A7E,   // nmsub_ps	f9,f15,f19,f25
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f9 = -(f15 - f19 * f25)");
+        }
+
+        [Test]
+        public void MipsRw_madd_ps()
+        {
+            AssertCode(0x4D3199E6,   // madd_ps	f7,f9,f19,f17
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f7 = f9 + f19 * f17");
+        }
+
+        [Test]
+        public void MipsRw_swxc1()
+        {
+            AssertCode(0x4D0999C8,   // swxc1	f19,r9(r8)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r8 + r9:word32] = (word32) f19");
         }
     }
 }
