@@ -1309,7 +1309,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0xBCC80000,   // cache	08,0000(r6)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__cache(0x08, Mem0[r6:word32])");
-    }
+        }
 
         [Test]
         public void MipsRw_madd_s()

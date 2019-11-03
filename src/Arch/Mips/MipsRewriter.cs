@@ -389,7 +389,7 @@ namespace Reko.Arch.Mips
                         //$REVIEW: is this even valid?
                         ea = Constant.Zero(
                             PrimitiveType.CreateWord(idxOp.Base.DataType.BitSize));
-            }
+                    }
                     else
                     {
                         ea = binder.EnsureRegister(idxOp.Index);
@@ -439,11 +439,11 @@ namespace Reko.Arch.Mips
                         //$REVIEW: is this even valid?
                         ea = Constant.Zero(
                             PrimitiveType.CreateWord(idxOp.Base.DataType.BitSize));
-            }
+                    }
                     else
-            {
+                    {
                         ea = binder.EnsureRegister(idxOp.Index);
-            }
+                    }
                 }
                 else
                 {
