@@ -4,17 +4,11 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFFFFFF code tFFFFFFFF) (10A60 (ptr32 code) ptr10A60) (10AA4 Eq_27 t10AA4) (10AAC word32 dw10AAC) (10AB0 int32 dw10AB0) (10ABC (ptr32 (ptr32 code)) ptr10ABC) (10AD4 (ptr32 code) ptr10AD4) (10AE4 (ptr32 code) ptr10AE4) (10AF0 byte b10AF0) (10AF4 Eq_63 t10AF4) (20A24 (ptr32 code) ptr20A24) (20A4C ptr32 ptr20A4C) (20A60 word32 dw20A60))
+Eq_1: (struct "Globals" (FFFFFFFF code tFFFFFFFF) (10A60 (ptr32 code) ptr10A60) (10AA4 int32 dw10AA4) (10AAC word32 dw10AAC) (10AB0 int32 dw10AB0) (10ABC (ptr32 (ptr32 code)) ptr10ABC) (10AD4 (ptr32 code) ptr10AD4) (10AE4 (ptr32 code) ptr10AE4) (10AF0 byte b10AF0) (10AF4 Eq_63 t10AF4) (20A24 (ptr32 code) ptr20A24) (20A4C ptr32 ptr20A4C) (20A60 word32 dw20A60))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_27: (union "Eq_27" (int32 u0) (ptr32 u1))
-	T_27 (in Mem0[0x00010AA4:word32] : word32)
-	T_28 (in 0x00010A84 : ptr32)
-	T_37 (in Mem0[0x00010AA4:word32] : word32)
 Eq_35: (union "Eq_35" (int32 u0) (uint32 u1))
 	T_35 (in r5_12 : Eq_35)
-	T_41 (in globals->t10AA4 - 0x00010A84 >> 0x02 : word32)
-Eq_38: (union "Eq_38" (int32 u0) (ptr32 u1))
-	T_38 (in 0x00010A84 : ptr32)
+	T_41 (in globals->dw10AA4 - 0x00010A84 >> 0x02 : word32)
 Eq_43: (union "Eq_43" (int32 u0) (uint32 u1))
 	T_43 (in r5_12 >> 0x1F : word32)
 Eq_44: (union "Eq_44" (int32 u0) (uint32 u1))
@@ -28,8 +22,6 @@ Eq_63: (union "Eq_63" (int32 u0) (uint32 u1))
 	T_94 (in r2_40 + 1 : word32)
 	T_96 (in Mem50[0x00010AF4:word32] : word32)
 	T_107 (in Mem50[0x00010AF4:word32] : word32)
-Eq_69: (union "Eq_69" (int32 u0) (ptr32 u1))
-	T_69 (in 0x00010A68 : ptr32)
 Eq_86: (fn void ())
 	T_86 (in deregister_tm_clones : ptr32)
 	T_87 (in signature of deregister_tm_clones : void)
@@ -171,17 +163,17 @@ T_25: (in Mem23[0x00020A24:word32] : word32)
   OrigDataType: (ptr32 code)
 T_26: (in 0x00010AA4 : word32)
   Class: Eq_26
-  DataType: (ptr32 Eq_27)
+  DataType: (ptr32 int32)
   OrigDataType: (ptr32 (struct (0 T_27 t0000)))
 T_27: (in Mem0[0x00010AA4:word32] : word32)
   Class: Eq_27
-  DataType: Eq_27
+  DataType: int32
   OrigDataType: word32
-T_28: (in 0x00010A84 : ptr32)
+T_28: (in 0x00010A84 : word32)
   Class: Eq_27
-  DataType: ptr32
-  OrigDataType: ptr32
-T_29: (in globals->t10AA4 == 0x00010A84 : bool)
+  DataType: int32
+  OrigDataType: word32
+T_29: (in globals->dw10AA4 == 0x00010A84 : bool)
   Class: Eq_29
   DataType: bool
   OrigDataType: bool
@@ -211,17 +203,17 @@ T_35: (in r5_12 : Eq_35)
   OrigDataType: (union (int32 u1) (uint32 u0))
 T_36: (in 0x00010AA4 : word32)
   Class: Eq_36
-  DataType: (ptr32 Eq_27)
+  DataType: (ptr32 int32)
   OrigDataType: (ptr32 (struct (0 T_37 t0000)))
 T_37: (in Mem0[0x00010AA4:word32] : word32)
   Class: Eq_27
-  DataType: Eq_27
+  DataType: int32
   OrigDataType: int32
-T_38: (in 0x00010A84 : ptr32)
+T_38: (in 0x00010A84 : word32)
   Class: Eq_38
   DataType: int32
-  OrigDataType: (union (int32 u0) (ptr32 u1))
-T_39: (in globals->t10AA4 - 0x00010A84 : word32)
+  OrigDataType: int32
+T_39: (in globals->dw10AA4 - 0x00010A84 : word32)
   Class: Eq_39
   DataType: int32
   OrigDataType: int32
@@ -229,7 +221,7 @@ T_40: (in 0x02 : byte)
   Class: Eq_40
   DataType: byte
   OrigDataType: byte
-T_41: (in globals->t10AA4 - 0x00010A84 >> 0x02 : word32)
+T_41: (in globals->dw10AA4 - 0x00010A84 >> 0x02 : word32)
   Class: Eq_35
   DataType: Eq_35
   OrigDataType: int32
@@ -341,10 +333,10 @@ T_68: (in Mem19[0x00010AB0:word32] : word32)
   Class: Eq_68
   DataType: int32
   OrigDataType: int32
-T_69: (in 0x00010A68 : ptr32)
+T_69: (in 0x00010A68 : word32)
   Class: Eq_69
   DataType: int32
-  OrigDataType: (union (int32 u0) (ptr32 u1))
+  OrigDataType: int32
 T_70: (in globals->dw10AB0 - 0x00010A68 : word32)
   Class: Eq_70
   DataType: int32
@@ -465,10 +457,10 @@ T_99: (in r2_47 << 0x02 : word32)
   Class: Eq_99
   DataType: ui32
   OrigDataType: ui32
-T_100: (in 0x00010A68 : ptr32)
+T_100: (in 0x00010A68 : word32)
   Class: Eq_100
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: word32
+  OrigDataType: word32
 T_101: (in (r2_47 << 0x02) + 0x00010A68 : word32)
   Class: Eq_97
   DataType: (ptr32 (ptr32 code))
@@ -821,10 +813,10 @@ T_188: (in r16_21 : (ptr32 word32))
   Class: Eq_188
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct 0004 (0 word32 dw0000)))
-T_189: (in 0x00010A60 : ptr32)
+T_189: (in 0x00010A60 : word32)
   Class: Eq_188
   DataType: (ptr32 word32)
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_190: (in -4 : int32)
   Class: Eq_190
   DataType: int32
@@ -832,15 +824,15 @@ T_190: (in -4 : int32)
 T_191: (in r16_21 + -4 : word32)
   Class: Eq_188
   DataType: (ptr32 word32)
-  OrigDataType: ptr32
+  OrigDataType: word32
 T_192: (in 0x00000000 : word32)
   Class: Eq_192
   DataType: word32
   OrigDataType: word32
 T_193: (in r16_21 + 0x00000000 : word32)
   Class: Eq_193
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: word32
+  OrigDataType: word32
 T_194: (in Mem17[r16_21 + 0x00000000:word32] : word32)
   Class: Eq_183
   DataType: (ptr32 code)
@@ -973,7 +965,7 @@ T_225: (in r25_15 + 1780 : word32)
 typedef struct Globals {
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
 	<anonymous> * ptr10A60;	// 10A60
-	Eq_27 t10AA4;	// 10AA4
+	int32 dw10AA4;	// 10AA4
 	word32 dw10AAC;	// 10AAC
 	int32 dw10AB0;	// 10AB0
 	<anonymous> ** ptr10ABC;	// 10ABC
@@ -986,20 +978,10 @@ typedef struct Globals {
 	word32 dw20A60;	// 20A60
 } Eq_1;
 
-typedef union Eq_27 {
-	int32 u0;
-	ptr32 u1;
-} Eq_27;
-
 typedef union Eq_35 {
 	int32 u0;
 	uint32 u1;
 } Eq_35;
-
-typedef union Eq_38 {
-	int32 u0;
-	ptr32 u1;
-} Eq_38;
 
 typedef union Eq_43 {
 	int32 u0;
@@ -1015,11 +997,6 @@ typedef union Eq_63 {
 	int32 u0;
 	uint32 u1;
 } Eq_63;
-
-typedef union Eq_69 {
-	int32 u0;
-	ptr32 u1;
-} Eq_69;
 
 typedef void (Eq_86)();
 

@@ -3261,7 +3261,7 @@ l0000CC24:
 l0000CB6A:
 	Mem465[Mem374[r6 + 0x00010CC4:word32]:byte] = 0x5D
 	sp_389 = <invalid>
-	branch fn0000E2EA(ap, fp, out r6_394, out r7_398, out r8_400, out ap_391, out fp_393) != 0x00000000 l0000CB9B
+	branch fn0000E2EA(r7, ap, fp, out r6_394, out r7_398, out r8_400, out ap_391, out fp_393) != 0x00000000 l0000CB9B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5193,10 +5193,10 @@ fn0000E2A6_exit:
 
 
 
-word32 fn0000E2EA(word32 ap, word32 fp, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & apOut, ptr32 & fpOut)
+word32 fn0000E2EA(word32 r7, word32 ap, word32 fp, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & apOut, ptr32 & fpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31]
+// MayUse:  ap:[0..31] fp:[0..31] r7:[8..31]
 // LiveOut: ap fp r0 r6 r7 r8 sp
 // Trashed: CVZN ap fp r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
@@ -5297,7 +5297,7 @@ l0000E345:
 // SymbolicIn:
 
 l0000E353:
-	branch (byte) (r7 - SEQ(SLICE(r0_111, word24, 8), (int8) r1_105)) == 0x00 l0000E3BF
+	branch r7 == SEQ(SLICE(r0_111, word24, 8), (int8) r1_105) l0000E3BF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5394,7 +5394,7 @@ l0000E399:
 
 l0000E3AB:
 	word32 r1_246
-	branch (byte) (r7_191 - SEQ(SLICE(r0_199, word24, 8), (int8) r5_204)) >= 0x00 l0000E3B8
+	branch r7_191 >= SEQ(SLICE(r0_199, word24, 8), (int8) r5_204) l0000E3B8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18455,7 +18455,7 @@ l00018EF3:
 
 l00018EFC:
 	word32 r2_702
-	branch (byte) (r5_1047 - r4_637) != 0x00 l00018F18
+	branch r5_1047 != r4_637 l00018F18
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

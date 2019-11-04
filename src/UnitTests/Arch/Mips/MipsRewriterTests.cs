@@ -682,10 +682,8 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_lwc1()
         {
             AssertCode(0xc4240000, // lwc1 $f4,0(at)
-            "0|L--|00100000(4): 3 instructions",
-            "1|L--|v4 = Mem0[r1:word32]",
-            "2|L--|v5 = SLICE(f4, word32, 32)",
-            "3|L--|f4 = SEQ(v5, v4)");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f4 = Mem0[r1:word32]");
         }
 
         [Test]
@@ -1397,10 +1395,8 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_luxc1()
         {
             AssertCode(0x4E8EE645,   // luxc1	f25,r14(r20)
-                "0|L--|00100000(4): 3 instructions",
-                "1|L--|v5 = Mem0[r20 + r14:word32]",
-                "2|L--|v6 = SLICE(f25, word32, 32)",
-                "3|L--|f25 = SEQ(v6, v5)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f25 = Mem0[r20 + r14:word32]");
         }
 
         [Test]
@@ -1432,10 +1428,8 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_lwxc1()
         {
             AssertCode(0x4F000000,   // lwxc1	f0,r0(r24)
-                "0|L--|00100000(4): 3 instructions",
-                "1|L--|v4 = Mem0[r24:word32]",
-                "2|L--|v5 = SLICE(f0, word32, 32)",
-                "3|L--|f0 = SEQ(v5, v4)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = Mem0[r24:word32]");
         }
 
         [Test]
@@ -1475,7 +1469,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x4D0999C8,   // swxc1	f19,r9(r8)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r8 + r9:word32] = (word32) f19");
+                "1|L--|Mem0[r8 + r9:word32] = f19");
         }
     }
 }

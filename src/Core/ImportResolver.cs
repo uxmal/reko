@@ -268,10 +268,10 @@ namespace Reko.Core
                 // Read an address sized value at the given address.
                 if (!program.SegmentMap.TryFindSegment(impref.ReferenceAddress, out ImageSegment seg))
                     return null;
-                var dt = program.Architecture.PointerType;
+                var dt = PrimitiveType.CreateWord(impref.ReferenceAddress.DataType.BitSize);
                 if (!program.Architecture.TryRead(seg.MemoryArea, impref.ReferenceAddress, dt, out Constant cIndirect))
                     return Constant.Invalid;
-                return cIndirect;
+                return Constant.Create(program.Architecture.WordWidth, cIndirect.ToInt64());
             }
             else
             {

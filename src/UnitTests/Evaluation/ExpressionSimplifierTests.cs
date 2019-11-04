@@ -316,5 +316,26 @@ namespace Reko.UnitTests.Evaluation
                 0);
             Assert.AreEqual("Mem0[ds:0x1234 + 0x0000:word16]", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_redundant_cast_of_ProcedureConstant()
+        {
+            Given_ExpressionSimplifier();
+            var pc = new ProcedureConstant(PrimitiveType.Ptr64, new ExternalProcedure("puts", new FunctionType()));
+
+            var exp = m.Cast(PrimitiveType.Word64, pc);
+            Assert.AreEqual("puts", exp.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_redundant_cast_of_word_type()
+        {
+            Given_ExpressionSimplifier();
+            var value = Constant.Word32(0x00123400);
+            value.DataType = PrimitiveType.Ptr32;
+
+            var exp = m.Cast(PrimitiveType.Word32, value);
+            Assert.AreEqual("0x00123400", exp.Accept(simplifier).ToString());
+        }
     }
 }

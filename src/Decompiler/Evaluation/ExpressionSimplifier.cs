@@ -481,6 +481,20 @@ namespace Reko.Evaluation
                         }
                     }
                 }
+                if (exp is ProcedureConstant pc && cast.DataType.BitSize == pc.DataType.BitSize)
+                {
+                    // (wordnn) procedure_const => procedure_const
+                    return pc;
+                }
+                if (exp.DataType.BitSize == cast.DataType.BitSize)
+                {
+                    // Redundant word-casts can be stripped.
+                    var wordType = PrimitiveType.CreateWord(exp.DataType.BitSize);
+                    if (wordType == cast.DataType)
+                    {
+                        return exp;
+                    }
+                }
                 cast = new Cast(cast.DataType, exp);
             }
             if (castCastRule.Match(cast))

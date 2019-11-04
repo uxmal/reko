@@ -321,7 +321,7 @@ namespace Reko.Arch.Mips
         {
             var op1 = RewriteOperand0(instr.op1);
             var op2 = RewriteOperand0(instr.op2);
-            var hi_lo = binder.EnsureSequence(arch.hi, arch.lo, PrimitiveType.Word64);
+            var hi_lo = binder.EnsureSequence(PrimitiveType.Word64, arch.hi, arch.lo);
             var product = m.IMul(op1, op2);
             product.DataType = hi_lo.DataType;
             m.Assign(hi_lo, fn(hi_lo, product));
@@ -397,7 +397,7 @@ namespace Reko.Arch.Mips
         {
             var op1 = RewriteOperand0(instr.op1);
             var op2 = RewriteOperand0(instr.op2);
-            var hi_lo = binder.EnsureSequence(arch.hi, arch.lo, PrimitiveType.Word64);
+            var hi_lo = binder.EnsureSequence(PrimitiveType.Word64, arch.hi, arch.lo);
             m.Assign(hi_lo, m.ISub(hi_lo, m.IMul(op1, op2)));
         }
 

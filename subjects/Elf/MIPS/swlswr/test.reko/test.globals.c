@@ -6,10 +6,7 @@
 
 <anonymous> g_tFFFFFFFF;
 <anonymous> * g_ptr10A60 = &g_tFFFFFFFF;
-Eq_n g_t10AA4 = 
-	{
-		68228
-	};
+int32 g_dw10AA4 = 68228;
 word32 g_dw10AAC = 0x00010AEC;
 int32 g_dw10AB0 = 68204;
 <anonymous> ** g_ptr10ABC = &g_ptr10A60;

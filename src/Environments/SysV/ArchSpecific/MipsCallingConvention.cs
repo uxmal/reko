@@ -99,7 +99,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (ir == 0)
                         firstArgIntegral = true;
-                    if (dtParam.Size <= 4)
+                    if (dtParam.Size <= arch.WordWidth.Size)
                     {
                         if (ir >= 4)
                         {
@@ -111,7 +111,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                             ++ir;
                         }
                     }
-                    else if (dtParam.Size <= 8)
+                    else if (dtParam.Size <= arch.WordWidth.Size * 2)
                     {
                         if ((ir & 1) != 0)
                             ++ir;

@@ -391,7 +391,103 @@ namespace Reko.UnitTests.Mocks
         #endregion
     }
 
-	public class MockMachineRegister : RegisterStorage
+    public class FakeArchitecture64 : ProcessorArchitecture
+    {
+        public FakeArchitecture64() : base("fakeArch64")
+        {
+            Endianness = EndianServices.Little;
+            FramePointerType = PrimitiveType.Ptr64;
+            PointerType = PrimitiveType.Ptr64;
+            WordWidth = PrimitiveType.Word64;
+        }
+
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ProcessorState CreateProcessorState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override FlagGroupStorage GetFlagGroup(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SortedList<string, int> GetOpcodeNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int? GetOpcodeNumber(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override RegisterStorage GetRegister(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override RegisterStorage[] GetRegisters()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
+        {
+            return Address.Ptr64(c.ToUInt64());
+        }
+
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryParseAddress(string txtAddr, out Address addr)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class MockMachineRegister : RegisterStorage
 	{
 		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, 0, dt) { }
 	}

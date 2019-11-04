@@ -187,7 +187,7 @@ Eq_n fib(Eq_n r2, union Eq_n & r10Out, union Eq_n & r11Out)
 		word32 v18_n = SLICE(fib((int64) (word32) SEQ(v12_n, (word32) r2 - 0x01), out r10_n, out r11_n), word32, 32);
 		word64 r10_n;
 		word64 r2_n = fib((int64) (word32) SEQ(v18_n, (word32) SEQ(v18_n, r11_n->dw00A4) - 0x02), out r10_n, out r11_n);
-		r1_n = SEQ(SLICE(r2_n, word32, 32), (word32) (r2_n + r10_n));
+		r1_n = SEQ(SLICE(r2_n, word32, 32), r2_n + r10_n);
 	}
 	Eq_n v26_n = (word64) r11_n + 0x00F8;
 	int64 r1_n = (int64) (word32) r1_n;
