@@ -90,7 +90,6 @@ namespace Reko.ImageLoaders.Elf
             this.imgLoader = imgLoader;
             this.machine = (ElfMachine) machine;
             this.endianness = endianness;
-            this.Architecture = CreateArchitecture(machine, endianness);
         }
 
         protected ElfLoader()
@@ -200,13 +199,18 @@ namespace Reko.ImageLoaders.Elf
             return mems;
         }
 
-        protected virtual IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
+        public void LoadArchitectureFromHeader()
+        {
+            Architecture = CreateArchitecture(endianness);
+        }
+
+        protected virtual IProcessorArchitecture CreateArchitecture(byte endianness)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var options = new Dictionary<string, object>();
             string arch;
             string stackRegName = null;
-            switch ((ElfMachine)machineType)
+            switch (this.machine)
             {
             case ElfMachine.EM_NONE: return null; // No machine
             case ElfMachine.EM_SPARC:
@@ -216,23 +220,6 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_386: arch = "x86-protected-32"; break;
             case ElfMachine.EM_X86_64: arch = "x86-protected-64"; break;
             case ElfMachine.EM_68K: arch = "m68k"; break;
-            case ElfMachine.EM_MIPS:
-                //$TODO: detect release 6 of the MIPS architecture. 
-                // would be great to get our sweaty little hands on
-                // such a binary.
-                if (endianness == ELFDATA2LSB)
-                {
-                    arch = "mips-le-32";
-                }
-                else if (endianness == ELFDATA2MSB)
-                {
-                    arch = "mips-be-32";
-                }
-                else
-                {
-                    throw new NotSupportedException(string.Format("The MIPS architecture does not support ELF endianness value {0}", endianness));
-                }
-                break;
             case ElfMachine.EM_PPC: arch = "ppc-be-32"; break;
             case ElfMachine.EM_PPC64: arch = "ppc-be-64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
@@ -270,7 +257,7 @@ namespace Reko.ImageLoaders.Elf
                 options["decoder"] = "nano";
                 break;
             default:
-                throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
+                throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machine));
             }
             var a = cfgSvc.GetArchitecture(arch);
             a.LoadUserOptions(options);

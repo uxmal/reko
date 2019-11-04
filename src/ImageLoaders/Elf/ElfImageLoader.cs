@@ -76,6 +76,7 @@ namespace Reko.ImageLoaders.Elf
         {
             LoadElfIdentification();
             this.innerLoader = CreateLoader();
+            this.innerLoader.LoadArchitectureFromHeader();
             addrLoad = addrLoad ?? innerLoader.DefaultAddress;
             var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
             int cHeaders = innerLoader.LoadSegments();

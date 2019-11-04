@@ -93,7 +93,7 @@ namespace Reko.Arch.Mips
             var instrHex = $"{wInstr:X8}";
             base.EmitUnitTest("MIPS", instrHex, message, "MipsDis", this.addr, w =>
             {
-                w.WriteLine("    AssertCode(\"@@@\", \"0x{0:X8}\"", wInstr);
+                w.WriteLine("    AssertCode(\"@@@\", \"0x{0:X8}\");", wInstr);
             });
         }
 

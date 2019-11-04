@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Lib;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
@@ -77,6 +78,49 @@ namespace Reko.ImageLoaders.Elf
             return Address.Ptr32((uint) uAddr);
         }
 
+        protected override IProcessorArchitecture CreateArchitecture(byte endianness)
+        {
+            string arch;
+            var options = new Dictionary<string, object>();
+            string stackRegName = null;
+            switch (machine)
+            {
+            case ElfMachine.EM_MIPS:
+                //$TODO: detect release 6 of the MIPS architecture. 
+                // would be great to get our sweaty little hands on
+                // such a binary.
+                var mipsFlags = (MIPSflags) Header.e_flags;
+                var is64 = (mipsFlags & MIPSflags.EF_MIPS_ARCH) == MIPSflags.EF_MIPS_ARCH_64;
+                if (endianness == ELFDATA2LSB)
+                {
+                    arch = is64 
+                        ? "mips-le-64"
+                        : "mips-le-32";
+                }
+                else if (endianness == ELFDATA2MSB)
+                {
+                    arch = is64
+                        ? "mips-be-64"
+                        : "mips-be-32";
+                }
+                else
+                {
+                    throw new NotSupportedException(string.Format("The MIPS architecture does not support ELF endianness value {0}", endianness));
+                }
+                break;
+            default:
+               return base.CreateArchitecture(endianness);
+            }
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var a = cfgSvc.GetArchitecture(arch);
+            a.LoadUserOptions(options);
+            if (stackRegName != null)
+            {
+                a.StackRegister = a.GetRegister(stackRegName);
+            }
+            return a;
+
+        }
 
         public override ElfObjectLinker CreateLinker()
         {
