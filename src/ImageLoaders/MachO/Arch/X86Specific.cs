@@ -30,8 +30,6 @@ namespace Reko.ImageLoaders.MachO.Arch
 {
     public class X86Specific : ArchSpecific
     {
-        private string archName;
-
         public X86Specific(IProcessorArchitecture arch) : base(arch) { }
 
         public override Address ReadStub(Address addrStub, MemoryArea mem)

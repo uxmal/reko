@@ -1217,11 +1217,9 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_lwxc1()
         {
-
-            AssertCode("lwxc1	$f0,at(t2)", 0x4d410000);
+            AssertCode("lwxc1\tf0,r1(r10)", 0x4d410000);
         }
 
         [Test]
@@ -1239,25 +1237,88 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_swc2()
         {
-            AssertCode("swc2	$0,-10884(t4)", 0xe980d57c);
+            AssertCode("swc2\tr0,-2A84(r12)", 0xe980d57c);
         }
 
         [Test]
-        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_sdc2()
         {
-            AssertCode("sdc2	$6,-13325(s8)", 0xfbc6cbf3);
+            AssertCode("sdc2\tr6,-340D(r30)", 0xfbc6cbf3);
         }
 
 
         [Test]
-        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_ldc2()
         {
-            AssertCode("ldc2	$12,13343(s8)", 0xdbcc341f);
+            AssertCode("ldc2\tr12,341F(r30)", 0xdbcc341f);
+        }
+
+        [Test]
+        public void MipsDis_cache2()
+        {
+            AssertCode("cache	08,0000(r6)", 0xBCC80000);
+        }
+
+        [Test]
+        public void MipsDis_madd_s()
+        {
+            AssertCode("madd.s\tf29,f4,f9,f0", 0x4C804F60);
+        }
+
+        [Test]
+        public void MipsDis_msub()
+        {
+            AssertCode("msub\tr8,r7", 0x71070004);
+        }
+
+        [Test]
+        public void MipsDis_sdc2_preV6()
+        {
+            AssertCode("sdc2\tr20,-0754(r6)", 0xF8D4F8AC);
+        }
+
+        [Test]
+        public void MipsDis_prefx()
+        {
+            AssertCode("prefx\t13,r8(r3)", 0x4C68994F);
+        }
+
+        [Test]
+        public void MipsDis_swxc1()
+        {
+            AssertCode("swxc1\tf19,r9(r8)", 0x4D0999C8);
+        }
+
+        [Test]
+        public void MipsDis_ldxc1()
+        {
+            AssertCode("ldxc1\tf19,r9(r13)", 0x4DA99A41);
+        }
+
+        [Test]
+        public void MipsDis_clz()
+        {
+            AssertCode("clz\tr14,r7", 0x70E17060);
+        }
+
+        [Test]
+        public void MipsDis_sdbbp()
+        {
+            AssertCode("sdbbp\t000AF1C8", 0x72BC723F);
+        }
+
+        [Test]
+        public void MipsDis_luxc1()
+        {
+            AssertCode("luxc1\tf5,r12(r26)", 0x4F4C4945);
+        }
+
+        [Test]
+        public void MipsDis_clo()
+        {
+            AssertCode("clo\tr24,r12", 0x7186C4E1);
         }
     }
 }

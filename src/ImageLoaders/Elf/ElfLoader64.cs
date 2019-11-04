@@ -72,10 +72,10 @@ namespace Reko.ImageLoaders.Elf
             return Address.Ptr64(uAddr);
         }
 
-        protected override IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
+        protected override IProcessorArchitecture CreateArchitecture(byte endianness)
         {
             string arch;
-            switch ((ElfMachine) machineType)
+            switch (machine)
             {
             case ElfMachine.EM_MIPS:
                 //$TODO: detect release 6 of the MIPS architecture. 
@@ -95,7 +95,7 @@ namespace Reko.ImageLoaders.Elf
                 }
                 break;
             default:
-                return base.CreateArchitecture(machineType, endianness);
+                return base.CreateArchitecture(endianness);
             }
             var cfgSvc = Services.RequireService<IConfigurationService>();
             return cfgSvc.GetArchitecture(arch);

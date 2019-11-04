@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -73,10 +73,10 @@ namespace Reko.Environments.Msdos
             pushing and popping of registers is implemented.
             Also sets program.offMain and program.segMain if possible */
 
-            uint startoff;
             uint init;
             uint i;
-            ushort rel, para;
+            //uint startoff;
+            //ushort rel, para;
             char chModel = 'x';
             char chVendor = 'x';
             char chVersion = 'x';

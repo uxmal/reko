@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>microBlaze</arch>
+  <input>
+    <filename>MicroBlaze.corpus</filename>
+    <asmDir>MicroBlaze.reko</asmDir>
+    <srcDir>MicroBlaze.reko</srcDir>
+    <includeDir>MicroBlaze.reko</includeDir>
+    <resources>MicroBlaze.reko\resources</resources>
+    <user>
+      <address>00000000</address>
+      <loader>raw</loader>
+      <processor name="microBlaze" />
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+    </user>
+  </input>
+</project>

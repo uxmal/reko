@@ -545,7 +545,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Diagnostic.cs" />
-    <Compile Include="DisassemblerBase.cs">
+    <Compile Include="Machine\DisassemblerBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dumper.cs">

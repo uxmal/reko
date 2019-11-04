@@ -63,19 +63,7 @@ namespace Reko.Arch.Mips
                 return null;
             }
             this.ops.Clear();
-            try
-            {
-                instrCur = rootDecoder.Decode(wInstr, this);
-            }
-            catch
-            {
-                instrCur = CreateInvalidInstruction();
-            }
-            if (instrCur == null)
-            {
-                instrCur = CreateInvalidInstruction();
-            }
-            EmitUnitTest(wInstr, instrCur);
+            instrCur = rootDecoder.Decode(wInstr, this);
             instrCur.Address = this.addr;
             instrCur.Length = 4;
             return instrCur;
@@ -83,22 +71,46 @@ namespace Reko.Arch.Mips
 
         protected override MipsInstruction CreateInvalidInstruction()
         {
-            return new MipsInstruction { opcode = Opcode.illegal };
+            return new MipsInstruction {
+                opcode = Opcode.illegal,
+                InstructionClass = InstrClass.Invalid
+            };
+        }
+
+        public override MipsInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            var instr = CreateInvalidInstruction();
+            EmitUnitTest(wInstr, message);
+            return instr;
         }
 
         [Conditional("DEBUG")]
-        public void EmitUnitTest(uint wInstr, MipsInstruction instr)
+        public void EmitUnitTest(uint wInstr, string message)
         {
-            if (instr.opcode != Opcode.illegal)
-                return;
             var op = (wInstr >> 26);
             if (op == 0 || op == 1)
                 return;
             var instrHex = $"{wInstr:X8}";
-            base.EmitUnitTest("MIPS", instrHex, "", "MipsDis", this.addr, w =>
+            base.EmitUnitTest("MIPS", instrHex, message, "MipsDis", this.addr, w =>
             {
-                w.WriteLine("    AssertCode(\"@@@\", \"0x{0:X8}\"", wInstr);
+                w.WriteLine("    AssertCode(\"@@@\", \"0x{0:X8}\");", wInstr);
             });
+        }
+
+
+        private static NyiDecoder<MipsDisassembler, Opcode, MipsInstruction> Nyi(string message)
+        {
+            return new NyiDecoder<MipsDisassembler, Opcode, MipsInstruction>(message);
+        }
+
+        private static InstrDecoder Instr(Opcode mnemonic, params Mutator<MipsDisassembler> [] mutators)
+        {
+            return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
+        }
+
+        private static InstrDecoder Instr(InstrClass iclass, Opcode mnemonic, params Mutator<MipsDisassembler>[] mutators)
+        {
+            return new InstrDecoder(iclass, mnemonic, mutators);
         }
 
         static MipsDisassembler()
@@ -456,13 +468,54 @@ namespace Reko.Arch.Mips
                 invalid,
                 invalid);
 
+            var cop2 = Mask(21, 5, "COP2",   // 12: COP2 
+                 Nyi("mfc2"),
+                 invalid,
+                 Nyi("cfc2"),
+                 Nyi("mfhc2"),
+                 Nyi("mtc2"),
+                 invalid,
+                 Nyi("ctc2"),
+                 Nyi("mthc2"),
+
+                 Nyi("bc2"),
+                 Nyi("bc2eqz"),
+                 new InstrDecoder(Opcode.lwc2,R2,E11w),
+                 Nyi("swc2"),
+                 invalid,
+                 Nyi("bc2nez"),
+                 Nyi("ldc2"),
+                 Nyi("sdc2"),
+
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid,
+                 invalid);
+
             var special2 = Sparse(0, 6, "Special2",
                 invalid,
-                (0x2, new Version6Decoder(
-                    new InstrDecoder(Opcode.mul, R3,R1,R2),
-                    invalid)
-                )
-            );
+                (0x0, new InstrDecoder(Opcode.madd, R1, R2)),
+                (0x1, new InstrDecoder(Opcode.maddu, R1, R2)),
+                (0x2, new InstrDecoder(Opcode.mul, R3, R1, R2)),
+                (0x4, new InstrDecoder(Opcode.msub, R1, R2)),
+                (0x5, new InstrDecoder(Opcode.msubu, R1, R2)),
+
+                (0x20, new InstrDecoder(Opcode.clz, R3, R1)),
+                (0x21, new InstrDecoder(Opcode.clo, R3, R1)),
+                (0x3F, new InstrDecoder(Opcode.sdbbp, Imm(PrimitiveType.UInt32, 6, 20))));
 
             var condDecoders = Mask(16, 5, "CondDecoders",
                 new InstrDecoder(DCT, Opcode.bltz, R1, j),
@@ -707,6 +760,87 @@ namespace Reko.Arch.Mips
                 new A64Decoder(Opcode.dsrl32, R3, R2, s),
                 new A64Decoder(Opcode.dsra32, R3, R2, s));
 
+            var cop1x = Mask(0, 6,
+                Instr(Opcode.lwxc1, F3,Mxw),
+                Instr(Opcode.ldxc1, F3,Mxd),
+                invalid,
+                invalid,
+
+                invalid,
+                Instr(Opcode.luxc1, F4,Mxw),
+                invalid,
+                invalid,
+
+                Instr(Opcode.swxc1, F3,Mxw),
+                Instr(Opcode.sdxc1, F3,Mxd),
+                invalid,
+                invalid,
+
+                invalid,
+                Instr(Opcode.suxc1, F4,Mxw),
+                invalid,
+                new InstrDecoder(Opcode.prefx, Imm(PrimitiveType.Byte, 11,5), Mxw),
+                // 10
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                new InstrDecoder(Opcode.alnv_ps, F4,F3,F2,R1),
+                invalid,
+                // 20
+                new InstrDecoder(Opcode.madd_s, F4,F1,F3,F2),
+                new InstrDecoder(Opcode.madd_d, F4,F1,F3,F2),
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                new InstrDecoder(Opcode.madd_ps, F4, F1, F3, F2),
+                invalid,
+
+                new InstrDecoder(Opcode.msub_s, F4, F1, F3, F2),
+                new InstrDecoder(Opcode.msub_d, F4, F1, F3, F2),
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                new InstrDecoder(Opcode.msub_ps, F4, F1, F3, F2),
+                invalid,
+                // 30
+                new InstrDecoder(Opcode.nmadd_s, F4, F1, F3, F2),
+                new InstrDecoder(Opcode.nmadd_d, F4, F1, F3, F2),
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                new InstrDecoder(Opcode.nmadd_ps, F4, F1, F3, F2),
+                invalid,
+
+                new InstrDecoder(Opcode.nmsub_s, F4, F1, F3, F2),
+                new InstrDecoder(Opcode.nmsub_d, F4, F1, F3, F2),
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                new InstrDecoder(Opcode.nmsub_ps, F4, F1, F3, F2),
+                invalid);
+
 
         rootDecoder = Mask(26, 6,
                 special,
@@ -764,46 +898,14 @@ namespace Reko.Arch.Mips
                     cop0_C0_decoder,
                     cop0_C0_decoder,
                     cop0_C0_decoder),
-               // 11: COP1 encodings
-                cop1,
-
-               Mask(21, 5, "COP2",   // 12: COP2 
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid,
-                    invalid),
-                null,   // COP1X
+               cop1,
+               new Version6Decoder(
+                   invalid,
+                   cop2),
+               new Version6Decoder(
+                    cop1x,
+                    invalid),       // removed in MIPS v6
+                
                 new InstrDecoder(DCT, Opcode.beql, R1,R2,j),
                 new InstrDecoder(DCT, Opcode.bnel, R1,R2,j),
                 new InstrDecoder(DCT, Opcode.blezl, R1,j),
@@ -814,9 +916,15 @@ namespace Reko.Arch.Mips
                 new A64Decoder(Opcode.ldl, R2,El),
                 new A64Decoder(Opcode.ldr, R2,El),
 
-                special2,
-                null,
-                null,
+                new Version6Decoder(
+                    special2,
+                    invalid),
+                new Version6Decoder(
+                    invalid,
+                    Nyi("POP6")),
+                new Version6Decoder(
+                    invalid, 
+                    Nyi("POP7")),
                 special3,
 
                 // 20
@@ -838,35 +946,47 @@ namespace Reko.Arch.Mips
                 new InstrDecoder(Opcode.sdl, R2,Ew),
                 new InstrDecoder(Opcode.sdr, R2,Ew),
                 new InstrDecoder(Opcode.swr, R2,Ew),
-                null,
+                new Version6Decoder(
+                    new InstrDecoder(Opcode.cache, Imm(PrimitiveType.Byte, 16, 5), Ew),
+                    invalid),
 
                 // 30
                 new Version6Decoder(
                     new InstrDecoder(Opcode.ll, R2,Ew),
                     invalid),
                 new InstrDecoder(Opcode.lwc1, F2,Ew),
-                null,
+                new Version6Decoder(
+                    new InstrDecoder(Opcode.lwc2, R2, El),
+                    Nyi("BC-v6")),
                 new InstrDecoder(Opcode.pref, R2,Ew),
 
                 new Version6Decoder(
                     new A64Decoder(Opcode.lld, R2,El),
                     invalid),
                 new InstrDecoder(Opcode.ldc1, F2,El),
-                null,
+                new Version6Decoder(
+                    new InstrDecoder(Opcode.ldc2, R2,El),
+                    Nyi("POP76")),
                 new A64Decoder(Opcode.ld, R2,El),
 
                 new Version6Decoder(
                     new InstrDecoder(Opcode.sc, R2,Ew),
                     invalid),
                 new InstrDecoder(Opcode.swc1, F2,Ew),
-                null,
-                null,
+                new Version6Decoder(
+                    new InstrDecoder(Opcode.swc2, R2, Ew),
+                    Nyi("BALC-v6")),
+                new Version6Decoder(
+                    invalid,
+                    Nyi("PCREL-v6")),
 
                 new Version6Decoder(
                     new A64Decoder(Opcode.scd, R2,El),
                     invalid),
                 new A64Decoder(Opcode.sdc1, F2,El),
-                null,
+                new Version6Decoder(
+                    new InstrDecoder(Opcode.sdc2, R2,El),
+                    Nyi("POP76")),
                 new A64Decoder(Opcode.sd, R2,El));
         }
 
@@ -934,6 +1054,17 @@ namespace Reko.Arch.Mips
             return true;
         }
 
+        private static Mutator<MipsDisassembler> Imm(PrimitiveType dt, int bitPos, int bitlen)
+        {
+            var field = new Bitfield(bitPos, bitlen);
+            return (u, d) =>
+            {
+                var n = field.Read(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, n)));
+                return true;
+            };
+        }
+
         internal static bool j(uint wInstr, MipsDisassembler dasm)
         {
             var op = dasm.RelativeBranch(wInstr);
@@ -995,6 +1126,40 @@ namespace Reko.Arch.Mips
         internal static readonly Mutator<MipsDisassembler> ew = e(PrimitiveType.Word32);
         internal static readonly Mutator<MipsDisassembler> el = e(PrimitiveType.Word64);
 
+        // effective address w 11-bit offset
+        internal static Mutator<MipsDisassembler> E11(PrimitiveType size)
+        {
+            var offsetField = new Bitfield(0, 11);
+            return (u, d) =>
+            {
+                var offset = (short)offsetField.ReadSigned(u);
+                var op = d.Ea(u, size, 11, offset);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<MipsDisassembler> E11w = E11(PrimitiveType.Word32);
+
+
+        // Indexed memory address
+        private static Mutator<MipsDisassembler> Mx(PrimitiveType dt, int posBase, int posIdx)
+        {
+            var baseField = new Bitfield(posBase, 5);
+            var idxField = new Bitfield(posIdx, 5);
+            return (u, d) =>
+            {
+                var iBase = (int) baseField.Read(u);
+                var iIndex = (int) idxField.Read(u);
+                var rBase = d.arch.GetRegister(iBase);
+                var rIndex = d.arch.GetRegister(iIndex);
+                d.ops.Add(new IndexedOperand(dt, rBase, rIndex));
+                return true;
+            };
+        }
+        private static readonly Mutator<MipsDisassembler> Mxbu = Mx(PrimitiveType.Byte, 21, 16);
+        private static readonly Mutator<MipsDisassembler> Mxh = Mx(PrimitiveType.Word16, 21, 16);
+        private static readonly Mutator<MipsDisassembler> Mxw = Mx(PrimitiveType.Word32, 21, 16);
+        private static readonly Mutator<MipsDisassembler> Mxd = Mx(PrimitiveType.Word64, 21, 16);
 
         // trap code
         internal static bool T(uint wInstr, MipsDisassembler dasm)

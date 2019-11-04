@@ -78,6 +78,20 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, opSrc);
         }
 
+        private void RewriteCache(MipsInstruction instr)
+        {
+            var op1 = RewriteOperand(instr.op1);
+            var opMem = RewriteOperand(instr.op2);
+            m.SideEffect(host.PseudoProcedure("__cache", VoidType.Instance, op1, opMem));
+        }
+
+        private void RewriteClo(MipsInstruction instr)
+        {
+            var opDst = RewriteOperand0(instr.op1);
+            var opSrc = RewriteOperand0(instr.op2);
+            m.Assign(opDst, host.PseudoProcedure("__clo", PrimitiveType.Int32, opSrc));
+        }
+
         private void RewriteClz(MipsInstruction instr)
         {
             var opDst = RewriteOperand0(instr.op1);
@@ -228,11 +242,32 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, host.PseudoProcedure("__lwr", PrimitiveType.Word32, opDst, opSrc));
         }
 
-        private void RewriteLdc1(MipsInstruction instr)
+        private void RewriteLcpr1(MipsInstruction instr)
         {
             var opDstFloat = RewriteOperand(instr.op1);
             var opSrcMem = RewriteOperand(instr.op2);
-            m.Assign(opDstFloat, opSrcMem);
+            int bitDiff = opDstFloat.DataType.BitSize - opSrcMem.DataType.BitSize;
+            if (bitDiff > 0)
+            {
+                var tmpLo = binder.CreateTemporary(opSrcMem.DataType);
+                var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(bitDiff));
+                m.Assign(tmpLo, opSrcMem);
+                m.Assign(tmpHi, m.Slice(tmpHi.DataType, opDstFloat, opSrcMem.DataType.BitSize));
+                m.Assign(opDstFloat, m.Seq(tmpHi, tmpLo));
+            }
+            else
+            {
+                m.Assign(opDstFloat, opSrcMem);
+            }
+        }
+
+        private void RewriteLdc2(MipsInstruction instr)
+        {
+            var iRegDst = ((RegisterOperand) instr.op1).Register.Number;
+            var opSrcMem = RewriteOperand(instr.op2);
+            m.SideEffect(host.PseudoProcedure("__write_cpr2", VoidType.Instance,
+                Constant.Byte((byte) iRegDst),
+                opSrcMem));
         }
 
         private void RewriteLwm(MipsInstruction instr)
@@ -280,6 +315,16 @@ namespace Reko.Arch.Mips
                 src = m.Cast(dst.DataType, src);
             }
             m.Assign(dst, src);
+        }
+
+        private void RewriteMac_int(MipsInstruction instr, Func<Expression,Expression,Expression> fn)
+        {
+            var op1 = RewriteOperand0(instr.op1);
+            var op2 = RewriteOperand0(instr.op2);
+            var hi_lo = binder.EnsureSequence(arch.hi, arch.lo, PrimitiveType.Word64);
+            var product = m.IMul(op1, op2);
+            product.DataType = hi_lo.DataType;
+            m.Assign(hi_lo, fn(hi_lo, product));
         }
 
         private void RewriteMf(MipsInstruction instr, RegisterStorage reg)
@@ -347,6 +392,15 @@ namespace Reko.Arch.Mips
                 m.Assign(hilo, ctor(op1, op2));
             }
         }
+
+        private void RewriteMsub(MipsInstruction instr)
+        {
+            var op1 = RewriteOperand0(instr.op1);
+            var op2 = RewriteOperand0(instr.op2);
+            var hi_lo = binder.EnsureSequence(arch.hi, arch.lo, PrimitiveType.Word64);
+            m.Assign(hi_lo, m.ISub(hi_lo, m.IMul(op1, op2)));
+        }
+
 
         private void RewriteNor(MipsInstruction instr)
         {
@@ -461,6 +515,17 @@ namespace Reko.Arch.Mips
             }
             m.Assign(sp, m.ISubS(sp, u));
         }
+
+        private void RewriteSdc2(MipsInstruction instr)
+        {
+            var iRegSrc = ((RegisterOperand) instr.op1).Register.Number;
+            var opDstMem = RewriteOperand(instr.op2);
+            m.Assign(opDstMem, host.PseudoProcedure(
+                "__read_cpr2",
+                opDstMem.DataType,
+                Constant.Byte((byte) iRegSrc)));
+        }
+
 
         private void RewriteSdl(MipsInstruction instr)
         {

@@ -147,6 +147,7 @@
         <File Source="$(var.M6800.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
         <File Source="$(var.M68k.Design.TargetPath)" />
+        <File Source="$(var.MicroBlaze.TargetPath)" />
         <File Source="$(var.MicrochipPIC.TargetPath)" />
         <File Source="$(var.MicrochipPIC.Design.TargetPath)" />
         <File Source="$(var.Mips.TargetPath)" />

@@ -449,7 +449,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void NanoMipsDis_move_balc()
         {
-            AssertCode("move_balc\tr4,r10,00100004", "08400000");
+            AssertCode("move.balc\tr4,r10,00100004", "08400000");
         }
 
         [Test]
@@ -509,7 +509,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void NanoMipsDis_restore_16()
         {
-            AssertCode("restore_jrc\t00000060,ra,00000006", "1F66");
+            AssertCode("restore.jrc\t00000060,ra,00000006", "1F66");
         }
 
         [Test]
@@ -521,7 +521,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void NanoMipsDis_restore_jrc()
         {
-            AssertCode("restore_jrc\t00000A20,r30,0000000A", "83CA3A23");
+            AssertCode("restore.jrc\t00000A20,r30,0000000A", "83CA3A23");
         }
 
         [Test]

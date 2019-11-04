@@ -31,7 +31,7 @@ using Reko.Core.Machine;
 namespace Reko.Arch.i8051
 {
     // http://www.keil.com/support/man/docs/is51/is51_instructions.htm
-    public class i8051Disassembler : Core.DisassemblerBase<i8051Instruction>
+    public class i8051Disassembler : DisassemblerBase<i8051Instruction>
     {
         private readonly i8051Architecture arch;
         private readonly EndianImageReader rdr;
