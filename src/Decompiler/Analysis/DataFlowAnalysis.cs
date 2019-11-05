@@ -172,7 +172,7 @@ namespace Reko.Analysis
             this.ssts.AddRange(ssts);
 
             // At this point, the computation of ProcedureFlow is possible.
-            var trf = new TrashedRegisterFinder3(program, flow, ssts, this.eventListener);
+            var trf = new TrashedRegisterFinder(program, flow, ssts, this.eventListener);
             trf.Compute();
 
             // New stack based variables may be available now.

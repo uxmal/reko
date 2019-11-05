@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,655 +21,839 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Services;
-using Reko.Core.Types;
 using Reko.Evaluation;
-using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Reko.Core.Types;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Uses an interprocedural reaching definition analysis to detect which 
-	/// registers are modified by the procedures, which registers are constant
-    /// at block exits, and which registers have their values preserved.
-    /// <para>
-    /// The results of the analysis are stored in the ProgramDataFlow.</para>
-	/// </summary>
-    //$TODO: bugger. Can use a queue here, but must use depth-first search.
-    public class TrashedRegisterFinder : InstructionVisitor<Instruction>
+    public class TrashedRegisterFinder : InstructionVisitor<bool>
     {
-        private Program program;
-        private IEnumerable<Procedure> procedures;
-        private HashSet<Procedure> procedureSet;
-        private ProgramDataFlow flow;
-        private BlockFlow bf;
-        private WorkList<Block> worklist;
-        private HashSet<Block> visited;
-        private SymbolicEvaluator se;
-        private SymbolicEvaluationContext ctx;
-        private DecompilerEventListener eventListener;
-        private ExpressionValueComparer ecomp;
-        private Block blockCur;
-        private Statement stmCur;
-        private ExpressionEmitter m;
+        private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation") { Level = TraceLevel.Error };
+
+        private readonly IProcessorArchitecture arch;
+        private readonly SegmentMap segmentMap;
+        private readonly ProgramDataFlow flow;
+        private readonly HashSet<SsaTransform> sccGroup;
+        private readonly CallGraph callGraph;
+        private readonly DecompilerEventListener listener;
+        private readonly WorkStack<Block> worklist;
+        private readonly Dictionary<Procedure, SsaState> ssas;
+        private readonly ExpressionValueComparer cmp;
+        private Block block;
+        private Dictionary<Procedure, ProcedureFlow> procCtx;
+        private Dictionary<Block, Context> blockCtx;
+        private Context ctx;
+        private ExpressionSimplifier eval;
+        private bool propagateToCallers;
+        private bool selfRecursiveCalls;
 
         public TrashedRegisterFinder(
             Program program,
-            IEnumerable<Procedure> procedures,
             ProgramDataFlow flow,
-            DecompilerEventListener eventListener)
+            IEnumerable<SsaTransform> sccGroup,
+            DecompilerEventListener listener)
         {
-            this.program = program;
-            this.procedures = procedures;
-            this.procedureSet = procedures.ToHashSet();
+            this.arch = program.Architecture;
+            this.segmentMap = program.SegmentMap;
             this.flow = flow;
-            this.eventListener = eventListener ?? NullDecompilerEventListener.Instance;
-            this.worklist = new WorkList<Block>();
-            this.visited = new HashSet<Block>();
-            this.ecomp = new ExpressionValueComparer();
-            this.m = new ExpressionEmitter();
+            this.sccGroup = sccGroup.ToHashSet();
+            this.callGraph = program.CallGraph;
+            this.listener = listener;
+            this.cmp = new ExpressionValueComparer();
+            this.worklist = new WorkStack<Block>();
+            this.ssas = sccGroup.ToDictionary(s => s.SsaState.Procedure, s => s.SsaState);
         }
 
-        public Dictionary<Storage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
-        public IDictionary<int, Expression> StackSymbolicValues { get { return ctx.StackState; } } 
-        public Dictionary<RegisterStorage,uint> TrashedFlags {get { return ctx.TrashedFlags; } }
-
-        public void CompleteWork()
-        {
-        }
-
+        /// <summary>
+        /// Computes the trashed registers for all the procedures in the 
+        /// SCC group.
+        /// </summary>
+        /// <remarks>
+        /// To deal with recursive functions -- including deeply nested
+        /// mutually recursive functions, we first compute what registers
+        /// are trashed when recursion is disregarded. If there are no
+        /// recursive calls, we are done and leave early. 
+        /// If there are recursive calls, we make one unwarranted but
+        /// highly likely assumption: for each involved procedure, 
+        /// the stack pointer will have the same value in the exit block 
+        /// after traversing both non-recursive and recursive paths
+        /// of the program.
+        /// </remarks>
         public void Compute()
         {
-            BackpropagateStackPointer();
-            FillWorklist();
-            ProcessWorkList();
-            CompleteWork();
-        }
+            CreateState();
+            this.propagateToCallers = false;
 
-        public void ProcessWorkList()
-        {
-            int initial = worklist.Count;
-            var e = eventListener;
-            while (worklist.GetWorkItem(out var block))
+            Block block;
+            while (worklist.GetWorkItem(out block))
             {
-                if (e.IsCanceled())
-                    break;
-                eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
+                ProcessBlock(block);
+            }
+            
+            if (!selfRecursiveCalls)
+            {
+                return;
+            }
+
+            // We make a big, but very reasonable assumption here: if a procedure
+            // has a recursive branch and a non-recursive branch, the stack pointer
+            // will have the same value at the point where the branches join.
+            // It certainly possible for an assembly language programmer to construct
+            // a program where procedures deliberately put the stack in imbalance
+            // after calling a procedure, but using such a procedure is very difficult
+            // to do as you must somehow understand how the procedure changes the
+            // stack pointers depending on ... anything! 
+            // It seems safe to assume that all branches leading to the exit block
+            // have the same stack pointer value.
+            
+            var savedSps = CollectStackPointers(flow, arch.StackRegister);
+            //$REVIEW: Ew. This hardwires a dependency on x87 in common code.
+            // We need a general mechanism for dealing with "stack pointers"
+            // that abstracts over platform integer stack pointers and the
+            // x87 FPU stack pointer.
+            var savedTops = new Dictionary<Procedure, int?>();
+            if (arch.TryGetRegister("Top", out var top))
+            {
+                savedTops = CollectStackPointers(flow, arch.GetRegister("Top"));
+            }
+
+            CreateState();
+
+            ApplyStackPointers(savedSps, flow);
+            ApplyStackPointers(savedTops, flow);
+
+            BypassRegisterOffsets(savedSps, arch.StackRegister);
+
+            this.propagateToCallers = true;
+            while (worklist.GetWorkItem(out block))
+            {
                 ProcessBlock(block);
             }
         }
 
-        public void FillWorklist()
+        private Dictionary<Procedure, int?> CollectStackPointers(ProgramDataFlow flow, Storage stackRegister)
         {
-            foreach (Procedure proc in procedures)
+            if (stackRegister == null)
+                return new Dictionary<Procedure, int?>();
+            return flow.ProcedureFlows.ToDictionary(
+                de => de.Key,
+                de =>
+                {
+                    if (de.Value.Trashed.Contains(stackRegister))
+                        return (int?)null;
+                    if (de.Value.Preserved.Contains(stackRegister))
+                        return 0;
+                    //$TODO: x86 RET N instructions.
+                    return 0;
+                });
+        }
+
+        private void ApplyStackPointers(
+            Dictionary<Procedure, int?> savedSps,
+            ProgramDataFlow flow)
+        {
+            foreach (var de in savedSps)
             {
+                var p = flow[de.Key];
+                if (de.Value.HasValue && de.Value.Value == 0)
+                {
+                    //$TODO: x86 RET-N instructions unbalance the stack
+                    // register.
+                    p.Trashed.Remove(arch.StackRegister);
+                    p.Preserved.Add(arch.StackRegister);
+                }
+            }
+        }
+
+        private void BypassRegisterOffsets(Dictionary<Procedure, int?> savedSps, RegisterStorage register)
+        {
+            foreach (var ssa in this.ssas.Values)
+            {
+                var callStms = ssa.Procedure.Statements
+                    .Where(stm => stm.Instruction is CallInstruction)
+                    .ToList();
+                var ssam = new SsaMutator(ssa);
+                foreach (var stm in callStms)
+                {
+                    var call = (CallInstruction)stm.Instruction;
+                    if (!((call.Callee as ProcedureConstant)?.Procedure is Procedure proc))
+                        continue;
+                    if (savedSps.TryGetValue(proc, out var delta) &&
+                        delta.HasValue)
+                    {
+                        ssam.AdjustRegisterAfterCall(stm, call, register, delta.Value);
+                    }
+                }
+            }
+        }
+
+
+        private void CreateState()
+        {
+            this.blockCtx = new Dictionary<Block, Context>();
+            this.procCtx = new Dictionary<Procedure, ProcedureFlow>();
+            foreach (var sst in sccGroup)
+            {
+                var proc = sst.SsaState.Procedure;
+                var procFlow = this.flow[proc];
+                procFlow.Trashed.Clear();
+                procFlow.Preserved.Clear();
+                procFlow.Constants.Clear();
+
+                procCtx.Add(proc, procFlow);
+                var idState = new Dictionary<Identifier, Tuple<Expression,BitRange>>();
+                //$REVIEW: this assumes the existence of a frame pointer.
+                Identifier fp;
+                if (sst.SsaState.Identifiers.TryGetValue(proc.Frame.FramePointer, out var sidFp))
+                {
+                    fp = sidFp.Identifier;
+                }
+                else
+                {
+                    fp = null;
+                }
+                var block = proc.EntryBlock;
+                blockCtx.Add(block, new Context(sst.SsaState, fp, idState, procFlow));
+
                 if (proc.Signature.ParametersValid)
                 {
-                    //$REVIEW: do we need this? if a procedure has a signature,
-                    // we will always trust that rather than the flow.
-                    var procFlow = flow[proc];
-                    var sig = proc.Signature;
-                    if (!sig.HasVoidReturn)
-                    {
-                        procFlow.Trashed.Add(sig.ReturnValue.Storage);
-                    }
-                    foreach (var stg in sig.Parameters
-                        .Select(p => p.Storage)
-                        .OfType<OutArgumentStorage>())
-                    {
-                        procFlow.Trashed.Add(stg.OriginalIdentifier.Storage);
-                    }
+                    ApplySignature(proc.Signature, flow[proc]);
                 }
                 else
                 {
                     worklist.Add(proc.EntryBlock);
-                    SetInitialValueOfStackPointer(proc);
                 }
+                procFlow.TerminatesProcess = proc.ExitBlock.Pred.Count == 0;
             }
         }
 
-        public void RewriteBasicBlocks()
+        private void ApplySignature(FunctionType sig, ProcedureFlow procFlow)
         {
-            foreach (var proc in procedures)
+            //$REVIEW: do we need this? if a procedure has a signature,
+            // we will always trust that rather than the flow.
+            if (!sig.HasVoidReturn)
             {
-                SetInitialValueOfStackPointer(proc);
-                var blocks = new DfsIterator<Block>(proc.ControlGraph).PreOrder().ToList();
-                foreach (var block in blocks)
-                {
-                    if (eventListener.IsCanceled())
-                        return;
-                    RewriteBlock(block);
-                }
+                procFlow.Trashed.Add(sig.ReturnValue.Storage);
+            }
+            foreach (var stg in sig.Parameters
+                .Select(p => p.Storage)
+                .OfType<OutArgumentStorage>())
+            {
+                procFlow.Trashed.Add(stg.OriginalIdentifier.Storage);
             }
         }
 
-        /// <summary>
-        /// Sets the initial value of the processor's stack pointer register to 
-        /// the virtual register 'fp':
-        ///     sp = fp
-        /// The intent of this is to propagate fp into all expressions using sp,
-        /// so that, for instance, the x86 sequence
-        ///     push ebp
-        ///     mov ebp,esp
-        ///     mov eax,[ebp+8]
-        /// can be translated to
-        ///     esp = fp
-        ///     Mem[fp - 4] = esp ; original sp
-        ///     ebp = fp - 4
-        ///     eax = Mem[fp + 4]
-        /// </summary>
-        /// <param name="proc"></param>
-        private void SetInitialValueOfStackPointer(Procedure proc)
+        private void ProcessBlock(Block block)
         {
-            //$REVIEW: is this needed? Scanner injects a literal
-            // SP = fp
-            // assignment in a platform-independent way.
-            flow[proc.EntryBlock].SymbolicIn.SetValue(
-                proc.Frame.EnsureRegister(proc.Architecture.StackRegister),
-                proc.Frame.FramePointer);
-        }
-
-        public bool IsTrashed(Storage storage)
-        {
-            var reg = storage as RegisterStorage;
-            if (reg == null)
-                throw new NotImplementedException();
-
-            if (!ctx.RegisterState.TryGetValue(reg, out Expression regVal))
-                return false;
-            var id = regVal as Identifier;
-            if (id == null)
-                return true;
-            return id.Storage == reg;
-        }
-
-        public void ProcessBlock(Block block)
-        {
-            visited.Add(block);
-            this.blockCur = block;
-            StartProcessingBlock(block);
+            this.ctx = blockCtx[block];
+            this.eval = new ExpressionSimplifier(segmentMap, ctx, listener);
+            this.block = block;
+            this.ctx.IsDirty = false;
             foreach (var stm in block.Statements)
             {
-                this.stmCur = stm;
-                try
-                {
-                    TrySetFallbackStackPointer(stm);
-                    stm.Instruction.Accept(this);
-                }
-                catch (Exception ex)
-                {
-                    eventListener.Error(
-                        eventListener.CreateStatementNavigator(program, stm),
-                        ex,
-                        "Error while analyzing trashed registers.");
-                }
+                if (!stm.Instruction.Accept(this))
+                    return;
             }
             if (block == block.Procedure.ExitBlock)
             {
-                PropagateToProcedureSummary(block.Procedure);
+                UpdateProcedureSummary(this.ctx, block);
             }
             else
             {
-                block.Succ.ForEach(s => PropagateToSuccessorBlock(s));
+                UpateBlockSuccessors(block);
             }
         }
 
-        public void RewriteBlock(Block block)
+        private void UpdateProcedureSummary(Context ctx, Block block)
         {
-            StartProcessingBlock(block);
-            var propagator = new ExpressionPropagator(program.Platform, se.Simplifier, ctx, flow);
-            foreach (Statement stm in block.Statements)
-            {
-                if (eventListener.IsCanceled())
-                    return;
-                try
-                {
-                    Instruction instr = stm.Instruction.Accept(propagator);
-#if _DEBUG
-                    string sInstr = stm.Instruction.ToString();
-                    string sInstrNew = instr.ToString();
-                    if (sInstr != sInstrNew)
-                    {
-                        Debug.Print("Changed: ");
-                        Debug.Print("\t{0}", sInstr);
-                        Debug.Print("\t{0}", sInstrNew);
-                    }
-#endif
-                    stm.Instruction = instr;
-                }
-                catch (Exception ex)
-                {
-                    var location = eventListener.CreateStatementNavigator(program, stm);
-                    eventListener.Error(
-                        location,
-                        ex,
-                        "An error occurred while processing instruction at address {0:X}.",
-                            program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress));
-                }
-            }
-        }
-
-        public void StartProcessingBlock(Block block)
-        {
-            bf = flow[block];
-            EnsureEvaluationContext(bf);
-            var proc = block.Procedure;
-            if (proc.EntryBlock == block)
-            {
-                var sp = proc.Frame.EnsureRegister(proc.Architecture.StackRegister);
-                bf.SymbolicIn.RegisterState[sp.Storage] = proc.Frame.FramePointer;
-            }
-            ctx.TrashedFlags = new Dictionary<RegisterStorage, uint>(bf.grfTrashedIn);
-        }
-
-        public void EnsureEvaluationContext(BlockFlow bf)
-        {
-            this.ctx = bf.SymbolicIn.Clone();
-            var tes = new TrashedExpressionSimplifier(this.program.SegmentMap, this, ctx);
-            this.se = new SymbolicEvaluator(tes, ctx);
-        }
-
-        public void PropagateToProcedureSummary(Procedure proc)
-        {
-            var prop = new TrashedRegisterSummarizer(proc, flow[proc], ctx);
-            bool changed = prop.PropagateToProcedureSummary();
-            if (changed)
-            {
-                foreach (Statement stm in program.CallGraph.CallerStatements(proc))
-                {
-                    if (this.procedureSet.Contains(stm.Block.Procedure) &&
-                        visited.Contains(stm.Block))
-                    {
-                        worklist.Add(stm.Block);
-                    }
-                }
-            }
-        }
-
-        public void PropagateToSuccessorBlock(Block s)
-        {
-            BlockFlow succFlow = flow[s];
-            bool changed = MergeDataFlow(succFlow);
-            if (changed)
-            {
-                worklist.Add(s);
-            }
-        }
-
-        public bool MergeRegister(Storage reg, Expression value, SymbolicEvaluationContext ctx)
-        {
-            if (!ctx.RegisterState.TryGetValue(reg, out Expression oldValue))
-            {
-                ctx.RegisterState[reg] = value;
-                return  true;
-            }
-            else if (oldValue != Constant.Invalid && !ecomp.Equals(oldValue, value))
-            {
-                ctx.RegisterState[reg] = Constant.Invalid;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public bool MergeDataFlow(BlockFlow succFlow)
-        {
-            var ctxSucc = succFlow.SymbolicIn;
-            bool changed = false;
-            foreach (var de in ctx.RegisterState)
-            {
-                changed |= MergeRegister(de.Key, de.Value, ctxSucc);
-            }
-
-            foreach (var de in ctx.StackState)
-            {
-                Expression oldValue;
-                if (!ctxSucc.StackState.TryGetValue(de.Key, out oldValue))
-                {
-                    ctxSucc.StackState[de.Key] = de.Value;
-                    changed = true;
-                }
-                else if (!ecomp.Equals(oldValue, de.Value) && oldValue != Constant.Invalid)
-                {
-                    ctxSucc.StackState[de.Key] = Constant.Invalid;
-                    changed = true;
-                }
-            }
-
-            foreach (var de in ctx.TrashedFlags)
-            {
-                var old = succFlow.grfTrashedIn.Get(de.Key);
-                var gnu = old | de.Value;
-                if (gnu != old)
-                {
-                    succFlow.grfTrashedIn[de.Key] = gnu;
-                changed = true;
-            }
-            }
-            return changed;
-        }
-
-        [Conditional("DEBUG")]
-        private void Dump(SortedList<int, Expression> map)
-        {
-            var sort = new SortedList<string, string>();
-            foreach (var de in map)
-                sort.Add(de.Key.ToString(), de.Value.ToString());
-            foreach (var de in sort)
-                Debug.Write(string.Format("{0}:{1} ", de.Key, de.Value));
-            Debug.WriteLine("");
-        }
-
-        [Conditional("DEBUG")]
-        private void Dump(Dictionary<Storage, Expression> dictionary)
-        {
-            var sort = new SortedList<string, string>();
-            foreach (var de in dictionary)
-                sort[de.Key.ToString()] = de.Value.ToString();
-            foreach (var de in sort)
-                Debug.Write(string.Format("{0}:{1} ", de.Key, de.Value));
-            Debug.WriteLine("");
-        }
-
-        public Instruction VisitAssignment(Assignment ass)
-        {
-            return se.VisitAssignment(ass);
-        }
-
-        public Instruction VisitBranch(Branch br)
-        {
-            return se.VisitBranch(br);
-        }
-
-        public Instruction VisitCallInstruction(CallInstruction ci)
-        {
-            se.VisitCallInstruction(ci);
-            if (ProcedureTerminates(ci.Callee))
-            {
-                // A terminating procedure has no trashed registers because caller will never see those effects!
-                ctx.RegisterState.Clear();
-                ctx.TrashedFlags.Clear();
-                Debug.Print("*** Terminated stm {0:X8} - {1}", stmCur.LinearAddress, ci);
-                return ci;
-            }
-
-            var pc = ci.Callee as ProcedureConstant;
-            if (pc != null)
-            {
-                var callee = pc.Procedure as Procedure;
-                if (callee != null)
-                {
-                    ctx.UpdateRegistersTrashedByProcedure(flow[callee]);
-                    return ci;
-                }
-            }
-            // Hell node: will want to assume that registers which aren't
-            // guaranteed to be preserved by the ABI are trashed.
-            foreach (var r in ctx.RegisterState.Keys.ToList())
-            {
-                foreach (var reg in program.Platform.CreateTrashedRegisters())
-                {
-                    //$PERF: not happy about the O(n^2) algorithm,
-                    // but this is better in the analysis-development 
-                    // branch.
-                    if (r.Domain == reg.Domain)
-                    {
-                        ctx.RegisterState[r] = Constant.Invalid;
-                    }
-                }
-            }
-            //$TODO: get trash information from signature?
-            return ci;
-        }
-
-        public Instruction VisitComment(CodeComment comment)
-        {
-            return comment;
-        }
-
-        public Instruction VisitDeclaration(Declaration decl)
-        {
-            return se.VisitDeclaration(decl);
-        }
-
-        public Instruction VisitDefInstruction(DefInstruction def)
-        {
-            return se.VisitDefInstruction(def);
-        }
-
-        public Instruction VisitGotoInstruction(GotoInstruction g)
-        {
-            return se.VisitGotoInstruction(g);
-        }
-
-        public Instruction VisitPhiAssignment(PhiAssignment phi)
-        {
-            return phi;
-        }
-
-        public Instruction VisitSideEffect(SideEffect side)
-        {
-            return se.VisitSideEffect(side);
-        }
-
-        public Instruction VisitReturnInstruction(ReturnInstruction r)
-        {
-            return se.VisitReturnInstruction(r);
-        }
-
-        public Instruction VisitStore(Store store)
-        {
-            return se.VisitStore(store);
-        }
-
-        public Instruction VisitSwitchInstruction(SwitchInstruction sw)
-        {
-            return se.VisitSwitchInstruction(sw);
-        }
-
-        public Instruction VisitUseInstruction(UseInstruction u)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Returns 'true' if we can prove that expr is a pointer
-        /// to a function that diverges (and doesn't return).
-        /// </summary>
-        /// <param name="expr"></param>
-        /// <returns></returns>
-        private bool ProcedureTerminates(Expression expr)
-        {
-            var pc = expr as ProcedureConstant;
-            if (pc == null)
-                return false;
-            var proc = pc.Procedure;
-            if (proc.Characteristics != null && proc.Characteristics.Terminates)
-                return true;
-            var p = proc as Procedure;
-            return (p != null && flow[p].TerminatesProcess);
-        }
-
-        /// <summary>
-        /// Backpropagate stack pointer from procedure return.
-        /// Assume that stack pointer at the end of procedure has the same
-        /// value as at the start
-        /// </summary>
-        /// <example>
-        /// If we have
-        /// <code>
-        ///     call eax; We do not know calling convention of this indirect call
-        ///             ; So we do not know value of stack pointer after it
-        /// cleanup:
-        ///     pop esi
-        ///     pop ebp
-        ///     ret
-        /// </code>
-        /// then we could assume than stack pointer at "cleanup" label is
-        /// "fp - 8"
-        /// </example>
-        // $REVIEW: It is highly unlikely that there is a procedure that
-        // leaves the stack pointer at different values depending on what
-        // path you took through it. Should we encounter such procedures in
-        // a binary we might consider turning this analysis off with a user
-        // switch.
-        private void BackpropagateStackPointer()
-        {
-            foreach (var proc in procedures)
-            {
-                foreach (var block in proc.ExitBlock.Pred)
-                {
-                    BackpropagateStackPointer(block);
-                }
-            }
-        }
-
-        private Expression GetValue(SymbolicEvaluationContext ctx, Storage stg)
-        {
-            if (!ctx.RegisterState.TryGetValue(stg, out var value))
-                return Constant.Invalid;
-            return value;
-        }
-
-        private void SetValue(
-            SymbolicEvaluationContext ctx,
-            Storage stg,
-            Expression value)
-        {
-            ctx.RegisterState[stg] = value;
-        }
-
-        private void CreateEvaluationState(Block block)
-        {
-            this.ctx = new SymbolicEvaluationContext(
-                block.Procedure.Architecture,
-                block.Procedure.Frame);
-            var tes = new TrashedExpressionSimplifier(
-                this.program.SegmentMap, this, ctx);
-            this.se = new SymbolicEvaluator(tes, ctx);
-        }
-
-        private bool GetOffset(Expression e, Identifier id, out int offset)
-        {
-            offset = 0;
-            if (e is BinaryExpression bin)
-            {
-                if (bin.Left != id)
-                    return false;
-                var op = bin.Operator;
-                if (op != Operator.ISub && op != Operator.IAdd)
-                    return false;
-                var o = bin.Right as Constant;
-                if (o == null)
-                    return false;
-                offset = o.ToInt32();
-                if (op == Operator.ISub)
-                    offset = -offset;
-                return true;
-            }
-            else
-            {
-                return e == id;
-            }
-        }
-
-        /// <summary>
-        /// Backpropagate stack pointer from procedure return.
-        /// Assume that stack pointer at the end of procedure has the same
-        /// value as at the start
-        /// </summary>
-        /// <remarks>
-        /// For each statement from block start to end
-        ///     - if stack pointer is trashed (usually after indirect calls)
-        ///     then pass fake 'currSp' identifier as stack pointer value to
-        ///     evaluation context and remember current
-        ///     - evaluate statement
-        /// At the end of block read stack pointer value from evaluation
-        /// context. It should be like 'currSp + offset'. We assume that stack
-        /// pointer at the end is 'fp'. So 'curSp' is 'fp - offset'. So we
-        /// assume that stack pointer at last remembered statement is
-        /// `fp - offset` and store this value to block flow
-        /// </remarks>
-        private void BackpropagateStackPointer(Block block)
-        {
-            Debug.Assert(block.Succ.Any(b => b == block.Procedure.ExitBlock));
-            CreateEvaluationState(block);
-            var stackStorage = block.Procedure.Architecture.StackRegister;
-            var currSp = new Identifier("currSp", stackStorage.DataType, null);
-            Statement fallbackStackStm = null;
-            foreach (var stm in block.Statements)
-            {
-                this.stmCur = stm;
-                if (GetValue(ctx, stackStorage) == Constant.Invalid)
-                {
-                    SetValue(ctx, stackStorage, currSp);
-                    fallbackStackStm = stm;
-                }
-                stm.Instruction.Accept(this);
-            }
-            if (fallbackStackStm == null)
+            if (!propagateToCallers || !ctx.IsDirty)
                 return;
-            var stackValue = GetValue(ctx, stackStorage);
-            if (!GetOffset(stackValue, currSp, out var offset))
-                return;
-            var bf = flow[block];
-            var fp = block.Procedure.Frame.FramePointer;
-            bf.FallbackStack[fallbackStackStm] = m.AddSubSignedInt(
-                fp,
-                -offset);
-        }
 
-        private void TrySetFallbackStackPointer(Statement stm)
-        {
-            var arch = stm.Block.Procedure.Architecture;
-            if (GetValue(ctx, arch.StackRegister) == Constant.Invalid
-                && bf.FallbackStack.TryGetValue(stm, out var fallbackStack))
+           // Propagate defined registers to calling procedures.
+            var callingBlocks = callGraph
+                .CallerStatements(block.Procedure)
+                .Cast<Statement>()
+                .Select(s => s.Block)
+                .Where(b => ssas.ContainsKey(b.Procedure));
+            foreach (var caller in callingBlocks)
             {
-                SetValue(ctx, arch.StackRegister, fallbackStack);
-            }
-        }
-
-        public class TrashedExpressionSimplifier : ExpressionSimplifier
-        {
-            private TrashedRegisterFinder trf;
-            private SymbolicEvaluationContext ctx;
-
-            public TrashedExpressionSimplifier(SegmentMap segmentMap, TrashedRegisterFinder trf, SymbolicEvaluationContext ctx)
-                : base(segmentMap, ctx, trf.eventListener)
-            {
-                this.trf = trf;
-                this.ctx = ctx;
-            }
-
-            public override Expression VisitApplication(Application appl)
-            {
-                var e = base.VisitApplication(appl);
-                if (appl.Procedure != null && trf.ProcedureTerminates(appl.Procedure))
+                if (!blockCtx.TryGetValue(caller, out var succCtx))
                 {
-                    ctx.TrashedFlags.Clear();
-                    ctx.RegisterState.Clear();
-                    return appl;
+                    var ssaCaller = ssas[caller.Procedure];
+                    var fpCaller = ssaCaller.Identifiers[caller.Procedure.Frame.FramePointer].Identifier;
+                    var idsCaller = blockCtx[caller.Procedure.EntryBlock].IdState;
+                    var clone = new Context(
+                        ssaCaller,
+                        fpCaller,
+                        idsCaller,
+                        procCtx[caller.Procedure]);
+                    blockCtx.Add(caller, clone);
                 }
-                foreach (var u in appl.Arguments.OfType<UnaryExpression>())
+                else
                 {
-                    if (u.Operator == UnaryOperator.AddrOf)
+                    succCtx.MergeWith(ctx);
+                }
+                worklist.Add(caller);
+            }
+        }
+
+        private void UpateBlockSuccessors(Block block)
+        {
+            var bf = blockCtx[block];
+            foreach (var s in block.Succ)
+            {
+                if (!blockCtx.TryGetValue(s, out var succCtx))
+                {
+                    var ctxClone = ctx.Clone();
+                    blockCtx.Add(s, ctxClone);
+                    worklist.Add(s);
+                }
+                else if (bf.IsDirty)
+                {
+                    succCtx.MergeWith(bf);
+                    worklist.Add(s);
+                }
+            }
+        }
+
+        public bool VisitAssignment(Assignment ass)
+        {
+            var value = ass.Src.Accept(eval);
+            DebugEx.Verbose(trace, "{0} = [{1}]", ass.Dst, value);
+
+            if (ass.Src is DepositBits dpb && 
+                dpb.Source is Identifier idDpb &&
+                ass.Dst.Storage == idDpb.Storage)
+            {
+                var oldRange = ctx.GetBitRange(idDpb);
+                var newRange = new BitRange(
+                    Math.Min(oldRange.Lsb, dpb.BitPosition),
+                    Math.Max(oldRange.Msb, dpb.BitPosition + dpb.InsertedBits.DataType.BitSize));
+                ctx.SetValue(ass.Dst, value, newRange);
+            }
+            else
+            {
+                ctx.SetValue(ass.Dst, value);
+            }
+            return true;
+        }
+
+        public bool VisitBranch(Branch branch)
+        {
+            branch.Condition.Accept(eval);
+            return true;
+        }
+
+        public bool VisitCallInstruction(CallInstruction ci)
+        {
+            if (!(ci.Callee is ProcedureConstant pc))
+            {
+                foreach (var d in ci.Definitions)
+                {
+                    ctx.SetValue((Identifier) d.Expression, Constant.Invalid);
+                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                }
+                return true;
+            }
+
+            if (pc.Procedure is ExternalProcedure ep)
+            {
+                // External procedures with signatures will have generated
+                // an Application earlier; without signatures they will have
+                // generated hell nodes. In either case we can't propagate 
+                // anything, so we leave early.
+                return true;
+            }
+            if (!(pc.Procedure is Procedure callee))
+                throw new NotImplementedException();
+
+            if (sccGroup.Any(s => s.SsaState.Procedure == callee))
+            {
+                // We're calling a function in the recursion group. If 
+                // we are not in propagate to callers mode, simply stop 
+                // at this block.
+                if (!propagateToCallers)
+                {
+                    selfRecursiveCalls = true;
+                    return false;
+                }
+                // Otherwise, use the flow information collected by
+                // the previous pass.
+            }
+
+            var flow = this.flow[callee];
+            Dump(block);
+            foreach (var d in ci.Definitions)
+            {
+                if (flow.Trashed.Contains(d.Storage))
+                {
+                    ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
+                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                }
+                if (flow.Preserved.Contains(d.Storage))
+                {
+                    var before = ci.Uses
+                        .Where(u => u.Storage == d.Storage)
+                        .Select(u => u.Expression.Accept(eval))
+                        .SingleOrDefault();
+                    ctx.SetValue((Identifier)d.Expression, before);
+                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, before);
+                }
+            }
+            return true;
+        }
+
+        public bool VisitComment(CodeComment comment)
+        {
+            return true;
+        }
+
+        public bool VisitDeclaration(Declaration decl)
+        {
+            var value = decl.Expression.Accept(eval);
+            DebugEx.Verbose(trace, "{0} = [{1}]", decl.Identifier, value);
+            ctx.SetValue(decl.Identifier, value);
+            return true;
+        }
+
+        public bool VisitDefInstruction(DefInstruction def)
+        {
+            var id = def.Identifier;
+            ctx.SetValue(id, id, BitRange.Empty);
+            return true;
+        }
+
+        public bool VisitGotoInstruction(GotoInstruction g)
+        {
+            g.Condition.Accept(eval);
+            g.Target.Accept(eval);
+            return true;
+        }
+
+        public bool VisitPhiAssignment(PhiAssignment phi)
+        {
+            Expression total = null;
+            foreach (var de in phi.Src.Arguments)
+            {
+                var p = de.Block;
+                var phiarg = (Identifier) de.Value;
+                // If phiarg hasn't been evaluated yet, it will have
+                // the value null after ctx.GetValue below. If not, we 
+                // use that value and hope all of the phi args have
+                // the same value.
+                var value = ctx.GetValue(phiarg);
+                if (total == null)
+                {
+                    total = value;
+                }
+                else if (value != null && !cmp.Equals(value, total))
+                {
+                    total = Constant.Invalid;
+                    break;
+                }
+            }
+            if (total != null)
+            {
+                ctx.SetValue(phi.Dst, total);
+            }
+            DebugEx.Verbose(trace, "{0} = Ï†[{1}]", phi.Dst, total);
+            return true;
+        }
+
+        public bool VisitReturnInstruction(ReturnInstruction ret)
+        {
+            if (ret.Expression != null)
+            {
+                ret.Expression.Accept(eval);
+            }
+            return true;
+        }
+
+        public bool VisitSideEffect(SideEffect side)
+        {
+            side.Expression.Accept(eval);
+            return true;
+        }
+
+        public bool VisitStore(Store store)
+        {
+            var value = store.Src.Accept(eval);
+            if (store.Dst is MemoryAccess mem)
+            {
+                ctx.SetValueEa(mem.EffectiveAddress, value);
+            }
+            return true;
+        }
+
+        public bool VisitSwitchInstruction(SwitchInstruction si)
+        {
+            si.Expression.Accept(eval);
+            return true;
+        }
+
+        /// <summary>
+        /// We're in the exit block now, so collect all identifiers
+        /// that are registers into the procedureflow of the 
+        /// current procedure.
+        /// </summary>
+        public bool VisitUseInstruction(UseInstruction use)
+        {
+            if (!(use.Expression is Identifier id))
+                return true;
+            var sid = ssas[block.Procedure].Identifiers[id];
+            switch (id.Storage)
+            {
+            case RegisterStorage reg:
+                {
+                    var value = ctx.GetValue(id);
+                    var range = ctx.GetBitRange(id);
+                    var stg = arch.GetRegister(id.Storage.Domain, range) ?? id.Storage;
+                    if (value == Constant.Invalid)
                     {
-                        if (u.Expression is Identifier id)
+                        ctx.ProcFlow.Trashed.Add(stg);
+                        ctx.ProcFlow.Preserved.Remove(stg);
+                        ctx.ProcFlow.Constants.Remove(stg);
+                        return true;
+                    }
+                    if (value is Constant c)
+                    {
+                        ctx.ProcFlow.Constants[stg] = c;
+                        ctx.ProcFlow.Preserved.Remove(stg);
+                        ctx.ProcFlow.Trashed.Add(stg);
+                        return true;
+                    }
+                    if (value is Identifier idV)
+                    {
+                        if (id.Storage == arch.StackRegister)
                         {
-                            ctx.SetValue(id, Constant.Invalid);
+                            if (idV == ctx.FramePointer)
+                            {
+                                // Special case: if we deduce that the CPU stack
+                                // register is equal to the pseudo-register FP
+                                // (frame pointer), we make note that the stack
+                                // register is preserved.
+                                ctx.ProcFlow.Preserved.Add(arch.StackRegister);
+                                return true;
+                            }
+                        }
+                        else if (idV.Storage == id.Storage)
+                        {
+                            if (sid.OriginalIdentifier == idV &&
+                                sid.OriginalIdentifier != id)
+                            {
+                                ctx.ProcFlow.Preserved.Add(stg);
+                            }
+                            return true;
                         }
                     }
+                    ctx.ProcFlow.Trashed.Add(stg);
+                    ctx.ProcFlow.Preserved.Remove(stg);
+                    ctx.ProcFlow.Constants.Remove(stg);
                 }
-                return e;
+                break;
+            case FlagGroupStorage grfStorage:
+                {
+                    var value = ctx.GetValue(id);
+                    if (value is Identifier idV && idV == sid.OriginalIdentifier)
+                    {
+                        ctx.ProcFlow.grfPreserved[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.grfPreserved.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
+                        ctx.ProcFlow.grfTrashed[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.grfTrashed.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
+                    }
+                    else
+                    {
+                        ctx.ProcFlow.grfTrashed[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.grfTrashed.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
+                        ctx.ProcFlow.grfPreserved[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.grfPreserved.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
+                    }
+                    return true;
+                }
+            case FpuStackStorage fpuStg:
+                {
+                    var value = ctx.GetValue(id);
+                    if (value is Identifier idV && idV == sid.OriginalIdentifier)
+                    {
+                        ctx.ProcFlow.Preserved.Add(fpuStg);
+                    }
+                    else
+                    {
+                        ctx.ProcFlow.Trashed.Add(fpuStg);
+                    }
+                    return true;
+                }
+            }
+            return true;
+        }
+
+        [Conditional("DEBUG")]
+        public void Dump(Block block)
+        {
+            var b = block ?? this.block;
+            foreach (var de in blockCtx[b].IdState.OrderBy(i => i.Key.Name))
+            {
+                DebugEx.Verbose(trace, "{0}: [{1}]", de.Key, de.Value);
+            }
+            foreach (var de in blockCtx[b].StackState.OrderBy(i => i.Key))
+            {
+                DebugEx.Verbose(trace, "fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
+            }
+        }
+
+        public class Context : EvaluationContext
+        {
+            public readonly Identifier FramePointer;
+            public readonly Dictionary<Identifier, Tuple<Expression, BitRange>> IdState;
+            public readonly Dictionary<int, Expression> StackState;
+            public ProcedureFlow ProcFlow;
+            public bool IsDirty { get; set; }
+            private SsaState ssa;
+            private readonly ExpressionValueComparer cmp;
+
+            public Context(
+                SsaState ssa,
+                Identifier fp,
+                Dictionary<Identifier, Tuple<Expression, BitRange>> idState,
+                ProcedureFlow procFlow)
+                : this(
+                      ssa,
+                      fp,
+                      idState,
+                      procFlow, 
+                      new Dictionary<int,Expression>(),
+                      new ExpressionValueComparer())
+            {
+            }
+
+            private Context(
+                SsaState ssa,
+                Identifier fp,
+                Dictionary<Identifier, Tuple<Expression, BitRange>> idState,
+                ProcedureFlow procFlow,
+                Dictionary<int, Expression> stack,
+                ExpressionValueComparer cmp)
+            {
+                this.ssa = ssa;
+                this.FramePointer = fp;
+                this.IdState = idState;
+                this.ProcFlow = procFlow;
+                this.StackState = stack;
+                this.cmp = cmp;
+            }
+
+            public Context Clone()
+            {
+                return new Context(ssa, this.FramePointer, this.IdState, this.ProcFlow, new Dictionary<int, Expression>(StackState), cmp);
+            }
+
+            /// <summary>
+            /// Merge <paramref name="ctxOther"/> into this context.
+            /// </summary>
+            /// <param name="ctxOther"></param>
+            /// <returns>True if a change resulted, otherwise false.</returns>
+            public bool MergeWith(Context ctxOther)
+            {
+                bool changed = false;
+                foreach (var de in ctxOther.StackState)
+                {
+                    if (!this.StackState.TryGetValue(de.Key, out var oldValue))
+                    {
+                        changed = true;
+                        this.StackState.Add(de.Key, de.Value);
+                    }
+                    else if (oldValue != Constant.Invalid && !cmp.Equals(oldValue, de.Value))
+                    {
+                        changed = true;
+                        this.StackState[de.Key] = Constant.Invalid;
+                    }
+                }
+                return changed;
+            }
+
+            public Expression GetDefiningExpression(Identifier id)
+            {
+                return null;
+            }
+
+            public List<Statement> GetDefiningStatementClosure(Identifier id)
+            {
+                return new List<Statement>();
+            }
+
+            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
+            {
+                var offset = this.GetFrameOffset(access.EffectiveAddress);
+                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression value))
+                {
+                    return value;
+                }
+                return Constant.Invalid;
+            }
+
+            public Expression GetValue(Application appl)
+            {
+                var args = appl.Arguments;
+                for (int i = 0; i < args.Length; ++i)
+                {
+                    if (!(args[i] is OutArgument outArg))
+                        continue;
+                    if (outArg.Expression is Identifier outId)
+                    {
+                        SetValue(outId, Constant.Invalid);
+                    }
+                }
+                return Constant.Invalid;
+            }
+
+            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
+            {
+                var offset = this.GetFrameOffset(access.EffectiveAddress);
+                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression value))
+                {
+                    return value;
+                }
+                return Constant.Invalid;
+            }
+
+            public Expression GetValue(Identifier id)
+            {
+                if (id.Storage is StackStorage stack)
+                    return StackState.Get(stack.StackOffset);
+                if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> value))
+                    return null;
+                else
+                    return value.Item1;
+            }
+
+            public BitRange GetBitRange(Identifier id)
+            {
+                if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> value))
+                    return BitRange.Empty;
+                else
+                    return value.Item2;
+            }
+
+
+            public bool IsUsedInPhi(Identifier id)
+            {
+                var src = ssa.Identifiers[id].DefStatement;
+                if (src == null)
+                    return false;
+                if (!(src.Instruction is Assignment assSrc))
+                    return false;
+                return ExpressionIdentifierUseFinder.Find(ssa.Identifiers, assSrc.Src)
+                    .Select(c => ssa.Identifiers[c].DefStatement)
+                    .Where(d => d != null)
+                    .Select(ph => ph.Instruction as PhiAssignment)
+                    .Where(ph => ph != null)
+                    .Any();
+            }
+
+            public Expression MakeSegmentedAddress(Constant c1, Constant c2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveExpressionUse(Expression expr)
+            {
+            }
+
+            public void RemoveIdentifierUse(Identifier id)
+            {
+            }
+
+            public void SetValue(Identifier id, Expression value)
+            {
+                SetValue(id, value, id.Storage.GetBitRange());
+            }
+
+            public void SetValue(Identifier id, Expression value, BitRange range)
+            {
+                if (id.Storage is StackStorage stack)
+                {
+                    if (!StackState.TryGetValue(stack.StackOffset, out Expression oldValue))
+                    {
+                        DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}", stack.StackOffset, value);
+                        IsDirty = true;
+                        StackState.Add(stack.StackOffset, value);
+                    }
+                    else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
+                    {
+                        DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
+                        IsDirty = true;
+                        StackState[stack.StackOffset] = Constant.Invalid;
+                    }
+                }
+                else
+                {
+                    if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> oldValue))
+                    {
+                        DebugEx.Verbose(trace, "Trf: id {0} now has value {1}", id, value);
+                        IsDirty = true;
+                        IdState.Add(id, Tuple.Create(value, range));
+                    }
+                    else if (!cmp.Equals(oldValue.Item1, value) && oldValue.Item1 != Constant.Invalid)
+                    {
+                        DebugEx.Verbose(trace, "Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
+                        IsDirty = true;
+                        IdState[id] = Tuple.Create((Expression)Constant.Invalid, range);
+                    }
+                }
+            }
+
+            public void SetValueEa(Expression effectiveAddress, Expression value)
+            {
+                var offset = GetFrameOffset(effectiveAddress);
+                if (!offset.HasValue)
+                    return;
+
+                if (!StackState.TryGetValue(offset.Value, out Expression oldValue))
+                {
+                    IsDirty = true;
+                    DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
+                    StackState.Add(offset.Value, value);
+                }
+                else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
+                {
+                    IsDirty = true;
+                    DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
+                    StackState[offset.Value] = Constant.Invalid;
+                }
+            }
+
+            private int? GetFrameOffset(Expression effectiveAddress)
+            {
+                if (!(effectiveAddress is BinaryExpression ea) || ea.Left != FramePointer)
+                    return null;
+                if (!(ea.Right is Constant o))
+                    return null;
+                if (ea.Operator == Operator.IAdd)
+                {
+                    return o.ToInt32();
+                }
+                else if (ea.Operator == Operator.ISub)
+                {
+                    return -o.ToInt32();
+                }
+                return null;
+            }
+
+            public void SetValueEa(Expression basePointer, Expression ea, Expression value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void UseExpression(Expression expr)
+            {
             }
         }
     }

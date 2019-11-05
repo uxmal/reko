@@ -242,9 +242,8 @@
     <Compile Include="Arch\MSP430\MSP430DisassemblerTests.cs" />
     <Compile Include="Arch\MSP430\Msp430RewriterTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
-    <Compile Include="Analysis\TrashedRegisterFinder3Tests.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinderTests.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuserTests.cs" />
-    <Compile Include="Analysis\ValueNumberingTests.cs" />
     <Compile Include="Arch\Avr\Avr8ArchitectureTests.cs" />
     <Compile Include="Arch\Avr\Avr8DisassemblerTests.cs" />
     <Compile Include="Arch\Avr\Avr8RewriterTests.cs" />
@@ -340,9 +339,7 @@
     <Compile Include="Analysis\DeclarationInserterTests.cs" />
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\DominatorGraphTests.cs" />
-    <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
     <Compile Include="Analysis\IndirectCallRewriterTests.cs" />
-    <Compile Include="Analysis\RegisterPreservationTests.cs" />
     <Compile Include="Analysis\SequenceIdentifierGeneratorTests.cs" />
     <Compile Include="Analysis\UsedRegisterFinderTests.cs" />
     <Compile Include="Analysis\UserSignatureBuilderTests.cs" />
@@ -390,11 +387,9 @@
     <Compile Include="Analysis\InterferenceGraphTests.cs" />
     <Compile Include="Analysis\InterferenceTests.cs" />
     <Compile Include="Analysis\IntraBlockDeadRegistersTests.cs" />
-    <Compile Include="Analysis\IsLiveHelperTests.cs" />
     <Compile Include="Analysis\LinearInductionVariableTests.cs" />
     <Compile Include="Analysis\LiveCopyInserterTests.cs" />
     <Compile Include="Analysis\RegisterLivenessTests.cs" />
-    <Compile Include="Analysis\RegisterLivenessUnitTests.cs" />
     <Compile Include="Analysis\SegmentedAccessClassifierTests.cs" />
     <Compile Include="Analysis\SideEffectFinderTests.cs" />
     <Compile Include="Analysis\SignatureBuilderTests.cs" />
@@ -402,14 +397,8 @@
     <Compile Include="Analysis\SsaTests.cs" />
     <Compile Include="Analysis\SsaTransformTests.cs" />
     <Compile Include="Analysis\StrengthReductionTests.cs" />
-    <Compile Include="Analysis\TerminationAnalysisTests.cs" />
-    <Compile Include="Analysis\TrashedRegisterFinderTests.cs" />
-    <Compile Include="Analysis\TrashedRegisterSummarizerTests.cs" />
-    <Compile Include="Analysis\TrashRegisterFinderUpdateCodeTests.cs" />
-    <Compile Include="Analysis\TrashStorageHelperTests.cs" />
     <Compile Include="Analysis\ExpressionIdentifierUseFinderTests.cs" />
     <Compile Include="Analysis\ValuePropagationTests.cs" />
-    <Compile Include="Analysis\IdentifierLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
     <Compile Include="Arch\ArchTestBase.cs" />
     <Compile Include="Arch\Arm\AArch64DisassemblerTests.cs" />
@@ -1117,7 +1106,6 @@
     <Compile Include="Evaluation\IdConstantTests.cs" />
     <Compile Include="Evaluation\Shl_mul_e_RuleTest.cs" />
     <Compile Include="Evaluation\SliceMem_RuleTest.cs" />
-    <Compile Include="Evaluation\SymbolicEvaluatorTests.cs" />
     <Compile Include="Mocks\FakePlatform.cs" />
     <Compile Include="Scanning\BlockPromoterTests.cs" />
     <Compile Include="Analysis\LongAddRewriterTests.cs" />
