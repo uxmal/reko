@@ -127,9 +127,6 @@
     <Compile Include="Analysis\DeclarationInserter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\DefinedIdentifierFinder.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\InstructionUseAdder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -147,7 +144,6 @@
     <Compile Include="Analysis\PhiGraph.cs" />
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\ProjectionPropagator.cs" />
-    <Compile Include="Analysis\RegisterPreservation.cs" />
     <Compile Include="Analysis\SparseValuePropagation.cs" />
     <Compile Include="Analysis\SsaDefinitionsCollector.cs" />
     <Compile Include="Analysis\SequenceIdentifierGenerator.cs" />
@@ -158,7 +154,6 @@
     <Compile Include="Analysis\UnalignedMemoryAccessFuser.cs" />
     <Compile Include="Analysis\UnusedOutValuesRemover.cs" />
     <Compile Include="Analysis\ExpressionIdentifierUseFinder.cs" />
-    <Compile Include="Analysis\IdentifierLiveness.cs" />
     <Compile Include="Analysis\Interference.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -178,10 +173,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\ProgramDataFlow.cs" />
-    <Compile Include="Analysis\ExpressionPropagator.cs" />
-    <Compile Include="Analysis\RegisterLiveness.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\SegmentedAccessClassifier.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -204,13 +195,8 @@
     <Compile Include="Analysis\SsaTransform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\TerminationAnalysis.cs" />
-    <Compile Include="Analysis\TrashedRegisterFinder.cs" />
-    <Compile Include="Analysis\TrashedRegisterSummarizer.cs" />
-    <Compile Include="Analysis\TrashedStorageHelper.cs" />
     <Compile Include="Analysis\UsedRegisterFinder.cs" />
     <Compile Include="Analysis\UserSignatureBuilder.cs" />
-    <Compile Include="Analysis\ValueNumbering.cs" />
     <Compile Include="Analysis\ValuePropagator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -260,7 +246,6 @@
     <Compile Include="Evaluation\BinOpWithSelf_Rule.cs" />
     <Compile Include="Evaluation\Substitutor.cs" />
     <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
-    <Compile Include="Evaluation\SymbolicEvaluator.cs" />
     <Compile Include="Loading\FlirtoidSignatureLoader.cs" />
     <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
