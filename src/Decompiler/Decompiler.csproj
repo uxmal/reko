@@ -150,7 +150,7 @@
     <Compile Include="Analysis\SsaMutator.cs" />
     <Compile Include="Analysis\SsaTransform.IdentifierTransformer.cs" />
     <Compile Include="Analysis\StackPointerBackpropagator.cs" />
-    <Compile Include="Analysis\TrashedRegisterFinder3.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinder.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuser.cs" />
     <Compile Include="Analysis\UnusedOutValuesRemover.cs" />
     <Compile Include="Analysis\ExpressionIdentifierUseFinder.cs" />

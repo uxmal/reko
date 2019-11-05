@@ -242,7 +242,7 @@
     <Compile Include="Arch\MSP430\MSP430DisassemblerTests.cs" />
     <Compile Include="Arch\MSP430\Msp430RewriterTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
-    <Compile Include="Analysis\TrashedRegisterFinder3Tests.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinderTests.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuserTests.cs" />
     <Compile Include="Arch\Avr\Avr8ArchitectureTests.cs" />
     <Compile Include="Arch\Avr\Avr8DisassemblerTests.cs" />

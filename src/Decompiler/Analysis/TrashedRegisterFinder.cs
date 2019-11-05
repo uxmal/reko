@@ -34,7 +34,7 @@ using Reko.Core.Types;
 
 namespace Reko.Analysis
 {
-    public class TrashedRegisterFinder3 : InstructionVisitor<bool>
+    public class TrashedRegisterFinder : InstructionVisitor<bool>
     {
         private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation") { Level = TraceLevel.Error };
 
@@ -55,7 +55,7 @@ namespace Reko.Analysis
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
 
-        public TrashedRegisterFinder3(
+        public TrashedRegisterFinder(
             Program program,
             ProgramDataFlow flow,
             IEnumerable<SsaTransform> sccGroup,

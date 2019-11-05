@@ -38,7 +38,7 @@ using System.Text;
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
-    public class TrashedRegisterFinder3Tests
+    public class TrashedRegisterFinderTests
     {
         private IProcessorArchitecture arch;
         private ProgramBuilder builder;
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Analysis
                 sstSet.Add(sst);
             }
 
-            var trf = new TrashedRegisterFinder3(
+            var trf = new TrashedRegisterFinder(
                 program,
                 dataFlow,
                 sstSet,
@@ -786,9 +786,9 @@ Constants: cl:0x00
             var state = new Dictionary<Identifier, Tuple<Expression, BitRange>>();
             var stateOther = new Dictionary<Identifier, Tuple<Expression, BitRange>>();
             var procFlow = new ProcedureFlow(null);
-            var ctx = new TrashedRegisterFinder3.Context(
+            var ctx = new TrashedRegisterFinder.Context(
                 null, null, state, procFlow);
-            var ctxOther = new TrashedRegisterFinder3.Context(
+            var ctxOther = new TrashedRegisterFinder.Context(
                 null, null, state, procFlow);
             var ebp = new Identifier("ebp", PrimitiveType.Word32, new RegisterStorage("ebp", 5, 0, PrimitiveType.Word32));
             var esi = new Identifier("esi", PrimitiveType.Word32, new RegisterStorage("esi", 6, 0, PrimitiveType.Word32));
