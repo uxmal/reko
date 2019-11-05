@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -165,6 +166,29 @@ namespace Reko.UnitTests.Scanning
             var block = proc.EntryBlock.Succ[0];
             var cloner = new BlockCloner(block, procCalling, callgraph);
             var blockNew = cloner.Execute();
+        }
+
+        [Test]
+        public void BlockCloner_CloneBlock_Temporaries()
+        {
+            var m = new ProcedureBuilder(arch, "fn1000");
+            var tmp = m.Frame.CreateTemporary(PrimitiveType.Word32);
+            var r2 = m.Register("r2");
+            var ass = m.Assign(tmp, r2);
+            var sto = (Store) m.MStore(m.Word32(0x00123400), tmp).Instruction;
+            m.Return();
+            var block = m.Procedure.ControlGraph.Blocks[2];
+
+            m = new ProcedureBuilder(arch, "procCalling");
+
+            var blockCloner = new BlockCloner(block, m.Procedure, callgraph);
+            var blockNew = blockCloner.Execute();
+
+            var assNew = (Assignment) blockNew.Statements[0].Instruction;
+            var stoNew = (Store) blockNew.Statements[1].Instruction;
+            Assert.AreNotSame(ass.Dst, assNew.Dst);
+            Assert.AreNotSame(sto.Src, stoNew.Src);
+            Assert.AreSame(assNew.Dst, stoNew.Src);
         }
     }
 }

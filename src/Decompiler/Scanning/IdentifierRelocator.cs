@@ -52,8 +52,7 @@ namespace Reko.Scanning
         public override Expression VisitIdentifier(Identifier id)
         {
             this.id = id;
-            Identifier idNew;
-            if (!mapIds.TryGetValue(id, out idNew))
+            if (!mapIds.TryGetValue(id, out Identifier idNew))
             {
                 idNew = id.Storage.Accept(this);
                 mapIds.Add(id, idNew);
@@ -93,6 +92,9 @@ namespace Reko.Scanning
 
         public Identifier VisitTemporaryStorage(TemporaryStorage tmp)
         {
+            var tmp2 = frame.FindTemporary(tmp.Name);
+            if (tmp2 != null)
+                return tmp2;
             return frame.CreateTemporary(id.DataType);
         }
 

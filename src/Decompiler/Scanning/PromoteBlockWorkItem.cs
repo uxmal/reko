@@ -35,7 +35,7 @@ namespace Reko.Scanning
 {
     public class PromoteBlockWorkItem : WorkItem
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(PromoteBlockWorkItem), "Trace the workings of PromoteBlockWorkItem") { Level = TraceLevel.Info };
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(PromoteBlockWorkItem), "Trace the workings of PromoteBlockWorkItem") { Level = TraceLevel.Info };
 
         public Block Block; 
         public Procedure ProcNew;

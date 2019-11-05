@@ -155,7 +155,7 @@ namespace Reko.Core
 
 		public Identifier CreateTemporary(string name, DataType dt)
 		{
-			Identifier id = new Identifier(name, dt, 
+            Identifier id = new Identifier(name, dt, 
                 new TemporaryStorage(name, identifiers.Count, dt));
 			identifiers.Add(id);
 			return id;
@@ -318,14 +318,12 @@ namespace Reko.Core
 		{
 			if (id == null)
 				return 0;
-			StackArgumentStorage stVar = id.Storage as StackArgumentStorage;
-			if (stVar != null)
-				return stVar.StackOffset;
-			FpuStackStorage fstVar = id.Storage as FpuStackStorage;
-			if (fstVar != null)
-				return fstVar.FpuStackOffset;
+            if (id.Storage is StackArgumentStorage stVar)
+                return stVar.StackOffset;
+            if (id.Storage is FpuStackStorage fstVar)
+                return fstVar.FpuStackOffset;
 
-			throw new ArgumentOutOfRangeException("id", "Identifier must be an argument.");
+            throw new ArgumentOutOfRangeException("id", "Identifier must be an argument.");
 		}
 
         public Identifier FindSequence(Storage[] elements)
@@ -356,10 +354,9 @@ namespace Reko.Core
 			int cbMax = 0;
 			foreach (Identifier id in identifiers)
 			{
-				StackArgumentStorage sa = id.Storage as StackArgumentStorage;
-				if (sa == null)
-					continue;
-				cbMax = Math.Max(cbMax, sa.StackOffset + sa.DataType.Size);
+                if (!(id.Storage is StackArgumentStorage sa))
+                    continue;
+                cbMax = Math.Max(cbMax, sa.StackOffset + sa.DataType.Size);
 			}
 			return cbMax;
 		}
@@ -382,10 +379,9 @@ namespace Reko.Core
 		{
 			foreach (Identifier id in identifiers)
 			{
-				FpuStackStorage fst = id.Storage as FpuStackStorage;
-				if (fst != null && fst.FpuStackOffset == off)
-					return id;
-			}
+                if (id.Storage is FpuStackStorage fst && fst.FpuStackOffset == off)
+                    return id;
+            }
 			return null;
 		}
 
@@ -393,12 +389,11 @@ namespace Reko.Core
 		{
 			foreach (Identifier id in identifiers)
 			{
-				OutArgumentStorage s = id.Storage as OutArgumentStorage;
-				if (s != null && s.OriginalIdentifier == idOrig)
-				{
-					return id;
-				}
-			}
+                if (id.Storage is OutArgumentStorage s && s.OriginalIdentifier == idOrig)
+                {
+                    return id;
+                }
+            }
 			return null;
 		}
 
@@ -406,10 +401,9 @@ namespace Reko.Core
 		{
 			foreach (Identifier id in identifiers)
 			{
-				RegisterStorage s = id.Storage as RegisterStorage;
-				if (s != null && s == reg)
-					return id;
-			}
+                if (id.Storage is RegisterStorage s && s == reg)
+                    return id;
+            }
 			return null;
 		}
 
@@ -417,12 +411,11 @@ namespace Reko.Core
 		{
 			foreach (Identifier id in identifiers)
 			{
-				StackArgumentStorage s = id.Storage as StackArgumentStorage;
-				if (s != null && s.StackOffset == offset && id.DataType.Size == size)
-				{
-					return id;
-				}
-			}
+                if (id.Storage is StackArgumentStorage s && s.StackOffset == offset && id.DataType.Size == size)
+                {
+                    return id;
+                }
+            }
 			return null;
 		}
 
@@ -430,10 +423,9 @@ namespace Reko.Core
 		{
 			foreach (Identifier id in identifiers)
 			{
-				StackLocalStorage loc = id.Storage as StackLocalStorage;
-				if (loc != null && loc.StackOffset == offset && id.DataType.Size == size)
-					return id;
-			}
+                if (id.Storage is StackLocalStorage loc && loc.StackOffset == offset && id.DataType.Size == size)
+                    return id;
+            }
 			return null;
 		}
 

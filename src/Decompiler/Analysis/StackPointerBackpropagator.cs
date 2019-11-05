@@ -112,7 +112,8 @@ namespace Reko.Analysis
         private (Identifier, int) MatchStackOffsetPattern(Identifier sp)
         {
             (Identifier, int) noMatch = (null, 0);
-            var def = ssa.Identifiers[sp].DefStatement;
+            var sid = ssa.Identifiers[sp];
+            var def = sid.DefStatement;
             if (!(def.Instruction is Assignment ass))
                 return noMatch;
             if (!(ass.Src is BinaryExpression bin))
