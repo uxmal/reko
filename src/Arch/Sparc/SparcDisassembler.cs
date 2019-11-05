@@ -30,11 +30,16 @@ using System.Text;
 
 namespace Reko.Arch.Sparc
 {
+    using Decoder = Decoder<SparcDisassembler, Opcode, SparcInstruction>;
+
     public class SparcDisassembler : DisassemblerBase<SparcInstruction>
     {
         private const InstrClass Transfer = InstrClass.Delay | InstrClass.Transfer;
         private const InstrClass CondTransfer = InstrClass.Delay | InstrClass.Transfer | InstrClass.Conditional;
         private const InstrClass LinkTransfer = InstrClass.Delay | InstrClass.Transfer | InstrClass.Call;
+
+        private static readonly Decoder rootDecoder;
+        private static readonly Decoder[] branchOps;
 
         private SparcInstruction instrCur;
         private EndianImageReader imageReader;
@@ -46,29 +51,6 @@ namespace Reko.Arch.Sparc
             this.ops = new List<MachineOperand>();
         }
 
-
-        // Format 1 (op == 1)
-        // +----+-------------------------------------------------------------+
-        // | op | disp30                                                      |
-        // +----+-------------------------------------------------------------+
-        //
-        // Format 2 (op == 0). SETHI and branches Bicc, FBcc, CBcc
-        // +----+---+------+-----+--------------------------------------------+
-        // | op | rd       | op2 | imm22                                      |
-        // +----+---+------+-----+--------------------------------------------+
-        // | op | a | cond | op2 | disp22                                     |
-        // +----+---+------+-----+--------------------------------------------+
-        // 31   29  28     24    21
-        //
-        // Format 3 (op = 2, 3)
-        // +----+----------+--------+------+-----+--------------------+-------+
-        // | op |    rd    |   op3  |  rs1 | i=0 |        asi         |  rs2  |
-        // +----+----------+--------+------+-----+--------------------+-------+
-        // | op |    rd    |   op3  |  rs1 | i=1 |        simm13              |
-        // +----+----------+--------+------+-----+--------------------+-------+
-        // | op |    rd    |   op3  |  rs1 |           opf            |  rs2  |
-        // +----+----------+--------+------+--------------------------+-------+
-        // 31   29         24       18     13    12                   4
         public override SparcInstruction DisassembleInstruction()
         {
             if (!imageReader.IsValid)
@@ -76,28 +58,7 @@ namespace Reko.Arch.Sparc
             ops.Clear();
             var addr = imageReader.Address;
             uint wInstr = imageReader.ReadBeUInt32();
-            switch (wInstr >> 30)
-            {
-            default: Debug.Assert(false, "Impossible!"); break;
-
-            case 0:
-                instrCur = decoders_0[(wInstr >> 22) & 7].Decode(this, wInstr);
-                break;
-            case 1:
-                instrCur = new SparcInstruction
-                {
-                    Opcode = Opcode.call,
-                    InstructionClass = LinkTransfer,
-                    Op1 = new AddressOperand((imageReader.Address - 4) + ((int) wInstr << 2)),
-                };
-                break;
-            case 2:
-                instrCur = decoders_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
-                break;
-            case 3:
-                instrCur = decoders_3[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
-                break;
-            }
+            instrCur = rootDecoder.Decode(wInstr, this);
             instrCur.Address = addr;
             instrCur.Length = 4;
             instrCur.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
@@ -106,21 +67,21 @@ namespace Reko.Arch.Sparc
 
         protected override SparcInstruction CreateInvalidInstruction()
         {
-            return invalid.Decode(this, 0);
+            return invalid.Decode(0, this);
         }
 
-        private class Decoder
+        private sealed class InstrDecoder : Decoder
         {
             public Opcode code;
             public InstrClass iclass = InstrClass.Linear;
             public Mutator<SparcDisassembler>[] mutators;
 
-            public virtual SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
+            public override SparcInstruction Decode(uint wInstr, SparcDisassembler dasm)
             {
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
-                        return invalid.Decode(dasm, wInstr);
+                        return invalid.Decode(wInstr, dasm);
                 }
                 return new SparcInstruction
                 {
@@ -232,6 +193,12 @@ namespace Reko.Arch.Sparc
         {
 
             dasm.ops.Add(GetAddressOperand(dasm.imageReader.Address, wInstr));
+            return true;
+        }
+
+        private static bool JJ(uint wInstr, SparcDisassembler dasm)
+        {
+            dasm.ops.Add(new AddressOperand((dasm.imageReader.Address - 4) + ((int) wInstr << 2)));
             return true;
         }
 
@@ -361,6 +328,7 @@ namespace Reko.Arch.Sparc
             Instr(Opcode.illegal, InstrClass.Invalid),
             new BranchDecoder { offset = 0x00 },
             Instr(Opcode.illegal, InstrClass.Invalid),
+
             Instr(Opcode.sethi, I,r25),
             Instr(Opcode.illegal, InstrClass.Invalid),
             new BranchDecoder { offset = 0x10 },
@@ -371,341 +339,343 @@ namespace Reko.Arch.Sparc
         {
             public uint offset;
 
-            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
+            public override SparcInstruction Decode(uint wInstr, SparcDisassembler dasm)
             {
                 uint i = ((wInstr >> 25) & 0xF) + offset;
-                SparcInstruction instr = branchOps[i].Decode(dasm, wInstr);
+                SparcInstruction instr = branchOps[i].Decode(wInstr, dasm);
                 instr.InstructionClass |= ((wInstr & (1u << 29)) != 0) ? InstrClass.Annul : 0;
                 return instr;
             }
         }
 
-        private static Decoder Instr(Opcode opcode, params Mutator<SparcDisassembler>[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, params Mutator<SparcDisassembler>[] mutators)
         {
-            return new Decoder { code = opcode, iclass = InstrClass.Linear, mutators = mutators };
+            return new InstrDecoder { code = opcode, iclass = InstrClass.Linear, mutators = mutators };
         }
 
-        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator<SparcDisassembler>[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<SparcDisassembler>[] mutators)
         {
-            return new Decoder { code = opcode, iclass = iclass, mutators = mutators };
+            return new InstrDecoder { code = opcode, iclass = iclass, mutators = mutators };
         }
 
-        private static Decoder invalid = Instr(Opcode.illegal, InstrClass.Invalid);
+        private static InstrDecoder invalid = Instr(Opcode.illegal, InstrClass.Invalid);
 
-        private static Decoder[] branchOps = new Decoder[]
+        static SparcDisassembler()
         {
-            // 00
-            Instr(Opcode.bn, CondTransfer, J),
-            Instr(Opcode.be, CondTransfer, J),
-            Instr(Opcode.ble, CondTransfer, J),
-            Instr(Opcode.bl, CondTransfer, J),
-            Instr(Opcode.bleu, CondTransfer, J),
-            Instr(Opcode.bcs, CondTransfer, J),
-            Instr(Opcode.bneg, CondTransfer, J),
-            Instr(Opcode.bvs, CondTransfer, J),
-
-            Instr(Opcode.ba, CondTransfer, J),
-            Instr(Opcode.bne, CondTransfer, J),
-            Instr(Opcode.bg, CondTransfer, J),
-            Instr(Opcode.bge, CondTransfer, J),
-            Instr(Opcode.bgu, CondTransfer, J),
-            Instr(Opcode.bcc, CondTransfer, J),
-            Instr(Opcode.bpos, CondTransfer, J),
-            Instr(Opcode.bvc, CondTransfer, J),
-
-            // 10
-            Instr(Opcode.fbn, CondTransfer, J),
-            Instr(Opcode.fbne, CondTransfer, J),
-            Instr(Opcode.fblg, CondTransfer, J),
-            Instr(Opcode.fbul, CondTransfer, J),
-            Instr(Opcode.fbug, CondTransfer, J),
-            Instr(Opcode.fbg, CondTransfer, J),
-            Instr(Opcode.fbu, CondTransfer, J),
-            Instr(Opcode.fbug, CondTransfer, J),
-
-            Instr(Opcode.fba, CondTransfer, J),
-            Instr(Opcode.fbe, CondTransfer, J),
-            Instr(Opcode.fbue, CondTransfer, J),
-            Instr(Opcode.fbge, CondTransfer, J),
-            Instr(Opcode.fbuge, CondTransfer, J),
-            Instr(Opcode.fble, CondTransfer, J),
-            Instr(Opcode.fbule, CondTransfer, J),
-            Instr(Opcode.fbo, CondTransfer, J),
-
-            // 20
-            Instr(Opcode.cbn, J),
-            Instr(Opcode.cb123, J),
-            Instr(Opcode.cb12, J),
-            Instr(Opcode.cb13, J),
-            Instr(Opcode.cb1, J),
-            Instr(Opcode.cb23, J),
-            Instr(Opcode.cb2, J),
-            Instr(Opcode.cb3, J),
-
-            Instr(Opcode.cba, J),
-            Instr(Opcode.cb0, J),
-            Instr(Opcode.cb03, J),
-            Instr(Opcode.cb02, J),
-            Instr(Opcode.cb023, J),
-            Instr(Opcode.cb01, J),
-            Instr(Opcode.cb013, J),
-            Instr(Opcode.cb012, J),
-
-            // 30
-            Instr(Opcode.tn, r14,T),
-            Instr(Opcode.te, r14,T),
-            Instr(Opcode.tle, r14,T),
-            Instr(Opcode.tl, r14,T),
-            Instr(Opcode.tleu, r14,T),
-            Instr(Opcode.tcs, r14,T),
-            Instr(Opcode.tneg, r14,T),
-            Instr(Opcode.tvs, r14,T),
-
-            Instr(Opcode.ta, r14,T),
-            Instr(Opcode.tne, r14,T),
-            Instr(Opcode.tg, r14,T),
-            Instr(Opcode.tge, r14,T),
-            Instr(Opcode.tgu, r14,T),
-            Instr(Opcode.tcc, r14,T),
-            Instr(Opcode.tpos, r14,T),
-            Instr(Opcode.tvc, r14,T),
-        };
-
-        private static Decoder[] decoders_2 = new Decoder[]
-        {
-            // 00
-            Instr(Opcode.add, r14,R0,r25),
-            Instr(Opcode.and, r14,R0,r25),
-            Instr(Opcode.or, r14,R0,r25),
-            Instr(Opcode.xor, r14,R0,r25),
-            Instr(Opcode.sub, r14,R0,r25),
-            Instr(Opcode.andn, r14,R0,r25),
-            Instr(Opcode.orn, r14,R0,r25),
-            Instr(Opcode.xnor, r14,R0,r25),
-
-            Instr(Opcode.addx, r14,R0,r25),
-            invalid,
-            Instr(Opcode.umul, r14,R0,r25),
-            Instr(Opcode.smul, r14,R0,r25),
-            Instr(Opcode.subx, r14,R0,r25),
-            invalid,
-            Instr(Opcode.udiv, r14,R0,r25),
-            Instr(Opcode.sdiv, r14,R0,r25),
-
-            // 10
-            Instr(Opcode.addcc, r14,R0,r25),
-            Instr(Opcode.andcc, r14,R0,r25),
-            Instr(Opcode.orcc, r14,R0,r25),
-            Instr(Opcode.xorcc, r14,R0,r25),
-            Instr(Opcode.subcc, r14,R0,r25),
-            Instr(Opcode.andncc, r14,R0,r25),
-            Instr(Opcode.orncc, r14,R0,r25),
-            Instr(Opcode.xnorcc, r14,R0,r25),
-
-            Instr(Opcode.addxcc, r14,R0,r25),
-            invalid,
-            Instr(Opcode.umulcc, r14,R0,r25),
-            Instr(Opcode.smulcc, r14,R0,r25),
-            Instr(Opcode.subxcc, r14,R0,r25),
-            invalid,
-            Instr(Opcode.udivcc, r14,R0,r25),
-            Instr(Opcode.sdivcc, r14,R0,r25),
-
-            // 20
-            Instr(Opcode.taddcc, r14,R0,r25),
-            Instr(Opcode.tsubcc, r14,R0,r25),
-            Instr(Opcode.taddcctv, r14,R0,r25),
-            Instr(Opcode.tsubcctv, r14,R0,r25),
-            Instr(Opcode.mulscc, r14,R0,r25),
-            Instr(Opcode.sll, r14,S,r25),
-            Instr(Opcode.srl, r14,S,r25),
-            Instr(Opcode.sra, r14,S,r25),
-
-            Instr(Opcode.rd, ry,r25),
-            new Decoder { code=Opcode.rdpsr, },
-            new Decoder { code=Opcode.rdtbr, },
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-
-            // 30
-            new Decoder { code=Opcode.wrasr, },
-            new Decoder { code=Opcode.wrpsr, },
-            new Decoder { code=Opcode.wrwim, },
-            new Decoder { code=Opcode.wrtbr, },
-            new FPop1Decoder { },
-            new FPop2Decoder { },
-            new CPop1 {  },
-            new CPop2 {  },
-
-            Instr(Opcode.jmpl, r14,Rs,r25),
-            Instr(Opcode.rett, r14,Rs ),
-            new BranchDecoder { offset= 0x30, },
-            Instr(Opcode.flush),
-            Instr(Opcode.save, r14,R0,r25),
-            Instr(Opcode.restore, r14,R0,r25),
-            invalid,
-            invalid,
-        };
-
-        private static Decoder[] decoders_3 = new Decoder[]
-        {
-            // 00
-            Instr(Opcode.ld, Mw,r25),
-            Instr(Opcode.ldub, Mb,r25),
-            Instr(Opcode.lduh, Mh,r25),
-            Instr(Opcode.ldd, Md,r25),
-            Instr(Opcode.st, r25,Mw),
-            Instr(Opcode.stb, r25,Mb),
-            Instr(Opcode.sth, r25,Mh),
-            Instr(Opcode.std, r25,Md),
-
-            invalid,
-            Instr(Opcode.ldsb, Msb,r25),
-            Instr(Opcode.ldsh, Msh,r25),
-            invalid,
-            invalid,
-            new Decoder { code=Opcode.ldstub,  iclass=InstrClass.Invalid },
-            invalid,
-            Instr(Opcode.swap, Mw,r25),
-
-            // 10
-            Instr(Opcode.lda, Aw,r25),
-            Instr(Opcode.lduba, Ab,r25),
-            Instr(Opcode.lduha, Ah,r25),
-            Instr(Opcode.ldda, Ad,r25),
-            Instr(Opcode.sta, r25,Aw),
-            Instr(Opcode.stba, r25,Ab),
-            Instr(Opcode.stha, r25,Ah),
-            Instr(Opcode.stda, r25,Ad),
-
-            invalid,
-            Instr(Opcode.ldsba, r25,Ab),
-            Instr(Opcode.ldsha, r25,Ah),
-            invalid,
-            invalid,
-            Instr(Opcode.ldstuba, Ab,r25),
-            invalid,
-            Instr(Opcode.swapa, Aw,r25),
-
-            // 20
-            Instr(Opcode.ldf,   Mw,f24),
-            Instr(Opcode.ldfsr, Mw,rfsr),
-            invalid,
-            Instr(Opcode.lddf, Md,f24),
-            Instr(Opcode.stf, f24,Mw),
-            Instr(Opcode.stfsr, rfsr,Mw),
-            Instr(Opcode.stdfq),
-            Instr(Opcode.stdf, f24,Md),
-
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-
-            // 30
-            new Decoder { code=Opcode.ldc, },
-            new Decoder { code=Opcode.ldcsr, },
-            invalid,
-            new Decoder { code=Opcode.lddc, },
-            new Decoder { code=Opcode.stc, },
-            new Decoder { code=Opcode.stcsr, },
-            new Decoder { code=Opcode.stdcq, },
-            new Decoder { code=Opcode.stdc, },
-
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-        };
-
-        private class FPop1Decoder : Decoder
-        {
-            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
+            branchOps = new Decoder[]
             {
-                return fpDecoders[(wInstr >> 5) & 0x1FF].Decode(dasm, wInstr);
-            }
-        }
+                // 00
+                Instr(Opcode.bn, CondTransfer, J),
+                Instr(Opcode.be, CondTransfer, J),
+                Instr(Opcode.ble, CondTransfer, J),
+                Instr(Opcode.bl, CondTransfer, J),
+                Instr(Opcode.bleu, CondTransfer, J),
+                Instr(Opcode.bcs, CondTransfer, J),
+                Instr(Opcode.bneg, CondTransfer, J),
+                Instr(Opcode.bvs, CondTransfer, J),
 
-        private class FPop2Decoder : Decoder
-        {
-            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
+                Instr(Opcode.ba, CondTransfer, J),
+                Instr(Opcode.bne, CondTransfer, J),
+                Instr(Opcode.bg, CondTransfer, J),
+                Instr(Opcode.bge, CondTransfer, J),
+                Instr(Opcode.bgu, CondTransfer, J),
+                Instr(Opcode.bcc, CondTransfer, J),
+                Instr(Opcode.bpos, CondTransfer, J),
+                Instr(Opcode.bvc, CondTransfer, J),
+
+                // 10
+                Instr(Opcode.fbn, CondTransfer, J),
+                Instr(Opcode.fbne, CondTransfer, J),
+                Instr(Opcode.fblg, CondTransfer, J),
+                Instr(Opcode.fbul, CondTransfer, J),
+                Instr(Opcode.fbug, CondTransfer, J),
+                Instr(Opcode.fbg, CondTransfer, J),
+                Instr(Opcode.fbu, CondTransfer, J),
+                Instr(Opcode.fbug, CondTransfer, J),
+
+                Instr(Opcode.fba, CondTransfer, J),
+                Instr(Opcode.fbe, CondTransfer, J),
+                Instr(Opcode.fbue, CondTransfer, J),
+                Instr(Opcode.fbge, CondTransfer, J),
+                Instr(Opcode.fbuge, CondTransfer, J),
+                Instr(Opcode.fble, CondTransfer, J),
+                Instr(Opcode.fbule, CondTransfer, J),
+                Instr(Opcode.fbo, CondTransfer, J),
+
+                // 20
+                Instr(Opcode.cbn, J),
+                Instr(Opcode.cb123, J),
+                Instr(Opcode.cb12, J),
+                Instr(Opcode.cb13, J),
+                Instr(Opcode.cb1, J),
+                Instr(Opcode.cb23, J),
+                Instr(Opcode.cb2, J),
+                Instr(Opcode.cb3, J),
+
+                Instr(Opcode.cba, J),
+                Instr(Opcode.cb0, J),
+                Instr(Opcode.cb03, J),
+                Instr(Opcode.cb02, J),
+                Instr(Opcode.cb023, J),
+                Instr(Opcode.cb01, J),
+                Instr(Opcode.cb013, J),
+                Instr(Opcode.cb012, J),
+
+                // 30
+                Instr(Opcode.tn, r14,T),
+                Instr(Opcode.te, r14,T),
+                Instr(Opcode.tle, r14,T),
+                Instr(Opcode.tl, r14,T),
+                Instr(Opcode.tleu, r14,T),
+                Instr(Opcode.tcs, r14,T),
+                Instr(Opcode.tneg, r14,T),
+                Instr(Opcode.tvs, r14,T),
+
+                Instr(Opcode.ta, r14,T),
+                Instr(Opcode.tne, r14,T),
+                Instr(Opcode.tg, r14,T),
+                Instr(Opcode.tge, r14,T),
+                Instr(Opcode.tgu, r14,T),
+                Instr(Opcode.tcc, r14,T),
+                Instr(Opcode.tpos, r14,T),
+                Instr(Opcode.tvc, r14,T),
+            };
+
+            var fpDecoders = new (uint, Decoder)[]
             {
-                return fpDecoders[(wInstr >> 5) & 0x1FF].Decode(dasm, wInstr);
-            }
-        }
+                // 00 
+                (0x01, Instr(Opcode.fmovs, f0, f25)),
+                (0x05, Instr(Opcode.fnegs, f0, f25)),
+                (0x09, Instr(Opcode.fabss, f0, f25)),
+                (0x29, Instr(Opcode.fsqrts, f0, f25)),
+                (0x2A, Instr(Opcode.fsqrtd, d0, d25)),
+                (0x2B, Instr(Opcode.fsqrtq, q0, q25)),
 
-        private class CPop1 : Decoder
-        {
-            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
+                (0x41, Instr(Opcode.fadds, f14, f0, f25)),
+                (0x42, Instr(Opcode.faddd, d14, d0, d25)),
+                (0x43, Instr(Opcode.faddq, q14, q0, q25)),
+                (0x45, Instr(Opcode.fsubs, f14, f0, f25)),
+                (0x46, Instr(Opcode.fsubd, d14, d0, d25)),
+                (0x47, Instr(Opcode.fsubq, q14, q0, q25)),
+
+                (0xC4, Instr(Opcode.fitos, f0, f25)),
+                (0xC6, Instr(Opcode.fdtos, d0, f25)),
+                (0xC7, Instr(Opcode.fqtos, q0, f25)),
+                (0xC8, Instr(Opcode.fitod, f0, d25)),
+                (0xC9, Instr(Opcode.fstod, f0, d25)),
+                (0xCB, Instr(Opcode.fqtod, q0, d25)),
+                (0xCC, Instr(Opcode.fitoq, f0, q25)),
+                (0xCD, Instr(Opcode.fstoq, f0, q25)),
+                (0xCE, Instr(Opcode.fdtoq, d0, q25)),
+                (0xD1, Instr(Opcode.fstoi, f0, f25)),
+                (0xD2, Instr(Opcode.fdtoi, d0, f25)),
+                (0xD3, Instr(Opcode.fqtoi, q0, f25)),
+
+                (0x49, Instr(Opcode.fmuls, f14, f0, f25)),
+                (0x4A, Instr(Opcode.fmuld, d14, d0, d25)),
+                (0x4B, Instr(Opcode.fmulq, q14, q0, q25)),
+                (0x4D, Instr(Opcode.fdivs, f14, f0, f25)),
+                (0x4E, Instr(Opcode.fdivd, d14, d0, d25)),
+                (0x4F, Instr(Opcode.fdivq, q14, q0, q25)),
+
+                (0x69, Instr(Opcode.fsmuld, f14, f0, d25)),
+                (0x6E, Instr(Opcode.fdmulq, d14, d0, q25)),
+
+                (0x51, Instr(Opcode.fcmps, f14, f0)),
+                (0x52, Instr(Opcode.fcmpd, d14, d0)),
+                (0x53, Instr(Opcode.fcmpq, f14, f0)),
+                (0x55, Instr(Opcode.fcmpes, f14, f0)),
+                (0x56, Instr(Opcode.fcmped, d14, d0)),
+                (0x57, Instr(Opcode.fcmpeq, q14, q0))
+            };
+
+            var decoders_2 = new Decoder[]
             {
-                return fpDecoders[(wInstr >> 4) & 0x1FF].Decode(dasm, wInstr);
-            }
-        }
-        private class CPop2 : Decoder
-        {
-            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
+                // 00
+                Instr(Opcode.add, r14,R0,r25),
+                Instr(Opcode.and, r14,R0,r25),
+                Instr(Opcode.or, r14,R0,r25),
+                Instr(Opcode.xor, r14,R0,r25),
+                Instr(Opcode.sub, r14,R0,r25),
+                Instr(Opcode.andn, r14,R0,r25),
+                Instr(Opcode.orn, r14,R0,r25),
+                Instr(Opcode.xnor, r14,R0,r25),
+
+                Instr(Opcode.addx, r14,R0,r25),
+                invalid,
+                Instr(Opcode.umul, r14,R0,r25),
+                Instr(Opcode.smul, r14,R0,r25),
+                Instr(Opcode.subx, r14,R0,r25),
+                invalid,
+                Instr(Opcode.udiv, r14,R0,r25),
+                Instr(Opcode.sdiv, r14,R0,r25),
+
+                // 10
+                Instr(Opcode.addcc, r14,R0,r25),
+                Instr(Opcode.andcc, r14,R0,r25),
+                Instr(Opcode.orcc, r14,R0,r25),
+                Instr(Opcode.xorcc, r14,R0,r25),
+                Instr(Opcode.subcc, r14,R0,r25),
+                Instr(Opcode.andncc, r14,R0,r25),
+                Instr(Opcode.orncc, r14,R0,r25),
+                Instr(Opcode.xnorcc, r14,R0,r25),
+
+                Instr(Opcode.addxcc, r14,R0,r25),
+                invalid,
+                Instr(Opcode.umulcc, r14,R0,r25),
+                Instr(Opcode.smulcc, r14,R0,r25),
+                Instr(Opcode.subxcc, r14,R0,r25),
+                invalid,
+                Instr(Opcode.udivcc, r14,R0,r25),
+                Instr(Opcode.sdivcc, r14,R0,r25),
+
+                // 20
+                Instr(Opcode.taddcc, r14,R0,r25),
+                Instr(Opcode.tsubcc, r14,R0,r25),
+                Instr(Opcode.taddcctv, r14,R0,r25),
+                Instr(Opcode.tsubcctv, r14,R0,r25),
+                Instr(Opcode.mulscc, r14,R0,r25),
+                Instr(Opcode.sll, r14,S,r25),
+                Instr(Opcode.srl, r14,S,r25),
+                Instr(Opcode.sra, r14,S,r25),
+
+                Instr(Opcode.rd, ry,r25),
+                new InstrDecoder { code=Opcode.rdpsr, },
+                new InstrDecoder { code=Opcode.rdtbr, },
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                // 30
+                new InstrDecoder { code=Opcode.wrasr, },
+                new InstrDecoder { code=Opcode.wrpsr, },
+                new InstrDecoder { code=Opcode.wrwim, },
+                new InstrDecoder { code=Opcode.wrtbr, },
+                Sparse(5, 9, "  FOp1", invalid, fpDecoders),
+                Sparse(5, 9, "  FOp2", invalid, fpDecoders),
+                Sparse(4, 9, "  CPop1", invalid, fpDecoders),
+                Sparse(4, 9, "  CPop2", invalid, fpDecoders),
+
+                Instr(Opcode.jmpl, r14,Rs,r25),
+                Instr(Opcode.rett, r14,Rs ),
+                new BranchDecoder { offset= 0x30, },
+                Instr(Opcode.flush),
+                Instr(Opcode.save, r14,R0,r25),
+                Instr(Opcode.restore, r14,R0,r25),
+                invalid,
+                invalid,
+            };
+
+            var decoders_3 = new InstrDecoder[]
             {
-                return fpDecoders[(wInstr >> 4) & 0xFF].Decode(dasm, wInstr);
-            }
+                // 00
+                Instr(Opcode.ld, Mw,r25),
+                Instr(Opcode.ldub, Mb,r25),
+                Instr(Opcode.lduh, Mh,r25),
+                Instr(Opcode.ldd, Md,r25),
+                Instr(Opcode.st, r25,Mw),
+                Instr(Opcode.stb, r25,Mb),
+                Instr(Opcode.sth, r25,Mh),
+                Instr(Opcode.std, r25,Md),
+
+                invalid,
+                Instr(Opcode.ldsb, Msb,r25),
+                Instr(Opcode.ldsh, Msh,r25),
+                invalid,
+                invalid,
+                new InstrDecoder { code=Opcode.ldstub,  iclass=InstrClass.Invalid },
+                invalid,
+                Instr(Opcode.swap, Mw,r25),
+
+                // 10
+                Instr(Opcode.lda, Aw,r25),
+                Instr(Opcode.lduba, Ab,r25),
+                Instr(Opcode.lduha, Ah,r25),
+                Instr(Opcode.ldda, Ad,r25),
+                Instr(Opcode.sta, r25,Aw),
+                Instr(Opcode.stba, r25,Ab),
+                Instr(Opcode.stha, r25,Ah),
+                Instr(Opcode.stda, r25,Ad),
+
+                invalid,
+                Instr(Opcode.ldsba, r25,Ab),
+                Instr(Opcode.ldsha, r25,Ah),
+                invalid,
+                invalid,
+                Instr(Opcode.ldstuba, Ab,r25),
+                invalid,
+                Instr(Opcode.swapa, Aw,r25),
+
+                // 20
+                Instr(Opcode.ldf,   Mw,f24),
+                Instr(Opcode.ldfsr, Mw,rfsr),
+                invalid,
+                Instr(Opcode.lddf, Md,f24),
+                Instr(Opcode.stf, f24,Mw),
+                Instr(Opcode.stfsr, rfsr,Mw),
+                Instr(Opcode.stdfq),
+                Instr(Opcode.stdf, f24,Md),
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                // 30
+                new InstrDecoder { code=Opcode.ldc, },
+                new InstrDecoder { code=Opcode.ldcsr, },
+                invalid,
+                new InstrDecoder { code=Opcode.lddc, },
+                new InstrDecoder { code=Opcode.stc, },
+                new InstrDecoder { code=Opcode.stcsr, },
+                new InstrDecoder { code=Opcode.stdcq, },
+                new InstrDecoder { code=Opcode.stdc, },
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+            };
+
+
+            // Format 1 (op == 1)
+            // +----+-------------------------------------------------------------+
+            // | op | disp30                                                      |
+            // +----+-------------------------------------------------------------+
+            //
+            // Format 2 (op == 0). SETHI and branches Bicc, FBcc, CBcc
+            // +----+---+------+-----+--------------------------------------------+
+            // | op | rd       | op2 | imm22                                      |
+            // +----+---+------+-----+--------------------------------------------+
+            // | op | a | cond | op2 | disp22                                     |
+            // +----+---+------+-----+--------------------------------------------+
+            // 31   29  28     24    21
+            //
+            // Format 3 (op = 2, 3)
+            // +----+----------+--------+------+-----+--------------------+-------+
+            // | op |    rd    |   op3  |  rs1 | i=0 |        asi         |  rs2  |
+            // +----+----------+--------+------+-----+--------------------+-------+
+            // | op |    rd    |   op3  |  rs1 | i=1 |        simm13              |
+            // +----+----------+--------+------+-----+--------------------+-------+
+            // | op |    rd    |   op3  |  rs1 |           opf            |  rs2  |
+            // +----+----------+--------+------+--------------------------+-------+
+            // 31   29         24       18     13    12                   4
+
+            rootDecoder = Mask(30, 2, "SPARC",
+                Mask(22, 3, "  Format 0", decoders_0),
+                Instr(Opcode.call, LinkTransfer, JJ),
+                Mask(19, 6, "  Format 2", decoders_2),
+                Mask(19, 6, "  Format 3", decoders_3));
         }
-
-        private static Dictionary<uint, Decoder> fpDecoders = new Dictionary<uint, Decoder>
-        {
-            // 00 
-            { 0x01, Instr(Opcode.fmovs, f0,f25) },
-            { 0x05, Instr(Opcode.fnegs, f0,f25) },
-            { 0x09, Instr(Opcode.fabss, f0,f25) },
-            { 0x29, Instr(Opcode.fsqrts, f0,f25) },
-            { 0x2A, Instr(Opcode.fsqrtd, d0,d25) },
-            { 0x2B, Instr(Opcode.fsqrtq, q0,q25) },
-
-            { 0x41, Instr(Opcode.fadds, f14,f0,f25) },
-            { 0x42, Instr(Opcode.faddd, d14,d0,d25) },
-            { 0x43, Instr(Opcode.faddq, q14,q0,q25) },
-            { 0x45, Instr(Opcode.fsubs, f14,f0,f25) },
-            { 0x46, Instr(Opcode.fsubd, d14,d0,d25) },
-            { 0x47, Instr(Opcode.fsubq, q14,q0,q25) },
-
-            { 0xC4, Instr(Opcode.fitos, f0,f25) },
-            { 0xC6, Instr(Opcode.fdtos, d0,f25) },
-            { 0xC7, Instr(Opcode.fqtos, q0,f25) },
-            { 0xC8, Instr(Opcode.fitod, f0,d25) },
-            { 0xC9, Instr(Opcode.fstod, f0,d25) },
-            { 0xCB, Instr(Opcode.fqtod, q0,d25) },
-            { 0xCC, Instr(Opcode.fitoq, f0,q25) },
-            { 0xCD, Instr(Opcode.fstoq, f0,q25) },
-            { 0xCE, Instr(Opcode.fdtoq, d0,q25) },
-            { 0xD1, Instr(Opcode.fstoi, f0,f25) },
-            { 0xD2, Instr(Opcode.fdtoi, d0,f25) },
-            { 0xD3, Instr(Opcode.fqtoi, q0,f25) },
-
-            { 0x49, Instr(Opcode.fmuls, f14,f0,f25) },
-            { 0x4A, Instr(Opcode.fmuld, d14,d0,d25) },
-            { 0x4B, Instr(Opcode.fmulq, q14,q0,q25) },
-            { 0x4D, Instr(Opcode.fdivs, f14,f0,f25) },
-            { 0x4E, Instr(Opcode.fdivd, d14,d0,d25) },
-            { 0x4F, Instr(Opcode.fdivq, q14,q0,q25) },
-
-            { 0x69, Instr(Opcode.fsmuld, f14,f0,d25) },
-            { 0x6E, Instr(Opcode.fdmulq, d14,d0,q25) },
-
-            { 0x51, Instr(Opcode.fcmps, f14,f0) },
-            { 0x52, Instr(Opcode.fcmpd, d14,d0) },
-            { 0x53, Instr(Opcode.fcmpq, f14,f0) },
-            { 0x55, Instr(Opcode.fcmpes, f14,f0) },
-            { 0x56, Instr(Opcode.fcmped, d14,d0) },
-            { 0x57, Instr(Opcode.fcmpeq, q14,q0) },
-        };
     }
 }
