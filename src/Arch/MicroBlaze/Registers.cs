@@ -19,7 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.MicroBlaze
 {
@@ -28,12 +31,25 @@ namespace Reko.Arch.MicroBlaze
         public static readonly RegisterStorage[] GpRegs;
         public static readonly RegisterStorage msr;
 
+        public static readonly FlagGroupStorage C;
+
+        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
+        public static readonly Dictionary<string, RegisterStorage> RegistersByName;
+
         static Registers()
         {
             var factory = new StorageFactory();
             GpRegs = factory.RangeOfReg32(32, "r{0}");
 
             msr = factory.Reg32("msr");
+            C = new FlagGroupStorage(msr, (uint) FlagM.CY, "C", PrimitiveType.Bool);
+
+            RegistersByDomain = GpRegs
+                .Concat(new[] { msr })
+                .ToDictionary(r => r.Domain);
+            RegistersByName = GpRegs
+                .Concat(new[] { msr })
+                .ToDictionary(r => r.Name);
         }
     }
 

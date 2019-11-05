@@ -69,7 +69,7 @@ namespace Reko.Arch.MicroBlaze
             return new MicroBlazeRewriter(this, rdr, state, binder, host);
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             if (flagGroups.TryGetValue(grf, out var f))
             {
@@ -78,7 +78,7 @@ namespace Reko.Arch.MicroBlaze
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var flagregister = Registers.msr;
-            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -98,9 +98,9 @@ namespace Reko.Arch.MicroBlaze
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByDomain[domain];
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -113,7 +113,12 @@ namespace Reko.Arch.MicroBlaze
             return Registers.GpRegs;
         }
 
-        public override string GrfToString(uint grf)
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            if ((flags.FlagGroupBits & (uint) FlagM.CY) != 0) yield return Registers.C;
+        }
+
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             var s = new StringBuilder();
             if ((grf & (uint) FlagM.CY) != 0) s.Append('C');
@@ -135,7 +140,7 @@ namespace Reko.Arch.MicroBlaze
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)

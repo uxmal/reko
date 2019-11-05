@@ -30,7 +30,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.MicroBlaze
 {
-    internal class MicroBlazeRewriter : IEnumerable<RtlInstructionCluster>
+    public class MicroBlazeRewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly MicroBlazeArchitecture arch;
         private readonly EndianImageReader rdr;
@@ -199,7 +199,7 @@ namespace Reko.Arch.MicroBlaze
 
         private void C(Expression e)
         {
-            var carry = binder.EnsureFlagGroup(arch.GetFlagGroup((uint) FlagM.CY));
+            var carry = binder.EnsureFlagGroup(Registers.C);
             m.Assign(carry, m.Cond(e));
         }
 
@@ -271,7 +271,7 @@ namespace Reko.Arch.MicroBlaze
 
         private Expression RorC(Expression a, Expression shift)
         {
-            var cy = binder.EnsureFlagGroup(arch.GetFlagGroup((uint) FlagM.CY));
+            var cy = binder.EnsureFlagGroup(Registers.C);
             var rorc = host.PseudoProcedure(PseudoProcedure.RorC, a.DataType, a, shift, cy);
             return rorc;
         }
@@ -320,7 +320,7 @@ namespace Reko.Arch.MicroBlaze
             var dst = Reg(0);
             var regA = ((RegisterOperand) instrCur.Operands[1]).Register;
             var regB = ((RegisterOperand) instrCur.Operands[2]).Register;
-            var cy = binder.EnsureFlagGroup(arch.GetFlagGroup((uint) FlagM.CY));
+            var cy = binder.EnsureFlagGroup(Registers.C);
             Expression src;
             if (regA == Registers.GpRegs[0])
             {
