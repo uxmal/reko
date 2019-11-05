@@ -27,38 +27,33 @@ namespace Reko.Arch.Alpha
     public class AlphaInstruction : MachineInstruction
     {
         public Opcode Opcode;
-        public MachineOperand op1;
-        public MachineOperand op2;
-        public MachineOperand op3;
 
         public override int OpcodeAsInteger => (int)Opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (i == 0) return op1;
-            if (i == 1) return op2;
-            if (i == 2) return op3;
-            return null;
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(this.Opcode.ToString());
-            if (op1 == null)
+            if (Operands.Length == 0)
                 return;
             writer.Tab();
-            op1.Write(writer, options);
-            if (op2 == null)
+            Operands[0].Write(writer, options);
+            if (Operands.Length == 1)
                 return;
             writer.WriteChar(',');
-            op2.Write(writer, options);
-            if (op3 == null)
+            Operands[1].Write(writer, options);
+            if (Operands.Length == 2)
                 return;
             writer.WriteChar(',');
-            op3.Write(writer, options);
+            Operands[2].Write(writer, options);
         }
 
         private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Obsolete("", true)]
+        public override MachineOperand GetOperand(int i)
         {
             throw new NotImplementedException();
         }

@@ -46,6 +46,11 @@ namespace Reko.Core.Machine
         public InstrClass InstructionClass;
 
         /// <summary>
+        /// 0 or more operands of the instruction.
+        /// </summary>
+        public MachineOperand[] Operands;
+
+        /// <summary>
         /// Returns true if the instruction is valid.
         /// </summary>
         public bool IsValid => InstructionClass != InstrClass.Invalid;
@@ -70,8 +75,9 @@ namespace Reko.Core.Machine
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
+        [Obsolete("", true)]
         public abstract MachineOperand GetOperand(int i);
-        
+
         /// <summary>
         /// Each different supported opcode should have a different numerical value, exposed here.
         /// </summary>

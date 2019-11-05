@@ -17,10 +17,10 @@ namespace Reko.Core.NativeInterface
             }
         }
 
+        [Obsolete("", true)]
         public override MachineOperand GetOperand(int i)
         {
-            // GetOperand is only ever used by X86 code and that may be going away soon.
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

@@ -107,11 +107,13 @@ namespace Reko.Arch.Alpha
                 {
                     Opcode = this.opcode,
                     InstructionClass = InstrClass.Linear,
-                    op1 = dasm.AluRegister(uInstr >> 21),
-                    op2 = new MemoryOperand(
-                        PrimitiveType.Word32,    // Dummy value
-                        dasm.AluRegister(uInstr >> 16).Register,
-                        (short)uInstr)
+                    Operands = new MachineOperand[] {
+                        dasm.AluRegister(uInstr >> 21),
+                        new MemoryOperand(
+                            PrimitiveType.Word32,    // Dummy value
+                            dasm.AluRegister(uInstr >> 16).Register,
+                            (short)uInstr)
+                    }
                 };
             }
         }
@@ -131,11 +133,14 @@ namespace Reko.Arch.Alpha
                 {
                     Opcode = this.opcode,
                     InstructionClass = InstrClass.Linear,
-                    op1 = dasm.FpuRegister(uInstr >> 21),
-                    op2 = new MemoryOperand(
-                        PrimitiveType.Word32,    // Dummy value
-                        dasm.AluRegister(uInstr >> 16).Register,
-                        (short)uInstr)
+                    Operands = new MachineOperand[]
+                    {
+                        dasm.FpuRegister(uInstr >> 21),
+                        new MemoryOperand(
+                            PrimitiveType.Word32,    // Dummy value
+                            dasm.AluRegister(uInstr >> 16).Register,
+                            (short)uInstr)
+                    }
                 };
             }
         }
@@ -164,8 +169,11 @@ namespace Reko.Arch.Alpha
                 {
                     Opcode = opcodes[(uInstr >> 14) & 0x3],
                     InstructionClass = iclasses[(uInstr>> 14) & 0x3],
-                    op1 = dasm.AluRegister(uInstr >> 21),
-                    op2 = dasm.AluRegister(uInstr >> 16)
+                    Operands = new MachineOperand[]
+                    {
+                        dasm.AluRegister(uInstr >> 21),
+                        dasm.AluRegister(uInstr >> 16)
+                    }
                 };
             }
         }
@@ -197,8 +205,7 @@ namespace Reko.Arch.Alpha
                 {
                     Opcode = this.opcode,
                     InstructionClass = InstrClass.ConditionalTransfer,
-                    op1 = op1,
-                    op2 = op2,
+                    Operands = new MachineOperand[] { op1, op2 }
                 };
             }
         }
@@ -221,8 +228,7 @@ namespace Reko.Arch.Alpha
                 {
                     Opcode = this.opcode,
                     InstructionClass = InstrClass.ConditionalTransfer,
-                    op1 = op1,
-                    op2 = op2,
+                    Operands = new MachineOperand[] { op1, op2 }
                 };
             }
         }
@@ -247,9 +253,7 @@ namespace Reko.Arch.Alpha
                 {
                     Opcode = this.opcode,
                     InstructionClass = InstrClass.Linear,
-                    op1 = op1,
-                    op2 = op2,
-                    op3 = op3,
+                    Operands = new MachineOperand[] { op1, op2, op3 }
                 };
             }
         }
@@ -310,9 +314,7 @@ namespace Reko.Arch.Alpha
                 {
                     Opcode = this.opcode,
                     InstructionClass = InstrClass.Linear,
-                    op1 = op1,
-                    op2 = op2,
-                    op3 = op3,
+                    Operands = new MachineOperand[] { op1, op2, op3 }
                 };
             }
         }
@@ -353,8 +355,7 @@ namespace Reko.Arch.Alpha
                 {
                     Opcode = this.opcode,
                     InstructionClass = InstrClass.Linear,
-                    op1 = op1,
-                    op2 = op2,
+                    Operands = new MachineOperand[] { op1, op2 }
                 };
             }
         }

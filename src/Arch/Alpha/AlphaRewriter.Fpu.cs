@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -36,16 +36,16 @@ namespace Reko.Arch.Alpha
 
         private void RewriteCpys(string intrinsic)
         {
-            var r1 = ((RegisterOperand)instr.op1).Register.Number;
-            var r2 = ((RegisterOperand)instr.op2).Register.Number;
-            var r3 = ((RegisterOperand)instr.op3).Register.Number;
+            var r1 = ((RegisterOperand)instr.Operands[0]).Register.Number;
+            var r2 = ((RegisterOperand)instr.Operands[1]).Register.Number;
+            var r3 = ((RegisterOperand)instr.Operands[2]).Register.Number;
             if (r1 == r2 && r2 == r3 && r1 == FpuZeroRegister)
             {
                 m.Nop();
             }
             else if (r1 == FpuZeroRegister && r2 == FpuZeroRegister)
             {
-                m.Assign(Rewrite(instr.op3), Rewrite(instr.op1));
+                m.Assign(Rewrite(instr.Operands[2]), Rewrite(instr.Operands[0]));
             }
             else
             {
@@ -55,9 +55,9 @@ namespace Reko.Arch.Alpha
 
         private void RewriteFpuOp(Func<Expression,Expression,Expression> fn)
         {
-            var op1 = Rewrite(instr.op1);
-            var op2 = Rewrite(instr.op2);
-            var dst = Rewrite(instr.op3);
+            var op1 = Rewrite(instr.Operands[0]);
+            var op2 = Rewrite(instr.Operands[1]);
+            var dst = Rewrite(instr.Operands[2]);
             m.Assign(dst, fn(op1, op2));
             //$TODO: overflow? Chopped?
         }
@@ -65,15 +65,15 @@ namespace Reko.Arch.Alpha
 
         private void RewriteCmpt(Func<Expression, Expression, Expression> fn)
         {
-            var op1 = Rewrite(instr.op1);
-            var op2 = Rewrite(instr.op2);
-            var dst = Rewrite(instr.op3);
+            var op1 = Rewrite(instr.Operands[0]);
+            var op2 = Rewrite(instr.Operands[1]);
+            var dst = Rewrite(instr.Operands[2]);
             m.Assign(dst, m.Conditional(op1.DataType, fn(op1, op2), Constant.Real64(2.0),  Constant.Real64(0.0)));
         }
 
         private void RewriteCvt(DataType dtFrom, DataType dtTo)
         {
-            var rSrc = ((RegisterOperand)instr.op1).Register;
+            var rSrc = ((RegisterOperand)instr.Operands[0]).Register;
             Expression src;
             if (rSrc.Number == ZeroRegister || rSrc.Number == FpuZeroRegister)
             {
@@ -92,9 +92,9 @@ namespace Reko.Arch.Alpha
             }
             else
             {
-                src = m.Cast(dtTo, Rewrite(instr.op1));
+                src = m.Cast(dtTo, Rewrite(instr.Operands[0]));
             }
-            var dst = Rewrite(instr.op2);
+            var dst = Rewrite(instr.Operands[1]);
             m.Assign(dst, src);
         }
     }

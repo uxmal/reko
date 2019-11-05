@@ -136,8 +136,7 @@ namespace Reko.Environments.Windows
             uint idx;
 
             // Start at program entry point
-            ImageSegment seg;
-            if (!program.SegmentMap.TryFindSegment(this.addrStart, out seg))
+            if (!program.SegmentMap.TryFindSegment(this.addrStart, out ImageSegment seg))
                 return null;
             var addrMax = Address.Min(seg.MemoryArea.EndAddress, addrStart + MaxDistanceFromEntry);
             var rdr = program.Architecture.CreateImageReader(
@@ -150,7 +149,7 @@ namespace Reko.Environments.Windows
                 return null;
 
             var instr = p.Current;
-            var op0 = instr.GetOperand(0);
+            var op0 = instr.Operands.Length > 0 ? instr.Operands[0] : null;
             var addrOp0 = op0 as AddressOperand;
             if (instr.InstructionClass == InstrClass.Transfer)
             {

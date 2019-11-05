@@ -39,8 +39,8 @@ namespace Reko.Arch.Alpha
 
         private void RewriteBr()
         {
-            var ret = ((RegisterOperand)instr.op1).Register;
-            var dst = ((AddressOperand)instr.op2).Address;
+            var ret = ((RegisterOperand)instr.Operands[0]).Register;
+            var dst = ((AddressOperand)instr.Operands[1]).Address;
             RewriteTransfer(ret, dst);
         }
 
@@ -57,25 +57,25 @@ namespace Reko.Arch.Alpha
 
         private void RewriteBranch(Func<Expression, Expression> fn)
         {
-            var dst = ((AddressOperand)instr.op2).Address;
-            var src = Rewrite(instr.op1);
+            var dst = ((AddressOperand)instr.Operands[1]).Address;
+            var src = Rewrite(instr.Operands[0]);
             m.Branch(fn(src), dst, instr.InstructionClass);
         }
 
         private void RewriteCmov(Func<Expression, Expression> skip)
         {
-            var cond = Rewrite(instr.op1);
-            var src = Rewrite(instr.op2);
-            var dst = Rewrite(instr.op3);
+            var cond = Rewrite(instr.Operands[0]);
+            var src = Rewrite(instr.Operands[1]);
+            var dst = Rewrite(instr.Operands[2]);
             m.BranchInMiddleOfInstruction(skip(cond).Invert(), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             m.Assign(dst, src);
         }
 
         private void RewriteFCmov(Operator op)
         {
-            var cond = Rewrite(instr.op1);
-            var src = Rewrite(instr.op2);
-            var dst = Rewrite(instr.op3);
+            var cond = Rewrite(instr.Operands[0]);
+            var src = Rewrite(instr.Operands[1]);
+            var dst = Rewrite(instr.Operands[2]);
             cond = new BinaryExpression(op, PrimitiveType.Bool, cond, Constant.Real64(0.0));
             m.BranchInMiddleOfInstruction(cond.Invert(), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             m.Assign(dst, src);
@@ -83,8 +83,8 @@ namespace Reko.Arch.Alpha
 
         private void RewriteFBranch(Operator op)
         {
-            var src = Rewrite(instr.op1);
-            var dst = ((AddressOperand)instr.op2).Address;
+            var src = Rewrite(instr.Operands[0]);
+            var dst = ((AddressOperand)instr.Operands[1]).Address;
             m.Branch(
                 new BinaryExpression(
                     op, PrimitiveType.Bool, src, Constant.Real64(0.0)),
@@ -94,8 +94,8 @@ namespace Reko.Arch.Alpha
 
         private void RewriteJmp()
         {
-            var ret = ((RegisterOperand)instr.op1).Register;
-            var dst = Rewrite(instr.op2);
+            var ret = ((RegisterOperand)instr.Operands[0]).Register;
+            var dst = Rewrite(instr.Operands[1]);
             RewriteTransfer(ret, dst);
         }
 
