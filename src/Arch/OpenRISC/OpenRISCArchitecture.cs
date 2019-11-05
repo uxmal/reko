@@ -106,12 +106,19 @@ namespace Reko.Arch.OpenRISC
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByDomain[domain];
         }
 
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.GpRegs;
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            var grf = (FlagM) flags.FlagGroupBits;
+            if ((grf & FlagM.CY) != 0) yield return Registers.C;
+            if ((grf & FlagM.OV) != 0) yield return Registers.V;
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
@@ -158,7 +165,7 @@ namespace Reko.Arch.OpenRISC
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.RegisterByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
