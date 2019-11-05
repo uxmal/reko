@@ -5,7 +5,6 @@
 #include "redir.h"
 
 <anonymous> g_tFFFFFFFF;
-FILE * g_ptr01C4;
 Eq_n g_t0695;
 <anonymous> g_t400620 = <code>;
 <anonymous> g_t40072C = <code>;
@@ -52,6 +51,19 @@ char g_str40A740[] = "w";
 char g_str40A744[] = ".old";
 char g_str40A74C[] = "%Y-%m-%d %H:%M:%S";
 char g_str40A760[] = "%s:%s.%03d:%s\n";
+struct Eq_n * g_ptr10000878 = &g_t10000000;
+union Eq_n * g_ptr100008A0 = &g_t10000AAC;
+int32 * g_ptr100008C0 = &g_dw10000014;
+int32 * g_ptr100008F4 = &g_dw10000018;
+time_t * g_ptr1000090C = &g_t10000020;
+FILE ** g_ptr10000914 = &g_ptr01C4;
+char * (* g_ptr100009C8)[] = &g_a100007E0;
+FILE ** g_ptr10000A20 = &g_ptr10000AA8;
+int32 * g_ptr10000A28 = &g_dw1000001C;
+struct Eq_n * g_ptr10000A40 = &g_t10000024;
+uint16 (** g_ptr10000A6C)[] = null;
+word32 g_dw100107A0;
+<anonymous> * g_ptr100107F8;
 Eq_n g_t10000000 = 
 	{
 		&g_ptr10000860,
@@ -59,10 +71,19 @@ Eq_n g_t10000000 =
 		0,
 		&g_tFFFFFFFF,
 	};
+Eq_n g_t10000AAC = 
+	{
+		0x0000
+	};
 int32 g_dw10000014 = 0;
 int32 g_dw10000018 = 4;
-int32 g_dw1000001C = 204800;
 Eq_n g_t10000020 = 0;
+FILE * g_ptr01C4;
+char * g_a100007E0[] = 
+	{
+	};
+FILE * g_ptr10000AA8 = null;
+int32 g_dw1000001C = 204800;
 Eq_n g_t10000024 = 
 	{
 		
@@ -81,26 +102,5 @@ Eq_n g_t10000024 =
 		0x000000C8,
 		47,
 	};
-char * g_a100007E0[] = 
-	{
-	};
 <anonymous> * g_ptr10000860 = null;
-struct Eq_n * g_ptr10000878 = &g_t10000000;
-union Eq_n * g_ptr100008A0 = &g_t10000AAC;
-int32 * g_ptr100008C0 = &g_dw10000014;
-int32 * g_ptr100008F4 = &g_dw10000018;
-time_t * g_ptr1000090C = &g_t10000020;
-FILE ** g_ptr10000914 = &g_ptr01C4;
-char * (* g_ptr100009C8)[] = &g_a100007E0;
-FILE ** g_ptr10000A20 = &g_ptr10000AA8;
-int32 * g_ptr10000A28 = &g_dw1000001C;
-struct Eq_n * g_ptr10000A40 = &g_t10000024;
-uint16 (** g_ptr10000A6C)[] = null;
-FILE * g_ptr10000AA8 = null;
-Eq_n g_t10000AAC = 
-	{
-		0x0000
-	};
-word32 g_dw100107A0;
-<anonymous> * g_ptr100107F8;
 

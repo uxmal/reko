@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFFFFFF code tFFFFFFFF) (1C4 (ptr32 Eq_1404) ptr01C4) (695 Eq_1445 t0695) (400620 code t400620) (40072C code t40072C) (4053F0 code t4053F0) (40697C code t40697C) (4077E0 code t4077E0) (408180 code t408180) (409C10 code t409C10) (409E44 (str char) str409E44) (409E48 (str char) str409E48) (409F94 (str char) str409F94) (409FBC (str char) str409FBC) (409FE0 Eq_2864 t409FE0) (409FF4 Eq_2864 t409FF4) (40A1A8 (str char) str40A1A8) (40A3FC (str char) str40A3FC) (40A404 (str char) str40A404) (40A410 (str char) str40A410) (40A424 (str char) str40A424) (40A468 (str char) str40A468) (40A46C (str char) str40A46C) (40A5C0 (str char) str40A5C0) (40A614 (str char) str40A614) (40A6AC (str char) str40A6AC) (40A6BC (str char) str40A6BC) (40A6D0 (str char) str40A6D0) (40A6D8 (str char) str40A6D8) (40A6E0 (str char) str40A6E0) (40A740 (str char) str40A740) (40A744 (str char) str40A744) (40A74C (str char) str40A74C) (40A760 (str char) str40A760) (10000000 Eq_1294 t10000000) (10000014 int32 dw10000014) (10000018 int32 dw10000018) (1000001C int32 dw1000001C) (10000020 Eq_1513 t10000020) (10000024 Eq_1445 t10000024) (100007E0 (arr (ptr32 char)) a100007E0) (10000860 (ptr32 code) ptr10000860) (10000878 (ptr32 Eq_1294) ptr10000878) (100008A0 (ptr32 Eq_1371) ptr100008A0) (100008C0 (ptr32 int32) ptr100008C0) (100008F4 (ptr32 int32) ptr100008F4) (1000090C (ptr32 Eq_1513) ptr1000090C) (10000914 (ptr32 (ptr32 Eq_1404)) ptr10000914) (100009C8 (ptr32 (arr (ptr32 char))) ptr100009C8) (10000A20 (ptr32 (ptr32 Eq_1404)) ptr10000A20) (10000A28 (ptr32 int32) ptr10000A28) (10000A40 (ptr32 Eq_1445) ptr10000A40) (10000A6C (ptr32 (ptr32 (arr uint16))) ptr10000A6C) (10000AA8 (ptr32 Eq_1404) ptr10000AA8) (10000AAC Eq_1371 t10000AAC) (100107A0 word32 dw100107A0) (100107F8 (ptr32 code) ptr100107F8))
+Eq_1: (struct "Globals" (FFFFFFFF code tFFFFFFFF) (695 Eq_1445 t0695) (400620 code t400620) (40072C code t40072C) (4053F0 code t4053F0) (40697C code t40697C) (4077E0 code t4077E0) (408180 code t408180) (409C10 code t409C10) (409E44 (str char) str409E44) (409E48 (str char) str409E48) (409F94 (str char) str409F94) (409FBC (str char) str409FBC) (409FE0 Eq_2864 t409FE0) (409FF4 Eq_2864 t409FF4) (40A1A8 (str char) str40A1A8) (40A3FC (str char) str40A3FC) (40A404 (str char) str40A404) (40A410 (str char) str40A410) (40A424 (str char) str40A424) (40A468 (str char) str40A468) (40A46C (str char) str40A46C) (40A5C0 (str char) str40A5C0) (40A614 (str char) str40A614) (40A6AC (str char) str40A6AC) (40A6BC (str char) str40A6BC) (40A6D0 (str char) str40A6D0) (40A6D8 (str char) str40A6D8) (40A6E0 (str char) str40A6E0) (40A740 (str char) str40A740) (40A744 (str char) str40A744) (40A74C (str char) str40A74C) (40A760 (str char) str40A760) (10000878 (ptr32 Eq_1294) ptr10000878) (100008A0 (ptr32 Eq_1371) ptr100008A0) (100008C0 (ptr32 int32) ptr100008C0) (100008F4 (ptr32 int32) ptr100008F4) (1000090C (ptr32 Eq_1513) ptr1000090C) (10000914 (ptr32 (ptr32 Eq_1404)) ptr10000914) (100009C8 (ptr32 (arr (ptr32 char))) ptr100009C8) (10000A20 (ptr32 (ptr32 Eq_1404)) ptr10000A20) (10000A28 (ptr32 int32) ptr10000A28) (10000A40 (ptr32 Eq_1445) ptr10000A40) (10000A6C (ptr32 (ptr32 (arr uint16))) ptr10000A6C) (100107A0 word32 dw100107A0) (100107F8 (ptr32 code) ptr100107F8))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_292: (fn void ())
 	T_292 (in __do_global_dtors_aux : ptr32)
@@ -34870,7 +34870,6 @@ T_8257:
 */
 typedef struct Globals {
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
-	FILE * ptr01C4;	// 1C4
 	Eq_1445 t0695;	// 695
 	<anonymous> t400620;	// 400620
 	<anonymous> t40072C;	// 40072C
@@ -34903,14 +34902,6 @@ typedef struct Globals {
 	char str40A744[];	// 40A744
 	char str40A74C[];	// 40A74C
 	char str40A760[];	// 40A760
-	Eq_1294 t10000000;	// 10000000
-	int32 dw10000014;	// 10000014
-	int32 dw10000018;	// 10000018
-	int32 dw1000001C;	// 1000001C
-	Eq_1513 t10000020;	// 10000020
-	Eq_1445 t10000024;	// 10000024
-	char * a100007E0[];	// 100007E0
-	<anonymous> * ptr10000860;	// 10000860
 	struct Eq_1294 * ptr10000878;	// 10000878
 	union Eq_1371 * ptr100008A0;	// 100008A0
 	int32 * ptr100008C0;	// 100008C0
@@ -34922,8 +34913,6 @@ typedef struct Globals {
 	int32 * ptr10000A28;	// 10000A28
 	struct Eq_1445 * ptr10000A40;	// 10000A40
 	uint16 (** ptr10000A6C)[];	// 10000A6C
-	FILE * ptr10000AA8;	// 10000AA8
-	Eq_1371 t10000AAC;	// 10000AAC
 	word32 dw100107A0;	// 100107A0
 	<anonymous> * ptr100107F8;	// 100107F8
 } Eq_1;
