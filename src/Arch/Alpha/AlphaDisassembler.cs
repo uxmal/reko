@@ -27,6 +27,8 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Alpha
 {
+    using Decoder = Decoder<AlphaDisassembler, Opcode, AlphaInstruction>;
+
     public class AlphaDisassembler : DisassemblerBase<AlphaInstruction>
     {
         private readonly AlphaArchitecture arch;
@@ -88,11 +90,6 @@ namespace Reko.Arch.Alpha
                 w.WriteLine("    AssertCode(\"AlphaDis_{1}\", 0x{0:X8}, \"@@@\", instr.ToString());", uInstr, instrHex);
             });
             return CreateInvalidInstruction();
-        }
-
-        private abstract class Decoder
-        {
-            public abstract AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm);
         }
 
         private class MemDecoder : Decoder

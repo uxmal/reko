@@ -29,6 +29,9 @@ using System.Text;
 
 namespace Reko.Arch.Z80
 {
+    using Decoder = Decoder<Z80Disassembler, Opcode, Z80Instruction>;
+    using Mutator = Mutator<Z80Disassembler>;
+
     /// <summary>
     /// Disassembles both 8080 and Z80 instructions, with respective syntax.
     /// </summary>
@@ -56,7 +59,7 @@ namespace Reko.Arch.Z80
             this.ops.Clear();
             this.IndexRegister = null;
             var decoder = decoders[op];
-            instr = decoder.Decode(this, op);
+            instr = decoder.Decode(op, this);
             if (instr == null)
                 return CreateInvalidInstruction();
             instr.Address = this.addr;
@@ -98,11 +101,6 @@ namespace Reko.Arch.Z80
             Registers.a
         };
 
-        private abstract class Decoder
-        {
-            public abstract Z80Instruction Decode(Z80Disassembler disasm, byte op);
-        }
-
         private class InstrDecoder : Decoder
         {
             public readonly InstrClass IClass;
@@ -118,7 +116,7 @@ namespace Reko.Arch.Z80
                 this.mutators = mutators;
             }
 
-            public override Z80Instruction Decode(Z80Disassembler disasm, byte op)
+            public override Z80Instruction Decode(uint op, Z80Disassembler disasm)
             {
                 var instr = disasm.instr;
                 foreach (var m in mutators)
@@ -150,10 +148,11 @@ namespace Reko.Arch.Z80
                 this.IndexRegister = idxReg;
             }
 
-            public override Z80Instruction Decode(Z80Disassembler dasm, byte op)
+            public override Z80Instruction Decode(uint bPrev, Z80Disassembler dasm)
             {
                 dasm.IndexRegister = this.IndexRegister;
-                op = dasm.rdr.ReadByte();
+                if (!dasm.rdr.TryReadByte(out byte op))
+                    return dasm.CreateInvalidInstruction();
                 var instr = dasm.instr;
                 if (op == 0xCB)
                 {
@@ -181,7 +180,7 @@ namespace Reko.Arch.Z80
                 }
                 else
                 {
-                    return decoders[op].Decode(dasm, op);
+                    return decoders[op].Decode(op, dasm);
                 }
             }
         }
@@ -203,7 +202,7 @@ namespace Reko.Arch.Z80
                 R, R, R, R, R, R, Mb, R, 
             };
 
-            public override Z80Instruction Decode(Z80Disassembler dasm, byte op2)
+            public override Z80Instruction Decode(uint bPrev, Z80Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadByte(out var op))
                     return dasm.CreateInvalidInstruction();
@@ -239,7 +238,7 @@ namespace Reko.Arch.Z80
 
         private class EdPrefixDecoder : Decoder
         {
-            public override Z80Instruction Decode(Z80Disassembler disasm, byte op)
+            public override Z80Instruction Decode(uint bPrev, Z80Disassembler disasm)
             {
                 if (!disasm.rdr.TryReadByte(out var op2))
                     return disasm.CreateInvalidInstruction();
@@ -250,7 +249,7 @@ namespace Reko.Arch.Z80
                     decoder = edDecoders[op2 - 0x60];
                 else
                     return disasm.CreateInvalidInstruction();
-                return decoder.Decode(disasm, op2);
+                return decoder.Decode(op2, disasm);
             }
         }
 
@@ -276,14 +275,14 @@ namespace Reko.Arch.Z80
 
         #region Mutators
 
-        private static bool a(byte op, Z80Disassembler dasm)
+        private static bool a(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.a));
             return true;
         }
 
         // Absolute memory address.
-        private static bool A(byte op, Z80Disassembler dasm)
+        private static bool A(uint op, Z80Disassembler dasm)
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort us))
                 return false;
@@ -291,20 +290,20 @@ namespace Reko.Arch.Z80
             return true;
         }
 
-        private static bool B(byte op, Z80Disassembler dasm)
+        private static bool B(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new MemoryOperand(Registers.bc, PrimitiveType.Byte));
             return true;
         }
 
-        private static bool D(byte op, Z80Disassembler dasm)
+        private static bool D(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new MemoryOperand(Registers.de, PrimitiveType.Byte));
             return true;
         }
 
         // memory access using HL
-        private static bool Hb(byte op, Z80Disassembler dasm)
+        private static bool Hb(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new MemoryOperand(
                 dasm.IndexRegister ?? Registers.hl, 
@@ -312,55 +311,55 @@ namespace Reko.Arch.Z80
             return true;
         }
 
-        private static bool C(byte op, Z80Disassembler dasm)
+        private static bool C(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new ConditionOperand(ConditionCode[(op >> 3) & 7]));
             return true;
         }
 
-        private static bool Q(byte op, Z80Disassembler dasm)
+        private static bool Q(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new ConditionOperand(ConditionCode[(op >> 3) & 3]));
             return true;
         }
 
         // register encoded in bits 3..5 of op
-        private static bool r(byte op, Z80Disassembler dasm)
+        private static bool r(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(ByteRegister[(op >> 3)&7]));
             return true;
         }
 
         // register encoded in bits 0..2 of op.
-        private static bool R(byte op, Z80Disassembler dasm)
+        private static bool R(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(ByteRegister[op & 7]));
             return true;
         }
 
         // Literal registers
-        private static bool Li(byte op, Z80Disassembler dasm)
+        private static bool Li(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.i));
             return true;
         }
 
-        private static bool Lr(byte op, Z80Disassembler dasm)
+        private static bool Lr(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.r));
             return true;
         }
 
-        private static Mutator x(byte imm) {
+        private static Mutator x(uint imm) {
             return (u, d) =>
             {
-                d.ops.Add(ImmediateOperand.Byte(imm));
+                d.ops.Add(ImmediateOperand.Byte((byte)imm));
                 return true;
             };
         }
 
         // Relative jump
-        private static bool Jb(byte op, Z80Disassembler dasm)
+        private static bool Jb(uint op, Z80Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out var bOffset))
                 return false;
@@ -370,44 +369,44 @@ namespace Reko.Arch.Z80
             return true;
         }
 
-        private static bool Sw(byte op, Z80Disassembler dasm)
+        private static bool Sw(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new MemoryOperand(Registers.sp, PrimitiveType.Word16));
             return true;
         }
 
-        private static bool Wa(byte op, Z80Disassembler dasm)
+        private static bool Wa(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.af));
             return true;
         }
 
-        private static bool Wb(byte op, Z80Disassembler dasm)
+        private static bool Wb(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.bc));
             return true;
         }
 
-        private static bool Wd(byte op, Z80Disassembler dasm)
+        private static bool Wd(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.de));
             return true;
         }
 
-        private static bool Wh(byte op, Z80Disassembler dasm)
+        private static bool Wh(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(dasm.IndexRegister ?? Registers.hl));
             return true;
         }
 
-        private static bool Ws(byte op, Z80Disassembler dasm)
+        private static bool Ws(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.sp));
             return true;
         }
 
 
-        private static bool Ib(byte op, Z80Disassembler dasm)
+        private static bool Ib(uint op, Z80Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out byte imm))
                 return false;
@@ -415,7 +414,7 @@ namespace Reko.Arch.Z80
             return true;
         }
 
-        private static bool Iw(byte op, Z80Disassembler dasm)
+        private static bool Iw(uint op, Z80Disassembler dasm)
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort imm))
                 return false;
@@ -443,13 +442,13 @@ namespace Reko.Arch.Z80
         private static Mutator Mb => M(PrimitiveType.Byte);
         private static Mutator Mw => M(PrimitiveType.Word16);
 
-        private static bool mc(byte op, Z80Disassembler dasm)
+        private static bool mc(uint op, Z80Disassembler dasm)
         {
             dasm.ops.Add(new MemoryOperand(Registers.c, PrimitiveType.Byte));
             return true;
         }
 
-        private static bool Ob(byte op, Z80Disassembler dasm)
+        private static bool Ob(uint op, Z80Disassembler dasm)
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort dir))
                 return false;
@@ -457,7 +456,7 @@ namespace Reko.Arch.Z80
             return true;
         }
 
-        private static bool ob(byte op, Z80Disassembler dasm)
+        private static bool ob(uint op, Z80Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out byte dir))
                 return false;
@@ -465,7 +464,7 @@ namespace Reko.Arch.Z80
             return true;
         }
 
-        private static bool Ow(byte op, Z80Disassembler dasm)
+        private static bool Ow(uint op, Z80Disassembler dasm)
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort dir))
                 return false;
@@ -904,7 +903,6 @@ namespace Reko.Arch.Z80
             Instr(Opcode.illegal, Opcode.illegal),
         };
 
-        private delegate bool Mutator(byte op, Z80Disassembler dasm);
 #if NEVER
 
 ---		LD	BC,(word)	ED4Bword	BC <- (word)

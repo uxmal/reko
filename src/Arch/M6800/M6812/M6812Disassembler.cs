@@ -28,6 +28,7 @@ using System.Diagnostics;
 
 namespace Reko.Arch.M6800.M6812
 {
+    using Decoder = Decoder<M6812Disassembler, Opcode, M6812Instruction>;
 
     public class M6812Disassembler : DisassemblerBase<M6812Instruction>
     {
@@ -66,11 +67,6 @@ namespace Reko.Arch.M6800.M6812
                 Opcode = Opcode.invalid,
                 Operands = new MachineOperand[0]
             };
-        }
-
-        public abstract class Decoder
-        {
-            public abstract M6812Instruction Decode(uint bInstr, M6812Disassembler dasm);
         }
 
         public class InstrDecoder : Decoder

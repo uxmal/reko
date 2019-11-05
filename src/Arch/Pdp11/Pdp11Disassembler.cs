@@ -29,6 +29,8 @@ using System.Text;
 
 namespace Reko.Arch.Pdp11
 {
+    using Decoder = Decoder<Pdp11Disassembler, Opcode, Pdp11Instruction>;
+
     public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction>
     {
         private readonly Pdp11Architecture arch;
@@ -46,13 +48,9 @@ namespace Reko.Arch.Pdp11
 
         public override Pdp11Instruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
-                return null;
             var addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort opcode))
                 return null;
-            if (addr.ToLinear() == 0x277A)
-                addr.ToString();
             ops.Clear();
             dataWidth = PrimitiveType.Word16;
             var decoder = decoders[(opcode >> 0x0C) & 0x00F];
@@ -152,10 +150,6 @@ namespace Reko.Arch.Pdp11
         
         #endregion
 
-        abstract class Decoder
-        {
-            public abstract Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm);
-        }
 
         class InstrDecoder : Decoder
         {
@@ -170,11 +164,11 @@ namespace Reko.Arch.Pdp11
                 this.mutators = mutators;
             }
 
-            public override Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm)
+            public override Pdp11Instruction Decode(uint uInstr, Pdp11Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {
-                    if (!m(opcode, dasm))
+                    if (!m(uInstr, dasm))
                         return dasm.CreateInvalidInstruction();
                 }
                 var instr = new Pdp11Instruction
@@ -186,21 +180,6 @@ namespace Reko.Arch.Pdp11
                     op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
                 };
                 return instr;
-            }
-        }
-
-        class FnDecoder : Decoder
-        {
-            private Func<ushort, Pdp11Disassembler, Pdp11Instruction> fn;
-
-            public FnDecoder(Func<ushort, Pdp11Disassembler, Pdp11Instruction> fn)
-            {
-                this.fn = fn;
-            }
-
-            public override Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm)
-            {
-                return fn(opcode, dasm);
             }
         }
 
@@ -242,20 +221,8 @@ namespace Reko.Arch.Pdp11
                 null,
             };
 
-            extraDecoders = new Decoder[]
-            {
-                Instr(Opcode.mul, E,r),
-                Instr(Opcode.div, E,r),
-                Instr(Opcode.ash, E,r),
-                Instr(Opcode.ashc, E,r),
-                Instr(Opcode.xor, E,r),
-                new FnDecoder(FpuArithmetic),
-                illegal,
-                Instr(Opcode.sob , r,I)
-            };
-
             fpu2Decoders = new Decoder[16]
-            {
+{
                 illegal,
                 // 00 cfcc
                 // 01 setf
@@ -289,6 +256,19 @@ namespace Reko.Arch.Pdp11
                 Instr(Opcode.ldcid, F,f),
                 Instr(Opcode.ldcfd, F,f),
             };
+
+            extraDecoders = new Decoder[]
+            {
+                Instr(Opcode.mul, E,r),
+                Instr(Opcode.div, E,r),
+                Instr(Opcode.ash, E,r),
+                Instr(Opcode.ashc, E,r),
+                Instr(Opcode.xor, E,r),
+                Mask(8, 4, fpu2Decoders),
+                illegal,
+                Instr(Opcode.sob , r,I)
+            };
+
         }
 
         private MachineOperand Imm6(ushort opcode)
@@ -303,11 +283,6 @@ namespace Reko.Arch.Pdp11
             if (freg == null)
                 return null;
             return new RegisterOperand(freg);
-        }
-
-        private static Pdp11Instruction FpuArithmetic(ushort opcode, Pdp11Disassembler dasm)
-        {
-            return fpu2Decoders[(opcode >> 8) & 0x0F].Decode(opcode, dasm);
         }
 
         private PrimitiveType DataWidthFromSizeBit(uint p)

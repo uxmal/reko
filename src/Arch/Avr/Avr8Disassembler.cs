@@ -28,6 +28,8 @@ using System.Diagnostics;
 
 namespace Reko.Arch.Avr
 {
+    using Decoder = Decoder<Avr8Disassembler, Opcode, AvrInstruction>;
+
     // Opcode map: http://lyons42.com/AVR/Opcodes/AVRAllOpcodes.html
     // Opcode map: https://en.wikipedia.org/wiki/Atmel_AVR_instruction_set
     public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
@@ -53,7 +55,7 @@ namespace Reko.Arch.Avr
             if (!rdr.TryReadUInt16(out ushort wInstr))
                 return null;
             ops.Clear();
-            var instr = decoders[wInstr >> 12].Decode(this, wInstr);
+            var instr = decoders[wInstr >> 12].Decode(wInstr, this);
             instr.Address = addr;
             var length = rdr.Address - addr;
             instr.Length = (int) length;
@@ -471,15 +473,15 @@ namespace Reko.Arch.Avr
 
             var decoders8 = new Decoder[8]
             {
-                new MaskDecoder(0, 4, decoders80),
-                new MaskDecoder(0, 4, decoders_std_Z),
-                new MaskDecoder(0, 4, decoders_ldd),
-                new MaskDecoder(0, 4, decoders_std),
+                Mask(0, 4, decoders80),
+                Mask(0, 4, decoders_std_Z),
+                Mask(0, 4, decoders_ldd),
+                Mask(0, 4, decoders_std),
 
-                new MaskDecoder(0, 4, decoders_ldd),
-                new MaskDecoder(0, 4, decoders_std),
-                new MaskDecoder(0, 4, decoders_ldd),
-                new MaskDecoder(0, 4, decoders_std),
+                Mask(0, 4, decoders_ldd),
+                Mask(0, 4, decoders_std),
+                Mask(0, 4, decoders_ldd),
+                Mask(0, 4, decoders_std),
             };
 
             var decoders94_8 = new Decoder[]
@@ -548,18 +550,18 @@ namespace Reko.Arch.Avr
                 Instr(Opcode.spm),
             };
 
-            var decoders94_9 = new Dictionary<int, Decoder>
+            var decoders94_9 = new (uint, Decoder)[]
             {
-                { 0, Instr(Opcode.ijmp, InstrClass.Transfer) },
-                { 1, Instr(Opcode.eijmp, InstrClass.Transfer) },
-                { 16, Instr(Opcode.icall, InstrClass.Transfer|InstrClass.Call) },
-                { 17, Instr(Opcode.eicall, InstrClass.Transfer|InstrClass.Call) },
+                ( 0, Instr(Opcode.ijmp, InstrClass.Transfer) ),
+                ( 1, Instr(Opcode.eijmp, InstrClass.Transfer) ),
+                ( 16, Instr(Opcode.icall, InstrClass.Transfer|InstrClass.Call) ),
+                ( 17, Instr(Opcode.eicall, InstrClass.Transfer|InstrClass.Call) ),
             };
 
-            var decoders95_9 = new Dictionary<int, Decoder>
+            var decoders95_9 = new (uint, Decoder)[] 
             {
-                { 0, Instr(Opcode.icall, InstrClass.Transfer|InstrClass.Call) },
-                { 1, Instr(Opcode.eicall, InstrClass.Transfer|InstrClass.Call) },
+                ( 0, Instr(Opcode.icall, InstrClass.Transfer|InstrClass.Call)),
+                ( 1, Instr(Opcode.eicall, InstrClass.Transfer|InstrClass.Call)),
             };
 
             var decoders90 = new Decoder[]
@@ -620,8 +622,8 @@ namespace Reko.Arch.Avr
                 Instr(Opcode.lsr, D),
                 Instr(Opcode.ror, D),
 
-                new MaskDecoder(4, 5, decoders94_8),
-                new SparseDecoder(4, 5, decoders94_9),
+                Mask(4, 5, decoders94_8),
+                Sparse(4, 5, invalid, decoders94_9),
                 Instr(Opcode.dec, D),
                 Instr(Opcode.des, i),
 
@@ -643,8 +645,8 @@ namespace Reko.Arch.Avr
                 Instr(Opcode.lsr, D),
                 Instr(Opcode.ror, D),
 
-                new MaskDecoder(4, 5, decoders95_8),
-                new SparseDecoder(4, 5, decoders95_9),
+                Mask(4, 4, decoders95_8),
+                Sparse(4, 5, invalid, decoders95_9),
                 Instr(Opcode.dec, D),
                 invalid,
 
@@ -656,13 +658,13 @@ namespace Reko.Arch.Avr
 
             var decoders9 = new Decoder[]
             {
-                new MaskDecoder(0, 4, decoders90),
-                new MaskDecoder(0, 4, decoders90),
-                new MaskDecoder(0, 4, decoders92),
-                new MaskDecoder(0, 4, decoders92),
+                Mask(0, 4, decoders90),
+                Mask(0, 4, decoders90),
+                Mask(0, 4, decoders92),
+                Mask(0, 4, decoders92),
 
-                new MaskDecoder(0, 4, decoders94),
-                new MaskDecoder(0, 4, decoders94),   //$TODO: may need a decoders95 for all the invalid des
+                Mask(0, 4, decoders94),
+                Mask(0, 4, decoders94),   //$TODO: may need a decoders95 for all the invalid des
                 Instr(Opcode.adiw, q,s),
                 Instr(Opcode.sbiw, q,s),
 
@@ -712,17 +714,17 @@ namespace Reko.Arch.Avr
                 invalid,
                 invalid,
 
-                new MaskDecoder(3, 1, decoders_sbrc),
-                new MaskDecoder(3, 1, decoders_sbrc),
-                new MaskDecoder(3, 1, decoders_sbrs),
-                new MaskDecoder(3, 1, decoders_sbrs),
+                Mask(3, 1, decoders_sbrc),
+                Mask(3, 1, decoders_sbrc),
+                Mask(3, 1, decoders_sbrs),
+                Mask(3, 1, decoders_sbrs),
             };
 
             decoders = new Decoder[]
             {
-                new MaskDecoder(8, 4, decoders0),
-                new MaskDecoder(10, 2, decoders1),
-                new MaskDecoder(10, 2, decoders2),
+                Mask(8, 4, decoders0),
+                Mask(10, 2, decoders1),
+                Mask(10, 2, decoders2),
                 Instr(Opcode.cpi, d,B),
 
                 Instr(Opcode.sbci, d,B),
@@ -730,21 +732,16 @@ namespace Reko.Arch.Avr
                 Instr(Opcode.ori, d,B),
                 Instr(Opcode.andi, d,B),
 
-                new MaskDecoder(9, 3, decoders8),
-                new MaskDecoder(8, 4, decoders9),
+                Mask(9, 3, decoders8),
+                Mask(8, 4, decoders9),
                 invalid,
-                new MaskDecoder(0xB, 1, decodersB),
+                Mask(0xB, 1, decodersB),
 
                 Instr(Opcode.rjmp, InstrClass.Transfer, J),
                 Instr(Opcode.rcall, InstrClass.Transfer|InstrClass.Call, J),
                 Instr(Opcode.ldi, d,K),
-                new MaskDecoder(8, 4, decodersF),
+                Mask(8, 4, decodersF),
             };
-        }
-
-        public abstract class Decoder
-        {
-            public abstract AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr);
         }
 
         public class InstrDecoder : Decoder
@@ -760,12 +757,12 @@ namespace Reko.Arch.Avr
                 this.mutators = mutators;
             }
 
-            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
+            public override AvrInstruction Decode(uint wInstr, Avr8Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
-                        return invalid.Decode(dasm, wInstr);
+                        return invalid.Decode(wInstr, dasm);
                 }
                 return new AvrInstruction
                 {
@@ -776,49 +773,7 @@ namespace Reko.Arch.Avr
             }
         }
 
-        public class MaskDecoder : Decoder
-        {
-            private readonly int shift;
-            private readonly int mask;
-            private readonly Decoder[] decoders;
 
-            public MaskDecoder(int shift, int length, Decoder[] decoders)
-            {
-                this.shift = shift;
-                this.mask = (1 << length) - 1;
-                this.decoders = decoders;
-            }
-
-            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
-            {
-                int slot = (wInstr >> shift) & mask;
-                return decoders[slot].Decode(dasm, wInstr);
-            }
-        }
-
-        public class SparseDecoder : Decoder
-        {
-            private readonly int shift;
-            private readonly int mask;
-            private readonly Dictionary<int, Decoder> decoders;
-
-            public SparseDecoder(int shift, int length, Dictionary<int, Decoder> decoders)
-            {
-                this.shift = shift;
-                this.mask = (1 << length) - 1;
-                this.decoders = decoders;
-            }
-
-            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
-            {
-                int slot = (wInstr >> shift) & mask;
-                if (!decoders.TryGetValue(slot, out Decoder decoder))
-                {
-                    return invalid.Decode(dasm, wInstr);
-                }
-                return decoder.Decode(dasm, wInstr);
-            }
-        }
 
         public class CondDecoder : Decoder
         {
@@ -831,8 +786,9 @@ namespace Reko.Arch.Avr
                 Opcode.brge, Opcode.brhc, Opcode.brtc, Opcode.brid
             };
 
-            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
+            public override AvrInstruction Decode(uint uInstr, Avr8Disassembler dasm)
             {
+                ushort wInstr = (ushort) uInstr;
                 int br = (((wInstr >> 7) & 8) | (wInstr & 7)) & 0xF;
                 o(wInstr, dasm);
                 return new AvrInstruction

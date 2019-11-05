@@ -30,6 +30,8 @@ using Reko.Core.Machine;
 
 namespace Reko.Arch.i8051
 {
+    using Decoder = Decoder<i8051Disassembler, Opcode, i8051Instruction>;
+
     // http://www.keil.com/support/man/docs/is51/is51_instructions.htm
     public class i8051Disassembler : DisassemblerBase<i8051Instruction>
     {
@@ -326,12 +328,6 @@ $@"    [Test]
 ");
         }
 
-        private abstract class Decoder
-        {
-            public abstract i8051Instruction Decode(byte op, i8051Disassembler dasm);
-        }
-
-
         private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
@@ -345,7 +341,7 @@ $@"    [Test]
                 this.mutators = mutators;
             }
 
-            public override i8051Instruction Decode(byte op, i8051Disassembler dasm)
+            public override i8051Instruction Decode(uint op, i8051Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {

@@ -31,6 +31,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
+    using Decoder = Decoder<Tlcs90Disassembler, Opcode, Tlcs90Instruction>;
+
     public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction>
     {
         private readonly EndianImageReader rdr;
@@ -256,11 +258,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
             throw new NotImplementedException();
         }
 
-        private abstract class Decoder
-        {
-            public abstract Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm);
-        }
-
         private class InstrDecoder : Decoder
         {
             private Opcode opcode;
@@ -274,7 +271,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 this.mutators = mutators;
             }
 
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            public override Tlcs90Instruction Decode(uint b, Tlcs90Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {
@@ -291,20 +288,20 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class RegOpRec : Decoder
+        private class RegDecoder : Decoder
         {
             private RegisterStorage regByte;
             private RegisterStorage regWord;
 
-            public RegOpRec(RegisterStorage regByte, RegisterStorage regWord)
+            public RegDecoder(RegisterStorage regByte, RegisterStorage regWord)
             {
                 this.regByte = regByte;
                 this.regWord = regWord;
             }
 
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
-                if (!dasm.rdr.TryReadByte(out b))
+                if (!dasm.rdr.TryReadByte(out byte b))
                     return null;
                 dasm.byteReg = new RegisterOperand(regByte);
                 if (regWord != null)
@@ -313,16 +310,16 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class DstOpRec : Decoder
+        private class DstDecoder : Decoder
         {
             private string format;
 
-            public DstOpRec(string format)
+            public DstDecoder(string format)
             {
                 this.format = format;
             }
 
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
                 RegisterStorage baseReg = null;
                 RegisterStorage idxReg = null;
@@ -359,14 +356,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     }
                     if (idxReg == null)
                     {
-                        if (!dasm.rdr.TryReadByte(out b))
+                        if (!dasm.rdr.TryReadByte(out byte bOff))
                             return null;
-                        offset = Constant.SByte((sbyte)b);
+                        offset = Constant.SByte((sbyte)bOff);
                     }
                     break;
                 default: throw new NotImplementedException(string.Format("Tlcs-90: dst {0}", format));
                 }
-                if (!dasm.rdr.TryReadByte(out b))
+                if (!dasm.rdr.TryReadByte(out byte b))
                     return null;
                 var instr = dstEncodings[b].Decode(b, dasm);
                 if (instr == null)
@@ -412,16 +409,16 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class SrcOpRec : Decoder
+        private class SrcDecoder : Decoder
         {
             private string format;
 
-            public SrcOpRec(string format)
+            public SrcDecoder(string format)
             {
                 this.format = format;
             }
 
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
                 Tlcs90Instruction instr;
                 Constant offset = null;
@@ -441,9 +438,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     };
                     if (idxReg == null)
                     {
-                        if (!dasm.rdr.TryReadByte(out b))
+                        if (!dasm.rdr.TryReadByte(out byte bOff))
                             return null;
-                        offset = Constant.SByte((sbyte)b);
+                        offset = Constant.SByte((sbyte)bOff);
                     }
                     break;
                 case 'B': baseReg = Registers.bc; break;
@@ -467,7 +464,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 default: throw new NotImplementedException(string.Format("Tlcs-90: src {0}", format));
                 }
 
-                if (!dasm.rdr.TryReadByte(out b))
+                if (!dasm.rdr.TryReadByte(out byte b))
                     return null;
                 instr = srcEncodings[b].Decode(b, dasm);
                 if (instr == null)
@@ -500,18 +497,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class InvalidDecoder : Decoder
-        {
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
-            {
-                return new Tlcs90Instruction
-                {
-                    Opcode = Opcode.invalid,
-                    InstructionClass = InstrClass.Invalid
-                };
-            }
-        }
-
         private static InstrDecoder Instr(Opcode opcode, params Mutator<Tlcs90Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
@@ -522,7 +507,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return new InstrDecoder(opcode, iclass, mutators);
         }
 
-        private static Decoder invalid = new InvalidDecoder();
+        private static Decoder invalid = Instr(Opcode.invalid, InstrClass.Invalid);
 
         private static Decoder[] decoders = new Decoder[256]
         {
@@ -821,45 +806,45 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.invalid, InstrClass.Invalid),
 
             // E0
-            new SrcOpRec("B"),
-            new SrcOpRec("D"),
-            new SrcOpRec("H"),
-            new SrcOpRec("M"),
+            new SrcDecoder("B"),
+            new SrcDecoder("D"),
+            new SrcDecoder("H"),
+            new SrcDecoder("M"),
 
-            new SrcOpRec("X"),
-            new SrcOpRec("Y"),
-            new SrcOpRec("S"),
-            new SrcOpRec("m"),
+            new SrcDecoder("X"),
+            new SrcDecoder("Y"),
+            new SrcDecoder("S"),
+            new SrcDecoder("m"),
 
-            new DstOpRec("B"),
-            new DstOpRec("D"),
-            new DstOpRec("H"),
-            new DstOpRec("M"),
+            new DstDecoder("B"),
+            new DstDecoder("D"),
+            new DstDecoder("H"),
+            new DstDecoder("M"),
 
-            new DstOpRec("X"),
-            new DstOpRec("Y"),
-            new DstOpRec("S"),
-            new DstOpRec("m"),
+            new DstDecoder("X"),
+            new DstDecoder("Y"),
+            new DstDecoder("S"),
+            new DstDecoder("m"),
 
             // F0
-            new SrcOpRec("EX"),
-            new SrcOpRec("EY"),
-            new SrcOpRec("ES"),
-            new SrcOpRec("EH"),
+            new SrcDecoder("EX"),
+            new SrcDecoder("EY"),
+            new SrcDecoder("ES"),
+            new SrcDecoder("EH"),
 
-            new DstOpRec("EX"),
-            new DstOpRec("EY"),
-            new DstOpRec("ES"),
-            new DstOpRec("EH"),
+            new DstDecoder("EX"),
+            new DstDecoder("EY"),
+            new DstDecoder("ES"),
+            new DstDecoder("EH"),
 
-            new RegOpRec(Registers.b, Registers.bc),
-            new RegOpRec(Registers.c, Registers.de),
-            new RegOpRec(Registers.d, Registers.hl),
-            new RegOpRec(Registers.e, null),
+            new RegDecoder(Registers.b, Registers.bc),
+            new RegDecoder(Registers.c, Registers.de),
+            new RegDecoder(Registers.d, Registers.hl),
+            new RegDecoder(Registers.e, null),
 
-            new RegOpRec(Registers.h, Registers.ix),
-            new RegOpRec(Registers.l, Registers.iy),
-            new RegOpRec(Registers.a, Registers.sp),
+            new RegDecoder(Registers.h, Registers.ix),
+            new RegDecoder(Registers.l, Registers.iy),
+            new RegDecoder(Registers.a, Registers.sp),
             Instr(Opcode.swi, InstrClass.Transfer|InstrClass.Call), 
         };
         private Address addr;

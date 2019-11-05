@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
+    using Decoder = Decoder<Tlcs90Disassembler, Opcode, Tlcs90Instruction>;
+
     partial class Tlcs90Disassembler
     {
         private static Decoder[] srcEncodings = new Decoder[]

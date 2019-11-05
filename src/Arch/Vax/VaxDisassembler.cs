@@ -29,10 +29,11 @@ using System.Text;
 
 namespace Reko.Arch.Vax
 {
+    using Decoder = Decoder<VaxDisassembler, Opcode, VaxInstruction>;
+    using Mutator = Mutator<VaxDisassembler>;
+
     public partial class VaxDisassembler : DisassemblerBase<VaxInstruction>
     {
-        private delegate bool Mutator(VaxDisassembler dasm);
-
         private VaxArchitecture arch;
         private EndianImageReader rdr;
         private List<MachineOperand> ops;
@@ -52,7 +53,7 @@ namespace Reko.Arch.Vax
             VaxInstruction instr;
             try
             {
-                instr = oneByteInstructions[op].Decode(this);
+                instr = oneByteInstructions[op].Decode(op, this);
             }
             catch
             {
@@ -229,37 +230,25 @@ namespace Reko.Arch.Vax
             return new ImmediateOperand(c);
         }
 
-        private class Decoder
+        private class InstrDecoder : Decoder
         {
             private readonly Opcode op;
             private readonly InstrClass iclass;
             private readonly Mutator[] mutators;
 
-            public Decoder(Opcode op, InstrClass iclass, params Mutator [] mutators)
+            public InstrDecoder(Opcode op, InstrClass iclass, params Mutator [] mutators)
             {
                 this.op = op;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
 
-            public Decoder(Opcode op, params Mutator[] mutators)
-            {
-                this.op = op;
-                this.iclass = InstrClass.Linear;
-                this.mutators = mutators;
-            }
 
-            public Decoder(Opcode op, int args)
-            {
-                this.op = op;
-                this.mutators = new Mutator[0];
-            }
-
-            public virtual VaxInstruction Decode(VaxDisassembler dasm)
+            public override VaxInstruction Decode(uint uInstr, VaxDisassembler dasm)
             {
                 foreach (var m in mutators)
                 {
-                    if (!m(dasm))
+                    if (!m(uInstr, dasm))
                     {
                         return dasm.CreateInvalidInstruction();
                     }
@@ -274,9 +263,24 @@ namespace Reko.Arch.Vax
             }
         }
 
+        public static Decoder Instr(Opcode opcode, params Mutator<VaxDisassembler> [] mutators)
+        {
+            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+        }
+
+        public static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator<VaxDisassembler>[] mutators)
+        {
+            return new InstrDecoder(opcode, iclass, mutators);
+        }
+
+        public static Decoder Instr(Opcode opcode, int ignored)
+        {
+            return new InstrDecoder(opcode, InstrClass.Linear);
+        }
+
         private static Mutator a(PrimitiveType dt)
         {
-            return d =>
+            return (u, d) =>
             {
                 if (!d.TryDecodeOperand(dt, out var op))
                     return false;
@@ -293,7 +297,7 @@ namespace Reko.Arch.Vax
 
         private static Mutator b(PrimitiveType width)
         {
-            return d =>
+            return (u, d) =>
             {
                 long jOffset = d.rdr.ReadLeSigned(width);
                 uint uAddr = (uint) ((long) d.rdr.Address.Offset + jOffset);
@@ -309,7 +313,7 @@ namespace Reko.Arch.Vax
 
         private static Mutator r(PrimitiveType dt)
         {
-            return d =>
+            return (u, d) =>
             {
                 if (!d.TryDecodeOperand(dt, out var op))
                     return false;
@@ -332,7 +336,7 @@ namespace Reko.Arch.Vax
 
         private static Mutator w(PrimitiveType dt)
         {
-            return d =>
+            return (u, d) =>
             {
                 if (!d.TryDecodeOperand(dt, out var op))
                     return false;

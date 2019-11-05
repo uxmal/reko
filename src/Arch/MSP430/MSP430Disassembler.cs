@@ -30,6 +30,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Msp430
 {
+    using Decoder = Decoder<Msp430Disassembler, Opcode, Msp430Instruction>;
+
     public class Msp430Disassembler : DisassemblerBase<Msp430Instruction>
     {
         private readonly EndianImageReader rdr;
@@ -53,7 +55,7 @@ namespace Reko.Arch.Msp430
             uExtension = 0;
             ops.Clear();
             dataWidth = null;
-            var instr = s_decoders[uInstr >> 12].Decode(this, uInstr);
+            var instr = s_decoders[uInstr >> 12].Decode(uInstr, this);
             if (instr != null)
             {
                 instr.Address = addr;
@@ -61,160 +63,6 @@ namespace Reko.Arch.Msp430
             }
             return instr;
         }
-
-        /*
-        private Msp430Instruction Decode(ushort uInstr, Opcode opcode, string fmt)
-        {
-            PrimitiveType dataWidth = null;
-            int i = 0;
-            if (i < fmt.Length)
-            {
-                switch (fmt[i++])
-                {
-                case 'w': // use width bit
-                    dataWidth = (uInstr & 0x40) != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
-                    break;
-                case 'a':   // a/w bit 4.
-                    dataWidth = (uInstr & 0x04) != 0 ? PrimitiveType.Word16 : Msp430Architecture.Word20;
-                    break;
-                case 'x':
-                    dataWidth = (uExtension != 0) && (uExtension & 0x40) == 0 ? Msp430Architecture.Word20 : PrimitiveType.Word16;
-                    break;
-                case 'p':
-                    dataWidth = Msp430Architecture.Word20;
-                    break;
-                case 'W': // b/w/a combined from the op and the extension
-                    var w = ((this.uExtension & 0x40) >> 5) | (uInstr & 0x040) >> 6;
-                    switch (w)
-                    {
-                    case 0: return Invalid();
-                    case 1: dataWidth = Msp430Architecture.Word20; break;
-                    case 2: dataWidth = PrimitiveType.Word16;      break;
-                    case 3: dataWidth = PrimitiveType.Byte;        break;
-                    }
-                    break;
-                default:
-                    --i;
-                    break;
-                }
-            }
-            MachineOperand op1 = null;
-            MachineOperand op2 = null;
-            int aS;
-            uint iReg;
-            if (i < fmt.Length)
-            {
-                switch (fmt[i++])
-                {
-                case 'J':
-                    int offset = (short)(uInstr << 6) >> 5;
-                    op1 = AddressOperand.Create(rdr.Address + offset);
-                    break;
-                case 'r':
-                    op1 = SourceOperand(0, uInstr & 0x0F, dataWidth);
-                    break;
-                case 'S':
-                    aS = (uInstr >> 4) & 0x03;
-                    iReg = (uInstr >> 8) & 0x0F;
-                    op1 = SourceOperand(aS, iReg, dataWidth);
-                    if (op1 == null)
-                        return null;
-                    break;
-                case 's':
-                    aS = (uInstr >> 4) & 0x03;
-                    iReg = uInstr & 0x0F;
-                    op1 = SourceOperand(aS, iReg, dataWidth);
-                    if (op1 == null)
-                        return null;
-                    break;
-                case 'n':
-                    int n = 1 + ((uInstr >> 4) & 0x0F);
-                    op1 = ImmediateOperand.Byte((byte)n);
-                    break;
-                case 'N':
-                    n = 1 + ((uInstr >> 10) & 3);
-                    op1 = ImmediateOperand.Byte((byte) n);
-                    break;
-                case '@':
-                    iReg = (uInstr >> 8) & 0x0F;
-                    var reg = Registers.GpRegisters[iReg];
-                    op1 = new MemoryOperand(Msp430Architecture.Word20)
-                    {
-                        Base = reg,
-                    };
-                    break;
-                case '+':
-                    iReg = (uInstr >> 8) & 0x0F;
-                    reg = Registers.GpRegisters[iReg];
-                    op1 = PostInc(reg, Msp430Architecture.Word20);
-                    break;
-                case '&':
-                    if (!rdr.TryReadLeUInt16(out var lo16))
-                        return Invalid();
-                    var hi4 = (uint)(uInstr >> 8) & 0x0F;
-                    //$TODO: 20-bit address?
-                    op1 = AddressOperand.Ptr32((hi4 << 16) | lo16);
-                    break;
-                case 'x':
-                    if (!rdr.TryReadLeInt16(out var idxOffset))
-                        return Invalid();
-                    iReg = (uInstr >> 8) & 0x0F;
-                    reg = Registers.GpRegisters[iReg];
-                    op1 = new MemoryOperand(Msp430Architecture.Word20)
-                    {
-                        Base = reg,
-                        Offset = idxOffset
-                    };
-                    break;
-                default:
-                    --i;
-                    break;
-                }
-            }
-            if (i < fmt.Length)
-            {
-                switch (fmt[i])
-                {
-                case 'D':
-                    var aD = (uInstr >> 7) & 0x01;
-                    iReg = uInstr & 0x0F;
-                    if (iReg == 3)
-                    {
-                        return Invalid();
-                    }
-                    var reg = Registers.GpRegisters[iReg];
-                    if (aD == 0)
-                    {
-                        if (iReg == 3)
-                            return Invalid();
-                        op2 = new RegisterOperand(reg);
-                    }
-                    else
-                    {
-                        op2 = Indexed(reg, dataWidth);
-                        if (op2 == null)
-                            return null;
-                    }
-                    break;
-                case 'r':
-                    op2 = SourceOperand(0, uInstr & 0x0F, dataWidth);
-                    break;
-                }
-            }
-            int rep = (uExtension & 0x0F);
-            var instr = new Msp430Instruction
-            {
-                opcode = opcode,
-                dataWidth = dataWidth,
-                op1 = op1,
-                op2 = op2,
-                repeatImm = (uExtension & 0x80) != 0 ? 0 : rep + 1,
-                repeatReg = (uExtension & 0x80) != 0 ? Registers.GpRegisters[rep] : null,
-            };
-            instr = SpecialCase(instr);
-            return instr;
-        }
-        */
 
         private Msp430Instruction SpecialCase(Msp430Instruction instr)
         {
@@ -509,6 +357,16 @@ namespace Reko.Arch.Msp430
             };
         }
 
+        public override Msp430Instruction NotYetImplemented(uint uInstr, string message)
+        {
+            var hexBytes = $"{(byte) uInstr:X2}{uInstr >> 2:X2}";
+            EmitUnitTest("MSP430", hexBytes, message, "MSP430Dis", Address.Ptr16(0x4000), w =>
+            {
+                w.WriteLine($"    AssertCode(\"@@@\", \"{hexBytes}\");");
+            });
+            return CreateInvalidInstruction();
+        }
+
         private static InstrDecoder Instr(Opcode opcode, params Mutator<Msp430Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
@@ -517,16 +375,6 @@ namespace Reko.Arch.Msp430
         private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, mutators);
-        }
-
-        private static ConditionalDecoder Cond(Predicate<ushort> fn, Decoder t, Decoder f)
-        {
-            return new ConditionalDecoder(fn, t, f);
-        }
-
-        private abstract class Decoder
-        {
-            public abstract Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr);
         }
 
         private class InstrDecoder : Decoder
@@ -542,7 +390,7 @@ namespace Reko.Arch.Msp430
                 this.mutators = mutators;
             }
 
-            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
+            public override Msp430Instruction Decode(uint uInstr, Msp430Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {
@@ -567,7 +415,7 @@ namespace Reko.Arch.Msp430
 
         private class JmpDecoder : Decoder
         {
-            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
+            public override Msp430Instruction Decode(uint uInstr, Msp430Disassembler dasm)
             {
                 if (!J(uInstr, dasm))
                     return dasm.CreateInvalidInstruction();
@@ -602,34 +450,12 @@ namespace Reko.Arch.Msp430
                 this.decoders = decoders;
             }
 
-            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
+            public override Msp430Instruction Decode(uint uInstr, Msp430Disassembler dasm)
             {
-                var key = (uInstr >> sh) & mask;
+                var key = (ushort)(uInstr >> sh) & mask;
                 if (!decoders.TryGetValue(key, out Decoder decoder))
                     return dasm.CreateInvalidInstruction();
-                return decoder.Decode(dasm, uInstr);
-            }
-        }
-
-        private class ConditionalDecoder : Decoder
-        {
-            private readonly Predicate<ushort> pred;
-            private readonly Decoder trueDecoder;
-            private readonly Decoder falseDecoder;
-
-            public ConditionalDecoder(Predicate<ushort> pred, Decoder trueDecoder, Decoder falseDecoder)
-            {
-                this.pred = pred;
-                this.trueDecoder = trueDecoder;
-                this.falseDecoder = falseDecoder;
-            }
-
-            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
-            {
-                if (pred(uInstr))
-                    return trueDecoder.Decode(dasm, uInstr);
-                else
-                    return falseDecoder.Decode(dasm, uInstr);
+                return decoder.Decode(uInstr, dasm);
             }
         }
 
@@ -642,44 +468,13 @@ namespace Reko.Arch.Msp430
                 this.decoders = decoders;
             }
 
-            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
+            public override Msp430Instruction Decode(uint uInstr, Msp430Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadLeUInt16(out ushort u))
                     return dasm.CreateInvalidInstruction();
-                dasm.uExtension = uInstr;
+                dasm.uExtension = (ushort)uInstr;
                 uInstr = u;
-                return this.decoders[uInstr >> 12].Decode(dasm, uInstr);
-            }
-        }
-
-        private class NyiDecoder : Decoder
-        {
-            private readonly Opcode opcode;
-            private readonly string msg;
-
-            public NyiDecoder()
-            {
-                this.opcode = Opcode.invalid;
-                this.msg = "";
-            }
-
-            public NyiDecoder(Opcode opcode, string msg)
-            {
-                this.opcode = opcode;
-                this.msg = msg;
-            }
-
-            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
-            {
-                var hexBytes = $"{(byte) uInstr:X2}{uInstr >> 2:X2}";
-                var msg = opcode != Opcode.invalid
-                    ? $"{opcode} - {this.msg}"
-                    : this.msg;
-                dasm.EmitUnitTest("MSP430", hexBytes, "", "MSP430Dis", Address.Ptr16(0x4000), w =>
-                    {
-                        w.WriteLine($"    AssertCode(\"@@@\", \"{hexBytes}\");");
-                    });
-                return dasm.CreateInvalidInstruction();
+                return this.decoders[uInstr >> 12].Decode(uInstr, dasm);
             }
         }
 
@@ -723,7 +518,7 @@ namespace Reko.Arch.Msp430
 
         private static readonly Decoder invalid = new InstrDecoder(Opcode.invalid, InstrClass.Invalid);
 
-        private static readonly Decoder nyi = new NyiDecoder();
+        private static readonly Decoder nyi = new NyiDecoder<Msp430Disassembler, Opcode, Msp430Instruction>("");
 
         private static readonly SubDecoder rotations = new SubDecoder(8, 0x03, new Dictionary<int, Decoder>
         {

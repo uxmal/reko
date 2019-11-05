@@ -32,6 +32,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.PaRisc
 {
+    using Decoder = Decoder<PaRiscDisassembler, Opcode, PaRiscInstruction>;
+
     public class PaRiscDisassembler : DisassemblerBase<PaRiscInstruction>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
@@ -1267,38 +1269,6 @@ namespace Reko.Arch.PaRisc
         }
         private static readonly Func<bool, uint, Bitfield[], uint> low_sign_ext5 = low_sign_ext(5);
         private static readonly Func<bool, uint, Bitfield[], uint> low_sign_ext11 = low_sign_ext(11);
-
-        /// <summary>
-        /// Decoders analyze the 32-bit instruction word and generate a disassembled instruction.
-        /// </summary>
-        private abstract class Decoder
-        {
-            public abstract PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm);
-
-            public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
-            {
-                var hibit = 0x80000000u;
-                var sb = new StringBuilder();
-                for (int i = 0; i < 32; ++i)
-                {
-                    if ((shMask & hibit) != 0)
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
-                    }
-                    else
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
-                    }
-                    shMask <<= 1;
-                    wInstr <<= 1;
-                }
-                if (!string.IsNullOrEmpty(tag))
-                {
-                    sb.AppendFormat(" {0}", tag);
-                }
-                Debug.Print(sb.ToString());
-            }
-        }
 
         private class InstrDecoder : Decoder
         {
