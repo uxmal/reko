@@ -301,10 +301,10 @@ namespace Reko.Core
             return visitor.VisitFpuStackStorage(this, context);
         }
 
-        public override bool Covers(Storage that)
+        public override bool Covers(Storage other)
         {
-            return that is FpuStackStorage &&
-                this.Number == that.Number;
+            return other is FpuStackStorage that &&
+                this.FpuStackOffset == that.FpuStackOffset;
         }
 
         public override bool Equals(object obj)
