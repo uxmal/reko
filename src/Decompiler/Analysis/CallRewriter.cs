@@ -50,18 +50,6 @@ namespace Reko.Analysis
 
         public void AddStackArgument(Identifier id, ProcedureFlow flow, SignatureBuilder sb)
 		{
-			object o = flow.StackArguments[id];
-			if (o != null)
-			{
-				int bitWidth = (int) o;
-				if (bitWidth < id.DataType.BitSize)
-				{
-					if (id.DataType is PrimitiveType pt)
-					{
-						id.DataType = PrimitiveType.Create(pt.Domain, bitWidth);
-					}
-				}
-			}
 			sb.AddInParam(id);
 		}
 
