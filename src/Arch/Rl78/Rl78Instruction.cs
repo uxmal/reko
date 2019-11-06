@@ -39,17 +39,10 @@ namespace Reko.Arch.Rl78
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Mnemonic.ToString());
-            if (Operands.Length == 0)
-                return;
-            writer.Tab();
-            RenderOperand(Operands[0], writer, options);
-            if (Operands.Length == 1)
-                return;
-            writer.WriteString(",");
-            RenderOperand(Operands[1], writer, options);
+            RenderOperands(writer, options);
         }
 
-        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op)
             {

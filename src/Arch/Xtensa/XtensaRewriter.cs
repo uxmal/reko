@@ -61,13 +61,13 @@ namespace Reko.Arch.Xtensa
                 rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 this.instr = dasm.Current;
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     throw new AddressCorrelatedException(
                        instr.Address,
                        "Rewriting of Xtensa instruction '{0}' not implemented yet.",
-                       instr.Opcode);
+                       instr.Mnemonic);
                 case Opcodes.abs: RewritePseudoFn("abs"); break;
                 case Opcodes.add:
                 case Opcodes.add_n: RewriteBinOp(m.IAdd); break;

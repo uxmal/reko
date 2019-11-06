@@ -50,7 +50,7 @@ namespace Reko.Arch.Mos6502
             return new Instruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Code = Opcode.illegal,
+                Mnemonic = Opcode.illegal,
             };
         }
 
@@ -296,7 +296,7 @@ namespace Reko.Arch.Mos6502
 
                 var instr = new Instruction
                 {
-                    Code = mnemonic,
+                    Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Operands = dasm.ops.ToArray(),
                 };

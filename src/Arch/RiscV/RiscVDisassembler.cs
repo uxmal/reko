@@ -77,25 +77,9 @@ namespace Reko.Arch.RiscV
                 Address = this.addrInstr,
                 Mnemonic = opcode,
                 InstructionClass = iclass,
+                Operands = ops.ToArray(),
                 Length = (int)(this.rdr.Address - addrInstr)
             };
-            if (ops.Count > 0)
-            {
-                instr.Opcodes__0 = ops[0];
-                if (ops.Count > 1)
-                {
-                    instr.Opcodes__1 = ops[1];
-                    if (ops.Count > 2)
-                    {
-                        instr.Opcodes__2 = ops[2];
-
-                        if (ops.Count > 3)
-                        {
-                            instr.Opcodes__3 = ops[3];
-                        }
-                    }
-                }
-            }
             return instr;
         }
 
@@ -299,22 +283,7 @@ namespace Reko.Arch.RiscV
             var i = state.instr;
             i.Address = this.addrInstr;
             var ops = this.state.ops;
-            if (ops.Count > 0)
-            {
-                i.Opcodes__0 = ops[0];
-                if (ops.Count > 1)
-                {
-                    i.Opcodes__1 = ops[1];
-                    if (ops.Count > 2)
-                    {
-                        i.Opcodes__2 = ops[2];
-                        if (ops.Count > 3)
-                        {
-                            i.Opcodes__3 = ops[3];
-                        }
-                    }
-                }
-            }
+            i.Operands = ops.ToArray();
             state.instr = new RiscVInstruction();
             return i;
         }
@@ -326,6 +295,7 @@ namespace Reko.Arch.RiscV
                 Address = addrInstr,
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Opcode.invalid,
+                Operands = new MachineOperand[0]
             };
         }
 

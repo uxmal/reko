@@ -74,7 +74,7 @@ namespace Reko.Arch.Arm.AArch64
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            int iOp = WriteOpcode(writer);
+            int iOp = WriteMnemonic(writer);
             if (Operands == null || Operands.Length == 0)
                 return;
             writer.Tab();
@@ -95,7 +95,7 @@ namespace Reko.Arch.Arm.AArch64
             RenderOperand(shiftAmount, writer, options);
         }
 
-        private int WriteOpcode(MachineInstructionWriter writer)
+        private int WriteMnemonic(MachineInstructionWriter writer)
         {
             if (Mnemonic == Opcode.b && Operands[0] is ConditionOperand cop)
             {
@@ -106,7 +106,7 @@ namespace Reko.Arch.Arm.AArch64
             return 0;
         }
 
-        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op)
             {

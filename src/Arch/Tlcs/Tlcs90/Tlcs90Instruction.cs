@@ -37,14 +37,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Mnemonic.ToString());
-            if (Operands.Length == 0)
-                return;
-            writer.Tab();
-            Operands[0].Write(writer, options);
-            if (Operands.Length == 1)
-                return;
-            writer.WriteString(",");
-            Operands[1].Write(writer, options);
+            RenderOperands(writer, options);
         }
     }
 }

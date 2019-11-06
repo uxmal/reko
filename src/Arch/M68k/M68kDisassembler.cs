@@ -36,10 +36,9 @@ namespace Reko.Arch.M68k
 
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
     {
-        private static TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
-
-
         public const string HexStringFormat = "{0}${1}";
+
+        private static readonly TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
 
         private EndianImageReader rdr;          // program counter 
         private List<MachineOperand> ops;       // Operand list being built
@@ -502,10 +501,6 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        static string b1 = "";
-        static string b2 = "";
-        static string mode = b2;
-
         /// <summary>
         /// Build an effective address.
         /// </summary>
@@ -517,9 +512,6 @@ namespace Reko.Arch.M68k
             ushort extension;
             bool preindex;
             bool postindex;
-
-            /* Switch buffers so we don't clobber on a double-call to this function */
-            mode = mode == b1 ? b2 : b1;
 
             switch (uInstr & 0x3f)
             {
@@ -2803,7 +2795,6 @@ namespace Reko.Arch.M68k
                 return true;
             };
         }
-
 
         private static bool n(uint uInstr, M68kDisassembler dasm)
         {

@@ -86,19 +86,8 @@ namespace Reko.Arch.SuperH
                 {
                     Opcode = this.opcode,
                     InstructionClass = iclass,
+                    Operands = ops.ToArray()
                 };
-                if (ops.Count > 0)
-                {
-                    instr.op1 = ops[0];
-                    if (ops.Count > 1)
-                    {
-                        instr.op2 = ops[1];
-                        if (ops.Count > 2)
-                        {
-                            instr.op3 = ops[2];
-                        }
-                    }
-                }
                 return instr;
             }
         }

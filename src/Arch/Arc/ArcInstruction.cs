@@ -34,28 +34,12 @@ namespace Reko.Arch.Arc
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             RenderMnemonic(writer);
-            if (Operands.Length == 0)
-                return;
-            writer.Tab();
-            Render(Operands[0]);
-            if (Operands.Length == 1)
-                return;
-            writer.WriteChar(',');
-            Render(Operands[1]);
-            if (Operands.Length == 2)
-                return;
-            writer.WriteChar(',');
-            Render(Operands[2]);
+            RenderOperands(writer, options);
         }
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
             writer.WriteString(Mnemonic.ToString());
-        }
-
-        private void Render(MachineOperand machineOperand)
-        {
-            throw new NotImplementedException();
         }
     }
 }

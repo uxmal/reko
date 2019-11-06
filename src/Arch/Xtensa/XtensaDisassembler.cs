@@ -121,7 +121,7 @@ namespace Reko.Arch.Xtensa
         {
             return new XtensaInstruction {
                 InstructionClass = InstrClass.Invalid,
-                Opcode = Opcodes.invalid
+                Mnemonic = Opcodes.invalid
             };
         }
 
@@ -160,7 +160,7 @@ namespace Reko.Arch.Xtensa
             }
             return new XtensaInstruction
             {
-                Opcode = opcode,
+                Mnemonic = opcode,
                 Operands = ops.ToArray()
             };
         }
@@ -439,7 +439,7 @@ namespace Reko.Arch.Xtensa
 
                 return new XtensaInstruction
                 {
-                    Opcode = Opcodes.movi_n,
+                    Mnemonic = Opcodes.movi_n,
                     Operands = new MachineOperand[]
                     {
                         dasm.GetAluRegister(dasm.state.s),
@@ -468,7 +468,7 @@ namespace Reko.Arch.Xtensa
 
                 return new XtensaInstruction
                 {
-                    Opcode = opcode,
+                    Mnemonic = opcode,
                     Operands = new MachineOperand[]
                     {
                         dasm.GetAluRegister(dasm.state.s),
@@ -500,7 +500,7 @@ namespace Reko.Arch.Xtensa
 
                 return new XtensaInstruction
                 {
-                    Opcode = opcode,
+                    Mnemonic = opcode,
                     Operands = new MachineOperand[]
                     {
                         dasm.GetAluRegister(dasm.state.s),
@@ -523,7 +523,7 @@ namespace Reko.Arch.Xtensa
             {
                 return new XtensaInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     Operands = new MachineOperand[] {
                         dasm.GetAluRegister(dasm.state.s),
                         ImmediateOperand.Byte((byte)(((dasm.state.r & 1) << 4) | dasm.state.t)),
@@ -539,7 +539,7 @@ namespace Reko.Arch.Xtensa
             {
                 return new XtensaInstruction
                 {
-                    Opcode = Opcodes.extui,
+                    Mnemonic = Opcodes.extui,
                     Operands = new MachineOperand[]
                     {
                         dasm.GetAluRegister(dasm.state.r),

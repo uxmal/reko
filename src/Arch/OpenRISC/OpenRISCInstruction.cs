@@ -31,18 +31,7 @@ namespace Reko.Arch.OpenRISC
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             RenderMnemonic(writer);
-            if (Operands.Length == 0)
-                return;
-            writer.Tab();
-            RenderOperand(Operands[0], writer, options);
-            if (Operands.Length == 1)
-                return;
-            writer.WriteString(",");
-            RenderOperand(Operands[1], writer, options);
-            if (Operands.Length == 2)
-                return;
-            writer.WriteString(",");
-            RenderOperand(Operands[2], writer, options);
+            RenderOperands(writer, options);
         }
 
         private void RenderMnemonic(MachineInstructionWriter writer)
@@ -50,11 +39,6 @@ namespace Reko.Arch.OpenRISC
             var sMnemonic = this.Mnemonic.ToString()
                 .Replace('_', '.');
             writer.WriteOpcode(sMnemonic);
-        }
-
-        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            op.Write(writer, options);
         }
     }
 }

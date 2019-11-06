@@ -27,12 +27,7 @@ namespace Reko.Arch.SuperH
 {
     public class SuperHInstruction : MachineInstruction
     {
-
-
         public Opcode Opcode { get; set; }
-        public MachineOperand op1 { get; set; }
-        public MachineOperand op2 { get; set; }
-        public MachineOperand op3 { get; set; }
 
         public override int OpcodeAsInteger => (int) Opcode;
 
@@ -80,21 +75,10 @@ namespace Reko.Arch.SuperH
             if (!opcodes.TryGetValue(Opcode, out var sOpcode))
                 sOpcode = Opcode.ToString();
             writer.WriteOpcode(sOpcode);
-            if (op1 == null)
-                return;
-            writer.Tab();
-            Render(op1, writer, options);
-            if (op2 == null)
-                return;
-            writer.WriteChar(',');
-            Render(op2, writer, options);
-            if (op3 == null)
-                return;
-            writer.WriteChar(',');
-            Render(op3, writer, options);
+            RenderOperands(writer, options);
         }
 
-        private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op)
             {

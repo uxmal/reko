@@ -34,28 +34,12 @@ namespace Reko.Arch.MicroBlaze
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             RenderMnemonic(writer);
-            if (Operands.Length == 0)
-                return;
-            writer.Tab();
-            RenderOperand(Operands[0], writer);
-            if (Operands.Length == 1)
-                return;
-            writer.WriteChar(',');
-            RenderOperand(Operands[1], writer);
-            if (Operands.Length == 2)
-                return;
-            writer.WriteChar(',');
-            RenderOperand(Operands[2], writer);
+            RenderOperands(writer, options);
         }
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(Mnemonic.ToString());
-        }
-
-        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer)
-        {
-            writer.WriteString(op.ToString());
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -69,13 +69,13 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtdasm_ret()
         {
-            AssertCode("ret\t", 0x000080);
+            AssertCode("ret", 0x000080);
         }
 
         [Test]
         public void Xtdasm_ill()
         {
-            AssertCode("ill\t", 0x000000);
+            AssertCode("ill", 0x000000);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtdasm_reserved()
         {
-            AssertCode("reserved\t", 0xFE9200);
+            AssertCode("reserved", 0xFE9200);
             // 00 92 fe
         }
 
@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtdasm_memw()
         {
-            AssertCode("memw\t", 0x0020C0);
+            AssertCode("memw", 0x0020C0);
         }
 
         [Test]
@@ -272,7 +272,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtdasm_ret_n()
         {
-            AssertCode("ret.n\t", 0xF00D);
+            AssertCode("ret.n", 0xF00D);
         }
 
         [Test]
@@ -363,7 +363,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtdasm_rfe()
         {
-            AssertCode("rfe\t", 0x003000);
+            AssertCode("rfe", 0x003000);
         }
 
         [Test]
@@ -543,7 +543,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtdasm_isync()
         {
-            AssertCode("isync\t", 0x002000);
+            AssertCode("isync", 0x002000);
         }
 
         [Test]
@@ -573,7 +573,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtdasm_ldpte()
         {
-            AssertCode("ldpte\t", 0xf1f810);
+            AssertCode("ldpte", 0xf1f810);
         }
 
         [Test]

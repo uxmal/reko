@@ -32,14 +32,14 @@ namespace Reko.Arch.PowerPC
         public Opcode Mnemonic;
         public bool setsCR0;
 
-        public PowerPcInstruction(Opcode opcode)
+        public PowerPcInstruction(Opcode mnemonic)
         {
-            this.Mnemonic = opcode;
+            this.Mnemonic = mnemonic;
         }
 
-        public PowerPcInstruction(Opcode opcode, MachineOperand op1, MachineOperand op2, MachineOperand op3, bool setsCR0)
+        public PowerPcInstruction(Opcode mnemonic, MachineOperand op1, MachineOperand op2, MachineOperand op3, bool setsCR0)
         {
-            this.Mnemonic = opcode;
+            this.Mnemonic = mnemonic;
             this.Operands = new MachineOperand[] { op1, op2, op3 };
             this.setsCR0 = setsCR0;
             this.InstructionClass = InstrClass.Linear;

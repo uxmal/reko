@@ -30,11 +30,7 @@ namespace Reko.Arch.RiscV
     {
         private static Dictionary<Opcode, string> opcodeNames;
 
-        internal Opcode Mnemonic;
-        internal MachineOperand Opcodes__0;
-        internal MachineOperand Opcodes__1;
-        internal MachineOperand Opcodes__2;
-        internal MachineOperand Opcodes__3;
+        public Opcode Mnemonic;
 
         static RiscVInstruction()
         {
@@ -100,25 +96,10 @@ namespace Reko.Arch.RiscV
                 name = Mnemonic.ToString();
             }
             writer.WriteOpcode(name);
-            if (Opcodes__0 == null)
-                return;
-            writer.Tab();
-            WriteOp(Opcodes__0, writer, options);
-            if (Opcodes__1 == null)
-                return;
-            writer.WriteChar(',');
-            WriteOp(Opcodes__1, writer, options);
-            if (Opcodes__2 == null)
-                return;
-            writer.WriteChar(',');
-            WriteOp(Opcodes__2, writer, options);
-            if (Opcodes__3 == null)
-                return;
-            writer.WriteChar(',');
-            WriteOp(Opcodes__3, writer, options);
+            RenderOperands(writer, options);
         }
 
-        private void WriteOp(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op)
             {

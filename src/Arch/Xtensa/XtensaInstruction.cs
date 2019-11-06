@@ -46,29 +46,18 @@ namespace Reko.Arch.Xtensa
             { Opcodes.ueq_s, "ueq.s" }
         };
 
-        public Opcodes Opcode { get; set; }
+        public Opcodes Mnemonic { get; set; }
 
-        public override int OpcodeAsInteger => (int) Opcode;
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            string instrName;
-            if (!instrNames.TryGetValue(Opcode, out instrName))
+            if (!instrNames.TryGetValue(Mnemonic, out string instrName))
             {
-                instrName = Opcode.ToString();
+                instrName = Mnemonic.ToString();
             }
             writer.WriteOpcode(instrName);
-            writer.Tab();
-            var sep = "";
-            if (this.Operands != null)
-            {
-                foreach (var op in this.Operands)
-                {
-                    writer.WriteString(sep);
-                    op.Write(writer, options);
-                    sep = ",";
-                }
-            }
+            RenderOperands(writer, options);
         }
     }
 }

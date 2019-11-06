@@ -41,47 +41,23 @@ namespace Reko.Arch.Sparc
                 string.Format("{0}{1}",
                 Mnemonic.ToString(),
                 Annul ? ",a" : ""));
-
-            if (Operands.Length > 0)
-            {
-                writer.Tab();
-                Write(Operands[0], writer, options);
-                if (Operands.Length > 1)
-                {
-                    writer.WriteChar(',');
-                    Write(Operands[1], writer, options);
-                    if (Operands.Length > 2)
-                    {
-                        writer.WriteChar(',');
-                        Write(Operands[2], writer, options);
-                    }
-                }
-            }
+            RenderOperands(writer, options);
         }
 
-        private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var reg = op as RegisterOperand;
-            if (reg != null)
+            switch (op)
             {
+            case RegisterOperand reg:
                 writer.WriteFormat("%{0}", reg.Register.Name);
                 return;
-            }
-            var imm = op as ImmediateOperand;
-            if (imm != null)
-            {
+            case ImmediateOperand imm:
                 writer.WriteString(imm.Value.ToString());
                 return;
-            }
-            var mem = op as MemoryOperand;
-            if (mem != null)
-            {
+            case MemoryOperand mem:
                 mem.Write(writer, options);
                 return;
-            }
-            var idx = op as IndexedMemoryOperand;
-            if (idx != null)
-            {
+            case IndexedMemoryOperand idx:
                 idx.Write(writer, options);
                 return;
             }

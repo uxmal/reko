@@ -29,13 +29,13 @@ namespace Reko.Arch.Mos6502
 {
     public class Instruction : MachineInstruction
     {
-        public Opcode Code;
+        public Opcode Mnemonic;
 
-        public override int OpcodeAsInteger => (int) Code;
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Code.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             RenderOperands(writer, options);
         }
 

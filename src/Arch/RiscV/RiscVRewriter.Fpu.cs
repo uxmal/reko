@@ -31,24 +31,24 @@ namespace Reko.Arch.RiscV
     {
         private void RewriteFcmp(PrimitiveType dt, Func<Expression, Expression,Expression> fn)
         {
-            var dst = RewriteOp(instr.Opcodes__0);
-            var left = RewriteOp(instr.Opcodes__1);
-            var right = RewriteOp(instr.Opcodes__2);
+            var dst = RewriteOp(instr.Operands[0]);
+            var left = RewriteOp(instr.Operands[1]);
+            var right = RewriteOp(instr.Operands[2]);
             m.Assign(dst, m.Cast(dst.DataType, fn(m.Cast(dt, left), m.Cast(dt, right))));
         }
 
         private void RewriteFcvt(PrimitiveType dt)
         {
-            var dst = RewriteOp(instr.Opcodes__0);
-            var src = RewriteOp(instr.Opcodes__1);
+            var dst = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(instr.Operands[1]);
             m.Assign(dst, m.Cast(dt, src));
         }
 
         private void RewriteFload(PrimitiveType dt)
         {
-            var dst = RewriteOp(instr.Opcodes__0);
+            var dst = RewriteOp(instr.Operands[0]);
             Expression ea;
-            if (instr.Opcodes__1 is MemoryOperand mem)
+            if (instr.Operands[1] is MemoryOperand mem)
             {
                 ea = binder.EnsureRegister(mem.Base);
                 if (mem.Offset != 0)
@@ -61,8 +61,8 @@ namespace Reko.Arch.RiscV
                 //$TODO: once 32-bit loads/stores are fixed, remove
                 // all "is MemoryOperand" occurrences and add a
                 // MemoryOperand case to RewriteOp.
-                ea = RewriteOp(instr.Opcodes__1);
-                var offset = RewriteOp(instr.Opcodes__2);
+                ea = RewriteOp(instr.Operands[1]);
+                var offset = RewriteOp(instr.Operands[2]);
                 if (!offset.IsZero)
                 {
                     ea = m.IAdd(ea, offset);
@@ -73,10 +73,10 @@ namespace Reko.Arch.RiscV
 
         private void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> addsub)
         {
-            var dst = RewriteOp(instr.Opcodes__0);
-            var factor1 = RewriteOp(instr.Opcodes__1);
-            var factor2 = RewriteOp(instr.Opcodes__2);
-            var summand = RewriteOp(instr.Opcodes__3);
+            var dst = RewriteOp(instr.Operands[0]);
+            var factor1 = RewriteOp(instr.Operands[1]);
+            var factor2 = RewriteOp(instr.Operands[2]);
+            var summand = RewriteOp(instr.Operands[3]);
             m.Assign(dst, addsub(m.FMul(factor1, factor2), summand));
         }
     }

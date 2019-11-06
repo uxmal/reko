@@ -58,7 +58,7 @@ namespace Reko.Arch.Mos6502
             return new AddressCorrelatedException(
                 instrCur.Address,
                 "Rewriting 6502 opcode '{0}' is not supported yet.",
-                instrCur.Code);
+                instrCur.Mnemonic);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -69,7 +69,7 @@ namespace Reko.Arch.Mos6502
                 var instrs = new List<RtlInstruction>();
                 this.rtlc = instrCur.InstructionClass;
                 this.m = new RtlEmitter(instrs);
-                switch (instrCur.Code)
+                switch (instrCur.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
@@ -376,7 +376,7 @@ namespace Reko.Arch.Mos6502
                     m.IAdd(a, mem),
                     c));
             m.Assign(
-                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Mnemonic), "NVZC", PrimitiveType.Byte),
                 m.Cond(a));
         }
 
@@ -391,7 +391,7 @@ namespace Reko.Arch.Mos6502
                     m.ISub(a, mem),
                     m.Not(c)));
             m.Assign(
-                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Mnemonic), "NVZC", PrimitiveType.Byte),
                 m.Cond(a));
         }
 
@@ -465,15 +465,15 @@ namespace Reko.Arch.Mos6502
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Code))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.Code);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Rw6502_" + dasm.Current.Code + "()");
+            Debug.WriteLine("        public void Rw6502_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            BuildTest(");
             Debug.Write(string.Join(

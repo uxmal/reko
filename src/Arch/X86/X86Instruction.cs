@@ -125,47 +125,32 @@ namespace Reko.Arch.X86
             {
                 options |= MachineInstructionWriterOptions.ExplicitOperandSize;
             }
-
-            if (Operands.Length == 0)
-                return;
-            writer.Tab();
-            Write(Operands[0], writer, options);
-            if (Operands.Length == 1)
-                return;
-			writer.WriteChar(',');
-			Write(Operands[1], writer, options);
-            if (Operands.Length == 2)
-                return;
-			writer.WriteString(",");
-			Write(Operands[2], writer, options);
+            RenderOperands(writer, options);
 		}
 
-        private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (op is MemoryOperand memOp)
+            if (op is MemoryOperand memOp && memOp.Base == Registers.rip)
             {
-                if (memOp.Base == Registers.rip)
+                var addr = this.Address + this.Length + memOp.Offset.ToInt32();
+                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
-                    var addr = this.Address + this.Length + memOp.Offset.ToInt32();
-                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
-                    {
-                        writer.WriteString("[");
-                        writer.WriteAddress(addr.ToString(), addr);
-                        writer.WriteString("]");
-                        writer.AddAnnotation(op.ToString());
-                    }
-                    else
-                    {
-                        op.Write(writer, options);
-                        writer.AddAnnotation(addr.ToString());
-                    }
-                    return;
+                    writer.WriteString("[");
+                    writer.WriteAddress(addr.ToString(), addr);
+                    writer.WriteString("]");
+                    writer.AddAnnotation(op.ToString());
+                }
+                else
+                {
+                    op.Write(writer, options);
+                    writer.AddAnnotation(addr.ToString());
                 }
             }
-            op.Write(writer, options);
+            else
+            {
+                op.Write(writer, options);
+            }
         }
-
- 
 
         // Returns the condition codes that an instruction modifies.
 
