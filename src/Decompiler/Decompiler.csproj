@@ -242,7 +242,6 @@
     <Compile Include="Evaluation\SliceShift.cs" />
     <Compile Include="Evaluation\BinOpWithSelf_Rule.cs" />
     <Compile Include="Evaluation\Substitutor.cs" />
-    <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Loading\FlirtoidSignatureLoader.cs" />
     <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
