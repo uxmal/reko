@@ -58,7 +58,7 @@
     <Compile Include="Avr8State.cs" />
     <Compile Include="AvrInstruction.cs" />
     <Compile Include="MemoryOperand.cs" />
-    <Compile Include="Opcode.cs" />
+    <Compile Include="Mnemonic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

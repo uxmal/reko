@@ -96,43 +96,43 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 new SubDecoder(8, 2, new Decoder[4] {               // 00 00?? .... ....
                     new SubDecoder(7, 1, new Decoder[2] {           // 00 0000 ?... ....
                         new WrongDecoder(),                         // 00 0000 0... ....
-                        new MemoryByteDecoder(Opcode.MOVWF)           // 00 0000 1... ....
+                        new MemoryByteDecoder(Mnemonic.MOVWF)           // 00 0000 1... ....
                     }),
                     new SubDecoder(7, 1, new Decoder[2] {           // 00 0001 ?... ....
                         new WrongDecoder(),                         // 00 0001 0... ....
-                        new MemoryByteDecoder(Opcode.CLRF)            // 00 0001 1... ....
+                        new MemoryByteDecoder(Mnemonic.CLRF)            // 00 0001 1... ....
                     }),
-                    new MemoryByteWDestDecoder(Opcode.SUBWF),         // 00 0010 .... ....
-                    new MemoryByteWDestDecoder(Opcode.DECF)           // 00 0011 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.SUBWF),         // 00 0010 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.DECF)           // 00 0011 .... ....
                 }),
                 new SubDecoder(8, 2, new Decoder[4] {               // 00 01?? .... ....
-                    new MemoryByteWDestDecoder(Opcode.IORWF),         // 00 0100 .... ....
-                    new MemoryByteWDestDecoder(Opcode.ANDWF),         // 00 0101 .... ....
-                    new MemoryByteWDestDecoder(Opcode.XORWF),         // 00 0110 .... ....
-                    new MemoryByteWDestDecoder(Opcode.ADDWF)          // 00 0111 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.IORWF),         // 00 0100 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.ANDWF),         // 00 0101 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.XORWF),         // 00 0110 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.ADDWF)          // 00 0111 .... ....
                 }),
                 new SubDecoder(8, 2, new Decoder[4] {               // 00 10?? .... ....
-                    new MemoryByteWDestDecoder(Opcode.MOVF),          // 00 1000 .... ....
-                    new MemoryByteWDestDecoder(Opcode.COMF),          // 00 1001 .... ....
-                    new MemoryByteWDestDecoder(Opcode.INCF),          // 00 1010 .... ....
-                    new MemoryByteWDestDecoder(Opcode.DECFSZ)         // 00 1011 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.MOVF),          // 00 1000 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.COMF),          // 00 1001 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.INCF),          // 00 1010 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.DECFSZ)         // 00 1011 .... ....
                 }),
                 new SubDecoder(8, 2, new Decoder[4] {               // 00 11?? .... ....
-                    new MemoryByteWDestDecoder(Opcode.RRF),           // 00 1100 .... ....
-                    new MemoryByteWDestDecoder(Opcode.RLF),           // 00 1101 .... ....
-                    new MemoryByteWDestDecoder(Opcode.SWAPF),         // 00 1110 .... ....
-                    new MemoryByteWDestDecoder(Opcode.INCFSZ)         // 00 1101 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.RRF),           // 00 1100 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.RLF),           // 00 1101 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.SWAPF),         // 00 1110 .... ....
+                    new MemoryByteWDestDecoder(Mnemonic.INCFSZ)         // 00 1101 .... ....
                 })
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 01 ??.. .... ....
-                new MemoryBitDecoder(Opcode.BCF),                     // 01 00.. .... ....
-                new MemoryBitDecoder(Opcode.BSF),                     // 01 01.. .... ....
-                new MemoryBitDecoder(Opcode.BTFSC),                   // 01 10.. .... ....
-                new MemoryBitDecoder(Opcode.BTFSS)                    // 01 11.. .... ....
+                new MemoryBitDecoder(Mnemonic.BCF),                     // 01 00.. .... ....
+                new MemoryBitDecoder(Mnemonic.BSF),                     // 01 01.. .... ....
+                new MemoryBitDecoder(Mnemonic.BTFSC),                   // 01 10.. .... ....
+                new MemoryBitDecoder(Mnemonic.BTFSS)                    // 01 11.. .... ....
             }),
             new SubDecoder(11, 1, new Decoder[2] {                  // 10 ?... .... ....
-                new TargetAbs11Decoder(Opcode.CALL),                  // 10 0... .... ....
-                new TargetAbs11Decoder(Opcode.GOTO)                   // 10 1... .... ....
+                new TargetAbs11Decoder(Mnemonic.CALL),                  // 10 0... .... ....
+                new TargetAbs11Decoder(Mnemonic.GOTO)                   // 10 1... .... ....
             }),
             new WrongDecoder()                                      // 11 .... .... ....
 
@@ -143,9 +143,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class NoOperandDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public NoOperandDecoder(Opcode opc)
+            public NoOperandDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -161,9 +161,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class MemoryBitDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MemoryBitDecoder(Opcode opc)
+            public MemoryBitDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -181,9 +181,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class MemoryByteDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MemoryByteDecoder(Opcode opc)
+            public MemoryByteDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -200,9 +200,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class MemoryByteWDestDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MemoryByteWDestDecoder(Opcode opc)
+            public MemoryByteWDestDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -220,9 +220,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class Immed5Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public Immed5Decoder(Opcode opc)
+            public Immed5Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -239,9 +239,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class Immed7Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public Immed7Decoder(Opcode opc)
+            public Immed7Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -258,9 +258,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class Immed8Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public Immed8Decoder(Opcode opc)
+            public Immed8Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -277,9 +277,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class TargetRel9Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public TargetRel9Decoder(Opcode opc)
+            public TargetRel9Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -296,9 +296,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class FSRArithDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public FSRArithDecoder(Opcode opc)
+            public FSRArithDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -316,9 +316,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class FSRIndexedDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public FSRIndexedDecoder(Opcode opc)
+            public FSRIndexedDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -339,9 +339,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             private static readonly FSRIndexedMode[] code2FSRIdx = new FSRIndexedMode[4]
                 { FSRIndexedMode.PREINC, FSRIndexedMode.PREDEC, FSRIndexedMode.POSTINC, FSRIndexedMode.POSTDEC };
 
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MoviIncDecDecoder(Opcode opc)
+            public MoviIncDecDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -359,9 +359,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected class TargetAbs11Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public TargetAbs11Decoder(Opcode opc)
+            public TargetAbs11Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -390,7 +390,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                     break;
                 bl.Add(uEEByte);
             }
-            instrCur = new PICInstructionPseudo(Opcode.DE, new PICOperandDEEPROM(bl.ToArray()))
+            instrCur = new PICInstructionPseudo(Mnemonic.DE, new PICOperandDEEPROM(bl.ToArray()))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)
@@ -403,7 +403,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             if (!rdr.TryReadByte(out byte uDAByte))
                 return null;
-            instrCur = new PICInstructionPseudo(Opcode.DA, new PICOperandDASCII(uDAByte))
+            instrCur = new PICInstructionPseudo(Mnemonic.DA, new PICOperandDASCII(uDAByte))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)
@@ -415,7 +415,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             if (!rdr.TryReadByte(out byte uDBByte))
                 return null;
-            instrCur = new PICInstructionPseudo(Opcode.DB, new PICOperandDByte(uDBByte))
+            instrCur = new PICInstructionPseudo(Mnemonic.DB, new PICOperandDByte(uDBByte))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)
@@ -427,7 +427,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             if (!rdr.TryReadUInt16(out ushort uDWWord))
                 return null;
-            instrCur = new PICInstructionPseudo(Opcode.DW, new PICOperandDWord(uDWWord))
+            instrCur = new PICInstructionPseudo(Mnemonic.DW, new PICOperandDWord(uDWWord))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)
@@ -439,7 +439,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             if (!rdr.TryReadUInt16(out ushort uConfigWord))
                 return null;
-            instrCur = new PICInstructionPseudo(Opcode.__IDLOCS, new PICOperandIDLocs(addrCur, uConfigWord))
+            instrCur = new PICInstructionPseudo(Mnemonic.__IDLOCS, new PICOperandIDLocs(addrCur, uConfigWord))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)
@@ -452,7 +452,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             if (!rdr.TryReadUInt16(out ushort uConfigWord))
                 return null;
             var cfgAddr = PICProgAddress.Ptr((uint)(addrCur.ToLinear() >> 1));
-            instrCur = new PICInstructionPseudo(Opcode.__CONFIG, new PICOperandConfigBits(arch, cfgAddr, uConfigWord))
+            instrCur = new PICInstructionPseudo(Mnemonic.__CONFIG, new PICOperandConfigBits(arch, cfgAddr, uConfigWord))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)

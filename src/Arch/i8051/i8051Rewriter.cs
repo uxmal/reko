@@ -72,56 +72,56 @@ namespace Reko.Arch.i8051
                        string.Format(
                            "i8051 instruction '{0}' not supported yet.",
                            instr.Mnemonic));
-                    goto case Opcode.Invalid;
-                case Opcode.Invalid:
-                case Opcode.reserved:
+                    goto case Mnemonic.Invalid;
+                case Mnemonic.Invalid:
+                case Mnemonic.reserved:
                     Invalid();
                     break;
-                case Opcode.acall: RewriteCall(); break;
-                case Opcode.add: RewriteBinop(m.IAdd, FlagM.C | FlagM.AC | FlagM.OV | FlagM.P); break;
-                case Opcode.addc: RewriteAddcSubb(m.IAdd); break;
-                case Opcode.ajmp: RewriteJump(); break;
-                case Opcode.anl: RewriteLogical(m.And); break;
-                case Opcode.cjne: RewriteCjne(); break;
-                case Opcode.clr: RewriteClr(); break;
-                case Opcode.dec: RewriteIncDec(m.ISub); break;
-                case Opcode.djnz: RewriteDjnz(); break;
-                case Opcode.inc: RewriteIncDec(m.IAdd); break;
-                case Opcode.jb: RewriteJb(m.Ne0); break;
-                case Opcode.jbc: RewriteJbc(); break;
-                case Opcode.jc: RewriteJc(e => e); break;
-                case Opcode.jmp: RewriteJump(); break;
-                case Opcode.jnb: RewriteJb(m.Eq0); break;
-                case Opcode.jnc: RewriteJc(m.Not); break;
-                case Opcode.jnz: RewriteJz(m.Ne0); break;
-                case Opcode.jz: RewriteJz(m.Eq0); break;
-                case Opcode.lcall: RewriteCall(); break;
-                case Opcode.ljmp: RewriteJump(); break;
-                case Opcode.mov: RewriteMov(); break;
-                case Opcode.movc: RewriteMovc(); break;
-                case Opcode.movx: RewriteMovx(); break;
-                case Opcode.mul: RewriteMul(); break;
-                case Opcode.nop: m.Nop(); break;
-                case Opcode.orl: RewriteLogical(m.Or); break;
-                case Opcode.pop: RewritePop(); break;
-                case Opcode.push: RewritePush(); break;
-                case Opcode.ret: RewriteRet(); break;
-                case Opcode.reti: RewriteRet(); break;
-                case Opcode.rl: RewriteRotate(PseudoProcedure.Rol); break;
-                case Opcode.rr: RewriteRotate(PseudoProcedure.Ror); break;
-                case Opcode.setb: RewriteSetb(); break;
-                case Opcode.sjmp: RewriteJump(); break;
-                case Opcode.subb: RewriteAddcSubb(m.ISub); break;
-                case Opcode.swap: RewriteSwap(); break;
-                case Opcode.xrl: RewriteLogical(m.Xor); break;
-                case Opcode.xch: RewriteXch(); break;
+                case Mnemonic.acall: RewriteCall(); break;
+                case Mnemonic.add: RewriteBinop(m.IAdd, FlagM.C | FlagM.AC | FlagM.OV | FlagM.P); break;
+                case Mnemonic.addc: RewriteAddcSubb(m.IAdd); break;
+                case Mnemonic.ajmp: RewriteJump(); break;
+                case Mnemonic.anl: RewriteLogical(m.And); break;
+                case Mnemonic.cjne: RewriteCjne(); break;
+                case Mnemonic.clr: RewriteClr(); break;
+                case Mnemonic.dec: RewriteIncDec(m.ISub); break;
+                case Mnemonic.djnz: RewriteDjnz(); break;
+                case Mnemonic.inc: RewriteIncDec(m.IAdd); break;
+                case Mnemonic.jb: RewriteJb(m.Ne0); break;
+                case Mnemonic.jbc: RewriteJbc(); break;
+                case Mnemonic.jc: RewriteJc(e => e); break;
+                case Mnemonic.jmp: RewriteJump(); break;
+                case Mnemonic.jnb: RewriteJb(m.Eq0); break;
+                case Mnemonic.jnc: RewriteJc(m.Not); break;
+                case Mnemonic.jnz: RewriteJz(m.Ne0); break;
+                case Mnemonic.jz: RewriteJz(m.Eq0); break;
+                case Mnemonic.lcall: RewriteCall(); break;
+                case Mnemonic.ljmp: RewriteJump(); break;
+                case Mnemonic.mov: RewriteMov(); break;
+                case Mnemonic.movc: RewriteMovc(); break;
+                case Mnemonic.movx: RewriteMovx(); break;
+                case Mnemonic.mul: RewriteMul(); break;
+                case Mnemonic.nop: m.Nop(); break;
+                case Mnemonic.orl: RewriteLogical(m.Or); break;
+                case Mnemonic.pop: RewritePop(); break;
+                case Mnemonic.push: RewritePush(); break;
+                case Mnemonic.ret: RewriteRet(); break;
+                case Mnemonic.reti: RewriteRet(); break;
+                case Mnemonic.rl: RewriteRotate(PseudoProcedure.Rol); break;
+                case Mnemonic.rr: RewriteRotate(PseudoProcedure.Ror); break;
+                case Mnemonic.setb: RewriteSetb(); break;
+                case Mnemonic.sjmp: RewriteJump(); break;
+                case Mnemonic.subb: RewriteAddcSubb(m.ISub); break;
+                case Mnemonic.swap: RewriteSwap(); break;
+                case Mnemonic.xrl: RewriteLogical(m.Xor); break;
+                case Mnemonic.xch: RewriteXch(); break;
 
-                case Opcode.cpl:
-                case Opcode.da:
-                case Opcode.div:
-                case Opcode.rrc:
-                case Opcode.rlc:
-                case Opcode.xchd:
+                case Mnemonic.cpl:
+                case Mnemonic.da:
+                case Mnemonic.div:
+                case Mnemonic.rrc:
+                case Mnemonic.rlc:
+                case Mnemonic.xchd:
                     EmitUnitTest();
                     Invalid();
                     break;

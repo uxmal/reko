@@ -30,7 +30,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     public class Tlcs90Instruction : MachineInstruction
     {
-        public Opcode Mnemonic { get; set; }
+        public Mnemonic Mnemonic { get; set; }
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 

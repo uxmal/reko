@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Reko.Arch.Mips
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         illegal,
 

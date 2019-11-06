@@ -72,252 +72,252 @@ namespace Reko.Arch.Mips
                         instr.Address,
                         string.Format("MIPS instruction '{0}' is not supported yet.", instr));
                     EmitUnitTest();
-                    goto case Opcode.illegal;
-                case Opcode.illegal:
+                    goto case Mnemonic.illegal;
+                case Mnemonic.illegal:
                     rtlc = InstrClass.Invalid; m.Invalid(); break;
-                case Opcode.add:
-                case Opcode.addi:
-                case Opcode.addiu:
-                case Opcode.addu:
+                case Mnemonic.add:
+                case Mnemonic.addi:
+                case Mnemonic.addiu:
+                case Mnemonic.addu:
                     RewriteAdd(instr, PrimitiveType.Word32); break;
-                case Opcode.add_s: RewriteFpuBinopS(instr, m.FAdd); break;
-                case Opcode.add_d: RewriteFpuBinopD(instr, m.FAdd); break;
-                    case Opcode.and:
-                case Opcode.andi:
+                case Mnemonic.add_s: RewriteFpuBinopS(instr, m.FAdd); break;
+                case Mnemonic.add_d: RewriteFpuBinopD(instr, m.FAdd); break;
+                    case Mnemonic.and:
+                case Mnemonic.andi:
                     RewriteAnd(instr); break;
-                case Opcode.bc1f: RewriteBranchConditional1(instr, false); break;
-                case Opcode.bc1t: RewriteBranchConditional1(instr, true); break;
-                case Opcode.beq: RewriteBranch(instr, m.Eq, false); break;
-                case Opcode.beql: RewriteBranchLikely(instr, m.Eq); break;
-                case Opcode.bgez:
+                case Mnemonic.bc1f: RewriteBranchConditional1(instr, false); break;
+                case Mnemonic.bc1t: RewriteBranchConditional1(instr, true); break;
+                case Mnemonic.beq: RewriteBranch(instr, m.Eq, false); break;
+                case Mnemonic.beql: RewriteBranchLikely(instr, m.Eq); break;
+                case Mnemonic.bgez:
                     RewriteBranch0(instr, m.Ge, false); break;
-                case Opcode.bgezl:
+                case Mnemonic.bgezl:
                     RewriteBranch0(instr, m.Ge, true); break;
-                case Opcode.bgezal:
+                case Mnemonic.bgezal:
                     RewriteBgezal(instr); break;
-                case Opcode.bgezall:
+                case Mnemonic.bgezall:
                     RewriteBranch0(instr, m.Ge, true); break;
-                case Opcode.bgtz:
+                case Mnemonic.bgtz:
                     RewriteBranch0(instr, m.Gt, false); break;
-                case Opcode.bgtzl:
+                case Mnemonic.bgtzl:
                     RewriteBranch0(instr, m.Gt, true); break;
-                case Opcode.blez:
+                case Mnemonic.blez:
                     RewriteBranch0(instr, m.Le, false); break;
-                case Opcode.blezl:
+                case Mnemonic.blezl:
                     RewriteBranch0(instr, m.Le, true); break;
-                case Opcode.bltz:
+                case Mnemonic.bltz:
                     RewriteBranch0(instr, m.Lt, false); break;
-                case Opcode.bltzl:
+                case Mnemonic.bltzl:
                     RewriteBranch0(instr, m.Lt, true); break;
-                case Opcode.bltzal:
+                case Mnemonic.bltzal:
                     RewriteBranch0(instr, m.Lt, true); break;
-                case Opcode.bltzall:
+                case Mnemonic.bltzall:
                     RewriteBranch0(instr, m.Lt, true); break;
-                case Opcode.bne:
+                case Mnemonic.bne:
                     RewriteBranch(instr, m.Ne, false); break;
-                case Opcode.bnel: RewriteBranchLikely(instr, m.Ne); break;
-                case Opcode.@break: RewriteBreak(instr); break;
-                case Opcode.c_le_d: RewriteFpuCmpD(instr, Operator.Fle); break;
-                case Opcode.c_le_s: RewriteFpuCmpD(instr, Operator.Fle); break;
-                case Opcode.c_lt_d: RewriteFpuCmpD(instr, Operator.Flt); break;
-                case Opcode.c_lt_s: RewriteFpuCmpD(instr, Operator.Flt); break;
-                case Opcode.c_eq_d: RewriteFpuCmpD(instr, Operator.Feq); break;
-                case Opcode.c_eq_s: RewriteFpuCmpD(instr, Operator.Feq); break;
-                case Opcode.cache: RewriteCache(instr); break;
-                case Opcode.cfc1: RewriteCfc1(instr); break;
-                case Opcode.ctc1: RewriteCtc1(instr); break;
-                case Opcode.clo: RewriteClo(instr); break;
-                case Opcode.clz: RewriteClz(instr); break;
-                case Opcode.cvt_d_l: RewriteCvtD(instr, PrimitiveType.Real64); break;
-                case Opcode.cvt_s_d: RewriteCvtD(instr, PrimitiveType.Real32); break;
-                case Opcode.cvt_w_d: RewriteCvtD(instr, PrimitiveType.Int32); break;
-                case Opcode.dadd:
-                case Opcode.daddi:
+                case Mnemonic.bnel: RewriteBranchLikely(instr, m.Ne); break;
+                case Mnemonic.@break: RewriteBreak(instr); break;
+                case Mnemonic.c_le_d: RewriteFpuCmpD(instr, Operator.Fle); break;
+                case Mnemonic.c_le_s: RewriteFpuCmpD(instr, Operator.Fle); break;
+                case Mnemonic.c_lt_d: RewriteFpuCmpD(instr, Operator.Flt); break;
+                case Mnemonic.c_lt_s: RewriteFpuCmpD(instr, Operator.Flt); break;
+                case Mnemonic.c_eq_d: RewriteFpuCmpD(instr, Operator.Feq); break;
+                case Mnemonic.c_eq_s: RewriteFpuCmpD(instr, Operator.Feq); break;
+                case Mnemonic.cache: RewriteCache(instr); break;
+                case Mnemonic.cfc1: RewriteCfc1(instr); break;
+                case Mnemonic.ctc1: RewriteCtc1(instr); break;
+                case Mnemonic.clo: RewriteClo(instr); break;
+                case Mnemonic.clz: RewriteClz(instr); break;
+                case Mnemonic.cvt_d_l: RewriteCvtD(instr, PrimitiveType.Real64); break;
+                case Mnemonic.cvt_s_d: RewriteCvtD(instr, PrimitiveType.Real32); break;
+                case Mnemonic.cvt_w_d: RewriteCvtD(instr, PrimitiveType.Int32); break;
+                case Mnemonic.dadd:
+                case Mnemonic.daddi:
                     RewriteAdd(instr, PrimitiveType.Word64); break;
-                case Opcode.daddiu:
-                case Opcode.daddu: RewriteAdd(instr, PrimitiveType.Word64); break;
-                case Opcode.ddiv: RewriteDiv(instr, m.SDiv); break;
-                case Opcode.ddivu: RewriteDiv(instr, m.UDiv); break;
-                case Opcode.div: RewriteDiv(instr, m.SDiv); break;
-                case Opcode.divu: RewriteDiv(instr, m.UDiv); break;
-                case Opcode.div_d: RewriteFpuBinopD(instr, m.FDiv); break;
-                case Opcode.dmfc0: RewriteMfc0(instr); break;
-                case Opcode.dmfc1: RewriteMfc1(instr); break;
-                case Opcode.dmtc0: RewriteMtc0(instr); break;
-                case Opcode.dmtc1: RewriteMtc1(instr); break;
-                case Opcode.dmult: RewriteMul(instr, m.SMul, PrimitiveType.Int128); break;
-                case Opcode.dmultu: RewriteMul(instr, m.UMul, PrimitiveType.UInt128); break;
-                case Opcode.dsll: RewriteSll(instr); break;
-                case Opcode.dsll32: RewriteDshift32(instr, m.Shl); break;
-                case Opcode.dsllv: RewriteSrl(instr); break;
-                case Opcode.dsra: RewriteSra(instr); break;
-                case Opcode.dsra32: RewriteDshift32(instr, m.Sar); break;
-                case Opcode.dsrav: RewriteSra(instr); break;
-                case Opcode.dsrl: RewriteSrl(instr); break;
-                case Opcode.dsrl32: RewriteDshift32(instr, m.Shr); break;
-                case Opcode.dsrlv: RewriteSrl(instr); break;
-                case Opcode.dsub:
-                case Opcode.dsubu:
+                case Mnemonic.daddiu:
+                case Mnemonic.daddu: RewriteAdd(instr, PrimitiveType.Word64); break;
+                case Mnemonic.ddiv: RewriteDiv(instr, m.SDiv); break;
+                case Mnemonic.ddivu: RewriteDiv(instr, m.UDiv); break;
+                case Mnemonic.div: RewriteDiv(instr, m.SDiv); break;
+                case Mnemonic.divu: RewriteDiv(instr, m.UDiv); break;
+                case Mnemonic.div_d: RewriteFpuBinopD(instr, m.FDiv); break;
+                case Mnemonic.dmfc0: RewriteMfc0(instr); break;
+                case Mnemonic.dmfc1: RewriteMfc1(instr); break;
+                case Mnemonic.dmtc0: RewriteMtc0(instr); break;
+                case Mnemonic.dmtc1: RewriteMtc1(instr); break;
+                case Mnemonic.dmult: RewriteMul(instr, m.SMul, PrimitiveType.Int128); break;
+                case Mnemonic.dmultu: RewriteMul(instr, m.UMul, PrimitiveType.UInt128); break;
+                case Mnemonic.dsll: RewriteSll(instr); break;
+                case Mnemonic.dsll32: RewriteDshift32(instr, m.Shl); break;
+                case Mnemonic.dsllv: RewriteSrl(instr); break;
+                case Mnemonic.dsra: RewriteSra(instr); break;
+                case Mnemonic.dsra32: RewriteDshift32(instr, m.Sar); break;
+                case Mnemonic.dsrav: RewriteSra(instr); break;
+                case Mnemonic.dsrl: RewriteSrl(instr); break;
+                case Mnemonic.dsrl32: RewriteDshift32(instr, m.Shr); break;
+                case Mnemonic.dsrlv: RewriteSrl(instr); break;
+                case Mnemonic.dsub:
+                case Mnemonic.dsubu:
                     RewriteSub(instr, PrimitiveType.Word64); break;
-                case Opcode.eret: RewriteEret(instr); break;
-                case Opcode.j: RewriteJump(instr); break;
-                case Opcode.jal: RewriteJal(instr); break;
-                case Opcode.jalr: RewriteJalr(instr); break;
-                case Opcode.jr: RewriteJr(instr); break;
-                case Opcode.lb: RewriteLoad(instr, PrimitiveType.SByte); break;
-                case Opcode.lbu: RewriteLoad(instr, PrimitiveType.Byte); break;
-                case Opcode.ld: RewriteLoad(instr, PrimitiveType.Word64); break;
-                case Opcode.ldl: RewriteLdl(instr); break;
-                case Opcode.ldr: RewriteLdr(instr); break;
-                case Opcode.ldc1: RewriteLcpr1(instr); break;
-                case Opcode.ldc2: RewriteLdc2(instr); break;
-                case Opcode.ldxc1: RewriteLcpr1(instr); break;
-                case Opcode.luxc1: RewriteLcpr1(instr); break;
-                case Opcode.lwxc1: RewriteLcpr1(instr); break;
-                case Opcode.lh: RewriteLoad(instr, PrimitiveType.Int16); break;
-                case Opcode.lhu: RewriteLoad(instr, PrimitiveType.UInt16); break;
-                case Opcode.ll: RewriteLoadLinked32(instr); break;
-                case Opcode.lld: RewriteLoadLinked64(instr); break;
-                case Opcode.lui: RewriteLui(instr); break;
-                case Opcode.lw: RewriteLoad(instr, PrimitiveType.Int32); break;
-                case Opcode.lwc1: RewriteLcpr1(instr); break;
-                case Opcode.lwc2: RewriteLdc2(instr); break;
-                case Opcode.lwl: RewriteLwl(instr); break;
-                case Opcode.lwr: RewriteLwr(instr); break;
-                case Opcode.lwu: RewriteLoad(instr, PrimitiveType.UInt32); break;
-                case Opcode.madd: RewriteMac_int(instr, m.IAdd); break;
-                case Opcode.madd_s: RewriteMac_real(instr, PrimitiveType.Real32, m.FAdd); break;
-                case Opcode.madd_ps: RewriteMac_vec(instr, PrimitiveType.Real32, m.FAdd); break;
-                case Opcode.mfc0: RewriteMfc0(instr); break;
-                case Opcode.mfc1: RewriteMfc1(instr); break;
-                case Opcode.mfhi: RewriteMf(instr, arch.hi); break;
-                case Opcode.mflo: RewriteMf(instr, arch.lo); break;
-                case Opcode.mtc0: RewriteMtc0(instr); break;
-                case Opcode.mthi: RewriteMt(instr, arch.hi); break;
-                case Opcode.mtlo: RewriteMt(instr, arch.lo); break;
-                case Opcode.movf: RewriteMovft(instr, false); break;
-                case Opcode.movn: RewriteMovCc(instr, m.Ne0); break;
-                case Opcode.movt: RewriteMovft(instr, true); break;
-                case Opcode.movz: RewriteMovCc(instr, m.Eq0); break;
-                case Opcode.mov_d: RewriteCopy(instr); break;
-                case Opcode.mov_s: RewriteCopy(instr); break;
-                case Opcode.msub: RewriteMac_int(instr, m.ISub); break;
-                case Opcode.msub_s: RewriteMac_real(instr, PrimitiveType.Real32, m.FSub); break;
-                case Opcode.mtc1: RewriteMtc1(instr); break;
-                case Opcode.mul: RewriteMul(instr, m.SMul, PrimitiveType.Int32); break;
-                case Opcode.mult: RewriteMul(instr, m.SMul, PrimitiveType.Int64); break;
-                case Opcode.multu: RewriteMul(instr, m.UMul, PrimitiveType.UInt64); break;
-                case Opcode.mul_s: RewriteMul(instr, m.FMul, PrimitiveType.Real32); break;
-                case Opcode.mul_d: RewriteMulD(instr); break;
-                case Opcode.nmadd_d: RewriteNmac_real(instr, PrimitiveType.Real64, m.FAdd); break;
-                case Opcode.nmadd_s: RewriteNmac_real(instr, PrimitiveType.Real32, m.FAdd); break;
-                case Opcode.nop: m.Nop(); break;
-                case Opcode.nor: RewriteNor(instr); break;
-                case Opcode.nmsub_d: RewriteNmac_real(instr, PrimitiveType.Real64, m.FSub); break;
-                case Opcode.nmsub_s: RewriteNmac_real(instr, PrimitiveType.Real32, m.FSub); break;
-                case Opcode.nmsub_ps: RewriteNmac_vec(instr, PrimitiveType.Real32, m.FSub); break;
-                case Opcode.or:
-                case Opcode.ori: RewriteOr(instr); break;
-                case Opcode.pref:
-                case Opcode.prefx: RewritePrefx(instr); break;
-                case Opcode.sb: RewriteStore(instr); break;
-                case Opcode.sc: RewriteStoreConditional32(instr); break;
-                case Opcode.scd: RewriteStoreConditional64(instr); break;
-                case Opcode.sd: RewriteStore(instr); break;
-                case Opcode.sdc1: RewriteStore(instr); break;
-                case Opcode.sdc2: RewriteSdc2(instr); break;
-                case Opcode.sdl: RewriteSdl(instr); break;
-                case Opcode.sdr: RewriteSdr(instr); break;
-                case Opcode.seb: RewriteSignExtend(instr, PrimitiveType.Byte); break;
-                case Opcode.seh: RewriteSignExtend(instr, PrimitiveType.Word16); break;
-                case Opcode.sh: RewriteStore(instr); break;
-                case Opcode.sll:
-                case Opcode.sllv:
+                case Mnemonic.eret: RewriteEret(instr); break;
+                case Mnemonic.j: RewriteJump(instr); break;
+                case Mnemonic.jal: RewriteJal(instr); break;
+                case Mnemonic.jalr: RewriteJalr(instr); break;
+                case Mnemonic.jr: RewriteJr(instr); break;
+                case Mnemonic.lb: RewriteLoad(instr, PrimitiveType.SByte); break;
+                case Mnemonic.lbu: RewriteLoad(instr, PrimitiveType.Byte); break;
+                case Mnemonic.ld: RewriteLoad(instr, PrimitiveType.Word64); break;
+                case Mnemonic.ldl: RewriteLdl(instr); break;
+                case Mnemonic.ldr: RewriteLdr(instr); break;
+                case Mnemonic.ldc1: RewriteLcpr1(instr); break;
+                case Mnemonic.ldc2: RewriteLdc2(instr); break;
+                case Mnemonic.ldxc1: RewriteLcpr1(instr); break;
+                case Mnemonic.luxc1: RewriteLcpr1(instr); break;
+                case Mnemonic.lwxc1: RewriteLcpr1(instr); break;
+                case Mnemonic.lh: RewriteLoad(instr, PrimitiveType.Int16); break;
+                case Mnemonic.lhu: RewriteLoad(instr, PrimitiveType.UInt16); break;
+                case Mnemonic.ll: RewriteLoadLinked32(instr); break;
+                case Mnemonic.lld: RewriteLoadLinked64(instr); break;
+                case Mnemonic.lui: RewriteLui(instr); break;
+                case Mnemonic.lw: RewriteLoad(instr, PrimitiveType.Int32); break;
+                case Mnemonic.lwc1: RewriteLcpr1(instr); break;
+                case Mnemonic.lwc2: RewriteLdc2(instr); break;
+                case Mnemonic.lwl: RewriteLwl(instr); break;
+                case Mnemonic.lwr: RewriteLwr(instr); break;
+                case Mnemonic.lwu: RewriteLoad(instr, PrimitiveType.UInt32); break;
+                case Mnemonic.madd: RewriteMac_int(instr, m.IAdd); break;
+                case Mnemonic.madd_s: RewriteMac_real(instr, PrimitiveType.Real32, m.FAdd); break;
+                case Mnemonic.madd_ps: RewriteMac_vec(instr, PrimitiveType.Real32, m.FAdd); break;
+                case Mnemonic.mfc0: RewriteMfc0(instr); break;
+                case Mnemonic.mfc1: RewriteMfc1(instr); break;
+                case Mnemonic.mfhi: RewriteMf(instr, arch.hi); break;
+                case Mnemonic.mflo: RewriteMf(instr, arch.lo); break;
+                case Mnemonic.mtc0: RewriteMtc0(instr); break;
+                case Mnemonic.mthi: RewriteMt(instr, arch.hi); break;
+                case Mnemonic.mtlo: RewriteMt(instr, arch.lo); break;
+                case Mnemonic.movf: RewriteMovft(instr, false); break;
+                case Mnemonic.movn: RewriteMovCc(instr, m.Ne0); break;
+                case Mnemonic.movt: RewriteMovft(instr, true); break;
+                case Mnemonic.movz: RewriteMovCc(instr, m.Eq0); break;
+                case Mnemonic.mov_d: RewriteCopy(instr); break;
+                case Mnemonic.mov_s: RewriteCopy(instr); break;
+                case Mnemonic.msub: RewriteMac_int(instr, m.ISub); break;
+                case Mnemonic.msub_s: RewriteMac_real(instr, PrimitiveType.Real32, m.FSub); break;
+                case Mnemonic.mtc1: RewriteMtc1(instr); break;
+                case Mnemonic.mul: RewriteMul(instr, m.SMul, PrimitiveType.Int32); break;
+                case Mnemonic.mult: RewriteMul(instr, m.SMul, PrimitiveType.Int64); break;
+                case Mnemonic.multu: RewriteMul(instr, m.UMul, PrimitiveType.UInt64); break;
+                case Mnemonic.mul_s: RewriteMul(instr, m.FMul, PrimitiveType.Real32); break;
+                case Mnemonic.mul_d: RewriteMulD(instr); break;
+                case Mnemonic.nmadd_d: RewriteNmac_real(instr, PrimitiveType.Real64, m.FAdd); break;
+                case Mnemonic.nmadd_s: RewriteNmac_real(instr, PrimitiveType.Real32, m.FAdd); break;
+                case Mnemonic.nop: m.Nop(); break;
+                case Mnemonic.nor: RewriteNor(instr); break;
+                case Mnemonic.nmsub_d: RewriteNmac_real(instr, PrimitiveType.Real64, m.FSub); break;
+                case Mnemonic.nmsub_s: RewriteNmac_real(instr, PrimitiveType.Real32, m.FSub); break;
+                case Mnemonic.nmsub_ps: RewriteNmac_vec(instr, PrimitiveType.Real32, m.FSub); break;
+                case Mnemonic.or:
+                case Mnemonic.ori: RewriteOr(instr); break;
+                case Mnemonic.pref:
+                case Mnemonic.prefx: RewritePrefx(instr); break;
+                case Mnemonic.sb: RewriteStore(instr); break;
+                case Mnemonic.sc: RewriteStoreConditional32(instr); break;
+                case Mnemonic.scd: RewriteStoreConditional64(instr); break;
+                case Mnemonic.sd: RewriteStore(instr); break;
+                case Mnemonic.sdc1: RewriteStore(instr); break;
+                case Mnemonic.sdc2: RewriteSdc2(instr); break;
+                case Mnemonic.sdl: RewriteSdl(instr); break;
+                case Mnemonic.sdr: RewriteSdr(instr); break;
+                case Mnemonic.seb: RewriteSignExtend(instr, PrimitiveType.Byte); break;
+                case Mnemonic.seh: RewriteSignExtend(instr, PrimitiveType.Word16); break;
+                case Mnemonic.sh: RewriteStore(instr); break;
+                case Mnemonic.sll:
+                case Mnemonic.sllv:
                     RewriteSll(instr); break;
-                case Opcode.slt: RewriteSxx(instr, m.Lt); break;
-                case Opcode.slti: RewriteSxx(instr, m.Lt); break;
-                case Opcode.sltiu: RewriteSxx(instr, m.Ult); break;
-                case Opcode.sltu: RewriteSxx(instr, m.Ult); break;
-                case Opcode.sra:
-                case Opcode.srav:
+                case Mnemonic.slt: RewriteSxx(instr, m.Lt); break;
+                case Mnemonic.slti: RewriteSxx(instr, m.Lt); break;
+                case Mnemonic.sltiu: RewriteSxx(instr, m.Ult); break;
+                case Mnemonic.sltu: RewriteSxx(instr, m.Ult); break;
+                case Mnemonic.sra:
+                case Mnemonic.srav:
                     RewriteSra(instr); break;
-                case Opcode.srl:
-                case Opcode.srlv:
+                case Mnemonic.srl:
+                case Mnemonic.srlv:
                     RewriteSrl(instr); break;
-                case Opcode.sub:
-                case Opcode.subu:
+                case Mnemonic.sub:
+                case Mnemonic.subu:
                     RewriteSub(instr, PrimitiveType.Word32); break;
-                case Opcode.sub_d: RewriteFpuBinopD(instr, m.FSub); break;
-                case Opcode.sw:
-                case Opcode.swc1: RewriteStore(instr); break;
-                case Opcode.swc2: RewriteSdc2(instr); break;
-                case Opcode.swl: RewriteSwl(instr); break;
-                case Opcode.swr: RewriteSwr(instr); break;
-                case Opcode.swxc1: RewriteStore(instr); break;
-                case Opcode.sync: RewriteSync(instr); break;
-                case Opcode.syscall: RewriteSyscall(instr); break;
-                case Opcode.teq: RewriteTrap(instr, m.Eq); break;
-                case Opcode.teqi: RewriteTrap(instr, m.Eq); break;
-                case Opcode.tge: RewriteTrap(instr, m.Ge); break;
-                case Opcode.tgeu: RewriteTrap(instr, m.Uge); break;
-                case Opcode.tgei: RewriteTrapi(instr, m.Ge); break;
-                case Opcode.tgeiu: RewriteTrapi(instr, m.Uge); break;
-                case Opcode.tlbp: RewriteTlbp(instr); break;
-                case Opcode.tlbr: RewriteTlbr(instr); break;
-                case Opcode.tlbwi: RewriteTlbwi(instr); break;
-                case Opcode.tlbwr: RewriteTlbwr(instr); break;
-                case Opcode.tlt: RewriteTrap(instr, m.Lt); break;
-                case Opcode.tlti: RewriteTrapi(instr, m.Lt); break;
-                case Opcode.tltiu: RewriteTrapi(instr, m.Ult); break;
-                case Opcode.tltu: RewriteTrap(instr, m.Ult); break;
-                case Opcode.tne: RewriteTrap(instr, m.Ne); break;
-                case Opcode.tnei: RewriteTrapi(instr, m.Ne); break;
-                case Opcode.trunc_l_d: RewriteTrunc(instr, "trunc", PrimitiveType.Real64, PrimitiveType.Int64); break;
-                case Opcode.wait: RewriteWait(instr); break;
-                case Opcode.xor:
-                case Opcode.xori: RewriteXor(instr); break;
-                case Opcode.rdhwr: RewriteReadHardwareRegister(instr); break;
+                case Mnemonic.sub_d: RewriteFpuBinopD(instr, m.FSub); break;
+                case Mnemonic.sw:
+                case Mnemonic.swc1: RewriteStore(instr); break;
+                case Mnemonic.swc2: RewriteSdc2(instr); break;
+                case Mnemonic.swl: RewriteSwl(instr); break;
+                case Mnemonic.swr: RewriteSwr(instr); break;
+                case Mnemonic.swxc1: RewriteStore(instr); break;
+                case Mnemonic.sync: RewriteSync(instr); break;
+                case Mnemonic.syscall: RewriteSyscall(instr); break;
+                case Mnemonic.teq: RewriteTrap(instr, m.Eq); break;
+                case Mnemonic.teqi: RewriteTrap(instr, m.Eq); break;
+                case Mnemonic.tge: RewriteTrap(instr, m.Ge); break;
+                case Mnemonic.tgeu: RewriteTrap(instr, m.Uge); break;
+                case Mnemonic.tgei: RewriteTrapi(instr, m.Ge); break;
+                case Mnemonic.tgeiu: RewriteTrapi(instr, m.Uge); break;
+                case Mnemonic.tlbp: RewriteTlbp(instr); break;
+                case Mnemonic.tlbr: RewriteTlbr(instr); break;
+                case Mnemonic.tlbwi: RewriteTlbwi(instr); break;
+                case Mnemonic.tlbwr: RewriteTlbwr(instr); break;
+                case Mnemonic.tlt: RewriteTrap(instr, m.Lt); break;
+                case Mnemonic.tlti: RewriteTrapi(instr, m.Lt); break;
+                case Mnemonic.tltiu: RewriteTrapi(instr, m.Ult); break;
+                case Mnemonic.tltu: RewriteTrap(instr, m.Ult); break;
+                case Mnemonic.tne: RewriteTrap(instr, m.Ne); break;
+                case Mnemonic.tnei: RewriteTrapi(instr, m.Ne); break;
+                case Mnemonic.trunc_l_d: RewriteTrunc(instr, "trunc", PrimitiveType.Real64, PrimitiveType.Int64); break;
+                case Mnemonic.wait: RewriteWait(instr); break;
+                case Mnemonic.xor:
+                case Mnemonic.xori: RewriteXor(instr); break;
+                case Mnemonic.rdhwr: RewriteReadHardwareRegister(instr); break;
 
                 // Nano instructions
-                case Opcode.addiupc: RewriteAddiupc(instr); break;
-                case Opcode.aluipc: RewriteAluipc(instr); break;
-                case Opcode.balc: RewriteJump(instr); break;
-                case Opcode.bbeqzc: RewriteBb(instr, e => e); break;
-                case Opcode.bbnezc: RewriteBb(instr, m.Not); break;
-                case Opcode.bc: RewriteJump(instr); break;
-                case Opcode.beqc: RewriteBranch(instr, m.Eq, false); break;
-                case Opcode.beqic: RewriteBranchImm(instr, m.Eq, false); break;
-                case Opcode.beqzc: RewriteBranch0(instr, m.Eq, false); break;
-                case Opcode.bgec: RewriteBranch(instr, m.Ge, false); break;
-                case Opcode.bgeic: RewriteBranchImm(instr, m.Ge, false); break;
-                case Opcode.bgeiuc: RewriteBranchImm(instr, m.Uge, false); break;
-                case Opcode.bltc: RewriteBranch(instr, m.Lt, false); break;
-                case Opcode.bltic: RewriteBranchImm(instr, m.Lt, false); break;
-                case Opcode.bltiuc: RewriteBranchImm(instr, m.Ult, false); break;
-                case Opcode.bltuc: RewriteBranch(instr, m.Ult, false); break;
-                case Opcode.bnec: RewriteBranch(instr, m.Ne, false); break;
-                case Opcode.bneiuc: RewriteBranchImm(instr, m.Ne, false); break;
-                case Opcode.bnezc: RewriteBranch0(instr, m.Ne, false); break;
-                case Opcode.ext: RewriteExt(instr); break;
-                case Opcode.ins: RewriteIns(instr); break;
-                case Opcode.jalrc: RewriteJalr(instr); break;
-                case Opcode.jrc: RewriteJr(instr); break;
-                case Opcode.lbux: RewriteLx(instr, PrimitiveType.Byte); break;
-                case Opcode.lwx: RewriteLx(instr, PrimitiveType.Word32); break;
-                case Opcode.li: RewriteMove(instr); break;
-                case Opcode.lsa: RewriteLsa(instr); break;
-                case Opcode.lwm: RewriteLwm(instr); break;
-                case Opcode.lwxs: RewriteLwxs(instr); break;
-                case Opcode.move: RewriteMove(instr); break;
-                case Opcode.move_balc: RewriteMoveBalc(instr); break;
-                case Opcode.movep: RewriteMovep(instr); break;
-                case Opcode.not: RewriteNot(instr); break;
-                case Opcode.restore: RewriteRestore(instr, false); break;
-                case Opcode.restore_jrc: RewriteRestore(instr, true); break;
-                case Opcode.save: RewriteSave(instr); break;
-                case Opcode.sigrie: RewriteSigrie(instr); break;
-                case Opcode.swxs: RewriteSwxs(instr); break;
-                case Opcode.ualwm: RewriteLwm(instr); break;
+                case Mnemonic.addiupc: RewriteAddiupc(instr); break;
+                case Mnemonic.aluipc: RewriteAluipc(instr); break;
+                case Mnemonic.balc: RewriteJump(instr); break;
+                case Mnemonic.bbeqzc: RewriteBb(instr, e => e); break;
+                case Mnemonic.bbnezc: RewriteBb(instr, m.Not); break;
+                case Mnemonic.bc: RewriteJump(instr); break;
+                case Mnemonic.beqc: RewriteBranch(instr, m.Eq, false); break;
+                case Mnemonic.beqic: RewriteBranchImm(instr, m.Eq, false); break;
+                case Mnemonic.beqzc: RewriteBranch0(instr, m.Eq, false); break;
+                case Mnemonic.bgec: RewriteBranch(instr, m.Ge, false); break;
+                case Mnemonic.bgeic: RewriteBranchImm(instr, m.Ge, false); break;
+                case Mnemonic.bgeiuc: RewriteBranchImm(instr, m.Uge, false); break;
+                case Mnemonic.bltc: RewriteBranch(instr, m.Lt, false); break;
+                case Mnemonic.bltic: RewriteBranchImm(instr, m.Lt, false); break;
+                case Mnemonic.bltiuc: RewriteBranchImm(instr, m.Ult, false); break;
+                case Mnemonic.bltuc: RewriteBranch(instr, m.Ult, false); break;
+                case Mnemonic.bnec: RewriteBranch(instr, m.Ne, false); break;
+                case Mnemonic.bneiuc: RewriteBranchImm(instr, m.Ne, false); break;
+                case Mnemonic.bnezc: RewriteBranch0(instr, m.Ne, false); break;
+                case Mnemonic.ext: RewriteExt(instr); break;
+                case Mnemonic.ins: RewriteIns(instr); break;
+                case Mnemonic.jalrc: RewriteJalr(instr); break;
+                case Mnemonic.jrc: RewriteJr(instr); break;
+                case Mnemonic.lbux: RewriteLx(instr, PrimitiveType.Byte); break;
+                case Mnemonic.lwx: RewriteLx(instr, PrimitiveType.Word32); break;
+                case Mnemonic.li: RewriteMove(instr); break;
+                case Mnemonic.lsa: RewriteLsa(instr); break;
+                case Mnemonic.lwm: RewriteLwm(instr); break;
+                case Mnemonic.lwxs: RewriteLwxs(instr); break;
+                case Mnemonic.move: RewriteMove(instr); break;
+                case Mnemonic.move_balc: RewriteMoveBalc(instr); break;
+                case Mnemonic.movep: RewriteMovep(instr); break;
+                case Mnemonic.not: RewriteNot(instr); break;
+                case Mnemonic.restore: RewriteRestore(instr, false); break;
+                case Mnemonic.restore_jrc: RewriteRestore(instr, true); break;
+                case Mnemonic.save: RewriteSave(instr); break;
+                case Mnemonic.sigrie: RewriteSigrie(instr); break;
+                case Mnemonic.swxs: RewriteSwxs(instr); break;
+                case Mnemonic.ualwm: RewriteLwm(instr); break;
                 }
                 yield return new RtlInstructionCluster(
                     instr.Address,
@@ -335,7 +335,7 @@ namespace Reko.Arch.Mips
         }
 
 #if DEBUG
-        private static readonly HashSet<Opcode> seen = new HashSet<Opcode>();
+        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
 
         private void EmitUnitTest()
         {

@@ -1,6 +1,6 @@
 namespace Reko.Arch.Arm.AArch32
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         Unknown = -1,
         Invalid = 0,

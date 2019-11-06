@@ -27,7 +27,7 @@ namespace Reko.Arch.Mips
 {
     public class MipsInstruction : MachineInstruction
     {
-        public Opcode Mnemonic;
+        public Mnemonic Mnemonic;
 
         public override int OpcodeAsInteger => (int)Mnemonic;
 

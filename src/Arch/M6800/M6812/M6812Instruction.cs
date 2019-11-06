@@ -28,7 +28,7 @@ namespace Reko.Arch.M6800.M6812
     {
         public override int OpcodeAsInteger => (int) Opcode;
 
-        public Opcode Opcode { get; set; }
+        public Mnemonic Opcode { get; set; }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

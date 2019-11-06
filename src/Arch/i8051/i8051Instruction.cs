@@ -32,7 +32,7 @@ namespace Reko.Arch.i8051
     {
         public override int OpcodeAsInteger => (int)Mnemonic;
 
-        public Opcode Mnemonic { get; set; }
+        public Mnemonic Mnemonic { get; set; }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

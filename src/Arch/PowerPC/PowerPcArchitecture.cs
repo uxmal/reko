@@ -202,13 +202,13 @@ namespace Reko.Arch.PowerPC
         {
             var e = rdr.GetEnumerator();
 
-            if (!e.MoveNext() || (e.Current.Mnemonic != Opcode.addis && e.Current.Mnemonic != Opcode.oris))
+            if (!e.MoveNext() || (e.Current.Mnemonic != Mnemonic.addis && e.Current.Mnemonic != Mnemonic.oris))
                 return null;
             var addrInstr = e.Current.Address;
             var reg = ((RegisterOperand)e.Current.Operands[0]).Register;
             var uAddr = ((ImmediateOperand)e.Current.Operands[2]).Value.ToUInt32() << 16;
              
-            if (!e.MoveNext() || e.Current.Mnemonic != Opcode.lwz)
+            if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.lwz)
                 return null;
             if (!(e.Current.Operands[1] is MemoryOperand mem))
                 return null;
@@ -217,12 +217,12 @@ namespace Reko.Arch.PowerPC
             uAddr = (uint)((int)uAddr + mem.Offset.ToInt32());
             reg = ((RegisterOperand)e.Current.Operands[0]).Register;
 
-            if (!e.MoveNext() || e.Current.Mnemonic != Opcode.mtctr)
+            if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.mtctr)
                 return null;
             if (((RegisterOperand)e.Current.Operands[0]).Register != reg)
                 return null;
 
-            if (!e.MoveNext() || e.Current.Mnemonic != Opcode.bcctr)
+            if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.bcctr)
                 return null;
 
             // We saw a thunk! now try to resolve it.
@@ -252,14 +252,14 @@ namespace Reko.Arch.PowerPC
 
         public override SortedList<string, int> GetOpcodeNames()
         {
-            return Enum.GetValues(typeof(Opcode))
-                .Cast<Opcode>()
-                .ToSortedList(v => Enum.GetName(typeof(Opcode), v), v => (int)v);
+            return Enum.GetValues(typeof(Mnemonic))
+                .Cast<Mnemonic>()
+                .ToSortedList(v => Enum.GetName(typeof(Mnemonic), v), v => (int)v);
         }
 
         public override int? GetOpcodeNumber(string name)
         {
-            if (!Enum.TryParse(name, true, out Opcode result))
+            if (!Enum.TryParse(name, true, out Mnemonic result))
                 return null;
             return (int)result;
         }

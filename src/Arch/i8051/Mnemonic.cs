@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.i8051
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         Invalid = -1,
 

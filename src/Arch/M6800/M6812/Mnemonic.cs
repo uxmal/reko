@@ -1,6 +1,6 @@
-﻿namespace Reko.Arch.M6800.M6812
+namespace Reko.Arch.M6800.M6812
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         invalid,
 

@@ -32,16 +32,16 @@ namespace Reko.Arch.Arm.AArch32
         #region Special cases
 
         // Specially rendered opcodes
-        private static readonly Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
+        private static readonly Dictionary<Mnemonic, string> opcodes = new Dictionary<Mnemonic, string>
         {
         };
 
         // Block data transfer opcodes that affect the rendering of the first operand.
-        private static readonly HashSet<Opcode> blockDataXferOpcodes = new HashSet<Opcode>
+        private static readonly HashSet<Mnemonic> blockDataXferOpcodes = new HashSet<Mnemonic>
         {
-            Opcode.ldm, Opcode.ldmda, Opcode.ldmdb, Opcode.ldmib,
-            Opcode.stm, Opcode.stmda, Opcode.stmdb, Opcode.stmib,
-            Opcode.vldmia, Opcode.vldmdb, Opcode.vstmia, Opcode.vstmdb
+            Mnemonic.ldm, Mnemonic.ldmda, Mnemonic.ldmdb, Mnemonic.ldmib,
+            Mnemonic.stm, Mnemonic.stmda, Mnemonic.stmdb, Mnemonic.stmib,
+            Mnemonic.vldmia, Mnemonic.vldmdb, Mnemonic.vstmia, Mnemonic.vstmdb
         };
 
         // Instruction aliases render instructions differently under special conditions.
@@ -72,12 +72,12 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private static readonly Dictionary<Opcode, ArmAlias> aliases = new Dictionary<Opcode, ArmAlias>
+        private static readonly Dictionary<Mnemonic, ArmAlias> aliases = new Dictionary<Mnemonic, ArmAlias>
         {
-            { Opcode.ldm, new ArmAlias(i => i.Writeback && i.IsStackPointer(0), "pop", ArmAlias.Shift) },
-            { Opcode.ldr, new ArmAlias(i => i.IsSinglePop(), "pop", ArmAlias.FirstOp) },
-            { Opcode.stmdb, new ArmAlias(i => i.Writeback && i.IsStackPointer(0), "push", ArmAlias.Shift) },
-            { Opcode.str, new ArmAlias(i => i.IsSinglePush(), "push", ArmAlias.FirstOp) },
+            { Mnemonic.ldm, new ArmAlias(i => i.Writeback && i.IsStackPointer(0), "pop", ArmAlias.Shift) },
+            { Mnemonic.ldr, new ArmAlias(i => i.IsSinglePop(), "pop", ArmAlias.FirstOp) },
+            { Mnemonic.stmdb, new ArmAlias(i => i.Writeback && i.IsStackPointer(0), "push", ArmAlias.Shift) },
+            { Mnemonic.str, new ArmAlias(i => i.IsSinglePush(), "push", ArmAlias.FirstOp) },
         };
         #endregion
 
@@ -86,7 +86,7 @@ namespace Reko.Arch.Arm.AArch32
             this.condition = ArmCondition.AL;
         }
 
-        public Opcode opcode { get; set; }
+        public Mnemonic opcode { get; set; }
         public ArmCondition condition { get; set; }
 
         public override int OpcodeAsInteger => (int) opcode;
@@ -100,7 +100,7 @@ namespace Reko.Arch.Arm.AArch32
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (opcode == Opcode.it)
+            if (opcode == Mnemonic.it)
             {
                 var itOpcode = RenderIt();
                 writer.WriteOpcode(itOpcode);
@@ -126,15 +126,15 @@ namespace Reko.Arch.Arm.AArch32
                 }
             }
     
-            if (ShiftType != Opcode.Invalid)
+            if (ShiftType != Mnemonic.Invalid)
             {
-                if (ShiftType != Opcode.lsl ||
+                if (ShiftType != Mnemonic.lsl ||
                     !(ShiftValue is ImmediateOperand imm) ||
                     !imm.Value.IsZero)
                 {
                     writer.WriteChar(',');
                     writer.WriteOpcode(ShiftType.ToString());
-                    if (ShiftType != Opcode.rrx)
+                    if (ShiftType != Mnemonic.rrx)
                     {
                         writer.WriteChar(' ');
                         RenderOperand(ShiftValue, writer, options);
@@ -192,7 +192,7 @@ namespace Reko.Arch.Arm.AArch32
             var sUpdate = SetFlags ? "s" : "";
             var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
             sb.Append(sOpcode);
-            if (opcode != Opcode.Invalid)
+            if (opcode != Mnemonic.Invalid)
             {
                 sb.Append(sUpdate);
                 sb.Append(sCond);
@@ -310,11 +310,11 @@ namespace Reko.Arch.Arm.AArch32
                     if (!mem.Add)
                         writer.WriteChar('-');
                     writer.WriteString(mem.Index.Name);
-                    if (mem.ShiftType != Opcode.Invalid)
+                    if (mem.ShiftType != Mnemonic.Invalid)
                     {
                         writer.WriteChar(',');
                         writer.WriteString(mem.ShiftType.ToString().ToLowerInvariant());
-                        if (this.ShiftType != Opcode.rrx)
+                        if (this.ShiftType != Mnemonic.rrx)
                         {
                             writer.WriteFormat(" #{0}", mem.Shift);
                         }
@@ -358,7 +358,7 @@ namespace Reko.Arch.Arm.AArch32
         public bool SetFlags;
         public bool UserStmLdm;
         public bool Wide;               // (Thumb only) wide form of instruction.
-        public Opcode ShiftType;
+        public Mnemonic ShiftType;
         public MachineOperand ShiftValue;
         public ArmVectorData vector_data;
         public int vector_size;         // only valid if vector_data is valid

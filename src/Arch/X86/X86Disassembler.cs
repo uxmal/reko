@@ -136,7 +136,7 @@ namespace Reko.Arch.X86
             X86LegacyCodeRegisterExtension registerExtension;
 
             // These fields are for synthesis.
-            public Opcode opcode;
+            public Mnemonic opcode;
             public InstrClass iclass;
             public PrimitiveType dataWidth;
             public PrimitiveType addressWidth;
@@ -330,7 +330,7 @@ namespace Reko.Arch.X86
 
         protected override X86Instruction CreateInvalidInstruction()
         {
-            return new X86Instruction(Opcode.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
+            return new X86Instruction(Mnemonic.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
         }
 
         private void NotYetImplemented(string message)
@@ -1074,22 +1074,22 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> s4 = Reg(Registers.fs);
         private static readonly Mutator<X86Disassembler> s5 = Reg(Registers.gs);
 
-        public static InstructionDecoder Instr(Opcode op)
+        public static InstructionDecoder Instr(Mnemonic op)
         {
             return new InstructionDecoder(op, InstrClass.Linear);
         }
 
-        public static InstructionDecoder Instr(Opcode op, params Mutator<X86Disassembler> [] mutators)
+        public static InstructionDecoder Instr(Mnemonic op, params Mutator<X86Disassembler> [] mutators)
         {
             return new InstructionDecoder(op, InstrClass.Linear, mutators);
         }
 
-        public static InstructionDecoder Instr(Opcode op, InstrClass iclass, params Mutator<X86Disassembler> [] mutators)
+        public static InstructionDecoder Instr(Mnemonic op, InstrClass iclass, params Mutator<X86Disassembler> [] mutators)
         {
             return new InstructionDecoder(op, iclass, mutators);
         }
 
-        public static PrefixedDecoder Prefixed(Opcode op, string format)
+        public static PrefixedDecoder Prefixed(Mnemonic op, string format)
         {
             return new PrefixedDecoder();
         }
@@ -1415,11 +1415,11 @@ namespace Reko.Arch.X86
 		private static Decoder [] s_decoders0F3A;
         private static Decoder [] s_groupDecoders;
 		private static Decoder [] s_fpuDecoders;
-        private static Dictionary<Opcode, Opcode> s_mpVex;
+        private static Dictionary<Mnemonic, Mnemonic> s_mpVex;
 
         static X86Disassembler()
 		{
-            s_invalid = Instr(Opcode.illegal, InstrClass.Invalid);
+            s_invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
             s_nyi = nyi("This could be invalid or it could be not yet implemented");
             s_rootDecoders = CreateOnebyteDecoders();
             s_decoders0F = CreateTwobyteDecoders();

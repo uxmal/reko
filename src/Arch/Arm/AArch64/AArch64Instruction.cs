@@ -65,8 +65,8 @@ namespace Reko.Arch.Arm.AArch64
 
     public class AArch64Instruction : MachineInstruction
     {
-        public Opcode Mnemonic;
-        public Opcode shiftCode;
+        public Mnemonic Mnemonic;
+        public Mnemonic shiftCode;
         public MachineOperand shiftAmount;
         public VectorData vectorData;
 
@@ -85,9 +85,9 @@ namespace Reko.Arch.Arm.AArch64
                 writer.WriteChar(',');
                 RenderOperand(op, writer, options);
             }
-            if (this.shiftCode == Opcode.Invalid)
+            if (this.shiftCode == Mnemonic.Invalid)
                 return;
-            if (shiftCode == Opcode.lsl && (shiftAmount is ImmediateOperand imm && imm.Value.IsIntegerZero))
+            if (shiftCode == Mnemonic.lsl && (shiftAmount is ImmediateOperand imm && imm.Value.IsIntegerZero))
                 return;
             writer.WriteChar(',');
             writer.WriteOpcode(shiftCode.ToString());
@@ -97,7 +97,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private int WriteMnemonic(MachineInstructionWriter writer)
         {
-            if (Mnemonic == Opcode.b && Operands[0] is ConditionOperand cop)
+            if (Mnemonic == Mnemonic.b && Operands[0] is ConditionOperand cop)
             {
                 writer.WriteOpcode($"b.{cop.Condition.ToString().ToLower()}");
                 return 1;

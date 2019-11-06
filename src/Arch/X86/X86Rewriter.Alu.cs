@@ -340,7 +340,7 @@ namespace Reko.Arch.X86
             Expression op1 = SrcOp(instrCur.Operands[0]);
             Expression op2 = SrcOp(instrCur.Operands[1], instrCur.Operands[0].Width);
             m.Assign(
-                orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
+                orw.FlagGroup(X86Instruction.DefCc(Mnemonic.cmp)),
                 new ConditionOf(m.ISub(op1, op2)));
         }
 
@@ -481,7 +481,7 @@ namespace Reko.Arch.X86
 
         private void RewriteLogical(BinaryOperator op)
         {
-            if (instrCur.code == Opcode.and)
+            if (instrCur.code == Mnemonic.and)
             {
                 if (instrCur.Operands[0] is RegisterOperand r &&
                     r.Register == arch.StackRegister &&
@@ -681,7 +681,7 @@ namespace Reko.Arch.X86
         {
             if (instrCur.Operands[0] is RegisterOperand reg && reg.Register == Registers.cs)
             {
-                if (dasm.Peek(1).code == Opcode.call &&
+                if (dasm.Peek(1).code == Mnemonic.call &&
                     dasm.Peek(1).Operands[0].Width == PrimitiveType.Word16)
                 {
                     dasm.MoveNext();
@@ -692,9 +692,9 @@ namespace Reko.Arch.X86
                 }
 
                 if (
-                    dasm.Peek(1).code == Opcode.push && (dasm.Peek(1).Operands[0] is ImmediateOperand) &&
-                    dasm.Peek(2).code == Opcode.push && (dasm.Peek(2).Operands[0] is ImmediateOperand) &&
-                    dasm.Peek(3).code == Opcode.jmp && (dasm.Peek(3).Operands[0] is X86AddressOperand))
+                    dasm.Peek(1).code == Mnemonic.push && (dasm.Peek(1).Operands[0] is ImmediateOperand) &&
+                    dasm.Peek(2).code == Mnemonic.push && (dasm.Peek(2).Operands[0] is ImmediateOperand) &&
+                    dasm.Peek(3).code == Mnemonic.jmp && (dasm.Peek(3).Operands[0] is X86AddressOperand))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
                     RewriteCall(dasm.Peek(3).Operands[0], instrCur.Operands[0].Width);
@@ -1000,49 +1000,49 @@ namespace Reko.Arch.X86
             {
             default:
                 return;
-            case Opcode.cmps:
-            case Opcode.cmpsb:
+            case Mnemonic.cmps:
+            case Mnemonic.cmpsb:
                 m.Assign(
-                    orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
+                    orw.FlagGroup(X86Instruction.DefCc(Mnemonic.cmp)),
                     m.Cond(m.ISub(MemSi(), MemDi())));
                 incSi = true;
                 incDi = true;
                 break;
-            case Opcode.lods:
-            case Opcode.lodsb:
+            case Mnemonic.lods:
+            case Mnemonic.lodsb:
                 m.Assign(RegAl, MemSi());
                 incSi = true;
                 break;
-            case Opcode.movs:
-            case Opcode.movsb:
+            case Mnemonic.movs:
+            case Mnemonic.movsb:
                 Identifier tmp = binder.CreateTemporary(instrCur.dataWidth);
                 m.Assign(tmp, MemSi());
                 m.Assign(MemDi(), tmp);
                 incSi = true;
                 incDi = true;
                 break;
-            case Opcode.ins:
-            case Opcode.insb:
+            case Mnemonic.ins:
+            case Mnemonic.insb:
                 regDX = binder.EnsureRegister(Registers.dx);
                 m.Assign(MemDi(), host.PseudoProcedure("__in", instrCur.dataWidth, regDX));
                 incDi = true;
                 break;
-            case Opcode.outs:
-            case Opcode.outsb:
+            case Mnemonic.outs:
+            case Mnemonic.outsb:
                 regDX = binder.EnsureRegister(Registers.dx);
                 var suffix = NamingPolicy.Instance.Types.ShortPrefix(RegAl.DataType); 
                 m.SideEffect(host.PseudoProcedure("__out" + suffix, VoidType.Instance, regDX, RegAl));
                 incSi = true;
                 break;
-            case Opcode.scas:
-            case Opcode.scasb:
+            case Mnemonic.scas:
+            case Mnemonic.scasb:
                 m.Assign(
-                    orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
+                    orw.FlagGroup(X86Instruction.DefCc(Mnemonic.cmp)),
                     m.Cond(m.ISub(RegAl, MemDi())));
                 incDi = true;
                 break;
-            case Opcode.stos:
-            case Opcode.stosb:
+            case Mnemonic.stos:
+            case Mnemonic.stosb:
                 m.Assign(MemDi(), RegAl);
                 incDi = true;
                 break;
@@ -1064,10 +1064,10 @@ namespace Reko.Arch.X86
 
             switch (instrCur.code)
             {
-            case Opcode.cmps:
-            case Opcode.cmpsb:
-            case Opcode.scas:
-            case Opcode.scasb:
+            case Mnemonic.cmps:
+            case Mnemonic.cmpsb:
+            case Mnemonic.scas:
+            case Mnemonic.scasb:
                 {
                     var cc = (instrCur.repPrefix == 2)
                         ? ConditionCode.NE

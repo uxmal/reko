@@ -24,7 +24,7 @@ using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
-    public enum Opcode : ushort
+    public enum Mnemonic : ushort
     {
         illegal,
 

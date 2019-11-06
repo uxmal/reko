@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.PaRisc
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         invalid,
 

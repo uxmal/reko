@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.SuperH
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         invalid,
         add,

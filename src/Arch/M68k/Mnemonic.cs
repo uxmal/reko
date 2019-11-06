@@ -24,7 +24,7 @@ using System.Text;
 
 namespace Reko.Arch.M68k
 {
-    public enum Opcode : short
+    public enum Mnemonic : short
     {
         illegal,
 

@@ -26,7 +26,7 @@ namespace Reko.Arch.zSeries
 {
     public class zSeriesInstruction : MachineInstruction
     {
-        internal Opcode Mnemonic;
+        internal Mnemonic Mnemonic;
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 

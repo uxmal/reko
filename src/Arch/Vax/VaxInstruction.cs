@@ -29,7 +29,7 @@ namespace Reko.Arch.Vax
 {
     public class VaxInstruction : MachineInstruction
     {
-        public Opcode Opcode { get; internal set; }
+        public Mnemonic Opcode { get; internal set; }
 
         public override int OpcodeAsInteger => (int)Opcode;
 

@@ -37,7 +37,7 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Rewriter
     {
-        private Expression CreateTestCondition(ConditionCode cc, Opcode opcode)
+        private Expression CreateTestCondition(ConditionCode cc, Mnemonic opcode)
         {
             var grf = orw.FlagGroup(X86Instruction.UseCc(opcode));
             var tc = new TestCondition(cc, grf);
@@ -98,7 +98,7 @@ namespace Reko.Arch.X86
                     // pop?
                     var next = dasm.Peek(1);
                     RegisterOperand reg = next.Operands[0] as RegisterOperand;
-                    if (next.code == Opcode.pop && reg != null)
+                    if (next.code == Mnemonic.pop && reg != null)
                     {
                         // call $+5,pop<reg> idiom
                         dasm.MoveNext();
@@ -237,7 +237,7 @@ namespace Reko.Arch.X86
                 return;
             }
             m.Return(
-                this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
+                this.arch.WordWidth.Size + (instrCur.code == Mnemonic.retf ? Registers.cs.DataType.Size : 0),
                 extraBytesPopped);
         }
 

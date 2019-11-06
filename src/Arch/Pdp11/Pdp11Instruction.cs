@@ -29,7 +29,7 @@ namespace Reko.Arch.Pdp11
 {
     public class Pdp11Instruction : MachineInstruction
     {
-        public Opcode Mnemonic;
+        public Mnemonic Mnemonic;
         public PrimitiveType DataWidth;
 
         public override int OpcodeAsInteger => (int)Mnemonic;

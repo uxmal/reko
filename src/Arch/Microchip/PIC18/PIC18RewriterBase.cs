@@ -57,226 +57,226 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     host.Warn(
                         instrCurr.Address,
                         $"PIC18 instruction '{instrCurr.Opcode}' is not supported yet.");
-                goto case Opcode.invalid;
-                case Opcode.invalid:
-                case Opcode.unaligned:
+                goto case Mnemonic.invalid;
+                case Mnemonic.invalid:
+                case Mnemonic.unaligned:
                     m.Invalid();
                     break;
-                case Opcode.ADDLW:
+                case Mnemonic.ADDLW:
                     RewriteADDLW();
                     break;
-                case Opcode.ADDWF:
+                case Mnemonic.ADDWF:
                     RewriteADDWF();
                     break;
-                case Opcode.ADDWFC:
+                case Mnemonic.ADDWFC:
                     RewriteADDWFC();
                     break;
-                case Opcode.ANDLW:
+                case Mnemonic.ANDLW:
                     RewriteANDLW();
                     break;
-                case Opcode.ANDWF:
+                case Mnemonic.ANDWF:
                     RewriteANDWF();
                     break;
-                case Opcode.BC:
+                case Mnemonic.BC:
                     RewriteBC();
                     break;
-                case Opcode.BCF:
+                case Mnemonic.BCF:
                     RewriteBCF();
                     break;
-                case Opcode.BN:
+                case Mnemonic.BN:
                     RewriteBN();
                     break;
-                case Opcode.BNC:
+                case Mnemonic.BNC:
                     RewriteBNC();
                     break;
-                case Opcode.BNN:
+                case Mnemonic.BNN:
                     RewriteBNN();
                     break;
-                case Opcode.BNOV:
+                case Mnemonic.BNOV:
                     RewriteBNOV();
                     break;
-                case Opcode.BNZ:
+                case Mnemonic.BNZ:
                     RewriteBNZ();
                     break;
-                case Opcode.BOV:
+                case Mnemonic.BOV:
                     RewriteBOV();
                     break;
-                case Opcode.BRA:
+                case Mnemonic.BRA:
                     RewriteBRA();
                     break;
-                case Opcode.BSF:
+                case Mnemonic.BSF:
                     RewriteBSF();
                     break;
-                case Opcode.BTFSC:
+                case Mnemonic.BTFSC:
                     RewriteBTFSC();
                     break;
-                case Opcode.BTFSS:
+                case Mnemonic.BTFSS:
                     RewriteBTFSS();
                     break;
-                case Opcode.BTG:
+                case Mnemonic.BTG:
                     RewriteBTG();
                     break;
-                case Opcode.BZ:
+                case Mnemonic.BZ:
                     RewriteBZ();
                     break;
-                case Opcode.CALL:
+                case Mnemonic.CALL:
                     RewriteCALL();
                     break;
-                case Opcode.CLRF:
+                case Mnemonic.CLRF:
                     RewriteCLRF();
                     break;
-                case Opcode.CLRWDT:
+                case Mnemonic.CLRWDT:
                     RewriteCLRWDT();
                     break;
-                case Opcode.COMF:
+                case Mnemonic.COMF:
                     RewriteCOMF();
                     break;
-                case Opcode.CPFSEQ:
+                case Mnemonic.CPFSEQ:
                     RewriteCPFSEQ();
                     break;
-                case Opcode.CPFSGT:
+                case Mnemonic.CPFSGT:
                     RewriteCPFSGT();
                     break;
-                case Opcode.CPFSLT:
+                case Mnemonic.CPFSLT:
                     RewriteCPFSLT();
                     break;
-                case Opcode.DAW:
+                case Mnemonic.DAW:
                     RewriteDAW();
                     break;
-                case Opcode.DCFSNZ:
+                case Mnemonic.DCFSNZ:
                     RewriteDCFSNZ();
                     break;
-                case Opcode.DECF:
+                case Mnemonic.DECF:
                     RewriteDECF();
                     break;
-                case Opcode.DECFSZ:
+                case Mnemonic.DECFSZ:
                     RewriteDECFSZ();
                     break;
-                case Opcode.GOTO:
+                case Mnemonic.GOTO:
                     RewriteGOTO();
                     break;
-                case Opcode.INCF:
+                case Mnemonic.INCF:
                     RewriteINCF();
                     break;
-                case Opcode.INCFSZ:
+                case Mnemonic.INCFSZ:
                     RewriteINCFSZ();
                     break;
-                case Opcode.INFSNZ:
+                case Mnemonic.INFSNZ:
                     RewriteINFSNZ();
                     break;
-                case Opcode.IORLW:
+                case Mnemonic.IORLW:
                     RewriteIORLW();
                     break;
-                case Opcode.IORWF:
+                case Mnemonic.IORWF:
                     RewriteIORWF();
                     break;
-                case Opcode.LFSR:
+                case Mnemonic.LFSR:
                     RewriteLFSR();
                     break;
-                case Opcode.MOVF:
+                case Mnemonic.MOVF:
                     RewriteMOVF();
                     break;
-                case Opcode.MOVFF:
+                case Mnemonic.MOVFF:
                     RewriteMOVFF();
                     break;
-                case Opcode.MOVLB:
+                case Mnemonic.MOVLB:
                     RewriteMOVLB();
                     break;
-                case Opcode.MOVLW:
+                case Mnemonic.MOVLW:
                     RewriteMOVLW();
                     break;
-                case Opcode.MOVWF:
+                case Mnemonic.MOVWF:
                     RewriteMOVWF();
                     break;
-                case Opcode.MULLW:
+                case Mnemonic.MULLW:
                     RewriteMULLW();
                     break;
-                case Opcode.MULWF:
+                case Mnemonic.MULWF:
                     RewriteMULWF();
                     break;
-                case Opcode.NEGF:
+                case Mnemonic.NEGF:
                     RewriteNEGF();
                     break;
-                case Opcode.NOP:
+                case Mnemonic.NOP:
                     m.Nop();
                     break;
-                case Opcode.POP:
+                case Mnemonic.POP:
                     RewritePOP();
                     break;
-                case Opcode.PUSH:
+                case Mnemonic.PUSH:
                     RewritePUSH();
                     break;
-                case Opcode.RCALL:
+                case Mnemonic.RCALL:
                     RewriteRCALL();
                     break;
-                case Opcode.RESET:
+                case Mnemonic.RESET:
                     RewriteRESET();
                     break;
-                case Opcode.RETFIE:
+                case Mnemonic.RETFIE:
                     RewriteRETFIE();
                     break;
-                case Opcode.RETLW:
+                case Mnemonic.RETLW:
                     RewriteRETLW();
                     break;
-                case Opcode.RETURN:
+                case Mnemonic.RETURN:
                     RewriteRETURN();
                     break;
-                case Opcode.RLCF:
+                case Mnemonic.RLCF:
                     RewriteRLCF();
                     break;
-                case Opcode.RLNCF:
+                case Mnemonic.RLNCF:
                     RewriteRLNCF();
                     break;
-                case Opcode.RRCF:
+                case Mnemonic.RRCF:
                     RewriteRRCF();
                     break;
-                case Opcode.RRNCF:
+                case Mnemonic.RRNCF:
                     RewriteRRNCF();
                     break;
-                case Opcode.SETF:
+                case Mnemonic.SETF:
                     RewriteSETF();
                     break;
-                case Opcode.SLEEP:
+                case Mnemonic.SLEEP:
                     RewriteSLEEP();
                     break;
-                case Opcode.SUBFWB:
+                case Mnemonic.SUBFWB:
                     RewriteSUBFWB();
                     break;
-                case Opcode.SUBLW:
+                case Mnemonic.SUBLW:
                     RewriteSUBLW();
                     break;
-                case Opcode.SUBWF:
+                case Mnemonic.SUBWF:
                     RewriteSUBWF();
                     break;
-                case Opcode.SUBWFB:
+                case Mnemonic.SUBWFB:
                     RewriteSUBWFB();
                     break;
-                case Opcode.SWAPF:
+                case Mnemonic.SWAPF:
                     RewriteSWAPF();
                     break;
-                case Opcode.TBLRD:
+                case Mnemonic.TBLRD:
                     RewriteTBLRD();
                     break;
-                case Opcode.TBLWT:
+                case Mnemonic.TBLWT:
                     RewriteTBLWT();
                     break;
-                case Opcode.TSTFSZ:
+                case Mnemonic.TSTFSZ:
                     RewriteTSTFSZ();
                     break;
-                case Opcode.XORLW:
+                case Mnemonic.XORLW:
                     RewriteXORLW();
                     break;
-                case Opcode.XORWF:
+                case Mnemonic.XORWF:
                     RewriteXORWF();
                     break;
 
                 // Pseudo-instructions
-                case Opcode.CONFIG:
-                case Opcode.DA:
-                case Opcode.DB:
-                case Opcode.DE:
-                case Opcode.DW:
-                case Opcode.__IDLOCS:
+                case Mnemonic.CONFIG:
+                case Mnemonic.DA:
+                case Mnemonic.DB:
+                case Mnemonic.DE:
+                case Mnemonic.DW:
+                case Mnemonic.__IDLOCS:
                     m.Invalid();
                     break;
             }

@@ -71,7 +71,7 @@
   <ItemGroup>
     <Compile Include="AddressOperand.cs" />
     <Compile Include="MemoryOperand.cs" />
-    <Compile Include="Opcode.cs" />
+    <Compile Include="Mnemonic.cs" />
     <Compile Include="Pdp11Architecture.cs" />
     <Compile Include="Pdp11Disassembler.cs" />
     <Compile Include="Pdp11Instruction.cs" />

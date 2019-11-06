@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Opcode.cs" />
+    <Compile Include="Mnemonic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
     <Compile Include="XtensaArchitecture.cs" />

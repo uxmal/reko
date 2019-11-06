@@ -99,9 +99,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 new SubDecoder(4, 4, new Decoder[16] {              // 0000 0000 ???? ....
                     new SubDecoder(2, 2, new Decoder[4] {           // 0000 0000 0000 ??..
                         new SubDecoder(0, 2, new Decoder[4] {       // 0000 0000 0000 00??
-                        new NoOperandDecoder(Opcode.NOP),             // 0000 0000 0000 0000
+                        new NoOperandDecoder(Mnemonic.NOP),             // 0000 0000 0000 0000
                         new InvalidDecoder(),                         // 0000 0000 0000 0001
-                        new MovsflDecoder(Opcode.MOVSFL),             // 0000 0000 0000 0010
+                        new MovsflDecoder(Mnemonic.MOVSFL),             // 0000 0000 0000 0010
                         new UseBaseDecode(),                        // 0000 0000 0000 0011
                         }),
                         new UseBaseDecode(),                        // 0000 0000 0000 01..
@@ -111,7 +111,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     new SubDecoder(2, 2, new Decoder[4] {           // 0000 0000 0001 ??..
                         new UseBaseDecode(),                        // 0000 0000 0001 00..
                         new SubDecoder(0, 2, new Decoder[4] {       // 0000 0000 0001 01??
-                            new NoOperandDecoder(Opcode.CALLW),       // 0000 0000 0001 0100
+                            new NoOperandDecoder(Mnemonic.CALLW),       // 0000 0000 0001 0100
                             new InvalidDecoder(),                     // 0000 0000 0001 0101
                             new InvalidDecoder(),                     // 0000 0000 0001 0110
                             new InvalidDecoder(),                     // 0000 0000 0001 0111
@@ -123,7 +123,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     new InvalidDecoder(),                             // 0000 0000 0011 ....
                     new InvalidDecoder(),                             // 0000 0000 0100 ....
                     new InvalidDecoder(),                             // 0000 0000 0101 ....
-                    new MovfflDecoder(Opcode.MOVFFL),                 // 0000 0000 0110 ffff + 1111 ffff ffff ffgg + 1111 gggg gggg gggg
+                    new MovfflDecoder(Mnemonic.MOVFFL),                 // 0000 0000 0110 ffff + 1111 ffff ffff ffgg + 1111 gggg gggg gggg
                     new InvalidDecoder(),                             // 0000 0000 0111 ....
                     new InvalidDecoder(),                             // 0000 0000 1000 ....
                     new InvalidDecoder(),                             // 0000 0000 1001 ....
@@ -134,7 +134,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     new InvalidDecoder(),                             // 0000 0000 1110 ....
                     new UseBaseDecode(),                            // 0000 0000 1111 1111 
                 }),
-                new MovlbImmDecoder(Opcode.MOVLB),                    // 0000 0001 .... ....
+                new MovlbImmDecoder(Mnemonic.MOVLB),                    // 0000 0001 .... ....
                 new UseBaseDecode(),                                // 0000 0010 .... ....
                 new UseBaseDecode(),                                // 0000 0011 .... ....
                 new UseBaseDecode(),                                // 0000 0100 .... ....
@@ -167,29 +167,29 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 new UseBaseDecode(),                                // 1110 0... .... ....
                 new SubDecoder(8, 3, new Decoder[8] {               // 1110 1??? .... ....
                     new SubDecoder(6, 2, new Decoder[4] {           // 1110 1000 ??.. ....
-                            new FsrArithDecoder(Opcode.ADDFSR),       // 1110 1000 ffkk kkkk
-                            new FsrArithDecoder(Opcode.ADDFSR),       // 1110 1000 ffkk kkkk
-                            new FsrArithDecoder(Opcode.ADDFSR),       // 1110 1000 ffkk kkkk
-                            new FsrULinkDecoder(Opcode.ADDULNK),      // 1110 1000 11kk kkkk
+                            new FsrArithDecoder(Mnemonic.ADDFSR),       // 1110 1000 ffkk kkkk
+                            new FsrArithDecoder(Mnemonic.ADDFSR),       // 1110 1000 ffkk kkkk
+                            new FsrArithDecoder(Mnemonic.ADDFSR),       // 1110 1000 ffkk kkkk
+                            new FsrULinkDecoder(Mnemonic.ADDULNK),      // 1110 1000 11kk kkkk
                     }),
                     new SubDecoder(6, 2, new Decoder[4] {           // 1110 1001 ??.. ....
-                            new FsrArithDecoder(Opcode.SUBFSR),       // 1110 1001 ffkk kkkk
-                            new FsrArithDecoder(Opcode.SUBFSR),       // 1110 1001 ffkk kkkk
-                            new FsrArithDecoder(Opcode.SUBFSR),       // 1110 1001 ffkk kkkk
-                            new FsrULinkDecoder(Opcode.SUBULNK),      // 1110 1001 11kk kkkk
+                            new FsrArithDecoder(Mnemonic.SUBFSR),       // 1110 1001 ffkk kkkk
+                            new FsrArithDecoder(Mnemonic.SUBFSR),       // 1110 1001 ffkk kkkk
+                            new FsrArithDecoder(Mnemonic.SUBFSR),       // 1110 1001 ffkk kkkk
+                            new FsrULinkDecoder(Mnemonic.SUBULNK),      // 1110 1001 11kk kkkk
                         }),
-                    new PushlDecoder(Opcode.PUSHL),                   // 1110 1010 kkkk kkkk
+                    new PushlDecoder(Mnemonic.PUSHL),                   // 1110 1010 kkkk kkkk
                     new SubDecoder(7, 1, new Decoder[2] {           // 1110 1011 ?... ....
-                        new MovsfDecoder(Opcode.MOVSF),               // 1110 1011 0zzz zzzz + 1111 ffff ffff ffff
-                        new MovssDecoder(Opcode.MOVSS),               // 1110 1011 1zzz zzzz + 1111 .... .zzz zzzz
+                        new MovsfDecoder(Mnemonic.MOVSF),               // 1110 1011 0zzz zzzz + 1111 ffff ffff ffff
+                        new MovssDecoder(Mnemonic.MOVSS),               // 1110 1011 1zzz zzzz + 1111 .... .zzz zzzz
                     }),
                     new UseBaseDecode(),                            // 1110 110s .... ....
                     new UseBaseDecode(),                            // 1110 110s .... ....
-                    new LfsrDecoder(Opcode.LFSR),                     // 1110 1110 ffkk kkkk + 1111 0000 kkkk kkkk
+                    new LfsrDecoder(Mnemonic.LFSR),                     // 1110 1110 ffkk kkkk + 1111 0000 kkkk kkkk
                     new UseBaseDecode(),                            // 1110 1111 .... ....
                 }),
             }),
-            new NoOperandDecoder(Opcode.NOP),                         // 1111 .... .... ....
+            new NoOperandDecoder(Mnemonic.NOP),                         // 1111 .... .... ....
         };
 
         /// <summary>
@@ -197,9 +197,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class MovlbImmDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovlbImmDecoder(Opcode opc)
+            public MovlbImmDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -208,7 +208,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 byte bsrval = (byte)uInstr.Extract(0, 8);
                 if (bsrval >= 64)
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 return new PICInstructionImmedByte(opcode, bsrval);
             }
         }
@@ -218,9 +218,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class MovfflDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovfflDecoder(Opcode opc)
+            public MovfflDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -229,7 +229,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 // This is a 3-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2) || !GetAddlInstrWord(dasm.rdr, out ushort word3))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 ushort srcaddr = (ushort)((uInstr.Extract(0, 4) << 10) | word2.Extract(2, 10));
                 ushort dstaddr = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
 
@@ -246,9 +246,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class FsrArithDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public FsrArithDecoder(Opcode opc)
+            public FsrArithDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -268,9 +268,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class FsrULinkDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public FsrULinkDecoder(Opcode opc)
+            public FsrULinkDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -278,7 +278,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // Only supported by PIC18 running in Extended Execution mode.
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var imm6 = uInstr.Extract(0, 6);
                 return new PICInstructionImmedByte(opcode, imm6);
@@ -290,9 +290,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class MovsfDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovsfDecoder(Opcode opc)
+            public MovsfDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -300,15 +300,15 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // PIC running in Extended Execution mode?
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort fd))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 // PCL, TOSL, TOSH, TOSU are invalid destinations.
                 if (PICRegisters.NotAllowedDest(fd))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var operzs = (byte)uInstr.Extract(0, 7);
                 return new PICInstructionMem2Mem(opcode, operzs, fd);
@@ -320,9 +320,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class MovsflDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovsflDecoder(Opcode opc)
+            public MovsflDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -330,17 +330,17 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 // This is a 3-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2) || !GetAddlInstrWord(dasm.rdr, out ushort word3))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 ushort fd = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
 
                 // PCL, TOSL, TOSH, TOSU are invalid destinations.
                 if (PICRegisters.NotAllowedDest(fd))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var operzs = (byte)word2.Extract(2, 7);
                 return new PICInstructionMem2Mem(opcode, operzs, fd);
@@ -352,9 +352,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class MovssDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovssDecoder(Opcode opc)
+            public MovssDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -362,11 +362,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var operzs = (byte)uInstr.Extract(0, 7);
                 var operzd = (byte)word2.Extract(0, 7);
@@ -380,9 +380,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class PushlDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public PushlDecoder(Opcode opc)
+            public PushlDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -390,7 +390,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var imm8 = (byte)uInstr.Extract(0, 8);
                 return new PICInstructionImmedByte(opcode, imm8);
@@ -402,9 +402,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class LfsrDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public LfsrDecoder(Opcode opc)
+            public LfsrDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -417,9 +417,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 if (word2 > 0x3FF) // Second word must be 'xxxx-00kk-kkkk-kkkk'
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var imm14 = ((ushort)((uInstr.Extract(0, 4) << 10) | word2));
                 return new PICInstructionLFSRLoad(opcode, fsrnum, imm14);

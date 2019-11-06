@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Arch.Sparc
             e = new SparcRewriter(arch, exts.GetEnumerator(), state, new Frame(arch.WordWidth), host.Object);
         }
 
-        private SparcInstruction Instr(Opcode opcode, params object[] ops)
+        private SparcInstruction Instr(Mnemonic opcode, params object[] ops)
         {
             var instr = new SparcInstruction
             {
@@ -397,7 +397,7 @@ namespace Reko.UnitTests.Arch.Sparc
         public void SparcRw_or_imm_g0()
         {
             BuildTest(
-                Instr(Opcode.or, Registers.g0, Constant.Word32(3), Registers.IntegerRegisters[1]));
+                Instr(Mnemonic.or, Registers.g0, Constant.Word32(3), Registers.IntegerRegisters[1]));
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.

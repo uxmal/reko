@@ -47,7 +47,7 @@
     <Compile Include="M6812\M6812Instruction.cs" />
     <Compile Include="M6812\M6812State.cs" />
     <Compile Include="M6812\MemoryOperand.cs" />
-    <Compile Include="M6812\Opcode.cs" />
+    <Compile Include="M6812\Mnemonic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="M6812\Registers.cs" />
   </ItemGroup>

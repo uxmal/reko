@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Opcode;
+using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Mnemonic;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {

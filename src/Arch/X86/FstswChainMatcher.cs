@@ -30,7 +30,7 @@ namespace Reko.Arch.X86
     public class FstswChainMatcher
     {
         X86Instruction [] instrs;
-        Dictionary<int, Opcode> zappedInstructions;
+        Dictionary<int, Mnemonic> zappedInstructions;
         List<Instruction> rewritten;
         OperandRewriter orw;
 
@@ -48,27 +48,27 @@ namespace Reko.Arch.X86
         {
             this.instrs = instrs;
             this.orw = orw;
-            this.zappedInstructions = new Dictionary<int, Opcode>();
+            this.zappedInstructions = new Dictionary<int, Mnemonic>();
             this.rewritten = new List<Instruction>();
         }
 
         public bool Matches(int iStart)
         {
             int i = iStart;
-            if (instrs[i].code != Opcode.fstsw)
+            if (instrs[i].code != Mnemonic.fstsw)
                 return false;
             ++i;
             if (i >= instrs.Length)
                 return false;
-            if (instrs[i].code == Opcode.sahf)
+            if (instrs[i].code == Mnemonic.sahf)
             {
-                zappedInstructions.Add(i, Opcode.nop);
+                zappedInstructions.Add(i, Mnemonic.nop);
                 rewritten.Add(new Assignment(
                     orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
                     orw.FlagGroup(FlagM.FPUF)));
                 return true;
             }
-            if (instrs[i].code == Opcode.test)
+            if (instrs[i].code == Mnemonic.test)
             {
                 RegisterOperand acc = instrs[i].Operands[0] as RegisterOperand;
                 if (acc == null)
@@ -81,7 +81,7 @@ namespace Reko.Arch.X86
                     mask >>= 8;
                 else if (acc.Register != Registers.ah)
                     return false;
-                zappedInstructions.Add(i, Opcode.nop);
+                zappedInstructions.Add(i, Mnemonic.nop);
                 rewritten.Add(new Assignment(
                     orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
                     orw.FlagGroup(FlagM.FPUF)));
@@ -91,37 +91,37 @@ namespace Reko.Arch.X86
                     return false;
                 switch (instrs[i].code)
                 {
-                case Opcode.jz:
+                case Mnemonic.jz:
                     if (mask == 0x40)
                     {
-                        zappedInstructions.Add(i, Opcode.jnz);
+                        zappedInstructions.Add(i, Mnemonic.jnz);
                         return true;
                     }
                     if (mask == 0x01)
                     {
-                        zappedInstructions.Add(i, Opcode.jge);
+                        zappedInstructions.Add(i, Mnemonic.jge);
                         return true;
                     }
                     if (mask == 0x41)
                     {
-                        zappedInstructions.Add(i, Opcode.jg);
+                        zappedInstructions.Add(i, Mnemonic.jg);
                         return true;
                     }
                     break;
-                case Opcode.jnz:
+                case Mnemonic.jnz:
                     if (mask == 0x40)
                     {
-                        zappedInstructions.Add(i, Opcode.jz);
+                        zappedInstructions.Add(i, Mnemonic.jz);
                         return true;
                     }
                     if (mask == 0x01)
                     {
-                        zappedInstructions.Add(i, Opcode.jl);
+                        zappedInstructions.Add(i, Mnemonic.jl);
                         return true;
                     }
                     if (mask == 0x41)
                     {
-                        zappedInstructions.Add(i, Opcode.jle);
+                        zappedInstructions.Add(i, Mnemonic.jle);
                         return true;
                     }
                     break;
@@ -137,8 +137,8 @@ namespace Reko.Arch.X86
             {
                 switch (instrs[i].code)
                 {
-                case Opcode.jz:
-                case Opcode.jnz:
+                case Mnemonic.jz:
+                case Mnemonic.jnz:
                     return i;
                 }
                 ++i;

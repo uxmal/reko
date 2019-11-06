@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    using Decoder = Reko.Core.Machine.Decoder<AArch64Disassembler, Opcode, AArch64Instruction>;
+    using Decoder = Reko.Core.Machine.Decoder<AArch64Disassembler, Mnemonic, AArch64Instruction>;
 
     public partial class AArch64Disassembler
     {
@@ -62,12 +62,12 @@ namespace Reko.Arch.Arm.AArch64
 
         private class InstrDecoder : Decoder
         {
-            private readonly Opcode opcode;
+            private readonly Mnemonic opcode;
             private readonly InstrClass iclass;
             private readonly VectorData vectorData;
             private readonly Mutator<AArch64Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, VectorData vectorData, params Mutator<AArch64Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic opcode, InstrClass iclass, VectorData vectorData, params Mutator<AArch64Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;

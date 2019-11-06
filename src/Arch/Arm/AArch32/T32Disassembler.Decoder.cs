@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    using Decoder = Reko.Core.Machine.Decoder<T32Disassembler, Opcode, AArch32Instruction>;
+    using Decoder = Reko.Core.Machine.Decoder<T32Disassembler, Mnemonic, AArch32Instruction>;
 
     public partial class T32Disassembler
     {
@@ -39,7 +39,7 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// Reads in the extra 16 bits needed for a 32-bit T32 instruction.
         /// </summary>
-        private class LongDecoder : Decoder<T32Disassembler, Opcode, AArch32Instruction>
+        private class LongDecoder : Decoder<T32Disassembler, Mnemonic, AArch32Instruction>
         {
             private readonly Decoder[] decoders;
 
@@ -66,12 +66,12 @@ namespace Reko.Arch.Arm.AArch32
         /// </summary>
         private class InstrDecoder : Decoder
         {
-            private readonly Opcode opcode;
+            private readonly Mnemonic opcode;
             private readonly InstrClass iclass;
             private readonly ArmVectorData vec;
             private readonly Mutator<T32Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic opcode, InstrClass iclass, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -112,7 +112,7 @@ namespace Reko.Arch.Arm.AArch32
                 off <<= 1;
                 return new T32Instruction
                 {
-                    opcode = Opcode.bl,
+                    opcode = Mnemonic.bl,
                     Operands = new MachineOperand[] { AddressOperand.Create(dasm.addr + (off + 4)) }
                 };
             }
@@ -130,8 +130,8 @@ namespace Reko.Arch.Arm.AArch32
                 return new T32Instruction
                 {
                     opcode = st
-                        ? Opcode.stm
-                        : Opcode.ldm,
+                        ? Mnemonic.stm
+                        : Mnemonic.ldm,
                     InstructionClass = InstrClass.Linear,
                     Writeback = w,
                     Operands = new MachineOperand[] {
@@ -144,9 +144,9 @@ namespace Reko.Arch.Arm.AArch32
         // Decodes 32-bit LDM* STM* instructions
         private class LdmStmDecoder32 : Decoder
         {
-            private readonly Opcode opcode;
+            private readonly Mnemonic opcode;
 
-            public LdmStmDecoder32(Opcode opcode)
+            public LdmStmDecoder32(Mnemonic opcode)
             {
                 this.opcode = opcode;
             }
@@ -162,7 +162,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     return new T32Instruction
                     {
-                        opcode = l != 0 ? Opcode.pop : Opcode.push,
+                        opcode = l != 0 ? Mnemonic.pop : Mnemonic.push,
                         InstructionClass = InstrClass.Linear,
                         Wide = true,
                         Writeback = w,
@@ -189,7 +189,7 @@ namespace Reko.Arch.Arm.AArch32
         private class MovMovsDecoder : InstrDecoder
         {
 
-            public MovMovsDecoder(Opcode opcode, params Mutator<T32Disassembler>[] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
+            public MovMovsDecoder(Mnemonic opcode, params Mutator<T32Disassembler>[] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
             }
 
@@ -198,7 +198,7 @@ namespace Reko.Arch.Arm.AArch32
                 var instr = base.Decode(wInstr, dasm);
                 if (instr.Operands[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
                 {
-                    instr.opcode = Opcode.mov;
+                    instr.opcode = Mnemonic.mov;
                 }
                 return instr;
             }
@@ -211,7 +211,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var instr = new T32Instruction
                 {
-                    opcode = Opcode.it,
+                    opcode = Mnemonic.it,
                     InstructionClass = InstrClass.Linear,
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte)SBitfield(wInstr, 0, 4)
@@ -227,7 +227,7 @@ namespace Reko.Arch.Arm.AArch32
         // differently from how they are repesented in the word.
         private class BfcBfiDecoder : InstrDecoder
         {
-            public BfcBfiDecoder(Opcode opcode, Mutator<T32Disassembler> [] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
+            public BfcBfiDecoder(Mnemonic opcode, Mutator<T32Disassembler> [] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
             }
 

@@ -126,19 +126,19 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         public void PIC16arch_GetOpcodeNumberTests()
         {
             var arch = GetArch(PIC16BasicName);
-            Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
-            Assert.AreEqual(Opcode.ADDWF, (Opcode)arch.GetOpcodeNumber("ADDWF"));
+            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetOpcodeNumber("MOVWF"));
+            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetOpcodeNumber("ADDWF"));
 
             arch = GetArch(PIC16EnhancedName);
-            Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
-            Assert.AreEqual(Opcode.ADDWF, (Opcode)arch.GetOpcodeNumber("ADDWF"));
-            Assert.AreEqual(Opcode.BRW, (Opcode)arch.GetOpcodeNumber("BRW"));
+            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetOpcodeNumber("MOVWF"));
+            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetOpcodeNumber("ADDWF"));
+            Assert.AreEqual(Mnemonic.BRW, (Mnemonic)arch.GetOpcodeNumber("BRW"));
 
             arch = GetArch(PIC16FullFeaturedName);
-            Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
-            Assert.AreEqual(Opcode.ADDWF, (Opcode)arch.GetOpcodeNumber("ADDWF"));
-            Assert.AreEqual(Opcode.BRW, (Opcode)arch.GetOpcodeNumber("BRW"));
-            Assert.AreEqual(Opcode.RESET, (Opcode)arch.GetOpcodeNumber("RESET"));
+            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetOpcodeNumber("MOVWF"));
+            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetOpcodeNumber("ADDWF"));
+            Assert.AreEqual(Mnemonic.BRW, (Mnemonic)arch.GetOpcodeNumber("BRW"));
+            Assert.AreEqual(Mnemonic.RESET, (Mnemonic)arch.GetOpcodeNumber("RESET"));
 
         }
 

@@ -36,49 +36,49 @@ namespace Reko.Arch.MicrochipPIC.Common
         public const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
         public const InstrClass Transfer = InstrClass.Transfer;
 
-        private static readonly Dictionary<Opcode, InstrClass> classOf = new Dictionary<Opcode, InstrClass>()
+        private static readonly Dictionary<Mnemonic, InstrClass> classOf = new Dictionary<Mnemonic, InstrClass>()
         {
-                { Opcode.ADDULNK,   Transfer },
-                { Opcode.BRA,       Transfer },
-                { Opcode.BRW,       Transfer },
-                { Opcode.GOTO,      Transfer },
-                { Opcode.RESET,     Transfer },
-                { Opcode.RETFIE,    Transfer },
-                { Opcode.RETLW,     Transfer },
-                { Opcode.RETURN,    Transfer },
-                { Opcode.SUBULNK,   Transfer },
-                { Opcode.BC,        CondTransfer },
-                { Opcode.BN,        CondTransfer },
-                { Opcode.BNC,       CondTransfer },
-                { Opcode.BNN,       CondTransfer },
-                { Opcode.BNOV,      CondTransfer },
-                { Opcode.BNZ,       CondTransfer },
-                { Opcode.BOV,       CondTransfer },
-                { Opcode.BZ,        CondTransfer },
-                { Opcode.BTFSC,     CondLinear },
-                { Opcode.BTFSS,     CondLinear },
-                { Opcode.CPFSEQ,    CondLinear },
-                { Opcode.CPFSGT,    CondLinear },
-                { Opcode.CPFSLT,    CondLinear },
-                { Opcode.DCFSNZ,    CondLinear },
-                { Opcode.DECFSZ,    CondLinear },
-                { Opcode.INCFSZ,    CondLinear },
-                { Opcode.INFSNZ,    CondLinear },
-                { Opcode.TSTFSZ,    CondLinear },
-                { Opcode.CALL,      LinkTransfer },
-                { Opcode.CALLW,     LinkTransfer },
-                { Opcode.RCALL,     LinkTransfer },
-                { Opcode.CONFIG,    InstrClass.None },
-                { Opcode.DA,        InstrClass.None },
-                { Opcode.DB,        InstrClass.None },
-                { Opcode.DE,        InstrClass.None },
-                { Opcode.DT,        InstrClass.None },
-                { Opcode.DTM,       InstrClass.None },
-                { Opcode.DW,        InstrClass.None },
-                { Opcode.__CONFIG,  InstrClass.None },
-                { Opcode.__IDLOCS,  InstrClass.None },
-                { Opcode.invalid,   InstrClass.Invalid },
-                { Opcode.unaligned, InstrClass.Invalid },
+                { Mnemonic.ADDULNK,   Transfer },
+                { Mnemonic.BRA,       Transfer },
+                { Mnemonic.BRW,       Transfer },
+                { Mnemonic.GOTO,      Transfer },
+                { Mnemonic.RESET,     Transfer },
+                { Mnemonic.RETFIE,    Transfer },
+                { Mnemonic.RETLW,     Transfer },
+                { Mnemonic.RETURN,    Transfer },
+                { Mnemonic.SUBULNK,   Transfer },
+                { Mnemonic.BC,        CondTransfer },
+                { Mnemonic.BN,        CondTransfer },
+                { Mnemonic.BNC,       CondTransfer },
+                { Mnemonic.BNN,       CondTransfer },
+                { Mnemonic.BNOV,      CondTransfer },
+                { Mnemonic.BNZ,       CondTransfer },
+                { Mnemonic.BOV,       CondTransfer },
+                { Mnemonic.BZ,        CondTransfer },
+                { Mnemonic.BTFSC,     CondLinear },
+                { Mnemonic.BTFSS,     CondLinear },
+                { Mnemonic.CPFSEQ,    CondLinear },
+                { Mnemonic.CPFSGT,    CondLinear },
+                { Mnemonic.CPFSLT,    CondLinear },
+                { Mnemonic.DCFSNZ,    CondLinear },
+                { Mnemonic.DECFSZ,    CondLinear },
+                { Mnemonic.INCFSZ,    CondLinear },
+                { Mnemonic.INFSNZ,    CondLinear },
+                { Mnemonic.TSTFSZ,    CondLinear },
+                { Mnemonic.CALL,      LinkTransfer },
+                { Mnemonic.CALLW,     LinkTransfer },
+                { Mnemonic.RCALL,     LinkTransfer },
+                { Mnemonic.CONFIG,    InstrClass.None },
+                { Mnemonic.DA,        InstrClass.None },
+                { Mnemonic.DB,        InstrClass.None },
+                { Mnemonic.DE,        InstrClass.None },
+                { Mnemonic.DT,        InstrClass.None },
+                { Mnemonic.DTM,       InstrClass.None },
+                { Mnemonic.DW,        InstrClass.None },
+                { Mnemonic.__CONFIG,  InstrClass.None },
+                { Mnemonic.__IDLOCS,  InstrClass.None },
+                { Mnemonic.invalid,   InstrClass.Invalid },
+                { Mnemonic.unaligned, InstrClass.Invalid },
         };
 
 
@@ -89,7 +89,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="opc">The PIC opcode.</param>
         /// <param name="ops">Zero, one, two or three instruction's operands ops.</param>
         /// <exception cref="ArgumentException">Thrown if more than 3 operands provided.</exception>
-        public PICInstruction(Opcode opc, params MachineOperand[] ops)
+        public PICInstruction(Mnemonic opc, params MachineOperand[] ops)
         {
             if (ops.Length >= 4)
                 throw new ArgumentException(nameof(ops), "Too many PIC instruction operands.");
@@ -103,7 +103,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the opcode.
         /// </summary>
-        public Opcode Opcode { get; }
+        public Mnemonic Opcode { get; }
 
         /// <summary>
         /// Each different supported opcode should have a different numerical value, exposed here.
@@ -139,7 +139,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionNoOpnd : PICInstruction
     {
-        public PICInstructionNoOpnd(Opcode opcode) : base(opcode)
+        public PICInstructionNoOpnd(Mnemonic opcode) : base(opcode)
         {
         }
 
@@ -155,7 +155,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionImmedByte : PICInstruction
     {
-        public PICInstructionImmedByte(Opcode opcode, ushort imm)
+        public PICInstructionImmedByte(Mnemonic opcode, ushort imm)
             : base(opcode, new PICOperandImmediate(imm, PrimitiveType.Byte))
         {
         }
@@ -171,7 +171,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
     public class PICInstructionImmedSByte : PICInstruction
     {
-        public PICInstructionImmedSByte(Opcode opcode, short imm)
+        public PICInstructionImmedSByte(Mnemonic opcode, short imm)
             : base(opcode, new PICOperandImmediate(imm, PrimitiveType.SByte))
         {
         }
@@ -190,7 +190,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionImmedUShort : PICInstruction
     {
-        public PICInstructionImmedUShort(Opcode opcode, ushort imm)
+        public PICInstructionImmedUShort(Mnemonic opcode, ushort imm)
             : base(opcode, new PICOperandImmediate(imm, PrimitiveType.UInt16))
         {
         }
@@ -209,7 +209,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionImmedShort : PICInstruction
     {
-        public PICInstructionImmedShort(Opcode opcode, short imm)
+        public PICInstructionImmedShort(Mnemonic opcode, short imm)
             : base(opcode,
                    new PICOperandImmediate(imm, PrimitiveType.Int16))
         {
@@ -229,21 +229,21 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionMem2Mem : PICInstruction
     {
-        public PICInstructionMem2Mem(Opcode opcode, uint srcaddr, uint dstaddr)
+        public PICInstructionMem2Mem(Mnemonic opcode, uint srcaddr, uint dstaddr)
             : base(opcode,
                    new PICOperandDataMemoryAddress(srcaddr),
                    new PICOperandDataMemoryAddress(dstaddr))
         {
         }
 
-        public PICInstructionMem2Mem(Opcode opcode, byte srcidx, uint dstaddr)
+        public PICInstructionMem2Mem(Mnemonic opcode, byte srcidx, uint dstaddr)
             : base(opcode,
                    new PICOperandFSRIndexation(Constant.Byte(srcidx)),
                    new PICOperandDataMemoryAddress(dstaddr))
         {
         }
 
-        public PICInstructionMem2Mem(Opcode opcode, byte srcidx, byte dstidx)
+        public PICInstructionMem2Mem(Mnemonic opcode, byte srcidx, byte dstidx)
             : base(opcode,
                    new PICOperandFSRIndexation(Constant.Byte(srcidx)),
                    new PICOperandFSRIndexation(Constant.Byte(dstidx)))
@@ -306,7 +306,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionMemF : PICInstruction
     {
-        public PICInstructionMemF(Opcode opcode, ushort memaddr)
+        public PICInstructionMemF(Mnemonic opcode, ushort memaddr)
             : base(opcode, new PICOperandBankedMemory(memaddr))
         {
         }
@@ -337,7 +337,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionMemFB : PICInstruction
     {
-        public PICInstructionMemFB(Opcode opcode, ushort memaddr, byte bitno)
+        public PICInstructionMemFB(Mnemonic opcode, ushort memaddr, byte bitno)
             : base(opcode, new PICOperandBankedMemory(memaddr), new PICOperandMemBitNo(bitno))
         {
         }
@@ -376,7 +376,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionMemFD : PICInstruction
     {
-        public PICInstructionMemFD(Opcode opcode, ushort memaddr, ushort dest)
+        public PICInstructionMemFD(Mnemonic opcode, ushort memaddr, ushort dest)
             : base(opcode, new PICOperandBankedMemory(memaddr), new PICOperandMemWRegDest(dest))
         {
         }
@@ -407,7 +407,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionMemFA : PICInstruction
     {
-        public PICInstructionMemFA(Opcode opcode, ushort memaddr, ushort acc)
+        public PICInstructionMemFA(Mnemonic opcode, ushort memaddr, ushort acc)
             : base(opcode, new PICOperandBankedMemory(memaddr, acc))
         {
         }
@@ -449,7 +449,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionMemFBA : PICInstruction
     {
-        public PICInstructionMemFBA(Opcode opcode, ushort memaddr, ushort bitno, ushort acc)
+        public PICInstructionMemFBA(Mnemonic opcode, ushort memaddr, ushort bitno, ushort acc)
             : base(opcode, new PICOperandBankedMemory(memaddr, acc), new PICOperandMemBitNo(bitno))
         {
         }
@@ -498,7 +498,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionMemFDA : PICInstruction
     {
-        public PICInstructionMemFDA(Opcode opcode, ushort memaddr, ushort dest, ushort acc)
+        public PICInstructionMemFDA(Mnemonic opcode, ushort memaddr, ushort dest, ushort acc)
             : base(opcode, new PICOperandBankedMemory(memaddr, acc), new PICOperandMemWRegDest(dest))
         {
         }
@@ -548,7 +548,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionLFSRLoad : PICInstruction
     {
-        public PICInstructionLFSRLoad(Opcode opcode, ushort fsrnum, ushort imm)
+        public PICInstructionLFSRLoad(Mnemonic opcode, ushort fsrnum, ushort imm)
             : base(opcode,
                    new PICOperandFSRNum(fsrnum),
                    new PICOperandImmediate(imm, PrimitiveType.UInt16))
@@ -574,7 +574,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionFSRIArith : PICInstruction
     {
-        public PICInstructionFSRIArith(Opcode opcode, ushort fsrnum, sbyte imm)
+        public PICInstructionFSRIArith(Mnemonic opcode, ushort fsrnum, sbyte imm)
             : base(opcode,
                    new PICOperandFSRNum(fsrnum),
                    new PICOperandImmediate(imm, PrimitiveType.SByte))
@@ -600,7 +600,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionFSRUArith : PICInstruction
     {
-        public PICInstructionFSRUArith(Opcode opcode, ushort fsrnum, byte imm)
+        public PICInstructionFSRUArith(Mnemonic opcode, ushort fsrnum, byte imm)
             : base(opcode,
                    new PICOperandFSRNum(fsrnum),
                    new PICOperandImmediate(imm, PrimitiveType.Byte))
@@ -626,12 +626,12 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionProgTarget : PICInstruction
     {
-        public PICInstructionProgTarget(Opcode opcode, uint progAdr)
+        public PICInstructionProgTarget(Mnemonic opcode, uint progAdr)
             : base(opcode, new PICOperandProgMemoryAddress(progAdr))
         {
         }
 
-        public PICInstructionProgTarget(Opcode opcode, short progOff, Address instrAdr)
+        public PICInstructionProgTarget(Mnemonic opcode, short progOff, Address instrAdr)
             : base(opcode, new PICOperandProgMemoryAddress(progOff, instrAdr))
         {
         }
@@ -657,7 +657,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionFast : PICInstruction
     {
-        public PICInstructionFast(Opcode opcode, ushort fast, bool wTab)
+        public PICInstructionFast(Mnemonic opcode, ushort fast, bool wTab)
             : base(opcode, new PICOperandFast(fast, wTab))
         {
         }
@@ -681,7 +681,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICInstructionProgTargetFast : PICInstruction
     {
-        public PICInstructionProgTargetFast(Opcode opcode, uint progAdr, ushort fast, bool wTab)
+        public PICInstructionProgTargetFast(Mnemonic opcode, uint progAdr, ushort fast, bool wTab)
             : base(opcode,
                    new PICOperandProgMemoryAddress(progAdr),
                    new PICOperandFast(fast, wTab))
@@ -710,7 +710,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
     public class PICInstructionWithFSR : PICInstruction
     {
-        public PICInstructionWithFSR(Opcode opcode, ushort fsrnum, sbyte value, FSRIndexedMode mode)
+        public PICInstructionWithFSR(Mnemonic opcode, ushort fsrnum, sbyte value, FSRIndexedMode mode)
             : base(opcode, new PICOperandFSRIndexation(fsrnum, Constant.SByte(value), mode))
         {
         }
@@ -753,7 +753,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICInstructionTbl : PICInstruction
     {
 
-        public PICInstructionTbl(Opcode opcode, ushort mode)
+        public PICInstructionTbl(Mnemonic opcode, ushort mode)
             : base(opcode, new PICOperandTBLRW(mode))
         {
         }
@@ -769,7 +769,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICInstructionTris : PICInstruction
     {
 
-        public PICInstructionTris(Opcode opcode, byte trisnum)
+        public PICInstructionTris(Mnemonic opcode, byte trisnum)
             : base(opcode,
                    new PICOperandTris(trisnum))
         {
@@ -787,7 +787,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICInstructionPseudo : PICInstruction
     {
 
-        public PICInstructionPseudo(Opcode opcode, PICOperandPseudo pseudoOperand)
+        public PICInstructionPseudo(Mnemonic opcode, PICOperandPseudo pseudoOperand)
             : base(opcode, pseudoOperand)
         {
         }

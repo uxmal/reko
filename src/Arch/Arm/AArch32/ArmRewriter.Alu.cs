@@ -975,7 +975,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             Expression src = Reg(((RegisterOperand)Src2()).Register);
-            if (instr.ShiftType == Opcode.ror)
+            if (instr.ShiftType == Mnemonic.ror)
             {
                 src = m.Shr(src, Operand(instr.ShiftValue));
             }
@@ -987,7 +987,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             Expression src = Reg(((RegisterOperand)Src1()).Register);
-            if (instr.ShiftType == Opcode.ror)
+            if (instr.ShiftType == Mnemonic.ror)
             {
                 src = m.Shr(src,Operand(instr.ShiftValue));
             }

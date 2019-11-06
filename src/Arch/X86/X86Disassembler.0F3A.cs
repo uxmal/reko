@@ -32,14 +32,14 @@ namespace Reko.Arch.X86
             return new Decoder[] {
 
                 // 00
-                new PrefixedDecoder(dec66: Instr(Opcode.vpermq, Vqq,Wqq,Ib)),
-                new PrefixedDecoder(dec66: Instr(Opcode.vpermpd, Vqq,Wqq,Ib)),
-                new PrefixedDecoder(dec66: Instr(Opcode.vpblendd, Vx,Hx,Wx,Ib)),
+                new PrefixedDecoder(dec66: Instr(Mnemonic.vpermq, Vqq,Wqq,Ib)),
+                new PrefixedDecoder(dec66: Instr(Mnemonic.vpermpd, Vqq,Wqq,Ib)),
+                new PrefixedDecoder(dec66: Instr(Mnemonic.vpblendd, Vx,Hx,Wx,Ib)),
                 s_invalid,
 
-                new PrefixedDecoder(dec66: Instr(Opcode.vpermilps, Vx,Wx,Ib)),
-                new PrefixedDecoder(dec66: Instr(Opcode.vpermilpd, Vx,Wx,Ib)),
-                new PrefixedDecoder(dec66: Instr(Opcode.vperm2f128, Vqq,Hqq,Wqq,Ib)),
+                new PrefixedDecoder(dec66: Instr(Mnemonic.vpermilps, Vx,Wx,Ib)),
+                new PrefixedDecoder(dec66: Instr(Mnemonic.vpermilpd, Vx,Wx,Ib)),
+                new PrefixedDecoder(dec66: Instr(Mnemonic.vperm2f128, Vqq,Hqq,Wqq,Ib)),
                 s_invalid,
 
                 s_nyi,
@@ -50,8 +50,8 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
                 new PrefixedDecoder(
-                    dec:Instr(Opcode.palignr, Pq,Qq,Ib),
-                    dec66:Instr(Opcode.palignr, Vx,Wx,Ib)),
+                    dec:Instr(Mnemonic.palignr, Pq,Qq,Ib),
+                    dec66:Instr(Mnemonic.palignr, Vx,Wx,Ib)),
 
                 // 10
                 s_invalid,
@@ -122,8 +122,8 @@ namespace Reko.Arch.X86
 
                 s_invalid,
                 s_invalid,
-                Instr(Opcode.vblendvpsv, Vx,Hx,Wx,Lx),
-                Instr(Opcode.vblendvpdv, Vx,Hx,Wx,Lx),
+                Instr(Mnemonic.vblendvpsv, Vx,Hx,Wx,Lx),
+                Instr(Mnemonic.vblendvpdv, Vx,Hx,Wx,Lx),
                 s_nyi,
                 s_invalid,
                 s_invalid,
@@ -153,7 +153,7 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
                 new PrefixedDecoder(
-                    dec66: Instr(Opcode.pcmpistri, Vx,Wx,Ib)),
+                    dec66: Instr(Mnemonic.pcmpistri, Vx,Wx,Ib)),
                 s_invalid,
                 s_invalid,
                 s_invalid,

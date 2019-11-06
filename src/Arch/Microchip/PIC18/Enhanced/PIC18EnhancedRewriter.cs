@@ -58,40 +58,40 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     base.RewriteInstr();
                     break;
 
-                case Opcode.ADDFSR:
+                case Mnemonic.ADDFSR:
                     RewriteADDFSR();
                     break;
 
-                case Opcode.ADDULNK:
+                case Mnemonic.ADDULNK:
                     RewriteADDULNK();
                     break;
 
-                case Opcode.CALLW:
+                case Mnemonic.CALLW:
                     RewriteCALLW();
                     break;
 
-                case Opcode.MOVFFL:
+                case Mnemonic.MOVFFL:
                     RewriteMOVFF();
                     break;
 
-                case Opcode.MOVSF:
-                case Opcode.MOVSFL:
+                case Mnemonic.MOVSF:
+                case Mnemonic.MOVSFL:
                     RewriteMOVSF();
                     break;
 
-                case Opcode.MOVSS:
+                case Mnemonic.MOVSS:
                     RewriteMOVSS();
                     break;
 
-                case Opcode.PUSHL:
+                case Mnemonic.PUSHL:
                     RewritePUSHL();
                     break;
 
-                case Opcode.SUBFSR:
+                case Mnemonic.SUBFSR:
                     RewriteSUBFSR();
                     break;
 
-                case Opcode.SUBULNK:
+                case Mnemonic.SUBULNK:
                     RewriteSUBULNK();
                     break;
             }

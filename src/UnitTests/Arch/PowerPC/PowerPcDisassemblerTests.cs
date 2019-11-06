@@ -93,14 +93,14 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCDis_IllegalOpcode()
         {
             PowerPcInstruction instr = DisassembleBytes(new byte[] { 00, 00, 00, 00 });
-            Assert.AreEqual(Opcode.illegal, instr.Mnemonic);
+            Assert.AreEqual(Mnemonic.illegal, instr.Mnemonic);
         }
 
         [Test]
         public void PPCDis_Ori()
         {
             PowerPcInstruction instr = DisassembleBytes(new byte[] { 0x60, 0x1F, 0x44, 0x44 });
-            Assert.AreEqual(Opcode.ori, instr.Mnemonic);
+            Assert.AreEqual(Mnemonic.ori, instr.Mnemonic);
             Assert.AreEqual(3, instr.Operands.Length);
             Assert.AreEqual("ori\tr31,r0,4444", instr.ToString());
         }

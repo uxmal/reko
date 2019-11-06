@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -20,7 +20,7 @@
 
 namespace Reko.Arch.Alpha
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         invalid,
 

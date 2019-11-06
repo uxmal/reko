@@ -20,7 +20,7 @@ namespace Reko.Arch.PowerPC
                 uint wInstr, 
                 PowerPcDisassembler dasm, 
                 InstrClass iclass,
-                Opcode opcode,
+                Mnemonic opcode,
                 Mutator<PowerPcDisassembler>[] mutators)
             {
                 foreach (var m in mutators)
@@ -38,7 +38,7 @@ namespace Reko.Arch.PowerPC
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return new PowerPcInstruction(Opcode.illegal);
+                return new PowerPcInstruction(Mnemonic.illegal);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 EmitUnitTest(wInstr);
-                return new PowerPcInstruction(Opcode.illegal);
+                return new PowerPcInstruction(Mnemonic.illegal);
             }
 
             [Conditional("DEBUG")]
@@ -109,11 +109,11 @@ namespace Reko.Arch.PowerPC
 
         public class InstrDecoder : Decoder
         {
-            public readonly Opcode opcode;
+            public readonly Mnemonic opcode;
             public readonly InstrClass iclass;
             public readonly Mutator<PowerPcDisassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, Mutator<PowerPcDisassembler> [] mutators, InstrClass iclass = InstrClass.Linear)
+            public InstrDecoder(Mnemonic opcode, Mutator<PowerPcDisassembler> [] mutators, InstrClass iclass = InstrClass.Linear)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -128,12 +128,12 @@ namespace Reko.Arch.PowerPC
 
         public class DSDecoder : Decoder
         {
-            public readonly Opcode opcode0;
-            public readonly Opcode opcode1;
+            public readonly Mnemonic opcode0;
+            public readonly Mnemonic opcode1;
             public readonly InstrClass iclass;
             public readonly Mutator<PowerPcDisassembler> []mutators;
 
-            public DSDecoder(Opcode opcode0, Opcode opcode1, params Mutator<PowerPcDisassembler> [] mutators)
+            public DSDecoder(Mnemonic opcode0, Mnemonic opcode1, params Mutator<PowerPcDisassembler> [] mutators)
             {
                 this.opcode0 = opcode0;
                 this.opcode1 = opcode1;
@@ -143,7 +143,7 @@ namespace Reko.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                Opcode opcode = ((wInstr & 1) == 0) ? opcode0 : opcode1;
+                Mnemonic opcode = ((wInstr & 1) == 0) ? opcode0 : opcode1;
                 wInstr &= ~3u;
                 return DecodeOperands(wInstr & ~3u, dasm, iclass, opcode, mutators);
             }
@@ -156,20 +156,20 @@ namespace Reko.Arch.PowerPC
                 // Only supported on 64-bit arch.
                 if (dasm.defaultWordWidth.BitSize == 32)
                 {
-                    return new PowerPcInstruction(Opcode.illegal);
+                    return new PowerPcInstruction(Mnemonic.illegal);
                 }
                 else
                 {
-                    Opcode opcode;
+                    Mnemonic opcode;
                     switch ((wInstr >> 1) & 0xF)
                     {
-                    case 0: case 1: opcode = Opcode.rldicl; break;
-                    case 2: case 3: opcode = Opcode.rldicr; break;
-                    case 4: case 5: opcode = Opcode.rldic; break;
-                    case 6: case 7: opcode = Opcode.rldimi; break;
-                    case 8: opcode = Opcode.rldcl; break;
-                    case 9: opcode = Opcode.rldcr; break;
-                    default: return new PowerPcInstruction(Opcode.illegal);
+                    case 0: case 1: opcode = Mnemonic.rldicl; break;
+                    case 2: case 3: opcode = Mnemonic.rldicr; break;
+                    case 4: case 5: opcode = Mnemonic.rldic; break;
+                    case 6: case 7: opcode = Mnemonic.rldimi; break;
+                    case 8: opcode = Mnemonic.rldcl; break;
+                    case 9: opcode = Mnemonic.rldcr; break;
+                    default: return new PowerPcInstruction(Mnemonic.illegal);
                     }
 
                     wInstr &= ~1u;
@@ -256,9 +256,9 @@ namespace Reko.Arch.PowerPC
 
         public class XlDecoderAux : InstrDecoder
         {
-            private readonly Opcode opLink;
+            private readonly Mnemonic opLink;
 
-            public XlDecoderAux(Opcode opcode, Opcode opLink, params Mutator<PowerPcDisassembler> [] mutators)
+            public XlDecoderAux(Mnemonic opcode, Mnemonic opLink, params Mutator<PowerPcDisassembler> [] mutators)
                 : base(opcode, mutators)
             {
                 this.opLink = opLink;
@@ -272,7 +272,7 @@ namespace Reko.Arch.PowerPC
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
-                        return new PowerPcInstruction(Opcode.illegal)
+                        return new PowerPcInstruction(Mnemonic.illegal)
                         {
                             InstructionClass = InstrClass.Invalid
                         };
@@ -285,7 +285,7 @@ namespace Reko.Arch.PowerPC
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                var opcode = (wInstr & 1) == 1 ? Opcode.bl : Opcode.b;
+                var opcode = (wInstr & 1) == 1 ? Mnemonic.bl : Mnemonic.b;
                 var iclass = (wInstr & 1) == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
                 var uOffset = wInstr & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
@@ -301,55 +301,55 @@ namespace Reko.Arch.PowerPC
 
         public class BDecoder : Decoder
         {
-            private static readonly Opcode[] opcBdnzf =
+            private static readonly Mnemonic[] opcBdnzf =
             {
-                Opcode.bdnzf, Opcode.bdnzfl
+                Mnemonic.bdnzf, Mnemonic.bdnzfl
             };
 
-            private static readonly Opcode[] opcBdzf =
+            private static readonly Mnemonic[] opcBdzf =
             {
-                Opcode.bdzf, Opcode.bdzfl
+                Mnemonic.bdzf, Mnemonic.bdzfl
             };
 
-            private static readonly Opcode[,] opcBNcc =
+            private static readonly Mnemonic[,] opcBNcc =
             {
-                { Opcode.bge, Opcode.bgel },
-                { Opcode.ble, Opcode.blel },
-                { Opcode.bne, Opcode.blel },
-                { Opcode.bns, Opcode.bnsl },
+                { Mnemonic.bge, Mnemonic.bgel },
+                { Mnemonic.ble, Mnemonic.blel },
+                { Mnemonic.bne, Mnemonic.blel },
+                { Mnemonic.bns, Mnemonic.bnsl },
             };
 
-            private static readonly Opcode[,] opcBcc =
+            private static readonly Mnemonic[,] opcBcc =
             {
-                { Opcode.blt, Opcode.bgel },
-                { Opcode.bgt, Opcode.blel },
-                { Opcode.beq, Opcode.blel },
-                { Opcode.bso, Opcode.bnsl },
+                { Mnemonic.blt, Mnemonic.bgel },
+                { Mnemonic.bgt, Mnemonic.blel },
+                { Mnemonic.beq, Mnemonic.blel },
+                { Mnemonic.bso, Mnemonic.bnsl },
             };
 
-            private static readonly Opcode[] opcBdnzt =
+            private static readonly Mnemonic[] opcBdnzt =
             {
-                Opcode.bdnzt, Opcode.bdnztl
+                Mnemonic.bdnzt, Mnemonic.bdnztl
             };
 
-            private static readonly Opcode[] opcBdzt =
+            private static readonly Mnemonic[] opcBdzt =
             {
-                Opcode.bdzt, Opcode.bdztl
+                Mnemonic.bdzt, Mnemonic.bdztl
             };
 
-            private static readonly Opcode[] opcBdnz =
+            private static readonly Mnemonic[] opcBdnz =
             {
-                Opcode.bdnz, Opcode.bdnzl
+                Mnemonic.bdnz, Mnemonic.bdnzl
             };
 
-            private static readonly Opcode[] opcBdz =
+            private static readonly Mnemonic[] opcBdz =
             {
-                Opcode.bdz, Opcode.bdzl
+                Mnemonic.bdz, Mnemonic.bdzl
             };
 
-            private static readonly Opcode[] opcB =
+            private static readonly Mnemonic[] opcB =
             {
-                Opcode.b, Opcode.bl
+                Mnemonic.b, Mnemonic.bl
             };
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
@@ -362,7 +362,7 @@ namespace Reko.Arch.PowerPC
                 var grfBo = (wInstr >> 21) & 0x1F;
                 var crf = grfBi >> 2;
 
-                Opcode mnemonic;
+                Mnemonic mnemonic;
                 InstrClass iclass = link == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
                 var ops = new List<MachineOperand>();
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
@@ -467,14 +467,14 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 bool link = (wInstr & 1) != 0;
-                var opcode = link ? Opcode.blrl : Opcode.blr;
+                var opcode = link ? Mnemonic.blrl : Mnemonic.blr;
                 var crBit = (wInstr >> 16) & 0x1F;
                 var crf = crBit >> 2;
                 var condCode = ((wInstr >> 22) & 4) | (crBit & 0x3);
                 var bo = (wInstr >> 21) & 0x1F;
                 if ((bo & 0x14) == 0x14)
                 {
-                    return new PowerPcInstruction(Opcode.blr)
+                    return new PowerPcInstruction(Mnemonic.blr)
                     {
                         InstructionClass = InstrClass.Transfer,
                         Operands = new MachineOperand[0]
@@ -485,7 +485,7 @@ namespace Reko.Arch.PowerPC
                 switch (condCode)
                 {
                 default:
-                    return new PowerPcInstruction(link ? Opcode.bclrl : Opcode.bclr)
+                    return new PowerPcInstruction(link ? Mnemonic.bclrl : Mnemonic.bclr)
                     {
                         InstructionClass = iclass | InstrClass.Transfer,
                         Operands = new MachineOperand[]
@@ -494,14 +494,14 @@ namespace Reko.Arch.PowerPC
                             new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
                         }
                     };
-                case 0: opcode = link ? Opcode.bgelrl : Opcode.bgelr; break;
-                case 1: opcode = link ? Opcode.blelrl : Opcode.blelr; break;
-                case 2: opcode = link ? Opcode.bnelrl : Opcode.bnelr; break;
-                case 3: opcode = link ? Opcode.bnslrl : Opcode.bnslr; break;
-                case 4: opcode = link ? Opcode.bltlrl : Opcode.bltlr; break;
-                case 5: opcode = link ? Opcode.bgtlrl : Opcode.bgtlr; break;
-                case 6: opcode = link ? Opcode.beqlrl : Opcode.beqlr; break;
-                case 7: opcode = link ? Opcode.bsolrl : Opcode.bsolr; break;
+                case 0: opcode = link ? Mnemonic.bgelrl : Mnemonic.bgelr; break;
+                case 1: opcode = link ? Mnemonic.blelrl : Mnemonic.blelr; break;
+                case 2: opcode = link ? Mnemonic.bnelrl : Mnemonic.bnelr; break;
+                case 3: opcode = link ? Mnemonic.bnslrl : Mnemonic.bnslr; break;
+                case 4: opcode = link ? Mnemonic.bltlrl : Mnemonic.bltlr; break;
+                case 5: opcode = link ? Mnemonic.bgtlrl : Mnemonic.bgtlr; break;
+                case 6: opcode = link ? Mnemonic.beqlrl : Mnemonic.beqlr; break;
+                case 7: opcode = link ? Mnemonic.bsolrl : Mnemonic.bsolr; break;
                 }
                 return new PowerPcInstruction(opcode)
                 {
@@ -513,7 +513,7 @@ namespace Reko.Arch.PowerPC
 
         public class XfxDecoder : InstrDecoder
         {
-            public XfxDecoder(Opcode opcode, params Mutator<PowerPcDisassembler>[] mutators) : base(opcode, mutators)
+            public XfxDecoder(Mnemonic opcode, params Mutator<PowerPcDisassembler>[] mutators) : base(opcode, mutators)
             {
             }
 
@@ -545,13 +545,13 @@ namespace Reko.Arch.PowerPC
             {
                 var ops = new List<MachineOperand> { dasm.RegFromBits(wInstr >> 21) };
                 var spr = ((wInstr >> 16) & 0x1F) | ((wInstr >> 6) & 0x3E0);
-                Opcode opcode;
+                Mnemonic opcode;
                 switch (spr)
                 {
-                case 0x08: opcode = to ? Opcode.mtlr : Opcode.mflr; break;
-                case 0x09: opcode = to ? Opcode.mtctr : Opcode.mfctr; break;
+                case 0x08: opcode = to ? Mnemonic.mtlr : Mnemonic.mflr; break;
+                case 0x09: opcode = to ? Mnemonic.mtctr : Mnemonic.mfctr; break;
                 default:
-                    opcode = to ? Opcode.mtspr : Opcode.mfspr;
+                    opcode = to ? Mnemonic.mtspr : Mnemonic.mfspr;
                     ops.Insert(0, ImmediateOperand.UInt32(spr));
                     break;
                 }
@@ -565,20 +565,20 @@ namespace Reko.Arch.PowerPC
 
         public class CmpDecoder : InstrDecoder
         {
-            public CmpDecoder(Opcode op, params Mutator<PowerPcDisassembler>[] mutators) : base(op, mutators)
+            public CmpDecoder(Mnemonic op, params Mutator<PowerPcDisassembler>[] mutators) : base(op, mutators)
             { }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var l = ((wInstr >> 21) & 1) != 0;
-                var op = Opcode.illegal;
+                var op = Mnemonic.illegal;
                 switch (this.opcode)
                 {
                 default: throw new NotImplementedException();
-                case Opcode.cmp: op = l ? Opcode.cmpl : Opcode.cmp; break;
-                case Opcode.cmpi: op = l ? Opcode.cmpi : Opcode.cmpwi; break;
-                case Opcode.cmpl: op = l ? Opcode.cmpl : Opcode.cmplw; break;
-                case Opcode.cmpli: op = l ? Opcode.cmpli : Opcode.cmplwi; break;
+                case Mnemonic.cmp: op = l ? Mnemonic.cmpl : Mnemonic.cmp; break;
+                case Mnemonic.cmpi: op = l ? Mnemonic.cmpi : Mnemonic.cmpwi; break;
+                case Mnemonic.cmpl: op = l ? Mnemonic.cmpl : Mnemonic.cmplw; break;
+                case Mnemonic.cmpli: op = l ? Mnemonic.cmpli : Mnemonic.cmplwi; break;
                 }
                 return DecodeOperands(wInstr, dasm, iclass, op, mutators);
             }
@@ -616,7 +616,7 @@ namespace Reko.Arch.PowerPC
 
         public class XSDecoder : InstrDecoder
         {
-            public XSDecoder(Opcode opcode, params Mutator<PowerPcDisassembler>[] mutators) : base(opcode, mutators) { }
+            public XSDecoder(Mnemonic opcode, params Mutator<PowerPcDisassembler>[] mutators) : base(opcode, mutators) { }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
@@ -682,7 +682,7 @@ namespace Reko.Arch.PowerPC
             {
                 var instr = Decoder.DecodeOperands(
                     wInstr, dasm, 
-                    InstrClass.Linear, Opcode.vperm128,
+                    InstrClass.Linear, Mnemonic.vperm128,
                     new Mutator<PowerPcDisassembler>[] { Wd, Wa, Wb, v3_6 });
                 return instr;
             }

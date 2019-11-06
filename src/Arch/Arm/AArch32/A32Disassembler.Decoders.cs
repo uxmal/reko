@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    using Decoder = Reko.Core.Machine.Decoder<A32Disassembler, Opcode, AArch32Instruction>;
+    using Decoder = Reko.Core.Machine.Decoder<A32Disassembler, Mnemonic, AArch32Instruction>;
 
     public partial class A32Disassembler
     {
@@ -62,12 +62,12 @@ namespace Reko.Arch.Arm.AArch32
 
         private class InstrDecoder : Decoder
         {
-            private readonly Opcode opcode;
+            private readonly Mnemonic opcode;
             private readonly InstrClass iclass;
             private readonly ArmVectorData vectorData;
             private readonly Mutator<A32Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, ArmVectorData vectorData, params Mutator<A32Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic opcode, InstrClass iclass, ArmVectorData vectorData, params Mutator<A32Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -94,7 +94,7 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private class CondMaskDecoder : MaskDecoder<A32Disassembler, Opcode, AArch32Instruction>
+        private class CondMaskDecoder : MaskDecoder<A32Disassembler, Mnemonic, AArch32Instruction>
         {
             public CondMaskDecoder(int bitPos, int bitLength, string tag, params Decoder[] decoders)
                 : base(bitPos, bitLength, tag, decoders)

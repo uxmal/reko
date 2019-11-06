@@ -29,13 +29,13 @@ namespace Reko.Arch.Z80
 {
     public class Z80Instruction : MachineInstruction
     {
-        public Opcode Mnemonic;
+        public Mnemonic Mnemonic;
 
         public override int OpcodeAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (Mnemonic == Opcode.ex_af)
+            if (Mnemonic == Mnemonic.ex_af)
             {
                 writer.WriteOpcode("ex");
                 writer.Tab();

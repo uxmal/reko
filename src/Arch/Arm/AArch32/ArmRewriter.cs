@@ -85,451 +85,451 @@ namespace Reko.Arch.Arm.AArch32
                 switch (instr.opcode)
                 {
                 default:
-                case Opcode.aesd:
-                case Opcode.aese:
-                case Opcode.aesimc:
-                case Opcode.aesmc:
-                case Opcode.clrex:
-                case Opcode.dbg:
-                case Opcode.fldmdbx:
-                case Opcode.fldmiax:
-                case Opcode.fstmdbx:
-                case Opcode.fstmiax:
-                case Opcode.lda:
-                case Opcode.ldab:
-                case Opcode.ldaex:
-                case Opcode.ldaexb:
-                case Opcode.ldaexd:
-                case Opcode.ldaexh:
-                case Opcode.ldah:
-                case Opcode.ldrexb:
-                case Opcode.ldrexd:
-                case Opcode.ldrexh:
-                case Opcode.mcr2:
-                case Opcode.mcrr2:
-                case Opcode.mrc2:
-                case Opcode.mrrc2:
-                case Opcode.pli:
-                case Opcode.qsub8:
-                case Opcode.rbit:
-                case Opcode.rev16:
-                case Opcode.revsh:
-                case Opcode.rfeda:
-                case Opcode.rfedb:
-                case Opcode.rfeia:
-                case Opcode.rfeib:
-                case Opcode.sel:
-                case Opcode.sha1c:
-                case Opcode.sha1h:
-                case Opcode.sha1m:
-                case Opcode.sha1p:
-                case Opcode.sha1su0:
-                case Opcode.sha1su1:
-                case Opcode.sha256h:
-                case Opcode.sha256h2:
-                case Opcode.sha256su0:
-                case Opcode.sha256su1:
-                case Opcode.shadd16:
-                case Opcode.shadd8:
-                case Opcode.shasx:
-                case Opcode.shsax:
-                case Opcode.smmlar:
-                case Opcode.smmlsr:
-                case Opcode.smmulr:
-                case Opcode.smuadx:
-                case Opcode.smusdx:
-                case Opcode.srsda:
-                case Opcode.srsdb:
-                case Opcode.srsia:
-                case Opcode.srsib:
-                case Opcode.ssax:
-                case Opcode.stl:
-                case Opcode.stlb:
-                case Opcode.stlex:
-                case Opcode.stlexb:
-                case Opcode.stlexd:
-                case Opcode.stlexh:
-                case Opcode.stlh:
-                case Opcode.strexb:
-                case Opcode.strexd:
-                case Opcode.strexh:
-                case Opcode.sxtab16:
-                case Opcode.sxtb16:
-                case Opcode.uhadd16:
-                case Opcode.uhadd8:
-                case Opcode.uhasx:
-                case Opcode.uhsax:
-                case Opcode.uhsub16:
-                case Opcode.uhsub8:
-                case Opcode.usad8:
-                case Opcode.uxtab16:
-                case Opcode.uxtb16:
-                case Opcode.vabal:
-                case Opcode.vabdl:
-                case Opcode.vacge:
-                case Opcode.vacgt:
-                case Opcode.vaddhn:
-                case Opcode.vbic:
-                case Opcode.vbsl:
-                case Opcode.vcls:
-                case Opcode.vclz:
-                case Opcode.vcnt:
-                case Opcode.vcvta:
-                case Opcode.vcvtb:
-                case Opcode.vcvtm:
-                case Opcode.vcvtn:
-                case Opcode.vcvtp:
-                case Opcode.vcvtt:
-                case Opcode.vfma:
-                case Opcode.vfms:
-                case Opcode.vfnma:
-                case Opcode.vfnms:
-                case Opcode.vld1:
-                case Opcode.vld2:
-                case Opcode.vld3:
-                case Opcode.vld4:
-                case Opcode.vldmdb:
-                case Opcode.vmaxnm:
-                case Opcode.vminnm:
-                case Opcode.vmovl:
-                case Opcode.vmovn:
-                case Opcode.vmsr:
-                case Opcode.vorn:
-                case Opcode.vpadal:
-                case Opcode.vpaddl:
-                case Opcode.vqdmlal:
-                case Opcode.vqdmlsl:
-                case Opcode.vqdmulh:
-                case Opcode.vqdmull:
-                case Opcode.vqmovun:
-                case Opcode.vqmovn:
-                case Opcode.vqneg:
-                case Opcode.vqrdmlah:
-                case Opcode.vqrshl:
-                case Opcode.vqrshrn:
-                case Opcode.vqrshrun:
-                case Opcode.vqshlu:
-                case Opcode.vqshrn:
-                case Opcode.vqshrun:
-                case Opcode.vqsub:
-                case Opcode.vraddhn:
-                case Opcode.vrecpe:
-                case Opcode.vrecps:
-                case Opcode.vrev16:
-                case Opcode.vrev32:
-                case Opcode.vrev64:
-                case Opcode.vrinta:
-                case Opcode.vrintm:
-                case Opcode.vrintn:
-                case Opcode.vrintp:
-                case Opcode.vrintr:
-                case Opcode.vrintx:
-                case Opcode.vrintz:
-                case Opcode.vrshrn:
-                case Opcode.vrsqrte:
-                case Opcode.vrsqrts:
-                case Opcode.vshrn:
-                case Opcode.vst1:
-                case Opcode.vst2:
-                case Opcode.vst3:
-                case Opcode.vst4:
-                case Opcode.vsubhn:
-                case Opcode.vswp:
-                case Opcode.vtbl:
-                case Opcode.vtbx:
-                case Opcode.vtrn:
-                case Opcode.vuzp:
-                case Opcode.vzip:
-                case Opcode.dcps1:
-                case Opcode.dcps2:
-                case Opcode.dcps3:
-                case Opcode.lsrs:
-                case Opcode.subs:
-                case Opcode.movs:
-                case Opcode.wfe:
-                case Opcode.sev:
-                case Opcode.sevl:
+                case Mnemonic.aesd:
+                case Mnemonic.aese:
+                case Mnemonic.aesimc:
+                case Mnemonic.aesmc:
+                case Mnemonic.clrex:
+                case Mnemonic.dbg:
+                case Mnemonic.fldmdbx:
+                case Mnemonic.fldmiax:
+                case Mnemonic.fstmdbx:
+                case Mnemonic.fstmiax:
+                case Mnemonic.lda:
+                case Mnemonic.ldab:
+                case Mnemonic.ldaex:
+                case Mnemonic.ldaexb:
+                case Mnemonic.ldaexd:
+                case Mnemonic.ldaexh:
+                case Mnemonic.ldah:
+                case Mnemonic.ldrexb:
+                case Mnemonic.ldrexd:
+                case Mnemonic.ldrexh:
+                case Mnemonic.mcr2:
+                case Mnemonic.mcrr2:
+                case Mnemonic.mrc2:
+                case Mnemonic.mrrc2:
+                case Mnemonic.pli:
+                case Mnemonic.qsub8:
+                case Mnemonic.rbit:
+                case Mnemonic.rev16:
+                case Mnemonic.revsh:
+                case Mnemonic.rfeda:
+                case Mnemonic.rfedb:
+                case Mnemonic.rfeia:
+                case Mnemonic.rfeib:
+                case Mnemonic.sel:
+                case Mnemonic.sha1c:
+                case Mnemonic.sha1h:
+                case Mnemonic.sha1m:
+                case Mnemonic.sha1p:
+                case Mnemonic.sha1su0:
+                case Mnemonic.sha1su1:
+                case Mnemonic.sha256h:
+                case Mnemonic.sha256h2:
+                case Mnemonic.sha256su0:
+                case Mnemonic.sha256su1:
+                case Mnemonic.shadd16:
+                case Mnemonic.shadd8:
+                case Mnemonic.shasx:
+                case Mnemonic.shsax:
+                case Mnemonic.smmlar:
+                case Mnemonic.smmlsr:
+                case Mnemonic.smmulr:
+                case Mnemonic.smuadx:
+                case Mnemonic.smusdx:
+                case Mnemonic.srsda:
+                case Mnemonic.srsdb:
+                case Mnemonic.srsia:
+                case Mnemonic.srsib:
+                case Mnemonic.ssax:
+                case Mnemonic.stl:
+                case Mnemonic.stlb:
+                case Mnemonic.stlex:
+                case Mnemonic.stlexb:
+                case Mnemonic.stlexd:
+                case Mnemonic.stlexh:
+                case Mnemonic.stlh:
+                case Mnemonic.strexb:
+                case Mnemonic.strexd:
+                case Mnemonic.strexh:
+                case Mnemonic.sxtab16:
+                case Mnemonic.sxtb16:
+                case Mnemonic.uhadd16:
+                case Mnemonic.uhadd8:
+                case Mnemonic.uhasx:
+                case Mnemonic.uhsax:
+                case Mnemonic.uhsub16:
+                case Mnemonic.uhsub8:
+                case Mnemonic.usad8:
+                case Mnemonic.uxtab16:
+                case Mnemonic.uxtb16:
+                case Mnemonic.vabal:
+                case Mnemonic.vabdl:
+                case Mnemonic.vacge:
+                case Mnemonic.vacgt:
+                case Mnemonic.vaddhn:
+                case Mnemonic.vbic:
+                case Mnemonic.vbsl:
+                case Mnemonic.vcls:
+                case Mnemonic.vclz:
+                case Mnemonic.vcnt:
+                case Mnemonic.vcvta:
+                case Mnemonic.vcvtb:
+                case Mnemonic.vcvtm:
+                case Mnemonic.vcvtn:
+                case Mnemonic.vcvtp:
+                case Mnemonic.vcvtt:
+                case Mnemonic.vfma:
+                case Mnemonic.vfms:
+                case Mnemonic.vfnma:
+                case Mnemonic.vfnms:
+                case Mnemonic.vld1:
+                case Mnemonic.vld2:
+                case Mnemonic.vld3:
+                case Mnemonic.vld4:
+                case Mnemonic.vldmdb:
+                case Mnemonic.vmaxnm:
+                case Mnemonic.vminnm:
+                case Mnemonic.vmovl:
+                case Mnemonic.vmovn:
+                case Mnemonic.vmsr:
+                case Mnemonic.vorn:
+                case Mnemonic.vpadal:
+                case Mnemonic.vpaddl:
+                case Mnemonic.vqdmlal:
+                case Mnemonic.vqdmlsl:
+                case Mnemonic.vqdmulh:
+                case Mnemonic.vqdmull:
+                case Mnemonic.vqmovun:
+                case Mnemonic.vqmovn:
+                case Mnemonic.vqneg:
+                case Mnemonic.vqrdmlah:
+                case Mnemonic.vqrshl:
+                case Mnemonic.vqrshrn:
+                case Mnemonic.vqrshrun:
+                case Mnemonic.vqshlu:
+                case Mnemonic.vqshrn:
+                case Mnemonic.vqshrun:
+                case Mnemonic.vqsub:
+                case Mnemonic.vraddhn:
+                case Mnemonic.vrecpe:
+                case Mnemonic.vrecps:
+                case Mnemonic.vrev16:
+                case Mnemonic.vrev32:
+                case Mnemonic.vrev64:
+                case Mnemonic.vrinta:
+                case Mnemonic.vrintm:
+                case Mnemonic.vrintn:
+                case Mnemonic.vrintp:
+                case Mnemonic.vrintr:
+                case Mnemonic.vrintx:
+                case Mnemonic.vrintz:
+                case Mnemonic.vrshrn:
+                case Mnemonic.vrsqrte:
+                case Mnemonic.vrsqrts:
+                case Mnemonic.vshrn:
+                case Mnemonic.vst1:
+                case Mnemonic.vst2:
+                case Mnemonic.vst3:
+                case Mnemonic.vst4:
+                case Mnemonic.vsubhn:
+                case Mnemonic.vswp:
+                case Mnemonic.vtbl:
+                case Mnemonic.vtbx:
+                case Mnemonic.vtrn:
+                case Mnemonic.vuzp:
+                case Mnemonic.vzip:
+                case Mnemonic.dcps1:
+                case Mnemonic.dcps2:
+                case Mnemonic.dcps3:
+                case Mnemonic.lsrs:
+                case Mnemonic.subs:
+                case Mnemonic.movs:
+                case Mnemonic.wfe:
+                case Mnemonic.sev:
+                case Mnemonic.sevl:
                     NotImplementedYet();
                     break;
-                case Opcode.Invalid:
+                case Mnemonic.Invalid:
                     Invalid();
                     break;
-                case Opcode.adc: RewriteAdcSbc(m.IAdd, false); break;
-                case Opcode.add: RewriteBinOp(m.IAdd); break;
-                case Opcode.addw: RewriteAddw(); break;
-                case Opcode.adr: RewriteAdr(); break;
-                case Opcode.and: RewriteLogical(m.And); break;
-                case Opcode.asr: RewriteShift(m.Sar); break;
-                case Opcode.asrs: RewriteShift(m.Sar); break;
-                case Opcode.b: RewriteB(false); break;
-                case Opcode.bfc: RewriteBfc(); break;
-                case Opcode.bfi: RewriteBfi(); break;
-                case Opcode.bic: RewriteLogical(Bic); break;
-                case Opcode.bkpt: RewriteBkpt(); break;
-                case Opcode.bl: RewriteB(true); break;
-                case Opcode.blx: RewriteB(true); break;
-                case Opcode.bx: RewriteB(false); break;
-                case Opcode.bxj: RewriteB(false); break; //$REVIEW: starting with ARMv8, behaves exactly as BX
-                case Opcode.cbz: RewriteCbnz(m.Eq0); break;
-                case Opcode.cbnz: RewriteCbnz(m.Ne0); break;
-                case Opcode.cdp: RewriteCdp("__cdp"); break;
-                case Opcode.cdp2: RewriteCdp("__cdp2"); break;
-                case Opcode.clz: RewriteClz(); break;
-                case Opcode.cmn: RewriteCmp(m.IAdd); break;
-                case Opcode.cmp: RewriteCmp(m.ISub); break;
-                case Opcode.cps: RewriteCps("__cps"); break;
-                case Opcode.cpsid: RewriteCps("__cps_id"); break;
-                case Opcode.crc32b: RewriteCrc("__crc32b", PrimitiveType.UInt8); break;
-                case Opcode.crc32h: RewriteCrc("__crc32h", PrimitiveType.UInt16); break;
-                case Opcode.crc32w: RewriteCrc("__crc32w", PrimitiveType.UInt32); break;
-                case Opcode.crc32cb: RewriteCrc("__crc32cb", PrimitiveType.UInt8); break;
-                case Opcode.crc32ch: RewriteCrc("__crc32ch", PrimitiveType.UInt16); break;
-                case Opcode.crc32cw: RewriteCrc("__crc32cw", PrimitiveType.UInt32); break;
-                case Opcode.dsb: RewriteDsb(); break;
-                case Opcode.dmb: RewriteDmb(); break;
-                case Opcode.eor: RewriteLogical(m.Xor); break;
-                case Opcode.eret: RewriteEret(); break;
-                case Opcode.hint: RewriteHint(); break;
-                case Opcode.hlt: RewriteHlt(); break;
-                case Opcode.hvc: RewriteHvc(); break;
-                case Opcode.isb: RewriteIsb(); break;
-                case Opcode.it: RewriteIt(); break;
-                case Opcode.ldc2l: RewriteLdc("__ldc2l"); break;
-                case Opcode.ldc2: RewriteLdc("__ldc2"); break;
-                case Opcode.ldcl: RewriteLdc("__ldcl"); break;
-                case Opcode.ldc: RewriteLdc("__ldc"); break;
-                case Opcode.ldm: RewriteLdm(0, m.IAdd); break;
-                case Opcode.ldmda: RewriteLdm(0, m.ISub); break;
-                case Opcode.ldmdb: RewriteLdm(-4, m.ISub); break;
-                case Opcode.ldmib: RewriteLdm(4, m.IAdd); break;
-                case Opcode.ldr: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Word32); break;
-                case Opcode.ldrt: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Word32); break;
-                case Opcode.ldrb: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Byte); break;
-                case Opcode.ldrbt: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Byte); break;
-                case Opcode.ldrh: RewriteLdr(PrimitiveType.Word32, PrimitiveType.UInt16); break;
-                case Opcode.ldrht: RewriteLdr(PrimitiveType.Word32, PrimitiveType.UInt16); break;
-                case Opcode.ldrsb: RewriteLdr(PrimitiveType.Word32, PrimitiveType.SByte); break;
-                case Opcode.ldrsbt: RewriteLdr(PrimitiveType.Word32, PrimitiveType.SByte); break;
-                case Opcode.ldrsh: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Int16); break;
-                case Opcode.ldrsht: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Int16); break;
-                case Opcode.ldrd: RewriteLdrd(); break;
-                case Opcode.ldrex: RewriteLdrex(); break;
-                case Opcode.lsl: case Opcode.lsls: RewriteShift(m.Shl); break;
-                case Opcode.lsr: RewriteShift(m.Shr); break;
-                case Opcode.nop: m.Nop(); break;
-                case Opcode.mcr: RewriteMcr(); break;
-                case Opcode.mcrr: RewriteMcrr(); break;
-                case Opcode.mla: RewriteMultiplyAccumulate(m.IAdd); break;
-                case Opcode.mls: RewriteMultiplyAccumulate(m.ISub); break;
-                case Opcode.mov: RewriteMov(); break;
-                case Opcode.movt: RewriteMovt(); break;
-                case Opcode.movw: RewriteMovw(); break;
-                case Opcode.mrc: RewriteMrc(); break;
-                case Opcode.mrrc: RewriteMrrc(); break;
-                case Opcode.mrs: RewriteMrs(); break;
-                case Opcode.msr: RewriteMsr(); break;
-                case Opcode.mul: RewriteBinOp(m.IMul); break;
-                case Opcode.mvn: RewriteUnaryOp(m.Comp); break;
-                case Opcode.orn: RewriteLogical((a, b) => m.Or(a, m.Comp(b))); break;
-                case Opcode.orr: RewriteLogical(m.Or); break;
-                case Opcode.pkhbt: RewritePk("__pkhbt"); break;
-                case Opcode.pkhtb: RewritePk("__pkhtb"); break;
-                case Opcode.pld: RewritePld("__pld"); break;
-                case Opcode.pldw: RewritePld("__pldw"); break;
-                case Opcode.pop: RewritePop(); break;
-                case Opcode.push: RewritePush(); break;
-                case Opcode.qadd: RewriteQAddSub(m.IAdd); break;
-                case Opcode.qadd16: RewriteVectorBinOp("__qadd_{0}", ArmVectorData.S16); break;
-                case Opcode.qadd8: RewriteVectorBinOp("__qadd_{0}", ArmVectorData.S8); break;
-                case Opcode.qdadd: RewriteQDAddSub(m.IAdd); break;
-                case Opcode.qasx: RewriteQasx("__qasx"); break;
-                case Opcode.qdsub: RewriteQDAddSub(m.ISub); break;
-                case Opcode.qsax: RewriteQasx("__qsax"); break;
-                case Opcode.qsub: RewriteQAddSub(m.ISub); break;
-                case Opcode.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
-                case Opcode.ror: RewriteShift(Ror); break;
-                case Opcode.rrx: RewriteShift(Rrx); break;
-                case Opcode.rev: RewriteRev(); break;
-                case Opcode.rsb: RewriteRevBinOp(m.ISub, instr.SetFlags); break;
-                case Opcode.rsc: RewriteAdcSbc(m.ISub, true); break;
-                case Opcode.sadd16: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S16); break;
-                case Opcode.sadd8: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S8); break;
-                case Opcode.sasx: RewriteQasx("__sasx"); break;
-                case Opcode.sbc: RewriteAdcSbc(m.ISub, false); break;
-                case Opcode.sbfx: RewriteSbfx(); break;
-                case Opcode.sdiv: RewriteDiv(m.SDiv); break;
-                case Opcode.setend: RewriteSetend(); break;
-                case Opcode.shsub16: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S16); break;
-                case Opcode.shsub8: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S8); break;
-                case Opcode.smc: RewriteSmc(); break;
-                case Opcode.smlabb: RewriteMla(false, false, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlabt: RewriteMla(false, true, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlad: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
-                case Opcode.smladx: RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
-                case Opcode.smlalbb: RewriteMlal(false, false, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlalbt: RewriteMlal(false, true, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlald: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
-                case Opcode.smlaldx: RewriteMlxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
-                case Opcode.smlaltb: RewriteMlal(true, false, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlaltt: RewriteMlal(true, true, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlal: RewriteSmlal(); break;
-                case Opcode.smlatb: RewriteMla(true, false, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlatt: RewriteMla(true, true, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlawb: RewriteSmlaw(false); break;
-                case Opcode.smlawt: RewriteSmlaw(true); break;
-                case Opcode.smlsd: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.ISub); break;
-                case Opcode.smlsdx: RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
-                case Opcode.smlsld: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.ISub); break;
-                case Opcode.smlsldx: RewriteMlxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
-                case Opcode.smmla: RewriteSmml(m.IAdd); break;
-                case Opcode.smmls: RewriteSmml(m.ISub); break;
-                case Opcode.smmul: RewriteSmmul(); break;
-                case Opcode.smuad: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
-                case Opcode.smulbb: RewriteMulbb(false, false, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smulbt: RewriteMulbb(false, true, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smulwb: RewriteMulw(false); break;
-                case Opcode.smulwt: RewriteMulw(true); break;
-                case Opcode.smultb: RewriteMulbb(true, false, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smultt: RewriteMulbb(true, true, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
-                case Opcode.smusd: RewriteSmusd(); break;
-                case Opcode.ssat: RewriteSsat(); break;
-                case Opcode.ssat16: RewriteSat16(PrimitiveType.Int16, "__ssat16"); break;
-                case Opcode.ssub16: RewriteVectorBinOp("__ssub16", ArmVectorData.S16); break;
-                case Opcode.ssub8: RewriteVectorBinOp("__ssub8", ArmVectorData.S8); break;
-                case Opcode.stc2l: RewriteStc("__stc2l"); break;
-                case Opcode.stc2: RewriteStc("__stc2"); break;
-                case Opcode.stc: RewriteStc("__stc"); break;
-                case Opcode.stcl: RewriteStc("__stcl"); break;
-                case Opcode.stm: RewriteStm(true, true); break;
-                case Opcode.stmdb: RewriteStm(false, false); break;
-                case Opcode.stmda: RewriteStm(false, true); break;
-                case Opcode.stmib: RewriteStm(true, false); break;
-                case Opcode.str: RewriteStr(PrimitiveType.Word32); break;
-                case Opcode.strb: RewriteStr(PrimitiveType.Byte); break;
-                case Opcode.strbt: RewriteStr(PrimitiveType.Byte); break;
-                case Opcode.strd: RewriteStrd(); break;
-                case Opcode.strex: RewriteStrex(); break;
-                case Opcode.strh: RewriteStr(PrimitiveType.UInt16); break;
-                case Opcode.strht: RewriteStr(PrimitiveType.UInt16); break;
-                case Opcode.strt: RewriteStr(PrimitiveType.Word32); break;
-                case Opcode.sub: RewriteBinOp(m.ISub); break;
-                case Opcode.subw: RewriteSubw(); break;
-                case Opcode.svc: RewriteSvc(); break;
-                case Opcode.swp: RewriteSwp(PrimitiveType.Word32); break;
-                case Opcode.swpb: RewriteSwp(PrimitiveType.Byte); break;
-                case Opcode.sxtab: RewriteXtab(PrimitiveType.SByte); break;
-                case Opcode.sxtah: RewriteXtab(PrimitiveType.Int16); break;
-                case Opcode.sxtb: RewriteXtb(PrimitiveType.SByte, PrimitiveType.Int32); break;
-                case Opcode.sxth: RewriteXtb(PrimitiveType.Int16, PrimitiveType.Int32); break;
-                case Opcode.tbb: RewriteTableBranch(PrimitiveType.Byte); break;
-                case Opcode.tbh: RewriteTableBranch(PrimitiveType.Word16); break;
-                case Opcode.teq: RewriteTeq(); break;
-                case Opcode.trap: RewriteTrap(); break;
-                case Opcode.tst: RewriteTst(); break;
-                case Opcode.uadd16: RewriteVectorBinOp("__uadd_{0}", ArmVectorData.I16); break;
-                case Opcode.uadd8: RewriteVectorBinOp("__uadd_{0}", ArmVectorData.I8); break;
-                case Opcode.uasx: RewriteUasx(); break;
-                case Opcode.ubfx: RewriteUbfx(); break;
-                case Opcode.udf: RewriteUdf(); break;
-                case Opcode.udiv: RewriteDiv(m.UDiv); break;
-                case Opcode.umaal: RewriteUmaal(); break;
-                case Opcode.umlal: RewriteUmlal(); break;
-                case Opcode.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
-                case Opcode.uqasx: RewriteVectorBinOp("__uqasx_{0}", ArmVectorData.U16); break;
-                case Opcode.uqadd16: RewriteVectorBinOp("__uqadd_{0}", ArmVectorData.U16); break;
-                case Opcode.uqadd8: RewriteVectorBinOp("__uqadd_{0}", ArmVectorData.U8); break;
-                case Opcode.uqsax: RewriteVectorBinOp("__uqsax_{0}", ArmVectorData.U16); break;
-                case Opcode.uqsub16: RewriteVectorBinOp("__uqsub_{0}", ArmVectorData.U16); break;
-                case Opcode.uqsub8: RewriteVectorBinOp("__uqsub_{0}", ArmVectorData.U8); break;
-                case Opcode.usada8: RewriteUsada8(); break;
-                case Opcode.usat: RewriteUsat(); break;
-                case Opcode.usat16: RewriteSat16(PrimitiveType.UInt16, "__usat16"); break;
-                case Opcode.usax: RewriteUsax(); break;
-                case Opcode.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
-                case Opcode.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
-                case Opcode.uxtab: RewriteXtab(PrimitiveType.Byte); break;
-                case Opcode.uxtah: RewriteXtab(PrimitiveType.UInt16); break;
-                case Opcode.uxtb: RewriteXtb(PrimitiveType.Byte, PrimitiveType.UInt32); break;
-                case Opcode.uxth: RewriteXtb(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
-                case Opcode.wfi: RewriteWfi(); break;
-                case Opcode.yield: RewriteYield(); break;
+                case Mnemonic.adc: RewriteAdcSbc(m.IAdd, false); break;
+                case Mnemonic.add: RewriteBinOp(m.IAdd); break;
+                case Mnemonic.addw: RewriteAddw(); break;
+                case Mnemonic.adr: RewriteAdr(); break;
+                case Mnemonic.and: RewriteLogical(m.And); break;
+                case Mnemonic.asr: RewriteShift(m.Sar); break;
+                case Mnemonic.asrs: RewriteShift(m.Sar); break;
+                case Mnemonic.b: RewriteB(false); break;
+                case Mnemonic.bfc: RewriteBfc(); break;
+                case Mnemonic.bfi: RewriteBfi(); break;
+                case Mnemonic.bic: RewriteLogical(Bic); break;
+                case Mnemonic.bkpt: RewriteBkpt(); break;
+                case Mnemonic.bl: RewriteB(true); break;
+                case Mnemonic.blx: RewriteB(true); break;
+                case Mnemonic.bx: RewriteB(false); break;
+                case Mnemonic.bxj: RewriteB(false); break; //$REVIEW: starting with ARMv8, behaves exactly as BX
+                case Mnemonic.cbz: RewriteCbnz(m.Eq0); break;
+                case Mnemonic.cbnz: RewriteCbnz(m.Ne0); break;
+                case Mnemonic.cdp: RewriteCdp("__cdp"); break;
+                case Mnemonic.cdp2: RewriteCdp("__cdp2"); break;
+                case Mnemonic.clz: RewriteClz(); break;
+                case Mnemonic.cmn: RewriteCmp(m.IAdd); break;
+                case Mnemonic.cmp: RewriteCmp(m.ISub); break;
+                case Mnemonic.cps: RewriteCps("__cps"); break;
+                case Mnemonic.cpsid: RewriteCps("__cps_id"); break;
+                case Mnemonic.crc32b: RewriteCrc("__crc32b", PrimitiveType.UInt8); break;
+                case Mnemonic.crc32h: RewriteCrc("__crc32h", PrimitiveType.UInt16); break;
+                case Mnemonic.crc32w: RewriteCrc("__crc32w", PrimitiveType.UInt32); break;
+                case Mnemonic.crc32cb: RewriteCrc("__crc32cb", PrimitiveType.UInt8); break;
+                case Mnemonic.crc32ch: RewriteCrc("__crc32ch", PrimitiveType.UInt16); break;
+                case Mnemonic.crc32cw: RewriteCrc("__crc32cw", PrimitiveType.UInt32); break;
+                case Mnemonic.dsb: RewriteDsb(); break;
+                case Mnemonic.dmb: RewriteDmb(); break;
+                case Mnemonic.eor: RewriteLogical(m.Xor); break;
+                case Mnemonic.eret: RewriteEret(); break;
+                case Mnemonic.hint: RewriteHint(); break;
+                case Mnemonic.hlt: RewriteHlt(); break;
+                case Mnemonic.hvc: RewriteHvc(); break;
+                case Mnemonic.isb: RewriteIsb(); break;
+                case Mnemonic.it: RewriteIt(); break;
+                case Mnemonic.ldc2l: RewriteLdc("__ldc2l"); break;
+                case Mnemonic.ldc2: RewriteLdc("__ldc2"); break;
+                case Mnemonic.ldcl: RewriteLdc("__ldcl"); break;
+                case Mnemonic.ldc: RewriteLdc("__ldc"); break;
+                case Mnemonic.ldm: RewriteLdm(0, m.IAdd); break;
+                case Mnemonic.ldmda: RewriteLdm(0, m.ISub); break;
+                case Mnemonic.ldmdb: RewriteLdm(-4, m.ISub); break;
+                case Mnemonic.ldmib: RewriteLdm(4, m.IAdd); break;
+                case Mnemonic.ldr: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Word32); break;
+                case Mnemonic.ldrt: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Word32); break;
+                case Mnemonic.ldrb: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Byte); break;
+                case Mnemonic.ldrbt: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Byte); break;
+                case Mnemonic.ldrh: RewriteLdr(PrimitiveType.Word32, PrimitiveType.UInt16); break;
+                case Mnemonic.ldrht: RewriteLdr(PrimitiveType.Word32, PrimitiveType.UInt16); break;
+                case Mnemonic.ldrsb: RewriteLdr(PrimitiveType.Word32, PrimitiveType.SByte); break;
+                case Mnemonic.ldrsbt: RewriteLdr(PrimitiveType.Word32, PrimitiveType.SByte); break;
+                case Mnemonic.ldrsh: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Int16); break;
+                case Mnemonic.ldrsht: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Int16); break;
+                case Mnemonic.ldrd: RewriteLdrd(); break;
+                case Mnemonic.ldrex: RewriteLdrex(); break;
+                case Mnemonic.lsl: case Mnemonic.lsls: RewriteShift(m.Shl); break;
+                case Mnemonic.lsr: RewriteShift(m.Shr); break;
+                case Mnemonic.nop: m.Nop(); break;
+                case Mnemonic.mcr: RewriteMcr(); break;
+                case Mnemonic.mcrr: RewriteMcrr(); break;
+                case Mnemonic.mla: RewriteMultiplyAccumulate(m.IAdd); break;
+                case Mnemonic.mls: RewriteMultiplyAccumulate(m.ISub); break;
+                case Mnemonic.mov: RewriteMov(); break;
+                case Mnemonic.movt: RewriteMovt(); break;
+                case Mnemonic.movw: RewriteMovw(); break;
+                case Mnemonic.mrc: RewriteMrc(); break;
+                case Mnemonic.mrrc: RewriteMrrc(); break;
+                case Mnemonic.mrs: RewriteMrs(); break;
+                case Mnemonic.msr: RewriteMsr(); break;
+                case Mnemonic.mul: RewriteBinOp(m.IMul); break;
+                case Mnemonic.mvn: RewriteUnaryOp(m.Comp); break;
+                case Mnemonic.orn: RewriteLogical((a, b) => m.Or(a, m.Comp(b))); break;
+                case Mnemonic.orr: RewriteLogical(m.Or); break;
+                case Mnemonic.pkhbt: RewritePk("__pkhbt"); break;
+                case Mnemonic.pkhtb: RewritePk("__pkhtb"); break;
+                case Mnemonic.pld: RewritePld("__pld"); break;
+                case Mnemonic.pldw: RewritePld("__pldw"); break;
+                case Mnemonic.pop: RewritePop(); break;
+                case Mnemonic.push: RewritePush(); break;
+                case Mnemonic.qadd: RewriteQAddSub(m.IAdd); break;
+                case Mnemonic.qadd16: RewriteVectorBinOp("__qadd_{0}", ArmVectorData.S16); break;
+                case Mnemonic.qadd8: RewriteVectorBinOp("__qadd_{0}", ArmVectorData.S8); break;
+                case Mnemonic.qdadd: RewriteQDAddSub(m.IAdd); break;
+                case Mnemonic.qasx: RewriteQasx("__qasx"); break;
+                case Mnemonic.qdsub: RewriteQDAddSub(m.ISub); break;
+                case Mnemonic.qsax: RewriteQasx("__qsax"); break;
+                case Mnemonic.qsub: RewriteQAddSub(m.ISub); break;
+                case Mnemonic.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
+                case Mnemonic.ror: RewriteShift(Ror); break;
+                case Mnemonic.rrx: RewriteShift(Rrx); break;
+                case Mnemonic.rev: RewriteRev(); break;
+                case Mnemonic.rsb: RewriteRevBinOp(m.ISub, instr.SetFlags); break;
+                case Mnemonic.rsc: RewriteAdcSbc(m.ISub, true); break;
+                case Mnemonic.sadd16: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S16); break;
+                case Mnemonic.sadd8: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S8); break;
+                case Mnemonic.sasx: RewriteQasx("__sasx"); break;
+                case Mnemonic.sbc: RewriteAdcSbc(m.ISub, false); break;
+                case Mnemonic.sbfx: RewriteSbfx(); break;
+                case Mnemonic.sdiv: RewriteDiv(m.SDiv); break;
+                case Mnemonic.setend: RewriteSetend(); break;
+                case Mnemonic.shsub16: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S16); break;
+                case Mnemonic.shsub8: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S8); break;
+                case Mnemonic.smc: RewriteSmc(); break;
+                case Mnemonic.smlabb: RewriteMla(false, false, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smlabt: RewriteMla(false, true, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smlad: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Mnemonic.smladx: RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Mnemonic.smlalbb: RewriteMlal(false, false, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smlalbt: RewriteMlal(false, true, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smlald: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Mnemonic.smlaldx: RewriteMlxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Mnemonic.smlaltb: RewriteMlal(true, false, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smlaltt: RewriteMlal(true, true, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smlal: RewriteSmlal(); break;
+                case Mnemonic.smlatb: RewriteMla(true, false, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smlatt: RewriteMla(true, true, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smlawb: RewriteSmlaw(false); break;
+                case Mnemonic.smlawt: RewriteSmlaw(true); break;
+                case Mnemonic.smlsd: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.ISub); break;
+                case Mnemonic.smlsdx: RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
+                case Mnemonic.smlsld: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.ISub); break;
+                case Mnemonic.smlsldx: RewriteMlxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
+                case Mnemonic.smmla: RewriteSmml(m.IAdd); break;
+                case Mnemonic.smmls: RewriteSmml(m.ISub); break;
+                case Mnemonic.smmul: RewriteSmmul(); break;
+                case Mnemonic.smuad: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Mnemonic.smulbb: RewriteMulbb(false, false, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smulbt: RewriteMulbb(false, true, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smulwb: RewriteMulw(false); break;
+                case Mnemonic.smulwt: RewriteMulw(true); break;
+                case Mnemonic.smultb: RewriteMulbb(true, false, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smultt: RewriteMulbb(true, true, PrimitiveType.Int16, m.SMul); break;
+                case Mnemonic.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
+                case Mnemonic.smusd: RewriteSmusd(); break;
+                case Mnemonic.ssat: RewriteSsat(); break;
+                case Mnemonic.ssat16: RewriteSat16(PrimitiveType.Int16, "__ssat16"); break;
+                case Mnemonic.ssub16: RewriteVectorBinOp("__ssub16", ArmVectorData.S16); break;
+                case Mnemonic.ssub8: RewriteVectorBinOp("__ssub8", ArmVectorData.S8); break;
+                case Mnemonic.stc2l: RewriteStc("__stc2l"); break;
+                case Mnemonic.stc2: RewriteStc("__stc2"); break;
+                case Mnemonic.stc: RewriteStc("__stc"); break;
+                case Mnemonic.stcl: RewriteStc("__stcl"); break;
+                case Mnemonic.stm: RewriteStm(true, true); break;
+                case Mnemonic.stmdb: RewriteStm(false, false); break;
+                case Mnemonic.stmda: RewriteStm(false, true); break;
+                case Mnemonic.stmib: RewriteStm(true, false); break;
+                case Mnemonic.str: RewriteStr(PrimitiveType.Word32); break;
+                case Mnemonic.strb: RewriteStr(PrimitiveType.Byte); break;
+                case Mnemonic.strbt: RewriteStr(PrimitiveType.Byte); break;
+                case Mnemonic.strd: RewriteStrd(); break;
+                case Mnemonic.strex: RewriteStrex(); break;
+                case Mnemonic.strh: RewriteStr(PrimitiveType.UInt16); break;
+                case Mnemonic.strht: RewriteStr(PrimitiveType.UInt16); break;
+                case Mnemonic.strt: RewriteStr(PrimitiveType.Word32); break;
+                case Mnemonic.sub: RewriteBinOp(m.ISub); break;
+                case Mnemonic.subw: RewriteSubw(); break;
+                case Mnemonic.svc: RewriteSvc(); break;
+                case Mnemonic.swp: RewriteSwp(PrimitiveType.Word32); break;
+                case Mnemonic.swpb: RewriteSwp(PrimitiveType.Byte); break;
+                case Mnemonic.sxtab: RewriteXtab(PrimitiveType.SByte); break;
+                case Mnemonic.sxtah: RewriteXtab(PrimitiveType.Int16); break;
+                case Mnemonic.sxtb: RewriteXtb(PrimitiveType.SByte, PrimitiveType.Int32); break;
+                case Mnemonic.sxth: RewriteXtb(PrimitiveType.Int16, PrimitiveType.Int32); break;
+                case Mnemonic.tbb: RewriteTableBranch(PrimitiveType.Byte); break;
+                case Mnemonic.tbh: RewriteTableBranch(PrimitiveType.Word16); break;
+                case Mnemonic.teq: RewriteTeq(); break;
+                case Mnemonic.trap: RewriteTrap(); break;
+                case Mnemonic.tst: RewriteTst(); break;
+                case Mnemonic.uadd16: RewriteVectorBinOp("__uadd_{0}", ArmVectorData.I16); break;
+                case Mnemonic.uadd8: RewriteVectorBinOp("__uadd_{0}", ArmVectorData.I8); break;
+                case Mnemonic.uasx: RewriteUasx(); break;
+                case Mnemonic.ubfx: RewriteUbfx(); break;
+                case Mnemonic.udf: RewriteUdf(); break;
+                case Mnemonic.udiv: RewriteDiv(m.UDiv); break;
+                case Mnemonic.umaal: RewriteUmaal(); break;
+                case Mnemonic.umlal: RewriteUmlal(); break;
+                case Mnemonic.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
+                case Mnemonic.uqasx: RewriteVectorBinOp("__uqasx_{0}", ArmVectorData.U16); break;
+                case Mnemonic.uqadd16: RewriteVectorBinOp("__uqadd_{0}", ArmVectorData.U16); break;
+                case Mnemonic.uqadd8: RewriteVectorBinOp("__uqadd_{0}", ArmVectorData.U8); break;
+                case Mnemonic.uqsax: RewriteVectorBinOp("__uqsax_{0}", ArmVectorData.U16); break;
+                case Mnemonic.uqsub16: RewriteVectorBinOp("__uqsub_{0}", ArmVectorData.U16); break;
+                case Mnemonic.uqsub8: RewriteVectorBinOp("__uqsub_{0}", ArmVectorData.U8); break;
+                case Mnemonic.usada8: RewriteUsada8(); break;
+                case Mnemonic.usat: RewriteUsat(); break;
+                case Mnemonic.usat16: RewriteSat16(PrimitiveType.UInt16, "__usat16"); break;
+                case Mnemonic.usax: RewriteUsax(); break;
+                case Mnemonic.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
+                case Mnemonic.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
+                case Mnemonic.uxtab: RewriteXtab(PrimitiveType.Byte); break;
+                case Mnemonic.uxtah: RewriteXtab(PrimitiveType.UInt16); break;
+                case Mnemonic.uxtb: RewriteXtb(PrimitiveType.Byte, PrimitiveType.UInt32); break;
+                case Mnemonic.uxth: RewriteXtb(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
+                case Mnemonic.wfi: RewriteWfi(); break;
+                case Mnemonic.yield: RewriteYield(); break;
 
 
-                case Opcode.vabs: RewriteVectorUnaryOp("__vabs_{0}"); break;
-                case Opcode.vaba: RewriteVectorBinOp("__vaba_{0}"); break;
-                case Opcode.vabd: RewriteVectorBinOp("__vabd_{0}"); break;
-                case Opcode.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
-                case Opcode.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
-                case Opcode.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
-                case Opcode.vand: RewriteVecBinOp(m.And); break;
-                case Opcode.vcmp: RewriteVcmp(); break;
-                case Opcode.vbif: RewriteIntrinsic("__vbif", Domain.UnsignedInt); break;
-                case Opcode.vbit: RewriteIntrinsic("__vbit", Domain.UnsignedInt); break;
-                case Opcode.vceq: RewriteVectorBinOp("__vceq_{0}"); break;
-                case Opcode.vcge: RewriteVectorBinOp("__vcge_{0}"); break;
-                case Opcode.vcgt: RewriteVectorBinOp("__vcgt_{0}"); break;
-                case Opcode.vcle: RewriteVectorBinOp("__vcle_{0}"); break;
-                case Opcode.vclt: RewriteVectorBinOp("__vclt_{0}"); break;
-                case Opcode.vcmpe: RewriteVcmp(); break;
-                case Opcode.vcvt: RewriteVcvt(); break;
-                case Opcode.vcvtr: RewriteVcvtr(); break;
-                case Opcode.vdiv: RewriteVecBinOp(m.FDiv); break;
-                case Opcode.vdup: RewriteVdup(); break;
-                case Opcode.veor: RewriteVecBinOp(m.Xor); break;
-                case Opcode.vext: RewriteVext(); break;
-                case Opcode.vhadd: RewriteVectorBinOp("__vhadd_{0}"); break;
-                case Opcode.vhsub: RewriteVectorBinOp("__vhsub_{0}"); break;
-                case Opcode.vldmia: RewriteVldmia(); break;
-                case Opcode.vldr: RewriteVldr(); break;
-                case Opcode.vmax: RewriteVectorBinOp("__vmax_{0}"); break;
-                case Opcode.vmin: RewriteVectorBinOp("__vmin_{0}"); break;
-                case Opcode.vmov: RewriteVmov(); break;
-                case Opcode.vmla: RewriteVectorBinOp("__vmla_{0}"); break;
-                case Opcode.vmls: RewriteVectorBinOp("__vmls_{0}"); break;
-                case Opcode.vmlal: RewriteVectorBinOp("__vmlal_{0}"); break;
-                case Opcode.vmlsl: RewriteVectorBinOp("__vmlsl_{0}"); break;
-                case Opcode.vmrs: RewriteVmrs(); break;
-                case Opcode.vmvn: RewriteVmvn(); break;
-                case Opcode.vmul: RewriteVectorBinOp("__vmul_{0}"); break;
-                case Opcode.vmull: RewriteVectorBinOp("__vmull_{0}"); break;
-                case Opcode.vorr: RewriteVecBinOp(m.Or); break;
-                case Opcode.vneg: RewriteVectorUnaryOp("__vneg_{0}"); break;
-                case Opcode.vnmla: RewriteVectorBinOp("__vnmla_{0}"); break;
-                case Opcode.vnmls: RewriteVectorBinOp("__vnmls_{0}"); break;
-                case Opcode.vnmul: RewriteVectorBinOp("__vnmul_{0}"); break;
-                case Opcode.vpadd: RewriteVectorBinOp("__vpadd_{0}"); break;
-                case Opcode.vpmax: RewriteVectorBinOp("__vpmax_{0}"); break;
-                case Opcode.vpmin: RewriteVectorBinOp("__vpmin_{0}"); break;
-                case Opcode.vpop: RewriteVpop(); break;
-                case Opcode.vpush: RewriteVpush(); break;
-                case Opcode.vqabs: RewriteVectorBinOp("__vqabs_{0}"); break;
-                case Opcode.vqadd: RewriteVectorBinOp("__vqadd_{0}"); break;
-                case Opcode.vqshl: RewriteVectorBinOp("__vqshl_{0}"); break;
-                case Opcode.vrhadd: RewriteVectorBinOp("__vrhadd_{0}"); break;
-                case Opcode.vrshl: RewriteVectorBinOp("__vrshl_{0}"); break;
-                case Opcode.vrshr: RewriteVectorBinOp("__vrshr_{0}"); break;
-                case Opcode.vrsra: RewriteVectorBinOp("__vrsra_{0}"); break;
-                case Opcode.vrsubhn: RewriteVectorBinOp("__vrsubhn_{0}"); break;
-                case Opcode.vseleq: RewriteVectorBinOp("__vseleq_{0}"); break;
-                case Opcode.vselge: RewriteVectorBinOp("__vselge_{0}"); break;
-                case Opcode.vselgt: RewriteVectorBinOp("__vselgt_{0}"); break;
-                case Opcode.vselvs: RewriteVectorBinOp("__vselvs_{0}"); break;
-                case Opcode.vstm: RewriteVstmia(true, false); break;
-                case Opcode.vstmdb: RewriteVstmia(false, true); break;
-                case Opcode.vstmia: RewriteVstmia(true, true); break;
-                case Opcode.vsqrt: RewriteVsqrt(); break;
-                case Opcode.vshl: RewriteVectorBinOp("__vshl_{0}"); break;
-                case Opcode.vshll: RewriteVectorBinOp("__vshll_{0}"); break;
-                case Opcode.vshr: RewriteVectorBinOp("__vshr_{0}"); break;
-                case Opcode.vsli: RewriteVectorBinOp("__vsli_{0}"); break;
-                case Opcode.vsra: RewriteVectorBinOp("__vsra_{0}"); break;
-                case Opcode.vsri: RewriteVectorBinOp("__vsri_{0}"); break;
-                case Opcode.vstr: RewriteVstr(); break;
-                case Opcode.vsub: RewriteVectorBinOp("__vsub_{0}"); break;
-                case Opcode.vsubl: RewriteVectorBinOp("__vsubl_{0}"); break;
-                case Opcode.vsubw: RewriteVectorBinOp("__vsubw_{0}"); break;
-                case Opcode.vtst: RewriteVectorBinOp("__vtst_{0}"); break;
+                case Mnemonic.vabs: RewriteVectorUnaryOp("__vabs_{0}"); break;
+                case Mnemonic.vaba: RewriteVectorBinOp("__vaba_{0}"); break;
+                case Mnemonic.vabd: RewriteVectorBinOp("__vabd_{0}"); break;
+                case Mnemonic.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
+                case Mnemonic.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
+                case Mnemonic.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
+                case Mnemonic.vand: RewriteVecBinOp(m.And); break;
+                case Mnemonic.vcmp: RewriteVcmp(); break;
+                case Mnemonic.vbif: RewriteIntrinsic("__vbif", Domain.UnsignedInt); break;
+                case Mnemonic.vbit: RewriteIntrinsic("__vbit", Domain.UnsignedInt); break;
+                case Mnemonic.vceq: RewriteVectorBinOp("__vceq_{0}"); break;
+                case Mnemonic.vcge: RewriteVectorBinOp("__vcge_{0}"); break;
+                case Mnemonic.vcgt: RewriteVectorBinOp("__vcgt_{0}"); break;
+                case Mnemonic.vcle: RewriteVectorBinOp("__vcle_{0}"); break;
+                case Mnemonic.vclt: RewriteVectorBinOp("__vclt_{0}"); break;
+                case Mnemonic.vcmpe: RewriteVcmp(); break;
+                case Mnemonic.vcvt: RewriteVcvt(); break;
+                case Mnemonic.vcvtr: RewriteVcvtr(); break;
+                case Mnemonic.vdiv: RewriteVecBinOp(m.FDiv); break;
+                case Mnemonic.vdup: RewriteVdup(); break;
+                case Mnemonic.veor: RewriteVecBinOp(m.Xor); break;
+                case Mnemonic.vext: RewriteVext(); break;
+                case Mnemonic.vhadd: RewriteVectorBinOp("__vhadd_{0}"); break;
+                case Mnemonic.vhsub: RewriteVectorBinOp("__vhsub_{0}"); break;
+                case Mnemonic.vldmia: RewriteVldmia(); break;
+                case Mnemonic.vldr: RewriteVldr(); break;
+                case Mnemonic.vmax: RewriteVectorBinOp("__vmax_{0}"); break;
+                case Mnemonic.vmin: RewriteVectorBinOp("__vmin_{0}"); break;
+                case Mnemonic.vmov: RewriteVmov(); break;
+                case Mnemonic.vmla: RewriteVectorBinOp("__vmla_{0}"); break;
+                case Mnemonic.vmls: RewriteVectorBinOp("__vmls_{0}"); break;
+                case Mnemonic.vmlal: RewriteVectorBinOp("__vmlal_{0}"); break;
+                case Mnemonic.vmlsl: RewriteVectorBinOp("__vmlsl_{0}"); break;
+                case Mnemonic.vmrs: RewriteVmrs(); break;
+                case Mnemonic.vmvn: RewriteVmvn(); break;
+                case Mnemonic.vmul: RewriteVectorBinOp("__vmul_{0}"); break;
+                case Mnemonic.vmull: RewriteVectorBinOp("__vmull_{0}"); break;
+                case Mnemonic.vorr: RewriteVecBinOp(m.Or); break;
+                case Mnemonic.vneg: RewriteVectorUnaryOp("__vneg_{0}"); break;
+                case Mnemonic.vnmla: RewriteVectorBinOp("__vnmla_{0}"); break;
+                case Mnemonic.vnmls: RewriteVectorBinOp("__vnmls_{0}"); break;
+                case Mnemonic.vnmul: RewriteVectorBinOp("__vnmul_{0}"); break;
+                case Mnemonic.vpadd: RewriteVectorBinOp("__vpadd_{0}"); break;
+                case Mnemonic.vpmax: RewriteVectorBinOp("__vpmax_{0}"); break;
+                case Mnemonic.vpmin: RewriteVectorBinOp("__vpmin_{0}"); break;
+                case Mnemonic.vpop: RewriteVpop(); break;
+                case Mnemonic.vpush: RewriteVpush(); break;
+                case Mnemonic.vqabs: RewriteVectorBinOp("__vqabs_{0}"); break;
+                case Mnemonic.vqadd: RewriteVectorBinOp("__vqadd_{0}"); break;
+                case Mnemonic.vqshl: RewriteVectorBinOp("__vqshl_{0}"); break;
+                case Mnemonic.vrhadd: RewriteVectorBinOp("__vrhadd_{0}"); break;
+                case Mnemonic.vrshl: RewriteVectorBinOp("__vrshl_{0}"); break;
+                case Mnemonic.vrshr: RewriteVectorBinOp("__vrshr_{0}"); break;
+                case Mnemonic.vrsra: RewriteVectorBinOp("__vrsra_{0}"); break;
+                case Mnemonic.vrsubhn: RewriteVectorBinOp("__vrsubhn_{0}"); break;
+                case Mnemonic.vseleq: RewriteVectorBinOp("__vseleq_{0}"); break;
+                case Mnemonic.vselge: RewriteVectorBinOp("__vselge_{0}"); break;
+                case Mnemonic.vselgt: RewriteVectorBinOp("__vselgt_{0}"); break;
+                case Mnemonic.vselvs: RewriteVectorBinOp("__vselvs_{0}"); break;
+                case Mnemonic.vstm: RewriteVstmia(true, false); break;
+                case Mnemonic.vstmdb: RewriteVstmia(false, true); break;
+                case Mnemonic.vstmia: RewriteVstmia(true, true); break;
+                case Mnemonic.vsqrt: RewriteVsqrt(); break;
+                case Mnemonic.vshl: RewriteVectorBinOp("__vshl_{0}"); break;
+                case Mnemonic.vshll: RewriteVectorBinOp("__vshll_{0}"); break;
+                case Mnemonic.vshr: RewriteVectorBinOp("__vshr_{0}"); break;
+                case Mnemonic.vsli: RewriteVectorBinOp("__vsli_{0}"); break;
+                case Mnemonic.vsra: RewriteVectorBinOp("__vsra_{0}"); break;
+                case Mnemonic.vsri: RewriteVectorBinOp("__vsri_{0}"); break;
+                case Mnemonic.vstr: RewriteVstr(); break;
+                case Mnemonic.vsub: RewriteVectorBinOp("__vsub_{0}"); break;
+                case Mnemonic.vsubl: RewriteVectorBinOp("__vsubl_{0}"); break;
+                case Mnemonic.vsubw: RewriteVectorBinOp("__vsubw_{0}"); break;
+                case Mnemonic.vtst: RewriteVectorBinOp("__vtst_{0}"); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
                 {
@@ -675,11 +675,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (cc == ArmCondition.AL)
                     return; // never skip!
-                if (instr.opcode == Opcode.b ||
-                    instr.opcode == Opcode.bl ||
-                    instr.opcode == Opcode.blx ||
-                    instr.opcode == Opcode.bx ||
-                    instr.opcode == Opcode.bxj)
+                if (instr.opcode == Mnemonic.b ||
+                    instr.opcode == Mnemonic.bl ||
+                    instr.opcode == Mnemonic.blx ||
+                    instr.opcode == Mnemonic.bx ||
+                    instr.opcode == Mnemonic.bxj)
                 {
                     // These instructions handle the branching themselves.
                     return;
@@ -777,23 +777,23 @@ namespace Reko.Arch.Arm.AArch32
                             // to translate rotates / right-shifts?
                             switch (mop.ShiftType)
                             {
-                            case Opcode.Invalid:
+                            case Mnemonic.Invalid:
                                 ea = m.IAdd(ea, ireg);
                                 break;
-                            case Opcode.lsl:
+                            case Mnemonic.lsl:
                                 ea = m.IAdd(ea, m.IMul(ireg, Constant.Int32(1 << mop.Shift)));
                                 break;
-                            case Opcode.lsr:
+                            case Mnemonic.lsr:
                                 ea = m.IAdd(ea, m.Shr(ireg, Constant.Int32(mop.Shift)));
                                 break;
-                            case Opcode.asr:
+                            case Mnemonic.asr:
                                 ea = m.IAdd(ea, m.Sar(ireg, Constant.Int32(mop.Shift)));
                                 break;
-                            case Opcode.ror:
+                            case Mnemonic.ror:
                                 var ix = host.PseudoProcedure(PseudoProcedure.Ror, ireg.DataType, ireg, Constant.Int32(mop.Shift));
                                 ea = m.IAdd(ea, ix);
                                 break;
-                            case Opcode.rrx:
+                            case Mnemonic.rrx:
                                 var rrx = host.PseudoProcedure(PseudoProcedure.RorC, ireg.DataType, ireg, Constant.Int32(mop.Shift), C());
                                 ea = m.IAdd(ea, rrx);
                                 break;
@@ -813,7 +813,7 @@ namespace Reko.Arch.Arm.AArch32
                         else if (mop.Index != null)
                         {
                             Expression idx = Reg(mop.Index);
-                            if (mop.ShiftType != Opcode.Invalid)
+                            if (mop.ShiftType != Mnemonic.Invalid)
                             {
                                 var sh = m.Int32(mop.Shift);
                                 idx = MaybeShiftExpression(idx, sh, mop.ShiftType);
@@ -854,36 +854,36 @@ namespace Reko.Arch.Arm.AArch32
         {
             switch (instr.opcode)
             {
-            case Opcode.ldc: return PrimitiveType.Word32;
-            case Opcode.ldc2: return PrimitiveType.Word32;
-            case Opcode.ldc2l: return PrimitiveType.Word32;
-            case Opcode.ldcl: return PrimitiveType.Word32;
-            case Opcode.ldr: return PrimitiveType.Word32;
-            case Opcode.ldrt: return PrimitiveType.Word32;
-            case Opcode.ldrb: return PrimitiveType.Byte;
-            case Opcode.ldrbt: return PrimitiveType.Byte;
-            case Opcode.ldrd: return PrimitiveType.Word64;
-            case Opcode.ldrh: return PrimitiveType.Word16;
-            case Opcode.ldrht: return PrimitiveType.Word16;
-            case Opcode.ldrsb: return PrimitiveType.SByte;
-            case Opcode.ldrsbt: return PrimitiveType.SByte;
-            case Opcode.ldrsh: return PrimitiveType.Int16;
-            case Opcode.ldrsht: return PrimitiveType.Int16;
-            case Opcode.stc: return PrimitiveType.Word32;
-            case Opcode.stc2: return PrimitiveType.Word32;
-            case Opcode.stc2l: return PrimitiveType.Word32;
-            case Opcode.stcl: return PrimitiveType.Word32;
-            case Opcode.str: return PrimitiveType.Word32;
-            case Opcode.strt: return PrimitiveType.Word32;
-            case Opcode.strb: return PrimitiveType.Byte;
-            case Opcode.strbt: return PrimitiveType.Byte;
-            case Opcode.strd: return PrimitiveType.Word64;
-            case Opcode.strh: return PrimitiveType.Word16;
-            case Opcode.strht: return PrimitiveType.Word16;
-            case Opcode.swp: return PrimitiveType.Word32;
-            case Opcode.swpb: return PrimitiveType.Byte;
-            case Opcode.vldr: return Dst().Width;
-            case Opcode.vstr: return Dst().Width;
+            case Mnemonic.ldc: return PrimitiveType.Word32;
+            case Mnemonic.ldc2: return PrimitiveType.Word32;
+            case Mnemonic.ldc2l: return PrimitiveType.Word32;
+            case Mnemonic.ldcl: return PrimitiveType.Word32;
+            case Mnemonic.ldr: return PrimitiveType.Word32;
+            case Mnemonic.ldrt: return PrimitiveType.Word32;
+            case Mnemonic.ldrb: return PrimitiveType.Byte;
+            case Mnemonic.ldrbt: return PrimitiveType.Byte;
+            case Mnemonic.ldrd: return PrimitiveType.Word64;
+            case Mnemonic.ldrh: return PrimitiveType.Word16;
+            case Mnemonic.ldrht: return PrimitiveType.Word16;
+            case Mnemonic.ldrsb: return PrimitiveType.SByte;
+            case Mnemonic.ldrsbt: return PrimitiveType.SByte;
+            case Mnemonic.ldrsh: return PrimitiveType.Int16;
+            case Mnemonic.ldrsht: return PrimitiveType.Int16;
+            case Mnemonic.stc: return PrimitiveType.Word32;
+            case Mnemonic.stc2: return PrimitiveType.Word32;
+            case Mnemonic.stc2l: return PrimitiveType.Word32;
+            case Mnemonic.stcl: return PrimitiveType.Word32;
+            case Mnemonic.str: return PrimitiveType.Word32;
+            case Mnemonic.strt: return PrimitiveType.Word32;
+            case Mnemonic.strb: return PrimitiveType.Byte;
+            case Mnemonic.strbt: return PrimitiveType.Byte;
+            case Mnemonic.strd: return PrimitiveType.Word64;
+            case Mnemonic.strh: return PrimitiveType.Word16;
+            case Mnemonic.strht: return PrimitiveType.Word16;
+            case Mnemonic.swp: return PrimitiveType.Word32;
+            case Mnemonic.swpb: return PrimitiveType.Byte;
+            case Mnemonic.vldr: return Dst().Width;
+            case Mnemonic.vstr: return Dst().Width;
             }
             return VoidType.Instance;
         }
@@ -893,7 +893,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (op != instr.Operands[instr.Operands.Length - 1])
                 return exp;
-            if (instr.ShiftType == Opcode.Invalid)
+            if (instr.ShiftType == Mnemonic.Invalid)
                 return exp;
 
             Expression sh;
@@ -905,15 +905,15 @@ namespace Reko.Arch.Arm.AArch32
             return MaybeShiftExpression(exp, sh, instr.ShiftType);
         }
 
-        private Expression MaybeShiftExpression(Expression exp, Expression sh, Opcode shiftType)
+        private Expression MaybeShiftExpression(Expression exp, Expression sh, Mnemonic shiftType)
         {
             switch (shiftType)
             {
-            case Opcode.asr: return m.Sar(exp, sh);
-            case Opcode.lsl: return m.Shl(exp, sh);
-            case Opcode.lsr: return m.Sar(exp, sh);
-            case Opcode.ror: return host.PseudoProcedure(PseudoProcedure.Ror, exp.DataType, exp, sh);
-            case Opcode.rrx:
+            case Mnemonic.asr: return m.Sar(exp, sh);
+            case Mnemonic.lsl: return m.Shl(exp, sh);
+            case Mnemonic.lsr: return m.Sar(exp, sh);
+            case Mnemonic.ror: return host.PseudoProcedure(PseudoProcedure.Ror, exp.DataType, exp, sh);
+            case Mnemonic.rrx:
                 return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, C());
             default: return exp;
             }
@@ -936,7 +936,7 @@ namespace Reko.Arch.Arm.AArch32
             else if (mop.Index != null)
             {
                 idx = binder.EnsureRegister(mop.Index);
-                if (mop.ShiftType != Opcode.Invalid)
+                if (mop.ShiftType != Mnemonic.Invalid)
                 {
                     var sh = Constant.Int32(mop.Shift);
                     idx = MaybeShiftExpression(idx, sh, mop.ShiftType);
@@ -1055,7 +1055,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
-        private static HashSet<Opcode> opcode_seen = new HashSet<Opcode>();
+        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
 
         void EmitUnitTest(AArch32Instruction instr)
         {

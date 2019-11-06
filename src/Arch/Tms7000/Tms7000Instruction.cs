@@ -25,7 +25,7 @@ namespace Reko.Arch.Tms7000
 {
     public class Tms7000Instruction : MachineInstruction
     {
-        public Opcode Mnemonic;
+        public Mnemonic Mnemonic;
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 

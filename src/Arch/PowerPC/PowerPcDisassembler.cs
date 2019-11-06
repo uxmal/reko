@@ -64,14 +64,14 @@ namespace Reko.Arch.PowerPC
 
         protected override PowerPcInstruction CreateInvalidInstruction()
         {
-            return new PowerPcInstruction(Opcode.illegal)
+            return new PowerPcInstruction(Mnemonic.illegal)
             {
                 InstructionClass = InstrClass.Invalid,
                 Operands = new MachineOperand[0],
             };
         }
 
-        private PowerPcInstruction MakeInstruction(InstrClass iclass, Opcode opcode)
+        private PowerPcInstruction MakeInstruction(InstrClass iclass, Mnemonic opcode)
         {
             return new PowerPcInstruction(opcode)
             {
@@ -367,7 +367,7 @@ namespace Reko.Arch.PowerPC
             //        }}
             //");
 #endif
-            return new PowerPcInstruction(Opcode.illegal)
+            return new PowerPcInstruction(Mnemonic.illegal)
             {
                 InstructionClass = InstrClass.Invalid
             };

@@ -26,7 +26,7 @@ namespace Reko.Arch.Alpha
 {
     public class AlphaInstruction : MachineInstruction
     {
-        public Opcode Mnemonic;
+        public Mnemonic Mnemonic;
 
         public override int OpcodeAsInteger => (int)Mnemonic;
 

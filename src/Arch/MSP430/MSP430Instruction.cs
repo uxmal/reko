@@ -29,7 +29,7 @@ namespace Reko.Arch.Msp430
 {
     public class Msp430Instruction : MachineInstruction
     {
-        public Opcode opcode;
+        public Mnemonics opcode;
         public PrimitiveType dataWidth;
         public int repeatImm;
         public RegisterStorage repeatReg;
@@ -76,7 +76,7 @@ namespace Reko.Arch.Msp430
             {
                 writer.WriteString("&");
             }
-            if (op is ImmediateOperand && opcode != Opcode.call)
+            if (op is ImmediateOperand && opcode != Mnemonics.call)
             {
                 writer.WriteString("#");
             }

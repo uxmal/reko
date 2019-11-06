@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
-    using Decoder = Decoder<Tlcs90Disassembler, Opcode, Tlcs90Instruction>;
+    using Decoder = Decoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>;
 
     partial class Tlcs90Disassembler
     {
@@ -56,25 +56,25 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // 10
-            Instr(Opcode.rld, x),
-            Instr(Opcode.rrd, x),
-            Instr(Opcode.mul, H,x),
-            Instr(Opcode.div, H,x),
+            Instr(Mnemonic.rld, x),
+            Instr(Mnemonic.rrd, x),
+            Instr(Mnemonic.mul, H,x),
+            Instr(Mnemonic.div, H,x),
 
-            Instr(Opcode.add, X,x),
-            Instr(Opcode.add, Y,x),
-            Instr(Opcode.add, S,x),
+            Instr(Mnemonic.add, X,x),
+            Instr(Mnemonic.add, Y,x),
+            Instr(Mnemonic.add, S,x),
             invalid,
 
-            Instr(Opcode.tset, i,x),
-            Instr(Opcode.tset, i,x),
-            Instr(Opcode.tset, i,x),
-            Instr(Opcode.tset, i,x),
+            Instr(Mnemonic.tset, i,x),
+            Instr(Mnemonic.tset, i,x),
+            Instr(Mnemonic.tset, i,x),
+            Instr(Mnemonic.tset, i,x),
 
-            Instr(Opcode.tset, i,x),
-            Instr(Opcode.tset, i,x),
-            Instr(Opcode.tset, i,x),
-            Instr(Opcode.tset, i,x),
+            Instr(Mnemonic.tset, i,x),
+            Instr(Mnemonic.tset, i,x),
+            Instr(Mnemonic.tset, i,x),
+            Instr(Mnemonic.tset, i,x),
 
             // 20
             invalid,
@@ -87,14 +87,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
 
-            Instr(Opcode.ld, r,x),
-            Instr(Opcode.ld, r,x),
-            Instr(Opcode.ld, r,x),
-            Instr(Opcode.ld, r,x),
+            Instr(Mnemonic.ld, r,x),
+            Instr(Mnemonic.ld, r,x),
+            Instr(Mnemonic.ld, r,x),
+            Instr(Mnemonic.ld, r,x),
 
-            Instr(Opcode.ld, r,x),
-            Instr(Opcode.ld, r,x),
-            Instr(Opcode.ld, r,x),
+            Instr(Mnemonic.ld, r,x),
+            Instr(Mnemonic.ld, r,x),
+            Instr(Mnemonic.ld, r,x),
             invalid,
 
             // 30
@@ -129,25 +129,25 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
 
-            Instr(Opcode.ld, B,x),
-            Instr(Opcode.ld, D,x),
-            Instr(Opcode.ld, H,x),
+            Instr(Mnemonic.ld, B,x),
+            Instr(Mnemonic.ld, D,x),
+            Instr(Mnemonic.ld, H,x),
             invalid,
 
-            Instr(Opcode.ld, X,x),
-            Instr(Opcode.ld, Y,x),
-            Instr(Opcode.ld, S,x),
+            Instr(Mnemonic.ld, X,x),
+            Instr(Mnemonic.ld, Y,x),
+            Instr(Mnemonic.ld, S,x),
             invalid,
 
             // 50
-            Instr(Opcode.ex, x,B),
-            Instr(Opcode.ex, x,D),
-            Instr(Opcode.ex, x,H),
+            Instr(Mnemonic.ex, x,B),
+            Instr(Mnemonic.ex, x,D),
+            Instr(Mnemonic.ex, x,H),
             invalid,
 
-            Instr(Opcode.ex, x,X),
-            Instr(Opcode.ex, x,Y),
-            Instr(Opcode.ex, x,S),
+            Instr(Mnemonic.ex, x,X),
+            Instr(Mnemonic.ex, x,Y),
+            Instr(Mnemonic.ex, x,S),
             invalid,
 
             invalid,
@@ -161,15 +161,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // 60
-            Instr(Opcode.add, a,x),
-            Instr(Opcode.adc, a,x),
-            Instr(Opcode.sub, a,x),
-            Instr(Opcode.sbc, a,x),
+            Instr(Mnemonic.add, a,x),
+            Instr(Mnemonic.adc, a,x),
+            Instr(Mnemonic.sub, a,x),
+            Instr(Mnemonic.sbc, a,x),
 
-            Instr(Opcode.and, a,x),
-            Instr(Opcode.xor, a,x),
-            Instr(Opcode.or,  a,x),
-            Instr(Opcode.cp,  a,x),
+            Instr(Mnemonic.and, a,x),
+            Instr(Mnemonic.xor, a,x),
+            Instr(Mnemonic.or,  a,x),
+            Instr(Mnemonic.cp,  a,x),
 
             invalid,
             invalid,
@@ -182,15 +182,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // 70
-            Instr(Opcode.add, H,x),
-            Instr(Opcode.adc, H,x),
-            Instr(Opcode.sub, H,x),
-            Instr(Opcode.sbc, H,x),
+            Instr(Mnemonic.add, H,x),
+            Instr(Mnemonic.adc, H,x),
+            Instr(Mnemonic.sub, H,x),
+            Instr(Mnemonic.sbc, H,x),
 
-            Instr(Opcode.and, H,x),
-            Instr(Opcode.xor, H,x),
-            Instr(Opcode.or,  H,x),
-            Instr(Opcode.cp,  H,x),
+            Instr(Mnemonic.and, H,x),
+            Instr(Mnemonic.xor, H,x),
+            Instr(Mnemonic.or,  H,x),
+            Instr(Mnemonic.cp,  H,x),
 
             invalid,
             invalid,
@@ -211,7 +211,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            Instr(Opcode.inc, x),
+            Instr(Mnemonic.inc, x),
 
             invalid,
             invalid,
@@ -221,7 +221,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            Instr(Opcode.dec, x),
+            Instr(Mnemonic.dec, x),
 
             // 90
             invalid,
@@ -232,7 +232,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            Instr(Opcode.incw, x),
+            Instr(Mnemonic.incw, x),
 
             invalid,
             invalid,
@@ -242,49 +242,49 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            Instr(Opcode.decw, x),
+            Instr(Mnemonic.decw, x),
 
             // A0
-            Instr(Opcode.rlc, x),
-            Instr(Opcode.rrc, x),
-            Instr(Opcode.rl, x),
-            Instr(Opcode.rr, x),
+            Instr(Mnemonic.rlc, x),
+            Instr(Mnemonic.rrc, x),
+            Instr(Mnemonic.rl, x),
+            Instr(Mnemonic.rr, x),
 
-            Instr(Opcode.sla, x),
-            Instr(Opcode.sra, x),
-            Instr(Opcode.sll, x),
-            Instr(Opcode.srl, x),
+            Instr(Mnemonic.sla, x),
+            Instr(Mnemonic.sra, x),
+            Instr(Mnemonic.sll, x),
+            Instr(Mnemonic.srl, x),
 
-            Instr(Opcode.bit, i,x),
-            Instr(Opcode.bit, i,x),
-            Instr(Opcode.bit, i,x),
-            Instr(Opcode.bit, i,x),
+            Instr(Mnemonic.bit, i,x),
+            Instr(Mnemonic.bit, i,x),
+            Instr(Mnemonic.bit, i,x),
+            Instr(Mnemonic.bit, i,x),
 
-            Instr(Opcode.bit, i,x),
-            Instr(Opcode.bit, i,x),
-            Instr(Opcode.bit, i,x),
-            Instr(Opcode.bit, i,x),
+            Instr(Mnemonic.bit, i,x),
+            Instr(Mnemonic.bit, i,x),
+            Instr(Mnemonic.bit, i,x),
+            Instr(Mnemonic.bit, i,x),
 
             // B0
-            Instr(Opcode.res, i,x),
-            Instr(Opcode.res, i,x),
-            Instr(Opcode.res, i,x),
-            Instr(Opcode.res, i,x),
+            Instr(Mnemonic.res, i,x),
+            Instr(Mnemonic.res, i,x),
+            Instr(Mnemonic.res, i,x),
+            Instr(Mnemonic.res, i,x),
 
-            Instr(Opcode.res, i,x),
-            Instr(Opcode.res, i,x),
-            Instr(Opcode.res, i,x),
-            Instr(Opcode.res, i,x),
+            Instr(Mnemonic.res, i,x),
+            Instr(Mnemonic.res, i,x),
+            Instr(Mnemonic.res, i,x),
+            Instr(Mnemonic.res, i,x),
 
-            Instr(Opcode.set, i,x),
-            Instr(Opcode.set, i,x),
-            Instr(Opcode.set, i,x),
-            Instr(Opcode.set, i,x),
+            Instr(Mnemonic.set, i,x),
+            Instr(Mnemonic.set, i,x),
+            Instr(Mnemonic.set, i,x),
+            Instr(Mnemonic.set, i,x),
 
-            Instr(Opcode.set, i,x),
-            Instr(Opcode.set, i,x),
-            Instr(Opcode.set, i,x),
-            Instr(Opcode.set, i,x),
+            Instr(Mnemonic.set, i,x),
+            Instr(Mnemonic.set, i,x),
+            Instr(Mnemonic.set, i,x),
+            Instr(Mnemonic.set, i,x),
 
             // 00
             invalid,

@@ -190,11 +190,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         {
             var arch = GetArch(PIC18EggName);
             PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
-            Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
-            Assert.AreEqual(Opcode.LFSR, (Opcode)arch.GetOpcodeNumber("LFSR"));
+            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetOpcodeNumber("MOVWF"));
+            Assert.AreEqual(Mnemonic.LFSR, (Mnemonic)arch.GetOpcodeNumber("LFSR"));
             PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
-            Assert.AreEqual(Opcode.LFSR, (Opcode)arch.GetOpcodeNumber("LFSR"));
+            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetOpcodeNumber("MOVWF"));
+            Assert.AreEqual(Mnemonic.LFSR, (Mnemonic)arch.GetOpcodeNumber("LFSR"));
         }
 
         [Test]

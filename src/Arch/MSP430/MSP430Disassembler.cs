@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Msp430
 {
-    using Decoder = Decoder<Msp430Disassembler, Opcode, Msp430Instruction>;
+    using Decoder = Decoder<Msp430Disassembler, Mnemonics, Msp430Instruction>;
 
     public class Msp430Disassembler : DisassemblerBase<Msp430Instruction>
     {
@@ -66,7 +66,7 @@ namespace Reko.Arch.Msp430
 
         private Msp430Instruction SpecialCase(Msp430Instruction instr)
         {
-            if (instr.opcode == Opcode.mov)
+            if (instr.opcode == Mnemonics.mov)
             {
                 if (instr.Operands[1] is RegisterOperand dst &&
                     dst.Register == Registers.pc)
@@ -76,12 +76,12 @@ namespace Reko.Arch.Msp430
                         mem.PostIncrement &&
                         mem.Base == Registers.sp)
                     {
-                        instr.opcode = Opcode.ret;
+                        instr.opcode = Mnemonics.ret;
                         instr.Operands = new MachineOperand[0];
                     }
                     else
                     {
-                        instr.opcode = Opcode.br;
+                        instr.opcode = Mnemonics.br;
                         instr.Operands[1] = null;
                         if (instr.Operands[0] is ImmediateOperand imm)
                         {
@@ -353,7 +353,7 @@ namespace Reko.Arch.Msp430
             return new Msp430Instruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Opcode.invalid,
+                opcode = Mnemonics.invalid,
                 Operands = new MachineOperand[0],
             };
         }
@@ -368,23 +368,23 @@ namespace Reko.Arch.Msp430
             return CreateInvalidInstruction();
         }
 
-        private static InstrDecoder Instr(Opcode opcode, params Mutator<Msp430Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonics opcode, params Mutator<Msp430Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonics opcode, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, mutators);
         }
 
         private class InstrDecoder : Decoder
         {
-            private readonly Opcode opcode;
+            private readonly Mnemonics opcode;
             private readonly InstrClass iclass;
             private readonly Mutator<Msp430Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
+            public InstrDecoder(Mnemonics opcode, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -484,14 +484,14 @@ namespace Reko.Arch.Msp430
                 { 0x00, nyi },
                 { 0x01, nyi },
                 { 0x02, nyi },
-                { 0x04, Instr(Opcode.rrax, W,s) },
-                { 0x05, Instr(Opcode.rrax, W,s) },
+                { 0x04, Instr(Mnemonics.rrax, W,s) },
+                { 0x05, Instr(Mnemonics.rrax, W,s) },
                 { 0x06, nyi },
                 { 0x08, nyi },
                 { 0x09, nyi },
                 { 0x0A, nyi },
                 { 0x0C, new SubDecoder(0, 0x3F, new Dictionary<int, Decoder> {
-                    { 0x00, Instr(Opcode.reti, InstrClass.Transfer) }
+                    { 0x00, Instr(Mnemonics.reti, InstrClass.Transfer) }
                 } ) }
             }),
             invalid,
@@ -515,75 +515,75 @@ namespace Reko.Arch.Msp430
 
         private static readonly ExtDecoder extDecoder = new ExtDecoder(extDecoders);
 
-        private static readonly Decoder invalid = new InstrDecoder(Opcode.invalid, InstrClass.Invalid);
+        private static readonly Decoder invalid = new InstrDecoder(Mnemonics.invalid, InstrClass.Invalid);
 
-        private static readonly Decoder nyi = new NyiDecoder<Msp430Disassembler, Opcode, Msp430Instruction>("");
+        private static readonly Decoder nyi = new NyiDecoder<Msp430Disassembler, Mnemonics, Msp430Instruction>("");
 
         private static readonly SubDecoder rotations = new SubDecoder(8, 0x03, new Dictionary<int, Decoder>
         {
-            { 0x00, Instr(Opcode.rrcm, a,N,r2) },
-            { 0x01, Instr(Opcode.rram, a,N,r2) },
-            { 0x02, Instr(Opcode.rlam, a,N,r2) },
-            { 0x03, Instr(Opcode.rrum, a,N,r2) },
+            { 0x00, Instr(Mnemonics.rrcm, a,N,r2) },
+            { 0x01, Instr(Mnemonics.rram, a,N,r2) },
+            { 0x02, Instr(Mnemonics.rlam, a,N,r2) },
+            { 0x03, Instr(Mnemonics.rrum, a,N,r2) },
         });
 
         private static readonly Decoder[] s_decoders = new Decoder[16]
         {
             new SubDecoder(0x4, 0x0F, new Dictionary<int, Decoder>
             {
-                { 0x00, Instr(Opcode.mova, p,At,r2) }, 
-                { 0x01, Instr(Opcode.mova, p,Post,r2) }, 
-                { 0x02, Instr(Opcode.mova, p,Amp,r2) }, 
-                { 0x03, Instr(Opcode.mova, p,ix,r2) }, 
+                { 0x00, Instr(Mnemonics.mova, p,At,r2) }, 
+                { 0x01, Instr(Mnemonics.mova, p,Post,r2) }, 
+                { 0x02, Instr(Mnemonics.mova, p,Amp,r2) }, 
+                { 0x03, Instr(Mnemonics.mova, p,ix,r2) }, 
 
                 { 0x04, rotations },
                 { 0x05, rotations },
-                { 0x06, Instr(Opcode.mova, p,r,Amp) },
-                { 0x07, Instr(Opcode.mova, p,r,x) },
+                { 0x06, Instr(Mnemonics.mova, p,r,Amp) },
+                { 0x07, Instr(Mnemonics.mova, p,r,x) },
 
-                { 0x08, Instr(Opcode.mova, p,Y,r2) },
-                { 0x09, Instr(Opcode.cmpa, p,Y,r2) },
-                { 0x0A, Instr(Opcode.adda, p,Y,r2) },
-                { 0x0B, Instr(Opcode.suba, p,Y,r2) },
+                { 0x08, Instr(Mnemonics.mova, p,Y,r2) },
+                { 0x09, Instr(Mnemonics.cmpa, p,Y,r2) },
+                { 0x0A, Instr(Mnemonics.adda, p,Y,r2) },
+                { 0x0B, Instr(Mnemonics.suba, p,Y,r2) },
 
-                { 0x0C, Instr(Opcode.mova, p,r,r2) },
-                { 0x0D, Instr(Opcode.cmpa, p,r,r2) },
-                { 0x0E, Instr(Opcode.adda, p,r,r2) },
-                { 0x0F, Instr(Opcode.suba, p,r,r2) },
+                { 0x0C, Instr(Mnemonics.mova, p,r,r2) },
+                { 0x0D, Instr(Mnemonics.cmpa, p,r,r2) },
+                { 0x0E, Instr(Mnemonics.adda, p,r,r2) },
+                { 0x0F, Instr(Mnemonics.suba, p,r,r2) },
             }),
             new SubDecoder(6, 0x3F, new Dictionary<int, Decoder> {
-                { 0x00, Instr(Opcode.rrc, w,s) },
-                { 0x01, Instr(Opcode.rrc, w,s) },
-                { 0x02, Instr(Opcode.swpb, s) },
-                { 0x04, Instr(Opcode.rra, w,s) },
-                { 0x05, Instr(Opcode.rra, w,s) },
-                { 0x06, Instr(Opcode.sxt, w,s) },
-                { 0x08, Instr(Opcode.push, w,s) },
-                { 0x09, Instr(Opcode.push, w,s) },
-                { 0x0A, Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, s) },
+                { 0x00, Instr(Mnemonics.rrc, w,s) },
+                { 0x01, Instr(Mnemonics.rrc, w,s) },
+                { 0x02, Instr(Mnemonics.swpb, s) },
+                { 0x04, Instr(Mnemonics.rra, w,s) },
+                { 0x05, Instr(Mnemonics.rra, w,s) },
+                { 0x06, Instr(Mnemonics.sxt, w,s) },
+                { 0x08, Instr(Mnemonics.push, w,s) },
+                { 0x09, Instr(Mnemonics.push, w,s) },
+                { 0x0A, Instr(Mnemonics.call, InstrClass.Transfer|InstrClass.Call, s) },
                 { 0x0C, new SubDecoder(0, 0x3F, new Dictionary<int, Decoder> {
-                    { 0x00, Instr(Opcode.reti, InstrClass.Transfer) }
+                    { 0x00, Instr(Mnemonics.reti, InstrClass.Transfer) }
                 } ) },
 
-                { 0x10, Instr(Opcode.pushm, x,n,r2) },
-                { 0x11, Instr(Opcode.pushm, x,n,r2) },
-                { 0x12, Instr(Opcode.pushm, x,n,r2) },
-                { 0x13, Instr(Opcode.pushm, x,n,r2) },
+                { 0x10, Instr(Mnemonics.pushm, x,n,r2) },
+                { 0x11, Instr(Mnemonics.pushm, x,n,r2) },
+                { 0x12, Instr(Mnemonics.pushm, x,n,r2) },
+                { 0x13, Instr(Mnemonics.pushm, x,n,r2) },
 
-                { 0x14, Instr(Opcode.pushm, x,n,r2) },
-                { 0x15, Instr(Opcode.pushm, x,n,r2) },
-                { 0x16, Instr(Opcode.pushm, x,n,r2) },
-                { 0x17, Instr(Opcode.pushm, x,n,r2) },
+                { 0x14, Instr(Mnemonics.pushm, x,n,r2) },
+                { 0x15, Instr(Mnemonics.pushm, x,n,r2) },
+                { 0x16, Instr(Mnemonics.pushm, x,n,r2) },
+                { 0x17, Instr(Mnemonics.pushm, x,n,r2) },
 
-                { 0x18, Instr(Opcode.popm, x,n,r2) },
-                { 0x19, Instr(Opcode.popm, x,n,r2) },
-                { 0x1A, Instr(Opcode.popm, x,n,r2) },
-                { 0x1B, Instr(Opcode.popm, x,n,r2) },
+                { 0x18, Instr(Mnemonics.popm, x,n,r2) },
+                { 0x19, Instr(Mnemonics.popm, x,n,r2) },
+                { 0x1A, Instr(Mnemonics.popm, x,n,r2) },
+                { 0x1B, Instr(Mnemonics.popm, x,n,r2) },
 
-                { 0x1C, Instr(Opcode.popm, x,n,r2) },
-                { 0x1D, Instr(Opcode.popm, x,n,r2) },
-                { 0x1E, Instr(Opcode.popm, x,n,r2) },
-                { 0x1F, Instr(Opcode.popm, x,n,r2) },
+                { 0x1C, Instr(Mnemonics.popm, x,n,r2) },
+                { 0x1D, Instr(Mnemonics.popm, x,n,r2) },
+                { 0x1E, Instr(Mnemonics.popm, x,n,r2) },
+                { 0x1F, Instr(Mnemonics.popm, x,n,r2) },
 
                 { 0x20, extDecoder },
                 { 0x21, extDecoder },
@@ -628,32 +628,32 @@ namespace Reko.Arch.Msp430
             new JmpDecoder(),
             new JmpDecoder(),
 
-            Instr(Opcode.mov, w,S,D),
-            Instr(Opcode.add, w,S,D),
-            Instr(Opcode.addc, w,S,D),
-            Instr(Opcode.subc, w,S,D),
+            Instr(Mnemonics.mov, w,S,D),
+            Instr(Mnemonics.add, w,S,D),
+            Instr(Mnemonics.addc, w,S,D),
+            Instr(Mnemonics.subc, w,S,D),
 
-            Instr(Opcode.sub, w,S,D),
-            Instr(Opcode.cmp, w,S,D),
-            Instr(Opcode.dadd, w,S,D),
-            Instr(Opcode.bit, w,S,D),
+            Instr(Mnemonics.sub, w,S,D),
+            Instr(Mnemonics.cmp, w,S,D),
+            Instr(Mnemonics.dadd, w,S,D),
+            Instr(Mnemonics.bit, w,S,D),
 
-            Instr(Opcode.bic, w,S,D),
-            Instr(Opcode.bis, w,S,D),
-            Instr(Opcode.xor, w,S,D),
-            Instr(Opcode.and, w,S,D),
+            Instr(Mnemonics.bic, w,S,D),
+            Instr(Mnemonics.bis, w,S,D),
+            Instr(Mnemonics.xor, w,S,D),
+            Instr(Mnemonics.and, w,S,D),
         };
 
-        private static readonly (Opcode, InstrClass)[] jmps = new (Opcode,InstrClass)[8]
+        private static readonly (Mnemonics, InstrClass)[] jmps = new (Mnemonics,InstrClass)[8]
         {
-            ( Opcode.jnz,  InstrClass.ConditionalTransfer ),
-            ( Opcode.jz,   InstrClass.ConditionalTransfer ),
-            ( Opcode.jnc,  InstrClass.ConditionalTransfer ),
-            ( Opcode.jc,   InstrClass.ConditionalTransfer ),
-            ( Opcode.jn,   InstrClass.ConditionalTransfer ),
-            ( Opcode.jge,  InstrClass.ConditionalTransfer ),
-            ( Opcode.jl,   InstrClass.ConditionalTransfer ),
-            ( Opcode.jmp,  InstrClass.Transfer ),
+            ( Mnemonics.jnz,  InstrClass.ConditionalTransfer ),
+            ( Mnemonics.jz,   InstrClass.ConditionalTransfer ),
+            ( Mnemonics.jnc,  InstrClass.ConditionalTransfer ),
+            ( Mnemonics.jc,   InstrClass.ConditionalTransfer ),
+            ( Mnemonics.jn,   InstrClass.ConditionalTransfer ),
+            ( Mnemonics.jge,  InstrClass.ConditionalTransfer ),
+            ( Mnemonics.jl,   InstrClass.ConditionalTransfer ),
+            ( Mnemonics.jmp,  InstrClass.Transfer ),
         };
     }
 }

@@ -20,7 +20,7 @@
 
 namespace Reko.Arch.RiscV
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         invalid, 
 

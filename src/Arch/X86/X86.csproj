@@ -137,7 +137,7 @@
     <Compile Include="MemoryOperand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Opcode.cs">
+    <Compile Include="Mnemonic.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProcessorMode.cs">

@@ -63,47 +63,47 @@ namespace Reko.Arch.Msp430
                 this.rtlc = InstrClass.Linear;
                 switch (instr.opcode)
                 {
-                case Opcode.invalid: Invalid(); break;
+                case Mnemonics.invalid: Invalid(); break;
                 default:
                     EmitUnitTest();
                     Invalid();
                     break;
-                case Opcode.addc: RewriteAdcSbc(m.IAdd); break;
-                case Opcode.add: RewriteBinop(m.IAdd, "V-----NZC"); break;
-                case Opcode.and: RewriteBinop(m.And,  "0-----NZC"); break;
-                case Opcode.bic: RewriteBinop(Bis,    "---------"); break;
-                case Opcode.bis: RewriteBinop(m.Or,   "---------"); break;
-                case Opcode.bit: RewriteBit(); break;
-                case Opcode.br: RewriteBr(); break;
-                case Opcode.call: RewriteCall(); break;
-                case Opcode.cmp: RewriteCmp(); break;
-                case Opcode.dadd: RewriteBinop(Dadd,  "------NZC"); break;
+                case Mnemonics.addc: RewriteAdcSbc(m.IAdd); break;
+                case Mnemonics.add: RewriteBinop(m.IAdd, "V-----NZC"); break;
+                case Mnemonics.and: RewriteBinop(m.And,  "0-----NZC"); break;
+                case Mnemonics.bic: RewriteBinop(Bis,    "---------"); break;
+                case Mnemonics.bis: RewriteBinop(m.Or,   "---------"); break;
+                case Mnemonics.bit: RewriteBit(); break;
+                case Mnemonics.br: RewriteBr(); break;
+                case Mnemonics.call: RewriteCall(); break;
+                case Mnemonics.cmp: RewriteCmp(); break;
+                case Mnemonics.dadd: RewriteBinop(Dadd,  "------NZC"); break;
 
-                case Opcode.jc:  RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
-                case Opcode.jge: RewriteBranch(ConditionCode.GE, FlagM.VF|FlagM.NF); break;
-                case Opcode.jl:  RewriteBranch(ConditionCode.LT, FlagM.VF | FlagM.NF); break;
-                case Opcode.jmp: RewriteGoto(); break;
-                case Opcode.jn:  RewriteBranch(ConditionCode.SG, FlagM.NF); break;
-                case Opcode.jnc: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
-                case Opcode.jnz: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
-                case Opcode.jz:  RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
+                case Mnemonics.jc:  RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
+                case Mnemonics.jge: RewriteBranch(ConditionCode.GE, FlagM.VF|FlagM.NF); break;
+                case Mnemonics.jl:  RewriteBranch(ConditionCode.LT, FlagM.VF | FlagM.NF); break;
+                case Mnemonics.jmp: RewriteGoto(); break;
+                case Mnemonics.jn:  RewriteBranch(ConditionCode.SG, FlagM.NF); break;
+                case Mnemonics.jnc: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
+                case Mnemonics.jnz: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
+                case Mnemonics.jz:  RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
 
-                case Opcode.mov: RewriteBinop((a, b) => b, ""); break;
-                case Opcode.mova: RewriteBinop((a, b) => b, ""); break;
-                case Opcode.popm: RewritePopm(); break;
-                case Opcode.push: RewritePush(); break;
-                case Opcode.pushm: RewritePushm(); break;
-                case Opcode.ret: RewriteRet(); break;
-                case Opcode.reti: RewriteReti(); break;
-                case Opcode.rra: RewriteRra(  "0-----NZC"); break;
-                case Opcode.rrax: RewriteRrax("0-----NZC"); break;
-                case Opcode.rrc: RewriteRrc(  "0-----NZC"); break;
-                case Opcode.rrum: RewriteRrum("0-----NZC"); break;
-                case Opcode.sub: RewriteBinop(m.ISub, "V-----NZC"); break;
-                case Opcode.subc: RewriteAdcSbc(m.ISub); break;
-                case Opcode.swpb: RewriteSwpb(); break;
-                case Opcode.sxt: RewriteSxt("0-----NZC"); break;
-                case Opcode.xor: RewriteBinop(m.Xor,  "V-----NZC"); break;
+                case Mnemonics.mov: RewriteBinop((a, b) => b, ""); break;
+                case Mnemonics.mova: RewriteBinop((a, b) => b, ""); break;
+                case Mnemonics.popm: RewritePopm(); break;
+                case Mnemonics.push: RewritePush(); break;
+                case Mnemonics.pushm: RewritePushm(); break;
+                case Mnemonics.ret: RewriteRet(); break;
+                case Mnemonics.reti: RewriteReti(); break;
+                case Mnemonics.rra: RewriteRra(  "0-----NZC"); break;
+                case Mnemonics.rrax: RewriteRrax("0-----NZC"); break;
+                case Mnemonics.rrc: RewriteRrc(  "0-----NZC"); break;
+                case Mnemonics.rrum: RewriteRrum("0-----NZC"); break;
+                case Mnemonics.sub: RewriteBinop(m.ISub, "V-----NZC"); break;
+                case Mnemonics.subc: RewriteAdcSbc(m.ISub); break;
+                case Mnemonics.swpb: RewriteSwpb(); break;
+                case Mnemonics.sxt: RewriteSxt("0-----NZC"); break;
+                case Mnemonics.xor: RewriteBinop(m.Xor,  "V-----NZC"); break;
                 }
                 var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
@@ -438,7 +438,7 @@ namespace Reko.Arch.Msp430
             rtlc = InstrClass.Invalid;
         }
 
-        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+        private static HashSet<Mnemonics> seen = new HashSet<Mnemonics>();
 
         [Conditional("DEBUG")]
         private void EmitUnitTest()

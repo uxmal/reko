@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.zSeries
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         invalid,
 

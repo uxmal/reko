@@ -60,49 +60,49 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                     base.RewriteInstr();
                     break;
 
-                case Opcode.ADDFSR:
+                case Mnemonic.ADDFSR:
                     Rewrite_ADDFSR();
                     break;
-                case Opcode.ADDWFC:
+                case Mnemonic.ADDWFC:
                     Rewrite_ADDWFC();
                     break;
-                case Opcode.ASRF:
+                case Mnemonic.ASRF:
                     Rewrite_ASRF();
                     break;
-                case Opcode.BRA:
+                case Mnemonic.BRA:
                     Rewrite_BRA();
                     break;
-                case Opcode.BRW:
+                case Mnemonic.BRW:
                     Rewrite_BRW();
                     break;
-                case Opcode.CALLW:
+                case Mnemonic.CALLW:
                     Rewrite_CALLW();
                     break;
-                case Opcode.LSLF:
+                case Mnemonic.LSLF:
                     Rewrite_LSLF();
                     break;
-                case Opcode.LSRF:
+                case Mnemonic.LSRF:
                     Rewrite_LSRF();
                     break;
-                case Opcode.MOVIW:
+                case Mnemonic.MOVIW:
                     Rewrite_MOVIW();
                     break;
-                case Opcode.MOVLB:
+                case Mnemonic.MOVLB:
                     Rewrite_MOVLB();
                     break;
-                case Opcode.MOVLP:
+                case Mnemonic.MOVLP:
                     Rewrite_MOVLP();
                     break;
-                case Opcode.MOVWI:
+                case Mnemonic.MOVWI:
                     Rewrite_MOVWI();
                     break;
-                case Opcode.RESET:
+                case Mnemonic.RESET:
                     Rewrite_RESET();
                     break;
-                case Opcode.SUBWFB:
+                case Mnemonic.SUBWFB:
                     Rewrite_SUBWFB();
                     break;
-                case Opcode.TRIS:
+                case Mnemonic.TRIS:
                     Rewrite_TRIS();
                     break;
             }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Reko.Arch.Avr
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         invalid,
 

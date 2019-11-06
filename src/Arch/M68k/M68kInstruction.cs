@@ -30,14 +30,14 @@ namespace Reko.Arch.M68k
 {
     public class M68kInstruction : MachineInstruction
     {
-        public Opcode code;
+        public Mnemonic code;
         public PrimitiveType dataWidth;
 
         public override int OpcodeAsInteger => (int) code;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (code == Opcode.illegal && Operands.Length > 0 && writer.Platform != null)
+            if (code == Mnemonic.illegal && Operands.Length > 0 && writer.Platform != null)
             {
                 var imm = Operands[0] as M68kImmediateOperand;
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 

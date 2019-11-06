@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm.AArch32
         public RegisterStorage BaseRegister;
         public Constant Offset;
         public RegisterStorage Index;
-        public Opcode ShiftType;
+        public Mnemonic ShiftType;
         public int Shift;
         public bool Add;
         public int Scale;

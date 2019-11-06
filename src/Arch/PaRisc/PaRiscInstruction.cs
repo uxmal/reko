@@ -27,7 +27,7 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscInstruction : MachineInstruction
     {
-        public Opcode Opcode { get; set; }
+        public Mnemonic Opcode { get; set; }
         
         // Completers
         public int Coprocessor { get; set; }

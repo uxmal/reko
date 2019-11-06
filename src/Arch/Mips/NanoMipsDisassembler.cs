@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Mips
 {
-    using Decoder = Reko.Core.Machine.Decoder<NanoMipsDisassembler, Opcode, MipsInstruction>;
+    using Decoder = Reko.Core.Machine.Decoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>;
 
     /// <summary>
     /// Disassembler for the nanoMips instruction set encoding.
@@ -74,7 +74,7 @@ namespace Reko.Arch.Mips
             return new MipsInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Mnemonic = Opcode.illegal
+                Mnemonic = Mnemonic.illegal
             };
         }
 
@@ -567,13 +567,13 @@ namespace Reko.Arch.Mips
 
         #region Decoder subclasses
 
-        private class InstrDecoder : Decoder<NanoMipsDisassembler, Opcode, MipsInstruction>
+        private class InstrDecoder : Decoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>
         {
             private readonly InstrClass iclass;
-            private readonly Opcode mnemonic;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator<NanoMipsDisassembler>[] mutators;
 
-            public InstrDecoder(InstrClass iclass, Opcode mnemonic, Mutator<NanoMipsDisassembler>[] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<NanoMipsDisassembler>[] mutators)
             {
                 this.iclass = iclass;
                 this.mnemonic = mnemonic;
@@ -663,10 +663,10 @@ namespace Reko.Arch.Mips
         private class WideInstrDecoder : WideDecoder
         {
             private readonly InstrClass iclass;
-            private readonly Opcode mnemonic;
+            private readonly Mnemonic mnemonic;
             private readonly WideMutator<NanoMipsDisassembler>[] mutators;
 
-            public WideInstrDecoder(InstrClass iclass, Opcode mnemonic, WideMutator<NanoMipsDisassembler>[] mutators)
+            public WideInstrDecoder(InstrClass iclass, Mnemonic mnemonic, WideMutator<NanoMipsDisassembler>[] mutators)
             {
                 this.iclass = iclass;
                 this.mnemonic = mnemonic;
@@ -693,120 +693,120 @@ namespace Reko.Arch.Mips
         #endregion
 
         #region Factory methods
-        private static Decoder Instr(Opcode mnemonic,  params Mutator<NanoMipsDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic,  params Mutator<NanoMipsDisassembler>[] mutators)
         {
             return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static Decoder Instr(Opcode mnemonic, InstrClass iclass, params Mutator<NanoMipsDisassembler> [] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<NanoMipsDisassembler> [] mutators)
         {
             return new InstrDecoder(iclass, mnemonic, mutators);
         }
 
-        private static WideDecoder WInstr(Opcode mnemonic, params WideMutator<NanoMipsDisassembler>[] mutators)
+        private static WideDecoder WInstr(Mnemonic mnemonic, params WideMutator<NanoMipsDisassembler>[] mutators)
         {
             return new WideInstrDecoder(InstrClass.Linear, mnemonic, mutators);
         }
 
         private static Decoder Nyi(string message)
         {
-            return new NyiDecoder<NanoMipsDisassembler, Opcode, MipsInstruction>(message);
+            return new NyiDecoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>(message);
         }
 
         #endregion
 
         static NanoMipsDisassembler()
         {
-            var invalid = Instr(Opcode.illegal, InstrClass.Invalid);
+            var invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
 
             var p16_ri = Nyi("P16.RI");
 
             var p16_mv = Select((5, 5), Eq0, "P16.MV",
                 p16_ri,
-                Instr(Opcode.move, R5, R0));
+                Instr(Mnemonic.move, R5, R0));
 
             var p16Pool = Mask(Bf((13, 3), (10, 2)), "P16 Pool",
                 p16_mv,
-                Instr(Opcode.lw, r7, msw),
-                Instr(Opcode.bc, InstrClass.Transfer, pcrel_0_9),
+                Instr(Mnemonic.lw, r7, msw),
+                Instr(Mnemonic.bc, InstrClass.Transfer, pcrel_0_9),
                 Mask(8, 1, "P16.SR",
-                    Instr(Opcode.save, Us(4, 4, 4), r(9, 1, gpr1_save_restore), U(0, 4)),
-                    Instr(Opcode.restore_jrc, InstrClass.Transfer, Us(4, 4, 4), r(9, 1, gpr1_save_restore), U(0, 4))),
+                    Instr(Mnemonic.save, Us(4, 4, 4), r(9, 1, gpr1_save_restore), U(0, 4)),
+                    Instr(Mnemonic.restore_jrc, InstrClass.Transfer, Us(4, 4, 4), r(9, 1, gpr1_save_restore), U(0, 4))),
 
                 Mask(3, 1, "P16.SHIFT",
-                    Instr(Opcode.sll, r7, r4, Ish3),
-                    Instr(Opcode.srl, r7, r4, Ish3)),
-                Instr(Opcode.lw, r7, Mspu5w),
-                Instr(Opcode.balc, InstrClass.Transfer | InstrClass.Call, pcrel_0_9),
+                    Instr(Mnemonic.sll, r7, r4, Ish3),
+                    Instr(Mnemonic.srl, r7, r4, Ish3)),
+                Instr(Mnemonic.lw, r7, Mspu5w),
+                Instr(Mnemonic.balc, InstrClass.Transfer | InstrClass.Call, pcrel_0_9),
                 Mask(Bf((8, 1), (3, 1)), "P16.4x4",
-                    Instr(Opcode.addu, rf5, rf5, rf0),
-                    Instr(Opcode.mul, rf5, rf5, rf0),
+                    Instr(Mnemonic.addu, rf5, rf5, rf0),
+                    Instr(Mnemonic.mul, rf5, rf5, rf0),
                     invalid,
                     invalid),
 
                 Mask(0, 2, "  P16C",
                     Mask(2, 2, "  POOL16C_00",
-                        Instr(Opcode.not, r7, r4),
-                        Instr(Opcode.xor, r7, r7, r4),
-                        Instr(Opcode.and, r7, r7, r4),
-                        Instr(Opcode.or, r7, r7, r4)),
-                    Instr(Opcode.lwxs, r1, mxw),
+                        Instr(Mnemonic.not, r7, r4),
+                        Instr(Mnemonic.xor, r7, r7, r4),
+                        Instr(Mnemonic.and, r7, r7, r4),
+                        Instr(Mnemonic.or, r7, r7, r4)),
+                    Instr(Mnemonic.lwxs, r1, mxw),
                     invalid,
-                    Instr(Opcode.lwxs, r1, mxw)),
-                Instr(Opcode.lw, r7, mgpw),
+                    Instr(Mnemonic.lwxs, r1, mxw)),
+                Instr(Mnemonic.lw, r7, mgpw),
                 invalid,
                 Mask(2, 2, "  P16.LB",
-                    Instr(Opcode.lb, r7, msb),
-                    Instr(Opcode.sb, r7_st, msbu),
-                    Instr(Opcode.lbu, r7, msbu),
+                    Instr(Mnemonic.lb, r7, msb),
+                    Instr(Mnemonic.sb, r7_st, msbu),
+                    Instr(Mnemonic.lbu, r7, msbu),
                     invalid),
 
                 Mask(6, 1, "  P16.A1",
                     invalid,
-                    Instr(Opcode.addiu, r7, Rn(29), Us(0, 6, 2))),
-                Instr(Opcode.lw, Mut4x4()),
+                    Instr(Mnemonic.addiu, r7, Rn(29), Us(0, 6, 2))),
+                Instr(Mnemonic.lw, Mut4x4()),
                 invalid,
                 Mask(Bf((3, 1), (1, 1)), "  P16.LH",
-                    Instr(Opcode.lh, r7, msh),
-                    Instr(Opcode.sh, r7_st, mshu),
-                    Instr(Opcode.lhu, r7, mshu),
+                    Instr(Mnemonic.lh, r7, msh),
+                    Instr(Mnemonic.sh, r7_st, mshu),
+                    Instr(Mnemonic.lhu, r7, mshu),
                     invalid),
 
                 Mask(3, 1, "  P16.A2",
-                    Instr(Opcode.addiu, r7, r4, Us(0, 3, 2)),
+                    Instr(Mnemonic.addiu, r7, r4, Us(0, 3, 2)),
                     Select((5, 5), Eq0, "  P.ADDIU[RS5]",
-                        Instr(Opcode.nop),
-                        Instr(Opcode.addiu, R5, R5, sf(Bf((4, 1), (0, 3)))))),
-                Instr(Opcode.sw, r7_st, Mspu5w),
-                Instr(Opcode.beqzc, InstrClass.ConditionalTransfer, r7, pcrel_0_6),
+                        Instr(Mnemonic.nop),
+                        Instr(Mnemonic.addiu, R5, R5, sf(Bf((4, 1), (0, 3)))))),
+                Instr(Mnemonic.sw, r7_st, Mspu5w),
+                Instr(Mnemonic.beqzc, InstrClass.ConditionalTransfer, r7, pcrel_0_6),
                 invalid,
 
                 Mask(0, 1, "  P16.ADDU",
-                    Instr(Opcode.addu, r1, r4, r7),
-                    Instr(Opcode.subu, r1, r4, r7)),
-                Instr(Opcode.sw, R5, Mspu5w),
-                Instr(Opcode.bnezc, InstrClass.ConditionalTransfer, r7, pcrel_0_6),
-                Instr(Opcode.movep,
+                    Instr(Mnemonic.addu, r1, r4, r7),
+                    Instr(Mnemonic.subu, r1, r4, r7)),
+                Instr(Mnemonic.sw, R5, Mspu5w),
+                Instr(Mnemonic.bnezc, InstrClass.ConditionalTransfer, r7, pcrel_0_6),
+                Instr(Mnemonic.movep,
                     rf(Bf((3, 1), (8, 1)), gpr2_reg1_encoding),
                     rf(Bf((3, 1), (8, 1)), gpr2_reg2_encoding),
                     rf(Bf((4, 1), (0, 3)), gpr4_zero_encoding),
                     rf(Bf((9, 1), (5, 3)), gpr4_zero_encoding)),
 
-                Instr(Opcode.li, r7, euLi()),
-                Instr(Opcode.sw, r7_st, mgpw),
+                Instr(Mnemonic.li, r7, euLi()),
+                Instr(Mnemonic.sw, r7_st, mgpw),
                 Select((0, 4), Eq0, "P16.BR",
                     Mask(4, 1, "P16.JRC",
-                        Instr(Opcode.jrc, InstrClass.Transfer, R5),
-                        Instr(Opcode.jalrc, InstrClass.Transfer|InstrClass.Call, Rn(31), R5)),
+                        Instr(Mnemonic.jrc, InstrClass.Transfer, R5),
+                        Instr(Mnemonic.jalrc, InstrClass.Transfer|InstrClass.Call, Rn(31), R5)),
                     Select(Rs3LtRt3, //"  P16.BR1",
-                        Instr(Opcode.beqc, r4,r7, pcrelu_0_4),
-                        Instr(Opcode.bnec, r7,r4, pcrelu_0_4))),
+                        Instr(Mnemonic.beqc, r4,r7, pcrelu_0_4),
+                        Instr(Mnemonic.bnec, r7,r4, pcrelu_0_4))),
                 invalid,
 
-                Instr(Opcode.andi, r7,r4, euAndi()),
-                Instr(Opcode.sw, Mut4x4()),
+                Instr(Mnemonic.andi, r7,r4, euAndi()),
+                Instr(Mnemonic.sw, Mut4x4()),
                 invalid,
-                Instr(Opcode.movep,
+                Instr(Mnemonic.movep,
                     rf(Bf((4, 1), (0, 3)), gpr4_encoding),
                     rf(Bf((9, 1), (5, 3)), gpr4_encoding),
                     rf(Bf((3, 1), (8, 1)), gpr2_reg1_encoding),
@@ -814,18 +814,18 @@ namespace Reko.Arch.Mips
 
             var pool32a0_0 = Mask(Bf((6, 4), (3, 2)), "  POOL32A0_0",
                 Nyi("P.TRAP"),
-                Instr(Opcode.seb, R21,R16),
-                Instr(Opcode.sllv, R11,R16,R21), 
-                Instr(Opcode.mul, R11,R16,R21),
+                Instr(Mnemonic.seb, R21,R16),
+                Instr(Mnemonic.sllv, R11,R16,R21), 
+                Instr(Mnemonic.mul, R11,R16,R21),
 
                 invalid,
-                Instr(Opcode.seh, R21,R16),
-                Instr(Opcode.srlv, R11,R16,R21), 
+                Instr(Mnemonic.seh, R21,R16),
+                Instr(Mnemonic.srlv, R11,R16,R21), 
                 Nyi("MUH"),
 
                 invalid,
                 invalid,
-                Instr(Opcode.srav, R11, R16, R21),
+                Instr(Mnemonic.srav, R11, R16, R21),
                 Nyi("MULU"),
 
                 invalid,
@@ -837,11 +837,11 @@ namespace Reko.Arch.Mips
                 invalid,
                 invalid,
                 Nyi("ADD"),
-                Instr(Opcode.div, R11,R16,R21),
+                Instr(Mnemonic.div, R11,R16,R21),
 
                 invalid,
                 invalid,
-                Instr(Opcode.addu, R11,R16,R21),
+                Instr(Mnemonic.addu, R11,R16,R21),
                 Nyi("MOD"),
 
                 invalid,
@@ -851,48 +851,48 @@ namespace Reko.Arch.Mips
 
                 Nyi("RDHWR"),
                 invalid,
-                Instr(Opcode.subu, R11,R16,R21),
-                Instr(Opcode.modu, R11,R16,R21),
+                Instr(Mnemonic.subu, R11,R16,R21),
+                Instr(Mnemonic.modu, R11,R16,R21),
 
                 // 20
                 invalid,
                 invalid,
                 Mask(10, 1, "  P.CMOVE",
-                    Instr(Opcode.movz, R11,R16,R21),
-                    Instr(Opcode.movn, R11,R16,R21)),
+                    Instr(Mnemonic.movz, R11,R16,R21),
+                    Instr(Mnemonic.movn, R11,R16,R21)),
                 invalid,
 
                 invalid,
                 invalid,
-                Instr(Opcode.and, R11,R16,R21),
+                Instr(Mnemonic.and, R11,R16,R21),
                 invalid,
 
                 invalid,
                 invalid,
-                Instr(Opcode.or, R11,R16,R21),
+                Instr(Mnemonic.or, R11,R16,R21),
                 invalid,
  
                 invalid,
                 invalid,
-                Instr(Opcode.nor, R11,R16,R21),
+                Instr(Mnemonic.nor, R11,R16,R21),
                 invalid,
  
                 // 30
                 invalid,
                 invalid,
-                Instr(Opcode.xor, R11,R16,R21),
+                Instr(Mnemonic.xor, R11,R16,R21),
                 invalid,
  
                 invalid,
                 invalid,
-                Instr(Opcode.slt, R11,R16,R21),
+                Instr(Mnemonic.slt, R11,R16,R21),
                 invalid,
 
                 invalid,
                 invalid,
                 Select((11, 5), Eq0, "  P.SLTU",
                     Nyi("P.DVP"),
-                    Instr(Opcode.sltu, R11,R16,R21)),
+                    Instr(Mnemonic.sltu, R11,R16,R21)),
                 invalid,
 
                 invalid,
@@ -901,8 +901,8 @@ namespace Reko.Arch.Mips
                 Nyi("invalid"));
             var pool32axf_4 = Sparse(9, 7, "Pool32Axf_4",
                 invalid, // dsp
-                (0b0100_101, Instr(Opcode.clo, R21,R16)),
-                (0b0101_101, Instr(Opcode.clz, R21,R16)));
+                (0b0100_101, Instr(Mnemonic.clo, R21,R16)),
+                (0b0101_101, Instr(Mnemonic.clz, R21,R16)));
             
             var pool32axf = Mask(6, 3, "  POOL32Axf",
                 invalid,
@@ -918,18 +918,18 @@ namespace Reko.Arch.Mips
 
             var p48i = Sparse(16, 5, "  P48I",
                 invalid, // (MIPS64)
-                (0, new Read48Decoder(WInstr(Opcode.li, R37w, Uf_w(Bf((0,16),(16,16)))))),
+                (0, new Read48Decoder(WInstr(Mnemonic.li, R37w, Uf_w(Bf((0,16),(16,16)))))),
                 (1, Nyi("ADDIU[48]")),
                 (2, Nyi("ADDIU[GP48]")),
-                (3, new Read48Decoder(WInstr(Opcode.addiupc, R37w, Sf_w(Bf((0,16),(16,16)))))),
-                (0b010_11, new Read48Decoder(WInstr(Opcode.lwpc, R37w, pcrel_w(Bf((0,16),(16,16)))))),
+                (3, new Read48Decoder(WInstr(Mnemonic.addiupc, R37w, Sf_w(Bf((0,16),(16,16)))))),
+                (0b010_11, new Read48Decoder(WInstr(Mnemonic.lwpc, R37w, pcrel_w(Bf((0,16),(16,16)))))),
                 (0b011_11, Nyi("SWPC[48]")));
 
             var p_lsx = Mask(6, 1, "  P.LSX",
                 Mask(7, 4,
                     Nyi("LBX"),
                     Nyi("SBX"),
-                    Instr(Opcode.lbux, R11, Mxbu),
+                    Instr(Mnemonic.lbux, R11, Mxbu),
                     invalid,
 
                     Nyi("LHX"),
@@ -937,8 +937,8 @@ namespace Reko.Arch.Mips
                     Nyi("LHUX"),
                     invalid, // (MIPS64)
 
-                    Instr(Opcode.lwx, R11, Mxw),
-                    Instr(Opcode.swx, R11, Mxw),
+                    Instr(Mnemonic.lwx, R11, Mxw),
+                    Instr(Mnemonic.swx, R11, Mxw),
                     invalid,    // (CP1)
                     invalid,    // (CP1)
 
@@ -958,8 +958,8 @@ namespace Reko.Arch.Mips
                     Nyi("LHUXS"),
                     invalid,    // (MIPS64)
 
-                    Instr(Opcode.lwxs,R11,Mxw),
-                    Instr(Opcode.swxs,R11,Mxw),
+                    Instr(Mnemonic.lwxs,R11,Mxw),
+                    Instr(Mnemonic.swxs,R11,Mxw),
                     invalid,    // (CP1)
                     invalid,    // (CP1)
 
@@ -970,18 +970,18 @@ namespace Reko.Arch.Mips
 
             var p_ls_s9 = Mask(8, 3, "  P.LS.S9",
                 Mask(11, 4, "  P.LS.S0",
-                    Instr(Opcode.lb, R21, Msb9),
-                    Instr(Opcode.sb, R21, Msb9),
-                    Instr(Opcode.lbu, R21, Msbu9),
+                    Instr(Mnemonic.lb, R21, Msb9),
+                    Instr(Mnemonic.sb, R21, Msb9),
+                    Instr(Mnemonic.lbu, R21, Msbu9),
                     Nyi("P.PREF[s9]"),
 
-                    Instr(Opcode.lh, R21, Msh9),
-                    Instr(Opcode.sh, R21, Msh9),
-                    Instr(Opcode.lhu, R21, Mshu9),
+                    Instr(Mnemonic.lh, R21, Msh9),
+                    Instr(Mnemonic.sh, R21, Msh9),
+                    Instr(Mnemonic.lhu, R21, Mshu9),
                     invalid,    // (MIPS64)
 
-                    Instr(Opcode.lw, R21, Msw9),
-                    Instr(Opcode.sw, R21, Msw9),
+                    Instr(Mnemonic.lw, R21, Msw9),
+                    Instr(Mnemonic.sw, R21, Msw9),
                     invalid,    // (CP1)
                     invalid,    // (CP1)
 
@@ -996,12 +996,12 @@ namespace Reko.Arch.Mips
                     Nyi("LBUE"),
                     Nyi("P.PREFE"),
 
-                    Instr(Opcode.lhe, R21,Ms(PrimitiveType.Int16, 16, Bf((15,1), (0, 8)))),
+                    Instr(Mnemonic.lhe, R21,Ms(PrimitiveType.Int16, 16, Bf((15,1), (0, 8)))),
                     Nyi("SHE"),
                     Nyi("LHUE"),
                     Nyi("CACHEE"),
 
-                    Instr(Opcode.lwe, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8)))),
+                    Instr(Mnemonic.lwe, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8)))),
                     Nyi("SWE"),
                     Nyi("P.LLE"),
                     Nyi("P.SCE"),
@@ -1013,11 +1013,11 @@ namespace Reko.Arch.Mips
                 invalid,
 
                 Mask(11, 1, "  P.LS.WM",
-                    Instr(Opcode.lwm, R21,Ms(PrimitiveType.Word32, 16, Bf((15,1),(0,8))), Ilswm3),
-                    Instr(Opcode.swm, R21,Ms(PrimitiveType.Word32, 16, Bf((15,1),(0,8))), Ilswm3)),
+                    Instr(Mnemonic.lwm, R21,Ms(PrimitiveType.Word32, 16, Bf((15,1),(0,8))), Ilswm3),
+                    Instr(Mnemonic.swm, R21,Ms(PrimitiveType.Word32, 16, Bf((15,1),(0,8))), Ilswm3)),
                 Mask(11, 1, "  P.LS.UAWM",
-                    Instr(Opcode.ualwm, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8))), Ilswm3),
-                    Instr(Opcode.uaswm, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8))), Ilswm3)),
+                    Instr(Mnemonic.ualwm, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8))), Ilswm3),
+                    Instr(Mnemonic.uaswm, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8))), Ilswm3)),
                 invalid,    // (MIPS64)
                 invalid);   // (MIPS64)
 
@@ -1032,13 +1032,13 @@ namespace Reko.Arch.Mips
             var p32Pool = Mask(Bf((29, 3), (26, 2)), "P32 Pool",
                 Select((0, 21), Eq0, "  P.ADDIU",
                     Mask(19, 2, "  P.RI",
-                        Instr(Opcode.sigrie, InstrClass.Padding|InstrClass.Terminates, U(0, 19)),
+                        Instr(Mnemonic.sigrie, InstrClass.Padding|InstrClass.Terminates, U(0, 19)),
                         Nyi("P.SYSCALL"),
                         Nyi("BREAK[32]"),
                         Nyi("SDBBP[32]")),
-                    Instr(Opcode.addiu, R21, R16, U(0, 16))),
-                Instr(Opcode.addiupc, R21, sf(Bf((0,1),(1,20)))),
-                Instr(Opcode.move_balc, InstrClass.Transfer|InstrClass.Call,
+                    Instr(Mnemonic.addiu, R21, R16, U(0, 16))),
+                Instr(Mnemonic.addiupc, R21, sf(Bf((0,1),(1,20)))),
+                Instr(Mnemonic.move_balc, InstrClass.Transfer|InstrClass.Call,
                     r(24,1,gpr1_encoding),
                     rf(Bf((25,1),(21,3)), gpr4_zero_encoding),
                     pcrel_0_20),
@@ -1057,7 +1057,7 @@ namespace Reko.Arch.Mips
                     invalid,
                     Mask(3, 3, "  _POOL32A7",
                         p_lsx,
-                        Instr(Opcode.lsa, R11,R16,R21,U(9,2)),
+                        Instr(Mnemonic.lsa, R11,R16,R21,U(9,2)),
                         invalid,
                         Nyi("EXTW"),
 
@@ -1067,26 +1067,26 @@ namespace Reko.Arch.Mips
                         pool32axf)),
                 invalid,
                 Mask(25, 1, "  P.BAL",
-                    Instr(Opcode.bc, InstrClass.Transfer, pcrel_0_24),
-                    Instr(Opcode.balc, InstrClass.Transfer|InstrClass.Call, pcrel_0_24)),
+                    Instr(Mnemonic.bc, InstrClass.Transfer, pcrel_0_24),
+                    Instr(Mnemonic.balc, InstrClass.Transfer|InstrClass.Call, pcrel_0_24)),
                 invalid,
 
                 Mask(0, 2, "  P.GP.W",
-                    Instr(Opcode.addiu, R21, Rn(28), U(0, 21)),
+                    Instr(Mnemonic.addiu, R21, Rn(28), U(0, 21)),
                     invalid,    // (MIPS64)
-                    Instr(Opcode.lw, R21, Mgpw),
-                    Instr(Opcode.sw, R21, Mgpw)),
+                    Instr(Mnemonic.lw, R21, Mgpw),
+                    Instr(Mnemonic.sw, R21, Mgpw)),
                 Mask(18, 3, "  P.GP.BH",
-                    Instr(Opcode.lb, R21, Mgpb),
-                    Instr(Opcode.sb, R21, Mgpbu),
-                    Instr(Opcode.lbu, R21, Mgpbu),
+                    Instr(Mnemonic.lb, R21, Mgpb),
+                    Instr(Mnemonic.sb, R21, Mgpbu),
+                    Instr(Mnemonic.lbu, R21, Mgpbu),
                     Nyi("ADDIU[GP.B]"),
 
                     Mask(0, 1, "  P.GP.LH",
-                        Instr(Opcode.lh, R21, Mgph),
-                        Instr(Opcode.lhu, R21, Mgphu)),
+                        Instr(Mnemonic.lh, R21, Mgph),
+                        Instr(Mnemonic.lhu, R21, Mgphu)),
                     Mask(0, 1, "  P.GP.SH",
-                        Instr(Opcode.sh, R21, Mgphu),
+                        Instr(Mnemonic.sh, R21, Mgphu),
                         invalid),
                     invalid,    // (CP1)
                     invalid),   // (MIPS64)
@@ -1103,23 +1103,23 @@ namespace Reko.Arch.Mips
                 invalid,
 
                 Mask(12, 4, "  P.U12",
-                    Instr(Opcode.ori, R21, R16, U(0, 12)),
-                    Instr(Opcode.xori, R21, R16, U(0, 12)),
-                    Instr(Opcode.andi, R21, R16, U(0, 12)),
+                    Instr(Mnemonic.ori, R21, R16, U(0, 12)),
+                    Instr(Mnemonic.xori, R21, R16, U(0, 12)),
+                    Instr(Mnemonic.andi, R21, R16, U(0, 12)),
                     Mask(20, 1, "  P.SR",
                         Mask(0, 2, "  PP.SR",
-                            Instr(Opcode.save,Us(3, 9, 3),R21,U(16,4)),
+                            Instr(Mnemonic.save,Us(3, 9, 3),R21,U(16,4)),
                             invalid,
-                            Instr(Opcode.restore,Us(3, 9, 3),R21,U(16,4)),
-                            Instr(Opcode.restore_jrc,Us(3, 9, 3),R21,U(16,4))),
+                            Instr(Mnemonic.restore,Us(3, 9, 3),R21,U(16,4)),
+                            Instr(Mnemonic.restore_jrc,Us(3, 9, 3),R21,U(16,4))),
                         invalid),   // (CR1)
 
-                    Instr(Opcode.slti, R21, R16, U(0, 12)),
-                    Instr(Opcode.sltiu, R21, R16, U(0, 12)),
+                    Instr(Mnemonic.slti, R21, R16, U(0, 12)),
+                    Instr(Mnemonic.sltiu, R21, R16, U(0, 12)),
                     Nyi(" SEQI"),
                     invalid,
 
-                    Instr(Opcode.addiu, R21, R16, Un(0, 12)),
+                    Instr(Mnemonic.addiu, R21, R16, Un(0, 12)),
                     invalid, // (MIPS64)
                     invalid, // (MIPS64) 
                     invalid,  //(MIPS64)
@@ -1127,16 +1127,16 @@ namespace Reko.Arch.Mips
                     Mask(5, 4, "  P.SHIFT",
                         Select((21,5), Eq0, "  P.SLL",
                             Sparse(0, 5, invalid,
-                                (0, Instr(Opcode.nop)),
+                                (0, Instr(Mnemonic.nop)),
                                 (3, Nyi("  EHB")),
                                 (5, Nyi("  PAUSE")),
                                 (6, Nyi("  SYNC"))),
-                            Instr(Opcode.sll, R21,R16, U(0,5))),
+                            Instr(Mnemonic.sll, R21,R16, U(0,5))),
                         invalid,
-                        Instr(Opcode.srl, R21,R16, U(0,5)),
+                        Instr(Mnemonic.srl, R21,R16, U(0,5)),
                         invalid,
 
-                        Instr(Opcode.sra, R21,R16, U(0,5)),
+                        Instr(Mnemonic.sra, R21,R16, U(0,5)),
                         invalid,
                         Nyi("ROTR"),
                         invalid,
@@ -1153,28 +1153,28 @@ namespace Reko.Arch.Mips
                     ),
                     Nyi("P.ROTX "),
                     Mask(Bf((11,1),(5,1)), "  P.INS ",
-                        Instr(Opcode.ins, R21,R16,U(0,4),UinsSize()), 
+                        Instr(Mnemonic.ins, R21,R16,U(0,4),UinsSize()), 
                         invalid, // (MIPS64)
                         invalid, // (MIPS64)
                         invalid), // (MIPS64)
                     Mask(Bf((11,1),(5,1)), "  P.EXT",
-                        Instr(Opcode.ext,R21,R16,U(0,4),Up1(6, 5)),
+                        Instr(Mnemonic.ext,R21,R16,U(0,4),Up1(6, 5)),
                         invalid, // (MIPS64)
                         invalid, // (MIPS64)
                         invalid)), // (MIPS64)
                 Mask(12, 4, "  P.LS.U12",
-                    Instr(Opcode.lb, R21,Mu(PrimitiveType.Byte,16,12)),
-                    Instr(Opcode.sb, R21,Mu(PrimitiveType.Byte,16,12)),
-                    Instr(Opcode.lbu, R21,Mu(PrimitiveType.Byte,16,12)),
+                    Instr(Mnemonic.lb, R21,Mu(PrimitiveType.Byte,16,12)),
+                    Instr(Mnemonic.sb, R21,Mu(PrimitiveType.Byte,16,12)),
+                    Instr(Mnemonic.lbu, R21,Mu(PrimitiveType.Byte,16,12)),
                     Nyi("P.PREF[U12]"),
 
-                    Instr(Opcode.lh, R21, Mu(PrimitiveType.Byte, 16, 12)),
-                    Instr(Opcode.sh, R21, Mu(PrimitiveType.Byte, 16, 12)),
-                    Instr(Opcode.lhu, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Mnemonic.lh, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Mnemonic.sh, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Mnemonic.lhu, R21, Mu(PrimitiveType.Byte, 16, 12)),
                     invalid,    // (MIPS64)
 
-                    Instr(Opcode.lw, R21, Mu(PrimitiveType.Byte, 16, 12)),
-                    Instr(Opcode.sw, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Mnemonic.lw, R21, Mu(PrimitiveType.Byte, 16, 12)),
+                    Instr(Mnemonic.sw, R21, Mu(PrimitiveType.Byte, 16, 12)),
                     invalid,    // (CP1)
                     invalid,    // (CP1)
 
@@ -1184,38 +1184,38 @@ namespace Reko.Arch.Mips
                     invalid),    // (CP1)
 
                 Mask(14, 2, "P.BR1",
-                    Instr(Opcode.beqc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13),
+                    Instr(Mnemonic.beqc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13),
                     p_br3a,
-                    Instr(Opcode.bgec, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13),
-                    Instr(Opcode.bgeuc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13)),
+                    Instr(Mnemonic.bgec, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13),
+                    Instr(Mnemonic.bgeuc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13)),
                 invalid,
 
                 invalid, // (CP1)
                 p_ls_s9,
                 Mask(14, 2, "  P.BR2",
-                    Instr(Opcode.bnec, InstrClass.ConditionalTransfer, R16,R21, pcrel_0_13),
+                    Instr(Mnemonic.bnec, InstrClass.ConditionalTransfer, R16,R21, pcrel_0_13),
                     invalid,
-                    Instr(Opcode.bltc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13),
-                    Instr(Opcode.bltuc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13)),
+                    Instr(Mnemonic.bltc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13),
+                    Instr(Mnemonic.bltuc, InstrClass.ConditionalTransfer, R16,R21,pcrel_0_13)),
                 invalid,
 
                 invalid, // (MIPS64)
                 invalid,
                 Mask(18, 3, "  P.BRI",
-                    Instr(Opcode.beqic, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
-                    Instr(Opcode.bbeqzc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
-                    Instr(Opcode.bgeic, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
-                    Instr(Opcode.bgeiuc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
+                    Instr(Mnemonic.beqic, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
+                    Instr(Mnemonic.bbeqzc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
+                    Instr(Mnemonic.bgeic, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
+                    Instr(Mnemonic.bgeiuc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
 
-                    Instr(Opcode.bneiuc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
-                    Instr(Opcode.bbnezc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
-                    Instr(Opcode.bltic, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
-                    Instr(Opcode.bltiuc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10)),
+                    Instr(Mnemonic.bneiuc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
+                    Instr(Mnemonic.bbnezc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
+                    Instr(Mnemonic.bltic, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10),
+                    Instr(Mnemonic.bltiuc, InstrClass.ConditionalTransfer, R21, U(11,6), pcrel_0_10)),
                 invalid,
                 
                 Mask(1, 1, "  P.LUI",
-                    Instr(Opcode.lui, R21, sf(Bf((0,1), (2,10), (12,9)))),
-                    Instr(Opcode.aluipc, R21, Aluipc())),
+                    Instr(Mnemonic.lui, R21, sf(Bf((0,1), (2,10), (12,9)))),
+                    Instr(Mnemonic.aluipc, R21, Aluipc())),
                 invalid,
                 invalid,
                 invalid);

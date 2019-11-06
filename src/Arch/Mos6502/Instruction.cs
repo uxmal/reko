@@ -29,7 +29,7 @@ namespace Reko.Arch.Mos6502
 {
     public class Instruction : MachineInstruction
     {
-        public Opcode Mnemonic;
+        public Mnemonic Mnemonic;
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 
@@ -40,64 +40,64 @@ namespace Reko.Arch.Mos6502
         }
 
         // http://www.obelisk.demon.co.uk/6502/instructions.html
-        public static FlagM DefCc(Opcode code)
+        public static FlagM DefCc(Mnemonic code)
         {
             switch (code)
             {
-            case Opcode.clc:
-            case Opcode.sec:
+            case Mnemonic.clc:
+            case Mnemonic.sec:
                 return FlagM.CF;
-            case Opcode.cld:
-            case Opcode.sed:
+            case Mnemonic.cld:
+            case Mnemonic.sed:
                 return FlagM.DF;
-            case Opcode.cli:
-            case Opcode.sei:
+            case Mnemonic.cli:
+            case Mnemonic.sei:
                 return FlagM.IF;
-            case Opcode.clv:
+            case Mnemonic.clv:
                 return FlagM.VF;
-            case Opcode.and:
-            case Opcode.dec:
-            case Opcode.dex:
-            case Opcode.dey:
-            case Opcode.eor:
-            case Opcode.inc:
-            case Opcode.inx:
-            case Opcode.iny:
-            case Opcode.lda:
-            case Opcode.ldx:
-            case Opcode.ldy:
-            case Opcode.ora:
-            case Opcode.tax:
-            case Opcode.tay:
-            case Opcode.txa:
-            case Opcode.tya:
-            case Opcode.tsx:
-            case Opcode.pla:
+            case Mnemonic.and:
+            case Mnemonic.dec:
+            case Mnemonic.dex:
+            case Mnemonic.dey:
+            case Mnemonic.eor:
+            case Mnemonic.inc:
+            case Mnemonic.inx:
+            case Mnemonic.iny:
+            case Mnemonic.lda:
+            case Mnemonic.ldx:
+            case Mnemonic.ldy:
+            case Mnemonic.ora:
+            case Mnemonic.tax:
+            case Mnemonic.tay:
+            case Mnemonic.txa:
+            case Mnemonic.tya:
+            case Mnemonic.tsx:
+            case Mnemonic.pla:
                 return FlagM.NF | FlagM.ZF;
-            case Opcode.bit:
+            case Mnemonic.bit:
                 return FlagM.NF | FlagM.VF | FlagM.ZF;
-            case Opcode.adc:
-            case Opcode.sbc:
+            case Mnemonic.adc:
+            case Mnemonic.sbc:
                 return FlagM.NF | FlagM.VF | FlagM.ZF | FlagM.CF;
-            case Opcode.asl:
-            case Opcode.cmp:
-            case Opcode.cpx:
-            case Opcode.cpy:
-            case Opcode.lsr:
-            case Opcode.rol:
-            case Opcode.ror:
+            case Mnemonic.asl:
+            case Mnemonic.cmp:
+            case Mnemonic.cpx:
+            case Mnemonic.cpy:
+            case Mnemonic.lsr:
+            case Mnemonic.rol:
+            case Mnemonic.ror:
                 return FlagM.NF | FlagM.ZF | FlagM.CF;
 
-            case Opcode.txs:
-            case Opcode.pha:
-            case Opcode.php:
-            case Opcode.jmp:
-            case Opcode.jsr:
-            case Opcode.rts:
-            case Opcode.nop:
+            case Mnemonic.txs:
+            case Mnemonic.pha:
+            case Mnemonic.php:
+            case Mnemonic.jmp:
+            case Mnemonic.jsr:
+            case Mnemonic.rts:
+            case Mnemonic.nop:
                 return 0;
-            case Opcode.plp:
-            case Opcode.rti:
+            case Mnemonic.plp:
+            case Mnemonic.rti:
                 return FlagM.CF |
                     FlagM.ZF |
                     FlagM.IF |
@@ -105,18 +105,18 @@ namespace Reko.Arch.Mos6502
                     FlagM.BF |
                     FlagM.VF |
                     FlagM.NF;
-            case Opcode.brk:
+            case Mnemonic.brk:
                 return FlagM.BF;
             }
             throw new NotImplementedException("DefCc for " + code);
         }
 
-        public static FlagM UseCc(Opcode code)
+        public static FlagM UseCc(Mnemonic code)
         {
             switch (code)
             {
-            case Opcode.adc:
-            case Opcode.sbc:
+            case Mnemonic.adc:
+            case Mnemonic.sbc:
                 return FlagM.CF;
             }
             return 0;

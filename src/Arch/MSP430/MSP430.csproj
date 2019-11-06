@@ -57,7 +57,7 @@
     <Compile Include="Msp430InstructionComparer.cs" />
     <Compile Include="Msp430Rewriter.cs" />
     <Compile Include="Msp430State.cs" />
-    <Compile Include="Opcode.cs" />
+    <Compile Include="Mnemonics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
   </ItemGroup>

@@ -29,15 +29,15 @@ namespace Reko.Arch.PowerPC
 {
     public class PowerPcInstruction : MachineInstruction
     {
-        public Opcode Mnemonic;
+        public Mnemonic Mnemonic;
         public bool setsCR0;
 
-        public PowerPcInstruction(Opcode mnemonic)
+        public PowerPcInstruction(Mnemonic mnemonic)
         {
             this.Mnemonic = mnemonic;
         }
 
-        public PowerPcInstruction(Opcode mnemonic, MachineOperand op1, MachineOperand op2, MachineOperand op3, bool setsCR0)
+        public PowerPcInstruction(Mnemonic mnemonic, MachineOperand op1, MachineOperand op2, MachineOperand op3, bool setsCR0)
         {
             this.Mnemonic = mnemonic;
             this.Operands = new MachineOperand[] { op1, op2, op3 };

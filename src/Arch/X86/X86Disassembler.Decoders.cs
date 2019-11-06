@@ -47,10 +47,10 @@ namespace Reko.Arch.X86
         public class InstructionDecoder : Decoder
         {
             public readonly InstrClass iclass;
-            public readonly Opcode opcode;       // mnemonic for the decoded instruction
+            public readonly Mnemonic opcode;       // mnemonic for the decoded instruction
             public readonly Mutator<X86Disassembler>[] mutators;  // mutators for decoding operands to this instruction
 
-            public InstructionDecoder(Opcode op, InstrClass icl, params Mutator<X86Disassembler> [] mutators)
+            public InstructionDecoder(Mnemonic op, InstrClass icl, params Mutator<X86Disassembler> [] mutators)
             {
                 this.iclass = icl;
                 this.opcode = op;
@@ -105,7 +105,7 @@ namespace Reko.Arch.X86
         /// </summary>
         public class Rex_or_InstructionDecoder : InstructionDecoder
         {
-            public Rex_or_InstructionDecoder(Opcode op, Mutator<X86Disassembler> mutator)
+            public Rex_or_InstructionDecoder(Mnemonic op, Mutator<X86Disassembler> mutator)
                 : base(op, InstrClass.Linear, mutator)
             {
             }
@@ -357,7 +357,7 @@ namespace Reko.Arch.X86
                 var instr = s_decoders0F[op].Decode(disasm, op);
                 if (!instr)
                     return false;
-                if (!s_mpVex.TryGetValue(disasm.decodingContext.opcode, out Opcode vexCode))
+                if (!s_mpVex.TryGetValue(disasm.decodingContext.opcode, out Mnemonic vexCode))
                 {
                     Debug.Print("X86Disassembler: {0} Failed to map {1} to VEX counterpart", disasm.addr, disasm.decodingContext.opcode);
                     return false;
@@ -543,7 +543,7 @@ namespace Reko.Arch.X86
         /// </summary>
         public class InterruptDecoder : InstructionDecoder
         {
-            public InterruptDecoder(Opcode op, Mutator<X86Disassembler> mutator) : base(op, InstrClass.Linear, mutator)
+            public InterruptDecoder(Mnemonic op, Mutator<X86Disassembler> mutator) : base(op, InstrClass.Linear, mutator)
             {
             }
 

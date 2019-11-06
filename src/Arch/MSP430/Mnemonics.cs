@@ -20,7 +20,7 @@
  
 namespace Reko.Arch.Msp430
 {
-    public enum Opcode
+    public enum Mnemonics
     {
         invalid,
 

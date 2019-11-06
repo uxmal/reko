@@ -144,7 +144,7 @@ namespace Reko.Arch.X86
         private void RewriteFcom(int pops)
         {
             Identifier op1 = FpuRegister(0);
-            Expression op2 = (instrCur.code == Opcode.fcompp || instrCur.code == Opcode.fucompp)
+            Expression op2 = (instrCur.code == Mnemonic.fcompp || instrCur.code == Mnemonic.fucompp)
                 ? FpuRegister(1)
                 : SrcOp(instrCur.Operands[0]);
             m.Assign(
@@ -391,7 +391,7 @@ namespace Reko.Arch.X86
         public bool MatchesFstswSequence()
         {
             var nextInstr = dasm.Peek(1);
-            if (nextInstr.code == Opcode.sahf)
+            if (nextInstr.code == Mnemonic.sahf)
             {
                 this.len += nextInstr.Length;
                 dasm.Skip(1);
@@ -400,7 +400,7 @@ namespace Reko.Arch.X86
                     orw.FlagGroup(FlagM.FPUF));
                 return true;
             }
-            if (nextInstr.code == Opcode.test)
+            if (nextInstr.code == Mnemonic.test)
             {
                 RegisterOperand acc = nextInstr.Operands[0] as RegisterOperand;
                 ImmediateOperand imm = nextInstr.Operands[1] as ImmediateOperand;
@@ -461,27 +461,27 @@ namespace Reko.Arch.X86
                     // basis, since they don't affect the x86 flags register.
                     // The long term fix is to implement an architecture-specific
                     // condition code elimination pass as described elsewhere.
-                    case Opcode.mov: RewriteMov(); break;
-                    case Opcode.fstp: RewriteFst(true); break;
-                    case Opcode.push: RewritePush(); break;
-                    case Opcode.lea: RewriteLea(); break;
+                    case Mnemonic.mov: RewriteMov(); break;
+                    case Mnemonic.fstp: RewriteFst(true); break;
+                    case Mnemonic.push: RewritePush(); break;
+                    case Mnemonic.lea: RewriteLea(); break;
 
-                    case Opcode.jpe:
+                    case Mnemonic.jpe:
                         if (mask == 0x05) { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
                         if (mask == 0x44) { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
                         throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
-                    case Opcode.jpo:
+                    case Mnemonic.jpo:
                         if (mask == 0x44) { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
                         if (mask == 0x05) { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
                         throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
-                    case Opcode.jz:
+                    case Mnemonic.jz:
                         if (mask == 0x40) { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
                         if (mask == 0x01) { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
                         throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
-                    case Opcode.jnz:
+                    case Mnemonic.jnz:
                         if (mask == 0x40) { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
                         if (mask == 0x01) { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }

@@ -367,7 +367,7 @@ namespace Reko.Arch.M68k
                 {
                     rem = binder.EnsureRegister(dreg.Register1);
                     quot = binder.EnsureRegister(dreg.Register2);
-                    if (instr.code == Opcode.divsl)
+                    if (instr.code == Mnemonic.divsl)
                     {
                         dividend = quot;
                     }

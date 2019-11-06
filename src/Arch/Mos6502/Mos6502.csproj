@@ -56,7 +56,7 @@
     <Compile Include="Disassembler.cs" />
     <Compile Include="Mos6502ProcessorArchitecture.cs" />
     <Compile Include="Mos6502ProcessorState.cs" />
-    <Compile Include="Opcode.cs" />
+    <Compile Include="Mnemonic.cs" />
     <Compile Include="Operand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rewriter.cs" />

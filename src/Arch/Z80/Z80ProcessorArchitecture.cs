@@ -75,18 +75,18 @@ namespace Reko.Arch.Z80
 
         public override SortedList<string, int> GetOpcodeNames()
         {
-            return Enum.GetValues(typeof(Opcode))
-                .Cast<Opcode>()
+            return Enum.GetValues(typeof(Mnemonic))
+                .Cast<Mnemonic>()
                 .ToSortedList(
-                    v => v == Opcode.ex_af ? "ex" : Enum.GetName(typeof(Opcode), v),
+                    v => v == Mnemonic.ex_af ? "ex" : Enum.GetName(typeof(Mnemonic), v),
                     v => (int)v);
         }
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
+            Mnemonic result;
             if (string.Compare(name, "ex", StringComparison.InvariantCultureIgnoreCase) == 0)
-                return (int)Opcode.ex_af;
+                return (int)Mnemonic.ex_af;
             if (!Enum.TryParse(name, true, out result))
                 return null;
             return (int)result;

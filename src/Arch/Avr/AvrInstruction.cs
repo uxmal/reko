@@ -26,7 +26,7 @@ namespace Reko.Arch.Avr
 {
     public class AvrInstruction : MachineInstruction
     {
-        public Opcode opcode;
+        public Mnemonic opcode;
         public MachineOperand[] operands;
 
         public override int OpcodeAsInteger => (int)opcode;

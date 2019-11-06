@@ -29,7 +29,7 @@ namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
-        public Opcode Mnemonic;
+        public Mnemonic Mnemonic;
 
         public override int OpcodeAsInteger => (int)Mnemonic; 
 

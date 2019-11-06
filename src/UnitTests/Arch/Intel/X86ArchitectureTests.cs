@@ -287,8 +287,8 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
             Assert.AreEqual(
-                Opcode.mov,
-                (Opcode)arch.GetOpcodeNumber("mov"));
+                Mnemonic.mov,
+                (Mnemonic)arch.GetOpcodeNumber("mov"));
         }
 
         [Test(Description = "Inline calls to __x86.get_pc_thunk.bx")]

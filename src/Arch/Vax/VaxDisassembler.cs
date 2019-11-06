@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.Arch.Vax
 {
-    using Decoder = Decoder<VaxDisassembler, Opcode, VaxInstruction>;
+    using Decoder = Decoder<VaxDisassembler, Mnemonic, VaxInstruction>;
     using Mutator = Mutator<VaxDisassembler>;
 
     public partial class VaxDisassembler : DisassemblerBase<VaxInstruction>
@@ -72,7 +72,7 @@ namespace Reko.Arch.Vax
             return new VaxInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Opcode = Opcode.Invalid,
+                Opcode = Mnemonic.Invalid,
                 Operands = new MachineOperand[0]
             };
         }
@@ -232,11 +232,11 @@ namespace Reko.Arch.Vax
 
         private class InstrDecoder : Decoder
         {
-            private readonly Opcode op;
+            private readonly Mnemonic op;
             private readonly InstrClass iclass;
             private readonly Mutator[] mutators;
 
-            public InstrDecoder(Opcode op, InstrClass iclass, params Mutator [] mutators)
+            public InstrDecoder(Mnemonic op, InstrClass iclass, params Mutator [] mutators)
             {
                 this.op = op;
                 this.iclass = iclass;
@@ -263,17 +263,17 @@ namespace Reko.Arch.Vax
             }
         }
 
-        public static Decoder Instr(Opcode opcode, params Mutator<VaxDisassembler> [] mutators)
+        public static Decoder Instr(Mnemonic opcode, params Mutator<VaxDisassembler> [] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        public static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator<VaxDisassembler>[] mutators)
+        public static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<VaxDisassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, mutators);
         }
 
-        public static Decoder Instr(Opcode opcode, int ignored)
+        public static Decoder Instr(Mnemonic opcode, int ignored)
         {
             return new InstrDecoder(opcode, InstrClass.Linear);
         }
