@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using Reko.Analysis;
 using Reko.Evaluation;
 using Reko.Arch.X86;
@@ -73,10 +74,10 @@ namespace Reko.UnitTests.Evaluation
             var dword = new TypeReference("DWORD", PrimitiveType.Int32);
             Identifier edx = new Identifier("edx", dword, Registers.edx);
 
-            var ctx = new SymbolicEvaluationContext(null, null);
-            ctx.SetValue(edx, Constant.Int32(321));
+            var ctx = new Mock<EvaluationContext>();
+            ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Int32(321));
 
-            IdConstant ic = new IdConstant(ctx, new Unifier(null, null), listener);
+            IdConstant ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("321", e.ToString());
@@ -89,10 +90,10 @@ namespace Reko.UnitTests.Evaluation
             var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
-            var ctx = new SymbolicEvaluationContext(null, null);
-            ctx.SetValue(edx, Constant.Int32(0x567));
+            var ctx = new Mock<EvaluationContext>();
+            ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Int32(0x567));
 
-            IdConstant ic = new IdConstant(ctx, new Unifier(null, null), listener);
+            IdConstant ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00000567", e.ToString());
@@ -105,10 +106,10 @@ namespace Reko.UnitTests.Evaluation
             var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
-            var ctx = new SymbolicEvaluationContext(null, null);
-            ctx.SetValue(edx, Address.Ptr32(0x00123400));
+            var ctx = new Mock<EvaluationContext>();
+            ctx.Setup(c => c.GetValue(edx)).Returns(Address.Ptr32(0x00123400));
 
-            IdConstant ic = new IdConstant(ctx, new Unifier(null, null), listener);
+            IdConstant ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00123400", e.ToString());
