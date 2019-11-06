@@ -57,7 +57,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 return null;
             this.opSize = null;
             this.ops.Clear();
-            var instr = opRecs[b].Decode(b, this);
+            var instr = rootDecoders[b].Decode(b, this);
             if (instr == null)
             {
                 instr = CreateInvalidInstruction();
@@ -534,7 +534,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 if (!mutator(bPrev, dasm) || !dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
-                return regOpRecs[b].Decode(b, dasm);
+                return regDecoders[b].Decode(b, dasm);
             }
         }
 
@@ -558,7 +558,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 if (!dasm.rdr.TryReadByte(out b))
                     return dasm.CreateInvalidInstruction();
                 dasm.ops.Add(op);
-                return regOpRecs[b].Decode(b, dasm);
+                return regDecoders[b].Decode(b, dasm);
             }
         }
 
@@ -575,15 +575,15 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 if (!mutator(bPrev, dasm) || !dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
-                return memOpRecs[b].Decode(b, dasm);
+                return memDecoders[b].Decode(b, dasm);
             }
         }
 
-        private class DstOpRec : Decoder
+        private class DstDecoder : Decoder
         {
             private Mutator<Tlcs900Disassembler> mutator;
 
-            public DstOpRec(Mutator<Tlcs900Disassembler> mutator)
+            public DstDecoder(Mutator<Tlcs900Disassembler> mutator)
             {
                 this.mutator = mutator;
             }
@@ -592,7 +592,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 if (!mutator(bPrev, dasm) || !dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
-                var instr = dstOpRecs[b].Decode(b, dasm);
+                var instr = dstDecoders[b].Decode(b, dasm);
                 if (instr.Operands.Length >= 2)
                 {
                     instr.Operands[0].Width = instr.Operands[1].Width;
@@ -709,7 +709,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             1, 2, 4
         };
 
-        private static Decoder[] opRecs = {
+        private static Decoder[] rootDecoders = {
             // 00
             Instr(Opcode.nop, InstrClass.Padding|InstrClass.Zero),
             Instr(Opcode.invalid),
@@ -931,25 +931,25 @@ namespace Reko.Arch.Tlcs.Tlcs900
             new MemDecoder(Nx),
             new MemDecoder(Nx),
             // B0
-            new DstOpRec(M_),
-            new DstOpRec(M_),
-            new DstOpRec(M_),
-            new DstOpRec(M_),
+            new DstDecoder(M_),
+            new DstDecoder(M_),
+            new DstDecoder(M_),
+            new DstDecoder(M_),
 
-            new DstOpRec(M_),
-            new DstOpRec(M_),
-            new DstOpRec(M_),
-            new DstOpRec(M_),
+            new DstDecoder(M_),
+            new DstDecoder(M_),
+            new DstDecoder(M_),
+            new DstDecoder(M_),
 
-            new DstOpRec(N_),
-            new DstOpRec(N_),
-            new DstOpRec(N_),
-            new DstOpRec(N_),
+            new DstDecoder(N_),
+            new DstDecoder(N_),
+            new DstDecoder(N_),
+            new DstDecoder(N_),
 
-            new DstOpRec(N_),
-            new DstOpRec(N_),
-            new DstOpRec(N_),
-            new DstOpRec(N_),
+            new DstDecoder(N_),
+            new DstDecoder(N_),
+            new DstDecoder(N_),
+            new DstDecoder(N_),
             // C0
             new MemDecoder(Ob),
             new MemDecoder(Pb),
@@ -1012,13 +1012,13 @@ namespace Reko.Arch.Tlcs.Tlcs900
             new RegDecoder(rx),
 
             // F0
-            new DstOpRec(O_),
-            new DstOpRec(P_),
-            new DstOpRec(Q_),
-            new DstOpRec(m_),
+            new DstDecoder(O_),
+            new DstDecoder(P_),
+            new DstDecoder(Q_),
+            new DstDecoder(m_),
 
-            new DstOpRec(Pre(null)),
-            new DstOpRec(Post(null)),
+            new DstDecoder(Pre(null)),
+            new DstDecoder(Post(null)),
             Instr(Opcode.invalid),
             Instr(Opcode.invalid),
 

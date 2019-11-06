@@ -126,155 +126,155 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             new SubDecoder(8, 4, new Decoder[16] {                  // 0000 ???? .... ....
                 new SubDecoder(4, 4, new Decoder[16] {              // 0000 0000 ???? ....
                     new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0000 ????
-                        new NoOperandOpRec(Opcode.NOP),             // 0000 0000 0000 0000
-                        new InvalidOpRec(),                         // 0000 0000 0000 0001
+                        new NoOperandDecoder(Opcode.NOP),             // 0000 0000 0000 0000
+                        new InvalidDecoder(),                         // 0000 0000 0000 0001
                         new WrongDecoder(),                         // 0000 0000 0000 0010
-                        new NoOperandOpRec(Opcode.SLEEP),           // 0000 0000 0000 0011
-                        new NoOperandOpRec(Opcode.CLRWDT),          // 0000 0000 0000 0100
-                        new NoOperandOpRec(Opcode.PUSH),            // 0000 0000 0000 0101
-                        new NoOperandOpRec(Opcode.POP),             // 0000 0000 0000 0110
-                        new NoOperandOpRec(Opcode.DAW),             // 0000 0000 0000 0111
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1000
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1001
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1010
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1011
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1100
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1101
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1110
-                        new TblOpRec(Opcode.TBLWT)                  // 0000 0000 0000 1111
+                        new NoOperandDecoder(Opcode.SLEEP),           // 0000 0000 0000 0011
+                        new NoOperandDecoder(Opcode.CLRWDT),          // 0000 0000 0000 0100
+                        new NoOperandDecoder(Opcode.PUSH),            // 0000 0000 0000 0101
+                        new NoOperandDecoder(Opcode.POP),             // 0000 0000 0000 0110
+                        new NoOperandDecoder(Opcode.DAW),             // 0000 0000 0000 0111
+                        new TblDecoder(Opcode.TBLRD),                 // 0000 0000 0000 1000
+                        new TblDecoder(Opcode.TBLRD),                 // 0000 0000 0000 1001
+                        new TblDecoder(Opcode.TBLRD),                 // 0000 0000 0000 1010
+                        new TblDecoder(Opcode.TBLRD),                 // 0000 0000 0000 1011
+                        new TblDecoder(Opcode.TBLWT),                 // 0000 0000 0000 1100
+                        new TblDecoder(Opcode.TBLWT),                 // 0000 0000 0000 1101
+                        new TblDecoder(Opcode.TBLWT),                 // 0000 0000 0000 1110
+                        new TblDecoder(Opcode.TBLWT)                  // 0000 0000 0000 1111
                     }),
                     new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0001 ????
-                        new ShadowOpRec(Opcode.RETFIE),             // 0000 0000 0001 0000
-                        new ShadowOpRec(Opcode.RETFIE),             // 0000 0000 0001 0001
-                        new ShadowOpRec(Opcode.RETURN),             // 0000 0000 0001 0010
-                        new ShadowOpRec(Opcode.RETURN),             // 0000 0000 0001 0011
+                        new ShadowDecoder(Opcode.RETFIE),             // 0000 0000 0001 0000
+                        new ShadowDecoder(Opcode.RETFIE),             // 0000 0000 0001 0001
+                        new ShadowDecoder(Opcode.RETURN),             // 0000 0000 0001 0010
+                        new ShadowDecoder(Opcode.RETURN),             // 0000 0000 0001 0011
                         new WrongDecoder(),                         // 0000 0000 0001 0100
-                        new InvalidOpRec(),                         // 0000 0000 0001 0101
-                        new InvalidOpRec(),                         // 0000 0000 0001 0110
-                        new InvalidOpRec(),                         // 0000 0000 0001 0111
-                        new InvalidOpRec(),                         // 0000 0000 0001 1000
-                        new InvalidOpRec(),                         // 0000 0000 0001 1001
-                        new InvalidOpRec(),                         // 0000 0000 0001 1010
-                        new InvalidOpRec(),                         // 0000 0000 0001 1011
-                        new InvalidOpRec(),                         // 0000 0000 0001 1100
-                        new InvalidOpRec(),                         // 0000 0000 0001 1101
-                        new InvalidOpRec(),                         // 0000 0000 0001 1110
-                        new InvalidOpRec(),                         // 0000 0000 0001 1111
+                        new InvalidDecoder(),                         // 0000 0000 0001 0101
+                        new InvalidDecoder(),                         // 0000 0000 0001 0110
+                        new InvalidDecoder(),                         // 0000 0000 0001 0111
+                        new InvalidDecoder(),                         // 0000 0000 0001 1000
+                        new InvalidDecoder(),                         // 0000 0000 0001 1001
+                        new InvalidDecoder(),                         // 0000 0000 0001 1010
+                        new InvalidDecoder(),                         // 0000 0000 0001 1011
+                        new InvalidDecoder(),                         // 0000 0000 0001 1100
+                        new InvalidDecoder(),                         // 0000 0000 0001 1101
+                        new InvalidDecoder(),                         // 0000 0000 0001 1110
+                        new InvalidDecoder(),                         // 0000 0000 0001 1111
                     }),
-                    new InvalidOpRec(),                             // 0000 0000 0010 ....
-                    new InvalidOpRec(),                             // 0000 0000 0011 ....
-                    new InvalidOpRec(),                             // 0000 0000 0100 ....
-                    new InvalidOpRec(),                             // 0000 0000 0101 ....
+                    new InvalidDecoder(),                             // 0000 0000 0010 ....
+                    new InvalidDecoder(),                             // 0000 0000 0011 ....
+                    new InvalidDecoder(),                             // 0000 0000 0100 ....
+                    new InvalidDecoder(),                             // 0000 0000 0101 ....
                     new WrongDecoder(),                             // 0000 0000 0110 ffff + 1111 ffff ffff ffgg + 1111 gggg gggg gggg
-                    new InvalidOpRec(),                             // 0000 0000 0111 ....
-                    new InvalidOpRec(),                             // 0000 0000 1000 ....
-                    new InvalidOpRec(),                             // 0000 0000 1001 ....
-                    new InvalidOpRec(),                             // 0000 0000 1010 ....
-                    new InvalidOpRec(),                             // 0000 0000 1011 ....
-                    new InvalidOpRec(),                             // 0000 0000 1100 ....
-                    new InvalidOpRec(),                             // 0000 0000 1101 ....
-                    new InvalidOpRec(),                             // 0000 0000 1110 ....
-                    new ResetOpRec(Opcode.RESET),                   // 0000 0000 1111 1111 
+                    new InvalidDecoder(),                             // 0000 0000 0111 ....
+                    new InvalidDecoder(),                             // 0000 0000 1000 ....
+                    new InvalidDecoder(),                             // 0000 0000 1001 ....
+                    new InvalidDecoder(),                             // 0000 0000 1010 ....
+                    new InvalidDecoder(),                             // 0000 0000 1011 ....
+                    new InvalidDecoder(),                             // 0000 0000 1100 ....
+                    new InvalidDecoder(),                             // 0000 0000 1101 ....
+                    new InvalidDecoder(),                             // 0000 0000 1110 ....
+                    new ResetDecoder(Opcode.RESET),                   // 0000 0000 1111 1111 
                 }),
                 new WrongDecoder(),                                 // 0000 0001 .... ....
-                new MemoryAccessOpRec(Opcode.MULWF),                // 0000 001a ffff ffff
-                new MemoryAccessOpRec(Opcode.MULWF),                // 0000 001a ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECF),         // 0000 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECF),         // 0000 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECF),         // 0000 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECF),         // 0000 01da ffff ffff
-                new Immed8OpRec(Opcode.SUBLW),                      // 0000 1000 kkkk kkkk
-                new Immed8OpRec(Opcode.IORLW),                      // 0000 1001 kkkk kkkk
-                new Immed8OpRec(Opcode.XORLW),                      // 0000 1010 kkkk kkkk
-                new Immed8OpRec(Opcode.ANDLW),                      // 0000 1011 kkkk kkkk
-                new Immed8OpRec(Opcode.RETLW),                      // 0000 1100 kkkk kkkk
-                new Immed8OpRec(Opcode.MULLW),                      // 0000 1101 kkkk kkkk
-                new Immed8OpRec(Opcode.MOVLW),                      // 0000 1110 kkkk kkkk
-                new Immed8OpRec(Opcode.ADDLW),                      // 0000 1111 kkkk kkkk
+                new MemoryAccessDecoder(Opcode.MULWF),                // 0000 001a ffff ffff
+                new MemoryAccessDecoder(Opcode.MULWF),                // 0000 001a ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.DECF),         // 0000 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.DECF),         // 0000 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.DECF),         // 0000 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.DECF),         // 0000 01da ffff ffff
+                new Immed8Decoder(Opcode.SUBLW),                      // 0000 1000 kkkk kkkk
+                new Immed8Decoder(Opcode.IORLW),                      // 0000 1001 kkkk kkkk
+                new Immed8Decoder(Opcode.XORLW),                      // 0000 1010 kkkk kkkk
+                new Immed8Decoder(Opcode.ANDLW),                      // 0000 1011 kkkk kkkk
+                new Immed8Decoder(Opcode.RETLW),                      // 0000 1100 kkkk kkkk
+                new Immed8Decoder(Opcode.MULLW),                      // 0000 1101 kkkk kkkk
+                new Immed8Decoder(Opcode.MOVLW),                      // 0000 1110 kkkk kkkk
+                new Immed8Decoder(Opcode.ADDLW),                      // 0000 1111 kkkk kkkk
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0001 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.IORWF),        // 0001 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.ANDWF),        // 0001 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.XORWF),        // 0001 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.COMF),         // 0001 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.IORWF),        // 0001 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.ANDWF),        // 0001 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.XORWF),        // 0001 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.COMF),         // 0001 11da ffff ffff
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0010 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.ADDWFC),       // 0010 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.ADDWF),        // 0010 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.INCF),         // 0010 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECFSZ),       // 0010 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.ADDWFC),       // 0010 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.ADDWF),        // 0010 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.INCF),         // 0010 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.DECFSZ),       // 0010 11da ffff ffff
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0011 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.RRCF),         // 0011 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.RLCF),         // 0011 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.SWAPF),        // 0011 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.INCFSZ),       // 0011 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.RRCF),         // 0011 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.RLCF),         // 0011 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.SWAPF),        // 0011 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.INCFSZ),       // 0011 11da ffff ffff
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0100 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.RRNCF),        // 0100 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.RLNCF),        // 0100 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.INFSNZ),       // 0100 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DCFSNZ),       // 0100 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.RRNCF),        // 0100 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.RLNCF),        // 0100 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.INFSNZ),       // 0100 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.DCFSNZ),       // 0100 11da ffff ffff
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0101 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.MOVF),         // 0101 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.SUBFWB),       // 0101 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.SUBWFB),       // 0101 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.SUBWF),        // 0101 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.MOVF),         // 0101 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.SUBFWB),       // 0101 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.SUBWFB),       // 0101 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Opcode.SUBWF),        // 0101 11da ffff ffff
             }),
             new SubDecoder(9, 3, new Decoder[8] {                   // 0110 ???. .... ....
-                new MemoryAccessOpRec(Opcode.CPFSLT),               // 0110 000. .... ....
-                new MemoryAccessOpRec(Opcode.CPFSEQ),               // 0110 001. .... ....
-                new MemoryAccessOpRec(Opcode.CPFSGT),               // 0110 010. .... ....
-                new MemoryAccessOpRec(Opcode.TSTFSZ),               // 0110 011. .... ....
-                new MemoryAccessOpRec(Opcode.SETF),                 // 0110 100. .... ....
-                new MemoryAccessOpRec(Opcode.CLRF),                 // 0110 101. .... ....
-                new MemoryAccessOpRec(Opcode.NEGF),                 // 0110 110 .... ....
-                new MemoryAccessOpRec(Opcode.MOVWF),                // 0110 111. .... ....
+                new MemoryAccessDecoder(Opcode.CPFSLT),               // 0110 000. .... ....
+                new MemoryAccessDecoder(Opcode.CPFSEQ),               // 0110 001. .... ....
+                new MemoryAccessDecoder(Opcode.CPFSGT),               // 0110 010. .... ....
+                new MemoryAccessDecoder(Opcode.TSTFSZ),               // 0110 011. .... ....
+                new MemoryAccessDecoder(Opcode.SETF),                 // 0110 100. .... ....
+                new MemoryAccessDecoder(Opcode.CLRF),                 // 0110 101. .... ....
+                new MemoryAccessDecoder(Opcode.NEGF),                 // 0110 110 .... ....
+                new MemoryAccessDecoder(Opcode.MOVWF),                // 0110 111. .... ....
             }),
-            new MemoryBitWithAccessOpRec(Opcode.BTG),           // 0111 bbba ffff ffff
-            new MemoryBitWithAccessOpRec(Opcode.BSF),           // 1000 bbba ffff ffff
-            new MemoryBitWithAccessOpRec(Opcode.BCF),           // 1001 bbba ffff ffff
-            new MemoryBitWithAccessOpRec(Opcode.BTFSS),         // 1010 bbba ffff ffff
-            new MemoryBitWithAccessOpRec(Opcode.BTFSC),         // 1011 bbba ffff ffff
-            new MovffOpRec(Opcode.MOVFF),                           // 1100 ffff ffff ffff + 1111 ffff ffff ffff
+            new MemoryBitWithAccessDecoder(Opcode.BTG),           // 0111 bbba ffff ffff
+            new MemoryBitWithAccessDecoder(Opcode.BSF),           // 1000 bbba ffff ffff
+            new MemoryBitWithAccessDecoder(Opcode.BCF),           // 1001 bbba ffff ffff
+            new MemoryBitWithAccessDecoder(Opcode.BTFSS),         // 1010 bbba ffff ffff
+            new MemoryBitWithAccessDecoder(Opcode.BTFSC),         // 1011 bbba ffff ffff
+            new MovffDecoder(Opcode.MOVFF),                           // 1100 ffff ffff ffff + 1111 ffff ffff ffff
             new SubDecoder(11, 1 , new Decoder[2] {                 // 1101 ?... .... ....
-                new TargetRel11OpRec(Opcode.BRA),                   // 1101 0nnn nnnn nnnn
-                new TargetRel11OpRec(Opcode.RCALL),                 // 1101 1nnn nnnn nnnn
+                new TargetRel11Decoder(Opcode.BRA),                   // 1101 0nnn nnnn nnnn
+                new TargetRel11Decoder(Opcode.RCALL),                 // 1101 1nnn nnnn nnnn
             }),
             new SubDecoder(11, 1, new Decoder[2] {                  // 1110 ?... .... ....
                 new SubDecoder(8, 3, new Decoder[8] {               // 1110 0??? .... ....
-                    new TargetRel8OpRec(Opcode.BZ),                 // 1110 0000 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BNZ),                // 1110 0001 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BC),                 // 1110 0010 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BNC),                // 1110 0011 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BOV),                // 1110 0100 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BNOV),               // 1110 0101 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BN),                 // 1110 0110 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BNN),                // 1110 0111 nnnn nnnn
+                    new TargetRel8Decoder(Opcode.BZ),                 // 1110 0000 nnnn nnnn
+                    new TargetRel8Decoder(Opcode.BNZ),                // 1110 0001 nnnn nnnn
+                    new TargetRel8Decoder(Opcode.BC),                 // 1110 0010 nnnn nnnn
+                    new TargetRel8Decoder(Opcode.BNC),                // 1110 0011 nnnn nnnn
+                    new TargetRel8Decoder(Opcode.BOV),                // 1110 0100 nnnn nnnn
+                    new TargetRel8Decoder(Opcode.BNOV),               // 1110 0101 nnnn nnnn
+                    new TargetRel8Decoder(Opcode.BN),                 // 1110 0110 nnnn nnnn
+                    new TargetRel8Decoder(Opcode.BNN),                // 1110 0111 nnnn nnnn
                 }),
                 new SubDecoder(8, 3, new Decoder[8] {               // 1110 1??? .... ....
                     new WrongDecoder(),                             // 1110 1000 .... ....
                     new WrongDecoder(),                             // 1110 1001 .... ....
                     new WrongDecoder(),                             // 1110 1010 .... ....
                     new WrongDecoder(),                             // 1110 1011 .... ....
-                    new CallOpRec(Opcode.CALL),                     // 1110 110s kkkk kkkk + 1111 kkkk kkkk kkkk
-                    new CallOpRec(Opcode.CALL),                     // 1110 110s kkkk kkkk + 1111 kkkk kkkk kkkk
+                    new CallDecoder(Opcode.CALL),                     // 1110 110s kkkk kkkk + 1111 kkkk kkkk kkkk
+                    new CallDecoder(Opcode.CALL),                     // 1110 110s kkkk kkkk + 1111 kkkk kkkk kkkk
                     new WrongDecoder(),                             // 1110 1110 .... ....
-                    new TargetAbs20OpRec(Opcode.GOTO),              // 1110 1111 kkkk kkkk + 1111 kkkk kkkk kkkk
+                    new TargetAbs20Decoder(Opcode.GOTO),              // 1110 1111 kkkk kkkk + 1111 kkkk kkkk kkkk
                 }),
             }),
-            new NoOperandOpRec(Opcode.NOP),                         // 1111 .... .... ....
+            new NoOperandDecoder(Opcode.NOP),                         // 1111 .... .... ....
         };
 
         /// <summary>
         /// Instruction with no operand.
         /// </summary>
-        protected class NoOperandOpRec : Decoder
+        protected class NoOperandDecoder : Decoder
         {
             private Opcode opcode;
 
-            public NoOperandOpRec(Opcode opc)
+            public NoOperandDecoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -288,11 +288,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction RESET.
         /// </summary>
-        protected class ResetOpRec : Decoder
+        protected class ResetDecoder : Decoder
         {
             private Opcode opcode;
 
-            public ResetOpRec(Opcode opc)
+            public ResetDecoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -308,11 +308,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction in the form <code>'....-bbba-ffff-ffff'</code>  (BTG, BSF, BCF, BTFSS, BTFSC)
         /// </summary>
-        protected class MemoryBitWithAccessOpRec : Decoder
+        protected class MemoryBitWithAccessDecoder : Decoder
         {
             private Opcode opcode;
 
-            public MemoryBitWithAccessOpRec(Opcode opc)
+            public MemoryBitWithAccessDecoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -329,11 +329,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction in the form <code>'....-...a-ffff-ffff'</code> (MULWF, CPFSLT, CPFSEQ, CPFSGT, SETF, CLRF, NEGF, MOVWF)
         /// </summary>
-        protected class MemoryAccessOpRec : Decoder
+        protected class MemoryAccessDecoder : Decoder
         {
             private Opcode opcode;
 
-            public MemoryAccessOpRec(Opcode opc)
+            public MemoryAccessDecoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -350,11 +350,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// Instruction in the form <code>'....-..da-ffff-ffff'</code>
         /// (DECF, IORWF, ANDWF, XORWF, COMF, ADDWFC, ADDWF, INCF, DECFSZ, RRCF, RLCF, SWAPF, INCFSZ, RRNCF, RLNCF, INFSNZ, DCFSNZ, MOVF, SUBFWB, SUBWFB, SUBWF, TSTFSZ)
         /// </summary>
-        protected class MemoryAccessWithDestOpRec : Decoder
+        protected class MemoryAccessWithDestDecoder : Decoder
         {
             private Opcode opcode;
 
-            public MemoryAccessWithDestOpRec(Opcode opc)
+            public MemoryAccessWithDestDecoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -371,11 +371,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction in the form <code>'....-....-kkkk-kkkk'</code> (ADDLW, MOVLW, RETLW, PUSHL, ...)
         /// </summary>
-        protected class Immed8OpRec : Decoder
+        protected class Immed8Decoder : Decoder
         {
             private Opcode opcode;
 
-            public Immed8OpRec(Opcode opc)
+            public Immed8Decoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -390,11 +390,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction in the form <code>'....-....-kkkk-kkkk, 1111-0000-kkkk-kkkk'</code>.
         /// </summary>
-        protected class Immed12OpRec : Decoder
+        protected class Immed12Decoder : Decoder
         {
             private Opcode opcode;
 
-            public Immed12OpRec(Opcode opc)
+            public Immed12Decoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -415,11 +415,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction with Shadow flag (RETFIE, RETURN)
         /// </summary>
-        protected class ShadowOpRec : Decoder
+        protected class ShadowDecoder : Decoder
         {
             private Opcode opcode;
 
-            public ShadowOpRec(Opcode opc)
+            public ShadowDecoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -434,11 +434,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Short relative branch (BC, BN, BZ, ...) decoder.
         /// </summary>
-        protected class TargetRel8OpRec : Decoder
+        protected class TargetRel8Decoder : Decoder
         {
             private Opcode opcode;
 
-            public TargetRel8OpRec(Opcode opc)
+            public TargetRel8Decoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -453,11 +453,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Long relative branch (BRA, RCALL) decoder.
         /// </summary>
-        protected class TargetRel11OpRec : Decoder
+        protected class TargetRel11Decoder : Decoder
         {
             private Opcode opcode;
 
-            public TargetRel11OpRec(Opcode opc)
+            public TargetRel11Decoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -472,11 +472,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction TBLRD, TBLWT decoder
         /// </summary>
-        protected class TblOpRec : Decoder
+        protected class TblDecoder : Decoder
         {
             private Opcode opcode;
 
-            public TblOpRec(Opcode opc)
+            public TblDecoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -491,11 +491,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction MOVFF decoder.
         /// </summary>
-        protected class MovffOpRec : Decoder
+        protected class MovffDecoder : Decoder
         {
             private Opcode opcode;
 
-            public MovffOpRec(Opcode opc)
+            public MovffDecoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -514,11 +514,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction GOTO decoder.
         /// </summary>
-        protected class TargetAbs20OpRec : Decoder
+        protected class TargetAbs20Decoder : Decoder
         {
             private Opcode opcode;
 
-            public TargetAbs20OpRec(Opcode opc)
+            public TargetAbs20Decoder(Opcode opc)
             {
                 opcode = opc;
             }
@@ -536,11 +536,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction CALL decoder.
         /// </summary>
-        protected class CallOpRec : Decoder
+        protected class CallDecoder : Decoder
         {
             private Opcode opcode;
 
-            public CallOpRec(Opcode opc)
+            public CallDecoder(Opcode opc)
             {
                 opcode = opc;
             }

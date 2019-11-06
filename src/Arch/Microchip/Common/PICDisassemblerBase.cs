@@ -179,7 +179,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Invalid instruction. Return <code>null</code> to indicate an invalid instruction.
         /// </summary>
-        protected class InvalidOpRec : Decoder
+        protected class InvalidDecoder : Decoder
         {
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {

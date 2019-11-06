@@ -32,7 +32,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
     partial class Tlcs900Disassembler
     {
-        private static Decoder[] regOpRecs = 
+        private static Decoder[] regDecoders = 
         {
             // 00
             Instr(Opcode.invalid),

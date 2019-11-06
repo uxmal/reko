@@ -32,7 +32,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
     partial class Tlcs900Disassembler
     {
-        private static Decoder[] dstOpRecs = 
+        private static Decoder[] dstDecoders = 
         {
             // 00
             Instr(Opcode.ld, Ib),
