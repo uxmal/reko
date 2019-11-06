@@ -6,27 +6,11 @@ void fn0000(byte R1)
 // Trashed: CAOP A DPH DPL R1 R7
 // Preserved: SP
 fn0000_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0788:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l077A:
 	Mem7[0x001D:byte] = 0x00
 	byte A_11 = Mem7[0x80F0:byte]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0791:
 	byte R1_20
 	call fn4EF3 (retsize: 2;)
@@ -34,27 +18,11 @@ l0791:
 		defs: R1:R1_20
 	Mem30[0x0157:byte] = 0x05
 	branch (Mem30[0x80EA:byte] >>u 0x02 & 0x01) != 0x00 l07AA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l07A7:
 	call fn4AC0 (retsize: 2;)
 		uses: R1:R1_20
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l07AA:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

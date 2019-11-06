@@ -6,33 +6,13 @@ void _init()
 // Trashed: SCZO rax
 // Preserved: rsp
 _init_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400AE8:
 	branch __gmon_start__ == 0x0000000000000000 l0000000000400AFD
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400AF8:
 	call __gmon_start__ (retsize: 8;)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400AFD:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _start(word64 rdx, word64 qwArg00)
@@ -44,23 +24,11 @@ void _start(word64 rdx, word64 qwArg00)
 // Preserved:
 // Terminates process
 _start_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _start_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400CD0:
 	__align(fp + 8)
 	__libc_start_main(0x00000000004012F9, qwArg00, fp + 8, 0x0000000000401780, 0x00000000004017F0, rdx, fp)
 	__hlt()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void deregister_tm_clones(word64 r8)
@@ -71,41 +39,17 @@ void deregister_tm_clones(word64 r8)
 // Trashed: SCZO r8 rax rdi
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D00:
 	branch false l0000000000400D30
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D15:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400D30
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D30:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D1F:
 	call 0x0000000000000000 (retsize: 8;)
 		uses: r8:r8 - 6299896,rdi:0x00000000006020F8
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 deregister_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void register_tm_clones()
@@ -116,41 +60,17 @@ void register_tm_clones()
 // Trashed: SCZO rax rdi rsi
 // Preserved: rbp rsp
 register_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D40:
 	branch 0 == 0x0000000000000000 l0000000000400D78
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D63:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400D78
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D78:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D6D:
 	call 0x0000000000000000 (retsize: 8;)
 		uses: rdi:0x00000000006020F8
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 register_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __do_global_dtors_aux(word64 r8)
@@ -161,34 +81,14 @@ void __do_global_dtors_aux(word64 r8)
 // Trashed: SCZO r8 rax rdi
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D80:
 	branch Mem0[0x0000000000602108:byte] != 0x00 l0000000000400D9A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D89:
 	deregister_tm_clones(r8)
 	Mem20[0x0000000000602108:byte] = 0x01
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400D9A:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_dtors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void frame_dummy()
@@ -199,52 +99,20 @@ void frame_dummy()
 // Trashed: SCZO rax rdi rsi
 // Preserved: rbp rsp
 frame_dummy_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400DA0:
 	branch Mem0[0x0000000000601E10:word64] != 0x0000000000000000 l0000000000400DB0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400DB0:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400DAB
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400DBA:
 	call fn0000000000000000 (retsize: 8;)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400DC1_thunk_register_tm_clones:
 	register_tm_clones()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400DAB:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400DAB_thunk_register_tm_clones:
 	register_tm_clones()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 frame_dummy_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 component(word32 ecx, word32 edx, word32 esi, word64 rdi, word32 r8d)
@@ -256,73 +124,29 @@ word32 component(word32 ecx, word32 edx, word32 esi, word64 rdi, word32 r8d)
 // Preserved: rbp rsp
 component_entry:
 	word32 ecx = SLICE(rcx, word32, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400DC6:
 	word32 eax_40 = SLICE((uint64) (SLICE((uint64) SLICE((uint64) (edx + SLICE((uint64) (SLICE((uint64) (SLICE((uint64) esi, word32, 0) & 0x0000003F), word32, 0) *s r8d), word32, 0)), word32, 0), word32, 0) *s ecx), word32, 0)
 	word64 v16_51 = rdi + ((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (SLICE((uint64) esi, word32, 0) >>u 0x00000006), word32, 0) *s r8d), word32, 0) *s ecx), word32, 0) << 0x0000000000000003) + (uint64) SLICE((uint64) (SLICE((uint64) eax_40, word32, 0) >>u 0x00000003), word32, 0)
 	branch ecx >u 0x00000010 l0000000000400EC1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400E2D:
 	word64 rax_112
 	switch (ecx) { l0000000000400EC1 l0000000000400E3A l0000000000400E5A l0000000000400EC1 l0000000000400E77 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400E94 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EA0 }
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400EA0:
 	rax_112 = (uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000001:byte], byte, 0) + SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51:byte], byte, 0) << 0x00000008), word32, 0), word32, 0))
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400E94:
 	rax_112 = SEQ(SLICE(v16_51, word32, 32), (word32) SLICE((word32) Mem54[v16_51:byte], byte, 0)) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400E77:
 	rax_112 = (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x0000000F)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400E5A:
 	rax_112 = (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000003)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400E3A:
 	rax_112 = (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000001)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400EE7:
 	return SLICE(rax_112, word32, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 component_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400EC1:
 	fprintf(Mem54[0x0000000000602100:word64], 0x0000000000401808, (uint64) ecx)
 	exit(0x0000000000000001)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, selector fs)
@@ -333,10 +157,6 @@ void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, selector fs)
 // Trashed: SCZO r8 r9 rax rcx rdi rdx rsi
 // Preserved: r12 r13 rbp rbx rsp
 print_pixel_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400EE9:
 	word64 rax_26 = Mem24[fs:0x00000028:word64]
 	word64 rcx_39
@@ -354,28 +174,12 @@ l0000000000400EE9:
 	word32 ecx_462 = SLICE(rcx_55, word32, 0)
 	word32 eax_61 = (word32) SLICE(rax_56, byte, 0)
 	branch eax_61 >u 0x00000006 l00000000004012C9
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400F4C:
 	switch (Mem46[(uint64) eax_61 * 0x0000000000000008 + 0x00401958:word32]) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040122A:
 	printf(0x0000000000401926, (uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000000, SLICE((uint64) ecx, word32, 0), rdx, 0x00000004), word32, 0), (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000001, SLICE((uint64) ecx, word32, 0), rdx, 0x00000004), word32, 0), word32, 0), (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000002, SLICE((uint64) ecx, word32, 0), rdx, 0x00000004), word32, 0), word32, 0), (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000003, SLICE((uint64) ecx, word32, 0), rdx, 0x00000004), word32, 0), word32, 0))
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004011D2:
 	printf(0x0000000000401914, (uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000000, SLICE((uint64) ecx, word32, 0), rdx, 0x00000002), word32, 0), (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000001, SLICE((uint64) ecx, word32, 0), rdx, 0x00000002), word32, 0), word32, 0))
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400F8D:
 	word32 eax_219 = SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000000, SLICE((uint64) ecx, word32, 0), rdx, 0x00000001), word32, 0)
 	word64 rax_232
@@ -383,130 +187,50 @@ l0000000000400F8D:
 		uses: rax:rdi,rcx:fp - 0x0000000000000050,rdi:rdi,rdx:fp - 0x0000000000000040,rsi:rsi,Stack +0030:0x00000000,Stack +003C:eax_219,Stack +0040:0x0000000000000000
 		defs: rax:rax_232
 	branch SLICE((uint64) (SLICE(rax_232, word32, 0) & 0x00000008), word32, 0) == 0x00000000 l0000000000401137
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400FE1:
 	branch true l0000000000401137
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400FEC:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000401137
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401137:
 	printf(0x00000000004018EA, (uint64) SLICE((uint64) eax_219, word32, 0))
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400FF9:
 	word64 rax_270
 	call png_get_tRNS (retsize: 8;)
 		uses: r8:0x0000000000000000,rax:rdi,rcx:fp - 0x000000000000004C,rdi:rdi,rdx:fp - 0x0000000000000038,rsi:rsi,Stack +0034:0x00000000,Stack +0048:0x0000000000000000
 		defs: rax:rax_270
 	branch SLICE((uint64) (SLICE(rax_270, word32, 0) & 0x00000010), word32, 0) == 0x00000000 l00000000004010D1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401031:
 	branch true l00000000004010D1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040103C:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004010D1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004010D1:
 	word64 rdx_309 = (uint64) eax_219
 	printf(0x00000000004018D3, (uint64) SLICE((uint64) eax_219, word32, 0), SEQ(SLICE(rdx_309, word32, 32), (word32) SLICE((word32) Mem259[rdx_309 * 0x0000000000000003:byte], byte, 0)), (uint64) (uint32) (word32) SLICE((word32) Mem259[(uint64) eax_219 * 0x0000000000000003 + 0x0000000000000001:byte], byte, 0), (uint64) (word32) SLICE((word32) Mem259[(uint64) eax_219 * 0x0000000000000003 + 0x0000000000000002:byte], byte, 0))
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401049:
 	word32 esi_340
 	branch eax_219 >=u 0x00000000 l0000000000401063
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401063:
 	esi_340 = 0x000000FF (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401051:
 	esi_340 = (word32) SLICE((word32) Mem259[(uint64) eax_219:byte], byte, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401068:
 	word64 rdx_362 = (uint64) eax_219
 	printf(0x00000000004018B9, (uint64) SLICE((uint64) eax_219, word32, 0), SEQ(SLICE(rdx_362, word32, 32), (word32) SLICE((word32) Mem259[rdx_362 * 0x0000000000000003:byte], byte, 0)), (uint64) (uint32) (word32) SLICE((word32) Mem259[(uint64) eax_219 * 0x0000000000000003 + 0x0000000000000001:byte], byte, 0), (uint64) (word32) SLICE((word32) Mem259[(uint64) eax_219 * 0x0000000000000003 + 0x0000000000000002:byte], byte, 0), (uint64) esi_340)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401150:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401155:
 	printf(0x0000000000401906, (uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000000, SLICE((uint64) ecx, word32, 0), rdx, 0x00000003), word32, 0), (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000001, SLICE((uint64) ecx, word32, 0), rdx, 0x00000003), word32, 0), word32, 0), (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000002, SLICE((uint64) ecx, word32, 0), rdx, 0x00000003), word32, 0), word32, 0))
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004012C9:
 	call png_error (retsize: 8;)
 		uses: ecx:ecx_462,rax:rdi,rdi:rdi,rdx:rdx_54,rsi:0x0000000000401938
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400F58:
 	printf(0x00000000004018B0, (uint64) SLICE((uint64) (uint32) component((uint64) SLICE((uint64) eax_45, word32, 0), 0x00000000, SLICE((uint64) ecx, word32, 0), rdx, 0x00000001), word32, 0))
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004012DA:
 	branch (rax_26 ^ Mem498[fs:0x00000028:word64]) == 0x0000000000000000 l00000000004012EE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004012EE:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 print_pixel_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004012E9:
 	__stack_chk_fail()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void main(word64 rsi, word32 edi, selector fs)
@@ -517,23 +241,11 @@ void main(word64 rsi, word32 edi, selector fs)
 // Trashed: SCZO rax rcx rdi rdx rsi
 // Preserved: r8 r9 rbp rsp
 main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004012F9:
 	word64 rax_13 = Mem11[fs:0x00000028:word64]
 	branch edi != 0x00000004 l000000000040173F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040173F:
 	fwrite(0x0000000000401A70, 0x0000000000000001, 0x0000000000000027, Mem16[0x0000000000602100:word64])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401337:
 	word64 rax_27 = Mem16[rsi + 0x0000000000000008:word64]
 	word64 rax_31 = SEQ(SLICE(rax_27, word32, 32), atol(rax_27))
@@ -541,16 +253,8 @@ l0000000000401337:
 	word64 rax_39 = SEQ(SLICE(rax_35, word32, 32), atol(rax_35))
 	word64 rax_46 = fopen(Mem40[rsi + 0x0000000000000018:word64], 0x0000000000401990)
 	branch rax_46 == 0x0000000000000000 l0000000000401716
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401716:
 	fprintf(Mem48[0x0000000000602100:word64], 0x0000000000401A48, Mem48[rsi + 0x0000000000000018:word64])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040139D:
 	word64 rsi_65
 	word64 rax_66
@@ -560,16 +264,8 @@ l000000000040139D:
 		uses: r8:r8_70,r9:r9_69,rcx:0x0000000000000000,rdi:0x0000000000401993,rdx:0x0000000000000000,rsi:0x0000000000000000,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_70,r9:r9_69,rax:rax_66,rsi:rsi_65
 	branch rax_66 == 0x0000000000000000 l00000000004016F6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004016F6:
 	fwrite(0x0000000000401A18, 0x0000000000000001, 0x000000000000002E, Mem72[0x0000000000602100:word64])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004013C7:
 	word64 rax_87
 	word64 rcx_88
@@ -579,10 +275,6 @@ l00000000004013C7:
 		uses: r8:r8_91,r9:r9_90,rax:rax_66,rcx:rcx_88,rdi:rax_66,rsi:rsi_65,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_91,r9:r9_90,rax:rax_87,rcx:rcx_88
 	branch rax_87 == 0x0000000000000000 l00000000004016C0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004013E4:
 	call png_init_io (retsize: 8;)
 		uses: r8:r8_173,r9:r9_172,rax:rax_66,rcx:rcx_170,rdi:rax_66,rdx:rax_46,rsi:rax_46,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
@@ -605,10 +297,6 @@ l00000000004013E4:
 		uses: r8:fp - 0x0000000000000080,r9:fp - 0x000000000000007C,rax:rax_66,rcx:fp - 0x0000000000000084,rdi:rax_66,rdx:fp - 0x0000000000000088,rsi:rax_87,Stack +0008:fp - 0x0000000000000078,Stack +0010:fp - 0x0000000000000074,Stack +0018:fp - 0x0000000000000070,Stack +0048:dwLoc88,Stack +004C:dwLoc84,Stack +0058:dwLoc78,Stack +0064:dwLoc6C,Stack +0088:rax_140,Stack +00B8:rax_140
 		defs: r8:r8_173,r9:r9_172,rax:rax_169,rcx:rcx_170,rsi:rsi_168
 	branch SLICE(rax_169, word32, 0) == 0x00000000 l00000000004016AF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004016AF:
 	word64 rcx_186
 	word64 r9_188
@@ -616,46 +304,18 @@ l00000000004016AF:
 	call png_error (retsize: 8;)
 		uses: r8:r8_189,r9:r9_188,rax:rax_66,rcx:rcx_186,rdi:rax_66,rsi:0x00000000004019C3,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_189,r9:r9_188,rcx:rcx_186
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004016C0:
 	fwrite(0x00000000004019E8, 0x0000000000000001, 0x000000000000002C, Mem191[0x0000000000602100:word64])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040147A:
 	word32 eax_199 = SLICE((uint64) dwLoc78, word32, 0)
 	branch eax_199 == 0x00000000 l0000000000401488
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401488:
 	dwLoc6C = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401481:
 	branch eax_199 == 0x00000001 l0000000000401491
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401491:
 	dwLoc6C = 0x00000007
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401486:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040149A:
 	word64 rcx_213
 	word64 r9_215
@@ -663,10 +323,6 @@ l000000000040149A:
 	call png_error (retsize: 8;)
 		uses: r8:r8_216,r9:r9_215,rax:rax_66,rcx:rcx_213,rdi:rax_66,rsi:0x000000000040199A,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_216,r9:r9_215,rcx:rcx_213,rsi:rsi_211
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004014AB:
 	word64 rcx_228
 	word64 r9_230
@@ -675,125 +331,53 @@ l00000000004014AB:
 		uses: r8:r8_231,r9:r9_230,rax:rax_66,rcx:rcx_228,rdi:rax_66,rsi:rsi_222,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_711
 		defs: r8:r8_231,r9:r9_230,rcx:rcx_228
 	word32 dwLoc68_601 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401673:
 	branch SLICE((uint64) dwLoc68_601, word32, 0) < dwLoc6C l00000000004014C3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004014C3:
 	word32 dwLoc5C_608
 	word32 dwLoc58_607
 	word32 dwLoc60_605
 	word32 dwLoc64_606
 	branch SLICE((uint64) dwLoc78, word32, 0) != 0x00000001 l00000000004015CE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004015CE:
 	dwLoc60_605 = 0x00000000
 	dwLoc64_606 = 0x00000000
 	dwLoc58_607 = 0x00000001
 	dwLoc5C_608 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004014CF:
 	word32 eax_270
 	branch dwLoc68_601 <= 0x00000001 l00000000004014EF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004014EF:
 	eax_270 = 0x00000007 (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004014D5:
 	eax_270 = SLICE((uint64) (SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) - 0x00000001), word32, 0) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004014F4:
 	word32 eax_317
 	word32 edx_323 = SLICE((uint64) SLICE((uint64) (SLICE((uint64) (eax_270 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88), word32, 0), word32, 0)
 	branch dwLoc68_601 <= 0x00000001 l0000000000401531
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401531:
 	eax_317 = 0x00000003 (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401525:
 	eax_317 = SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401536:
 	branch SLICE((uint64) SLICE((uint64) (edx_323 >>u SLICE((uint64) eax_317, byte, 0)), word32, 0), word32, 0) == 0x00000000 l000000000040166E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040166E:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401544:
 	word32 eax_420
 	dwLoc60_605 = SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)
 	dwLoc64_606 = SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)
 	dwLoc58_607 = SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0)
 	branch dwLoc68_601 <= 0x00000002 l00000000004015C4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004015C4:
 	eax_420 = 0x00000008 (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004015AF:
 	eax_420 = SLICE((uint64) SLICE((uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004015C9:
 	dwLoc5C_608 = eax_420
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004015E8:
 	word32 dwLoc54_619 = SLICE((uint64) dwLoc64_606, word32, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401664:
 	branch dwLoc54_619 <u SLICE((uint64) dwLoc84, word32, 0) l00000000004015F0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004015F0:
 	puts(0x00000000004019B6)
 	word64 r9_450
@@ -802,59 +386,23 @@ l00000000004015F0:
 		uses: r8:r8_451,r9:r9_450,rax:rax_66,rcx:rax_140,rdi:rax_66,rdx:0x0000000000000000,rsi:rax_140,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_711
 		defs: r8:r8_451,r9:r9_450
 	branch (uint64) dwLoc54_619 != rax_39 l000000000040165E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040161B:
 	word32 dwLoc50_627 = SLICE((uint64) dwLoc60_605, word32, 0)
 	word32 dwLoc4C_628 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401656:
 	branch dwLoc50_627 <u SLICE((uint64) dwLoc88, word32, 0) l000000000040162A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040162A:
 	branch (uint64) dwLoc50_627 != rax_31 l000000000040164C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040164C:
 	dwLoc50_627 = dwLoc50_627 + SLICE((uint64) dwLoc58_607, word32, 0)
 	dwLoc4C_628 = dwLoc4C_628 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401633:
 	print_pixel(SLICE((uint64) dwLoc4C_628, word32, 0), rax_140, rax_87, rax_66, fs)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040165E:
 	dwLoc54_619 = dwLoc54_619 + SLICE((uint64) dwLoc5C_608, word32, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040166C:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040166F:
 	dwLoc68_601 = dwLoc68_601 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040167F:
 	call png_free (retsize: 8;)
 		uses: r8:r8_541,r9:r9_540,rax:rax_66,rcx:rcx_538,rdi:rax_66,rdx:rax_140,rsi:rax_140,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_711,Stack +0068:0x0000000000000000
@@ -864,10 +412,6 @@ l000000000040167F:
 	call png_destroy_info_struct (retsize: 8;)
 		uses: r8:r8_541,r9:r9_540,rax:rax_66,rcx:rcx_538,rdi:rax_66,rdx:fp - 0x0000000000000038,rsi:fp - 0x0000000000000038,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_711
 		defs: r8:r8_541,r9:r9_540,rcx:rcx_538
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004016DE:
 	word64 rcx_556
 	word64 r9_558
@@ -875,33 +419,13 @@ l00000000004016DE:
 	call png_destroy_read_struct (retsize: 8;)
 		uses: r8:r8_559,r9:r9_558,rax:fp - 0x0000000000000040,rcx:rcx_556,rdi:fp - 0x0000000000000040,rdx:0x0000000000000000,rsi:0x0000000000000000,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_799
 		defs: r8:r8_559,r9:r9_558,rcx:rcx_556
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040175D:
 	branch (rax_13 ^ Mem562[fs:0x00000028:word64]) == 0x0000000000000000 l0000000000401777
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401777:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401772:
 	__stack_chk_fail()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
@@ -913,45 +437,21 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000401780:
 	_init()
 	word32 r15d_82 = SLICE((uint64) edi, word32, 0)
 	word64 rbp_29 = 0x0000000000601E08 - 0x0000000000601E00
 	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l00000000004017D6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004017B6:
 	word64 rbx_41 = 0x0000000000000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004017C0:
 	call Mem24[0x0000000000601E00 + rbx_41 * 0x0000000000000008:word64] (retsize: 8;)
 		uses: rdi:(uint64) r15d_82,rdx:rdx,rsi:rsi
 	rbx_41 = rbx_41 + 0x0000000000000001
 	branch rbx_41 != rbp_29 >> 0x0000000000000003 l00000000004017C0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004017D6:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_fini()
@@ -962,21 +462,9 @@ void __libc_csu_fini()
 // Trashed:
 // Preserved: rsp
 __libc_csu_fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004017F0:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _fini()
@@ -987,20 +475,8 @@ void _fini()
 // Trashed: SCZO
 // Preserved: rsp
 _fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004017F4:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

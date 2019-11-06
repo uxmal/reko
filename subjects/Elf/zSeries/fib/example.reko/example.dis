@@ -6,27 +6,15 @@ byte _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, w
 // Trashed: CC r1 r10 r11 r12 r13 r14 r4 r6 r7 r8 r9
 // Preserved: r15
 _init_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000560:
 	word64 r15_33 = fp - 320
 	word64 r12_35 = DPB(r12, 0x00002000, 0)
 	word64 r1_37 = Mem34[DPB(fp - 160, 0x00002038, 0):word64]
 	branch r1_37 == 0x0000000000000000 l00000590
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000058E:
 	call r1_37 (retsize: 0;)
 		uses: r10:r10,r11:r11,r12:r12_35,r13:r13,r14:0x00000590,r6:r6,r7:r7,r8:r8,r9:r9
 		defs: r15:r15_41
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000590:
 	word64 v16_57 = r15_33 + 208
 	word64 r6_78
@@ -50,15 +38,7 @@ l00000590:
 	r12Out = r12_84
 	r13Out = r13_85
 	return CC_89
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __cxa_finalize()
@@ -70,15 +50,7 @@ void __cxa_finalize()
 // Preserved: r15
 // Terminates process
 __cxa_finalize_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __cxa_finalize_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_start_main()
@@ -90,15 +62,7 @@ void __libc_start_main()
 // Preserved: r15
 // Terminates process
 __libc_start_main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_start_main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _start(word64 r2, word64 r5, word64 r6, word64 r14)
@@ -110,25 +74,13 @@ void _start(word64 r2, word64 r5, word64 r6, word64 r14)
 // Preserved: r15
 // Terminates process
 _start_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _start_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000600:
 	word64 r15_7 = fp - 160 & 0xFFFFFFFFFFFFFFF0
 	Mem10[r15_7 - 176:byte] = 0x00
 	Mem14[r15_7 - 16:word64] = r14
 	Mem16[r15_7 - 8:word64] = r15_7 - 176
 	__libc_start_main(Mem16[DPB(r2, 0x00002040, 0):word64], qwLocA0, fp - 152, DPB(r5, 0x00000820, 0), DPB(r6, 0x00000888, 0), Mem16[r15_7 - 16:(ptr32 (fn void ()))], Mem16[r15_7 - 8:(ptr32 void)])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word64 deregister_tm_clones(word64 r1, word64 r2, word64 r5, word64 r14, ptr32 & r2Out, ptr32 & r5Out)
@@ -139,26 +91,14 @@ word64 deregister_tm_clones(word64 r1, word64 r2, word64 r5, word64 r14, ptr32 &
 // Trashed: CC r1 r14 r2 r5
 // Preserved: r15
 deregister_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000648:
 	word64 r2_8 = DPB(r2, 0x00002068, 0)
 	word64 r5_4 = DPB(r5, 0x000008C8, 0)
 	word64 r1_10 = DPB(r1, 0x00002068, 0) + 7 - r2_8
 	branch r1_10 > Mem0[r5_4:byte] l0000066A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000066A:
 	word64 r1_14 = Mem0[DPB(r1_10, 0x00002030, 0):word64]
 	branch r1_14 != 0x0000000000000000 l0000067C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000067C:
 	word64 r5_18
 	word64 r1_19
@@ -170,10 +110,6 @@ l0000067C:
 	r2Out = r2_20
 	r5Out = r5_18
 	return r1_19
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000067A_1:
 	word64 r5_25
 	word64 r1_26
@@ -184,10 +120,6 @@ l0000067A_1:
 	r2Out = r2_27
 	r5Out = r5_25
 	return r1_26
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000668_1:
 	word64 r5_31
 	word64 r1_32
@@ -198,15 +130,7 @@ l00000668_1:
 	r2Out = r2_33
 	r5Out = r5_31
 	return r1_32
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 deregister_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void register_tm_clones(word64 r1, word64 r2, word64 r3, word64 r14)
@@ -217,57 +141,29 @@ void register_tm_clones(word64 r1, word64 r2, word64 r3, word64 r14)
 // Trashed: CC r1 r14 r2 r3
 // Preserved: r15
 register_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000680:
 	word64 r3_7 = DPB(r3, 0x00002068, 0) - DPB(r1, 0x00002068, 0)
 	word64 r1_9 = r3_7 >> 3 >>u 63
 	word64 r3_10 = (r3_7 >> 3) + r1_9
 	branch r3_10 != 0x0000000000000000 l000006A8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006A8:
 	word64 r1_15 = Mem0[DPB(r1_9, 0x00002050, 0):word64]
 	branch r1_15 != 0x0000000000000000 l000006BA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006BA:
 	word64 r14_23
 	call r1_15 (retsize: 0;)
 		uses: r1:r1_15,r14:r14_23,r2:DPB(r2, 0x00002068, 0),r3:r3_10 >> 1
 		defs: r14:r14_23
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006B8_1:
 	call r14 (retsize: 0;)
 		uses: r1:r1_15,r14:r14,r2:r2,r3:r3_10 >> 1
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006A6_1:
 	call r14 (retsize: 0;)
 		uses: r1:r1_9,r14:r14,r2:r2,r3:r3_10 >> 1
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 register_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __do_global_dtors_aux(word64 r1, word64 r2, word64 r5, word64 r11, word64 r12, word64 r13)
@@ -278,56 +174,28 @@ void __do_global_dtors_aux(word64 r1, word64 r2, word64 r5, word64 r11, word64 r
 // Trashed: CC r1 r11 r12 r13 r14 r2 r4 r5
 // Preserved: r15
 __do_global_dtors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006C8:
 	word64 r13_17 = DPB(r13, 0x000008D0, 0)
 	word64 r15_18 = fp - 320
 	word64 r11_19 = DPB(r11, 0x00002068, 0)
 	branch Mem16[r11_19:byte] != 0x00 l00000712
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006E6:
 	word64 r1_22 = DPB(r1, 0x00002028, 0)
 	branch Mem16[r13_17:byte] == Mem16[r1_22:byte] l00000708
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006F6:
 	word64 r1_24 = DPB(r1, 0x00002060, 0)
 	call __cxa_finalize (retsize: 0;)
 		uses: r1:r1_24,r11:r11_19,r12:r12,r13:r13_17,r14:0x00000708,r2:Mem16[r1_24:word64],r5:r5
 		defs: r1:r1_32,r11:r11_28,r15:r15_27,r2:r2_33
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000708:
 	r1 = deregister_tm_clones(r1_22, r2, r5, 0x0000070E, out r2, out r5)
 	Mem48[r11_19:byte] = 0x01
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000712:
 	word64 v12_53 = r15_18 + 248
 	call Mem51[r15_18 + 272:word64] (retsize: 0;)
 		uses: r1:r1_63,r11:Mem51[v12_53:word64],r12:Mem51[v12_53 + 8:word64],r13:Mem51[v12_53 + 16:word64],r14:Mem51[v12_53 + 24:word64],r2:r2_65,r5:r5_64
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_dtors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void frame_dummy(word64 r1, word64 r2, word64 r3, word64 r13)
@@ -338,10 +206,6 @@ void frame_dummy(word64 r1, word64 r2, word64 r3, word64 r13)
 // Trashed: CC r1 r13 r14 r15 r2 r3
 // Preserved:
 frame_dummy_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000720:
 	word64 r3_49
 	word64 r13_11 = DPB(r13, 0x000008D8, 0)
@@ -349,10 +213,6 @@ l00000720:
 	word64 r15_12 = fp - 320
 	byte CC_15 = cond(Mem10[r13_11:byte] - Mem10[r2_14:byte])
 	branch Mem10[r13_11:byte] != Mem10[r2_14:byte] l0000074C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000740:
 	Mem18 = Mem10 (alias)
 	word64 v8_17 = r15_12 + 264
@@ -360,40 +220,20 @@ l00000740:
 	word64 r14_21 = Mem18[v8_17 + 8:word64]
 	r15_12 = Mem18[v8_17 + 16:word64]
 	branch CC_15 l00000680
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000746_thunk_register_tm_clones:
 	register_tm_clones(r1, r2_14, r3, r14_21)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 frame_dummy_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000074C:
 	word64 r1_37 = Mem10[DPB(r1, 0x00002048, 0):word64]
 	r1 = r1_37
 	CC_15 = cond(r1_37)
 	branch r1_37 == 0x0000000000000000 l00000740
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000760:
 	call r1_37 (retsize: 0;)
 		uses: r1:r1_37,r13:r13_41,r14:0x00000762,r2:r2_42,r3:r3_49
 		defs: CC:CC_50,r1:r1_48,r15:r15_44,r2:r2_47,r3:r3_49
 	r3 = r3_49
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word64 fib(word64 r2, ptr32 & r10Out, ptr32 & r11Out)
@@ -404,19 +244,11 @@ word64 fib(word64 r2, ptr32 & r10Out, ptr32 & r11Out)
 // Trashed: CC r1 r10 r11 r12 r13 r14 r2 r4
 // Preserved: r15
 fib_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000768:
 	word64 r1_73
 	word64 r11_21 = fp - 328
 	word32 v12_25 = SLICE(r2, word32, 32)
 	branch r2 >u 0x0000000000000001 l00000792
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000792:
 	word64 r11_40
 	word64 r10_118
@@ -424,16 +256,8 @@ l00000792:
 	word64 r10_61
 	word64 r2_66 = fib((int64) (word32) SEQ(v18_50, (word32) SEQ(v18_50, Mem24[r11_40 + 164:word32]) - 2), out r10_61, out r11_21)
 	r1_73 = SEQ(SLICE(r2_66, word32, 32), r2_66 + r10_61)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000078A:
 	r1_73 = r2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000007CA:
 	word64 v26_84 = r11_21 + 248
 	word64 r1_79 = (int64) (word32) r1_73
@@ -446,15 +270,7 @@ l000007CA:
 	r10Out = r10_97
 	r11Out = r11_98
 	return r2_102
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fib_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void main(word64 r3)
@@ -465,10 +281,6 @@ void main(word64 r3)
 // Trashed: CC r1 r10 r11 r12 r13 r14 r2 r3 r4
 // Preserved: r15
 main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000007E0:
 	word64 r11_29
 	word64 r10_70
@@ -476,15 +288,7 @@ l000007E0:
 	call Mem24[r11_29 + 288:word64] (retsize: 0;)
 		uses: r1:r1_38,r11:Mem24[r11_29 + 264:word64],r12:Mem24[r11_29 + 272:word64],r13:Mem24[r11_29 + 280:word64],r14:Mem24[r11_29 + 288:word64],r2:r1_38,r3:r3
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word64 r11, word64 r12, word64 r13)
@@ -495,10 +299,6 @@ void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word
 // Trashed: CC r1 r10 r11 r12 r13 r14 r2 r3 r4 r6 r7 r8 r9
 // Preserved: r15
 __libc_csu_init_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000820:
 	word64 r1_52 = DPB(r1_39, 0x00001E08, 0)
 	word64 r15_29 = fp - 320
@@ -512,16 +312,8 @@ l00000820:
 	word64 r13_43
 	word64 r6_112
 	branch _init(r6, r7, r4, r3, r2, r11, r12, r13, out r1_39, out r6_112, out r8_48, out r9_49, out r10_40, out r11_41, out r12_42, out r13_43) l00000876
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000856:
 	word64 r7_55 = r1_52
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000085A:
 	word64 r11_78
 	call Mem28[r7_55:word64] (retsize: 0;)
@@ -529,25 +321,13 @@ l0000085A:
 		defs: r10:r10_77,r11:r11_78,r12:r12_79,r13:r13_80,r15:r15_73,r2:r2_82,r3:r3_83,r6:r6_86,r7:r7_74,r8:r8_75,r9:r9_76
 	r11_54 = r11_78 - 1
 	branch r11_78 != 0x0000000000000001 l0000085A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000876:
 	word64 v17_92 = r15_29 + 216
 	word64 r4_91 = Mem28[r15_29 + 272:word64]
 	call r4_91 (retsize: 0;)
 		uses: r10:Mem28[v17_92 + 24:word64],r11:Mem28[v17_92 + 32:word64],r12:Mem28[v17_92 + 40:word64],r13:Mem28[v17_92 + 48:word64],r14:Mem28[v17_92 + 56:word64],r2:r2_110,r3:r3_111,r4:r4_91,r6:r6_112,r7:Mem28[v17_92:word64],r8:Mem28[v17_92 + 8:word64],r9:Mem28[v17_92 + 16:word64]
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_fini(word64 r14)
@@ -558,23 +338,11 @@ void __libc_csu_fini(word64 r14)
 // Trashed: r14
 // Preserved: r15
 __libc_csu_fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000888:
 	call r14 (retsize: 0;)
 		uses: r14:r14
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _fini(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r12, word64 r13, word64 r14)
@@ -585,24 +353,12 @@ void _fini(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, w
 // Trashed: CC r1 r10 r11 r12 r13 r14 r4 r6 r7 r8 r9
 // Preserved: r15
 _fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000890:
 	word64 r4_68
 	call r14 (retsize: 0;)
 		uses: r1:fp - 160,r10:r10,r11:r11,r12:r12,r13:r13,r14:r14,r4:r4_68,r6:r6,r7:r7,r8:r8,r9:r9,Stack +0030:r6,Stack +0038:r7,Stack +0040:r8,Stack +0048:r9,Stack +0050:r10,Stack +0058:r11,Stack +0060:r12,Stack +0068:r13,Stack +0070:r14,Stack +0078:fp - 160,Stack +FFFFFEC0:fp - 160,Stack +FFFFFF60:fp - 160,Stack +FFFFFF90:r6,Stack +FFFFFF98:r7,Stack +FFFFFFA0:r8,Stack +FFFFFFA8:r9,Stack +FFFFFFB0:r10,Stack +FFFFFFB8:r11,Stack +FFFFFFC0:r12,Stack +FFFFFFC8:r13,Stack +FFFFFFD0:r14,Stack +FFFFFFD8:fp - 160
 		defs: r4:r4_68
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

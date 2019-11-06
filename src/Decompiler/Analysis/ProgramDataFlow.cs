@@ -32,12 +32,10 @@ namespace Reko.Analysis
 	public class ProgramDataFlow
 	{
 		private Dictionary<Procedure,ProcedureFlow> procFlow;
-        private Dictionary<Block, BlockFlow> blockFlow;
 
 		public ProgramDataFlow()
 		{
 			procFlow = new Dictionary<Procedure,ProcedureFlow>();
-            blockFlow = new Dictionary<Block,BlockFlow>();
 		}
 
 		public ProgramDataFlow(Program program) : this()
@@ -50,15 +48,6 @@ namespace Reko.Analysis
             foreach (Procedure proc in procs)
             {
                 procFlow[proc] = new ProcedureFlow(proc);
-                foreach (var block in proc.ControlGraph.Blocks)
-                {
-                    blockFlow[block] = new Analysis.BlockFlow(
-                        block,
-                        new HashSet<Storage>(),
-                        new SymbolicEvaluationContext(
-                            proc.Architecture,
-                            proc.Frame));
-                }
             }
         }
 
@@ -66,17 +55,6 @@ namespace Reko.Analysis
 		{
 			get { return procFlow[proc]; }
 			set { procFlow[proc] = value; }
-		}
-
-		public BlockFlow this[Block block]
-		{
-			get { return (BlockFlow) blockFlow[block]; }
-            set { blockFlow[block] = value; }
-		}
-
-		public IDictionary<Block, BlockFlow> BlockFlows
-		{
-			get { return blockFlow; }
 		}
 
         public IDictionary<Procedure, ProcedureFlow> ProcedureFlows

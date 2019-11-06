@@ -6,21 +6,9 @@ void _init()
 // Trashed: r2 r25 r28
 // Preserved: ra sp
 _init_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000588:
 	branch __gmon_start__ == 0x00000000 l00000588_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000588_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000005B8:
 	word32 r25_16 = Mem10[0x00020A4C:word32]
 	call r25_16 + 2004 (retsize: 0;)
@@ -29,29 +17,13 @@ l000005B8:
 	call r25_24 + 2416 (retsize: 0;)
 		uses: r25:r25_24 + 2416
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000588_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000005AC:
 	word32 r25_31
 	call __gmon_start__ (retsize: 0;)
 		uses: r25:r25_31
 		defs: r25:r25_31
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __start(word32 r2, word32 dwArg00)
@@ -63,28 +35,12 @@ void __start(word32 r2, word32 dwArg00)
 // Preserved:
 // Terminates process
 __start_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __start_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000610:
 	word32 r8_19 = Mem0[0x00020A60:word32]
 	call Mem23[0x00020A24:word32] (retsize: 0;)
 		uses: r2:r2,r4:Mem0[0x00020A68:word32],r5:dwArg00,r6:fp + 4,r7:Mem0[0x00020A64:word32],r8:r8_19,Stack +0010:r8_19,Stack +0014:r2,Stack +0018:fp + -40,Stack +0028:dwArg00
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000664:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void deregister_tm_clones()
@@ -95,61 +51,21 @@ void deregister_tm_clones()
 // Trashed: r2 r25 r28 r4
 // Preserved: sp
 deregister_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000670:
 	branch Mem0[0x00010AA4:word32] == 0x00010A84 l00000670_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000670_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000670_ds_f:
 	word32 r25_12 = Mem0[0x00010AE4:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000690:
 	branch r25_12 == 0x00000000 l00000690_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000690_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006A0:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000690_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000698:
 	call r25_12 (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 deregister_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void register_tm_clones()
@@ -160,62 +76,22 @@ void register_tm_clones()
 // Trashed: r2 r25 r28 r4 r5
 // Preserved: sp
 register_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006A8:
 	word32 r5_12 = Mem0[0x00010AA4:word32] - 0x00010A84 >> 0x02
 	branch (r5_12 >>u 0x1F) + r5_12 >> 0x01 == 0x00000000 l000006A8_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006A8_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006A8_ds_f:
 	word32 r25_17 = Mem0[0x00010AD4:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006DC:
 	branch r25_17 == 0x00000000 l000006DC_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006DC_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006EC:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006DC_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006E4:
 	call r25_17 (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 register_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __do_global_dtors_aux()
@@ -226,71 +102,27 @@ void __do_global_dtors_aux()
 // Trashed: r2 r25 r28 r3 r4
 // Preserved: r16 r17 r18 r19 ra sp
 __do_global_dtors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006F4:
 	branch (word32) Mem19[0x00010AF0:byte] != 0x00000000 l000006F4_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006F4_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000006F4_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000072C:
 	branch __cxa_finalize == 0x00000000 l0000072C_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000072C_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000072C_ds_f:
 	word32 r2_24 = Mem19[0x00010AAC:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000734:
 	word32 r25_27
 	word32 r3_30
 	call __cxa_finalize (retsize: 0;)
 		uses: r25:r25_27,r3:r3_30,r4:Mem19[r2_24:word32]
 		defs: r25:r25_27,r3:r3_30
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000744:
 	word32 r2_40 = Mem19[0x00010AF4:word32]
 	word32 r16_42 = (Mem19[0x00010AB0:word32] - 0x00010A68 >> 0x02) + -1
 	branch (word32) (r2_40 <u r16_42) == 0x00000000 l00000744_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000744_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000744_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000774:
 	word32 r2_47 = r2_40 + 1
 	Mem50[0x00010AF4:word32] = r2_47
@@ -301,43 +133,15 @@ l00000774:
 		defs: r4:r4_60
 	r2_40 = Mem50[0x00010AF4:word32]
 	branch (word32) (r2_40 <u r16_42) != 0x00000000 l00000774_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000774_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000774_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000007A0:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000007A4:
 	deregister_tm_clones()
 	Mem76[0x00010AF0:byte] = 0x01
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000007B8:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_dtors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void frame_dummy()
@@ -348,27 +152,11 @@ void frame_dummy()
 // Trashed: r2 r25 r28 r4 r5
 // Preserved: sp
 frame_dummy_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000007D4:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000007E8_thunk_register_tm_clones:
 	register_tm_clones()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 frame_dummy_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void main()
@@ -379,10 +167,6 @@ void main()
 // Trashed: r2 r25 r28 r3 r4 r5 r6
 // Preserved: r30 ra sp
 main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000007F0:
 	memset(fp + -20, 0x00000000, 5)
 	word32 r2_38 = calloc(1, 5)
@@ -394,15 +178,7 @@ l000007F0:
 	r3_44 = dwLoc14
 	r2_52 = r2_38
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_init(word32 r4, word32 r5, word32 r6)
@@ -413,61 +189,25 @@ void __libc_csu_init(word32 r4, word32 r5, word32 r6)
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r16 r17 r18 r19 r20 r21 ra sp
 __libc_csu_init_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000008C0:
 	_init()
 	word32 r16_35 = Mem30[0x00010ABC:word32]
 	word32 r18_37 = Mem30[0x00010ABC:word32] - r16_35
 	branch r18_37 >> 0x02 == 0x00000000 l000008C0_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000008C0_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000008C0_ds_f:
 	word32 r17_40 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000920:
 	call Mem30[r16_35:word32] (retsize: 0;)
 		uses: r4:r4,r5:r5,r6:r6
 	r17_40 = r17_40 + 1
 	branch r18_37 >> 0x02 != r17_40 l00000920_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000920_ds_t:
 	r16_35 = r16_35 + 4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000920_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000940:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_fini()
@@ -478,21 +218,9 @@ void __libc_csu_fini()
 // Trashed: r25
 // Preserved: sp
 __libc_csu_fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000964:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __do_global_ctors_aux()
@@ -503,63 +231,23 @@ void __do_global_ctors_aux()
 // Trashed: r2 r25 r28 r3
 // Preserved: r16 r17 ra sp
 __do_global_ctors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000970:
 	word32 r25_18 = Mem17[0x00010A60:word32]
 	branch r25_18 == -1 l00000970_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000970_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000970_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000009A4:
 	word32 r16_21 = 0x00010A60
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000009A8:
 	call r25_18 (retsize: 0;)
 	r16_21 = r16_21 + -4
 	r25_18 = Mem17[r16_21:word32]
 	branch r25_18 != -1 l000009A8_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000009A8_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000009A8_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000009BC:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_ctors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_start_main(word32 r28, word32 ra)
@@ -571,22 +259,10 @@ void __libc_start_main(word32 r28, word32 ra)
 // Preserved:
 // Terminates process
 __libc_start_main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_start_main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000009D0:
 	call Mem0[r28 - 0x00007FF0:word32] (retsize: 0;)
 		uses: r15:ra,r24:12
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void memset(word32 r28, word32 ra)
@@ -598,22 +274,10 @@ void memset(word32 r28, word32 ra)
 // Preserved:
 // Terminates process
 memset_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 memset_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000009E0:
 	call Mem0[r28 - 0x00007FF0:word32] (retsize: 0;)
 		uses: r15:ra,r24:11
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void calloc(word32 r28, word32 ra)
@@ -624,29 +288,13 @@ void calloc(word32 r28, word32 ra)
 // Trashed: r15 r24 r25 r28
 // Preserved: sp
 calloc_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000009F0:
 	call Mem0[r28 - 0x00007FF0:word32] (retsize: 0;)
 		uses: r15:ra,r24:9
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000A0C_thunk__fini:
 	_fini()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 calloc_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _fini()
@@ -657,23 +305,11 @@ void _fini()
 // Trashed: r25 r28
 // Preserved: ra sp
 _fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000A10:
 	word32 r25_15 = Mem10[0x00020A4C:word32]
 	call r25_15 + 1780 (retsize: 0;)
 		uses: r25:r25_15 + 1780,Stack +0010:0x00018A80
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

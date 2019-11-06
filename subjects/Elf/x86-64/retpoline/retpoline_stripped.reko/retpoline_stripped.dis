@@ -6,33 +6,13 @@ void fn0000000000400428()
 // Trashed: SCZO rax
 // Preserved: rsp
 fn0000000000400428_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400428:
 	branch __gmon_start__ == 0x0000000000000000 l000000000040043A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400438:
 	call __gmon_start__ (retsize: 8;)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040043A:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000000000400428_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0000000000400480(word64 rdx, word64 qwArg00)
@@ -44,23 +24,11 @@ void fn0000000000400480(word64 rdx, word64 qwArg00)
 // Preserved:
 // Terminates process
 fn0000000000400480_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000000000400480_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400480:
 	__align(fp + 8)
 	__libc_start_main(0x0000000000400660, qwArg00, fp + 8, 0x0000000000400710, 0x0000000000400780, rdx, fp)
 	__hlt()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00000000004004B0(word64 r8)
@@ -71,41 +39,17 @@ void fn00000000004004B0(word64 r8)
 // Trashed: SCZO r8 rax rdi
 // Preserved: rbp rsp
 fn00000000004004B0_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004B0:
 	branch r8 == 0x0000000000601040 l00000000004004D8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004C1:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004D8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004D8:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004CB:
 	call 0x0000000000000000 (retsize: 8;)
 		uses: r8:r8,rdi:0x0000000000601040
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00000000004004B0_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0000000000400560(word32 esi, word32 edi)
@@ -116,22 +60,10 @@ void fn0000000000400560(word32 esi, word32 edi)
 // Trashed: SCZO rdi rsi
 // Preserved: rbp rsp
 fn0000000000400560_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400560:
 	calloc((int64) edi, (int64) esi)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000000000400560_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00000000004006F0()
@@ -143,27 +75,11 @@ void fn00000000004006F0()
 // Preserved:
 // Terminates process
 fn00000000004006F0_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00000000004006F0_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004006F0:
 	fn0000000000400700()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004006F5:
 	__pause()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0000000000400700()
@@ -174,20 +90,8 @@ void fn0000000000400700()
 // Trashed:
 // Preserved: rsp
 fn0000000000400700_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400700:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000000000400700_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
