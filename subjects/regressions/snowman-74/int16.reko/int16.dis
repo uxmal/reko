@@ -6,21 +6,9 @@ int32 get(int32 dwArg04)
 // Trashed: eax
 // Preserved:
 ?get@A@@AAEHH@Z_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l10071000:
 	return Mem0[this:word32] + dwArg04
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 ?get@A@@AAEHH@Z_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
@@ -31,20 +19,8 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // Trashed: eax
 // Preserved:
 DllMain_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l10071010:
 	return 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 DllMain_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

@@ -7,22 +7,10 @@ void _f(word32 eax)
 // Preserved:
 _f_entry:
 	byte al_5 = SLICE(eax, byte, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000004:
 	Mem7[eax:byte] = Mem0[eax:byte] + al_5
 	Mem9[eax:byte] = Mem7[eax:byte] + al_5
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _f_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

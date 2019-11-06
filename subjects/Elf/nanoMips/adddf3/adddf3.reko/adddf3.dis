@@ -6,10 +6,6 @@ void __adddf3(word32 r4, word32 r5, word32 r6, word32 r7)
 // Trashed: r10 r11 r12 r13 r14 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __adddf3_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048000:
 	word32 r10_5 = __ext(r5, 0x00000000, 0x00000014)
 	word32 r9_7 = __ext(r7, 0x00000000, 0x00000014)
@@ -22,1089 +18,457 @@ l08048000:
 	word32 r9_150 = r6 >>u 0x0000001D | r9_7 << 0x00000003
 	word32 r11_22 = r13_11 - r10_14
 	branch r5 >>u 0x0000001F != r7 >>u 0x0000001F l08048304
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048304:
 	word32 r11_209
 	word32 r4_207
 	word32 r14_24 = r11_22
 	branch r11_22 <= 0x00000000 l080483BE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483BE:
 	branch r11_22 == 0x00000000 l0804846E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804846E:
 	branch r13_11 >= 0x000007FE l08048524
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048524:
 	r11_209 = (r4 << 0x00000003) - (r6 << 0x00000003)
 	r4_207 = r8_12 - r9_150 - (word32) (r4 << 0x00000003 <u r11_209)
 	branch __bit(r4_207, 0x00000017) l080485A4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485A4:
 	r12_116 = r11_209 | r4_207
 	branch r12_116 != 0x00000000 l08048548
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048536:
 	r11_209 = (r6 << 0x00000003) - (r4 << 0x00000003)
 	r5_133 = r7 >>u 0x0000001F
 	r4_207 = r9_150 - r8_12 - (word32) (r6 << 0x00000003 <u r11_209)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804847A:
 	r10_14 = r8_12 | r4 << 0x00000003
 	word32 r7_38 = r9_150 | r6 << 0x00000003
 	branch r13_11 != 0x00000000 l080484D6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484D6:
 	branch r10_14 != 0x00000000 l080484E4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484E4:
 	r10_14 = 0x000007FF
 	branch r7_38 == 0x00000000 l0804827A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484EA:
 	word32 r4_44
 	word32 r7_40 = r8_12 >>u 0x00000003
 	branch !__bit(r9_150 >>u 0x00000003 | r8_12 >>u 0x00000003, 0x00000013) l0804851A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804851A:
 	r7_40 = 0x000FFFFF
 	r4_44 = 0xFFFFFFFF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484FA:
 	r4_44 = r8_12 << 0x0000001D | __ext(r4, 0x00000000, 0x0000001D)
 	r14_24 = r5 >>u 0x0000001F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048508:
 	r8_12 = r4_44 >>u 0x0000001D | r7_40 << 0x00000003
 	r12_116 = r4_44 << 0x00000003
 	r5_133 = r14_24
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484DA:
 	branch r7_38 == 0x00000000 l08048600
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048600:
 	r5_133 = 0x00000000
 	r8_12 = 0x007FFFFF
 	r12_116 = 0xFFFFFFF8
 	r10_14 = 0x000007FF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484DE:
 	r8_12 = r9_150
 	r12_116 = r6 << 0x00000003
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048486:
 	branch r10_14 != 0x00000000 l0804849A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804849A:
 	branch r7_38 == 0x00000000 l080484D2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804849C:
 	word32 r4_63 = (r4 << 0x00000003) - (r6 << 0x00000003)
 	word32 r7_66 = r8_12 - r9_150 - (word32) (r4 << 0x00000003 <u r4_63)
 	branch __bit(r7_66, 0x00000017) l080484C6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484C6:
 	r12_116 = r4_63 | r7_66
 	branch r12_116 == 0x00000000 l080485AC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485AC:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484CE:
 	r8_12 = r7_66
 	r12_116 = r4_63
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484B0:
 	r12_116 = (r6 << 0x00000003) - (r4 << 0x00000003)
 	r10_14 = 0x00000000
 	r8_12 = r9_150 - r8_12 - (word32) (r6 << 0x00000003 <u r12_116)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804848A:
 	branch r7_38 != 0x00000000 l080483D8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804848E:
 	r12_116 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048492:
 	r8_12 = 0x00000000
 	r10_14 = 0x00000000
 	r5_133 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483C2:
 	word32 r8_122
 	word32 r11_81
 	branch r13_11 != 0x00000000 l08048430
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048430:
 	branch r10_14 == 0x000007FF l080483D0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048434:
 	r11_81 = -r11_22
 	r8_12 = r8_12 | 0x08000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483C6:
 	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l080483DE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483DE:
 	r11_81 = ~r11_22
 	branch r11_81 != 0x00000000 l080483FA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483FA:
 	branch r10_14 == 0x000007FF l080483D0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483FE:
 	word32 r11_100
 	word32 r12_109
 	branch r11_81 >= 0x00000039 l08048464
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048464:
 	r12_109 = (word32) ((r8_12 | r4 << 0x00000003) >u 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048402:
 	branch r11_81 >= 0x00000020 l08048442
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048442:
 	word32 r5_90 = r8_12 >>u r11_81
 	word32 r7_91 = 0x00000000
 	branch r11_81 == 0x00000020 l08048454
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804844C:
 	r7_91 = r8_12 << -r11_81
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048454:
 	r12_109 = r5_90 | (word32) ((r7_91 | r4 << 0x00000003) >u 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048460:
 	r11_100 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048406:
 	word32 r7_103 = 0x00000020 - r11_81
 	r11_100 = r8_12 >>u r11_81
 	r12_109 = r8_12 << r7_103 | (r4 << 0x00000003) >>u r11_81 | (word32) ((r4 << 0x00000003) << r7_103 >u 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048426:
 	r12_116 = (r6 << 0x00000003) - r12_109
 	r8_122 = r9_150 - r11_100
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483E6:
 	r12_116 = (r6 << 0x00000003) - (r4 << 0x00000003)
 	r8_122 = r9_150 - r8_12
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483EE:
 	r5_133 = r7 >>u 0x0000001F
 	r8_12 = r8_122 - (word32) (r6 << 0x00000003 <u r12_116)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483CC:
 	branch r10_14 != 0x000007FF l080483D8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483D0:
 	r12_116 = r9_150 | r6 << 0x00000003
 	branch r12_116 == 0x00000000 l080485F8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485F8:
 	r8_12 = 0x00000000
 	r5_133 = r7 >>u 0x0000001F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483D8:
 	r8_12 = r9_150
 	r12_116 = r6 << 0x00000003
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484C2:
 	r5_133 = r7 >>u 0x0000001F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804830A:
 	word32 r7_151
 	branch r10_14 != 0x00000000 l08048384
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048384:
 	branch r13_11 == 0x000007FF l08048112
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048388:
 	r9_150 = r9_150 | 0x08000000
 	r7_151 = r11_22
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804830E:
 	branch (r9_150 | r6 << 0x00000003) == 0x00000000 l08048052
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048316:
 	r7_151 = r11_22 + 0xFFFFFFFF
 	branch r11_22 != 0xFFFFFFFF l08048340
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048340:
 	branch r11_22 == 0x000007FF l080480FE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048344:
 	word32 r7_169
 	word32 r6_158
 	branch r7_151 >= 0x00000039 l080483B4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483B4:
 	r6_158 = (word32) ((r9_150 | r6 << 0x00000003) >u 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048348:
 	branch r7_151 >= 0x00000020 l08048394
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048394:
 	word32 r4_159 = r9_150 >>u r7_151
 	word32 r10_160 = 0x00000000
 	branch r7_151 == 0x00000020 l080483A6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804839E:
 	r10_160 = r9_150 << -r7_151
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483A6:
 	r6_158 = (word32) ((r10_160 | r6 << 0x00000003) >u 0x00000000) | r4_159
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080483B0:
 	r7_169 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804834C:
 	word32 r10_172 = 0x00000020 - r7_151
 	r7_169 = r9_150 >>u r7_151
 	r6_158 = (word32) (r6 << 0x00000003 << r10_172 >u 0x00000000) | (r9_150 << r10_172 | (r6 << 0x00000003) >>u r7_151)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804836E:
 	word32 r6_185 = (r4 << 0x00000003) - r6_158
 	r10_14 = r13_11
 	r8_12 = r8_12 - r7_169 - (word32) (r4 << 0x00000003 <u r6_185)
 	r12_116 = r6_185
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804831C:
 	word32 r6_200 = (r4 << 0x00000003) - (r6 << 0x00000003)
 	r10_14 = 0x00000001
 	r8_12 = r8_12 - r9_150 - (word32) (r4 << 0x00000003 <u r6_200)
 	r12_116 = r6_200
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048332:
 	branch __bit(r8_12, 0x00000017) l0804827A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048336:
 	r4_207 = __ext(r8_12, 0x00000000, 0x00000017)
 	r11_209 = r12_116
 	r13_11 = r10_14
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048548:
 	word32 r7_218 = __clz(r4_207)
 	branch r4_207 != 0x00000000 l08048556
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804854E:
 	r7_218 = __clz(r11_209) + 0x00000020
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048556:
 	word32 r8_227
 	word32 r10_223 = r7_218 + 0xFFFFFFF8
 	branch r10_223 >= 0x00000020 l080485B0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485B0:
 	r12_116 = 0x00000000
 	r8_227 = r11_209 << r7_218 + 0xFFFFFFD8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804855E:
 	r12_116 = r11_209 << r10_223
 	r8_227 = r11_209 >>u -r10_223 | r4_207 << r10_223
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048572:
 	branch r10_223 < r13_11 l080485E2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485E2:
 	r10_14 = r13_11 - r10_223
 	r8_12 = __ins(r8_227, 0x00000000, 0x00000007, 0x00000001)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048576:
 	word32 r10_241 = r10_223 - r13_11
 	branch r10_241 >= 0xFFFFFFE1 l080485BC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485BC:
 	word32 r7_244 = 0x00000000
 	word32 r10_245 = r8_227 >>u r10_241 + 0xFFFFFFE1
 	branch r10_241 == 0xFFFFFFE1 l080485D2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485CA:
 	r7_244 = r8_227 << -(r10_241 + 0x00000001)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485D2:
 	r12_116 = r10_245 | (word32) ((r12_116 | r7_244) >u 0x00000000)
 	r8_12 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048582:
 	word32 r7_258 = 0x00000020 - (r10_241 + 0x00000001)
 	r12_116 = r8_227 << r7_258 | r12_116 >>u r10_241 + 0x00000001 | (word32) (r12_116 << r7_258 >u 0x00000000)
 	r8_12 = r8_227 >>u r10_241 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048042:
 	r3_13 = r11_22
 	branch r11_22 <= 0x00000000 l08048192
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048192:
 	branch r11_22 == 0x00000000 l08048240
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048240:
 	r10_14 = r13_11 + 0x00000001
 	branch r13_11 >= 0x000007FE l080482E2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080482E2:
 	branch r13_11 == 0xFFFFF802 l08048060
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080482E6:
 	word32 r6_268 = (r4 << 0x00000003) + (r6 << 0x00000003)
 	word32 r2_272 = r8_12 + r9_150 + (word32) (r6_268 <u r4 << 0x00000003)
 	r12_116 = r2_272 << 0x0000001F | r6_268 >>u 0x00000001
 	r8_12 = r2_272 >>u 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804824C:
 	word32 r7_276 = r8_12 | r4 << 0x00000003
 	branch r13_11 != 0x00000000 l08048298
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048298:
 	branch r7_276 == 0x00000000 l080485F2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485F2:
 	r8_12 = r9_150
 	r12_116 = r6 << 0x00000003
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804829C:
 	r10_14 = 0x000007FF
 	branch (r9_150 | r6 << 0x00000003) == 0x00000000 l0804827A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080482A4:
 	word32 r7_285
 	word32 r10_281 = r8_12 >>u 0x00000003
 	branch !__bit(r9_150 >>u 0x00000003 | r8_12 >>u 0x00000003, 0x00000013) l080482D8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080482D8:
 	r10_281 = 0x000FFFFF
 	r7_285 = 0xFFFFFFFF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080482B4:
 	r7_285 = r8_12 << 0x0000001D | __ext(r4, 0x00000000, 0x0000001D)
 	r3_13 = r5 >>u 0x0000001F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080482C0:
 	r8_12 = r7_285 >>u 0x0000001D | r10_281 << 0x00000003
 	r12_116 = r7_285 << 0x00000003
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080482D0:
 	r5_133 = r3_13
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048254:
 	branch r7_276 == 0x00000000 l080485EC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080485EC:
 	r8_12 = r9_150
 	r12_116 = r6 << 0x00000003
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080484D2:
 	r10_14 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048258:
 	r10_14 = 0x00000000
 	branch (r9_150 | r6 << 0x00000003) == 0x00000000 l0804827A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048260:
 	word32 r6_304 = (r4 << 0x00000003) + (r6 << 0x00000003)
 	r12_116 = r6_304
 	r8_12 = r8_12 + r9_150 + (word32) (r6_304 <u r4 << 0x00000003)
 	branch __bit(r8_12, 0x00000017) l0804827A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048272:
 	r8_12 = __ins(r8_12, 0x00000000, 0x00000007, 0x00000001)
 	r10_14 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048196:
 	word32 r8_353
 	word32 r11_312
 	branch r13_11 != 0x00000000 l08048202
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048202:
 	branch r10_14 == 0x000007FF l080481A4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048206:
 	r11_312 = -r11_22
 	r8_12 = r8_12 | 0x08000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804819A:
 	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l080481B4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481B4:
 	r11_312 = ~r11_22
 	branch r11_312 != 0x00000000 l080481CA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481CA:
 	branch r10_14 == 0x000007FF l080481A4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481CE:
 	word32 r11_331
 	word32 r12_320
 	branch r11_312 >= 0x00000039 l08048236
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048236:
 	r12_320 = (word32) ((r8_12 | r4 << 0x00000003) >u 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481D2:
 	branch r11_312 >= 0x00000020 l08048214
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048214:
 	word32 r4_321 = r8_12 >>u r11_312
 	word32 r7_322 = 0x00000000
 	branch r11_312 == 0x00000020 l08048226
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804821E:
 	r7_322 = r8_12 << -r11_312
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048226:
 	r12_320 = r4_321 | (word32) ((r7_322 | r4 << 0x00000003) >u 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048232:
 	r11_331 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481D6:
 	word32 r7_334 = 0x00000020 - r11_312
 	r11_331 = r8_12 >>u r11_312
 	r12_320 = r8_12 << r7_334 | (r4 << 0x00000003) >>u r11_312 | (word32) ((r4 << 0x00000003) << r7_334 >u 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481F8:
 	r12_116 = r12_320 + (r6 << 0x00000003)
 	r8_353 = r11_331 + r9_150
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481BC:
 	r12_116 = (r4 << 0x00000003) + (r6 << 0x00000003)
 	r8_353 = r8_12 + r9_150
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481C2:
 	r8_12 = r8_353 + (word32) (r12_116 <u r6 << 0x00000003)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481A0:
 	branch r10_14 != 0x000007FF l080481AE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481A4:
 	r12_116 = r9_150 | r6 << 0x00000003
 	r8_12 = 0x00000000
 	branch r12_116 == 0x00000000 l08048064
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080481AE:
 	r8_12 = r9_150
 	r12_116 = r6 << 0x00000003
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048048:
 	word32 r7_371
 	branch r10_14 != 0x00000000 l0804810E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804810E:
 	branch r13_11 != 0x000007FF l08048122
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048122:
 	r9_150 = r9_150 | 0x08000000
 	r7_371 = r11_22
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048112:
 	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l080482D2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804811A:
 	r8_12 = 0x00000000
 	r12_116 = 0x00000000
 	r10_14 = r13_11
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804804C:
 	branch (r9_150 | r6 << 0x00000003) != 0x00000000 l080480B4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080480B4:
 	r7_371 = r11_22 + 0xFFFFFFFF
 	branch r11_22 != 0xFFFFFFFF l080480FA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080480FA:
 	branch r11_22 != 0x000007FF l0804812C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804812C:
 	word32 r7_396
 	word32 r6_385
 	branch r7_371 >= 0x00000039 l08048188
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048188:
 	r6_385 = (word32) ((r9_150 | r6 << 0x00000003) >u 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048130:
 	branch r7_371 >= 0x00000020 l08048168
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048168:
 	word32 r4_386 = r9_150 >>u r7_371
 	word32 r10_387 = 0x00000000
 	branch r7_371 == 0x00000020 l0804817A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048172:
 	r10_387 = r9_150 << -r7_371
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804817A:
 	r6_385 = (word32) ((r10_387 | r6 << 0x00000003) >u 0x00000000) | r4_386
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048184:
 	r7_396 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048134:
 	word32 r10_399 = 0x00000020 - r7_371
 	r7_396 = r9_150 >>u r7_371
 	r6_385 = (word32) (r6 << 0x00000003 << r10_399 >u 0x00000000) | (r9_150 << r10_399 | (r6 << 0x00000003) >>u r7_371)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048156:
 	word32 r6_412 = r6_385 + (r4 << 0x00000003)
 	r10_14 = r13_11
 	r8_12 = (word32) (r6_412 <u r4 << 0x00000003) + (r7_396 + r8_12)
 	r12_116 = r6_412
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080480FE:
 	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l080482D2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080482D2:
 	r10_14 = 0x000007FF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048106:
 	r8_12 = 0x00000000
 	r12_116 = 0x00000000
 	r10_14 = r11_22
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080480BA:
 	word32 r6_435 = (r4 << 0x00000003) + (r6 << 0x00000003)
 	r10_14 = 0x00000001
 	r8_12 = r8_12 + r9_150 + (word32) (r6_435 <u r4 << 0x00000003)
 	r12_116 = r6_435
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080480CC:
 	branch __bit(r8_12, 0x00000017) l0804827A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080480D0:
 	r10_14 = r10_14 + 0x00000001
 	branch r10_14 == 0x000007FF l08048060
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080480DA:
 	word32 r6_453 = __ins(r8_12, 0x00000000, 0x00000007, 0x00000001)
 	r12_116 = r6_453 << 0x0000001F | (r12_116 >>u 0x00000001 | r12_116 + 0x00000001)
 	r8_12 = r6_453 >>u 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048052:
 	r10_14 = r11_22
 	branch r11_22 != 0x000007FF l0804827A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048058:
 	branch (r8_12 | r4 << 0x00000003) != 0x00000000 l0804827A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804827A:
 	branch r12_116 == 0x00000007 l08048064
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048282:
 	branch r12_116 == 0x0000000B l08048064
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804828A:
 	word32 r6_472 = r12_116 + 0x00000004
 	r12_116 = r6_472
 	r8_12 = r8_12 + (word32) (r6_472 <u r12_116)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048060:
 	r8_12 = 0x00000000
 	r12_116 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048064:
 	branch __bit(r8_12, 0x00000017) l0804807A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048068:
 	r10_14 = r10_14 + 0x00000001
 	r8_12 = __ins(r8_12, 0x00000000, 0x00000007, 0x00000001)
 	branch r10_14 != 0x000007FF l0804807A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048076:
 	r8_12 = 0x00000000
 	r12_116 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0804807A:
 	word32 r7_505 = r12_116 >>u 0x00000003 | r8_12 << 0x0000001D
 	word32 r8_507 = r8_12 >>u 0x00000003
 	branch r10_14 != 0x000007FF l080480A0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048090:
 	branch (r7_505 | r8_507) == 0x00000000 l08048612
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048612:
 	r8_507 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l08048098:
 	r8_507 = r8_507 | 0x00800000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l080480A0:
 	__ins(__ins(__ins(0x00000000, r8_507, 0x00000000, 0x00000001), r10_14, 0x00000004, 0x00000001), r5_133, 0x0000000F, 0x00000001)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __adddf3_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

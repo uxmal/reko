@@ -6,134 +6,62 @@ void fn00001000(word32 d0, word32 a0)
 // Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d4 d5
 // Preserved: a7 d7
 fn00001000_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001000:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000100A:
 	word32 a6_9 = Mem0[0x00000004:word32]
 	word32 d2_102 = d0
 	word32 a2_290 = a0
 	branch Mem0[a6_9 + 20:word16] >=u 0x0024 l00001036
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001020:
 	word32 a0_13 = 0x000013C8
 	word32 d0_16 = 0x0000000C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001030:
 	Mem19[a0_13:word32] = 0x00000000
 	a0_13 = a0_13 + 4
 	d0_16 = d0_16 - 0x00000001
 	branch d0_16 != 0x00000000 l00001030
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001036:
 	Mem30[0x000013C8:word32] = fp
 	Mem34[0x000013CC:word32] = a6_9
 	word32 d0_36 = FindTask(0x00000000)
 	word32 d0_112 = OpenLibrary(0x000012BC, 0)
 	branch d0_112 == 0x00000000 l00001226
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001226:
 	Alert(0x00038007)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001056:
 	word32 d4_74
 	Mem67[0x000013D0:word32] = d0_112
 	branch Mem67[d0_36 + 172:word32] != 0x00000000 l00001066
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001066:
 	word32 a0_73 = a0
 	d4_74 = 3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000106A:
 	branch Mem67[a0_697:byte] != 0x20 l00001072
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001070:
 	d4_74 = SEQ(SLICE(d4_74, word16, 16), SLICE(d4_74, word16, 0) + 0x0001)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001072:
 	a0_73 = a0_697 + 1
 	a0_697 = a0_73
 	branch Mem67[a0_697:byte] != 0x00 l0000106A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001060:
 	d4_74 = 2
 	d2_102 = 8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001076:
 	word32 d0_100 = d4_74 << 0x00000002
 	word32 d0_107 = d0_100 + d2_102
 	word32 d1_111 = 0x00010001
 	d0_112 = AllocMem(d0_107 + 0x00000011, 0x00010001)
 	branch d0_112 == 0x00000000 l0000123E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000123E:
 	CloseLibrary(Mem67[0x000013D0:word32])
 	Alert(0x00010000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000125C:
 	branch Mem153[d0_36 + 172:word32] != 0x00000000 l00001268
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001262:
 	fn00001214(d0_36)
 	fn0000126C(d0_112)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001268:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001096:
 	word32 dwLoc0C_554
 	word32 a0_447
@@ -143,10 +71,6 @@ l00001096:
 	Mem179[0x00000000:word32] = 0x00000000
 	word32 d0_180 = Mem179[d0_36 + 172:word32]
 	branch d0_180 == 0x00000000 l00001190
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001190:
 	fn00001214(d0_36)
 	Mem187[0x000013D4:word32] = d0_180
@@ -155,24 +79,12 @@ l00001190:
 	dwLoc0C_554 = d0_180
 	word32 d0_197 = Mem194[d0_180 + 36:word32]
 	branch d0_197 == 0x00000000 l000011B6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000011AE:
 	Enable()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000011B6:
 	Supervisor(d0_112)
 	Mem209[d0_112 + 4:word32] = d0_197
 	branch d0_197 != 0x00000000 l000011D2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000011D2:
 	Mem214[0x000013DC:word32] = d0_197
 	Mem216[0x000013E0:word32] = d0_197
@@ -181,33 +93,13 @@ l000011D2:
 	Mem223[d0_36 + 160:word32] = d0_197
 	word32 d0_227 = Mem223[(d0_197 << 0x00000002) + 8:word32]
 	branch d0_227 == 0x00000000 l000011F4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000011F0:
 	Mem231[d0_36 + 164:word32] = d0_227
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000011F4:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000011CC:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000011CE_thunk_fn0000127C:
 	fn0000127C()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010B6:
 	word32 d0_252 = Mem179[(d0_180 << 0x00000002) + 16:word32]
 	word32 a1_255 = Mem179[d0_112 + 8:word32]
@@ -218,139 +110,63 @@ l000010B6:
 	word32 a6_266 = d0_112 + 20
 	word32 d3_267 = 1
 	word32 a0_272 = a0 + d2_102
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010DA:
 	a0_272 = a0_272 - 1
 	branch Mem265[a0_272:byte] >u 0x20 l000010E2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010DE_1:
 	word16 v37_280 = SLICE(d2_102, word16, 0)
 	d2_102 = SEQ(SLICE(d2_102, word16, 16), v37_280 - 1)
 	branch v37_280 != 0x0000 l000010DA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010E2:
 	Mem285[a0_272 + 1:byte] = 0x00
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010E6:
 	byte v40_292 = Mem291[a2_290:byte]
 	a2_290 = a2_290 + 1
 	d1_111 = SEQ(SLICE(d1_111, word24, 8), v40_292)
 	branch v40_292 == 0x00 l00001148
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010EA:
 	branch v40_292 == 0x20 l000010E6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010F0:
 	branch v40_292 == 0x09 l000010E6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010F6:
 	branch d3_267 - Mem291[d0_112 + 12:word32] == 0x00000000 l00001148
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000010FC:
 	Mem313[a6_266:word32] = a1_255
 	a6_266 = a6_266 + 4
 	d3_267 = SEQ(SLICE(d3_267, word16, 16), SLICE(d3_267, word16, 0) + 0x0001)
 	branch v40_292 == 0x22 l0000111A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000111A:
 	byte v71_324 = Mem323[a2_290:byte]
 	word24 v72_327 = SLICE(d1_111, word24, 8)
 	a2_290 = a2_290 + 1
 	d1_111 = SEQ(v72_327, v71_324)
 	branch v71_324 == 0x00 l00001148
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000111E:
 	branch v71_324 == 0x22 l00001116
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001124:
 	branch v71_324 != 0x2A l00001144
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000112A:
 	byte v75_337 = Mem323[a2_290:byte]
 	a2_290 = a2_290 + 1
 	d1_111 = SEQ(v72_327, v75_337)
 	branch (v75_337 & 0xDF) != 0x4E l0000113C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000113C:
 	branch (v75_337 & 0xDF) != 0x45 l00001144
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001142:
 	d1_111 = 27
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001138:
 	d1_111 = 10
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001144:
 	Mem362[a1_255:byte] = SLICE(d1_111, byte, 0)
 	a1_255 = a1_255 + 1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001106:
 	Mem366[a1_255:byte] = v40_292
 	a1_255 = a1_255 + 1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001108:
 	byte v50_371 = Mem370[a2_290:byte]
 	a2_290 = a2_290 + 1
 	d1_111 = SEQ(SLICE(d1_111, word24, 8), v50_371)
 	branch v50_371 == 0x00 l00001148
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001148:
 	Mem380[a1_255:byte] = 0x00
 	Mem385[a6_266:word32] = 0x00000000
@@ -361,83 +177,35 @@ l00001148:
 	dwLoc0C_554 = d0_112 + 16
 	dwLoc10 = d3_267
 	branch Mem418[Mem418[0x000013CC:word32] + 20:word16] <u 0x0024 l0000117A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001172:
 	word32 v92_428 = Mem418[d0_36 + 224:word32]
 	Mem429[0x000013E4:word32] = v92_428
 	branch v92_428 != 0x00000000 l0000117E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000117A:
 	Mem435[0x000013E4:word32] = d0_262
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000117E:
 	branch Mem439[d0_36 + 8:byte] != 0x0D l000011F8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000011F8:
 	a0_447 = Mem445[d0_36 + 58:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001186:
 	word32 a0_450 = Mem439[d0_36 + 176:word32]
 	a0_447 = a0_450 + 4 - Mem439[a0_450:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001202:
 	Mem461[0x000013F0:word32] = a0_447
 	Mem469[0x000013F4:word32] = fp - 16
 	fn00001354(dwLoc10, dwLoc0C_554)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001212_thunk_fn0000127C:
 	fn0000127C()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00001000_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000110C:
 	branch v50_371 == 0x20 l00001116
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001116:
 	Mem501[a1_255:byte] = 0x00
 	a1_255 = a1_255 + 1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001112:
 	Mem508[a1_255:byte] = v50_371
 	a1_255 = a1_255 + 1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00001214(word32 a3)
@@ -448,23 +216,11 @@ void fn00001214(word32 a3)
 // Trashed: a0
 // Preserved: a7
 fn00001214_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001214:
 	WaitPort(a3 + 92)
 	GetMsg(a3 + 92)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00001214_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0000126C(word32 a2)
@@ -475,23 +231,11 @@ void fn0000126C(word32 a2)
 // Trashed: a1
 // Preserved: a7
 fn0000126C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000126C:
 	Forbid()
 	ReplyMsg(a2)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000126C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00001278(word32 dwArg04)
@@ -502,27 +246,11 @@ void fn00001278(word32 dwArg04)
 // Trashed: CVZN a1 a2 a4 a5 a6 d0 d1 d2
 // Preserved: a7
 fn00001278_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001278:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001278_thunk_fn0000127C:
 	fn0000127C()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00001278_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0000127C()
@@ -533,50 +261,22 @@ void fn0000127C()
 // Trashed: CVZN a1 a2 a4 a5 a6 a7 d0 d1
 // Preserved:
 fn0000127C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000127C:
 	word32 a7_6 = Mem0[0x000013C8:word32]
 	word32 v7_11 = Mem0[a7_6 - 4:word32]
 	word32 v5_8 = Mem0[a7_6 - 8:word32]
 	branch Mem0[v7_11 + 4:word32] == 0x00000000 l0000129E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001296:
 	execPrivate1()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000129E:
 	CloseLibrary(Mem0[0x000013D0:word32])
 	branch v5_8 == 0x00000000 l000012B0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000012AE:
 	fn0000126C(v5_8)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000012B0:
 	FreeMem(v7_11, Mem0[v7_11:word32])
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000127C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn000012D0(word32 dwArg04)
@@ -587,59 +287,27 @@ void fn000012D0(word32 dwArg04)
 // Trashed: CVZNX a1 a4 a5 a6 d0 d1
 // Preserved: a2 a3 a7 d2
 fn000012D0_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000012D0:
 	branch 0x00001404 == 0x00000000 l00001308
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000012E2:
 	word32 d2_16 = 1
 	branch Mem11[0x00001408:word32] == 0x00000000 l000012F6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000012EA:
 	d2_16 = d2_16 + 0x00000001
 	branch Mem11[0x00001404 + (d2_16 << 0x00000002):word32] != 0x00000000 l000012EA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000012F6:
 	word32 d2_33 = d2_16 - 0x00000001
 	branch d2_33 == 0x00000000 l00001308
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000012FA:
 	word32 d0_38 = d2_33 << 0x00000002
 	call Mem11[0x00001404 + d0_38:word32] (retsize: 4;)
 		uses: d0:d0_38,Stack +0014:dwArg04
 	d2_33 = d2_33 - 0x00000001
 	branch d2_33 != 0x00000000 l000012FA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001308:
 	fn00001278(dwArg04)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000012D0_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0000131C(word32 dwArg04)
@@ -650,50 +318,22 @@ void fn0000131C(word32 dwArg04)
 // Trashed: CVZN a1 a4 a5 a6 d0 d1
 // Preserved: X a2 a3 a7
 fn0000131C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000131C:
 	branch Mem8[0x000013F8:word32] != 0x00000000 l0000134E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001328:
 	word32 a3_13 = Mem8[0x0000140C:word32]
 	Mem16[0x000013F8:word32] = 1
 	branch a3_13 == 0x00000000 l00001346
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000133A:
 	call Mem16[a3_13 + 4:word32] (retsize: 4;)
 		uses: d0:a3_26,Stack +0010:dwArg04
 	a3_13 = Mem16[a3_13:word32]
 	branch a3_13 != 0x00000000 l0000133A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001346:
 	fn000012D0(dwArg04)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000134E:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000131C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00001354(word32 dwArg04, word32 dwArg08)
@@ -704,44 +344,20 @@ void fn00001354(word32 dwArg04, word32 dwArg08)
 // Trashed: CVZNX a0 a1 a4 a5 a6 d0 d1
 // Preserved: a2 a3 a7
 fn00001354_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001354:
 	word32 a3_17 = 0x00001400
 	branch 0x000013FC == 0x00000000 l00001372
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001366:
 	branch Mem8[0x00001400:word32] == 0x00000000 l00001372
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000136A:
 	call Mem8[a3_17:word32] (retsize: 4;)
 		uses: Stack +0010:dwArg04,Stack +0014:dwArg08
 	a3_17 = a3_17 + 4
 	branch Mem8[a3_17:word32] != 0x00000000 l0000136A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001372:
 	fn0000131C(fn00001390())
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00001354_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00001390()
@@ -752,21 +368,9 @@ word32 fn00001390()
 // Trashed: CVZNX a0 a1 d0
 // Preserved: a2 a7
 fn00001390_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00001390:
 	return fn000013AC(0x000013A4)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00001390_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn000013AC(word32 dwArg04)
@@ -777,40 +381,16 @@ word32 fn000013AC(word32 dwArg04)
 // Trashed: CVZNX a0 a1 d0
 // Preserved: a7
 fn000013AC_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000013AC:
 	word32 a1_4 = dwArg04
 	word32 d0_15 = 0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000013B6:
 	a1_4 = a1_4 + 1
 	branch Mem0[a1_4:byte] != 0x00 l000013B4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000013B4:
 	d0_15 = d0_15 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000013BE:
 	return d0_15
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000013AC_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

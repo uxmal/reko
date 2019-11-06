@@ -104,9 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\AdjacentBranchCollector.cs" />
-    <Compile Include="Analysis\BlockFlow.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\CallApplicationBuilder.cs" />
     <Compile Include="Analysis\Coalescer.cs">
       <SubType>Code</SubType>
@@ -245,7 +242,6 @@
     <Compile Include="Evaluation\SliceShift.cs" />
     <Compile Include="Evaluation\BinOpWithSelf_Rule.cs" />
     <Compile Include="Evaluation\Substitutor.cs" />
-    <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Loading\FlirtoidSignatureLoader.cs" />
     <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />

@@ -6,22 +6,10 @@ int32 main(int32 argc, char ** argv)
 // Trashed: eax
 // Preserved:
 main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401000:
 	test1(Mem19[argv:word32], argc, 0x004020C0, 1.0F)
 	return 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
@@ -32,22 +20,10 @@ void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 // Trashed:
 // Preserved:
 test1_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401030:
 	printf(0x004020C8, arg1, arg2, arg3, (real64) arg4)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 test1_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void test2(word32 dwArg04)
@@ -58,34 +34,14 @@ void test2(word32 dwArg04)
 // Trashed: SCZO FPU -1 Top
 // Preserved: ebp esp
 test2_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401060:
 	test1(0x004020D8, 0x00000002, 0x004020D4, Mem10[0x004020E8:real32])
 	branch dwArg04 != 0x00000000 l004010A5
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401087:
 	test1(0x004020E0, 0x00000006, 0x004020DC, Mem25[0x004020E4:real32])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004010A5:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 test2_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void indirect_call_test3(cdecl_class * c)
@@ -96,22 +52,10 @@ void indirect_call_test3(cdecl_class * c)
 // Trashed:
 // Preserved:
 indirect_call_test3_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004010B0:
 	Mem12[Mem12[c:word32] + 0x00000004:word32](c, 0x000003E8)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 indirect_call_test3_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void test4()
@@ -122,22 +66,10 @@ void test4()
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp esp
 test4_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004010D0:
 	Mem10[Mem10[Mem10[0x00403018:word32]:word32]:word32](Mem6[0x00403018:word32])
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 test4_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void test5()
@@ -148,22 +80,10 @@ void test5()
 // Trashed: SCZO eax ecx edx FPU -1 Top
 // Preserved: ebp esp
 test5_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004010F0:
 	Mem18[Mem18[Mem18[0x00403018:word32]:word32] + 0x00000004:word32](Mem15[0x00403018:word32], 0x000003E7, Mem9[0x004020EC:real32])
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 test5_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void test6(cdecl_class * c, int32 a, int32 b)
@@ -174,22 +94,10 @@ void test6(cdecl_class * c, int32 a, int32 b)
 // Trashed:
 // Preserved:
 test6_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401120:
 	Mem37[Mem37[c:word32] + 0x00000004:word32](c, Mem19[Mem19[c:word32] + 0x00000008:word32](c, a, b))
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 test6_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void test7(real64 rArg04)
@@ -200,34 +108,14 @@ void test7(real64 rArg04)
 // Trashed: SCZO eax ecx edx FPU -1 FPUF Top
 // Preserved: ebp esp
 test7_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401160:
 	branch rArg04 <= 1.0 l00401189
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040116F:
 	Mem17[Mem17[Mem17[0x00403024:word32]:word32]:word32](Mem17[0x00403024:word32], rArg04)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401189:
 	Mem40[Mem40[Mem40[0x00403024:word32]:word32] + 0x00000004:word32](Mem40[0x00403024:word32], 0x0000000D, rArg04)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 test7_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void nested_if_blocks_test8(real64 rArg04)
@@ -238,41 +126,17 @@ void nested_if_blocks_test8(real64 rArg04)
 // Trashed: SCZO eax ecx edx FPU -1 FPUF Top
 // Preserved: ebp esp
 nested_if_blocks_test8_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011B0:
 	Mem15[Mem15[Mem15[0x00403024:word32]:word32] + 0x00000004:word32](Mem15[0x00403024:word32], 0xFFFFFFFF, rArg04)
 	branch Mem15[0x004020F8:real64] == rArg04 l0040120D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011E2:
 	branch Mem15[0x004020F0:real64] <= rArg04 l0040120D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011F2:
 	Mem42[Mem42[Mem42[0x00403024:word32]:word32]:word32](Mem42[0x00403024:word32], rArg04)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040120D:
 	test6(Mem58[0x00403018:word32], 0x00000006, 0x00000007)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 nested_if_blocks_test8_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void loop_test9(real32 rArg04)
@@ -283,45 +147,17 @@ void loop_test9(real32 rArg04)
 // Trashed: SCZO eax ecx edx FPU -1 FPU -2 FPUF Top
 // Preserved: ebp esp
 loop_test9_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401230:
 	word32 dwLoc08_65 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401248:
 	branch Mem25[Mem25[Mem25[0x00403024:word32]:word32] + 0x00000004:word32](Mem25[0x00403024:word32], dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 l00401294
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401294:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 loop_test9_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401278:
 	Mem48[Mem48[Mem48[0x00403024:word32]:word32]:word32](Mem48[0x00403024:word32], (real64) rArg04)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040123F:
 	dwLoc08_65 = dwLoc08_65 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void const_div_test10(word32 dwArg04)
@@ -332,38 +168,18 @@ void const_div_test10(word32 dwArg04)
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp esp
 const_div_test10_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012A0:
 	word32 eax_18 = 0x0000000A
 	word32 ecx_20 = 0x00000003
 	branch dwArg04 == 0x00000000 l004012BA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012B4:
 	eax_18 = 0x00000003
 	ecx_20 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012BA:
 	Mem22[0x0040301C:word32] = ecx_20
 	Mem24[0x00403020:word32] = eax_18
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 const_div_test10_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void loop_test11(real64 rArg04)
@@ -374,70 +190,26 @@ void loop_test11(real64 rArg04)
 // Trashed: SCZO Top
 // Preserved: eax ebp ecx edx esp FPU -1 FPUF
 loop_test11_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012D0:
 	word32 dwLoc08_100 = 0x00000005
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012DD:
 	branch dwLoc08_100 <= 0x00000000 l00401329
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401329:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 loop_test11_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012E3:
 	word32 eax_19 = dwLoc08_100 & 0x80000001
 	branch (dwLoc08_100 & 0x80000001) >= 0x00000000 l004012F2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012ED:
 	eax_19 = ((dwLoc08_100 & 0x80000001) - 0x00000001 | 0xFFFFFFFE) + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012F2:
 	branch eax_19 != 0x00000000 l0040130D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040130D:
 	nested_if_blocks_test8(rArg04)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012F6:
 	loop_test9((real32) rArg04)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040131E:
 	dwLoc08_100 = dwLoc08_100 - 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void nested_structs_test12(word32 dwArg04)
@@ -448,25 +220,13 @@ void nested_structs_test12(word32 dwArg04)
 // Trashed: eax ecx edx Top
 // Preserved: ebp esp
 nested_structs_test12_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401330:
 	Mem9[dwArg04:word32] = 0x00000001
 	Mem11[dwArg04 + 0x00000004:word32] = 0x00000002
 	Mem13[dwArg04 + 0x00000008:word32] = 0x00000003
 	Mem15[dwArg04 + 0x0000000C:word32] = 0x00000004
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 nested_structs_test12_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void nested_structs_test13(nested_structs_type * str)
@@ -477,21 +237,9 @@ void nested_structs_test13(nested_structs_type * str)
 // Trashed:
 // Preserved:
 nested_structs_test13_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401360:
 	nested_structs_test12(str)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 nested_structs_test13_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

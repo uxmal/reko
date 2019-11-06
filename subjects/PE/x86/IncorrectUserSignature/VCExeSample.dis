@@ -6,10 +6,6 @@ void test6(cdecl_class * c, int32 a, int32 b)
 // Trashed:
 // Preserved:
 test6_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401120:
 	// Incorrect user-defined signature
 	// "void sum(int, int)" is set instead of "int sum(int, int)"
@@ -18,14 +14,6 @@ l00401120:
 	word32 eax_25 = <invalid>
 	Mem37[Mem37[c:word32] + 0x00000004:word32](c, eax_25)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 test6_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

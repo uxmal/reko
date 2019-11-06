@@ -6,33 +6,13 @@ void _init()
 // Trashed: SCZO rax
 // Preserved: rsp
 _init_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400428:
 	branch __gmon_start__ == 0x0000000000000000 l000000000040043A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400438:
 	call __gmon_start__ (retsize: 8;)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040043A:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _start(word64 rdx, word64 qwArg00)
@@ -44,23 +24,11 @@ void _start(word64 rdx, word64 qwArg00)
 // Preserved:
 // Terminates process
 _start_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _start_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400480:
 	__align(fp + 8)
 	__libc_start_main(0x0000000000400660, qwArg00, fp + 8, 0x0000000000400710, 0x0000000000400780, rdx, fp)
 	__hlt()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void deregister_tm_clones(word64 r8)
@@ -71,41 +39,17 @@ void deregister_tm_clones(word64 r8)
 // Trashed: SCZO r8 rax rdi
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004B0:
 	branch r8 == 0x0000000000601040 l00000000004004D8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004C1:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004D8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004D8:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004CB:
 	call 0x0000000000000000 (retsize: 8;)
 		uses: r8:r8,rdi:0x0000000000601040
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 deregister_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void register_tm_clones()
@@ -116,41 +60,17 @@ void register_tm_clones()
 // Trashed: SCZO rax rdi rsi
 // Preserved: rbp rsp
 register_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004004E0:
 	branch 0 == 0x0000000000000000 l0000000000400518
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400503:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400518
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400518:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040050D:
 	call 0x0000000000000000 (retsize: 8;)
 		uses: rdi:0x0000000000601040
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 register_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __do_global_dtors_aux(word64 r8)
@@ -161,35 +81,15 @@ void __do_global_dtors_aux(word64 r8)
 // Trashed: SCZO r8 rax rdi
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400520:
 	branch Mem0[0x0000000000601040:byte] != 0x00 l0000000000400540
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400540:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400529:
 	deregister_tm_clones(r8)
 	Mem18[0x0000000000601040:byte] = 0x01
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_dtors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void frame_dummy()
@@ -200,27 +100,11 @@ void frame_dummy()
 // Trashed: SCZO rax rdi rsi
 // Preserved: rbp rsp
 frame_dummy_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400550:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400555_thunk_register_tm_clones:
 	register_tm_clones()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 frame_dummy_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void my1(word32 esi, word32 edi)
@@ -231,22 +115,10 @@ void my1(word32 esi, word32 edi)
 // Trashed: SCZO rdi rsi
 // Preserved: rbp rsp
 my1_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400560:
 	calloc((int64) edi, (int64) esi)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 my1_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void my2(byte sil, word64 rdi)
@@ -257,22 +129,10 @@ void my2(byte sil, word64 rdi)
 // Trashed: rax rsi
 // Preserved: rbp rdi rsp
 my2_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400590:
 	Mem15[rdi:byte] = sil
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 my2_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void branches(word32 esi, word32 edi)
@@ -284,66 +144,26 @@ void branches(word32 esi, word32 edi)
 // Preserved: rbp rsp
 branches_entry:
 	word32 edi = SLICE(rdi, word32, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004005B0:
 	branch SLICE((uint64) edi, word32, 0) >= esi l000000000040064F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004005CA:
 	branch SLICE((uint64) (SLICE((uint64) edi, word32, 0) << 0x00000001), word32, 0) >= SLICE((uint64) (SLICE((uint64) esi, word32, 0) << 0x00000001), word32, 0) l000000000040064F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004005DE:
 	branch SLICE((uint64) (edi *s 0x00000003), word32, 0) >= SLICE((uint64) (esi *s 0x00000003), word32, 0) l000000000040064F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004005EE:
 	branch SLICE((uint64) (SLICE((uint64) edi, word32, 0) << 0x00000002), word32, 0) >= SLICE((uint64) (SLICE((uint64) esi, word32, 0) << 0x00000002), word32, 0) l000000000040064F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400602:
 	word64 rax_59 = (uint64) SLICE((uint64) esi, word32, 0)
 	word32 eax_66 = (int32) ((int64) SLICE(rax_59, word32, 0) / 0x00000002)
 	word64 rax_84 = SEQ(SLICE(rax_59, word32, 32), eax_66)
 	branch SLICE((uint64) (int32) ((int64) SLICE((uint64) SLICE((uint64) edi, word32, 0), word32, 0) / 0x00000002), word32, 0) >= eax_66 l000000000040064F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040064F:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000000000040062B:
 	my1(SLICE((uint64) esi, word32, 0), SLICE((uint64) edi, word32, 0))
 	free(rax_84)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400656:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 branches_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void main()
@@ -355,21 +175,9 @@ void main()
 // Preserved:
 // Terminates process
 main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400660:
 	__llvm_retpoline_r11()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __llvm_retpoline_r11()
@@ -381,27 +189,11 @@ void __llvm_retpoline_r11()
 // Preserved:
 // Terminates process
 __llvm_retpoline_r11_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __llvm_retpoline_r11_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004006F0:
 	fn0000000000400700()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00000000004006F5:
 	__pause()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0000000000400700()
@@ -412,21 +204,9 @@ void fn0000000000400700()
 // Trashed:
 // Preserved: rsp
 fn0000000000400700_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400700:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0000000000400700_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
@@ -438,45 +218,21 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400710:
 	_init()
 	word32 r15d_82 = SLICE((uint64) edi, word32, 0)
 	word64 rbp_29 = 0x0000000000600E18 - 0x0000000000600E10
 	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l0000000000400766
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400746:
 	word64 rbx_41 = 0x0000000000000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400750:
 	call Mem24[0x0000000000600E10 + rbx_41 * 0x0000000000000008:word64] (retsize: 8;)
 		uses: rdi:(uint64) r15d_82,rdx:rdx,rsi:rsi
 	rbx_41 = rbx_41 + 0x0000000000000001
 	branch rbp_29 >> 0x0000000000000003 != rbx_41 l0000000000400750
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400766:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_fini()
@@ -487,21 +243,9 @@ void __libc_csu_fini()
 // Trashed:
 // Preserved: rsp
 __libc_csu_fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400780:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _fini()
@@ -512,20 +256,8 @@ void _fini()
 // Trashed: SCZO
 // Preserved: rsp
 _fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000000000400784:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

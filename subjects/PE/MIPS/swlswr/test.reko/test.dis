@@ -6,10 +6,6 @@ word32 fn00011000()
 // Trashed: r2 r4 r5 r6 r8
 // Preserved: ra sp
 fn00011000_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011000:
 	memset(fp + -20, 0x00000000, 5)
 	word32 r2_20 = calloc(1, 5)
@@ -17,15 +13,7 @@ l00011000:
 	Mem28[r2_20:byte] = 0x0C
 	Mem32[r2_20 + 1:word32] = 0x00000000
 	return 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00011000_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 DWORD Win32CrtStartup()
@@ -36,22 +24,10 @@ DWORD Win32CrtStartup()
 // Trashed: r2
 // Preserved:
 Win32CrtStartup_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000110A0:
 	fn000111C4()
 	return fn000110E8()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 Win32CrtStartup_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn000110E8()
@@ -62,29 +38,13 @@ word32 fn000110E8()
 // Trashed: r2 r4 r5 r6 r8 r9
 // Preserved: r30 r7 ra sp
 fn000110E8_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000110E8:
 	fn000114E4()
 	word32 r2_25 = fn00011000()
 	fn00011278(r2_25)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011154:
 	return r2_25
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000110E8_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0001116C(word32 r2, word32 r4, word32 dwArg00)
@@ -95,10 +55,6 @@ void fn0001116C(word32 r2, word32 r4, word32 dwArg00)
 // Trashed: r2 r30 r4 r5 r8 ra sp
 // Preserved:
 fn0001116C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001116C:
 	Mem11[r2 + 0xFFFFFFEC:word32] = r4
 	Mem13[r2 + 0xFFFFFFF0:word32] = Mem11[r2 + 0xFFFFFFEC:word32]
@@ -108,15 +64,7 @@ l0001116C:
 	call XcptFilter (retsize: 0;)
 		uses: r2:r2,r4:Mem19[r2 + 0xFFFFFFE8:word32],r5:Mem19[r2 + 0xFFFFFFF0:word32],r8:r8_18,Stack +0018:dwArg00
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0001116C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn000111C4()
@@ -127,38 +75,14 @@ void fn000111C4()
 // Trashed: r8 r9
 // Preserved: r2 ra sp
 fn000111C4_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000111C4:
 	word32 r8_7 = Mem5[0x00013030:word32]
 	branch r8_7 == 0x00000000 l000111C4_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000111C4_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000111C4_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000111E4:
 	branch r8_7 == 0x0000B064 l000111E4_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000111E4_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001120C:
 	word32 r2_16
 	call COREDLL.dll!Ordinal_2696 (retsize: 0;)
@@ -167,55 +91,19 @@ l0001120C:
 	word32 r8_24 = r2_16 >>u 0x10 ^ r2_16 + 0x0000FFFF
 	word32 dwLoc0C_50 = r8_24
 	branch r8_24 != 0x00000000 l0001120C_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001120C_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001120C_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011244:
 	dwLoc0C_50 = 0x0000B064
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001124C:
 	Mem33[0x00013030:word32] = dwLoc0C_50
 	Mem37[0x00013034:word32] = ~dwLoc0C_50
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000111E4_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000111F4:
 	Mem41[0x00013034:word32] = ~r8_7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011268:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000111C4_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00011278(word32 r4)
@@ -226,22 +114,10 @@ void fn00011278(word32 r4)
 // Trashed: r4 r5 r6 r8 r9
 // Preserved: ra sp
 fn00011278_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011278:
 	fn000112A8(r4, 0x00000000, 0x00000000)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00011278_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn000112A8(word32 r4, word32 r5, word32 r6)
@@ -252,137 +128,45 @@ void fn000112A8(word32 r4, word32 r5, word32 r6)
 // Trashed: r4 r5 r8 r9
 // Preserved: ra sp
 fn000112A8_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112A8:
 	Mem16[0x00013038:byte] = (byte) (r6 << 0x18 >> 0x18)
 	branch r5 != 0x00000000 l000112A8_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112A8_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001138C:
 	fn0001147C(0x00012018, 0x0001201C)
 	branch r6 != 0x00000000 l0001138C_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001138C_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000113C8:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000112A8_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001138C_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000113B0:
 	TerminateProcess(fn00011460(), r4)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112A8_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112DC:
 	branch Mem16[0x00013040:word32] == 0x00000000 l000112DC_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112DC_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112DC_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112EC:
 	Mem39[0x0001303C:word32] = Mem35[0x0001303C:word32] + -4
 	branch (word32) (Mem39[0x0001303C:word32] <u Mem39[0x00013040:word32]) != 0x00000000 l000112EC_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112EC_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001134C:
 	free(Mem39[0x00013040:word32])
 	Mem48[0x0001303C:word32] = 0x00000000
 	Mem52[0x00013040:word32] = Mem48[0x0001303C:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011374:
 	fn0001147C(0x00012010, 0x00012014)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000112EC_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001131C:
 	branch Mem39[Mem39[0x0001303C:word32]:word32] == 0x00000000 l0001131C_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001131C_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011344:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001131C_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011330:
 	word32 r8_64 = Mem39[Mem39[0x0001303C:word32]:word32]
 	call r8_64 (retsize: 0;)
 		uses: r4:r4,r5:r5,r6:r6,r8:r8_64
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn000113D8(word32 r4)
@@ -393,22 +177,10 @@ void fn000113D8(word32 r4)
 // Trashed: r4 r5 r6 r8 r9
 // Preserved: ra sp
 fn000113D8_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000113D8:
 	fn000112A8(r4, 1, 0x00000000)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000113D8_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00011408()
@@ -419,22 +191,10 @@ void fn00011408()
 // Trashed: r4 r5 r6 r8 r9
 // Preserved: ra sp
 fn00011408_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011408:
 	fn000112A8(0x00000000, 0x00000000, 1)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00011408_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00011434()
@@ -445,22 +205,10 @@ void fn00011434()
 // Trashed: r4 r5 r6 r8 r9
 // Preserved: ra sp
 fn00011434_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011434:
 	fn000112A8(0x00000000, 1, 1)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00011434_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00011460()
@@ -471,21 +219,9 @@ word32 fn00011460()
 // Trashed: r2 r8
 // Preserved: sp
 fn00011460_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011460:
 	return 66
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00011460_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0001147C(word32 r4, word32 r5)
@@ -496,72 +232,24 @@ void fn0001147C(word32 r4, word32 r5)
 // Trashed: r8 r9
 // Preserved: ra sp
 fn0001147C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001147C:
 	word32 dwArg00_33 = r4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001148C:
 	branch (word32) (dwArg00_33 <u r5) == 0x00000000 l0001147C_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001147C_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000114D4:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0001147C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001147C_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000114A0:
 	branch Mem11[dwArg00_33:word32] == 0x00000000 l000114A0_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000114A0_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000114C0:
 	dwArg00_33 = dwArg00_33 + 4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000114A0_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000114B0:
 	call fn00000000 (retsize: 0;)
 		uses: r4:r4,r5:r5,r8:Mem11[dwArg00_34:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn000114E4()
@@ -572,23 +260,11 @@ void fn000114E4()
 // Trashed: r4 r5 r8 r9
 // Preserved: ra sp
 fn000114E4_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000114E4:
 	fn0001147C(0x00012008, 0x0001200C)
 	fn0001147C(0x00012000, 0x00012004)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000114E4_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn0001152C()
@@ -599,231 +275,75 @@ word32 fn0001152C()
 // Trashed: r2 r4 r5 r8 r9
 // Preserved: ra sp
 fn0001152C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001152C:
 	word32 r8_10 = Mem8[0x00013040:word32]
 	word32 sp_3 = fp + -56
 	branch Mem11[0x0001303C:word32] - r8_10 >= 0x00000000 l0001152C_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001152C_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011588:
 	branch r8_10 == 0x00000000 l00011588_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011588_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011588_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115A0:
 	word32 r5_31
 	call msize (retsize: 0;)
 		uses: r4:r8_10,r5:r5_31
 		defs: r5:r5_31
 	sp_3 = fp + 0xFFFFFFCC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115B0:
 	branch (word32) (Mem35[sp_3 + 0x00000018:word32] <u Mem35[sp_3 + 0x00000024:word32]) == 0x00000000 l000115B0_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115B0_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115B0_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115C4:
 	branch Mem35[sp_3 + 0x0000001C:word32] != 0x00000000 l000115C4_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115C4_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115E8:
 	Mem42[sp_3 + 0x00000020:word32] = Mem35[sp_3 + 0x00000018:word32] << 0x01
 	branch (word32) (Mem42[sp_3 + 0x00000018:word32] <u 513) != 0x00000000 l000115E8_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115E8_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115E8_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011604:
 	Mem47[sp_3 + 0x00000020:word32] = Mem42[sp_3 + 0x00000018:word32] + 512
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011610:
 	branch (word32) (Mem49[sp_3 + 0x00000018:word32] <u Mem49[sp_3 + 0x00000020:word32]) == 0x00000000 l00011610_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011610_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011610_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011624:
 	Mem56[sp_3 + 0x00000014:word32] = realloc(Mem49[sp_3 + 0x0000001C:word32], Mem49[sp_3 + 0x00000020:word32])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011638:
 	branch Mem58[sp_3 + 0x00000014:word32] != 0x00000000 l00011638_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011638_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011638_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011644:
 	branch (word32) (Mem58[sp_3 + 0x00000018:word32] <u Mem58[sp_3 + 0x00000024:word32]) == 0x00000000 l00011644_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011644_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011644_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011658:
 	Mem66[sp_3 + 0x00000014:word32] = realloc(Mem58[sp_3 + 0x0000001C:word32], Mem58[sp_3 + 0x00000024:word32])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115C4_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000115D0:
 	Mem69[sp_3 + 0x00000014:word32] = malloc(16)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001166C:
 	branch Mem71[sp_3 + 0x00000014:word32] != 0x00000000 l0001166C_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001166C_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011688:
 	Mem80[sp_3 + 0x00000028:word32] = Mem71[sp_3 + 0x00000014:word32] + ((Mem71[sp_3 + 0x00000028:word32] - Mem71[sp_3 + 0x0000001C:word32] >> 0x02) << 0x02)
 	Mem82[sp_3 + 0x0000001C:word32] = Mem80[sp_3 + 0x00000014:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000116B0:
 	Mem87[Mem84[sp_3 + 0x00000028:word32]:word32] = Mem84[sp_3 + 0x00000038:word32]
 	Mem90[sp_3 + 0x00000028:word32] = Mem87[sp_3 + 0x00000028:word32] + 4
 	Mem93[0x0001303C:word32] = Mem90[sp_3 + 0x00000028:word32]
 	Mem96[0x00013040:word32] = Mem93[sp_3 + 0x0000001C:word32]
 	Mem98[sp_3 + 0x0000002C:word32] = Mem96[sp_3 + 0x00000038:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001166C_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011678:
 	Mem100[sp_3 + 0x0000002C:word32] = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001152C_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011578:
 	dwLoc0C = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000116E8:
 	return dwLoc0C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0001152C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn000116FC()
@@ -834,46 +354,14 @@ void fn000116FC()
 // Trashed: r2 r4 r5 r8 r9
 // Preserved: ra sp
 fn000116FC_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000116FC:
 	branch fn0001152C() == 0x00000000 l000116FC_ds_t
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000116FC_ds_t:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011728:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000116FC_ds_f:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0001171C:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00011730:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn000116FC_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

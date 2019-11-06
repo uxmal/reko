@@ -6,25 +6,13 @@ word32 _init(ptr32 & r10Out)
 // Trashed: NZCV lr pc r0 r10 r2 r3 r4
 // Preserved: sp
 _init_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000082F0:
 	word32 r10_8 = call_gmon_start()
 	frame_dummy()
 	word32 r4_24 = __do_global_ctors_aux()
 	r10Out = r10_8
 	return r4_24
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void abort()
@@ -36,15 +24,7 @@ void abort()
 // Preserved:
 // Terminates process
 abort_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 abort_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_start_main()
@@ -56,15 +36,7 @@ void __libc_start_main()
 // Preserved:
 // Terminates process
 __libc_start_main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_start_main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _start(word32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
@@ -76,22 +48,10 @@ void _start(word32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptr
 // Preserved:
 // Terminates process
 _start_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _start_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008334:
 	__libc_start_main(Mem14[0x00008364:word32], dwArg00, fp + 4, Mem14[0x00008368:word32], ptrArg08, ptrArg0C, ptrArg10)
 	abort()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 call_gmon_start()
@@ -102,18 +62,10 @@ word32 call_gmon_start()
 // Trashed: NZCV lr pc r10 r3
 // Preserved: sp
 call_gmon_start_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000836C:
 	word32 r10_10 = 0x00008380 + Mem6[0x00008394:word32]
 	word32 r3_11 = Mem6[r10_10 + Mem6[0x00008398:word32]:word32]
 	branch r3_11 != 0x00000000 l00008388
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008388:
 	word32 r10_16
 	word32 pc_18
@@ -121,21 +73,9 @@ l00008388:
 		uses: lr:0x00008390,pc:pc_18,r10:r10_10
 		defs: pc:pc_18,r10:r10_16
 	return r10_16
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008384_1:
 	return r10
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 call_gmon_start_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __do_global_dtors_aux()
@@ -146,32 +86,16 @@ void __do_global_dtors_aux()
 // Trashed: NZCV lr pc r2 r3 r4 r5
 // Preserved: sp
 __do_global_dtors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000839C:
 	word32 r5_10 = Mem8[0x000083F4:word32]
 	branch (word32) Mem8[r5_10:byte] == 0x00000000 l000083B0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000083B0:
 	word32 r4_14 = Mem8[0x000083F8:word32]
 	word32 r2_16 = Mem8[Mem8[r4_14:word32]:word32]
 	branch r2_16 == 0x00000000 l000083E8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000083E8:
 	Mem20[r5_10:byte] = 0x01
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000083C4:
 	word32 r3_24 = Mem8[r4_14:word32]
 	Mem26[r4_14:word32] = r3_24 + 0x00000004
@@ -181,21 +105,9 @@ l000083C4:
 		uses: lr:0x000083D8,pc:pc_32,r2:r2_34,r3:r3_24 + 0x00000004,r4:r4_14,r5:r5_10
 		defs: pc:pc_32,r2:r2_34
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000083AC_1:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_dtors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void call___do_global_dtors_aux()
@@ -206,21 +118,9 @@ void call___do_global_dtors_aux()
 // Trashed:
 // Preserved: sp
 call___do_global_dtors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000083FC:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 call___do_global_dtors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void frame_dummy()
@@ -231,49 +131,21 @@ void frame_dummy()
 // Trashed: NZCV r0 r3
 // Preserved: pc sp
 frame_dummy_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008404:
 	branch Mem0[Mem0[0x00008424:word32]:word32] != 0x00000000 l00008414
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008414:
 	branch Mem0[0x00008428:word32] != 0x00000000 l00008420
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008420:
 	word32 pc_13
 	call fn00000000 (retsize: 0;)
 		uses: pc:pc_13
 		defs: pc:pc_13
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000841C_1:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008410_1:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 frame_dummy_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void call_frame_dummy()
@@ -284,21 +156,9 @@ void call_frame_dummy()
 // Trashed:
 // Preserved: sp
 call_frame_dummy_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000842C:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 call_frame_dummy_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 frobulate(word32 r0, word32 dwArg00)
@@ -309,22 +169,10 @@ word32 frobulate(word32 r0, word32 dwArg00)
 // Trashed: NZCV fp ip r1 r2 r3 sp
 // Preserved:
 frobulate_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008434:
 	__divsi3(r0 * r0, 0x00000539)
 	return dwArg00
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 frobulate_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 bazulate(word32 r0, word32 r1)
@@ -335,10 +183,6 @@ word32 bazulate(word32 r0, word32 r1)
 // Trashed: NZCV fp ip r1 r2 r3 r4 sp
 // Preserved:
 bazulate_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008470:
 	word32 fp_24 = frobulate(r0, r1)
 	word32 r0_38 = __divsi3(r0 + r1, r0)
@@ -347,15 +191,7 @@ l00008470:
 	word32 fp_48 = frobulate(r0_47, Mem19[sp_29:word32])
 	__divsi3(r0_38, r0_47)
 	return Mem19[fp_48:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 bazulate_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 switcheroo(word32 r0)
@@ -366,63 +202,23 @@ word32 switcheroo(word32 r0)
 // Trashed: NZCV fp ip r0 r1 r2 r3 r4 sp
 // Preserved:
 switcheroo_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000084D4:
 	word32 fp_35
 	branch r0 >u 0x00000006 l000084F4
 	switch (r0) { l00008514 l00008514 l00008514 l00008540 l00008520 l00008540 l00008534 }
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008534:
 	bazulate(r0, r0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008520:
 	fp_35 = frobulate(r0 - 0x00000003, r0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008514:
 	fp_35 = frobulate(r0, r0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000084F4:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008540:
 	fp_35 = bazulate(0x00000000, 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000854C:
 	return Mem15[fp_35 - -4:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 switcheroo_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000084F0_1:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void main(word32 r0)
@@ -433,22 +229,10 @@ void main(word32 r0)
 // Trashed: NZCV fp ip r0 r1 r2 r3 r4 sp
 // Preserved:
 main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000855C:
 	switcheroo(r0)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 __divsi3(word32 r0, word32 r1)
@@ -459,10 +243,6 @@ word32 __divsi3(word32 r0, word32 r1)
 // Trashed: NZCV ip r0 r1 r2 r3
 // Preserved: sp
 __divsi3_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008588:
 	word32 r1_10
 	word32 ip_5 = r0 ^ r1
@@ -470,249 +250,89 @@ l00008588:
 	word32 r2_103 = 0x00000000
 	r1_10 = r1
 	branch r1 >= 0x00000000 l0000859C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008598_1:
 	r1_10 = 0x00000000 - r1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000859C:
 	branch r1 == 0x00000000 l00008628
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008628:
 	__div0(r0)
 	return 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085A0:
 	branch r0 >= 0x00000000 l000085A8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085A4_1:
 	r0 = 0x00000000 - r0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085A8:
 	branch r0 <u r1_10 l00008618
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085B0:
 	bool C_35 = SLICE(cond(r1_10 - 0x10000000), bool, 1)
 	branch r1_10 >=u 0x10000000 l000085B8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085B4_1:
 	C_35 = SLICE(cond(r1_10 - r0), bool, 1) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085B8:
 	branch C_35 l000085C0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085B8_1:
 	r1_10 = r1_10 << 4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085BC_1:
 	r3_134 = r3_134 << 4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085C0:
 	branch C_35 l000085B0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085C4:
 	bool C_48 = SLICE(cond(r1_10 - 0x80000000), bool, 1)
 	branch r1_10 >=u 0x80000000 l000085CC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085C8_1:
 	C_48 = SLICE(cond(r1_10 - r0), bool, 1) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085CC:
 	branch C_48 l000085D4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085CC_1:
 	r1_10 = r1_10 << 1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085D0_1:
 	r3_134 = r3_134 << 1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085D4:
 	branch C_48 l000085C4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085D8:
 	branch r0 <u r1_10 l000085E4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085DC_1:
 	r0 = r0 - r1_10
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085E0_1:
 	r2_103 = r2_103 | r3_134
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085E4:
 	branch r0 <u r1_10 >> 1 l000085F0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085E8_1:
 	r0 = r0 - (r1_10 >> 1)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085EC_1:
 	r2_103 = r2_103 | r3_134 >> 1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085F0:
 	branch r0 <u r1_10 >> 2 l000085FC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085F4_1:
 	r0 = r0 - (r1_10 >> 2)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085F8_1:
 	r2_103 = r2_103 | r3_134 >> 2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000085FC:
 	branch r0 <u r1_10 >> 3 l00008608
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008600_1:
 	r0 = r0 - (r1_10 >> 3)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008604_1:
 	r2_103 = r2_103 | r3_134 >> 3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008608:
 	bool Z_93 = SLICE(cond(r0), bool, 2)
 	branch r0 == 0x00000000 l00008610
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000860C_1:
 	r3_134 = r3_134 >>u 4
 	Z_93 = SLICE(cond(r3_134), bool, 2) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008610:
 	branch Z_93 l00008614
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008610_1:
 	r1_10 = r1_10 >>u 4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008614:
 	branch Z_93 l000085D8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008618:
 	word32 r0_109 = r2_103
 	branch ip_5 >= 0x00000000 l00008624
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008620_1:
 	r0_109 = 0x00000000 - r2_103
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008624:
 	return r0_109
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __divsi3_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __div0(word32 r0)
@@ -723,35 +343,15 @@ void __div0(word32 r0)
 // Trashed: NZCV
 // Preserved: r1 sp
 __div0_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008638:
 	__syscall(0x00900014)
 	branch r0 <u 0x000003E8 l00008648
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008648:
 	__syscall(0x00900025)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008644_1:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __div0_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_init()
@@ -762,39 +362,19 @@ void __libc_csu_init()
 // Trashed: NZCV lr pc r0 r1 r10 r2 r3 r4 r5 r6
 // Preserved: sp
 __libc_csu_init_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008654:
 	word32 r10_20
 	word32 r4_23 = _init(out r10_20)
 	word32 r1_30 = Mem12[r10_20 + Mem12[0x000086A8:word32]:word32]
 	word32 r3_32 = Mem12[r10_20 + Mem12[0x000086AC:word32]:word32] - r1_30
 	branch r4_23 <u r3_32 >> 2 l00008684
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008684:
 	call Mem12[r1_30 + (r4_23 << 2):word32] (retsize: 0;)
 		uses: lr:0x00008694,r10:r10_20,r4:r4_23,r5:r3_32,r6:r1_30
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008680_1:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_init_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __libc_csu_fini()
@@ -805,45 +385,21 @@ void __libc_csu_fini()
 // Trashed: NZCV lr pc r1 r10 r2 r3 r4 r5
 // Preserved: sp
 __libc_csu_fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000086B0:
 	word32 r10_15 = 0x000086C8 + Mem10[0x00008700:word32]
 	word32 r1_16 = Mem10[r10_15 + Mem10[0x00008704:word32]:word32]
 	word32 r3_18 = Mem10[r10_15 + Mem10[0x00008708:word32]:word32] - r1_16
 	word32 r4_21 = (r3_18 >> 2) - 0x00000001
 	branch r3_18 >> 2 == 0x00000000 l000086F8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000086F8:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000086FC_thunk__fini:
 	_fini()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l000086E0:
 	call Mem10[r1_16 + (r4_21 << 2):word32] (retsize: 0;)
 		uses: lr:0x000086EC,r10:r10_15,r4:r4_21,r5:r1_16
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __libc_csu_fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 __do_global_ctors_aux()
@@ -854,18 +410,10 @@ word32 __do_global_ctors_aux()
 // Trashed: NZCV lr pc r2 r3 r4
 // Preserved: sp
 __do_global_ctors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000870C:
 	word32 r3_8 = Mem6[0x00008740:word32]
 	word32 r2_9 = Mem6[r3_8 - 4:word32]
 	branch r2_9 != 0x00000001 l00008724
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008724:
 	word32 r4_16
 	word32 r3_18
@@ -874,21 +422,9 @@ l00008724:
 		uses: lr:0x00008730,pc:pc_19,r3:r3_18,r4:r3_8 - 0x00000004
 		defs: pc:pc_19,r3:r3_18,r4:r4_16
 	return r4_16
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008720_1:
 	return r4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_ctors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void call___do_global_ctors_aux()
@@ -899,21 +435,9 @@ void call___do_global_ctors_aux()
 // Trashed:
 // Preserved: sp
 call___do_global_ctors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00008744:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 call___do_global_ctors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _fini()
@@ -924,21 +448,9 @@ void _fini()
 // Trashed: NZCV lr pc r2 r3 r4 r5
 // Preserved: sp
 _fini_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0000874C:
 	__do_global_dtors_aux()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _fini_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

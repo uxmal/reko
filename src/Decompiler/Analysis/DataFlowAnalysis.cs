@@ -82,9 +82,6 @@ namespace Reko.Analysis
 				{
 					if (block != null)
 					{
-						BlockFlow bf = this.flow[block];
-						bf.Emit(proc.Architecture, output);
-						output.WriteLine();
 						block.Write(output);
 					}
 				}

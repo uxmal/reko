@@ -77,17 +77,6 @@ namespace Reko.Analysis
         /// </summary>
         public Dictionary<Storage, Constant> Constants; 
 
-		[Obsolete] public HashSet<Storage> ByPass { get; set; }
-		[Obsolete] public Dictionary<RegisterStorage, uint> grfByPass;
-		[Obsolete] public HashSet<Storage> MayUse;
-		[Obsolete] public Dictionary<RegisterStorage, uint> grfMayUse;
-		[Obsolete] public HashSet<Storage> Summary;
-		[Obsolete] public Dictionary<RegisterStorage, uint> grfSummary;
-
-		public Hashtable StackArguments;		//$REFACTOR: make this a strongly typed dictionary (Var -> PrimitiveType)
-
-
-
         // True if calling this procedure terminates the thread/process. This implies
         // that no code path reached the exit block without first terminating the process.
         public bool TerminatesProcess;
@@ -106,19 +95,7 @@ namespace Reko.Analysis
 
             BitsLiveOut = new Dictionary<Storage, BitRange>();
 
-            StackArguments = new Hashtable();
             this.BitsUsed = new Dictionary<Storage, BitRange>();
-            InitObsoleteCode();
-        }
-
-        [Obsolete]
-        private void InitObsoleteCode()
-        {
-            grfSummary = new Dictionary<RegisterStorage, uint>();
-            grfByPass = new Dictionary<RegisterStorage, uint>();
-            grfMayUse = new Dictionary<RegisterStorage, uint>();
-            ByPass = new HashSet<Storage>();
-            MayUse = new HashSet<Storage>();
         }
 
         [Conditional("DEBUG")]
@@ -139,29 +116,8 @@ namespace Reko.Analysis
 			writer.WriteLine();
 			EmitRegisters(arch, "// Preserved:", grfPreserved, Preserved, writer);
 			writer.WriteLine();
-			EmitStackArguments(StackArguments, writer);
             if (TerminatesProcess)
                 writer.WriteLine("// Terminates process");
-		}
-
-		public void EmitStackArguments(Hashtable args, TextWriter sb)
-		{
-			if (args.Count > 0)
-			{
-				sb.Write("// Stack args:");
-				SortedList sort = new SortedList();
-				foreach (DictionaryEntry de in args)
-				{
-					sort.Add(string.Format("{0}({1})", de.Key, de.Value), de.Key);
-				}
-
-				foreach (string s in sort.Keys)
-				{
-					sb.Write(' ');
-					sb.Write(s);
-				}
-				sb.WriteLine();
-			}
 		}
 
 		public bool IsLiveOut(Identifier id)

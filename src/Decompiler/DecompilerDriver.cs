@@ -166,13 +166,6 @@ namespace Reko
                         if (block == null)
                             continue;
                         block.Write(output);
-
-                        BlockFlow bf;
-                        if (dfa.ProgramDataFlow.BlockFlows.TryGetValue(block, out bf))
-                        {
-                            bf.Emit(program.Architecture, output);
-                            output.WriteLine();
-                        }
                     }
                 }
                 else

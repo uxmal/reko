@@ -6,43 +6,19 @@ word32 deregister_tm_clones()
 // Trashed: CVZNX a0 a6 a7 d0 d1
 // Preserved:
 deregister_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000080:
 	word32 a6_23 = fp - 0x00000004
 	branch true l800000AA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000096:
 	branch null == 0x00000000 l800000AA
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000A0:
 	word32 a0_26
 	call null (retsize: 4;)
 		uses: a0:a0_26,a6:fp - 0x00000004,Stack +0004:0x80002724
 		defs: a0:a0_26,a6:a6_23
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000AA:
 	return Mem31[a6_23:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 deregister_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void register_tm_clones()
@@ -53,56 +29,24 @@ void register_tm_clones()
 // Trashed: CVZNX a0 a6 a7 d0
 // Preserved:
 register_tm_clones_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000AE:
 	word32 d0_12 = 0
 	branch false l800000C6
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000C4:
 	d0_12 = 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000C6:
 	word32 d0_18 = d0_12 >> 0x00000001
 	branch d0_18 == 0x00000000 l800000E0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000CA:
 	branch null == 0x00000000 l800000E0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000D4:
 	word32 a0_37
 	call null (retsize: 4;)
 		uses: a0:a0_37,a6:fp - 0x00000004,Stack +0004:0x80002724,Stack +0008:d0_18
 		defs: a0:a0_37
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000E0:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 register_tm_clones_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __do_global_dtors_aux()
@@ -113,26 +57,14 @@ void __do_global_dtors_aux()
 // Trashed: CVZNX a0 a2 a6 a7 d0 d1 d2
 // Preserved:
 __do_global_dtors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000E4:
 	word32 a6_38 = fp - 0x00000004
 	branch Mem15[0x80002724:byte] != 0x00 l8000014C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800000F4:
 	word32 d0_21 = Mem15[0x80002726:word32]
 	word32 a2_20 = 0x80002714
 	word32 d2_25 = 0x00000000
 	branch d0_21 >=u 0x00000000 l8000012C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000114:
 	word32 d0_31 = d0_21 + 0x00000001
 	Mem34[0x80002726:word32] = d0_31
@@ -143,18 +75,10 @@ l80000114:
 		defs: a0:a0_46,a2:a2_43,a6:a6_42,d1:d1_95,d2:d2_44
 	d0_21 = Mem34[0x80002726:word32]
 	branch d2_25 - d0_21 >u 0x00000000 l80000114
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000012C:
 	word32 a6_55 = deregister_tm_clones()
 	word32 a7_56 = <invalid>
 	branch null == 0x00000000 l80000144
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000013A:
 	Mem68[a7_56 - 0x00000004:word32] = 0x8000065C
 	word32 d0_75
@@ -163,27 +87,11 @@ l8000013A:
 	call null (retsize: 4;)
 		uses: a0:a0_76,a2:a2_69,a6:a6_55,d0:d0_75,d1:d1_77,d2:d2_70
 		defs: a0:a0_76,d0:d0_75,d1:d1_77
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000144:
 	Mem81[0x80002724:byte] = 0x01
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000014C:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_dtors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void call___do_global_dtors_aux()
@@ -194,21 +102,9 @@ void call___do_global_dtors_aux()
 // Trashed:
 // Preserved: a6 a7
 call___do_global_dtors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000158:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 call___do_global_dtors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void frame_dummy()
@@ -219,18 +115,10 @@ void frame_dummy()
 // Trashed: CVZNX a0 a1 a6 d0
 // Preserved: a7
 frame_dummy_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000160:
 	word32 a6_18 = fp - 0x00000004
 	word32 a7_23 = fp - 0x00000004
 	branch null == 0x00000000 l8000017E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000016E:
 	word32 a7_17
 	word32 a1_20
@@ -238,56 +126,24 @@ l8000016E:
 		uses: a1:a1_20,a6:fp - 0x00000004,Stack +0004:0x8000065C,Stack +0008:0x8000272A
 		defs: a1:a1_20,a6:a6_18,a7:a7_17
 	a7_23 = a7_17 + 8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000017E:
 	branch Mem25[0x8000271C:word32] != 0x00000000 l8000018E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000018E:
 	branch null == 0x00000000 l80000188
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000198:
 	Mem38[a7_23 - 4:word32] = 0x8000271C
 	word32 a1_44
 	call null (retsize: 4;)
 		uses: a1:a1_44,a6:a6_40
 		defs: a1:a1_44
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800001A0_thunk_register_tm_clones:
 	register_tm_clones()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000188:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000018A_thunk_register_tm_clones:
 	register_tm_clones()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 frame_dummy_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void call_frame_dummy()
@@ -298,21 +154,9 @@ void call_frame_dummy()
 // Trashed:
 // Preserved: a6 a7
 call_frame_dummy_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800001A4:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 call_frame_dummy_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void sine_taylor(real64 rArg04)
@@ -323,21 +167,9 @@ void sine_taylor(real64 rArg04)
 // Trashed:
 // Preserved:
 _Z11sine_taylord_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800001AC:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _Z11sine_taylord_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void factorial(int32 dwArg04)
@@ -348,39 +180,15 @@ void factorial(int32 dwArg04)
 // Trashed:
 // Preserved:
 _ZL9factoriali_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000033C:
 	word32 dwLoc08_35 = 2
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000034C:
 	branch dwLoc08_35 - dwArg04 > 0x00000000 l8000036A
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000036A:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _ZL9factoriali_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000356:
 	dwLoc08_35 = dwLoc08_35 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void pow_int(real64 rArg04, int32 dwArg0C)
@@ -391,39 +199,15 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 // Trashed:
 // Preserved:
 _ZL7pow_intdi_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000372:
 	word32 dwLoc08_49 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000386:
 	branch dwLoc08_49 - dwArg0C >= 0x00000000 l800003A8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800003A8:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _ZL7pow_intdi_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000390:
 	dwLoc08_49 = dwLoc08_49 + 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void sine_taylor(real64 rArg04, int32 dwArg0C)
@@ -434,61 +218,25 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // Trashed:
 // Preserved:
 _Z11sine_taylordi_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800003BC:
 	word32 dwLoc08_127 = 3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800003D6:
 	branch dwLoc08_127 - dwArg0C > 0x00000000 l80000428
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000428:
 	word32 dwLoc08_130 = 5
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000042E:
 	branch dwLoc08_130 - dwArg0C > 0x00000000 l80000480
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000480:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _Z11sine_taylordi_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000438:
 	pow_int(rArg04, dwLoc08_130)
 	factorial(dwLoc08_130)
 	dwLoc08_130 = dwLoc08_130 + 0x00000004
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800003E0:
 	pow_int(rArg04, dwLoc08_127)
 	factorial(dwLoc08_127)
 	dwLoc08_127 = dwLoc08_127 + 0x00000004
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void main()
@@ -499,23 +247,11 @@ void main()
 // Trashed: CVZNX d0
 // Preserved: a6 a7
 main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000049A:
 	sine_taylor(4.61425307021499e+18)
 	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 0x00000008)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
@@ -526,46 +262,22 @@ void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // Trashed:
 // Preserved:
 _Z4_sinddRi_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l800004DE:
 	real64 rLoc0C_114 = rArg04
 	real64 v9_14 = (real64) ((real96) rArg04 * rArg04)
 	word32 dwLoc20_120 = 0x00000002
 	real64 rLoc14_122 = 0x3FF0000000000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000051A:
 	branch (real64) ((real96) rLoc0C_114 / rLoc14_122) < rArg0C l8000060E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000060E:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 _Z4_sinddRi_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000530:
 	Mem106[tArg14:word32] = Mem98[tArg14:word32] + 0x00000001
 	word32 v23_57 = dwLoc20_120 + 0x00000000
 	rLoc0C_114 = (real64) ((real96) (real64) ((real96) rLoc0C_114 * v9_14) * v9_14)
 	dwLoc20_120 = v23_57 + 0x00000003
 	rLoc14_122 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_122 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003)))
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void __do_global_ctors_aux()
@@ -576,19 +288,11 @@ void __do_global_ctors_aux()
 // Trashed: CVZN a0 a2 a6 a7 d0
 // Preserved:
 __do_global_ctors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000624:
 	word32 a0_12 = Mem11[0x8000270C:word32]
 	word32 a6_19 = fp - 0x00000004
 	word32 a2_13 = 0x8000270C
 	branch a0_12 == -1 l80000646
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000063C:
 	word32 a2_24
 	call a0_12 (retsize: 4;)
@@ -597,21 +301,9 @@ l8000063C:
 	a0_12 = Mem11[a2_24 - 4:word32]
 	a2_13 = a2_24 - 4
 	branch a0_12 != -1 l8000063C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l80000646:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __do_global_ctors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void call___do_global_ctors_aux()
@@ -622,20 +314,8 @@ void call___do_global_ctors_aux()
 // Trashed:
 // Preserved: a6 a7
 call___do_global_ctors_aux_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l8000064E:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 call___do_global_ctors_aux_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

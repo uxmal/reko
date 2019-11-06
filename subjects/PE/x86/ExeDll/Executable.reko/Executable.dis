@@ -6,10 +6,6 @@ word32 fn00401000()
 // Trashed: SCZO eax ecx Top
 // Preserved: esp
 fn00401000_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401000:
 	InitializeCriticalSection(&exported_critical_section)
 	fn00401060(0x00402108)
@@ -17,15 +13,7 @@ l00401000:
 	fn00401060(0x00402108)
 	fn00401060(0x00402108)
 	return 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401000_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00401050()
@@ -36,21 +24,9 @@ word32 fn00401050()
 // Trashed: eax Top
 // Preserved: esp
 fn00401050_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401050:
 	return 0x00403378
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401050_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401060(word32 dwArg04)
@@ -61,10 +37,6 @@ void fn00401060(word32 dwArg04)
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esi esp
 fn00401060_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401060:
 	word32 esp_14
 	word32 eax_16
@@ -81,15 +53,7 @@ l00401060:
 	call _stdio_common_vfprintf (retsize: 4;)
 		uses: Stack +0008:dwArg04
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401060_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 DWORD Win32CrtStartup()
@@ -101,32 +65,16 @@ DWORD Win32CrtStartup()
 // Preserved:
 Win32CrtStartup_entry:
 	word24 ebx_24_8_129 = SLICE(ebx, word24, 8)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012CE:
 	fn00401663()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040115F:
 	word32 ebp_19 = fn00401980(ebx, esi, edi, dwLoc0C, 0x00000014)
 	word32 esp_35 = fp - 8
 	branch SLICE((uint32) (uint8) fn00401474(edx, 0x00000001), byte, 0) != 0x00 l0040117E
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401177:
 	esp_35 = esp_35 - 4
 	Mem42[esp_35:word32] = 0x00000007
 	fn00401774(Mem42[esp_35:word32])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040117E:
 	Mem53[ebp_19 - 0x00000019:byte] = 0x00
 	Mem55[ebp_19 - 0x00000004:word32] = Mem53[ebp_19 - 0x00000004:word32] & 0x00000000
@@ -136,25 +84,13 @@ l0040117E:
 	word32 eax_69 = Mem68[0x00403334:word32]
 	word32 ebx_127 = SEQ(ebx_24_8_129, 0x00)
 	branch eax_69 == 0x00000001 l00401177
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040119B:
 	word32 eax_298
 	word32 esp_292
 	branch eax_69 != 0x00000000 l004011E8
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011E8:
 	Mem79[ebp_19 - 0x00000019:byte] = 0x01
 	ebx_127 = SEQ(ebx_24_8_129, 0x01) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040119F:
 	Mem82[0x00403334:word32] = 0x00000001
 	word32 esp_84 = esp_35 - 4
@@ -162,19 +98,11 @@ l0040119F:
 	Mem87[esp_84 - 4:word32] = 0x004020E0
 	esp_292 = esp_84 + 4
 	branch _initterm_e(Mem87[esp_84 - 4:(ptr32 PVFV)], Mem87[esp_84:(ptr32 PVFV)]) == 0x00000000 l004011CB
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011CB:
 	Mem97[esp_84:word32] = 0x004020DC
 	Mem99[esp_84 - 4:word32] = 0x004020D4
 	_initterm(Mem99[esp_84 - 4:(ptr32 PVFV)], Mem99[esp_84:(ptr32 PVFV)])
 	Mem104[0x00403334:word32] = 0x00000002
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011ED:
 	word32 esp_109 = esp_35 - 4
 	Mem110[esp_109:word32] = Mem106[ebp_19 - 0x00000024:word32]
@@ -183,19 +111,11 @@ l004011ED:
 	word32 eax_119 = fn00401768()
 	word32 edi_121 = 0x00000000
 	branch Mem110[eax_119:word32] == 0x00000000 l0040121D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401203:
 	Mem125[esp_109:word32] = eax_119
 	esp_118 = esp_109 + 4
 	word32 esi_139
 	branch SLICE((uint32) (uint8) fn00401544(ebx_127, eax_119, 0x00000000, out edx_140, out ebx_127, out ebp_135, out esi_139, out edi_121), byte, 0) == 0x00 l0040121D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040120E:
 	Mem152[esp_109:word32] = edi_121
 	Mem154[esp_109 - 4:word32] = 0x00000002
@@ -205,36 +125,20 @@ l0040120E:
 	call esi_157 (retsize: 4;)
 		uses: edx:edx_140,Stack +FFFFFFF8:0x00000001
 		defs: edx:edx_164,esp:esp_160
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040121D:
 	word32 eax_166 = fn0040176E()
 	branch Mem168[eax_166:word32] == edi_121 l0040123B
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401228:
 	word32 esp_173 = esp_118 - 4
 	Mem174[esp_173:word32] = eax_166
 	word32 esi_182
 	word32 edi_346
 	branch SLICE((uint32) (uint8) fn00401544(ebx_127, eax_166, edi_121, out edx_140, out ebx_127, out ebp_135, out esi_182, out edi_346), byte, 0) == 0x00 l0040123B
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401233:
 	Mem196[esp_173:word32] = Mem174[esi_182:word32]
 	call register_thread_local_exe_atexit_callback (retsize: 4;)
 		uses: edx:edx_183,Stack +FFFFFFF8:0x00000001
 		defs: edx:edx_205
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040123B:
 	word32 eax_220
 	word32 edx_222
@@ -259,24 +163,12 @@ l0040123B:
 	byte bl_266 = SLICE(ebx_127, byte, 0)
 	word32 esp_253 = esp_232
 	branch SLICE((uint32) (uint8) fn0040188F(), byte, 0) != 0x00 l0040126C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040126C:
 	branch bl_266 != 0x00 l00401275
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401270:
 	call cexit (retsize: 4;)
 		uses: edx:edx_236,Stack +FFFFFFF8:0x00000001
 		defs: esp:esp_272
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401275:
 	word32 esp_279 = esp_253 - 4
 	Mem280[esp_279:word32] = 0x00000000
@@ -285,39 +177,19 @@ l00401275:
 	Mem296[ebp_135 - 0x00000004:word32] = 0xFFFFFFFE
 	esp_292 = esp_279 + 4
 	eax_298 = eax_246
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401266:
 	Mem300[esp_232 - 4:word32] = eax_246
 	exit(Mem300[esp_232 - 4:int32])
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011BA:
 	Mem301[ebp_19 - 0x00000004:word32] = 0xFFFFFFFE
 	eax_298 = 0x000000FF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012C8:
 	word32 ebp_308
 	word32 edi_311
 	word32 esi_312
 	fn004019C6(ebp_135, Mem307[esp_292 + -4:word32], out ebp_308, out esi_312, out edi_311)
 	return eax_298
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 Win32CrtStartup_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004012D8(word32 dwArg04)
@@ -328,24 +200,12 @@ void fn004012D8(word32 dwArg04)
 // Trashed: eax Top
 // Preserved: ebp esp
 fn004012D8_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004012D8:
 	SetUnhandledExceptionFilter(0x00000000)
 	UnhandledExceptionFilter(dwArg04)
 	TerminateProcess(GetCurrentProcess(), 0xC0000409)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004012D8_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn004013FB(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
@@ -356,68 +216,28 @@ word32 fn004013FB(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp esi esp
 fn004013FB_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004013FB:
 	word32 eax_32
 	word32 ecx_13 = Mem11[dwArg04 + 0x0000003C:word32] + dwArg04
 	word32 edx_16 = ecx_13 + 0x00000018 + (word32) Mem11[ecx_13 + 0x00000014:word16]
 	word32 esi_19 = (word32) Mem11[ecx_13 + 0x00000006:word16] *s 0x00000028 + edx_16
 	branch edx_16 == esi_19 l00401436
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040141D:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401420:
 	branch dwArg08 <u Mem11[edx_16 + 0x0000000C:word32] l0040142F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401425:
 	branch dwArg08 <u Mem11[edx_16 + 0x00000008:word32] + Mem11[edx_16 + 0x0000000C:word32] l0040143B
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040143B:
 	eax_32 = edx_16
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040142F:
 	edx_16 = edx_16 + 0x00000028
 	branch edx_16 != esi_19 l00401420
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401436:
 	eax_32 = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401438:
 	edxOut = edx_16
 	return eax_32
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004013FB_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 byte fn0040143F(ptr32 & edxOut)
@@ -428,64 +248,28 @@ byte fn0040143F(ptr32 & edxOut)
 // Trashed: SCZO eax ecx edx Top
 // Preserved: esi esp
 fn0040143F_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040143F:
 	word32 eax_4 = fn00401B98()
 	branch eax_4 != 0x00000000 l0040144B
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040144B:
 	word32 edx_19 = Mem17[Mem0[fs:0x00000018:word32] + 0x00000004:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401460:
 	__lock()
 	word32 eax_25
 	__cmpxchg(Mem17[0x00403338:word32], edx_19, 0x00000000, out eax_25)
 	branch eax_25 != 0x00000000 l0040145C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040145C:
 	branch edx_19 == eax_25 l00401470
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401470:
 	edxOut = edx_19
 	return 0x01
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040146C:
 	edxOut = edx_19
 	return 0x00
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401448:
 	edxOut = edx
 	return 0x00
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040143F_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 byte fn00401474(word32 edx, word32 dwArg04)
@@ -496,58 +280,22 @@ byte fn00401474(word32 edx, word32 dwArg04)
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp esp
 fn00401474_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401474:
 	branch dwArg04 != 0x00000000 l00401484
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040147D:
 	Mem10[0x00403354:byte] = 0x01
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401484:
 	fn004019FE(edx)
 	branch fn00401C48() != 0x00 l00401496
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401496:
 	branch fn00401C48() != 0x00 l004014A9
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014A9:
 	return 0x01
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040149F:
 	fn00401C48()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401492:
 	return 0x00
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401474_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004014AD(word32 ebx, word32 edi, word32 dwArg04)
@@ -558,29 +306,13 @@ void fn004014AD(word32 ebx, word32 edi, word32 dwArg04)
 // Trashed: SCZDOP eax ebp ebx ecx edi edx esi esp Top
 // Preserved:
 fn004014AD_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014AD:
 	branch dwArg04 == 0x00000000 l004014C0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014BB:
 	branch dwArg04 != 0x00000001 l0040153C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040153C:
 	fn00401774(0x00000005)
 	int3()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401543_thunk_fn00401544:
 	word32 esi_231
 	word32 edi_232
@@ -589,22 +321,10 @@ l00401543_thunk_fn00401544:
 	word32 edx_228
 	fn00401544(ebx, dwArg04, edi, out edx_228, out ebx_229, out ebp_230, out esi_231, out edi_232)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014C0:
 	branch fn00401B98() == 0x00000000 l004014F3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014C9:
 	branch dwArg04 != 0x00000000 l004014F3
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014F3:
 	word32 eax_55 = Mem11[0x00403004:word32]
 	word32 eax_76 = __ror(eax_55 & 0x0000001F | 0xFFFFFFFF, SLICE(0x00000020 - (eax_55 & 0x0000001F), byte, 0)) ^ Mem68[0x00403004:word32]
@@ -614,10 +334,6 @@ l004014F3:
 	Mem99[0x00403348:word32] = eax_76
 	Mem103[0x0040334C:word32] = eax_76
 	Mem107[0x00403350:word32] = eax_76
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014CD:
 	word32 esp_116
 	word32 eax_117
@@ -626,36 +342,16 @@ l004014CD:
 		uses: edx:edx_120,Stack +0004:0x0040333C,Stack +0020:dwArg04
 		defs: eax:eax_117,edx:edx_120,esp:esp_116
 	branch eax_117 == 0x00000000 l004014E0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014E0:
 	Mem128[esp_116:word32] = 0x00403348
 	word32 edx_133
 	call initialize_onexit_table (retsize: 4;)
 		uses: edx:edx_133,Stack +0008:dwArg04
 		defs: edx:edx_133
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004014DC:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401537:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004014AD_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 byte fn00401544(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
@@ -666,35 +362,19 @@ byte fn00401544(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ebxO
 // Trashed: SCZO eax ebp ebx ecx edi edx esi Top
 // Preserved: esp
 fn00401544_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401544:
 	word32 eax_84
 	word32 ebp_13 = fn00401980(ebx, esi, edi, dwLoc0C, 0x00000008)
 	Mem19[ebp_13 - 0x00000004:word32] = Mem7[ebp_13 - 0x00000004:word32] & 0x00000000
 	word24 eax_24_8_85 = 0x00005A
 	branch Mem19[0x00400000:word16] != 0x5A4D l004015BF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401562:
 	word32 eax_25 = Mem19[0x0040003C:word32]
 	eax_24_8_85 = SLICE(eax_25, word24, 8) (alias)
 	eax_24_8_85 = SLICE(eax_25, word24, 8) (alias)
 	branch Mem19[eax_25 + 0x00400000:word32] != 0x00004550 l004015BF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401573:
 	branch Mem19[eax_25 + 0x00400018:word16] != 0x010B l004015BF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401581:
 	word32 eax_32 = Mem19[ebp_13 + 0x00000008:word32]
 	word32 eax_40 = fn004013FB(0x00400000, eax_32 - 0x00400000, out edx)
@@ -702,30 +382,14 @@ l00401581:
 	eax_24_8_85 = SLICE(eax_40, word24, 8) (alias)
 	eax_24_8_85 = SLICE(eax_40, word24, 8) (alias)
 	branch eax_40 == 0x00000000 l004015BF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401598:
 	branch Mem39[eax_40 + 0x00000024:word32] < 0x00000000 l004015BF
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015BF:
 	Mem57[ebp_13 - 0x00000004:word32] = 0xFFFFFFFE
 	eax_84 = SEQ(eax_24_8_85, 0x00) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040159E:
 	Mem61[ebp_13 - 0x00000004:word32] = 0xFFFFFFFE
 	eax_84 = SEQ(eax_24_8_85, 0x01) (alias)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015C8:
 	word32 ebp_69
 	word32 edi_72
@@ -737,15 +401,7 @@ l004015C8:
 	esiOut = esi_73
 	ediOut = edi_72
 	return SLICE(eax_84, byte, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401544_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004015CE(byte bArg04)
@@ -756,39 +412,15 @@ void fn004015CE(byte bArg04)
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esp
 fn004015CE_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015CE:
 	branch fn00401B98() == 0x00000000 l004015E9
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015DA:
 	branch bArg04 != 0x00 l004015E9
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015E0:
 	Mem23[0x00403338:word32] = 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015E9:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004015CE_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004015EB(byte bArg08)
@@ -799,40 +431,16 @@ void fn004015EB(byte bArg08)
 // Trashed: SCZO al ecx Top
 // Preserved: ebp esp
 fn004015EB_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015EB:
 	branch Mem6[0x00403354:byte] == 0x00 l004015FD
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015F7:
 	branch bArg08 != 0x00 l0040160F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004015FD:
 	fn00401C48()
 	fn00401C48()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040160F:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004015EB_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00401613(word32 dwArg04)
@@ -843,45 +451,21 @@ word32 fn00401613(word32 dwArg04)
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esp
 fn00401613_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401613:
 	word32 eax_23
 	word32 eax_8 = Mem6[0x00403004:word32]
 	branch __ror(eax_8 ^ Mem6[0x0040333C:word32], SLICE(eax_8 & 0x0000001F, byte, 0)) != 0xFFFFFFFF l00401637
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401637:
 	call register_onexit_function (retsize: 4;)
 		uses: Stack +0004:0x0040333C,Stack +0014:dwArg04
 		defs: eax:eax_23
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401630:
 	call crt_atexit (retsize: 4;)
 		uses: Stack +0010:dwArg04
 		defs: eax:eax_30
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401642:
 	return ~(0x00000000 - (-eax_23 == 0x00000000)) & dwArg04
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401613_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0040164E(word32 dwArg04)
@@ -892,22 +476,10 @@ void fn0040164E(word32 dwArg04)
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esp
 fn0040164E_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040164E:
 	fn00401613(dwArg04)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040164E_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401663()
@@ -918,75 +490,31 @@ void fn00401663()
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp edi esi esp
 fn00401663_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401663:
 	word32 eax_15 = Mem13[0x00403004:word32]
 	branch eax_15 == 0xBB40E64E l00401693
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401686:
 	branch (eax_15 & 0xFFFF0000) == 0x00000000 l00401693
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401693:
 	GetSystemTimeAsFileTime(fp - 0x00000010)
 	word32 v14_43 = dwLoc0C & 0x00000000 ^ dwLoc10 & 0x00000000 ^ GetCurrentThreadId() ^ GetCurrentProcessId()
 	QueryPerformanceCounter(fp - 0x00000018)
 	word32 ecx_55 = dwLoc14 ^ dwLoc18 ^ v14_43 ^ fp - 0x00000008
 	branch ecx_55 != 0xBB40E64E l004016DB
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004016DB:
 	branch (ecx_55 & 0xFFFF0000) != 0x00000000 l004016EB
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004016DF:
 	ecx_55 = ecx_55 | (ecx_55 | 0x00004711) << 0x00000010
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004016D4:
 	ecx_55 = 0xBB40E64F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004016EB:
 	Mem71[0x00403004:word32] = ecx_55
 	Mem73[0x00403000:word32] = ~ecx_55
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040168A:
 	Mem75[0x00403000:word32] = ~eax_15
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004016F9:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401663_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004016FF()
@@ -997,21 +525,9 @@ void fn004016FF()
 // Trashed: SCZO eax Top
 // Preserved: esp
 fn004016FF_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004016FF:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004016FF_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401703()
@@ -1022,21 +538,9 @@ void fn00401703()
 // Trashed: eax Top
 // Preserved: esp
 fn00401703_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401703:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401703_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401709()
@@ -1047,21 +551,9 @@ void fn00401709()
 // Trashed: SCZO eax Top
 // Preserved: esp
 fn00401709_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401709:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401709_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0040170C()
@@ -1072,22 +564,10 @@ void fn0040170C()
 // Trashed: Top
 // Preserved: esp
 fn0040170C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040170C:
 	InitializeSListHead(0x00403358)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040170C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401718()
@@ -1098,45 +578,21 @@ void fn00401718()
 // Trashed: SCZDOP eax Top
 // Preserved: esp
 fn00401718_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401718:
 	word32 eax_11
 	call controlfp_s (retsize: 4;)
 		uses: Stack +0004:0x00000000,Stack +0008:0x00010000,Stack +000C:0x00030000
 		defs: eax:eax_11
 	branch eax_11 != 0x00000000 l00401731
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401731:
 	fn00401774(0x00000007)
 	int3()
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401738_thunk_fn00401739:
 	fn00401739()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401730:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401718_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00401739()
@@ -1147,21 +603,9 @@ word32 fn00401739()
 // Trashed: eax Top
 // Preserved: esp
 fn00401739_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401739:
 	return 0x00403360
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401739_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0040173F()
@@ -1172,10 +616,6 @@ void fn0040173F()
 // Trashed: SCZO eax ecx Top
 // Preserved: esp
 fn0040173F_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040173F:
 	word32 eax_4 = fn00401050()
 	word32 ecx_6 = Mem0[eax_4 + 0x00000004:word32]
@@ -1186,15 +626,7 @@ l0040173F:
 	Mem15[eax_12:word32] = Mem11[eax_12:word32] | 0x00000002
 	Mem18[eax_12 + 0x00000004:word32] = ecx_13
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040173F_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0040175C()
@@ -1205,21 +637,9 @@ void fn0040175C()
 // Trashed: SCZO eax Top
 // Preserved: esp
 fn0040175C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040175C:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040175C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00401768()
@@ -1230,21 +650,9 @@ word32 fn00401768()
 // Trashed: eax Top
 // Preserved: esp
 fn00401768_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401768:
 	return 0x00403388
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401768_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn0040176E()
@@ -1255,21 +663,9 @@ word32 fn0040176E()
 // Trashed: eax Top
 // Preserved: esp
 fn0040176E_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040176E:
 	return 0x00403384
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040176E_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401774(word32 dwArg04)
@@ -1280,16 +676,8 @@ void fn00401774(word32 dwArg04)
 // Trashed: SCZDOP eax Top
 // Preserved: ebp ebx esi esp
 fn00401774_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401774:
 	branch IsProcessorFeaturePresent(0x00000017) == 0x00000000 l0040178F
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040178F:
 	Mem30[0x00403368:word32] = 0x00000000
 	memset(fp - 0x00000328, 0x00000000, 0x000002CC)
@@ -1297,33 +685,13 @@ l0040178F:
 	byte bl_90 = 0x00 - (IsDebuggerPresent() == 0x00000001)
 	SetUnhandledExceptionFilter(0x00000000)
 	branch UnhandledExceptionFilter(fp - 0x0000000C) != 0x00000000 l00401889
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040187C:
 	Mem108[0x00403368:word32] = Mem97[0x00403368:word32] & 0x00000000 - (-((word32) (bl_90 + 0x01)) == 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401889:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401774_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040178A:
 	__fastfail(dwArg04)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 byte fn0040188F()
@@ -1334,60 +702,24 @@ byte fn0040188F()
 // Trashed: SCZO eax ecx Top
 // Preserved: esp
 fn0040188F_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040188F:
 	word32 eax_6 = GetModuleHandleW(0x00000000)
 	branch eax_6 != 0x00000000 l004018A0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004018A0:
 	branch Mem5[eax_6:word16] != 0x5A4D l0040189D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004018AA:
 	word32 eax_17 = Mem5[eax_6 + 0x0000003C:word32] + eax_6
 	word24 eax_24_8_43 = SLICE(eax_17, word24, 8)
 	branch Mem5[eax_17:word32] != 0x00004550 l0040189D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004018B7:
 	branch Mem5[eax_17 + 0x00000018:word16] != 0x010B l0040189D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004018C2:
 	branch Mem5[eax_17 + 0x00000074:word32] <=u 0x0000000E l0040189D
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004018C8:
 	return SLICE(SEQ(eax_24_8_43, Mem5[eax_17 + 0x000000E8:word32] != 0x00000000), byte, 0)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040189D:
 	return 0x00
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040188F_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004018D3()
@@ -1398,22 +730,10 @@ void fn004018D3()
 // Trashed: eax Top
 // Preserved: esp
 fn004018D3_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004018D3:
 	SetUnhandledExceptionFilter(0x004018DF)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004018D3_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401920()
@@ -1424,61 +744,25 @@ void fn00401920()
 // Trashed: SCZO Top
 // Preserved: ebx ecx edi esi esp
 fn00401920_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401920:
 	word32 esi_10 = 0x004024C8
 	branch true l00401948
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401930:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401931:
 	branch Mem16[esi_10:word32] == 0x00000000 l00401940
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401937:
 	fn00401976()
 	word32 ecx_28
 	call fn00000000 (retsize: 4;)
 		uses: ecx:ecx_28
 		defs: ecx:ecx_28
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401940:
 	esi_10 = esi_10 + 0x00000004
 	branch esi_10 <u 0x004024C8 l00401931
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401947:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401948:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401920_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401976()
@@ -1489,22 +773,10 @@ void fn00401976()
 // Trashed: Top
 // Preserved: esp
 fn00401976_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401976:
 	call Mem0[0x004020D0:word32] (retsize: 4;)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401976_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00401980(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg08)
@@ -1515,10 +787,6 @@ word32 fn00401980(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwA
 // Trashed: SCZO eax ebp Top
 // Preserved: esp
 fn00401980_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401980:
 	word32 esp_14 = fp - 8 - dwArg08
 	Mem17[esp_14 - 4:word32] = ebx
@@ -1528,15 +796,7 @@ l00401980:
 	Mem36[esp_14 - 20:word32] = dwArg00
 	Mem41[fs:0x00000000:word32] = fp - 0x00000008
 	return fp + 0x00000008
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401980_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn004019C6(word32 ebp, word32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
@@ -1547,10 +807,6 @@ word32 fn004019C6(word32 ebp, word32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, pt
 // Trashed: ebp ebx ecx edi esi esp Top
 // Preserved:
 fn004019C6_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004019C6:
 	Mem8[fs:0x00000000:word32] = Mem0[ebp - 0x00000010:word32]
 	word32 ebp_19 = Mem8[ebp:word32]
@@ -1559,15 +815,7 @@ l004019C6:
 	esiOut = dwArg0C
 	ediOut = dwArg08
 	return dwArg10
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004019C6_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004019FE(word32 edx)
@@ -1578,18 +826,10 @@ void fn004019FE(word32 edx)
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp ebx edi esi esp
 fn004019FE_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004019FE:
 	Mem9[0x0040336C:word32] = Mem6[0x0040336C:word32] & 0x00000000
 	Mem18[0x00403010:word32] = Mem14[0x00403010:word32] | 0x00000001
 	branch IsProcessorFeaturePresent(0x0000000A) == 0x00000000 l00401B91
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401A24:
 	word32 edi_101
 	Mem32[0x00403010:word32] = Mem28[0x00403010:word32] | 0x00000002
@@ -1598,139 +838,55 @@ l00401A24:
 	__cpuid(0x00000001, 0x00000000, &0x00000001, &0x00000001, &0x00000000, &edx)
 	byte bLoc14_258 = SLICE(dwLoc14 & 0x00000000, byte, 0)
 	branch (edx ^ 0x49656E69 | 0x6C65746E | 0x756E6546) != 0x00000000 l00401ACE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401A8B:
 	branch 0x00000000 == 0x000106C0 l00401ABD
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401A9A:
 	branch 0x00000000 == 0x00020660 l00401ABD
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401AA1:
 	branch 0x00000000 == 0x00020670 l00401ABD
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401AA8:
 	branch 0x00000000 == 0x00030650 l00401ABD
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401AAF:
 	branch 0x00000000 == 0x00030660 l00401ABD
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401AB6:
 	branch true l00401ACE
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401ACE:
 	edi_101 = Mem81[0x00403370:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401ABD:
 	word32 edi_100 = Mem81[0x00403370:word32]
 	Mem104[0x00403370:word32] = edi_100 | 0x00000001
 	edi_101 = edi_100 | 0x00000001
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401AD4:
 	branch true l00401B1B
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401AE9:
 	__cpuid(0x00000007, 0x00000000, &0x00000007, &0x00000001, &0x00000000, &edx)
 	bLoc14_258 = 0x01 (alias)
 	branch 0x00000000 == 0x00000000 l00401B1B
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B12:
 	Mem150[0x00403370:word32] = edi_101 | 0x00000002
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B1B:
 	branch 0x00000000 == 0x00000000 l00401B91
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B24:
 	Mem162[0x00403010:word32] = Mem152[0x00403010:word32] | 0x00000004
 	Mem164[0x0040336C:word32] = 0x00000002
 	branch 0x00000000 == 0x00000000 l00401B91
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B3C:
 	branch 0x00000000 == 0x00000000 l00401B91
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B43:
 	branch (SLICE(__xgetbv(0x00000000), word32, 0) & 0x00000006) != 0x00000006 l00401B91
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B5E:
 	branch false l00401B91
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B62:
 	word32 eax_187 = Mem177[0x00403010:word32]
 	Mem189[0x0040336C:word32] = 0x00000003
 	Mem192[0x00403010:word32] = eax_187 | 0x00000008
 	branch (bLoc14_258 & 0x20) == 0x00 l00401B91
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B7F:
 	Mem197[0x0040336C:word32] = 0x00000005
 	Mem198[0x00403010:word32] = eax_187 | 0x00000008 | 0x00000020
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B91:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004019FE_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00401B98()
@@ -1741,21 +897,9 @@ word32 fn00401B98()
 // Trashed: SCZO eax Top
 // Preserved: esp
 fn00401B98_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401B98:
 	return (uint32) (uint8) (Mem0[0x00403014:word32] != 0x00000000)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401B98_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401BA4()
@@ -1766,21 +910,9 @@ void fn00401BA4()
 // Trashed: Top
 // Preserved: esp
 fn00401BA4_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401BA4:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401BA4_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 byte fn00401C48()
@@ -1791,20 +923,8 @@ byte fn00401C48()
 // Trashed: al Top
 // Preserved: esp
 fn00401C48_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401C48:
 	return 0x01
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401C48_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 

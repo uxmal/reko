@@ -6,27 +6,11 @@ void _GetExceptDLLinfo(word32 dwArg04)
 // Trashed: SCZO eax edx Top
 // Preserved: esp
 __GetExceptDLLinfo_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401071:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401071_thunk_fn004011FC:
 	fn004011FC(dwArg04)
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 __GetExceptDLLinfo_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401084()
@@ -37,21 +21,9 @@ void fn00401084()
 // Trashed: ebx esp Top
 // Preserved:
 fn00401084_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401084:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401084_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0040110B()
@@ -62,45 +34,21 @@ void fn0040110B()
 // Trashed: SCZO eax Top
 // Preserved: esp
 fn0040110B_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040110B:
 	branch Mem0[0x0040208B:word32] <u 0x00000000 l0040113C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401114:
 	word32 eax_11
 	call __CRTL_TLS_GetValue (retsize: 4;)
 		uses: eax:eax_11,Stack +0004:Mem0[0x0040208B:word32]
 		defs: eax:eax_11
 	branch eax_11 == 0x00000000 l0040113C
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401123:
 	word32 eax_22 = GetProcessHeap()
 	call __CRTL_TLS_ExitThread (retsize: 4;)
 		uses: eax:HeapFree(eax_22, 0x00000008, eax_11),Stack +0000:0x00000008,Stack +0004:Mem24[0x0040208B:word32],Stack +FFFFFFFC:eax_22
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040113C:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040110B_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 word32 fn00401158()
@@ -111,21 +59,9 @@ word32 fn00401158()
 // Trashed: eax edx Top
 // Preserved: esp
 fn00401158_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401158:
 	return Mem0[Mem0[fs:0x002C:word32] + Mem0[0x0040208B:word32] * 0x00000004:word32]
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401158_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 int32 main(int32 argc, char ** argv)
@@ -136,22 +72,10 @@ int32 main(int32 argc, char ** argv)
 // Trashed: eax
 // Preserved:
 main_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401168:
 	printf(0x004020A4)
 	return 0x00000000
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 main_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn0040117C()
@@ -162,21 +86,9 @@ void fn0040117C()
 // Trashed: Top
 // Preserved: esp
 fn0040117C_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l0040117C:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn0040117C_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn00401180()
@@ -187,21 +99,9 @@ void fn00401180()
 // Trashed: Top
 // Preserved: esp
 fn00401180_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l00401180:
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn00401180_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004011B0(word32 dwArg04)
@@ -212,43 +112,19 @@ void fn004011B0(word32 dwArg04)
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp ebx esp
 fn004011B0_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011B0:
 	word32 ebx_12 = dwArg04
 	branch dwArg04 != 0x00000000 l004011D7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011C6:
 	branch dwArg04 != 0x00000000 l004011D7
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011CA:
 	fn004011FC(fp - 0x0000000C)
 	ebx_12 = dwLoc08
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011D7:
 	memcpy(fn00401158(), ebx_12, 0x0000009C)
 	_InitTermAndUnexPtrs()
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004011B0_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
 void fn004011FC(word32 dwArg04)
@@ -259,23 +135,11 @@ void fn004011FC(word32 dwArg04)
 // Trashed: SCZO eax edx Top
 // Preserved: ebp ebx esp
 fn004011FC_entry:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 l004011FC:
 	Mem17[0x004020F8:word32] = fn00401158() + 0x0000001C
 	Mem18[dwArg04:word32] = 0x82727349
 	Mem19[dwArg04 + 0x00000004:word32] = 0x004020E4
 	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn004011FC_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 
 
