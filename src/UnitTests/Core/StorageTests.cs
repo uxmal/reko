@@ -31,6 +31,8 @@ namespace Reko.UnitTests.Core
         private Storage ax;
         private Storage al;
         private Storage ah;
+        private Storage fpu0;
+        private Storage fpu1;
         private Storage tmpWord32;
 
         private RegisterStorage freg;
@@ -53,6 +55,9 @@ namespace Reko.UnitTests.Core
             this.c = new FlagGroupStorage(freg, 0x1, "c", PrimitiveType.Bool);
             this.z = new FlagGroupStorage(freg, 0x2, "z", PrimitiveType.Bool);
             this.s = new FlagGroupStorage(freg, 0x4, "s", PrimitiveType.Bool);
+
+            this.fpu0 = new FpuStackStorage(0, PrimitiveType.Real64);
+            this.fpu1 = new FpuStackStorage(1, PrimitiveType.Real64);
 
             this.tmpWord32 = new TemporaryStorage("tmp", 0, PrimitiveType.Word32);
         }
@@ -107,6 +112,14 @@ namespace Reko.UnitTests.Core
             var argSmall = new StackArgumentStorage(7, PrimitiveType.Byte);
             Assert.IsTrue(argLarge.Covers(argSmall), $"{argLarge} should cover {argSmall}.");
             Assert.False(argSmall.Covers(argLarge), $"{argSmall} shouldn't cover {argLarge}.");
+        }
+
+        [Test]
+        public void Stg_FpuStackStorageCover()
+        {
+            Assert.True(fpu0.Covers(fpu0), $"{fpu0} should cover {fpu0}.");
+            Assert.False(fpu0.Covers(fpu1), $"{fpu0} shouldn't cover {fpu1}.");
+            Assert.False(fpu1.Covers(fpu0), $"{fpu1} shouldn't cover {fpu0}.");
         }
 
         [Test]
