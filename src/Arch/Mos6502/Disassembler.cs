@@ -298,7 +298,7 @@ namespace Reko.Arch.Mos6502
                 {
                     Code = mnemonic,
                     InstructionClass = iclass,
-                    Operand__0 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
+                    Operands = dasm.ops.ToArray(),
                 };
                 return instr;
             }

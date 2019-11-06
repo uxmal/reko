@@ -490,7 +490,7 @@ namespace Reko.Arch.X86
             if (dstType == null)
                 dstType = arrayType;
             Expression src1;
-            if (instrCur.Operands[1] != null)
+            if (instrCur.Operands.Length > 1)
             {
                 src1 = SrcOp(instrCur.Operands[1]);
             }

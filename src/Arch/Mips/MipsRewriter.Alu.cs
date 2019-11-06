@@ -126,7 +126,7 @@ namespace Reko.Arch.Mips
         {
             var op1 = RewriteOperand(instr.Operands[0]);
             var op2 = RewriteOperand(instr.Operands[1]);
-            if (instr.Operands[2] != null)
+            if (instr.Operands.Length > 3)
             {
                 var op3 = RewriteOperand(instr.Operands[2]);
                 m.Assign(op1, ctor(op2, op3));

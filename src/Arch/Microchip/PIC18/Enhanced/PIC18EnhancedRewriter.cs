@@ -100,7 +100,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteADDULNK()
         {
-            var k = instrCurr.Operand__0 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operand__0}");
+            var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
             m.Assign(Fsr2, m.IAdd(Fsr2, k.ImmediateValue));
@@ -128,21 +128,21 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteMOVSF()
         {
-            var zs = GetFSR2IdxAddress(instrCurr.Operand__0);
-            var (indMode, memPtr) = GetUnaryAbsPtrs(instrCurr.Operand__1, out Expression memExpr);
+            var zs = GetFSR2IdxAddress(instrCurr.Operands[0]);
+            var (indMode, memPtr) = GetUnaryAbsPtrs(instrCurr.Operands[1], out Expression memExpr);
             ArithAssignIndirect(memExpr, zs, indMode, memPtr);
         }
 
         private void RewriteMOVSS()
         {
-            var zs = GetFSR2IdxAddress(instrCurr.Operand__0);
-            var zd = GetFSR2IdxAddress(instrCurr.Operand__1);
+            var zs = GetFSR2IdxAddress(instrCurr.Operands[0]);
+            var zd = GetFSR2IdxAddress(instrCurr.Operands[1]);
             m.Assign(zd, zs);
         }
 
         private void RewritePUSHL()
         {
-            var k = instrCurr.Operand__0 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operand__0}");
+            var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             m.Assign(DataMem8(Fsr2), k.ImmediateValue);
             m.Assign(Fsr2, m.IAdd(Fsr2, 1));
         }
@@ -151,7 +151,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             rtlc = InstrClass.Transfer;
 
-            var k = instrCurr.Operand__0 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operand__0}");
+            var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
             m.Assign(Fsr2, m.ISub(Fsr2, k.ImmediateValue));

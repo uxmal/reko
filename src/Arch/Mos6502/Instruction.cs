@@ -30,19 +30,13 @@ namespace Reko.Arch.Mos6502
     public class Instruction : MachineInstruction
     {
         public Opcode Code;
-        public Operand Operand__0;
 
         public override int OpcodeAsInteger => (int) Code;
-
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Code.ToString());
-            if (Operand__0 != null)
-            {
-                writer.Tab();
-                Operand__0.Write(writer, options);
-            }
+            RenderOperands(writer, options);
         }
 
         // http://www.obelisk.demon.co.uk/6502/instructions.html

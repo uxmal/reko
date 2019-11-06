@@ -5172,4 +5172,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 59 binaries in 73.92 seconds ---
+Decompiled 59 binaries in 79.82 seconds ---

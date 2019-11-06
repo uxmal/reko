@@ -32,17 +32,14 @@ namespace Reko.Arch.M68k
     {
         public Opcode code;
         public PrimitiveType dataWidth;
-        public MachineOperand Operand__0;
-        public MachineOperand Operand__1;
-        public MachineOperand Operand__2;
 
         public override int OpcodeAsInteger => (int) code;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (code == Opcode.illegal && Operand__0 != null && writer.Platform != null)
+            if (code == Opcode.illegal && Operands.Length > 0 && writer.Platform != null)
             {
-                var imm = Operand__0 as M68kImmediateOperand;
+                var imm = Operands[0] as M68kImmediateOperand;
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
@@ -62,24 +59,10 @@ namespace Reko.Arch.M68k
             {
                 writer.WriteOpcode(code.ToString());
             }
-            if (Operand__0 != null)
-            {
-                writer.Tab();
-                WriteOperand(Operand__0, writer, options);
-                if (Operand__1 != null)
-                {
-                    writer.WriteChar(',');
-                    WriteOperand(Operand__1, writer, options);
-                    if (Operand__2 != null)
-                    {
-                        writer.WriteChar(',');
-                        WriteOperand(Operand__2, writer, options);
-                    }
-                }
-            }
+            RenderOperands(writer, options);
         }
 
-        private void WriteOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {

@@ -111,8 +111,8 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_ADDFSR()
         {
-            var fsrnum = instrCurr.Operand__0 as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR register number operand: {instrCurr.Operand__0}");
-            var imm = instrCurr.Operand__1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operand__1}");
+            var fsrnum = instrCurr.Operands[0] as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR register number operand: {instrCurr.Operands[0]}");
+            var imm = instrCurr.Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[1]}");
             Identifier fsrreg;
             switch (fsrnum.FSRNum)
             {
@@ -153,7 +153,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_BRA()
         {
             rtlc = InstrClass.Transfer;
-            var target = instrCurr.Operand__0 as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.Operand__0}");
+            var target = instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.Operands[0]}");
             m.Goto(target.CodeTarget);
         }
 
@@ -191,7 +191,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_MOVIW()
         {
-            var fsridx = instrCurr.Operand__0 as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.Operand__0}");
+            var fsridx = instrCurr.Operands[0] as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.Operands[0]}");
             Identifier fsrreg;
             switch (fsridx.FSRNum)
             {
@@ -242,20 +242,20 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_MOVLB()
         {
-            var imm = instrCurr.Operand__0 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operand__0}");
+            var imm = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             m.Assign(Bsr, imm.ImmediateValue);
         }
 
         private void Rewrite_MOVLP()
         {
-            var imm = instrCurr.Operand__0 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operand__0}");
+            var imm = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var pclath = binder.EnsureRegister(PIC16Registers.PCLATH);
             m.Assign(pclath, imm.ImmediateValue);
         }
 
         private void Rewrite_MOVWI()
         {
-            var fsridx = instrCurr.Operand__0 as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.Operand__0}");
+            var fsridx = instrCurr.Operands[0] as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.Operands[0]}");
             Identifier fsrreg;
             switch (fsridx.FSRNum)
             {

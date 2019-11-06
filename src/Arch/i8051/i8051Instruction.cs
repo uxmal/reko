@@ -33,25 +33,11 @@ namespace Reko.Arch.i8051
         public override int OpcodeAsInteger => (int)Mnemonic;
 
         public Opcode Mnemonic { get; set; }
-        public MachineOperand Operand__0 { get; set; }
-        public MachineOperand Operand__1 { get; set; }
-        public MachineOperand Operand__2 { get; set; }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Mnemonic.ToString());
-            if (Operand__0 == null)
-                return;
-            writer.Tab();
-            Operand__0.Write(writer, options);
-            if (Operand__1 == null)
-                return;
-            writer.WriteString(",");
-            Operand__1.Write(writer, options);
-            if (Operand__2 == null)
-                return;
-            writer.WriteString(",");
-            Operand__2.Write(writer, options);
+            RenderOperands(writer, options);
         }
     }
 }

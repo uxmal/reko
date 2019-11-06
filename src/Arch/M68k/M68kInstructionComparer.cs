@@ -36,9 +36,9 @@ namespace Reko.Arch.M68k
             var a = (M68kInstruction)x;
             var b = (M68kInstruction)y;
             return
-                Compare(a.Operand__0, a.Operand__0) &&
-                Compare(a.Operand__1, a.Operand__1) &&
-                Compare(a.Operand__2, a.Operand__2);
+                Compare(a.Operands[0], a.Operands[0]) &&
+                Compare(a.Operands[1], a.Operands[1]) &&
+                Compare(a.Operands[2], a.Operands[2]);
         }
 
         private bool Compare(MachineOperand opA, MachineOperand opB)
@@ -121,9 +121,9 @@ namespace Reko.Arch.M68k
         {
             var i = (M68kInstruction)instr;
             return
-                OperandHash(i.Operand__0) * 23 ^
-                OperandHash(i.Operand__1) * 29 ^
-                OperandHash(i.Operand__2) * 9;
+                OperandHash(i.Operands[0]) * 23 ^
+                OperandHash(i.Operands[1]) * 29 ^
+                OperandHash(i.Operands[2]) * 9;
         }
 
         private int OperandHash(MachineOperand op)
