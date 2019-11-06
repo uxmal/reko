@@ -125,17 +125,12 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("RTN;", instr.ToString());
         }
 
-
-        // Reko: a decoder for Blackfin instruction 6010 at address 07F40142 has not been implemented. (10600000 - C26F0000 - 90610000 - 00600000 - 90610000 - 00600000 - 90610000 - 00600000 - 0b0110............)
         [Test]
         public void BlackfinDasm_mov_dreg_negimm()
         {
             var instr = DisassembleHexBytes("F863");
             Assert.AreEqual("R0 = FFFFFFFF;", instr.ToString());
         }
-
-
-
 
         [Test]
         public void BlackfinDasm_push_i3()
@@ -242,7 +237,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("SSYNC;", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction A0A0 at address 07F40550 has not been implemented. (A0A00000 - E6A00000 - E6A00000 - 0b1010............)
         [Test]
         public void BlackfinDasm_load_dreg_shortoffset()
         {
@@ -341,21 +335,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("[P5 + 0x001C] = P4;", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction E0B21003 at address 07F406AE has not been implemented. (0310B2E0 - 780500E3 - EA0500E3 - 360030E6 - 360036E6 - 030426E4 - 050827E6 - 800600E3 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6)
-        [Test]
-        public void BlackfinDasm_E0B21003()
-        {
-            var instr = DisassembleHexBytes("B2E00310");
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        // Reko: a decoder for Blackfin instruction E0B21002 at address 07F406CA has not been implemented. (0210B2E0 - 0310B2E0 - 780500E3 - EA0500E3 - 360030E6 - 360036E6 - 030426E4 - 050827E6 - 800600E3 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6 - 005C21E6 - 015C20E6 - 005C21E6)
-        [Test]
-        public void BlackfinDasm_E0B21002()
-        {
-            var instr = DisassembleHexBytes("B2E00210");
-            Assert.AreEqual("@@@", instr.ToString());
-        }
 
         [Test]
         public void BlackfinDasm_pop_regs()
@@ -413,11 +392,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("R7 = R7 + R0;", instr.ToString());
         }
 
-
-
-
-
-        // Reko: a decoder for Blackfin instruction 40F7 at address 07F40912 has not been implemented. (F7400000 - 884E0000 - C7400000 - C1430000 - C04A0000 - C04A0000 - 2A4E0000 - 2A4E0000 - 2A4E0000 - 064C0000 - 0b0100............)
         [Test]
         public void BlackfinDasm_mul()
         {
@@ -542,7 +516,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("IF CC JUMP 000FFFEC (BP);", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction 4340 at address 07F40B02 has not been implemented. (40430000 - 00480000 - F84A0000 - 08480000 - 58430000 - 08480000 - 324F0000 - F7400000 - 884E0000 - C7400000 - C1430000 - C04A0000 - C04A0000 - 2A4E0000 - 2A4E0000 - 2A4E0000 - 064C0000 - 0b0100............)
         [Test]
         public void BlackfinDasm_mov_b_z()
         {
@@ -585,7 +558,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("B[SP + 0x0010] = R0;", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction 04C5 at address 07F40BB0 has not been implemented. (C5040000 - 00000000 - 10000000 - 08080000 - 10000000 - 27010000 - 67010000 - 00000000 - 38050000 - 67010000 - 78050000 - 00000000 - 10000000 - A5050000 - 27010000 - A5050000 - 27010000 - 25080000 - BE090000 - 000C0000 - 00000000 - B9090000 - 28080000 - 00000000 - 010C0000 - BA090000 - 08070000 - 18080000 - 67010000 - E5050000 - 00000000 - 10000000 - AC050000 - 27010000 - 080A0000 - 000C0000 - F7070000 - 67010000 - EC050000 - 00000000 - 10000000 - 38050000 - 01070000 - 000C0000 - 27010000 - F4070000 - 67010000 - 78050000 - 00000000 - 52060000 - 11070000 - 210E0000 - 010C0000 - 10000000 - 020C0000 - 020C0000 - 00020000 - 08020000 - 00000000 - 10000000 - 28050000 - 27010000 - 90090000 - 070A0000 - 67010000 - 68050000 - 00000000 - 10000000 - 27010000 - 67010000 - 10000000 - 38050000 - 27010000 - 81090000 - 67010000 - 78050000 - 00000000 - 23000000 - 23000000 - 10000000 - 30000000 - 00000000 - 10000000 - 40000000 - F9070000 - 08080000 - 00000000 - 10000000 - 38050000 - 27010000 - 10000000 - 010C0000 - 67010000 - 78050000 - 00000000 - 10000000 - 40000000 - F9070000 - 00000000 - 10000000 - 70020000 - 00000000 - 10000000 - 68020000 - 10000000 - 70020000 - 58020000 - 10000000 - 00000000 - 78020000 - 00000000 - 13000000 - 00000000 - 11000000 - 80050000 - 10010000 - 11010000 - 12010000 - 13010000 - 14010000 - 15010000 - 18010000 - 19010000 - 1A010000 - 1B010000 - 20010000 - 21010000 - 22010000 - 23010000 - 30010000 - 33010000 - 31010000 - 34010000 - 32010000 - 35010000 - 26010000 - 27010000 - 3E010000 - 39010000 - 3A010000 - 40010000 - 7A010000 - 79010000 - 7E010000 - 7D010000 - 7C010000 - 40010000 - 74010000 - 71010000 - 73010000 - 70010000 - 63010000 - 62010000 - 61010000 - 60010000 - 5B010000 - 5A010000 - 59010000 - 58010000 - 5F010000 - 5E010000 - 5D010000 - 5C010000 - 57010000 - 56010000 - 78010000 - 4F010000 - C0050000 - 40010000 - 00000000 - 11000000 - 80050000 - 10010000 - 11010000 - 12010000 - 13010000 - 14010000 - 15010000 - 16010000 - 17010000 - 1A010000 - 1B010000 - 20010000 - 21010000 - 22010000 - 23010000 - 30010000 - 33010000 - 31010000 - 34010000 - 32010000 - 35010000 - 26010000 - 27010000 - 3C010000 - 3E010000 - 39010000 - 3A010000 - 40000000 - 23000000 - 40010000 - 7A010000 - 79010000 - 7E010000 - 7D010000 - 7C010000 - 40010000 - 67010000 - 40010000 - 70010000 - 63010000 - 62010000 - 61010000 - 60010000 - 5B010000 - 5A010000 - 59010000 - 58010000 - 5F010000 - 5E010000 - 5D010000 - 5C010000 - 57010000 - 56010000 - 55010000 - 54010000 - 53010000 - 40010000 - 12000000 - 80050000 - 10010000 - 11010000 - 12010000 - 13010000 - 14010000 - 15010000 - 16010000 - 17010000 - 1C010000 - 1D010000 - 1E010000 - 21010000 - 22010000 - 23010000 - 30010000 - 33010000 - 31010000 - 34010000 - 32010000 - 35010000 - 26010000 - 27010000 - 3C010000 - 3D010000 - 3E010000 - 39010000 - 7B010000 - 46000000 - 36000000 - 000C0000 - 40010000 - 7C010000 - 40010000 - 67010000 - 40010000 - 66010000 - 75010000 - 72010000 - 74010000 - 71010000 - 73010000 - 70010000 - 63010000 - 62010000 - 61010000 - 60010000 - 5B010000 - 5A010000 - 5E010000 - 5D010000 - 5C010000 - 57010000 - 56010000 - 55010000 - 54010000 - 53010000 - 52010000 - 51010000 - 50010000 - 78010000 - 4F010000 - C0050000 - 40010000 - 5E010000 - 5D010000 - 5C010000 - 57010000 - 56010000 - 55010000 - 54010000 - 53010000 - 52010000 - 51010000 - 50010000 - 78010000 - 4F010000 - C0050000 - 40010000 - 24000000 - 24000000 - 24000000 - 60050000 - 10000000 - 24000000 - 24000000 - 24000000 - 60050000 - 10000000 - 24000000 - 24000000 - 24000000 - 60050000 - 10000000 - 60050000 - 10000000 - 60050000 - 10000000 - 60050000 - 10000000 - 24000000 - 24000000 - 24000000 - 24000000 - 24000000 - 24000000 - 24000000 - 24000000 - 24000000 - 0b0000............)
         [Test]
         public void BlackfinDasm_push_p5()
         {
@@ -628,14 +600,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("CALL [P2];", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction C0801808 at address 07F67398 has not been implemented. (081880C0)
-        [Test]
-        public void BlackfinDasm_C0801808()
-        {
-            var instr = DisassembleHexBytes("80C00818");
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
         [Test]
         public void BlackfinDasm_excpt()
         {
@@ -664,7 +628,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("R1 <<= R0;", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction AC8E at address 07F403A8 has not been implemented. (8EAC0000 - 0b101011..........)
         [Test]
         public void BlackfinDasm_ld_sp()
         {
@@ -721,7 +684,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("MNOP;", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction 98C9 at address 07F413C0 has not been implemented. (C9980000 - 0B9C0000 - 0B9C0000 - 019C0000 - 0b1001............)
         [Test]
         public void BlackfinDasm_98C9()
         {
@@ -751,13 +713,6 @@ namespace Reko.UnitTests.Arch.Blackfin
         }
 
         [Test]
-        public void BlackfinDasm_add3_long()
-        {
-            var instr = DisassembleHexBytes("22C41144");
-            Assert.AreEqual("R2.H = R2.L + R1.L;", instr.ToString());
-        }
-
-        [Test]
         public void BlackfinDasm_ld_p()
         {
             var instr = DisassembleHexBytes("41AC");
@@ -771,7 +726,13 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("P1 -= P5;", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction 4282 at address 07F422D4 has not been implemented. (C2420000 - F1420000 - 48400000 - 29440000 - 0A440000 - D1440000 - D1440000 - D2440000 - D1440000 - B8400000 - F1420000 - F0420000 - F9420000 - F8420000 - 81400000 - 81400000 - 81400000 - 0b0100............)
+        [Test]
+        public void BlackfinDasm_st_p_d_w()
+        {
+            var instr = DisassembleHexBytes("1797");
+            Assert.AreEqual("W[P2] = R7;", instr.ToString());
+        }
+
         [Test]
         public void BlackfinDasm_mov_d_xl()
         {
@@ -793,7 +754,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("R0 = W[P2] (Z);", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction AA30 at address 07F42548 has not been implemented. (30AA0000 - 0b101010..........)
         [Test]
         public void BlackfinDasm_ld_sp_wx()
         {
@@ -801,12 +761,18 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("R0 = W[SP + 0x0010] (X);", instr.ToString());
         }
 
-        // Reko: a decoder for Blackfin instruction C6820161 at address 07F4258A has not been implemented. (610182C6 - 670182C6 - 408682C6 - 838582C6 - 838082C6 - 848182C6 - 83018CC2 - 868182C6 - 808782C6 - 360028E4 - 360028E4 - 360020E4 - 240020E4 - 100020E4 - 110020E4 - 120020E4 - 130020E4 - 180020E4 - 190020E4 - 1A0020E4 - 1B0020E4 - 140020E4 - 150020E4 - 160020E4 - 170020E4 - 1C0020E4 - 1D0020E4 - 1E0020E4 - 1F0020E4 - 200020E4 - 210020E4 - 220020E4 - 230020E4 - 250020E4 - 260020E4 - 270020E4 - 280020E4 - 290020E4 - 2A0020E4 - 2B0020E4 - 2C0020E4 - 2D0020E4 - 2E0020E4 - 2F0020E4 - 300020E4 - 310020E4 - 320020E4 - 330020E4 - 030000E8 - 340028E4 - 330028E4 - 300028E4 - 2E0028E4 - 2B0028E4 - 2A0028E4 - 290028E4 - 280028E4 - 270028E4 - 260028E4 - 250028E4 - 230028E4 - 220028E4 - 210028E4 - 200028E4 - 1F0028E4 - 1E0028E4 - 1D0028E4 - 1C0028E4 - 1B0028E4 - 1A0028E4 - 190028E4 - 180028E4 - 170028E4 - 160028E4 - 150028E4 - 140028E4 - 130028E4 - 120028E4 - 110028E4 - 100028E4 - 848382C6 - 9C8382C6 - DC8382C6 - C48382C6 - C38182C6 - 1110B8E0 - 2B00B3E0 - 270000E4 - 260000E4 - 250000E4 - 240000E4 - 230000E4 - 220000E4 - 210000E4 - 200000E4 - 1F0000E4 - 1E0000E4 - 1D0000E4 - 1C0000E4 - 1B0000E4 - 1A0000E4 - 190000E4 - 180000E4 - 170000E4 - 160000E4 - 150000E4 - 140000E4 - 130000E4 - 120000E4 - 110000E4 - 100000E4 - 3F400AC4 - 3F000AC4 - 0220A2E0 - 0210A2E0 - 114422C4 - 110402C4 - 418482C6 - 0320A2E0 - 0320A2E0 - 001803C8 - 0210A2E0 - 0320A2E0 - 0420A3E0 - 001803C8 - 0520A5E0 - 0420A3E0 - 0620A2E0 - 0710A2E0 - 360028E4 - 500F82C6 - 240029E4 - 13002AE4 - 120029E4 - 110028E4 - 100028E4 - 18002AE4 - 140029E4 - 200028E4 - 1C0028E4 - 19002AE4 - 150029E4 - 210028E4 - 1D0028E4 - 1A002AE4 - 160029E4 - 220028E4 - 1E0028E4 - 1B002AE4 - 170029E4 - 230028E4 - 1F0028E4 - 26002AE4 - 270029E4 - 250028E4 - 2A002AE4 - 2B0029E4 - 280028E4 - 290028E4 - 2E002AE4 - 2F0029E4 - 2C0028E4 - 2D0028E4 - 32002AE4 - 330029E4 - 300028E4 - 310028E4 - 360028E4 - 920382C6 - 2B0000E8 - 290000E8 - C38182C6 - A78582C6 - 0210B2E0 - 0210B2E0 - 0310B2E0 - 0310B2E0 - 030426E4 - C28182C6 - DB8182C6 - C38182C6 - 0F0829E7 - F88582C6 - F88582C6 - 081880C0 - 081880C0)
         [Test]
-        public void BlackfinDasm_C6820161()
+        public void BlackfinDasm_sra()
         {
             var instr = DisassembleHexBytes("82C66101");
             Assert.AreEqual("R0 = R1 >>> F4;", instr.ToString());
+        }
+
+        [Test]
+        public void BlackfinDasm_neg_cc()
+        {
+            var instr = DisassembleHexBytes("1802");
+            Assert.AreEqual("CC = !CC;", instr.ToString());
         }
 
         [Test]
@@ -822,6 +788,39 @@ namespace Reko.UnitTests.Arch.Blackfin
             var instr = DisassembleHexBytes("229C");
             Assert.AreEqual("R2.L = W[I0++];", instr.ToString());
         }
+
+#if BORED
+
+        [Test]
+        public void BlackfinDasm_add3_long()
+        {
+            var instr = DisassembleHexBytes("22C41144");
+            Assert.AreEqual("R2.H = R2.L + R1.L;", instr.ToString());
+        }
+
+        [Test]
+        public void BlackfinDasm_E0B21003()
+        {
+            var instr = DisassembleHexBytes("B2E00310");
+            Assert.AreEqual("@@@", instr.ToString());
+        }
+
+        [Test]
+        public void BlackfinDasm_E0B21002()
+        {
+            var instr = DisassembleHexBytes("B2E00210");
+            Assert.AreEqual("@@@", instr.ToString());
+        }
+
+
+        [Test]
+        public void BlackfinDasm_C0801808()
+        {
+            var instr = DisassembleHexBytes("80C00818");
+            Assert.AreEqual("@@@", instr.ToString());
+        }
+
+
 
         // Reko: a decoder for Blackfin instruction E0A21007 at address 07F41316 has not been implemented. (0710A2E0 - 0210B2E0 - 0210B2E0 - 0310B2E0 - 0310B2E0 - 081880C0 - 081880C0)
         [Test]
@@ -911,13 +910,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             Assert.AreEqual("@@@", instr.ToString());
         }
 
-        [Test]
-        public void BlackfinDasm_neg_cc()
-        {
-            var instr = DisassembleHexBytes("1802");
-            Assert.AreEqual("CC = !CC;", instr.ToString());
-        }
-
         // Reko: a decoder for Blackfin instruction 9D00 at address 07F4553E has not been implemented. (009D0000 - 10970000 - 0b1001............)
         [Test]
         public void BlackfinDasm_9D00()
@@ -955,13 +947,6 @@ namespace Reko.UnitTests.Arch.Blackfin
         {
             var instr = DisassembleHexBytes("FA45");
             Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void BlackfinDasm_st_p_d_w()
-        {
-            var instr = DisassembleHexBytes("1797");
-            Assert.AreEqual("W[P2] = R7;", instr.ToString());
         }
 
         // Reko: a decoder for Blackfin instruction E0B22010 at address 07F561C8 has not been implemented. (1020B2E0 - 0620B2E0 - 9D10B3E0 - 0220B2E0 - 0420B2E0 - 1110B3E0 - 0920B2E0 - 1A10B3E0 - 1810B3E0 - 0320B2E0 - 0F10B2E0 - 0C10B2E0 - 0C10B2E0 - 0E10B2E0 - 0E10B2E0 - 0E10B2E0 - 0E10B2E0 - 83018CC2 - 1110B8E0 - 2B00B3E0 - 0220A2E0 - 0210A2E0 - 0320A2E0 - 0320A2E0 - 0210A2E0 - 0320A2E0 - 0420A3E0 - 0520A5E0 - 0420A3E0 - 0620A2E0 - 0710A2E0 - 0210B2E0 - 0210B2E0 - 0310B2E0 - 0310B2E0 - 081880C0 - 081880C0)
@@ -1218,5 +1203,6 @@ namespace Reko.UnitTests.Arch.Blackfin
             var instr = DisassembleHexBytes("8BC00038");
             Assert.AreEqual("@@@", instr.ToString());
         }
+#endif
     }
 }

@@ -30,24 +30,16 @@ namespace Reko.Arch.Blackfin
 {
     public class BlackfinInstruction : MachineInstruction
     {
-        public Opcode Opcode;
-        public MachineOperand[] Operands;
+        public Mnemonic Mnemonic;
 
-        public override int OpcodeAsInteger => (int) Opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            return (0 <= i && i < Operands.Length)
-                ? Operands[i]
-                : null;
-        }
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             (string prefix, string infix, string suffix) aaOpcode;
-            if (!mapOpcodes.TryGetValue(Opcode, out aaOpcode))
+            if (!mapOpcodes.TryGetValue(Mnemonic, out aaOpcode))
             {
-                aaOpcode.prefix = Opcode.ToString();
+                aaOpcode.prefix = Mnemonic.ToString();
             }
             if (aaOpcode.infix != null)
             {
@@ -90,55 +82,55 @@ namespace Reko.Arch.Blackfin
             writer.WriteString(";");
         }
 
-        private static readonly Dictionary<Opcode, (string,string,string)> mapOpcodes = 
-            new Dictionary<Opcode, (string, string, string)>
+        private static readonly Dictionary<Mnemonic, (string,string,string)> mapOpcodes = 
+            new Dictionary<Mnemonic, (string, string, string)>
         {
-            { Opcode.add, (null, " += ", null) },
-            { Opcode.add3, (null, " + ", null) },
-            { Opcode.add_sh1, (null, " + ", " << 1") },
-            { Opcode.add_sh2, (null, " + ", " << 2") },
-            { Opcode.and3, (null, " & ", null) },
-            { Opcode.or3, (null, " | ", null) },
-            { Opcode.sub3, (null, " - ", null) },
-            { Opcode.xor3, (null, " ^ ", null) },
-            { Opcode.asr, (null, " >>>= ", null) },
-            { Opcode.asr3, (null, " >>> ", null) },
-            { Opcode.DIVQ, ("DIVQ (", null, ")") },
-            { Opcode.lsl, (null, " <<= ", null) },
-            { Opcode.lsl3, (null, " << ", null) },
-            { Opcode.lsr, (null, " >>= ", null) },
-            { Opcode.lsr3, (null, " >> ", null) },
-            { Opcode.bitset, ( "BITSET(", ",", ")") },
-            { Opcode.bittgl, ( "BITTGL(", ",", ")") },
-            { Opcode.bitclr, ( "BITCLR(", ",", ")") },
-            { Opcode.if_cc_jump, ("IF CC JUMP", null, null) },
-            { Opcode.if_cc_jump_bp, ("IF CC JUMP", null, " (BP)") },
-            { Opcode.if_cc_mov, ("IF CC ", " = ", null) },
-            { Opcode.if_ncc_mov, ("IF !CC ", " = ", null) },
-            { Opcode.if_ncc_jump, ("IF !CC JUMP", null, null) },
-            { Opcode.if_ncc_jump_bp, ("IF !CC JUMP", null, " (BP)") },
-            { Opcode.mov, (null, " = ", null) },
-            { Opcode.mov_cc_eq, ("CC = ", " == ", null) },
-            { Opcode.mov_cc_le, ("CC = ", " <= ", null) },
-            { Opcode.mov_cc_lt, ("CC = ", " < ", null) },
-            { Opcode.mov_cc_ule, ("CC = ", " <= ", null) },
-            { Opcode.mov_cc_ult, ("CC = ", " < ", null) },
-            { Opcode.mov_cc_bittest, ( "CC = BITTEST(", ",", ")" )},
-            { Opcode.mov_cc_n_bittest, ( "CC = !BITTEST(", ",", ")" )},
-            { Opcode.mov_r_cc, (null, " = ", "CC") },
-            { Opcode.mov_xb, (null, " = ", ".B (X)") },
-            { Opcode.mov_xl, (null, " = ", ".L (X)") },
-            { Opcode.mov_zb, (null, " = ", ".B (Z)") },
-            { Opcode.mov_zl, (null, " = ", ".L (Z)") },
-            { Opcode.mov_x, (null, " = ", " (X)") },
-            { Opcode.mov_z, (null, " = ", " (Z)") },
-            { Opcode.mul, (null, " *= ", null) },
-            { Opcode.neg, (null, " = -", null) },
-            { Opcode.neg_cc, ("CC = !CC", null, null)},
-            { Opcode.not, (null, " = ~", null) },
-            { Opcode.JUMP_S, ("JUMP.S", null, null) },
-            { Opcode.JUMP_L, ("JUMP.L", null, null) },
-            { Opcode.sub, (null, " -= ", null) },
+            { Mnemonic.add, (null, " += ", null) },
+            { Mnemonic.add3, (null, " + ", null) },
+            { Mnemonic.add_sh1, (null, " + ", " << 1") },
+            { Mnemonic.add_sh2, (null, " + ", " << 2") },
+            { Mnemonic.and3, (null, " & ", null) },
+            { Mnemonic.or3, (null, " | ", null) },
+            { Mnemonic.sub3, (null, " - ", null) },
+            { Mnemonic.xor3, (null, " ^ ", null) },
+            { Mnemonic.asr, (null, " >>>= ", null) },
+            { Mnemonic.asr3, (null, " >>> ", null) },
+            { Mnemonic.DIVQ, ("DIVQ (", null, ")") },
+            { Mnemonic.lsl, (null, " <<= ", null) },
+            { Mnemonic.lsl3, (null, " << ", null) },
+            { Mnemonic.lsr, (null, " >>= ", null) },
+            { Mnemonic.lsr3, (null, " >> ", null) },
+            { Mnemonic.bitset, ( "BITSET(", ",", ")") },
+            { Mnemonic.bittgl, ( "BITTGL(", ",", ")") },
+            { Mnemonic.bitclr, ( "BITCLR(", ",", ")") },
+            { Mnemonic.if_cc_jump, ("IF CC JUMP", null, null) },
+            { Mnemonic.if_cc_jump_bp, ("IF CC JUMP", null, " (BP)") },
+            { Mnemonic.if_cc_mov, ("IF CC ", " = ", null) },
+            { Mnemonic.if_ncc_mov, ("IF !CC ", " = ", null) },
+            { Mnemonic.if_ncc_jump, ("IF !CC JUMP", null, null) },
+            { Mnemonic.if_ncc_jump_bp, ("IF !CC JUMP", null, " (BP)") },
+            { Mnemonic.mov, (null, " = ", null) },
+            { Mnemonic.mov_cc_eq, ("CC = ", " == ", null) },
+            { Mnemonic.mov_cc_le, ("CC = ", " <= ", null) },
+            { Mnemonic.mov_cc_lt, ("CC = ", " < ", null) },
+            { Mnemonic.mov_cc_ule, ("CC = ", " <= ", null) },
+            { Mnemonic.mov_cc_ult, ("CC = ", " < ", null) },
+            { Mnemonic.mov_cc_bittest, ( "CC = BITTEST(", ",", ")" )},
+            { Mnemonic.mov_cc_n_bittest, ( "CC = !BITTEST(", ",", ")" )},
+            { Mnemonic.mov_r_cc, (null, " = ", "CC") },
+            { Mnemonic.mov_xb, (null, " = ", ".B (X)") },
+            { Mnemonic.mov_xl, (null, " = ", ".L (X)") },
+            { Mnemonic.mov_zb, (null, " = ", ".B (Z)") },
+            { Mnemonic.mov_zl, (null, " = ", ".L (Z)") },
+            { Mnemonic.mov_x, (null, " = ", " (X)") },
+            { Mnemonic.mov_z, (null, " = ", " (Z)") },
+            { Mnemonic.mul, (null, " *= ", null) },
+            { Mnemonic.neg, (null, " = -", null) },
+            { Mnemonic.neg_cc, ("CC = !CC", null, null)},
+            { Mnemonic.not, (null, " = ~", null) },
+            { Mnemonic.JUMP_S, ("JUMP.S", null, null) },
+            { Mnemonic.JUMP_L, ("JUMP.L", null, null) },
+            { Mnemonic.sub, (null, " -= ", null) },
 
         };
     }

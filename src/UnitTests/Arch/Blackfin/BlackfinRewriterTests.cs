@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Blackfin;
 using Reko.Core;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,16 +30,38 @@ using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Blackfin
 {
+    [Ignore("Not ready yet")]
     public class BlackfinRewriterTests : RewriterTestBase
     {
-        public BlackfinRewriterTests()
+        private BlackfinArchitecture arch;
+        private MemoryArea image;
+
+        [SetUp]
+        public void Setup()
         {
-            this.Architecture = new BlackfinArchitecture("blackfin");
+            this.arch = new BlackfinArchitecture("blackfin");
         }
 
-        public override IProcessorArchitecture Architecture { get; }
+        public override IProcessorArchitecture Architecture => arch;
 
         public override Address LoadAddress => Address.Ptr32(0x00100000);
+
+        protected override MemoryArea RewriteCode(string hexBytes)
+        {
+            var bytes = HexStringToBytes(hexBytes);
+            this.image = new MemoryArea(LoadAddress, bytes);
+            return image;
+        }
+
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        {
+            var state = new BlackfinProcessorState(arch);
+            return arch.CreateRewriter(
+                arch.CreateImageReader(image, image.BaseAddress),
+                state,
+                binder,
+                host);
+        }
 
         [Test]
         public void BlackfinRw_mov()
@@ -117,6 +140,7 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
         }
+
         [Test]
         public void BlackfinRw_mov_xb()
         {
@@ -125,6 +149,7 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
         }
+
         [Test]
         public void BlackfinRw_mov_cc_eq()
         {
@@ -133,6 +158,7 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
         }
+
         [Test]
         public void BlackfinRw_mov_cc_n_bittest()
         {

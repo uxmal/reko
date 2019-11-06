@@ -28,7 +28,7 @@ namespace Reko.Arch.Blackfin
 {
     internal class BlackfinRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private static HashSet<Opcode> opcode_seen = new HashSet<Opcode>();
+        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
 
         private readonly BlackfinArchitecture arch;
         private readonly EndianImageReader rdr;
@@ -37,7 +37,7 @@ namespace Reko.Arch.Blackfin
         private readonly IRewriterHost host;
         private readonly IEnumerator<BlackfinInstruction> dasm;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private BlackfinInstruction instr;
 
         public BlackfinRewriter(BlackfinArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -57,18 +57,18 @@ namespace Reko.Arch.Blackfin
                 this.instr = dasm.Current;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
-                this.rtlc = instr.InstructionClass;
-                switch (instr.Opcode)
+                this.iclass = instr.InstructionClass;
+                switch (instr.Mnemonic)
                 {
                 default:
                     EmitUnitTest(instr);
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
                 {
-                    Class = rtlc
+                    Class = iclass
                 };
             }
         }
@@ -80,15 +80,15 @@ namespace Reko.Arch.Blackfin
 
         void EmitUnitTest(BlackfinInstruction instr)
         {
-            if (opcode_seen.Contains(instr.Opcode))
+            if (opcode_seen.Contains(instr.Mnemonic))
                 return;
-            opcode_seen.Add(instr.Opcode);
+            opcode_seen.Add(instr.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= instr.Length;
 
             Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void BlackfinRw_{0}()", instr.Opcode);
+            Console.WriteLine("        public void BlackfinRw_{0}()", instr.Mnemonic);
             Console.WriteLine("        {");
 
             if (instr.Length > 2)

@@ -20,7 +20,7 @@
 
 namespace Reko.Arch.Blackfin
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         invalid,
         JUMP,
