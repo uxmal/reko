@@ -68,7 +68,6 @@ namespace Reko.Core
         /// The name of this storage.
         /// </summary>
         public string Name { get; protected set; }
-        public int Number { get; protected set; }
 
         /// <summary>
         /// Returns the bit offset of <paramref name="storage"/> within this 
@@ -531,6 +530,8 @@ namespace Reko.Core
         /// <remarks>
         /// General-purpose registers can use the Domain.Word </remarks>
         public new PrimitiveType DataType => (PrimitiveType) base.DataType;
+
+        public int Number { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {

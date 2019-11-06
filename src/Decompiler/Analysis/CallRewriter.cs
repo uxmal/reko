@@ -248,7 +248,8 @@ namespace Reko.Analysis
             }
 
             var outs = definitions.Select(d => d.Storage)
-                .Where(d => d is RegisterStorage r && !implicitRegs.Contains(r))
+                .OfType<RegisterStorage>()
+                .Where(r => !implicitRegs.Contains(r))
                 .OrderBy(r => r.Number);
             foreach (var o in outs)
             {
