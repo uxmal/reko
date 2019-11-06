@@ -38,12 +38,12 @@ namespace Reko.Arch.Mips
         {
             // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
             // We handle that case here explicitly.
-            if (((RegisterOperand)instr.op1).Register.Number == 0)
+            if (((RegisterOperand)instr.Operands[0]).Register.Number == 0)
             {
                 // A special case is when we call to the location after
                 // the delay slot. This is an idiom to capture the 
                 // program counter in the la register.
-                var dst = ((AddressOperand)instr.op2).Address;
+                var dst = ((AddressOperand)instr.Operands[1]).Address;
                 if (instr.Address.ToLinear() + 8 == dst.ToLinear())
                 {
                     rtlc = InstrClass.Linear;
@@ -61,9 +61,9 @@ namespace Reko.Arch.Mips
 
         private void RewriteBb(MipsInstruction instr, Func<Expression, Expression> condOp)
         {
-            var reg = RewriteOperand0(instr.op1);
-            var bit = RewriteOperand(instr.op2);
-            var addr = (Address) RewriteOperand0(instr.op3);
+            var reg = RewriteOperand0(instr.Operands[0]);
+            var bit = RewriteOperand(instr.Operands[1]);
+            var addr = (Address) RewriteOperand0(instr.Operands[2]);
             var test = condOp(host.PseudoProcedure("__bit", PrimitiveType.Bool, reg, bit));
             m.Branch(test, addr, instr.InstructionClass);
         }
@@ -72,13 +72,13 @@ namespace Reko.Arch.Mips
         {
             if (!link)
             {
-                var reg1 = RewriteOperand0(instr.op1);
-                var reg2 = RewriteOperand0(instr.op2);
-                var addr = (Address)RewriteOperand0(instr.op3);
+                var reg1 = RewriteOperand0(instr.Operands[0]);
+                var reg2 = RewriteOperand0(instr.Operands[1]);
+                var addr = (Address)RewriteOperand0(instr.Operands[2]);
                 var cond = condOp(reg1, reg2);
                 if (condOp == m.Eq &&
-                    ((RegisterOperand)instr.op1).Register ==
-                    ((RegisterOperand)instr.op2).Register)
+                    ((RegisterOperand)instr.Operands[0]).Register ==
+                    ((RegisterOperand)instr.Operands[1]).Register)
                 {
                     m.Goto(addr, instr.InstructionClass & ~InstrClass.Conditional);
                 }
@@ -101,8 +101,8 @@ namespace Reko.Arch.Mips
                     binder.EnsureRegister(arch.LinkRegister),
                     instr.Address + 8);
             }
-            var reg = RewriteOperand0(instr.op1);
-            var addr = (Address)RewriteOperand0(instr.op2);
+            var reg = RewriteOperand0(instr.Operands[0]);
+            var addr = (Address)RewriteOperand0(instr.Operands[1]);
             if (reg is Constant)
             {
                 // r0 has been replaced with '0'.
@@ -124,22 +124,22 @@ namespace Reko.Arch.Mips
                     binder.EnsureRegister(arch.LinkRegister),
                     instr.Address + 8);
             }
-            var reg = RewriteOperand0(instr.op1);
-            var imm = RewriteOperand(instr.op2);
-            var addr = (Address) RewriteOperand0(instr.op3);
+            var reg = RewriteOperand0(instr.Operands[0]);
+            var imm = RewriteOperand(instr.Operands[1]);
+            var addr = (Address) RewriteOperand0(instr.Operands[2]);
             var cond = condOp(reg, imm);
             m.Branch(cond, addr, instr.InstructionClass);
         }
 
         private void RewriteBranchLikely(MipsInstruction instr, Func<Expression, Expression, Expression> condOp)
         {
-            var reg1 = RewriteOperand0(instr.op1);
-            var reg2 = RewriteOperand0(instr.op2);
-            var addr = (Address)RewriteOperand0(instr.op3);
+            var reg1 = RewriteOperand0(instr.Operands[0]);
+            var reg2 = RewriteOperand0(instr.Operands[1]);
+            var addr = (Address)RewriteOperand0(instr.Operands[2]);
             var cond = condOp(reg1, reg2);
             if (condOp == m.Eq &&
-                ((RegisterOperand)instr.op1).Register ==
-                ((RegisterOperand)instr.op2).Register)
+                ((RegisterOperand)instr.Operands[0]).Register ==
+                ((RegisterOperand)instr.Operands[1]).Register)
             {
                 m.GotoD(addr);
             }
@@ -151,17 +151,17 @@ namespace Reko.Arch.Mips
 
         private void RewriteBranchConditional1(MipsInstruction instr, bool opTrue)
         {
-            var cond = RewriteOperand0(instr.op1);
+            var cond = RewriteOperand0(instr.Operands[0]);
             if (!opTrue)
                 cond = m.Not(cond);
-            var addr = (Address)RewriteOperand0(instr.op2);
+            var addr = (Address)RewriteOperand0(instr.Operands[1]);
             rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
             m.Branch(cond, addr, rtlc);
         }
 
         private void RewriteCall(MipsInstruction instr)
         {
-            var dst = RewriteOperand0(instr.op1);
+            var dst = RewriteOperand0(instr.Operands[0]);
             m.Call(dst, 0, instr.InstructionClass);
         }
 
@@ -179,7 +179,7 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            m.CallD(RewriteOperand0(instr.op1), 0);
+            m.CallD(RewriteOperand0(instr.Operands[0]), 0);
         }
 
         private void RewriteJalr(MipsInstruction instr)
@@ -187,8 +187,8 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            var dst = RewriteOperand0(instr.op2);
-            var lr = ((RegisterOperand)instr.op1).Register;
+            var dst = RewriteOperand0(instr.Operands[1]);
+            var lr = ((RegisterOperand)instr.Operands[0]).Register;
             if (lr == arch.LinkRegister)
             {
                 m.Call(dst, 0, instr.InstructionClass);
@@ -203,7 +203,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteJr(MipsInstruction instr)
         {
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.Operands[0]);
 
             var reg = (RegisterStorage)((Identifier)dst).Storage;
             if (reg == arch.LinkRegister)
@@ -218,16 +218,16 @@ namespace Reko.Arch.Mips
 
         private void RewriteJump(MipsInstruction instr)
         {
-            var dst = RewriteOperand0(instr.op1);
+            var dst = RewriteOperand0(instr.Operands[0]);
             m.Goto(dst, instr.InstructionClass);
         }
 
         private void RewriteMoveBalc(MipsInstruction instr)
         {
-            var dst = RewriteOperand0(instr.op1);
-            var src = RewriteOperand0(instr.op2);
+            var dst = RewriteOperand0(instr.Operands[0]);
+            var src = RewriteOperand0(instr.Operands[1]);
             m.Assign(dst, src);
-            var addr = RewriteOperand(instr.op3);
+            var addr = RewriteOperand(instr.Operands[2]);
             m.Call(addr, 0);
         }
 
@@ -238,7 +238,7 @@ namespace Reko.Arch.Mips
                 Terminates = true
             };
             m.SideEffect(host.PseudoProcedure("__reserved_instruction", chr,
-                VoidType.Instance, RewriteOperand(instr.op1)));
+                VoidType.Instance, RewriteOperand(instr.Operands[0])));
         }
     }
 }

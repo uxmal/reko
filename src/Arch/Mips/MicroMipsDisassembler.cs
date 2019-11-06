@@ -65,7 +65,7 @@ namespace Reko.Arch.Mips
             var instr = new MipsInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Opcode.illegal,
+                Mnemonic = Opcode.illegal,
             };
             ops.Clear();
             return instr;
@@ -130,12 +130,9 @@ namespace Reko.Arch.Mips
                 var ops = dasm.ops;
                 var instr = new MipsInstruction
                 {
-                    opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = this.iclass,
-                    op1 = ops.Count > 0 ? ops[0] : null,
-                    op2 = ops.Count > 1 ? ops[1] : null,
-                    op3 = ops.Count > 2 ? ops[2] : null,
-                    op4 = ops.Count > 3 ? ops[3] : null,
+                    Operands = ops.ToArray()
                 };
                 ops.Clear();
                 return instr;

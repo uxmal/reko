@@ -35,9 +35,9 @@ namespace Reko.Arch.Sparc
         {
             var a = (SparcInstruction)x;
             var b = (SparcInstruction)y;
-            return CompareOperands(a.Op1, b.Op1) &&
-                   CompareOperands(a.Op2, b.Op2) &&
-                   CompareOperands(a.Op3, b.Op3);
+            return CompareOperands(a.Operands[0], b.Operands[0]) &&
+                   CompareOperands(a.Operands[1], b.Operands[1]) &&
+                   CompareOperands(a.Operands[2], b.Operands[2]);
         }
 
         private bool CompareOperands(MachineOperand a, MachineOperand b)
@@ -89,9 +89,9 @@ namespace Reko.Arch.Sparc
         {
             var instr = (SparcInstruction)sInstr;
             return
-                17 * GetOperandHash(instr.Op1) ^
-                23 * GetOperandHash(instr.Op2) ^
-                59 * GetOperandHash(instr.Op3);
+                17 * GetOperandHash(instr.Operands[0]) ^
+                23 * GetOperandHash(instr.Operands[1]) ^
+                59 * GetOperandHash(instr.Operands[2]);
         }
 
         private int GetOperandHash(MachineOperand op)

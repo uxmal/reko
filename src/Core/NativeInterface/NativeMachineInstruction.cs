@@ -17,12 +17,6 @@ namespace Reko.Core.NativeInterface
             }
         }
 
-        [Obsolete("", true)]
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             base.Render(writer, options);

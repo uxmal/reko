@@ -60,7 +60,7 @@ namespace Reko.Arch.Alpha
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 this.rtlc = instr.InstructionClass;
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
@@ -69,7 +69,7 @@ namespace Reko.Arch.Alpha
                        instr.Address,
                        string.Format(
                            "Alpha AXP instruction '{0}' not supported yet.",
-                           instr.Opcode));
+                           instr.Mnemonic));
 
                     break;
                 case Opcode.invalid:
@@ -229,15 +229,15 @@ namespace Reko.Arch.Alpha
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Opcode))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.Opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void AlphaRw_" + dasm.Current.Opcode + "()");
+            Debug.WriteLine("        public void AlphaRw_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            RewriteCode(\"");
             Debug.Write(string.Join(

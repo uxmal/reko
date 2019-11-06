@@ -29,45 +29,31 @@ namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
-        public Opcode Opcode;
-        public MachineOperand Op1;
-        public MachineOperand Op2;
-        public MachineOperand Op3;
+        public Opcode Mnemonic;
 
-        public override int OpcodeAsInteger => (int)Opcode; 
+        public override int OpcodeAsInteger => (int)Mnemonic; 
 
         public bool Annul => (InstructionClass & InstrClass.Annul) != 0;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            switch (i)
-            {
-            case 0: return Op1;
-            case 1: return Op2;
-            case 2: return Op3;
-            default: return null; 
-            }
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(
                 string.Format("{0}{1}",
-                Opcode.ToString(),
+                Mnemonic.ToString(),
                 Annul ? ",a" : ""));
 
-            if (Op1 != null)
+            if (Operands.Length > 0)
             {
                 writer.Tab();
-                Write(Op1, writer, options);
-                if (Op2 != null)
+                Write(Operands[0], writer, options);
+                if (Operands.Length > 1)
                 {
                     writer.WriteChar(',');
-                    Write(Op2, writer, options);
-                    if (Op3 != null)
+                    Write(Operands[1], writer, options);
+                    if (Operands.Length > 2)
                     {
                         writer.WriteChar(',');
-                        Write(Op3, writer, options);
+                        Write(Operands[2], writer, options);
                     }
                 }
             }

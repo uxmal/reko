@@ -244,8 +244,8 @@ VS Overflow Set 1001 V
                 case Opcode.spl: RewriteScc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.svc: RewriteScc(ConditionCode.NO, FlagM.VF); break;
                 case Opcode.svs: RewriteScc(ConditionCode.OV, FlagM.VF); break;
-                case Opcode.st: orw.RewriteMoveDst(instr.op1, instr.Address, PrimitiveType.Bool, Constant.True()); break;
-                case Opcode.sf: orw.RewriteMoveDst(instr.op1, instr.Address, PrimitiveType.Bool, Constant.False()); break;
+                case Opcode.st: orw.RewriteMoveDst(instr.Operand__0, instr.Address, PrimitiveType.Bool, Constant.True()); break;
+                case Opcode.sf: orw.RewriteMoveDst(instr.Operand__0, instr.Address, PrimitiveType.Bool, Constant.False()); break;
                 case Opcode.stop: RewriteStop(); break;
                 case Opcode.sub: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Opcode.suba: RewriteBinOp((s, d) => m.ISub(d, s)); break;

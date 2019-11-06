@@ -30,29 +30,21 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     public class Tlcs90Instruction : MachineInstruction
     {
-        public Opcode Opcode { get; set; }
-        internal MachineOperand op1;
-        internal MachineOperand op2;
+        public Opcode Mnemonic { get; set; }
 
-
-        public override int OpcodeAsInteger => (int) Opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
-            if (op1 == null)
+            writer.WriteOpcode(Mnemonic.ToString());
+            if (Operands.Length == 0)
                 return;
             writer.Tab();
-            op1.Write(writer, options);
-            if (op2 == null)
+            Operands[0].Write(writer, options);
+            if (Operands.Length == 1)
                 return;
             writer.WriteString(",");
-            op2.Write(writer, options);
+            Operands[1].Write(writer, options);
         }
     }
 }

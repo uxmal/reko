@@ -60,7 +60,7 @@ namespace Reko.Arch.Tms7000
                 this.rtlc = InstrClass.Linear;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     host.Error(instr.Address, "Rewriting x86 opcode '{0}' is not supported yet.", instr);
@@ -217,8 +217,8 @@ namespace Reko.Arch.Tms7000
 
         public void RewriteAdcSbb(Func<Expression, Expression, Expression> opr)
         {
-            var dst = Operand(instr.op1);
-            var src = Operand(instr.op2);
+            var dst = Operand(instr.Operands[0]);
+            var src = Operand(instr.Operands[1]);
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
@@ -232,8 +232,8 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
         {
-            var src = Operand(instr.op1);
-            var dst = Operand(instr.op2);
+            var src = Operand(instr.Operands[0]);
+            var dst = Operand(instr.Operands[1]);
             m.Assign(dst, fn(dst, src));
             CNZ(dst);
         }
@@ -241,20 +241,20 @@ namespace Reko.Arch.Tms7000
         private void RewriteBtj(Func<Expression, Expression> fn)
         {
             this.rtlc = InstrClass.ConditionalTransfer;
-            var opLeft = Operand(instr.op2);
-            var opRight = Operand(instr.op1);
+            var opLeft = Operand(instr.Operands[1]);
+            var opRight = Operand(instr.Operands[0]);
             NZ0(m.And(opLeft, fn(opRight)));
             var z = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.ZF));
             m.Branch(
                 m.Test(ConditionCode.NE, z),
-                ((AddressOperand)instr.op3).Address,
+                ((AddressOperand)instr.Operands[2]).Address,
                 InstrClass.ConditionalTransfer);
         }
 
         private void RewriteBr()
         {
             rtlc = InstrClass.Transfer;
-            var dst = Operand(instr.op1);
+            var dst = Operand(instr.Operands[0]);
             var ea = ((MemoryAccess)dst).EffectiveAddress;
             m.Goto(ea);
         }
@@ -262,15 +262,15 @@ namespace Reko.Arch.Tms7000
         private void RewriteCall()
         {
             rtlc = InstrClass.Transfer | InstrClass.Call;
-            var dst = Operand(instr.op1);
+            var dst = Operand(instr.Operands[0]);
             var ea = ((MemoryAccess)dst).EffectiveAddress;
             m.Call(ea, 2);
         }
 
         private void RewriteDacDsb(string intrinsicName)
         {
-            var opLeft = Operand(instr.op1);
-            var opRight = Operand(instr.op1);
+            var opLeft = Operand(instr.Operands[0]);
+            var opRight = Operand(instr.Operands[0]);
 
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             m.Assign(c, host.PseudoProcedure(
@@ -285,7 +285,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteClr()
         {
-            var op = Operand(instr.op1);
+            var op = Operand(instr.Operands[0]);
             m.Assign(op, Constant.Zero(op.DataType));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF)), Constant.False());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.NF)), Constant.False());
@@ -312,7 +312,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn)
         {
-            var reg = Operand(instr.op1);
+            var reg = Operand(instr.Operands[0]);
             m.Assign(reg, fn(reg, Constant.Word(reg.DataType.BitSize, 1)));
             CNZ(reg);
         }
@@ -320,7 +320,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteIncdDecd(Func<Expression, Expression, Expression> fn)
         {
-            var hireg = ((RegisterOperand)instr.op1).Register;
+            var hireg = ((RegisterOperand)instr.Operands[0]).Register;
             var loreg = arch.GpRegs[(hireg.Number - 1 & 0xFF)];
             var reg = binder.EnsureSequence(hireg, loreg, PrimitiveType.Word16);
             m.Assign(reg, fn(reg, Constant.Word(reg.DataType.BitSize, 1)));
@@ -330,9 +330,9 @@ namespace Reko.Arch.Tms7000
         private void RewriteDjnz()
         {
             rtlc = InstrClass.ConditionalTransfer;
-            var reg = Operand(instr.op1);
+            var reg = Operand(instr.Operands[0]);
             m.Assign(reg, m.ISub(reg, 1));
-            m.Branch(m.Ne0(reg), ((AddressOperand)instr.op2).Address, rtlc);
+            m.Branch(m.Ne0(reg), ((AddressOperand)instr.Operands[1]).Address, rtlc);
         }
 
         private void RewriteIdle()
@@ -342,7 +342,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteInv()
         {
-            var op = Operand(instr.op1);
+            var op = Operand(instr.Operands[0]);
             m.Assign(op, m.Comp(op));
             NZ0(op);
         }
@@ -350,7 +350,7 @@ namespace Reko.Arch.Tms7000
         private void RewriteJcc(ConditionCode cc, FlagM grf)
         {
             rtlc = InstrClass.ConditionalTransfer;
-            var dst = ((AddressOperand)instr.op1).Address;
+            var dst = ((AddressOperand)instr.Operands[0]).Address;
             var flags = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grf));
             m.Branch(m.Test(cc, flags), dst, rtlc);
         }
@@ -358,13 +358,13 @@ namespace Reko.Arch.Tms7000
         private void RewriteJmp()
         {
             rtlc = InstrClass.Transfer;
-            m.Goto(Operand(instr.op1));
+            m.Goto(Operand(instr.Operands[0]));
         }
 
         private void RewriteLda()
         {
             var a = binder.EnsureRegister(arch.a);
-            var src = Operand(instr.op1);
+            var src = Operand(instr.Operands[0]);
             m.Assign(a, src);
             NZ0(a);
         }
@@ -378,24 +378,24 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteLogical(Func<Expression, Expression, Expression> fn)
         {
-            var src = Operand(instr.op1);
-            var dst = Operand(instr.op2);
+            var src = Operand(instr.Operands[0]);
+            var dst = Operand(instr.Operands[1]);
             m.Assign(dst, fn(dst, src));
             NZ0(dst);
         }
 
         private void RewriteMov()
         {
-            var src = Operand(instr.op1);
-            var dst = Operand(instr.op2);
+            var src = Operand(instr.Operands[0]);
+            var dst = Operand(instr.Operands[1]);
             m.Assign(dst, src);
             NZ0(dst);
         }
 
         private void RewriteMovd()
         {
-            var dst = RegisterPair(((RegisterOperand)instr.op2).Register);
-            var src = Operand(instr.op1);
+            var dst = RegisterPair(((RegisterOperand)instr.Operands[1]).Register);
+            var src = Operand(instr.Operands[0]);
             if (src is MemoryAccess mem)
             {
                 src = mem.EffectiveAddress;
@@ -407,8 +407,8 @@ namespace Reko.Arch.Tms7000
         private void RewriteMpy()
         {
             var dst = binder.EnsureSequence(arch.a, arch.b, PrimitiveType.Word16);
-            var left = Operand(instr.op2);
-            var right = Operand(instr.op1);
+            var left = Operand(instr.Operands[1]);
+            var right = Operand(instr.Operands[0]);
             m.Assign(dst, m.IMul(left, right));
             NZ0(dst);
         }
@@ -416,10 +416,10 @@ namespace Reko.Arch.Tms7000
         private void RewritePop()
         {
             var sp = binder.EnsureRegister(arch.sp);
-            var dst = Operand(instr.op1);
+            var dst = Operand(instr.Operands[0]);
             m.Assign(dst, m.Mem8(m.Cast(PrimitiveType.Ptr16, sp)));
             m.Assign(sp, m.ISub(sp, 1));
-            if (!(instr.op1 is RegisterOperand reg &&
+            if (!(instr.Operands[0] is RegisterOperand reg &&
                 reg.Register == arch.st))
             {
                 NZ0(dst);
@@ -429,7 +429,7 @@ namespace Reko.Arch.Tms7000
         private void RewritePush()
         {
             var sp = binder.EnsureRegister(arch.sp);
-            var src = Operand(instr.op1);
+            var src = Operand(instr.Operands[0]);
             m.Assign(sp, m.IAdd(sp, 1));
             m.Assign(m.Mem8(m.Cast(PrimitiveType.Ptr16, sp)), src);
         }
@@ -448,7 +448,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteRotate(string rot)
         {
-            var op = Operand(instr.op1);
+            var op = Operand(instr.Operands[0]);
             var C = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             m.Assign(
                 op,
@@ -458,7 +458,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteRotateC(string rot)
         {
-            var op = Operand(instr.op1);
+            var op = Operand(instr.Operands[0]);
             var C = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             m.Assign(
                 op,
@@ -476,7 +476,7 @@ namespace Reko.Arch.Tms7000
         private void RewriteSta()
         {
             var a = binder.EnsureRegister(arch.a);
-            var dst = Operand(instr.op1);
+            var dst = Operand(instr.Operands[0]);
             m.Assign(dst, a);
         }
 
@@ -494,7 +494,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteSwap()
         {
-            var op = Operand(instr.op1);
+            var op = Operand(instr.Operands[0]);
             m.Assign(op, host.PseudoProcedure("__swap_nybbles", op.DataType, op));
             CNZ(op);
         }
@@ -509,7 +509,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteXchb()
         {
-            var dst = Operand(instr.op1);
+            var dst = Operand(instr.Operands[0]);
             var src = binder.EnsureRegister(arch.b);
             var tmp = binder.CreateTemporary(dst.DataType);
             m.Assign(tmp, dst);

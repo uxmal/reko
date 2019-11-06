@@ -30,6 +30,8 @@ using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Opcode;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {
+    using Decoder = Decoder<Tlcs900Disassembler, Opcode, Tlcs900Instruction>;
+
     /// <summary>
     /// Disassembler for the 32-bit Toshiba TLCS-900 processor.
     /// </summary>
@@ -69,7 +71,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return new Tlcs900Instruction {
                 Address = this.addr,
                 InstructionClass = InstrClass.Invalid,
-                Opcode = Opcode.invalid };
+                Mnemonic = Opcode.invalid };
 
         }
         #region Mutators 
@@ -488,79 +490,66 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return null;
         }
 
-
-        public abstract class OpRecBase
-        {
-            public abstract Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm);
-        }
-
-        private class OpRec : OpRecBase
+        private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
             private readonly Mutator<Tlcs900Disassembler>[] mutators;
 
-            public OpRec(Opcode opcode, InstrClass iclass, Mutator<Tlcs900Disassembler>[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, Mutator<Tlcs900Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
 
-            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            public override Tlcs900Instruction Decode(uint b, Tlcs900Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {
                     if (!m(b, dasm))
-                        return new Tlcs900Instruction
-                        {
-                            Opcode = Opcode.invalid,
-                            InstructionClass = iclass,
-                            Address = dasm.addr
-                        };
+                        return dasm.CreateInvalidInstruction();
                 }
                 var instr = new Tlcs900Instruction
                 {
-                    Opcode = opcode,
+                    Mnemonic = opcode,
                     InstructionClass = iclass,
                     Address = dasm.addr,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
-                    op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
+                    Operands = dasm.ops.ToArray()
                 };
                 return instr;
             }
         }
 
-        private class RegOpRec : OpRecBase
+        private class RegDecoder : Decoder
         {
             private readonly Mutator<Tlcs900Disassembler> mutator;
 
-            public RegOpRec(Mutator<Tlcs900Disassembler> mutator)
+            public RegDecoder(Mutator<Tlcs900Disassembler> mutator)
             {
                 this.mutator = mutator;
             }
 
-            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            public override Tlcs900Instruction Decode(uint bPrev, Tlcs900Disassembler dasm)
             {
-                if (!mutator(b, dasm) || !dasm.rdr.TryReadByte(out b))
+                if (!mutator(bPrev, dasm) || !dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
                 return regOpRecs[b].Decode(b, dasm);
             }
         }
 
-        private class ExtraRegOprec :OpRecBase
+        private class ExtraRegDecoder :Decoder
         {
             private readonly PrimitiveType width;
 
-            public ExtraRegOprec(PrimitiveType width)
+            public ExtraRegDecoder(PrimitiveType width)
             {
                 this.width = width;
             }
 
-            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            public override Tlcs900Instruction Decode(uint bPrev, Tlcs900Disassembler dasm)
             {
-                if (!dasm.rdr.TryReadByte(out b))
+                if (!dasm.rdr.TryReadByte(out byte b))
                     return null;
                 dasm.opSize = width;
                 var op = dasm.ExtraRegister(b);
@@ -573,24 +562,24 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
         }
 
-        private class MemOpRec : OpRecBase
+        private class MemDecoder : Decoder
         {
             private Mutator<Tlcs900Disassembler> mutator;
 
-            public MemOpRec(Mutator<Tlcs900Disassembler> mutator)
+            public MemDecoder(Mutator<Tlcs900Disassembler> mutator)
             {
                 this.mutator = mutator;
             }
 
-            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            public override Tlcs900Instruction Decode(uint bPrev, Tlcs900Disassembler dasm)
             {
-                if (!mutator(b, dasm) || !dasm.rdr.TryReadByte(out b))
+                if (!mutator(bPrev, dasm) || !dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
                 return memOpRecs[b].Decode(b, dasm);
             }
         }
 
-        private class DstOpRec : OpRecBase
+        private class DstOpRec : Decoder
         {
             private Mutator<Tlcs900Disassembler> mutator;
 
@@ -599,110 +588,110 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 this.mutator = mutator;
             }
 
-            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            public override Tlcs900Instruction Decode(uint bPrev, Tlcs900Disassembler dasm)
             {
-                if (!mutator(b, dasm) || !dasm.rdr.TryReadByte(out b))
+                if (!mutator(bPrev, dasm) || !dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
                 var instr = dstOpRecs[b].Decode(b, dasm);
-                if (instr.op1 != null && instr.op2 != null)
+                if (instr.Operands.Length >= 2)
                 {
-                    instr.op1.Width = instr.op2.Width;
+                    instr.Operands[0].Width = instr.Operands[1].Width;
                 }
-                if (instr.op2 != null && instr.op2.Width == null)
+                if (instr.Operands.Length >= 2 && instr.Operands[1].Width == null)
                 {
                     //$HACK to get conditional calls/jumps to work
-                    instr.op2.Width = PrimitiveType.Word32;
+                    instr.Operands[1].Width = PrimitiveType.Word32;
                 }
                 return instr;
             }
         }
 
-        private class SecondOpRec : OpRecBase
+        private class SecondDecoder : Decoder
         {
             private Opcode opcode;
             private Mutator<Tlcs900Disassembler> mutator;
 
-            public SecondOpRec(Opcode opcode, Mutator<Tlcs900Disassembler> mutator = null)
+            public SecondDecoder(Opcode opcode, Mutator<Tlcs900Disassembler> mutator = null)
             {
                 this.opcode = opcode;
                 this.mutator = mutator;
             }
 
-            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            public override Tlcs900Instruction Decode(uint bPrev, Tlcs900Disassembler dasm)
             {
                 if (this.mutator == null)
                 {
                     return new Tlcs900Instruction
                     {
-                        Opcode = this.opcode,
+                        Mnemonic = this.opcode,
                         Address = dasm.addr,
-                        op1 = dasm.ops[0]
+                        Operands = dasm.ops.ToArray()
                     };
                 }
 
-                if (!mutator(b, dasm))
+                if (!mutator(bPrev, dasm))
                     return dasm.CreateInvalidInstruction();
+                dasm.ops.Reverse();
                 return new Tlcs900Instruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     Address = dasm.addr,
-                    op1 = dasm.ops.Count > 1 ? dasm.ops[1] : dasm.ops[0],
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[0] : null,
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }
 
         // Inverts the order of the decoded operands
-        private class InvOpRec : OpRecBase
+        private class InvDecoder : Decoder
         {
             private Opcode opcode;
             private Mutator<Tlcs900Disassembler>[] mutators;
 
-            public InvOpRec(Opcode opcode, params Mutator<Tlcs900Disassembler>[]mutators)
+            public InvDecoder(Opcode opcode, params Mutator<Tlcs900Disassembler>[]mutators)
             {
                 this.opcode = opcode;
                 this.mutators = mutators;
             }
 
-            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            public override Tlcs900Instruction Decode(uint b, Tlcs900Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {
                     if (!m(b, dasm))
                         return dasm.CreateInvalidInstruction();
                 }
-                bool swap = dasm.ops.Count == 2;
+                dasm.ops.Reverse();
                 return new Tlcs900Instruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     Address = dasm.addr,
-                    op1 = swap ? dasm.ops[1] : dasm.ops[0],
-                    op2 = swap ? dasm.ops[0] : null
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }
 
-        private class LdirOpRec : OpRecBase
+        private class LdirDecoder : Decoder
         {
-            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            public override Tlcs900Instruction Decode(uint b, Tlcs900Disassembler dasm)
             {
                 return new Tlcs900Instruction
                 {
-                    Opcode = dasm.opSize.Size == 2 ? Opcode.ldirw : Opcode.ldir,
+                    Mnemonic = dasm.opSize.Size == 2 ? Opcode.ldirw : Opcode.ldir,
                     InstructionClass = InstrClass.Linear,
+                    Operands = new MachineOperand[0],
                     Address = dasm.addr
                 };
             }
         }
 
-        private static OpRec Instr(Opcode opcode, params Mutator<Tlcs900Disassembler>[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, params Mutator<Tlcs900Disassembler>[] mutators)
         {
-            return new OpRec(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        private static OpRec Instr(Opcode opcode, InstrClass iclass, params Mutator<Tlcs900Disassembler>[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<Tlcs900Disassembler>[] mutators)
         {
-            return new OpRec(opcode, iclass, mutators);
+            return new InstrDecoder(opcode, iclass, mutators);
         }
 
         private static int[] imm3Const = new int[8]
@@ -720,7 +709,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             1, 2, 4
         };
 
-        private static OpRecBase[] opRecs = {
+        private static Decoder[] opRecs = {
             // 00
             Instr(Opcode.nop, InstrClass.Padding|InstrClass.Zero),
             Instr(Opcode.invalid),
@@ -882,65 +871,65 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Instr(Opcode.jr, C,jw),
             Instr(Opcode.jr, C,jw),
             // 80
-            new MemOpRec(Mb),
-            new MemOpRec(Mb),
-            new MemOpRec(Mb),
-            new MemOpRec(Mb),
+            new MemDecoder(Mb),
+            new MemDecoder(Mb),
+            new MemDecoder(Mb),
+            new MemDecoder(Mb),
 
-            new MemOpRec(Mb),
-            new MemOpRec(Mb),
-            new MemOpRec(Mb),
-            new MemOpRec(Mb),
+            new MemDecoder(Mb),
+            new MemDecoder(Mb),
+            new MemDecoder(Mb),
+            new MemDecoder(Mb),
 
-            new MemOpRec(Nb),
-            new MemOpRec(Nb),
-            new MemOpRec(Nb),
-            new MemOpRec(Nb),
+            new MemDecoder(Nb),
+            new MemDecoder(Nb),
+            new MemDecoder(Nb),
+            new MemDecoder(Nb),
 
-            new MemOpRec(Nb),
-            new MemOpRec(Nb),
-            new MemOpRec(Nb),
-            new MemOpRec(Nb),
+            new MemDecoder(Nb),
+            new MemDecoder(Nb),
+            new MemDecoder(Nb),
+            new MemDecoder(Nb),
             // 90
-            new MemOpRec(Mw),
-            new MemOpRec(Mw),
-            new MemOpRec(Mw),
-            new MemOpRec(Mw),
+            new MemDecoder(Mw),
+            new MemDecoder(Mw),
+            new MemDecoder(Mw),
+            new MemDecoder(Mw),
 
-            new MemOpRec(Mw),
-            new MemOpRec(Mw),
-            new MemOpRec(Mw),
-            new MemOpRec(Mw),
+            new MemDecoder(Mw),
+            new MemDecoder(Mw),
+            new MemDecoder(Mw),
+            new MemDecoder(Mw),
 
-            new MemOpRec(Nw),
-            new MemOpRec(Nw),
-            new MemOpRec(Nw),
-            new MemOpRec(Nw),
+            new MemDecoder(Nw),
+            new MemDecoder(Nw),
+            new MemDecoder(Nw),
+            new MemDecoder(Nw),
 
-            new MemOpRec(Nw),
-            new MemOpRec(Nw),
-            new MemOpRec(Nw),
-            new MemOpRec(Nw),
+            new MemDecoder(Nw),
+            new MemDecoder(Nw),
+            new MemDecoder(Nw),
+            new MemDecoder(Nw),
             // A0
-            new MemOpRec(Mx),
-            new MemOpRec(Mx),
-            new MemOpRec(Mx),
-            new MemOpRec(Mx),
+            new MemDecoder(Mx),
+            new MemDecoder(Mx),
+            new MemDecoder(Mx),
+            new MemDecoder(Mx),
 
-            new MemOpRec(Mx),
-            new MemOpRec(Mx),
-            new MemOpRec(Mx),
-            new MemOpRec(Mx),
+            new MemDecoder(Mx),
+            new MemDecoder(Mx),
+            new MemDecoder(Mx),
+            new MemDecoder(Mx),
 
-            new MemOpRec(Nx),
-            new MemOpRec(Nx),
-            new MemOpRec(Nx),
-            new MemOpRec(Nx),
+            new MemDecoder(Nx),
+            new MemDecoder(Nx),
+            new MemDecoder(Nx),
+            new MemDecoder(Nx),
 
-            new MemOpRec(Nx),
-            new MemOpRec(Nx),
-            new MemOpRec(Nx),
-            new MemOpRec(Nx),
+            new MemDecoder(Nx),
+            new MemDecoder(Nx),
+            new MemDecoder(Nx),
+            new MemDecoder(Nx),
             // B0
             new DstOpRec(M_),
             new DstOpRec(M_),
@@ -962,65 +951,65 @@ namespace Reko.Arch.Tlcs.Tlcs900
             new DstOpRec(N_),
             new DstOpRec(N_),
             // C0
-            new MemOpRec(Ob),
-            new MemOpRec(Pb),
-            new MemOpRec(Qb),
-            new MemOpRec(mb),
+            new MemDecoder(Ob),
+            new MemDecoder(Pb),
+            new MemDecoder(Qb),
+            new MemDecoder(mb),
 
-            new MemOpRec(Pre(PrimitiveType.Byte)),
-            new MemOpRec(Post(PrimitiveType.Byte)),
+            new MemDecoder(Pre(PrimitiveType.Byte)),
+            new MemDecoder(Post(PrimitiveType.Byte)),
             Instr(Opcode.invalid),
-            new ExtraRegOprec(PrimitiveType.Byte),
+            new ExtraRegDecoder(PrimitiveType.Byte),
 
-            new RegOpRec(rb),
-            new RegOpRec(rb),
-            new RegOpRec(rb),
-            new RegOpRec(rb),
+            new RegDecoder(rb),
+            new RegDecoder(rb),
+            new RegDecoder(rb),
+            new RegDecoder(rb),
 
-            new RegOpRec(rb),
-            new RegOpRec(rb),
-            new RegOpRec(rb),
-            new RegOpRec(rb),
+            new RegDecoder(rb),
+            new RegDecoder(rb),
+            new RegDecoder(rb),
+            new RegDecoder(rb),
             // D0
-            new MemOpRec(Ow),
-            new MemOpRec(Pw),
-            new MemOpRec(Qw),
-            new MemOpRec(mw),
+            new MemDecoder(Ow),
+            new MemDecoder(Pw),
+            new MemDecoder(Qw),
+            new MemDecoder(mw),
 
-            new MemOpRec(Pre(PrimitiveType.Word16)),
-            new MemOpRec(Post(PrimitiveType.Word16)),
+            new MemDecoder(Pre(PrimitiveType.Word16)),
+            new MemDecoder(Post(PrimitiveType.Word16)),
             Instr(Opcode.invalid),
-            new ExtraRegOprec(PrimitiveType.Word16),
+            new ExtraRegDecoder(PrimitiveType.Word16),
 
-            new RegOpRec(rw),
-            new RegOpRec(rw),
-            new RegOpRec(rw),
-            new RegOpRec(rw),
+            new RegDecoder(rw),
+            new RegDecoder(rw),
+            new RegDecoder(rw),
+            new RegDecoder(rw),
 
-            new RegOpRec(rw),
-            new RegOpRec(rw),
-            new RegOpRec(rw),
-            new RegOpRec(rw),
+            new RegDecoder(rw),
+            new RegDecoder(rw),
+            new RegDecoder(rw),
+            new RegDecoder(rw),
             // E0
-            new MemOpRec(Ox),
-            new MemOpRec(Px),
-            new MemOpRec(Qx),
-            new MemOpRec(mx),
+            new MemDecoder(Ox),
+            new MemDecoder(Px),
+            new MemDecoder(Qx),
+            new MemDecoder(mx),
 
-            new MemOpRec(Pre(PrimitiveType.Word32)),
-            new MemOpRec(Post(PrimitiveType.Word32)),
+            new MemDecoder(Pre(PrimitiveType.Word32)),
+            new MemDecoder(Post(PrimitiveType.Word32)),
             Instr(Opcode.invalid),
-            new ExtraRegOprec(PrimitiveType.Word32),
+            new ExtraRegDecoder(PrimitiveType.Word32),
 
-            new RegOpRec(rx),
-            new RegOpRec(rx),
-            new RegOpRec(rx),
-            new RegOpRec(rx),
+            new RegDecoder(rx),
+            new RegDecoder(rx),
+            new RegDecoder(rx),
+            new RegDecoder(rx),
 
-            new RegOpRec(rx),
-            new RegOpRec(rx),
-            new RegOpRec(rx),
-            new RegOpRec(rx),
+            new RegDecoder(rx),
+            new RegDecoder(rx),
+            new RegDecoder(rx),
+            new RegDecoder(rx),
 
             // F0
             new DstOpRec(O_),

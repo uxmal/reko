@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -280,7 +280,7 @@ namespace Reko.Arch.X86
             if (instrs[0].code == Opcode.mov && 
                 instrs[1].code == Opcode.ret)
             {
-                if (!(instrs[0].op2 is MemoryOperand mop))
+                if (!(instrs[0].Operands[1] is MemoryOperand mop))
                     return null;
                 if (mop.Base != StackRegister)
                     return null;
@@ -289,9 +289,9 @@ namespace Reko.Arch.X86
                 if (mop.Index != null && mop.Index != RegisterStorage.None)
                     return null;
 
-                if (instrs[1].op1 != null)
+                if (instrs[1].Operands.Length > 0)
                     return null; 
-                var reg = binder.EnsureRegister(((RegisterOperand)instrs[0].op1).Register);
+                var reg = binder.EnsureRegister(((RegisterOperand)instrs[0].Operands[0]).Register);
                 var rtls = new List<RtlInstruction>();
                 var m = new RtlEmitter(rtls);
                 m.Assign(reg, addrContinuation);

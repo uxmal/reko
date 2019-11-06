@@ -42,11 +42,11 @@ namespace Reko.Arch.PowerPC
             var a = (PowerPcInstruction)x;
             var b = (PowerPcInstruction)y;
             return
-                Compare(a.op1, b.op1) &&
-                Compare(a.op2, b.op2) &&
-                Compare(a.op3, b.op3) &&
-                Compare(a.op4, b.op4) &&
-                Compare(a.op5, b.op5);
+                Compare(a.Operands[0], b.Operands[0]) &&
+                Compare(a.Operands[1], b.Operands[1]) &&
+                Compare(a.Operands[2], b.Operands[2]) &&
+                Compare(a.Operands[3], b.Operands[3]) &&
+                Compare(a.Operands[4], b.Operands[4]);
         }
 
         private bool Compare(MachineOperand opA, MachineOperand opB)
@@ -96,11 +96,11 @@ namespace Reko.Arch.PowerPC
         {
             var i = (PowerPcInstruction)instr;
             return
-                OperandHash(i.op1) * 23 ^
-                OperandHash(i.op2) * 29 ^
-                OperandHash(i.op3) * 9 ^
-                OperandHash(i.op4) * 7 ^
-                OperandHash(i.op5) * 3;
+                OperandHash(i.Operands[0]) * 23 ^
+                OperandHash(i.Operands[1]) * 29 ^
+                OperandHash(i.Operands[2]) * 9 ^
+                OperandHash(i.Operands[3]) * 7 ^
+                OperandHash(i.Operands[4]) * 3;
         }
 
         private int OperandHash(MachineOperand op)

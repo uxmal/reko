@@ -46,13 +46,8 @@ namespace Reko.UnitTests.Mocks
         }
 
         public override int OpcodeAsInteger { get { return (int)operation; } }
-        public Operation Operation { get { return operation; } }
-        public MachineOperand[] Operands { get { return ops; } }
+        public Operation Mnemonic { get { return operation; } }
 
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

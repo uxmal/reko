@@ -38,7 +38,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteFbcc(ConditionCode cc)
         {
-            var addr = ((M68kAddressOperand)instr.op1).Address;
+            var addr = ((M68kAddressOperand)instr.Operand__0).Address;
             if (cc == ConditionCode.NEVER)
             {
                 m.Nop();
@@ -60,14 +60,14 @@ namespace Reko.Arch.M68k
             rtlc = InstrClass.ConditionalTransfer;
             m.Branch(fnTest(
                 binder.EnsureRegister(Registers.fpsr)),
-                ((M68kAddressOperand)instr.op1).Address,
+                ((M68kAddressOperand)instr.Operand__0).Address,
                 InstrClass.ConditionalTransfer);
         }
 
         private void RewriteFBinOp(Func<Expression, Expression, Expression> binOpGen)
         {
-            var opSrc = orw.RewriteSrc(instr.op1, instr.Address);
-            var opDst = orw.RewriteDst(instr.op2, instr.Address, opSrc, binOpGen);
+            var opSrc = orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var opDst = orw.RewriteDst(instr.Operand__1, instr.Address, opSrc, binOpGen);
             if (opDst == null)
             {
                 EmitInvalid();
@@ -78,7 +78,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
         {
-            var op = orw.RewriteUnary(instr.op1, instr.Address, instr.dataWidth, unaryOpGen);
+            var op = orw.RewriteUnary(instr.Operand__0, instr.Address, instr.dataWidth, unaryOpGen);
             m.Assign(FpuFlagGroup(), m.Cond(op));
         }
 
@@ -93,15 +93,15 @@ namespace Reko.Arch.M68k
 
         private void RewriteFcmp()
         {
-            var opSrc = orw.RewriteSrc(instr.op1, instr.Address);
-            var opDst = orw.RewriteSrc(instr.op2, instr.Address);
+            var opSrc = orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var opDst = orw.RewriteSrc(instr.Operand__1, instr.Address);
             m.Assign(FpuFlagGroup(), m.Cond(m.ISub(opDst, opSrc)));
         }
 
         private void RewriteFmove()
         {
-            var opSrc = orw.RewriteSrc(instr.op1, instr.Address);
-            var opDst = orw.RewriteDst(instr.op2, instr.Address, opSrc, MaybeCastFpuArgs);
+            var opSrc = orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var opDst = orw.RewriteDst(instr.Operand__1, instr.Address, opSrc, MaybeCastFpuArgs);
             if (opDst == null)
             {
                 EmitInvalid();
@@ -112,7 +112,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteFmovecr()
         {
-            var opSrc = (M68kImmediateOperand)instr.op1;
+            var opSrc = (M68kImmediateOperand)instr.Operand__0;
             int n = opSrc.Constant.ToInt32();
             Expression src;
             if (fpuRomConstants.TryGetValue(n, out double d))
@@ -124,7 +124,7 @@ namespace Reko.Arch.M68k
             {
                 src = host.PseudoProcedure("__fmovecr", PrimitiveType.Real64, opSrc.Constant);
             }
-            var dst = orw.RewriteSrc(instr.op2, instr.Address);
+            var dst = orw.RewriteSrc(instr.Operand__1, instr.Address);
             m.Assign(dst, src);
             m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(dst));
         }
@@ -132,8 +132,8 @@ namespace Reko.Arch.M68k
         private void RewriteFasin()
         {
             //$TODO: #include <math.h>
-            var src = orw.RewriteSrc(instr.op1, instr.Address);
-            var dst = orw.RewriteDst(instr.op2, instr.Address, src, (s, d) =>
+            var src = orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var dst = orw.RewriteDst(instr.Operand__1, instr.Address, src, (s, d) =>
                 host.PseudoProcedure("asin", s.DataType, s));
         }
 
@@ -143,24 +143,24 @@ namespace Reko.Arch.M68k
             // to zero.
             // http://en.cppreference.com/w/c/numeric/math/trunc
             //$TODO: #include <math.h>
-            var src = orw.RewriteSrc(instr.op1, instr.Address);
-            var dst = orw.RewriteDst(instr.op2, instr.Address, src, (s, d) =>
+            var src = orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var dst = orw.RewriteDst(instr.Operand__1, instr.Address, src, (s, d) =>
                 host.PseudoProcedure("trunc", s.DataType, s));
         }
 
         private void RewriteFsqrt()
         {
             //$TODO: #include <math.h>
-            var src = orw.RewriteSrc(instr.op1, instr.Address);
-            var dst = orw.RewriteDst(instr.op2, instr.Address, src, (s, d) =>
+            var src = orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var dst = orw.RewriteDst(instr.Operand__1, instr.Address, src, (s, d) =>
                 host.PseudoProcedure("sqrt", s.DataType, s));
         }
 
         private void RewriteFtan()
         {
             //$TODO: #include <math.h>
-            var src = orw.RewriteSrc(instr.op1, instr.Address);
-            var dst = orw.RewriteDst(instr.op2, instr.Address, src, (s, d) =>
+            var src = orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var dst = orw.RewriteDst(instr.Operand__1, instr.Address, src, (s, d) =>
                 host.PseudoProcedure("tan", s.DataType, s));
         }
 

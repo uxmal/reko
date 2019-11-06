@@ -64,10 +64,10 @@ namespace Reko.Arch.Arm.AArch32
         protected virtual void PostRewrite() { }
         protected virtual void RewriteIt() { }
 
-        MachineOperand Dst() => instr.ops[0];
-        MachineOperand Src1() => instr.ops[1];
-        MachineOperand Src2() => instr.ops[2];
-        MachineOperand Src3() => instr.ops[3];
+        MachineOperand Dst() => instr.Operands[0];
+        MachineOperand Src1() => instr.Operands[1];
+        MachineOperand Src2() => instr.Operands[2];
+        MachineOperand Src3() => instr.Operands[3];
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -891,7 +891,7 @@ namespace Reko.Arch.Arm.AArch32
 
         Expression MaybeShiftOperand(Expression exp, MachineOperand op)
         {
-            if (op != instr.ops[instr.ops.Length - 1])
+            if (op != instr.Operands[instr.Operands.Length - 1])
                 return exp;
             if (instr.ShiftType == Opcode.Invalid)
                 return exp;
@@ -1048,7 +1048,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteIntrinsic(string name, Domain returnDomain)
         {
-            var args = instr.ops.Skip(1).Select(o => Operand(o)).ToArray();
+            var args = instr.Operands.Skip(1).Select(o => Operand(o)).ToArray();
             var dst = Operand(Dst());
             var dtRet = PrimitiveType.Create(returnDomain, Dst().Width.BitSize);
             var intrinsic = host.PseudoProcedure(name, dtRet, args);

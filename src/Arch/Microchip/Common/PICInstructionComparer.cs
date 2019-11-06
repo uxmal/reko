@@ -141,13 +141,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             bool retval = true;
             if (instrA.NumberOfOperands > 0)
             {
-                retval = CompareOperands(instrA.op1, instrB.op1);
+                retval = CompareOperands(instrA.Operand__0, instrB.Operand__0);
                 if (retval && instrA.NumberOfOperands > 1)
                 {
-                    retval = CompareOperands(instrA.op2, instrB.op2);
+                    retval = CompareOperands(instrA.Operand__1, instrB.Operand__1);
                     if (retval && instrA.NumberOfOperands > 2)
                     {
-                        retval = CompareOperands(instrA.op3, instrB.op3);
+                        retval = CompareOperands(instrA.Operand__2, instrB.Operand__2);
                     }
                 }
             }
@@ -160,10 +160,10 @@ namespace Reko.Arch.MicrochipPIC.Common
             int hash = instr.NumberOfOperands.GetHashCode();
             if (instr.NumberOfOperands > 0)
             {
-                hash = hash * 23 + GetHashCode(instr.op1);
+                hash = hash * 23 + GetHashCode(instr.Operand__0);
                 if (instr.NumberOfOperands > 1)
                 {
-                    hash = hash * 17 + GetHashCode(instr.op2);
+                    hash = hash * 17 + GetHashCode(instr.Operand__1);
                 }
             }
             return hash;

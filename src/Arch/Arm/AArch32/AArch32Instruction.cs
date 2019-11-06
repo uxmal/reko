@@ -63,12 +63,12 @@ namespace Reko.Arch.Arm.AArch32
 
             public static (MachineOperand[], bool) Shift(AArch32Instruction i)
             {
-                return (i.ops.Skip(1).ToArray(), false);
+                return (i.Operands.Skip(1).ToArray(), false);
             }
 
             public static (MachineOperand[], bool) FirstOp(AArch32Instruction i)
             {
-                return (i.ops.Take(1).ToArray(), false);
+                return (i.Operands.Take(1).ToArray(), false);
             }
         }
 
@@ -88,7 +88,6 @@ namespace Reko.Arch.Arm.AArch32
 
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
-        public MachineOperand[] ops { get; set; }
 
         public override int OpcodeAsInteger => (int) opcode;
 
@@ -98,14 +97,6 @@ namespace Reko.Arch.Arm.AArch32
         /// </summary>
         public abstract Address ComputePcRelativeAddress(MemoryOperand mem);
 
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (0 <= i && i < ops.Length)
-                return ops[i];
-            else
-                return null;
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -158,36 +149,36 @@ namespace Reko.Arch.Arm.AArch32
 
         public bool IsStackPointer(int iOp)
         {
-            return ops[iOp] is RegisterOperand r && r.Register == Registers.sp;
+            return Operands[iOp] is RegisterOperand r && r.Register == Registers.sp;
         }
 
         public bool IsSinglePop()
         {
-            return ops[1] is MemoryOperand mem &&
+            return Operands[1] is MemoryOperand mem &&
                 mem.BaseRegister == Registers.sp &&
                 this.Writeback && 
                 !mem.PreIndex &&
                 mem.Offset != null &&
                 mem.Add &&
-                mem.Offset.ToInt32() == ops[0].Width.Size;
+                mem.Offset.ToInt32() == Operands[0].Width.Size;
         }
 
         public bool IsSinglePush()
         {
-            return ops[1] is MemoryOperand mem &&
+            return Operands[1] is MemoryOperand mem &&
                 mem.BaseRegister == Registers.sp &&
                 this.Writeback &&
                 mem.PreIndex &&
                 mem.Offset != null &&
                 !mem.Add &&
-                mem.Offset.ToInt32() == ops[0].Width.Size;
+                mem.Offset.ToInt32() == Operands[0].Width.Size;
         }
 
         private (MachineOperand[], bool) RenderMnemonic(MachineInstructionWriter writer)
         {
             var sb = new StringBuilder();
             string sOpcode;
-            var ops = (this.ops, this.Writeback);
+            var ops = (this.Operands, this.Writeback);
             if (aliases.TryGetValue(opcode, out ArmAlias armAlias) &&
                 armAlias.Matches(this))
             {

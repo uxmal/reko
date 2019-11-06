@@ -40,16 +40,8 @@ namespace Reko.Arch.PaRisc
         public CacheHint CacheHint { get; set; }
 
         public ConditionOperand Condition { get; set; }
-        public MachineOperand[] Operands { get; set; }
 
         public override int OpcodeAsInteger => (int) Opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            return (0 <= i && i < Operands.Length)
-                ? Operands[i]
-                : null;
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

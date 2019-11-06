@@ -29,42 +29,21 @@ namespace Reko.Arch.Z80
 {
     public class Z80Instruction : MachineInstruction
     {
-        public Opcode Code;
-        public MachineOperand Op1;
-        public MachineOperand Op2;
+        public Opcode Mnemonic;
 
-        public override int OpcodeAsInteger => (int)Code;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (i == 0)
-                return Op1;
-            else if (i == 1)
-                return Op2;
-            else
-                return null;
-        }
+        public override int OpcodeAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (Code == Opcode.ex_af)
+            if (Mnemonic == Opcode.ex_af)
             {
                 writer.WriteOpcode("ex");
                 writer.Tab();
                 writer.WriteString("af,af'");
                 return;
             }
-            writer.WriteOpcode(Code.ToString());
-            if (Op1 != null)
-            {
-                writer.Tab();
-                Op1.Write(writer, options);
-                if (Op2 != null)
-                {
-                    writer.WriteString(",");
-                    Op2.Write(writer, options);
-                }
-            }
+            writer.WriteOpcode(Mnemonic.ToString());
+            RenderOperands(writer, options);
         }
     }
 }

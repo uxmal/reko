@@ -218,12 +218,12 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected void CondBranch(TestCondition test)
         {
             rtlc = InstrClass.ConditionalTransfer;
-            if (instrCurr.op1 is PICOperandProgMemoryAddress brop)
+            if (instrCurr.Operand__0 is PICOperandProgMemoryAddress brop)
             {
                 m.Branch(test, PICProgAddress.Ptr(brop.CodeTarget.ToUInt32()), rtlc);
                 return;
             }
-            throw new InvalidOperationException($"Wrong PIC program relative address: op1={instrCurr.op1}.");
+            throw new InvalidOperationException($"Wrong PIC program relative address: op1={instrCurr.Operand__0}.");
         }
 
         protected void CondSkipIndirect(Expression cond, FSRIndexedMode indMode, Expression memPtr)
@@ -365,8 +365,8 @@ namespace Reko.Arch.MicrochipPIC.Common
                 return false;
             }
 
-            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out memExpr);
-            dst = (DestIsWreg(instrCurr.op2) ? Wreg : memExpr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operand__0, out memExpr);
+            dst = (DestIsWreg(instrCurr.Operand__1) ? Wreg : memExpr);
             return (indMode, memPtr);
         }
 

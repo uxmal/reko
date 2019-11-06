@@ -85,11 +85,9 @@ namespace Reko.Arch.Sparc
                 }
                 return new SparcInstruction
                 {
-                    Opcode = code,
+                    Mnemonic = code,
                     InstructionClass = iclass,
-                    Op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    Op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
-                    Op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }

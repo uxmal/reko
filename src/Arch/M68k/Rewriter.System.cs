@@ -34,27 +34,27 @@ namespace Reko.Arch.M68k
         private void RewriteBkpt()
         {
             rtlc = InstrClass.Invalid;
-            var src = this.orw.RewriteSrc(instr.op1, instr.Address);
+            var src = this.orw.RewriteSrc(instr.Operand__0, instr.Address);
             m.SideEffect(host.PseudoProcedure("__bkpt", VoidType.Instance, src));
         }
 
         private void RewriteMoves()
         {
-            var src = this.orw.RewriteSrc(instr.op1, instr.Address);
-            var dst = orw.RewriteDst(instr.op2, instr.Address, instr.dataWidth, src, (s, d) =>
+            var src = this.orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var dst = orw.RewriteDst(instr.Operand__1, instr.Address, instr.dataWidth, src, (s, d) =>
                 host.PseudoProcedure("__moves", VoidType.Instance, s));
         }
 
         private void RewritePflushr()
         {
-            var src = this.orw.RewriteSrc(instr.op1, instr.Address);
+            var src = this.orw.RewriteSrc(instr.Operand__0, instr.Address);
             m.SideEffect(host.PseudoProcedure("__pflushr", VoidType.Instance, src));
         }
 
         private void RewritePtest()
         {
-            var src1 = this.orw.RewriteSrc(instr.op1, instr.Address);
-            var src2 = this.orw.RewriteSrc(instr.op2, instr.Address);
+            var src1 = this.orw.RewriteSrc(instr.Operand__0, instr.Address);
+            var src2 = this.orw.RewriteSrc(instr.Operand__1, instr.Address);
             m.SideEffect(host.PseudoProcedure("__ptest", VoidType.Instance, src2, src1));
         }
 

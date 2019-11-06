@@ -32,28 +32,17 @@ namespace Reko.Arch.M68k
     {
         public Opcode code;
         public PrimitiveType dataWidth;
-        public MachineOperand op1;
-        public MachineOperand op2;
-        public MachineOperand op3;
+        public MachineOperand Operand__0;
+        public MachineOperand Operand__1;
+        public MachineOperand Operand__2;
 
         public override int OpcodeAsInteger => (int) code;
 
-        public override MachineOperand GetOperand(int i)
-        {
-            switch (i)
-            {
-            case 0: return op1;
-            case 1: return op2;
-            case 2: return op3;
-            default: return null;
-            }
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (code == Opcode.illegal && op1 != null && writer.Platform != null)
+            if (code == Opcode.illegal && Operand__0 != null && writer.Platform != null)
             {
-                var imm = op1 as M68kImmediateOperand;
+                var imm = Operand__0 as M68kImmediateOperand;
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
@@ -73,18 +62,18 @@ namespace Reko.Arch.M68k
             {
                 writer.WriteOpcode(code.ToString());
             }
-            if (op1 != null)
+            if (Operand__0 != null)
             {
                 writer.Tab();
-                WriteOperand(op1, writer, options);
-                if (op2 != null)
+                WriteOperand(Operand__0, writer, options);
+                if (Operand__1 != null)
                 {
                     writer.WriteChar(',');
-                    WriteOperand(op2, writer, options);
-                    if (op3 != null)
+                    WriteOperand(Operand__1, writer, options);
+                    if (Operand__2 != null)
                     {
                         writer.WriteChar(',');
-                        WriteOperand(op3, writer, options);
+                        WriteOperand(Operand__2, writer, options);
                     }
                 }
             }

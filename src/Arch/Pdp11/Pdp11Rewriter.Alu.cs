@@ -35,7 +35,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
         {
             var src = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
-            var dst = RewriteDst(instr.op1, src, fn);
+            var dst = RewriteDst(instr.Operands[0], src, fn);
             if (dst == null)
             {
                 rtlc = InstrClass.Invalid;
@@ -49,14 +49,14 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteAdd()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, m.IAdd);
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, m.IAdd);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteAshc()
         {
-            var r = ((RegisterOperand)instr.op2).Register;
+            var r = ((RegisterOperand)instr.Operands[1]).Register;
             if (r == Registers.pc)
             {
                 m.Invalid();
@@ -64,7 +64,7 @@ namespace Reko.Arch.Pdp11
             }
             var r1 = arch.GetRegister(r.Number + 1);
             var dst = binder.EnsureSequence(r, r1, PrimitiveType.Word32);
-            var sh = RewriteSrc(instr.op1);
+            var sh = RewriteSrc(instr.Operands[0]);
             if (sh == null)
             {
                 m.Invalid();
@@ -93,47 +93,47 @@ namespace Reko.Arch.Pdp11
         private void RewriteAsl()
         {
             var src = Constant.Int16(1);
-            var dst = RewriteDst(instr.op1, src, m.Shl);
+            var dst = RewriteDst(instr.Operands[0], src, m.Shl);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteAsr()
         {
             var src = Constant.Int16(1);
-            var dst = RewriteDst(instr.op1, src, m.Sar);
+            var dst = RewriteDst(instr.Operands[0], src, m.Sar);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteBic()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, (a, b) => m.And(a, m.Comp(b)));
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, (a, b) => m.And(a, m.Comp(b)));
             SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
         private void RewriteBis()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, m.Or);
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, m.Or);
             SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
         private void RewriteBit()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, m.And);
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, m.And);
             SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
         private void RewriteClr(Pdp11Instruction instr, Expression src)
         {
-            var dst = RewriteDst(instr.op1, src, s => s);
+            var dst = RewriteDst(instr.Operands[0], src, s => s);
             SetFlags(dst, 0, FlagM.NF | FlagM.CF | FlagM.VF, FlagM.ZF);
         }
 
         private void RewriteClrSetFlags(Func<Constant> gen)
         {
-            var grf = ((ImmediateOperand)instr.op1).Value.ToByte();
+            var grf = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
             AddFlagAssignment(grf, FlagM.NF, gen);
             AddFlagAssignment(grf, FlagM.ZF, gen);
             AddFlagAssignment(grf, FlagM.VF, gen);
@@ -152,8 +152,8 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteCmp()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteSrc(instr.op2);
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteSrc(instr.Operands[1]);
             var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, m.ISub(dst, src));
             SetFlags(tmp, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
@@ -161,18 +161,18 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteCom()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op1, src, m.Comp);
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[0], src, m.Comp);
             SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, FlagM.CF);
         }
 
         private void RewriteDiv()
         {
-            var reg = ((RegisterOperand)instr.op2).Register;
+            var reg = ((RegisterOperand)instr.Operands[1]).Register;
             var reg1 = arch.GetRegister(reg.Number | 1);
             var reg_reg = binder.EnsureSequence(reg, reg1, PrimitiveType.Int32);
             var dividend = binder.CreateTemporary(PrimitiveType.Int32);
-            var divisor = RewriteSrc(instr.op1);
+            var divisor = RewriteSrc(instr.Operands[0]);
             var quotient = binder.EnsureRegister(reg);
             var remainder = binder.EnsureRegister(reg1);
             m.Assign(dividend, reg_reg);
@@ -183,14 +183,14 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteIncDec(Func<Expression, int, Expression> fn)
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op1, src, s => fn(s, 1));
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[0], src, s => fn(s, 1));
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
         private void RewriteMfpd()
         {
-            var src = RewriteSrc(instr.op1);
+            var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
                 rtlc = InstrClass.Invalid;
@@ -207,7 +207,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteMfpi()
         {
-            var src = RewriteSrc(instr.op1);
+            var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
                 rtlc = InstrClass.Invalid;
@@ -224,7 +224,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteMtpi()
         {
-            var src = RewriteSrc(instr.op1);
+            var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
                 rtlc = InstrClass.Invalid;
@@ -241,23 +241,23 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteMov()
         {
-            var src = RewriteSrc(instr.op1);
+            var src = RewriteSrc(instr.Operands[0]);
             Expression dst;
-            if (instr.op2 is RegisterOperand && instr.DataWidth.Size == 1)
+            if (instr.Operands[1] is RegisterOperand && instr.DataWidth.Size == 1)
             {
-                dst = RewriteDst(instr.op2, src, s => m.Cast(PrimitiveType.Int16, s));
+                dst = RewriteDst(instr.Operands[1], src, s => m.Cast(PrimitiveType.Int16, s));
             }
             else
             {
-                dst = RewriteDst(instr.op2, src, s => s);
+                dst = RewriteDst(instr.Operands[1], src, s => s);
             }
             SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.VF, 0);
         }
 
         private void RewriteMul()
         {
-            var src = RewriteSrc(instr.op1);
-            var reg = ((RegisterOperand)instr.op2).Register;
+            var src = RewriteSrc(instr.Operands[0]);
+            var reg = ((RegisterOperand)instr.Operands[1]).Register;
             // Even numbered register R_2n means result
             // goes into the pair [R_2n:R_2n+1]
             Identifier dst;
@@ -270,28 +270,28 @@ namespace Reko.Arch.Pdp11
             {
                 dst = binder.EnsureRegister(reg);
             }
-            m.Assign(dst, m.SMul(RewriteSrc(instr.op2), src));
+            m.Assign(dst, m.SMul(RewriteSrc(instr.Operands[1]), src));
             SetFlags(dst, FlagM.CF | FlagM.ZF | FlagM.NF, FlagM.VF, 0);
         }
 
         private void RewriteNeg()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op1, src, m.Neg);
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[0], src, m.Neg);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
         private void RewriteRotate(string op)
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op1, src, (a, b) =>
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
                 host.PseudoProcedure(op, instr.DataWidth, a, b));
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteShift()
         {
-            var src = RewriteSrc(instr.op1);
+            var src = RewriteSrc(instr.Operands[0]);
             var immSrc = src as Constant;
             Func<Expression, Expression, Expression> fn = null;
             if (immSrc != null)
@@ -313,21 +313,21 @@ namespace Reko.Arch.Pdp11
                 fn = (a, b) =>
                     host.PseudoProcedure("__shift", instr.DataWidth, a, b);
             }
-            var dst = RewriteDst(instr.op2, src, fn);
+            var dst = RewriteDst(instr.Operands[1], src, fn);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteSub()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, m.ISub);
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, m.ISub);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteStexp()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, e =>
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, e =>
                 host.PseudoProcedure("__stexp", PrimitiveType.Int16, e));
             SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.CF | FlagM.VF, 0);
         }
@@ -337,14 +337,14 @@ namespace Reko.Arch.Pdp11
             var n  = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.NF));
 
             var src = m.ISub(Constant.Int16(0), n);
-            var dst = RewriteDst(instr.op1, src, s => s);
+            var dst = RewriteDst(instr.Operands[0], src, s => s);
             SetFlags(dst, FlagM.ZF, 0, 0);
         }
 
         private void RewriteSwab()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op1, src, e => host.PseudoProcedure("__swab", PrimitiveType.Word16, e));
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[0], src, e => host.PseudoProcedure("__swab", PrimitiveType.Word16, e));
             if (dst == null)
             {
                 m.Invalid();
@@ -356,7 +356,7 @@ namespace Reko.Arch.Pdp11
         }
         private void RewriteTst()
         {
-            var src = RewriteSrc(instr.op1);
+            var src = RewriteSrc(instr.Operands[0]);
             var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, src);
             m.Assign(tmp, m.And(tmp, tmp));
@@ -365,8 +365,8 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteXor()
         {
-            var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, m.Xor);
+            var src = RewriteSrc(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, m.Xor);
             SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.CF | FlagM.VF, 0);
         }
     }

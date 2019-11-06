@@ -131,10 +131,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("001000 00001 00010 1111111111111000");
             Assert.AreEqual("addi\tr2,r1,-00000008", instr.ToString());
-            Assert.AreEqual(Opcode.addi, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r2, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r1, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op3, Constant.Int32(-8), PrimitiveType.Int32);
+            Assert.AreEqual(Opcode.addi, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r2, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r1, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Int32(-8), PrimitiveType.Int32);
         }
 
         [Test]
@@ -142,10 +142,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("001001 00011 00110 1111111111111000");
             Assert.AreEqual("addiu\tr6,r3,-00000008", instr.ToString());
-            Assert.AreEqual(Opcode.addiu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r6, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op3, Constant.Int32(-8), PrimitiveType.Int32);
+            Assert.AreEqual(Opcode.addiu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r6, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Int32(-8), PrimitiveType.Int32);
         }
 
         [Test]
@@ -153,10 +153,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00110 11110 00000 100001");
             Assert.AreEqual("addu\tr30,r3,r6", instr.ToString());
-            Assert.AreEqual(Opcode.addu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r6, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.addu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r6, PrimitiveType.Word32);
         }
 
         [Test]
@@ -164,10 +164,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00110 11110 00000 100100");
             Assert.AreEqual("and\tr30,r3,r6", instr.ToString());
-            Assert.AreEqual(Opcode.and, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r6, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.and, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r6, PrimitiveType.Word32);
         }
 
         [Test]
@@ -175,10 +175,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("001100 00011 00110 1111000000100100");
             Assert.AreEqual("andi\tr6,r3,0000F024", instr.ToString());
-            Assert.AreEqual(Opcode.andi, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r6, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op3, Constant.Word32(0xF024), PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.andi, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r6, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Word32(0xF024), PrimitiveType.Word32);
         }
 
         [Test]
@@ -186,10 +186,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000100 00011 00110 0000000000000001");
             Assert.AreEqual("beq\tr3,r6,00100008", instr.ToString());
-            Assert.AreEqual(Opcode.beq, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r6, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op3, Address.Ptr32(0x100008), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.beq, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r6, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[2], Address.Ptr32(0x100008), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -197,10 +197,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("010100 00011 00110 0000000000000001");
             Assert.AreEqual("beql\tr3,r6,00100008", instr.ToString());
-            Assert.AreEqual(Opcode.beql, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r6, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op3, Address.Ptr32(0x100008), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.beql, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r6, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[2], Address.Ptr32(0x100008), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -208,9 +208,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000001 00011 00001 1111111111111110");
             Assert.AreEqual("bgez\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bgez, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bgez, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -218,9 +218,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000001 00011 10001 1111111111111110");
             Assert.AreEqual("bgezal\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bgezal, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bgezal, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -228,9 +228,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000001 00011 10011 1111111111111110");
             Assert.AreEqual("bgezall\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bgezall, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bgezall, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -238,9 +238,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000001 00011 00011 1111111111111110");
             Assert.AreEqual("bgezl\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bgezl, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bgezl, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -248,9 +248,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000111 00011 00000 1111111111111110");
             Assert.AreEqual("bgtz\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bgtz, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bgtz, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -258,9 +258,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("010111 00011 00000 1111111111111110");
             Assert.AreEqual("bgtzl\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bgtzl, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bgtzl, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -268,9 +268,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000110 00011 00000 1111111111111110");
             Assert.AreEqual("blez\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.blez, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.blez, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -278,9 +278,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("010110 00011 00000 1111111111111110");
             Assert.AreEqual("blezl\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.blezl, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.blezl, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -288,9 +288,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000001 00011 00000 1111111111111110");
             Assert.AreEqual("bltz\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bltz, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bltz, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -298,9 +298,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000001 00011 10000 1111111111111110");
             Assert.AreEqual("bltzal\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bltzal, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bltzal, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -308,9 +308,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000001 00011 10010 1111111111111110");
             Assert.AreEqual("bltzall\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bltzall, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bltzall, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -318,9 +318,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000001 00011 00010 1111111111111110");
             Assert.AreEqual("bltzl\tr3,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bltzl, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bltzl, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -328,10 +328,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000101 00011 00010 1111111111111110");
             Assert.AreEqual("bne\tr3,r2,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bne, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r2, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op3, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bne, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r2, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[2], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -339,10 +339,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("010101 00011 00010 1111111111111110");
             Assert.AreEqual("bnel\tr3,r2,000FFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.bnel, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r2, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op3, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bnel, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r2, PrimitiveType.Word32);
+            VerifyAddressOperand(instr.Operands[2], Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -350,8 +350,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011000101111111111 001101");
             Assert.AreEqual("break\t00018BFF", instr.ToString());
-            Assert.AreEqual(Opcode.@break, instr.opcode);
-            VerifyImmediateOperand(instr.op1, Constant.Word32(0x18BFF), PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.@break, instr.Mnemonic);
+            VerifyImmediateOperand(instr.Operands[0], Constant.Word32(0x18BFF), PrimitiveType.Word32);
         }
 
         [Test]
@@ -360,10 +360,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101100");
             Assert.AreEqual("dadd\tr30,r3,r2", instr.ToString());
-            Assert.AreEqual(Opcode.dadd, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op3, Registers.r2, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.dadd, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r2, PrimitiveType.Word64);
         }
 
         [Test]
@@ -372,10 +372,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("011000 00011 00010 1111000000101100");
             Assert.AreEqual("daddi\tr2,r3,-00000FD4", instr.ToString());
-            Assert.AreEqual(Opcode.daddi, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r2, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word64);
-            VerifyImmediateOperand(instr.op3, Constant.Int64(-0xFD4), PrimitiveType.Int64);
+            Assert.AreEqual(Opcode.daddi, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r2, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word64);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Int64(-0xFD4), PrimitiveType.Int64);
         }
 
         [Test]
@@ -384,10 +384,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("011001 00011 00010 1111000000101100");
             Assert.AreEqual("daddiu\tr2,r3,-00000FD4", instr.ToString());
-            Assert.AreEqual(Opcode.daddiu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r2, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word64);
-            VerifyImmediateOperand(instr.op3, Constant.Int64(-0xFD4), PrimitiveType.Int64);
+            Assert.AreEqual(Opcode.daddiu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r2, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word64);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Int64(-0xFD4), PrimitiveType.Int64);
         }
 
         [Test]
@@ -396,10 +396,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101101");
             Assert.AreEqual("daddu\tr30,r3,r2", instr.ToString());
-            Assert.AreEqual(Opcode.daddu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op3, Registers.r2, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.daddu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r2, PrimitiveType.Word64);
         }
 
         [Test]
@@ -408,9 +408,9 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011110");
             Assert.AreEqual("ddiv\tr3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.ddiv, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.ddiv, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
         }
 
         [Test]
@@ -419,9 +419,9 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011111");
             Assert.AreEqual("ddivu\tr3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.ddivu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.ddivu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
         }
 
         [Test]
@@ -429,9 +429,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011010");
             Assert.AreEqual("div\tr3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.div, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.div, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -439,9 +439,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011011");
             Assert.AreEqual("divu\tr3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.divu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.divu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -450,9 +450,9 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011100");
             Assert.AreEqual("dmult\tr3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.dmult, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.dmult, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
         }
 
         [Test]
@@ -461,9 +461,9 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011101");
             Assert.AreEqual("dmultu\tr3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.dmultu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.dmultu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
         }
 
         [Test]
@@ -472,10 +472,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111000");
             Assert.AreEqual("dsll\tr7,r5,09", instr.ToString());
-            Assert.AreEqual(Opcode.dsll, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.dsll, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
@@ -484,10 +484,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111100");
             Assert.AreEqual("dsll32\tr7,r5,09", instr.ToString());
-            Assert.AreEqual(Opcode.dsll32, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.dsll32, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
@@ -496,10 +496,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00111 00000 010100");
             Assert.AreEqual("dsllv\tr7,r5,r3", instr.ToString());
-            Assert.AreEqual(Opcode.dsllv, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.dsllv, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r3, PrimitiveType.Word64);
         }
 
         [Test]
@@ -508,10 +508,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111011");
             Assert.AreEqual("dsra\tr7,r5,09", instr.ToString());
-            Assert.AreEqual(Opcode.dsra, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.dsra, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
@@ -520,10 +520,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111111");
             Assert.AreEqual("dsra32\tr7,r5,09", instr.ToString());
-            Assert.AreEqual(Opcode.dsra32, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.dsra32, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
@@ -532,10 +532,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00111 00000 010111");
             Assert.AreEqual("dsrav\tr7,r5,r3", instr.ToString());
-            Assert.AreEqual(Opcode.dsrav, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.dsrav, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r3, PrimitiveType.Word64);
         }
 
         [Test]
@@ -544,10 +544,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111010");
             Assert.AreEqual("dsrl\tr7,r5,09", instr.ToString());
-            Assert.AreEqual(Opcode.dsrl, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.dsrl, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
@@ -556,10 +556,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111110");
             Assert.AreEqual("dsrl32\tr7,r5,09", instr.ToString());
-            Assert.AreEqual(Opcode.dsrl32, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.dsrl32, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
@@ -568,10 +568,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00111 00000 010110");
             Assert.AreEqual("dsrlv\tr7,r5,r3", instr.ToString());
-            Assert.AreEqual(Opcode.dsrlv, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.dsrlv, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r3, PrimitiveType.Word64);
         }
 
         [Test]
@@ -580,10 +580,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101110");
             Assert.AreEqual("dsub\tr30,r3,r2", instr.ToString());
-            Assert.AreEqual(Opcode.dsub, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op3, Registers.r2, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.dsub, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r2, PrimitiveType.Word64);
         }
 
         [Test]
@@ -592,10 +592,10 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101111");
             Assert.AreEqual("dsubu\tr30,r3,r2", instr.ToString());
-            Assert.AreEqual(Opcode.dsubu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word64);
-            VerifyRegisterOperand(instr.op3, Registers.r2, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.dsubu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r30, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r2, PrimitiveType.Word64);
         }
 
         [Test]
@@ -603,8 +603,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000010 11111111111111111111111111");
             Assert.AreEqual("j\t0FFFFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.j, instr.opcode);
-            VerifyAddressOperand(instr.op1, Address.Ptr32(0x0FFFFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.j, instr.Mnemonic);
+            VerifyAddressOperand(instr.Operands[0], Address.Ptr32(0x0FFFFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -612,8 +612,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000011 11111111111111111111111111");
             Assert.AreEqual("jal\t0FFFFFFC", instr.ToString());
-            Assert.AreEqual(Opcode.jal, instr.opcode);
-            VerifyAddressOperand(instr.op1, Address.Ptr32(0x0FFFFFFC), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.jal, instr.Mnemonic);
+            VerifyAddressOperand(instr.Operands[0], Address.Ptr32(0x0FFFFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -621,8 +621,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 01001 000000000000000 001000");
             Assert.AreEqual("jr\tr9", instr.ToString());
-            Assert.AreEqual(Opcode.jr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r9, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.jr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r9, PrimitiveType.Word32);
         }
 
         [Test]
@@ -630,9 +630,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 01001 00000 11111 00000 001001");
             Assert.AreEqual("jalr\tra,r9", instr.ToString());
-            Assert.AreEqual(Opcode.jalr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.ra, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r9, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.jalr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.ra, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r9, PrimitiveType.Word32);
         }
 
         [Test]
@@ -640,9 +640,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("100000 01001 00011 1111111111001000");
             Assert.AreEqual("lb\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.lb, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.SByte);
+            Assert.AreEqual(Opcode.lb, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.SByte);
         }
 
         [Test]
@@ -650,9 +650,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("100100 01001 00011 1111111111001000");
             Assert.AreEqual("lbu\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.lbu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.lbu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Byte);
         }
 
         [Test]
@@ -660,9 +660,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("100001 01001 00011 1111111111001000");
             Assert.AreEqual("lh\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.lh, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Int16);
+            Assert.AreEqual(Opcode.lh, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Int16);
         }
 
         [Test]
@@ -670,9 +670,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("100101 01001 00011 1111111111001000");
             Assert.AreEqual("lhu\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.lhu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word16);
+            Assert.AreEqual(Opcode.lhu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word16);
         }
 
         [Test]
@@ -680,9 +680,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("100011 01001 00011 1111111111001000");
             Assert.AreEqual("lw\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.lw, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.lw, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -691,9 +691,9 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleBits("100111 01001 00011 1111111111001000");
             Assert.AreEqual("lwu\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.lwu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.lwu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -701,9 +701,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("100010 01001 00011 1111111111001000");
             Assert.AreEqual("lwl\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.lwl, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.lwl, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -711,9 +711,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("100110 01001 00011 1111111111001000");
             Assert.AreEqual("lwr\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.lwr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.lwr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -740,9 +740,9 @@ namespace Reko.UnitTests.Arch.Mips
             MipsInstruction instr;
             instr = DisassembleBits("110000 01001 00011 1111111111001000");
             Assert.AreEqual("ll\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.ll, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.ll, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -764,9 +764,9 @@ namespace Reko.UnitTests.Arch.Mips
             MipsInstruction instr;
             instr = DisassembleBits("011111 01001 00011 111111100 0 110110");
             Assert.AreEqual("ll\tr3,-0004(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.ll, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x4, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.ll, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x4, PrimitiveType.Word32);
         }
 
         [Test]
@@ -783,9 +783,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("001111 00000 00011 1111111111001000");
             Assert.AreEqual("lui\tr3,-0038", instr.ToString());
-            Assert.AreEqual(Opcode.lui, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op2, Constant.Int16(-0x38), PrimitiveType.Int16);
+            Assert.AreEqual(Opcode.lui, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[1], Constant.Int16(-0x38), PrimitiveType.Int16);
         }
 
         [Test]
@@ -793,8 +793,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00000 00000 01010 00000 010000");
             Assert.AreEqual("mfhi\tr10", instr.ToString());
-            Assert.AreEqual(Opcode.mfhi, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r10, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.mfhi, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
         }
 
         [Test]
@@ -802,8 +802,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00000 00000 01010 00000 010010");
             Assert.AreEqual("mflo\tr10", instr.ToString());
-            Assert.AreEqual(Opcode.mflo, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r10, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.mflo, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
         }
 
         [Test]
@@ -811,8 +811,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 01010 00000 00000 00000 010001");
             Assert.AreEqual("mthi\tr10", instr.ToString());
-            Assert.AreEqual(Opcode.mthi, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r10, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.mthi, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
         }
 
         [Test]
@@ -820,8 +820,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 01010 00000 00000 00000 010011");
             Assert.AreEqual("mtlo\tr10", instr.ToString());
-            Assert.AreEqual(Opcode.mtlo, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r10, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.mtlo, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
         }
 
         [Test]
@@ -829,10 +829,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00001 00101 01010 00000 001011");
             Assert.AreEqual("movn\tr10,r1,r5", instr.ToString());
-            Assert.AreEqual(Opcode.movn, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r10, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r1, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.movn, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r1, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -840,10 +840,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00001 00101 01010 00000 001010");
             Assert.AreEqual("movz\tr10,r1,r5", instr.ToString());
-            Assert.AreEqual(Opcode.movz, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r10, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r1, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.movz, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r10, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r1, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -851,9 +851,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011000");
             Assert.AreEqual("mult\tr3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.mult, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.mult, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -861,9 +861,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011001");
             Assert.AreEqual("multu\tr3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.multu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.multu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -871,10 +871,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00111 00000 100101");
             Assert.AreEqual("or\tr7,r3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.or, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.or, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -882,10 +882,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00111 00000 100111");
             Assert.AreEqual("nor\tr7,r3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.nor, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.nor, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -893,10 +893,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("001101 00011 00101 0011100000100111");
             Assert.AreEqual("ori\tr5,r3,00003827", instr.ToString());
-            Assert.AreEqual(Opcode.ori, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r5, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op3, Constant.Word32(0x3827), PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.ori, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Word32(0x3827), PrimitiveType.Word32);
         }
 
         [Test]
@@ -904,9 +904,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("101000 01001 00011 1111111111001000");
             Assert.AreEqual("sb\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.sb, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.sb, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Byte);
         }
 
         [Test]
@@ -914,9 +914,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("101001 01001 00011 1111111111001000");
             Assert.AreEqual("sh\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.sh, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word16);
+            Assert.AreEqual(Opcode.sh, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word16);
         }
 
         [Test]
@@ -924,9 +924,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("101011 01001 00011 1111111111001000");
             Assert.AreEqual("sw\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.sw, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.sw, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -934,9 +934,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("101010 01001 00011 1111111111001000");
             Assert.AreEqual("swl\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.swl, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.swl, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -944,9 +944,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("101110 01001 00011 1111111111001000");
             Assert.AreEqual("swr\tr3,-0038(r9)", instr.ToString());
-            Assert.AreEqual(Opcode.swr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.swr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -968,9 +968,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("111000 01010 10101 1111111111001000");
             Assert.AreEqual("sc\tr21,-0038(r10)", instr.ToString());
-            Assert.AreEqual(Opcode.sc, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r21, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r10, -0x38, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.sc, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r21, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.Operands[1], Registers.r10, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -988,10 +988,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00111 00000 100110");
             Assert.AreEqual("xor\tr7,r3,r5", instr.ToString());
-            Assert.AreEqual(Opcode.xor, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r5, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.xor, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r7, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r5, PrimitiveType.Word32);
         }
 
         [Test]
@@ -999,10 +999,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("001110 00011 00101 0011100000100111");
             Assert.AreEqual("xori\tr5,r3,00003827", instr.ToString());
-            Assert.AreEqual(Opcode.xori, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r5, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op3, Constant.Word32(0x3827), PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.xori, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[2], Constant.Word32(0x3827), PrimitiveType.Word32);
         }
 
         [Test]
@@ -1010,7 +1010,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0); // nop
             Assert.AreEqual("nop", instr.ToString());
-            Assert.AreEqual(Opcode.nop, instr.opcode);
+            Assert.AreEqual(Opcode.nop, instr.Mnemonic);
         }
 
         [Test]
@@ -1018,10 +1018,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x0144402B);
             Assert.AreEqual("sltu\tr8,r10,r4", instr.ToString());
-            Assert.AreEqual(Opcode.sltu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r8, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r10, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r4, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.sltu, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r8, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r10, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r4, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1029,10 +1029,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x01011004);
             Assert.AreEqual("sllv\tr2,r1,r8", instr.ToString());
-            Assert.AreEqual(Opcode.sllv, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r2, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r1, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r8, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.sllv, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r2, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r1, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[2], Registers.r8, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1040,9 +1040,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x40024800);
             Assert.AreEqual("mfc0\tr2,r9", instr.ToString());
-            Assert.AreEqual(Opcode.mfc0, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r2, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r9, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.mfc0, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r2, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.r9, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1050,9 +1050,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x448C0800);
             Assert.AreEqual("mtc1\tr12,f1", instr.ToString());
-            Assert.AreEqual(Opcode.mtc1, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r12, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.f1, PrimitiveType.Word64);
+            Assert.AreEqual(Opcode.mtc1, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r12, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], Registers.f1, PrimitiveType.Word64);
         }
 
         [Test]
@@ -1060,9 +1060,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0xE7AC0030);
             Assert.AreEqual("swc1\tf12,0030(sp)", instr.ToString());
-            Assert.AreEqual(Opcode.swc1, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.f12, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, Registers.sp, 0x30, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.swc1, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.f12, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.Operands[1], Registers.sp, 0x30, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1070,9 +1070,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x4443F800);
             Assert.AreEqual("cfc1\tr3,FCSR", instr.ToString());
-            Assert.AreEqual(Opcode.cfc1, instr.opcode);
-            VerifyRegisterOperand(instr.op1, this.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, arch.FCSR, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.cfc1, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], this.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], arch.FCSR, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1081,33 +1081,33 @@ namespace Reko.UnitTests.Arch.Mips
             // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
             var instr = DisassembleBits("011111 00000 00011 00000 00000 111011");
             Assert.AreEqual("rdhwr\tr3,00", instr.ToString()); // CPU number
-            Assert.AreEqual(Opcode.rdhwr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op2, Constant.Byte(0x0), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.rdhwr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x0), PrimitiveType.Byte);
 
             instr = DisassembleBits("011111 00000 00011 00001 00000 111011");
             Assert.AreEqual("rdhwr\tr3,01", instr.ToString()); // SYNCI step size
-            Assert.AreEqual(Opcode.rdhwr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op2, Constant.Byte(0x1), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.rdhwr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x1), PrimitiveType.Byte);
 
             instr = DisassembleBits("011111 00000 00011 00010 00000 111011");
             Assert.AreEqual("rdhwr\tr3,02", instr.ToString()); // Cycle counter
-            Assert.AreEqual(Opcode.rdhwr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op2, Constant.Byte(0x2), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.rdhwr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x2), PrimitiveType.Byte);
 
             instr = DisassembleBits("011111 00000 00011 00011 00000 111011");
             Assert.AreEqual("rdhwr\tr3,03", instr.ToString()); // Cycle counter resolution
-            Assert.AreEqual(Opcode.rdhwr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op2, Constant.Byte(0x3), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.rdhwr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x3), PrimitiveType.Byte);
 
             instr = DisassembleBits("011111 00000 00011 11101 00000 111011");
             Assert.AreEqual("rdhwr\tr3,1D", instr.ToString()); // OS-specific, thread local pointer on Linux
-            Assert.AreEqual(Opcode.rdhwr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyImmediateOperand(instr.op2, Constant.Byte(0x1D), PrimitiveType.Byte);
+            Assert.AreEqual(Opcode.rdhwr, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.r3, PrimitiveType.Word32);
+            VerifyImmediateOperand(instr.Operands[1], Constant.Byte(0x1D), PrimitiveType.Byte);
         }
 
         [Test]
@@ -1115,15 +1115,15 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x44C1F800);
             Assert.AreEqual("ctc1\tr1,FCSR", instr.ToString());
-            Assert.AreEqual(Opcode.ctc1, instr.opcode);
-            VerifyRegisterOperand(instr.op1, this.r1, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, arch.FCSR, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.ctc1, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], this.r1, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], arch.FCSR, PrimitiveType.Word32);
 
             instr = DisassembleWord(0x44C3F800);
             Assert.AreEqual("ctc1\tr3,FCSR", instr.ToString());
-            Assert.AreEqual(Opcode.ctc1, instr.opcode);
-            VerifyRegisterOperand(instr.op1, this.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, arch.FCSR, PrimitiveType.Word32);
+            Assert.AreEqual(Opcode.ctc1, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], this.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.Operands[1], arch.FCSR, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1131,9 +1131,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x45000012);
             Assert.AreEqual("bc1f\tcc0,0010004C", instr.ToString());
-            Assert.AreEqual(Opcode.bc1f, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.cc0, PrimitiveType.Bool);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x0010004C), PrimitiveType.Ptr32);
+            Assert.AreEqual(Opcode.bc1f, instr.Mnemonic);
+            VerifyRegisterOperand(instr.Operands[0], Registers.cc0, PrimitiveType.Bool);
+            VerifyAddressOperand(instr.Operands[1], Address.Ptr32(0x0010004C), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -1141,7 +1141,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x46202032);
             Assert.AreEqual("c.eq.d\tcc0,f4,f0", instr.ToString());
-            Assert.AreEqual(Opcode.c_eq_d, instr.opcode);
+            Assert.AreEqual(Opcode.c_eq_d, instr.Mnemonic);
         }
 
         [Test]
@@ -1149,7 +1149,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0xC4230004);
             Assert.AreEqual("lwc1\tf3,0004(r1)", instr.ToString());
-            Assert.AreEqual(Opcode.lwc1, instr.opcode);
+            Assert.AreEqual(Opcode.lwc1, instr.Mnemonic);
         }
 
         [Test]
@@ -1157,11 +1157,11 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x46a00861);
             Assert.AreEqual("cvt.d.l\tf1,f1", instr.ToString());
-            Assert.AreEqual(Opcode.cvt_d_l, instr.opcode);
+            Assert.AreEqual(Opcode.cvt_d_l, instr.Mnemonic);
 
             instr = DisassembleWord(0x46200820);
             Assert.AreEqual("cvt.s.d\tf0,f1", instr.ToString());
-            Assert.AreEqual(Opcode.cvt_s_d, instr.opcode);
+            Assert.AreEqual(Opcode.cvt_s_d, instr.Mnemonic);
         }
 
         [Test]

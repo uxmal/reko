@@ -72,7 +72,7 @@ namespace Reko.Arch.Z80
             return new Z80Instruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Code = Opcode.illegal,
+                Mnemonic = Opcode.illegal,
                 Address = this.addr,
             };
         }
@@ -125,16 +125,8 @@ namespace Reko.Arch.Z80
                         return disasm.CreateInvalidInstruction();
                 }
                 instr.InstructionClass = IClass;
-                instr.Code = Z80Opcode;
-                var ops = disasm.ops;
-                if (ops.Count > 0)
-                {
-                    instr.Op1 = ops[0];
-                    if (ops.Count > 1)
-                    {
-                        instr.Op2 = ops[1];
-                    }
-                }
+                instr.Mnemonic = Z80Opcode;
+                instr.Operands = disasm.ops.ToArray();
                 return instr;
             }
         }
@@ -162,19 +154,25 @@ namespace Reko.Arch.Z80
                     {
                     default: throw new NotImplementedException();
                     case 1:
-                        instr.Code = Opcode.bit;
-                        instr.Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07)));
-                            instr.Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte);
+                        instr.Mnemonic = Opcode.bit;
+                        instr.Operands = new MachineOperand[] {
+                            new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
+                            new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
+                        };
                         return instr;
                     case 2:
-                        instr.Code = Opcode.res;
-                        instr.Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07)));
-                        instr.Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte);
+                        instr.Mnemonic = Opcode.res;
+                        instr.Operands = new MachineOperand[] {
+                            new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
+                            new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
+                        };
                         return instr;
                     case 3:
-                        instr.Code = Opcode.set;
-                        instr.Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07)));
-                        instr.Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte);
+                        instr.Mnemonic = Opcode.set;
+                        instr.Operands = new MachineOperand[] {
+                            new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
+                            new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
+                        };
                         return instr;
                     }
                 }
@@ -213,25 +211,24 @@ namespace Reko.Arch.Z80
                 {
                 default: throw new InvalidOperationException();
                 case 0:
-                    dasm.instr.Code = cbOpcodes[y];
+                    dasm.instr.Mnemonic = cbOpcodes[y];
                     break;
                 case 1:
-                    dasm.instr.Code = Opcode.bit;
+                    dasm.instr.Mnemonic = Opcode.bit;
                     dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 case 2:
-                    dasm.instr.Code = Opcode.res;
+                    dasm.instr.Mnemonic = Opcode.res;
                     dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 case 3:
-                    dasm.instr.Code = Opcode.set;
+                    dasm.instr.Mnemonic = Opcode.set;
                     dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 }
                 if (!cbFormats[op & 0x07](op, dasm))
                     return dasm.CreateInvalidInstruction();
-                dasm.instr.Op1 = dasm.ops[0];
-                dasm.instr.Op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null;
+                dasm.instr.Operands = dasm.ops.ToArray();
                 return dasm.instr;
             }
         }

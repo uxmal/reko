@@ -57,11 +57,6 @@ namespace Reko.Arch.Arm.AArch64
             get { return info.Opcode; }
         }
 
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotSupportedException();
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             nInstr.Render(writer, options);
@@ -70,29 +65,23 @@ namespace Reko.Arch.Arm.AArch64
 
     public class AArch64Instruction : MachineInstruction
     {
-        public Opcode opcode;
-        public MachineOperand[] ops;
+        public Opcode Mnemonic;
         public Opcode shiftCode;
         public MachineOperand shiftAmount;
         public VectorData vectorData;
 
-        public override int OpcodeAsInteger => (int)opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            return 0 <= i && i < ops.Length ? ops[i] : null;
-        }
+        public override int OpcodeAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             int iOp = WriteOpcode(writer);
-            if (ops == null || ops.Length == 0)
+            if (Operands == null || Operands.Length == 0)
                 return;
             writer.Tab();
-            RenderOperand(ops[iOp++], writer, options);
-            for (; iOp < ops.Length; ++iOp)
+            RenderOperand(Operands[iOp++], writer, options);
+            for (; iOp < Operands.Length; ++iOp)
             {
-                var op = ops[iOp];
+                var op = Operands[iOp];
                 writer.WriteChar(',');
                 RenderOperand(op, writer, options);
             }
@@ -108,12 +97,12 @@ namespace Reko.Arch.Arm.AArch64
 
         private int WriteOpcode(MachineInstructionWriter writer)
         {
-            if (opcode == Opcode.b && ops[0] is ConditionOperand cop)
+            if (Mnemonic == Opcode.b && Operands[0] is ConditionOperand cop)
             {
                 writer.WriteOpcode($"b.{cop.Condition.ToString().ToLower()}");
                 return 1;
             }
-            writer.WriteOpcode(opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             return 0;
         }
 

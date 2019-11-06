@@ -65,7 +65,7 @@ namespace Reko.Arch.Mips
                 var rtlInstructions = new List<RtlInstruction>();
                 this.rtlc = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
-                switch (instr.opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     host.Error(
@@ -339,16 +339,16 @@ namespace Reko.Arch.Mips
 
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.opcode))
+            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             int cbInstr = dasm.Current.Length;
             r2.Offset -= cbInstr;
             var uInstr = cbInstr == 2 ? r2.ReadUInt16() : r2.ReadUInt32();
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void MipsRw_{0}()", dasm.Current.opcode);
+            Debug.WriteLine("        public void MipsRw_{0}()", dasm.Current.Mnemonic);
             Debug.WriteLine("        {");
             Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
             Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", cbInstr);

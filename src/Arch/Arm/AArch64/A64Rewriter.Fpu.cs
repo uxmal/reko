@@ -80,8 +80,8 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteFabs()
         {
             //$TODO: #include <math.h>
-            var dst = RewriteOp(instr.ops[0]);
-            var src = RewriteOp(instr.ops[1]);
+            var dst = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(instr.Operands[1]);
             var dtSrc = MakeReal(src.DataType);
             var dtDst = MakeReal(dst.DataType);
             var tmp = binder.CreateTemporary(dtSrc);
@@ -98,28 +98,28 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteFcmp()
         {
-            var left = RewriteOp(instr.ops[0]);
-            var right = RewriteOp(instr.ops[1]);
+            var left = RewriteOp(instr.Operands[0]);
+            var right = RewriteOp(instr.Operands[1]);
             NZCV(m.Cond(m.FSub(left, right)));
         }
 
         private void RewriteFcsel()
         {
-            var eTrue = RewriteOp(instr.ops[1]);
-            var eFalse = RewriteOp(instr.ops[2]);
-            var dst = RewriteOp(instr.ops[0]);
-            var cond = ((ConditionOperand)instr.ops[3]).Condition;
+            var eTrue = RewriteOp(instr.Operands[1]);
+            var eFalse = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
+            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), eTrue, eFalse));
         }
 
         private void RewriteFcvt()
         {
-            if (instr.ops[0] is VectorRegisterOperand)
+            if (instr.Operands[0] is VectorRegisterOperand)
             {
                 throw new NotImplementedException();
             }
-            var dst = RewriteOp(instr.ops[0]);
-            var src = RewriteOp(instr.ops[1]);
+            var dst = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(instr.Operands[1]);
             var dtDst = MakeReal(dst.DataType);
             var dtSrc = MakeReal(src.DataType);
             m.Assign(dst, Convert(dtDst, dtSrc, src));
@@ -129,7 +129,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             //$TODO: #include <math.h>
             var dtSrc = MakeReal(src.DataType);
-            var dtDst = MakeInteger(domain, instr.ops[0].Width);
+            var dtDst = MakeInteger(domain, instr.Operands[0].Width);
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, src);
             var fn = dtSrc.BitSize == 32 ? f32name : f64name;
@@ -165,7 +165,7 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     DataType dt;
                     string fname;
-                    if (instr.ops[0].Width.BitSize == 64)
+                    if (instr.Operands[0].Width.BitSize == 64)
                     {
                         dt = PrimitiveType.Real64;
                         fname = name64;
@@ -182,13 +182,13 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteIntrinsicFTernary(string name32, string name64)
         {
-            var src1 = RewriteOp(instr.ops[1]);
-            var src2 = RewriteOp(instr.ops[2]);
-            var src3 = RewriteOp(instr.ops[3]);
-            var dst = RewriteOp(instr.ops[0]);
+            var src1 = RewriteOp(instr.Operands[1]);
+            var src2 = RewriteOp(instr.Operands[2]);
+            var src3 = RewriteOp(instr.Operands[3]);
+            var dst = RewriteOp(instr.Operands[0]);
             DataType dt;
             string fname;
-            if (instr.ops[0].Width.BitSize == 64)
+            if (instr.Operands[0].Width.BitSize == 64)
             {
                 dt = PrimitiveType.Real64;
                 fname = name64;
@@ -219,23 +219,23 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteFsqrt()
         {
             //$TODO: require "<math.h>"
-            var src = binder.CreateTemporary(MakeReal(instr.ops[1].Width));
-            var dst = RewriteOp(instr.ops[0]);
-            m.Assign(src, RewriteOp(instr.ops[1]));
+            var src = binder.CreateTemporary(MakeReal(instr.Operands[1].Width));
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(src, RewriteOp(instr.Operands[1]));
             var fn = src.DataType.BitSize == 32 ? "sqrtf" : "sqrt";
             m.Assign(dst, host.PseudoProcedure(fn, src.DataType, src));
         }
 
         private void RewriteIcvt(Domain domain)
         {
-            if (instr.ops[0] is VectorRegisterOperand)
+            if (instr.Operands[0] is VectorRegisterOperand)
             {
                 throw new NotImplementedException();
             }
             else
             {
-                var dst = RewriteOp(instr.ops[0]);
-                var src = RewriteOp(instr.ops[1]);
+                var dst = RewriteOp(instr.Operands[0]);
+                var src = RewriteOp(instr.Operands[1]);
                 var dtSrc = MakeInteger(domain, src.DataType);
                 var dtDst = MakeReal(dst.DataType);
                 m.Assign(dst, Convert(dtDst, dtSrc, src));

@@ -1141,7 +1141,7 @@ l00002226:
 l00002228:
 	lea	-$06A8(a5),a0
 	ori.b	#$41,(a0,d1)
-	move.l	a1,(a1,d1*4)
+	move.l	a1,(a2,d1*4)
 	bra	$00002250
 
 l00002238:
@@ -1150,7 +1150,7 @@ l00002238:
 	movea.l	$0008(a1),a0
 	movea.l	(a0),a0
 	movea.w	$0002(a0),a0
-	move.l	a0,(a0,d1*4)
+	move.l	a0,(a2,d1*4)
 
 l00002250:
 	lea	$0014(a1),a1
@@ -2087,14 +2087,14 @@ l000029FE:
 	move.l	$0008(a6),d5
 	move.l	d5,d1
 	lsl.l	#$04,d1
-	move.l	d0,(a0,d1)
+	move.l	d0,(a1,d1)
 	bra	$00002A20
 
 l00002A14:
 	move.l	$0008(a6),d5
 	move.l	d5,d0
 	lsl.l	#$04,d0
-	move.l	a0,(a0,d0)
+	move.l	a0,(a1,d0)
 
 l00002A20:
 	move.l	d5,d0
@@ -2215,9 +2215,9 @@ l00002AFE:
 	movea.l	-$0524(a5),a0
 	movea.l	(a0),a0
 	moveq	#$00,d2
-	move.l	d2,(a2,d3)
-	move.l	d2,($04,a2,d3)
-	move.l	d2,($08,a2,d3)
+	move.l	d2,(a0,d3)
+	move.l	d2,($04,a0,d3)
+	move.l	d2,($08,a0,d3)
 	move.l	(a7)+,d3
 	unlk	a6
 	rts

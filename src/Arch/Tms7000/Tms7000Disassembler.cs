@@ -148,7 +148,7 @@ namespace Reko.Arch.Tms7000
         {
             return new Tms7000Instruction
             {
-                Opcode = Opcode.invalid,
+                Mnemonic = Opcode.invalid,
             };
         }
 
@@ -178,11 +178,9 @@ namespace Reko.Arch.Tms7000
                 }
                 var instr = new Tms7000Instruction
                 {
-                    Opcode = opcode,
+                    Mnemonic = opcode,
                     InstructionClass = iclass,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
-                    op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
+                    Operands = dasm.ops.ToArray()
                 };
                 return instr;
             }

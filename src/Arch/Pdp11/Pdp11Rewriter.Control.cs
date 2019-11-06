@@ -43,7 +43,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteBr()
         {
             this.rtlc = InstrClass.Transfer;
-            m.Goto(((AddressOperand)instr.op1).Address);
+            m.Goto(((AddressOperand)instr.Operands[0]).Address);
         }
 
         private void RewriteBxx(ConditionCode cc, FlagM flags)
@@ -51,14 +51,14 @@ namespace Reko.Arch.Pdp11
             this.rtlc = InstrClass.Transfer;
             m.Branch(
                 m.Test(cc, binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags))),
-                ((AddressOperand)instr.op1).Address,
+                ((AddressOperand)instr.Operands[0]).Address,
                 InstrClass.ConditionalTransfer);
         }
 
         private void RewriteEmt()
         {
             this.rtlc = InstrClass.Transfer;
-            var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
+            var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
             var svc = m.Word16((ushort)(0x8800 | imm));
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
         }
@@ -82,7 +82,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteJmp()
         {
-            var jmpDst = RewriteJmpSrc(instr.op1);
+            var jmpDst = RewriteJmpSrc(instr.Operands[0]);
             if (jmpDst != null)
             {
                 this.rtlc = InstrClass.Transfer;
@@ -97,10 +97,10 @@ namespace Reko.Arch.Pdp11
         private void RewriteJsr()
         {
             //$TODO: do something with regLink.
-            var callDst = RewriteJmpSrc(instr.op2);
+            var callDst = RewriteJmpSrc(instr.Operands[1]);
             if (callDst != null)
             {
-                var regLink = binder.EnsureRegister(((RegisterOperand)instr.op1).Register);
+                var regLink = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
                 if (regLink.Storage != Registers.pc)
                 {
                     var sp = binder.EnsureRegister(Registers.sp);
@@ -132,7 +132,7 @@ namespace Reko.Arch.Pdp11
             var r5 = binder.EnsureRegister(Registers.r5);
             m.Assign(sp, m.IAdd(pc,
                 Constant.Int16((short)(2 *
-                ((ImmediateOperand)instr.op1).Value.ToInt16()))));
+                ((ImmediateOperand)instr.Operands[0]).Value.ToInt16()))));
             m.Assign(tmp, r5);
             m.Assign(r5, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, 2));
@@ -153,7 +153,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteRts()
         {
             this.rtlc = InstrClass.Transfer;
-            var regLink = (RegisterOperand)instr.op1;
+            var regLink = (RegisterOperand)instr.Operands[0];
             if (regLink.Register == Registers.pc)
             {
                 m.Return(2, 0);
@@ -180,7 +180,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteSob()
         {
             this.rtlc = InstrClass.ConditionalTransfer;
-            var reg = RewriteSrc(instr.op1);
+            var reg = RewriteSrc(instr.Operands[0]);
             if (reg == null)
             {
                 m.Invalid();
@@ -188,14 +188,14 @@ namespace Reko.Arch.Pdp11
             else
             {
                 m.Assign(reg, m.ISub(reg, 1));
-                m.Branch(m.Ne0(reg), ((AddressOperand)instr.op2).Address, this.rtlc);
+                m.Branch(m.Ne0(reg), ((AddressOperand)instr.Operands[1]).Address, this.rtlc);
             }
         }
 
         private void RewriteTrap()
         {
             this.rtlc = InstrClass.Transfer;
-            var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
+            var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
             var svc = m.Word16((ushort)(0x8900 | imm));
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
         }

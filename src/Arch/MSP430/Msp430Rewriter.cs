@@ -237,18 +237,18 @@ namespace Reko.Arch.Msp430
         private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
         {
             var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
-            var src = RewriteOp(instr.op1);
-            var dst = RewriteDst(instr.op2, src, (a, b) => fn(fn(a, b), c));
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, (a, b) => fn(fn(a, b), c));
             EmitCc(dst, "V-----NZC");
         }
 
         private void RewriteBinop(Func<Expression,Expression,Expression> fn, string vnzc)
         {
-            var src = RewriteOp(instr.op1);
-            if (instr.op2 is RegisterOperand rop &&
+            var src = RewriteOp(instr.Operands[0]);
+            if (instr.Operands[1] is RegisterOperand rop &&
                 rop.Register == Registers.pc)
             {
-                if (instr.op1 is MemoryOperand mop &&
+                if (instr.Operands[0] is MemoryOperand mop &&
                     mop.PostIncrement &&
                     mop.Base == Registers.sp)
                 {
@@ -256,15 +256,15 @@ namespace Reko.Arch.Msp430
                     return;
                 }
             }
-            var dst = RewriteDst(instr.op2, src, fn);
+            var dst = RewriteDst(instr.Operands[1], src, fn);
             EmitCc(dst, vnzc);
         }
 
         private void RewriteBit()
         {
-            var left = RewriteOp(instr.op2);
-            var right = RewriteOp(instr.op1);
-            var tmp = binder.CreateTemporary(instr.op1.Width);
+            var left = RewriteOp(instr.Operands[1]);
+            var right = RewriteOp(instr.Operands[0]);
+            var tmp = binder.CreateTemporary(instr.Operands[0].Width);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF)));
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             var v = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.VF));
@@ -277,39 +277,39 @@ namespace Reko.Arch.Msp430
         private void RewriteBr()
         {
             rtlc = InstrClass.Transfer;
-            m.Goto(RewriteOp(instr.op1));
+            m.Goto(RewriteOp(instr.Operands[0]));
         }
 
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
             rtlc = InstrClass.ConditionalTransfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags));
-            m.Branch(m.Test(cc, grf), ((AddressOperand)instr.op1).Address, InstrClass.ConditionalTransfer);
+            m.Branch(m.Test(cc, grf), ((AddressOperand)instr.Operands[0]).Address, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteCall()
         {
             rtlc = InstrClass.Transfer | InstrClass.Call;
-            m.Call(RewriteOp(instr.op1), 2);
+            m.Call(RewriteOp(instr.Operands[0]), 2);
         }
 
         private void RewriteCmp()
         {
-            var right = RewriteOp(instr.op1);
-            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.Operands[0]);
+            var left = RewriteOp(instr.Operands[1]);
             EmitCc(m.ISub(left, right), "V-----NZC");
         }
 
         private void RewriteGoto()
         {
             rtlc = InstrClass.Transfer;
-            m.Goto(RewriteOp(instr.op1));
+            m.Goto(RewriteOp(instr.Operands[0]));
         }
 
         private void RewritePopm()
         {
-            int c = ((ImmediateOperand)instr.op1).Value.ToInt32();
-            int iReg = ((RegisterOperand)instr.op2).Register.Number - c + 1;
+            int c = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            int iReg = ((RegisterOperand)instr.Operands[1]).Register.Number - c + 1;
             if (iReg < 0)
             {
                 Invalid();
@@ -327,7 +327,7 @@ namespace Reko.Arch.Msp430
 
         private void RewritePush()
         {
-            var src = RewriteOp(instr.op1);
+            var src = RewriteOp(instr.Operands[0]);
             var sp = binder.EnsureRegister(Registers.sp);
             m.Assign(sp, m.ISub(sp, m.Int32(2)));
             m.Assign(m.Mem16(sp), src);
@@ -335,9 +335,9 @@ namespace Reko.Arch.Msp430
 
         private void RewritePushm()
         {
-            int c = ((ImmediateOperand)instr.op1).Value.ToInt32();
+            int c = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
             var sp = binder.EnsureRegister(Registers.sp);
-            int iReg = ((RegisterOperand)instr.op2).Register.Number;
+            int iReg = ((RegisterOperand)instr.Operands[1]).Register.Number;
             if (iReg < c)
             {
                 Invalid();
@@ -366,23 +366,23 @@ namespace Reko.Arch.Msp430
 
         private void RewriteRra(string flags)
         {
-            var src = RewriteOp(instr.op1);
-            var dst = RewriteDst(instr.op1, src, (a, b) => m.Sar(a, m.Byte(1)));
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[0], src, (a, b) => m.Sar(a, m.Byte(1)));
             EmitCc(dst, flags);
         }
 
         private void RewriteRrax(string flags)
         {
-            var src = RewriteOp(instr.op1);
-            var dst = RewriteDst(instr.op1, src, (a, b) => m.Sar(a, Repeat()));
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[0], src, (a, b) => m.Sar(a, Repeat()));
             EmitCc(dst, flags);
         }
 
         private void RewriteRrc(string flags)
         {
-            var src = RewriteOp(instr.op1);
+            var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(
-                instr.op1,
+                instr.Operands[0],
                 src, 
                 (a, b) => host.PseudoProcedure(
                     PseudoProcedure.RorC, 
@@ -407,15 +407,15 @@ namespace Reko.Arch.Msp430
 
         private void RewriteRrum(string flags)
         {
-            var src = RewriteOp(instr.op1);
-            var dst = RewriteDst(instr.op2, src, (a, b) => m.Shr(a, b));
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[1], src, (a, b) => m.Shr(a, b));
             EmitCc(dst, flags);
         }
 
         private void RewriteSwpb()
         {
-            var src = RewriteOp(instr.op1);
-            var dst = RewriteDst(instr.op1,
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteDst(instr.Operands[0],
                 src,
                 (a, b) => host.PseudoProcedure(
                     "__swpb",
@@ -425,10 +425,10 @@ namespace Reko.Arch.Msp430
 
         private void RewriteSxt(string flags)
         {
-            var src = RewriteOp(instr.op1);
+            var src = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, m.Slice(PrimitiveType.Byte, src, 0));
-            var dst = RewriteDst(instr.op1, tmp, (a, b) => m.Cast(PrimitiveType.Int16, b));
+            var dst = RewriteDst(instr.Operands[0], tmp, (a, b) => m.Cast(PrimitiveType.Int16, b));
             EmitCc(dst, flags);
         }
 

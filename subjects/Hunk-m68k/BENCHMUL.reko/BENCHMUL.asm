@@ -4012,7 +4012,7 @@ l000031E0:
 
 l000031E2:
 	lea	$004E(a7),a0
-	move.b	d5,(a5,d1)
+	move.b	d5,(a0,d1)
 	addq.l	#$01,d1
 	cmp.l	#$00000020,d1
 	bcs	$000031D4

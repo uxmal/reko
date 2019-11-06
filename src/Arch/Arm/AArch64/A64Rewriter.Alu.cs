@@ -37,8 +37,8 @@ namespace Reko.Arch.Arm.AArch64
     {
         private void RewriteAdrp()
         {
-            var dst = RewriteOp(instr.ops[0]);
-            var imm = ((ImmediateOperand)instr.ops[1]).Value;
+            var dst = RewriteOp(instr.Operands[0]);
+            var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             var wBase = instr.Address.ToLinear();
             wBase &= ~0xFFFul;        // Mask out lowest 12 bits.
             wBase = (ulong)((long)wBase + imm.ToInt64());
@@ -51,7 +51,7 @@ namespace Reko.Arch.Arm.AArch64
             Domain domain = Domain.None, 
             Action<Expression> setFlags = null)
         {
-            if (instr.vectorData != VectorData.Invalid || instr.ops[0] is VectorRegisterOperand vr)
+            if (instr.vectorData != VectorData.Invalid || instr.Operands[0] is VectorRegisterOperand vr)
             {
                 RewriteSimdBinary(simdFormat, domain, setFlags);
             }
@@ -67,7 +67,7 @@ namespace Reko.Arch.Arm.AArch64
             Domain domain = Domain.None)
         {
             if (instr.vectorData != VectorData.Invalid || 
-                (instr.ops[0] is VectorRegisterOperand vr && vr.Index < 0))
+                (instr.Operands[0] is VectorRegisterOperand vr && vr.Index < 0))
             {
                 RewriteSimdUnary(simdFormat, domain);
             }
@@ -79,9 +79,9 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteBinary(Func<Expression, Expression, Expression> fn, Action<Expression> setFlags = null)
         {
-            var dst = RewriteOp(instr.ops[0]);
-            var left = RewriteOp(instr.ops[1], true);
-            var right = RewriteOp(instr.ops[2], true);
+            var dst = RewriteOp(instr.Operands[0]);
+            var left = RewriteOp(instr.Operands[1], true);
+            var right = RewriteOp(instr.Operands[2], true);
 
             var toBitSize = left.DataType.BitSize;
             right = MaybeExtendExpression(right, toBitSize);
@@ -119,10 +119,10 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteBfm()
         {
-            var src1 = RewriteOp(instr.ops[1]);
-            var src2 = RewriteOp(instr.ops[2]);
-            var src3 = RewriteOp(instr.ops[3]);
-            var dst = RewriteOp(instr.ops[0]);
+            var src1 = RewriteOp(instr.Operands[1]);
+            var src2 = RewriteOp(instr.Operands[2]);
+            var src3 = RewriteOp(instr.Operands[3]);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, host.PseudoProcedure("__bfm", dst.DataType, src1, src2, src3));
         }
 
@@ -130,12 +130,12 @@ namespace Reko.Arch.Arm.AArch64
         {
             var nzcv = NZCV();
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
-            var cond = Invert(((ConditionOperand) instr.ops[3]).Condition);
+            var cond = Invert(((ConditionOperand) instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
-            m.Assign(nzcv, RewriteOp(instr.ops[2]));
+            m.Assign(nzcv, RewriteOp(instr.Operands[2]));
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
-            var left = RewriteOp(instr.ops[0]);
-            var right = RewriteOp(instr.ops[1]);
+            var left = RewriteOp(instr.Operands[0]);
+            var right = RewriteOp(instr.Operands[1]);
             m.Assign(nzcv, m.Cond(m.IAdd(left, right)));
         }
 
@@ -143,26 +143,26 @@ namespace Reko.Arch.Arm.AArch64
         {
             var nzcv = NZCV();
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
-            var cond = Invert(((ConditionOperand)instr.ops[3]).Condition);
+            var cond = Invert(((ConditionOperand)instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
-            m.Assign(nzcv, RewriteOp(instr.ops[2]));
+            m.Assign(nzcv, RewriteOp(instr.Operands[2]));
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
-            var left = RewriteOp(instr.ops[0]);
-            var right = RewriteOp(instr.ops[1]);
+            var left = RewriteOp(instr.Operands[0]);
+            var right = RewriteOp(instr.Operands[1]);
             m.Assign(nzcv, m.Cond(m.ISub(left, right)));
         }
 
         private void RewriteClz()
         {
-            var src = RewriteOp(instr.ops[1]);
-            var dst = RewriteOp(instr.ops[0]);
+            var src = RewriteOp(instr.Operands[1]);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, host.PseudoProcedure("__clz", MakeInteger(Domain.SignedInt, dst.DataType), src));
         }
 
         private void RewriteCmp()
         {
-            var left = RewriteOp(instr.ops[0]);
-            var right = RewriteOp(instr.ops[1]);
+            var left = RewriteOp(instr.Operands[0]);
+            var right = RewriteOp(instr.Operands[1]);
             right = MaybeExtendExpression(right, left.DataType.BitSize);
             var nzcv = NZCV();
             m.Assign(nzcv, m.Cond(m.ISub(left, right)));
@@ -170,60 +170,60 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteCsel()
         {
-            var srcTrue = RewriteOp(instr.ops[1], true);
-            var srcFalse = RewriteOp(instr.ops[2], true);
-            var dst = RewriteOp(instr.ops[0]);
-            var cond = ((ConditionOperand)instr.ops[3]).Condition;
+            var srcTrue = RewriteOp(instr.Operands[1], true);
+            var srcFalse = RewriteOp(instr.Operands[2], true);
+            var dst = RewriteOp(instr.Operands[0]);
+            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, srcFalse));
         }
 
 
         private void RewriteCsinc()
         {
-            var dst = RewriteOp(instr.ops[0]);
-            var rTrue = ((RegisterOperand)instr.ops[1]).Register;
-            var rFalse = ((RegisterOperand)instr.ops[2]).Register;
-            var cond = ((ConditionOperand)instr.ops[3]).Condition;
+            var dst = RewriteOp(instr.Operands[0]);
+            var rTrue = ((RegisterOperand)instr.Operands[1]).Register;
+            var rFalse = ((RegisterOperand)instr.Operands[2]).Register;
+            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
             if (rTrue.Number == 31 && rFalse.Number == 31)
             {
                 m.Assign(dst, m.Cast(dst.DataType, TestCond(Invert(cond))));
                 return;
             }
-            var src = RewriteOp(instr.ops[1]);
+            var src = RewriteOp(instr.Operands[1]);
             if (rFalse.Number != 31 && rTrue == rFalse)
             {
                 m.BranchInMiddleOfInstruction(TestCond(Invert(cond)), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
                 m.Assign(dst, m.IAdd(src, 1));
                 return;
             }
-            var srcTrue = RewriteOp(instr.ops[1], true);
-            var srcFalse = RewriteOp(instr.ops[2], true);
+            var srcTrue = RewriteOp(instr.Operands[1], true);
+            var srcFalse = RewriteOp(instr.Operands[2], true);
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, m.IAdd(srcFalse, 1)));
         }
 
         private void RewriteCsinv()
         {
-            var srcTrue = RewriteOp(instr.ops[1], true);
-            var srcFalse = RewriteOp(instr.ops[2], true);
-            var dst = RewriteOp(instr.ops[0]);
-            var cond = ((ConditionOperand)instr.ops[3]).Condition;
+            var srcTrue = RewriteOp(instr.Operands[1], true);
+            var srcFalse = RewriteOp(instr.Operands[2], true);
+            var dst = RewriteOp(instr.Operands[0]);
+            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, m.Comp(srcFalse)));
         }
 
         private void RewriteCsneg()
         {
-            var srcTrue = RewriteOp(instr.ops[1], true);
-            var srcFalse = RewriteOp(instr.ops[2], true);
-            var dst = RewriteOp(instr.ops[0]);
-            var cond = ((ConditionOperand)instr.ops[3]).Condition;
+            var srcTrue = RewriteOp(instr.Operands[1], true);
+            var srcFalse = RewriteOp(instr.Operands[2], true);
+            var dst = RewriteOp(instr.Operands[0]);
+            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, m.Neg(srcFalse)));
         }
 
         private void RewriteLoadStorePair(bool load, DataType dtDst = null, DataType dtCast = null)
         {
-            var reg1 = RewriteOp(instr.ops[0], !load);
-            var reg2 = RewriteOp(instr.ops[1], !load);
-            var mem = (MemoryOperand)instr.ops[2];
+            var reg1 = RewriteOp(instr.Operands[0], !load);
+            var reg2 = RewriteOp(instr.Operands[1], !load);
+            var mem = (MemoryOperand)instr.Operands[2];
             Expression regBase = binder.EnsureRegister(mem.Base);
             Expression offset = RewriteEffectiveAddressOffset(mem);
             Expression ea = regBase;
@@ -278,18 +278,18 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteLdr(DataType dt)
         {
-            var dst = RewriteOp(instr.ops[0]);
+            var dst = RewriteOp(instr.Operands[0]);
             Expression ea;
             MemoryOperand mem = null;
             Identifier baseReg = null;
             Expression postIndex = null;
-            if (instr.ops[1] is AddressOperand aOp)
+            if (instr.Operands[1] is AddressOperand aOp)
             {
                 ea = aOp.Address;
             }
             else
             {
-                mem = (MemoryOperand)instr.ops[1];
+                mem = (MemoryOperand)instr.Operands[1];
                 (ea, baseReg) = RewriteEffectiveAddress(mem);
                 if (mem.PreIndex)
                 {
@@ -319,20 +319,20 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMaddSub(Func<Expression, Expression, Expression> op)
         {
-            var op1 = RewriteOp(instr.ops[1]);
-            var op2 = RewriteOp(instr.ops[2]);
-            var op3 = RewriteOp(instr.ops[3]);
-            var dst = RewriteOp(instr.ops[0]);
+            var op1 = RewriteOp(instr.Operands[1]);
+            var op2 = RewriteOp(instr.Operands[2]);
+            var op3 = RewriteOp(instr.Operands[3]);
+            var dst = RewriteOp(instr.Operands[0]);
 
             m.Assign(dst, op(op3, m.IMul(op1, op2)));
         }
 
         private void RewriteMaddl(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
         {
-            var op1 = RewriteOp(instr.ops[1]);
-            var op2 = RewriteOp(instr.ops[2]);
-            var op3 = RewriteOp(instr.ops[3]);
-            var dst = RewriteOp(instr.ops[0]);
+            var op1 = RewriteOp(instr.Operands[1]);
+            var op2 = RewriteOp(instr.Operands[2]);
+            var op3 = RewriteOp(instr.Operands[3]);
+            var dst = RewriteOp(instr.Operands[0]);
 
             m.Assign(dst, m.IAdd(op3, m.Cast(dt, mul(op1, op2))));
         }
@@ -344,16 +344,16 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMovk()
         {
-            var dst = RewriteOp(instr.ops[0]);
-            var imm = ((ImmediateOperand)instr.ops[1]).Value;
+            var dst = RewriteOp(instr.Operands[0]);
+            var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             var shift = ((ImmediateOperand)instr.shiftAmount).Value;
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));
         }
 
         private void RewriteMovn()
         {
-            var src = RewriteOp(instr.ops[1]);
-            var dst = RewriteOp(instr.ops[0]);
+            var src = RewriteOp(instr.Operands[1]);
+            var dst = RewriteOp(instr.Operands[0]);
             if (src is Constant c)
             {
                 src = c.Complement();
@@ -367,31 +367,31 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMovz()
         {
-            var dst = RewriteOp(instr.ops[0]);
-            var imm = ((ImmediateOperand)instr.ops[1]).Value;
+            var dst = RewriteOp(instr.Operands[0]);
+            var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             var shift = ((ImmediateOperand)instr.shiftAmount).Value;
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToInt64() << shift.ToInt32()));
         }
 
         private void RewriteMulh(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
         {
-            var op1 = RewriteOp(instr.ops[1]);
-            var op2 = RewriteOp(instr.ops[2]);
-            var dst = RewriteOp(instr.ops[0]);
+            var op1 = RewriteOp(instr.Operands[1]);
+            var op2 = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
 
             m.Assign(dst, m.Slice(dt, mul(op1, op2), 64));
         }
 
         private void RewriteMull(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
         {
-            if (instr.ops[1] is VectorRegisterOperand)
+            if (instr.Operands[1] is VectorRegisterOperand)
             {
                 RewriteSimdBinary("__mull_{0}", Domain.Integer);
                 return;
             }
-            var op1 = RewriteOp(instr.ops[1]);
-            var op2 = RewriteOp(instr.ops[2]);
-            var dst = RewriteOp(instr.ops[0]);
+            var op1 = RewriteOp(instr.Operands[1]);
+            var op2 = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
 
             m.Assign(dst, m.Cast(dt, mul(op1, op2)));
         }
@@ -477,13 +477,13 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewritePrfm()
         {
-            var imm = ((ImmediateOperand)instr.ops[0]).Value;
+            var imm = ((ImmediateOperand)instr.Operands[0]).Value;
             Expression ea;
-            if (instr.ops[1] is AddressOperand aOp)
+            if (instr.Operands[1] is AddressOperand aOp)
             {
                 ea = aOp.Address;
             }
-            else if (instr.ops[1] is MemoryOperand mem)
+            else if (instr.Operands[1] is MemoryOperand mem)
             {
                 (ea, _) = RewriteEffectiveAddress(mem);
             }
@@ -506,26 +506,26 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteSbfiz()
         {
-            var src1 = RewriteOp(instr.ops[1], true);
-            var src2 = RewriteOp(instr.ops[2], true);
-            var dst = RewriteOp(instr.ops[0]);
+            var src1 = RewriteOp(instr.Operands[1], true);
+            var src2 = RewriteOp(instr.Operands[2], true);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, host.PseudoProcedure("__sbfiz", dst.DataType, src1, src2));
         }
 
         private void RewriteUSbfm(string fnName)
         {
-            var src1 = RewriteOp(instr.ops[1], true);
-            var src2 = RewriteOp(instr.ops[2], true);
-            var src3 = RewriteOp(instr.ops[2], true);
-            var dst = RewriteOp(instr.ops[0]);
+            var src1 = RewriteOp(instr.Operands[1], true);
+            var src2 = RewriteOp(instr.Operands[2], true);
+            var src3 = RewriteOp(instr.Operands[2], true);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, host.PseudoProcedure(fnName, dst.DataType, src1, src2, src3));
         }
 
         private void RewriteStr(PrimitiveType dt)
         {
-            var rSrc = (RegisterOperand)instr.ops[0];
+            var rSrc = (RegisterOperand)instr.Operands[0];
             Expression src = MaybeZeroRegister(rSrc.Register, dt ?? rSrc.Width);
-            var mem = (MemoryOperand)instr.ops[1];
+            var mem = (MemoryOperand)instr.Operands[1];
             var (ea, baseReg) = RewriteEffectiveAddress(mem);
             Expression postIndex = null;
             if (mem.PreIndex)
@@ -554,22 +554,22 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteTest()
         {
-            var op1 = RewriteOp(instr.ops[0], true);
-            var op2 = RewriteOp(instr.ops[1], true);
+            var op1 = RewriteOp(instr.Operands[0], true);
+            var op2 = RewriteOp(instr.Operands[1], true);
             NZ00(m.Cond(m.And(op1, op2)));
         }
 
         private void RewriteUnary(Func<Expression, Expression> fn)
         {
-            var src = RewriteOp(instr.ops[1], true);
-            var dst = RewriteOp(instr.ops[0]);
+            var src = RewriteOp(instr.Operands[1], true);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, fn(src));
         }
 
         private void RewriteUSxt(Domain domDst, int bitSize)
         {
-            var src = RewriteOp(instr.ops[1], true);
-            var dst = RewriteOp(instr.ops[0]);
+            var src = RewriteOp(instr.Operands[1], true);
+            var dst = RewriteOp(instr.Operands[0]);
             var dtSrc = PrimitiveType.Create(domDst, bitSize);
             var dtDst = MakeInteger(domDst, dst.DataType);
             m.Assign(dst, m.Cast(dtDst, m.Cast(dtSrc, src)));

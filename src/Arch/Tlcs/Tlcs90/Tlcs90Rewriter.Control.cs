@@ -31,16 +31,16 @@ namespace Reko.Arch.Tlcs.Tlcs90
     {
         private void RewriteCall()
         {
-            if (instr.op2 != null)
+            if (instr.Operands.Length >= 2)
             {
-                var cc = RewriteCondition((ConditionOperand)instr.op1).Invert();
+                var cc = RewriteCondition((ConditionOperand)instr.Operands[0]).Invert();
                 m.Branch(cc, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
-                instr.op2.Width = PrimitiveType.Ptr16;
-                m.Call(RewriteSrc(instr.op2), 2);
+                instr.Operands[1].Width = PrimitiveType.Ptr16;
+                m.Call(RewriteSrc(instr.Operands[1]), 2);
             }
             else
             {
-                m.Call(RewriteSrc(instr.op1), 2);
+                m.Call(RewriteSrc(instr.Operands[0]), 2);
             }
         }
 
@@ -54,16 +54,16 @@ namespace Reko.Arch.Tlcs.Tlcs90
             MachineOperand op;
             Identifier reg;
             Constant one;
-            if (instr.op2 != null)
+            if (instr.Operands.Length >= 2)
             {
-                reg = (Identifier)RewriteSrc(instr.op1);
-                op = instr.op2;
+                reg = (Identifier)RewriteSrc(instr.Operands[0]);
+                op = instr.Operands[1];
                 one = m.Int16(1);
             }
             else
             {
                 reg = binder.EnsureRegister(Registers.b);
-                op = instr.op1;
+                op = instr.Operands[0];
                 one = Constant.SByte(1);
             }
             m.Assign(reg, m.ISub(reg, one));
@@ -89,21 +89,21 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private void RewriteJp()
         {
             MachineOperand op;
-            if (instr.op2 != null)
+            if (instr.Operands.Length >= 2)
             {
-                var cc = RewriteCondition((ConditionOperand)instr.op1);
-                var addrOp = instr.op2 as AddressOperand;
+                var cc = RewriteCondition((ConditionOperand)instr.Operands[0]);
+                var addrOp = instr.Operands[1] as AddressOperand;
                 if (addrOp != null)
                 {
                     m.Branch(cc, addrOp.Address, InstrClass.ConditionalTransfer);
                     return;
                 }
                 m.Branch(cc.Invert(), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
-                op = instr.op2;
+                op = instr.Operands[1];
             }
             else
             {
-                op = instr.op1;
+                op = instr.Operands[0];
             }
             op.Width = PrimitiveType.Ptr16;
             var dst = RewriteSrc(op);
@@ -112,7 +112,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteRet()
         {
-            if (instr.op2 != null)
+            if (instr.Operands.Length >= 2)
             {
                 EmitUnitTest();
                 Invalid();

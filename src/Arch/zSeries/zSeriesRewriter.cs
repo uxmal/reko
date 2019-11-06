@@ -62,7 +62,7 @@ namespace Reko.Arch.zSeries
                 this.rtlc = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
@@ -132,16 +132,16 @@ namespace Reko.Arch.zSeries
 
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Opcode))
+            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.Opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
 
             Debug.Print("        [Test]");
-            Debug.Print("        public void zSeriesRw_{0}()", dasm.Current.Opcode);
+            Debug.Print("        public void zSeriesRw_{0}()", dasm.Current.Mnemonic);
             Debug.Print("        {");
             Debug.Print("            Given_MachineCode(\"{0}\");", string.Join("", bytes.Select(b => b.ToString("X2"))));
             Debug.Print("            AssertCode(     // {0}", dasm.Current);

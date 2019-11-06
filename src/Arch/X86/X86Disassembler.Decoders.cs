@@ -123,7 +123,7 @@ namespace Reko.Arch.X86
                     }
                     if (!disasm.rdr.TryReadByte(out var op2))
                         return false;
-                    return s_aOpRec[op2].Decode(disasm, op2);
+                    return s_rootDecoders[op2].Decode(disasm, op2);
                 }
                 else
                     return base.Decode(disasm, op);
@@ -147,7 +147,7 @@ namespace Reko.Arch.X86
                 disasm.decodingContext.SegmentOverride = SegFromBits(seg);
                 if (!disasm.rdr.TryReadByte(out var op2))
                     return false;
-                return s_aOpRec[op2].Decode(disasm, op2);
+                return s_rootDecoders[op2].Decode(disasm, op2);
             }
         }
 
@@ -179,8 +179,8 @@ namespace Reko.Arch.X86
                     }
                 }
 
-                Decoder opRec = s_aOpRecGrp[grp * 8 + ((modRm >> 3) & 0x07)];
-                return opRec.Decode(disasm, op);
+                Decoder decoder = s_groupDecoders[grp * 8 + ((modRm >> 3) & 0x07)];
+                return decoder.Decode(disasm, op);
             }
         }
 
@@ -282,14 +282,14 @@ namespace Reko.Arch.X86
                 if (!disasm.TryEnsureModRM(out byte modRM))
                     return false;
                 Decoder decoder;
-                int iOpRec = (op & 0x07) * 0x48;
+                int iDecoder = (op & 0x07) * 0x48;
                 if (modRM < 0xC0)
                 {
-                    decoder = s_aFpDecoders[iOpRec + ((modRM >> 3) & 0x07)];
+                    decoder = s_fpuDecoders[iDecoder + ((modRM >> 3) & 0x07)];
                 }
                 else
                 {
-                    decoder = s_aFpDecoders[iOpRec + modRM - 0xB8];
+                    decoder = s_fpuDecoders[iDecoder + modRM - 0xB8];
                 }
                 return decoder.Decode(disasm, op);
             }
@@ -304,7 +304,7 @@ namespace Reko.Arch.X86
             {
                 if (!disasm.rdr.TryReadByte(out op))
                     return false;
-                return s_aOpRec0F[op].Decode(disasm, op);
+                return s_decoders0F[op].Decode(disasm, op);
             }
         }
 
@@ -318,11 +318,11 @@ namespace Reko.Arch.X86
                 case 0x38:
                     if (!disasm.rdr.TryReadByte(out op2))
                         return false;
-                    return s_aOpRec0F38[op2].Decode(disasm, op2);
+                    return s_decoders0F38[op2].Decode(disasm, op2);
                 case 0x3A:
                     if (!disasm.rdr.TryReadByte(out op2))
                         return false;
-                    return s_aOpRec0F3A[op2].Decode(disasm, op2);
+                    return s_decoders0F3A[op2].Decode(disasm, op2);
                 default: return false;
                 }
             }
@@ -354,7 +354,7 @@ namespace Reko.Arch.X86
                     return false;
                 if (op == 0x38 || op == 0x3A)
                     return false;
-                var instr = s_aOpRec0F[op].Decode(disasm, op);
+                var instr = s_decoders0F[op].Decode(disasm, op);
                 if (!instr)
                     return false;
                 if (!s_mpVex.TryGetValue(disasm.decodingContext.opcode, out Opcode vexCode))
@@ -400,9 +400,9 @@ namespace Reko.Arch.X86
                 Decoder[] decoders;
                 switch (mmmmm)
                 {
-                case 1: decoders = s_aOpRec0F; break;
-                case 2: decoders = s_aOpRec0F38; break;
-                case 3: decoders = s_aOpRec0F3A; break;
+                case 1: decoders = s_decoders0F; break;
+                case 2: decoders = s_decoders0F38; break;
+                case 3: decoders = s_decoders0F3A; break;
                 default: return false;
                 }
                 if (!disasm.rdr.TryReadByte(out op))
@@ -424,7 +424,7 @@ namespace Reko.Arch.X86
                 disasm.decodingContext.F2Prefix = true;
                 if (!disasm.rdr.TryReadByte(out op))
                     return false;
-                return s_aOpRec[op].Decode(disasm, op);
+                return s_rootDecoders[op].Decode(disasm, op);
             }
         }
 
@@ -438,12 +438,12 @@ namespace Reko.Arch.X86
                 {
                     // rep ret idiom.
                     op = disasm.rdr.ReadByte();
-                    return s_aOpRec[b].Decode(disasm, op);
+                    return s_rootDecoders[b].Decode(disasm, op);
                 }
                 disasm.decodingContext.F3Prefix = true;
                 if (!disasm.rdr.TryReadByte(out op))
                     return false;
-                return s_aOpRec[op].Decode(disasm, op);
+                return s_rootDecoders[op].Decode(disasm, op);
             }
         }
 
@@ -458,7 +458,7 @@ namespace Reko.Arch.X86
                 disasm.decodingContext.iWidth = disasm.decodingContext.dataWidth;
                 if (!disasm.rdr.TryReadByte(out byte op2))
                     return false;
-                return s_aOpRec[op2].Decode(disasm, op2);
+                return s_rootDecoders[op2].Decode(disasm, op2);
             }
         }
 
@@ -470,7 +470,7 @@ namespace Reko.Arch.X86
                     ? PrimitiveType.Word32
                     : PrimitiveType.Word16;
                 op = disasm.rdr.ReadByte();
-                return s_aOpRec[op].Decode(disasm, op);
+                return s_rootDecoders[op].Decode(disasm, op);
             }
         }
 

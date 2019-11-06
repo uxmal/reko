@@ -202,27 +202,27 @@ namespace Reko.Arch.PowerPC
         {
             var e = rdr.GetEnumerator();
 
-            if (!e.MoveNext() || (e.Current.Opcode != Opcode.addis && e.Current.Opcode != Opcode.oris))
+            if (!e.MoveNext() || (e.Current.Mnemonic != Opcode.addis && e.Current.Mnemonic != Opcode.oris))
                 return null;
             var addrInstr = e.Current.Address;
-            var reg = ((RegisterOperand)e.Current.op1).Register;
-            var uAddr = ((ImmediateOperand)e.Current.op3).Value.ToUInt32() << 16;
+            var reg = ((RegisterOperand)e.Current.Operands[0]).Register;
+            var uAddr = ((ImmediateOperand)e.Current.Operands[2]).Value.ToUInt32() << 16;
              
-            if (!e.MoveNext() || e.Current.Opcode != Opcode.lwz)
+            if (!e.MoveNext() || e.Current.Mnemonic != Opcode.lwz)
                 return null;
-            if (!(e.Current.op2 is MemoryOperand mem))
+            if (!(e.Current.Operands[1] is MemoryOperand mem))
                 return null;
             if (mem.BaseRegister != reg)
                 return null;
             uAddr = (uint)((int)uAddr + mem.Offset.ToInt32());
-            reg = ((RegisterOperand)e.Current.op1).Register;
+            reg = ((RegisterOperand)e.Current.Operands[0]).Register;
 
-            if (!e.MoveNext() || e.Current.Opcode != Opcode.mtctr)
+            if (!e.MoveNext() || e.Current.Mnemonic != Opcode.mtctr)
                 return null;
-            if (((RegisterOperand)e.Current.op1).Register != reg)
+            if (((RegisterOperand)e.Current.Operands[0]).Register != reg)
                 return null;
 
-            if (!e.MoveNext() || e.Current.Opcode != Opcode.bcctr)
+            if (!e.MoveNext() || e.Current.Mnemonic != Opcode.bcctr)
                 return null;
 
             // We saw a thunk! now try to resolve it.

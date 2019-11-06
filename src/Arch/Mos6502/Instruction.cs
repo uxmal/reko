@@ -30,22 +30,18 @@ namespace Reko.Arch.Mos6502
     public class Instruction : MachineInstruction
     {
         public Opcode Code;
-        public Operand Operand;
+        public Operand Operand__0;
 
         public override int OpcodeAsInteger => (int) Code;
 
-        public override MachineOperand GetOperand(int i)
-        {
-            return i == 0 ? Operand : null;
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Code.ToString());
-            if (Operand != null)
+            if (Operand__0 != null)
             {
                 writer.Tab();
-                Operand.Write(writer, options);
+                Operand__0.Write(writer, options);
             }
         }
 

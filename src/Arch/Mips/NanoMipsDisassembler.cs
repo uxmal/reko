@@ -74,7 +74,7 @@ namespace Reko.Arch.Mips
             return new MipsInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Opcode.illegal
+                Mnemonic = Opcode.illegal
             };
         }
 
@@ -591,11 +591,8 @@ namespace Reko.Arch.Mips
                 var instr = new MipsInstruction
                 {
                     InstructionClass = this.iclass,
-                    opcode = this.mnemonic,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
-                    op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
-                    op4 = dasm.ops.Count > 3 ? dasm.ops[3] : null,
+                    Mnemonic = this.mnemonic,
+                    Operands = dasm.ops.ToArray()
                 };
                 return instr;
             }
@@ -687,11 +684,8 @@ namespace Reko.Arch.Mips
                 var instr = new MipsInstruction
                 {
                     InstructionClass = this.iclass,
-                    opcode = this.mnemonic,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
-                    op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
-                    op4 = dasm.ops.Count > 3 ? dasm.ops[3] : null,
+                    Mnemonic = this.mnemonic,
+                    Operands = dasm.ops.ToArray()
                 };
                 return instr;
             }

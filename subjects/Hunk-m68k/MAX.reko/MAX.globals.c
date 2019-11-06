@@ -18,7 +18,7 @@ Eq_n g_t2BED =
 	};
 ptr32 g_ptr3D90 = 0x00000000;
 struct Eq_n * g_ptr3D94 = &g_t4000;
-union Eq_n * g_ptr3D98 = null;
+struct Eq_n * g_ptr3D98 = null;
 struct Eq_n * g_ptr3D9C = &g_t10202;
 struct Eq_n * g_ptr3DA0 = &g_t3030303;
 Eq_n g_t3DA4 = 

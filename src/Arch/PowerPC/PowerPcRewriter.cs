@@ -71,7 +71,7 @@ namespace Reko.Arch.PowerPC
                 this.rtlInstructions = new List<RtlInstruction>();
                 this.rtlc = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
-                switch (dasm.Current.Opcode)
+                switch (dasm.Current.Mnemonic)
                 {
                 default:
                     host.Error(
@@ -470,15 +470,15 @@ namespace Reko.Arch.PowerPC
         
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Opcode))
+            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.Opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var uInstr = r2.ReadUInt32();
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void PPCRw_{0}()", dasm.Current.Opcode);
+            Debug.WriteLine("        public void PPCRw_{0}()", dasm.Current.Mnemonic);
             Debug.WriteLine("        {");
             Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
             Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);

@@ -187,11 +187,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 get { throw new NotImplementedException(); }
             }
 
-            public override MachineOperand GetOperand(int i)
-            {
-                throw new NotImplementedException();
-            }
-
             public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
             {
                 writer.WriteOpcode("opcode.l");

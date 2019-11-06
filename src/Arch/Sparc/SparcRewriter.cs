@@ -72,14 +72,14 @@ namespace Reko.Arch.Sparc
                 var rtlInstructions = new List<RtlInstruction>();
                 rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
-                switch (instrCur.Opcode)
+                switch (instrCur.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
                     host.Warn(
                         instrCur.Address,
                         "SPARC instruction '{0}' is not supported yet.",
-                        instrCur.Opcode);
+                        instrCur.Mnemonic);
                     goto case Opcode.illegal;
                 case Opcode.illegal:
                     rtlc = InstrClass.Invalid;
@@ -227,15 +227,15 @@ namespace Reko.Arch.Sparc
         //[Conditional("DEBUG")]
         public void EmitUnitTest()
         {
-            if (seen.Contains(instrCur.Opcode))
+            if (seen.Contains(instrCur.Mnemonic))
                 return;
-            seen.Add(instrCur.Opcode);
+            seen.Add(instrCur.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var wInstr = r2.ReadUInt32();
             Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void SparcRw_" + dasm.Current.Opcode + "()");
+            Console.WriteLine("        public void SparcRw_" + dasm.Current.Mnemonic + "()");
             Console.WriteLine("        {");
             Console.Write($"            BuildTest(0x{wInstr:X8}");
             Console.WriteLine(");\t// " + dasm.Current.ToString());

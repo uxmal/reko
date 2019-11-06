@@ -72,8 +72,9 @@ namespace Reko.Arch.Mips
         protected override MipsInstruction CreateInvalidInstruction()
         {
             return new MipsInstruction {
-                opcode = Opcode.illegal,
-                InstructionClass = InstrClass.Invalid
+                Mnemonic = Opcode.illegal,
+                InstructionClass = InstrClass.Invalid,
+                Operands = new MachineOperand[0]
             };
         }
 

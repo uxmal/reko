@@ -26,36 +26,14 @@ namespace Reko.Arch.Alpha
 {
     public class AlphaInstruction : MachineInstruction
     {
-        public Opcode Opcode;
+        public Opcode Mnemonic;
 
-        public override int OpcodeAsInteger => (int)Opcode;
+        public override int OpcodeAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(this.Opcode.ToString());
-            if (Operands.Length == 0)
-                return;
-            writer.Tab();
-            Operands[0].Write(writer, options);
-            if (Operands.Length == 1)
-                return;
-            writer.WriteChar(',');
-            Operands[1].Write(writer, options);
-            if (Operands.Length == 2)
-                return;
-            writer.WriteChar(',');
-            Operands[2].Write(writer, options);
-        }
-
-        private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete("", true)]
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
+            writer.WriteOpcode(this.Mnemonic.ToString());
+            RenderOperands(writer, options);
         }
     }
 }

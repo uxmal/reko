@@ -70,10 +70,10 @@ namespace Reko.Arch.X86
             }
             if (instrs[i].code == Opcode.test)
             {
-                RegisterOperand acc = instrs[i].op1 as RegisterOperand;
+                RegisterOperand acc = instrs[i].Operands[0] as RegisterOperand;
                 if (acc == null)
                     return false;
-                ImmediateOperand imm = instrs[i].op2 as ImmediateOperand;
+                ImmediateOperand imm = instrs[i].Operands[1] as ImmediateOperand;
                 if (imm == null)
                     return false;
                 int mask = imm.Value.ToInt32();

@@ -61,13 +61,13 @@ namespace Reko.Arch.Pdp11
                 this.rtlInstructions = new List<RtlInstruction>();
                 this.rtlc = instr.InstructionClass;
                 m = new RtlEmitter(this.rtlInstructions);
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     host.Warn(
                         instr.Address,
                         "PDP-11 instruction {0} is not supported yet.", 
-                        instr.Opcode);
+                        instr.Mnemonic);
                     rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;

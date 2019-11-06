@@ -66,7 +66,11 @@ namespace Reko.Arch.Alpha
 
         protected override AlphaInstruction CreateInvalidInstruction()
         {
-            return new AlphaInstruction { Opcode = Opcode.invalid, InstructionClass = InstrClass.Invalid };
+            return new AlphaInstruction {
+                Mnemonic = Opcode.invalid,
+                InstructionClass = InstrClass.Invalid,
+                Operands = new MachineOperand[0]
+            };
         }
 
         private AlphaInstruction Nyi(uint uInstr)
@@ -105,7 +109,7 @@ namespace Reko.Arch.Alpha
             {
                 return new AlphaInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[] {
                         dasm.AluRegister(uInstr >> 21),
@@ -131,7 +135,7 @@ namespace Reko.Arch.Alpha
             {
                 return new AlphaInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[]
                     {
@@ -167,7 +171,7 @@ namespace Reko.Arch.Alpha
             {
                 return new AlphaInstruction
                 {
-                    Opcode = opcodes[(uInstr >> 14) & 0x3],
+                    Mnemonic = opcodes[(uInstr >> 14) & 0x3],
                     InstructionClass = iclasses[(uInstr>> 14) & 0x3],
                     Operands = new MachineOperand[]
                     {
@@ -203,7 +207,7 @@ namespace Reko.Arch.Alpha
                 var op2 = AddressOperand.Create(dasm.rdr.Address + offset);
                 return new AlphaInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = InstrClass.ConditionalTransfer,
                     Operands = new MachineOperand[] { op1, op2 }
                 };
@@ -226,7 +230,7 @@ namespace Reko.Arch.Alpha
                 var op2 = AddressOperand.Create(dasm.rdr.Address + offset);
                 return new AlphaInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = InstrClass.ConditionalTransfer,
                     Operands = new MachineOperand[] { op1, op2 }
                 };
@@ -251,7 +255,7 @@ namespace Reko.Arch.Alpha
                 var op3 = dasm.AluRegister(uInstr);
                 return new AlphaInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[] { op1, op2, op3 }
                 };
@@ -312,7 +316,7 @@ namespace Reko.Arch.Alpha
                 var op3 = dasm.FpuRegister(uInstr);
                 return new AlphaInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[] { op1, op2, op3 }
                 };
@@ -333,8 +337,9 @@ namespace Reko.Arch.Alpha
                 if (!opcodes.TryGetValue(uInstr & 0x0000FFFF, out var opcode))
                     return dasm.CreateInvalidInstruction();
                 return new AlphaInstruction {
-                    Opcode = opcode.Item1,
-                    InstructionClass = opcode.Item2
+                    Mnemonic = opcode.Item1,
+                    InstructionClass = opcode.Item2,
+                    Operands = new MachineOperand[0]
                 };
             }
         }
@@ -353,7 +358,7 @@ namespace Reko.Arch.Alpha
                 var op2 = dasm.FpuRegister(uInstr >> 16);
                 return new AlphaInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[] { op1, op2 }
                 };

@@ -31,16 +31,7 @@ namespace Reko.Arch.Vax
     {
         public Opcode Opcode { get; internal set; }
 
-        public MachineOperand[] Operands;
-
         public override int OpcodeAsInteger => (int)Opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (i >= Operands.Length)
-                return null;
-            return Operands[i];
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

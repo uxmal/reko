@@ -33,56 +33,56 @@ namespace Reko.Arch.RiscV
     {
         private void RewriteAuipc()
         {
-            var offset = ((ImmediateOperand)instr.op2).Value.ToInt32() << 12;
+            var offset = ((ImmediateOperand)instr.Opcodes__1).Value.ToInt32() << 12;
             var addr = instr.Address + offset;
-            var dst = RewriteOp(instr.op1);
+            var dst = RewriteOp(instr.Opcodes__0);
             m.Assign(dst, addr);
         }
 
         private void RewriteBranch(Func<Expression, Expression, Expression> fn)
         {
-            var opLeft = RewriteOp(instr.op1);
-            var opRight = RewriteOp(instr.op2);
+            var opLeft = RewriteOp(instr.Opcodes__0);
+            var opRight = RewriteOp(instr.Opcodes__1);
             m.Branch(
                 fn(opLeft, opRight),
-                ((AddressOperand)instr.op3).Address,
+                ((AddressOperand)instr.Opcodes__2).Address,
                 InstrClass.ConditionalTransfer);
         }
 
         private void RewriteCompressedBranch(Func<Expression, Expression, Expression> fn)
         {
-            var op = RewriteOp(instr.op1);
+            var op = RewriteOp(instr.Opcodes__0);
             var zero = Constant.Zero(op.DataType);
             m.Branch(
                 fn(op, zero),
-                ((AddressOperand) instr.op2).Address,
+                ((AddressOperand) instr.Opcodes__1).Address,
                 InstrClass.ConditionalTransfer);
         }
 
         private void RewriteCompressedJ()
         {
-            m.Goto(RewriteOp(instr.op1));
+            m.Goto(RewriteOp(instr.Opcodes__0));
         }
 
 
         private void RewriteCompressedJalr()
         {
-            m.Call(RewriteOp(instr.op1), 0);
+            m.Call(RewriteOp(instr.Opcodes__0), 0);
         }
 
         private void RewriteCompressedJr()
         {
-            var reg = (RegisterOperand) instr.op1;
+            var reg = (RegisterOperand) instr.Opcodes__0;
             if (reg.Register == arch.LinkRegister)
                 m.Return(0, 0);
             else 
-                m.Goto(RewriteOp(instr.op1));
+                m.Goto(RewriteOp(instr.Opcodes__0));
         }
 
         private void RewriteJal()
         {
-            var continuation = ((RegisterOperand)instr.op1).Register;
-            var dst = RewriteOp(instr.op2);
+            var continuation = ((RegisterOperand)instr.Opcodes__0).Register;
+            var dst = RewriteOp(instr.Opcodes__1);
             rtlc = InstrClass.Transfer;
             if (continuation.Number == 0)
             {
@@ -97,10 +97,10 @@ namespace Reko.Arch.RiscV
 
         private void RewriteJalr()
         {
-            var continuation = ((RegisterOperand)instr.op1).Register;
-            var rDst = ((RegisterOperand)instr.op2).Register;
-            var dst = RewriteOp(instr.op2);
-            var off = RewriteOp(instr.op3);
+            var continuation = ((RegisterOperand)instr.Opcodes__0).Register;
+            var rDst = ((RegisterOperand)instr.Opcodes__1).Register;
+            var dst = RewriteOp(instr.Opcodes__1);
+            var off = RewriteOp(instr.Opcodes__2);
             rtlc = InstrClass.Transfer;
             if (!off.IsZero)
             {
@@ -125,7 +125,7 @@ namespace Reko.Arch.RiscV
             else 
             {
                 m.Assign(
-                    RewriteOp(instr.op1),
+                    RewriteOp(instr.Opcodes__0),
                     instr.Address + instr.Length);
                 m.Goto(dst, 0);
             }

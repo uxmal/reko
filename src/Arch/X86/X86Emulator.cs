@@ -192,36 +192,36 @@ namespace Reko.Arch.X86
             {
             default:
                 throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
-            case Opcode.adc: Adc(instr.op1, instr.op2); return;
-            case Opcode.add: Add(instr.op1, instr.op2); return;
-            case Opcode.and: And(instr.op1, instr.op2); return;
-            case Opcode.call: Call(instr.op1); return;
-            case Opcode.cmp: Cmp(instr.op1, instr.op2); return;
-            case Opcode.dec: Dec(instr.op1); return;
+            case Opcode.adc: Adc(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.add: Add(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.and: And(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.call: Call(instr.Operands[0]); return;
+            case Opcode.cmp: Cmp(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.dec: Dec(instr.Operands[0]); return;
             case Opcode.hlt: running = false; return;
-            case Opcode.inc: Inc(instr.op1); return;
-            case Opcode.ja: if ((Flags & (Cmask | Zmask)) == 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
-            case Opcode.jbe: if ((Flags & (Cmask | Zmask)) != 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
-            case Opcode.jc: if ((Flags & Cmask) != 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
-            case Opcode.jmp: Jump(instr.op1); return;
-            case Opcode.jnc: if ((Flags & Cmask) == 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
-            case Opcode.jnz: if ((Flags & Zmask) == 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
-            case Opcode.jz: if ((Flags & Zmask) != 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
-            case Opcode.lea: Write(instr.op1, GetEffectiveAddress((MemoryOperand)instr.op2)); break;
-            case Opcode.loop: Loop(instr.op1); break;
-            case Opcode.mov: Write(instr.op1, Read(instr.op2)); break;
-            case Opcode.or: Or(instr.op1, instr.op2); return;
-            case Opcode.pop: Write(instr.op1, Pop()); return;
+            case Opcode.inc: Inc(instr.Operands[0]); return;
+            case Opcode.ja: if ((Flags & (Cmask | Zmask)) == 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
+            case Opcode.jbe: if ((Flags & (Cmask | Zmask)) != 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
+            case Opcode.jc: if ((Flags & Cmask) != 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
+            case Opcode.jmp: Jump(instr.Operands[0]); return;
+            case Opcode.jnc: if ((Flags & Cmask) == 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
+            case Opcode.jnz: if ((Flags & Zmask) == 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
+            case Opcode.jz: if ((Flags & Zmask) != 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
+            case Opcode.lea: Write(instr.Operands[0], GetEffectiveAddress((MemoryOperand)instr.Operands[1])); break;
+            case Opcode.loop: Loop(instr.Operands[0]); break;
+            case Opcode.mov: Write(instr.Operands[0], Read(instr.Operands[1])); break;
+            case Opcode.or: Or(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.pop: Write(instr.Operands[0], Pop()); return;
             case Opcode.popa: Popa(); return;
-            case Opcode.push: Push(Read(instr.op1)); return;
+            case Opcode.push: Push(Read(instr.Operands[0])); return;
             case Opcode.pusha: Pusha(); return;
-            case Opcode.rol: Rol(instr.op1, instr.op2); return;
+            case Opcode.rol: Rol(instr.Operands[0], instr.Operands[1]); return;
             case Opcode.scasb: Scasb(); return;
-            case Opcode.shl: Shl(instr.op1, instr.op2); return;
-            case Opcode.shr: Shr(instr.op1, instr.op2); return;
-            case Opcode.sub: Sub(instr.op1, instr.op2); return;
-            case Opcode.xor: Xor(instr.op1, instr.op2); return;
-            case Opcode.xchg: Xchg(instr.op1, instr.op2); return;
+            case Opcode.shl: Shl(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.shr: Shr(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.sub: Sub(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.xor: Xor(instr.Operands[0], instr.Operands[1]); return;
+            case Opcode.xchg: Xchg(instr.Operands[0], instr.Operands[1]); return;
             }
         }
 

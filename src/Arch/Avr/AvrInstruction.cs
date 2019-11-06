@@ -45,13 +45,5 @@ namespace Reko.Arch.Avr
                 }
             }
         }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (0 <= i && i < operands.Length)
-                return operands[i];
-            else
-                return null;
-        }
     }
 }

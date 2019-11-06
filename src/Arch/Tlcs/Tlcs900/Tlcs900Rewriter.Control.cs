@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,7 +34,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
     {
         private void RewriteCall()
         {
-            var co = instr.op1 as ConditionOperand;
+            var co = instr.Operands[0] as ConditionOperand;
             if (co != null)
             {
                 rtlc = InstrClass.ConditionalTransfer | InstrClass.Call;
@@ -42,32 +42,32 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     GenerateTestExpression(co, true),
                     instr.Address + instr.Length,
                     InstrClass.ConditionalTransfer);
-                m.Call(RewriteSrc(instr.op2), 4);
+                m.Call(RewriteSrc(instr.Operands[1]), 4);
             }
             else
             {
                 rtlc = InstrClass.Transfer | InstrClass.Call;
-                m.Call(RewriteSrc(instr.op1), 4);
+                m.Call(RewriteSrc(instr.Operands[0]), 4);
             }
         }
 
         private void RewriteDjnz()
         {
             rtlc = InstrClass.ConditionalTransfer;
-            var reg = RewriteSrc(instr.op1);
-            var dst = ((AddressOperand)instr.op2).Address;
+            var reg = RewriteSrc(instr.Operands[0]);
+            var dst = ((AddressOperand)instr.Operands[1]).Address;
             m.Assign(reg, m.ISub(reg, 1));
             m.Branch(m.Ne0(reg), dst, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteJp()
         {
-            var co = instr.op1 as ConditionOperand;
+            var co = instr.Operands[0] as ConditionOperand;
             if (co != null)
             {
                 rtlc = InstrClass.ConditionalTransfer;
                 var test = GenerateTestExpression(co, false);
-                var dst = RewriteSrc(instr.op2);
+                var dst = RewriteSrc(instr.Operands[1]);
                 var addr = dst as Address;
                 if (addr != null)
                 {
@@ -83,15 +83,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
             else
             {
                 rtlc = InstrClass.Transfer;
-                var dst = RewriteSrc(instr.op1);
+                var dst = RewriteSrc(instr.Operands[0]);
                 m.Goto(dst);
             }
         }
 
         private void RewriteRet()
         {
-            var co = instr.op1 as ConditionOperand;
-            if (co != null)
+            if (instr.Operands.Length == 1 && instr.Operands[0] is ConditionOperand co)
             {
                 rtlc = InstrClass.ConditionalTransfer;
 
@@ -109,7 +108,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteRetd()
         {
             rtlc = InstrClass.Transfer;
-            m.Return(4, ((ImmediateOperand) instr.op1).Value.ToInt32());
+            m.Return(4, ((ImmediateOperand) instr.Operands[0]).Value.ToInt32());
         }
 
         private void RewriteReti()

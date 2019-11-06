@@ -98,19 +98,11 @@ namespace Reko.UnitTests.Arch.Sparc
 
         private SparcInstruction Instr(Opcode opcode, params object[] ops)
         {
-            var instr = new SparcInstruction { Opcode = opcode };
-            if (ops.Length > 0)
+            var instr = new SparcInstruction
             {
-                instr.Op1 = Op(ops[0]);
-                if (ops.Length > 1)
-                {
-                    instr.Op2 = Op(ops[1]);
-                    if (ops.Length > 2)
-                    {
-                        instr.Op3 = Op(ops[2]);
-                    }
-                }
-            }
+                Mnemonic = opcode,
+                Operands = ops.Select(Op).ToArray()
+            };
             return instr;
         }
 

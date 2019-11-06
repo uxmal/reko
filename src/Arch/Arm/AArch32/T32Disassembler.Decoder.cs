@@ -113,7 +113,7 @@ namespace Reko.Arch.Arm.AArch32
                 return new T32Instruction
                 {
                     opcode = Opcode.bl,
-                    ops = new MachineOperand[] { AddressOperand.Create(dasm.addr + (off + 4)) }
+                    Operands = new MachineOperand[] { AddressOperand.Create(dasm.addr + (off + 4)) }
                 };
             }
         }
@@ -134,7 +134,7 @@ namespace Reko.Arch.Arm.AArch32
                         : Opcode.ldm,
                     InstructionClass = InstrClass.Linear,
                     Writeback = w,
-                    ops = new MachineOperand[] {
+                    Operands = new MachineOperand[] {
                             new RegisterOperand(rn),
                             new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
                 };
@@ -166,7 +166,7 @@ namespace Reko.Arch.Arm.AArch32
                         InstructionClass = InstrClass.Linear,
                         Wide = true,
                         Writeback = w,
-                        ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers) }
+                        Operands = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers) }
                     };
                 }
                 else
@@ -176,7 +176,7 @@ namespace Reko.Arch.Arm.AArch32
                         opcode = opcode,
                         InstructionClass = InstrClass.Linear,
                         Writeback = w,
-                        ops = new MachineOperand[] {
+                        Operands = new MachineOperand[] {
                             new RegisterOperand(rn),
                             new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers)
                         }
@@ -196,7 +196,7 @@ namespace Reko.Arch.Arm.AArch32
             public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 var instr = base.Decode(wInstr, dasm);
-                if (instr.ops[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
+                if (instr.Operands[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
                 {
                     instr.opcode = Opcode.mov;
                 }
@@ -237,21 +237,21 @@ namespace Reko.Arch.Arm.AArch32
                 var instr = base.Decode(wInstr, dasm);
                 ImmediateOperand opLsb;
                 ImmediateOperand opMsb;
-                if (instr.ops.Length > 3)
+                if (instr.Operands.Length > 3)
                 {
-                    opMsb = (ImmediateOperand)instr.ops[3];
-                    opLsb = (ImmediateOperand)instr.ops[2];
+                    opMsb = (ImmediateOperand)instr.Operands[3];
+                    opLsb = (ImmediateOperand)instr.Operands[2];
                 }
                 else
                 {
-                    opMsb = (ImmediateOperand)instr.ops[2];
-                    opLsb = (ImmediateOperand)instr.ops[1];
+                    opMsb = (ImmediateOperand)instr.Operands[2];
+                    opLsb = (ImmediateOperand)instr.Operands[1];
                 }
                 var opWidth = ImmediateOperand.Word32(opMsb.Value.ToInt32() - opLsb.Value.ToInt32() + 1);
-                if (instr.ops.Length > 3)
-                    instr.ops[3] = opWidth;
+                if (instr.Operands.Length > 3)
+                    instr.Operands[3] = opWidth;
                 else
-                    instr.ops[2] = opWidth;
+                    instr.Operands[2] = opWidth;
                 return instr;
             }
         }

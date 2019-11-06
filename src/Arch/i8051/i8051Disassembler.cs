@@ -60,7 +60,7 @@ namespace Reko.Arch.i8051
         {
             return new i8051Instruction
             {
-                Opcode = Opcode.Invalid,
+                Mnemonic = Opcode.Invalid,
                 InstructionClass = InstrClass.Invalid,
             };
         }
@@ -155,12 +155,12 @@ namespace Reko.Arch.i8051
 
             return new i8051Instruction
             {
-                Opcode = opcode,
+                Mnemonic = opcode,
                 Address = this.addr,
                 Length = (int)(rdr.Address - this.addr),
-                Operand1 = ops.Count >= 1 ? ops[0] : null,
-                Operand2 = ops.Count >= 2 ? ops[1] : null,
-                Operand3 = ops.Count >= 3 ? ops[2] : null,
+                Operand__0 = ops.Count >= 1 ? ops[0] : null,
+                Operand__1 = ops.Count >= 2 ? ops[1] : null,
+                Operand__2 = ops.Count >= 3 ? ops[2] : null,
             };
         }
 
@@ -352,12 +352,12 @@ $@"    [Test]
                 }
                 return new i8051Instruction
                 {
-                    Opcode = opcode,
+                    Mnemonic = opcode,
                     Address = dasm.addr,
                     Length = (int) (dasm.rdr.Address - dasm.addr),
-                    Operand1 = dasm.ops.Count >= 1 ? dasm.ops[0] : null,
-                    Operand2 = dasm.ops.Count >= 2 ? dasm.ops[1] : null,
-                    Operand3 = dasm.ops.Count >= 3 ? dasm.ops[2] : null,
+                    Operand__0 = dasm.ops.Count >= 1 ? dasm.ops[0] : null,
+                    Operand__1 = dasm.ops.Count >= 2 ? dasm.ops[1] : null,
+                    Operand__2 = dasm.ops.Count >= 3 ? dasm.ops[2] : null,
                 };
             }
 

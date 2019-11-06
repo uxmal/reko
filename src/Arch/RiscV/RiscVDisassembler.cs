@@ -75,23 +75,23 @@ namespace Reko.Arch.RiscV
             var instr = new RiscVInstruction
             {
                 Address = this.addrInstr,
-                opcode = opcode,
+                Mnemonic = opcode,
                 InstructionClass = iclass,
                 Length = (int)(this.rdr.Address - addrInstr)
             };
             if (ops.Count > 0)
             {
-                instr.op1 = ops[0];
+                instr.Opcodes__0 = ops[0];
                 if (ops.Count > 1)
                 {
-                    instr.op2 = ops[1];
+                    instr.Opcodes__1 = ops[1];
                     if (ops.Count > 2)
                     {
-                        instr.op3 = ops[2];
+                        instr.Opcodes__2 = ops[2];
 
                         if (ops.Count > 3)
                         {
-                            instr.op4 = ops[3];
+                            instr.Opcodes__3 = ops[3];
                         }
                     }
                 }
@@ -301,16 +301,16 @@ namespace Reko.Arch.RiscV
             var ops = this.state.ops;
             if (ops.Count > 0)
             {
-                i.op1 = ops[0];
+                i.Opcodes__0 = ops[0];
                 if (ops.Count > 1)
                 {
-                    i.op2 = ops[1];
+                    i.Opcodes__1 = ops[1];
                     if (ops.Count > 2)
                     {
-                        i.op3 = ops[2];
+                        i.Opcodes__2 = ops[2];
                         if (ops.Count > 3)
                         {
-                            i.op4 = ops[3];
+                            i.Opcodes__3 = ops[3];
                         }
                     }
                 }
@@ -325,7 +325,7 @@ namespace Reko.Arch.RiscV
             {
                 Address = addrInstr,
                 InstructionClass = InstrClass.Invalid,
-                opcode = Opcode.invalid,
+                Mnemonic = Opcode.invalid,
             };
         }
 
@@ -369,7 +369,7 @@ namespace Reko.Arch.RiscV
             public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
             {
                 dasm.state.instr.InstructionClass = this.iclass;
-                dasm.state.instr.opcode = opcode;
+                dasm.state.instr.Mnemonic = opcode;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)
                 {
@@ -396,7 +396,7 @@ namespace Reko.Arch.RiscV
             public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
             {
                 dasm.state.instr.InstructionClass = this.iclass;
-                dasm.state.instr.opcode = opcode;
+                dasm.state.instr.Mnemonic = opcode;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)
                 {
@@ -421,7 +421,7 @@ namespace Reko.Arch.RiscV
             public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
             {
                 dasm.state.instr.InstructionClass = InstrClass.Linear;
-                dasm.state.instr.opcode = opcode;
+                dasm.state.instr.Mnemonic = opcode;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)
                 {

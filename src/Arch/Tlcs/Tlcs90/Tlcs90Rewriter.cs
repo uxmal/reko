@@ -63,7 +63,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 rtlc = instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
@@ -72,7 +72,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                        instr.Address,
                        string.Format(
                            "TLCS-90 instruction '{0}' not supported yet.",
-                           instr.Opcode));
+                           instr.Mnemonic));
 
                     break;
                 case Opcode.invalid: m.Invalid(); break;
@@ -148,7 +148,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                instr.Address,
                string.Format(
                    "Rewriting of TLCS-90 instruction '{0}' not implemented yet.",
-                   instr.Opcode));
+                   instr.Mnemonic));
             rtlc = InstrClass.Invalid;
             m.Invalid();
         }
@@ -333,7 +333,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void {0}{1}()", prefix, dasm.Current.Opcode);
+            Debug.WriteLine("        public void {0}{1}()", prefix, dasm.Current.Mnemonic);
             Debug.WriteLine("        {");
             Debug.Print("            RewriteCode(\"{0}\");  // {1}",
                 string.Join("", bytes.Select(b => string.Format("{0:X2}", (int)b))),

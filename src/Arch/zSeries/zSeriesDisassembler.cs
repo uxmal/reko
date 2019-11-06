@@ -65,8 +65,8 @@ namespace Reko.Arch.zSeries
         {
             return new zSeriesInstruction
             {
-                Opcode = Opcode.invalid,
-                Ops = new MachineOperand[0]
+                Mnemonic = Opcode.invalid,
+                Operands = new MachineOperand[0]
             };
         }
 
@@ -146,8 +146,8 @@ namespace Reko.Arch.zSeries
             {
                 var instr = new zSeriesInstruction
                 {
-                    Opcode = this.opcode,
-                    Ops = this.ops.ToArray(),
+                    Mnemonic = this.opcode,
+                    Operands = this.ops.ToArray(),
                 };
                 return instr;
             }

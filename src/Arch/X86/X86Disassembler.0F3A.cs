@@ -27,7 +27,7 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static Decoder[] Create0F3AOprecs()
+        private static Decoder[] Create0F3ADecoders()
         {
             return new Decoder[] {
 

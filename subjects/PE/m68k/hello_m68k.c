@@ -736,14 +736,13 @@ void fn000021F0(Eq_n * a5)
 				{
 					a5->aFFFFF958[d1_n] |= 0x01;
 					struct Eq_n * a0_n = *a1_n->ptr0008;
-					struct Eq_n * a0_n = SEQ(SLICE(a0_n, word16, 16), a0_n->w0002);
-					a0_n[d1_n * 0x04] = (struct Eq_n) a0_n;
+					a5->aFFFFF998[d1_n] = SEQ(SLICE(a0_n, word16, 16), a0_n->w0002);
 				}
 			}
 			else
 			{
 				a5->aFFFFF958[d1_n] |= 0x41;
-				a1_n[d1_n * 0x04 / 0x0014] = (struct Eq_n) a1_n;
+				a5->aFFFFF998[d1_n] = a1_n;
 			}
 			++a1_n;
 		}
@@ -1292,11 +1291,11 @@ int32 fn000029C8(Eq_n a0, Eq_n * a5, ptr32 a6, ui32 dwArg04, Eq_n * dwArg08)
 	__syscall(0xA11E);
 	if (a0 != 0x00)
 	{
-		word32 a1_n = *a5->tFFFFFADC;
+		struct Eq_n * a1_n = *a5->tFFFFFADC;
 		if (((word16) a0 & 0x03) != 0x00)
-			*((word32) a0 + dwArg04 * 0x10) = SEQ(SLICE((word32) a0 + 0x03, word16, 16), (word16) (a0 + 0x03) & ~0x03);
+			a1_n[dwArg04 * 0x10] = (struct Eq_n) SEQ(SLICE((word32) a0 + 0x03, word16, 16), (word16) (a0 + 0x03) & ~0x03);
 		else
-			*((word32) a0 + dwArg04 * 0x10) = a0;
+			a1_n[dwArg04 * 0x10] = (struct Eq_n) a0;
 		struct Eq_n * a1_n = a1_n + (dwArg04 << 0x04);
 		a1_n->t000C = a0;
 		a1_n->ptr0008 = d4_n;
@@ -1305,7 +1304,7 @@ int32 fn000029C8(Eq_n a0, Eq_n * a5, ptr32 a6, ui32 dwArg04, Eq_n * dwArg08)
 		if (d0_n == 0x00)
 			return d0_n;
 		*(fp - 0x14) = dwArg04;
-		fn00002AE0(a2, a5, dwArg00);
+		fn00002AE0(a5, dwArg00);
 	}
 	d0_n = -0x01;
 	return d0_n;
@@ -1337,14 +1336,15 @@ int32 fn00002A54(Eq_n * a5, ui32 dwArg04, Eq_n * dwArg08)
 	return 0x00;
 }
 
-// 00002AE0: void fn00002AE0(Register (arr Eq_n) a2, Register (ptr32 Eq_n) a5, Stack ui32 dwArg04)
-void fn00002AE0(Eq_n a2[], Eq_n * a5, ui32 dwArg04)
+// 00002AE0: void fn00002AE0(Register (ptr32 Eq_n) a5, Stack ui32 dwArg04)
+void fn00002AE0(Eq_n * a5, ui32 dwArg04)
 {
 	if (*((word32) *a5->tFFFFFADC + dwArg04 * 0x10) != 0x00)
 		__syscall(0xA01F);
-	a2[dwArg04].dw0000 = 0x00;
-	a2[dwArg04].dw0004 = 0x00;
-	a2[dwArg04].dw0008 = 0x00;
+	Eq_n a0_n[] = *a5->tFFFFFADC;
+	a0_n[dwArg04].dw0000 = 0x00;
+	a0_n[dwArg04].dw0004 = 0x00;
+	a0_n[dwArg04].dw0008 = 0x00;
 }
 
 // 00002B18: void fn00002B18(Register (ptr32 Eq_n) a5, Stack Eq_n dwArg04)

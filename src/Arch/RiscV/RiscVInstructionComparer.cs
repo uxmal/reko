@@ -36,9 +36,9 @@ namespace Reko.Arch.RiscV
             var a = (RiscVInstruction)x;
             var b = (RiscVInstruction)y;
             return
-                CompareOperands(a.op1, b.op1) &&
-                CompareOperands(a.op2, b.op2) &&
-                CompareOperands(a.op3, b.op3);
+                CompareOperands(a.Opcodes__0, b.Opcodes__0) &&
+                CompareOperands(a.Opcodes__1, b.Opcodes__1) &&
+                CompareOperands(a.Opcodes__2, b.Opcodes__2);
         }
 
         private bool CompareOperands(MachineOperand opA, MachineOperand opB)
@@ -75,9 +75,9 @@ namespace Reko.Arch.RiscV
         {
             var i = (RiscVInstruction)instr;
             int hash =
-                GetOperandHash(i.op1) * 23 ^
-                GetOperandHash(i.op2) * 19 ^
-                GetOperandHash(i.op3);
+                GetOperandHash(i.Opcodes__0) * 23 ^
+                GetOperandHash(i.Opcodes__1) * 19 ^
+                GetOperandHash(i.Opcodes__2);
             return hash;
         }
 

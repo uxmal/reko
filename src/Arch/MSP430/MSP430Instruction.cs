@@ -31,19 +31,18 @@ namespace Reko.Arch.Msp430
     {
         public Opcode opcode;
         public PrimitiveType dataWidth;
-        public MachineOperand op1;
-        public MachineOperand op2;
         public int repeatImm;
         public RegisterStorage repeatReg;
 
         public override int OpcodeAsInteger => (int) opcode;
 
-        public override MachineOperand GetOperand(int i)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            throw new NotImplementedException();
+            RenderMnemonic(writer);
+            RenderOperands(writer, options);
         }
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private void RenderMnemonic(MachineInstructionWriter writer)
         {
             if (repeatReg != null)
             {
@@ -51,7 +50,8 @@ namespace Reko.Arch.Msp430
                 writer.WriteString(" ");
                 writer.WriteString(repeatReg.Name);
                 writer.WriteString(" ");
-            } else if (repeatImm > 1)
+            }
+            else if (repeatImm > 1)
             {
                 writer.WriteOpcode("rpt");
                 writer.WriteString(" #");
@@ -61,26 +61,16 @@ namespace Reko.Arch.Msp430
             var sb = new StringBuilder(opcode.ToString());
             if (dataWidth != null)
             {
-                sb.AppendFormat(".{0}", dataWidth.BitSize == 8 
-                    ? "b" 
+                sb.AppendFormat(".{0}", dataWidth.BitSize == 8
+                    ? "b"
                     : dataWidth.BitSize == 16
                         ? "w"
-                        : "a" );
+                        : "a");
             }
             writer.WriteOpcode(sb.ToString());
-            if (op1 != null)
-            {
-                writer.Tab();
-                Write(op1, writer, options);
-                if (op2 != null)
-                {
-                    writer.WriteString(",");
-                    Write(op2, writer, options);
-                }
-            }
         }
 
-        private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (op is AddressOperand && (base.InstructionClass & InstrClass.Transfer) == 0)
             {

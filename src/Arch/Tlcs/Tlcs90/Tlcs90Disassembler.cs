@@ -61,9 +61,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             this.backPatchOp = -1;
             this.ops.Clear();
 
-            var instr = Oprecs[b].Decode(b, this);
+            var instr = Decoders[b].Decode(b, this);
             if (instr == null)
-                instr = new Tlcs90Instruction { Opcode = Opcode.invalid, InstructionClass = InstrClass.Invalid };
+                instr = CreateInvalidInstruction();
             var len = rdr.Address - addr;
             instr.Address = addr;
             instr.Length = (int) len;
@@ -74,8 +74,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
         {
             return new Tlcs90Instruction
             {
-                Opcode = Opcode.invalid,
-                InstructionClass = InstrClass.Invalid
+                Mnemonic = Opcode.invalid,
+                InstructionClass = InstrClass.Invalid,
+                Operands = new MachineOperand[0]
             };
         }
 
@@ -280,18 +281,17 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 return new Tlcs90Instruction
                 {
-                    Opcode = opcode,
+                    Mnemonic = opcode,
                     InstructionClass = iclass,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }
 
         private class RegDecoder : Decoder
         {
-            private RegisterStorage regByte;
-            private RegisterStorage regWord;
+            private readonly RegisterStorage regByte;
+            private readonly RegisterStorage regWord;
 
             public RegDecoder(RegisterStorage regByte, RegisterStorage regWord)
             {
@@ -378,29 +378,39 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 };
                 if (dasm.backPatchOp == 0)
                 {
-                    instr.op2 = instr.op1;
-                    instr.op1 = operand;
-                    if (instr.op2 != null)
+                    if (instr.Operands.Length == 0)
                     {
-                        instr.op1.Width = instr.op2.Width;
+                        instr.Operands = new MachineOperand[] { operand };
+                    }
+                    else
+                    {
+                        instr.Operands = new MachineOperand[] { operand, instr.Operands[0] };
+                    }
+                    if (instr.Operands.Length == 2)
+                    {
+                        instr.Operands[0].Width = instr.Operands[1].Width;
                     }
                 }
                 else if (dasm.backPatchOp == 1)
                 {
-                    if ((instr.Opcode == Opcode.jp || instr.Opcode == Opcode.call)
+                    if ((instr.Mnemonic == Opcode.jp || instr.Mnemonic == Opcode.call)
                         &&
                         operand.Base == null &&
                         operand.Index == null &&
                         operand.Offset != null)
                     {
                         // JP cc,(XXXX) should be JP cc,XXXX
-                        instr.op2 = AddressOperand.Ptr16(operand.Offset.ToUInt16());
-                        instr.op2.Width = PrimitiveType.Ptr16;
+                        var op = AddressOperand.Ptr16(operand.Offset.ToUInt16());
+                        op.Width = PrimitiveType.Ptr16;
+                        instr.Operands = new MachineOperand[] { instr.Operands[0], op };
                     }
                     else
                     {
-                        instr.op2 = operand;
-                        instr.op2.Width = instr.op1.Width;
+                        instr.Operands = new MachineOperand[] {
+                            instr.Operands[0],
+                            operand
+                        };
+                        instr.Operands[1].Width = instr.Operands[0].Width;
                     }
                 }
                 else
@@ -479,17 +489,26 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
                 if (dasm.backPatchOp == 0)
                 {
-                    instr.op2 = instr.op1;
-                    instr.op1 = operand;
-                    if (instr.op2 != null)
+                    if (instr.Operands.Length == 1)
                     {
-                        operand.Width = instr.op2.Width;
+                        instr.Operands = new MachineOperand[] { operand, instr.Operands[0] };
+                    }
+                    else
+                    {
+                        instr.Operands = new MachineOperand[] { operand };
+                    }
+                    if (instr.Operands.Length >= 2)
+                    {
+                        operand.Width = instr.Operands[1].Width;
                     }
                 }
                 else if (dasm.backPatchOp == 1)
                 {
-                    instr.op2 = operand;
-                    operand.Width = instr.op1.Width;
+                    if (operand != null)
+                    {
+                        instr.Operands = new MachineOperand[] { instr.Operands[0], operand };
+                    }
+                    operand.Width = instr.Operands[0].Width;
                 }
                 else
                     return null;
@@ -517,9 +536,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.di),
             Instr(Opcode.ei),
 
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
             Instr(Opcode.incx, mw),
 
             Instr(Opcode.ex, D,H),
@@ -588,7 +607,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.ld, B,Iw),
             Instr(Opcode.ld, D,Iw),
             Instr(Opcode.ld, H,Iw),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             Instr(Opcode.ld, X,Iw),
             Instr(Opcode.ld, Y,Iw),
@@ -599,7 +618,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.ld, H,B),
             Instr(Opcode.ld, H,D),
             Instr(Opcode.ld, H,H),    // lolwut
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             Instr(Opcode.ld, H,X),
             Instr(Opcode.ld, H,Y),
@@ -609,7 +628,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.ld, B,H),
             Instr(Opcode.ld, D,H),
             Instr(Opcode.ld, H,H),    // lolwut
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             Instr(Opcode.ld, X,H),
             Instr(Opcode.ld, Y,H),
@@ -620,22 +639,22 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.push, B),
             Instr(Opcode.push, D),
             Instr(Opcode.push, H),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             Instr(Opcode.push, X),
             Instr(Opcode.push, Y),
             Instr(Opcode.push, A),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             Instr(Opcode.pop, B),
             Instr(Opcode.pop, D),
             Instr(Opcode.pop, H),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             Instr(Opcode.pop, X),
             Instr(Opcode.pop, Y),
             Instr(Opcode.pop, A),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             // 60
             Instr(Opcode.add, a,mb),
@@ -704,7 +723,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.inc, B),
             Instr(Opcode.inc, D),
             Instr(Opcode.inc, H),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             Instr(Opcode.inc, X),
             Instr(Opcode.inc, Y),
@@ -714,7 +733,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.dec, B),
             Instr(Opcode.dec, D),
             Instr(Opcode.dec, H),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
 
             Instr(Opcode.dec, X),
             Instr(Opcode.dec, Y),
@@ -785,25 +804,25 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
 
             // D0
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
             // E0
             new SrcDecoder("B"),
@@ -849,7 +868,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         };
         private Address addr;
 
-        private static Decoder[] Oprecs
+        private static Decoder[] Decoders
         {
             get
             {

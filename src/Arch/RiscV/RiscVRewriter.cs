@@ -64,13 +64,13 @@ namespace Reko.Arch.RiscV
                 this.rtlc = this.instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
 
-                switch (instr.opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     host.Warn(
                         instr.Address, 
                         "Risc-V instruction '{0}' not supported yet.",
-                        instr.opcode);
+                        instr.Mnemonic);
                     EmitUnitTest();
                     rtlc = InstrClass.Invalid;
                     m.Invalid();
@@ -242,15 +242,15 @@ namespace Reko.Arch.RiscV
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(instr.opcode))
+            if (seen.Contains(instr.Mnemonic))
                 return;
-            seen.Add(dasm.Current.opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void RiscV_rw_" + instr.opcode + "()");
+            Debug.WriteLine("        public void RiscV_rw_" + instr.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            RewriteCode(\"");
             Debug.Write(string.Join(

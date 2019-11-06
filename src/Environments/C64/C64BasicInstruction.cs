@@ -50,12 +50,6 @@ namespace Reko.Environments.C64
             get { throw new NotImplementedException(); }
         }
 
-        public override MachineOperand GetOperand(int i)
-        {
-            return null;
-        }
-
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteFormat("{0} ", Address.ToLinear());

@@ -63,20 +63,17 @@ namespace Reko.Arch.Mips
                         return new MipsInstruction
                         {
                             InstructionClass = InstrClass.Invalid,
-                            opcode = Opcode.illegal
+                            Mnemonic = Opcode.illegal
                         };
                     }
                 }
                 return new MipsInstruction
                 {
-                    opcode = mnemonic,
+                    Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Address = dasm.addr,
                     Length = 4,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
-                    op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
-                    op4 = dasm.ops.Count > 3 ? dasm.ops[3] : null,
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }
@@ -97,7 +94,6 @@ namespace Reko.Arch.Mips
 
             public override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
             {
-                
                 if (dasm.arch.PointerType.Size == 8)
                     return base.Decode(wInstr, dasm);
                 else

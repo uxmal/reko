@@ -49,29 +49,29 @@ namespace Reko.Arch.Sparc
             this.rtlc = rtlClass;
             if (cond is Constant c && c.ToBoolean())
             {
-                m.Goto(((AddressOperand)instrCur.Op1).Address, rtlClass);
+                m.Goto(((AddressOperand)instrCur.Operands[0]).Address, rtlClass);
             }
             else
             {
-                m.Branch(cond, ((AddressOperand)instrCur.Op1).Address, rtlClass);
+                m.Branch(cond, ((AddressOperand)instrCur.Operands[0]).Address, rtlClass);
             }
         }
 
         private void RewriteCall()
         {
             rtlc = InstrClass.Transfer | InstrClass.Call;
-            m.CallD(((AddressOperand)instrCur.Op1).Address, 0);
+            m.CallD(((AddressOperand)instrCur.Operands[0]).Address, 0);
         }
 
         private void RewriteJmpl()
         {
             rtlc = InstrClass.Transfer;
-            var rDst = instrCur.Op3 as RegisterOperand;
-            var src1 = RewriteOp(instrCur.Op1);
-            var src2 = RewriteOp(instrCur.Op2);
+            var rDst = instrCur.Operands[2] as RegisterOperand;
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
             if (rDst.Register != Registers.g0)
             {
-                var dst = RewriteOp(instrCur.Op3);
+                var dst = RewriteOp(instrCur.Operands[2]);
                 m.Assign(dst, instrCur.Address);
             }
             var target = SimplifySum(src1, src2);
@@ -96,8 +96,8 @@ namespace Reko.Arch.Sparc
         private void RewriteTrap(Expression cond)
         {
             //$REVIEW: does a SPARC trap instruction have a delay slot?
-            var src1 = RewriteOp(instrCur.Op1, true);
-            var src2 = RewriteOp(instrCur.Op2, true);
+            var src1 = RewriteOp(instrCur.Operands[0], true);
+            var src2 = RewriteOp(instrCur.Operands[1], true);
             m.BranchInMiddleOfInstruction(
                 cond.Invert(),
                 instrCur.Address + instrCur.Length,

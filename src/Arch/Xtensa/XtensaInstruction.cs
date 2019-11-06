@@ -47,14 +47,8 @@ namespace Reko.Arch.Xtensa
         };
 
         public Opcodes Opcode { get; set; }
-        public MachineOperand[] Operands { get; internal set; }
 
         public override int OpcodeAsInteger => (int) Opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

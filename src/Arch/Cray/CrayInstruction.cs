@@ -28,15 +28,7 @@ namespace Reko.Arch.Cray
     public class CrayInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
-        public MachineOperand[] Operands { get; set; }
         public override int OpcodeAsInteger => (int)Mnemonic;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (0 <= i && i < Operands.Length)
-                return Operands[i];
-            return null;
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

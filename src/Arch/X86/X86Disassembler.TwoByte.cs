@@ -29,7 +29,7 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static Decoder[] CreateTwobyteOprecs()
+        private static Decoder[] CreateTwobyteDecoders()
         {
             return new Decoder[]
             {

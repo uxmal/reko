@@ -36,11 +36,6 @@ namespace Reko.Arch.SuperH
 
         public override int OpcodeAsInteger => (int) Opcode;
 
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
-
         private static Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
         {
             { Opcode.and_b, "and.b" },

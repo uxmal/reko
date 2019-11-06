@@ -104,7 +104,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     InstructionClass = iclass,
                     opcode = opcode,
-                    ops = ops.ToArray(),
+                    Operands = ops.ToArray(),
                     ShiftType = shiftOp,
                     ShiftValue = shiftValue,
                     SetFlags = updateFlags,
@@ -293,7 +293,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 InstructionClass = InstrClass.Invalid,
                 opcode = Opcode.Invalid,
-                ops = new MachineOperand[0]
+                Operands = new MachineOperand[0]
             };
         }
 

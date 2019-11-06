@@ -29,16 +29,7 @@ namespace Reko.Arch.MicroBlaze
     {
         public Mnemonic Mnemonic { get; set; }
 
-        public MachineOperand[] Operands { get; set; }
-
         public override int OpcodeAsInteger => (int) Mnemonic;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            return (0 <= i && i < Operands.Length)
-                ? Operands[i]
-                : null;
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

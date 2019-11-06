@@ -31,19 +31,10 @@ namespace Reko.Arch.Rl78
     public class Rl78Instruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
-        public MachineOperand[] Operands { get; set; }
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 
         public RegisterStorage Prefix { get; internal set; }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (0 <= i && i < Operands.Length)
-                return Operands[i];
-            else
-                return null;
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

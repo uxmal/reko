@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -32,23 +32,23 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn, string flags)
         {
             var c = binder.EnsureFlagGroup(Registers.C);
-            var src = RewriteSrc(this.instr.op2);
-            var dst = RewriteDst(this.instr.op1, src, (d, s) => fn(fn(d, s), c));
+            var src = RewriteSrc(this.instr.Operands[1]);
+            var dst = RewriteDst(this.instr.Operands[0], src, (d, s) => fn(fn(d, s), c));
             EmitCc(dst, flags);
         }
 
         private void RewriteBinOp(Func<Expression, Expression, Expression> fn, string flags)
         {
-            var src = RewriteSrc(this.instr.op2);
-            var dst = RewriteDst(this.instr.op1, src, fn);
+            var src = RewriteSrc(this.instr.Operands[1]);
+            var dst = RewriteDst(this.instr.Operands[0], src, fn);
             EmitCc(dst, flags);
         }
 
         private void RewriteBit()
         {
             var Z = binder.EnsureFlagGroup(Tlcs900Registers.Z);
-            var bit = RewriteSrc(this.instr.op1);
-            var dst = RewriteSrc(this.instr.op2);
+            var bit = RewriteSrc(this.instr.Operands[0]);
+            var dst = RewriteSrc(this.instr.Operands[1]);
             m.Assign(Z, m.Eq0(m.And(dst, m.Shl(m.Int8(1), bit))));
             m.Assign(binder.EnsureFlagGroup(Registers.H), Constant.True());
             m.Assign(binder.EnsureFlagGroup(Registers.N), Constant.False());
@@ -57,7 +57,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteBs1b()
         {
             var a = binder.EnsureRegister(Registers.a);
-            var src = RewriteSrc(instr.op2);
+            var src = RewriteSrc(instr.Operands[1]);
             var v = binder.EnsureFlagGroup(Registers.V);
             m.Assign(a, host.PseudoProcedure("__bs1b", PrimitiveType.SByte, src));
             m.Assign(v, m.Eq0(src));
@@ -71,21 +71,21 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteChg()
         {
-            var bit = ((ImmediateOperand)instr.op1).Value.ToInt32();
-            var src = RewriteSrc(instr.op2);
-            var dst = RewriteDst(instr.op2, src, (a, b) => m.Xor(b, 1 << bit));
+            var bit = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            var src = RewriteSrc(instr.Operands[1]);
+            var dst = RewriteDst(instr.Operands[1], src, (a, b) => m.Xor(b, 1 << bit));
         }
 
         private void RewriteCp(string flags)
         {
-            var op1 = RewriteSrc(this.instr.op1);
-            var op2 = RewriteSrc(this.instr.op2);
+            var op1 = RewriteSrc(this.instr.Operands[0]);
+            var op2 = RewriteSrc(this.instr.Operands[1]);
             EmitCc(m.ISub(op1, op2), flags);
         }
 
         private void RewriteDaa(string flags)
         {
-            var src = RewriteSrc(this.instr.op1);
+            var src = RewriteSrc(this.instr.Operands[0]);
             var fn = host.PseudoProcedure("__daa", PrimitiveType.Byte, src);
             m.Assign(src, fn);
             EmitCc(src, flags);
@@ -93,8 +93,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteDiv(Func<Expression, Expression, Expression> fn, string flags)
         {
-            var reg = ((RegisterOperand)this.instr.op1).Register;
-            var op2 = RewriteSrc(this.instr.op2);
+            var reg = ((RegisterOperand)this.instr.Operands[0]).Register;
+            var op2 = RewriteSrc(this.instr.Operands[1]);
             var div = binder.EnsureRegister(arch.GetSubregister(Registers.regs[(int)reg.Domain], 0, (int)reg.BitSize * 2));
             var tmp = binder.CreateTemporary(reg.DataType);
             var quo = binder.EnsureRegister(arch.GetSubregister(reg, 0, 8));
@@ -107,8 +107,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteEx()
         {
-            var op1 = RewriteSrc(instr.op1);
-            var op2 = RewriteSrc(instr.op2);
+            var op1 = RewriteSrc(instr.Operands[0]);
+            var op2 = RewriteSrc(instr.Operands[1]);
             var tmp = binder.CreateTemporary(op1.DataType);
             m.Assign(tmp, op1);
             m.Assign(op1, op2);
@@ -117,26 +117,26 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn, string flags)
         {
-            var src = RewriteSrc(this.instr.op1);
-            var dst = RewriteDst(this.instr.op2, src, fn);
+            var src = RewriteSrc(this.instr.Operands[0]);
+            var dst = RewriteDst(this.instr.Operands[1], src, fn);
             EmitCc(dst, flags);
         }
 
         private void RewriteLd()
         {
-            var src = RewriteSrc(this.instr.op2);
-            var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
+            var src = RewriteSrc(this.instr.Operands[1]);
+            var dst = RewriteDst(this.instr.Operands[0], src, (d, s) => s);
         }
 
         private void RewriteLda()
         {
-            var src = RewriteSrcEa((MemoryOperand)this.instr.op2);
-            var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
+            var src = RewriteSrcEa((MemoryOperand)this.instr.Operands[1]);
+            var dst = RewriteDst(this.instr.Operands[0], src, (d, s) => s);
         }
 
         private void RewriteLdir(PrimitiveType dt, string flags)
         {
-            if (instr.op1 != null || instr.op2 != null)
+            if (instr.Operands.Length > 0)
             {
                 EmitUnitTest("Tlcs900_rw_", "00010000");
                 Invalid();
@@ -157,22 +157,22 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteMul(Func<Expression,Expression,Expression> fn)
         {
-            var op1 = ((RegisterOperand)instr.op1).Register;
-            var op2 = RewriteSrc(instr.op2);
+            var op1 = ((RegisterOperand)instr.Operands[0]).Register;
+            var op2 = RewriteSrc(instr.Operands[1]);
             var dst = binder.EnsureRegister(Registers.regs[op1.Number]);
             m.Assign(dst, fn(binder.EnsureRegister(op1), op2));
         }
         private void RewritePop()
         {
             var xsp = binder.EnsureRegister(Tlcs900Registers.xsp);
-            var op = m.Mem(instr.op1.Width, xsp);
-            RewriteDst(instr.op1, op, (a, b) => b);
-            m.Assign(xsp, m.IAddS(xsp, instr.op1.Width.Size));
+            var op = m.Mem(instr.Operands[0].Width, xsp);
+            RewriteDst(instr.Operands[0], op, (a, b) => b);
+            m.Assign(xsp, m.IAddS(xsp, instr.Operands[0].Width.Size));
         }
 
         private void RewritePush()
         {
-            var op = RewriteSrc(instr.op1);
+            var op = RewriteSrc(instr.Operands[0]);
             var xsp = binder.EnsureRegister(Tlcs900Registers.xsp);
             m.Assign(xsp, m.ISubS(xsp, op.DataType.Size));
             m.Assign(m.Mem(op.DataType, xsp), op);
@@ -185,8 +185,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteRes()
         {
-            var op1 = RewriteSrc(this.instr.op1);
-            var op2 = RewriteDst(this.instr.op2,
+            var op1 = RewriteSrc(this.instr.Operands[0]);
+            var op2 = RewriteDst(this.instr.Operands[1],
                 op1,
                 (a, b) => m.And(
                     a,
@@ -198,8 +198,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteScc()
         {
-            var test = GenerateTestExpression((ConditionOperand)instr.op1, false);
-            m.Assign(RewriteSrc(instr.op2), test);
+            var test = GenerateTestExpression((ConditionOperand)instr.Operands[0], false);
+            m.Assign(RewriteSrc(instr.Operands[1]), test);
         }
 
         private void RewriteScf()
@@ -209,8 +209,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteSet()
         {
-            var op1 = RewriteSrc(this.instr.op1);
-            var op2 = RewriteDst(this.instr.op2,
+            var op1 = RewriteSrc(this.instr.Operands[0]);
+            var op2 = RewriteDst(this.instr.Operands[1],
                 op1,
                 (a, b) => m.Or(
                     a,
@@ -222,16 +222,16 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteShift(Func<Expression,Expression, Expression> shift, string flags)
         {
             Expression value;
-            if (instr.op2 == null)
+            if (instr.Operands.Length == 1)
             {
                 var amt = Constant.SByte(1);
-                value = RewriteDst(this.instr.op1, amt, shift);
+                value = RewriteDst(this.instr.Operands[0], amt, shift);
 
             }
             else
             {
-                var op1 = RewriteSrc(this.instr.op1);
-                value = RewriteDst(this.instr.op2, op1, shift);
+                var op1 = RewriteSrc(this.instr.Operands[0]);
+                value = RewriteDst(this.instr.Operands[1], op1, shift);
             }
             EmitCc(value, flags);
         }

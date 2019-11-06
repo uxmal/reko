@@ -68,26 +68,25 @@ namespace Reko.Arch.Msp430
         {
             if (instr.opcode == Opcode.mov)
             {
-                if (instr.op2 is RegisterOperand dst &&
+                if (instr.Operands[1] is RegisterOperand dst &&
                     dst.Register == Registers.pc)
                 {
                     instr.InstructionClass = InstrClass.Transfer;
-                    if (instr.op1 is MemoryOperand mem &&
+                    if (instr.Operands[0] is MemoryOperand mem &&
                         mem.PostIncrement &&
                         mem.Base == Registers.sp)
                     {
                         instr.opcode = Opcode.ret;
-                        instr.op1 = null;
-                        instr.op2 = null;
+                        instr.Operands = new MachineOperand[0];
                     }
                     else
                     {
                         instr.opcode = Opcode.br;
-                        instr.op2 = null;
-                        if (instr.op1 is ImmediateOperand imm)
+                        instr.Operands[1] = null;
+                        if (instr.Operands[0] is ImmediateOperand imm)
                         {
                             var uAddr = imm.Value.ToUInt16();
-                            instr.op1 = AddressOperand.Ptr16(uAddr);
+                            instr.Operands = new MachineOperand[] { AddressOperand.Ptr16(uAddr) };
                         }
                     }
                     return instr;
@@ -351,9 +350,11 @@ namespace Reko.Arch.Msp430
 
         protected override Msp430Instruction CreateInvalidInstruction()
         {
-            return new Msp430Instruction {
+            return new Msp430Instruction
+            {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Opcode.invalid
+                opcode = Opcode.invalid,
+                Operands = new MachineOperand[0],
             };
         }
 
@@ -403,8 +404,7 @@ namespace Reko.Arch.Msp430
                 {
                     opcode = opcode,
                     dataWidth = dasm.dataWidth,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1]:null,
+                    Operands = dasm.ops.ToArray(),
                     repeatImm = (dasm.uExtension & 0x80) != 0 ? 0 : rep + 1,
                     repeatReg = (dasm.uExtension & 0x80) != 0 ? Registers.GpRegisters[rep] : null,
                 };
@@ -427,8 +427,7 @@ namespace Reko.Arch.Msp430
                     opcode = jj.Item1,
                     InstructionClass = jj.Item2,
                     dataWidth = dasm.dataWidth,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
+                    Operands = dasm.ops.ToArray(),
                     repeatImm = (dasm.uExtension & 0x80) != 0 ? 0 : rep + 1,
                     repeatReg = (dasm.uExtension & 0x80) != 0 ? Registers.GpRegisters[rep] : null,
                 };

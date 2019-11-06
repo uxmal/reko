@@ -41,9 +41,6 @@ namespace Reko.Arch.X86
         public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
-		public MachineOperand op1;
-		public MachineOperand op2;
-		public MachineOperand op3;
 
 		public X86Instruction(Opcode code, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
@@ -51,18 +48,7 @@ namespace Reko.Arch.X86
             this.InstructionClass = iclass;
 			this.dataWidth = dataWidth;
 			this.addrWidth = addrWidth;
-			if (ops.Length >= 1)
-			{
-				op1 = ops[0];
-				if (ops.Length >= 2)
-				{
-					op2 = ops[1];
-					if (ops.Length == 3)
-						op3 = ops[2];
-					else if (ops.Length >= 4)
-						throw new ArgumentException("Too many operands.");
-				}
-			}
+            this.Operands = ops;
 		}
 
         public override int OpcodeAsInteger => (int) code;
@@ -78,37 +64,13 @@ namespace Reko.Arch.X86
                 code == Opcode.lgs || 
                 code == Opcode.lss)
                 return false;
-            if (Operands >= 2 && op1.Width.Size != op2.Width.Size)
+            if (Operands.Length >= 2 && Operands[0].Width.Size != Operands[1].Width.Size)
                 return true;
 			return 
-				 (Operands < 1 || !ImplicitWidth(op1)) &&
-				 (Operands < 2 || !ImplicitWidth(op2)) &&
-				 (Operands < 3 || !ImplicitWidth(op3));
+				 (Operands.Length < 1 || !ImplicitWidth(Operands[0])) &&
+				 (Operands.Length < 2 || !ImplicitWidth(Operands[1])) &&
+				 (Operands.Length < 3 || !ImplicitWidth(Operands[2]));
 		}
-
-        public byte Operands
-        {
-            get { 
-                if (op1 == null)
-                return 0;
-                if (op2 == null)
-                    return 1;
-                if (op3 == null)
-                    return 2;
-                return 3;
-            }
-        }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            switch (i)
-            {
-            case 0: return op1;
-            case 1: return op2;
-            case 2: return op3;
-            default: return null;
-            }
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -164,21 +126,18 @@ namespace Reko.Arch.X86
                 options |= MachineInstructionWriterOptions.ExplicitOperandSize;
             }
 
-			if (Operands >= 1)
-			{
-                writer.Tab();
-                Write(op1, writer, options);
-				if (Operands >= 2)
-				{
-					writer.WriteChar(',');
-					Write(op2, writer, options);
-					if (Operands >= 3)
-					{
-						writer.WriteString(",");
-						Write(op3, writer, options);
-					}
-				}
-			}
+            if (Operands.Length == 0)
+                return;
+            writer.Tab();
+            Write(Operands[0], writer, options);
+            if (Operands.Length == 1)
+                return;
+			writer.WriteChar(',');
+			Write(Operands[1], writer, options);
+            if (Operands.Length == 2)
+                return;
+			writer.WriteString(",");
+			Write(Operands[2], writer, options);
 		}
 
         private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)

@@ -62,7 +62,7 @@ namespace Reko.Arch.Arm.AArch64
                 var cluster = new List<RtlInstruction>();
                 m = new RtlEmitter(cluster);
                 rtlc = instr.InstructionClass;
-                switch (instr.opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
@@ -229,7 +229,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             uint wInstr;
             wInstr = rdr.PeekLeUInt32(-4);
-            host.Error(instr.Address, "Rewriting A64 opcode '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
+            host.Error(instr.Address, "Rewriting A64 opcode '{0}' ({1:X4}) is not supported yet.", instr.Mnemonic, wInstr);
             EmitUnitTest();
             m.Invalid();
         }
@@ -239,15 +239,15 @@ namespace Reko.Arch.Arm.AArch64
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.opcode))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var wInstr = r2.ReadUInt32();
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void A64Rw_" + dasm.Current.opcode + "()");
+            Debug.WriteLine("        public void A64Rw_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            Given_Instruction(");
             Debug.Write($"0x{wInstr:X8}");

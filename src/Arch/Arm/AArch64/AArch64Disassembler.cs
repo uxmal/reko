@@ -96,9 +96,9 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var instr = new AArch64Instruction
                 {
-                    opcode = opcode,
+                    Mnemonic = opcode,
                     InstructionClass = iclass,
-                    ops = ops.ToArray(),
+                    Operands = ops.ToArray(),
                     shiftCode = shiftCode,
                     shiftAmount = shiftAmount,
                     vectorData = vectorData,
@@ -1537,8 +1537,8 @@ namespace Reko.Arch.Arm.AArch64
             return new AArch64Instruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Opcode.Invalid,
-                ops = new MachineOperand[0]
+                Mnemonic = Opcode.Invalid,
+                Operands = new MachineOperand[0]
             };
         }
 

@@ -76,8 +76,9 @@ namespace Reko.Arch.Pdp11
         {
             return new Pdp11Instruction
             {
-                Opcode = Opcode.illegal,
+                Mnemonic = Opcode.illegal,
                 InstructionClass = InstrClass.Invalid,
+                Operands = new MachineOperand[0],
             };
         }
 
@@ -95,7 +96,6 @@ namespace Reko.Arch.Pdp11
 
         private static bool E(uint wOpcode, Pdp11Disassembler dasm)
         {
-
             var op = dasm.DecodeOperand(wOpcode);
             if (op == null)
                 return false;
@@ -173,11 +173,10 @@ namespace Reko.Arch.Pdp11
                 }
                 var instr = new Pdp11Instruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = iclass,
                     DataWidth = dasm.dataWidth,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
+                    Operands = dasm.ops.ToArray()
                 };
                 return instr;
             }
@@ -313,31 +312,42 @@ namespace Reko.Arch.Pdp11
             }
 
             var dataWidth = dasm.DataWidthFromSizeBit(opcode & 0x8000u);
-            int cop = 1;
-            MachineOperand op1 = null;
-            MachineOperand op2 = null;
+            var ops = new List<MachineOperand>();
             Opcode oc = Opcode.illegal;
             switch ((opcode >> 6) & 0x3FF)
             {
             case 0x000:
                 switch (opcode & 0x3F)
                 {
-                case 0x00: cop = 0; oc = Opcode.halt; iclass = InstrClass.Terminates|InstrClass.Zero; break;
-                case 0x01: cop = 0; oc = Opcode.wait; break;
-                case 0x02: cop = 0; oc = Opcode.rti; iclass = InstrClass.Transfer; break;
-                case 0x03: cop = 0; oc = Opcode.bpt; break;
-                case 0x04: cop = 0; oc = Opcode.iot; break;
-                case 0x05: cop = 0; oc = Opcode.reset; iclass = InstrClass.Transfer; break;
-                case 0x06: cop = 0; oc = Opcode.rtt; iclass = InstrClass.Transfer; break;
-                case 0x07: cop = 0; oc = Opcode.illegal; break;
+                case 0x00: oc = Opcode.halt; iclass = InstrClass.Terminates|InstrClass.Zero; break;
+                case 0x01: oc = Opcode.wait; break;
+                case 0x02: oc = Opcode.rti; iclass = InstrClass.Transfer; break;
+                case 0x03: oc = Opcode.bpt; break;
+                case 0x04: oc = Opcode.iot; break;
+                case 0x05: oc = Opcode.reset; iclass = InstrClass.Transfer; break;
+                case 0x06: oc = Opcode.rtt; iclass = InstrClass.Transfer; break;
+                case 0x07: oc = Opcode.illegal; break;
                 }
                 break;
-            case 0x001: op1 = dasm.DecodeOperand(opcode); oc = Opcode.jmp; iclass = InstrClass.Transfer; break;
+            case 0x001:
+                var op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
+                oc = Opcode.jmp; iclass = InstrClass.Transfer; break;
             case 0x002:
                 switch (opcode & 0x38)
                 {
-                case 0: op1 = dasm.DecodeOperand(opcode & 7u); oc = Opcode.rts; iclass = InstrClass.Transfer; break;
-                case 3: op1 = dasm.DecodeOperand(opcode); oc = Opcode.spl; break;
+                case 0:
+                    ops.Add(dasm.DecodeOperand(opcode & 7u));
+                    oc = Opcode.rts;
+                    iclass = InstrClass.Transfer; break;
+                case 3:
+                    op = dasm.DecodeOperand(opcode);
+                    if (op == null)
+                        return dasm.CreateInvalidInstruction();
+                    ops.Add(op);
+                    oc = Opcode.spl; break;
                 case 0x20:
                 case 0x28:
                 case 0x30:
@@ -346,7 +356,11 @@ namespace Reko.Arch.Pdp11
                 }
                 break;
             case 0x003:
-                oc = Opcode.swab; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.swab;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 dataWidth = PrimitiveType.Byte;
                 break;
             case 0x020:
@@ -359,9 +373,11 @@ namespace Reko.Arch.Pdp11
             case 0x027:
                 oc = Opcode.jsr;
                 iclass = InstrClass.Transfer | InstrClass.Call;
-                cop = 2;
-                op1 = Reg(opcode >> 6, dasm);
-                op2 = dasm.DecodeOperand(opcode);
+                ops.Add(Reg(opcode >> 6, dasm));
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 dataWidth = PrimitiveType.Word16;
                 break;
             case 0x220:
@@ -369,7 +385,7 @@ namespace Reko.Arch.Pdp11
             case 0x222:
             case 0x223:
                 oc = Opcode.emt;
-                op1 = new ImmediateOperand(Constant.Byte((byte)opcode));
+                ops.Add(new ImmediateOperand(Constant.Byte((byte)opcode)));
                 break;
             case 0x224:
             case 0x225:
@@ -377,99 +393,164 @@ namespace Reko.Arch.Pdp11
             case 0x227:
                 oc = Opcode.trap;
                 iclass = InstrClass.Transfer;
-                op1 = new ImmediateOperand(Constant.Byte((byte)opcode));
+                ops.Add(new ImmediateOperand(Constant.Byte((byte)opcode)));
                 break;
             case 0x028:
             case 0x228:
                 oc = dataWidth.Size == 1 ? Opcode.clrb : Opcode.clr;
-                op1 = dasm.DecodeOperand(opcode);
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x029:
             case 0x229:
-                oc = Opcode.com; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.com;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x02A:
             case 0x22A:
-                oc = Opcode.inc; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.inc;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x02B:
             case 0x22B:
-                oc = Opcode.dec; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.dec;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x02C:
             case 0x22C:
-                oc = Opcode.neg; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.neg;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x02D:
             case 0x22D:
-                oc = Opcode.adc; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.adc;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x02E:
             case 0x22E:
-                oc = Opcode.sbc; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.sbc;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x02F:
             case 0x22F:
-                oc = Opcode.tst; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.tst;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x030:
             case 0x230:
-                oc = Opcode.ror; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.ror;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x031:
             case 0x231:
-                oc = Opcode.rol; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.rol;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x032:
             case 0x232:
-                oc = Opcode.asr; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.asr;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x033:
             case 0x233:
-                oc = Opcode.asl; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.asl;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x034:
                 oc = Opcode.mark;
-                op1 = new ImmediateOperand(Constant.Byte((byte)opcode));
+                ops.Add(new ImmediateOperand(Constant.Byte((byte)opcode)));
                 break;
             case 0x234:
-                oc = Opcode.mtps; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.mtps;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x035:
-                oc = Opcode.mfpi; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.mfpi;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x235:
-                oc = Opcode.mfpd; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.mfpd;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x036:
-                oc = Opcode.mtpi; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.mtpi;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x236:
-                oc = Opcode.mtpd; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.mtpd;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x037:
-                oc = Opcode.sxt; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.sxt;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
             case 0x237:
-                oc = Opcode.mfps; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.mfps;
+                op = dasm.DecodeOperand(opcode);
+                if (op == null)
+                    return dasm.CreateInvalidInstruction();
+                ops.Add(op);
                 break;
-            }
-            if (cop > 0 && op1 == null ||
-                cop > 1 && op2 == null)
-            {
-                return new Pdp11Instruction
-                {
-                    Opcode = Opcode.illegal,
-                    InstructionClass = InstrClass.Invalid
-                };
             }
             return new Pdp11Instruction
             {
-                Opcode = oc,
+                Mnemonic = oc,
                 InstructionClass = iclass,
                 DataWidth = dataWidth,
-                op1 = op1,
-                op2 = op2,
+                Operands = ops.ToArray()
             };
         }
 
@@ -479,16 +560,17 @@ namespace Reko.Arch.Pdp11
             {
                 return new Pdp11Instruction
                 {
-                    Opcode = Opcode.nop,
-                    InstructionClass = InstrClass.Linear,
+                    Mnemonic = Opcode.nop,
+                    InstructionClass = InstrClass.Linear|InstrClass.Padding,
+                    Operands = new MachineOperand[0]
                 };
             } 
             return new Pdp11Instruction
             {
-                Opcode = ((opcode & 0x10) != 0) ? Opcode.setflags : Opcode.clrflags,
+                Mnemonic = ((opcode & 0x10) != 0) ? Opcode.setflags : Opcode.clrflags,
                 InstructionClass = InstrClass.Linear,
                 DataWidth = dataWidth,
-                op1 = new ImmediateOperand(Constant.Byte((byte)(opcode&0xF))),
+                Operands = new MachineOperand[] { new ImmediateOperand(Constant.Byte((byte) (opcode & 0xF))) },
             };
         }
 
@@ -506,10 +588,10 @@ namespace Reko.Arch.Pdp11
         {
             return new Pdp11Instruction
             {
-                Opcode = oc,
+                Mnemonic = oc,
                 InstructionClass = iclass,
                 DataWidth = PrimitiveType.Word16,
-                op1 = new AddressOperand(this.rdr.Address + 2 * (sbyte)(opcode & 0xFF)),
+                Operands = new MachineOperand[] { new AddressOperand(this.rdr.Address + 2 * (sbyte) (opcode & 0xFF)) },
             };
         }
 

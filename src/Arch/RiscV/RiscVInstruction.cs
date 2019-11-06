@@ -30,11 +30,11 @@ namespace Reko.Arch.RiscV
     {
         private static Dictionary<Opcode, string> opcodeNames;
 
-        internal Opcode opcode;
-        internal MachineOperand op1;
-        internal MachineOperand op2;
-        internal MachineOperand op3;
-        internal MachineOperand op4;
+        internal Opcode Mnemonic;
+        internal MachineOperand Opcodes__0;
+        internal MachineOperand Opcodes__1;
+        internal MachineOperand Opcodes__2;
+        internal MachineOperand Opcodes__3;
 
         static RiscVInstruction()
         {
@@ -91,44 +91,31 @@ namespace Reko.Arch.RiscV
             };
         }
 
-        public override int OpcodeAsInteger { get { return (int)opcode; } }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (i == 0)
-                return op1;
-            else if (i == 1)
-                return op2;
-            else if (i == 2)
-                return op3;
-            else if (i == 3)
-                return op4;
-            return null;
-        }
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (!opcodeNames.TryGetValue(opcode, out string name))
+            if (!opcodeNames.TryGetValue(Mnemonic, out string name))
             {
-                name = opcode.ToString();
+                name = Mnemonic.ToString();
             }
             writer.WriteOpcode(name);
-            if (op1 == null)
+            if (Opcodes__0 == null)
                 return;
             writer.Tab();
-            WriteOp(op1, writer, options);
-            if (op2 == null)
+            WriteOp(Opcodes__0, writer, options);
+            if (Opcodes__1 == null)
                 return;
             writer.WriteChar(',');
-            WriteOp(op2, writer, options);
-            if (op3 == null)
+            WriteOp(Opcodes__1, writer, options);
+            if (Opcodes__2 == null)
                 return;
             writer.WriteChar(',');
-            WriteOp(op3, writer, options);
-            if (op4 == null)
+            WriteOp(Opcodes__2, writer, options);
+            if (Opcodes__3 == null)
                 return;
             writer.WriteChar(',');
-            WriteOp(op4, writer, options);
+            WriteOp(Opcodes__3, writer, options);
         }
 
         private void WriteOp(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)

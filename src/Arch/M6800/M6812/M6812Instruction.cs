@@ -26,16 +26,9 @@ namespace Reko.Arch.M6800.M6812
 {
     public class M6812Instruction : MachineInstruction
     {
-        public MachineOperand[] Operands;
-
         public override int OpcodeAsInteger => (int) Opcode;
 
         public Opcode Opcode { get; set; }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
