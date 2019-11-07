@@ -189,9 +189,9 @@ foo:
 
             CreateDisassembler16(program.SegmentMap.Segments.Values.First().MemoryArea);
             X86Instruction[] instrs = dasm.Take(3).ToArray();
-            Assert.AreEqual(Registers.ss, ((MemoryOperand) instrs[0].op2).DefaultSegment);
-            Assert.AreEqual(Registers.ds, ((MemoryOperand) instrs[1].op2).DefaultSegment);
-            Assert.AreEqual(Registers.cs, ((MemoryOperand) instrs[2].op2).DefaultSegment);
+            Assert.AreEqual(Registers.ss, ((MemoryOperand) instrs[0].Operands[1]).DefaultSegment);
+            Assert.AreEqual(Registers.ds, ((MemoryOperand) instrs[1].Operands[1]).DefaultSegment);
+            Assert.AreEqual(Registers.cs, ((MemoryOperand) instrs[2].Operands[1]).DefaultSegment);
         }
 
         [Test]
@@ -282,13 +282,13 @@ movzx	ax,byte ptr [bp+04]
             X86Instruction one = DisEnumerator_TakeNext(instructions);
             X86Instruction two = DisEnumerator_TakeNext(instructions);
 
-            Assert.AreEqual(Opcode.pshuflw, one.code);
-            Assert.AreEqual("xmm0", one.op1.ToString());
-            Assert.AreEqual("[eax]", one.op2.ToString());
+            Assert.AreEqual(Mnemonic.pshuflw, one.code);
+            Assert.AreEqual("xmm0", one.Operands[0].ToString());
+            Assert.AreEqual("[eax]", one.Operands[1].ToString());
 
-            Assert.AreEqual(Opcode.pshufhw, two.code);
-            Assert.AreEqual("xmm0", two.op1.ToString());
-            Assert.AreEqual("[eax]", two.op2.ToString());
+            Assert.AreEqual(Mnemonic.pshufhw, two.code);
+            Assert.AreEqual("xmm0", two.Operands[0].ToString());
+            Assert.AreEqual("[eax]", two.Operands[1].ToString());
         }
 
         [Test]
@@ -301,7 +301,7 @@ movzx	ax,byte ptr [bp+04]
 ");
             CreateDisassembler32(program.SegmentMap.Segments.Values.First().MemoryArea);
             var instr = dasm.First();
-            MemoryOperand mem = (MemoryOperand) instr.op2;
+            MemoryOperand mem = (MemoryOperand) instr.Operands[1];
             Assert.AreEqual(2, mem.Scale);
             Assert.AreEqual(RegisterStorage.None, mem.Base);
             Assert.AreEqual(Registers.edi, mem.Index);
@@ -332,8 +332,8 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble16(0x83, 0xC6, 0x1);  // add si,+01
             Assert.AreEqual("add\tsi,01", instr.ToString());
-            Assert.AreEqual(PrimitiveType.Word16, instr.op1.Width);
-            Assert.AreEqual(PrimitiveType.Byte, instr.op2.Width);
+            Assert.AreEqual(PrimitiveType.Word16, instr.Operands[0].Width);
+            Assert.AreEqual(PrimitiveType.Byte, instr.Operands[1].Width);
             Assert.AreEqual(PrimitiveType.Word16, instr.dataWidth);
         }
 
@@ -342,7 +342,7 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble16(0xC4, 0x5E, 0x6);		// les bx,[bp+06]
             Assert.AreEqual("les\tbx,[bp+06]", instr.ToString());
-            Assert.AreSame(PrimitiveType.Ptr32, instr.op2.Width);
+            Assert.AreSame(PrimitiveType.Ptr32, instr.Operands[1].Width);
         }
 
         [Test]
@@ -380,7 +380,7 @@ movzx	ax,byte ptr [bp+04]
                 false);
             X86Instruction instr = dasm.First();
             Assert.AreEqual("mov\teax,12345678", instr.ToString());
-            Assert.AreEqual("ptr32", instr.op2.Width.ToString());
+            Assert.AreEqual("ptr32", instr.Operands[1].Width.ToString());
         }
 
         [Test]
@@ -394,7 +394,7 @@ movzx	ax,byte ptr [bp+04]
             CreateDisassembler16(rdr);
             X86Instruction instr = dasm.First();
             Assert.AreEqual("mov\tword ptr cs:[0001],0800", instr.ToString());
-            Assert.AreEqual("selector", instr.op2.Width.ToString());
+            Assert.AreEqual("selector", instr.Operands[1].Width.ToString());
         }
 
         [Test]
@@ -402,8 +402,8 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble16(0xF6, 0x06, 0x26, 0x54, 0x01);     // test byte ptr [5426],01
             Assert.AreEqual("test\tbyte ptr [5426],01", instr.ToString());
-            Assert.AreSame(PrimitiveType.Byte, instr.op1.Width);
-            Assert.AreSame(PrimitiveType.Byte, instr.op2.Width);
+            Assert.AreSame(PrimitiveType.Byte, instr.Operands[0].Width);
+            Assert.AreSame(PrimitiveType.Byte, instr.Operands[1].Width);
             Assert.AreSame(PrimitiveType.Byte, instr.dataWidth, "Instruction data width should be byte");
         }
 
@@ -412,7 +412,7 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble16(0xE8, 0x00, 0xF0);
             Assert.AreEqual("call\tF003", instr.ToString());
-            Assert.AreSame(PrimitiveType.Word16, instr.op1.Width);
+            Assert.AreSame(PrimitiveType.Word16, instr.Operands[0].Width);
         }
 
         [Test]
@@ -563,7 +563,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_Call32()
         {
             var instr = Disassemble32(0xE9, 0x78, 0x56, 0x34, 012);
-            var addrOp = (AddressOperand) instr.op1;
+            var addrOp = (AddressOperand) instr.Operands[0];
             Assert.AreEqual("0C35567D", addrOp.ToString());
         }
 
@@ -571,7 +571,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_Call16()
         {
             var instr = Disassemble16(0xE9, 0x78, 0x56);
-            var addrOp = (ImmediateOperand) instr.op1;
+            var addrOp = (ImmediateOperand) instr.Operands[0];
             Assert.AreEqual("567B", addrOp.ToString());
         }
 
@@ -580,7 +580,7 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble32(0x8B, 0x15, 0x22, 0x33, 0x44, 0x55, 0x66);
             Assert.AreEqual("mov\tedx,[55443322]", instr.ToString());
-            var memOp = (MemoryOperand) instr.op2;
+            var memOp = (MemoryOperand) instr.Operands[1];
             Assert.AreEqual("ptr32", memOp.Offset.DataType.ToString());
         }
 
@@ -589,7 +589,7 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble16(0x8B, 0x16, 0x22, 0x33, 0x44);
             Assert.AreEqual("mov\tdx,[3322]", instr.ToString());
-            var memOp = (MemoryOperand) instr.op2;
+            var memOp = (MemoryOperand) instr.Operands[1];
             Assert.AreEqual("word16", memOp.Offset.DataType.ToString());
         }
 
@@ -810,34 +810,34 @@ movzx	ax,byte ptr [bp+04]
             {
                 instr.Add(DisEnumerator_TakeNext(instructions));
             }
-            Assert.AreEqual(Opcode.movsb, instr[0].code);
-            Assert.AreEqual(Opcode.movs, instr[1].code);
+            Assert.AreEqual(Mnemonic.movsb, instr[0].code);
+            Assert.AreEqual(Mnemonic.movs, instr[1].code);
             Assert.AreEqual("word16", instr[1].dataWidth.Name);
-            Assert.AreEqual(Opcode.movs, instr[2].code);
+            Assert.AreEqual(Mnemonic.movs, instr[2].code);
             Assert.AreEqual("word32", instr[2].dataWidth.Name);
 
-            Assert.AreEqual(Opcode.scasb, instr[3].code);
-            Assert.AreEqual(Opcode.scas, instr[4].code);
+            Assert.AreEqual(Mnemonic.scasb, instr[3].code);
+            Assert.AreEqual(Mnemonic.scas, instr[4].code);
             Assert.AreEqual("word16", instr[4].dataWidth.Name);
-            Assert.AreEqual(Opcode.scas, instr[5].code);
+            Assert.AreEqual(Mnemonic.scas, instr[5].code);
             Assert.AreEqual("word32", instr[5].dataWidth.Name);
 
-            Assert.AreEqual(Opcode.cmpsb, instr[6].code);
-            Assert.AreEqual(Opcode.cmps, instr[7].code);
+            Assert.AreEqual(Mnemonic.cmpsb, instr[6].code);
+            Assert.AreEqual(Mnemonic.cmps, instr[7].code);
             Assert.AreEqual("word16", instr[7].dataWidth.Name);
-            Assert.AreEqual(Opcode.cmps, instr[8].code);
+            Assert.AreEqual(Mnemonic.cmps, instr[8].code);
             Assert.AreEqual("word32", instr[8].dataWidth.Name);
 
-            Assert.AreEqual(Opcode.lodsb, instr[9].code);
-            Assert.AreEqual(Opcode.lods, instr[10].code);
+            Assert.AreEqual(Mnemonic.lodsb, instr[9].code);
+            Assert.AreEqual(Mnemonic.lods, instr[10].code);
             Assert.AreEqual("word16", instr[10].dataWidth.Name);
-            Assert.AreEqual(Opcode.lods, instr[11].code);
+            Assert.AreEqual(Mnemonic.lods, instr[11].code);
             Assert.AreEqual("word32", instr[11].dataWidth.Name);
 
-            Assert.AreEqual(Opcode.stosb, instr[12].code);
-            Assert.AreEqual(Opcode.stos, instr[13].code);
+            Assert.AreEqual(Mnemonic.stosb, instr[12].code);
+            Assert.AreEqual(Mnemonic.stos, instr[13].code);
             Assert.AreEqual("word16", instr[13].dataWidth.Name);
-            Assert.AreEqual(Opcode.stos, instr[14].code);
+            Assert.AreEqual(Mnemonic.stos, instr[14].code);
             Assert.AreEqual("word32", instr[14].dataWidth.Name);
         }
 

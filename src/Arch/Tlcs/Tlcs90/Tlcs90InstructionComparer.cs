@@ -38,8 +38,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
         {
             var a = (Tlcs90Instruction   )x;
             var b = (Tlcs90Instruction)y;
-            return CompareOp(a.op1, b.op1) &&
-                   CompareOp(a.op2, b.op2);
+            return CompareOp(a.Operands[0], b.Operands[0]) &&
+                   CompareOp(a.Operands[1], b.Operands[1]);
         }
 
         private bool CompareOp(MachineOperand opA, MachineOperand opB)
@@ -96,8 +96,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
         {
             var tinstr = (Tlcs90Instruction)instr;
             return
-                HashOp(tinstr.op1) ^
-                HashOp(tinstr.op2) * 17;
+                HashOp(tinstr.Operands[0]) ^
+                HashOp(tinstr.Operands[1]) * 17;
         }
 
         private int HashOp(MachineOperand op)

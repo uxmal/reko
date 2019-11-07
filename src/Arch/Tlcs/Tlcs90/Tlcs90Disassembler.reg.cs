@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
+    using Decoder = Decoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>;
+
     partial class Tlcs90Disassembler
     {
         private static Decoder[] regEncodings = new Decoder[]
@@ -55,23 +58,23 @@ namespace Reko.Arch.Tlcs.Tlcs90
             // 10
             invalid,
             invalid,
-            Instr(Opcode.mul, H,g),
-            Instr(Opcode.div, H,g),
+            Instr(Mnemonic.mul, H,g),
+            Instr(Mnemonic.div, H,g),
 
-            Instr(Opcode.add, X,G),
-            Instr(Opcode.add, Y,G),
-            Instr(Opcode.add, S,G),
+            Instr(Mnemonic.add, X,G),
+            Instr(Mnemonic.add, Y,G),
+            Instr(Mnemonic.add, S,G),
             invalid,
 
-            Instr(Opcode.tset, i,g),
-            Instr(Opcode.tset, i,g),
-            Instr(Opcode.tset, i,g),
-            Instr(Opcode.tset, i,g),
+            Instr(Mnemonic.tset, i,g),
+            Instr(Mnemonic.tset, i,g),
+            Instr(Mnemonic.tset, i,g),
+            Instr(Mnemonic.tset, i,g),
 
-            Instr(Opcode.tset, i,g),
-            Instr(Opcode.tset, i,g),
-            Instr(Opcode.tset, i,g),
-            Instr(Opcode.tset, i,g),
+            Instr(Mnemonic.tset, i,g),
+            Instr(Mnemonic.tset, i,g),
+            Instr(Mnemonic.tset, i,g),
+            Instr(Mnemonic.tset, i,g),
 
             // 20
             invalid,
@@ -95,24 +98,24 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // 30
-            Instr(Opcode.ld, r,g),
-            Instr(Opcode.ld, r,g),
-            Instr(Opcode.ld, r,g),
-            Instr(Opcode.ld, r,g),
+            Instr(Mnemonic.ld, r,g),
+            Instr(Mnemonic.ld, r,g),
+            Instr(Mnemonic.ld, r,g),
+            Instr(Mnemonic.ld, r,g),
 
-            Instr(Opcode.ld, r,g),
-            Instr(Opcode.ld, r,g),
-            Instr(Opcode.ld, r,g),
+            Instr(Mnemonic.ld, r,g),
+            Instr(Mnemonic.ld, r,g),
+            Instr(Mnemonic.ld, r,g),
             invalid,
 
-            Instr(Opcode.ld, B,G),
-            Instr(Opcode.ld, D,G),
-            Instr(Opcode.ld, H,G),
+            Instr(Mnemonic.ld, B,G),
+            Instr(Mnemonic.ld, D,G),
+            Instr(Mnemonic.ld, H,G),
             invalid,
 
-            Instr(Opcode.ld, X,G),
-            Instr(Opcode.ld, Y,G),
-            Instr(Opcode.ld, S,G),
+            Instr(Mnemonic.ld, X,G),
+            Instr(Mnemonic.ld, Y,G),
+            Instr(Mnemonic.ld, S,G),
             invalid,
 
             // 40
@@ -147,47 +150,47 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
 
-            Instr(Opcode.ldi),
-            Instr(Opcode.ldir),
-            Instr(Opcode.ldd),
-            Instr(Opcode.lddr),
+            Instr(Mnemonic.ldi),
+            Instr(Mnemonic.ldir),
+            Instr(Mnemonic.ldd),
+            Instr(Mnemonic.lddr),
 
-            Instr(Opcode.cpi),
-            Instr(Opcode.cpir),
-            Instr(Opcode.cpd),
-            Instr(Opcode.cpdr),
+            Instr(Mnemonic.cpi),
+            Instr(Mnemonic.cpir),
+            Instr(Mnemonic.cpd),
+            Instr(Mnemonic.cpdr),
 
             // 60
-            Instr(Opcode.add, a,g),
-            Instr(Opcode.adc, a,g),
-            Instr(Opcode.sub, a,g),
-            Instr(Opcode.sbc, a,g),
+            Instr(Mnemonic.add, a,g),
+            Instr(Mnemonic.adc, a,g),
+            Instr(Mnemonic.sub, a,g),
+            Instr(Mnemonic.sbc, a,g),
 
-            Instr(Opcode.and, a,g),
-            Instr(Opcode.xor, a,g),
-            Instr(Opcode.or,  a,g),
-            Instr(Opcode.cp,  a,g),
+            Instr(Mnemonic.and, a,g),
+            Instr(Mnemonic.xor, a,g),
+            Instr(Mnemonic.or,  a,g),
+            Instr(Mnemonic.cp,  a,g),
 
-            Instr(Opcode.add, g,Ib),
-            Instr(Opcode.adc, g,Ib),
-            Instr(Opcode.sub, g,Ib),
-            Instr(Opcode.sbc, g,Ib),
+            Instr(Mnemonic.add, g,Ib),
+            Instr(Mnemonic.adc, g,Ib),
+            Instr(Mnemonic.sub, g,Ib),
+            Instr(Mnemonic.sbc, g,Ib),
 
-            Instr(Opcode.and, g,Ib),
-            Instr(Opcode.xor, g,Ib),
-            Instr(Opcode.or,  g,Ib),
-            Instr(Opcode.cp,  g,Ib),
+            Instr(Mnemonic.and, g,Ib),
+            Instr(Mnemonic.xor, g,Ib),
+            Instr(Mnemonic.or,  g,Ib),
+            Instr(Mnemonic.cp,  g,Ib),
 
             // 70
-            Instr(Opcode.add, H,G),
-            Instr(Opcode.adc, H,G),
-            Instr(Opcode.sub, H,G),
-            Instr(Opcode.sbc, H,G),
+            Instr(Mnemonic.add, H,G),
+            Instr(Mnemonic.adc, H,G),
+            Instr(Mnemonic.sub, H,G),
+            Instr(Mnemonic.sbc, H,G),
 
-            Instr(Opcode.and, H,G),
-            Instr(Opcode.xor, H,G),
-            Instr(Opcode.or,  H,G),
-            Instr(Opcode.cp,  H,G),
+            Instr(Mnemonic.and, H,G),
+            Instr(Mnemonic.xor, H,G),
+            Instr(Mnemonic.or,  H,G),
+            Instr(Mnemonic.cp,  H,G),
 
             invalid,
             invalid,
@@ -242,46 +245,46 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // A0
-            Instr(Opcode.rlc, g),
-            Instr(Opcode.rrc, g),
-            Instr(Opcode.rl, g),
-            Instr(Opcode.rr, g),
+            Instr(Mnemonic.rlc, g),
+            Instr(Mnemonic.rrc, g),
+            Instr(Mnemonic.rl, g),
+            Instr(Mnemonic.rr, g),
 
-            Instr(Opcode.sla, g),
-            Instr(Opcode.sra, g),
-            Instr(Opcode.sll, g),
-            Instr(Opcode.srl, g),
+            Instr(Mnemonic.sla, g),
+            Instr(Mnemonic.sra, g),
+            Instr(Mnemonic.sll, g),
+            Instr(Mnemonic.srl, g),
 
-            Instr(Opcode.bit, i,g),
-            Instr(Opcode.bit, i,g),
-            Instr(Opcode.bit, i,g),
-            Instr(Opcode.bit, i,g),
+            Instr(Mnemonic.bit, i,g),
+            Instr(Mnemonic.bit, i,g),
+            Instr(Mnemonic.bit, i,g),
+            Instr(Mnemonic.bit, i,g),
 
-            Instr(Opcode.bit, i,g),
-            Instr(Opcode.bit, i,g),
-            Instr(Opcode.bit, i,g),
-            Instr(Opcode.bit, i,g),
+            Instr(Mnemonic.bit, i,g),
+            Instr(Mnemonic.bit, i,g),
+            Instr(Mnemonic.bit, i,g),
+            Instr(Mnemonic.bit, i,g),
 
             // B0
-            Instr(Opcode.res, i,g),
-            Instr(Opcode.res, i,g),
-            Instr(Opcode.res, i,g),
-            Instr(Opcode.res, i,g),
+            Instr(Mnemonic.res, i,g),
+            Instr(Mnemonic.res, i,g),
+            Instr(Mnemonic.res, i,g),
+            Instr(Mnemonic.res, i,g),
 
-            Instr(Opcode.res, i,g),
-            Instr(Opcode.res, i,g),
-            Instr(Opcode.res, i,g),
-            Instr(Opcode.res, i,g),
+            Instr(Mnemonic.res, i,g),
+            Instr(Mnemonic.res, i,g),
+            Instr(Mnemonic.res, i,g),
+            Instr(Mnemonic.res, i,g),
 
-            Instr(Opcode.set, i,g),
-            Instr(Opcode.set, i,g),
-            Instr(Opcode.set, i,g),
-            Instr(Opcode.set, i,g),
+            Instr(Mnemonic.set, i,g),
+            Instr(Mnemonic.set, i,g),
+            Instr(Mnemonic.set, i,g),
+            Instr(Mnemonic.set, i,g),
 
-            Instr(Opcode.set, i,g),
-            Instr(Opcode.set, i,g),
-            Instr(Opcode.set, i,g),
-            Instr(Opcode.set, i,g),
+            Instr(Mnemonic.set, i,g),
+            Instr(Mnemonic.set, i,g),
+            Instr(Mnemonic.set, i,g),
+            Instr(Mnemonic.set, i,g),
 
             // C0
             invalid,
@@ -305,25 +308,25 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // D0
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
 
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
 
-            Instr(Opcode.ret, InstrClass.Transfer),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.Transfer),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
 
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
-            Instr(Opcode.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer, c),
 
             // E0
             invalid,

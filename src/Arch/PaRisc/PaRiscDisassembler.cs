@@ -32,6 +32,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.PaRisc
 {
+    using Decoder = Decoder<PaRiscDisassembler, Mnemonic, PaRiscInstruction>;
+
     public class PaRiscDisassembler : DisassemblerBase<PaRiscInstruction>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
@@ -1268,45 +1270,13 @@ namespace Reko.Arch.PaRisc
         private static readonly Func<bool, uint, Bitfield[], uint> low_sign_ext5 = low_sign_ext(5);
         private static readonly Func<bool, uint, Bitfield[], uint> low_sign_ext11 = low_sign_ext(11);
 
-        /// <summary>
-        /// Decoders analyze the 32-bit instruction word and generate a disassembled instruction.
-        /// </summary>
-        private abstract class Decoder
-        {
-            public abstract PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm);
-
-            public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
-            {
-                var hibit = 0x80000000u;
-                var sb = new StringBuilder();
-                for (int i = 0; i < 32; ++i)
-                {
-                    if ((shMask & hibit) != 0)
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
-                    }
-                    else
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
-                    }
-                    shMask <<= 1;
-                    wInstr <<= 1;
-                }
-                if (!string.IsNullOrEmpty(tag))
-                {
-                    sb.AppendFormat(" {0}", tag);
-                }
-                Debug.Print(sb.ToString());
-            }
-        }
-
         private class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Opcode opcode;
+            private readonly Mnemonic opcode;
             private readonly Mutator<PaRiscDisassembler>[] mutators;
 
-            public InstrDecoder(InstrClass iclass, Opcode opcode, params Mutator<PaRiscDisassembler> [] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic opcode, params Mutator<PaRiscDisassembler> [] mutators)
             {
                 this.iclass = iclass;
                 this.opcode = opcode;
@@ -1387,10 +1357,10 @@ namespace Reko.Arch.PaRisc
 
         private class NyiDecoder : Decoder
         {
-            private readonly Opcode mnemonic;
+            private readonly Mnemonic mnemonic;
             private readonly string message;
 
-            public NyiDecoder(Opcode mnemonic, string message)
+            public NyiDecoder(Mnemonic mnemonic, string message)
             {
                 this.mnemonic = mnemonic;
                 this.message = !string.IsNullOrEmpty(message) ? message : mnemonic.ToString();
@@ -1433,12 +1403,12 @@ namespace Reko.Arch.PaRisc
         }
 
 
-        private static InstrDecoder Instr(Opcode opcode, params Mutator<PaRiscDisassembler> [] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<PaRiscDisassembler> [] mutators)
         {
             return new InstrDecoder(InstrClass.Linear, opcode, mutators);
         }
 
-        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<PaRiscDisassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<PaRiscDisassembler>[] mutators)
         {
             return new InstrDecoder(iclass, opcode, mutators);
         }
@@ -1479,10 +1449,10 @@ namespace Reko.Arch.PaRisc
 
         private static NyiDecoder Nyi(string message)
         {
-            return new NyiDecoder(Opcode.invalid, message);
+            return new NyiDecoder(Mnemonic.invalid, message);
         }
 
-        private static NyiDecoder Nyi(Opcode opcode, string message)
+        private static NyiDecoder Nyi(Mnemonic opcode, string message)
         {
             return new NyiDecoder(opcode, message);
         }
@@ -1490,193 +1460,193 @@ namespace Reko.Arch.PaRisc
 
         static PaRiscDisassembler()
         {
-            invalid = Instr(Opcode.invalid, InstrClass.Invalid);
+            invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
             var systemOp = Mask(19, 8, invalid,
-                (0x00, Instr(Opcode.@break, InstrClass.Call|InstrClass.Transfer, u8(27,5), u16(6,13))),
-                (0x20, Nyi(Opcode.sync, "")),
-                (0x20, Nyi(Opcode.syncdma, "")),
-                (0x60, Instr(Opcode.rfi, InstrClass.System | InstrClass.Transfer)),
-                (0x65, Instr(Opcode.rfi_r, InstrClass.System | InstrClass.Transfer)),
-                (0x6B, Nyi(Opcode.ssm, "")),
-                (0x73, Nyi(Opcode.rsm, "")),
-                (0xC3, Instr(Opcode.mtsm, InstrClass.System|InstrClass.Transfer, r11)),
+                (0x00, Instr(Mnemonic.@break, InstrClass.Call|InstrClass.Transfer, u8(27,5), u16(6,13))),
+                (0x20, Nyi(Mnemonic.sync, "")),
+                (0x20, Nyi(Mnemonic.syncdma, "")),
+                (0x60, Instr(Mnemonic.rfi, InstrClass.System | InstrClass.Transfer)),
+                (0x65, Instr(Mnemonic.rfi_r, InstrClass.System | InstrClass.Transfer)),
+                (0x6B, Nyi(Mnemonic.ssm, "")),
+                (0x73, Nyi(Mnemonic.rsm, "")),
+                (0xC3, Instr(Mnemonic.mtsm, InstrClass.System|InstrClass.Transfer, r11)),
                 (0x85, Cond(16,2, Eq0,
-                    Instr(Opcode.ldsid, r6,r27),
-                    Instr(Opcode.ldsid, sr(16),r27))),
-                (0xC1, Instr(Opcode.mtsp, r(11,5),sr(16))),
-                (0x25, Nyi(Opcode.mfsp, "")),
-                (0xC2, Instr(Opcode.mtctl, r11, cr(6,5))),
+                    Instr(Mnemonic.ldsid, r6,r27),
+                    Instr(Mnemonic.ldsid, sr(16),r27))),
+                (0xC1, Instr(Mnemonic.mtsp, r(11,5),sr(16))),
+                (0x25, Nyi(Mnemonic.mfsp, "")),
+                (0xC2, Instr(Mnemonic.mtctl, r11, cr(6,5))),
                 (0x45, Mask(17, 1, 
-                    Instr(Opcode.mfctl, cr(6,5), r27),
-                    Instr(Opcode.mfctl_w, cr(6,5), r27))));
+                    Instr(Mnemonic.mfctl, cr(6,5), r27),
+                    Instr(Mnemonic.mfctl_w, cr(6,5), r27))));
 
             var memMgmt = Mask(19, 1,
                 Mask(19, 7, invalid,
-                    (0x20, Nyi(Opcode.iitlbt, "")),
-                    (0x08, Nyi(Opcode.pitlb, "")),
-                    (0x09, Nyi(Opcode.pitlbe, "")),
-                    (0x18, Nyi(Opcode.pitlb_l, "")),
-                    (0x0A, Nyi(Opcode.fic_0a, "")),
-                    (0x0B, Nyi(Opcode.fice, ""))),
+                    (0x20, Nyi(Mnemonic.iitlbt, "")),
+                    (0x08, Nyi(Mnemonic.pitlb, "")),
+                    (0x09, Nyi(Mnemonic.pitlbe, "")),
+                    (0x18, Nyi(Mnemonic.pitlb_l, "")),
+                    (0x0A, Nyi(Mnemonic.fic_0a, "")),
+                    (0x0B, Nyi(Mnemonic.fice, ""))),
                 Mask(18, 8, invalid,
-                    (0x60, Nyi(Opcode.idtlbt, "")),
-                    (0x49, Nyi(Opcode.pdtlbe, "")),
-                    (0x48, Instr(Opcode.pdtlb, Mx(PrimitiveType.Word32, 6, 11, 16))),
-                    (0x58, Instr(Opcode.pdtlb_l, Mx(PrimitiveType.Word32, 6, 11, 16))),
-                    (0x4A, Nyi(Opcode.fdc, "(index)")),
-                    (0xCA, Nyi(Opcode.fdc, "(imm)")),
-                    (0x4B, Nyi(Opcode.fdce, "")),
-                    (0x4E, Nyi(Opcode.pdc, "")),
-                    (0x4F, Nyi(Opcode.fic, "")),
-                    (0x46, Nyi(Opcode.probe, "")),
-                    (0xC6, Nyi(Opcode.probei, "")),
-                    (0x47, Nyi(Opcode.probe, "")),
-                    (0xC7, Nyi(Opcode.probei, "")),
-                    (0x4D, Nyi(Opcode.lpa, "")),
-                    (0x4C, Nyi(Opcode.lci, ""))));
+                    (0x60, Nyi(Mnemonic.idtlbt, "")),
+                    (0x49, Nyi(Mnemonic.pdtlbe, "")),
+                    (0x48, Instr(Mnemonic.pdtlb, Mx(PrimitiveType.Word32, 6, 11, 16))),
+                    (0x58, Instr(Mnemonic.pdtlb_l, Mx(PrimitiveType.Word32, 6, 11, 16))),
+                    (0x4A, Nyi(Mnemonic.fdc, "(index)")),
+                    (0xCA, Nyi(Mnemonic.fdc, "(imm)")),
+                    (0x4B, Nyi(Mnemonic.fdce, "")),
+                    (0x4E, Nyi(Mnemonic.pdc, "")),
+                    (0x4F, Nyi(Mnemonic.fic, "")),
+                    (0x46, Nyi(Mnemonic.probe, "")),
+                    (0xC6, Nyi(Mnemonic.probei, "")),
+                    (0x47, Nyi(Mnemonic.probe, "")),
+                    (0xC7, Nyi(Mnemonic.probei, "")),
+                    (0x4D, Nyi(Mnemonic.lpa, "")),
+                    (0x4C, Nyi(Mnemonic.lci, ""))));
 
 
             var arithLog = Mask(20, 6, invalid,
-                (0x00, Instr(Opcode.andcm, cf_log(), r11, r6, r27)),
+                (0x00, Instr(Mnemonic.andcm, cf_log(), r11, r6, r27)),
 
-                (0x04, Instr(Opcode.hsub_us, r11, r6, r27)),
-                (0x05, Instr(Opcode.hsub_ss, r11, r6, r27)),
-                (0x07, Instr(Opcode.hsub, r11, r6, r27)),
+                (0x04, Instr(Mnemonic.hsub_us, r11, r6, r27)),
+                (0x05, Instr(Mnemonic.hsub_ss, r11, r6, r27)),
+                (0x07, Instr(Mnemonic.hsub, r11, r6, r27)),
 
-                (0x08, Instr(Opcode.and, cf_log(), r11, r6, r27)),
-                (0x09, Instr(Opcode.or, cf_log(), r11, r6, r27)),
-                (0x0A, Instr(Opcode.xor, cf_log(), r11, r6, r27)),
-                (0x0B, Instr(Opcode.havg, r11, r6, r27)),
+                (0x08, Instr(Mnemonic.and, cf_log(), r11, r6, r27)),
+                (0x09, Instr(Mnemonic.or, cf_log(), r11, r6, r27)),
+                (0x0A, Instr(Mnemonic.xor, cf_log(), r11, r6, r27)),
+                (0x0B, Instr(Mnemonic.havg, r11, r6, r27)),
 
-                (0x0C, Instr(Opcode.hadd_us, r11, r6, r27)),
-                (0x0D, Instr(Opcode.hadd_ss, r11, r6, r27)),
-                (0x0E, Instr(Opcode.uxor, cf_log(), r11, r6, r27)),
-                (0x0F, Instr(Opcode.hadd, r11, r6, r27)),
+                (0x0C, Instr(Mnemonic.hadd_us, r11, r6, r27)),
+                (0x0D, Instr(Mnemonic.hadd_ss, r11, r6, r27)),
+                (0x0E, Instr(Mnemonic.uxor, cf_log(), r11, r6, r27)),
+                (0x0F, Instr(Mnemonic.hadd, r11, r6, r27)),
 
-                (0x10, Instr(Opcode.sub, cf_log(), r11, r6, r27)),
-                (0x11, Instr(Opcode.ds, r11, r6, r27)),
-                (0x13, Instr(Opcode.sub_tc, cf_cmpsub(), r11, r6, r27)),
+                (0x10, Instr(Mnemonic.sub, cf_log(), r11, r6, r27)),
+                (0x11, Instr(Mnemonic.ds, r11, r6, r27)),
+                (0x13, Instr(Mnemonic.sub_tc, cf_cmpsub(), r11, r6, r27)),
 
-                (0x14, Instr(Opcode.sub_b, cf_cmpsub(), r11, r6, r27)),
-                (0x15, Instr(Opcode.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
-                (0x16, Instr(Opcode.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
-                (0x17, Instr(Opcode.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x14, Instr(Mnemonic.sub_b, cf_cmpsub(), r11, r6, r27)),
+                (0x15, Instr(Mnemonic.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x16, Instr(Mnemonic.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x17, Instr(Mnemonic.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
 
-                (0x18, Instr(Opcode.add, cf_add(), r11, r6, r27)),
-                (0x19, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
-                (0x1A, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
-                (0x1B, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x18, Instr(Mnemonic.add, cf_add(), r11, r6, r27)),
+                (0x19, Instr(Mnemonic.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x1A, Instr(Mnemonic.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x1B, Instr(Mnemonic.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
 
-                (0x1C, Instr(Opcode.add_c, cf_add(), r11, r6, r27)),
-                (0x1D, Instr(Opcode.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
-                (0x1E, Instr(Opcode.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
-                (0x1F, Instr(Opcode.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x1C, Instr(Mnemonic.add_c, cf_add(), r11, r6, r27)),
+                (0x1D, Instr(Mnemonic.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x1E, Instr(Mnemonic.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x1F, Instr(Mnemonic.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
 
-                (0x22, Instr(Opcode.cmpclr, cf_cmpsub(), r11, r6, r27)),
+                (0x22, Instr(Mnemonic.cmpclr, cf_cmpsub(), r11, r6, r27)),
 
-                (0x26, Instr(Opcode.uaddcm, r11, r6, r27)),
-                (0x27, Instr(Opcode.uaddcm_tc, r11, r6, r27)),
+                (0x26, Instr(Mnemonic.uaddcm, r11, r6, r27)),
+                (0x27, Instr(Mnemonic.uaddcm_tc, r11, r6, r27)),
 
-                (0x28, Instr(Opcode.add_l, cf_add(), r11, r6, r27)),
-                (0x29, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
-                (0x2A, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
-                (0x2B, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x28, Instr(Mnemonic.add_l, cf_add(), r11, r6, r27)),
+                (0x29, Instr(Mnemonic.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x2A, Instr(Mnemonic.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x2B, Instr(Mnemonic.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
 
-                (0x2E, Instr(Opcode.dcor)),
-                (0x2F, Instr(Opcode.dcor_i)),
+                (0x2E, Instr(Mnemonic.dcor)),
+                (0x2F, Instr(Mnemonic.dcor_i)),
 
-                (0x30, Instr(Opcode.sub_tsv, cf_cmpsub(), r11, r6, r27)),
-                (0x33, Instr(Opcode.sub_tsv_tc, cf_cmpsub(), r11, r6, r27)),
+                (0x30, Instr(Mnemonic.sub_tsv, cf_cmpsub(), r11, r6, r27)),
+                (0x33, Instr(Mnemonic.sub_tsv_tc, cf_cmpsub(), r11, r6, r27)),
 
-                (0x34, Instr(Opcode.sub_b_tsv, cf_cmpsub(), r11, r6, r27)),
+                (0x34, Instr(Mnemonic.sub_b_tsv, cf_cmpsub(), r11, r6, r27)),
 
-                (0x38, Instr(Opcode.add_tsv, cf_add(), r11, r6, r27)),
-                (0x39, Instr(Opcode.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
-                (0x3A, Instr(Opcode.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
-                (0x3B, Instr(Opcode.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x38, Instr(Mnemonic.add_tsv, cf_add(), r11, r6, r27)),
+                (0x39, Instr(Mnemonic.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x3A, Instr(Mnemonic.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x3B, Instr(Mnemonic.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
 
-                (0x3C, Instr(Opcode.add_c_tsv, cf_add(), r11, r6, r27)));
+                (0x3C, Instr(Mnemonic.add_c_tsv, cf_add(), r11, r6, r27)));
 
             var indexMem = Mask(19, 1,  // opc=3
                 Mask(22, 4, invalid,
-                    (0x0, Instr(Opcode.ldb, Mx(PrimitiveType.Byte, 6, 11, 16), r27)),
-                    (0x1, Instr(Opcode.ldh, Mx(PrimitiveType.Word16, 6, 11, 16), r27)),
-                    (0x2, Instr(Opcode.ldw, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
-                    (0x3, Instr(Opcode.ldd, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
-                    (0x4, Instr(Opcode.ldda, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
-                    (0x5, Instr(Opcode.ldcd, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
-                    (0x6, Instr(Opcode.ldwa, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
-                    (0x7, Instr(Opcode.ldcw, Mx(PrimitiveType.Word32, 6, 11, 16), r27))),
+                    (0x0, Instr(Mnemonic.ldb, Mx(PrimitiveType.Byte, 6, 11, 16), r27)),
+                    (0x1, Instr(Mnemonic.ldh, Mx(PrimitiveType.Word16, 6, 11, 16), r27)),
+                    (0x2, Instr(Mnemonic.ldw, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x3, Instr(Mnemonic.ldd, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x4, Instr(Mnemonic.ldda, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x5, Instr(Mnemonic.ldcd, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x6, Instr(Mnemonic.ldwa, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x7, Instr(Mnemonic.ldcw, Mx(PrimitiveType.Word32, 6, 11, 16), r27))),
                 Mask(22, 4, invalid,
-                    (0x0, Instr(Opcode.ldb, cc_loads, Mshort(11, PrimitiveType.Byte), r27)),
-                    (0x1, Instr(Opcode.ldh, cc_loads, Mshort(11, PrimitiveType.Word16), r27)),
-                    (0x2, Instr(Opcode.ldw, cc_loads, Mshort(11, PrimitiveType.Word32), r27)),
-                    (0x3, Instr(Opcode.ldd, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
-                    (0x4, Instr(Opcode.ldda, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
-                    (0x5, Instr(Opcode.ldcd, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
-                    (0x6, Instr(Opcode.ldwa, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
-                    (0x7, Instr(Opcode.ldcw, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
-                    (0x8, Instr(Opcode.stb, cc_stores, r11, Mshort(27, PrimitiveType.Byte))),
-                    (0x9, Instr(Opcode.sth, cc_stores, r11, Mshort(27, PrimitiveType.Word16))),
-                    (0xA, Instr(Opcode.stw, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
-                    (0xB, Instr(Opcode.std, cc_stores, r11, Mshort(27, PrimitiveType.Word64))),
-                    (0xC, Instr(Opcode.stby, cc_stores, r11, Mshort(27, PrimitiveType.Byte, stbyMods))),
-                    (0xD, Instr(Opcode.stdby, cc_stores, r11, Mshort(27, PrimitiveType.Byte, stbyMods))),
-                    (0xE, Instr(Opcode.stwa, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
-                    (0xF, Instr(Opcode.stda, cc_stores, r11, Mshort(27, PrimitiveType.Word64)))));
+                    (0x0, Instr(Mnemonic.ldb, cc_loads, Mshort(11, PrimitiveType.Byte), r27)),
+                    (0x1, Instr(Mnemonic.ldh, cc_loads, Mshort(11, PrimitiveType.Word16), r27)),
+                    (0x2, Instr(Mnemonic.ldw, cc_loads, Mshort(11, PrimitiveType.Word32), r27)),
+                    (0x3, Instr(Mnemonic.ldd, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x4, Instr(Mnemonic.ldda, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x5, Instr(Mnemonic.ldcd, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x6, Instr(Mnemonic.ldwa, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x7, Instr(Mnemonic.ldcw, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x8, Instr(Mnemonic.stb, cc_stores, r11, Mshort(27, PrimitiveType.Byte))),
+                    (0x9, Instr(Mnemonic.sth, cc_stores, r11, Mshort(27, PrimitiveType.Word16))),
+                    (0xA, Instr(Mnemonic.stw, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
+                    (0xB, Instr(Mnemonic.std, cc_stores, r11, Mshort(27, PrimitiveType.Word64))),
+                    (0xC, Instr(Mnemonic.stby, cc_stores, r11, Mshort(27, PrimitiveType.Byte, stbyMods))),
+                    (0xD, Instr(Mnemonic.stdby, cc_stores, r11, Mshort(27, PrimitiveType.Byte, stbyMods))),
+                    (0xE, Instr(Mnemonic.stwa, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
+                    (0xF, Instr(Mnemonic.stda, cc_stores, r11, Mshort(27, PrimitiveType.Word64)))));
 
             var spopN = Mask(21, 2,
-                Instr(Opcode.spop0, u(23, 3, PrimitiveType.UInt32), u(27, 5, PrimitiveType.UInt32), Annul(26)),
-                Instr(Opcode.spop1),
-                Instr(Opcode.spop2),
-                Instr(Opcode.spop3));
+                Instr(Mnemonic.spop0, u(23, 3, PrimitiveType.UInt32), u(27, 5, PrimitiveType.UInt32), Annul(26)),
+                Instr(Mnemonic.spop1),
+                Instr(Mnemonic.spop2),
+                Instr(Mnemonic.spop3));
 
             var coprW = Cond(23, 3, IsFpuProcessor,
                 Mask(22, 1,
-                    Instr(Opcode.fldw, cc_loads, Mshort(11, PrimitiveType.Real32), fr25_27),
-                    Instr(Opcode.fstw, cc_stores, fr25_27, Mshort(11, PrimitiveType.Real32))),
+                    Instr(Mnemonic.fldw, cc_loads, Mshort(11, PrimitiveType.Real32), fr25_27),
+                    Instr(Mnemonic.fstw, cc_stores, fr25_27, Mshort(11, PrimitiveType.Real32))),
                 Mask(22, 1,
-                    Instr(Opcode.cldw, cc_loads, cop(23, 3), Mshort(11, PrimitiveType.Word32), r27),
-                    Instr(Opcode.cstw, cc_stores, cop(23, 3), r27, Mshort(11, PrimitiveType.Word32))));
+                    Instr(Mnemonic.cldw, cc_loads, cop(23, 3), Mshort(11, PrimitiveType.Word32), r27),
+                    Instr(Mnemonic.cstw, cc_stores, cop(23, 3), r27, Mshort(11, PrimitiveType.Word32))));
 
             var coprDW = Cond(23, 3, IsFpuProcessor,
                 Mask(22, 1,
-                    Instr(Opcode.fldd, cc_loads, Mshort(11, PrimitiveType.Real64), fr27),
-                    Instr(Opcode.fstd, cc_stores, fr27, Mshort(11, PrimitiveType.Real64))),
+                    Instr(Mnemonic.fldd, cc_loads, Mshort(11, PrimitiveType.Real64), fr27),
+                    Instr(Mnemonic.fstd, cc_stores, fr27, Mshort(11, PrimitiveType.Real64))),
                 Mask(22, 1,
-                    Instr(Opcode.cldd, cc_loads,cop(23, 3), Mshort(11, PrimitiveType.Word64), r27),
-                    Instr(Opcode.cstd, cc_stores, cop(23, 3), r27, Mshort(11, PrimitiveType.Word64))));
+                    Instr(Mnemonic.cldd, cc_loads,cop(23, 3), Mshort(11, PrimitiveType.Word64), r27),
+                    Instr(Mnemonic.cstd, cc_stores, cop(23, 3), r27, Mshort(11, PrimitiveType.Word64))));
 
             var copr = Mask(21, 2,
                 Mask(16, 3,
                     Cond(6, 26, Eq0,
-                        Instr(Opcode.fid),
+                        Instr(Mnemonic.fid),
                         invalid),
                     invalid,
-                    Instr(Opcode.fcpy, fpFmt2, fr6, fr27),
-                    Instr(Opcode.fabs, fpFmt2, fr6, fr27),
+                    Instr(Mnemonic.fcpy, fpFmt2, fr6, fr27),
+                    Instr(Mnemonic.fabs, fpFmt2, fr6, fr27),
 
-                    Instr(Opcode.fsqrt, fpFmt2, fr6, fr27),
+                    Instr(Mnemonic.fsqrt, fpFmt2, fr6, fr27),
                     Nyi("frnd"),
-                    Instr(Opcode.fneg, fpFmt2, fr6, fr27),
-                    Instr(Opcode.fnegabs, fpFmt2, fr6, fr27)),
+                    Instr(Mnemonic.fneg, fpFmt2, fr6, fr27),
+                    Instr(Mnemonic.fnegabs, fpFmt2, fr6, fr27)),
                 Mask(14, 3,
-                    Instr(Opcode.fcnvff, cvf_s,cvf_d,fr6,fr27),
-                    Instr(Opcode.fcnvxf, cvx_s,cvf_d,fr6,fr27),
-                    Instr(Opcode.fcnvfx, cvf_s,cvx_d,fr6,fr27),
-                    Instr(Opcode.fcnvfxt, cvf_s,cvx_d,fr6,fr27),
+                    Instr(Mnemonic.fcnvff, cvf_s,cvf_d,fr6,fr27),
+                    Instr(Mnemonic.fcnvxf, cvx_s,cvf_d,fr6,fr27),
+                    Instr(Mnemonic.fcnvfx, cvf_s,cvx_d,fr6,fr27),
+                    Instr(Mnemonic.fcnvfxt, cvf_s,cvx_d,fr6,fr27),
 
                     invalid,
-                    Instr(Opcode.fcnv, cvu_s,cvf_d,fr6,fr27),
-                    Instr(Opcode.fcnv, cvf_s,cvu_d,fr6,fr27),
-                    Instr(Opcode.fcnv_t, cvf_s,cvu_d,fr6,fr27)),
+                    Instr(Mnemonic.fcnv, cvu_s,cvf_d,fr6,fr27),
+                    Instr(Mnemonic.fcnv, cvf_s,cvu_d,fr6,fr27),
+                    Instr(Mnemonic.fcnv_t, cvf_s,cvu_d,fr6,fr27)),
                 Nyi("FP 0C two"),
                 Mask(16, 3,
-                    Instr(Opcode.fadd, fpFmt2, fr6, fr11, fr27),
-                    Instr(Opcode.fsub, fpFmt2, fr6, fr11, fr27),
-                    Instr(Opcode.fmpy, fpFmt2, fr6, fr11, fr27),
-                    Instr(Opcode.fdiv, fpFmt2, fr6, fr11, fr27),
+                    Instr(Mnemonic.fadd, fpFmt2, fr6, fr11, fr27),
+                    Instr(Mnemonic.fsub, fpFmt2, fr6, fr11, fr27),
+                    Instr(Mnemonic.fmpy, fpFmt2, fr6, fr11, fr27),
+                    Instr(Mnemonic.fdiv, fpFmt2, fr6, fr11, fr27),
 
                     invalid,
                     invalid,
@@ -1686,86 +1656,86 @@ namespace Reko.Arch.PaRisc
                 Mask(16, 3,
                     invalid,
                     invalid,
-                    Instr(Opcode.fcpy, fpFmt20_1, fr6_24, fr25_27),
-                    Nyi(Opcode.fabs, ""),
+                    Instr(Mnemonic.fcpy, fpFmt20_1, fr6_24, fr25_27),
+                    Nyi(Mnemonic.fabs, ""),
 
-                    Nyi(Opcode.fsqrt, ""),
-                    Nyi(Opcode.frnd, ""),
-                    Nyi(Opcode.fneg, ""),
-                    Nyi(Opcode.fnegabs, "")),
+                    Nyi(Mnemonic.fsqrt, ""),
+                    Nyi(Mnemonic.frnd, ""),
+                    Nyi(Mnemonic.fneg, ""),
+                    Nyi(Mnemonic.fnegabs, "")),
                 Mask(14, 3,
-                    Instr(Opcode.fcnv, cvf_s, cvf_d, fr6_20, fr27_18),
-                    Instr(Opcode.fcnv, cvx_s, cvf_d, fr6_20, fr27_18),
-                    Instr(Opcode.fcnv, cvf_s, cvx_d, fr6_20, fr27_18),
-                    Instr(Opcode.fcnv_t, cvf_s, cvx_d, fr6_20, fr27_18),
+                    Instr(Mnemonic.fcnv, cvf_s, cvf_d, fr6_20, fr27_18),
+                    Instr(Mnemonic.fcnv, cvx_s, cvf_d, fr6_20, fr27_18),
+                    Instr(Mnemonic.fcnv, cvf_s, cvx_d, fr6_20, fr27_18),
+                    Instr(Mnemonic.fcnv_t, cvf_s, cvx_d, fr6_20, fr27_18),
 
                     invalid,
-                    Instr(Opcode.fcnv, cvu_s, cvf_d, fr6_20, fr27_18),
-                    Instr(Opcode.fcnv, cvf_s, cvu_d, fr6_20, fr27_18),
-                    Instr(Opcode.fcnv_t, cvf_s, cvu_d, fr6_20, fr27_18)),
-                Instr(Opcode.fcmp, cf27_fp, fr25_27, fr11_19),
+                    Instr(Mnemonic.fcnv, cvu_s, cvf_d, fr6_20, fr27_18),
+                    Instr(Mnemonic.fcnv, cvf_s, cvu_d, fr6_20, fr27_18),
+                    Instr(Mnemonic.fcnv_t, cvf_s, cvu_d, fr6_20, fr27_18)),
+                Instr(Mnemonic.fcmp, cf27_fp, fr25_27, fr11_19),
                 Mask(23, 1,
                     Mask(16, 3,
-                        Instr(Opcode.fadd, fpFmt20_1),
-                        Instr(Opcode.fsub, fpFmt20_1),
-                        Instr(Opcode.fmpy, fpFmt20_1, fr24_6, fr24_11, fr25_27),
-                        Instr(Opcode.fdiv, fpFmt20_1),
+                        Instr(Mnemonic.fadd, fpFmt20_1),
+                        Instr(Mnemonic.fsub, fpFmt20_1),
+                        Instr(Mnemonic.fmpy, fpFmt20_1, fr24_6, fr24_11, fr25_27),
+                        Instr(Mnemonic.fdiv, fpFmt20_1),
                         invalid,
                         invalid,
                         invalid,
                         invalid),
-                    Instr(Opcode.xmpyu, fr6_25, fr11_19, fr27)));
+                    Instr(Mnemonic.xmpyu, fr6_25, fr11_19, fr27)));
             var productSpecific = Nyi("productSpecific");
             var subi = Mask(20, 1,
-                Instr(Opcode.subi, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
-                Instr(Opcode.subi_tsv, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11));
+                Instr(Mnemonic.subi, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
+                Instr(Mnemonic.subi_tsv, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11));
             var extract_34 = Mask(19, 3,
-                Instr(Opcode.shrpw, cf16_sh_ex_dp_3, r11, r6, r27),
+                Instr(Mnemonic.shrpw, cf16_sh_ex_dp_3, r11, r6, r27),
                 Cond(23, 4, Eq0,
-                    Instr(Opcode.shrpd, cf16_sh_ex_dp_3, r11, r6, reg(Registers.SAR), r27),
-                    Instr(Opcode.shrpd, cf16_sh_ex_dp_3, r11, r6, shamt(BeFields((20,1),(22,5))), r27)),
-                Instr(Opcode.shrpw, cf16_sh_ex_dp_3, r11, r6, r27),
-                Instr(Opcode.shrpd, cf16_sh_ex_dp_3, r11, r6, r27),
+                    Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3, r11, r6, reg(Registers.SAR), r27),
+                    Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3, r11, r6, shamt(BeFields((20,1),(22,5))), r27)),
+                Instr(Mnemonic.shrpw, cf16_sh_ex_dp_3, r11, r6, r27),
+                Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3, r11, r6, r27),
 
                 Nyi("extract-100"),
                 Nyi("extract-101"),
-                Instr(Opcode.extrw, cf16_shext, se(21), r6, u(22, 5,PrimitiveType.Byte), u8From32(27, 5), r11),
-                Instr(Opcode.extrw, cf16_shext, se(21), r6, u(22, 5,PrimitiveType.Byte), u8From32(27, 5), r11));
+                Instr(Mnemonic.extrw, cf16_shext, se(21), r6, u(22, 5,PrimitiveType.Byte), u8From32(27, 5), r11),
+                Instr(Mnemonic.extrw, cf16_shext, se(21), r6, u(22, 5,PrimitiveType.Byte), u8From32(27, 5), r11));
             var deposit_35 = Mask(19, 2,
-                Instr(Opcode.depw, cf16_shext, z(21), r11, u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6),
-                Instr(Opcode.depw, cf16_shext, z(21), r11, u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6),
+                Instr(Mnemonic.depw, cf16_shext, z(21), r11, u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6),
+                Instr(Mnemonic.depw, cf16_shext, z(21), r11, u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6),
                 Nyi("depwi-var"),
-                Instr(Opcode.depwi, cf16_shext, z(21), lse(11, 5), u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6));
+                Instr(Mnemonic.depwi, cf16_shext, z(21), lse(11, 5), u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6));
             var extract_3C = Nyi("extract_3C");
             var deposit_3D = Nyi("deposit_3D");
             var multimedia = Mask(16, 1,
-                Nyi(Opcode.permh, ""),
+                Nyi(Mnemonic.permh, ""),
                 Mask(17, 2,
                     Mask(20, 2,
-                        Nyi(Opcode.mixw_l, ""),
-                        Nyi(Opcode.mixh_l, ""),
-                        Nyi(Opcode.hshl, ""),
+                        Nyi(Mnemonic.mixw_l, ""),
+                        Nyi(Mnemonic.mixh_l, ""),
+                        Nyi(Mnemonic.hshl, ""),
                         invalid),
                     invalid,
                     Mask(20, 2,
-                        Nyi(Opcode.mixw_r, ""),
-                        Nyi(Opcode.mixh_r, ""),
-                        Nyi(Opcode.hshr_u, ""),
-                        Nyi(Opcode.hshr_s, "")),
+                        Nyi(Mnemonic.mixw_r, ""),
+                        Nyi(Mnemonic.mixh_r, ""),
+                        Nyi(Mnemonic.hshr_u, ""),
+                        Nyi(Mnemonic.hshr_s, "")),
                     invalid));
 
             var branch = Mask(16, 3,
-                Instr(Opcode.b_l, PcRel(assemble_17, BeFields((11,5),(19,11),(31,1))),r6, Annul(30)),
-                Nyi(Opcode.b_gate, ""),
-                Nyi(Opcode.blr, ""),
+                Instr(Mnemonic.b_l, PcRel(assemble_17, BeFields((11,5),(19,11),(31,1))),r6, Annul(30)),
+                Nyi(Mnemonic.b_gate, ""),
+                Nyi(Mnemonic.blr, ""),
                 invalid,
 
-                Instr(Opcode.b_l_push, r11,r6,Annul(30)),
-                Instr(Opcode.b_l, PcRel(assemble_22, BeFields((6,5),(11,5),(19,11),(31,1))),reg(Registers.GpRegs[2]), Annul(30)),
+                Instr(Mnemonic.b_l_push, r11,r6,Annul(30)),
+                Instr(Mnemonic.b_l, PcRel(assemble_22, BeFields((6,5),(11,5),(19,11),(31,1))),reg(Registers.GpRegs[2]), Annul(30)),
                 Mask(19, 1,
-                    Instr(Opcode.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30)),
-                    Instr(Opcode.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30))),
-                Nyi(Opcode.bve_l, ""));
+                    Instr(Mnemonic.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30)),
+                    Instr(Mnemonic.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30))),
+                Nyi(Mnemonic.bve_l, ""));
 
             rootDecoder = Mask(0, 6,
                 systemOp,
@@ -1774,35 +1744,35 @@ namespace Reko.Arch.PaRisc
                 indexMem,
 
                 spopN,
-                Instr(Opcode.diag, InstrClass.Linear|InstrClass.System, u(6, 26, PrimitiveType.Int32)),
-                Instr(Opcode.fmpyadd, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
+                Instr(Mnemonic.diag, InstrClass.Linear|InstrClass.System, u(6, 26, PrimitiveType.Int32)),
+                Instr(Mnemonic.fmpyadd, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
                 invalid,
 
-                Instr(Opcode.ldil, u(11, 21, PrimitiveType.Word32), r6),
+                Instr(Mnemonic.ldil, u(11, 21, PrimitiveType.Word32), r6),
                 coprW,
-                Instr(Opcode.addil, Left(BeFields((11,21)), assemble_21, 11), r6,reg(Registers.GpRegs[1])),
+                Instr(Mnemonic.addil, Left(BeFields((11,21)), assemble_21, 11), r6,reg(Registers.GpRegs[1])),
                 coprDW,
 
                 copr,
-                Instr(Opcode.ldo, M(PrimitiveType.Word32, 6, BeFields((16,2),(18,14)), assemble_16),r11),
+                Instr(Mnemonic.ldo, M(PrimitiveType.Word32, 6, BeFields((16,2),(18,14)), assemble_16),r11),
                 float0EDecoder,
                 productSpecific,
 
                 // 10
-                Instr(Opcode.ldb, M(PrimitiveType.Byte, 6, BeFields((16, 2), (18, 14)), assemble_16), r11),
-                Instr(Opcode.ldh, M(PrimitiveType.Word16, 6, BeFields((16, 2), (18, 14)), assemble_16), r11),
-                Instr(Opcode.ldw, M(PrimitiveType.Word32, 6, BeFields((16, 2), (18, 14)), assemble_16), r11),
-                Instr(Opcode.ldw, Mam(PrimitiveType.Word32, 6, BeFields((16,2), (18,11), (31,1)), assemble_16a), r11),
+                Instr(Mnemonic.ldb, M(PrimitiveType.Byte, 6, BeFields((16, 2), (18, 14)), assemble_16), r11),
+                Instr(Mnemonic.ldh, M(PrimitiveType.Word16, 6, BeFields((16, 2), (18, 14)), assemble_16), r11),
+                Instr(Mnemonic.ldw, M(PrimitiveType.Word32, 6, BeFields((16, 2), (18, 14)), assemble_16), r11),
+                Instr(Mnemonic.ldw, Mam(PrimitiveType.Word32, 6, BeFields((16,2), (18,11), (31,1)), assemble_16a), r11),
 
                 invalid,
                 invalid,
                 invalid,
                 invalid,
 
-                Instr(Opcode.stb, r11,M(PrimitiveType.Byte, 6, BeFields((16,2), (18,14)),assemble_16)),
-                Instr(Opcode.sth, r11,M(PrimitiveType.Word16, 6, BeFields((16,2), (18,14)),assemble_16)),
-                Instr(Opcode.stw, r11,M(PrimitiveType.Word32, 6, BeFields((16, 2), (18, 14)), assemble_16)),
-                Instr(Opcode.stw, r11,Mam(PrimitiveType.Word32, 6, BeFields((16, 2), (18, 11), (31,1)), assemble_16a)),
+                Instr(Mnemonic.stb, r11,M(PrimitiveType.Byte, 6, BeFields((16,2), (18,14)),assemble_16)),
+                Instr(Mnemonic.sth, r11,M(PrimitiveType.Word16, 6, BeFields((16,2), (18,14)),assemble_16)),
+                Instr(Mnemonic.stw, r11,M(PrimitiveType.Word32, 6, BeFields((16, 2), (18, 14)), assemble_16)),
+                Instr(Mnemonic.stw, r11,Mam(PrimitiveType.Word32, 6, BeFields((16, 2), (18, 11), (31,1)), assemble_16a)),
 
                 invalid,
                 invalid,
@@ -1810,47 +1780,47 @@ namespace Reko.Arch.PaRisc
                 invalid,
 
                 // 20
-                Instr(Opcode.cmpb,  CTD, cf16_cmp32_t,r11,r6,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),
-                Instr(Opcode.cmpib, CTD, cf16_cmp32_t,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
-                Instr(Opcode.cmpb,  CTD, cf16_cmp32_f,r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
-                Instr(Opcode.cmpib, CTD, cf16_cmp32_f,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Mnemonic.cmpb,  CTD, cf16_cmp32_t,r11,r6,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),
+                Instr(Mnemonic.cmpib, CTD, cf16_cmp32_t,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Mnemonic.cmpb,  CTD, cf16_cmp32_f,r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Mnemonic.cmpib, CTD, cf16_cmp32_f,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
 
                 Mask(19, 2, 
-                    Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp32_t, lse(20, 11), r6, r11),
-                    Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp64_t, lse(20, 11), r6, r11),
-                    Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp32_f, lse(20, 11), r6, r11),
-                    Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp64_f, lse(20, 11), r6, r11)),
+                    Instr(Mnemonic.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp32_t, lse(20, 11), r6, r11),
+                    Instr(Mnemonic.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp64_t, lse(20, 11), r6, r11),
+                    Instr(Mnemonic.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp32_f, lse(20, 11), r6, r11),
+                    Instr(Mnemonic.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp64_f, lse(20, 11), r6, r11)),
                 subi,
-                Instr(Opcode.fmpysub, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
+                Instr(Mnemonic.fmpysub, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
                 invalid,
 
-                Instr(Opcode.addb, CTD, cf16_add_3, r11, r6,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),
-                Instr(Opcode.addib, CTD, cfadd_bitsize, lse(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
-                Instr(Opcode.addb, CTD, cf16_add_3_neg, r11, r6, PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
-                Instr(Opcode.addib, CTD, cfadd_bitsize_neg, lse(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
+                Instr(Mnemonic.addb, CTD, cf16_add_3, r11, r6,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),
+                Instr(Mnemonic.addib, CTD, cfadd_bitsize, lse(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
+                Instr(Mnemonic.addb, CTD, cf16_add_3_neg, r11, r6, PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Mnemonic.addib, CTD, cfadd_bitsize_neg, lse(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
 
                 Mask(20, 1,
-                    Instr(Opcode.addi_tc, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
-                    Instr(Opcode.addi_tsv_tc, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11)),
+                    Instr(Mnemonic.addi_tc, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
+                    Instr(Mnemonic.addi_tsv_tc, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11)),
                 Mask(20, 1,
-                    Instr(Opcode.addi, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
-                    Instr(Opcode.addi_tsv, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11)),
+                    Instr(Mnemonic.addi, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
+                    Instr(Mnemonic.addi_tsv, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11)),
                 invalid,
                 invalid,
 
                 // 30
-                Nyi(Opcode.bvb, ""),
-                Instr(Opcode.bb, CTD, cf16_bb_1, r11, bb_bitpos(), PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
-                Instr(Opcode.movb, CTD, cf16_shext, r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
-                Instr(Opcode.movib, CTD, cf16_shext, lse(11,5),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Nyi(Mnemonic.bvb, ""),
+                Instr(Mnemonic.bb, CTD, cf16_bb_1, r11, bb_bitpos(), PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Mnemonic.movb, CTD, cf16_shext, r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Mnemonic.movib, CTD, cf16_shext, lse(11,5),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
 
                 extract_34,
                 deposit_35,
                 invalid,
                 invalid,
 
-                Instr(Opcode.be,  TD, Msh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)),6,16),Annul(30)),
-                Instr(Opcode.be_l,TD, Msh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)),6,16),Annul(30)),
+                Instr(Mnemonic.be,  TD, Msh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)),6,16),Annul(30)),
+                Instr(Mnemonic.be_l,TD, Msh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)),6,16),Annul(30)),
                 branch,
                 invalid,
 

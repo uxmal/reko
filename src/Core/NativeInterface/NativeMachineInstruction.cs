@@ -17,12 +17,6 @@ namespace Reko.Core.NativeInterface
             }
         }
 
-        public override MachineOperand GetOperand(int i)
-        {
-            // GetOperand is only ever used by X86 code and that may be going away soon.
-            throw new NotSupportedException();
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             base.Render(writer, options);

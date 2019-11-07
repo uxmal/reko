@@ -64,7 +64,7 @@
     <Compile Include="MipsRewriter.Fpu.cs" />
     <Compile Include="MipsRewriter.System.cs" />
     <Compile Include="NanoMipsDisassembler.cs" />
-    <Compile Include="Opcode.cs" />
+    <Compile Include="Mnemonic.cs" />
     <Compile Include="Decoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

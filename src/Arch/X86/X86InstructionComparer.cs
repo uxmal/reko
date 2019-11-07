@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,19 +97,19 @@ namespace Reko.Arch.X86
 
 			if (instrA.code != instrB.code)
 				return false;
-			if (instrA.Operands != instrB.Operands)
+			if (instrA.Operands.Length != instrB.Operands.Length)
 				return false;
 
 			bool retval = true;
-			if (instrA.Operands > 0)
+			if (instrA.Operands.Length > 0)
 			{
-				retval = CompareOperands(instrA.op1, instrB.op1);
-				if (retval && instrA.Operands > 1)
+				retval = CompareOperands(instrA.Operands[0], instrB.Operands[0]);
+				if (retval && instrA.Operands.Length > 1)
 				{
-					retval = CompareOperands(instrA.op2, instrB.op2);
-					if (retval && instrA.Operands > 2)
+					retval = CompareOperands(instrA.Operands[1], instrB.Operands[1]);
+					if (retval && instrA.Operands.Length > 2)
 					{
-						retval = CompareOperands(instrA.op3, instrB.op3);
+						retval = CompareOperands(instrA.Operands[2], instrB.Operands[2]);
 					}
 				}
 			}
@@ -119,16 +119,16 @@ namespace Reko.Arch.X86
         public override int GetOperandsHash(MachineInstruction inst)
         {
             var instr = (X86Instruction)inst;
-			int hash = instr.Operands.GetHashCode();
-			if (instr.Operands > 0)
+			int hash = instr.Operands.Length.GetHashCode();
+			if (instr.Operands.Length > 0)
 			{
-				hash = hash * 23 + GetHashCode(instr.op1);
-				if (instr.Operands > 1)
+				hash = hash * 23 + GetHashCode(instr.Operands[0]);
+				if (instr.Operands.Length > 1)
 				{
-					hash = hash * 17 + GetHashCode(instr.op2);
-					if (instr.Operands > 2)
+					hash = hash * 17 + GetHashCode(instr.Operands[1]);
+					if (instr.Operands.Length > 2)
 					{
-						hash = hash * 13 + GetHashCode(instr.op3);
+						hash = hash * 13 + GetHashCode(instr.Operands[2]);
 					}
 				}
 			}

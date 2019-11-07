@@ -34,7 +34,7 @@ namespace Reko.Arch.Arm.AArch32
             Expression opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             Expression opSrc1;
             Expression opSrc2;
-            if (instr.ops.Length == 3)
+            if (instr.Operands.Length == 3)
             {
                 opSrc1 = this.Operand(Src1());
                 opSrc2 = this.Operand(Src2());
@@ -88,8 +88,8 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteBfc()
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var lsb = ((ImmediateOperand)instr.ops[1]).Value.ToInt32();
-            var bitsize = ((ImmediateOperand)instr.ops[2]).Value.ToInt32();
+            var lsb = ((ImmediateOperand)instr.Operands[1]).Value.ToInt32();
+            var bitsize = ((ImmediateOperand)instr.Operands[2]).Value.ToInt32();
             m.Assign(opDst, m.And(opDst, Constant.UInt32(~Bits.Mask32(lsb, bitsize))));
         }
 
@@ -98,8 +98,8 @@ namespace Reko.Arch.Arm.AArch32
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var opSrc = this.Operand(Src1());
             var tmp = binder.CreateTemporary(PrimitiveType.Word32);
-            var lsb = ((ImmediateOperand)instr.ops[2]).Value.ToInt32();
-            var bitsize = ((ImmediateOperand)instr.ops[3]).Value.ToInt32();
+            var lsb = ((ImmediateOperand)instr.Operands[2]).Value.ToInt32();
+            var bitsize = ((ImmediateOperand)instr.Operands[3]).Value.ToInt32();
             m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
             m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
         }
@@ -107,7 +107,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteBinOp(Func<Expression, Expression, Expression> op)
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            if (instr.ops.Length > 2)
+            if (instr.Operands.Length > 2)
             {
                 var src1 = this.Operand(Src1());
                 var src2 = this.Operand(Src2());
@@ -128,7 +128,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteLogical(Func<Expression, Expression, Expression> cons)
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            if (instr.ops.Length > 2)
+            if (instr.Operands.Length > 2)
             {
                 var opSrc1 = this.Operand(Src1());
                 var opSrc2 = this.Operand(Src2());
@@ -155,7 +155,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteRevBinOp(Func<Expression, Expression, Expression> op, bool setflags)
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            if (instr.ops.Length > 2)
+            if (instr.Operands.Length > 2)
             {
                 var src1 = this.Operand(Src1());
                 var src2 = this.Operand(Src2());
@@ -220,7 +220,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteTableBranch(DataType elemSize)
         {
             this.rtlClass = InstrClass.Transfer;
-            var mem = (MemoryOperand) instr.ops[0];
+            var mem = (MemoryOperand) instr.Operands[0];
             Expression tableBase;
             if (mem.BaseRegister == Registers.pc)
             {
@@ -265,7 +265,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteLdr(PrimitiveType dtDst, PrimitiveType dtSrc)
         {
             var mem = (MemoryOperand)Src1();
-            var rDst = (RegisterOperand)instr.ops[0];
+            var rDst = (RegisterOperand)instr.Operands[0];
             bool isJump = rDst.Register == Registers.pc;
 
             Expression dst = Operand(rDst, PrimitiveType.Word32, true);
@@ -328,12 +328,12 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteLdrd()
         {
-            var regLo = ((RegisterOperand)instr.ops[0]).Register;
-            var regHi = ((RegisterOperand)instr.ops[1]).Register;
+            var regLo = ((RegisterOperand)instr.Operands[0]).Register;
+            var regHi = ((RegisterOperand)instr.Operands[1]).Register;
             var opDst = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
-            var opSrc = this.Operand(instr.ops[2]);
+            var opSrc = this.Operand(instr.Operands[2]);
             m.Assign(opDst, opSrc);
-            MaybePostOperand(instr.ops[2]);
+            MaybePostOperand(instr.Operands[2]);
         }
 
         private void RewriteStr(PrimitiveType size)
@@ -350,12 +350,12 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteStrd()
         {
-            var regLo = ((RegisterOperand)instr.ops[0]).Register;
-            var regHi = ((RegisterOperand)instr.ops[1]).Register;
+            var regLo = ((RegisterOperand)instr.Operands[0]).Register;
+            var regHi = ((RegisterOperand)instr.Operands[1]).Register;
             var opSrc = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
-            var opDst = this.Operand(instr.ops[2]);
+            var opDst = this.Operand(instr.Operands[2]);
             m.Assign(opDst, opSrc);
-            MaybePostOperand(instr.ops[2]);
+            MaybePostOperand(instr.Operands[2]);
         }
 
         private void RewriteStrex()
@@ -400,7 +400,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteLdm(Expression dst, int skip, int offset, Func<Expression, Expression, Expression> op, bool writeback)
         {
             bool pcRestored = false;
-            var mop = (MultiRegisterOperand)instr.ops[instr.ops.Length > 1 ? 1 : 0];
+            var mop = (MultiRegisterOperand)instr.Operands[instr.Operands.Length > 1 ? 1 : 0];
             foreach (var r in mop.GetRegisters())
             {
                 Expression ea = offset != 0
@@ -441,7 +441,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src1 = Operand(Src1());
             Expression src2;
-            if (instr.ops.Length == 2)
+            if (instr.Operands.Length == 2)
             {
                 src2 = src1;
                 src1 = dst;
@@ -546,8 +546,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMull(PrimitiveType dtResult, Func<Expression, Expression, Expression> op)
         {
-            var regLo = ((RegisterOperand)instr.ops[0]).Register;
-            var regHi = ((RegisterOperand)instr.ops[1]).Register;
+            var regLo = ((RegisterOperand)instr.Operands[0]).Register;
+            var regHi = ((RegisterOperand)instr.Operands[1]).Register;
 
             var opDst = binder.EnsureSequence(dtResult, regHi, regLo);
             var opSrc1 = this.Operand(Src3());
@@ -585,7 +585,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewritePush()
         {
             Expression dst = Reg(Registers.sp);
-            var regs = ((MultiRegisterOperand)instr.ops[0]).GetRegisters().ToArray();
+            var regs = ((MultiRegisterOperand)instr.Operands[0]).GetRegisters().ToArray();
             m.Assign(dst, m.ISubS(dst, regs.Length * 4));
 
             int offset = 0;
@@ -653,8 +653,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteSmlal()
         {
-            var r1 = ((RegisterOperand)instr.ops[0]).Register;
-            var r2 = ((RegisterOperand)instr.ops[1]).Register;
+            var r1 = ((RegisterOperand)instr.Operands[0]).Register;
+            var r2 = ((RegisterOperand)instr.Operands[1]).Register;
             var dst = binder.EnsureSequence(PrimitiveType.Int64, r1, r2);
             var fac1 = Operand(Src2());
             var fac2 = Operand(Src3());
@@ -663,8 +663,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMlal(bool hiLeft, bool hiRight, PrimitiveType dt, Func<Expression, Expression, Expression> op)
         {
-            var r1 = ((RegisterOperand)instr.ops[0]).Register;
-            var r2 = ((RegisterOperand)instr.ops[1]).Register;
+            var r1 = ((RegisterOperand)instr.Operands[0]).Register;
+            var r2 = ((RegisterOperand)instr.Operands[1]).Register;
             var dst = binder.EnsureSequence(PrimitiveType.Int64, r1, r2);
 
             var left = Operand(Src2());
@@ -681,8 +681,8 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteMlxd(bool swap, PrimitiveType dt, Func<Expression, Expression, Expression> mul, Func<Expression, Expression, Expression> addSub)
         {
             // The ARM manual states that the double return value is in [op2,op1]
-            var r1 = ((RegisterOperand)instr.ops[1]).Register;
-            var r2 = ((RegisterOperand)instr.ops[0]).Register;
+            var r1 = ((RegisterOperand)instr.Operands[1]).Register;
+            var r2 = ((RegisterOperand)instr.Operands[0]).Register;
             var dst = binder.EnsureSequence(PrimitiveType.Int64, r1, r2);
 
             var left = Operand(Src2());
@@ -700,7 +700,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMxd(bool swap, PrimitiveType dt, Func<Expression, Expression, Expression> mul, Func<Expression, Expression, Expression> addSub)
         {
-            var dst = Operand(instr.ops[0]);
+            var dst = Operand(instr.Operands[0]);
             var left = Operand(Src1());
             var right = Operand(Src2());
 
@@ -859,8 +859,8 @@ namespace Reko.Arch.Arm.AArch32
         {
             var diff = binder.CreateTemporary(PrimitiveType.UInt16);
             var sum = binder.CreateTemporary(PrimitiveType.UInt16);
-            var rn = Operand(instr.ops[1]);
-            var rm = Operand(instr.ops[2]);
+            var rn = Operand(instr.Operands[1]);
+            var rm = Operand(instr.Operands[2]);
             m.Assign(diff, m.ISub(m.Slice(rn, 0, 16), m.Slice(rm, 16, 16)));
             m.Assign(sum, m.IAdd(m.Slice(rn, 16, 16), m.Slice(rm, 0, 16)));
             var rd = Operand(Dst());
@@ -962,8 +962,8 @@ namespace Reko.Arch.Arm.AArch32
         {
             var sum = binder.CreateTemporary(PrimitiveType.UInt16);
             var diff = binder.CreateTemporary(PrimitiveType.UInt16);
-            var rn = Operand(instr.ops[1]);
-            var rm = Operand(instr.ops[2]);
+            var rn = Operand(instr.Operands[1]);
+            var rm = Operand(instr.Operands[2]);
             m.Assign(sum, m.IAdd(m.Slice(rn, 0, 16), m.Slice(rm, 16, 16)));
             m.Assign(diff, m.ISub(m.Slice(rn, 16, 16), m.Slice(rm, 0, 16)));
             var rd = Operand(Dst());
@@ -975,7 +975,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             Expression src = Reg(((RegisterOperand)Src2()).Register);
-            if (instr.ShiftType == Opcode.ror)
+            if (instr.ShiftType == Mnemonic.ror)
             {
                 src = m.Shr(src, Operand(instr.ShiftValue));
             }
@@ -987,7 +987,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             Expression src = Reg(((RegisterOperand)Src1()).Register);
-            if (instr.ShiftType == Opcode.ror)
+            if (instr.ShiftType == Mnemonic.ror)
             {
                 src = m.Shr(src,Operand(instr.ShiftValue));
             }

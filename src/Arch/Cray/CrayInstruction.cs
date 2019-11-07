@@ -28,63 +28,39 @@ namespace Reko.Arch.Cray
     public class CrayInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
-        public MachineOperand[] Operands { get; set; }
         public override int OpcodeAsInteger => (int)Mnemonic;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (0 <= i && i < Operands.Length)
-                return Operands[i];
-            return null;
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (Mnemonic)
             {
             case Mnemonic._and:
-                Render3("&", writer);
+                Render3("&", writer, options);
                 return;
             case Mnemonic._fmul:
-                Render3("*F", writer);
+                Render3("*F", writer, options);
                 return;
             case Mnemonic._mov:
-                RenderOperand(Operands[0], writer);
+                RenderOperand(Operands[0], writer, options);
                 writer.Tab();
-                RenderOperand(Operands[1], writer);
+                RenderOperand(Operands[1], writer, options);
                 if (Operands.Length == 2)
                     return;
                 writer.WriteString(",");
-                RenderOperand(Operands[2], writer);
+                RenderOperand(Operands[2], writer, options);
                 return;
             }
             writer.WriteOpcode(this.Mnemonic.ToString());
-            if (Operands.Length == 0)
-                return;
-            writer.Tab();
-            RenderOperand(Operands[0], writer);
-            if (Operands.Length == 1)
-                return;
-            writer.WriteChar(',');
-            RenderOperand(Operands[1], writer);
-            if (Operands.Length == 2)
-                return;
-            writer.WriteChar(',');
-            RenderOperand(Operands[2], writer);
+            RenderOperands(writer, options);
         }
 
-        private void Render3(string infix, MachineInstructionWriter writer)
+        private void Render3(string infix, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            RenderOperand(Operands[0], writer);
+            RenderOperand(Operands[0], writer, options);
             writer.Tab();
-            RenderOperand(Operands[1], writer);
+            RenderOperand(Operands[1], writer, options);
             writer.WriteString(infix);
-            RenderOperand(Operands[2], writer);
-        }
-
-        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer)
-        {
-            writer.WriteString(op.ToString());
+            RenderOperand(Operands[2], writer, options);
         }
     }
 }

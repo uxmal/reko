@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work from:
@@ -99,9 +99,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             new SubDecoder(8, 4, new Decoder[16] {                  // 0000 ???? .... ....
                 new SubDecoder(4, 4, new Decoder[16] {              // 0000 0000 ???? ....
                     new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0000 ????
-                        new NoOperandOpRec(Opcode.NOP),             // 0000 0000 0000 0000
-                        new InvalidOpRec(),                         // 0000 0000 0000 0001
-                        new InvalidOpRec(),                         // 0000 0000 0000 0010
+                        new NoOperandDecoder(Mnemonic.NOP),             // 0000 0000 0000 0000
+                        new InvalidDecoder(),                         // 0000 0000 0000 0001
+                        new InvalidDecoder(),                         // 0000 0000 0000 0010
                         new UseBaseDecode(),                        // 0000 0000 0000 0011
                         new UseBaseDecode(),                        // 0000 0000 0000 0100
                         new UseBaseDecode(),                        // 0000 0000 0000 0101
@@ -121,35 +121,35 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                         new UseBaseDecode(),                        // 0000 0000 0001 0001
                         new UseBaseDecode(),                        // 0000 0000 0001 0010
                         new UseBaseDecode(),                        // 0000 0000 0001 0011
-                        new NoOperandOpRec(Opcode.CALLW),           // 0000 0000 0001 0100
-                        new InvalidOpRec(),                         // 0000 0000 0001 0101
-                        new InvalidOpRec(),                         // 0000 0000 0001 0110
-                        new InvalidOpRec(),                         // 0000 0000 0001 0111
-                        new InvalidOpRec(),                         // 0000 0000 0001 1000
-                        new InvalidOpRec(),                         // 0000 0000 0001 1001
-                        new InvalidOpRec(),                         // 0000 0000 0001 1010
-                        new InvalidOpRec(),                         // 0000 0000 0001 1011
-                        new InvalidOpRec(),                         // 0000 0000 0001 1100
-                        new InvalidOpRec(),                         // 0000 0000 0001 1101
-                        new InvalidOpRec(),                         // 0000 0000 0001 1110
-                        new InvalidOpRec(),                         // 0000 0000 0001 1111
+                        new NoOperandDecoder(Mnemonic.CALLW),           // 0000 0000 0001 0100
+                        new InvalidDecoder(),                         // 0000 0000 0001 0101
+                        new InvalidDecoder(),                         // 0000 0000 0001 0110
+                        new InvalidDecoder(),                         // 0000 0000 0001 0111
+                        new InvalidDecoder(),                         // 0000 0000 0001 1000
+                        new InvalidDecoder(),                         // 0000 0000 0001 1001
+                        new InvalidDecoder(),                         // 0000 0000 0001 1010
+                        new InvalidDecoder(),                         // 0000 0000 0001 1011
+                        new InvalidDecoder(),                         // 0000 0000 0001 1100
+                        new InvalidDecoder(),                         // 0000 0000 0001 1101
+                        new InvalidDecoder(),                         // 0000 0000 0001 1110
+                        new InvalidDecoder(),                         // 0000 0000 0001 1111
                     }),
-                    new InvalidOpRec(),                             // 0000 0000 0010 ....
-                    new InvalidOpRec(),                             // 0000 0000 0011 ....
-                    new InvalidOpRec(),                             // 0000 0000 0100 ....
-                    new InvalidOpRec(),                             // 0000 0000 0101 ....
-                    new InvalidOpRec(),                             // 0000 0000 0110 ....
-                    new InvalidOpRec(),                             // 0000 0000 0111 ....
-                    new InvalidOpRec(),                             // 0000 0000 1000 ....
-                    new InvalidOpRec(),                             // 0000 0000 1001 ....
-                    new InvalidOpRec(),                             // 0000 0000 1010 ....
-                    new InvalidOpRec(),                             // 0000 0000 1011 ....
-                    new InvalidOpRec(),                             // 0000 0000 1100 ....
-                    new InvalidOpRec(),                             // 0000 0000 1101 ....
-                    new InvalidOpRec(),                             // 0000 0000 1110 ....
+                    new InvalidDecoder(),                             // 0000 0000 0010 ....
+                    new InvalidDecoder(),                             // 0000 0000 0011 ....
+                    new InvalidDecoder(),                             // 0000 0000 0100 ....
+                    new InvalidDecoder(),                             // 0000 0000 0101 ....
+                    new InvalidDecoder(),                             // 0000 0000 0110 ....
+                    new InvalidDecoder(),                             // 0000 0000 0111 ....
+                    new InvalidDecoder(),                             // 0000 0000 1000 ....
+                    new InvalidDecoder(),                             // 0000 0000 1001 ....
+                    new InvalidDecoder(),                             // 0000 0000 1010 ....
+                    new InvalidDecoder(),                             // 0000 0000 1011 ....
+                    new InvalidDecoder(),                             // 0000 0000 1100 ....
+                    new InvalidDecoder(),                             // 0000 0000 1101 ....
+                    new InvalidDecoder(),                             // 0000 0000 1110 ....
                     new UseBaseDecode(),                            // 0000 0000 1111 .... 
                 }),
-                new MovlbImmOpRec(Opcode.MOVLB),                    // 0000 0001 .... ....
+                new MovlbImmDecoder(Mnemonic.MOVLB),                    // 0000 0001 .... ....
                 new UseBaseDecode(),                                // 0000 0010 .... ....
                 new UseBaseDecode(),                                // 0000 0011 .... ....
                 new UseBaseDecode(),                                // 0000 0100 .... ....
@@ -182,39 +182,39 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 new UseBaseDecode(),                                // 1110 0... .... ....
                 new SubDecoder(8, 3, new Decoder[8] {               // 1110 1??? .... ....
                     new SubDecoder(6, 2, new Decoder[4] {           // 1110 1000 ??.. ....
-                            new FsrArithOpRec(Opcode.ADDFSR),       // 1110 1000 ffkk kkkk
-                            new FsrArithOpRec(Opcode.ADDFSR),       // 1110 1000 ffkk kkkk
-                            new FsrArithOpRec(Opcode.ADDFSR),       // 1110 1000 ffkk kkkk
-                            new FsrULinkOpRec(Opcode.ADDULNK),      // 1110 1000 11kk kkkk
+                            new FsrArithDecoder(Mnemonic.ADDFSR),       // 1110 1000 ffkk kkkk
+                            new FsrArithDecoder(Mnemonic.ADDFSR),       // 1110 1000 ffkk kkkk
+                            new FsrArithDecoder(Mnemonic.ADDFSR),       // 1110 1000 ffkk kkkk
+                            new FsrULinkDecoder(Mnemonic.ADDULNK),      // 1110 1000 11kk kkkk
                     }),
                     new SubDecoder(6, 2, new Decoder[4] {           // 1110 1001 ??.. ....
-                            new FsrArithOpRec(Opcode.SUBFSR),       // 1110 1001 ffkk kkkk
-                            new FsrArithOpRec(Opcode.SUBFSR),       // 1110 1001 ffkk kkkk
-                            new FsrArithOpRec(Opcode.SUBFSR),       // 1110 1001 ffkk kkkk
-                            new FsrULinkOpRec(Opcode.SUBULNK),      // 1110 1001 11kk kkkk
+                            new FsrArithDecoder(Mnemonic.SUBFSR),       // 1110 1001 ffkk kkkk
+                            new FsrArithDecoder(Mnemonic.SUBFSR),       // 1110 1001 ffkk kkkk
+                            new FsrArithDecoder(Mnemonic.SUBFSR),       // 1110 1001 ffkk kkkk
+                            new FsrULinkDecoder(Mnemonic.SUBULNK),      // 1110 1001 11kk kkkk
                         }),
-                    new PushlOpRec(Opcode.PUSHL),                   // 1110 1010 kkkk kkkk
+                    new PushlDecoder(Mnemonic.PUSHL),                   // 1110 1010 kkkk kkkk
                     new SubDecoder(7, 1, new Decoder[2] {           // 1110 1011 ?... ....
-                        new MovsfOpRec(Opcode.MOVSF),               // 1110 1011 0zzz zzzz + 1111 ffff ffff ffff
-                        new MovssOpRec(Opcode.MOVSS),               // 1110 1011 1zzz zzzz + 1111 .... .zzz zzzz
+                        new MovsfDecoder(Mnemonic.MOVSF),               // 1110 1011 0zzz zzzz + 1111 ffff ffff ffff
+                        new MovssDecoder(Mnemonic.MOVSS),               // 1110 1011 1zzz zzzz + 1111 .... .zzz zzzz
                     }),
                     new UseBaseDecode(),                            // 1110 110s .... ....
                     new UseBaseDecode(),                            // 1110 110s .... ....
-                    new LfsrOpRec(Opcode.LFSR),                     // 1110 1110 ffkk kkkk + 1111 0000 kkkk kkkk
+                    new LfsrDecoder(Mnemonic.LFSR),                     // 1110 1110 ffkk kkkk + 1111 0000 kkkk kkkk
                     new UseBaseDecode(),                            // 1110 1111 .... ....
                 }),
             }),
-            new NoOperandOpRec(Opcode.NOP),                         // 1111 .... .... ....
+            new NoOperandDecoder(Mnemonic.NOP),                         // 1111 .... .... ....
         };
 
         /// <summary>
         /// Instruction MOVLB with <code>'....-....-0000-kkkk'</code> or <code>'....-....-00kk-kkkk'</code> immediate value.
         /// </summary>
-        private class MovlbImmOpRec : Decoder
+        private class MovlbImmDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovlbImmOpRec(Opcode opc)
+            public MovlbImmDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -223,7 +223,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 var bsrval = uInstr.Extract(0, 8);
                 if (bsrval >= 16)
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 return new PICInstructionImmedByte(opcode, bsrval);
 
             }
@@ -232,11 +232,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instructions ADDFSR, SUBFSR (PIC18 extended or later).
         /// </summary>
-        private class FsrArithOpRec : Decoder
+        private class FsrArithDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public FsrArithOpRec(Opcode opc)
+            public FsrArithDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -244,7 +244,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended)
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 byte fsrnum = (byte)uInstr.Extract(6, 2);
                 if (fsrnum >= 3)
                     return null;
@@ -256,11 +256,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instructions ADDULNK, SUBULNK (PIC18 extended or later, extended execution mode).
         /// </summary>
-        private class FsrULinkOpRec : Decoder
+        private class FsrULinkDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public FsrULinkOpRec(Opcode opc)
+            public FsrULinkDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -268,7 +268,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // Only supported by PIC18 running in Extended Execution mode.
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var imm6 = uInstr.Extract(0, 6);
                 return new PICInstructionImmedByte(opcode, imm6);
@@ -278,11 +278,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction MOVSF decoder. (Extended mode)
         /// </summary>
-        private class MovsfOpRec : Decoder
+        private class MovsfDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovsfOpRec(Opcode opc)
+            public MovsfDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -290,15 +290,15 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // PIC not running in Extended Execution mode?
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort fd))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 // PCL, TOSL, TOSH, TOSU are invalid destinations.
                 if (PICRegisters.NotAllowedDest(fd))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var operzs = (byte)uInstr.Extract(0, 7);
                 return new PICInstructionMem2Mem(opcode, operzs, fd);
@@ -308,11 +308,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction MOVSS decoder. (Extended mode)
         /// </summary>
-        private class MovssOpRec : Decoder
+        private class MovssDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovssOpRec(Opcode opc)
+            public MovssDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -320,11 +320,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var operzs = (byte)uInstr.Extract(0, 7);
                 var operzd = (byte)word2.Extract(0, 7);
@@ -336,11 +336,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction PUSHL decoder. (Extended mode)
         /// </summary>
-        private class PushlOpRec : Decoder
+        private class PushlDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public PushlOpRec(Opcode opc)
+            public PushlDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -348,7 +348,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var imm8 = (byte)uInstr.Extract(0, 8);
                 return new PICInstructionImmedByte(opcode, imm8);
@@ -358,11 +358,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction LFSR decoder.
         /// </summary>
-        private class LfsrOpRec : Decoder
+        private class LfsrDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public LfsrOpRec(Opcode opc)
+            public LfsrDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -371,13 +371,13 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 byte fsrnum = (byte)uInstr.Extract(4, 4);
                 if (fsrnum >= 3)
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 if (word2 > 0xFF) // Second word must be 'xxxx-0000-kkkk-kkkk'
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var imm12 = (ushort)(((uInstr.Extract(0, 4) << 8) | word2));
                 return new PICInstructionLFSRLoad(opcode, fsrnum, imm12);

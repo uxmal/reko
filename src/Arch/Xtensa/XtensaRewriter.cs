@@ -61,125 +61,125 @@ namespace Reko.Arch.Xtensa
                 rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 this.instr = dasm.Current;
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     throw new AddressCorrelatedException(
                        instr.Address,
                        "Rewriting of Xtensa instruction '{0}' not implemented yet.",
-                       instr.Opcode);
-                case Opcodes.abs: RewritePseudoFn("abs"); break;
-                case Opcodes.add:
-                case Opcodes.add_n: RewriteBinOp(m.IAdd); break;
-                case Opcodes.add_s: RewriteBinOp(m.FAdd); break;
-                case Opcodes.addi: RewriteAddi(); break;
-                case Opcodes.addi_n: RewriteAddi(); break;
-                case Opcodes.addmi: RewriteBinOp(m.IAdd); break;
-                case Opcodes.addx2: RewriteAddx(2); break;
-                case Opcodes.addx4: RewriteAddx(4); break;
-                case Opcodes.addx8: RewriteAddx(8); break;
-                case Opcodes.and: RewriteBinOp(m.And); break;
-                case Opcodes.andb: RewriteBinOp(m.And); break;
-                case Opcodes.andbc: RewriteBinOp((a, b) => m.And(a, m.Not(b))); break;
-                case Opcodes.ball: RewriteBall(); break;
-                case Opcodes.bany: RewriteBany(); break;
-                case Opcodes.bbc: 
-                case Opcodes.bbci: RewriteBbx(m.Eq0); break;
-                case Opcodes.bbs:
-                case Opcodes.bbsi: RewriteBbx(m.Ne0); break;
-                case Opcodes.beq:
-                case Opcodes.beqi: RewriteBranch(m.Eq); break;
-                case Opcodes.beqz:
-                case Opcodes.beqz_n: RewriteBranchZ(m.Eq0); break;
-                case Opcodes.bge:
-                case Opcodes.bgei: RewriteBranch(m.Ge); break;
-                case Opcodes.bgeu:
-                case Opcodes.bgeui: RewriteBranch(m.Uge); break;
-                case Opcodes.bgez: RewriteBranchZ(m.Ge0); break;
-                case Opcodes.blt: RewriteBranch(m.Lt); break;
-                case Opcodes.blti: RewriteBranch(m.Lt); break;
-                case Opcodes.bltu:
-                case Opcodes.bltui: RewriteBranch(m.Ult); break;
-                case Opcodes.bltz: RewriteBranchZ(m.Lt0); break;
-                case Opcodes.bnall: RewriteBnall(); break;
-                case Opcodes.bne: RewriteBranch(m.Ne); break;
-                case Opcodes.bnei: RewriteBranch(m.Ne); break;
-                case Opcodes.bnez:
-                case Opcodes.bnez_n: RewriteBranchZ(m.Ne0); break;
-                case Opcodes.bnone: RewriteBnone(); break;
-                case Opcodes.@break: RewriteBreak(); break;
-                case Opcodes.call0:
-                case Opcodes.callx0: RewriteCall0(); break;
-                case Opcodes.extui: RewriteExtui(); break;
-                case Opcodes.floor_s: RewritePseudoFn("__floor"); break;
-                case Opcodes.isync: RewritePseudoProc("__isync"); break;
-                case Opcodes.j:
-                case Opcodes.jx: RewriteJ(); break;
-                case Opcodes.ill: RewriteIll(); break;
-                case Opcodes.l16si: RewriteLsi(PrimitiveType.Int16); break;
-                case Opcodes.l16ui: RewriteLui(PrimitiveType.UInt16); break;
-                case Opcodes.l32i: RewriteL32i(); break;
-                case Opcodes.l32e: RewriteL32e(); break;
-                case Opcodes.l32i_n: RewriteL32i(); break;
-                case Opcodes.l32r: RewriteCopy(); break;
-                case Opcodes.l8ui: RewriteLui(PrimitiveType.Byte); break;
-                case Opcodes.ldpte: RewritePseudoProc("__ldpte"); break;
-                case Opcodes.lsiu: RewriteLsiu(); break;
-                case Opcodes.memw: RewriteNop(); break; /// memory sync barriers?
-                case Opcodes.mov_n: RewriteCopy(); break;
-                case Opcodes.movi: RewriteCopy(); break;
-                case Opcodes.movi_n: RewriteMovi_n(); break;
-                case Opcodes.moveqz:
-                case Opcodes.moveqz_s: RewriteMovcc(m.Eq); break;
-                case Opcodes.movltz: RewriteMovcc(m.Lt); break;
-                case Opcodes.movgez: RewriteMovcc(m.Ge); break;
-                case Opcodes.movnez: RewriteMovcc(m.Ne); break;
-                case Opcodes.mul_s: RewriteBinOp(m.FMul); break;
-                case Opcodes.mul16s: RewriteMul16(m.SMul, Domain.SignedInt); break;
-                case Opcodes.mul16u: RewriteMul16(m.UMul, Domain.UnsignedInt); break;
-                case Opcodes.mull: RewriteBinOp(m.IMul); break;
-                case Opcodes.neg: RewriteUnaryOp(m.Neg); break;
-                case Opcodes.nsa: RewritePseudoFn("__nsa"); break;
-                case Opcodes.nsau: RewritePseudoFn("__nsau"); break;
-                case Opcodes.or: RewriteOr(); break;
-                case Opcodes.orbc: RewriteBinOp((a, b) => m.Or(a, m.Not(b))); break;
-                case Opcodes.quos: RewriteBinOp(m.SDiv); break;
-                case Opcodes.quou: RewriteBinOp(m.UDiv); break;
-                case Opcodes.rems: RewriteBinOp(m.Mod); break;
-                case Opcodes.remu: RewriteBinOp(m.Mod); break;
-                case Opcodes.reserved: RewriteReserved(); break;
-                case Opcodes.ret:
-                case Opcodes.ret_n: RewriteRet(); break;
-                case Opcodes.rfe: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from exception?
-                case Opcodes.rfi: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from interrupt?
-                case Opcodes.rsil: RewritePseudoFn("__rsil"); break;
-                case Opcodes.rsr: RewriteCopy(); break;
-                case Opcodes.s16i: RewriteSi(PrimitiveType.Word16); break;
-                case Opcodes.s32e: RewriteS32e(); break;
-                case Opcodes.s32i:
-                case Opcodes.s32i_n: RewriteSi(PrimitiveType.Word32); break;
-                case Opcodes.s32ri: RewriteSi(PrimitiveType.Word32); break; //$REVIEW: what about concurrency semantics
-                case Opcodes.s8i: RewriteSi(PrimitiveType.Byte); break;
-                case Opcodes.sll: RewriteShift(m.Shl); break;
-                case Opcodes.slli: RewriteShiftI(m.Shl); break;
-                case Opcodes.sra: RewriteShift(m.Sar); break;
-                case Opcodes.srai: RewriteShiftI(m.Sar); break;
-                case Opcodes.src: RewriteSrc(); break;
-                case Opcodes.srl: RewriteShift(m.Sar); break;
-                case Opcodes.srli: RewriteShiftI(m.Shr); break;
-                case Opcodes.ssa8l: RewriteSsa8l(); break;
-                case Opcodes.ssi: RewriteSi(PrimitiveType.Real32); break;
-                case Opcodes.ssl: RewriteSsl(); break;
-                case Opcodes.ssr:
-                case Opcodes.ssai: RewriteSsa(); break;
-                case Opcodes.sub: RewriteBinOp(m.ISub); break;
-                case Opcodes.sub_s: RewriteBinOp(m.FSub); break;
-                case Opcodes.subx2: RewriteSubx(2); break;
-                case Opcodes.subx4: RewriteSubx(4); break;
-                case Opcodes.subx8: RewriteSubx(8); break;
-                case Opcodes.ueq_s: RewriteBinOp(m.Eq); break;
-                case Opcodes.wsr: RewriteWsr(); break;
-                case Opcodes.xor: RewriteBinOp(m.Xor); break;
+                       instr.Mnemonic);
+                case Mnemonic.abs: RewritePseudoFn("abs"); break;
+                case Mnemonic.add:
+                case Mnemonic.add_n: RewriteBinOp(m.IAdd); break;
+                case Mnemonic.add_s: RewriteBinOp(m.FAdd); break;
+                case Mnemonic.addi: RewriteAddi(); break;
+                case Mnemonic.addi_n: RewriteAddi(); break;
+                case Mnemonic.addmi: RewriteBinOp(m.IAdd); break;
+                case Mnemonic.addx2: RewriteAddx(2); break;
+                case Mnemonic.addx4: RewriteAddx(4); break;
+                case Mnemonic.addx8: RewriteAddx(8); break;
+                case Mnemonic.and: RewriteBinOp(m.And); break;
+                case Mnemonic.andb: RewriteBinOp(m.And); break;
+                case Mnemonic.andbc: RewriteBinOp((a, b) => m.And(a, m.Not(b))); break;
+                case Mnemonic.ball: RewriteBall(); break;
+                case Mnemonic.bany: RewriteBany(); break;
+                case Mnemonic.bbc: 
+                case Mnemonic.bbci: RewriteBbx(m.Eq0); break;
+                case Mnemonic.bbs:
+                case Mnemonic.bbsi: RewriteBbx(m.Ne0); break;
+                case Mnemonic.beq:
+                case Mnemonic.beqi: RewriteBranch(m.Eq); break;
+                case Mnemonic.beqz:
+                case Mnemonic.beqz_n: RewriteBranchZ(m.Eq0); break;
+                case Mnemonic.bge:
+                case Mnemonic.bgei: RewriteBranch(m.Ge); break;
+                case Mnemonic.bgeu:
+                case Mnemonic.bgeui: RewriteBranch(m.Uge); break;
+                case Mnemonic.bgez: RewriteBranchZ(m.Ge0); break;
+                case Mnemonic.blt: RewriteBranch(m.Lt); break;
+                case Mnemonic.blti: RewriteBranch(m.Lt); break;
+                case Mnemonic.bltu:
+                case Mnemonic.bltui: RewriteBranch(m.Ult); break;
+                case Mnemonic.bltz: RewriteBranchZ(m.Lt0); break;
+                case Mnemonic.bnall: RewriteBnall(); break;
+                case Mnemonic.bne: RewriteBranch(m.Ne); break;
+                case Mnemonic.bnei: RewriteBranch(m.Ne); break;
+                case Mnemonic.bnez:
+                case Mnemonic.bnez_n: RewriteBranchZ(m.Ne0); break;
+                case Mnemonic.bnone: RewriteBnone(); break;
+                case Mnemonic.@break: RewriteBreak(); break;
+                case Mnemonic.call0:
+                case Mnemonic.callx0: RewriteCall0(); break;
+                case Mnemonic.extui: RewriteExtui(); break;
+                case Mnemonic.floor_s: RewritePseudoFn("__floor"); break;
+                case Mnemonic.isync: RewritePseudoProc("__isync"); break;
+                case Mnemonic.j:
+                case Mnemonic.jx: RewriteJ(); break;
+                case Mnemonic.ill: RewriteIll(); break;
+                case Mnemonic.l16si: RewriteLsi(PrimitiveType.Int16); break;
+                case Mnemonic.l16ui: RewriteLui(PrimitiveType.UInt16); break;
+                case Mnemonic.l32i: RewriteL32i(); break;
+                case Mnemonic.l32e: RewriteL32e(); break;
+                case Mnemonic.l32i_n: RewriteL32i(); break;
+                case Mnemonic.l32r: RewriteCopy(); break;
+                case Mnemonic.l8ui: RewriteLui(PrimitiveType.Byte); break;
+                case Mnemonic.ldpte: RewritePseudoProc("__ldpte"); break;
+                case Mnemonic.lsiu: RewriteLsiu(); break;
+                case Mnemonic.memw: RewriteNop(); break; /// memory sync barriers?
+                case Mnemonic.mov_n: RewriteCopy(); break;
+                case Mnemonic.movi: RewriteCopy(); break;
+                case Mnemonic.movi_n: RewriteMovi_n(); break;
+                case Mnemonic.moveqz:
+                case Mnemonic.moveqz_s: RewriteMovcc(m.Eq); break;
+                case Mnemonic.movltz: RewriteMovcc(m.Lt); break;
+                case Mnemonic.movgez: RewriteMovcc(m.Ge); break;
+                case Mnemonic.movnez: RewriteMovcc(m.Ne); break;
+                case Mnemonic.mul_s: RewriteBinOp(m.FMul); break;
+                case Mnemonic.mul16s: RewriteMul16(m.SMul, Domain.SignedInt); break;
+                case Mnemonic.mul16u: RewriteMul16(m.UMul, Domain.UnsignedInt); break;
+                case Mnemonic.mull: RewriteBinOp(m.IMul); break;
+                case Mnemonic.neg: RewriteUnaryOp(m.Neg); break;
+                case Mnemonic.nsa: RewritePseudoFn("__nsa"); break;
+                case Mnemonic.nsau: RewritePseudoFn("__nsau"); break;
+                case Mnemonic.or: RewriteOr(); break;
+                case Mnemonic.orbc: RewriteBinOp((a, b) => m.Or(a, m.Not(b))); break;
+                case Mnemonic.quos: RewriteBinOp(m.SDiv); break;
+                case Mnemonic.quou: RewriteBinOp(m.UDiv); break;
+                case Mnemonic.rems: RewriteBinOp(m.Mod); break;
+                case Mnemonic.remu: RewriteBinOp(m.Mod); break;
+                case Mnemonic.reserved: RewriteReserved(); break;
+                case Mnemonic.ret:
+                case Mnemonic.ret_n: RewriteRet(); break;
+                case Mnemonic.rfe: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from exception?
+                case Mnemonic.rfi: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from interrupt?
+                case Mnemonic.rsil: RewritePseudoFn("__rsil"); break;
+                case Mnemonic.rsr: RewriteCopy(); break;
+                case Mnemonic.s16i: RewriteSi(PrimitiveType.Word16); break;
+                case Mnemonic.s32e: RewriteS32e(); break;
+                case Mnemonic.s32i:
+                case Mnemonic.s32i_n: RewriteSi(PrimitiveType.Word32); break;
+                case Mnemonic.s32ri: RewriteSi(PrimitiveType.Word32); break; //$REVIEW: what about concurrency semantics
+                case Mnemonic.s8i: RewriteSi(PrimitiveType.Byte); break;
+                case Mnemonic.sll: RewriteShift(m.Shl); break;
+                case Mnemonic.slli: RewriteShiftI(m.Shl); break;
+                case Mnemonic.sra: RewriteShift(m.Sar); break;
+                case Mnemonic.srai: RewriteShiftI(m.Sar); break;
+                case Mnemonic.src: RewriteSrc(); break;
+                case Mnemonic.srl: RewriteShift(m.Sar); break;
+                case Mnemonic.srli: RewriteShiftI(m.Shr); break;
+                case Mnemonic.ssa8l: RewriteSsa8l(); break;
+                case Mnemonic.ssi: RewriteSi(PrimitiveType.Real32); break;
+                case Mnemonic.ssl: RewriteSsl(); break;
+                case Mnemonic.ssr:
+                case Mnemonic.ssai: RewriteSsa(); break;
+                case Mnemonic.sub: RewriteBinOp(m.ISub); break;
+                case Mnemonic.sub_s: RewriteBinOp(m.FSub); break;
+                case Mnemonic.subx2: RewriteSubx(2); break;
+                case Mnemonic.subx4: RewriteSubx(4); break;
+                case Mnemonic.subx8: RewriteSubx(8); break;
+                case Mnemonic.ueq_s: RewriteBinOp(m.Eq); break;
+                case Mnemonic.wsr: RewriteWsr(); break;
+                case Mnemonic.xor: RewriteBinOp(m.Xor); break;
 
                 }
                 yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())

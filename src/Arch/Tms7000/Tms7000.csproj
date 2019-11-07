@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MemoryOperand.cs" />
-    <Compile Include="Opcode.cs" />
+    <Compile Include="Mnemonic.cs" />
     <Compile Include="Tms7000Disassembler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tms7000Architecture.cs" />

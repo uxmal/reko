@@ -102,6 +102,8 @@ namespace Reko.Arch.M68k
 
     public class MemoryOperand : M68kOperandImpl
     {
+        public const string HexStringFormat = "{0}${1}";
+
         public AddressRegister Base;
         public Constant Offset;
 

@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.Elf
 {
+
     public class ElfLoader32 : ElfLoader
     {
         public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32, byte[] rawImage, byte endianness)
@@ -143,6 +144,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
             case ElfMachine.EM_AVR: return new AvrRelocator(this, imageSymbols);
             case ElfMachine.EM_SH: return new SuperHRelocator(this, imageSymbols);
+            case ElfMachine.EM_BLACKFIN: return new BlackfinRelocator(this, imageSymbols);
             }
             return base.CreateRelocator(machine, imageSymbols);
         }

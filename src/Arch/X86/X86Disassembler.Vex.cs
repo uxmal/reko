@@ -28,42 +28,42 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static Dictionary<Opcode, Opcode> CreateVexMapping()
+        private static Dictionary<Mnemonic, Mnemonic> CreateVexMapping()
         {
-            return new Dictionary<Opcode, Opcode>
+            return new Dictionary<Mnemonic, Mnemonic>
             {
-                { Opcode.illegal, Opcode.illegal },
-                { Opcode.addsd, Opcode.vaddsd },
-                { Opcode.addpd, Opcode.vaddpd },
-                { Opcode.addsubpd, Opcode.vaddsubpd },
-                { Opcode.addsubps, Opcode.vaddsubps },
-                { Opcode.cvtsi2sd, Opcode.vcvtsi2sd },
-                { Opcode.cvtsi2ss, Opcode.vcvtsi2ss },
-                { Opcode.cvttpd2dq, Opcode.vcvttpd2dq },
-                { Opcode.cvtdq2pd, Opcode.vcvtdq2pd },
-                { Opcode.cvtpd2dq, Opcode.vcvtpd2dq },
-                { Opcode.movapd, Opcode.vmovapd },
-                { Opcode.movaps, Opcode.vmovaps },
-                { Opcode.movlps, Opcode.vmovlps },
-                { Opcode.movlpd, Opcode.vmovlpd },
-                { Opcode.movsd, Opcode.vmovsd },
-                { Opcode.movss, Opcode.vmovss },
-                { Opcode.xorpd, Opcode.vxorpd },
-                { Opcode.xorps, Opcode.vxorps },
-                { Opcode.unpckhpd, Opcode.vunpckhpd },
-                { Opcode.unpckhps, Opcode.vunpckhps },
+                { Mnemonic.illegal, Mnemonic.illegal },
+                { Mnemonic.addsd, Mnemonic.vaddsd },
+                { Mnemonic.addpd, Mnemonic.vaddpd },
+                { Mnemonic.addsubpd, Mnemonic.vaddsubpd },
+                { Mnemonic.addsubps, Mnemonic.vaddsubps },
+                { Mnemonic.cvtsi2sd, Mnemonic.vcvtsi2sd },
+                { Mnemonic.cvtsi2ss, Mnemonic.vcvtsi2ss },
+                { Mnemonic.cvttpd2dq, Mnemonic.vcvttpd2dq },
+                { Mnemonic.cvtdq2pd, Mnemonic.vcvtdq2pd },
+                { Mnemonic.cvtpd2dq, Mnemonic.vcvtpd2dq },
+                { Mnemonic.movapd, Mnemonic.vmovapd },
+                { Mnemonic.movaps, Mnemonic.vmovaps },
+                { Mnemonic.movlps, Mnemonic.vmovlps },
+                { Mnemonic.movlpd, Mnemonic.vmovlpd },
+                { Mnemonic.movsd, Mnemonic.vmovsd },
+                { Mnemonic.movss, Mnemonic.vmovss },
+                { Mnemonic.xorpd, Mnemonic.vxorpd },
+                { Mnemonic.xorps, Mnemonic.vxorps },
+                { Mnemonic.unpckhpd, Mnemonic.vunpckhpd },
+                { Mnemonic.unpckhps, Mnemonic.vunpckhps },
 
                 //$TODO: should be in the decoder.
-                { Opcode.vhaddpd, Opcode.vhaddpd },
-                { Opcode.vhaddps, Opcode.vhaddps },
-                { Opcode.vhsubpd, Opcode.vhsubpd },
-                { Opcode.vhsubps, Opcode.vhsubps },
-                { Opcode.vlddqu, Opcode.vlddqu }, 
-                { Opcode.vmovlps, Opcode.vmovlps},
-                { Opcode.vpacksswb, Opcode.vpacksswb },
-                { Opcode.vpslld, Opcode.vpslld },
-                { Opcode.vpunpckhqdq, Opcode.vpunpckhqdq },
-                { Opcode.vpunpcklqdq, Opcode.vpunpcklqdq },
+                { Mnemonic.vhaddpd, Mnemonic.vhaddpd },
+                { Mnemonic.vhaddps, Mnemonic.vhaddps },
+                { Mnemonic.vhsubpd, Mnemonic.vhsubpd },
+                { Mnemonic.vhsubps, Mnemonic.vhsubps },
+                { Mnemonic.vlddqu, Mnemonic.vlddqu }, 
+                { Mnemonic.vmovlps, Mnemonic.vmovlps},
+                { Mnemonic.vpacksswb, Mnemonic.vpacksswb },
+                { Mnemonic.vpslld, Mnemonic.vpslld },
+                { Mnemonic.vpunpckhqdq, Mnemonic.vpunpckhqdq },
+                { Mnemonic.vpunpcklqdq, Mnemonic.vpunpcklqdq },
             };
         }
     }

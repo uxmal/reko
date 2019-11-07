@@ -163,6 +163,8 @@
     <Compile Include="Arch\Arc\ArcDisassemblerTests.cs" />
     <Compile Include="Arch\Arm\A64RewriterTests.cs" />
     <Compile Include="Arch\Arm\Arm64ArchitectureTests.cs" />
+    <Compile Include="Arch\Blackfin\BlackfinDisassemblerTests.cs" />
+    <Compile Include="Arch\Blackfin\BlackfinRewriterTests.cs" />
     <Compile Include="Arch\Cray\Cray1\Cray1DisassemblerTests.cs" />
     <Compile Include="Arch\Cray\Ymp\YmpDisassemblerTests.cs" />
     <Compile Include="Arch\Cray\Ymp\YmpRewriterTests.cs" />
@@ -811,6 +813,10 @@
     <ProjectReference Include="..\Arch\Avr\Avr.csproj">
       <Project>{5E75D702-3032-41FE-8D09-86428555A8ED}</Project>
       <Name>Avr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Blackfin\Blackfin.csproj">
+      <Project>{0bccefdd-63a8-47f2-9a39-8ce7b5f9cfab}</Project>
+      <Name>Blackfin</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Cil\Cil.csproj">
       <Project>{F6F2225D-B778-4FD2-9BA9-A8E2B58ACCCC}</Project>

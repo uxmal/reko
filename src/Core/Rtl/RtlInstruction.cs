@@ -112,7 +112,7 @@ namespace Reko.Core.Rtl
         /// <summary>
         /// The length of the original machine instruction, in bytes.
         /// </summary>
-        public byte Length { get; set; }
+        public byte Length { get; private set; }
 
         public override string ToString()
         {

@@ -136,6 +136,10 @@
       <Project>{5e75d702-3032-41fe-8d09-86428555a8ed}</Project>
       <Name>Avr</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Blackfin\Blackfin.csproj">
+      <Project>{0bccefdd-63a8-47f2-9a39-8ce7b5f9cfab}</Project>
+      <Name>Blackfin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Cil\Cil.csproj">
       <Project>{f6f2225d-b778-4fd2-9ba9-a8e2b58acccc}</Project>
       <Name>Cil</Name>

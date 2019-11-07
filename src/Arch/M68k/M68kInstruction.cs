@@ -30,30 +30,16 @@ namespace Reko.Arch.M68k
 {
     public class M68kInstruction : MachineInstruction
     {
-        public Opcode code;
+        public Mnemonic code;
         public PrimitiveType dataWidth;
-        public MachineOperand op1;
-        public MachineOperand op2;
-        public MachineOperand op3;
 
         public override int OpcodeAsInteger => (int) code;
 
-        public override MachineOperand GetOperand(int i)
-        {
-            switch (i)
-            {
-            case 0: return op1;
-            case 1: return op2;
-            case 2: return op3;
-            default: return null;
-            }
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (code == Opcode.illegal && op1 != null && writer.Platform != null)
+            if (code == Mnemonic.illegal && Operands.Length > 0 && writer.Platform != null)
             {
-                var imm = op1 as M68kImmediateOperand;
+                var imm = Operands[0] as M68kImmediateOperand;
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
@@ -73,24 +59,10 @@ namespace Reko.Arch.M68k
             {
                 writer.WriteOpcode(code.ToString());
             }
-            if (op1 != null)
-            {
-                writer.Tab();
-                WriteOperand(op1, writer, options);
-                if (op2 != null)
-                {
-                    writer.WriteChar(',');
-                    WriteOperand(op2, writer, options);
-                    if (op3 != null)
-                    {
-                        writer.WriteChar(',');
-                        WriteOperand(op3, writer, options);
-                    }
-                }
-            }
+            RenderOperands(writer, options);
         }
 
-        private void WriteOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {

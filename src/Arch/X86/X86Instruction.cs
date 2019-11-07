@@ -37,78 +37,40 @@ namespace Reko.Arch.X86
         private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
         private const InstrClass Transfer = InstrClass.Transfer;
 
-		public Opcode code;		        // Opcode of the instruction.
+		public Mnemonic code;		        // Opcode of the instruction.
         public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
-		public MachineOperand op1;
-		public MachineOperand op2;
-		public MachineOperand op3;
 
-		public X86Instruction(Opcode code, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
+		public X86Instruction(Mnemonic code, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.code = code;
             this.InstructionClass = iclass;
 			this.dataWidth = dataWidth;
 			this.addrWidth = addrWidth;
-			if (ops.Length >= 1)
-			{
-				op1 = ops[0];
-				if (ops.Length >= 2)
-				{
-					op2 = ops[1];
-					if (ops.Length == 3)
-						op3 = ops[2];
-					else if (ops.Length >= 4)
-						throw new ArgumentException("Too many operands.");
-				}
-			}
+            this.Operands = ops;
 		}
 
         public override int OpcodeAsInteger => (int) code;
 
 		private bool NeedsExplicitMemorySize()
 		{
-			if (code == Opcode.movsx || code == Opcode.movzx)
+			if (code == Mnemonic.movsx || code == Mnemonic.movzx)
 				return true;
-            if (code == Opcode.lea ||
-                code == Opcode.lds ||
-                code == Opcode.les ||
-                code == Opcode.lfs || 
-                code == Opcode.lgs || 
-                code == Opcode.lss)
+            if (code == Mnemonic.lea ||
+                code == Mnemonic.lds ||
+                code == Mnemonic.les ||
+                code == Mnemonic.lfs || 
+                code == Mnemonic.lgs || 
+                code == Mnemonic.lss)
                 return false;
-            if (Operands >= 2 && op1.Width.Size != op2.Width.Size)
+            if (Operands.Length >= 2 && Operands[0].Width.Size != Operands[1].Width.Size)
                 return true;
 			return 
-				 (Operands < 1 || !ImplicitWidth(op1)) &&
-				 (Operands < 2 || !ImplicitWidth(op2)) &&
-				 (Operands < 3 || !ImplicitWidth(op3));
+				 (Operands.Length < 1 || !ImplicitWidth(Operands[0])) &&
+				 (Operands.Length < 2 || !ImplicitWidth(Operands[1])) &&
+				 (Operands.Length < 3 || !ImplicitWidth(Operands[2]));
 		}
-
-        public byte Operands
-        {
-            get { 
-                if (op1 == null)
-                return 0;
-                if (op2 == null)
-                    return 1;
-                if (op3 == null)
-                    return 2;
-                return 3;
-            }
-        }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            switch (i)
-            {
-            case 0: return op1;
-            case 1: return op2;
-            case 2: return op3;
-            default: return null;
-            }
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -128,25 +90,25 @@ namespace Reko.Arch.X86
             string s = code.ToString();
 			switch (code)
 			{
-			case Opcode.cwd:
+			case Mnemonic.cwd:
 				if (dataWidth == PrimitiveType.Word32)
 				{
 					s = "cdq";
 				}
 				break;
-			case Opcode.cbw:
+			case Mnemonic.cbw:
 				if (dataWidth == PrimitiveType.Word32)
 				{
 					s = "cwde";
 				}
 				break;
-			case Opcode.ins:
-			case Opcode.outs:
-			case Opcode.movs:
-			case Opcode.cmps:
-			case Opcode.stos:
-			case Opcode.lods:
-			case Opcode.scas:
+			case Mnemonic.ins:
+			case Mnemonic.outs:
+			case Mnemonic.movs:
+			case Mnemonic.cmps:
+			case Mnemonic.stos:
+			case Mnemonic.lods:
+			case Mnemonic.scas:
 				switch (dataWidth.Size)
 				{
 				case 1: s += 'b'; break;
@@ -163,117 +125,99 @@ namespace Reko.Arch.X86
             {
                 options |= MachineInstructionWriterOptions.ExplicitOperandSize;
             }
-
-			if (Operands >= 1)
-			{
-                writer.Tab();
-                Write(op1, writer, options);
-				if (Operands >= 2)
-				{
-					writer.WriteChar(',');
-					Write(op2, writer, options);
-					if (Operands >= 3)
-					{
-						writer.WriteString(",");
-						Write(op3, writer, options);
-					}
-				}
-			}
+            RenderOperands(writer, options);
 		}
 
-        private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (op is MemoryOperand memOp)
+            if (op is MemoryOperand memOp && memOp.Base == Registers.rip)
             {
-                if (memOp.Base == Registers.rip)
+                var addr = this.Address + this.Length + memOp.Offset.ToInt32();
+                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
-                    var addr = this.Address + this.Length + memOp.Offset.ToInt32();
-                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
-                    {
-                        writer.WriteString("[");
-                        writer.WriteAddress(addr.ToString(), addr);
-                        writer.WriteString("]");
-                        writer.AddAnnotation(op.ToString());
-                    }
-                    else
-                    {
-                        op.Write(writer, options);
-                        writer.AddAnnotation(addr.ToString());
-                    }
-                    return;
+                    writer.WriteString("[");
+                    writer.WriteAddress(addr.ToString(), addr);
+                    writer.WriteString("]");
+                    writer.AddAnnotation(op.ToString());
+                }
+                else
+                {
+                    op.Write(writer, options);
+                    writer.AddAnnotation(addr.ToString());
                 }
             }
-            op.Write(writer, options);
+            else
+            {
+                op.Write(writer, options);
+            }
         }
-
- 
 
         // Returns the condition codes that an instruction modifies.
 
-        public static FlagM DefCc(Opcode opcode)
+        public static FlagM DefCc(Mnemonic opcode)
 		{
 			switch (opcode)
 			{
-			case Opcode.aaa:
-			case Opcode.aas:
+			case Mnemonic.aaa:
+			case Mnemonic.aas:
 				return FlagM.CF;
-			case Opcode.aad:
-			case Opcode.aam:
+			case Mnemonic.aad:
+			case Mnemonic.aam:
 				return FlagM.SF|FlagM.ZF;
-			case Opcode.bt:
-			case Opcode.bts:
-			case Opcode.btc:
-			case Opcode.btr:
+			case Mnemonic.bt:
+			case Mnemonic.bts:
+			case Mnemonic.btc:
+			case Mnemonic.btr:
 				return FlagM.CF;
-			case Opcode.clc:
-			case Opcode.cmc:
-			case Opcode.stc:
+			case Mnemonic.clc:
+			case Mnemonic.cmc:
+			case Mnemonic.stc:
 				return FlagM.CF;
-			case Opcode.cld:
-			case Opcode.std:
+			case Mnemonic.cld:
+			case Mnemonic.std:
 				return FlagM.DF;
-			case Opcode.daa:
-			case Opcode.das:
+			case Mnemonic.daa:
+			case Mnemonic.das:
 				return FlagM.CF|FlagM.SF|FlagM.ZF;
-			case Opcode.adc:
-			case Opcode.add:
-			case Opcode.sbb:
-			case Opcode.sub:
-			case Opcode.cmp:
-			case Opcode.cmpsb:
-			case Opcode.cmps:
-			case Opcode.div:
-			case Opcode.idiv:
-			case Opcode.imul:
-			case Opcode.mul:
-			case Opcode.neg:
-			case Opcode.scas:
-			case Opcode.scasb:
+			case Mnemonic.adc:
+			case Mnemonic.add:
+			case Mnemonic.sbb:
+			case Mnemonic.sub:
+			case Mnemonic.cmp:
+			case Mnemonic.cmpsb:
+			case Mnemonic.cmps:
+			case Mnemonic.div:
+			case Mnemonic.idiv:
+			case Mnemonic.imul:
+			case Mnemonic.mul:
+			case Mnemonic.neg:
+			case Mnemonic.scas:
+			case Mnemonic.scasb:
 				return FlagM.CF|FlagM.SF|FlagM.ZF|FlagM.OF;
-			case Opcode.dec:
-			case Opcode.inc:
+			case Mnemonic.dec:
+			case Mnemonic.inc:
 				return FlagM.SF|FlagM.ZF|FlagM.OF;
-			case Opcode.rcl:
-			case Opcode.rcr:
-			case Opcode.rol:
-			case Opcode.ror:
+			case Mnemonic.rcl:
+			case Mnemonic.rcr:
+			case Mnemonic.rol:
+			case Mnemonic.ror:
 				return FlagM.OF|FlagM.CF;		// if shift count > 1, FlagM.OF is not set.
-			case Opcode.sar:
-			case Opcode.shl:
-			case Opcode.shr:
+			case Mnemonic.sar:
+			case Mnemonic.shl:
+			case Mnemonic.shr:
 				return FlagM.OF|FlagM.SF|FlagM.ZF|FlagM.CF;	// if shift count > 1, FlagM.OF is not set.
-			case Opcode.shld:
-			case Opcode.shrd:
+			case Mnemonic.shld:
+			case Mnemonic.shrd:
 				return FlagM.SF|FlagM.ZF|FlagM.CF;
-			case Opcode.bsf:
-			case Opcode.bsr:
+			case Mnemonic.bsf:
+			case Mnemonic.bsr:
 				return FlagM.ZF;
-			case Opcode.and:
-			case Opcode.or:
-            case Opcode.sahf:
-            case Opcode.test:
-            case Opcode.xadd:
-            case Opcode.xor:
+			case Mnemonic.and:
+			case Mnemonic.or:
+            case Mnemonic.sahf:
+            case Mnemonic.test:
+            case Mnemonic.xadd:
+            case Mnemonic.xor:
 				return FlagM.OF|FlagM.SF|FlagM.ZF|FlagM.CF;
 			default:
 				return 0;
@@ -282,99 +226,99 @@ namespace Reko.Arch.X86
 
 		// Returns the condition codes an instruction uses.
 
-		public static FlagM UseCc(Opcode opcode)
+		public static FlagM UseCc(Mnemonic opcode)
 		{
 			switch (opcode)
 			{
-			case Opcode.adc:
-			case Opcode.sbb:
+			case Mnemonic.adc:
+			case Mnemonic.sbb:
 				return FlagM.CF;
-			case Opcode.daa:
-			case Opcode.das:
+			case Mnemonic.daa:
+			case Mnemonic.das:
 				return FlagM.CF;
-			case Opcode.ins:
-			case Opcode.insb:
-			case Opcode.lods:
-			case Opcode.lodsb:
-			case Opcode.movs:
-			case Opcode.movsb:
-			case Opcode.outs:
-			case Opcode.outsb:
-			case Opcode.scas:
-			case Opcode.scasb:
-			case Opcode.stos:
-			case Opcode.stosb:
+			case Mnemonic.ins:
+			case Mnemonic.insb:
+			case Mnemonic.lods:
+			case Mnemonic.lodsb:
+			case Mnemonic.movs:
+			case Mnemonic.movsb:
+			case Mnemonic.outs:
+			case Mnemonic.outsb:
+			case Mnemonic.scas:
+			case Mnemonic.scasb:
+			case Mnemonic.stos:
+			case Mnemonic.stosb:
 				return FlagM.DF;
-            case Opcode.cmova:
-            case Opcode.ja:
-			case Opcode.seta:
+            case Mnemonic.cmova:
+            case Mnemonic.ja:
+			case Mnemonic.seta:
 				return FlagM.CF|FlagM.ZF;
-            case Opcode.cmovbe:
-            case Opcode.jbe:
-			case Opcode.setbe:
+            case Mnemonic.cmovbe:
+            case Mnemonic.jbe:
+			case Mnemonic.setbe:
 				return FlagM.CF|FlagM.ZF;
-            case Opcode.cmovc:
-            case Opcode.jc:
-			case Opcode.setc:
+            case Mnemonic.cmovc:
+            case Mnemonic.jc:
+			case Mnemonic.setc:
 				return FlagM.CF;
-            case Opcode.cmovg:
-            case Opcode.jg:
-			case Opcode.setg:
+            case Mnemonic.cmovg:
+            case Mnemonic.jg:
+			case Mnemonic.setg:
 				return FlagM.SF|FlagM.OF|FlagM.ZF;
-            case Opcode.cmovge:
-            case Opcode.jge:
-			case Opcode.setge:
+            case Mnemonic.cmovge:
+            case Mnemonic.jge:
+			case Mnemonic.setge:
 				return FlagM.SF|FlagM.OF;
-			case Opcode.cmovl:
-            case Opcode.jl:
-            case Opcode.setl:
+			case Mnemonic.cmovl:
+            case Mnemonic.jl:
+            case Mnemonic.setl:
 				return FlagM.SF|FlagM.OF;
-            case Opcode.cmovle:
-            case Opcode.jle:
-			case Opcode.setle:
+            case Mnemonic.cmovle:
+            case Mnemonic.jle:
+			case Mnemonic.setle:
 				return FlagM.SF|FlagM.OF|FlagM.ZF;
-            case Opcode.cmovnc:
-            case Opcode.jnc:
-            case Opcode.setnc:
+            case Mnemonic.cmovnc:
+            case Mnemonic.jnc:
+            case Mnemonic.setnc:
 				return FlagM.CF;
-            case Opcode.cmovno:
-            case Opcode.jno:
-			case Opcode.setno:
+            case Mnemonic.cmovno:
+            case Mnemonic.jno:
+			case Mnemonic.setno:
 				return FlagM.OF;
-            case Opcode.cmovns:
-            case Opcode.jns:
-			case Opcode.setns:
+            case Mnemonic.cmovns:
+            case Mnemonic.jns:
+			case Mnemonic.setns:
 				return FlagM.SF;
-            case Opcode.cmovnz:
-            case Opcode.jnz:
-			case Opcode.setnz:
+            case Mnemonic.cmovnz:
+            case Mnemonic.jnz:
+			case Mnemonic.setnz:
 				return FlagM.ZF;
-            case Opcode.cmovo:
-            case Opcode.jo:
-			case Opcode.seto:
+            case Mnemonic.cmovo:
+            case Mnemonic.jo:
+			case Mnemonic.seto:
 				return FlagM.OF;
-            case Opcode.cmovpe:
-            case Opcode.jpe:
-			case Opcode.setpe:
-            case Opcode.cmovpo:
-            case Opcode.jpo:
-			case Opcode.setpo:
+            case Mnemonic.cmovpe:
+            case Mnemonic.jpe:
+			case Mnemonic.setpe:
+            case Mnemonic.cmovpo:
+            case Mnemonic.jpo:
+			case Mnemonic.setpo:
                 return FlagM.PF;
-            case Opcode.cmovs:
-            case Opcode.js:
-			case Opcode.sets:
+            case Mnemonic.cmovs:
+            case Mnemonic.js:
+			case Mnemonic.sets:
 				return FlagM.SF;
-            case Opcode.cmovz:
-            case Opcode.jz:
-			case Opcode.setz:
+            case Mnemonic.cmovz:
+            case Mnemonic.jz:
+			case Mnemonic.setz:
 				return FlagM.ZF;
-			case Opcode.lahf:
+			case Mnemonic.lahf:
 				return FlagM.CF|FlagM.SF|FlagM.ZF|FlagM.OF;
-			case Opcode.loope:
-			case Opcode.loopne:
+			case Mnemonic.loope:
+			case Mnemonic.loopne:
 				return FlagM.ZF;
-			case Opcode.rcl:
-			case Opcode.rcr:
+			case Mnemonic.rcl:
+			case Mnemonic.rcr:
 				return FlagM.CF;
 			default:
 				return 0;

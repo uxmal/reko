@@ -43,9 +43,9 @@ namespace Reko.Arch.PowerPC
                 "__unpack_quantized",
                 fpPair,
                 tmp1,
-                RewriteOperand(instr.op4),
-                RewriteOperand(instr.op5)));
-            m.Assign(RewriteOperand(instr.op1), tmp2);
+                RewriteOperand(instr.Operands[3]),
+                RewriteOperand(instr.Operands[4])));
+            m.Assign(RewriteOperand(instr.Operands[0]), tmp2);
             if (update)
             {
                 m.Assign(baseReg, ea);
@@ -58,14 +58,14 @@ namespace Reko.Arch.PowerPC
             var tmp1 = binder.CreateTemporary(PrimitiveType.Word64);
             var tmp2 = binder.CreateTemporary(fpPair);
 
-            m.Assign(tmp1, RewriteOperand(instr.op1));
+            m.Assign(tmp1, RewriteOperand(instr.Operands[0]));
 
             m.Assign(tmp2, host.PseudoProcedure(
                 "__pack_quantized",
                 fpPair,
                 tmp1,
-                RewriteOperand(instr.op4),
-                RewriteOperand(instr.op5)));
+                RewriteOperand(instr.Operands[3]),
+                RewriteOperand(instr.Operands[4])));
 
             m.Assign(m.Mem64(ea), tmp2);
 
@@ -79,25 +79,25 @@ namespace Reko.Arch.PowerPC
         {
             Expression ea;
             Expression baseReg;
-            if (((RegisterOperand)instr.op2).Register.Number == 0)
+            if (((RegisterOperand)instr.Operands[1]).Register.Number == 0)
             {
-                ea = RewriteOperand(instr.op3);
+                ea = RewriteOperand(instr.Operands[2]);
                 baseReg = ea;
             }
             else
             {
-                ea = RewriteOperand(instr.op2);
+                ea = RewriteOperand(instr.Operands[1]);
                 baseReg = ea;
-                ea = m.IAdd(ea, RewriteOperand(instr.op3));
+                ea = m.IAdd(ea, RewriteOperand(instr.Operands[2]));
             }
             return (ea, baseReg);
         }
 
         private void Rewrite_ps_cmpo(string intrinsic) {
 
-            var cr = RewriteOperand(instr.op1);
-            var opA = RewriteOperand(instr.op2);
-            var opB = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var opA = RewriteOperand(instr.Operands[1]);
+            var opB = RewriteOperand(instr.Operands[2]);
             var tmpA = binder.CreateTemporary(fpPair);
             var tmpB = binder.CreateTemporary(fpPair);
             m.Assign(tmpA, opA);
@@ -108,14 +108,14 @@ namespace Reko.Arch.PowerPC
         private void Rewrite_ps_mr()
         {
             m.Assign(
-                RewriteOperand(instr.op1),
-                RewriteOperand(instr.op2));
+                RewriteOperand(instr.Operands[0]),
+                RewriteOperand(instr.Operands[1]));
         }
 
         private void RewritePairedInstruction_Src1(string intrinsic)
         {
-            var src = RewriteOperand(instr.op2);
-            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.Operands[1]);
+            var dst = RewriteOperand(instr.Operands[0]);
             var tmpA = binder.CreateTemporary(fpPair);
             var tmpD = binder.CreateTemporary(fpPair);
             m.Assign(tmpA, src);
@@ -126,9 +126,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewritePairedInstruction_Src2(string intrinsic)
         {
-            var srcA = RewriteOperand(instr.op2);
-            var srcB = RewriteOperand(instr.op3);
-            var dst = RewriteOperand(instr.op1);
+            var srcA = RewriteOperand(instr.Operands[1]);
+            var srcB = RewriteOperand(instr.Operands[2]);
+            var dst = RewriteOperand(instr.Operands[0]);
             var tmpA = binder.CreateTemporary(fpPair);
             var tmpB = binder.CreateTemporary(fpPair);
             var tmpD = binder.CreateTemporary(fpPair);
@@ -141,10 +141,10 @@ namespace Reko.Arch.PowerPC
 
         private void RewritePairedInstruction_Src3(string intrinsic)
         {
-            var srcA = RewriteOperand(instr.op2);
-            var srcB = RewriteOperand(instr.op3);
-            var srcC = RewriteOperand(instr.op4);
-            var dst = RewriteOperand(instr.op1);
+            var srcA = RewriteOperand(instr.Operands[1]);
+            var srcB = RewriteOperand(instr.Operands[2]);
+            var srcC = RewriteOperand(instr.Operands[3]);
+            var dst = RewriteOperand(instr.Operands[0]);
             var tmpA = binder.CreateTemporary(fpPair);
             var tmpB = binder.CreateTemporary(fpPair);
             var tmpC= binder.CreateTemporary(fpPair);

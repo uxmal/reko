@@ -58,35 +58,35 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     base.RewriteInstr();
                     break;
 
-                case Opcode.ADDFSR:
+                case Mnemonic.ADDFSR:
                     RewriteADDFSR();
                     break;
 
-                case Opcode.ADDULNK:
+                case Mnemonic.ADDULNK:
                     RewriteADDULNK();
                     break;
 
-                case Opcode.CALLW:
+                case Mnemonic.CALLW:
                     RewriteCALLW();
                     break;
 
-                case Opcode.MOVSF:
+                case Mnemonic.MOVSF:
                     RewriteMOVSF();
                     break;
 
-                case Opcode.MOVSS:
+                case Mnemonic.MOVSS:
                     RewriteMOVSS();
                     break;
 
-                case Opcode.PUSHL:
+                case Mnemonic.PUSHL:
                     RewritePUSHL();
                     break;
 
-                case Opcode.SUBFSR:
+                case Mnemonic.SUBFSR:
                     RewriteSUBFSR();
                     break;
 
-                case Opcode.SUBULNK:
+                case Mnemonic.SUBULNK:
                     RewriteSUBULNK();
                     break;
             }
@@ -95,7 +95,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteADDULNK()
         {
-            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
             m.Assign(Fsr2, m.IAdd(Fsr2, k.ImmediateValue));
@@ -123,21 +123,21 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteMOVSF()
         {
-            var zs = GetFSR2IdxAddress(instrCurr.op1);
-            var (indMode, memPtr) = GetUnaryAbsPtrs(instrCurr.op2, out Expression memExpr);
+            var zs = GetFSR2IdxAddress(instrCurr.Operands[0]);
+            var (indMode, memPtr) = GetUnaryAbsPtrs(instrCurr.Operands[1], out Expression memExpr);
             ArithAssignIndirect(memExpr, zs, indMode, memPtr);
         }
 
         private void RewriteMOVSS()
         {
-            var zs = GetFSR2IdxAddress(instrCurr.op1);
-            var zd = GetFSR2IdxAddress(instrCurr.op2);
+            var zs = GetFSR2IdxAddress(instrCurr.Operands[0]);
+            var zd = GetFSR2IdxAddress(instrCurr.Operands[1]);
             m.Assign(zd, zs);
         }
 
         private void RewritePUSHL()
         {
-            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             m.Assign(DataMem8(Fsr2), k.ImmediateValue);
             m.Assign(Fsr2, m.IAdd(Fsr2, 1));
         }
@@ -146,7 +146,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             rtlc = InstrClass.Transfer;
 
-            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
             m.Assign(Fsr2, m.ISub(Fsr2, k.ImmediateValue));

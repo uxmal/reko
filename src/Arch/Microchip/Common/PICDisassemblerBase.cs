@@ -82,7 +82,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 throw new InvalidOperationException($"Unable to retrieve program memory region for address {addrCur.ToString()}.");
             if ((addrCur.Offset % (regn.Trait?.LocSize ?? 1)) != 0)
             {
-                instrCur = new PICInstructionNoOpnd(Opcode.unaligned)
+                instrCur = new PICInstructionNoOpnd(Mnemonic.unaligned)
                 {
                     Address = addrCur,
                     Length = 1
@@ -130,7 +130,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected override PICInstruction CreateInvalidInstruction()
         {
-            return new PICInstructionNoOpnd(Opcode.invalid)
+            return new PICInstructionNoOpnd(Mnemonic.invalid)
             {
                 InstructionClass = InstrClass.Invalid
             };
@@ -179,11 +179,11 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Invalid instruction. Return <code>null</code> to indicate an invalid instruction.
         /// </summary>
-        protected class InvalidOpRec : Decoder
+        protected class InvalidDecoder : Decoder
         {
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
-                return new PICInstructionNoOpnd(Opcode.invalid);
+                return new PICInstructionNoOpnd(Mnemonic.invalid);
             }
         }
 

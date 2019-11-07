@@ -35,7 +35,7 @@ namespace Reko.Arch.PowerPC
     {
         private void RewriteB()
         {
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.Operands[0]);
             m.Goto(dst);
         }
 
@@ -51,7 +51,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteBl()
         {
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.Operands[0]);
             var addrDst = dst as Address;
             if (addrDst != null && instr.Address.ToLinear() + 4 == addrDst.ToLinear())
             {
@@ -72,11 +72,11 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteBranch(bool updateLinkregister, bool toLinkRegister, ConditionCode cc)
         {
-            var ccrOp = instr.op1 as RegisterOperand;
+            var ccrOp = instr.Operands[0] as RegisterOperand;
             Expression cr;
             if (ccrOp != null)
             {
-                cr = RewriteOperand(instr.op1);
+                cr = RewriteOperand(instr.Operands[0]);
             }
             else 
             {
@@ -100,7 +100,7 @@ namespace Reko.Arch.PowerPC
             }
             else
             {
-                var dst = RewriteOperand(ccrOp != null ? instr.op2 : instr.op1);
+                var dst = RewriteOperand(ccrOp != null ? instr.Operands[1] : instr.Operands[0]);
                 if (updateLinkregister)
                 {
                     m.BranchInMiddleOfInstruction(
@@ -140,7 +140,7 @@ namespace Reko.Arch.PowerPC
 
             Expression cond = decOp(ctr, Constant.Zero(ctr.DataType));
 
-            if (instr.op1 is ConditionOperand ccOp)
+            if (instr.Operands[0] is ConditionOperand ccOp)
             {
                 Expression test = m.Test(
                     CcFromOperand(ccOp),
@@ -148,11 +148,11 @@ namespace Reko.Arch.PowerPC
                 if (!ifSet)
                     test = test.Invert();
                 cond = m.Cand(cond, test);
-                dest = RewriteOperand(instr.op2);
+                dest = RewriteOperand(instr.Operands[1]);
             }
             else
             {
-                dest = RewriteOperand(instr.op1);
+                dest = RewriteOperand(instr.Operands[0]);
             }
             
             m.Assign(ctr, m.ISub(ctr, 1));
@@ -176,7 +176,7 @@ namespace Reko.Arch.PowerPC
         private void RewriteBranch(bool linkRegister, Expression destination)
         {
             var ctr = binder.EnsureRegister(arch.ctr);
-            var bo = ((Constant)RewriteOperand(instr.op1)).ToByte();
+            var bo = ((Constant)RewriteOperand(instr.Operands[0])).ToByte();
             switch (bo)
             {
             case 0x00:

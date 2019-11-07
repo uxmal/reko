@@ -26,7 +26,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// Values that represent symbolic opcodes of the 8-bit MCU PIC16/18 family.
     /// Note: Opcodes are defined in uppercase to conform to Microchip MPASM user's guide syntax.
     /// </summary>
-    public enum Opcode : byte
+    public enum Mnemonic : byte
     {
 
         /// <summary>Invalid instruction. (PIC16, PIC18) </summary>

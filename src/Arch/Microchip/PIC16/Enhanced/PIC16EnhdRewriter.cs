@@ -61,49 +61,49 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                     base.RewriteInstr();
                     break;
 
-                case Opcode.ADDFSR:
+                case Mnemonic.ADDFSR:
                     Rewrite_ADDFSR();
                     break;
-                case Opcode.ADDWFC:
+                case Mnemonic.ADDWFC:
                     Rewrite_ADDWFC();
                     break;
-                case Opcode.ASRF:
+                case Mnemonic.ASRF:
                     Rewrite_ASRF();
                     break;
-                case Opcode.BRA:
+                case Mnemonic.BRA:
                     Rewrite_BRA();
                     break;
-                case Opcode.BRW:
+                case Mnemonic.BRW:
                     Rewrite_BRW();
                     break;
-                case Opcode.CALLW:
+                case Mnemonic.CALLW:
                     Rewrite_CALLW();
                     break;
-                case Opcode.LSLF:
+                case Mnemonic.LSLF:
                     Rewrite_LSLF();
                     break;
-                case Opcode.LSRF:
+                case Mnemonic.LSRF:
                     Rewrite_LSRF();
                     break;
-                case Opcode.MOVIW:
+                case Mnemonic.MOVIW:
                     Rewrite_MOVIW();
                     break;
-                case Opcode.MOVLB:
+                case Mnemonic.MOVLB:
                     Rewrite_MOVLB();
                     break;
-                case Opcode.MOVLP:
+                case Mnemonic.MOVLP:
                     Rewrite_MOVLP();
                     break;
-                case Opcode.MOVWI:
+                case Mnemonic.MOVWI:
                     Rewrite_MOVWI();
                     break;
-                case Opcode.RESET:
+                case Mnemonic.RESET:
                     Rewrite_RESET();
                     break;
-                case Opcode.SUBWFB:
+                case Mnemonic.SUBWFB:
                     Rewrite_SUBWFB();
                     break;
-                case Opcode.TRIS:
+                case Mnemonic.TRIS:
                     Rewrite_TRIS();
                     break;
             }
@@ -113,8 +113,8 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_ADDFSR()
         {
-            var fsrnum = instrCurr.op1 as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR register number operand: {instrCurr.op1}");
-            var imm = instrCurr.op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op2}");
+            var fsrnum = instrCurr.Operands[0] as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR register number operand: {instrCurr.Operands[0]}");
+            var imm = instrCurr.Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[1]}");
             Identifier fsrreg;
             switch (fsrnum.FSRNum)
             {
@@ -155,7 +155,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_BRA()
         {
             rtlc = InstrClass.Transfer;
-            var target = instrCurr.op1 as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.op1}");
+            var target = instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.Operands[0]}");
             m.Goto(target.CodeTarget);
         }
 
@@ -193,7 +193,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_MOVIW()
         {
-            var fsridx = instrCurr.op1 as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.op1}");
+            var fsridx = instrCurr.Operands[0] as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.Operands[0]}");
             Identifier fsrreg;
             switch (fsridx.FSRNum)
             {
@@ -243,20 +243,20 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_MOVLB()
         {
-            var imm = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            var imm = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             m.Assign(Bsr, imm.ImmediateValue);
         }
 
         private void Rewrite_MOVLP()
         {
-            var imm = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            var imm = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var pclath = binder.EnsureRegister(PIC16Registers.PCLATH);
             m.Assign(pclath, imm.ImmediateValue);
         }
 
         private void Rewrite_MOVWI()
         {
-            var fsridx = instrCurr.op1 as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.op1}");
+            var fsridx = instrCurr.Operands[0] as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.Operands[0]}");
             Identifier fsrreg;
             switch (fsridx.FSRNum)
             {

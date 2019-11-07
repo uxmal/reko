@@ -73,14 +73,14 @@
     <Compile Include="Tlcs900\Tlcs900Disassembler.mem.cs" />
     <Compile Include="Tlcs900\Tlcs900Disassembler.reg.cs" />
     <Compile Include="Tlcs900\Tlcs900Instruction.cs" />
-    <Compile Include="Tlcs900\Tlcs900Opcode.cs" />
+    <Compile Include="Tlcs900\Tlcs900Mnemonic.cs" />
     <Compile Include="Tlcs900\Tlcs900ProcessorState.cs" />
     <Compile Include="Tlcs900\Tlcs900Registers.cs" />
     <Compile Include="Tlcs900\Tlcs900Rewriter.cs" />
     <Compile Include="Tlcs900\Tlcs900Rewriter.Control.cs" />
     <Compile Include="Tlcs900\Tlcs900Rewriter.System.cs" />
     <Compile Include="Tlcs90Architecture.cs" />
-    <Compile Include="Tlcs90\Opcode.cs" />
+    <Compile Include="Tlcs90\Mnemonic.cs" />
     <Compile Include="Tlcs90\Tlcs90Disassembler.cs" />
     <Compile Include="Tlcs90\Tlcs90Disassembler.dst.cs" />
     <Compile Include="Tlcs90\Tlcs90Disassembler.reg.cs" />

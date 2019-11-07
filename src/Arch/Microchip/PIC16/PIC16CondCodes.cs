@@ -35,47 +35,47 @@ namespace Reko.Arch.MicrochipPIC.PIC16
     /// </summary>
     public static class PIC16CC
     {
-        private static Dictionary<Opcode, FlagM> defCC = new Dictionary<Opcode, FlagM>()
+        private static Dictionary<Mnemonic, FlagM> defCC = new Dictionary<Mnemonic, FlagM>()
         {
-            { Opcode.ANDLW,  FlagM.Z },
-            { Opcode.ANDWF,  FlagM.Z },
-            { Opcode.CLRF,   FlagM.Z },
-            { Opcode.CLRW,   FlagM.Z },
-            { Opcode.COMF,   FlagM.Z },
-            { Opcode.DECF,   FlagM.Z },
-            { Opcode.INCF,   FlagM.Z },
-            { Opcode.IORLW,  FlagM.Z },
-            { Opcode.IORWF,  FlagM.Z },
-            { Opcode.MOVF,   FlagM.Z },
-            { Opcode.MOVIW,  FlagM.Z },
-            { Opcode.XORLW,  FlagM.Z },
-            { Opcode.XORWF,  FlagM.Z },
-            { Opcode.RLF,    FlagM.C },
-            { Opcode.RRF,    FlagM.C },
-            { Opcode.ASRF,   FlagM.C | FlagM.Z },
-            { Opcode.LSLF,   FlagM.C | FlagM.Z },
-            { Opcode.LSRF,   FlagM.C | FlagM.Z },
-            { Opcode.ADDLW,  FlagM.C | FlagM.DC | FlagM.Z },
-            { Opcode.ADDWF,  FlagM.C | FlagM.DC | FlagM.Z },
-            { Opcode.ADDWFC, FlagM.C | FlagM.DC | FlagM.Z },
-            { Opcode.SUBLW,  FlagM.C | FlagM.DC | FlagM.Z },
-            { Opcode.SUBWF,  FlagM.C | FlagM.DC | FlagM.Z },
-            { Opcode.SUBWFB, FlagM.C | FlagM.DC | FlagM.Z },
+            { Mnemonic.ANDLW,  FlagM.Z },
+            { Mnemonic.ANDWF,  FlagM.Z },
+            { Mnemonic.CLRF,   FlagM.Z },
+            { Mnemonic.CLRW,   FlagM.Z },
+            { Mnemonic.COMF,   FlagM.Z },
+            { Mnemonic.DECF,   FlagM.Z },
+            { Mnemonic.INCF,   FlagM.Z },
+            { Mnemonic.IORLW,  FlagM.Z },
+            { Mnemonic.IORWF,  FlagM.Z },
+            { Mnemonic.MOVF,   FlagM.Z },
+            { Mnemonic.MOVIW,  FlagM.Z },
+            { Mnemonic.XORLW,  FlagM.Z },
+            { Mnemonic.XORWF,  FlagM.Z },
+            { Mnemonic.RLF,    FlagM.C },
+            { Mnemonic.RRF,    FlagM.C },
+            { Mnemonic.ASRF,   FlagM.C | FlagM.Z },
+            { Mnemonic.LSLF,   FlagM.C | FlagM.Z },
+            { Mnemonic.LSRF,   FlagM.C | FlagM.Z },
+            { Mnemonic.ADDLW,  FlagM.C | FlagM.DC | FlagM.Z },
+            { Mnemonic.ADDWF,  FlagM.C | FlagM.DC | FlagM.Z },
+            { Mnemonic.ADDWFC, FlagM.C | FlagM.DC | FlagM.Z },
+            { Mnemonic.SUBLW,  FlagM.C | FlagM.DC | FlagM.Z },
+            { Mnemonic.SUBWF,  FlagM.C | FlagM.DC | FlagM.Z },
+            { Mnemonic.SUBWFB, FlagM.C | FlagM.DC | FlagM.Z },
         };
 
-        private static Dictionary<Opcode, FlagM> useCC = new Dictionary<Opcode, FlagM>()
+        private static Dictionary<Mnemonic, FlagM> useCC = new Dictionary<Mnemonic, FlagM>()
         {
-            { Opcode.ADDWFC, FlagM.C },
-            { Opcode.RLF,    FlagM.C },
-            { Opcode.RRF,    FlagM.C },
-            { Opcode.SUBWFB, FlagM.C },
+            { Mnemonic.ADDWFC, FlagM.C },
+            { Mnemonic.RLF,    FlagM.C },
+            { Mnemonic.RRF,    FlagM.C },
+            { Mnemonic.SUBWFB, FlagM.C },
         };
 
         /// <summary>
         /// Gets the condition code flags altered by the given opcode.
         /// </summary>
         /// <param name="opc">The opcode.</param>
-        public static FlagM Defined(Opcode opc)
+        public static FlagM Defined(Mnemonic opc)
         {
             if (defCC.TryGetValue(opc, out FlagM flg))
                 return flg;
@@ -86,7 +86,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// Gets the condition code flags used by the given opcode.
         /// </summary>
         /// <param name="opc">The opcode.</param>
-        public static FlagM Used(Opcode opc)
+        public static FlagM Used(Mnemonic opc)
         {
             if (useCC.TryGetValue(opc, out FlagM flg))
                 return flg;

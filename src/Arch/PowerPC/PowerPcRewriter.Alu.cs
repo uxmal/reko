@@ -42,17 +42,17 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteAdd()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
         }
 
         public void RewriteAddc()
         {
-            var opL = RewriteOperand(instr.op2, true);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1], true);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
             var xer = binder.EnsureRegister(arch.xer);
             m.Assign(xer, m.Cond(opD));
@@ -60,9 +60,9 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteAdde()
         {
-            var opL = RewriteOperand(instr.op2, true);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1], true);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             var xer = binder.EnsureRegister(arch.xer);
             m.Assign(opD,
                 m.IAdd(
@@ -74,8 +74,8 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteAddme()
         {
-            var opD = RewriteOperand(instr.op1);
-            var opS = RewriteOperand(instr.op2);
+            var opD = RewriteOperand(instr.Operands[0]);
+            var opS = RewriteOperand(instr.Operands[1]);
             var cr0 = binder.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
             m.Assign(opD,
                 m.ISub(
@@ -85,17 +85,17 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteAddi()
         {
-            var opL = RewriteOperand(instr.op2, true);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1], true);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
         }
 
         public void RewriteAddic()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
             var xer = binder.EnsureRegister(arch.xer);
             m.Assign(xer, m.Cond(opD));
@@ -103,17 +103,17 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteAddis()
         {
-            var opL = RewriteOperand(instr.op2, true);
-            var opR = Shift16(dasm.Current.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1], true);
+            var opR = Shift16(dasm.Current.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
         }
 
         private void RewriteAddze()
         {
-            var opL = RewriteOperand(instr.op2);
+            var opL = RewriteOperand(instr.Operands[1]);
             var opR = binder.EnsureRegister(arch.xer);
-            var opD = RewriteOperand(instr.op1);
+            var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
             m.Assign(opR, m.Cond(opD));
         }
@@ -131,9 +131,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteAnd(bool negate)
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             var s = (opL == opR)
                 ? opL
                 : m.And(opL, opR);
@@ -145,9 +145,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteAndc()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             var s = m.And(opL, m.Comp(opR));
             m.Assign(opD, s);
             MaybeEmitCr0(opD);
@@ -155,21 +155,21 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteAndis()
         {
-            var opD = RewriteOperand(instr.op1);
+            var opD = RewriteOperand(instr.Operands[0]);
             
             m.Assign(
                 opD,
                 m.And(
-                    RewriteOperand(instr.op2),
-                    Shift16(dasm.Current.op3)));
+                    RewriteOperand(instr.Operands[1]),
+                    Shift16(dasm.Current.Operands[2])));
             MaybeEmitCr0(opD);
         }
 
         private void RewriteBcdadd()
         {
-            var d = RewriteOperand(instr.op1);
-            var a = RewriteOperand(instr.op2);
-            var b = RewriteOperand(instr.op3);
+            var d = RewriteOperand(instr.Operands[0]);
+            var a = RewriteOperand(instr.Operands[1]);
+            var b = RewriteOperand(instr.Operands[2]);
             m.Assign(
                 d,
                 host.PseudoProcedure("__bcdadd", d.DataType, a, b));
@@ -177,71 +177,71 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteCmp()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
                 m.ISub(r, i)));
         }
 
         private void RewriteCmpi()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
                 m.ISub(r, i)));
         }
 
         private void RewriteCmpl()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
                 m.ISub(r, i)));
         }
 
         private void RewriteCmpli()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
                 m.ISub(r, i)));
         }
 
         private void RewriteCmplw()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
                 m.ISub(r, i)));
         }
 
         private void RewriteCmplwi()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
                 m.ISub(r, i)));
         }
 
         private void RewriteCmpwi()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
                 m.ISub(r, i)));
         }
 
         private void RewriteCntlz(string name, DataType dt)
         {
-            var dst = RewriteOperand(instr.op1);
-            var src = RewriteOperand(instr.op2);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var src = RewriteOperand(instr.Operands[1]);
             if (dt.Size < arch.WordWidth.Size)
             {
                 src = m.Cast(dt, src);
@@ -251,67 +251,67 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteCreqv()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__creqv", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCrnor()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__crnor", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCror()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__cror", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCrxor()
         {
-            var cr = RewriteOperand(instr.op1);
-            var r = RewriteOperand(instr.op2);
-            var i = RewriteOperand(instr.op3);
+            var cr = RewriteOperand(instr.Operands[0]);
+            var r = RewriteOperand(instr.Operands[1]);
+            var i = RewriteOperand(instr.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__crxor", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteDivd(Func<Expression,Expression,Expression> div)
         {
-            var opL = RewriteOperand(instr.op2, true);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1], true);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, div(opL, opR));
             MaybeEmitCr0(opD);
         }
 
         private void RewriteDivw()
         {
-            var opL = RewriteOperand(instr.op2, true);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1], true);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.SDiv(opL, opR));
             MaybeEmitCr0(opD);
         }
 
         private void RewriteDivwu()
         {
-            var opL = RewriteOperand(instr.op2, true);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1], true);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.UDiv(opL, opR));
             MaybeEmitCr0(opD);
         }
 
         private void RewriteExts(PrimitiveType size)
         {
-            var opS = RewriteOperand(instr.op2);
-            var opD = RewriteOperand(instr.op1);
+            var opS = RewriteOperand(instr.Operands[1]);
+            var opD = RewriteOperand(instr.Operands[0]);
             var tmp = binder.CreateTemporary(size);
             m.Assign(tmp, m.Cast(tmp.DataType, opS));
             m.Assign(
@@ -324,14 +324,14 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteMcrf()
         {
-            var dst = RewriteOperand(instr.op1);
-            var src = RewriteOperand(instr.op2);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var src = RewriteOperand(instr.Operands[1]);
             m.Assign(dst, src);
         }
 
         private void RewriteMfcr()
         {
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.Operands[0]);
             var src = binder.EnsureRegister(arch.cr);
             m.Assign(dst, src);
         }
@@ -339,68 +339,68 @@ namespace Reko.Arch.PowerPC
         private void RewriteMfctr()
         {
             var src = binder.EnsureRegister(arch.ctr);
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.Operands[0]);
             m.Assign(dst, src);
         }
 
         private void RewriteMftb()
         {
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.Operands[0]);
             var src = host.PseudoProcedure("__mftb", dst.DataType);
             m.Assign(dst, src);
         }
 
         private void RewriteMflr()
         {
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.Operands[0]);
             var src = binder.EnsureRegister(arch.lr);
             m.Assign(dst, src);
         }
 
         private void RewriteMtcrf()
         {
-            var dst = RewriteOperand(instr.op1);
-            var src = RewriteOperand(instr.op2);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var src = RewriteOperand(instr.Operands[1]);
             m.SideEffect(host.PseudoProcedure("__mtcrf", VoidType.Instance, dst, src));
         }
 
         private void RewriteMtctr()
         {
-            var src = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.Operands[0]);
             var dst = binder.EnsureRegister(arch.ctr);
             m.Assign(dst, src);
         }
 
         private void RewriteMtlr()
         {
-            var src= RewriteOperand(instr.op1);
+            var src= RewriteOperand(instr.Operands[0]);
             var dst = binder.EnsureRegister(arch.lr);
             m.Assign(dst, src);
         }
 
         private void RewriteMulhhwu()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.UMul(m.Shr(opL, 0x10), m.Shr(opR, 0x10)));
             MaybeEmitCr0(opD);
         }
 
         private void RewriteMulhw()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.Sar(m.IMul(opL, opR), 0x20));
             MaybeEmitCr0(opD);
         }
 
         private void RewriteMulhwu()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.Sar(m.UMul(opL, opR), 0x20));
             MaybeEmitCr0(opD);
         }
@@ -409,17 +409,17 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteMull()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.IMul(opL, opR));
             MaybeEmitCr0(opD);
         }
 
         private void RewriteNeg()
         {
-            var opE = RewriteOperand(instr.op2);
-            var opD = RewriteOperand(instr.op1);
+            var opE = RewriteOperand(instr.Operands[1]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.Neg(opE));
             MaybeEmitCr0(opD);
         }
@@ -427,9 +427,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteOr(bool negate)
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             var s = (opL == opR)
                 ? opL
                 :  m.Or(opL, opR);
@@ -441,9 +441,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteOrc(bool negate)
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, 
                 m.Or(
                     opL,
@@ -454,34 +454,34 @@ namespace Reko.Arch.PowerPC
         private void RewriteOris()
         {
             m.Assign(
-                RewriteOperand(instr.op1),
+                RewriteOperand(instr.Operands[0]),
                 m.Or(
-                    RewriteOperand(instr.op2),
-                    Shift16(dasm.Current.op3)));
+                    RewriteOperand(instr.Operands[1]),
+                    Shift16(dasm.Current.Operands[2])));
         }
 
         void RewriteRlwimi()
         {
-            var src = RewriteOperand(instr.op2);
-            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.Operands[1]);
+            var dst = RewriteOperand(instr.Operands[0]);
             m.Assign(
                 dst,
                 host.PseudoProcedure(
                     "__rlwimi",
                     PrimitiveType.Word32,
                     src,
-                    RewriteOperand(instr.op3),
-                    RewriteOperand(instr.op4),
-                    RewriteOperand(instr.op5))
+                    RewriteOperand(instr.Operands[2]),
+                    RewriteOperand(instr.Operands[3]),
+                    RewriteOperand(instr.Operands[4]))
                 );
         }
 
         void RewriteRldicl()
         {
-            var rd = RewriteOperand(instr.op1);
-            var rs = RewriteOperand(instr.op2);
-            byte sh = ((Constant)RewriteOperand(instr.op3)).ToByte();
-            byte mb = ((Constant)RewriteOperand(instr.op4)).ToByte();
+            var rd = RewriteOperand(instr.Operands[0]);
+            var rs = RewriteOperand(instr.Operands[1]);
+            byte sh = ((Constant)RewriteOperand(instr.Operands[2])).ToByte();
+            byte mb = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
             ulong maskBegin = (ulong)(1ul << (64 - mb)) - 1;
             if (sh == 0)
             {
@@ -598,10 +598,10 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteRldicr()
         {
-            var rd = RewriteOperand(instr.op1);
-            var rs = RewriteOperand(instr.op2);
-            byte sh = ((Constant)RewriteOperand(instr.op3)).ToByte();
-            byte me = ((Constant)RewriteOperand(instr.op4)).ToByte();
+            var rd = RewriteOperand(instr.Operands[0]);
+            var rs = RewriteOperand(instr.Operands[1]);
+            byte sh = ((Constant)RewriteOperand(instr.Operands[2])).ToByte();
+            byte me = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
             ulong maskEnd = 0ul - (ulong)(1ul << (63 - me));
 
             // Extract double word and right justify immediate | extrdi RA, RS, n, b   | rldicl RA, RS, b + n, 64 - n   | n > 0
@@ -643,10 +643,10 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteRldimi()
         {
-            var rd = RewriteOperand(instr.op1);
-            var rs = RewriteOperand(instr.op2);
-            byte sh = ((Constant)RewriteOperand(instr.op3)).ToByte();
-            byte me = ((Constant)RewriteOperand(instr.op4)).ToByte();
+            var rd = RewriteOperand(instr.Operands[0]);
+            var rs = RewriteOperand(instr.Operands[1]);
+            byte sh = ((Constant)RewriteOperand(instr.Operands[2])).ToByte();
+            byte me = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
 
             MaybeEmitCr0(rd);
             if (sh == 0x20 && me == 0x00)
@@ -670,11 +670,11 @@ namespace Reko.Arch.PowerPC
 
         void RewriteRlwinm()
         {
-            var rd = RewriteOperand(instr.op1);
-            var rs = RewriteOperand(instr.op2);
-            byte sh = ((Constant)RewriteOperand(instr.op3)).ToByte();
-            byte mb = ((Constant)RewriteOperand(instr.op4)).ToByte();
-            byte me = ((Constant)RewriteOperand(instr.op5)).ToByte();
+            var rd = RewriteOperand(instr.Operands[0]);
+            var rs = RewriteOperand(instr.Operands[1]);
+            byte sh = ((Constant)RewriteOperand(instr.Operands[2])).ToByte();
+            byte mb = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
+            byte me = ((Constant)RewriteOperand(instr.Operands[4])).ToByte();
             uint maskBegin = (uint)(1ul << (32 - mb));
             uint maskEnd = 1u << (31 - me);
             uint mask = maskBegin - maskEnd;
@@ -769,11 +769,11 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteRlwnm()
         {
-            var rd = RewriteOperand(instr.op1);
-            var rs = RewriteOperand(instr.op2);
-            var sh = RewriteOperand(instr.op3);
-            byte mb = ((Constant)RewriteOperand(instr.op4)).ToByte();
-            byte me = ((Constant)RewriteOperand(instr.op5)).ToByte();
+            var rd = RewriteOperand(instr.Operands[0]);
+            var rs = RewriteOperand(instr.Operands[1]);
+            var sh = RewriteOperand(instr.Operands[2]);
+            byte mb = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
+            byte me = ((Constant)RewriteOperand(instr.Operands[4])).ToByte();
             var rol = host.PseudoProcedure(PseudoProcedure.Rol, rd.DataType, rs, sh );
             if (mb == 0 && me == 31)
             {
@@ -786,9 +786,9 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteSl(PrimitiveType dt)
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.Shl(opL, opR));
             MaybeEmitCr0(opD);
         }
@@ -796,36 +796,36 @@ namespace Reko.Arch.PowerPC
         public void RewriteSra()
         {
             //$TODO: identical to Sraw? If so, merge instructions
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.Sar(opL, opR));
             MaybeEmitCr0(opD);
         }
 
         public void RewriteSrw()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.Shr(opL, opR));
             MaybeEmitCr0(opD);
         }
 
         public void RewriteSubf()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
         }
 
         public void RewriteSubfc()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
             var xer = binder.EnsureRegister(arch.xer);
@@ -834,9 +834,9 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteSubfe()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             var xer = binder.EnsureRegister(arch.xer);
             m.Assign(opD, m.IAdd(m.ISub(opR, opL), xer));
             MaybeEmitCr0(opD);
@@ -844,17 +844,17 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteSubfic()
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
         }
 
         public void RewriteSubfze()
         {
-            var opS = RewriteOperand(instr.op2);
-            var opD = RewriteOperand(instr.op1);
+            var opS = RewriteOperand(instr.Operands[1]);
+            var opD = RewriteOperand(instr.Operands[0]);
             var xer = binder.EnsureRegister(arch.xer);
             m.Assign(
                 opD, 
@@ -869,9 +869,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteXor(bool negate)
         {
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             var s = (opL == opR)
                 ? Constant.Zero(opL.DataType)
                 : m.Xor(opL, opR);
@@ -885,9 +885,9 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteXoris()
         {
-            var opL = RewriteOperand(instr.op2, true);
-            var opR = Shift16(dasm.Current.op3);
-            var opD = RewriteOperand(instr.op1);
+            var opL = RewriteOperand(instr.Operands[1], true);
+            var opR = Shift16(dasm.Current.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.Xor(opL, opR));
         }
     }

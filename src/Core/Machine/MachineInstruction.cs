@@ -46,6 +46,11 @@ namespace Reko.Core.Machine
         public InstrClass InstructionClass;
 
         /// <summary>
+        /// 0 or more operands of the instruction.
+        /// </summary>
+        public MachineOperand[] Operands;
+
+        /// <summary>
         /// Returns true if the instruction is valid.
         /// </summary>
         public bool IsValid => InstructionClass != InstrClass.Invalid;
@@ -66,13 +71,6 @@ namespace Reko.Core.Machine
         }
 
         /// <summary>
-        /// Retrieves the i'th operand, or null if there is none at that position.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public abstract MachineOperand GetOperand(int i);
-        
-        /// <summary>
         /// Each different supported opcode should have a different numerical value, exposed here.
         /// </summary>
         public abstract int OpcodeAsInteger { get; }
@@ -91,6 +89,29 @@ namespace Reko.Core.Machine
             renderer.Address = Address;
             this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
+        }
+
+        /// <summary>
+        /// Utility function to render the operands, separated by commas.
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="options"></param>
+        protected void RenderOperands(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            if (Operands.Length == 0)
+                return;
+            writer.Tab();
+            RenderOperand(Operands[0], writer, options);
+            for (int i = 1; i < Operands.Length; ++i)
+            {
+                writer.WriteChar(',');
+                RenderOperand(Operands[i], writer, options);
+            }
+        }
+
+        protected virtual void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            operand.Write(writer, options);
         }
     }
 }

@@ -28,6 +28,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Rl78
 {
+    using Decoder = Decoder<Rl78Disassembler, Mnemonic, Rl78Instruction>;
+
     public class Rl78Disassembler : DisassemblerBase<Rl78Instruction>
     {
         private static readonly Decoder[] s_decoders;
@@ -345,11 +347,6 @@ namespace Reko.Arch.Rl78
         private static readonly Mutator<Rl78Disassembler> RB3 = RegisterBank(3);
 
         #endregion
-
-        private abstract class Decoder
-        {
-            public abstract Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm);
-        }
 
         private class InstrDecoder : Decoder
         {

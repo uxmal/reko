@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -37,7 +37,7 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Rewriter
     {
-        private Expression CreateTestCondition(ConditionCode cc, Opcode opcode)
+        private Expression CreateTestCondition(ConditionCode cc, Mnemonic opcode)
         {
             var grf = orw.FlagGroup(X86Instruction.UseCc(opcode));
             var tc = new TestCondition(cc, grf);
@@ -97,8 +97,8 @@ namespace Reko.Arch.X86
                     // Calling the following address. Is the call followed by a 
                     // pop?
                     var next = dasm.Peek(1);
-                    RegisterOperand reg = next.op1 as RegisterOperand;
-                    if (next.code == Opcode.pop && reg != null)
+                    RegisterOperand reg = next.Operands[0] as RegisterOperand;
+                    if (next.code == Mnemonic.pop && reg != null)
                     {
                         // call $+5,pop<reg> idiom
                         dasm.MoveNext();
@@ -147,7 +147,7 @@ namespace Reko.Arch.X86
 
         private void RewriteInt()
         {
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.op1)));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.Operands[0])));
             rtlc |= InstrClass.Call | InstrClass.Transfer;
         }
 
@@ -165,7 +165,7 @@ namespace Reko.Arch.X86
         {
             m.Branch(
                 m.Eq0(orw.AluRegister(Registers.rcx, instrCur.dataWidth)),
-                OperandAsCodeAddress(instrCur.op1),
+                OperandAsCodeAddress(instrCur.Operands[0]),
                 InstrClass.ConditionalTransfer);
         }
 
@@ -189,13 +189,13 @@ namespace Reko.Arch.X86
 			}
 
             rtlc = InstrClass.Transfer;
-			if (instrCur.op1 is ImmediateOperand)
+			if (instrCur.Operands[0] is ImmediateOperand)
 			{
-				Address addr = OperandAsCodeAddress(instrCur.op1);
+				Address addr = OperandAsCodeAddress(instrCur.Operands[0]);
                 m.Goto(addr);
 				return;
 			}
-            var target = SrcOp(instrCur.op1);
+            var target = SrcOp(instrCur.Operands[0]);
             if (target.DataType.Size == 2 && arch.WordWidth.Size > 2)
             {
                 rtlc = InstrClass.Invalid;
@@ -215,19 +215,19 @@ namespace Reko.Arch.X86
                     m.Cand(
                         m.Test(cc, orw.FlagGroup(useFlags)),
                         m.Ne0(cx)),
-                    OperandAsCodeAddress(instrCur.op1),
+                    OperandAsCodeAddress(instrCur.Operands[0]),
                     InstrClass.ConditionalTransfer);
             }
             else
             {
-                m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.op1), InstrClass.ConditionalTransfer);
+                m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.Operands[0]), InstrClass.ConditionalTransfer);
             }
         }
 
         public void RewriteRet()
         {
-            int extraBytesPopped = instrCur.Operands == 1 
-                ? ((ImmediateOperand)instrCur.op1).Value.ToInt32() 
+            int extraBytesPopped = instrCur.Operands.Length == 1 
+                ? ((ImmediateOperand)instrCur.Operands[0]).Value.ToInt32() 
                 : 0;
             if ((extraBytesPopped & 1) == 1)
             {
@@ -237,7 +237,7 @@ namespace Reko.Arch.X86
                 return;
             }
             m.Return(
-                this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
+                this.arch.WordWidth.Size + (instrCur.code == Mnemonic.retf ? Registers.cs.DataType.Size : 0),
                 extraBytesPopped);
         }
 
@@ -281,7 +281,7 @@ namespace Reko.Arch.X86
         /// <returns></returns>
         private bool IsRealModeReboot(X86Instruction instrCur)
         {
-            var addrOp = instrCur.op1 as X86AddressOperand;
+            var addrOp = instrCur.Operands[0] as X86AddressOperand;
             bool isRealModeReboot = addrOp != null && addrOp.Address.ToLinear() == 0xFFFF0;
             return isRealModeReboot;
         }

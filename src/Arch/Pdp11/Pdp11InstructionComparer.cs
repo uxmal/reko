@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -36,8 +36,13 @@ namespace Reko.Arch.Pdp11
             var a = (Pdp11Instruction)x;
             var b = (Pdp11Instruction)y;
             return
-                Compare(a.op1, b.op1) &&
-                Compare(a.op2, b.op2);
+                Compare(Op(x, 0), Op(y, 0)) &&
+                Compare(Op(x, 1), Op(y, 1));
+        }
+
+        private MachineOperand Op(MachineInstruction instr, int iOp)
+        {
+            return iOp < instr.Operands.Length ? instr.Operands[iOp] : null;
         }
 
         private bool Compare(MachineOperand opA, MachineOperand opB)
@@ -89,16 +94,14 @@ namespace Reko.Arch.Pdp11
 
         public override int GetOperandsHash(MachineInstruction i)
         {
-            var instr = (Pdp11Instruction)i;
-            return
-                Hash(instr.op1) * 23 ^
-                Hash(instr.op2);
+            return Hash(i, 0) * 23 ^ Hash(i, 1);
         }
 
-        private int Hash(MachineOperand op)
+        private int Hash(MachineInstruction instr, int iOp)
         {
-            if (op == null)
+            if (iOp >= instr.Operands.Length)
                 return 0;
+            var op = instr.Operands[iOp];
             int hash = op.GetType().GetHashCode();
             var rop = op as RegisterOperand;
             if (rop != null)

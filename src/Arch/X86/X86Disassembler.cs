@@ -136,7 +136,7 @@ namespace Reko.Arch.X86
             X86LegacyCodeRegisterExtension registerExtension;
 
             // These fields are for synthesis.
-            public Opcode opcode;
+            public Mnemonic opcode;
             public InstrClass iclass;
             public PrimitiveType dataWidth;
             public PrimitiveType addressWidth;
@@ -315,7 +315,7 @@ namespace Reko.Arch.X86
             this.decodingContext.iWidth = defaultDataWidth;
 
             X86Instruction instr;
-            if (s_aOpRec[op].Decode(this, op))
+            if (s_rootDecoders[op].Decode(this, op))
             {
                 instr = decodingContext.MakeInstruction();
             }
@@ -330,7 +330,7 @@ namespace Reko.Arch.X86
 
         protected override X86Instruction CreateInvalidInstruction()
         {
-            return new X86Instruction(Opcode.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
+            return new X86Instruction(Mnemonic.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
         }
 
         private void NotYetImplemented(string message)
@@ -1075,22 +1075,22 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> s4 = Reg(Registers.fs);
         private static readonly Mutator<X86Disassembler> s5 = Reg(Registers.gs);
 
-        public static InstructionDecoder Instr(Opcode op)
+        public static InstructionDecoder Instr(Mnemonic op)
         {
             return new InstructionDecoder(op, InstrClass.Linear);
         }
 
-        public static InstructionDecoder Instr(Opcode op, params Mutator<X86Disassembler> [] mutators)
+        public static InstructionDecoder Instr(Mnemonic op, params Mutator<X86Disassembler> [] mutators)
         {
             return new InstructionDecoder(op, InstrClass.Linear, mutators);
         }
 
-        public static InstructionDecoder Instr(Opcode op, InstrClass iclass, params Mutator<X86Disassembler> [] mutators)
+        public static InstructionDecoder Instr(Mnemonic op, InstrClass iclass, params Mutator<X86Disassembler> [] mutators)
         {
             return new InstructionDecoder(op, iclass, mutators);
         }
 
-        public static PrefixedDecoder Prefixed(Opcode op, string format)
+        public static PrefixedDecoder Prefixed(Mnemonic op, string format)
         {
             return new PrefixedDecoder();
         }
@@ -1410,27 +1410,27 @@ namespace Reko.Arch.X86
 
         private static Decoder s_invalid;
         private static Decoder s_nyi;
-		private static Decoder [] s_aOpRec;
-		private static Decoder [] s_aOpRec0F;
-		private static Decoder [] s_aOpRec0F38;
-		private static Decoder [] s_aOpRec0F3A;
-        private static Decoder [] s_aOpRecGrp;
-		private static Decoder [] s_aFpDecoders;
-        private static Dictionary<Opcode, Opcode> s_mpVex;
+		private static Decoder [] s_rootDecoders;
+		private static Decoder [] s_decoders0F;
+		private static Decoder [] s_decoders0F38;
+		private static Decoder [] s_decoders0F3A;
+        private static Decoder [] s_groupDecoders;
+		private static Decoder [] s_fpuDecoders;
+        private static Dictionary<Mnemonic, Mnemonic> s_mpVex;
 
         static X86Disassembler()
 		{
-            s_invalid = Instr(Opcode.illegal, InstrClass.Invalid);
+            s_invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
             s_nyi = nyi("This could be invalid or it could be not yet implemented");
-            s_aOpRec = CreateOnebyteDecoders();
-            s_aOpRec0F = CreateTwobyteOprecs();
-            s_aOpRec0F38 = Create0F38Oprecs();
-            s_aOpRec0F3A = Create0F3AOprecs();
+            s_rootDecoders = CreateOnebyteDecoders();
+            s_decoders0F = CreateTwobyteDecoders();
+            s_decoders0F38 = Create0F38Decoders();
+            s_decoders0F3A = Create0F3ADecoders();
 
-            s_aOpRecGrp = CreateGroupDecoders();
-            s_aFpDecoders = CreateFpuDecoders();
+            s_groupDecoders = CreateGroupDecoders();
+            s_fpuDecoders = CreateFpuDecoders();
             s_mpVex = CreateVexMapping();
-            Debug.Assert(s_aFpDecoders.Length == 8 * 0x48);
+            Debug.Assert(s_fpuDecoders.Length == 8 * 0x48);
 		}
     }
 }

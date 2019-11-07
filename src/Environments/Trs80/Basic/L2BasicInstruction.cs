@@ -44,11 +44,6 @@ namespace Reko.Environments.Trs80.Basic
             get { throw new NotImplementedException(); }
         }
 
-        public override MachineOperand GetOperand(int i)
-        {
-            return null;
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteFormat("{0} ", Address.ToLinear());

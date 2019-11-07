@@ -193,16 +193,16 @@ namespace Reko.Arch.Xtensa
 
         public override SortedList<string, int> GetOpcodeNames()
         {
-            return Enum.GetValues(typeof(Opcodes))
-            .Cast<Opcodes>()
+            return Enum.GetValues(typeof(Mnemonic))
+            .Cast<Mnemonic>()
             .ToSortedList(
-                v => Enum.GetName(typeof(Opcodes), v).Replace('_','.'),
+                v => Enum.GetName(typeof(Mnemonic), v).Replace('_','.'),
                 v => (int)v);
         }
 
         public override int? GetOpcodeNumber(string name)
         {
-            if (!Enum.TryParse(name.Replace('.', '_'), true, out Opcodes result))
+            if (!Enum.TryParse(name.Replace('.', '_'), true, out Mnemonic result))
                 return null;
             return (int)result;
         }

@@ -29,56 +29,44 @@ namespace Reko.Arch.Vax
 {
     public class VaxInstruction : MachineInstruction
     {
-        public Opcode Opcode { get; internal set; }
-
-        public MachineOperand[] Operands;
+        public Mnemonic Opcode { get; internal set; }
 
         public override int OpcodeAsInteger => (int)Opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (i >= Operands.Length)
-                return null;
-            return Operands[i];
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(this.Opcode.ToString());
-            writer.Tab();
-            bool sep = false; 
-            foreach (var op in Operands)
+            RenderOperands(writer, options);
+        }
+
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            switch (op)
             {
-                if (sep)
-                    writer.WriteChar(',');
-                sep = true;
-                if (op is ImmediateOperand)
+            case ImmediateOperand _:
+                writer.WriteChar('#');
+                op.Write(writer, options);
+                return;
+            case MemoryOperand mop when mop.Base == Registers.pc:
+                var addr = this.Address + this.Length;
+                if (mop.Offset != null)
                 {
-                    writer.WriteChar('#');
-                    op.Write(writer, options);
+                    addr += mop.Offset.ToInt32();
                 }
-                else if (op is MemoryOperand mop && mop.Base == Registers.pc)
+                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
-                    var addr = this.Address + this.Length;
-                    if (mop.Offset != null)
-                    {
-                        addr += mop.Offset.ToInt32();
-                    } 
-                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
-                    {
-                        writer.WriteAddress(addr.ToString(), addr);
-                        writer.AddAnnotation(op.ToString());
-                    }
-                    else
-                    {
-                        op.Write(writer, options);
-                        writer.AddAnnotation(addr.ToString());
-                    }
+                    writer.WriteAddress(addr.ToString(), addr);
+                    writer.AddAnnotation(op.ToString());
                 }
                 else
                 {
                     op.Write(writer, options);
+                    writer.AddAnnotation(addr.ToString());
                 }
+                return;
+            default:
+                op.Write(writer, options);
+                return;
             }
         }
     }

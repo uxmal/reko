@@ -55,11 +55,6 @@ namespace Reko.Arch.Arm.AArch32
             get { return info.Opcode; }
         }
 
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotSupportedException();
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             nInstr.Render(writer, options);

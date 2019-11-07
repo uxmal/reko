@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Mips
 {
-    using Decoder = Reko.Core.Machine.Decoder<MicroMipsDisassembler, Opcode, MipsInstruction>;
+    using Decoder = Reko.Core.Machine.Decoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>;
 
     public class MicroMipsDisassembler : DisassemblerBase<MipsInstruction>
     {
@@ -65,7 +65,7 @@ namespace Reko.Arch.Mips
             var instr = new MipsInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Opcode.illegal,
+                Mnemonic = Mnemonic.illegal,
             };
             ops.Clear();
             return instr;
@@ -83,12 +83,12 @@ namespace Reko.Arch.Mips
 
         // Factory methods for decoders
 
-        private static Decoder Instr(Opcode opcode, params Mutator<MicroMipsDisassembler> [] mutators)
+        private static Decoder Instr(Mnemonic opcode, params Mutator<MicroMipsDisassembler> [] mutators)
         {
             return new InstrDecoder(InstrClass.Linear, opcode, mutators);
         }
 
-        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator<MicroMipsDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<MicroMipsDisassembler>[] mutators)
         {
             return new InstrDecoder(iclass, opcode, mutators);
         }
@@ -104,16 +104,16 @@ namespace Reko.Arch.Mips
 
         private static Decoder Nyi(string message)
         {
-            return new NyiDecoder<MicroMipsDisassembler, Opcode, MipsInstruction>(message);
+            return new NyiDecoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>(message);
         }
 
         private class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Opcode opcode;
+            private readonly Mnemonic opcode;
             private readonly Mutator<MicroMipsDisassembler>[] mutators;
 
-            public InstrDecoder(InstrClass iclass, Opcode opcode, Mutator<MicroMipsDisassembler>[] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic opcode, Mutator<MicroMipsDisassembler>[] mutators)
             {
                 this.iclass = iclass;
                 this.opcode = opcode;
@@ -130,12 +130,9 @@ namespace Reko.Arch.Mips
                 var ops = dasm.ops;
                 var instr = new MipsInstruction
                 {
-                    opcode = this.opcode,
+                    Mnemonic = this.opcode,
                     InstructionClass = this.iclass,
-                    op1 = ops.Count > 0 ? ops[0] : null,
-                    op2 = ops.Count > 1 ? ops[1] : null,
-                    op3 = ops.Count > 2 ? ops[2] : null,
-                    op4 = ops.Count > 3 ? ops[3] : null,
+                    Operands = ops.ToArray()
                 };
                 ops.Clear();
                 return instr;
@@ -345,7 +342,7 @@ namespace Reko.Arch.Mips
 
         static MicroMipsDisassembler()
         {
-            var invalid = Instr(Opcode.illegal, InstrClass.Invalid);
+            var invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
 
             var pool16a = Nyi("pool16a");
             var pool16b = Nyi("pool16b");
@@ -372,7 +369,7 @@ namespace Reko.Arch.Mips
                 Nyi("not16"),
                 Nyi("and16"),
                 Nyi("lwm16"),
-                Instr(Opcode.jrcaddiusp, UIs5_sh2),
+                Instr(Mnemonic.jrcaddiusp, UIs5_sh2),
                 Nyi("movep"),
                 Nyi("movep"),
                 Nyi("movep"),
@@ -410,7 +407,7 @@ namespace Reko.Arch.Mips
                 Nyi("not16"),
                 Nyi("and16"),
                 Nyi("lwm16"),
-                Instr(Opcode.jrcaddiusp, UIs5_sh2),
+                Instr(Mnemonic.jrcaddiusp, UIs5_sh2),
                 Nyi("movep"),
                 Nyi("movep"),
                 Nyi("movep"),
@@ -429,7 +426,7 @@ namespace Reko.Arch.Mips
 
             var pool16e = Mask(0, 1,
                 Nyi("addiur2"),
-                Instr(Opcode.addiur1sp, r7,UIs(1, 6, 2)));
+                Instr(Mnemonic.addiur1sp, r7,UIs(1, 6, 2)));
 
             var pool16f = Mask(0, 1,
                 invalid,
@@ -507,12 +504,12 @@ namespace Reko.Arch.Mips
             rootDecoder = Mask(10, 6,
                 pool32a,
                 pool16a,
-                Instr(Opcode.lbu16, r7, mb),
+                Instr(Mnemonic.lbu16, r7, mb),
                 Nyi("move16 "),
 
-                Low16(Instr(Opcode.aui, R21, R16, SI16)),
-                Low16(Instr(Opcode.lbu32, R21, Mb)),
-                Low16(Instr(Opcode.sb32, R21, Mb)),
+                Low16(Instr(Mnemonic.aui, R21, R16, SI16)),
+                Low16(Instr(Mnemonic.lbu32, R21, Mb)),
+                Low16(Instr(Mnemonic.sb32, R21, Mb)),
                 Nyi("lb32"),
 
                 // 
@@ -532,7 +529,7 @@ namespace Reko.Arch.Mips
                 Nyi("lwsp16"),
                 pool16d,
 
-                Low16(Instr(Opcode.ori32, R21, R16, UI16)),
+                Low16(Instr(Mnemonic.ori32, R21, R16, UI16)),
                 pool32f,
                 pool32s,
                 Nyi("daddiu32"),
@@ -543,7 +540,7 @@ namespace Reko.Arch.Mips
                 Nyi("lw16"),
                 pool16e,
 
-                Low16(Instr(Opcode.xori32, R21, R16, UI16)),
+                Low16(Instr(Mnemonic.xori32, R21, R16, UI16)),
                 Nyi("bovc /beqzalc /beqc"),
                 Nyi("addiupc /auipc / aluipc / ldpc /lwpc / lwupc"),
                 Nyi("bnvc /bnezalc /bnec"),
@@ -555,41 +552,41 @@ namespace Reko.Arch.Mips
                 Nyi("beqzc16"),
 
                 Nyi("slti32"),
-                Low16(Instr(Opcode.bc, InstrClass.Transfer, pcRel26)),
+                Low16(Instr(Mnemonic.bc, InstrClass.Transfer, pcRel26)),
                 Nyi("swc132"),
                 Nyi("lwc132"),
 
                 //
-                Instr(Opcode.bnezc16, InstrClass.ConditionalTransfer, r7, pcRel7),
+                Instr(Mnemonic.bnezc16, InstrClass.ConditionalTransfer, r7, pcRel7),
                 invalid,
-                Instr(Opcode.sh16, rz7, Mh),
+                Instr(Mnemonic.sh16, rz7, Mh),
                 Nyi("bnezc16"),
 
                 Nyi("sltiu32"),
                 Nyi("balc"),
-                Low16(Instr(Opcode.sdc132,F21,Md)),
-                Low16(Instr(Opcode.ldc132,F21,Md)),
+                Low16(Instr(Mnemonic.sdc132,F21,Md)),
+                Low16(Instr(Mnemonic.ldc132,F21,Md)),
 
                 // 30
 
                 Nyi("blezalc/bgezalc/bgeuc"),
                 invalid,
                 Nyi("swsp16"),
-                Instr(Opcode.bc16, InstrClass.Transfer, pcRel10),
+                Instr(Mnemonic.bc16, InstrClass.Transfer, pcRel10),
 
-                Low16(Instr(Opcode.andi32, R21,R16,UI16)),
+                Low16(Instr(Mnemonic.andi32, R21,R16,UI16)),
                 Nyi("bgtzc /bltzc /bltc"),
-                Low16(Instr(Opcode.sd32, Is64Bit, R21,Mq)),
-                Low16(Instr(Opcode.ld32, Is64Bit, R21,Mq)),
+                Low16(Instr(Mnemonic.sd32, Is64Bit, R21,Mq)),
+                Low16(Instr(Mnemonic.ld32, Is64Bit, R21,Mq)),
 
                 Nyi("bgtzalc/bltzalc/bltuc"),
                 invalid,
-                Instr(Opcode.sw16, rz7, mw),
+                Instr(Mnemonic.sw16, rz7, mw),
                 Nyi("li16"),
 
                 Nyi("daui"),
                 Nyi("blezc /bgezc /bgec"),
-                Low16(Instr(Opcode.sw32, R21,Mw)),
+                Low16(Instr(Mnemonic.sw32, R21,Mw)),
                 Nyi("lw32"));
         }
     }

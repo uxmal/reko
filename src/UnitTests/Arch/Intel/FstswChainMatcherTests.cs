@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.Intel
             m.Rewrite(emitter);
             Assert.AreEqual(1, emitter.Block.Statements.Count);
             Assert.AreEqual("SCZO = FPUF", emitter.Block.Statements[0].ToString());
-            Assert.AreEqual(Opcode.nop, instrs[1].code);
+            Assert.AreEqual(Mnemonic.nop, instrs[1].code);
         }
         
         [Test]
@@ -100,12 +100,12 @@ namespace Reko.UnitTests.Arch.Intel
             asm.Test(asm.ah, asm.Const(0x40));
             asm.Jnz("foo");
             var m = GetMatcher();
-            Assert.AreEqual(Opcode.jnz, instrs[2].code);
+            Assert.AreEqual(Mnemonic.jnz, instrs[2].code);
             Assert.IsTrue(m.Matches(0));
             m.Rewrite(emitter);
             Assert.AreEqual(1, emitter.Block.Statements.Count);
             Assert.AreEqual("SCZO = FPUF", emitter.Block.Statements[0].ToString());
-            Assert.AreEqual(Opcode.jz, instrs[2].code);
+            Assert.AreEqual(Mnemonic.jz, instrs[2].code);
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Arch.Intel
             var m = GetMatcher();
             Assert.IsTrue(m.Matches(0));
             m.Rewrite(emitter);
-            Assert.AreEqual(Opcode.jge, instrs[2].code);
+            Assert.AreEqual(Mnemonic.jge, instrs[2].code);
         }
 
         private FstswChainMatcher GetMatcher()

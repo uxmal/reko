@@ -33,13 +33,13 @@ namespace Reko.Arch.PowerPC
         private void RewriteDcbf()
         {
             m.SideEffect(host.PseudoProcedure("__dcbf", VoidType.Instance,
-                EffectiveAddress_r0(instr.op1, instr.op2)));
+                EffectiveAddress_r0(instr.Operands[0], instr.Operands[1])));
         }
 
         private void RewriteDcbi()
         {
             m.SideEffect(host.PseudoProcedure("__dcbi", VoidType.Instance,
-                EffectiveAddress_r0(instr.op1, instr.op2)));
+                EffectiveAddress_r0(instr.Operands[0], instr.Operands[1])));
         }
 
         private void RewriteDcbt()
@@ -52,13 +52,13 @@ namespace Reko.Arch.PowerPC
         private void RewriteDcbst()
         {
             m.SideEffect(host.PseudoProcedure("__dcbst", VoidType.Instance,
-                EffectiveAddress_r0(instr.op1, instr.op2)));
+                EffectiveAddress_r0(instr.Operands[0], instr.Operands[1])));
         }
 
         private void RewriteIcbi()
         {
             m.SideEffect(host.PseudoProcedure("__icbi", VoidType.Instance,
-                EffectiveAddress_r0(instr.op1, instr.op2)));
+                EffectiveAddress_r0(instr.Operands[0], instr.Operands[1])));
         }
 
         private void RewriteIsync()
@@ -68,14 +68,14 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteMfmsr()
         {
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.Operands[0]);
             m.Assign(dst, host.PseudoProcedure("__read_msr", PrimitiveType.Word32));
         }
 
         private void RewriteMfspr()
         {
-            var spr = RewriteOperand(instr.op1);
-            var reg = RewriteOperand(instr.op2);
+            var spr = RewriteOperand(instr.Operands[0]);
+            var reg = RewriteOperand(instr.Operands[1]);
             m.Assign(
                 reg, 
                 host.PseudoProcedure("__read_spr", PrimitiveType.Word32, spr));
@@ -83,14 +83,14 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteMtmsr(PrimitiveType dt)
         {
-            var src = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.Operands[0]);
             m.SideEffect(host.PseudoProcedure("__write_msr", VoidType.Instance, src));
         }
 
         private void RewriteMtspr()
         {
-            var spr = RewriteOperand(instr.op1);
-            var reg = RewriteOperand(instr.op2);
+            var spr = RewriteOperand(instr.Operands[0]);
+            var reg = RewriteOperand(instr.Operands[1]);
             m.SideEffect(host.PseudoProcedure("__write_spr", PrimitiveType.Word32, spr, reg));
         }
 

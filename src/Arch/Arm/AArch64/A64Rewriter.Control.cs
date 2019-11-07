@@ -29,41 +29,41 @@ namespace Reko.Arch.Arm.AArch64
     {
         private void RewriteB()
         {
-            if (instr.ops[0] is ConditionOperand cop)
+            if (instr.Operands[0] is ConditionOperand cop)
             {
                 var cc = cop.Condition;
-                m.Branch(TestCond(cc), ((AddressOperand) instr.ops[1]).Address, rtlc);
+                m.Branch(TestCond(cc), ((AddressOperand) instr.Operands[1]).Address, rtlc);
             }
             else
             {
-                m.Goto(RewriteOp(instr.ops[0]));
+                m.Goto(RewriteOp(instr.Operands[0]));
             }
         }
 
         private void RewriteBl()
         {
-            m.Call(RewriteOp(instr.ops[0]), 0);
+            m.Call(RewriteOp(instr.Operands[0]), 0);
         }
 
         private void RewriteBlr()
         {
-            m.Call(RewriteOp(instr.ops[0]), 0);
+            m.Call(RewriteOp(instr.Operands[0]), 0);
         }
 
         private void RewriteBr()
         {
-            m.Goto(RewriteOp(instr.ops[0]));
+            m.Goto(RewriteOp(instr.Operands[0]));
         }
 
         private void RewriteCb(Func<Expression, Expression> fn)
         {
-            var reg = binder.EnsureRegister(((RegisterOperand)instr.ops[0]).Register);
-            m.Branch(fn(reg), ((AddressOperand)instr.ops[1]).Address, rtlc);
+            var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
+            m.Branch(fn(reg), ((AddressOperand)instr.Operands[1]).Address, rtlc);
         }
 
         private void RewriteRet()
         {
-            var reg = ((RegisterOperand)instr.ops[0]).Register;
+            var reg = ((RegisterOperand)instr.Operands[0]).Register;
             if (reg == Registers.GpRegs64[30])
             {
                 // Link register
@@ -77,10 +77,10 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteTb(Func<Expression,Expression> fn)
         {
-            var reg = RewriteOp(instr.ops[0]);
-            int sh = ((ImmediateOperand)instr.ops[1]).Value.ToInt32();
+            var reg = RewriteOp(instr.Operands[0]);
+            int sh = ((ImmediateOperand)instr.Operands[1]).Value.ToInt32();
             var mask = Constant.Create(reg.DataType, 1ul << sh);
-            var dst = ((AddressOperand)instr.ops[2]).Address;
+            var dst = ((AddressOperand)instr.Operands[2]).Address;
             m.Branch(fn(m.And(reg, mask)), dst, instr.InstructionClass);
         }
     }

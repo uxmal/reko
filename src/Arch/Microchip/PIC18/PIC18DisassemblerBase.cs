@@ -88,7 +88,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         protected override PICInstruction CreateInvalidInstruction()
         {
-            return new PICInstructionNoOpnd(Opcode.invalid)
+            return new PICInstructionNoOpnd(Mnemonic.invalid)
             {
                 InstructionClass = InstrClass.Invalid
             };
@@ -126,155 +126,155 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             new SubDecoder(8, 4, new Decoder[16] {                  // 0000 ???? .... ....
                 new SubDecoder(4, 4, new Decoder[16] {              // 0000 0000 ???? ....
                     new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0000 ????
-                        new NoOperandOpRec(Opcode.NOP),             // 0000 0000 0000 0000
-                        new InvalidOpRec(),                         // 0000 0000 0000 0001
+                        new NoOperandDecoder(Mnemonic.NOP),             // 0000 0000 0000 0000
+                        new InvalidDecoder(),                         // 0000 0000 0000 0001
                         new WrongDecoder(),                         // 0000 0000 0000 0010
-                        new NoOperandOpRec(Opcode.SLEEP),           // 0000 0000 0000 0011
-                        new NoOperandOpRec(Opcode.CLRWDT),          // 0000 0000 0000 0100
-                        new NoOperandOpRec(Opcode.PUSH),            // 0000 0000 0000 0101
-                        new NoOperandOpRec(Opcode.POP),             // 0000 0000 0000 0110
-                        new NoOperandOpRec(Opcode.DAW),             // 0000 0000 0000 0111
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1000
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1001
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1010
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1011
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1100
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1101
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1110
-                        new TblOpRec(Opcode.TBLWT)                  // 0000 0000 0000 1111
+                        new NoOperandDecoder(Mnemonic.SLEEP),           // 0000 0000 0000 0011
+                        new NoOperandDecoder(Mnemonic.CLRWDT),          // 0000 0000 0000 0100
+                        new NoOperandDecoder(Mnemonic.PUSH),            // 0000 0000 0000 0101
+                        new NoOperandDecoder(Mnemonic.POP),             // 0000 0000 0000 0110
+                        new NoOperandDecoder(Mnemonic.DAW),             // 0000 0000 0000 0111
+                        new TblDecoder(Mnemonic.TBLRD),                 // 0000 0000 0000 1000
+                        new TblDecoder(Mnemonic.TBLRD),                 // 0000 0000 0000 1001
+                        new TblDecoder(Mnemonic.TBLRD),                 // 0000 0000 0000 1010
+                        new TblDecoder(Mnemonic.TBLRD),                 // 0000 0000 0000 1011
+                        new TblDecoder(Mnemonic.TBLWT),                 // 0000 0000 0000 1100
+                        new TblDecoder(Mnemonic.TBLWT),                 // 0000 0000 0000 1101
+                        new TblDecoder(Mnemonic.TBLWT),                 // 0000 0000 0000 1110
+                        new TblDecoder(Mnemonic.TBLWT)                  // 0000 0000 0000 1111
                     }),
                     new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0001 ????
-                        new ShadowOpRec(Opcode.RETFIE),             // 0000 0000 0001 0000
-                        new ShadowOpRec(Opcode.RETFIE),             // 0000 0000 0001 0001
-                        new ShadowOpRec(Opcode.RETURN),             // 0000 0000 0001 0010
-                        new ShadowOpRec(Opcode.RETURN),             // 0000 0000 0001 0011
+                        new ShadowDecoder(Mnemonic.RETFIE),             // 0000 0000 0001 0000
+                        new ShadowDecoder(Mnemonic.RETFIE),             // 0000 0000 0001 0001
+                        new ShadowDecoder(Mnemonic.RETURN),             // 0000 0000 0001 0010
+                        new ShadowDecoder(Mnemonic.RETURN),             // 0000 0000 0001 0011
                         new WrongDecoder(),                         // 0000 0000 0001 0100
-                        new InvalidOpRec(),                         // 0000 0000 0001 0101
-                        new InvalidOpRec(),                         // 0000 0000 0001 0110
-                        new InvalidOpRec(),                         // 0000 0000 0001 0111
-                        new InvalidOpRec(),                         // 0000 0000 0001 1000
-                        new InvalidOpRec(),                         // 0000 0000 0001 1001
-                        new InvalidOpRec(),                         // 0000 0000 0001 1010
-                        new InvalidOpRec(),                         // 0000 0000 0001 1011
-                        new InvalidOpRec(),                         // 0000 0000 0001 1100
-                        new InvalidOpRec(),                         // 0000 0000 0001 1101
-                        new InvalidOpRec(),                         // 0000 0000 0001 1110
-                        new InvalidOpRec(),                         // 0000 0000 0001 1111
+                        new InvalidDecoder(),                         // 0000 0000 0001 0101
+                        new InvalidDecoder(),                         // 0000 0000 0001 0110
+                        new InvalidDecoder(),                         // 0000 0000 0001 0111
+                        new InvalidDecoder(),                         // 0000 0000 0001 1000
+                        new InvalidDecoder(),                         // 0000 0000 0001 1001
+                        new InvalidDecoder(),                         // 0000 0000 0001 1010
+                        new InvalidDecoder(),                         // 0000 0000 0001 1011
+                        new InvalidDecoder(),                         // 0000 0000 0001 1100
+                        new InvalidDecoder(),                         // 0000 0000 0001 1101
+                        new InvalidDecoder(),                         // 0000 0000 0001 1110
+                        new InvalidDecoder(),                         // 0000 0000 0001 1111
                     }),
-                    new InvalidOpRec(),                             // 0000 0000 0010 ....
-                    new InvalidOpRec(),                             // 0000 0000 0011 ....
-                    new InvalidOpRec(),                             // 0000 0000 0100 ....
-                    new InvalidOpRec(),                             // 0000 0000 0101 ....
+                    new InvalidDecoder(),                             // 0000 0000 0010 ....
+                    new InvalidDecoder(),                             // 0000 0000 0011 ....
+                    new InvalidDecoder(),                             // 0000 0000 0100 ....
+                    new InvalidDecoder(),                             // 0000 0000 0101 ....
                     new WrongDecoder(),                             // 0000 0000 0110 ffff + 1111 ffff ffff ffgg + 1111 gggg gggg gggg
-                    new InvalidOpRec(),                             // 0000 0000 0111 ....
-                    new InvalidOpRec(),                             // 0000 0000 1000 ....
-                    new InvalidOpRec(),                             // 0000 0000 1001 ....
-                    new InvalidOpRec(),                             // 0000 0000 1010 ....
-                    new InvalidOpRec(),                             // 0000 0000 1011 ....
-                    new InvalidOpRec(),                             // 0000 0000 1100 ....
-                    new InvalidOpRec(),                             // 0000 0000 1101 ....
-                    new InvalidOpRec(),                             // 0000 0000 1110 ....
-                    new ResetOpRec(Opcode.RESET),                   // 0000 0000 1111 1111 
+                    new InvalidDecoder(),                             // 0000 0000 0111 ....
+                    new InvalidDecoder(),                             // 0000 0000 1000 ....
+                    new InvalidDecoder(),                             // 0000 0000 1001 ....
+                    new InvalidDecoder(),                             // 0000 0000 1010 ....
+                    new InvalidDecoder(),                             // 0000 0000 1011 ....
+                    new InvalidDecoder(),                             // 0000 0000 1100 ....
+                    new InvalidDecoder(),                             // 0000 0000 1101 ....
+                    new InvalidDecoder(),                             // 0000 0000 1110 ....
+                    new ResetDecoder(Mnemonic.RESET),                   // 0000 0000 1111 1111 
                 }),
                 new WrongDecoder(),                                 // 0000 0001 .... ....
-                new MemoryAccessOpRec(Opcode.MULWF),                // 0000 001a ffff ffff
-                new MemoryAccessOpRec(Opcode.MULWF),                // 0000 001a ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECF),         // 0000 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECF),         // 0000 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECF),         // 0000 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECF),         // 0000 01da ffff ffff
-                new Immed8OpRec(Opcode.SUBLW),                      // 0000 1000 kkkk kkkk
-                new Immed8OpRec(Opcode.IORLW),                      // 0000 1001 kkkk kkkk
-                new Immed8OpRec(Opcode.XORLW),                      // 0000 1010 kkkk kkkk
-                new Immed8OpRec(Opcode.ANDLW),                      // 0000 1011 kkkk kkkk
-                new Immed8OpRec(Opcode.RETLW),                      // 0000 1100 kkkk kkkk
-                new Immed8OpRec(Opcode.MULLW),                      // 0000 1101 kkkk kkkk
-                new Immed8OpRec(Opcode.MOVLW),                      // 0000 1110 kkkk kkkk
-                new Immed8OpRec(Opcode.ADDLW),                      // 0000 1111 kkkk kkkk
+                new MemoryAccessDecoder(Mnemonic.MULWF),                // 0000 001a ffff ffff
+                new MemoryAccessDecoder(Mnemonic.MULWF),                // 0000 001a ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.DECF),         // 0000 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.DECF),         // 0000 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.DECF),         // 0000 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.DECF),         // 0000 01da ffff ffff
+                new Immed8Decoder(Mnemonic.SUBLW),                      // 0000 1000 kkkk kkkk
+                new Immed8Decoder(Mnemonic.IORLW),                      // 0000 1001 kkkk kkkk
+                new Immed8Decoder(Mnemonic.XORLW),                      // 0000 1010 kkkk kkkk
+                new Immed8Decoder(Mnemonic.ANDLW),                      // 0000 1011 kkkk kkkk
+                new Immed8Decoder(Mnemonic.RETLW),                      // 0000 1100 kkkk kkkk
+                new Immed8Decoder(Mnemonic.MULLW),                      // 0000 1101 kkkk kkkk
+                new Immed8Decoder(Mnemonic.MOVLW),                      // 0000 1110 kkkk kkkk
+                new Immed8Decoder(Mnemonic.ADDLW),                      // 0000 1111 kkkk kkkk
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0001 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.IORWF),        // 0001 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.ANDWF),        // 0001 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.XORWF),        // 0001 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.COMF),         // 0001 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.IORWF),        // 0001 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.ANDWF),        // 0001 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.XORWF),        // 0001 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.COMF),         // 0001 11da ffff ffff
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0010 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.ADDWFC),       // 0010 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.ADDWF),        // 0010 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.INCF),         // 0010 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DECFSZ),       // 0010 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.ADDWFC),       // 0010 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.ADDWF),        // 0010 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.INCF),         // 0010 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.DECFSZ),       // 0010 11da ffff ffff
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0011 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.RRCF),         // 0011 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.RLCF),         // 0011 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.SWAPF),        // 0011 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.INCFSZ),       // 0011 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.RRCF),         // 0011 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.RLCF),         // 0011 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.SWAPF),        // 0011 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.INCFSZ),       // 0011 11da ffff ffff
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0100 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.RRNCF),        // 0100 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.RLNCF),        // 0100 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.INFSNZ),       // 0100 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.DCFSNZ),       // 0100 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.RRNCF),        // 0100 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.RLNCF),        // 0100 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.INFSNZ),       // 0100 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.DCFSNZ),       // 0100 11da ffff ffff
             }),
             new SubDecoder(10, 2, new Decoder[4] {                  // 0101 ??.. .... ....
-                new MemoryAccessWithDestOpRec(Opcode.MOVF),         // 0101 00da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.SUBFWB),       // 0101 01da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.SUBWFB),       // 0101 10da ffff ffff
-                new MemoryAccessWithDestOpRec(Opcode.SUBWF),        // 0101 11da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.MOVF),         // 0101 00da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.SUBFWB),       // 0101 01da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.SUBWFB),       // 0101 10da ffff ffff
+                new MemoryAccessWithDestDecoder(Mnemonic.SUBWF),        // 0101 11da ffff ffff
             }),
             new SubDecoder(9, 3, new Decoder[8] {                   // 0110 ???. .... ....
-                new MemoryAccessOpRec(Opcode.CPFSLT),               // 0110 000. .... ....
-                new MemoryAccessOpRec(Opcode.CPFSEQ),               // 0110 001. .... ....
-                new MemoryAccessOpRec(Opcode.CPFSGT),               // 0110 010. .... ....
-                new MemoryAccessOpRec(Opcode.TSTFSZ),               // 0110 011. .... ....
-                new MemoryAccessOpRec(Opcode.SETF),                 // 0110 100. .... ....
-                new MemoryAccessOpRec(Opcode.CLRF),                 // 0110 101. .... ....
-                new MemoryAccessOpRec(Opcode.NEGF),                 // 0110 110 .... ....
-                new MemoryAccessOpRec(Opcode.MOVWF),                // 0110 111. .... ....
+                new MemoryAccessDecoder(Mnemonic.CPFSLT),               // 0110 000. .... ....
+                new MemoryAccessDecoder(Mnemonic.CPFSEQ),               // 0110 001. .... ....
+                new MemoryAccessDecoder(Mnemonic.CPFSGT),               // 0110 010. .... ....
+                new MemoryAccessDecoder(Mnemonic.TSTFSZ),               // 0110 011. .... ....
+                new MemoryAccessDecoder(Mnemonic.SETF),                 // 0110 100. .... ....
+                new MemoryAccessDecoder(Mnemonic.CLRF),                 // 0110 101. .... ....
+                new MemoryAccessDecoder(Mnemonic.NEGF),                 // 0110 110 .... ....
+                new MemoryAccessDecoder(Mnemonic.MOVWF),                // 0110 111. .... ....
             }),
-            new MemoryBitWithAccessOpRec(Opcode.BTG),           // 0111 bbba ffff ffff
-            new MemoryBitWithAccessOpRec(Opcode.BSF),           // 1000 bbba ffff ffff
-            new MemoryBitWithAccessOpRec(Opcode.BCF),           // 1001 bbba ffff ffff
-            new MemoryBitWithAccessOpRec(Opcode.BTFSS),         // 1010 bbba ffff ffff
-            new MemoryBitWithAccessOpRec(Opcode.BTFSC),         // 1011 bbba ffff ffff
-            new MovffOpRec(Opcode.MOVFF),                           // 1100 ffff ffff ffff + 1111 ffff ffff ffff
+            new MemoryBitWithAccessDecoder(Mnemonic.BTG),           // 0111 bbba ffff ffff
+            new MemoryBitWithAccessDecoder(Mnemonic.BSF),           // 1000 bbba ffff ffff
+            new MemoryBitWithAccessDecoder(Mnemonic.BCF),           // 1001 bbba ffff ffff
+            new MemoryBitWithAccessDecoder(Mnemonic.BTFSS),         // 1010 bbba ffff ffff
+            new MemoryBitWithAccessDecoder(Mnemonic.BTFSC),         // 1011 bbba ffff ffff
+            new MovffDecoder(Mnemonic.MOVFF),                           // 1100 ffff ffff ffff + 1111 ffff ffff ffff
             new SubDecoder(11, 1 , new Decoder[2] {                 // 1101 ?... .... ....
-                new TargetRel11OpRec(Opcode.BRA),                   // 1101 0nnn nnnn nnnn
-                new TargetRel11OpRec(Opcode.RCALL),                 // 1101 1nnn nnnn nnnn
+                new TargetRel11Decoder(Mnemonic.BRA),                   // 1101 0nnn nnnn nnnn
+                new TargetRel11Decoder(Mnemonic.RCALL),                 // 1101 1nnn nnnn nnnn
             }),
             new SubDecoder(11, 1, new Decoder[2] {                  // 1110 ?... .... ....
                 new SubDecoder(8, 3, new Decoder[8] {               // 1110 0??? .... ....
-                    new TargetRel8OpRec(Opcode.BZ),                 // 1110 0000 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BNZ),                // 1110 0001 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BC),                 // 1110 0010 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BNC),                // 1110 0011 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BOV),                // 1110 0100 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BNOV),               // 1110 0101 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BN),                 // 1110 0110 nnnn nnnn
-                    new TargetRel8OpRec(Opcode.BNN),                // 1110 0111 nnnn nnnn
+                    new TargetRel8Decoder(Mnemonic.BZ),                 // 1110 0000 nnnn nnnn
+                    new TargetRel8Decoder(Mnemonic.BNZ),                // 1110 0001 nnnn nnnn
+                    new TargetRel8Decoder(Mnemonic.BC),                 // 1110 0010 nnnn nnnn
+                    new TargetRel8Decoder(Mnemonic.BNC),                // 1110 0011 nnnn nnnn
+                    new TargetRel8Decoder(Mnemonic.BOV),                // 1110 0100 nnnn nnnn
+                    new TargetRel8Decoder(Mnemonic.BNOV),               // 1110 0101 nnnn nnnn
+                    new TargetRel8Decoder(Mnemonic.BN),                 // 1110 0110 nnnn nnnn
+                    new TargetRel8Decoder(Mnemonic.BNN),                // 1110 0111 nnnn nnnn
                 }),
                 new SubDecoder(8, 3, new Decoder[8] {               // 1110 1??? .... ....
                     new WrongDecoder(),                             // 1110 1000 .... ....
                     new WrongDecoder(),                             // 1110 1001 .... ....
                     new WrongDecoder(),                             // 1110 1010 .... ....
                     new WrongDecoder(),                             // 1110 1011 .... ....
-                    new CallOpRec(Opcode.CALL),                     // 1110 110s kkkk kkkk + 1111 kkkk kkkk kkkk
-                    new CallOpRec(Opcode.CALL),                     // 1110 110s kkkk kkkk + 1111 kkkk kkkk kkkk
+                    new CallDecoder(Mnemonic.CALL),                     // 1110 110s kkkk kkkk + 1111 kkkk kkkk kkkk
+                    new CallDecoder(Mnemonic.CALL),                     // 1110 110s kkkk kkkk + 1111 kkkk kkkk kkkk
                     new WrongDecoder(),                             // 1110 1110 .... ....
-                    new TargetAbs20OpRec(Opcode.GOTO),              // 1110 1111 kkkk kkkk + 1111 kkkk kkkk kkkk
+                    new TargetAbs20Decoder(Mnemonic.GOTO),              // 1110 1111 kkkk kkkk + 1111 kkkk kkkk kkkk
                 }),
             }),
-            new NoOperandOpRec(Opcode.NOP),                         // 1111 .... .... ....
+            new NoOperandDecoder(Mnemonic.NOP),                         // 1111 .... .... ....
         };
 
         /// <summary>
         /// Instruction with no operand.
         /// </summary>
-        protected class NoOperandOpRec : Decoder
+        protected class NoOperandDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public NoOperandOpRec(Opcode opc)
+            public NoOperandDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -288,11 +288,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction RESET.
         /// </summary>
-        protected class ResetOpRec : Decoder
+        protected class ResetDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public ResetOpRec(Opcode opc)
+            public ResetDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -301,18 +301,18 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 if (uInstr == 0x00FFU)
                     return new PICInstructionNoOpnd(opcode);
-                return new PICInstructionNoOpnd(Opcode.invalid);
+                return new PICInstructionNoOpnd(Mnemonic.invalid);
             }
         }
 
         /// <summary>
         /// Instruction in the form <code>'....-bbba-ffff-ffff'</code>  (BTG, BSF, BCF, BTFSS, BTFSC)
         /// </summary>
-        protected class MemoryBitWithAccessOpRec : Decoder
+        protected class MemoryBitWithAccessDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MemoryBitWithAccessOpRec(Opcode opc)
+            public MemoryBitWithAccessDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -329,11 +329,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction in the form <code>'....-...a-ffff-ffff'</code> (MULWF, CPFSLT, CPFSEQ, CPFSGT, SETF, CLRF, NEGF, MOVWF)
         /// </summary>
-        protected class MemoryAccessOpRec : Decoder
+        protected class MemoryAccessDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MemoryAccessOpRec(Opcode opc)
+            public MemoryAccessDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -350,11 +350,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// Instruction in the form <code>'....-..da-ffff-ffff'</code>
         /// (DECF, IORWF, ANDWF, XORWF, COMF, ADDWFC, ADDWF, INCF, DECFSZ, RRCF, RLCF, SWAPF, INCFSZ, RRNCF, RLNCF, INFSNZ, DCFSNZ, MOVF, SUBFWB, SUBWFB, SUBWF, TSTFSZ)
         /// </summary>
-        protected class MemoryAccessWithDestOpRec : Decoder
+        protected class MemoryAccessWithDestDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MemoryAccessWithDestOpRec(Opcode opc)
+            public MemoryAccessWithDestDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -371,11 +371,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction in the form <code>'....-....-kkkk-kkkk'</code> (ADDLW, MOVLW, RETLW, PUSHL, ...)
         /// </summary>
-        protected class Immed8OpRec : Decoder
+        protected class Immed8Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public Immed8OpRec(Opcode opc)
+            public Immed8Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -390,11 +390,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction in the form <code>'....-....-kkkk-kkkk, 1111-0000-kkkk-kkkk'</code>.
         /// </summary>
-        protected class Immed12OpRec : Decoder
+        protected class Immed12Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public Immed12OpRec(Opcode opc)
+            public Immed12Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -402,9 +402,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (!GetAddlInstrWord(dasm.rdr, out ushort lsw))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 if (lsw >= 256)  // second word must be <xxxx 0000 kkkk kkkk>
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var msw = uInstr.Extract(0, 4);
                 var operd = (ushort)((msw << 8) | lsw);
@@ -415,11 +415,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction with Shadow flag (RETFIE, RETURN)
         /// </summary>
-        protected class ShadowOpRec : Decoder
+        protected class ShadowDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public ShadowOpRec(Opcode opc)
+            public ShadowDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -434,11 +434,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Short relative branch (BC, BN, BZ, ...) decoder.
         /// </summary>
-        protected class TargetRel8OpRec : Decoder
+        protected class TargetRel8Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public TargetRel8OpRec(Opcode opc)
+            public TargetRel8Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -453,11 +453,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Long relative branch (BRA, RCALL) decoder.
         /// </summary>
-        protected class TargetRel11OpRec : Decoder
+        protected class TargetRel11Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public TargetRel11OpRec(Opcode opc)
+            public TargetRel11Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -472,11 +472,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction TBLRD, TBLWT decoder
         /// </summary>
-        protected class TblOpRec : Decoder
+        protected class TblDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public TblOpRec(Opcode opc)
+            public TblDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -491,11 +491,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction MOVFF decoder.
         /// </summary>
-        protected class MovffOpRec : Decoder
+        protected class MovffDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public MovffOpRec(Opcode opc)
+            public MovffDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -504,7 +504,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 // This a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort dst))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var src = uInstr.Extract(0, 12);
                 return new PICInstructionMem2Mem(opcode, src, dst);
@@ -514,11 +514,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction GOTO decoder.
         /// </summary>
-        protected class TargetAbs20OpRec : Decoder
+        protected class TargetAbs20Decoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public TargetAbs20OpRec(Opcode opc)
+            public TargetAbs20Decoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -527,7 +527,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 // This a 2-words instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
                 return new PICInstructionProgTarget(opcode, dstaddr);
             }
@@ -536,11 +536,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Instruction CALL decoder.
         /// </summary>
-        protected class CallOpRec : Decoder
+        protected class CallDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
 
-            public CallOpRec(Opcode opc)
+            public CallDecoder(Mnemonic opc)
             {
                 opcode = opc;
             }
@@ -549,7 +549,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
-                    return new PICInstructionNoOpnd(Opcode.invalid);
+                    return new PICInstructionNoOpnd(Mnemonic.invalid);
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
                 ushort ufast = uInstr.Extract(8, 1);
                 return new PICInstructionProgTargetFast(opcode, dstaddr, ufast, false);
@@ -564,7 +564,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
 
             if (!rdr.TryReadByte(out byte uEEByte))
-                return new PICInstructionNoOpnd(Opcode.invalid);
+                return new PICInstructionNoOpnd(Mnemonic.invalid);
             var bl = new List<byte>() { uEEByte };
             for (int i = 0; i < 7; i++)
             {
@@ -574,7 +574,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     break;
                 bl.Add(uEEByte);
             }
-            instrCur = new PICInstructionPseudo(Opcode.DE, new PICOperandDEEPROM(bl.ToArray()))
+            instrCur = new PICInstructionPseudo(Mnemonic.DE, new PICOperandDEEPROM(bl.ToArray()))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur),
@@ -587,8 +587,8 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
 
             if (!rdr.TryReadByte(out byte uDAByte))
-                return new PICInstructionNoOpnd(Opcode.invalid);
-            instrCur = new PICInstructionPseudo(Opcode.DA, new PICOperandDASCII(uDAByte))
+                return new PICInstructionNoOpnd(Mnemonic.invalid);
+            instrCur = new PICInstructionPseudo(Mnemonic.DA, new PICOperandDASCII(uDAByte))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur),
@@ -601,8 +601,8 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
 
             if (!rdr.TryReadByte(out byte uDBByte))
-                return new PICInstructionNoOpnd(Opcode.invalid);
-            instrCur = new PICInstructionPseudo(Opcode.DB, new PICOperandDByte(uDBByte))
+                return new PICInstructionNoOpnd(Mnemonic.invalid);
+            instrCur = new PICInstructionPseudo(Mnemonic.DB, new PICOperandDByte(uDBByte))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur),
@@ -615,8 +615,8 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
 
             if (!rdr.TryReadUInt16(out ushort uDWWord))
-                return new PICInstructionNoOpnd(Opcode.invalid);
-            instrCur = new PICInstructionPseudo(Opcode.DW, new PICOperandDWord(uDWWord))
+                return new PICInstructionNoOpnd(Mnemonic.invalid);
+            instrCur = new PICInstructionPseudo(Mnemonic.DW, new PICOperandDWord(uDWWord))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur),
@@ -629,8 +629,8 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
 
             if (!rdr.TryReadByte(out byte uIDByte))
-                return new PICInstructionNoOpnd(Opcode.invalid);
-            instrCur = new PICInstructionPseudo(Opcode.__IDLOCS, new PICOperandIDLocs(addrCur, uIDByte))
+                return new PICInstructionNoOpnd(Mnemonic.invalid);
+            instrCur = new PICInstructionPseudo(Mnemonic.__IDLOCS, new PICOperandIDLocs(addrCur, uIDByte))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur),
@@ -643,8 +643,8 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
 
             if (!rdr.TryReadByte(out byte uConfigByte))
-                return new PICInstructionNoOpnd(Opcode.invalid);
-            instrCur = new PICInstructionPseudo(Opcode.CONFIG, new PICOperandConfigBits(arch, addrCur, uConfigByte))
+                return new PICInstructionNoOpnd(Mnemonic.invalid);
+            instrCur = new PICInstructionPseudo(Mnemonic.CONFIG, new PICOperandConfigBits(arch, addrCur, uConfigByte))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur),

@@ -29,73 +29,35 @@ namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
-        public Opcode Opcode;
-        public MachineOperand Op1;
-        public MachineOperand Op2;
-        public MachineOperand Op3;
+        public Mnemonic Mnemonic;
 
-        public override int OpcodeAsInteger => (int)Opcode; 
+        public override int OpcodeAsInteger => (int)Mnemonic; 
 
         public bool Annul => (InstructionClass & InstrClass.Annul) != 0;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            switch (i)
-            {
-            case 0: return Op1;
-            case 1: return Op2;
-            case 2: return Op3;
-            default: return null; 
-            }
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(
                 string.Format("{0}{1}",
-                Opcode.ToString(),
+                Mnemonic.ToString(),
                 Annul ? ",a" : ""));
-
-            if (Op1 != null)
-            {
-                writer.Tab();
-                Write(Op1, writer, options);
-                if (Op2 != null)
-                {
-                    writer.WriteChar(',');
-                    Write(Op2, writer, options);
-                    if (Op3 != null)
-                    {
-                        writer.WriteChar(',');
-                        Write(Op3, writer, options);
-                    }
-                }
-            }
+            RenderOperands(writer, options);
         }
 
-        private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var reg = op as RegisterOperand;
-            if (reg != null)
+            switch (op)
             {
+            case RegisterOperand reg:
                 writer.WriteFormat("%{0}", reg.Register.Name);
                 return;
-            }
-            var imm = op as ImmediateOperand;
-            if (imm != null)
-            {
+            case ImmediateOperand imm:
                 writer.WriteString(imm.Value.ToString());
                 return;
-            }
-            var mem = op as MemoryOperand;
-            if (mem != null)
-            {
+            case MemoryOperand mem:
                 mem.Write(writer, options);
                 return;
-            }
-            var idx = op as IndexedMemoryOperand;
-            if (idx != null)
-            {
+            case IndexedMemoryOperand idx:
                 idx.Write(writer, options);
                 return;
             }

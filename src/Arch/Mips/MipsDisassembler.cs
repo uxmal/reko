@@ -36,7 +36,7 @@ namespace Reko.Arch.Mips
         private const InstrClass CTD = InstrClass.Call | InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass DCT = InstrClass.ConditionalTransfer | InstrClass.Delay;
 
-        private static readonly MaskDecoder<MipsDisassembler, Opcode, MipsInstruction> rootDecoder;
+        private static readonly MaskDecoder<MipsDisassembler, Mnemonic, MipsInstruction> rootDecoder;
 
         private readonly MipsProcessorArchitecture arch;
         private readonly bool isVersion6OrLater;
@@ -72,8 +72,9 @@ namespace Reko.Arch.Mips
         protected override MipsInstruction CreateInvalidInstruction()
         {
             return new MipsInstruction {
-                opcode = Opcode.illegal,
-                InstructionClass = InstrClass.Invalid
+                Mnemonic = Mnemonic.illegal,
+                InstructionClass = InstrClass.Invalid,
+                Operands = new MachineOperand[0]
             };
         }
 
@@ -98,34 +99,34 @@ namespace Reko.Arch.Mips
         }
 
 
-        private static NyiDecoder<MipsDisassembler, Opcode, MipsInstruction> Nyi(string message)
+        private static NyiDecoder<MipsDisassembler, Mnemonic, MipsInstruction> Nyi(string message)
         {
-            return new NyiDecoder<MipsDisassembler, Opcode, MipsInstruction>(message);
+            return new NyiDecoder<MipsDisassembler, Mnemonic, MipsInstruction>(message);
         }
 
-        private static InstrDecoder Instr(Opcode mnemonic, params Mutator<MipsDisassembler> [] mutators)
+        private static InstrDecoder Instr(Mnemonic mnemonic, params Mutator<MipsDisassembler> [] mutators)
         {
             return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(InstrClass iclass, Opcode mnemonic, params Mutator<MipsDisassembler>[] mutators)
+        private static InstrDecoder Instr(InstrClass iclass, Mnemonic mnemonic, params Mutator<MipsDisassembler>[] mutators)
         {
             return new InstrDecoder(iclass, mnemonic, mutators);
         }
 
         static MipsDisassembler()
         {
-            var invalid = new InstrDecoder(Opcode.illegal);
+            var invalid = new InstrDecoder(Mnemonic.illegal);
 
             var cop1_s = Mask(0, 6, "FPU (single)",
-                new InstrDecoder(Opcode.add_s, F4,F3,F2),
-                new InstrDecoder(Opcode.sub_s, F4,F3,F2),
-                new InstrDecoder(Opcode.mul_s, F4,F3,F2),
-                new InstrDecoder(Opcode.div_s, F4,F3,F2),
+                new InstrDecoder(Mnemonic.add_s, F4,F3,F2),
+                new InstrDecoder(Mnemonic.sub_s, F4,F3,F2),
+                new InstrDecoder(Mnemonic.mul_s, F4,F3,F2),
+                new InstrDecoder(Mnemonic.div_s, F4,F3,F2),
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.mov_s, F4,F3),
-                new InstrDecoder(Opcode.neg_s, F4,F3),
+                new InstrDecoder(Mnemonic.mov_s, F4,F3),
+                new InstrDecoder(Mnemonic.neg_s, F4,F3),
 
                 invalid,
                 invalid,
@@ -174,7 +175,7 @@ namespace Reko.Arch.Mips
 
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.c_eq_s, c8,F3,F2),
+                new InstrDecoder(Mnemonic.c_eq_s, c8,F3,F2),
                 invalid,
                 invalid,
                 invalid,
@@ -185,24 +186,24 @@ namespace Reko.Arch.Mips
                 invalid,
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.c_lt_s, c8,F3,F2),
+                new InstrDecoder(Mnemonic.c_lt_s, c8,F3,F2),
                 invalid,
-                new InstrDecoder(Opcode.c_le_s, c8,F3,F2),
+                new InstrDecoder(Mnemonic.c_le_s, c8,F3,F2),
                 invalid);
 
             var cop1_d = Mask(0, 6, "FPU (double)",
                 // fn 00
-                new InstrDecoder(Opcode.add_d, F4,F3,F2),
-                new InstrDecoder(Opcode.sub_d, F4,F3,F2),
-                new InstrDecoder(Opcode.mul_d, F4,F3,F2),
-                new InstrDecoder(Opcode.div_d, F4,F3,F2),
+                new InstrDecoder(Mnemonic.add_d, F4,F3,F2),
+                new InstrDecoder(Mnemonic.sub_d, F4,F3,F2),
+                new InstrDecoder(Mnemonic.mul_d, F4,F3,F2),
+                new InstrDecoder(Mnemonic.div_d, F4,F3,F2),
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.mov_d, F4,F3),
-                new InstrDecoder(Opcode.neg_d, F4,F3),
+                new InstrDecoder(Mnemonic.mov_d, F4,F3),
+                new InstrDecoder(Mnemonic.neg_d, F4,F3),
 
                 invalid,
-                new InstrDecoder(Opcode.trunc_l_d, F4,F3),
+                new InstrDecoder(Mnemonic.trunc_l_d, F4,F3),
                 invalid,
                 invalid,
                 invalid,
@@ -230,11 +231,11 @@ namespace Reko.Arch.Mips
                 invalid,
 
                 // fn 20
-                new InstrDecoder(Opcode.cvt_s_d, F4,F3),
+                new InstrDecoder(Mnemonic.cvt_s_d, F4,F3),
                 invalid,
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.cvt_w_d, F4,F3),
+                new InstrDecoder(Mnemonic.cvt_w_d, F4,F3),
                 invalid,
                 invalid,
                 invalid,
@@ -251,7 +252,7 @@ namespace Reko.Arch.Mips
                 // fn 30
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.c_eq_d, c8,F3,F2),
+                new InstrDecoder(Mnemonic.c_eq_d, c8,F3,F2),
                 invalid,
                 invalid,
                 invalid,
@@ -262,9 +263,9 @@ namespace Reko.Arch.Mips
                 invalid,
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.c_lt_d, c8,F3,F2),
+                new InstrDecoder(Mnemonic.c_lt_d, c8,F3,F2),
                 invalid,
-                new InstrDecoder(Opcode.c_le_d, c8,F3,F2),
+                new InstrDecoder(Mnemonic.c_le_d, c8,F3,F2),
                 invalid);
 
             var cop1_w = Mask(0, 6, "FPU (word)",
@@ -339,7 +340,7 @@ namespace Reko.Arch.Mips
                 invalid,
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.c_lt_d, c8,F3,F2),
+                new InstrDecoder(Mnemonic.c_lt_d, c8,F3,F2),
                 invalid,
                 invalid,
                 invalid);
@@ -384,8 +385,8 @@ namespace Reko.Arch.Mips
                 invalid,
 
                 // fn 20
-                new InstrDecoder(Opcode.cvt_s_l, F4,F3),
-                new InstrDecoder(Opcode.cvt_d_l, F4,F3),
+                new InstrDecoder(Mnemonic.cvt_s_l, F4,F3),
+                new InstrDecoder(Mnemonic.cvt_d_l, F4,F3),
                 invalid,
                 invalid,
                 invalid,
@@ -423,25 +424,25 @@ namespace Reko.Arch.Mips
 
             var cop0_C0_decoder = Sparse(0, 6, "COP0 C0", 
                 invalid,
-                ( 0x01, new InstrDecoder(Opcode.tlbr ) ),
-                ( 0x02, new InstrDecoder(Opcode.tlbwi) ),
-                ( 0x06, new InstrDecoder(Opcode.tlbwr) ),
-                ( 0x08, new InstrDecoder(Opcode.tlbp ) ),
-                ( 0x18, new InstrDecoder(Opcode.eret ) ),
-                ( 0x20, new InstrDecoder(Opcode.wait ) ));
+                ( 0x01, new InstrDecoder(Mnemonic.tlbr ) ),
+                ( 0x02, new InstrDecoder(Mnemonic.tlbwi) ),
+                ( 0x06, new InstrDecoder(Mnemonic.tlbwr) ),
+                ( 0x08, new InstrDecoder(Mnemonic.tlbp ) ),
+                ( 0x18, new InstrDecoder(Mnemonic.eret ) ),
+                ( 0x20, new InstrDecoder(Mnemonic.wait ) ));
             var cop1 = Mask(21, 5, "COP1",
-                new InstrDecoder(Opcode.mfc1, R2,F3),
-                new A64Decoder(Opcode.dmfc1, R2,F3),
-                new InstrDecoder(Opcode.cfc1, R2,f3),
+                new InstrDecoder(Mnemonic.mfc1, R2,F3),
+                new A64Decoder(Mnemonic.dmfc1, R2,F3),
+                new InstrDecoder(Mnemonic.cfc1, R2,f3),
                 invalid,
-                new InstrDecoder(Opcode.mtc1, R2,F3),
-                new A64Decoder(Opcode.dmtc1, R2,F3),
-                new InstrDecoder(Opcode.ctc1, R2,f3),
+                new InstrDecoder(Mnemonic.mtc1, R2,F3),
+                new A64Decoder(Mnemonic.dmtc1, R2,F3),
+                new InstrDecoder(Mnemonic.ctc1, R2,f3),
                 invalid,
 
                 Mask(16, 1,
-                    new InstrDecoder(InstrClass.ConditionalTransfer | InstrClass.Delay, Opcode.bc1f, c18,j),
-                    new InstrDecoder(InstrClass.ConditionalTransfer | InstrClass.Delay, Opcode.bc1t, c18,j)),
+                    new InstrDecoder(InstrClass.ConditionalTransfer | InstrClass.Delay, Mnemonic.bc1f, c18,j),
+                    new InstrDecoder(InstrClass.ConditionalTransfer | InstrClass.Delay, Mnemonic.bc1t, c18,j)),
                 invalid,
                 invalid,
                 invalid,
@@ -480,7 +481,7 @@ namespace Reko.Arch.Mips
 
                  Nyi("bc2"),
                  Nyi("bc2eqz"),
-                 new InstrDecoder(Opcode.lwc2,R2,E11w),
+                 new InstrDecoder(Mnemonic.lwc2,R2,E11w),
                  Nyi("swc2"),
                  invalid,
                  Nyi("bc2nez"),
@@ -507,41 +508,41 @@ namespace Reko.Arch.Mips
 
             var special2 = Sparse(0, 6, "Special2",
                 invalid,
-                (0x0, new InstrDecoder(Opcode.madd, R1, R2)),
-                (0x1, new InstrDecoder(Opcode.maddu, R1, R2)),
-                (0x2, new InstrDecoder(Opcode.mul, R3, R1, R2)),
-                (0x4, new InstrDecoder(Opcode.msub, R1, R2)),
-                (0x5, new InstrDecoder(Opcode.msubu, R1, R2)),
+                (0x0, new InstrDecoder(Mnemonic.madd, R1, R2)),
+                (0x1, new InstrDecoder(Mnemonic.maddu, R1, R2)),
+                (0x2, new InstrDecoder(Mnemonic.mul, R3, R1, R2)),
+                (0x4, new InstrDecoder(Mnemonic.msub, R1, R2)),
+                (0x5, new InstrDecoder(Mnemonic.msubu, R1, R2)),
 
-                (0x20, new InstrDecoder(Opcode.clz, R3, R1)),
-                (0x21, new InstrDecoder(Opcode.clo, R3, R1)),
-                (0x3F, new InstrDecoder(Opcode.sdbbp, Imm(PrimitiveType.UInt32, 6, 20))));
+                (0x20, new InstrDecoder(Mnemonic.clz, R3, R1)),
+                (0x21, new InstrDecoder(Mnemonic.clo, R3, R1)),
+                (0x3F, new InstrDecoder(Mnemonic.sdbbp, Imm(PrimitiveType.UInt32, 6, 20))));
 
             var condDecoders = Mask(16, 5, "CondDecoders",
-                new InstrDecoder(DCT, Opcode.bltz, R1, j),
-                new InstrDecoder(DCT, Opcode.bgez, R1, j),
-                new InstrDecoder(DCT, Opcode.bltzl, R1, j),
-                new InstrDecoder(DCT, Opcode.bgezl, R1, j),
+                new InstrDecoder(DCT, Mnemonic.bltz, R1, j),
+                new InstrDecoder(DCT, Mnemonic.bgez, R1, j),
+                new InstrDecoder(DCT, Mnemonic.bltzl, R1, j),
+                new InstrDecoder(DCT, Mnemonic.bgezl, R1, j),
 
                 invalid,
                 invalid,
                 invalid,
                 invalid,
 
-                new InstrDecoder(CTD, Opcode.tgei, R1, I),
-                new InstrDecoder(CTD, Opcode.tgeiu, R1, I),
-                new InstrDecoder(CTD, Opcode.tlti, R1, I),
-                new InstrDecoder(CTD, Opcode.tltiu, R1, I),
+                new InstrDecoder(CTD, Mnemonic.tgei, R1, I),
+                new InstrDecoder(CTD, Mnemonic.tgeiu, R1, I),
+                new InstrDecoder(CTD, Mnemonic.tlti, R1, I),
+                new InstrDecoder(CTD, Mnemonic.tltiu, R1, I),
 
-                new InstrDecoder(CTD, Opcode.teqi, R1, I),
+                new InstrDecoder(CTD, Mnemonic.teqi, R1, I),
                 invalid,
-                new InstrDecoder(CTD, Opcode.tnei, R1, I),
+                new InstrDecoder(CTD, Mnemonic.tnei, R1, I),
                 invalid,
 
-                new InstrDecoder(CTD, Opcode.bltzal, R1, j),
-                new InstrDecoder(CTD, Opcode.bgezal, R1, j),
-                new InstrDecoder(CTD, Opcode.bltzall, R1, j),
-                new InstrDecoder(CTD, Opcode.bgezall, R1, j),
+                new InstrDecoder(CTD, Mnemonic.bltzal, R1, j),
+                new InstrDecoder(CTD, Mnemonic.bgezal, R1, j),
+                new InstrDecoder(CTD, Mnemonic.bltzall, R1, j),
+                new InstrDecoder(CTD, Mnemonic.bgezall, R1, j),
 
                 invalid,
                 invalid,
@@ -562,7 +563,7 @@ namespace Reko.Arch.Mips
            var bshfl = Mask(6, 5,
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.wsbh, x("")),
+                new InstrDecoder(Mnemonic.wsbh, x("")),
                 invalid,
 
                 invalid,
@@ -581,7 +582,7 @@ namespace Reko.Arch.Mips
                 invalid,
 
                 // 10
-                new InstrDecoder(Opcode.seb, R3, R2),
+                new InstrDecoder(Mnemonic.seb, R3, R2),
                 invalid,
                 invalid,
                 invalid,
@@ -591,7 +592,7 @@ namespace Reko.Arch.Mips
                 invalid,
                 invalid,
 
-                new InstrDecoder(Opcode.seh, R3, R2),
+                new InstrDecoder(Mnemonic.seh, R3, R2),
                 invalid,
                 invalid,
                 invalid,
@@ -668,15 +669,15 @@ namespace Reko.Arch.Mips
             invalid,
             new Version6Decoder(
                 invalid,
-                new InstrDecoder(Opcode.ll, R2,ew)),
+                new InstrDecoder(Mnemonic.ll, R2,ew)),
             new Version6Decoder(
                 invalid,
-                new A64Decoder(Opcode.lld, R2,el)),
+                new A64Decoder(Mnemonic.lld, R2,el)),
 
             invalid,
             invalid,
             invalid,
-            new InstrDecoder(Opcode.rdhwr, R2,H),
+            new InstrDecoder(Mnemonic.rdhwr, R2,H),
             invalid,
             invalid,
             invalid,
@@ -684,102 +685,102 @@ namespace Reko.Arch.Mips
 
             var special = Mask(0, 6, "Special",
                 Select((6, 5), n => n == 0,
-                    new InstrDecoder(InstrClass.Linear|InstrClass.Padding, Opcode.nop),
-                    new InstrDecoder(Opcode.sll, R3, R2, s)),
+                    new InstrDecoder(InstrClass.Linear|InstrClass.Padding, Mnemonic.nop),
+                    new InstrDecoder(Mnemonic.sll, R3, R2, s)),
                 Mask(16, 1,
-                    new InstrDecoder(Opcode.movf, R2, R1, C18),
-                    new InstrDecoder(Opcode.movt, R2, R1, C18)),
-                new InstrDecoder(Opcode.srl, R3, R2, s),
-                new InstrDecoder(Opcode.sra, R3, R2, s),
+                    new InstrDecoder(Mnemonic.movf, R2, R1, C18),
+                    new InstrDecoder(Mnemonic.movt, R2, R1, C18)),
+                new InstrDecoder(Mnemonic.srl, R3, R2, s),
+                new InstrDecoder(Mnemonic.sra, R3, R2, s),
 
-                new InstrDecoder(Opcode.sllv, R3, R2, R1),
-                new InstrDecoder(Opcode.illegal),
-                new InstrDecoder(Opcode.srlv, R3, R2, R1),
-                new InstrDecoder(Opcode.srav, R3, R2, R1),
+                new InstrDecoder(Mnemonic.sllv, R3, R2, R1),
+                new InstrDecoder(Mnemonic.illegal),
+                new InstrDecoder(Mnemonic.srlv, R3, R2, R1),
+                new InstrDecoder(Mnemonic.srav, R3, R2, R1),
 
-                new InstrDecoder(TD, Opcode.jr, R1),
-                new InstrDecoder(CTD, Opcode.jalr, R3, R1),
-                new InstrDecoder(Opcode.movz, R3, R1, R2),
-                new InstrDecoder(Opcode.movn, R3, R1, R2),
-                new InstrDecoder(Opcode.syscall, B),
-                new InstrDecoder(Opcode.@break, B),
-                new InstrDecoder(Opcode.illegal),
-                new InstrDecoder(Opcode.sync, s),
+                new InstrDecoder(TD, Mnemonic.jr, R1),
+                new InstrDecoder(CTD, Mnemonic.jalr, R3, R1),
+                new InstrDecoder(Mnemonic.movz, R3, R1, R2),
+                new InstrDecoder(Mnemonic.movn, R3, R1, R2),
+                new InstrDecoder(Mnemonic.syscall, B),
+                new InstrDecoder(Mnemonic.@break, B),
+                new InstrDecoder(Mnemonic.illegal),
+                new InstrDecoder(Mnemonic.sync, s),
                 // 10
-                new InstrDecoder(Opcode.mfhi, R3),
-                new InstrDecoder(Opcode.mthi, R1),
-                new InstrDecoder(Opcode.mflo, R3),
-                new InstrDecoder(Opcode.mtlo, R1),
-                new A64Decoder(Opcode.dsllv, R3, R2, R1),
-                new InstrDecoder(Opcode.illegal),
-                new A64Decoder(Opcode.dsrlv, R3, R2, R1),
-                new A64Decoder(Opcode.dsrav, R3, R2, R1),
+                new InstrDecoder(Mnemonic.mfhi, R3),
+                new InstrDecoder(Mnemonic.mthi, R1),
+                new InstrDecoder(Mnemonic.mflo, R3),
+                new InstrDecoder(Mnemonic.mtlo, R1),
+                new A64Decoder(Mnemonic.dsllv, R3, R2, R1),
+                new InstrDecoder(Mnemonic.illegal),
+                new A64Decoder(Mnemonic.dsrlv, R3, R2, R1),
+                new A64Decoder(Mnemonic.dsrav, R3, R2, R1),
 
-                new InstrDecoder(Opcode.mult, R1, R2),
-                new InstrDecoder(Opcode.multu, R1, R2),
-                new InstrDecoder(Opcode.div, R1, R2),
-                new InstrDecoder(Opcode.divu, R1, R2),
-                new A64Decoder(Opcode.dmult, R1, R2),
-                new A64Decoder(Opcode.dmultu, R1, R2),
-                new A64Decoder(Opcode.ddiv, R1, R2),
-                new A64Decoder(Opcode.ddivu, R1, R2),
+                new InstrDecoder(Mnemonic.mult, R1, R2),
+                new InstrDecoder(Mnemonic.multu, R1, R2),
+                new InstrDecoder(Mnemonic.div, R1, R2),
+                new InstrDecoder(Mnemonic.divu, R1, R2),
+                new A64Decoder(Mnemonic.dmult, R1, R2),
+                new A64Decoder(Mnemonic.dmultu, R1, R2),
+                new A64Decoder(Mnemonic.ddiv, R1, R2),
+                new A64Decoder(Mnemonic.ddivu, R1, R2),
                 // 20
-                new InstrDecoder(Opcode.add, R3, R1, R2),
-                new InstrDecoder(Opcode.addu, R3, R1, R2),
-                new InstrDecoder(Opcode.sub, R3, R1, R2),
-                new InstrDecoder(Opcode.subu, R3, R1, R2),
-                new InstrDecoder(Opcode.and, R3, R1, R2),
-                new InstrDecoder(Opcode.or, R3, R1, R2),
-                new InstrDecoder(Opcode.xor, R3, R1, R2),
-                new InstrDecoder(Opcode.nor, R3, R1, R2),
+                new InstrDecoder(Mnemonic.add, R3, R1, R2),
+                new InstrDecoder(Mnemonic.addu, R3, R1, R2),
+                new InstrDecoder(Mnemonic.sub, R3, R1, R2),
+                new InstrDecoder(Mnemonic.subu, R3, R1, R2),
+                new InstrDecoder(Mnemonic.and, R3, R1, R2),
+                new InstrDecoder(Mnemonic.or, R3, R1, R2),
+                new InstrDecoder(Mnemonic.xor, R3, R1, R2),
+                new InstrDecoder(Mnemonic.nor, R3, R1, R2),
 
-                new InstrDecoder(Opcode.illegal),
-                new InstrDecoder(Opcode.illegal),
-                new InstrDecoder(Opcode.slt, R3, R1, R2),
-                new InstrDecoder(Opcode.sltu, R3, R1, R2),
-                new A64Decoder(Opcode.dadd, R3, R1, R2),
-                new A64Decoder(Opcode.daddu, R3, R1, R2),
-                new A64Decoder(Opcode.dsub, R3, R1, R2),
-                new A64Decoder(Opcode.dsubu, R3, R1, R2),
+                new InstrDecoder(Mnemonic.illegal),
+                new InstrDecoder(Mnemonic.illegal),
+                new InstrDecoder(Mnemonic.slt, R3, R1, R2),
+                new InstrDecoder(Mnemonic.sltu, R3, R1, R2),
+                new A64Decoder(Mnemonic.dadd, R3, R1, R2),
+                new A64Decoder(Mnemonic.daddu, R3, R1, R2),
+                new A64Decoder(Mnemonic.dsub, R3, R1, R2),
+                new A64Decoder(Mnemonic.dsubu, R3, R1, R2),
                 // 30
-                new InstrDecoder(CTD, Opcode.tge, R1, R2, T),
-                new InstrDecoder(CTD, Opcode.tgeu, R1, R2, T),
-                new InstrDecoder(CTD, Opcode.tlt, R1, R2, T),
-                new InstrDecoder(CTD, Opcode.tltu, R1, R2, T),
-                new InstrDecoder(CTD, Opcode.teq, R1, R2, T),
-                new InstrDecoder(Opcode.illegal),
-                new InstrDecoder(CTD, Opcode.tne, R1, R2, T),
-                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(CTD, Mnemonic.tge, R1, R2, T),
+                new InstrDecoder(CTD, Mnemonic.tgeu, R1, R2, T),
+                new InstrDecoder(CTD, Mnemonic.tlt, R1, R2, T),
+                new InstrDecoder(CTD, Mnemonic.tltu, R1, R2, T),
+                new InstrDecoder(CTD, Mnemonic.teq, R1, R2, T),
+                new InstrDecoder(Mnemonic.illegal),
+                new InstrDecoder(CTD, Mnemonic.tne, R1, R2, T),
+                new InstrDecoder(Mnemonic.illegal),
 
-                new A64Decoder(Opcode.dsll, R3, R2, s),
-                new InstrDecoder(Opcode.illegal),
-                new A64Decoder(Opcode.dsrl, R3, R2, s),
-                new A64Decoder(Opcode.dsra, R3, R2, s),
-                new A64Decoder(Opcode.dsll32, R3, R2, s),
-                new InstrDecoder(Opcode.illegal),
-                new A64Decoder(Opcode.dsrl32, R3, R2, s),
-                new A64Decoder(Opcode.dsra32, R3, R2, s));
+                new A64Decoder(Mnemonic.dsll, R3, R2, s),
+                new InstrDecoder(Mnemonic.illegal),
+                new A64Decoder(Mnemonic.dsrl, R3, R2, s),
+                new A64Decoder(Mnemonic.dsra, R3, R2, s),
+                new A64Decoder(Mnemonic.dsll32, R3, R2, s),
+                new InstrDecoder(Mnemonic.illegal),
+                new A64Decoder(Mnemonic.dsrl32, R3, R2, s),
+                new A64Decoder(Mnemonic.dsra32, R3, R2, s));
 
             var cop1x = Mask(0, 6,
-                Instr(Opcode.lwxc1, F3,Mxw),
-                Instr(Opcode.ldxc1, F3,Mxd),
+                Instr(Mnemonic.lwxc1, F3,Mxw),
+                Instr(Mnemonic.ldxc1, F3,Mxd),
                 invalid,
                 invalid,
 
                 invalid,
-                Instr(Opcode.luxc1, F4,Mxw),
+                Instr(Mnemonic.luxc1, F4,Mxw),
                 invalid,
                 invalid,
 
-                Instr(Opcode.swxc1, F3,Mxw),
-                Instr(Opcode.sdxc1, F3,Mxd),
+                Instr(Mnemonic.swxc1, F3,Mxw),
+                Instr(Mnemonic.sdxc1, F3,Mxd),
                 invalid,
                 invalid,
 
                 invalid,
-                Instr(Opcode.suxc1, F4,Mxw),
+                Instr(Mnemonic.suxc1, F4,Mxw),
                 invalid,
-                new InstrDecoder(Opcode.prefx, Imm(PrimitiveType.Byte, 11,5), Mxw),
+                new InstrDecoder(Mnemonic.prefx, Imm(PrimitiveType.Byte, 11,5), Mxw),
                 // 10
                 invalid,
                 invalid,
@@ -798,77 +799,77 @@ namespace Reko.Arch.Mips
 
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.alnv_ps, F4,F3,F2,R1),
+                new InstrDecoder(Mnemonic.alnv_ps, F4,F3,F2,R1),
                 invalid,
                 // 20
-                new InstrDecoder(Opcode.madd_s, F4,F1,F3,F2),
-                new InstrDecoder(Opcode.madd_d, F4,F1,F3,F2),
+                new InstrDecoder(Mnemonic.madd_s, F4,F1,F3,F2),
+                new InstrDecoder(Mnemonic.madd_d, F4,F1,F3,F2),
                 invalid,
                 invalid,
 
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.madd_ps, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.madd_ps, F4, F1, F3, F2),
                 invalid,
 
-                new InstrDecoder(Opcode.msub_s, F4, F1, F3, F2),
-                new InstrDecoder(Opcode.msub_d, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.msub_s, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.msub_d, F4, F1, F3, F2),
                 invalid,
                 invalid,
 
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.msub_ps, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.msub_ps, F4, F1, F3, F2),
                 invalid,
                 // 30
-                new InstrDecoder(Opcode.nmadd_s, F4, F1, F3, F2),
-                new InstrDecoder(Opcode.nmadd_d, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.nmadd_s, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.nmadd_d, F4, F1, F3, F2),
                 invalid,
                 invalid,
 
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.nmadd_ps, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.nmadd_ps, F4, F1, F3, F2),
                 invalid,
 
-                new InstrDecoder(Opcode.nmsub_s, F4, F1, F3, F2),
-                new InstrDecoder(Opcode.nmsub_d, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.nmsub_s, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.nmsub_d, F4, F1, F3, F2),
                 invalid,
                 invalid,
 
                 invalid,
                 invalid,
-                new InstrDecoder(Opcode.nmsub_ps, F4, F1, F3, F2),
+                new InstrDecoder(Mnemonic.nmsub_ps, F4, F1, F3, F2),
                 invalid);
 
 
         rootDecoder = Mask(26, 6,
                 special,
                 condDecoders,
-                new InstrDecoder(TD, Opcode.j, J),
-                new InstrDecoder(CTD, Opcode.jal, J),
-                new InstrDecoder(DCT, Opcode.beq, R1,R2,j),
-                new InstrDecoder(DCT, Opcode.bne, R1,R2,j),
-                new InstrDecoder(DCT, Opcode.blez, R1,j),
-                new InstrDecoder(DCT, Opcode.bgtz, R1,j),
+                new InstrDecoder(TD, Mnemonic.j, J),
+                new InstrDecoder(CTD, Mnemonic.jal, J),
+                new InstrDecoder(DCT, Mnemonic.beq, R1,R2,j),
+                new InstrDecoder(DCT, Mnemonic.bne, R1,R2,j),
+                new InstrDecoder(DCT, Mnemonic.blez, R1,j),
+                new InstrDecoder(DCT, Mnemonic.bgtz, R1,j),
 
-                new InstrDecoder(Opcode.addi, R2,R1,I),
-                new InstrDecoder(Opcode.addiu, R2,R1,I),
-                new InstrDecoder(Opcode.slti, R2,R1,I),
-                new InstrDecoder(Opcode.sltiu, R2,R1,I),
+                new InstrDecoder(Mnemonic.addi, R2,R1,I),
+                new InstrDecoder(Mnemonic.addiu, R2,R1,I),
+                new InstrDecoder(Mnemonic.slti, R2,R1,I),
+                new InstrDecoder(Mnemonic.sltiu, R2,R1,I),
 
-                new InstrDecoder(Opcode.andi, R2,R1,U),
-                new InstrDecoder(Opcode.ori, R2,R1,U),
-                new InstrDecoder(Opcode.xori, R2,R1,U),
-                new InstrDecoder(Opcode.lui, R2,i),
+                new InstrDecoder(Mnemonic.andi, R2,R1,U),
+                new InstrDecoder(Mnemonic.ori, R2,R1,U),
+                new InstrDecoder(Mnemonic.xori, R2,R1,U),
+                new InstrDecoder(Mnemonic.lui, R2,i),
                 // 10
                 Mask(21, 5, "Coprocessor",
-                    new InstrDecoder(Opcode.mfc0, R2,R3),
-                    new InstrDecoder(Opcode.dmfc0, R2,R3),
+                    new InstrDecoder(Mnemonic.mfc0, R2,R3),
+                    new InstrDecoder(Mnemonic.dmfc0, R2,R3),
                     invalid,
                     invalid,
-                    new InstrDecoder(Opcode.mtc0, R2,R3),
-                    new InstrDecoder(Opcode.dmtc0, R2,R3),
+                    new InstrDecoder(Mnemonic.mtc0, R2,R3),
+                    new InstrDecoder(Mnemonic.dmtc0, R2,R3),
                     invalid,
                     invalid,
 
@@ -906,15 +907,15 @@ namespace Reko.Arch.Mips
                     cop1x,
                     invalid),       // removed in MIPS v6
                 
-                new InstrDecoder(DCT, Opcode.beql, R1,R2,j),
-                new InstrDecoder(DCT, Opcode.bnel, R1,R2,j),
-                new InstrDecoder(DCT, Opcode.blezl, R1,j),
-                new InstrDecoder(DCT, Opcode.bgtzl, R1,j),
+                new InstrDecoder(DCT, Mnemonic.beql, R1,R2,j),
+                new InstrDecoder(DCT, Mnemonic.bnel, R1,R2,j),
+                new InstrDecoder(DCT, Mnemonic.blezl, R1,j),
+                new InstrDecoder(DCT, Mnemonic.bgtzl, R1,j),
 
-                new A64Decoder(Opcode.daddi, R2,R1,I),
-                new A64Decoder(Opcode.daddiu, R2,R1,I),
-                new A64Decoder(Opcode.ldl, R2,El),
-                new A64Decoder(Opcode.ldr, R2,El),
+                new A64Decoder(Mnemonic.daddi, R2,R1,I),
+                new A64Decoder(Mnemonic.daddiu, R2,R1,I),
+                new A64Decoder(Mnemonic.ldl, R2,El),
+                new A64Decoder(Mnemonic.ldr, R2,El),
 
                 new Version6Decoder(
                     special2,
@@ -928,66 +929,66 @@ namespace Reko.Arch.Mips
                 special3,
 
                 // 20
-                new InstrDecoder(Opcode.lb, R2,EB),
-                new InstrDecoder(Opcode.lh, R2,EH),
-                new InstrDecoder(Opcode.lwl, R2,Ew),
-                new InstrDecoder(Opcode.lw, R2,Ew),
+                new InstrDecoder(Mnemonic.lb, R2,EB),
+                new InstrDecoder(Mnemonic.lh, R2,EH),
+                new InstrDecoder(Mnemonic.lwl, R2,Ew),
+                new InstrDecoder(Mnemonic.lw, R2,Ew),
 
-                new InstrDecoder(Opcode.lbu, R2,Eb),
-                new InstrDecoder(Opcode.lhu, R2,Eh),
-                new InstrDecoder(Opcode.lwr, R2,Ew),
-                new A64Decoder(Opcode.lwu, R2,Ew),
+                new InstrDecoder(Mnemonic.lbu, R2,Eb),
+                new InstrDecoder(Mnemonic.lhu, R2,Eh),
+                new InstrDecoder(Mnemonic.lwr, R2,Ew),
+                new A64Decoder(Mnemonic.lwu, R2,Ew),
 
-                new InstrDecoder(Opcode.sb, R2,Eb),
-                new InstrDecoder(Opcode.sh, R2,Eh),
-                new InstrDecoder(Opcode.swl, R2,Ew),
-                new InstrDecoder(Opcode.sw, R2,Ew),
+                new InstrDecoder(Mnemonic.sb, R2,Eb),
+                new InstrDecoder(Mnemonic.sh, R2,Eh),
+                new InstrDecoder(Mnemonic.swl, R2,Ew),
+                new InstrDecoder(Mnemonic.sw, R2,Ew),
 
-                new InstrDecoder(Opcode.sdl, R2,Ew),
-                new InstrDecoder(Opcode.sdr, R2,Ew),
-                new InstrDecoder(Opcode.swr, R2,Ew),
+                new InstrDecoder(Mnemonic.sdl, R2,Ew),
+                new InstrDecoder(Mnemonic.sdr, R2,Ew),
+                new InstrDecoder(Mnemonic.swr, R2,Ew),
                 new Version6Decoder(
-                    new InstrDecoder(Opcode.cache, Imm(PrimitiveType.Byte, 16, 5), Ew),
+                    new InstrDecoder(Mnemonic.cache, Imm(PrimitiveType.Byte, 16, 5), Ew),
                     invalid),
 
                 // 30
                 new Version6Decoder(
-                    new InstrDecoder(Opcode.ll, R2,Ew),
+                    new InstrDecoder(Mnemonic.ll, R2,Ew),
                     invalid),
-                new InstrDecoder(Opcode.lwc1, F2,Ew),
+                new InstrDecoder(Mnemonic.lwc1, F2,Ew),
                 new Version6Decoder(
-                    new InstrDecoder(Opcode.lwc2, R2, El),
+                    new InstrDecoder(Mnemonic.lwc2, R2, El),
                     Nyi("BC-v6")),
-                new InstrDecoder(Opcode.pref, R2,Ew),
+                new InstrDecoder(Mnemonic.pref, R2,Ew),
 
                 new Version6Decoder(
-                    new A64Decoder(Opcode.lld, R2,El),
+                    new A64Decoder(Mnemonic.lld, R2,El),
                     invalid),
-                new InstrDecoder(Opcode.ldc1, F2,El),
+                new InstrDecoder(Mnemonic.ldc1, F2,El),
                 new Version6Decoder(
-                    new InstrDecoder(Opcode.ldc2, R2,El),
+                    new InstrDecoder(Mnemonic.ldc2, R2,El),
                     Nyi("POP76")),
-                new A64Decoder(Opcode.ld, R2,El),
+                new A64Decoder(Mnemonic.ld, R2,El),
 
                 new Version6Decoder(
-                    new InstrDecoder(Opcode.sc, R2,Ew),
+                    new InstrDecoder(Mnemonic.sc, R2,Ew),
                     invalid),
-                new InstrDecoder(Opcode.swc1, F2,Ew),
+                new InstrDecoder(Mnemonic.swc1, F2,Ew),
                 new Version6Decoder(
-                    new InstrDecoder(Opcode.swc2, R2, Ew),
+                    new InstrDecoder(Mnemonic.swc2, R2, Ew),
                     Nyi("BALC-v6")),
                 new Version6Decoder(
                     invalid,
                     Nyi("PCREL-v6")),
 
                 new Version6Decoder(
-                    new A64Decoder(Opcode.scd, R2,El),
+                    new A64Decoder(Mnemonic.scd, R2,El),
                     invalid),
-                new A64Decoder(Opcode.sdc1, F2,El),
+                new A64Decoder(Mnemonic.sdc1, F2,El),
                 new Version6Decoder(
-                    new InstrDecoder(Opcode.sdc2, R2,El),
+                    new InstrDecoder(Mnemonic.sdc2, R2,El),
                     Nyi("POP76")),
-                new A64Decoder(Opcode.sd, R2,El));
+                new A64Decoder(Mnemonic.sd, R2,El));
         }
 
         internal static Mutator<MipsDisassembler> R(int offset)

@@ -34,142 +34,10 @@ namespace Reko.Arch.M68k
     public class OperandFormatDecoder
     {
         private M68kDisassembler dasm;
-        ushort opcode;
-        int i;
-        private ushort bitSet;          // MoveM
 
         public OperandFormatDecoder(M68kDisassembler dasm, int i)
         {
             this.dasm = dasm;
-            this.opcode = dasm.uInstr;
-            this.i = i;
-        }
-
-        /// <summary>
-        /// Attempts to decode an operand.
-        /// </summary>
-        /// <param name="rdr"></param>
-        /// <param name="args"></param>
-        /// <param name="dataWidth"></param>
-        /// <param name="op"></param>
-        /// <returns>If true, either no more operands are needed, or an
-        /// operand was fetched sucessfully. If false, the operand was
-        /// invalid, either due to a bad encoding or because the reader read
-        /// off the end of the memory area.
-        /// </returns>
-        public bool TryGetOperand(EndianImageReader rdr, string args, PrimitiveType dataWidth, out MachineOperand op)
-        {
-            if (i >= args.Length)
-            {
-                op = null; return true;
-            }
-            for (; ; )
-            {
-                if (args[i] == ',')
-                    ++i;
-                Address addr;
-                switch (args[i++])
-                {
-                case 'A':   // Address register A0-A7 encoded in in instrution
-                    op = new RegisterOperand(AddressRegister(opcode, GetOpcodeOffset(args[i++])));
-                    return true;
-                case 'c':   // CCR register 
-                    op= new RegisterOperand(Registers.ccr);
-                    return true;
-                case 'D':   // Data register D0-D7 encoded in instruction
-                    op = DataRegisterOperand(opcode, GetOpcodeOffset(args[i++]));
-                    return true;
-                case 'E':   // Effective address (EA) 
-                    return TryParseOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr, out op);
-                case 'e':   // Effective address with 3-bit halves swapped
-                    return TryParseSwappedOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr, out op);
-                case 'I':   // Immediate operand
-                    return TryGetImmediate(rdr, GetSizeType(0, args[i++], dataWidth), out op);
-                case 'J':   // PC Relative jump 
-                    return TryPcRelative(rdr, opcode, out op);
-                case 'M':   // Register bitset
-                    var size = GetSizeType(0, args[i++], dataWidth);
-                    ushort memSet;
-                    if (!rdr.TryReadBeUInt16(out memSet))
-                    {
-                        op = null; return false;
-                    }
-                    op = new RegisterSetOperand(memSet, size);
-                    return true;
-                case 'n':   // cache bitset
-                    if (!rdr.TryReadBeUInt16(out bitSet))
-                    {
-                        op = null; return false;
-                    }
-                    break;
-                case 'm':   // Register bitset reversed
-                    size = GetSizeType(0, args[i++], dataWidth);
-                    op = RegisterSetOperand.CreateReversed(bitSet, size);
-                    return true;
-                case 'q':   // "Small" quick constant (3-bit part of the opcode)
-                    op = GetQuickImmediate(GetOpcodeOffset(args[i++]), 0x07, 8, PrimitiveType.Byte);
-                    return true;
-                case 'Q':   // "Large" quick constant (8-bit part of the opcode)
-                    op = GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
-                    return true;
-                case 'R': // relative
-                    addr = rdr.Address;
-                    int relative = 0;
-                    switch (args[i++])
-                    {
-                    case 'w': relative = rdr.ReadBeInt16(); break;
-                    case 'l': relative = rdr.ReadBeInt32(); break;
-                    default: throw new NotImplementedException();
-                    }
-                    op = new M68kAddressOperand(addr + relative);
-                    return true;
-                case 's':   // SR register
-                    op = new RegisterOperand(Registers.sr);
-                    return true;
-                case '+':   // Postincrement operator; following character specifies bit offset of the address register code.
-                    op = new PostIncrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
-                    return true;
-                case '-':   // Predecrement operator; following character specifies bit offset of the address register code.
-                    op = new PredecrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
-                    return true;
-                default: throw new FormatException(string.Format("Unknown argument type {0}.", args[--i]));
-                }
-            }
-        }
-
-        private bool TryPcRelative(ImageReader rdr, ushort opcode, out MachineOperand op)
-        {
-            var addr = rdr.Address;
-            int offset = opcode & 0xFF;
-            if (offset == 0xFF)
-            {
-                if (!rdr.TryReadBeInt32(out offset))
-                {
-                    op = null;
-                    return false;
-                }
-            }
-            else if (offset == 0x00)
-            {
-                if (!rdr.TryReadBeInt16(out short sOffset))
-                {
-                    op = null;
-                    return false;
-                }
-                offset = sOffset;
-            }
-            else
-                offset = (sbyte)offset;
-            op = new M68kAddressOperand(addr + offset);
-            return true;
-        }
-
-        private MachineOperand GetQuickImmediate(int offset, int mask, int zeroValue, PrimitiveType dataWidth)
-        {
-            int v = ((int) opcode >> offset) & mask;
-            if (v == 0)
-                v = zeroValue;
-            return new M68kImmediateOperand(Constant.Create(dataWidth, v));
         }
 
         private static PrimitiveType SizeField(ushort opcode, int bitOffset)
@@ -183,34 +51,12 @@ namespace Reko.Arch.M68k
             }
         }
 
-		private static bool TryGetImmediate(ImageReader rdr, PrimitiveType type, out MachineOperand op)
-		{
-            if (type.Size == 1)
-            {
-                if (!rdr.IsValidOffset(rdr.Offset + 1))
-                {
-                    op = null;
-                    return false;
-                }
-                rdr.Offset += 1;    // skip a byte so we get the appropriate lsb byte and align the word stream.
-            }
-            if (!rdr.TryReadBe(type, out Constant imm))
-            {
-                op = null; return false;
-            }
-            else
-            {
-                op = new M68kImmediateOperand(imm);
-                return true;
-            }
-        }
-
 		public bool TryParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
 		{
             opcode >>= bitOffset;
             byte operandBits = (byte) (opcode & 7);
             byte addressMode = (byte) ((opcode >> 3) & 7);
-            return TryParseOperandInner(addressMode, operandBits, dataWidth, rdr, out op);
+            return TryParseOperandInner(opcode, addressMode, operandBits, dataWidth, rdr, out op);
         }
 
 		private bool TryParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
@@ -218,7 +64,7 @@ namespace Reko.Arch.M68k
             opcode >>= bitOffset;
             byte addressMode = (byte) (opcode & 7);
             byte operandBits = (byte) ((opcode >> 3) & 7);
-            return TryParseOperandInner(addressMode, operandBits, dataWidth, rdr, out op);
+            return TryParseOperandInner(opcode, addressMode, operandBits, dataWidth, rdr, out op);
         }
 
         private static int GetOpcodeOffset(char c)
@@ -250,7 +96,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-		private bool TryParseOperandInner(byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+		private bool TryParseOperandInner(ushort uInstr, byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
 		{
             Constant offset;
             switch (addressMode)
@@ -279,7 +125,7 @@ namespace Reko.Arch.M68k
                 op = MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0), offset);
                 return true;
             case 6: // Address register indirect with index
-                return TryAddressRegisterIndirectWithIndex(dataWidth, rdr, out op);
+                return TryAddressRegisterIndirectWithIndex(uInstr, dataWidth, rdr, out op);
             case 7:
                 switch (operandBits)
                 {
@@ -390,7 +236,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private bool TryAddressRegisterIndirectWithIndex(PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+        private bool TryAddressRegisterIndirectWithIndex(ushort uInstr, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
         {
             if (!rdr.TryReadBeUInt16(out ushort extension))
             {
@@ -421,7 +267,7 @@ namespace Reko.Arch.M68k
                 }
                 if (EXT_BASE_REGISTER_PRESENT(extension))
                 {
-                    base_reg = Registers.AddressRegister(opcode & 7);
+                    base_reg = Registers.AddressRegister(uInstr & 7);
                 }
                 if (EXT_INDEX_REGISTER_PRESENT(extension))
                 {
@@ -441,7 +287,7 @@ namespace Reko.Arch.M68k
                 op = new IndirectIndexedOperand(
                     dataWidth,
                     EXT_8BIT_DISPLACEMENT(extension),
-                    Registers.AddressRegister(opcode & 7),
+                    Registers.AddressRegister(uInstr & 7),
                     EXT_INDEX_AR(extension)
                         ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
                         : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),

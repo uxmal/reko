@@ -32,19 +32,17 @@ using System.Text;
 namespace Reko.Arch.M68k
 {
     // M68k opcode map in http://www.freescale.com/files/archives/doc/ref_manual/M68000PRM.pdf
+    using Mutator = Mutator<M68kDisassembler>;
 
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
     {
-        private static TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
-
-        private delegate bool Mutator(M68kDisassembler dasm);
-
         public const string HexStringFormat = "{0}${1}";
+
+        private static readonly TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
 
         private EndianImageReader rdr;          // program counter 
         private List<MachineOperand> ops;       // Operand list being built
         internal M68kInstruction instr;         // instruction being built
-        internal ushort uInstr;                 // 16-bit instruction
         private string g_dasm_str;              //string to hold disassembly: OBSOLETE
         private PrimitiveType dataWidth;        // width of data.
         private ushort bitSet;                  // Bit set.
@@ -70,25 +68,18 @@ namespace Reko.Arch.M68k
         public override M68kInstruction DisassembleInstruction()
         {
             var addr = rdr.Address;
-            if (!rdr.TryReadBeUInt16(out uInstr))
+            if (!rdr.TryReadBeUInt16(out ushort uInstr))
                 return null;
             var offset = rdr.Offset;
             Decoder handler = g_instruction_table[uInstr];
-            try
+            instr = new M68kInstruction
             {
-                instr = new M68kInstruction
-                {
-                    Address = addr,
-                    InstructionClass = handler.iclass
-                };
-                instr = handler.UseDecodeMethod(this);
-                if (instr == null)
-                    instr = CreateInvalidInstruction();
-            }
-            catch
-            {
+                Address = addr,
+                InstructionClass = handler.iclass
+            };
+            instr = handler.Decode(uInstr, this);
+            if (instr == null)
                 instr = CreateInvalidInstruction();
-            }
             ops.Clear();
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
@@ -200,8 +191,9 @@ namespace Reko.Arch.M68k
         {
             return new M68kInstruction
             {
-                code = Opcode.illegal,
+                code = Mnemonic.illegal,
                 InstructionClass = InstrClass.Invalid,
+                Operands = new MachineOperand[0]
             };
         }
 
@@ -218,7 +210,7 @@ namespace Reko.Arch.M68k
             public readonly uint match;                 // opcode bit patter (after mask)
             public readonly uint ea_mask;               // Permitted ea modes are allowed 
 
-            public readonly Opcode opcode;              // The decoded opcode.
+            public readonly Mnemonic opcode;              // The decoded opcode.
             public readonly InstrClass iclass;          // Instruction class of the decoded instruction.
             public readonly Mutator[] mutators;         // Format string which when interpreted generates the operands of the dasm.instruction.
 
@@ -236,11 +228,10 @@ namespace Reko.Arch.M68k
             /// <param name="ea_mask"></param>
             /// <param name="opcode"></param>
             /// <param name="iclass"></param>
-            public Decoder(Mutator[] mutators, uint mask, uint match, uint ea_mask, Opcode opcode = Opcode.illegal, InstrClass iclass = InstrClass.Linear)
+            public Decoder(Mutator[] mutators, uint mask, uint match, uint ea_mask, Mnemonic opcode = Mnemonic.illegal, InstrClass iclass = InstrClass.Linear)
             {
                 this.mutators = mutators;
-                if (mutators.Any(m => m == null))
-                    throw new ArgumentException();
+                Debug.Assert(mutators.All(m => m != null));
                 this.mask = mask;
                 this.match = match;
                 this.ea_mask = ea_mask;
@@ -248,33 +239,22 @@ namespace Reko.Arch.M68k
                 this.iclass = iclass;
             }
 
-            public virtual M68kInstruction UseDecodeMethod(M68kDisassembler dasm)
+            public virtual M68kInstruction Decode(uint uInstr, M68kDisassembler dasm)
             {
                 var instr = dasm.instr;
                 instr.code = opcode;
                 instr.InstructionClass = iclass;
                 foreach (var m in mutators)
                 {
-                    if (!m(dasm))
+                    if (!m(uInstr, dasm))
                         return dasm.CreateInvalidInstruction();
                 }
-                if (dasm.ops.Count > 0)
-                {
-                    dasm.instr.op1 = dasm.ops[0];
-                    if (dasm.ops.Count > 1)
-                    {
-                        dasm.instr.op2 = dasm.ops[1];
-                        if (dasm.ops.Count > 2)
-                        {
-                            dasm.instr.op2 = dasm.ops[2];
-                        }
-                    }
-                }
-                return dasm.instr;
+                dasm.instr.Operands = dasm.ops.ToArray();
+                return instr;
             }
         }
 
-        private static Decoder Instr(uint mask, uint match, uint ea_mask, Opcode opcode, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(uint mask, uint match, uint ea_mask, Mnemonic opcode, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[0],
@@ -285,7 +265,7 @@ namespace Reko.Arch.M68k
                 iclass);
         }
 
-        private static Decoder Instr(Mutator m1, uint mask, uint match, uint ea_mask, Opcode opcode = Opcode.illegal, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(Mutator m1, uint mask, uint match, uint ea_mask, Mnemonic opcode = Mnemonic.illegal, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[] { m1 },
@@ -296,7 +276,7 @@ namespace Reko.Arch.M68k
                 iclass);
         }
 
-        private static Decoder Instr(Mutator m1, Mutator m2, uint mask, uint match, uint ea_mask, Opcode opcode, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(Mutator m1, Mutator m2, uint mask, uint match, uint ea_mask, Mnemonic opcode, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[] { m1, m2 },
@@ -307,7 +287,7 @@ namespace Reko.Arch.M68k
                 iclass);
         }
 
-        private static Decoder Instr(Mutator m1, Mutator m2, Mutator m3, uint mask, uint match, uint ea_mask, Opcode opcode, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(Mutator m1, Mutator m2, Mutator m3, uint mask, uint match, uint ea_mask, Mnemonic opcode, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[] { m1, m2, m3 },
@@ -318,7 +298,7 @@ namespace Reko.Arch.M68k
                 iclass);
         }
 
-        private static Decoder Instr(Mutator m1, Mutator m2, Mutator m3, Mutator m4, uint mask, uint match, uint ea_mask, Opcode opcode, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(Mutator m1, Mutator m2, Mutator m3, Mutator m4, uint mask, uint match, uint ea_mask, Mnemonic opcode, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[] { m1, m2, m3, m4 },
@@ -344,31 +324,31 @@ namespace Reko.Arch.M68k
 	        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
         };
 
-        private static Opcode[] g_bcc = new Opcode[16] { 
-            Opcode.bt,  Opcode.bf,  Opcode.bhi, Opcode.bls, Opcode.bcc, Opcode.bcs, Opcode.bne, Opcode.beq, 
-            Opcode.bvc, Opcode.bvs, Opcode.bpl, Opcode.bmi, Opcode.bge, Opcode.blt, Opcode.bgt, Opcode.ble };
-        private static Opcode[] g_dbcc = new Opcode[16] { 
-            Opcode.dbt,  Opcode.dbf,  Opcode.dbhi, Opcode.dbls, Opcode.dbcc, Opcode.dbcs, Opcode.dbne, Opcode.dbeq, 
-            Opcode.dbvc, Opcode.dbvs, Opcode.dbpl, Opcode.dbmi, Opcode.dbge, Opcode.dblt, Opcode.dbgt, Opcode.dble };
-        private static Opcode[] g_scc = new Opcode[16] { 
-            Opcode.st,  Opcode.sf,  Opcode.shi, Opcode.sls, Opcode.scc, Opcode.scs, Opcode.sne, Opcode.seq, 
-            Opcode.svc, Opcode.svs, Opcode.spl, Opcode.smi, Opcode.sge, Opcode.slt, Opcode.sgt, Opcode.sle };
-        private static Opcode[] g_trapcc = new Opcode[16] { 
-            Opcode.trapt,  Opcode.trapf,  Opcode.traphi, Opcode.trapls, Opcode.trapcc, Opcode.trapcs, Opcode.trapne, Opcode.trapeq, 
-            Opcode.trapvc, Opcode.trapvs, Opcode.trappl, Opcode.trapmi, Opcode.trapge, Opcode.traplt, Opcode.trapgt, Opcode.traple
+        private static Mnemonic[] g_bcc = new Mnemonic[16] { 
+            Mnemonic.bt,  Mnemonic.bf,  Mnemonic.bhi, Mnemonic.bls, Mnemonic.bcc, Mnemonic.bcs, Mnemonic.bne, Mnemonic.beq, 
+            Mnemonic.bvc, Mnemonic.bvs, Mnemonic.bpl, Mnemonic.bmi, Mnemonic.bge, Mnemonic.blt, Mnemonic.bgt, Mnemonic.ble };
+        private static Mnemonic[] g_dbcc = new Mnemonic[16] { 
+            Mnemonic.dbt,  Mnemonic.dbf,  Mnemonic.dbhi, Mnemonic.dbls, Mnemonic.dbcc, Mnemonic.dbcs, Mnemonic.dbne, Mnemonic.dbeq, 
+            Mnemonic.dbvc, Mnemonic.dbvs, Mnemonic.dbpl, Mnemonic.dbmi, Mnemonic.dbge, Mnemonic.dblt, Mnemonic.dbgt, Mnemonic.dble };
+        private static Mnemonic[] g_scc = new Mnemonic[16] { 
+            Mnemonic.st,  Mnemonic.sf,  Mnemonic.shi, Mnemonic.sls, Mnemonic.scc, Mnemonic.scs, Mnemonic.sne, Mnemonic.seq, 
+            Mnemonic.svc, Mnemonic.svs, Mnemonic.spl, Mnemonic.smi, Mnemonic.sge, Mnemonic.slt, Mnemonic.sgt, Mnemonic.sle };
+        private static Mnemonic[] g_trapcc = new Mnemonic[16] { 
+            Mnemonic.trapt,  Mnemonic.trapf,  Mnemonic.traphi, Mnemonic.trapls, Mnemonic.trapcc, Mnemonic.trapcs, Mnemonic.trapne, Mnemonic.trapeq, 
+            Mnemonic.trapvc, Mnemonic.trapvs, Mnemonic.trappl, Mnemonic.trapmi, Mnemonic.trapge, Mnemonic.traplt, Mnemonic.trapgt, Mnemonic.traple
         };
 
-        private static Opcode[] g_cpcc = new Opcode[64] 
+        private static Mnemonic[] g_cpcc = new Mnemonic[64] 
         {
             /* 000            001            010            011    100    101    110    111 */
-	          Opcode.fbf,     Opcode.fbeq,   Opcode.fbogt,  Opcode.fboge, Opcode.fbolt, Opcode.fbole, Opcode.fbogl,  Opcode.fbor, /* 000 */
-	          Opcode.fbun,    Opcode.fbueq,  Opcode.fbugt,  Opcode.fbuge, Opcode.fbult, Opcode.fbule, Opcode.fbne,   Opcode.fbt, /* 001 */
-	          Opcode.fbsf,    Opcode.fbseq,  Opcode.fbgt,   Opcode.fbge,  Opcode.fblt,  Opcode.fble,  Opcode.fbgl,   Opcode.fbgle, /* 010 */
-              Opcode.fbngle,  Opcode.fbngl,  Opcode.fbnle,  Opcode.fbnlt, Opcode.fbnge, Opcode.fbngt, Opcode.fbsne,  Opcode.fbst, /* 011 */
-	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,/* 100 */
-	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal, /* 101 */
-	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal, /* 110 */
-	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,/* 111 */
+	          Mnemonic.fbf,     Mnemonic.fbeq,   Mnemonic.fbogt,  Mnemonic.fboge, Mnemonic.fbolt, Mnemonic.fbole, Mnemonic.fbogl,  Mnemonic.fbor, /* 000 */
+	          Mnemonic.fbun,    Mnemonic.fbueq,  Mnemonic.fbugt,  Mnemonic.fbuge, Mnemonic.fbult, Mnemonic.fbule, Mnemonic.fbne,   Mnemonic.fbt, /* 001 */
+	          Mnemonic.fbsf,    Mnemonic.fbseq,  Mnemonic.fbgt,   Mnemonic.fbge,  Mnemonic.fblt,  Mnemonic.fble,  Mnemonic.fbgl,   Mnemonic.fbgle, /* 010 */
+              Mnemonic.fbngle,  Mnemonic.fbngl,  Mnemonic.fbnle,  Mnemonic.fbnlt, Mnemonic.fbnge, Mnemonic.fbngt, Mnemonic.fbsne,  Mnemonic.fbst, /* 011 */
+	          Mnemonic.illegal, Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,/* 100 */
+	          Mnemonic.illegal, Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal, /* 101 */
+	          Mnemonic.illegal, Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal, /* 110 */
+	          Mnemonic.illegal, Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,Mnemonic.illegal,/* 111 */
         };
 
         private static string[] g_mmuregs = new string[] 
@@ -381,31 +361,32 @@ namespace Reko.Arch.M68k
             "", "dc", "ic", "bc"
         };
 
-        private static Opcode[] g_mmucond =
+        private static Mnemonic[] g_mmucond =
         {
-	        Opcode.pbbs, Opcode.pbbc, Opcode.pbls, Opcode.pblc,
-            Opcode.pbss, Opcode.pbsc, Opcode.pbas, Opcode.pbac,
-	        Opcode.pbws, Opcode.pbwc, Opcode.pbis, Opcode.pbic,
-            Opcode.pbgs, Opcode.pbgc, Opcode.pbcs, Opcode.pbcc
+	        Mnemonic.pbbs, Mnemonic.pbbc, Mnemonic.pbls, Mnemonic.pblc,
+            Mnemonic.pbss, Mnemonic.pbsc, Mnemonic.pbas, Mnemonic.pbac,
+	        Mnemonic.pbws, Mnemonic.pbwc, Mnemonic.pbis, Mnemonic.pbic,
+            Mnemonic.pbgs, Mnemonic.pbgc, Mnemonic.pbcs, Mnemonic.pbcc
         };
 
         // Utility functions 
 
-        private bool LIMIT_CPU_TYPES(uint ALLOWED_CPU_TYPES)
+        private bool LIMIT_CPU_TYPES(uint uInstr, uint ALLOWED_CPU_TYPES)
         {
             if ((g_cpu_type & ALLOWED_CPU_TYPES) == 0)
             {
                 if ((uInstr & 0xf000) == 0xf000)
-                    d68000_1111(this);
-                else d68000_illegal(this);
+                    d68000_1111(uInstr, this);
+                else
+                    d68000_illegal(uInstr, this);
                 return false;
             }
             return true;
         }
 
-        private MachineOperand get_ea_mode_str_8(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Byte); }
-        private MachineOperand get_ea_mode_str_16(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Word16); }
-        private MachineOperand get_ea_mode_str_32(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Word32); }
+        private MachineOperand get_ea_mode_str_8(uint instruction) { return get_ea_mode_str(instruction, PrimitiveType.Byte); }
+        private MachineOperand get_ea_mode_str_16(uint instruction) { return get_ea_mode_str(instruction, PrimitiveType.Word16); }
+        private MachineOperand get_ea_mode_str_32(uint instruction) { return get_ea_mode_str(instruction, PrimitiveType.Word32); }
 
         private bool get_imm_str_s8(out M68kImmediateOperand imm) { return TryGetSignedImmediate(0, out imm); }
         private bool get_imm_str_s16(out M68kImmediateOperand imm) { return TryGetSignedImmediate(1, out imm); }
@@ -413,18 +394,19 @@ namespace Reko.Arch.M68k
 
         private bool get_imm_str_u8(out M68kImmediateOperand  imm) { return get_imm_str_u(PrimitiveType.Byte, out imm); }
 
-        private static RegisterOperand get_data_reg(int d) { return new RegisterOperand(Registers.DataRegister(d)); }
-        private static RegisterOperand get_addr_reg(int a) { return new RegisterOperand(Registers.AddressRegister(a)); }
-        private static RegisterOperand get_addr_or_data_reg(bool addrReg, int bits)
+        private static RegisterOperand get_data_reg(uint d) { return new RegisterOperand(Registers.DataRegister(d)); }
+        private static RegisterOperand get_addr_reg(uint a) { return new RegisterOperand(Registers.AddressRegister(a)); }
+        private static RegisterOperand get_addr_or_data_reg(bool addrReg, uint bits)
         {
-            return addrReg ? get_addr_reg(bits) : get_data_reg(bits);
+            var reg = addrReg ? Registers.AddressRegister(bits) : Registers.DataRegister(bits);
+            return new RegisterOperand(reg);
         }
 
         private RegisterOperand get_fp_reg(int fp) { return new RegisterOperand(Registers.FpRegister(fp)); }
 
-        private PredecrementMemoryOperand get_pre_dec(int a)
+        private PredecrementMemoryOperand get_pre_dec(uint uInstr, int offset)
         {
-            return new PredecrementMemoryOperand(instr.dataWidth, Registers.AddressRegister(a & 7));
+            return new PredecrementMemoryOperand(instr.dataWidth, Registers.AddressRegister((uInstr >> offset) & 7));
         }
 
         private PostIncrementMemoryOperand get_post_inc(int a)
@@ -432,9 +414,9 @@ namespace Reko.Arch.M68k
             return new PostIncrementMemoryOperand(instr.dataWidth, Registers.AddressRegister(a & 7));
         }
 
-        private RegisterOperand get_ctrl_reg(string regName, int number)
+        private RegisterOperand get_ctrl_reg(string regName, uint number)
         {
-            return new RegisterOperand(new RegisterStorage(regName, number, 0, PrimitiveType.Word16));
+            return new RegisterOperand(new RegisterStorage(regName, (int)number, 0, PrimitiveType.Word16));
         }
 
         private DoubleRegisterOperand get_double_data_reg(uint d1, uint d2)
@@ -519,26 +501,19 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        static string b1 = "";
-        static string b2 = "";
-        static string mode = b2;
-
         /// <summary>
         /// Build an effective address.
         /// </summary>
-        /// <param name="instruction"></param>
+        /// <param name="uInstr"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        private MachineOperand get_ea_mode_str(uint instruction, PrimitiveType dataWidth)
+        private MachineOperand get_ea_mode_str(uint uInstr, PrimitiveType dataWidth)
         {
             ushort extension;
             bool preindex;
             bool postindex;
 
-            /* Switch buffers so we don't clobber on a double-call to this function */
-            mode = mode == b1 ? b2 : b1;
-
-            switch (instruction & 0x3f)
+            switch (uInstr & 0x3f)
             {
             case 0x00:
             case 0x01:
@@ -549,7 +524,7 @@ namespace Reko.Arch.M68k
             case 0x06:
             case 0x07:
                 // data register direct 
-                return get_data_reg((int)instruction & 7);
+                return get_data_reg(uInstr & 7);
             case 0x08:
             case 0x09:
             case 0x0a:
@@ -559,7 +534,7 @@ namespace Reko.Arch.M68k
             case 0x0e:
             case 0x0f:
                 // address register direct 
-                return get_addr_reg((int)instruction & 7);
+                return get_addr_reg(uInstr & 7);
             case 0x10:
             case 0x11:
             case 0x12:
@@ -569,7 +544,7 @@ namespace Reko.Arch.M68k
             case 0x16:
             case 0x17:
                 // address register indirect
-                return MemoryOperand.Indirect(dataWidth, Registers.AddressRegister((int)instruction & 7));
+                return MemoryOperand.Indirect(dataWidth, Registers.AddressRegister((int)uInstr & 7));
             case 0x18:
             case 0x19:
             case 0x1a:
@@ -579,7 +554,7 @@ namespace Reko.Arch.M68k
             case 0x1e:
             case 0x1f:
                 // address register indirect with postincrement
-                return new PostIncrementMemoryOperand(dataWidth, Registers.AddressRegister((int)instruction & 7));
+                return new PostIncrementMemoryOperand(dataWidth, Registers.AddressRegister((int)uInstr & 7));
             case 0x20:
             case 0x21:
             case 0x22:
@@ -589,7 +564,7 @@ namespace Reko.Arch.M68k
             case 0x26:
             case 0x27:
                 // address register indirect with predecrement
-                return new PredecrementMemoryOperand(dataWidth, Registers.AddressRegister((int)instruction & 7));
+                return new PredecrementMemoryOperand(dataWidth, Registers.AddressRegister(uInstr & 7));
             case 0x28:
             case 0x29:
             case 0x2a:
@@ -603,7 +578,7 @@ namespace Reko.Arch.M68k
                     return null;
                 return MemoryOperand.Indirect(
                     instr.dataWidth,
-                    Registers.AddressRegister((int) instruction & 7),
+                    Registers.AddressRegister(uInstr & 7),
                     Constant.Int16(sDisplacement));
             case 0x30:
             case 0x31:
@@ -642,7 +617,7 @@ namespace Reko.Arch.M68k
                     }
                     if (EXT_BASE_REGISTER_PRESENT(extension))
                     {
-                        base_reg = Registers.AddressRegister(uInstr & 7);
+                        base_reg = Registers.AddressRegister((int)uInstr & 7);
                     }
                     if (EXT_INDEX_REGISTER_PRESENT(extension))
                     {
@@ -662,7 +637,7 @@ namespace Reko.Arch.M68k
                     return new IndirectIndexedOperand(
                         dataWidth,
                         EXT_8BIT_DISPLACEMENT(extension),
-                        Registers.AddressRegister(uInstr & 7),
+                        Registers.AddressRegister((int)uInstr & 7),
                         EXT_INDEX_AR(extension)
                             ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
                             : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension)),
@@ -757,7 +732,7 @@ namespace Reko.Arch.M68k
                 }
                 return new M68kImmediateOperand(coff);
             }
-            this.instr.code = Opcode.illegal;
+            this.instr.code = Mnemonic.illegal;
             return null;
         }
 
@@ -799,78 +774,78 @@ namespace Reko.Arch.M68k
          * al  : absolute long
          */
 
-        private static bool d68000_illegal(M68kDisassembler dasm)
+        private static bool d68000_illegal(uint uInstr, M68kDisassembler dasm)
         {
             return false;
             //throw new NotSupportedException(string.Format("dc.w    ${0:X}; ILLEGAL", dasm.instruction));
         }
 
-        private static bool d68000_1010(M68kDisassembler dasm)
+        private static bool d68000_1010(uint uInstr, M68kDisassembler dasm)
         {
-            if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1010", dasm.uInstr);
-            dasm.instr.code = Opcode.illegal;
+            if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1010", uInstr);
+            dasm.instr.code = Mnemonic.illegal;
             dasm.instr.InstructionClass = InstrClass.Invalid;
-            dasm.instr.op1 = new M68kImmediateOperand(Constant.Word16(dasm.uInstr));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.Word16((ushort) uInstr)));
             return true;
         }
 
-        private static bool d68000_1111(M68kDisassembler dasm)
+        private static bool d68000_1111(uint uInstr, M68kDisassembler dasm)
         {
-            if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1111", dasm.uInstr);
+            if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1111", uInstr);
             return false;
         }
 
-        private static bool d68000_bcc_8(M68kDisassembler dasm)
+        private static bool d68000_bcc_8(uint uInstr, M68kDisassembler dasm)
         {
-            var temp_pc = dasm.rdr.Address + (sbyte) dasm.uInstr;
-            dasm.instr.code = g_bcc[(dasm.uInstr >> 8) & 0xf];
+            var temp_pc = dasm.rdr.Address + (sbyte) uInstr;
+            dasm.instr.code = g_bcc[(uInstr >> 8) & 0xf];
             dasm.instr.InstructionClass = InstrClass.ConditionalTransfer;
-            dasm.instr.op1 = new M68kAddressOperand(temp_pc);
+            dasm.ops.Add(new M68kAddressOperand(temp_pc));
             return true;
         }
 
-        private static bool d68000_bcc_16(M68kDisassembler dasm)
+        private static bool d68000_bcc_16(uint uInstr, M68kDisassembler dasm)
         {
             var temp_pc = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt16(out short s))
                 return false;
-            dasm.instr.code = g_bcc[(dasm.uInstr >> 8) & 0xf]; 
+            dasm.instr.code = g_bcc[(uInstr >> 8) & 0xf]; 
             dasm.instr.InstructionClass = InstrClass.ConditionalTransfer;
-            dasm.instr.op1 = new M68kAddressOperand(temp_pc + s);
+            dasm.ops.Add(new M68kAddressOperand(temp_pc + s));
             return true;
         }
 
-        private static bool d68020_bcc_32(M68kDisassembler dasm)
+        private static bool d68020_bcc_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             var temp_pc = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt32(out int s))
                 return false;
-            dasm.instr.code = g_bcc[(dasm.uInstr >> 8) & 0xf]; 
+            dasm.instr.code = g_bcc[(uInstr >> 8) & 0xf]; 
             dasm.instr.InstructionClass = InstrClass.ConditionalTransfer;
-            dasm.instr.op1 = new M68kAddressOperand(temp_pc + s);
+            dasm.ops.Add(new M68kAddressOperand(temp_pc + s));
             return true;
         }
 
-        private static bool d68010_bkpt(M68kDisassembler dasm)
+        private static bool d68010_bkpt(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
-            dasm.instr.code = Opcode.bkpt;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
+            dasm.instr.code = Mnemonic.bkpt;
             dasm.instr.InstructionClass = InstrClass.System;
-            dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (dasm.uInstr & 7)));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (uInstr & 7))));
             return true;
         }
 
-        private static bool d68020_bfchg(M68kDisassembler dasm)
+        private static bool d68020_bfchg(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
 
             MachineOperand offset;
             if (BIT_B(extension))
-                offset = get_data_reg((extension >> 6) & 7);
+                offset = get_data_reg((uint)(extension >> 6) & 7);
             else
                 offset = new M68kImmediateOperand(Constant.Byte((byte)((extension >> 6) & 31)));
 
@@ -880,46 +855,46 @@ namespace Reko.Arch.M68k
             else
                 width = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
 
-            dasm.instr.code = Opcode.bfchg;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.op2 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            dasm.instr.code = Mnemonic.bfchg;
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
+            dasm.ops.Add(new BitfieldOperand(PrimitiveType.Word32, offset, width));
             return true;
         }
 
-        private static bool d68020_bfclr(M68kDisassembler dasm)
+        private static bool d68020_bfclr(uint uInstr, M68kDisassembler dasm)
         {
             MachineOperand offset;
             MachineOperand width;
 
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
 
             if (BIT_B(extension))
-                offset = get_data_reg((extension >> 6) & 7);
+                offset = get_data_reg((uint)(extension >> 6) & 7);
             else
                 offset = new M68kImmediateOperand(Constant.Byte((byte)((extension >> 6) & 31)));
             if (BIT_5(extension))
                 width = new RegisterOperand(Registers.DataRegister(extension & 7));
             else
                 width = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
-            dasm.instr.code = Opcode.bfclr;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.op2 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            dasm.instr.code = Mnemonic.bfclr;
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
+            dasm.ops.Add(new BitfieldOperand(PrimitiveType.Word32, offset, width));
             return true;
         }
 
-        private static bool d68020_bfexts(M68kDisassembler dasm)
+        private static bool d68020_bfexts(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
 
             MachineOperand offset;
             if (BIT_B(extension))
-                offset = get_data_reg((extension >> 6) & 7);
+                offset = get_data_reg((uint)(extension >> 6) & 7);
             else
                 offset = new M68kImmediateOperand(Constant.Byte((byte) ((extension >> 6) & 31)));
             MachineOperand width;
@@ -927,21 +902,21 @@ namespace Reko.Arch.M68k
                 width = new RegisterOperand(Registers.DataRegister(extension & 7));
             else
                 width = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
-            dasm.instr.code = Opcode.bfexts;
-            dasm.instr.op1 = get_data_reg((extension >> 12) & 7);
-            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.op3 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            dasm.instr.code = Mnemonic.bfexts;
+            dasm.ops.Add(get_data_reg((uint)(extension >> 12) & 7));
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
+            dasm.ops.Add(new BitfieldOperand(PrimitiveType.Word32, offset, width));
             return true;
         }
 
-        private static bool d68020_bfextu(M68kDisassembler dasm)
+        private static bool d68020_bfextu(uint uInstr, M68kDisassembler dasm)
         {
             return false;
             //uint extension;
             //string offset; ;
             //string width; ;
 
-            //dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            //dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             //extension = dasm.read_imm_16();
 
@@ -957,9 +932,9 @@ namespace Reko.Arch.M68k
             //throw new NotImplementedException();
         }
 
-        private static bool d68020_bfffo(M68kDisassembler dasm)
+        private static bool d68020_bfffo(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
@@ -970,16 +945,16 @@ namespace Reko.Arch.M68k
             var width = BIT_5(extension)
                 ? new RegisterOperand(Registers.DataRegister(extension & 7))
                 : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int) g_5bit_data_table[extension & 31]));
-            dasm.instr.code = Opcode.bfffo;
-            dasm.instr.op1 = get_data_reg((extension >> 12) & 7);
-            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.op3 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            dasm.instr.code = Mnemonic.bfffo;
+            dasm.ops.Add(get_data_reg((uint)(extension >> 12) & 7));
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
+            dasm.ops.Add(new BitfieldOperand(PrimitiveType.Word32, offset, width));
             return true;
         }
 
-        private static bool d68020_bfins(M68kDisassembler dasm)
+        private static bool d68020_bfins(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
@@ -990,16 +965,16 @@ namespace Reko.Arch.M68k
             var width = BIT_5(extension)
                 ? new RegisterOperand(Registers.DataRegister(extension & 7))
                 : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int)g_5bit_data_table[extension & 31]));
-            dasm.instr.code = Opcode.bfins;
-            dasm.instr.op1 = new RegisterOperand(Registers.DataRegister((extension >> 12) & 7));
-            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.op3 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            dasm.instr.code = Mnemonic.bfins;
+            dasm.ops.Add(new RegisterOperand(Registers.DataRegister((extension >> 12) & 7)));
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
+            dasm.ops.Add(new BitfieldOperand(PrimitiveType.Word32, offset, width));
             return true;
         }
 
-        private static bool d68020_bfset(M68kDisassembler dasm)
+        private static bool d68020_bfset(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
@@ -1009,15 +984,15 @@ namespace Reko.Arch.M68k
             var width = BIT_5(extension)
                 ? new RegisterOperand(Registers.DataRegister(extension & 7))
                 : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int)g_5bit_data_table[extension & 31]));
-            dasm.instr.code = Opcode.bfins;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.op2 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            dasm.instr.code = Mnemonic.bfins;
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
+            dasm.ops.Add(new BitfieldOperand(PrimitiveType.Word32, offset, width));
             return true;
         }
 
-        private static bool d68020_bftst(M68kDisassembler dasm)
+        private static bool d68020_bftst(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
@@ -1028,67 +1003,67 @@ namespace Reko.Arch.M68k
             var width = BIT_5(extension)
                 ? new RegisterOperand(Registers.DataRegister(extension & 7))
                 : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int) g_5bit_data_table[extension & 31]));
-            dasm.instr.code = Opcode.bftst;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.op2 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            dasm.instr.code = Mnemonic.bftst;
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
+            dasm.ops.Add(new BitfieldOperand(PrimitiveType.Word32, offset, width));
             return true;
         }
 
-        private static bool d68020_callm(M68kDisassembler dasm)
+        private static bool d68020_callm(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_ONLY);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_ONLY);
             if (!dasm.TryReadImm8(out byte b))
                 return false;
-            dasm.instr.code = Opcode.callm;
+            dasm.instr.code = Mnemonic.callm;
             dasm.instr.InstructionClass = InstrClass.Transfer|InstrClass.Call;
-            dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte(b));
-            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(new M68kImmediateOperand(Constant.Byte(b)));
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68020_cas_8(M68kDisassembler dasm)
+        private static bool d68020_cas_8(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
-            dasm.instr.code = Opcode.cas;
+            dasm.instr.code = Mnemonic.cas;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
-            dasm.instr.op1 = get_data_reg((int) extension & 7);
-            dasm.instr.op2 = get_data_reg((int) (extension >> 8) & 7);
-            dasm.instr.op3 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(get_data_reg(extension & 7u));
+            dasm.ops.Add(get_data_reg((uint)(extension >> 8) & 7));
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68020_cas_16(M68kDisassembler dasm)
+        private static bool d68020_cas_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
-            dasm.instr.code = Opcode.cas;
+            dasm.instr.code = Mnemonic.cas;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = get_data_reg((int) extension & 7);
-            dasm.instr.op2 = get_data_reg((int) (extension >> 8) & 7);
-            dasm.instr.op3 = dasm.get_ea_mode_str_16(dasm.uInstr);
+            dasm.ops.Add(get_data_reg(extension & 7u));
+            dasm.ops.Add(get_data_reg((uint) (extension >> 8) & 7));
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
 
-        private static bool d68020_cas_32(M68kDisassembler dasm)
+        private static bool d68020_cas_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
-            dasm.instr.code = Opcode.cas;
+            dasm.instr.code = Mnemonic.cas;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = get_data_reg((int) extension & 7);
-            dasm.instr.op2 = get_data_reg((int) (extension >> 8) & 7);
-            dasm.instr.op3 = dasm.get_ea_mode_str_32(dasm.uInstr);
+            dasm.ops.Add(get_data_reg(extension & 7u));
+            dasm.ops.Add(get_data_reg((uint) (extension >> 8) & 7));
+            dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
 
-        private static bool d68020_cas2_16(M68kDisassembler dasm)
+        private static bool d68020_cas2_16(uint uInstr, M68kDisassembler dasm)
         {
             /* CAS2 Dc1:Dc2,Du1:Dc2:(Rn1):(Rn2)
             f e d c b a 9 8 7 6 5 4 3 2 1 0
@@ -1096,7 +1071,7 @@ namespace Reko.Arch.M68k
              DARn2  0 0 0  Du2  0 0 0  Dc2
             */
 
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt32(out uint extension))
                 return false;
             dasm.g_dasm_str = string.Format("cas2.w  D{0}:D%d:D%d:D%d, (%c%d):(%c%d); (2+)",
@@ -1106,9 +1081,9 @@ namespace Reko.Arch.M68k
             return false;
         }
 
-        private static bool d68020_cas2_32(M68kDisassembler dasm)
+        private static bool d68020_cas2_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (dasm.rdr.TryReadBeUInt32(out uint extension))
                 return false;
             dasm.g_dasm_str = string.Format("cas2.l  D{0}:D%d:D%d:D%d, (%c%d):(%c%d); (2+)",
@@ -1118,196 +1093,196 @@ namespace Reko.Arch.M68k
             return false;
         }
 
-        private static bool d68000_chk_16(M68kDisassembler dasm)
+        private static bool d68000_chk_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = Opcode.chk;
+            dasm.instr.code = Mnemonic.chk;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
-            dasm.instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
+            dasm.ops.Add(get_data_reg((uInstr >> 9) & 7));
             return true;
         }
 
-        private static bool d68020_chk_32(M68kDisassembler dasm)
+        private static bool d68020_chk_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.chk;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.chk;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
-            dasm.instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
+            dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
+            dasm.ops.Add(get_data_reg((uInstr >> 9) & 7));
             return true;
         }
 
-        private static bool d68020_chk2_cmp2_8(M68kDisassembler dasm)
+        private static bool d68020_chk2_cmp2_8(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
 
-            dasm.instr.code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2;
+            dasm.instr.code = BIT_B(extension) ? Mnemonic.chk2 : Mnemonic.cmp2;
             dasm.instr.InstructionClass = InstrClass.Invalid;
             dasm.instr.dataWidth = PrimitiveType.Byte;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.op2 = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
+            dasm.ops.Add(get_addr_or_data_reg(BIT_F(extension), (uint) (extension >> 12) & 7));
             return true;
         }
 
-        private static bool d68020_chk2_cmp2_16(M68kDisassembler dasm)
+        private static bool d68020_chk2_cmp2_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
-            dasm.instr.code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2;
+            dasm.instr.code = BIT_B(extension) ? Mnemonic.chk2 : Mnemonic.cmp2;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
-            dasm.instr.op2 = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
+            dasm.ops.Add(get_addr_or_data_reg(BIT_F(extension), (uint) (extension >> 12) & 7));
             return true;
         }
 
-        private static bool d68020_chk2_cmp2_32(M68kDisassembler dasm)
+        private static bool d68020_chk2_cmp2_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
 
-            dasm.instr.code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2;
+            dasm.instr.code = BIT_B(extension) ? Mnemonic.chk2 : Mnemonic.cmp2;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
-            dasm.instr.op2 = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
+            dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
+            dasm.ops.Add(get_addr_or_data_reg(BIT_F(extension), (uint) (extension >> 12) & 7));
             return true;
         }
 
-        private static bool d68040_cinv(M68kDisassembler dasm)
+        private static bool d68040_cinv(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68040_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
             var cache = new RegisterStorage(
-                g_caches[(dasm.uInstr >> 6) & 3],
+                g_caches[(uInstr >> 6) & 3],
                 0,
                 0,
                 PrimitiveType.Word32);
 
-            switch ((dasm.uInstr >> 3) & 3)
+            switch ((uInstr >> 3) & 3)
             {
             case 0:
                 dasm.instr.InstructionClass = InstrClass.Invalid;
-                dasm.instr.code = Opcode.cinv; // illegal
+                dasm.instr.code = Mnemonic.cinv; // illegal
                 break;
             case 1:
-                dasm.instr.code = Opcode.cinvl;
-                dasm.instr.op1 = new RegisterOperand(cache);
-                dasm.instr.op2 = MemoryOperand.Indirect(PrimitiveType.Word32, Registers.AddressRegister((int) dasm.uInstr & 7));
+                dasm.instr.code = Mnemonic.cinvl;
+                dasm.ops.Add(new RegisterOperand(cache));
+                dasm.ops.Add(MemoryOperand.Indirect(PrimitiveType.Word32, Registers.AddressRegister((int) uInstr & 7)));
                 break;
             case 2:
-                dasm.instr.code = Opcode.cinvp;
-                dasm.instr.op1 = new RegisterOperand(cache);
-                dasm.instr.op2 = MemoryOperand.Indirect(PrimitiveType.Word32, Registers.AddressRegister((int) dasm.uInstr & 7));
+                dasm.instr.code = Mnemonic.cinvp;
+                dasm.ops.Add(new RegisterOperand(cache));
+                dasm.ops.Add(MemoryOperand.Indirect(PrimitiveType.Word32, Registers.AddressRegister((int) uInstr & 7)));
                 break;
             case 3:
-                dasm.instr.code = Opcode.cinva;
-                dasm.instr.op1 = new RegisterOperand(cache);
+                dasm.instr.code = Mnemonic.cinva;
+                dasm.ops.Add(new RegisterOperand(cache));
                 break;
             }
             return true;
         }
 
-        private static bool d68020_cmpi_pcdi_8(M68kDisassembler dasm)
+        private static bool d68020_cmpi_pcdi_8(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.get_imm_str_s8(out var imm))
                 return false;
-            dasm.instr.code = Opcode.cmpi;
+            dasm.instr.code = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = imm;
-            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(imm);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68020_cmpi_pcix_8(M68kDisassembler dasm)
+        private static bool d68020_cmpi_pcix_8(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.get_imm_str_s8(out var imm))
                 return false;
-            dasm.instr.code = Opcode.cmpi;
+            dasm.instr.code = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
-            dasm.instr.op1 = imm;
-            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(imm);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68020_cmpi_pcdi_16(M68kDisassembler dasm)
+        private static bool d68020_cmpi_pcdi_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
-            dasm.instr.code = Opcode.cmpi;
+            dasm.instr.code = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = imm;
-            dasm.instr.op2 = dasm.get_ea_mode_str_16(dasm.uInstr);
+            dasm.ops.Add(imm);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
 
-        private static bool d68020_cmpi_pcix_16(M68kDisassembler dasm)
+        private static bool d68020_cmpi_pcix_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
-            dasm.instr.code = Opcode.cmpi;
+            dasm.instr.code = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = imm;
-            dasm.instr.op2 = dasm.get_ea_mode_str_16(dasm.uInstr);
+            dasm.ops.Add(imm);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
 
-        private static bool d68020_cmpi_pcdi_32(M68kDisassembler dasm)
+        private static bool d68020_cmpi_pcdi_32(uint uInstr, M68kDisassembler dasm)
         {
             if (!dasm.get_imm_str_s32(out var imm))
                 return false;
-            dasm.instr.code = Opcode.cmpi;
+            dasm.instr.code = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = imm;
-            dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.uInstr);
+            dasm.ops.Add(imm);
+            dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
 
-        private static bool d68020_cmpi_pcix_32(M68kDisassembler dasm)
+        private static bool d68020_cmpi_pcix_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.get_imm_str_s32(out var imm))
                 return false;
-            dasm.instr.code = Opcode.cmpi;
+            dasm.instr.code = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = imm;
-            dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.uInstr);
+            dasm.ops.Add(imm);
+            dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
 
-        private static bool d68020_cpbcc_16(M68kDisassembler dasm)
+        private static bool d68020_cpbcc_16(uint uInstr, M68kDisassembler dasm)
         {
             var new_pc = dasm.rdr.Address;
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            Opcode opcode = g_cpcc[dasm.uInstr & 0x3f];
-            if (opcode == Opcode.illegal)
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            Mnemonic opcode = g_cpcc[uInstr & 0x3f];
+            if (opcode == Mnemonic.illegal)
                 return false;
             if (!dasm.rdr.TryReadBeInt16(out var displacement))
                 return false;
             dasm.instr.code = opcode;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = new M68kAddressOperand(new_pc + displacement);
+            dasm.ops.Add(new M68kAddressOperand(new_pc + displacement));
             return true;
         }
 
-        private static bool d68020_cpbcc_32(M68kDisassembler dasm)
+        private static bool d68020_cpbcc_32(uint uInstr, M68kDisassembler dasm)
         {
             var new_pc = dasm.rdr.Address;
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
             if (!dasm.rdr.TryReadBeInt32(out int sDisplacement))
@@ -1316,14 +1291,14 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
 
-            dasm.g_dasm_str = string.Format("%db%-4s  %s; %x (extension = %x) (2-3)", (dasm.uInstr >> 9) & 7, g_cpcc[dasm.uInstr & 0x3f], imm, new_pc, extension);
+            dasm.g_dasm_str = string.Format("%db%-4s  %s; %x (extension = %x) (2-3)", (uInstr >> 9) & 7, g_cpcc[uInstr & 0x3f], imm, new_pc, extension);
             return true;
         }
 
-        private static bool d68020_cpdbcc(M68kDisassembler dasm)
+        private static bool d68020_cpdbcc(uint uInstr, M68kDisassembler dasm)
         {
             var new_pc = dasm.rdr.Address;
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension1))
                 return false;
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension2))
@@ -1333,77 +1308,77 @@ namespace Reko.Arch.M68k
             new_pc += sDisplacement;
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
-            dasm.g_dasm_str = string.Format("%ddb%-4s D%d,%s; %x (extension = %x) (2-3)", (dasm.uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.uInstr & 7, imm, new_pc, extension2);
+            dasm.g_dasm_str = string.Format("%ddb%-4s D%d,%s; %x (extension = %x) (2-3)", (uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], uInstr & 7, imm, new_pc, extension2);
             return true;
         }
 
-        private static bool d68020_cpgen(M68kDisassembler dasm)
+        private static bool d68020_cpgen(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt32(out uint u))
                 return false;
-            dasm.g_dasm_str = string.Format("%dgen    %s; (2-3)", (dasm.uInstr >> 9) & 7, u);
+            dasm.g_dasm_str = string.Format("%dgen    %s; (2-3)", (uInstr >> 9) & 7, u);
             return false;
         }
 
-        private static bool d68020_cprestore(M68kDisassembler dasm)
+        private static bool d68020_cprestore(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            if (((dasm.uInstr >> 9) & 7) == 1)
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            if (((uInstr >> 9) & 7) == 1)
             {
-                dasm.instr.code = Opcode.frestore;
-                dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
+                dasm.instr.code = Mnemonic.frestore;
+                dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
                 return true;
             }
             else
             {
-                dasm.g_dasm_str = string.Format("%drestore %s; (2-3)", (dasm.uInstr >> 9) & 7, dasm.get_ea_mode_str_8(dasm.uInstr));
+                dasm.g_dasm_str = string.Format("%drestore %s; (2-3)", (uInstr >> 9) & 7, dasm.get_ea_mode_str_8(uInstr));
             }
             return false;
         }
 
-        private static bool d68020_cpsave(M68kDisassembler dasm)
+        private static bool d68020_cpsave(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            if (((dasm.uInstr >> 9) & 7) == 1)
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            if (((uInstr >> 9) & 7) == 1)
             {
-                dasm.instr.code = Opcode.fsave;
-                dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
+                dasm.instr.code = Mnemonic.fsave;
+                dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
                 return true;
             }
             else
             {
-                dasm.g_dasm_str = string.Format("{0}save   {1}; (2-3)", (dasm.uInstr >> 9) & 7, dasm.get_ea_mode_str_8(dasm.uInstr));
+                dasm.g_dasm_str = string.Format("{0}save   {1}; (2-3)", (uInstr >> 9) & 7, dasm.get_ea_mode_str_8(uInstr));
             }
             return false;
         }
 
-        private static bool d68020_cpscc(M68kDisassembler dasm)
+        private static bool d68020_cpscc(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             // 0 - MMU
             // 1 - MC68881/2 FPU
-            int cooprocessor_id = (dasm.uInstr >> 9) & 7;
+            int cooprocessor_id = (int)(uInstr >> 9) & 7;
             if (dasm.rdr.TryReadBeUInt16(out var extension1))
                 return false;
-            dasm.g_dasm_str = string.Format("{0}cpS{1}  %s; (extension = %x) (2-3)", cooprocessor_id, g_cpcc[extension1 & 0x3f], dasm.get_ea_mode_str_8(dasm.uInstr));
+            dasm.g_dasm_str = string.Format("{0}cpS{1}  %s; (extension = %x) (2-3)", cooprocessor_id, g_cpcc[extension1 & 0x3f], dasm.get_ea_mode_str_8(uInstr));
             return false;
         }
 
-        private static bool d68020_cptrapcc_0(M68kDisassembler dasm)
+        private static bool d68020_cptrapcc_0(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (dasm.rdr.TryReadBeUInt16(out var extension1))
                 return false;
             if (dasm.rdr.TryReadBeUInt16(out var extension2))
                 return false;
-            dasm.g_dasm_str = string.Format("{0}cptrap{1,4}; (extension = {2:X}) (2-3)", (dasm.uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], extension2);
+            dasm.g_dasm_str = string.Format("{0}cptrap{1,4}; (extension = {2:X}) (2-3)", (uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], extension2);
             return false;
         }
 
-        private static bool d68020_cptrapcc_16(M68kDisassembler dasm)
+        private static bool d68020_cptrapcc_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out var extension1))
                 return false;
@@ -1411,71 +1386,71 @@ namespace Reko.Arch.M68k
                 return false;
             if (!dasm.rdr.TryReadBeInt16(out var s))
                 return false;
-            dasm.g_dasm_str = string.Format("{0}trap{1,4} {2}; (extension = {3}) (2-3)", (dasm.uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], s, extension2);
+            dasm.g_dasm_str = string.Format("{0}trap{1,4} {2}; (extension = {3}) (2-3)", (uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], s, extension2);
             return false;
         }
 
-        private static bool d68020_cptrapcc_32(M68kDisassembler dasm)
+        private static bool d68020_cptrapcc_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out var extension1))
                 return false;
             if (!dasm.rdr.TryReadBeUInt16(out var extension2))
                 return false;
             if (!dasm.rdr.TryReadBeUInt32(out uint u))
                 return false;
-            dasm.g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", (dasm.uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], new M68kImmediateOperand(Constant.UInt32(u)), extension2);
+            dasm.g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", (uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], new M68kImmediateOperand(Constant.UInt32(u)), extension2);
             return false;
         }
 
-        private static bool d68040_cpush(M68kDisassembler dasm)
+        private static bool d68040_cpush(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68040_PLUS);
-            switch ((dasm.uInstr >> 3) & 3)
+            dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
+            switch ((uInstr >> 3) & 3)
             {
             case 0:
                 dasm.g_dasm_str = string.Format("cpush (illegal scope); (4)");
                 break;
             case 1:
-                dasm.g_dasm_str = string.Format("cpushl  {0}, (A%d); (4)", (dasm.uInstr >> 6) & 3, dasm.uInstr & 7);
+                dasm.g_dasm_str = string.Format("cpushl  {0}, (A%d); (4)", (uInstr >> 6) & 3, uInstr & 7);
                 break;
             case 2:
-                dasm.g_dasm_str = string.Format("cpushp  {0}, (A%d); (4)", (dasm.uInstr >> 6) & 3, dasm.uInstr & 7);
+                dasm.g_dasm_str = string.Format("cpushp  {0}, (A%d); (4)", (uInstr >> 6) & 3, uInstr & 7);
                 break;
             case 3:
-                dasm.g_dasm_str = string.Format("cpusha  {0}; (4)", (dasm.uInstr >> 6) & 3);
+                dasm.g_dasm_str = string.Format("cpusha  {0}; (4)", (uInstr >> 6) & 3);
                 break;
             }
             return false;
         }
 
-        private static bool d68000_dbcc(M68kDisassembler dasm)
+        private static bool d68000_dbcc(uint uInstr, M68kDisassembler dasm)
         {
             Address temp_pc = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
                 return false;
             dasm.instr.InstructionClass = InstrClass.ConditionalTransfer;
-            dasm.instr.code = g_dbcc[(dasm.uInstr >> 8) & 0xf];
-            dasm.instr.op1 = get_data_reg(dasm.uInstr & 7);
-            dasm.instr.op2 = new M68kAddressOperand(temp_pc + sDisplacement);
+            dasm.instr.code = g_dbcc[(uInstr >> 8) & 0xf];
+            dasm.ops.Add(get_data_reg(uInstr & 7));
+            dasm.ops.Add(new M68kAddressOperand(temp_pc + sDisplacement));
             return true;
         }
 
-        private static bool d68020_divl(M68kDisassembler dasm)
+        private static bool d68020_divl(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
 
-            var ea = dasm.get_ea_mode_str_32(dasm.uInstr);
-            Opcode code;
+            var ea = dasm.get_ea_mode_str_32(uInstr);
+            Mnemonic code;
             if (BIT_B(extension))
             {
-                code = BIT_A(extension) ? Opcode.divs : Opcode.divsl;
+                code = BIT_A(extension) ? Mnemonic.divs : Mnemonic.divsl;
             }
             else
             {
-                code = BIT_A(extension) ? Opcode.divu : Opcode.divul;
+                code = BIT_A(extension) ? Mnemonic.divu : Mnemonic.divul;
             }
             var dq = (uint) (extension >> 12) & 7;
             var dr = (uint) (extension & 7);
@@ -1488,7 +1463,7 @@ namespace Reko.Arch.M68k
             }
             else if (dr == dq)
             {
-                op2 = get_data_reg((int) dq);
+                op2 = get_data_reg(dq);
                 dataWidth = PrimitiveType.Int32;
             }
             else
@@ -1500,33 +1475,33 @@ namespace Reko.Arch.M68k
             dasm.instr.code = code;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = dataWidth;
-            dasm.instr.op1 = ea;
-            dasm.instr.op2 = op2;
+            dasm.ops.Add(ea);
+            dasm.ops.Add(op2);
             return true;
         }
 
-        private static bool d68000_eori_to_ccr(M68kDisassembler dasm)
+        private static bool d68000_eori_to_ccr(uint uInstr, M68kDisassembler dasm)
         {
             if (!dasm.get_imm_str_u8(out var imm))
                 return false;
 
-            dasm.instr.code = Opcode.eori;
+            dasm.instr.code = Mnemonic.eori;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = imm;
-            dasm.instr.op2 = new RegisterOperand(Registers.ccr);
+            dasm.ops.Add(imm);
+            dasm.ops.Add(new RegisterOperand(Registers.ccr));
             return true;
         }
 
-        private static bool d68000_eori_to_sr(M68kDisassembler dasm)
+        private static bool d68000_eori_to_sr(uint uInstr, M68kDisassembler dasm)
         {
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension1))
                 return false;
 
-            dasm.instr.code = Opcode.eori;
+            dasm.instr.code = Mnemonic.eori;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt16(extension1));
-            dasm.instr.op2 = new RegisterOperand(Registers.sr);
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(extension1)));
+            dasm.ops.Add(new RegisterOperand(Registers.sr));
             return true;
         }
 
@@ -1542,11 +1517,11 @@ namespace Reko.Arch.M68k
             null,                 // ".p"
 	    };
 
-        private static bool d68040_fpu(M68kDisassembler dasm)
+        private static bool d68040_fpu(uint uInstr, M68kDisassembler dasm)
         {
-            Opcode mnemonic;
+            Mnemonic mnemonic;
             uint src, dst_reg;
-            dasm.LIMIT_CPU_TYPES(M68030_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68030_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort w2))
                 return false;
 
@@ -1557,9 +1532,9 @@ namespace Reko.Arch.M68k
             // special override for FMOVECR
             if ((((w2 >> 13) & 0x7) == 2) && (((w2 >> 10) & 0x7) == 7))
             {
-                instr.code = Opcode.fmovecr;
-                instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (w2 & 0x7f)));
-                instr.op2 = dasm.get_fp_reg((int) dst_reg);
+                instr.code = Mnemonic.fmovecr;
+                dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (w2 & 0x7f))));
+                dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
                 return true;
             }
 
@@ -1570,41 +1545,41 @@ namespace Reko.Arch.M68k
                 {
                     switch (w2 & 0x7f)
                     {
-                    case 0x00: mnemonic = Opcode.fmove; break;
-                    case 0x01: mnemonic = Opcode.fint; break;
-                    case 0x02: mnemonic = Opcode.fsinh; break;
-                    case 0x03: mnemonic = Opcode.fintrz; break;
-                    case 0x04: mnemonic = Opcode.fsqrt; break;
-                    case 0x06: mnemonic = Opcode.flognp1; break;
-                    case 0x08: mnemonic = Opcode.fetoxm1; break;
-                    case 0x09: mnemonic = Opcode.ftanh1; break;
-                    case 0x0a: mnemonic = Opcode.fatan; break;
-                    case 0x0c: mnemonic = Opcode.fasin; break;
-                    case 0x0d: mnemonic = Opcode.fatanh; break;
-                    case 0x0e: mnemonic = Opcode.fsin; break;
-                    case 0x0f: mnemonic = Opcode.ftan; break;
-                    case 0x10: mnemonic = Opcode.fetox; break;
-                    case 0x11: mnemonic = Opcode.ftwotox; break;
-                    case 0x12: mnemonic = Opcode.ftentox; break;
-                    case 0x14: mnemonic = Opcode.flogn; break;
-                    case 0x15: mnemonic = Opcode.flog10; break;
-                    case 0x16: mnemonic = Opcode.flog2; break;
-                    case 0x18: mnemonic = Opcode.fabs; break;
-                    case 0x19: mnemonic = Opcode.fcosh; break;
-                    case 0x1a: mnemonic = Opcode.fneg; break;
-                    case 0x1c: mnemonic = Opcode.facos; break;
-                    case 0x1d: mnemonic = Opcode.fcos; break;
-                    case 0x1e: mnemonic = Opcode.fgetexp; break;
-                    case 0x1f: mnemonic = Opcode.fgetman; break;
-                    case 0x20: mnemonic = Opcode.fdiv; break;
-                    case 0x21: mnemonic = Opcode.fmod; break;
-                    case 0x22: mnemonic = Opcode.fadd; break;
-                    case 0x23: mnemonic = Opcode.fmul; break;
-                    case 0x24: mnemonic = Opcode.fsgldiv; break;
-                    case 0x25: mnemonic = Opcode.frem; break;
-                    case 0x26: mnemonic = Opcode.fscale; break;
-                    case 0x27: mnemonic = Opcode.fsglmul; break;
-                    case 0x28: mnemonic = Opcode.fsub; break;
+                    case 0x00: mnemonic = Mnemonic.fmove; break;
+                    case 0x01: mnemonic = Mnemonic.fint; break;
+                    case 0x02: mnemonic = Mnemonic.fsinh; break;
+                    case 0x03: mnemonic = Mnemonic.fintrz; break;
+                    case 0x04: mnemonic = Mnemonic.fsqrt; break;
+                    case 0x06: mnemonic = Mnemonic.flognp1; break;
+                    case 0x08: mnemonic = Mnemonic.fetoxm1; break;
+                    case 0x09: mnemonic = Mnemonic.ftanh1; break;
+                    case 0x0a: mnemonic = Mnemonic.fatan; break;
+                    case 0x0c: mnemonic = Mnemonic.fasin; break;
+                    case 0x0d: mnemonic = Mnemonic.fatanh; break;
+                    case 0x0e: mnemonic = Mnemonic.fsin; break;
+                    case 0x0f: mnemonic = Mnemonic.ftan; break;
+                    case 0x10: mnemonic = Mnemonic.fetox; break;
+                    case 0x11: mnemonic = Mnemonic.ftwotox; break;
+                    case 0x12: mnemonic = Mnemonic.ftentox; break;
+                    case 0x14: mnemonic = Mnemonic.flogn; break;
+                    case 0x15: mnemonic = Mnemonic.flog10; break;
+                    case 0x16: mnemonic = Mnemonic.flog2; break;
+                    case 0x18: mnemonic = Mnemonic.fabs; break;
+                    case 0x19: mnemonic = Mnemonic.fcosh; break;
+                    case 0x1a: mnemonic = Mnemonic.fneg; break;
+                    case 0x1c: mnemonic = Mnemonic.facos; break;
+                    case 0x1d: mnemonic = Mnemonic.fcos; break;
+                    case 0x1e: mnemonic = Mnemonic.fgetexp; break;
+                    case 0x1f: mnemonic = Mnemonic.fgetman; break;
+                    case 0x20: mnemonic = Mnemonic.fdiv; break;
+                    case 0x21: mnemonic = Mnemonic.fmod; break;
+                    case 0x22: mnemonic = Mnemonic.fadd; break;
+                    case 0x23: mnemonic = Mnemonic.fmul; break;
+                    case 0x24: mnemonic = Mnemonic.fsgldiv; break;
+                    case 0x25: mnemonic = Mnemonic.frem; break;
+                    case 0x26: mnemonic = Mnemonic.fscale; break;
+                    case 0x27: mnemonic = Mnemonic.fsglmul; break;
+                    case 0x28: mnemonic = Mnemonic.fsub; break;
                     case 0x30:
                     case 0x31:
                     case 0x32:
@@ -1613,23 +1588,23 @@ namespace Reko.Arch.M68k
                     case 0x35:
                     case 0x36:
                     case 0x37:
-                        mnemonic = Opcode.fsincos; break;
-                    case 0x38: mnemonic = Opcode.fcmp; break;
-                    case 0x3a: mnemonic = Opcode.ftst; break;
-                    case 0x41: mnemonic = Opcode.fssqrt; break;
-                    case 0x45: mnemonic = Opcode.fdsqrt; break;
-                    case 0x58: mnemonic = Opcode.fsabs; break;
-                    case 0x5a: mnemonic = Opcode.fsneg; break;
-                    case 0x5c: mnemonic = Opcode.fdabs; break;
-                    case 0x5e: mnemonic = Opcode.fdneg; break;
-                    case 0x60: mnemonic = Opcode.fsdiv; break;
-                    case 0x62: mnemonic = Opcode.fsadd; break;
-                    case 0x63: mnemonic = Opcode.fsmul; break;
-                    case 0x64: mnemonic = Opcode.fddiv; break;
-                    case 0x66: mnemonic = Opcode.fdadd; break;
-                    case 0x67: mnemonic = Opcode.fdmul; break;
-                    case 0x68: mnemonic = Opcode.fssub; break;
-                    case 0x6c: mnemonic = Opcode.fdsub; break;
+                        mnemonic = Mnemonic.fsincos; break;
+                    case 0x38: mnemonic = Mnemonic.fcmp; break;
+                    case 0x3a: mnemonic = Mnemonic.ftst; break;
+                    case 0x41: mnemonic = Mnemonic.fssqrt; break;
+                    case 0x45: mnemonic = Mnemonic.fdsqrt; break;
+                    case 0x58: mnemonic = Mnemonic.fsabs; break;
+                    case 0x5a: mnemonic = Mnemonic.fsneg; break;
+                    case 0x5c: mnemonic = Mnemonic.fdabs; break;
+                    case 0x5e: mnemonic = Mnemonic.fdneg; break;
+                    case 0x60: mnemonic = Mnemonic.fsdiv; break;
+                    case 0x62: mnemonic = Mnemonic.fsadd; break;
+                    case 0x63: mnemonic = Mnemonic.fsmul; break;
+                    case 0x64: mnemonic = Mnemonic.fddiv; break;
+                    case 0x66: mnemonic = Mnemonic.fdadd; break;
+                    case 0x67: mnemonic = Mnemonic.fdmul; break;
+                    case 0x68: mnemonic = Mnemonic.fssub; break;
+                    case 0x6c: mnemonic = Mnemonic.fdsub; break;
 
                     default: return false;
                     }
@@ -1638,15 +1613,15 @@ namespace Reko.Arch.M68k
                     {
                         instr.code = mnemonic;
                         instr.dataWidth = float_data_format[src];
-                        instr.op1 = dasm.get_ea_mode_str(dasm.uInstr, float_data_format[src]);
-                        instr.op2 = dasm.get_fp_reg((int) dst_reg);
+                        dasm.ops.Add(dasm.get_ea_mode_str(uInstr, float_data_format[src]));
+                        dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
                     }
                     else
                     {
                         instr.code = mnemonic;
                         instr.dataWidth = PrimitiveType.Real80;
-                        instr.op1 = dasm.get_fp_reg((int) src);
-                        instr.op2 = dasm.get_fp_reg((int) dst_reg);
+                        dasm.ops.Add(dasm.get_fp_reg((int) src));
+                        dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
                     }
                     return true;
                 }
@@ -1656,21 +1631,21 @@ namespace Reko.Arch.M68k
                     switch ((w2 >> 10) & 7)
                     {
                     case 3:		// packed decimal w/fixed k-factor
-                        instr.code = Opcode.fmove;
+                        instr.code = Mnemonic.fmove;
                         instr.dataWidth = float_data_format[(w2 >> 10) & 7];
-                        instr.op1 = dasm.get_fp_reg((int) dst_reg);
-                        instr.op2 = dasm.get_ea_mode_str_32(dasm.uInstr);
+                        dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
+                        dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
                         // sext_7bit_int((int)w2 & 0x7f));
                         return true;
                     case 7:		// packed decimal w/dynamic k-factor (register)
-                        dasm.g_dasm_str = string.Format("fmove{0}   FP%d, %s {{D%d}}", float_data_format[(w2 >> 10) & 7], dst_reg, dasm.get_ea_mode_str_32(dasm.uInstr), (w2 >> 4) & 7);
+                        dasm.g_dasm_str = string.Format("fmove{0}   FP%d, %s {{D%d}}", float_data_format[(w2 >> 10) & 7], dst_reg, dasm.get_ea_mode_str_32(uInstr), (w2 >> 4) & 7);
                         break;
 
                     default:
-                        instr.code = Opcode.fmove;
+                        instr.code = Mnemonic.fmove;
                         instr.dataWidth = float_data_format[(w2 >> 10) & 7];
-                        instr.op1 = dasm.get_fp_reg((int) dst_reg);
-                        instr.op2 = dasm.get_ea_mode_str_32(dasm.uInstr);
+                        dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
+                        dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
                         return true;
                     }
                     break;
@@ -1678,7 +1653,7 @@ namespace Reko.Arch.M68k
 
             case 0x4:	// ea to control
                 {
-                    dasm.g_dasm_str = string.Format("fmovem.l   {0}, ", dasm.get_ea_mode_str_32(dasm.uInstr));
+                    dasm.g_dasm_str = string.Format("fmovem.l   {0}, ", dasm.get_ea_mode_str_32(uInstr));
                     if ((w2 & 0x1000) != 0) dasm.g_dasm_str += "fpcr";
                     if ((w2 & 0x0800) != 0) dasm.g_dasm_str += "/fpsr";
                     if ((w2 & 0x0400) != 0) dasm.g_dasm_str += "/fpiar";
@@ -1692,7 +1667,7 @@ namespace Reko.Arch.M68k
                     if ((w2 & 0x0800) != 0) dasm.g_dasm_str += "/fpsr";
                     if ((w2 & 0x0400) != 0) dasm.g_dasm_str += "/fpiar";
                     dasm.g_dasm_str += ", ";
-                    dasm.g_dasm_str += dasm.get_ea_mode_str_32(dasm.uInstr);
+                    dasm.g_dasm_str += dasm.get_ea_mode_str_32(uInstr);
                     break;
                 }
 
@@ -1700,42 +1675,24 @@ namespace Reko.Arch.M68k
                 {
                     if (((w2 >> 11) & 1) != 0)	// dynamic register list
                     {
-                        dasm.g_dasm_str = string.Format("fmovem.x   {0},D{1}", dasm.get_ea_mode_str_32(dasm.uInstr), (w2 >> 4) & 7);
+                        dasm.g_dasm_str = string.Format("fmovem.x   {0},D{1}", dasm.get_ea_mode_str_32(uInstr), (w2 >> 4) & 7);
                     }
                     else	// static register list
                     {
-                        instr.code = Opcode.fmovem;
+                        instr.code = Mnemonic.fmovem;
                         instr.dataWidth = PrimitiveType.Real96;
+                        dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
+                        MachineOperand op2;
                         if (((w2 >> 12) & 1) == 0)
                         {
-                            instr.op2 = RegisterSetOperand.CreateReversed((byte) w2, PrimitiveType.Real96);
+                            op2 = RegisterSetOperand.CreateReversed((byte) w2, PrimitiveType.Real96);
                         }
                         else
                         {
-                            instr.op2 = new RegisterSetOperand((byte) w2, PrimitiveType.Real96);
+                            op2 = new RegisterSetOperand((byte) w2, PrimitiveType.Real96);
                         }
-                        instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
+                        dasm.ops.Add(op2);
                         return true;
-
-                        //int i;
-
-                        //dasm.g_dasm_str = string.Format("fmovem.x   {0}, ", dasm.get_ea_mode_str_32(dasm.instruction));
-
-                        //for (i = 0; i < 8; i++)
-                        //{
-                        //    if ((w2 & (1 << i)) != 0)
-                        //    {
-                        //        if (((w2 >> 12) & 1) != 0)	// postincrement or control
-                        //        {
-                        //            temp = string.Format("FP{0} ", 7 - i);
-                        //        }
-                        //        else			// predecrement
-                        //        {
-                        //            temp = string.Format("FP{0} ", i);
-                        //        }
-                        //        dasm.g_dasm_str += temp;
-                        //    }
-                        //}
                     }
                     break;
                 }
@@ -1743,118 +1700,118 @@ namespace Reko.Arch.M68k
             case 0x7:   // FPU to memory, list
                 if (((w2 >> 11) & 1) != 0)  // dynamic register list
                 {
-                    instr.code = Opcode.fmovem;
+                    instr.code = Mnemonic.fmovem;
                     instr.dataWidth = PrimitiveType.Real96;
-                    instr.op1 = new RegisterOperand(Registers.GetRegister((int) (w2 >> 4) & 7));
-                    instr.op2 = dasm.get_ea_mode_str_32(dasm.uInstr);
+                    dasm.ops.Add(new RegisterOperand(Registers.GetRegister((int) (w2 >> 4) & 7)));
+                    dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
                 }
                 else    // static register list
                 {
-                    instr.code = Opcode.fmovem;
+                    instr.code = Mnemonic.fmovem;
                     instr.dataWidth = PrimitiveType.Real96;
                     if (((w2 >> 12) & 1) == 0)
                     {
-                        instr.op1 = RegisterSetOperand.CreateReversed((ushort) (w2 << 8), PrimitiveType.Real96);
+                        dasm.ops.Add(RegisterSetOperand.CreateReversed((ushort) (w2 << 8), PrimitiveType.Real96));
                     }
                     else
                     {
-                        instr.op1 = new RegisterSetOperand(w2 & 0xFFu, PrimitiveType.Real96);
+                        dasm.ops.Add(new RegisterSetOperand(w2 & 0xFFu, PrimitiveType.Real96));
                     }
-                    instr.op2 = dasm.get_ea_mode_str_32(dasm.uInstr);
+                    dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
                 }
                 return true;
             }
             return false;
         }
 
-        private static bool d68000_move_8(M68kDisassembler dasm)
+        private static bool d68000_move_8(uint uInstr, M68kDisassembler dasm)
         {
-            var ea = dasm.get_ea_mode_str_8(dasm.uInstr);
-            dasm.instr.code = Opcode.move;
+            var ea = dasm.get_ea_mode_str_8(uInstr);
+            dasm.instr.code = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
-            dasm.instr.op1 = ea;
-            dasm.instr.op2 = dasm.get_ea_mode_str_8(((dasm.uInstr >> 9) & 7) | ((dasm.uInstr >> 3) & 0x38));
+            dasm.ops.Add(ea);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(((uInstr >> 9) & 7) | ((uInstr >> 3) & 0x38)));
             return true;
         }
 
-        private static bool d68000_move_16(M68kDisassembler dasm)
+        private static bool d68000_move_16(uint uInstr, M68kDisassembler dasm)
         {
-            var str = dasm.get_ea_mode_str_16(dasm.uInstr);
-            dasm.instr.code = Opcode.move;
+            var str = dasm.get_ea_mode_str_16(uInstr);
+            dasm.instr.code = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = str;
-            dasm.instr.op2 = dasm.get_ea_mode_str_16(((dasm.uInstr >> 9) & 7) | ((dasm.uInstr >> 3) & 0x38));
+            dasm.ops.Add(str);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(((uInstr >> 9) & 7) | ((uInstr >> 3) & 0x38)));
             return true;
         }
 
-        private static bool d68000_move_32(M68kDisassembler dasm)
+        private static bool d68000_move_32(uint uInstr, M68kDisassembler dasm)
         {
-            var str = dasm.get_ea_mode_str_32(dasm.uInstr);
-            dasm.instr.code = Opcode.move;
+            var str = dasm.get_ea_mode_str_32(uInstr);
+            dasm.instr.code = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = str;
-            dasm.instr.op2 = dasm.get_ea_mode_str_32(((dasm.uInstr >> 9) & 7) | ((dasm.uInstr >> 3) & 0x38));
+            dasm.ops.Add(str);
+            dasm.ops.Add(dasm.get_ea_mode_str_32(((uInstr >> 9) & 7) | ((uInstr >> 3) & 0x38)));
             return true;
         }
 
-        private static bool d68010_move_fr_ccr(M68kDisassembler dasm)
+        private static bool d68010_move_fr_ccr(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
-            dasm.instr.code = Opcode.move;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
+            dasm.instr.code = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = new RegisterOperand(Registers.ccr);
-            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(new RegisterOperand(Registers.ccr));
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68000_move_fr_sr(M68kDisassembler dasm)
+        private static bool d68000_move_fr_sr(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = Opcode.move;
+            dasm.instr.code = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.System;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = new RegisterOperand(Registers.sr);
-            dasm.instr.op2 = dasm.get_ea_mode_str_16(dasm.uInstr);
+            dasm.ops.Add(new RegisterOperand(Registers.sr));
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
 
-        private static bool d68000_move_to_sr(M68kDisassembler dasm)
+        private static bool d68000_move_to_sr(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = Opcode.move;
+            dasm.instr.code = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.System;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
-            dasm.instr.op2 = new RegisterOperand(Registers.sr);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
+            dasm.ops.Add(new RegisterOperand(Registers.sr));
             return true;
         }
 
-        private static bool d68000_move_fr_usp(M68kDisassembler dasm)
+        private static bool d68000_move_fr_usp(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = Opcode.move;
+            dasm.instr.code = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = new RegisterOperand(Registers.usp);
-            dasm.instr.op2 = get_addr_reg(dasm.uInstr & 7);
+            dasm.ops.Add(new RegisterOperand(Registers.usp));
+            dasm.ops.Add(get_addr_reg(uInstr & 7));
             return true;
         }
 
-        private static bool d68000_move_to_usp(M68kDisassembler dasm)
+        private static bool d68000_move_to_usp(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = Opcode.move;
+            dasm.instr.code = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = get_addr_reg(dasm.uInstr & 7);
-            dasm.instr.op2 = new RegisterOperand(Registers.usp);
+            dasm.ops.Add(get_addr_reg(uInstr & 7));
+            dasm.ops.Add(new RegisterOperand(Registers.usp));
             return true;
         }
 
-        private static bool d68010_movec(M68kDisassembler dasm)
+        private static bool d68010_movec(uint uInstr, M68kDisassembler dasm)
         {
             MachineOperand reg_name;
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
 
-            int regNumber = (int)extension & 0xfff;
+            uint regNumber = extension & 0xFFFu;
             switch (regNumber)
             {
             case 0x000:
@@ -1911,24 +1868,24 @@ namespace Reko.Arch.M68k
             }
 
             var other_reg = BIT_F(extension)
-                ? get_addr_reg((int)(extension >> 12) & 7)
-                : get_data_reg((int)(extension >> 12) & 7);
-            dasm.instr.code = Opcode.movec;
+                ? get_addr_reg((uint)(extension >> 12) & 7)
+                : get_data_reg((uint)(extension >> 12) & 7);
+            dasm.instr.code = Mnemonic.movec;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            if (BIT_0(dasm.uInstr))
+            if (BIT_0(uInstr))
             {
-                dasm.instr.op1 = other_reg;
-                dasm.instr.op2 = reg_name;
+                dasm.ops.Add(other_reg);
+                dasm.ops.Add(reg_name);
             }
             else
             {
-                dasm.instr.op1 = reg_name;
-                dasm.instr.op2 = other_reg;
+                dasm.ops.Add(reg_name);
+                dasm.ops.Add(other_reg);
             }
             return true;
         }
 
-        private static bool d68000_movem_pd_16(M68kDisassembler dasm)
+        private static bool d68000_movem_pd_16(uint uInstr, M68kDisassembler dasm)
         {
             if (!dasm.rdr.TryReadBeUInt16(out ushort data))
                 return false;
@@ -1972,7 +1929,7 @@ namespace Reko.Arch.M68k
                         buffer.AppendFormat("-A{0}", first + run_length);
                 }
             }
-            dasm.g_dasm_str = string.Format("movem.w {0},{1}", buffer, dasm.get_ea_mode_str_16(dasm.uInstr));
+            dasm.g_dasm_str = string.Format("movem.w {0},{1}", buffer, dasm.get_ea_mode_str_16(uInstr));
             return false;
         }
 
@@ -2000,415 +1957,416 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private static bool d68010_moves_8(M68kDisassembler dasm)
+        private static bool d68010_moves_8(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
-            var reg = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
-            var ea = dasm.get_ea_mode_str_8(dasm.uInstr);
+            var reg = get_addr_or_data_reg(BIT_F(extension), (uint)(extension >> 12) & 7);
+            var ea = dasm.get_ea_mode_str_8(uInstr);
             if (BIT_B(extension))
             {
-                dasm.instr.code = Opcode.moves;
+                dasm.instr.code = Mnemonic.moves;
                 dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.dataWidth = PrimitiveType.Word16;
-                dasm.instr.op1 = reg;
-                dasm.instr.op2 = ea;
+                dasm.ops.Add(reg);
+                dasm.ops.Add(ea);
             }
             else
             {
-                dasm.instr.code = Opcode.moves;
+                dasm.instr.code = Mnemonic.moves;
                 dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.dataWidth = PrimitiveType.Word16;
-                dasm.instr.op1 = ea;
-                dasm.instr.op2 = reg;
+                dasm.ops.Add(ea);
+                dasm.ops.Add(reg);
             }
             return true;
         }
 
-        private static bool d68010_moves_16(M68kDisassembler dasm)
+        private static bool d68010_moves_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
-            var reg = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
-            var ea = dasm.get_ea_mode_str_16(dasm.uInstr);
+            var reg = get_addr_or_data_reg(BIT_F(extension), (uint) (extension >> 12) & 7);
+            var ea = dasm.get_ea_mode_str_16(uInstr);
             if (BIT_B(extension))
             {
-                dasm.instr.code = Opcode.moves;
+                dasm.instr.code = Mnemonic.moves;
                 dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.dataWidth = PrimitiveType.Word16;
-                dasm.instr.op1 = reg;
-                dasm.instr.op2 = ea;
+                dasm.ops.Add(reg);
+                dasm.ops.Add(ea);
             }
             else
             {
-                dasm.instr.code = Opcode.moves;
+                dasm.instr.code = Mnemonic.moves;
                 dasm.instr.InstructionClass = InstrClass.System;
                 dasm.instr.dataWidth = PrimitiveType.Word16;
-                dasm.instr.op1 = ea;
-                dasm.instr.op2 = reg;
+                dasm.ops.Add(ea);
+                dasm.ops.Add(reg);
             }
             return true;
         }
 
-        private static bool d68010_moves_32(M68kDisassembler dasm)
+        private static bool d68010_moves_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68010_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
-            var reg = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7);
-            var ea = dasm.get_ea_mode_str_32(dasm.uInstr);
-            dasm.instr.code = Opcode.moves;
+            var reg = get_addr_or_data_reg(BIT_F(extension), (uint)(extension >> 12) & 7);
+            var ea = dasm.get_ea_mode_str_32(uInstr);
+            dasm.instr.code = Mnemonic.moves;
             dasm.instr.InstructionClass = InstrClass.System;
             dasm.instr.dataWidth = PrimitiveType.Word16;
             if (BIT_B(extension))
             {
-                dasm.instr.op1 = reg;
-                dasm.instr.op2 = ea;
+                dasm.ops.Add(reg);
+                dasm.ops.Add(ea);
             }
             else
             {
-                dasm.instr.op1 = ea;
-                dasm.instr.op2 = reg;
+                dasm.ops.Add(ea);
+                dasm.ops.Add(reg);
             };
             return true;
         }
 
-        private static bool d68040_move16_pi_pi(M68kDisassembler dasm)
+        private static bool d68040_move16_pi_pi(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68040_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
             if (dasm.rdr.TryReadBeUInt16(out ushort us))
                 return false;
-            dasm.instr.code = Opcode.move16;
+            dasm.instr.code = Mnemonic.move16;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = dasm.get_post_inc(dasm.uInstr & 7);
-            dasm.instr.op2 = dasm.get_post_inc((us >> 12) & 7);
+            dasm.ops.Add(dasm.get_post_inc((int)uInstr & 7));
+            dasm.ops.Add(dasm.get_post_inc((us >> 12) & 7));
             return true;
         }
 
-        private static bool d68040_move16_pi_al(M68kDisassembler dasm)
+        private static bool d68040_move16_pi_al(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68040_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
             if (!dasm.rdr.TryReadBeUInt32(out uint uOp2))
                 return false;
-            dasm.instr.code = Opcode.move16;
+            dasm.instr.code = Mnemonic.move16;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = dasm.get_post_inc(dasm.uInstr & 7);
-            dasm.instr.op2 = new M68kImmediateOperand(Constant.UInt32(uOp2));
+            dasm.ops.Add(dasm.get_post_inc((int) uInstr & 7));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp2)));
             return true;
         }
 
-        private static bool d68040_move16_al_pi(M68kDisassembler dasm)
+        private static bool d68040_move16_al_pi(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68040_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
             if (!dasm.rdr.TryReadBeUInt32(out uint uOp1))
                 return false;
-            dasm.instr.code = Opcode.move16;
+            dasm.instr.code = Mnemonic.move16;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt32(uOp1));
-            dasm.instr.op2 = dasm.get_post_inc(dasm.uInstr & 7);
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp1)));
+            dasm.ops.Add(dasm.get_post_inc((int)uInstr & 7));
             return true;
         }
 
-        private static bool d68040_move16_ai_al(M68kDisassembler dasm)
+        private static bool d68040_move16_ai_al(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68040_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
             if (!dasm.rdr.TryReadBeUInt32(out uint uOp2))
                 return false;
             var instr = dasm.instr;
-            instr.code = Opcode.move16;
-            instr.op1 = new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(dasm.uInstr & 7));
-            instr.op2 = new M68kImmediateOperand(Constant.UInt32(uOp2));
+            instr.code = Mnemonic.move16;
+            dasm.ops.Add(new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(uInstr & 7)));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp2)));
             return true;
         }
 
-        private static bool d68040_move16_al_ai(M68kDisassembler dasm)
+        private static bool d68040_move16_al_ai(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68040_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
             if (!dasm.rdr.TryReadBeUInt32(out uint uOp1))
                 return false;
 
             var instr = dasm.instr;
-            instr.code = Opcode.move16;
-            instr.op1 = new M68kImmediateOperand(Constant.UInt32(uOp1));
-            instr.op2 = new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(dasm.uInstr & 7));
+            instr.code = Mnemonic.move16;
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp1)));
+            dasm.ops.Add(new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(uInstr & 7)));
             return true;
         }
 
-        private static bool d68020_mull(M68kDisassembler dasm)
+        private static bool d68020_mull(uint uInstr, M68kDisassembler dasm)
         {
             if (!dasm.rdr.TryReadBeUInt16(out var extension))
                 return false;
 
             MachineOperand op2 = BIT_A(extension)
                 ? dasm.get_double_data_reg(extension & 7u, (uint)(extension >> 12) & 7u)
-                : (MachineOperand) get_data_reg((int)(extension >> 12) & 7);
+                : (MachineOperand) get_data_reg((uint)(extension >> 12) & 7);
             var opDecoder = new OperandFormatDecoder(dasm, 0);
-            dasm.instr.code = BIT_B(extension) ? Opcode.muls : Opcode.mulu;
+            dasm.instr.code = BIT_B(extension) ? Mnemonic.muls : Mnemonic.mulu;
             dasm.instr.dataWidth = PrimitiveType.Word32;
 
-            if (!opDecoder.TryParseOperand(dasm.uInstr, 0, PrimitiveType.Word32, dasm.rdr, out dasm.instr.op1))
+            if (!opDecoder.TryParseOperand((ushort)uInstr, 0, PrimitiveType.Word32, dasm.rdr, out var op1))
             {
                 return false;
             }
-            dasm.instr.op2 = op2;
+            dasm.ops.Add(op1);
+            dasm.ops.Add(op2);
             return true;
         }
 
-        private static bool d68000_nbcd(M68kDisassembler dasm)
+        private static bool d68000_nbcd(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = Opcode.nbcd;
+            dasm.instr.code = Mnemonic.nbcd;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68020_pack_rr(M68kDisassembler dasm)
+        private static bool d68020_pack_rr(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
-            dasm.instr.code = Opcode.pack;
+            dasm.instr.code = Mnemonic.pack;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = get_data_reg(dasm.uInstr & 7);
-            dasm.instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
-            dasm.instr.op3 = new M68kImmediateOperand(Constant.UInt16(uImm));
+            dasm.ops.Add(get_data_reg(uInstr & 7));
+            dasm.ops.Add(get_data_reg((uInstr >> 9) & 7));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
             return true;
         }
 
-        private static bool d68020_pack_mm(M68kDisassembler dasm)
+        private static bool d68020_pack_mm(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
-            dasm.instr.code = Opcode.pack;
+            dasm.instr.code = Mnemonic.pack;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = dasm.get_pre_dec(dasm.uInstr & 7);
-            dasm.instr.op2 = dasm.get_pre_dec((dasm.uInstr >> 9) & 7);
-            dasm.instr.op3 = new M68kImmediateOperand(Constant.UInt16(uImm));
+            dasm.ops.Add(dasm.get_pre_dec(uInstr, 0));
+            dasm.ops.Add(dasm.get_pre_dec(uInstr, 9));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
             return true;
         }
 
         // this is a 68040-specific form of PFLUSH
-        private static bool d68040_pflush(M68kDisassembler dasm)
+        private static bool d68040_pflush(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68040_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
 
-            if ((dasm.uInstr & 0x10) != 0)
+            if ((uInstr & 0x10) != 0)
             {
-                dasm.g_dasm_str = string.Format("pflusha{0}", (dasm.uInstr & 8)!=0 ? "" : "n");
+                dasm.g_dasm_str = string.Format("pflusha{0}", (uInstr & 8)!=0 ? "" : "n");
             }
             else
             {
-                dasm.g_dasm_str = string.Format("pflush{0}(A%d)", (dasm.uInstr & 8)!=0 ? "" : "n", dasm.uInstr & 7);
+                dasm.g_dasm_str = string.Format("pflush{0}(A%d)", (uInstr & 8)!=0 ? "" : "n", uInstr & 7);
             }
             return false;
         }
 
-        private static bool d68020_rtm(M68kDisassembler dasm)
+        private static bool d68020_rtm(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_ONLY);
-            int reg = dasm.uInstr & 7;
-            dasm.instr.code = Opcode.rtm;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_ONLY);
+            uint reg = uInstr & 7;
+            dasm.instr.code = Mnemonic.rtm;
             dasm.instr.InstructionClass = InstrClass.Transfer | InstrClass.Call;
-            dasm.instr.op1 = BIT_3(dasm.uInstr)
+            dasm.ops.Add(BIT_3(uInstr)
                 ? get_addr_reg(reg)
-                : get_data_reg(reg);
+                : get_data_reg(reg));
             return true;
         }
 
-        private static bool d68000_scc(M68kDisassembler dasm)
+        private static bool d68000_scc(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = g_scc[(dasm.uInstr >> 8) & 0xf];
+            dasm.instr.code = g_scc[(uInstr >> 8) & 0xf];
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68000_stop(M68kDisassembler dasm)
+        private static bool d68000_stop(uint uInstr, M68kDisassembler dasm)
         {
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
-            dasm.instr.code = Opcode.stop;
+            dasm.instr.code = Mnemonic.stop;
             dasm.instr.InstructionClass = InstrClass.System;
-            dasm.instr.op1 = imm;
+            dasm.ops.Add(imm);
             return true;
         }
 
-        private static bool d68000_tas(M68kDisassembler dasm)
+        private static bool d68000_tas(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = Opcode.tas;
+            dasm.instr.code = Mnemonic.tas;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68000_trap(M68kDisassembler dasm)
+        private static bool d68000_trap(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.instr.code = Opcode.trap;
+            dasm.instr.code = Mnemonic.trap;
             dasm.instr.InstructionClass = InstrClass.Call | InstrClass.Transfer;
-            dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (dasm.uInstr & 0xf)));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (uInstr & 0xf))));
             return true;
         }
 
-        private static bool d68020_trapcc_0(M68kDisassembler dasm)
+        private static bool d68020_trapcc_0(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = g_trapcc[(dasm.uInstr >> 8) & 0xf];
-            dasm.instr.InstructionClass = dasm.instr.code != Opcode.trapf
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = g_trapcc[(uInstr >> 8) & 0xf];
+            dasm.instr.InstructionClass = dasm.instr.code != Mnemonic.trapf
                 ? InstrClass.Call | InstrClass.Transfer
                 : InstrClass.Linear;
             return true;
         }
 
-        private static bool d68020_trapcc_16(M68kDisassembler dasm)
+        private static bool d68020_trapcc_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
 
-            dasm.instr.code = g_trapcc[(dasm.uInstr >> 8) & 0xf];
+            dasm.instr.code = g_trapcc[(uInstr >> 8) & 0xf];
             dasm.instr.InstructionClass = InstrClass.Call | InstrClass.Transfer;
-            dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt16(uImm));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
             return true;
         }
 
-        private static bool d68020_trapcc_32(M68kDisassembler dasm)
+        private static bool d68020_trapcc_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt32(out uint uOp1))
                 return false;
 
-            dasm.instr.code = g_trapcc[(dasm.uInstr >> 8) & 0xf];
+            dasm.instr.code = g_trapcc[(uInstr >> 8) & 0xf];
             dasm.instr.InstructionClass = InstrClass.Call | InstrClass.Transfer;
-            dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt32(uOp1));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp1)));
             return true;
         }
 
-        private static bool d68020_tst_pcdi_8(M68kDisassembler dasm)
+        private static bool d68020_tst_pcdi_8(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_pcix_8(M68kDisassembler dasm)
+        private static bool d68020_tst_pcix_8(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_i_8(M68kDisassembler dasm)
+        private static bool d68020_tst_i_8(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Byte;
-            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_a_16(M68kDisassembler dasm)
+        private static bool d68020_tst_a_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_pcdi_16(M68kDisassembler dasm)
+        private static bool d68020_tst_pcdi_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_pcix_16(M68kDisassembler dasm)
+        private static bool d68020_tst_pcix_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_i_16(M68kDisassembler dasm)
+        private static bool d68020_tst_i_16(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = dasm.get_ea_mode_str_16(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_a_32(M68kDisassembler dasm)
+        private static bool d68020_tst_a_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_pcdi_32(M68kDisassembler dasm)
+        private static bool d68020_tst_pcdi_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
 
-        private static bool d68020_tst_pcix_32(M68kDisassembler dasm)
+        private static bool d68020_tst_pcix_32(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            dasm.instr.code = Opcode.tst;
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
+            dasm.instr.code = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.uInstr);
+            dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
 
-        private static bool d68020_unpk_rr(M68kDisassembler dasm)
+        private static bool d68020_unpk_rr(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
-            dasm.instr.code = Opcode.unpk;
+            dasm.instr.code = Mnemonic.unpk;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = get_data_reg(dasm.uInstr & 7);
-            dasm.instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
-            dasm.instr.op3 = new M68kImmediateOperand(Constant.UInt16(uImm));
+            dasm.ops.Add(get_data_reg(uInstr & 7));
+            dasm.ops.Add(get_data_reg((uInstr >> 9) & 7));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
             return true;
         }
 
-        private static bool d68020_unpk_mm(M68kDisassembler dasm)
+        private static bool d68020_unpk_mm(uint uInstr, M68kDisassembler dasm)
         {
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return false;
-            dasm.instr.code = Opcode.unpk;
+            dasm.instr.code = Mnemonic.unpk;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.op1 = dasm.get_pre_dec(dasm.uInstr & 7);
-            dasm.instr.op2 = dasm.get_pre_dec((dasm.uInstr >> 9) & 7);
-            dasm.instr.op3 = new M68kImmediateOperand(Constant.UInt16(uImm));
+            dasm.ops.Add(dasm.get_pre_dec(uInstr, 0));
+            dasm.ops.Add(dasm.get_pre_dec(uInstr, 9));
+            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
             return true;
         }
 
@@ -2421,76 +2379,76 @@ namespace Reko.Arch.M68k
         // PMOVE 3: 011xxxx000000000
         // PTEST:   100xxxxxxxxxxxxx
         // PFLUSHR: 1010000000000000
-        private static bool d68851_p000(M68kDisassembler dasm)
+        private static bool d68851_p000(uint uInstr, M68kDisassembler dasm)
         {
             if (!dasm.rdr.TryReadBeUInt16(out ushort modes))
                 return false;
 
             // do this after fetching the second PMOVE word so we properly get the 3rd if necessary
-            var str = dasm.get_ea_mode_str_32(dasm.uInstr);
+            var str = dasm.get_ea_mode_str_32(uInstr);
 
             if ((modes & 0xfde0) == 0x2000)	// PLOAD
             {
                 if ((modes & 0x0200) != 0)
                 {
-                    dasm.instr.code = Opcode.pload;
+                    dasm.instr.code = Mnemonic.pload;
                     dasm.instr.InstructionClass = InstrClass.Linear;
-                    dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 10) & 7)));
-                    dasm.instr.op2 = str;
+                    dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 10) & 7))));
+                    dasm.ops.Add(str);
                     return true;
                 }
                 else
                 {
-                    dasm.instr.code = Opcode.pload;
+                    dasm.instr.code = Mnemonic.pload;
                     dasm.instr.InstructionClass = InstrClass.Linear;
-                    dasm.instr.op1 = str;
-                    dasm.instr.op2 = new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 10) & 7)));
+                    dasm.ops.Add(str);
+                    dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 10) & 7))));
                     return true;
                 }
             }
 
             if ((modes & 0xe200) == 0x2000)	// PFLUSH
             {
-                dasm.instr.code = Opcode.pflushr;
+                dasm.instr.code = Mnemonic.pflushr;
                 dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f)));
-                dasm.instr.op2 = new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 5) & 0xf)));
-                dasm.instr.op3 = str;
+                dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f))));
+                dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 5) & 0xf))));
+                dasm.ops.Add(str);
                 return true;
             }
 
             if (modes == 0xa000)	// PFLUSHR
             {
-                dasm.instr.code = Opcode.pflushr;
+                dasm.instr.code = Mnemonic.pflushr;
                 dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.op1 = str;
+                dasm.ops.Add(str);
                 return true;
             }
 
             if (modes == 0x2800)	// PVALID (FORMAT 1)
             {
-                dasm.instr.code = Opcode.pvalid;
+                dasm.instr.code = Mnemonic.pvalid;
                 dasm.instr.InstructionClass = InstrClass.Linear;
-                dasm.instr.op1 = dasm.get_ctrl_reg("VAL", 0x2800);
-                dasm.instr.op2 = str;
+                dasm.ops.Add(dasm.get_ctrl_reg("VAL", 0x2800));
+                dasm.ops.Add(str);
                 return true;
             }
 
             if ((modes & 0xfff8) == 0x2c00)	// PVALID (FORMAT 2)
             {
-                dasm.instr.code = Opcode.pvalid;
+                dasm.instr.code = Mnemonic.pvalid;
                 dasm.instr.InstructionClass = InstrClass.Linear;
-                dasm.instr.op1 = get_addr_reg(modes & 0xf);
-                dasm.instr.op2 = str;
+                dasm.ops.Add(get_addr_reg(modes & 0xFu));
+                dasm.ops.Add(str);
                 return true;
             }
 
             if ((modes & 0xe000) == 0x8000)	// PTEST
             {
-                dasm.instr.code = Opcode.ptest;
+                dasm.instr.code = Mnemonic.ptest;
                 dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f)));
-                dasm.instr.op2 = str;
+                dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f))));
+                dasm.ops.Add(str);
                 return true;
             }
 
@@ -2540,26 +2498,26 @@ namespace Reko.Arch.M68k
             return false;
         }
 
-        private static bool d68851_pbcc16(M68kDisassembler dasm)
+        private static bool d68851_pbcc16(uint uInstr, M68kDisassembler dasm)
         {
             var temp_pc = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
                 return false;
-            dasm.instr.code = g_mmucond[dasm.uInstr & 0xf];
-            dasm.instr.op1 = AddressOperand.Create(temp_pc + sDisplacement);
+            dasm.instr.code = g_mmucond[uInstr & 0xf];
+            dasm.ops.Add(AddressOperand.Create(temp_pc + sDisplacement));
             return true;
         }
 
-        private static bool d68851_pbcc32(M68kDisassembler dasm)
+        private static bool d68851_pbcc32(uint uInstr, M68kDisassembler dasm)
         {
             var temp_pc = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
                 return false;
-            dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[dasm.uInstr & 0xf], temp_pc + sDisplacement);
+            dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[uInstr & 0xf], temp_pc + sDisplacement);
             return false;
         }
 
-        private static bool d68851_pdbcc(M68kDisassembler dasm)
+        private static bool d68851_pdbcc(uint uInstr, M68kDisassembler dasm)
         {
             var temp_pc = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeUInt16(out ushort modes))
@@ -2571,7 +2529,7 @@ namespace Reko.Arch.M68k
         }
 
         // PScc:  0000000000xxxxxx
-        private static bool d68851_p001(M68kDisassembler dasm)
+        private static bool d68851_p001(uint uInstr, M68kDisassembler dasm)
         {
             //dasm.g_dasm_str = string.Format("MMU 001 group");
             return false;
@@ -2581,9 +2539,9 @@ namespace Reko.Arch.M68k
 
         private static Mutator s(int bitOffset)
         {
-            return d =>
+            return (u, d) =>
             {
-                switch ((d.uInstr >> bitOffset) & 3)
+                switch ((u >> bitOffset) & 3)
                 {
                 case 0: d.instr.dataWidth = d.dataWidth = PrimitiveType.Byte; return true;
                 case 1: d.instr.dataWidth = d.dataWidth = PrimitiveType.Word16; return true;
@@ -2594,14 +2552,14 @@ namespace Reko.Arch.M68k
         }
 
         private static Mutator s6 = s(6);
-        private static bool sb(M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Byte; return true; }
-        private static bool sw(M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Word16; return true; }
-        private static bool sl(M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Word32; return true; }
-        private static bool su(M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.UInt16; return true; }
-        private static bool sr(M68kDisassembler d)
+        private static bool sb(uint u, M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Byte; return true; }
+        private static bool sw(uint u, M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Word16; return true; }
+        private static bool sl(uint u, M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Word32; return true; }
+        private static bool su(uint u, M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.UInt16; return true; }
+        private static bool sr(uint u, M68kDisassembler d)
         {
             // If EA is register, 32 bits, else 8.
-            var dt = ((d.uInstr & 0x30) == 0)
+            var dt = ((u & 0x30) == 0)
                 ? PrimitiveType.Word32
                 : PrimitiveType.Byte;
             d.instr.dataWidth = d.dataWidth = dt;
@@ -2611,24 +2569,24 @@ namespace Reko.Arch.M68k
         // Data register D0-D7 encoded in instruction
         private static Mutator D(int bitOffset)
         {
-            return d =>
+            return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(Registers.DataRegister((d.uInstr >> bitOffset) & 0x7)));
+                d.ops.Add(new RegisterOperand(Registers.DataRegister((int)(u >> bitOffset) & 0x7)));
                 return true;
             };
         }
 
         private static readonly Mutator D0 = D(0);
         private static readonly Mutator D9 = D(9);
-        private static bool ccr(M68kDisassembler d) { d.ops.Add(new RegisterOperand(Registers.ccr)); return true; }
-        private static bool SR(M68kDisassembler d) { d.ops.Add(new RegisterOperand(Registers.sr)); return true; }
+        private static bool ccr(uint uInstr, M68kDisassembler d) { d.ops.Add(new RegisterOperand(Registers.ccr)); return true; }
+        private static bool SR(uint uInstr, M68kDisassembler d) { d.ops.Add(new RegisterOperand(Registers.sr)); return true; }
 
         // Address register A0-A7 encoded in in instrution
         private static Mutator A(int bitOffset)
         {
-            return d =>
+            return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(Registers.AddressRegister((d.uInstr >> bitOffset) & 0x7)));
+                d.ops.Add(new RegisterOperand(Registers.AddressRegister((int)(u >> bitOffset) & 0x7)));
                 return true;
             };
         }
@@ -2640,14 +2598,14 @@ namespace Reko.Arch.M68k
 
         private static Mutator Ad(int bitOffset)
         {
-            return d =>
+            return (u, d) =>
             {
                 if (!d.rdr.TryReadBeInt16(out short sDisplacement))
                     return false;
-                var aReg = Registers.AddressRegister((d.uInstr >> bitOffset) & 0x7);
+                var aReg = Registers.AddressRegister((int)(u >> bitOffset) & 0x7);
                 d.ops.Add(new MemoryOperand(
                     PrimitiveType.Word16,
-                    Registers.AddressRegister(d.uInstr & 7),
+                    Registers.AddressRegister((int)u & 7),
                     Constant.Int16(sDisplacement)));
                 return true;
             };
@@ -2658,9 +2616,9 @@ namespace Reko.Arch.M68k
         // Effective address (EA) 
         private static Mutator E(int bitOffset)
         {
-            return d =>
+            return (u, d) =>
             {
-                var opcode = (uint)d.uInstr >> bitOffset;
+                var opcode = u >> bitOffset;
                 var op = d.get_ea_mode_str(opcode, d.dataWidth);
                 if (op == null)
                     return false;
@@ -2672,10 +2630,10 @@ namespace Reko.Arch.M68k
         // Effective address with 3-bit halves swapped
         private static Mutator e(int bitOffset)
         {
-            return d =>
+            return (u, d) =>
             {
-                var opcode = (uint) d.uInstr >> bitOffset;
-                opcode = ((opcode >> 3) & 0x07u) | ((opcode & 0x7u) << 3);
+                var o = u >> bitOffset;
+                var opcode = ((o >> 3) & 0x07u) | ((o & 0x7u) << 3);
                 var op = d.get_ea_mode_str(opcode, d.dataWidth);
                 if (op == null)
                     return false;
@@ -2690,7 +2648,7 @@ namespace Reko.Arch.M68k
 
         // Immediate operand
 
-        private static bool Ib(M68kDisassembler d)
+        private static bool Ib(uint uInstr, M68kDisassembler d)
         {
             if (!d.rdr.IsValidOffset(d.rdr.Offset + 1))
             {
@@ -2703,7 +2661,7 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        private static bool Iw(M68kDisassembler d)
+        private static bool Iw(uint uInstr, M68kDisassembler d)
         {
             if (!d.rdr.TryRead(PrimitiveType.Word16, out var c))
                 return false;
@@ -2711,7 +2669,7 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        private static bool Il(M68kDisassembler d)
+        private static bool Il(uint uInstr, M68kDisassembler d)
         {
             if (!d.rdr.TryRead(PrimitiveType.Word32, out var c))
                 return false;
@@ -2719,10 +2677,10 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        private static bool Iv(M68kDisassembler d)
+        private static bool Iv(uint uInstr, M68kDisassembler d)
         {
             if (d.dataWidth.Size == 1)
-                return Ib(d);
+                return Ib(uInstr, d);
             if (!d.rdr.TryRead(d.dataWidth, out var c))
                 return false;
             d.ops.Add(new M68kImmediateOperand(c));
@@ -2732,9 +2690,9 @@ namespace Reko.Arch.M68k
         // Quick constant (3-bit part of the opcode)
         private static Mutator Q(int bitOffset, int mask, int zeroValue, PrimitiveType dt)
         {
-            return d =>
+            return (u, d) =>
             {
-                int v = ((int) d.uInstr >> bitOffset) & mask;
+                int v = ((int) u >> bitOffset) & mask;
                 if (v == 0)
                     v = zeroValue;
                 d.ops.Add(new M68kImmediateOperand(Constant.Create(dt, v)));
@@ -2748,11 +2706,11 @@ namespace Reko.Arch.M68k
         // Predecrement operator
         private static Mutator Pre(int bitOffset)
         {
-            return d =>
+            return (u, d) =>
             {
                 d.ops.Add(new PredecrementMemoryOperand(
                     d.dataWidth,
-                    Registers.AddressRegister((d.uInstr >> bitOffset) & 0x7)));
+                    Registers.AddressRegister((u >> bitOffset) & 0x7)));
                 return true;
             };
         }
@@ -2764,11 +2722,11 @@ namespace Reko.Arch.M68k
         // Postdecrement operator
         private static Mutator Post(int bitOffset)
         {
-            return d =>
+            return (u, d)=>
             {
                 d.ops.Add(new PostIncrementMemoryOperand(
                     d.dataWidth,
-                    Registers.AddressRegister((d.uInstr >> bitOffset) & 0x7)));
+                    Registers.AddressRegister((int)(u >> bitOffset) & 0x7)));
                 return true;
             };
         }
@@ -2778,10 +2736,10 @@ namespace Reko.Arch.M68k
 
 
         // PC Relative jump 
-        private static bool J(M68kDisassembler dasm)
+        private static bool J(uint uInstr, M68kDisassembler dasm)
         {
             var addr = dasm.rdr.Address;
-            int offset = dasm.uInstr & 0xFF;
+            int offset = (int)uInstr & 0xFF;
             if (offset == 0xFF)
             {
                 if (!dasm.rdr.TryReadBeInt32(out offset))
@@ -2805,7 +2763,7 @@ namespace Reko.Arch.M68k
 
 
         // relative
-        private static bool Rw(M68kDisassembler dasm) {
+        private static bool Rw(uint uInstr, M68kDisassembler dasm) {
             var addr = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt16(out short relative))
                 return false;
@@ -2813,7 +2771,7 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        private static bool Rl(M68kDisassembler dasm)
+        private static bool Rl(uint uInstr, M68kDisassembler dasm)
         {
             var addr = dasm.rdr.Address;
             if (!dasm.rdr.TryReadBeInt32(out int relative))
@@ -2826,7 +2784,7 @@ namespace Reko.Arch.M68k
         // Register bitset
         private static Mutator M(PrimitiveType size)
         {
-            return d =>
+            return (u, d) =>
             {
                 //var size = GetSizeType(0, args[i++], dataWidth);
                 if (!d.rdr.TryReadBeUInt16(out ushort memSet))
@@ -2838,8 +2796,7 @@ namespace Reko.Arch.M68k
             };
         }
 
-
-        private static bool n(M68kDisassembler dasm)
+        private static bool n(uint uInstr, M68kDisassembler dasm)
         {
             if (!dasm.rdr.TryReadBeUInt16(out dasm.bitSet))
             {
@@ -2851,7 +2808,7 @@ namespace Reko.Arch.M68k
         // Register bitset reversed
         private static Mutator m(PrimitiveType size)
         {
-            return d =>
+            return (u, d) =>
             {
                 d.ops.Add(RegisterSetOperand.CreateReversed(d.bitSet, size));
                 return true;
@@ -2899,61 +2856,61 @@ namespace Reko.Arch.M68k
            {
 //  opcode handler             mask    match   ea mask 
 	Instr(d68000_1010         , 0xf000, 0xa000, 0x000),
-    Instr(0xf000, 0xf000, 0x000, Opcode.illegal, InstrClass.Invalid),  // d68000_1111
-	Instr(D0,D9, 0xf1f8, 0xc100, 0x000, Opcode.abcd),             // d68000_abcd_rr
-	Instr(Pre0,Pre9, 0xf1f8, 0xc108, 0x000, Opcode.abcd),             // d68000_abcd_mm
-	Instr(s6,E0,D9, 0xf1c0, 0xd000, 0xbff, Opcode.add),           // d68000_add_er_8
-	Instr(sw,E0,D9, 0xf1c0, 0xd040, 0xfff, Opcode.add),           // d68000_add_er_16
-	Instr(sl,E0,D9, 0xf1c0, 0xd080, 0xfff, Opcode.add),           // d68000_add_er_32
-	Instr(s6,D9,E0, 0xf1c0, 0xd100, 0x3f8, Opcode.add),           // d68000_add_re_8
-	Instr(sw,D9,E0, 0xf1c0, 0xd140, 0x3f8, Opcode.add),           // d68000_add_re_16
-	Instr(sl,D9,E0, 0xf1c0, 0xd180, 0x3f8, Opcode.add),           // d68000_add_re_32
-	Instr(sw,E0,A9, 0xf1c0, 0xd0c0, 0xfff, Opcode.adda),          // d68000_adda_16
-	Instr(sl,E0,A9, 0xf1c0, 0xd1c0, 0xfff, Opcode.adda),          // d68000_adda_32
-	Instr(sb,Ib,E0, 0xffc0, 0x0600, 0xbf8, Opcode.addi),          // d68000_addi_8
-	Instr(sw,Iw,E0, 0xffc0, 0x0640, 0xbf8, Opcode.addi),          // d68000_addi_16
-	Instr(sl,Il,E0, 0xffc0, 0x0680, 0xbf8, Opcode.addi),          // d68000_addi_32
-	Instr(s6,q9,E0, 0xf1c0, 0x5000, 0xbf8, Opcode.addq),          // d68000_addq_8 
-	Instr(s6,q9,E0, 0xf1c0, 0x5040, 0xff8, Opcode.addq),          // d68000_addq_16
-	Instr(s6,q9,E0, 0xf1c0, 0x5080, 0xff8, Opcode.addq),          // d68000_addq_32
-	Instr(sb,D0,D9, 0xf1f8, 0xd100, 0x000, Opcode.addx),          // d68000_addx_rr_8    
-	Instr(sw,D0,D9, 0xf1f8, 0xd140, 0x000, Opcode.addx),          // d68000_addx_rr_16   
-	Instr(sl,D0,D9, 0xf1f8, 0xd180, 0x000, Opcode.addx),          // d68000_addx_rr_32   
-	Instr(sb,Pre0,Pre9, 0xf1f8, 0xd108, 0x000, Opcode.addx),          // d68000_addx_mm_8    
-	Instr(sw,Pre0,Pre9, 0xf1f8, 0xd148, 0x000, Opcode.addx),          // d68000_addx_mm_16   
-	Instr(sl,Pre0,Pre9, 0xf1f8, 0xd188, 0x000, Opcode.addx),          // d68000_addx_mm_32   
-	Instr(sb,E0,D9, 0xf1c0, 0xc000, 0xbff, Opcode.and),           // d68000_and_er_8
-	Instr(sw,E0,D9, 0xf1c0, 0xc040, 0xbff, Opcode.and),           // d68000_and_er_16
-	Instr(sl,E0,D9, 0xf1c0, 0xc080, 0xbff, Opcode.and),           // d68000_and_er_32
-	Instr(sb,D9,E0, 0xf1c0, 0xc100, 0x3f8, Opcode.and),           // d68000_and_re_8
-	Instr(sw,D9,E0, 0xf1c0, 0xc140, 0x3f8, Opcode.and),           // d68000_and_re_16
-	Instr(sl,D9,E0, 0xf1c0, 0xc180, 0x3f8, Opcode.and),           // d68000_and_re_32
-	Instr(Iw,ccr,   0xffff, 0x023c, 0x000, Opcode.andi),          // d68000_andi_to_ccr
-	Instr(Iw,SR,    0xffff, 0x027c, 0x000, Opcode.andi),          // d68000_andi_to_sr
-	Instr(sb,Ib,E0, 0xffc0, 0x0200, 0xbf8, Opcode.andi),          // d68000_andi_8
-	Instr(sw,Iw,E0, 0xffc0, 0x0240, 0xbf8, Opcode.andi),          // d68000_andi_16
-	Instr(sl,Il,E0, 0xffc0, 0x0280, 0xbf8, Opcode.andi),          // d68000_andi_32
-	Instr(sb,q9,D0, 0xf1f8, 0xe000, 0x000, Opcode.asr),           // d68000_asr_s_8
-	Instr(sw,q9,D0, 0xf1f8, 0xe040, 0x000, Opcode.asr),           // d68000_asr_s_16
-	Instr(sl,q9,D0, 0xf1f8, 0xe080, 0x000, Opcode.asr),           // d68000_asr_s_32
-	Instr(sb,D9,D0, 0xf1f8, 0xe020, 0x000, Opcode.asr),           // d68000_asr_r_8
-    Instr(sw,D9,D0, 0xf1f8, 0xe060, 0x000, Opcode.asr),           // d68000_asr_r_16
-	Instr(sl,D9,D0, 0xf1f8, 0xe0a0, 0x000, Opcode.asr),           // d68000_asr_r_32
-	Instr(sw,E0,    0xffc0, 0xe0c0, 0x3f8, Opcode.asr),           // d68000_asr_ea
-	Instr(sb,q9,D0, 0xf1f8, 0xe100, 0x000, Opcode.asl),           // d68000_asl_s_8     
-	Instr(sw,q9,D0, 0xf1f8, 0xe140, 0x000, Opcode.asl),           // d68000_asl_s_16    
-	Instr(sl,q9,D0, 0xf1f8, 0xe180, 0x000, Opcode.asl),           // d68000_asl_s_32    
-	Instr(sb,D9,D0, 0xf1f8, 0xe120, 0x000, Opcode.asl),           // d68000_asl_r_8     
-	Instr(sw,D9,D0, 0xf1f8, 0xe160, 0x000, Opcode.asl),           // d68000_asl_r_16    
-	Instr(sl,D9,D0, 0xf1f8, 0xe1a0, 0x000, Opcode.asl),           // d68000_asl_r_32    
-	Instr(sw,E0,    0xffc0, 0xe1c0, 0x3f8, Opcode.asl),           // d68000_asl_ea      
+    Instr(0xf000, 0xf000, 0x000, Mnemonic.illegal, InstrClass.Invalid),  // d68000_1111
+	Instr(D0,D9, 0xf1f8, 0xc100, 0x000, Mnemonic.abcd),             // d68000_abcd_rr
+	Instr(Pre0,Pre9, 0xf1f8, 0xc108, 0x000, Mnemonic.abcd),             // d68000_abcd_mm
+	Instr(s6,E0,D9, 0xf1c0, 0xd000, 0xbff, Mnemonic.add),           // d68000_add_er_8
+	Instr(sw,E0,D9, 0xf1c0, 0xd040, 0xfff, Mnemonic.add),           // d68000_add_er_16
+	Instr(sl,E0,D9, 0xf1c0, 0xd080, 0xfff, Mnemonic.add),           // d68000_add_er_32
+	Instr(s6,D9,E0, 0xf1c0, 0xd100, 0x3f8, Mnemonic.add),           // d68000_add_re_8
+	Instr(sw,D9,E0, 0xf1c0, 0xd140, 0x3f8, Mnemonic.add),           // d68000_add_re_16
+	Instr(sl,D9,E0, 0xf1c0, 0xd180, 0x3f8, Mnemonic.add),           // d68000_add_re_32
+	Instr(sw,E0,A9, 0xf1c0, 0xd0c0, 0xfff, Mnemonic.adda),          // d68000_adda_16
+	Instr(sl,E0,A9, 0xf1c0, 0xd1c0, 0xfff, Mnemonic.adda),          // d68000_adda_32
+	Instr(sb,Ib,E0, 0xffc0, 0x0600, 0xbf8, Mnemonic.addi),          // d68000_addi_8
+	Instr(sw,Iw,E0, 0xffc0, 0x0640, 0xbf8, Mnemonic.addi),          // d68000_addi_16
+	Instr(sl,Il,E0, 0xffc0, 0x0680, 0xbf8, Mnemonic.addi),          // d68000_addi_32
+	Instr(s6,q9,E0, 0xf1c0, 0x5000, 0xbf8, Mnemonic.addq),          // d68000_addq_8 
+	Instr(s6,q9,E0, 0xf1c0, 0x5040, 0xff8, Mnemonic.addq),          // d68000_addq_16
+	Instr(s6,q9,E0, 0xf1c0, 0x5080, 0xff8, Mnemonic.addq),          // d68000_addq_32
+	Instr(sb,D0,D9, 0xf1f8, 0xd100, 0x000, Mnemonic.addx),          // d68000_addx_rr_8    
+	Instr(sw,D0,D9, 0xf1f8, 0xd140, 0x000, Mnemonic.addx),          // d68000_addx_rr_16   
+	Instr(sl,D0,D9, 0xf1f8, 0xd180, 0x000, Mnemonic.addx),          // d68000_addx_rr_32   
+	Instr(sb,Pre0,Pre9, 0xf1f8, 0xd108, 0x000, Mnemonic.addx),          // d68000_addx_mm_8    
+	Instr(sw,Pre0,Pre9, 0xf1f8, 0xd148, 0x000, Mnemonic.addx),          // d68000_addx_mm_16   
+	Instr(sl,Pre0,Pre9, 0xf1f8, 0xd188, 0x000, Mnemonic.addx),          // d68000_addx_mm_32   
+	Instr(sb,E0,D9, 0xf1c0, 0xc000, 0xbff, Mnemonic.and),           // d68000_and_er_8
+	Instr(sw,E0,D9, 0xf1c0, 0xc040, 0xbff, Mnemonic.and),           // d68000_and_er_16
+	Instr(sl,E0,D9, 0xf1c0, 0xc080, 0xbff, Mnemonic.and),           // d68000_and_er_32
+	Instr(sb,D9,E0, 0xf1c0, 0xc100, 0x3f8, Mnemonic.and),           // d68000_and_re_8
+	Instr(sw,D9,E0, 0xf1c0, 0xc140, 0x3f8, Mnemonic.and),           // d68000_and_re_16
+	Instr(sl,D9,E0, 0xf1c0, 0xc180, 0x3f8, Mnemonic.and),           // d68000_and_re_32
+	Instr(Iw,ccr,   0xffff, 0x023c, 0x000, Mnemonic.andi),          // d68000_andi_to_ccr
+	Instr(Iw,SR,    0xffff, 0x027c, 0x000, Mnemonic.andi),          // d68000_andi_to_sr
+	Instr(sb,Ib,E0, 0xffc0, 0x0200, 0xbf8, Mnemonic.andi),          // d68000_andi_8
+	Instr(sw,Iw,E0, 0xffc0, 0x0240, 0xbf8, Mnemonic.andi),          // d68000_andi_16
+	Instr(sl,Il,E0, 0xffc0, 0x0280, 0xbf8, Mnemonic.andi),          // d68000_andi_32
+	Instr(sb,q9,D0, 0xf1f8, 0xe000, 0x000, Mnemonic.asr),           // d68000_asr_s_8
+	Instr(sw,q9,D0, 0xf1f8, 0xe040, 0x000, Mnemonic.asr),           // d68000_asr_s_16
+	Instr(sl,q9,D0, 0xf1f8, 0xe080, 0x000, Mnemonic.asr),           // d68000_asr_s_32
+	Instr(sb,D9,D0, 0xf1f8, 0xe020, 0x000, Mnemonic.asr),           // d68000_asr_r_8
+    Instr(sw,D9,D0, 0xf1f8, 0xe060, 0x000, Mnemonic.asr),           // d68000_asr_r_16
+	Instr(sl,D9,D0, 0xf1f8, 0xe0a0, 0x000, Mnemonic.asr),           // d68000_asr_r_32
+	Instr(sw,E0,    0xffc0, 0xe0c0, 0x3f8, Mnemonic.asr),           // d68000_asr_ea
+	Instr(sb,q9,D0, 0xf1f8, 0xe100, 0x000, Mnemonic.asl),           // d68000_asl_s_8     
+	Instr(sw,q9,D0, 0xf1f8, 0xe140, 0x000, Mnemonic.asl),           // d68000_asl_s_16    
+	Instr(sl,q9,D0, 0xf1f8, 0xe180, 0x000, Mnemonic.asl),           // d68000_asl_s_32    
+	Instr(sb,D9,D0, 0xf1f8, 0xe120, 0x000, Mnemonic.asl),           // d68000_asl_r_8     
+	Instr(sw,D9,D0, 0xf1f8, 0xe160, 0x000, Mnemonic.asl),           // d68000_asl_r_16    
+	Instr(sl,D9,D0, 0xf1f8, 0xe1a0, 0x000, Mnemonic.asl),           // d68000_asl_r_32    
+	Instr(sw,E0,    0xffc0, 0xe1c0, 0x3f8, Mnemonic.asl),           // d68000_asl_ea      
 	Instr(d68000_bcc_8        , 0xf000, 0x6000, 0x000, iclass:InstrClass.ConditionalTransfer),
     Instr(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000, iclass:InstrClass.ConditionalTransfer),
     Instr(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000, iclass:InstrClass.ConditionalTransfer),
-    Instr(sr,D9,E0, 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
-	Instr(sr,Ib,E0, 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
-	Instr(sr,D9,E0, 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
-	Instr(sr,Ib,E0, 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
+    Instr(sr,D9,E0, 0xf1c0, 0x0140, 0xbf8, Mnemonic.bchg),          // d68000_bchg_r 
+	Instr(sr,Ib,E0, 0xffc0, 0x0840, 0xbf8, Mnemonic.bchg),          // d68000_bchg_s 
+	Instr(sr,D9,E0, 0xf1c0, 0x0180, 0xbf8, Mnemonic.bclr),          // d68000_bclr_r 
+	Instr(sr,Ib,E0, 0xffc0, 0x0880, 0xbf8, Mnemonic.bclr),          // d68000_bclr_s 
 	Instr(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
     Instr(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
     Instr(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
@@ -2963,16 +2920,16 @@ namespace Reko.Arch.M68k
     Instr(d68020_bfset        , 0xffc0, 0xeec0, 0xa78),
     Instr(d68020_bftst        , 0xffc0, 0xe8c0, 0xa7b),
     Instr(d68010_bkpt         , 0xfff8, 0x4848, 0x000),
-    Instr(J, 0xff00, 0x6000, 0x000, Opcode.bra, InstrClass.Transfer),              // d68000_bra_8
-	Instr(J, 0xffff, 0x6000, 0x000, Opcode.bra, InstrClass.Transfer),              // d68000_bra_16
-	Instr(J, 0xffff, 0x60ff, 0x000, Opcode.bra, InstrClass.Transfer),              // d68020_bra_32
-	Instr(D9,E0, 0xf1c0, 0x01c0, 0xbf8, Opcode.bset),         // d68000_bset_r
-	Instr(Iw,E0, 0xffc0, 0x08c0, 0xbf8, Opcode.bset),         // d68000_bset_s
-	Instr(J, 0xff00, 0x6100, 0x000, Opcode.bsr, InstrClass.Transfer|InstrClass.Call),   // d68000_bsr_8 
-	Instr(J, 0xffff, 0x6100, 0x000, Opcode.bsr, InstrClass.Transfer|InstrClass.Call),   // d68000_bsr_16
-	Instr(J, 0xffff, 0x61ff, 0x000, Opcode.bsr, InstrClass.Transfer|InstrClass.Call),   // d68020_bsr_32
-	Instr(sl,D9,E0, 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
-	Instr(sw,Iw,E0, 0xffc0, 0x0800, 0xbfb, Opcode.btst),      // d68000_btst_s
+    Instr(J, 0xff00, 0x6000, 0x000, Mnemonic.bra, InstrClass.Transfer),              // d68000_bra_8
+	Instr(J, 0xffff, 0x6000, 0x000, Mnemonic.bra, InstrClass.Transfer),              // d68000_bra_16
+	Instr(J, 0xffff, 0x60ff, 0x000, Mnemonic.bra, InstrClass.Transfer),              // d68020_bra_32
+	Instr(D9,E0, 0xf1c0, 0x01c0, 0xbf8, Mnemonic.bset),         // d68000_bset_r
+	Instr(Iw,E0, 0xffc0, 0x08c0, 0xbf8, Mnemonic.bset),         // d68000_bset_s
+	Instr(J, 0xff00, 0x6100, 0x000, Mnemonic.bsr, InstrClass.Transfer|InstrClass.Call),   // d68000_bsr_8 
+	Instr(J, 0xffff, 0x6100, 0x000, Mnemonic.bsr, InstrClass.Transfer|InstrClass.Call),   // d68000_bsr_16
+	Instr(J, 0xffff, 0x61ff, 0x000, Mnemonic.bsr, InstrClass.Transfer|InstrClass.Call),   // d68020_bsr_32
+	Instr(sl,D9,E0, 0xf1c0, 0x0100, 0xbff, Mnemonic.btst),      // d68000_btst_r 
+	Instr(sw,Iw,E0, 0xffc0, 0x0800, 0xbfb, Mnemonic.btst),      // d68000_btst_s
 	Instr(d68020_callm        , 0xffc0, 0x06c0, 0x27b, iclass:InstrClass.Transfer|InstrClass.Call),
     Instr(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
     Instr(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
@@ -2985,26 +2942,26 @@ namespace Reko.Arch.M68k
     Instr(d68020_chk2_cmp2_16 , 0xffc0, 0x02c0, 0x27b),
     Instr(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
     Instr(d68040_cinv         , 0xff20, 0xf400, 0x000),
-    Instr(sb,E0, 0xffc0, 0x4200, 0xbf8, Opcode.clr),      // d68000_clr_8
-	Instr(sw,E0, 0xffc0, 0x4240, 0xbf8, Opcode.clr),      // d68000_clr_16
-	Instr(sl,E0, 0xffc0, 0x4280, 0xbf8, Opcode.clr),      // d68000_clr_32
-	Instr(sb,E0,D9, 0xf1c0, 0xb000, 0xbff, Opcode.cmp),   // d68000_cmp_8
-	Instr(sw,E0,D9, 0xf1c0, 0xb040, 0xfff, Opcode.cmp),   // d68000_cmp_16
-	Instr(sl,E0,D9, 0xf1c0, 0xb080, 0xfff, Opcode.cmp),   // d68000_cmp_32
-	Instr(sw,E0,A9, 0xf1c0, 0xb0c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_16
-	Instr(sl,E0,A9, 0xf1c0, 0xb1c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_32
-	Instr(sb,Ib,E0, 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),  // d68000_cmpi_8
+    Instr(sb,E0, 0xffc0, 0x4200, 0xbf8, Mnemonic.clr),      // d68000_clr_8
+	Instr(sw,E0, 0xffc0, 0x4240, 0xbf8, Mnemonic.clr),      // d68000_clr_16
+	Instr(sl,E0, 0xffc0, 0x4280, 0xbf8, Mnemonic.clr),      // d68000_clr_32
+	Instr(sb,E0,D9, 0xf1c0, 0xb000, 0xbff, Mnemonic.cmp),   // d68000_cmp_8
+	Instr(sw,E0,D9, 0xf1c0, 0xb040, 0xfff, Mnemonic.cmp),   // d68000_cmp_16
+	Instr(sl,E0,D9, 0xf1c0, 0xb080, 0xfff, Mnemonic.cmp),   // d68000_cmp_32
+	Instr(sw,E0,A9, 0xf1c0, 0xb0c0, 0xfff, Mnemonic.cmpa),  // d68000_cmpa_16
+	Instr(sl,E0,A9, 0xf1c0, 0xb1c0, 0xfff, Mnemonic.cmpa),  // d68000_cmpa_32
+	Instr(sb,Ib,E0, 0xffc0, 0x0c00, 0xbf8, Mnemonic.cmpi),  // d68000_cmpi_8
 	Instr(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
     Instr(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
-    Instr(sw,Iw,E0, 0xffc0, 0x0c40, 0xbf8, Opcode.cmpi),      // d68000_cmpi_16
+    Instr(sw,Iw,E0, 0xffc0, 0x0c40, 0xbf8, Mnemonic.cmpi),      // d68000_cmpi_16
 	Instr(d68020_cmpi_pcdi_16 , 0xffff, 0x0c7a, 0x000),
     Instr(d68020_cmpi_pcix_16 , 0xffff, 0x0c7b, 0x000),
-    Instr(sl,Il,E0, 0xffc0, 0x0c80, 0xbf8, Opcode.cmpi),      // d68000_cmpi_32
+    Instr(sl,Il,E0, 0xffc0, 0x0c80, 0xbf8, Mnemonic.cmpi),      // d68000_cmpi_32
 	Instr(d68020_cmpi_pcdi_32 , 0xffff, 0x0cba, 0x000),
     Instr(d68020_cmpi_pcix_32 , 0xffff, 0x0cbb, 0x000),
-    Instr(sb,Post0,Post9, 0xf1f8, 0xb108, 0x000, Opcode.cmpm),      // d68000_cmpm_8
-	Instr(sw,Post0,Post9 , 0xf1f8, 0xb148, 0x000, Opcode.cmpm),     // d68000_cmpm_16     
-	Instr(sl,Post0,Post9 , 0xf1f8, 0xb188, 0x000, Opcode.cmpm),     // d68000_cmpm_32     
+    Instr(sb,Post0,Post9, 0xf1f8, 0xb108, 0x000, Mnemonic.cmpm),      // d68000_cmpm_8
+	Instr(sw,Post0,Post9 , 0xf1f8, 0xb148, 0x000, Mnemonic.cmpm),     // d68000_cmpm_16     
+	Instr(sl,Post0,Post9 , 0xf1f8, 0xb188, 0x000, Mnemonic.cmpm),     // d68000_cmpm_32     
 	Instr(d68020_cpbcc_16     , 0xf1c0, 0xf080, 0x000),
     Instr(d68020_cpbcc_32     , 0xf1c0, 0xf0c0, 0x000),
     Instr(d68020_cpdbcc       , 0xf1f8, 0xf048, 0x000),
@@ -3017,185 +2974,185 @@ namespace Reko.Arch.M68k
     Instr(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
     Instr(d68040_cpush        , 0xff20, 0xf420, 0x000),
     Instr(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
-    Instr(D0,Rw, 0xfff8, 0x51c8, 0x000, Opcode.dbra),         // d68000_dbra
-	Instr(sw,E0,D9, 0xf1c0, 0x81c0, 0xbff, Opcode.divs),      // d68000_divs
-	Instr(su,E0,D9, 0xf1c0, 0x80c0, 0xbff, Opcode.divu),      // d68000_divu   
+    Instr(D0,Rw, 0xfff8, 0x51c8, 0x000, Mnemonic.dbra),         // d68000_dbra
+	Instr(sw,E0,D9, 0xf1c0, 0x81c0, 0xbff, Mnemonic.divs),      // d68000_divs
+	Instr(su,E0,D9, 0xf1c0, 0x80c0, 0xbff, Mnemonic.divu),      // d68000_divu   
 	Instr(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
-    Instr(sb,D9,E0, 0xf1c0, 0xb100, 0xbf8, Opcode.eor),          // d68000_eor_8  
-	Instr(sw,D9,E0, 0xf1c0, 0xb140, 0xbf8, Opcode.eor),         // d68000_eor_16 
-	Instr(sl,D9,E0, 0xf1c0, 0xb180, 0xbf8, Opcode.eor),         // d68000_eor_32 
-	Instr(sb,Ib,ccr, 0xffff, 0x0a3c, 0x000, Opcode.eori),       //  d68000_eori_to_ccr
+    Instr(sb,D9,E0, 0xf1c0, 0xb100, 0xbf8, Mnemonic.eor),          // d68000_eor_8  
+	Instr(sw,D9,E0, 0xf1c0, 0xb140, 0xbf8, Mnemonic.eor),         // d68000_eor_16 
+	Instr(sl,D9,E0, 0xf1c0, 0xb180, 0xbf8, Mnemonic.eor),         // d68000_eor_32 
+	Instr(sb,Ib,ccr, 0xffff, 0x0a3c, 0x000, Mnemonic.eori),       //  d68000_eori_to_ccr
     Instr(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
-    Instr(sb,Ib,E0, 0xffc0, 0x0a00, 0xbf8, Opcode.eori),      // d68000_eori_8
-	Instr(sw,Iw,E0, 0xffc0, 0x0a40, 0xbf8, Opcode.eori),      // d68000_eori_16
-	Instr(sl,Il,E0, 0xffc0, 0x0a80, 0xbf8, Opcode.eori),      // d68000_eori_32
-	Instr(D9,D0, 0xf1f8, 0xc140, 0x000, Opcode.exg),          // d68000_exg_dd 
-	Instr(A9,A0, 0xf1f8, 0xc148, 0x000, Opcode.exg),          // d68000_exg_aa
-	Instr(D9,A0, 0xf1f8, 0xc188, 0x000, Opcode.exg),          // d68000_exg_da
-	Instr(sl,D0, 0xfff8, 0x49c0, 0x000, Opcode.extb),         // d68020_extb_32
-	Instr(sw,D0, 0xfff8, 0x4880, 0x000, Opcode.ext),          // d68000_ext_16
-	Instr(sl,D0, 0xfff8, 0x48c0, 0x000, Opcode.ext),          // d68000_ext_32
+    Instr(sb,Ib,E0, 0xffc0, 0x0a00, 0xbf8, Mnemonic.eori),      // d68000_eori_8
+	Instr(sw,Iw,E0, 0xffc0, 0x0a40, 0xbf8, Mnemonic.eori),      // d68000_eori_16
+	Instr(sl,Il,E0, 0xffc0, 0x0a80, 0xbf8, Mnemonic.eori),      // d68000_eori_32
+	Instr(D9,D0, 0xf1f8, 0xc140, 0x000, Mnemonic.exg),          // d68000_exg_dd 
+	Instr(A9,A0, 0xf1f8, 0xc148, 0x000, Mnemonic.exg),          // d68000_exg_aa
+	Instr(D9,A0, 0xf1f8, 0xc188, 0x000, Mnemonic.exg),          // d68000_exg_da
+	Instr(sl,D0, 0xfff8, 0x49c0, 0x000, Mnemonic.extb),         // d68020_extb_32
+	Instr(sw,D0, 0xfff8, 0x4880, 0x000, Mnemonic.ext),          // d68000_ext_16
+	Instr(sl,D0, 0xfff8, 0x48c0, 0x000, Mnemonic.ext),          // d68000_ext_32
 	Instr(d68040_fpu          , 0xffc0, 0xf200, 0x000),
     Instr(d68000_illegal      , 0xffff, 0x4afc, 0x000, iclass:InstrClass.Invalid),
-    Instr(sl,E0, 0xffc0, 0x4ec0, 0x27b, Opcode.jmp, InstrClass.Transfer),   // d68000_jmp
-	Instr(sl,E0, 0xffc0, 0x4e80, 0x27b, Opcode.jsr, InstrClass.Transfer|InstrClass.Call),   // d68000_jsr
-	Instr(E0,A9, 0xf1c0, 0x41c0, 0x27b, Opcode.lea),       // d68000_lea
-	Instr(A0,Iw, 0xfff8, 0x4e50, 0x000, Opcode.link),         // d68000_link_16 
-	Instr(A0,Il, 0xfff8, 0x4808, 0x000, Opcode.link),         // d68020_link_32
-	Instr(s6,q9,D0, 0xf1f8, 0xe008, 0x000, Opcode.lsr),       // d68000_lsr_s_8
-	Instr(s6,q9,D0, 0xf1f8, 0xe048, 0x000, Opcode.lsr),       // d68000_lsr_s_16 
-	Instr(s6,q9,D0, 0xf1f8, 0xe088, 0x000, Opcode.lsr),       // d68000_lsr_s_32 
-	Instr(sb,D9,D0, 0xf1f8, 0xe028, 0x000, Opcode.lsr),       // d68000_lsr_r_8  
-	Instr(sw,D9,D0, 0xf1f8, 0xe068, 0x000, Opcode.lsr),       // d68000_lsr_r_16 
-	Instr(sl,D9,D0, 0xf1f8, 0xe0a8, 0x000, Opcode.lsr),       // d68000_lsr_r_32 
-	Instr(sw,E0,    0xffc0, 0xe2c0, 0x3f8, Opcode.lsr),       // d68000_lsr_ea   
-	Instr(s6,q9,D0, 0xf1f8, 0xe108, 0x000, Opcode.lsl),       // d68000_lsl_s_8  
-	Instr(s6,q9,D0, 0xf1f8, 0xe148, 0x000, Opcode.lsl),       // d68000_lsl_s_16 
-	Instr(s6,q9,D0, 0xf1f8, 0xe188, 0x000, Opcode.lsl),       // d68000_lsl_s_32 
-	Instr(sb,D9,D0, 0xf1f8, 0xe128, 0x000, Opcode.lsl),       // d68000_lsl_r_8  
-	Instr(sw,D9,D0, 0xf1f8, 0xe168, 0x000, Opcode.lsl),       // d68000_lsl_r_16 
-	Instr(sl,D9,D0, 0xf1f8, 0xe1a8, 0x000, Opcode.lsl),       // d68000_lsl_r_32 
-	Instr(sw,E0,    0xffc0, 0xe3c0, 0x3f8, Opcode.lsl),       // d68000_lsl_ea       
-	Instr(sb,E0,e6, 0xf000, 0x1000, 0xbff, Opcode.move),      // d68000_move_8   
-	Instr(sw,E0,e6, 0xf000, 0x3000, 0xfff, Opcode.move),      // d68000_move_16  
-	Instr(sl,E0,e6, 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
-	Instr(sw,E0,A9, 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16 
-	Instr(sl,E0,A9, 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // d68000_movea_32
-	Instr(sw,E0,ccr,   0xffc0, 0x44c0, 0xbff, Opcode.move),     // d68000_move_to_ccr
-	Instr(sw,ccr,E0,   0xffc0, 0x42c0, 0xbf8, Opcode.move),     // d68010_move_fr_ccr
+    Instr(sl,E0, 0xffc0, 0x4ec0, 0x27b, Mnemonic.jmp, InstrClass.Transfer),   // d68000_jmp
+	Instr(sl,E0, 0xffc0, 0x4e80, 0x27b, Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call),   // d68000_jsr
+	Instr(E0,A9, 0xf1c0, 0x41c0, 0x27b, Mnemonic.lea),       // d68000_lea
+	Instr(A0,Iw, 0xfff8, 0x4e50, 0x000, Mnemonic.link),         // d68000_link_16 
+	Instr(A0,Il, 0xfff8, 0x4808, 0x000, Mnemonic.link),         // d68020_link_32
+	Instr(s6,q9,D0, 0xf1f8, 0xe008, 0x000, Mnemonic.lsr),       // d68000_lsr_s_8
+	Instr(s6,q9,D0, 0xf1f8, 0xe048, 0x000, Mnemonic.lsr),       // d68000_lsr_s_16 
+	Instr(s6,q9,D0, 0xf1f8, 0xe088, 0x000, Mnemonic.lsr),       // d68000_lsr_s_32 
+	Instr(sb,D9,D0, 0xf1f8, 0xe028, 0x000, Mnemonic.lsr),       // d68000_lsr_r_8  
+	Instr(sw,D9,D0, 0xf1f8, 0xe068, 0x000, Mnemonic.lsr),       // d68000_lsr_r_16 
+	Instr(sl,D9,D0, 0xf1f8, 0xe0a8, 0x000, Mnemonic.lsr),       // d68000_lsr_r_32 
+	Instr(sw,E0,    0xffc0, 0xe2c0, 0x3f8, Mnemonic.lsr),       // d68000_lsr_ea   
+	Instr(s6,q9,D0, 0xf1f8, 0xe108, 0x000, Mnemonic.lsl),       // d68000_lsl_s_8  
+	Instr(s6,q9,D0, 0xf1f8, 0xe148, 0x000, Mnemonic.lsl),       // d68000_lsl_s_16 
+	Instr(s6,q9,D0, 0xf1f8, 0xe188, 0x000, Mnemonic.lsl),       // d68000_lsl_s_32 
+	Instr(sb,D9,D0, 0xf1f8, 0xe128, 0x000, Mnemonic.lsl),       // d68000_lsl_r_8  
+	Instr(sw,D9,D0, 0xf1f8, 0xe168, 0x000, Mnemonic.lsl),       // d68000_lsl_r_16 
+	Instr(sl,D9,D0, 0xf1f8, 0xe1a8, 0x000, Mnemonic.lsl),       // d68000_lsl_r_32 
+	Instr(sw,E0,    0xffc0, 0xe3c0, 0x3f8, Mnemonic.lsl),       // d68000_lsl_ea       
+	Instr(sb,E0,e6, 0xf000, 0x1000, 0xbff, Mnemonic.move),      // d68000_move_8   
+	Instr(sw,E0,e6, 0xf000, 0x3000, 0xfff, Mnemonic.move),      // d68000_move_16  
+	Instr(sl,E0,e6, 0xf000, 0x2000, 0xfff, Mnemonic.move),      // d68000_move_32  
+	Instr(sw,E0,A9, 0xf1c0, 0x3040, 0xfff, Mnemonic.movea),     // d68000_movea_16 
+	Instr(sl,E0,A9, 0xf1c0, 0x2040, 0xfff, Mnemonic.movea),     // d68000_movea_32
+	Instr(sw,E0,ccr,   0xffc0, 0x44c0, 0xbff, Mnemonic.move),     // d68000_move_to_ccr
+	Instr(sw,ccr,E0,   0xffc0, 0x42c0, 0xbf8, Mnemonic.move),     // d68010_move_fr_ccr
 	Instr(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
     Instr(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
     Instr(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
     Instr(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
     Instr(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
-    Instr(sw,Mw,E0, 0xfff8, 0x48a0, 0x000, Opcode.movem),     // d68000_movem_pd_16
-	Instr(sl,Ml,E0, 0xfff8, 0x48e0, 0x000, Opcode.movem),     // d68000_movem_pd_32
-	Instr(sw,Mw,E0, 0xffc0, 0x4880, 0x2f8, Opcode.movem),     // d68000_movem_re_16
-	Instr(sl,Ml,E0, 0xffc0, 0x48c0, 0x2f8, Opcode.movem),     // d68000_movem_re_32
-	Instr(sw,n,E0,mw, 0xffc0, 0x4c80, 0x37b, Opcode.movem),     // d68000_movem_er_16
-	Instr(sl,n,E0,ml, 0xffc0, 0x4cc0, 0x37b, Opcode.movem),     // d68000_movem_er_32
-	Instr(sw,Ad0,D9, 0xf1f8, 0x0108, 0x000, Opcode.movep),      // d68000_movep_er_16
-    Instr(sl,Ad0,D9, 0xf1f8, 0x0148, 0x000, Opcode.movep),      // 68000_movep_er_32
-    Instr(sw,D9,Ad0,             0xf1f8, 0x0188, 0x000, Opcode.movep),   // d68000_movep_re_16),
-	Instr(sl,D9,Ad0,             0xf1f8, 0x01c8, 0x000, Opcode.movep),   // d68000_movep_re_32
+    Instr(sw,Mw,E0, 0xfff8, 0x48a0, 0x000, Mnemonic.movem),     // d68000_movem_pd_16
+	Instr(sl,Ml,E0, 0xfff8, 0x48e0, 0x000, Mnemonic.movem),     // d68000_movem_pd_32
+	Instr(sw,Mw,E0, 0xffc0, 0x4880, 0x2f8, Mnemonic.movem),     // d68000_movem_re_16
+	Instr(sl,Ml,E0, 0xffc0, 0x48c0, 0x2f8, Mnemonic.movem),     // d68000_movem_re_32
+	Instr(sw,n,E0,mw, 0xffc0, 0x4c80, 0x37b, Mnemonic.movem),     // d68000_movem_er_16
+	Instr(sl,n,E0,ml, 0xffc0, 0x4cc0, 0x37b, Mnemonic.movem),     // d68000_movem_er_32
+	Instr(sw,Ad0,D9, 0xf1f8, 0x0108, 0x000, Mnemonic.movep),      // d68000_movep_er_16
+    Instr(sl,Ad0,D9, 0xf1f8, 0x0148, 0x000, Mnemonic.movep),      // 68000_movep_er_32
+    Instr(sw,D9,Ad0,             0xf1f8, 0x0188, 0x000, Mnemonic.movep),   // d68000_movep_re_16),
+	Instr(sl,D9,Ad0,             0xf1f8, 0x01c8, 0x000, Mnemonic.movep),   // d68000_movep_re_32
 	Instr(d68010_moves_8      , 0xffc0, 0x0e00, 0x3f8, iclass:InstrClass.System),
 	Instr(d68010_moves_16     , 0xffc0, 0x0e40, 0x3f8, iclass:InstrClass.System),
 	Instr(d68010_moves_32     , 0xffc0, 0x0e80, 0x3f8, iclass:InstrClass.System),
-	Instr(Q0,D9, 0xf100, 0x7000, 0x000, Opcode.moveq),        // d68000_moveq        
+	Instr(Q0,D9, 0xf100, 0x7000, 0x000, Mnemonic.moveq),        // d68000_moveq        
 	Instr(d68040_move16_pi_pi , 0xfff8, 0xf620, 0x000),
 	Instr(d68040_move16_pi_al , 0xfff8, 0xf600, 0x000),
 	Instr(d68040_move16_al_pi , 0xfff8, 0xf608, 0x000),
 	Instr(d68040_move16_ai_al , 0xfff8, 0xf610, 0x000),
 	Instr(d68040_move16_al_ai , 0xfff8, 0xf618, 0x000),
-	Instr(sw,E0,D9, 0xf1c0, 0xc1c0, 0xbff, Opcode.muls),      // d68000_muls         
-	Instr(sw,E0,D9, 0xf1c0, 0xc0c0, 0xbff, Opcode.mulu),      // d68000_mulu
+	Instr(sw,E0,D9, 0xf1c0, 0xc1c0, 0xbff, Mnemonic.muls),      // d68000_muls         
+	Instr(sw,E0,D9, 0xf1c0, 0xc0c0, 0xbff, Mnemonic.mulu),      // d68000_mulu
 	Instr(d68020_mull         , 0xffc0, 0x4c00, 0xbff),
 	Instr(d68000_nbcd         , 0xffc0, 0x4800, 0xbf8),
-	Instr(sb,E0, 0xffc0, 0x4400, 0xbf8, Opcode.neg),          // d68000_neg_8
-	Instr(sw,E0, 0xffc0, 0x4440, 0xbf8, Opcode.neg),          // d68000_neg_16
-	Instr(sl,E0, 0xffc0, 0x4480, 0xbf8, Opcode.neg),          // d68000_neg_32
-	Instr(sb,E0, 0xffc0, 0x4000, 0xbf8, Opcode.negx),         // d68000_negx_8
-	Instr(sw,E0, 0xffc0, 0x4040, 0xbf8, Opcode.negx),         // d68000_negx_16
-	Instr(sl,E0, 0xffc0, 0x4080, 0xbf8, Opcode.negx),         // d68000_negx_32,
-	Instr(0xffff, 0x4e71, 0x000, Opcode.nop),                   // d68000_nop
-	Instr(sb,E0, 0xffc0, 0x4600, 0xbf8, Opcode.not),          // d68000_not_8
-	Instr(sw,E0, 0xffc0, 0x4640, 0xbf8, Opcode.not),          // d68000_not_16
-	Instr(sl,E0, 0xffc0, 0x4680, 0xbf8, Opcode.not),          // d68000_not_32       
-	Instr(sb,E0,D9, 0xf1c0, 0x8000, 0xbff, Opcode.or),        // d68000_or_er_8      
-	Instr(sw,E0,D9, 0xf1c0, 0x8040, 0xbff, Opcode.or),        // d68000_or_er_16     
-	Instr(sl,E0,D9, 0xf1c0, 0x8080, 0xbff, Opcode.or),        // d68000_or_er_32   
-	Instr(sb,D9,E0, 0xf1c0, 0x8100, 0x3f8, Opcode.or),       // d68000_or_re_8     
-	Instr(sw,D9,E0, 0xf1c0, 0x8140, 0x3f8, Opcode.or),       // d68000_or_re_16    
-	Instr(sl,D9,E0, 0xf1c0, 0x8180, 0x3f8, Opcode.or),        // d68000_or_re_32
-	Instr(sb,Ib,ccr, 0xffff, 0x003c, 0x000, Opcode.ori),        // d68000_ori_to_ccr   
-	Instr(sw,Iw,SR, 0xffff, 0x007c, 0x000, Opcode.ori),        // d68000_ori_to_sr    
-	Instr(s6,Iv,E0, 0xffc0, 0x0000, 0xbf8, Opcode.ori),       // d68000_ori_8        
-	Instr(s6,Iv,E0, 0xffc0, 0x0040, 0xbf8, Opcode.ori),       // d68000_ori_16        
-	Instr(s6,Iv,E0, 0xffc0, 0x0080, 0xbf8, Opcode.ori),       // d68000_ori_32       
+	Instr(sb,E0, 0xffc0, 0x4400, 0xbf8, Mnemonic.neg),          // d68000_neg_8
+	Instr(sw,E0, 0xffc0, 0x4440, 0xbf8, Mnemonic.neg),          // d68000_neg_16
+	Instr(sl,E0, 0xffc0, 0x4480, 0xbf8, Mnemonic.neg),          // d68000_neg_32
+	Instr(sb,E0, 0xffc0, 0x4000, 0xbf8, Mnemonic.negx),         // d68000_negx_8
+	Instr(sw,E0, 0xffc0, 0x4040, 0xbf8, Mnemonic.negx),         // d68000_negx_16
+	Instr(sl,E0, 0xffc0, 0x4080, 0xbf8, Mnemonic.negx),         // d68000_negx_32,
+	Instr(0xffff, 0x4e71, 0x000, Mnemonic.nop),                   // d68000_nop
+	Instr(sb,E0, 0xffc0, 0x4600, 0xbf8, Mnemonic.not),          // d68000_not_8
+	Instr(sw,E0, 0xffc0, 0x4640, 0xbf8, Mnemonic.not),          // d68000_not_16
+	Instr(sl,E0, 0xffc0, 0x4680, 0xbf8, Mnemonic.not),          // d68000_not_32       
+	Instr(sb,E0,D9, 0xf1c0, 0x8000, 0xbff, Mnemonic.or),        // d68000_or_er_8      
+	Instr(sw,E0,D9, 0xf1c0, 0x8040, 0xbff, Mnemonic.or),        // d68000_or_er_16     
+	Instr(sl,E0,D9, 0xf1c0, 0x8080, 0xbff, Mnemonic.or),        // d68000_or_er_32   
+	Instr(sb,D9,E0, 0xf1c0, 0x8100, 0x3f8, Mnemonic.or),       // d68000_or_re_8     
+	Instr(sw,D9,E0, 0xf1c0, 0x8140, 0x3f8, Mnemonic.or),       // d68000_or_re_16    
+	Instr(sl,D9,E0, 0xf1c0, 0x8180, 0x3f8, Mnemonic.or),        // d68000_or_re_32
+	Instr(sb,Ib,ccr, 0xffff, 0x003c, 0x000, Mnemonic.ori),        // d68000_ori_to_ccr   
+	Instr(sw,Iw,SR, 0xffff, 0x007c, 0x000, Mnemonic.ori),        // d68000_ori_to_sr    
+	Instr(s6,Iv,E0, 0xffc0, 0x0000, 0xbf8, Mnemonic.ori),       // d68000_ori_8        
+	Instr(s6,Iv,E0, 0xffc0, 0x0040, 0xbf8, Mnemonic.ori),       // d68000_ori_16        
+	Instr(s6,Iv,E0, 0xffc0, 0x0080, 0xbf8, Mnemonic.ori),       // d68000_ori_32       
 	Instr(d68020_pack_rr      , 0xf1f8, 0x8140, 0x000),
 	Instr(d68020_pack_mm      , 0xf1f8, 0x8148, 0x000),
-	Instr(E0, 0xffc0, 0x4840, 0x27b, Opcode.pea),             // d68000_pea
+	Instr(E0, 0xffc0, 0x4840, 0x27b, Mnemonic.pea),             // d68000_pea
 	Instr(d68040_pflush       , 0xffe0, 0xf500, 0x000),
-	Instr(0xffff, 0x4e70, 0x000, Opcode.reset, InstrClass.Transfer),  // d68000_reset
-	Instr(sb,q9,D0, 0xf1f8, 0xe018, 0x000, Opcode.ror),       // d68000_ror_s_8
-	Instr(sw,q9,D0, 0xf1f8, 0xe058, 0x000, Opcode.ror),       // d68000_ror_s_16
-	Instr(sl,q9,D0, 0xf1f8, 0xe098, 0x000, Opcode.ror),       // d68000_ror_s_32
-	Instr(sb,D9,D0, 0xf1f8, 0xe038, 0x000, Opcode.ror),       // d68000_ror_r_8 
-	Instr(sw,D9,D0, 0xf1f8, 0xe078, 0x000, Opcode.ror),       // d68000_ror_r_16
-	Instr(sl,D9,D0, 0xf1f8, 0xe0b8, 0x000, Opcode.ror),       // d68000_ror_r_32
-	Instr(sl,E0, 0xffc0, 0xe6c0, 0x3f8, Opcode.ror),          // d68000_ror_ea
-	Instr(sb,q9,D0, 0xf1f8, 0xe118, 0x000, Opcode.rol),       // d68000_rol_s_8
-	Instr(sw,q9,D0, 0xf1f8, 0xe158, 0x000, Opcode.rol),       // d68000_rol_s_16
-	Instr(sl,q9,D0, 0xf1f8, 0xe198, 0x000, Opcode.rol),       // d68000_rol_s_32
-	Instr(sb,D9,D0, 0xf1f8, 0xe138, 0x000, Opcode.rol),       // d68000_rol_r_8
-	Instr(sw,D9,D0, 0xf1f8, 0xe178, 0x000, Opcode.rol),       // d68000_rol_r_16
-	Instr(sl,D9,D0, 0xf1f8, 0xe1b8, 0x000, Opcode.rol),       // d68000_rol_r_32
-	Instr(sl,E0,    0xffc0, 0xe7c0, 0x3f8, Opcode.rol),         // d68000_rol_ea
-	Instr(sb,q9,D0, 0xf1f8, 0xe010, 0x000, Opcode.roxr),      // d68000_roxr_s_8 
-	Instr(sw,q9,D0, 0xf1f8, 0xe050, 0x000, Opcode.roxr),      // d68000_roxr_s_16
-	Instr(sl,q9,D0, 0xf1f8, 0xe090, 0x000, Opcode.roxr),      // d68000_roxr_s_32
-	Instr(sb,D9,D0, 0xf1f8, 0xe030, 0x000, Opcode.roxr),      // d68000_roxr_r_8 
-	Instr(sw,D9,D0, 0xf1f8, 0xe070, 0x000, Opcode.roxr),      // d68000_roxr_r_16
-	Instr(sl,D9,D0, 0xf1f8, 0xe0b0, 0x000, Opcode.roxr),      // d68000_roxr_r_32
-	Instr(sl,E0, 0xffc0, 0xe4c0, 0x3f8, Opcode.roxr),         // d68000_roxr_ea  
-	Instr(sb,q9,D0, 0xf1f8, 0xe110, 0x000, Opcode.roxl),      // d68000_roxl_s_8 
-	Instr(sw,q9,D0, 0xf1f8, 0xe150, 0x000, Opcode.roxl),      // d68000_roxl_s_16
-	Instr(sl,q9,D0, 0xf1f8, 0xe190, 0x000, Opcode.roxl),      // d68000_roxl_s_32
-	Instr(sb,D9,D0, 0xf1f8, 0xe130, 0x000, Opcode.roxl),      // d68000_roxl_r_8 
-	Instr(sw,D9,D0, 0xf1f8, 0xe170, 0x000, Opcode.roxl),      // d68000_roxl_r_16
-	Instr(sl,D9,D0, 0xf1f8, 0xe1b0, 0x000, Opcode.roxl),      // d68000_roxl_r_32
-	Instr(sl,E0, 0xffc0, 0xe5c0, 0x3f8, Opcode.roxl),         // d68000_roxl_ea 
-	Instr(Iw, 0xffff, 0x4e74, 0x000, Opcode.rtd, InstrClass.Transfer),      // d68010_rtd
-	Instr(0xffff, 0x4e73, 0x000, Opcode.rte, InstrClass.Transfer|InstrClass.System),        // d68000_rte
+	Instr(0xffff, 0x4e70, 0x000, Mnemonic.reset, InstrClass.Transfer),  // d68000_reset
+	Instr(sb,q9,D0, 0xf1f8, 0xe018, 0x000, Mnemonic.ror),       // d68000_ror_s_8
+	Instr(sw,q9,D0, 0xf1f8, 0xe058, 0x000, Mnemonic.ror),       // d68000_ror_s_16
+	Instr(sl,q9,D0, 0xf1f8, 0xe098, 0x000, Mnemonic.ror),       // d68000_ror_s_32
+	Instr(sb,D9,D0, 0xf1f8, 0xe038, 0x000, Mnemonic.ror),       // d68000_ror_r_8 
+	Instr(sw,D9,D0, 0xf1f8, 0xe078, 0x000, Mnemonic.ror),       // d68000_ror_r_16
+	Instr(sl,D9,D0, 0xf1f8, 0xe0b8, 0x000, Mnemonic.ror),       // d68000_ror_r_32
+	Instr(sl,E0, 0xffc0, 0xe6c0, 0x3f8, Mnemonic.ror),          // d68000_ror_ea
+	Instr(sb,q9,D0, 0xf1f8, 0xe118, 0x000, Mnemonic.rol),       // d68000_rol_s_8
+	Instr(sw,q9,D0, 0xf1f8, 0xe158, 0x000, Mnemonic.rol),       // d68000_rol_s_16
+	Instr(sl,q9,D0, 0xf1f8, 0xe198, 0x000, Mnemonic.rol),       // d68000_rol_s_32
+	Instr(sb,D9,D0, 0xf1f8, 0xe138, 0x000, Mnemonic.rol),       // d68000_rol_r_8
+	Instr(sw,D9,D0, 0xf1f8, 0xe178, 0x000, Mnemonic.rol),       // d68000_rol_r_16
+	Instr(sl,D9,D0, 0xf1f8, 0xe1b8, 0x000, Mnemonic.rol),       // d68000_rol_r_32
+	Instr(sl,E0,    0xffc0, 0xe7c0, 0x3f8, Mnemonic.rol),         // d68000_rol_ea
+	Instr(sb,q9,D0, 0xf1f8, 0xe010, 0x000, Mnemonic.roxr),      // d68000_roxr_s_8 
+	Instr(sw,q9,D0, 0xf1f8, 0xe050, 0x000, Mnemonic.roxr),      // d68000_roxr_s_16
+	Instr(sl,q9,D0, 0xf1f8, 0xe090, 0x000, Mnemonic.roxr),      // d68000_roxr_s_32
+	Instr(sb,D9,D0, 0xf1f8, 0xe030, 0x000, Mnemonic.roxr),      // d68000_roxr_r_8 
+	Instr(sw,D9,D0, 0xf1f8, 0xe070, 0x000, Mnemonic.roxr),      // d68000_roxr_r_16
+	Instr(sl,D9,D0, 0xf1f8, 0xe0b0, 0x000, Mnemonic.roxr),      // d68000_roxr_r_32
+	Instr(sl,E0, 0xffc0, 0xe4c0, 0x3f8, Mnemonic.roxr),         // d68000_roxr_ea  
+	Instr(sb,q9,D0, 0xf1f8, 0xe110, 0x000, Mnemonic.roxl),      // d68000_roxl_s_8 
+	Instr(sw,q9,D0, 0xf1f8, 0xe150, 0x000, Mnemonic.roxl),      // d68000_roxl_s_16
+	Instr(sl,q9,D0, 0xf1f8, 0xe190, 0x000, Mnemonic.roxl),      // d68000_roxl_s_32
+	Instr(sb,D9,D0, 0xf1f8, 0xe130, 0x000, Mnemonic.roxl),      // d68000_roxl_r_8 
+	Instr(sw,D9,D0, 0xf1f8, 0xe170, 0x000, Mnemonic.roxl),      // d68000_roxl_r_16
+	Instr(sl,D9,D0, 0xf1f8, 0xe1b0, 0x000, Mnemonic.roxl),      // d68000_roxl_r_32
+	Instr(sl,E0, 0xffc0, 0xe5c0, 0x3f8, Mnemonic.roxl),         // d68000_roxl_ea 
+	Instr(Iw, 0xffff, 0x4e74, 0x000, Mnemonic.rtd, InstrClass.Transfer),      // d68010_rtd
+	Instr(0xffff, 0x4e73, 0x000, Mnemonic.rte, InstrClass.Transfer|InstrClass.System),        // d68000_rte
 	Instr(d68020_rtm, 0xfff0, 0x06c0, 0x000, iclass:InstrClass.Transfer),
-	Instr(0xffff, 0x4e77, 0x000, Opcode.rtr, InstrClass.Transfer),        // d68000_rtr
-	Instr(0xffff, 0x4e75, 0x000, Opcode.rts, InstrClass.Transfer),        // d68000_rts
-	Instr(D0,D9, 0xf1f8, 0x8100, 0x000, Opcode.sbcd),         // d68000_sbcd_rr
-	Instr(Pre0,Pre9, 0xf1f8, 0x8108, 0x000, Opcode.sbcd),         // d68000_sbcd_mm
+	Instr(0xffff, 0x4e77, 0x000, Mnemonic.rtr, InstrClass.Transfer),        // d68000_rtr
+	Instr(0xffff, 0x4e75, 0x000, Mnemonic.rts, InstrClass.Transfer),        // d68000_rts
+	Instr(D0,D9, 0xf1f8, 0x8100, 0x000, Mnemonic.sbcd),         // d68000_sbcd_rr
+	Instr(Pre0,Pre9, 0xf1f8, 0x8108, 0x000, Mnemonic.sbcd),         // d68000_sbcd_mm
 	Instr(d68000_scc          , 0xf0c0, 0x50c0, 0xbf8),
 	Instr(d68000_stop         , 0xffff, 0x4e72, 0x000),
-	Instr(sb,E0,D9, 0xf1c0, 0x9000, 0xbff, Opcode.sub),       // d68000_sub_er_8
-	Instr(sw,E0,D9, 0xf1c0, 0x9040, 0xfff, Opcode.sub),       // d68000_sub_er_16
-	Instr(sl,E0,D9, 0xf1c0, 0x9080, 0xfff, Opcode.sub),       // d68000_sub_er_32
-	Instr(sb,D9,E0, 0xf1c0, 0x9100, 0x3f8, Opcode.sub),       // d68000_sub_re_8
-	Instr(sw,D9,E0, 0xf1c0, 0x9140, 0x3f8, Opcode.sub),       // d68000_sub_re_16
-	Instr(sl,D9,E0, 0xf1c0, 0x9180, 0x3f8, Opcode.sub),       // d68000_sub_re_32
-	Instr(sw,E0,A9, 0xf1c0, 0x90c0, 0xfff, Opcode.suba),      // d68000_suba_16
-	Instr(sl,E0,A9, 0xf1c0, 0x91c0, 0xfff, Opcode.suba),      // d68000_suba_32
-	Instr(sb,Ib,E0,   0xffc0, 0x0400, 0xbf8, Opcode.subi),      // d68000_subi_8
-	Instr(sw,Iw,E0,   0xffc0, 0x0440, 0xbf8, Opcode.subi),      // d68000_subi_16
-	Instr(sl,Il,E0,   0xffc0, 0x0480, 0xbf8, Opcode.subi),      // d68000_subi_32
-	Instr(sb,q9,E0,   0xf1c0, 0x5100, 0xbf8, Opcode.subq),      // d68000_subq_8
-	Instr(sw,q9,E0,   0xf1c0, 0x5140, 0xff8, Opcode.subq),      // d68000_subq_16
-	Instr(sl,q9,E0,   0xf1c0, 0x5180, 0xff8, Opcode.subq),      // d68000_subq_32
-	Instr(sb,D0,D9,   0xf1f8, 0x9100, 0x000, Opcode.subx),      // d68000_subx_rr_8
-	Instr(sw,D0,D9,   0xf1f8, 0x9140, 0x000, Opcode.subx),      // d68000_subx_rr_16
-	Instr(sl,D0,D9,   0xf1f8, 0x9180, 0x000, Opcode.subx),      // d68000_subx_rr_32
-	Instr(sb,Pre0,Pre9,   0xf1f8, 0x9108, 0x000, Opcode.subx),      // d68000_subx_mm_8
-	Instr(sw,Pre0,Pre9,   0xf1f8, 0x9148, 0x000, Opcode.subx),      // d68000_subx_mm_16
-	Instr(sl,Pre0,Pre9,     0xf1f8, 0x9188, 0x000, Opcode.subx),      // d68000_subx_mm_32
-	Instr(sl,D0,      0xfff8, 0x4840, 0x000, Opcode.swap),      // d68000_swap
+	Instr(sb,E0,D9, 0xf1c0, 0x9000, 0xbff, Mnemonic.sub),       // d68000_sub_er_8
+	Instr(sw,E0,D9, 0xf1c0, 0x9040, 0xfff, Mnemonic.sub),       // d68000_sub_er_16
+	Instr(sl,E0,D9, 0xf1c0, 0x9080, 0xfff, Mnemonic.sub),       // d68000_sub_er_32
+	Instr(sb,D9,E0, 0xf1c0, 0x9100, 0x3f8, Mnemonic.sub),       // d68000_sub_re_8
+	Instr(sw,D9,E0, 0xf1c0, 0x9140, 0x3f8, Mnemonic.sub),       // d68000_sub_re_16
+	Instr(sl,D9,E0, 0xf1c0, 0x9180, 0x3f8, Mnemonic.sub),       // d68000_sub_re_32
+	Instr(sw,E0,A9, 0xf1c0, 0x90c0, 0xfff, Mnemonic.suba),      // d68000_suba_16
+	Instr(sl,E0,A9, 0xf1c0, 0x91c0, 0xfff, Mnemonic.suba),      // d68000_suba_32
+	Instr(sb,Ib,E0,   0xffc0, 0x0400, 0xbf8, Mnemonic.subi),      // d68000_subi_8
+	Instr(sw,Iw,E0,   0xffc0, 0x0440, 0xbf8, Mnemonic.subi),      // d68000_subi_16
+	Instr(sl,Il,E0,   0xffc0, 0x0480, 0xbf8, Mnemonic.subi),      // d68000_subi_32
+	Instr(sb,q9,E0,   0xf1c0, 0x5100, 0xbf8, Mnemonic.subq),      // d68000_subq_8
+	Instr(sw,q9,E0,   0xf1c0, 0x5140, 0xff8, Mnemonic.subq),      // d68000_subq_16
+	Instr(sl,q9,E0,   0xf1c0, 0x5180, 0xff8, Mnemonic.subq),      // d68000_subq_32
+	Instr(sb,D0,D9,   0xf1f8, 0x9100, 0x000, Mnemonic.subx),      // d68000_subx_rr_8
+	Instr(sw,D0,D9,   0xf1f8, 0x9140, 0x000, Mnemonic.subx),      // d68000_subx_rr_16
+	Instr(sl,D0,D9,   0xf1f8, 0x9180, 0x000, Mnemonic.subx),      // d68000_subx_rr_32
+	Instr(sb,Pre0,Pre9,   0xf1f8, 0x9108, 0x000, Mnemonic.subx),      // d68000_subx_mm_8
+	Instr(sw,Pre0,Pre9,   0xf1f8, 0x9148, 0x000, Mnemonic.subx),      // d68000_subx_mm_16
+	Instr(sl,Pre0,Pre9,     0xf1f8, 0x9188, 0x000, Mnemonic.subx),      // d68000_subx_mm_32
+	Instr(sl,D0,      0xfff8, 0x4840, 0x000, Mnemonic.swap),      // d68000_swap
 	Instr(d68000_tas          , 0xffc0, 0x4ac0, 0xbf8),
 	Instr(d68000_trap         , 0xfff0, 0x4e40, 0x000, iclass:InstrClass.Transfer|InstrClass.Call),
 	Instr(d68020_trapcc_0     , 0xf0ff, 0x50fc, 0x000, iclass:InstrClass.Transfer|InstrClass.Call),
 	Instr(d68020_trapcc_16    , 0xf0ff, 0x50fa, 0x000, iclass:InstrClass.Transfer|InstrClass.Call),
 	Instr(d68020_trapcc_32    , 0xf0ff, 0x50fb, 0x000, iclass:InstrClass.Transfer|InstrClass.Call),
-	Instr(0xffff, 0x4e76, 0x000, Opcode.trapv, InstrClass.Transfer|InstrClass.Call),  // d68000_trapv
-	Instr(sb,E0, 0xffc0, 0x4a00, 0xbf8, Opcode.tst),              // d68000_tst_8
+	Instr(0xffff, 0x4e76, 0x000, Mnemonic.trapv, InstrClass.Transfer|InstrClass.Call),  // d68000_trapv
+	Instr(sb,E0, 0xffc0, 0x4a00, 0xbf8, Mnemonic.tst),              // d68000_tst_8
 	Instr(d68020_tst_pcdi_8   , 0xffff, 0x4a3a, 0x000),
 	Instr(d68020_tst_pcix_8   , 0xffff, 0x4a3b, 0x000),
 	Instr(d68020_tst_i_8      , 0xffff, 0x4a3c, 0x000),
-	Instr(sw,E0, 0xffc0, 0x4a40, 0xbf8, Opcode.tst),              // d68000_tst_16
+	Instr(sw,E0, 0xffc0, 0x4a40, 0xbf8, Mnemonic.tst),              // d68000_tst_16
 	Instr(d68020_tst_a_16     , 0xfff8, 0x4a48, 0x000),
 	Instr(d68020_tst_pcdi_16  , 0xffff, 0x4a7a, 0x000),
 	Instr(d68020_tst_pcix_16  , 0xffff, 0x4a7b, 0x000),
 	Instr(d68020_tst_i_16     , 0xffff, 0x4a7c, 0x000),
-	Instr(sl,E0,      0xffc0, 0x4a80, 0xbf8, Opcode.tst),         // d68000_tst_32
+	Instr(sl,E0,      0xffc0, 0x4a80, 0xbf8, Mnemonic.tst),         // d68000_tst_32
 	Instr(d68020_tst_a_32     , 0xfff8, 0x4a88, 0x000),
-	Instr(sl,E0,      0xffff, 0x4aba, 0x000, Opcode.tst),         // d68020_tst_pcdi_32
+	Instr(sl,E0,      0xffff, 0x4aba, 0x000, Mnemonic.tst),         // d68020_tst_pcdi_32
 	Instr(d68020_tst_pcix_32  , 0xffff, 0x4abb, 0x000),
-	Instr(sl,E0, 0xffff, 0x4abc, 0x000, Opcode.tst),              // d68020_tst_i_32
-	Instr(A0, 0xfff8, 0x4e58, 0x000, Opcode.unlk),                // d68000_unlk
+	Instr(sl,E0, 0xffff, 0x4abc, 0x000, Mnemonic.tst),              // d68020_tst_i_32
+	Instr(A0, 0xfff8, 0x4e58, 0x000, Mnemonic.unlk),                // d68000_unlk
 	Instr(d68020_unpk_rr      , 0xf1f8, 0x8180, 0x000),
 	Instr(d68020_unpk_mm      , 0xf1f8, 0x8188, 0x000),
 	Instr(d68851_p000         , 0xffc0, 0xf000, 0x000),
@@ -3203,11 +3160,11 @@ namespace Reko.Arch.M68k
 	Instr(d68851_pbcc32       , 0xffc0, 0xf0c0, 0x000),
 	Instr(d68851_pdbcc        , 0xfff8, 0xf048, 0x000),
 	Instr(d68851_p001         , 0xffc0, 0xf040, 0x000),
-	Instr(d => false, 0, 0, 0),
+	Instr((u, d) => false, 0, 0, 0),
 };
         }
 
-        private static Decoder illegalOpcode = new Decoder(new Mutator[0], 0, 0, 0, Opcode.illegal);
+        private static Decoder illegalOpcode = new Decoder(new Mutator[0], 0, 0, 0, Mnemonic.illegal);
 
         // Check if opcode is using a valid ea mode
         static bool valid_ea(uint opcode, uint mask)

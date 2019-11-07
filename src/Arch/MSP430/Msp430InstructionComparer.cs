@@ -35,7 +35,7 @@ namespace Reko.Arch.Msp430
         {
             var a = (Msp430Instruction)x;
             var b = (Msp430Instruction)y;
-            return CompareOperands(a.op1, b.op1) && CompareOperands(a.op2, b.op2);
+            return CompareOperands(a.Operands[0], b.Operands[0]) && CompareOperands(a.Operands[1], b.Operands[1]);
         }
 
         private bool CompareOperands(MachineOperand op1, MachineOperand op2)
@@ -58,7 +58,7 @@ namespace Reko.Arch.Msp430
         public override int GetOperandsHash(MachineInstruction instr)
         {
             var a = (Msp430Instruction)instr;
-            var h = GetOperandHash(a.op1) ^ GetOperandHash(a.op2) * 37;
+            var h = GetOperandHash(a.Operands[0]) ^ GetOperandHash(a.Operands[1]) * 37;
             return h;
         }
 

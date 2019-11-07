@@ -56,7 +56,7 @@ namespace Reko.Arch.Arm.AArch32
 
         protected override void ConditionalSkip(bool force)
         {
-            if (instr.opcode == Opcode.it)
+            if (instr.opcode == Mnemonic.it)
                 return;
             base.ConditionalSkip(force);
         }

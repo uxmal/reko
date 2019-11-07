@@ -28,6 +28,8 @@ using System.Diagnostics;
 
 namespace Reko.Arch.Avr
 {
+    using Decoder = Decoder<Avr8Disassembler, Mnemonic, AvrInstruction>;
+
     // Opcode map: http://lyons42.com/AVR/Opcodes/AVRAllOpcodes.html
     // Opcode map: https://en.wikipedia.org/wiki/Atmel_AVR_instruction_set
     public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
@@ -53,13 +55,13 @@ namespace Reko.Arch.Avr
             if (!rdr.TryReadUInt16(out ushort wInstr))
                 return null;
             ops.Clear();
-            var instr = decoders[wInstr >> 12].Decode(this, wInstr);
+            var instr = decoders[wInstr >> 12].Decode(wInstr, this);
             instr.Address = addr;
             var length = rdr.Address - addr;
             instr.Length = (int) length;
 
 #if DEBUG
-            if (instr.opcode == Opcode.invalid) EmitUnitTest(wInstr);
+            if (instr.opcode == Mnemonic.invalid) EmitUnitTest(wInstr);
 #endif
             return instr;
         }
@@ -69,7 +71,7 @@ namespace Reko.Arch.Avr
             return new AvrInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Opcode.invalid,
+                opcode = Mnemonic.invalid,
                 operands = new MachineOperand[0]
             };
         }
@@ -292,12 +294,12 @@ namespace Reko.Arch.Avr
 
         #endregion
 
-        private static InstrDecoder Instr(Opcode opcode, params Mutator<Avr8Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<Avr8Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, mutators);
         }
@@ -337,175 +339,175 @@ namespace Reko.Arch.Avr
 
         static Avr8Disassembler()
         {
-            invalid = Instr(Opcode.invalid, InstrClass.Invalid);
+            invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
             var decoders0 = new Decoder[16]
             {
-                Instr(Opcode.invalid, InstrClass.Invalid|InstrClass.Zero),
-                Instr(Opcode.movw, p,P),
-                Instr(Opcode.muls, d,r4),
-                Instr(Opcode.muls, d,r4),
+                Instr(Mnemonic.invalid, InstrClass.Invalid|InstrClass.Zero),
+                Instr(Mnemonic.movw, p,P),
+                Instr(Mnemonic.muls, d,r4),
+                Instr(Mnemonic.muls, d,r4),
 
-                Instr(Opcode.cpc, D,R),
-                Instr(Opcode.cpc, D,R),
-                Instr(Opcode.cpc, D,R),
-                Instr(Opcode.cpc, D,R),
+                Instr(Mnemonic.cpc, D,R),
+                Instr(Mnemonic.cpc, D,R),
+                Instr(Mnemonic.cpc, D,R),
+                Instr(Mnemonic.cpc, D,R),
 
-                Instr(Opcode.sbc, D,R),
-                Instr(Opcode.sbc, D,R),
-                Instr(Opcode.sbc, D,R),
-                Instr(Opcode.sbc, D,R),
+                Instr(Mnemonic.sbc, D,R),
+                Instr(Mnemonic.sbc, D,R),
+                Instr(Mnemonic.sbc, D,R),
+                Instr(Mnemonic.sbc, D,R),
 
-                Instr(Opcode.add, D,R),
-                Instr(Opcode.add, D,R),
-                Instr(Opcode.add, D,R),
-                Instr(Opcode.add, D,R),
+                Instr(Mnemonic.add, D,R),
+                Instr(Mnemonic.add, D,R),
+                Instr(Mnemonic.add, D,R),
+                Instr(Mnemonic.add, D,R),
             };
 
             var decoders1 = new Decoder[]
             {
-                Instr(Opcode.cpse, D,R),
-                Instr(Opcode.cp,   D,R),
-                Instr(Opcode.sub,  D,R),
-                Instr(Opcode.adc,  D,R),
+                Instr(Mnemonic.cpse, D,R),
+                Instr(Mnemonic.cp,   D,R),
+                Instr(Mnemonic.sub,  D,R),
+                Instr(Mnemonic.adc,  D,R),
             };
 
             var decoders2 = new Decoder[]
             {
-                Instr(Opcode.and, D,R),
-                Instr(Opcode.eor, D,R),
-                Instr(Opcode.or, D,R),
-                Instr(Opcode.mov, R,r),
+                Instr(Mnemonic.and, D,R),
+                Instr(Mnemonic.eor, D,R),
+                Instr(Mnemonic.or, D,R),
+                Instr(Mnemonic.mov, R,r),
             };
 
             var decoders80 = new Decoder[]
             {
-                Instr(Opcode.ld,  D,X),
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
+                Instr(Mnemonic.ld,  D,X),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
 
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
 
-                Instr(Opcode.ld,  D,y),
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
+                Instr(Mnemonic.ld,  D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
 
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
             };
 
             var decoders_std_Z = new Decoder[]
             {
-                Instr(Opcode.st, Z,D),
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
+                Instr(Mnemonic.st, Z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
 
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
 
-                Instr(Opcode.st, y,D),
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
+                Instr(Mnemonic.st, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
 
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
             };
 
             var decoders_ldd = new Decoder[]
             {
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
 
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
-                Instr(Opcode.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
+                Instr(Mnemonic.ldd, D,z),
 
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
 
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
-                Instr(Opcode.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
+                Instr(Mnemonic.ldd, D,y),
             };
 
             var decoders_std = new Decoder[]
             {
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
 
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
-                Instr(Opcode.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
+                Instr(Mnemonic.std, z,D),
 
-                Instr(Opcode.st, y,D),
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
+                Instr(Mnemonic.st, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
 
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
-                Instr(Opcode.std, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
+                Instr(Mnemonic.std, y,D),
             };
 
             var decoders8 = new Decoder[8]
             {
-                new MaskDecoder(0, 4, decoders80),
-                new MaskDecoder(0, 4, decoders_std_Z),
-                new MaskDecoder(0, 4, decoders_ldd),
-                new MaskDecoder(0, 4, decoders_std),
+                Mask(0, 4, decoders80),
+                Mask(0, 4, decoders_std_Z),
+                Mask(0, 4, decoders_ldd),
+                Mask(0, 4, decoders_std),
 
-                new MaskDecoder(0, 4, decoders_ldd),
-                new MaskDecoder(0, 4, decoders_std),
-                new MaskDecoder(0, 4, decoders_ldd),
-                new MaskDecoder(0, 4, decoders_std),
+                Mask(0, 4, decoders_ldd),
+                Mask(0, 4, decoders_std),
+                Mask(0, 4, decoders_ldd),
+                Mask(0, 4, decoders_std),
             };
 
             var decoders94_8 = new Decoder[]
             {
-                Instr(Opcode.sec),
-                Instr(Opcode.sez),
-                Instr(Opcode.sen),
-                Instr(Opcode.sev),
+                Instr(Mnemonic.sec),
+                Instr(Mnemonic.sez),
+                Instr(Mnemonic.sen),
+                Instr(Mnemonic.sev),
 
-                Instr(Opcode.ses),
-                Instr(Opcode.seh),
-                Instr(Opcode.set),
-                Instr(Opcode.sei),
+                Instr(Mnemonic.ses),
+                Instr(Mnemonic.seh),
+                Instr(Mnemonic.set),
+                Instr(Mnemonic.sei),
 
-                Instr(Opcode.clc),
-                Instr(Opcode.clz),
-                Instr(Opcode.cln),
-                Instr(Opcode.clv),
+                Instr(Mnemonic.clc),
+                Instr(Mnemonic.clz),
+                Instr(Mnemonic.cln),
+                Instr(Mnemonic.clv),
 
-                Instr(Opcode.cls),
-                Instr(Opcode.clh),
-                Instr(Opcode.clt),
-                Instr(Opcode.cli),
+                Instr(Mnemonic.cls),
+                Instr(Mnemonic.clh),
+                Instr(Mnemonic.clt),
+                Instr(Mnemonic.cli),
 
-                Instr(Opcode.ret, InstrClass.Transfer),
-                Instr(Opcode.reti, InstrClass.Transfer),
+                Instr(Mnemonic.ret, InstrClass.Transfer),
+                Instr(Mnemonic.reti, InstrClass.Transfer),
                 invalid,
                 invalid,
 
@@ -514,21 +516,21 @@ namespace Reko.Arch.Avr
                 invalid,
                 invalid,
 
-                Instr(Opcode.sleep),
-                Instr(Opcode.@break),
-                Instr(Opcode.wdr),
+                Instr(Mnemonic.sleep),
+                Instr(Mnemonic.@break),
+                Instr(Mnemonic.wdr),
                 invalid,
 
-                Instr(Opcode.lpm),
-                Instr(Opcode.elpm),
-                Instr(Opcode.spm),
-                Instr(Opcode.spm),
+                Instr(Mnemonic.lpm),
+                Instr(Mnemonic.elpm),
+                Instr(Mnemonic.spm),
+                Instr(Mnemonic.spm),
             };
 
             var decoders95_8 = new Decoder[]
             {
-                Instr(Opcode.ret, InstrClass.Transfer),
-                Instr(Opcode.reti, InstrClass.Transfer),
+                Instr(Mnemonic.ret, InstrClass.Transfer),
+                Instr(Mnemonic.reti, InstrClass.Transfer),
                 invalid,
                 invalid,
 
@@ -537,59 +539,59 @@ namespace Reko.Arch.Avr
                 invalid,
                 invalid,
 
-                Instr(Opcode.sleep),
-                Instr(Opcode.@break),
-                Instr(Opcode.wdr),
+                Instr(Mnemonic.sleep),
+                Instr(Mnemonic.@break),
+                Instr(Mnemonic.wdr),
                 invalid,
 
-                Instr(Opcode.lpm),
-                Instr(Opcode.elpm),
-                Instr(Opcode.spm),
-                Instr(Opcode.spm),
+                Instr(Mnemonic.lpm),
+                Instr(Mnemonic.elpm),
+                Instr(Mnemonic.spm),
+                Instr(Mnemonic.spm),
             };
 
-            var decoders94_9 = new Dictionary<int, Decoder>
+            var decoders94_9 = new (uint, Decoder)[]
             {
-                { 0, Instr(Opcode.ijmp, InstrClass.Transfer) },
-                { 1, Instr(Opcode.eijmp, InstrClass.Transfer) },
-                { 16, Instr(Opcode.icall, InstrClass.Transfer|InstrClass.Call) },
-                { 17, Instr(Opcode.eicall, InstrClass.Transfer|InstrClass.Call) },
+                ( 0, Instr(Mnemonic.ijmp, InstrClass.Transfer) ),
+                ( 1, Instr(Mnemonic.eijmp, InstrClass.Transfer) ),
+                ( 16, Instr(Mnemonic.icall, InstrClass.Transfer|InstrClass.Call) ),
+                ( 17, Instr(Mnemonic.eicall, InstrClass.Transfer|InstrClass.Call) ),
             };
 
-            var decoders95_9 = new Dictionary<int, Decoder>
+            var decoders95_9 = new (uint, Decoder)[] 
             {
-                { 0, Instr(Opcode.icall, InstrClass.Transfer|InstrClass.Call) },
-                { 1, Instr(Opcode.eicall, InstrClass.Transfer|InstrClass.Call) },
+                ( 0, Instr(Mnemonic.icall, InstrClass.Transfer|InstrClass.Call)),
+                ( 1, Instr(Mnemonic.eicall, InstrClass.Transfer|InstrClass.Call)),
             };
 
             var decoders90 = new Decoder[]
             {
-                Instr(Opcode.lds, D,w),
-                Instr(Opcode.ld, D,IncZ),
-                Instr(Opcode.ld, D,DecZ),
+                Instr(Mnemonic.lds, D,w),
+                Instr(Mnemonic.ld, D,IncZ),
+                Instr(Mnemonic.ld, D,DecZ),
                 invalid,
 
-                Instr(Opcode.lpm, D,Z),
-                Instr(Opcode.lpm, D,IncZ),
-                Instr(Opcode.elpm, D,Z),
-                Instr(Opcode.elpm, D,IncZ),
+                Instr(Mnemonic.lpm, D,Z),
+                Instr(Mnemonic.lpm, D,IncZ),
+                Instr(Mnemonic.elpm, D,Z),
+                Instr(Mnemonic.elpm, D,IncZ),
 
                 invalid,
-                Instr(Opcode.ld, D,IncY),
-                Instr(Opcode.ld, D,DecY),
+                Instr(Mnemonic.ld, D,IncY),
+                Instr(Mnemonic.ld, D,DecY),
                 invalid,
 
-                Instr(Opcode.ld, D,X),
-                Instr(Opcode.ld, D,IncX),
-                Instr(Opcode.ld, D,DecX),
-                Instr(Opcode.pop, D),
+                Instr(Mnemonic.ld, D,X),
+                Instr(Mnemonic.ld, D,IncX),
+                Instr(Mnemonic.ld, D,DecX),
+                Instr(Mnemonic.pop, D),
             };
 
             var decoders92 = new Decoder[]
             {
-                Instr(Opcode.sts, w,D),
-                Instr(Opcode.st, IncZ,D),
-                Instr(Opcode.st, DecZ,D),
+                Instr(Mnemonic.sts, w,D),
+                Instr(Mnemonic.st, IncZ,D),
+                Instr(Mnemonic.st, DecZ,D),
                 invalid,
 
                 invalid,
@@ -598,78 +600,78 @@ namespace Reko.Arch.Avr
                 invalid,
 
                 invalid,
-                Instr(Opcode.st, IncY,D),
-                Instr(Opcode.st, DecY,D),
+                Instr(Mnemonic.st, IncY,D),
+                Instr(Mnemonic.st, DecY,D),
                 invalid,
 
-                Instr(Opcode.st, X,D),
-                Instr(Opcode.st, IncX,D),
-                Instr(Opcode.st, DecX,D),
-                Instr(Opcode.push, D),
+                Instr(Mnemonic.st, X,D),
+                Instr(Mnemonic.st, IncX,D),
+                Instr(Mnemonic.st, DecX,D),
+                Instr(Mnemonic.push, D),
             };
 
             var decoders94 = new Decoder[]
             {
-                Instr(Opcode.com, D),
-                Instr(Opcode.neg, D),
-                Instr(Opcode.swap, D),
-                Instr(Opcode.inc, D),
+                Instr(Mnemonic.com, D),
+                Instr(Mnemonic.neg, D),
+                Instr(Mnemonic.swap, D),
+                Instr(Mnemonic.inc, D),
 
                 invalid,
-                Instr(Opcode.asr, D),
-                Instr(Opcode.lsr, D),
-                Instr(Opcode.ror, D),
+                Instr(Mnemonic.asr, D),
+                Instr(Mnemonic.lsr, D),
+                Instr(Mnemonic.ror, D),
 
-                new MaskDecoder(4, 5, decoders94_8),
-                new SparseDecoder(4, 5, decoders94_9),
-                Instr(Opcode.dec, D),
-                Instr(Opcode.des, i),
+                Mask(4, 5, decoders94_8),
+                Sparse(4, 5, invalid, decoders94_9),
+                Instr(Mnemonic.dec, D),
+                Instr(Mnemonic.des, i),
 
-                Instr(Opcode.jmp, InstrClass.Transfer, Q),
-                Instr(Opcode.jmp, InstrClass.Transfer, Q),
-                Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, Q),
-                Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, Q),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, Q),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, Q),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Q),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Q),
             };
 
             var decoders95 = new Decoder[]
             {
-                Instr(Opcode.com, D),
-                Instr(Opcode.neg, D),
-                Instr(Opcode.swap, D),
-                Instr(Opcode.inc, D),
+                Instr(Mnemonic.com, D),
+                Instr(Mnemonic.neg, D),
+                Instr(Mnemonic.swap, D),
+                Instr(Mnemonic.inc, D),
 
                 invalid,
-                Instr(Opcode.asr, D),
-                Instr(Opcode.lsr, D),
-                Instr(Opcode.ror, D),
+                Instr(Mnemonic.asr, D),
+                Instr(Mnemonic.lsr, D),
+                Instr(Mnemonic.ror, D),
 
-                new MaskDecoder(4, 5, decoders95_8),
-                new SparseDecoder(4, 5, decoders95_9),
-                Instr(Opcode.dec, D),
+                Mask(4, 4, decoders95_8),
+                Sparse(4, 5, invalid, decoders95_9),
+                Instr(Mnemonic.dec, D),
                 invalid,
 
-                Instr(Opcode.jmp, InstrClass.Transfer, Q),
-                Instr(Opcode.jmp, InstrClass.Transfer, Q),
-                Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, Q),
-                Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, Q),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, Q),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, Q),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Q),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Q),
             };
 
             var decoders9 = new Decoder[]
             {
-                new MaskDecoder(0, 4, decoders90),
-                new MaskDecoder(0, 4, decoders90),
-                new MaskDecoder(0, 4, decoders92),
-                new MaskDecoder(0, 4, decoders92),
+                Mask(0, 4, decoders90),
+                Mask(0, 4, decoders90),
+                Mask(0, 4, decoders92),
+                Mask(0, 4, decoders92),
 
-                new MaskDecoder(0, 4, decoders94),
-                new MaskDecoder(0, 4, decoders94),   //$TODO: may need a decoders95 for all the invalid des
-                Instr(Opcode.adiw, q,s),
-                Instr(Opcode.sbiw, q,s),
+                Mask(0, 4, decoders94),
+                Mask(0, 4, decoders94),   //$TODO: may need a decoders95 for all the invalid des
+                Instr(Mnemonic.adiw, q,s),
+                Instr(Mnemonic.sbiw, q,s),
 
                 invalid,
                 invalid,
                 invalid,
-                Instr(Opcode.sbis, g,h),
+                Instr(Mnemonic.sbis, g,h),
 
                 invalid,
                 invalid,
@@ -679,19 +681,19 @@ namespace Reko.Arch.Avr
 
             var decodersB = new Decoder[]
             {
-                Instr(Opcode.@in, D,A),
-                Instr(Opcode.@out, A,D),
+                Instr(Mnemonic.@in, D,A),
+                Instr(Mnemonic.@out, A,D),
             };
 
             var decoders_sbrc = new Decoder[2]
             {
-                Instr(Opcode.sbrc, D,I),
+                Instr(Mnemonic.sbrc, D,I),
                 invalid,
             };
 
             var decoders_sbrs = new Decoder[2]
             {
-                Instr(Opcode.sbrs, D,I),
+                Instr(Mnemonic.sbrs, D,I),
                 invalid,
             };
 
@@ -712,60 +714,55 @@ namespace Reko.Arch.Avr
                 invalid,
                 invalid,
 
-                new MaskDecoder(3, 1, decoders_sbrc),
-                new MaskDecoder(3, 1, decoders_sbrc),
-                new MaskDecoder(3, 1, decoders_sbrs),
-                new MaskDecoder(3, 1, decoders_sbrs),
+                Mask(3, 1, decoders_sbrc),
+                Mask(3, 1, decoders_sbrc),
+                Mask(3, 1, decoders_sbrs),
+                Mask(3, 1, decoders_sbrs),
             };
 
             decoders = new Decoder[]
             {
-                new MaskDecoder(8, 4, decoders0),
-                new MaskDecoder(10, 2, decoders1),
-                new MaskDecoder(10, 2, decoders2),
-                Instr(Opcode.cpi, d,B),
+                Mask(8, 4, decoders0),
+                Mask(10, 2, decoders1),
+                Mask(10, 2, decoders2),
+                Instr(Mnemonic.cpi, d,B),
 
-                Instr(Opcode.sbci, d,B),
-                Instr(Opcode.subi, d,B),
-                Instr(Opcode.ori, d,B),
-                Instr(Opcode.andi, d,B),
+                Instr(Mnemonic.sbci, d,B),
+                Instr(Mnemonic.subi, d,B),
+                Instr(Mnemonic.ori, d,B),
+                Instr(Mnemonic.andi, d,B),
 
-                new MaskDecoder(9, 3, decoders8),
-                new MaskDecoder(8, 4, decoders9),
+                Mask(9, 3, decoders8),
+                Mask(8, 4, decoders9),
                 invalid,
-                new MaskDecoder(0xB, 1, decodersB),
+                Mask(0xB, 1, decodersB),
 
-                Instr(Opcode.rjmp, InstrClass.Transfer, J),
-                Instr(Opcode.rcall, InstrClass.Transfer|InstrClass.Call, J),
-                Instr(Opcode.ldi, d,K),
-                new MaskDecoder(8, 4, decodersF),
+                Instr(Mnemonic.rjmp, InstrClass.Transfer, J),
+                Instr(Mnemonic.rcall, InstrClass.Transfer|InstrClass.Call, J),
+                Instr(Mnemonic.ldi, d,K),
+                Mask(8, 4, decodersF),
             };
-        }
-
-        public abstract class Decoder
-        {
-            public abstract AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr);
         }
 
         public class InstrDecoder : Decoder
         {
-            private readonly Opcode opcode;
+            private readonly Mnemonic opcode;
             private readonly InstrClass iclass;
             private readonly Mutator<Avr8Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
 
-            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
+            public override AvrInstruction Decode(uint wInstr, Avr8Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
-                        return invalid.Decode(dasm, wInstr);
+                        return invalid.Decode(wInstr, dasm);
                 }
                 return new AvrInstruction
                 {
@@ -776,63 +773,22 @@ namespace Reko.Arch.Avr
             }
         }
 
-        public class MaskDecoder : Decoder
-        {
-            private readonly int shift;
-            private readonly int mask;
-            private readonly Decoder[] decoders;
 
-            public MaskDecoder(int shift, int length, Decoder[] decoders)
-            {
-                this.shift = shift;
-                this.mask = (1 << length) - 1;
-                this.decoders = decoders;
-            }
-
-            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
-            {
-                int slot = (wInstr >> shift) & mask;
-                return decoders[slot].Decode(dasm, wInstr);
-            }
-        }
-
-        public class SparseDecoder : Decoder
-        {
-            private readonly int shift;
-            private readonly int mask;
-            private readonly Dictionary<int, Decoder> decoders;
-
-            public SparseDecoder(int shift, int length, Dictionary<int, Decoder> decoders)
-            {
-                this.shift = shift;
-                this.mask = (1 << length) - 1;
-                this.decoders = decoders;
-            }
-
-            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
-            {
-                int slot = (wInstr >> shift) & mask;
-                if (!decoders.TryGetValue(slot, out Decoder decoder))
-                {
-                    return invalid.Decode(dasm, wInstr);
-                }
-                return decoder.Decode(dasm, wInstr);
-            }
-        }
 
         public class CondDecoder : Decoder
         {
-            static readonly Opcode[] branches = new Opcode[]
+            static readonly Mnemonic[] branches = new Mnemonic[]
             {
-                Opcode.brcs, Opcode.breq, Opcode.brmi, Opcode.brvs,
-                Opcode.brlt, Opcode.brhs, Opcode.brts, Opcode.brie,
+                Mnemonic.brcs, Mnemonic.breq, Mnemonic.brmi, Mnemonic.brvs,
+                Mnemonic.brlt, Mnemonic.brhs, Mnemonic.brts, Mnemonic.brie,
 
-                Opcode.brcc, Opcode.brne, Opcode.brpl, Opcode.brvc,
-                Opcode.brge, Opcode.brhc, Opcode.brtc, Opcode.brid
+                Mnemonic.brcc, Mnemonic.brne, Mnemonic.brpl, Mnemonic.brvc,
+                Mnemonic.brge, Mnemonic.brhc, Mnemonic.brtc, Mnemonic.brid
             };
 
-            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
+            public override AvrInstruction Decode(uint uInstr, Avr8Disassembler dasm)
             {
+                ushort wInstr = (ushort) uInstr;
                 int br = (((wInstr >> 7) & 8) | (wInstr & 7)) & 0xF;
                 o(wInstr, dasm);
                 return new AvrInstruction

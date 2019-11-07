@@ -31,6 +31,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
+    using Decoder = Decoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>;
+
     public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction>
     {
         private readonly EndianImageReader rdr;
@@ -59,9 +61,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             this.backPatchOp = -1;
             this.ops.Clear();
 
-            var instr = Oprecs[b].Decode(b, this);
+            var instr = Decoders[b].Decode(b, this);
             if (instr == null)
-                instr = new Tlcs90Instruction { Opcode = Opcode.invalid, InstructionClass = InstrClass.Invalid };
+                instr = CreateInvalidInstruction();
             var len = rdr.Address - addr;
             instr.Address = addr;
             instr.Length = (int) len;
@@ -72,8 +74,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
         {
             return new Tlcs90Instruction
             {
-                Opcode = Opcode.invalid,
-                InstructionClass = InstrClass.Invalid
+                Mnemonic = Mnemonic.invalid,
+                InstructionClass = InstrClass.Invalid,
+                Operands = new MachineOperand[0]
             };
         }
 
@@ -256,25 +259,20 @@ namespace Reko.Arch.Tlcs.Tlcs90
             throw new NotImplementedException();
         }
 
-        private abstract class Decoder
-        {
-            public abstract Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm);
-        }
-
         private class InstrDecoder : Decoder
         {
-            private Opcode opcode;
+            private Mnemonic opcode;
             private InstrClass iclass;
             private Mutator<Tlcs90Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, Mutator<Tlcs90Disassembler> [] mutators)
+            public InstrDecoder(Mnemonic opcode, InstrClass iclass, Mutator<Tlcs90Disassembler> [] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
 
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            public override Tlcs90Instruction Decode(uint b, Tlcs90Disassembler dasm)
             {
                 foreach (var m in mutators)
                 {
@@ -283,28 +281,27 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 return new Tlcs90Instruction
                 {
-                    Opcode = opcode,
+                    Mnemonic = opcode,
                     InstructionClass = iclass,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }
 
-        private class RegOpRec : Decoder
+        private class RegDecoder : Decoder
         {
-            private RegisterStorage regByte;
-            private RegisterStorage regWord;
+            private readonly RegisterStorage regByte;
+            private readonly RegisterStorage regWord;
 
-            public RegOpRec(RegisterStorage regByte, RegisterStorage regWord)
+            public RegDecoder(RegisterStorage regByte, RegisterStorage regWord)
             {
                 this.regByte = regByte;
                 this.regWord = regWord;
             }
 
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
-                if (!dasm.rdr.TryReadByte(out b))
+                if (!dasm.rdr.TryReadByte(out byte b))
                     return null;
                 dasm.byteReg = new RegisterOperand(regByte);
                 if (regWord != null)
@@ -313,16 +310,16 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class DstOpRec : Decoder
+        private class DstDecoder : Decoder
         {
             private string format;
 
-            public DstOpRec(string format)
+            public DstDecoder(string format)
             {
                 this.format = format;
             }
 
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
                 RegisterStorage baseReg = null;
                 RegisterStorage idxReg = null;
@@ -359,14 +356,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     }
                     if (idxReg == null)
                     {
-                        if (!dasm.rdr.TryReadByte(out b))
+                        if (!dasm.rdr.TryReadByte(out byte bOff))
                             return null;
-                        offset = Constant.SByte((sbyte)b);
+                        offset = Constant.SByte((sbyte)bOff);
                     }
                     break;
                 default: throw new NotImplementedException(string.Format("Tlcs-90: dst {0}", format));
                 }
-                if (!dasm.rdr.TryReadByte(out b))
+                if (!dasm.rdr.TryReadByte(out byte b))
                     return null;
                 var instr = dstEncodings[b].Decode(b, dasm);
                 if (instr == null)
@@ -381,29 +378,39 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 };
                 if (dasm.backPatchOp == 0)
                 {
-                    instr.op2 = instr.op1;
-                    instr.op1 = operand;
-                    if (instr.op2 != null)
+                    if (instr.Operands.Length == 0)
                     {
-                        instr.op1.Width = instr.op2.Width;
+                        instr.Operands = new MachineOperand[] { operand };
+                    }
+                    else
+                    {
+                        instr.Operands = new MachineOperand[] { operand, instr.Operands[0] };
+                    }
+                    if (instr.Operands.Length == 2)
+                    {
+                        instr.Operands[0].Width = instr.Operands[1].Width;
                     }
                 }
                 else if (dasm.backPatchOp == 1)
                 {
-                    if ((instr.Opcode == Opcode.jp || instr.Opcode == Opcode.call)
+                    if ((instr.Mnemonic == Mnemonic.jp || instr.Mnemonic == Mnemonic.call)
                         &&
                         operand.Base == null &&
                         operand.Index == null &&
                         operand.Offset != null)
                     {
                         // JP cc,(XXXX) should be JP cc,XXXX
-                        instr.op2 = AddressOperand.Ptr16(operand.Offset.ToUInt16());
-                        instr.op2.Width = PrimitiveType.Ptr16;
+                        var op = AddressOperand.Ptr16(operand.Offset.ToUInt16());
+                        op.Width = PrimitiveType.Ptr16;
+                        instr.Operands = new MachineOperand[] { instr.Operands[0], op };
                     }
                     else
                     {
-                        instr.op2 = operand;
-                        instr.op2.Width = instr.op1.Width;
+                        instr.Operands = new MachineOperand[] {
+                            instr.Operands[0],
+                            operand
+                        };
+                        instr.Operands[1].Width = instr.Operands[0].Width;
                     }
                 }
                 else
@@ -412,16 +419,16 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class SrcOpRec : Decoder
+        private class SrcDecoder : Decoder
         {
             private string format;
 
-            public SrcOpRec(string format)
+            public SrcDecoder(string format)
             {
                 this.format = format;
             }
 
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
                 Tlcs90Instruction instr;
                 Constant offset = null;
@@ -441,9 +448,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     };
                     if (idxReg == null)
                     {
-                        if (!dasm.rdr.TryReadByte(out b))
+                        if (!dasm.rdr.TryReadByte(out byte bOff))
                             return null;
-                        offset = Constant.SByte((sbyte)b);
+                        offset = Constant.SByte((sbyte)bOff);
                     }
                     break;
                 case 'B': baseReg = Registers.bc; break;
@@ -467,7 +474,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 default: throw new NotImplementedException(string.Format("Tlcs-90: src {0}", format));
                 }
 
-                if (!dasm.rdr.TryReadByte(out b))
+                if (!dasm.rdr.TryReadByte(out byte b))
                     return null;
                 instr = srcEncodings[b].Decode(b, dasm);
                 if (instr == null)
@@ -482,17 +489,26 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
                 if (dasm.backPatchOp == 0)
                 {
-                    instr.op2 = instr.op1;
-                    instr.op1 = operand;
-                    if (instr.op2 != null)
+                    if (instr.Operands.Length == 1)
                     {
-                        operand.Width = instr.op2.Width;
+                        instr.Operands = new MachineOperand[] { operand, instr.Operands[0] };
+                    }
+                    else
+                    {
+                        instr.Operands = new MachineOperand[] { operand };
+                    }
+                    if (instr.Operands.Length >= 2)
+                    {
+                        operand.Width = instr.Operands[1].Width;
                     }
                 }
                 else if (dasm.backPatchOp == 1)
                 {
-                    instr.op2 = operand;
-                    operand.Width = instr.op1.Width;
+                    if (operand != null)
+                    {
+                        instr.Operands = new MachineOperand[] { instr.Operands[0], operand };
+                    }
+                    operand.Width = instr.Operands[0].Width;
                 }
                 else
                     return null;
@@ -500,371 +516,359 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class InvalidDecoder : Decoder
-        {
-            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
-            {
-                return new Tlcs90Instruction
-                {
-                    Opcode = Opcode.invalid,
-                    InstructionClass = InstrClass.Invalid
-                };
-            }
-        }
-
-        private static InstrDecoder Instr(Opcode opcode, params Mutator<Tlcs90Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<Tlcs90Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<Tlcs90Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<Tlcs90Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, mutators);
         }
 
-        private static Decoder invalid = new InvalidDecoder();
+        private static Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
         private static Decoder[] decoders = new Decoder[256]
         {
             // 00
-            Instr(Opcode.nop, InstrClass.Linear|InstrClass.Padding|InstrClass.Zero),
-            Instr(Opcode.halt, InstrClass.Terminates),
-            Instr(Opcode.di),
-            Instr(Opcode.ei),
+            Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding|InstrClass.Zero),
+            Instr(Mnemonic.halt, InstrClass.Terminates),
+            Instr(Mnemonic.di),
+            Instr(Mnemonic.ei),
 
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.incx, mw),
+            invalid,
+            invalid,
+            invalid,
+            Instr(Mnemonic.incx, mw),
 
-            Instr(Opcode.ex, D,H),
-            Instr(Opcode.ex, A,af_),
-            Instr(Opcode.exx),
-            Instr(Opcode.daa, a),
+            Instr(Mnemonic.ex, D,H),
+            Instr(Mnemonic.ex, A,af_),
+            Instr(Mnemonic.exx),
+            Instr(Mnemonic.daa, a),
 
-            Instr(Opcode.rcf),
-            Instr(Opcode.scf),
-            Instr(Opcode.ccf),
-            Instr(Opcode.decx, mb),
+            Instr(Mnemonic.rcf),
+            Instr(Mnemonic.scf),
+            Instr(Mnemonic.ccf),
+            Instr(Mnemonic.decx, mb),
 
             // 10
-            Instr(Opcode.cpl, a),
-            Instr(Opcode.neg, a),
-            Instr(Opcode.mul, H,Ib),
-            Instr(Opcode.div, H,Ib),
+            Instr(Mnemonic.cpl, a),
+            Instr(Mnemonic.neg, a),
+            Instr(Mnemonic.mul, H,Ib),
+            Instr(Mnemonic.div, H,Ib),
 
-            Instr(Opcode.add, X,Iw),
-            Instr(Opcode.add, Y,Iw),
-            Instr(Opcode.add, S,Iw),
-            Instr(Opcode.ldar, H,jw),
+            Instr(Mnemonic.add, X,Iw),
+            Instr(Mnemonic.add, Y,Iw),
+            Instr(Mnemonic.add, S,Iw),
+            Instr(Mnemonic.ldar, H,jw),
 
-            Instr(Opcode.djnz, InstrClass.ConditionalTransfer, jb ),
-            Instr(Opcode.djnz, InstrClass.ConditionalTransfer, B,jb),
-            Instr(Opcode.jp, InstrClass.Transfer, Jw),
-            Instr(Opcode.jr, InstrClass.Transfer, jw),
+            Instr(Mnemonic.djnz, InstrClass.ConditionalTransfer, jb ),
+            Instr(Mnemonic.djnz, InstrClass.ConditionalTransfer, B,jb),
+            Instr(Mnemonic.jp, InstrClass.Transfer, Jw),
+            Instr(Mnemonic.jr, InstrClass.Transfer, jw),
 
-            Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, Jw),
-            Instr(Opcode.callr, InstrClass.Transfer|InstrClass.Call, jw),
-            Instr(Opcode.ret, InstrClass.Transfer),
-            Instr(Opcode.reti, InstrClass.Transfer), 
+            Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Jw),
+            Instr(Mnemonic.callr, InstrClass.Transfer|InstrClass.Call, jw),
+            Instr(Mnemonic.ret, InstrClass.Transfer),
+            Instr(Mnemonic.reti, InstrClass.Transfer), 
 
             // 20
-            Instr(Opcode.ld, a,r),
-            Instr(Opcode.ld, a,r),
-            Instr(Opcode.ld, a,r),
-            Instr(Opcode.ld, a,r),
+            Instr(Mnemonic.ld, a,r),
+            Instr(Mnemonic.ld, a,r),
+            Instr(Mnemonic.ld, a,r),
+            Instr(Mnemonic.ld, a,r),
 
-            Instr(Opcode.ld, a,r),
-            Instr(Opcode.ld, a,r),
-            Instr(Opcode.ld, a,r),
-            Instr(Opcode.ld, a,mb),
+            Instr(Mnemonic.ld, a,r),
+            Instr(Mnemonic.ld, a,r),
+            Instr(Mnemonic.ld, a,r),
+            Instr(Mnemonic.ld, a,mb),
 
-            Instr(Opcode.ld, r,a),
-            Instr(Opcode.ld, r,a),
-            Instr(Opcode.ld, r,a),
-            Instr(Opcode.ld, r,a),
+            Instr(Mnemonic.ld, r,a),
+            Instr(Mnemonic.ld, r,a),
+            Instr(Mnemonic.ld, r,a),
+            Instr(Mnemonic.ld, r,a),
 
-            Instr(Opcode.ld, r,a),
-            Instr(Opcode.ld, r,a),
-            Instr(Opcode.ld, r,a),
-            Instr(Opcode.ld, mb,a),
+            Instr(Mnemonic.ld, r,a),
+            Instr(Mnemonic.ld, r,a),
+            Instr(Mnemonic.ld, r,a),
+            Instr(Mnemonic.ld, mb,a),
 
             // 30
-            Instr(Opcode.ld, r,Ib),
-            Instr(Opcode.ld, r,Ib),
-            Instr(Opcode.ld, r,Ib),
-            Instr(Opcode.ld, r,Ib),
+            Instr(Mnemonic.ld, r,Ib),
+            Instr(Mnemonic.ld, r,Ib),
+            Instr(Mnemonic.ld, r,Ib),
+            Instr(Mnemonic.ld, r,Ib),
 
-            Instr(Opcode.ld, r,Ib),
-            Instr(Opcode.ld, r,Ib),
-            Instr(Opcode.ld, r,Ib),
-            Instr(Opcode.ld, mb,Ib),
+            Instr(Mnemonic.ld, r,Ib),
+            Instr(Mnemonic.ld, r,Ib),
+            Instr(Mnemonic.ld, r,Ib),
+            Instr(Mnemonic.ld, mb,Ib),
 
-            Instr(Opcode.ld, B,Iw),
-            Instr(Opcode.ld, D,Iw),
-            Instr(Opcode.ld, H,Iw),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.ld, B,Iw),
+            Instr(Mnemonic.ld, D,Iw),
+            Instr(Mnemonic.ld, H,Iw),
+            invalid,
 
-            Instr(Opcode.ld, X,Iw),
-            Instr(Opcode.ld, Y,Iw),
-            Instr(Opcode.ld, S,Iw),
-            Instr(Opcode.ldw, mw,Iw),
+            Instr(Mnemonic.ld, X,Iw),
+            Instr(Mnemonic.ld, Y,Iw),
+            Instr(Mnemonic.ld, S,Iw),
+            Instr(Mnemonic.ldw, mw,Iw),
 
             // 40
-            Instr(Opcode.ld, H,B),
-            Instr(Opcode.ld, H,D),
-            Instr(Opcode.ld, H,H),    // lolwut
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.ld, H,B),
+            Instr(Mnemonic.ld, H,D),
+            Instr(Mnemonic.ld, H,H),    // lolwut
+            invalid,
 
-            Instr(Opcode.ld, H,X),
-            Instr(Opcode.ld, H,Y),
-            Instr(Opcode.ld, H,S),
-            Instr(Opcode.ld, H,mw),
+            Instr(Mnemonic.ld, H,X),
+            Instr(Mnemonic.ld, H,Y),
+            Instr(Mnemonic.ld, H,S),
+            Instr(Mnemonic.ld, H,mw),
 
-            Instr(Opcode.ld, B,H),
-            Instr(Opcode.ld, D,H),
-            Instr(Opcode.ld, H,H),    // lolwut
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.ld, B,H),
+            Instr(Mnemonic.ld, D,H),
+            Instr(Mnemonic.ld, H,H),    // lolwut
+            invalid,
 
-            Instr(Opcode.ld, X,H),
-            Instr(Opcode.ld, Y,H),
-            Instr(Opcode.ld, S,H),
-            Instr(Opcode.ld, mw,H),
+            Instr(Mnemonic.ld, X,H),
+            Instr(Mnemonic.ld, Y,H),
+            Instr(Mnemonic.ld, S,H),
+            Instr(Mnemonic.ld, mw,H),
 
             // 50
-            Instr(Opcode.push, B),
-            Instr(Opcode.push, D),
-            Instr(Opcode.push, H),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.push, B),
+            Instr(Mnemonic.push, D),
+            Instr(Mnemonic.push, H),
+            invalid,
 
-            Instr(Opcode.push, X),
-            Instr(Opcode.push, Y),
-            Instr(Opcode.push, A),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.push, X),
+            Instr(Mnemonic.push, Y),
+            Instr(Mnemonic.push, A),
+            invalid,
 
-            Instr(Opcode.pop, B),
-            Instr(Opcode.pop, D),
-            Instr(Opcode.pop, H),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.pop, B),
+            Instr(Mnemonic.pop, D),
+            Instr(Mnemonic.pop, H),
+            invalid,
 
-            Instr(Opcode.pop, X),
-            Instr(Opcode.pop, Y),
-            Instr(Opcode.pop, A),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.pop, X),
+            Instr(Mnemonic.pop, Y),
+            Instr(Mnemonic.pop, A),
+            invalid,
 
             // 60
-            Instr(Opcode.add, a,mb),
-            Instr(Opcode.adc, a,mb),
-            Instr(Opcode.sub, a,mb),
-            Instr(Opcode.sbc, a,mb),
+            Instr(Mnemonic.add, a,mb),
+            Instr(Mnemonic.adc, a,mb),
+            Instr(Mnemonic.sub, a,mb),
+            Instr(Mnemonic.sbc, a,mb),
 
-            Instr(Opcode.and, a,mb),
-            Instr(Opcode.xor, a,mb),
-            Instr(Opcode.or,  a,mb),
-            Instr(Opcode.cp,  a,mb),
+            Instr(Mnemonic.and, a,mb),
+            Instr(Mnemonic.xor, a,mb),
+            Instr(Mnemonic.or,  a,mb),
+            Instr(Mnemonic.cp,  a,mb),
 
-            Instr(Opcode.add, a,Ib),
-            Instr(Opcode.adc, a,Ib),
-            Instr(Opcode.sub, a,Ib),
-            Instr(Opcode.sbc, a,Ib),
+            Instr(Mnemonic.add, a,Ib),
+            Instr(Mnemonic.adc, a,Ib),
+            Instr(Mnemonic.sub, a,Ib),
+            Instr(Mnemonic.sbc, a,Ib),
 
-            Instr(Opcode.and, a,Ib),
-            Instr(Opcode.xor, a,Ib),
-            Instr(Opcode.or,  a,Ib),
-            Instr(Opcode.cp,  a,Ib),
+            Instr(Mnemonic.and, a,Ib),
+            Instr(Mnemonic.xor, a,Ib),
+            Instr(Mnemonic.or,  a,Ib),
+            Instr(Mnemonic.cp,  a,Ib),
 
             // 70
-            Instr(Opcode.add, H,Mw),
-            Instr(Opcode.adc, H,Mw),
-            Instr(Opcode.sub, H,Mw),
-            Instr(Opcode.sbc, H,Mw),
+            Instr(Mnemonic.add, H,Mw),
+            Instr(Mnemonic.adc, H,Mw),
+            Instr(Mnemonic.sub, H,Mw),
+            Instr(Mnemonic.sbc, H,Mw),
 
-            Instr(Opcode.and, H,Mw),
-            Instr(Opcode.xor, H,Mw),
-            Instr(Opcode.or,  H,Mw),
-            Instr(Opcode.cp,  H,Mw),
+            Instr(Mnemonic.and, H,Mw),
+            Instr(Mnemonic.xor, H,Mw),
+            Instr(Mnemonic.or,  H,Mw),
+            Instr(Mnemonic.cp,  H,Mw),
 
-            Instr(Opcode.add, H,Iw),
-            Instr(Opcode.adc, H,Iw),
-            Instr(Opcode.sub, H,Iw),
-            Instr(Opcode.sbc, H,Iw),
+            Instr(Mnemonic.add, H,Iw),
+            Instr(Mnemonic.adc, H,Iw),
+            Instr(Mnemonic.sub, H,Iw),
+            Instr(Mnemonic.sbc, H,Iw),
 
-            Instr(Opcode.and, H,Iw),
-            Instr(Opcode.xor, H,Iw),
-            Instr(Opcode.or,  H,Iw),
-            Instr(Opcode.cp,  H,Iw),
+            Instr(Mnemonic.and, H,Iw),
+            Instr(Mnemonic.xor, H,Iw),
+            Instr(Mnemonic.or,  H,Iw),
+            Instr(Mnemonic.cp,  H,Iw),
 
             // 80
-            Instr(Opcode.inc, r),
-            Instr(Opcode.inc, r),
-            Instr(Opcode.inc, r),
-            Instr(Opcode.inc, r),
+            Instr(Mnemonic.inc, r),
+            Instr(Mnemonic.inc, r),
+            Instr(Mnemonic.inc, r),
+            Instr(Mnemonic.inc, r),
 
-            Instr(Opcode.inc, r),
-            Instr(Opcode.inc, r),
-            Instr(Opcode.inc, r),
-            Instr(Opcode.inc, mb),
+            Instr(Mnemonic.inc, r),
+            Instr(Mnemonic.inc, r),
+            Instr(Mnemonic.inc, r),
+            Instr(Mnemonic.inc, mb),
 
-            Instr(Opcode.dec, r),
-            Instr(Opcode.dec, r),
-            Instr(Opcode.dec, r),
-            Instr(Opcode.dec, r),
+            Instr(Mnemonic.dec, r),
+            Instr(Mnemonic.dec, r),
+            Instr(Mnemonic.dec, r),
+            Instr(Mnemonic.dec, r),
 
-            Instr(Opcode.dec, r),
-            Instr(Opcode.dec, r),
-            Instr(Opcode.dec, r),
-            Instr(Opcode.dec, mb),
+            Instr(Mnemonic.dec, r),
+            Instr(Mnemonic.dec, r),
+            Instr(Mnemonic.dec, r),
+            Instr(Mnemonic.dec, mb),
 
             // 90
-            Instr(Opcode.inc, B),
-            Instr(Opcode.inc, D),
-            Instr(Opcode.inc, H),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.inc, B),
+            Instr(Mnemonic.inc, D),
+            Instr(Mnemonic.inc, H),
+            invalid,
 
-            Instr(Opcode.inc, X),
-            Instr(Opcode.inc, Y),
-            Instr(Opcode.inc, A),
-            Instr(Opcode.incw, mw),
+            Instr(Mnemonic.inc, X),
+            Instr(Mnemonic.inc, Y),
+            Instr(Mnemonic.inc, A),
+            Instr(Mnemonic.incw, mw),
 
-            Instr(Opcode.dec, B),
-            Instr(Opcode.dec, D),
-            Instr(Opcode.dec, H),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            Instr(Mnemonic.dec, B),
+            Instr(Mnemonic.dec, D),
+            Instr(Mnemonic.dec, H),
+            invalid,
 
-            Instr(Opcode.dec, X),
-            Instr(Opcode.dec, Y),
-            Instr(Opcode.dec, A),
-            Instr(Opcode.decw, mw),
+            Instr(Mnemonic.dec, X),
+            Instr(Mnemonic.dec, Y),
+            Instr(Mnemonic.dec, A),
+            Instr(Mnemonic.decw, mw),
 
             // A0
-            Instr(Opcode.rrc),
-            Instr(Opcode.rrc),
-            Instr(Opcode.rl),
-            Instr(Opcode.rr),
+            Instr(Mnemonic.rrc),
+            Instr(Mnemonic.rrc),
+            Instr(Mnemonic.rl),
+            Instr(Mnemonic.rr),
 
-            Instr(Opcode.sla),
-            Instr(Opcode.sra),
-            Instr(Opcode.sll),
-            Instr(Opcode.srl),
+            Instr(Mnemonic.sla),
+            Instr(Mnemonic.sra),
+            Instr(Mnemonic.sll),
+            Instr(Mnemonic.srl),
 
-            Instr(Opcode.bit, i,mb),
-            Instr(Opcode.bit, i,mb),
-            Instr(Opcode.bit, i,mb),
-            Instr(Opcode.bit, i,mb),
+            Instr(Mnemonic.bit, i,mb),
+            Instr(Mnemonic.bit, i,mb),
+            Instr(Mnemonic.bit, i,mb),
+            Instr(Mnemonic.bit, i,mb),
 
-            Instr(Opcode.bit, i,mb),
-            Instr(Opcode.bit, i,mb),
-            Instr(Opcode.bit, i,mb),
-            Instr(Opcode.bit, i,mb),
+            Instr(Mnemonic.bit, i,mb),
+            Instr(Mnemonic.bit, i,mb),
+            Instr(Mnemonic.bit, i,mb),
+            Instr(Mnemonic.bit, i,mb),
 
             // B0
-            Instr(Opcode.res, i,mb),
-            Instr(Opcode.res, i,mb),
-            Instr(Opcode.res, i,mb),
-            Instr(Opcode.res, i,mb),
+            Instr(Mnemonic.res, i,mb),
+            Instr(Mnemonic.res, i,mb),
+            Instr(Mnemonic.res, i,mb),
+            Instr(Mnemonic.res, i,mb),
 
-            Instr(Opcode.res, i,mb),
-            Instr(Opcode.res, i,mb),
-            Instr(Opcode.res, i,mb),
-            Instr(Opcode.res, i,mb),
+            Instr(Mnemonic.res, i,mb),
+            Instr(Mnemonic.res, i,mb),
+            Instr(Mnemonic.res, i,mb),
+            Instr(Mnemonic.res, i,mb),
 
-            Instr(Opcode.set, i,mb),
-            Instr(Opcode.set, i,mb),
-            Instr(Opcode.set, i,mb),
-            Instr(Opcode.set, i,mb),
+            Instr(Mnemonic.set, i,mb),
+            Instr(Mnemonic.set, i,mb),
+            Instr(Mnemonic.set, i,mb),
+            Instr(Mnemonic.set, i,mb),
 
-            Instr(Opcode.set, i,mb),
-            Instr(Opcode.set, i,mb),
-            Instr(Opcode.set, i,mb),
-            Instr(Opcode.set, i,mb),
+            Instr(Mnemonic.set, i,mb),
+            Instr(Mnemonic.set, i,mb),
+            Instr(Mnemonic.set, i,mb),
+            Instr(Mnemonic.set, i,mb),
 
             // C0
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
 
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
 
-            Instr(Opcode.jr, InstrClass.Transfer, jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.Transfer, jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
 
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
-            Instr(Opcode.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
+            Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, c,jb),
 
             // D0
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
-            Instr(Opcode.invalid, InstrClass.Invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
             // E0
-            new SrcOpRec("B"),
-            new SrcOpRec("D"),
-            new SrcOpRec("H"),
-            new SrcOpRec("M"),
+            new SrcDecoder("B"),
+            new SrcDecoder("D"),
+            new SrcDecoder("H"),
+            new SrcDecoder("M"),
 
-            new SrcOpRec("X"),
-            new SrcOpRec("Y"),
-            new SrcOpRec("S"),
-            new SrcOpRec("m"),
+            new SrcDecoder("X"),
+            new SrcDecoder("Y"),
+            new SrcDecoder("S"),
+            new SrcDecoder("m"),
 
-            new DstOpRec("B"),
-            new DstOpRec("D"),
-            new DstOpRec("H"),
-            new DstOpRec("M"),
+            new DstDecoder("B"),
+            new DstDecoder("D"),
+            new DstDecoder("H"),
+            new DstDecoder("M"),
 
-            new DstOpRec("X"),
-            new DstOpRec("Y"),
-            new DstOpRec("S"),
-            new DstOpRec("m"),
+            new DstDecoder("X"),
+            new DstDecoder("Y"),
+            new DstDecoder("S"),
+            new DstDecoder("m"),
 
             // F0
-            new SrcOpRec("EX"),
-            new SrcOpRec("EY"),
-            new SrcOpRec("ES"),
-            new SrcOpRec("EH"),
+            new SrcDecoder("EX"),
+            new SrcDecoder("EY"),
+            new SrcDecoder("ES"),
+            new SrcDecoder("EH"),
 
-            new DstOpRec("EX"),
-            new DstOpRec("EY"),
-            new DstOpRec("ES"),
-            new DstOpRec("EH"),
+            new DstDecoder("EX"),
+            new DstDecoder("EY"),
+            new DstDecoder("ES"),
+            new DstDecoder("EH"),
 
-            new RegOpRec(Registers.b, Registers.bc),
-            new RegOpRec(Registers.c, Registers.de),
-            new RegOpRec(Registers.d, Registers.hl),
-            new RegOpRec(Registers.e, null),
+            new RegDecoder(Registers.b, Registers.bc),
+            new RegDecoder(Registers.c, Registers.de),
+            new RegDecoder(Registers.d, Registers.hl),
+            new RegDecoder(Registers.e, null),
 
-            new RegOpRec(Registers.h, Registers.ix),
-            new RegOpRec(Registers.l, Registers.iy),
-            new RegOpRec(Registers.a, Registers.sp),
-            Instr(Opcode.swi, InstrClass.Transfer|InstrClass.Call), 
+            new RegDecoder(Registers.h, Registers.ix),
+            new RegDecoder(Registers.l, Registers.iy),
+            new RegDecoder(Registers.a, Registers.sp),
+            Instr(Mnemonic.swi, InstrClass.Transfer|InstrClass.Call), 
         };
         private Address addr;
 
-        private static Decoder[] Oprecs
+        private static Decoder[] Decoders
         {
             get
             {

@@ -38,21 +38,9 @@ namespace Reko.Arch.Cil
         public OpCode Opcode { get; set; }
         public override int OpcodeAsInteger { get { return (int)Opcode.Value; } }
 
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            try
-            {
-                writer.WriteOpcode(mpopcodetostring[Opcode]);
-            }
-            catch
-            {
-                throw new NotImplementedException("Lolwut: " + Opcode);
-            }
+            writer.WriteOpcode(mpopcodetostring[Opcode]);
         }
 
         public object Operand { get; set; }

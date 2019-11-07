@@ -34,9 +34,9 @@ namespace Reko.Arch.Sparc
     {
         private void RewriteAddxSubx(Func<Expression,Expression,Expression> op, bool emitCc)
         {
-            var dst = RewriteRegister(instrCur.Op3);
-            var src1 = RewriteOp(instrCur.Op1);
-            var src2 = RewriteOp(instrCur.Op2);
+            var dst = RewriteRegister(instrCur.Operands[2]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
             var C = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 dst,
@@ -49,9 +49,9 @@ namespace Reko.Arch.Sparc
 
         private void RewriteAlu(Func<Expression,Expression,Expression> op, bool negateOp2)
         {
-            var dst = RewriteRegister(instrCur.Op3);
-            var src1 = RewriteOp(instrCur.Op1);
-            var src2 = RewriteOp(instrCur.Op2);
+            var dst = RewriteRegister(instrCur.Operands[2]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
             if (negateOp2)
             {
                 src2 = m.Comp(src2);
@@ -62,7 +62,7 @@ namespace Reko.Arch.Sparc
         private void RewriteAluCc(Func<Expression, Expression, Expression> op, bool negateOp2)
         {
             RewriteAlu(op, negateOp2);
-            var dst = RewriteRegister(instrCur.Op3);
+            var dst = RewriteRegister(instrCur.Operands[2]);
             EmitCc(dst);
         }
 
@@ -73,8 +73,8 @@ namespace Reko.Arch.Sparc
 
         private void RewriteLdstub()
         {
-            var mem = (MemoryAccess)RewriteOp(instrCur.Op1);
-            var dst = RewriteOp(instrCur.Op2);
+            var mem = (MemoryAccess)RewriteOp(instrCur.Operands[0]);
+            var dst = RewriteOp(instrCur.Operands[1]);
             var bTmp = binder.CreateTemporary(PrimitiveType.Byte);
             var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bTmp.DataType.BitSize));
             var intrinsic = host.PseudoProcedure("__ldstub", bTmp.DataType, m.AddrOf(arch.PointerType, mem));
@@ -85,8 +85,8 @@ namespace Reko.Arch.Sparc
 
         private void RewriteLoad(PrimitiveType size)
         {
-            var dst = RewriteOp(instrCur.Op2);
-            var src = RewriteMemOp(instrCur.Op1, size);
+            var dst = RewriteOp(instrCur.Operands[1]);
+            var src = RewriteMemOp(instrCur.Operands[0], size);
             if (size.Size < dst.DataType.Size)
             {
                 size = (size.Domain == Domain.SignedInt) ? PrimitiveType.Int32 : PrimitiveType.Word32;
@@ -97,9 +97,9 @@ namespace Reko.Arch.Sparc
 
         private void RewriteMulscc()
         {
-            var dst = RewriteOp(instrCur.Op3);
-            var src1 = RewriteOp(instrCur.Op1);
-            var src2 = RewriteOp(instrCur.Op2);
+            var dst = RewriteOp(instrCur.Operands[2]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
             m.Assign(
                 dst,
                 host.PseudoProcedure("__mulscc", PrimitiveType.Int32, src1, src2));
@@ -108,9 +108,9 @@ namespace Reko.Arch.Sparc
 
         private void RewriteRestore()
         {
-            var dst = RewriteOp(instrCur.Op3);
-            var src1 = RewriteOp(instrCur.Op1);
-            var src2 = RewriteOp(instrCur.Op2);
+            var dst = RewriteOp(instrCur.Operands[2]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
             Identifier tmp = null;
             if (dst is Identifier && ((Identifier)dst).Storage != Registers.g0)
             {
@@ -130,9 +130,9 @@ namespace Reko.Arch.Sparc
 
         private void RewriteSave()
         {
-            var dst = RewriteOp(instrCur.Op3);
-            var src1 = RewriteOp(instrCur.Op1);
-            var src2 = RewriteOp(instrCur.Op2);
+            var dst = RewriteOp(instrCur.Operands[2]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
             Identifier tmp = null;
             if (((Identifier)dst).Storage != Registers.g0)
             {
@@ -159,7 +159,7 @@ namespace Reko.Arch.Sparc
 
         private void RewriteSethi()
         {
-            var rDst = (RegisterOperand)instrCur.Op2;
+            var rDst = (RegisterOperand)instrCur.Operands[1];
             if (rDst.Register == Registers.g0)
             {
                 m.Nop();
@@ -168,15 +168,15 @@ namespace Reko.Arch.Sparc
             {
                 //$TODO: check relocations for a symbol at instrCur.Address.
                 var dst = binder.EnsureRegister(rDst.Register);
-                var src = (ImmediateOperand)instrCur.Op1;
+                var src = (ImmediateOperand)instrCur.Operands[0];
                 m.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
             }
         }
 
         private void RewriteStore(PrimitiveType size)
         {
-            var src = RewriteOp(instrCur.Op1);
-            var dst = RewriteMemOp(instrCur.Op2, size);
+            var src = RewriteOp(instrCur.Operands[0]);
+            var dst = RewriteMemOp(instrCur.Operands[1], size);
             if (size.Size < src.DataType.Size)
                 src = m.Cast(size, src);
             m.Assign(dst, src);

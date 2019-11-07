@@ -26,7 +26,7 @@ namespace Reko.Arch.Avr
 {
     public class AvrInstruction : MachineInstruction
     {
-        public Opcode opcode;
+        public Mnemonic opcode;
         public MachineOperand[] operands;
 
         public override int OpcodeAsInteger => (int)opcode;
@@ -44,14 +44,6 @@ namespace Reko.Arch.Avr
                     writer.WriteString(operands[1].ToString());
                 }
             }
-        }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            if (0 <= i && i < operands.Length)
-                return operands[i];
-            else
-                return null;
         }
     }
 }

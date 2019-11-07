@@ -27,57 +27,47 @@ namespace Reko.Arch.SuperH
 {
     public class SuperHInstruction : MachineInstruction
     {
-
-
-        public Opcode Opcode { get; set; }
-        public MachineOperand op1 { get; set; }
-        public MachineOperand op2 { get; set; }
-        public MachineOperand op3 { get; set; }
+        public Mnemonic Opcode { get; set; }
 
         public override int OpcodeAsInteger => (int) Opcode;
 
-        public override MachineOperand GetOperand(int i)
+        private static Dictionary<Mnemonic, string> opcodes = new Dictionary<Mnemonic, string>
         {
-            throw new NotImplementedException();
-        }
-
-        private static Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
-        {
-            { Opcode.and_b, "and.b" },
-            { Opcode.bf_s, "bf/s" },
-            { Opcode.bt_s, "bt/s" },
-            { Opcode.cmp_eq, "cmp/eq" },
-            { Opcode.cmp_ge, "cmp/ge" },
-            { Opcode.cmp_gt, "cmp/gt" },
-            { Opcode.cmp_hi, "cmp/hi" },
-            { Opcode.cmp_hs, "cmp/hs" },
-            { Opcode.cmp_pl, "cmp/pl" },
-            { Opcode.cmp_pz, "cmp/pz" },
-            { Opcode.cmp_str, "cmp/str" },
-            { Opcode.dmuls_l, "dmuls.l" },
-            { Opcode.exts_b, "exts.b" },
-            { Opcode.exts_w, "exts.w" },
-            { Opcode.extu_b, "extu.b" },
-            { Opcode.extu_w, "extu.w" },
-            { Opcode.fcmp_eq, "fcmp/eq" },
-            { Opcode.fcmp_gt, "fcmp/gt" },
-            { Opcode.fmov_d, "fmov.d" },
-            { Opcode.fmov_s, "fmov.s" },
-            { Opcode.ldc_l, "ldc.l" },
-            { Opcode.lds_l, "lds.l" },
-            { Opcode.mac_l, "mac.l" },
-            { Opcode.mac_w, "mac.w" },
-            { Opcode.mov_b, "mov.b" },
-            { Opcode.mov_l, "mov.l" },
-            { Opcode.mov_w, "mov.w" },
-            { Opcode.movca_l, "movca.l" },
-            { Opcode.movco_l, "movco.l" },
-            { Opcode.movmu_l, "movmu.l" },
-            { Opcode.mul_l, "mul.l" },
-            { Opcode.stc_l, "stc.l" },
-            { Opcode.sts_l, "sts.l" },
-            { Opcode.swap_w, "swap.w" },
-            { Opcode.tas_b, "tas.b" },
+            { Mnemonic.and_b, "and.b" },
+            { Mnemonic.bf_s, "bf/s" },
+            { Mnemonic.bt_s, "bt/s" },
+            { Mnemonic.cmp_eq, "cmp/eq" },
+            { Mnemonic.cmp_ge, "cmp/ge" },
+            { Mnemonic.cmp_gt, "cmp/gt" },
+            { Mnemonic.cmp_hi, "cmp/hi" },
+            { Mnemonic.cmp_hs, "cmp/hs" },
+            { Mnemonic.cmp_pl, "cmp/pl" },
+            { Mnemonic.cmp_pz, "cmp/pz" },
+            { Mnemonic.cmp_str, "cmp/str" },
+            { Mnemonic.dmuls_l, "dmuls.l" },
+            { Mnemonic.exts_b, "exts.b" },
+            { Mnemonic.exts_w, "exts.w" },
+            { Mnemonic.extu_b, "extu.b" },
+            { Mnemonic.extu_w, "extu.w" },
+            { Mnemonic.fcmp_eq, "fcmp/eq" },
+            { Mnemonic.fcmp_gt, "fcmp/gt" },
+            { Mnemonic.fmov_d, "fmov.d" },
+            { Mnemonic.fmov_s, "fmov.s" },
+            { Mnemonic.ldc_l, "ldc.l" },
+            { Mnemonic.lds_l, "lds.l" },
+            { Mnemonic.mac_l, "mac.l" },
+            { Mnemonic.mac_w, "mac.w" },
+            { Mnemonic.mov_b, "mov.b" },
+            { Mnemonic.mov_l, "mov.l" },
+            { Mnemonic.mov_w, "mov.w" },
+            { Mnemonic.movca_l, "movca.l" },
+            { Mnemonic.movco_l, "movco.l" },
+            { Mnemonic.movmu_l, "movmu.l" },
+            { Mnemonic.mul_l, "mul.l" },
+            { Mnemonic.stc_l, "stc.l" },
+            { Mnemonic.sts_l, "sts.l" },
+            { Mnemonic.swap_w, "swap.w" },
+            { Mnemonic.tas_b, "tas.b" },
         };
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -85,21 +75,10 @@ namespace Reko.Arch.SuperH
             if (!opcodes.TryGetValue(Opcode, out var sOpcode))
                 sOpcode = Opcode.ToString();
             writer.WriteOpcode(sOpcode);
-            if (op1 == null)
-                return;
-            writer.Tab();
-            Render(op1, writer, options);
-            if (op2 == null)
-                return;
-            writer.WriteChar(',');
-            Render(op2, writer, options);
-            if (op3 == null)
-                return;
-            writer.WriteChar(',');
-            Render(op3, writer, options);
+            RenderOperands(writer, options);
         }
 
-        private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op)
             {

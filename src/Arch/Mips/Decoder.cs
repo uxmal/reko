@@ -30,24 +30,24 @@ using static Reko.Arch.Mips.MipsDisassembler;
 
 namespace Reko.Arch.Mips
 {
-    using Decoder = Reko.Core.Machine.Decoder<MipsDisassembler, Opcode, MipsInstruction>;
+    using Decoder = Reko.Core.Machine.Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
 
     public partial class MipsDisassembler
     {
         public class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Opcode mnemonic;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator<MipsDisassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, params Mutator<MipsDisassembler>[] mutators)
+            public InstrDecoder(Mnemonic opcode, params Mutator<MipsDisassembler>[] mutators)
             {
                 this.iclass = InstrClass.Linear;
                 this.mnemonic = opcode;
                 this.mutators = mutators;
             }
 
-            public InstrDecoder(InstrClass iclass, Opcode opcode, params Mutator<MipsDisassembler>[] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic opcode, params Mutator<MipsDisassembler>[] mutators)
             {
                 this.iclass = iclass;
                 this.mnemonic = opcode;
@@ -63,20 +63,17 @@ namespace Reko.Arch.Mips
                         return new MipsInstruction
                         {
                             InstructionClass = InstrClass.Invalid,
-                            opcode = Opcode.illegal
+                            Mnemonic = Mnemonic.illegal
                         };
                     }
                 }
                 return new MipsInstruction
                 {
-                    opcode = mnemonic,
+                    Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Address = dasm.addr,
                     Length = 4,
-                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
-                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
-                    op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
-                    op4 = dasm.ops.Count > 3 ? dasm.ops[3] : null,
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }
@@ -86,10 +83,10 @@ namespace Reko.Arch.Mips
         /// </summary>
         class A64Decoder : InstrDecoder
         {
-            private readonly Opcode opcode;
+            private readonly Mnemonic opcode;
             private readonly Mutator<MipsDisassembler>[] mutators;
 
-            public A64Decoder(Opcode opcode, params Mutator<MipsDisassembler>[] mutators) : base(opcode, mutators)
+            public A64Decoder(Mnemonic opcode, params Mutator<MipsDisassembler>[] mutators) : base(opcode, mutators)
             {
                 this.opcode = opcode;
                 this.mutators = mutators;
@@ -97,7 +94,6 @@ namespace Reko.Arch.Mips
 
             public override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
             {
-                
                 if (dasm.arch.PointerType.Size == 8)
                     return base.Decode(wInstr, dasm);
                 else

@@ -79,8 +79,8 @@ namespace Reko.Arch.Sparc
 
         public override SortedList<string, int> GetOpcodeNames()
         {
-            return Enum.GetValues(typeof(Opcode))
-                .Cast<Opcode>()
+            return Enum.GetValues(typeof(Mnemonic))
+                .Cast<Mnemonic>()
                 .ToSortedList(
                     v => v.ToString(),
                     v => (int)v);
@@ -88,7 +88,7 @@ namespace Reko.Arch.Sparc
 
         public override int? GetOpcodeNumber(string name)
         {
-            if (!Enum.TryParse(name, true, out Opcode result))
+            if (!Enum.TryParse(name, true, out Mnemonic result))
                 return null;
             return (int)result;
         }

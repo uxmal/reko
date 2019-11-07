@@ -30,9 +30,9 @@ namespace Reko.Arch.Arm.AArch32
     {
         private void RewriteBkpt()
         {
-            if (instr.ops.Length > 0)
+            if (instr.Operands.Length > 0)
             {
-                m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance, Operand(instr.ops[0])));
+                m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance, Operand(instr.Operands[0])));
             }
             else
             {
@@ -42,7 +42,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteCdp(string name)
         {
-            var ops = instr.ops.Select(o => Operand(o)).ToArray();
+            var ops = instr.Operands.Select(o => Operand(o)).ToArray();
             m.SideEffect(host.PseudoProcedure("__cdp", VoidType.Instance, ops));
         }
 
@@ -53,14 +53,14 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteDmb()
         {
-            var memBarrier = (BarrierOperand)instr.ops[0];
+            var memBarrier = (BarrierOperand)instr.Operands[0];
             var name = $"__dmb_{memBarrier.Option.ToString().ToLower()}";
             m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
         }
 
         private void RewriteDsb()
         {
-            var memBarrier = (BarrierOperand) instr.ops[0];
+            var memBarrier = (BarrierOperand) instr.Operands[0];
             var name = $"__dsb_{memBarrier.Option.ToString().ToLower()}";
             m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
         }
@@ -84,13 +84,13 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteHvc()
         {
-            var n = Operand(instr.ops[0]);
+            var n = Operand(instr.Operands[0]);
             m.SideEffect(host.PseudoProcedure("__hypervisor", VoidType.Instance, n));
         }
 
         private void RewriteIsb()
         {
-            var memBarrier = (BarrierOperand) instr.ops[0];
+            var memBarrier = (BarrierOperand) instr.Operands[0];
             var name = $"__isb_{memBarrier.Option.ToString().ToLower()}";
             m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
         }
@@ -110,7 +110,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteMcr()
         {
             var args = new List<Expression>();
-            foreach (var op in instr.ops)
+            foreach (var op in instr.Operands)
             {
                 args.Add(Operand(op));
             }
@@ -120,11 +120,11 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMcrr()
         {
-            var cop = Operand(instr.ops[0]);
-            var cmd = Operand(instr.ops[1]);
-            var cr = Operand(instr.ops[4]);
-            var rhi = ((RegisterOperand) instr.ops[2]).Register;
-            var rlo = ((RegisterOperand) instr.ops[3]).Register;
+            var cop = Operand(instr.Operands[0]);
+            var cmd = Operand(instr.Operands[1]);
+            var cr = Operand(instr.Operands[4]);
+            var rhi = ((RegisterOperand) instr.Operands[2]).Register;
+            var rlo = ((RegisterOperand) instr.Operands[3]).Register;
             var nBits = (int) (rhi.BitSize + rlo.BitSize);
             var rseq = binder.EnsureSequence(PrimitiveType.CreateWord(nBits), rhi, rlo);
             m.Assign(rseq, host.PseudoProcedure("__mcrr", VoidType.Instance, cop, cmd, cr, rseq));
@@ -135,7 +135,7 @@ namespace Reko.Arch.Arm.AArch32
             int cArgs = 0;
             Expression dst = null;
             var args = new List<Expression>();
-            foreach (var op in instr.ops)
+            foreach (var op in instr.Operands)
             {
                 var a = Operand(op);
                 if (cArgs == 2)
@@ -154,11 +154,11 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMrrc()
         {
-            var cop = Operand(instr.ops[0]);
-            var cmd = Operand(instr.ops[1]);
-            var cr = Operand(instr.ops[4]);
-            var rhi = ((RegisterOperand) instr.ops[2]).Register;
-            var rlo = ((RegisterOperand) instr.ops[3]).Register;
+            var cop = Operand(instr.Operands[0]);
+            var cmd = Operand(instr.Operands[1]);
+            var cr = Operand(instr.Operands[4]);
+            var rhi = ((RegisterOperand) instr.Operands[2]).Register;
+            var rlo = ((RegisterOperand) instr.Operands[3]).Register;
             var nBits = (int) (rhi.BitSize + rlo.BitSize);
             var rseq = binder.EnsureSequence(PrimitiveType.CreateWord(nBits), rhi, rlo);
             m.Assign(rseq, host.PseudoProcedure("__mrrc", rseq.DataType, cop, cmd, cr));
@@ -178,14 +178,14 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteSetend()
         {
-            var endianness = (EndiannessOperand)instr.ops[0];
+            var endianness = (EndiannessOperand)instr.Operands[0];
             var intrisic = host.PseudoProcedure("__set_bigendian", VoidType.Instance, Constant.Bool(endianness.BigEndian));
             m.SideEffect(intrisic);
         }
 
         private void RewriteSmc()
         {
-            var n = Operand(instr.ops[0]);
+            var n = Operand(instr.Operands[0]);
             m.SideEffect(host.PseudoProcedure("__smc", VoidType.Instance, n));
         }
 
@@ -217,7 +217,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteUdf()
         {
-            var trapNo = ((ImmediateOperand)instr.ops[0]).Value;
+            var trapNo = ((ImmediateOperand)instr.Operands[0]).Value;
             var ppp = host.PseudoProcedure("__syscall", PrimitiveType.Word32, trapNo);
             m.SideEffect(ppp);
         }

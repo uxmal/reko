@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -95,7 +95,6 @@ namespace Reko.UnitTests.Arch.Tms7000
             var instr = DisassembleBytes(0x8A, 0x12, 0x34);
             Assert.AreEqual("lda\t@1234", instr.ToString());
         }
-
 
         [Test]
         public void Tms7000_dis_lda_direct_indexed()

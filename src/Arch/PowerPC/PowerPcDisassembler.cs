@@ -64,24 +64,21 @@ namespace Reko.Arch.PowerPC
 
         protected override PowerPcInstruction CreateInvalidInstruction()
         {
-            return new PowerPcInstruction(Opcode.illegal)
+            return new PowerPcInstruction(Mnemonic.illegal)
             {
-                InstructionClass = InstrClass.Invalid
+                InstructionClass = InstrClass.Invalid,
+                Operands = new MachineOperand[0],
             };
         }
 
-        private PowerPcInstruction MakeInstruction(InstrClass iclass, Opcode opcode)
+        private PowerPcInstruction MakeInstruction(InstrClass iclass, Mnemonic opcode)
         {
             return new PowerPcInstruction(opcode)
             {
                 Address = addr,
                 InstructionClass = iclass,
                 Length = 4,
-                op1 = ops.Count > 0 ? ops[0] : null,
-                op2 = ops.Count > 1 ? ops[1] : null,
-                op3 = ops.Count > 2 ? ops[2] : null,
-                op4 = ops.Count > 3 ? ops[3] : null,
-                op5 = ops.Count > 4 ? ops[4] : null,
+                Operands = ops.ToArray(),
                 setsCR0 = allowSetCR0,
             };
         }
@@ -227,6 +224,19 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> v3 = v(11);
         internal static readonly Mutator<PowerPcDisassembler> v4 = v(6);
 
+        // vector register using only 3 bits of encoding
+        internal static Mutator<PowerPcDisassembler> v3_(int offset)
+        {
+            return (u, d) =>
+            {
+                var op = d.VRegFromBits((u >> offset) & 0x7);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<PowerPcDisassembler> v3_6 = v3_(6);
+
+
         internal static Mutator<PowerPcDisassembler> I(int offset)
         {
             return (u, d) =>
@@ -362,7 +372,7 @@ namespace Reko.Arch.PowerPC
             //        }}
             //");
 #endif
-            return new PowerPcInstruction(Opcode.illegal)
+            return new PowerPcInstruction(Mnemonic.illegal)
             {
                 InstructionClass = InstrClass.Invalid
             };

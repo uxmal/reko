@@ -164,9 +164,19 @@ namespace Reko.Arch.M68k
             return regs[reg];
         }
 
+        public static RegisterStorage DataRegister(uint reg)
+        {
+            return regs[reg];
+        }
+
         public static AddressRegister AddressRegister(int reg)
         {
             return (AddressRegister)regs[reg + 8];
+        }
+
+        public static AddressRegister AddressRegister(uint reg)
+        {
+            return (AddressRegister) regs[reg + 8];
         }
 
         public static RegisterStorage FpRegister(int reg)

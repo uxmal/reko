@@ -119,14 +119,14 @@ namespace Reko.Arch.Vax
 
         public override SortedList<string, int> GetOpcodeNames()
         {
-            return Enum.GetValues(typeof(Opcode))
-                .Cast<Opcode>()
-                .ToSortedList(v => Enum.GetName(typeof(Opcode), v), v => (int)v);
+            return Enum.GetValues(typeof(Mnemonic))
+                .Cast<Mnemonic>()
+                .ToSortedList(v => Enum.GetName(typeof(Mnemonic), v), v => (int)v);
         }
 
         public override int? GetOpcodeNumber(string name)
         {
-            if (!Enum.TryParse(name, out Opcode result))
+            if (!Enum.TryParse(name, out Mnemonic result))
                 return null;
             return (int)result;
         }

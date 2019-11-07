@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -57,7 +58,7 @@ namespace Reko.Arch.Mos6502
             return new AddressCorrelatedException(
                 instrCur.Address,
                 "Rewriting 6502 opcode '{0}' is not supported yet.",
-                instrCur.Code);
+                instrCur.Mnemonic);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -68,70 +69,70 @@ namespace Reko.Arch.Mos6502
                 var instrs = new List<RtlInstruction>();
                 this.rtlc = instrCur.InstructionClass;
                 this.m = new RtlEmitter(instrs);
-                switch (instrCur.Code)
+                switch (instrCur.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
                     rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.illegal: m.Invalid(); break;
-                case Opcode.adc: Adc(); break;
-                case Opcode.and: And(); break;
-                case Opcode.asl: Asl(); break;
-                case Opcode.bcc: Branch(ConditionCode.UGE, FlagM.CF); break;
-                case Opcode.bcs: Branch(ConditionCode.ULT, FlagM.CF); break;
-                case Opcode.beq: Branch(ConditionCode.EQ, FlagM.ZF); break;
-                case Opcode.bit: Bit(); break;
-                case Opcode.bmi: Branch(ConditionCode.SG, FlagM.NF); break;
-                case Opcode.bne: Branch(ConditionCode.NE, FlagM.ZF); break;
-                case Opcode.bpl: Branch(ConditionCode.NS, FlagM.NF); break;
-                case Opcode.brk: Brk(); break;
-                case Opcode.bvc: Branch(ConditionCode.NO, FlagM.VF); break;
-                case Opcode.bvs: Branch(ConditionCode.OV, FlagM.VF); break;
-                case Opcode.clc: SetFlag(FlagM.CF, false); break;
-                case Opcode.cld: SetFlag(FlagM.DF, false); break;
-                case Opcode.cli: SetFlag(FlagM.IF, false); break;
-                case Opcode.clv: SetFlag(FlagM.VF, false); break;
-                case Opcode.cmp: Cmp(Registers.a); break;
-                case Opcode.cpx: Cmp(Registers.x); break;
-                case Opcode.cpy: Cmp(Registers.y); break;
-                case Opcode.dec: Dec(); break;
-                case Opcode.dex: Dec(Registers.x); break;
-                case Opcode.dey: Dec(Registers.y); break;
-                case Opcode.eor: Eor(); break;
-                case Opcode.inc: Inc(); break;
-                case Opcode.inx: Inc(Registers.x); break;
-                case Opcode.iny: Inc(Registers.y); break;
-                case Opcode.jmp: Jmp(); break;
-                case Opcode.jsr: Jsr(); break;
-                case Opcode.lda: Ld(Registers.a); break;
-                case Opcode.ldx: Ld(Registers.x); break;
-                case Opcode.ldy: Ld(Registers.y); break;
-                case Opcode.lsr: Lsr(); break;
-                case Opcode.nop: m.Nop(); break;
-                case Opcode.ora: Ora(); break;
-                case Opcode.pha: Push(Registers.a); break;
-                case Opcode.php: Push(AllFlags()); break;
-                case Opcode.pla: Pull(Registers.a); break;
-                case Opcode.plp: Plp(); break;
-                case Opcode.rol: Rotate(PseudoProcedure.Rol); break;
-                case Opcode.ror: Rotate(PseudoProcedure.Ror); break;
-                case Opcode.rti: Rti(); break;
-                case Opcode.rts: Rts(); break;
-                case Opcode.sbc: Sbc(); break;
-                case Opcode.sec: SetFlag(FlagM.CF, true); break;
-                case Opcode.sed: SetFlag(FlagM.DF, true); break;
-                case Opcode.sei: SetFlag(FlagM.IF, true); break;
-                case Opcode.sta: St(Registers.a); break;
-                case Opcode.stx: St(Registers.x); break;
-                case Opcode.sty: St(Registers.y); break;
-                case Opcode.tax: Copy(Registers.x, Registers.a); break;
-                case Opcode.tay: Copy(Registers.y, Registers.a); break;
-                case Opcode.tsx: Copy(Registers.x, Registers.s); break;
-                case Opcode.txa: Copy(Registers.a, Registers.x); break;
-                case Opcode.txs: Copy(Registers.s, Registers.x); break;
-                case Opcode.tya: Copy(Registers.a, Registers.y); break;
+                case Mnemonic.illegal: m.Invalid(); break;
+                case Mnemonic.adc: Adc(); break;
+                case Mnemonic.and: And(); break;
+                case Mnemonic.asl: Asl(); break;
+                case Mnemonic.bcc: Branch(ConditionCode.UGE, FlagM.CF); break;
+                case Mnemonic.bcs: Branch(ConditionCode.ULT, FlagM.CF); break;
+                case Mnemonic.beq: Branch(ConditionCode.EQ, FlagM.ZF); break;
+                case Mnemonic.bit: Bit(); break;
+                case Mnemonic.bmi: Branch(ConditionCode.SG, FlagM.NF); break;
+                case Mnemonic.bne: Branch(ConditionCode.NE, FlagM.ZF); break;
+                case Mnemonic.bpl: Branch(ConditionCode.NS, FlagM.NF); break;
+                case Mnemonic.brk: Brk(); break;
+                case Mnemonic.bvc: Branch(ConditionCode.NO, FlagM.VF); break;
+                case Mnemonic.bvs: Branch(ConditionCode.OV, FlagM.VF); break;
+                case Mnemonic.clc: SetFlag(FlagM.CF, false); break;
+                case Mnemonic.cld: SetFlag(FlagM.DF, false); break;
+                case Mnemonic.cli: SetFlag(FlagM.IF, false); break;
+                case Mnemonic.clv: SetFlag(FlagM.VF, false); break;
+                case Mnemonic.cmp: Cmp(Registers.a); break;
+                case Mnemonic.cpx: Cmp(Registers.x); break;
+                case Mnemonic.cpy: Cmp(Registers.y); break;
+                case Mnemonic.dec: Dec(); break;
+                case Mnemonic.dex: Dec(Registers.x); break;
+                case Mnemonic.dey: Dec(Registers.y); break;
+                case Mnemonic.eor: Eor(); break;
+                case Mnemonic.inc: Inc(); break;
+                case Mnemonic.inx: Inc(Registers.x); break;
+                case Mnemonic.iny: Inc(Registers.y); break;
+                case Mnemonic.jmp: Jmp(); break;
+                case Mnemonic.jsr: Jsr(); break;
+                case Mnemonic.lda: Ld(Registers.a); break;
+                case Mnemonic.ldx: Ld(Registers.x); break;
+                case Mnemonic.ldy: Ld(Registers.y); break;
+                case Mnemonic.lsr: Lsr(); break;
+                case Mnemonic.nop: m.Nop(); break;
+                case Mnemonic.ora: Ora(); break;
+                case Mnemonic.pha: Push(Registers.a); break;
+                case Mnemonic.php: Push(AllFlags()); break;
+                case Mnemonic.pla: Pull(Registers.a); break;
+                case Mnemonic.plp: Plp(); break;
+                case Mnemonic.rol: Rotate(PseudoProcedure.Rol); break;
+                case Mnemonic.ror: Rotate(PseudoProcedure.Ror); break;
+                case Mnemonic.rti: Rti(); break;
+                case Mnemonic.rts: Rts(); break;
+                case Mnemonic.sbc: Sbc(); break;
+                case Mnemonic.sec: SetFlag(FlagM.CF, true); break;
+                case Mnemonic.sed: SetFlag(FlagM.DF, true); break;
+                case Mnemonic.sei: SetFlag(FlagM.IF, true); break;
+                case Mnemonic.sta: St(Registers.a); break;
+                case Mnemonic.stx: St(Registers.x); break;
+                case Mnemonic.sty: St(Registers.y); break;
+                case Mnemonic.tax: Copy(Registers.x, Registers.a); break;
+                case Mnemonic.tay: Copy(Registers.y, Registers.a); break;
+                case Mnemonic.tsx: Copy(Registers.x, Registers.s); break;
+                case Mnemonic.txa: Copy(Registers.a, Registers.x); break;
+                case Mnemonic.txs: Copy(Registers.s, Registers.x); break;
+                case Mnemonic.tya: Copy(Registers.a, Registers.y); break;
                 }
                 yield return new RtlInstructionCluster(
                     instrCur.Address,
@@ -172,7 +173,7 @@ namespace Reko.Arch.Mos6502
             var f = FlagGroupStorage(flags);
             m.Branch(
                 m.Test(cc, f),
-                Address.Ptr16(instrCur.Operand.Offset.ToUInt16()),
+                Address.Ptr16(((Operand)instrCur.Operands[0]).Offset.ToUInt16()),
                 rtlc);
         }
 
@@ -184,7 +185,7 @@ namespace Reko.Arch.Mos6502
 
         private void Asl()
         {
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             m.Assign(tmp, m.Shl(mem, 1));
@@ -194,7 +195,7 @@ namespace Reko.Arch.Mos6502
 
         private void Lsr()
         {
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             m.Assign(tmp, m.Shr(mem, 1));
@@ -205,7 +206,7 @@ namespace Reko.Arch.Mos6502
         private void Bit()
         {
             var a = binder.EnsureRegister(Registers.a);
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var flags = FlagGroupStorage(FlagM.NF | FlagM.VF | FlagM.CF);
             m.Assign(tmp, m.And(a, mem));
@@ -220,18 +221,18 @@ namespace Reko.Arch.Mos6502
         private void Cmp(RegisterStorage r)
         {
             var a = binder.EnsureRegister(r);
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             m.Assign(c, m.Cond(m.ISub(a, mem)));
         }
 
         private void Dec()
         {
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
             m.Assign(tmp, m.ISub(mem, 1));
-            m.Assign(RewriteOperand(instrCur.Operand), tmp);
+            m.Assign(RewriteOperand(instrCur.Operands[0]), tmp);
             m.Assign(c, m.Cond(tmp));
         }
 
@@ -245,11 +246,11 @@ namespace Reko.Arch.Mos6502
 
         private void Inc()
         {
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(tmp, m.IAdd(mem, 1));
-            m.Assign(RewriteOperand(instrCur.Operand), tmp);
+            m.Assign(RewriteOperand(instrCur.Operands[0]), tmp);
             m.Assign(c, m.Cond(tmp));
         }
 
@@ -263,20 +264,20 @@ namespace Reko.Arch.Mos6502
 
         private void Jmp()
         {
-            var mem = (MemoryAccess)RewriteOperand(instrCur.Operand);
+            var mem = (MemoryAccess)RewriteOperand(instrCur.Operands[0]);
             m.Goto(mem.EffectiveAddress);
         }
 
         private void Jsr()
         {
-            var mem  = (MemoryAccess) RewriteOperand(instrCur.Operand);
+            var mem  = (MemoryAccess) RewriteOperand(instrCur.Operands[0]);
             m.Call(mem.EffectiveAddress, 2);
         }
 
         private void Ld(RegisterStorage reg)
         {
             var r = binder.EnsureRegister(reg);
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(r, mem);
             m.Assign(c, m.Cond(r));
@@ -285,7 +286,7 @@ namespace Reko.Arch.Mos6502
         private void And()
         {
             var a = binder.EnsureRegister(Registers.a);
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(
                 a,
@@ -296,7 +297,7 @@ namespace Reko.Arch.Mos6502
         private void Eor()
         {
             var a = binder.EnsureRegister(Registers.a);
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(
                 a,
@@ -307,7 +308,7 @@ namespace Reko.Arch.Mos6502
         private void Ora()
         {
             var a = binder.EnsureRegister(Registers.a);
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(
                 a,
@@ -348,7 +349,7 @@ namespace Reko.Arch.Mos6502
         private void Rotate(string rot)
         {
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
-            var arg = RewriteOperand(instrCur.Operand);
+            var arg = RewriteOperand(instrCur.Operands[0]);
             m.Assign(arg, host.PseudoProcedure(rot, arg.DataType, arg, Constant.Byte(1)));
             m.Assign(c, m.Cond(arg));
         }
@@ -366,7 +367,7 @@ namespace Reko.Arch.Mos6502
 
         private void Adc()
         {
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var a = binder.EnsureRegister(Registers.a);
             var c = binder.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             m.Assign(
@@ -375,13 +376,13 @@ namespace Reko.Arch.Mos6502
                     m.IAdd(a, mem),
                     c));
             m.Assign(
-                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Mnemonic), "NVZC", PrimitiveType.Byte),
                 m.Cond(a));
         }
 
         private void Sbc()
         {
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var a = binder.EnsureRegister(Registers.a);
             var c = binder.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             m.Assign(
@@ -390,7 +391,7 @@ namespace Reko.Arch.Mos6502
                     m.ISub(a, mem),
                     m.Not(c)));
             m.Assign(
-                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Mnemonic), "NVZC", PrimitiveType.Byte),
                 m.Cond(a));
         }
 
@@ -403,14 +404,15 @@ namespace Reko.Arch.Mos6502
 
         private void St(RegisterStorage reg)
         {
-            var mem = RewriteOperand(instrCur.Operand);
+            var mem = RewriteOperand(instrCur.Operands[0]);
             var id = binder.EnsureRegister(reg);
             m.Assign(mem, id);
         }
 
-        private Expression RewriteOperand(Operand op)
+        private Expression RewriteOperand(MachineOperand mop)
         {
             Constant offset;
+            var op = (Operand) mop;
             switch (op.Mode)
             {
             default: throw new NotImplementedException("Unimplemented address mode " + op.Mode);
@@ -458,20 +460,20 @@ namespace Reko.Arch.Mos6502
             }
         }
 
-        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
 
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Code))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.Code);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Rw6502_" + dasm.Current.Code + "()");
+            Debug.WriteLine("        public void Rw6502_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            BuildTest(");
             Debug.Write(string.Join(

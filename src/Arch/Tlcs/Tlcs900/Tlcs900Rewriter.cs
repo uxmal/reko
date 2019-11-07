@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Opcode;
+using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Mnemonic;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {
@@ -63,14 +63,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 var instrs = new List<RtlInstruction>();
                 m = new RtlEmitter(instrs);
                 this.instr = dasm.Current;
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     host.Warn(
                        instr.Address,
                        string.Format(
                            "TLCS-900 instruction '{0}' not supported yet.",
-                           instr.Opcode));
+                           instr.Mnemonic));
                     EmitUnitTest();
                     Invalid();
                     break;
@@ -327,7 +327,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void {0}{1}()", prefix, dasm.Current.Opcode);
+            Debug.WriteLine("        public void {0}{1}()", prefix, dasm.Current.Mnemonic);
             Debug.WriteLine("        {");
             Debug.Write("            BuildTest(");
             Debug.Write(string.Join(

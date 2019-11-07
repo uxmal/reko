@@ -47,26 +47,26 @@ namespace Reko.Arch.Mips
 
         private void RewriteFpuBinopS(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
         {
-            var dst = RewriteOperand(instr.op1);
-            var src1 = RewriteOperand(instr.op2);
-            var src2 = RewriteOperand(instr.op3);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var src1 = RewriteOperand(instr.Operands[1]);
+            var src2 = RewriteOperand(instr.Operands[2]);
             m.Assign(dst, ctor(src1, src2));
         }
 
         private void RewriteFpuBinopD(MipsInstruction instr, Func<Expression,Expression,Expression> ctor)
         {
-            var dst = GetFpuRegPair(instr.op1);
-            var src1 = GetFpuRegPair(instr.op2);
-            var src2 = GetFpuRegPair(instr.op3);
+            var dst = GetFpuRegPair(instr.Operands[0]);
+            var src1 = GetFpuRegPair(instr.Operands[1]);
+            var src2 = GetFpuRegPair(instr.Operands[2]);
             m.Assign(dst, ctor(src1, src2));
         }
 
         private void RewriteMac_real(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
         {
-            var dst = RewriteOperand(instr.op1);
-            var acc = RewriteOperand(instr.op2);
-            var src1 = RewriteOperand(instr.op3);
-            var src2 = RewriteOperand(instr.op4);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var acc = RewriteOperand(instr.Operands[1]);
+            var src1 = RewriteOperand(instr.Operands[2]);
+            var src2 = RewriteOperand(instr.Operands[3]);
             var product = m.FMul(src1, src2);
             product.DataType = dt;
             var sum = ctor(acc, product);
@@ -76,10 +76,10 @@ namespace Reko.Arch.Mips
 
         private void RewriteMac_vec(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
         {
-            var dst = RewriteOperand(instr.op1);
-            var acc = RewriteOperand(instr.op2);
-            var src1 = RewriteOperand(instr.op3);
-            var src2 = RewriteOperand(instr.op4);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var acc = RewriteOperand(instr.Operands[1]);
+            var src1 = RewriteOperand(instr.Operands[2]);
+            var src2 = RewriteOperand(instr.Operands[3]);
             var product = m.FMul(src1, src2);
             product.DataType = new ArrayType(dt, src1.DataType.BitSize / dt.BitSize);
             var sum = ctor(acc, product);
@@ -89,10 +89,10 @@ namespace Reko.Arch.Mips
 
         private void RewriteNmac_real(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
         {
-            var dst = RewriteOperand(instr.op1);
-            var acc = RewriteOperand(instr.op2);
-            var src1 = RewriteOperand(instr.op3);
-            var src2 = RewriteOperand(instr.op4);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var acc = RewriteOperand(instr.Operands[1]);
+            var src1 = RewriteOperand(instr.Operands[2]);
+            var src2 = RewriteOperand(instr.Operands[3]);
             var product = m.FMul(src1, src2);
             product.DataType = dt;
             var sum = ctor(acc, product);
@@ -102,10 +102,10 @@ namespace Reko.Arch.Mips
 
         private void RewriteNmac_vec(MipsInstruction instr, PrimitiveType dt, Func<Expression, Expression, Expression> ctor)
         {
-            var dst = RewriteOperand(instr.op1);
-            var acc = RewriteOperand(instr.op2);
-            var src1 = RewriteOperand(instr.op3);
-            var src2 = RewriteOperand(instr.op4);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var acc = RewriteOperand(instr.Operands[1]);
+            var src1 = RewriteOperand(instr.Operands[2]);
+            var src2 = RewriteOperand(instr.Operands[3]);
             var product = m.FMul(src1, src2);
             product.DataType = new ArrayType(dt, src1.DataType.BitSize / dt.BitSize);
             var sum = ctor(acc, product);
@@ -116,9 +116,9 @@ namespace Reko.Arch.Mips
 
         private void RewriteMovft(MipsInstruction instr, bool checkIfClear)
         {
-            var dst = RewriteOperand(instr.op1);
-            var src = RewriteOperand(instr.op2);
-            var cc = RewriteOperand(instr.op3);
+            var dst = RewriteOperand(instr.Operands[0]);
+            var src = RewriteOperand(instr.Operands[1]);
+            var cc = RewriteOperand(instr.Operands[2]);
             m.BranchInMiddleOfInstruction(checkIfClear
                 ? cc.Invert()
                 : cc,
@@ -129,60 +129,60 @@ namespace Reko.Arch.Mips
 
         private void RewriteMulD(MipsInstruction instr)
         {
-            var dst = GetFpuRegPair(instr.op1);
-            var src1 = GetFpuRegPair(instr.op2);
-            var src2 = GetFpuRegPair(instr.op3);
+            var dst = GetFpuRegPair(instr.Operands[0]);
+            var src1 = GetFpuRegPair(instr.Operands[1]);
+            var src2 = GetFpuRegPair(instr.Operands[2]);
             m.Assign(dst, m.FMul(src1, src2));
         }
 
         private void RewriteFpuCmpD(MipsInstruction instr, Operator cmp)
         {
             m.Assign(
-                RewriteOperand0(instr.op1),
+                RewriteOperand0(instr.Operands[0]),
                 new BinaryExpression(cmp, PrimitiveType.Bool,
-                    GetFpuRegPair(instr.op2),
-                    GetFpuRegPair(instr.op3)));
+                    GetFpuRegPair(instr.Operands[1]),
+                    GetFpuRegPair(instr.Operands[2])));
         }
 
         private void RewriteCfc1(MipsInstruction instr)
         {
             m.Assign(
-                    RewriteOperand(instr.op1),
-                    RewriteOperand0(instr.op2));
+                    RewriteOperand(instr.Operands[0]),
+                    RewriteOperand0(instr.Operands[1]));
         }
 
         private void RewriteCtc1(MipsInstruction instr)
         {
             m.Assign(
-                    RewriteOperand(instr.op2),
-                    RewriteOperand0(instr.op1));
+                    RewriteOperand(instr.Operands[1]),
+                    RewriteOperand0(instr.Operands[0]));
         }
 
         private void RewriteCvtD(MipsInstruction instr, DataType dt)
         {
-            var regPair = GetFpuRegPair(instr.op2);
+            var regPair = GetFpuRegPair(instr.Operands[1]);
             m.Assign(
-                RewriteOperand0(instr.op1),
+                RewriteOperand0(instr.Operands[0]),
                 m.Cast(dt, regPair));
         }
 
         private void RewriteMfc1(MipsInstruction instr)
         {
-            m.Assign(RewriteOperand0(instr.op1), RewriteOperand0(instr.op2));
+            m.Assign(RewriteOperand0(instr.Operands[0]), RewriteOperand0(instr.Operands[1]));
         }
 
         private void RewriteMtc1(MipsInstruction instr)
         {
-            m.Assign(RewriteOperand0(instr.op2), RewriteOperand0(instr.op1));
+            m.Assign(RewriteOperand0(instr.Operands[1]), RewriteOperand0(instr.Operands[0]));
         }
 
         private void RewriteTrunc(MipsInstruction instr, string fn, PrimitiveType dtSrc, PrimitiveType dtDst)
         {
             var tmp = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp, RewriteOperand(instr.op2));
+            m.Assign(tmp, RewriteOperand(instr.Operands[1]));
             var ppp = host.PseudoProcedure(fn, dtSrc, tmp);
             m.Assign(
-                RewriteOperand(instr.op1),
+                RewriteOperand(instr.Operands[0]),
                 m.Cast(dtDst, ppp));
         }
     }

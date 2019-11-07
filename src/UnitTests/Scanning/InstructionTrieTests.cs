@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Scanning
 		private X86Instruction CreateMov(RegisterStorage regDst, RegisterStorage regSrc)
 		{
             X86Instruction inst = new X86Instruction(
-                Opcode.mov,
+                Mnemonic.mov,
                 InstrClass.Linear,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Scanning
 		private X86Instruction CreatePush(RegisterStorage reg)
 		{
             X86Instruction inst = new X86Instruction(
-                Opcode.push,
+                Mnemonic.push,
                 InstrClass.Linear,
                 reg.DataType,
                 reg.DataType,

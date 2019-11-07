@@ -27,54 +27,37 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaInstruction : MachineInstruction
     {
-        private static readonly Dictionary<Opcodes, string> instrNames = new Dictionary<Opcodes, string>
+        private static readonly Dictionary<Mnemonic, string> instrNames = new Dictionary<Mnemonic, string>
         {
-            { Opcodes.add_n, "add.n" },
-            { Opcodes.add_s, "add.s" },
-            { Opcodes.addi_n, "addi.n" },
-            { Opcodes.beqz_n, "beqz.n" },
-            { Opcodes.bnez_n, "bnez.n" },
-            { Opcodes.floor_s, "floor.s" },
-            { Opcodes.l32i_n, "l32i.n" },
-            { Opcodes.mov_n, "mov.n" },
-            { Opcodes.moveqz_s, "moveqz.s" },
-            { Opcodes.movi_n, "movi.n" },
-            { Opcodes.mul_s, "mul.s" },
-            { Opcodes.ret_n, "ret.n" },
-            { Opcodes.s32i_n, "s32i.n" },
-            { Opcodes.sub_s, "sub.s"  },
-            { Opcodes.ueq_s, "ueq.s" }
+            { Mnemonic.add_n, "add.n" },
+            { Mnemonic.add_s, "add.s" },
+            { Mnemonic.addi_n, "addi.n" },
+            { Mnemonic.beqz_n, "beqz.n" },
+            { Mnemonic.bnez_n, "bnez.n" },
+            { Mnemonic.floor_s, "floor.s" },
+            { Mnemonic.l32i_n, "l32i.n" },
+            { Mnemonic.mov_n, "mov.n" },
+            { Mnemonic.moveqz_s, "moveqz.s" },
+            { Mnemonic.movi_n, "movi.n" },
+            { Mnemonic.mul_s, "mul.s" },
+            { Mnemonic.ret_n, "ret.n" },
+            { Mnemonic.s32i_n, "s32i.n" },
+            { Mnemonic.sub_s, "sub.s"  },
+            { Mnemonic.ueq_s, "ueq.s" }
         };
 
-        public Opcodes Opcode { get; set; }
-        public MachineOperand[] Operands { get; internal set; }
+        public Mnemonic Mnemonic { get; set; }
 
-        public override int OpcodeAsInteger => (int) Opcode;
-
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            string instrName;
-            if (!instrNames.TryGetValue(Opcode, out instrName))
+            if (!instrNames.TryGetValue(Mnemonic, out string instrName))
             {
-                instrName = Opcode.ToString();
+                instrName = Mnemonic.ToString();
             }
             writer.WriteOpcode(instrName);
-            writer.Tab();
-            var sep = "";
-            if (this.Operands != null)
-            {
-                foreach (var op in this.Operands)
-                {
-                    writer.WriteString(sep);
-                    op.Write(writer, options);
-                    sep = ",";
-                }
-            }
+            RenderOperands(writer, options);
         }
     }
 }

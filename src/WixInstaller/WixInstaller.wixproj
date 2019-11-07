@@ -57,6 +57,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Blackfin\Blackfin.csproj">
+      <Name>Blackfin</Name>
+      <Project>{0bccefdd-63a8-47f2-9a39-8ce7b5f9cfab}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Cray\Cray.csproj">
       <Name>Cray</Name>
       <Project>{47b16677-2bfc-4a5c-a830-e1683c574aec}</Project>

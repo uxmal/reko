@@ -24,13 +24,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Opcode;
+using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Mnemonic;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {
+    using Decoder = Decoder<Tlcs900Disassembler, Opcode, Tlcs900Instruction>;
+
     partial class Tlcs900Disassembler
     {
-        private static OpRecBase[] dstOpRecs = 
+        private static Decoder[] dstDecoders = 
         {
             // 00
             Instr(Opcode.ld, Ib),
@@ -38,9 +40,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Instr(Opcode.ld, Iw),
             Instr(Opcode.invalid),
 
-            new SecondOpRec(Opcode.pop, Zb),
+            new SecondDecoder(Opcode.pop, Zb),
             Instr(Opcode.invalid),
-            new SecondOpRec(Opcode.pop, Zw),
+            new SecondDecoder(Opcode.pop, Zw),
             Instr(Opcode.invalid),
 
             Instr(Opcode.invalid),
@@ -73,15 +75,15 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Instr(Opcode.invalid),
             Instr(Opcode.invalid),
             // 20
-            new SecondOpRec(Opcode.lda, Rw),
-            new SecondOpRec(Opcode.lda, Rw),
-            new SecondOpRec(Opcode.lda, Rw),
-            new SecondOpRec(Opcode.lda, Rw),
+            new SecondDecoder(Opcode.lda, Rw),
+            new SecondDecoder(Opcode.lda, Rw),
+            new SecondDecoder(Opcode.lda, Rw),
+            new SecondDecoder(Opcode.lda, Rw),
 
-            new SecondOpRec(Opcode.lda, Rw),
-            new SecondOpRec(Opcode.lda, Rw),
-            new SecondOpRec(Opcode.lda, Rw),
-            new SecondOpRec(Opcode.lda, Rw),
+            new SecondDecoder(Opcode.lda, Rw),
+            new SecondDecoder(Opcode.lda, Rw),
+            new SecondDecoder(Opcode.lda, Rw),
+            new SecondDecoder(Opcode.lda, Rw),
 
             Instr(Opcode.invalid),
             Instr(Opcode.invalid),
@@ -93,15 +95,15 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Instr(Opcode.invalid),
             Instr(Opcode.invalid),
             // 30
-            new SecondOpRec(Opcode.lda, Rx),
-            new SecondOpRec(Opcode.lda, Rx),
-            new SecondOpRec(Opcode.lda, Rx),
-            new SecondOpRec(Opcode.lda, Rx),
+            new SecondDecoder(Opcode.lda, Rx),
+            new SecondDecoder(Opcode.lda, Rx),
+            new SecondDecoder(Opcode.lda, Rx),
+            new SecondDecoder(Opcode.lda, Rx),
 
-            new SecondOpRec(Opcode.lda, Rx),
-            new SecondOpRec(Opcode.lda, Rx),
-            new SecondOpRec(Opcode.lda, Rx),
-            new SecondOpRec(Opcode.lda, Rx),
+            new SecondDecoder(Opcode.lda, Rx),
+            new SecondDecoder(Opcode.lda, Rx),
+            new SecondDecoder(Opcode.lda, Rx),
+            new SecondDecoder(Opcode.lda, Rx),
 
             Instr(Opcode.invalid),
             Instr(Opcode.invalid),
@@ -113,15 +115,15 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Instr(Opcode.invalid),
             Instr(Opcode.invalid),
             // 40
-            new InvOpRec(Opcode.ld, Rb),
-            new InvOpRec(Opcode.ld, Rb),
-            new InvOpRec(Opcode.ld, Rb),
-            new InvOpRec(Opcode.ld, Rb),
+            new InvDecoder(Opcode.ld, Rb),
+            new InvDecoder(Opcode.ld, Rb),
+            new InvDecoder(Opcode.ld, Rb),
+            new InvDecoder(Opcode.ld, Rb),
 
-            new InvOpRec(Opcode.ld, Rb),
-            new InvOpRec(Opcode.ld, Rb),
-            new InvOpRec(Opcode.ld, Rb),
-            new InvOpRec(Opcode.ld, Rb),
+            new InvDecoder(Opcode.ld, Rb),
+            new InvDecoder(Opcode.ld, Rb),
+            new InvDecoder(Opcode.ld, Rb),
+            new InvDecoder(Opcode.ld, Rb),
 
             Instr(Opcode.invalid),
             Instr(Opcode.invalid),
@@ -253,85 +255,85 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Instr(Opcode.invalid),
             Instr(Opcode.invalid),
             // B0
-            new InvOpRec(Opcode.res, i3b,Zb),
-            new InvOpRec(Opcode.res, i3b,Zb),
-            new InvOpRec(Opcode.res, i3b,Zb),
-            new InvOpRec(Opcode.res, i3b,Zb),
+            new InvDecoder(Opcode.res, i3b,Zb),
+            new InvDecoder(Opcode.res, i3b,Zb),
+            new InvDecoder(Opcode.res, i3b,Zb),
+            new InvDecoder(Opcode.res, i3b,Zb),
 
-            new InvOpRec(Opcode.res, i3b,Zb),
-            new InvOpRec(Opcode.res, i3b,Zb),
-            new InvOpRec(Opcode.res, i3b,Zb),
-            new InvOpRec(Opcode.res, i3b,Zb),
+            new InvDecoder(Opcode.res, i3b,Zb),
+            new InvDecoder(Opcode.res, i3b,Zb),
+            new InvDecoder(Opcode.res, i3b,Zb),
+            new InvDecoder(Opcode.res, i3b,Zb),
 
-            new InvOpRec(Opcode.set, i3b,Zb),
-            new InvOpRec(Opcode.set, i3b,Zb),
-            new InvOpRec(Opcode.set, i3b,Zb),
-            new InvOpRec(Opcode.set, i3b,Zb),
+            new InvDecoder(Opcode.set, i3b,Zb),
+            new InvDecoder(Opcode.set, i3b,Zb),
+            new InvDecoder(Opcode.set, i3b,Zb),
+            new InvDecoder(Opcode.set, i3b,Zb),
 
-            new InvOpRec(Opcode.set, i3b,Zb),
-            new InvOpRec(Opcode.set, i3b,Zb),
-            new InvOpRec(Opcode.set, i3b,Zb),
-            new InvOpRec(Opcode.set, i3b,Zb),
+            new InvDecoder(Opcode.set, i3b,Zb),
+            new InvDecoder(Opcode.set, i3b,Zb),
+            new InvDecoder(Opcode.set, i3b,Zb),
+            new InvDecoder(Opcode.set, i3b,Zb),
             // C0
-            new InvOpRec(Opcode.chg, i3b,Zb),
-            new InvOpRec(Opcode.chg, i3b,Zb),
-            new InvOpRec(Opcode.chg, i3b,Zb),
-            new InvOpRec(Opcode.chg, i3b,Zb),
+            new InvDecoder(Opcode.chg, i3b,Zb),
+            new InvDecoder(Opcode.chg, i3b,Zb),
+            new InvDecoder(Opcode.chg, i3b,Zb),
+            new InvDecoder(Opcode.chg, i3b,Zb),
 
-            new InvOpRec(Opcode.chg, i3b,Zb),
-            new InvOpRec(Opcode.chg, i3b,Zb),
-            new InvOpRec(Opcode.chg, i3b,Zb),
-            new InvOpRec(Opcode.chg, i3b,Zb),
+            new InvDecoder(Opcode.chg, i3b,Zb),
+            new InvDecoder(Opcode.chg, i3b,Zb),
+            new InvDecoder(Opcode.chg, i3b,Zb),
+            new InvDecoder(Opcode.chg, i3b,Zb),
 
-            new InvOpRec(Opcode.bit, i3b,Zb),
-            new InvOpRec(Opcode.bit, i3b,Zb),
-            new InvOpRec(Opcode.bit, i3b,Zb),
-            new InvOpRec(Opcode.bit, i3b,Zb),
+            new InvDecoder(Opcode.bit, i3b,Zb),
+            new InvDecoder(Opcode.bit, i3b,Zb),
+            new InvDecoder(Opcode.bit, i3b,Zb),
+            new InvDecoder(Opcode.bit, i3b,Zb),
 
-            new InvOpRec(Opcode.bit, i3b,Zb),
-            new InvOpRec(Opcode.bit, i3b,Zb),
-            new InvOpRec(Opcode.bit, i3b,Zb),
-            new InvOpRec(Opcode.bit, i3b,Zb),
+            new InvDecoder(Opcode.bit, i3b,Zb),
+            new InvDecoder(Opcode.bit, i3b,Zb),
+            new InvDecoder(Opcode.bit, i3b,Zb),
+            new InvDecoder(Opcode.bit, i3b,Zb),
             // D0
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
 
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
 
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
 
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
-            new InvOpRec(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
+            new InvDecoder(Opcode.jp, C,Zx),
             // E0
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
 
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
 
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
 
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
-            new InvOpRec(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
+            new InvDecoder(Opcode.call, C,Zx),
             // F0
             Instr(Opcode.ret, clr,C),
             Instr(Opcode.ret, clr,C),

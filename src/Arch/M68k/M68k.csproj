@@ -79,7 +79,7 @@
     <Compile Include="M68kCallingConvention.cs" />
     <Compile Include="M68kState.cs" />
     <Compile Include="MemoryOperand.cs" />
-    <Compile Include="Opcode.cs" />
+    <Compile Include="Mnemonic.cs" />
     <Compile Include="OperandFormatDecoder.cs" />
     <Compile Include="OperandRewriter.cs" />
     <Compile Include="M68kPointerScanner.cs" />

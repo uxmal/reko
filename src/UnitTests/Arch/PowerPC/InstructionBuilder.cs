@@ -119,57 +119,57 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public void Bctr()
         {
-            Add(new PowerPcInstruction(Opcode.bcctr, new ImmediateOperand(Constant.Byte(0x20)), null, null, false));
+            Add(new PowerPcInstruction(Mnemonic.bcctr, new ImmediateOperand(Constant.Byte(0x20)), null, null, false));
         }
 
         public void Oris(RegisterOperand rA, RegisterOperand rS, ushort val)
         {
-            Add(new PowerPcInstruction(Opcode.oris, rA, rS, new ImmediateOperand(Constant.Word16(val)), false));
+            Add(new PowerPcInstruction(Mnemonic.oris, rA, rS, new ImmediateOperand(Constant.Word16(val)), false));
         }
 
         public void Add(RegisterOperand rT, RegisterOperand rA, RegisterOperand rB)
         {
-            Add(new PowerPcInstruction(Opcode.add, rT, rA, rB, false));
+            Add(new PowerPcInstruction(Mnemonic.add, rT, rA, rB, false));
         }
 
         public void Add_(RegisterOperand rT, RegisterOperand rA, RegisterOperand rB)
         {
-            Add(new PowerPcInstruction(Opcode.add, rT, rA, rB, true));
+            Add(new PowerPcInstruction(Mnemonic.add, rT, rA, rB, true));
         }
 
         internal void Lbzu(RegisterOperand rD, short offset, RegisterOperand rA)
         {
-            Add(new PowerPcInstruction(Opcode.lbzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lbzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
         }
 
         public void Lis(RegisterOperand r, ushort uimm)
         {
-            Add(new PowerPcInstruction(Opcode.oris, r, r, new ImmediateOperand(Constant.Word16(uimm)), false));
+            Add(new PowerPcInstruction(Mnemonic.oris, r, r, new ImmediateOperand(Constant.Word16(uimm)), false));
         }
 
         public void Lwzu(RegisterOperand rD, short offset, RegisterOperand rA)
         {
-            Add(new PowerPcInstruction(Opcode.lwzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lwzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
         }
 
         public void Lwz(RegisterOperand rD, short offset, RegisterOperand rA)
         {
-            Add(new PowerPcInstruction(Opcode.lwz, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lwz, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
         }
 
         public void Mtctr(RegisterOperand r)
         {
-            Add(new PowerPcInstruction(Opcode.mtctr, r, null, null, false));
+            Add(new PowerPcInstruction(Mnemonic.mtctr, r, null, null, false));
         }
 
         public void Stbux(RegisterOperand rS, RegisterOperand rA, RegisterOperand rB)
         {
-            Add(new PowerPcInstruction(Opcode.stbux, rS, rA, rB, false));
+            Add(new PowerPcInstruction(Mnemonic.stbux, rS, rA, rB, false));
         }
 
         public void Stbu(RegisterOperand rS, short offset, RegisterOperand rA)
         {
-            Add(new PowerPcInstruction(Opcode.stbu, rS, Mem(rA, offset), null, false));
+            Add(new PowerPcInstruction(Mnemonic.stbu, rS, Mem(rA, offset), null, false));
         }
 
         private MemoryOperand Mem(RegisterOperand baseReg, short offset)

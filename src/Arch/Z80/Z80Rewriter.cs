@@ -59,87 +59,87 @@ namespace Reko.Arch.Z80
                 this.rtlc = dasm.Current.InstructionClass;
                 var rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
-                switch (dasm.Current.Code)
+                switch (dasm.Current.Mnemonic)
                 {
                 default: throw new AddressCorrelatedException(
                     dasm.Current.Address,
                     "Z80 instruction '{0}' is not supported yet.",
-                    dasm.Current.Code);
-                case Opcode.illegal: m.Invalid(); break;
-                case Opcode.adc: RewriteAdc(); break;
-                case Opcode.add: RewriteAdd(); break;
-                case Opcode.and: RewriteAnd(); break;
-                case Opcode.bit: RewriteBit(); break;
-                case Opcode.call: RewriteCall(dasm.Current); break;
-                case Opcode.ccf: RewriteCcf(); break;
-                case Opcode.cp: RewriteCp(); break;
-                case Opcode.cpd: RewriteCp(m.ISub, false);  break;
-                case Opcode.cpdr:RewriteCp(m.ISub, true);   break;
-                case Opcode.cpi: RewriteCp(m.IAdd, false);  break;
-                case Opcode.cpir:RewriteCp(m.IAdd, true);   break;
-                case Opcode.cpl: RewriteCpl(); break;
-                case Opcode.di: RewriteDi(); break;
-                case Opcode.daa: RewriteDaa(); break;
-                case Opcode.dec: RewriteDec(); break;
-                case Opcode.djnz: RewriteDjnz(dasm.Current.Op1); break;
-                case Opcode.ei: RewriteEi(); break;
-                case Opcode.ex: RewriteEx(); break;
-                case Opcode.ex_af: RewriteExAf(); break;
-                case Opcode.exx: RewriteExx(); break;
-                case Opcode.hlt: RewriteHlt(); break;
-                case Opcode.@in: RewriteIn(); break;
-                case Opcode.ind:  RewriteIn(m.ISub, false); break;
-                case Opcode.indr: RewriteIn(m.ISub, true); break;
-                case Opcode.ini: RewriteIn(m.IAdd, false); break;
-                case Opcode.inir: RewriteIn(m.IAdd, true); break;
-                case Opcode.im:
-                    m.SideEffect(host.PseudoProcedure("__im", VoidType.Instance, RewriteOp(dasm.Current.Op1)));
+                    dasm.Current.Mnemonic);
+                case Mnemonic.illegal: m.Invalid(); break;
+                case Mnemonic.adc: RewriteAdc(); break;
+                case Mnemonic.add: RewriteAdd(); break;
+                case Mnemonic.and: RewriteAnd(); break;
+                case Mnemonic.bit: RewriteBit(); break;
+                case Mnemonic.call: RewriteCall(dasm.Current); break;
+                case Mnemonic.ccf: RewriteCcf(); break;
+                case Mnemonic.cp: RewriteCp(); break;
+                case Mnemonic.cpd: RewriteCp(m.ISub, false);  break;
+                case Mnemonic.cpdr:RewriteCp(m.ISub, true);   break;
+                case Mnemonic.cpi: RewriteCp(m.IAdd, false);  break;
+                case Mnemonic.cpir:RewriteCp(m.IAdd, true);   break;
+                case Mnemonic.cpl: RewriteCpl(); break;
+                case Mnemonic.di: RewriteDi(); break;
+                case Mnemonic.daa: RewriteDaa(); break;
+                case Mnemonic.dec: RewriteDec(); break;
+                case Mnemonic.djnz: RewriteDjnz(dasm.Current.Operands[0]); break;
+                case Mnemonic.ei: RewriteEi(); break;
+                case Mnemonic.ex: RewriteEx(); break;
+                case Mnemonic.ex_af: RewriteExAf(); break;
+                case Mnemonic.exx: RewriteExx(); break;
+                case Mnemonic.hlt: RewriteHlt(); break;
+                case Mnemonic.@in: RewriteIn(); break;
+                case Mnemonic.ind:  RewriteIn(m.ISub, false); break;
+                case Mnemonic.indr: RewriteIn(m.ISub, true); break;
+                case Mnemonic.ini: RewriteIn(m.IAdd, false); break;
+                case Mnemonic.inir: RewriteIn(m.IAdd, true); break;
+                case Mnemonic.im:
+                    m.SideEffect(host.PseudoProcedure("__im", VoidType.Instance, RewriteOp(dasm.Current.Operands[0])));
                     break;
-                case Opcode.inc: RewriteInc(); break;
-                case Opcode.jp: RewriteJp(dasm.Current); break;
-                case Opcode.jr: RewriteJr(); break;
-                case Opcode.ld: RewriteLd();  break;
-                case Opcode.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
-                case Opcode.rla: RewriteRotation(PseudoProcedure.RolC, true); break;
-                case Opcode.rlc: RewriteRotation(PseudoProcedure.Rol, false); break;
-                case Opcode.rlca: RewriteRotation(PseudoProcedure.Rol, false); break;
-                case Opcode.rr: RewriteRotation(PseudoProcedure.RorC, true); break;
-                case Opcode.rra: RewriteRotation(PseudoProcedure.RorC, true); break;
-                case Opcode.rrc: RewriteRotation(PseudoProcedure.Ror, true); break;
-                case Opcode.rrca: RewriteRotation(PseudoProcedure.Ror, true); break;
-                case Opcode.ldd: RewriteBlockInstruction(m.ISub, false); break;
-                case Opcode.lddr: RewriteBlockInstruction(m.ISub, true); break;
-                case Opcode.ldi: RewriteBlockInstruction(m.IAdd, false); break;
-                case Opcode.ldir: RewriteBlockInstruction(m.IAdd, true); break;
-                case Opcode.neg: RewriteNeg(); break;
-                case Opcode.nop: m.Nop(); break;
-                case Opcode.or: RewriteOr(); break;
-                case Opcode.@out: RewriteOut(); break;
-                case Opcode.pop: RewritePop(); break;
-                case Opcode.push: RewritePush(dasm.Current); break;
-                case Opcode.res: RewriteResSet("__res"); break;
-                case Opcode.ret: RewriteRet(); break;
-                case Opcode.rst: RewriteRst(); break;
-                case Opcode.sbc: RewriteSbc(); break;
-                case Opcode.scf: RewriteScf(); break;
-                case Opcode.set: RewriteResSet("__set"); break;
-                case Opcode.sla: RewriteShift(dasm.Current, m.Shl); break;
-                case Opcode.sra: RewriteShift(dasm.Current, m.Sar); break;
-                case Opcode.srl: RewriteShift(dasm.Current, m.Shr); break;
-                case Opcode.sub: RewriteSub(); break;
-                case Opcode.xor: RewriteXor(); break;
+                case Mnemonic.inc: RewriteInc(); break;
+                case Mnemonic.jp: RewriteJp(dasm.Current); break;
+                case Mnemonic.jr: RewriteJr(); break;
+                case Mnemonic.ld: RewriteLd();  break;
+                case Mnemonic.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
+                case Mnemonic.rla: RewriteRotation(PseudoProcedure.RolC, true); break;
+                case Mnemonic.rlc: RewriteRotation(PseudoProcedure.Rol, false); break;
+                case Mnemonic.rlca: RewriteRotation(PseudoProcedure.Rol, false); break;
+                case Mnemonic.rr: RewriteRotation(PseudoProcedure.RorC, true); break;
+                case Mnemonic.rra: RewriteRotation(PseudoProcedure.RorC, true); break;
+                case Mnemonic.rrc: RewriteRotation(PseudoProcedure.Ror, true); break;
+                case Mnemonic.rrca: RewriteRotation(PseudoProcedure.Ror, true); break;
+                case Mnemonic.ldd: RewriteBlockInstruction(m.ISub, false); break;
+                case Mnemonic.lddr: RewriteBlockInstruction(m.ISub, true); break;
+                case Mnemonic.ldi: RewriteBlockInstruction(m.IAdd, false); break;
+                case Mnemonic.ldir: RewriteBlockInstruction(m.IAdd, true); break;
+                case Mnemonic.neg: RewriteNeg(); break;
+                case Mnemonic.nop: m.Nop(); break;
+                case Mnemonic.or: RewriteOr(); break;
+                case Mnemonic.@out: RewriteOut(); break;
+                case Mnemonic.pop: RewritePop(); break;
+                case Mnemonic.push: RewritePush(dasm.Current); break;
+                case Mnemonic.res: RewriteResSet("__res"); break;
+                case Mnemonic.ret: RewriteRet(); break;
+                case Mnemonic.rst: RewriteRst(); break;
+                case Mnemonic.sbc: RewriteSbc(); break;
+                case Mnemonic.scf: RewriteScf(); break;
+                case Mnemonic.set: RewriteResSet("__set"); break;
+                case Mnemonic.sla: RewriteShift(dasm.Current, m.Shl); break;
+                case Mnemonic.sra: RewriteShift(dasm.Current, m.Sar); break;
+                case Mnemonic.srl: RewriteShift(dasm.Current, m.Shr); break;
+                case Mnemonic.sub: RewriteSub(); break;
+                case Mnemonic.xor: RewriteXor(); break;
 
                 //$TODO: Not implemented yet; feel free to implement these!
-        case Opcode.otdr: goto default;
-        case Opcode.otir: goto default;
-        case Opcode.outd: goto default;
-        case Opcode.outi: goto default;
-        case Opcode.outr: goto default;
-        case Opcode.reti: goto default;
-        case Opcode.retn: goto default;
-        case Opcode.rld: goto default;
-        case Opcode.rrd: goto default;
-        case Opcode.swap: goto default;
+        case Mnemonic.otdr: goto default;
+        case Mnemonic.otir: goto default;
+        case Mnemonic.outd: goto default;
+        case Mnemonic.outi: goto default;
+        case Mnemonic.outr: goto default;
+        case Mnemonic.reti: goto default;
+        case Mnemonic.retn: goto default;
+        case Mnemonic.rld: goto default;
+        case Mnemonic.rrd: goto default;
+        case Mnemonic.swap: goto default;
                 }
                 yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
                 {
@@ -150,24 +150,24 @@ namespace Reko.Arch.Z80
 
         private void RewriteAdc()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.IAdd(m.IAdd(dst, src), FlagGroup(FlagM.CF)));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
 
         private void RewriteAdd()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.IAdd(dst, src));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
 
         private void RewriteAnd()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.And(dst, src));
             AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
@@ -199,8 +199,8 @@ namespace Reko.Arch.Z80
 
         private void RewriteOr()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.Or(dst, src));
             AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
@@ -208,8 +208,8 @@ namespace Reko.Arch.Z80
 
         private void RewriteSbc()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.ISub(m.ISub(dst, src), FlagGroup(FlagM.CF)));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
@@ -217,9 +217,9 @@ namespace Reko.Arch.Z80
         private void RewriteRotation(string pseudoOp, bool useCarry)
         {
             Expression reg;
-            if (dasm.Current.Op1 != null)
+            if (dasm.Current.Operands.Length > 0)
             {
-                reg = RewriteOp(dasm.Current.Op1);
+                reg = RewriteOp(dasm.Current.Operands[0]);
             }
             else
             {
@@ -247,16 +247,16 @@ namespace Reko.Arch.Z80
 
         private void RewriteSub()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.ISub(dst, src));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF, dst);
         }
 
         private void RewriteXor()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.Xor(dst, src));
             AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
@@ -307,17 +307,17 @@ namespace Reko.Arch.Z80
 
         private void RewriteCall(Z80Instruction instr)
         {
-            if (instr.Op1 is ConditionOperand cOp)
+            if (instr.Operands[0] is ConditionOperand cOp)
             {
                 m.BranchInMiddleOfInstruction(
                     GenerateTestExpression(cOp, true),
                     instr.Address + instr.Length,
                     InstrClass.ConditionalTransfer);
-                m.Call(((AddressOperand)instr.Op2).Address, 2);
+                m.Call(((AddressOperand)instr.Operands[1]).Address, 2);
             }
             else
             {
-                m.Call(((AddressOperand)instr.Op1).Address, 2);
+                m.Call(((AddressOperand)instr.Operands[0]).Address, 2);
             }
         }
 
@@ -328,8 +328,8 @@ namespace Reko.Arch.Z80
 
         private void RewriteCp()
         {
-            var a = this.RewriteOp(dasm.Current.Op1);
-            var b = this.RewriteOp(dasm.Current.Op2);
+            var a = this.RewriteOp(dasm.Current.Operands[0]);
+            var b = this.RewriteOp(dasm.Current.Operands[1]);
             m.Assign(
                 FlagGroup(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.PF),
                 m.Cond(m.ISub(a, b)));
@@ -369,8 +369,8 @@ namespace Reko.Arch.Z80
 
         private void RewriteDec()
         {
-            var src = RewriteOp(dasm.Current.Op1);
-            var dst = RewriteOp(dasm.Current.Op1);
+            var src = RewriteOp(dasm.Current.Operands[0]);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
             m.Assign(dst, m.ISub(src, 1));
             AssignCond(FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
@@ -394,10 +394,10 @@ namespace Reko.Arch.Z80
 
         private void RewriteEx()
         {
-            var t = binder.CreateTemporary(dasm.Current.Op1.Width);
-            m.Assign(t, RewriteOp(dasm.Current.Op1));
-            m.Assign(RewriteOp(dasm.Current.Op1), RewriteOp(dasm.Current.Op2));
-            m.Assign(RewriteOp(dasm.Current.Op2), t);
+            var t = binder.CreateTemporary(dasm.Current.Operands[0].Width);
+            m.Assign(t, RewriteOp(dasm.Current.Operands[0]));
+            m.Assign(RewriteOp(dasm.Current.Operands[0]), RewriteOp(dasm.Current.Operands[1]));
+            m.Assign(RewriteOp(dasm.Current.Operands[1]), t);
         }
 
         private void RewriteExAf()
@@ -434,18 +434,18 @@ namespace Reko.Arch.Z80
 
         private void RewriteInc()
         {
-            var src = RewriteOp(dasm.Current.Op1);
-            var dst = RewriteOp(dasm.Current.Op1);
+            var src = RewriteOp(dasm.Current.Operands[0]);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
             m.Assign(dst, m.IAdd(src, 1));
             AssignCond(FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
 
         private void RewriteJp(Z80Instruction instr)
         {
-            switch (instr.Op1)
+            switch (instr.Operands[0])
             {
             case ConditionOperand cOp:
-                EmitBranch(cOp, ((AddressOperand)instr.Op2).Address);
+                EmitBranch(cOp, ((AddressOperand)instr.Operands[1]).Address);
                 break;
             case AddressOperand target:
                 m.Goto(target.Address);
@@ -458,11 +458,11 @@ namespace Reko.Arch.Z80
 
         private void RewriteJr()
         {
-            var op = dasm.Current.Op1;
+            var op = dasm.Current.Operands[0];
             var cop = op as ConditionOperand;
             if (cop != null)
             {
-                op = dasm.Current.Op2;
+                op = dasm.Current.Operands[1];
             }
             var target = (AddressOperand)op;
             if (cop != null)
@@ -493,8 +493,8 @@ namespace Reko.Arch.Z80
         private void RewriteLd()
         {
             m.Assign(
-                RewriteOp(dasm.Current.Op1),
-                RewriteOp(dasm.Current.Op2));
+                RewriteOp(dasm.Current.Operands[0]),
+                RewriteOp(dasm.Current.Operands[1]));
         }
 
         private Expression RewriteOp(MachineOperand op)
@@ -542,8 +542,8 @@ namespace Reko.Arch.Z80
 
         private void RewriteIn()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, host.PseudoProcedure("__in", PrimitiveType.Byte, src));
         }
 
@@ -567,15 +567,15 @@ namespace Reko.Arch.Z80
 
         private void RewriteOut()
         {
-            var dst = RewriteOp(dasm.Current.Op1);
-            var src = RewriteOp(dasm.Current.Op2);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
             m.SideEffect(host.PseudoProcedure("__out", PrimitiveType.Byte, dst, src));
         }
 
         private void RewritePop()
         {
             var sp = binder.EnsureRegister(Registers.sp);
-            var op = RewriteOp(dasm.Current.Op1);
+            var op = RewriteOp(dasm.Current.Operands[0]);
             m.Assign(op, m.Mem(PrimitiveType.Word16, sp));
             m.Assign(sp, m.IAdd(sp, op.DataType.Size));
         }
@@ -583,22 +583,22 @@ namespace Reko.Arch.Z80
         private void RewritePush(Z80Instruction instr)
         {
             var sp = binder.EnsureRegister(Registers.sp);
-            var op = RewriteOp(instr.Op1);
+            var op = RewriteOp(instr.Operands[0]);
             m.Assign(sp, m.ISub(sp, op.DataType.Size));
             m.Assign(m.Mem(PrimitiveType.Word16, sp), op);
         }
 
         private void RewriteBit()
         {
-            var bit = RewriteOp(dasm.Current.Op1);
-            var op = RewriteOp(dasm.Current.Op2);
+            var bit = RewriteOp(dasm.Current.Operands[0]);
+            var op = RewriteOp(dasm.Current.Operands[1]);
             AssignCond(FlagM.ZF, host.PseudoProcedure("__bit", PrimitiveType.Bool, op, bit));
         }
 
         private void RewriteResSet(string pseudocode)
         {
-            var bit = RewriteOp(dasm.Current.Op1);
-            var op = RewriteOp(dasm.Current.Op2);
+            var bit = RewriteOp(dasm.Current.Operands[0]);
+            var op = RewriteOp(dasm.Current.Operands[1]);
             Expression dst;
             if (op is MemoryAccess)
                 dst = binder.CreateTemporary(op.DataType);
@@ -620,13 +620,13 @@ namespace Reko.Arch.Z80
         {
             m.Call(
                 Address.Ptr16(
-                    ((ImmediateOperand)dasm.Current.Op1).Value.ToUInt16()),
+                    ((ImmediateOperand)dasm.Current.Operands[0]).Value.ToUInt16()),
                 2);
         }
 
         private void RewriteShift(Z80Instruction instr, Func<Expression, Expression, Expression> op)
         {
-            var reg = RewriteOp(instr.Op1);
+            var reg = RewriteOp(instr.Operands[0]);
             var sh = m.Byte(1);
             m.Assign(reg, op(reg, sh));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, reg);

@@ -62,58 +62,58 @@ namespace Reko.Arch.zSeries
                 this.rtlc = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
-                    goto case Opcode.invalid;
-                case Opcode.invalid:
+                    goto case Mnemonic.invalid;
+                case Mnemonic.invalid:
                     rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.aghi: RewriteAhi(PrimitiveType.Word64); break;
-                case Opcode.ahi: RewriteAhi(PrimitiveType.Word32); break;
-                case Opcode.agr: RewriteAgr(); break;
-                case Opcode.ar: RewriteAr(); break;
-                case Opcode.basr: RewriteBasr(); break;
-                case Opcode.ber: RewriteBranch(ConditionCode.EQ); break;
-                case Opcode.bler: RewriteBranch(ConditionCode.LE); break;
-                case Opcode.br: RewriteBr(); break;
-                case Opcode.brasl: RewriteBrasl(); break;
-                case Opcode.brctg: RewriteBrctg(); break;
-                case Opcode.chi: RewriteChi(); break;
-                case Opcode.clc: RewriteClc(); break;
-                case Opcode.clg: RewriteClg(); break;
-                case Opcode.cli: RewriteCli(); break;
-                case Opcode.j: RewriteJ(); break;
-                case Opcode.je: RewriteJcc(ConditionCode.EQ); break;
-                case Opcode.jg: RewriteJcc(ConditionCode.GT); break;
-                case Opcode.jh: RewriteJcc(ConditionCode.UGT); break;
-                case Opcode.jne: RewriteJcc(ConditionCode.NE); break;
-                case Opcode.la: RewriteLa(); break;
-                case Opcode.larl: RewriteLarl(); break;
-                case Opcode.l: RewriteL(PrimitiveType.Word32); break;
-                case Opcode.lg: RewriteL(PrimitiveType.Word64); break;
-                case Opcode.lgf: RewriteLgf(); break;
-                case Opcode.lgfr: RewriteLgfr(); break;
-                case Opcode.lghi: RewriteLghi(); break;
-                case Opcode.lgr: RewriteLgr(); break;
-                case Opcode.lhi: RewriteLhi(); break;
-                case Opcode.lmg: RewriteLmg(); break;
-                case Opcode.lr: RewriteLr(); break;
-                case Opcode.ltgr: RewriteLtgr(); break;
-                case Opcode.mvi: RewriteMvi(); break;
-                case Opcode.mvz: RewriteMvz(); break;
-                case Opcode.nc: RewriteNc(); break;
-                case Opcode.ngr: RewriteNgr(); break;
-                case Opcode.nopr: m.Nop(); break;
-                case Opcode.sgr: RewriteSgr(); break;
-                case Opcode.srag: RewriteSrag(); break;
-                case Opcode.srlg: RewriteSrlg(); break;
-                case Opcode.st: RewriteSt(PrimitiveType.Word32); break;
-                case Opcode.stg: RewriteSt(PrimitiveType.Word64); break;
-                case Opcode.stmg: RewriteStmg(); break;
-                case Opcode.xc: RewriteXc(); break;
+                case Mnemonic.aghi: RewriteAhi(PrimitiveType.Word64); break;
+                case Mnemonic.ahi: RewriteAhi(PrimitiveType.Word32); break;
+                case Mnemonic.agr: RewriteAgr(); break;
+                case Mnemonic.ar: RewriteAr(); break;
+                case Mnemonic.basr: RewriteBasr(); break;
+                case Mnemonic.ber: RewriteBranch(ConditionCode.EQ); break;
+                case Mnemonic.bler: RewriteBranch(ConditionCode.LE); break;
+                case Mnemonic.br: RewriteBr(); break;
+                case Mnemonic.brasl: RewriteBrasl(); break;
+                case Mnemonic.brctg: RewriteBrctg(); break;
+                case Mnemonic.chi: RewriteChi(); break;
+                case Mnemonic.clc: RewriteClc(); break;
+                case Mnemonic.clg: RewriteClg(); break;
+                case Mnemonic.cli: RewriteCli(); break;
+                case Mnemonic.j: RewriteJ(); break;
+                case Mnemonic.je: RewriteJcc(ConditionCode.EQ); break;
+                case Mnemonic.jg: RewriteJcc(ConditionCode.GT); break;
+                case Mnemonic.jh: RewriteJcc(ConditionCode.UGT); break;
+                case Mnemonic.jne: RewriteJcc(ConditionCode.NE); break;
+                case Mnemonic.la: RewriteLa(); break;
+                case Mnemonic.larl: RewriteLarl(); break;
+                case Mnemonic.l: RewriteL(PrimitiveType.Word32); break;
+                case Mnemonic.lg: RewriteL(PrimitiveType.Word64); break;
+                case Mnemonic.lgf: RewriteLgf(); break;
+                case Mnemonic.lgfr: RewriteLgfr(); break;
+                case Mnemonic.lghi: RewriteLghi(); break;
+                case Mnemonic.lgr: RewriteLgr(); break;
+                case Mnemonic.lhi: RewriteLhi(); break;
+                case Mnemonic.lmg: RewriteLmg(); break;
+                case Mnemonic.lr: RewriteLr(); break;
+                case Mnemonic.ltgr: RewriteLtgr(); break;
+                case Mnemonic.mvi: RewriteMvi(); break;
+                case Mnemonic.mvz: RewriteMvz(); break;
+                case Mnemonic.nc: RewriteNc(); break;
+                case Mnemonic.ngr: RewriteNgr(); break;
+                case Mnemonic.nopr: m.Nop(); break;
+                case Mnemonic.sgr: RewriteSgr(); break;
+                case Mnemonic.srag: RewriteSrag(); break;
+                case Mnemonic.srlg: RewriteSrlg(); break;
+                case Mnemonic.st: RewriteSt(PrimitiveType.Word32); break;
+                case Mnemonic.stg: RewriteSt(PrimitiveType.Word64); break;
+                case Mnemonic.stmg: RewriteStmg(); break;
+                case Mnemonic.xc: RewriteXc(); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
@@ -128,20 +128,20 @@ namespace Reko.Arch.zSeries
         }
 
 #if DEBUG
-        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
 
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Opcode))
+            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.Opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
 
             Debug.Print("        [Test]");
-            Debug.Print("        public void zSeriesRw_{0}()", dasm.Current.Opcode);
+            Debug.Print("        public void zSeriesRw_{0}()", dasm.Current.Mnemonic);
             Debug.Print("        {");
             Debug.Print("            Given_MachineCode(\"{0}\");", string.Join("", bytes.Select(b => b.ToString("X2"))));
             Debug.Print("            AssertCode(     // {0}", dasm.Current);

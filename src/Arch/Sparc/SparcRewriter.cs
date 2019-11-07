@@ -72,40 +72,40 @@ namespace Reko.Arch.Sparc
                 var rtlInstructions = new List<RtlInstruction>();
                 rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
-                switch (instrCur.Opcode)
+                switch (instrCur.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
                     host.Warn(
                         instrCur.Address,
                         "SPARC instruction '{0}' is not supported yet.",
-                        instrCur.Opcode);
-                    goto case Opcode.illegal;
-                case Opcode.illegal:
+                        instrCur.Mnemonic);
+                    goto case Mnemonic.illegal;
+                case Mnemonic.illegal:
                     rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.add: RewriteAlu(m.IAdd, false); break;
-                case Opcode.addcc: RewriteAluCc(m.IAdd, false); break;
-                case Opcode.addx: RewriteAddxSubx(m.IAdd, false); break;
-                case Opcode.addxcc: RewriteAddxSubx(m.IAdd, true); break;
-                case Opcode.and: RewriteAlu(m.And, false); break;
-                case Opcode.andcc: RewriteAluCc(m.And, false); break;
-                case Opcode.andn: RewriteAlu(m.And, true); break;
-                case Opcode.ba: RewriteBranch(Constant.True()); break;
-                case Opcode.bn: RewriteBranch(Constant.False()); break;
-                case Opcode.bne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
-                case Opcode.be: RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
-                case Opcode.bg: RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
-                case Opcode.bge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.NF | FlagM.VF))); break;
-                case Opcode.bgu: RewriteBranch(m.Test(ConditionCode.UGE, Grf(FlagM.CF | FlagM.ZF))); break;
-                case Opcode.bl: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
-                case Opcode.ble: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
-                case Opcode.bleu: RewriteBranch(m.Test(ConditionCode.ULE, Grf(FlagM.CF | FlagM.ZF))); break;
-                case Opcode.bcc: RewriteBranch(m.Test(ConditionCode.UGE, Grf(FlagM.CF))); break;
-                case Opcode.bcs: RewriteBranch(m.Test(ConditionCode.ULT, Grf(FlagM.CF))); break;
-                case Opcode.bneg: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.NF))); break;
-                case Opcode.bpos: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.NF))); break;
+                case Mnemonic.add: RewriteAlu(m.IAdd, false); break;
+                case Mnemonic.addcc: RewriteAluCc(m.IAdd, false); break;
+                case Mnemonic.addx: RewriteAddxSubx(m.IAdd, false); break;
+                case Mnemonic.addxcc: RewriteAddxSubx(m.IAdd, true); break;
+                case Mnemonic.and: RewriteAlu(m.And, false); break;
+                case Mnemonic.andcc: RewriteAluCc(m.And, false); break;
+                case Mnemonic.andn: RewriteAlu(m.And, true); break;
+                case Mnemonic.ba: RewriteBranch(Constant.True()); break;
+                case Mnemonic.bn: RewriteBranch(Constant.False()); break;
+                case Mnemonic.bne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
+                case Mnemonic.be: RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
+                case Mnemonic.bg: RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Mnemonic.bge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.NF | FlagM.VF))); break;
+                case Mnemonic.bgu: RewriteBranch(m.Test(ConditionCode.UGE, Grf(FlagM.CF | FlagM.ZF))); break;
+                case Mnemonic.bl: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Mnemonic.ble: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Mnemonic.bleu: RewriteBranch(m.Test(ConditionCode.ULE, Grf(FlagM.CF | FlagM.ZF))); break;
+                case Mnemonic.bcc: RewriteBranch(m.Test(ConditionCode.UGE, Grf(FlagM.CF))); break;
+                case Mnemonic.bcs: RewriteBranch(m.Test(ConditionCode.ULT, Grf(FlagM.CF))); break;
+                case Mnemonic.bneg: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.NF))); break;
+                case Mnemonic.bpos: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.NF))); break;
                 //                    Z
                 //case Opcode.bgu  not (C or Z)
                 //case Opcode.bleu (C or Z)
@@ -116,98 +116,98 @@ namespace Reko.Arch.Sparc
                 //case Opcode.bvc  not V
                 //case Opcode.bvs  V
 
-                case Opcode.call: RewriteCall(); break;
-                case Opcode.fabss: RewriteFabss(); break;
-                case Opcode.fadds: RewriteFadds(); break;
-                case Opcode.fbne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.LF | FlagM.GF))); break;
-                case Opcode.fba: RewriteBranch(Constant.True()); break;
-                case Opcode.fbn: RewriteBranch(Constant.False()); break;
+                case Mnemonic.call: RewriteCall(); break;
+                case Mnemonic.fabss: RewriteFabss(); break;
+                case Mnemonic.fadds: RewriteFadds(); break;
+                case Mnemonic.fbne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.LF | FlagM.GF))); break;
+                case Mnemonic.fba: RewriteBranch(Constant.True()); break;
+                case Mnemonic.fbn: RewriteBranch(Constant.False()); break;
 
-                case Opcode.fbu   : RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.UF))); break;
-                case Opcode.fbg   : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF))); break;
-                case Opcode.fbug  : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF | FlagM.UF))); break;
+                case Mnemonic.fbu   : RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.UF))); break;
+                case Mnemonic.fbg   : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF))); break;
+                case Mnemonic.fbug  : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF | FlagM.UF))); break;
                 //case Opcode.fbug  : on Unordered or Greater G or U
                 //case Opcode.fbl   : on Less L
-                case Opcode.fbul: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.GF|FlagM.UF))); break;
+                case Mnemonic.fbul: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.GF|FlagM.UF))); break;
                 //case Opcode.fbul  : on Unordered or Less L or U
                 //case Opcode.fblg  : on Less or Greater L or G
                 //case Opcode.fbne  : on Not Equal L or G or U
                 //case Opcode.fbe   : on Equal E
-                case Opcode.fbue : RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.EF | FlagM.UF))); break;
-                case Opcode.fbuge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF | FlagM.UF))); break;
+                case Mnemonic.fbue : RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.EF | FlagM.UF))); break;
+                case Mnemonic.fbuge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF | FlagM.UF))); break;
 
                 //case Opcode.fble  : on Less or Equal E or L
                 //case Opcode.fbule : on Unordered or Less or Equal E or L or U
-                case Opcode.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
-                case Opcode.fbge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF))); break;
+                case Mnemonic.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
+                case Mnemonic.fbge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF))); break;
                 //                case Opcode.FBO   : on Ordered E or L or G
 
 
-                case Opcode.fcmpes: RewriteFcmpes(); break;
-                case Opcode.fcmpd: RewriteFcmpd(); break;
-                case Opcode.fcmpq: RewriteFcmpq(); break;
-                case Opcode.fcmps: RewriteFcmps(); break;
-                case Opcode.fdivd: RewriteFdivs(); break;
-                case Opcode.fdivs: RewriteFdivd(); break;
-                case Opcode.fdtos: RewriteFdtos(); break;
-                case Opcode.fitod: RewriteFitod(); break;
-                case Opcode.fitoq: RewriteFitoq(); break;
-                case Opcode.fitos: RewriteFitos(); break;
-                case Opcode.fmovs: RewriteFmovs(); break;
-                case Opcode.fmuls: RewriteFmuls(); break;
-                case Opcode.fnegs: RewriteFmovs(); break;
-                case Opcode.fstod: RewriteFstod(); break;
-                case Opcode.fsubs: RewriteFsubs(); break;
-                case Opcode.jmpl: RewriteJmpl(); break;
-                case Opcode.ld: RewriteLoad(PrimitiveType.Word32); break;
-                case Opcode.lddf: RewriteLoad(PrimitiveType.Real64); break;
-                case Opcode.ldf: RewriteLoad(PrimitiveType.Real32); break;
-                case Opcode.ldd: RewriteLoad(PrimitiveType.Word64); break;
-                case Opcode.ldsb: RewriteLoad(PrimitiveType.SByte); break;
-                case Opcode.ldsh: RewriteLoad(PrimitiveType.Int16); break;
-                case Opcode.ldstub: RewriteLdstub(); break;
-                case Opcode.ldub: RewriteLoad(PrimitiveType.Byte); break;
-                case Opcode.lduh: RewriteLoad(PrimitiveType.Word16); break;
-                case Opcode.ldfsr: RewriteLoad(PrimitiveType.Word32); break;
-                case Opcode.mulscc: RewriteMulscc(); break;
-                case Opcode.or: RewriteAlu(m.Or, false); break;
-                case Opcode.orcc: RewriteAluCc(m.Or, false); break;
-                case Opcode.restore: RewriteRestore(); break;
-                case Opcode.rett: RewriteRett(); break;
-                case Opcode.save: RewriteSave(); break;
-                case Opcode.sethi: RewriteSethi(); break;
-                case Opcode.sdiv: RewriteAlu(m.SDiv, false); break;
-                case Opcode.sdivcc: RewriteAlu(m.SDiv, false); break;
-                case Opcode.sll: RewriteAlu(m.Shl, false); break;
-                case Opcode.smul: RewriteAlu(m.SMul, false); break;
-                case Opcode.smulcc: RewriteAluCc(m.SMul, false); break;
-                case Opcode.sra: RewriteAlu(m.Sar, false); break;
-                case Opcode.srl: RewriteAlu(m.Shr, false); break;
-                case Opcode.st: RewriteStore(PrimitiveType.Word32); break;
-                case Opcode.stb: RewriteStore(PrimitiveType.Byte); break;
-                case Opcode.std: RewriteStore(PrimitiveType.Word64); break;
-                case Opcode.stdf: RewriteStore(PrimitiveType.Real64); break;
-                case Opcode.stf: RewriteStore(PrimitiveType.Real32); break;
-                case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
-                case Opcode.stfsr: RewriteStore(PrimitiveType.Word32); break;
-                case Opcode.sub: RewriteAlu(m.ISub, false); break;
-                case Opcode.subcc: RewriteAluCc(m.ISub, false); break;
-                case Opcode.subx: RewriteAddxSubx(m.ISub, false); break;
-                case Opcode.subxcc: RewriteAddxSubx(m.ISub, true); break;
-                case Opcode.ta: RewriteTrap(Constant.True()); break;
-                case Opcode.tn: RewriteTrap(Constant.False()); break;
-                case Opcode.tne: RewriteTrap(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
-                case Opcode.te: RewriteTrap(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
+                case Mnemonic.fcmpes: RewriteFcmpes(); break;
+                case Mnemonic.fcmpd: RewriteFcmpd(); break;
+                case Mnemonic.fcmpq: RewriteFcmpq(); break;
+                case Mnemonic.fcmps: RewriteFcmps(); break;
+                case Mnemonic.fdivd: RewriteFdivs(); break;
+                case Mnemonic.fdivs: RewriteFdivd(); break;
+                case Mnemonic.fdtos: RewriteFdtos(); break;
+                case Mnemonic.fitod: RewriteFitod(); break;
+                case Mnemonic.fitoq: RewriteFitoq(); break;
+                case Mnemonic.fitos: RewriteFitos(); break;
+                case Mnemonic.fmovs: RewriteFmovs(); break;
+                case Mnemonic.fmuls: RewriteFmuls(); break;
+                case Mnemonic.fnegs: RewriteFmovs(); break;
+                case Mnemonic.fstod: RewriteFstod(); break;
+                case Mnemonic.fsubs: RewriteFsubs(); break;
+                case Mnemonic.jmpl: RewriteJmpl(); break;
+                case Mnemonic.ld: RewriteLoad(PrimitiveType.Word32); break;
+                case Mnemonic.lddf: RewriteLoad(PrimitiveType.Real64); break;
+                case Mnemonic.ldf: RewriteLoad(PrimitiveType.Real32); break;
+                case Mnemonic.ldd: RewriteLoad(PrimitiveType.Word64); break;
+                case Mnemonic.ldsb: RewriteLoad(PrimitiveType.SByte); break;
+                case Mnemonic.ldsh: RewriteLoad(PrimitiveType.Int16); break;
+                case Mnemonic.ldstub: RewriteLdstub(); break;
+                case Mnemonic.ldub: RewriteLoad(PrimitiveType.Byte); break;
+                case Mnemonic.lduh: RewriteLoad(PrimitiveType.Word16); break;
+                case Mnemonic.ldfsr: RewriteLoad(PrimitiveType.Word32); break;
+                case Mnemonic.mulscc: RewriteMulscc(); break;
+                case Mnemonic.or: RewriteAlu(m.Or, false); break;
+                case Mnemonic.orcc: RewriteAluCc(m.Or, false); break;
+                case Mnemonic.restore: RewriteRestore(); break;
+                case Mnemonic.rett: RewriteRett(); break;
+                case Mnemonic.save: RewriteSave(); break;
+                case Mnemonic.sethi: RewriteSethi(); break;
+                case Mnemonic.sdiv: RewriteAlu(m.SDiv, false); break;
+                case Mnemonic.sdivcc: RewriteAlu(m.SDiv, false); break;
+                case Mnemonic.sll: RewriteAlu(m.Shl, false); break;
+                case Mnemonic.smul: RewriteAlu(m.SMul, false); break;
+                case Mnemonic.smulcc: RewriteAluCc(m.SMul, false); break;
+                case Mnemonic.sra: RewriteAlu(m.Sar, false); break;
+                case Mnemonic.srl: RewriteAlu(m.Shr, false); break;
+                case Mnemonic.st: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.stb: RewriteStore(PrimitiveType.Byte); break;
+                case Mnemonic.std: RewriteStore(PrimitiveType.Word64); break;
+                case Mnemonic.stdf: RewriteStore(PrimitiveType.Real64); break;
+                case Mnemonic.stf: RewriteStore(PrimitiveType.Real32); break;
+                case Mnemonic.sth: RewriteStore(PrimitiveType.Word16); break;
+                case Mnemonic.stfsr: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.sub: RewriteAlu(m.ISub, false); break;
+                case Mnemonic.subcc: RewriteAluCc(m.ISub, false); break;
+                case Mnemonic.subx: RewriteAddxSubx(m.ISub, false); break;
+                case Mnemonic.subxcc: RewriteAddxSubx(m.ISub, true); break;
+                case Mnemonic.ta: RewriteTrap(Constant.True()); break;
+                case Mnemonic.tn: RewriteTrap(Constant.False()); break;
+                case Mnemonic.tne: RewriteTrap(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
+                case Mnemonic.te: RewriteTrap(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
 
-                case Opcode.udiv: RewriteAlu(m.UDiv, false); break;
-                case Opcode.udivcc: RewriteAluCc(m.UDiv, false); break;
-                case Opcode.umul: RewriteAlu(m.UMul, false); break;
-                case Opcode.umulcc: RewriteAluCc(m.UMul, false); break;
-                case Opcode.unimp: m.Invalid(); break;
-                case Opcode.xor: RewriteAlu(m.Xor, false); break;
-                case Opcode.xorcc: RewriteAlu(m.Xor, true); break;
-                case Opcode.xnor: RewriteAlu(XNor, false); break;
-                case Opcode.xnorcc: RewriteAlu(XNor, true); break;
+                case Mnemonic.udiv: RewriteAlu(m.UDiv, false); break;
+                case Mnemonic.udivcc: RewriteAluCc(m.UDiv, false); break;
+                case Mnemonic.umul: RewriteAlu(m.UMul, false); break;
+                case Mnemonic.umulcc: RewriteAluCc(m.UMul, false); break;
+                case Mnemonic.unimp: m.Invalid(); break;
+                case Mnemonic.xor: RewriteAlu(m.Xor, false); break;
+                case Mnemonic.xorcc: RewriteAlu(m.Xor, true); break;
+                case Mnemonic.xnor: RewriteAlu(XNor, false); break;
+                case Mnemonic.xnorcc: RewriteAlu(XNor, true); break;
 
                 }
                 yield return new RtlInstructionCluster(addr, 4, rtlInstructions.ToArray())
@@ -222,20 +222,20 @@ namespace Reko.Arch.Sparc
             return GetEnumerator();
         }
 
-        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
 
         //[Conditional("DEBUG")]
         public void EmitUnitTest()
         {
-            if (seen.Contains(instrCur.Opcode))
+            if (seen.Contains(instrCur.Mnemonic))
                 return;
-            seen.Add(instrCur.Opcode);
+            seen.Add(instrCur.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var wInstr = r2.ReadUInt32();
             Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void SparcRw_" + dasm.Current.Opcode + "()");
+            Console.WriteLine("        public void SparcRw_" + dasm.Current.Mnemonic + "()");
             Console.WriteLine("        {");
             Console.Write($"            BuildTest(0x{wInstr:X8}");
             Console.WriteLine(");\t// " + dasm.Current.ToString());

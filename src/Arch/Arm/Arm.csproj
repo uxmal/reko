@@ -88,7 +88,7 @@
     <Compile Include="AArch64\ConditionOperand.cs" />
     <Compile Include="AArch64\FlagM.cs" />
     <Compile Include="AArch64\MemoryOperand.cs" />
-    <Compile Include="AArch64\Opcode.cs" />
+    <Compile Include="AArch64\Mnemonic.cs" />
     <Compile Include="AArch64\Registers.cs" />
     <Compile Include="AArch64\VectorData.cs" />
     <Compile Include="AArch64\VectorMultipleRegisterOperand.cs" />
@@ -109,7 +109,7 @@
     <Compile Include="AArch32\ArmVectorData.cs" />
     <Compile Include="AArch32\FlagM.cs" />
     <Compile Include="AArch32\MultiRegisterOperand.cs" />
-    <Compile Include="AArch32\Opcode.cs" />
+    <Compile Include="AArch32\Mnemonic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AArch32\Registers.cs" />
     <Compile Include="AArch32\T32Disassembler.cs" />

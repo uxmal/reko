@@ -29,7 +29,7 @@ namespace Reko.Arch.Arm.AArch32
     {
         private void RewriteVecBinOp(Func<Expression, Expression, Expression> fn)
         {
-            if (instr.ops.Length == 3)
+            if (instr.Operands.Length == 3)
             {
                 var src1 = Operand(Src1());
                 var src2 = Operand(Src2());
