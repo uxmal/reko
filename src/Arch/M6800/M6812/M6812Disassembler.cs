@@ -221,7 +221,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static short[] prePostIncrementOffset = new short[16]
+        private readonly static short[] prePostIncrementOffset = new short[16]
         {
             1, 2, 3, 4, 5, 6, 7, 8, -8, -7, -6, -5, -4, -3, -2, -1,
         };

@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="M6809Architecture.cs" />
+    <Compile Include="M6809\M6809Instruction.cs" />
+    <Compile Include="M6809\MemoryOperand.cs" />
+    <Compile Include="M6809\Mnemonic.cs" />
+    <Compile Include="M6809\MultipleRegisterOperand.cs" />
     <Compile Include="M6812Architecture.cs" />
     <Compile Include="M6812\M6812Rewriter.cs" />
     <Compile Include="M6812\M6812Disassembler.cs" />
@@ -50,6 +55,8 @@
     <Compile Include="M6812\Mnemonic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="M6812\Registers.cs" />
+    <Compile Include="M6809\Registers.cs" />
+    <Compile Include="M6809\M6809Disassembler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
@@ -57,5 +64,6 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
