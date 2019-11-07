@@ -63,6 +63,9 @@ namespace Reko.Arch.Blackfin
                 default:
                     EmitUnitTest(instr);
                     iclass = InstrClass.Invalid;
+                    goto case Mnemonic.invalid;
+                case Mnemonic.invalid:
+                    this.iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 }
@@ -94,12 +97,12 @@ namespace Reko.Arch.Blackfin
             if (instr.Length > 2)
             {
                 var wInstr = r2.ReadBeUInt32();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\");");
+                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\");  // {instr}");
             }
             else
             {
                 var wInstr = r2.ReadBeUInt16();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\");");
+                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\");  // {instr}");
             }
             Console.WriteLine("            AssertCode(");
             Console.WriteLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
