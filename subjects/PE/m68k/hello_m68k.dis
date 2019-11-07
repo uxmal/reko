@@ -994,14 +994,13 @@ l00002218:
 	branch d0_32 == 0x45434F4E l00002228
 l00002228:
 	Mem41[a5 + -1704 + d1_27:byte] = Mem30[a5 + -1704 + d1_27:byte] | 0x41
-	Mem43[a1_21 + d1_27 * 4:word32] = a1_21
+	Mem44[a5 + -1640 + d1_27 * 4:word32] = a1_21
 l00002222:
 	branch d0_32 == 0x46535953 l00002238
 l00002238:
-	Mem51[a5 + -1704 + d1_27:byte] = Mem30[a5 + -1704 + d1_27:byte] | 0x01
-	word32 a0_53 = Mem51[Mem51[a1_21 + 8:word32]:word32]
-	word32 a0_56 = SEQ(SLICE(a0_53, word16, 16), Mem51[a0_53 + 2:word16])
-	Mem58[a0_56 + d1_27 * 4:word32] = a0_56
+	Mem52[a5 + -1704 + d1_27:byte] = Mem30[a5 + -1704 + d1_27:byte] | 0x01
+	word32 a0_54 = Mem52[Mem52[a1_21 + 8:word32]:word32]
+	Mem59[a5 + -1640 + d1_27 * 4:word32] = SEQ(SLICE(a0_54, word16, 16), Mem52[a0_54 + 2:word16])
 l00002226:
 l00002250:
 	a1_21 = a1_21 + 20
@@ -1752,9 +1751,9 @@ l000029F2:
 	word32 a1_42 = Mem16[Mem16[a5 + -1316:word32]:word32]
 	branch (SLICE(a0, word16, 0) & 0x0003) == 0x0000 l00002A14
 l00002A14:
-	Mem56[a0 + (dwArg04 << 0x00000004):word32] = a0
+	Mem56[a1_42 + (dwArg04 << 0x00000004):word32] = a0
 l000029FE:
-	Mem68[a0 + (dwArg04 << 0x00000004):word32] = SEQ(SLICE(a0 + 0x00000003, word16, 16), SLICE(a0 + 0x00000003, word16, 0) & 0xFFFC)
+	Mem68[a1_42 + (dwArg04 << 0x00000004):word32] = SEQ(SLICE(a0 + 0x00000003, word16, 16), SLICE(a0 + 0x00000003, word16, 0) & 0xFFFC)
 l00002A20:
 	word32 a1_75 = a1_42 + (dwArg04 << 0x00000004)
 	Mem78[a1_75 + 12:word32] = a0
@@ -1769,7 +1768,7 @@ l00002A20:
 	branch d0_104 == 0x00000000 l00002A4C
 l00002A42:
 	Mem122[a7_103 + 4:word32] = d5_108
-	fn00002AE0(a2_99, a5, Mem122[a7_103 + 4:word32])
+	fn00002AE0(a5, Mem122[a7_103 + 4:word32])
 l00002A4A:
 	d0_104 = -1
 l00002A4C:
@@ -1838,10 +1837,10 @@ l00002AA8:
 fn00002A54_exit:
 
 
-void fn00002AE0(word32 a2, word32 a5, word32 dwArg04)
+void fn00002AE0(word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a2:[0..31] a5:[0..31] Stack +0004:[0..31]
+// MayUse:  a5:[0..31] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: CVZNX a0 d2
 // Preserved: a6 a7 d3
@@ -1851,9 +1850,10 @@ l00002AE0:
 l00002AF8:
 	__syscall(0xA01F)
 l00002AFE:
-	Mem32[a2 + (dwArg04 << 0x00000004):word32] = 0
-	Mem34[a2 + 4 + (dwArg04 << 0x00000004):word32] = 0
-	Mem36[a2 + 8 + (dwArg04 << 0x00000004):word32] = 0
+	word32 a0_26 = Mem11[Mem11[a5 + -1316:word32]:word32]
+	Mem30[a0_26 + (dwArg04 << 0x00000004):word32] = 0
+	Mem32[a0_26 + 4 + (dwArg04 << 0x00000004):word32] = 0
+	Mem34[a0_26 + 8 + (dwArg04 << 0x00000004):word32] = 0
 	return
 fn00002AE0_exit:
 
