@@ -33,8 +33,7 @@ using System.Text;
 namespace Reko.Analysis
 {
 	/// <summary>
-	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment
-    /// form.
+	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
 	/// </summary>
     /// <remarks>
     /// This class implements an SSA algorithm that does not require the

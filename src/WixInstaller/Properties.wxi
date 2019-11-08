@@ -2,7 +2,7 @@
 <Include>
   <!-- Every time you change the RekoVersion, you must also update
        the RekoProductCode below -->
-  <?define RekoVersion="0.8.2.0"?>
+  <?define RekoVersion="0.9.0.0"?>
   
   <!-- Platform specific properties -->
   <?if $(var.Platform) = x64 ?>
@@ -10,12 +10,12 @@
     <?define IsWin64="yes"?>
     <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
     <?define UpgradeCode="11756789-4124-498B-8866-7F29B60F3389"?>
-    <?define RekoProductCode="52FDF2D9-39FF-4085-A21F-408FE6156DA9"?>
+    <?define RekoProductCode="31C74DDC-7FC7-4B6C-9845-8934BDE95E40"?>
   <?else ?>
     <?define ProductName="Reko decompiler for x86" ?>
     <?define IsWin64="no"?>
     <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
     <?define UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E"?>
-    <?define RekoProductCode="AE3446D7-FBC9-40B2-B4BA-DEBD56D3FA8A"?>
+    <?define RekoProductCode="B4360F1A-E38F-45E4-9376-17224F7DD39E"?>
   <?endif ?>
 </Include>
