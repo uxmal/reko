@@ -62,24 +62,10 @@ namespace Reko.WindowsItp.Decoders
 
         public TestInstruction MakeInstruction()
         {
-#if !ARRAY_OPERANDS
-            var aOps = new MachineOperand[operands.Count];
-            var c = aOps.Length;
-            for (int i =0; i < aOps.Length; ++i)
-            {
-                aOps[i] = operands[i];
-            }
-#endif
             return new TestInstruction
             {
                 Opcode = opcode,
-#if !ARRAY_OPERANDS
-                Operands = aOps,
-#else 
-                Op1 = operands.Count > 0 ? operands[0] : null,
-                Op2 = operands.Count > 1 ? operands[1] : null,
-                Op3 = operands.Count > 2 ? operands[2] : null,
-#endif
+                Operands = operands.ToArray(),
             };
         }
 
