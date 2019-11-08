@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -41,5 +41,14 @@ namespace Reko.Arch.M6800.M6812
 
         public static RegisterStorage ccr = new RegisterStorage("ccr", 5, 0, PrimitiveType.Byte);
 
+    }
+
+    [Flags]
+    public enum FlagM : byte
+    {
+        CF = 1,             // carry
+        VF = 2,             // overflow
+        ZF = 4,             // zero
+        NF = 8,             // sign
     }
 }

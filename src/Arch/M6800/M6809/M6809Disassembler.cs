@@ -136,11 +136,11 @@ namespace Reko.Arch.M6800.M6809
                         mode = MemoryOperand.Mode.PostInc1;
                         break;
                     case 0b0001:
-                        if (indirect)
-                            return false;
                         mode = MemoryOperand.Mode.PostInc2;
                         break;
                     case 0b0010:
+                        if (indirect)
+                            return false;
                         mode = MemoryOperand.Mode.PreDec1;
                         break;
                     case 0b0011:
@@ -461,23 +461,23 @@ namespace Reko.Arch.M6800.M6809
                 // 20
                 invalid,
                 Instr(Mnemonic.lbrn, PCw),
-                Instr(Mnemonic.lbhi, PCw),
-                Instr(Mnemonic.lbls, PCw),
+                Instr(Mnemonic.lbhi, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lbls, InstrClass.ConditionalTransfer, PCw),
 
-                Instr(Mnemonic.lbhs, PCw),
-                Instr(Mnemonic.lblo, PCw),
-                Instr(Mnemonic.lbne, PCw),
-                Instr(Mnemonic.lbeq, PCw),
+                Instr(Mnemonic.lbhs, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lblo, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lbne, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lbeq, InstrClass.ConditionalTransfer, PCw),
 
-                Instr(Mnemonic.lbvc, PCw),
-                Instr(Mnemonic.lbvs, PCw),
-                Instr(Mnemonic.lbpl, PCw),
-                Instr(Mnemonic.lbmi, PCw),
+                Instr(Mnemonic.lbvc, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lbvs, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lbpl, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lbmi, InstrClass.ConditionalTransfer, PCw),
 
-                Instr(Mnemonic.lbge, PCw),
-                Instr(Mnemonic.lblt, PCw),
-                Instr(Mnemonic.lbgt, PCw),
-                Instr(Mnemonic.lble, PCw),
+                Instr(Mnemonic.lbge, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lblt, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lbgt, InstrClass.ConditionalTransfer, PCw),
+                Instr(Mnemonic.lble, InstrClass.ConditionalTransfer, PCw),
 
                 // 30
                 invalid,
@@ -1112,7 +1112,7 @@ namespace Reko.Arch.M6800.M6809
 
                 Instr(Mnemonic.inc, Dir),
                 Instr(Mnemonic.tst, Dir),
-                Instr(Mnemonic.jmp, Dir),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, Dir),
                 Instr(Mnemonic.clr, Dir),
 
                 // 10
@@ -1123,8 +1123,8 @@ namespace Reko.Arch.M6800.M6809
 
                 invalid,
                 invalid,
-                Instr(Mnemonic.lbra, PCw),
-                Instr(Mnemonic.lbsr, PCw),
+                Instr(Mnemonic.lbra, InstrClass.Transfer, PCw),
+                Instr(Mnemonic.lbsr, InstrClass.Transfer|InstrClass.Call, PCw),
 
                 invalid,
                 Instr(Mnemonic.daa),
@@ -1137,25 +1137,25 @@ namespace Reko.Arch.M6800.M6809
                 Instr(Mnemonic.tfr, Exg),
 
                 // 20
-                Instr(Mnemonic.bra, PCb),
-                Instr(Mnemonic.brn, PCb),
-                Instr(Mnemonic.bhi, PCb),
-                Instr(Mnemonic.bls, PCb),
+                Instr(Mnemonic.bra, InstrClass.Transfer, PCb),
+                Instr(Mnemonic.brn, InstrClass.Linear, PCb),
+                Instr(Mnemonic.bhi, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.bls, InstrClass.ConditionalTransfer, PCb),
 
-                Instr(Mnemonic.bhs, PCb),
-                Instr(Mnemonic.blo, PCb),
-                Instr(Mnemonic.bne, PCb),
-                Instr(Mnemonic.beq, PCb),
+                Instr(Mnemonic.bhs, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.blo, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.bne, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.beq, InstrClass.ConditionalTransfer, PCb),
 
-                Instr(Mnemonic.bvc, PCb),
-                Instr(Mnemonic.bvs, PCb),
-                Instr(Mnemonic.bpl, PCb),
-                Instr(Mnemonic.bmi, PCb),
+                Instr(Mnemonic.bvc, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.bvs, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.bpl, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.bmi, InstrClass.ConditionalTransfer, PCb),
 
-                Instr(Mnemonic.bge, PCb),
-                Instr(Mnemonic.blt, PCb),
-                Instr(Mnemonic.bgt, PCb),
-                Instr(Mnemonic.ble, PCb),
+                Instr(Mnemonic.bge, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.blt, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.bgt, InstrClass.ConditionalTransfer, PCb),
+                Instr(Mnemonic.ble, InstrClass.ConditionalTransfer, PCb),
 
                 // 30
                 Instr(Mnemonic.leax, Idx),
@@ -1169,9 +1169,9 @@ namespace Reko.Arch.M6800.M6809
                 Instr(Mnemonic.pulu, MregsS),
 
                 invalid,
-                Instr(Mnemonic.rts),
+                Instr(Mnemonic.rts, InstrClass.Transfer),
                 Instr(Mnemonic.abx),
-                Instr(Mnemonic.rti),
+                Instr(Mnemonic.rti, InstrClass.Transfer),
 
                 Instr(Mnemonic.cwai, Ib),
                 Instr(Mnemonic.mul, Ib),
@@ -1238,7 +1238,7 @@ namespace Reko.Arch.M6800.M6809
 
                 Instr(Mnemonic.inc, Idx),
                 Instr(Mnemonic.tst, Idx),
-                Instr(Mnemonic.jmp, Idx),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, Idx),
                 Instr(Mnemonic.clr, Idx),
 
                 // 70
@@ -1279,7 +1279,7 @@ namespace Reko.Arch.M6800.M6809
                 Instr(Mnemonic.adda, Ib),
 
                 Instr(Mnemonic.cmpx, Iw),
-                Instr(Mnemonic.bsr, Iw),
+                Instr(Mnemonic.bsr, InstrClass.Transfer|InstrClass.Call, PCb),
                 Instr(Mnemonic.ldx, Iw),
                 invalid,
 
@@ -1300,7 +1300,7 @@ namespace Reko.Arch.M6800.M6809
                 Instr(Mnemonic.adda, Dir),
 
                 Instr(Mnemonic.cmpx, Dirw),
-                Instr(Mnemonic.jsr, Dirw),
+                Instr(Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call, Dirw),
                 Instr(Mnemonic.ldx, Dirw),
                 Instr(Mnemonic.stx, Dirw),
 
@@ -1321,7 +1321,7 @@ namespace Reko.Arch.M6800.M6809
                 Instr(Mnemonic.adda, Idx),
 
                 Instr(Mnemonic.cmpx, IdxW),
-                Instr(Mnemonic.jsr, IdxW),
+                Instr(Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call, IdxW),
                 Instr(Mnemonic.ldx, IdxW),
                 Instr(Mnemonic.stx, IdxW),
 
@@ -1342,7 +1342,7 @@ namespace Reko.Arch.M6800.M6809
                 Instr(Mnemonic.adda, Ext),
 
                 Instr(Mnemonic.cmpx, ExtW),
-                Instr(Mnemonic.jsr, ExtW),
+                Instr(Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call,ExtW),
                 Instr(Mnemonic.ldx, ExtW),
                 Instr(Mnemonic.stx, ExtW),
 

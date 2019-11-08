@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -31,8 +32,12 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.M6800
 {
+    using FlagM = Reko.Arch.M6800.M6809.FlagM;
+
     public class M6809Architecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public M6809Architecture(string archId) : base(archId)
         {
             this.Endianness = EndianServices.Big;
@@ -40,6 +45,7 @@ namespace Reko.Arch.M6800
             this.InstructionBitSize = 8;
             this.PointerType = PrimitiveType.Ptr16;
             this.StackRegister = M6809.Registers.S;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -59,17 +65,26 @@ namespace Reko.Arch.M6800
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new M6809State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new M6809.M6809Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var flagregister = M6812.Registers.ccr;
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -104,7 +119,12 @@ namespace Reko.Arch.M6800
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            if ((grf & (uint) FlagM.N) != 0) sb.Append('N');
+            if ((grf & (uint) FlagM.Z) != 0) sb.Append('Z');
+            if ((grf & (uint) FlagM.V) != 0) sb.Append('V');
+            if ((grf & (uint) FlagM.C) != 0) sb.Append('C');
+            return sb.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)

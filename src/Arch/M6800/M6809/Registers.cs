@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Types;
+using System;
 
 namespace Reko.Arch.M6800.M6809
 {
@@ -56,5 +57,18 @@ namespace Reko.Arch.M6800.M6809
 
             AddrRegs = new RegisterStorage[] { X, Y, U, S };
         }
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        E = 128,
+        F = 64,
+        H = 32,
+        I = 16,
+        N = 8,
+        Z = 4,
+        V = 2,
+        C = 1,
     }
 }

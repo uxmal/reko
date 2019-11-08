@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="M6809Architecture.cs" />
+    <Compile Include="M6809State.cs" />
     <Compile Include="M6809\M6809Instruction.cs" />
+    <Compile Include="M6809\M6809Rewriter.cs" />
     <Compile Include="M6809\MemoryOperand.cs" />
     <Compile Include="M6809\Mnemonic.cs" />
     <Compile Include="M6809\MultipleRegisterOperand.cs" />

@@ -102,20 +102,6 @@ namespace Reko.UnitTests.Mocks
             return b;
         }
 
-        public void BranchCc(ConditionCode cc, string label)
-        {
-            Identifier f;
-            switch (cc)
-            {
-            case ConditionCode.EQ:
-            case ConditionCode.NE: f = Flags("Z"); break;
-            default: throw new ArgumentOutOfRangeException("Condition code: " + cc);
-            }
-            branchBlock = BlockOf(label);
-            Emit(new Branch(new TestCondition(cc, f), branchBlock));
-            TerminateBlock();
-        }
-
         public Statement BranchIf(Expression expr, string label)
         {
             Block b = EnsureBlock(null);
