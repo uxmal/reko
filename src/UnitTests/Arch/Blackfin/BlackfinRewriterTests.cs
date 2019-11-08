@@ -116,6 +116,7 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");
         }
+
         [Test]
         public void BlackfinRw_RTS()
         {
