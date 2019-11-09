@@ -625,7 +625,10 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public MemoryAccess Mem(MemoryIdentifier mid, DataType dt, Expression ea)
+        public virtual MemoryAccess Mem(
+            MemoryIdentifier mid,
+            DataType dt,
+            Expression ea)
         {
             return new MemoryAccess(mid, ea, dt);
         }

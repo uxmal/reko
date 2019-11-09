@@ -62,6 +62,7 @@ Top_48: orig: Top
 Z_49: orig: Z
 Z_50: orig: Z
 sp_51: orig: sp
+Top_52: orig: Top
 // fn0C00_000F
 // Return size: 0
 word16 fn0C00_000F(word16 wArg02)
@@ -94,25 +95,24 @@ ss:ss
 Mem7: orig: Mem0
 ax_8: orig: ax
     def:  ax_8 = fn0C00_000F(0x0064)
-    uses: Mem18[ds:0x0064:word16] = ax_8
-Top_9: orig: Top
-dx_10: orig: dx
-S_11: orig: S
-C_12: orig: C
-Z_13: orig: Z
-O_14: orig: O
-sp_15: orig: sp
-SCZO_16: orig: SCZO
+    uses: Mem17[ds:0x0064:word16] = ax_8
+dx_9: orig: dx
+S_10: orig: S
+C_11: orig: C
+Z_12: orig: Z
+O_13: orig: O
+sp_14: orig: sp
+SCZO_15: orig: SCZO
 ds:ds
     def:  def ds
-    uses: Mem18[ds:0x0064:word16] = ax_8
-Mem18: orig: Mem0
-    def:  Mem18[ds:0x0064:word16] = ax_8
-wLoc02_19: orig: wLoc02
-C_20: orig: C
-O_21: orig: O
-S_22: orig: S
-Z_23: orig: Z
+    uses: Mem17[ds:0x0064:word16] = ax_8
+Mem17: orig: Mem0
+    def:  Mem17[ds:0x0064:word16] = ax_8
+wLoc02_18: orig: wLoc02
+C_19: orig: C
+O_20: orig: O
+S_21: orig: S
+Z_22: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -121,7 +121,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_8 = fn0C00_000F(0x0064)
-	Mem18[ds:0x0064:word16] = ax_8
+	Mem17[ds:0x0064:word16] = ax_8
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

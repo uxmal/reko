@@ -449,6 +449,9 @@ namespace Reko.Analysis
                     sst.Transform();
                 }
 
+                var fpuGuesser = new FpuStackReturnGuesser(ssa);
+                fpuGuesser.Rewrite();
+
                 // By placing use statements in the exit block, we will collect
                 // reaching definitions in the use statements.
                 sst.AddUsesToExitBlock();

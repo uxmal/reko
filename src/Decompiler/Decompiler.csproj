@@ -124,6 +124,7 @@
     <Compile Include="Analysis\DeclarationInserter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\FpuStackReturnGuesser.cs" />
     <Compile Include="Analysis\InstructionUseAdder.cs">
       <SubType>Code</SubType>
     </Compile>
