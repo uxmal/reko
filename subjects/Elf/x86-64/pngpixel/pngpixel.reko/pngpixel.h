@@ -41,31 +41,31 @@ Eq_73: (union "Eq_73" (int32 u0) (uint64 u1) (up32 u2))
 	T_73 (in ecx : Eq_73)
 	T_79 (in SLICE(rcx, word32, 0) : word32)
 	T_123 (in 0x00000010 : word32)
-	T_277 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_297 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_310 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_325 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_342 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_369 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_382 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_405 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_418 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_433 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
-	T_448 (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+	T_277 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_297 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_310 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_325 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_342 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_369 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_382 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_405 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_418 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_433 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
+	T_448 (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
 Eq_98: (struct "Eq_98" (0 byte b0000) (1 byte b0001))
-	T_98 (in v16_51 : (ptr64 Eq_98))
-	T_122 (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x00000006)) *s r8d)) *s ecx))) << 0x0000000000000003) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_40) >> 0x00000003))) : word64)
+	T_98 (in v16_52 : (ptr64 Eq_98))
+	T_122 (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x00000006)) *s r8d)) *s ecx))) << 0x0000000000000003) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_41) >> 0x00000003))) : word64)
 Eq_125: (fn int32 ((ptr64 Eq_127), (ptr64 char), uint64))
 	T_125 (in fprintf : ptr64)
 	T_126 (in signature of fprintf : void)
 Eq_127: FILE
 	T_127 (in fp : (ptr64 FILE))
-	T_131 (in Mem54[0x0000000000602100:word64] : word64)
+	T_131 (in Mem55[0x0000000000602100:word64] : word64)
 	T_603 (in stream : (ptr64 FILE))
-	T_608 (in Mem16[0x0000000000602100:word64] : word64)
-	T_646 (in Mem48[0x0000000000602100:word64] : word64)
-	T_665 (in Mem72[0x0000000000602100:word64] : word64)
-	T_680 (in Mem191[0x0000000000602100:word64] : word64)
+	T_608 (in Mem17[0x0000000000602100:word64] : word64)
+	T_646 (in Mem49[0x0000000000602100:word64] : word64)
+	T_665 (in Mem73[0x0000000000602100:word64] : word64)
+	T_680 (in Mem192[0x0000000000602100:word64] : word64)
 Eq_135: (fn void (Eq_137))
 	T_135 (in exit : ptr64)
 	T_136 (in signature of exit : void)
@@ -112,22 +112,22 @@ Eq_493: (fn int32 ((ptr64 char), uint64, int64, Eq_497, Eq_498))
 	T_494 (in signature of printf : void)
 Eq_497: (union "Eq_497" (int64 u0) (uint64 u1))
 	T_497 (in  : int64)
-	T_521 (in (uint64) (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint64)
+	T_521 (in (uint64) (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint64)
 Eq_498: (union "Eq_498" (int64 u0) (uint64 u1))
 	T_498 (in  : int64)
-	T_530 (in (uint64) (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint64)
+	T_530 (in (uint64) (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint64)
 Eq_549: (fn int32 ((ptr64 char), uint64, int64, Eq_553, Eq_554, Eq_555))
 	T_549 (in printf : ptr64)
 	T_550 (in signature of printf : void)
 Eq_553: (union "Eq_553" (int64 u0) (uint64 u1))
 	T_553 (in  : int64)
-	T_578 (in (uint64) (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint64)
+	T_578 (in (uint64) (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint64)
 Eq_554: (union "Eq_554" (int64 u0) (uint64 u1))
 	T_554 (in  : int64)
-	T_587 (in (uint64) (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint64)
+	T_587 (in (uint64) (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint64)
 Eq_555: (union "Eq_555" (int64 u0) (uint64 u1))
 	T_555 (in  : int64)
-	T_588 (in (uint64) esi_340 : uint64)
+	T_588 (in (uint64) esi_341 : uint64)
 Eq_590: (struct "Eq_590" (8 (ptr64 char) ptr0008) (10 (ptr64 char) ptr0010) (18 (ptr64 char) ptr0018))
 	T_590 (in rsi : (ptr64 Eq_590))
 Eq_598: (fn Eq_601 ((ptr64 void), Eq_601, Eq_601, (ptr64 Eq_127)))
@@ -152,7 +152,7 @@ Eq_616: (fn int32 ((ptr64 char)))
 	T_617 (in signature of atol : void)
 	T_627 (in atol : ptr64)
 Eq_630: FILE
-	T_630 (in rax_46 : (ptr64 Eq_630))
+	T_630 (in rax_47 : (ptr64 Eq_630))
 	T_639 (in fopen(rsi->ptr0018, "rb") : (ptr64 FILE))
 	T_640 (in 0x0000000000000000 : word64)
 Eq_631: (fn (ptr64 Eq_630) ((ptr64 char), (ptr64 char)))
@@ -175,10 +175,10 @@ Eq_1014: (union "Eq_1014" (int64 u0) (ptr64 u1))
 Eq_1015: (union "Eq_1015" (int64 u0) (ptr64 u1))
 	T_1015 (in 0000000000601E00 : ptr64)
 Eq_1021: (union "Eq_1021" (int64 u0) (uint64 u1))
-	T_1021 (in rbx_41 : Eq_1021)
+	T_1021 (in rbx_42 : Eq_1021)
 	T_1022 (in 0x0000000000000000 : uint64)
-	T_1028 (in rbx_41 + 0x0000000000000001 : word64)
-	T_1029 (in rbp_29 >> 0x0000000000000003 : word64)
+	T_1028 (in rbx_42 + 0x0000000000000001 : word64)
+	T_1029 (in rbp_30 >> 0x0000000000000003 : word64)
 Eq_1031: (struct "Eq_1031" 0008 (0 word32 dw0000))
 	T_1031
 Eq_1032: (struct "Eq_1032" 0003 (0 byte b0000))
@@ -418,7 +418,7 @@ T_56: (in 0000000000602108 : ptr64)
   Class: Eq_56
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_57 t0000)))
-T_57: (in Mem20[0x0000000000602108:byte] : byte)
+T_57: (in Mem21[0x0000000000602108:byte] : byte)
   Class: Eq_49
   DataType: byte
   OrigDataType: byte
@@ -510,7 +510,7 @@ T_79: (in SLICE(rcx, word32, 0) : word32)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: word32
-T_80: (in eax_40 : ui32)
+T_80: (in eax_41 : ui32)
   Class: Eq_80
   DataType: ui32
   OrigDataType: ui32
@@ -582,7 +582,7 @@ T_97: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (edx + SLICE((uint64) (S
   Class: Eq_80
   DataType: ui32
   OrigDataType: word32
-T_98: (in v16_51 : (ptr64 Eq_98))
+T_98: (in v16_52 : (ptr64 Eq_98))
   Class: Eq_98
   DataType: (ptr64 Eq_98)
   OrigDataType: (ptr64 (struct (0 T_143 t0000) (1 T_215 t0001)))
@@ -650,11 +650,11 @@ T_114: (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((u
   Class: Eq_114
   DataType: word64
   OrigDataType: word64
-T_115: (in (uint64) eax_40 : uint64)
+T_115: (in (uint64) eax_41 : uint64)
   Class: Eq_115
   DataType: uint64
   OrigDataType: uint64
-T_116: (in SLICE((uint64) eax_40, word32, 0) : word32)
+T_116: (in SLICE((uint64) eax_41, word32, 0) : word32)
   Class: Eq_116
   DataType: uint32
   OrigDataType: uint32
@@ -662,23 +662,23 @@ T_117: (in 0x00000003 : word32)
   Class: Eq_117
   DataType: word32
   OrigDataType: word32
-T_118: (in (word32) (uint64) eax_40 >> 0x00000003 : word32)
+T_118: (in (word32) (uint64) eax_41 >> 0x00000003 : word32)
   Class: Eq_118
   DataType: uint32
   OrigDataType: uint32
-T_119: (in (uint64) (SLICE((uint64) eax_40, word32, 0) >>u 0x00000003) : uint64)
+T_119: (in (uint64) (SLICE((uint64) eax_41, word32, 0) >>u 0x00000003) : uint64)
   Class: Eq_119
   DataType: uint64
   OrigDataType: uint64
-T_120: (in SLICE((uint64) (SLICE((uint64) eax_40, word32, 0) >>u 0x00000003), word32, 0) : word32)
+T_120: (in SLICE((uint64) (SLICE((uint64) eax_41, word32, 0) >>u 0x00000003), word32, 0) : word32)
   Class: Eq_120
   DataType: word32
   OrigDataType: word32
-T_121: (in (uint64) SLICE((uint64) (SLICE((uint64) eax_40, word32, 0) >>u 0x00000003), word32, 0) : uint64)
+T_121: (in (uint64) SLICE((uint64) (SLICE((uint64) eax_41, word32, 0) >>u 0x00000003), word32, 0) : uint64)
   Class: Eq_121
   DataType: uint64
   OrigDataType: uint64
-T_122: (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x00000006)) *s r8d)) *s ecx))) << 0x0000000000000003) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_40) >> 0x00000003))) : word64)
+T_122: (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x00000006)) *s r8d)) *s ecx))) << 0x0000000000000003) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_41) >> 0x00000003))) : word64)
   Class: Eq_98
   DataType: (ptr64 Eq_98)
   OrigDataType: word64
@@ -714,7 +714,7 @@ T_130: (in 0000000000602100 : ptr64)
   Class: Eq_130
   DataType: (ptr64 (ptr64 Eq_127))
   OrigDataType: (ptr64 (struct (0 T_131 t0000)))
-T_131: (in Mem54[0x0000000000602100:word64] : word64)
+T_131: (in Mem55[0x0000000000602100:word64] : word64)
   Class: Eq_127
   DataType: (ptr64 Eq_127)
   OrigDataType: (ptr64 FILE)
@@ -750,7 +750,7 @@ T_139: (in exit(0x0000000000000001) : void)
   Class: Eq_139
   DataType: void
   OrigDataType: void
-T_140: (in rax_112 : uint64)
+T_140: (in rax_113 : uint64)
   Class: Eq_140
   DataType: uint64
   OrigDataType: uint64
@@ -758,23 +758,23 @@ T_141: (in 0x0000000000000000 : word64)
   Class: Eq_141
   DataType: word64
   OrigDataType: word64
-T_142: (in v16_51 + 0x0000000000000000 : word64)
+T_142: (in v16_52 + 0x0000000000000000 : word64)
   Class: Eq_142
   DataType: word64
   OrigDataType: word64
-T_143: (in Mem54[v16_51 + 0x0000000000000000:byte] : byte)
+T_143: (in Mem55[v16_52 + 0x0000000000000000:byte] : byte)
   Class: Eq_143
   DataType: byte
   OrigDataType: byte
-T_144: (in (word32) Mem54[v16_51 + 0x0000000000000000:byte] : word32)
+T_144: (in (word32) Mem55[v16_52 + 0x0000000000000000:byte] : word32)
   Class: Eq_144
   DataType: word32
   OrigDataType: word32
-T_145: (in SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : byte)
+T_145: (in SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : byte)
   Class: Eq_145
   DataType: byte
   OrigDataType: byte
-T_146: (in (word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : word32)
+T_146: (in (word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : word32)
   Class: Eq_146
   DataType: int32
   OrigDataType: int32
@@ -786,47 +786,47 @@ T_148: (in 0x00000007 : word32)
   Class: Eq_148
   DataType: ui32
   OrigDataType: ui32
-T_149: (in eax_40 & 0x00000007 : word32)
+T_149: (in eax_41 & 0x00000007 : word32)
   Class: Eq_149
   DataType: ui32
   OrigDataType: ui32
-T_150: (in 0x00000007 - (eax_40 & 0x00000007) : word32)
+T_150: (in 0x00000007 - (eax_41 & 0x00000007) : word32)
   Class: Eq_150
   DataType: word32
   OrigDataType: word32
-T_151: (in (uint64) (0x00000007 - (eax_40 & 0x00000007)) : uint64)
+T_151: (in (uint64) (0x00000007 - (eax_41 & 0x00000007)) : uint64)
   Class: Eq_151
   DataType: uint64
   OrigDataType: uint64
-T_152: (in SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0) : word32)
+T_152: (in SLICE((uint64) (0x00000007 - (eax_41 & 0x00000007)), word32, 0) : word32)
   Class: Eq_152
   DataType: word32
   OrigDataType: word32
-T_153: (in (uint64) SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0) : uint64)
+T_153: (in (uint64) SLICE((uint64) (0x00000007 - (eax_41 & 0x00000007)), word32, 0) : uint64)
   Class: Eq_153
   DataType: uint64
   OrigDataType: uint64
-T_154: (in SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0), byte, 0) : byte)
+T_154: (in SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_41 & 0x00000007)), word32, 0), byte, 0) : byte)
   Class: Eq_154
   DataType: byte
   OrigDataType: byte
-T_155: (in (word32) (byte) (word32) v16_51->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000007 - (eax_40 & 0x00000007))))) : word32)
+T_155: (in (word32) (byte) (word32) v16_52->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000007 - (eax_41 & 0x00000007))))) : word32)
   Class: Eq_155
   DataType: int32
   OrigDataType: int32
-T_156: (in (uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0), byte, 0)) : uint64)
+T_156: (in (uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_41 & 0x00000007)), word32, 0), byte, 0)) : uint64)
   Class: Eq_156
   DataType: uint64
   OrigDataType: uint64
-T_157: (in SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : word32)
+T_157: (in SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_157
   DataType: word32
   OrigDataType: word32
-T_158: (in (uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : uint64)
+T_158: (in (uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_158
   DataType: uint64
   OrigDataType: uint64
-T_159: (in SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_159: (in SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_159
   DataType: ui32
   OrigDataType: ui32
@@ -834,11 +834,11 @@ T_160: (in 0x00000001 : word32)
   Class: Eq_160
   DataType: ui32
   OrigDataType: ui32
-T_161: (in (word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) v16_51->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000007 - (eax_40 & 0x00000007)))))) & 0x00000001 : word32)
+T_161: (in (word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) v16_52->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000007 - (eax_41 & 0x00000007)))))) & 0x00000001 : word32)
   Class: Eq_161
   DataType: ui32
   OrigDataType: ui32
-T_162: (in (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000001) : uint64)
+T_162: (in (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000007 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000001) : uint64)
   Class: Eq_140
   DataType: uint64
   OrigDataType: uint64
@@ -846,23 +846,23 @@ T_163: (in 0x0000000000000000 : word64)
   Class: Eq_163
   DataType: word64
   OrigDataType: word64
-T_164: (in v16_51 + 0x0000000000000000 : word64)
+T_164: (in v16_52 + 0x0000000000000000 : word64)
   Class: Eq_164
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 byte)
-T_165: (in Mem54[v16_51 + 0x0000000000000000:byte] : byte)
+T_165: (in Mem55[v16_52 + 0x0000000000000000:byte] : byte)
   Class: Eq_143
   DataType: byte
   OrigDataType: byte
-T_166: (in (word32) Mem54[v16_51 + 0x0000000000000000:byte] : word32)
+T_166: (in (word32) Mem55[v16_52 + 0x0000000000000000:byte] : word32)
   Class: Eq_166
   DataType: word32
   OrigDataType: word32
-T_167: (in SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : byte)
+T_167: (in SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : byte)
   Class: Eq_167
   DataType: byte
   OrigDataType: byte
-T_168: (in (word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : word32)
+T_168: (in (word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : word32)
   Class: Eq_168
   DataType: int32
   OrigDataType: int32
@@ -870,47 +870,47 @@ T_169: (in 0x00000006 : word32)
   Class: Eq_169
   DataType: word32
   OrigDataType: word32
-T_170: (in eax_40 & 0x00000007 : word32)
+T_170: (in eax_41 & 0x00000007 : word32)
   Class: Eq_170
   DataType: ui32
   OrigDataType: ui32
-T_171: (in 0x00000006 - (eax_40 & 0x00000007) : word32)
+T_171: (in 0x00000006 - (eax_41 & 0x00000007) : word32)
   Class: Eq_171
   DataType: word32
   OrigDataType: word32
-T_172: (in (uint64) (0x00000006 - (eax_40 & 0x00000007)) : uint64)
+T_172: (in (uint64) (0x00000006 - (eax_41 & 0x00000007)) : uint64)
   Class: Eq_172
   DataType: uint64
   OrigDataType: uint64
-T_173: (in SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0) : word32)
+T_173: (in SLICE((uint64) (0x00000006 - (eax_41 & 0x00000007)), word32, 0) : word32)
   Class: Eq_173
   DataType: word32
   OrigDataType: word32
-T_174: (in (uint64) SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0) : uint64)
+T_174: (in (uint64) SLICE((uint64) (0x00000006 - (eax_41 & 0x00000007)), word32, 0) : uint64)
   Class: Eq_174
   DataType: uint64
   OrigDataType: uint64
-T_175: (in SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0), byte, 0) : byte)
+T_175: (in SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_41 & 0x00000007)), word32, 0), byte, 0) : byte)
   Class: Eq_175
   DataType: byte
   OrigDataType: byte
-T_176: (in (word32) (byte) (word32) v16_51->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000006 - (eax_40 & 0x00000007))))) : word32)
+T_176: (in (word32) (byte) (word32) v16_52->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000006 - (eax_41 & 0x00000007))))) : word32)
   Class: Eq_176
   DataType: int32
   OrigDataType: int32
-T_177: (in (uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0), byte, 0)) : uint64)
+T_177: (in (uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_41 & 0x00000007)), word32, 0), byte, 0)) : uint64)
   Class: Eq_177
   DataType: uint64
   OrigDataType: uint64
-T_178: (in SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : word32)
+T_178: (in SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_178
   DataType: word32
   OrigDataType: word32
-T_179: (in (uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : uint64)
+T_179: (in (uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_179
   DataType: uint64
   OrigDataType: uint64
-T_180: (in SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_180: (in SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_180
   DataType: ui32
   OrigDataType: ui32
@@ -918,11 +918,11 @@ T_181: (in 0x00000003 : word32)
   Class: Eq_181
   DataType: ui32
   OrigDataType: ui32
-T_182: (in (word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) v16_51->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000006 - (eax_40 & 0x00000007)))))) & 0x00000003 : word32)
+T_182: (in (word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) v16_52->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000006 - (eax_41 & 0x00000007)))))) & 0x00000003 : word32)
   Class: Eq_182
   DataType: ui32
   OrigDataType: ui32
-T_183: (in (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000003) : uint64)
+T_183: (in (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000006 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000003) : uint64)
   Class: Eq_140
   DataType: uint64
   OrigDataType: uint64
@@ -930,23 +930,23 @@ T_184: (in 0x0000000000000000 : word64)
   Class: Eq_184
   DataType: word64
   OrigDataType: word64
-T_185: (in v16_51 + 0x0000000000000000 : word64)
+T_185: (in v16_52 + 0x0000000000000000 : word64)
   Class: Eq_185
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 byte)
-T_186: (in Mem54[v16_51 + 0x0000000000000000:byte] : byte)
+T_186: (in Mem55[v16_52 + 0x0000000000000000:byte] : byte)
   Class: Eq_143
   DataType: byte
   OrigDataType: byte
-T_187: (in (word32) Mem54[v16_51 + 0x0000000000000000:byte] : word32)
+T_187: (in (word32) Mem55[v16_52 + 0x0000000000000000:byte] : word32)
   Class: Eq_187
   DataType: word32
   OrigDataType: word32
-T_188: (in SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : byte)
+T_188: (in SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : byte)
   Class: Eq_188
   DataType: byte
   OrigDataType: byte
-T_189: (in (word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : word32)
+T_189: (in (word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : word32)
   Class: Eq_189
   DataType: int32
   OrigDataType: int32
@@ -954,47 +954,47 @@ T_190: (in 0x00000004 : word32)
   Class: Eq_190
   DataType: word32
   OrigDataType: word32
-T_191: (in eax_40 & 0x00000007 : word32)
+T_191: (in eax_41 & 0x00000007 : word32)
   Class: Eq_191
   DataType: ui32
   OrigDataType: ui32
-T_192: (in 0x00000004 - (eax_40 & 0x00000007) : word32)
+T_192: (in 0x00000004 - (eax_41 & 0x00000007) : word32)
   Class: Eq_192
   DataType: word32
   OrigDataType: word32
-T_193: (in (uint64) (0x00000004 - (eax_40 & 0x00000007)) : uint64)
+T_193: (in (uint64) (0x00000004 - (eax_41 & 0x00000007)) : uint64)
   Class: Eq_193
   DataType: uint64
   OrigDataType: uint64
-T_194: (in SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0) : word32)
+T_194: (in SLICE((uint64) (0x00000004 - (eax_41 & 0x00000007)), word32, 0) : word32)
   Class: Eq_194
   DataType: word32
   OrigDataType: word32
-T_195: (in (uint64) SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0) : uint64)
+T_195: (in (uint64) SLICE((uint64) (0x00000004 - (eax_41 & 0x00000007)), word32, 0) : uint64)
   Class: Eq_195
   DataType: uint64
   OrigDataType: uint64
-T_196: (in SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0), byte, 0) : byte)
+T_196: (in SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_41 & 0x00000007)), word32, 0), byte, 0) : byte)
   Class: Eq_196
   DataType: byte
   OrigDataType: byte
-T_197: (in (word32) (byte) (word32) v16_51->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000004 - (eax_40 & 0x00000007))))) : word32)
+T_197: (in (word32) (byte) (word32) v16_52->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000004 - (eax_41 & 0x00000007))))) : word32)
   Class: Eq_197
   DataType: int32
   OrigDataType: int32
-T_198: (in (uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0), byte, 0)) : uint64)
+T_198: (in (uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_41 & 0x00000007)), word32, 0), byte, 0)) : uint64)
   Class: Eq_198
   DataType: uint64
   OrigDataType: uint64
-T_199: (in SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : word32)
+T_199: (in SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_199
   DataType: word32
   OrigDataType: word32
-T_200: (in (uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : uint64)
+T_200: (in (uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_200
   DataType: uint64
   OrigDataType: uint64
-T_201: (in SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_201: (in SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_201
   DataType: ui32
   OrigDataType: ui32
@@ -1002,15 +1002,15 @@ T_202: (in 0x0000000F : word32)
   Class: Eq_202
   DataType: ui32
   OrigDataType: ui32
-T_203: (in (word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) v16_51->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000004 - (eax_40 & 0x00000007)))))) & 0x0000000F : word32)
+T_203: (in (word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) v16_52->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x00000004 - (eax_41 & 0x00000007)))))) & 0x0000000F : word32)
   Class: Eq_203
   DataType: ui32
   OrigDataType: ui32
-T_204: (in (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_40 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x0000000F) : uint64)
+T_204: (in (uint64) (SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) >> SLICE((uint64) SLICE((uint64) (0x00000004 - (eax_41 & 0x00000007)), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x0000000F) : uint64)
   Class: Eq_140
   DataType: uint64
   OrigDataType: uint64
-T_205: (in SLICE(v16_51, word32, 32) : word32)
+T_205: (in SLICE(v16_52, word32, 32) : word32)
   Class: Eq_205
   DataType: word32
   OrigDataType: word32
@@ -1018,27 +1018,27 @@ T_206: (in 0x0000000000000000 : word64)
   Class: Eq_206
   DataType: word64
   OrigDataType: word64
-T_207: (in v16_51 + 0x0000000000000000 : word64)
+T_207: (in v16_52 + 0x0000000000000000 : word64)
   Class: Eq_207
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 byte)
-T_208: (in Mem54[v16_51 + 0x0000000000000000:byte] : byte)
+T_208: (in Mem55[v16_52 + 0x0000000000000000:byte] : byte)
   Class: Eq_143
   DataType: byte
   OrigDataType: byte
-T_209: (in (word32) Mem54[v16_51 + 0x0000000000000000:byte] : word32)
+T_209: (in (word32) Mem55[v16_52 + 0x0000000000000000:byte] : word32)
   Class: Eq_209
   DataType: word32
   OrigDataType: word32
-T_210: (in SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : byte)
+T_210: (in SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : byte)
   Class: Eq_210
   DataType: byte
   OrigDataType: byte
-T_211: (in (word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : word32)
+T_211: (in (word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : word32)
   Class: Eq_211
   DataType: word32
   OrigDataType: word32
-T_212: (in SEQ(SLICE(v16_51, word32, 32), (word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0)) : word64)
+T_212: (in SEQ(SLICE(v16_52, word32, 32), (word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0)) : word64)
   Class: Eq_140
   DataType: uint64
   OrigDataType: word64
@@ -1046,23 +1046,23 @@ T_213: (in 0x0000000000000001 : word64)
   Class: Eq_213
   DataType: word64
   OrigDataType: word64
-T_214: (in v16_51 + 0x0000000000000001 : word64)
+T_214: (in v16_52 + 0x0000000000000001 : word64)
   Class: Eq_214
   DataType: ptr64
   OrigDataType: ptr64
-T_215: (in Mem54[v16_51 + 0x0000000000000001:byte] : byte)
+T_215: (in Mem55[v16_52 + 0x0000000000000001:byte] : byte)
   Class: Eq_215
   DataType: byte
   OrigDataType: byte
-T_216: (in (word32) Mem54[v16_51 + 0x0000000000000001:byte] : word32)
+T_216: (in (word32) Mem55[v16_52 + 0x0000000000000001:byte] : word32)
   Class: Eq_216
   DataType: word32
   OrigDataType: word32
-T_217: (in SLICE((word32) Mem54[v16_51 + 0x0000000000000001:byte], byte, 0) : byte)
+T_217: (in SLICE((word32) Mem55[v16_52 + 0x0000000000000001:byte], byte, 0) : byte)
   Class: Eq_217
   DataType: byte
   OrigDataType: byte
-T_218: (in (word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000001:byte], byte, 0) : word32)
+T_218: (in (word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000001:byte], byte, 0) : word32)
   Class: Eq_218
   DataType: word32
   OrigDataType: word32
@@ -1070,23 +1070,23 @@ T_219: (in 0x0000000000000000 : word64)
   Class: Eq_219
   DataType: word64
   OrigDataType: word64
-T_220: (in v16_51 + 0x0000000000000000 : word64)
+T_220: (in v16_52 + 0x0000000000000000 : word64)
   Class: Eq_220
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 byte)
-T_221: (in Mem54[v16_51 + 0x0000000000000000:byte] : byte)
+T_221: (in Mem55[v16_52 + 0x0000000000000000:byte] : byte)
   Class: Eq_143
   DataType: byte
   OrigDataType: byte
-T_222: (in (word32) Mem54[v16_51 + 0x0000000000000000:byte] : word32)
+T_222: (in (word32) Mem55[v16_52 + 0x0000000000000000:byte] : word32)
   Class: Eq_222
   DataType: word32
   OrigDataType: word32
-T_223: (in SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : byte)
+T_223: (in SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : byte)
   Class: Eq_223
   DataType: byte
   OrigDataType: byte
-T_224: (in (word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) : word32)
+T_224: (in (word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) : word32)
   Class: Eq_224
   DataType: ui32
   OrigDataType: ui32
@@ -1094,35 +1094,35 @@ T_225: (in 0x00000008 : word32)
   Class: Eq_225
   DataType: word32
   OrigDataType: word32
-T_226: (in (word32) (byte) (word32) v16_51->b0000 << 0x00000008 : word32)
+T_226: (in (word32) (byte) (word32) v16_52->b0000 << 0x00000008 : word32)
   Class: Eq_226
   DataType: ui32
   OrigDataType: ui32
-T_227: (in (uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) << 0x00000008) : uint64)
+T_227: (in (uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) << 0x00000008) : uint64)
   Class: Eq_227
   DataType: uint64
   OrigDataType: uint64
-T_228: (in SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) << 0x00000008), word32, 0) : word32)
+T_228: (in SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) << 0x00000008), word32, 0) : word32)
   Class: Eq_228
   DataType: word32
   OrigDataType: word32
-T_229: (in (uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) << 0x00000008), word32, 0) : uint64)
+T_229: (in (uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) << 0x00000008), word32, 0) : uint64)
   Class: Eq_229
   DataType: uint64
   OrigDataType: uint64
-T_230: (in SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) << 0x00000008), word32, 0), word32, 0) : word32)
+T_230: (in SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) << 0x00000008), word32, 0), word32, 0) : word32)
   Class: Eq_230
   DataType: word32
   OrigDataType: word32
-T_231: (in (word32) (byte) (word32) v16_51->b0001 + (word32) ((uint64) ((word32) ((uint64) ((word32) ((byte) ((word32) v16_51->b0000)) << 0x00000008)))) : word32)
+T_231: (in (word32) (byte) (word32) v16_52->b0001 + (word32) ((uint64) ((word32) ((uint64) ((word32) ((byte) ((word32) v16_52->b0000)) << 0x00000008)))) : word32)
   Class: Eq_231
   DataType: word32
   OrigDataType: word32
-T_232: (in (uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000001:byte], byte, 0) + SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem54[v16_51 + 0x0000000000000000:byte], byte, 0) << 0x00000008), word32, 0), word32, 0)) : uint64)
+T_232: (in (uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000001:byte], byte, 0) + SLICE((uint64) SLICE((uint64) ((word32) SLICE((word32) Mem55[v16_52 + 0x0000000000000000:byte], byte, 0) << 0x00000008), word32, 0), word32, 0)) : uint64)
   Class: Eq_140
   DataType: uint64
   OrigDataType: uint64
-T_233: (in SLICE(rax_112, word32, 0) : word32)
+T_233: (in SLICE(rax_113, word32, 0) : word32)
   Class: Eq_72
   DataType: word32
   OrigDataType: word32
@@ -1146,7 +1146,7 @@ T_238: (in fs : (ptr32 Eq_238))
   Class: Eq_238
   DataType: (ptr32 Eq_238)
   OrigDataType: (ptr32 (segment (28 T_239 t0028)))
-T_239: (in rax_26 : word64)
+T_239: (in rax_27 : word64)
   Class: Eq_239
   DataType: word64
   OrigDataType: word64
@@ -1154,15 +1154,15 @@ T_240: (in 0x00000028 : word32)
   Class: Eq_240
   DataType: (memptr (ptr32 Eq_238) word64)
   OrigDataType: (memptr T_238 (struct (0 T_241 t0000)))
-T_241: (in Mem24[fs:0x00000028:word64] : word64)
+T_241: (in Mem25[fs:0x00000028:word64] : word64)
   Class: Eq_239
   DataType: word64
   OrigDataType: word64
-T_242: (in rcx_39 : word64)
+T_242: (in rcx_40 : word64)
   Class: Eq_242
   DataType: word64
   OrigDataType: word64
-T_243: (in rax_40 : word64)
+T_243: (in rax_41 : word64)
   Class: Eq_243
   DataType: word64
   OrigDataType: word64
@@ -1174,27 +1174,27 @@ T_245: (in signature of png_get_bit_depth : void)
   Class: Eq_245
   DataType: Eq_245
   OrigDataType: 
-T_246: (in eax_45 : word32)
+T_246: (in eax_46 : word32)
   Class: Eq_246
   DataType: word32
   OrigDataType: word32
-T_247: (in SLICE(rax_40, byte, 0) : byte)
+T_247: (in SLICE(rax_41, byte, 0) : byte)
   Class: Eq_247
   DataType: byte
   OrigDataType: byte
-T_248: (in (word32) SLICE(rax_40, byte, 0) : word32)
+T_248: (in (word32) SLICE(rax_41, byte, 0) : word32)
   Class: Eq_246
   DataType: word32
   OrigDataType: word32
-T_249: (in rdx_54 : word64)
+T_249: (in rdx_55 : word64)
   Class: Eq_249
   DataType: word64
   OrigDataType: word64
-T_250: (in rcx_55 : word64)
+T_250: (in rcx_56 : word64)
   Class: Eq_250
   DataType: word64
   OrigDataType: word64
-T_251: (in rax_56 : word64)
+T_251: (in rax_57 : word64)
   Class: Eq_251
   DataType: word64
   OrigDataType: word64
@@ -1206,23 +1206,23 @@ T_253: (in signature of png_get_color_type : void)
   Class: Eq_253
   DataType: Eq_253
   OrigDataType: 
-T_254: (in ecx_462 : word32)
+T_254: (in ecx_463 : word32)
   Class: Eq_254
   DataType: word32
   OrigDataType: word32
-T_255: (in SLICE(rcx_55, word32, 0) : word32)
+T_255: (in SLICE(rcx_56, word32, 0) : word32)
   Class: Eq_254
   DataType: word32
   OrigDataType: word32
-T_256: (in eax_61 : up32)
+T_256: (in eax_62 : up32)
   Class: Eq_256
   DataType: up32
   OrigDataType: up32
-T_257: (in SLICE(rax_56, byte, 0) : byte)
+T_257: (in SLICE(rax_57, byte, 0) : byte)
   Class: Eq_257
   DataType: byte
   OrigDataType: byte
-T_258: (in (word32) SLICE(rax_56, byte, 0) : word32)
+T_258: (in (word32) SLICE(rax_57, byte, 0) : word32)
   Class: Eq_256
   DataType: up32
   OrigDataType: word32
@@ -1230,7 +1230,7 @@ T_259: (in 0x00000006 : word32)
   Class: Eq_256
   DataType: up32
   OrigDataType: up32
-T_260: (in eax_61 > 0x00000006 : bool)
+T_260: (in eax_62 > 0x00000006 : bool)
   Class: Eq_260
   DataType: bool
   OrigDataType: bool
@@ -1246,7 +1246,7 @@ T_263: (in 0x00401958 : word32)
   Class: Eq_263
   DataType: (ptr32 (arr Eq_1031))
   OrigDataType: (ptr32 (struct (0 (arr T_1031) a0000)))
-T_264: (in (uint64) eax_61 : uint64)
+T_264: (in (uint64) eax_62 : uint64)
   Class: Eq_264
   DataType: uint64
   OrigDataType: uint64
@@ -1254,11 +1254,11 @@ T_265: (in 0x0000000000000008 : word64)
   Class: Eq_265
   DataType: ui64
   OrigDataType: ui64
-T_266: (in (uint64) eax_61 * 0x0000000000000008 : uint64)
+T_266: (in (uint64) eax_62 * 0x0000000000000008 : uint64)
   Class: Eq_266
   DataType: ui64
   OrigDataType: ui64
-T_267: (in 0x00401958[(uint64) eax_61 * 0x0000000000000008] : word32)
+T_267: (in 0x00401958[(uint64) eax_62 * 0x0000000000000008] : word32)
   Class: Eq_267
   DataType: word32
   OrigDataType: word32
@@ -1290,15 +1290,15 @@ T_274: (in signature of component : void)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: 
-T_275: (in (uint64) eax_45 : uint64)
+T_275: (in (uint64) eax_46 : uint64)
   Class: Eq_275
   DataType: uint64
   OrigDataType: uint64
-T_276: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_276: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_276
   DataType: word32
   OrigDataType: word32
-T_277: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_277: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1318,27 +1318,27 @@ T_281: (in 0x00000001 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_282: (in component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : word32)
+T_282: (in component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_283: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : uint32)
+T_283: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : uint32)
   Class: Eq_283
   DataType: uint32
   OrigDataType: uint32
-T_284: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : uint64)
+T_284: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : uint64)
   Class: Eq_284
   DataType: uint64
   OrigDataType: uint64
-T_285: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001), word32, 0) : word32)
+T_285: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001), word32, 0) : word32)
   Class: Eq_285
   DataType: word32
   OrigDataType: word32
-T_286: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001), word32, 0) : uint64)
+T_286: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001), word32, 0) : uint64)
   Class: Eq_271
   DataType: uint64
   OrigDataType: uint64
-T_287: (in printf("GRAY %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001)) : int32)
+T_287: (in printf("GRAY %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001)) : int32)
   Class: Eq_287
   DataType: int32
   OrigDataType: int32
@@ -1370,15 +1370,15 @@ T_294: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_302 (T_297, T_298, T_300, T_235, T_301)))
-T_295: (in (uint64) eax_45 : uint64)
+T_295: (in (uint64) eax_46 : uint64)
   Class: Eq_295
   DataType: uint64
   OrigDataType: uint64
-T_296: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_296: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_296
   DataType: word32
   OrigDataType: word32
-T_297: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_297: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1398,23 +1398,23 @@ T_301: (in 0x00000003 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_302: (in component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003) : word32)
+T_302: (in component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_303: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003) : uint32)
+T_303: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003) : uint32)
   Class: Eq_303
   DataType: uint32
   OrigDataType: uint32
-T_304: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003) : uint64)
+T_304: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003) : uint64)
   Class: Eq_304
   DataType: uint64
   OrigDataType: uint64
-T_305: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : word32)
+T_305: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : word32)
   Class: Eq_305
   DataType: word32
   OrigDataType: word32
-T_306: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : uint64)
+T_306: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : uint64)
   Class: Eq_290
   DataType: uint64
   OrigDataType: uint64
@@ -1422,15 +1422,15 @@ T_307: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_315 (T_310, T_311, T_313, T_235, T_314)))
-T_308: (in (uint64) eax_45 : uint64)
+T_308: (in (uint64) eax_46 : uint64)
   Class: Eq_308
   DataType: uint64
   OrigDataType: uint64
-T_309: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_309: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_309
   DataType: word32
   OrigDataType: word32
-T_310: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_310: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1450,31 +1450,31 @@ T_314: (in 0x00000003 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_315: (in component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003) : word32)
+T_315: (in component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_316: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003) : uint32)
+T_316: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003) : uint32)
   Class: Eq_316
   DataType: uint32
   OrigDataType: uint32
-T_317: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003) : uint64)
+T_317: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003) : uint64)
   Class: Eq_317
   DataType: uint64
   OrigDataType: uint64
-T_318: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : word32)
+T_318: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : word32)
   Class: Eq_318
   DataType: word32
   OrigDataType: word32
-T_319: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : uint64)
+T_319: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : uint64)
   Class: Eq_319
   DataType: uint64
   OrigDataType: uint64
-T_320: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0), word32, 0) : word32)
+T_320: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0), word32, 0) : word32)
   Class: Eq_320
   DataType: word32
   OrigDataType: word32
-T_321: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0), word32, 0) : uint64)
+T_321: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0), word32, 0) : uint64)
   Class: Eq_291
   DataType: uint64
   OrigDataType: uint64
@@ -1482,15 +1482,15 @@ T_322: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_330 (T_325, T_326, T_328, T_235, T_329)))
-T_323: (in (uint64) eax_45 : uint64)
+T_323: (in (uint64) eax_46 : uint64)
   Class: Eq_323
   DataType: uint64
   OrigDataType: uint64
-T_324: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_324: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_324
   DataType: word32
   OrigDataType: word32
-T_325: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_325: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1510,39 +1510,39 @@ T_329: (in 0x00000003 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_330: (in component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003) : word32)
+T_330: (in component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_331: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003) : uint32)
+T_331: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003) : uint32)
   Class: Eq_331
   DataType: uint32
   OrigDataType: uint32
-T_332: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003) : uint64)
+T_332: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003) : uint64)
   Class: Eq_332
   DataType: uint64
   OrigDataType: uint64
-T_333: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : word32)
+T_333: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : word32)
   Class: Eq_333
   DataType: word32
   OrigDataType: word32
-T_334: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : uint64)
+T_334: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0) : uint64)
   Class: Eq_334
   DataType: uint64
   OrigDataType: uint64
-T_335: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0), word32, 0) : word32)
+T_335: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0), word32, 0) : word32)
   Class: Eq_335
   DataType: word32
   OrigDataType: word32
-T_336: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0), word32, 0) : uint64)
+T_336: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003), word32, 0), word32, 0) : uint64)
   Class: Eq_292
   DataType: uint64
   OrigDataType: uint64
-T_337: (in printf("RGB %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003)) : int32)
+T_337: (in printf("RGB %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003)) : int32)
   Class: Eq_337
   DataType: int32
   OrigDataType: int32
-T_338: (in eax_219 : up32)
+T_338: (in eax_220 : up32)
   Class: Eq_338
   DataType: up32
   OrigDataType: up32
@@ -1550,15 +1550,15 @@ T_339: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_347 (T_342, T_343, T_345, T_235, T_346)))
-T_340: (in (uint64) eax_45 : uint64)
+T_340: (in (uint64) eax_46 : uint64)
   Class: Eq_340
   DataType: uint64
   OrigDataType: uint64
-T_341: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_341: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_341
   DataType: word32
   OrigDataType: word32
-T_342: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_342: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1578,23 +1578,23 @@ T_346: (in 0x00000001 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_347: (in component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : word32)
+T_347: (in component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_348: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : uint32)
+T_348: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : uint32)
   Class: Eq_348
   DataType: uint32
   OrigDataType: uint32
-T_349: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : uint64)
+T_349: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001) : uint64)
   Class: Eq_349
   DataType: uint64
   OrigDataType: uint64
-T_350: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001), word32, 0) : word32)
+T_350: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001), word32, 0) : word32)
   Class: Eq_338
   DataType: up32
   OrigDataType: word32
-T_351: (in rax_232 : word64)
+T_351: (in rax_233 : word64)
   Class: Eq_351
   DataType: word64
   OrigDataType: word64
@@ -1606,7 +1606,7 @@ T_353: (in signature of png_get_PLTE : void)
   Class: Eq_353
   DataType: Eq_353
   OrigDataType: 
-T_354: (in SLICE(rax_232, word32, 0) : word32)
+T_354: (in SLICE(rax_233, word32, 0) : word32)
   Class: Eq_354
   DataType: ui32
   OrigDataType: ui32
@@ -1614,15 +1614,15 @@ T_355: (in 0x00000008 : word32)
   Class: Eq_355
   DataType: ui32
   OrigDataType: ui32
-T_356: (in (word32) rax_232 & 0x00000008 : word32)
+T_356: (in (word32) rax_233 & 0x00000008 : word32)
   Class: Eq_356
   DataType: ui32
   OrigDataType: ui32
-T_357: (in (uint64) (SLICE(rax_232, word32, 0) & 0x00000008) : uint64)
+T_357: (in (uint64) (SLICE(rax_233, word32, 0) & 0x00000008) : uint64)
   Class: Eq_357
   DataType: uint64
   OrigDataType: uint64
-T_358: (in SLICE((uint64) (SLICE(rax_232, word32, 0) & 0x00000008), word32, 0) : word32)
+T_358: (in SLICE((uint64) (SLICE(rax_233, word32, 0) & 0x00000008), word32, 0) : word32)
   Class: Eq_358
   DataType: word32
   OrigDataType: word32
@@ -1630,7 +1630,7 @@ T_359: (in 0x00000000 : word32)
   Class: Eq_358
   DataType: word32
   OrigDataType: word32
-T_360: (in (word32) (uint64) ((word32) rax_232 & 0x00000008) == 0x00000000 : bool)
+T_360: (in (word32) (uint64) ((word32) rax_233 & 0x00000008) == 0x00000000 : bool)
   Class: Eq_360
   DataType: bool
   OrigDataType: bool
@@ -1658,15 +1658,15 @@ T_366: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_374 (T_369, T_370, T_372, T_235, T_373)))
-T_367: (in (uint64) eax_45 : uint64)
+T_367: (in (uint64) eax_46 : uint64)
   Class: Eq_367
   DataType: uint64
   OrigDataType: uint64
-T_368: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_368: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_368
   DataType: word32
   OrigDataType: word32
-T_369: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_369: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1686,23 +1686,23 @@ T_373: (in 0x00000002 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_374: (in component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002) : word32)
+T_374: (in component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_375: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002) : uint32)
+T_375: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002) : uint32)
   Class: Eq_375
   DataType: uint32
   OrigDataType: uint32
-T_376: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002) : uint64)
+T_376: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002) : uint64)
   Class: Eq_376
   DataType: uint64
   OrigDataType: uint64
-T_377: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0) : word32)
+T_377: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0) : word32)
   Class: Eq_377
   DataType: word32
   OrigDataType: word32
-T_378: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0) : uint64)
+T_378: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0) : uint64)
   Class: Eq_363
   DataType: uint64
   OrigDataType: uint64
@@ -1710,15 +1710,15 @@ T_379: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_387 (T_382, T_383, T_385, T_235, T_386)))
-T_380: (in (uint64) eax_45 : uint64)
+T_380: (in (uint64) eax_46 : uint64)
   Class: Eq_380
   DataType: uint64
   OrigDataType: uint64
-T_381: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_381: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_381
   DataType: word32
   OrigDataType: word32
-T_382: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_382: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1738,35 +1738,35 @@ T_386: (in 0x00000002 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_387: (in component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002) : word32)
+T_387: (in component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_388: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002) : uint32)
+T_388: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002) : uint32)
   Class: Eq_388
   DataType: uint32
   OrigDataType: uint32
-T_389: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002) : uint64)
+T_389: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002) : uint64)
   Class: Eq_389
   DataType: uint64
   OrigDataType: uint64
-T_390: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0) : word32)
+T_390: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0) : word32)
   Class: Eq_390
   DataType: word32
   OrigDataType: word32
-T_391: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0) : uint64)
+T_391: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0) : uint64)
   Class: Eq_391
   DataType: uint64
   OrigDataType: uint64
-T_392: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0), word32, 0) : word32)
+T_392: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0), word32, 0) : word32)
   Class: Eq_392
   DataType: word32
   OrigDataType: word32
-T_393: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0), word32, 0) : uint64)
+T_393: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002), word32, 0), word32, 0) : uint64)
   Class: Eq_364
   DataType: uint64
   OrigDataType: uint64
-T_394: (in printf("GRAY+ALPHA %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002)) : int32)
+T_394: (in printf("GRAY+ALPHA %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002)) : int32)
   Class: Eq_394
   DataType: int32
   OrigDataType: int32
@@ -1802,15 +1802,15 @@ T_402: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_410 (T_405, T_406, T_408, T_235, T_409)))
-T_403: (in (uint64) eax_45 : uint64)
+T_403: (in (uint64) eax_46 : uint64)
   Class: Eq_403
   DataType: uint64
   OrigDataType: uint64
-T_404: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_404: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_404
   DataType: word32
   OrigDataType: word32
-T_405: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_405: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1830,23 +1830,23 @@ T_409: (in 0x00000004 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_410: (in component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004) : word32)
+T_410: (in component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_411: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004) : uint32)
+T_411: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004) : uint32)
   Class: Eq_411
   DataType: uint32
   OrigDataType: uint32
-T_412: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004) : uint64)
+T_412: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004) : uint64)
   Class: Eq_412
   DataType: uint64
   OrigDataType: uint64
-T_413: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : word32)
+T_413: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : word32)
   Class: Eq_413
   DataType: word32
   OrigDataType: word32
-T_414: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : uint64)
+T_414: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : uint64)
   Class: Eq_397
   DataType: uint64
   OrigDataType: uint64
@@ -1854,15 +1854,15 @@ T_415: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_423 (T_418, T_419, T_421, T_235, T_422)))
-T_416: (in (uint64) eax_45 : uint64)
+T_416: (in (uint64) eax_46 : uint64)
   Class: Eq_416
   DataType: uint64
   OrigDataType: uint64
-T_417: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_417: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_417
   DataType: word32
   OrigDataType: word32
-T_418: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_418: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1882,31 +1882,31 @@ T_422: (in 0x00000004 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_423: (in component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004) : word32)
+T_423: (in component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_424: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004) : uint32)
+T_424: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004) : uint32)
   Class: Eq_424
   DataType: uint32
   OrigDataType: uint32
-T_425: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004) : uint64)
+T_425: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004) : uint64)
   Class: Eq_425
   DataType: uint64
   OrigDataType: uint64
-T_426: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : word32)
+T_426: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : word32)
   Class: Eq_426
   DataType: word32
   OrigDataType: word32
-T_427: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : uint64)
+T_427: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : uint64)
   Class: Eq_427
   DataType: uint64
   OrigDataType: uint64
-T_428: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : word32)
+T_428: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : word32)
   Class: Eq_428
   DataType: word32
   OrigDataType: word32
-T_429: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : uint64)
+T_429: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : uint64)
   Class: Eq_398
   DataType: uint64
   OrigDataType: uint64
@@ -1914,15 +1914,15 @@ T_430: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_438 (T_433, T_434, T_436, T_235, T_437)))
-T_431: (in (uint64) eax_45 : uint64)
+T_431: (in (uint64) eax_46 : uint64)
   Class: Eq_431
   DataType: uint64
   OrigDataType: uint64
-T_432: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_432: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_432
   DataType: word32
   OrigDataType: word32
-T_433: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_433: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -1942,31 +1942,31 @@ T_437: (in 0x00000004 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_438: (in component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004) : word32)
+T_438: (in component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_439: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004) : uint32)
+T_439: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004) : uint32)
   Class: Eq_439
   DataType: uint32
   OrigDataType: uint32
-T_440: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004) : uint64)
+T_440: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004) : uint64)
   Class: Eq_440
   DataType: uint64
   OrigDataType: uint64
-T_441: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : word32)
+T_441: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : word32)
   Class: Eq_441
   DataType: word32
   OrigDataType: word32
-T_442: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : uint64)
+T_442: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : uint64)
   Class: Eq_442
   DataType: uint64
   OrigDataType: uint64
-T_443: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : word32)
+T_443: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : word32)
   Class: Eq_443
   DataType: word32
   OrigDataType: word32
-T_444: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : uint64)
+T_444: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : uint64)
   Class: Eq_399
   DataType: uint64
   OrigDataType: uint64
@@ -1974,15 +1974,15 @@ T_445: (in component : ptr64)
   Class: Eq_273
   DataType: (ptr64 Eq_273)
   OrigDataType: (ptr64 (fn T_453 (T_448, T_449, T_451, T_235, T_452)))
-T_446: (in (uint64) eax_45 : uint64)
+T_446: (in (uint64) eax_46 : uint64)
   Class: Eq_446
   DataType: uint64
   OrigDataType: uint64
-T_447: (in SLICE((uint64) eax_45, word32, 0) : word32)
+T_447: (in SLICE((uint64) eax_46, word32, 0) : word32)
   Class: Eq_447
   DataType: word32
   OrigDataType: word32
-T_448: (in (uint64) SLICE((uint64) eax_45, word32, 0) : uint64)
+T_448: (in (uint64) SLICE((uint64) eax_46, word32, 0) : uint64)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: (union (uint64 u0) (word32 u1))
@@ -2002,35 +2002,35 @@ T_452: (in 0x00000004 : word32)
   Class: Eq_77
   DataType: int32
   OrigDataType: word32
-T_453: (in component((uint64) (word32) (uint64) eax_45, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004) : word32)
+T_453: (in component((uint64) (word32) (uint64) eax_46, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004) : word32)
   Class: Eq_282
   DataType: word32
   OrigDataType: word32
-T_454: (in (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004) : uint32)
+T_454: (in (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004) : uint32)
   Class: Eq_454
   DataType: uint32
   OrigDataType: uint32
-T_455: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004) : uint64)
+T_455: (in (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004) : uint64)
   Class: Eq_455
   DataType: uint64
   OrigDataType: uint64
-T_456: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : word32)
+T_456: (in SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : word32)
   Class: Eq_456
   DataType: word32
   OrigDataType: word32
-T_457: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : uint64)
+T_457: (in (uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0) : uint64)
   Class: Eq_457
   DataType: uint64
   OrigDataType: uint64
-T_458: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : word32)
+T_458: (in SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : word32)
   Class: Eq_458
   DataType: word32
   OrigDataType: word32
-T_459: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : uint64)
+T_459: (in (uint64) SLICE((uint64) SLICE((uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004), word32, 0), word32, 0) : uint64)
   Class: Eq_400
   DataType: uint64
   OrigDataType: uint64
-T_460: (in printf("RGBA %u %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_45, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004)) : int32)
+T_460: (in printf("RGBA %u %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_46, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004)) : int32)
   Class: Eq_460
   DataType: int32
   OrigDataType: int32
@@ -2050,11 +2050,11 @@ T_464: (in 0x00000028 : word32)
   Class: Eq_464
   DataType: (memptr (ptr32 Eq_238) word64)
   OrigDataType: (memptr T_238 (struct (0 T_465 t0000)))
-T_465: (in Mem498[fs:0x00000028:word64] : word64)
+T_465: (in Mem500[fs:0x00000028:word64] : word64)
   Class: Eq_239
   DataType: word64
   OrigDataType: word64
-T_466: (in rax_26 ^ fs->qw0028 : word64)
+T_466: (in rax_27 ^ fs->qw0028 : word64)
   Class: Eq_466
   DataType: ui64
   OrigDataType: ui64
@@ -2062,7 +2062,7 @@ T_467: (in 0x0000000000000000 : word64)
   Class: Eq_466
   DataType: ui64
   OrigDataType: word64
-T_468: (in (rax_26 ^ fs->qw0028) == 0x0000000000000000 : bool)
+T_468: (in (rax_27 ^ fs->qw0028) == 0x0000000000000000 : bool)
   Class: Eq_468
   DataType: bool
   OrigDataType: bool
@@ -2082,19 +2082,19 @@ T_472: (in 0x00000000004018EA : uint64)
   Class: Eq_270
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_473: (in (uint64) eax_219 : uint64)
+T_473: (in (uint64) eax_220 : uint64)
   Class: Eq_473
   DataType: uint64
   OrigDataType: uint64
-T_474: (in SLICE((uint64) eax_219, word32, 0) : word32)
+T_474: (in SLICE((uint64) eax_220, word32, 0) : word32)
   Class: Eq_474
   DataType: word32
   OrigDataType: word32
-T_475: (in (uint64) SLICE((uint64) eax_219, word32, 0) : uint64)
+T_475: (in (uint64) SLICE((uint64) eax_220, word32, 0) : uint64)
   Class: Eq_471
   DataType: uint64
   OrigDataType: uint64
-T_476: (in printf("INDEXED %u = invalid index\n", (uint64) (word32) (uint64) eax_219) : int32)
+T_476: (in printf("INDEXED %u = invalid index\n", (uint64) (word32) (uint64) eax_220) : int32)
   Class: Eq_476
   DataType: int32
   OrigDataType: int32
@@ -2114,7 +2114,7 @@ T_480: (in 0x0000000000000000 == 0x0000000000000000 : bool)
   Class: Eq_480
   DataType: bool
   OrigDataType: bool
-T_481: (in rax_270 : word64)
+T_481: (in rax_271 : word64)
   Class: Eq_481
   DataType: word64
   OrigDataType: word64
@@ -2126,7 +2126,7 @@ T_483: (in signature of png_get_tRNS : void)
   Class: Eq_483
   DataType: Eq_483
   OrigDataType: 
-T_484: (in SLICE(rax_270, word32, 0) : word32)
+T_484: (in SLICE(rax_271, word32, 0) : word32)
   Class: Eq_484
   DataType: ui32
   OrigDataType: ui32
@@ -2134,15 +2134,15 @@ T_485: (in 0x00000010 : word32)
   Class: Eq_485
   DataType: ui32
   OrigDataType: ui32
-T_486: (in (word32) rax_270 & 0x00000010 : word32)
+T_486: (in (word32) rax_271 & 0x00000010 : word32)
   Class: Eq_486
   DataType: ui32
   OrigDataType: ui32
-T_487: (in (uint64) (SLICE(rax_270, word32, 0) & 0x00000010) : uint64)
+T_487: (in (uint64) (SLICE(rax_271, word32, 0) & 0x00000010) : uint64)
   Class: Eq_487
   DataType: uint64
   OrigDataType: uint64
-T_488: (in SLICE((uint64) (SLICE(rax_270, word32, 0) & 0x00000010), word32, 0) : word32)
+T_488: (in SLICE((uint64) (SLICE(rax_271, word32, 0) & 0x00000010), word32, 0) : word32)
   Class: Eq_488
   DataType: word32
   OrigDataType: word32
@@ -2150,15 +2150,15 @@ T_489: (in 0x00000000 : word32)
   Class: Eq_488
   DataType: word32
   OrigDataType: word32
-T_490: (in (word32) (uint64) ((word32) rax_270 & 0x00000010) == 0x00000000 : bool)
+T_490: (in (word32) (uint64) ((word32) rax_271 & 0x00000010) == 0x00000000 : bool)
   Class: Eq_490
   DataType: bool
   OrigDataType: bool
-T_491: (in rdx_309 : uint64)
+T_491: (in rdx_310 : uint64)
   Class: Eq_491
   DataType: uint64
   OrigDataType: uint64
-T_492: (in (uint64) eax_219 : uint64)
+T_492: (in (uint64) eax_220 : uint64)
   Class: Eq_491
   DataType: uint64
   OrigDataType: uint64
@@ -2190,19 +2190,19 @@ T_499: (in 0x00000000004018D3 : uint64)
   Class: Eq_270
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_500: (in (uint64) eax_219 : uint64)
+T_500: (in (uint64) eax_220 : uint64)
   Class: Eq_500
   DataType: uint64
   OrigDataType: uint64
-T_501: (in SLICE((uint64) eax_219, word32, 0) : word32)
+T_501: (in SLICE((uint64) eax_220, word32, 0) : word32)
   Class: Eq_501
   DataType: word32
   OrigDataType: word32
-T_502: (in (uint64) SLICE((uint64) eax_219, word32, 0) : uint64)
+T_502: (in (uint64) SLICE((uint64) eax_220, word32, 0) : uint64)
   Class: Eq_495
   DataType: uint64
   OrigDataType: uint64
-T_503: (in SLICE(rdx_309, word32, 32) : word32)
+T_503: (in SLICE(rdx_310, word32, 32) : word32)
   Class: Eq_503
   DataType: word32
   OrigDataType: word32
@@ -2214,27 +2214,27 @@ T_505: (in 0x0000000000000003 : word64)
   Class: Eq_505
   DataType: ui64
   OrigDataType: ui64
-T_506: (in rdx_309 * 0x0000000000000003 : word64)
+T_506: (in rdx_310 * 0x0000000000000003 : word64)
   Class: Eq_506
   DataType: ui64
   OrigDataType: ui64
-T_507: (in 0x0000000000000000[rdx_309 * 0x0000000000000003] : byte)
+T_507: (in 0x0000000000000000[rdx_310 * 0x0000000000000003] : byte)
   Class: Eq_507
   DataType: byte
   OrigDataType: byte
-T_508: (in (word32) 0x0000000000000000[rdx_309 * 0x0000000000000003] : word32)
+T_508: (in (word32) 0x0000000000000000[rdx_310 * 0x0000000000000003] : word32)
   Class: Eq_508
   DataType: word32
   OrigDataType: word32
-T_509: (in SLICE((word32) 0x0000000000000000[rdx_309 * 0x0000000000000003], byte, 0) : byte)
+T_509: (in SLICE((word32) 0x0000000000000000[rdx_310 * 0x0000000000000003], byte, 0) : byte)
   Class: Eq_509
   DataType: byte
   OrigDataType: byte
-T_510: (in (word32) SLICE((word32) 0x0000000000000000[rdx_309 * 0x0000000000000003], byte, 0) : word32)
+T_510: (in (word32) SLICE((word32) 0x0000000000000000[rdx_310 * 0x0000000000000003], byte, 0) : word32)
   Class: Eq_510
   DataType: word32
   OrigDataType: word32
-T_511: (in SEQ(SLICE(rdx_309, word32, 32), (word32) SLICE((word32) 0x0000000000000000[rdx_309 * 0x0000000000000003], byte, 0)) : word64)
+T_511: (in SEQ(SLICE(rdx_310, word32, 32), (word32) SLICE((word32) 0x0000000000000000[rdx_310 * 0x0000000000000003], byte, 0)) : word64)
   Class: Eq_496
   DataType: int64
   OrigDataType: int64
@@ -2242,7 +2242,7 @@ T_512: (in 0x0000000000000001 : word64)
   Class: Eq_512
   DataType: (ptr64 (arr Eq_1033))
   OrigDataType: (ptr64 (struct (0 (arr T_1033) a0000)))
-T_513: (in (uint64) eax_219 : uint64)
+T_513: (in (uint64) eax_220 : uint64)
   Class: Eq_513
   DataType: uint64
   OrigDataType: uint64
@@ -2250,31 +2250,31 @@ T_514: (in 0x0000000000000003 : word64)
   Class: Eq_514
   DataType: ui64
   OrigDataType: ui64
-T_515: (in (uint64) eax_219 * 0x0000000000000003 : uint64)
+T_515: (in (uint64) eax_220 * 0x0000000000000003 : uint64)
   Class: Eq_515
   DataType: ui64
   OrigDataType: ui64
-T_516: (in 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003] : byte)
+T_516: (in 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003] : byte)
   Class: Eq_516
   DataType: byte
   OrigDataType: byte
-T_517: (in (word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003] : word32)
+T_517: (in (word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003] : word32)
   Class: Eq_517
   DataType: word32
   OrigDataType: word32
-T_518: (in SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : byte)
+T_518: (in SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : byte)
   Class: Eq_518
   DataType: byte
   OrigDataType: byte
-T_519: (in (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : word32)
+T_519: (in (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : word32)
   Class: Eq_519
   DataType: word32
   OrigDataType: word32
-T_520: (in (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint32)
+T_520: (in (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint32)
   Class: Eq_520
   DataType: uint32
   OrigDataType: uint32
-T_521: (in (uint64) (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint64)
+T_521: (in (uint64) (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint64)
   Class: Eq_497
   DataType: Eq_497
   OrigDataType: (union (int64 u1) (uint64 u0))
@@ -2282,7 +2282,7 @@ T_522: (in 0x0000000000000002 : word64)
   Class: Eq_522
   DataType: (ptr64 (arr Eq_1034))
   OrigDataType: (ptr64 (struct (0 (arr T_1034) a0000)))
-T_523: (in (uint64) eax_219 : uint64)
+T_523: (in (uint64) eax_220 : uint64)
   Class: Eq_523
   DataType: uint64
   OrigDataType: uint64
@@ -2290,31 +2290,31 @@ T_524: (in 0x0000000000000003 : word64)
   Class: Eq_524
   DataType: ui64
   OrigDataType: ui64
-T_525: (in (uint64) eax_219 * 0x0000000000000003 : uint64)
+T_525: (in (uint64) eax_220 * 0x0000000000000003 : uint64)
   Class: Eq_525
   DataType: ui64
   OrigDataType: ui64
-T_526: (in 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003] : byte)
+T_526: (in 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003] : byte)
   Class: Eq_526
   DataType: byte
   OrigDataType: byte
-T_527: (in (word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003] : word32)
+T_527: (in (word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003] : word32)
   Class: Eq_527
   DataType: word32
   OrigDataType: word32
-T_528: (in SLICE((word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003], byte, 0) : byte)
+T_528: (in SLICE((word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003], byte, 0) : byte)
   Class: Eq_528
   DataType: byte
   OrigDataType: byte
-T_529: (in (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003], byte, 0) : word32)
+T_529: (in (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003], byte, 0) : word32)
   Class: Eq_529
   DataType: word32
   OrigDataType: word32
-T_530: (in (uint64) (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint64)
+T_530: (in (uint64) (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint64)
   Class: Eq_498
   DataType: Eq_498
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_531: (in printf("INDEXED %u = %d %d %d\n", (uint64) (word32) (uint64) eax_219, SEQ(SLICE(rdx_309, word32, 32), (word32) (byte) (word32) null[rdx_309].b0000), (uint64) (uint32) (word32) (byte) (word32) ((Eq_1033[]) 0x0000000000000001)[(uint64) eax_219].b0000, (uint64) (word32) (byte) (word32) ((Eq_1034[]) 0x0000000000000002)[(uint64) eax_219]) : int32)
+T_531: (in printf("INDEXED %u = %d %d %d\n", (uint64) (word32) (uint64) eax_220, SEQ(SLICE(rdx_310, word32, 32), (word32) (byte) (word32) null[rdx_310].b0000), (uint64) (uint32) (word32) (byte) (word32) ((Eq_1033[]) 0x0000000000000001)[(uint64) eax_220].b0000, (uint64) (word32) (byte) (word32) ((Eq_1034[]) 0x0000000000000002)[(uint64) eax_220]) : int32)
   Class: Eq_531
   DataType: int32
   OrigDataType: int32
@@ -2334,7 +2334,7 @@ T_535: (in 0x0000000000000000 == 0x0000000000000000 : bool)
   Class: Eq_535
   DataType: bool
   OrigDataType: bool
-T_536: (in esi_340 : word32)
+T_536: (in esi_341 : word32)
   Class: Eq_536
   DataType: word32
   OrigDataType: word32
@@ -2342,7 +2342,7 @@ T_537: (in 0x00000000 : word32)
   Class: Eq_338
   DataType: up32
   OrigDataType: up32
-T_538: (in eax_219 >= 0x00000000 : bool)
+T_538: (in eax_220 >= 0x00000000 : bool)
   Class: Eq_538
   DataType: bool
   OrigDataType: bool
@@ -2350,7 +2350,7 @@ T_539: (in 0x000000FF : word32)
   Class: Eq_536
   DataType: word32
   OrigDataType: word32
-T_540: (in (uint64) eax_219 : uint64)
+T_540: (in (uint64) eax_220 : uint64)
   Class: Eq_540
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_543 t0000)))
@@ -2358,31 +2358,31 @@ T_541: (in 0x0000000000000000 : word64)
   Class: Eq_541
   DataType: word64
   OrigDataType: word64
-T_542: (in (uint64) eax_219 + 0x0000000000000000 : word64)
+T_542: (in (uint64) eax_220 + 0x0000000000000000 : word64)
   Class: Eq_542
   DataType: uint64
   OrigDataType: uint64
-T_543: (in Mem259[(uint64) eax_219 + 0x0000000000000000:byte] : byte)
+T_543: (in Mem260[(uint64) eax_220 + 0x0000000000000000:byte] : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_544: (in (word32) Mem259[(uint64) eax_219 + 0x0000000000000000:byte] : word32)
+T_544: (in (word32) Mem260[(uint64) eax_220 + 0x0000000000000000:byte] : word32)
   Class: Eq_544
   DataType: word32
   OrigDataType: word32
-T_545: (in SLICE((word32) Mem259[(uint64) eax_219 + 0x0000000000000000:byte], byte, 0) : byte)
+T_545: (in SLICE((word32) Mem260[(uint64) eax_220 + 0x0000000000000000:byte], byte, 0) : byte)
   Class: Eq_545
   DataType: byte
   OrigDataType: byte
-T_546: (in (word32) SLICE((word32) Mem259[(uint64) eax_219 + 0x0000000000000000:byte], byte, 0) : word32)
+T_546: (in (word32) SLICE((word32) Mem260[(uint64) eax_220 + 0x0000000000000000:byte], byte, 0) : word32)
   Class: Eq_536
   DataType: word32
   OrigDataType: word32
-T_547: (in rdx_362 : uint64)
+T_547: (in rdx_363 : uint64)
   Class: Eq_547
   DataType: uint64
   OrigDataType: uint64
-T_548: (in (uint64) eax_219 : uint64)
+T_548: (in (uint64) eax_220 : uint64)
   Class: Eq_547
   DataType: uint64
   OrigDataType: uint64
@@ -2418,19 +2418,19 @@ T_556: (in 0x00000000004018B9 : uint64)
   Class: Eq_270
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_557: (in (uint64) eax_219 : uint64)
+T_557: (in (uint64) eax_220 : uint64)
   Class: Eq_557
   DataType: uint64
   OrigDataType: uint64
-T_558: (in SLICE((uint64) eax_219, word32, 0) : word32)
+T_558: (in SLICE((uint64) eax_220, word32, 0) : word32)
   Class: Eq_558
   DataType: word32
   OrigDataType: word32
-T_559: (in (uint64) SLICE((uint64) eax_219, word32, 0) : uint64)
+T_559: (in (uint64) SLICE((uint64) eax_220, word32, 0) : uint64)
   Class: Eq_551
   DataType: uint64
   OrigDataType: uint64
-T_560: (in SLICE(rdx_362, word32, 32) : word32)
+T_560: (in SLICE(rdx_363, word32, 32) : word32)
   Class: Eq_560
   DataType: word32
   OrigDataType: word32
@@ -2442,27 +2442,27 @@ T_562: (in 0x0000000000000003 : word64)
   Class: Eq_562
   DataType: ui64
   OrigDataType: ui64
-T_563: (in rdx_362 * 0x0000000000000003 : word64)
+T_563: (in rdx_363 * 0x0000000000000003 : word64)
   Class: Eq_563
   DataType: ui64
   OrigDataType: ui64
-T_564: (in 0x0000000000000000[rdx_362 * 0x0000000000000003] : byte)
+T_564: (in 0x0000000000000000[rdx_363 * 0x0000000000000003] : byte)
   Class: Eq_564
   DataType: byte
   OrigDataType: byte
-T_565: (in (word32) 0x0000000000000000[rdx_362 * 0x0000000000000003] : word32)
+T_565: (in (word32) 0x0000000000000000[rdx_363 * 0x0000000000000003] : word32)
   Class: Eq_565
   DataType: word32
   OrigDataType: word32
-T_566: (in SLICE((word32) 0x0000000000000000[rdx_362 * 0x0000000000000003], byte, 0) : byte)
+T_566: (in SLICE((word32) 0x0000000000000000[rdx_363 * 0x0000000000000003], byte, 0) : byte)
   Class: Eq_566
   DataType: byte
   OrigDataType: byte
-T_567: (in (word32) SLICE((word32) 0x0000000000000000[rdx_362 * 0x0000000000000003], byte, 0) : word32)
+T_567: (in (word32) SLICE((word32) 0x0000000000000000[rdx_363 * 0x0000000000000003], byte, 0) : word32)
   Class: Eq_567
   DataType: word32
   OrigDataType: word32
-T_568: (in SEQ(SLICE(rdx_362, word32, 32), (word32) SLICE((word32) 0x0000000000000000[rdx_362 * 0x0000000000000003], byte, 0)) : word64)
+T_568: (in SEQ(SLICE(rdx_363, word32, 32), (word32) SLICE((word32) 0x0000000000000000[rdx_363 * 0x0000000000000003], byte, 0)) : word64)
   Class: Eq_552
   DataType: int64
   OrigDataType: int64
@@ -2470,7 +2470,7 @@ T_569: (in 0x0000000000000001 : word64)
   Class: Eq_569
   DataType: (ptr64 (arr Eq_1036))
   OrigDataType: (ptr64 (struct (0 (arr T_1036) a0000)))
-T_570: (in (uint64) eax_219 : uint64)
+T_570: (in (uint64) eax_220 : uint64)
   Class: Eq_570
   DataType: uint64
   OrigDataType: uint64
@@ -2478,31 +2478,31 @@ T_571: (in 0x0000000000000003 : word64)
   Class: Eq_571
   DataType: ui64
   OrigDataType: ui64
-T_572: (in (uint64) eax_219 * 0x0000000000000003 : uint64)
+T_572: (in (uint64) eax_220 * 0x0000000000000003 : uint64)
   Class: Eq_572
   DataType: ui64
   OrigDataType: ui64
-T_573: (in 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003] : byte)
+T_573: (in 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003] : byte)
   Class: Eq_573
   DataType: byte
   OrigDataType: byte
-T_574: (in (word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003] : word32)
+T_574: (in (word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003] : word32)
   Class: Eq_574
   DataType: word32
   OrigDataType: word32
-T_575: (in SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : byte)
+T_575: (in SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : byte)
   Class: Eq_575
   DataType: byte
   OrigDataType: byte
-T_576: (in (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : word32)
+T_576: (in (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : word32)
   Class: Eq_576
   DataType: word32
   OrigDataType: word32
-T_577: (in (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint32)
+T_577: (in (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint32)
   Class: Eq_577
   DataType: uint32
   OrigDataType: uint32
-T_578: (in (uint64) (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint64)
+T_578: (in (uint64) (uint32) (word32) SLICE((word32) 0x0000000000000001[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint64)
   Class: Eq_553
   DataType: Eq_553
   OrigDataType: (union (int64 u1) (uint64 u0))
@@ -2510,7 +2510,7 @@ T_579: (in 0x0000000000000002 : word64)
   Class: Eq_579
   DataType: (ptr64 (arr Eq_1037))
   OrigDataType: (ptr64 (struct (0 (arr T_1037) a0000)))
-T_580: (in (uint64) eax_219 : uint64)
+T_580: (in (uint64) eax_220 : uint64)
   Class: Eq_580
   DataType: uint64
   OrigDataType: uint64
@@ -2518,35 +2518,35 @@ T_581: (in 0x0000000000000003 : word64)
   Class: Eq_581
   DataType: ui64
   OrigDataType: ui64
-T_582: (in (uint64) eax_219 * 0x0000000000000003 : uint64)
+T_582: (in (uint64) eax_220 * 0x0000000000000003 : uint64)
   Class: Eq_582
   DataType: ui64
   OrigDataType: ui64
-T_583: (in 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003] : byte)
+T_583: (in 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003] : byte)
   Class: Eq_583
   DataType: byte
   OrigDataType: byte
-T_584: (in (word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003] : word32)
+T_584: (in (word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003] : word32)
   Class: Eq_584
   DataType: word32
   OrigDataType: word32
-T_585: (in SLICE((word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003], byte, 0) : byte)
+T_585: (in SLICE((word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003], byte, 0) : byte)
   Class: Eq_585
   DataType: byte
   OrigDataType: byte
-T_586: (in (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003], byte, 0) : word32)
+T_586: (in (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003], byte, 0) : word32)
   Class: Eq_586
   DataType: word32
   OrigDataType: word32
-T_587: (in (uint64) (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_219 * 0x0000000000000003], byte, 0) : uint64)
+T_587: (in (uint64) (word32) SLICE((word32) 0x0000000000000002[(uint64) eax_220 * 0x0000000000000003], byte, 0) : uint64)
   Class: Eq_554
   DataType: Eq_554
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_588: (in (uint64) esi_340 : uint64)
+T_588: (in (uint64) esi_341 : uint64)
   Class: Eq_555
   DataType: Eq_555
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_589: (in printf("INDEXED %u = %d %d %d %d\n", (uint64) (word32) (uint64) eax_219, SEQ(SLICE(rdx_362, word32, 32), (word32) (byte) (word32) null[rdx_362].b0000), (uint64) (uint32) (word32) (byte) (word32) ((Eq_1036[]) 0x0000000000000001)[(uint64) eax_219].b0000, (uint64) (word32) (byte) (word32) ((Eq_1037[]) 0x0000000000000002)[(uint64) eax_219].b0000, (uint64) esi_340) : int32)
+T_589: (in printf("INDEXED %u = %d %d %d %d\n", (uint64) (word32) (uint64) eax_220, SEQ(SLICE(rdx_363, word32, 32), (word32) (byte) (word32) null[rdx_363].b0000), (uint64) (uint32) (word32) (byte) (word32) ((Eq_1036[]) 0x0000000000000001)[(uint64) eax_220].b0000, (uint64) (word32) (byte) (word32) ((Eq_1037[]) 0x0000000000000002)[(uint64) eax_220].b0000, (uint64) esi_341) : int32)
   Class: Eq_589
   DataType: int32
   OrigDataType: int32
@@ -2562,7 +2562,7 @@ T_592: (in fs : (ptr32 Eq_238))
   Class: Eq_238
   DataType: (ptr32 Eq_238)
   OrigDataType: (ptr32 (segment (28 T_593 t0028)))
-T_593: (in rax_13 : word64)
+T_593: (in rax_14 : word64)
   Class: Eq_239
   DataType: word64
   OrigDataType: word64
@@ -2570,7 +2570,7 @@ T_594: (in 0x00000028 : word32)
   Class: Eq_594
   DataType: (memptr (ptr32 Eq_238) word64)
   OrigDataType: (memptr T_592 (struct (0 T_595 t0000)))
-T_595: (in Mem11[fs:0x00000028:word64] : word64)
+T_595: (in Mem12[fs:0x00000028:word64] : word64)
   Class: Eq_239
   DataType: word64
   OrigDataType: word64
@@ -2622,7 +2622,7 @@ T_607: (in 0000000000602100 : ptr64)
   Class: Eq_607
   DataType: (ptr64 (ptr64 Eq_127))
   OrigDataType: (ptr64 (struct (0 T_608 t0000)))
-T_608: (in Mem16[0x0000000000602100:word64] : word64)
+T_608: (in Mem17[0x0000000000602100:word64] : word64)
   Class: Eq_127
   DataType: (ptr64 Eq_127)
   OrigDataType: (ptr64 FILE)
@@ -2630,7 +2630,7 @@ T_609: (in fwrite(&globals->v401A70, 0x0000000000000001, 0x0000000000000027, glo
   Class: Eq_601
   DataType: Eq_601
   OrigDataType: size_t
-T_610: (in rax_27 : (ptr64 char))
+T_610: (in rax_28 : (ptr64 char))
   Class: Eq_610
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -2642,15 +2642,15 @@ T_612: (in rsi + 0x0000000000000008 : word64)
   Class: Eq_612
   DataType: word64
   OrigDataType: word64
-T_613: (in Mem16[rsi + 0x0000000000000008:word64] : word64)
+T_613: (in Mem17[rsi + 0x0000000000000008:word64] : word64)
   Class: Eq_610
   DataType: (ptr64 char)
   OrigDataType: word64
-T_614: (in rax_31 : uint64)
+T_614: (in rax_32 : uint64)
   Class: Eq_614
   DataType: uint64
   OrigDataType: word64
-T_615: (in SLICE(rax_27, word32, 32) : word32)
+T_615: (in SLICE(rax_28, word32, 32) : word32)
   Class: Eq_615
   DataType: word32
   OrigDataType: word32
@@ -2666,15 +2666,15 @@ T_618: (in rdi : (ptr64 char))
   Class: Eq_610
   DataType: (ptr64 char)
   OrigDataType: 
-T_619: (in atol(rax_27) : int32)
+T_619: (in atol(rax_28) : int32)
   Class: Eq_619
   DataType: int32
   OrigDataType: int32
-T_620: (in SEQ(SLICE(rax_27, word32, 32), atol(rax_27)) : word64)
+T_620: (in SEQ(SLICE(rax_28, word32, 32), atol(rax_28)) : word64)
   Class: Eq_614
   DataType: uint64
   OrigDataType: word64
-T_621: (in rax_35 : (ptr64 char))
+T_621: (in rax_36 : (ptr64 char))
   Class: Eq_610
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -2686,15 +2686,15 @@ T_623: (in rsi + 0x0000000000000010 : word64)
   Class: Eq_623
   DataType: ptr64
   OrigDataType: ptr64
-T_624: (in Mem32[rsi + 0x0000000000000010:word64] : word64)
+T_624: (in Mem33[rsi + 0x0000000000000010:word64] : word64)
   Class: Eq_610
   DataType: (ptr64 char)
   OrigDataType: word64
-T_625: (in rax_39 : uint64)
+T_625: (in rax_40 : uint64)
   Class: Eq_625
   DataType: uint64
   OrigDataType: word64
-T_626: (in SLICE(rax_35, word32, 32) : word32)
+T_626: (in SLICE(rax_36, word32, 32) : word32)
   Class: Eq_626
   DataType: word32
   OrigDataType: word32
@@ -2702,15 +2702,15 @@ T_627: (in atol : ptr64)
   Class: Eq_616
   DataType: (ptr64 Eq_616)
   OrigDataType: (ptr64 (fn T_628 (T_621)))
-T_628: (in atol(rax_35) : int32)
+T_628: (in atol(rax_36) : int32)
   Class: Eq_619
   DataType: int32
   OrigDataType: int32
-T_629: (in SEQ(SLICE(rax_35, word32, 32), atol(rax_35)) : word64)
+T_629: (in SEQ(SLICE(rax_36, word32, 32), atol(rax_36)) : word64)
   Class: Eq_625
   DataType: uint64
   OrigDataType: word64
-T_630: (in rax_46 : (ptr64 Eq_630))
+T_630: (in rax_47 : (ptr64 Eq_630))
   Class: Eq_630
   DataType: (ptr64 Eq_630)
   OrigDataType: (ptr64 FILE)
@@ -2738,7 +2738,7 @@ T_636: (in rsi + 0x0000000000000018 : word64)
   Class: Eq_636
   DataType: ptr64
   OrigDataType: ptr64
-T_637: (in Mem40[rsi + 0x0000000000000018:word64] : word64)
+T_637: (in Mem41[rsi + 0x0000000000000018:word64] : word64)
   Class: Eq_633
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -2754,7 +2754,7 @@ T_640: (in 0x0000000000000000 : word64)
   Class: Eq_630
   DataType: (ptr64 Eq_630)
   OrigDataType: word64
-T_641: (in rax_46 == null : bool)
+T_641: (in rax_47 == null : bool)
   Class: Eq_641
   DataType: bool
   OrigDataType: bool
@@ -2774,7 +2774,7 @@ T_645: (in 0000000000602100 : ptr64)
   Class: Eq_645
   DataType: (ptr64 (ptr64 Eq_127))
   OrigDataType: (ptr64 (struct (0 T_646 t0000)))
-T_646: (in Mem48[0x0000000000602100:word64] : word64)
+T_646: (in Mem49[0x0000000000602100:word64] : word64)
   Class: Eq_127
   DataType: (ptr64 Eq_127)
   OrigDataType: (ptr64 FILE)
@@ -2790,7 +2790,7 @@ T_649: (in rsi + 0x0000000000000018 : word64)
   Class: Eq_649
   DataType: (ptr64 (ptr64 char))
   OrigDataType: (ptr64 (ptr64 char))
-T_650: (in Mem48[rsi + 0x0000000000000018:word64] : word64)
+T_650: (in Mem49[rsi + 0x0000000000000018:word64] : word64)
   Class: Eq_633
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -2798,19 +2798,19 @@ T_651: (in fprintf(globals->ptr602100, "pngpixel: %s: could not open file\n", rs
   Class: Eq_651
   DataType: int32
   OrigDataType: int32
-T_652: (in rsi_65 : word64)
+T_652: (in rsi_66 : word64)
   Class: Eq_652
   DataType: word64
   OrigDataType: word64
-T_653: (in rax_66 : word64)
+T_653: (in rax_67 : word64)
   Class: Eq_237
   DataType: word64
   OrigDataType: word64
-T_654: (in r9_69 : word64)
+T_654: (in r9_70 : word64)
   Class: Eq_654
   DataType: word64
   OrigDataType: word64
-T_655: (in r8_70 : word64)
+T_655: (in r8_71 : word64)
   Class: Eq_655
   DataType: word64
   OrigDataType: word64
@@ -2826,7 +2826,7 @@ T_658: (in 0x0000000000000000 : word64)
   Class: Eq_237
   DataType: word64
   OrigDataType: word64
-T_659: (in rax_66 == 0x0000000000000000 : bool)
+T_659: (in rax_67 == 0x0000000000000000 : bool)
   Class: Eq_659
   DataType: bool
   OrigDataType: bool
@@ -2850,7 +2850,7 @@ T_664: (in 0000000000602100 : ptr64)
   Class: Eq_664
   DataType: (ptr64 (ptr64 Eq_127))
   OrigDataType: (ptr64 (struct (0 T_665 t0000)))
-T_665: (in Mem72[0x0000000000602100:word64] : word64)
+T_665: (in Mem73[0x0000000000602100:word64] : word64)
   Class: Eq_127
   DataType: (ptr64 Eq_127)
   OrigDataType: (ptr64 FILE)
@@ -2858,19 +2858,19 @@ T_666: (in fwrite(&globals->v401A18, 0x0000000000000001, 0x000000000000002E, glo
   Class: Eq_601
   DataType: Eq_601
   OrigDataType: size_t
-T_667: (in rax_87 : word64)
+T_667: (in rax_88 : word64)
   Class: Eq_236
   DataType: word64
   OrigDataType: word64
-T_668: (in rcx_88 : word64)
+T_668: (in rcx_89 : word64)
   Class: Eq_668
   DataType: word64
   OrigDataType: word64
-T_669: (in r9_90 : word64)
+T_669: (in r9_91 : word64)
   Class: Eq_669
   DataType: word64
   OrigDataType: word64
-T_670: (in r8_91 : word64)
+T_670: (in r8_92 : word64)
   Class: Eq_670
   DataType: word64
   OrigDataType: word64
@@ -2886,7 +2886,7 @@ T_673: (in 0x0000000000000000 : word64)
   Class: Eq_236
   DataType: word64
   OrigDataType: word64
-T_674: (in rax_87 == 0x0000000000000000 : bool)
+T_674: (in rax_88 == 0x0000000000000000 : bool)
   Class: Eq_674
   DataType: bool
   OrigDataType: bool
@@ -2910,7 +2910,7 @@ T_679: (in 0000000000602100 : ptr64)
   Class: Eq_679
   DataType: (ptr64 (ptr64 Eq_127))
   OrigDataType: (ptr64 (struct (0 T_680 t0000)))
-T_680: (in Mem191[0x0000000000602100:word64] : word64)
+T_680: (in Mem192[0x0000000000602100:word64] : word64)
   Class: Eq_127
   DataType: (ptr64 Eq_127)
   OrigDataType: (ptr64 FILE)
@@ -2934,7 +2934,7 @@ T_685: (in signature of png_read_info : void)
   Class: Eq_685
   DataType: Eq_685
   OrigDataType: 
-T_686: (in rax_128 : word64)
+T_686: (in rax_129 : word64)
   Class: Eq_686
   DataType: word64
   OrigDataType: word64
@@ -2946,7 +2946,7 @@ T_688: (in signature of png_get_rowbytes : void)
   Class: Eq_688
   DataType: Eq_688
   OrigDataType: 
-T_689: (in rax_140 : word64)
+T_689: (in rax_141 : word64)
   Class: Eq_76
   DataType: word64
   OrigDataType: word64
@@ -2958,23 +2958,23 @@ T_691: (in signature of png_malloc : void)
   Class: Eq_691
   DataType: Eq_691
   OrigDataType: 
-T_692: (in rax_169 : word64)
+T_692: (in rax_170 : word64)
   Class: Eq_692
   DataType: word64
   OrigDataType: word64
-T_693: (in rcx_170 : word64)
+T_693: (in rcx_171 : word64)
   Class: Eq_693
   DataType: word64
   OrigDataType: word64
-T_694: (in r9_172 : word64)
+T_694: (in r9_173 : word64)
   Class: Eq_694
   DataType: word64
   OrigDataType: word64
-T_695: (in r8_173 : word64)
+T_695: (in r8_174 : word64)
   Class: Eq_695
   DataType: word64
   OrigDataType: word64
-T_696: (in rsi_168 : word64)
+T_696: (in rsi_169 : word64)
   Class: Eq_696
   DataType: word64
   OrigDataType: word64
@@ -2986,7 +2986,7 @@ T_698: (in signature of png_get_IHDR : void)
   Class: Eq_698
   DataType: Eq_698
   OrigDataType: 
-T_699: (in SLICE(rax_169, word32, 0) : word32)
+T_699: (in SLICE(rax_170, word32, 0) : word32)
   Class: Eq_699
   DataType: word32
   OrigDataType: word32
@@ -2994,19 +2994,19 @@ T_700: (in 0x00000000 : word32)
   Class: Eq_699
   DataType: word32
   OrigDataType: word32
-T_701: (in (word32) rax_169 == 0x00000000 : bool)
+T_701: (in (word32) rax_170 == 0x00000000 : bool)
   Class: Eq_701
   DataType: bool
   OrigDataType: bool
-T_702: (in rcx_186 : word64)
+T_702: (in rcx_187 : word64)
   Class: Eq_702
   DataType: word64
   OrigDataType: word64
-T_703: (in r9_188 : word64)
+T_703: (in r9_189 : word64)
   Class: Eq_703
   DataType: word64
   OrigDataType: word64
-T_704: (in r8_189 : word64)
+T_704: (in r8_190 : word64)
   Class: Eq_704
   DataType: word64
   OrigDataType: word64
@@ -3018,7 +3018,7 @@ T_706: (in signature of png_error : void)
   Class: Eq_706
   DataType: Eq_706
   OrigDataType: 
-T_707: (in eax_199 : word32)
+T_707: (in eax_200 : word32)
   Class: Eq_707
   DataType: word32
   OrigDataType: word32
@@ -3038,7 +3038,7 @@ T_711: (in 0x00000000 : word32)
   Class: Eq_707
   DataType: word32
   OrigDataType: word32
-T_712: (in eax_199 == 0x00000000 : bool)
+T_712: (in eax_200 == 0x00000000 : bool)
   Class: Eq_712
   DataType: bool
   OrigDataType: bool
@@ -3054,7 +3054,7 @@ T_715: (in 0x00000001 : word32)
   Class: Eq_707
   DataType: word32
   OrigDataType: word32
-T_716: (in eax_199 == 0x00000001 : bool)
+T_716: (in eax_200 == 0x00000001 : bool)
   Class: Eq_716
   DataType: bool
   OrigDataType: bool
@@ -3062,15 +3062,15 @@ T_717: (in 0x00000007 : word32)
   Class: Eq_713
   DataType: int32
   OrigDataType: word32
-T_718: (in rcx_213 : word64)
+T_718: (in rcx_214 : word64)
   Class: Eq_718
   DataType: word64
   OrigDataType: word64
-T_719: (in r9_215 : word64)
+T_719: (in r9_216 : word64)
   Class: Eq_719
   DataType: word64
   OrigDataType: word64
-T_720: (in r8_216 : word64)
+T_720: (in r8_217 : word64)
   Class: Eq_720
   DataType: word64
   OrigDataType: word64
@@ -3090,31 +3090,31 @@ T_724: (in __stack_chk_fail() : void)
   Class: Eq_463
   DataType: void
   OrigDataType: void
-T_725: (in dwLoc68_601 : int32)
+T_725: (in dwLoc68_615 : int32)
   Class: Eq_725
   DataType: int32
   OrigDataType: int32
-T_726: (in (uint64) dwLoc68_601 : uint64)
+T_726: (in (uint64) dwLoc68_615 : uint64)
   Class: Eq_726
   DataType: uint64
   OrigDataType: uint64
-T_727: (in SLICE((uint64) dwLoc68_601, word32, 0) : word32)
+T_727: (in SLICE((uint64) dwLoc68_615, word32, 0) : word32)
   Class: Eq_713
   DataType: int32
   OrigDataType: int32
-T_728: (in (word32) (uint64) dwLoc68_601 < dwLoc6C : bool)
+T_728: (in (word32) (uint64) dwLoc68_615 < dwLoc6C : bool)
   Class: Eq_728
   DataType: bool
   OrigDataType: bool
-T_729: (in rcx_228 : word64)
+T_729: (in rcx_230 : word64)
   Class: Eq_729
   DataType: word64
   OrigDataType: word64
-T_730: (in r9_230 : word64)
+T_730: (in r9_232 : word64)
   Class: Eq_730
   DataType: word64
   OrigDataType: word64
-T_731: (in r8_231 : word64)
+T_731: (in r8_233 : word64)
   Class: Eq_731
   DataType: word64
   OrigDataType: word64
@@ -3130,19 +3130,19 @@ T_734: (in 0x00000000 : word32)
   Class: Eq_725
   DataType: int32
   OrigDataType: word32
-T_735: (in dwLoc5C_608 : word32)
+T_735: (in dwLoc5C_622 : word32)
   Class: Eq_735
   DataType: word32
   OrigDataType: word32
-T_736: (in dwLoc58_607 : word32)
+T_736: (in dwLoc58_621 : word32)
   Class: Eq_736
   DataType: word32
   OrigDataType: word32
-T_737: (in dwLoc60_605 : word32)
+T_737: (in dwLoc60_619 : word32)
   Class: Eq_737
   DataType: word32
   OrigDataType: word32
-T_738: (in dwLoc64_606 : word32)
+T_738: (in dwLoc64_620 : word32)
   Class: Eq_738
   DataType: word32
   OrigDataType: word32
@@ -3170,15 +3170,15 @@ T_744: (in signature of png_free : void)
   Class: Eq_744
   DataType: Eq_744
   OrigDataType: 
-T_745: (in rcx_538 : word64)
+T_745: (in rcx_547 : word64)
   Class: Eq_745
   DataType: word64
   OrigDataType: word64
-T_746: (in r9_540 : word64)
+T_746: (in r9_549 : word64)
   Class: Eq_746
   DataType: word64
   OrigDataType: word64
-T_747: (in r8_541 : word64)
+T_747: (in r8_550 : word64)
   Class: Eq_747
   DataType: word64
   OrigDataType: word64
@@ -3190,15 +3190,15 @@ T_749: (in signature of png_destroy_info_struct : void)
   Class: Eq_749
   DataType: Eq_749
   OrigDataType: 
-T_750: (in rcx_556 : word64)
+T_750: (in rcx_567 : word64)
   Class: Eq_750
   DataType: word64
   OrigDataType: word64
-T_751: (in r9_558 : word64)
+T_751: (in r9_569 : word64)
   Class: Eq_751
   DataType: word64
   OrigDataType: word64
-T_752: (in r8_559 : word64)
+T_752: (in r8_570 : word64)
   Class: Eq_752
   DataType: word64
   OrigDataType: word64
@@ -3214,11 +3214,11 @@ T_755: (in 0x00000028 : word32)
   Class: Eq_755
   DataType: (memptr (ptr32 Eq_238) word64)
   OrigDataType: (memptr T_592 (struct (0 T_756 t0000)))
-T_756: (in Mem562[fs:0x00000028:word64] : word64)
+T_756: (in Mem573[fs:0x00000028:word64] : word64)
   Class: Eq_239
   DataType: word64
   OrigDataType: word64
-T_757: (in rax_13 ^ fs->qw0028 : word64)
+T_757: (in rax_14 ^ fs->qw0028 : word64)
   Class: Eq_757
   DataType: ui64
   OrigDataType: ui64
@@ -3226,7 +3226,7 @@ T_758: (in 0x0000000000000000 : word64)
   Class: Eq_757
   DataType: ui64
   OrigDataType: word64
-T_759: (in (rax_13 ^ fs->qw0028) == 0x0000000000000000 : bool)
+T_759: (in (rax_14 ^ fs->qw0028) == 0x0000000000000000 : bool)
   Class: Eq_759
   DataType: bool
   OrigDataType: bool
@@ -3246,7 +3246,7 @@ T_763: (in 0x00000001 : word32)
   Class: Eq_735
   DataType: word32
   OrigDataType: word32
-T_764: (in eax_270 : word32)
+T_764: (in eax_272 : word32)
   Class: Eq_764
   DataType: word32
   OrigDataType: word32
@@ -3254,7 +3254,7 @@ T_765: (in 0x00000001 : word32)
   Class: Eq_725
   DataType: int32
   OrigDataType: int32
-T_766: (in dwLoc68_601 <= 0x00000001 : bool)
+T_766: (in dwLoc68_615 <= 0x00000001 : bool)
   Class: Eq_766
   DataType: bool
   OrigDataType: bool
@@ -3270,15 +3270,15 @@ T_769: (in 0x00000007 : word32)
   Class: Eq_769
   DataType: word32
   OrigDataType: word32
-T_770: (in 0x00000007 - dwLoc68_601 : word32)
+T_770: (in 0x00000007 - dwLoc68_615 : word32)
   Class: Eq_770
   DataType: word32
   OrigDataType: word32
-T_771: (in (uint64) (0x00000007 - dwLoc68_601) : uint64)
+T_771: (in (uint64) (0x00000007 - dwLoc68_615) : uint64)
   Class: Eq_771
   DataType: uint64
   OrigDataType: uint64
-T_772: (in SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) : word32)
+T_772: (in SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) : word32)
   Class: Eq_772
   DataType: int32
   OrigDataType: int32
@@ -3286,43 +3286,43 @@ T_773: (in 0x00000001 : word32)
   Class: Eq_773
   DataType: word32
   OrigDataType: word32
-T_774: (in (word32) (uint64) (0x00000007 - dwLoc68_601) >> 0x00000001 : word32)
+T_774: (in (word32) (uint64) (0x00000007 - dwLoc68_615) >> 0x00000001 : word32)
   Class: Eq_774
   DataType: int32
   OrigDataType: int32
-T_775: (in (uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001) : uint64)
+T_775: (in (uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001) : uint64)
   Class: Eq_775
   DataType: uint64
   OrigDataType: uint64
-T_776: (in SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0) : word32)
+T_776: (in SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0) : word32)
   Class: Eq_776
   DataType: word32
   OrigDataType: word32
-T_777: (in (uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0) : uint64)
+T_777: (in (uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0) : uint64)
   Class: Eq_777
   DataType: uint64
   OrigDataType: uint64
-T_778: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0) : byte)
+T_778: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0) : byte)
   Class: Eq_778
   DataType: byte
   OrigDataType: byte
-T_779: (in 0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_601)) >> 0x00000001)))) : word32)
+T_779: (in 0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_615)) >> 0x00000001)))) : word32)
   Class: Eq_779
   DataType: ui32
   OrigDataType: ui32
-T_780: (in (uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)) : uint64)
+T_780: (in (uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)) : uint64)
   Class: Eq_780
   DataType: uint64
   OrigDataType: uint64
-T_781: (in SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : word32)
+T_781: (in SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_781
   DataType: word32
   OrigDataType: word32
-T_782: (in (uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : uint64)
+T_782: (in (uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_782
   DataType: uint64
   OrigDataType: uint64
-T_783: (in SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_783: (in SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_783
   DataType: word32
   OrigDataType: word32
@@ -3330,39 +3330,39 @@ T_784: (in 0x00000001 : word32)
   Class: Eq_784
   DataType: word32
   OrigDataType: word32
-T_785: (in (word32) (uint64) (word32) (uint64) (0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_601)) >> 0x00000001))))) - 0x00000001 : word32)
+T_785: (in (word32) (uint64) (word32) (uint64) (0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_615)) >> 0x00000001))))) - 0x00000001 : word32)
   Class: Eq_785
   DataType: word32
   OrigDataType: word32
-T_786: (in (uint64) (SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) - 0x00000001) : uint64)
+T_786: (in (uint64) (SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) - 0x00000001) : uint64)
   Class: Eq_786
   DataType: uint64
   OrigDataType: uint64
-T_787: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) - 0x00000001), word32, 0) : word32)
+T_787: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) - 0x00000001), word32, 0) : word32)
   Class: Eq_764
   DataType: word32
   OrigDataType: word32
-T_788: (in eax_317 : word32)
+T_788: (in eax_319 : word32)
   Class: Eq_788
   DataType: word32
   OrigDataType: word32
-T_789: (in edx_323 : uint32)
+T_789: (in edx_325 : uint32)
   Class: Eq_789
   DataType: uint32
   OrigDataType: uint32
-T_790: (in (uint64) dwLoc68_601 : uint64)
+T_790: (in (uint64) dwLoc68_615 : uint64)
   Class: Eq_790
   DataType: uint64
   OrigDataType: uint64
-T_791: (in SLICE((uint64) dwLoc68_601, word32, 0) : word32)
+T_791: (in SLICE((uint64) dwLoc68_615, word32, 0) : word32)
   Class: Eq_791
   DataType: word32
   OrigDataType: word32
-T_792: (in (uint64) SLICE((uint64) dwLoc68_601, word32, 0) : uint64)
+T_792: (in (uint64) SLICE((uint64) dwLoc68_615, word32, 0) : uint64)
   Class: Eq_792
   DataType: uint64
   OrigDataType: uint64
-T_793: (in SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) : word32)
+T_793: (in SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) : word32)
   Class: Eq_793
   DataType: ui32
   OrigDataType: ui32
@@ -3370,15 +3370,15 @@ T_794: (in 0x00000001 : word32)
   Class: Eq_794
   DataType: ui32
   OrigDataType: ui32
-T_795: (in (word32) (uint64) (word32) (uint64) dwLoc68_601 & 0x00000001 : word32)
+T_795: (in (word32) (uint64) (word32) (uint64) dwLoc68_615 & 0x00000001 : word32)
   Class: Eq_795
   DataType: ui32
   OrigDataType: ui32
-T_796: (in (uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001) : uint64)
+T_796: (in (uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001) : uint64)
   Class: Eq_796
   DataType: uint64
   OrigDataType: uint64
-T_797: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) : word32)
+T_797: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) : word32)
   Class: Eq_797
   DataType: ui32
   OrigDataType: ui32
@@ -3386,11 +3386,11 @@ T_798: (in 0x00000003 : word32)
   Class: Eq_798
   DataType: word32
   OrigDataType: word32
-T_799: (in (uint64) dwLoc68_601 : uint64)
+T_799: (in (uint64) dwLoc68_615 : uint64)
   Class: Eq_799
   DataType: uint64
   OrigDataType: uint64
-T_800: (in SLICE((uint64) dwLoc68_601, word32, 0) : word32)
+T_800: (in SLICE((uint64) dwLoc68_615, word32, 0) : word32)
   Class: Eq_800
   DataType: word32
   OrigDataType: word32
@@ -3398,15 +3398,15 @@ T_801: (in 0x00000001 : word32)
   Class: Eq_801
   DataType: word32
   OrigDataType: word32
-T_802: (in (word32) (uint64) dwLoc68_601 + 0x00000001 : word32)
+T_802: (in (word32) (uint64) dwLoc68_615 + 0x00000001 : word32)
   Class: Eq_802
   DataType: word32
   OrigDataType: word32
-T_803: (in (uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001) : uint64)
+T_803: (in (uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001) : uint64)
   Class: Eq_803
   DataType: uint64
   OrigDataType: uint64
-T_804: (in SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) : word32)
+T_804: (in SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) : word32)
   Class: Eq_804
   DataType: int32
   OrigDataType: int32
@@ -3414,63 +3414,63 @@ T_805: (in 0x00000001 : word32)
   Class: Eq_805
   DataType: word32
   OrigDataType: word32
-T_806: (in (word32) (uint64) ((word32) (uint64) dwLoc68_601 + 0x00000001) >> 0x00000001 : word32)
+T_806: (in (word32) (uint64) ((word32) (uint64) dwLoc68_615 + 0x00000001) >> 0x00000001 : word32)
   Class: Eq_806
   DataType: int32
   OrigDataType: int32
-T_807: (in (uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001) : uint64)
+T_807: (in (uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001) : uint64)
   Class: Eq_807
   DataType: uint64
   OrigDataType: uint64
-T_808: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0) : word32)
+T_808: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0) : word32)
   Class: Eq_808
   DataType: word32
   OrigDataType: word32
-T_809: (in 0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) + 0x00000001)) >> 0x00000001)) : word32)
+T_809: (in 0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) + 0x00000001)) >> 0x00000001)) : word32)
   Class: Eq_809
   DataType: word32
   OrigDataType: word32
-T_810: (in (uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)) : uint64)
+T_810: (in (uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)) : uint64)
   Class: Eq_810
   DataType: uint64
   OrigDataType: uint64
-T_811: (in SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0) : word32)
+T_811: (in SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0) : word32)
   Class: Eq_811
   DataType: word32
   OrigDataType: word32
-T_812: (in (uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0) : uint64)
+T_812: (in (uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0) : uint64)
   Class: Eq_812
   DataType: uint64
   OrigDataType: uint64
-T_813: (in SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : word32)
+T_813: (in SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_813
   DataType: word32
   OrigDataType: word32
-T_814: (in (uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : uint64)
+T_814: (in (uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : uint64)
   Class: Eq_814
   DataType: uint64
   OrigDataType: uint64
-T_815: (in SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0) : byte)
+T_815: (in SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0) : byte)
   Class: Eq_815
   DataType: byte
   OrigDataType: byte
-T_816: (in (word32) (uint64) ((word32) (uint64) (word32) (uint64) dwLoc68_601 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) + 0x00000001)) >> 0x00000001)))))))) : word32)
+T_816: (in (word32) (uint64) ((word32) (uint64) (word32) (uint64) dwLoc68_615 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) + 0x00000001)) >> 0x00000001)))))))) : word32)
   Class: Eq_816
   DataType: ui32
   OrigDataType: ui32
-T_817: (in (uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)) : uint64)
+T_817: (in (uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)) : uint64)
   Class: Eq_817
   DataType: uint64
   OrigDataType: uint64
-T_818: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : word32)
+T_818: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_818
   DataType: word32
   OrigDataType: word32
-T_819: (in (uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : uint64)
+T_819: (in (uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_819
   DataType: uint64
   OrigDataType: uint64
-T_820: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_820: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_820
   DataType: ui32
   OrigDataType: ui32
@@ -3478,27 +3478,27 @@ T_821: (in 0x00000007 : word32)
   Class: Eq_821
   DataType: ui32
   OrigDataType: ui32
-T_822: (in (word32) (uint64) (word32) (uint64) ((word32) (uint64) ((word32) (uint64) (word32) (uint64) dwLoc68_601 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) + 0x00000001)) >> 0x00000001))))))))) & 0x00000007 : word32)
+T_822: (in (word32) (uint64) (word32) (uint64) ((word32) (uint64) ((word32) (uint64) (word32) (uint64) dwLoc68_615 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) + 0x00000001)) >> 0x00000001))))))))) & 0x00000007 : word32)
   Class: Eq_822
   DataType: ui32
   OrigDataType: ui32
-T_823: (in (uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007) : uint64)
+T_823: (in (uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007) : uint64)
   Class: Eq_823
   DataType: uint64
   OrigDataType: uint64
-T_824: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0) : word32)
+T_824: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0) : word32)
   Class: Eq_824
   DataType: word32
   OrigDataType: word32
-T_825: (in eax_270 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601))) & 0x00000001)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) + 0x00000001)) >> 0x00000001)))))))))))) & 0x00000007)) : word32)
+T_825: (in eax_272 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615))) & 0x00000001)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) + 0x00000001)) >> 0x00000001)))))))))))) & 0x00000007)) : word32)
   Class: Eq_825
   DataType: word32
   OrigDataType: word32
-T_826: (in (uint64) (eax_270 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)) : uint64)
+T_826: (in (uint64) (eax_272 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)) : uint64)
   Class: Eq_826
   DataType: uint64
   OrigDataType: uint64
-T_827: (in SLICE((uint64) (eax_270 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) : word32)
+T_827: (in SLICE((uint64) (eax_272 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) : word32)
   Class: Eq_827
   DataType: word32
   OrigDataType: word32
@@ -3506,23 +3506,23 @@ T_828: (in dwLoc88 : word32)
   Class: Eq_828
   DataType: word32
   OrigDataType: word32
-T_829: (in (word32) (uint64) (eax_270 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601))) & 0x00000001)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) + 0x00000001)) >> 0x00000001)))))))))))) & 0x00000007))) + dwLoc88 : uint64)
+T_829: (in (word32) (uint64) (eax_272 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615))) & 0x00000001)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) + 0x00000001)) >> 0x00000001)))))))))))) & 0x00000007))) + dwLoc88 : uint64)
   Class: Eq_829
   DataType: word32
   OrigDataType: word32
-T_830: (in (uint64) (SLICE((uint64) (eax_270 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88) : uint64)
+T_830: (in (uint64) (SLICE((uint64) (eax_272 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88) : uint64)
   Class: Eq_830
   DataType: uint64
   OrigDataType: uint64
-T_831: (in SLICE((uint64) (SLICE((uint64) (eax_270 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88), word32, 0) : word32)
+T_831: (in SLICE((uint64) (SLICE((uint64) (eax_272 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88), word32, 0) : word32)
   Class: Eq_831
   DataType: word32
   OrigDataType: word32
-T_832: (in (uint64) SLICE((uint64) (SLICE((uint64) (eax_270 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88), word32, 0) : uint64)
+T_832: (in (uint64) SLICE((uint64) (SLICE((uint64) (eax_272 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88), word32, 0) : uint64)
   Class: Eq_832
   DataType: uint64
   OrigDataType: uint64
-T_833: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (eax_270 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_601, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88), word32, 0), word32, 0) : word32)
+T_833: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (eax_272 - SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) SLICE((uint64) dwLoc68_615, word32, 0), word32, 0) & 0x00000001), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0)), word32, 0) + dwLoc88), word32, 0), word32, 0) : word32)
   Class: Eq_789
   DataType: uint32
   OrigDataType: word32
@@ -3530,7 +3530,7 @@ T_834: (in 0x00000001 : word32)
   Class: Eq_725
   DataType: int32
   OrigDataType: int32
-T_835: (in dwLoc68_601 <= 0x00000001 : bool)
+T_835: (in dwLoc68_615 <= 0x00000001 : bool)
   Class: Eq_835
   DataType: bool
   OrigDataType: bool
@@ -3542,15 +3542,15 @@ T_837: (in 0x00000007 : word32)
   Class: Eq_837
   DataType: word32
   OrigDataType: word32
-T_838: (in 0x00000007 - dwLoc68_601 : word32)
+T_838: (in 0x00000007 - dwLoc68_615 : word32)
   Class: Eq_838
   DataType: word32
   OrigDataType: word32
-T_839: (in (uint64) (0x00000007 - dwLoc68_601) : uint64)
+T_839: (in (uint64) (0x00000007 - dwLoc68_615) : uint64)
   Class: Eq_839
   DataType: uint64
   OrigDataType: uint64
-T_840: (in SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) : word32)
+T_840: (in SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) : word32)
   Class: Eq_840
   DataType: int32
   OrigDataType: int32
@@ -3558,43 +3558,43 @@ T_841: (in 0x00000001 : word32)
   Class: Eq_841
   DataType: word32
   OrigDataType: word32
-T_842: (in (word32) (uint64) (0x00000007 - dwLoc68_601) >> 0x00000001 : word32)
+T_842: (in (word32) (uint64) (0x00000007 - dwLoc68_615) >> 0x00000001 : word32)
   Class: Eq_842
   DataType: int32
   OrigDataType: int32
-T_843: (in (uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001) : uint64)
+T_843: (in (uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001) : uint64)
   Class: Eq_843
   DataType: uint64
   OrigDataType: uint64
-T_844: (in SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0) : word32)
+T_844: (in SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0) : word32)
   Class: Eq_788
   DataType: word32
   OrigDataType: word32
-T_845: (in (uint64) eax_317 : uint64)
+T_845: (in (uint64) eax_319 : uint64)
   Class: Eq_845
   DataType: uint64
   OrigDataType: uint64
-T_846: (in SLICE((uint64) eax_317, byte, 0) : byte)
+T_846: (in SLICE((uint64) eax_319, byte, 0) : byte)
   Class: Eq_846
   DataType: byte
   OrigDataType: byte
-T_847: (in edx_323 >> (byte) ((uint64) eax_317) : word32)
+T_847: (in edx_325 >> (byte) ((uint64) eax_319) : word32)
   Class: Eq_847
   DataType: uint32
   OrigDataType: uint32
-T_848: (in (uint64) (edx_323 >>u SLICE((uint64) eax_317, byte, 0)) : uint64)
+T_848: (in (uint64) (edx_325 >>u SLICE((uint64) eax_319, byte, 0)) : uint64)
   Class: Eq_848
   DataType: uint64
   OrigDataType: uint64
-T_849: (in SLICE((uint64) (edx_323 >>u SLICE((uint64) eax_317, byte, 0)), word32, 0) : word32)
+T_849: (in SLICE((uint64) (edx_325 >>u SLICE((uint64) eax_319, byte, 0)), word32, 0) : word32)
   Class: Eq_849
   DataType: word32
   OrigDataType: word32
-T_850: (in (uint64) SLICE((uint64) (edx_323 >>u SLICE((uint64) eax_317, byte, 0)), word32, 0) : uint64)
+T_850: (in (uint64) SLICE((uint64) (edx_325 >>u SLICE((uint64) eax_319, byte, 0)), word32, 0) : uint64)
   Class: Eq_850
   DataType: uint64
   OrigDataType: uint64
-T_851: (in SLICE((uint64) SLICE((uint64) (edx_323 >>u SLICE((uint64) eax_317, byte, 0)), word32, 0), word32, 0) : word32)
+T_851: (in SLICE((uint64) SLICE((uint64) (edx_325 >>u SLICE((uint64) eax_319, byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_851
   DataType: word32
   OrigDataType: word32
@@ -3602,11 +3602,11 @@ T_852: (in 0x00000000 : word32)
   Class: Eq_851
   DataType: word32
   OrigDataType: word32
-T_853: (in (word32) (uint64) (word32) (uint64) (edx_323 >> (byte) ((uint64) eax_317)) == 0x00000000 : bool)
+T_853: (in (word32) (uint64) (word32) (uint64) (edx_325 >> (byte) ((uint64) eax_319)) == 0x00000000 : bool)
   Class: Eq_853
   DataType: bool
   OrigDataType: bool
-T_854: (in dwLoc54_619 : up32)
+T_854: (in dwLoc54_633 : up32)
   Class: Eq_854
   DataType: up32
   OrigDataType: up32
@@ -3622,19 +3622,19 @@ T_857: (in SLICE((uint64) dwLoc84, word32, 0) : word32)
   Class: Eq_854
   DataType: up32
   OrigDataType: up32
-T_858: (in dwLoc54_619 < (word32) ((uint64) dwLoc84) : bool)
+T_858: (in dwLoc54_633 < (word32) ((uint64) dwLoc84) : bool)
   Class: Eq_858
   DataType: bool
   OrigDataType: bool
-T_859: (in eax_420 : word32)
+T_859: (in eax_422 : word32)
   Class: Eq_735
   DataType: word32
   OrigDataType: word32
-T_860: (in (uint64) dwLoc68_601 : uint64)
+T_860: (in (uint64) dwLoc68_615 : uint64)
   Class: Eq_860
   DataType: uint64
   OrigDataType: uint64
-T_861: (in SLICE((uint64) dwLoc68_601, word32, 0) : word32)
+T_861: (in SLICE((uint64) dwLoc68_615, word32, 0) : word32)
   Class: Eq_861
   DataType: ui32
   OrigDataType: ui32
@@ -3642,23 +3642,23 @@ T_862: (in 0x00000001 : word32)
   Class: Eq_862
   DataType: ui32
   OrigDataType: ui32
-T_863: (in (word32) (uint64) dwLoc68_601 & 0x00000001 : word32)
+T_863: (in (word32) (uint64) dwLoc68_615 & 0x00000001 : word32)
   Class: Eq_863
   DataType: ui32
   OrigDataType: ui32
-T_864: (in (uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001) : uint64)
+T_864: (in (uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001) : uint64)
   Class: Eq_864
   DataType: uint64
   OrigDataType: uint64
-T_865: (in SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) : word32)
+T_865: (in SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) : word32)
   Class: Eq_865
   DataType: word32
   OrigDataType: word32
-T_866: (in (uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) : uint64)
+T_866: (in (uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) : uint64)
   Class: Eq_866
   DataType: uint64
   OrigDataType: uint64
-T_867: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0), word32, 0) : word32)
+T_867: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0), word32, 0) : word32)
   Class: Eq_867
   DataType: ui32
   OrigDataType: ui32
@@ -3666,11 +3666,11 @@ T_868: (in 0x00000003 : word32)
   Class: Eq_868
   DataType: word32
   OrigDataType: word32
-T_869: (in (uint64) dwLoc68_601 : uint64)
+T_869: (in (uint64) dwLoc68_615 : uint64)
   Class: Eq_869
   DataType: uint64
   OrigDataType: uint64
-T_870: (in SLICE((uint64) dwLoc68_601, word32, 0) : word32)
+T_870: (in SLICE((uint64) dwLoc68_615, word32, 0) : word32)
   Class: Eq_870
   DataType: word32
   OrigDataType: word32
@@ -3678,15 +3678,15 @@ T_871: (in 0x00000001 : word32)
   Class: Eq_871
   DataType: word32
   OrigDataType: word32
-T_872: (in (word32) (uint64) dwLoc68_601 + 0x00000001 : word32)
+T_872: (in (word32) (uint64) dwLoc68_615 + 0x00000001 : word32)
   Class: Eq_872
   DataType: word32
   OrigDataType: word32
-T_873: (in (uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001) : uint64)
+T_873: (in (uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001) : uint64)
   Class: Eq_873
   DataType: uint64
   OrigDataType: uint64
-T_874: (in SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) : word32)
+T_874: (in SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) : word32)
   Class: Eq_874
   DataType: int32
   OrigDataType: int32
@@ -3694,63 +3694,63 @@ T_875: (in 0x00000001 : word32)
   Class: Eq_875
   DataType: word32
   OrigDataType: word32
-T_876: (in (word32) (uint64) ((word32) (uint64) dwLoc68_601 + 0x00000001) >> 0x00000001 : word32)
+T_876: (in (word32) (uint64) ((word32) (uint64) dwLoc68_615 + 0x00000001) >> 0x00000001 : word32)
   Class: Eq_876
   DataType: int32
   OrigDataType: int32
-T_877: (in (uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001) : uint64)
+T_877: (in (uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001) : uint64)
   Class: Eq_877
   DataType: uint64
   OrigDataType: uint64
-T_878: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0) : word32)
+T_878: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0) : word32)
   Class: Eq_878
   DataType: word32
   OrigDataType: word32
-T_879: (in 0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) + 0x00000001)) >> 0x00000001)) : word32)
+T_879: (in 0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) + 0x00000001)) >> 0x00000001)) : word32)
   Class: Eq_879
   DataType: word32
   OrigDataType: word32
-T_880: (in (uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)) : uint64)
+T_880: (in (uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)) : uint64)
   Class: Eq_880
   DataType: uint64
   OrigDataType: uint64
-T_881: (in SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0) : word32)
+T_881: (in SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0) : word32)
   Class: Eq_881
   DataType: word32
   OrigDataType: word32
-T_882: (in (uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0) : uint64)
+T_882: (in (uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0) : uint64)
   Class: Eq_882
   DataType: uint64
   OrigDataType: uint64
-T_883: (in SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : word32)
+T_883: (in SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_883
   DataType: word32
   OrigDataType: word32
-T_884: (in (uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : uint64)
+T_884: (in (uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : uint64)
   Class: Eq_884
   DataType: uint64
   OrigDataType: uint64
-T_885: (in SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0) : byte)
+T_885: (in SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0) : byte)
   Class: Eq_885
   DataType: byte
   OrigDataType: byte
-T_886: (in (word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68_601 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) + 0x00000001)) >> 0x00000001)))))))) : word32)
+T_886: (in (word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68_615 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) + 0x00000001)) >> 0x00000001)))))))) : word32)
   Class: Eq_886
   DataType: ui32
   OrigDataType: ui32
-T_887: (in (uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)) : uint64)
+T_887: (in (uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)) : uint64)
   Class: Eq_887
   DataType: uint64
   OrigDataType: uint64
-T_888: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : word32)
+T_888: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_888
   DataType: word32
   OrigDataType: word32
-T_889: (in (uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : uint64)
+T_889: (in (uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_889
   DataType: uint64
   OrigDataType: uint64
-T_890: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_890: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_890
   DataType: ui32
   OrigDataType: ui32
@@ -3758,23 +3758,23 @@ T_891: (in 0x00000007 : word32)
   Class: Eq_891
   DataType: ui32
   OrigDataType: ui32
-T_892: (in (word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68_601 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) + 0x00000001)) >> 0x00000001))))))))) & 0x00000007 : word32)
+T_892: (in (word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68_615 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) + 0x00000001)) >> 0x00000001))))))))) & 0x00000007 : word32)
   Class: Eq_892
   DataType: ui32
   OrigDataType: ui32
-T_893: (in (uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007) : uint64)
+T_893: (in (uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007) : uint64)
   Class: Eq_893
   DataType: uint64
   OrigDataType: uint64
-T_894: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0) : word32)
+T_894: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0), word32, 0) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) + 0x00000001), word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0) : word32)
   Class: Eq_737
   DataType: word32
   OrigDataType: word32
-T_895: (in (uint64) dwLoc68_601 : uint64)
+T_895: (in (uint64) dwLoc68_615 : uint64)
   Class: Eq_895
   DataType: uint64
   OrigDataType: uint64
-T_896: (in SLICE((uint64) dwLoc68_601, word32, 0) : word32)
+T_896: (in SLICE((uint64) dwLoc68_615, word32, 0) : word32)
   Class: Eq_896
   DataType: ui32
   OrigDataType: ui32
@@ -3782,15 +3782,15 @@ T_897: (in 0x00000001 : word32)
   Class: Eq_897
   DataType: ui32
   OrigDataType: ui32
-T_898: (in (word32) (uint64) dwLoc68_601 & 0x00000001 : word32)
+T_898: (in (word32) (uint64) dwLoc68_615 & 0x00000001 : word32)
   Class: Eq_898
   DataType: ui32
   OrigDataType: ui32
-T_899: (in (uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001) : uint64)
+T_899: (in (uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001) : uint64)
   Class: Eq_899
   DataType: uint64
   OrigDataType: uint64
-T_900: (in SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) : word32)
+T_900: (in SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) : word32)
   Class: Eq_900
   DataType: word32
   OrigDataType: word32
@@ -3798,11 +3798,11 @@ T_901: (in 0x00000000 : word32)
   Class: Eq_900
   DataType: word32
   OrigDataType: word32
-T_902: (in (word32) (uint64) ((word32) (uint64) dwLoc68_601 & 0x00000001) == 0x00000000 : bool)
+T_902: (in (word32) (uint64) ((word32) (uint64) dwLoc68_615 & 0x00000001) == 0x00000000 : bool)
   Class: Eq_902
   DataType: bool
   OrigDataType: bool
-T_903: (in (word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) == 0x00000000) : word32)
+T_903: (in (word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) == 0x00000000) : word32)
   Class: Eq_903
   DataType: ui32
   OrigDataType: ui32
@@ -3810,11 +3810,11 @@ T_904: (in 0x00000003 : word32)
   Class: Eq_904
   DataType: word32
   OrigDataType: word32
-T_905: (in (uint64) dwLoc68_601 : uint64)
+T_905: (in (uint64) dwLoc68_615 : uint64)
   Class: Eq_905
   DataType: uint64
   OrigDataType: uint64
-T_906: (in SLICE((uint64) dwLoc68_601, word32, 0) : word32)
+T_906: (in SLICE((uint64) dwLoc68_615, word32, 0) : word32)
   Class: Eq_906
   DataType: int32
   OrigDataType: int32
@@ -3822,63 +3822,63 @@ T_907: (in 0x00000001 : word32)
   Class: Eq_907
   DataType: word32
   OrigDataType: word32
-T_908: (in (word32) (uint64) dwLoc68_601 >> 0x00000001 : word32)
+T_908: (in (word32) (uint64) dwLoc68_615 >> 0x00000001 : word32)
   Class: Eq_908
   DataType: int32
   OrigDataType: int32
-T_909: (in (uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001) : uint64)
+T_909: (in (uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001) : uint64)
   Class: Eq_909
   DataType: uint64
   OrigDataType: uint64
-T_910: (in SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0) : word32)
+T_910: (in SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0) : word32)
   Class: Eq_910
   DataType: word32
   OrigDataType: word32
-T_911: (in 0x00000003 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_601) >> 0x00000001)) : word32)
+T_911: (in 0x00000003 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_615) >> 0x00000001)) : word32)
   Class: Eq_911
   DataType: word32
   OrigDataType: word32
-T_912: (in (uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)) : uint64)
+T_912: (in (uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)) : uint64)
   Class: Eq_912
   DataType: uint64
   OrigDataType: uint64
-T_913: (in SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0) : word32)
+T_913: (in SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0) : word32)
   Class: Eq_913
   DataType: word32
   OrigDataType: word32
-T_914: (in (uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0) : uint64)
+T_914: (in (uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0) : uint64)
   Class: Eq_914
   DataType: uint64
   OrigDataType: uint64
-T_915: (in SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : word32)
+T_915: (in SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_915
   DataType: word32
   OrigDataType: word32
-T_916: (in (uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : uint64)
+T_916: (in (uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0) : uint64)
   Class: Eq_916
   DataType: uint64
   OrigDataType: uint64
-T_917: (in SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0) : byte)
+T_917: (in SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0) : byte)
   Class: Eq_917
   DataType: byte
   OrigDataType: byte
-T_918: (in (word32) ((word32) (uint64) ((word32) (uint64) dwLoc68_601 & 0x00000001) == 0x00000000) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_601) >> 0x00000001)))))))) : word32)
+T_918: (in (word32) ((word32) (uint64) ((word32) (uint64) dwLoc68_615 & 0x00000001) == 0x00000000) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_615) >> 0x00000001)))))))) : word32)
   Class: Eq_918
   DataType: ui32
   OrigDataType: ui32
-T_919: (in (uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)) : uint64)
+T_919: (in (uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)) : uint64)
   Class: Eq_919
   DataType: uint64
   OrigDataType: uint64
-T_920: (in SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : word32)
+T_920: (in SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_920
   DataType: word32
   OrigDataType: word32
-T_921: (in (uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : uint64)
+T_921: (in (uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_921
   DataType: uint64
   OrigDataType: uint64
-T_922: (in SLICE((uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_922: (in SLICE((uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_922
   DataType: ui32
   OrigDataType: ui32
@@ -3886,15 +3886,15 @@ T_923: (in 0x00000007 : word32)
   Class: Eq_923
   DataType: ui32
   OrigDataType: ui32
-T_924: (in (word32) (uint64) (word32) (uint64) ((word32) ((word32) (uint64) ((word32) (uint64) dwLoc68_601 & 0x00000001) == 0x00000000) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_601) >> 0x00000001))))))))) & 0x00000007 : word32)
+T_924: (in (word32) (uint64) (word32) (uint64) ((word32) ((word32) (uint64) ((word32) (uint64) dwLoc68_615 & 0x00000001) == 0x00000000) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_615) >> 0x00000001))))))))) & 0x00000007 : word32)
   Class: Eq_924
   DataType: ui32
   OrigDataType: ui32
-T_925: (in (uint64) (SLICE((uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007) : uint64)
+T_925: (in (uint64) (SLICE((uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007) : uint64)
   Class: Eq_925
   DataType: uint64
   OrigDataType: uint64
-T_926: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0) : word32)
+T_926: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) & 0x00000001), word32, 0) == 0x00000000) << SLICE((uint64) SLICE((uint64) SLICE((uint64) (0x00000003 - SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) >> 0x00000001), word32, 0)), word32, 0), word32, 0), byte, 0)), word32, 0), word32, 0) & 0x00000007), word32, 0) : word32)
   Class: Eq_738
   DataType: word32
   OrigDataType: word32
@@ -3906,15 +3906,15 @@ T_928: (in 0x00000007 : word32)
   Class: Eq_928
   DataType: word32
   OrigDataType: word32
-T_929: (in 0x00000007 - dwLoc68_601 : word32)
+T_929: (in 0x00000007 - dwLoc68_615 : word32)
   Class: Eq_929
   DataType: word32
   OrigDataType: word32
-T_930: (in (uint64) (0x00000007 - dwLoc68_601) : uint64)
+T_930: (in (uint64) (0x00000007 - dwLoc68_615) : uint64)
   Class: Eq_930
   DataType: uint64
   OrigDataType: uint64
-T_931: (in SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) : word32)
+T_931: (in SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) : word32)
   Class: Eq_931
   DataType: int32
   OrigDataType: int32
@@ -3922,43 +3922,43 @@ T_932: (in 0x00000001 : word32)
   Class: Eq_932
   DataType: word32
   OrigDataType: word32
-T_933: (in (word32) (uint64) (0x00000007 - dwLoc68_601) >> 0x00000001 : word32)
+T_933: (in (word32) (uint64) (0x00000007 - dwLoc68_615) >> 0x00000001 : word32)
   Class: Eq_933
   DataType: int32
   OrigDataType: int32
-T_934: (in (uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001) : uint64)
+T_934: (in (uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001) : uint64)
   Class: Eq_934
   DataType: uint64
   OrigDataType: uint64
-T_935: (in SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0) : word32)
+T_935: (in SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0) : word32)
   Class: Eq_935
   DataType: word32
   OrigDataType: word32
-T_936: (in (uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0) : uint64)
+T_936: (in (uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0) : uint64)
   Class: Eq_936
   DataType: uint64
   OrigDataType: uint64
-T_937: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0) : byte)
+T_937: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0) : byte)
   Class: Eq_937
   DataType: byte
   OrigDataType: byte
-T_938: (in 0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_601)) >> 0x00000001)))) : word32)
+T_938: (in 0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_615)) >> 0x00000001)))) : word32)
   Class: Eq_938
   DataType: ui32
   OrigDataType: ui32
-T_939: (in (uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)) : uint64)
+T_939: (in (uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)) : uint64)
   Class: Eq_939
   DataType: uint64
   OrigDataType: uint64
-T_940: (in SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : word32)
+T_940: (in SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_940
   DataType: word32
   OrigDataType: word32
-T_941: (in (uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : uint64)
+T_941: (in (uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_941
   DataType: uint64
   OrigDataType: uint64
-T_942: (in SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_601), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_942: (in SLICE((uint64) SLICE((uint64) (0x00000001 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (0x00000007 - dwLoc68_615), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_736
   DataType: word32
   OrigDataType: word32
@@ -3966,7 +3966,7 @@ T_943: (in 0x00000002 : word32)
   Class: Eq_725
   DataType: int32
   OrigDataType: int32
-T_944: (in dwLoc68_601 <= 0x00000002 : bool)
+T_944: (in dwLoc68_615 <= 0x00000002 : bool)
   Class: Eq_944
   DataType: bool
   OrigDataType: bool
@@ -3978,11 +3978,11 @@ T_946: (in 0x00000008 : word32)
   Class: Eq_946
   DataType: int32
   OrigDataType: int32
-T_947: (in (uint64) dwLoc68_601 : uint64)
+T_947: (in (uint64) dwLoc68_615 : uint64)
   Class: Eq_947
   DataType: uint64
   OrigDataType: uint64
-T_948: (in SLICE((uint64) dwLoc68_601, word32, 0) : word32)
+T_948: (in SLICE((uint64) dwLoc68_615, word32, 0) : word32)
   Class: Eq_948
   DataType: word32
   OrigDataType: word32
@@ -3990,15 +3990,15 @@ T_949: (in 0x00000001 : word32)
   Class: Eq_949
   DataType: word32
   OrigDataType: word32
-T_950: (in (word32) (uint64) dwLoc68_601 - 0x00000001 : word32)
+T_950: (in (word32) (uint64) dwLoc68_615 - 0x00000001 : word32)
   Class: Eq_950
   DataType: word32
   OrigDataType: word32
-T_951: (in (uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001) : uint64)
+T_951: (in (uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001) : uint64)
   Class: Eq_951
   DataType: uint64
   OrigDataType: uint64
-T_952: (in SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) : word32)
+T_952: (in SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) : word32)
   Class: Eq_952
   DataType: int32
   OrigDataType: int32
@@ -4006,43 +4006,43 @@ T_953: (in 0x00000001 : word32)
   Class: Eq_953
   DataType: word32
   OrigDataType: word32
-T_954: (in (word32) (uint64) ((word32) (uint64) dwLoc68_601 - 0x00000001) >> 0x00000001 : word32)
+T_954: (in (word32) (uint64) ((word32) (uint64) dwLoc68_615 - 0x00000001) >> 0x00000001 : word32)
   Class: Eq_954
   DataType: int32
   OrigDataType: int32
-T_955: (in (uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001) : uint64)
+T_955: (in (uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) >> 0x00000001) : uint64)
   Class: Eq_955
   DataType: uint64
   OrigDataType: uint64
-T_956: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0) : word32)
+T_956: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0) : word32)
   Class: Eq_956
   DataType: word32
   OrigDataType: word32
-T_957: (in (uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0) : uint64)
+T_957: (in (uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0) : uint64)
   Class: Eq_957
   DataType: uint64
   OrigDataType: uint64
-T_958: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0) : byte)
+T_958: (in SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0) : byte)
   Class: Eq_958
   DataType: byte
   OrigDataType: byte
-T_959: (in 0x00000008 >> (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_601) - 0x00000001)) >> 0x00000001)))) : word32)
+T_959: (in 0x00000008 >> (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_615) - 0x00000001)) >> 0x00000001)))) : word32)
   Class: Eq_959
   DataType: int32
   OrigDataType: int32
-T_960: (in (uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)) : uint64)
+T_960: (in (uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)) : uint64)
   Class: Eq_960
   DataType: uint64
   OrigDataType: uint64
-T_961: (in SLICE((uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : word32)
+T_961: (in SLICE((uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : word32)
   Class: Eq_961
   DataType: word32
   OrigDataType: word32
-T_962: (in (uint64) SLICE((uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : uint64)
+T_962: (in (uint64) SLICE((uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0) : uint64)
   Class: Eq_962
   DataType: uint64
   OrigDataType: uint64
-T_963: (in SLICE((uint64) SLICE((uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_601, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
+T_963: (in SLICE((uint64) SLICE((uint64) (0x00000008 >> SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc68_615, word32, 0) - 0x00000001), word32, 0) >> 0x00000001), word32, 0), byte, 0)), word32, 0), word32, 0) : word32)
   Class: Eq_735
   DataType: word32
   OrigDataType: word32
@@ -4066,11 +4066,11 @@ T_968: (in puts("png_read_row") : int32)
   Class: Eq_968
   DataType: int32
   OrigDataType: int32
-T_969: (in r9_450 : word64)
+T_969: (in r9_453 : word64)
   Class: Eq_969
   DataType: word64
   OrigDataType: word64
-T_970: (in r8_451 : word64)
+T_970: (in r8_454 : word64)
   Class: Eq_970
   DataType: word64
   OrigDataType: word64
@@ -4082,11 +4082,11 @@ T_972: (in signature of png_read_row : void)
   Class: Eq_972
   DataType: Eq_972
   OrigDataType: 
-T_973: (in (uint64) dwLoc54_619 : uint64)
+T_973: (in (uint64) dwLoc54_633 : uint64)
   Class: Eq_625
   DataType: uint64
   OrigDataType: uint64
-T_974: (in (uint64) dwLoc54_619 != rax_39 : bool)
+T_974: (in (uint64) dwLoc54_633 != rax_40 : bool)
   Class: Eq_974
   DataType: bool
   OrigDataType: bool
@@ -4094,43 +4094,43 @@ T_975: (in 0x00000001 : word32)
   Class: Eq_975
   DataType: word32
   OrigDataType: word32
-T_976: (in dwLoc68_601 + 0x00000001 : word32)
+T_976: (in dwLoc68_615 + 0x00000001 : word32)
   Class: Eq_725
   DataType: int32
   OrigDataType: int32
-T_977: (in (uint64) dwLoc64_606 : uint64)
+T_977: (in (uint64) dwLoc64_620 : uint64)
   Class: Eq_977
   DataType: uint64
   OrigDataType: uint64
-T_978: (in SLICE((uint64) dwLoc64_606, word32, 0) : word32)
+T_978: (in SLICE((uint64) dwLoc64_620, word32, 0) : word32)
   Class: Eq_854
   DataType: up32
   OrigDataType: word32
-T_979: (in (uint64) dwLoc5C_608 : uint64)
+T_979: (in (uint64) dwLoc5C_622 : uint64)
   Class: Eq_979
   DataType: uint64
   OrigDataType: uint64
-T_980: (in SLICE((uint64) dwLoc5C_608, word32, 0) : word32)
+T_980: (in SLICE((uint64) dwLoc5C_622, word32, 0) : word32)
   Class: Eq_980
   DataType: up32
   OrigDataType: up32
-T_981: (in dwLoc54_619 + (word32) ((uint64) dwLoc5C_608) : word32)
+T_981: (in dwLoc54_633 + (word32) ((uint64) dwLoc5C_622) : word32)
   Class: Eq_854
   DataType: up32
   OrigDataType: up32
-T_982: (in dwLoc50_627 : up32)
+T_982: (in dwLoc50_641 : up32)
   Class: Eq_982
   DataType: up32
   OrigDataType: up32
-T_983: (in (uint64) dwLoc60_605 : uint64)
+T_983: (in (uint64) dwLoc60_619 : uint64)
   Class: Eq_983
   DataType: uint64
   OrigDataType: uint64
-T_984: (in SLICE((uint64) dwLoc60_605, word32, 0) : word32)
+T_984: (in SLICE((uint64) dwLoc60_619, word32, 0) : word32)
   Class: Eq_982
   DataType: up32
   OrigDataType: word32
-T_985: (in dwLoc4C_628 : word32)
+T_985: (in dwLoc4C_642 : word32)
   Class: Eq_985
   DataType: word32
   OrigDataType: word32
@@ -4146,27 +4146,27 @@ T_988: (in SLICE((uint64) dwLoc88, word32, 0) : word32)
   Class: Eq_982
   DataType: up32
   OrigDataType: up32
-T_989: (in dwLoc50_627 < (word32) ((uint64) dwLoc88) : bool)
+T_989: (in dwLoc50_641 < (word32) ((uint64) dwLoc88) : bool)
   Class: Eq_989
   DataType: bool
   OrigDataType: bool
-T_990: (in (uint64) dwLoc50_627 : uint64)
+T_990: (in (uint64) dwLoc50_641 : uint64)
   Class: Eq_614
   DataType: uint64
   OrigDataType: uint64
-T_991: (in (uint64) dwLoc50_627 != rax_31 : bool)
+T_991: (in (uint64) dwLoc50_641 != rax_32 : bool)
   Class: Eq_991
   DataType: bool
   OrigDataType: bool
-T_992: (in (uint64) dwLoc58_607 : uint64)
+T_992: (in (uint64) dwLoc58_621 : uint64)
   Class: Eq_992
   DataType: uint64
   OrigDataType: uint64
-T_993: (in SLICE((uint64) dwLoc58_607, word32, 0) : word32)
+T_993: (in SLICE((uint64) dwLoc58_621, word32, 0) : word32)
   Class: Eq_993
   DataType: up32
   OrigDataType: up32
-T_994: (in dwLoc50_627 + (word32) ((uint64) dwLoc58_607) : word32)
+T_994: (in dwLoc50_641 + (word32) ((uint64) dwLoc58_621) : word32)
   Class: Eq_982
   DataType: up32
   OrigDataType: up32
@@ -4174,7 +4174,7 @@ T_995: (in 0x00000001 : word32)
   Class: Eq_995
   DataType: word32
   OrigDataType: word32
-T_996: (in dwLoc4C_628 + 0x00000001 : word32)
+T_996: (in dwLoc4C_642 + 0x00000001 : word32)
   Class: Eq_985
   DataType: word32
   OrigDataType: word32
@@ -4186,15 +4186,15 @@ T_998: (in signature of print_pixel : void)
   Class: Eq_997
   DataType: (ptr64 Eq_997)
   OrigDataType: 
-T_999: (in (uint64) dwLoc4C_628 : uint64)
+T_999: (in (uint64) dwLoc4C_642 : uint64)
   Class: Eq_999
   DataType: uint64
   OrigDataType: uint64
-T_1000: (in SLICE((uint64) dwLoc4C_628, word32, 0) : word32)
+T_1000: (in SLICE((uint64) dwLoc4C_642, word32, 0) : word32)
   Class: Eq_234
   DataType: word32
   OrigDataType: word32
-T_1001: (in print_pixel((word32) (uint64) dwLoc4C_628, rax_140, rax_87, rax_66, fs) : void)
+T_1001: (in print_pixel((word32) (uint64) dwLoc4C_642, rax_141, rax_88, rax_67, fs) : void)
   Class: Eq_1001
   DataType: void
   OrigDataType: void
@@ -4230,7 +4230,7 @@ T_1009: (in _init() : void)
   Class: Eq_1009
   DataType: void
   OrigDataType: void
-T_1010: (in r15d_82 : word32)
+T_1010: (in r15d_84 : word32)
   Class: Eq_1010
   DataType: word32
   OrigDataType: word32
@@ -4242,7 +4242,7 @@ T_1012: (in SLICE((uint64) edi, word32, 0) : word32)
   Class: Eq_1010
   DataType: word32
   OrigDataType: word32
-T_1013: (in rbp_29 : int64)
+T_1013: (in rbp_30 : int64)
   Class: Eq_1013
   DataType: int64
   OrigDataType: int64
@@ -4262,7 +4262,7 @@ T_1017: (in 0x0000000000000003 : word64)
   Class: Eq_1017
   DataType: word64
   OrigDataType: word64
-T_1018: (in rbp_29 >> 0x0000000000000003 : word64)
+T_1018: (in rbp_30 >> 0x0000000000000003 : word64)
   Class: Eq_1018
   DataType: int64
   OrigDataType: int64
@@ -4270,11 +4270,11 @@ T_1019: (in 0x0000000000000000 : word64)
   Class: Eq_1018
   DataType: int64
   OrigDataType: word64
-T_1020: (in rbp_29 >> 0x0000000000000003 == 0x0000000000000000 : bool)
+T_1020: (in rbp_30 >> 0x0000000000000003 == 0x0000000000000000 : bool)
   Class: Eq_1020
   DataType: bool
   OrigDataType: bool
-T_1021: (in rbx_41 : Eq_1021)
+T_1021: (in rbx_42 : Eq_1021)
   Class: Eq_1021
   DataType: Eq_1021
   OrigDataType: word64
@@ -4290,11 +4290,11 @@ T_1024: (in 0x0000000000000008 : word64)
   Class: Eq_1024
   DataType: ui64
   OrigDataType: ui64
-T_1025: (in rbx_41 * 0x0000000000000008 : word64)
+T_1025: (in rbx_42 * 0x0000000000000008 : word64)
   Class: Eq_1025
   DataType: ui64
   OrigDataType: ui64
-T_1026: (in 0x0000000000601E00[rbx_41 * 0x0000000000000008] : word64)
+T_1026: (in 0x0000000000601E00[rbx_42 * 0x0000000000000008] : word64)
   Class: Eq_1026
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
@@ -4302,15 +4302,15 @@ T_1027: (in 0x0000000000000001 : word64)
   Class: Eq_1027
   DataType: word64
   OrigDataType: word64
-T_1028: (in rbx_41 + 0x0000000000000001 : word64)
+T_1028: (in rbx_42 + 0x0000000000000001 : word64)
   Class: Eq_1021
   DataType: Eq_1021
   OrigDataType: uint64
-T_1029: (in rbp_29 >> 0x0000000000000003 : word64)
+T_1029: (in rbp_30 >> 0x0000000000000003 : word64)
   Class: Eq_1021
   DataType: Eq_1021
   OrigDataType: int64
-T_1030: (in rbx_41 != rbp_29 >> 0x0000000000000003 : bool)
+T_1030: (in rbx_42 != rbp_30 >> 0x0000000000000003 : bool)
   Class: Eq_1030
   DataType: bool
   OrigDataType: bool
