@@ -29,9 +29,9 @@ using System.Text;
 
 namespace Reko.Arch.Arc
 {
-    public class ArcArchitecture : ProcessorArchitecture
+    public class ARCompactArchitecture : ProcessorArchitecture
     {
-        public ArcArchitecture(string archId) : base(archId)
+        public ARCompactArchitecture(string archId) : base(archId)
         {
             base.Endianness = EndianServices.Little;
             base.FramePointerType = PrimitiveType.Ptr32;
@@ -131,7 +131,7 @@ namespace Reko.Arch.Arc
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

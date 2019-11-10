@@ -54,7 +54,7 @@ namespace Reko.Core.Machine
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
         {
-            return;
+            //return;
             var hibit = 0x80000000u;
             var sb = new StringBuilder();
             for (int i = 0; i < 32; ++i)

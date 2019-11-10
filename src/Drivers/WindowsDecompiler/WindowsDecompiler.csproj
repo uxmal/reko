@@ -188,13 +188,29 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj">
+      <Project>{c4c56725-bfd0-405a-802c-2c66fcd0ef06}</Project>
+      <Name>Alpha</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Arc\Arc.csproj">
+      <Project>{f9c628df-eb23-46d7-9580-3a2b749e8bda}</Project>
+      <Name>Arc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
       <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
       <Name>Arm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Avr\Avr.csproj">
+      <Project>{5e75d702-3032-41fe-8d09-86428555a8ed}</Project>
+      <Name>Avr</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Blackfin\Blackfin.csproj">
       <Project>{0bccefdd-63a8-47f2-9a39-8ce7b5f9cfab}</Project>
       <Name>Blackfin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Cil\Cil.csproj">
+      <Project>{f6f2225d-b778-4fd2-9ba9-a8e2b58acccc}</Project>
+      <Name>Cil</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Cray\Cray.csproj">
       <Project>{47b16677-2bfc-4a5c-a830-e1683c574aec}</Project>
@@ -264,9 +280,29 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\AmigaOS.Design\AmigaOS.Design.csproj">
+      <Project>{1ee2f083-625e-49fc-8601-d3c58c713028}</Project>
+      <Name>AmigaOS.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\AmigaOS\AmigaOS.csproj">
+      <Project>{0b2dcd75-44ff-4af6-aa08-aaf4ea30c402}</Project>
+      <Name>AmigaOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\AtariTOS\AtariTOS.csproj">
+      <Project>{73e8b629-f836-4ca6-b003-dae0809b8a7a}</Project>
+      <Name>AtariTOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\C64\C64.csproj">
+      <Project>{fdfe3507-e8ce-4930-b9b5-8fb647cfc6dc}</Project>
+      <Name>C64</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj">
       <Project>{a1376626-5207-41a9-a77b-11ddb9f534d1}</Project>
       <Name>Cpm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Dreamcast\Dreamcast.csproj">
+      <Project>{908b208a-becc-42ad-8253-a167ec40b20b}</Project>
+      <Name>Dreamcast</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\Hpux\Hpux.csproj">
       <Project>{3488c24e-187c-4477-a310-d2292892d257}</Project>
@@ -288,6 +324,14 @@
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\BinHex\BinHex.csproj">
+      <Project>{3f73b4eb-4ee6-45df-aa07-06ecdefa5bd9}</Project>
+      <Name>BinHex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Coff\Coff.csproj">
+      <Project>{02595a47-2592-441d-b44d-8ea8c19ee5e2}</Project>
+      <Name>Coff</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
       <Project>{5b6da2ca-5ca1-4a84-8084-9d6780f64bcf}</Project>
       <Name>Dol</Name>
@@ -299,6 +343,10 @@
     <ProjectReference Include="..\..\ImageLoaders\HpSom\HpSom.csproj">
       <Project>{6faa0b0c-f6c2-4091-9cc8-1dc2cf708bc2}</Project>
       <Name>HpSom</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\IntelHex\IntelHex.csproj">
+      <Project>{72641087-68d2-41e7-9b29-bc9d4213940a}</Project>
+      <Name>IntelHex</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj">
       <Project>{db44d301-72ea-4f9b-8327-be8ebc5b1bc8}</Project>
