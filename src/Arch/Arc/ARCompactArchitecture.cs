@@ -37,6 +37,7 @@ namespace Reko.Arch.Arc
             base.FramePointerType = PrimitiveType.Ptr32;
             base.InstructionBitSize = 16;
             base.PointerType = PrimitiveType.Ptr32;
+            base.StackRegister = Registers.Sp;
             base.WordWidth = PrimitiveType.Word32;
         }
 
@@ -57,12 +58,12 @@ namespace Reko.Arch.Arc
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new ARCompactState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new ARCompactRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
