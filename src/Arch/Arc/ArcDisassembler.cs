@@ -32,6 +32,10 @@ namespace Reko.Arch.Arc
     public class ArcDisassembler : DisassemblerBase<ArcInstruction>
     {
         private static readonly Decoder rootDecoder;
+        private const InstrClass T = InstrClass.Transfer;
+        private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass CT = InstrClass.ConditionalTransfer;
+        private const InstrClass CTD = InstrClass.ConditionalTransfer | InstrClass.Delay;
 
         private readonly ARCompactArchitecture arch;
         private readonly EndianImageReader rdr;
@@ -133,6 +137,7 @@ namespace Reko.Arch.Arc
             };
         }
         private static readonly Mutator<ArcDisassembler> h_limm = R_or_limm(Bf((0, 3), (5, 3)));
+        private static readonly Mutator<ArcDisassembler> C_limm = R_or_limm(Bf((6, 6)));
 
 
         // Compact register encoding
@@ -181,6 +186,18 @@ namespace Reko.Arch.Arc
             {
                 var imm = Bitfield.ReadSignedFields(fields, u);
                 d.ops.Add(ImmediateOperand.Int32((int) imm));
+                return true;
+            };
+        }
+
+        // Unsigned immediate
+        private static Mutator<ArcDisassembler> U(int bitPos, int length)
+        {
+            var field = new Bitfield(bitPos, length);
+            return (u, d) =>
+            {
+                var imm = field.Read(u);
+                d.ops.Add(ImmediateOperand.Word32((int) imm));
                 return true;
             };
         }
@@ -239,6 +256,30 @@ namespace Reko.Arch.Arc
             };
         }
 
+        // Indirect access
+        private static Mutator<ArcDisassembler> Mr(PrimitiveType dt, int bitpos, int bitlen)
+        {
+            var baseRegField = new Bitfield(bitpos, bitlen);
+            return (u, d) =>
+            {
+                var iBaseReg = baseRegField.Read(u);
+                var mem = new MemoryOperand(dt);
+                if (iBaseReg == 0x3E)
+                {
+                    if (!d.rdr.TryReadInt32(out int offset))
+                        return false;
+                    mem.Offset = offset;
+                }
+                else
+                {
+                    mem.Base = bRegs[iBaseReg];
+                }
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+        private static readonly Mutator<ArcDisassembler> Mr_C = Mr(PrimitiveType.Word32, 6, 6);
+
         private static bool Mblink(uint uInstr, ArcDisassembler dasm)
         {
             dasm.ops.Add(new MemoryOperand(PrimitiveType.Word32)
@@ -275,8 +316,26 @@ namespace Reko.Arch.Arc
             return true;
         }
 
+        private static bool N5(uint uInstr, ArcDisassembler dasm)
+        {
+            dasm.instr.Delay = Bits.IsBitSet(uInstr, 5);
+            return true;
+        }
 
-        private static Mutator<ArcDisassembler> PcRel(Bitfield[] fields)
+        private static Mutator<ArcDisassembler> PcRel2(Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var offset = Bitfield.ReadSignedFields(fields, u) << 1;
+                // According to manual, PC-relative calculations 
+                // always mask the low 2 bits of program counter....
+                var addr = (d.addr.ToUInt32() & ~3u) + offset;
+                d.ops.Add(AddressOperand.Ptr32((uint)addr));
+                return true;
+            };
+        }
+
+        private static Mutator<ArcDisassembler> PcRel4(Bitfield[] fields)
         {
             return (u, d) =>
             {
@@ -284,7 +343,20 @@ namespace Reko.Arch.Arc
                 // According to manual, PC-relative calculations 
                 // always mask the low 2 bits of program counter....
                 var addr = (d.addr.ToUInt32() & ~3u) + offset;
-                d.ops.Add(AddressOperand.Ptr32((uint)addr));
+                d.ops.Add(AddressOperand.Ptr32((uint) addr));
+                return true;
+            };
+        }
+
+        private static Mutator<ArcDisassembler> PcRel_s(Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var offset = Bitfield.ReadSignedFields(fields, u) << 1;
+                // According to manual, PC-relative calculations 
+                // always mask the low 2 bits of program counter....
+                var addr = (d.addr.ToUInt32() & ~3u) + offset;
+                d.ops.Add(AddressOperand.Ptr32((uint) addr));
                 return true;
             };
         }
@@ -356,8 +428,6 @@ namespace Reko.Arch.Arc
 
         #endregion
 
-
-
         static ArcDisassembler()
         {
             var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
@@ -403,11 +473,15 @@ namespace Reko.Arch.Arc
             rootDecoder = Mask(11, 5, "ARC instruction",
                 new W32Decoder(Mask(16, 1, "Bcc Branch  32-bit",
                     Nyi("Branch Conditionally"),
-                    Nyi("Branch Unconditional Far"))),
+                    Mask(5, 1, "  Branch far unconditionally",
+                        Instr(Mnemonic.b, T, N5, PcRel2(Bf((0,4), (6,10), (17,10)))),
+                        Instr(Mnemonic.b, TD, N5, PcRel2(Bf((0,4), (6,10), (17,10))))))),
                 new W32Decoder(Mask(16,1, "BLcc, BRcc Branch and link conditional Compare-branch conditional 32-bit",
                     Mask(17, 1,  "    BLcc 0?",
                         Nyi("    BLcc 00"),
-                        Instr(Mnemonic.bl, PcRel(Bf((0,4),(6,10),(18,9))))),
+                        Mask(5, 1, "  Branch and link unconditionally",
+                            Instr(Mnemonic.bl, T |InstrClass.Call, PcRel4(Bf((0,4),(6,10),(18,9)))),
+                            Instr(Mnemonic.bl, TD|InstrClass.Call, PcRel4(Bf((0,4),(6,10),(18,9)))))),
                     Mask(4, 1, "    BLcc 1?",
                         Nyi("    BLcc 10"),
                         Nyi("    BLcc 11")))),
@@ -425,7 +499,8 @@ namespace Reko.Arch.Arc
                     invalid)),
                 new W32Decoder(Mask(22, 2, "04 op  a,b,c ARC 32-bit basecase instructions 32-bit",
                     Sparse(16, 6, "REG_REG", Nyi("REG_REG"),
-                        (0x0A, Instr(Mnemonic.mov, B,C))),
+                        (0x0A, Instr(Mnemonic.mov, B,C)),
+                        (0x2A, Instr(Mnemonic.lr, B,Mr_C))),
                     Nyi("REG_U6IMM"),
                     Sparse(16, 6, "REG_S12IMM", Nyi("REG_S12IMM"),
                         (0x06, Instr(Mnemonic.bic, B,B,I(Bf((0,6),(6,6)))))
@@ -489,6 +564,7 @@ namespace Reko.Arch.Arc
                     Nyi(" 1E"),
                     Nyi(" 1F")),
 
+                // 0x10
                 Nyi("LD_S c,[b,u7] Delayed load (32-bit aligned offset) 16-bit"),
                 Nyi("LDB_S c,[b,u5] Delayed load (  8-bit aligned offset) 16-bit"),
                 Instr(Mnemonic.ldw_s, c, Mo_s(PrimitiveType.Word16)),
@@ -497,16 +573,40 @@ namespace Reko.Arch.Arc
                 Instr(Mnemonic.st_s, c,b,Mo_s(PrimitiveType.Word32)),
                 Nyi("STB_S c,[b,u5] Buffered store (  8-bit aligned offset) 16-bit"),
                 Instr(Mnemonic.stw_s, c, Mo_s(PrimitiveType.Word16)),
-                Nyi("OP_S b,b,u5 Shift/subtract/bit ops 16-bit"),
-                
+                Mask(5, 3, "  OP_S b,b,u5 Shift/subtract/bit ops 16-bit",
+                    Instr(Mnemonic.asl_s, b, b, U(0, 5)),
+                    Instr(Mnemonic.lsr_s, b, b, U(0, 5)),
+                    Instr(Mnemonic.asr_s, b, b, U(0, 5)),
+                    Instr(Mnemonic.sub_s, b, b, U(0, 5)),
+
+                    Instr(Mnemonic.bset_s, b, b, U(0, 5)),
+                    Instr(Mnemonic.bclr_s, b, b, U(0, 5)),
+                    Instr(Mnemonic.bmsk_s, b, b, U(0, 5)),
+                    Instr(Mnemonic.btst_s, b, U(0, 5))),
+                // 0x18
                 SpBasedInstructions,
                 Nyi("LD_S / LDW_S / LDB_S / ADD_S  Gp-based ld/add (data aligned offset) 16-bit"),
                 Nyi("LD_S b,[PCL,u10] Pcl-based ld (32-bit aligned offset) 16-bit"),
-                Nyi("MOV_S b,u8 Move immediate 16-bit"),
+                Instr(Mnemonic.mov_s, b, U(0,8)),
                 
-                Nyi("ADD_S / CMP_S b,u7 Add/compare immediate 16-bit"),
+                Mask(7, 1, "  ADD_S / CMP_S b,u7 Add/compare immediate 16-bit",
+                    Instr(Mnemonic.add_s, b,b,U(0,7)),
+                    Instr(Mnemonic.cmp_s, b,b,U(0,7))),
                 Nyi("BRcc_S b,0,s8 Branch conditionally on reg z/nz 16-bit"),
-                Nyi("Bcc_S s10/s7 Branch conditionally 16-bit"),
+                Mask(9, 2, "  Bcc_S s10/s7 Branch conditionally 16-bit",
+                    Instr(Mnemonic.b_s, T, PcRel_s(Bf((0,9)))),
+                    Instr(Mnemonic.beq_s, CT, PcRel_s(Bf((0,9)))),
+                    Instr(Mnemonic.bne_s, CT, PcRel_s(Bf((0,9)))),
+                    Mask(6, 3, "  Bcc_S",
+                        Instr(Mnemonic.bgt_s, CT, PcRel_s(Bf((0,6)))),
+                        Instr(Mnemonic.bge_s, CT, PcRel_s(Bf((0, 6)))),
+                        Instr(Mnemonic.blt_s, CT, PcRel_s(Bf((0, 6)))),
+                        Instr(Mnemonic.ble_s, CT, PcRel_s(Bf((0, 6)))),
+
+                        Instr(Mnemonic.bhi_s, CT, PcRel_s(Bf((0, 6)))),
+                        Instr(Mnemonic.bhs_s, CT, PcRel_s(Bf((0, 6)))),
+                        Instr(Mnemonic.blo_s, CT, PcRel_s(Bf((0, 6)))),
+                        Instr(Mnemonic.bls_s, CT, PcRel_s(Bf((0, 6)))))),
                 Nyi("BL_S s13 Branch and link unconditionally 16-bit"));
         }
     }

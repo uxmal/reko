@@ -148,116 +148,61 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode("bic\tr0,r0,-00000009", "20860DFF");
         }
 
+        [Test]
+        public void ARCompactDis_cmp_s_imm()
+        {
+            AssertCode("cmp_s\tr0,r0,00000000", "E080");
+        }
+
+        [Test]
+        public void ARCompactDis_b_s()
+        {
+            AssertCode("b_s\t00100026", "F013");
+        }
+
+        [Test]
+        public void ARCompactDis_bne_s()
+        {
+            AssertCode("bne_s\t00100006", "F403");
+        }
+
+        [Test]
+        public void ARCompactDis_bmsk_s()
+        {
+            AssertCode("bmsk_s\tr0,r0,00000000", "B8C0");
+        }
+
+        [Test]
+        public void ARCompactDis_mov_s()
+        {
+            AssertCode("mov_s\tr0,00000004", "D804");
+        }
+
+        [Test]
+        public void ARCompactDis_b_far()
+        {
+            AssertCode("b\t00700800", "00010043");
+        }
+
+        [Test]
+        public void ARCompactDis_b_d_far()
+        {
+            AssertCode("b.d\t00700800", "00010063");
+        }
+
+        [Test]
+        public void ARCompactDis_lr_limm()
+        {
+            AssertCode("lr\tr0,[19088743]", "202A0F8001234567");
+        }
+
+        [Test]
+        public void ARCompactDis_ld()
+        {
+            AssertCode("ld\tr0,[fp,-4]", "13FCB000");
+        }
+
         //////////////////////////////////////////////////
 
-        // Reko: a decoder for ARCompact instruction 1404341B at address 00000022 has not been implemented. (LD register + offset Delayed load 32-bit)
-
-        // Reko: a decoder for ARCompact instruction C0D1 at address 00000026 has not been implemented. (POP_S)
-
-
-        // Reko: a decoder for ARCompact instruction C6C1 at address 00000028 has not been implemented. (POP_S)
-
-        // Reko: a decoder for ARCompact instruction 7EE0 at address 0000002C has not been implemented. (j_s [blink])
-
-
-        // Reko: a decoder for ARCompact instruction 0000C5E1 at address 0000002E has not been implemented. (Branch Conditionally)
-
-        // Reko: a decoder for ARCompact instruction 36C01404 at address 00000020 has not been implemented. (06 op  a,b,c ARC 32-bit extension instructions 32-bit)
-        [Test]
-        public void ARCompactDis_36C01404()
-        {
-            AssertCode("@@@", "36C01404");
-        }
-
-        // Reko: a decoder for ARCompact instruction 341BC0D1 at address 00000024 has not been implemented. (06 op  a,b,c ARC 32-bit extension instructions 32-bit)
-        [Test]
-        public void ARCompactDis_341BC0D1()
-        {
-            AssertCode("@@@", "341BC0D1");
-        }
-
-        // Reko: a decoder for ARCompact instruction C1A1 at address 0000003E has not been implemented. (ADD_S/SUB_S)
-
-        // Reko: a decoder for ARCompact instruction 910B at address 0000004C has not been implemented. (LDW_S c,[b,u6] Delayed load (16-bit aligned offset) 16-bit)
-
-        // Reko: a decoder for ARCompact instruction 20860DFF at address 0000004E has not been implemented. (REG_S12IMM)
-
-
-        // Reko: a decoder for ARCompact instruction E080 at address 00000052 has not been implemented. (ADD_S / CMP_S b,u7 Add/compare immediate 16-bit)
-        [Test]
-        public void ARCompactDis_E080()
-        {
-            AssertCode("@@@", "E080");
-        }
-
-        // Reko: a decoder for ARCompact instruction F403 at address 00000054 has not been implemented. (Bcc_S s10/s7 Branch conditionally 16-bit)
-        [Test]
-        public void ARCompactDis_F403()
-        {
-            AssertCode("@@@", "F403");
-        }
-
-        // Reko: a decoder for ARCompact instruction D804 at address 00000056 has not been implemented. (MOV_S b,u8 Move immediate 16-bit)
-        [Test]
-        public void ARCompactDis_D804()
-        {
-            AssertCode("@@@", "D804");
-        }
-
-        // Reko: a decoder for ARCompact instruction F013 at address 00000058 has not been implemented. (Bcc_S s10/s7 Branch conditionally 16-bit)
-        [Test]
-        public void ARCompactDis_F013()
-        {
-            AssertCode("@@@", "F013");
-        }
-
-        // Reko: a decoder for ARCompact instruction 202A0F80 at address 0000005A has not been implemented. (REG_REG)
-        [Test]
-        public void ARCompactDis_202A0F80()
-        {
-            AssertCode("@@@", "202A0F80");
-        }
-
-        // Reko: a decoder for ARCompact instruction 00010043 at address 0000005E has not been implemented. (Branch Unconditional Far)
-        [Test]
-        public void ARCompactDis_00010043()
-        {
-            AssertCode("@@@", "00010043");
-        }
-
-        // Reko: a decoder for ARCompact instruction 13FCB000 at address 00000066 has not been implemented. (LD register + offset Delayed load 32-bit)
-        [Test]
-        public void ARCompactDis_13FCB000()
-        {
-            AssertCode("@@@", "13FCB000");
-        }
-
-        // Reko: a decoder for ARCompact instruction B8C0 at address 0000006A has not been implemented. (OP_S b,b,u5 Shift/subtract/bit ops 16-bit)
-        [Test]
-        public void ARCompactDis_B8C0()
-        {
-            AssertCode("@@@", "B8C0");
-        }
-
-        // Reko: a decoder for ARCompact instruction F404 at address 0000006E has not been implemented. (Bcc_S s10/s7 Branch conditionally 16-bit)
-        [Test]
-        public void ARCompactDis_F404()
-        {
-            AssertCode("@@@", "F404");
-        }
-
-        // Reko: a decoder for ARCompact instruction 00431BFC at address 00000060 has not been implemented. (Branch Unconditional Far)
-        [Test]
-        public void ARCompactDis_00431BFC()
-        {
-            AssertCode("@@@", "00431BFC");
-        }
-
-        // Reko: a decoder for ARCompact instruction F007 at address 00000072 has not been implemented. (Bcc_S s10/s7 Branch conditionally 16-bit)
-        [Test]
-        public void ARCompactDis_F007()
-        {
-            AssertCode("@@@", "F007");
-        }
     }
 }

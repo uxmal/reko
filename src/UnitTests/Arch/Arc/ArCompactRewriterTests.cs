@@ -41,6 +41,10 @@ namespace Reko.UnitTests.Arch.Arc
         public void Setup()
         {
             this.arch = new ARCompactArchitecture("arCompact");
+            arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { "Endianness", "be" }
+            });
             this.addr = Address.Ptr32(0x00100000);
         }
 

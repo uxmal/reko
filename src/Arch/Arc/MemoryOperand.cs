@@ -39,10 +39,15 @@ namespace Reko.Arch.Arc
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteChar('[');
-            writer.WriteString(Base.Name);
+            var sep = "";
+            if (Base != null)
+            {
+                writer.WriteString(Base.Name);
+                sep = ",";
+            }
             if (Offset != 0)
             {
-                writer.WriteFormat(",{0}", Offset);
+                writer.WriteFormat("{0}{1}", sep, Offset);
             }
             writer.WriteChar(']');
         }

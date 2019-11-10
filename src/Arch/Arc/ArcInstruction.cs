@@ -28,9 +28,10 @@ namespace Reko.Arch.Arc
     public class ArcInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic;
-        public bool SignExtend;
         public AddressWritebackMode Writeback;
+        public bool SignExtend;
         public bool DirectWrite;
+        public bool Delay;
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 
@@ -44,6 +45,10 @@ namespace Reko.Arch.Arc
         {
             var sb = new StringBuilder();
             sb.Append(Mnemonic.ToString());
+            if (Delay)
+            {
+                sb.Append(".d");
+            }
             if (SignExtend)
             {
                 sb.AppendFormat(".x");
