@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public class RtlNop : RtlInstruction
+    public sealed class RtlNop : RtlInstruction
     {
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {

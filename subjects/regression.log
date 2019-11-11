@@ -617,12 +617,6 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\DecompilerDriver.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 184
 === TLCS\90\TLCS-90.corpus
-*** TLCS\90\TLCS-90.corpus
-034E: warning: Procedure fn034E previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0E2F: warning: Procedure fn0C1D previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-060B: warning: Procedure fn04EE previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-fn03B2: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-00000823: warning: Expected sizes of arrays to have been determined by now
 === VMS-vax\unzip.dcproject
 *** VMS-vax\unzip.dcproject
 000012B8: error: Instruction acbd	#8.0,r5,(sp),00007C18 too complex to rewrite.
@@ -1127,4 +1121,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 59 binaries in 81.97 seconds ---
+Decompiled 59 binaries in 119.36 seconds ---

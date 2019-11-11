@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public class RtlBranch : RtlTransfer
+    public sealed class RtlBranch : RtlTransfer
     {
         public RtlBranch(Expression condition, Address target, InstrClass rtlClass) 
             : base(target, rtlClass)

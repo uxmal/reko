@@ -11,11 +11,14 @@
                 // Ask msbuild to generate full paths for file names.
                 "/property:GenerateFullPaths=true",
                 "/t:build",
-                "/p:Configuration=UnixRelease",
+                "/p:Configuration=Debug",
                 "/verbosity:minimal",
                 "Reko-decompiler.sln"
             ],
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "presentation": {
                 // Reveal the output only if unrecognized errors occur.
                 "reveal": "silent"
@@ -37,9 +40,9 @@
             ],
             "group": "build",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "silent"
             },
-            "problemMatcher":"$msCompile"
+            "problemMatcher": "$msCompile"
         }
     ]
 }

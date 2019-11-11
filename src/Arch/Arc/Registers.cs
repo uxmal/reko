@@ -24,25 +24,32 @@ namespace Reko.Arch.Arc
 {
     public class Registers
     {
-        public static readonly RegisterStorage [] GpRegs;
+        public static readonly RegisterStorage [] CoreRegisters;
+        public static readonly RegisterStorage Gp;
+        public static readonly RegisterStorage Fp;
         public static readonly RegisterStorage Sp;
         public static readonly RegisterStorage Blink;
+        public static readonly RegisterStorage LP_count;
+        public static readonly RegisterStorage Pcl;
 
         static Registers()
         {
             var factory = new StorageFactory();
-            GpRegs = factory.RangeOfReg32(64, "r{0}");
+            CoreRegisters = factory.RangeOfReg32(64, "r{0}");
 
-            RenameRegister(27, "fp");
+            Gp = RenameRegister(26, "gp");
+            Fp = RenameRegister(27, "fp");
             Sp = RenameRegister(28, "sp");
             Blink = RenameRegister(31, "blink");
+            LP_count = RenameRegister(60, "lp_count");
+            Pcl  = RenameRegister(63, "pcl");
         }
 
         private static RegisterStorage RenameRegister(int iGpReg, string regName)
         {
-            var oldReg = GpRegs[iGpReg];
+            var oldReg = CoreRegisters[iGpReg];
             var newReg = new RegisterStorage(regName, oldReg.Number, 0, oldReg.DataType);
-            GpRegs[iGpReg] = newReg;
+            CoreRegisters[iGpReg] = newReg;
             return newReg;
         }
     }

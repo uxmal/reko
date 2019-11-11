@@ -268,9 +268,165 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode("bl_s\t000FFFFC", "FFFF");
         }
 
+        [Test]
+        public void ARCompactDis_jl_d_MemAbs()
+        {
+            AssertCode("jl.d\t[1450709556]", "20220F80 5678 1234");
+        }
+
+        [Test]
+        public void ARCompactDis_brhs()
+        {
+            AssertCode("brhs\tr23,r0,001000FE", "0FFF2005");
+        }
+
+        [Test]
+        public void ARCompactDis_bleq()
+        {
+            AssertCode("bleq\t00100780", "0F800001");
+        }
+
+        [Test]
+        public void ARCompactDis_j_blink()
+        {
+            AssertCode("j.d\t[blink]", "202007C0");
+        }
+
+        [Test]
+        public void ARCompactDis_flag()
+        {
+            AssertCode("flag\tr1", "20690040");
+        }
+
+        [Test]
+        public void ARCompactDis_j_d_blink()
+        {
+            AssertCode("j.d\t[blink]", "202107C0");
+        }
+
+        [Test]
+        public void ARCompactDis_or()
+        {
+            AssertCode("or\tr0,r0,00000002", "20450080");
+        }
+
+        [Test]
+        public void ARCompactDis_add_s()
+        {
+            AssertCode("add_s\tr0,r15,r13", "67B8");
+        }
+
+        [Test]
+        public void ARCompactDis_lsr_1op()
+        {
+            AssertCode("lsr\tlp_count,r4", "242FF102");
+        }
+
+        [Test]
+        [Ignore("LPcc")]
+        public void ARCompactDis_LPcc()
+        {
+            AssertCode("@@@", "20E804A2");
+        }
+
+        [Test]
+        public void ARCompactDis_jeq_d()
+        {
+            AssertCode("jeq.d\t[blink]", "20E007C1");
+        }
+
+        [Test]
+        public void ARCompactDis_st_s()
+        {
+            AssertCode("st_s\tr0,[sp,8]", "C042");
+        }
+
+        [Test]
+        public void ARCompactDis_ld_s_sp()
+        {
+            AssertCode("ld_s\tr1,[sp,8]", "C102");
+        }
+
+        [Test]
+        public void ARCompactDis_ld_s_pcl()
+        {
+            AssertCode("ld_s\tr0,[pcl,76]", "D013");
+        }
+
+        [Test]
+        public void ARCompactDis_add_reg_sp_imm()
+        {
+            AssertCode("add_s\tr1,sp,00000004", "C181");
+        }
+
+        [Test]
+        public void ARCompactDis_21CC8F82()
+        {
+            // 21cc 8f82 0000 0201 	cmp.ne	r1,0x201
+            AssertCode("cmp.ne\tr1,00000201", "21CC8F82 0000 0201");
+        }
+
+        [Test]
+        public void ARCompactDis_22CA03CD()
+        {
+            AssertCode("mov.hi\tr2,r15", "22CA03CD");
+        }
+
+        [Test]
+        public void ARCompactDis_bset_ne()
+        {
+            AssertCode("bset.ne\tr14,r14,00000005", "26CF1162");
+        }
+
+        [Test]
+        public void ARCompactDis_ldw_s_gp()
+        {
+            AssertCode("ldw_s\tr0,[gp,56]", "CC1C");
+        }
+
+        [Test]
+        public void ARCompactDis_jl_s_reg()
+        {
+            AssertCode("jl_s\t[r2]", "7A40");
+        }
+
+
+        // ................00100.:..::.:::: ARC instruction
+        //..:...:..:101111..........::::::   04 General operation
+        //..:...:..::.::::..........111111   04 unaries
+        //..:..010.::.::::..........::::::   ZOP
+        // Reko: a decoder for ARCompact instruction 226F003F at address 000032DA has not been implemented. (swi)
+        [Test]
+        public void ARCompactDis_226F003F()
+        {
+            AssertCode("@@@", "226F003F");
+        }
+
+        [Test]
+        public void ARCompactDis_brne_s()
+        {
+            AssertCode("brne_s\tr0,+00000000,00100048", "E8A4");
+        }
+
+        [Test]
+        public void ARCompactDis_breq_S()
+        {
+            AssertCode("breq_s\tr2,+00000000,000FFF90", "EA48");
+        }
+
+        [Test]
+        public void ARCompactDis_20E804A2()
+        {
+            AssertCode("@@@", "20E804A2");
+        }
+
         //////////////////////////////////////////////////
 
 #if BORED
+
+
+
+
 #endif
     }
 }

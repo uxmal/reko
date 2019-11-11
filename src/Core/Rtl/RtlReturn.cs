@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public class RtlReturn : RtlInstruction
+    public sealed class RtlReturn : RtlInstruction
     {
         public RtlReturn(int returnAddressBytes, int extraBytesPopped, InstrClass rtlClass)
         {

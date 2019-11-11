@@ -28,6 +28,7 @@ namespace Reko.Arch.Arc
     public class ArcInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic;
+        public ArcCondition Condition;
         public AddressWritebackMode Writeback;
         public bool SignExtend;
         public bool DirectWrite;
@@ -46,6 +47,10 @@ namespace Reko.Arch.Arc
         {
             var sb = new StringBuilder();
             sb.Append(Mnemonic.ToString());
+            if (Condition != 0)
+            {
+                sb.AppendFormat(".{0}", Condition.ToString().ToLowerInvariant());
+            }
             if (Delay)
             {
                 sb.Append(".d");

@@ -31,7 +31,7 @@ namespace Reko.Core.Rtl
     /// <summary>
     /// Models the `call`, `jsr` or similar machine code instructions.
     /// </summary>
-    public class RtlCall : RtlTransfer
+    public sealed class RtlCall : RtlTransfer
     {
         /// <summary>
         /// Creates an <see cref="RtlCall"/> instruction.
