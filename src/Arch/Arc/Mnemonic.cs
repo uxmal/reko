@@ -95,5 +95,6 @@ namespace Reko.Arch.Arc
         add,
         sr,
         and,
+        bl_s,
     }
 }

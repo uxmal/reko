@@ -259,7 +259,13 @@ namespace Reko.UnitTests.Arch.Arc
         [Test]
         public void ARCompactDis_and()
         {
-            AssertCode("and@@@", "20440401");
+            AssertCode("and\tr1,r0,00000010", "20440401");
+        }
+
+        [Test]
+        public void ARCompactDis_bl_s()
+        {
+            AssertCode("bl_s\t000FFFFC", "FFFF");
         }
 
         //////////////////////////////////////////////////

@@ -391,6 +391,12 @@ namespace Reko.Arch.Arc
             return true;
         }
 
+        private static bool F15(uint uInstr, ArcDisassembler dasm)
+        {
+            dasm.instr.SetFlags = Bits.IsBitSet(uInstr, 15);
+            return true;
+        }
+
         private static Mutator<ArcDisassembler> PcRel2(Bitfield[] fields)
         {
             return (u, d) =>
@@ -430,41 +436,55 @@ namespace Reko.Arch.Arc
             };
         }
 
-        private static readonly Bitfield genopFormatField = new Bitfield(22, 2);
-        private static readonly Bitfield genopUimm6 = new Bitfield(6, 6);
-        private static bool GeneralOp(uint uInstr, ArcDisassembler dasm)
+        private static Mutator<ArcDisassembler> GeneralOp(bool use3ops)
         {
-            var format = genopFormatField.Read(uInstr);
-            switch (format)
+            Bitfield genopFormatField = new Bitfield(22, 2);
+            Bitfield genopUimm6 = new Bitfield(6, 6);
+            Bitfield[] genopSimm12 = Bf((0, 6), (6, 6));
+            return (uInstr, dasm) =>
             {
-            case 0: // REG_REG
-                if (!B(uInstr, dasm))
-                    return false;
-                if (!C(uInstr, dasm))
-                    return false;
-                return true;
-            case 1: // REG_U6IMM
-                if (!B(uInstr, dasm))
-                    return false;
-                var uimm6 = genopUimm6.Read(uInstr);
-                dasm.ops.Add(ImmediateOperand.Word32(uimm6));
-                return true;
-            case 2: // REG_S12IMM
-                Nyi("General op, REG_S12IMM");
-                return false;
-            default: // COND_REG
-                if (Bits.IsBitSet(uInstr, 5))
+                var format = genopFormatField.Read(uInstr);
+                switch (format)
                 {
-                    Nyi("General op, COND_REG_UIMM6");
-                    return false;
+                case 0: // REG_REG
+                    if (use3ops && !A(uInstr, dasm))
+                        return false;
+                    if (!B(uInstr, dasm))
+                        return false;
+                    if (!C(uInstr, dasm))
+                        return false;
+                    return true;
+                case 1: // REG_U6IMM
+                    if (use3ops && !A(uInstr, dasm))
+                        return false;
+                    if (!B(uInstr, dasm))
+                        return false;
+                    var uimm6 = genopUimm6.Read(uInstr);
+                    dasm.ops.Add(ImmediateOperand.Word32(uimm6));
+                    return true;
+                case 2: // REG_S12IMM
+                    if (!B(uInstr, dasm))
+                        return false;
+                    dasm.ops.Add(dasm.ops[dasm.ops.Count - 1]);
+                    var simm12 = Bitfield.ReadSignedFields(genopSimm12, uInstr);
+                    dasm.ops.Add(ImmediateOperand.Int32(simm12));
+                    return true;
+                default: // COND_REG
+                    if (Bits.IsBitSet(uInstr, 5))
+                    {
+                        Nyi("General op, COND_REG_UIMM6").Decode(uInstr, dasm);
+                        return false;
+                    }
+                    else
+                    {
+                        Nyi("General op, COND_REG").Decode(uInstr, dasm);
+                        return false;
+                    }
                 }
-                else
-                {
-                    Nyi("General op, COND_REG");
-                    return false;
-                }
-            }
+            };
         }
+        private static readonly Mutator<ArcDisassembler> GeneralOp_BC = GeneralOp(false);
+        private static readonly Mutator<ArcDisassembler> GeneralOp_ABC = GeneralOp(true);
 
         #endregion
 
@@ -645,22 +665,16 @@ namespace Reko.Arch.Arc
                     Instr(Mnemonic.b, T, N5, PcRel2(Bf((0, 4), (6, 10), (17, 10)))),
                     Instr(Mnemonic.b, TD, N5, PcRel2(Bf((0, 4), (6, 10), (17, 10)))))));
 
-            var majorOpc_04 = new W32Decoder(Mask(22, 2, "  04 op  a,b,c ARC 32-bit basecase instructions 32-bit",
-                Sparse(16, 6, "REG_REG", Nyi("REG_REG"),
-                    (0x00, Instr(Mnemonic.add, A, B, C)),
-                    (0x02, Instr(Mnemonic.sub, A, B, C)),
-                    (0x06, Instr(Mnemonic.bic, A, B, C)),
-                    (0x0A, Instr(Mnemonic.mov, B, C)),
+            var majorOpc_04 = new W32Decoder(Sparse(16, 6, "REG_REG", Nyi("REG_REG"),
+                    (0x00, Instr(Mnemonic.add, F15, GeneralOp_ABC)),
+                    (0x02, Instr(Mnemonic.sub, F15, GeneralOp_ABC)),
+                    (0x04, Instr(Mnemonic.and, F15, GeneralOp_ABC)),
+                    (0x06, Instr(Mnemonic.bic, F15, GeneralOp_ABC)),
+                    (0x0A, Instr(Mnemonic.mov, F15, GeneralOp_BC)),
+                    (0x13, Instr(Mnemonic.bmsk, F15, GeneralOp_ABC)),
                     (0x2A, Instr(Mnemonic.lr, B, Mr_C)),
-                    (0x2B, Instr(Mnemonic.sr, B, Mr_C))),
-                Sparse(16, 6, "REG_U6IMM", Nyi("REG_U6IMM"),
-                    (0x04, Instr(Mnemonic.and, A, GeneralOp)),
-                    (0x13, Instr(Mnemonic.bmsk, A, B, U(6,6))),
-                    (0x30, Instr(Mnemonic.ld, A, AA22, Di15, Mrr(PrimitiveType.Word32,Bf((12,3),(24,3)), Bf((6,6)))))),
-                Sparse(16, 6, "REG_S12IMM", Nyi("REG_S12IMM"),
-                    (0x06, Instr(Mnemonic.bic, B, B, I(Bf((0, 6), (6, 6)))))
-                    ),
-                Sparse(16, 6, "COND_REG", Nyi("COND_REG"))));
+                    (0x2B, Instr(Mnemonic.sr, B, Mr_C)),
+                    (0x30, Instr(Mnemonic.ld, A, AA22, Di15, Mrr(PrimitiveType.Word32, Bf((12, 3), (24, 3)), Bf((6, 6)))))));
 
             var SpBasedInstructions = Mask(5, 3, "  Sp-based instructions 16-bit",
                 Nyi("LD_S"),
@@ -807,7 +821,7 @@ namespace Reko.Arch.Arc
                         Instr(Mnemonic.bhs_s, CT, PcRel_s(Bf((0, 6)))),
                         Instr(Mnemonic.blo_s, CT, PcRel_s(Bf((0, 6)))),
                         Instr(Mnemonic.bls_s, CT, PcRel_s(Bf((0, 6)))))),
-                Nyi("BL_S s13 Branch and link unconditionally 16-bit"));
+                Instr(Mnemonic.bl_s, PcRel4(Bf((0, 11)))));
         }
     }
 }

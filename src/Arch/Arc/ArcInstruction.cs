@@ -32,6 +32,7 @@ namespace Reko.Arch.Arc
         public bool SignExtend;
         public bool DirectWrite;
         public bool Delay;
+        public bool SetFlags;
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 
