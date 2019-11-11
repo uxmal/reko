@@ -33,8 +33,9 @@ namespace Reko.Arch.Arc
         {
         }
 
-        public RegisterStorage Base { get; internal set; }
-        public int Offset { get; internal set; }
+        public RegisterStorage Base { get; set; }
+        public int Offset { get;  set; }
+        public RegisterStorage Index { get; set; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -46,6 +47,10 @@ namespace Reko.Arch.Arc
                 sep = ",";
             }
             if (Offset != 0)
+            {
+                writer.WriteFormat("{0}{1}", sep, Offset);
+            }
+            else if (Index != null)
             {
                 writer.WriteFormat("{0}{1}", sep, Offset);
             }

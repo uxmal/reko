@@ -202,7 +202,69 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode("ld\tr0,[fp,-4]", "13FCB000");
         }
 
+        [Test]
+        public void ARCompactDis_ld_s()
+        {
+            AssertCode("ld_s\tr0,[r15,4]", "8702");
+        }
+
+        [Test]
+        public void ARCompactDis_extb_s()
+        {
+            AssertCode("extb_s\tr0,r0", "780F");
+        }
+
+        [Test]
+        public void ARCompactDis_sub_s()
+        {
+            AssertCode("sub_s\tr0,r0,r1", "7822");
+        }
+
+        [Test]
+        public void ARCompactDis_lsr_s_1()
+        {
+            AssertCode("lsr_s\tr0,r0,+00000001", "781D");
+        }
+
+        [Test]
+        public void ARCompactDis_asl_s_imm3()
+        {
+            AssertCode("asl_s\tr0,r14,00000002", "6E12");
+        }
+
+        [Test]
+        public void ARCompactDis_bmsk_imm6()
+        {
+            AssertCode("bmsk\tr1,r0,00000000", "20530001");
+        }
+
+        [Test]
+        public void ARCompactDis_bss()
+        {
+            AssertCode("bss\t001E2802", "00027150");
+        }
+
+        [Test]
+        public void ARCompactDis_bhi()
+        {
+            AssertCode("bhi\t0010004C", "004C000D");
+        }
+
+        [Test]
+        public void ARCompactDis_ld_aw()
+        {
+            AssertCode("ld.aw\tr1,[r0,0]", "20700401");
+        }
+
+        [Test]
+        public void ARCompactDis_and()
+        {
+            AssertCode("and@@@", "20440401");
+        }
+
         //////////////////////////////////////////////////
 
+#if BORED
+#endif
     }
 }
