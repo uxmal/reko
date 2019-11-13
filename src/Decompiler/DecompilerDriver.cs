@@ -265,6 +265,7 @@ namespace Reko
         public Program LoadRawImage(string fileName, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
+            raw.ArchitectureOptions = raw.ArchitectureOptions ?? new Dictionary<string, object>();
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.LoadRawImage(fileName, image, null, raw);
             Project = CreateDefaultProject(fileName, program);

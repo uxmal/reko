@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Arch.Arc
         [Test]
         public void ARCompactDis_cmp_s_imm()
         {
-            AssertCode("cmp_s\tr0,r0,00000000", "E080");
+            AssertCode("cmp_s\tr0,00000000", "E080");
         }
 
         [Test]
@@ -333,6 +333,8 @@ namespace Reko.UnitTests.Arch.Arc
         {
             AssertCode("jeq.d\t[blink]", "20E007C1");
         }
+
+  
 
         [Test]
         public void ARCompactDis_st_s()

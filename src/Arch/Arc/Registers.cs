@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
+using System;
 
 namespace Reko.Arch.Arc
 {
@@ -32,6 +34,8 @@ namespace Reko.Arch.Arc
         public static readonly RegisterStorage LP_count;
         public static readonly RegisterStorage Pcl;
 
+        public static readonly RegisterStorage Status32;
+
         static Registers()
         {
             var factory = new StorageFactory();
@@ -43,6 +47,9 @@ namespace Reko.Arch.Arc
             Blink = RenameRegister(31, "blink");
             LP_count = RenameRegister(60, "lp_count");
             Pcl  = RenameRegister(63, "pcl");
+
+            var sysFactory = new StorageFactory(StorageDomain.SystemRegister);
+            Status32 = sysFactory.Reg("STATUS32", PrimitiveType.Word32);
         }
 
         private static RegisterStorage RenameRegister(int iGpReg, string regName)
@@ -52,5 +59,14 @@ namespace Reko.Arch.Arc
             CoreRegisters[iGpReg] = newReg;
             return newReg;
         }
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        ZF = 2048,
+        NF = 1024,
+        CF = 512,
+        VF = 256,
     }
 }

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -31,6 +32,8 @@ namespace Reko.Arch.Arc
 {
     public class ARCompactArchitecture : ProcessorArchitecture
     {
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public ARCompactArchitecture(string archId) : base(archId)
         {
             base.Endianness = EndianServices.Little;
@@ -39,6 +42,7 @@ namespace Reko.Arch.Arc
             base.PointerType = PrimitiveType.Ptr32;
             base.StackRegister = Registers.Sp;
             base.WordWidth = PrimitiveType.Word32;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -68,7 +72,16 @@ namespace Reko.Arch.Arc
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var fl))
+            {
+                return fl;
+            }
+
+            var dt = Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var flagregister = Registers.Status32;
+            fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -103,7 +116,12 @@ namespace Reko.Arch.Arc
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix,  uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if ((grf & (uint) FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint) FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint) FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint) FlagM.VF) != 0) s.Append('V');
+            return s.ToString();
         }
 
         public override void LoadUserOptions(Dictionary<string, object> options)

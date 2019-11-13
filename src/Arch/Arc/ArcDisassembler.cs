@@ -726,7 +726,7 @@ namespace Reko.Arch.Arc
 
             Decoder BLcc(bool delay)
             {
-                var iclass = delay ? TD : T;
+                var iclass = delay ? (TD | InstrClass.Call) : (T | InstrClass.Call);
                 var offset = PcRel4(Bf((6, 10), (18, 9)));
                 return Mask(0, 5, " BLcc delay=" + delay,
                     Instr(Mnemonic.blal, iclass, N5, offset),
@@ -771,13 +771,13 @@ namespace Reko.Arch.Arc
             }
 
             var breq = Mask(0, 4, "  BRcc",
-                Instr(Mnemonic.breq, B, C, PcRel2(Bf((15, 1), (17, 7)))),
-                Instr(Mnemonic.brne, B, C, PcRel2(Bf((15, 1), (17, 7)))),
-                Instr(Mnemonic.brlt, B, C, PcRel2(Bf((15, 1), (17, 7)))),
-                Instr(Mnemonic.brge, B, C, PcRel2(Bf((15, 1), (17, 7)))),
+                Instr(Mnemonic.breq, CT, B, C, PcRel2(Bf((15, 1), (17, 7)))),
+                Instr(Mnemonic.brne, CT, B, C, PcRel2(Bf((15, 1), (17, 7)))),
+                Instr(Mnemonic.brlt, CT, B, C, PcRel2(Bf((15, 1), (17, 7)))),
+                Instr(Mnemonic.brge, CT, B, C, PcRel2(Bf((15, 1), (17, 7)))),
 
-                Instr(Mnemonic.brlo, B, C, PcRel2(Bf((15, 1), (17, 7)))),
-                Instr(Mnemonic.brhs, B, C, PcRel2(Bf((15, 1), (17, 7)))),
+                Instr(Mnemonic.brlo, CT, B, C, PcRel2(Bf((15, 1), (17, 7)))),
+                Instr(Mnemonic.brhs, CT, B, C, PcRel2(Bf((15, 1), (17, 7)))),
                 reserved,
                 reserved,
 
@@ -1177,7 +1177,7 @@ namespace Reko.Arch.Arc
                 Mask(3, 2, "  0E MOV_S / CMP_S / ADD_S   b,h / b,b,h One dest/source can be any of r0-r63 16-bit",
                     Instr(Mnemonic.add_s, b, b, h_limm),
                     Instr(Mnemonic.mov_s, b, h_limm),
-                    Instr(Mnemonic.mov_s, b, h_limm),
+                    Instr(Mnemonic.cmp_s, b, h_limm),
                     Instr(Mnemonic.mov_s, h, b)),
 
                 Mask(0, 5, "  0F op_S b,b,c General ops/ single ops 16-bit",
@@ -1248,7 +1248,7 @@ namespace Reko.Arch.Arc
                 
                 Mask(7, 1, "  1C ADD_S / CMP_S b,u7 Add/compare immediate 16-bit",
                     Instr(Mnemonic.add_s, b,b,U(0,7)),
-                    Instr(Mnemonic.cmp_s, b,b,U(0,7))),
+                    Instr(Mnemonic.cmp_s, b,U(0,7))),
                 Mask(7, 1, "  1D BRcc_S b,0,s8 Branch conditionally on reg z/nz 16-bit",
                     Instr(Mnemonic.breq_s, b,n(0),PcRel2(Bf((0,7)))),
                     Instr(Mnemonic.brne_s, b,n(0),PcRel2(Bf((0,7))))),

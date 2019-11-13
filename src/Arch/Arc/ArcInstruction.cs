@@ -59,6 +59,10 @@ namespace Reko.Arch.Arc
             {
                 sb.AppendFormat(".x");
             }
+            if (SetFlags)
+            {
+                sb.Append(".f");
+            }
             if (Writeback != AddressWritebackMode.None)
             {
                 sb.AppendFormat(".{0}", Writeback);
