@@ -323,10 +323,9 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        [Ignore("LPcc")]
         public void ARCompactDis_LPcc()
         {
-            AssertCode("@@@", "20E804A2");
+            AssertCode("lpne\t00100024", "20E804A2");
         }
 
         [Test]
@@ -390,16 +389,10 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode("jl_s\t[r2]", "7A40");
         }
 
-
-        // ................00100.:..::.:::: ARC instruction
-        //..:...:..:101111..........::::::   04 General operation
-        //..:...:..::.::::..........111111   04 unaries
-        //..:..010.::.::::..........::::::   ZOP
-        // Reko: a decoder for ARCompact instruction 226F003F at address 000032DA has not been implemented. (swi)
         [Test]
-        public void ARCompactDis_226F003F()
+        public void ARCompactDis_trap0()
         {
-            AssertCode("@@@", "226F003F");
+            AssertCode("trap0", "226F003F");
         }
 
         [Test]
@@ -414,11 +407,6 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode("breq_s\tr2,+00000000,000FFF90", "EA48");
         }
 
-        [Test]
-        public void ARCompactDis_20E804A2()
-        {
-            AssertCode("@@@", "20E804A2");
-        }
 
         //////////////////////////////////////////////////
 

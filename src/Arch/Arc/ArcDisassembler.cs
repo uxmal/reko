@@ -524,8 +524,23 @@ namespace Reko.Arch.Arc
                 var offset = Bitfield.ReadSignedFields(fields, u) << 1;
                 // According to manual, PC-relative calculations 
                 // always mask the low 2 bits of program counter....
-                var addr = (d.addr.ToUInt32() & ~3u) + offset;
-                d.ops.Add(AddressOperand.Ptr32((uint)addr));
+                var uAddr = (d.addr.ToUInt32() & ~3u) + offset;
+                d.ops.Add(AddressOperand.Ptr32((uint)uAddr));
+                return true;
+            };
+        }
+
+        // PC relative unsigned offset (always forward jump)
+        private static Mutator<ArcDisassembler> PcRelU2(int bitpos, int bitlength)
+        {
+            var field = new Bitfield(bitpos, bitlength);
+            return (u, d) =>
+            {
+                var offset = field.Read(u) << 1;
+                // According to manual, PC-relative calculations 
+                // always mask the low 2 bits of program counter....
+                var uAddr = (d.addr.ToUInt32() & ~3u) + offset;
+                d.ops.Add(AddressOperand.Ptr32(uAddr));
                 return true;
             };
         }
@@ -945,9 +960,57 @@ namespace Reko.Arch.Arc
                     Nyi("  JLcc - 11"));
             }
 
+            var pcrelU_66 = PcRelU2(6, 6);
+            var LPcc = Mask(22, 2, "  LPcc",
+                    invalid,
+                    invalid,
+                    Instr(Mnemonic.lp, PcRel2(Bf((0,6),(6,6)))),
+                    Mask(5, 1, "  LPcc bit5",
+                        invalid,
+                        Mask(0, 5, "  LPcc condition",
+                        Instr(Mnemonic.lp,   pcrelU_66),
+                        Instr(Mnemonic.lpeq, pcrelU_66),
+                        Instr(Mnemonic.lpne, pcrelU_66),
+                        Instr(Mnemonic.lppl, pcrelU_66),
+
+                        Instr(Mnemonic.lpmi, pcrelU_66),
+                        Instr(Mnemonic.lpcs, pcrelU_66),
+                        Instr(Mnemonic.lpcc, pcrelU_66),
+                        Instr(Mnemonic.lpvs, pcrelU_66),
+
+                        Instr(Mnemonic.lpvc, pcrelU_66),
+                        Instr(Mnemonic.lpgt, pcrelU_66),
+                        Instr(Mnemonic.lpge, pcrelU_66),
+                        Instr(Mnemonic.lplt, pcrelU_66),
+
+                        Instr(Mnemonic.lple, pcrelU_66),
+                        Instr(Mnemonic.lphi, pcrelU_66),
+                        Instr(Mnemonic.lpls, pcrelU_66),
+                        Instr(Mnemonic.lppnz, pcrelU_66),
+
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid)));
+
             var ZOP = Sparse(24, 3, "  ZOP", invalid,
                 (0x01, Nyi("sleep")),
-                (0x02, Nyi("swi")),
+                (0x02, Instr(Mnemonic.trap0)),
                 (0x03, Nyi("sync")),
                 (0x04, Nyi("rtie")),
                 (0x05, Nyi("brk")));
@@ -1018,7 +1081,7 @@ namespace Reko.Arch.Arc
                 (0x21, Jcc(true)),
                 (0x22, JLcc(false)),
                 (0x23, JLcc(true)),
-                (0x28, Nyi("LPcc")),
+                (0x28, LPcc),
                 (0x29, Instr(Mnemonic.flag, C)),
                 (0x2A, Instr(Mnemonic.lr, B, Mext_C)),
                 (0x2B, Instr(Mnemonic.sr, B, Mext_C)),
