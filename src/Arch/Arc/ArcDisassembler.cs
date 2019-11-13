@@ -716,8 +716,8 @@ namespace Reko.Arch.Arc
             var SOPs = Mask(5, 3, "  Single operand, Jumps and Special Format Instructions",
                 Instr(Mnemonic.j_s, T, Mr_s(PrimitiveType.Word32)),
                 Instr(Mnemonic.j_s, TD, N(true), Mr_s(PrimitiveType.Word32)),
-                Instr(Mnemonic.jl_s, T, Mr_s(PrimitiveType.Word32)),
-                Instr(Mnemonic.jl_s, TD, N(true), Mr_s(PrimitiveType.Word32)),
+                Instr(Mnemonic.jl_s, InstrClass.Call | T, Mr_s(PrimitiveType.Word32)),
+                Instr(Mnemonic.jl_s, InstrClass.Call | TD, N(true), Mr_s(PrimitiveType.Word32)),
 
                 invalid,
                 invalid,
@@ -952,9 +952,9 @@ namespace Reko.Arch.Arc
 
             Decoder JLcc(bool delay)
             {
-                var iclass = delay ? T : TD;
+                var iclass = delay ? (InstrClass.Call | T) : (InstrClass.Call | TD);
                 return Mask(22, 2, "  JLcc",
-                    Instr(Mnemonic.jl, T, N(delay), Mr_C),
+                    Instr(Mnemonic.jl, iclass, N(delay), Mr_C),
                     Nyi("  JLcc - 01"),
                     Nyi("  JLcc - 10"),
                     Nyi("  JLcc - 11"));
@@ -1059,7 +1059,7 @@ namespace Reko.Arch.Arc
                 (0x0A, Instr(Mnemonic.mov, F15, GeneralOp_BC)),
                 (0x0B, Instr(Mnemonic.tst, F15, GeneralOp_BC)),
                
-                (0x0C, Instr(Mnemonic.cmp, F15, GeneralOp_BC)),
+                (0x0C, Instr(Mnemonic.cmp, GeneralOp_BC)),
                 (0x0D, Instr(Mnemonic.rcmp, F15, GeneralOp_BC)),
                 (0x0E, Instr(Mnemonic.rsub, F15, GeneralOp_ABC)),
                 (0x0F, Instr(Mnemonic.bset, F15, GeneralOp_ABC)),
@@ -1266,7 +1266,7 @@ namespace Reko.Arch.Arc
                         Instr(Mnemonic.bhs_s, CT, PcRel_s(Bf((0, 6)))),
                         Instr(Mnemonic.blo_s, CT, PcRel_s(Bf((0, 6)))),
                         Instr(Mnemonic.bls_s, CT, PcRel_s(Bf((0, 6)))))),
-                Instr(Mnemonic.bl_s, PcRel4(Bf((0, 11)))));
+                Instr(Mnemonic.bl_s, InstrClass.Call | T,  PcRel4(Bf((0, 11)))));
         }
     }
 }

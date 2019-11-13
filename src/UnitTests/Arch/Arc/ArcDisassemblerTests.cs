@@ -364,7 +364,7 @@ namespace Reko.UnitTests.Arch.Arc
         public void ARCompactDis_21CC8F82()
         {
             // 21cc 8f82 0000 0201 	cmp.ne	r1,0x201
-            AssertCode("cmp.ne\tr1,00000201", "21CC8F82 0000 0201");
+            AssertCode("cmp.ne.f\tr1,00000201", "21CC8F82 0000 0201");
         }
 
         [Test]
@@ -409,9 +409,15 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode("breq_s\tr2,+00000000,000FFF90", "EA48");
         }
 
+        [Test]
+        public void ARCompactDis_sr()
+        {
+            AssertCode("sr\tr1,[]", "212B0000");
+        }
+
 
         //////////////////////////////////////////////////
-
+         
 #if BORED
 
 

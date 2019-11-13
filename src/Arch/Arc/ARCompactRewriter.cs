@@ -12,6 +12,7 @@ namespace Reko.Arch.Arc
     public class ARCompactRewriter : IEnumerable<RtlInstructionCluster>
     {
         private const FlagM ZNCV = FlagM.ZF | FlagM.NF | FlagM.CF | FlagM.VF;
+        private const FlagM ZNC = FlagM.ZF | FlagM.NF | FlagM.CF;
         private const FlagM ZN = FlagM.ZF | FlagM.NF;
 
         private readonly ARCompactArchitecture arch;
@@ -48,16 +49,11 @@ namespace Reko.Arch.Arc
                 case Mnemonic.abss:
                 case Mnemonic.abssw:
                 case Mnemonic.adc:
-                case Mnemonic.add:
                 case Mnemonic.add1:
-                case Mnemonic.add2:
                 case Mnemonic.add3:
                 case Mnemonic.adds:
                 case Mnemonic.addsdw:
-                case Mnemonic.and:
-                case Mnemonic.asl:
                 case Mnemonic.asls:
-                case Mnemonic.asr:
                 case Mnemonic.asrs:
                 case Mnemonic.bbit0:
                 case Mnemonic.bbit1:
@@ -69,16 +65,12 @@ namespace Reko.Arch.Arc
                 case Mnemonic.bss:
                 case Mnemonic.btst:
                 case Mnemonic.bxor:
-                case Mnemonic.cmp:
                 case Mnemonic.divaw:
                 case Mnemonic.ex:
-                case Mnemonic.extb:
-                case Mnemonic.extw:
                 case Mnemonic.flag:
                 case Mnemonic.j:
                 case Mnemonic.jcc:
                 case Mnemonic.jcs:
-                case Mnemonic.jeq:
                 case Mnemonic.jge:
                 case Mnemonic.jgt:
                 case Mnemonic.jhi:
@@ -108,14 +100,10 @@ namespace Reko.Arch.Arc
                 case Mnemonic.lppnz:
                 case Mnemonic.lpvc:
                 case Mnemonic.lpvs:
-                case Mnemonic.lsr:
-                case Mnemonic.max:
-                case Mnemonic.min:
                 case Mnemonic.mul64:
                 case Mnemonic.mulu64:
                 case Mnemonic.negs:
                 case Mnemonic.negsw:
-                case Mnemonic.nop:
                 case Mnemonic.norm:
                 case Mnemonic.normw:
                 case Mnemonic.rcmp:
@@ -123,13 +111,8 @@ namespace Reko.Arch.Arc
                 case Mnemonic.rnd16:
                 case Mnemonic.ror:
                 case Mnemonic.rrc:
-                case Mnemonic.rsub:
                 case Mnemonic.sat16:
                 case Mnemonic.sbc:
-                case Mnemonic.sexb:
-                case Mnemonic.sexw:
-                case Mnemonic.sr:
-                case Mnemonic.sub:
                 case Mnemonic.sub1:
                 case Mnemonic.sub2:
                 case Mnemonic.sub3:
@@ -137,42 +120,20 @@ namespace Reko.Arch.Arc
                 case Mnemonic.subsdw:
                 case Mnemonic.swap:
                 case Mnemonic.trap0:
-                case Mnemonic.tst:
-                case Mnemonic.xor:
 
                 case Mnemonic.abs_s:
-                case Mnemonic.add_s:
                 case Mnemonic.add1_s:
-                case Mnemonic.add2_s:
                 case Mnemonic.add3_s:
-                case Mnemonic.and_s:
-                case Mnemonic.asl_s:
-                case Mnemonic.asr_s:
                 case Mnemonic.bclr_s:
-                case Mnemonic.bic_s:
-                case Mnemonic.bl_s:
                 case Mnemonic.breq_s:
                 case Mnemonic.brk_s:
                 case Mnemonic.brne_s:
                 case Mnemonic.bset_s:
                 case Mnemonic.btst_s:
-                case Mnemonic.extb_s:
-                case Mnemonic.extw_s:
-                case Mnemonic.jl_s:
-                case Mnemonic.ldb_s:
-                case Mnemonic.lsr_s:
                 case Mnemonic.mul64_s:
-                case Mnemonic.neg_s:
                 case Mnemonic.not_s:
-                case Mnemonic.or_s:
-                case Mnemonic.sexb_s:
-                case Mnemonic.sexw_s:
-                case Mnemonic.st_s:
-                case Mnemonic.stb_s:
                 case Mnemonic.trap_s:
-                case Mnemonic.tst_s:
                 case Mnemonic.unimp_s:
-                case Mnemonic.xor_s:
                 default:
                     EmitUnitTest(this.instr);
                     break;
@@ -180,6 +141,21 @@ namespace Reko.Arch.Arc
                     this.iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
+                case Mnemonic.add:
+                case Mnemonic.add_s:
+                    RewriteAluOp(m.IAdd, ZNCV); break;
+                case Mnemonic.add2:
+                case Mnemonic.add2_s:
+                    RewriteAluOp(Add2, ZNCV); break;
+                case Mnemonic.and:
+                case Mnemonic.and_s:
+                    RewriteAluOp(m.And, ZN); break;
+                case Mnemonic.asl:
+                case Mnemonic.asl_s:
+                    RewriteShift(m.Shl, ZNCV); break;
+                case Mnemonic.asr:
+                case Mnemonic.asr_s:
+                    RewriteShift(m.Sar, ZNCV); break;
                 case Mnemonic.b:    case Mnemonic.b_s: RewriteB(ArcCondition.AL); break;
                 case Mnemonic.bcc:  case Mnemonic.bhs_s: RewriteB(ArcCondition.CC); break;
                 case Mnemonic.bcs:  case Mnemonic.blo_s: RewriteB(ArcCondition.CS); break;
@@ -197,7 +173,9 @@ namespace Reko.Arch.Arc
                 case Mnemonic.bvc: RewriteB(ArcCondition.VC); break;
                 case Mnemonic.bvs: RewriteB(ArcCondition.VS); break;
 
-                case Mnemonic.bl:    RewriteBl(ArcCondition.AL); break;
+                case Mnemonic.bl:
+                case Mnemonic.bl_s:
+                    RewriteBl(ArcCondition.AL); break;
                 case Mnemonic.blal:  RewriteBl(ArcCondition.AL); break;
                 case Mnemonic.blcc:  RewriteBl(ArcCondition.CC); break;
                 case Mnemonic.blcs:  RewriteBl(ArcCondition.CS); break;
@@ -220,35 +198,77 @@ namespace Reko.Arch.Arc
                 case Mnemonic.brlt: RewriteBr(m.Lt); break;
                 case Mnemonic.brne: RewriteBr(m.Ne); break;
 
-                case Mnemonic.bic: RewriteAluOp(Bic, ZN); break;
+                case Mnemonic.bic:
+                case Mnemonic.bic_s:
+                    RewriteAluOp(Bic, ZN); break;
                 case Mnemonic.bmsk:
                 case Mnemonic.bmsk_s:
                     RewriteAluOp(Bmsk, ZN); break;
-                case Mnemonic.cmp_s: RewriteCmp(); break;
-
-                case Mnemonic.j_s: RewriteJ(); break;
+                case Mnemonic.cmp:
+                case Mnemonic.cmp_s:
+                    RewriteCondInstr(m.ISub, ZNCV); break;
+                case Mnemonic.extb:
+                case Mnemonic.extb_s:
+                    RewriteExt(PrimitiveType.Byte, PrimitiveType.Word32); break;
+                case Mnemonic.extw:
+                case Mnemonic.extw_s:
+                    RewriteExt(PrimitiveType.Word16, PrimitiveType.Word32); break;
+                case Mnemonic.j_s: RewriteJ(ArcCondition.AL); break;
+                case Mnemonic.jeq: RewriteJ(ArcCondition.EQ); break;
+                case Mnemonic.jl_s: RewriteJl(); break;
 
                 case Mnemonic.ld:
                 case Mnemonic.ld_s:
                     RewriteLoad(PrimitiveType.Word32); break;
-                case Mnemonic.ldb: RewriteLoad(PrimitiveType.Byte); break;
+                case Mnemonic.ldb:
+                case Mnemonic.ldb_s:
+                    RewriteLoad(PrimitiveType.Byte); break;
                 case Mnemonic.ldw:
                 case Mnemonic.ldw_s:
                     RewriteLoad(PrimitiveType.Word16); break;
                 case Mnemonic.lr: RewriteLr(); break;
-                case Mnemonic.or: RewriteAluOp(m.Or, ZN); break;
+                case Mnemonic.lsr:
+                case Mnemonic.lsr_s:
+                    RewriteShift(m.Shr, ZNC); break;
+                case Mnemonic.or:
+                case Mnemonic.or_s:
+                    RewriteAluOp(m.Or, ZN); break;
+                case Mnemonic.max: RewriteAluOp(Max, ZNCV); break;
+                case Mnemonic.min: RewriteAluOp(Min, ZNCV); break;
                 case Mnemonic.mov:
                 case Mnemonic.mov_s:
                     RewriteMov(); break;
+                case Mnemonic.neg_s: RewriteAluOp(m.Neg, ZNCV); break;
+                case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.not: RewriteAluOp(m.Comp, ZN); break;
                 case Mnemonic.pop_s: RewritePop(); break;
                 case Mnemonic.push_s: RewritePush(); break;
-                case Mnemonic.st: RewriteStore(PrimitiveType.Word32); break;
-                case Mnemonic.stb: RewriteStore(PrimitiveType.Byte); break;
+                case Mnemonic.rsub: RewriteAluOp(Rsub, ZNCV); break;
+                case Mnemonic.sexb:
+                case Mnemonic.sexb_s:
+                    RewriteExt(PrimitiveType.SByte, PrimitiveType.Int32); break;
+                case Mnemonic.sexw:
+                case Mnemonic.sexw_s:
+                    RewriteExt(PrimitiveType.Int16, PrimitiveType.Int32); break;
+                case Mnemonic.sr: RewriteSr(); break;
+                case Mnemonic.st:
+                case Mnemonic.st_s:
+                    RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.stb:
+                case Mnemonic.stb_s:
+                    RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.stw:
                 case Mnemonic.stw_s:
                     RewriteStore(PrimitiveType.Word16); break;
-                case Mnemonic.sub_s: RewriteAluOp(m.ISub, ZNCV); break;
+                case Mnemonic.sub:
+                case Mnemonic.sub_s:
+                     RewriteAluOp(m.ISub, ZNCV); break;
+                case Mnemonic.tst:
+                case Mnemonic.tst_s:
+                    RewriteCondInstr(m.And, ZN); break;
+                case Mnemonic.xor:
+                case Mnemonic.xor_s:
+                    RewriteAluOp(m.Xor, ZN); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
@@ -256,8 +276,6 @@ namespace Reko.Arch.Arc
                 };
             }
         }
-
-
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -305,6 +323,11 @@ namespace Reko.Arch.Arc
             iclass = InstrClass.Invalid;
         }
 
+        private Expression Add2(Expression a, Expression b)
+        {
+            return m.IAdd(a, m.Shl(b, 2));
+        }
+
         private Expression Bic(Expression a, Expression b)
         {
             return m.And(a, m.Comp(b));
@@ -313,6 +336,21 @@ namespace Reko.Arch.Arc
         private Expression Bmsk(Expression a, Expression b)
         {
             return host.PseudoProcedure("__bitmask", a.DataType, a, b);
+        }
+
+        private Expression Max(Expression a, Expression b)
+        {
+            return host.PseudoProcedure("max", PrimitiveType.Int32, a, b);
+        }
+
+        private Expression Min(Expression a, Expression b)
+        {
+            return host.PseudoProcedure("min", PrimitiveType.Int32, a, b);
+        }
+
+        private Expression Rsub(Expression a, Expression b)
+        {
+            return m.ISub(b, a);
         }
 
         private Expression Operand(int iOp)
@@ -464,16 +502,24 @@ namespace Reko.Arch.Arc
             m.Branch(cmp(src1, src2), ((AddressOperand) instr.Operands[2]).Address, instr.InstructionClass);
         }
 
-        private void RewriteCmp()
+        private void RewriteCondInstr(Func<Expression, Expression, Expression> fn, FlagM grf)
         {
             var src1 = Operand(0);
             var src2 = Operand(1);
-            var dst = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint)ZNCV));
-            m.Assign(dst, m.Cond(m.ISub(src1, src2)));
+            var dst = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint)grf));
+            m.Assign(dst, m.Cond(fn(src1, src2)));
         }
 
-        private void RewriteJ()
+        private void RewriteExt(PrimitiveType dtSlice, PrimitiveType dtExt)
         {
+            var src = Operand(1);
+            var dst = Operand(0);
+            m.Assign(dst, m.Cast(dtExt, m.Slice(dtSlice, src, 0)));
+        }
+
+        private void RewriteJ(ArcCondition cond)
+        {
+            MaybeSkip(cond);
             if (instr.Operands[0] is MemoryOperand mop)
             {
                 if (mop.Base != null && mop.Offset == 0)
@@ -488,8 +534,23 @@ namespace Reko.Arch.Arc
             EmitUnitTest(instr, "Unimplemented J instruction");
         }
 
+        private void RewriteJl()
+        {
+            if (instr.Operands[0] is MemoryOperand mop)
+            {
+                var (_, ea) = RewriteEa(mop);
+                m.Call(ea, 0, instr.InstructionClass);
+                return;
+            }
+            EmitUnitTest(instr, "Unimplemented J instruction");
+        }
+
         private void RewriteLoad(PrimitiveType dt)
         {
+            if (instr.SignExtend)
+            {
+                dt = PrimitiveType.Create(Domain.SignedInt, dt.BitSize);
+            }
             var dst = Operand(0);
             var (baseReg, ea) = RewriteEa((MemoryOperand) instr.Operands[1]);
             switch (instr.Writeback)
@@ -501,6 +562,11 @@ namespace Reko.Arch.Arc
                 var reg = binder.EnsureRegister(baseReg);
                 MaybeCast(dst, m.Mem(dt, reg));
                 m.Assign(reg, ea);
+                break;
+            case AddressWritebackMode.aw:
+                reg = binder.EnsureRegister(baseReg);
+                m.Assign(reg, ea);
+                MaybeCast(dst, m.Mem(dt, reg));
                 break;
             default:
                 host.Warn(instr.Address, "Unimplemented writeback mode {0}", instr.Writeback);
@@ -539,6 +605,35 @@ namespace Reko.Arch.Arc
             m.Assign(m.Mem32(sp), src);
         }
 
+        private void RewriteShift(Func<Expression, Expression, Expression> fn, FlagM grf)
+        {
+            MaybeSkip(instr.Condition);
+            var src1 = Operand(1);
+            Expression src2;
+            if (instr.Operands.Length == 3)
+            {
+                src2 = Operand(2);
+            }
+            else
+            {
+                src2 = Constant.Int32(1);
+            }
+            var dst = Operand(0);
+            m.Assign(dst, fn(src1, src2));
+            if (instr.SetFlags)
+            {
+                var flagReg = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint) grf));
+                m.Assign(flagReg, m.Cond(dst));
+            }
+        }
+
+        private void RewriteSr()
+        {
+            var src = Operand(0);
+            var dst = (uint) ((MemoryOperand) instr.Operands[1]).Offset;
+            m.SideEffect(host.PseudoProcedure("__store_aux_reg", VoidType.Instance, m.Word32(dst), src));
+        }
+
         private void RewriteStore(PrimitiveType dt)
         {
             var src = Operand(0);
@@ -552,6 +647,11 @@ namespace Reko.Arch.Arc
                 var reg = binder.EnsureRegister(baseReg);
                 m.Assign(reg, ea);
                 MaybeSlice(m.Mem(dt, reg), src);
+                break;
+            case AddressWritebackMode.ab:
+                reg = binder.EnsureRegister(baseReg);
+                MaybeSlice(m.Mem(dt, reg), src);
+                m.Assign(reg, ea);
                 break;
             default:
                 host.Warn(instr.Address, "Unimplemented writeback mode {0}", instr.Writeback);

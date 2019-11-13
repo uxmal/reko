@@ -67,6 +67,605 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
+        public void ARCompactRw_add()
+        {
+            RewriteCode("20C00301"); // add.eq	r0,r0,r12
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|L--|r0 = r0 + r12");
+        }
+
+        [Test]
+        public void ARCompactRw_add_s_imm()
+        {
+            RewriteCode("E043"); // add_s	r0,r0,00000043
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r0 + 0x00000043");
+        }
+
+        [Test]
+        public void ARCompactRw_add2_s()
+        {
+            RewriteCode("7915"); // add2_s	r1,r1,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r1 = r1 + (r0 << 0x02)");
+        }
+
+        [Test]
+        public void ARCompactRw_and()
+        {
+            RewriteCode("20440401"); // and	r1,r0,00000010
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r0 & 0x00000010");
+        }
+
+        [Test]
+        public void ARCompactRw_and_s()
+        {
+            RewriteCode("7D04"); // and_s	r13,r13,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r13 = r13 & r0");
+        }
+
+        [Test]
+        public void ARCompactRw_asl()
+        {
+            RewriteCode("2F800000"); // asl	r0,r7,r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r7 << r0");
+        }
+
+        [Test]
+        public void ARCompactRw_asl_s()
+        {
+            RewriteCode("6E12"); // asl_s	r0,r14,00000002
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r14 << 0x00000002");
+        }
+
+        [Test]
+        public void ARCompactRw_asr()
+        {
+            RewriteCode("2D421200"); // asr	r0,r13,r8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r13 >> r8");
+        }
+
+        [Test]
+        public void ARCompactRw_asr_s()
+        {
+            RewriteCode("691B"); // asr_s	r0,r1,00000003
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r1 >> 0x00000003");
+        }
+
+        [Test]
+        public void ARCompactRw_bic_s()
+        {
+            RewriteCode("78E6"); // bic_s	r0,r0,r15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r0 & ~r15");
+        }
+
+        [Test]
+        public void ARCompactRw_bl()
+        {
+            RewriteCode("0B0A0000"); // bl	00000308
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|call 00100308 (0)");
+        }
+
+        [Test]
+        public void ARCompactRw_bmsk()
+        {
+            RewriteCode("20530001"); // bmsk	r1,r0,00000000
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = __bitmask(r0, 0x00000000)");
+        }
+
+        [Test]
+        public void ARCompactRw_bgt()
+        {
+            RewriteCode("000070C9"); // bgt	000E1814
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (Test(GT,ZNV)) branch 001E1800");
+        }
+
+        [Test]
+        public void ARCompactRw_bge()
+        {
+            RewriteCode("0300240A"); // bge	0004831C
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (Test(GE,ZN)) branch 00148300");
+        }
+
+        [Test]
+        public void ARCompactRw_bge_s()
+        {
+            RewriteCode("F653"); // bge_s	00001196
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(GE,ZN)) branch 00100026");
+        }
+
+        [Test]
+        public void ARCompactRw_blo_s()
+        {
+            RewriteCode("F792"); // blo_s	000007F0
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(ULT,C)) branch 00100024");
+        }
+
+        [Test]
+        public void ARCompactRw_ld_ab()
+        {
+            RewriteCode("1404341B"); // ld.ab	fp,[sp,4]
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|fp = Mem0[sp:word32]",
+                "2|L--|sp = sp + 4");
+        }
+
+        [Test]
+        public void ARCompactRw_ldb_s()
+        {
+            RewriteCode("67A9"); // ldb_s	r1,[r15,0]
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r1 = (word32) Mem0[r15:byte]");
+        }
+
+        [Test]
+        public void ARCompactRw_pop_s()
+        {
+            RewriteCode("C0D1"); // pop_s	blink
+            AssertCode(
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|blink = Mem0[sp:word32]",
+                "2|L--|sp = sp + 4");
+        }
+
+        [Test]
+        public void ARCompactRw_beq_d()
+        {
+            RewriteCode("0000C5E1"); // beq.d	FFF8B82C
+            AssertCode(
+                "0|TD-|00100000(4): 1 instructions",
+                "1|TD-|if (Test(EQ,Z)) branch 0008B800");
+        }
+
+        [Test]
+        public void ARCompactRw_beq_s()
+        {
+            RewriteCode("F205"); // beq_s	0000013E
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 0010000A");
+        }
+
+        [Test]
+        public void ARCompactRw_bhi()
+        {
+            RewriteCode("004C000D"); // bhi	000001D0
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (Test(UGT,ZC)) branch 0010004C");
+        }
+
+        [Test]
+        public void ARCompactRw_bhi_s()
+        {
+            RewriteCode("F738"); // bhi_s	00000188
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(UGT,ZC)) branch 000FFFF0");
+        }
+
+        [Test]
+        public void ARCompactRw_bic()
+        {
+            RewriteCode("2006D7F8"); // bic	r56,r40,blink
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r56 = r40 & ~blink",
+                "2|L--|ZN = cond(r56)");
+        }
+
+        [Test]
+        public void ARCompactRw_extb()
+        {
+            RewriteCode("202F2407"); // extb	r16,r16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r16 = (word32) SLICE(r16, byte, 0)");
+        }
+
+        [Test]
+        public void ARCompactRw_extb_s()
+        {
+            RewriteCode("780F"); // extb_s	r0,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = (word32) SLICE(r0, byte, 0)");
+        }
+
+        [Test]
+        public void ARCompactRw_extw()
+        {
+            RewriteCode("202F2408"); // extw	r16,r16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r16 = (word32) SLICE(r16, word16, 0)");
+        }
+
+        [Test]
+        public void ARCompactRw_extw_s()
+        {
+            RewriteCode("7ED0"); // extw_s	r14,r14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r14 = (word32) SLICE(r14, word16, 0)");
+        }
+
+        [Test]
+        public void ARCompactRw_ld_pcl()
+        {
+            RewriteCode("D7F8"); // ld_s	r15,[pcl,992]
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r15 = Mem0[0x001003E0:word32]");
+        }
+
+        [Test]
+        public void ARCompactRw_ldw_s()
+        {
+            RewriteCode("910B"); // ldw_s	r0,[r1,22]
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = (word32) Mem0[r1 + 22:word16]");
+        }
+
+        [Test]
+        public void ARCompactRw_bleq()
+        {
+            RewriteCode("0F800001"); // bleq	000007DC
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|T--|call 00100780 (0)");
+        }
+
+        [Test]
+        public void ARCompactRw_blge()
+        {
+            RewriteCode("0800F20A"); // blge	FFFE8790
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(LT,ZN)) branch 00100004",
+                "2|T--|call 000E4000 (0)");
+        }
+
+        [Test]
+        public void ARCompactRw_blgt()
+        {
+            RewriteCode("0A0407C9"); // blgt	00010300
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(LE,ZNV)) branch 00100004",
+                "2|T--|call 0010FA04 (0)");
+        }
+
+        [Test]
+        public void ARCompactRw_blle()
+        {
+            RewriteCode("0FC01BEC"); // blle.d	0003B658
+            AssertCode(
+                "0|TD-|00100000(4): 2 instructions",
+                "1|T--|if (Test(GT,ZNV)) branch 00100004",
+                "2|TD-|call 00137FC0 (0)");
+        }
+
+        [Test]
+        public void ARCompactRw_bllt()
+        {
+            RewriteCode("0FC0202B"); // bllt.d	0004A65C
+            AssertCode(
+                "0|TD-|00100000(4): 2 instructions",
+                "1|T--|if (Test(GE,ZN)) branch 00100004",
+                "2|TD-|call 001407C0 (0)");
+        }
+
+        [Test]
+        public void ARCompactRw_blne()
+        {
+            RewriteCode("0F8C0002"); // blne	0000168C
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004",
+                "2|T--|call 0010078C (0)");
+        }
+
+        [Test]
+        public void ARCompactRw_bmsk_s()
+        {
+            RewriteCode("B8C0"); // bmsk_s	r0,r0,00000000
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = __bitmask(r0, 0x00000000)");
+        }
+
+        [Test]
+        public void ARCompactRw_ble()
+        {
+            RewriteCode("00C0140C"); // ble	000285D8
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (Test(LE,ZNV)) branch 001280C0");
+        }
+
+        [Test]
+        public void ARCompactRw_ble_s()
+        {
+            RewriteCode("F6D2"); // ble_s	00001648
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(LE,ZNV)) branch 00100024");
+        }
+
+
+        [Test]
+        public void ARCompactRw_blt()
+        {
+            RewriteCode("0204202B"); // blt.d	00040CF0
+            AssertCode(
+                "0|TD-|00100000(4): 1 instructions",
+                "1|TD-|if (Test(LT,ZN)) branch 00140204");
+        }
+
+        [Test]
+        public void ARCompactRw_blt_s()
+        {
+            RewriteCode("F683"); // blt_s	0000025A
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(LT,ZN)) branch 00100006");
+        }
+
+        [Test]
+        public void ARCompactRw_bne_s()
+        {
+            RewriteCode("F403"); // bne_s	0000005A
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100006");
+        }
+
+        [Test]
+        [Ignore("Involves testing S1 and S2 in the AUX_MACMODE register")]
+        public void ARCompactRw_bss()
+        {
+            RewriteCode("00027150"); // bss	000E2922
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ARCompactRw_b()
+        {
+            RewriteCode("00010043"); // b	0060085C
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto 00700800");
+        }
+
+        [Test]
+        public void ARCompactRw_b_s()
+        {
+            RewriteCode("F013"); // b_s	0000007E
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|goto 00100026");
+        }
+
+        [Test]
+        public void ARCompactRw_bl_s()
+        {
+            RewriteCode("FFFF"); // bl_s	00000334
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|call 000FFFFC (0)");
+        }
+
+
+        [Test]
+        public void ARCompactRw_breq()
+        {
+            RewriteCode("0DFFE080"); // breq	r53,r2,0000004E
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r53 == r2) branch 000FFFFE");
+        }
+
+        [Test]
+        public void ARCompactRw_brge()
+        {
+            RewriteCode("0FC7B883"); // brge	blink,r34,00004D66
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (blink >= r34) branch 000FFFC6");
+        }
+
+        [Test]
+        public void ARCompactRw_brlt()
+        {
+            RewriteCode("0FFFC0A2"); // brlt	r39,r2,00000B1A
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r39 < r2) branch 000FFFFE");
+        }
+
+        [Test]
+        public void ARCompactRw_brne()
+        {
+            RewriteCode("0F8101E1"); // brne	r7,r7,0000B99C
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r7 != r7) branch 00100080");
+        }
+
+        [Test]
+        public void ARCompactRw_cmp()
+        {
+            RewriteCode("244C8000"); // cmp	r4,00000000
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ZNCV = cond(r4 - 0x00000000)");
+        }
+
+        [Test]
+        public void ARCompactRw_cmp_s()
+        {
+            RewriteCode("E080"); // cmp_s	r0,00000000
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|ZNCV = cond(r0 - 0x00000000)");
+        }
+
+        [Test]
+        public void ARCompactRw_j_s_blink()
+        {
+            RewriteCode("7EE0"); // j_s	[blink]
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|return (0,0)");
+        }
+
+        [Test]
+        public void ARCompactRw_jeq_d_blink()
+        {
+            RewriteCode("20E007C1"); // jeq.d	[blink]
+            AssertCode(
+                "0|TD-|00100000(4): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|TD-|return (0,0)");
+        }
+
+        [Test]
+        public void ARCompactRw_jl_s()
+        {
+            RewriteCode("7A40"); // jl_s	[r2]
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|call r2 (0)");
+        }
+
+        [Test]
+        public void ARCompactRw_ldb_x()
+        {
+            RewriteCode("13FEB0C0"); // ldb.x	r0,[fp,-2]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = (word32) Mem0[fp - 2:int8]");
+        }
+
+        [Test]
+        public void ARCompactRw_lr()
+        {
+            RewriteCode("202A0F8012345678"); // lr	r0,[65603]
+            AssertCode(
+                "0|L--|00100000(8): 1 instructions",
+                "1|L--|r0 = __load_aux_reg(0x12345678)");
+        }
+
+        [Test]
+        public void ARCompactRw_lsr()
+        {
+            RewriteCode("2A41008D"); // lsr	r13,r2,r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r13 = r2 >>u r2");
+        }
+
+        [Test]
+        public void ARCompactRw_lsr_s()
+        {
+            RewriteCode("B823"); // lsr_s	r0,r0,00000003
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r0 >>u 0x00000003");
+        }
+
+        [Test]
+        public void ARCompactRw_max()
+        {
+            RewriteCode("2088706A"); // max	r56,r56,-0000057F
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r56 = max(r56, -1407)");
+        }
+
+        [Test]
+        public void ARCompactRw_min()
+        {
+            RewriteCode("23092640"); // min	r0,r19,r25
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = min(r19, r25)");
+        }
+
+        [Test]
+        public void ARCompactRw_mov()
+        {
+            RewriteCode("230A3700"); // mov	fp,sp
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|fp = sp");
+        }
+
+        [Test]
+        public void ARCompactRw_mov_s()
+        {
+            RewriteCode("7608"); // mov_s	r14,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r14 = r0");
+        }
+
+        [Test]
+        public void ARCompactRw_neg_s()
+        {
+            RewriteCode("7813"); // neg_s	r0,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = -r0");
+        }
+
+        [Test]
+        public void ARCompactRw_nop()
+        {
+            RewriteCode("78E0"); // nop
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
         public void ARCompactRw_not()
         {
             RewriteCode("252F808A"); // not.f	r5,r2
@@ -77,6 +676,25 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
+        public void ARCompactRw_or()
+        {
+            RewriteCode("2005A000"); // or.f	r0,r16,r0
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r0 = r16 | r0",
+                "2|L--|ZN = cond(r0)");
+        }
+
+        [Test]
+        public void ARCompactRw_or_s()
+        {
+            RewriteCode("7EA5"); // or_s	r14,r14,r13
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r14 = r14 | r13");
+        }
+
+        [Test]
         public void ARCompactRw_push_s()
         {
             RewriteCode("C5E1"); // push_s	r13
@@ -84,6 +702,44 @@ namespace Reko.UnitTests.Arch.Arc
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|sp = sp - 4",
                 "2|L--|Mem0[sp:word32] = r13");
+        }
+
+        [Test]
+        public void ARCompactRw_rsub()
+        {
+            RewriteCode("200E8080"); // rsub	r0,r0,r2
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r0 = r2 - r0",
+                "2|L--|ZNCV = cond(r0)");
+        }
+
+        [Test]
+        public void ARCompactRw_sexb()
+        {
+            RewriteCode("202F2405"); // sexb	r16,r16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r16 = (int32) SLICE(r16, int8, 0)");
+        }
+
+        [Test]
+        public void ARCompactRw_sexw_s()
+        {
+            RewriteCode("792E"); // sexw_s	r1,r1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r1 = (int32) SLICE(r1, int16, 0)");
+        }
+
+
+        [Test]
+        public void ARCompactRw_sr()
+        {
+            RewriteCode("212B0000"); // sr	r1,[]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__store_aux_reg(0x00000000, r1)");
         }
 
         [Test]
@@ -106,6 +762,43 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
+        public void ARCompactRw_st_s()
+        {
+            RewriteCode("A707"); // st_s	r0,[r15,28]
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|Mem0[r15 + 28:word32] = r0");
+        }
+
+        [Test]
+        public void ARCompactRw_stb_ab()
+        {
+            RewriteCode("1E011012"); // stb.ab	r0,[r14,1]
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|Mem0[r14:byte] = SLICE(r0, byte, 0)",
+                "2|L--|r14 = r14 + 1");
+        }
+
+        [Test]
+        public void ARCompactRw_stb_s()
+        {
+            RewriteCode("A820"); // stb_s	r1,[r0]
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|Mem0[r0:byte] = SLICE(r1, byte, 0)");
+        }
+
+        [Test]
+        public void ARCompactRw_stw()
+        {
+            RewriteCode("1A282004"); // stw	r0,[r18,40]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r18 + 40:word16] = SLICE(r0, word16, 0)");
+        }
+
+        [Test]
         public void ARCompactRw_stw_s()
         {
             RewriteCode("B6C8"); // stw_s	r14,[r14,16]
@@ -115,86 +808,12 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        public void ARCompactRw_mov()
+        public void ARCompactRw_sub()
         {
-            RewriteCode("230A3700"); // mov	fp,sp
+            RewriteCode("21020012"); // sub	r18,r1,r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|fp = sp");
-        }
-
-        [Test]
-        public void ARCompactRw_mov_s()
-        {
-            RewriteCode("7608"); // mov_s	r14,r0
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r14 = r0");
-        }
-
-        [Test]
-        public void ARCompactRw_bl()
-        {
-            RewriteCode("0B0A0000"); // bl	00000308
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|call 00100308 (0)");
-        }
-
-        [Test]
-        public void ARCompactRw_bgt()
-        {
-            RewriteCode("000070C9"); // bgt	000E1814
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(GT,ZNV)) branch 001E1800");
-        }
-
-        [Test]
-        public void ARCompactRw_bge()
-        {
-            RewriteCode("0300240A"); // bge	0004831C
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(GE,ZN)) branch 00148300");
-        }
-
-        [Test]
-        public void ARCompactRw_ld_ab()
-        {
-            RewriteCode("1404341B"); // ld.ab	fp,[sp,4]
-            AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|fp = Mem0[sp:word32]",
-                "2|L--|sp = sp + 4");
-        }
-
-        [Test]
-        public void ARCompactRw_pop_s()
-        {
-            RewriteCode("C0D1"); // pop_s	blink
-            AssertCode(
-                "0|L--|00100000(2): 2 instructions",
-                "1|L--|blink = Mem0[sp:word32]",
-                "2|L--|sp = sp + 4");
-        }
-
-        [Test]
-        public void ARCompactRw_j_s_blink()
-        {
-            RewriteCode("7EE0"); // j_s	[blink]
-            AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|return (0,0)");
-        }
-
-        [Test]
-        public void ARCompactRw_beq_d()
-        {
-            RewriteCode("0000C5E1"); // beq.d	FFF8B82C
-            AssertCode(
-                "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|if (Test(EQ,Z)) branch 0008B800");
+                "1|L--|r18 = r1 - r0");
         }
 
         [Test]
@@ -207,198 +826,41 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        public void ARCompactRw_bic()
+        public void ARCompactRw_tst()
         {
-            RewriteCode("2006D7F8"); // bic	r56,r40,blink
+            RewriteCode("230B2140"); // tst	r19,r5
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r56 = r40 & ~blink",
-                "2|L--|ZN = cond(r56)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ZN = cond(r19 & r5)");
         }
 
         [Test]
-        public void ARCompactRw_ld_pcl()
+        public void ARCompactRw_xor()
         {
-            RewriteCode("D7F8"); // ld_s	r15,[pcl,992]
+            RewriteCode("24071F29"); // xor	r41,r12,lp_count
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r41 = r12 ^ lp_count");
+        }
+
+        [Test]
+        public void ARCompactRw_xor_s()
+        {
+            RewriteCode("7B07"); // xor_s	r3,r3,r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r15 = Mem0[0x001003E0:word32]");
-        }
-
-        [Test]
-        public void ARCompactRw_ldw_s()
-        {
-            RewriteCode("910B"); // ldw_s	r0,[r1,22]
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = (word32) Mem0[r1 + 22:word16]");
-        }
-
-        [Test]
-        public void ARCompactRw_breq()
-        {
-            RewriteCode("0DFFE080"); // breq	r53,r2,0000004E
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (r53 == r2) branch 000FFFFE");
-        }
-
-        [Test]
-        public void ARCompactRw_bleq()
-        {
-            RewriteCode("0F800001"); // bleq	000007DC
-            AssertCode(
-                "0|T--|00100000(4): 2 instructions",
-                "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|T--|call 00100780 (0)");
-        }
-
-        [Test]
-        public void ARCompactRw_bne_s()
-        {
-            RewriteCode("F403"); // bne_s	0000005A
-            AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|if (Test(NE,Z)) branch 00100006");
-        }
-
-        [Test]
-        public void ARCompactRw_b()
-        {
-            RewriteCode("00010043"); // b	0060085C
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto 00700800");
-        }
-
-        [Test]
-        public void ARCompactRw_b_s()
-        {
-            RewriteCode("F013"); // b_s	0000007E
-            AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|goto 00100026");
-        }
-
-        [Test]
-        public void ARCompactRw_cmp_s()
-        {
-            RewriteCode("E080"); // cmp_s	r0,00000000
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|ZNCV = cond(r0 - 0x00000000)");
-        }
-
-        [Test]
-        public void ARCompactRw_lr()
-        {
-            RewriteCode("202A0F8012345678"); // lr	r0,[65603]
-            AssertCode(
-                "0|L--|00100000(8): 1 instructions",
-                "1|L--|r0 = __load_aux_reg(0x12345678)");
-        }
-
-        [Test]
-        public void ARCompactRw_or()
-        {
-            RewriteCode("2005A000"); // or.f	r0,r16,r0
-            AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r0 = r16 | r0");
-        }
-
-        [Test]
-        public void ARCompactRw_bmsk_s()
-        {
-            RewriteCode("B8C0"); // bmsk_s	r0,r0,00000000
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = __bitmask(r0, 0x00000000)");
+                "1|L--|r3 = r3 ^ r0");
         }
 
         //////////////////////////////////////////////////////////////////
 
 #if BORED
-        [Test]
-        public void ARCompactRw_add()
-        {
-            RewriteCode("27C07708"); // add.vc	pcl,pcl,sp
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_add_s()
-        {
-            RewriteCode("E043"); // add_s	r0,r0,00000043
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_lsr_s()
-        {
-            RewriteCode("B823"); // lsr_s	r0,r0,00000003
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_beq_s()
-        {
-            RewriteCode("F205"); // beq_s	0000013E
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_bmsk()
-        {
-            RewriteCode("20530001"); // bmsk	r1,r0,00000000
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_bss()
-        {
-            RewriteCode("00027150"); // bss	000E2922
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_ldb()
-        {
-            RewriteCode("13FEB0C0"); // ldb.x	r0,[fp,-2]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void ARCompactRw_extb_s()
-        {
-            RewriteCode("780F"); // extb_s	r0,r0
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void ARCompactRw_sub()
-        {
-            RewriteCode("21020012"); // sub	r18,r1,r0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void ARCompactRw_bhs_s()
@@ -418,50 +880,12 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_bhi()
-        {
-            RewriteCode("004C000D"); // bhi	000001D0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_asl_s()
-        {
-            RewriteCode("6E12"); // asl_s	r0,r14,00000002
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+ 
 
-        [Test]
-        public void ARCompactRw_sr()
-        {
-            RewriteCode("212B0000"); // sr	r1,[]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_bhi_s()
-        {
-            RewriteCode("F738"); // bhi_s	00000188
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_st_s()
-        {
-            RewriteCode("A707"); // st_s	r0,[r15,28]
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ARCompactRw_bclr_s()
@@ -481,14 +905,8 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_asl()
-        {
-            RewriteCode("2F800000"); // asl	r0,r7,r0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
 
         [Test]
         public void ARCompactRw_bsc()
@@ -526,23 +944,9 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_blt_s()
-        {
-            RewriteCode("F683"); // blt_s	0000025A
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_and()
-        {
-            RewriteCode("20440401"); // and	r1,r0,00000010
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
 
         [Test]
         public void ARCompactRw_jl()
@@ -564,14 +968,7 @@ namespace Reko.UnitTests.Arch.Arc
 
 
 
-        [Test]
-        public void ARCompactRw_bl_s()
-        {
-            RewriteCode("FFFF"); // bl_s	00000334
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ARCompactRw_brhs()
@@ -600,14 +997,7 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_nop()
-        {
-            RewriteCode("78E0"); // nop
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ARCompactRw_ldw()
@@ -654,14 +1044,7 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_ble()
-        {
-            RewriteCode("00C0140C"); // ble	000285D8
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ARCompactRw_bcc()
@@ -690,68 +1073,17 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_blo_s()
-        {
-            RewriteCode("F792"); // blo_s	000007F0
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_stb()
-        {
-            RewriteCode("1E011012"); // stb.ab	r0,[r14,1]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_ldb_s()
-        {
-            RewriteCode("67A9"); // ldb_s	r1,[r15,0]
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_stb_s()
-        {
-            RewriteCode("A820"); // stb_s	r1,[r0]
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_or_s()
-        {
-            RewriteCode("7EA5"); // or_s	r14,r14,r13
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_lsr()
-        {
-            RewriteCode("2A41008D"); // lsr	r13,r2,r2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_jeq()
-        {
-            RewriteCode("20E007C1"); // jeq.d	[blink]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
+
+
+
 
         [Test]
         public void ARCompactRw_bpnz()
@@ -798,14 +1130,7 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_blgt()
-        {
-            RewriteCode("0A0407C9"); // blgt	00010300
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ARCompactRw_btst_s()
@@ -826,15 +1151,6 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        public void ARCompactRw_cmp()
-        {
-            RewriteCode("244C8000"); // cmp	r4,00000000
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void ARCompactRw_btst()
         {
             RewriteCode("261190C0"); // btst	r14,r3
@@ -843,23 +1159,9 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_blt()
-        {
-            RewriteCode("0204202B"); // blt.d	00040CF0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_brlt()
-        {
-            RewriteCode("0FFFC0A2"); // brlt	r39,r2,00000B1A
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
 
         [Test]
         public void ARCompactRw_sbc()
@@ -888,23 +1190,9 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_add2_s()
-        {
-            RewriteCode("7915"); // add2_s	r1,r1,r0
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_blne()
-        {
-            RewriteCode("0F8C0002"); // blne	0000168C
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
 
         [Test]
         public void ARCompactRw_bclr()
@@ -924,14 +1212,7 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_bge_s()
-        {
-            RewriteCode("F653"); // bge_s	00001196
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ARCompactRw_blcs()
@@ -960,41 +1241,11 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_extb()
-        {
-            RewriteCode("202F2407"); // extb	r16,r16
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_xor()
-        {
-            RewriteCode("24071F29"); // xor	r41,r12,lp_count
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_ble_s()
-        {
-            RewriteCode("F6D2"); // ble_s	00001648
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_extw_s()
-        {
-            RewriteCode("7ED0"); // extw_s	r14,r14
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
 
         [Test]
         public void ARCompactRw_ror()
@@ -1014,14 +1265,7 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_max()
-        {
-            RewriteCode("2088706A"); // max	r56,r56,-0000057F
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+      
 
         [Test]
         public void ARCompactRw_bgt_s()
@@ -1041,50 +1285,14 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_stw()
-        {
-            RewriteCode("1A282004"); // stw	r0,[r18,40]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_and_s()
-        {
-            RewriteCode("7D04"); // and_s	r13,r13,r0
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_asr_s()
-        {
-            RewriteCode("691B"); // asr_s	r0,r1,00000003
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_rsub()
-        {
-            RewriteCode("200E8080"); // rsub	r0,r0,r2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_jl_s()
-        {
-            RewriteCode("7A40"); // jl_s	[r2]
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
+
+
 
         [Test]
         public void ARCompactRw_blpl()
@@ -1122,23 +1330,7 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_tst()
-        {
-            RewriteCode("230B2140"); // tst	r19,r5
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_min()
-        {
-            RewriteCode("23092640"); // min	r0,r19,r25
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void ARCompactRw_breq_s()
@@ -1149,23 +1341,6 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_blle()
-        {
-            RewriteCode("0FC01BEC"); // blle.d	0003B658
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void ARCompactRw_bic_s()
-        {
-            RewriteCode("78E6"); // bic_s	r0,r0,r15
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void ARCompactRw_add1_s()
@@ -1194,23 +1369,9 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_blge()
-        {
-            RewriteCode("0800F20A"); // blge	FFFE8790
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_brge()
-        {
-            RewriteCode("0FC7B883"); // brge	blink,r34,00004D66
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
 
         [Test]
         public void ARCompactRw_bxor()
@@ -1248,23 +1409,9 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_extw()
-        {
-            RewriteCode("202F2408"); // extw	r16,r16
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_asr()
-        {
-            RewriteCode("2D421200"); // asr	r0,r13,r8
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
 
         [Test]
         public void ARCompactRw_divaw()
@@ -1284,14 +1431,6 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_bllt()
-        {
-            RewriteCode("0FC0202B"); // bllt.d	0004A65C
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void ARCompactRw_blpnz()
@@ -1311,41 +1450,8 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_xor_s()
-        {
-            RewriteCode("7B07"); // xor_s	r3,r3,r0
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_neg_s()
-        {
-            RewriteCode("7813"); // neg_s	r0,r0
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void ARCompactRw_brne()
-        {
-            RewriteCode("0F8101E1"); // brne	r7,r7,0000B99C
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void ARCompactRw_sexw_s()
-        {
-            RewriteCode("792E"); // sexw_s	r1,r1
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void ARCompactRw_trap_s()
@@ -1356,14 +1462,7 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ARCompactRw_sexb()
-        {
-            RewriteCode("202F2405"); // sexb	r16,r16
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ARCompactRw_addsdw()
