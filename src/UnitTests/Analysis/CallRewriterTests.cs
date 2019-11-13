@@ -857,6 +857,40 @@ main_exit:
             AssertProcedureCode(sExp, ssa);
         }
 
+        [Test(Description = "Ignore FPU return if it was not found in call definitions")]
+        [Category(Categories.UnitTests)]
+        public void CrwFPUReturnNotFound()
+        {
+            var ret = new FpuStackStorage(0, PrimitiveType.Real64);
+            var ssa = Given_Procedure("main", m =>
+            {
+                m.Label("body");
+                m.Call("fn", 4, new Identifier[] { }, new Identifier[] { });
+                m.Return();
+            });
+            Given_Procedure("fn", m => { });
+            Given_Signature(
+                "fn",
+                FunctionType.Func(
+                    new Identifier(
+                        "ret",
+                        ret.DataType,
+                        ret)));
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	fn()
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
         [Test]
         [Category(Categories.UnitTests)]
         public void CrwExcessRegisterUse()
