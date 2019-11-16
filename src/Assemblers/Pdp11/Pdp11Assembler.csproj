@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.Assemblers.Pdp11</RootNamespace><AssemblyName>Reko.Assemblers.Pdp11</AssemblyName></PropertyGroup>
+    <RootNamespace>Reko.Assemblers.Pdp11</RootNamespace>
+    <AssemblyName>Reko.Assemblers.Pdp11</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Pdp11\Pdp11.csproj"/>
     <ProjectReference Include="..\..\Core\Core.csproj"/>

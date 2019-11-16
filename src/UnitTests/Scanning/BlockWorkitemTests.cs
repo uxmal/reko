@@ -133,9 +133,9 @@ namespace Reko.UnitTests.Scanning
             program.Platform = new FakePlatform(null, arch.Object)
             {
                 Test_CreateTrashedRegisters =
-                    () => regs
-                        .Select(id => (RegisterStorage)id.Storage)
-                        .ToSet()
+                    () => EnumerableEx.ToHashSet(regs
+                        .Select(id => (RegisterStorage) id.Storage)
+)
             };
         }
 

@@ -1,18 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko</RootNamespace><AssemblyName>Reko</AssemblyName></PropertyGroup>
+    <RootNamespace>Reko</RootNamespace>
+    <AssemblyName>Reko</AssemblyName>
+  </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Scanning\BapScanner.cs"/>
+    <Compile Remove="Scanning\BapScanner.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj"/>
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 </Project>

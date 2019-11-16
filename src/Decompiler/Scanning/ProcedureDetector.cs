@@ -51,7 +51,7 @@ namespace Reko.Scanning
             this.program = program;
             this.sr = sr;
             this.listener = listener;
-            this.procedures = sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys).ToSet();
+            this.procedures = sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys).ToHashSet();
             DumpDuplicates(sr.ICFG.Nodes);
             this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
         }
@@ -393,7 +393,7 @@ namespace Reko.Scanning
             // Remove all nodes with no predecessors which haven't been marked as entries.
             var deadNodes = cluster.Blocks
                 .Where(b => !entries.Contains(b) && sr.ICFG.Predecessors(b).Count == 0)
-                .ToSet();
+                .ToHashSet();
             cluster.Blocks.ExceptWith(deadNodes);
             if (cluster.Blocks.Count == 0 || entries.Count == 0)
             {

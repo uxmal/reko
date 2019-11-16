@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" >
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>Reko.Tools.genPICdb</RootNamespace>
@@ -14,22 +14,22 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    <Reference Include="System.Core"/>
-    <Reference Include="System.IO.Compression"/>
-    <Reference Include="System.IO.Compression.FileSystem"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    <Reference Include="Microsoft.CSharp"/>
-    <Reference Include="System.Data"/>
-    <Reference Include="System.Net.Http"/>
-    <Reference Include="System.Xml"/>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config"/>
-    <None Include="defaultpicdb.zip"/>
-    <None Include="genPICdb.licenseheader"/>
-    <None Include="picdb.zip"/>
+    <None Include="App.config" />
+    <None Include="defaultpicdb.zip" />
+    <None Include="genPICdb.licenseheader" />
+    <None Include="picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

@@ -1,12 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>Reko.Core</AssemblyName>
+    <RootNamespace>Reko.Core</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.Core</RootNamespace><AssemblyName>Reko.Core</AssemblyName><PackageProjectUrl>https://github.com/uxmal/reko</PackageProjectUrl><RepositoryUrl>https://github.com/uxmal/reko</RepositoryUrl></PropertyGroup>
+    <PackageProjectUrl>https://github.com/uxmal/reko</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/uxmal/reko</RepositoryUrl>
+  </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Serialization\DecompilerDiscoveries.cs" />
@@ -16,9 +20,6 @@
   <ItemGroup>
     <None Remove="Serialization\Serialization.xsd" />
     <None Remove="Serialization\Serialization.xsx" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

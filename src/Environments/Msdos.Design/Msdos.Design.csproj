@@ -12,6 +12,6 @@
     <ProjectReference Include="..\Msdos\Msdos.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms"/>
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 </Project>

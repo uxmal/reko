@@ -19,6 +19,6 @@
     <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms"/>
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 </Project>

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   <RootNamespace>Reko.Environments.Xbox360</RootNamespace><AssemblyName>Reko.Environments.Xbox360</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj"/>
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj" />
   </ItemGroup>
 </Project>

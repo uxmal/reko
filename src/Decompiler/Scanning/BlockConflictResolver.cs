@@ -106,7 +106,7 @@ namespace Reko.Scanning
             {
                 if (mpAddrToBlock.TryGetValue(addrProcStart,out var entry))
                 {
-                    var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToSet();
+                    var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToHashSet();
                     reachable.UnionWith(r);
                 }
             }
@@ -178,7 +178,7 @@ namespace Reko.Scanning
         private void RemoveBlocksConflictingWithValidBlocks(HashSet<RtlBlock> valid)
         {
             // `nodes` are all blocks that weren't reachable by DFS.
-            var nodes = blocks.Nodes.Where(nn => !valid.Contains(nn)).ToSet();
+            var nodes = blocks.Nodes.Where(nn => !valid.Contains(nn)).ToHashSet();
             foreach (var cc in
                 (from c in conflicts
                  where nodes.Contains(c.Item1) && valid.Contains(c.Item2)

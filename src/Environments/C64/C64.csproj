@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   <RootNamespace>Reko.Environments.C64</RootNamespace><AssemblyName>Reko.Environments.C64</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\Mos6502\Mos6502.csproj"/>
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\Arch\Mos6502\Mos6502.csproj" />
   </ItemGroup>
 </Project>

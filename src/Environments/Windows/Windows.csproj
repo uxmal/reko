@@ -1,20 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   <RootNamespace>Reko.Environments.Windows</RootNamespace><AssemblyName>Reko.Environments.Windows</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\X86\X86.csproj"/>
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
-    <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj"/>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
+    <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj" />
   </ItemGroup>
   <ItemGroup>
     <TranslateHeader Include="msvcrt.inc" />
   </ItemGroup>
-  <Target Name="AfterBuild">
+  <Target Name="CopyMetadata" AfterTargets="CoreBuild">
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
     <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/c2xml.exe -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
