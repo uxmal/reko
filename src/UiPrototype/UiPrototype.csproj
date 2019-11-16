@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0" DefaultTargets="Build">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -74,27 +74,27 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore"/>
-    <Reference Include="PresentationFramework"/>
-    <Reference Include="System"/>
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xaml"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    <Reference Include="System.Data"/>
-    <Reference Include="System.Deployment"/>
-    <Reference Include="System.Drawing"/>
-    <Reference Include="System.Windows.Forms"/>
-    <Reference Include="System.Xml"/>
-    <Reference Include="WindowsBase"/>
-    <Reference Include="WindowsFormsIntegration"/>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ui\MainFormInteractor.cs"/>
-    <Compile Include="WinForms\DataType.cs"/>
-    <Compile Include="WinForms\Project.cs"/>
-    <Compile Include="WinForms\StringSearcher.cs"/>
-    <Compile Include="WinForms\SearchHit.cs"/>
+    <Compile Include="Ui\MainFormInteractor.cs" />
+    <Compile Include="WinForms\DataType.cs" />
+    <Compile Include="WinForms\Project.cs" />
+    <Compile Include="WinForms\StringSearcher.cs" />
+    <Compile Include="WinForms\SearchHit.cs" />
     <Compile Include="WinForms\PatternSearchDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,8 +113,8 @@
     <Compile Include="WinForms\MemoryView.Designer.cs">
       <DependentUpon>MemoryView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs"/>
-    <Compile Include="Properties\AssemblyInfo.cs"/>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinForms\MemoryTyperControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -152,7 +152,7 @@
     <EmbeddedResource Include="WinForms\TypeDialog.resx">
       <DependentUpon>TypeDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config"/>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -164,14 +164,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Back.bmp"/>
-    <Content Include="Resources\Forward.bmp"/>
-    <Content Include="Resources\Forward.ico"/>
-    <Content Include="Resources\Binary.ico"/>
-    <Content Include="Resources\Data.ico"/>
-    <Content Include="Resources\Back.ico"/>
-    <Content Include="Resources\Header.ico"/>
-    <Content Include="Resources\Code.ico"/>
+    <Content Include="Resources\Back.bmp" />
+    <Content Include="Resources\Forward.bmp" />
+    <Content Include="Resources\Forward.ico" />
+    <Content Include="Resources\Binary.ico" />
+    <Content Include="Resources\Data.ico" />
+    <Content Include="Resources\Back.ico" />
+    <Content Include="Resources\Header.ico" />
+    <Content Include="Resources\Code.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
@@ -187,7 +187,7 @@
       <Name>Gui</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

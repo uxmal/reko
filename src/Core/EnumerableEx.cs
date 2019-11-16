@@ -83,7 +83,8 @@ namespace Reko.Core
             return list;
         }
 
-        public static HashSet<TElement> ToSet<TElement>(
+        // Enumerable.ToHashSet() doesn't exist on .NET Standard 2.0, only in .NET Core 2.x and .NET Framework. WTaF?
+        public static HashSet<TElement> ToHashSet<TElement>(
             this IEnumerable<TElement> source)
         {
             return new HashSet<TElement>(source);

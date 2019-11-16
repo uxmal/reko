@@ -569,7 +569,7 @@ all other cases, together they constitute a Switch[].
         {
             this.postDoms = BuildPostDoms();
             var immPDom = this.postDoms.ImmediateDominator(n);
-            var caseNodes = regionGraph.Successors(n).ToSet();
+            var caseNodes = regionGraph.Successors(n).ToHashSet();
             if (caseNodes.Any(s => regionGraph.Successors(s).Contains(immPDom)))
                 return immPDom;
 
@@ -596,7 +596,7 @@ all other cases, together they constitute a Switch[].
             Region n, Region follow)
         {
             var caseNodesMap = new Dictionary<Region, ISet<Region>>();
-            var caseEntries = regionGraph.Successors(n).ToSet();
+            var caseEntries = regionGraph.Successors(n).ToHashSet();
             foreach (var c in caseEntries)
             {
                 var caseSet = new HashSet<Region>() { c };

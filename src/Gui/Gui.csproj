@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   <RootNamespace>Reko.Gui</RootNamespace><AssemblyName>Reko.Gui</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Windows\Forms\CmdIds.cs" />
+    <Compile Include="CmdIds.cs" Condition="!Exists('CmdIds.cs')" />
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />

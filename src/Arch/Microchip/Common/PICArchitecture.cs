@@ -348,7 +348,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToSet();
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return ProcessorModel.CreatePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 

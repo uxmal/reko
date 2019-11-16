@@ -129,7 +129,7 @@ namespace Reko.Arch.Mips
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToSet();
+            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
             return new MipsPointerScanner32(rdr, knownLinAddresses, flags).Select(l => Address.Ptr32(l));
         }
 

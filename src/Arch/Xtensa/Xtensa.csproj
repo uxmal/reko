@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.Arch.Xtensa</RootNamespace><AssemblyName>Reko.Arch.Xtensa</AssemblyName></PropertyGroup>
+    <RootNamespace>Reko.Arch.Xtensa</RootNamespace>
+    <AssemblyName>Reko.Arch.Xtensa</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj"/>
   </ItemGroup>

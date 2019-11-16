@@ -17,13 +17,11 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
     <PackageReference Include="Microsoft.NET.Test.SDK" Version="15.9.0" />
   </ItemGroup>
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-    <Message Text="Copy $(ProjectDir)$(OutDir)$(TargetFileName) to $(SolutionDir)tools" Importance="High" />
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName).config" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Core.dll" DestinationFolder="$(SolutionDir)tools" />
+  <Target Name="CopyToToolsDir" AfterTargets="CoreBuild">
+    <Message Text="Copy $(ProjectDir)$(OutputPath)$(TargetFileName) to $(SolutionDir)tools" Importance="High" />
+    <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName)" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName).config" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(ProjectDir)$(OutputPath)Reko.Core.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)..\external\docopt.net-0.6.1.4\DocoptNet.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(SolutionDir)tools" SkipUnchangedFiles="true" />
   </Target>

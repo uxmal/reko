@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   <RootNamespace>Reko.ImageLoaders.Hunk</RootNamespace><AssemblyName>Reko.ImageLoaders.Hunk</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <Compile Remove="HunkShow.cs"/>
-    <Compile Remove="Segment.cs"/>
+    <Compile Remove="HunkShow.cs" />
+    <Compile Remove="Segment.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
-    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj"/>
-    <ProjectReference Include="..\..\Environments\AmigaOS\AmigaOS.csproj"/>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />
+    <ProjectReference Include="..\..\Environments\AmigaOS\AmigaOS.csproj" />
   </ItemGroup>
 </Project>
