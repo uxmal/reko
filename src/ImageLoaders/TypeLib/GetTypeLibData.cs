@@ -1,6 +1,8 @@
 // **************************************
 //    "GetTypeLibData.bas"
 
+namespace Reko.ImageLoaders.TypeLib
+{ 
 
 //This file is GPL 2008, by TheirCorp
 // *************************************

@@ -54,6 +54,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void WriteOpcode(string opcode)
         {
+            TerminateSpan();
             line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, opcode + " ", Gui.UiStyles.DisassemblerOpcode));
         }
 

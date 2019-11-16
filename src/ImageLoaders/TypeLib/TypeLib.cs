@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TypeLib;
 
-namespace Decompiler.TypeLib
-{
+namespace Reko.ImageLoaders.TypeLib
+{ 
         using WORD = System.UInt16;
         using DWORD = System.UInt32;
     using HRESULT = System.Int32;

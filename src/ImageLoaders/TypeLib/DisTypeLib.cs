@@ -18,7 +18,7 @@
 //This file is GPL 2008, by TheirCorp
 //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
-namespace Decompiler.TypeLib
+namespace Reko.ImageLoaders.TypeLib
 {
     public class DisTypeLib
     {
@@ -36,10 +36,6 @@ const int ProfileOn		= 1;
 public static int dbg;		
 public static string  dbs;	
 
-public void zz()
-{
-
-}
 
 #else
 
