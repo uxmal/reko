@@ -5,7 +5,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.Arch.M68k.Design</RootNamespace><AssemblyName>Reko.Arch.M68k.Design</AssemblyName></PropertyGroup>
+    <RootNamespace>Reko.Arch.M68k.Design</RootNamespace>
+    <AssemblyName>Reko.Arch.M68k.Design</AssemblyName></PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj"/>
     <ProjectReference Include="..\..\Gui\Gui.csproj"/>
@@ -14,4 +15,12 @@
   <ItemGroup>
     <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
+
+  <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
+  <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
+    <ItemGroup>
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(AssemblyName).UNK" />
+    </ItemGroup>
+  </Target>
+
 </Project>
