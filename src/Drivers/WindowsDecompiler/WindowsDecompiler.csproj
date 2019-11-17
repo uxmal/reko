@@ -99,5 +99,13 @@
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
+
+  <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
+  <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
+    <ItemGroup>
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(AssemblyName).UNK" />
+    </ItemGroup>
+  </Target>
+
   <Import Project="$(ProjectDir)..\PreBuild.targets" />
 </Project>
