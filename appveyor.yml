@@ -16,7 +16,7 @@ before_build:
 # If you want more build spew, change the verbosity below
 build:
   project: src/Reko-decompiler.sln
-  verbosity: diagnostic
+  verbosity: normal
 
 environment:
   artifacts_dir: bin
