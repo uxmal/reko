@@ -15,7 +15,7 @@
   </PropertyGroup>
   <!-- Copy dependencies to the `tools` directory.-->
   <Target Name="CopyToToolsDir" AfterTargets="CopyFilesToOutputDirectory">
-    <Message Importance="high" Text="Copying $(TargetFilename) to tools directory">
+    <Message Importance="high" Text="Copying $(TargetFilename) to tools directory" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
   </Target>
 </Project>
