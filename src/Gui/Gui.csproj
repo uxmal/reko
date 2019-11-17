@@ -28,12 +28,13 @@
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
     <Message Importance="high" Text="Generating C# files for Gui.csproj" />
     <Message Importance="high" Text="xslt.exe exists" Condition="Exists('$(ProjectDir)../tools/xslt.exe')" />
-    <!-- Assume that xslt.dll has been compiled. -->
-    <Exec Command="dotnet &quot;$(ProjectDir)..\tools\xslt.dll&quot; &quot;$(ProjectDir)cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)CmdIds.cs&quot;" />
-
     <!--
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(ProjectDir)..\tools\xslt.exe&quot; &quot;$(ProjectDir)cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)CmdIds.cs&quot;" />
+        It seems we can't rely on xslt.exe / xslt.dll (net472 or netcoreapp20)
+        have been built, despite all efforts to express this in the SLN file.
+        Thanks, build system.
     -->
+    <Msbuild Projects="$(ProjectDir)..\tools\xslt\xslt.csproj" Properties="Configuration=$(Configuration)" />
+    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(ProjectDir)..\tools\xslt.exe&quot; &quot;$(ProjectDir)cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)CmdIds.cs&quot;" />
+    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.dll') " Command="dotnet $(ProjectDir)../tools/xslt.dll $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
   </Target>
 </Project>
