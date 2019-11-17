@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net472</TargetFrameworks>
@@ -19,7 +19,7 @@
   <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
   <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
     <ItemGroup>
-      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(AssemblyName).UNK" />
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\net472\$(AssemblyName).dll" />
     </ItemGroup>
   </Target>
 
