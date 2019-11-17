@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp2.0;netstandard2.0</TargetFrameworks>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -15,6 +15,7 @@
   </PropertyGroup>
   <!-- Copy dependencies to the `tools` directory.-->
   <Target Name="CopyToToolsDir" AfterTargets="CopyFilesToOutputDirectory">
+    <Message Importance="high" Text="Copying $(TargetFilename) to tools directory">
     <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
   </Target>
 </Project>
