@@ -7,6 +7,7 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.Tools.HdrGen</RootNamespace>
     <AssemblyName>hdrgen</AssemblyName>
+    <OutputType>Exe</OutputType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>

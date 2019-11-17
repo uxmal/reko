@@ -4,10 +4,12 @@
     <TargetFrameworks>net472;netcoreapp2.0</TargetFrameworks>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject>Reko.Tools.C2Xml.Program</StartupObject>
-    <RootNamespace>Decompiler.Tools.C2Xml</RootNamespace>
+    <RootNamespace>Reko.Tools.C2Xml</RootNamespace>
     <AssemblyName>c2xml</AssemblyName>
   </PropertyGroup>
 
