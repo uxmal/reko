@@ -3,6 +3,7 @@
   <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
     <TargetFrameworks>net472</TargetFrameworks>
+    <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
