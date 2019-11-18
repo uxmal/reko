@@ -65,7 +65,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     new[] { dlg.Patterns.Text }.Concat(dlg.Patterns.Items.Cast<string>()));
             }
 
-            var pattern = EncodePattern(dlg.Encodings.SelectedIndex, dlg.Patterns.Text);
+            dlg.Patterns.Text = ConvertPatternToHexString(dlg.Encodings.SelectedIndex, dlg.Patterns.Text);
+
+            var pattern = ConvertHexStringToByteArray(dlg.Patterns.Text);
+
             dlg.ImageSearcher = new KmpStringSearch<byte>(
                 pattern,
                 dlg.ScannedMemory.Checked,
@@ -73,17 +76,48 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         }
 
         private const int EncodingHex = 0;
+        private const int EncodingOct = 1;
+        private const int EncodingAscii = 2;
+        private const int EncodingUtf8 = 3;
 
-        private byte[] EncodePattern(int encoding, string pattern)
+        private static string ConvertPatternToHexString(int encoding, string pattern)
         {
+            byte[] patternAsBytes;
+
             Debug.Print("Encoding pattern {0}", pattern);
             switch (encoding)
             {
             case EncodingHex:
-                // Ignore any non-hex digits.
-                return Hexize(pattern).ToArray();
+                return pattern;
+            case EncodingAscii:
+                patternAsBytes = Encoding.Convert(Encoding.Default, Encoding.ASCII, Encoding.Default.GetBytes(pattern));
+                break;
+            case EncodingUtf8:
+                patternAsBytes =  Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(pattern));
+                break;
             default: throw new NotImplementedException();
             }
+
+            return ConvertNumbersToHexString(patternAsBytes);
+        }
+
+        private static string ConvertNumbersToHexString(byte[] digits)
+        {
+            var stringBuilder = new StringBuilder();
+            foreach (var digit in digits)
+            {
+                if (stringBuilder.Length > 0)
+                   stringBuilder.Append(" ");
+                stringBuilder.Append(digit.ToString("X2"));
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private byte[] ConvertHexStringToByteArray(string pattern)
+        {
+            // Ignore any non-hex digits.
+            return Hexize(pattern).ToArray();
         }
 
         private static int HexDigit(char c)
