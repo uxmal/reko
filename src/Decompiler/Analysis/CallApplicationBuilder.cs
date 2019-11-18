@@ -105,6 +105,8 @@ namespace Reko.Analysis
                 if (((FpuStackStorage) de.Value.Storage).FpuStackOffset == fpu.FpuStackOffset)
                     return de.Value.Expression;
             }
+            if (!bindUses)
+                return null;
             throw new NotImplementedException(string.Format("Offsets not matching? SP({0})", fpu.FpuStackOffset));
         }
 
