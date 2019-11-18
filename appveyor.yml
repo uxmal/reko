@@ -43,7 +43,7 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
-  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/net472/Reko.UnitTests.dll --where="cat != FailedTests && cat != UserInterface" --framework:net-4.7.2
+  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/net472/Reko.UnitTests.dll --where="cat != FailedTests && cat != UserInterface" --framework:net-4.5
   - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
 
 artifacts:
