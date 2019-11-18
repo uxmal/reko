@@ -12,6 +12,7 @@
     <ApplicationIcon />
     <OutputType>WinExe</OutputType>
     <StartupObject>Reko.WindowsDecompiler.Driver</StartupObject>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

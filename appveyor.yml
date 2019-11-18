@@ -21,7 +21,7 @@ build:
 environment:
   artifacts_dir: bin
 
-# //$HACK: we've had to hard-wire the 'netstandard2.0' and 'net472' here.
+# //$HACK: we've had to hard-wire the 'net472' here.
 after_build:
   - ps : >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
