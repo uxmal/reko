@@ -11,6 +11,7 @@
     <StartupObject />
     <RootNamespace>Reko.CmdLine</RootNamespace>
     <AssemblyName>decompile</AssemblyName>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj" />

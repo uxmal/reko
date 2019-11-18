@@ -8,6 +8,7 @@
     <RootNamespace>Reko.UnitTests</RootNamespace>
     <AssemblyName>Reko.UnitTests</AssemblyName>
     <SolutionDir>$(ProjectDir)..\</SolutionDir>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
@@ -149,7 +150,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Python\Python.csproj" />
 
-    <ProjectReference Include="..\Native\NativeProxy.csproj" />
+ <!--   <ProjectReference Include="..\Native\NativeProxy.csproj" /> -->
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +165,7 @@
 
   <!-- TODO: Duplicated in Common.items -->
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
+<!--    
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
@@ -175,7 +177,8 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
-  </ItemGroup>
+-->
+</ItemGroup>
   <ItemGroup>
     <Compile Remove="CmdLine\**" />
     <Compile Remove="WindowsForms\**" />

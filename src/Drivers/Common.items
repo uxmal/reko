@@ -133,6 +133,7 @@ by the PreBuild.targets file.
 
   <!-- Platform dependent files go here-->
 
+  <!--
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
@@ -146,4 +147,5 @@ by the PreBuild.targets file.
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.$(UnixDllExt)" />
   </ItemGroup>
+  -->
 </Project>
