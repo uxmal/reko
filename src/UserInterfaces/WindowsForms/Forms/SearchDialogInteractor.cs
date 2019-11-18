@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  .
@@ -89,6 +89,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
             case EncodingHex:
                 return pattern;
+            case EncodingOct:
+                patternAsBytes = Octize(pattern).ToArray();
+                break;
             case EncodingAscii:
                 patternAsBytes = Encoding.Convert(Encoding.Default, Encoding.ASCII, Encoding.Default.GetBytes(pattern));
                 break;
@@ -131,6 +134,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             return -1;
         }
 
+        private static int OctalDigit(char c)
+        {
+            var n = c - '0';
+            if (0 <= n && n < 8)
+                return n;
+            else
+                return -1;
+        }
+
         public static IEnumerable<byte> Hexize(string pattern)
         {
             int digits = 0;
@@ -143,6 +155,27 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     ++digits;
                     outByte = (outByte << 4) | h;
                     if (digits == 2)
+                    {
+                        yield return (byte) outByte;
+                        digits = 0;
+                        outByte = 0;
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<byte> Octize(string pattern)
+        {
+            int digits = 0;
+            int outByte = 0;
+            foreach (char c in pattern)
+            {
+                int h = OctalDigit(c);
+                if (h >= 0)
+                {
+                    ++digits;
+                    outByte = outByte * 8 | h;
+                    if (digits == 3)
                     {
                         yield return (byte) outByte;
                         digits = 0;

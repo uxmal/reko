@@ -160,6 +160,16 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var bytes = SearchDialogInteractor.Hexize("FA").ToArray();
             Assert.AreEqual(0xFA, bytes[0]);
         }
+
+        [Test]
+        public void SrchDlg_Octize()
+        {
+            var bytes = SearchDialogInteractor.Octize("010 032 377").ToArray();
+            Assert.AreEqual(0x08, bytes[0]);
+            Assert.AreEqual(0x1A, bytes[1]);
+            Assert.AreEqual(0xFF, bytes[2]);
+        }
+
         private void Then_DialogHasBinarySearcher(params byte[] expectedBytes)
         {
             Assert.IsNotNull(dlg.ImageSearcher);
