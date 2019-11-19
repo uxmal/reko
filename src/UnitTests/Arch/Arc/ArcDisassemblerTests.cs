@@ -319,7 +319,7 @@ namespace Reko.UnitTests.Arch.Arc
         [Test]
         public void ARCompactDis_lsr_1op()
         {
-            AssertCode("lsr\tlp_count,r4", "242FF102");
+            AssertCode("lsr.f\tlp_count,r4", "242FF102");
         }
 
         [Test]
@@ -361,10 +361,10 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        public void ARCompactDis_21CC8F82()
+        public void ARCompactDis_cmp_ne()
         {
             // 21cc 8f82 0000 0201 	cmp.ne	r1,0x201
-            AssertCode("cmp.ne.f\tr1,00000201", "21CC8F82 0000 0201");
+            AssertCode("cmp.ne\tr1,00000201", "21CC8F82 0000 0201");
         }
 
         [Test]
@@ -404,7 +404,7 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        public void ARCompactDis_breq_S()
+        public void ARCompactDis_breq_s()
         {
             AssertCode("breq_s\tr2,+00000000,000FFF90", "EA48");
         }

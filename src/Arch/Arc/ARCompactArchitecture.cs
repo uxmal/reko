@@ -117,10 +117,17 @@ namespace Reko.Arch.Arc
         public override string GrfToString(RegisterStorage flagRegister, string prefix,  uint grf)
         {
             StringBuilder s = new StringBuilder();
-            if ((grf & (uint) FlagM.ZF) != 0) s.Append('Z');
-            if ((grf & (uint) FlagM.NF) != 0) s.Append('N');
-            if ((grf & (uint) FlagM.CF) != 0) s.Append('C');
-            if ((grf & (uint) FlagM.VF) != 0) s.Append('V');
+            if (flagRegister == Registers.Status32)
+            {
+                if ((grf & (uint) FlagM.ZF) != 0) s.Append('Z');
+                if ((grf & (uint) FlagM.NF) != 0) s.Append('N');
+                if ((grf & (uint) FlagM.CF) != 0) s.Append('C');
+                if ((grf & (uint) FlagM.VF) != 0) s.Append('V');
+            }
+            else
+            {
+                if ((grf & (uint) AuxFlagM.Sat) != 0) s.Append('S');
+            }
             return s.ToString();
         }
 

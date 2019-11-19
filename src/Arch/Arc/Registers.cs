@@ -31,10 +31,13 @@ namespace Reko.Arch.Arc
         public static readonly RegisterStorage Fp;
         public static readonly RegisterStorage Sp;
         public static readonly RegisterStorage Blink;
+        public static readonly RegisterStorage Mlo;
+        public static readonly RegisterStorage Mhi;
         public static readonly RegisterStorage LP_count;
         public static readonly RegisterStorage Pcl;
 
         public static readonly RegisterStorage Status32;
+        public static readonly RegisterStorage AuxMacmode;
 
         static Registers()
         {
@@ -45,11 +48,14 @@ namespace Reko.Arch.Arc
             Fp = RenameRegister(27, "fp");
             Sp = RenameRegister(28, "sp");
             Blink = RenameRegister(31, "blink");
+            Mlo = RenameRegister(57, "mlo");
+            Mhi = RenameRegister(59, "mhi");
             LP_count = RenameRegister(60, "lp_count");
             Pcl  = RenameRegister(63, "pcl");
 
             var sysFactory = new StorageFactory(StorageDomain.SystemRegister);
             Status32 = sysFactory.Reg("STATUS32", PrimitiveType.Word32);
+            AuxMacmode = sysFactory.Reg("AUX_MACMODE", PrimitiveType.Word32);
         }
 
         private static RegisterStorage RenameRegister(int iGpReg, string regName)
@@ -68,5 +74,11 @@ namespace Reko.Arch.Arc
         NF = 1024,
         CF = 512,
         VF = 256,
+    }
+
+    [Flags]
+    public enum AuxFlagM
+    {
+        Sat = 1 << 4,
     }
 }

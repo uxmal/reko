@@ -788,8 +788,8 @@ namespace Reko.Arch.Arc
 
                 reserved,
                 reserved,
-                Instr(Mnemonic.bbit0, B, C, PcRel2(Bf((15, 1), (17, 7)))),
-                Instr(Mnemonic.bbit1, B, C, PcRel2(Bf((15, 1), (17, 7)))));
+                Instr(Mnemonic.bbit0, CT, B, C, PcRel2(Bf((15, 1), (17, 7)))),
+                Instr(Mnemonic.bbit1, CT, B, C, PcRel2(Bf((15, 1), (17, 7)))));
 
             var majorOpc_00 = new W32Decoder(Mask(16, 1, "  00 Bcc Branch  32-bit",
                 Mask(5, 1, "  Branch Conditionally",
@@ -905,7 +905,7 @@ namespace Reko.Arch.Arc
                 var iclass = delay ? T : TD;
                 var ndelay = N(delay);
                 return Mask(22, 2, "  Jcc",
-                    Instr(Mnemonic.j, T, N(delay), Mr_C),
+                    Instr(Mnemonic.j, iclass, N(delay), Mr_C),
                     Nyi("  Jcc - 01"),
                     Nyi("  Jcc - 10"),
                     Mask(0, 5, "  Jcc - 11",
@@ -1010,10 +1010,10 @@ namespace Reko.Arch.Arc
 
             var ZOP = Sparse(24, 3, "  ZOP", invalid,
                 (0x01, Nyi("sleep")),
-                (0x02, Instr(Mnemonic.trap0)),
+                (0x02, Instr(Mnemonic.trap0, T | InstrClass.Call)),
                 (0x03, Nyi("sync")),
                 (0x04, Nyi("rtie")),
-                (0x05, Nyi("brk")));
+                (0x05, Instr(Mnemonic.brk, InstrClass.Terminates)));
 
             var unaries_04 = Sparse(0, 6, "  04 unaries", invalid,
                 (0x00, Instr(Mnemonic.asl, F15, B,C)),
@@ -1218,8 +1218,8 @@ namespace Reko.Arch.Arc
 
                     Instr(Mnemonic.asr_s, b,c,n(1)),
                     Instr(Mnemonic.lsr_s, b,c,n(1)),
-                    Instr(Mnemonic.trap_s),
-                    Instr(Mnemonic.brk_s)),
+                    Instr(Mnemonic.trap_s, T| InstrClass.Call),
+                    Instr(Mnemonic.brk_s, InstrClass.Terminates)),
 
                 // 0x10
                 Instr(Mnemonic.ld_s, c, Mo_s(PrimitiveType.Word16)),
@@ -1250,8 +1250,8 @@ namespace Reko.Arch.Arc
                     Instr(Mnemonic.add_s, b,b,U(0,7)),
                     Instr(Mnemonic.cmp_s, b,U(0,7))),
                 Mask(7, 1, "  1D BRcc_S b,0,s8 Branch conditionally on reg z/nz 16-bit",
-                    Instr(Mnemonic.breq_s, b,n(0),PcRel2(Bf((0,7)))),
-                    Instr(Mnemonic.brne_s, b,n(0),PcRel2(Bf((0,7))))),
+                    Instr(Mnemonic.breq_s, CT, b,n(0),PcRel2(Bf((0,7)))),
+                    Instr(Mnemonic.brne_s, CT, b,n(0),PcRel2(Bf((0,7))))),
                 Mask(9, 2, "  1E Bcc_S s10/s7 Branch conditionally 16-bit",
                     Instr(Mnemonic.b_s, T, PcRel_s(Bf((0,9)))),
                     Instr(Mnemonic.beq_s, CT, PcRel_s(Bf((0,9)))),

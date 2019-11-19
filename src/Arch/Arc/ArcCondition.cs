@@ -42,5 +42,8 @@ namespace Reko.Arch.Arc
         HI = 0x0D, // Higher than (unsigned) /C and /Z
         LS = 0x0E, // Lower than or same (unsigned) C or Z
         PNZ = 0x0F, //  Positive non-zero /N and /Z
+
+        SC = 0x10,  // Saturation flags clear
+        SS = 0x11,  // Saturation flags set
     }
 }

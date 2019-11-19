@@ -62,6 +62,7 @@ namespace Reko.Arch.Arc
         breq,
         brge,
         brhs,
+        brk,
         brlo,
         brlt,
         brne,
