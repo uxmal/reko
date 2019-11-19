@@ -192,6 +192,7 @@
     <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000RewriterTests.cs" />
+    <Compile Include="Arch\WE32100\WE32100DisassemblerTests.cs" />
     <Compile Include="Arch\zSeries\zSeriesDisassemblerTests.cs" />
     <Compile Include="Arch\zSeries\zSeriesRewriterTests.cs" />
     <Compile Include="Core\CriticalInstructionTests.cs" />
@@ -907,6 +908,10 @@
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Project>{82777964-B370-431A-AC97-733C594C02B5}</Project>
       <Name>Vax</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\WE32100\WE32100.csproj">
+      <Project>{a3d277db-5f5d-41f7-80f1-1c84a5026b90}</Project>
+      <Name>WE32100</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\X86.Design\X86.Design.csproj">
       <Project>{370a707f-3b17-4680-bc35-8edc846f058f}</Project>

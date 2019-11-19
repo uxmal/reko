@@ -171,6 +171,7 @@
         <File Source="$(var.SuperH.TargetPath)" />
         <File Source="$(var.Tlcs.TargetPath)" />
         <File Source="$(var.Vax.TargetPath)" />
+        <File Source="$(var.WE32100.TargetPath)" />
         <File Source="$(var.X86.TargetPath)" />
         <File Source="$(var.X86.Design.TargetPath)" />
         <File Source="$(var.Xtensa.TargetPath)" />

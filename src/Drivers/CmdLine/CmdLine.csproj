@@ -224,6 +224,10 @@
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
       <Name>Vax</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\WE32100\WE32100.csproj">
+      <Project>{a3d277db-5f5d-41f7-80f1-1c84a5026b90}</Project>
+      <Name>WE32100</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj">
       <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
       <Name>X86</Name>

@@ -241,6 +241,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\WE32100\WE32100.csproj">
+      <Name>WE32100</Name>
+      <Project>{a3d277db-5f5d-41f7-80f1-1c84a5026b90}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\X86.Design\X86.Design.csproj">
       <Name>X86.Design</Name>
       <Project>{370a707f-3b17-4680-bc35-8edc846f058f}</Project>
