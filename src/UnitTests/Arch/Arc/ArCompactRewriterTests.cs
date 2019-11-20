@@ -989,21 +989,24 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        public void ARCompactRw_lpne()
-        {
-            RewriteCode("20E804A2"); // lpne	000008B8
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void ARCompactRw_lp()
         {
             RewriteCode("20A80180"); // lp	000008E0
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|LP_START = 00100004",
+                "2|L--|LP_END = 0010000C");
+        }
+
+        [Test]
+        public void ARCompactRw_lpne()
+        {
+            RewriteCode("20E804A2"); // lpne	000008B8
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004",
+                "2|L--|LP_START = 00100004",
+                "3|L--|LP_END = 00100024");
         }
 
         [Test]

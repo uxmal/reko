@@ -70,22 +70,6 @@ namespace Reko.Arch.Arc
                 case Mnemonic.jpnz:
                 case Mnemonic.jvc:
                 case Mnemonic.jvs:
-                case Mnemonic.lp:
-                case Mnemonic.lpcc:
-                case Mnemonic.lpcs:
-                case Mnemonic.lpeq:
-                case Mnemonic.lpge:
-                case Mnemonic.lpgt:
-                case Mnemonic.lphi:
-                case Mnemonic.lple:
-                case Mnemonic.lpls:
-                case Mnemonic.lplt:
-                case Mnemonic.lpmi:
-                case Mnemonic.lpne:
-                case Mnemonic.lppl:
-                case Mnemonic.lppnz:
-                case Mnemonic.lpvc:
-                case Mnemonic.lpvs:
                 case Mnemonic.negs:
                 case Mnemonic.negsw:
                 case Mnemonic.norm:
@@ -130,19 +114,19 @@ namespace Reko.Arch.Arc
                 case Mnemonic.asr:
                 case Mnemonic.asr_s:
                     RewriteShift(m.Sar, ZNCV); break;
-                case Mnemonic.b:    case Mnemonic.b_s: RewriteB(ArcCondition.AL); break;
-                case Mnemonic.bcc:  case Mnemonic.bhs_s: RewriteB(ArcCondition.CC); break;
-                case Mnemonic.bcs:  case Mnemonic.blo_s: RewriteB(ArcCondition.CS); break;
-                case Mnemonic.beq:  case Mnemonic.beq_s: RewriteB(ArcCondition.EQ); break;
-                case Mnemonic.bge:  case Mnemonic.bge_s: RewriteB(ArcCondition.GE); break;
-                case Mnemonic.bgt:  case Mnemonic.bgt_s: RewriteB(ArcCondition.GT); break;
-                case Mnemonic.bhi:  case Mnemonic.bhi_s: RewriteB(ArcCondition.HI); break;
-                case Mnemonic.ble:  case Mnemonic.ble_s: RewriteB(ArcCondition.LE); break;
-                case Mnemonic.bls:  case Mnemonic.bls_s: RewriteB(ArcCondition.LS); break;
-                case Mnemonic.blt:  case Mnemonic.blt_s: RewriteB(ArcCondition.LT); break;
-                case Mnemonic.bmi:  RewriteB(ArcCondition.MI); break;
-                case Mnemonic.bne:  case Mnemonic.bne_s: RewriteB(ArcCondition.NE); break;
-                case Mnemonic.bpl:  RewriteB(ArcCondition.PL); break;
+                case Mnemonic.b: case Mnemonic.b_s: RewriteB(ArcCondition.AL); break;
+                case Mnemonic.bcc: case Mnemonic.bhs_s: RewriteB(ArcCondition.CC); break;
+                case Mnemonic.bcs: case Mnemonic.blo_s: RewriteB(ArcCondition.CS); break;
+                case Mnemonic.beq: case Mnemonic.beq_s: RewriteB(ArcCondition.EQ); break;
+                case Mnemonic.bge: case Mnemonic.bge_s: RewriteB(ArcCondition.GE); break;
+                case Mnemonic.bgt: case Mnemonic.bgt_s: RewriteB(ArcCondition.GT); break;
+                case Mnemonic.bhi: case Mnemonic.bhi_s: RewriteB(ArcCondition.HI); break;
+                case Mnemonic.ble: case Mnemonic.ble_s: RewriteB(ArcCondition.LE); break;
+                case Mnemonic.bls: case Mnemonic.bls_s: RewriteB(ArcCondition.LS); break;
+                case Mnemonic.blt: case Mnemonic.blt_s: RewriteB(ArcCondition.LT); break;
+                case Mnemonic.bmi: RewriteB(ArcCondition.MI); break;
+                case Mnemonic.bne: case Mnemonic.bne_s: RewriteB(ArcCondition.NE); break;
+                case Mnemonic.bpl: RewriteB(ArcCondition.PL); break;
                 case Mnemonic.bpnz: RewriteB(ArcCondition.PNZ); break;
                 case Mnemonic.bvc: RewriteB(ArcCondition.VC); break;
                 case Mnemonic.bvs: RewriteB(ArcCondition.VS); break;
@@ -156,19 +140,19 @@ namespace Reko.Arch.Arc
                 case Mnemonic.bl:
                 case Mnemonic.bl_s:
                     RewriteBl(ArcCondition.AL); break;
-                case Mnemonic.blal:  RewriteBl(ArcCondition.AL); break;
-                case Mnemonic.blcc:  RewriteBl(ArcCondition.CC); break;
-                case Mnemonic.blcs:  RewriteBl(ArcCondition.CS); break;
-                case Mnemonic.bleq:  RewriteBl(ArcCondition.EQ); break;
-                case Mnemonic.blge:  RewriteBl(ArcCondition.GE); break;
-                case Mnemonic.blgt:  RewriteBl(ArcCondition.GT); break;
-                case Mnemonic.blhi:  RewriteBl(ArcCondition.HI); break;
-                case Mnemonic.blle:  RewriteBl(ArcCondition.LE); break;
-                case Mnemonic.blls:  RewriteBl(ArcCondition.LS); break;
-                case Mnemonic.bllt:  RewriteBl(ArcCondition.LT); break;
-                case Mnemonic.blmi:  RewriteBl(ArcCondition.MI); break;
-                case Mnemonic.blne:  RewriteBl(ArcCondition.NE); break;
-                case Mnemonic.blpl:  RewriteBl(ArcCondition.PL); break;
+                case Mnemonic.blal: RewriteBl(ArcCondition.AL); break;
+                case Mnemonic.blcc: RewriteBl(ArcCondition.CC); break;
+                case Mnemonic.blcs: RewriteBl(ArcCondition.CS); break;
+                case Mnemonic.bleq: RewriteBl(ArcCondition.EQ); break;
+                case Mnemonic.blge: RewriteBl(ArcCondition.GE); break;
+                case Mnemonic.blgt: RewriteBl(ArcCondition.GT); break;
+                case Mnemonic.blhi: RewriteBl(ArcCondition.HI); break;
+                case Mnemonic.blle: RewriteBl(ArcCondition.LE); break;
+                case Mnemonic.blls: RewriteBl(ArcCondition.LS); break;
+                case Mnemonic.bllt: RewriteBl(ArcCondition.LT); break;
+                case Mnemonic.blmi: RewriteBl(ArcCondition.MI); break;
+                case Mnemonic.blne: RewriteBl(ArcCondition.NE); break;
+                case Mnemonic.blpl: RewriteBl(ArcCondition.PL); break;
                 case Mnemonic.blpnz: RewriteBl(ArcCondition.PNZ); break;
                 case Mnemonic.blvc: RewriteBl(ArcCondition.VC); break;
                 case Mnemonic.blvs: RewriteBl(ArcCondition.VS); break;
@@ -180,7 +164,8 @@ namespace Reko.Arch.Arc
                 case Mnemonic.brlt: RewriteBr(m.Lt); break;
                 case Mnemonic.brne: case Mnemonic.brne_s: RewriteBr(m.Ne); break;
 
-                case Mnemonic.brk: case Mnemonic.brk_s:
+                case Mnemonic.brk:
+                case Mnemonic.brk_s:
                     RewriteBrk(); break;
 
                 case Mnemonic.bic:
@@ -224,13 +209,28 @@ namespace Reko.Arch.Arc
                 case Mnemonic.ldw:
                 case Mnemonic.ldw_s:
                     RewriteLoad(PrimitiveType.Word16); break;
+
+                case Mnemonic.lp: RewriteLp(ArcCondition.AL); break;
+                case Mnemonic.lpcc: RewriteLp(ArcCondition.CC); break;
+                case Mnemonic.lpcs: RewriteLp(ArcCondition.CS); break;
+                case Mnemonic.lpeq: RewriteLp(ArcCondition.EQ); break;
+                case Mnemonic.lpge: RewriteLp(ArcCondition.GE); break;
+                case Mnemonic.lpgt: RewriteLp(ArcCondition.GT); break;
+                case Mnemonic.lphi: RewriteLp(ArcCondition.HI); break;
+                case Mnemonic.lple: RewriteLp(ArcCondition.LE); break;
+                case Mnemonic.lpls: RewriteLp(ArcCondition.LS); break;
+                case Mnemonic.lplt: RewriteLp(ArcCondition.LT); break;
+                case Mnemonic.lpmi: RewriteLp(ArcCondition.MI); break;
+                case Mnemonic.lpne: RewriteLp(ArcCondition.NE); break;
+                case Mnemonic.lppl: RewriteLp(ArcCondition.PL); break;
+                case Mnemonic.lppnz: RewriteLp(ArcCondition.PNZ); break;
+                case Mnemonic.lpvc: RewriteLp(ArcCondition.VC); break;
+                case Mnemonic.lpvs: RewriteLp(ArcCondition.VS); break;
+
                 case Mnemonic.lr: RewriteLr(); break;
                 case Mnemonic.lsr:
                 case Mnemonic.lsr_s:
                     RewriteShift(m.Shr, ZNC); break;
-                case Mnemonic.or:
-                case Mnemonic.or_s:
-                    RewriteAluOp(m.Or, ZN); break;
                 case Mnemonic.max: RewriteAluOp(Max, ZNCV); break;
                 case Mnemonic.min: RewriteAluOp(Min, ZNCV); break;
                 case Mnemonic.mov:
@@ -244,6 +244,9 @@ namespace Reko.Arch.Arc
                 case Mnemonic.neg_s: RewriteAluOp(m.Neg, ZNCV); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.not: RewriteAluOp(m.Comp, ZN); break;
+                case Mnemonic.or:
+                case Mnemonic.or_s:
+                    RewriteAluOp(m.Or, ZN); break;
                 case Mnemonic.pop_s: RewritePop(); break;
                 case Mnemonic.push_s: RewritePush(); break;
                 case Mnemonic.rcmp: RewriteCondInstr(Rsub, ZNCV); break;
@@ -268,7 +271,7 @@ namespace Reko.Arch.Arc
                     RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.sub:
                 case Mnemonic.sub_s:
-                     RewriteAluOp(m.ISub, ZNCV); break;
+                    RewriteAluOp(m.ISub, ZNCV); break;
                 case Mnemonic.sub1: RewriteAluOp(Sub1, ZNCV); break;
                 case Mnemonic.sub2: RewriteAluOp(Sub2, ZNCV); break;
                 case Mnemonic.sub3: RewriteAluOp(Sub3, ZNCV); break;
@@ -284,13 +287,43 @@ namespace Reko.Arch.Arc
                 case Mnemonic.xor_s:
                     RewriteAluOp(m.Xor, ZN); break;
                 }
+
+                TryHandlingZeroOverheadLoop();
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
                     Class = iclass
                 };
+
             }
         }
 
+        private void TryHandlingZeroOverheadLoop()
+        {
+            // Check if we would hit the LP_END instruction set up by a prior LP instruction.
+            var uAddrNext = instr.Address.ToUInt32() + (uint) instr.Length;
+            var end = state.GetValue(Registers.LpEnd);
+            if (end is Constant cEnd && cEnd.IsValid && cEnd.ToUInt32() == uAddrNext)
+            {
+                var addrNext = Address.Ptr32(uAddrNext);
+
+                var lpCount = binder.EnsureRegister(Registers.LP_count);
+                var start = state.GetValue(Registers.LpStart);
+                Expression eBackEdgeTarget;
+                if (start is Constant cStart && cStart.IsValid)
+                {
+                    eBackEdgeTarget= Address.Ptr32(cStart.ToUInt32());
+                }
+                else
+                {
+                    eBackEdgeTarget = binder.EnsureRegister(Registers.LpStart);
+                }
+                m.BranchInMiddleOfInstruction(m.Eq(lpCount, 1), addrNext, InstrClass.ConditionalTransfer);
+
+                m.Assign(lpCount, m.ISubS(lpCount, 1));
+                m.Goto(eBackEdgeTarget);
+                iclass = InstrClass.ConditionalTransfer;
+            }
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -717,6 +750,21 @@ namespace Reko.Arch.Arc
                 EmitUnitTest(instr);
                 return;
             }
+        }
+
+        // Rewriting LP instructions is hairy because it's a dynamic property of a loop.
+        // We set the LP_START and LP_END regisers in the state and hope they survive.
+        // Another static possibility is to assume that the LP target will be reached and 
+        // create a "static" edge, but this is not required to happen.
+        private void RewriteLp(ArcCondition condition)
+        {
+            MaybeSkip(condition);
+            var uAddrStart = instr.Address.ToUInt32() + (uint) instr.Length;
+            var uAddrEnd = ((AddressOperand) instr.Operands[0]).Address.ToUInt32();
+            this.state.SetValue(Registers.LpStart, Constant.UInt32(uAddrStart));
+            this.state.SetValue(Registers.LpEnd, Constant.UInt32(uAddrEnd));
+            m.Assign(binder.EnsureRegister(Registers.LpStart), Address.Ptr32(uAddrStart));
+            m.Assign(binder.EnsureRegister(Registers.LpEnd), Address.Ptr32(uAddrEnd));
         }
 
         private void RewriteLr()

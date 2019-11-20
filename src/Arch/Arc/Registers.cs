@@ -37,6 +37,8 @@ namespace Reko.Arch.Arc
         public static readonly RegisterStorage Pcl;
 
         public static readonly RegisterStorage Status32;
+        public static readonly RegisterStorage LpStart;
+        public static readonly RegisterStorage LpEnd;
         public static readonly RegisterStorage AuxMacmode;
 
         static Registers()
@@ -55,6 +57,9 @@ namespace Reko.Arch.Arc
 
             var sysFactory = new StorageFactory(StorageDomain.SystemRegister);
             Status32 = sysFactory.Reg("STATUS32", PrimitiveType.Word32);
+
+            LpStart = sysFactory.Reg("LP_START", PrimitiveType.Word32);
+            LpEnd = sysFactory.Reg("LP_END", PrimitiveType.Word32);
             AuxMacmode = sysFactory.Reg("AUX_MACMODE", PrimitiveType.Word32);
         }
 

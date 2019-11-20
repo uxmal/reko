@@ -31,32 +31,36 @@ namespace Reko.Arch.Arc
     public class ARCompactState : ProcessorState
     {
         private readonly ARCompactArchitecture arch;
+        private readonly Dictionary<RegisterStorage, Constant> values;
 
-        public ARCompactState(ARCompactArchitecture arch)
+        public ARCompactState(ARCompactArchitecture arch, Dictionary<RegisterStorage, Constant> values = null)
         {
             this.arch = arch;
+            this.values = values ?? new Dictionary<RegisterStorage, Constant>();
         }
 
         public override IProcessorArchitecture Architecture => arch;
 
         public override ProcessorState Clone()
         {
-            return new ARCompactState(this.arch);
+            return new ARCompactState(this.arch,  new Dictionary<RegisterStorage, Constant>(this.values));
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            if (!values.TryGetValue(r, out var value))
+                return Constant.Invalid;
+            else
+                return value;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnProcedureEntered()
@@ -65,7 +69,6 @@ namespace Reko.Arch.Arc
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)
@@ -74,6 +77,7 @@ namespace Reko.Arch.Arc
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
+            values[r] = v;
         }
     }
 }
