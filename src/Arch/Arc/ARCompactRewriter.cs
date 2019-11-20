@@ -1,6 +1,28 @@
+#region License
+/* 
+ * Copyright (C) 1999-2019 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -60,7 +82,6 @@ namespace Reko.Arch.Arc
                 case Mnemonic.jge:
                 case Mnemonic.jgt:
                 case Mnemonic.jhi:
-                case Mnemonic.jl:
                 case Mnemonic.jle:
                 case Mnemonic.jls:
                 case Mnemonic.jlt:
@@ -130,6 +151,8 @@ namespace Reko.Arch.Arc
                 case Mnemonic.bpnz: RewriteB(ArcCondition.PNZ); break;
                 case Mnemonic.bvc: RewriteB(ArcCondition.VC); break;
                 case Mnemonic.bvs: RewriteB(ArcCondition.VS); break;
+                case Mnemonic.bsc: RewriteB(ArcCondition.SC); break;
+                case Mnemonic.bss: RewriteB(ArcCondition.SS); break;
 
                 case Mnemonic.bbit0: RewriteBbit(false); break;
                 case Mnemonic.bbit1: RewriteBbit(true); break;
@@ -198,7 +221,8 @@ namespace Reko.Arch.Arc
 
                 case Mnemonic.j: case Mnemonic.j_s: RewriteJ(ArcCondition.AL); break;
                 case Mnemonic.jeq: RewriteJ(ArcCondition.EQ); break;
-                case Mnemonic.jl_s: RewriteJl(); break;
+
+                case Mnemonic.jl: case Mnemonic.jl_s: RewriteJl(); break;
 
                 case Mnemonic.ld:
                 case Mnemonic.ld_s:
@@ -334,6 +358,8 @@ namespace Reko.Arch.Arc
 
         void EmitUnitTest(ArcInstruction instr, string message = "")
         {
+            m.Invalid();
+            iclass = InstrClass.Invalid;
             if (opcode_seen.Contains(instr.Mnemonic))
                 return;
             opcode_seen.Add(instr.Mnemonic);
@@ -341,34 +367,34 @@ namespace Reko.Arch.Arc
             var r2 = rdr.Clone();
             r2.Offset -= instr.Length;
 
+            var sb = new StringBuilder();
             if (!string.IsNullOrEmpty(message))
             {
-                Console.WriteLine("        // {0}", message);
+                sb.AppendLine($"        // {message}");
             }
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void ARCompactRw_{0}()", instr.Mnemonic);
-            Console.WriteLine("        {");
+            sb.AppendLine($"        [Test]");
+            sb.AppendLine($"        public void ARCompactRw_{instr.Mnemonic}()");
+            sb.AppendLine("        {");
 
             if (instr.Length > 2)
             {
                 var wInstrHi = r2.ReadUInt16();
                 var wInstrLo = r2.ReadUInt16();
                 uint wInstr = (((uint) wInstrHi) << 16) | wInstrLo; 
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\"); // {instr}");
+                sb.AppendLine($"            RewriteCode(\"{wInstr:X8}\"); // {instr}");
             }
             else
             {
                 var wInstr = r2.ReadUInt16();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\"); // {instr}");
+                sb.AppendLine($"            RewriteCode(\"{wInstr:X4}\"); // {instr}");
             }
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            Console.WriteLine($"                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
-            Console.WriteLine();
-
-            m.Invalid();
-            iclass = InstrClass.Invalid;
+            sb.AppendLine("            AssertCode(");
+            sb.AppendLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
+            sb.AppendLine($"                \"1|L--|@@@\");");
+            sb.AppendLine("        }");
+            sb.AppendLine();
+            Console.Write(sb);
+            Debug.WriteLine(sb);
         }
 
         private Expression Adc(Expression a, Expression b)
@@ -553,25 +579,35 @@ namespace Reko.Arch.Arc
             m.Assign(dst, src);
         }
 
-        private (RegisterStorage baseReg, Expression ea) RewriteEa(MemoryOperand mem)
+        private (RegisterStorage baseReg, Expression ea) RewriteEa(MemoryOperand mem, bool scaleOffset)
         {
             Expression ea = null;
+            int offset = mem.Offset;
+            if (scaleOffset)
+            {
+                // Byte size is undefined.
+                if (mem.Width.Size == 1)
+                {
+                    return (null, null);
+                }
+                offset = offset * mem.Width.Size;
+            }
             if (mem.Base != null)
             {
                 if (mem.Base == Registers.Pcl)
                 {
                     var uAddr = (int) instr.Address.ToUInt32() & ~3;
-                    ea = Address.Ptr32((uint) (uAddr + mem.Offset));
+                    ea = Address.Ptr32((uint) (uAddr + offset));
                 }
                 else
                 {
                     ea = binder.EnsureRegister(mem.Base);
-                    ea = m.AddSubSignedInt(ea, mem.Offset);
+                    ea = m.AddSubSignedInt(ea, offset);
                 }
             }
             else
             {
-                ea = m.Word32(mem.Offset);
+                ea = m.Word32(offset);
             }
             return (mem.Base, ea);
         }
@@ -715,7 +751,7 @@ namespace Reko.Arch.Arc
         {
             if (instr.Operands[0] is MemoryOperand mop)
             {
-                var (_, ea) = RewriteEa(mop);
+                var (_, ea) = RewriteEa(mop, false);
                 m.Call(ea, 0, instr.InstructionClass);
                 return;
             }
@@ -729,10 +765,17 @@ namespace Reko.Arch.Arc
                 dt = PrimitiveType.Create(Domain.SignedInt, dt.BitSize);
             }
             var dst = Operand(0);
-            var (baseReg, ea) = RewriteEa((MemoryOperand) instr.Operands[1]);
+            var (baseReg, ea) = RewriteEa((MemoryOperand) instr.Operands[1], instr.Writeback == AddressWritebackMode.@as);
+            if (ea == null)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
             switch (instr.Writeback)
             {
             case AddressWritebackMode.None:
+            case AddressWritebackMode.@as:
                 MaybeCast(dst, m.Mem(dt, ea));
                 break;
             case AddressWritebackMode.ab:
@@ -840,10 +883,17 @@ namespace Reko.Arch.Arc
         private void RewriteStore(PrimitiveType dt)
         {
             var src = Operand(0);
-            var (baseReg, ea) = RewriteEa((MemoryOperand) instr.Operands[1]);
+            var (baseReg, ea) = RewriteEa((MemoryOperand) instr.Operands[1], instr.Writeback == AddressWritebackMode.@as);
+            if (ea == null)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
             switch (instr.Writeback)
             {
             case AddressWritebackMode.None:
+            case AddressWritebackMode.@as:
                 MaybeSlice(m.Mem(dt, ea), src);
                 break;
             case AddressWritebackMode.aw:

@@ -311,6 +311,12 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
+        public void ARCompactRw_add_invalid()
+        {
+            AssertCode("Invalid", "20C07814"); // add.20  r56,r56,r32
+        } 
+
+        [Test]
         public void ARCompactDis_add_s()
         {
             AssertCode("add_s\tr0,r15,r13", "67B8");
@@ -368,7 +374,7 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
-        public void ARCompactDis_22CA03CD()
+        public void ARCompactDis_mov_hi()
         {
             AssertCode("mov.hi\tr2,r15", "22CA03CD");
         }

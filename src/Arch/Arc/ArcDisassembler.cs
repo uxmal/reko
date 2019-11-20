@@ -612,7 +612,10 @@ namespace Reko.Arch.Arc
                         return false;
                     if (!B(uInstr, dasm))
                         return false;
-                    dasm.instr.Condition = (ArcCondition) genopCondField.Read(uInstr);
+                    var cond = (ArcCondition) genopCondField.Read(uInstr);
+                    if (cond >= ArcCondition.Max)
+                        return false;
+                    dasm.instr.Condition = cond;
                     if (Bits.IsBitSet(uInstr, 5))
                     {
                         uimm6 = genopUimm6.Read(uInstr);

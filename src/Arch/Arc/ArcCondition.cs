@@ -45,5 +45,7 @@ namespace Reko.Arch.Arc
 
         SC = 0x10,  // Saturation flags clear
         SS = 0x11,  // Saturation flags set
+
+        Max = 0x12
     }
 }
