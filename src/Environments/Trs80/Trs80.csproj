@@ -60,6 +60,7 @@
     <Compile Include="Dmk\CompareItem.cs" />
     <Compile Include="Dmk\Sector.cs" />
     <Compile Include="Dmk\Track.cs" />
+    <Compile Include="ColorComputer.cs" />
     <Compile Include="Trs80Platform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -74,6 +75,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CoCoMemoryMap.xml" />
     <Content Include="Trs80Rom.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -313,14 +313,28 @@ namespace Reko.UnitTests.Arch.M6800
         }
 
         [Test]
+        public void M6809Rw_sta()
+        {
+            RewriteCode("B7FF23"); // sta $FF23
+            AssertCode(
+                "0|L--|0100(3): 4 instructions",
+                "1|L--|v3 = a",
+                "2|L--|Mem0[0xFF23:byte] = v3",
+                "3|L--|NZ = cond(v3)",
+                "4|L--|V = false");
+        }
+
+        [Test]
         public void M6809Rw_std()
         {
             RewriteCode("EDC1"); // std ,u++
             AssertCode(
-                "0|L--|0100(2): 3 instructions",
+                "0|L--|0100(2): 5 instructions",
                 "1|L--|v4 = d",
                 "2|L--|Mem0[u:word16] = v4",
-                "3|L--|u = u + 2");
+                "3|L--|u = u + 2",
+                "4|L--|NZ = cond(v4)",
+                "5|L--|V = false");
         }
 
         [Test]

@@ -127,6 +127,7 @@
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" />
+        <File Source="$(var.Trs80.ProjectDir)CoCoMemoryMap.xml" />
         <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" />
         <File Source="$(var.Wii.TargetPath)" />
         <File Source="$(var.Windows.TargetPath)" />
