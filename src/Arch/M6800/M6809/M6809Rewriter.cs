@@ -166,13 +166,13 @@ namespace Reko.Arch.M6800.M6809
                 case Mnemonic.sbca: RewriteSbc(Registers.A); break;
                 case Mnemonic.sbcb: RewriteSbc(Registers.B); break;
                 case Mnemonic.sex: RewriteSex(); break;
-                case Mnemonic.sta: RewriteUnary(Store(Registers.A), NoCc); break;
-                case Mnemonic.stb: RewriteUnary(Store(Registers.B), NoCc); break;
-                case Mnemonic.std: RewriteUnary(Store(Registers.D), NoCc); break;
-                case Mnemonic.sts: RewriteUnary(Store(Registers.S), NoCc); break;
-                case Mnemonic.stu: RewriteUnary(Store(Registers.U), NoCc); break;
-                case Mnemonic.stx: RewriteUnary(Store(Registers.X), NoCc); break;
-                case Mnemonic.sty: RewriteUnary(Store(Registers.Y), NoCc); break;
+                case Mnemonic.sta: RewriteUnary(Store(Registers.A), NZ0_); break;
+                case Mnemonic.stb: RewriteUnary(Store(Registers.B), NZ0_); break;
+                case Mnemonic.std: RewriteUnary(Store(Registers.D), NZ0_); break;
+                case Mnemonic.sts: RewriteUnary(Store(Registers.S), NZ0_); break;
+                case Mnemonic.stu: RewriteUnary(Store(Registers.U), NZ0_); break;
+                case Mnemonic.stx: RewriteUnary(Store(Registers.X), NZ0_); break;
+                case Mnemonic.sty: RewriteUnary(Store(Registers.Y), NZ0_); break;
                 case Mnemonic.suba: RewriteBinary(Registers.A, m.ISub, NZVC); break;
                 case Mnemonic.subb: RewriteBinary(Registers.B, m.ISub, NZVC); break;
                 case Mnemonic.subd: RewriteBinary(Registers.D, m.ISub, NZVC); break;
@@ -210,10 +210,10 @@ namespace Reko.Arch.M6800.M6809
 
         private void ClrCc(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup((uint) FlagM.N)), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup((uint) FlagM.Z)), Constant.True());
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup((uint) FlagM.V)), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup((uint) FlagM.C)), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.N)), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.Z)), Constant.True());
+            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.V)), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.C)), Constant.False());
         }
 
         private void NoCc(Expression e)
@@ -249,35 +249,35 @@ namespace Reko.Arch.M6800.M6809
 
         private void NZV(Expression e)
         {
-            var nzvc = arch.GetFlagGroup((uint) (FlagM.N | FlagM.Z | FlagM.V));
+            var nzvc = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z | FlagM.V));
             m.Assign(binder.EnsureFlagGroup(nzvc), m.Cond(e));
         }
 
         private void NZVC(Expression e)
         {
-            var nzvc = arch.GetFlagGroup((uint) (FlagM.N | FlagM.Z | FlagM.V | FlagM.C));
+            var nzvc = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z | FlagM.V | FlagM.C));
             m.Assign(binder.EnsureFlagGroup(nzvc), m.Cond(e));
         }
 
         private void NZ_C(Expression e)
         {
-            var nz_c = arch.GetFlagGroup((uint) (FlagM.N | FlagM.Z |  FlagM.C));
+            var nz_c = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z |  FlagM.C));
             m.Assign(binder.EnsureFlagGroup(nz_c), m.Cond(e));
         }
 
         private void NZ0_(Expression e)
         {
-            var nz = arch.GetFlagGroup((uint) (FlagM.N | FlagM.Z));
-            var v = arch.GetFlagGroup((uint) FlagM.V);
+            var nz = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z));
+            var v = arch.GetFlagGroup(Registers.CC, (uint) FlagM.V);
             m.Assign(binder.EnsureFlagGroup(nz), m.Cond(e));
             m.Assign(binder.EnsureFlagGroup(v), Constant.False());
         }
 
         private void NZ01(Expression e)
         {
-            var nz = arch.GetFlagGroup((uint) (FlagM.N | FlagM.Z));
-            var v = arch.GetFlagGroup((uint) FlagM.V);
-            var c = arch.GetFlagGroup((uint) FlagM.C);
+            var nz = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z));
+            var v = arch.GetFlagGroup(Registers.CC, (uint) FlagM.V);
+            var c = arch.GetFlagGroup(Registers.CC, (uint) FlagM.C);
             m.Assign(binder.EnsureFlagGroup(nz), m.Cond(e));
             m.Assign(binder.EnsureFlagGroup(v), Constant.False());
             m.Assign(binder.EnsureFlagGroup(c), Constant.True());
@@ -445,7 +445,7 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
-            var flagGrp = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags));
+            var flagGrp = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint)flags));
             m.Branch(m.Test(cc, flagGrp), ((AddressOperand) instr.Operands[0]).Address, instr.InstructionClass); 
         }
 

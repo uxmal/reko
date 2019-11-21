@@ -38,12 +38,12 @@ namespace Reko.Arch.M6800
 
         public override ProcessorState Clone()
         {
-            throw new System.NotImplementedException();
+            return new M6809State(this.arch);
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new System.NotImplementedException();
+            return Constant.Invalid;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)
@@ -58,7 +58,6 @@ namespace Reko.Arch.M6800
 
         public override void OnProcedureEntered()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
@@ -68,12 +67,10 @@ namespace Reko.Arch.M6800
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new System.NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

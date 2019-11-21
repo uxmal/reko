@@ -49,6 +49,7 @@ namespace Reko.Arch.M6800.M6809
             var addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
                 return null;
+            this.ops.Clear();
             var instr = rootDecoders[b].Decode(b, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
@@ -197,7 +198,7 @@ namespace Reko.Arch.M6800.M6809
                         offset = usOffset;
                         break;
                     default:
-                        throw new NotImplementedException($"Idx: {b:X2}");
+                        return false;
                     }
                 }
                 dasm.ops.Add(new MemoryOperand(dt)

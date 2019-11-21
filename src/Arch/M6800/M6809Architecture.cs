@@ -73,7 +73,7 @@ namespace Reko.Arch.M6800
             return new M6809.M6809Rewriter(this, rdr, state, binder, host);
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             if (flagGroups.TryGetValue(grf, out var f))
             {
@@ -81,8 +81,7 @@ namespace Reko.Arch.M6800
             }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var flagregister = M6812.Registers.ccr;
-            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(M6809.Registers.CC, grf, GrfToString(M6809.Registers.CC, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -102,12 +101,12 @@ namespace Reko.Arch.M6800
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }
@@ -117,7 +116,7 @@ namespace Reko.Arch.M6800
             throw new NotImplementedException();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             var sb = new StringBuilder();
             if ((grf & (uint) FlagM.N) != 0) sb.Append('N');
@@ -129,7 +128,7 @@ namespace Reko.Arch.M6800
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return Address.Ptr16(c.ToUInt16());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
@@ -144,7 +143,7 @@ namespace Reko.Arch.M6800
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddr, out addr);
         }
     }
 }
