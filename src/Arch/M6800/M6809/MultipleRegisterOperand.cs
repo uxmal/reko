@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using System.Collections.Generic;
 
 namespace Reko.Arch.M6800.M6809
 {
@@ -35,21 +36,29 @@ namespace Reko.Arch.M6800.M6809
             this.b = b;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public IEnumerable<RegisterStorage> GetRegisters()
         {
             uint m = 0x80;
             int iReg = 0;
-            string sep = "";
             while (m != 0)
             {
                 if ((b & m) != 0)
                 {
-                    writer.WriteString(sep);
-                    sep = ",";
-                    writer.WriteString(regs[iReg].Name);
+                    yield return regs[iReg];
                 }
                 m >>= 1;
                 ++iReg;
+            }
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string sep = "";
+            foreach (var reg in GetRegisters())
+            {
+                writer.WriteString(sep);
+                sep = ",";
+                writer.WriteString(reg.Name);
             }
         }
     }

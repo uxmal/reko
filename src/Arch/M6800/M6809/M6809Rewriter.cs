@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,14 +74,14 @@ namespace Reko.Arch.M6800.M6809
                     m.Invalid();
                     break;
                 case Mnemonic.abx: RewriteAbx(); break;
-                case Mnemonic.adca: RewriteAdc(Registers.A); break;
-                case Mnemonic.adcb: RewriteAdc(Registers.B); break;
+                case Mnemonic.adca: RewriteBinary(Registers.A, Adc, NZVC); break;
+                case Mnemonic.adcb: RewriteBinary(Registers.B, Adc, NZVC); break;
                 case Mnemonic.adda: RewriteBinary(Registers.A, m.IAdd, NZVC); break;
                 case Mnemonic.addb: RewriteBinary(Registers.B, m.IAdd, NZVC); break;
                 case Mnemonic.addd: RewriteBinary(Registers.D, m.IAdd, NZVC); break;
                 case Mnemonic.anda: RewriteBinary(Registers.A, m.And, NZ0_); break;
                 case Mnemonic.andb: RewriteBinary(Registers.B, m.And, NZ0_); break;
-                case Mnemonic.andcc: RewriteAndcc(); break;
+                case Mnemonic.andcc: RewriteModifyCc(m.And); break;
                 case Mnemonic.asr: RewriteUnary(Shl1, NZ_C); break;
                 case Mnemonic.beq: RewriteBranch(ConditionCode.EQ, FlagM.Z); break;
                 case Mnemonic.bge: RewriteBranch(ConditionCode.GE, FlagM.N | FlagM.V); break;
@@ -143,28 +144,28 @@ namespace Reko.Arch.M6800.M6809
                 case Mnemonic.ldu: RewriteBinary(Registers.U, Load, NZ0_); break;
                 case Mnemonic.ldx: RewriteBinary(Registers.X, Load, NZ0_); break;
                 case Mnemonic.ldy: RewriteBinary(Registers.Y, Load, NZ0_); break;
-                case Mnemonic.leas: RewriteLea(Registers.S); break;
-                case Mnemonic.leau: RewriteLea(Registers.U); break;
-                case Mnemonic.leax: RewriteLea(Registers.X); break;
-                case Mnemonic.leay: RewriteLea(Registers.Y); break;
+                case Mnemonic.leas: RewriteLea(Registers.S, NoCc); break;
+                case Mnemonic.leau: RewriteLea(Registers.U, NoCc); break;
+                case Mnemonic.leax: RewriteLea(Registers.X, _Z__); break;
+                case Mnemonic.leay: RewriteLea(Registers.Y, _Z__); break;
                 case Mnemonic.lsl: RewriteUnary(Shl1, NZVC); break;
-                case Mnemonic.lsr: RewriteLsr(); break;
+                case Mnemonic.lsr: RewriteUnary(Shr1, NZ_C); break;
                 case Mnemonic.mul: RewriteMul(); break;
                 case Mnemonic.neg: RewriteUnary(m.Neg, NZVC); break;
                 case Mnemonic.nop: m.Nop(); break;
-                case Mnemonic.ora: RewriteOr(Registers.A); break;
-                case Mnemonic.orb: RewriteOr(Registers.B); break;
-                case Mnemonic.orcc: RewriteOr(Registers.CC); break;
+                case Mnemonic.ora: RewriteBinary(Registers.A, m.Or, NZ0_); break;
+                case Mnemonic.orb: RewriteBinary(Registers.B, m.Or, NZ0_); break;
+                case Mnemonic.orcc: RewriteModifyCc(m.Or); break;
                 case Mnemonic.pshs: RewritePsh(Registers.S); break;
                 case Mnemonic.pshu: RewritePsh(Registers.U); break;
                 case Mnemonic.puls: RewritePul(Registers.S); break;
                 case Mnemonic.pulu: RewritePul(Registers.U); break;
-                case Mnemonic.rol: RewriteRol(); break;
-                case Mnemonic.ror: RewriteRor(); break;
+                case Mnemonic.rol: RewriteUnary(Rol1, NZVC); break;
+                case Mnemonic.ror: RewriteUnary(Ror1, NZ_C); break;
                 case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.rts: RewriteRts(); break;
-                case Mnemonic.sbca: RewriteSbc(Registers.A); break;
-                case Mnemonic.sbcb: RewriteSbc(Registers.B); break;
+                case Mnemonic.sbca: RewriteBinary(Registers.A, Sbc, NZVC); break;
+                case Mnemonic.sbcb: RewriteBinary(Registers.B, Sbc, NZVC); break;
                 case Mnemonic.sex: RewriteSex(); break;
                 case Mnemonic.sta: RewriteUnary(Store(Registers.A), NZ0_); break;
                 case Mnemonic.stb: RewriteUnary(Store(Registers.B), NZ0_); break;
@@ -176,9 +177,9 @@ namespace Reko.Arch.M6800.M6809
                 case Mnemonic.suba: RewriteBinary(Registers.A, m.ISub, NZVC); break;
                 case Mnemonic.subb: RewriteBinary(Registers.B, m.ISub, NZVC); break;
                 case Mnemonic.subd: RewriteBinary(Registers.D, m.ISub, NZVC); break;
-                case Mnemonic.swi: RewriteSwi(); break;
-                case Mnemonic.swi2: RewriteSwi2(); break;
-                case Mnemonic.swi3: RewriteSwi3(); break;
+                case Mnemonic.swi: RewriteSwi(0xFFFA); break;
+                case Mnemonic.swi2: RewriteSwi(0xFFF4); break;
+                case Mnemonic.swi3: RewriteSwi(0xFFF2); break;
                 case Mnemonic.sync: RewriteSync(); break;
                 case Mnemonic.tfr: RewriteTfr(); break;
                 case Mnemonic.tst: RewriteTst(); break;
@@ -190,18 +191,44 @@ namespace Reko.Arch.M6800.M6809
             }
         }
 
-        private void EmitUnitTest()
-        {
-            host.Warn(
-                instr.Address,
-                "M6809 instruction '{0}' is not supported yet.",
-                instr.Mnemonic.ToString());
-        }
+        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }
+
+        private void EmitUnitTest()
+        {
+            m.Invalid();
+            iclass = InstrClass.Invalid;
+
+            if (opcode_seen.Contains(instr.Mnemonic))
+                return;
+            opcode_seen.Add(instr.Mnemonic);
+            host.Warn(
+                instr.Address,
+                "M6809 instruction '{0}' is not supported yet.",
+                instr.Mnemonic.ToString());
+
+            var r2 = rdr.Clone();
+            r2.Offset -= instr.Length;
+            var hexBytes = string.Join("", r2.ReadBytes(instr.Length).Select(b => $"{b:X2}"));
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"        [Test]");
+            sb.AppendLine($"        public void M6809Rw_{instr.Mnemonic}()");
+            sb.AppendLine("        {");
+            sb.AppendLine($"            RewriteCode(\"{hexBytes}\"); // {instr}");
+            sb.AppendLine($"            AssertCode(");
+            sb.AppendLine($"                \"0|L--|0100({instr.Length}): 1 instructions\",");
+            sb.AppendLine($"                \"1|L--|@@@\");");
+            sb.AppendLine("        }");
+            Debug.WriteLine(sb.ToString());
+            Console.WriteLine(sb.ToString());
+        }
+
+
 
         private Expression Clr(Expression e)
         {
@@ -221,6 +248,12 @@ namespace Reko.Arch.M6800.M6809
 
         }
 
+        private Expression Adc(Expression a, Expression b)
+        {
+            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.C));
+            return m.IAdd(m.IAdd(a, b), C);
+        }
+
         private Expression Dec(Expression e)
         {
             return m.ISubS(e, 1);
@@ -236,15 +269,64 @@ namespace Reko.Arch.M6800.M6809
             return t;
         }
 
+        private void Pull(RegisterStorage stackptr, RegisterStorage reg)
+        {
+            var sp = binder.EnsureRegister(stackptr);
+            var r = binder.EnsureRegister(reg);
+            if (reg == Registers.PCR)
+            {
+                m.Return(2, 0);
+            }
+            else
+            {
+                m.Assign(r, m.Mem(r.DataType, sp));
+                m.Assign(sp, m.IAddS(sp, r.DataType.Size));
+            }
+        }
+
+        private void Push(RegisterStorage stackptr, RegisterStorage reg)
+        {
+            var sp = binder.EnsureRegister(stackptr);
+            var r = binder.EnsureRegister(reg);
+            m.Assign(sp, m.ISubS(sp, r.DataType.Size));
+            m.Assign(m.Mem(r.DataType, sp), r);
+        }
+
+        private Expression Rol1(Expression e)
+        {
+            return host.PseudoProcedure(PseudoProcedure.Rol, e.DataType, e, Constant.Byte(1));
+        }
+
+        private Expression Ror1(Expression e)
+        {
+            return host.PseudoProcedure(PseudoProcedure.Ror, e.DataType, e, Constant.Byte(1));
+        }
+
+        private Expression Sbc(Expression a, Expression b)
+        {
+            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.C));
+            return m.ISub(m.ISub(a, b), C);
+        }
+
         private Expression Shl1(Expression e)
         {
             return m.Shl(e, 1);
+        }
+
+        private Expression Shr1(Expression e)
+        {
+            return m.Shr(e, 1);
         }
 
         private Func<Expression, Expression> Store(RegisterStorage reg)
         {
             var r = binder.EnsureRegister(reg);
             return t => r;
+        }
+
+        private Expression Tst(Expression dummy, Expression e)
+        {
+            return m.ISub(e, 0);
         }
 
         private void NZV(Expression e)
@@ -258,7 +340,7 @@ namespace Reko.Arch.M6800.M6809
             var nzvc = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z | FlagM.V | FlagM.C));
             m.Assign(binder.EnsureFlagGroup(nzvc), m.Cond(e));
         }
-
+        
         private void NZ_C(Expression e)
         {
             var nz_c = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z |  FlagM.C));
@@ -281,6 +363,34 @@ namespace Reko.Arch.M6800.M6809
             m.Assign(binder.EnsureFlagGroup(nz), m.Cond(e));
             m.Assign(binder.EnsureFlagGroup(v), Constant.False());
             m.Assign(binder.EnsureFlagGroup(c), Constant.True());
+        }
+
+        private void NZ__(Expression e)
+        {
+            var nz__ = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z));
+            m.Assign(binder.EnsureFlagGroup(nz__), m.Cond(e));
+        }
+
+        private void _Z__(Expression e)
+        {
+            var z = arch.GetFlagGroup(Registers.CC, (uint) FlagM.Z);
+            m.Assign(binder.EnsureFlagGroup(z), m.Cond(e));
+        }
+
+        private void _ZC_(Expression e)
+        {
+            var zc = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.Z|FlagM.C));
+            m.Assign(binder.EnsureFlagGroup(zc), m.Cond(e));
+        }
+
+        Expression EaKernel(Func<Expression, Expression, Expression> f, Expression d, Expression ea, MemoryOperand mem)
+        {
+            if (mem.Indirect)
+            {
+                ea = m.Mem(PrimitiveType.Ptr16, ea);
+            }
+            f(d, ea);
+            return d;
         }
 
         Expression MemKernel(Func<Expression, Expression, Expression> f, Expression d, Expression ea, MemoryOperand mem)
@@ -318,7 +428,7 @@ namespace Reko.Arch.M6800.M6809
         }
 
         private void RewriteBinaryTest(
-            RegisterStorage reg,
+            Storage reg,
             Func<Expression, Expression, Expression> fn,
             Action<Expression> genFlags)
         {
@@ -339,12 +449,12 @@ namespace Reko.Arch.M6800.M6809
         }
 
         private void RewriteOp(
-            RegisterStorage rDst, 
+            Storage rDst, 
             Func<Func<Expression,Expression,Expression>, Expression, Expression, MemoryOperand, Expression> memFn,
             Func<Expression, Expression, Expression> bin, 
             Action<Expression> genFlags)
         {
-            Expression dst = rDst != null ? binder.EnsureRegister(rDst) : null;
+            Expression dst = rDst != null ? binder.EnsureIdentifier(rDst) : null;
             Expression tmp;
             switch (instr.Operands[0])
             {
@@ -424,23 +534,16 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteAbx()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var b = binder.EnsureRegister(Registers.B);
+            var x = binder.EnsureRegister(Registers.X);
+            m.Assign(x, m.IAdd(x, m.Cast(PrimitiveType.UInt16, b)));
         }
 
-        private void RewriteAdc(RegisterStorage reg)
-        {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
-        }
-
-        private void RewriteAndcc()
+        private void RewriteModifyCc(Func<Expression, Expression, Expression> fn)
         {
             var imm = ((ImmediateOperand) instr.Operands[0]).Value;
             var cc = binder.EnsureRegister(Registers.CC);
-            m.Assign(cc, m.And(cc, imm));
+            m.Assign(cc, fn(cc, imm));
         }
 
         private void RewriteBranch(ConditionCode cc, FlagM flags)
@@ -461,16 +564,23 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteCwai()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var cc = binder.EnsureRegister(Registers.CC);
+            m.Assign(cc, m.And(cc, ((ImmediateOperand) instr.Operands[0]).Value));
+            Push(Registers.S, Registers.PCR);
+            Push(Registers.S, Registers.U);
+            Push(Registers.S, Registers.Y);
+            Push(Registers.S, Registers.X);
+            Push(Registers.S, Registers.DP);
+            Push(Registers.S, Registers.B);
+            Push(Registers.S, Registers.A);
+            Push(Registers.S, Registers.CC);
         }
 
         private void RewriteDaa()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var a = binder.EnsureRegister(Registers.A);
+            m.Assign(a, host.PseudoProcedure("__daa", PrimitiveType.Byte, a));
+            NZ_C(a);
         }
 
         private void RewriteExg()
@@ -482,16 +592,12 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteJmp()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            RewriteOp(null, EaKernel, (a, b) => { m.Goto(b); return null; }, NoCc);
         }
 
         private void RewriteJsr()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            RewriteOp(null, EaKernel, (a, b) => { m.Call(b, 2); return null; }, NoCc);
         }
 
         private void RewriteLd(RegisterStorage reg)
@@ -501,11 +607,9 @@ namespace Reko.Arch.M6800.M6809
             m.Invalid();
         }
 
-        private void RewriteLea(RegisterStorage reg)
+        private void RewriteLea(RegisterStorage reg, Action<Expression> genFlags)
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            RewriteOp(reg, EaKernel, (a, b) => { m.Assign(a, b); return null; }, genFlags);
         }
 
         private void RewriteLsr()
@@ -517,79 +621,57 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteMul()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var a = binder.EnsureRegister(Registers.A);
+            var b = binder.EnsureRegister(Registers.B);
+            var d = binder.EnsureRegister(Registers.D);
+            var product = m.UMul(a, b);
+            product.DataType = PrimitiveType.Word16;
+            m.Assign(d, product);
+            _ZC_(d);
         }
 
-        private void RewriteOr(RegisterStorage reg)
+        private void RewritePsh(RegisterStorage stackPtr)
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var mregs = (MultipleRegisterOperand) instr.Operands[0];
+            foreach (var reg in mregs.GetRegisters())
+            {
+                Push(stackPtr, reg);
+            }
         }
 
-        private void RewriteOrcc()
+        private void RewritePul(RegisterStorage stackPtr)
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
-        }
-
-        private void RewritePsh(RegisterStorage reg)
-        {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
-        }
-
-        private void RewritePul(RegisterStorage reg)
-        {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
-        }
-
-        private void RewriteRol()
-        {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
-        }
-
-        private void RewriteRor()
-        {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var mregs = (MultipleRegisterOperand) instr.Operands[0];
+            foreach (var reg in mregs.GetRegisters().Reverse())
+            {
+                Pull(stackPtr, reg);
+            }
         }
 
         private void RewriteRti()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var cc = binder.EnsureRegister(Registers.CC);
+            Pull(Registers.S, Registers.CC);
+            Pull(Registers.S, Registers.A);
+            Pull(Registers.S, Registers.B);
+            Pull(Registers.S, Registers.DP);
+            Pull(Registers.S, Registers.X);
+            Pull(Registers.S, Registers.Y);
+            Pull(Registers.S, Registers.U);
+            Pull(Registers.S, Registers.PCR);
         }
 
         private void RewriteRts()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
-        }
-
-        private void RewriteSbc(RegisterStorage reg)
-        {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            m.Return(2, 0);
         }
 
         private void RewriteSex()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var b = binder.EnsureRegister(Registers.B);
+            var d = binder.EnsureRegister(Registers.D);
+            m.Assign(d, m.Cast(PrimitiveType.Int16, b));
+            NZ__(d);
         }
 
         private void RewriteSt(RegisterStorage reg)
@@ -606,46 +688,41 @@ namespace Reko.Arch.M6800.M6809
             m.Invalid();
         }
 
-        private void RewriteSwi()
+        private void RewriteSwi(ushort uAddrVector)
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
-        }
-
-        private void RewriteSwi2()
-        {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
-        }
-
-        private void RewriteSwi3()
-        {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            Push(Registers.S, Registers.PCR);
+            Push(Registers.S, Registers.U);
+            Push(Registers.S, Registers.Y);
+            Push(Registers.S, Registers.X);
+            Push(Registers.S, Registers.DP);
+            Push(Registers.S, Registers.B);
+            Push(Registers.S, Registers.A);
+            Push(Registers.S, Registers.CC);
+            m.Goto(m.Mem16(Address.Ptr16(uAddrVector)));
         }
 
         private void RewriteSync()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance));
         }
 
         private void RewriteTfr()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var src = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            var dst = binder.EnsureRegister(((RegisterOperand) instr.Operands[1]).Register);
+            m.Assign(dst, src);
         }
 
         private void RewriteTst()
         {
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            if (instr.Operands[0] is RegisterOperand reg)
+            {
+                RewriteBinaryTest(reg.Register, Tst, NZ0_);
+            }
+            else
+            {
+                RewriteBinaryTest(null, Tst, NZ0_);
+            }
         }
     }
 }

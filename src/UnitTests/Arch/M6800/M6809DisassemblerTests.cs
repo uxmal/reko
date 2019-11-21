@@ -94,6 +94,12 @@ namespace Reko.UnitTests.Arch.M6800
         }
 
         [Test]
+        public void M6809Dis_mul()
+        {
+            AssertCode("mul", "3D");
+        }
+
+        [Test]
         public void M6809Dis_rol_accumulator_offset_b()
         {
             AssertCode("rol\tb,x", "6985");

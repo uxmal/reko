@@ -67,6 +67,35 @@ namespace Reko.UnitTests.Arch.M6800
         }
 
         [Test]
+        public void M6809Rw_abx()
+        {
+            RewriteCode("3A"); // abx
+            AssertCode(
+                "0|L--|0100(1): 1 instructions",
+                "1|L--|x = x + (uint16) b");
+        }
+
+        [Test]
+        public void M6809Rw_adca()
+        {
+            RewriteCode("A928"); // adca	$08,y
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|a = a + Mem0[y + 8:byte] + C",
+                "2|L--|NZVC = cond(a)");
+        }
+
+        [Test]
+        public void M6809Rw_adcb()
+        {
+            RewriteCode("C91F"); // adcb	#$1F
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|b = b + 0x1F + C",
+                "2|L--|NZVC = cond(b)");
+        }
+
+        [Test]
         public void M6809Rw_adda_postinc2()
         {
             RewriteCode("AB81"); // adda ,x++
@@ -246,6 +275,40 @@ namespace Reko.UnitTests.Arch.M6800
         }
 
         [Test]
+        public void M6809Rw_cwai()
+        {
+            RewriteCode("3C26"); // cwai	#$26
+            AssertCode(
+                "0|L--|0100(2): 17 instructions",
+                "1|L--|cc = cc & 0x26",
+                "2|L--|s = s - 2",
+                "3|L--|Mem0[s:ptr16] = pcr",
+                "4|L--|s = s - 2",
+                "5|L--|Mem0[s:word16] = u",
+                "6|L--|s = s - 2",
+                "7|L--|Mem0[s:word16] = y",
+                "8|L--|s = s - 2",
+                "9|L--|Mem0[s:word16] = x",
+                "10|L--|s = s - 1",
+                "11|L--|Mem0[s:byte] = dp",
+                "12|L--|s = s - 1",
+                "13|L--|Mem0[s:byte] = b",
+                "14|L--|s = s - 1",
+                "15|L--|Mem0[s:byte] = a",
+                "16|L--|s = s - 1",
+                "17|L--|Mem0[s:byte] = cc");
+        }
+
+        [Test]
+        public void M6809Rw_daa()
+        {
+            RewriteCode("19"); // daa
+            AssertCode(
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|a = __daa(a)");
+        }
+
+        [Test]
         public void M6809Rw_deca()
         {
             RewriteCode("4A"); // deca
@@ -279,6 +342,24 @@ namespace Reko.UnitTests.Arch.M6800
         }
 
         [Test]
+        public void M6809Rw_jmp()
+        {
+            RewriteCode("6E84"); // jmp	,x
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|goto x");
+        }
+
+        [Test]
+        public void M6809Rw_jsr()
+        {
+            RewriteCode("BDA928"); // jsr	$A928
+            AssertCode(
+                "0|T--|0100(3): 1 instructions",
+                "1|T--|call A928 (2)");
+        }
+
+        [Test]
         public void M6809Rw_ldy()
         {
             RewriteCode("10AE04"); // ldy 4,x
@@ -287,6 +368,44 @@ namespace Reko.UnitTests.Arch.M6800
                 "1|L--|y = Mem0[x + 4:word16]",
                 "2|L--|NZ = cond(y)",
                 "3|L--|V = false");
+        }
+
+        [Test]
+        public void M6809Rw_leas()
+        {
+            RewriteCode("320D"); // leas	$0D,x
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|s = x + 13");
+        }
+
+        [Test]
+        public void M6809Rw_leau()
+        {
+            RewriteCode("335E"); // leau	-$02,u
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|u = u - 2");
+        }
+
+        [Test]
+        public void M6809Rw_leax()
+        {
+            RewriteCode("3001"); // leax	$01,x
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|x = x + 1",
+                "2|L--|Z = cond(x)");
+        }
+
+        [Test]
+        public void M6809Rw_leay()
+        {
+            RewriteCode("318CE4"); // leay	-$1C,pcr
+            AssertCode(
+                "0|L--|0100(3): 2 instructions",
+                "1|L--|y = 00E7",
+                "2|L--|Z = cond(y)");
         }
 
         [Test]
@@ -302,6 +421,27 @@ namespace Reko.UnitTests.Arch.M6800
         }
 
         [Test]
+        public void M6809Rw_lsr()
+        {
+            RewriteCode("0412"); // lsr	>$12
+            AssertCode(
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|v3 = Mem0[dp + 0x12:byte] >>u 0x01",
+                "2|L--|Mem0[dp + 0x12:byte] = v3",
+                "3|L--|NZC = cond(v3)");
+        }
+
+        [Test]
+        public void M6809Rw_mul()
+        {
+            RewriteCode("3D"); // mul
+            AssertCode(
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|d = a *u b",
+                "2|L--|ZC = cond(d)");
+        }
+
+        [Test]
         public void M6809Rw_neg_dir()
         {
             RewriteCode("0042");
@@ -310,6 +450,172 @@ namespace Reko.UnitTests.Arch.M6800
                 "1|L--|v3 = -Mem0[dp + 0x42:byte]",
                 "2|L--|Mem0[dp + 0x42:byte] = v3",
                 "3|L--|NZVC = cond(v3)");
+        }
+
+        [Test]
+        public void M6809Rw_ora()
+        {
+            RewriteCode("9ACE"); // ora	>$CE
+            AssertCode(
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|a = a | Mem0[dp + 0xCE:byte]",
+                "2|L--|NZ = cond(a)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void M6809Rw_orcc()
+        {
+            RewriteCode("1A7E"); // orcc	#$7E
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|cc = cc | 0x7E");
+        }
+
+        [Test]
+        public void M6809Rw_puls()
+        {
+            RewriteCode("35AA"); // puls	pcr,y,dp,a
+            AssertCode(
+                "0|L--|0100(2): 7 instructions",
+                "1|L--|a = Mem0[s:byte]",
+                "2|L--|s = s + 1",
+                "3|L--|dp = Mem0[s:byte]",
+                "4|L--|s = s + 1",
+                "5|L--|y = Mem0[s:word16]",
+                "6|L--|s = s + 2",
+                "7|T--|return (2,0)");
+        }
+
+        [Test]
+        public void M6809Rw_pulu()
+        {
+            RewriteCode("37B7"); // pulu	pcr,y,x,b,a,cc
+            AssertCode(
+                "0|L--|0100(2): 11 instructions",
+                "1|L--|cc = Mem0[u:byte]",
+                "2|L--|u = u + 1",
+                "3|L--|a = Mem0[u:byte]",
+                "4|L--|u = u + 1",
+                "5|L--|b = Mem0[u:byte]",
+                "6|L--|u = u + 1",
+                "7|L--|x = Mem0[u:word16]",
+                "8|L--|u = u + 2",
+                "9|L--|y = Mem0[u:word16]",
+                "10|L--|u = u + 2",
+                "11|T--|return (2,0)");
+        }
+
+        [Test]
+        public void M6809Rw_pshs()
+        {
+            RewriteCode("34A7"); // pshs	pcr,y,b,a,cc
+            AssertCode(
+                "0|L--|0100(2): 10 instructions",
+                "1|L--|s = s - 2",
+                "2|L--|Mem0[s:ptr16] = pcr",
+                "3|L--|s = s - 2",
+                "4|L--|Mem0[s:word16] = y",
+                "5|L--|s = s - 1",
+                "6|L--|Mem0[s:byte] = b",
+                "7|L--|s = s - 1",
+                "8|L--|Mem0[s:byte] = a",
+                "9|L--|s = s - 1",
+                "10|L--|Mem0[s:byte] = cc");
+        }
+
+        [Test]
+        public void M6809Rw_pshu()
+        {
+            RewriteCode("3602"); // pshu	a
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|u = u - 1",
+                "2|L--|Mem0[u:byte] = a");
+        }
+
+        [Test]
+        public void M6809Rw_rol()
+        {
+            RewriteCode("59"); // rol	b
+            AssertCode(
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|b = __rol(b, 0x01)",
+                "2|L--|NZVC = cond(b)");
+        }
+
+        [Test]
+        public void M6809Rw_ror()
+        {
+            RewriteCode("0630"); // ror	>$30
+            AssertCode(
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|v3 = __ror(Mem0[dp + 0x30:byte], 0x01)",
+                "2|L--|Mem0[dp + 0x30:byte] = v3",
+                "3|L--|NZC = cond(v3)");
+        }
+
+        [Test]
+        public void M6809Rw_rti()
+        {
+            RewriteCode("3B"); // rti
+            AssertCode(
+                "0|T--|0100(1): 15 instructions",
+                "1|L--|cc = Mem0[s:byte]",
+                "2|L--|s = s + 1",
+                "3|L--|a = Mem0[s:byte]",
+                "4|L--|s = s + 1",
+                "5|L--|b = Mem0[s:byte]",
+                "6|L--|s = s + 1",
+                "7|L--|dp = Mem0[s:byte]",
+                "8|L--|s = s + 1",
+                "9|L--|x = Mem0[s:word16]",
+                "10|L--|s = s + 2",
+                "11|L--|y = Mem0[s:word16]",
+                "12|L--|s = s + 2",
+                "13|L--|u = Mem0[s:word16]",
+                "14|L--|s = s + 2",
+                "15|T--|return (2,0)");
+        }
+
+        [Test]
+        public void M6809Rw_rts()
+        {
+            RewriteCode("39"); // rts
+            AssertCode(
+                "0|T--|0100(1): 1 instructions",
+                "1|T--|return (2,0)");
+        }
+
+        [Test]
+        public void M6809Rw_sbca()
+        {
+            RewriteCode("A282"); // sbca	,-x
+            AssertCode(
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|x = x - 1",
+                "2|L--|a = a - Mem0[x:byte] - C",
+                "3|L--|NZVC = cond(a)");
+        }
+
+        [Test]
+        public void M6809Rw_sbcb()
+        {
+            RewriteCode("E227"); // sbcb	$07,y
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|b = b - Mem0[y + 7:byte] - C",
+                "2|L--|NZVC = cond(b)");
+        }
+
+        [Test]
+        public void M6809Rw_sex()
+        {
+            RewriteCode("1D"); // sex
+            AssertCode(
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|d = (int16) b",
+                "2|L--|NZ = cond(d)");
         }
 
         [Test]
@@ -346,5 +652,73 @@ namespace Reko.UnitTests.Arch.M6800
                 "1|L--|d = d - 0x1234",
                 "2|L--|NZVC = cond(d)");
         }
+
+        [Test]
+        public void M6809Rw_swi()
+        {
+            RewriteCode("3F"); // swi
+            AssertCode(
+                "0|L--|0100(1): 17 instructions",
+                "1|L--|s = s - 2",
+                "2|L--|Mem0[s:ptr16] = pcr",
+                "3|L--|s = s - 2",
+                "4|L--|Mem0[s:word16] = u",
+                "5|L--|s = s - 2",
+                "6|L--|Mem0[s:word16] = y",
+                "7|L--|s = s - 2",
+                "8|L--|Mem0[s:word16] = x",
+                "9|L--|s = s - 1",
+                "10|L--|Mem0[s:byte] = dp",
+                "11|L--|s = s - 1",
+                "12|L--|Mem0[s:byte] = b",
+                "13|L--|s = s - 1",
+                "14|L--|Mem0[s:byte] = a",
+                "15|L--|s = s - 1",
+                "16|L--|Mem0[s:byte] = cc",
+                "17|T--|goto Mem0[0xFFFA:word16]");
+        }
+
+        [Test]
+        public void M6809Rw_sync()
+        {
+            RewriteCode("13"); // sync
+            AssertCode(
+                "0|L--|0100(1): 1 instructions",
+                "1|L--|__sync()");
+        }
+
+        [Test]
+        public void M6809Rw_tfr()
+        {
+            RewriteCode("1F9B"); // tfr	b,dp
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|dp = b");
+        }
+
+        [Test]
+        public void M6809Rw_tst()
+        {
+            RewriteCode("5D"); // tst	b
+            AssertCode(
+                "0|L--|0100(1): 3 instructions",
+                "1|L--|b = b - 0x00",
+                "2|L--|NZ = cond(b)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void M6809Rw_tst_mem()
+        {
+            RewriteCode("7EB593"); // tst	$B593
+            AssertCode(
+                "0|L--|0100(3): 4 instructions",
+                "1|L--|v2 = Mem0[0xB593:byte]",
+                "2|L--|v2 = v2 - 0x00",
+                "3|L--|NZ = cond(v2)",
+                "4|L--|V = false");
+        }
+
+
     }
 }

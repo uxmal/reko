@@ -1175,7 +1175,7 @@ namespace Reko.Arch.M6800.M6809
                 Instr(Mnemonic.rti, InstrClass.Transfer),
 
                 Instr(Mnemonic.cwai, Ib),
-                Instr(Mnemonic.mul, Ib),
+                Instr(Mnemonic.mul),
                 invalid,
                 Instr(Mnemonic.swi),
 
