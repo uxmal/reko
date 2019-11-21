@@ -38,7 +38,7 @@ namespace Reko.Arch.PowerPC
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return new PowerPcInstruction(Mnemonic.illegal);
+                return dasm.CreateInvalidInstruction();
             }
         }
 
