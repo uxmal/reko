@@ -69,12 +69,14 @@ namespace Reko.ImageLoaders.LLVM
         {
             IProcessorArchitecture? arch = null;
             IPlatform? platform = null;
+            DataLayout? layout = null; 
             foreach (var target in targets)
             {
                 var segs = target.Specification!.Split('-');
                 switch (target.Type)
                 {
                 case TokenType.datalayout:
+                    layout = LoadDataLayout(segs[0]);
                     break;
                 case TokenType.triple:
                     arch = LoadArchitecture(segs[0]);
@@ -121,6 +123,11 @@ namespace Reko.ImageLoaders.LLVM
             return platform;
         }
         
+        private DataLayout LoadDataLayout(string sLayout)
+        {
+            var parser = new DataLayoutParser(sLayout);
+            return parser.Parse();
+        }
 
         public Address RegisterEntry(ModuleEntry entry, Address addr)
         {

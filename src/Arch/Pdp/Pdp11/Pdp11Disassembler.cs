@@ -201,12 +201,12 @@ namespace Reko.Arch.Pdp.Pdp11
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<Pdp11Disassembler> [] mutators)
         {
             return new InstrDecoder<Pdp11Disassembler,Mnemonic,Pdp11Instruction>(InstrClass.Linear, mnemonic, mutators);
-        }
+            }
 
         private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<Pdp11Disassembler>[] mutators)
-        {
+            {
             return new InstrDecoder<Pdp11Disassembler, Mnemonic, Pdp11Instruction>(iclass, mnemonic, mutators);
-        }
+                }
 
 
         static Pdp11Disassembler()

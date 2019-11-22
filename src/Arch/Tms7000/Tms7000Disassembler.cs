@@ -157,7 +157,7 @@ namespace Reko.Arch.Tms7000
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
             };
-        }
+            }
 
         public override Tms7000Instruction NotYetImplemented(string message)
         {
@@ -167,14 +167,14 @@ namespace Reko.Arch.Tms7000
         }
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<Tms7000Disassembler> [] mutators)
-        {
+            {
             return new InstrDecoder<Tms7000Disassembler, Mnemonic, Tms7000Instruction>(InstrClass.Linear, mnemonic, mutators);
-        }
+            }
 
         private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<Tms7000Disassembler>[] mutators)
-        {
+            {
             return new InstrDecoder<Tms7000Disassembler, Mnemonic, Tms7000Instruction>(iclass, mnemonic, mutators);
-        }
+                }
 
         private static readonly Mutator<Tms7000Disassembler>[]  F_None = {};
 

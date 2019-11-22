@@ -243,14 +243,14 @@ namespace Reko.Arch.Vax
 
 
         public static Decoder Instr(Mnemonic mnemonic, params Mutator<VaxDisassembler> [] mutators)
-        {
+            {
             return new InstrDecoder<VaxDisassembler, Mnemonic, VaxInstruction>(InstrClass.Linear, mnemonic, mutators);
-        }
+            }
 
         public static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<VaxDisassembler>[] mutators)
-        {
+            {
             return new InstrDecoder<VaxDisassembler, Mnemonic, VaxInstruction>(iclass, mnemonic, mutators);
-        }
+                    }
 
         public static Decoder Instr(Mnemonic mnemonic, int ignored)
         {

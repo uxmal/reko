@@ -81,7 +81,7 @@ namespace Reko.Arch.Blackfin
                 Mnemonic = Mnemonic.invalid,
                 Operands = Array.Empty<MachineOperand>()
             };
-        }
+            }
 
         public override BlackfinInstruction NotYetImplemented(string message)
         {

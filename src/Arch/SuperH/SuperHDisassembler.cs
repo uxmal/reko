@@ -95,7 +95,7 @@ namespace Reko.Arch.SuperH
             {
                 ops.Clear();
             }
-        }
+            }
 
         public override SuperHInstruction NotYetImplemented(string message)
         {
