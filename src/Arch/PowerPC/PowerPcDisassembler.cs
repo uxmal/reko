@@ -372,10 +372,7 @@ namespace Reko.Arch.PowerPC
             //        }}
             //");
 #endif
-            return new PowerPcInstruction(Mnemonic.illegal)
-            {
-                InstructionClass = InstrClass.Invalid
-            };
+            return CreateInvalidInstruction();
         }
     }
 }
