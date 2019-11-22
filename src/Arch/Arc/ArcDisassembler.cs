@@ -43,6 +43,7 @@ namespace Reko.Arch.Arc
         private Address addr;
         private ArcInstruction instr;   // Instruction being decoded.
         private List<MachineOperand> ops;
+        private bool readLimm;
 
         public ArcDisassembler(ARCompactArchitecture arch, EndianImageReader rdr)
         {
@@ -57,6 +58,7 @@ namespace Reko.Arch.Arc
             if (!rdr.TryReadUInt16(out ushort hInstr))
                 return null;
             this.ops.Clear();
+            this.readLimm = false;
             this.instr = new ArcInstruction();
             var instr = rootDecoder.Decode(hInstr, this);
             if (hInstr == 0)
@@ -89,19 +91,16 @@ namespace Reko.Arch.Arc
             return CreateInvalidInstruction();
         }
 
-
         private bool TryReadLongImmediate(out uint imm)
         {
+            imm = 0;
+            if (this.readLimm)
+                return false;
             if (!rdr.TryReadUInt16(out ushort immHi))
-            {
-                imm = 0;
                 return false;
-            }
             if (!rdr.TryReadUInt16(out ushort immLo))
-            {
-                imm = 0;
                 return false;
-            }
+            this.readLimm = true;
             imm = immLo | ((uint) immHi << 16);
             return true;
         }
@@ -153,10 +152,11 @@ namespace Reko.Arch.Arc
                     d.ops.Add(new RegisterOperand(reg));
                 }
                 return true;
-
             };
         }
+
         private static readonly Mutator<ArcDisassembler> h_limm = R_or_limm(Bf((0, 3), (5, 3)));
+        private static readonly Mutator<ArcDisassembler> B_limm = R_or_limm(Bf((12, 3), (24, 3)));
         private static readonly Mutator<ArcDisassembler> C_limm = R_or_limm(Bf((6, 6)));
 
 
@@ -586,7 +586,7 @@ namespace Reko.Arch.Arc
                 case 0: // REG_REG
                     if (use3ops && !A(uInstr, dasm))
                         return false;
-                    if (!B(uInstr, dasm))
+                    if (!B_limm(uInstr, dasm))
                         return false;
                     if (!C_limm(uInstr, dasm))
                         return false;
@@ -610,7 +610,7 @@ namespace Reko.Arch.Arc
                 default: // COND_REG
                     if (use3ops && !B(uInstr, dasm))
                         return false;
-                    if (!B(uInstr, dasm))
+                    if (!B_limm(uInstr, dasm))
                         return false;
                     var cond = (ArcCondition) genopCondField.Read(uInstr);
                     if (cond >= ArcCondition.Max)
@@ -1092,14 +1092,14 @@ namespace Reko.Arch.Arc
                 (0x30, Instr(Mnemonic.ld, A, AA22, Di15, Mrr(PrimitiveType.Word32, Bf((12, 3), (24, 3)), Bf((6, 6)))))));
 
             var majorOpc_05 = new W32Decoder(Sparse(16, 6, "  05 Extension instruction", Nyi("05 Extension instruction"),
-                (0x00, Instr(Mnemonic.asl, A, B, C)),
-                (0x01, Instr(Mnemonic.lsr, A, B, C)),
-                (0x02, Instr(Mnemonic.asr, A, B, C)),
-                (0x03, Instr(Mnemonic.ror, A, B, C)),
-                (0x04, Instr(Mnemonic.mul64, B, C)),
-                (0x05, Instr(Mnemonic.mulu64, B, C)),
-                (0x06, Instr(Mnemonic.adds, A, B, C)),
-                (0x07, Instr(Mnemonic.subs, A, B, C)),
+                (0x00, Instr(Mnemonic.asl, A, B_limm, C_limm)),
+                (0x01, Instr(Mnemonic.lsr, A, B_limm, C_limm)),
+                (0x02, Instr(Mnemonic.asr, A, B_limm, C_limm)),
+                (0x03, Instr(Mnemonic.ror, A, B_limm, C_limm)),
+                (0x04, Instr(Mnemonic.mul64, B_limm, C_limm)),
+                (0x05, Instr(Mnemonic.mulu64, B_limm, C_limm)),
+                (0x06, Instr(Mnemonic.adds, A, B_limm, C_limm)),
+                (0x07, Instr(Mnemonic.subs, A, B_limm, C_limm)),
                 (0x08, Instr(Mnemonic.divaw, A, B, C)),
                 (0x0A, Instr(Mnemonic.asls, A, B, C)),
                 (0x0B, Instr(Mnemonic.asrs, A, B, C)),

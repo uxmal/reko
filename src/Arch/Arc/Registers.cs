@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.Arc
 {
@@ -40,6 +42,15 @@ namespace Reko.Arch.Arc
         public static readonly RegisterStorage LpStart;
         public static readonly RegisterStorage LpEnd;
         public static readonly RegisterStorage AuxMacmode;
+
+        public static readonly FlagGroupStorage Z;
+        public static readonly FlagGroupStorage N;
+        public static readonly FlagGroupStorage C;
+        public static readonly FlagGroupStorage V;
+        public static readonly FlagGroupStorage S;
+
+        public static readonly Dictionary<StorageDomain, RegisterStorage> ByStorageDomain;
+        public static readonly Dictionary<string, RegisterStorage> ByName;
 
         static Registers()
         {
@@ -61,6 +72,19 @@ namespace Reko.Arch.Arc
             LpStart = sysFactory.Reg("LP_START", PrimitiveType.Word32);
             LpEnd = sysFactory.Reg("LP_END", PrimitiveType.Word32);
             AuxMacmode = sysFactory.Reg("AUX_MACMODE", PrimitiveType.Word32);
+
+            Z = new FlagGroupStorage(Status32, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            N = new FlagGroupStorage(Status32, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+            C = new FlagGroupStorage(Status32, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            V = new FlagGroupStorage(Status32, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+            S = new FlagGroupStorage(AuxMacmode, (uint) AuxFlagM.Sat, "S", PrimitiveType.Bool);
+
+            ByStorageDomain = factory.DomainsToRegisters
+                .Concat(sysFactory.DomainsToRegisters)
+                .ToDictionary(k => k.Key, v => v.Value);
+            ByName = factory.NamesToRegisters
+                .Concat(sysFactory.NamesToRegisters)
+                .ToDictionary(k => k.Key, v => v.Value);
         }
 
         private static RegisterStorage RenameRegister(int iGpReg, string regName)

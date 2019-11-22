@@ -323,6 +323,12 @@ namespace Reko.UnitTests.Arch.Arc
         }
 
         [Test]
+        public void ARCompactDis_asl_imm()
+        {
+            AssertCode("asl\tr3, 0000000F, r1", "2E0070430000000F");
+        }
+
+        [Test]
         public void ARCompactDis_lsr_1op()
         {
             AssertCode("lsr.f\tlp_count,r4", "242FF102");

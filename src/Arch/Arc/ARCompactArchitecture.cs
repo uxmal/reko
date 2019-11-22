@@ -101,7 +101,7 @@ namespace Reko.Arch.Arc
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.ByStorageDomain[domain];
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -112,6 +112,22 @@ namespace Reko.Arch.Arc
         public override RegisterStorage[] GetRegisters()
         {
             throw new NotImplementedException();
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if (flags.FlagRegister == Registers.Status32)
+            {
+                if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+                if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
+                if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+                if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+            }
+            else if (flags.FlagRegister == Registers.AuxMacmode)
+            {
+                if ((grf & Registers.S.FlagGroupBits) != 0) yield return Registers.S;
+            }
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix,  uint grf)
@@ -155,7 +171,7 @@ namespace Reko.Arch.Arc
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.ByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
