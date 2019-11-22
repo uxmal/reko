@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,12 +33,16 @@ namespace Reko.Arch.XCore
     {
         public XCore200Architecture(IServiceProvider services, string moniker) : base(services, moniker)
         {
-
+            this.Endianness = EndianServices.Little;
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.InstructionBitSize = 16;
+            this.PointerType = PrimitiveType.Ptr32;
+            this.WordWidth = PrimitiveType.Word32;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            throw new NotImplementedException();
+            return new XCore200Disassembler(this, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)

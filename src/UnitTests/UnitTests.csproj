@@ -989,6 +989,10 @@
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
       <Name>X86</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\XCore\XCore.csproj">
+      <Project>{EA6CA709-00CF-4BE2-A34F-11C43522C789}</Project>
+      <Name>XCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Xtensa\Xtensa.csproj">
       <Project>{BC7D4AD1-795F-4AEC-823C-813E65C5557A}</Project>
       <Name>Xtensa</Name>
