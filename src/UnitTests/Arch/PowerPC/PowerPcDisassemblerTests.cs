@@ -94,6 +94,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             PowerPcInstruction instr = DisassembleBytes(new byte[] { 00, 00, 00, 00 });
             Assert.AreEqual(Mnemonic.illegal, instr.Mnemonic);
+            Assert.IsNotNull(instr.Operands);
         }
 
         [Test]
