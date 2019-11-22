@@ -54,7 +54,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 EmitUnitTest(wInstr);
-                return new PowerPcInstruction(Mnemonic.illegal);
+                return dasm.CreateInvalidInstruction();
             }
 
             [Conditional("DEBUG")]
@@ -156,7 +156,7 @@ namespace Reko.Arch.PowerPC
                 // Only supported on 64-bit arch.
                 if (dasm.defaultWordWidth.BitSize == 32)
                 {
-                    return new PowerPcInstruction(Mnemonic.illegal);
+                    return dasm.CreateInvalidInstruction();
                 }
                 else
                 {
@@ -169,7 +169,7 @@ namespace Reko.Arch.PowerPC
                     case 6: case 7: opcode = Mnemonic.rldimi; break;
                     case 8: opcode = Mnemonic.rldcl; break;
                     case 9: opcode = Mnemonic.rldcr; break;
-                    default: return new PowerPcInstruction(Mnemonic.illegal);
+                    default: return dasm.CreateInvalidInstruction();
                     }
 
                     wInstr &= ~1u;
@@ -272,10 +272,7 @@ namespace Reko.Arch.PowerPC
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
-                        return new PowerPcInstruction(Mnemonic.illegal)
-                        {
-                            InstructionClass = InstrClass.Invalid
-                        };
+                        return dasm.CreateInvalidInstruction();
                 }
                 return dasm.MakeInstruction(iclass, opcode);
             }
