@@ -47,6 +47,7 @@
         <var id="var.WE32100.TargetPath" >../Arch/WE32100/$TargetDir$/Reko.Arch.WE32100.dll</var>
         <var id="var.X86.Design.TargetPath" >../Arch/X86.Design/$TargetFwk472Dir$/Reko.Arch.X86.Design.dll</var>
         <var id="var.X86.TargetPath" >../Arch/X86/$TargetDir$/Reko.Arch.X86.dll</var>
+        <var id="var.XCore.TargetPath" >../Arch/XCore/$TargetDir$/Reko.Arch.XCore.dll</var>
         <var id="var.Xtensa.TargetPath" >../Arch/Xtensa/$TargetDir$/Reko.Arch.Xtensa.dll</var>
         <var id="var.Z80.TargetPath" >../Arch/Z80/$TargetDir$/Reko.Arch.Z80.dll</var>
         <var id="var.i8051.TargetPath" >../Arch/i8051/$TargetDir$/Reko.Arch.i8051.dll</var>

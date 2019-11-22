@@ -49,6 +49,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\WE32100\bin\$(Configuration)\netstandard2.0\Reko.Arch.WE32100.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\bin\$(Configuration)\netstandard2.0\Reko.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\X86.Design\bin\$(Configuration)\Reko.Arch.X86.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\XCore\bin\$(Configuration)\netstandard2.0\Reko.Arch.XCore.*" />
     <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(Configuration)\netstandard2.0\Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(Configuration)\netstandard2.0\Reko.Arch.Z80.*" />
     <Architectures Include="$(SolutionDir)Arch\zSeries\bin\$(Configuration)\netstandard2.0\Reko.Arch.zSeries.*" />
