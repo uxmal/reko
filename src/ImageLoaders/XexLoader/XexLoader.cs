@@ -223,43 +223,20 @@ namespace Reko.ImageLoaders.Xex
                         XexImportLibraryBlockHeader blockHeader = new StructureReader<XexImportLibraryBlockHeader>(rdr).Read();
 
                         long string_table = rdr.Offset;
-
-                        rdr.Offset += blockHeader.string_table_size;
+                        for(int _i=0; _i<blockHeader.count; _i++) {
+                            string name = rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString();
+							imageData.libNames.Add(name);
+						}
+						rdr.Offset = string_table + blockHeader.string_table_size;
 
                         for (int m=0; m<blockHeader.count; m++) {
                             XexImportLibaryHeader imp_header = new StructureReader<XexImportLibaryHeader>(rdr).Read();
 
-                            string name = "Unknown";
-                            uint name_index = (byte)imp_header.name_index;
-
-                            uint _i, _j;
-                            for(_i=0, _j=0; _i<blockHeader.string_table_size;) {
-                                if(_j > 0xFF) {
-                                    throw new Exception();
-                                }
-
-                                if(_j == name_index) {
-                                    name = rdr.ReadAt<string>(string_table + (_i * 4), r => r.ReadCString(
-                                        PrimitiveType.Char, Encoding.ASCII
-                                    ).ToString());
-                                    break;
-                                }
-
-                                uint ptr = rdr.ReadAt<UInt32>(string_table + (_i * 4), r => r.ReadUInt32());
-                                if(ptr == 0) {
-                                    _i++;
-                                    if((_i % 4) != 0) {
-                                        _i += 4 - (_i % 4);
-                                    }
-                                    _j++;
-                                } else {
-                                    _i++;
-                                }
-                            }
-
-                            if(name.Length > 0) {
-                                imageData.libNames.Add(name);
-                            }
+                            string name = null;
+                            int name_index = (byte)imp_header.name_index;
+                            if(name_index < blockHeader.count) {
+								name = imageData.libNames[name_index];
+							}
 
                             for(uint ri=0; ri<imp_header.record_count; ++ri) {
                                 UInt32 recordEntry = rdr.ReadUInt32();
@@ -603,7 +580,7 @@ namespace Reko.ImageLoaders.Xex
                 byte type = (byte)((value & 0xFF000000) >> 24);
                 byte libIndex = (byte)((value & 0x00FF0000) >> 16);
 
-                if(type == 0) {
+                if(type == 0) { //variable
                     if(libIndex >= xexData.libNames.Count) {
                         throw new BadImageFormatException($"XEX: invalid import type 0 record lib index ({libIndex}, max:{xexData.libNames.Count})");
                     }
@@ -613,8 +590,8 @@ namespace Reko.ImageLoaders.Xex
                     UInt32 importAddress = xexData.import_records[i];
 
                     var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.ExternalProcedure));
-                } else if(type == 1) {
+                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.Data));
+                } else if(type == 1) { //thunk
                     if (libIndex >= xexData.libNames.Count) {
                         throw new BadImageFormatException($"XEX: invalid import type 0 record lib index ({libIndex}, max:{xexData.libNames.Count})");
                     }
@@ -624,7 +601,7 @@ namespace Reko.ImageLoaders.Xex
                     UInt32 importAddress = xexData.import_records[i];
 
                     var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.ExternalProcedure));
+                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.Code));
                 }
             }
         }
