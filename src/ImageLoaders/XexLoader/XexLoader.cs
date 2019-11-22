@@ -601,7 +601,7 @@ namespace Reko.ImageLoaders.Xex
                     UInt32 importAddress = xexData.import_records[i];
 
                     var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.Code));
+                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.ExternalProcedure));
                 }
             }
         }
