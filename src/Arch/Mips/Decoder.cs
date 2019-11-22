@@ -83,12 +83,12 @@ namespace Reko.Arch.Mips
         /// </summary>
         class A64Decoder : InstrDecoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator<MipsDisassembler>[] mutators;
 
-            public A64Decoder(Mnemonic opcode, params Mutator<MipsDisassembler>[] mutators) : base(opcode, mutators)
+            public A64Decoder(Mnemonic mnemonic, params Mutator<MipsDisassembler>[] mutators) : base(mnemonic, mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 

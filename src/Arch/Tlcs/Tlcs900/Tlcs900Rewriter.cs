@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Mnemonic;
+using Mnemonic = Reko.Arch.Tlcs.Tlcs900.Tlcs900Mnemonic;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {
@@ -41,7 +41,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<Tlcs900Instruction> dasm;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
         private Tlcs900Instruction instr;
 
@@ -59,7 +59,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             while (dasm.MoveNext())
             {
-                rtlc = InstrClass.Linear;
+                iclass = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 m = new RtlEmitter(instrs);
                 this.instr = dasm.Current;
@@ -74,63 +74,63 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     EmitUnitTest();
                     Invalid();
                     break;
-                case Opcode.invalid:
+                case Mnemonic.invalid:
                     Invalid();
                     break;
-                case Opcode.adc: RewriteAdcSbc(m.IAdd, "****0*"); break;
-                case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
-                case Opcode.and: RewriteBinOp(m.And, "**1*00"); break;
-                case Opcode.bit: RewriteBit(); break;
-                case Opcode.bs1b: RewriteBs1b(); break;
-                case Opcode.call: RewriteCall(); break;
-                case Opcode.calr: RewriteCall(); break;
-                case Opcode.ccf: RewriteCcf(); break;
-                case Opcode.chg: RewriteChg(); break;
-                case Opcode.cp: RewriteCp("SZHV1C"); break;
-                case Opcode.daa: RewriteDaa("****-*"); break;
-                case Opcode.dec: RewriteIncDec(m.ISub, "****1-"); break;
-                case Opcode.decf: RewriteDecf(); break;
-                case Opcode.div: RewriteDiv(m.UDiv, "---V--");break;
-                case Opcode.divs: RewriteDiv(m.SDiv, "---V--");break;
-                case Opcode.djnz: RewriteDjnz(); break;
-                case Opcode.ei: RewriteEi(); break;
-                case Opcode.ex: RewriteEx(); break;
-                case Opcode.halt: RewriteHalt(); break;
-                case Opcode.inc: RewriteIncDec(m.IAdd, "****0-"); break;
-                case Opcode.incf: RewriteIncf(); break;
-                case Opcode.lda: RewriteLda(); break;
-                case Opcode.jp: RewriteJp(); break;
-                case Opcode.jr: RewriteJp(); break;
-                case Opcode.ld: RewriteLd(); break;
-                case Opcode.ldf: RewriteLdf(); break;
-                case Opcode.ldir: RewriteLdir(PrimitiveType.Byte, "--000-"); break;
-                case Opcode.ldirw: RewriteLdir(PrimitiveType.Word16, "--000-"); break;
-                case Opcode.mul: RewriteMul(m.UMul); break;
-                case Opcode.muls: RewriteMul(m.SMul); break;
-                case Opcode.nop: m.Nop(); break;
-                case Opcode.or: RewriteBinOp(m.Or, "**0*00"); break;
-                case Opcode.pop: RewritePop(); break;
-                case Opcode.push: RewritePush(); break;
-                case Opcode.rcf: RewriteRcf(); break;
-                case Opcode.res: RewriteRes(); break;
-                case Opcode.ret: RewriteRet(); break;
-                case Opcode.retd: RewriteRetd(); break;
-                case Opcode.reti: RewriteReti(); break;
-                case Opcode.sbc: RewriteAdcSbc(m.ISub, "****1*"); break;
-                case Opcode.scc: RewriteScc(); break;
-                case Opcode.scf: RewriteScf(); break;
-                case Opcode.set: RewriteSet(); break;
-                case Opcode.sla: RewriteShift(m.Shl,"**0*0*"); break;
-                case Opcode.sll: RewriteShift(m.Shl,"**0*0*"); break;
-                case Opcode.srl: RewriteShift(m.Shr, "**0*0*"); break;
-                case Opcode.sub: RewriteBinOp(m.ISub, "***V1*"); break;
-                case Opcode.swi: RewriteSwi(); break;
-                case Opcode.xor: RewriteBinOp(m.Xor, "**0*00"); break;
-                case Opcode.zcf: RewriteZcf(); break;
+                case Mnemonic.adc: RewriteAdcSbc(m.IAdd, "****0*"); break;
+                case Mnemonic.add: RewriteBinOp(m.IAdd, "***V0*"); break;
+                case Mnemonic.and: RewriteBinOp(m.And, "**1*00"); break;
+                case Mnemonic.bit: RewriteBit(); break;
+                case Mnemonic.bs1b: RewriteBs1b(); break;
+                case Mnemonic.call: RewriteCall(); break;
+                case Mnemonic.calr: RewriteCall(); break;
+                case Mnemonic.ccf: RewriteCcf(); break;
+                case Mnemonic.chg: RewriteChg(); break;
+                case Mnemonic.cp: RewriteCp("SZHV1C"); break;
+                case Mnemonic.daa: RewriteDaa("****-*"); break;
+                case Mnemonic.dec: RewriteIncDec(m.ISub, "****1-"); break;
+                case Mnemonic.decf: RewriteDecf(); break;
+                case Mnemonic.div: RewriteDiv(m.UDiv, "---V--");break;
+                case Mnemonic.divs: RewriteDiv(m.SDiv, "---V--");break;
+                case Mnemonic.djnz: RewriteDjnz(); break;
+                case Mnemonic.ei: RewriteEi(); break;
+                case Mnemonic.ex: RewriteEx(); break;
+                case Mnemonic.halt: RewriteHalt(); break;
+                case Mnemonic.inc: RewriteIncDec(m.IAdd, "****0-"); break;
+                case Mnemonic.incf: RewriteIncf(); break;
+                case Mnemonic.lda: RewriteLda(); break;
+                case Mnemonic.jp: RewriteJp(); break;
+                case Mnemonic.jr: RewriteJp(); break;
+                case Mnemonic.ld: RewriteLd(); break;
+                case Mnemonic.ldf: RewriteLdf(); break;
+                case Mnemonic.ldir: RewriteLdir(PrimitiveType.Byte, "--000-"); break;
+                case Mnemonic.ldirw: RewriteLdir(PrimitiveType.Word16, "--000-"); break;
+                case Mnemonic.mul: RewriteMul(m.UMul); break;
+                case Mnemonic.muls: RewriteMul(m.SMul); break;
+                case Mnemonic.nop: m.Nop(); break;
+                case Mnemonic.or: RewriteBinOp(m.Or, "**0*00"); break;
+                case Mnemonic.pop: RewritePop(); break;
+                case Mnemonic.push: RewritePush(); break;
+                case Mnemonic.rcf: RewriteRcf(); break;
+                case Mnemonic.res: RewriteRes(); break;
+                case Mnemonic.ret: RewriteRet(); break;
+                case Mnemonic.retd: RewriteRetd(); break;
+                case Mnemonic.reti: RewriteReti(); break;
+                case Mnemonic.sbc: RewriteAdcSbc(m.ISub, "****1*"); break;
+                case Mnemonic.scc: RewriteScc(); break;
+                case Mnemonic.scf: RewriteScf(); break;
+                case Mnemonic.set: RewriteSet(); break;
+                case Mnemonic.sla: RewriteShift(m.Shl,"**0*0*"); break;
+                case Mnemonic.sll: RewriteShift(m.Shl,"**0*0*"); break;
+                case Mnemonic.srl: RewriteShift(m.Shr, "**0*0*"); break;
+                case Mnemonic.sub: RewriteBinOp(m.ISub, "***V1*"); break;
+                case Mnemonic.swi: RewriteSwi(); break;
+                case Mnemonic.xor: RewriteBinOp(m.Xor, "**0*00"); break;
+                case Mnemonic.zcf: RewriteZcf(); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
-                    Class = rtlc
+                    Class = iclass
                 };
             }
         }
@@ -142,7 +142,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void Invalid()
         {
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
 

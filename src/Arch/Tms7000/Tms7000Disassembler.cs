@@ -154,7 +154,7 @@ namespace Reko.Arch.Tms7000
 
         private class InstrDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator<Tms7000Disassembler>[] mutators;
 
@@ -162,9 +162,9 @@ namespace Reko.Arch.Tms7000
             {
             }
 
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, params Mutator<Tms7000Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<Tms7000Disassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
@@ -178,7 +178,7 @@ namespace Reko.Arch.Tms7000
                 }
                 var instr = new Tms7000Instruction
                 {
-                    Mnemonic = opcode,
+                    Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Operands = dasm.ops.ToArray()
                 };

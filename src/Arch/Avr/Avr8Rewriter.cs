@@ -78,7 +78,7 @@ namespace Reko.Arch.Avr
             this.rtlInstructions = new List<RtlInstruction>();
             this.rtlc = instr.InstructionClass;
             this.m = new RtlEmitter(rtlInstructions);
-            switch (instr.opcode)
+            switch (instr.Mnemonic)
             {
             case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
             case Mnemonic.add: RewriteBinOp(m.IAdd, CmpFlags); break;
@@ -143,7 +143,7 @@ namespace Reko.Arch.Avr
             case Mnemonic.subi: RewriteBinOp(m.ISub, CmpFlags); break;
             case Mnemonic.swap: RewriteSwap(); break;
             default:
-                host.Error(instr.Address, string.Format("AVR8 instruction '{0}' is not supported yet.", instr.opcode));
+                host.Error(instr.Address, string.Format("AVR8 instruction '{0}' is not supported yet.", instr.Mnemonic));
                 EmitUnitTest();
                 m.Invalid();
                 break;
@@ -165,15 +165,15 @@ namespace Reko.Arch.Avr
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.opcode))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Avr8_rw_" + dasm.Current.opcode + "()");
+            Debug.WriteLine("        public void Avr8_rw_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            Rewrite(");
             Debug.Write(string.Join(

@@ -52,7 +52,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         protected override void RewriteInstr()
         {
-            switch (instrCurr.Opcode)
+            switch (instrCurr.Mnemonic)
             {
                 default:
                     base.RewriteInstr();

@@ -27,7 +27,7 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscInstruction : MachineInstruction
     {
-        public Mnemonic Opcode { get; set; }
+        public Mnemonic Mnemonic { get; set; }
         
         // Completers
         public int Coprocessor { get; set; }
@@ -41,7 +41,7 @@ namespace Reko.Arch.PaRisc
 
         public ConditionOperand Condition { get; set; }
 
-        public override int OpcodeAsInteger => (int) Opcode;
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -60,7 +60,7 @@ namespace Reko.Arch.PaRisc
         private void WriteMnemonic(MachineInstructionWriter writer)
         {
             var sb = new StringBuilder();
-            sb.Append(Opcode.ToString().Replace('_',','));
+            sb.Append(Mnemonic.ToString().Replace('_',','));
             if (Coprocessor != -1)
                 sb.AppendFormat(",{0}", Coprocessor);
             if (FpFmt != FpFormat.None)

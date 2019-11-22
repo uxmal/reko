@@ -134,11 +134,11 @@ namespace Reko.Arch.zSeries
         private class State
         {
             public List<MachineOperand> ops = new List<MachineOperand>();
-            public Mnemonic opcode;
+            public Mnemonic mnemonic;
 
             public void Reset()
             {
-                this.opcode = Mnemonic.invalid;
+                this.mnemonic = Mnemonic.invalid;
                 this.ops.Clear();
             }
 
@@ -146,7 +146,7 @@ namespace Reko.Arch.zSeries
             {
                 var instr = new zSeriesInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     Operands = this.ops.ToArray(),
                 };
                 return instr;
@@ -433,18 +433,18 @@ namespace Reko.Arch.zSeries
 
         public class InstrDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator[] mutators;
 
             public InstrDecoder(Mnemonic opcode, params Mutator[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = opcode;
                 this.mutators = mutators;
             }
 
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
-                dasm.state.opcode = opcode;
+                dasm.state.mnemonic = mnemonic;
                 foreach (var m in mutators)
                 {
                     if (!m(uInstr, dasm))

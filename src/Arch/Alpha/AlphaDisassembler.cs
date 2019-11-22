@@ -98,18 +98,18 @@ namespace Reko.Arch.Alpha
 
         private class MemDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public MemDecoder(Mnemonic opcode)
+            public MemDecoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
                 return new AlphaInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[] {
                         dasm.AluRegister(uInstr >> 21),
@@ -124,18 +124,18 @@ namespace Reko.Arch.Alpha
 
         private class FMemDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public FMemDecoder(Mnemonic opcode)
+            public FMemDecoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
                 return new AlphaInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[]
                     {
@@ -193,11 +193,11 @@ namespace Reko.Arch.Alpha
 
         private class BranchDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public BranchDecoder(Mnemonic opcode)
+            public BranchDecoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
@@ -207,7 +207,7 @@ namespace Reko.Arch.Alpha
                 var op2 = AddressOperand.Create(dasm.rdr.Address + offset);
                 return new AlphaInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = InstrClass.ConditionalTransfer,
                     Operands = new MachineOperand[] { op1, op2 }
                 };
@@ -216,11 +216,11 @@ namespace Reko.Arch.Alpha
 
         private class FBranchDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public FBranchDecoder(Mnemonic opcode)
+            public FBranchDecoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
@@ -230,7 +230,7 @@ namespace Reko.Arch.Alpha
                 var op2 = AddressOperand.Create(dasm.rdr.Address + offset);
                 return new AlphaInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = InstrClass.ConditionalTransfer,
                     Operands = new MachineOperand[] { op1, op2 }
                 };
@@ -239,11 +239,11 @@ namespace Reko.Arch.Alpha
 
         private class RegDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public RegDecoder(Mnemonic opcode)
+            public RegDecoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
@@ -255,7 +255,7 @@ namespace Reko.Arch.Alpha
                 var op3 = dasm.AluRegister(uInstr);
                 return new AlphaInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[] { op1, op2, op3 }
                 };
@@ -302,11 +302,11 @@ namespace Reko.Arch.Alpha
 
         private class FRegDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public FRegDecoder(Mnemonic opcode)
+            public FRegDecoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
@@ -316,7 +316,7 @@ namespace Reko.Arch.Alpha
                 var op3 = dasm.FpuRegister(uInstr);
                 return new AlphaInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[] { op1, op2, op3 }
                 };
@@ -346,10 +346,11 @@ namespace Reko.Arch.Alpha
 
         private class CvtDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
-            public CvtDecoder(Mnemonic opcode)
+            private readonly Mnemonic mnemonic;
+
+            public CvtDecoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
@@ -358,7 +359,7 @@ namespace Reko.Arch.Alpha
                 var op2 = dasm.FpuRegister(uInstr >> 16);
                 return new AlphaInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[] { op1, op2 }
                 };
