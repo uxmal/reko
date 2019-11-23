@@ -56,6 +56,11 @@ namespace Reko.ImageLoaders.Xex
         }
     }
 
+    public class LoaderInfo
+	{
+		public byte[] aes_key;
+	}
+
     public class ImageData
     {
         internal XexHeader header;
@@ -74,7 +79,7 @@ namespace Reko.ImageLoaders.Xex
 
         internal List<string> libNames = new List<string>();
         internal List<UInt32> import_records = new List<uint>();
-        internal XexLoaderInfo loader_info;
+        internal LoaderInfo loader_info = new LoaderInfo();
         internal List<XexSection> sections;
         internal byte[] session_key;
 

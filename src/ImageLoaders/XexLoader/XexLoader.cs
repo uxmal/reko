@@ -35,13 +35,15 @@ using static Reko.ImageLoaders.Xex.Structures;
 
 namespace Reko.ImageLoaders.Xex
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <remarks>
-    /// Ported from https://github.com/rexdex/recompiler/blob/master/dev/src/xenon_decompiler/xenonImageLoader.cpp
-    /// </remarks>
-    public class XexLoader : ImageLoader
+	/// <summary>
+	/// Xbox 360 Executable Loader
+	/// </summary>
+	/// <remarks>
+	/// References:
+	/// https://github.com/rexdex/recompiler/blob/master/dev/src/xenon_decompiler/xenonImageLoader.cpp
+	/// https://github.com/xenia-project/xenia/blob/bc8b62909291017f4867ceaa1b46f1654a0aaefa/src/xenia/cpu/xex_module.cc
+	/// </remarks>
+	public class XexLoader : ImageLoader
     {
         private const uint IMAGE_SUBSYSTEM_XBOX = 14;
         private DecompilerEventListener decompilerEventListener;
@@ -90,10 +92,13 @@ namespace Reko.ImageLoaders.Xex
 
             XexHeader header = xexData.header;
 
-            if (header.xex2 != XEX2_MAGIC)
-            {
-                throw new BadImageFormatException("Invalid XEX Magic");
-            }
+			switch (header.magic) {
+				case XEX2_MAGIC:
+				case XEX1_MAGIC:
+					break;
+				default:
+					throw new BadImageFormatException("Invalid XEX Magic");
+			}
 
             for(uint i=0; i<header.header_count; i++)
             {
@@ -249,13 +254,23 @@ namespace Reko.ImageLoaders.Xex
 
             // load the loader info
             {
-                rdr.Offset = header.certificate_offset;
-                xexData.loader_info = new StructureReader<XexLoaderInfo>(rdr).Read();
+                rdr.Offset = header.security_offset;
+
+				switch (header.magic) {
+					case XEX1_MAGIC:
+                        Xex1LoaderInfo info1 = new StructureReader<Xex1LoaderInfo>(rdr).Read();
+						xexData.loader_info.aes_key = info1.aes_key;
+						break;
+					case XEX2_MAGIC:
+                        Xex2LoaderInfo info2 = new StructureReader<Xex2LoaderInfo>(rdr).Read();
+						xexData.loader_info.aes_key = info2.aes_key;
+						break;
+				}
             }
 
             // load the sections
             {
-                rdr.Offset = header.certificate_offset + 0x180;
+                rdr.Offset = header.security_offset + 0x180;
 
                 UInt32 sectionCount = rdr.ReadUInt32();
                 xexData.sections = new List<XexSection>((int)sectionCount);
@@ -268,7 +283,7 @@ namespace Reko.ImageLoaders.Xex
             // decrypt the XEX key
             {
                 byte[] keyToUse = xe_xex2_devkit_key;
-                if(xexData.execution_info.title_id != 0) {
+                if(header.magic != XEX1_MAGIC && xexData.execution_info.title_id != 0) {
                     keyToUse = xe_xex2_retail_key;
                 }
 
@@ -282,7 +297,7 @@ namespace Reko.ImageLoaders.Xex
 
                 xexData.session_key = aes
                     .CreateDecryptor()
-                    .TransformFinalBlock(xexData.loader_info.file_key, 0, 16);
+                    .TransformFinalBlock(xexData.loader_info.aes_key, 0, 16);
                 decompilerEventListener.Info(
                     new NullCodeLocation(""),
                     "XEX Session key: " + BitConverter.ToString(xexData.session_key).Replace("-", "")
@@ -326,16 +341,16 @@ namespace Reko.ImageLoaders.Xex
         private void LoadImageDataUncompressed()
         {
             // The EXE image memory is just the XEX memory - exe offset
-            UInt32 memorySize = (uint)rdr.Bytes.Length - xexData.header.exe_offset;
+            UInt32 memorySize = (uint)rdr.Bytes.Length - xexData.header.header_size;
 
             UInt32 maxImageSize = 128 << 20;
             if(memorySize >= maxImageSize) {
-                throw new BadImageFormatException($"Computed image size is to big ({memorySize}), the exe offset = 0x{xexData.header.exe_offset}");
+                throw new BadImageFormatException($"Computed image size is to big ({memorySize}), the exe offset = 0x{xexData.header.header_size}");
             }
 
             byte[] memory = new byte[memorySize];
 
-            long sourceDataOff = rdr.Offset + xexData.header.exe_offset;
+            long sourceDataOff = rdr.Offset + xexData.header.header_size;
             byte[] sourceData = rdr.ReadAt<byte[]>(sourceDataOff, r => r.ReadBytes(memorySize));
 
             DecryptBuffer(
@@ -360,7 +375,7 @@ namespace Reko.ImageLoaders.Xex
 
             UInt32 maxImageSize = 128 << 20;
             if(memorySize >= maxImageSize) {
-                throw new BadImageFormatException($"Computed image size is to big ({memorySize}), the exe offset = 0x{xexData.header.exe_offset}");
+                throw new BadImageFormatException($"Computed image size is to big ({memorySize}), the exe offset = 0x{xexData.header.header_size}");
             }
 
             byte[] memory = new byte[memorySize];
@@ -376,7 +391,7 @@ namespace Reko.ImageLoaders.Xex
             };
             var dec = aes.CreateDecryptor();
 
-            int sourceOffset = (int)xexData.header.exe_offset;
+            int sourceOffset = (int)xexData.header.header_size;
             int destOffset = 0;
 
             for(int n=0; n<blockCount; n++) {
@@ -445,7 +460,7 @@ namespace Reko.ImageLoaders.Xex
 
         private void LoadPEImage()
         {
-            long fileDataSize = rdr.Bytes.Length - xexData.header.exe_offset;
+            long fileDataSize = rdr.Bytes.Length - xexData.header.header_size;
 
             BeImageReader memRdr = new BeImageReader(xexData.memoryData);
             DOSHeader dosHeader = new StructureReader<DOSHeader>(memRdr).Read();
