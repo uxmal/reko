@@ -44,8 +44,7 @@ namespace Reko.ImageLoaders.HpSom
 
         public override Program Load(Address addrLoad)
         {
-            var ext = new StructureReader<SOM_Header>(MakeReader(0));
-            var somHeader = ext.Read();
+            var somHeader = MakeReader(0).ReadStruct<SOM_Header>();
 
             if (somHeader.aux_header_location == 0)
                 throw new BadImageFormatException();
@@ -54,8 +53,7 @@ namespace Reko.ImageLoaders.HpSom
             var subspaces = ReadSubspaces(somHeader.subspace_location, somHeader.subspace_total, somHeader.space_strings_location);
 
             var rdr = MakeReader(somHeader.aux_header_location);
-            var auxReader = new StructureReader<aux_id>(rdr);
-            var aux = auxReader.Read();
+            var aux = rdr.ReadStruct<aux_id>();
 
             switch (aux.type)
             {
@@ -98,7 +96,7 @@ namespace Reko.ImageLoaders.HpSom
             IProcessorArchitecture arch)
         {
             // According to HP's spec, the shlib info is at offset 0 of the $TEXT$ space.
-            var dlHeader = new StructureReader<DlHeader>(MakeReader(exeAuxHdr.exec_tfile)).Read();
+            var dlHeader = MakeReader(exeAuxHdr.exec_tfile).ReadStruct<DlHeader>();
             uint uStrTable = exeAuxHdr.exec_tfile + dlHeader.string_table_loc;
             var imports = ReadImports(exeAuxHdr.exec_tfile + dlHeader.import_list_loc, dlHeader.import_list_count, uStrTable);
             var dltEntries = ReadDltEntries(dlHeader, exeAuxHdr.exec_dfile, imports);
@@ -166,7 +164,7 @@ namespace Reko.ImageLoaders.HpSom
         private List<(string,SubspaceDictionaryRecord)> ReadSubspaces(uint subspace_location, uint count, uint uStrings)
         {
             var subspaces = new List<(string, SubspaceDictionaryRecord)>();
-            var rdr= new StructureReader<SubspaceDictionaryRecord>(MakeReader(subspace_location));
+            var rdr = new StructureReader<SubspaceDictionaryRecord>(MakeReader(subspace_location));
             for (; count > 0; --count)
             {
                 var subspace = rdr.Read();
@@ -194,8 +192,7 @@ namespace Reko.ImageLoaders.HpSom
         private Program LoadExecSegments(BeImageReader rdr)
         {
             var segments = new List<ImageSegment>();
-            var execAuxRdr = new StructureReader<SOM_Exec_aux_hdr>(rdr);
-            var execAux = execAuxRdr.Read();
+            var execAux = rdr.ReadStruct<SOM_Exec_aux_hdr>();
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("paRisc");

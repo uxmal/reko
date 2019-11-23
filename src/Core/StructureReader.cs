@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -41,6 +41,14 @@ namespace Reko.Core
 
         public Type MemberType { get; private set; }
 
+    }
+
+    public static class BinaryReaderStructureReader
+    {
+        public static T ReadStruct<T>(this BinaryReader rdr) where T : struct
+        {
+            return new StructureReader<T>(rdr).Read();
+        }
     }
 
     /// <summary>
