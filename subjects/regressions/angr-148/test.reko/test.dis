@@ -3,7 +3,7 @@ void _init()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax
+// Trashed: SCZO rax Top
 // Preserved: rsp
 _init_entry:
 l00000000004003E0:
@@ -36,7 +36,7 @@ void deregister_tm_clones(word64 r8)
 
 // MayUse:  r8:[0..63]
 // LiveOut:
-// Trashed: SCZO r8 rax rdi
+// Trashed: SCZO r8 rax rdi Top
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l0000000000400470:
@@ -57,7 +57,7 @@ void register_tm_clones(word64 r8)
 
 // MayUse:  r8:[0..63]
 // LiveOut:
-// Trashed: SCZO r8 rax rdi rdx rsi
+// Trashed: SCZO r8 rax rdi rdx rsi Top
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l00000000004004A0:
@@ -78,14 +78,14 @@ void __do_global_dtors_aux(word64 r8)
 
 // MayUse:  r8:[0..63]
 // LiveOut:
-// Trashed: SCZO r8 rax rdi
+// Trashed: SCZO r8 rax rdi Top
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
 l00000000004004E0:
 	branch Mem0[0x0000000000601040:byte] != 0x00 l00000000004004FA
 l00000000004004E9:
 	deregister_tm_clones(r8)
-	Mem20[0x0000000000601040:byte] = 0x01
+	Mem21[0x0000000000601040:byte] = 0x01
 l00000000004004FA:
 	return
 __do_global_dtors_aux_exit:
@@ -96,7 +96,7 @@ void frame_dummy(word64 r8)
 
 // MayUse:  r8:[0..63]
 // LiveOut:
-// Trashed: SCZO r8 rax rdi rdx rsi
+// Trashed: SCZO r8 rax rdi rdx rsi Top
 // Preserved: rbp rsp
 frame_dummy_entry:
 l0000000000400500:
@@ -108,12 +108,12 @@ l0000000000400528_thunk_register_tm_clones:
 	register_tm_clones(r8)
 	return
 l0000000000400514:
-	word64 r8_28
+	word64 r8_29
 	call fn0000000000000000 (retsize: 8;)
 		uses: r8:r8,rdi:0x0000000000600E20
-		defs: r8:r8_28
+		defs: r8:r8_29
 l0000000000400520_thunk_register_tm_clones:
-	register_tm_clones(r8_28)
+	register_tm_clones(r8_29)
 	return
 frame_dummy_exit:
 
@@ -123,7 +123,7 @@ word32 f()
 
 // MayUse: 
 // LiveOut: eax
-// Trashed: eax rdi
+// Trashed: eax rdi Top
 // Preserved: rbp rsp
 f_entry:
 l000000000040052D:
@@ -136,7 +136,7 @@ void main()
 
 // MayUse: 
 // LiveOut:
-// Trashed: rax rdi
+// Trashed: rax rdi Top
 // Preserved: rbp rsp
 main_entry:
 l000000000040053D:
@@ -150,22 +150,22 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
-// Trashed: SCZO rax rdi rdx rsi
+// Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000400550:
 	_init()
-	word32 r15d_79 = SLICE((uint64) edi, word32, 0)
-	word64 rbp_29 = 0x0000000000600E18 - 0x0000000000600E10
-	word64 rbx_30 = 0x0000000000000000
-	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6
+	word32 r15d_81 = SLICE((uint64) edi, word32, 0)
+	word64 rbp_30 = 0x0000000000600E18 - 0x0000000000600E10
+	word64 rbx_31 = 0x0000000000000000
+	branch rbp_30 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6
 l0000000000400588:
 l0000000000400590:
-	call Mem28[0x0000000000600E10 + rbx_30 * 0x0000000000000008:word64] (retsize: 8;)
-		uses: rdi:(uint64) r15d_79,rdx:rdx,rsi:rsi
-	rbx_30 = rbx_30 + 0x0000000000000001
-	branch rbx_30 != rbp_29 >> 0x0000000000000003 l0000000000400590
+	call Mem29[0x0000000000600E10 + rbx_31 * 0x0000000000000008:word64] (retsize: 8;)
+		uses: rdi:(uint64) r15d_81,rdx:rdx,rsi:rsi
+	rbx_31 = rbx_31 + 0x0000000000000001
+	branch rbx_31 != rbp_30 >> 0x0000000000000003 l0000000000400590
 l00000000004005A6:
 	return
 __libc_csu_init_exit:
@@ -176,7 +176,7 @@ void __libc_csu_fini()
 
 // MayUse: 
 // LiveOut:
-// Trashed:
+// Trashed: Top
 // Preserved: rsp
 __libc_csu_fini_entry:
 l00000000004005C0:
@@ -189,7 +189,7 @@ void _fini()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO
+// Trashed: SCZO Top
 // Preserved: rsp
 _fini_entry:
 l00000000004005C4:
