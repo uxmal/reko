@@ -133,7 +133,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var instrA = (PICInstruction)a;
             var instrB = (PICInstruction)b;
 
-            if (instrA.Opcode != instrB.Opcode)
+            if (instrA.Mnemonic != instrB.Mnemonic)
                 return false;
             if (instrA.NumberOfOperands != instrB.NumberOfOperands)
                 return false;

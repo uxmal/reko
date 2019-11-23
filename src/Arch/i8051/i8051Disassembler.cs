@@ -329,13 +329,13 @@ $@"    [Test]
 
         private class InstrDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator<i8051Disassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, params Mutator<i8051Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<i8051Disassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
@@ -351,7 +351,7 @@ $@"    [Test]
                 }
                 return new i8051Instruction
                 {
-                    Mnemonic = opcode,
+                    Mnemonic = mnemonic,
                     Address = dasm.addr,
                     Length = (int) (dasm.rdr.Address - dasm.addr),
                     Operands = dasm.ops.ToArray()

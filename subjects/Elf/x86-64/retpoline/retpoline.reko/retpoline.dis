@@ -3,7 +3,7 @@ void _init()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax
+// Trashed: SCZO rax Top
 // Preserved: rsp
 _init_entry:
 l0000000000400428:
@@ -36,7 +36,7 @@ void deregister_tm_clones(word64 r8)
 
 // MayUse:  r8:[0..63]
 // LiveOut:
-// Trashed: SCZO r8 rax rdi
+// Trashed: SCZO r8 rax rdi Top
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l00000000004004B0:
@@ -57,7 +57,7 @@ void register_tm_clones()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi rsi
+// Trashed: SCZO rax rdi rsi Top
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l00000000004004E0:
@@ -78,7 +78,7 @@ void __do_global_dtors_aux(word64 r8)
 
 // MayUse:  r8:[0..63]
 // LiveOut:
-// Trashed: SCZO r8 rax rdi
+// Trashed: SCZO r8 rax rdi Top
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
 l0000000000400520:
@@ -87,7 +87,7 @@ l0000000000400540:
 	return
 l0000000000400529:
 	deregister_tm_clones(r8)
-	Mem18[0x0000000000601040:byte] = 0x01
+	Mem19[0x0000000000601040:byte] = 0x01
 	return
 __do_global_dtors_aux_exit:
 
@@ -97,7 +97,7 @@ void frame_dummy()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi rsi
+// Trashed: SCZO rax rdi rsi Top
 // Preserved: rbp rsp
 frame_dummy_entry:
 l0000000000400550:
@@ -112,7 +112,7 @@ void my1(word32 esi, word32 edi)
 
 // MayUse:  edi:[0..31] esi:[0..31]
 // LiveOut:
-// Trashed: SCZO rdi rsi
+// Trashed: SCZO rdi rsi Top
 // Preserved: rbp rsp
 my1_entry:
 l0000000000400560:
@@ -126,11 +126,11 @@ void my2(byte sil, word64 rdi)
 
 // MayUse:  rdi:[0..63] sil:[0..7]
 // LiveOut:
-// Trashed: rax rsi
+// Trashed: rax rsi Top
 // Preserved: rbp rdi rsp
 my2_entry:
 l0000000000400590:
-	Mem15[rdi:byte] = sil
+	Mem16[rdi:byte] = sil
 	return
 my2_exit:
 
@@ -140,7 +140,7 @@ void branches(word32 esi, word32 edi)
 
 // MayUse:  esi:[0..31] rdi:[0..31]
 // LiveOut:
-// Trashed: SCZO edx rax rcx rdi rsi
+// Trashed: SCZO edx rax rcx rdi rsi Top
 // Preserved: rbp rsp
 branches_entry:
 	word32 edi = SLICE(rdi, word32, 0)
@@ -153,14 +153,14 @@ l00000000004005DE:
 l00000000004005EE:
 	branch SLICE((uint64) (SLICE((uint64) edi, word32, 0) << 0x00000002), word32, 0) >= SLICE((uint64) (SLICE((uint64) esi, word32, 0) << 0x00000002), word32, 0) l000000000040064F
 l0000000000400602:
-	word64 rax_59 = (uint64) SLICE((uint64) esi, word32, 0)
-	word32 eax_66 = (int32) ((int64) SLICE(rax_59, word32, 0) / 0x00000002)
-	word64 rax_84 = SEQ(SLICE(rax_59, word32, 32), eax_66)
-	branch SLICE((uint64) (int32) ((int64) SLICE((uint64) SLICE((uint64) edi, word32, 0), word32, 0) / 0x00000002), word32, 0) >= eax_66 l000000000040064F
+	word64 rax_60 = (uint64) SLICE((uint64) esi, word32, 0)
+	word32 eax_67 = (int32) ((int64) SLICE(rax_60, word32, 0) / 0x00000002)
+	word64 rax_85 = SEQ(SLICE(rax_60, word32, 32), eax_67)
+	branch SLICE((uint64) (int32) ((int64) SLICE((uint64) SLICE((uint64) edi, word32, 0), word32, 0) / 0x00000002), word32, 0) >= eax_67 l000000000040064F
 l000000000040064F:
 l000000000040062B:
 	my1(SLICE((uint64) esi, word32, 0), SLICE((uint64) edi, word32, 0))
-	free(rax_84)
+	free(rax_85)
 l0000000000400656:
 	return
 branches_exit:
@@ -201,7 +201,7 @@ void fn0000000000400700()
 
 // MayUse: 
 // LiveOut:
-// Trashed:
+// Trashed: Top
 // Preserved: rsp
 fn0000000000400700_entry:
 l0000000000400700:
@@ -214,22 +214,22 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
-// Trashed: SCZO rax rdi rdx rsi
+// Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000400710:
 	_init()
-	word32 r15d_82 = SLICE((uint64) edi, word32, 0)
-	word64 rbp_29 = 0x0000000000600E18 - 0x0000000000600E10
-	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l0000000000400766
+	word32 r15d_84 = SLICE((uint64) edi, word32, 0)
+	word64 rbp_30 = 0x0000000000600E18 - 0x0000000000600E10
+	branch rbp_30 >> 0x0000000000000003 == 0x0000000000000000 l0000000000400766
 l0000000000400746:
-	word64 rbx_41 = 0x0000000000000000
+	word64 rbx_42 = 0x0000000000000000
 l0000000000400750:
-	call Mem24[0x0000000000600E10 + rbx_41 * 0x0000000000000008:word64] (retsize: 8;)
-		uses: rdi:(uint64) r15d_82,rdx:rdx,rsi:rsi
-	rbx_41 = rbx_41 + 0x0000000000000001
-	branch rbp_29 >> 0x0000000000000003 != rbx_41 l0000000000400750
+	call Mem25[0x0000000000600E10 + rbx_42 * 0x0000000000000008:word64] (retsize: 8;)
+		uses: rdi:(uint64) r15d_84,rdx:rdx,rsi:rsi
+	rbx_42 = rbx_42 + 0x0000000000000001
+	branch rbp_30 >> 0x0000000000000003 != rbx_42 l0000000000400750
 l0000000000400766:
 	return
 __libc_csu_init_exit:
@@ -240,7 +240,7 @@ void __libc_csu_fini()
 
 // MayUse: 
 // LiveOut:
-// Trashed:
+// Trashed: Top
 // Preserved: rsp
 __libc_csu_fini_entry:
 l0000000000400780:
@@ -253,7 +253,7 @@ void _fini()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO
+// Trashed: SCZO Top
 // Preserved: rsp
 _fini_entry:
 l0000000000400784:

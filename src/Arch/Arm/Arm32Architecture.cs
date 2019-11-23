@@ -155,10 +155,10 @@ namespace Reko.Arch.Arm
             while (rdr.IsValid)
             {
                 uint linAddrCall =  rdr.Address.ToUInt32();
-                var opcode = rdr.ReadLeUInt32();
-                if ((opcode & 0x0F000000) == 0x0B000000)         // BL
+                var wInstr = rdr.ReadLeUInt32();
+                if ((wInstr & 0x0F000000) == 0x0B000000)         // BL
                 {
-                    int offset = ((int)opcode << 8) >> 6;
+                    int offset = ((int)wInstr << 8) >> 6;
                     uint target = (uint)(linAddrCall + 8 + offset);
                     if (knownLinAddresses.Contains(target))
                         yield return Address.Ptr32(linAddrCall);

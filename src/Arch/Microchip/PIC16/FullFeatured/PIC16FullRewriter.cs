@@ -54,7 +54,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         protected override void RewriteInstr()
         {
-            switch (instrCurr.Opcode)
+            switch (instrCurr.Mnemonic)
             {
                 default:
                     base.RewriteInstr();

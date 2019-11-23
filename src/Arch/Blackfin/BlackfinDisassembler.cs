@@ -76,13 +76,13 @@ namespace Reko.Arch.Blackfin
         private class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator[] mutators;
 
-            public InstrDecoder(InstrClass iclass, Mnemonic opcode, params Mutator[] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator[] mutators)
             {
                 this.iclass = iclass;
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
@@ -96,7 +96,7 @@ namespace Reko.Arch.Blackfin
                 }
                 dasm.instr.Address = dasm.addr;
                 dasm.instr.InstructionClass = iclass;
-                dasm.instr.Mnemonic = opcode;
+                dasm.instr.Mnemonic = mnemonic;
                 dasm.instr.Operands = dasm.ops.ToArray();
                 return dasm.instr;
             }

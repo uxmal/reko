@@ -64,14 +64,15 @@ namespace Reko.Arch.SuperH
             return new SuperHInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Opcode = Mnemonic.invalid
+                Mnemonic = Mnemonic.invalid,
+                Operands = new MachineOperand[0]
             };
         }
 
         public class DasmState
         {
             public List<MachineOperand> ops = new List<MachineOperand>();
-            public Mnemonic opcode;
+            public Mnemonic mnemonic;
             public InstrClass iclass;
             public RegisterStorage reg;
 
@@ -84,7 +85,7 @@ namespace Reko.Arch.SuperH
             {
                 var instr = new SuperHInstruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = iclass,
                     Operands = ops.ToArray()
                 };
@@ -527,20 +528,20 @@ namespace Reko.Arch.SuperH
 
         private class InstrDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator<SuperHDisassembler>[] mutators;
 
             public InstrDecoder(Mnemonic opcode, InstrClass iclass, Mutator<SuperHDisassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = opcode;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
 
             public override SuperHInstruction Decode(uint uInstr, SuperHDisassembler dasm)
             {
-                dasm.state.opcode = this.opcode;
+                dasm.state.mnemonic = this.mnemonic;
                 dasm.state.iclass = this.iclass;
                 foreach (var mutator in this.mutators)
                 {

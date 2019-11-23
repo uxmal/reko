@@ -61,7 +61,7 @@ namespace Reko.Arch.Avr
             instr.Length = (int) length;
 
 #if DEBUG
-            if (instr.opcode == Mnemonic.invalid) EmitUnitTest(wInstr);
+            if (instr.Mnemonic == Mnemonic.invalid) EmitUnitTest(wInstr);
 #endif
             return instr;
         }
@@ -71,7 +71,7 @@ namespace Reko.Arch.Avr
             return new AvrInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Mnemonic.invalid,
+                Mnemonic = Mnemonic.invalid,
                 operands = new MachineOperand[0]
             };
         }
@@ -746,13 +746,13 @@ namespace Reko.Arch.Avr
 
         public class InstrDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator<Avr8Disassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
@@ -766,7 +766,7 @@ namespace Reko.Arch.Avr
                 }
                 return new AvrInstruction
                 {
-                    opcode = opcode,
+                    Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     operands = dasm.ops.ToArray(),
                 };
@@ -794,7 +794,7 @@ namespace Reko.Arch.Avr
                 return new AvrInstruction
                 {
                     InstructionClass = InstrClass.ConditionalTransfer,
-                    opcode = branches[br],
+                    Mnemonic = branches[br],
                     operands = dasm.ops.ToArray()
                 };
             }

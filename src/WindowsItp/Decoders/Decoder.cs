@@ -51,12 +51,12 @@ namespace Reko.WindowsItp.Decoders
 
     public class ThreadedDecoder : Decoder
     {
-        private readonly Opcode opcode;
+        private readonly Opcode mnemonic;
         private readonly Mutator<Disassembler>[] mutators;
 
         public ThreadedDecoder(Opcode opcode, params Mutator<Disassembler> [] mutators)
         {
-            this.opcode = opcode;
+            this.mnemonic = opcode;
             this.mutators = mutators;
         }
          

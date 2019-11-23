@@ -136,7 +136,7 @@ namespace Reko.Arch.X86
             X86LegacyCodeRegisterExtension registerExtension;
 
             // These fields are for synthesis.
-            public Mnemonic opcode;
+            public Mnemonic mnemonic;
             public InstrClass iclass;
             public PrimitiveType dataWidth;
             public PrimitiveType addressWidth;
@@ -175,7 +175,7 @@ namespace Reko.Arch.X86
 
             public X86Instruction MakeInstruction()
             {
-                return new X86Instruction(this.opcode, this.iclass, this.iWidth, this.addressWidth, this.ops.ToArray())
+                return new X86Instruction(this.mnemonic, this.iclass, this.iWidth, this.addressWidth, this.ops.ToArray())
                 {
                     repPrefix = this.F2Prefix ? 2 :
                                 this.F3Prefix ? 3 : 0

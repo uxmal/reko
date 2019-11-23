@@ -98,6 +98,7 @@
         <File Source="$(var.MzExe.TargetPath)" />
         <File Source="$(var.OdbgScript.TargetPath)" />
         <File Source="$(var.VmsExe.TargetPath)" />
+        <File Source="$(var.Xex.TargetPath)" />
 
         <!-- Environments -->
         <File Source="$(var.AmigaOS.TargetPath)" />
@@ -138,6 +139,7 @@
         <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" />
         <File Source="$(var.Windows.ProjectDir)oleaut32.xml" />
         <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" />
+        <File Source="$(var.Xbox360.TargetPath)" />
         <File Source="$(var.ZX81.TargetPath)" />
 
         <!-- Architectures -->

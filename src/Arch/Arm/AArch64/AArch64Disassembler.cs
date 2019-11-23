@@ -66,7 +66,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private class DasmState
         {
-            public Mnemonic opcode;
+            public Mnemonic mnemonic;
             public InstrClass iclass;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public Mnemonic shiftCode = Mnemonic.Invalid;
@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm.AArch64
 
             public void Clear()
             {
-                this.opcode = Mnemonic.Invalid;
+                this.mnemonic = Mnemonic.Invalid;
                 this.iclass = InstrClass.Invalid;
                 this.ops.Clear();
                 this.shiftCode = Mnemonic.Invalid;
@@ -89,14 +89,14 @@ namespace Reko.Arch.Arm.AArch64
             public void Invalid()
             {
                 Clear();
-                opcode = Mnemonic.Invalid;
+                mnemonic = Mnemonic.Invalid;
             }
 
             public AArch64Instruction MakeInstruction()
             {
                 var instr = new AArch64Instruction
                 {
-                    Mnemonic = opcode,
+                    Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Operands = ops.ToArray(),
                     shiftCode = shiftCode,
@@ -1247,7 +1247,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             return (u, d) =>
             {
-                var op = d.state.opcode.ToString();
+                var op = d.state.mnemonic.ToString();
                 string m;
                 if (message == "")
                     m = op;
@@ -1270,13 +1270,13 @@ namespace Reko.Arch.Arm.AArch64
             if ((width == 32 && imms == 0x1F) ||
                 (width == 64 && imms == 0x3F))
             {
-                dasm.state.opcode = Mnemonic.asr;
+                dasm.state.mnemonic = Mnemonic.asr;
                 dasm.state.ops.RemoveAt(3);
                 return true;
             }
             if (imms < immr)
             {
-                dasm.state.opcode = Mnemonic.sbfiz;
+                dasm.state.mnemonic = Mnemonic.sbfiz;
                 dasm.state.ops[2] = ImmediateOperand.Int32(width - (int)immr);
                 dasm.state.ops[3] = ImmediateOperand.Int32((int)imms + 1);
                 return true;
@@ -1287,17 +1287,17 @@ namespace Reko.Arch.Arm.AArch64
                 switch (imms)
                 {
                 case 0b00111:
-                    dasm.state.opcode = Mnemonic.sxtb;
+                    dasm.state.mnemonic = Mnemonic.sxtb;
                     dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
                 case 0b01111:
-                    dasm.state.opcode = Mnemonic.sxth;
+                    dasm.state.mnemonic = Mnemonic.sxth;
                     dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
                 case 0b11111:
-                    dasm.state.opcode = Mnemonic.sxtw;
+                    dasm.state.mnemonic = Mnemonic.sxtw;
                     dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
@@ -1315,12 +1315,12 @@ namespace Reko.Arch.Arm.AArch64
             {
                 if (imms == 0x1F)
                 {
-                    dasm.state.opcode = Mnemonic.lsr;
+                    dasm.state.mnemonic = Mnemonic.lsr;
                     dasm.state.ops.RemoveAt(3);
                     return true;
                 } else if (imms + 1 == immr)
                 {
-                    dasm.state.opcode = Mnemonic.lsl;
+                    dasm.state.mnemonic = Mnemonic.lsl;
                     dasm.state.ops.RemoveAt(3); dasm.state.ops[2] = ImmediateOperand.Int32(31 - (int)imms);
 
                     return true;
@@ -1330,13 +1330,13 @@ namespace Reko.Arch.Arm.AArch64
             {
                 if (imms == 0x3F)
                 {
-                    dasm.state.opcode = Mnemonic.lsr;
+                    dasm.state.mnemonic = Mnemonic.lsr;
                     dasm.state.ops.RemoveAt(3);
                     return true;
                 }
                 else if (imms + 1 == immr)
                 {
-                    dasm.state.opcode = Mnemonic.lsl;
+                    dasm.state.mnemonic = Mnemonic.lsl;
                     dasm.state.ops[2] = ImmediateOperand.Int32(63 - (int)imms);
                     dasm.state.ops.RemoveAt(3);
                     return true;
@@ -1347,15 +1347,15 @@ namespace Reko.Arch.Arm.AArch64
                 switch (imms)
                 {
                 case 0b00111:
-                    dasm.state.opcode = Mnemonic.uxtb;
+                    dasm.state.mnemonic = Mnemonic.uxtb;
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
                 case 0b01111:
-                    dasm.state.opcode = Mnemonic.uxth;
+                    dasm.state.mnemonic = Mnemonic.uxth;
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
                 case 0b11111:
-                    dasm.state.opcode = Mnemonic.uxtw;
+                    dasm.state.mnemonic = Mnemonic.uxtw;
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
                 }

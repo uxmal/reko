@@ -29,12 +29,12 @@ namespace Reko.Arch.Msp430
 {
     public class Msp430Instruction : MachineInstruction
     {
-        public Mnemonics opcode;
+        public Mnemonics Mnemonic;
         public PrimitiveType dataWidth;
         public int repeatImm;
         public RegisterStorage repeatReg;
 
-        public override int OpcodeAsInteger => (int) opcode;
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -58,7 +58,7 @@ namespace Reko.Arch.Msp430
                 writer.WriteString(repeatImm.ToString());
                 writer.WriteString(" ");
             }
-            var sb = new StringBuilder(opcode.ToString());
+            var sb = new StringBuilder(Mnemonic.ToString());
             if (dataWidth != null)
             {
                 sb.AppendFormat(".{0}", dataWidth.BitSize == 8
@@ -76,7 +76,7 @@ namespace Reko.Arch.Msp430
             {
                 writer.WriteString("&");
             }
-            if (op is ImmediateOperand && opcode != Mnemonics.call)
+            if (op is ImmediateOperand && Mnemonic != Mnemonics.call)
             {
                 writer.WriteString("#");
             }

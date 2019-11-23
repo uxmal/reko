@@ -326,20 +326,20 @@ namespace Reko.Arch.RiscV
         public class CDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator<RiscVDisassembler>[] mutators;
 
-            internal CDecoder(InstrClass iclass, Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
+            internal CDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
             {
                 this.iclass = iclass;
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
             public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
             {
                 dasm.state.instr.InstructionClass = this.iclass;
-                dasm.state.instr.Mnemonic = opcode;
+                dasm.state.instr.Mnemonic = mnemonic;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)
                 {
@@ -352,21 +352,21 @@ namespace Reko.Arch.RiscV
 
         public class WInstrDecoderOld : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator<RiscVDisassembler> [] mutators;
 
-            public WInstrDecoderOld(InstrClass iclass, Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
+            public WInstrDecoderOld(InstrClass iclass, Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
             {
                 this.iclass = iclass;
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
             public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
             {
                 dasm.state.instr.InstructionClass = this.iclass;
-                dasm.state.instr.Mnemonic = opcode;
+                dasm.state.instr.Mnemonic = mnemonic;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)
                 {
@@ -380,18 +380,18 @@ namespace Reko.Arch.RiscV
         public class FpuDecoder : Decoder
         {
             private readonly Mutator<RiscVDisassembler>[] mutators;
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public FpuDecoder(Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
+            public FpuDecoder(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
             public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
             {
                 dasm.state.instr.InstructionClass = InstrClass.Linear;
-                dasm.state.instr.Mnemonic = opcode;
+                dasm.state.instr.Mnemonic = mnemonic;
                 dasm.state.ops.Clear();
                 foreach (var m in mutators)
                 {

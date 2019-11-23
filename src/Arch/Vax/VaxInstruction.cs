@@ -29,13 +29,13 @@ namespace Reko.Arch.Vax
 {
     public class VaxInstruction : MachineInstruction
     {
-        public Mnemonic Opcode { get; internal set; }
+        public Mnemonic Mnemonic { get; internal set; }
 
-        public override int OpcodeAsInteger => (int)Opcode;
+        public override int OpcodeAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(this.Opcode.ToString());
+            writer.WriteOpcode(this.Mnemonic.ToString());
             RenderOperands(writer, options);
         }
 

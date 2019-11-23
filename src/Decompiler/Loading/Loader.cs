@@ -337,14 +337,13 @@ namespace Reko.Loading
             return default(T);
         }
 
-        public bool ImageHasMagicNumber(byte[] image, string magicNumber, string sOffset)
+        public bool ImageHasMagicNumber(byte[] image, string magicNumber, long offset)
         {
-            int offset = ConvertOffset(sOffset);
             byte[] magic = ConvertHexStringToBytes(magicNumber);
             if (image.Length < offset + magic.Length)
                 return false;
 
-            for (int i = 0, j = offset; i < magic.Length; ++i, ++j)
+            for (long i = 0, j = offset; i < magic.Length; ++i, ++j)
             {
                 if (magic[i] != image[j])
                     return false;

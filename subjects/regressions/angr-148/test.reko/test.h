@@ -54,10 +54,10 @@ Eq_94: (union "Eq_94" (int64 u0) (ptr64 u1))
 Eq_95: (union "Eq_95" (int64 u0) (ptr64 u1))
 	T_95 (in 0000000000600E10 : ptr64)
 Eq_97: (union "Eq_97" (int64 u0) (uint64 u1))
-	T_97 (in rbx_30 : Eq_97)
+	T_97 (in rbx_31 : Eq_97)
 	T_98 (in 0x0000000000000000 : uint64)
-	T_108 (in rbx_30 + 0x0000000000000001 : word64)
-	T_109 (in rbp_29 >> 0x0000000000000003 : word64)
+	T_108 (in rbx_31 + 0x0000000000000001 : word64)
+	T_109 (in rbp_30 >> 0x0000000000000003 : word64)
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
   Class: Eq_1
@@ -279,7 +279,7 @@ T_55: (in 0000000000601040 : ptr64)
   Class: Eq_55
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_56 t0000)))
-T_56: (in Mem20[0x0000000000601040:byte] : byte)
+T_56: (in Mem21[0x0000000000601040:byte] : byte)
   Class: Eq_48
   DataType: byte
   OrigDataType: byte
@@ -315,7 +315,7 @@ T_64: (in 0x0000000000000000 == 0x0000000000000000 : bool)
   Class: Eq_64
   DataType: bool
   OrigDataType: bool
-T_65: (in r8_28 : word64)
+T_65: (in r8_29 : word64)
   Class: Eq_40
   DataType: word64
   OrigDataType: word64
@@ -335,7 +335,7 @@ T_69: (in signature of register_tm_clones : void)
   Class: Eq_68
   DataType: (ptr64 Eq_68)
   OrigDataType: 
-T_70: (in register_tm_clones(r8_28) : void)
+T_70: (in register_tm_clones(r8_29) : void)
   Class: Eq_70
   DataType: void
   OrigDataType: void
@@ -415,7 +415,7 @@ T_89: (in _init() : void)
   Class: Eq_89
   DataType: void
   OrigDataType: void
-T_90: (in r15d_79 : word32)
+T_90: (in r15d_81 : word32)
   Class: Eq_90
   DataType: word32
   OrigDataType: word32
@@ -427,7 +427,7 @@ T_92: (in SLICE((uint64) edi, word32, 0) : word32)
   Class: Eq_90
   DataType: word32
   OrigDataType: word32
-T_93: (in rbp_29 : int64)
+T_93: (in rbp_30 : int64)
   Class: Eq_93
   DataType: int64
   OrigDataType: int64
@@ -443,7 +443,7 @@ T_96: (in 0x0000000000600E18 - 0x0000000000600E10 : word64)
   Class: Eq_93
   DataType: int64
   OrigDataType: int64
-T_97: (in rbx_30 : Eq_97)
+T_97: (in rbx_31 : Eq_97)
   Class: Eq_97
   DataType: Eq_97
   OrigDataType: word64
@@ -455,7 +455,7 @@ T_99: (in 0x0000000000000003 : word64)
   Class: Eq_99
   DataType: word64
   OrigDataType: word64
-T_100: (in rbp_29 >> 0x0000000000000003 : word64)
+T_100: (in rbp_30 >> 0x0000000000000003 : word64)
   Class: Eq_100
   DataType: int64
   OrigDataType: int64
@@ -463,7 +463,7 @@ T_101: (in 0x0000000000000000 : word64)
   Class: Eq_100
   DataType: int64
   OrigDataType: word64
-T_102: (in rbp_29 >> 0x0000000000000003 == 0x0000000000000000 : bool)
+T_102: (in rbp_30 >> 0x0000000000000003 == 0x0000000000000000 : bool)
   Class: Eq_102
   DataType: bool
   OrigDataType: bool
@@ -475,11 +475,11 @@ T_104: (in 0x0000000000000008 : word64)
   Class: Eq_104
   DataType: ui64
   OrigDataType: ui64
-T_105: (in rbx_30 * 0x0000000000000008 : word64)
+T_105: (in rbx_31 * 0x0000000000000008 : word64)
   Class: Eq_105
   DataType: ui64
   OrigDataType: ui64
-T_106: (in 0x0000000000600E10[rbx_30 * 0x0000000000000008] : word64)
+T_106: (in 0x0000000000600E10[rbx_31 * 0x0000000000000008] : word64)
   Class: Eq_106
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
@@ -487,15 +487,15 @@ T_107: (in 0x0000000000000001 : word64)
   Class: Eq_107
   DataType: word64
   OrigDataType: word64
-T_108: (in rbx_30 + 0x0000000000000001 : word64)
+T_108: (in rbx_31 + 0x0000000000000001 : word64)
   Class: Eq_97
   DataType: Eq_97
   OrigDataType: uint64
-T_109: (in rbp_29 >> 0x0000000000000003 : word64)
+T_109: (in rbp_30 >> 0x0000000000000003 : word64)
   Class: Eq_97
   DataType: Eq_97
   OrigDataType: int64
-T_110: (in rbx_30 != rbp_29 >> 0x0000000000000003 : bool)
+T_110: (in rbx_31 != rbp_30 >> 0x0000000000000003 : bool)
   Class: Eq_110
   DataType: bool
   OrigDataType: bool

@@ -104,15 +104,15 @@ namespace Reko.Arch.Z80
         private class InstrDecoder : Decoder
         {
             public readonly InstrClass IClass;
-            public readonly Mnemonic i8080Opcode;
-            public readonly Mnemonic Z80Opcode;
+            public readonly Mnemonic i8080mnemonic;
+            public readonly Mnemonic Z80mnemonic;
             private readonly Mutator[] mutators;
 
             public InstrDecoder(InstrClass iclass, Mnemonic i8080, Mnemonic z80, params Mutator [] mutators)
             {
                 this.IClass = iclass;
-                this.i8080Opcode = i8080;
-                this.Z80Opcode = z80;
+                this.i8080mnemonic = i8080;
+                this.Z80mnemonic = z80;
                 this.mutators = mutators;
             }
 
@@ -125,7 +125,7 @@ namespace Reko.Arch.Z80
                         return disasm.CreateInvalidInstruction();
                 }
                 instr.InstructionClass = IClass;
-                instr.Mnemonic = Z80Opcode;
+                instr.Mnemonic = Z80mnemonic;
                 instr.Operands = disasm.ops.ToArray();
                 return instr;
             }
