@@ -41,6 +41,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Arc\Arc.csproj">
+      <Name>Arc</Name>
+      <Project>{f9c628df-eb23-46d7-9580-3a2b749e8bda}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Arm\Arm.csproj">
       <Name>Arm</Name>
       <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
@@ -441,6 +449,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\Switch\Switch.csproj">
+      <Name>Switch</Name>
+      <Project>{c1bae231-5a72-40d2-8b75-328849d58c0f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\SysV\SysV.csproj">
       <Name>SysV</Name>
       <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
@@ -556,6 +572,14 @@
     <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj">
       <Name>MzExe</Name>
       <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Nro\Nro.csproj">
+      <Name>Nro</Name>
+      <Project>{0ab0aab7-292e-4827-a480-a32561b07fd7}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
