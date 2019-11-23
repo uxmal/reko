@@ -647,15 +647,14 @@ namespace Reko.ImageLoaders.Xex
 				XexImportType type = (XexImportType)((value & 0xFF000000) >> 24);
 				byte libIndex = (byte)((value & 0x00FF0000) >> 16);
 
+				if (type > XexImportType.Function) {
+					decompilerEventListener.Error(new NullCodeLocation(""), $"XEX: Unsupported import type {type}, value: 0x{value:X}");
+					continue;
+				}
+
 				if (libIndex >= xexData.libNames.Count)
 				{
 					throw new BadImageFormatException($"XEX: invalid import record lib index ({libIndex}, max:{xexData.libNames.Count})");
-				}
-
-				if (type > XexImportType.Function)
-				{
-					decompilerEventListener.Error(new NullCodeLocation(""), $"XEX: Unsupported import type {type}, value: 0x{value:X}");
-					continue;
 				}
 
 				UInt32 importOrdinal = (value & 0xFFFF);
