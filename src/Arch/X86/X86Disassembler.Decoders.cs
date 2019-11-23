@@ -47,20 +47,20 @@ namespace Reko.Arch.X86
         public class InstructionDecoder : Decoder
         {
             public readonly InstrClass iclass;
-            public readonly Mnemonic opcode;       // mnemonic for the decoded instruction
+            public readonly Mnemonic mnemonic;       // mnemonic for the decoded instruction
             public readonly Mutator<X86Disassembler>[] mutators;  // mutators for decoding operands to this instruction
 
-            public InstructionDecoder(Mnemonic op, InstrClass icl, params Mutator<X86Disassembler> [] mutators)
+            public InstructionDecoder(Mnemonic mnemonic, InstrClass icl, params Mutator<X86Disassembler> [] mutators)
             {
                 this.iclass = icl;
-                this.opcode = op;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
             public override bool Decode(X86Disassembler disasm, byte op)
             {
                 disasm.decodingContext.iclass = this.iclass;
-                disasm.decodingContext.opcode = this.opcode;
+                disasm.decodingContext.mnemonic = this.mnemonic;
                 foreach (var m in mutators)
                 {
                     if (!m(op, disasm))
@@ -71,7 +71,7 @@ namespace Reko.Arch.X86
 
             public override string ToString()
             {
-                return $"{iclass}:{opcode}";
+                return $"{iclass}:{mnemonic}";
             }
         }
 
@@ -357,12 +357,12 @@ namespace Reko.Arch.X86
                 var instr = s_decoders0F[op].Decode(disasm, op);
                 if (!instr)
                     return false;
-                if (!s_mpVex.TryGetValue(disasm.decodingContext.opcode, out Mnemonic vexCode))
+                if (!s_mpVex.TryGetValue(disasm.decodingContext.mnemonic, out Mnemonic vexCode))
                 {
-                    Debug.Print("X86Disassembler: {0} Failed to map {1} to VEX counterpart", disasm.addr, disasm.decodingContext.opcode);
+                    Debug.Print("X86Disassembler: {0} Failed to map {1} to VEX counterpart", disasm.addr, disasm.decodingContext.mnemonic);
                     return false;
                 }
-                disasm.decodingContext.opcode = vexCode;
+                disasm.decodingContext.mnemonic = vexCode;
                 return true;
             }
         }
@@ -409,9 +409,9 @@ namespace Reko.Arch.X86
                     return false;
                 if (!decoders[op].Decode(disasm, op))
                     return false;
-                if (s_mpVex.TryGetValue(disasm.decodingContext.opcode, out var vCode))
+                if (s_mpVex.TryGetValue(disasm.decodingContext.mnemonic, out var vCode))
                 {
-                    disasm.decodingContext.opcode = vCode;
+                    disasm.decodingContext.mnemonic = vCode;
                 }
                 return true;
             }

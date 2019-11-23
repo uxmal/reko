@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm.AArch32
                 itCondition = ArmCondition.AL;
                 itState = 0;
             }
-            else if (itState != 0 && instr.opcode != Mnemonic.it)
+            else if (itState != 0 && instr.Mnemonic != Mnemonic.it)
             {
                 // We're still under the influence of the IT instruction.
                 var bit = ((itState >> 4) ^ ((int) this.itCondition)) & 1;
@@ -89,7 +89,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private class DasmState
         {
-            public Mnemonic opcode;
+            public Mnemonic mnemonic;
             public InstrClass iclass;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public ArmCondition cc = ArmCondition.AL;
@@ -111,7 +111,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 return new T32Instruction
                 {
-                    opcode = opcode,
+                    Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Operands = ops.ToArray(),
                     condition = cc,
@@ -290,7 +290,7 @@ namespace Reko.Arch.Arm.AArch32
             return new T32Instruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Mnemonic.Invalid,
+                Mnemonic = Mnemonic.Invalid,
                 Operands = new MachineOperand[0]
             };
         }

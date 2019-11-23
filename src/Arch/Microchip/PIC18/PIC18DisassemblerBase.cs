@@ -310,11 +310,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class MemoryBitWithAccessDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private Mnemonic mnemonic;
 
-            public MemoryBitWithAccessDecoder(Mnemonic opc)
+            public MemoryBitWithAccessDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
@@ -322,7 +322,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 var adr = uInstr.Extract(0, 8);
                 var acc = uInstr.Extract(8, 1);
                 var bitno = uInstr.Extract(9, 3);
-                return new PICInstructionMemFBA(opcode, adr, bitno, acc);
+                return new PICInstructionMemFBA(mnemonic, adr, bitno, acc);
             }
         }
 

@@ -4,6 +4,7 @@
     <TargetFramework>net47</TargetFramework>
     <AssemblyName>Reko.ImageLoaders.HpSom</AssemblyName>
     <RootNamespace>Reko.ImageLoaders.HpSom</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>

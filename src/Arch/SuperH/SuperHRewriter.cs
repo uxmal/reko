@@ -63,14 +63,14 @@ namespace Reko.Arch.SuperH
                 this.rtlc = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     host.Error(
                         dasm.Current.Address,
                         string.Format(
                             "SuperH instruction {0} not supported yet.",
-                        dasm.Current.Opcode));
+                        dasm.Current.Mnemonic));
                     EmitUnitTest();
                     goto case Mnemonic.invalid;
                 case Mnemonic.invalid:
@@ -196,15 +196,15 @@ namespace Reko.Arch.SuperH
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Opcode))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.Opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void SHRw_" + dasm.Current.Opcode + "()");
+            Debug.WriteLine("        public void SHRw_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            RewriteCode(\"");
             Debug.Write(string.Join(

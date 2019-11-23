@@ -66,14 +66,14 @@ namespace Reko.Arch.Arm.AArch32
         /// </summary>
         private class InstrDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly ArmVectorData vec;
             private readonly Mutator<T32Disassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.vec = vec;
                 this.mutators = mutators;
@@ -81,8 +81,8 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
-                DumpMaskedInstruction(wInstr, 0, this.opcode);
-                dasm.state.opcode = this.opcode;
+                DumpMaskedInstruction(wInstr, 0, this.mnemonic);
+                dasm.state.mnemonic = this.mnemonic;
                 dasm.state.iclass = this.iclass;
                 dasm.state.vectorData = this.vec;
                 for (int i = 0; i < mutators.Length; ++i)
@@ -112,7 +112,7 @@ namespace Reko.Arch.Arm.AArch32
                 off <<= 1;
                 return new T32Instruction
                 {
-                    opcode = Mnemonic.bl,
+                    Mnemonic = Mnemonic.bl,
                     Operands = new MachineOperand[] { AddressOperand.Create(dasm.addr + (off + 4)) }
                 };
             }
@@ -129,7 +129,7 @@ namespace Reko.Arch.Arm.AArch32
                 var w = st || (registers & (1 << rn.Number)) == 0;
                 return new T32Instruction
                 {
-                    opcode = st
+                    Mnemonic = st
                         ? Mnemonic.stm
                         : Mnemonic.ldm,
                     InstructionClass = InstrClass.Linear,
@@ -144,11 +144,11 @@ namespace Reko.Arch.Arm.AArch32
         // Decodes 32-bit LDM* STM* instructions
         private class LdmStmDecoder32 : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public LdmStmDecoder32(Mnemonic opcode)
+            public LdmStmDecoder32(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
@@ -162,7 +162,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     return new T32Instruction
                     {
-                        opcode = l != 0 ? Mnemonic.pop : Mnemonic.push,
+                        Mnemonic = l != 0 ? Mnemonic.pop : Mnemonic.push,
                         InstructionClass = InstrClass.Linear,
                         Wide = true,
                         Writeback = w,
@@ -173,7 +173,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     return new T32Instruction
                     {
-                        opcode = opcode,
+                        Mnemonic = mnemonic,
                         InstructionClass = InstrClass.Linear,
                         Writeback = w,
                         Operands = new MachineOperand[] {
@@ -198,7 +198,7 @@ namespace Reko.Arch.Arm.AArch32
                 var instr = base.Decode(wInstr, dasm);
                 if (instr.Operands[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
                 {
-                    instr.opcode = Mnemonic.mov;
+                    instr.Mnemonic = Mnemonic.mov;
                 }
                 return instr;
             }
@@ -211,7 +211,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var instr = new T32Instruction
                 {
-                    opcode = Mnemonic.it,
+                    Mnemonic = Mnemonic.it,
                     InstructionClass = InstrClass.Linear,
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte)SBitfield(wInstr, 0, 4)

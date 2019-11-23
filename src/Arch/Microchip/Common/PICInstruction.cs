@@ -83,19 +83,19 @@ namespace Reko.Arch.MicrochipPIC.Common
 
 
         /// <summary>
-        /// Instantiates a new <see cref="PICInstruction"/> with given <see cref="Opcode"/> and operands.
+        /// Instantiates a new <see cref="PICInstruction"/> with given <see cref="Mnemonic"/> and operands.
         /// Throws an <see cref="ArgumentException"/> in more than 3 operands are provided.
         /// </summary>
-        /// <param name="opc">The PIC opcode.</param>
+        /// <param name="mnemonic">The PIC opcode.</param>
         /// <param name="ops">Zero, one, two or three instruction's operands ops.</param>
         /// <exception cref="ArgumentException">Thrown if more than 3 operands provided.</exception>
-        public PICInstruction(Mnemonic opc, params MachineOperand[] ops)
+        public PICInstruction(Mnemonic mnemonic, params MachineOperand[] ops)
         {
             if (ops.Length >= 4)
                 throw new ArgumentException(nameof(ops), "Too many PIC instruction operands.");
-            Opcode = opc;
+            Mnemonic = mnemonic;
 
-            if (!classOf.TryGetValue(Opcode, out this.InstructionClass))
+            if (!classOf.TryGetValue(Mnemonic, out this.InstructionClass))
                 this.InstructionClass = InstrClass.Linear;
             Operands = ops;
         }
@@ -103,7 +103,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the opcode.
         /// </summary>
-        public Mnemonic Opcode { get; }
+        public Mnemonic Mnemonic { get; }
 
         /// <summary>
         /// Each different supported opcode should have a different numerical value, exposed here.
@@ -111,7 +111,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The opcode as integer.
         /// </value>
-        public override int OpcodeAsInteger => (int)Opcode;
+        public override int OpcodeAsInteger => (int)Mnemonic;
 
         /// <summary>
         /// Gets the number of operands of this instruction.
@@ -145,7 +145,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
         }
 
     }
@@ -162,7 +162,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             Operands[0].Write(writer, options);
         }
@@ -178,7 +178,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             Operands[0].Write(writer, options);
         }
@@ -197,7 +197,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             Operands[0].Write(writer, options);
         }
@@ -217,7 +217,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             Operands[0].Write(writer, options);
         }
@@ -252,7 +252,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
 
             switch (Operands[0])
@@ -315,7 +315,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             var memop = Operands[0] as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {Operands[0]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
 
             var bankmem = PICMemoryDescriptor.CreateBankedAddr(memop);
@@ -347,7 +347,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var bankmem = Operands[0] as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {Operands[0]}");
             var bitno = Operands[1] as PICOperandMemBitNo ?? throw new InvalidOperationException($"Invalid bit number operand: {Operands[1]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
 
             if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset, out var reg))
@@ -386,7 +386,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var bankmem = Operands[0] as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {Operands[0]}");
             var wregdest = Operands[1] as PICOperandMemWRegDest ?? throw new InvalidOperationException($"Invalid destination operand: {Operands[1]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
 
             if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset, out var reg))
@@ -416,7 +416,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             var memop = Operands[0] as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {Operands[0]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
 
             var bankmem = PICMemoryDescriptor.CreateBankedAddr(memop);
@@ -459,7 +459,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var memop = Operands[0] as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {Operands[0]}");
             var bitno = Operands[1] as PICOperandMemBitNo ?? throw new InvalidOperationException($"Invalid bit number operand: {Operands[1]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
 
             var bankmem = PICMemoryDescriptor.CreateBankedAddr(memop);
@@ -508,7 +508,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var memop = Operands[0] as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {Operands[0]}");
             var wregdest = Operands[1] as PICOperandMemWRegDest ?? throw new InvalidOperationException($"Invalid destination operand: {Operands[1]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
 
             var bankmem = PICMemoryDescriptor.CreateBankedAddr(memop);
@@ -560,7 +560,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var fsrnum = Operands[0] as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR number operand: {Operands[0]}");
             var imm = Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {Operands[1]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             fsrnum.Write(writer, options);
             writer.WriteString(",");
@@ -586,7 +586,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var fsrnum = Operands[0] as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR number operand: {Operands[0]}");
             var imm = Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {Operands[1]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             fsrnum.Write(writer, options);
             writer.WriteString(",");
@@ -612,7 +612,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var fsrnum = Operands[0] as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR number operand: {Operands[0]}");
             var imm = Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {Operands[1]}");
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             fsrnum.Write(writer, options);
             writer.WriteString(",");
@@ -638,7 +638,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             if (Operands[0] is PICOperandProgMemoryAddress target)
             {
@@ -665,7 +665,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var fast = Operands[0] as PICOperandFast ?? throw new InvalidOperationException($"Invalid FAST operand: {Operands[1]}");
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             if (fast.IsFast)
             {
                 writer.WriteString(",");
@@ -690,7 +690,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             if (Operands[0] is PICOperandProgMemoryAddress target)
             {
@@ -720,7 +720,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var fsridx = Operands[0] as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR index operand: {Operands[0]}");
             var fsrnum = fsridx.FSRNum;
 
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
 
             switch (fsridx.Mode)
@@ -760,7 +760,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             Operands[0].Write(writer, options);
         }
 
@@ -777,7 +777,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             Operands[0].Write(writer, options);
         }
@@ -794,7 +794,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             writer.Tab();
             Operands[0].Write(writer, options);
         }

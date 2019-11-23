@@ -109,20 +109,20 @@ namespace Reko.Arch.PowerPC
 
         public class InstrDecoder : Decoder
         {
-            public readonly Mnemonic opcode;
+            public readonly Mnemonic mnemonic;
             public readonly InstrClass iclass;
             public readonly Mutator<PowerPcDisassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic opcode, Mutator<PowerPcDisassembler> [] mutators, InstrClass iclass = InstrClass.Linear)
+            public InstrDecoder(Mnemonic mnemonic, Mutator<PowerPcDisassembler> [] mutators, InstrClass iclass = InstrClass.Linear)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return DecodeOperands(wInstr, dasm, iclass, opcode, mutators);
+                return DecodeOperands(wInstr, dasm, iclass, mnemonic, mutators);
             }
         }
 
@@ -143,9 +143,9 @@ namespace Reko.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                Mnemonic opcode = ((wInstr & 1) == 0) ? opcode0 : opcode1;
+                Mnemonic mnemonic = ((wInstr & 1) == 0) ? opcode0 : opcode1;
                 wInstr &= ~3u;
-                return DecodeOperands(wInstr & ~3u, dasm, iclass, opcode, mutators);
+                return DecodeOperands(wInstr & ~3u, dasm, iclass, mnemonic, mutators);
             }
         }
 
@@ -160,20 +160,20 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    Mnemonic opcode;
+                    Mnemonic mnemonic;
                     switch ((wInstr >> 1) & 0xF)
                     {
-                    case 0: case 1: opcode = Mnemonic.rldicl; break;
-                    case 2: case 3: opcode = Mnemonic.rldicr; break;
-                    case 4: case 5: opcode = Mnemonic.rldic; break;
-                    case 6: case 7: opcode = Mnemonic.rldimi; break;
-                    case 8: opcode = Mnemonic.rldcl; break;
-                    case 9: opcode = Mnemonic.rldcr; break;
+                    case 0: case 1: mnemonic = Mnemonic.rldicl; break;
+                    case 2: case 3: mnemonic = Mnemonic.rldicr; break;
+                    case 4: case 5: mnemonic = Mnemonic.rldic; break;
+                    case 6: case 7: mnemonic = Mnemonic.rldimi; break;
+                    case 8: mnemonic = Mnemonic.rldcl; break;
+                    case 9: mnemonic = Mnemonic.rldcr; break;
                     default: return dasm.CreateInvalidInstruction();
                     }
 
                     wInstr &= ~1u;
-                    return new PowerPcInstruction(opcode)
+                    return new PowerPcInstruction(mnemonic)
                     {
                         InstructionClass = InstrClass.Linear,
                         Operands = new MachineOperand[]
@@ -267,14 +267,14 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 bool link = (wInstr & 1) != 0;
-                var opcode = link ? this.opLink : this.opcode;
+                var mnemonic = link ? this.opLink : this.mnemonic;
                 var iclass = link ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
                         return dasm.CreateInvalidInstruction();
                 }
-                return dasm.MakeInstruction(iclass, opcode);
+                return dasm.MakeInstruction(iclass, mnemonic);
             }
         }
 
@@ -282,13 +282,13 @@ namespace Reko.Arch.PowerPC
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                var opcode = (wInstr & 1) == 1 ? Mnemonic.bl : Mnemonic.b;
+                var mnemonic = (wInstr & 1) == 1 ? Mnemonic.bl : Mnemonic.b;
                 var iclass = (wInstr & 1) == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
                 var uOffset = wInstr & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
-                return new PowerPcInstruction(opcode)
+                return new PowerPcInstruction(mnemonic)
                 {
                     InstructionClass = iclass,
                     Operands = new MachineOperand[] { new AddressOperand(baseAddr + uOffset) },
@@ -464,7 +464,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 bool link = (wInstr & 1) != 0;
-                var opcode = link ? Mnemonic.blrl : Mnemonic.blr;
+                var mnemonic = link ? Mnemonic.blrl : Mnemonic.blr;
                 var crBit = (wInstr >> 16) & 0x1F;
                 var crf = crBit >> 2;
                 var condCode = ((wInstr >> 22) & 4) | (crBit & 0x3);
@@ -491,16 +491,16 @@ namespace Reko.Arch.PowerPC
                             new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
                         }
                     };
-                case 0: opcode = link ? Mnemonic.bgelrl : Mnemonic.bgelr; break;
-                case 1: opcode = link ? Mnemonic.blelrl : Mnemonic.blelr; break;
-                case 2: opcode = link ? Mnemonic.bnelrl : Mnemonic.bnelr; break;
-                case 3: opcode = link ? Mnemonic.bnslrl : Mnemonic.bnslr; break;
-                case 4: opcode = link ? Mnemonic.bltlrl : Mnemonic.bltlr; break;
-                case 5: opcode = link ? Mnemonic.bgtlrl : Mnemonic.bgtlr; break;
-                case 6: opcode = link ? Mnemonic.beqlrl : Mnemonic.beqlr; break;
-                case 7: opcode = link ? Mnemonic.bsolrl : Mnemonic.bsolr; break;
+                case 0: mnemonic = link ? Mnemonic.bgelrl : Mnemonic.bgelr; break;
+                case 1: mnemonic = link ? Mnemonic.blelrl : Mnemonic.blelr; break;
+                case 2: mnemonic = link ? Mnemonic.bnelrl : Mnemonic.bnelr; break;
+                case 3: mnemonic = link ? Mnemonic.bnslrl : Mnemonic.bnslr; break;
+                case 4: mnemonic = link ? Mnemonic.bltlrl : Mnemonic.bltlr; break;
+                case 5: mnemonic = link ? Mnemonic.bgtlrl : Mnemonic.bgtlr; break;
+                case 6: mnemonic = link ? Mnemonic.beqlrl : Mnemonic.beqlr; break;
+                case 7: mnemonic = link ? Mnemonic.bsolrl : Mnemonic.bsolr; break;
                 }
-                return new PowerPcInstruction(opcode)
+                return new PowerPcInstruction(mnemonic)
                 {
                     InstructionClass = iclass | InstrClass.ConditionalTransfer,
                     Operands = new MachineOperand[] { dasm.CRegFromBits(crf) },
@@ -518,7 +518,7 @@ namespace Reko.Arch.PowerPC
             {
                 var reg = dasm.RegFromBits(wInstr >> 21);
                 var spr = (wInstr >> 11) & 0x3FF;
-                return new PowerPcInstruction(opcode)
+                return new PowerPcInstruction(mnemonic)
                 {
                     InstructionClass = base.iclass,
                     Operands = new MachineOperand[] {
@@ -542,17 +542,17 @@ namespace Reko.Arch.PowerPC
             {
                 var ops = new List<MachineOperand> { dasm.RegFromBits(wInstr >> 21) };
                 var spr = ((wInstr >> 16) & 0x1F) | ((wInstr >> 6) & 0x3E0);
-                Mnemonic opcode;
+                Mnemonic mnemonic;
                 switch (spr)
                 {
-                case 0x08: opcode = to ? Mnemonic.mtlr : Mnemonic.mflr; break;
-                case 0x09: opcode = to ? Mnemonic.mtctr : Mnemonic.mfctr; break;
+                case 0x08: mnemonic = to ? Mnemonic.mtlr : Mnemonic.mflr; break;
+                case 0x09: mnemonic = to ? Mnemonic.mtctr : Mnemonic.mfctr; break;
                 default:
-                    opcode = to ? Mnemonic.mtspr : Mnemonic.mfspr;
+                    mnemonic = to ? Mnemonic.mtspr : Mnemonic.mfspr;
                     ops.Insert(0, ImmediateOperand.UInt32(spr));
                     break;
                 }
-                return new PowerPcInstruction(opcode)
+                return new PowerPcInstruction(mnemonic)
                 {
                     InstructionClass = InstrClass.Linear,
                     Operands = ops.ToArray()
@@ -569,7 +569,7 @@ namespace Reko.Arch.PowerPC
             {
                 var l = ((wInstr >> 21) & 1) != 0;
                 var op = Mnemonic.illegal;
-                switch (this.opcode)
+                switch (this.mnemonic)
                 {
                 default: throw new NotImplementedException();
                 case Mnemonic.cmp: op = l ? Mnemonic.cmpl : Mnemonic.cmp; break;

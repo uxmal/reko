@@ -1099,7 +1099,9 @@ namespace Reko.Analysis
                 c = ea as Constant;
             }
 
-            if (c != null)
+            if (c != null &&
+                // Search imported procedures only in Global Memory
+                access.MemoryId.Storage == MemoryStorage.Instance)
             {
                 var e = importResolver.ResolveToImportedValue(stmCur, c);
                 if (e != null)

@@ -3937,6 +3937,47 @@ SsaLocalStackCommonSequence_exit:
             AssertProcedureCode(expected);
         }
 
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void SsaDoNotSearchImportedProcInFpuStack()
+        {
+            // ResolveToImportedValue always throws exception in X86 real mode
+            importResolver.Setup(
+                i => i.ResolveToImportedValue(
+                    It.IsAny<Statement>(),
+                    It.IsAny<Constant>()))
+                .Throws(
+                new NotSupportedException(
+                    "Must pass segment:offset to make a segmented address."));
+            var proc = Given_Procedure(
+                nameof(SsaDoNotSearchImportedProcInFpuStack),
+                m =>
+            {
+                var a = m.Reg32("a", 1);
+                var stStg = new RegisterStorage(
+                    "FakeST", 2, 0, PrimitiveType.Word32);
+                var st = new MemoryIdentifier(
+                    stStg.Name, stStg.DataType, stStg);
+                m.Label("init");
+                m.Assign(a, m.Mem(st, PrimitiveType.Word32, m.Word32(0x1)));
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+
+            var expected =
+            #region Expected
+@"SsaDoNotSearchImportedProcInFpuStack_entry:
+	def FakeST
+init:
+	a_2 = FakeST[0x00000001:word32]
+	return
+SsaDoNotSearchImportedProcInFpuStack_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
+
         private void MakeEndiannessCheck(ProcedureBuilder m)
         {
             var fp = m.Frame.FramePointer;

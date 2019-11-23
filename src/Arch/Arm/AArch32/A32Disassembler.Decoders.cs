@@ -62,14 +62,14 @@ namespace Reko.Arch.Arm.AArch32
 
         private class InstrDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly ArmVectorData vectorData;
             private readonly Mutator<A32Disassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, ArmVectorData vectorData, params Mutator<A32Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, ArmVectorData vectorData, params Mutator<A32Disassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.vectorData = vectorData;
                 this.mutators = mutators;
@@ -77,9 +77,9 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
-                DumpMaskedInstruction(wInstr, 0, this.opcode);
+                DumpMaskedInstruction(wInstr, 0, this.mnemonic);
                 dasm.state.iclass = iclass;
-                dasm.state.opcode = this.opcode;
+                dasm.state.mnemonic = this.mnemonic;
                 dasm.state.vectorData = this.vectorData;
                 for (int i = 0; i < mutators.Length; ++i)
                 {

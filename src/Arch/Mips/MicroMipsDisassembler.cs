@@ -110,13 +110,13 @@ namespace Reko.Arch.Mips
         private class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator<MicroMipsDisassembler>[] mutators;
 
-            public InstrDecoder(InstrClass iclass, Mnemonic opcode, Mutator<MicroMipsDisassembler>[] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<MicroMipsDisassembler>[] mutators)
             {
                 this.iclass = iclass;
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
@@ -130,7 +130,7 @@ namespace Reko.Arch.Mips
                 var ops = dasm.ops;
                 var instr = new MipsInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = this.iclass,
                     Operands = ops.ToArray()
                 };

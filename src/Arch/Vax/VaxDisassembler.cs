@@ -72,7 +72,7 @@ namespace Reko.Arch.Vax
             return new VaxInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Opcode = Mnemonic.Invalid,
+                Mnemonic = Mnemonic.Invalid,
                 Operands = new MachineOperand[0]
             };
         }
@@ -232,13 +232,13 @@ namespace Reko.Arch.Vax
 
         private class InstrDecoder : Decoder
         {
-            private readonly Mnemonic op;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator[] mutators;
 
             public InstrDecoder(Mnemonic op, InstrClass iclass, params Mutator [] mutators)
             {
-                this.op = op;
+                this.mnemonic = op;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
@@ -255,7 +255,7 @@ namespace Reko.Arch.Vax
                 }
                 var instr = new VaxInstruction
                 {
-                    Opcode = this.op,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = this.iclass,
                     Operands = dasm.ops.ToArray()
                 };

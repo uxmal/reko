@@ -41,7 +41,7 @@ namespace Reko.Core.Configuration
         /// The offset at which to look for the magic number. By default, a missing value means
         /// offset 0.
         /// </summary>
-        public string Offset { get; set; }
+        public long Offset { get; set; }
 
         /// <summary>
         /// The assembly-qualified name for the .NET type that is responsible for handling this

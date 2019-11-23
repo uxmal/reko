@@ -26,14 +26,14 @@ namespace Reko.Arch.Avr
 {
     public class AvrInstruction : MachineInstruction
     {
-        public Mnemonic opcode;
+        public Mnemonic Mnemonic;
         public MachineOperand[] operands;
 
-        public override int OpcodeAsInteger => (int)opcode;
+        public override int OpcodeAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             if (operands.Length > 0)
             {
                 writer.Tab();
