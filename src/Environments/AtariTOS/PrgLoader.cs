@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -77,8 +77,7 @@ namespace Reko.Environments.AtariTOS
 
         private bool TryLoadHeader(BeImageReader rdr, out PrgHeader hdr)
         {
-            var sr = new StructureReader<PrgHeader>(rdr);
-            var h = sr.Read();
+            var h = rdr.ReadStruct<PrgHeader>();
             if (h.Magic != 0x601A)
             {
                 hdr = default(PrgHeader);

@@ -83,7 +83,7 @@ namespace Reko.ImageLoaders.Xex
 		private void LoadHeaders()
 		{
 			ImageData imageData = xexData;
-			xexData.header = new StructureReader<XexHeader>(rdr).Read();
+			xexData.header = rdr.ReadStruct<XexHeader>();
 
 			XexHeader header = xexData.header;
 
@@ -99,7 +99,7 @@ namespace Reko.ImageLoaders.Xex
 			for (uint i = 0; i < header.header_count; i++)
 			{
 				bool add = true;
-				XexOptionalHeader st_optionalHeader = new StructureReader<XexOptionalHeader>(rdr).Read();
+				XexOptionalHeader st_optionalHeader = rdr.ReadStruct<XexOptionalHeader>();
 				OptionalHeader optionalHeader = new OptionalHeader(st_optionalHeader);
 
 				switch ((byte)optionalHeader.key)
@@ -169,19 +169,19 @@ namespace Reko.ImageLoaders.Xex
 
 						for (uint n = 0; n < count; n++)
 						{
-							xexData.resources.Insert(i, new StructureReader<XexResourceInfo>(rdr).Read());
+							xexData.resources.Insert(i, rdr.ReadStruct<XexResourceInfo>());
 						}
 						break;
 
 					case XEXHeaderKeys.XEX_HEADER_EXECUTION_INFO:
-						imageData.execution_info = new StructureReader<XexExecutionInfo>(rdr).Read();
+						imageData.execution_info = rdr.ReadStruct<XexExecutionInfo>();
 						break;
 
 					case XEXHeaderKeys.XEX_HEADER_GAME_RATINGS:
 						break;
 
 					case XEXHeaderKeys.XEX_HEADER_TLS_INFO:
-						imageData.tls_info = new StructureReader<XexTlsInfo>(rdr).Read();
+						imageData.tls_info = rdr.ReadStruct<XexTlsInfo>();
 						break;
 
 					case XEXHeaderKeys.XEX_HEADER_IMAGE_BASE_ADDRESS:
@@ -201,7 +201,7 @@ namespace Reko.ImageLoaders.Xex
 						break;
 
 					case XEXHeaderKeys.XEX_HEADER_FILE_FORMAT_INFO:
-						XexEncryptionHeader encHeader = new StructureReader<XexEncryptionHeader>(rdr).Read();
+						XexEncryptionHeader encHeader = rdr.ReadStruct<XexEncryptionHeader>();
 
 						imageData.file_format_info.encryption_type = encHeader.encryption_type;
 						imageData.file_format_info.compression_type = encHeader.compression_type;
@@ -218,11 +218,11 @@ namespace Reko.ImageLoaders.Xex
 
 								for (int ib = 0; ib < block_count; ib++)
 								{
-									imageData.file_format_info.basic_blocks.Insert(ib, new StructureReader<XexFileBasicCompressionBlock>(rdr).Read());
+									imageData.file_format_info.basic_blocks.Insert(ib, rdr.ReadStruct<XexFileBasicCompressionBlock>());
 								}
 								break;
 							case XEXCompressionType.XEX_COMPRESSION_NORMAL:
-								imageData.file_format_info.normal = new StructureReader<XexFileNormalCompressionInfo>(rdr).Read();
+								imageData.file_format_info.normal = rdr.ReadStruct<XexFileNormalCompressionInfo>();
 								break;
 						}
 
@@ -232,7 +232,7 @@ namespace Reko.ImageLoaders.Xex
 						}
 						break;
 					case XEXHeaderKeys.XEX_HEADER_IMPORT_LIBRARIES:
-						XexImportLibraryBlockHeader blockHeader = new StructureReader<XexImportLibraryBlockHeader>(rdr).Read();
+						XexImportLibraryBlockHeader blockHeader = rdr.ReadStruct<XexImportLibraryBlockHeader>();
 
 						long string_table = rdr.Offset;
 						for (int j = 0; j < blockHeader.count; j++)
@@ -244,7 +244,7 @@ namespace Reko.ImageLoaders.Xex
 
 						for (int m = 0; m < blockHeader.count; m++)
 						{
-							XexImportLibaryHeader imp_header = new StructureReader<XexImportLibaryHeader>(rdr).Read();
+							XexImportLibaryHeader imp_header = rdr.ReadStruct<XexImportLibaryHeader>();
 
 							string name = null;
 							int name_index = (byte)imp_header.name_index;
@@ -270,11 +270,11 @@ namespace Reko.ImageLoaders.Xex
 				switch (header.magic)
 				{
 					case XEX1_MAGIC:
-						Xex1LoaderInfo info1 = new StructureReader<Xex1LoaderInfo>(rdr).Read();
+						Xex1LoaderInfo info1 = rdr.ReadStruct<Xex1LoaderInfo>();
 						xexData.loader_info.aes_key = info1.aes_key;
 						break;
 					case XEX2_MAGIC:
-						Xex2LoaderInfo info2 = new StructureReader<Xex2LoaderInfo>(rdr).Read();
+						Xex2LoaderInfo info2 = rdr.ReadStruct<Xex2LoaderInfo>();
 						xexData.loader_info.aes_key = info2.aes_key;
 						break;
 				}
@@ -289,7 +289,7 @@ namespace Reko.ImageLoaders.Xex
 
 				for (int si = 0; si < sectionCount; si++)
 				{
-					xexData.sections.Insert(0, new StructureReader<XexSection>(rdr).Read());
+					xexData.sections.Insert(0, rdr.ReadStruct<XexSection>());
 				}
 			}
 
@@ -495,7 +495,7 @@ namespace Reko.ImageLoaders.Xex
 			long fileDataSize = rdr.Bytes.Length - xexData.header.header_size;
 
 			BeImageReader memRdr = new BeImageReader(xexData.memoryData);
-			DOSHeader dosHeader = new StructureReader<DOSHeader>(memRdr).Read();
+			DOSHeader dosHeader = memRdr.ReadStruct<DOSHeader>();
 			dosHeader.Validate();
 
 			memRdr.Offset = dosHeader.e_lfanew;
@@ -506,7 +506,7 @@ namespace Reko.ImageLoaders.Xex
 				throw new BadImageFormatException("PE: Invalid or Missing PE Signature");
 			}
 
-			COFFHeader coffHeader = new StructureReader<COFFHeader>(memRdr).Read();
+			COFFHeader coffHeader = memRdr.ReadStruct<COFFHeader>();
 			if (coffHeader.Machine != 0x1F2)
 			{
 				throw new BadImageFormatException($"PE: Machine type does not match Xbox360 (found 0x{coffHeader.Machine:X})");
@@ -522,7 +522,7 @@ namespace Reko.ImageLoaders.Xex
 				throw new BadImageFormatException($"PE: Invalid size of optional header (got {coffHeader.SizeOfOptionalHeader}");
 			}
 
-			PEOptHeader optHeader = new StructureReader<PEOptHeader>(memRdr).Read();
+			PEOptHeader optHeader = memRdr.ReadStruct<PEOptHeader>();
 			if (optHeader.signature != 0x10b)
 			{
 				throw new BadImageFormatException($"PE: Invalid signature of optional header (got 0x{optHeader.signature})");
@@ -542,7 +542,7 @@ namespace Reko.ImageLoaders.Xex
 
 			for (uint i = 0; i < numSections; i++)
 			{
-				COFFSection section = new StructureReader<COFFSection>(memRdr).Read();
+				COFFSection section = memRdr.ReadStruct<COFFSection>();
 
 				string sectionName = Encoding.ASCII.GetString(section.Name).Trim('\0');
 
