@@ -33,6 +33,12 @@ namespace Reko.ImageLoaders.Xex
         public const UInt32 XEX1_MAGIC = 0x58455831; //XEX1
 		public const UInt32 XEX2_MAGIC = 0x58455832; //XEX2
 
+		public enum XexImportType : byte
+		{
+            Data = 0,
+            Function = 1
+		}
+
         [Endian(Endianness.BigEndian)]
         [StructLayout(LayoutKind.Sequential)]
         public struct XexVersion

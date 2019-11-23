@@ -592,33 +592,33 @@ namespace Reko.ImageLoaders.Xex
 
                 UInt32 value = memRdr.ReadAt<UInt32>(memOffset, rdr => rdr.ReadUInt32());
 
-                byte type = (byte)((value & 0xFF000000) >> 24);
+                XexImportType type = (XexImportType)((value & 0xFF000000) >> 24);
                 byte libIndex = (byte)((value & 0x00FF0000) >> 16);
 
-                if(type == 0) { //variable
-                    if(libIndex >= xexData.libNames.Count) {
-                        throw new BadImageFormatException($"XEX: invalid import type 0 record lib index ({libIndex}, max:{xexData.libNames.Count})");
-                    }
+				if (libIndex >= xexData.libNames.Count) {
+					throw new BadImageFormatException($"XEX: invalid import record lib index ({libIndex}, max:{xexData.libNames.Count})");
+				}
 
-                    UInt32 importOrdinal = (value & 0xFFFF);
-                    string importLibName = xexData.libNames[libIndex];
-                    UInt32 importAddress = xexData.import_records[i];
+                if(type > XexImportType.Function) {
+					decompilerEventListener.Error(new NullCodeLocation(""), $"XEX: Unsupported import type {type}, value: 0x{value:X}");
+					continue;
+				}
 
-                    var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.Data));
-                } else if(type == 1) { //thunk
-                    if (libIndex >= xexData.libNames.Count) {
-                        throw new BadImageFormatException($"XEX: invalid import type 0 record lib index ({libIndex}, max:{xexData.libNames.Count})");
-                    }
-
-                    UInt32 importOrdinal = (value & 0xFFFF);
-                    string importLibName = xexData.libNames[libIndex];
-                    UInt32 importAddress = xexData.import_records[i];
-
-                    var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.ExternalProcedure));
-                }
-            }
+				UInt32 importOrdinal = (value & 0xFFFF);
+				string importLibName = xexData.libNames[libIndex];
+				Address32 importAddress = new Address32(xexData.import_records[i]);
+				
+                SymbolType symbolType = SymbolType.Unknown;
+				switch (type) {
+					case XexImportType.Data:
+						symbolType = SymbolType.Data;
+						break;
+					case XexImportType.Function:
+						symbolType = SymbolType.ExternalProcedure;
+						break;
+				}
+				imports.Add(importAddress, new OrdinalImportReference(importAddress, importLibName, (int)importOrdinal, symbolType));
+			}
         }
 
         public override Program Load(Address addrLoad)
