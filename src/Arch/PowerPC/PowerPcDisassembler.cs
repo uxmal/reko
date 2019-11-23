@@ -57,6 +57,8 @@ namespace Reko.Arch.PowerPC
             this.allowSetCR0 = false;
             this.ops.Clear();
             var instrCur = primaryDecoders[wInstr >> 26].Decode(this, wInstr);
+            if (wInstr == 0)
+                instrCur.InstructionClass |= InstrClass.Zero;
             instrCur.Address = addr;
             instrCur.Length = 4;
             return instrCur;

@@ -729,6 +729,13 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_bcctrne()
+        {
+            //$TODO: prefer bcctrne
+            AssertCode(0x4C820420, "bcctr\t04,02");
+        }
+
+        [Test]
         public void PPCDis_mftb()
         {
             AssertCode(0x7eac42e6, "mftb\tr21,0188");

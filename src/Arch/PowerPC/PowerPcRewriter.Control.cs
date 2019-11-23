@@ -72,8 +72,8 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteBranch(bool updateLinkregister, bool toLinkRegister, ConditionCode cc)
         {
-            var ccrOp = instr.Operands[0] as RegisterOperand;
             Expression cr;
+            var ccrOp = instr.Operands[0] as RegisterOperand;
             if (ccrOp != null)
             {
                 cr = RewriteOperand(instr.Operands[0]);
@@ -176,7 +176,8 @@ namespace Reko.Arch.PowerPC
         private void RewriteBranch(bool linkRegister, Expression destination)
         {
             var ctr = binder.EnsureRegister(arch.ctr);
-            var bo = ((Constant)RewriteOperand(instr.Operands[0])).ToByte();
+            var bo = ((Constant) RewriteOperand(instr.Operands[0])).ToByte();
+            var bi = ((Constant) RewriteOperand(instr.Operands[1])).ToByte();
             switch (bo)
             {
             case 0x00:
@@ -186,9 +187,36 @@ namespace Reko.Arch.PowerPC
             case 0x04:
             case 0x05:
             case 0x06:
-            case 0x07: throw new NotImplementedException("condition false");
+            case 0x07:
+                // Bit 0 = LT
+                // Bit 1 = GT
+                // Bit 2 = EQ
+                // Bit 3 = SO
+                ConditionCode cc;
+                switch (bi)
+                {
+                // Fixed arithmetic flags.
+                    case 0: cc = ConditionCode.GE; break;
+                    case 1: cc = ConditionCode.LE; break;
+                    case 2: cc = ConditionCode.NE; break;
+                    case 3: cc = ConditionCode.NO; break;
+                default:
+                    throw new NotImplementedException("condition false");
+                }
+                var flag = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.cr, 1u << bi));
+                if (destination is Address addrDst)
+                {
+                    m.Branch(m.Test(cc, flag), addrDst);
+                }
+                else
+                {
+                    m.BranchInMiddleOfInstruction(m.Test(cc.Invert(), flag), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
+                    m.Goto(destination);
+                }
+                break;
             case 0x08:
-            case 0x09: throw new NotImplementedException("dec ctr; condition false");
+            case 0x09:
+                throw new NotImplementedException("dec ctr; condition false");
             case 0x0A:
             case 0x0B: throw new NotImplementedException("dec ctr; condition false");
             case 0x0C:
