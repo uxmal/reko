@@ -70,6 +70,7 @@ namespace Reko.Arch.Blackfin
                 Mnemonic = Mnemonic.invalid,
                 Address = addr,
                 Length = (int) (rdr.Address - addr),
+                Operands = new MachineOperand[0]
             };
         }
 

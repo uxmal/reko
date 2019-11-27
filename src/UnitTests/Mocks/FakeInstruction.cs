@@ -28,34 +28,32 @@ namespace Reko.UnitTests.Mocks
 {
     public class FakeInstruction : MachineInstruction
     {
-        private Operation operation;
-        private MachineOperand[] ops;
 
-        public FakeInstruction(Operation operation, params MachineOperand[] ops)
+        public FakeInstruction(Mnemonic mnemonic, params MachineOperand[] ops)
         {
-            this.operation = operation;
-            this.ops = ops;
+            this.Mnemonic = mnemonic;
+            this.Operands = ops;
             this.InstructionClass = InstrClass.Invalid;
         }
 
-        public FakeInstruction(InstrClass iClass, Operation operation, params MachineOperand[] ops)
+        public FakeInstruction(InstrClass iClass, Mnemonic mnemonic, params MachineOperand[] ops)
         {
             this.InstructionClass = iClass;
-            this.operation = operation;
-            this.ops = ops;
+            this.Mnemonic = mnemonic;
+            this.Operands = ops;
         }
 
-        public override int OpcodeAsInteger { get { return (int)operation; } }
-        public Operation Mnemonic { get { return operation; } }
+        public Mnemonic Mnemonic { get; set; }
 
+        public override int OpcodeAsInteger { get { return (int)Mnemonic; } }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(operation.ToString().ToLower());
+            writer.WriteOpcode(Mnemonic.ToString().ToLower());
         }
     }
 
-    public enum Operation
+    public enum Mnemonic
     {
         Invalid = -1,
         Nop,

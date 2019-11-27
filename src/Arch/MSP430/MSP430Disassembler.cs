@@ -77,7 +77,7 @@ namespace Reko.Arch.Msp430
                         mem.Base == Registers.sp)
                     {
                         instr.Mnemonic = Mnemonics.ret;
-                        instr.Operands = new MachineOperand[0];
+                        instr.Operands = MachineInstruction.NoOperands;
                     }
                     else
                     {

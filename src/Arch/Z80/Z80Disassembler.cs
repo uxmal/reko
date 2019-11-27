@@ -74,6 +74,7 @@ namespace Reko.Arch.Z80
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.illegal,
                 Address = this.addr,
+                Operands = MachineInstruction.NoOperands
             };
         }
 

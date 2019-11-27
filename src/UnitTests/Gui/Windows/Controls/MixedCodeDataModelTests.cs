@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private FakeInstruction Instr(uint addr)
         {
             var reg = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
-            return new FakeInstruction(Operation.Add, new RegisterOperand(reg), new RegisterOperand(reg))
+            return new FakeInstruction(Mnemonic.Add, new RegisterOperand(reg), new RegisterOperand(reg))
             {
                 Address = Address.Ptr32(addr),
                 Length = 2,
@@ -302,8 +302,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var instrs = new MachineInstruction[]
             {
-                new FakeInstruction(Operation.Add) { Address = Address.Ptr32(0x1000), Length = 2 },
-                new FakeInstruction(Operation.Add) { Address = Address.Ptr32(0x1002), Length = 2 },
+                new FakeInstruction(Mnemonic.Add) { Address = Address.Ptr32(0x1000), Length = 2 },
+                new FakeInstruction(Mnemonic.Add) { Address = Address.Ptr32(0x1002), Length = 2 },
             };
             Func<uint, int> Idx = u =>
                 MixedCodeDataModel.FindIndexOfInstructionAddress(

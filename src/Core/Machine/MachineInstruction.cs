@@ -29,6 +29,8 @@ namespace Reko.Core.Machine
     /// </summary>
     public abstract class MachineInstruction
     {
+        public static readonly MachineOperand[] NoOperands = new MachineOperand[0];
+
         /// <summary>
         /// The address at which the instruction begins.
         /// </summary>

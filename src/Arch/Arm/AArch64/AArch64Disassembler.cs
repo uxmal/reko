@@ -1546,7 +1546,7 @@ namespace Reko.Arch.Arm.AArch64
 
         static AArch64Disassembler()
         {
-            invalid = Instr(Mnemonic.Invalid);
+            invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
 
             Decoder LdStRegUImm;
             {

@@ -295,7 +295,7 @@ namespace Reko.Arch.RiscV
                 Address = addrInstr,
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = new MachineOperand[0]
+                Operands = MachineInstruction.NoOperands
             };
         }
 

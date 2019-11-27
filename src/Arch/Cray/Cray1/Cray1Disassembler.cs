@@ -62,7 +62,8 @@ namespace Reko.Arch.Cray.Cray1
             return new CrayInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Mnemonic = Mnemonic.Invalid
+                Mnemonic = Mnemonic.Invalid,
+                Operands = MachineInstruction.NoOperands
             };
         }
 

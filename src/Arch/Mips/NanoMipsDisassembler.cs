@@ -74,7 +74,8 @@ namespace Reko.Arch.Mips
             return new MipsInstruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Mnemonic = Mnemonic.illegal
+                Mnemonic = Mnemonic.illegal,
+                Operands = MachineInstruction.NoOperands
             };
         }
 

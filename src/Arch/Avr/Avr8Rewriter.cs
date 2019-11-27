@@ -238,7 +238,7 @@ namespace Reko.Arch.Avr
         private void RewriteIO(int iRegOp, int iPortOp, bool read)
         {
             var reg = RewriteOp(iRegOp);
-            var port = ((ImmediateOperand)instr.operands[iPortOp]).Value.ToByte();
+            var port = ((ImmediateOperand)instr.Operands[iPortOp]).Value.ToByte();
             if (port == 0x3F)
             {
                 var psreg = binder.EnsureRegister(arch.sreg);
@@ -307,7 +307,7 @@ namespace Reko.Arch.Avr
 
         private Expression RewriteOp(int iOp)
         {
-            var op = instr.operands[iOp];
+            var op = instr.Operands[iOp];
             switch (op)
             {
             case RegisterOperand rop:
@@ -322,7 +322,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteMem(int iOp, Expression src, Action<Expression, Expression> write, Expression seg)
         {
-            var op = instr.operands[iOp];
+            var op = instr.Operands[iOp];
             var mop = (MemoryOperand)op;
             var baseReg = binder.EnsureRegister(mop.Base);
             Expression ea = baseReg;
@@ -366,9 +366,9 @@ namespace Reko.Arch.Avr
 
         private void RewriteAddSubIW(Func<Expression,Expression,Expression> fn)
         {
-            var operand = instr.operands[0];
+            var operand = instr.Operands[0];
             var regPair = RegisterPair(operand);
-            var imm = ((ImmediateOperand)instr.operands[1]).Value;
+            var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             m.Assign(regPair, fn(regPair, Constant.Word16(imm.ToUInt16())));
             EmitFlags(regPair, ArithFlags);
         }
@@ -406,8 +406,8 @@ namespace Reko.Arch.Avr
 
         private void RewriteMovw()
         {
-            var pairDst = RegisterPair(instr.operands[0]);
-            var pairSrc = RegisterPair(instr.operands[1]);
+            var pairDst = RegisterPair(instr.Operands[0]);
+            var pairSrc = RegisterPair(instr.Operands[1]);
             m.Assign(pairDst, pairSrc);
         }
 
@@ -513,7 +513,7 @@ namespace Reko.Arch.Avr
         private void RewriteLpm()
         {
             var codeSel = binder.EnsureRegister(arch.code);
-            if (instr.operands.Length == 0)
+            if (instr.Operands.Length == 0)
             {
                 var z = binder.EnsureRegister(Avr8Architecture.z);
                 var r0 = binder.EnsureRegister(arch.GetRegister(0));

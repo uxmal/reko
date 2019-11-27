@@ -148,7 +148,9 @@ namespace Reko.Arch.Tms7000
         {
             return new Tms7000Instruction
             {
+                InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
+                Operands = MachineInstruction.NoOperands
             };
         }
 

@@ -65,8 +65,9 @@ namespace Reko.Arch.zSeries
         {
             return new zSeriesInstruction
             {
+                InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = new MachineOperand[0]
+                Operands = MachineInstruction.NoOperands
             };
         }
 
@@ -134,6 +135,7 @@ namespace Reko.Arch.zSeries
         private class State
         {
             public List<MachineOperand> ops = new List<MachineOperand>();
+            public InstrClass iclass;
             public Mnemonic mnemonic;
 
             public void Reset()
@@ -146,6 +148,7 @@ namespace Reko.Arch.zSeries
             {
                 var instr = new zSeriesInstruction
                 {
+                    InstructionClass = this.iclass,
                     Mnemonic = this.mnemonic,
                     Operands = this.ops.ToArray(),
                 };
@@ -433,12 +436,14 @@ namespace Reko.Arch.zSeries
 
         public class InstrDecoder : Decoder
         {
+            private readonly InstrClass iclass;
             private readonly Mnemonic mnemonic;
             private readonly Mutator[] mutators;
 
-            public InstrDecoder(Mnemonic opcode, params Mutator[] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator[] mutators)
             {
-                this.mnemonic = opcode;
+                this.iclass = iclass;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
@@ -472,7 +477,7 @@ namespace Reko.Arch.zSeries
 
         public class ExtendDecoder32 : InstrDecoder
         {
-            public ExtendDecoder32(Mnemonic opcode, params Mutator [] mutators) : base(opcode, mutators)
+            public ExtendDecoder32(InstrClass iclass, Mnemonic opcode, params Mutator [] mutators) : base(iclass, opcode, mutators)
             {
             }
 
@@ -487,7 +492,7 @@ namespace Reko.Arch.zSeries
 
         public class ExtendDecoder48 : InstrDecoder
         {
-            public ExtendDecoder48(Mnemonic opcode, params Mutator[] mutators) : base(opcode, mutators)
+            public ExtendDecoder48(InstrClass iclass, Mnemonic opcode, params Mutator[] mutators) : base(iclass, opcode, mutators)
             {
             }
 
@@ -612,17 +617,22 @@ namespace Reko.Arch.zSeries
 
         public static InstrDecoder Instr(Mnemonic opcode, params Mutator[] mutators)
         {
-            return new InstrDecoder(opcode, mutators);
+            return new InstrDecoder(InstrClass.Linear, opcode, mutators);
+        }
+
+        public static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator[] mutators)
+        {
+            return new InstrDecoder(iclass, opcode, mutators);
         }
 
         public static ExtendDecoder32 Instr32(Mnemonic opcode, params Mutator[] mutators)
         {
-            return new ExtendDecoder32(opcode, mutators);
+            return new ExtendDecoder32(InstrClass.Linear, opcode, mutators);
         }
 
         public static ExtendDecoder48 Instr48(Mnemonic opcode, params Mutator[] mutators)
         {
-            return new ExtendDecoder48(opcode, mutators);
+            return new ExtendDecoder48(InstrClass.Linear, opcode, mutators);
         }
 
         public static MaskDecoder Mask(int pos, int len, params Decoder[] decoders)
@@ -657,7 +667,7 @@ namespace Reko.Arch.zSeries
 
         static zSeriesDisassembler()
         {
-            invalid = Instr(Mnemonic.invalid);
+            invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
             var n01_decoders = Mask(0, 8,
                 (0x01, Instr(Mnemonic.pr)));

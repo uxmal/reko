@@ -69,7 +69,7 @@ namespace Reko.Arch.PowerPC
             return new PowerPcInstruction(Mnemonic.illegal)
             {
                 InstructionClass = InstrClass.Invalid,
-                Operands = new MachineOperand[0],
+                Operands = MachineInstruction.NoOperands
             };
         }
 

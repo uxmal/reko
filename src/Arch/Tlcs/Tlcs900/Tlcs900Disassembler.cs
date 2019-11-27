@@ -71,7 +71,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return new Tlcs900Instruction {
                 Address = this.addr,
                 InstructionClass = InstrClass.Invalid,
-                Mnemonic = Mnemonic.invalid };
+                Mnemonic = Mnemonic.invalid,
+                Operands = MachineInstruction.NoOperands
+            };
 
         }
         #region Mutators 
@@ -715,21 +717,23 @@ namespace Reko.Arch.Tlcs.Tlcs900
             1, 2, 4
         };
 
+        private static Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
+
         private static Decoder[] rootDecoders = {
             // 00
             Instr(Mnemonic.nop, InstrClass.Padding|InstrClass.Zero),
-            Instr(Mnemonic.invalid),
+            invalid,
             Instr(Mnemonic.push, Sw),
             Instr(Mnemonic.pop, Sw),
 
-            Instr(Mnemonic.invalid),
+            invalid,
             Instr(Mnemonic.halt),
             Instr(Mnemonic.ei, Ib),
             Instr(Mnemonic.reti),
 
-            Instr(Mnemonic.invalid),
+            invalid,
             Instr(Mnemonic.push, Ib),
-            Instr(Mnemonic.invalid),
+            invalid,
             Instr(Mnemonic.push, Iw),
 
             Instr(Mnemonic.incf),
@@ -744,18 +748,18 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
             Instr(Mnemonic.push, A),
             Instr(Mnemonic.pop, A),
-            Instr(Mnemonic.invalid),
+            invalid,
             Instr(Mnemonic.ldf, Ib),
 
-            Instr(Mnemonic.invalid),
-            Instr(Mnemonic.invalid),
+            invalid,
+            invalid,
             Instr(Mnemonic.jp, Jw),
             Instr(Mnemonic.jp, Jl),
 
             Instr(Mnemonic.call, Jw),
             Instr(Mnemonic.call, Jl),
             Instr(Mnemonic.calr, jw),
-            Instr(Mnemonic.invalid),
+            invalid,
             // 20
             Instr(Mnemonic.ld, Rb,Ib),
             Instr(Mnemonic.ld, Rb,Ib),
@@ -817,15 +821,15 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Instr(Mnemonic.pop, Rw),
             Instr(Mnemonic.pop, Rw),
             // 50
-            Instr(Mnemonic.invalid),
-            Instr(Mnemonic.invalid),
-            Instr(Mnemonic.invalid),
-            Instr(Mnemonic.invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            Instr(Mnemonic.invalid),
-            Instr(Mnemonic.invalid),
-            Instr(Mnemonic.invalid),
-            Instr(Mnemonic.invalid),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
             Instr(Mnemonic.pop, Rx),
             Instr(Mnemonic.pop, Rx),
@@ -964,7 +968,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
             new MemDecoder(Pre(PrimitiveType.Byte)),
             new MemDecoder(Post(PrimitiveType.Byte)),
-            Instr(Mnemonic.invalid),
+            invalid,
             new ExtraRegDecoder(PrimitiveType.Byte),
 
             new RegDecoder(rb),
@@ -984,7 +988,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
             new MemDecoder(Pre(PrimitiveType.Word16)),
             new MemDecoder(Post(PrimitiveType.Word16)),
-            Instr(Mnemonic.invalid),
+            invalid,
             new ExtraRegDecoder(PrimitiveType.Word16),
 
             new RegDecoder(rw),
@@ -1004,7 +1008,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
             new MemDecoder(Pre(PrimitiveType.Word32)),
             new MemDecoder(Post(PrimitiveType.Word32)),
-            Instr(Mnemonic.invalid),
+            invalid,
             new ExtraRegDecoder(PrimitiveType.Word32),
 
             new RegDecoder(rx),
@@ -1025,8 +1029,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
             new DstDecoder(Pre(null)),
             new DstDecoder(Post(null)),
-            Instr(Mnemonic.invalid),
-            Instr(Mnemonic.invalid),
+            invalid,
+            invalid,
 
             Instr(Mnemonic.swi, i3b),
             Instr(Mnemonic.swi, i3b),

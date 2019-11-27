@@ -119,9 +119,11 @@ namespace Reko.Arch.Xtensa
 
         protected override XtensaInstruction CreateInvalidInstruction()
         {
-            return new XtensaInstruction {
+            return new XtensaInstruction
+            {
                 InstructionClass = InstrClass.Invalid,
-                Mnemonic = Mnemonic.invalid
+                Mnemonic = Mnemonic.invalid,
+                Operands = MachineInstruction.NoOperands
             };
         }
 

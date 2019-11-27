@@ -65,7 +65,7 @@ namespace Reko.Arch.M6800.M6812
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = new MachineOperand[0]
+                Operands = MachineInstruction.NoOperands
             };
         }
 
@@ -372,7 +372,7 @@ namespace Reko.Arch.M6800.M6812
                 Registers.pc
             };
 
-            var invalid = Instr(Mnemonic.invalid);
+            var invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
             decodersSecondByte = new Decoder[256]
             {

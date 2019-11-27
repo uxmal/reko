@@ -65,7 +65,7 @@ namespace Reko.Arch.SuperH
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = new MachineOperand[0]
+                Operands = MachineInstruction.NoOperands
             };
         }
 

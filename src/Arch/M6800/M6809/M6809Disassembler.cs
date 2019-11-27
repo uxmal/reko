@@ -62,7 +62,7 @@ namespace Reko.Arch.M6800.M6809
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = new MachineOperand[0]
+                Operands = MachineInstruction.NoOperands
             };
         }
 

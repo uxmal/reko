@@ -51,6 +51,7 @@ namespace Reko.Arch.Mos6502
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.illegal,
+                Operands = MachineInstruction.NoOperands
             };
         }
 

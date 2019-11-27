@@ -72,7 +72,7 @@ namespace Reko.Arch.Avr
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                operands = new MachineOperand[0]
+                Operands = new MachineOperand[0]
             };
         }
 
@@ -768,7 +768,7 @@ namespace Reko.Arch.Avr
                 {
                     Mnemonic = mnemonic,
                     InstructionClass = iclass,
-                    operands = dasm.ops.ToArray(),
+                    Operands = dasm.ops.ToArray(),
                 };
             }
         }
@@ -795,7 +795,7 @@ namespace Reko.Arch.Avr
                 {
                     InstructionClass = InstrClass.ConditionalTransfer,
                     Mnemonic = branches[br],
-                    operands = dasm.ops.ToArray()
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }

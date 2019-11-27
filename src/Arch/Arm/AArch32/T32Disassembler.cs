@@ -2118,7 +2118,7 @@ namespace Reko.Arch.Arm.AArch32
 
         static T32Disassembler()
         {
-            invalid = Instr(Mnemonic.Invalid);
+            invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
 
             // Build the decoder decision tree.
             var dec16bit = Create16bitDecoders();
@@ -2238,7 +2238,7 @@ namespace Reko.Arch.Arm.AArch32
                 Mask(12, 0x01,
                     decLdmStm,
                     decCondBranch),
-                Instr(Mnemonic.Invalid));
+                invalid);
         }
 
         private static Decoder CreateAluDecoder()
