@@ -217,7 +217,7 @@ namespace Reko.Arch.Arm.AArch32
         private string RenderIt()
         {
             var sb = new StringBuilder();
-            ;  sb.Append("it");
+            sb.Append("it");
             int mask = this.itmask;
             var bit = (~(int)this.condition & 1) << 3;
 
@@ -229,7 +229,7 @@ namespace Reko.Arch.Arm.AArch32
             return sb.ToString();
         }
 
-        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op)
             {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -28,7 +28,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
@@ -41,7 +40,7 @@ namespace Reko.ImageLoaders.OdbgScript
         int AssembleEx(string asm, ulong addr);
         bool DialogASK(string title, out string returned);
         bool DialogMSG(string msg, out int input);
-        bool DialogMSGYN(string msg, out DialogResult input);
+        bool DialogMSGYN(string msg, out int input);
         string Disassemble(byte[] buffer, ulong addr, out int opsize);
         MachineInstruction DisassembleEx(Address addr);
         ulong FindHandle(ulong var, string sClassName, ulong x, ulong y);
@@ -77,6 +76,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
     public class Host : IHost
     {
+        public const int Cancel = 0;
+        public const int OK = 1;
+
         private OdbgScriptLoader loader;
 
 		public Host(OdbgScriptLoader loader, SegmentMap segmentMap)
@@ -100,7 +102,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        public virtual bool DialogMSGYN(string msg, out DialogResult input)
+        public virtual bool DialogMSGYN(string msg, out int input)
         {
             throw new NotImplementedException();
         }

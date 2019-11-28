@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.CmdLine</RootNamespace>
     <AssemblyName>decompile</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -407,12 +407,6 @@
     <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
       <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
       <Name>Microchip.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Project>{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}</Project>
-      <Name>Dol</Name>
-      <Name>Python</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>

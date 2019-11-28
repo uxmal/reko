@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NativeProxy</RootNamespace>
     <AssemblyName>NativeProxy</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -125,15 +125,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CleanCMake" AfterTargets="Clean">
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
-    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
+    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DACTION=clean -DREKO_PATH=&quot;$(ProjectDir)../../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(ProjectDir)reko.cmake&quot;" WorkingDirectory="$(ProjectDir)" />
+    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DACTION=clean -DREKO_PATH=&quot;$(ProjectDir)../../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(ProjectDir)reko.cmake&quot;" WorkingDirectory="$(ProjectDir)" />
   </Target>
   <Target Name="AfterBuild">
     <!-- Start building the native shared libraries using CMake -->
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="..\tools\hdrgen\bin\$(Configuration)\hdrgen.exe &quot;$(SolutionDir)Core\bin\$(Configuration)\Reko.Core.dll&quot; &quot;$(ProjectDir)include\reko.h&quot;" WorkingDirectory="$(ProjectDir)" />
-    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="../tools/hdrgen/bin/$(Configuration)/hdrgen.exe $(SolutionDir)Core/bin/$(Configuration)/Reko.Core.dll $(ProjectDir)include/reko.h" WorkingDirectory="$(ProjectDir)" />
+    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="..\tools\hdrgen\bin\$(Configuration)\hdrgen.exe &quot;$(ProjectDir)..\Core\bin\$(Configuration)\Reko.Core.dll&quot; &quot;$(ProjectDir)include\reko.h&quot;" WorkingDirectory="$(ProjectDir)" />
+    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="../tools/hdrgen/bin/$(Configuration)/hdrgen.exe $(ProjectDir)../Core/bin/$(Configuration)/Reko.Core.dll $(ProjectDir)include/reko.h" WorkingDirectory="$(ProjectDir)" />
     <!-- FIXME: not all C# configurations are valid CMake configurations -->
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
-    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
+    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DREKO_PATH=&quot;$(ProjectDir)../../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(ProjectDir)reko.cmake&quot;" WorkingDirectory="$(ProjectDir)" />
+    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DREKO_PATH=&quot;$(ProjectDir)../../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(ProjectDir)reko.cmake&quot;" WorkingDirectory="$(ProjectDir)" />
   </Target>
 </Project>

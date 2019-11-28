@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -51,10 +51,10 @@ namespace Reko.Environments.Windows
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            return new[] {
+            return new HashSet<RegisterStorage>(new[] {
                 "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
                    "r16", "r17", "r18", "r9", "r20", "r21",
-                   "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)).ToHashSet();
+                   "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)));
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)

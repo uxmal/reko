@@ -114,7 +114,7 @@ namespace Reko.Environments.SysV
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            return this.trashedRegs.ToHashSet();
+            return new HashSet<RegisterStorage>(this.trashedRegs);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

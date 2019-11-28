@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
@@ -3252,18 +3252,17 @@ string filename;
         private bool DoMSGYN(string[] args)
         {
             string msg;
-
+            
             if (args.Length == 1 && GetString(args[0], out msg))
             {
-                DialogResult input;
-                if (Host.DialogMSGYN(msg, out input))
+                if (Host.DialogMSGYN(msg, out int input))
                 {
                     switch (input)
                     {
-                    case DialogResult.Cancel:
+                    case OdbgScript.Host.Cancel:
                         variables["$RESULT"] = Var.Create(2);
                         return Pause();
-                    case DialogResult.OK:
+                    case OdbgScript.Host.OK:
                         variables["$RESULT"] = Var.Create(1);
                         break;
                     default:
