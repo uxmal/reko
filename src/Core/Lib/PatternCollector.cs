@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,7 +12,7 @@ namespace Reko.Core.Lib
     //const int SYMLEN = 16 ;         /* Number of chars in the symbol name, incl null */
     //        const int PATLEN = 23 ;         /* Number of bytes in the pattern part */
 
-    struct HASHENTRY
+    public struct HASHENTRY
     {
         const int SYMLEN = 16;         /* Number of chars in the symbol name, incl null */
         const int PATLEN = 23;         /* Number of bytes in the pattern part */

@@ -36,7 +36,6 @@ namespace Reko.Arch.Mos6502
     public class Disassembler : DisassemblerBase<Instruction>
     {
         private readonly EndianImageReader rdr;
-        private Instruction instr;
         private readonly List<Operand> ops;
 
         public Disassembler(EndianImageReader rdr)

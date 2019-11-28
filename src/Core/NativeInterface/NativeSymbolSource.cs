@@ -1,4 +1,4 @@
-﻿using Reko.Core.NativeInterface.Interfaces;
+using Reko.Core.NativeInterface.Interfaces;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,7 @@ namespace Reko.Core.NativeInterface
 
 		public NativeSymbolSource(IProcessorArchitecture arch, string libPath, ILibraryLoader ldr)
 		{
+            this.arch = arch;
 			loader = ldr;
 			handle = loader.LoadLibrary(libPath);
 
