@@ -57,6 +57,8 @@ namespace Reko.Arch.PowerPC
             this.allowSetCR0 = false;
             this.ops.Clear();
             var instrCur = primaryDecoders[wInstr >> 26].Decode(this, wInstr);
+            if (wInstr == 0)
+                instrCur.InstructionClass |= InstrClass.Zero;
             instrCur.Address = addr;
             instrCur.Length = 4;
             return instrCur;
@@ -67,7 +69,7 @@ namespace Reko.Arch.PowerPC
             return new PowerPcInstruction(Mnemonic.illegal)
             {
                 InstructionClass = InstrClass.Invalid,
-                Operands = new MachineOperand[0],
+                Operands = MachineInstruction.NoOperands
             };
         }
 
@@ -372,10 +374,7 @@ namespace Reko.Arch.PowerPC
             //        }}
             //");
 #endif
-            return new PowerPcInstruction(Mnemonic.illegal)
-            {
-                InstructionClass = InstrClass.Invalid
-            };
+            return CreateInvalidInstruction();
         }
     }
 }

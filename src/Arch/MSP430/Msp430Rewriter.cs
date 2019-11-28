@@ -61,7 +61,7 @@ namespace Reko.Arch.Msp430
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 this.rtlc = InstrClass.Linear;
-                switch (instr.opcode)
+                switch (instr.Mnemonic)
                 {
                 case Mnemonics.invalid: Invalid(); break;
                 default:
@@ -443,15 +443,15 @@ namespace Reko.Arch.Msp430
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(instr.opcode))
+            if (seen.Contains(instr.Mnemonic))
                 return;
-            seen.Add(instr.opcode);
+            seen.Add(instr.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void Msp430Rw_" + instr.opcode + "()");
+            Console.WriteLine("        public void Msp430Rw_" + instr.Mnemonic + "()");
             Console.WriteLine("        {");
             Console.Write("            BuildTest(");
             Console.Write(string.Join(

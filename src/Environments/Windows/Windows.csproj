@@ -5,14 +5,19 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.Environments.Windows</RootNamespace><AssemblyName>Reko.Environments.Windows</AssemblyName></PropertyGroup>
+    <RootNamespace>Reko.Environments.Windows</RootNamespace>
+    <AssemblyName>Reko.Environments.Windows</AssemblyName>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
     <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj" />
   </ItemGroup>
+  
   <ItemGroup>
     <TranslateHeader Include="msvcrt.inc" />
   </ItemGroup>
+  
   <Target Name="CopyMetadata" AfterTargets="CoreBuild">
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />

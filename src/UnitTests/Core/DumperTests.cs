@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Core
                 .Returns((MemoryArea m, Address a) => new LeImageReader(m, a));
         }
 
-        private void Given_Disassembly(params Operation[] operations)
+        private void Given_Disassembly(params Mnemonic[] operations)
         {
             arch.Setup(a => a.CreateDisassembler(
                 It.IsNotNull<EndianImageReader>()))
@@ -136,10 +136,10 @@ namespace Reko.UnitTests.Core
         {
             Given_32bit_Program();
             Given_Disassembly(
-                Operation.Add,
-                Operation.Mul,
-                Operation.Add,
-                Operation.Ret);
+                Mnemonic.Add,
+                Mnemonic.Mul,
+                Mnemonic.Add,
+                Mnemonic.Ret);
             Given_ProcedureAt(Address.Ptr32(0x10010));
 
             var dmp = new Dumper(program);
@@ -169,10 +169,10 @@ fn00010010 proc
         {
             Given_32bit_Program();
             Given_Disassembly(
-                Operation.Add,
-                Operation.Mul,
-                Operation.Add,
-                Operation.Ret);
+                Mnemonic.Add,
+                Mnemonic.Mul,
+                Mnemonic.Add,
+                Mnemonic.Ret);
 
             var proc = Given_ProcedureAt(Address.Ptr32(0x10010));
             proc.Name = "__foo@8";
@@ -204,10 +204,10 @@ __foo@8 proc
         {
             Given_32bit_Program();
             Given_Disassembly(
-                Operation.Add,
-                Operation.Mul,
-                Operation.Add,
-                Operation.Ret);
+                Mnemonic.Add,
+                Mnemonic.Mul,
+                Mnemonic.Add,
+                Mnemonic.Ret);
 
             program.ImageMap.AddItemWithSize(
                 Address.Ptr32(0x10004),
@@ -249,10 +249,10 @@ l00010004	dd	0x07060504
             };
             Given_32bit_Program();
             Given_Disassembly(
-                Operation.Add,
-                Operation.Mul,
-                Operation.Add,
-                Operation.Ret);
+                Mnemonic.Add,
+                Mnemonic.Mul,
+                Mnemonic.Add,
+                Mnemonic.Ret);
 
             program.ImageMap.AddItemWithSize(
                 Address.Ptr32(0x10004),
@@ -318,10 +318,10 @@ l00010004		db	0x04
         {
             Given_32bit_Program();
             Given_Disassembly(
-                Operation.Add,
-                Operation.Mul,
-                Operation.Add,
-                Operation.Ret);
+                Mnemonic.Add,
+                Mnemonic.Mul,
+                Mnemonic.Add,
+                Mnemonic.Ret);
 
             Given_ProcedureAt(Address.Ptr32(0x10010));
 
@@ -352,10 +352,10 @@ fn00010010 proc
         {
             Given_32bit_Program();
             Given_Disassembly(
-                Operation.Add,
-                Operation.Mul,
-                Operation.Add,
-                Operation.Ret);
+                Mnemonic.Add,
+                Mnemonic.Mul,
+                Mnemonic.Add,
+                Mnemonic.Ret);
 
             Given_ProcedureAt(Address.Ptr32(0x10010));
 
@@ -386,7 +386,7 @@ fn00010010 proc
         public void Dumper_ShowCallers()
         {
             Given_32bit_Program(48);
-            Given_Disassembly(Operation.Call, Operation.Ret);
+            Given_Disassembly(Mnemonic.Call, Mnemonic.Ret);
             var p1 = Given_ProcedureAt(Address.Ptr32(0x10010));
             var p2 = Given_ProcedureAt(Address.Ptr32(0x10020));
 

@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Decompiler.Assemblers.x86</RootNamespace>
+    <AssemblyName>Decompiler.Assemblers.x86</AssemblyName>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Decompiler.Assemblers.x86</RootNamespace><AssemblyName>Decompiler.Assemblers.x86</AssemblyName></PropertyGroup>
+  </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\X86\X86.csproj"/>
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
-    <ProjectReference Include="..\..\Environments\Msdos\Msdos.csproj"/>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Environments\Msdos\Msdos.csproj" />
   </ItemGroup>
 </Project>

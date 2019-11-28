@@ -78,7 +78,7 @@ namespace Reko.Arch.Pdp11
             {
                 Mnemonic = Mnemonic.illegal,
                 InstructionClass = InstrClass.Invalid,
-                Operands = new MachineOperand[0],
+                Operands = MachineInstruction.NoOperands
             };
         }
 
@@ -154,12 +154,12 @@ namespace Reko.Arch.Pdp11
         class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator<Pdp11Disassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic op, InstrClass iclass, params Mutator<Pdp11Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<Pdp11Disassembler>[] mutators)
             {
-                this.opcode = op;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
@@ -173,7 +173,7 @@ namespace Reko.Arch.Pdp11
                 }
                 var instr = new Pdp11Instruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = iclass,
                     DataWidth = dasm.dataWidth,
                     Operands = dasm.ops.ToArray()

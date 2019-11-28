@@ -193,7 +193,7 @@ namespace Reko.Arch.M68k
             {
                 code = Mnemonic.illegal,
                 InstructionClass = InstrClass.Invalid,
-                Operands = new MachineOperand[0]
+                Operands = MachineInstruction.NoOperands
             };
         }
 
@@ -210,7 +210,7 @@ namespace Reko.Arch.M68k
             public readonly uint match;                 // opcode bit patter (after mask)
             public readonly uint ea_mask;               // Permitted ea modes are allowed 
 
-            public readonly Mnemonic opcode;              // The decoded opcode.
+            public readonly Mnemonic mnemonic;              // The decoded opcode.
             public readonly InstrClass iclass;          // Instruction class of the decoded instruction.
             public readonly Mutator[] mutators;         // Format string which when interpreted generates the operands of the dasm.instruction.
 
@@ -226,23 +226,23 @@ namespace Reko.Arch.M68k
             /// <param name="mask"></param>
             /// <param name="match"></param>
             /// <param name="ea_mask"></param>
-            /// <param name="opcode"></param>
+            /// <param name="mnemonic"></param>
             /// <param name="iclass"></param>
-            public Decoder(Mutator[] mutators, uint mask, uint match, uint ea_mask, Mnemonic opcode = Mnemonic.illegal, InstrClass iclass = InstrClass.Linear)
+            public Decoder(Mutator[] mutators, uint mask, uint match, uint ea_mask, Mnemonic mnemonic = Mnemonic.illegal, InstrClass iclass = InstrClass.Linear)
             {
                 this.mutators = mutators;
                 Debug.Assert(mutators.All(m => m != null));
                 this.mask = mask;
                 this.match = match;
                 this.ea_mask = ea_mask;
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
             }
 
             public virtual M68kInstruction Decode(uint uInstr, M68kDisassembler dasm)
             {
                 var instr = dasm.instr;
-                instr.code = opcode;
+                instr.code = mnemonic;
                 instr.InstructionClass = iclass;
                 foreach (var m in mutators)
                 {
@@ -265,14 +265,14 @@ namespace Reko.Arch.M68k
                 iclass);
         }
 
-        private static Decoder Instr(Mutator m1, uint mask, uint match, uint ea_mask, Mnemonic opcode = Mnemonic.illegal, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(Mutator m1, uint mask, uint match, uint ea_mask, Mnemonic mnemonic = Mnemonic.illegal, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[] { m1 },
                 mask,
                 match,
                 ea_mask,
-                opcode,
+                mnemonic,
                 iclass);
         }
 
@@ -1268,12 +1268,12 @@ namespace Reko.Arch.M68k
         {
             var new_pc = dasm.rdr.Address;
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
-            Mnemonic opcode = g_cpcc[uInstr & 0x3f];
-            if (opcode == Mnemonic.illegal)
+            Mnemonic mnemonic = g_cpcc[uInstr & 0x3f];
+            if (mnemonic == Mnemonic.illegal)
                 return false;
             if (!dasm.rdr.TryReadBeInt16(out var displacement))
                 return false;
-            dasm.instr.code = opcode;
+            dasm.instr.code = mnemonic;
             dasm.instr.InstructionClass = InstrClass.Linear;
             dasm.ops.Add(new M68kAddressOperand(new_pc + displacement));
             return true;
@@ -3164,7 +3164,7 @@ namespace Reko.Arch.M68k
 };
         }
 
-        private static Decoder illegalOpcode = new Decoder(new Mutator[0], 0, 0, 0, Mnemonic.illegal);
+        private static Decoder illegal = new Decoder(new Mutator[0], 0, 0, 0, Mnemonic.illegal);
 
         // Check if opcode is using a valid ea mode
         static bool valid_ea(uint opcode, uint mask)
@@ -3277,7 +3277,7 @@ namespace Reko.Arch.M68k
 
             for (uint i = 0; i < 0x10000; i++)
             {
-                g_instruction_table[i] = illegalOpcode;     //default to illegal
+                g_instruction_table[i] = illegal;     //default to illegal
                 uint opcode = i;
                 // search through opcode info for a match
                 for (ostruct = 0; opcode_info[ostruct].mutators != null; ostruct++)

@@ -82,7 +82,7 @@ namespace Reko.Arch.Arm.AArch32
                 // Most instructions have a conditional mode of operation.
                 //$TODO: make sure non-conditional instructions are handled correctly here.
                 ConditionalSkip(false);
-                switch (instr.opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                 case Mnemonic.aesd:
@@ -675,11 +675,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (cc == ArmCondition.AL)
                     return; // never skip!
-                if (instr.opcode == Mnemonic.b ||
-                    instr.opcode == Mnemonic.bl ||
-                    instr.opcode == Mnemonic.blx ||
-                    instr.opcode == Mnemonic.bx ||
-                    instr.opcode == Mnemonic.bxj)
+                if (instr.Mnemonic == Mnemonic.b ||
+                    instr.Mnemonic == Mnemonic.bl ||
+                    instr.Mnemonic == Mnemonic.blx ||
+                    instr.Mnemonic == Mnemonic.bx ||
+                    instr.Mnemonic == Mnemonic.bxj)
                 {
                     // These instructions handle the branching themselves.
                     return;
@@ -852,7 +852,7 @@ namespace Reko.Arch.Arm.AArch32
 
         DataType SizeFromLoadStore()
         {
-            switch (instr.opcode)
+            switch (instr.Mnemonic)
             {
             case Mnemonic.ldc: return PrimitiveType.Word32;
             case Mnemonic.ldc2: return PrimitiveType.Word32;
@@ -1059,15 +1059,15 @@ namespace Reko.Arch.Arm.AArch32
 
         void EmitUnitTest(AArch32Instruction instr)
         {
-            if (opcode_seen.Contains(instr.opcode))
+            if (opcode_seen.Contains(instr.Mnemonic))
                 return;
-            opcode_seen.Add(instr.opcode);
+            opcode_seen.Add(instr.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= instr.Length;
 
             Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void ArmRw_{0}()", instr.opcode);
+            Console.WriteLine("        public void ArmRw_{0}()", instr.Mnemonic);
             Console.WriteLine("        {");
 
             if (instr.Length > 2)

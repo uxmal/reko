@@ -124,7 +124,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var tabPage = new TabPage
             {
                 Text = documentTitle,
-                ImageIndex = 7,
+                ImageIndex = 8,
             };
             WindowFrame frame = new WindowFrame(this, documentType, docItem, tabPage, pane);
             framesByTab.Add(tabPage, frame);

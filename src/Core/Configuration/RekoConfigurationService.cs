@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -96,7 +97,7 @@ namespace Reko.Core.Configuration
             {
                 Argument = l.Argument,
                 Extension = l.Extension,
-                Offset = l.Offset,
+                Offset = ConvertNumber(l.Offset),
                 Label = l.Label,
                 MagicNumber = l.MagicNumber,
                 TypeName = l.Type
@@ -289,6 +290,33 @@ namespace Reko.Core.Configuration
                 return new RekoConfigurationService(sConfig);
             }
         }
+
+        private long ConvertNumber(string sNumber)
+        {
+            if (string.IsNullOrEmpty(sNumber))
+                return 0;
+            sNumber = sNumber.Trim();
+            if (sNumber.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (Int64.TryParse(
+                    sNumber.Substring(2),
+                    NumberStyles.HexNumber,
+                    CultureInfo.InvariantCulture,
+                    out long offset))
+                {
+                    return offset;
+                }
+            }
+            else
+            {
+                if (Int64.TryParse(sNumber, out long offset))
+                {
+                    return offset;
+                }
+            }
+            return 0;
+        }
+
 
         public virtual ICollection<LoaderDefinition> GetImageLoaders()
         {

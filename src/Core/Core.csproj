@@ -1,25 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <AssemblyName>Reko.Core</AssemblyName>
     <RootNamespace>Reko.Core</RootNamespace>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-    <PackageProjectUrl>https://github.com/uxmal/reko</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/uxmal/reko</RepositoryUrl>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Serialization\DecompilerDiscoveries.cs" />
     <Compile Remove="Serialization\EnumType_v1.cs" />
     <Compile Remove="Serialization\SignatureSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Serialization\Serialization.xsd" />
-    <None Remove="Serialization\Serialization.xsx" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
   </ItemGroup>
 
 </Project>

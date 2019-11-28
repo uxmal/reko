@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ namespace Reko.Symbols.LGSymLoader
 		public bool CanLoad(string filename, byte[] fileContents = null)
         {
 			try {
-                this.hdr = new StructureReader<SymHeader>(rdr).Read();
+                this.hdr = rdr.ReadStruct<SymHeader>();
 				if (hdr.magic != SYM_MAGIC)
 					return false;
 
@@ -168,7 +168,7 @@ namespace Reko.Symbols.LGSymLoader
             for (uint i = 0; i < hdr.n_symbols; i++)
             {
                 rdr.BaseStream.Seek(syms_offset + Marshal.SizeOf(typeof(SymEntry)) * i, SeekOrigin.Begin);
-                SymEntry? s = new StructureReader<SymEntry>(rdr).Read();
+                SymEntry? s = rdr.ReadStruct<SymEntry>();
                 if (s == null)
                     break;
 

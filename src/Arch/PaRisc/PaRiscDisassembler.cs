@@ -1273,13 +1273,13 @@ namespace Reko.Arch.PaRisc
         private class InstrDecoder : Decoder
         {
             private readonly InstrClass iclass;
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly Mutator<PaRiscDisassembler>[] mutators;
 
-            public InstrDecoder(InstrClass iclass, Mnemonic opcode, params Mutator<PaRiscDisassembler> [] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator<PaRiscDisassembler> [] mutators)
             {
                 this.iclass = iclass;
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.mutators = mutators;
             }
 
@@ -1296,7 +1296,7 @@ namespace Reko.Arch.PaRisc
                 return new PaRiscInstruction
                 {
                     InstructionClass = iclass,
-                    Opcode = opcode,
+                    Mnemonic = mnemonic,
                     Coprocessor = dasm.coprocessor,
                     Condition = dasm.cond,
                     Operands = dasm.ops.ToArray(),
@@ -1383,7 +1383,7 @@ namespace Reko.Arch.PaRisc
                 {
                     InstructionClass = 0,
                     Coprocessor = -1,
-                    Opcode = mnemonic,
+                    Mnemonic = mnemonic,
                     Operands = new MachineOperand[0]
                 };
             }

@@ -185,5 +185,52 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void Abc_Selfloop()
+        {
+            // The top "triangle" is a self loop. Avoid collecting it.
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	// succ:  m1Header
+m1Header:
+	Mem0[0x00123400:byte] = 0x2A
+	// succ:  m1Prev
+m1Prev:
+	branch Test(UGE,CZ) m1Prev
+	// succ:  m2Block m1Prev
+m2Block:
+	branch Test(EQ,Z) m4Done
+	// succ:  m3Leg m4Done
+m3Leg:
+	CZ = 0x00
+	// succ:  m4Done
+m4Done:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var Z = m.Frame.EnsureFlagGroup(arch.GetFlagGroup("Z"));
+                var CZ = m.Frame.EnsureFlagGroup(arch.GetFlagGroup("CZ"));
+                m.Label("m1Header");
+                m.MStore(m.Word32(0x00123400), m.Byte(42));
+                m.Label("m1Prev");
+                m.BranchIf(m.Test(ConditionCode.UGE, CZ), "m1Prev");
+                m.Label("m2Block");
+                m.BranchIf(m.Test(ConditionCode.EQ, Z), "m4Done");
+                m.Label("m3Leg");
+                m.Assign(CZ, 0);
+                m.Label("m4Done");
+                m.Return();
+            });
+        }
     }
 }

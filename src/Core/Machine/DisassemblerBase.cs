@@ -44,6 +44,7 @@ namespace Reko.Core.Machine
                 TInstr instr = DisassembleInstruction();
                 if (instr == null)
                     break;
+                Debug.Assert(instr.Operands != null);   //$REVIEW: when we switch to C# 8.0 perhaps we don't need this?
                 yield return instr;
             }
         }
@@ -87,7 +88,7 @@ namespace Reko.Core.Machine
             return CreateInvalidInstruction();
         }
 
-        private static Dictionary<string, HashSet<string>> seen =
+        private static readonly Dictionary<string, HashSet<string>> seen =
             new Dictionary<string, HashSet<string>>();
 
         /// <summary>

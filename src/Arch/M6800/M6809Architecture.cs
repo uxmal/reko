@@ -20,29 +20,37 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.Arc
+namespace Reko.Arch.M6800
 {
-    public class ArcArchitecture : ProcessorArchitecture
+    using FlagM = Reko.Arch.M6800.M6809.FlagM;
+
+    public class M6809Architecture : ProcessorArchitecture
     {
-        public ArcArchitecture(string archId) : base(archId)
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
+        public M6809Architecture(string archId) : base(archId)
         {
-            base.Endianness = EndianServices.Little;
-            base.FramePointerType = PrimitiveType.Ptr32;
-            base.InstructionBitSize = 16;
-            base.PointerType = PrimitiveType.Ptr32;
-            base.WordWidth = PrimitiveType.Word32;
+            this.Endianness = EndianServices.Big;
+            this.FramePointerType = PrimitiveType.Ptr16;
+            this.InstructionBitSize = 8;
+            this.PointerType = PrimitiveType.Ptr16;
+            this.StackRegister = M6809.Registers.S;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new ArcDisassembler(this, rdr);
+            return new M6809.M6809Disassembler(this, rdr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -57,17 +65,25 @@ namespace Reko.Arch.Arc
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new M6809State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new M6809.M6809Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(M6809.Registers.CC, grf, GrfToString(M6809.Registers.CC, "", grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -85,12 +101,12 @@ namespace Reko.Arch.Arc
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }
@@ -100,23 +116,19 @@ namespace Reko.Arch.Arc
             throw new NotImplementedException();
         }
 
-        public override string GrfToString(RegisterStorage flagRegister, string prefix,  uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
-        }
-
-        public override void LoadUserOptions(Dictionary<string, object> options)
-        {
-            Endianness = (options.TryGetValue("Endianness", out var oEndian)
-                && oEndian is string sEndian
-                && string.Compare(sEndian, "be") == 0)
-                ? EndianServices.Big
-                : EndianServices.Little;
+            var sb = new StringBuilder();
+            if ((grf & (uint) FlagM.N) != 0) sb.Append('N');
+            if ((grf & (uint) FlagM.Z) != 0) sb.Append('Z');
+            if ((grf & (uint) FlagM.V) != 0) sb.Append('V');
+            if ((grf & (uint) FlagM.C) != 0) sb.Append('C');
+            return sb.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return Address.Ptr16(c.ToUInt16());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
@@ -131,7 +143,7 @@ namespace Reko.Arch.Arc
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddr, out addr);
         }
     }
 }

@@ -114,7 +114,7 @@ namespace Reko.Environments.SysV
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            return this.trashedRegs.ToHashSet();
+            return new HashSet<RegisterStorage>(this.trashedRegs);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -188,6 +188,12 @@ namespace Reko.Environments.SysV
             case "mips-le-64":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
                 m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister("r25")), Constant.Word64((uint) addr.ToLinear()));
+                break;
+            case "x86-protected-32":
+            case "x86-protected-64":
+                m.Assign(
+                    proc.Frame.EnsureRegister(Architecture.FpuStackRegister),
+                    0);
                 break;
             case "zSeries":
                 // Stack parameters are passed in starting at offset +160 from the 

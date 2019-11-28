@@ -1,14 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>Reko.Libraries.Microchip</RootNamespace>
     <AssemblyName>Reko.Libraries.Microchip.Utils</AssemblyName>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\..\Core\Core.csproj" />
   </ItemGroup>
+  <Target Name="CopyPicDatabase" BeforeTargets="CoreCompile">
+    <Message Importance="normal" Text="Copying PIC Database to $(TargetDir)" />
+    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" />
+  </Target>
 </Project>

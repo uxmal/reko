@@ -30,7 +30,7 @@ namespace Reko.Core.Rtl
     /// Models conditionally executed statements, like those that appear in 
     /// the ARM architecture.
     /// </summary>
-    public class RtlIf : RtlInstruction
+    public sealed class RtlIf : RtlInstruction
     {
         /// <summary>
         /// Builds an RTL If instruction, which executes the specified statement

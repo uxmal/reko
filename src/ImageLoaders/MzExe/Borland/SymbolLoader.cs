@@ -67,8 +67,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             }
             dataSize += exeLoader.e_cbLastPage;
             var rdr = new LeImageReader(rawImage, dataSize);
-            var srdr = new StructureReader<debug_header>(rdr);
-            this.header = srdr.Read();
+            this.header = rdr.ReadStruct<debug_header>();
             if (this.header.magic_number != MagicNumber)
             {
                 return false;
@@ -76,8 +75,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             this.name_pool_offset = rawImage.Length - this.header.names;
             if (this.header.extension_size == 0x20)
             {
-                var ext = new StructureReader<header_extension_20>(rdr);
-                var extHdr = ext.Read();
+                var extHdr = rdr.ReadStruct<header_extension_20>();
                 name_pool_offset = rdr.Offset + (int)extHdr.name_pool_offset;
             }
             else if (this.header.extension_size != 0)

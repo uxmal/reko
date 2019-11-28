@@ -48,7 +48,7 @@ namespace Reko.Arch.Arm.AArch32
         private class ArmAlias
         {
             public readonly Func<AArch32Instruction, bool> Matches;  // predicate for the alias
-            public readonly string sOpcode;
+            public readonly string sMnemonic;
             public readonly Func<AArch32Instruction, (MachineOperand[], bool)> NewOperands;   // Mutated operands
 
             public ArmAlias(
@@ -57,7 +57,7 @@ namespace Reko.Arch.Arm.AArch32
                 Func<AArch32Instruction, (MachineOperand[], bool)> newOperands)
             {
                 this.Matches = match;
-                this.sOpcode = sOpcode;
+                this.sMnemonic = sOpcode;
                 this.NewOperands = newOperands;
             }
 
@@ -86,10 +86,10 @@ namespace Reko.Arch.Arm.AArch32
             this.condition = ArmCondition.AL;
         }
 
-        public Mnemonic opcode { get; set; }
+        public Mnemonic Mnemonic { get; set; }
         public ArmCondition condition { get; set; }
 
-        public override int OpcodeAsInteger => (int) opcode;
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         /// <summary>
         /// PC-relative addressing has an extra offset.This varies
@@ -100,10 +100,10 @@ namespace Reko.Arch.Arm.AArch32
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (opcode == Mnemonic.it)
+            if (Mnemonic == Mnemonic.it)
             {
-                var itOpcode = RenderIt();
-                writer.WriteOpcode(itOpcode);
+                var itMnemonic = RenderIt();
+                writer.WriteOpcode(itMnemonic);
                 writer.Tab();
                 writer.WriteString(condition.ToString().ToLowerInvariant());
                 return;
@@ -114,7 +114,7 @@ namespace Reko.Arch.Arm.AArch32
                 writer.Tab();
                 RenderOperand(ops[0], writer, options);
                 if (writeback &&
-                    blockDataXferOpcodes.Contains(opcode) &&
+                    blockDataXferOpcodes.Contains(Mnemonic) &&
                     ops[0] is RegisterOperand)
                 {
                     writer.WriteChar('!');
@@ -177,22 +177,22 @@ namespace Reko.Arch.Arm.AArch32
         private (MachineOperand[], bool) RenderMnemonic(MachineInstructionWriter writer)
         {
             var sb = new StringBuilder();
-            string sOpcode;
+            string sMnemonic;
             var ops = (this.Operands, this.Writeback);
-            if (aliases.TryGetValue(opcode, out ArmAlias armAlias) &&
+            if (aliases.TryGetValue(Mnemonic, out ArmAlias armAlias) &&
                 armAlias.Matches(this))
             {
-                sOpcode = armAlias.sOpcode;
+                sMnemonic = armAlias.sMnemonic;
                 ops = armAlias.NewOperands(this);
             }
-            else if (!opcodes.TryGetValue(opcode, out sOpcode))
+            else if (!opcodes.TryGetValue(Mnemonic, out sMnemonic))
             {
-                sOpcode = opcode.ToString();
+                sMnemonic = Mnemonic.ToString();
             }
             var sUpdate = SetFlags ? "s" : "";
             var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
-            sb.Append(sOpcode);
-            if (opcode != Mnemonic.Invalid)
+            sb.Append(sMnemonic);
+            if (Mnemonic != Mnemonic.Invalid)
             {
                 sb.Append(sUpdate);
                 sb.Append(sCond);
@@ -217,7 +217,7 @@ namespace Reko.Arch.Arm.AArch32
         private string RenderIt()
         {
             var sb = new StringBuilder();
-            ;  sb.Append("it");
+            sb.Append("it");
             int mask = this.itmask;
             var bit = (~(int)this.condition & 1) << 3;
 

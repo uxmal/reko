@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public class RtlAssignment : RtlInstruction
+    public sealed class RtlAssignment : RtlInstruction
     {
         public RtlAssignment(Expression dst, Expression src)
         {

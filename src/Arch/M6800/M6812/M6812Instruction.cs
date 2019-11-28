@@ -26,13 +26,13 @@ namespace Reko.Arch.M6800.M6812
 {
     public class M6812Instruction : MachineInstruction
     {
-        public override int OpcodeAsInteger => (int) Opcode;
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
-        public Mnemonic Opcode { get; set; }
+        public Mnemonic Mnemonic { get; set; }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            writer.WriteOpcode(Mnemonic.ToString());
             RenderOperands(writer, options);
         }
 

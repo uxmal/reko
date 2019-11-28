@@ -122,15 +122,15 @@ namespace Reko.Environments.Windows
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return new[] { "r11", "sp", "lr", "pc" }
-                .Select(r => Architecture.GetRegister(r)).ToHashSet();
+            return new HashSet<RegisterStorage>(new[] { "r11", "sp", "lr", "pc" }
+                .Select(r => Architecture.GetRegister(r)));
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // https://msdn.microsoft.com/en-us/library/dn736986.aspx 
-            return new[] { "r0", "r1", "r2", "r3", "ip" }
-                .Select(r => Architecture.GetRegister(r)).ToHashSet();
+            return new HashSet<RegisterStorage>(new[] { "r0", "r1", "r2", "r3", "ip" }
+                .Select(r => Architecture.GetRegister(r)));
         }
 
         public override CallingConvention GetCallingConvention(string ccName)

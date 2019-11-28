@@ -37,7 +37,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var co = instr.Operands[0] as ConditionOperand;
             if (co != null)
             {
-                rtlc = InstrClass.ConditionalTransfer | InstrClass.Call;
+                iclass = InstrClass.ConditionalTransfer | InstrClass.Call;
                 m.BranchInMiddleOfInstruction(
                     GenerateTestExpression(co, true),
                     instr.Address + instr.Length,
@@ -46,14 +46,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-                rtlc = InstrClass.Transfer | InstrClass.Call;
+                iclass = InstrClass.Transfer | InstrClass.Call;
                 m.Call(RewriteSrc(instr.Operands[0]), 4);
             }
         }
 
         private void RewriteDjnz()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var reg = RewriteSrc(instr.Operands[0]);
             var dst = ((AddressOperand)instr.Operands[1]).Address;
             m.Assign(reg, m.ISub(reg, 1));
@@ -65,7 +65,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var co = instr.Operands[0] as ConditionOperand;
             if (co != null)
             {
-                rtlc = InstrClass.ConditionalTransfer;
+                iclass = InstrClass.ConditionalTransfer;
                 var test = GenerateTestExpression(co, false);
                 var dst = RewriteSrc(instr.Operands[1]);
                 var addr = dst as Address;
@@ -82,7 +82,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-                rtlc = InstrClass.Transfer;
+                iclass = InstrClass.Transfer;
                 var dst = RewriteSrc(instr.Operands[0]);
                 m.Goto(dst);
             }
@@ -92,7 +92,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             if (instr.Operands.Length == 1 && instr.Operands[0] is ConditionOperand co)
             {
-                rtlc = InstrClass.ConditionalTransfer;
+                iclass = InstrClass.ConditionalTransfer;
 
                 var test = GenerateTestExpression(co, true);
                 m.Branch(test, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
@@ -100,20 +100,20 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-                rtlc = InstrClass.Transfer;
+                iclass = InstrClass.Transfer;
                 m.Return(4, 0);
             }
         }
 
         private void RewriteRetd()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(4, ((ImmediateOperand) instr.Operands[0]).Value.ToInt32());
         }
 
         private void RewriteReti()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var sr = binder.EnsureRegister(Registers.sr);
             var sp = binder.EnsureRegister(Registers.xsp);
             m.Assign(sr, m.Mem16(sp));

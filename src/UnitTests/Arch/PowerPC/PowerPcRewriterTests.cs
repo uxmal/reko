@@ -2574,5 +2574,14 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "2|L--|v5 = __ps_nabs(v4)",
                 "3|L--|f16 = v5");
         }
+
+        [Test]
+        public void PPCRw_bcctrne()
+        {
+            AssertCode(0x4C820420,  // bcctr\t04,02
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(EQ,cr0)) branch 00100004",
+                "2|T--|goto ctr");
+        }
     }
 }

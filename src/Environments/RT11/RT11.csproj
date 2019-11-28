@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Reko.Environments.RT11</RootNamespace>
+    <AssemblyName>Reko.Environments.RT11</AssemblyName>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.Environments.RT11</RootNamespace><AssemblyName>Reko.Environments.RT11</AssemblyName></PropertyGroup>
+  </PropertyGroup>
+
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Arch\Pdp11\Pdp11.csproj" />
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
   </ItemGroup>
 </Project>

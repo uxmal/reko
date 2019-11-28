@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -87,6 +87,51 @@ namespace Reko.UnitTests.Core.Configuration
             var archs = env.Architectures;
             Assert.AreEqual(1, archs.Count);
             Assert.AreEqual("lp32.xml", archs[0].TypeLibraries[0].Name);
+        }
+
+        [Test]
+        public void Rcfg_LoadLoader()
+        {
+            var cfgSvc = new RekoConfigurationService(new RekoConfiguration_v1
+            {
+                Loaders = new[]
+                {
+                    new RekoLoader
+                    {
+                        MagicNumber = "425325",
+                        Offset = "0x4242",
+                        Extension = ".foo",
+                        Argument = "fnord",
+                        Label = "lay-bul",
+                        Type= "foo.Loader,foo",
+                    },
+                    new RekoLoader
+                    {
+                        MagicNumber = "444444",
+                        Offset = "123",
+                        Extension = ".bar",
+                        Argument = "bok",
+                        Label = "bullet",
+                        Type= "bar.Loader,bar",
+                    }
+                }
+            });
+
+            var ldrs = cfgSvc.GetImageLoaders().ToArray();
+
+            Assert.AreEqual("425325", ldrs[0].MagicNumber);
+            Assert.AreEqual(0x4242, ldrs[0].Offset);
+            Assert.AreEqual(".foo", ldrs[0].Extension);
+            Assert.AreEqual("fnord", ldrs[0].Argument);
+            Assert.AreEqual("lay-bul", ldrs[0].Label);
+            Assert.AreEqual("foo.Loader,foo", ldrs[0].TypeName);
+
+            Assert.AreEqual("444444", ldrs[1].MagicNumber);
+            Assert.AreEqual(123, ldrs[1].Offset);
+            Assert.AreEqual(".bar", ldrs[1].Extension);
+            Assert.AreEqual("bok", ldrs[1].Argument);
+            Assert.AreEqual("bullet", ldrs[1].Label);
+            Assert.AreEqual("bar.Loader,bar", ldrs[1].TypeName);
         }
     }
 }

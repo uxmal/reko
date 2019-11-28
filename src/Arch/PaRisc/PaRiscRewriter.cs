@@ -63,7 +63,7 @@ namespace Reko.Arch.PaRisc
                 this.iclass = instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
                 m = new RtlEmitter(instrs);
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
@@ -146,13 +146,13 @@ namespace Reko.Arch.PaRisc
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Opcode))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.Opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var bytes = rdr.PeekBeUInt32(-dasm.Current.Length);
             Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void PaRiscRw_" + dasm.Current.Opcode + "()");
+            Console.WriteLine("        public void PaRiscRw_" + dasm.Current.Mnemonic + "()");
             Console.WriteLine("        {");
             Console.WriteLine("            BuildTest(\"{0:X8}\");\t// {1}", bytes, dasm.Current.ToString());
             Console.WriteLine("            AssertCode(");

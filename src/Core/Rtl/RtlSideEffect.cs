@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public class RtlSideEffect : RtlInstruction
+    public sealed class RtlSideEffect : RtlInstruction
     {
         public RtlSideEffect(Expression sideEffect)
         {

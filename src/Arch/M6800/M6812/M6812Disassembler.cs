@@ -64,20 +64,20 @@ namespace Reko.Arch.M6800.M6812
             return new M6812Instruction
             {
                 InstructionClass = InstrClass.Invalid,
-                Opcode = Mnemonic.invalid,
-                Operands = new MachineOperand[0]
+                Mnemonic = Mnemonic.invalid,
+                Operands = MachineInstruction.NoOperands
             };
         }
 
         public class InstrDecoder : Decoder
         {
-            private readonly Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator<M6812Disassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, params Mutator<M6812Disassembler>[] mutators)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<M6812Disassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
@@ -91,7 +91,7 @@ namespace Reko.Arch.M6800.M6812
                 }
                 return new M6812Instruction
                 {
-                    Opcode = this.opcode,
+                    Mnemonic = this.mnemonic,
                     InstructionClass = iclass,
                     Operands = dasm.operands.ToArray()
                 };
@@ -221,7 +221,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static short[] prePostIncrementOffset = new short[16]
+        private readonly static short[] prePostIncrementOffset = new short[16]
         {
             1, 2, 3, 4, 5, 6, 7, 8, -8, -7, -6, -5, -4, -3, -2, -1,
         };
@@ -372,7 +372,7 @@ namespace Reko.Arch.M6800.M6812
                 Registers.pc
             };
 
-            var invalid = Instr(Mnemonic.invalid);
+            var invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
             decodersSecondByte = new Decoder[256]
             {

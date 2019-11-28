@@ -78,7 +78,7 @@ namespace Reko.Arch.Avr
             this.rtlInstructions = new List<RtlInstruction>();
             this.rtlc = instr.InstructionClass;
             this.m = new RtlEmitter(rtlInstructions);
-            switch (instr.opcode)
+            switch (instr.Mnemonic)
             {
             case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
             case Mnemonic.add: RewriteBinOp(m.IAdd, CmpFlags); break;
@@ -143,7 +143,7 @@ namespace Reko.Arch.Avr
             case Mnemonic.subi: RewriteBinOp(m.ISub, CmpFlags); break;
             case Mnemonic.swap: RewriteSwap(); break;
             default:
-                host.Error(instr.Address, string.Format("AVR8 instruction '{0}' is not supported yet.", instr.opcode));
+                host.Error(instr.Address, string.Format("AVR8 instruction '{0}' is not supported yet.", instr.Mnemonic));
                 EmitUnitTest();
                 m.Invalid();
                 break;
@@ -165,15 +165,15 @@ namespace Reko.Arch.Avr
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.opcode))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.opcode);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Avr8_rw_" + dasm.Current.opcode + "()");
+            Debug.WriteLine("        public void Avr8_rw_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            Rewrite(");
             Debug.Write(string.Join(
@@ -238,7 +238,7 @@ namespace Reko.Arch.Avr
         private void RewriteIO(int iRegOp, int iPortOp, bool read)
         {
             var reg = RewriteOp(iRegOp);
-            var port = ((ImmediateOperand)instr.operands[iPortOp]).Value.ToByte();
+            var port = ((ImmediateOperand)instr.Operands[iPortOp]).Value.ToByte();
             if (port == 0x3F)
             {
                 var psreg = binder.EnsureRegister(arch.sreg);
@@ -307,7 +307,7 @@ namespace Reko.Arch.Avr
 
         private Expression RewriteOp(int iOp)
         {
-            var op = instr.operands[iOp];
+            var op = instr.Operands[iOp];
             switch (op)
             {
             case RegisterOperand rop:
@@ -322,7 +322,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteMem(int iOp, Expression src, Action<Expression, Expression> write, Expression seg)
         {
-            var op = instr.operands[iOp];
+            var op = instr.Operands[iOp];
             var mop = (MemoryOperand)op;
             var baseReg = binder.EnsureRegister(mop.Base);
             Expression ea = baseReg;
@@ -366,9 +366,9 @@ namespace Reko.Arch.Avr
 
         private void RewriteAddSubIW(Func<Expression,Expression,Expression> fn)
         {
-            var operand = instr.operands[0];
+            var operand = instr.Operands[0];
             var regPair = RegisterPair(operand);
-            var imm = ((ImmediateOperand)instr.operands[1]).Value;
+            var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             m.Assign(regPair, fn(regPair, Constant.Word16(imm.ToUInt16())));
             EmitFlags(regPair, ArithFlags);
         }
@@ -406,8 +406,8 @@ namespace Reko.Arch.Avr
 
         private void RewriteMovw()
         {
-            var pairDst = RegisterPair(instr.operands[0]);
-            var pairSrc = RegisterPair(instr.operands[1]);
+            var pairDst = RegisterPair(instr.Operands[0]);
+            var pairSrc = RegisterPair(instr.Operands[1]);
             m.Assign(pairDst, pairSrc);
         }
 
@@ -513,7 +513,7 @@ namespace Reko.Arch.Avr
         private void RewriteLpm()
         {
             var codeSel = binder.EnsureRegister(arch.code);
-            if (instr.operands.Length == 0)
+            if (instr.Operands.Length == 0)
             {
                 var z = binder.EnsureRegister(Avr8Architecture.z);
                 var r0 = binder.EnsureRegister(arch.GetRegister(0));

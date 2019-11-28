@@ -62,7 +62,7 @@ namespace Reko.Arch.M6800.M6812
                 var rtlInstrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtlInstrs);
                 this.rtlc = instr.InstructionClass;
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
                 case Mnemonic.mov: 
                 case Mnemonic.rev: 
@@ -71,7 +71,7 @@ namespace Reko.Arch.M6800.M6812
                     host.Warn(
                         instr.Address,
                         "M6812 instruction '{0}' is not supported yet.",
-                        instr.Opcode);
+                        instr.Mnemonic);
                     goto case Mnemonic.invalid;
                 case Mnemonic.invalid:
                     this.rtlc = InstrClass.Invalid;

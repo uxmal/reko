@@ -17,14 +17,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj" />
-    <ProjectReference Include="..\..\Arch\Arc\Arc.csproj" />
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj" />
     <ProjectReference Include="..\..\Arch\Avr\Avr.csproj" />
-    <ProjectReference Include="..\..\Arch\Blackfin\Blackfin.csproj" />
     <ProjectReference Include="..\..\Arch\Cil\Cil.csproj" />
     <ProjectReference Include="..\..\Arch\Cray\Cray.csproj" />
-    <ProjectReference Include="..\..\Arch\i8051\i8051.csproj" />
-    <ProjectReference Include="..\..\Arch\M6800\M6800.csproj" />
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />
     <ProjectReference Include="..\..\Arch\MicroBlaze\MicroBlaze.csproj" />
     <ProjectReference Include="..\..\Arch\Microchip\MicrochipPIC.csproj" />

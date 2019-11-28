@@ -5,12 +5,14 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.Environments.AmigaOS.Design</RootNamespace><AssemblyName>Reko.Environments.AmigaOS.Design</AssemblyName></PropertyGroup>
+    <RootNamespace>Reko.Environments.AmigaOS.Design</RootNamespace>
+    <AssemblyName>Reko.Environments.AmigaOS.Design</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
-    <ProjectReference Include="..\..\Gui\Gui.csproj"/>
-    <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj"/>
-    <ProjectReference Include="..\AmigaOS\AmigaOS.csproj"/>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Gui\Gui.csproj" />
+    <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj" />
+    <ProjectReference Include="..\AmigaOS\AmigaOS.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />

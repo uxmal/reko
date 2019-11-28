@@ -16,6 +16,7 @@ by the PreBuild.targets file.
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
 
     <Architectures Include="$(SolutionDir)Arch\Alpha\bin\$(StandardOutputDir)\Reko.Arch.Alpha.*" />
+    <Architectures Include="$(SolutionDir)Arch\Arc\bin\$(Configuration)\Reko.Arch.Arc.*" />
     <Architectures Include="$(SolutionDir)Arch\Arm\bin\$(StandardOutputDir)\Reko.Arch.Arm.*" />
     <Architectures Include="$(SolutionDir)Arch\Avr\bin\$(StandardOutputDir)\Reko.Arch.Avr.*" />
     <Architectures Include="$(SolutionDir)Arch\i8051\bin\$(StandardOutputDir)\Reko.Arch.i8051.*" />
@@ -74,6 +75,7 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\opengl.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\CoCoMemoryMap.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\Trs80Rom.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
@@ -95,8 +97,9 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\bin\$(StandardOutputDir)\Reko.ImageLoaders.IntelHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\bin\$(StandardOutputDir)\Reko.ImageLoaders.LLVM.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\bin\$(StandardOutputDir)\Reko.ImageLoaders.MachO.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Nro\bin\$(Configuration)\Reko.ImageLoaders.Nro.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(StandardOutputDir)\Reko.ImageLoaders.OdbgScript.*" />
-    <imageLoaders Include="$(SolutionDir)ImageLoaders\Omf\bin\$(StandardOutputDir)\Reko.ImageLoaders.Omf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(Configuration)\Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(StandardOutputDir)\Reko.ImageLoaders.VmsExe.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Xex\bin\$(StandardOutputDir)\Reko.ImageLoaders.Xex.*" />
 
@@ -115,6 +118,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\RiscOS\bin\$(StandardOutputDir)\Reko.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\RT11\bin\$(StandardOutputDir)\Reko.Environments.RT11.*" />
     <Environments Include="$(SolutionDir)Environments\SegaGenesis\bin\$(StandardOutputDir)\Reko.Environments.SegaGenesis.*" />
+    <Environments Include="$(SolutionDir)Environments\Switch\bin\$(Configuration\Reko.Environments.Switch.*" />
     <Environments Include="$(SolutionDir)Environments\SysV\bin\$(StandardOutputDir)\Reko.Environments.SysV.*" />
     <Environments Include="$(SolutionDir)Environments\Trs80\bin\$(StandardOutputDir)\Reko.Environments.Trs80.*" />
     <Environments Include="$(SolutionDir)Environments\Wii\bin\$(StandardOutputDir)\Reko.Environments.Wii.*" />

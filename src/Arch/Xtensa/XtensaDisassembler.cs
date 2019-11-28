@@ -119,9 +119,11 @@ namespace Reko.Arch.Xtensa
 
         protected override XtensaInstruction CreateInvalidInstruction()
         {
-            return new XtensaInstruction {
+            return new XtensaInstruction
+            {
                 InstructionClass = InstrClass.Invalid,
-                Mnemonic = Mnemonic.invalid
+                Mnemonic = Mnemonic.invalid,
+                Operands = MachineInstruction.NoOperands
             };
         }
 
@@ -389,27 +391,27 @@ namespace Reko.Arch.Xtensa
 
         public class InstrDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private Mnemonic mnemonic;
             private InstrClass iclass;
             private string fmt;
             private bool twoByte;
 
-            public InstrDecoder(Mnemonic opcode, string fmt)
+            public InstrDecoder(Mnemonic mnemonic, string fmt)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.fmt = fmt;
             }
 
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, string fmt)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, string fmt)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.fmt = fmt;
             }
 
-            public InstrDecoder(Mnemonic opcode, string fmt, bool twoByte)
+            public InstrDecoder(Mnemonic mnemonic, string fmt, bool twoByte)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.fmt = fmt;
                 this.twoByte = twoByte;
             }
@@ -418,7 +420,7 @@ namespace Reko.Arch.Xtensa
             {
                 if (this.twoByte)
                     dasm.rdr.Offset -= 1;
-                return dasm.DecodeOperands(opcode, fmt);
+                return dasm.DecodeOperands(mnemonic, fmt);
             }
         }
 
@@ -451,11 +453,11 @@ namespace Reko.Arch.Xtensa
 
         public class bz_Decoder : Decoder
         {
-            private Mnemonic opcode;
+            private Mnemonic mnemonic;
 
-            public bz_Decoder(Mnemonic opcode)
+            public bz_Decoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override XtensaInstruction Decode(XtensaDisassembler dasm)
@@ -468,7 +470,7 @@ namespace Reko.Arch.Xtensa
 
                 return new XtensaInstruction
                 {
-                    Mnemonic = opcode,
+                    Mnemonic = mnemonic,
                     Operands = new MachineOperand[]
                     {
                         dasm.GetAluRegister(dasm.state.s),
@@ -481,11 +483,11 @@ namespace Reko.Arch.Xtensa
 
         public class Beqxx_n_Decoder : Decoder
         {
-            private Mnemonic opcode;
+            private Mnemonic mnemonic;
 
-            public Beqxx_n_Decoder(Mnemonic opcode)
+            public Beqxx_n_Decoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override XtensaInstruction Decode(XtensaDisassembler dasm)
@@ -500,7 +502,7 @@ namespace Reko.Arch.Xtensa
 
                 return new XtensaInstruction
                 {
-                    Mnemonic = opcode,
+                    Mnemonic = mnemonic,
                     Operands = new MachineOperand[]
                     {
                         dasm.GetAluRegister(dasm.state.s),
@@ -512,18 +514,18 @@ namespace Reko.Arch.Xtensa
 
         public class bbxi_Decoder : Decoder
         {
-            private Mnemonic opcode;
+            private Mnemonic mnemonic;
 
-            public bbxi_Decoder(Mnemonic opcode)
+            public bbxi_Decoder(Mnemonic mnemonic)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
             }
 
             public override XtensaInstruction Decode(XtensaDisassembler dasm)
             {
                 return new XtensaInstruction
                 {
-                    Mnemonic = this.opcode,
+                    Mnemonic = this.mnemonic,
                     Operands = new MachineOperand[] {
                         dasm.GetAluRegister(dasm.state.s),
                         ImmediateOperand.Byte((byte)(((dasm.state.r & 1) << 4) | dasm.state.t)),

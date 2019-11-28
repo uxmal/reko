@@ -66,7 +66,7 @@ namespace Reko.Arch.Msp430
 
         private Msp430Instruction SpecialCase(Msp430Instruction instr)
         {
-            if (instr.opcode == Mnemonics.mov)
+            if (instr.Mnemonic == Mnemonics.mov)
             {
                 if (instr.Operands[1] is RegisterOperand dst &&
                     dst.Register == Registers.pc)
@@ -76,12 +76,12 @@ namespace Reko.Arch.Msp430
                         mem.PostIncrement &&
                         mem.Base == Registers.sp)
                     {
-                        instr.opcode = Mnemonics.ret;
-                        instr.Operands = new MachineOperand[0];
+                        instr.Mnemonic = Mnemonics.ret;
+                        instr.Operands = MachineInstruction.NoOperands;
                     }
                     else
                     {
-                        instr.opcode = Mnemonics.br;
+                        instr.Mnemonic = Mnemonics.br;
                         instr.Operands[1] = null;
                         if (instr.Operands[0] is ImmediateOperand imm)
                         {
@@ -353,7 +353,7 @@ namespace Reko.Arch.Msp430
             return new Msp430Instruction
             {
                 InstructionClass = InstrClass.Invalid,
-                opcode = Mnemonics.invalid,
+                Mnemonic = Mnemonics.invalid,
                 Operands = new MachineOperand[0],
             };
         }
@@ -380,13 +380,13 @@ namespace Reko.Arch.Msp430
 
         private class InstrDecoder : Decoder
         {
-            private readonly Mnemonics opcode;
+            private readonly Mnemonics mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator<Msp430Disassembler>[] mutators;
 
-            public InstrDecoder(Mnemonics opcode, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
+            public InstrDecoder(Mnemonics mnemonic, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
@@ -402,7 +402,7 @@ namespace Reko.Arch.Msp430
                 int rep = (dasm.uExtension & 0x0F);
                 var instr = new Msp430Instruction
                 {
-                    opcode = opcode,
+                    Mnemonic = mnemonic,
                     dataWidth = dasm.dataWidth,
                     Operands = dasm.ops.ToArray(),
                     repeatImm = (dasm.uExtension & 0x80) != 0 ? 0 : rep + 1,
@@ -424,7 +424,7 @@ namespace Reko.Arch.Msp430
                 var jj = jmps[(uInstr >> 10) & 7];
                 var instr = new Msp430Instruction
                 {
-                    opcode = jj.Item1,
+                    Mnemonic = jj.Item1,
                     InstructionClass = jj.Item2,
                     dataWidth = dasm.dataWidth,
                     Operands = dasm.ops.ToArray(),

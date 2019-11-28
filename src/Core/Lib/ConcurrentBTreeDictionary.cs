@@ -647,24 +647,29 @@ namespace Reko.Core.Lib
 
         public bool TryGetLowerBound(TKey key, out TValue value)
         {
+            var snapshot = this.root;
             var cmp = this.Comparer;
-            int lo = 0;
-            int hi = this.Count - 1;
+
             value = default(TValue);
             bool set = false;
+            if (snapshot == null)
+                return set;
+
+            int lo = 0;
+            int hi = snapshot.totalCount - 1;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                var k = this.Keys[mid];
-                int c = cmp.Compare(k, key);
+                var kv = GetEntry(snapshot, mid);
+                int c = cmp.Compare(kv.Key, key);
                 if (c == 0)
                 {
-                    value = this.Values[mid];
+                    value = kv.Value;
                     return true;
                 }
                 if (c < 0)
                 {
-                    value = this.Values[mid];
+                    value = kv.Value;
                     set = true;
                     lo = mid + 1;
                 }
@@ -678,24 +683,29 @@ namespace Reko.Core.Lib
 
         public bool TryGetUpperBound(TKey key, out TValue value)
         {
+            var snapshot = this.root;
             var cmp = this.Comparer;
-            int lo = 0;
-            int hi = this.Count - 1;
+
             value = default(TValue);
             bool set = false;
+            if (snapshot == null)
+                return set;
+
+            int lo = 0;
+            int hi = snapshot.totalCount - 1;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                var k = this.Keys[mid];
-                int c = cmp.Compare(k, key);
+                var kv = GetEntry(snapshot, mid);
+                int c = cmp.Compare(kv.Key, key);
                 if (c == 0)
                 {
-                    value = this.Values[mid];
+                    value = kv.Value;
                     return true;
                 }
                 if (c > 0)
                 {
-                    value = this.Values[mid];
+                    value = kv.Value;
                     set = true;
                     hi = mid - 1;
                 }
@@ -709,24 +719,29 @@ namespace Reko.Core.Lib
 
         public bool TryGetLowerBoundKey(TKey key, out TKey closestKey)
         {
+            var snapshot = this.root;
             var cmp = this.Comparer;
-            int lo = 0;
-            int hi = this.Count - 1;
+
             closestKey = default(TKey);
             bool set = false;
+            if (snapshot == null)
+                return set;
+
+            int lo = 0;
+            int hi = snapshot.totalCount - 1;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                var k = this.Keys[mid];
-                int c = cmp.Compare(k, key);
+                var kv = GetEntry(snapshot, mid);
+                int c = cmp.Compare(kv.Key, key);
                 if (c == 0)
                 {
-                    closestKey = k;
+                    closestKey = kv.Key;
                     return true;
                 }
                 if (c < 0)
                 {
-                    closestKey = k;
+                    closestKey = kv.Key;
                     set = true;
                     lo = mid + 1;
                 }
@@ -740,19 +755,24 @@ namespace Reko.Core.Lib
 
         public bool TryGetUpperBoundKey(TKey key, out TKey closestKey)
         {
+            var snapshot = this.root;
             var cmp = this.Comparer;
-            int lo = 0;
-            int hi = this.Count - 1;
+
             closestKey = default(TKey);
             bool set = false;
+            if (snapshot == null)
+                return set;
+
+            int lo = 0;
+            int hi = snapshot.totalCount - 1;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                var k = this.Keys[mid];
-                int c = cmp.Compare(k, key);
+                var kv = GetEntry(snapshot, mid);
+                int c = cmp.Compare(kv.Key, key);
                 if (c == 0)
                 {
-                    closestKey = k;
+                    closestKey = kv.Key;
                     return true;
                 }
                 if (c < 0)
@@ -761,7 +781,7 @@ namespace Reko.Core.Lib
                 }
                 else
                 {
-                    closestKey = k;
+                    closestKey = kv.Key;
                     set = true;
                     hi = mid - 1;
                 }
@@ -771,16 +791,21 @@ namespace Reko.Core.Lib
 
         public bool TryGetLowerBoundIndex(TKey key, out int closestIndex)
         {
+            var snapshot = this.root;
             var cmp = this.Comparer;
-            int lo = 0;
-            int hi = this.Count - 1;
+
             closestIndex = -1;
             bool set = false;
+            if (snapshot == null)
+                return set;
+
+            int lo = 0;
+            int hi = snapshot.totalCount - 1;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                var k = this.Keys[mid];
-                int c = cmp.Compare(k, key);
+                var kv = GetEntry(snapshot, mid);
+                int c = cmp.Compare(kv.Key, key);
                 if (c == 0)
                 {
                     closestIndex = mid;
@@ -802,16 +827,21 @@ namespace Reko.Core.Lib
 
         public bool TryGetUpperBoundIndex(TKey key, out int closestIndex)
         {
+            var snapshot = this.root;
             var cmp = this.Comparer;
-            int lo = 0;
-            int hi = this.Count - 1;
+
             closestIndex = -1;
             bool set = false;
+            if (snapshot == null)
+                return set;
+
+            int lo = 0;
+            int hi = snapshot.totalCount - 1;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                var k = this.Keys[mid];
-                int c = cmp.Compare(k, key);
+                var kv = GetEntry(snapshot, mid);
+                int c = cmp.Compare(kv.Key, key);
                 if (c == 0)
                 {
                     closestIndex = mid;
@@ -847,9 +877,10 @@ namespace Reko.Core.Lib
                 0, 0);
         }
 
-        private KeyValuePair<TKey, TValue> GetEntry(int index)
+        private static KeyValuePair<TKey, TValue> GetEntry(Node root, int index)
         {
-            if (0 <= index && index < this.Count)
+            int count = root.totalCount;
+            if (0 <= index && index < count)
             {
                 Node node = root;
                 int itemsLeft = index;
@@ -1010,7 +1041,7 @@ namespace Reko.Core.Lib
             {
             }
 
-            public override TKey this[int index] => btree.GetEntry(index).Key;
+            public override TKey this[int index] => GetEntry(btree.root, index).Key;
 
             public override bool Contains(TKey item) => btree.ContainsKey(item);
 
@@ -1038,7 +1069,7 @@ namespace Reko.Core.Lib
             {
             }
 
-            public override TValue this[int index] => btree.GetEntry(index).Value;
+            public override TValue this[int index] => GetEntry(btree.root, index).Value;
 
             public override bool Contains(TValue item) => btree.ContainsValue(item);
 

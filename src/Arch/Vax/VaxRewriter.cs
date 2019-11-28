@@ -65,7 +65,7 @@ namespace Reko.Arch.Vax
                 this.rtlInstructions = new List<RtlInstruction>();
                 this.rtlc = this.instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
-                switch (this.instr.Opcode)
+                switch (this.instr.Mnemonic)
                 {
                 default:
                     //EmitUnitTest();
@@ -480,15 +480,15 @@ namespace Reko.Arch.Vax
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(this.instr.Opcode))
+            if (seen.Contains(this.instr.Mnemonic))
                 return;
-            seen.Add(this.instr.Opcode);
+            seen.Add(this.instr.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= this.instr.Length;
             var bytes = r2.ReadBytes(this.instr.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void VaxRw_" + this.instr.Opcode + "()");
+            Debug.WriteLine("        public void VaxRw_" + this.instr.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            BuildTest(");
             Debug.Write(string.Join(

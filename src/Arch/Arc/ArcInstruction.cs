@@ -27,7 +27,13 @@ namespace Reko.Arch.Arc
 {
     public class ArcInstruction : MachineInstruction
     {
-        public Mnemonic Mnemonic { get; set; }
+        public Mnemonic Mnemonic;
+        public ArcCondition Condition;
+        public AddressWritebackMode Writeback;
+        public bool SignExtend;
+        public bool DirectWrite;
+        public bool Delay;
+        public bool SetFlags;
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 
@@ -39,7 +45,33 @@ namespace Reko.Arch.Arc
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
-            writer.WriteString(Mnemonic.ToString());
+            var sb = new StringBuilder();
+            sb.Append(Mnemonic.ToString());
+            if (Condition != 0)
+            {
+                sb.AppendFormat(".{0}", Condition.ToString().ToLowerInvariant());
+            }
+            if (Delay)
+            {
+                sb.Append(".d");
+            }
+            if (SignExtend)
+            {
+                sb.AppendFormat(".x");
+            }
+            if (SetFlags)
+            {
+                sb.Append(".f");
+            }
+            if (Writeback != AddressWritebackMode.None)
+            {
+                sb.AppendFormat(".{0}", Writeback);
+            }
+            if (DirectWrite)
+            {
+                sb.Append(".di");
+            }
+            writer.WriteOpcode(sb.ToString());
         }
     }
 }

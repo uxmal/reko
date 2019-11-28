@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  .
@@ -65,7 +65,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     new[] { dlg.Patterns.Text }.Concat(dlg.Patterns.Items.Cast<string>()));
             }
 
-            var pattern = EncodePattern(dlg.Encodings.SelectedIndex, dlg.Patterns.Text);
+            dlg.Patterns.Text = ConvertPatternToHexString(dlg.Encodings.SelectedIndex, dlg.Patterns.Text);
+
+            var pattern = ConvertHexStringToByteArray(dlg.Patterns.Text);
+
             dlg.ImageSearcher = new KmpStringSearch<byte>(
                 pattern,
                 dlg.ScannedMemory.Checked,
@@ -73,17 +76,51 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         }
 
         private const int EncodingHex = 0;
+        private const int EncodingOct = 1;
+        private const int EncodingAscii = 2;
+        private const int EncodingUtf8 = 3;
 
-        private byte[] EncodePattern(int encoding, string pattern)
+        private static string ConvertPatternToHexString(int encoding, string pattern)
         {
+            byte[] patternAsBytes;
+
             Debug.Print("Encoding pattern {0}", pattern);
             switch (encoding)
             {
             case EncodingHex:
-                // Ignore any non-hex digits.
-                return Hexize(pattern).ToArray();
+                return pattern;
+            case EncodingOct:
+                patternAsBytes = Octize(pattern).ToArray();
+                break;
+            case EncodingAscii:
+                patternAsBytes = Encoding.Convert(Encoding.Default, Encoding.ASCII, Encoding.Default.GetBytes(pattern));
+                break;
+            case EncodingUtf8:
+                patternAsBytes =  Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(pattern));
+                break;
             default: throw new NotImplementedException();
             }
+
+            return ConvertNumbersToHexString(patternAsBytes);
+        }
+
+        private static string ConvertNumbersToHexString(byte[] digits)
+        {
+            var stringBuilder = new StringBuilder();
+            foreach (var digit in digits)
+            {
+                if (stringBuilder.Length > 0)
+                   stringBuilder.Append(" ");
+                stringBuilder.Append(digit.ToString("X2"));
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private byte[] ConvertHexStringToByteArray(string pattern)
+        {
+            // Ignore any non-hex digits.
+            return Hexize(pattern).ToArray();
         }
 
         private static int HexDigit(char c)
@@ -95,6 +132,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             if ('a' <= c && c <= 'f')
                 return c - 'a' + 10;
             return -1;
+        }
+
+        private static int OctalDigit(char c)
+        {
+            var n = c - '0';
+            if (0 <= n && n < 8)
+                return n;
+            else
+                return -1;
         }
 
         public static IEnumerable<byte> Hexize(string pattern)
@@ -109,6 +155,27 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     ++digits;
                     outByte = (outByte << 4) | h;
                     if (digits == 2)
+                    {
+                        yield return (byte) outByte;
+                        digits = 0;
+                        outByte = 0;
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<byte> Octize(string pattern)
+        {
+            int digits = 0;
+            int outByte = 0;
+            foreach (char c in pattern)
+            {
+                int h = OctalDigit(c);
+                if (h >= 0)
+                {
+                    ++digits;
+                    outByte = outByte * 8 | h;
+                    if (digits == 3)
                     {
                         yield return (byte) outByte;
                         digits = 0;

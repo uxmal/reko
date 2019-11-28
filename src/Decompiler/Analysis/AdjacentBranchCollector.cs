@@ -154,6 +154,8 @@ namespace Reko.Analysis
                 pred = block.Pred[1];
                 predCond = block.Pred[0];
             }
+            if (pred == block)
+                return null;
             if (pred.Succ.Count != 2)
                 return null;
             if (predCond.Pred.Count != 1)

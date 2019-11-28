@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+  <!-- http://www.cocopedia.com/wiki/index.php/Main_Page -->
+  <segment name="system_use" addr="0000" size="0400"><description>System use</description>  </segment>
+  <segment name="txt_memory" addr="0400" size="0200"><description>Text screen memory</description></segment>
+  <segment name="disk_ram"   addr="0600" size="0800"><description>Disk System RAM</description></segment>
+  <segment name="free_ram"   addr="0E00" size="8200"><description>Free RAM (depending on use of graphics pages) </description></segment>
+<!--
+  <segment name="hirs_page1" addr="0E00" size=25FF	4.5	> <description>Hires graphics page 1 (disk systems)          </description></segment>
+  <segment name="hirs_page1" addr="2600" size=3DFF	4.5	> <description>Hires graphics page 2 (disk systems)          </description></segment>
+-->
+  <segment name="ext_rom"    addr="8000" size="9FFF"><description>Extended BASIC ROM</description></segment>
+  <segment name="coco_rom"   addr="A000" size="BFFF"><description>COLOR BASIC ROM   </description></segment>
+  <segment name="cart_rom"   addr="C000" size="DFFF"><description>Cartridge ROM     </description></segment>
+<!--  <segment name="disk_rom"   addr="C000" size="D800"><description>Disk BASIC ROM    </description></segment> -->
+  <segment name="unused    " addr="E000" size="FEFF"><description>Unused            </description></segment>
+  <segment name="" addr="FF00" size="0100">
+    <description>Input/Output Area</description>
+    FF00	FF1F	Peripheral Interface Adapter (PIA) 0
+    FF00		PIA0 data port A: Keyboard rows and joystick button
+    FF01		PIA0 control port A: Horizontal sync and interrupt control
+    FF02		PIA0 data port B: Keyboard columns
+    FF03		PIA0 control port B: Vertical sync control
+    FF04	FF1F	PIA0 mirrors
+    FF20	FF3F	Peripheral Interface Adapter (PIA) 1
+    FF20		PIA1 data port A: sound/cassette/RS-232 output/input
+    FF21		PIA1 control port A: Cassette motor control
+    FF22		PIA1 data port B: VDG control
+    FF23		PIA1 control port B: FIRQ and sound control
+    FF24	FF3F	PIA1 mirrors
+    FF40	FF5F	Diskette I/O usage
+    FF60	FF7F	Miscellaneous external hardware control
+    FF80	FFBF	Unused in CoCo 1 and 2
+    FFC0	FFDF	SAM registers (screen mode and offset)
+    FFE0	FFF1	Reserved
+    FFF2	FFFF	Interrupt vectors
+  </segment>
+</memory>

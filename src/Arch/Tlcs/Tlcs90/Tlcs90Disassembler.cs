@@ -76,7 +76,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 Mnemonic = Mnemonic.invalid,
                 InstructionClass = InstrClass.Invalid,
-                Operands = new MachineOperand[0]
+                Operands = MachineInstruction.NoOperands
             };
         }
 
@@ -261,13 +261,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private class InstrDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private Mnemonic mnemonic;
             private InstrClass iclass;
             private Mutator<Tlcs90Disassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, Mutator<Tlcs90Disassembler> [] mutators)
+            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, Mutator<Tlcs90Disassembler> [] mutators)
             {
-                this.opcode = opcode;
+                this.mnemonic = mnemonic;
                 this.iclass = iclass;
                 this.mutators = mutators;
             }
@@ -281,7 +281,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 return new Tlcs90Instruction
                 {
-                    Mnemonic = opcode,
+                    Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Operands = dasm.ops.ToArray()
                 };

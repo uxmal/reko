@@ -30,6 +30,8 @@ using System.Text;
 
 namespace Reko.Arch.M6800
 {
+    using FlagM = Reko.Arch.M6800.M6812.FlagM;
+
     public class M6812Architecture : ProcessorArchitecture
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
@@ -143,14 +145,5 @@ namespace Reko.Arch.M6800
         {
             return Address.TryParse16(txtAddr, out addr);
         }
-    }
-
-    [Flags]
-    public enum FlagM : byte
-    {
-        CF = 1,             // carry
-        VF = 2,             // overflow
-        ZF = 4,             // zero
-        NF = 8,             // sign
     }
 }

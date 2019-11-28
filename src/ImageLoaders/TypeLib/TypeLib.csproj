@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Reko.TypeLib</RootNamespace>
+    <AssemblyName>Reko.TypeLib</AssemblyName>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>TypeLib</RootNamespace><AssemblyName>TypeLib</AssemblyName></PropertyGroup>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="DisTypeLib.cs" />
     <Compile Remove="DisTypeLib.inc.cs" />
@@ -14,6 +15,7 @@
     <Compile Remove="TypeLib.cs" />
     <Compile Remove="Typelib.h.cs" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>

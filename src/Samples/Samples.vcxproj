@@ -15,7 +15,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{18501CAB-5F95-49E5-B92C-BF52A5D08609}</ProjectGuid>
     <RootNamespace>Samples</RootNamespace>
     <Keyword>MakeFileProj</Keyword>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>

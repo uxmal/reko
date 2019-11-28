@@ -30,7 +30,14 @@ namespace Reko.ImageLoaders.Xex
 {
     public class Structures
     {
-        public const UInt32 XEX2_MAGIC = 0x58455832; //XEX2
+        public const UInt32 XEX1_MAGIC = 0x58455831; //XEX1
+		public const UInt32 XEX2_MAGIC = 0x58455832; //XEX2
+
+		public enum XexImportType : byte
+		{
+            Data = 0,
+            Function = 1
+		}
 
         [Endian(Endianness.BigEndian)]
         [StructLayout(LayoutKind.Sequential)]
@@ -128,12 +135,12 @@ namespace Reko.ImageLoaders.Xex
         [StructLayout(LayoutKind.Sequential)]
         public struct XexHeader
         {
-            public UInt32 xex2;
+            public UInt32 magic;
             public UInt32 module_flags;
-            public UInt32 exe_offset;
+            public UInt32 header_size;
             public UInt32 discardable_headers_length;
 
-            public UInt32 certificate_offset;
+            public UInt32 security_offset;
             public UInt32 header_count;
         }
 
@@ -188,7 +195,31 @@ namespace Reko.ImageLoaders.Xex
 
         [Endian(Endianness.BigEndian)]
         [StructLayout(LayoutKind.Sequential)]
-        public struct XexLoaderInfo
+        public struct Xex1LoaderInfo
+		{
+			public UInt32 header_size;
+			public UInt32 image_size;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+			public byte[] rsa_signature;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+			public byte[] image_digest;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+			public byte[] import_table_digest;
+			public UInt32 load_address;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public byte[] aes_key;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public byte[] xdg2_media_id;
+			public UInt32 region;
+			public UInt32 image_flags;
+			public UInt32 export_table;
+			public UInt32 allowed_media_types;
+			public UInt32 page_descriptor_count;
+		}
+
+        [Endian(Endianness.BigEndian)]
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Xex2LoaderInfo
         {
             public UInt32 header_size;
             public UInt32 image_size;
@@ -205,7 +236,7 @@ namespace Reko.ImageLoaders.Xex
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
             public byte[] media_id;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public byte[] file_key;
+            public byte[] aes_key;
             public UInt32 export_table;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
             public byte[] header_digest;

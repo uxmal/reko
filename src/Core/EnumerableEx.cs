@@ -83,7 +83,9 @@ namespace Reko.Core
             return list;
         }
 
-        // Enumerable.ToHashSet() doesn't exist on .NET Standard 2.0, only in .NET Core 2.x and .NET Framework. WTaF?
+        // Well dang. System.Linq.Enumerable.ToHashSet() exists in .NET Core 2.0 and later,
+        // .NET Framework 4.7.2 and later, but not .NET Standard 2.0. 
+        //$REFACTOR: remove this when we're on .NET Standard 2.1
         public static HashSet<TElement> ToHashSet<TElement>(
             this IEnumerable<TElement> source)
         {
@@ -93,13 +95,8 @@ namespace Reko.Core
         public static SortedSet<TElement> ToSortedSet<TElement>(
             this IEnumerable<TElement> source)
         {
-            SortedSet<TElement> set = new SortedSet<TElement>();
-            foreach (var element in source)
-            {
-                set.Add(element);
+            return new SortedSet<TElement>(source);
             }
-            return set;
-        }
 
         public static IEnumerable<IEnumerable<T>> Chunks<T>(
             this IEnumerable<T> enumerable,

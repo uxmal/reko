@@ -43,6 +43,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabFindResults = new System.Windows.Forms.TabPage();
             this.listFindResults = new System.Windows.Forms.ListView();
             this.tabCallHierarchy = new System.Windows.Forms.TabPage();
+            this.callHierarchyView = new Reko.UserInterfaces.WindowsForms.Forms.CallHierarchyView();
             this.tabConsole = new System.Windows.Forms.TabPage();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
@@ -57,7 +58,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.colProcSegment = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtProcedureFilter = new System.Windows.Forms.TextBox();
             this.tabDocuments = new System.Windows.Forms.TabControl();
-            this.callHierarchyView = new Reko.UserInterfaces.WindowsForms.Forms.CallHierarchyView();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
@@ -152,6 +152,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.columnHeader2});
             this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listDiagnostics.FullRowSelect = true;
+            this.listDiagnostics.HideSelection = false;
             this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
             this.listDiagnostics.Name = "listDiagnostics";
             this.listDiagnostics.Size = new System.Drawing.Size(770, 136);
@@ -181,9 +182,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.imageList.Images.SetKeyName(4, "FinishDecompilation.ico");
             this.imageList.Images.SetKeyName(5, "Error");
             this.imageList.Images.SetKeyName(6, "Warning");
-            this.imageList.Images.SetKeyName(7, "CloseTab");
-            this.imageList.Images.SetKeyName(8, "Collapse.ico");
-            this.imageList.Images.SetKeyName(9, "CreateSegment.ico");
+            this.imageList.Images.SetKeyName(7, "Info");
+            this.imageList.Images.SetKeyName(8, "CloseTab");
+            this.imageList.Images.SetKeyName(9, "Collapse.ico");
+            this.imageList.Images.SetKeyName(10, "CreateSegment.ico");
             // 
             // tabFindResults
             // 
@@ -216,6 +218,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabCallHierarchy.TabIndex = 3;
             this.tabCallHierarchy.Text = "Call hierarchy";
             this.tabCallHierarchy.UseVisualStyleBackColor = true;
+            // 
+            // callHierarchyView
+            // 
+            this.callHierarchyView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.callHierarchyView.Location = new System.Drawing.Point(0, 0);
+            this.callHierarchyView.Name = "callHierarchyView";
+            this.callHierarchyView.Size = new System.Drawing.Size(776, 142);
+            this.callHierarchyView.TabIndex = 0;
             // 
             // tabConsole
             // 
@@ -346,14 +356,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabDocuments.SelectedIndex = 0;
             this.tabDocuments.Size = new System.Drawing.Size(601, 339);
             this.tabDocuments.TabIndex = 0;
-            // 
-            // callHierarchyView
-            // 
-            this.callHierarchyView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.callHierarchyView.Location = new System.Drawing.Point(0, 0);
-            this.callHierarchyView.Name = "callHierarchyView";
-            this.callHierarchyView.Size = new System.Drawing.Size(776, 142);
-            this.callHierarchyView.TabIndex = 0;
             // 
             // MainForm
             // 
