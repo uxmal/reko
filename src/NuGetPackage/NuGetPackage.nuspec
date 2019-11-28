@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Reko.Decompiler.Runtime</id>
+    <version>0.9.1.0</version>
+    <title>Reko Decompiler Runtime</title>
+    <authors>Reko Decompiler contributors</authors>
+    <owners>John Källén</owners>
+    <licenseUrl>https://github.com/uxmal/reko/blob/master/COPYING</licenseUrl>
+    <projectUrl>https://github.com/uxmal/reko</projectUrl>
+    <iconUrl>https://github.com/uxmal/reko/blob/master/web/images/reko.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Runtime components for the Reko decompiler toolchain</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright (C) 1999-2019 John Källén</copyright>
+    <tags>decompiler disassembler</tags>
+
+    <!-- Copy Reko metadata into output directory -->
+    <contentFiles>
+      <files include="any\any\reko\*" buildAction="None" copyToOutput="true" flatten="true"/>
+    </contentFiles>
+
+  </metadata>
+
+  <!-- These are the files that are packaged into the nupkg file -->
+  <files>
+    <!-- Runtime executable code -->
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Core.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Alpha.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Arc.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Arm.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Avr.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Blackfin.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Cil.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Cray.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.i8051.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.M6800.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.M68k.Design.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.M68k.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.MicroBlaze.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.MicrochipPIC.Design.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.MicrochipPIC.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Mips.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Mos6502.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Msp430.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.OpenRISC.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.PaRisc.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Pdp11.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.PowerPC.Design.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.PowerPC.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.RiscV.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Rl78.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Sparc.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.SuperH.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Tlcs.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Tms7000.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Vax.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.X86.Design.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.X86.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Xtensa.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Z80.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.zSeries.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Assemblers.Pdp11.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.AmigaOS.Design.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.AmigaOS.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.AtariTOS.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.C64.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Cpm.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Dreamcast.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Hpux.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.MacOS.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Msdos.Design.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Msdos.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.NeoGeo.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Ps3.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.RiscOS.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.RT11.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.SegaGenesis.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Switch.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.SysV.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Trs80.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Wii.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Windows.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Xbox360.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.ZX81.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.BinHex.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.Coff.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.Dol.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.Elf.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.HpSom.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.Hunk.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.IntelHex.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.LLVM.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.MachO.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.MzExe.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.Nro.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.OdbgScript.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.Omf.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.VmsExe.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.Xex.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Libraries.Libc.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Libraries.Microchip.Utils.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Libraries.Python.dll" target="lib\netstandard2.0" />
+    
+    <!-- Reko metadata -->
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\reko.config" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\atariTOS.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\C64.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\CoCoMemoryMap.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\comctl32.spec" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\commdlg.dll16.spec" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\coredll.def" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\cpm_map.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\exec.funcs" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\gdi.exe16.spec" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\IMAGE_FILE_MACHINE_AMD64.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\IMAGE_FILE_MACHINE_ARM.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\IMAGE_FILE_MACHINE_I386.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\IMAGE_FILE_MACHINE_IA64.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\krnl386.exe16.spec" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\libc.so.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\linux-syscalls-i386.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Mac MPW Interfaces 1991 PASCAL.pas" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\msvcrt.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\NeoGeoPocket.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\ntoskrnl.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\oleaut32.def" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\oleaut32.spec" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\oleaut32.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\opengl.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\picdb.zip" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\PLATFORM_INDEPENDENT.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\realmodeintservices.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\rt11_services.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\SegaGenesis.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\sysvcharacteristics.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Trs80Rom.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\upx_ultimate.osc" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\user.exe16.spec" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\win32characteristics.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\win64characteristics.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\wince.inc" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\windows32.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\windows64.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\windows_CE.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\wsock32.xml" target="contentFiles\any\any\reko" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Xlib.xml" target="contentFiles\any\any\reko" />
+  </files>
+</package>
