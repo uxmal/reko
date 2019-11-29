@@ -41,6 +41,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Arc\Arc.csproj">
+      <Name>Arc</Name>
+      <Project>{f9c628df-eb23-46d7-9580-3a2b749e8bda}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Arm\Arm.csproj">
       <Name>Arm</Name>
       <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
@@ -57,9 +65,25 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Blackfin\Blackfin.csproj">
+      <Name>Blackfin</Name>
+      <Project>{0bccefdd-63a8-47f2-9a39-8ce7b5f9cfab}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Cray\Cray.csproj">
       <Name>Cray</Name>
       <Project>{47b16677-2bfc-4a5c-a830-e1683c574aec}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\M6800\M6800.csproj">
+      <Name>M6800</Name>
+      <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -292,6 +316,22 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
       <Name>Decompiler</Name>
       <Project>{5e21c722-f9c6-4192-95ec-89fcef2acdb7}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Drivers\CmdLine\CmdLine.csproj">
+      <Name>CmdLine</Name>
+      <Project>{d439868b-c78f-472f-82f2-1e3e5c88163b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Drivers\WindowsDecompiler\WindowsDecompiler.csproj">
+      <Name>WindowsDecompiler</Name>
+      <Project>{1c5dac93-1202-4704-abd5-3e49adcf0e81}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

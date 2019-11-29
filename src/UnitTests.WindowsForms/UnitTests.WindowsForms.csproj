@@ -8,6 +8,7 @@
     <RootNamespace>Reko.UnitTests.WindowsForms</RootNamespace>
     <AssemblyName>Reko.UnitTests.WindowsForms</AssemblyName>
     <OutputType>Library</OutputType>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.13.0" />
