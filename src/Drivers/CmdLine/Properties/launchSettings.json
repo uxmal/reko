@@ -8,20 +8,11 @@
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "CmdLine": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:53054/"
+      "commandName": "Executable",
+      "executablePath": "D:\\dev\\uxmal\\reko\\master\\src\\Drivers\\CmdLine\\bin\\x64\\Debug\\net472\\decompile.exe",
+      "commandLineArgs": "--heuristic shingle --arch pic --arch-option model=\"PIC18F1230\" --loader IntelHex --base 0000 --entry 0000 PIC18EggExtd.hex",
+      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\Microchip\\C18\\PIC18Extd"
     }
   }
 }

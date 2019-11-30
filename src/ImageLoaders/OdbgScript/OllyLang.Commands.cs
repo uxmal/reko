@@ -3252,18 +3252,17 @@ string filename;
         private bool DoMSGYN(string[] args)
         {
             string msg;
-
+            
             if (args.Length == 1 && GetString(args[0], out msg))
             {
-                DialogResult input;
-                if (Host.DialogMSGYN(msg, out input))
+                if (Host.DialogMSGYN(msg, out int input))
                 {
                     switch (input)
                     {
-                    case DialogResult.Cancel:
+                    case OdbgScript.Host.Cancel:
                         variables["$RESULT"] = Var.Create(2);
                         return Pause();
-                    case DialogResult.OK:
+                    case OdbgScript.Host.OK:
                         variables["$RESULT"] = Var.Create(1);
                         break;
                     default:

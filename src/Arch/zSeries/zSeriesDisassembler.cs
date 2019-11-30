@@ -140,6 +140,7 @@ namespace Reko.Arch.zSeries
 
             public void Reset()
             {
+                this.iclass = InstrClass.Invalid;
                 this.mnemonic = Mnemonic.invalid;
                 this.ops.Clear();
             }
@@ -449,6 +450,7 @@ namespace Reko.Arch.zSeries
 
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
+                dasm.state.iclass = iclass;
                 dasm.state.mnemonic = mnemonic;
                 foreach (var m in mutators)
                 {

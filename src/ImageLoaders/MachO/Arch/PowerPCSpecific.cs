@@ -10,8 +10,6 @@ namespace Reko.ImageLoaders.MachO.Arch
 {
     class PowerPCSpecific  : ArchSpecific
     {
-        private string archName;
-
         public PowerPCSpecific(IProcessorArchitecture arch) : base(arch)
         {
         }
