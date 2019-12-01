@@ -7,6 +7,7 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.Environments.SysV</RootNamespace>
     <AssemblyName>Reko.Environments.SysV</AssemblyName>
+    <SolutionDir>$(ProjectDir)..\..\</SolutionDir>
     </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj"/>

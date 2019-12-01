@@ -39,16 +39,14 @@
     <ProjectReference Include="..\Arch\MSP430\MSP430.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\OpenRISC\OpenRISC.csproj" />
-    <ProjectReference Include="..\Arch\PaRisc\PaRisc.csproj">
-    </ProjectReference>
+    <ProjectReference Include="..\Arch\PaRisc\PaRisc.csproj" />
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\RiscV\RiscV.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Rl78\Rl78.csproj">
-    </ProjectReference>
+    <ProjectReference Include="..\Arch\Rl78\Rl78.csproj" />
     <ProjectReference Include="..\Arch\Sparc\Sparc.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\SuperH\SuperH.csproj">
@@ -190,6 +188,7 @@
     <PackageReference Include="Moq" Version="4.13.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
   </ItemGroup>
   <Target Name="CopyAllTheFiles" AfterTargets="CopyFilesToOutputDirectory">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
