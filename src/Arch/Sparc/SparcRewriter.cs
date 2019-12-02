@@ -295,7 +295,12 @@ namespace Reko.Arch.Sparc
 
         private Expression RewriteQuadRegister(MachineOperand op)
         {
-            throw new NotImplementedException("This will only work in the analys-development branch.");
+            var reg3 = ((RegisterOperand) op).Register;
+            var iReg = reg3.Number - Registers.FloatRegisters[0].Number;
+            var reg2 = Registers.FloatRegisters[iReg + 1];
+            var reg1 = Registers.FloatRegisters[iReg + 2];
+            var reg0 = Registers.FloatRegisters[iReg + 3];
+            return binder.EnsureSequence(PrimitiveType.Word128, reg3, reg2, reg1, reg0);
         }
 
 

@@ -481,7 +481,7 @@ namespace Reko.Arch.Sparc
 
                 (0x51, Instr(Mnemonic.fcmps, f14, f0)),
                 (0x52, Instr(Mnemonic.fcmpd, d14, d0)),
-                (0x53, Instr(Mnemonic.fcmpq, f14, f0)),
+                (0x53, Instr(Mnemonic.fcmpq, q14, q0)),
                 (0x55, Instr(Mnemonic.fcmpes, f14, f0)),
                 (0x56, Instr(Mnemonic.fcmped, d14, d0)),
                 (0x57, Instr(Mnemonic.fcmpeq, q14, q0))
