@@ -153,6 +153,7 @@
   <ItemGroup>
     <Compile Include="Analysis\AdjacentBranchCollectorTests.cs" />
     <Compile Include="Analysis\CallApplicationBuilderTests.cs" />
+    <Compile Include="Analysis\FpuStackReturnGuesserTests.cs" />
     <Compile Include="Analysis\ProjectionPropagatorTests.cs" />
     <Compile Include="Analysis\ProcedureFlowTests.cs" />
     <Compile Include="Analysis\SparseValuePropagationTests.cs" />

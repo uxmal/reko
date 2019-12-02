@@ -2,7 +2,7 @@
 // Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	Mem18[ds:0x0064:word16] = fn0C00_000F(0x0064)
+	Mem17[ds:0x0064:word16] = fn0C00_000F(0x0064)
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0000:
@@ -10,7 +10,7 @@ fn0C00_0000_exit:
 
 void fn0C00_0000(selector ds)
 {
-	Mem18[ds:0x0064:word16] = fn0C00_000F(0x0064);
+	Mem17[ds:0x0064:word16] = fn0C00_000F(0x0064);
 }
 ===========================
 // fn0C00_000F

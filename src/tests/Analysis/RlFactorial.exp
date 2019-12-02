@@ -11,7 +11,7 @@ l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
 		uses: Stack +0002:0x0064
 		defs: ax:ax_8
-	Mem18[ds:0x0064:word16] = ax_8
+	Mem17[ds:0x0064:word16] = ax_8
 	return
 fn0C00_0000_exit:
 // fn0C00_000F /////////////////////
