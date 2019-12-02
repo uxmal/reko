@@ -17,7 +17,13 @@ TestResults
 /src/UnitTests/UnitTests.VisualState.xml
 /src/UnitTests/UnitTests.csproj.VisualState.xml
 /src/UnitTests/TestResult.xml
-/src/tools/reko.config
+
+# //$TODO the $(REKO)/tools should contain all these files!
+/src/tools/*.config
+/src/tools/*.exe
+/src/tools/*.json
+/src/tools/*.dll
+
 /src/Reko-decompiler.VC.db
 **/ipch/
 /subjects/subject_weights.txt

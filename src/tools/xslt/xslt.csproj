@@ -13,9 +13,13 @@
     <AssemblyName>xslt</AssemblyName>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+  <ItemGroup>
+    <XsltExtraFiles Include="$(ProjectDir)$(OutDir)*.json" />
+  </ItemGroup>
   <!-- Copy dependencies to the `tools` directory.-->
   <Target Name="CopyToToolsDir" AfterTargets="CopyFilesToOutputDirectory">
     <Message Importance="high" Text="Copying $(TargetFilename) to tools directory" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
+    <Copy SourceFiles="@(XsltExtraFiles)" DestinationFolder="$(ProjectDir).." />
   </Target>
 </Project>
