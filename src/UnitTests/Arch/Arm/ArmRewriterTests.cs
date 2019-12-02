@@ -1857,13 +1857,12 @@ means
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ArmRw_vmla()
         {
             BuildTest(0xF2DEF14C);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d31 = __vmla_f16(d31, d14)");
         }
 
         [Test]

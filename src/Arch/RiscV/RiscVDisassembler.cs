@@ -37,10 +37,6 @@ namespace Reko.Arch.RiscV
     public class RiscVDisassembler : DisassemblerBase<RiscVInstruction>
     {
         private static readonly Decoder[] decoders;
-        private static readonly MaskDecoder w32decoders;
-        private static readonly Decoder[] compressed0;
-        private static readonly Decoder[] compressed1;
-        private static readonly Decoder[] compressed2;
         private static readonly int[] compressedRegs;
         private static readonly Decoder invalid;
 
@@ -350,13 +346,13 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class WInstrDecoderOld : Decoder
+        public class InstrDecoder : Decoder
         {
             private readonly Mnemonic mnemonic;
             private readonly InstrClass iclass;
             private readonly Mutator<RiscVDisassembler> [] mutators;
 
-            public WInstrDecoderOld(InstrClass iclass, Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
+            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
             {
                 this.iclass = iclass;
                 this.mnemonic = mnemonic;
@@ -377,12 +373,12 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class FpuDecoder : Decoder
+        public class GOGGAGOGGA : Decoder
         {
             private readonly Mutator<RiscVDisassembler>[] mutators;
             private readonly Mnemonic mnemonic;
 
-            public FpuDecoder(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
+            public GOGGAGOGGA(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
             {
                 this.mnemonic = mnemonic;
                 this.mutators = mutators;
@@ -473,14 +469,14 @@ namespace Reko.Arch.RiscV
 
         #endregion
 
-        private static WInstrDecoderOld Instr(Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
         {
-            return new WInstrDecoderOld(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder(InstrClass.Linear, opcode, mutators);
         }
 
-        private static WInstrDecoderOld Instr(Mnemonic opcode, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
         {
-            return new WInstrDecoderOld(iclass, opcode, mutators);
+            return new InstrDecoder(iclass, opcode, mutators);
         }
 
         // Compact instruction decoder
@@ -785,44 +781,46 @@ namespace Reko.Arch.RiscV
             new Bitfield(21, 10)
         };
 
+        private static bool Ne0(uint u) => u != 0;
+
         #endregion
 
         static RiscVDisassembler()
         {
             invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
-            var loads = new Decoder[]
+            var loads = new Decoder[]           // 0b00000
             {
                 Instr(Mnemonic.lb, d,r1,Ls),
                 Instr(Mnemonic.lh, d,r1,Ls),
                 Instr(Mnemonic.lw, d,r1,Ls),
-                Instr(Mnemonic.ld, d,r1,Ls),
+                Instr(Mnemonic.ld, d,r1,Ls),    // 64I
 
                 Instr(Mnemonic.lbu, d,r1,Ls),
                 Instr(Mnemonic.lhu, d,r1,Ls),
-                Instr(Mnemonic.lwu, d,r1,Ls),    // 64
+                Instr(Mnemonic.lwu, d,r1,Ls),    // 64I
                 Nyi(""),
             };
 
-            var fploads = new Decoder[8]
+            var fploads = new Decoder[8]        // 0b00001
             {
                 invalid,
                 invalid,
                 CInstr(Mnemonic.flw, Fd,Mem(PrimitiveType.Real32, 15, (20, 12))),
                 CInstr(Mnemonic.fld, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
 
-                invalid,
+                CInstr(Mnemonic.flq, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
                 invalid,
                 invalid,
                 invalid,
             };
 
-            var stores = new Decoder[]
+            var stores = new Decoder[]          // 0b01000
             {
                 Instr(Mnemonic.sb, r2,r1,Ss),
                 Instr(Mnemonic.sh, r2,r1,Ss),
                 Instr(Mnemonic.sw, r2,r1,Ss),
-                Instr(Mnemonic.sd, r2,r1,Ss),
+                Instr(Mnemonic.sd, r2,r1,Ss),   // I64
 
                 invalid,
                 invalid,
@@ -830,7 +828,7 @@ namespace Reko.Arch.RiscV
                 invalid,
             };
 
-            var fpstores = new Decoder[8]
+            var fpstores = new Decoder[8]       // 0b01001
             {
                 invalid,
                 invalid,
@@ -843,24 +841,7 @@ namespace Reko.Arch.RiscV
                 invalid,
             };
 
-            var op = new Decoder[]
-            {
-                new ShiftDecoder(
-                    Instr(Mnemonic.add, d,r1,r2),
-                    Instr(Mnemonic.sub, d,r1,r2)),
-                CInstr(Mnemonic.sll, Rd,R1,R2),
-                CInstr(Mnemonic.slt, Rd,R1,R2),
-                CInstr(Mnemonic.sltu, Rd,R1,R2),
-
-                CInstr(Mnemonic.xor, Rd,R1,R2),
-                new ShiftDecoder(
-                    Instr(Mnemonic.srl, d,r1,r2),
-                    Instr(Mnemonic.sra, d,r1,r2)),
-                CInstr(Mnemonic.or, Rd,R1,R2),
-                CInstr(Mnemonic.and, Rd,R1,R2),
-            };
-
-            var opimm = new Decoder[]
+            var opimm = new Decoder[]           // 0b00100
             {
                 Instr(Mnemonic.addi, d,r1,i),
                 new ShiftDecoder(
@@ -877,7 +858,7 @@ namespace Reko.Arch.RiscV
                 Instr(Mnemonic.andi, d,r1,i),
             };
 
-            var opimm32 = new Decoder[]
+            var opimm32 = new Decoder[]         // 0b00110
             {
                 CInstr(Mnemonic.addiw, Rd,R1,I20s),
                 CInstr(Mnemonic.slliw, Rd,R1,Imm(20, 5)),
@@ -892,7 +873,29 @@ namespace Reko.Arch.RiscV
                 Nyi(""),
             };
 
-            var op32 = new Decoder[]
+            var op = Mask(30, 1, "op",      // 0b01100
+                Mask(12, 3, "alu",
+                    CInstr(Mnemonic.add, Rd, R1, R2),
+                    CInstr(Mnemonic.sll, Rd, R1, R2),
+                    CInstr(Mnemonic.slt, Rd, R1, R2),
+                    CInstr(Mnemonic.sltu, Rd, R1, R2),
+
+                    CInstr(Mnemonic.xor, Rd, R1, R2),
+                    CInstr(Mnemonic.srl, Rd, R1, R2),
+                    CInstr(Mnemonic.or, Rd, R1, R2),
+                    CInstr(Mnemonic.and, Rd, R1, R2)),
+                Mask(12, 3, "alu2",
+                    CInstr(Mnemonic.sub, Rd, R1, R2),
+                    Nyi("op - 20 - 0b001"),
+                    Nyi("op - 20 - 0b010"),
+                    Nyi("op - 20 - 0b011"),
+
+                    Nyi("op - 20 - 0b100"),
+                    CInstr(Mnemonic.sra, Rd, R1, R2),
+                    Nyi("op - 20 - 0b110"),
+                    Nyi("op - 20 - 0b111")));
+
+            var op32 = new Decoder[]            // 0b01110
             {
                 new ShiftDecoder(
                     Instr(Mnemonic.addw, d,r1,r2),
@@ -911,18 +914,116 @@ namespace Reko.Arch.RiscV
                 Nyi(""),
             };
 
-            var opfp = new(uint, Decoder)[]
+            var opfp = new(uint, Decoder)[]     // 0b10100
             {
-                ( 0x00, new FpuDecoder(Mnemonic.fadd_s, Fd,F1,F2) ),
-                ( 0x01, new FpuDecoder(Mnemonic.fadd_d, Fd,F1,F2) ),
-                ( 0x21, new FpuDecoder(Mnemonic.fcvt_d_s, Fd,F1) ),
-                ( 0x50, Sparse(12, 3, invalid,
-                        ( 2, Instr(Mnemonic.feq_s, d,F1,F2)))),
-                ( 0x71, new FpuDecoder(Mnemonic.fmv_d_x, Fd,r1) ),
-                ( 0x78, new FpuDecoder(Mnemonic.fmv_s_x, Fd,r1) )
+                ( 0x00, Instr(Mnemonic.fadd_s, Fd,F1,F2) ),
+                ( 0x01, Instr(Mnemonic.fadd_d, Fd,F1,F2) ),
+                ( 0x03, Instr(Mnemonic.fadd_q, Fd,F1,F2) ),
+
+                ( 0x04, Instr(Mnemonic.fsub_s, Fd,F1,F2) ),
+                ( 0x05, Instr(Mnemonic.fsub_d, Fd,F1,F2) ),
+                ( 0x07, Instr(Mnemonic.fsub_q, Fd,F1,F2) ),
+
+                ( 0x08, Instr(Mnemonic.fmul_s, Fd,F1,F2) ),
+                ( 0x09, Instr(Mnemonic.fmul_d, Fd,F1,F2) ),
+                ( 0x0B, Instr(Mnemonic.fmul_q, Fd,F1,F2) ),
+
+                ( 0x0C, Instr(Mnemonic.fdiv_s, Fd,F1,F2) ),
+                ( 0x0D, Instr(Mnemonic.fdiv_d, Fd,F1,F2) ),
+                ( 0x0F, Instr(Mnemonic.fdiv_q, Fd,F1,F2) ),
+
+                ( 0x10, Sparse(12, 3, "fsgn.s", invalid,
+                    (0x0, Instr(Mnemonic.fsgnj_s, Fd,F1, F2)),
+                    (0x1, Instr(Mnemonic.fsgnjn_s, Fd,F1, F2)),
+                    (0x2, Instr(Mnemonic.fsgnjx_s, Fd,F1, F2)))),
+                ( 0x11, Sparse(12, 3, "fsgn.d", invalid,
+                    (0x0, Instr(Mnemonic.fsgnj_d, Fd,F1, F2)),
+                    (0x1, Instr(Mnemonic.fsgnjn_d, Fd,F1, F2)),
+                    (0x2, Instr(Mnemonic.fsgnjx_d, Fd,F1, F2)))),
+                ( 0x13, Sparse(12, 3, "fsgn.q", invalid,
+                    (0x0, Instr(Mnemonic.fsgnj_q, Fd,F1, F2)),
+                    (0x1, Instr(Mnemonic.fsgnjn_q, Fd,F1, F2)),
+                    (0x2, Instr(Mnemonic.fsgnjx_q, Fd,F1, F2)))),
+
+                ( 0x14, Sparse(12, 3, "fmin/fmax.s", invalid,
+                    (0x0, Instr(Mnemonic.fmin_s, Fd,F1, F2)),
+                    (0x1, Instr(Mnemonic.fmax_s, Fd,F1, F2)))),
+                ( 0x15, Sparse(12, 3, "fmin/fmax.d", invalid,
+                    (0x0, Instr(Mnemonic.fmin_d, Fd,F1, F2)),
+                    (0x1, Instr(Mnemonic.fmax_d, Fd,F1, F2)))),
+                ( 0x17, Sparse(12, 3, "fmin/fmax.q", invalid,
+                    (0x0, Instr(Mnemonic.fmin_q, Fd,F1, F2)),
+                    (0x1, Instr(Mnemonic.fmax_q, Fd,F1, F2)))),
+
+                ( 0x20, Sparse(20, 5, "fcvt.s", invalid,
+                    (0x1, Instr(Mnemonic.fcvt_s_d, Fd,F1) ),
+                    (0x3, Instr(Mnemonic.fcvt_s_q, Fd,F1) ))),
+                ( 0x21, Sparse(20, 5, "fcvt.d", invalid,
+                    (0x0, Instr(Mnemonic.fcvt_d_s, Fd,F1) ),
+                    (0x3, Instr(Mnemonic.fcvt_d_q, Fd,F1) ))),
+                ( 0x23, Sparse(20, 5, "fcvt", invalid,
+                    (0x0, Instr(Mnemonic.fcvt_q_s, Fd,F1) ),
+                    (0x1, Instr(Mnemonic.fcvt_q_d, Fd,F1) ))),
+
+                ( 0x2C, Select((20, 5), Ne0, invalid, Instr(Mnemonic.fsqrt_s, Fd,F1)) ),
+                ( 0x2D, Select((20, 5), Ne0, invalid, Instr(Mnemonic.fsqrt_d, Fd,F1)) ),
+                ( 0x2F, Select((20, 5), Ne0, invalid, Instr(Mnemonic.fsqrt_q, Fd,F1)) ),
+
+                ( 0x50, Sparse(12, 3, "fcmp.s", invalid,
+                    ( 0, Instr(Mnemonic.fle_s, d,F1,F2)),
+                    ( 1, Instr(Mnemonic.flt_s, d,F1,F2)),
+                    ( 2, Instr(Mnemonic.feq_s, d,F1,F2)))),
+                ( 0x51, Sparse(12, 3, "fcmp.d", invalid,
+                    ( 0, Instr(Mnemonic.fle_d, d,F1,F2)),
+                    ( 1, Instr(Mnemonic.flt_d, d,F1,F2)),
+                    ( 2, Instr(Mnemonic.feq_d, d,F1,F2)))),
+                ( 0x53, Sparse(12, 3, "fcmp.q", invalid,
+                    ( 0, Instr(Mnemonic.fle_q, d,F1,F2)),
+                    ( 1, Instr(Mnemonic.flt_q, d,F1,F2)),
+                    ( 2, Instr(Mnemonic.feq_s, d,F1,F2)))),
+
+                ( 0x60, Sparse(20, 5, "fcvt.w.s", invalid,
+                    ( 0, Instr(Mnemonic.fcvt_w_s, Rd,F1)),
+                    ( 1, Instr(Mnemonic.fcvt_wu_s, Rd,F1)),
+                    ( 2, Instr(Mnemonic.fcvt_l_s, Rd,F1)),
+                    ( 3, Instr(Mnemonic.fcvt_lu_s, Rd,F1)))),
+                ( 0x61, Sparse(20, 5, "fcvt.w.d", invalid,
+                    ( 0, Instr(Mnemonic.fcvt_w_d, Rd,F1)),
+                    ( 1, Instr(Mnemonic.fcvt_wu_d, Rd,F1)),
+                    ( 2, Instr(Mnemonic.fcvt_l_d, Rd,F1)),
+                    ( 3, Instr(Mnemonic.fcvt_lu_d, Rd,F1)))),
+                ( 0x63, Sparse(20, 5, "fcvt_w_q", invalid, 
+                    ( 0, Instr(Mnemonic.fcvt_w_q, Rd,F1)),
+                    ( 1, Instr(Mnemonic.fcvt_wu_q, Rd,F1)),
+                    ( 2, Instr(Mnemonic.fcvt_l_q, Rd,F1)),
+                    ( 3, Instr(Mnemonic.fcvt_lu_q, Rd,F1)))),
+
+                ( 0x68, Sparse(20, 5, "fcvt.to.s", invalid,
+                    ( 0, Instr(Mnemonic.fcvt_s_w, Rd,F1)),
+                    ( 1, Instr(Mnemonic.fcvt_s_wu, Rd,F1)),
+                    ( 2, Instr(Mnemonic.fcvt_s_l, Rd,F1)),
+                    ( 3, Instr(Mnemonic.fcvt_s_lu, Rd, F1)))),
+                ( 0x69, Sparse(20, 5, "fcvt.to.d", invalid,
+                    ( 0, Instr(Mnemonic.fcvt_d_w, Rd,F1)),
+                    ( 1, Instr(Mnemonic.fcvt_d_wu, Rd,F1)),
+                    ( 2, Instr(Mnemonic.fcvt_d_l, Rd,F1)),
+                    ( 3, Instr(Mnemonic.fcvt_d_lu, Rd,F1)))),
+                ( 0x6B, Sparse(20, 5, "fcvt.to.q", invalid,
+                    ( 0, Instr(Mnemonic.fcvt_q_w, Rd,F1)),
+                    ( 1, Instr(Mnemonic.fcvt_q_wu, Rd,F1)),
+                    ( 2, Instr(Mnemonic.fcvt_q_l, Rd,F1)),
+                    ( 3, Instr(Mnemonic.fcvt_q_lu, Rd,F1)))),
+
+                ( 0x70, Instr(Mnemonic.fmv_x_w, Rd,F1) ),
+                ( 0x71, Instr(Mnemonic.fmv_d_x, Fd,r1) ),
+                ( 0x73, Sparse(20, 5, "fclass.q", invalid,
+                    ( 0, Instr(Mnemonic.fclass_q, Rd,F1)))),
+
+                ( 0x78, Instr(Mnemonic.fmv_w_x, Fd,r1) ),
+                ( 0x79, Instr(Mnemonic.fmv_d_x, Fd,r1) )
             };
 
-            var branches = new Decoder[]
+            var branches = new Decoder[]            // 0b11000
             {
                 Instr(Mnemonic.beq, InstrClass.ConditionalTransfer, r1,r2,B),
                 Instr(Mnemonic.bne, InstrClass.ConditionalTransfer, r1,r2,B),
@@ -935,13 +1036,13 @@ namespace Reko.Arch.RiscV
                 Instr(Mnemonic.bgeu, InstrClass.ConditionalTransfer, r1,r2,B),
             };
 
-            var system = Sparse(20, 12, "system",
+            var system = Sparse(20, 12, "system",   // 0b11100
                 Nyi("system"),
                 (0, Instr(Mnemonic.ecall)),
                 (1, Instr(Mnemonic.ebreak)));
 
 
-            w32decoders = Mask(2, 5, "w32decoders", 
+            var w32decoders = Mask(2, 5, "w32decoders", 
                 // 00
                 Mask(12, 3, "loads", loads),
                 Mask(12, 3, "fploads", fploads),
@@ -958,29 +1059,9 @@ namespace Reko.Arch.RiscV
                 Nyi("custom-1"),
                 Nyi("amo"),
 
-                Mask(30, 1, "op",
-                    Mask(12, 3, "alu",
-                         CInstr(Mnemonic.add, Rd,R1,R2),
-                         CInstr(Mnemonic.sll, Rd,R1,R2),
-                         CInstr(Mnemonic.slt, Rd,R1,R2),
-                         CInstr(Mnemonic.sltu, Rd,R1,R2),
-
-                         CInstr(Mnemonic.xor, Rd,R1,R2),
-                         CInstr(Mnemonic.srl, Rd,R1,R2),
-                         CInstr(Mnemonic.or,  Rd,R1,R2),
-                         CInstr(Mnemonic.and, Rd,R1,R2)),
-                    new MaskDecoder(12, 3, "alu2",
-                         CInstr(Mnemonic.sub, Rd,R1,R2),
-                         Nyi("op - 20 - 0b001"),
-                         Nyi("op - 20 - 0b010"),
-                         Nyi("op - 20 - 0b011"),
-
-                         Nyi("op - 20 - 0b100"),
-                         CInstr(Mnemonic.sra, Rd,R1,R2),
-                         Nyi("op - 20 - 0b110"),
-                         Nyi("op - 20 - 0b111"))),
+                op,
                 Instr(Mnemonic.lui, d,Iu),
-                Sparse(25, 7, "op32",
+                Sparse(25, 7, "op-32",
                     invalid, 
                     ( 1, new MaskDecoder(12, 3, "muldiv",
                         CInstr(Mnemonic.mulw, Rd,R1,R2),
@@ -1031,7 +1112,7 @@ namespace Reko.Arch.RiscV
                 8, 9, 10, 11, 12, 13, 14, 15
             };
 
-            compressed0 = new Decoder[8]
+            var compressed0 = new Decoder[8]
             {
                 Select((0, 16), u => u != 0, "zero",
                     CInstr(Mnemonic.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
@@ -1058,7 +1139,7 @@ namespace Reko.Arch.RiscV
                     rv128: CInstr(Mnemonic.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3)))),
             };
 
-            compressed1 = new Decoder[8]
+            var compressed1 = new Decoder[8]
             {
                 CInstr(Mnemonic.c_addi, R(7), ImmS((12, 1), (2, 5))),
                 WordSize(
@@ -1097,7 +1178,7 @@ namespace Reko.Arch.RiscV
                 CInstr(InstrClass.ConditionalTransfer, Mnemonic.c_bnez, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
             };
 
-            compressed2 = new Decoder[8]
+            var compressed2 = new Decoder[8]
             {
                 CInstr(Mnemonic.c_slli, R(7), ImmB((12, 1), (2, 5))),
                 WordSize(

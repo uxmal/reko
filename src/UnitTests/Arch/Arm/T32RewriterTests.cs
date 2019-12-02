@@ -6055,13 +6055,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_revsh()
+        public void ThumbRw_rev()
         {
             RewriteCode("FFBA");	// revsh r7, r7
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r7 = __rev(r7)");
+        }
+
+        [Test]
+        public void ThumbRw_rev_2()
+        {
+            RewriteCode("19BA");	// rev r1, r3
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r1 = __rev(r3)");
         }
 
         [Test]
@@ -7207,15 +7215,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_rev()
-        {
-            RewriteCode("19BA");	// rev r1, r3
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = __rev(r3)");
-        }
-
-        [Test]
         [Ignore(Categories.FailedTests)]
         public void ThumbRw_rev16()
         {
@@ -7503,13 +7502,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vbic()
         {
             RewriteCode("C1FF7DE5");	// vbic.i32 q15, #0x9d0000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q15 = @@@");
+                "1|L--|q15 = __vbic_i32(q15, 0x009D0000009D0000)");
         }
 
         [Test]
@@ -7789,13 +7787,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_smuad()
         {
             RewriteCode("22FB04F1");	// smuad r1, r2, r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = ((int16) r2 *s (int16) r4 + (r2 >> 16) *s (r4 >> 16))");
+                "1|L--|r1 = r1 + ((int16) r2 *s (int16) r4 + (r2 >> 16) *s (r4 >> 16))");
         }
 
         [Test]

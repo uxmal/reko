@@ -152,6 +152,13 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(opDst, intrinsic);
         }
 
+        private void RewriteRevsh()
+        {
+            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
+            var intrinsic = m.Cast(PrimitiveType.Int32, host.PseudoProcedure("__rev_16", PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)));
+            m.Assign(opDst, intrinsic);
+        }
+
         private void RewriteRevBinOp(Func<Expression, Expression, Expression> op, bool setflags)
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);

@@ -2303,7 +2303,6 @@ movzx	ax,byte ptr [bp+04]
 
         [Test]
         [Ignore("addressing mode is off")]
-
         public void X86Dis_vpmovsxbq()
         {
             var instr = Disassemble64(0xc4, 0x02, 0x75, 0x22, 0x41, 0x8b);

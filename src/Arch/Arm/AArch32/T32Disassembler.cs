@@ -3591,37 +3591,21 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSimdTwoScalarsAndExtension = Nyi("AdvancedSimdTwoScalarsAndExtension");
 
-            var vmov_t1_d = Instr(Mnemonic.vmov, I32, D22_12, MS_28_16_0);
-            var vmov_t1_q = Instr(Mnemonic.vmov, I32, Q22_12, MS_28_16_0);
-            var vmvn_t1_d = Instr(Mnemonic.vmvn, I32, D22_12, MS_28_16_0);
-            var vmvn_t1_q = Instr(Mnemonic.vmvn, I32, Q22_12, MS_28_16_0);
+            var vmov_t1 = Instr(Mnemonic.vmov, I32, q6, W22_12, MS_28_16_0);
+            var vmvn_t1 = Instr(Mnemonic.vmvn, I32, q6, W22_12, MS_28_16_0);
+            var vorr_v1 = Instr(Mnemonic.vorr, I32, q6, W22_12, W22_12, MS_28_16_0);
+            var vbic_t1 = Instr(Mnemonic.vbic, I32, q6, W22_12, W22_12, MS_28_16_0);
 
-            var AdvancedSimdOneRegisterAndModifiedImmediate = Mask(8, 4, "AdvancedSimdOneRegisterAndModifiedImmediate",
-                Mask(6, 1, // Q
-                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
-                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
-                Mask(6, 1, // Q
-                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
-                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
-                Mask(6, 1, // Q
-                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
-                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
-                Mask(6, 1, // Q
-                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
-                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+            var AdvancedSimdOneRegisterAndModifiedImmediate = Mask(8, 4, "Advanced SIMD one register and modified immediate",
+                Mask(5, 1, vmov_t1, vmvn_t1),
+                Mask(5, 1, vorr_v1, vbic_t1),
+                Mask(5, 1, vmov_t1, vmvn_t1),
+                Mask(5, 1, vorr_v1, vbic_t1),
 
-                Mask(6, 1, // Q
-                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
-                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
-                Mask(6, 1, // Q
-                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
-                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
-                Mask(6, 1, // Q
-                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
-                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
-                Mask(6, 1, // Q
-                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
-                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+                Mask(5, 1, vmov_t1, vmvn_t1),
+                Mask(5, 1, vorr_v1, vbic_t1),
+                Mask(5, 1, vmov_t1, vmvn_t1),
+                Mask(5, 1, vorr_v1, vbic_t1),
 
                 Mask(5, 1,  // op
                     Instr(Mnemonic.vmov, nyi("*immediate - T3")),

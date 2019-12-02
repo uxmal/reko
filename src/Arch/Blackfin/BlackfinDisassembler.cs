@@ -199,12 +199,12 @@ namespace Reko.Arch.Blackfin
             }
         }
 
-        private static InstrDecoder Instr(InstrClass iclass, Mnemonic opcode, params Mutator[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator[] mutators)
         {
             return new InstrDecoder(iclass, opcode, mutators);
         }
 
-        private static InstrDecoder Instr( Mnemonic opcode, params Mutator[] mutators)
+        private static InstrDecoder Instr(Mnemonic opcode, params Mutator[] mutators)
         {
             return new InstrDecoder(InstrClass.Linear, opcode, mutators);
         }
@@ -622,7 +622,7 @@ namespace Reko.Arch.Blackfin
 
         static BlackfinDisassembler()
         {
-            var invalid = Instr(InstrClass.Invalid, Mnemonic.invalid);
+            var invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
             var instr32 = Mask32(24, 8,
                 Nyi(""),
                 (0xC4, Mask(16, 8,
@@ -647,15 +647,15 @@ namespace Reko.Arch.Blackfin
                             Instr(Mnemonic.lsl3, D9, D0, Imms(3, 5, PrimitiveType.Byte)),
                             Instr(Mnemonic.lsr3, D9, D0, NImms(3, 5, PrimitiveType.Byte)))))))),
                 (0xC8, Cond(16, 8, n => n == 3, 
-                    Instr(InstrClass.Padding|InstrClass.Linear, Mnemonic.MNOP),
+                    Instr(Mnemonic.MNOP, InstrClass.Padding | InstrClass.Linear),
                     invalid)),
                 (0xE1, Mask(5 + 16, 2,
                     Instr(Mnemonic.mov, Rlo16, Imm(0, 16, PrimitiveType.Word16)),
                     Instr(Mnemonic.mov_x, Rpib16, Imm(0, 16, PrimitiveType.Word16)),
                     Instr(Mnemonic.mov, Rhi16, Imm(0, 16, PrimitiveType.Word16)),
                     Nyi(""))),
-                (0xE2, Instr(Mnemonic.JUMP_L, J(0, 24, 1))),
-                (0xE3, Instr(Mnemonic.CALL, J(0, 24, 1))),
+                (0xE2, Instr(Mnemonic.JUMP_L, InstrClass.Transfer, J(0, 24, 1))),
+                (0xE3, Instr(Mnemonic.CALL, InstrClass.Transfer | InstrClass.Call, J(0, 24, 1))),
 
                 (0xE4, Mask(6 + 16, 2,
                     Instr(Mnemonic.mov, D16, MoffS(3 + 16, 0, 16, 2, PrimitiveType.Word32)),
@@ -684,14 +684,14 @@ namespace Reko.Arch.Blackfin
                 Mask(4, 8,
                     Nyi("0b0000????????...."),
                     (0x00, Cond(0, 4, IsZero,
-                        Instr(InstrClass.Zero|InstrClass.Linear|InstrClass.Padding, Mnemonic.NOP),
+                        Instr(Mnemonic.NOP, InstrClass.Zero|InstrClass.Linear|InstrClass.Padding),
                         invalid)),
                     (0x01, Mask(0, 4, invalid,
-                        (0x0, Instr(InstrClass.Transfer, Mnemonic.RTS)),
-                        (0x1, Instr(InstrClass.Transfer, Mnemonic.RTI)),
-                        (0x2, Instr(InstrClass.Transfer, Mnemonic.RTX)),
-                        (0x3, Instr(InstrClass.Transfer, Mnemonic.RTN)),
-                        (0x4, Instr(InstrClass.Transfer, Mnemonic.RTE)))),
+                        (0x0, Instr(Mnemonic.RTS, InstrClass.Transfer)),
+                        (0x1, Instr(Mnemonic.RTI, InstrClass.Transfer)),
+                        (0x2, Instr(Mnemonic.RTX, InstrClass.Transfer)),
+                        (0x3, Instr(Mnemonic.RTN, InstrClass.Transfer)),
+                        (0x4, Instr(Mnemonic.RTE, InstrClass.Transfer)))),
                     (0x02, Mask(0, 4, invalid,
                         (0x0, Instr(Mnemonic.IDLE)),
                         (0x3, Instr(Mnemonic.CSYNC)),
@@ -699,25 +699,25 @@ namespace Reko.Arch.Blackfin
                         (0x5, Instr(Mnemonic.EMUEXCEPT)),
                         (0xF, Instr(Mnemonic.ABORT)))),
                     (0x03, Mask(3, 1,
-                        Instr(InstrClass.System|InstrClass.Linear, Mnemonic.CLI, D0),
+                        Instr(Mnemonic.CLI, InstrClass.System|InstrClass.Linear, D0),
                         invalid)),
                     (0x04, Mask(3, 1,
                         Instr(Mnemonic.STI, D0),
                         invalid)),
                     (0x05, Mask(3, 1,
-                        Instr(InstrClass.Transfer, Mnemonic.JUMP, IP0),
+                        Instr(Mnemonic.JUMP, InstrClass.Transfer, IP0),
                         invalid)),
                     (0x06, Mask(3, 1,
-                        Instr(InstrClass.Transfer, Mnemonic.CALL, IP0),
+                        Instr(Mnemonic.CALL, InstrClass.Transfer, IP0),
                         invalid)),
                     (0x07, Mask(3, 1,
-                        Instr(InstrClass.Transfer, Mnemonic.CALL, PCIX0),
+                        Instr(Mnemonic.CALL, InstrClass.Transfer, PCIX0),
                         invalid)),
                     (0x08, Mask(3, 1,
-                        Instr(InstrClass.Transfer, Mnemonic.JUMP, PCIX0),
+                        Instr(Mnemonic.JUMP, InstrClass.Transfer, PCIX0),
                         invalid)),
-                    (0x09, Instr(InstrClass.Linear, Mnemonic.RAISE, Imm(0, 4, PrimitiveType.Byte))),
-                    (0x0A, Instr(InstrClass.Linear, Mnemonic.EXCPT, Imm(0, 4, PrimitiveType.Byte))),
+                    (0x09, Instr(Mnemonic.RAISE, InstrClass.Linear, Imm(0, 4, PrimitiveType.Byte))),
+                    (0x0A, Instr(Mnemonic.EXCPT, InstrClass.Linear, Imm(0, 4, PrimitiveType.Byte))),
                     (0x0B, Nyi("TESTSET (Preg)")),
 
                     (0x10, invalid),
@@ -944,7 +944,7 @@ namespace Reko.Arch.Blackfin
                     Instr(Mnemonic.if_ncc_jump_bp, J(0,10,1)),
                     Instr(Mnemonic.if_cc_jump, J(0,10,1)),
                     Instr(Mnemonic.if_cc_jump_bp, J(0,10,1))),
-                Instr(InstrClass.Transfer, Mnemonic.JUMP_S, J12),
+                Instr(Mnemonic.JUMP_S, InstrClass.Transfer, J12),
                 Instr(Mnemonic.mov, R(Registers.AllReg, 9,3, 3,3), R(Registers.AllReg, 6,3,0,3)),
                 
                 // 4xxx

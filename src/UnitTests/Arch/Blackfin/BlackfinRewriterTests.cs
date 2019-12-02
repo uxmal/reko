@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Blackfin
 {
-    [Ignore("Not ready yet")]
+    [TestFixture]
     public class BlackfinRewriterTests : RewriterTestBase
     {
         private BlackfinArchitecture arch;
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             RewriteCode("0EE1EC0F");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|SP.L = 0x0FEC");
         }
 
         [Test]
@@ -77,8 +77,8 @@ namespace Reko.UnitTests.Arch.Blackfin
         {
             RewriteCode("1300");
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|return (0,0)");
         }
 
         [Test]
@@ -87,16 +87,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             RewriteCode("20E1E803");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void BlackfinRw_invalid()
-        {
-            RewriteCode("A100");
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R0 = (word32) 0x03E8");
         }
 
         [Test]
@@ -105,7 +96,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             RewriteCode("C858");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R3 = R0 ^ R1");
         }
 
         [Test]
@@ -113,8 +104,8 @@ namespace Reko.UnitTests.Arch.Blackfin
         {
             RewriteCode("FFE2D05C");
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto 000EB9A0");
         }
 
         [Test]
@@ -122,24 +113,26 @@ namespace Reko.UnitTests.Arch.Blackfin
         {
             RewriteCode("1000");
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|return (0,0)");
         }
+
         [Test]
         public void BlackfinRw_mul()
         {
             RewriteCode("CA40");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R2 = R2 * R1");
         }
+
         [Test]
         public void BlackfinRw_mov_zb()
         {
             RewriteCode("4043");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R0 = (word32) SLICE(R0, byte, 0)");
         }
 
         [Test]
@@ -148,10 +141,11 @@ namespace Reko.UnitTests.Arch.Blackfin
             RewriteCode("0143");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R1 = (int32) SLICE(R0, int8, 0)");
         }
 
         [Test]
+        [Ignore("Need an actual binary")]
         public void BlackfinRw_mov_cc_eq()
         {
             RewriteCode("010C");
@@ -161,6 +155,7 @@ namespace Reko.UnitTests.Arch.Blackfin
         }
 
         [Test]
+        [Ignore("Need an actual binary")]
         public void BlackfinRw_mov_cc_n_bittest()
         {
             RewriteCode("3948");
@@ -175,9 +170,11 @@ namespace Reko.UnitTests.Arch.Blackfin
             RewriteCode("4152");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R1 = R1 - R0");
         }
+
         [Test]
+        [Ignore("Need an actual binary")]
         public void BlackfinRw_mov_cc_le()
         {
             RewriteCode("020D");
@@ -185,6 +182,7 @@ namespace Reko.UnitTests.Arch.Blackfin
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
         }
+
         [Test]
         public void BlackfinRw_CLI()
         {
@@ -195,6 +193,7 @@ namespace Reko.UnitTests.Arch.Blackfin
         }
 
         [Test]
+        [Ignore("Decoder NYI")]
         public void BlackfinRw_lsr3()
         {
             RewriteCode("82C6F885");

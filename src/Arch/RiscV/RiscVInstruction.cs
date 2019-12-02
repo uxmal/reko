@@ -91,12 +91,18 @@ namespace Reko.Arch.RiscV
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            RenderMnemonic(writer);
+            RenderOperands(writer, options);
+        }
+
+        private void RenderMnemonic(MachineInstructionWriter writer)
+        {
             if (!opcodeNames.TryGetValue(Mnemonic, out string name))
             {
                 name = Mnemonic.ToString();
+                name = name.Replace('_', '.');
             }
             writer.WriteOpcode(name);
-            RenderOperands(writer, options);
         }
 
         protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
