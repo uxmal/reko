@@ -9,6 +9,7 @@
     <AssemblyName>Reko.UnitTests</AssemblyName>
     <SolutionDir>$(ProjectDir)..\</SolutionDir>
     <Platforms>x86;x64</Platforms>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
@@ -39,8 +40,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Arch\OpenRISC\OpenRISC.csproj" />
     <ProjectReference Include="..\Arch\PaRisc\PaRisc.csproj">
-      <Project>{C57B1AD7-336A-4CE6-8A8C-836760029EBB}</Project>
-      <Name>PaRisc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
     </ProjectReference>
@@ -49,8 +48,6 @@
     <ProjectReference Include="..\Arch\RiscV\RiscV.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\Rl78\Rl78.csproj">
-      <Project>{54029784-C8A6-43F5-9D00-62EC8DA04FA1}</Project>
-      <Name>Rl78</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Sparc\Sparc.csproj">
     </ProjectReference>
