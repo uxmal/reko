@@ -1,7 +1,7 @@
 language: csharp
 solution: src/Reko-decompiler.sln
 sudo: required
-dotnet: 3.0
+dotnet: 2.1.202
 
 #addons:
 #  apt:
