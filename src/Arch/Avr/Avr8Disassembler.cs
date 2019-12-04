@@ -66,6 +66,16 @@ namespace Reko.Arch.Avr
             return instr;
         }
 
+        public override AvrInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            return new AvrInstruction
+            {
+                Mnemonic = mnemonic,
+                InstructionClass = iclass,
+                Operands = this.ops.ToArray(),
+            };
+        }
+
         public override AvrInstruction CreateInvalidInstruction()
         {
             return new AvrInstruction
@@ -294,16 +304,15 @@ namespace Reko.Arch.Avr
 
         #endregion
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<Avr8Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic opcode, params Mutator<Avr8Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder<Avr8Disassembler, Mnemonic, AvrInstruction>(InstrClass.Linear, opcode, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, mutators);
+            return new InstrDecoder<Avr8Disassembler, Mnemonic, AvrInstruction>(iclass, opcode, mutators);
         }
-
 
         private MachineOperand Register(int v)
         {
@@ -743,37 +752,6 @@ namespace Reko.Arch.Avr
                 Mask(8, 4, decodersF),
             };
         }
-
-        public class InstrDecoder : Decoder
-        {
-            private readonly Mnemonic mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator<Avr8Disassembler>[] mutators;
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override AvrInstruction Decode(uint wInstr, Avr8Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return invalid.Decode(wInstr, dasm);
-                }
-                return new AvrInstruction
-                {
-                    Mnemonic = mnemonic,
-                    InstructionClass = iclass,
-                    Operands = dasm.ops.ToArray(),
-                };
-            }
-        }
-
-
 
         public class CondDecoder : Decoder
         {

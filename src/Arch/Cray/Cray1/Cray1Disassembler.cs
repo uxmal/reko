@@ -82,7 +82,7 @@ namespace Reko.Arch.Cray.Cray1
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<Cray1Disassembler> [] mutators)
         {
-            return new InstrDecoder2<Cray1Disassembler, Mnemonic, CrayInstruction>(InstrClass.Linear, mnemonic, mutators);
+            return new InstrDecoder<Cray1Disassembler, Mnemonic, CrayInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
         #endregion

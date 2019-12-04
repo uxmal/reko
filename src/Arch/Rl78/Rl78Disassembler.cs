@@ -64,6 +64,18 @@ namespace Reko.Arch.Rl78
             return instr;
         }
 
+        public override Rl78Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new Rl78Instruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Prefix = this.prefix,
+                Operands = this.ops.ToArray()
+            };
+            return instr;
+        }
+
         public override Rl78Instruction CreateInvalidInstruction()
         {
             return new Rl78Instruction
@@ -348,37 +360,6 @@ namespace Reko.Arch.Rl78
 
         #endregion
 
-        private class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnem;
-            private readonly Mutator<Rl78Disassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnem, Mutator<Rl78Disassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnem = mnem;
-                this.mutators = mutators;
-            }
-
-            public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(uInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var instr = new Rl78Instruction
-                {
-                    InstructionClass = iclass,
-                    Mnemonic = mnem,
-                    Prefix = dasm.prefix,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
-        }
-
         private class TwoByteDecoder : Decoder
         {
             private readonly Decoder[] decoders;
@@ -425,12 +406,12 @@ namespace Reko.Arch.Rl78
 
         private static Decoder Instr(Mnemonic mnem, InstrClass iclass, params Mutator<Rl78Disassembler>[] mutators)
         {
-            return new InstrDecoder(iclass, mnem, mutators);
+            return new InstrDecoder<Rl78Disassembler,Mnemonic,Rl78Instruction>(iclass, mnem, mutators);
         }
 
         private static Decoder Instr(Mnemonic mnem, params Mutator<Rl78Disassembler>[] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, mnem, mutators);
+            return new InstrDecoder<Rl78Disassembler, Mnemonic, Rl78Instruction>(InstrClass.Linear, mnem, mutators);
         }
 
         private static Decoder TwoByte(Decoder[] decoders)

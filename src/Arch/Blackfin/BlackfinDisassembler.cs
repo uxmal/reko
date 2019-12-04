@@ -40,9 +40,8 @@ namespace Reko.Arch.Blackfin
 
         private readonly BlackfinArchitecture arch;
         private readonly EndianImageReader rdr;
+        private readonly List<MachineOperand> ops;
         private Address addr;
-        private BlackfinInstruction instr;
-        private List<MachineOperand> ops;
 
         public BlackfinDisassembler(BlackfinArchitecture arch, EndianImageReader rdr)
         {
@@ -58,7 +57,19 @@ namespace Reko.Arch.Blackfin
                 return null;
             this.ops.Clear();
             var instr = rootDecoder.Decode(uInstr, this);
+            instr.Address = this.addr;
             instr.Length = (int)(rdr.Address - this.addr);
+            return instr;
+        }
+
+        public override BlackfinInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new BlackfinInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = this.ops.ToArray()
+            };
             return instr;
         }
 
@@ -68,39 +79,8 @@ namespace Reko.Arch.Blackfin
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Address = addr,
-                Length = (int) (rdr.Address - addr),
                 Operands = new MachineOperand[0]
             };
-        }
-
-        private class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override BlackfinInstruction Decode(uint uInstr, BlackfinDisassembler dasm)
-            {
-                dasm.instr = new BlackfinInstruction();
-                foreach (var mutator in mutators)
-                {
-                    if (!mutator(uInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                dasm.instr.Address = dasm.addr;
-                dasm.instr.InstructionClass = iclass;
-                dasm.instr.Mnemonic = mnemonic;
-                dasm.instr.Operands = dasm.ops.ToArray();
-                return dasm.instr;
-            }
         }
 
         private class Mask32Decoder : MaskDecoder
@@ -199,14 +179,14 @@ namespace Reko.Arch.Blackfin
             }
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator[] mutators)
+        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator[] mutators)
         {
-            return new InstrDecoder(iclass, opcode, mutators);
+            return new InstrDecoder<BlackfinDisassembler,Mnemonic,BlackfinInstruction>(iclass, opcode, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator[] mutators)
+        private static Decoder Instr(Mnemonic opcode, params Mutator[] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<BlackfinDisassembler, Mnemonic, BlackfinInstruction>(InstrClass.Linear, opcode, mutators);
         }
 
         private static MaskDecoder Mask(int pos, int len, params Decoder[] decoders)

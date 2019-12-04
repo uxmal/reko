@@ -68,6 +68,14 @@ namespace Reko.Arch.Arc
             return instr;
         }
 
+        public override ArcInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            this.instr.InstructionClass = iclass;
+            this.instr.Mnemonic = mnemonic;
+            this.instr.Operands = this.ops.ToArray();
+            return this.instr;
+        }
+
         public override ArcInstruction CreateInvalidInstruction()
         {
             return new ArcInstruction
@@ -637,33 +645,6 @@ namespace Reko.Arch.Arc
 
         #region Decoders
 
-        private class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<ArcDisassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<ArcDisassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override ArcInstruction Decode(uint wInstr, ArcDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                dasm.instr.InstructionClass = iclass;
-                dasm.instr.Mnemonic = mnemonic;
-                dasm.instr.Operands = dasm.ops.ToArray();
-                return dasm.instr;
-            }
-        }
-
         private class W32Decoder : Decoder
         {
             private readonly Decoder decoder;
@@ -683,19 +664,19 @@ namespace Reko.Arch.Arc
             }
         }
 
-        private static InstrDecoder Instr(Mnemonic mnemonic, params Mutator<ArcDisassembler> [] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<ArcDisassembler> [] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
+            return new InstrDecoder<ArcDisassembler,Mnemonic,ArcInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<ArcDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<ArcDisassembler>[] mutators)
         {
-            return new InstrDecoder(iclass, mnemonic, mutators);
+            return new InstrDecoder<ArcDisassembler, Mnemonic, ArcInstruction>(iclass, mnemonic, mutators);
         }
 
-        private static NyiDecoder Nyi(string message)
+        private static Decoder Nyi(string message)
         {
-            return new NyiDecoder(message);
+            return new NyiDecoder<ArcDisassembler, Mnemonic, ArcInstruction>(message);
         }
 
         #endregion

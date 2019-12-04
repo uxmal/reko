@@ -59,6 +59,8 @@ namespace Reko.Arch.RiscV
             {
                 return null;
             }
+            state.ops.Clear();
+            state.instr = new RiscVInstruction();
             var instr = decoders[hInstr & 0x3].Decode(hInstr, this);
             instr.Address = addrInstr;
             instr.Length = (int) (rdr.Address - addrInstr);
@@ -66,18 +68,28 @@ namespace Reko.Arch.RiscV
             return instr;
         }
 
-        private RiscVInstruction BuildInstruction(Mnemonic opcode, InstrClass iclass, List<MachineOperand> ops)
-        { 
-            var instr = new RiscVInstruction
-            {
-                Address = this.addrInstr,
-                Mnemonic = opcode,
-                InstructionClass = iclass,
-                Operands = ops.ToArray(),
-                Length = (int)(this.rdr.Address - addrInstr)
-            };
-            return instr;
+        public override RiscVInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var i = state.instr;
+            i.InstructionClass = iclass;
+            i.Mnemonic = mnemonic;
+            i.Address = this.addrInstr;
+            i.Operands = this.state.ops.ToArray();
+            state.instr = new RiscVInstruction();
+            return i;
         }
+
+        public override RiscVInstruction CreateInvalidInstruction()
+        {
+            return new RiscVInstruction
+            {
+                Address = addrInstr,
+                InstructionClass = InstrClass.Invalid,
+                Mnemonic = Mnemonic.invalid,
+                Operands = MachineInstruction.NoOperands
+            };
+        }
+
 
         //private RiscVInstruction DecodeWideOperands(Opcode opcode, InstrClass iclass, Mutator<RiscVDisassembler>[] fmt, uint wInstr)
         //{
@@ -274,28 +286,6 @@ namespace Reko.Arch.RiscV
             return CreateInvalidInstruction();
         }
 
-        public RiscVInstruction MakeInstruction()
-        {
-            var i = state.instr;
-            i.Address = this.addrInstr;
-            var ops = this.state.ops;
-            i.Operands = ops.ToArray();
-            state.instr = new RiscVInstruction();
-            return i;
-        }
-
-        public override RiscVInstruction CreateInvalidInstruction()
-        {
-            return new RiscVInstruction
-            {
-                Address = addrInstr,
-                InstructionClass = InstrClass.Invalid,
-                Mnemonic = Mnemonic.invalid,
-                Operands = MachineInstruction.NoOperands
-            };
-        }
-
-
         internal class State
         {
             public RiscVInstruction instr = new RiscVInstruction();
@@ -316,60 +306,6 @@ namespace Reko.Arch.RiscV
             public override RiscVInstruction Decode(uint hInstr, RiscVDisassembler dasm)
             {
                 return dasm.NotYetImplemented(hInstr, message);
-            }
-        }
-
-        public class CDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<RiscVDisassembler>[] mutators;
-
-            internal CDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
-            {
-                dasm.state.instr.InstructionClass = this.iclass;
-                dasm.state.instr.Mnemonic = mnemonic;
-                dasm.state.ops.Clear();
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                return dasm.MakeInstruction();
-            }
-        }
-
-        public class InstrDecoder : Decoder
-        {
-            private readonly Mnemonic mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator<RiscVDisassembler> [] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
-            {
-                dasm.state.instr.InstructionClass = this.iclass;
-                dasm.state.instr.Mnemonic = mnemonic;
-                dasm.state.ops.Clear();
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                return dasm.MakeInstruction();
             }
         }
 
@@ -444,26 +380,14 @@ namespace Reko.Arch.RiscV
 
         #endregion
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>(InstrClass.Linear, opcode, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
         {
-            return new InstrDecoder(iclass, opcode, mutators);
-        }
-
-        // Compact instruction decoder
-
-        private static CDecoder CInstr(Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
-        {
-            return new CDecoder(InstrClass.Linear, opcode, mutators);
-        }
-
-        private static CDecoder CInstr(InstrClass iclass, Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutator)
-        {
-            return new CDecoder(iclass, opcode, mutator);
+            return new InstrDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>(iclass, opcode, mutators);
         }
 
         // Conditional decoder
@@ -781,10 +705,10 @@ namespace Reko.Arch.RiscV
             {
                 invalid,
                 invalid,
-                CInstr(Mnemonic.flw, Fd,Mem(PrimitiveType.Real32, 15, (20, 12))),
-                CInstr(Mnemonic.fld, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
+                Instr(Mnemonic.flw, Fd,Mem(PrimitiveType.Real32, 15, (20, 12))),
+                Instr(Mnemonic.fld, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
 
-                CInstr(Mnemonic.flq, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
+                Instr(Mnemonic.flq, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
                 invalid,
                 invalid,
                 invalid,
@@ -807,8 +731,8 @@ namespace Reko.Arch.RiscV
             {
                 invalid,
                 invalid,
-                CInstr(Mnemonic.fsw, F2,Memc(PrimitiveType.Real32, 15, (25,7),(7,5))),
-                CInstr(Mnemonic.fsd, F2,Memc(PrimitiveType.Real64, 15, (25,7),(7,5))),
+                Instr(Mnemonic.fsw, F2,Memc(PrimitiveType.Real32, 15, (25,7),(7,5))),
+                Instr(Mnemonic.fsd, F2,Memc(PrimitiveType.Real64, 15, (25,7),(7,5))),
 
                 invalid,
                 invalid,
@@ -821,7 +745,7 @@ namespace Reko.Arch.RiscV
                 Instr(Mnemonic.addi, d,r1,i),
                 new ShiftDecoder(
                     Instr(Mnemonic.slli, d,r1,z),
-                    Instr(Mnemonic.invalid, InstrClass.Invalid)),
+                    invalid),
                 Instr(Mnemonic.slti, d,r1,i),
                 Instr(Mnemonic.sltiu, d,r1,i),
 
@@ -835,8 +759,8 @@ namespace Reko.Arch.RiscV
 
             var opimm32 = new Decoder[]         // 0b00110
             {
-                CInstr(Mnemonic.addiw, Rd,R1,I20s),
-                CInstr(Mnemonic.slliw, Rd,R1,Imm(20, 5)),
+                Instr(Mnemonic.addiw, Rd,R1,I20s),
+                Instr(Mnemonic.slliw, Rd,R1,Imm(20, 5)),
                 Nyi(""),
                 Nyi(""),
  
@@ -850,23 +774,23 @@ namespace Reko.Arch.RiscV
 
             var op = Mask(30, 1, "op",      // 0b01100
                 Mask(12, 3, "alu",
-                    CInstr(Mnemonic.add, Rd, R1, R2),
-                    CInstr(Mnemonic.sll, Rd, R1, R2),
-                    CInstr(Mnemonic.slt, Rd, R1, R2),
-                    CInstr(Mnemonic.sltu, Rd, R1, R2),
+                    Instr(Mnemonic.add, Rd, R1, R2),
+                    Instr(Mnemonic.sll, Rd, R1, R2),
+                    Instr(Mnemonic.slt, Rd, R1, R2),
+                    Instr(Mnemonic.sltu, Rd, R1, R2),
 
-                    CInstr(Mnemonic.xor, Rd, R1, R2),
-                    CInstr(Mnemonic.srl, Rd, R1, R2),
-                    CInstr(Mnemonic.or, Rd, R1, R2),
-                    CInstr(Mnemonic.and, Rd, R1, R2)),
+                    Instr(Mnemonic.xor, Rd, R1, R2),
+                    Instr(Mnemonic.srl, Rd, R1, R2),
+                    Instr(Mnemonic.or, Rd, R1, R2),
+                    Instr(Mnemonic.and, Rd, R1, R2)),
                 Mask(12, 3, "alu2",
-                    CInstr(Mnemonic.sub, Rd, R1, R2),
+                    Instr(Mnemonic.sub, Rd, R1, R2),
                     Nyi("op - 20 - 0b001"),
                     Nyi("op - 20 - 0b010"),
                     Nyi("op - 20 - 0b011"),
 
                     Nyi("op - 20 - 0b100"),
-                    CInstr(Mnemonic.sra, Rd, R1, R2),
+                    Instr(Mnemonic.sra, Rd, R1, R2),
                     Nyi("op - 20 - 0b110"),
                     Nyi("op - 20 - 0b111")));
 
@@ -877,7 +801,7 @@ namespace Reko.Arch.RiscV
                     Instr(Mnemonic.subw, d,r1,r2)),
                 new ShiftDecoder(
                     Instr(Mnemonic.sllw, d,r1,r2),
-                    Instr(Mnemonic.invalid, InstrClass.Invalid)),
+                    invalid),
                 Nyi(""),
                 Nyi(""),
 
@@ -1005,8 +929,8 @@ namespace Reko.Arch.RiscV
                 Nyi(""),
                 Nyi(""),
 
-                Instr(Mnemonic.blt, InstrClass.ConditionalTransfer,  r1,r2,B),
-                Instr(Mnemonic.bge, InstrClass.ConditionalTransfer,  r1,r2,B),
+                Instr(Mnemonic.blt,  InstrClass.ConditionalTransfer, r1,r2,B),
+                Instr(Mnemonic.bge,  InstrClass.ConditionalTransfer, r1,r2,B),
                 Instr(Mnemonic.bltu, InstrClass.ConditionalTransfer, r1,r2,B),
                 Instr(Mnemonic.bgeu, InstrClass.ConditionalTransfer, r1,r2,B),
             };
@@ -1039,18 +963,18 @@ namespace Reko.Arch.RiscV
                 Sparse(25, 7, "op-32",
                     invalid, 
                     ( 1, new MaskDecoder(12, 3, "muldiv",
-                        CInstr(Mnemonic.mulw, Rd,R1,R2),
+                        Instr(Mnemonic.mulw, Rd,R1,R2),
                         invalid,
                         invalid,
                         invalid,
                         
-                        CInstr(Mnemonic.divw, Rd,R1,R2),
-                        CInstr(Mnemonic.divuw, Rd,R1,R2),
-                        CInstr(Mnemonic.remw, Rd,R1,R2),
-                        CInstr(Mnemonic.remuw, Rd,R1,R2))
+                        Instr(Mnemonic.divw, Rd,R1,R2),
+                        Instr(Mnemonic.divuw, Rd,R1,R2),
+                        Instr(Mnemonic.remw, Rd,R1,R2),
+                        Instr(Mnemonic.remuw, Rd,R1,R2))
                     ),
                     ( 0x20, new MaskDecoder(12, 3, "suww",
-                        CInstr(Mnemonic.subw, Rd,R1,R2),
+                        Instr(Mnemonic.subw, Rd,R1,R2),
                         Nyi("20 - 001"),
                         Nyi("20 - 010"),
                         Nyi("20 - 011"),
@@ -1062,10 +986,10 @@ namespace Reko.Arch.RiscV
                 Nyi("64-bit instruction"),
 
                 // 10
-                CInstr(Mnemonic.fmadd_s,  Fd,F1,F2,F3),
-                CInstr(Mnemonic.fmsub_s , Fd,F1,F2,F3),
-                CInstr(Mnemonic.fnmsub_s, Fd,F1,F2,F3),
-                CInstr(Mnemonic.fnmadd_s, Fd,F1,F2,F3),
+                Instr(Mnemonic.fmadd_s,  Fd,F1,F2,F3),
+                Instr(Mnemonic.fmsub_s , Fd,F1,F2,F3),
+                Instr(Mnemonic.fnmsub_s, Fd,F1,F2,F3),
+                Instr(Mnemonic.fnmadd_s, Fd,F1,F2,F3),
 
                 Sparse(25, 7, invalid, opfp),
                 Nyi("Reserved"),
@@ -1073,9 +997,9 @@ namespace Reko.Arch.RiscV
                 Nyi("48-bit instruction"),
 
                 new MaskDecoder(12, 3, "branches", branches),
-                Instr(Mnemonic.jalr, InstrClass.Transfer, d,r1,i),
+                Instr(Mnemonic.jalr, InstrClass.Transfer, d, r1, i),
                 Nyi("Reserved"),
-                CInstr(InstrClass.Transfer|InstrClass.Call, Mnemonic.jal, Rd,J),
+                Instr(Mnemonic.jal, InstrClass.Transfer | InstrClass.Call, Rd, J),
 
                 system,
                 Nyi("Reserved"),
@@ -1090,93 +1014,93 @@ namespace Reko.Arch.RiscV
             var compressed0 = new Decoder[8]
             {
                 Select((0, 16), u => u != 0, "zero",
-                    CInstr(Mnemonic.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
-                    CInstr(InstrClass.Invalid|InstrClass.Zero, Mnemonic.invalid)),
+                    Instr(Mnemonic.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
+                    Instr(Mnemonic.invalid, InstrClass.Invalid|InstrClass.Zero)),
                 WordSize(
-                    rv32: CInstr(Mnemonic.c_fld, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
-                    rv64: CInstr(Mnemonic.c_fld, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv32: Instr(Mnemonic.c_fld, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv64: Instr(Mnemonic.c_fld, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
                     rv128: Nyi("lq")),
-                CInstr(Mnemonic.c_lw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
+                Instr(Mnemonic.c_lw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
                 WordSize(
-                    rv32: CInstr(Mnemonic.c_flw, Fc(7), Memc(PrimitiveType.Real32, 2, (5,1), (10,3), (6,1))),
-                    rv64: CInstr(Mnemonic.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
-                    rv128: CInstr(Mnemonic.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
+                    rv32: Instr(Mnemonic.c_flw, Fc(7), Memc(PrimitiveType.Real32, 2, (5,1), (10,3), (6,1))),
+                    rv64: Instr(Mnemonic.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
+                    rv128: Instr(Mnemonic.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
 
                 Nyi("reserved"),
                 WordSize(
-                    rv32: CInstr(Mnemonic.c_fsd, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
-                    rv64: CInstr(Mnemonic.c_fsd, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv32: Instr(Mnemonic.c_fsd, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv64: Instr(Mnemonic.c_fsd, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
                     rv128: Nyi("sq")),
-                CInstr(Mnemonic.c_sw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
+                Instr(Mnemonic.c_sw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
                 WordSize(
                     rv32: Nyi("fsw"),
-                    rv64: CInstr(Mnemonic.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
-                    rv128: CInstr(Mnemonic.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3)))),
+                    rv64: Instr(Mnemonic.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv128: Instr(Mnemonic.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3)))),
             };
 
             var compressed1 = new Decoder[8]
             {
-                CInstr(Mnemonic.c_addi, R(7), ImmS((12, 1), (2, 5))),
+                Instr(Mnemonic.c_addi, R(7), ImmS((12, 1), (2, 5))),
                 WordSize(
                     rv32: Nyi("c.jal"),
-                    rv64: CInstr(Mnemonic.c_addiw, R(7), ImmS((12, 1), (2, 5))),
-                    rv128: CInstr(Mnemonic.c_addiw, R(7), ImmS((12, 1), (2, 5)))),
-                CInstr(Mnemonic.c_li, R(7), ImmS((12,1), (2, 5))),
+                    rv64: Instr(Mnemonic.c_addiw, R(7), ImmS((12, 1), (2, 5))),
+                    rv128: Instr(Mnemonic.c_addiw, R(7), ImmS((12, 1), (2, 5)))),
+                Instr(Mnemonic.c_li, R(7), ImmS((12,1), (2, 5))),
                 Select((7, 5), u => u == 2,
-                    CInstr(Mnemonic.c_addi16sp, ImmShS(4, (12,1), (3,2), (5,1), (2,1), (6, 1))),
-                    CInstr(Mnemonic.c_lui, R(7), ImmShS(12, (12,1), (2, 5)))),
+                    Instr(Mnemonic.c_addi16sp, ImmShS(4, (12,1), (3,2), (5,1), (2,1), (6, 1))),
+                    Instr(Mnemonic.c_lui, R(7), ImmShS(12, (12,1), (2, 5)))),
 
                 new MaskDecoder(10, 2, "comp1",
-                    CInstr(Mnemonic.c_srli, Rc(7), Imm((12,1), (2,5))),
-                    CInstr(Mnemonic.c_srai, Rc(7), Imm((12,1), (2,5))),
-                    CInstr(Mnemonic.c_andi, Rc(7), ImmS((12,1), (2,5))),
+                    Instr(Mnemonic.c_srli, Rc(7), Imm((12,1), (2,5))),
+                    Instr(Mnemonic.c_srai, Rc(7), Imm((12,1), (2,5))),
+                    Instr(Mnemonic.c_andi, Rc(7), ImmS((12,1), (2,5))),
                     new MaskDecoder(12, 1, "comp1_1",
                         new MaskDecoder(5, 2, "comp1_1_1",
-                            CInstr(Mnemonic.c_sub, Rc(7), Rc(2)),
-                            CInstr(Mnemonic.c_xor, Rc(7), Rc(2)),
-                            CInstr(Mnemonic.c_or, Rc(7), Rc(2)),
-                            CInstr(Mnemonic.c_and, Rc(7), Rc(2))),
+                            Instr(Mnemonic.c_sub, Rc(7), Rc(2)),
+                            Instr(Mnemonic.c_xor, Rc(7), Rc(2)),
+                            Instr(Mnemonic.c_or, Rc(7), Rc(2)),
+                            Instr(Mnemonic.c_and, Rc(7), Rc(2))),
                         new MaskDecoder(5, 2, "comp1_1_2",
                             WordSize(
-                                rv64: CInstr(Mnemonic.c_subw, Rc(7),Rc(2)),
-                                rv128: CInstr(Mnemonic.c_subw, Rc(7),Rc(2))),
+                                rv64: Instr(Mnemonic.c_subw, Rc(7),Rc(2)),
+                                rv128: Instr(Mnemonic.c_subw, Rc(7),Rc(2))),
                             WordSize(
-                                rv64: CInstr(Mnemonic.c_addw, Rc(7),Rc(2)),
-                                rv128: CInstr(Mnemonic.c_addw, Rc(7),Rc(2))),
+                                rv64: Instr(Mnemonic.c_addw, Rc(7),Rc(2)),
+                                rv128: Instr(Mnemonic.c_addw, Rc(7),Rc(2))),
                             invalid,
                             invalid))),
 
 // imm[11|4|9:8|10|6|7|3:1|5]
      //11 10  9  8 7 6   3 2
-                CInstr(InstrClass.Transfer, Mnemonic.c_j, PcRel(1, (11,1), (8,1), (9,2), (6,1), (7,1), (2,1), (10,1), (3,2))),
-                CInstr(InstrClass.ConditionalTransfer, Mnemonic.c_beqz, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
-                CInstr(InstrClass.ConditionalTransfer, Mnemonic.c_bnez, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
+                Instr(Mnemonic.c_j, InstrClass.Transfer, PcRel(1, (11,1), (8,1), (9,2), (6,1), (7,1), (2,1), (10,1), (3,2))),
+                Instr(Mnemonic.c_beqz, InstrClass.ConditionalTransfer, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
+                Instr(Mnemonic.c_bnez, InstrClass.ConditionalTransfer, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
             };
 
             var compressed2 = new Decoder[8]
             {
-                CInstr(Mnemonic.c_slli, R(7), ImmB((12, 1), (2, 5))),
+                Instr(Mnemonic.c_slli, R(7), ImmB((12, 1), (2, 5))),
                 WordSize(
-                    rv32: CInstr(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
-                    rv64: CInstr(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3)))),
-                CInstr(Mnemonic.c_lwsp, R(2), ImmSh(2, (12,1),(7,3),(10,3))),
-                CInstr(Mnemonic.c_ldsp, R(2), ImmSh(3, (12,1),(7,3),(10,3))),
+                    rv32: Instr(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
+                    rv64: Instr(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3)))),
+                Instr(Mnemonic.c_lwsp, R(2), ImmSh(2, (12,1),(7,3),(10,3))),
+                Instr(Mnemonic.c_ldsp, R(2), ImmSh(3, (12,1),(7,3),(10,3))),
 
                 new MaskDecoder(12, 1,  "",
                     Select((2, 5), u => u == 0, "",
-                        CInstr(InstrClass.Transfer, Mnemonic.c_jr, R(7)),
-                        CInstr(Mnemonic.c_mv, R(7), R(2))),
+                        Instr(Mnemonic.c_jr, InstrClass.Transfer, R(7)),
+                        Instr(Mnemonic.c_mv, R(7), R(2))),
                     Select((2, 5), u => u == 0,
                         Select((7, 5), u => u == 0,
                             Nyi("c.ebreak"),
-                            CInstr(InstrClass.Transfer, Mnemonic.c_jalr, R(7))),
-                        CInstr(Mnemonic.c_add, R(7), R(2)))),
+                            Instr(Mnemonic.c_jalr, InstrClass.Transfer, R(7))),
+                        Instr(Mnemonic.c_add, R(7), R(2)))),
                 WordSize(
-                    rv32: CInstr(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
-                    rv64: CInstr(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
+                    rv32: Instr(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
+                    rv64: Instr(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
                     rv128:Nyi("sqsp")),
-                CInstr(Mnemonic.c_swsp, R(2), ImmSh(2, (7,3),(10,3))),
-                CInstr(Mnemonic.c_sdsp, R(2), ImmSh(3, (7,3),(10,3))),
+                Instr(Mnemonic.c_swsp, R(2), ImmSh(2, (7,3),(10,3))),
+                Instr(Mnemonic.c_sdsp, R(2), ImmSh(3, (7,3),(10,3))),
             };
 
             decoders = new Decoder[4]

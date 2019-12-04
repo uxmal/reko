@@ -64,6 +64,21 @@ namespace Reko.Arch.Msp430
             return instr;
         }
 
+        public override Msp430Instruction MakeInstruction(InstrClass iclass, Mnemonics mnemonic)
+        {
+            int rep = (this.uExtension & 0x0F);
+            var instr = new Msp430Instruction
+            {
+                Mnemonic = mnemonic,
+                dataWidth = this.dataWidth,
+                Operands = this.ops.ToArray(),
+                repeatImm = (this.uExtension & 0x80) != 0 ? 0 : rep + 1,
+                repeatReg = (this.uExtension & 0x80) != 0 ? Registers.GpRegisters[rep] : null,
+            };
+            instr = this.SpecialCase(instr);
+            return instr;
+        }
+
         private Msp430Instruction SpecialCase(Msp430Instruction instr)
         {
             if (instr.Mnemonic == Mnemonics.mov)
@@ -368,49 +383,14 @@ namespace Reko.Arch.Msp430
             return CreateInvalidInstruction();
         }
 
-        private static InstrDecoder Instr(Mnemonics opcode, params Mutator<Msp430Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonics mnemonic, params Mutator<Msp430Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder<Msp430Disassembler, Mnemonics, Msp430Instruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonics opcode, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonics mnemonic, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, mutators);
-        }
-
-        private class InstrDecoder : Decoder
-        {
-            private readonly Mnemonics mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator<Msp430Disassembler>[] mutators;
-
-            public InstrDecoder(Mnemonics mnemonic, InstrClass iclass, params Mutator<Msp430Disassembler>[] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override Msp430Instruction Decode(uint uInstr, Msp430Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(uInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-
-                int rep = (dasm.uExtension & 0x0F);
-                var instr = new Msp430Instruction
-                {
-                    Mnemonic = mnemonic,
-                    dataWidth = dasm.dataWidth,
-                    Operands = dasm.ops.ToArray(),
-                    repeatImm = (dasm.uExtension & 0x80) != 0 ? 0 : rep + 1,
-                    repeatReg = (dasm.uExtension & 0x80) != 0 ? Registers.GpRegisters[rep] : null,
-                };
-                instr = dasm.SpecialCase(instr);
-                return instr;
-            }
+            return new InstrDecoder<Msp430Disassembler, Mnemonics, Msp430Instruction>(iclass, mnemonic, mutators);
         }
 
         private class JmpDecoder : Decoder
@@ -515,7 +495,7 @@ namespace Reko.Arch.Msp430
 
         private static readonly ExtDecoder extDecoder = new ExtDecoder(extDecoders);
 
-        private static readonly Decoder invalid = new InstrDecoder(Mnemonics.invalid, InstrClass.Invalid);
+        private static readonly Decoder invalid = Instr(Mnemonics.invalid, InstrClass.Invalid);
 
         private static readonly Decoder nyi = new NyiDecoder<Msp430Disassembler, Mnemonics, Msp430Instruction>("");
 

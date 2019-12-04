@@ -59,6 +59,16 @@ namespace Reko.Arch.M6800.M6812
             return instr;
         }
 
+        public override M6812Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            return new M6812Instruction
+            {
+                Mnemonic = mnemonic,
+                InstructionClass = iclass,
+                Operands = this.operands.ToArray()
+            };
+        }
+
         public override M6812Instruction CreateInvalidInstruction()
         {
             return new M6812Instruction
@@ -67,35 +77,6 @@ namespace Reko.Arch.M6800.M6812
                 Mnemonic = Mnemonic.invalid,
                 Operands = MachineInstruction.NoOperands
             };
-        }
-
-        public class InstrDecoder : Decoder
-        {
-            private readonly Mnemonic mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator<M6812Disassembler>[] mutators;
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<M6812Disassembler>[] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override M6812Instruction Decode(uint bInstr, M6812Disassembler dasm)
-            {
-                foreach (var mutator in mutators)
-                {
-                    if (!mutator(bInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                return new M6812Instruction
-                {
-                    Mnemonic = this.mnemonic,
-                    InstructionClass = iclass,
-                    Operands = dasm.operands.ToArray()
-                };
-            }
         }
 
         public class NextByteDecoder : Decoder
@@ -115,20 +96,20 @@ namespace Reko.Arch.M6800.M6812
             }
         }
 
-        private static Decoder Instr(Mnemonic opcode, params Mutator<M6812Disassembler> [] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<M6812Disassembler> [] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder<M6812Disassembler, Mnemonic, M6812Instruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<M6812Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<M6812Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, mutators);
+            return new InstrDecoder<M6812Disassembler, Mnemonic, M6812Instruction>(iclass, mnemonic, mutators);
         }
 
 
         private static Decoder Nyi(string message)
         {
-            return new InstrDecoder(Mnemonic.invalid, InstrClass.Invalid, NotYetImplemented);
+            return new InstrDecoder<M6812Disassembler, Mnemonic, M6812Instruction>(InstrClass.Invalid, Mnemonic.invalid, NotYetImplemented);
         }
 
         private static bool A(uint bInstr, M6812Disassembler dasm)

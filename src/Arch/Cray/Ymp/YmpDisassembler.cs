@@ -114,12 +114,12 @@ namespace Reko.Arch.Cray.Ymp
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<YmpDisassembler>[] mutators)
         {
-            return new InstrDecoder2<YmpDisassembler, Mnemonic, CrayInstruction>(InstrClass.Linear, mnemonic, mutators);
+            return new InstrDecoder<YmpDisassembler, Mnemonic, CrayInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
         private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<YmpDisassembler>[] mutators)
         {
-            return new InstrDecoder2<YmpDisassembler, Mnemonic, CrayInstruction>(iclass, mnemonic, mutators);
+            return new InstrDecoder<YmpDisassembler, Mnemonic, CrayInstruction>(iclass, mnemonic, mutators);
         }
 
         protected static NyiDecoder<YmpDisassembler, Mnemonic, CrayInstruction> Nyi(string message)

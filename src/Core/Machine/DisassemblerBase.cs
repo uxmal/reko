@@ -142,13 +142,13 @@ namespace Reko.Core.Machine
         protected static Decoder<TDasm, TMnemonic, TInstr> Instr<TDasm>(TMnemonic mnemonic, params Mutator<TDasm> [] mutators)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
-            return new InstrDecoder2<TDasm, TMnemonic, TInstr>(InstrClass.Linear, mnemonic, mutators);
+            return new InstrDecoder<TDasm, TMnemonic, TInstr>(InstrClass.Linear, mnemonic, mutators);
         }
 
         protected static Decoder<TDasm, TMnemonic, TInstr> Instr<TDasm>(TMnemonic mnemonic, InstrClass iclass, params Mutator<TDasm>[] mutators)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
-            return new InstrDecoder2<TDasm, TMnemonic, TInstr>(iclass, mnemonic, mutators);
+            return new InstrDecoder<TDasm, TMnemonic, TInstr>(iclass, mnemonic, mutators);
         }
 
         protected static MaskDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(int bitPos, int bitLength, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)

@@ -75,6 +75,17 @@ namespace Reko.Arch.MicroBlaze
             return flds.Select(f => BeField(f.bitPos, f.bitLength)).ToArray();
         }
 
+        public override MicroBlazeInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new MicroBlazeInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = this.ops.ToArray()
+            };
+            return instr;
+        }
+
         public override MicroBlazeInstruction CreateInvalidInstruction()
         {
             return new MicroBlazeInstruction
@@ -172,45 +183,16 @@ namespace Reko.Arch.MicroBlaze
         #endregion
 
         #region Decoders
-        private class InstrDecoder : Decoder
+
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<MicroBlazeDisassembler>[] mutators)
         {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<MicroBlazeDisassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<MicroBlazeDisassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override MicroBlazeInstruction Decode(uint wInstr, MicroBlazeDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var instr = new MicroBlazeInstruction
-                {
-                    InstructionClass = iclass,
-                    Mnemonic = mnemonic,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
-        }
-
-        private static InstrDecoder Instr(Mnemonic mnemonic, params Mutator<MicroBlazeDisassembler>[] mutators)
-        {
-            return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
+            return new InstrDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
 
-        private static InstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<MicroBlazeDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<MicroBlazeDisassembler>[] mutators)
         {
-            return new InstrDecoder(iclass, mnemonic, mutators);
+            return new InstrDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction>(iclass, mnemonic, mutators);
         }
 
         protected static NyiDecoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction> Nyi(string message)

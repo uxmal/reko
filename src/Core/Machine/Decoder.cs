@@ -77,4 +77,15 @@ namespace Reko.Core.Machine
             Debug.Print(sb.ToString());
         }
     }
+
+    public abstract class WideDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
+        where TInstr : MachineInstruction
+    {
+        public sealed override TInstr Decode(uint wInstr, TDasm dasm)
+        {
+            throw new InvalidOperationException("32-bit decoding is not allowed with wide decoders.");
+        }
+
+        public abstract TInstr Decode(ulong ulInstr, TDasm dasm);
+    }
 }

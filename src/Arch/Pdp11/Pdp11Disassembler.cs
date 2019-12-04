@@ -72,12 +72,24 @@ namespace Reko.Arch.Pdp11
             return instrCur;
         }
 
+        public override Pdp11Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new Pdp11Instruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                DataWidth = this.dataWidth,
+                Operands = this.ops.ToArray()
+            };
+            return instr;
+        }
+
         public override Pdp11Instruction CreateInvalidInstruction()
         {
             return new Pdp11Instruction
             {
-                Mnemonic = Mnemonic.illegal,
                 InstructionClass = InstrClass.Invalid,
+                Mnemonic = Mnemonic.illegal,
                 Operands = MachineInstruction.NoOperands
             };
         }
@@ -150,46 +162,14 @@ namespace Reko.Arch.Pdp11
         
         #endregion
 
-
-        class InstrDecoder : Decoder
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<Pdp11Disassembler> [] mutators)
         {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<Pdp11Disassembler>[] mutators;
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<Pdp11Disassembler>[] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override Pdp11Instruction Decode(uint uInstr, Pdp11Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(uInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var instr = new Pdp11Instruction
-                {
-                    Mnemonic = this.mnemonic,
-                    InstructionClass = iclass,
-                    DataWidth = dasm.dataWidth,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
+            return new InstrDecoder<Pdp11Disassembler,Mnemonic,Pdp11Instruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<Pdp11Disassembler> [] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<Pdp11Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
-        }
-
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<Pdp11Disassembler>[] mutators)
-        {
-            return new InstrDecoder(opcode, iclass, mutators);
+            return new InstrDecoder<Pdp11Disassembler, Mnemonic, Pdp11Instruction>(iclass, mnemonic, mutators);
         }
 
         private static readonly Decoder[] decoders;

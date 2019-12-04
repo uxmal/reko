@@ -54,9 +54,21 @@ namespace Reko.Arch.Mips
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt16(out ushort uInstr))
                 return null;
+            ops.Clear();
             var instr = rootDecoder.Decode(uInstr, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
+            return instr;
+        }
+
+        public override MipsInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new MipsInstruction
+            {
+                Mnemonic = mnemonic,
+                InstructionClass = iclass,
+                Operands = this.ops.ToArray()
+            };
             return instr;
         }
 
@@ -86,12 +98,12 @@ namespace Reko.Arch.Mips
 
         private static Decoder Instr(Mnemonic opcode, params Mutator<MicroMipsDisassembler> [] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>(InstrClass.Linear, opcode, mutators);
         }
 
         private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<MicroMipsDisassembler>[] mutators)
         {
-            return new InstrDecoder(iclass, opcode, mutators);
+            return new InstrDecoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>(iclass, opcode, mutators);
         }
 
         //
@@ -106,38 +118,6 @@ namespace Reko.Arch.Mips
         private static Decoder Nyi(string message)
         {
             return new NyiDecoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>(message);
-        }
-
-        private class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<MicroMipsDisassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<MicroMipsDisassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override MipsInstruction Decode(uint wInstr, MicroMipsDisassembler dasm)
-            {
-                foreach (var mutator in mutators)
-                {
-                    if (!mutator(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var ops = dasm.ops;
-                var instr = new MipsInstruction
-                {
-                    Mnemonic = this.mnemonic,
-                    InstructionClass = this.iclass,
-                    Operands = ops.ToArray()
-                };
-                ops.Clear();
-                return instr;
-            }
         }
 
         private class ReadLow16Decoder : Decoder

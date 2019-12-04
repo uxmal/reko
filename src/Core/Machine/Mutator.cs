@@ -27,4 +27,6 @@ using System.Threading.Tasks;
 namespace Reko.Core.Machine
 {
     public delegate bool Mutator<TDasm>(uint uInstr, TDasm dasm);
+
+    public delegate bool WideMutator<TDasm>(ulong uInstr, TDasm dasm);
 }
