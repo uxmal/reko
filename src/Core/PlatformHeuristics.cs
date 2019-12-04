@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -27,33 +27,12 @@ namespace Reko.Core
 {
     public class PlatformHeuristics
     {
-        public BytePattern[] ProcedurePrologs;
+        public MaskedPattern[] ProcedurePrologs;
     }
 
-    public class BytePattern
+    public class MaskedPattern
     {
         public byte[] Bytes;
         public byte[] Mask;
-
-        public static bool TryParseHexDigit(char c, out byte b)
-        {
-            if ('0' <= c && c <= '9')
-            {
-                b = (byte)(c - '0');
-                return true;
-            }
-            else if ('A' <= c && c <= 'F')
-            {
-                b = (byte)(c - 'A' + 10);
-                return true;
-            }
-            else if ('a' <= c && c <= 'f')
-            {
-                b = (byte)(c - 'a' + 10);
-                return true;
-            }
-            b = 0;
-            return false;
-        }
     }
 }

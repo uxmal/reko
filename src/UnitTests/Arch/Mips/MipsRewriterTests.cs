@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         protected override MemoryArea RewriteCode(string hexBytes)
         {
-            var bytes = PlatformDefinition.LoadHexBytes(hexBytes)
+            var bytes = BytePattern.FromHexBytes(hexBytes)
                            .ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
             this.rdr = image.CreateBeReader(0);

@@ -83,18 +83,18 @@ namespace Reko.Core.Configuration
             {
                 return new PlatformHeuristics
                 {
-                    ProcedurePrologs = new BytePattern[0],
+                    ProcedurePrologs = new MaskedPattern[0],
                 };
             }
-            BytePattern[] prologs;
+            MaskedPattern[] prologs;
             if (heuristics.ProcedurePrologs == null)
             {
-                prologs = new BytePattern[0];
+                prologs = new MaskedPattern[0];
             }
             else
             {
                 prologs = heuristics.ProcedurePrologs
-                    .Select(p => LoadBytePattern(p))
+                    .Select(p => LoadMaskedPattern(p))
                     .Where(p => p.Bytes != null)
                     .ToArray();
             }
@@ -105,7 +105,7 @@ namespace Reko.Core.Configuration
             };
         }
 
-        public BytePattern LoadBytePattern(BytePattern_v1 sPattern)
+        public MaskedPattern LoadMaskedPattern(BytePattern_v1 sPattern)
         {
             List<byte> bytes = null;
             List<byte> mask = null;
@@ -151,13 +151,13 @@ namespace Reko.Core.Configuration
             }
             else
             {
-                bytes = LoadHexBytes(sPattern.Bytes);
-                mask = LoadHexBytes(sPattern.Mask);
+                bytes = BytePattern.FromHexBytes(sPattern.Bytes);
+                mask = BytePattern.FromHexBytes(sPattern.Mask);
             }
             if (bytes.Count == 0)
                 return null;
             else
-                return new BytePattern
+                return new MaskedPattern
                 {
                     Bytes = bytes.ToArray(),
                     Mask = mask.ToArray()
@@ -165,30 +165,6 @@ namespace Reko.Core.Configuration
 
         }
 
-        //$REFACTOR: this is so generic it should live somewhere else.
-        public static List<byte> LoadHexBytes(string sBytes)
-        {
-            int shift = 4;
-            int bb = 0;
-            var bytes = new List<byte>();
-            for (int i = 0; i < sBytes.Length; ++i)
-            {
-                char c = sBytes[i];
-                byte b;
-                if (BytePattern.TryParseHexDigit(c, out b))
-                {
-                    bb = bb | (b << shift);
-                    shift -= 4;
-                    if (shift < 0)
-                    {
-                        bytes.Add((byte)bb);
-                        shift = 4;
-                        bb = 0;
-                    }
-                }
-            }
-            return bytes;
-        }
 
         public override string ToString()
         {
