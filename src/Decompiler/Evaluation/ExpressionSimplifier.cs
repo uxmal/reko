@@ -489,8 +489,7 @@ namespace Reko.Evaluation
                 if (exp.DataType.BitSize == cast.DataType.BitSize)
                 {
                     // Redundant word-casts can be stripped.
-                    var wordType = PrimitiveType.CreateWord(exp.DataType.BitSize);
-                    if (wordType == cast.DataType)
+                    if (cast.DataType.IsWord())
                     {
                         return exp;
                     }
