@@ -4720,7 +4720,7 @@ l0000000000017C7C:
 
 l0000000000017C84:
 	flw	fa4,52(s2)
-	fmv.s.x	fa5,zero
+	fmv.w.x	fa5,zero
 	feq.s	a5,fa4,fa5
 	beq	a5,zero,0000000000017CC8
 
@@ -4884,7 +4884,7 @@ l0000000000017E70:
 
 l0000000000017E78:
 	flw	fa4,52(s0)
-	fmv.s.x	fa5,zero
+	fmv.w.x	fa5,zero
 	feq.s	a5,fa4,fa5
 	beq	a5,zero,0000000000017EBC
 
