@@ -29,7 +29,7 @@ namespace Reko.Arch.MicroBlaze
 {
     using Decoder = Decoder<MicroBlazeDisassembler, Mnemonic, MicroBlazeInstruction>;
 
-    public class MicroBlazeDisassembler : DisassemblerBase<MicroBlazeInstruction>
+    public class MicroBlazeDisassembler : DisassemblerBase<MicroBlazeInstruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
 
@@ -75,7 +75,7 @@ namespace Reko.Arch.MicroBlaze
             return flds.Select(f => BeField(f.bitPos, f.bitLength)).ToArray();
         }
 
-        protected override MicroBlazeInstruction CreateInvalidInstruction()
+        public override MicroBlazeInstruction CreateInvalidInstruction()
         {
             return new MicroBlazeInstruction
             {

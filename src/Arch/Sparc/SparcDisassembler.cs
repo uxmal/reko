@@ -32,7 +32,7 @@ namespace Reko.Arch.Sparc
 {
     using Decoder = Decoder<SparcDisassembler, Mnemonic, SparcInstruction>;
 
-    public class SparcDisassembler : DisassemblerBase<SparcInstruction>
+    public class SparcDisassembler : DisassemblerBase<SparcInstruction, Mnemonic>
     {
         private const InstrClass Transfer = InstrClass.Delay | InstrClass.Transfer;
         private const InstrClass CondTransfer = InstrClass.Delay | InstrClass.Transfer | InstrClass.Conditional;
@@ -65,7 +65,7 @@ namespace Reko.Arch.Sparc
             return instrCur;
         }
 
-        protected override SparcInstruction CreateInvalidInstruction()
+        public override SparcInstruction CreateInvalidInstruction()
         {
             return invalid.Decode(0, this);
         }

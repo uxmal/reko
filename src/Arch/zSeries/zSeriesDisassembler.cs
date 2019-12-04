@@ -31,7 +31,7 @@ namespace Reko.Arch.zSeries
 {
     using Mutator = Func<ulong, zSeriesDisassembler, bool>;
 
-    public class zSeriesDisassembler : DisassemblerBase<zSeriesInstruction>
+    public class zSeriesDisassembler : DisassemblerBase<zSeriesInstruction, Mnemonic>
     {
         private readonly static Decoder[] decoders;
         private readonly static Decoder invalid;
@@ -61,7 +61,7 @@ namespace Reko.Arch.zSeries
             return instr;
         }
 
-        protected override zSeriesInstruction CreateInvalidInstruction()
+        public override zSeriesInstruction CreateInvalidInstruction()
         {
             return new zSeriesInstruction
             {

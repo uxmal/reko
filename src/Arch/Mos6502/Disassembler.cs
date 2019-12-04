@@ -33,7 +33,7 @@ namespace Reko.Arch.Mos6502
 
     // http://www.e-tradition.net/bytes/6502/6502_instruction_set.html
     // 65816 = http://www.zophar.net/fileuploads/2/10538ivwiu/65816info.txt
-    public class Disassembler : DisassemblerBase<Instruction>
+    public class Disassembler : DisassemblerBase<Instruction, Mnemonic>
     {
         private readonly EndianImageReader rdr;
         private Instruction instr;
@@ -45,7 +45,7 @@ namespace Reko.Arch.Mos6502
             this.ops = new List<Operand>();
         }
 
-        protected override Instruction CreateInvalidInstruction()
+        public override Instruction CreateInvalidInstruction()
         {
             return new Instruction
             {

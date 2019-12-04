@@ -34,7 +34,7 @@ namespace Reko.Arch.RiscV
     using Decoder = Reko.Core.Machine.Decoder<RiscVDisassembler, Mnemonic, RiscVInstruction>;
     using MaskDecoder = Reko.Core.Machine.MaskDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>;
 
-    public class RiscVDisassembler : DisassemblerBase<RiscVInstruction>
+    public class RiscVDisassembler : DisassemblerBase<RiscVInstruction, Mnemonic>
     {
         private static readonly Decoder[] decoders;
         private static readonly int[] compressedRegs;
@@ -284,7 +284,7 @@ namespace Reko.Arch.RiscV
             return i;
         }
 
-        protected override RiscVInstruction CreateInvalidInstruction()
+        public override RiscVInstruction CreateInvalidInstruction()
         {
             return new RiscVInstruction
             {

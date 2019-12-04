@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
-    public partial class PowerPcDisassembler : DisassemblerBase<PowerPcInstruction>
+    public partial class PowerPcDisassembler : DisassemblerBase<PowerPcInstruction, Mnemonic>
     {
         private readonly PowerPcArchitecture arch;
         private readonly EndianImageReader rdr;
@@ -64,7 +64,7 @@ namespace Reko.Arch.PowerPC
             return instrCur;
         }
 
-        protected override PowerPcInstruction CreateInvalidInstruction()
+        public override PowerPcInstruction CreateInvalidInstruction()
         {
             return new PowerPcInstruction(Mnemonic.illegal)
             {
@@ -73,7 +73,7 @@ namespace Reko.Arch.PowerPC
             };
         }
 
-        private PowerPcInstruction MakeInstruction(InstrClass iclass, Mnemonic opcode)
+        public override PowerPcInstruction MakeInstruction(InstrClass iclass, Mnemonic opcode)
         {
             return new PowerPcInstruction(opcode)
             {

@@ -32,7 +32,7 @@ namespace Reko.Arch.Vax
     using Decoder = Decoder<VaxDisassembler, Mnemonic, VaxInstruction>;
     using Mutator = Mutator<VaxDisassembler>;
 
-    public partial class VaxDisassembler : DisassemblerBase<VaxInstruction>
+    public partial class VaxDisassembler : DisassemblerBase<VaxInstruction, Mnemonic>
     {
         private VaxArchitecture arch;
         private EndianImageReader rdr;
@@ -67,7 +67,7 @@ namespace Reko.Arch.Vax
             return instr;
         }
 
-        protected override VaxInstruction CreateInvalidInstruction()
+        public override VaxInstruction CreateInvalidInstruction()
         {
             return new VaxInstruction
             {

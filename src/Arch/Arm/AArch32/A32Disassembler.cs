@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm.AArch32
 {
     using Decoder = Reko.Core.Machine.Decoder<A32Disassembler, Mnemonic, AArch32Instruction>;
 
-    public partial class A32Disassembler : DisassemblerBase<AArch32Instruction>
+    public partial class A32Disassembler : DisassemblerBase<AArch32Instruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
         private static readonly Decoder invalid;
@@ -287,7 +287,7 @@ namespace Reko.Arch.Arm.AArch32
             return CreateInvalidInstruction();
         }
 
-        protected override AArch32Instruction CreateInvalidInstruction()
+        public override AArch32Instruction CreateInvalidInstruction()
         {
             return new A32Instruction
             {

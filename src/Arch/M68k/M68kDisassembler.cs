@@ -34,7 +34,7 @@ namespace Reko.Arch.M68k
     // M68k opcode map in http://www.freescale.com/files/archives/doc/ref_manual/M68000PRM.pdf
     using Mutator = Mutator<M68kDisassembler>;
 
-    public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
+    public partial class M68kDisassembler : DisassemblerBase<M68kInstruction, Mnemonic>
     {
         public const string HexStringFormat = "{0}${1}";
 
@@ -187,7 +187,7 @@ namespace Reko.Arch.M68k
         private static bool EXT_OUTER_DISPLACEMENT_WORD(uint A) { return (((A) & 3) == 2 && ((A) & 0x47) < 0x44); }
         private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
 
-        protected override M68kInstruction CreateInvalidInstruction()
+        public override M68kInstruction CreateInvalidInstruction()
         {
             return new M68kInstruction
             {

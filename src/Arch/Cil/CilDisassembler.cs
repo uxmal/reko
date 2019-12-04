@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Arch.Cil
 {
-    public class CilDisassembler : DisassemblerBase<CilInstruction>
+    public class CilDisassembler : DisassemblerBase<CilInstruction, OpCode>
     {
         private EndianImageReader rdr;
         private CilInstruction instr;
@@ -894,7 +894,7 @@ namespace Reko.Arch.Cil
             return instr;
         }
 
-        protected override CilInstruction CreateInvalidInstruction()
+        public override CilInstruction CreateInvalidInstruction()
         {
             return new CilInstruction
             {

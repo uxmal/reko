@@ -33,7 +33,7 @@ namespace Reko.Arch.i8051
     using Decoder = Decoder<i8051Disassembler, Mnemonic, i8051Instruction>;
 
     // http://www.keil.com/support/man/docs/is51/is51_instructions.htm
-    public class i8051Disassembler : DisassemblerBase<i8051Instruction>
+    public class i8051Disassembler : DisassemblerBase<i8051Instruction, Mnemonic>
     {
         private readonly i8051Architecture arch;
         private readonly EndianImageReader rdr;
@@ -56,7 +56,7 @@ namespace Reko.Arch.i8051
             return decoders[b].Decode(b, this);
         }
 
-        protected override i8051Instruction CreateInvalidInstruction()
+        public override i8051Instruction CreateInvalidInstruction()
         {
             return new i8051Instruction
             {

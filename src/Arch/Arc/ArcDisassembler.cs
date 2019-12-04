@@ -29,7 +29,7 @@ namespace Reko.Arch.Arc
     using Decoder = Decoder<ArcDisassembler, Mnemonic, ArcInstruction>;
     using NyiDecoder = NyiDecoder<ArcDisassembler, Mnemonic, ArcInstruction>;
 
-    public class ArcDisassembler : DisassemblerBase<ArcInstruction>
+    public class ArcDisassembler : DisassemblerBase<ArcInstruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
         private const InstrClass T = InstrClass.Transfer;
@@ -68,7 +68,7 @@ namespace Reko.Arch.Arc
             return instr;
         }
 
-        protected override ArcInstruction CreateInvalidInstruction()
+        public override ArcInstruction CreateInvalidInstruction()
         {
             return new ArcInstruction
             {

@@ -32,7 +32,7 @@ namespace Reko.Arch.Msp430
 {
     using Decoder = Decoder<Msp430Disassembler, Mnemonics, Msp430Instruction>;
 
-    public class Msp430Disassembler : DisassemblerBase<Msp430Instruction>
+    public class Msp430Disassembler : DisassemblerBase<Msp430Instruction, Mnemonics>
     {
         private readonly EndianImageReader rdr;
         private readonly Msp430Architecture arch;
@@ -348,7 +348,7 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        protected override Msp430Instruction CreateInvalidInstruction()
+        public override Msp430Instruction CreateInvalidInstruction()
         {
             return new Msp430Instruction
             {

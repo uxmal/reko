@@ -34,7 +34,7 @@ namespace Reko.Arch.Blackfin
     using Decoder = Decoder<BlackfinDisassembler, Mnemonic, BlackfinInstruction>;
     using Mutator = Mutator<BlackfinDisassembler>;
 
-    public class BlackfinDisassembler : DisassemblerBase<BlackfinInstruction>
+    public class BlackfinDisassembler : DisassemblerBase<BlackfinInstruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
 
@@ -62,7 +62,7 @@ namespace Reko.Arch.Blackfin
             return instr;
         }
 
-        protected override BlackfinInstruction CreateInvalidInstruction()
+        public override BlackfinInstruction CreateInvalidInstruction()
         {
             return new BlackfinInstruction
             {

@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.UnitTests.Mocks
 {
-    public class FakeDisassembler : DisassemblerBase<MachineInstruction>
+    public class FakeDisassembler : DisassemblerBase<MachineInstruction, Mnemonic>
     {
         private IEnumerator<MachineInstruction> instrs;
         private Address addr;
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Mocks
             return instr;
         }
 
-        protected override MachineInstruction CreateInvalidInstruction()
+        public override MachineInstruction CreateInvalidInstruction()
         {
             throw new NotImplementedException();
         }

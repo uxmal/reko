@@ -35,7 +35,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
     /// <summary>
     /// Disassembler for the 32-bit Toshiba TLCS-900 processor.
     /// </summary>
-    public partial class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction>
+    public partial class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction, Mnemonic>
     {
         private readonly Tlcs900Architecture arch;
         private readonly ImageReader rdr;
@@ -66,7 +66,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return instr;
         }
 
-        protected override Tlcs900Instruction CreateInvalidInstruction()
+        public override Tlcs900Instruction CreateInvalidInstruction()
         {
             return new Tlcs900Instruction {
                 Address = this.addr,

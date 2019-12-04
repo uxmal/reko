@@ -30,7 +30,7 @@ using System.Diagnostics;
 
 namespace Reko.Arch.Mips
 {
-    public partial class MipsDisassembler : DisassemblerBase<MipsInstruction>
+    public partial class MipsDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass CTD = InstrClass.Call | InstrClass.Transfer | InstrClass.Delay;
@@ -69,7 +69,7 @@ namespace Reko.Arch.Mips
             return instrCur;
         }
 
-        protected override MipsInstruction CreateInvalidInstruction()
+        public override MipsInstruction CreateInvalidInstruction()
         {
             return new MipsInstruction 
             {

@@ -29,7 +29,7 @@ namespace Reko.Arch.OpenRISC
 {
     using Decoder = Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction>;
 
-    public class OpenRISCDisassembler : DisassemblerBase<OpenRISCInstruction>
+    public class OpenRISCDisassembler : DisassemblerBase<OpenRISCInstruction, Mnemonic>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass TDC = InstrClass.Transfer | InstrClass.Delay | InstrClass.Call;
@@ -64,7 +64,7 @@ namespace Reko.Arch.OpenRISC
             return instr;
         }
 
-        protected override OpenRISCInstruction CreateInvalidInstruction()
+        public override OpenRISCInstruction CreateInvalidInstruction()
         {
             return new OpenRISCInstruction
             {

@@ -357,6 +357,7 @@
     <Compile Include="Machine\BitfieldDecoder.cs" />
     <Compile Include="Machine\ConditionalDecoder.cs" />
     <Compile Include="Machine\Decoder.cs" />
+    <Compile Include="Machine\InstrDecoder.cs" />
     <Compile Include="Machine\MaskDecoder.cs" />
     <Compile Include="Machine\Mutator.cs" />
     <Compile Include="Machine\NyiDecoder.cs" />

@@ -31,7 +31,7 @@ namespace Reko.Arch.Pdp11
 {
     using Decoder = Decoder<Pdp11Disassembler, Mnemonic, Pdp11Instruction>;
 
-    public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction>
+    public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction, Mnemonic>
     {
         private readonly Pdp11Architecture arch;
         private readonly EndianImageReader rdr;
@@ -72,7 +72,7 @@ namespace Reko.Arch.Pdp11
             return instrCur;
         }
 
-        protected override Pdp11Instruction CreateInvalidInstruction()
+        public override Pdp11Instruction CreateInvalidInstruction()
         {
             return new Pdp11Instruction
             {

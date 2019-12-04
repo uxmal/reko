@@ -34,7 +34,7 @@ namespace Reko.Arch.PaRisc
 {
     using Decoder = Decoder<PaRiscDisassembler, Mnemonic, PaRiscInstruction>;
 
-    public class PaRiscDisassembler : DisassemblerBase<PaRiscInstruction>
+    public class PaRiscDisassembler : DisassemblerBase<PaRiscInstruction, Mnemonic>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass CTD = InstrClass.ConditionalTransfer | InstrClass.Delay;
@@ -91,7 +91,7 @@ namespace Reko.Arch.PaRisc
             return instr;
         }
 
-        protected override PaRiscInstruction CreateInvalidInstruction()
+        public override PaRiscInstruction CreateInvalidInstruction()
         {
             return invalid.Decode(0, this);
         }

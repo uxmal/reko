@@ -37,7 +37,7 @@ namespace Reko.Arch.Mips
     /// <summary>
     /// Disassembler for the nanoMips instruction set encoding.
     /// </summary>
-    public class NanoMipsDisassembler : DisassemblerBase<MipsInstruction>
+    public class NanoMipsDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
 
@@ -69,7 +69,7 @@ namespace Reko.Arch.Mips
             return instr;
         }
 
-        protected override MipsInstruction CreateInvalidInstruction()
+        public override MipsInstruction CreateInvalidInstruction()
         {
             return new MipsInstruction
             {

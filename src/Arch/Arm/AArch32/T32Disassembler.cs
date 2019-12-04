@@ -38,7 +38,7 @@ namespace Reko.Arch.Arm.AArch32
     /// Disassembles machine code in the ARM T32 encoding into 
     /// ARM32 instructions.
     /// </summary>
-    public partial class T32Disassembler : DisassemblerBase<AArch32Instruction>
+    public partial class T32Disassembler : DisassemblerBase<AArch32Instruction, Mnemonic>
     {
         private const uint ArmRegPC = 0xFu;
 
@@ -285,7 +285,7 @@ namespace Reko.Arch.Arm.AArch32
             return null;
         }
 
-        protected override AArch32Instruction CreateInvalidInstruction()
+        public override AArch32Instruction CreateInvalidInstruction()
         {
             return new T32Instruction
             {

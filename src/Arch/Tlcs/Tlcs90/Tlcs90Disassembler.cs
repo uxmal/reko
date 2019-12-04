@@ -33,7 +33,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     using Decoder = Decoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>;
 
-    public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction>
+    public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction, Mnemonic>
     {
         private readonly EndianImageReader rdr;
         private readonly Tlcs90Architecture arch;
@@ -70,7 +70,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return instr;
         }
 
-        protected override Tlcs90Instruction CreateInvalidInstruction()
+        public override Tlcs90Instruction CreateInvalidInstruction()
         {
             return new Tlcs90Instruction
             {

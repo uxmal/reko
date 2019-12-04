@@ -29,7 +29,7 @@ namespace Reko.Arch.Tms7000
 {
     using Decoder = Decoder<Tms7000Disassembler, Mnemonic, Tms7000Instruction>;
 
-    public class Tms7000Disassembler : DisassemblerBase<Tms7000Instruction>
+    public class Tms7000Disassembler : DisassemblerBase<Tms7000Instruction, Mnemonic>
     {
         private readonly Tms7000Architecture arch;
         private readonly EndianImageReader rdr;
@@ -144,7 +144,7 @@ namespace Reko.Arch.Tms7000
         
         #endregion
 
-        protected override Tms7000Instruction CreateInvalidInstruction()
+        public override Tms7000Instruction CreateInvalidInstruction()
         {
             return new Tms7000Instruction
             {

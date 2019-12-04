@@ -30,7 +30,7 @@ namespace Reko.Arch.M6800.M6812
 {
     using Decoder = Decoder<M6812Disassembler, Mnemonic, M6812Instruction>;
 
-    public class M6812Disassembler : DisassemblerBase<M6812Instruction>
+    public class M6812Disassembler : DisassemblerBase<M6812Instruction, Mnemonic>
     {
         private readonly static Decoder[] decoders;
         private readonly static Decoder[] decodersSecondByte;
@@ -59,7 +59,7 @@ namespace Reko.Arch.M6800.M6812
             return instr;
         }
 
-        protected override M6812Instruction CreateInvalidInstruction()
+        public override M6812Instruction CreateInvalidInstruction()
         {
             return new M6812Instruction
             {

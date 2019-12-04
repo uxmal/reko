@@ -35,7 +35,7 @@ namespace Reko.Arch.SuperH
 
     // http://www.shared-ptr.com/sh_insns.html
 
-    public class SuperHDisassembler : DisassemblerBase<SuperHInstruction>
+    public class SuperHDisassembler : DisassemblerBase<SuperHInstruction, Mnemonic>
     {
         private readonly EndianImageReader rdr;
         private readonly DasmState state;
@@ -59,7 +59,7 @@ namespace Reko.Arch.SuperH
             return instr;
         }
 
-        protected override SuperHInstruction CreateInvalidInstruction()
+        public override SuperHInstruction CreateInvalidInstruction()
         {
             return new SuperHInstruction
             {

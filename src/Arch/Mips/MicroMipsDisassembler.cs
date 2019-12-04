@@ -33,7 +33,7 @@ namespace Reko.Arch.Mips
 {
     using Decoder = Reko.Core.Machine.Decoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>;
 
-    public class MicroMipsDisassembler : DisassemblerBase<MipsInstruction>
+    public class MicroMipsDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {
         private static Decoder rootDecoder;
 
@@ -60,7 +60,7 @@ namespace Reko.Arch.Mips
             return instr;
         }
 
-        protected override MipsInstruction CreateInvalidInstruction()
+        public override MipsInstruction CreateInvalidInstruction()
         {
             var instr = new MipsInstruction
             {

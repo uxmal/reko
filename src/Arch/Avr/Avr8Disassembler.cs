@@ -32,7 +32,7 @@ namespace Reko.Arch.Avr
 
     // Opcode map: http://lyons42.com/AVR/Opcodes/AVRAllOpcodes.html
     // Opcode map: https://en.wikipedia.org/wiki/Atmel_AVR_instruction_set
-    public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
+    public class Avr8Disassembler : DisassemblerBase<AvrInstruction, Mnemonic>
     {
         private readonly static Decoder[] decoders;
         private readonly static Decoder invalid;
@@ -66,7 +66,7 @@ namespace Reko.Arch.Avr
             return instr;
         }
 
-        protected override AvrInstruction CreateInvalidInstruction()
+        public override AvrInstruction CreateInvalidInstruction()
         {
             return new AvrInstruction
             {

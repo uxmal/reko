@@ -30,7 +30,7 @@ namespace Reko.Arch.Rl78
 {
     using Decoder = Decoder<Rl78Disassembler, Mnemonic, Rl78Instruction>;
 
-    public class Rl78Disassembler : DisassemblerBase<Rl78Instruction>
+    public class Rl78Disassembler : DisassemblerBase<Rl78Instruction, Mnemonic>
     {
         private static readonly Decoder[] s_decoders;
         private static readonly Decoder[] s_ext2;
@@ -64,7 +64,7 @@ namespace Reko.Arch.Rl78
             return instr;
         }
 
-        protected override Rl78Instruction CreateInvalidInstruction()
+        public override Rl78Instruction CreateInvalidInstruction()
         {
             return new Rl78Instruction
             {
