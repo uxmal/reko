@@ -184,7 +184,7 @@ namespace Reko.Core.Expressions
             return Constant.Real64(BitConverter.Int64BitsToDouble(bits));
 		}
 
-		private static double MakeReal(int exponent, int expBias, long mantissa, int mantissaSize)
+		public static double MakeReal(int exponent, int expBias, long mantissa, int mantissaSize)
 		{
 			if (exponent == 0)
 			{
