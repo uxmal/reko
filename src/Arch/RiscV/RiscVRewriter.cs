@@ -130,7 +130,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
                 case Mnemonic.fmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd); break;
                 case Mnemonic.fmv_d_x: RewriteFcvt(PrimitiveType.Real64); break;
-                case Mnemonic.fmv_s_x: RewriteFcvt(PrimitiveType.Real32); break;
+                case Mnemonic.fmv_w_x: RewriteFcvt(PrimitiveType.Real32); break;
                 case Mnemonic.fld: RewriteFload(PrimitiveType.Real64); break;
                 case Mnemonic.flw: RewriteFload(PrimitiveType.Real32); break;
                 case Mnemonic.fsd: RewriteStore(PrimitiveType.Real64); break;

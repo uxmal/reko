@@ -83,7 +83,6 @@ namespace Reko.Arch.RiscV
                 { Mnemonic.fnmsub_s, "fnmsub.s" },
                 { Mnemonic.fnmadd_s, "fnmadd.s" },
                 { Mnemonic.fmv_d_x, "fmv.d.x" },
-                { Mnemonic.fmv_s_x, "fmv.s.x" },
             };
         }
 

@@ -189,9 +189,9 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_dasm_fmv_s_x()
+        public void RiscV_dasm_fmv_w_x()
         {
-            AssertCode("fmv.s.x\tfa5,zero", 0xF00007D3u);
+            AssertCode("fmv.w.x\tfa5,zero", 0xF00007D3u);
         }
 
         [Test]

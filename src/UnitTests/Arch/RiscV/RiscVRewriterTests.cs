@@ -293,9 +293,9 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_fmv_s_x()
+        public void RiscV_rw_fmv_w_x()
         {
-            Rewrite(0xF00007D3u);    // fmv.s.x\tfa5,zero
+            Rewrite(0xF00007D3u);    // fmv.w.x\tfa5,zero
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|fa5 = (real32) 0x0000000000000000");
