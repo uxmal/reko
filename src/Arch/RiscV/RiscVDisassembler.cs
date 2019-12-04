@@ -373,31 +373,6 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class GOGGAGOGGA : Decoder
-        {
-            private readonly Mutator<RiscVDisassembler>[] mutators;
-            private readonly Mnemonic mnemonic;
-
-            public GOGGAGOGGA(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override RiscVInstruction Decode(uint wInstr, RiscVDisassembler dasm)
-            {
-                dasm.state.instr.InstructionClass = InstrClass.Linear;
-                dasm.state.instr.Mnemonic = mnemonic;
-                dasm.state.ops.Clear();
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                return dasm.MakeInstruction();
-            }
-        }
-
         public class W32Decoder : Decoder
         {
             private readonly MaskDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction> subDecoders;
