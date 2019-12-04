@@ -18,6 +18,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Gui\Gui.csproj" />
     <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj" />
     <ProjectReference Include="..\UnitTests\UnitTests.csproj" />
