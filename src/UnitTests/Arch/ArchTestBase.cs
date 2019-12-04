@@ -167,7 +167,7 @@ namespace Reko.UnitTests.Arch
 
         public byte[] HexStringToBytes(string hexPattern)
         {
-            return PlatformDefinition.LoadHexBytes(hexPattern)
+            return BytePattern.FromHexBytes(hexPattern)
                 .ToArray();
         }
 

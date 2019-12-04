@@ -141,8 +141,8 @@ namespace Reko.UnitTests.Scanning
         {
             program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
-            program.Platform.Heuristics.ProcedurePrologs = new BytePattern[] {
-                new BytePattern
+            program.Platform.Heuristics.ProcedurePrologs = new MaskedPattern[] {
+                new MaskedPattern
                 {
                     Bytes = new byte[] {0x55, 0x8B, 0xEC },
                     Mask = new byte[] { 0xFF, 0xFF, 0xff }

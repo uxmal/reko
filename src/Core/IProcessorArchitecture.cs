@@ -41,7 +41,10 @@ namespace Reko.Core
         /// <remarks>The IEnumerable lets us use Linq expressions
         /// like Take() on a stream of disassembled instructions.</remarks>
         /// <param name="imageReader"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// An <see cref="IEnumerable{MachineInstruction}"/>, which can be 
+        /// viewed as a stream of disassembled instructions.
+        /// </returns>
         IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace Reko.Core
         /// processor.
         /// </summary>
         /// <param name="map">Segment map with descriptions of segments</param>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="ProcessorState"/>.</returns>
 		ProcessorState CreateProcessorState();
 
         /// <summary>
@@ -307,7 +310,6 @@ namespace Reko.Core
         /// </summary>
         /// <param name="program">The program to postprocess.</param>
         void PostprocessProgram(Program program);
-        
 
         /// <summary>
         /// The dictionary contains options that were loaded from the 

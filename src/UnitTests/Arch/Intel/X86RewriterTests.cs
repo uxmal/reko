@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void Run64bitTest(string hexBytes)
         {
             arch = arch64;
-            image = new MemoryArea(baseAddr64, PlatformDefinition.LoadHexBytes(hexBytes).ToArray());
+            image = new MemoryArea(baseAddr64, BytePattern.FromHexBytes(hexBytes).ToArray());
             host = new RewriterHost(null);
         }
 

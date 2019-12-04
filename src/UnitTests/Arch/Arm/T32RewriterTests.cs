@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override MemoryArea RewriteCode(string hexBytes)
         {
-            var bytes = PlatformDefinition.LoadHexBytes(hexBytes)
+            var bytes = BytePattern.FromHexBytes(hexBytes)
                 .ToArray();
             this.image = new MemoryArea(LoadAddress, bytes);
             return image;
