@@ -238,6 +238,7 @@
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="BinaryReaderExtensions.cs" />
     <Compile Include="BitRange.cs" />
+    <Compile Include="BytePattern.cs" />
     <Compile Include="CallingConvention.cs" />
     <Compile Include="CharacteristicsLibrary.cs" />
     <Compile Include="CLanguage\CBasicType.cs" />
@@ -343,6 +344,7 @@
     <Compile Include="Lib\Float16.cs" />
     <Compile Include="Lib\LinqAlgorithms.cs" />
     <Compile Include="Lib\LTDominatorGraph.cs" />
+    <Compile Include="Lib\MBFFloat.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\Float80.cs" />
