@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{5C315C78-1F97-4B16-81AA-917284969DFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decompiler", "Decompiler\Decompiler.csproj", "{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Decompiler", "Decompiler\Decompiler.csproj", "{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architectures", "Architectures", "{18994109-C4D5-49F9-86E0-3B5B1046C08E}"
 EndProject
@@ -961,12 +961,12 @@ Global
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|x64.Build.0 = Release|Any CPU
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|x86.Build.0 = Release|Any CPU
-		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|Any CPU.ActiveCfg = UnixRelease|Any CPU
-		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|Any CPU.Build.0 = UnixRelease|Any CPU
-		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|x64.ActiveCfg = UnixRelease|Any CPU
-		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|x64.Build.0 = UnixRelease|Any CPU
-		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|x86.ActiveCfg = UnixRelease|Any CPU
-		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|x86.Build.0 = UnixRelease|Any CPU
+		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
+		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|x64.ActiveCfg = Release|Any CPU
+		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|x64.Build.0 = Release|Any CPU
+		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|x86.ActiveCfg = Release|Any CPU
+		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.UnixRelease|x86.Build.0 = Release|Any CPU
 		{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}.Debug|x64.ActiveCfg = Debug|Any CPU
