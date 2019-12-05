@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -33,54 +33,41 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
     [TestFixture]
     public class WasmRewriterTests : Arch.RewriterTestBase
     {
-        private MemoryArea mem;
-        private Address addr = Address.Ptr32(0x00123400);
-        private WasmArchitecture arch;
+        private readonly WasmArchitecture arch;
+        private readonly Address addr = Address.Ptr32(0x00123400);
 
         public WasmRewriterTests()
         {
-            this.arch = new WasmArchitecture("wasm");
+            this.arch = new WasmArchitecture(CreateServiceContainer(), "wasm");
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
+        public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            return new WasmRewriter(arch, mem.CreateLeReader(mem.BaseAddress), arch.CreateFrame());
-        }
-
-        public override Address LoadAddress
-        {
-            get { return addr; }
-        }
-
-        private void BuildTest(params byte[] bytes)
-        {
-            this.mem = new MemoryArea(Address.Ptr32(0x00123400), bytes);
+            return new WasmRewriter(arch, mem.CreateLeReader(0), arch.CreateFrame());
         }
 
         [Test]
         public void WasmRw_Const()
         {
-            BuildTest(0x41, 0x04);
+            base.Given_HexString("4104");
             base.AssertCode(
                 "0|L--|00123400(2): 3 instructions",
-                "1|L--|v2 = 0x00000004",
-                "2|L--|sp = sp - 8",
+                "1|L--|v2 = 4<32>",
+                "2|L--|sp = sp - 8<i32>",
                 "3|L--|Mem0[sp:word32] = v2");
         }
 
         [Test]
         public void WasmRw_Const_r32()
         {
-            BuildTest(0x43, 0xC3, 0xF5, 0x48, 0xC0);
+            Given_HexString("43C3F548C0");
             base.AssertCode(
                 "0|L--|00123400(5): 3 instructions",
                 "1|L--|v2 = -3.14F",
-                "2|L--|sp = sp - 8",
+                "2|L--|sp = sp - 8<i32>",
                 "3|L--|Mem0[sp:real32] = v2");
         }
     }

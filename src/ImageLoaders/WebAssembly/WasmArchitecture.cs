@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.WebAssembly
 {
     public class WasmArchitecture : ProcessorArchitecture
     {
-        public WasmArchitecture(string archName) : base(archName)
+        public WasmArchitecture(IServiceProvider services, string archName) : base(services, archName)
         {
             this.PointerType = PrimitiveType.Ptr32;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -46,29 +46,9 @@ namespace Reko.ImageLoaders.WebAssembly
             return new WasmDisassembler(imageReader);
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new LeImageWriter(img, addr);
+            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -101,17 +81,17 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             throw new NotImplementedException();
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
             throw new NotImplementedException();
         }
@@ -121,7 +101,7 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }
@@ -131,17 +111,17 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader? rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -151,12 +131,7 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             throw new NotImplementedException();
         }

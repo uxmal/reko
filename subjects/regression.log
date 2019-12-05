@@ -951,5 +951,44 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
+=== wasm\hello.wasm
+*** wasm\hello.wasm
+error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
+   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea img, Address addr) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 434
+   at Reko.Core.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 176
+   at Reko.Core.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 119
+   at Reko.Core.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 70
+   at Reko.Decompiler.DumpAssembler(Program program, String filename, Dictionary`2 segmentItems, Formatter wr) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
+   at Reko.Decompiler.<>c__DisplayClass35_0.<ScanProgram>b__0(String n, Dictionary`2 items, Formatter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 572
+   at Reko.DecompiledFileService.WriteDisassembly(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 129
+   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 572
+   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 554
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 193
+=== wasm\nbody.wasm
+*** wasm\nbody.wasm
+error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
+   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea img, Address addr) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 434
+   at Reko.Core.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 176
+   at Reko.Core.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 119
+   at Reko.Core.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 70
+   at Reko.Decompiler.DumpAssembler(Program program, String filename, Dictionary`2 segmentItems, Formatter wr) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
+   at Reko.Decompiler.<>c__DisplayClass35_0.<ScanProgram>b__0(String n, Dictionary`2 items, Formatter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 572
+   at Reko.DecompiledFileService.WriteDisassembly(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 129
+   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 572
+   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 554
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 193
+=== wasm\sample.wasm
+*** wasm\sample.wasm
+error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
+   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea img, Address addr) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 434
+   at Reko.Core.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 176
+   at Reko.Core.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 119
+   at Reko.Core.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 70
+   at Reko.Decompiler.DumpAssembler(Program program, String filename, Dictionary`2 segmentItems, Formatter wr) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
+   at Reko.Decompiler.<>c__DisplayClass35_0.<ScanProgram>b__0(String n, Dictionary`2 items, Formatter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 572
+   at Reko.DecompiledFileService.WriteDisassembly(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 129
+   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 572
+   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 554
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 193
 Stripping SSA identifier numbers
-Decompiled 63 binaries in 107.59 seconds ---
+Decompiled 66 binaries in 107.18 seconds ---

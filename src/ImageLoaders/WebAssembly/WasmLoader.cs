@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -41,16 +41,17 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public WasmLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
         {
+            PreferredBaseAddress = Address.Ptr32(0);
         }
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var rdr = LoadHeader();
             var sections = LoadSections(rdr);
             var segmentMap = BuildSegmentMap(sections);
-            var arch = new WasmArchitecture("wasm");
+            var arch = new WasmArchitecture(Services, "wasm");
             var platform = new DefaultPlatform(Services, arch);
             return new Program()
             {
@@ -92,7 +93,7 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        public Section LoadSection(WasmImageReader rdr)
+        public Section? LoadSection(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarUInt7(out byte bType))
                 return null;            // no more data, return.
@@ -154,7 +155,7 @@ namespace Reko.ImageLoaders.WebAssembly
         }
 
         // The type section declares all function signatures that will be used in the module.
-        private Section LoadTypeSection(WasmImageReader rdr)
+        private Section? LoadTypeSection(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
@@ -163,6 +164,8 @@ namespace Reko.ImageLoaders.WebAssembly
             for (int i = 0; i < count; ++i)
             {
                 var ft = LoadFuncType(rdr);
+                if (ft is null)
+                    return null;
                 types.Add(ft);
             }
             return new TypeSection
@@ -171,7 +174,7 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadImportSection(WasmImageReader rdr)
+        private Section? LoadImportSection(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
@@ -221,17 +224,19 @@ namespace Reko.ImageLoaders.WebAssembly
                         Type = SymbolType.AddressSpace,
                         Module = module,
                         Field = field,
-                        MemoryType = memory_type,
+                        MemoryType = memory_type.Value,
                     });
                     break;
                 case 3:
                     var global_type = ReadGlobalType(rdr);
+                    if (global_type == null)
+                        return null;
                     imps.Add(new Import
                     {
                         Type = SymbolType.Data,
                         Module = module,
                         Field = field,
-                        GlobalType = global_type,
+                        GlobalType = global_type.Value,
                     });
                     break;
                 default:
@@ -253,16 +258,14 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadFunctionSection(WasmImageReader rdr)
+        private Section? LoadFunctionSection(WasmImageReader rdr)
         {
-            uint count;
-            if (!rdr.TryReadVarUInt32(out count))
+            if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
             var decls = new List<uint>();
             for (int i = 0; i < count; ++i)
             {
-                uint decl;
-                if (!rdr.TryReadVarUInt32(out decl))
+                if (!rdr.TryReadVarUInt32(out uint decl))
                     return null;
                 decls.Add(decl);
             }
@@ -272,15 +275,14 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadTableSection(WasmImageReader rdr)
+        private Section? LoadTableSection(WasmImageReader rdr)
         {
-            uint count;
-            if (!rdr.TryReadVarUInt32(out count))
+            if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
             var tables = new List<TableType>();
             for (int i = 0; i < count; ++i)
             {
-                TableType tt = ReadTableType(rdr);
+                TableType? tt = ReadTableType(rdr);
                 if (tt == null)
                     return null;
                 tables.Add(tt);
@@ -291,7 +293,7 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private TableType ReadTableType(WasmImageReader rdr)
+        private TableType? ReadTableType(WasmImageReader rdr)
         {
             var dt = ReadValueType(rdr);
             if (dt == null)
@@ -304,18 +306,16 @@ namespace Reko.ImageLoaders.WebAssembly
             return new TableType
             {
                 EntryType = dt,
-                Initial = tpl.Item1,
-                Maximum = tpl.Item2,
+                Initial = tpl.Value.Item1,
+                Maximum = tpl.Value.Item2,
             };
         }
 
-        private Tuple<uint,uint> ReadResizableLimits(WasmImageReader rdr)
+        private (uint,uint)? ReadResizableLimits(WasmImageReader rdr)
         {
-            uint flags;
-            if (!rdr.TryReadVarUInt32(out flags))
+            if (!rdr.TryReadVarUInt32(out uint flags))
                 return null;
-            uint init;
-            if (!rdr.TryReadVarUInt32(out init))
+            if (!rdr.TryReadVarUInt32(out uint init))
                 return null;
             uint max = 0;
             if ((flags & 1) != 0)
@@ -323,22 +323,19 @@ namespace Reko.ImageLoaders.WebAssembly
                 if (!rdr.TryReadVarUInt32(out max))
                     return null;
             }
-            return Tuple.Create(init, max);
+            return (init, max);
         }
 
-        private Section LoadMemorySection(WasmImageReader rdr)
+        private Section? LoadMemorySection(WasmImageReader rdr)
         {
-            uint count;
-            if (!rdr.TryReadVarUInt32(out count))
+            if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
             var mems = new List<Memory>();
             for (int i = 0; i < count; ++i)
             {
-                uint flags;
-                if (!rdr.TryReadVarUInt32(out flags))
+                if (!rdr.TryReadVarUInt32(out uint flags))
                     return null;
-                uint init;
-                if (!rdr.TryReadVarUInt32(out init))
+                if (!rdr.TryReadVarUInt32(out uint init))
                     return null;
                 uint max = 0;
                 if ((flags & 1) != 0)
@@ -360,10 +357,9 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadGlobalSection(WasmImageReader rdr)
+        private Section? LoadGlobalSection(WasmImageReader rdr)
         {
-            uint count;
-            if (!rdr.TryReadVarUInt32(out count))
+            if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
             var globals = new List<GlobalEntry>();
             for (int i = 0; i < count; ++i)
@@ -374,7 +370,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 var expr = LoadInitExpr(rdr);
                 globals.Add(new GlobalEntry
                 {
-                    Type = global_type,
+                    Type = global_type.Value,
                     InitExpr = expr,
                 });
             }
@@ -384,10 +380,9 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadExportSection(WasmImageReader rdr)
+        private Section? LoadExportSection(WasmImageReader rdr)
         {
-            uint count;
-            if (!rdr.TryReadVarUInt32(out count))
+            if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
             var exports = new List<ExportEntry>();
             for (int i = 0; i < count; ++i)
@@ -417,7 +412,7 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        private Section LoadElementSection(WasmImageReader rdr)
+        private Section? LoadElementSection(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
@@ -449,7 +444,7 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadCodeSection(WasmImageReader rdr)
+        private Section? LoadCodeSection(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
@@ -467,7 +462,7 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private FunctionDefinition LoadFunctionDefinition(WasmImageReader rdr)
+        private FunctionDefinition? LoadFunctionDefinition(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarUInt32(out uint len))
                 return null;
@@ -496,7 +491,7 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadDataSection(WasmImageReader rdr)
+        private Section? LoadDataSection(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
@@ -530,12 +525,12 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private FunctionType LoadFuncType(WasmImageReader rdr)
+        private FunctionType? LoadFuncType(WasmImageReader rdr)
         {
             byte form;              // varint7     the value for the func type constructor as defined above
             uint param_count;       // varuint32   the number of parameters to the function
             byte return_count;      // varuint1    the number of results from the function
-            Identifier ret = null;  // value_type ? the result type of the function(if return_count is 1)
+            Identifier? ret = null;  // value_type ? the result type of the function(if return_count is 1)
 
             if (!rdr.TryReadVarUInt7(out form))
                 return null;
@@ -559,17 +554,19 @@ namespace Reko.ImageLoaders.WebAssembly
             if (return_count == 1)
             {
                 var dt = ReadValueType(rdr);
+                if (dt is null)
+                    return null;
                 ret = new Identifier(
                     "",
                     dt,
                     new StackArgumentStorage(0, dt));
             }
             return new FunctionType(
-                ret,
+                ret!,
                 args.ToArray());
         }
 
-        private DataType ReadValueType(WasmImageReader rdr)
+        private DataType? ReadValueType(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarInt7(out sbyte ty))
                 return null;
@@ -592,12 +589,12 @@ namespace Reko.ImageLoaders.WebAssembly
             return Convert.ToUInt32(eval.Run());
         }
 
-        private Tuple<DataType, bool> ReadGlobalType(WasmImageReader rdr)
+        private (DataType, bool)? ReadGlobalType(WasmImageReader rdr)
         {
             var dt = this.ReadValueType(rdr);
             if (!rdr.TryReadByte(out byte b))
                 return null;
-            return Tuple.Create(dt, b != 0);
+            return (dt!, b != 0);
         }
 
         public SegmentMap BuildSegmentMap(List<Section> sections)
@@ -639,6 +636,8 @@ namespace Reko.ImageLoaders.WebAssembly
     {
 
     }
+
+#nullable disable   //$TODO: remove this '#nullable' when C# 9.0 is released.
     public class CustomSection : Section
     {
         public string Name { get; internal set; }
@@ -672,8 +671,8 @@ namespace Reko.ImageLoaders.WebAssembly
         public string Module;
         public string Field;
         public uint Index = ~0u;
-        public Tuple<DataType, bool> GlobalType;
-        public Tuple<uint, uint> MemoryType;
+        public (DataType, bool) GlobalType;
+        public (uint, uint) MemoryType;
         public TableType TableType;
 
         public override string ToString()
@@ -809,7 +808,7 @@ namespace Reko.ImageLoaders.WebAssembly
     public class GlobalEntry
     {
         public object InitExpr { get; internal set; }
-        public Tuple<DataType, bool> Type { get; internal set; }
+        public (DataType, bool) Type { get; internal set; }
     }
 
     public class ElementSegment
@@ -828,4 +827,5 @@ namespace Reko.ImageLoaders.WebAssembly
     {
         internal DataType DataType;
     }
+#nullable enable
 }

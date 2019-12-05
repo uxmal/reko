@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -29,27 +29,29 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
-    public class WasmDisassembler : DisassemblerBase<WasmInstruction>
+    public class WasmDisassembler : DisassemblerBase<WasmInstruction, Mnemonic>
     {
-        private WasmImageReader rdr;
+        private readonly WasmImageReader rdr;
 
         public WasmDisassembler(EndianImageReader rdr)
         {
-            this.rdr = new WasmImageReader(rdr.Image);
-            this.rdr.Offset = rdr.Offset;
+            this.rdr = new WasmImageReader(new MemoryArea(rdr.Address, rdr.Bytes))
+            {
+                Offset = rdr.Offset
+            };
         }
 
-        public override WasmInstruction DisassembleInstruction()
+        public override WasmInstruction? DisassembleInstruction()
         {
             var addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
             {
                 return null;
             }
-            var opcode = (Opcode)b;
-            if (!opRecs.TryGetValue(opcode, out string fmt))
+            var opcode = (Mnemonic)b;
+            if (!decoders.TryGetValue(opcode, out string fmt))
             {
-                opcode = Opcode.unreachable;
+                opcode = Mnemonic.unreachable;
                 fmt = "";
             }
             var ops = new List<MachineOperand>();
@@ -63,7 +65,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 case 'v':
                     if (!rdr.TryReadVarUInt32(out u))
                     {
-                        opcode = Opcode.unreachable;
+                        opcode = Mnemonic.unreachable;
                         break;
                     }
                     ops.Add(ImmediateOperand.Word32(u));
@@ -71,7 +73,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 case 'r':
                     if (!rdr.TryReadUInt32(out u))
                     {
-                        opcode = Opcode.unreachable;
+                        opcode = Mnemonic.unreachable;
                         break;
                     }
                     ops.Add(new ImmediateOperand(Constant.FloatFromBitpattern(u)));
@@ -81,193 +83,210 @@ namespace Reko.ImageLoaders.WebAssembly
                 }
             }
 
-            var instr = new WasmInstruction(opcode);
-            instr.Address = addr;
-            instr.Operands = ops.ToArray();
-            instr.Length = (int)(rdr.Address - addr);
+            var instr = new WasmInstruction(opcode)
+            {
+                Address = addr,
+                Operands = ops.ToArray(),
+                Length = (int) (rdr.Address - addr)
+            };
             return instr;
         }
 
-        private static Dictionary<Opcode, string> opRecs = new Dictionary<Opcode, string>
+        public override WasmInstruction CreateInvalidInstruction()
         {
-            { Opcode.unreachable, "" },
-            { Opcode.nop, "" },
-            { Opcode.block, "b" },
-            { Opcode.loop, "b" },
-            { Opcode.@if, "b" },
-            { Opcode.@else, "" },
-            { Opcode.end, "" },
-            { Opcode.br, "v" },
-            { Opcode.br_if, "v" },
-            { Opcode.br_table, "t" },
-            { Opcode.@return, "" },
+            var instr = new WasmInstruction(Mnemonic.unreachable)
+            {
+                InstructionClass = InstrClass.Invalid,
+                Operands = MachineInstruction.NoOperands,
+            };
+            return instr;
+        }
 
-            { Opcode.call, "v" },
-            { Opcode.call_indirect, "v,v" },
+        public override WasmInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            throw new NotImplementedException();
+        }
 
-            { Opcode.drop, "" },
-            { Opcode.select, "" },
-            { Opcode.get_local, "v" },
-            { Opcode.set_local, "v" },
-            { Opcode.tee_local, "v" },
-            { Opcode.get_global, "v" },
-            { Opcode.set_global, "v" },
-            { Opcode.i32_load, "m" },
-            { Opcode.i64_load, "m" },
-            { Opcode.f32_load, "m" },
-            { Opcode.f64_load, "m" },
-            { Opcode.i32_load8_s, "m" },
-            { Opcode.i32_load8_u, "m" },
-            { Opcode.i32_load16_s, "m" },
-            { Opcode.i32_load16_u, "m" },
-            { Opcode.i64_load8_s, "m" },
-            { Opcode.i64_load8_u, "m" },
-            { Opcode.i64_load16_s, "m" },
-            { Opcode.i64_load16_u, "m" },
-            { Opcode.i64_load32_s, "m" },
-            { Opcode.i64_load32_u, "m" },
-            { Opcode.i32_store, "m" },
-            { Opcode.i64_store, "m" },
-            { Opcode.f32_store, "m" },
-            { Opcode.f64_store, "m" },
-            { Opcode.i32_store8, "m" },
-            { Opcode.i32_store16, "m" },
-            { Opcode.i64_store8, "m" },
-            { Opcode.i64_store16, "m" },
-            { Opcode.i64_store32, "m" },
-            { Opcode.current_memory, "v" },
-            { Opcode.grow_memory, "v" },
+        private static readonly Dictionary<Mnemonic, string> decoders = new Dictionary<Mnemonic, string>
+        {
+            { Mnemonic.unreachable, "" },
+            { Mnemonic.nop, "" },
+            { Mnemonic.block, "b" },
+            { Mnemonic.loop, "b" },
+            { Mnemonic.@if, "b" },
+            { Mnemonic.@else, "" },
+            { Mnemonic.end, "" },
+            { Mnemonic.br, "v" },
+            { Mnemonic.br_if, "v" },
+            { Mnemonic.br_table, "t" },
+            { Mnemonic.@return, "" },
 
-            { Opcode.i32_const, "v" },
-            { Opcode.i64_const, "V" },
-            { Opcode.f32_const, "r" },
-            { Opcode.f64_const, "R" },
-            { Opcode.i32_eqz, "" },
-            { Opcode.i32_eq, "" },
-            { Opcode.i32_ne, "" },
-            { Opcode.i32_lt_s, "" },
-            { Opcode.i32_lt_u, "" },
-            { Opcode.i32_gt_s, "" },
-            { Opcode.i32_gt_u, "" },
-            { Opcode.i32_le_s, "" },
-            { Opcode.i32_le_u, "" },
-            { Opcode.i32_ge_s, "" },
-            { Opcode.i32_ge_u, "" },
-            { Opcode.i64_eqz, "" },
-            { Opcode.i64_eq, "" },
-            { Opcode.i64_ne, "" },
-            { Opcode.i64_lt_s, "" },
-            { Opcode.i64_lt_u, "" },
-            { Opcode.i64_gt_s, "" },
-            { Opcode.i64_gt_u, "" },
-            { Opcode.i64_le_s, "" },
-            { Opcode.i64_le_u, "" },
-            { Opcode.i64_ge_s, "" },
-            { Opcode.i64_ge_u, "" },
-            { Opcode.f32_eq, "" },
-            { Opcode.f32_ne, "" },
-            { Opcode.f32_lt, "" },
-            { Opcode.f32_gt, "" },
-            { Opcode.f32_le, "" },
-            { Opcode.f32_ge, "" },
-            { Opcode.f64_eq, "" },
-            { Opcode.f64_ne, "" },
-            { Opcode.f64_lt, "" },
-            { Opcode.f64_gt, "" },
-            { Opcode.f64_le, "" },
-            { Opcode.f64_ge, "" },
+            { Mnemonic.call, "v" },
+            { Mnemonic.call_indirect, "v,v" },
 
-            { Opcode.i32_clz, "" },
-            { Opcode.i32_ctz, "" },
-            { Opcode.i32_popcnt, "" },
-            { Opcode.i32_add, "" },
-            { Opcode.i32_sub, "" },
-            { Opcode.i32_mul, "" },
-            { Opcode.i32_div_s, "" },
-            { Opcode.i32_div_u, "" },
-            { Opcode.i32_rem_s, "" },
-            { Opcode.i32_rem_u, "" },
-            { Opcode.i32_and, "" },
-            { Opcode.i32_or, "" },
-            { Opcode.i32_xor, "" },
-            { Opcode.i32_shl, "" },
-            { Opcode.i32_shr_s, "" },
-            { Opcode.i32_shr_u, "" },
-            { Opcode.i32_rotl, "" },
-            { Opcode.i32_rotr, "" },
-            { Opcode.i64_clz, "" },
-            { Opcode.i64_ctz, "" },
-            { Opcode.i64_popcnt, "" },
-            { Opcode.i64_add, "" },
-            { Opcode.i64_sub, "" },
-            { Opcode.i64_mul, "" },
-            { Opcode.i64_div_s, "" },
-            { Opcode.i64_div_u, "" },
-            { Opcode.i64_rem_s, "" },
-            { Opcode.i64_rem_u, "" },
-            { Opcode.i64_and, "" },
-            { Opcode.i64_or, "" },
-            { Opcode.i64_xor, "" },
-            { Opcode.i64_shl, "" },
-            { Opcode.i64_shr_s, "" },
-            { Opcode.i64_shr_u, "" },
-            { Opcode.i64_rotl, "" },
-            { Opcode.i64_rotr, "" },
-            { Opcode.f32_abs, "" },
-            { Opcode.f32_neg, "" },
-            { Opcode.f32_ceil, "" },
-            { Opcode.f32_floor, "" },
-            { Opcode.f32_trunc, "" },
-            { Opcode.f32_nearest, "" },
-            { Opcode.f32_sqrt, "" },
-            { Opcode.f32_add, "" },
-            { Opcode.f32_sub, "" },
-            { Opcode.f32_mul, "" },
-            { Opcode.f32_div, "" },
-            { Opcode.f32_min, "" },
-            { Opcode.f32_max, "" },
-            { Opcode.f32_copysign, "" },
-            { Opcode.f64_abs, "" },
-            { Opcode.f64_neg, "" },
-            { Opcode.f64_ceil, "" },
-            { Opcode.f64_floor, "" },
-            { Opcode.f64_trunc, "" },
-            { Opcode.f64_nearest, "" },
-            { Opcode.f64_sqrt, "" },
-            { Opcode.f64_add, "" },
-            { Opcode.f64_sub, "" },
-            { Opcode.f64_mul, "" },
-            { Opcode.f64_div, "" },
-            { Opcode.f64_min, "" },
-            { Opcode.f64_max, "" },
-            { Opcode.f64_copysign, "" },
+            { Mnemonic.drop, "" },
+            { Mnemonic.select, "" },
+            { Mnemonic.get_local, "v" },
+            { Mnemonic.set_local, "v" },
+            { Mnemonic.tee_local, "v" },
+            { Mnemonic.get_global, "v" },
+            { Mnemonic.set_global, "v" },
+            { Mnemonic.i32_load, "m" },
+            { Mnemonic.i64_load, "m" },
+            { Mnemonic.f32_load, "m" },
+            { Mnemonic.f64_load, "m" },
+            { Mnemonic.i32_load8_s, "m" },
+            { Mnemonic.i32_load8_u, "m" },
+            { Mnemonic.i32_load16_s, "m" },
+            { Mnemonic.i32_load16_u, "m" },
+            { Mnemonic.i64_load8_s, "m" },
+            { Mnemonic.i64_load8_u, "m" },
+            { Mnemonic.i64_load16_s, "m" },
+            { Mnemonic.i64_load16_u, "m" },
+            { Mnemonic.i64_load32_s, "m" },
+            { Mnemonic.i64_load32_u, "m" },
+            { Mnemonic.i32_store, "m" },
+            { Mnemonic.i64_store, "m" },
+            { Mnemonic.f32_store, "m" },
+            { Mnemonic.f64_store, "m" },
+            { Mnemonic.i32_store8, "m" },
+            { Mnemonic.i32_store16, "m" },
+            { Mnemonic.i64_store8, "m" },
+            { Mnemonic.i64_store16, "m" },
+            { Mnemonic.i64_store32, "m" },
+            { Mnemonic.current_memory, "v" },
+            { Mnemonic.grow_memory, "v" },
 
-            { Opcode.i32_wrap_i64, "" },
-            { Opcode.i32_trunc_s_f32, "" },
-            { Opcode.i32_trunc_u_f32, "" },
-            { Opcode.i32_trunc_s_f64, "" },
-            { Opcode.i32_trunc_u_f64, "" },
-            { Opcode.i64_extend_s_i32, "" },
-            { Opcode.i64_extend_u_i32, "" },
-            { Opcode.i64_trunc_s_f32, "" },
-            { Opcode.i64_trunc_u_f32, "" },
-            { Opcode.i64_trunc_s_f64, "" },
-            { Opcode.i64_trunc_u_f64, "" },
-            { Opcode.f32_convert_s_i32, "" },
-            { Opcode.f32_convert_u_i32, "" },
-            { Opcode.f32_convert_s_i64, "" },
-            { Opcode.f32_convert_u_i64, "" },
-            { Opcode.f32_demote_f64, "" },
-            { Opcode.f64_convert_s_i32, "" },
-            { Opcode.f64_convert_u_i32, "" },
-            { Opcode.f64_convert_s_i64, "" },
-            { Opcode.f64_convert_u_i64, "" },
-            { Opcode.f64_promote_f32, "" },
+            { Mnemonic.i32_const, "v" },
+            { Mnemonic.i64_const, "V" },
+            { Mnemonic.f32_const, "r" },
+            { Mnemonic.f64_const, "R" },
+            { Mnemonic.i32_eqz, "" },
+            { Mnemonic.i32_eq, "" },
+            { Mnemonic.i32_ne, "" },
+            { Mnemonic.i32_lt_s, "" },
+            { Mnemonic.i32_lt_u, "" },
+            { Mnemonic.i32_gt_s, "" },
+            { Mnemonic.i32_gt_u, "" },
+            { Mnemonic.i32_le_s, "" },
+            { Mnemonic.i32_le_u, "" },
+            { Mnemonic.i32_ge_s, "" },
+            { Mnemonic.i32_ge_u, "" },
+            { Mnemonic.i64_eqz, "" },
+            { Mnemonic.i64_eq, "" },
+            { Mnemonic.i64_ne, "" },
+            { Mnemonic.i64_lt_s, "" },
+            { Mnemonic.i64_lt_u, "" },
+            { Mnemonic.i64_gt_s, "" },
+            { Mnemonic.i64_gt_u, "" },
+            { Mnemonic.i64_le_s, "" },
+            { Mnemonic.i64_le_u, "" },
+            { Mnemonic.i64_ge_s, "" },
+            { Mnemonic.i64_ge_u, "" },
+            { Mnemonic.f32_eq, "" },
+            { Mnemonic.f32_ne, "" },
+            { Mnemonic.f32_lt, "" },
+            { Mnemonic.f32_gt, "" },
+            { Mnemonic.f32_le, "" },
+            { Mnemonic.f32_ge, "" },
+            { Mnemonic.f64_eq, "" },
+            { Mnemonic.f64_ne, "" },
+            { Mnemonic.f64_lt, "" },
+            { Mnemonic.f64_gt, "" },
+            { Mnemonic.f64_le, "" },
+            { Mnemonic.f64_ge, "" },
 
-            { Opcode.i32_reinterpret_f32, "" },
-            { Opcode.i64_reinterpret_f64, "" },
-            { Opcode.f32_reinterpret_i32, "" },
-            { Opcode.f64_reinterpret_i64, "" },
+            { Mnemonic.i32_clz, "" },
+            { Mnemonic.i32_ctz, "" },
+            { Mnemonic.i32_popcnt, "" },
+            { Mnemonic.i32_add, "" },
+            { Mnemonic.i32_sub, "" },
+            { Mnemonic.i32_mul, "" },
+            { Mnemonic.i32_div_s, "" },
+            { Mnemonic.i32_div_u, "" },
+            { Mnemonic.i32_rem_s, "" },
+            { Mnemonic.i32_rem_u, "" },
+            { Mnemonic.i32_and, "" },
+            { Mnemonic.i32_or, "" },
+            { Mnemonic.i32_xor, "" },
+            { Mnemonic.i32_shl, "" },
+            { Mnemonic.i32_shr_s, "" },
+            { Mnemonic.i32_shr_u, "" },
+            { Mnemonic.i32_rotl, "" },
+            { Mnemonic.i32_rotr, "" },
+            { Mnemonic.i64_clz, "" },
+            { Mnemonic.i64_ctz, "" },
+            { Mnemonic.i64_popcnt, "" },
+            { Mnemonic.i64_add, "" },
+            { Mnemonic.i64_sub, "" },
+            { Mnemonic.i64_mul, "" },
+            { Mnemonic.i64_div_s, "" },
+            { Mnemonic.i64_div_u, "" },
+            { Mnemonic.i64_rem_s, "" },
+            { Mnemonic.i64_rem_u, "" },
+            { Mnemonic.i64_and, "" },
+            { Mnemonic.i64_or, "" },
+            { Mnemonic.i64_xor, "" },
+            { Mnemonic.i64_shl, "" },
+            { Mnemonic.i64_shr_s, "" },
+            { Mnemonic.i64_shr_u, "" },
+            { Mnemonic.i64_rotl, "" },
+            { Mnemonic.i64_rotr, "" },
+            { Mnemonic.f32_abs, "" },
+            { Mnemonic.f32_neg, "" },
+            { Mnemonic.f32_ceil, "" },
+            { Mnemonic.f32_floor, "" },
+            { Mnemonic.f32_trunc, "" },
+            { Mnemonic.f32_nearest, "" },
+            { Mnemonic.f32_sqrt, "" },
+            { Mnemonic.f32_add, "" },
+            { Mnemonic.f32_sub, "" },
+            { Mnemonic.f32_mul, "" },
+            { Mnemonic.f32_div, "" },
+            { Mnemonic.f32_min, "" },
+            { Mnemonic.f32_max, "" },
+            { Mnemonic.f32_copysign, "" },
+            { Mnemonic.f64_abs, "" },
+            { Mnemonic.f64_neg, "" },
+            { Mnemonic.f64_ceil, "" },
+            { Mnemonic.f64_floor, "" },
+            { Mnemonic.f64_trunc, "" },
+            { Mnemonic.f64_nearest, "" },
+            { Mnemonic.f64_sqrt, "" },
+            { Mnemonic.f64_add, "" },
+            { Mnemonic.f64_sub, "" },
+            { Mnemonic.f64_mul, "" },
+            { Mnemonic.f64_div, "" },
+            { Mnemonic.f64_min, "" },
+            { Mnemonic.f64_max, "" },
+            { Mnemonic.f64_copysign, "" },
+
+            { Mnemonic.i32_wrap_i64, "" },
+            { Mnemonic.i32_trunc_s_f32, "" },
+            { Mnemonic.i32_trunc_u_f32, "" },
+            { Mnemonic.i32_trunc_s_f64, "" },
+            { Mnemonic.i32_trunc_u_f64, "" },
+            { Mnemonic.i64_extend_s_i32, "" },
+            { Mnemonic.i64_extend_u_i32, "" },
+            { Mnemonic.i64_trunc_s_f32, "" },
+            { Mnemonic.i64_trunc_u_f32, "" },
+            { Mnemonic.i64_trunc_s_f64, "" },
+            { Mnemonic.i64_trunc_u_f64, "" },
+            { Mnemonic.f32_convert_s_i32, "" },
+            { Mnemonic.f32_convert_u_i32, "" },
+            { Mnemonic.f32_convert_s_i64, "" },
+            { Mnemonic.f32_convert_u_i64, "" },
+            { Mnemonic.f32_demote_f64, "" },
+            { Mnemonic.f64_convert_s_i32, "" },
+            { Mnemonic.f64_convert_u_i32, "" },
+            { Mnemonic.f64_convert_s_i64, "" },
+            { Mnemonic.f64_convert_u_i64, "" },
+            { Mnemonic.f64_promote_f32, "" },
+
+            { Mnemonic.i32_reinterpret_f32, "" },
+            { Mnemonic.i64_reinterpret_f64, "" },
+            { Mnemonic.f32_reinterpret_i32, "" },
+            { Mnemonic.f64_reinterpret_i64, "" },
         };
 
     }

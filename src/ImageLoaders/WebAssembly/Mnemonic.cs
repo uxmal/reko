@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         unreachable = 0x00,
         nop = 0x01,

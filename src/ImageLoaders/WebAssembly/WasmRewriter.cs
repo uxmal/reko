@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -34,11 +34,11 @@ namespace Reko.ImageLoaders.WebAssembly
 {
     public class WasmRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private WasmArchitecture arch;
-        private IEnumerator<WasmInstruction> dasm;
+        private readonly WasmArchitecture arch;
+        private readonly IEnumerator<WasmInstruction> dasm;
+        private readonly IStorageBinder binder;
         private WasmInstruction instr;
-        private RtlClass rtlc;
-        private IStorageBinder binder;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public WasmRewriter(WasmArchitecture arch, EndianImageReader rdr, IStorageBinder binder)
@@ -53,18 +53,18 @@ namespace Reko.ImageLoaders.WebAssembly
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.rtlc = RtlClass.Linear;
+                this.iclass = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 m = new RtlEmitter(instrs);
-                switch (instr.Opcode)
+                switch (instr.Mnemonic)
                 {
-                case Opcode.i32_const: Const(PrimitiveType.Word32); break;
-                case Opcode.f32_const: Const(PrimitiveType.Real32); break;
+                case Mnemonic.i32_const: Const(PrimitiveType.Word32); break;
+                case Mnemonic.f32_const: Const(PrimitiveType.Real32); break;
                 default: m.Invalid(); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
-                    Class = this.rtlc
+                    Class = this.iclass
                 };
             }
         }
