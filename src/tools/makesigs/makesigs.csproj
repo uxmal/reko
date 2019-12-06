@@ -13,6 +13,7 @@
     <AssemblyName>makesigs</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Configurations>Debug;Release;UnixRelease</Configurations>
   </PropertyGroup>
   <!-- Copy dependencies to the `tools` directory.-->
   <Target Name="CopyToTools" AfterTargets="CopyFilesToOutputDirectory">

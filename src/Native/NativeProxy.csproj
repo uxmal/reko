@@ -4,7 +4,10 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  <RootNamespace>NativeProxy</RootNamespace><AssemblyName>NativeProxy</AssemblyName></PropertyGroup>
+    <RootNamespace>NativeProxy</RootNamespace>
+    <AssemblyName>NativeProxy</AssemblyName>
+    <Configurations>Debug;Release;UnixRelease</Configurations>
+  </PropertyGroup>
 
   <Target Name="CleanCMake" AfterTargets="Clean">
     <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
@@ -19,6 +22,6 @@
     <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
   </Target>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj"/>
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 </Project>

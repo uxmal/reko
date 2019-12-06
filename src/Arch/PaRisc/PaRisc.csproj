@@ -4,7 +4,7 @@
     <AssemblyName>Reko.Arch.PaRisc</AssemblyName>
     <RootNamespace>Reko.Arch.PaRisc</RootNamespace>
     <LangVersion>7.2</LangVersion>
-    <Configurations>Debug;Release;UnixRelease</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

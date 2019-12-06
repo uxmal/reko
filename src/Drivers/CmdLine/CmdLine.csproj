@@ -12,6 +12,7 @@
     <RootNamespace>Reko.CmdLine</RootNamespace>
     <AssemblyName>decompile</AssemblyName>
     <Platforms>x86;x64</Platforms>
+    <Configurations>Debug;Release;UnixRelease</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj" />
