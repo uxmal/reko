@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)'!='Unix'">net472;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)'=='Unix'">netcoreapp2.0</TargetFrameworks>
     <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers>
     <OutputType>Exe</OutputType>
     <RootNamespace>Reko.Tools.genPICdb</RootNamespace>
