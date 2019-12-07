@@ -134,13 +134,24 @@
         <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" />
         <File Source="$(var.Wii.TargetPath)" />
         <File Source="$(var.Windows.TargetPath)" />
-        <File Source="$(var.Windows.ProjectDir)windows32.xml" />
-        <File Source="$(var.Windows.ProjectDir)windows_CE.xml" />
-        <File Source="$(var.Windows.ProjectDir)windows64.xml" />
+        <File Source="$(var.Windows.ProjectDir)advapi32.xml" />
+        <File Source="$(var.Windows.ProjectDir)comdlg32.xml" />
         <File Source="$(var.Windows.ProjectDir)commctrl.xml" />
+        <File Source="$(var.Windows.ProjectDir)gdi32.xml" />
+        <File Source="$(var.Windows.ProjectDir)kernel32.xml" />
+        <File Source="$(var.Windows.ProjectDir)msvcrt.xml" />
         <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" />
         <File Source="$(var.Windows.ProjectDir)oleaut32.xml" />
+        <File Source="$(var.Windows.ProjectDir)shell32.xml" />
+        <File Source="$(var.Windows.ProjectDir)user32.xml" />
         <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" />
+        <File Source="$(var.Windows.ProjectDir)win64characteristics.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows_CE.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows32.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows64.xml" />
+        <File Source="$(var.Windows.ProjectDir)wininet.xml" />
+        <File Source="$(var.Windows.ProjectDir)winspool.xml" />
+        <File Source="$(var.Windows.ProjectDir)wsock32.xml" />
         <File Source="$(var.Xbox360.TargetPath)" />
         <File Source="$(var.ZX81.TargetPath)" />
 
