@@ -36,7 +36,7 @@ namespace Reko.Environments.Windows
     /// Emulates the Win32 operating environment. In particular, intercepts calls to GetProcAddress
     /// so that the procedures used by the decompiled program can be gleaned. 
     /// </summary>
-    public class Win32Emulator : IPlatformEmulator, IImportResolver
+    public class Win32Emulator : IPlatformEmulator, IDynamicLinker
     {
         private Dictionary<string, Module> modules;
         private TWord uPseudoFn;
@@ -108,13 +108,13 @@ namespace Reko.Environments.Windows
             }
         }
 
-        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, string importName, IPlatform platform)
+        ExternalProcedure IDynamicLinker.ResolveProcedure(string moduleName, string importName, IPlatform platform)
         {
             Module module = EnsureModule(moduleName);
             return EnsureProc(module, importName, NYI);
         }
 
-        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
+        ExternalProcedure IDynamicLinker.ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
             throw new NotImplementedException();
         }

@@ -41,14 +41,14 @@ namespace Reko.UnitTests.Analysis
 	{
         private SsaProcedureBuilder m;
         private ProgramDataFlow programDataFlow;
-        private Mock<IImportResolver> importResolver;
+        private Mock<IDynamicLinker> dynamicLinker;
 
         [SetUp]
         public void Setup()
         {
             m = new SsaProcedureBuilder();
             this.programDataFlow = new ProgramDataFlow();
-            this.importResolver = new Mock<IImportResolver>();
+            this.dynamicLinker = new Mock<IDynamicLinker>();
         }
 
         public void EliminateDeadCode()
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
 			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)
 			{

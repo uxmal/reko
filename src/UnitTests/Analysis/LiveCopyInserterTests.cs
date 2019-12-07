@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Analysis
                 Platform = platform,
             };
             this.proc = proc;
-            var importResolver = new Mock<IImportResolver>().Object;
+            var dynamicLinker = new Mock<IDynamicLinker>().Object;
 			var gr = proc.CreateBlockDominatorGraph();
             SsaTransform sst = new SsaTransform(
                 program,

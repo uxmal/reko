@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Scanning
             BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(sc, arch), m);
         }
 
-        private class RewriterHost : IRewriterHost, IImportResolver
+        private class RewriterHost : IRewriterHost, IDynamicLinker
         {
             Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
             Dictionary<ulong, FunctionType> sigs = new Dictionary<ulong, FunctionType>();

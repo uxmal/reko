@@ -447,7 +447,7 @@
     <Compile Include="Core\AbsynCodeFormatterTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
-    <Compile Include="Core\ImportResolverTests.cs" />
+    <Compile Include="Core\DynamicLinkerTests.cs" />
     <Compile Include="Core\Output\GlobalDataWriterTests.cs" />
     <Compile Include="Core\PrintfApplicationBuilderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />

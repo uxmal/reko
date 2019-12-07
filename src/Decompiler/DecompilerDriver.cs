@@ -119,7 +119,7 @@ namespace Reko
             {
                 if (eventListener.IsCanceled())
                     return;
-                var ir = new ImportResolver(project, program, eventListener);
+                var ir = new DynamicLinker(project, program, eventListener);
                 var dfa = new DataFlowAnalysis(program, ir, eventListener);
                 if (program.NeedsSsaTransform)
                 {
@@ -559,7 +559,7 @@ namespace Reko
         {
             return new Scanner(
                 program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 services);
         }
 

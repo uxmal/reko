@@ -244,7 +244,7 @@ namespace Reko.UnitTests.Analysis
                 : new ProjectLoader(sc, loader, eventListener).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 sc);
 
             scan.EnqueueImageSymbol(ImageSymbol.Procedure(program.Architecture, asm.StartAddress), true);
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Analysis
             postLoad(program);
             var scan = new Scanner(
                 program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 sc);
 
             scan.EnqueueImageSymbol(ImageSymbol.Location(program.Architecture, asm.StartAddress), true);

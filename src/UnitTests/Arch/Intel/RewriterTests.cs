@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Arch.Intel
             project.Programs.Add(this.program);
             scanner = new Scanner(
                 this.program, 
-                new ImportResolver(project, this.program, eventListener),
+                new DynamicLinker(project, this.program, eventListener),
                 sc);
             var ep = ImageSymbol.Procedure(this.program.Architecture, baseAddress);
             this.program.EntryPoints.Add(ep.Address, ep);

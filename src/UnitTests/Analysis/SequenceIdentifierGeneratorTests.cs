@@ -33,12 +33,12 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class SequenceIdentifierGeneratorTests
     {
-        private Mock<IImportResolver> importResolver;
+        private Mock<IDynamicLinker> dynamicLinker;
 
         [SetUp]
         public void Setup()
         {
-            this.importResolver = new Mock<IImportResolver>();
+            this.dynamicLinker = new Mock<IDynamicLinker>();
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Analysis
                 new Program(), 
                 pb.Procedure, 
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 null);
             sst.Transform();
 

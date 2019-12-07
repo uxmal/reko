@@ -45,18 +45,18 @@ namespace Reko.Analysis
 	{
 		private readonly Program program;
 		private readonly DecompilerEventListener eventListener;
-        private readonly IImportResolver importResolver;
+        private readonly IDynamicLinker dynamicLinker;
 		private readonly ProgramDataFlow flow;
         private List<SsaTransform> ssts;
         private HashSet<Procedure> sccProcs;
 
         public DataFlowAnalysis(
             Program program,
-            IImportResolver importResolver,
+            IDynamicLinker dynamicLinker,
             DecompilerEventListener eventListener)
 		{
 			this.program = program;
-            this.importResolver = importResolver;
+            this.dynamicLinker = dynamicLinker;
             this.eventListener = eventListener;
 			this.flow = new ProgramDataFlow(program);
 		}
@@ -129,7 +129,7 @@ namespace Reko.Analysis
                 program,
                 ssts.Select(sst => sst.SsaState),
                 this.flow,
-                importResolver,
+                dynamicLinker,
                 eventListener);
             uvr.Transform();
 
@@ -175,7 +175,7 @@ namespace Reko.Analysis
             // New stack based variables may be available now.
             foreach (var sst in ssts)
             {
-                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, program.CallGraph, importResolver, this.eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, program.CallGraph, dynamicLinker, this.eventListener);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -350,7 +350,7 @@ namespace Reko.Analysis
                     coa.Transform();
                     DeadCode.Eliminate(ssa);
 
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver,  eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker,  eventListener);
                     vp.Transform();
 
                     DumpWatchedProcedure("After expression coalescing", ssa.Procedure);
@@ -405,7 +405,7 @@ namespace Reko.Analysis
                 // not been visited, or are computed destinations  (e.g. vtables)
                 // they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
-                var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
+                var sst = new SsaTransform(program, proc, sccProcs, dynamicLinker, this.ProgramDataFlow);
                 var ssa = sst.Transform();
                 DumpWatchedProcedure("After SSA", ssa.Procedure);
 
@@ -418,7 +418,7 @@ namespace Reko.Analysis
                 // We also hope that procedure constants
                 // kept in registers are propagated to the corresponding call
                 // sites.
-                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
                 vp.Transform();
                 DumpWatchedProcedure("After first VP", ssa.Procedure);
 
@@ -471,7 +471,7 @@ namespace Reko.Analysis
             else
             {
                 // We are assuming phi functions are already generated.
-                var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
+                var sst = new SsaTransform(program, proc, sccProcs, dynamicLinker, this.ProgramDataFlow);
                 return sst;
             }
         }

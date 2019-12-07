@@ -65,8 +65,8 @@ namespace Reko.UnitTests.Evaluation
             this.ssaIds = BuildSsaIdentifiers();
             var listener = new FakeDecompilerEventListener();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var importResolver = new Mock<IImportResolver>();
-            var ssaCtx = new SsaEvaluationContext(arch?.Object, ssaIds, importResolver.Object);
+            var dynamicLinker = new Mock<IDynamicLinker>();
+            var ssaCtx = new SsaEvaluationContext(arch?.Object, ssaIds, dynamicLinker.Object);
             simplifier = new ExpressionSimplifier(segmentMap, ssaCtx, listener);
         }
 

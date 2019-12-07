@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class UnusedOutValuesRemoverTests
     {
-        private Mock<IImportResolver> import;
+        private Mock<IDynamicLinker> import;
         private Mock<DecompilerEventListener> eventListener;
         private ProgramBuilder pb;
         private List<SsaState> ssaStates;
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Analysis
         {
             UnusedOutValuesRemover.trace.Level = TraceLevel.Verbose;
 
-            this.import = new Mock<IImportResolver>();
+            this.import = new Mock<IDynamicLinker>();
             this.eventListener = new Mock<DecompilerEventListener>();
             this.pb = new ProgramBuilder();
             this.ssaStates = new List<SsaState>();

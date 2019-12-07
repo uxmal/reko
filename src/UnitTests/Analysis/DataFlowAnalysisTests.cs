@@ -53,8 +53,8 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter writer)
 		{
             SetCSignatures(program);
-            var importResolver = new Mock<IImportResolver>();
-			dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
+            var dynamicLinker = new Mock<IDynamicLinker>();
+			dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in program.Procedures.Values)
 			{

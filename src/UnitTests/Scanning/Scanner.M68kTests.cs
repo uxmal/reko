@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Scanning
             var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
-                new ImportResolver(project, program, new FakeDecompilerEventListener()),
+                new DynamicLinker(project, program, new FakeDecompilerEventListener()),
                 sc);
             scanner.EnqueueImageSymbol(ImageSymbol.Procedure(arch, addrBase), true);
             scanner.ScanImage();

@@ -132,12 +132,12 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(Action<ProcedureBuilder> builder)
         {
             builder(m);
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
             var sst = new SsaTransform(
                 program, 
                 m.Procedure,
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 new ProgramDataFlow());
             sst.Transform();
             sst.RenameFrameAccesses = true;
@@ -152,12 +152,12 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
             builder(m);
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
             var sst = new SsaTransform(
                 program,
                 m.Procedure,
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 new ProgramDataFlow());
             sst.Transform();
             sst.RenameFrameAccesses = true;

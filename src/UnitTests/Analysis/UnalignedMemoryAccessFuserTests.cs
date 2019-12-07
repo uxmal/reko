@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Analysis
     {
         private ProcedureBuilder m;
         private Mock<IProcessorArchitecture> arch;
-        private IImportResolver importResolver;
+        private IDynamicLinker dynamicLinker;
         private FakeDecompilerEventListener listener;
         private Program program;
 
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             arch = new Mock<IProcessorArchitecture>();
-            importResolver = new Mock<IImportResolver>().Object;
+            dynamicLinker = new Mock<IDynamicLinker>().Object;
             listener = new FakeDecompilerEventListener();
             m = new ProcedureBuilder();
             program = new Program();
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 proc,
                 new HashSet<Procedure>(),
-                importResolver,
+                dynamicLinker,
                 new ProgramDataFlow());
             var ssa = sst.Transform();
             var ufuser = new UnalignedMemoryAccessFuser(ssa);

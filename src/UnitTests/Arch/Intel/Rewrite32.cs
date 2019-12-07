@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Arch.Intel
             var project = new Project { Programs = { program } };
             Scanner scan = new Scanner(
                 program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 services);
             foreach (var ep in asm.EntryPoints)
             {
