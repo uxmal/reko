@@ -52,7 +52,7 @@ namespace Reko.Gui.Forms
 
         protected virtual IDecompiler CreateDecompiler(ILoader ldr)
         {
-            return new DecompilerDriver(ldr, Services);
+            return new Decompiler(ldr, Services);
         }
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

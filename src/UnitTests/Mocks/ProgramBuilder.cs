@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Mocks
 
         public void Add(ProcedureBuilder mock)
         {
-            mock.ProgramMock = this;
+            mock.ProgramBuilder = this;
             Add(mock.Procedure, null);
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
         }
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Mocks
         public Procedure Add(Procedure_v1 userProc, Action<ProcedureBuilder> testCodeBuilder)
         {
             var mock = new ProcedureBuilder(Program.Architecture, GuessName(userProc));
-            mock.ProgramMock = this;
+            mock.ProgramBuilder = this;
             mock.LinearAddress = (uint)((procCount + 1) * 0x1000);
             testCodeBuilder(mock);
             Add(mock.Procedure, userProc);

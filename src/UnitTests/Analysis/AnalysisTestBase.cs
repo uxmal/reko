@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Analysis
         {
             var m = new ProgramBuilder();
             var pb = new ProcedureBuilder();
-            pb.ProgramMock = m;
+            pb.ProgramBuilder = m;
             buildProc(pb);
             m.Add(pb);
             var program = m.BuildProgram();
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Analysis
         {
             var m = new ProgramBuilder(arch);
             var pb = new ProcedureBuilder(arch);
-            pb.ProgramMock = m;
+            pb.ProgramBuilder = m;
             buildProc(pb);
             m.Add(pb);
             var program = m.BuildProgram();

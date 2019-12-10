@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Gui.Forms
                 {
                     program.ToString();
                 });
-            decSvc.Decompiler = new DecompilerDriver(ldr.Object, sc);
+            decSvc.Decompiler = new Decompiler(ldr.Object, sc);
             decSvc.Decompiler.Load("test.exe");
 
             interactor = new ScannedPageInteractor(sc);

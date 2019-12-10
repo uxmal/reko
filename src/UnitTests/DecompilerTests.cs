@@ -39,7 +39,7 @@ namespace Reko.UnitTests
     public class DecompilerTests
     {
         private Mock<ILoader>loader;
-        DecompilerDriver decompiler;
+        Decompiler decompiler;
         private ServiceContainer sc;
         private Mock<IFileSystemService> fsSvc;
 
@@ -57,7 +57,7 @@ namespace Reko.UnitTests
             sc.AddService<IDecompiledFileService>(host);
             sc.AddService<IConfigurationService>((IConfigurationService)cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
-            decompiler = new DecompilerDriver(loader.Object, sc);
+            decompiler = new Decompiler(loader.Object, sc);
         }
 
         [Test]

@@ -56,11 +56,7 @@ namespace Reko
 	/// <summary>
 	/// The main driver class for decompilation of binaries. 
 	/// </summary>
-	/// <remarks>
-	/// This class is named this way as the previous name 'Decompiler' causes C# to get confused
-	/// between the namespace and the class name.
-	/// </remarks>
-	public class DecompilerDriver : IDecompiler
+	public class Decompiler : IDecompiler
 	{
 		private IDecompiledFileService host;
 		private readonly ILoader loader;
@@ -68,7 +64,7 @@ namespace Reko
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
 
-        public DecompilerDriver(ILoader ldr, IServiceProvider services)
+        public Decompiler(ILoader ldr, IServiceProvider services)
         {
             this.loader = ldr ?? throw new ArgumentNullException("ldr");
             this.services = services ?? throw new ArgumentNullException("services");
@@ -198,7 +194,7 @@ namespace Reko
                 var program = loader.LoadExecutable(fileName, image, loaderName, null);
                 if (program == null)
                     return false;
-                this.Project = CreateDefaultProject(fileName, program);
+                this.Project = AddProgramToProject(fileName, program);
                 this.Project.LoadedMetadata = program.Platform.CreateMetadata();
                 program.EnvironmentMetadata = this.Project.LoadedMetadata;
             }
@@ -251,7 +247,7 @@ namespace Reko
         {
             eventListener.ShowStatus("Assembling program.");
             var program = loader.AssembleExecutable(fileName, asm, null);
-            Project = CreateDefaultProject(fileName, program);
+            Project = AddProgramToProject(fileName, program);
             eventListener.ShowStatus("Assembled program.");
         }
 
@@ -268,20 +264,22 @@ namespace Reko
             raw.ArchitectureOptions = raw.ArchitectureOptions ?? new Dictionary<string, object>();
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.LoadRawImage(fileName, image, null, raw);
-            Project = CreateDefaultProject(fileName, program);
+            Project = AddProgramToProject(fileName, program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;
         }
 
-        protected Project CreateDefaultProject(string fileNameWithPath, Program program)
+        protected Project AddProgramToProject(string fileNameWithPath, Program program)
         {
+            if (this.project == null)
+            {
+                this.project = new Project();
+            }
             program.Filename = fileNameWithPath;
             program.EnsureDirectoryNames(fileNameWithPath);
             program.User.ExtractResources = true;
-            var project = new Project
-            {
-                Programs = { program },
-            };
+
+            project.Programs.Add(program);
             return project;
         }
 

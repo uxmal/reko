@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Mocks
         /// </summary>
         public Block Block { get; private set; }
         public Procedure Procedure { get; private set; }
-        public ProgramBuilder ProgramMock { get; set; }
+        public ProgramBuilder ProgramBuilder { get; set; }
         public IProcessorArchitecture Architecture { get; private set; }
         public int InstructionSize { get; set; }
 

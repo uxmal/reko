@@ -125,7 +125,7 @@ namespace Reko.Gui.Forms
 
         public virtual IDecompiler CreateDecompiler(ILoader ldr)
         {
-            return new DecompilerDriver(ldr, sc);
+            return new Decompiler(ldr, sc);
         }
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
