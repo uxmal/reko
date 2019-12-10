@@ -56,11 +56,8 @@ namespace Reko.Arch.Msp430
             ops.Clear();
             dataWidth = null;
             var instr = s_decoders[uInstr >> 12].Decode(uInstr, this);
-            if (instr != null)
-            {
-                instr.Address = addr;
-                instr.Length = (int)(rdr.Address - addr);
-            }
+            instr.Address = addr;
+            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
@@ -141,7 +138,7 @@ namespace Reko.Arch.Msp430
         // b/w/a combined from the op and the extension
         private static bool W(uint uInstr, Msp430Disassembler dasm)
         { 
-                    var w = ((dasm.uExtension & 0x40u) >> 5) | (uInstr & 0x040u) >> 6;
+            var w = ((dasm.uExtension & 0x40u) >> 5) | (uInstr & 0x040u) >> 6;
             switch (w)
             {
             case 0: return false;
