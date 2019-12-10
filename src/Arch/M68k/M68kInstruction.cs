@@ -30,14 +30,14 @@ namespace Reko.Arch.M68k
 {
     public class M68kInstruction : MachineInstruction
     {
-        public Mnemonic code;
+        public Mnemonic Mnemonic;
         public PrimitiveType dataWidth;
 
-        public override int OpcodeAsInteger => (int) code;
+        public override int OpcodeAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (code == Mnemonic.illegal && Operands.Length > 0 && writer.Platform != null)
+            if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && writer.Platform != null)
             {
                 var imm = Operands[0] as M68kImmediateOperand;
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
@@ -53,11 +53,11 @@ namespace Reko.Arch.M68k
             }
             if (dataWidth != null)
             {
-                writer.WriteOpcode(string.Format("{0}{1}", code, DataSizeSuffix(dataWidth)));
+                writer.WriteOpcode(string.Format("{0}{1}", Mnemonic, DataSizeSuffix(dataWidth)));
             }
             else
             {
-                writer.WriteOpcode(code.ToString());
+                writer.WriteOpcode(Mnemonic.ToString());
             }
             RenderOperands(writer, options);
         }
@@ -79,7 +79,6 @@ namespace Reko.Arch.M68k
                     writer.AddAnnotation(addr.ToString());
                 }
                 return;
-
             }
             op.Write(writer, options);
         }
