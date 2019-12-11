@@ -224,6 +224,10 @@
       <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
       <Name>M6800</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\M68k.Design\M68k.Design.csproj">
+      <Project>{90b83ec1-915b-471b-8f86-6a71b17db6a1}</Project>
+      <Name>M68k.Design</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
       <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
       <Name>M68k</Name>
@@ -244,6 +248,10 @@
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Mos6502\Mos6502.csproj">
+      <Project>{dc11ed7f-97f6-4488-86b4-eec67dd1f511}</Project>
+      <Name>Mos6502</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\MSP430\MSP430.csproj">
       <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
       <Name>MSP430</Name>
@@ -256,25 +264,81 @@
       <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>
       <Name>PaRisc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Pdp11\Pdp11.csproj">
+      <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
+      <Name>Pdp11</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\PowerPC.Design\PowerPC.Design.csproj">
       <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
       <Name>PowerPC.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
+      <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>
+      <Name>PowerPC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\RiscV\RiscV.csproj">
+      <Project>{e0697f4c-5f5e-4037-9f0e-7a9064a55b4d}</Project>
+      <Name>RiscV</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Rl78\Rl78.csproj">
       <Project>{54029784-c8a6-43f5-9d00-62ec8da04fa1}</Project>
       <Name>Rl78</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Sparc\Sparc.csproj">
+      <Project>{454d9734-edf3-4646-8c7f-8449c68eb826}</Project>
+      <Name>Sparc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\SuperH\SuperH.csproj">
       <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
       <Name>SuperH</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Tlcs\Tlcs.csproj">
+      <Project>{b15c2937-0fb8-4f3b-8b84-bee861dc841b}</Project>
+      <Name>Tlcs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Tms7000\Tms7000.csproj">
+      <Project>{e453ff63-48cf-4c94-aced-d8f836ebe884}</Project>
+      <Name>Tms7000</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Vax\Vax.csproj">
+      <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
+      <Name>Vax</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\WE32100\WE32100.csproj">
       <Project>{a3d277db-5f5d-41f7-80f1-1c84a5026b90}</Project>
       <Name>WE32100</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\X86.Design\X86.Design.csproj">
+      <Project>{370a707f-3b17-4680-bc35-8edc846f058f}</Project>
+      <Name>X86.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj">
+      <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
+      <Name>X86</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Xtensa\Xtensa.csproj">
+      <Project>{bc7d4ad1-795f-4aec-823c-813e65c5557a}</Project>
+      <Name>Xtensa</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Z80\Z80.csproj">
+      <Project>{66a00ab2-6964-4815-9140-f28fee48e6d6}</Project>
+      <Name>Z80</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
       <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
       <Name>zSeries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assemblers\M68k\M68kAssembler.csproj">
+      <Project>{fd6ad906-bed1-4ac1-a7c5-0a04cca2d7dc}</Project>
+      <Name>M68kAssembler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assemblers\Pdp11\Pdp11Assembler.csproj">
+      <Project>{3bb6b0fb-6686-428b-9dc9-a32f349e50e6}</Project>
+      <Name>Pdp11Assembler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assemblers\x86\X86Assembler.csproj">
+      <Project>{3805de2c-659a-442d-8c34-e88822a4d27c}</Project>
+      <Name>X86Assembler</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
@@ -312,6 +376,38 @@
       <Project>{3488c24e-187c-4477-a310-d2292892d257}</Project>
       <Name>Hpux</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\MacOS\MacOS.csproj">
+      <Project>{d0d1798c-08f7-4de6-94e9-cc382e1fbec8}</Project>
+      <Name>MacOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Msdos.Design\Msdos.Design.csproj">
+      <Project>{6b0ded4f-5035-49ce-ae54-be92b3354e44}</Project>
+      <Name>Msdos.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Msdos\Msdos.csproj">
+      <Project>{a943cf9b-7fcd-413a-b6d9-a199a69af217}</Project>
+      <Name>Msdos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\NeoGeo\NeoGeo.csproj">
+      <Project>{1e57924e-b623-4894-8e3a-87e3e99e2303}</Project>
+      <Name>NeoGeo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Ps3\Ps3.csproj">
+      <Project>{1a60f017-4e4c-48f8-bb97-47d52186c7fd}</Project>
+      <Name>Ps3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\RiscOS\RiscOS.csproj">
+      <Project>{1976b356-7c5e-411a-a409-d3eb349e44fa}</Project>
+      <Name>RiscOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\RT11\RT11.csproj">
+      <Project>{697accc1-ba7b-4b34-bca3-f82113843f40}</Project>
+      <Name>RT11</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\SegaGenesis\SegaGenesis.csproj">
+      <Project>{46d47ac5-dec2-44e6-942a-f1d9b77bb514}</Project>
+      <Name>SegaGenesis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Environments\Switch\Switch.csproj">
       <Project>{c1bae231-5a72-40d2-8b75-328849d58c0f}</Project>
       <Name>Switch</Name>
@@ -320,6 +416,14 @@
       <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
       <Name>SysV</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Trs80\Trs80.csproj">
+      <Project>{8c072c7a-9771-42d5-bf07-e79850cfcc90}</Project>
+      <Name>Trs80</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Wii\Wii.csproj">
+      <Project>{958a95bd-260b-4d90-a7a3-0f514d117298}</Project>
+      <Name>Wii</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Environments\Windows\Windows.csproj">
       <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
       <Name>Windows</Name>
@@ -327,6 +431,10 @@
     <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj">
       <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
       <Name>Xbox360</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\ZX81\ZX81.csproj">
+      <Project>{2b4e0f2e-b458-4bc2-96ac-6a4d9324f974}</Project>
+      <Name>ZX81</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Gui\Gui.csproj">
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
@@ -352,9 +460,17 @@
       <Project>{6faa0b0c-f6c2-4091-9cc8-1dc2cf708bc2}</Project>
       <Name>HpSom</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Hunk\Hunk.csproj">
+      <Project>{f1b0c3c9-1c64-4744-9217-c25fbc5d0dcc}</Project>
+      <Name>Hunk</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\IntelHex\IntelHex.csproj">
       <Project>{72641087-68d2-41e7-9b29-bc9d4213940a}</Project>
       <Name>IntelHex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Llvm\LLVM.csproj">
+      <Project>{9292f9e7-2ce7-470d-b5f0-72d775720bc0}</Project>
+      <Name>LLVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj">
       <Project>{db44d301-72ea-4f9b-8327-be8ebc5b1bc8}</Project>
@@ -368,17 +484,45 @@
       <Project>{0ab0aab7-292e-4827-a480-a32561b07fd7}</Project>
       <Name>Nro</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\OdbgScript\OdbgScript.csproj">
+      <Project>{2882376f-663a-4fc8-842c-b0300a6829e8}</Project>
+      <Name>OdbgScript</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj">
       <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
       <Name>Omf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\TypeLib\TypeLib.csproj">
+      <Project>{a4def935-217c-4107-998c-c7845893cfa0}</Project>
+      <Name>TypeLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\VmsExe\VmsExe.csproj">
+      <Project>{4059bebf-7b5c-4701-ac98-ade2515d8823}</Project>
+      <Name>VmsExe</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj">
       <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
       <Name>Xex</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj">
+      <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
+      <Name>Libc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Python\Python.csproj">
+      <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
+      <Name>Python</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
       <Name>NativeProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Symbols\LGSymLoader\LGSymLoader.csproj">
+      <Project>{9e4b5291-eba1-4127-ac38-e0f822f7e4f1}</Project>
+      <Name>LGSymLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\tools\xslt\xslt.csproj">
+      <Project>{c4ef0f8b-b8bc-4bbd-91e6-f11d2335f901}</Project>
+      <Name>xslt</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj">
       <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>

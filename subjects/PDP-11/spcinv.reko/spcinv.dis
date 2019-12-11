@@ -21,7 +21,7 @@ l0216:
 	word16 r0_16
 	branch TTYIN(out r0_16) l0216
 l021A:
-	branch r0_9 == 0x0042 l0236
+	branch r0_9 == 0x42 l0236
 l0236:
 	PRINT(0x0FDA)
 l023C:
@@ -30,11 +30,11 @@ l023C:
 l0220:
 	r2_3 = 0x0001
 	r3_35 = 0x0001
-	branch r0_9 == 0x0049 l0240
+	branch r0_9 == 0x49 l0240
 l022A:
 	r2_3 = 0x0000
 	r3_35 = 0x0002
-	branch r0_9 == 0x0045 l0240
+	branch r0_9 == 0x45 l0240
 l0240:
 	Mem46[0x0F06:word16] = r2_3
 	Mem49[0x0F08:word16] = r3_35
@@ -172,9 +172,9 @@ l02B0:
 	Mem338[0x02CB:byte] = r0_92
 	word16 r1_339 = 0x02C6
 l02B8:
-	r1_339 = r1_442 + 0x0002
+	r1_339 = r1_442 + 0x0001
 	r1_442 = r1_339
-	branch Mem338[r1_442:word16] - r0_92 != 0x0000 l02B8
+	branch Mem338[r1_442:byte] - r0_92 != 0x0000 l02B8
 l02BC:
 	call Mem338[(r1_339 - 0x02C7 << 1) + 0x02CC:ptr16] (retsize: 2;)
 	return
@@ -250,18 +250,18 @@ l04B4:
 	word16 r0_36 = r0_28 - 0x0001
 	branch Mem34[0x0F02:word16] > 0x0000 l04D8
 l04D2:
-	branch r0_28 - 0x0001 >=u 0x0004 l0584
+	branch r0_28 - 0x0001 >=u 0x04 l0584
 l04D8:
-	branch r0_28 - 0x0001 == 0x0002 l0584
+	branch r0_28 - 0x0001 == 0x02 l0584
 l04DE:
 	Mem51[r5_10 + 0x0EF3:byte] = r0_28 - 0x0001
-	branch r0_28 - 0x0001 >u 0x0016 l04EE
+	branch r0_28 - 0x0001 >u 0x16 l04EE
 l04E8:
 	sp_107 = <invalid>
 	branch fn067C(r0_28 - 0x0001, r3_15, r4_29 + 0x0001, r5_10, out r0_36, out r4, out r5_10) l0584
 l04EE:
 	word16 r1_68 = r0_36 + 0x0001
-	branch r0_36 != 0x0003 l0504
+	branch r0_36 != 0x03 l0504
 l04F8:
 	branch Mem51[0x0F02:word16] <= 0x0000 l0504
 l04FE:
@@ -302,13 +302,13 @@ l058A:
 	sp_109 = sp_142 - 0x0002
 	r0_128 = fn0AB6(r0_157, r4_158, r5_159, out r4, out r5_10)
 l0532:
-	branch r3_134 + 0x0004 - Mem133[r5_10 + 0x0EF0:word16] >u 0x0000 l05AE
+	branch r3_134 + 0x0004 - Mem133[r5_10 + 0x0EF0:byte] >u 0x00 l05AE
 l05AE:
 	r0_128 = r0_128 + 0x0002
 	r1_129 = r1_129 - 0x0001
 	branch r1_129 != 0x0000 l052C
 l053C:
-	branch Mem133[r0_128:word16] - Mem133[r5_10 + 0x0EF0:word16] <u 0x0000 l05B4
+	branch Mem133[r0_128:byte] - Mem133[r5_10 + 0x0EF0:byte] <u 0x00 l05B4
 l0542:
 	word16 r1_198 = Mem133[r0_128:word16]
 	Mem200[r0_128:word16] = Mem133[r0_128:word16] | 0x8000
@@ -426,16 +426,16 @@ l064A:
 	word16 r2_33 = Mem0[0x0F06:word16]
 l064E:
 	bool Z_27
-	branch Mem0[r2_33 + 0x0EE6:word16] - r3 != 0x0000 l0676
+	branch Mem0[r2_33 + 0x0EE6:byte] - r3 != 0x0000 l0676
 l0654:
 	branch Mem0[r2_33 + 0x0EEC:byte] < 0x00 l0676
 l065A:
-	branch Mem0[r2_33 + 0x0EE9:word16] - r1 == 0x0000 l0670
+	branch Mem0[r2_33 + 0x0EE9:byte] - r1 == 0x0000 l0670
 l0670:
 	Mem23[r2_33 + 0x0EE6:byte] = 0x00
 	Z_27 = true
 l0660:
-	branch Mem0[r2_33 + 0x0EE9:word16] - r0 != 0x0000 l0676
+	branch Mem0[r2_33 + 0x0EE9:byte] - r0 != 0x0000 l0676
 l0676:
 	r2_33 = r2_33 - 0x0001
 	Z_27 = SLICE(cond(r2_33), bool, 2) (alias)
@@ -544,7 +544,7 @@ l06F6:
 	branch Mem15[r2_172 + 0x0EEC:byte] < 0x00 l0710
 l0710:
 	r0_50 = fn0AB6(r0_30, r4, r5, out r4, out r5)
-	Mem58[r2_172 + 0x0EEC:word16] = Mem43[r2_172 + 0x0EEC:word16] & ~0x0080
+	Mem58[r2_172 + 0x0EEC:byte] = Mem43[r2_172 + 0x0EEC:byte] & ~0x80
 l0700:
 	word16 r4_67
 	r0_50 = fn0AB6(r0_30, r4, r5, out r4_67, out r5)
@@ -888,9 +888,9 @@ l09EA:
 l09F0:
 	branch Mem66[0x0F10:word16] < 0x0000 l09FE
 l09FE:
-	branch r2_156 == 0x0002 l0A2A
+	branch r2_156 == 0x02 l0A2A
 l09F6:
-	branch r2_156 == 0x0049 l0A2A
+	branch r2_156 == 0x49 l0A2A
 l0A2A:
 	word16 r4_114
 	word16 r5_115

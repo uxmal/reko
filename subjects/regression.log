@@ -76,7 +76,7 @@ Parameter name: index
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block)
    at Reko.Structure.CompoundConditionCoalescer.Transform()
    at Reko.Structure.StructureAnalysis.Structure()
-   at Reko.DecompilerDriver.StructureProgram()
+   at Reko.Decompiler.StructureProgram()
 00017540: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
 === Elf\nanoMips\adddf3\adddf3.o
@@ -399,14 +399,14 @@ l0800_17AE: warning: Non-integral switch expression
 error: An error occurred during decompilation. System.InvalidOperationException: Missing PIC model user options.
    at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 304
    at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details)
-   at Reko.DecompilerDriver.LoadRawImage(String fileName, LoadDetails raw)
+   at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw)
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 215
 === Microchip\C18\PIC18\PIC18Legacy.hex
 *** Microchip\C18\PIC18\PIC18Legacy.hex
 error: An error occurred during decompilation. System.InvalidOperationException: Missing PIC model user options.
    at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 304
    at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details)
-   at Reko.DecompilerDriver.LoadRawImage(String fileName, LoadDetails raw)
+   at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw)
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 215
 === OpenRISC\sunxi\blob.dcproject
 *** OpenRISC\sunxi\blob.dcproject
@@ -434,22 +434,28 @@ Parameter name: stride
 0000B978: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 0000B950: error: Negative strides are not allowed.
 Parameter name: stride
-fn0000F8E8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-00003CA8: warning: Expected sizes of arrays to have been determined by now
-000100B8: warning: Expected sizes of arrays to have been determined by now
-00012478: warning: Expected sizes of arrays to have been determined by now
-0001300E: warning: Expected sizes of arrays to have been determined by now
-000137E8: warning: Expected sizes of arrays to have been determined by now
-00013974: warning: Expected sizes of arrays to have been determined by now
-00003CA8: warning: Expected sizes of arrays to have been determined by now
-000100B8: warning: Expected sizes of arrays to have been determined by now
-00012478: warning: Expected sizes of arrays to have been determined by now
-0001300E: warning: Expected sizes of arrays to have been determined by now
-000137E8: warning: Expected sizes of arrays to have been determined by now
-00013974: warning: Expected sizes of arrays to have been determined by now
+error: An error occurred during decompilation. System.IO.IOException: The requested operation cannot be performed on a file with a user-mapped section open.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
+   at Reko.Core.Services.FileSystemServiceImpl.CreateFileStream(String filename, FileMode mode, FileAccess access) in D:\dev\uxmal\reko\master\src\Core\Services\IFileSystemService.cs:line 70
+   at Reko.DecompiledFileService.CreateTextWriter(String filename)
+   at Reko.DecompiledFileService.WriteTypes(Program program, Action`2 writer)
+   at Reko.Decompiler.ReconstructTypes()
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 185
 === PDP-11\lunar.lda
 === PDP-11\space.dcproject
 *** PDP-11\space.dcproject
+0498: warning: PDP-11 instruction spl is not supported yet.
+106C: warning: PDP-11 instruction spl is not supported yet.
+23B4: warning: PDP-11 instruction spl is not supported yet.
+23BC: warning: PDP-11 instruction spl is not supported yet.
+23D2: warning: PDP-11 instruction spl is not supported yet.
+23E0: warning: PDP-11 instruction spl is not supported yet.
+23E8: warning: PDP-11 instruction spl is not supported yet.
+4D58: warning: PDP-11 instruction spl is not supported yet.
+53EA: warning: PDP-11 instruction spl is not supported yet.
 46BE: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 1924: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1930: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -478,7 +484,7 @@ fn0000F8E8: warning: Structure analysis stopped making progress, quitting. Pleas
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes()
 02DE: error: An error occurred while processing the statement Mem147[r4_87 - 0x003E + 0x0000:byte] = 0x0000.
-    Not handling (ptr16 (struct (0 T_3218 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
+    Not handling (ptr16 (struct (0 T_3197 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin)
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv)
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -584,7 +590,7 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Core.Lib.SccFinder`1.FindAll() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 119
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa()
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures()
-   at Reko.DecompilerDriver.AnalyzeDataFlow()
+   at Reko.Decompiler.AnalyzeDataFlow()
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 184
 === TLCS\900\ngp_iq\NGP_IQ.NGP
 *** TLCS\900\ngp_iq\NGP_IQ.NGP
@@ -611,7 +617,7 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Core.Lib.SccFinder`1.FindAll() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 119
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa()
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures()
-   at Reko.DecompilerDriver.AnalyzeDataFlow()
+   at Reko.Decompiler.AnalyzeDataFlow()
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 184
 === TLCS\90\TLCS-90.corpus
 === VMS-vax\unzip.dcproject
@@ -1118,4 +1124,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 59 binaries in 92.50 seconds ---
+Decompiled 59 binaries in 76.21 seconds ---

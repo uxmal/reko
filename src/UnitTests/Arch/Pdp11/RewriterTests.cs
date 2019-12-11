@@ -156,11 +156,11 @@ namespace Reko.UnitTests.Arch.Pdp11
         [Test]
         public void Pdp11Rw_bisb()
         {
-            BuildTest(0xD5DF, 0x2000, 0x0024);  // "bisb\t#0024,@#2000",
+            BuildTest(0xD5DF, 0x0020, 0x0024);  // "bisb\t#0024,@#2000",
             AssertCode(
                 "0|L--|0200(6): 4 instructions",
-                "1|L--|v2 = Mem0[0x0024:word16] | 0x2000",
-                "2|L--|Mem0[0x0024:word16] = v2",
+                "1|L--|v2 = Mem0[0x0024:byte] | 0x20",
+                "2|L--|Mem0[0x0024:byte] = v2",
                 "3|L--|NZ = cond(v2)",
                 "4|L--|V = false");
         }

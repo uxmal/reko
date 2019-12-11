@@ -785,23 +785,24 @@ l0C8A:
 fn0C76_exit:
 
 
-void fn0C90(word16 wArg02, word16 wArg04)
+void fn0C90(word16 wArg02, byte bArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0002:[0..15] Stack +0004:[0..15]
+// MayUse:  Stack +0002:[0..15] Stack +0004:[0..7]
 // LiveOut: sp
 // Trashed: NZVC sp
 // Preserved: r4
 fn0C90_entry:
+	byte bArg04_46 = SLICE(wArg04, byte, 0)
 l0C90:
 	branch wArg02 >> 1 >=u 0x0000 l0CB2
 l0CB2:
-	Mem11[(wArg02 >> 1) + 0x3013:word16] = Mem5[(wArg02 >> 1) + 0x3013:word16] & ~0x000F
+	Mem11[(wArg02 >> 1) + 0x3013:byte] = Mem5[(wArg02 >> 1) + 0x3013:byte] & ~0x0F
 l0C9A:
-	Mem24[(wArg02 >> 1) + 0x3013:word16] = Mem21[(wArg02 >> 1) + 0x3013:word16] & ~0x00F0
-	wArg04 = wArg04 << 4
+	Mem24[(wArg02 >> 1) + 0x3013:byte] = Mem21[(wArg02 >> 1) + 0x3013:byte] & ~0xF0
+	bArg04_46 = SLICE(wArg04 << 4, byte, 0) (alias)
 l0CB8:
-	Mem31[(wArg02 >> 1) + 0x3013:word16] = Mem28[(wArg02 >> 1) + 0x3013:word16] | wArg04
+	Mem31[(wArg02 >> 1) + 0x3013:byte] = Mem28[(wArg02 >> 1) + 0x3013:byte] | bArg04_46
 	return
 fn0C90_exit:
 
@@ -1762,7 +1763,7 @@ fn1658_entry:
 l1658:
 	branch wArg02 != 0x0000 l1670
 l165E:
-	branch Mem0[r3:word16] != 0x0030 l166C
+	branch Mem0[r3:byte] != 0x30 l166C
 l166C:
 l1670:
 	Mem23[r1:byte] = Mem18[r3:byte]
@@ -1789,8 +1790,8 @@ l1676_thunk_fn15F2:
 l1678:
 	word16 r0_29 = fn15F2(-r0, r1)
 l1680:
-	r0_29 = r0_29 - 0x0002
-	branch Mem0[r0_29:word16] != 0x0020 l1680
+	r0_29 = r0_29 - 0x0001
+	branch Mem0[r0_29:byte] != 0x20 l1680
 l1686:
 	Mem38[r0_29:byte] = 0x2D
 	return

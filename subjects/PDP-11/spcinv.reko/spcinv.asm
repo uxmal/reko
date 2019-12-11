@@ -48,19 +48,19 @@ l0216:
 	bcs	0216
 
 l021A:
-	cmp	r1,#0042
+	cmpb	r1,#0042
 	beq	0236
 
 l0220:
 	dec	r2
 	inc	r3
-	cmp	r1,#0049
+	cmpb	r1,#0049
 	beq	0240
 
 l022A:
 	dec	r2
 	inc	r3
-	cmp	r1,#0045
+	cmpb	r1,#0045
 	beq	0240
 
 l0234:
@@ -120,7 +120,7 @@ l02B0:
 	mov	#02C6,r1
 
 l02B8:
-	cmp	r0,(r1)+
+	cmpb	r0,(r1)+
 	bne	02B8
 
 l02BC:
@@ -317,16 +317,16 @@ l04B4:
 	bgt	04D8
 
 l04D2:
-	cmp	r0,#0004
+	cmpb	r0,#0004
 	blos	0584
 
 l04D8:
-	cmp	r0,#0002
+	cmpb	r0,#0002
 	beq	0584
 
 l04DE:
 	movb	r0,0EF3(r5)
-	cmp	r0,#0016
+	cmpb	r0,#0016
 	bcs	04EE
 
 l04E8:
@@ -336,7 +336,7 @@ l04E8:
 l04EE:
 	mov	r0,r1
 	inc	r1
-	cmp	r0,#0003
+	cmpb	r0,#0003
 	bne	0504
 
 l04F8:
@@ -386,11 +386,11 @@ l0530:
 
 l0532:
 	add	#0004,r3
-	cmp	0EF0(r5),r3
+	cmpb	0EF0(r5),r3
 	bhi	05AE
 
 l053C:
-	cmp	0EF0(r5),@r0
+	cmpb	0EF0(r5),@r0
 	bcs	05B4
 
 l0542:
@@ -429,7 +429,7 @@ l058A:
 	jsr	pc,@#0A74
 	clr	@r0
 	movb	0EF0(r5),r3
-	inc	r3
+	incb	r3
 	movb	r3,-(sp)
 	movb	0EF3(r5),0001(sp)
 	jsr	pc,@#0AB6
@@ -502,19 +502,19 @@ fn064A proc
 	mov	@#0F08,r2
 
 l064E:
-	cmp	r3,0EE6(r2)
+	cmpb	r3,0EE6(r2)
 	bne	0676
 
 l0654:
-	tst	0EEC(r2)
+	tstb	0EEC(r2)
 	bmi	0676
 
 l065A:
-	cmp	r1,0EE9(r2)
+	cmpb	r1,0EE9(r2)
 	beq	0670
 
 l0660:
-	cmp	r0,0EE9(r2)
+	cmpb	r0,0EE9(r2)
 	bne	0676
 
 l0666:
@@ -541,11 +541,11 @@ fn067C proc
 	dec	r1
 	asl	r1
 	add	r0,r1
-	tst	0E2A(r1)
+	tstb	0E2A(r1)
 	beq	06A0
 
 l068A:
-	dec	0E2A(r1)
+	decb	0E2A(r1)
 	movb	0E2A(r1),r1
 	movb	r3,-(sp)
 	movb	r0,0001(sp)
@@ -564,7 +564,7 @@ l06A8:
 	mov	@#0F06,r5
 
 l06AC:
-	tst	0EF0(r5)
+	tstb	0EF0(r5)
 	bne	06D0
 
 l06B2:
@@ -601,7 +601,7 @@ l06E0:
 	bne	06F6
 
 l06E8:
-	tst	0EEC(r2)
+	tstb	0EEC(r2)
 	ble	07A0
 
 l06EE:
@@ -610,7 +610,7 @@ l06EE:
 
 l06F6:
 	movb	0EE9(r2),r0
-	tst	0EEC(r2)
+	tstb	0EEC(r2)
 	bmi	0710
 
 l0700:
@@ -621,15 +621,15 @@ l0700:
 	br	0724
 
 l0710:
-	inc	r3
+	incb	r3
 	movb	r3,-(sp)
 	movb	r0,0001(sp)
 	jsr	pc,@#0AB6
-	dec	r3
-	bic	#0080,0EEC(r2)
+	decb	r3
+	bicb	#0080,0EEC(r2)
 
 l0724:
-	inc	0EE9(r2)
+	incb	0EE9(r2)
 	inc	r0
 	cmp	r0,#0019
 	beq	0784
@@ -864,7 +864,7 @@ l08C0:
 	mov	@#0F08,r2
 
 l08C4:
-	tst	0EE6(r2)
+	tstb	0EE6(r2)
 	beq	08D0
 
 l08CA:
@@ -928,7 +928,7 @@ l092C:
 	bne	093A
 
 l0936:
-	inc	0EEC(r2)
+	incb	0EEC(r2)
 
 l093A:
 	rts	pc
@@ -1040,14 +1040,14 @@ l09F0:
 	bmi	09FE
 
 l09F6:
-	cmp	r2,#0049
+	cmpb	r2,#0049
 	beq	0A2A
 
 l09FC:
 	br	0A04
 
 l09FE:
-	cmp	r2,#0002
+	cmpb	r2,#0002
 	beq	0A2A
 
 l0A04:

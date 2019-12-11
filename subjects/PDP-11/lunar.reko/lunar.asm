@@ -1354,14 +1354,14 @@ l0C9A:
 	asl	0006(sp)
 	asl	0006(sp)
 	asl	0006(sp)
-	bic	#00F0,3013(r4)
+	bicb	#00F0,3013(r4)
 	br	0CB8
 
 l0CB2:
-	bic	#000F,3013(r4)
+	bicb	#000F,3013(r4)
 
 l0CB8:
-	bis	0006(sp),3013(r4)
+	bisb	0006(sp),3013(r4)
 	mov	(sp)+,r4
 	mov	@sp,0004(sp)
 	add	#0004,sp
@@ -2552,7 +2552,7 @@ l1640:
 	bcs	1602
 
 l1646:
-	inc	FFFF(r1)
+	incb	FFFF(r1)
 	sub	#2710,r0
 	br	1640
 
@@ -2572,7 +2572,7 @@ fn1658 proc
 	bne	1670
 
 l165E:
-	cmp	@r3,#0030
+	cmpb	@r3,#0030
 	bne	166C
 
 l1664:
@@ -2601,7 +2601,7 @@ l1678:
 	mov	r1,r0
 
 l1680:
-	cmp	#0020,-(r0)
+	cmpb	#0020,-(r0)
 	bne	1680
 
 l1686:
@@ -3017,7 +3017,7 @@ l3548:
 ;;     3536 (in fn34E0)
 ;;     3540 (in fn34E0)
 fn355A proc
-	tst	@#FB8C
+	tstb	@#FB8C
 	bpl	355A
 
 l3560:

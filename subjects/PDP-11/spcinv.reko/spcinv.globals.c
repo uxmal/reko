@@ -7,19 +7,13 @@
 Eq_n g_t0001 = 
 	{
 		0x00,
-		
-		{
-			0x00
-		},
+		0x00,
 		0x00,
 	};
 Eq_n g_t0002 = 
 	{
 		0x00,
-		
-		{
-			0x00
-		},
+		0x00,
 		0x00,
 	};
 Eq_n g_t0003 = 
@@ -29,16 +23,6 @@ Eq_n g_t0003 =
 		{
 			0x00
 		},
-	};
-Eq_n g_t0004 = 
-	{
-		
-		{
-			0x00,
-			0x00,
-			0x00,
-			0x00,
-		}
 	};
 Eq_n g_t000A = 
 	{
@@ -54,27 +38,7 @@ Eq_n g_t000D =
 		},
 	};
 cui16 g_w0024 = 0x0000;
-Eq_n g_t0049 = 
-	{
-		
-		{
-			0x00,
-			0x00,
-			0x4E,
-			0x44,
-		}
-	};
-Eq_n g_t004A = 
-	{
-		
-		{
-			0x00,
-			0x00,
-			0x56,
-			0x45,
-		}
-	};
-word16 g_w02C6 = 0x2E2C;
+byte g_b02C6 = 0x2C;
 Eq_n g_t02CB = 
 	{
 		0x00
@@ -258,9 +222,18 @@ word16 g_w0EF8 = 0x0000;
 <anonymous> * g_ptr0EFA = null;
 word16 g_w0EFC = 0x0000;
 word16 g_w0EFE = 0x0000;
-union Eq_n * g_ptr0F00 = null;
-union Eq_n * g_ptr0F02 = null;
-union Eq_n * g_ptr0F04 = null;
+Eq_n g_t0F00 = 
+	{
+		0x00
+	};
+Eq_n g_t0F02 = 
+	{
+		0x00
+	};
+Eq_n g_t0F04 = 
+	{
+		0x00
+	};
 struct Eq_n * g_ptr0F06 = &g_t0002;
 struct Eq_n * g_ptr0F08 = null;
 Eq_n g_t0F0A = 
@@ -284,7 +257,10 @@ ci16 g_w0F20 = 0x0000;
 word16 g_w0F22 = 0x0000;
 byte g_b0F24 = 0x00;
 ci16 g_w0F26 = 0x0407;
-union Eq_n * g_ptr0F28 = &g_t0004;
+Eq_n g_t0F28 = 
+	{
+		0x04
+	};
 Eq_n g_a0F2A[] = 
 	{
 	};
