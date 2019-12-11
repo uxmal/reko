@@ -173,6 +173,7 @@
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
+    <Compile Include="Arch\LatticeMico\LatticeMico32DisassemblerTests.cs" />
     <Compile Include="Arch\M6800\M6809DisassemblerTests.cs" />
     <Compile Include="Arch\M6800\M6809RewriterTests.cs" />
     <Compile Include="Arch\M6800\M6812DisassemblerTests.cs" />
@@ -836,6 +837,10 @@
     <ProjectReference Include="..\Arch\i8051\i8051.csproj">
       <Project>{AB5DDEB2-87C0-42C7-8CD3-72CB2B1282FB}</Project>
       <Name>i8051</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\LatticeMico\LatticeMico.csproj">
+      <Project>{75d6bc51-64d8-4f1c-bffd-ee2debfd83ba}</Project>
+      <Name>LatticeMico</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\M6800\M6800.csproj">
       <Project>{54944B1E-7C12-4FB1-A208-996AD6D04B80}</Project>

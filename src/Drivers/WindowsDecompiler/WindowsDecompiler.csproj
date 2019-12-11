@@ -220,6 +220,10 @@
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
       <Name>i8051</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\LatticeMico\LatticeMico.csproj">
+      <Project>{75d6bc51-64d8-4f1c-bffd-ee2debfd83ba}</Project>
+      <Name>LatticeMico</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\M6800\M6800.csproj">
       <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
       <Name>M6800</Name>

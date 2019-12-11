@@ -162,6 +162,8 @@
         <File Source="$(var.Avr.TargetPath)" />
         <File Source="$(var.Blackfin.TargetPath)" />
         <File Source="$(var.Cray.TargetPath)" />
+        <File Source="$(var.i8051.TargetPath)" />
+        <File Source="$(var.LatticeMico.TargetPath)" />
         <File Source="$(var.M6800.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
         <File Source="$(var.M68k.Design.TargetPath)" />
