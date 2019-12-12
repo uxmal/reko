@@ -58,12 +58,12 @@ namespace Reko.Arch.LatticeMico
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new LatticeMico32State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new LatticeMico32Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)

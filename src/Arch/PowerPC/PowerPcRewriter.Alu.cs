@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -874,7 +874,7 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.Operands[0]);
             var s = (opL == opR)
                 ? Constant.Zero(opL.DataType)
-                : m.Xor(opL, opR);
+                : (Expression)m.Xor(opL, opR);
             if (negate)
             {
                 s = m.Comp(s);

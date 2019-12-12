@@ -30,6 +30,8 @@ namespace Reko.Arch.LatticeMico
 
     public class LatticeMico32Disassembler : DisassemblerBase<LatticeMico32Instruction, Mnemonic>
     {
+        private const InstrClass CT = InstrClass.ConditionalTransfer;
+
         private static readonly Decoder rootDecoder;
 
         private readonly LatticeMico32Architecture arch;
@@ -115,6 +117,7 @@ namespace Reko.Arch.LatticeMico
             };
         }
 
+        private static readonly Mutator<LatticeMico32Disassembler> Is5 = ImmS(0, 5);
         private static readonly Mutator<LatticeMico32Disassembler> Is16 = ImmS(0, 16);
 
         private static Mutator<LatticeMico32Disassembler> PcRel(int bitpos, int bitsize)
@@ -195,13 +198,13 @@ namespace Reko.Arch.LatticeMico
         static LatticeMico32Disassembler()
         {
             rootDecoder = Mask(26, 6, "LatticeMico32",
-                Instr(Mnemonic.srui, r16, r21, Is16),
+                Instr(Mnemonic.srui, r16, r21, Is5),
                 Instr(Mnemonic.nori, r16, r21, Is16),
                 Instr(Mnemonic.muli, r16, r21, Is16),
                 Instr(Mnemonic.sh, M(PrimitiveType.Word16), r16),
 
                 Instr(Mnemonic.lb, r16, M(PrimitiveType.SByte)),
-                Instr(Mnemonic.sri, r16, r21, Is16),
+                Instr(Mnemonic.sri, r16, r21, Is5),
                 Instr(Mnemonic.xori, r16, r21, Is16),
                 Instr(Mnemonic.lh, r16, M(PrimitiveType.Int16)),
 
@@ -213,18 +216,18 @@ namespace Reko.Arch.LatticeMico
                 Instr(Mnemonic.sb, M(PrimitiveType.Byte), r16),
                 Instr(Mnemonic.addi, r16, r21, Is16),
                 Instr(Mnemonic.ori, r16, r21, Is16),
-                Instr(Mnemonic.sli, r16, r21, Is16),
+                Instr(Mnemonic.sli, r16, r21, Is5),
 
                 // 10
                 Instr(Mnemonic.lbu, r16, M(PrimitiveType.Byte)),
-                Instr(Mnemonic.be, r16, r21, PcRel16),
-                Instr(Mnemonic.bg, r16, r21, PcRel16),
-                Instr(Mnemonic.bge, r16, r21, PcRel16),
+                Instr(Mnemonic.be,  CT, r16, r21, PcRel16),
+                Instr(Mnemonic.bg,  CT, r16, r21, PcRel16),
+                Instr(Mnemonic.bge, CT, r16, r21, PcRel16),
 
-                Instr(Mnemonic.bgeu, r16, r21, PcRel16),
-                Instr(Mnemonic.bgu, r16, r21, PcRel16),
+                Instr(Mnemonic.bgeu, CT, r16, r21, PcRel16),
+                Instr(Mnemonic.bgu,  CT, r16, r21, PcRel16),
                 Instr(Mnemonic.sw, M(PrimitiveType.Word32), r16),
-                Instr(Mnemonic.bne, r16, r21, PcRel16),
+                Instr(Mnemonic.bne, CT, r16, r21, PcRel16),
 
                 Instr(Mnemonic.andhi, r16, r21, Is16),
                 Instr(Mnemonic.cmpei, r16, r21, Is16),
@@ -258,17 +261,17 @@ namespace Reko.Arch.LatticeMico
                 Instr(Mnemonic.sl, z11, r11, r21, r16),
 
                 // 30
-                Instr(Mnemonic.b, z21, r21),
+                Instr(Mnemonic.b, InstrClass.Transfer, z21, r21),
                 Instr(Mnemonic.modu, z11, r11, r21, r16),
                 Instr(Mnemonic.sub, z11, r11, r21, r16),
                 Instr(Mnemonic.reserved, InstrClass.Invalid),
 
                 Instr(Mnemonic.wcsr, nyi("wcsr")),
                 Instr(Mnemonic.mod, z11, r11, r21, r16),
-                Instr(Mnemonic.call, z21, r21),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, z21, r21),
                 Instr(Mnemonic.sexth, z11, r11, r21),
 
-                Instr(Mnemonic.bi, PcRel26),
+                Instr(Mnemonic.bi, InstrClass.Transfer, PcRel26),
                 Instr(Mnemonic.cmpe, z11, r11, r21, r16),
                 Instr(Mnemonic.cmpg, z11, r11, r21, r16),
                 Instr(Mnemonic.cmpge, z11, r11, r21, r16),

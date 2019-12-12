@@ -1032,7 +1032,7 @@ namespace Reko.Core.Expressions
         /// Generates a bitwise OR operation ('a | b' in the C language family).
         /// </summary>
         /// <returns>Bitwise disjunction expression.</returns>
-        public Expression Or(Expression a, Expression b)
+        public BinaryExpression Or(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Or, a.DataType, a, b);
         }
@@ -1042,7 +1042,7 @@ namespace Reko.Core.Expressions
         /// The second parameter is converted to a Constant.
         /// </summary>
         /// <returns>Bitwise disjunction expression.</returns>
-        public Expression Or(Expression a, int b)
+        public BinaryExpression Or(Expression a, int b)
         {
             return new BinaryExpression(Operator.Or, a.DataType, a, Constant.Create(a.DataType, b));
         }
@@ -1392,7 +1392,7 @@ namespace Reko.Core.Expressions
         /// Generates the bitwise exclusive OR of the two arguments.
         /// </summary>
         /// <returns>Bitwise XOR expression.</returns>
-        public Expression Xor(Expression a, Expression b)
+        public BinaryExpression Xor(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, b);
         }
@@ -1402,7 +1402,7 @@ namespace Reko.Core.Expressions
         /// The second argument is converted to a Constant.
         /// </summary>
         /// <returns>Bitwise XOR expression.</returns>
-        public Expression Xor(Expression a, int b)
+        public BinaryExpression Xor(Expression a, int b)
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, Constant.Create(a.DataType, b));
         }

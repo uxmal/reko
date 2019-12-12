@@ -228,8 +228,6 @@ namespace Reko.Arch.M6800.M6809
             Console.WriteLine(sb.ToString());
         }
 
-
-
         private Expression Clr(Expression e)
         {
             return Constant.Zero(e.DataType);
