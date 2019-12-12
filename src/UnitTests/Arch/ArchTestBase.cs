@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch
 
         public abstract Address LoadAddress { get; }
 
-        protected virtual IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected virtual IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             yield break;
         }
