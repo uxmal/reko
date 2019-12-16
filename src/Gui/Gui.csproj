@@ -34,7 +34,7 @@
         Thanks, build system.
     -->
     <Msbuild Projects="$(ProjectDir)..\tools\xslt\xslt.csproj" Properties="Configuration=$(Configuration)" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(ProjectDir)..\tools\xslt.exe&quot; &quot;$(ProjectDir)cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)CmdIds.cs&quot;" />
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.dll') " Command="dotnet $(ProjectDir)../tools/xslt.dll $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
+    <Exec Condition=" '$(MSBuildRuntimeType)' != 'Core' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(ProjectDir)..\tools\xslt.exe&quot; &quot;$(ProjectDir)cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)CmdIds.cs&quot;" />
+    <Exec Condition=" '$(MSBuildRuntimeType)' == 'Core' And Exists('$(ProjectDir)../tools/xslt.dll') " Command="dotnet $(ProjectDir)../tools/xslt.dll $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
   </Target>
 </Project>

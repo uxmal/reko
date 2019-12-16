@@ -60,7 +60,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
   <PropertyGroup>
-    <PreBuildEvent Condition="'$(OS)' != 'Unix'">copy $(SolutionDir)debug\armnative.dll "$(TargetDir)"
+    <PreBuildEvent Condition="'$(MSBuildRuntimeType)' != 'Core'">copy $(SolutionDir)debug\armnative.dll "$(TargetDir)"
 copy ..\..\..\..\..\external\capstone\x86\capstone.dll "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
