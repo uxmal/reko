@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  *
@@ -67,10 +67,16 @@ namespace Reko.Tools.genPICdb
                 {
                     try
                     {
+#if __MonoCS__ || NETCOREAPP
+                        //$HELP: @chostelet: not everyone compiles Reko on a Windows machine.
+                        throw new NotSupportedException();
+#else
+
                         RegistryKey MicrochipKey = Registry.LocalMachine.OpenSubKey(keyW32);
                         if (MicrochipKey?.SubKeyCount <= 0) MicrochipKey = Registry.LocalMachine.OpenSubKey(keyW64);
                         mplabXinstallDir = (string)(MicrochipKey?.OpenSubKey("MPLAB X")?.GetValue("InstallDir", null));
                         mplabXVersion = new DirectoryInfo(mplabXinstallDir).Name;
+#endif
                     }
                     catch (Exception ex)
                     {
@@ -202,7 +208,7 @@ namespace Reko.Tools.genPICdb
                 xdoc.Save(partw);
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Main entry-point for this application.
