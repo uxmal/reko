@@ -171,6 +171,16 @@ namespace Reko.Arch.XCore
             return false;
         }
 
+        // PC-relative
+        private static readonly Bitfield pcRe11Field = new Bitfield(0, 11);
+        private static bool PcRel11_2(uint uInstr, XCore200Disassembler dasm)
+        {
+            var offset = pcRe11Field.ReadSigned(uInstr);
+            var addr = dasm.addr + 2 * offset;
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
+        }
+
         // 20-bit immediate.
         private static bool lu10(uint uInstr, XCore200Disassembler dasm)
         {
@@ -393,13 +403,15 @@ namespace Reko.Arch.XCore
             
             rootDecoder = Mask(11, 5, "XCore",
                 Nyi("00"),
-                Nyi("01"),
+                Mask(4, 1, "  01",
+                    Instr(Mnemonic.clz, r2),
+                    Nyi("01")),
                 Instr(Mnemonic.add, r3),
                 Nyi("03"),
 
                 Mask(4, 1, "  04",
                     Select((5, 6), u => u == 0x3F, "  04 - 0 0x3F",
-                        Instr(Mnemonic.bla),
+                        Instr(Mnemonic.bla, r1),
                         Nyi("04 - 0")),
                     Instr(Mnemonic.bau, InstrClass.Transfer, r1)),
                 Instr(Mnemonic.andnot, r2),
@@ -416,20 +428,22 @@ namespace Reko.Arch.XCore
                 Nyi("0E"),
                 Nyi("0F"),
                 // 10
-                Nyi("10"),
-                Nyi("11"),
+                Instr(Mnemonic.ld16s, r3),
+                Instr(Mnemonic.ld8u, r3),
                 Instr(Mnemonic.addi, r2us),
                 Nyi("13"),
                 
                 Nyi("14"),
                 Nyi("15"),
-                Nyi("16"),
+                Instr(Mnemonic.eqi, r2us),
                 Nyi("17"),
                 
                 Nyi("18"),
                 Nyi("19"),
                 Nyi("1A"),
-                Nyi("1B"),
+                Mask(10, 1, "  1B",
+                    Instr(Mnemonic.ldapb, PcRel11_2),
+                    Instr(Mnemonic.ldapf, PcRel11_2)),
 
                 Nyi("1C"),
                 Nyi("1D"),

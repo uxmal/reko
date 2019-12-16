@@ -31,5 +31,11 @@ namespace Reko.Arch.XCore
         bau = 6,
         bla = 7,
         eq = 8,
+        clz = 9,
+        eqi = 10,
+        ld8u = 11,
+        ld16s = 12,
+        ldapb = 13,
+        ldapf = 14,
     }
 }

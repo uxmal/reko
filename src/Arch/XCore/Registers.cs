@@ -19,17 +19,27 @@
 #endregion
 
 using Reko.Core;
+using System.Linq;
 
 namespace Reko.Arch.XCore
 {
     public static class Registers
     {
         public static RegisterStorage[] GpRegs { get; }
+        private static RegisterStorage cp { get; }
+        private static RegisterStorage dp { get; }
+        private static RegisterStorage sp { get; }
+        private static RegisterStorage lr { get; }
 
         static Registers()
         {
             var factory = new StorageFactory();
-            GpRegs = factory.RangeOfReg32(12, "r{0}");
+            var regs = factory.RangeOfReg32(12, "r{0}");
+            cp = factory.Reg32("cp");
+            dp = factory.Reg32("dp");
+            sp = factory.Reg32("sp");
+            lr = factory.Reg32("lr");
+            GpRegs = regs.Concat(new[] { cp, dp, sp, lr }).ToArray();
         }
     }
 }

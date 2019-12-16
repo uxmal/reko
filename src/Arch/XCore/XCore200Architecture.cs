@@ -62,12 +62,12 @@ namespace Reko.Arch.XCore
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new XCore200State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new XCore200Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
