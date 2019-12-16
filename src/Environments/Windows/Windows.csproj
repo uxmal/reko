@@ -17,7 +17,7 @@
     <TranslateHeader Include="msvcrt.inc" />
   </ItemGroup>
   <Target Name="CopyMetadata" AfterTargets="CoreBuild">
-    <Message Imporance="high" Text="*** TargetFramework: $(TargetFramework); MSBuildRuntimeType: $(MSBuildRuntimeType) ***" />
+    <Message Importance="high" Text="*** TargetFramework: $(TargetFramework); MSBuildRuntimeType: $(MSBuildRuntimeType) ***" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
     <Exec Condition="'$(OS)'=='Unix'" Command="ls -R $(SolutionDir)tools" />
