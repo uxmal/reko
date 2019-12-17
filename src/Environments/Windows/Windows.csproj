@@ -18,10 +18,12 @@
   </ItemGroup>
   <Target Name="CopyMetadata" AfterTargets="CoreBuild">
     <Message Importance="high" Text="*** TargetFramework: $(TargetFramework); MSBuildRuntimeType: $(MSBuildRuntimeType) ***" />
+    <Msbuild Projects="$(ProjectDir)..\..\tools\c2xml\C2xml.csproj" Properties="Configuration=$(Configuration)" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
     <Exec Condition="'$(OS)'=='Unix'" Command="ls -R $(SolutionDir)tools" />
     <Exec Condition=" '$(MSBuildRuntimeType)' == 'Core' " Command="dotnet $(SolutionDir)tools/c2xml.dll -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
-    <Exec Condition=" '$(MSBuildRuntimeType)' != 'Core' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(MSBuildRuntimeType)' == 'Mono' " Command="dotnet $(SolutionDir)tools/c2xml.dll -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(MSBuildRuntimeType)' == 'Full' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
   </Target>
 </Project>
