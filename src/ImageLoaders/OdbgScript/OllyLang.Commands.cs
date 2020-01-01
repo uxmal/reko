@@ -801,7 +801,7 @@ rulong hwnd;
 
                 // Truncate existing file
                 var fsSvc = services.RequireService<IFileSystemService>();
-                using (Stream hfile = fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write))
+                using (Stream hfile =  fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write))
                 {
                 }
                 return DoDMA(args);
@@ -815,50 +815,50 @@ rulong hwnd;
                 GetAddress(args[0], out Address addr) &&
                 GetRulong(args[1], out ulong uSize) &&
                 GetString(args[2], out string filename))
-            {
+	{
                 int size = (int) uSize;
                 if (!Path.IsPathRooted(filename))
                     filename = Path.Combine(Host.TE_GetTargetDirectory(), filename);
 
-                variables["$RESULT"] = Var.Create(size);
+		variables["$RESULT"] = Var.Create(size);
 
                 Stream hFile = null;
                 try
-                {
+		{
                     hFile = new FileStream(filename, FileMode.Append, FileAccess.Write);
-                    byte[] membuf = new byte[PAGE_SIZE];
+			byte[] membuf = new byte[PAGE_SIZE];
                     hFile.Seek(0, SeekOrigin.End);
                     while (size >= membuf.Length)
-                    {
+			{
                         if (!Host.TryReadBytes(addr, membuf.Length, membuf))
-                        {
+				{
                             Array.Clear(membuf, 0, membuf.Length);
-                        }
+				}
                         hFile.Write(membuf, 0, membuf.Length);
                         addr += (uint) membuf.Length;
                         size -= membuf.Length;
-                    }
+			}
 
                     if (size > 0)
-                    {
+			{
                         if (!Host.TryReadBytes(addr, size, membuf))
-                        {
+				{
                             Array.Clear(membuf, 0, size);
-                        }
+				}
                         hFile.Write(membuf, 0, size);
-                    }
+			}
                     return true;
-                }
+		}
                 catch
                 {
                     errorstr = "Couldn't create file";
-                }
+	}
                 finally
                 {
                     hFile.Close();
                 }
             }
-            return false;
+	return false;
         }
 
         private bool DoDPE(string[] args)
@@ -3189,7 +3189,7 @@ string param;
                 {
                     return SetFloat(args[0], flt1 * flt2);
                 }
-                else if (GetFloat(args[0], out flt1) && GetRulong(args[1], out dw2))
+                else if (GetFloat(args[0], out  flt1) && GetRulong(args[1], out dw2))
                 {
                     return SetFloat(args[0], flt1 * dw2);
                 }
@@ -3921,9 +3921,9 @@ rulong dw1, dw2;
                 }
                 if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
                 {
-                    zf = ((dw1 & dw2) == 0);
-                    return true;
-                }
+                zf = ((dw1 & dw2) == 0);
+                return true;
+            }
             }
             return false;
         }
@@ -4150,7 +4150,7 @@ string filename, data;
                 {
                     Host.AddSegmentReference(addr, (ushort) seg);
                     return true;
-                }
+    }
             }
             return false;
         }

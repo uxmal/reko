@@ -30,11 +30,11 @@ using System.Diagnostics;
 
 namespace Reko.ImageLoaders.MzExe
 {
-    /// <summary>
-    /// Loads MS-DOS binary executables that haven't had any packing or encryption
+	/// <summary>
+	/// Loads MS-DOS binary executables that haven't had any packing or encryption
     /// done to them.
-    /// </summary>
-    public class MsdosImageLoader : ImageLoader
+	/// </summary>
+	public class MsdosImageLoader : ImageLoader
 	{
         private IProcessorArchitecture arch;
         private IPlatform platform;
@@ -100,26 +100,26 @@ namespace Reko.ImageLoaders.MzExe
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            SegmentMap imageMap = segmentMap;
+		{
+			SegmentMap imageMap = segmentMap;
             EndianImageReader rdr = new LeImageReader(ExeLoader.RawImage, ExeLoader.e_lfaRelocations);
             int i = ExeLoader.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
             var linBase = addrLoad.ToLinear();
-            while (i != 0)
-            {
-                uint offset = rdr.ReadLeUInt16();
-                ushort segOffset = rdr.ReadLeUInt16();
-                offset += segOffset * 0x0010u;
+			while (i != 0)
+			{
+				uint offset = rdr.ReadLeUInt16();
+				ushort segOffset = rdr.ReadLeUInt16();
+				offset += segOffset * 0x0010u;
 
-                ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector.Value);
-                imgLoaded.WriteLeUInt16(offset, seg);
+				ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector.Value);
+				imgLoaded.WriteLeUInt16(offset, seg);
 
                 var segment = AddSegmentReference(offset + linBase, seg);
 
                 segments[segment.Address] = seg;
-                --i;
-            }
+				--i;
+			}
 
             // Create an identifier for each segment.
             foreach (var de in segments)
@@ -134,10 +134,10 @@ namespace Reko.ImageLoaders.MzExe
                     tmp);
             }
 
-            // Found the start address.
+			// Found the start address.
 
             Address addrStart = Address.SegPtr((ushort) (ExeLoader.e_cs + addrLoad.Selector.Value), ExeLoader.e_ip);
-            segmentMap.AddSegment(new ImageSegment(
+			segmentMap.AddSegment(new ImageSegment(
                 addrStart.Selector.Value.ToString("X4"),
                 Address.SegPtr(addrStart.Selector.Value, 0),
                 imgLoaded,
@@ -155,20 +155,20 @@ namespace Reko.ImageLoaders.MzExe
                 ep.NoDecompile = true;
             }
 
-            try
-            {
-                LoadDebugSymbols(results.Symbols, addrLoad);
-            }
-            catch (Exception ex)
-            {
+			try
+			{
+				LoadDebugSymbols(results.Symbols, addrLoad);
+			}
+			catch (Exception ex)
+			{
                 var listener = Services.RequireService<DecompilerEventListener>();
                 listener.Error(
                     new NullCodeLocation(Filename),
                     ex,
                     "Detected debug symbols but failed to load them.");
-            }
+			}
             return results;
-        }
+		}
 
         private ImageSymbol CreateEntryPointSymbol(Address addrLoad, Address addrStart, Address addrStackTop)
         {
@@ -204,7 +204,7 @@ namespace Reko.ImageLoaders.MzExe
                 foreach (var sym in syms)
                 {
                     symbols[sym.Key] = sym.Value;
-                }
+        }
             }
         }
 

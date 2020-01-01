@@ -71,11 +71,11 @@ namespace Reko.ImageLoaders.OdbgScript
         private readonly List<uint> calls = new List<uint>();         // Call/Ret in script
         public readonly Dictionary<string, Var> variables = new Dictionary<string, Var>(); // Variables that exist
         private readonly Dictionary<rulong, uint> bpjumps = new Dictionary<rulong, uint>();  // Breakpoint Auto Jumps 
-        public bool debuggee_running;
-        public bool script_running;
-        public bool run_till_return;
-        public bool return_to_usercode;
-        private uint script_pos, script_pos_next;
+        public  bool debuggee_running;
+        public  bool script_running;
+        public  bool run_till_return;
+        public  bool return_to_usercode;
+        private  uint script_pos, script_pos_next;
 
         // Debugger state
         private bool resumeDebuggee;
@@ -847,7 +847,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
                 script_pos_next = script_pos + 1;
 
-                // Log line of code if enabled
+                // Log line of code if  enabled
                 if (Script.Log)
                 {
                     Host.TE_Log("--> " + line.RawLine, Host.TS_LOG_COMMAND);
@@ -857,8 +857,8 @@ namespace Reko.ImageLoaders.OdbgScript
                 Func<string[], bool> cmd = line.CommandPtr;
                 if (cmd == null && commands.TryGetValue(line.Command, out var it))
                 {
-                    line.CommandPtr = cmd = it;
-                }
+                        line.CommandPtr = cmd = it;
+                    }
 
                 bool result = false;
                 if (cmd != null)
@@ -1467,8 +1467,8 @@ namespace Reko.ImageLoaders.OdbgScript
             if (arch.TryGetRegister(op, out var reg))
             {
                 value = Debugger.GetRegisterValue(reg);
-                return true;
-            }
+                    return true;
+                }
             else if (is_flag(op))
             {
                 eflags_t flags = new eflags_t();
@@ -1604,7 +1604,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 Debugger.SetRegisterValue(reg, value);
                 return true;
-            }
+                }
             else if (is_flag(op))
             {
                 throw new NotImplementedException();

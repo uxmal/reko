@@ -110,6 +110,6 @@ namespace Reko.Core
         public virtual ImageSegment AddSegmentReference(Address addr, ushort seg)
         {
             return null;
-        }
+    }
     }
 }
