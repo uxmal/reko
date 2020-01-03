@@ -493,7 +493,7 @@ namespace Reko.Arch.X86
                  ymm13,
                  ymm14,
                  ymm15,
-			};
+            };
 
             // For each register storage domain, arrange the registers in order of size.
             SubRegisters = new Dictionary<StorageDomain, RegisterStorage[]>

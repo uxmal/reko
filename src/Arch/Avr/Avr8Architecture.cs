@@ -133,11 +133,6 @@ namespace Reko.Arch.Avr
             return fl;
         }
 
-        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
-        {
-            return GetFlagGroup(sreg, grf);
-        }
-
         public override SortedList<string, int> GetMnemonicNames()
         {
             throw new NotImplementedException();

@@ -144,7 +144,7 @@ namespace Reko.Arch.Z80
                 foreach (var m in mutators)
                 {
                     if (!m(op, disasm))
-                        return disasm.Invalid();
+                        return disasm.CreateInvalidInstruction();
                 }
                 return disasm.MakeInstruction(IClass, Z80mnemonic);
             }
@@ -212,7 +212,7 @@ namespace Reko.Arch.Z80
             public override Z80Instruction Decode(uint bPrev, Z80Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadByte(out var op))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
 
                 Mnemonic mnemonic;
                 var y = (byte) ((op >> 3) & 0x07);
@@ -236,7 +236,7 @@ namespace Reko.Arch.Z80
                     break;
                 }
                 if (!cbFormats[op & 0x07](op, dasm))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 return dasm.MakeInstruction(InstrClass.Linear, mnemonic);
             }
         }
@@ -246,14 +246,14 @@ namespace Reko.Arch.Z80
             public override Z80Instruction Decode(uint bPrev, Z80Disassembler disasm)
             {
                 if (!disasm.rdr.TryReadByte(out var op2))
-                    return disasm.Invalid();
+                    return disasm.CreateInvalidInstruction();
                 Decoder decoder;
                 if (0x40 <= op2 && op2 < 0x80)
                     decoder = edDecoders[op2 - 0x40];
                 else if (0xA0 <= op2 && op2 < 0xC0)
                     decoder = edDecoders[op2 - 0x60];
                 else
-                    return disasm.Invalid();
+                    return disasm.CreateInvalidInstruction();
                 return decoder.Decode(op2, disasm);
             }
         }

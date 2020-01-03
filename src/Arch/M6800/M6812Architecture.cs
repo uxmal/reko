@@ -91,11 +91,6 @@ namespace Reko.Arch.M6800
             return fl;
         }
 
-        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
-        {
-            return GetFlagGroup(M6812.Registers.ccr, grf);
-        }
-
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

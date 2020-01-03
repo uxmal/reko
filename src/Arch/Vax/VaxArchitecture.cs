@@ -122,11 +122,6 @@ namespace Reko.Arch.Vax
             return fl;
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
-        {
-            return GetFlagGroup(Registers.psw, grf);
-        }
-
         public override SortedList<string, int> GetMnemonicNames()
         {
             return Enum.GetValues(typeof(Mnemonic))

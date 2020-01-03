@@ -215,11 +215,6 @@ namespace Reko.Arch.Tlcs
             return fl;
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
-        {
-            return GetFlagGroup(Registers.f, grf);
-        }
-
         public override SortedList<string, int> GetMnemonicNames()
         {
             throw new NotImplementedException();

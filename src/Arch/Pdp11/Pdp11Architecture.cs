@@ -212,11 +212,6 @@ namespace Reko.Arch.Pdp11
 			return fl;
 		}
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
-		{
-            return GetFlagGroup(Registers.psw, grf);
-        }
-
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             uint grf = 0;

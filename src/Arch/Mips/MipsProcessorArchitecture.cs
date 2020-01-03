@@ -213,7 +213,6 @@ namespace Reko.Arch.Mips
             throw new NotSupportedException();
         }
 
-
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

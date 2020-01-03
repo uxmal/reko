@@ -706,7 +706,7 @@ namespace Reko.Arch.X86
             if (dst is Identifier idDst)
             {
                 this.AssignToRegister(idDst, src);
-        }
+            }
             else
             {
                 m.Assign(dst, src);

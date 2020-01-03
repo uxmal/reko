@@ -118,11 +118,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             return fl;
         }
 
-        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grpFlags)
-        {
-            return GetFlagGroup(PICRegisters.STATUS, grpFlags);
-        }
-
         public override FlagGroupStorage GetFlagGroup(string flgsName)
         {
             FlagM grf = 0;

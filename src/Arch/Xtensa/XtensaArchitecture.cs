@@ -86,7 +86,7 @@ namespace Reko.Arch.Xtensa
         };
 
         private static RegisterStorage[] fregs = new[]
-{
+        {
             Registers.f0 ,
             Registers.f1 ,
             Registers.f2 ,
