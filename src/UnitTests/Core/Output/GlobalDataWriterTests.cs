@@ -376,5 +376,17 @@ struct test g_t1004 =
 ");
         }
 
+
+        [Test]
+        public void GdwNonAsciiChar()
+        {
+            Given_Memory(0x1000)
+                .WriteByte(0x9D);
+            Given_Globals(
+                Given_Field(0x1000, PrimitiveType.Char));
+            RunTest(@"char g_b1000 = '\x9D';
+");
+
+        }
     }
 }
