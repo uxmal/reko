@@ -129,7 +129,7 @@
 </value>
   </data>
   <data name="lblCopyleft.Text" xml:space="preserve">
-    <value>Reko Decompiler Copyright (C) 1999-2019 John Källén.
+    <value>Reko Decompiler Copyright (C) 1999-2020 John Källén.
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it. The Reko project is hosted at GitHub at the following URL:</value>
   </data>
 </root>
