@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -35,6 +35,11 @@ namespace Reko.UnitTests.Mocks
             : base(services, arch, "fake")
         {
             Metadata = new TypeLibrary();
+        }
+
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
         }
 
         public Func<HashSet<RegisterStorage>> Test_CreateImplicitArgumentRegisters;

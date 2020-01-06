@@ -163,6 +163,11 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             }
 
+            public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+            {
+                throw new NotImplementedException();
+            }
+
             public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
             {
                 throw new NotImplementedException();

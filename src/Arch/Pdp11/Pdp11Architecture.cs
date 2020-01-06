@@ -108,6 +108,11 @@ namespace Reko.Arch.Pdp11
             return new Pdp11Disassembler(rdr, this);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new Pdp11InstructionComparer(norm);

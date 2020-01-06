@@ -54,6 +54,11 @@ namespace Reko.Arch.Mos6502
             return new Disassembler((LeImageReader)imageReader);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

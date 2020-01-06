@@ -76,8 +76,7 @@ namespace Reko.Arch.X86
             set
             {
                 ip = value;
-                ImageSegment segment;
-                if (!map.TryFindSegment(ip, out segment))
+                if (!map.TryFindSegment(ip, out ImageSegment segment))
                     throw new AccessViolationException();
                 var rdr = arch.CreateImageReader(segment.MemoryArea, value);
                 dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
@@ -436,25 +435,21 @@ namespace Reko.Arch.X86
 
         private TWord Read(MachineOperand op)
         {
-            var r = op as RegisterOperand;
-            if (r != null)
+            if (op is RegisterOperand r)
             {
                 return ReadRegister(r.Register);
             }
-            var i = op as ImmediateOperand;
-            if (i != null)
+            if (op is ImmediateOperand i)
                 return i.Value.ToUInt32();
-            var a = op as AddressOperand;
-            if (a != null)
+            if (op is AddressOperand a)
                 return a.Address.ToUInt32();
-            var m = op as MemoryOperand;
-            if (m != null)
+            if (op is MemoryOperand m)
             {
                 TWord ea = GetEffectiveAddress(m);
                 byte b;
                 switch (op.Width.Size)
                 {
-                case 1: if (!TryReadByte(Address.Ptr32(ea), out b)) throw new IndexOutOfRangeException(); else  return b;
+                case 1: if (!TryReadByte(Address.Ptr32(ea), out b)) throw new IndexOutOfRangeException(); else return b;
                 case 4: return ReadLeUInt32(Address.Ptr32(ea));
                 }
                 throw new NotImplementedException();
@@ -483,20 +478,18 @@ namespace Reko.Arch.X86
 
         private void Write(MachineOperand op, TWord w)
         {
-            var r = op as RegisterOperand;
-            if (r != null)
+            if (op is RegisterOperand r)
             {
                 WriteRegister(r.Register, w);
                 return;
             }
-            var m = op as MemoryOperand;
-            if (m != null)
+            if (op is MemoryOperand m)
             {
                 var ea = GetEffectiveAddress(m);
                 switch (op.Width.Size)
                 {
-                case 1: WriteByte(Address.Ptr32(ea), (byte)w); return;
-                case 4: WriteLeUInt32(Address.Ptr32(ea), (UInt32)w); return;
+                case 1: WriteByte(Address.Ptr32(ea), (byte) w); return;
+                case 4: WriteLeUInt32(Address.Ptr32(ea), (UInt32) w); return;
                 }
                 throw new NotImplementedException();
             }
@@ -569,8 +562,7 @@ namespace Reko.Arch.X86
             //$PERF: wow this is inefficient; an allocation
             // per memory fetch. TryFindSegment needs an overload
             // that accepts ulongs / linear addresses.
-            ImageSegment segment;
-            if (!map.TryFindSegment(ea, out segment))
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
                 throw new AccessViolationException();
             return segment.MemoryArea.TryReadByte(ea, out b);
         }

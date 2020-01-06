@@ -58,6 +58,11 @@ namespace Reko.Environments.Msdos
             };
         }
 
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
+
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // On MS-DOS, C and Pascal compilers

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -39,7 +39,12 @@ namespace Reko.Environments.Wii
 
 		public override string DefaultCallingConvention { get { return ""; } }
 
-		public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
 			//$TODO: find out what registers are always preserved
 			return new HashSet<RegisterStorage>();

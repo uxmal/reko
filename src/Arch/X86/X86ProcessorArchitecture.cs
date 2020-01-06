@@ -78,6 +78,11 @@ namespace Reko.Arch.X86
             return mode.CreateDisassembler(imageReader, Options);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            return new X86Emulator(this, segmentMap, envEmulator);
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new X86InstructionComparer(norm);

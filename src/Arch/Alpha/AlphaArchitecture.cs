@@ -47,6 +47,11 @@ namespace Reko.Arch.Alpha
             return new AlphaDisassembler(this, rdr);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return null;

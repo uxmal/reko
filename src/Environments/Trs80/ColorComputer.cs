@@ -37,6 +37,11 @@ namespace Reko.Environments.Trs80
 
         public override string DefaultCallingConvention => throw new NotImplementedException();
 
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
+
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>();

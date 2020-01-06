@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -97,6 +97,16 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The new disassembler.
         /// </returns>
         public abstract PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr);
+
+        /// <summary>
+        /// Creates an emulator for the target processor.
+        /// </summary>
+        /// <param name="arch">The architecture of the processor.</param>
+        /// <param name="segmentMap">The memory of the program to be emulated.</param>
+        /// <param name="envEmulator">Emulated environment.</param>
+        /// <returns>The created emulator.</returns>
+        public virtual IProcessorEmulator CreateEmulator(PICArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
+            => throw new NotImplementedException();
 
         /// <summary>
         /// Creates the registers for the PIC.

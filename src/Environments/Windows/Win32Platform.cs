@@ -84,6 +84,11 @@ namespace Reko.Environments.Windows
             };
         }
 
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            return new Win32Emulator(segmentMap, this, importReferences);
+        }
+
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             var bitset = new HashSet<RegisterStorage>()

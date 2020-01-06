@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -31,6 +31,8 @@ namespace Reko.Core
     /// </summary>
     public interface IPlatformEmulator
     {
+        Dictionary<Address, ExternalProcedure> InterceptedCalls { get; }
+
         /// <summary>
         /// Processor emulators call this method to give the platform emulator 
         /// a shot at intercepting the call to simulate an OS service. If the call

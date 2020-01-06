@@ -52,6 +52,11 @@ namespace Reko.Arch.M6800
             return new M6812.M6812Disassembler(imageReader);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

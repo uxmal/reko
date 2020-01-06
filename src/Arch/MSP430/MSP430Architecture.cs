@@ -53,6 +53,11 @@ namespace Reko.Arch.Msp430
             return new Msp430Disassembler(this, imageReader);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new Msp430InstructionComparer(norm);

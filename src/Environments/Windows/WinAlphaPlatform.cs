@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -42,6 +42,11 @@ namespace Reko.Environments.Windows
         public override string DefaultCallingConvention
         {
             get { return null; }
+        }
+
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

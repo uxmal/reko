@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -42,6 +42,11 @@ namespace Reko.Environments.ZX81
             : base(services, arch, "zx81")
         {
             encoding = new ZX81Encoding();
+        }
+
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            return new DefaultPlatformEmulator();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

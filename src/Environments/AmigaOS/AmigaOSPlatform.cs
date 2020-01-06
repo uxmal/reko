@@ -70,6 +70,11 @@ namespace Reko.Environments.AmigaOS
             }
         }
 
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
+
         private Dictionary<string, object> EnsureMapKickstartToListOfLibraries()
         {
             if (mapKickstartToListOfLibraries != null)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -42,6 +42,10 @@ namespace Reko.Environments.AtariTOS
             get { return ""; }
         }
 
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             throw new NotImplementedException();

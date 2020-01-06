@@ -56,6 +56,11 @@ namespace Reko.Arch.M68k
             return M68kDisassembler.Create68020(rdr);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<M68kInstruction> CreateDisassemblerImpl(EndianImageReader rdr)
         {
             return M68kDisassembler.Create68020(rdr);

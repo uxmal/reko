@@ -109,7 +109,12 @@ namespace Reko.UnitTests.Mocks
 			return registers[i];
 		}
 
-		#region IProcessorArchitecture Members
+        #region IProcessorArchitecture Members
+
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -402,6 +407,11 @@ namespace Reko.UnitTests.Mocks
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
             throw new NotImplementedException();
         }

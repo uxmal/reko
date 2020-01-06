@@ -72,8 +72,8 @@ namespace Reko.ImageLoaders.OdbgScript
             this.ImageMap = program.SegmentMap;
             this.Architecture = (IntelArchitecture)program.Architecture;
 
-            var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
-            var state = (X86State)program.Architecture.CreateProcessorState();
+            IPlatformEmulator win32 = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
+            var wxin32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
             var emu = new X86Emulator((IntelArchitecture)program.Architecture, program.SegmentMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
@@ -90,7 +90,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             foreach (var ic in win32.InterceptedCalls)
             {
-                program.InterceptedCalls.Add(Address.Ptr32(ic.Key), ic.Value);
+                program.InterceptedCalls.Add(ic.Key, ic.Value);
             }
             return program;
         }

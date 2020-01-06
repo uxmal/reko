@@ -97,6 +97,11 @@ namespace Reko.Arch.Mips
             return CreateDisassemblerInternal(imageReader);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         private IEnumerable<MipsInstruction> CreateDisassemblerInternal(EndianImageReader imageReader)
         {
             switch (this.instructionSetEncoding)

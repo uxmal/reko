@@ -70,6 +70,11 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
+
         public HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             throw new NotImplementedException();

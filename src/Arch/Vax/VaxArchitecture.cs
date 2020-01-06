@@ -79,6 +79,11 @@ namespace Reko.Arch.Vax
             return new VaxDisassembler(this, imageReader);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new VaxInstructionComparer(norm);

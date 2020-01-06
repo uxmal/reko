@@ -130,6 +130,11 @@ namespace Reko.Arch.Arm
             return new AArch64Disassembler(this, rdr);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();

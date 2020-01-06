@@ -50,6 +50,11 @@ namespace Reko.Environments.SysV
             get { return ""; }
         }
 
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
+
         public override CallingConvention GetCallingConvention(string ccName)
         {
             switch (Architecture.Name)

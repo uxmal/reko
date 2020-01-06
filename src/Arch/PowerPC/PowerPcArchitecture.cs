@@ -164,6 +164,11 @@ namespace Reko.Arch.PowerPC
             return new PowerPcDisassembler(this, EnsureDecoders(), rdr, WordWidth);
         }
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new PowerPcInstructionComparer(norm);

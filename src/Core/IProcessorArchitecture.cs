@@ -160,6 +160,16 @@ namespace Reko.Core
             Expression callee);
 
         /// <summary>
+        /// Creates a processor emulator for this architecture.
+        /// </summary>
+        /// <param name="segmentMap">The memory image containing the program 
+        /// image and initial data.
+        /// </param>
+        /// <param name="envEmulator">Simulated operating system.</param>
+        /// <returns>The emulator ready to run.</returns>
+        IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator);
+
+        /// <summary>
         /// Given a register <paramref name="reg"/>, retrieves all architectural
         /// registers that overlap all or part of it.
         /// </summary>
@@ -407,6 +417,7 @@ namespace Reko.Core
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
+        public abstract IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
 

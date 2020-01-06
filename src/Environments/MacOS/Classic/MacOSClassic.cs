@@ -43,6 +43,11 @@ namespace Reko.Environments.MacOS.Classic
             encoding = new MacOsRomanEncoding();
         }
 
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
+
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage> { Registers.a5, Registers.a7 };
