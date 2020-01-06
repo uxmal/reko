@@ -76,7 +76,7 @@ namespace Reko.Core.Types
 		
 		private PrimitiveType(Domain dom, int bitSize, string name)
 		{
-			this.Domain = dom;
+            this.Domain = dom;
 			this.bitSize = bitSize;
             this.byteSize = (bitSize + (BitsPerByte-1)) / BitsPerByte;
 			this.Name = name;

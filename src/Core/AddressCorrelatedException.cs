@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -42,6 +42,6 @@ namespace Reko.Core
             this.Address = addr;
         }
 
-        public Address Address { get; private set; }
+        public Address Address { get; }
     }
 }

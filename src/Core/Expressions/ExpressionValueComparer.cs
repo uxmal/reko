@@ -317,6 +317,17 @@ namespace Reko.Core.Expressions
                     return ((ProcedureConstant) obj).GetHashCode();
                 });
 
+            Add(typeof(ScopeResolution),
+                (sa, sb) =>
+                {
+                    var a = (ScopeResolution) sa;
+                    var b = (ScopeResolution) sb;
+                    return a.DataType.ToString() == b.DataType.ToString();
+                },
+                obj =>
+                {
+                    return ((ScopeResolution) obj).DataType.ToString().GetHashCode();
+                });
             Add(typeof(SegmentedAccess),
                 (ea, eb) =>
                 {

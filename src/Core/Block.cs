@@ -49,7 +49,7 @@ namespace Reko.Core
         /// to have a starting address. 
         /// </summary>
         public Address Address { get; set; }
-        public string Name { get; private set; }
+        public string Name { get; }
         public Procedure Procedure { get; set; }
 
         /// <summary>
