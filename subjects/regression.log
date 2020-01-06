@@ -567,6 +567,15 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\RussianText\RussianText.exe
 === PE\x86\VCExeSample\VCExeSample.dcproject
 === PE\x86\demo_upx\Demo.exe
+*** PE\x86\demo_upx\Demo.exe
+error: An error occurred during decompilation. System.ArgumentOutOfRangeException: Specified argument was out of the range of valid values.
+Parameter name: Linear address DEAD0001 is not in known segment.
+   at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 181
+   at Reko.ImageLoaders.OdbgScript.OdbgScriptLoader.Load(Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\OdbgScript\OdbgScriptLoader.cs:line 93
+   at Reko.ImageLoaders.MzExe.ExeImageLoader.Load(Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\ExeImageLoader.cs:line 96
+   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, String loader, Address addrLoad)
+   at Reko.Decompiler.Load(String fileName, String loaderName)
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 154
 === PE\x86\import-ordinals\import-ordinals.dcproject
 === PE\x86\pySample\pySample.dcproject
 === Raw\MicroBlaze\MicroBlaze.dcproject

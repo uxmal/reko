@@ -119,9 +119,9 @@ namespace Reko.Arch.X86
             this.ip = value;
             WriteRegister(this.ipReg, (TWord)value.Offset);
             if (value.Selector.HasValue)
-            {
+        {
                 WriteRegister(X86.Registers.cs, value.Selector.Value);
-            }
+        }
         }
 
         private StringBuilder DumpRegs()
@@ -142,10 +142,10 @@ namespace Reko.Arch.X86
                 UpdateIp(dasm.Current.Address);
                 ulong eip = ip.ToLinear();
                 if (!TestForBreakpoint(eip))
-                    break;
-                Execute(dasm.Current);
+                            break;
+                    Execute(dasm.Current);
+                }
             }
-        }
 
         [Conditional("DEBUG")]
         private void TraceCurrentInstruction()
@@ -166,18 +166,18 @@ namespace Reko.Arch.X86
             {
                 if (instr.repPrefix == 2)
                 {
-                    // repne
-                    switch (instr.code)
-                    {
-                    case Mnemonic.scasb: Repne(); return;
-                    }
-                    throw new NotImplementedException();
+                // repne
+                switch (instr.code)
+                {
+                case Mnemonic.scasb: Repne(); return;
                 }
+                throw new NotImplementedException();
+            }
                 else if (instr.repPrefix == 3)
                 {
                     // rep / repe
-                    switch (instr.code)
-                    {
+            switch (instr.code)
+            {
                     case Mnemonic.lods: Rep(); return;
                     case Mnemonic.lodsb: Rep(); return;
                     case Mnemonic.movs: Rep(); return;
@@ -353,7 +353,7 @@ namespace Reko.Arch.X86
 
             uint ov = ((~(l ^ r) & (l ^ sum)) & 0x80000000u) >> 20;
             Flags =
-                (newCy) |                   // Carry
+                (newCy) |       // Carry
                 (sum == 0 ? 1u << 6 : 0u) | // Zero
                 (ov)                        // Overflow
                 ;
@@ -370,10 +370,10 @@ namespace Reko.Arch.X86
             Write(dst, sum);
             uint ov = ((~(l ^ r) & (l ^ sum)) & mask.hibit) >> 20;
             Flags =
-                (r > sum ? 1u : 0u) |                       // Carry
+                (r > sum ? 1u : 0u) |     // Carry
                 (sum == 0 ? 1u << 6 : 0u) |                 // Zero
                 ((sum & mask.hibit) != 0 ? Smask : 0u) |    // Sign
-                (ov)                                        // Overflow
+                (ov)                        // Overflow
                 ;
         }
 
@@ -517,10 +517,10 @@ namespace Reko.Arch.X86
             TWord diff = (l + r) & mask.value;
             uint ov = ((~(l ^ r) & (l ^ diff)) & mask.hibit) >> 20;
             Flags =
-                (l < diff ? 1u : 0u) |                      // Carry
-                (diff == 0 ? Zmask : 0u) |                  // Zero
+                (l < diff ? 1u : 0u) |     // Carry
+                (diff == 0 ? Zmask : 0u) | // Zero
                 ((diff & mask.hibit) != 0 ? Smask : 0u) |   // Sign
-                (ov)                                        // Overflow
+                (ov)                        // Overflow
                 ;
         }
 
@@ -554,7 +554,7 @@ namespace Reko.Arch.X86
             Write(dst, and);
             Flags =
                 0 |                         // Clear Carry
-                (and == 0 ? Zmask : 0u) |   // Zero
+                (and == 0 ? Zmask : 0u) |    // Zero
                 ((and & mask.hibit) != 0 ? Smask : 0u) | // Sign
                 0;                          // Clear Overflow
         }
@@ -583,8 +583,8 @@ namespace Reko.Arch.X86
             Write(op, gnu);
             uint ov = ((old ^ gnu) & ~gnu & mask.hibit) >> 20;
             Flags =
-                Flags & Cmask |                             // Carry preserved
-                (gnu == 0 ? Zmask : 0u) |                   // Zero
+                Flags & Cmask |             // Carry preserved
+                (gnu == 0 ? Zmask : 0u) |   // Zero
                 ((gnu & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 ov;                          //$BUG:
         }
@@ -608,10 +608,10 @@ namespace Reko.Arch.X86
             var c = ReadRegister(cxReg) - 1u;
             WriteRegister(cxReg, c);
             if (c != 0)
-            {
+        {
                 InstructionPointer = XferTarget(op);
             }
-        }
+                }
 
         public void Popa()
         {
@@ -672,5 +672,5 @@ namespace Reko.Arch.X86
                 ((xor & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 0;                          // Overflow
         }
-    }
+        }
 }
