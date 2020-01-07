@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Intel
             emu.WriteRegister(reg, value);
         }
 
-        private void Given_Code(Action<X86Assembler> coder)
+        private void Given_Win32Code(Action<X86Assembler> coder)
         {
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr32(0x00100000), new List<ImageSymbol>());
             coder(asm);
@@ -69,9 +69,27 @@ namespace Reko.UnitTests.Arch.Intel
 
             var win32 = new Win32Emulator(program.SegmentMap, platform, importReferences);
             
-            emu = new X86Emulator(arch, program.SegmentMap, win32);
+            emu = (X86Emulator) arch.CreateEmulator(program.SegmentMap, win32);
             emu.InstructionPointer = program.ImageMap.BaseAddress;
             emu.WriteRegister(Registers.esp, (uint)program.ImageMap.BaseAddress.ToLinear() + 0x0FFC);
+            emu.ExceptionRaised += delegate { throw new Exception(); };
+        }
+
+        private void Given_MsdosCode(Action<X86Assembler> coder)
+        {
+            arch = new X86ArchitectureReal("x86-real-16");
+            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr32(0x00100000), new List<ImageSymbol>());
+            coder(asm);
+            var program = asm.GetImage();
+            this.segmentMap = program.SegmentMap;
+
+            Given_Platform();
+
+            var msdos = platform.CreateEmulator(program.SegmentMap, importReferences);
+
+            emu = (X86Emulator) arch.CreateEmulator(program.SegmentMap, msdos);
+            emu.InstructionPointer = program.ImageMap.BaseAddress;
+            emu.WriteRegister(Registers.sp, (uint) program.ImageMap.BaseAddress.ToLinear() + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };
         }
 
@@ -86,7 +104,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Mov32()
         {
-            Given_Code(m => { m.Mov(m.eax, m.ebx); });
+            Given_Win32Code(m => { m.Mov(m.eax, m.ebx); });
             Given_RegValue(Registers.ebx, 4);
             emu.Start();
 
@@ -96,7 +114,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Add32()
         {
-            Given_Code(m => { m.Add(m.eax, m.ebx); });
+            Given_Win32Code(m => { m.Add(m.eax, m.ebx); });
 
             Given_RegValue(Registers.eax, 4);
             Given_RegValue(Registers.ebx, ~4u + 1u);
@@ -109,7 +127,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Add32_ov()
         {
-            Given_Code(m => { m.Add(m.eax, m.ebx); });
+            Given_Win32Code(m => { m.Add(m.eax, m.ebx); });
 
             Given_RegValue(Registers.eax, 0x80000000u);
             Given_RegValue(Registers.ebx, 0x80000000u);
@@ -122,7 +140,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Sub32_ov()
         {
-            Given_Code(m => {
+            Given_Win32Code(m => {
                 m.Mov(m.eax, ~0x7FFFFFFF);
                 m.Mov(m.ebx, 0x00000001);
                 m.Sub(m.eax, m.ebx); 
@@ -137,7 +155,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Sub32_cy()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.eax, 0);
                 m.Mov(m.ebx, 4);
@@ -153,7 +171,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_ReadDirect_W32()
         {
-            Given_Code(m => {
+            Given_Win32Code(m => {
                 m.Label("datablob");
                 m.Dd(0x12345678);
                 m.Mov(m.eax, m.MemDw("datablob")); 
@@ -167,7 +185,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_ReadIndexed_W32()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Label("datablob");
                 m.Dd(0x12345678);
@@ -183,7 +201,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Immediate_W32()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.eax, 0x1234);
             });
@@ -196,7 +214,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Write_Byte()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Label("datablob");
                 m.Dd(0x12345678);
@@ -212,7 +230,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Immediate_W16()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.ax, 0x1234);
             });
@@ -225,7 +243,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Xor()
         {
-            Given_Code(m => { m.Xor(m.eax, m.eax); });
+            Given_Win32Code(m => { m.Xor(m.eax, m.eax); });
             Given_RegValue(Registers.eax, 0x1);
 
             emu.Start();
@@ -237,7 +255,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_or()
         {
-            Given_Code(m => { m.Or(m.eax, m.eax); });
+            Given_Win32Code(m => { m.Or(m.eax, m.eax); });
             Given_RegValue(Registers.eax, 0x1);
 
             emu.Start();
@@ -249,7 +267,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_halt()
         {
-            Given_Code(m => {
+            Given_Win32Code(m => {
                 m.Hlt();
                 m.Mov(m.eax, 42);
             });
@@ -263,7 +281,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_jz()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Sub(m.eax, m.eax);
                 m.Jz("z_flag_set");
@@ -280,7 +298,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_pusha()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Pusha();
                 m.Hlt();
@@ -298,7 +316,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_lea()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Lea(m.eax, m.MemDw(Registers.edx, Registers.edx, 4, null));
             });
@@ -312,7 +330,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_adc()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Add(m.eax, 1);
                 m.Adc(m.ebx, 0);
@@ -328,7 +346,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_inc()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.eax, 0x7FFFFFFF);
                 m.Inc(m.eax);
@@ -344,7 +362,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_add_signextendedImmByte()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.esi, -0x4);
                 m.Db(0x83,0xEE,0xFC);     // sub esi,-4
@@ -360,7 +378,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_shl()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.esi, 4);
                 m.Shl(m.esi, 2);
@@ -374,7 +392,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_sub_with_adc()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.esi, 0x0401000);
                 m.Xor(m.ebx, m.ebx);
@@ -390,7 +408,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_shr()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.esi, 0x00040);
                 m.Shr(m.esi, 4);
@@ -404,7 +422,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_rol()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.esi, -0x0FFFFFFF);
                 m.Rol(m.esi, 4);
@@ -418,7 +436,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_xchg()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.eax, 1);
                 m.Mov(m.ebx, 2);
@@ -434,7 +452,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_loop()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.eax, 0);    // sum
                 m.Mov(m.ecx, 4);
@@ -451,7 +469,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_regression_1()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.esi, 8);
                 m.Mov(m.ebx, -1);
@@ -465,7 +483,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_call()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Mov(m.esi, 0x00100000 + 5);           // 5
 
@@ -505,7 +523,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_repne_scasb()
         {
-            Given_Code(m =>
+            Given_Win32Code(m =>
             {
                 m.Repne();
                 m.Scasb();
@@ -520,6 +538,20 @@ namespace Reko.UnitTests.Arch.Intel
 
             Assert.AreEqual(0x0010000A, emu.Registers[Registers.edi.Number]);
 
+        }
+
+        [Test]
+        public void X86Emu_cld()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Cld();
+                m.Hlt();
+            });
+            emu.Registers[Registers.eflags.Number] = 0xFFFFFFFF;
+            emu.Start();
+
+            Assert.AreEqual(0xFFFFFBFF, emu.Registers[Registers.eflags.Number]);
         }
     }
 }

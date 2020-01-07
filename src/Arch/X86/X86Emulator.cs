@@ -40,6 +40,7 @@ namespace Reko.Arch.X86
 
         public const uint Cmask = 1u << 0;
         public const uint Zmask = 1u << 6;
+        public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
 
         private IntelArchitecture arch;
@@ -50,8 +51,7 @@ namespace Reko.Arch.X86
         private Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
 
         public readonly ulong[] Registers;
-        public readonly bool[] Valid;
-        public TWord Flags;
+        private readonly int iFlags;
         private Address ip;
         private Action stepAction;
         private bool stepInto;
@@ -63,8 +63,14 @@ namespace Reko.Arch.X86
             this.arch = arch;
             this.map = segmentMap;
             this.Registers = new ulong[40];
-            this.Valid = new bool[40];
+            this.iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
+        }
+
+        public ulong Flags
+        {
+            get { return this.Registers[iFlags]; }
+            set { this.Registers[iFlags] = value; }
         }
 
         /// <summary>
@@ -92,7 +98,7 @@ namespace Reko.Arch.X86
         /// </summary>
         public void StepOver(Action callback)
         {
-            stepOverAddress = (TWord)((long)dasm.Current.Address.ToLinear() + dasm.Current.Length);
+            stepOverAddress = (TWord) ((long) dasm.Current.Address.ToLinear() + dasm.Current.Length);
             stepAction = callback;
         }
 
@@ -195,18 +201,19 @@ namespace Reko.Arch.X86
             case Mnemonic.add: Add(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.and: And(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.call: Call(instr.Operands[0]); return;
+            case Mnemonic.cld: Cld(); return;
             case Mnemonic.cmp: Cmp(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.dec: Dec(instr.Operands[0]); return;
             case Mnemonic.hlt: running = false; return;
             case Mnemonic.inc: Inc(instr.Operands[0]); return;
-            case Mnemonic.ja: if ((Flags & (Cmask | Zmask)) == 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
-            case Mnemonic.jbe: if ((Flags & (Cmask | Zmask)) != 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
-            case Mnemonic.jc: if ((Flags & Cmask) != 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
+            case Mnemonic.ja: if ((Flags & (Cmask | Zmask)) == 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
+            case Mnemonic.jbe: if ((Flags & (Cmask | Zmask)) != 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
+            case Mnemonic.jc: if ((Flags & Cmask) != 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
             case Mnemonic.jmp: Jump(instr.Operands[0]); return;
-            case Mnemonic.jnc: if ((Flags & Cmask) == 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
-            case Mnemonic.jnz: if ((Flags & Zmask) == 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
-            case Mnemonic.jz: if ((Flags & Zmask) != 0) InstructionPointer = ((AddressOperand)instr.Operands[0]).Address; return;
-            case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveAddress((MemoryOperand)instr.Operands[1])); break;
+            case Mnemonic.jnc: if ((Flags & Cmask) == 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
+            case Mnemonic.jnz: if ((Flags & Zmask) == 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
+            case Mnemonic.jz: if ((Flags & Zmask) != 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
+            case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveAddress((MemoryOperand) instr.Operands[1])); break;
             case Mnemonic.loop: Loop(instr.Operands[0]); break;
             case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); break;
             case Mnemonic.or: Or(instr.Operands[0], instr.Operands[1]); return;
@@ -228,7 +235,7 @@ namespace Reko.Arch.X86
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            TWord sum = l + r + (Flags & 1);
+            TWord sum = l + r + ((uint)Flags & 1);
             Write(dst, sum);
             var newCy =
                 ((l & r) | ((l | r) & (~(sum)))) >> 31;
@@ -246,13 +253,13 @@ namespace Reko.Arch.X86
             TWord l = Read(dst);
             TWord r = Read(src);
             if (src.Width.Size < dst.Width.Size)
-                r = (TWord)(sbyte)r;
+                r = (TWord) (sbyte) r;
             TWord sum = l + r;
             Write(dst, sum);
             uint ov = ((~(l ^ r) & (l ^ sum)) & 0x80000000u) >> 20;
             Flags =
                 (r > sum ? 1u : 0u) |     // Carry
-                (sum == 0 ? 1u << 6: 0u)  | // Zero
+                (sum == 0 ? 1u << 6 : 0u) | // Zero
                 (ov)                        // Overflow
                 ;
         }
@@ -276,7 +283,7 @@ namespace Reko.Arch.X86
         private void Rol(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
-            byte sh = (byte)Read(src);
+            byte sh = (byte) Read(src);
             TWord r = (l << sh) | (l >> (32 - sh));
             Write(dst, r);
             Flags =
@@ -291,7 +298,7 @@ namespace Reko.Arch.X86
             var addr = Address.Ptr32(edi);
             if (!map.TryFindSegment(addr, out ImageSegment seg))
                 throw new AccessViolationException();
-            byte mem = (byte)(al - seg.MemoryArea.Bytes[edi - (uint)seg.MemoryArea.BaseAddress.ToLinear()]);
+            byte mem = (byte) (al - seg.MemoryArea.Bytes[edi - (uint) seg.MemoryArea.BaseAddress.ToLinear()]);
             WriteRegister(X86.Registers.edi, edi + 1);      //$BUG: Direction flag not respected
             Flags =
                 (mem == 0 ? Zmask : 0u);
@@ -300,7 +307,7 @@ namespace Reko.Arch.X86
         private void Shl(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
-            byte sh = (byte)Read(src);
+            byte sh = (byte) Read(src);
             TWord r = l << sh;
             Write(dst, r);
             Flags =
@@ -310,7 +317,7 @@ namespace Reko.Arch.X86
         private void Shr(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
-            byte sh = (byte)Read(src);
+            byte sh = (byte) Read(src);
             TWord r = l >> sh;
             Write(dst, r);
             Flags =
@@ -319,12 +326,17 @@ namespace Reko.Arch.X86
 
         private void Call(MachineOperand op)
         {
-            Push(InstructionPointer.ToLinear() + (uint)dasm.Current.Length);   // Push return value on stack
-      
+            Push(InstructionPointer.ToLinear() + (uint) dasm.Current.Length);   // Push return value on stack
+
             TWord l = Read(op);
             if (envEmulator.InterceptCall(this, l))
                 return;
-             InstructionPointer = Address.Ptr32(l);
+            InstructionPointer = Address.Ptr32(l);
+        }
+
+        private void Cld()
+        {
+            Flags &= ~Dmask;
         }
 
         private void Jump(MachineOperand op)
