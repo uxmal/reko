@@ -186,7 +186,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             var szfile = rawImage.Length;
             for (var ofs = 8; ofs <= 256 && ofs < szfile; ++ofs)
             {
-                fp.Offset = ofs;
+                fp.Offset = szfile - ofs;
                 var sig = Encoding.ASCII.GetString(fp.ReadBytes(4));
                 long dlfaBase = fp.ReadLeUInt32();
                 if (sig.StartsWith("NB0"))
@@ -228,16 +228,13 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             foreach (var i in Enumerable.Range(0, cdnt))
             {
                 // read subsection headers
-                //var _tup_2 = @struct.unpack("<HHLH", fp.read(10));
                 var usst = fp.ReadLeUInt16();
                 var module = fp.ReadLeUInt16();
                 var lfoStart = fp.ReadLeInt32();
                 var cb = fp.ReadLeUInt16();
                 // read subsection data
-                //var pos = /*fp.tell();*/
                 var rdr = new LeImageReader(fp.Bytes, (uint)(lfoStart + dlfaBase));
                 var data = fp.ReadBytes(cb);
-                //fp.seek(pos, 0);
                 var sst = (SST) usst;
                 // mash the subsection into one
                 var FACTORY = new Dictionary<SST, Func<SST, ushort, byte[], Subsection>>
