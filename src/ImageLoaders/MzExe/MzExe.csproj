@@ -6,6 +6,7 @@
     <RootNamespace>Reko.ImageLoaders.MzExe</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.MzExe</AssemblyName>
     <TargetFrameworks>netStandard2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
