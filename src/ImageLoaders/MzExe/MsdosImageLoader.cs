@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -157,6 +157,15 @@ namespace Reko.ImageLoaders.MzExe
             if (borsymLdr.LoadDebugHeader())
             {
                 var syms = borsymLdr.LoadSymbols();
+                foreach (var sym in syms)
+                {
+                    symbols[sym.Key] = sym.Value;
+                }
+            }
+            var codeviewLdr = new CodeView.CodeViewLoader(arch, RawImage, addrLoad);
+            if (codeviewLdr.LoadCodeViewInfo())
+            {
+                var syms = codeviewLdr.LoadSymbols();
                 foreach (var sym in syms)
                 {
                     symbols[sym.Key] = sym.Value;

@@ -26,6 +26,17 @@ namespace Reko.ImageLoaders.MzExe.CodeView
 {
     public class CodeViewLoader
     {
+        private readonly IProcessorArchitecture arch;
+        private readonly byte[] rawImage;
+        private readonly Address addrLoad;
+        private List<object> subsections;
+
+        public CodeViewLoader(IProcessorArchitecture arch, byte[] rawImage, Address addrLoad)
+        {
+            this.arch = arch;
+            this.rawImage = rawImage;
+            this.addrLoad = addrLoad;
+        }
 
         // ----------------------------------------
         // Subsection type
@@ -201,6 +212,11 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             return (null, 0, 0);
         }
 
+        public Dictionary<Address, ImageSymbol> LoadSymbols()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Read the CodeView subsection directory
         /// </summary>
@@ -241,19 +257,19 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             return subsecs;
         }
 
-        public object LoadCodeViewInfo(byte[] fp)
+        public bool LoadCodeViewInfo()
         {
             // read CodeView header
-            var (ver, dlfaBase, subsecBase) = FindCodeView(fp);
+            var (ver, dlfaBase, subsecBase) = FindCodeView(rawImage);
             if (ver is null)
-                return null;
+                return false;
 
             // print CodeView header
             Console.WriteLine("CodeView version '{0}', with dlfaBase=0x{1:X8} and subsecBase=0x{2:X8}", ver, dlfaBase, subsecBase);
 
             // read the subsection directory
-            var subsections = ReadSubsectionDirectory(new LeImageReader(fp, (uint) subsecBase), dlfaBase);
-            return subsections;
+            this.subsections = ReadSubsectionDirectory(new LeImageReader(this.rawImage, (uint) subsecBase), dlfaBase);
+            return true;
         }
     }
 }
