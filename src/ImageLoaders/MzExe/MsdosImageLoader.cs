@@ -142,7 +142,7 @@ namespace Reko.ImageLoaders.MzExe
                 listener.Error(
                     new NullCodeLocation(Filename),
                     ex,
-                    "Detected Borland debug symbols but failed to load them.");
+                    "Detected debug symbols but failed to load them.");
 			}
             return results;
 		}
