@@ -129,6 +129,17 @@ namespace Reko.Arch.X86
             Run();
         }
 
+        public void SetBreakpoint(ulong address, Action callback)
+        {
+            bpExecute.Add((uint) address, callback);
+        }
+
+        public void DeleteBreakpoint(ulong address)
+        {
+            bpExecute.Remove((uint) address);
+        }
+
+
         private StringBuilder DumpRegs()
         {
             var sb = new StringBuilder();
@@ -244,6 +255,134 @@ namespace Reko.Arch.X86
             }
         }
 
+        protected abstract ulong GetEffectiveAddress(MemoryOperand m);
+
+        protected TWord GetEffectiveOffset(MemoryOperand m)
+        {
+            TWord ea = 0;
+            if (m.Offset.IsValid)
+                ea += m.Offset.ToUInt32();
+            if (m.Index != RegisterStorage.None)
+                ea += ReadRegister(m.Index) * m.Scale;
+            if (m.Base != null && m.Base != RegisterStorage.None)
+            {
+                ea += ReadRegister(m.Base);
+            }
+            return ea;
+        }
+
+        private TWord Read(MachineOperand op)
+        {
+            if (op is RegisterOperand r)
+            {
+                return ReadRegister(r.Register);
+            }
+            if (op is ImmediateOperand i)
+                return i.Value.ToUInt32();
+            if (op is AddressOperand a)
+                return a.Address.ToUInt32();
+            if (op is MemoryOperand m)
+            {
+                ulong ea = GetEffectiveAddress(m);
+                switch (op.Width.Size)
+                {
+                case 1: if (!TryReadByte(ea, out byte b)) throw new IndexOutOfRangeException(); else return b;
+                case 2: return ReadLeUInt16(ea);
+                case 4: return ReadLeUInt32(ea);
+                }
+                throw new NotImplementedException();
+            }
+            throw new NotImplementedException();
+        }
+
+
+        public TWord ReadRegister(RegisterStorage r)
+        {
+            return (TWord) (Registers[r.Number] & r.BitMask) >> (int) r.BitAddress;
+        }
+
+        private void Write(MachineOperand op, TWord w)
+        {
+            if (op is RegisterOperand r)
+            {
+                WriteRegister(r.Register, w);
+                return;
+            }
+            if (op is MemoryOperand m)
+            {
+                var ea = GetEffectiveAddress(m);
+                switch (op.Width.Size)
+                {
+                case 1: WriteByte(ea, (byte) w); return;
+                case 2: WriteLeUInt16(ea, (ushort) w); return;
+                case 4: WriteLeUInt32(ea, (uint) w); return;
+                }
+                throw new NotImplementedException();
+            }
+            throw new NotImplementedException();
+        }
+
+        public void WriteRegister(RegisterStorage r, TWord value)
+        {
+            Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int) r.BitAddress);
+        }
+
+        private bool TryReadByte(ulong ea, out byte b)
+        {
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
+                throw new AccessViolationException();
+            var mem = segment.MemoryArea;
+            var off = ea - mem.BaseAddress.ToLinear();
+            return segment.MemoryArea.TryReadByte((long) off, out b);
+        }
+
+        public ushort ReadLeUInt16(ulong ea)
+        {
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
+                throw new AccessViolationException();
+            var mem = segment.MemoryArea;
+            var off = ea - mem.BaseAddress.ToLinear();
+            return mem.ReadLeUInt16((uint) off);
+        }
+
+        public uint ReadLeUInt32(ulong ea)
+        {
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
+                throw new AccessViolationException();
+            var mem = segment.MemoryArea;
+            var off = ea - mem.BaseAddress.ToLinear();
+            return mem.ReadLeUInt32((uint) off);
+        }
+
+        private void WriteByte(ulong ea, byte value)
+        {
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
+                throw new AccessViolationException();
+            var mem = segment.MemoryArea;
+            mem.WriteByte((long) (ea - mem.BaseAddress.ToLinear()), value);
+        }
+
+        public void WriteLeUInt16(ulong ea, ushort value)
+        {
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
+                throw new AccessViolationException();
+            var mem = segment.MemoryArea;
+            var off = ea - mem.BaseAddress.ToLinear();
+            segment.MemoryArea.WriteLeUInt16((uint) off, value);
+        }
+
+        protected void WriteLeUInt32(ulong ea, uint value)
+        {
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
+                throw new AccessViolationException();
+            var mem = segment.MemoryArea;
+            var off = ea - mem.BaseAddress.ToLinear();
+            segment.MemoryArea.WriteLeUInt32((long) off, value);
+        }
+
+
+
+
         private void Adc(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
@@ -353,7 +492,7 @@ namespace Reko.Arch.X86
             Flags &= ~Dmask;
         }
 
-        private void Jump(MachineOperand op)
+        protected void Jump(MachineOperand op)
         {
             TWord l = Read(op);
             InstructionPointer = Address.Ptr32(l);
@@ -467,76 +606,6 @@ namespace Reko.Arch.X86
                 0;                          // Overflow
         }
 
-        private TWord Read(MachineOperand op)
-        {
-            if (op is RegisterOperand r)
-            {
-                return ReadRegister(r.Register);
-            }
-            if (op is ImmediateOperand i)
-                return i.Value.ToUInt32();
-            if (op is AddressOperand a)
-                return a.Address.ToUInt32();
-            if (op is MemoryOperand m)
-            {
-                ulong ea = GetEffectiveAddress(m);
-                switch (op.Width.Size)
-                {
-                case 1: if (!TryReadByte(ea, out byte b)) throw new IndexOutOfRangeException(); else return b;
-                case 2: return ReadLeUInt16(ea);
-                case 4: return ReadLeUInt32(ea);
-                }
-                throw new NotImplementedException();
-            }
-            throw new NotImplementedException();
-        }
-
-        protected abstract ulong GetEffectiveAddress(MemoryOperand m);
-
-        protected TWord GetEffectiveOffset(MemoryOperand m)
-        {
-            TWord ea = 0;
-            if (m.Offset.IsValid)
-                ea += m.Offset.ToUInt32();
-            if (m.Index != RegisterStorage.None)
-                ea += ReadRegister(m.Index) * m.Scale;
-            if (m.Base != null && m.Base != RegisterStorage.None)
-            {
-                ea += ReadRegister(m.Base);
-            }
-            return ea;
-        }
-
-        public TWord ReadRegister(RegisterStorage r)
-        {
-            return (TWord)(Registers[r.Number] & r.BitMask) >> (int)r.BitAddress;
-        }
-
-        private void Write(MachineOperand op, TWord w)
-        {
-            if (op is RegisterOperand r)
-            {
-                WriteRegister(r.Register, w);
-                return;
-            }
-            if (op is MemoryOperand m)
-            {
-                var ea = GetEffectiveAddress(m);
-                switch (op.Width.Size)
-                {
-                case 1: WriteByte(ea, (byte) w); return;
-                case 2: WriteLeUInt16(ea, (ushort) w); return;
-                case 4: WriteLeUInt32(ea, (uint) w); return;
-                }
-                throw new NotImplementedException();
-            }
-            throw new NotImplementedException();
-        }
-
-        public void WriteRegister(RegisterStorage r, TWord value)
-        {
-            Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int)r.BitAddress);
-        }
 
         public void Loop(MachineOperand op)
         {
@@ -589,67 +658,5 @@ namespace Reko.Arch.X86
             Write(op2, tmp);
         }
 
-        private bool TryReadByte(ulong ea, out byte b)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            return segment.MemoryArea.TryReadByte((long)off, out b);
-        }
-
-        public ushort ReadLeUInt16(ulong ea)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            return mem.ReadLeUInt16((uint) off);
-        }
-
-        public uint ReadLeUInt32(ulong ea)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            return mem.ReadLeUInt32((uint) off);
-        }
-
-        private void WriteByte(ulong ea, byte value)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            mem.WriteByte((long) (ea - mem.BaseAddress.ToLinear()), value);
-        }
-
-        public void WriteLeUInt16(ulong ea, ushort value)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            segment.MemoryArea.WriteLeUInt16((uint)off, value);
-        }
-
-        protected void WriteLeUInt32(ulong ea, uint value)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            segment.MemoryArea.WriteLeUInt32((long)off, value);
-        }
-
-        public void SetBreakpoint(ulong address, Action callback)
-        {
-            bpExecute.Add((uint)address, callback);
-        }
-
-        public void DeleteBreakpoint(ulong address)
-        {
-            bpExecute.Remove((uint)address);
-        }
     }
 }
