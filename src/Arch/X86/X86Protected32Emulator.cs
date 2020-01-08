@@ -18,12 +18,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Types;
+using System;
 
 namespace Reko.Arch.X86
 {
@@ -37,6 +34,11 @@ namespace Reko.Arch.X86
         protected override ulong GetEffectiveAddress(MemoryOperand m)
         {
             return GetEffectiveOffset(m);
+        }
+
+        protected override void Movs(PrimitiveType dt)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Push(ulong word)

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -66,9 +67,9 @@ namespace Reko.Arch.X86
             this.iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
             this.masks = new (uint,uint)[]{
+                (0, 0),
                 (0x0000_00FFu,  0x0000_0080),
                 (0x0000_FFFFu, 0x0000_8000),
-                (0, 0),
                 (0, 0),
 
                 (0xFFFF_FFFFu, 0x8000_0000),
@@ -217,6 +218,15 @@ namespace Reko.Arch.X86
                 }
                 throw new NotImplementedException();
             }
+            if (instr.repPrefix == 3 && !ignoreRep)
+            {
+                // rep / repe
+                switch (instr.code)
+                {
+                case Mnemonic.movs: Rep(); return; 
+                }
+                throw new NotImplementedException();
+            }
             switch (instr.code)
             {
             default:
@@ -240,6 +250,7 @@ namespace Reko.Arch.X86
             case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveOffset((MemoryOperand) instr.Operands[1])); break;
             case Mnemonic.loop: Loop(instr.Operands[0]); break;
             case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); break;
+            case Mnemonic.movs: Movs(instr.dataWidth); break;
             case Mnemonic.or: Or(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.pop: Write(instr.Operands[0], Pop()); return;
             case Mnemonic.popa: Popa(); return;
@@ -284,13 +295,7 @@ namespace Reko.Arch.X86
             if (op is MemoryOperand m)
             {
                 ulong ea = GetEffectiveAddress(m);
-                switch (op.Width.Size)
-                {
-                case 1: if (!TryReadByte(ea, out byte b)) throw new IndexOutOfRangeException(); else return b;
-                case 2: return ReadLeUInt16(ea);
-                case 4: return ReadLeUInt32(ea);
-                }
-                throw new NotImplementedException();
+                return ReadMemory(ea, m.Width);
             }
             throw new NotImplementedException();
         }
@@ -299,6 +304,18 @@ namespace Reko.Arch.X86
         public TWord ReadRegister(RegisterStorage r)
         {
             return (TWord) (Registers[r.Number] & r.BitMask) >> (int) r.BitAddress;
+        }
+
+        public TWord ReadMemory(ulong ea, PrimitiveType dt)
+        {
+            switch (dt.Size)
+            {
+            case 1: if (!TryReadByte(ea, out byte b)) throw new IndexOutOfRangeException(); else return b;
+            case 2: return ReadLeUInt16(ea);
+            case 4: return ReadLeUInt32(ea);
+            case 8: throw new NotImplementedException();
+            }
+            throw new InvalidOperationException();
         }
 
         private void Write(MachineOperand op, TWord w)
@@ -311,13 +328,8 @@ namespace Reko.Arch.X86
             if (op is MemoryOperand m)
             {
                 var ea = GetEffectiveAddress(m);
-                switch (op.Width.Size)
-                {
-                case 1: WriteByte(ea, (byte) w); return;
-                case 2: WriteLeUInt16(ea, (ushort) w); return;
-                case 4: WriteLeUInt32(ea, (uint) w); return;
-                }
-                throw new NotImplementedException();
+                WriteMemory(w, ea, op.Width);
+                return;
             }
             throw new NotImplementedException();
         }
@@ -325,6 +337,18 @@ namespace Reko.Arch.X86
         public void WriteRegister(RegisterStorage r, TWord value)
         {
             Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int) r.BitAddress);
+        }
+
+        public void WriteMemory(TWord w, ulong ea, PrimitiveType dt)
+        {
+            switch (dt.Size)
+            {
+            case 1: WriteByte(ea, (byte) w); return;
+            case 2: WriteLeUInt16(ea, (ushort) w); return;
+            case 4: WriteLeUInt32(ea, (uint) w); return;
+            case 8: throw new NotImplementedException();
+            }
+            throw new InvalidOperationException();
         }
 
         private bool TryReadByte(ulong ea, out byte b)
@@ -417,6 +441,22 @@ namespace Reko.Arch.X86
                 ;
         }
 
+        private void Rep()
+        {
+            var strInstr = dasm.Current;
+            this.ignoreRep = true;
+            var mask = masks[strInstr.addrWidth.Size];
+            var ecx = ReadRegister(X86.Registers.ecx);
+            uint c = ecx & mask.value;
+            while (c != 0)
+            {
+                Execute(strInstr);
+                --c;
+                ecx = (ecx & ~mask.value) | c;
+                WriteRegister(X86.Registers.ecx, ecx);
+            }
+        }
+
         private void Repne()
         {
             var strInstr = dasm.Current;
@@ -424,12 +464,14 @@ namespace Reko.Arch.X86
             uint ecx = ReadRegister(X86.Registers.ecx);
             while (ecx != 0)
             {
+                // Note: a more faithful simulation would 
+                // check for pending interrupts.
                 Execute(strInstr);
                 --ecx;
+                WriteRegister(X86.Registers.ecx, ecx);
                 if ((Flags & Zmask) != 0)
                     break;
             }
-            WriteRegister(X86.Registers.ecx, ecx);
             this.ignoreRep = false;
         }
 
@@ -442,6 +484,8 @@ namespace Reko.Arch.X86
             Flags =
                 (r == 0 ? Zmask : 0u);      // Zero
         }
+
+        protected abstract void Movs(PrimitiveType dt);
 
         private void Scasb()
         {

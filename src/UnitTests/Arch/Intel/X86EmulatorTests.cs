@@ -619,6 +619,32 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(X86Emulator.Zmask, emu.Flags & X86Emulator.Zmask);
             Assert.AreEqual(X86Emulator.Cmask, emu.Flags & X86Emulator.Cmask);
         }
+
+        [Test]
+        public void X86Emu_movsw_16bit()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.si, 0x40);
+                m.Mov(m.di, 0x80);
+                m.Mov(m.cx, 0x3);
+                m.Rep();
+                m.Movsw();
+                m.Hlt();
+            });
+
+            emu.WriteLeUInt16(Lin(0x800, 0x40), 1);
+            emu.WriteLeUInt16(Lin(0x800, 0x42), 2);
+            emu.WriteLeUInt16(Lin(0x800, 0x44), 3);
+            emu.WriteLeUInt16(Lin(0x800, 0x46), 4); // won't get copied.
+
+            emu.Start();
+
+            Assert.AreEqual(1, emu.ReadLeUInt16(Lin(0x800, 0x80)));
+            Assert.AreEqual(2, emu.ReadLeUInt16(Lin(0x800, 0x82)));
+            Assert.AreEqual(3, emu.ReadLeUInt16(Lin(0x800, 0x84)));
+            Assert.AreEqual(0, emu.ReadLeUInt16(Lin(0x800, 0x86))); // won't get copied.
+        }
     }
 }
 /*
@@ -650,3 +676,4 @@ namespace Reko.UnitTests.Arch.Intel
 0800:0033 B2 10 mov dl,10
 0800:0035 EA E6 05 54 15 jmp far 1554:05E6
 */
+

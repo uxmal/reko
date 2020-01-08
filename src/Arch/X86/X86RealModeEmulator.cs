@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Types;
 
 namespace Reko.Arch.X86
 {
@@ -31,6 +32,11 @@ namespace Reko.Arch.X86
     {
         public X86RealModeEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator) : base(arch, segmentMap, envEmulator)
         {
+        }
+
+        private static ulong ToLinear(uint seg, uint off)
+        {
+            return (((ulong) seg) << 4) + off;
         }
 
         protected override ulong GetEffectiveAddress(MemoryOperand m)
@@ -41,7 +47,22 @@ namespace Reko.Arch.X86
 
             var off = GetEffectiveOffset(m);
             var seg = ReadRegister(segReg);
-            return (seg << 4) + off;
+            return ToLinear(seg, off);
+        }
+
+        protected override void Movs(PrimitiveType dt)
+        {
+            var ds = ReadRegister(X86.Registers.ds);
+            var es = ReadRegister(X86.Registers.es);
+            var si = ReadRegister(X86.Registers.si);
+            var di = ReadRegister(X86.Registers.di);
+            var value = ReadMemory(ToLinear(ds, si), dt);
+            WriteMemory(value, ToLinear(es, di), dt);
+            var delta = (uint)dt.Size * (((Flags & Dmask) != 0) ? 0xFFFFu : 0x0001u);
+            si += delta;
+            di += delta;
+            WriteRegister(X86.Registers.si, si);
+            WriteRegister(X86.Registers.di, di);
         }
 
         public override void Push(ulong value)
