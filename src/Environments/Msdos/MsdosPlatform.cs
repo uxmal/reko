@@ -60,7 +60,7 @@ namespace Reko.Environments.Msdos
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {
-            throw new NotImplementedException();
+            return new MsdosEmulator();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

@@ -74,9 +74,8 @@ namespace Reko.ImageLoaders.OdbgScript
             this.ImageMap = program.SegmentMap;
             this.Architecture = (IntelArchitecture)program.Architecture;
 
-            IPlatformEmulator win32 = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
-            var wxin32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
-            var emu = program.Architecture.CreateEmulator(program.SegmentMap, win32);
+            var envEmu = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
+            var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
             this.scriptInterpreter.Host = new Host(this, program.SegmentMap);
@@ -90,7 +89,7 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.Start();
             TearDownStack(stackSeg);
 
-            foreach (var ic in win32.InterceptedCalls)
+            foreach (var ic in envEmu.InterceptedCalls)
             {
                 program.InterceptedCalls.Add(ic.Key, ic.Value);
             }
