@@ -78,8 +78,12 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_MsdosCode(Action<X86Assembler> coder)
         {
             arch = new X86ArchitectureReal("x86-real-16");
-            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr32(0x00100000), new List<ImageSymbol>());
+            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.SegPtr(0x07F0, 0), new List<ImageSymbol>());
+            asm.Segment("PSP");
+            asm.Repeat(0x100, m => m.Db(0));
+            asm.Segment("Code");
             coder(asm);
+            asm.Align(0x2000);  // make room for a stack.
             var program = asm.GetImage();
             this.segmentMap = program.SegmentMap;
 
@@ -88,8 +92,12 @@ namespace Reko.UnitTests.Arch.Intel
             var msdos = platform.CreateEmulator(program.SegmentMap, importReferences);
 
             emu = (X86Emulator) arch.CreateEmulator(program.SegmentMap, msdos);
-            emu.InstructionPointer = program.ImageMap.BaseAddress;
-            emu.WriteRegister(Registers.sp, (uint) program.ImageMap.BaseAddress.ToLinear() + 0x0FFC);
+            emu.InstructionPointer = Address.SegPtr(0x800, 0);
+            emu.WriteRegister(Registers.cs, 0x0800);
+            emu.WriteRegister(Registers.ds, 0x0800);
+            emu.WriteRegister(Registers.es, 0x0800);
+            emu.WriteRegister(Registers.ss, 0x0800);
+            emu.WriteRegister(Registers.sp, 0x0FFE);
             emu.ExceptionRaised += delegate { throw new Exception(); };
         }
 
@@ -552,6 +560,21 @@ namespace Reko.UnitTests.Arch.Intel
             emu.Start();
 
             Assert.AreEqual(0xFFFFFBFF, emu.Registers[Registers.eflags.Number]);
+        }
+
+        [Test]
+        public void X86Emu_real_push()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Push(m.es);
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual(0x0FFC, emu.Registers[Registers.esp.Number]);
+            Assert.AreEqual(0x800u, emu.ReadLeUInt16(Address.SegPtr(0x800, 0xFFC)));
         }
     }
 }

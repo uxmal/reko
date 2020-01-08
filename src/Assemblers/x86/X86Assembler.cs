@@ -85,6 +85,7 @@ namespace Reko.Assemblers.x86
             SetDefaultWordWidth(defaultWordSize);
         }
 
+
         public IPlatform Platform { get; set; }
 
         public Dictionary<Address, ImportReference> ImportReferences
@@ -135,6 +136,11 @@ namespace Reko.Assemblers.x86
                     image.WriteLeUInt16((uint)((reloc.Segment.Selector - addrBase.Selector.Value) * 16u + reloc.Offset), seg.Selector);
                 }
             }
+        }
+
+        public void Align(int alignment)
+        {
+            emitter.Align(0, alignment);
         }
 
         public void Mov(ParsedOperand op, int constant)
@@ -209,6 +215,7 @@ namespace Reko.Assemblers.x86
         {
             ProcessTest(op1, Imm(imm));
         }
+
         public ParsedOperand BytePtr(int offset)
         {
             AddressWidth = SegmentAddressWidth;
@@ -2108,6 +2115,11 @@ namespace Reko.Assemblers.x86
         public ParsedOperand ds
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ds)); }
+        }
+
+        public ParsedOperand es
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.es)); }
         }
 
         public ParsedOperand Const(int n)

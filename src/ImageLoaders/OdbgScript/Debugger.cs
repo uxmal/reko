@@ -1,4 +1,4 @@
-﻿using Reko.Arch.X86;
+using Reko.Arch.X86;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
     public class Debugger
     {
-        private X86Emulator emu;
+        private IProcessorEmulator emu;
 
-        public Debugger(X86Emulator emu)
+        public Debugger(IProcessorEmulator emu)
         {
             this.emu = emu;
         }

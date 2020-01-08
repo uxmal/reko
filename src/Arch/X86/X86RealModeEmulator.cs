@@ -22,28 +22,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Reko.Core;
 
-namespace Reko.Core
+namespace Reko.Arch.X86
 {
-    using TWord = System.UInt32;
-
-    /// <summary>
-    /// Interface for processor emulation.
-    /// </summary>
-    public interface IProcessorEmulator
+    public class X86RealModeEmulator : X86Emulator
     {
-        event EventHandler BeforeStart;
-        event EventHandler ExceptionRaised;
+        public X86RealModeEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator) : base(arch, segmentMap, envEmulator)
+        {
+        }
 
-        Address InstructionPointer { get; set; }
-
-        TWord ReadRegister(RegisterStorage reg);
-        void WriteRegister(RegisterStorage reg, TWord value);
-        void Start();
-        void Stop();
-        void StepInto(Action callback);
-        void StepOver(Action callback);
-        void SetBreakpoint(ulong linearAddress, Action callback);
-        void DeleteBreakpoint(ulong linearAddress);
+        public override void Push(ulong value)
+        {
+            var ss = (ushort) Registers[X86.Registers.ss.Number];
+            var sp = (ushort) Registers[X86.Registers.esp.Number] - 2u;
+            WriteLeUInt16(Address.SegPtr(ss, sp), (ushort) value);
+            WriteRegister(X86.Registers.sp, sp);
+        }
     }
 }

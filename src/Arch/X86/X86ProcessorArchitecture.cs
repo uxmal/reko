@@ -80,7 +80,7 @@ namespace Reko.Arch.X86
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
-            return new X86Emulator(this, segmentMap, envEmulator);
+            return mode.CreateEmulator(this, segmentMap, envEmulator);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

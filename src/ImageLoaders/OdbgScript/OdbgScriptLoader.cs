@@ -74,7 +74,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             IPlatformEmulator win32 = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
             var wxin32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
-            var emu = new X86Emulator((IntelArchitecture)program.Architecture, program.SegmentMap, win32);
+            var emu = program.Architecture.CreateEmulator(program.SegmentMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
             this.scriptInterpreter.Host = new Host(this, program.SegmentMap);
@@ -95,7 +95,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return program;
         }
 
-        private ImageSegment InitializeStack(X86Emulator emu)
+        private ImageSegment InitializeStack(IProcessorEmulator emu)
         {
             var stack = new MemoryArea(Address.Ptr32(0x7FE00000), new byte[1024 * 1024]);
             var stackSeg = this.ImageMap.AddSegment(stack, "stack", AccessMode.ReadWrite);

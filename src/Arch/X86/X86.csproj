@@ -129,6 +129,8 @@
     <Compile Include="X86Disassembler.TwoByte.cs" />
     <Compile Include="X86Disassembler.x87.cs" />
     <Compile Include="X86ProcessorArchitecture.cs" />
+    <Compile Include="X86Protected32Emulator.cs" />
+    <Compile Include="X86RealModeEmulator.cs" />
     <Compile Include="X86Rewriter.Ext.cs" />
     <Compile Include="X86Rewriter.Fpu.cs" />
     <Compile Include="X86Rewriter.Sse.cs" />

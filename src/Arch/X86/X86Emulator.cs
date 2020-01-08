@@ -33,7 +33,7 @@ namespace Reko.Arch.X86
     /// Simple emulator of X86 instructions. No attempt is made to be high-performance
     /// as long as correctness is maintained.
     /// </summary>
-    public class X86Emulator : IProcessorEmulator
+    public abstract class X86Emulator : IProcessorEmulator
     {
         public event EventHandler BeforeStart;
         public event EventHandler ExceptionRaised;
@@ -555,12 +555,7 @@ namespace Reko.Arch.X86
             return word;
         }
 
-        public void Push(ulong word)
-        {
-            var esp = (uint)Registers[X86.Registers.esp.Number] - 4;
-            WriteLeUInt32(Address.Ptr32(esp), (uint) word);
-            WriteRegister(X86.Registers.esp, (uint) esp);
-        }
+        public abstract void Push(ulong value);
 
         private void Xchg(MachineOperand op1, MachineOperand op2)
         {
@@ -591,6 +586,17 @@ namespace Reko.Arch.X86
             return segment.MemoryArea.ReadLeUInt32(addr);
         }
 
+        public ushort ReadLeUInt16(Address ea)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            ImageSegment segment;
+            if (!map.TryFindSegment(ea, out segment))
+                throw new AccessViolationException();
+            return segment.MemoryArea.ReadLeUInt16(ea);
+        }
+
         private uint ReadLeUInt32(Address ea)
         {
             //$PERF: wow this is inefficient; an allocation
@@ -602,18 +608,27 @@ namespace Reko.Arch.X86
             return segment.MemoryArea.ReadLeUInt32(ea);
         }
 
-        private void WriteLeUInt32(Address ea, uint value)
+        protected void WriteLeUInt16(Address ea, ushort value)
         {
             //$PERF: wow this is inefficient; an allocation
             // per memory fetch. TryFindSegment needs an overload
             // that accepts ulongs / linear addresses.
-            ImageSegment segment;
-            if (!map.TryFindSegment(ea, out segment))
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
+                throw new AccessViolationException();
+            segment.MemoryArea.WriteLeUInt16(ea, value);
+        }
+
+        protected void WriteLeUInt32(Address ea, uint value)
+        {
+            //$PERF: wow this is inefficient; an allocation
+            // per memory fetch. TryFindSegment needs an overload
+            // that accepts ulongs / linear addresses.
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
                 throw new AccessViolationException();
             segment.MemoryArea.WriteLeUInt32(ea, value);
         }
 
-        private void WriteLeUInt32(uint ea, uint value)
+        protected void WriteLeUInt32(uint ea, uint value)
         {
             //$PERF: wow this is inefficient; an allocation
             // per memory fetch. TryFindSegment needs an overload
@@ -636,14 +651,14 @@ namespace Reko.Arch.X86
             segment.MemoryArea.WriteByte(ea, value);
         }
 
-        public void SetBreakpoint(uint address, Action callback)
+        public void SetBreakpoint(ulong address, Action callback)
         {
-            bpExecute.Add(address, callback);
+            bpExecute.Add((uint)address, callback);
         }
 
-        public void DeleteBreakpoint(uint address)
+        public void DeleteBreakpoint(ulong address)
         {
-            bpExecute.Remove(address);
+            bpExecute.Remove((uint)address);
         }
     }
 }
