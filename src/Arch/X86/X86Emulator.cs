@@ -248,6 +248,7 @@ namespace Reko.Arch.X86
             case Mnemonic.jnz: if ((Flags & Zmask) == 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
             case Mnemonic.jz: if ((Flags & Zmask) != 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
             case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveOffset((MemoryOperand) instr.Operands[1])); break;
+            case Mnemonic.lods: Lods(instr.dataWidth); break;
             case Mnemonic.loop: Loop(instr.Operands[0]); break;
             case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); break;
             case Mnemonic.movs: Movs(instr.dataWidth); break;
@@ -485,6 +486,7 @@ namespace Reko.Arch.X86
                 (r == 0 ? Zmask : 0u);      // Zero
         }
 
+        protected abstract void Lods(PrimitiveType dt);
         protected abstract void Movs(PrimitiveType dt);
 
         private void Scasb()

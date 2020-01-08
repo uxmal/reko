@@ -50,6 +50,20 @@ namespace Reko.Arch.X86
             return ToLinear(seg, off);
         }
 
+        protected override void Lods(PrimitiveType dt)
+        {
+            var ds = ReadRegister(X86.Registers.ds);
+            var si = ReadRegister(X86.Registers.si);
+            var value = ReadMemory(ToLinear(ds, si), dt);
+            var mask = masks[dt.Size];
+            var a = ReadRegister(X86.Registers.eax);
+            var aNew = (a & ~mask.value) | value;
+            WriteRegister(X86.Registers.eax, aNew);
+            var delta = (uint) dt.Size * (((Flags & Dmask) != 0) ? 0xFFFFu : 0x0001u);
+            si += delta;
+            WriteRegister(X86.Registers.si, si);
+        }
+
         protected override void Movs(PrimitiveType dt)
         {
             var ds = ReadRegister(X86.Registers.ds);

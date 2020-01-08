@@ -36,6 +36,11 @@ namespace Reko.Arch.X86
             return GetEffectiveOffset(m);
         }
 
+        protected override void Lods(PrimitiveType dt)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void Movs(PrimitiveType dt)
         {
             throw new NotImplementedException();

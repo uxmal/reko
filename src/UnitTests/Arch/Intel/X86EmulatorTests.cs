@@ -645,6 +645,24 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(3, emu.ReadLeUInt16(Lin(0x800, 0x84)));
             Assert.AreEqual(0, emu.ReadLeUInt16(Lin(0x800, 0x86))); // won't get copied.
         }
+
+        [Test]
+        public void X86Emu_lodsw_16bit()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.si, 0x40);
+                m.Lodsw();
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.eax, 0xFFFFFFFF);
+            emu.WriteLeUInt16(Lin(0x800, 0x40), 0x4242);
+
+            emu.Start();
+
+            Assert.AreEqual(0xFFFF4242, emu.ReadRegister(Registers.eax));
+        }
     }
 }
 /*
