@@ -39,13 +39,15 @@ namespace Reko.ImageLoaders.OdbgScript
     /// file to specify the script file to use.</remarks>
     public class OdbgScriptLoader : ImageLoader
     {
+        private ImageLoader originalImageLoader;
         private Debugger debugger;
         private OllyLang scriptInterpreter;
         private rulong OldIP;
 
-        public OdbgScriptLoader(IServiceProvider services, string filename, byte[] imgRaw)
-            : base(services, filename, imgRaw)
+        public OdbgScriptLoader(ImageLoader imageLoader) 
+            : base(imageLoader.Services, imageLoader.Filename, imageLoader.RawImage)
         {
+            this.originalImageLoader = imageLoader;
         }
 
         public override Address PreferredBaseAddress
@@ -66,7 +68,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             // First load the file as a PE Executable. This gives us a (writeable) image and 
             // the packed entry point.
-            var pe = CreatePeImageLoader();
+            var pe = this.originalImageLoader;
             var program = pe.Load(pe.PreferredBaseAddress);
             var rr = pe.Relocate(program, pe.PreferredBaseAddress);
             this.ImageMap = program.SegmentMap;

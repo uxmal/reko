@@ -39,18 +39,20 @@ namespace Reko.ImageLoaders.MzExe
 	{
         private IProcessorArchitecture arch;
         private IPlatform platform;
-		private ExeImageLoader exe;
 		private MemoryArea imgLoaded;
         private SegmentMap segmentMap;
 
-		public MsdosImageLoader(IServiceProvider services, string filename, ExeImageLoader exe) : base(services, filename, exe.RawImage)
+		public MsdosImageLoader(ExeImageLoader exe) 
+            : base(exe.Services, exe.Filename, exe.RawImage)
 		{
-			this.exe = exe;
-            var cfgSvc = services.RequireService<IConfigurationService>();
+			this.ExeLoader = exe;
+            var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16");
             this.platform = cfgSvc.GetEnvironment("ms-dos")
-                .Load(services, arch);
+                .Load(Services, arch);
 		}
+
+        public ExeImageLoader ExeLoader { get; }
 
 		public override Address PreferredBaseAddress
 		{
@@ -60,8 +62,8 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
-            int iImageStart = (exe.e_cparHeader * 0x10);
-            int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
+            int iImageStart = (ExeLoader.e_cparHeader * 0x10);
+            int cbImageSize = ExeLoader.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
             byte[] bytes = new byte[cbImageSize];
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
@@ -73,9 +75,9 @@ namespace Reko.ImageLoaders.MzExe
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
 			SegmentMap imageMap = segmentMap;
-			EndianImageReader rdr = new LeImageReader(exe.RawImage, exe.e_lfaRelocations);
+			EndianImageReader rdr = new LeImageReader(ExeLoader.RawImage, ExeLoader.e_lfaRelocations);
             var relocations = imgLoaded.Relocations;
-			int i = exe.e_cRelocations;
+			int i = ExeLoader.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
             var linBase = addrLoad.ToLinear();
 			while (i != 0)
@@ -113,7 +115,7 @@ namespace Reko.ImageLoaders.MzExe
 
 			// Found the start address.
 
-			Address addrStart = Address.SegPtr((ushort)(exe.e_cs + addrLoad.Selector.Value), exe.e_ip);
+			Address addrStart = Address.SegPtr((ushort)(ExeLoader.e_cs + addrLoad.Selector.Value), ExeLoader.e_ip);
 			segmentMap.AddSegment(new ImageSegment(
                 addrStart.Selector.Value.ToString("X4"),
                 Address.SegPtr(addrStart.Selector.Value, 0),
@@ -153,7 +155,7 @@ namespace Reko.ImageLoaders.MzExe
             // We don't want to load every registered symbol provider, though. Perhaps
             // load symbols in a separate AppDomain, marshal all the symbols across,
             // then discard the appdomain?
-            var borsymLdr = new Borland.SymbolLoader(arch, exe, RawImage, addrLoad);
+            var borsymLdr = new Borland.SymbolLoader(arch, ExeLoader, RawImage, addrLoad);
             if (borsymLdr.LoadDebugHeader())
             {
                 var syms = borsymLdr.LoadSymbols();

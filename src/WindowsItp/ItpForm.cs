@@ -200,7 +200,7 @@ namespace Reko.WindowsItp
             var size = fs.Length;
             var abImage = new byte[size];
             fs.Read(abImage, 0, abImage.Length);
-            var ldr = new OdbgScriptLoader(sc, "foo.exe", abImage);
+            var ldr = new OdbgScriptLoader(new Reko.Loading.NullImageLoader(sc, "foo.exe", abImage));
             ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
             var addr = ldr.PreferredBaseAddress;
             var program = ldr.Load(addr);
