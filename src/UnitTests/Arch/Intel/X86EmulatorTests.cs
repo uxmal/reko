@@ -663,6 +663,44 @@ namespace Reko.UnitTests.Arch.Intel
 
             Assert.AreEqual(0xFFFF4242, emu.ReadRegister(Registers.eax));
         }
+
+        [Test]
+        public void X86Emu_jmp_far_16bit()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.JmpF(Address.SegPtr(0x7FF, 0x16));
+                m.Hlt();
+                m.Mov(m.ax, 0x4242);
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.eax, 0xFFFFFFFF);
+
+            emu.Start();
+
+            Assert.AreEqual(0xFFFF4242, emu.ReadRegister(Registers.eax));
+        }
+
+        [Test]
+        public void X86Emu_js_16bit()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Jns("not_signed");
+                m.Mov(m.ax, 0x4711);
+                m.Hlt();
+                m.Label("not_signed");
+                m.Mov(m.ax, 0x4242);
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.eax, 0xFFFFFFFF);
+
+            emu.Start();
+
+            Assert.AreEqual(0xFFFF4242, emu.ReadRegister(Registers.eax));
+        }
     }
 }
 /*

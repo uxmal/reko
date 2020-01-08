@@ -1482,6 +1482,11 @@ namespace Reko.Assemblers.x86
             EmitRelativeTarget(destination, PrimitiveType.Byte);
         }
 
+        public void Jns(string destination)
+        {
+            ProcessShortBranch(0x09, destination);
+        }
+
         public void Jnz(string destination)
         {
             ProcessShortBranch(0x05, destination);

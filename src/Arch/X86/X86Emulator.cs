@@ -41,6 +41,7 @@ namespace Reko.Arch.X86
 
         public const uint Cmask = 1u << 0;
         public const uint Zmask = 1u << 6;
+        public const uint Smask = 1u << 7;
         public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
         public readonly (uint value, uint hibit)[] masks;
@@ -209,23 +210,27 @@ namespace Reko.Arch.X86
 
         public void Execute(X86Instruction instr)
         {
-            if (instr.repPrefix == 2 && !ignoreRep)
+            if (!ignoreRep)
             {
-                // repne
-                switch (instr.code)
+                if (instr.repPrefix == 2)
                 {
-                case Mnemonic.scasb: Repne(); return;
+                    // repne
+                    switch (instr.code)
+                    {
+                    case Mnemonic.scasb: Repne(); return;
+                    }
+                    throw new NotImplementedException();
                 }
-                throw new NotImplementedException();
-            }
-            if (instr.repPrefix == 3 && !ignoreRep)
-            {
-                // rep / repe
-                switch (instr.code)
+                else if (instr.repPrefix == 3)
                 {
-                case Mnemonic.movs: Rep(); return; 
+                    // rep / repe
+                    switch (instr.code)
+                    {
+                    case Mnemonic.lods: Rep(); return;
+                    case Mnemonic.movs: Rep(); return;
+                    }
+                    throw new NotImplementedException();
                 }
-                throw new NotImplementedException();
             }
             switch (instr.code)
             {
@@ -240,13 +245,14 @@ namespace Reko.Arch.X86
             case Mnemonic.dec: Dec(instr.Operands[0]); return;
             case Mnemonic.hlt: running = false; return;
             case Mnemonic.inc: Inc(instr.Operands[0]); return;
-            case Mnemonic.ja: if ((Flags & (Cmask | Zmask)) == 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
-            case Mnemonic.jbe: if ((Flags & (Cmask | Zmask)) != 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
-            case Mnemonic.jc: if ((Flags & Cmask) != 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
+            case Mnemonic.ja: if ((Flags & (Cmask | Zmask)) == 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.jbe: if ((Flags & (Cmask | Zmask)) != 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.jc: if ((Flags & Cmask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jmp: Jump(instr.Operands[0]); return;
-            case Mnemonic.jnc: if ((Flags & Cmask) == 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
-            case Mnemonic.jnz: if ((Flags & Zmask) == 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
-            case Mnemonic.jz: if ((Flags & Zmask) != 0) InstructionPointer = ((AddressOperand) instr.Operands[0]).Address; return;
+            case Mnemonic.jnc: if ((Flags & Cmask) == 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.jns: if ((Flags & Smask) == 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.jnz: if ((Flags & Zmask) == 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.jz: if ((Flags & Zmask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveOffset((MemoryOperand) instr.Operands[1])); break;
             case Mnemonic.lods: Lods(instr.dataWidth); break;
             case Mnemonic.loop: Loop(instr.Operands[0]); break;
@@ -540,8 +546,20 @@ namespace Reko.Arch.X86
 
         protected void Jump(MachineOperand op)
         {
-            TWord l = Read(op);
-            InstructionPointer = Address.Ptr32(l);
+            if (op is AddressOperand a)
+            {
+                InstructionPointer = a.Address;
+            }
+            else if (op is ImmediateOperand immediate)
+            {
+                var addrNew = InstructionPointer.NewOffset(immediate.Value.ToUInt64());
+                InstructionPointer = addrNew;
+            }
+            else
+            {
+                TWord l = Read(op);
+                InstructionPointer = Address.Ptr32(l);
+            }
         }
 
         private void Cmp(MachineOperand dst, MachineOperand src)
