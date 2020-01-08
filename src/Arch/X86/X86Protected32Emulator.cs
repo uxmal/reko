@@ -33,10 +33,16 @@ namespace Reko.Arch.X86
         {
         }
 
+        //$TODO: fs:[...] and gs:[...]
+        protected override ulong GetEffectiveAddress(MemoryOperand m)
+        {
+            return GetEffectiveOffset(m);
+        }
+
         public override void Push(ulong word)
         {
             var esp = (uint) Registers[X86.Registers.esp.Number] - 4;
-            WriteLeUInt32(Address.Ptr32(esp), (uint) word);
+            WriteLeUInt32(esp, (uint) word);
             WriteRegister(X86.Registers.esp, (uint) esp);
         }
     }

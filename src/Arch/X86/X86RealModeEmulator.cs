@@ -33,11 +33,22 @@ namespace Reko.Arch.X86
         {
         }
 
+        protected override ulong GetEffectiveAddress(MemoryOperand m)
+        {
+            var segReg = m.SegOverride;
+            if (m.SegOverride == RegisterStorage.None)
+                segReg = m.DefaultSegment;
+
+            var off = GetEffectiveOffset(m);
+            var seg = ReadRegister(segReg);
+            return (seg << 4) + off;
+        }
+
         public override void Push(ulong value)
         {
             var ss = (ushort) Registers[X86.Registers.ss.Number];
             var sp = (ushort) Registers[X86.Registers.esp.Number] - 2u;
-            WriteLeUInt16(Address.SegPtr(ss, sp), (ushort) value);
+            WriteLeUInt16(((ulong)ss << 4) + sp, (ushort) value);
             WriteRegister(X86.Registers.sp, sp);
         }
     }

@@ -109,6 +109,13 @@ namespace Reko.UnitTests.Arch.Intel
             this.platform = mockPlatform.Object;
         }
 
+        // Calculate a segmented real mode address.
+        private ulong Lin(uint seg, uint off)
+        {
+            return (seg << 4) + off;
+        }
+
+
         [Test]
         public void X86Emu_Mov32()
         {
@@ -574,11 +581,72 @@ namespace Reko.UnitTests.Arch.Intel
             emu.Start();
 
             Assert.AreEqual(0x0FFC, emu.Registers[Registers.esp.Number]);
-            Assert.AreEqual(0x800u, emu.ReadLeUInt16(Address.SegPtr(0x800, 0xFFC)));
+            Assert.AreEqual(0x800u, emu.ReadLeUInt16(Lin(0x800, 0xFFC)));
+        }
+
+
+        [Test]
+        public void X86Emu_mov_16Bit()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.ax, m.cs);
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.eax, 0xFFFFFFFF);
+            emu.Start();
+
+            Assert.AreEqual(0xFFFF0800, emu.Registers[Registers.eax.Number]);
+        }
+
+        [Test]
+        public void X86Emu_add_mem_16Bit()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Db(0x01, 0x06, 0x38, 0x00);   // add ds:[0038],ax
+                m.Hlt();
+            });
+
+            var addr = Lin(0x800, 0x38);
+            emu.WriteLeUInt16(addr, 0x4000);
+            emu.WriteRegister(Registers.eax, 0x1C000);
+
+            emu.Start();
+
+            Assert.AreEqual(0x0000, emu.ReadLeUInt16(addr));
+            Assert.AreEqual(X86Emulator.Zmask, emu.Flags & X86Emulator.Zmask);
+            Assert.AreEqual(X86Emulator.Cmask, emu.Flags & X86Emulator.Cmask);
         }
     }
 }
 /*
- *    011111 => 100000 overflow
- *    111111 => 000000 no overflow
+0800:0003 FC cld 
+0800:0004 06 push es
+0800:0005 1E push ds
+0800:0006 0E push cs
+0800:0007 8C C8 mov ax,cs
+0800:0009 01 06 38 01 add [0138],ax
+0800:000D BA 78 0A mov dx,0A78
+0800:0010 03 C2 add ax,dx
+0800:0012 8B D8 mov bx,ax
+0800:0014 05 4A 0B add ax,0B4A
+0800:0017 8E DB mov ds,bx
+0800:0019 8E C0 mov es,ax
+0800:001B 33 F6 xor si,si
+0800:001D 33 FF xor di,di
+0800:001F B9 08 00 mov cx,0008
+0800:0022 F3 A5 rep movsw  
+0800:0024 4B dec bx
+0800:0025 48 dec ax
+0800:0026 4A dec dx
+0800:0027 79 EE jns 0017
+0800:0029 8E C3 mov es,bx
+0800:002B 8E D8 mov ds,ax
+0800:002D BE 4A 00 mov si,004A
+0800:0030 AD lodsw 
+0800:0031 8B E8 mov bp,ax
+0800:0033 B2 10 mov dl,10
+0800:0035 EA E6 05 54 15 jmp far 1554:05E6
 */

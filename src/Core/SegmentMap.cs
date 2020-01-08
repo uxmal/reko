@@ -39,6 +39,7 @@ namespace Reko.Core
         {
             this.BaseAddress = addrBase ?? throw new ArgumentNullException("addrBase");
             this.Segments = new SortedList<Address, ImageSegment>();
+            this.SegmentByLinAddress = new SortedList<ulong, ImageSegment>();
             foreach (var seg in segments)
             {
                 this.AddSegment(seg);
@@ -48,6 +49,7 @@ namespace Reko.Core
         public Address BaseAddress { get; }
 
         public SortedList<Address, ImageSegment> Segments { get; }
+        private SortedList<ulong, ImageSegment> SegmentByLinAddress { get; }
 
         /// <summary>
         /// Adds a segment to the segment map. The segment is assumed to be disjoint
@@ -95,6 +97,7 @@ namespace Reko.Core
             {
                 EnsureSegmentSize(segNew);
                 Segments.Add(segNew.Address, segNew);
+                SegmentByLinAddress.Add(segNew.Address.ToLinear(), segNew);
                 MapChanged.Fire(this);
                 //DumpSections();
                 return segNew;
@@ -184,8 +187,6 @@ namespace Reko.Core
         /// <summary>
         /// Returns the segment that contains the specified address.
         /// </summary>
-        /// <param name="addr"></param>
-        /// <returns></returns>
         public bool TryFindSegment(Address addr, out ImageSegment segment)
         {
             if (!Segments.TryGetLowerBound(addr, out segment))
@@ -193,6 +194,18 @@ namespace Reko.Core
             if (segment.Address.ToLinear() == addr.ToLinear())
                 return true;
             return segment.IsInRange(addr);
+        }
+
+        /// <summary>
+        /// Returns the segments that contains the specified linear address.
+        /// </summary>
+        public bool TryFindSegment(ulong linAddress, out ImageSegment segment)
+        {
+            if (!this.SegmentByLinAddress.TryGetLowerBound(linAddress, out segment))
+                return false;
+            if (segment.Address.ToLinear() == linAddress)
+                return true;
+            return segment.IsInRange(linAddress);
         }
 
         [Conditional("DEBUG")]
