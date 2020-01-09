@@ -855,7 +855,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
                 script_pos_next = script_pos + 1;
 
-                // Log line of code if  enabled
+                // Log line of code if enabled
                 if (script.Log)
                 {
                     string logstr = "--> " + line.RawLine;
@@ -1400,8 +1400,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     else
                     {
                         var ea = Address.Ptr32((uint) src);
-                        ImageSegment segment;
-                        if (!Host.SegmentMap.TryFindSegment(ea, out segment))
+                        if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                             throw new AccessViolationException();
                         byte[] buffer = new byte[STRING_READSIZE];
 
@@ -1416,8 +1415,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else
             {
-                string parsed = "";
-                return (ParseString(op, out parsed) && GetString(parsed, size, out value));
+                return (ParseString(op, out string parsed) && GetString(parsed, size, out value));
             }
             value = "";
             return false;
@@ -1489,25 +1487,21 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
-                rulong src;
-                if (GetRulong(tmp, out src))
+                if (GetRulong(tmp, out ulong src))
                 {
                     Debug.Assert(src != 0);
-                    uint dw;
-                    var ea = Address.Ptr32((uint)src);
-                    ImageSegment segment;
-                    if (!Host.SegmentMap.TryFindSegment(ea, out segment))
+                    var ea = Address.Ptr32((uint) src);
+                    if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                         throw new AccessViolationException();
-                    bool ret = segment.MemoryArea.TryReadLeUInt32(ea, out dw);
+                    bool ret = segment.MemoryArea.TryReadLeUInt32(ea, out uint dw);
                     value = dw;
                     return ret;
                 }
             }
             else
             {
-                string parsed;
                 value = 0;
-                return (ParseRulong(op, out parsed) && GetRulong(parsed, out value));
+                return (ParseRulong(op, out string parsed) && GetRulong(parsed, out value));
             }
             value = 0;
             return false;
@@ -1567,8 +1561,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else
             {
-                string parsed;
-                return (ParseFloat(op, out parsed) && GetFloat(parsed, out value));
+                return (ParseFloat(op, out string parsed) && GetFloat(parsed, out value));
             }
             return false;
         }
@@ -1664,8 +1657,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
-                rulong target;
-                if (GetRulong(tmp, out target))
+                if (GetRulong(tmp, out ulong target))
                 {
                     Debug.Assert(target != 0);
 
@@ -1687,9 +1679,7 @@ namespace Reko.ImageLoaders.OdbgScript
             else if (Helper.IsMemoryAccess(op))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
-
-                rulong target;
-                if (GetRulong(tmp, out target))
+                if (GetRulong(tmp, out ulong target))
                 {
                     Debug.Assert(target != 0);
                     var bytes = Encoding.ASCII.GetBytes(value);

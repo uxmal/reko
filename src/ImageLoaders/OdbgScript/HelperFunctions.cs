@@ -93,7 +93,6 @@ namespace Reko.ImageLoaders.OdbgScript
 
             if (@base < 2 || @base > 32)
                 return "";
-
             do
             {
                 @out.Insert(0, digits[(int)(x % @base)]);

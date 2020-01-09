@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.OdbgScript
     /// file to specify the script file to use.</remarks>
     public class OdbgScriptLoader : ImageLoader
     {
-        private ImageLoader originalImageLoader;
+        private readonly ImageLoader originalImageLoader;
         private Debugger debugger;
         private OllyLang scriptInterpreter;
         private rulong OldIP;
