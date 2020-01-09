@@ -19,30 +19,31 @@
 #endregion
 
 using Reko.Arch.X86;
-using Reko.Environments.Msdos;
 using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using Reko.Core.Configuration;
 using System.Diagnostics;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.Core.Services;
 
 namespace Reko.ImageLoaders.MzExe
 {
-	/// <summary>
-	/// Loads MS-DOS binary executables that haven't had any packing or encryption
+    /// <summary>
+    /// Loads MS-DOS binary executables that haven't had any packing or encryption
     /// done to them.
-	/// </summary>
-	public class MsdosImageLoader : ImageLoader
+    /// </summary>
+    public class MsdosImageLoader : ImageLoader
 	{
         private IProcessorArchitecture arch;
         private IPlatform platform;
 		private MemoryArea imgLoaded;
         private SegmentMap segmentMap;
+        private Address addrStackTop;
+        private ushort segPsp;
 
-		public MsdosImageLoader(ExeImageLoader exe) 
+        public MsdosImageLoader(ExeImageLoader exe) 
             : base(exe.Services, exe.Filename, exe.RawImage)
 		{
 			this.ExeLoader = exe;
@@ -62,8 +63,16 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
+            //$TODO: no space allocated for the PSP!
+            this.segPsp = (ushort)(addrLoad.Selector.Value - 0x10);
+            var ss = (ushort) (ExeLoader.e_ss + addrLoad.Selector.Value);
+            this.addrStackTop = Address.SegPtr(ss, ExeLoader.e_sp);
+
             int iImageStart = (ExeLoader.e_cparHeader * 0x10);
             int cbImageSize = ExeLoader.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
+            // The +4 is room for a far return address at the top of the stack.
+            int offsetStackTop = (int)(addrStackTop - addrLoad) + 4;
+            cbImageSize = Math.Max(cbImageSize, offsetStackTop);
             byte[] bytes = new byte[cbImageSize];
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
@@ -73,33 +82,33 @@ namespace Reko.ImageLoaders.MzExe
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
-		{
-			SegmentMap imageMap = segmentMap;
-			EndianImageReader rdr = new LeImageReader(ExeLoader.RawImage, ExeLoader.e_lfaRelocations);
+        {
+            SegmentMap imageMap = segmentMap;
+            EndianImageReader rdr = new LeImageReader(ExeLoader.RawImage, ExeLoader.e_lfaRelocations);
             var relocations = imgLoaded.Relocations;
-			int i = ExeLoader.e_cRelocations;
+            int i = ExeLoader.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
             var linBase = addrLoad.ToLinear();
-			while (i != 0)
-			{
-				uint offset = rdr.ReadLeUInt16();
-				ushort segOffset = rdr.ReadLeUInt16();
-				offset += segOffset * 0x0010u;
+            while (i != 0)
+            {
+                uint offset = rdr.ReadLeUInt16();
+                ushort segOffset = rdr.ReadLeUInt16();
+                offset += segOffset * 0x0010u;
 
-				ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector.Value);
-				imgLoaded.WriteLeUInt16(offset, seg);
-				relocations.AddSegmentReference(offset + linBase, seg);
+                ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector.Value);
+                imgLoaded.WriteLeUInt16(offset, seg);
+                relocations.AddSegmentReference(offset + linBase, seg);
 
                 var segment = new ImageSegment(
                     seg.ToString("X4"),
                     Address.SegPtr(seg, 0),
-                    imgLoaded, 
+                    imgLoaded,
                     AccessMode.ReadWriteExecute);
                 segment = segmentMap.AddSegment(segment);
                 segments[segment.Address] = seg;
-				--i;
-			}
-		
+                --i;
+            }
+
             // Create an identifier for each segment.
             foreach (var de in segments)
             {
@@ -113,17 +122,17 @@ namespace Reko.ImageLoaders.MzExe
                     tmp);
             }
 
-			// Found the start address.
+            // Found the start address.
 
-			Address addrStart = Address.SegPtr((ushort)(ExeLoader.e_cs + addrLoad.Selector.Value), ExeLoader.e_ip);
-			segmentMap.AddSegment(new ImageSegment(
+            Address addrStart = Address.SegPtr((ushort) (ExeLoader.e_cs + addrLoad.Selector.Value), ExeLoader.e_ip);
+            segmentMap.AddSegment(new ImageSegment(
                 addrStart.Selector.Value.ToString("X4"),
                 Address.SegPtr(addrStart.Selector.Value, 0),
                 imgLoaded,
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
 
-            var ep = ImageSymbol.Procedure(arch, addrStart, state: arch.CreateProcessorState());
+            var ep = CreateEntryPointSymbol(addrLoad, addrStart, addrStackTop);
             var sym = platform.FindMainProcedure(program, addrStart);
             var results = new RelocationResults(
                 new List<ImageSymbol> { ep },
@@ -134,20 +143,32 @@ namespace Reko.ImageLoaders.MzExe
                 ep.NoDecompile = true;
             }
 
-			try
-			{
-				LoadDebugSymbols(results.Symbols, addrLoad);
-			}
-			catch (Exception ex)
-			{
+            try
+            {
+                LoadDebugSymbols(results.Symbols, addrLoad);
+            }
+            catch (Exception ex)
+            {
                 var listener = Services.RequireService<DecompilerEventListener>();
                 listener.Error(
                     new NullCodeLocation(Filename),
                     ex,
                     "Detected debug symbols but failed to load them.");
-			}
+            }
             return results;
-		}
+        }
+
+        private ImageSymbol CreateEntryPointSymbol(Address addrLoad, Address addrStart, Address addrStackTop)
+        {
+            var state = arch.CreateProcessorState();
+            state.SetInstructionPointer(addrStart);
+            state.SetRegister(Registers.cs, Constant.UInt16(addrLoad.Selector.Value));
+            state.SetRegister(Registers.ss, Constant.UInt16((ushort) addrStackTop.Selector.Value));
+            state.SetRegister(Registers.sp, Constant.UInt16((ushort) addrStackTop.Offset));
+            state.SetRegister(Registers.ds, Constant.UInt16(segPsp));
+            var ep = ImageSymbol.Procedure(arch, addrStart, state: state);
+            return ep;
+        }
 
         private void LoadDebugSymbols(SortedList<Address, ImageSymbol> symbols, Address addrLoad)
         {

@@ -701,6 +701,18 @@ namespace Reko.UnitTests.Arch.Intel
 
             Assert.AreEqual(0xFFFF4242, emu.ReadRegister(Registers.eax));
         }
+
+        [Test]
+        public void X86Emu_dec_16bit()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Dec(m.dx);
+                m.Hlt();
+            });
+            emu.Start();
+            Assert.AreEqual(X86Emulator.Smask, emu.Flags & X86Emulator.Smask);
+        }
     }
 }
 /*

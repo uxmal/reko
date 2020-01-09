@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -2919,9 +2919,7 @@ string filename;
                 //Writememory((void*)str, (ulong) hMem, str.Length, MM_DELANAL|MM_SILENT);
 
                 if(DoPUSH(bfdlladdr))
-                 */
                 {
-                    /*
                     char bffnloadlib[10] = {0};
                     sprintf(bffnloadlib, "%09X", fnload);
                     string libPtrToLoad = bffnloadlib;
@@ -2945,12 +2943,11 @@ string filename;
 
                     // Free memory block after next ollyloop
                     regBlockToFree(block);
-                 */
                     //require_addonaction = true;
                     //back_to_debugloop = true;
                     return true;
                 }
-
+                 */
             }
             return false;
         }
@@ -3566,8 +3563,8 @@ string param;
             CreateOperands ( args, ops, 1 );
 	
             variables["$RESULT"] = Var.Create(0);
+            if (saved_bp != 0)
             */
-            if ( saved_bp != 0)
             {
                 /*
                 bpt = ( t_table * ) Plugingetvalue ( VAL_BREAKPOINTS );

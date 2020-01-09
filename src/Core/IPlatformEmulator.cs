@@ -45,5 +45,9 @@ namespace Reko.Core
         /// <returns>True if the platform emulator intercepted the call and simulated it.
         /// False otherwise.</returns>
         bool InterceptCall(IProcessorEmulator emulator, TWord calledAddress);
+
+        ImageSegment InitializeStack(IProcessorEmulator emulator, ProcessorState state);
+
+        void TearDownStack(ImageSegment stackSeg);
     }
 }

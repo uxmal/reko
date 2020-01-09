@@ -44,13 +44,28 @@ namespace Reko.Arch.X86
         public const uint Smask = 1u << 7;
         public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
-        public readonly (uint value, uint hibit)[] masks;
+
+        public static readonly (uint value, uint hibit)[] masks = new(uint, uint)[]{
+                (0, 0),
+                (0x0000_00FFu,  0x0000_0080),
+                (0x0000_FFFFu, 0x0000_8000),
+                (0, 0),
+
+                (0xFFFF_FFFFu, 0x8000_0000),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+
+                (0, 0),  //$TODO: 64-bit implementation.
+            };
+        private static TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator");
+
         private IntelArchitecture arch;
         private SegmentMap map;
         private IPlatformEmulator envEmulator;
+        private Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
         private IEnumerator<X86Instruction> dasm;
         private bool running;
-        private Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
 
         public readonly ulong[] Registers;
         private readonly int iFlags;
@@ -67,19 +82,6 @@ namespace Reko.Arch.X86
             this.Registers = new ulong[40];
             this.iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
-            this.masks = new (uint,uint)[]{
-                (0, 0),
-                (0x0000_00FFu,  0x0000_0080),
-                (0x0000_FFFFu, 0x0000_8000),
-                (0, 0),
-
-                (0xFFFF_FFFFu, 0x8000_0000),
-                (0, 0),
-                (0, 0),
-                (0, 0),
-
-                (0, 0),  //$TODO: 64-bit implementation.
-            };
         }
 
         public ulong Flags
@@ -159,7 +161,7 @@ namespace Reko.Arch.X86
             {
                 while (running && dasm.MoveNext())
                 {
-                    //                Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
+                    TraceCurrentInstruction();
                     TWord eip = (uint) dasm.Current.Address.ToLinear();
                     if (bpExecute.TryGetValue(eip, out Action bpAction))
                     {
@@ -196,6 +198,14 @@ namespace Reko.Arch.X86
                 Debug.Print("Emulator exception when executing {0}. {1}\r\n{2}", dasm.Current, ex.Message, ex.StackTrace);
                 ExceptionRaised.Fire(this);
             }
+        }
+
+        [Conditional("DEBUG")]
+        private void TraceCurrentInstruction()
+        {
+            if (trace.Level != TraceLevel.Verbose)
+                return;
+            Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
         }
 
         public void Stop()
@@ -462,6 +472,7 @@ namespace Reko.Arch.X86
                 ecx = (ecx & ~mask.value) | c;
                 WriteRegister(X86.Registers.ecx, ecx);
             }
+            this.ignoreRep = false;
         }
 
         private void Repne()
@@ -637,8 +648,9 @@ namespace Reko.Arch.X86
             Write(op, gnu);
             uint ov = ((old ^ gnu) & ~gnu & mask.hibit) >> 20;
             Flags =
-                Flags & Cmask |             // Carry preserved
-                (gnu == 0 ? Zmask : 0u) |   // Zero
+                Flags & Cmask |                             // Carry preserved
+                (gnu == 0 ? Zmask : 0u) |                   // Zero
+                ((gnu & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 ov;                          //$BUG:
         }
 
@@ -652,6 +664,7 @@ namespace Reko.Arch.X86
             Flags =
                 Flags & Cmask |             // Carry preserved
                 (gnu == 0 ? Zmask : 0u) |   // Zero
+                ((gnu & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 ov;                          //$BUG:
         }
 

@@ -258,6 +258,19 @@ namespace Reko.Environments.Windows
             return Encoding.ASCII.GetString(ab.ToArray());
         }
 
+        public ImageSegment InitializeStack(IProcessorEmulator emu, ProcessorState state)
+        {
+            var stack = new MemoryArea(Address.Ptr32(0x7FE00000), new byte[1024 * 1024]);
+            var stackSeg = this.map.AddSegment(stack, "stack", AccessMode.ReadWrite);
+            emu.WriteRegister(Registers.esp, (uint) stack.EndAddress.ToLinear() - 4u);
+            return stackSeg;
+        }
+
+        public void TearDownStack(ImageSegment stackSeg)
+        {
+            this.map.Segments.Remove(stackSeg.Address);
+        }
+
         public bool InterceptCall(IProcessorEmulator emu, TWord l)
         {
             if (!this.InterceptedCalls.TryGetValue(Address.Ptr32(l), out ExternalProcedure epProc))

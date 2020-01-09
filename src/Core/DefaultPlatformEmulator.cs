@@ -39,5 +39,14 @@ namespace Reko.Core
         {
             return false;
         }
+
+        public ImageSegment InitializeStack(IProcessorEmulator emulator, ProcessorState state)
+        {
+            return null;
+        }
+
+        public void TearDownStack(ImageSegment stackSeg)
+        {
+        }
     }
 }

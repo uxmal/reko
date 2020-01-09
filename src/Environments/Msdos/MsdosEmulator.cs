@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,23 @@ namespace Reko.Environments.Msdos
         public bool InterceptCall(IProcessorEmulator emulator, uint calledAddress)
         {
             return false;
+        }
+
+        public ImageSegment InitializeStack(IProcessorEmulator emulator, ProcessorState state)
+        {
+            var cs = ((Constant) state.GetValue(Registers.cs)).ToUInt16();
+            var ss = ((Constant) state.GetValue(Registers.ss)).ToUInt16();
+            var sp = ((Constant) state.GetValue(Registers.sp)).ToUInt16();
+            var ds = ((Constant) state.GetValue(Registers.ds)).ToUInt16();
+            emulator.WriteRegister(Registers.cs, cs);
+            emulator.WriteRegister(Registers.ss, ss);
+            emulator.WriteRegister(Registers.sp, sp);
+            emulator.WriteRegister(Registers.ds, ds);
+            return null;
+        }
+
+        public void TearDownStack(ImageSegment stackSeg)
+        {
         }
     }
 }

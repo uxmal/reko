@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -244,8 +244,7 @@ namespace Reko.ImageLoaders.OdbgScript
         // Commands
         bool GetByte(string op, ref byte value)
         {
-            rulong temp;
-            if (GetRulong(op, out temp) && temp <= Byte.MaxValue)
+            if (GetRulong(op, out rulong temp) && temp <= Byte.MaxValue)
             {
                 value = (byte) temp;
                 return true;
@@ -264,8 +263,8 @@ namespace Reko.ImageLoaders.OdbgScript
         t_bpoint* softbp_t;
         */
 
-        uint saved_bp;
-        uint alloc_bp;
+        //uint saved_bp;
+        //uint alloc_bp;
         //bool AllocSwbpMem(uint tmpSizet);
         //void FreeBpMem();
 
@@ -782,8 +781,8 @@ namespace Reko.ImageLoaders.OdbgScript
             zf = cf = false;
             search_buffer = null;
 
-            saved_bp = 0;
-            alloc_bp = 0;
+            //saved_bp = 0;
+            //alloc_bp = 0;
 
             script_running = false;
 
@@ -869,8 +868,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 Func<string[], bool> cmd = line.CommandPtr;
                 if (cmd == null)
                 {
-                    Func<string[], bool> it;
-                    if (commands.TryGetValue(line.Command, out it))
+                    if (commands.TryGetValue(line.Command, out var it))
                     {
                         line.CommandPtr = cmd = it;
                     }
@@ -950,8 +948,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 else
                 {
                     rulong ip = Debugger.InstructionPointer.ToLinear();
-                    uint it;
-                    if (bpjumps.TryGetValue(ip, out it))
+                    if (bpjumps.TryGetValue(ip, out uint it))
                     {
                         script_pos_next = it;
                     }
@@ -1114,7 +1111,6 @@ namespace Reko.ImageLoaders.OdbgScript
             int start = 0, offs;
             char oper = '+';
             Var val = Var.Create("");
-            string curval;
             result = "";
 
             if ((offs = GetStringOperatorPos(arg)) >= 0)
@@ -1123,7 +1119,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     string token = Helper.trim(arg.Substring(start, offs));
 
-                    if (!GetString(token, out curval))
+                    if (!GetString(token, out string curval))
                         return false;
 
                     switch (oper)
@@ -1227,12 +1223,10 @@ namespace Reko.ImageLoaders.OdbgScript
                     else
                     {
                         string token = Helper.trim(arg.Substring(start, offs));
-
                         if (!GetFloat(token, out curval))
                         {
                             //Convert integer to float (but not for first operand)
-                            rulong dw;
-                            if (start != 0 && GetRulong(token, out dw))
+                            if (start != 0 && GetRulong(token, out rulong  dw))
                                 curval = dw;
                             else
                                 return false;
@@ -1284,7 +1278,6 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool GetAnyValue(string op, out string value, bool hex8forExec = false)
         {
-            rulong dw;
             value = null;
 
             if (IsVariable(op))
@@ -1336,7 +1329,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 return GetString(op, out value);
             }
-            else if (GetRulong(op, out dw))
+            else if (GetRulong(op, out ulong dw))
             {
                 if (hex8forExec)
                     value = '0' + Helper.toupper(Helper.rul2hexstr(dw));
@@ -1390,19 +1383,14 @@ namespace Reko.ImageLoaders.OdbgScript
             else if (Helper.IsMemoryAccess(op))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
-
-                rulong src;
-                if (GetRulong(tmp, out src))
+                if (GetRulong(tmp, out rulong src))
                 {
                     Debug.Assert(src != 0);
 
                     value = "";
                     if (size != 0)
                     {
-                        byte[] buffer;
-
-                            buffer = new byte[size];
-
+                        byte[] buffer = new byte[size];
                         if (Host.TryReadBytes(src, (uint)size, buffer))
                         {
                             value = '#' + Helper.bytes2hexstr(buffer, size) + '#';
@@ -1437,8 +1425,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool GetBool(string op, out bool value)
         {
-            rulong temp;
-            if (GetRulong(op, out temp))
+            if (GetRulong(op, out rulong temp))
             {
                 value = temp != 0;
                 return true;
@@ -1568,13 +1555,11 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
-                rulong src;
-                if (GetRulong(tmp, out src))
+                if (GetRulong(tmp, out rulong src))
                 {
                     Debug.Assert(src != 0);
                     var ea = Address.Ptr32((uint) src);
-                    ImageSegment segment;
-                    if (!Host.SegmentMap.TryFindSegment(ea, out segment))
+                    if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                         throw new AccessViolationException();
                     value = segment.MemoryArea.ReadLeDouble(ea).ToDouble();
                     return true;
@@ -1974,8 +1959,8 @@ namespace Reko.ImageLoaders.OdbgScript
                 delete[] softbp_t;
                 softbp_t = null;
             }*/
-            saved_bp = 0;
-            alloc_bp = 0;
+            //saved_bp = 0;
+            //alloc_bp = 0;
         }
 
         void StepIntoCallback()
@@ -2102,8 +2087,7 @@ namespace Reko.ImageLoaders.OdbgScript
             if (Lib != null)
             {
                 Dictionary<string, string> labels = LibraryBreakpointLabels[bpxType];
-                string it;
-                if (labels.TryGetValue(Lib.szLibraryPath, out it))
+                if (labels.TryGetValue(Lib.szLibraryPath, out string it))
                 {
                     DoCALL(new[] { it });
                 }

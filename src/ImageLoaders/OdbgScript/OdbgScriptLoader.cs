@@ -84,29 +84,16 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 
-            var stackSeg = InitializeStack(emu);
+            var stackSeg = envEmu.InitializeStack(emu, rr.EntryPoints[0].ProcessorState);
             LoadScript(Argument, scriptInterpreter.script);
             emu.Start();
-            TearDownStack(stackSeg);
+            envEmu.TearDownStack(stackSeg);
 
             foreach (var ic in envEmu.InterceptedCalls)
             {
                 program.InterceptedCalls.Add(ic.Key, ic.Value);
             }
             return program;
-        }
-
-        private ImageSegment InitializeStack(IProcessorEmulator emu)
-        {
-            var stack = new MemoryArea(Address.Ptr32(0x7FE00000), new byte[1024 * 1024]);
-            var stackSeg = this.ImageMap.AddSegment(stack, "stack", AccessMode.ReadWrite);
-            emu.WriteRegister(Registers.esp, (uint)stack.EndAddress.ToLinear() - 4u);
-            return stackSeg;
-        }
-
-        private void TearDownStack(ImageSegment stackSeg)
-        {
-            this.ImageMap.Segments.Remove(stackSeg.Address);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
