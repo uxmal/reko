@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 using System.Text;
 
@@ -30,9 +31,18 @@ namespace Reko.ImageLoaders.OdbgScript
     public class OllyLangTests
     {
         private Mock<IHost> host;
+        private Mock<IProcessorEmulator> emu;
+        private Mock<IProcessorArchitecture> arch;
         private OllyLang engine;
         private MemoryArea mem;
         private SegmentMap imageMap;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.emu = new Mock<IProcessorEmulator>();
+            this.arch = new Mock<IProcessorArchitecture>();
+        }
 
         [Test]
         public void Ose_var()
@@ -54,9 +64,9 @@ namespace Reko.ImageLoaders.OdbgScript
         private void Given_Engine()
         {
             this.host = new Mock<IHost>();
-            engine = new OllyLang(null);
+            engine = new OllyLang(null, arch.Object);
             engine.Host = host.Object;
-            engine.Debugger = new Debugger(null);
+            engine.Debugger = new Debugger(emu.Object);
         }
 
         private void Given_Image(uint addr, params byte[] bytes)
@@ -141,6 +151,45 @@ namespace Reko.ImageLoaders.OdbgScript
             //Assert.AreEqual("foo 0xa", engine.FormatAsmDwords("foo a"));
             //Assert.AreEqual("foo [0xa]", engine.FormatAsmDwords("foo [a]"));
             Assert.AreEqual("foo [0xa],0xb", engine.FormatAsmDwords("foo [a],b"));
+        }
+
+        [Test]
+        public void Ose_Breakpoint()
+        {
+            emu.Setup(e => e.SetBreakpoint(
+                0x00123400u,
+                It.IsNotNull<Action>()))
+                .Verifiable();
+            arch.Setup(a => a.MakeAddressFromConstant(
+                It.IsNotNull<Constant>(),
+                false))
+                .Returns(Address.Ptr32(0x00123400));
+
+            Given_Engine();
+            Given_Script("bp 00123400");
+            engine.Run();
+
+            emu.Verify();
+        }
+
+        [Test]
+        public void Ose_Breakpoint_SegmentedAddress()
+        {
+            emu.Setup(e => e.SetBreakpoint(
+                0x00008010,
+                It.IsNotNull<Action>()))
+                .Verifiable();
+            var addr = Address.SegPtr(0x800, 0x10);
+            arch.Setup(a => a.MakeSegmentedAddress(
+                It.IsNotNull<Constant>(),
+                It.IsNotNull<Constant>()))
+                .Returns(addr);
+
+            Given_Engine();
+            Given_Script("bp 0800:0010");
+            engine.Run();
+
+            emu.Verify();
         }
     }
 

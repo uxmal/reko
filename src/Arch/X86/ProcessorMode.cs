@@ -314,7 +314,7 @@ namespace Reko.Arch.X86
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            return Address.Ptr32(c.ToUInt32());
+            return Address.Ptr32((uint)c.ToUInt64());
         }
 
         public override Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)

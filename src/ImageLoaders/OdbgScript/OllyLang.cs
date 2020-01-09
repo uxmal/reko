@@ -29,6 +29,7 @@ using System.Text;
 namespace Reko.ImageLoaders.OdbgScript
 {
     using Reko.Arch.X86;
+    using Reko.Core.Expressions;
     using rulong = System.UInt64;
 
     // This is the table for Script Execution
@@ -57,7 +58,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
     public partial class OllyLang : IScriptInterpreter
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
+        private readonly IProcessorArchitecture arch;
+
         private enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
 
         const byte OS_VERSION_HI = 1;  // High plugin version
@@ -426,9 +429,10 @@ namespace Reko.ImageLoaders.OdbgScript
 #endif
 };
 
-        public OllyLang(IServiceProvider services)
+        public OllyLang(IServiceProvider services, IProcessorArchitecture arch)
         {
             this.services = services;
+            this.arch = arch;
             this.script = new OllyScript(this);
 
             #region Initialize command array
@@ -1430,6 +1434,29 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             value = false;
             return false;
+        }
+
+        public bool GetAddress(string op, out Address value)
+        {
+            value = null;
+            int iColon = op.IndexOf(':');
+            if (iColon > 0)
+            {
+                // Possible segmented address. Evaluate part before
+                // and after colon.
+                if (GetRulong(op.Remove(iColon), out var seg) &&
+                    GetRulong(op.Substring(iColon+1), out var off))
+                {
+                    var cSeg = Constant.UInt16((ushort) seg);
+                    var cOff = Constant.UInt32((uint) off);
+                    value = arch.MakeSegmentedAddress(cSeg, cOff);
+                    return true;
+                }
+            }
+            if (!GetRulong(op, out rulong uAddr))
+                return false;
+            value = arch.MakeAddressFromConstant(Constant.UInt64(uAddr), false);
+            return true;
         }
 
         bool GetRulong(string op, out rulong value)

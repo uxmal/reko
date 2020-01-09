@@ -295,11 +295,14 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
+        /// <summary>
+        /// Set a BreakPoint.
+        /// </summary>
         private bool DoBP(string[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetAddress(args[0], out Address addr))
             {
-                Debugger.SetBPX(addr, Ue.UE_BREAKPOINT, SoftwareCallback);
+                Debugger.SetBPX(addr.ToLinear(), Ue.UE_BREAKPOINT, SoftwareCallback);
                 return true;
             }
             return false;
