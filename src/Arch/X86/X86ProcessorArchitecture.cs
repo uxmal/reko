@@ -210,11 +210,6 @@ namespace Reko.Arch.X86
 			return GetFlagGroup(Registers.eflags, (uint) grf);
 		}
 
-        public RegisterStorage GetRegister(int i)
-        {
-            return Registers.GetRegister(i);
-        }
-
         public override RegisterStorage GetRegister(string name)
 		{
 			var r = Registers.GetRegister(name);

@@ -30,7 +30,8 @@ namespace Reko.Arch.X86
 {
     public class X86RealModeEmulator : X86Emulator
     {
-        public X86RealModeEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator) : base(arch, segmentMap, envEmulator)
+        public X86RealModeEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator) 
+            : base(arch, segmentMap, envEmulator, X86.Registers.ip)
         {
         }
 

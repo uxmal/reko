@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Reko.Arch.X86
@@ -58,27 +59,29 @@ namespace Reko.Arch.X86
 
                 (0, 0),  //$TODO: 64-bit implementation.
             };
-        private static TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator");
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator");
 
-        private IntelArchitecture arch;
-        private SegmentMap map;
-        private IPlatformEmulator envEmulator;
-        private Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
+        private readonly IntelArchitecture arch;
+        private readonly SegmentMap map;
+        private readonly RegisterStorage ipReg;
+        private readonly IPlatformEmulator envEmulator;
+        private readonly Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
         private IEnumerator<X86Instruction> dasm;
-        private bool running;
 
         public readonly ulong[] Registers;
         private readonly int iFlags;
+        private bool running;
         private Address ip;
         private Action stepAction;
         private bool stepInto;
         private TWord stepOverAddress;
         private bool ignoreRep;
 
-        public X86Emulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        public X86Emulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator, RegisterStorage ipReg)
         {
             this.arch = arch;
             this.map = segmentMap;
+            this.ipReg = ipReg;
             this.Registers = new ulong[40];
             this.iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
@@ -98,11 +101,22 @@ namespace Reko.Arch.X86
             get { return ip; }
             set
             {
-                ip = value;
+                UpdateIp(value);
                 if (!map.TryFindSegment(ip, out ImageSegment segment))
                     throw new AccessViolationException();
                 var rdr = arch.CreateImageReader(segment.MemoryArea, value);
                 dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void UpdateIp(Address value)
+        {
+            this.ip = value;
+            WriteRegister(this.ipReg, (TWord)value.Offset);
+            if (value.Selector.HasValue)
+            {
+                WriteRegister(X86.Registers.cs, value.Selector.Value);
             }
         }
 
@@ -162,7 +176,8 @@ namespace Reko.Arch.X86
                 while (running && dasm.MoveNext())
                 {
                     TraceCurrentInstruction();
-                    TWord eip = (uint) dasm.Current.Address.ToLinear();
+                    UpdateIp(dasm.Current.Address);
+                    TWord eip = (uint) ip.ToLinear();
                     if (bpExecute.TryGetValue(eip, out Action bpAction))
                     {
                         ++counter;
