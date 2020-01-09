@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472;netcoreapp2.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp3.1</TargetFrameworks>
     <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Reko.Tools.genPICdb</RootNamespace>
+    <RootNamespace>Reko.Tools.GenPICdb</RootNamespace>
     <AssemblyName>genPICdb</AssemblyName>
-    <StartupObject>Reko.Tools.genPICdb.Program</StartupObject>
+    <StartupObject>Reko.Tools.GenPICdb.Program</StartupObject>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -16,10 +16,6 @@
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="defaultpicdb.zip" />
@@ -31,5 +27,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
 </Project>

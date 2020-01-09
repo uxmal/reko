@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2019 Christian Hostelet.
+ * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,32 @@
 
 namespace Reko.Libraries.Microchip
 {
+    /// <summary>
+    /// A class defining some constants related to Microchip PIC database.
+    /// </summary>
     public static class PICConstants
     {
+        /// <summary>
+        /// The filename of the local database file (ZIP archive).
+        /// </summary>
         public const string LocalDBFilename = "picdb.zip";
-        public const string PartsinfoFilename = "partsinfo.xml";
-        public const string ContentPIC16Path = @"content/edc/16xxxx";
-        public const string ContentPIC18Path = @"content/edc/18xxxx";
+
+        /// <summary>
+        /// The filename of the parts information file inside the PIC database.
+        /// </summary>
+        public const string PartsInfoFilename = "partsinfo.xml";
+
+        /// <summary>
+        /// Relative pathname for PIC16 definition files in the PIC database.
+        /// </summary>
+        public const string ContentPIC16Path = EDCContent + "16xxxx";
+        /// <summary>
+        /// Relative pathname for PIC16 definition files in the PIC database.
+        /// </summary>
+        public const string ContentPIC18Path = EDCContent + "18xxxx";
+
+        private const string EDCContent = @"content/edc/";
+
     }
 
 }

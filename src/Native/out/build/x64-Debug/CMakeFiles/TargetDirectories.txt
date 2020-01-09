@@ -1,0 +1,8 @@
+L:/Software/Projects/Git/reko/src/Native/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+L:/Software/Projects/Git/reko/src/Native/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+L:/Software/Projects/Git/reko/src/Native/out/build/x64-Debug/common/CMakeFiles/common.dir
+L:/Software/Projects/Git/reko/src/Native/out/build/x64-Debug/common/CMakeFiles/edit_cache.dir
+L:/Software/Projects/Git/reko/src/Native/out/build/x64-Debug/common/CMakeFiles/rebuild_cache.dir
+L:/Software/Projects/Git/reko/src/Native/out/build/x64-Debug/ArmNative/CMakeFiles/ArmNative.dir
+L:/Software/Projects/Git/reko/src/Native/out/build/x64-Debug/ArmNative/CMakeFiles/edit_cache.dir
+L:/Software/Projects/Git/reko/src/Native/out/build/x64-Debug/ArmNative/CMakeFiles/rebuild_cache.dir

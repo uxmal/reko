@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 2017-2019 Christian Hostelet.
+ * Copyright (C) 2017-2020 Christian Hostelet.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.Libraries.Microchip
     public sealed class PICCrownking
     {
         private static PICCrownking currentDB = null;
-        private static PartInfo partslist = null;
+        private static PICPartInfo partslist = null;
 
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
@@ -114,7 +114,7 @@ namespace Reko.Libraries.Microchip
                      && filter(picentry.Name));
         }
 
-        private PartInfo PartsInfo
+        private PICPartInfo PartsInfo
         {
             get
             {
@@ -125,12 +125,12 @@ namespace Reko.Libraries.Microchip
                     {
                         using (ZipArchive picdbzipfile = ZipFile.OpenRead(CurrentDBPath))
                         {
-                            var entry = picdbzipfile.GetEntry(PartsinfoFilename);
+                            var entry = picdbzipfile.GetEntry(PartsInfoFilename);
                             if (entry != null)
                             {
                                 using (var eo = entry.Open())
                                 {
-                                    partslist = XDocument.Load(eo).Root.ToObject<PartInfo>();
+                                    partslist = XDocument.Load(eo).Root.ToObject<PICPartInfo>();
                                 }
                             }
                         }
@@ -305,14 +305,14 @@ namespace Reko.Libraries.Microchip
         /// Gets PIC information given its name.
         /// </summary>
         /// <param name="picName">Name of the PIC.</param>
-        public (string Name, int ID)? GetPICInfo(string picName)
+        public (string Name, uint ID)? GetPICInfo(string picName)
             => PartsInfo?.Parts.Where(p => p.Name == picName).Select(p => (p.Name, p.ProcID)).FirstOrDefault();
 
         /// <summary>
         /// Gets PIC information given its processor ID.
         /// </summary>
         /// <param name="picID">Identifier for the PIC.</param>
-        public (string Name, int ID)? GetPICInfo(int picID)
+        public (string Name, uint ID)? GetPICInfo(int picID)
             => PartsInfo?.Parts.Where(p => p.ProcID == picID).Select(p => (p.Name, p.ProcID)).FirstOrDefault();
 
         #endregion
