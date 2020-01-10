@@ -1,2 +1,27 @@
+var addrFarjmp
+var addrUnpacker
+
+// Run until just before the first long JMP.
+bp cs:0035
 run
+
+// Execute the long jump.
+sti
+
+// Look for the final long JMP:
+// XOR... XOR... JMP FAR...
+find cs:ip,#33DB33C0EA 
+cmp $RESULT,0
+je Exit
+
+// Perform the unpacking
+mov addrFarjmp,cs:ip
+add addrFarjmp,4
+bp addrFarjmp
+run
+
+// Single step into the original code.
+sti
+
+
 ret
