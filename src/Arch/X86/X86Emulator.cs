@@ -661,7 +661,8 @@ namespace Reko.Arch.X86
             Write(dst, and);
             Flags =
                 0 |                         // Clear Carry
-                (and == 0 ? Zmask : 0u) |    // Zero
+                (and == 0 ? Zmask : 0u) |   // Zero
+                ((and & mask.hibit) != 0 ? Smask : 0u) | // Sign
                 0;                          // Clear Overflow
         }
 
@@ -677,6 +678,7 @@ namespace Reko.Arch.X86
             Flags =
                 0 |                         // Clear Carry
                 (or == 0 ? Zmask : 0u) |    // Zero
+                ((or & mask.hibit) != 0 ? Smask : 0u) | // Sign
                 0;                          // Clear Overflow
         }
 

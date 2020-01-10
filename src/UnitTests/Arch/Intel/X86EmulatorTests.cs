@@ -277,13 +277,15 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_or()
         {
-            Given_Win32Code(m => { m.Or(m.eax, m.eax); });
-            Given_RegValue(Registers.eax, 0x1);
+            Given_Win32Code(m => {
+                m.Mov(m.eax, m.Imm(0x80000000));
+                m.Or(m.eax, m.Imm(1));
+            });
 
             emu.Start();
 
-            Assert.AreEqual(1, emu.Registers[Registers.eax.Number]);
-            Assert.AreEqual(0, emu.Flags, "Expected ZF clear ");
+            Assert.AreEqual(0x80000001, emu.Registers[Registers.eax.Number]);
+            Assert.AreEqual(X86Emulator.Smask, emu.Flags, "Expected ZF clear, SF set ");
         }
 
         [Test]
