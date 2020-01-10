@@ -57,7 +57,7 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public uint ReadRegister(RegisterStorage reg)
+        public ulong ReadRegister(RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
@@ -88,7 +88,7 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public void WriteRegister(RegisterStorage reg, uint value)
+        public void WriteRegister(RegisterStorage reg, ulong value)
         {
             throw new NotImplementedException();
         }

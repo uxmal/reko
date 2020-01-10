@@ -308,10 +308,10 @@ namespace Reko.Arch.X86
             if (m.Offset.IsValid)
                 ea += m.Offset.ToUInt32();
             if (m.Index != RegisterStorage.None)
-                ea += ReadRegister(m.Index) * m.Scale;
+                ea += (TWord)ReadRegister(m.Index) * m.Scale;
             if (m.Base != null && m.Base != RegisterStorage.None)
             {
-                ea += ReadRegister(m.Base);
+                ea += (TWord) ReadRegister(m.Base);
             }
             return ea;
         }
@@ -320,7 +320,7 @@ namespace Reko.Arch.X86
         {
             if (op is RegisterOperand r)
             {
-                return ReadRegister(r.Register);
+                return (TWord) ReadRegister(r.Register);
             }
             if (op is ImmediateOperand i)
                 return i.Value.ToUInt32();
@@ -335,9 +335,9 @@ namespace Reko.Arch.X86
         }
 
 
-        public TWord ReadRegister(RegisterStorage r)
+        public ulong ReadRegister(RegisterStorage r)
         {
-            return (TWord) (Registers[r.Number] & r.BitMask) >> (int) r.BitAddress;
+            return (Registers[r.Number] & r.BitMask) >> (int) r.BitAddress;
         }
 
         public TWord ReadMemory(ulong ea, PrimitiveType dt)
@@ -368,7 +368,7 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
-        public void WriteRegister(RegisterStorage r, TWord value)
+        public void WriteRegister(RegisterStorage r, ulong value)
         {
             Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int) r.BitAddress);
         }
@@ -498,7 +498,7 @@ namespace Reko.Arch.X86
             this.ignoreRep = true;
             var mask = masks[strInstr.addrWidth.Size];
             var ecx = ReadRegister(X86.Registers.ecx);
-            uint c = ecx & mask.value;
+            ulong c = ecx & mask.value;
             while (c != 0)
             {
                 Execute(strInstr);
@@ -513,7 +513,9 @@ namespace Reko.Arch.X86
         {
             var strInstr = dasm.Current;
             this.ignoreRep = true;
-            uint ecx = ReadRegister(X86.Registers.ecx);
+            var mask = masks[strInstr.addrWidth.Size];
+            var ecx = ReadRegister(X86.Registers.ecx);
+            ulong c = ecx & mask.value;
             while (ecx != 0)
             {
                 // Note: a more faithful simulation would 
@@ -548,8 +550,8 @@ namespace Reko.Arch.X86
         {
             //$TODO repne
             byte al = (byte) ReadRegister(X86.Registers.al);
-            TWord edi = ReadRegister(X86.Registers.edi);
-            var addr = Address.Ptr32(edi);
+            var edi = ReadRegister(X86.Registers.edi);
+            var addr = Address.Ptr32((TWord)edi);
             if (!map.TryFindSegment(addr, out ImageSegment seg))
                 throw new AccessViolationException();
             byte mem = (byte) (al - seg.MemoryArea.Bytes[edi - (uint) seg.MemoryArea.BaseAddress.ToLinear()]);

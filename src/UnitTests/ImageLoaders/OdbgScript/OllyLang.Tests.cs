@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Text;
 
@@ -71,6 +72,24 @@ namespace Reko.ImageLoaders.OdbgScript
             engine = new OllyLang(null, arch.Object);
             engine.Host = host.Object;
             engine.Debugger = new Debugger(emu.Object);
+        }
+
+        private void Given_ArchRegister(RegisterStorage reg)
+        {
+            arch.Setup(a => a.TryGetRegister(reg.Name, out reg)).Returns(true);
+        }
+
+        private void Given_MakeSegmentedAddress()
+        {
+            arch.Setup(a => a.MakeSegmentedAddress(
+                It.IsNotNull<Constant>(),
+                It.IsNotNull<Constant>())).
+                Returns(new Func<Constant, Constant, Address>((s, o) =>
+                {
+                    var seg = s.ToUInt16();
+                    var off = o.ToUInt32();
+                    return Address.SegPtr(seg, off);
+                }));
         }
 
         private void Given_Image(uint addr, params byte[] bytes)
@@ -201,14 +220,21 @@ namespace Reko.ImageLoaders.OdbgScript
         public void Ose_Add_Address()
         {
             Given_Engine();
-            Given_Script("add cs:ip,2");
+            Given_Script(
+                "var q\r\n" +
+                "mov q,cs:ip\r\n" +
+                "add q,2\r\n");
+            Given_ArchRegister(new RegisterStorage("cs", 3, 0, PrimitiveType.SegmentSelector));
+            Given_ArchRegister(new RegisterStorage("ip", 4, 0, PrimitiveType.Word16));
             emu.Setup(e => e.ReadRegister(
                 It.Is<RegisterStorage>(r => r.Name == "cs"))).Returns(0x800);
             emu.Setup(e => e.ReadRegister(
                 It.Is<RegisterStorage>(r => r.Name == "ip"))).Returns(0x800);
 
+            Given_MakeSegmentedAddress();
+
             engine.Run();
-            Assert.AreEqual("@@@", engine.variables["$RESULT"].Address);
+            Assert.AreEqual("0800:0802", engine.variables["q"].Address.ToString());
         }
     }
 

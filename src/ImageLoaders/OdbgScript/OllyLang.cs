@@ -1596,33 +1596,24 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool SetRulong(string op, rulong value, int size = 0)
         {
-            throw new NotImplementedException();
-#if LATER
-            if (size > sizeof(value))
-                size = sizeof(value);
+            if (size > sizeof(rulong))
+                size = sizeof(rulong);
 
-            if (is_variable(op))
+            if (IsVariable(op))
             {
-                variables[op] = value;
+                variables[op] = Var.Create(value);
                 variables[op].resize(size);
                 return true;
             }
-            else if (is_register(op))
+            else if (arch.TryGetRegister(op, out var reg))
             {
-                register_t reg = find_register(op);
-                rulong tmp = resize(value, min(size, (int)reg.size));
-                if (reg.size < sizeof(rulong))
-                {
-                    rulong oldval, newval;
-                    oldval = Debugger.GetContextData(reg.id);
-                    oldval &= ~(((1 << (reg.size * 8)) - 1) << (reg.offset * 8));
-                    newval = resize(value, reg.size) << (reg.offset * 8);
-                    tmp = oldval | newval;
-                }
-                return Debugger.SetContextData(reg.id, tmp);
+                Debugger.SetRegisterValue(reg, value);
+                return true;
             }
             else if (is_flag(op))
             {
+                throw new NotImplementedException();
+#if NYI
                 bool flagval = value != 0;
 
                 eflags_t flags;
@@ -1640,9 +1631,12 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
 
                 return Debugger.SetContextData(eContextData.UE_EFLAGS, flags.dw);
+#endif
             }
-            else if (Helper.is_memory(op))
+            else if (Helper.IsMemoryAccess(op))
             {
+                throw new NotImplementedException();
+#if NYI
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
                 rulong target;
@@ -1651,10 +1645,19 @@ namespace Reko.ImageLoaders.OdbgScript
                     Debug.Assert(target != 0);
                     return Host.TE_WriteMemory(target, size, value);
                 }
-            }
-
-            return false;
 #endif
+            }
+            return false;
+        }
+
+        bool SetAddress(string op, Address addr)
+        {
+            if (IsVariable(op))
+            {
+                variables[op] = Var.Create(addr);
+                return true;
+            }
+            throw new NotImplementedException();
         }
 
         bool SetFloat(string op, double value)

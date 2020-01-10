@@ -37,8 +37,8 @@ namespace Reko.Core
 
         Address InstructionPointer { get; set; }
 
-        TWord ReadRegister(RegisterStorage reg);
-        void WriteRegister(RegisterStorage reg, TWord value);
+        ulong ReadRegister(RegisterStorage reg);
+        void WriteRegister(RegisterStorage reg, ulong value);
         void Start();
         void Stop();
         void StepInto(Action callback);

@@ -52,14 +52,14 @@ namespace Reko.Arch.X86
                 segReg = m.DefaultSegment;
 
             var off = GetEffectiveOffset(m);
-            var seg = ReadRegister(segReg);
+            var seg = (ushort)ReadRegister(segReg);
             return ToLinear(seg, off);
         }
 
         protected override void Lods(PrimitiveType dt)
         {
-            var ds = ReadRegister(X86.Registers.ds);
-            var si = ReadRegister(X86.Registers.si);
+            var ds = (ushort) ReadRegister(X86.Registers.ds);
+            var si = (uint) ReadRegister(X86.Registers.si);
             var value = ReadMemory(ToLinear(ds, si), dt);
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax);
@@ -72,10 +72,10 @@ namespace Reko.Arch.X86
 
         protected override void Movs(PrimitiveType dt)
         {
-            var ds = ReadRegister(X86.Registers.ds);
-            var es = ReadRegister(X86.Registers.es);
-            var si = ReadRegister(X86.Registers.si);
-            var di = ReadRegister(X86.Registers.di);
+            var ds = (ushort) ReadRegister(X86.Registers.ds);
+            var es = (ushort) ReadRegister(X86.Registers.es);
+            var si = (uint) ReadRegister(X86.Registers.si);
+            var di = (uint) ReadRegister(X86.Registers.di);
             var value = ReadMemory(ToLinear(ds, si), dt);
             WriteMemory(value, ToLinear(es, di), dt);
             var delta = (uint)dt.Size * (((Flags & Dmask) != 0) ? 0xFFFFu : 0x0001u);

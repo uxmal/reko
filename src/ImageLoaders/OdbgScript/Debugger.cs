@@ -132,5 +132,10 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             return emu.ReadRegister(reg);
         }
+
+        public void SetRegisterValue(RegisterStorage reg, ulong value)
+        {
+            emu.WriteRegister(reg, value);
+        }
     }
 }

@@ -41,6 +41,10 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 2)
             {
+                if (GetAddress(args[0], out Address addr) && GetRulong(args[1], out rulong dw))
+                {
+                    return SetAddress(args[0], addr + dw);
+                }
                 if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out rulong dw2))
                 {
                     return SetRulong(args[0], dw1 + dw2);
