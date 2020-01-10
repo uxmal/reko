@@ -56,7 +56,7 @@ namespace Reko.Arch.Mos6502
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
-            throw new NotImplementedException();
+            return new Mos6502Emulator(this, segmentMap, envEmulator);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
