@@ -201,6 +201,11 @@ namespace Reko.Assemblers.x86
             ProcessShiftRotation(0x05, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
         }
 
+        public void Shr(ParsedOperand dst, ParsedOperand sh)
+        {
+            ProcessShiftRotation(0x05, dst, sh);
+        }
+
         public void Shld(ParsedOperand op1, ParsedOperand op2, ParsedOperand op3)
         {
             ProcessDoubleShift(0, op1, op2, op3);

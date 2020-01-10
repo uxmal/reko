@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -262,6 +263,7 @@ namespace Reko.Arch.X86
                     case Mnemonic.lodsb: Rep(); return;
                     case Mnemonic.movs: Rep(); return;
                     case Mnemonic.movsb: Rep(); return;
+                    case Mnemonic.stosb: Rep(); return;
                     }
                     throw new NotImplementedException();
                 }
@@ -303,10 +305,12 @@ namespace Reko.Arch.X86
             case Mnemonic.retf: Retf(); return;
             case Mnemonic.rcl: Rcl(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.rol: Rol(instr.Operands[0], instr.Operands[1]); return;
+            case Mnemonic.sar: Sar(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.scasb: Scasb(); return;
             case Mnemonic.shl: Shl(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.shr: Shr(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.stc: Flags |= Cmask; break;
+            case Mnemonic.stosb: Stos(PrimitiveType.Byte); break;
             case Mnemonic.sub: Sub(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.xor: Xor(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.xchg: Xchg(instr.Operands[0], instr.Operands[1]); return;
@@ -474,7 +478,8 @@ namespace Reko.Arch.X86
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            TWord sum = l + r + ((uint)Flags & 1);
+            var mask = masks[dst.Width.Size];
+            TWord sum = (l + r + ((uint)Flags & 1)) & mask.value;
             Write(dst, sum);
             var newCy =
                 ((l & r) | ((l | r) & (~(sum)))) >> 31;
@@ -500,6 +505,7 @@ namespace Reko.Arch.X86
             Flags =
                 (r > sum ? 1u : 0u) |     // Carry
                 (sum == 0 ? 1u << 6 : 0u) | // Zero
+                ((sum & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 (ov)                        // Overflow
                 ;
         }
@@ -567,6 +573,7 @@ namespace Reko.Arch.X86
 
         protected abstract void Lods(PrimitiveType dt);
         protected abstract void Movs(PrimitiveType dt);
+        protected abstract void Stos(PrimitiveType dt);
 
         private void Scasb()
         {
@@ -582,24 +589,42 @@ namespace Reko.Arch.X86
                 (mem == 0 ? Zmask : 0u);
         }
 
+        private void Sar(MachineOperand dst, MachineOperand src)
+        {
+            ulong n = Read(dst);
+            long l = (long) Bits.SignExtend(n, dst.Width.BitSize);
+            byte sh = (byte) Read(src);
+            var mask = masks[dst.Width.Size];
+            TWord r = (TWord)((l >> sh) & mask.value);
+            Write(dst, r);
+            Flags =
+                (r == 0 ? Zmask : 0u) |      // Zero
+                ((r & mask.hibit) != 0 ? Smask : 0u);    // Sign
+        }
+
         private void Shl(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
-            TWord r = l << sh;
+            var mask = masks[dst.Width.Size];
+            TWord r = (l << sh) & mask.value;
             Write(dst, r);
             Flags =
-                (r == 0 ? Zmask : 0u);      // Zero
+                (r == 0 ? Zmask : 0u) |      // Zero
+                ((r & mask.hibit) != 0 ? Smask : 0u);    // Sign
+
         }
 
         private void Shr(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
-            TWord r = l >> sh;
+            var mask = masks[dst.Width.Size];
+            TWord r = (l >> sh) & mask.value;
             Write(dst, r);
             Flags =
-                (r == 0 ? Zmask : 0u);      // Zero
+                (r == 0 ? Zmask : 0u) |      // Zero
+                ((r & mask.hibit) != 0 ? Smask : 0u);    // Sign
         }
 
         protected abstract void Call(MachineOperand op);
@@ -627,6 +652,7 @@ namespace Reko.Arch.X86
             Flags =
                 (l < diff ? 1u : 0u) |     // Carry
                 (diff == 0 ? Zmask : 0u) | // Zero
+                ((diff & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 (ov)                        // Overflow
                 ;
         }
@@ -645,6 +671,7 @@ namespace Reko.Arch.X86
             Flags =
                 (l < diff ? 1u : 0u) |     // Carry
                 (diff == 0 ? Zmask : 0u) | // Zero
+                ((diff & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 (ov)                        // Overflow
                 ;
         }
@@ -776,6 +803,7 @@ namespace Reko.Arch.X86
             Flags =
                 0 |                         // Carry
                 (xor == 0 ? Zmask : 0u) |   // Zero
+                ((xor & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 0;                          // Overflow
         }
     }

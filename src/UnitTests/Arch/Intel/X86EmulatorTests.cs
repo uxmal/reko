@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Arch.Intel
             emu.Start();
 
             Assert.AreEqual(0xFFFFFFFCu, emu.Registers[Registers.eax.Number]);
-            Assert.AreEqual(X86Emulator.Cmask, emu.Flags, "Should set C flag");
+            Assert.AreEqual(X86Emulator.Cmask|X86Emulator.Smask, emu.Flags, "Should set C, S flags");
         }
 
         [Test]
@@ -852,13 +852,72 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.IsTrue((emu.Flags & X86Emulator.Cmask) != 0);
         }
 
-        /*
- sar 
- shl 
- shr 
- stosb
- sub 
- xor */
+        [Test]
+        public void X86Emu_sar16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.eax, 0x7FF0AAAA);
+                m.Sar(m.ax, 3);
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual("7FF0F555", emu.ReadRegister(Registers.eax).ToString("X8"));
+            Assert.AreEqual(X86Emulator.Smask, emu.Flags);
+        }
+
+        [Test]
+        public void X86Emu_shr16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.cx, 3);
+                m.Mov(m.eax, 0x33333333);
+                m.Shr(m.ax, m.cl);
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual("33330666", emu.ReadRegister(Registers.eax).ToString("X8"));
+            Assert.AreEqual(0, emu.Flags);
+        }
+
+        [Test]
+        public void X86Emu_shl16_flags()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.eax, 0x33333333);
+                m.Shl(m.ax, 2);
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual("3333CCCC", emu.ReadRegister(Registers.eax).ToString("X8"));
+            Assert.AreEqual(X86Emulator.Smask, emu.Flags);
+        }
+
+        [Test]
+        public void X86Emu_stosb16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.ax, 0x1234);
+                m.Mov(m.edi, 0x28880020);
+                m.Stosb();
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual(52, emu.ReadLeUInt16(Lin(0x800, 0x0020)));
+        }
+
+        // stosb
     }
 }
 /*

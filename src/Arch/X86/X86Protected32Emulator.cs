@@ -58,6 +58,12 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
+        protected override void Stos(PrimitiveType dt)
+        {
+            throw new NotImplementedException();
+        }
+
+
         protected override uint Pop(PrimitiveType dt)
         {
             var esp = ReadRegister(X86.Registers.esp);

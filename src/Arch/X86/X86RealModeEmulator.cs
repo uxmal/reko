@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
@@ -82,6 +83,17 @@ namespace Reko.Arch.X86
             si += delta;
             di += delta;
             WriteRegister(X86.Registers.si, si);
+            WriteRegister(X86.Registers.di, di);
+        }
+
+        protected override void Stos(PrimitiveType dt)
+        {
+            var es = (ushort) ReadRegister(X86.Registers.es);
+            var di = (uint) ReadRegister(X86.Registers.di);
+            var value = (uint) (Registers[X86.Registers.rax.Number] & Bits.Mask(0, dt.BitSize));
+            WriteMemory(value, ToLinear(es, di), dt);
+            var delta = (uint) dt.Size * (((Flags & Dmask) != 0) ? 0xFFFFu : 0x0001u);
+            di += delta;
             WriteRegister(X86.Registers.di, di);
         }
 
