@@ -77,7 +77,29 @@ namespace Reko.Tools.GenPICdb
     /// </summary>
     public static class MPLABLocations
     {
-#region Inner classes
+
+        #region Inner classes
+
+#if NETCOREAPP
+
+        /// <summary>
+        /// A dummy Registry implementation to satisfy the C# compiler until NetCore supports this class.
+        /// </summary>
+        private static class Registry
+        {
+            public sealed class RegistryKey
+            {
+                public int SubKeyCount => 0;
+
+                public RegistryKey OpenSubKey(string key) => null;
+                public object GetValue(string name, object defaultValue) => null;
+            }
+
+            public static readonly RegistryKey LocalMachine;
+
+        }
+
+#endif
 
 
         /// <summary>
@@ -170,7 +192,7 @@ namespace Reko.Tools.GenPICdb
         /// <summary>
         /// Implementation for Linux.
         /// </summary>
-        private class MPLABLocationsUX : IMPLABLocations
+        private sealed class MPLABLocationsUX : IMPLABLocations
         {
             private const string mplab_IDE_UX = @"/usr/bin/mplab_ide";
 
@@ -229,7 +251,7 @@ namespace Reko.Tools.GenPICdb
         /// <summary>
         /// Implementation for OS/X.
         /// </summary>
-        private class MPLABLocationsOSX : IMPLABLocations
+        private sealed class MPLABLocationsOSX : IMPLABLocations
         {
             private const string mplab_IDE_OSX = @"/Applications/microchip/mplabx";
 
@@ -285,7 +307,7 @@ namespace Reko.Tools.GenPICdb
         /// <summary>
         /// Implementation for Windows.
         /// </summary>
-        private class MPLABLocationsWIN : IMPLABLocations
+        private sealed class MPLABLocationsWIN : IMPLABLocations
         {
 
             private const string jarFolderPath = @"mplab_ide\mplablibs\modules\ext";
@@ -317,25 +339,21 @@ namespace Reko.Tools.GenPICdb
 
             }
 
-#if NETFRAMEWORK
-
             private string mplabXInstallationFolder
             {
                 get
                 {
                     if (mplabxInstallationFolder == null)
                     {
-                        var MicrochipKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microchip");
-                        if (MicrochipKey?.SubKeyCount <= 0) MicrochipKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microchip");
+                        var MicrochipKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microchip");
+                        if (MicrochipKey is null || MicrochipKey.SubKeyCount <= 0)
+                            MicrochipKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microchip");
                         mplabxInstallationFolder = (string) (MicrochipKey?.OpenSubKey("MPLAB X")?.GetValue("InstallDir", null));
                     }
                     return mplabxInstallationFolder;
                 }
             }
             private string mplabxInstallationFolder = null;
-#else
-            private string mplabXInstallationFolder => null;
-#endif
 
             /// <summary>
             /// Gets a value indicating whether the Windows installation information is valid.
@@ -359,22 +377,46 @@ namespace Reko.Tools.GenPICdb
 
         }
 
+        private sealed class DummyLocations : IMPLABLocations
+        {
+            /// <summary>
+            /// Gets a value indicating whether the Windows installation information is valid.
+            /// </summary>
+            public bool IsValid => false;
+
+            /// <summary>
+            /// Gets the MPLAB X IDE version as a string for this Windows installation.
+            /// </summary>
+            public string Version => null;
+
+            /// <summary>
+            /// MPLAB X IDE installations on Windows use Device Family Packs (version &gt;= 4.10) or 'JAR' file for legacy MPLAB IDE.
+            /// </summary>
+            public bool UsePacks => false;
+
+            /// <summary>
+            /// Gets the pathname to the Device Family Packs (DFP) folder or the '.jar' file for this Windows installation.
+            /// </summary>
+            public string SourceFolder => null;
+
+        }
+
 #endregion
 
         /// <summary>
         /// Gets the MPLAB X IDE locations information.
         /// </summary>
-        public static IMPLABLocations Loc { get; } = null;
+        private static IMPLABLocations dummyLoc { get; } = new DummyLocations();
 
-        static MPLABLocations()
+        public static IMPLABLocations Create()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Loc = new MPLABLocationsWIN();
+                return new MPLABLocationsWIN();
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                Loc = new MPLABLocationsUX();
+                return new MPLABLocationsUX();
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                Loc = new MPLABLocationsOSX();
-            _ = Loc ?? throw new NotImplementedException("This program can't execute on current platform.");
+                return new MPLABLocationsOSX();
+            return dummyLoc;
         }
 
     }
