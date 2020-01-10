@@ -261,6 +261,7 @@ namespace Reko.Arch.X86
                     case Mnemonic.lods: Rep(); return;
                     case Mnemonic.lodsb: Rep(); return;
                     case Mnemonic.movs: Rep(); return;
+                    case Mnemonic.movsb: Rep(); return;
                     }
                     throw new NotImplementedException();
                 }
@@ -292,6 +293,7 @@ namespace Reko.Arch.X86
             case Mnemonic.loop: Loop(instr.Operands[0]); break;
             case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); break;
             case Mnemonic.movs: Movs(instr.dataWidth); break;
+            case Mnemonic.movsb: Movs(PrimitiveType.Byte); break;
             case Mnemonic.or: Or(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.pop: Write(instr.Operands[0], Pop(instr.Operands[0].Width)); return;
             case Mnemonic.popa: Popa(); return;
@@ -299,10 +301,12 @@ namespace Reko.Arch.X86
             case Mnemonic.pusha: Pusha(); return;
             case Mnemonic.ret: Ret(); return;
             case Mnemonic.retf: Retf(); return;
+            case Mnemonic.rcl: Rcl(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.rol: Rol(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.scasb: Scasb(); return;
             case Mnemonic.shl: Shl(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.shr: Shr(instr.Operands[0], instr.Operands[1]); return;
+            case Mnemonic.stc: Flags |= Cmask; break;
             case Mnemonic.sub: Sub(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.xor: Xor(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.xchg: Xchg(instr.Operands[0], instr.Operands[1]); return;
@@ -342,7 +346,6 @@ namespace Reko.Arch.X86
             }
             throw new NotImplementedException();
         }
-
 
         public ulong ReadRegister(RegisterStorage r)
         {
@@ -537,6 +540,21 @@ namespace Reko.Arch.X86
 
         protected abstract void Retf();
 
+        private void Rcl(MachineOperand dst, MachineOperand src)
+        {
+            //$TODO: 64-bit will be harder.
+            TWord l = Read(dst) << 1; // Make space for inbound carry bit.
+            if ((Flags & Cmask) != 0)
+                l |= 1;
+            byte sh = (byte) Read(src);
+            TWord r = (l << sh) | (l >> (dst.Width.BitSize + 1 - sh));
+            var mask = masks[dst.Width.Size];
+            Write(dst, (r >> 1) & mask.value);
+            Flags =
+                ((r & ~1) == 0 ? Zmask : 0u) |  // Zero
+                ((r & 1) != 0 ? Cmask : 0u);
+        }
+
         private void Rol(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
@@ -661,7 +679,6 @@ namespace Reko.Arch.X86
                 (or == 0 ? Zmask : 0u) |    // Zero
                 0;                          // Clear Overflow
         }
-
 
         private void Dec(MachineOperand op)
         {

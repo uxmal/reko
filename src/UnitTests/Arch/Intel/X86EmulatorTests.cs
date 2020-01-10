@@ -819,10 +819,38 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(10, emu.Registers[Registers.ax.Number]);
         }
 
+        [Test]
+        public void X86Emu_stc()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Stc();
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.IsTrue((emu.Flags & X86Emulator.Cmask) != 0);
+        }
+
+        [Test]
+        public void X86Emu_rcl16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Stc();
+                m.Mov(m.eax, 0x7FF0AAAA);
+                m.Rcl(m.ax, 1);
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual("7FF05555", emu.ReadRegister(Registers.eax).ToString("X8"));
+            Assert.IsTrue((emu.Flags & X86Emulator.Cmask) != 0);
+        }
+
         /*
- movsb
- or 
- rcl 
  sar 
  shl 
  shr 
