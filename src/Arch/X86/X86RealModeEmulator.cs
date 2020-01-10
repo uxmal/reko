@@ -18,12 +18,8 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 
 namespace Reko.Arch.X86
@@ -35,9 +31,18 @@ namespace Reko.Arch.X86
         {
         }
 
-        private static ulong ToLinear(uint seg, uint off)
+        protected override void Call(MachineOperand op)
         {
-            return (((ulong) seg) << 4) + off;
+            if (op.Width.Size == 4)
+            {
+                Push(InstructionPointer.Selector.Value, PrimitiveType.Word16);
+            }
+            var nextIp = InstructionPointer.Offset + (uint) dasm.Current.Length;   // Push return value on stack
+            Push(nextIp, PrimitiveType.Word16);
+            var dest = XferTarget(op);
+            if (envEmulator.InterceptCall(this, (uint) dest.ToLinear()))
+                return;
+            InstructionPointer = dest;
         }
 
         protected override ulong GetEffectiveAddress(MemoryOperand m)
@@ -80,12 +85,39 @@ namespace Reko.Arch.X86
             WriteRegister(X86.Registers.di, di);
         }
 
-        public override void Push(ulong value)
+        protected override uint Pop(PrimitiveType dt)
         {
-            var ss = (ushort) Registers[X86.Registers.ss.Number];
-            var sp = (ushort) Registers[X86.Registers.esp.Number] - 2u;
-            WriteLeUInt16(((ulong)ss << 4) + sp, (ushort) value);
+            var ss = (ushort) ReadRegister(X86.Registers.ss);
+            var sp = (ushort) ReadRegister(X86.Registers.sp);
+            var value = ReadLeUInt16(ToLinear(ss, sp));
+            WriteRegister(X86.Registers.sp, sp + (uint) dt.Size);
+            return value;
+        }
+
+        protected override void Push(ulong value, PrimitiveType dt)
+        {
+            var ss = (ushort) ReadRegister(X86.Registers.ss);
+            var sp = (ushort) ReadRegister(X86.Registers.sp) - (uint)dt.Size;
+            WriteLeUInt16(ToLinear(ss, sp), (ushort) value);
             WriteRegister(X86.Registers.sp, sp);
+        }
+
+        protected override void Ret()
+        {
+            var dst = (ushort) Pop(PrimitiveType.Word16);
+            InstructionPointer = InstructionPointer.NewOffset(dst);
+        }
+
+        protected override void Retf()
+        {
+            var ip = (ushort) Pop(PrimitiveType.Word16);
+            var cs = (ushort) Pop(PrimitiveType.Word16);
+            InstructionPointer = Address.SegPtr(cs, ip);
+        }
+
+        private static ulong ToLinear(uint seg, uint off)
+        {
+            return (((ulong) seg) << 4) + off;
         }
     }
 }

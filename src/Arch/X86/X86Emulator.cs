@@ -61,12 +61,12 @@ namespace Reko.Arch.X86
             };
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator");
 
-        private readonly IntelArchitecture arch;
-        private readonly SegmentMap map;
+        protected readonly IntelArchitecture arch;
+        protected readonly SegmentMap map;
+        protected readonly IPlatformEmulator envEmulator;
+        protected IEnumerator<X86Instruction> dasm;
         private readonly RegisterStorage ipReg;
-        private readonly IPlatformEmulator envEmulator;
         private readonly Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
-        private IEnumerator<X86Instruction> dasm;
 
         public readonly ulong[] Registers;
         private readonly int iFlags;
@@ -284,10 +284,12 @@ namespace Reko.Arch.X86
             case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); break;
             case Mnemonic.movs: Movs(instr.dataWidth); break;
             case Mnemonic.or: Or(instr.Operands[0], instr.Operands[1]); return;
-            case Mnemonic.pop: Write(instr.Operands[0], Pop()); return;
+            case Mnemonic.pop: Write(instr.Operands[0], Pop(instr.Operands[0].Width)); return;
             case Mnemonic.popa: Popa(); return;
-            case Mnemonic.push: Push(Read(instr.Operands[0])); return;
+            case Mnemonic.push: Push(instr.Operands[0]); return;
             case Mnemonic.pusha: Pusha(); return;
+            case Mnemonic.ret: Ret(); return;
+            case Mnemonic.retf: Retf(); return;
             case Mnemonic.rol: Rol(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.scasb: Scasb(); return;
             case Mnemonic.shl: Shl(instr.Operands[0], instr.Operands[1]); return;
@@ -436,7 +438,24 @@ namespace Reko.Arch.X86
             segment.MemoryArea.WriteLeUInt32((long) off, value);
         }
 
-
+        protected Address XferTarget(MachineOperand op)
+        {
+            if (op is AddressOperand a)
+            {
+                return a.Address;
+            }
+            else if (op is ImmediateOperand immediate)
+            {
+                var addrNew = InstructionPointer.NewOffset(immediate.Value.ToUInt64());
+                return addrNew;
+            }
+            else
+            {
+                //$BUG: not correct for x86-real
+                TWord l = Read(op);
+                return Address.Ptr32(l);
+            }
+        }
 
 
         private void Adc(MachineOperand dst, MachineOperand src)
@@ -508,6 +527,10 @@ namespace Reko.Arch.X86
             this.ignoreRep = false;
         }
 
+        protected abstract void Ret();
+
+        protected abstract void Retf();
+
         private void Rol(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
@@ -555,15 +578,7 @@ namespace Reko.Arch.X86
                 (r == 0 ? Zmask : 0u);      // Zero
         }
 
-        private void Call(MachineOperand op)
-        {
-            Push(InstructionPointer.ToLinear() + (uint) dasm.Current.Length);   // Push return value on stack
-
-            TWord l = Read(op);
-            if (envEmulator.InterceptCall(this, l))
-                return;
-            InstructionPointer = Address.Ptr32(l);
-        }
+        protected abstract void Call(MachineOperand op);
 
         private void Cld()
         {
@@ -572,20 +587,7 @@ namespace Reko.Arch.X86
 
         protected void Jump(MachineOperand op)
         {
-            if (op is AddressOperand a)
-            {
-                InstructionPointer = a.Address;
-            }
-            else if (op is ImmediateOperand immediate)
-            {
-                var addrNew = InstructionPointer.NewOffset(immediate.Value.ToUInt64());
-                InstructionPointer = addrNew;
-            }
-            else
-            {
-                TWord l = Read(op);
-                InstructionPointer = Address.Ptr32(l);
-            }
+            InstructionPointer = XferTarget(op);
         }
 
         private void Cmp(MachineOperand dst, MachineOperand src)
@@ -683,22 +685,6 @@ namespace Reko.Arch.X86
                 ov;                          //$BUG:
         }
 
-        private void Xor(MachineOperand dst, MachineOperand src)
-        {
-            TWord l = Read(dst);
-            TWord r = Read(src);
-            if (src.Width.Size < dst.Width.Size)
-                r = (TWord)(sbyte)r;
-            var mask = masks[dst.Width.Size];
-            var xor = (l ^ r) & mask.value;
-            Write(dst, xor);
-            Flags =
-                0 |                         // Carry
-                (xor == 0 ? Zmask : 0u) |   // Zero
-                0;                          // Overflow
-        }
-
-
         public void Loop(MachineOperand op)
         {
             var c = ReadRegister(X86.Registers.ecx)  -1u;
@@ -709,39 +695,40 @@ namespace Reko.Arch.X86
 
         public void Popa()
         {
-            Registers[X86.Registers.edi.Number] = Pop();
-            Registers[X86.Registers.esi.Number] = Pop();
-            Registers[X86.Registers.ebp.Number] = Pop();
-            Pop();
-            Registers[X86.Registers.ebx.Number] = Pop();
-            Registers[X86.Registers.edx.Number] = Pop();
-            Registers[X86.Registers.ecx.Number] = Pop();
-            Registers[X86.Registers.eax.Number] = Pop();
+            var dt = arch.WordWidth;
+            Registers[X86.Registers.edi.Number] = Pop(dt);
+            Registers[X86.Registers.esi.Number] = Pop(dt);
+            Registers[X86.Registers.ebp.Number] = Pop(dt);
+            Pop(dt);
+            Registers[X86.Registers.ebx.Number] = Pop(dt);
+            Registers[X86.Registers.edx.Number] = Pop(dt);
+            Registers[X86.Registers.ecx.Number] = Pop(dt);
+            Registers[X86.Registers.eax.Number] = Pop(dt);
         }
 
         public void Pusha()
         {
-            var temp = Registers[X86.Registers.esp.Number];
-            Push(Registers[X86.Registers.eax.Number]);
-            Push(Registers[X86.Registers.ecx.Number]);
-            Push(Registers[X86.Registers.edx.Number]);
-            Push(Registers[X86.Registers.ebx.Number]);
-            Push(temp);
-            Push(Registers[X86.Registers.ebp.Number]);
-            Push(Registers[X86.Registers.esi.Number]);
-            Push(Registers[X86.Registers.edi.Number]);
+            var dt = PrimitiveType.Word32;
+            var temp = (uint)Registers[X86.Registers.esp.Number];
+            Push((uint)Registers[X86.Registers.eax.Number], dt);
+            Push((uint)Registers[X86.Registers.ecx.Number], dt);
+            Push((uint)Registers[X86.Registers.edx.Number], dt);
+            Push((uint)Registers[X86.Registers.ebx.Number], dt);
+            Push(temp, dt);
+            Push((uint)Registers[X86.Registers.ebp.Number], dt);
+            Push((uint)Registers[X86.Registers.esi.Number], dt);
+            Push((uint)Registers[X86.Registers.edi.Number], dt);
         }
 
-        public TWord Pop()
+        protected abstract TWord Pop(PrimitiveType dt);
+
+        public void Push(MachineOperand op)
         {
-            var esp = Registers[X86.Registers.esp.Number];
-            var word = ReadLeUInt32((uint)esp);
-            esp += 4;
-            WriteRegister(X86.Registers.esp, (uint)esp);
-            return word;
+            var value = Read(op);
+            Push(value, op.Width);
         }
 
-        public abstract void Push(ulong value);
+        protected abstract void Push(ulong dw, PrimitiveType dt);
 
         private void Xchg(MachineOperand op1, MachineOperand op2)
         {
@@ -750,5 +737,19 @@ namespace Reko.Arch.X86
             Write(op2, tmp);
         }
 
+        private void Xor(MachineOperand dst, MachineOperand src)
+        {
+            TWord l = Read(dst);
+            TWord r = Read(src);
+            if (src.Width.Size < dst.Width.Size)
+                r = (TWord) (sbyte) r;
+            var mask = masks[dst.Width.Size];
+            var xor = (l ^ r) & mask.value;
+            Write(dst, xor);
+            Flags =
+                0 |                         // Carry
+                (xor == 0 ? Zmask : 0u) |   // Zero
+                0;                          // Overflow
+        }
     }
 }

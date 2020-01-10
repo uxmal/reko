@@ -104,8 +104,13 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_Platform()
         {
             var mockPlatform = new Mock<IPlatform>();
+            var emu = new Mock<IPlatformEmulator>();
             mockPlatform.Setup(p => p.LookupProcedureByName(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new ExternalProcedure("", new FunctionType()));
+            mockPlatform.Setup(p => p.CreateEmulator(
+                It.IsAny<SegmentMap>(),
+                It.IsAny<Dictionary<Address,ImportReference>>()))
+                .Returns(emu.Object);
             this.platform = mockPlatform.Object;
         }
 
@@ -713,35 +718,296 @@ namespace Reko.UnitTests.Arch.Intel
             emu.Start();
             Assert.AreEqual(X86Emulator.Smask, emu.Flags & X86Emulator.Smask);
         }
+
+        [Test]
+        public void X86emu_call_far()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Db(0x9A, 0x06, 0x00, 0x00, 0x08); // call far fn
+                m.Hlt();
+
+                m.Label("fn");
+                m.Mov(m.ax, 0x42);
+                m.Hlt();
+            });
+            emu.Start();
+            Assert.AreEqual(0x42, emu.ReadRegister(Registers.ax));
+        }
+
+        [Test]
+        public void X86emu_call_far_ret()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Db(0x9A, 0x09, 0x00, 0x00, 0x08); // call far fn
+                m.Mov(m.ax, 0x42);
+                m.Hlt();
+
+                m.Label("fn");
+                m.Retf();
+            });
+            emu.Start();
+            Assert.AreEqual(0x42, emu.ReadRegister(Registers.ax));
+        }
+
+        [Test]
+        public void X86emu_call_near_ret()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Call("fn"); // call near fn
+                m.Mov(m.ax, 0x42);
+                m.Hlt();
+
+                m.Label("fn");
+                m.Ret();
+            });
+            emu.Start();
+            Assert.AreEqual(0x42, emu.ReadRegister(Registers.ax));
+        }
+
+        /*
+ add 
+ and 
+ cmp 
+ dec 
+ inc 
+ lodsb
+ lodsw
+ loop 
+ mov 
+ movsb
+ or 
+ rcl 
+ sar 
+ shl 
+ shr 
+ stosb
+ sub 
+ xor */
     }
 }
 /*
-0800:0003 FC cld 
-0800:0004 06 push es
-0800:0005 1E push ds
-0800:0006 0E push cs
-0800:0007 8C C8 mov ax,cs
-0800:0009 01 06 38 01 add [0138],ax
-0800:000D BA 78 0A mov dx,0A78
-0800:0010 03 C2 add ax,dx
-0800:0012 8B D8 mov bx,ax
-0800:0014 05 4A 0B add ax,0B4A
-0800:0017 8E DB mov ds,bx
-0800:0019 8E C0 mov es,ax
-0800:001B 33 F6 xor si,si
-0800:001D 33 FF xor di,di
-0800:001F B9 08 00 mov cx,0008
-0800:0022 F3 A5 rep movsw  
-0800:0024 4B dec bx
-0800:0025 48 dec ax
-0800:0026 4A dec dx
-0800:0027 79 EE jns 0017
-0800:0029 8E C3 mov es,bx
-0800:002B 8E D8 mov ds,ax
-0800:002D BE 4A 00 mov si,004A
-0800:0030 AD lodsw 
-0800:0031 8B E8 mov bp,ax
-0800:0033 B2 10 mov dl,10
-0800:0035 EA E6 05 54 15 jmp far 1554:05E6
+;; fn1D54_056D: 1D54:056D
+;;   Called from:
+;;     1800:5AB9 (in fn0800_0003)
+;;     1800:5ABE (in fn0800_0003)
+;;     1800:5AC7 (in fn0800_0003)
+;;     1800:5ACC (in fn0800_0003)
+;;     1800:5ADD (in fn0800_0003)
+;;     1800:5AE4 (in fn0800_0003)
+;;     1800:5AEB (in fn0800_0003)
+;;     1800:5AF6 (in fn0800_0003)
+;;     1800:5AFF (in fn0800_0003)
+;;     1800:5B15 (in fn0800_0003)
+;;     1800:5B26 (in fn0800_0003)
+;;     1800:5B2E (in fn0800_0003)
+;;     1800:5B38 (in fn0800_0003)
+;;     1800:5B41 (in fn0800_0003)
+fn1D54_056D proc
+	shr	bp,01
+	dec	dl
+	jnz	0578
+
+l1D54_0573:
+	lodsw
+	mov	bp,ax
+	mov	dl,10
+
+l1D54_0578:
+	ret
+
+l1D54_0579:
+	call	056D
+	rcl	bh,01
+	call	056D
+	jc	0597
+
+l1D54_0583:
+	mov	dh,02
+	mov	cl,03
+
+l1D54_0587:
+	call	056D
+	jc	0595
+
+l1D54_058C:
+	call	056D
+	rcl	bh,01
+	shl	dh,01
+	loop	0587
+
+l1D54_0595:
+	sub	bh,dh
+
+l1D54_0597:
+	mov	dh,02
+	mov	cl,04
+
+l1D54_059B:
+	inc	dh
+	call	056D
+	jc	05B2
+
+l1D54_05A2:
+	loop	059B
+
+l1D54_05A4:
+	call	056D
+	jnc	05B6
+
+l1D54_05A9:
+	inc	dh
+	call	056D
+	jnc	05B2
+
+l1D54_05B0:
+	inc	dh
+
+l1D54_05B2:
+	mov	cl,dh
+	jmp	05E0
+
+l1D54_05B6:
+	call	056D
+	jc	05CB
+
+l1D54_05BB:
+	mov	cl,03
+	mov	dh,00
+
+l1D54_05BF:
+	call	056D
+	rcl	dh,01
+	loop	05BF
+
+l1D54_05C6:
+	add	dh,09
+	jmp	05B2
+
+l1D54_05CB:
+	lodsb
+	mov	cl,al
+	add	cx,11
+	jmp	05E0
+
+l1D54_05D3:
+	mov	cl,03
+
+l1D54_05D5:
+	call	056D
+	rcl	bh,01
+	loop	05D5
+
+l1D54_05DC:
+	dec	bh
+
+l1D54_05DE:
+	mov	cl,02
+
+l1D54_05E0:
+	mov	al,es:[bx+di]
+	stosb
+	loop	05E0
+
+
+
+
+
+fn1D54_05E6:
+	call	056D
+	jnc	05EE
+
+l1D54_05EB:
+	movsb
+	jmp	05E6
+
+
+l1D54_05EE:
+	call	056D
+	lodsb
+	mov	bh,FF
+	mov	bl,al
+	jc	0579
+
+l1D54_05F8:
+	call	056D
+	jc	05D3
+
+l1D54_05FD:
+	cmp	bh,bl
+	jnz	05DE
+
+l1D54_0601:
+	call	056D
+	jnc	062D
+
+l1D54_0606:
+	mov	cl,04
+	push	di
+	shr	di,cl
+	mov	ax,es
+	add	ax,di
+	sub	ah,02
+	mov	es,ax
+	pop	di
+	and	di,000F
+	add	di,2000
+	push	si
+	shr	si,cl
+	mov	ax,ds
+	add	ax,si
+	mov	ds,ax
+	pop	si
+	and	si,000F
+	jmp	05E6
+
+l1D54_062D:
+	pop	bp
+	push	cs
+	pop	ds
+	mov	si,004A
+	mov	cx,008A
+
+l1D54_0636:
+	lodsw
+	or	ax,ax
+	js	0644
+
+l1D54_063B:
+	add	ax,bp
+	mov	es,ax
+	lodsw
+	mov	bx,ax
+	jmp	064A
+
+l1D54_0644:
+	shl	ax,01
+	sar	ax,01
+	add	bx,ax
+
+l1D54_064A:
+	add	es:[bx],bp
+	loop	0636
+
+l1D54_064F:
+	pop	es
+	pop	ds
+	add	bp,1555
+	mov	ss,bp
+	mov	sp,0000
+	xor	bp,bp
+	xor	di,di
+	xor	si,si
+	xor	dx,dx
+	xor	bx,bx
+	xor	ax,ax
+	jmp	far 0800:2268
+1D54:066B                                  00 00 00 00 00            .....
+1D54:0670 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
+1D54:0750 00 00 00 00 00 00 00 00 29 DB 00 08 F0 07 00 00 ........).......
+1D54:0760 00 00 00 00                                     ....           
 */
 
