@@ -28,7 +28,7 @@ namespace Reko.Arch.X86
     public class X86Protected32Emulator : X86Emulator
     {
         public X86Protected32Emulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator) 
-            : base(arch, segmentMap, envEmulator, X86.Registers.eip)
+            : base(arch, segmentMap, envEmulator, X86.Registers.eip, X86.Registers.ecx)
         {
         }
 

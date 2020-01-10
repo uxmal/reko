@@ -157,6 +157,8 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(1 | (1 << 6) | (1 << 11), emu.Flags, "Should set carry + z + ov");
         }
 
+
+
         [Test]
         public void X86Emu_Sub32_ov()
         {
@@ -670,6 +672,24 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void X86Emu_lodsb_16bit()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.si, 0x40);
+                m.Lodsb();
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.eax, 0xFFFFFFFF);
+            emu.WriteLeUInt16(Lin(0x800, 0x40), 0x4242);
+
+            emu.Start();
+
+            Assert.AreEqual(0xFFFFFF42, emu.ReadRegister(Registers.eax));
+        }
+
+        [Test]
         public void X86Emu_jmp_far_16bit()
         {
             Given_MsdosCode(m =>
@@ -767,16 +787,39 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(0x42, emu.ReadRegister(Registers.ax));
         }
 
+        [Test]
+        public void X86Emu_Shl16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Shl(m.si, 3);
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.esi, 0xFFFF0001);
+            emu.Start();
+            Assert.AreEqual(0xFFFF0008, emu.ReadRegister(Registers.esi));
+        }
+
+        [Test]
+        public void X86Emu_loop16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.ax, 0);    // sum
+                m.Mov(m.cx, 4);
+                m.Label("Lupe");
+                m.Add(m.ax, m.cx);
+                m.Loop("Lupe");
+            });
+
+            emu.WriteRegister(Registers.ecx, 0xFFFFFFFF);
+            emu.Start();
+
+            Assert.AreEqual(10, emu.Registers[Registers.ax.Number]);
+        }
+
         /*
- add 
- and 
- cmp 
- dec 
- inc 
- lodsb
- lodsw
- loop 
- mov 
  movsb
  or 
  rcl 

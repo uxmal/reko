@@ -66,6 +66,7 @@ namespace Reko.Arch.X86
         protected readonly IPlatformEmulator envEmulator;
         protected IEnumerator<X86Instruction> dasm;
         private readonly RegisterStorage ipReg;
+        private readonly RegisterStorage cxReg;
         private readonly Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
 
         public readonly ulong[] Registers;
@@ -77,11 +78,17 @@ namespace Reko.Arch.X86
         private TWord stepOverAddress;
         private bool ignoreRep;
 
-        public X86Emulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator, RegisterStorage ipReg)
+        public X86Emulator(
+            IntelArchitecture arch, 
+            SegmentMap segmentMap, 
+            IPlatformEmulator envEmulator, 
+            RegisterStorage ipReg,
+            RegisterStorage cxReg)
         {
             this.arch = arch;
             this.map = segmentMap;
             this.ipReg = ipReg;
+            this.cxReg = cxReg;
             this.Registers = new ulong[40];
             this.iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
@@ -252,6 +259,7 @@ namespace Reko.Arch.X86
                     switch (instr.code)
                     {
                     case Mnemonic.lods: Rep(); return;
+                    case Mnemonic.lodsb: Rep(); return;
                     case Mnemonic.movs: Rep(); return;
                     }
                     throw new NotImplementedException();
@@ -279,6 +287,7 @@ namespace Reko.Arch.X86
             case Mnemonic.jnz: if ((Flags & Zmask) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jz: if ((Flags & Zmask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveOffset((MemoryOperand) instr.Operands[1])); break;
+            case Mnemonic.lodsb: Lods(PrimitiveType.Byte); break;
             case Mnemonic.lods: Lods(instr.dataWidth); break;
             case Mnemonic.loop: Loop(instr.Operands[0]); break;
             case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); break;
@@ -496,15 +505,12 @@ namespace Reko.Arch.X86
         {
             var strInstr = dasm.Current;
             this.ignoreRep = true;
-            var mask = masks[strInstr.addrWidth.Size];
-            var ecx = ReadRegister(X86.Registers.ecx);
-            ulong c = ecx & mask.value;
+            var c = ReadRegister(cxReg);
             while (c != 0)
             {
                 Execute(strInstr);
                 --c;
-                ecx = (ecx & ~mask.value) | c;
-                WriteRegister(X86.Registers.ecx, ecx);
+                WriteRegister(cxReg, c);
             }
             this.ignoreRep = false;
         }
@@ -513,16 +519,14 @@ namespace Reko.Arch.X86
         {
             var strInstr = dasm.Current;
             this.ignoreRep = true;
-            var mask = masks[strInstr.addrWidth.Size];
-            var ecx = ReadRegister(X86.Registers.ecx);
-            ulong c = ecx & mask.value;
-            while (ecx != 0)
+            var c = ReadRegister(cxReg);
+            while (c != 0)
             {
                 // Note: a more faithful simulation would 
                 // check for pending interrupts.
                 Execute(strInstr);
-                --ecx;
-                WriteRegister(X86.Registers.ecx, ecx);
+                --c;
+                WriteRegister(cxReg, c);
                 if ((Flags & Zmask) != 0)
                     break;
             }
@@ -689,10 +693,12 @@ namespace Reko.Arch.X86
 
         public void Loop(MachineOperand op)
         {
-            var c = ReadRegister(X86.Registers.ecx)  -1u;
-            WriteRegister(X86.Registers.ecx, c);
+            var c = ReadRegister(cxReg) - 1u;
+            WriteRegister(cxReg, c);
             if (c != 0)
-                InstructionPointer = ((AddressOperand)op).Address;
+            {
+                InstructionPointer = XferTarget(op);
+            }
         }
 
         public void Popa()
