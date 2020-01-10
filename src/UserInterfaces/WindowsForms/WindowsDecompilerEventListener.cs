@@ -274,10 +274,13 @@ namespace Reko.UserInterfaces.WindowsForms
             this.position = numerator;
             this.total = denominator;
             System.Threading.Interlocked.Exchange<string>(ref status, caption);
-            var percentDone = Math.Min(
-                100,
-                (int)((numerator * 100L) / denominator));
-            dlg.Worker.ReportProgress(percentDone);
+            if (denominator > 0)
+            {
+                var percentDone = Math.Min(
+                    100,
+                    (int) ((numerator * 100L) / denominator));
+                dlg.Worker.ReportProgress(percentDone);
+            }
         }
 
         void DecompilerEventListener.Advance(int count)
