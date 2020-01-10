@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,16 +18,13 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Core;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
     public class MEMORY_BASIC_INFORMATION
     {
-        public ulong BaseAddress;
+        public Address BaseAddress;
         public ulong RegionSize;
         public ulong AllocationBase;
     }

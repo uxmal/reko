@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +30,6 @@ using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    using Core.Services;
     using rulong = System.UInt64;
 
     public partial class OllyLang
@@ -41,7 +41,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 2)
             {
-                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out rulong dw2))
                 {
                     return SetRulong(args[0], dw1 + dw2);
                 }
@@ -223,9 +223,9 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     return DoBCA();
                 }
-                else if (GetRulong(args[0], out ulong addr))
+                else if (GetAddress(args[0], out Address addr))
                 {
-                    Debugger.DeleteBPX(addr);
+                    Debugger.DeleteBPX(addr.ToLinear());
                     return true;
                 }
             }
@@ -645,7 +645,12 @@ rulong hwnd;
                     return false;
 
                 Var v1, v2;
-                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                if (GetAddress(args[0], out Address addr1) && GetRulong(args[1], out ulong dw))
+                {
+                    v1 = Var.Create(addr1.ToLinear());
+                    v2 = Var.Create(dw);
+                }
+                else if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
                 {
                     v1 = Var.Create(dw1);
                     v2 = Var.Create(dw2);
@@ -803,7 +808,7 @@ rulong hwnd;
         private bool DoDMA(string[] args)
         {
             if (args.Length == 3 &&
-                GetRulong(args[0], out ulong addr) &&
+                GetAddress(args[0], out Address addr) &&
                 GetRulong(args[1], out ulong uSize) &&
                 GetString(args[2], out string filename))
             {
@@ -821,7 +826,7 @@ rulong hwnd;
                     hFile.Seek(0, SeekOrigin.End);
                     while (size >= membuf.Length)
                     {
-                        if (!Host.TryReadBytes(addr, (uint) membuf.Length, membuf))
+                        if (!Host.TryReadBytes(addr, membuf.Length, membuf))
                         {
                             Array.Clear(membuf, 0, membuf.Length);
                         }
@@ -832,7 +837,7 @@ rulong hwnd;
 
                     if (size > 0)
                     {
-                        if (!Host.TryReadBytes(addr, (uint)size, membuf))
+                        if (!Host.TryReadBytes(addr, size, membuf))
                         {
                             Array.Clear(membuf, 0, size);
                         }
@@ -854,7 +859,9 @@ rulong hwnd;
 
         private bool DoDPE(string[] args)
         {
-            if (args.Length == 2 && GetString(args[0], out string filename) && GetRulong(args[1], out ulong ep))
+            if (args.Length == 2 &&
+                GetString(args[0], out string filename) &&
+                GetAddress(args[1], out Address ep))
             {
                 // We're cheating here and not actually dumping to disk. We don't need to 
                 // because the image is unpacked in memory, and we are now ready to start
@@ -1039,7 +1046,7 @@ rulong hwnd;
         private bool DoFILL(string[] args)
         {
             byte val = 0;
-            if (args.Length == 3 && GetRulong(args[0], out ulong addr) && GetRulong(args[1], out ulong len) && GetByte(args[2], ref val))
+            if (args.Length == 3 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong len) && GetByte(args[2], ref val))
             {
                 byte[] membuf = new byte[PAGE_SIZE];
                 int cb = Math.Min((int)len, membuf.Length);
@@ -1075,7 +1082,7 @@ rulong hwnd;
             string finddata;
             rulong maxsize = 0;
 
-            if (args.Length < 2 || args.Length > 3 || !GetRulong(args[0], out ulong addr))
+            if (args.Length < 2 || args.Length > 3 || !GetAddress(args[0], out Address addr))
                 return false;
 
             if (args.Length == 3 && !GetRulong(args[2], out maxsize))
@@ -1113,11 +1120,11 @@ rulong hwnd;
             //$REVIEW: extremely inefficient O(n*m) algorithm, do we care?
             if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
             {
-                int memlen = (int)(MemInfo.BaseAddress + MemInfo.RegionSize - addr);
+                int memlen = (int) ((MemInfo.BaseAddress - addr) + (long) MemInfo.RegionSize);
                 if (maxsize != 0 && (int)maxsize < memlen)
                     memlen = (int)maxsize;
 
-                var ea = Address.Ptr32((uint)addr);
+                var ea = addr;
                 if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                     throw new AccessViolationException();
                 byte[] membuf = new byte[memlen];
@@ -1446,7 +1453,7 @@ rulong hwnd;
             string finddata;
             rulong maxsize = 0;
 
-            if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 2 && args.Length <= 3 && GetAddress(args[0], out Address addr))
             {
                 if (args.Length == 3 && !GetRulong(args[2], out maxsize))
                     return false;
@@ -1481,14 +1488,14 @@ rulong hwnd;
                     // search in current mem block
                     if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                     {
-                        rulong memlen = (rulong) MemInfo.BaseAddress + MemInfo.RegionSize - addr;
+                        rulong memlen = (rulong) (MemInfo.BaseAddress - addr) + MemInfo.RegionSize;
                         if (maxsize != 0 && maxsize < memlen)
                             memlen = maxsize;
 
                         byte[] membuf = null, mask = null, bytes = null;
 
                         membuf = new byte[memlen];
-                        if (Host.TryReadBytes(addr, memlen, membuf))
+                        if (Host.TryReadBytes(addr, (int)memlen, membuf))
                         {
                             int bytecount = finddata.Length / 2;
 
@@ -1522,18 +1529,18 @@ rulong hwnd;
 
         private bool DoFINDMEM(string[] args)
         {
-            rulong addr = 0;
+            Address addr = null;
             if (args.Length >= 1 && args.Length <= 2)
             {
-                if (args.Length == 2 && !GetRulong(args[1], out addr))
+                if (args.Length == 2 && !GetAddress(args[1], out addr))
                     return false;
 
                 variables["$RESULT"] = Var.Create(0);
                 while (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo) && variables["$RESULT"].ToUInt64() == 0)
                 {
-                    if (!callCommand(DoFIND, Helper.rul2hexstr(addr), args[0]))
+                    if (!callCommand(DoFIND, addr.ToString(), args[0]))
                         return false;
-                    addr = (rulong) MemInfo.BaseAddress + MemInfo.RegionSize;
+                    addr = MemInfo.BaseAddress + MemInfo.RegionSize;
                 }
                 return true;
             }
@@ -1769,7 +1776,7 @@ rulong addr;
         {
             string val;
 
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr))
             {
                 variables["$RESULT"] = Var.Create(0);
 
@@ -1777,7 +1784,7 @@ rulong addr;
                 {
                     val = args[1].ToUpperInvariant();
 
-                    if (val == "MEMORYBASE") variables["$RESULT"] = Var.Create((rulong) MemInfo.BaseAddress);
+                    if (val == "MEMORYBASE") variables["$RESULT"] = Var.Create(MemInfo.BaseAddress);
                     else if (val == "MEMORYSIZE") variables["$RESULT"] = Var.Create(MemInfo.RegionSize);
                     else if (val == "MEMORYOWNER") variables["$RESULT"] = Var.Create((rulong) MemInfo.AllocationBase);
                     else
@@ -2463,7 +2470,7 @@ string str = "";
         {
             rulong size = 2;
 
-            if (args.Length >= 1 && args.Length <= 2 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 1 && args.Length <= 2 && GetAddress(args[0], out Address addr))
             {
                 if (args.Length == 2 && !GetRulong(args[1], out size))
                     return false;
@@ -2472,7 +2479,7 @@ string str = "";
 
                 if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                 {
-                    rulong memsize = (rulong) MemInfo.BaseAddress + MemInfo.RegionSize - addr;
+                    rulong memsize = (rulong) (MemInfo.BaseAddress - addr) + MemInfo.RegionSize;
 
                     byte[] buffer;
 
@@ -2480,7 +2487,7 @@ string str = "";
 
                     buffer[0] = buffer[memsize] = 0;
 
-                    if (Host.TryReadBytes(addr, memsize, buffer))
+                    if (Host.TryReadBytes(addr, (int)memsize, buffer))
                     {
                         rulong strsize = (uint) buffer.Length;
                         if (strsize != 0 && strsize >= size && strsize < memsize)
@@ -2944,16 +2951,20 @@ string filename;
                     if (maxsize > sizeof(rulong) && Helper.IsMemoryAccess(args[1])) // byte string
                     {
                         string tmp = Helper.UnquoteString(args[1], '[', ']');
-                        if (GetRulong(tmp, out ulong src))
+                        if (GetAddress(tmp, out Address src))
                         {
-                            Debug.Assert(src != 0);
+                            Debug.Assert(src != null);
                             byte[] bytes = new byte[maxsize];
-                            if (!Host.TryReadBytes(src, maxsize, bytes))
+                            if (!Host.TryReadBytes(src, (int)maxsize, bytes))
                                 return false;
                             v = Var.Create("#" + Helper.bytes2hexstr(bytes, (int) maxsize) + '#');
                         }
                         else
                             v = Var.Create(0);
+                    }
+                    else if (GetAddress(args[1], out Address addrSrc))
+                    {
+                        v = Var.Create(addrSrc);
                     }
                     else if (maxsize <= sizeof(rulong) && GetRulong(args[1], out dw)) // rulong
                     {
@@ -3044,23 +3055,23 @@ string filename;
                 else if (Helper.IsMemoryAccess(args[0]))
                 {
                     string tmp = Helper.UnquoteString(args[0], '[', ']');
-                    if (GetRulong(tmp, out ulong target))
+                    if (GetAddress(tmp, out Address target))
                     {
-                        Debug.Assert(target != 0);
+                        Debug.Assert(target != null);
 
                         if (maxsize > sizeof(rulong) && Helper.IsMemoryAccess(args[1]))
                         {
                             tmp = Helper.UnquoteString(args[1], '[', ']');
-                            if (GetRulong(tmp, out ulong src))
+                            if (GetAddress(tmp, out Address src))
                             {
-                                Debug.Assert(src != 0);
+                                Debug.Assert(src != null);
 
                                 byte[] copybuffer;
 
                                 copybuffer = new byte[maxsize];
                                 errorstr = "Out of memory!";
 
-                                if (!Host.TryReadBytes(src, maxsize, copybuffer) || !Host.WriteMemory(target, (int) maxsize, copybuffer))
+                                if (!Host.TryReadBytes(src, (int)maxsize, copybuffer) || !Host.WriteMemory(target, (int) maxsize, copybuffer))
                                 {
                                     return false;
                                 }
@@ -3215,13 +3226,13 @@ string param;
         //see also GCI
         private bool DoOPCODE(string[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetAddress(args[0], out Address addr))
             {
                 byte[] buffer = new byte[MAX_INSTR_SIZE];
 
                 variables["$RESULT"] = variables["$RESULT_1"] = variables["$RESULT_2"] = Var.Create(0);
 
-                if (Host.TryReadBytes(addr, (rulong) buffer.Length, buffer))
+                if (Host.TryReadBytes(addr, buffer.Length, buffer))
                 {
                     string opstring = Host.Disassemble(buffer, addr, out int opsize);
                     if (opsize != 0)
@@ -3336,7 +3347,7 @@ string param;
             {
                 rulong CSP = Debugger.GetContextData(eContextData.UE_CSP) - sizeof(rulong);
                 Debugger.SetContextData(eContextData.UE_CSP, CSP);
-                return Host.WriteMemory(CSP, dw); ;
+                return Host.WriteMemory(Address.Ptr32((uint)CSP), dw); ;
             }
             return false;
         }
@@ -3477,7 +3488,7 @@ string param;
             string v1, v2;
             rulong len = 0;
 
-            if (args.Length >= 3 && args.Length <= 4 && GetRulong(args[0], out ulong addr) && Helper.IsHexLiteral(args[1]) && Helper.IsHexLiteral(args[2]))
+            if (args.Length >= 3 && args.Length <= 4 && GetAddress(args[0], out Address addr) && Helper.IsHexLiteral(args[1]) && Helper.IsHexLiteral(args[2]))
             {
                 if (args.Length == 4 && !GetRulong(args[3], out len))
                     return false;
@@ -3486,7 +3497,7 @@ string param;
                     if (!Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                         return true;
 
-                    len = (rulong)MemInfo.BaseAddress + MemInfo.RegionSize - addr;
+                    len = (rulong) (MemInfo.BaseAddress - addr) + MemInfo.RegionSize;
                 }
 
                 v1 = Helper.UnquoteString(args[1], '#');
@@ -3503,7 +3514,7 @@ string param;
                 byte[] membuf = null, mask1 = null, mask2 = null, bytes1 = null, bytes2;
 
                 membuf = new byte[len];
-                if (Host.TryReadBytes(addr, len, membuf))
+                if (Host.TryReadBytes(addr, (int)len, membuf))
                 {
                     bool replaced = false;
 
@@ -3896,10 +3907,18 @@ rulong dw1, dw2;
 
         private bool DoTEST(string[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+            if (args.Length == 2)
             {
-                zf = ((dw1 & dw2) == 0);
-                return true;
+                if (GetAddress(args[0], out Address addr1) && GetAddress(args[1], out Address addr2))
+                {
+                    zf = (addr1.ToLinear() & addr2.ToLinear()) == 0;
+                    return true;
+                }
+                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                {
+                    zf = ((dw1 & dw2) == 0);
+                    return true;
+                }
             }
             return false;
         }

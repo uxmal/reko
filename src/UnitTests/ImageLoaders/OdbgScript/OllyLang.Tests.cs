@@ -64,6 +64,10 @@ namespace Reko.ImageLoaders.OdbgScript
         private void Given_Engine()
         {
             this.host = new Mock<IHost>();
+            arch.Setup(a => a.MakeAddressFromConstant(
+                It.IsAny<Constant>(),
+                It.IsAny<bool>()))
+                .Returns(new Func<Constant, bool, Address>((c, f) => Address.Ptr32((uint) c.ToUInt64())));
             engine = new OllyLang(null, arch.Object);
             engine.Host = host.Object;
             engine.Debugger = new Debugger(emu.Object);
@@ -78,12 +82,12 @@ namespace Reko.ImageLoaders.OdbgScript
             host.Setup(h => h.SegmentMap).Returns(imageMap);
             var meminfo = new MEMORY_BASIC_INFORMATION
             {
-                BaseAddress = mem.BaseAddress.ToLinear(),
+                BaseAddress = mem.BaseAddress,
                 RegionSize = (uint) mem.Length,
                 AllocationBase = mem.BaseAddress.ToLinear()
             };
             host.Setup(h => h.TE_GetMemoryInfo(
-                It.IsAny<ulong>(),
+                It.IsAny<Address>(),
                 out meminfo)).Returns(true);
         }
 
@@ -121,12 +125,13 @@ namespace Reko.ImageLoaders.OdbgScript
             Given_Engine();
             Given_Image(0x001000, new byte[] { 0x2a, 0x2a, 0x2a, 0x21, 0x23, 0x21, 0x23 });
             host.Setup(h => h.WriteMemory(
-                It.IsAny<ulong>(),
+                It.IsAny<Address>(),
                 3,
                 It.IsNotNull<byte[]>()))
-                .Returns((ulong a, int l, byte[] b) =>
+                .Returns((Address a, int l, byte[] b) =>
             {
-                MemoryArea.WriteBytes(b, (long) a - (long) mem.BaseAddress.ToLinear(), l, mem.Bytes);
+                var offset = a - mem.BaseAddress;
+                MemoryArea.WriteBytes(b, offset, l, mem.Bytes);
                 return true;
             });
 
@@ -190,6 +195,20 @@ namespace Reko.ImageLoaders.OdbgScript
             engine.Run();
 
             emu.Verify();
+        }
+
+        [Test]
+        public void Ose_Add_Address()
+        {
+            Given_Engine();
+            Given_Script("add cs:ip,2");
+            emu.Setup(e => e.ReadRegister(
+                It.Is<RegisterStorage>(r => r.Name == "cs"))).Returns(0x800);
+            emu.Setup(e => e.ReadRegister(
+                It.Is<RegisterStorage>(r => r.Name == "ip"))).Returns(0x800);
+
+            engine.Run();
+            Assert.AreEqual("@@@", engine.variables["$RESULT"].Address);
         }
     }
 

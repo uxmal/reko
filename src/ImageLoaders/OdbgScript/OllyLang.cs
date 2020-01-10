@@ -866,7 +866,6 @@ namespace Reko.ImageLoaders.OdbgScript
                     Host.TE_Log(logstr, Host.TS_LOG_COMMAND);
                 }
 
-                bool result = false;
 
                 // Find command and execute it
                 Func<string[], bool> cmd = line.CommandPtr;
@@ -878,6 +877,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     }
                 }
 
+                bool result = false;
                 if (cmd != null)
                 {
                     result = cmd(line.args); // Call command
@@ -1387,15 +1387,15 @@ namespace Reko.ImageLoaders.OdbgScript
             else if (Helper.IsMemoryAccess(op))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
-                if (GetRulong(tmp, out rulong src))
+                if (GetAddress(tmp, out Address src))
                 {
-                    Debug.Assert(src != 0);
+                    Debug.Assert(src != null);
 
                     value = "";
                     if (size != 0)
                     {
                         byte[] buffer = new byte[size];
-                        if (Host.TryReadBytes(src, (uint)size, buffer))
+                        if (Host.TryReadBytes(src, size, buffer))
                         {
                             value = '#' + Helper.bytes2hexstr(buffer, size) + '#';
                             return true;
@@ -1403,7 +1403,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     }
                     else
                     {
-                        var ea = Address.Ptr32((uint) src);
+                        var ea = src;
                         if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                             throw new AccessViolationException();
                         byte[] buffer = new byte[STRING_READSIZE];
@@ -1453,6 +1453,11 @@ namespace Reko.ImageLoaders.OdbgScript
                     return true;
                 }
             }
+            if (IsVariable(op) && variables[op].Address != null)
+            {
+                value = variables[op].Address;
+                return true;
+            }
             if (!GetRulong(op, out rulong uAddr))
                 return false;
             value = arch.MakeAddressFromConstant(Constant.UInt64(uAddr), false);
@@ -1473,13 +1478,13 @@ namespace Reko.ImageLoaders.OdbgScript
                 flags.dw = Debugger.GetContextData(eContextData.UE_EFLAGS);
                 switch (op[1])
                 {
-                case 'a': value =(flags.bits.AF?1u:0u); break;
-                case 'c': value =(flags.bits.CF?1u:0u); break;
-                case 'd': value =(flags.bits.DF?1u:0u); break;
-                case 'o': value =(flags.bits.OF?1u:0u); break;
-                case 'p': value =(flags.bits.PF?1u:0u); break;
-                case 's': value =(flags.bits.SF?1u:0u); break;
-                case 'z': value =(flags.bits.ZF?1u:0u); break;
+                case 'a': value = (flags.bits.AF ? 1u : 0u); break;
+                case 'c': value = (flags.bits.CF ? 1u : 0u); break;
+                case 'd': value = (flags.bits.DF ? 1u : 0u); break;
+                case 'o': value = (flags.bits.OF ? 1u : 0u); break;
+                case 'p': value = (flags.bits.PF ? 1u : 0u); break;
+                case 's': value = (flags.bits.SF ? 1u : 0u); break;
+                case 'z': value = (flags.bits.ZF ? 1u : 0u); break;
                 }
                 return true;
             }
@@ -1523,8 +1528,8 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else
             {
-                value = 0;
-                return (ParseRulong(op, out string parsed) && GetRulong(parsed, out value));
+                return (ParseRulong(op, out string parsed) &&
+                        GetRulong(parsed, out value));
             }
             value = 0;
             return false;
@@ -1680,9 +1685,9 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
-                if (GetRulong(tmp, out ulong target))
+                if (GetAddress(tmp, out Address target))
                 {
-                    Debug.Assert(target != 0);
+                    Debug.Assert(target != null);
 
                     return Host.WriteMemory(target, value);
                 }
@@ -1702,9 +1707,9 @@ namespace Reko.ImageLoaders.OdbgScript
             else if (Helper.IsMemoryAccess(op))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
-                if (GetRulong(tmp, out ulong target))
+                if (GetAddress(tmp, out Address target))
                 {
-                    Debug.Assert(target != 0);
+                    Debug.Assert(target != null);
                     var bytes = Encoding.ASCII.GetBytes(value);
                     return Host.WriteMemory(target, Math.Min(size, bytes.Length), bytes);
                 }
