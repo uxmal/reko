@@ -1462,14 +1462,10 @@ namespace Reko.ImageLoaders.OdbgScript
         bool GetRulong(string op, out rulong value)
         {
             value = 0;
-            if (is_register(op))
+            if (arch.TryGetRegister(op, out var reg))
             {
-                register_t reg = find_register(op);
-                if (reg != null)
-                {
-                    value = Debugger.GetContextData(reg.id);
-                    return true;
-                }
+                value = Debugger.GetRegisterValue(reg);
+                return true;
             }
             else if (is_flag(op))
             {
