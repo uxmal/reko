@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Reko.Core;
 
 namespace Reko.Arch.Mos6502
@@ -26,26 +27,33 @@ namespace Reko.Arch.Mos6502
     public class Mos6502Emulator : IProcessorEmulator
     {
         private Mos6502ProcessorArchitecture arch;
-        private SegmentMap segmentMap;
+        private SegmentMap map;
         private IPlatformEmulator envEmulator;
+        private ushort[] regs;
+        private IEnumerator<Instruction> dasm;
 
         public Mos6502Emulator(Mos6502ProcessorArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
             this.arch = arch;
-            this.segmentMap = segmentMap;
+            this.map = segmentMap;
             this.envEmulator = envEmulator;
+            this.regs = new ushort[12];
         }
 
         public Address InstructionPointer
         {
             get
             {
-                throw new NotImplementedException();
+                return Address.Ptr16(regs[Registers.pc.Number]);
             }
 
             set
             {
-                throw new NotImplementedException();
+                regs[Registers.pc.Number] = value.ToUInt16();
+                if (!map.TryFindSegment(value, out ImageSegment segment))
+                    throw new AccessViolationException();
+                var rdr = arch.CreateImageReader(segment.MemoryArea, value);
+                dasm = new Disassembler(rdr).GetEnumerator();
             }
         }
 

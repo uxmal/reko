@@ -183,6 +183,7 @@
     <Compile Include="Arch\MicroBlaze\MicroBlazeRewriterTests.cs" />
     <Compile Include="Arch\Mips\MicroMipsDisassemblerTests.cs" />
     <Compile Include="Arch\Mips\NanoMipsDisassemblerTests.cs" />
+    <Compile Include="Arch\Mos6502\EmulatorTests.cs" />
     <Compile Include="Arch\OpenRISC\OpenRISCDisassemblerTests.cs" />
     <Compile Include="Arch\OpenRISC\OpenRISCRewriterTests.cs" />
     <Compile Include="Arch\PaRisc\PaRiscDisassemblerTests.cs" />
