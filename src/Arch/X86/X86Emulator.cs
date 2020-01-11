@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Emulation;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -36,11 +37,8 @@ namespace Reko.Arch.X86
     /// Simple emulator of X86 instructions. No attempt is made to be high-performance
     /// as long as correctness is maintained.
     /// </summary>
-    public abstract class X86Emulator : IProcessorEmulator
+    public abstract class X86Emulator : EmulatorBase
     {
-        public event EventHandler BeforeStart;
-        public event EventHandler ExceptionRaised;
-
         public const uint Cmask = 1u << 0;
         public const uint Zmask = 1u << 6;
         public const uint Smask = 1u << 7;
@@ -68,15 +66,10 @@ namespace Reko.Arch.X86
         protected IEnumerator<X86Instruction> dasm;
         private readonly RegisterStorage ipReg;
         private readonly RegisterStorage cxReg;
-        private readonly Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
 
         public readonly ulong[] Registers;
         private readonly int iFlags;
-        private bool running;
         private Address ip;
-        private Action stepAction;
-        private bool stepInto;
-        private TWord stepOverAddress;
         private bool ignoreRep;
 
         public X86Emulator(
@@ -85,6 +78,7 @@ namespace Reko.Arch.X86
             IPlatformEmulator envEmulator, 
             RegisterStorage ipReg,
             RegisterStorage cxReg)
+            : base(segmentMap)
         {
             this.arch = arch;
             this.map = segmentMap;
@@ -95,6 +89,8 @@ namespace Reko.Arch.X86
             this.envEmulator = envEmulator;
         }
 
+        public override MachineInstruction CurrentInstruction => dasm.Current;
+
         public ulong Flags
         {
             get { return this.Registers[iFlags]; }
@@ -104,7 +100,7 @@ namespace Reko.Arch.X86
         /// <summary>
         /// The current instruction pointer of the emulator.
         /// </summary>
-        public Address InstructionPointer
+        public override Address InstructionPointer
         {
             get { return ip; }
             set
@@ -128,44 +124,6 @@ namespace Reko.Arch.X86
             }
         }
 
-        /// <summary>
-        /// Requests the emulator to place itself in step-over mode. This means
-        /// it should execute the next instruction then call the provided 
-        /// <paramref name="callback" />. If the instruction
-        /// is a CALL or a REP[NZ] the call will be taken and the REP will be 
-        /// carried out before resuming.
-        /// </summary>
-        public void StepOver(Action callback)
-        {
-            stepOverAddress = (TWord) ((long) dasm.Current.Address.ToLinear() + dasm.Current.Length);
-            stepAction = callback;
-        }
-
-        public void StepInto(Action callback)
-        {
-            stepInto = true;
-            stepAction = callback;
-        }
-
-        public void Start()
-        {
-            running = true;
-            CreateStack();
-            BeforeStart.Fire(this);
-            Run();
-        }
-
-        public void SetBreakpoint(ulong address, Action callback)
-        {
-            bpExecute.Add((uint) address, callback);
-        }
-
-        public void DeleteBreakpoint(ulong address)
-        {
-            bpExecute.Remove((uint) address);
-        }
-
-
         private StringBuilder DumpRegs()
         {
             var sb = new StringBuilder();
@@ -176,50 +134,16 @@ namespace Reko.Arch.X86
             return sb;
         }
 
-        private void Run()
+        protected override void Run()
         {
-            int counter = 0;
-            try
+            while (IsRunning && dasm.MoveNext())
             {
-                while (running && dasm.MoveNext())
-                {
-                    TraceCurrentInstruction();
-                    UpdateIp(dasm.Current.Address);
-                    TWord eip = (uint) ip.ToLinear();
-                    if (bpExecute.TryGetValue(eip, out Action bpAction))
-                    {
-                        ++counter;
-                        stepOverAddress = 0;
-                        stepInto = false;
-                        bpAction();
-                        if (!running)
-                            break;
-                    }
-                    else if (stepInto)
-                    {
-                        stepInto = false;
-                        var s = stepAction;
-                        stepAction = null;
-                        s();
-                        if (!running)
-                            break;
-                    }
-                    else if (stepOverAddress == eip)
-                    {
-                        stepOverAddress = 0;
-                        var s = stepAction;
-                        stepAction = null;
-                        s();
-                        if (!running)
-                            break;
-                    }
-                    Execute(dasm.Current);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print("Emulator exception when executing {0}. {1}\r\n{2}", dasm.Current, ex.Message, ex.StackTrace);
-                ExceptionRaised.Fire(this);
+                TraceCurrentInstruction();
+                UpdateIp(dasm.Current.Address);
+                ulong eip = ip.ToLinear();
+                if (!TestForBreakpoint(eip))
+                    break;
+                Execute(dasm.Current);
             }
         }
 
@@ -229,16 +153,6 @@ namespace Reko.Arch.X86
             if (trace.Level != TraceLevel.Verbose)
                 return;
             Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
-        }
-
-        public void Stop()
-        {
-            running = false;
-        }
-
-        public void CreateStack()
-        {
-
         }
 
         public void Execute(X86Instruction instr)
@@ -279,7 +193,7 @@ namespace Reko.Arch.X86
             case Mnemonic.cld: Cld(); return;
             case Mnemonic.cmp: Cmp(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.dec: Dec(instr.Operands[0]); return;
-            case Mnemonic.hlt: running = false; return;
+            case Mnemonic.hlt: Stop(); return;
             case Mnemonic.inc: Inc(instr.Operands[0]); return;
             case Mnemonic.ja: if ((Flags & (Cmask | Zmask)) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jbe: if ((Flags & (Cmask | Zmask)) != 0) Jump(instr.Operands[0]); return;
@@ -351,7 +265,7 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
-        public ulong ReadRegister(RegisterStorage r)
+        public override ulong ReadRegister(RegisterStorage r)
         {
             return (Registers[r.Number] & r.BitMask) >> (int) r.BitAddress;
         }
@@ -384,7 +298,7 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
-        public void WriteRegister(RegisterStorage r, ulong value)
+        public override void WriteRegister(RegisterStorage r, ulong value)
         {
             Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int) r.BitAddress);
         }
@@ -401,58 +315,9 @@ namespace Reko.Arch.X86
             throw new InvalidOperationException();
         }
 
-        private bool TryReadByte(ulong ea, out byte b)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            return segment.MemoryArea.TryReadByte((long) off, out b);
-        }
 
-        public ushort ReadLeUInt16(ulong ea)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            return mem.ReadLeUInt16((uint) off);
-        }
 
-        public uint ReadLeUInt32(ulong ea)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            return mem.ReadLeUInt32((uint) off);
-        }
 
-        private void WriteByte(ulong ea, byte value)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            mem.WriteByte((long) (ea - mem.BaseAddress.ToLinear()), value);
-        }
-
-        public void WriteLeUInt16(ulong ea, ushort value)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            segment.MemoryArea.WriteLeUInt16((uint) off, value);
-        }
-
-        protected void WriteLeUInt32(ulong ea, uint value)
-        {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
-                throw new AccessViolationException();
-            var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
-            segment.MemoryArea.WriteLeUInt32((long) off, value);
-        }
 
         protected Address XferTarget(MachineOperand op)
         {

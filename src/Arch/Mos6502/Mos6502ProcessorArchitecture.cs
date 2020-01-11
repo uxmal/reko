@@ -203,7 +203,7 @@ namespace Reko.Arch.Mos6502
         public static readonly RegisterStorage s = RegisterStorage.Reg8("s", 3);
 
         public static readonly RegisterStorage p = new RegisterStorage("p", 10, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage pc = new Registerstorage("pc", 11, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage pc = new RegisterStorage("pc", 11, 0, PrimitiveType.Word16);
 
         public static readonly FlagGroupStorage N = new FlagGroupStorage(p, (uint)FlagM.NF, "N", PrimitiveType.Bool);
         public static readonly FlagGroupStorage V = new FlagGroupStorage(p, (uint)FlagM.VF, "V", PrimitiveType.Bool);
