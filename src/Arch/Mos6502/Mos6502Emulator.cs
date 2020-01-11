@@ -28,6 +28,7 @@ using Reko.Core.Machine;
 
 namespace Reko.Arch.Mos6502
 {
+    // http://www.obelisk.me.uk/6502/
     public class Mos6502Emulator : EmulatorBase
     {
         public const byte Cmask = 1;
@@ -132,6 +133,7 @@ namespace Reko.Arch.Mos6502
             {
             default:
                 throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
+            case Mnemonic.lda: NZ(regs[Registers.a.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(instr.Operands[0])); return;
             }
         }
@@ -145,6 +147,24 @@ namespace Reko.Arch.Mos6502
                 throw new NotImplementedException($"Addressing mode {op.Mode} not implemented yet.");
             case AddressMode.Immediate:
                 return op.Offset.ToUInt16();
+            case AddressMode.AbsoluteY:
+                // Treat y as unsigned.
+                var ea = regs[Registers.y.Number] + op.Offset.ToUInt16();
+                return ReadMemory(op, (ushort) ea);
+            }
+        }
+
+        private ushort ReadMemory(Operand op, ushort ea)
+        {
+            if (op.Width.Size == 2)
+            {
+                return ReadLeUInt16(ea);
+            }
+            else
+            {
+                if (!TryReadByte(ea, out var b))
+                    throw new AccessViolationException();
+                return b;
             }
         }
 

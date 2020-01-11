@@ -63,16 +63,30 @@ namespace Reko.UnitTests.Arch.Mos6502
         {
             Given_Code(m =>
             {
-                m.Ldy(m.i8(0xC4)); //0816 A0 C4 ldy #$C4
+                m.Ldy(m.i8(0xC4)); // A0 C4 ldy #$C4
             });
 
             emu.Start();
 
             Assert.AreEqual(0xC4, emu.ReadRegister(Registers.y));
         }
+
+        [Test]
+        public void Emu6502_lda_abs_y()
+        {
+            Given_Code(m =>
+            {
+                m.Db(0x42);
+                m.Ldy(m.i8(4));         // A0 04    ldy #$04
+                m.Lda(m.ay(0x07FC));    // B9 3C 08 lda $083C,y
+            });
+            emu.InstructionPointer += 1;
+            emu.Start();
+            Assert.AreEqual(0x42, emu.ReadRegister(Registers.a));
+        }
     }
     /* ﻿
-    0818 B9 3C 08 lda $083C,y
+    0818 
     081B 99 F8 00 sta $00F8,y
     081E B9 FD 08 lda $08FD,y
     0821 99 33 03 sta $0333,y

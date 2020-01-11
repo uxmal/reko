@@ -1828,7 +1828,7 @@ namespace Reko.Assemblers.x86
             }
         }
 
-        internal void Db(int b)
+        public void Db(int b)
         {
             emitter.EmitByte(b);
         }

@@ -31,6 +31,8 @@ namespace Reko.Arch.Mos6502
 {
     public class Assembler : Reko.Core.Assemblers.Assembler
     {
+        private static readonly Dictionary<Mnemonic, InstrOpcodes> instrOpcodes;
+
         private ServiceContainer sc;
         private Mos6502ProcessorArchitecture arch;
         private IPlatform platform;
@@ -59,19 +61,46 @@ namespace Reko.Arch.Mos6502
             return program;
         }
 
-        public void Ldy(ParsedOperand op)
+        private void EmitOpcodeOperand(Mnemonic mnemonic, Operand op)
         {
-            switch (op.Operand.Mode)
+            var ops = instrOpcodes[mnemonic];
+            switch (op.Mode)
             {
+            default: throw new NotImplementedException($"Assembler has not implemented address mode {op.Mode}.");
             case AddressMode.Immediate:
-                m.EmitByte(0xA0);
-                m.EmitByte(op.Operand.Offset.ToByte());
-                break;
-            default:
-               throw new NotImplementedException();
+                if (ops.Imm == 0)
+                    break;
+                m.EmitByte(ops.Imm);
+                m.EmitByte(op.Offset.ToByte());
+                return;
+            case AddressMode.AbsoluteY:
+                if (ops.AbsY == 0)
+                    break;
+                m.EmitByte(ops.AbsY);
+                m.EmitLeUInt16(op.Offset.ToUInt16());
+                return;
+            }
+            throw new NotSupportedException($"Instruction {mnemonic} does not support address mode {op.Mode}.");
+
+        }
+
+        public void Db(params byte[] bytes)
+        {
+            for (int i = 0; i < bytes.Length; ++i)
+            {
+                m.EmitByte(bytes[i]);
             }
         }
 
+        public void Lda(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.lda, op.Operand);
+        }
+
+        public void Ldy(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.ldy, op.Operand);
+        }
 
         public ParsedOperand i8(byte v)
         {
@@ -82,6 +111,17 @@ namespace Reko.Arch.Mos6502
                     Offset = Constant.Byte(v)
                 },
                 null);
+        }
+
+        public ParsedOperand ay(uint addr)
+        {
+            return new ParsedOperand(
+                  new Operand(PrimitiveType.Word16)
+                  {
+                      Mode = AddressMode.AbsoluteY,
+                      Offset = Constant.Word16((ushort) addr)
+                  },
+                  null);
         }
 
         public Address StartAddress
@@ -126,6 +166,8 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+
+
         public class ParsedOperand
         {
             public Operand Operand;
@@ -139,6 +181,43 @@ namespace Reko.Arch.Mos6502
         public class Symbol
         {
 
+        }
+
+        public class InstrOpcodes
+        {
+            public byte Imm;
+            public byte Zp;
+            public byte ZpX;
+            public byte Abs;
+            public byte AbsX;
+            public byte AbsY;
+            public byte IndX;
+            public byte IndY;
+        }
+
+        static Assembler()
+        {
+            instrOpcodes = new Dictionary<Mnemonic, InstrOpcodes>
+            {
+                { Mnemonic.lda, new InstrOpcodes {
+                    Imm = 0xA9,
+                    Zp = 0xA5,
+                    ZpX = 0xB5,
+                    Abs = 0xAD,
+                    AbsX = 0xBD,
+                    AbsY = 0xB9,
+                    IndX = 0xA1,
+                    IndY = 0xB1,
+                } },
+                { Mnemonic.ldy, new InstrOpcodes {
+                    Imm = 0xA0,
+                    Zp = 0xA4,
+                    ZpX = 0xB4,
+                    Abs = 0xAC,
+                    AbsX = 0xBC,
+                } }
+
+            };
         }
     }
 }
