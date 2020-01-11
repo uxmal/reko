@@ -73,6 +73,18 @@ namespace Reko.Arch.Mos6502
                 m.EmitByte(ops.Imm);
                 m.EmitByte(op.Offset.ToByte());
                 return;
+            case AddressMode.ZeroPage:
+                if (ops.Zp == 0)
+                    break;
+                m.EmitByte(ops.Zp);
+                m.EmitByte(op.Offset.ToByte());
+                return;
+            case AddressMode.ZeroPageX:
+                if (ops.ZpX == 0)
+                    break;
+                m.EmitByte(ops.ZpX);
+                m.EmitByte(op.Offset.ToByte());
+                return;
             case AddressMode.AbsoluteY:
                 if (ops.AbsY == 0)
                     break;
@@ -97,9 +109,19 @@ namespace Reko.Arch.Mos6502
             EmitOpcodeOperand(Mnemonic.lda, op.Operand);
         }
 
+        public void Ldx(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.ldx, op.Operand);
+        }
+
         public void Ldy(ParsedOperand op)
         {
             EmitOpcodeOperand(Mnemonic.ldy, op.Operand);
+        }
+
+        public void Sta(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.sta, op.Operand);
         }
 
         public ParsedOperand i8(byte v)
@@ -113,6 +135,37 @@ namespace Reko.Arch.Mos6502
                 null);
         }
 
+        /// <summary>
+        /// Generate a zero-page address operand.
+        /// </summary>
+        public ParsedOperand zp(byte zp)
+        {
+            return new ParsedOperand(
+                  new Operand(PrimitiveType.Word16)
+                  {
+                      Mode = AddressMode.ZeroPage,
+                      Offset = Constant.Byte(zp)
+                  },
+                  null);
+        }
+
+        /// <summary>
+        /// Generate a zero-page,X address operand.
+        /// </summary>
+        public ParsedOperand zpX(byte zp)
+        {
+            return new ParsedOperand(
+                  new Operand(PrimitiveType.Word16)
+                  {
+                      Mode = AddressMode.ZeroPageX,
+                      Offset = Constant.Byte(zp)
+                  },
+                  null);
+        }
+
+        /// <summary>
+        /// Generate an absolute,Y address operand.
+        /// </summary>
         public ParsedOperand ay(uint addr)
         {
             return new ParsedOperand(
@@ -188,6 +241,7 @@ namespace Reko.Arch.Mos6502
             public byte Imm;
             public byte Zp;
             public byte ZpX;
+            public byte ZpY;
             public byte Abs;
             public byte AbsX;
             public byte AbsY;
@@ -209,13 +263,29 @@ namespace Reko.Arch.Mos6502
                     IndX = 0xA1,
                     IndY = 0xB1,
                 } },
+                { Mnemonic.ldx, new InstrOpcodes {
+                    Imm = 0xA2,
+                    Zp = 0xA6,
+                    ZpY = 0xB6,
+                    Abs = 0xAE,
+                    AbsY = 0xBE,
+                } },
                 { Mnemonic.ldy, new InstrOpcodes {
                     Imm = 0xA0,
                     Zp = 0xA4,
                     ZpX = 0xB4,
                     Abs = 0xAC,
                     AbsX = 0xBC,
-                } }
+                } },
+                { Mnemonic.sta, new InstrOpcodes {
+                    Zp = 0x85,
+                    ZpX = 0x95,
+                    Abs = 0x8D,
+                    AbsX = 0x9D,
+                    AbsY = 0x99,
+                    IndX = 0x81,
+                    IndY = 0x91,
+                } },
 
             };
         }

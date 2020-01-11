@@ -49,6 +49,10 @@ namespace Reko.UnitTests.Arch.Mos6502
             var asm = new Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr16(0x0800), new List<ImageSymbol>());
             p(asm);
             var program = asm.GetImage();
+            program.SegmentMap.AddSegment(
+                new MemoryArea(Address.Ptr16(0), new byte[256]),
+                "ZeroPage",
+                AccessMode.ReadWriteExecute);
 
             var envEmu = new DefaultPlatformEmulator();
 
@@ -82,19 +86,42 @@ namespace Reko.UnitTests.Arch.Mos6502
             });
             emu.InstructionPointer += 1;
             emu.Start();
+
             Assert.AreEqual(0x42, emu.ReadRegister(Registers.a));
+        }
+
+        [Test]
+        public void Emu6502_ldx_zp()
+        {
+            Given_Code(m =>
+            {
+                m.Ldx(m.zp(4));         // A6 04    ldx $04
+            });
+            emu.WriteByte(0x04, 0x42);
+            emu.Start();
+
+            Assert.AreEqual(0x42, emu.ReadRegister(Registers.x));
+        }
+
+        [Test]
+        public void Emu6502_sta_zpx()
+        {
+            Given_Code(m =>
+            {
+                m.Lda(m.i8(0x42));      // lda  #$42
+                m.Ldx(m.i8(0x04));      // ldx  #$04
+                m.Sta(m.zpX(0x04));     // sta  $04,x
+            });
+            emu.Start();
+            emu.TryReadByte(0x0008, out var b);
+            Assert.AreEqual(0x42, b);
         }
     }
     /* ﻿
     0818 
-    081B 99 F8 00 sta $00F8,y
-    081E B9 FD 08 lda $08FD,y
-    0821 99 33 03 sta $0333,y
     0824 88 dey 
     0825 D0 F1 bne #$818
     0827 A0 09 ldy #$09
-    0829 B9 0C 08 lda $080C,y
-    082C 99 FF 03 sta $03FF,y
     082F 88 dey 
     0830 D0 F7 bne #$829
     0832 A9 51 lda #$51
@@ -102,5 +129,8 @@ namespace Reko.UnitTests.Arch.Mos6502
     0836 A9 55 lda #$55
     0838 85 2E sta $2E
     083A 4C 00 01 jmp $0100
+    ﻿0967 78 sei 
+    0968 E6 01 inc $01
+    096A 4C 16 08 jmp $0816
     */
 }

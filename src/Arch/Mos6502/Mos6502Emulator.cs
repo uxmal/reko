@@ -38,7 +38,6 @@ namespace Reko.Arch.Mos6502
         public const byte Vmask = 0x40;
         public const byte Nmask = 0x80;
 
-
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(Mos6502Emulator), "Trace execution of 6502 Emulator");
         private static readonly RegisterStorage[] dumpRegs = new[]
         {
@@ -84,8 +83,6 @@ namespace Reko.Arch.Mos6502
             regs[Registers.pc.Number] = value.ToUInt16();
         }
 
-
-
         protected override void Run()
         {
             while (IsRunning && dasm.MoveNext())
@@ -126,7 +123,6 @@ namespace Reko.Arch.Mos6502
                 .Select(r => $" {r.Name} {regs[r.Number]:X2}"));
         }
 
-
         private void Execute(Instruction instr)
         {
             switch (instr.Mnemonic)
@@ -134,24 +130,54 @@ namespace Reko.Arch.Mos6502
             default:
                 throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
             case Mnemonic.lda: NZ(regs[Registers.a.Number] = Read(instr.Operands[0])); return;
+            case Mnemonic.ldx: NZ(regs[Registers.x.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(instr.Operands[0])); return;
+            case Mnemonic.sta: Write(instr.Operands[0], regs[Registers.a.Number]); return;
             }
         }
 
         private ushort Read(MachineOperand mop)
         {
             var op = (Operand) mop;
+            ushort ea;
             switch (op.Mode)
             {
             default:
                 throw new NotImplementedException($"Addressing mode {op.Mode} not implemented yet.");
             case AddressMode.Immediate:
                 return op.Offset.ToUInt16();
+            case AddressMode.ZeroPage:
+                ea = op.Offset.ToByte();
+                break;
             case AddressMode.AbsoluteY:
                 // Treat y as unsigned.
-                var ea = regs[Registers.y.Number] + op.Offset.ToUInt16();
-                return ReadMemory(op, (ushort) ea);
+                ea = (ushort) (regs[Registers.y.Number] + op.Offset.ToUInt16());
+                break;
             }
+            return ReadMemory(op, ea);
+        }
+
+        private void Write(MachineOperand mop, ushort value)
+        {
+            var op = (Operand) mop;
+            ushort ea;
+            switch (op.Mode)
+            {
+            default:
+                throw new NotImplementedException($"Addressing mode {op.Mode} not implemented yet.");
+            case AddressMode.ZeroPage:
+                ea = op.Offset.ToByte();
+                break;
+            case AddressMode.ZeroPageX:
+            case AddressMode.ZeroPageY:
+                ea = (ushort)(regs[op.Register.Number] + op.Offset.ToByte());
+                break;
+            case AddressMode.AbsoluteY:
+                // Treat y as unsigned.
+                ea = (ushort) (regs[Registers.y.Number] + op.Offset.ToUInt16());
+                break;
+            }
+            WriteMemory(op, ea, value);
         }
 
         private ushort ReadMemory(Operand op, ushort ea)
@@ -165,6 +191,18 @@ namespace Reko.Arch.Mos6502
                 if (!TryReadByte(ea, out var b))
                     throw new AccessViolationException();
                 return b;
+            }
+        }
+
+        private void WriteMemory(Operand op, ushort ea, ushort value)
+        {
+            if (op.Width.Size == 2)
+            {
+                WriteLeUInt16(ea, value);
+            }
+            else
+            {
+                WriteByte(ea, (byte)value);
             }
         }
 
