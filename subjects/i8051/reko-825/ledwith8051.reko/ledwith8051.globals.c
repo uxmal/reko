@@ -4,4 +4,12 @@
 
 #include "ledwith8051.h"
 
+byte g_a0000[128] = 
+	{
+		0x02,
+		0x00,
+		0x2C,
+		;
+byte g_b0001 = 0x00;
+byte g_b0081;
 

@@ -1,8 +1,69 @@
-;;; Segment CODE_00 (00000000)
-00000000 02 00 2C                                        ..,            
-;;; Segment CODE_01 (00000003)
-00000003          E4 FF FE E4 FD FC 0D BD 00 01 0C BC 27    ............'
-00000010 F8 BD 10 F5 0F BF 00 01 0E EF 64 0A 4E 70 E7 22 ..........d.Np."
-;;; Segment CODE_02 (00000020)
-00000020 D2 A0 12 00 03 C2 A0 12 00 03 80 F4 78 7F E4 F6 ............x...
-00000030 D8 FD 75 81 07 02 00 20                         ..u....        
+;;; Segment CODE_00 (0000)
+
+;; fn0000: 0000
+fn0000 proc
+	ljmp	002C
+;;; Segment CODE_01 (0003)
+
+;; fn0003: 0003
+;;   Called from:
+;;     0022 (in fn0000)
+;;     0027 (in fn0000)
+fn0003 proc
+	clr	A
+	mov	R7,A
+	mov	R6,A
+
+l0006:
+	clr	A
+	mov	R5,A
+	mov	R4,A
+
+l0009:
+	inc	R5
+	cjne	R5,00,000E
+
+l000D:
+	inc	R4
+
+l000E:
+	cjne	R4,27,0009
+
+l0011:
+	cjne	R5,10,0009
+
+l0014:
+	inc	R7
+	cjne	R7,00,0019
+
+l0018:
+	inc	R6
+
+l0019:
+	mov	A,R7
+	xrl	A,0A
+	orl	A,R6
+	jnz	0006
+
+l001F:
+	ret
+;;; Segment CODE_02 (0020)
+
+l0020:
+	setb	P2.0
+	lcall	0003
+	clr	P2.0
+	lcall	0003
+	sjmp	0020
+
+l002C:
+	mov	R0,7F
+	clr	A
+
+l002F:
+	mov	@R0,A
+	djnz	R0,002F
+
+l0032:
+	mov	[0081],07
+	ljmp	0020

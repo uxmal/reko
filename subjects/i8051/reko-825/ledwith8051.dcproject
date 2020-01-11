@@ -11,7 +11,11 @@
       <address>0000</address>
       <loader>IntelHex</loader>
       <processor name="8051" />
+      <procedure name="fn0000">
+        <address>0000</address>
+      </procedure>
       <registerValues />
+      <extractResources>false</extractResources>
     </user>
   </input>
 </project>
