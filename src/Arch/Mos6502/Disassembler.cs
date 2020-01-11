@@ -131,7 +131,7 @@ namespace Reko.Arch.Mos6502
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
-                Mode = AddressMode.ZeroPage,
+                Mode = AddressMode.ZeroPageX,
                 Register = Registers.x,
                 Offset = offset
             });
@@ -144,8 +144,8 @@ namespace Reko.Arch.Mos6502
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
-                Mode = AddressMode.ZeroPage,
-                Register = Registers.x,
+                Mode = AddressMode.ZeroPageY,
+                Register = Registers.y,
                 Offset = offset
             });
             return true;

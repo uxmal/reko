@@ -444,17 +444,13 @@ namespace Reko.Arch.Mos6502
                     arch.MakeAddressFromConstant(op.Offset, false),
                     binder.EnsureRegister(op.Register)));
             case AddressMode.ZeroPage:
-                if (op.Register != null)
-                {
-                    return m.Mem8(
-                        m.IAdd(
-                            arch.MakeAddressFromConstant(op.Offset, false),
-                            binder.EnsureRegister(op.Register)));
-                }
-                else
-                {
-                    return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));
-                }
+                 return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));
+            case AddressMode.ZeroPageX:
+            case AddressMode.ZeroPageY:
+                return m.Mem8(
+                    m.IAdd(
+                        arch.MakeAddressFromConstant(op.Offset, false),
+                        binder.EnsureRegister(op.Register)));
             case AddressMode.Indirect:
                 return m.Mem16(m.Mem16(arch.MakeAddressFromConstant(op.Offset, false)));
             }

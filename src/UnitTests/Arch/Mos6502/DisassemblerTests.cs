@@ -88,5 +88,12 @@ namespace Reko.UnitTests.Arch.Mos6502
             var instr = RunTest(0x0A);
             Assert.AreEqual("asl\t", instr.ToString());
         }
+
+        [Test]
+        public void Dis6502_sta_zpx()
+        {
+            var instr = RunTest(0x095, 0x04);
+            Assert.AreEqual("sta\t$04,x", instr.ToString());
+        }
     }
 }
