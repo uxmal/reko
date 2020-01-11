@@ -288,6 +288,7 @@
     <Compile Include="Dfa\TreeNode.cs" />
     <Compile Include="DispatchProcedure.cs" />
     <Compile Include="Emulation\EmulatorBase.cs" />
+    <Compile Include="Emulation\EmulatorExceptionEventArgs.cs" />
     <Compile Include="EndianImageReader.cs" />
     <Compile Include="Endianness.cs" />
     <Compile Include="EndianServices.cs" />

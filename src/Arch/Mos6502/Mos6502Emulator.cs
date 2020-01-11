@@ -20,12 +20,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Reko.Core;
+using Reko.Core.Emulation;
+using Reko.Core.Machine;
 
 namespace Reko.Arch.Mos6502
 {
-    public class Mos6502Emulator : IProcessorEmulator
+    public class Mos6502Emulator : EmulatorBase
     {
+        public const byte Cmask = 1;
+        public const byte Zmask = 2;
+        public const byte Imask = 4;
+        public const byte Dmask = 8;
+        public const byte Vmask = 0x40;
+        public const byte Nmask = 0x80;
+
+
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Mos6502Emulator), "Trace execution of 6502 Emulator");
+        private static readonly RegisterStorage[] dumpRegs = new[]
+        {
+            Registers.a, Registers.x, Registers.y, Registers.s, Registers.p
+        };
+
         private Mos6502ProcessorArchitecture arch;
         private SegmentMap map;
         private IPlatformEmulator envEmulator;
@@ -33,6 +51,7 @@ namespace Reko.Arch.Mos6502
         private IEnumerator<Instruction> dasm;
 
         public Mos6502Emulator(Mos6502ProcessorArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
+            : base(segmentMap)
         {
             this.arch = arch;
             this.map = segmentMap;
@@ -40,7 +59,9 @@ namespace Reko.Arch.Mos6502
             this.regs = new ushort[12];
         }
 
-        public Address InstructionPointer
+        public override MachineInstruction CurrentInstruction => dasm.Current;
+        
+        public override Address InstructionPointer
         {
             get
             {
@@ -49,7 +70,7 @@ namespace Reko.Arch.Mos6502
 
             set
             {
-                regs[Registers.pc.Number] = value.ToUInt16();
+                UpdatePc(value);
                 if (!map.TryFindSegment(value, out ImageSegment segment))
                     throw new AccessViolationException();
                 var rdr = arch.CreateImageReader(segment.MemoryArea, value);
@@ -57,48 +78,84 @@ namespace Reko.Arch.Mos6502
             }
         }
 
-        public event EventHandler BeforeStart;
-        public event EventHandler ExceptionRaised;
-
-        public void DeleteBreakpoint(ulong linearAddress)
+        private void UpdatePc(Address value)
         {
-            throw new NotImplementedException();
+            regs[Registers.pc.Number] = value.ToUInt16();
         }
 
-        public ulong ReadRegister(RegisterStorage reg)
+
+
+        protected override void Run()
         {
-            throw new NotImplementedException();
+            while (IsRunning && dasm.MoveNext())
+            {
+                TraceCurrentInstruction();
+                var pc = dasm.Current.Address;
+                UpdatePc(pc);
+                ulong linPc = pc.ToLinear();
+                if (!TestForBreakpoint(linPc))
+                    break;
+                Execute(dasm.Current);
+            }
         }
 
-        public void SetBreakpoint(ulong linearAddress, Action callback)
+        public override ulong ReadRegister(RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return regs[reg.Number];
         }
 
-        public void Start()
+        public override ulong WriteRegister(RegisterStorage reg, ulong value)
         {
-            BeforeStart?.Invoke(this, EventArgs.Empty);
-            throw new NotImplementedException();
+            var v = (ushort) value;
+            this.regs[reg.Number] = v;
+            return v;
         }
 
-        public void StepInto(Action callback)
+        [Conditional("DEBUG")]
+        private void TraceCurrentInstruction()
         {
-            throw new NotImplementedException();
+            if (trace.Level != TraceLevel.Verbose)
+                return;
+            Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
         }
 
-        public void StepOver(Action callback)
+        private string DumpRegs()
         {
-            throw new NotImplementedException();
+            return string.Join("", dumpRegs
+                .Select(r => $" {r.Name} {regs[r.Number]:X2}"));
         }
 
-        public void Stop()
+
+        private void Execute(Instruction instr)
         {
-            throw new NotImplementedException();
+            switch (instr.Mnemonic)
+            {
+            default:
+                throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
+            case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(instr.Operands[0])); return;
+            }
         }
 
-        public void WriteRegister(RegisterStorage reg, ulong value)
+        private ushort Read(MachineOperand mop)
         {
-            throw new NotImplementedException();
+            var op = (Operand) mop;
+            switch (op.Mode)
+            {
+            default:
+                throw new NotImplementedException($"Addressing mode {op.Mode} not implemented yet.");
+            case AddressMode.Immediate:
+                return op.Offset.ToUInt16();
+            }
+        }
+
+        private void NZ(ulong value)
+        {
+            var p = regs[Registers.p.Number];
+            p &= unchecked((ushort)(~(Nmask | Zmask)));
+            if (value == 0)
+                p |= Zmask;
+            if ((value & Nmask) != 0)
+                p |= Nmask;
         }
     }
 }

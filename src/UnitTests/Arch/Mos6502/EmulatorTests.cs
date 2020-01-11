@@ -42,19 +42,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             this.sc = new ServiceContainer();
         }
 
-        [Test]
-        [Ignore("Not ready yet")]
-        public void Emu6502_ldy_imm()
-        {
-            Given_Code(m =>
-            {
-                m.Ldy(m.Imm8(0xC4)); //0816 A0 C4 ldy #$C4
-            });
-
-            emu.Start();
-
-            Assert.AreEqual(0xC4, emu.ReadRegister(Registers.y));
-        }
+       
 
         private void Given_Code(Action<Assembler> p)
         {
@@ -67,11 +55,23 @@ namespace Reko.UnitTests.Arch.Mos6502
             emu = (Mos6502Emulator) arch.CreateEmulator(program.SegmentMap, envEmu);
             emu.InstructionPointer = program.ImageMap.BaseAddress;
             emu.WriteRegister(Registers.s, 0xFF);
-            emu.ExceptionRaised += delegate { throw new Exception(); };
+            emu.ExceptionRaised += (sender, e) => { throw e.Exception; };
+        }
+
+        [Test]
+        public void Emu6502_ldy_imm()
+        {
+            Given_Code(m =>
+            {
+                m.Ldy(m.i8(0xC4)); //0816 A0 C4 ldy #$C4
+            });
+
+            emu.Start();
+
+            Assert.AreEqual(0xC4, emu.ReadRegister(Registers.y));
         }
     }
     /* ﻿
-    0816 A0 C4 ldy #$C4
     0818 B9 3C 08 lda $083C,y
     081B 99 F8 00 sta $00F8,y
     081E B9 FD 08 lda $08FD,y

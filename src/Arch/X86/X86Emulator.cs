@@ -298,9 +298,10 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
-        public override void WriteRegister(RegisterStorage r, ulong value)
+        public override ulong WriteRegister(RegisterStorage r, ulong value)
         {
             Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int) r.BitAddress);
+            return value;
         }
 
         public void WriteMemory(TWord w, ulong ea, PrimitiveType dt)

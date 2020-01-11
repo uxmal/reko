@@ -73,7 +73,7 @@ namespace Reko.Arch.Mos6502
         }
 
 
-        public ParsedOperand Imm8(byte v)
+        public ParsedOperand i8(byte v)
         {
             return new ParsedOperand(
                 new Operand(PrimitiveType.Byte)

@@ -35,7 +35,7 @@ namespace Reko.Core.Emulation
     public abstract class EmulatorBase : IProcessorEmulator
     {
         public event EventHandler BeforeStart;
-        public event EventHandler ExceptionRaised;
+        public event EventHandler<EmulatorExceptionEventArgs>  ExceptionRaised;
 
         private readonly SegmentMap map;
         private readonly Dictionary<ulong, Action> bpExecute;
@@ -65,7 +65,7 @@ namespace Reko.Core.Emulation
             catch (Exception ex)
             {
                 Debug.Print("Emulator exception when executing {0}. {1}\r\n{2}", CurrentInstruction, ex.Message, ex.StackTrace);
-                ExceptionRaised.Fire(this);
+                ExceptionRaised?.Invoke(this, new EmulatorExceptionEventArgs(ex));
             }
         }
 
@@ -113,7 +113,7 @@ namespace Reko.Core.Emulation
 
         public abstract ulong ReadRegister(RegisterStorage reg);
 
-        public abstract void WriteRegister(RegisterStorage reg, ulong value);
+        public abstract ulong WriteRegister(RegisterStorage reg, ulong value);
 
         /// <summary>
         /// Test if 
@@ -172,7 +172,7 @@ namespace Reko.Core.Emulation
             return mem.ReadLeUInt32((uint) off);
         }
 
-        protected void WriteByte(ulong ea, byte value)
+        public void WriteByte(ulong ea, byte value)
         {
             if (!map.TryFindSegment(ea, out ImageSegment segment))
                 throw new AccessViolationException();
@@ -180,7 +180,7 @@ namespace Reko.Core.Emulation
             mem.WriteByte((long) (ea - mem.BaseAddress.ToLinear()), value);
         }
 
-        protected void WriteLeUInt16(ulong ea, ushort value)
+        public void WriteLeUInt16(ulong ea, ushort value)
         {
             if (!map.TryFindSegment(ea, out ImageSegment segment))
                 throw new AccessViolationException();
@@ -189,7 +189,7 @@ namespace Reko.Core.Emulation
             segment.MemoryArea.WriteLeUInt16((uint) off, value);
         }
 
-        protected void WriteLeUInt32(ulong ea, uint value)
+        public void WriteLeUInt32(ulong ea, uint value)
         {
             if (!map.TryFindSegment(ea, out ImageSegment segment))
                 throw new AccessViolationException();
