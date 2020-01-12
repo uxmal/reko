@@ -57,7 +57,7 @@ namespace Reko.Libraries.Microchip
         /// <param name="name">The name of the PIC.</param>
         /// <param name="id">The COFF identifier of the PIC.</param>
         /// <param name="arch">The archictecture name of the PIC.</param>
-        /// <param name="clonedfrom">The cloned PIC name if this pIC is a clone.</param>
+        /// <param name="clonedfrom">The cloned PIC name if this PIC is a clone.</param>
         public PICPart(string name, uint id, string arch, string clonedfrom)
         {
             Name = name;

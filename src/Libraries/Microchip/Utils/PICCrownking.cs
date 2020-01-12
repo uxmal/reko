@@ -1,11 +1,15 @@
 #region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * Copyrighted (c) 2017-2020 Christian Hostelet.
+ *
+ * The contents of this file are subject to the terms of the Common Development
+ * and Distribution License (the License), or the GPL v2, or (at your option)
+ * any later version. 
+ * You may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+ * or http://www.gnu.org/licenses/gpl-2.0.html.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,22 +19,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in each file
+ * and include the License file at http://www.netbeans.org/cddl.txt.
+ * If applicable, add the following below the CDDL Header, with the fields
+ * enclosed by brackets [] replaced by your own identifying information:
+ * "Portions Copyrighted (c) [year] [name of copyright owner]"
+ *
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.IO.Compression;
-using System.Reflection;
-using System.Xml.Linq;
-using System.Linq;
-
 namespace Reko.Libraries.Microchip
 {
-    using V1;
-    using static PICConstants;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Linq;
+    using System.Reflection;
+    using System.Xml.Linq;
+
+    using static Reko.Libraries.Microchip.PICConstants;
 
     /// <summary>
     /// This factory class provides methods for loading Microchip PIC definition (XML) from the MPLAB X IDE (a.k.a. Crownking) database or a local copy of it.
@@ -105,13 +115,6 @@ namespace Reko.Libraries.Microchip
                                                     ? "Unable to get PIC DB file pathname"
                                                     : $"PIC DB file '{CurrentDBPath}' not found"));
             }
-        }
-
-        private bool AcceptPICEntry(ZipArchiveEntry picentry, Func<string, bool> filter)
-        {
-            return ((picentry.FullName.StartsWith(ContentPIC16Path + "/PIC16", true, CultureInfo.InvariantCulture) ||
-                     picentry.FullName.StartsWith(ContentPIC18Path + "/PIC18", true, CultureInfo.InvariantCulture))
-                     && filter(picentry.Name));
         }
 
         private PICPartInfo PartsInfo

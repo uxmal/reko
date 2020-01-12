@@ -8,7 +8,4 @@
     <RootNamespace>Reko.Libraries.Microchip</RootNamespace>
     <AssemblyName>Reko.Libraries.Microchip.Utils</AssemblyName>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Core.csproj"/>
-  </ItemGroup>
 </Project>

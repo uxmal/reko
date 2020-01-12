@@ -23,8 +23,6 @@
     <None Include="picdb.zip" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj">
-    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
     </ProjectReference>
   </ItemGroup>

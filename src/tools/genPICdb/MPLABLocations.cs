@@ -95,7 +95,7 @@ namespace Reko.Tools.GenPICdb
                 public object GetValue(string name, object defaultValue) => null;
             }
 
-            public static readonly RegistryKey LocalMachine;
+            public static readonly RegistryKey LocalMachine = new RegistryKey();
 
         }
 
