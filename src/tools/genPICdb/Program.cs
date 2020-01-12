@@ -48,7 +48,6 @@ namespace Reko.Tools.GenPICdb
 #endif
 
     using Reko.Libraries.Microchip;
-    using Reko.Libraries.Microchip.V1;
 
     /// <summary>
     /// A program to generate the PIC definition database from the MPLAB X IDE installation.
@@ -122,24 +121,8 @@ namespace Reko.Tools.GenPICdb
             = Path.Combine(_workingDir, "..", "..", "..", PICConstants.LocalDBFilename);
 
 
-        private string GenPICDBPath
-        {
-            get
-            {
-                if (genpicdbpath == null)
-                {
-                    Assembly CrownkingAssembly;
-                    CrownkingAssembly = Assembly.GetAssembly(this.GetType());
-                    genpicdbpath = Path.GetDirectoryName(CrownkingAssembly.Location);
-                }
-                return genpicdbpath;
-            }
-        }
-        private string genpicdbpath = null;
-
-
         // Prunes the PIC XML document of unwanted/unnecessary information.
-        // Adds missing information (e.g. bitpos for bitfields).
+        // Adds missing information (e.g. bitpos for bit fields).
         private static XDocument pruneAndPatch(XDocument xdoc)
         {
             XNamespace edc = edcNamespace;
@@ -171,17 +154,24 @@ namespace Reko.Tools.GenPICdb
                     e.ReplaceAttributes(e.Attributes().Select(a => a.IsNamespaceDeclaration ? null : a.Name.Namespace != XNamespace.None ? new XAttribute(XNamespace.None.GetName(a.Name.LocalName), a.Value) : a));
             }
 
-            // Remove the unwanted root's attribute
+            // Remove the unwanted root's attribute.
             xroot.Attribute("schemaLocation").Remove();
 
-            // Add the bitfields positions
+            // Add the bit fields' bit-location.
             xdoc = addBitPos(xdoc, "DCR");
             xdoc = addBitPos(xdoc, "SFR");
 
-            // Must be done after the bitfields positions addition
+            // Must be done only after the addition of the bit locations on the bit fields.
             xdoc.Descendants().Where(p => p.Name.LocalName == "AdjustPoint").Remove();
 
-            // Prune any redundant or meaningless bitfield definitions.
+            // Remove useless/confusing attributes in 'JoinedSFR' elements.
+            foreach (var xjoined in xroot.Descendants().Where(p => p.Name.LocalName == "JoinedSFRDef"))
+            {
+                xjoined.Attribute("_modsrc")?.Remove();
+                xjoined.Attribute("_refcount")?.Remove();
+            }
+
+            // Prune any redundant or meaningless bit field definitions.
             xdoc = removeRedundantFieldDef(xdoc, "DCR");
             xdoc = removeRedundantFieldDef(xdoc, "SFR");
 
@@ -189,7 +179,7 @@ namespace Reko.Tools.GenPICdb
         }
 
         /// <summary>
-        /// Adds a bit position to each bitfield definition.
+        /// Adds a bit position attribute to each bitfield definition.
         /// </summary>
         /// <param name="xdoc">The XML document.</param>
         /// <param name="prefix">The prefix to bitfield definition.</param>
@@ -226,7 +216,7 @@ namespace Reko.Tools.GenPICdb
         }
 
         /// <summary>
-        /// Removes the redundant field definition. Those whose width is equal to that of parent register.
+        /// Removes the redundant register field definitions. Those whose width is equal to that of parent register.
         /// </summary>
         /// <param name="xdoc">The xdoc.</param>
         /// <param name="prefix">The prefix.</param>
@@ -241,6 +231,9 @@ namespace Reko.Tools.GenPICdb
 
             foreach (var xdef in xdoc.Root.Descendants().Where(p => p.Name.LocalName == def))
             {
+                xdef.Attribute("_modsrc")?.Remove();
+                xdef.Attribute("_refcount")?.Remove();
+
                 var defnzwidth = xdef.Attribute("nzwidth").Value.ToUInt32Ex(); // Size of main register
 
                 foreach (var xfielddef in xdef.Descendants().Where(p => p.Name.LocalName == fielddef))
@@ -287,15 +280,18 @@ namespace Reko.Tools.GenPICdb
         // Writes a PIC XML document to the PIC compact database. Keeps note of the PIC processor ID for COFF decoding.
         private static void writePICEntry(XDocument xdoc, string subdir, ZipArchive zout)
         {
-            var pic = xdoc.Root.ToObject<PIC_v1>();
-            picPartsInfo.Parts.Add(new PICPart(pic.Name, (uint)pic.ProcID, pic.Arch, pic.ClonedFrom));
-            var xns = new XmlSerializerNamespaces();
-            xns.Add(string.Empty, string.Empty);
-            var xs = new XmlSerializer(pic.GetType(), string.Empty);
-            var picpath = subdir + "/" + pic.Name + ".PIC";
+            var xroot = xdoc?.Root;
+            if (xroot is null)
+                return;
+            var picName = xroot.Attribute("name").Value;
+            var procID = xroot.Attribute("procid").Value.ToUInt32Ex();
+            var arch = xroot.Attribute("arch").Value;
+            var clonedFrom = xroot.Attribute("clonedfrom")?.Value;
+            picPartsInfo.Parts.Add(new PICPart(picName, procID, arch, clonedFrom));
+            var picpath = subdir + "/" + picName + ".PIC";
             var picentry = zout.CreateEntry(picpath);
             using (var picw = new StreamWriter(picentry.Open()))
-                xs.Serialize(picw, pic, xns);
+                xdoc.Save(picw);
         }
 
         // Accepts only desired PIC16 and PIC18 from the more general (huge) Microchip MPLAB X database.
