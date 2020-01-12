@@ -116,13 +116,25 @@ namespace Reko.UnitTests.Arch.Mos6502
             emu.TryReadByte(0x0008, out var b);
             Assert.AreEqual(0x42, b);
         }
+
+
+        [Test]
+        public void Emu6502_dey()
+        {
+            Given_Code(m =>
+            {
+                m.Dey();                // 88 dey 
+            });
+            emu.Start();
+
+            Assert.AreEqual(0xFF, emu.ReadRegister(Registers.y));
+            Assert.AreEqual(Mos6502Emulator.Nmask, emu.ReadRegister(Registers.p));
+        }
     }
     /* ﻿
     0818 
-    0824 88 dey 
     0825 D0 F1 bne #$818
     0827 A0 09 ldy #$09
-    082F 88 dey 
     0830 D0 F7 bne #$829
     0832 A9 51 lda #$51
     0834 85 2D sta $2D

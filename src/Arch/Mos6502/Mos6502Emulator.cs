@@ -129,6 +129,7 @@ namespace Reko.Arch.Mos6502
             {
             default:
                 throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
+            case Mnemonic.dey: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)-1)); return;
             case Mnemonic.lda: NZ(regs[Registers.a.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldx: NZ(regs[Registers.x.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(instr.Operands[0])); return;
@@ -209,11 +210,12 @@ namespace Reko.Arch.Mos6502
         private void NZ(ulong value)
         {
             var p = regs[Registers.p.Number];
-            p &= unchecked((ushort)(~(Nmask | Zmask)));
+            p &= unchecked((ushort)~(Nmask | Zmask));
             if (value == 0)
                 p |= Zmask;
-            if ((value & Nmask) != 0)
+            if ((value & 0x80) != 0)
                 p |= Nmask;
+            regs[Registers.p.Number] = p;
         }
     }
 }

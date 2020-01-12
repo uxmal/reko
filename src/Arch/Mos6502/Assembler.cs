@@ -104,6 +104,11 @@ namespace Reko.Arch.Mos6502
             }
         }
 
+        public void Dey()
+        {
+            m.EmitByte(0x88);
+        }
+
         public void Lda(ParsedOperand op)
         {
             EmitOpcodeOperand(Mnemonic.lda, op.Operand);
