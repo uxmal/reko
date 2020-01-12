@@ -129,12 +129,22 @@ namespace Reko.Arch.Mos6502
             {
             default:
                 throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
+            case Mnemonic.bne: if ((regs[Registers.p.Number] & Zmask) == 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.dex: NZ(regs[Registers.x.Number] = (byte)(ReadRegister(Registers.x)-1)); return;
             case Mnemonic.dey: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)-1)); return;
+            case Mnemonic.inx: NZ(regs[Registers.x.Number] = (byte)(ReadRegister(Registers.x)+1)); return;
+            case Mnemonic.iny: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)+1)); return;
             case Mnemonic.lda: NZ(regs[Registers.a.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldx: NZ(regs[Registers.x.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(instr.Operands[0])); return;
+            case Mnemonic.nop: return;
             case Mnemonic.sta: Write(instr.Operands[0], regs[Registers.a.Number]); return;
             }
+        }
+
+        protected void Jump(MachineOperand op)
+        {
+            InstructionPointer = Address.Ptr16(((Operand) op).Offset.ToUInt16());
         }
 
         private ushort Read(MachineOperand mop)

@@ -24,6 +24,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 
@@ -39,6 +40,7 @@ namespace Reko.Arch.Mos6502
         private Address addrBase;
         private Core.Assemblers.IEmitter m;
         private List<ImageSymbol> symbols;
+        private SymbolTable symtab;
 
         public Assembler(ServiceContainer sc, IPlatform platform, Address addrBase, List<ImageSymbol> symbols)
         {
@@ -48,6 +50,7 @@ namespace Reko.Arch.Mos6502
             this.addrBase = addrBase;
             this.symbols = symbols;
             this.m = new Core.Assemblers.Emitter();
+            this.symtab = new SymbolTable();
         }
 
         public Program GetImage()
@@ -59,6 +62,18 @@ namespace Reko.Arch.Mos6502
                 arch,
                 platform);
             return program;
+        }
+
+        private void DefineSymbol(string pstr)
+        {
+            var sym = symtab.DefineSymbol(pstr, m.Position);
+            sym.ResolveLe(m);
+        }
+
+        public Assembler Label(string label)
+        {
+            DefineSymbol(label);
+            return this;
         }
 
         private void EmitOpcodeOperand(Mnemonic mnemonic, Operand op)
@@ -93,10 +108,24 @@ namespace Reko.Arch.Mos6502
                 return;
             }
             throw new NotSupportedException($"Instruction {mnemonic} does not support address mode {op.Mode}.");
-
         }
 
-        public void Db(params byte[] bytes)
+
+        private Symbol EmitRelativeTarget(string target, PrimitiveType dt)
+        {
+            int offBytes = dt.Size;
+            switch (offBytes)
+            {
+            case 1: m.EmitByte(-(m.Length + 1)); break;
+            case 2: m.EmitLeUInt16(-(m.Length + 2)); break;
+            }
+            var sym = symtab.CreateSymbol(target);
+            sym.ReferToLe(m.Length - offBytes, dt, m);
+            return sym;
+        }
+
+
+            public void Db(params byte[] bytes)
         {
             for (int i = 0; i < bytes.Length; ++i)
             {
@@ -104,9 +133,35 @@ namespace Reko.Arch.Mos6502
             }
         }
 
+        public void Bne(string target)
+        {
+            m.EmitByte(0xD0);
+            EmitRelativeTarget(target, PrimitiveType.Byte);
+        }
+
+        public void Dex()
+        {
+            m.EmitByte(0xCA);
+        }
+
         public void Dey()
         {
             m.EmitByte(0x88);
+        }
+
+        public void Inx()
+        {
+            m.EmitByte(0xE8);
+        }
+
+        public void Iny()
+        {
+            m.EmitByte(0xC8);
+        }
+
+        public void Nop()
+        {
+            m.EmitByte(0xEA);
         }
 
         public void Lda(ParsedOperand op)
@@ -234,11 +289,6 @@ namespace Reko.Arch.Mos6502
             {
                 this.Operand = op;
             }
-        }
-
-        public class Symbol
-        {
-
         }
 
         public class InstrOpcodes

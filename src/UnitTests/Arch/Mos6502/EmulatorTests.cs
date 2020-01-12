@@ -130,16 +130,41 @@ namespace Reko.UnitTests.Arch.Mos6502
             Assert.AreEqual(0xFF, emu.ReadRegister(Registers.y));
             Assert.AreEqual(Mos6502Emulator.Nmask, emu.ReadRegister(Registers.p));
         }
+
+        [Test]
+        public void Emu6502_inx()
+        {
+            Given_Code(m =>
+            {
+                m.Ldx(m.i8(0xFF));
+                m.Inx();                // E8      inx
+            });
+            emu.Start();
+
+            Assert.AreEqual(0x00, emu.ReadRegister(Registers.x));
+            Assert.AreEqual(Mos6502Emulator.Zmask, emu.ReadRegister(Registers.p));
+        }
+
+        [Test]
+        public void Emu6502_bne()
+        {
+            Given_Code(m =>
+            {
+                m.Ldx(m.i8(2));         // xx yy    ldx
+                m.Dex();                // CA       dex
+                m.Bne("skip");          // D0 xx    bne
+                m.Ldx(m.i8(0x42));
+                m.Label("skip");
+                m.Nop();
+            });
+            emu.Start();
+
+            Assert.AreEqual(0x01, emu.ReadRegister(Registers.x));
+            Assert.AreEqual(0, emu.ReadRegister(Registers.p));
+        }
     }
     /* ﻿
     0818 
-    0825 D0 F1 bne #$818
-    0827 A0 09 ldy #$09
-    0830 D0 F7 bne #$829
-    0832 A9 51 lda #$51
-    0834 85 2D sta $2D
-    0836 A9 55 lda #$55
-    0838 85 2E sta $2E
     083A 4C 00 01 jmp $0100
     ﻿0967 78 sei 
     0968 E6 01 inc $01
