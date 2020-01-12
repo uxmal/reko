@@ -67,7 +67,7 @@ namespace Reko.Tools.GenPICdb
 
         private static readonly PICPartInfo picPartsInfo = new PICPartInfo();
 
-        private static readonly IMPLABLocations MPLABLoc = MPLABLocations.Create();
+        private static readonly IMPLABLocations mplabLoc = MPLABLocations.Create();
 
         private static readonly HashSet<string> acceptedPICArchitectures =
             new HashSet<string>() { "16xxxx", "16Exxx", "18xxxx" };
@@ -116,10 +116,10 @@ namespace Reko.Tools.GenPICdb
             = Path.Combine(_workingDir, PICConstants.LocalDBFilename);
 
         private static string _picDefaultDBFilePath { get; set; }
-            = Path.Combine(_workingDir, "..", "..", defaultDBFilename);
+            = Path.Combine(_workingDir, "..", "..", "..", defaultDBFilename);
 
         private static string _picCopyDBFilePath { get; set; }
-            = Path.Combine(_workingDir, "..", "..", PICConstants.LocalDBFilename);
+            = Path.Combine(_workingDir, "..", "..", "..", PICConstants.LocalDBFilename);
 
 
         private string GenPICDBPath
@@ -309,7 +309,7 @@ namespace Reko.Tools.GenPICdb
         {
             if (picPartsInfo.Parts.Count() <= 0)
                 return;
-            picPartsInfo.Version = MPLABLoc.Version;
+            picPartsInfo.Version = mplabLoc.Version;
             var xdoc = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
             var theDate = DateTime.Today.ToLongDateString();
             var theHour = DateTime.Today.ToShortTimeString();
@@ -329,7 +329,7 @@ namespace Reko.Tools.GenPICdb
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         private static int before410Database(string outFilename)
         {
-            Console.WriteLine($"Using *old* MPLAB X IDE version {MPLABLoc.Version} installation.");
+            Console.WriteLine($"Using *old* MPLAB X IDE version {mplabLoc.Version} installation.");
             var numpics = 0;
 
             try
@@ -338,7 +338,7 @@ namespace Reko.Tools.GenPICdb
                 using (var outfile = new FileStream(outFilename, FileMode.Create, FileAccess.Write))
                 {
                     // Those database are compressed (ZIP format)
-                    using (ZipArchive crownkingfile = ZipFile.OpenRead(MPLABLoc.SourceFolder),
+                    using (ZipArchive crownkingfile = ZipFile.OpenRead(mplabLoc.SourceFolder),
                                       zoutfile = new ZipArchive(outfile, ZipArchiveMode.Create))
                     {
                         // For each MPLAB X IDE entry, look only for true PIC16 and PIC18
@@ -389,7 +389,7 @@ namespace Reko.Tools.GenPICdb
         private static int post410Database(string outFilename)
         {
             var numpics = 0;
-            Console.WriteLine($"Using MPLAB X IDE {MPLABLoc.Version} installation.");
+            Console.WriteLine($"Using MPLAB X IDE {mplabLoc.Version} installation.");
 
             try
             {
@@ -401,7 +401,7 @@ namespace Reko.Tools.GenPICdb
                     {
                         var xver = new XDocument(
                                         new XDeclaration("1.0", "utf-8", "yes"),
-                                        new XElement("Version", MPLABLoc.Version)
+                                        new XElement("Version", mplabLoc.Version)
                                    );
                         var picentry = zoutfile.CreateEntry("_version_.xml");
                         using (var picw = new StreamWriter(picentry.Open()))
@@ -463,7 +463,7 @@ namespace Reko.Tools.GenPICdb
         /// 
         private static IEnumerable<XDocument> getValidPICInDFP(string subdir)
         {
-            foreach (var dir in Directory.EnumerateDirectories(MPLABLoc.SourceFolder, subdir, SearchOption.AllDirectories))
+            foreach (var dir in Directory.EnumerateDirectories(mplabLoc.SourceFolder, subdir, SearchOption.AllDirectories))
             {
                 foreach (var edcdir in Directory.EnumerateDirectories(dir, "edc", SearchOption.AllDirectories))
                 {
@@ -513,7 +513,7 @@ namespace Reko.Tools.GenPICdb
                 _picCopyDBFilePath = null;
             }
 
-            if (!MPLABLoc.IsValid)
+            if (!mplabLoc.IsValid)
             {
                 if (File.Exists(_picDefaultDBFilePath))
                 {
@@ -528,7 +528,7 @@ namespace Reko.Tools.GenPICdb
                 return -1;
             }
 
-            if (MPLABLoc.UsePacks)
+            if (mplabLoc.UsePacks)
                 success = (post410Database(_picLocalDBFilePath) == 0);
             else
                 success = (before410Database(_picLocalDBFilePath) == 0);

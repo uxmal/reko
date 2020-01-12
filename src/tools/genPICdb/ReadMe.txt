@@ -11,10 +11,15 @@ This IDE contains the definitions of all the Microchip micro-controllers (PIC12,
 only the relevant (to Reko) PIC16 and PIC18 definitions are extracted. In case this MPLAB X IDE is not installed in the current
 environment, a default database is created (more exactly we use a copy of the file 'defaultpicdb.zip').
 
+This utility tool runs under Microsoft Windows (7, 10 or higher), Linux (tested under Ubuntu 18.04) and MacOS (tested under MacOS Catalina 10.15).
+
+
 Usage
 -----
 
-The 'genPICdb.exe' expects no command parameter. Simply launch it in a DOS or PowerShell window or from the Windows File Explorer.
+The 'genPICdb.exe' expects no command parameter.
+Simply launch it in a terminal session window (DOS or PowerShell, /bin/bash, Xterm, etc...) with the command "./genPICdb.exe".
 If all goes well, an updated 'picdb.zip' will be created in the 'genPICdb' source directory.
 
-It is recommended to run this utility each time an updated Microchip MPLAB X IDE is installed in the development environment.
+It is recommended to run this utility each time an updated Microchip MPLAB X IDE is installed in the development environment to get
+the most up-to-date PIC definitions.
