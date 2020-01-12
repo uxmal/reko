@@ -124,8 +124,7 @@ namespace Reko.Arch.Mos6502
             return sym;
         }
 
-
-            public void Db(params byte[] bytes)
+        public void Db(params byte[] bytes)
         {
             for (int i = 0; i < bytes.Length; ++i)
             {
@@ -157,6 +156,14 @@ namespace Reko.Arch.Mos6502
         public void Iny()
         {
             m.EmitByte(0xC8);
+        }
+
+        public void Jmp(string target)
+        {
+            m.EmitByte(0x4C);
+            m.EmitLeUInt16(addrBase.ToUInt16());  // 6502 jmps are absolute.
+            var sym = symtab.CreateSymbol(target);
+            sym.ReferToLe(m.Length - 2, PrimitiveType.Word16, m);
         }
 
         public void Nop()

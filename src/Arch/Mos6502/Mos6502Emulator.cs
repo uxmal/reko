@@ -38,7 +38,7 @@ namespace Reko.Arch.Mos6502
         public const byte Vmask = 0x40;
         public const byte Nmask = 0x80;
 
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Mos6502Emulator), "Trace execution of 6502 Emulator");
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Mos6502Emulator), "Trace execution of 6502 Emulator") { Level = TraceLevel.Verbose };
         private static readonly RegisterStorage[] dumpRegs = new[]
         {
             Registers.a, Registers.x, Registers.y, Registers.s, Registers.p
@@ -95,7 +95,7 @@ namespace Reko.Arch.Mos6502
                     break;
                 Execute(dasm.Current);
             }
-        }
+        } 
 
         public override ulong ReadRegister(RegisterStorage reg)
         {
@@ -134,6 +134,7 @@ namespace Reko.Arch.Mos6502
             case Mnemonic.dey: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)-1)); return;
             case Mnemonic.inx: NZ(regs[Registers.x.Number] = (byte)(ReadRegister(Registers.x)+1)); return;
             case Mnemonic.iny: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)+1)); return;
+            case Mnemonic.jmp: Jump(instr.Operands[0]); return;
             case Mnemonic.lda: NZ(regs[Registers.a.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldx: NZ(regs[Registers.x.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(instr.Operands[0])); return;

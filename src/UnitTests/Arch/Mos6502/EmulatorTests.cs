@@ -162,6 +162,25 @@ namespace Reko.UnitTests.Arch.Mos6502
             Assert.AreEqual(0x01, emu.ReadRegister(Registers.x));
             Assert.AreEqual(0, emu.ReadRegister(Registers.p));
         }
+
+        [Test]
+        public void Emu6502_jmp()
+        {
+            Given_Code(m =>
+            {
+                m.Ldx(m.i8(2));         // xx yy    ldx
+                m.Dex();                // CA       dex
+                m.Jmp("skip");          // 4C xx xx jmp
+                m.Ldx(m.i8(0x42));
+                m.Label("skip");
+                m.Nop();
+            });
+            emu.Start();
+
+            Assert.AreEqual(0x01, emu.ReadRegister(Registers.x));
+            Assert.AreEqual(0, emu.ReadRegister(Registers.p));
+        }
+
     }
     /* ﻿
     0818 
