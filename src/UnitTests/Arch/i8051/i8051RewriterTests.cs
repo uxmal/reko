@@ -430,7 +430,16 @@ namespace Reko.UnitTests.Arch.i8051
                 "0|L--|0000(2): 2 instructions",
                 "1|L--|SP = SP + 0x01",
                 "2|L--|Mem0[SP:byte] = Mem0[0x0090:byte]");
+        }
 
+        [Test]
+        public void I8051_rw_push_acc()
+        {
+            Given_Bytes(0xC0, 0x90); // push\t[00E0] = alias for ACC.
+            AssertCode(
+                "0|L--|0000(2): 2 instructions",
+                "1|L--|SP = SP + 0x01",
+                "2|L--|Mem0[SP:byte] = A");
         }
 
         [Test]

@@ -8,9 +8,8 @@
 void fn0000()
 {
 	Eq_n R0_n;
-	for (R0_n = 0x7F; R0_n != 0x00; R0_n -= &globals->b0001)
+	for (R0_n = 0x7F; R0_n != 0x00; --R0_n)
 		R0_n->u0 = 0x00;
-	*(byte *) 0x81 = 0x07;
 	while (true)
 	{
 		fn0003();

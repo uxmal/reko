@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -404,6 +404,11 @@ namespace Reko.Arch.i8051
                     {
                         ea = m.IAdd(mem.DirectAddress, binder.EnsureRegister(mem.Index));
                     }
+                    else if (mem.DirectAddress is Address addr)
+                    {
+                        var alias = AliasedSpecialFunctionRegister(addr.ToUInt16());
+                        ea =  alias ?? addr;
+                    }
                     else
                     {
                         ea = mem.DirectAddress;
@@ -454,6 +459,19 @@ namespace Reko.Arch.i8051
             }
         }
 
+        /// <summary>
+        /// Some 8051 registers are aliased to memory addresses.
+        /// </summary>
+        private Expression AliasedSpecialFunctionRegister(ushort uAddress)
+        {
+            switch (uAddress)
+            {
+            case 0x81: return binder.EnsureIdentifier(Registers.SP);
+            case 0xE0: return binder.EnsureIdentifier(Registers.A);
+            case 0xF0: return binder.EnsureIdentifier(Registers.B);
+            }
+            return null;
+        }
 
         private void WriteDst(MachineOperand op, Expression src)
         {
