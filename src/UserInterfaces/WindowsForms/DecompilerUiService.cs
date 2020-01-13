@@ -73,10 +73,10 @@ namespace Reko.UserInterfaces.WindowsForms
             Thread ownthr = null;
 #endif
             return (Gui.DialogResult)
-                form.Invoke(new Func<Form, Gui.DialogResult>(delegate(Form dlgToShow)
+                form.Invoke(new Func<Gui.DialogResult>(delegate()
                 {
-                    return (Gui.DialogResult)dlgToShow.ShowDialog(form);
-                }), dlg);
+                    return (Gui.DialogResult)dlg.ShowDialog(form);
+                }));
         }
 
         public virtual Gui.DialogResult ShowModalDialog(IDialog dlg)
