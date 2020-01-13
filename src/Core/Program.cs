@@ -51,7 +51,6 @@ namespace Reko.Core
         private Identifier globals;
         private Encoding encoding;
 
-
         public Program()
         {
             this.Architectures = new Dictionary<string, IProcessorArchitecture>();
@@ -238,8 +237,9 @@ namespace Reko.Core
             return new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
         }
 
-
+        /// <summary>
         /// The processor architectures that exist in the Program. 
+        /// </summary>
         /// <remarks>
         /// Normally there is only one architecture. But there are examples
         /// of binaries that have two or more processor architectures. E.g.

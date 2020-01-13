@@ -20,6 +20,7 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
@@ -389,8 +390,6 @@ namespace Reko
             return true;
         }
 
-
-
         /// <summary>
         /// Extracts type information from the typeless rewritten programs.
         /// </summary>
@@ -400,17 +399,14 @@ namespace Reko
         {
             foreach (var program in Project.Programs.Where(p => p.NeedsTypeReconstruction))
             {
-                TypeAnalyzer analyzer = new TypeAnalyzer(eventListener);
+                var analyzer = new TypeAnalyzer(eventListener);
                 try
                 {
-                    try
-                    {
-                        analyzer.RewriteProgram(program);
-                    }
-                    catch (Exception ex)
-                    {
-                        eventListener.Error(new NullCodeLocation(""), ex, "Error when reconstructing types.");
-                    }
+                    analyzer.RewriteProgram(program);
+                }
+                catch (Exception ex)
+                {
+                    eventListener.Error(new NullCodeLocation(""), ex, "Error when reconstructing types.");
                 } 
                 finally
                 {
