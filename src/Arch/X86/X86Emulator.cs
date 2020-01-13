@@ -45,6 +45,7 @@ namespace Reko.Arch.X86
         public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
 
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") { Level = TraceLevel.Warning };
         public static readonly (uint value, uint hibit)[] masks = new(uint, uint)[]{
                 (0, 0),
                 (0x0000_00FFu,  0x0000_0080),
@@ -58,7 +59,6 @@ namespace Reko.Arch.X86
 
                 (0, 0),  //$TODO: 64-bit implementation.
             };
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator");
 
         protected readonly IntelArchitecture arch;
         protected readonly SegmentMap map;
@@ -202,6 +202,7 @@ namespace Reko.Arch.X86
             case Mnemonic.jnc: if ((Flags & Cmask) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jns: if ((Flags & Smask) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jnz: if ((Flags & Zmask) == 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.js: if ((Flags & Smask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jz: if ((Flags & Zmask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveOffset((MemoryOperand) instr.Operands[1])); break;
             case Mnemonic.lodsb: Lods(PrimitiveType.Byte); break;
