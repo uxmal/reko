@@ -40,7 +40,6 @@ namespace Reko.Tools.GenPICdb
     using System.Linq;
     using System.Reflection;
     using System.Xml.Linq;
-    using System.Xml.Serialization;
     using System.Diagnostics.CodeAnalysis;
 
 #if NETCOREAPP

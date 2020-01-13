@@ -18,9 +18,13 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="defaultpicdb.zip" />
+    <None Include="defaultpicdb.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="genPICdb.licenseheader" />
-    <None Include="picdb.zip" />
+    <None Include="picdb.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">

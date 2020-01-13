@@ -83,7 +83,7 @@ namespace Reko.Tools.GenPICdb
 #if NETCOREAPP
 
         /// <summary>
-        /// A dummy Registry implementation to satisfy the C# compiler until NetCore supports this class.
+        /// A dummy registry implementation to satisfy the C # compiler until NetCore eventually supports this class.
         /// </summary>
         private static class Registry
         {
@@ -91,8 +91,8 @@ namespace Reko.Tools.GenPICdb
             {
                 public int SubKeyCount => 0;
 
-                public RegistryKey OpenSubKey(string key) => null;
-                public object GetValue(string name, object defaultValue) => null;
+                public RegistryKey OpenSubKey(string _) => null;
+                public object GetValue(string _1, object _2) => null;
             }
 
             public static readonly RegistryKey LocalMachine = new RegistryKey();
@@ -130,12 +130,11 @@ namespace Reko.Tools.GenPICdb
 
             private IntPtr unmanagedFName = IntPtr.Zero;
 #else
-            public static string RealPath(string fname, string buffer)
+            public static string RealPath(string fname, string _)
                 => fname;
 
-            public static void Free(string ptr) => ptr = null;
+            public static void Free(string _) { }
 
-            private string unmanagedFName = null;
 #endif
 
             private readonly string origPath;
@@ -151,20 +150,20 @@ namespace Reko.Tools.GenPICdb
             /// Gets the absolute path of the original path removing relative path and symbolic links.
             /// </summary>
             public string GetPath
+#if NETCOREAPP
             {
                 get
                 {
-#if NETCOREAPP
                     if (unmanagedFName == IntPtr.Zero)
                     {
                         unmanagedFName = RealPath(origPath, null);
                     }
                     return Marshal.PtrToStringAnsi(unmanagedFName);
-#else
-                    return origPath;
-#endif
                 }
             }
+#else
+                    => origPath;
+#endif
 
             void IDisposable.Dispose()
             {
