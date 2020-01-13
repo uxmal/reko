@@ -155,7 +155,7 @@ namespace Reko.Tools.GenPICdb
             }
 
             // Remove the unwanted root's attribute.
-            xroot.Attribute("schemaLocation").Remove();
+            xroot.Attribute("schemaLocation")?.Remove();
 
             // Add the bit fields' bit-location.
             xdoc = addBitPos(xdoc, "DCR");
@@ -307,8 +307,8 @@ namespace Reko.Tools.GenPICdb
                 return;
             picPartsInfo.Version = mplabLoc.Version;
             var xdoc = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
-            var theDate = DateTime.Today.ToLongDateString();
-            var theHour = DateTime.Today.ToShortTimeString();
+            var theDate = DateTime.Now.ToLongDateString();
+            var theHour = DateTime.Now.ToShortTimeString();
             xdoc.AddFirst(new XComment($"Generated on {theDate} at {theHour}."));
             xdoc.Add(picPartsInfo.ToXElement());
             var partsentry = zout.CreateEntry(PICConstants.PartsInfoFilename);

@@ -66,17 +66,11 @@ namespace Reko.Libraries.Microchip
             ClonedFrom = clonedfrom;
         }
 
-        /// <summary> Gets the unique processor ID for this PIC. </summary>
-        [XmlIgnore] public uint ProcID { get; private set; }
-
-        /// <summary> Gets the name of the PIC </summary>
-        [XmlAttribute(AttributeName = "name", Namespace = "")] public string Name { get; set; }
-
         /// <summary> Gets the architecture of the PIC. </summary>
         [XmlAttribute(AttributeName = "arch", Namespace = "")] public string Arch { get; set; }
 
-        /// <summary> Gets the cloned PIC name if this pIC is a clone. </summary>
-        [XmlAttribute(AttributeName = "clonedfrom", Namespace = "")] public string ClonedFrom { get; set; }
+        /// <summary> Gets the unique processor ID for this PIC. </summary>
+        [XmlIgnore] public uint ProcID { get; private set; }
 
         /// <summary> XML attribute formatting property. </summary>
         [XmlAttribute(AttributeName = "procid", Namespace = "")]
@@ -86,6 +80,12 @@ namespace Reko.Libraries.Microchip
             get => $"0x{ProcID:X4}";
             set => ProcID = value.ToUInt32Ex();
         }
+
+        /// <summary> Gets the name of the PIC </summary>
+        [XmlAttribute(AttributeName = "name", Namespace = "")] public string Name { get; set; }
+
+        /// <summary> Gets the cloned PIC name if this pIC is a clone. </summary>
+        [XmlAttribute(AttributeName = "clonedfrom", Namespace = "")] public string ClonedFrom { get; set; }
 
         /// <summary> XML attribute conditional presence. </summary>
         public bool ShouldSerializeClonedFrom() => !string.IsNullOrWhiteSpace(ClonedFrom);
@@ -145,7 +145,7 @@ namespace Reko.Libraries.Microchip
         /// Gets the name of a PIC given its part ID.
         /// </summary>
         /// <param name="id">The part identifier.</param>
-        public string GetPicName(int id)
+        public string GetPICName(int id)
             => Parts.Where(p => p.ProcID == id).FirstOrDefault()?.Name;
 
         /// <summary>
