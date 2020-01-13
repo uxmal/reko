@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.ExceptionRaised += emu_ExceptionRaised;
 
             var stackSeg = envEmu.InitializeStack(emu, rr.EntryPoints[0].ProcessorState);
-            LoadScript(Argument, scriptInterpreter.script);
+            LoadScript(Argument, scriptInterpreter.Script);
             emu.Start();
             envEmu.TearDownStack(stackSeg);
 
@@ -219,13 +219,13 @@ namespace Reko.ImageLoaders.OdbgScript
         public bool ScripterLoadFile(string szFileName)
         {
             scriptInterpreter.Reset();
-            return scriptInterpreter.script.LoadFile(szFileName);
+            return scriptInterpreter.Script.LoadFile(szFileName);
         }
 
         public bool ScripterLoadBuffer(string szScript)
         {
             scriptInterpreter.Reset();
-            return scriptInterpreter.script.LoadScriptFromString(szScript);
+            return scriptInterpreter.Script.LoadScriptFromString(szScript);
         }
 
         public bool ScripterResume()
@@ -246,7 +246,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool ScripterAutoDebug(string szDebuggee)
         {
-            if (scriptInterpreter.script.IsLoaded && scriptInterpreter.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
+            if (scriptInterpreter.Script.IsLoaded && scriptInterpreter.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
             {
                 scriptInterpreter.Debugger.DebugLoop();
                 return true;

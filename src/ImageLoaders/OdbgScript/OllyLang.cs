@@ -58,36 +58,21 @@ namespace Reko.ImageLoaders.OdbgScript
 
     public partial class OllyLang : IScriptInterpreter
     {
+        private const byte OS_VERSION_HI = 1;  // High plugin version
+        private const byte OS_VERSION_LO = 77; // Low plugin version
+        private const byte TE_VERSION_HI = 2;
+        private const byte TE_VERSION_LO = 03;
+        private const byte TS_VERSION_HI = 0;
+        private const byte TS_VERSION_LO = 7;
+        private const int STRING_READSIZE = 256;
+
         private readonly IServiceProvider services;
         private readonly IProcessorArchitecture arch;
-
-        private enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
-
-        const byte OS_VERSION_HI = 1;  // High plugin version
-        const byte OS_VERSION_LO = 77; // Low plugin version
-        //static const byte OS_VERSION_ST = 3;  // plugin state (0 hacked, 1 svn, 2 beta, 3 official release)
-
-        const byte TE_VERSION_HI = 2;
-        const byte TE_VERSION_LO = 03;
-
-        const byte TS_VERSION_HI = 0;
-        const byte TS_VERSION_LO = 7;
-
-        // "Events"
-        //void OnBreakpoint(eBreakpointType reason);
-        //void OnException();
-
         public  bool debuggee_running;
         public  bool script_running;
         public  bool run_till_return;
         public  bool return_to_usercode;
-
-        public OllyScript script;
-
         private  uint script_pos, script_pos_next;
-
-        private  const int STRING_READSIZE = 256;
-
         public Dictionary<string, Var> variables = new Dictionary<string,Var>(); // Variables that exist
         private Dictionary<rulong, uint> bpjumps = new Dictionary<rulong,uint>();  // Breakpoint Auto Jumps 
         private List<uint> calls = new List<uint>();         // Call/Ret in script
@@ -103,337 +88,17 @@ namespace Reko.ImageLoaders.OdbgScript
         //last breakpoint reason
         private rulong break_reason;
         private rulong break_memaddr;
-
         private rulong pmemforexec;
         private rulong membpaddr, membpsize;
-
         //private bool require_addonaction;
         //private bool back_to_debugloop;
-
         private string errorstr;
-
-        void SoftwareCallback() { OnBreakpoint(eBreakpointType.PP_INT3BREAK); }
-        void HardwareCallback() { OnBreakpoint(eBreakpointType.PP_HWBREAK); }
-        void MemoryCallback()   { OnBreakpoint(eBreakpointType.PP_MEMBREAK); }
-        void EXECJMPCallback()  { DoSTI(); }
-
-        public struct callback_t
-        {
-            public uint call;
-            public bool returns_value;
-            public Var.etype return_type;
-        }
-
-        List<callback_t> callbacks = new List<callback_t>();
-        Var callback_return;
-
-        //bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result);
-
-        Dictionary<eCustomException, string> CustomHandlerLabels = new Dictionary<eCustomException, string>();
-        Dictionary<eCustomException, Debugger.fCustomHandlerCallback> CustomHandlerCallbacks = new Dictionary<eCustomException, Debugger.fCustomHandlerCallback>();
-
-        //void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId);
-
-        //static void __stdcall CHC_BREAKPOINT(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_BREAKPOINT); }
-        //static void __stdcall CHC_SINGLESTEP(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_SINGLESTEP); }
-        //static void __stdcall CHC_ACCESSVIOLATION(object  ExceptionData)         { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ACCESSVIOLATION); }
-        //static void __stdcall CHC_ILLEGALINSTRUCTION(object  ExceptionData)      { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ILLEGALINSTRUCTION); }
-        //static void __stdcall CHC_NONCONTINUABLEEXCEPTION(object  ExceptionData) { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_NONCONTINUABLEEXCEPTION); }
-        //static void __stdcall CHC_ARRAYBOUNDSEXCEPTION(object  ExceptionData)    { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ARRAYBOUNDSEXCEPTION); }
-        //static void __stdcall CHC_FLOATDENORMALOPERAND(object  ExceptionData)    { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_FLOATDENORMALOPERAND); }
-        //static void __stdcall CHC_FLOATDEVIDEBYZERO(object  ExceptionData)       { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_FLOATDEVIDEBYZERO); }
-        //static void __stdcall CHC_INTEGERDEVIDEBYZERO(object  ExceptionData)     { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_INTEGERDEVIDEBYZERO); }
-        //static void __stdcall CHC_INTEGEROVERFLOW(object  ExceptionData)         { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_INTEGEROVERFLOW); }
-        //static void __stdcall CHC_PRIVILEGEDINSTRUCTION(object  ExceptionData)   { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_PRIVILEGEDINSTRUCTION); }
-        //static void __stdcall CHC_PAGEGUARD(object  ExceptionData)               { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_PAGEGUARD); }
-        //static void __stdcall CHC_EVERYTHINGELSE(object  ExceptionData)          { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EVERYTHINGELSE); }
-        //static void __stdcall CHC_CREATETHREAD(object  ExceptionData)            { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_CREATETHREAD); }
-        //static void __stdcall CHC_EXITTHREAD(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EXITTHREAD); }
-        //static void __stdcall CHC_CREATEPROCESS(object  ExceptionData)           { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_CREATEPROCESS); }
-        //static void __stdcall CHC_EXITPROCESS(object  ExceptionData)             { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EXITPROCESS); }
-        //static void __stdcall CHC_LOADDLL(object  ExceptionData)                 { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_LOADDLL); }
-        //static void __stdcall CHC_UNLOADDLL(object  ExceptionData)               { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_UNLOADDLL); }
-        //static void __stdcall CHC_OUTPUTDEBUGSTRING(object  ExceptionData)       { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_OUTPUTDEBUGSTRING); }
-
-        string Label_AutoFixIATEx = "";
-        //static void __stdcall Callback_AutoFixIATEx(object fIATPointer);
-
-        Dictionary<eLibraryEvent, Dictionary<string, string>> LibraryBreakpointLabels = //<library path, label name>
-            new Dictionary<eLibraryEvent, Dictionary<string, string>>();
-        Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback> LibraryBreakpointCallbacks =
-            new Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback>();
-
-        //void LBPC_TRAMPOLINE(const LOAD_DLL_DEBUG_INFO* SpecialDBG, eLibraryEvent bpxType);
-
-        //static void __stdcall LBPC_LOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG)   { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_LOAD); }
-        //static void __stdcall LBPC_UNLOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG) { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_UNLOAD); }
-        //static void __stdcall LBPC_ALL(const LOAD_DLL_DEBUG_INFO* SpecialDBG)    { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_ALL); }
-
-        public class register_t
-        {
-            public register_t(string n, eContextData i, byte s, byte o)
-            {
-                this.name = n; this.id = i; this.size = s; this.offset = o;
-            }
-            public readonly string name;
-            public readonly eContextData id;
-            public readonly byte size;
-            public readonly byte offset;
-        }
-
-        public class constant_t
-        {
-            public constant_t(string name, byte value) { this.name = name; this.value = value; }
-            public readonly string name;
-            public readonly byte value;
-        }
-
-        public class eflags_t
-        {
-            public ulong dw;
-
-            public class Flagomizer
-            {
-                private eflags_t eflags_t;
-
-                public Flagomizer(eflags_t eflags_t)
-                {
-                    this.eflags_t = eflags_t;
-                }
-
-                public bool CF { get { return ((eflags_t.dw & 1) != 0); } set { if (value) eflags_t.dw |= 1u; else eflags_t.dw &= ~1u; } }
-                public bool PF { get { return ((eflags_t.dw & 4) != 0); } set { if (value) eflags_t.dw |= 4u; else eflags_t.dw &= ~4u; } }
-                public bool AF { get { return ((eflags_t.dw & 16) != 0); } set { if (value) eflags_t.dw |= 16u; else eflags_t.dw &= ~16u; } }
-                public bool ZF { get { return ((eflags_t.dw & 32) != 0); } set { if (value) eflags_t.dw |= 32u; else eflags_t.dw &= ~32u; } }
-                public bool SF { get { return ((eflags_t.dw & 64) != 0); } set { if (value) eflags_t.dw |= 64u; else eflags_t.dw &= ~64u; } }
-                public bool TF { get { return ((eflags_t.dw & 128) != 0); } set { if (value) eflags_t.dw |= 128u; else eflags_t.dw &= ~128u; } }
-                public bool IF { get { return ((eflags_t.dw & 256) != 0); } set { if (value) eflags_t.dw |= 256u; else eflags_t.dw &= ~256u; } }
-                public bool DF { get { return ((eflags_t.dw & 512) != 0); } set { if (value) eflags_t.dw |= 512u; else eflags_t.dw &= ~512u; } }
-                public bool OF { get { return ((eflags_t.dw & 1024) != 0); } set { if (value) eflags_t.dw |= 1024u; else eflags_t.dw &= ~1024u; } }
-            }
-            public readonly Flagomizer bits;
-
-            public eflags_t()
-            {
-                bits = new Flagomizer(this);
-            }
-        }
-
-
-        // Commands that can be executed
-        Dictionary<string, Func<string[], bool>> commands = new Dictionary<string, Func<string[], bool>>();
-
-        int EOB_row, EOE_row;
-
-        bool bInternalBP;
-        ulong tickcount_startup;
-
-        byte[] search_buffer;
-
-        // Pseudo-flags to emulate CMP
-        bool zf;
-        bool cf;
-
-        // Cursor for REF / (NEXT)REF function
-        //int adrREF;
-        //int curREF;
-
-        void SetCMPFlags(int diff)
-        {
-            zf = (diff == 0);
-            cf = (diff < 0);
-        }
-
-        // Commands
-        bool GetByte(string op, ref byte value)
-        {
-            if (GetRulong(op, out rulong temp) && temp <= Byte.MaxValue)
-            {
-                value = (byte) temp;
-                return true;
-            }
-            else 
-            {
-                value = 0;
-                return false;
-            }
-        }
-
-        // Save / Restore Breakpoints
-        /*
-        t_hardbpoint hwbp_t[4];
-        t_sorted sortedsoftbp_t;
-        t_bpoint* softbp_t;
-        */
-
-        //uint saved_bp;
-        //uint alloc_bp;
-        //bool AllocSwbpMem(uint tmpSizet);
-        //void FreeBpMem();
-
-        // Save / Restore Registers
-        public class t_reg_backup
-        {
-            public bool loaded;
-            public rulong[] regs = new rulong[17];
-            public ulong eflags;
-            public uint threadid;
-            public uint script_pos;
-        }
-        t_reg_backup reg_backup = new t_reg_backup();
-
-        //cache for GMEXP
-        List<t_export> tExportsCache = new List<t_export>();
-        //ulong exportsCacheAddr;
-
-        //cache for GMIMP
-        List<t_export> tImportsCache = new List<t_export>();
-        //ulong importsCacheAddr;
-    
-#if _WIN64
-
-    register_t [] registers = 
-    {
-	new register_t("rax",  eContextData.UE_RAX, 8, 0), new register_t("rbx",  eContextData.UE_RBX, 8, 0), new register_t("rcx",  eContextData.UE_RCX, 8, 0),
-	new register_t("rdx",  eContextData.UE_RDX, 8, 0), new register_t("rsi",  eContextData.UE_RSI, 8, 0), new register_t("rdi",  eContextData.UE_RDI, 8, 0),
-	new register_t("rbp",  eContextData.UE_RBP, 8, 0), new register_t("rsp",  eContextData.UE_RSP, 8, 0), new register_t("rip",  eContextData.UE_RIP, 8, 0),
-
-	new register_t("r8",   eContextData.UE_R8,  8, 0), new register_t("r9",   eContextData.UE_R9,  8, 0), new register_t("r10",  eContextData.UE_R10, 8, 0),
-	new register_t("r11",  eContextData.UE_R11, 8, 0), new register_t("r12",  eContextData.UE_R12, 8, 0), new register_t("r13",  eContextData.UE_R13, 8, 0),
-	new register_t("r14",  eContextData.UE_R14, 8, 0), new register_t("r15",  eContextData.UE_R15, 8, 0),
-
-	new register_t("dr0",  eContextData.UE_DR0, 8, 0), new register_t("dr1",  eContextData.UE_DR1, 8, 0), new register_t("dr2",  eContextData.UE_DR2, 8, 0),
-	new register_t("dr3",  eContextData.UE_DR3, 8, 0), new register_t("dr6",  eContextData.UE_DR6, 8, 0), new register_t("dr7",  eContextData.UE_DR7, 8, 0),
-
-	new register_t("eax",  eContextData.UE_RAX, 4, 0), new register_t("ebx",  eContextData.UE_RBX, 4, 0), new register_t("ecx",  eContextData.UE_RCX, 4, 0),
-	new register_t("edx",  eContextData.UE_RDX, 4, 0), new register_t("esi",  eContextData.UE_RSI, 4, 0), new register_t("edi",  eContextData.UE_RDI, 4, 0),
-	new register_t("ebp",  eContextData.UE_RBP, 4, 0), new register_t("esp",  eContextData.UE_RSP, 4, 0),
-
-	new register_t("r8d",  eContextData.UE_R8,  4, 0), new register_t("r9d",  eContextData.UE_R9,  4, 0), new register_t("r10d", eContextData.UE_R10, 4, 0),
-	new register_t("r11d", eContextData.UE_R11, 4, 0), new register_t("r12d", eContextData.UE_R12, 4, 0), new register_t("r13d", eContextData.UE_R13, 4, 0),
-	new register_t("r14d", eContextData.UE_R14, 4, 0), new register_t("r15d", eContextData.UE_R15, 4, 0),
-
-	new register_t("ax",   eContextData.UE_RAX, 2, 0), new register_t("bx",   eContextData.UE_RBX, 2, 0), new register_t("cx",   eContextData.UE_RCX, 2, 0),
-	new register_t("dx",   eContextData.UE_RDX, 2, 0), new register_t("si",   eContextData.UE_RSI, 2, 0), new register_t("di",   eContextData.UE_RDI, 2, 0),
-	new register_t("bp",   eContextData.UE_RBP, 2, 0), new register_t("sp",   eContextData.UE_RSP, 2, 0),
-
-	new register_t("r8w",  eContextData.UE_R8,  2, 0), new register_t("r9w",  eContextData.UE_R9,  2, 0), new register_t("r10w", eContextData.UE_R10, 2, 0),
-	new register_t("r11w", eContextData.UE_R11, 2, 0), new register_t("r12w", eContextData.UE_R12, 2, 0), new register_t("r13w", eContextData.UE_R13, 2, 0),
-	new register_t("r14w", eContextData.UE_R14, 2, 0), new register_t("r15w", eContextData.UE_R15, 2, 0),
-
-	new register_t("ah",   eContextData.UE_RAX, 1, 1), new register_t("bh",   eContextData.UE_RBX, 1, 1), new register_t("ch",   eContextData.UE_RCX, 1, 1),
-	new register_t("dh",   eContextData.UE_RDX, 1, 1),
-
-	new register_t("al",   eContextData.UE_RAX, 1, 0), new register_t("bl",   eContextData.UE_RBX, 1, 0), new register_t("cl",   eContextData.UE_RCX, 1, 0),
-	new register_t("dl",   eContextData.UE_RDX, 1, 0), new register_t("sil",  eContextData.UE_RSI, 1, 0), new register_t("dil",  eContextData.UE_RDI, 1, 0),
-	new register_t("bpl",  eContextData.UE_RBP, 1, 0), new register_t("spl",  eContextData.UE_RSP, 1, 0),
-
-	new register_t("r8b",  eContextData.UE_R8,  1, 0), new register_t("r9b",  eContextData.UE_R9,  1, 0), new register_t("r10b", eContextData.UE_R10, 1, 0),
-	new register_t("r11b", eContextData.UE_R11, 1, 0), new register_t("r12b", eContextData.UE_R12, 1, 0), new register_t("r13b", eContextData.UE_R13, 1, 0),
-	new register_t("r14b", eContextData.UE_R14, 1, 0), new register_t("r15b", eContextData.UE_R15, 1, 0),
-};
-
-#else
-
-        readonly register_t[] registers = new register_t[] 
-{
-	new register_t("eax", eContextData.UE_EAX, 4, 0), new register_t("ebx", eContextData.UE_EBX, 4, 0), new register_t("ecx", eContextData.UE_ECX, 4, 0),
-	new register_t("edx", eContextData.UE_EDX, 4, 0), new register_t("esi", eContextData.UE_ESI, 4, 0), new register_t("edi", eContextData.UE_EDI, 4, 0),
-	new register_t("ebp", eContextData.UE_EBP, 4, 0), new register_t("esp", eContextData.UE_ESP, 4, 0), new register_t("eip", eContextData.UE_EIP, 4, 0),
-
-	new register_t("dr0", eContextData.UE_DR0, 4, 0), new register_t("dr1", eContextData.UE_DR1, 4, 0), new register_t("dr2", eContextData.UE_DR2, 4, 0),
-	new register_t("dr3", eContextData.UE_DR3, 4, 0), new register_t("dr6", eContextData.UE_DR6, 4, 0), new register_t("dr7", eContextData.UE_DR7, 4, 0),
-
-	new register_t("ax", eContextData.UE_EAX, 2, 0), new register_t("bx", eContextData. UE_EBX, 2, 0), new register_t("cx", eContextData. UE_ECX, 2, 0),
-	new register_t("dx", eContextData.UE_EDX, 2, 0), new register_t("si", eContextData. UE_ESI, 2, 0), new register_t("di", eContextData. UE_EDI, 2, 0),
-	new register_t("bp", eContextData. UE_EBP, 2, 0), new register_t("sp", eContextData. UE_ESP, 2, 0),
-
-	new register_t("ah", eContextData. UE_EAX, 1, 1), new register_t("bh", eContextData. UE_EBX, 1, 1), new register_t("ch", eContextData. UE_ECX, 1, 1),
-	new register_t("dh", eContextData. UE_EDX, 1, 1),
-
-	new register_t("al", eContextData. UE_EAX, 1, 0), new register_t("bl", eContextData. UE_EBX, 1, 0), new register_t("cl", eContextData. UE_ECX, 1, 0),
-	new register_t("dl", eContextData. UE_EDX, 1, 0)
-};
-
-#endif
-
-        readonly static string[] fpu_registers = { "st(0)", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)" };
-
-        readonly static string[] e_flags = { "!cf", "!pf", "!af", "!zf", "!sf", "!df", "!of" };
-
-        readonly static constant_t[] constants =
-{
-	new constant_t("true",  1),
-	new constant_t("false", 0),
-	new constant_t("null",  0),
-    
-#if LATER
-	new constant_t("ue_access_read",  UE_ACCESS_READ),
-	new constant_t("ue_access_write", UE_ACCESS_WRITE),
-	new constant_t("ue_access_all",   UE_ACCESS_ALL),
-    
-	new constant_t("ue_pe_offset",              UE_PE_OFFSET),
-	new constant_t("ue_imagebase",              UE_IMAGEBASE),
-	new constant_t("ue_oep",                    UE_OEP),
-	new constant_t("ue_sizeofimage",            UE_SIZEOFIMAGE),
-	new constant_t("ue_sizeofheaders",          UE_SIZEOFHEADERS),
-	new constant_t("ue_sizeofoptionalheader",   UE_SIZEOFOPTIONALHEADER),
-	new constant_t("ue_sectionalignment",       UE_SECTIONALIGNMENT),
-	new constant_t("ue_importtableaddress",     UE_IMPORTTABLEADDRESS),
-	new constant_t("ue_importtablesize",        UE_IMPORTTABLESIZE),
-	new constant_t("ue_resourcetableaddress",   UE_RESOURCETABLEADDRESS),
-	new constant_t("ue_resourcetablesize",      UE_RESOURCETABLESIZE),
-	new constant_t("ue_exporttableaddress",     UE_EXPORTTABLEADDRESS),
-	new constant_t("ue_exporttablesize",        UE_EXPORTTABLESIZE),
-	new constant_t("ue_tlstableaddress",        UE_TLSTABLEADDRESS),
-	new constant_t("ue_tlstablesize",           UE_TLSTABLESIZE),
-	new constant_t("ue_relocationtableaddress", UE_RELOCATIONTABLEADDRESS),
-	new constant_t("ue_relocationtablesize",    UE_RELOCATIONTABLESIZE),
-	new constant_t("ue_timedatestamp",          UE_TIMEDATESTAMP),
-	new constant_t("ue_sectionnumber",          UE_SECTIONNUMBER),
-	new constant_t("ue_checksum",               UE_CHECKSUM),
-	new constant_t("ue_subsystem",              UE_SUBSYSTEM),
-	new constant_t("ue_characteristics",        UE_CHARACTERISTICS),
-	new constant_t("ue_numberofrvaandsizes",    UE_NUMBEROFRVAANDSIZES),
-	new constant_t("ue_sectionname",            UE_SECTIONNAME),
-	new constant_t("ue_sectionvirtualoffset",   UE_SECTIONVIRTUALOFFSET),
-	new constant_t("ue_sectionvirtualsize",     UE_SECTIONVIRTUALSIZE),
-	new constant_t("ue_sectionrawoffset",       UE_SECTIONRAWOFFSET),
-	new constant_t("ue_sectionrawsize",         UE_SECTIONRAWSIZE),
-	new constant_t("ue_sectionflags",           UE_SECTIONFLAGS),
-    
-	new constant_t("ue_ch_breakpoint",              UE_CH_BREAKPOINT),
-	new constant_t("ue_ch_singlestep",              UE_CH_SINGLESTEP),
-	new constant_t("ue_ch_accessviolation",         UE_CH_ACCESSVIOLATION),
-	new constant_t("ue_ch_illegalinstruction",      UE_CH_ILLEGALINSTRUCTION),
-	new constant_t("ue_ch_noncontinuableexception", UE_CH_NONCONTINUABLEEXCEPTION),
-	new constant_t("ue_ch_arrayboundsexception",    UE_CH_ARRAYBOUNDSEXCEPTION),
-	new constant_t("ue_ch_floatdenormaloperand",    UE_CH_FLOATDENORMALOPERAND),
-	new constant_t("ue_ch_floatdevidebyzero",       UE_CH_FLOATDEVIDEBYZERO),
-	new constant_t("ue_ch_integerdevidebyzero",     UE_CH_INTEGERDEVIDEBYZERO),
-	new constant_t("ue_ch_integeroverflow",         UE_CH_INTEGEROVERFLOW),
-	new constant_t("ue_ch_privilegedinstruction",   UE_CH_PRIVILEGEDINSTRUCTION),
-	new constant_t("ue_ch_pageguard",               UE_CH_PAGEGUARD),
-	new constant_t("ue_ch_everythingelse",          UE_CH_EVERYTHINGELSE),
-	new constant_t("ue_ch_createthread",            UE_CH_CREATETHREAD),
-	new constant_t("ue_ch_exitthread",              UE_CH_EXITTHREAD),
-	new constant_t("ue_ch_createprocess",           UE_CH_CREATEPROCESS),
-	new constant_t("ue_ch_exitprocess",             UE_CH_EXITPROCESS),
-	new constant_t("ue_ch_loaddll",                 UE_CH_LOADDLL),
-	new constant_t("ue_ch_unloaddll",               UE_CH_UNLOADDLL),
-	new constant_t("ue_ch_outputdebugstring",       UE_CH_OUTPUTDEBUGSTRING),
-    
-	new constant_t("ue_on_lib_load",   UE_ON_LIB_LOAD),
-	new constant_t("ue_on_lib_unload", UE_ON_LIB_UNLOAD),
-	new constant_t("ue_on_lib_all",    UE_ON_LIB_ALL)
-#endif
-};
 
         public OllyLang(IServiceProvider services, IProcessorArchitecture arch)
         {
             this.services = services;
             this.arch = arch;
-            this.script = new OllyScript(this);
+            this.Script = new OllyScript(this);
 
             #region Initialize command array
             commands["add"] = DoADD;
@@ -731,8 +396,328 @@ namespace Reko.ImageLoaders.OdbgScript
 #endif
         }
 
+
+        void SoftwareCallback() { OnBreakpoint(eBreakpointType.PP_INT3BREAK); }
+        void HardwareCallback() { OnBreakpoint(eBreakpointType.PP_HWBREAK); }
+        void MemoryCallback()   { OnBreakpoint(eBreakpointType.PP_MEMBREAK); }
+        void EXECJMPCallback()  { DoSTI(); }
+
+        public struct callback_t
+        {
+            public uint call;
+            public bool returns_value;
+            public Var.etype return_type;
+        }
+
+        List<callback_t> callbacks = new List<callback_t>();
+        Var callback_return;
+
+        //bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result);
+
+        Dictionary<eCustomException, string> CustomHandlerLabels = new Dictionary<eCustomException, string>();
+        Dictionary<eCustomException, Debugger.fCustomHandlerCallback> CustomHandlerCallbacks = new Dictionary<eCustomException, Debugger.fCustomHandlerCallback>();
+
+        //void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId);
+
+        //static void __stdcall CHC_BREAKPOINT(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_BREAKPOINT); }
+        //static void __stdcall CHC_SINGLESTEP(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_SINGLESTEP); }
+        //static void __stdcall CHC_ACCESSVIOLATION(object  ExceptionData)         { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ACCESSVIOLATION); }
+        //static void __stdcall CHC_ILLEGALINSTRUCTION(object  ExceptionData)      { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ILLEGALINSTRUCTION); }
+        //static void __stdcall CHC_NONCONTINUABLEEXCEPTION(object  ExceptionData) { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_NONCONTINUABLEEXCEPTION); }
+        //static void __stdcall CHC_ARRAYBOUNDSEXCEPTION(object  ExceptionData)    { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ARRAYBOUNDSEXCEPTION); }
+        //static void __stdcall CHC_FLOATDENORMALOPERAND(object  ExceptionData)    { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_FLOATDENORMALOPERAND); }
+        //static void __stdcall CHC_FLOATDEVIDEBYZERO(object  ExceptionData)       { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_FLOATDEVIDEBYZERO); }
+        //static void __stdcall CHC_INTEGERDEVIDEBYZERO(object  ExceptionData)     { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_INTEGERDEVIDEBYZERO); }
+        //static void __stdcall CHC_INTEGEROVERFLOW(object  ExceptionData)         { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_INTEGEROVERFLOW); }
+        //static void __stdcall CHC_PRIVILEGEDINSTRUCTION(object  ExceptionData)   { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_PRIVILEGEDINSTRUCTION); }
+        //static void __stdcall CHC_PAGEGUARD(object  ExceptionData)               { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_PAGEGUARD); }
+        //static void __stdcall CHC_EVERYTHINGELSE(object  ExceptionData)          { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EVERYTHINGELSE); }
+        //static void __stdcall CHC_CREATETHREAD(object  ExceptionData)            { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_CREATETHREAD); }
+        //static void __stdcall CHC_EXITTHREAD(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EXITTHREAD); }
+        //static void __stdcall CHC_CREATEPROCESS(object  ExceptionData)           { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_CREATEPROCESS); }
+        //static void __stdcall CHC_EXITPROCESS(object  ExceptionData)             { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EXITPROCESS); }
+        //static void __stdcall CHC_LOADDLL(object  ExceptionData)                 { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_LOADDLL); }
+        //static void __stdcall CHC_UNLOADDLL(object  ExceptionData)               { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_UNLOADDLL); }
+        //static void __stdcall CHC_OUTPUTDEBUGSTRING(object  ExceptionData)       { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_OUTPUTDEBUGSTRING); }
+
+        string Label_AutoFixIATEx = "";
+        //static void __stdcall Callback_AutoFixIATEx(object fIATPointer);
+
+        Dictionary<eLibraryEvent, Dictionary<string, string>> LibraryBreakpointLabels = //<library path, label name>
+            new Dictionary<eLibraryEvent, Dictionary<string, string>>();
+        Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback> LibraryBreakpointCallbacks =
+            new Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback>();
+
+        //void LBPC_TRAMPOLINE(const LOAD_DLL_DEBUG_INFO* SpecialDBG, eLibraryEvent bpxType);
+
+        //static void __stdcall LBPC_LOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG)   { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_LOAD); }
+        //static void __stdcall LBPC_UNLOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG) { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_UNLOAD); }
+        //static void __stdcall LBPC_ALL(const LOAD_DLL_DEBUG_INFO* SpecialDBG)    { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_ALL); }
+
+        private enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
+
+        public class register_t
+        {
+            public register_t(string n, eContextData i, byte s, byte o)
+            {
+                this.name = n; this.id = i; this.size = s; this.offset = o;
+            }
+            public readonly string name;
+            public readonly eContextData id;
+            public readonly byte size;
+            public readonly byte offset;
+        }
+
+        public class constant_t
+        {
+            public constant_t(string name, byte value) { this.name = name; this.value = value; }
+            public readonly string name;
+            public readonly byte value;
+        }
+
+        public class eflags_t
+        {
+            public ulong dw;
+
+            public class Flagomizer
+            {
+                private eflags_t eflags_t;
+
+                public Flagomizer(eflags_t eflags_t)
+                {
+                    this.eflags_t = eflags_t;
+                }
+
+                public bool CF { get { return ((eflags_t.dw & 1) != 0); } set { if (value) eflags_t.dw |= 1u; else eflags_t.dw &= ~1u; } }
+                public bool PF { get { return ((eflags_t.dw & 4) != 0); } set { if (value) eflags_t.dw |= 4u; else eflags_t.dw &= ~4u; } }
+                public bool AF { get { return ((eflags_t.dw & 16) != 0); } set { if (value) eflags_t.dw |= 16u; else eflags_t.dw &= ~16u; } }
+                public bool ZF { get { return ((eflags_t.dw & 32) != 0); } set { if (value) eflags_t.dw |= 32u; else eflags_t.dw &= ~32u; } }
+                public bool SF { get { return ((eflags_t.dw & 64) != 0); } set { if (value) eflags_t.dw |= 64u; else eflags_t.dw &= ~64u; } }
+                public bool TF { get { return ((eflags_t.dw & 128) != 0); } set { if (value) eflags_t.dw |= 128u; else eflags_t.dw &= ~128u; } }
+                public bool IF { get { return ((eflags_t.dw & 256) != 0); } set { if (value) eflags_t.dw |= 256u; else eflags_t.dw &= ~256u; } }
+                public bool DF { get { return ((eflags_t.dw & 512) != 0); } set { if (value) eflags_t.dw |= 512u; else eflags_t.dw &= ~512u; } }
+                public bool OF { get { return ((eflags_t.dw & 1024) != 0); } set { if (value) eflags_t.dw |= 1024u; else eflags_t.dw &= ~1024u; } }
+            }
+            public readonly Flagomizer bits;
+
+            public eflags_t()
+            {
+                bits = new Flagomizer(this);
+            }
+        }
+
+
+        // Commands that can be executed
+        Dictionary<string, Func<string[], bool>> commands = new Dictionary<string, Func<string[], bool>>();
+
+        int EOB_row, EOE_row;
+        bool bInternalBP;
+        ulong tickcount_startup;
+        byte[] search_buffer;
+
+        // Pseudo-flags to emulate CMP
+        bool zf;
+        bool cf;
+
+        // Cursor for REF / (NEXT)REF function
+        //int adrREF;
+        //int curREF;
+
+        void SetCMPFlags(int diff)
+        {
+            zf = (diff == 0);
+            cf = (diff < 0);
+        }
+
+        // Commands
+        bool GetByte(string op, ref byte value)
+        {
+            if (GetRulong(op, out rulong temp) && temp <= Byte.MaxValue)
+            {
+                value = (byte) temp;
+                return true;
+            }
+            else 
+            {
+                value = 0;
+                return false;
+            }
+        }
+
+        // Save / Restore Breakpoints
+        /*
+        t_hardbpoint hwbp_t[4];
+        t_sorted sortedsoftbp_t;
+        t_bpoint* softbp_t;
+        */
+
+        //uint saved_bp;
+        //uint alloc_bp;
+        //bool AllocSwbpMem(uint tmpSizet);
+        //void FreeBpMem();
+
+        // Save / Restore Registers
+        public class t_reg_backup
+        {
+            public bool loaded;
+            public rulong[] regs = new rulong[17];
+            public ulong eflags;
+            public uint threadid;
+            public uint script_pos;
+        }
+        t_reg_backup reg_backup = new t_reg_backup();
+
+        //cache for GMEXP
+        List<t_export> tExportsCache = new List<t_export>();
+        //ulong exportsCacheAddr;
+
+        //cache for GMIMP
+        List<t_export> tImportsCache = new List<t_export>();
+        //ulong importsCacheAddr;
+    
+#if _WIN64
+
+    register_t [] registers = 
+    {
+	new register_t("rax",  eContextData.UE_RAX, 8, 0), new register_t("rbx",  eContextData.UE_RBX, 8, 0), new register_t("rcx",  eContextData.UE_RCX, 8, 0),
+	new register_t("rdx",  eContextData.UE_RDX, 8, 0), new register_t("rsi",  eContextData.UE_RSI, 8, 0), new register_t("rdi",  eContextData.UE_RDI, 8, 0),
+	new register_t("rbp",  eContextData.UE_RBP, 8, 0), new register_t("rsp",  eContextData.UE_RSP, 8, 0), new register_t("rip",  eContextData.UE_RIP, 8, 0),
+
+	new register_t("r8",   eContextData.UE_R8,  8, 0), new register_t("r9",   eContextData.UE_R9,  8, 0), new register_t("r10",  eContextData.UE_R10, 8, 0),
+	new register_t("r11",  eContextData.UE_R11, 8, 0), new register_t("r12",  eContextData.UE_R12, 8, 0), new register_t("r13",  eContextData.UE_R13, 8, 0),
+	new register_t("r14",  eContextData.UE_R14, 8, 0), new register_t("r15",  eContextData.UE_R15, 8, 0),
+
+	new register_t("dr0",  eContextData.UE_DR0, 8, 0), new register_t("dr1",  eContextData.UE_DR1, 8, 0), new register_t("dr2",  eContextData.UE_DR2, 8, 0),
+	new register_t("dr3",  eContextData.UE_DR3, 8, 0), new register_t("dr6",  eContextData.UE_DR6, 8, 0), new register_t("dr7",  eContextData.UE_DR7, 8, 0),
+
+	new register_t("eax",  eContextData.UE_RAX, 4, 0), new register_t("ebx",  eContextData.UE_RBX, 4, 0), new register_t("ecx",  eContextData.UE_RCX, 4, 0),
+	new register_t("edx",  eContextData.UE_RDX, 4, 0), new register_t("esi",  eContextData.UE_RSI, 4, 0), new register_t("edi",  eContextData.UE_RDI, 4, 0),
+	new register_t("ebp",  eContextData.UE_RBP, 4, 0), new register_t("esp",  eContextData.UE_RSP, 4, 0),
+
+	new register_t("r8d",  eContextData.UE_R8,  4, 0), new register_t("r9d",  eContextData.UE_R9,  4, 0), new register_t("r10d", eContextData.UE_R10, 4, 0),
+	new register_t("r11d", eContextData.UE_R11, 4, 0), new register_t("r12d", eContextData.UE_R12, 4, 0), new register_t("r13d", eContextData.UE_R13, 4, 0),
+	new register_t("r14d", eContextData.UE_R14, 4, 0), new register_t("r15d", eContextData.UE_R15, 4, 0),
+
+	new register_t("ax",   eContextData.UE_RAX, 2, 0), new register_t("bx",   eContextData.UE_RBX, 2, 0), new register_t("cx",   eContextData.UE_RCX, 2, 0),
+	new register_t("dx",   eContextData.UE_RDX, 2, 0), new register_t("si",   eContextData.UE_RSI, 2, 0), new register_t("di",   eContextData.UE_RDI, 2, 0),
+	new register_t("bp",   eContextData.UE_RBP, 2, 0), new register_t("sp",   eContextData.UE_RSP, 2, 0),
+
+	new register_t("r8w",  eContextData.UE_R8,  2, 0), new register_t("r9w",  eContextData.UE_R9,  2, 0), new register_t("r10w", eContextData.UE_R10, 2, 0),
+	new register_t("r11w", eContextData.UE_R11, 2, 0), new register_t("r12w", eContextData.UE_R12, 2, 0), new register_t("r13w", eContextData.UE_R13, 2, 0),
+	new register_t("r14w", eContextData.UE_R14, 2, 0), new register_t("r15w", eContextData.UE_R15, 2, 0),
+
+	new register_t("ah",   eContextData.UE_RAX, 1, 1), new register_t("bh",   eContextData.UE_RBX, 1, 1), new register_t("ch",   eContextData.UE_RCX, 1, 1),
+	new register_t("dh",   eContextData.UE_RDX, 1, 1),
+
+	new register_t("al",   eContextData.UE_RAX, 1, 0), new register_t("bl",   eContextData.UE_RBX, 1, 0), new register_t("cl",   eContextData.UE_RCX, 1, 0),
+	new register_t("dl",   eContextData.UE_RDX, 1, 0), new register_t("sil",  eContextData.UE_RSI, 1, 0), new register_t("dil",  eContextData.UE_RDI, 1, 0),
+	new register_t("bpl",  eContextData.UE_RBP, 1, 0), new register_t("spl",  eContextData.UE_RSP, 1, 0),
+
+	new register_t("r8b",  eContextData.UE_R8,  1, 0), new register_t("r9b",  eContextData.UE_R9,  1, 0), new register_t("r10b", eContextData.UE_R10, 1, 0),
+	new register_t("r11b", eContextData.UE_R11, 1, 0), new register_t("r12b", eContextData.UE_R12, 1, 0), new register_t("r13b", eContextData.UE_R13, 1, 0),
+	new register_t("r14b", eContextData.UE_R14, 1, 0), new register_t("r15b", eContextData.UE_R15, 1, 0),
+};
+
+#else
+
+        readonly register_t[] registers = new register_t[] 
+{
+	new register_t("eax", eContextData.UE_EAX, 4, 0), new register_t("ebx", eContextData.UE_EBX, 4, 0), new register_t("ecx", eContextData.UE_ECX, 4, 0),
+	new register_t("edx", eContextData.UE_EDX, 4, 0), new register_t("esi", eContextData.UE_ESI, 4, 0), new register_t("edi", eContextData.UE_EDI, 4, 0),
+	new register_t("ebp", eContextData.UE_EBP, 4, 0), new register_t("esp", eContextData.UE_ESP, 4, 0), new register_t("eip", eContextData.UE_EIP, 4, 0),
+
+	new register_t("dr0", eContextData.UE_DR0, 4, 0), new register_t("dr1", eContextData.UE_DR1, 4, 0), new register_t("dr2", eContextData.UE_DR2, 4, 0),
+	new register_t("dr3", eContextData.UE_DR3, 4, 0), new register_t("dr6", eContextData.UE_DR6, 4, 0), new register_t("dr7", eContextData.UE_DR7, 4, 0),
+
+	new register_t("ax", eContextData.UE_EAX, 2, 0), new register_t("bx", eContextData. UE_EBX, 2, 0), new register_t("cx", eContextData. UE_ECX, 2, 0),
+	new register_t("dx", eContextData.UE_EDX, 2, 0), new register_t("si", eContextData. UE_ESI, 2, 0), new register_t("di", eContextData. UE_EDI, 2, 0),
+	new register_t("bp", eContextData. UE_EBP, 2, 0), new register_t("sp", eContextData. UE_ESP, 2, 0),
+
+	new register_t("ah", eContextData. UE_EAX, 1, 1), new register_t("bh", eContextData. UE_EBX, 1, 1), new register_t("ch", eContextData. UE_ECX, 1, 1),
+	new register_t("dh", eContextData. UE_EDX, 1, 1),
+
+	new register_t("al", eContextData. UE_EAX, 1, 0), new register_t("bl", eContextData. UE_EBX, 1, 0), new register_t("cl", eContextData. UE_ECX, 1, 0),
+	new register_t("dl", eContextData. UE_EDX, 1, 0)
+};
+
+#endif
+
+        readonly static string[] fpu_registers = { "st(0)", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)" };
+
+        readonly static string[] e_flags = { "!cf", "!pf", "!af", "!zf", "!sf", "!df", "!of" };
+
+        readonly static constant_t[] constants =
+{
+	new constant_t("true",  1),
+	new constant_t("false", 0),
+	new constant_t("null",  0),
+    
+#if LATER
+	new constant_t("ue_access_read",  UE_ACCESS_READ),
+	new constant_t("ue_access_write", UE_ACCESS_WRITE),
+	new constant_t("ue_access_all",   UE_ACCESS_ALL),
+    
+	new constant_t("ue_pe_offset",              UE_PE_OFFSET),
+	new constant_t("ue_imagebase",              UE_IMAGEBASE),
+	new constant_t("ue_oep",                    UE_OEP),
+	new constant_t("ue_sizeofimage",            UE_SIZEOFIMAGE),
+	new constant_t("ue_sizeofheaders",          UE_SIZEOFHEADERS),
+	new constant_t("ue_sizeofoptionalheader",   UE_SIZEOFOPTIONALHEADER),
+	new constant_t("ue_sectionalignment",       UE_SECTIONALIGNMENT),
+	new constant_t("ue_importtableaddress",     UE_IMPORTTABLEADDRESS),
+	new constant_t("ue_importtablesize",        UE_IMPORTTABLESIZE),
+	new constant_t("ue_resourcetableaddress",   UE_RESOURCETABLEADDRESS),
+	new constant_t("ue_resourcetablesize",      UE_RESOURCETABLESIZE),
+	new constant_t("ue_exporttableaddress",     UE_EXPORTTABLEADDRESS),
+	new constant_t("ue_exporttablesize",        UE_EXPORTTABLESIZE),
+	new constant_t("ue_tlstableaddress",        UE_TLSTABLEADDRESS),
+	new constant_t("ue_tlstablesize",           UE_TLSTABLESIZE),
+	new constant_t("ue_relocationtableaddress", UE_RELOCATIONTABLEADDRESS),
+	new constant_t("ue_relocationtablesize",    UE_RELOCATIONTABLESIZE),
+	new constant_t("ue_timedatestamp",          UE_TIMEDATESTAMP),
+	new constant_t("ue_sectionnumber",          UE_SECTIONNUMBER),
+	new constant_t("ue_checksum",               UE_CHECKSUM),
+	new constant_t("ue_subsystem",              UE_SUBSYSTEM),
+	new constant_t("ue_characteristics",        UE_CHARACTERISTICS),
+	new constant_t("ue_numberofrvaandsizes",    UE_NUMBEROFRVAANDSIZES),
+	new constant_t("ue_sectionname",            UE_SECTIONNAME),
+	new constant_t("ue_sectionvirtualoffset",   UE_SECTIONVIRTUALOFFSET),
+	new constant_t("ue_sectionvirtualsize",     UE_SECTIONVIRTUALSIZE),
+	new constant_t("ue_sectionrawoffset",       UE_SECTIONRAWOFFSET),
+	new constant_t("ue_sectionrawsize",         UE_SECTIONRAWSIZE),
+	new constant_t("ue_sectionflags",           UE_SECTIONFLAGS),
+    
+	new constant_t("ue_ch_breakpoint",              UE_CH_BREAKPOINT),
+	new constant_t("ue_ch_singlestep",              UE_CH_SINGLESTEP),
+	new constant_t("ue_ch_accessviolation",         UE_CH_ACCESSVIOLATION),
+	new constant_t("ue_ch_illegalinstruction",      UE_CH_ILLEGALINSTRUCTION),
+	new constant_t("ue_ch_noncontinuableexception", UE_CH_NONCONTINUABLEEXCEPTION),
+	new constant_t("ue_ch_arrayboundsexception",    UE_CH_ARRAYBOUNDSEXCEPTION),
+	new constant_t("ue_ch_floatdenormaloperand",    UE_CH_FLOATDENORMALOPERAND),
+	new constant_t("ue_ch_floatdevidebyzero",       UE_CH_FLOATDEVIDEBYZERO),
+	new constant_t("ue_ch_integerdevidebyzero",     UE_CH_INTEGERDEVIDEBYZERO),
+	new constant_t("ue_ch_integeroverflow",         UE_CH_INTEGEROVERFLOW),
+	new constant_t("ue_ch_privilegedinstruction",   UE_CH_PRIVILEGEDINSTRUCTION),
+	new constant_t("ue_ch_pageguard",               UE_CH_PAGEGUARD),
+	new constant_t("ue_ch_everythingelse",          UE_CH_EVERYTHINGELSE),
+	new constant_t("ue_ch_createthread",            UE_CH_CREATETHREAD),
+	new constant_t("ue_ch_exitthread",              UE_CH_EXITTHREAD),
+	new constant_t("ue_ch_createprocess",           UE_CH_CREATEPROCESS),
+	new constant_t("ue_ch_exitprocess",             UE_CH_EXITPROCESS),
+	new constant_t("ue_ch_loaddll",                 UE_CH_LOADDLL),
+	new constant_t("ue_ch_unloaddll",               UE_CH_UNLOADDLL),
+	new constant_t("ue_ch_outputdebugstring",       UE_CH_OUTPUTDEBUGSTRING),
+    
+	new constant_t("ue_on_lib_load",   UE_ON_LIB_LOAD),
+	new constant_t("ue_on_lib_unload", UE_ON_LIB_UNLOAD),
+	new constant_t("ue_on_lib_all",    UE_ON_LIB_ALL)
+#endif
+};
+
+
         public Debugger Debugger { get; set; }
         public IHost Host { get; set; }
+        public OllyScript Script { get; set; }
 
         public void Dispose()
         {
@@ -818,12 +803,12 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromFile(string scriptFilename, string curDir)
         {
-            script.LoadFile(scriptFilename, curDir);
+            Script.LoadFile(scriptFilename, curDir);
         }
 
         public void LoadFromString(string scriptString, string curDir)
         {
-            script.LoadScriptFromString(scriptString, curDir);
+            Script.LoadScriptFromString(scriptString, curDir);
         }
 
         public void Run()
@@ -844,23 +829,23 @@ namespace Reko.ImageLoaders.OdbgScript
             ignore_exceptions = false;
             stepcount = 0;
 
-            while (!resumeDebuggee && script.IsLoaded && script_running)
+            while (!resumeDebuggee && Script.IsLoaded && script_running)
             {
                 if (tickcount_startup == 0)
                     tickcount_startup = Helper.MyTickCount();
 
-                script_pos = (uint) script.NextCommandIndex((int)script_pos_next);
+                script_pos = (uint) Script.NextCommandIndex((int)script_pos_next);
 
                 // Check if script out of bounds
-                if (script_pos >= script.Lines.Count)
+                if (script_pos >= Script.Lines.Count)
                     return false;
 
-                var line = script.Lines[(int)script_pos];
+                var line = Script.Lines[(int)script_pos];
 
                 script_pos_next = script_pos + 1;
 
                 // Log line of code if enabled
-                if (script.Log)
+                if (Script.Log)
                 {
                     string logstr = "--> " + line.RawLine;
                     Host.TE_Log(logstr, Host.TS_LOG_COMMAND);
@@ -2094,7 +2079,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             Var ret = Var.Empty();
 
-            uint label = script.Labels[Label_AutoFixIATEx];
+            uint label = Script.Labels[Label_AutoFixIATEx];
             variables["$TE_ARG_1"] = Var.Create((rulong)fIATPointer);
             if (StepCallback(label, true, Var.etype.DW, ref ret))
                 return (object)ret.ToUInt64();

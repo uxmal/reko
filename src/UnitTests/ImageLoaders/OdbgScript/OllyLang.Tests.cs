@@ -58,8 +58,8 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private void Given_Script(string script)
         {
-            engine.script.Clear();
-            engine.script.LoadScriptFromString(script, ".");
+            engine.Script.Clear();
+            engine.Script.LoadScriptFromString(script, ".");
         }
 
         private void Given_Engine()

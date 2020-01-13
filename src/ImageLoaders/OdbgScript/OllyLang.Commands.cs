@@ -342,9 +342,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoBPGOTO(string[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && script.IsLabel(args[1]))
+            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && Script.IsLabel(args[1]))
             {
-                bpjumps[addr] = script.Labels[args[1]];
+                bpjumps[addr] = Script.Labels[args[1]];
                 return true;
             }
             return false;
@@ -606,7 +606,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoCALL(params string[] args)
         {
-            if (args.Length == 1 && script.IsLabel(args[0]))
+            if (args.Length == 1 && Script.IsLabel(args[0]))
             {
                 calls.Add(script_pos + 1);
                 return DoJMP(args);
@@ -933,9 +933,9 @@ rulong hwnd;
                     EOB_row = -1;
                     return true;
                 }
-                else if (script.IsLabel(args[0])) // Set label to go to
+                else if (Script.IsLabel(args[0])) // Set label to go to
                 {
-                    EOB_row = (int)script.Labels[args[0]];
+                    EOB_row = (int)Script.Labels[args[0]];
                     return true;
                 }
             }
@@ -951,9 +951,9 @@ rulong hwnd;
                     EOE_row = -1;
                     return true;
                 }
-                else if (script.IsLabel(args[0])) // Set label to go to
+                else if (Script.IsLabel(args[0])) // Set label to go to
                 {
-                    EOE_row = (int)script.Labels[args[0]];
+                    EOE_row = (int)Script.Labels[args[0]];
                     return true;
                 }
             }
@@ -975,9 +975,9 @@ rulong hwnd;
             if (args.Length == 0)
             {
                 uint first = script_pos + 1;
-                uint ende = (uint)script.NextCommandIndex((int)first);
+                uint ende = (uint)Script.NextCommandIndex((int)first);
 
-                if (ende > script.Lines.Count)
+                if (ende > Script.Lines.Count)
                 {
                     errorstr = "EXEC needs ENDE command!";
                     return false;
@@ -993,7 +993,7 @@ rulong hwnd;
 
                     for (uint i = first; i < ende; i++)
                     {
-                        string line = ResolveVarsForExec(script.Lines[(int)i].RawLine, true);
+                        string line = ResolveVarsForExec(Script.Lines[(int)i].RawLine, true);
                         if ((len = Host.AssembleEx(line, (pmemforexec + (uint)totallen))) == 0)
                         {
                             Host.TE_FreeMemory(pmemforexec);
@@ -2624,9 +2624,9 @@ string str = "";
 
         private bool DoJMP(string[] args)
         {
-            if (args.Length == 1 && script.IsLabel(args[0]))
+            if (args.Length == 1 && Script.IsLabel(args[0]))
             {
-                script_pos_next = script.Labels[args[0]];
+                script_pos_next = Script.Labels[args[0]];
                 return true;
             }
             return false;
