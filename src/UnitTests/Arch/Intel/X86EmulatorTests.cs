@@ -853,6 +853,23 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void X86Emu_rcl8()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Stc();
+                m.Mov(m.eax, 0x7FF08000);
+                m.Rcl(m.ah, 1);
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual("7FF00100", emu.ReadRegister(Registers.eax).ToString("X8"));
+            Assert.IsTrue((emu.Flags & X86Emulator.Cmask) != 0);
+        }
+
+        [Test]
         public void X86Emu_sar16()
         {
             Given_MsdosCode(m =>
@@ -917,7 +934,39 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(52, emu.ReadLeUInt16(Lin(0x800, 0x0020)));
         }
 
-        // stosb
+        [Test]
+        public void X86Emu_shr_16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.bp, 0xFFFF);
+                m.Shr(m.bp, 1);
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual(0x7FFF, emu.ReadRegister(Registers.bp));
+            Assert.AreEqual(X86Emulator.Cmask, emu.Flags);
+        }
+
+        [Test]
+        public void X86emu_X86Emu_indexed_memory_16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.bx, 0xFFF0);
+                m.Mov(m.di, 0x0020);
+                m.Db(0x8A, 0x01); // 8A01          MOV AL,[BX+DI]
+                m.Hlt();
+            });
+
+            emu.WriteByte(Lin(0x0800, 0x0010), 0x42);
+
+            emu.Start();
+
+            Assert.AreEqual(0x42, emu.ReadRegister(Registers.al));
+        }
     }
 }
 /*

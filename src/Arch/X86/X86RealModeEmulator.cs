@@ -22,6 +22,9 @@ using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Arch.X86
 {
@@ -52,7 +55,7 @@ namespace Reko.Arch.X86
             if (m.SegOverride == RegisterStorage.None)
                 segReg = m.DefaultSegment;
 
-            var off = GetEffectiveOffset(m);
+            var off = GetEffectiveOffset(m) & 0xFFFF;
             var seg = (ushort)ReadRegister(segReg);
             return ToLinear(seg, off);
         }
@@ -125,6 +128,49 @@ namespace Reko.Arch.X86
             var ip = (ushort) Pop(PrimitiveType.Word16);
             var cs = (ushort) Pop(PrimitiveType.Word16);
             InstructionPointer = Address.SegPtr(cs, ip);
+        }
+
+        protected override void TraceState(X86Instruction instr)
+        {
+            Debug.Print("{0}  ", string.Join("  ",
+                new[] { "AX", "BX", "CX", "DX", "SP", "BP", "SI", "DI" }
+                .Select(DumpReg)));
+            Debug.Print("{0}   {1}", string.Join("  ",
+                new[] {"DS", "ES", "SS", "CS", "IP" }
+                .Select(DumpReg)),
+                DumpFlags());
+            Debug.Print("{0}", DumpInstr(instr));
+            Debug.Print("-t");
+            Debug.Print("");
+            Debug.Print("");
+        }
+
+        private string DumpReg(string regName)
+        {
+            var regValue = this.ReadRegister(arch.GetRegister(regName.ToLower()));
+            return $"{regName}={regValue:X4}";
+        }
+
+        private string DumpFlags()
+        {
+            string D(uint mask, string t, string f)
+            {
+                return (Flags & mask) != 0 ? t : f;
+            }
+            return string.Join(" ",
+                D(Omask, "OV", "NV"),
+                D(Dmask, "UP", "DN"),
+                D(Dmask, "EI", "EI"),
+                D(Smask, "PL", "NG"),
+                D(Zmask, "ZR", "NZ"),
+                D(Cmask, "--", "--"),
+                D(Cmask, "--", "--"),
+                D(Cmask, "CY", "NC"));
+        }
+
+        private string DumpInstr(X86Instruction instr)
+        {
+            return $"{instr.Address} XX {instr.ToString().ToUpper()}";
         }
 
         private static ulong ToLinear(uint seg, uint off)

@@ -45,7 +45,7 @@ namespace Reko.Arch.X86
         public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
 
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") { Level = TraceLevel.Warning };
+        protected static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") { Level = TraceLevel.Warning };
         public static readonly (uint value, uint hibit)[] masks = new(uint, uint)[]{
                 (0, 0),
                 (0x0000_00FFu,  0x0000_0080),
@@ -152,6 +152,11 @@ namespace Reko.Arch.X86
         {
             if (trace.Level != TraceLevel.Verbose)
                 return;
+            TraceState(dasm.Current);
+        }
+
+        protected virtual void TraceState(X86Instruction current)
+        {
             Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
         }
 
@@ -317,10 +322,6 @@ namespace Reko.Arch.X86
             throw new InvalidOperationException();
         }
 
-
-
-
-
         protected Address XferTarget(MachineOperand op)
         {
             if (op is AddressOperand a)
@@ -340,7 +341,6 @@ namespace Reko.Arch.X86
             }
         }
 
-
         private void Adc(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
@@ -353,7 +353,7 @@ namespace Reko.Arch.X86
 
             uint ov = ((~(l ^ r) & (l ^ sum)) & 0x80000000u) >> 20;
             Flags =
-                (newCy) |       // Carry
+                (newCy) |                   // Carry
                 (sum == 0 ? 1u << 6 : 0u) | // Zero
                 (ov)                        // Overflow
                 ;
@@ -370,10 +370,10 @@ namespace Reko.Arch.X86
             Write(dst, sum);
             uint ov = ((~(l ^ r) & (l ^ sum)) & mask.hibit) >> 20;
             Flags =
-                (r > sum ? 1u : 0u) |     // Carry
-                (sum == 0 ? 1u << 6 : 0u) | // Zero
+                (r > sum ? 1u : 0u) |                       // Carry
+                (sum == 0 ? 1u << 6 : 0u) |                 // Zero
                 ((sum & mask.hibit) != 0 ? Smask : 0u) |    // Sign
-                (ov)                        // Overflow
+                (ov)                                        // Overflow
                 ;
         }
 
@@ -425,7 +425,7 @@ namespace Reko.Arch.X86
             Write(dst, (r >> 1) & mask.value);
             Flags =
                 ((r & ~1) == 0 ? Zmask : 0u) |  // Zero
-                ((r & 1) != 0 ? Cmask : 0u);
+                ((r & 1) != 0 ? Cmask : 0u);    // Carry
         }
 
         private void Rol(MachineOperand dst, MachineOperand src)
@@ -465,8 +465,8 @@ namespace Reko.Arch.X86
             TWord r = (TWord)((l >> sh) & mask.value);
             Write(dst, r);
             Flags =
-                (r == 0 ? Zmask : 0u) |      // Zero
-                ((r & mask.hibit) != 0 ? Smask : 0u);    // Sign
+                (r == 0 ? Zmask : 0u) |                 // Zero
+                ((r & mask.hibit) != 0 ? Smask : 0u);   // Sign
         }
 
         private void Shl(MachineOperand dst, MachineOperand src)
@@ -477,9 +477,8 @@ namespace Reko.Arch.X86
             TWord r = (l << sh) & mask.value;
             Write(dst, r);
             Flags =
-                (r == 0 ? Zmask : 0u) |      // Zero
-                ((r & mask.hibit) != 0 ? Smask : 0u);    // Sign
-
+                (r == 0 ? Zmask : 0u) |                 // Zero
+                ((r & mask.hibit) != 0 ? Smask : 0u);   // Sign
         }
 
         private void Shr(MachineOperand dst, MachineOperand src)
@@ -490,8 +489,9 @@ namespace Reko.Arch.X86
             TWord r = (l >> sh) & mask.value;
             Write(dst, r);
             Flags =
-                (r == 0 ? Zmask : 0u) |      // Zero
-                ((r & mask.hibit) != 0 ? Smask : 0u);    // Sign
+                ((l >> (sh-1)) & 1) |                   // Carry
+                (r == 0 ? Zmask : 0u) |                 // Zero
+                ((r & mask.hibit) != 0 ? Smask : 0u);   // Sign
         }
 
         protected abstract void Call(MachineOperand op);
@@ -517,10 +517,10 @@ namespace Reko.Arch.X86
             TWord diff = (l + r) & mask.value;
             uint ov = ((~(l ^ r) & (l ^ diff)) & mask.hibit) >> 20;
             Flags =
-                (l < diff ? 1u : 0u) |     // Carry
-                (diff == 0 ? Zmask : 0u) | // Zero
-                ((diff & mask.hibit) != 0 ? Smask : 0u) |    // Sign
-                (ov)                        // Overflow
+                (l < diff ? 1u : 0u) |                      // Carry
+                (diff == 0 ? Zmask : 0u) |                  // Zero
+                ((diff & mask.hibit) != 0 ? Smask : 0u) |   // Sign
+                (ov)                                        // Overflow
                 ;
         }
 
@@ -542,7 +542,6 @@ namespace Reko.Arch.X86
                 (ov)                        // Overflow
                 ;
         }
-
 
         private void And(MachineOperand dst, MachineOperand src)
         {
