@@ -435,7 +435,7 @@ namespace Reko.UnitTests.Arch.i8051
         [Test]
         public void I8051_rw_push_acc()
         {
-            Given_Bytes(0xC0, 0x90); // push\t[00E0] = alias for ACC.
+            Given_Bytes(0xC0, 0xE0); // push\t[00E0] = alias for ACC.
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
                 "1|L--|SP = SP + 0x01",

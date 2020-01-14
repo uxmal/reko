@@ -407,7 +407,9 @@ namespace Reko.Arch.i8051
                     else if (mem.DirectAddress is Address addr)
                     {
                         var alias = AliasedSpecialFunctionRegister(addr.ToUInt16());
-                        ea =  alias ?? addr;
+                        if (alias != null)
+                            return alias;
+                        ea =  addr;
                     }
                     else
                     {
