@@ -69,9 +69,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 It.IsAny<Constant>(),
                 It.IsAny<bool>()))
                 .Returns(new Func<Constant, bool, Address>((c, f) => Address.Ptr32((uint) c.ToUInt64())));
-            engine = new OllyLang(null, arch.Object);
-            engine.Host = host.Object;
-            engine.Debugger = new Debugger(emu.Object);
+            engine = new OllyLang(null, arch.Object)
+            {
+                Host = host.Object,
+                Debugger = new Debugger(emu.Object),
+            };
         }
 
         private void Given_ArchRegister(RegisterStorage reg)
@@ -235,6 +237,21 @@ namespace Reko.ImageLoaders.OdbgScript
 
             engine.Run();
             Assert.AreEqual("0800:0802", engine.variables["q"].Address.ToString());
+        }
+
+        [Test]
+        public void Ose_interpolate_variable()
+        {
+            Given_Engine();
+            Given_Script(
+                "var foo\r\n" +
+                "mov foo,0123:4567\r\n" +
+                "msg $\"foo: {foo}\"\r\n");
+            arch.Setup(a => a.MakeSegmentedAddress(It.IsAny<Constant>(), It.IsAny<Constant>()))
+                .Returns(Address.SegPtr(0x0123, 0x4567));
+            int x;
+            host.Setup(h => h.DialogMSG("foo: 0123:4567", out x));
+            engine.Run();
         }
     }
 

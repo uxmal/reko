@@ -335,7 +335,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 1)
             {
-                return callCommand(DoBPX, args[0], "1");
+                return CallCommand(DoBPX, args[0], "1");
             }
             return false;
         }
@@ -649,15 +649,15 @@ rulong hwnd;
                     return false;
 
                 Var v1, v2;
-                if (GetAddress(args[0], out Address addr1) && GetRulong(args[1], out ulong dw))
-                {
-                    v1 = Var.Create(addr1.ToLinear());
-                    v2 = Var.Create(dw);
-                }
-                else if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
                 {
                     v1 = Var.Create(dw1);
                     v2 = Var.Create(dw2);
+                }
+                else if (GetAddress(args[0], out Address addr1) && GetRulong(args[1], out ulong dw))
+                {
+                    v1 = Var.Create(addr1.ToLinear());
+                    v2 = Var.Create(dw);
                 }
                 else if (GetFloat(args[0], out double flt1) && GetFloat(args[1], out double flt2))
                 {
@@ -964,7 +964,7 @@ rulong hwnd;
         {
             if (args.Length == 1 && GetString(args[0], out string to_eval))
             {
-                variables["$RESULT"] = Var.Create(ResolveVarsForExec(to_eval, false));
+                variables["$RESULT"] = Var.Create(InterpolateVariables(to_eval, false));
                 return true;
             }
             return false;
@@ -993,7 +993,7 @@ rulong hwnd;
 
                     for (uint i = first; i < ende; i++)
                     {
-                        string line = ResolveVarsForExec(Script.Lines[(int)i].RawLine, true);
+                        string line = InterpolateVariables(Script.Lines[(int)i].RawLine, true);
                         if ((len = Host.AssembleEx(line, (pmemforexec + (uint)totallen))) == 0)
                         {
                             Host.TE_FreeMemory(pmemforexec);
@@ -1146,7 +1146,7 @@ rulong hwnd;
                     {
                         if (Helper.MaskedCompare(membuf, i, bytes, mask, bytecount))
                         {
-                            variables["$RESULT"] = Var.Create(addr + (ulong)i);
+                            variables["$RESULT"] = Var.Create(addr + i);
                             break;
                         }
                     }
@@ -1542,7 +1542,7 @@ rulong hwnd;
                 variables["$RESULT"] = Var.Create(0);
                 while (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo) && variables["$RESULT"].ToUInt64() == 0)
                 {
-                    if (!callCommand(DoFIND, addr.ToString(), args[0]))
+                    if (!CallCommand(DoFIND, addr.ToString(), args[0]))
                         return false;
                     addr = MemInfo.BaseAddress + MemInfo.RegionSize;
                 }
@@ -1565,7 +1565,7 @@ rulong hwnd;
                 if ((size == 0 && Host.TE_FreeMemory(addr)) || (size != 0 && Host.TE_FreeMemory(addr, size)))
                 {
                     variables["$RESULT"] = Var.Create(1);
-                    unregMemBlock(addr);
+                    UnregMemBlock(addr);
                 }
                 return true;
             }
@@ -1766,7 +1766,7 @@ rulong addr;
                             cur = cur.Remove(8);
                         if (cur.ToLowerInvariant() == mod)
                         {
-                            return callCommand(DoGMI, Helper.rul2hexstr((rulong) modules[i].modBaseAddr), args[1]);
+                            return CallCommand(DoGMI, Helper.rul2hexstr((rulong) modules[i].modBaseAddr), args[1]);
                         }
                     }
                 }
@@ -2918,7 +2918,7 @@ string filename;
         {
             if (args.Length == 3)
             {
-                return callCommand(DoMOV, ('[' + args[0] + ']'), ('[' + args[1] + ']'), args[2]);
+                return CallCommand(DoMOV, ('[' + args[0] + ']'), ('[' + args[1] + ']'), args[2]);
             }
             return false;
         }
@@ -2930,10 +2930,9 @@ string filename;
         /// <returns></returns>
         private bool DoMOV(string[] args)
         {
-            rulong maxsize = 0;
-
             if (args.Length >= 2 && args.Length <= 3)
             {
+                rulong maxsize = 0;
                 if (args.Length == 3 && !GetRulong(args[2], out maxsize))
                     return false;
 
@@ -3605,7 +3604,7 @@ string param;
                             if (callbacks.Last().returns_value)
                             {
                                 variables["$TEMP"] = Var.Create(0);
-                                if (callCommand(DoMOV, "$TEMP", args[0]))
+                                if (CallCommand(DoMOV, "$TEMP", args[0]))
                                 {
                                     callback_return = variables["$TEMP"];
                                     variables.Remove("$TEMP");
@@ -3804,9 +3803,9 @@ rulong dw1, dw2;
                 switch (args.Length)
                 {
                 case 2:
-                    return callCommand(DoSCMP, (args[0]).ToLowerInvariant(), (args[1]).ToLowerInvariant());
+                    return CallCommand(DoSCMP, args[0].ToLowerInvariant(), args[1].ToLowerInvariant());
                 case 3:
-                    return callCommand(DoSCMP, (args[0]).ToLowerInvariant(), (args[1]).ToLowerInvariant(), args[2]);
+                    return CallCommand(DoSCMP, args[0].ToLowerInvariant(), args[1].ToLowerInvariant(), args[2]);
                 }
             }
             return false;

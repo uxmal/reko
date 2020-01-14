@@ -68,14 +68,14 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private readonly IServiceProvider services;
         private readonly IProcessorArchitecture arch;
-        public  bool debuggee_running;
-        public  bool script_running;
-        public  bool run_till_return;
-        public  bool return_to_usercode;
-        private  uint script_pos, script_pos_next;
-        public Dictionary<string, Var> variables = new Dictionary<string,Var>(); // Variables that exist
-        private Dictionary<rulong, uint> bpjumps = new Dictionary<rulong,uint>();  // Breakpoint Auto Jumps 
-        private List<uint> calls = new List<uint>();         // Call/Ret in script
+        private readonly List<uint> calls = new List<uint>();         // Call/Ret in script
+        public readonly Dictionary<string, Var> variables = new Dictionary<string, Var>(); // Variables that exist
+        private readonly Dictionary<rulong, uint> bpjumps = new Dictionary<rulong, uint>();  // Breakpoint Auto Jumps 
+        public bool debuggee_running;
+        public bool script_running;
+        public bool run_till_return;
+        public bool return_to_usercode;
+        private uint script_pos, script_pos_next;
 
         // Debugger state
         private bool resumeDebuggee;
@@ -83,7 +83,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private int stepcount;
 
         //allocated memory blocks to free at end of script
-        private List<t_dbgmemblock> tMemBlocks = new List<t_dbgmemblock>();
+        private readonly List<t_dbgmemblock> tMemBlocks = new List<t_dbgmemblock>();
 
         //last breakpoint reason
         private rulong break_reason;
@@ -396,7 +396,6 @@ namespace Reko.ImageLoaders.OdbgScript
 #endif
         }
 
-
         void SoftwareCallback() { OnBreakpoint(eBreakpointType.PP_INT3BREAK); }
         void HardwareCallback() { OnBreakpoint(eBreakpointType.PP_HWBREAK); }
         void MemoryCallback()   { OnBreakpoint(eBreakpointType.PP_MEMBREAK); }
@@ -409,13 +408,13 @@ namespace Reko.ImageLoaders.OdbgScript
             public Var.etype return_type;
         }
 
-        List<callback_t> callbacks = new List<callback_t>();
-        Var callback_return;
+        private readonly List<callback_t> callbacks = new List<callback_t>();
+        private Var callback_return;
 
         //bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result);
 
-        Dictionary<eCustomException, string> CustomHandlerLabels = new Dictionary<eCustomException, string>();
-        Dictionary<eCustomException, Debugger.fCustomHandlerCallback> CustomHandlerCallbacks = new Dictionary<eCustomException, Debugger.fCustomHandlerCallback>();
+        private readonly Dictionary<eCustomException, string> CustomHandlerLabels = new Dictionary<eCustomException, string>();
+        private readonly Dictionary<eCustomException, Debugger.fCustomHandlerCallback> CustomHandlerCallbacks = new Dictionary<eCustomException, Debugger.fCustomHandlerCallback>();
 
         //void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId);
 
@@ -440,12 +439,12 @@ namespace Reko.ImageLoaders.OdbgScript
         //static void __stdcall CHC_UNLOADDLL(object  ExceptionData)               { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_UNLOADDLL); }
         //static void __stdcall CHC_OUTPUTDEBUGSTRING(object  ExceptionData)       { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_OUTPUTDEBUGSTRING); }
 
-        string Label_AutoFixIATEx = "";
+        private string Label_AutoFixIATEx = "";
         //static void __stdcall Callback_AutoFixIATEx(object fIATPointer);
 
-        Dictionary<eLibraryEvent, Dictionary<string, string>> LibraryBreakpointLabels = //<library path, label name>
+        private Dictionary<eLibraryEvent, Dictionary<string, string>> LibraryBreakpointLabels = //<library path, label name>
             new Dictionary<eLibraryEvent, Dictionary<string, string>>();
-        Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback> LibraryBreakpointCallbacks =
+        private Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback> LibraryBreakpointCallbacks =
             new Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback>();
 
         //void LBPC_TRAMPOLINE(const LOAD_DLL_DEBUG_INFO* SpecialDBG, eLibraryEvent bpxType);
@@ -510,14 +509,14 @@ namespace Reko.ImageLoaders.OdbgScript
         // Commands that can be executed
         Dictionary<string, Func<string[], bool>> commands = new Dictionary<string, Func<string[], bool>>();
 
-        int EOB_row, EOE_row;
-        bool bInternalBP;
-        ulong tickcount_startup;
-        byte[] search_buffer;
+        private int EOB_row, EOE_row;
+        private bool bInternalBP;
+        private ulong tickcount_startup;
+        private byte[] search_buffer;
 
         // Pseudo-flags to emulate CMP
-        bool zf;
-        bool cf;
+        private bool zf;
+        private bool cf;
 
         // Cursor for REF / (NEXT)REF function
         //int adrREF;
@@ -574,7 +573,7 @@ namespace Reko.ImageLoaders.OdbgScript
         //cache for GMIMP
         List<t_export> tImportsCache = new List<t_export>();
         //ulong importsCacheAddr;
-    
+
 #if _WIN64
 
     register_t [] registers = 
@@ -620,25 +619,25 @@ namespace Reko.ImageLoaders.OdbgScript
 
 #else
 
-        readonly register_t[] registers = new register_t[] 
-{
-	new register_t("eax", eContextData.UE_EAX, 4, 0), new register_t("ebx", eContextData.UE_EBX, 4, 0), new register_t("ecx", eContextData.UE_ECX, 4, 0),
-	new register_t("edx", eContextData.UE_EDX, 4, 0), new register_t("esi", eContextData.UE_ESI, 4, 0), new register_t("edi", eContextData.UE_EDI, 4, 0),
-	new register_t("ebp", eContextData.UE_EBP, 4, 0), new register_t("esp", eContextData.UE_ESP, 4, 0), new register_t("eip", eContextData.UE_EIP, 4, 0),
+        readonly register_t[] registers = new register_t[]
+        {
+            new register_t("eax", eContextData.UE_EAX, 4, 0), new register_t("ebx", eContextData.UE_EBX, 4, 0), new register_t("ecx", eContextData.UE_ECX, 4, 0),
+            new register_t("edx", eContextData.UE_EDX, 4, 0), new register_t("esi", eContextData.UE_ESI, 4, 0), new register_t("edi", eContextData.UE_EDI, 4, 0),
+            new register_t("ebp", eContextData.UE_EBP, 4, 0), new register_t("esp", eContextData.UE_ESP, 4, 0), new register_t("eip", eContextData.UE_EIP, 4, 0),
 
-	new register_t("dr0", eContextData.UE_DR0, 4, 0), new register_t("dr1", eContextData.UE_DR1, 4, 0), new register_t("dr2", eContextData.UE_DR2, 4, 0),
-	new register_t("dr3", eContextData.UE_DR3, 4, 0), new register_t("dr6", eContextData.UE_DR6, 4, 0), new register_t("dr7", eContextData.UE_DR7, 4, 0),
+            new register_t("dr0", eContextData.UE_DR0, 4, 0), new register_t("dr1", eContextData.UE_DR1, 4, 0), new register_t("dr2", eContextData.UE_DR2, 4, 0),
+            new register_t("dr3", eContextData.UE_DR3, 4, 0), new register_t("dr6", eContextData.UE_DR6, 4, 0), new register_t("dr7", eContextData.UE_DR7, 4, 0),
 
-	new register_t("ax", eContextData.UE_EAX, 2, 0), new register_t("bx", eContextData. UE_EBX, 2, 0), new register_t("cx", eContextData. UE_ECX, 2, 0),
-	new register_t("dx", eContextData.UE_EDX, 2, 0), new register_t("si", eContextData. UE_ESI, 2, 0), new register_t("di", eContextData. UE_EDI, 2, 0),
-	new register_t("bp", eContextData. UE_EBP, 2, 0), new register_t("sp", eContextData. UE_ESP, 2, 0),
+            new register_t("ax", eContextData.UE_EAX, 2, 0), new register_t("bx", eContextData. UE_EBX, 2, 0), new register_t("cx", eContextData. UE_ECX, 2, 0),
+            new register_t("dx", eContextData.UE_EDX, 2, 0), new register_t("si", eContextData. UE_ESI, 2, 0), new register_t("di", eContextData. UE_EDI, 2, 0),
+            new register_t("bp", eContextData. UE_EBP, 2, 0), new register_t("sp", eContextData. UE_ESP, 2, 0),
 
-	new register_t("ah", eContextData. UE_EAX, 1, 1), new register_t("bh", eContextData. UE_EBX, 1, 1), new register_t("ch", eContextData. UE_ECX, 1, 1),
-	new register_t("dh", eContextData. UE_EDX, 1, 1),
+            new register_t("ah", eContextData. UE_EAX, 1, 1), new register_t("bh", eContextData. UE_EBX, 1, 1), new register_t("ch", eContextData. UE_ECX, 1, 1),
+            new register_t("dh", eContextData. UE_EDX, 1, 1),
 
-	new register_t("al", eContextData. UE_EAX, 1, 0), new register_t("bl", eContextData. UE_EBX, 1, 0), new register_t("cl", eContextData. UE_ECX, 1, 0),
-	new register_t("dl", eContextData. UE_EDX, 1, 0)
-};
+            new register_t("al", eContextData. UE_EAX, 1, 0), new register_t("bl", eContextData. UE_EBX, 1, 0), new register_t("cl", eContextData. UE_ECX, 1, 0),
+            new register_t("dl", eContextData. UE_EDX, 1, 0)
+        };
 
 #endif
 
@@ -723,7 +722,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (search_buffer != null)
                 DoENDSEARCH();
-            freeMemBlocks();
+            FreeMemBlocks();
         }
 
         public void InitGlobalVariables()
@@ -748,7 +747,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void Reset()
         {
-            freeMemBlocks();
+            FreeMemBlocks();
             variables.Clear();
             bpjumps.Clear();
             calls.Clear();
@@ -847,19 +846,14 @@ namespace Reko.ImageLoaders.OdbgScript
                 // Log line of code if enabled
                 if (Script.Log)
                 {
-                    string logstr = "--> " + line.RawLine;
-                    Host.TE_Log(logstr, Host.TS_LOG_COMMAND);
+                    Host.TE_Log("--> " + line.RawLine, Host.TS_LOG_COMMAND);
                 }
-
 
                 // Find command and execute it
                 Func<string[], bool> cmd = line.CommandPtr;
-                if (cmd == null)
+                if (cmd == null && commands.TryGetValue(line.Command, out var it))
                 {
-                    if (commands.TryGetValue(line.Command, out var it))
-                    {
-                        line.CommandPtr = cmd = it;
-                    }
+                    line.CommandPtr = cmd = it;
                 }
 
                 bool result = false;
@@ -1269,7 +1263,13 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             value = null;
 
-            if (IsVariable(op))
+            if (GetAddress(op, out Address addr))
+            {
+                value = addr.ToString();
+                //$TODO: hex8forexec?
+                return true;
+            }
+            else if (IsVariable(op))
             {
                 Var  v = variables[op];
                 if (v.IsString())
@@ -1302,6 +1302,12 @@ namespace Reko.ImageLoaders.OdbgScript
             else if (Helper.is_dec(op))
             {
                 value = Helper.rul2hexstr(Helper.decstr2rul(op.Substring(0, op.Length - 1))).ToUpperInvariant();
+                return true;
+            }
+            else if (Helper.IsInterpolatedString(op))
+            {
+                value = Helper.UnquoteInterpolatedString(op);
+                value = InterpolateVariables(value, hex8forExec);
                 return true;
             }
             else if (Helper.IsStringLiteral(op))
@@ -1767,10 +1773,17 @@ namespace Reko.ImageLoaders.OdbgScript
             return (IsVariable(s) || Helper.IsMemoryAccess(s) || is_register(s) || is_flag(s) || is_floatreg(s));
         }
 
-        string ResolveVarsForExec(string @in, bool hex8forExec)
+
+        /// <summary>
+        /// Given a string literal, interpolates values.
+        /// </summary>
+        /// <param name="intrString"></param>
+        /// <param name="hex8forExec"></param>
+        /// <returns></returns>
+        string InterpolateVariables(string intrString, bool hex8forExec)
         {
-            string ti = Helper.trim(@in);
-            bool in_var = false;
+            string ti = intrString.Trim();
+            bool insideVar = false;
 
             var sb = new StringBuilder();
             var varname = new StringBuilder();
@@ -1778,20 +1791,19 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (ti[i] == '{')
                 {
-                    in_var = true;
+                    insideVar = true;
                 }
                 else if (ti[i] == '}')
                 {
-                    in_var = false;
-                    string value;
-                    GetAnyValue(varname.ToString(), out value, hex8forExec);
+                    insideVar = false;
+                    GetAnyValue(varname.ToString(), out string value, hex8forExec);
                     sb.Append(value);
                     varname.Clear();
                 }
                 else
                 {
                     char ch = ti[i];
-                    if (in_var)
+                    if (insideVar)
                         varname.Append(ch);
                     else
                         sb.Append(ch);
@@ -1841,7 +1853,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return Helper.trim(command.ToString());
         }
 
-        bool callCommand(Func<string[], bool> command, params string[] args)
+        private bool CallCommand(Func<string[], bool> command, params string[] args)
         {
             return command(args);
         }
@@ -1864,7 +1876,7 @@ namespace Reko.ImageLoaders.OdbgScript
             regBlockToFree(block);
         }
 
-        bool unregMemBlock(rulong address)
+        private bool UnregMemBlock(rulong address)
         {
             for (int i = 0; i < tMemBlocks.Count; i++)
             {
@@ -1877,7 +1889,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool freeMemBlocks()
+        private bool FreeMemBlocks()
         {
             for (int i = 0; i < tMemBlocks.Count; i++)
             {
@@ -1888,7 +1900,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        bool SaveRegisters(bool stackToo)
+        private bool SaveRegisters(bool stackToo)
         {
             for (int i = 0; i < registers.Length; i++)
             {
@@ -2067,8 +2079,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId)
         {
-            string it;
-            if (CustomHandlerLabels.TryGetValue(ExceptionId, out it))
+            if (CustomHandlerLabels.TryGetValue(ExceptionId, out string it))
             {
                 //variables["$TE_ARG_1"] = (rulong)ExceptionData;
                 DoCALL(it);

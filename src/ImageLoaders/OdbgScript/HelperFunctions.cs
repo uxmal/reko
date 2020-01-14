@@ -298,6 +298,13 @@ namespace Reko.ImageLoaders.OdbgScript
             return (len > 2 && s[0] == '"' && s.IndexOf('"', 1) == len - 1);
         }
 
+        public static bool IsInterpolatedString(string s)
+        {
+            return s.Length >= 3 &&
+                s.StartsWith("$\"") &&
+                s.EndsWith("\"");
+        }
+
         public static bool IsMemoryAccess(string s)
         {
             int len = s.Length;
@@ -365,17 +372,20 @@ namespace Reko.ImageLoaders.OdbgScript
             return (s.Length >= 2 && s[0] == cstart && s[s.Length - 1] == cend);
         }
 
+        public static string UnquoteInterpolatedString(string s)
+        {
+            return s.Substring(2, s.Length - 3);
+        }
+
         public static string UnquoteString(string s, char cstart, char cend = '\0')
         {
-            string result;
-
             if (cend == 0)
                 cend = cstart;
 
             if (!IsQuotedString(s, cstart, cend))
                 return s;
 
-            result = s.Substring(1, s.Length - 2);
+            var result = s.Substring(1, s.Length - 2);
             if (cstart == '"')
             {
                 result = result.Replace("\\r\\n", "\r\n");
