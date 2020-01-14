@@ -9,25 +9,10 @@ namespace Reko.ImageLoaders.OdbgScript
     using rulong = System.UInt64;
     using System.Text;
     using System.Linq;
+    using Reko.Core.Lib;
 
     public static class Helper
     {
-
-        // #pragma once
-
-        //#include "HelperFunctions.h"
-
-        //#include <algorithm>
-        //#include <cstdlib>
-        //#include "globals.h"
-
-        //#include "Debug.h"
-
-        //using std::string;
-        //using std::reverse;
-        //using std::min;
-        //using std::max;
-
         // Number conversion
 
         const string digits = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
@@ -143,16 +128,16 @@ namespace Reko.ImageLoaders.OdbgScript
 #endif
         }
 
+        /// <summary>
+        /// Masks off the high part of the given value.
+        /// </summary>
         public static rulong resize(rulong dw, int size)
         {
-               throw new NotImplementedException();
-#if LATER
-            if (size > 0 && size < sizeof(dw))
+            if (0 <= size && size < sizeof(ulong))
             {
-                dw &= ((1 << (size * 8)) - 1);
+                dw &= Bits.Mask(0, size * 8);
             }
             return dw;
-#endif
         }
 
         public static rulong round_up(rulong dw, rulong val)

@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public uint script_pos; //Registred at script pos
         public bool autoclean; //On script restart/change
 
-        public rulong free_at_ip; //To free memory block used in ASM commands
+        public Address free_at_ip; //To free memory block used in ASM commands
 
         //Optional actions to do
         public bool restore_registers;
@@ -89,7 +89,8 @@ namespace Reko.ImageLoaders.OdbgScript
         private rulong break_reason;
         private rulong break_memaddr;
         private rulong pmemforexec;
-        private rulong membpaddr, membpsize;
+        private Address membpaddr;
+        private ulong membpsize;
         //private bool require_addonaction;
         //private bool back_to_debugloop;
         private string errorstr;
@@ -780,7 +781,7 @@ namespace Reko.ImageLoaders.OdbgScript
             break_reason = 0;
 
             pmemforexec = 0;
-            membpaddr = 0;
+            membpaddr = null;
             membpsize = 0;
 
             reg_backup.loaded = false;
@@ -893,7 +894,7 @@ namespace Reko.ImageLoaders.OdbgScript
         bool ProcessAddonAction()
         {
             bool restore_registers = false;
-            rulong ip = Debugger.GetContextData(eContextData.UE_CIP);
+            Address ip = Debugger.InstructionPointer;
             for (int i = 0; i < tMemBlocks.Count; )
             {
                 if (tMemBlocks[i].free_at_ip == ip)
@@ -1263,13 +1264,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             value = null;
 
-            if (GetAddress(op, out Address addr))
-            {
-                value = addr.ToString();
-                //$TODO: hex8forexec?
-                return true;
-            }
-            else if (IsVariable(op))
+            if (IsVariable(op))
             {
                 Var  v = variables[op];
                 if (v.IsString())
@@ -1285,6 +1280,12 @@ namespace Reko.ImageLoaders.OdbgScript
                         value = Helper.rul2hexstr(v.ToUInt64()).ToUpperInvariant();
                     return true;
                 }
+            }
+            else if (op.Contains(':') && GetAddress(op, out Address addr))
+            {
+                value = addr.ToString();
+                //$TODO: hex8forexec?
+                return true;
             }
             else if (Helper.is_float(op))
             {
@@ -1327,9 +1328,9 @@ namespace Reko.ImageLoaders.OdbgScript
             else if (GetRulong(op, out ulong dw))
             {
                 if (hex8forExec)
-                    value = '0' + Helper.toupper(Helper.rul2hexstr(dw));
+                    value = '0' + Helper.rul2hexstr(dw).ToUpperInvariant();
                 else
-                    value = Helper.toupper(Helper.rul2hexstr(dw));
+                    value = Helper.rul2hexstr(dw).ToUpperInvariant();
                 return true;
             }
             return false;
@@ -1430,6 +1431,8 @@ namespace Reko.ImageLoaders.OdbgScript
         public bool GetAddress(string op, out Address value)
         {
             value = null;
+            if (op.StartsWith("["))
+                return false;
             int iColon = op.IndexOf(':');
             if (iColon > 0)
             {
@@ -1506,10 +1509,8 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
-                if (GetRulong(tmp, out ulong src))
+                if (GetAddress(tmp, out Address ea))
                 {
-                    Debug.Assert(src != 0);
-                    var ea = Address.Ptr32((uint) src);
                     if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                         throw new AccessViolationException();
                     bool ret = segment.MemoryArea.TryReadLeUInt32(ea, out uint dw);

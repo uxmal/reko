@@ -28,7 +28,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
@@ -41,7 +40,7 @@ namespace Reko.ImageLoaders.OdbgScript
         int AssembleEx(string asm, ulong addr);
         bool DialogASK(string title, out string returned);
         bool DialogMSG(string msg, out int input);
-        bool DialogMSGYN(string msg, out DialogResult input);
+        bool DialogMSGYN(string msg, out int dialogResult);
         string Disassemble(byte[] buffer, Address addr, out int opsize);
         MachineInstruction DisassembleEx(Address addr);
         ulong FindHandle(ulong var, string sClassName, ulong x, ulong y);
@@ -60,8 +59,8 @@ namespace Reko.ImageLoaders.OdbgScript
         string TE_GetTargetPath();
         string TE_GetOutputPath();
         int LengthDisassemble(byte[] membuf, int i);
-        int LengthDisassembleBackEx(ulong addr);
-        uint LengthDisassembleEx(ulong addr);
+        int LengthDisassembleBackEx(Address addr);
+        uint LengthDisassembleEx(Address addr);
         void TE_Log(string message);
         void TE_Log(string message, object p);
         void MsgError(string message);
@@ -100,7 +99,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        public virtual bool DialogMSGYN(string msg, out DialogResult input)
+        public virtual bool DialogMSGYN(string msg, out int dialogResult)
         {
             throw new NotImplementedException();
         }
@@ -187,7 +186,7 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual uint LengthDisassembleEx(ulong addr)
+        public virtual uint LengthDisassembleEx(Address addr)
         {
             throw new NotImplementedException();
         }
@@ -291,7 +290,7 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual int LengthDisassembleBackEx(ulong addr)
+        public virtual int LengthDisassembleBackEx(Address addr)
         {
             throw new NotImplementedException();
         }

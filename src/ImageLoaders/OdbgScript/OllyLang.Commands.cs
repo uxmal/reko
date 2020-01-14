@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
@@ -196,7 +196,6 @@ namespace Reko.ImageLoaders.OdbgScript
                         totallen += len;
                     }
                 }
-
                 variables["$RESULT"] = Var.Create(totallen);
                 variables["$RESULT_1"] = Var.Create(lines.Count);
                 return true;
@@ -229,7 +228,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 else if (GetAddress(args[0], out Address addr))
                 {
-                    Debugger.DeleteBPX(addr.ToLinear());
+                    Debugger.DeleteBPX(addr);
                     return true;
                 }
             }
@@ -255,7 +254,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     return DoBDA();
                 }
-                else if (GetRulong(args[0], out ulong addr))
+                else if (GetAddress(args[0], out Address addr))
                 {
                     Debugger.DisableBPX(addr);
                     return true;
@@ -306,7 +305,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 1 && GetAddress(args[0], out Address addr))
             {
-                Debugger.SetBPX(addr.ToLinear(), Ue.UE_BREAKPOINT, SoftwareCallback);
+                Debugger.SetBPX(addr, Ue.UE_BREAKPOINT, SoftwareCallback);
                 return true;
             }
             return false;
@@ -396,7 +395,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             string typestr = "x";
 
-            if (args.Length >= 1 && args.Length <= 2 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 1 && args.Length <= 2 && GetAddress(args[0], out Address addr))
             {
                 if (args.Length == 2 && (!GetString(args[1], out typestr) || typestr.Length != 1))
                     return false;
@@ -462,10 +461,11 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 0)
             {
-                if (membpaddr != 0 && membpsize != 0)
+                if (membpaddr != null && membpsize != 0)
                 {
                     Debugger.RemoveMemoryBPX(membpaddr, membpsize);
-                    membpaddr = membpsize = 0;
+                    membpaddr = null;
+                    membpsize = 0;
                 }
                 return true;
             }
@@ -474,9 +474,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoBPRM(string[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetRulong(args[1], out ulong size))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong size))
             {
-                if (membpaddr != 0 && membpsize != 0)
+                if (membpaddr != null && membpsize != 0)
                     DoBPMC();
 
                 if (Debugger.SetMemoryBPXEx(addr, size, Ue.UE_MEMORY_READ, true, MemoryCallback))
@@ -491,9 +491,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoBPWM(string[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetRulong(args[1], out ulong size))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong size))
             {
-                if (membpaddr != 0 && membpsize != 0)
+                if (membpaddr != null && membpsize != 0)
                     DoBPMC();
 
                 if (Debugger.SetMemoryBPXEx(addr, size, Ue.UE_MEMORY_WRITE, true, MemoryCallback))
@@ -1006,10 +1006,10 @@ rulong hwnd;
                     //return at ENDE
                     script_pos_next = ende;
 
-                    rulong eip = Debugger.GetContextData(eContextData.UE_CIP);
+                    Address eip = Debugger.InstructionPointer;
 
                     // Add jump to original EIP
-                    string jmpstr = "jmp " + Helper.rul2hexstr(eip);
+                    string jmpstr = "jmp " + eip.ToString();
                     rulong jmpaddr = pmemforexec + (uint)totallen;
 
                     len = Host.AssembleEx(jmpstr, pmemforexec + (uint)totallen);
@@ -1108,7 +1108,7 @@ rulong hwnd;
             else if (GetString(args[1], out finddata))
             {
                 var v = Var.Create(finddata);
-                finddata = v.to_bytes();
+                finddata = v.ToHexString();
                 if (!v.IsBuf)
                     finddata = finddata.Replace("3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
             }
@@ -1478,7 +1478,7 @@ rulong hwnd;
                 else if (GetString(args[1], out finddata))
                 {
                     Var v = Var.Create(finddata);
-                    finddata = v.to_bytes();
+                    finddata = v.ToHexString();
                     if (!v.IsBuf)
                         Helper.ReplaceString(ref finddata, "3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
                 }
@@ -1653,13 +1653,13 @@ rulong hwnd;
 
         private bool DoGCI(string[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr))
             {
                 var param = args[1].ToUpperInvariant();
                 if (param == "COMMAND")
                 {
                     int size = 0;
-                    var instr = Host.DisassembleEx(Address.Ptr32((uint) addr));
+                    var instr = Host.DisassembleEx(addr);
                     if (size != 0)
                         variables["$RESULT"] = Var.Create(instr.ToString());
                     else
@@ -2217,7 +2217,7 @@ string str;
 
         private bool DoGO(string[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetAddress(args[0], out Address addr))
             {
                 Debugger.SetBPX(addr, Ue.UE_SINGLESHOOT, SoftwareCallback);
                 bInternalBP = true;
@@ -2243,7 +2243,7 @@ string str;
 
                 index--;
 
-                param = Helper.toupper(args[2]);
+                param = args[2].ToUpperInvariant();
 
                 errorstr = "Unsupported command!";
                 return false;
@@ -2473,7 +2473,6 @@ string str = "";
         private bool DoGSTR(string[] args)
         {
             rulong size = 2;
-
             if (args.Length >= 1 && args.Length <= 2 && GetAddress(args[0], out Address addr))
             {
                 if (args.Length == 2 && !GetRulong(args[1], out size))
@@ -2853,7 +2852,7 @@ string filename;
 
                 if (GetRulong(args[0], out ulong dw))
                 {
-                    @out = Helper.toupper(Helper.rul2hexstr(dw, sizeof(rulong) * 2));
+                    @out = Helper.rul2hexstr(dw, sizeof(rulong) * 2).ToUpperInvariant();
                 }
                 else if (GetFloat(args[0], out double flt))
                 {
@@ -2894,7 +2893,7 @@ string filename;
                 Var v = variables[args[0]];
 
                 string line = "";
-                string data = v.to_bytes();
+                string data = v.ToHexString();
 
                 for (int i = 0; i < v.size; i++)
                 {
@@ -2974,7 +2973,7 @@ string filename;
                         // DW to DW/FLT var
                         if (maxsize == 0)
                             maxsize = sizeof(rulong);
-                        // dw = Helper.resize(dw, (int)maxsize);
+                        dw = Helper.resize(dw, (int)maxsize);
                         v = Var.Create(dw);
                         v.size = (int)maxsize;
                     }
@@ -3004,9 +3003,9 @@ string filename;
                         {
                             //rulong oldval, newval;
                             rulong oldval = Debugger.GetContextData(reg.id);
-                            throw new NotImplementedException("oldval &= ~(((1 << (reg.size * 8)) - 1) << (reg.offset * 8));");
-                            //newval = resize(dw, reg.size) << (reg.offset * 8);
-                            //dw = oldval | newval;
+                            oldval &= ~Bits.Mask(reg.offset * 8, reg.size * 8);
+                            var newval = Helper.resize(dw, reg.size) << (reg.offset * 8);
+                            dw = oldval | newval;
                         }
                         return Debugger.SetContextData(reg.id, dw);
                     }
@@ -3123,14 +3122,14 @@ string filename;
         {
             if (args.Length == 1 && GetString(args[0], out string msg))
             {
-                if (Host.DialogMSGYN(msg, out DialogResult input))
+                if (Host.DialogMSGYN(msg, out int input))
                 {
                     switch (input)
                     {
-                    case DialogResult.Cancel:
+                    case 0:
                         variables["$RESULT"] = Var.Create(2);
                         return Pause();
-                    case DialogResult.OK:
+                    case 1:
                         variables["$RESULT"] = Var.Create(1);
                         break;
                     default:
@@ -3323,21 +3322,20 @@ string param;
 
         private bool DoPREOP(string[] args)
         {
-            rulong addr = 0;
-
             if (args.Length >= 0 && args.Length <= 1)
             {
-                if (args.Length == 1 && !GetRulong(args[0], out addr))
+                Address addr = null;
+                if (args.Length == 1 && !GetAddress(args[0], out addr))
                     return false;
                 else if (args.Length == 0)
-                    addr = Debugger.GetContextData(eContextData.UE_CIP);
+                    addr = Debugger.InstructionPointer;
 
                 variables["$RESULT"] = Var.Create(0);
 
                 int prevsize = Host.LengthDisassembleBackEx(addr);
                 if (prevsize != 0)
                 {
-                    variables["$RESULT"] = Var.Create(addr - (rulong)prevsize);
+                    variables["$RESULT"] = Var.Create(addr - prevsize);
                 }
                 return true;
             }
@@ -3851,6 +3849,9 @@ rulong dw1, dw2;
             return false;
         }
 
+        /// <summary>
+        /// Step over
+        /// </summary>
         private bool DoSTO(string[] args)
         {
             if (args.Length == 0)
