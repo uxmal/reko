@@ -19,6 +19,7 @@
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -29,7 +30,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         private readonly IProcessorArchitecture arch;
         private readonly byte[] rawImage;
         private readonly Address addrLoad;
-        private List<object> subsections;
+        private List<Subsection> subsections;
 
         public CodeViewLoader(IProcessorArchitecture arch, byte[] rawImage, Address addrLoad)
         {
@@ -114,23 +115,20 @@ namespace Reko.ImageLoaders.MzExe.CodeView
 
         public class PublicSymbol
         {
-
             public string name;
-            public ushort offset;
-            public ushort segment;
+            public Address addr;
             public uint typeidx;
 
-            public PublicSymbol(ushort offset, ushort segment, uint typeidx, string name)
+            public PublicSymbol(Address addr, uint typeidx, string name)
             {
-                this.offset = offset;
-                this.segment = segment;
+                this.addr = addr;
                 this.typeidx = typeidx;
                 this.name = name;
             }
 
             public override string ToString()
             {
-                return String.Format("<PublicSymbol \'{0}\', seg 0x{1:X4} ofs 0x{2:X4} type {3}>", this.name, this.segment, this.offset, this.typeidx);
+                return String.Format("<PublicSymbol \'{0}\', addr 0x{1} type {2}>", this.name, this.addr, this.typeidx);
             }
         }
 
@@ -146,21 +144,18 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             public sstPublics(SST sst, object module, byte[] data)
                 : base(sst, module, data)
             {
-                //using (var fo = open("pub", "wb")) {
-                //    fo.write(data);
-                //}
                 var syms = new List<PublicSymbol>();
 
                 var rdr = new LeImageReader(data);
                 while (rdr.IsValid)
                 {
-                    //var _tup_1 = @struct.unpack_from("<HHHB", data, dofs);
-                    var ofs = rdr.ReadLeUInt16();
+                    var off = rdr.ReadLeUInt16();
                     var seg = rdr.ReadLeUInt16();
                     var typeidx = rdr.ReadLeUInt16();
                     var namelen = rdr.ReadByte();
                     var name = Encoding.ASCII.GetString(data, (int) rdr.Offset, namelen);
-                    syms.Add(new PublicSymbol(ofs, seg, typeidx, name));
+                    rdr.Offset += namelen;
+                    syms.Add(new PublicSymbol(Address.SegPtr(seg, off), typeidx, name));
                 }
                 this.symbols = syms;
             }
@@ -214,17 +209,34 @@ namespace Reko.ImageLoaders.MzExe.CodeView
 
         public Dictionary<Address, ImageSymbol> LoadSymbols()
         {
-            throw new NotImplementedException();
+            var dict = new Dictionary<Address, ImageSymbol>();
+            var list = new List<(Address, PublicSymbol)>();
+            foreach (var sym in this.subsections
+                .OfType<sstPublics>()
+                .SelectMany(sp => sp.symbols))
+            {
+                var addr = Address.SegPtr(
+                        (ushort) (sym.addr.Selector.Value + this.addrLoad.Selector),
+                        (uint) sym.addr.Offset);
+                dict[addr] = ImageSymbol.Procedure(this.arch, addr, sym.name);
+                list.Add((addr, sym));
+            }
+            foreach (var (a, s) in list.OrderBy(tu => tu.Item1))
+            {
+                Debug.Print("{0} {2:X6}:{1}", a, s.name, s.typeidx);
+            }
+            return dict;
         }
 
         /// <summary>
         /// Read the CodeView subsection directory
         /// </summary>
-        public static List<object> ReadSubsectionDirectory(LeImageReader fp, int dlfaBase)
+        /// https://github.com/JWasm/JWasm/blob/master/dbgcv.c
+        public static List<Subsection> ReadSubsectionDirectory(LeImageReader fp, int dlfaBase)
         {
             // get number of subsections
             var cdnt = fp.ReadLeUInt16();
-            var subsecs = new List<object>();
+            var subsecs = new List<Subsection>();
             foreach (var i in Enumerable.Range(0, cdnt))
             {
                 // read subsection headers
@@ -234,7 +246,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                 var cb = fp.ReadLeUInt16();
                 // read subsection data
                 var rdr = new LeImageReader(fp.Bytes, (uint)(lfoStart + dlfaBase));
-                var data = fp.ReadBytes(cb);
+                var data = rdr.ReadBytes(cb);
                 var sst = (SST) usst;
                 // mash the subsection into one
                 var FACTORY = new Dictionary<SST, Func<SST, ushort, byte[], Subsection>>
