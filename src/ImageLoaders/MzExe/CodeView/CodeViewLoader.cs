@@ -168,6 +168,64 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         }
 
         /// <summary>
+        /// Type subsection.
+        /// </summary>
+        private class CodeViewTypes : Subsection
+        {
+            // https://github.com/jbevain/cecil/blob/master/symbols/pdb/Microsoft.Cci.Pdb/CvInfo.cs
+            public CodeViewTypes(SST sst, object module, byte[] data) : base(sst, module, data)
+            {
+                var cvtl = new CodeViewTypeLoader(data);
+                var dict = cvtl.Load();
+                Console.WriteLine("== Type information for module {0}", module);
+                foreach (var item in dict.OrderBy(d => d.Key))
+                {
+                    Dump(item.Key, item.Value.Leaves);
+                }
+            }
+
+            private static void Dump(int index, byte[]data)
+            {
+                var rdr = new LeImageReader(data);
+                try
+                {
+                    var leaf = CodeViewTypeLoader.ReadLeaf(rdr);
+                    switch (leaf)
+                    {
+                    case object[] list:
+                        Console.Write("Type index #{0:X4}: ", index);
+                        Console.WriteLine(string.Join(Environment.NewLine, list));
+                        break;
+                    case LeafType lt:
+                        if (lt == LeafType.Nil)
+                            return;
+                        Console.Write("Type index #{0:X4}: ", index);
+                        Console.WriteLine(lt);
+                        break;
+                    default:
+                        Console.Write("Type index #{0:X4}: ", index);
+                        Console.WriteLine(leaf);
+                        break;
+                    }
+                }
+                catch
+                {
+                    for (int i = 0; i < data.Length; ++i)
+                    {
+                        if ((i % 16) == 0)
+                        {
+                            Console.WriteLine(" ");
+                            Console.Write("{0:X8}", i);
+                        }
+                        Console.Write("{1}{0:X2}", data[i], (i % 16) == 8 ? '-' : ' ');
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
+
+        /// <summary>
         /// Find Codeview pointer in the last 256 bytes of the EXE
         /// </summary>
         /// <param name="rawImage">The raw image.</param>
@@ -252,7 +310,8 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                 var FACTORY = new Dictionary<SST, Func<SST, ushort, byte[], Subsection>>
                 {
                     { SST.SST_MODULES, (s,m,d) => new sstModules(s,m,d)},
-                    { SST.SST_PUBLICS, (s,m,d) => new sstPublics(s,m,d)}
+                    { SST.SST_PUBLICS, (s,m,d) => new sstPublics(s,m,d)},
+                    { SST.SST_TYPE, (s,m,d) => new CodeViewTypes(s,m,d)}
                 };
                 if (FACTORY.ContainsKey(sst))
                 {

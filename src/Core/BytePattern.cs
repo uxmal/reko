@@ -34,8 +34,7 @@ namespace Reko.Core
             for (int i = 0; i < sBytes.Length; ++i)
             {
                 char c = sBytes[i];
-                byte b;
-                if (BytePattern.TryParseHexDigit(c, out b))
+                if (BytePattern.TryParseHexDigit(c, out byte b))
                 {
                     bb = bb | (b << shift);
                     shift -= 4;
