@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,5 +96,20 @@ namespace Reko.Core
         /// <param name="addrLoad">The address at which the program image is loaded.</param>
         /// <returns></returns>
 		public abstract RelocationResults Relocate(Program program, Address addrLoad);
+
+        /// <summary>
+        /// Express the fact that memory at address <paramref name="addr"/> was relocated
+        /// to segment <paramref>seg</paramref>.
+        /// </summary>
+        /// <param name="addr">The address of the relocation.</param>
+        /// <param name="seg">The relocated segment reference.</param>
+        /// <remarks>
+        /// This method only makes sense for image formats that support
+        /// x86-style segments.
+        /// </remarks>
+        public virtual ImageSegment AddSegmentReference(Address addr, ushort seg)
+        {
+            return null;
+        }
     }
 }

@@ -72,6 +72,7 @@ namespace Reko.ImageLoaders.OdbgScript
         bool WriteMemory(Address addr, ushort w);
         bool WriteMemory(Address addr, byte b);
         bool WriteMemory(Address target, double value);
+        void AddSegmentReference(Address addr, ushort seg);
     }
 
     public class Host : IHost
@@ -90,6 +91,11 @@ namespace Reko.ImageLoaders.OdbgScript
         public virtual ulong TE_AllocMemory(ulong size)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual void AddSegmentReference(Address addr, ushort seg)
+        {
+            loader.AddSegmentReference(addr, seg);
         }
 
         public virtual bool DialogMSG(string msg, out int input)

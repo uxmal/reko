@@ -77,15 +77,32 @@ namespace Reko.ImageLoaders.MzExe
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new MemoryArea(addrLoad, bytes);
-            segmentMap = new SegmentMap(addrLoad);
+            this.segmentMap = new SegmentMap(addrLoad);
             return new Program(segmentMap, arch, platform);
+        }
+
+        public override ImageSegment AddSegmentReference(Address addr, ushort seg)
+        {
+            return AddSegmentReference(addr.ToLinear(), seg);
+        }
+
+        private ImageSegment AddSegmentReference(ulong linAddr, ushort seg)
+        {
+            var relocations = imgLoaded.Relocations;
+            relocations.AddSegmentReference(linAddr, seg);
+
+            var addrSeg = Address.SegPtr(seg, 0);
+            return segmentMap.AddOverlappingSegment(
+                    seg.ToString("X4"),
+                    imgLoaded,
+                    addrSeg,
+                    AccessMode.ReadWriteExecute);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             SegmentMap imageMap = segmentMap;
             EndianImageReader rdr = new LeImageReader(ExeLoader.RawImage, ExeLoader.e_lfaRelocations);
-            var relocations = imgLoaded.Relocations;
             int i = ExeLoader.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
             var linBase = addrLoad.ToLinear();
@@ -97,14 +114,9 @@ namespace Reko.ImageLoaders.MzExe
 
                 ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector.Value);
                 imgLoaded.WriteLeUInt16(offset, seg);
-                relocations.AddSegmentReference(offset + linBase, seg);
 
-                var segment = new ImageSegment(
-                    seg.ToString("X4"),
-                    Address.SegPtr(seg, 0),
-                    imgLoaded,
-                    AccessMode.ReadWriteExecute);
-                segment = segmentMap.AddSegment(segment);
+                var segment = AddSegmentReference(offset + linBase, seg);
+
                 segments[segment.Address] = seg;
                 --i;
             }

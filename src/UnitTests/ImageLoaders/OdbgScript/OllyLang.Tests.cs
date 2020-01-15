@@ -23,10 +23,11 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.ImageLoaders.OdbgScript;
 using System;
 using System.Text;
 
-namespace Reko.ImageLoaders.OdbgScript
+namespace Reko.UnitTests.ImageLoaders.OdbgScript
 {
     [TestFixture]
     public class OllyLangTests
@@ -263,10 +264,10 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var v = Var.Create("#1234#");
             v = v.reverse();
-            Assert.AreEqual("3412", v.to_bytes());
+            Assert.AreEqual("3412", v.ToHexString());
             v = Var.Create("#123456#");
             v = v.reverse();
-            Assert.AreEqual("563412", v.to_bytes());
+            Assert.AreEqual("563412", v.ToHexString());
         }
 
         [Test]
@@ -274,7 +275,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var v = Var.Create("#1234#");
             v.resize(1);
-            Assert.AreEqual("12", v.to_bytes());
+            Assert.AreEqual("12", v.ToHexString());
         }
     }
 }

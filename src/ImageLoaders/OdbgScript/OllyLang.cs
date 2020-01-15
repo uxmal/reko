@@ -282,6 +282,9 @@ namespace Reko.ImageLoaders.OdbgScript
             commands["xchg"] = DoXCHG;
             commands["wrt"] = DoWRT;
             commands["wrta"] = DoWRTA;
+
+            commands["reko.addseg"] = RekoAddSegmentReference;
+
             #endregion
 #if LATER
             commands["error"] = DoError;

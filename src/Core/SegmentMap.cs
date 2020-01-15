@@ -113,6 +113,7 @@ namespace Reko.Core
                 segSplit.Size = (uint)(seg.Size - delta);
                 seg.Size = (uint)delta;
                 Segments.Add(segNew.Address, segSplit);
+                SegmentByLinAddress.Add(segNew.Address.ToLinear(), segSplit);
 
                 // And split any items in the segment
 

@@ -988,6 +988,10 @@
       <Project>{908b208a-becc-42ad-8253-a167ec40b20b}</Project>
       <Name>Dreamcast</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\Hpux\Hpux.csproj">
+      <Project>{3488c24e-187c-4477-a310-d2292892d257}</Project>
+      <Name>Hpux</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
       <Name>MacOS</Name>
@@ -1020,6 +1024,10 @@
       <Project>{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}</Project>
       <Name>SegaGenesis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\Switch\Switch.csproj">
+      <Project>{c1bae231-5a72-40d2-8b75-328849d58c0f}</Project>
+      <Name>Switch</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\SysV\SysV.csproj">
       <Project>{5307665E-072F-4398-872D-6550BE6FC1EB}</Project>
       <Name>SysV</Name>
@@ -1035,6 +1043,10 @@
     <ProjectReference Include="..\Environments\Windows\Windows.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
       <Name>Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Xbox360\Xbox360.csproj">
+      <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
+      <Name>Xbox360</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\ZX81\ZX81.csproj">
       <Project>{2b4e0f2e-b458-4bc2-96ac-6a4d9324f974}</Project>
@@ -1060,6 +1072,10 @@
       <Project>{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}</Project>
       <Name>Elf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\HpSom\HpSom.csproj">
+      <Project>{6faa0b0c-f6c2-4091-9cc8-1dc2cf708bc2}</Project>
+      <Name>HpSom</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\Hunk\Hunk.csproj">
       <Project>{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}</Project>
       <Name>Hunk</Name>
@@ -1080,9 +1096,17 @@
       <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>
       <Name>MzExe</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Nro\Nro.csproj">
+      <Project>{0ab0aab7-292e-4827-a480-a32561b07fd7}</Project>
+      <Name>Nro</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj">
       <Project>{2882376f-663a-4fc8-842c-b0300a6829e8}</Project>
       <Name>OdbgScript</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Omf\Omf.csproj">
+      <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
+      <Name>Omf</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\TypeLib\TypeLib.csproj">
       <Project>{a4def935-217c-4107-998c-c7845893cfa0}</Project>
@@ -1091,6 +1115,10 @@
     <ProjectReference Include="..\ImageLoaders\VmsExe\VmsExe.csproj">
       <Project>{4059bebf-7b5c-4701-ac98-ade2515d8823}</Project>
       <Name>VmsExe</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\XexLoader\Xex.csproj">
+      <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
+      <Name>Xex</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Libc\Libc.csproj">
       <Project>{FDAF4CA9-085C-473E-BCB5-0D2A4354A949}</Project>

@@ -30,7 +30,6 @@ using rulong = System.UInt64;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-
     /// <summary>
     /// ImageLoader that uses OdbgScript to assist in the unpacking of 
     /// compressed or obfuscated binaries.
@@ -57,7 +56,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         public SegmentMap ImageMap { get; set; }
-        public IntelArchitecture Architecture { get; set; }
+        public IProcessorArchitecture Architecture { get; set; }
 
         /// <summary>
         /// Original entry point to the executable, before it was packed.
@@ -66,13 +65,13 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public override Program Load(Address addrLoad)
         {
-            // First load the file as a PE Executable. This gives us a (writeable) image and 
+            // First load the file. This gives us a (writeable) image and 
             // the packed entry point.
-            var pe = this.originalImageLoader;
-            var program = pe.Load(pe.PreferredBaseAddress);
-            var rr = pe.Relocate(program, pe.PreferredBaseAddress);
+            var origLdr = this.originalImageLoader;
+            var program = origLdr.Load(origLdr.PreferredBaseAddress);
+            var rr = origLdr.Relocate(program, origLdr.PreferredBaseAddress);
             this.ImageMap = program.SegmentMap;
-            this.Architecture = (IntelArchitecture)program.Architecture;
+            this.Architecture = program.Architecture;
 
             var envEmu = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
@@ -94,6 +93,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 program.InterceptedCalls.Add(ic.Key, ic.Value);
             }
             return program;
+        }
+
+        public override ImageSegment AddSegmentReference(Address addr, ushort seg)
+        {
+            return originalImageLoader.AddSegmentReference(addr, seg);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

@@ -3108,6 +3108,7 @@ string filename;
         {
             if (args.Length == 1 && GetAnyValue(args[0], out string msg))
             {
+                Debug.Print("OllyLang: {0}", msg);
                 if (Host.DialogMSG(msg, out int input))
                 {
                     if (input == -1) // IDCANCEL)
@@ -4136,6 +4137,20 @@ string filename, data;
                     hFile.Write(b, 0, b.Length);
                 }
                 return true;
+            }
+            return false;
+        }
+
+        private bool RekoAddSegmentReference(string [] args)
+        {
+            if (args.Length == 2)
+            {
+                if (GetAddress(args[0], out Address addr) &&
+                    GetRulong(args[1], out ulong seg))
+                {
+                    Host.AddSegmentReference(addr, (ushort) seg);
+                    return true;
+                }
             }
             return false;
         }
