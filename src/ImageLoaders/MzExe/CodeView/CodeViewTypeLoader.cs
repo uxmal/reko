@@ -204,11 +204,16 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         {
             var linkage = rdr.ReadByte();
             var length = rdr.ReadLeUInt16();
-            var abLeaves = rdr.ReadBytes(length);
+            var rdrLeaves = new LeImageReader(rdr.ReadBytes(length));
+            var leaves = new List<object>();
+            while (rdrLeaves.IsValid)
+            {
+                leaves.Add(ReadLeaf(rdrLeaves));
+            }
             return new TypeDefinition
             {
                 linkage = linkage,
-                Leaves = abLeaves
+                Leaves = leaves.ToArray()
             };
         }
     }
@@ -216,7 +221,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
     public class TypeDefinition
     {
         public int linkage;
-        public byte[] Leaves;
+        public object[] Leaves;
     }
 
     public class Array

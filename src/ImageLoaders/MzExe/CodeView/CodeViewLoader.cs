@@ -60,10 +60,10 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         public class Subsection
         {
             public byte[] data;
-            public object module;
+            public int module;
             public SST sst;
 
-            public Subsection(SST sst, object module, byte[] data)
+            public Subsection(SST sst, int module, byte[] data)
             {
                 this.sst = sst;
                 this.module = module;
@@ -91,7 +91,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             private byte nsegs;
             public string @string;
 
-            public sstModules(SST sst, object module, byte[] data)
+            public sstModules(SST sst, int module, byte[] data)
                 : base(sst, module, data)
             {
                 var _tup_1 = new LeImageReader(data);
@@ -117,9 +117,9 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         {
             public string name;
             public Address addr;
-            public uint typeidx;
+            public int typeidx;
 
-            public PublicSymbol(Address addr, uint typeidx, string name)
+            public PublicSymbol(Address addr, int typeidx, string name)
             {
                 this.addr = addr;
                 this.typeidx = typeidx;
@@ -141,7 +141,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
 
             public List<PublicSymbol> symbols;
 
-            public sstPublics(SST sst, object module, byte[] data)
+            public sstPublics(SST sst, int module, byte[] data)
                 : base(sst, module, data)
             {
                 var syms = new List<PublicSymbol>();
@@ -173,7 +173,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         private class CodeViewTypes : Subsection
         {
             // https://github.com/jbevain/cecil/blob/master/symbols/pdb/Microsoft.Cci.Pdb/CvInfo.cs
-            public CodeViewTypes(SST sst, object module, byte[] data) : base(sst, module, data)
+            public CodeViewTypes(SST sst, int module, byte[] data) : base(sst, module, data)
             {
                 var cvtl = new CodeViewTypeLoader(data);
                 var dict = cvtl.Load();
@@ -184,12 +184,11 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                 }
             }
 
-            private static void Dump(int index, byte[]data)
+            private static void Dump(int index, object[]data)
             {
-                var rdr = new LeImageReader(data);
+                foreach (var leaf in data)
                 try
                 {
-                    var leaf = CodeViewTypeLoader.ReadLeaf(rdr);
                     switch (leaf)
                     {
                     case object[] list:
@@ -268,22 +267,51 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         public Dictionary<Address, ImageSymbol> LoadSymbols()
         {
             var dict = new Dictionary<Address, ImageSymbol>();
-            var list = new List<(Address, PublicSymbol)>();
-            foreach (var sym in this.subsections
-                .OfType<sstPublics>()
-                .SelectMany(sp => sp.symbols))
+            var subsectionsByModule =
+                from ss in subsections
+                group ss by ss.module into g
+                select g;
+            foreach (var module in subsectionsByModule)
             {
-                var addr = Address.SegPtr(
-                        (ushort) (sym.addr.Selector.Value + this.addrLoad.Selector),
-                        (uint) sym.addr.Offset);
-                dict[addr] = ImageSymbol.Procedure(this.arch, addr, sym.name);
-                list.Add((addr, sym));
-            }
-            foreach (var (a, s) in list.OrderBy(tu => tu.Item1))
-            {
-                Debug.Print("{0} {2:X6}:{1}", a, s.name, s.typeidx);
+                var m = module.Key;
+                LoadModuleSymbols(m, module, dict);
             }
             return dict;
+        }
+
+        private void LoadModuleSymbols(
+            int m, 
+            IGrouping<int, Subsection> module, 
+            Dictionary<Address, ImageSymbol> dict)
+        {
+            Debug.Print("== Module {0} symbols ==============", m);
+            var list = new List<PublicSymbol>();
+            CodeViewTypeLoader types = null;
+            foreach (var item in module)
+            {
+                if (item is sstPublics sp)
+                {
+                    foreach (var sym in sp.symbols)
+                    {
+                        var addr = Address.SegPtr(
+                                (ushort) (sym.addr.Selector.Value + this.addrLoad.Selector),
+                                (uint) sym.addr.Offset);
+                        dict[addr] = ImageSymbol.Procedure(this.arch, addr, sym.name);
+
+                        var relocatedSym = new PublicSymbol(addr, sym.typeidx, sym.name);
+                        list.Add(relocatedSym);
+                    }
+                }
+                else if (item is CodeViewTypes ty)
+                {
+                    types = new CodeViewTypeLoader(ty.data);
+                }
+            }
+            foreach (var s in list.OrderBy(tu => tu.addr))
+            {
+                Debug.Print("{0} [{1}] {2:X6}:{3}", s.addr, m, s.typeidx, s.name);
+            }
+            var symbols = TypeBuilder.Build(arch, types?.Load(), list);
         }
 
         /// <summary>
