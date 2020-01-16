@@ -36,18 +36,18 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\PowerPC\bin\$(Configuration)\Reko.Arch.PowerPC.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC.Design\bin\$(Configuration)\Reko.Arch.PowerPC.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\RiscV\bin\$(Configuration)\Reko.Arch.RiscV.*" />
+    <Architectures Include="$(SolutionDir)Arch\Rl78\bin\$(Configuration)\Reko.Arch.Rl78.*" />
     <Architectures Include="$(SolutionDir)Arch\Sparc\bin\$(Configuration)\Reko.Arch.Sparc.*" />
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(Configuration)\Reko.Arch.SuperH.*" />
     <Architectures Include="$(SolutionDir)Arch\Tlcs\bin\$(Configuration)\Reko.Arch.Tlcs.*" />
     <Architectures Include="$(SolutionDir)Arch\Tms7000\bin\$(Configuration)\Reko.Arch.Tms7000.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\bin\$(Configuration)\Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\WE32100\bin\$(Configuration)\Reko.Arch.WE32100.*" />
-    <Architectures Include="$(SolutionDir)Arch\X86\bin\$(Configuration)\Reko.Arch.X86.*" />
+    <Architectures Include="$(SolutionDir)Arch\X86\bin\$(Configuration)\netstandard2.0\Reko.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\X86.Design\bin\$(Configuration)\Reko.Arch.X86.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(Configuration)\Reko.Arch.Xtensa.*" />
-    <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(Configuration)\Reko.Arch.Z80.*" />
+    <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(Configuration)\netstandard2.0\Reko.Arch.Z80.*" />
     <Architectures Include="$(SolutionDir)Arch\zSeries\bin\$(Configuration)\Reko.Arch.zSeries.*" />
-    <Architectures Include="$(SolutionDir)Arch\Rl78\bin\$(Configuration)\Reko.Arch.Rl78.*" />
 
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />

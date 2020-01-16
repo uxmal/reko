@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	/// <summary>
 	/// Assists in rewriting X86 string instructions.
@@ -35,7 +35,7 @@ namespace Decompiler.Arch.X86
 		private OperandRewriter orw;
 		private IntelArchitecture arch;
 
-		private IntelInstruction instrCur;
+		private X86Instruction instrCur;
 
 		public StringInstructionRewriter(IntelArchitecture arch, OperandRewriter orw)
 		{
@@ -44,7 +44,7 @@ namespace Decompiler.Arch.X86
 		}
 
 
-		public void EmitStringInstruction(IntelInstruction instr, CodeEmitterOld emitter)
+		public void EmitStringInstruction(X86Instruction instr, CodeEmitter emitter)
 		{
             this.emitter = emitter;
 
@@ -55,22 +55,22 @@ namespace Decompiler.Arch.X86
 			{
 				default:
 					throw new ApplicationException("NYI");
-				case Opcode.cmps:
-				case Opcode.cmpsb:
+				case Mnemonic.cmps:
+				case Mnemonic.cmpsb:
 					emitter.Assign(
-						orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+						orw.FlagGroup(X86Instruction.DefCc(Mnemonic.cmp)),
 						new ConditionOf(
-						new BinaryExpression(Operator.Sub, instrCur.dataWidth, MemSi(), MemDi())));
+						new BinaryExpression(Operator.ISub, instrCur.dataWidth, MemSi(), MemDi())));
 					incSi = true;
 					incDi = true;
 					break;
-				case Opcode.lods:
-				case Opcode.lodsb:
+				case Mnemonic.lods:
+				case Mnemonic.lodsb:
 					emitter.Assign(RegAl, MemSi());
 					incSi = true;
 					break;
-				case Opcode.movs:
-				case Opcode.movsb:
+				case Mnemonic.movs:
+				case Mnemonic.movsb:
 				{
 					Identifier tmp = frame.CreateTemporary(instrCur.dataWidth);
 					emitter.Assign(tmp, MemSi());
@@ -79,35 +79,35 @@ namespace Decompiler.Arch.X86
 					incDi = true;
 					break;
 				}
-				case Opcode.ins:
-				case Opcode.insb:
+				case Mnemonic.ins:
+				case Mnemonic.insb:
 				{
 					Identifier regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
 					emitter.Store(MemDi(), emitter.PseudoProc("__in", instrCur.dataWidth, regDX));
 					incDi = true;
 					break;
 				}
-				case Opcode.outs:
-				case Opcode.outsb:
+				case Mnemonic.outs:
+				case Mnemonic.outsb:
 				{
 					Identifier regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
 					emitter.SideEffect("__out" + RegAl.DataType.Prefix, regDX, RegAl);
 					incSi = true;
 					break;
 				}
-				case Opcode.scas:
-				case Opcode.scasb:
+				case Mnemonic.scas:
+				case Mnemonic.scasb:
 					emitter.Assign(
-						orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+						orw.FlagGroup(X86Instruction.DefCc(Mnemonic.cmp)),
 						new ConditionOf(
-						new BinaryExpression(Operator.Sub, 
+						new BinaryExpression(Operator.ISub, 
 						instrCur.dataWidth,
 						RegAl, 
 						MemDi())));
 					incDi = true;
 					break;
-				case Opcode.stos:
-				case Opcode.stosb:
+				case Mnemonic.stos:
+				case Mnemonic.stosb:
                     emitter.Store(MemDi(), RegAl);
 					incDi = true;
 					break;
@@ -116,19 +116,19 @@ namespace Decompiler.Arch.X86
 			if (incSi)
 			{
 				emitter.Assign(RegSi,
-					new BinaryExpression(Operator.Add, 
+					new BinaryExpression(Operator.IAdd, 
 					instrCur.addrWidth,
 					RegSi, 
-					new Constant(instrCur.addrWidth, instrCur.dataWidth.Size)));
+					Constant.Create(instrCur.addrWidth, instrCur.dataWidth.Size)));
 			}
 
 			if (incDi)
 			{
 				emitter.Assign(RegDi,
-					new BinaryExpression(Operator.Add, 
+					new BinaryExpression(Operator.IAdd, 
 					instrCur.addrWidth,
 					RegDi, 
-					new Constant(instrCur.addrWidth, instrCur.dataWidth.Size)));
+					Constant.Create(instrCur.addrWidth, instrCur.dataWidth.Size)));
 			}
 		}
 
