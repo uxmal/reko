@@ -184,39 +184,34 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                 }
             }
 
+            [Conditional("DEBUG")]
             private static void Dump(int index, object[]data)
             {
                 foreach (var leaf in data)
-                try
                 {
-                    switch (leaf)
+                    try
                     {
-                    case object[] list:
-                        Console.Write("Type index #{0:X4}: ", index);
-                        Console.WriteLine(string.Join(Environment.NewLine, list));
-                        break;
-                    case LeafType lt:
-                        if (lt == LeafType.Nil)
-                            return;
-                        Console.Write("Type index #{0:X4}: ", index);
-                        Console.WriteLine(lt);
-                        break;
-                    default:
-                        Console.Write("Type index #{0:X4}: ", index);
-                        Console.WriteLine(leaf);
-                        break;
-                    }
-                }
-                catch
-                {
-                    for (int i = 0; i < data.Length; ++i)
-                    {
-                        if ((i % 16) == 0)
+                        switch (leaf)
                         {
-                            Console.WriteLine(" ");
-                            Console.Write("{0:X8}", i);
+                        case object[] list:
+                            Console.WriteLine("Type index #{0:X4}: [", index);
+                            Console.WriteLine(string.Join(Environment.NewLine + "    ", list));
+                            Console.WriteLine("]");
+                            break;
+                        case LeafType lt:
+                            if (lt == LeafType.Nil)
+                                return;
+                            Console.Write("Type index #{0:X4}: ", index);
+                            Console.WriteLine(lt);
+                            break;
+                        default:
+                            Console.Write("Type index #{0:X4}: ", index);
+                            Console.WriteLine(leaf);
+                            break;
                         }
-                        Console.Write("{1}{0:X2}", data[i], (i % 16) == 8 ? '-' : ' ');
+                    }
+                    catch
+                    {
                     }
                 }
                 Console.WriteLine();
@@ -311,7 +306,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             {
                 Debug.Print("{0} [{1}] {2:X6}:{3}", s.addr, m, s.typeidx, s.name);
             }
-            var symbols = TypeBuilder.Build(arch, types?.Load(), list);
+            //var symbols = TypeBuilder.Build(arch, types?.Load(), list);
         }
 
         /// <summary>

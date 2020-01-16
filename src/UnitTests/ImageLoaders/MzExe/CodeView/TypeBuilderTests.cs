@@ -53,22 +53,67 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.CodeView
             addrSym += 0x0005;
         }
 
+        private void Given_Type(int typeIndex, string hexString)
+        {
+            var bytes = BytePattern.FromHexBytes(hexString);
+            var rdr = new LeImageReader(bytes.ToArray());
+            this.typesByIndex.Add(typeIndex, new TypeDefinition
+            {
+                Leaves = new object[]
+                {
+                    CodeViewTypeLoader.ReadLeaf(rdr)
+                }
+            });
+        }
+
         private void AssertSymbols(params string[] sExpected)
         {
             var imgSyms = TypeBuilder.Build(arch.Object, typesByIndex, syms);
             Assert.AreEqual(sExpected.Length, imgSyms.Count);
             for (int i = 0; i < sExpected.Length; ++i)
             {
-                Assert.AreEqual(sExpected[i], imgSyms[i].ToString());
+                var imgSym = imgSyms[i];
+                string sActual;
+                if (imgSym.Signature != null)
+                {
+                    sActual = $"{imgSym}: {imgSym.Signature}";
+                }
+                else
+                {
+                    sActual = imgSyms[i].ToString();
+                }
+                Assert.AreEqual(sExpected[i], sActual);
             }
         }
 
         [Test]
-        public void Cvtb_ZeroSymbol()
+        public void Cvtb_NoType()
         {
             Given_Symbol("foo", 0);
 
             AssertSymbols("foo (0800:0010)");
+        }
+
+        [Test]
+        public void Cvtb_Fn_int()
+        {
+            Given_Type(0x200, "75 80 81 63 00 83 0102"); // Procedure C_NEAR return:129 (2: #03C1)");
+            Given_Type(0x201, "80");
+            Given_Symbol("foo", 0x200);
+
+            AssertSymbols("foo (0800:0010): fn(__cdecl,arg(prim(SignedInt,2)),())");
+        }
+
+        [Test]
+        public void Cvtb_Fn_float_arg()
+        {
+            Given_Type(0x200, "75 80 81 63 02 83 0102"); // Procedure C_NEAR return:129 (2: #03C1)");
+            Given_Type(0x201, "7F 83 8200 83 8800");
+            Given_Symbol("foo", 0x200);
+
+            AssertSymbols(
+                "foo (0800:0010): " +
+                "fn(__cdecl,arg(prim(SignedInt,2)),(arg(prim(SignedInt,4)),arg(prim(Real,4))))");
         }
     }
 }

@@ -41,9 +41,9 @@ namespace Reko.Core.Serialization
 		{
 		}
 
-        public static SerializedType Bool()
+        public static SerializedType Bool(int byteSize = 1)
         {
-            return new PrimitiveType_v1 { Domain = Domain.Boolean, ByteSize = 1 };
+            return new PrimitiveType_v1 { Domain = Domain.Boolean, ByteSize = byteSize };
         }
 
         public static SerializedType Char8()
