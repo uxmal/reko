@@ -162,16 +162,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void CollectInstructions()
         {
             this.instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
-            foreach (var bi in program.ImageMap.Items.Values.OfType<ImageMapBlock>().ToList())
+            foreach (var bi in program.ImageMap.Items.Values.OfType<ImageMapBlock>()
+                .ToList())
             {
                 var instrs = new List<MachineInstruction>();
-                var addrStart = bi.Address;
-                var addrEnd = bi.Address + bi.Size;
-                var arch = bi.Block.Procedure.Architecture;
-                var dasm = program.CreateDisassembler(arch, addrStart).GetEnumerator();
-                while (dasm.MoveNext() && dasm.Current.Address < addrEnd)
+                if (bi.Size > 0)
                 {
-                    instrs.Add(dasm.Current);
+                    var addrStart = bi.Address;
+                    var addrEnd = bi.Address + bi.Size;
+                    var arch = bi.Block.Procedure.Architecture;
+                    var dasm = program.CreateDisassembler(arch, addrStart).GetEnumerator();
+                    while (dasm.MoveNext() && dasm.Current.Address < addrEnd)
+                    {
+                        instrs.Add(dasm.Current);
+                    }
                 }
                 instructions.Add(bi, instrs.ToArray());
             }
