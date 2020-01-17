@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -88,7 +88,6 @@ namespace Reko.Gui
             return sb.ToString();
         }
 
-
         public string ProcedureName { get; private set;}
 
         public SerializedSignature Signature { get; private set; }
@@ -100,8 +99,7 @@ namespace Reko.Gui
             string w = GetNextWord();
             if (w == "void")
                 return null;
-            RegisterStorage reg;
-            if (arch.TryGetRegister(w, out reg))
+            if (arch.TryGetRegister(w, out RegisterStorage reg))
             {
                 return new Argument_v1(
                     reg.Name,
@@ -122,8 +120,7 @@ namespace Reko.Gui
             var regs = new List<Register_v1>();
             foreach (string subReg in subregs)
             {
-                RegisterStorage r;
-                if (!arch.TryGetRegister(subReg, out r))
+                if (!arch.TryGetRegister(subReg, out RegisterStorage r))
                     return null;
                 regs.Add(new Register_v1(r.Name));
             }
@@ -174,9 +171,8 @@ namespace Reko.Gui
             if (w == null)
                 return null;
 
-            RegisterStorage reg;
             string type = null;
-            if (!arch.TryGetRegister(w, out reg))
+            if (!arch.TryGetRegister(w, out RegisterStorage reg))
             {
                 type = w;
                 w = GetNextWord();
@@ -215,8 +211,7 @@ namespace Reko.Gui
             string w2 = GetNextWord();
             if (w2 == null)
                 return null;
-            RegisterStorage reg2;
-            if (!arch.TryGetRegister(w2, out reg2))
+            if (!arch.TryGetRegister(w2, out RegisterStorage reg2))
                 return null;
             var seqArgName = reg.Name + "_" + reg2.Name;
             var seqArgType = new TypeReference_v1 { TypeName = type };
@@ -235,10 +230,9 @@ namespace Reko.Gui
 
 		private Argument_v1 ParseStackArgument(string typeName, string argName)
 		{
-			PrimitiveType p;
 			int sizeInWords;
 			int wordSize = arch.WordWidth.Size;
-			if (PrimitiveType.TryParse(typeName, out p))
+			if (PrimitiveType.TryParse(typeName, out PrimitiveType p))
 			{
 				sizeInWords = (p.Size + (wordSize - 1))/wordSize;
 			}

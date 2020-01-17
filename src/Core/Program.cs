@@ -531,7 +531,7 @@ namespace Reko.Core
 
             var generatedName = procedureName ?? this.NamingPolicy.ProcedureName(addr);
             proc = Procedure.Create(arch, generatedName, addr, arch.CreateFrame());
-            if (procedureName == null && this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
+            if (this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
             {
                 procedureName = sym.Name;
                 if (sym.Signature != null)

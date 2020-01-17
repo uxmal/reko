@@ -107,13 +107,30 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.CodeView
         [Test]
         public void Cvtb_Fn_float_arg()
         {
-            Given_Type(0x200, "75 80 81 63 02 83 0102"); // Procedure C_NEAR return:129 (2: #03C1)");
+            Given_Type(0x200, "75 80 81 63 02 83 0102");
             Given_Type(0x201, "7F 83 8200 83 8800");
             Given_Symbol("foo", 0x200);
 
             AssertSymbols(
                 "foo (0800:0010): " +
                 "fn(__cdecl,arg(prim(SignedInt,2)),(arg(prim(SignedInt,4)),arg(prim(Real,4))))");
+        }
+
+        [Test]
+        public void Cvtb_Fn_Structure()
+        {
+            Given_Type(0x200, "75 80 83 8400 63 01 83 0102");   // arg0 = ptr to structure
+            Given_Type(0x201, "7F 83 0202");                    // args: ( #0202 )
+            Given_Type(0x202, "7A 73 83 0302");                 // ptr to #0203
+            Given_Type(0x203, "79 08 02 83 0402 83 0502 82 06 7265636f7264"); // structure definition
+            Given_Type(0x204, "7F 83 C200 83 0202");
+            Given_Type(0x205, "7F 82 02 7565 88 00  82 02 696D 88 04");
+
+            Given_Symbol("foo", 0x200);
+
+            AssertSymbols(
+                "foo (0800:0010): " +
+                "fn(__cdecl,arg(prim(UnsignedInt,1)),(arg(ptr(struct(record, )))))");
         }
     }
 }

@@ -41,7 +41,10 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             this.arch = arch;
             this.dictionary = dictionary;
             this.dataTypesByTypeIndex = new Dictionary<int, SerializedType>();
-            BuildTypes();
+            if (dictionary != null)
+            {
+                BuildTypes();
+            }
         }
 
         public static List<ImageSymbol> Build(
@@ -69,7 +72,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                 return imgSym;
             if (fnType is SerializedSignature ssig)
             {
-                imgSym.Signature = ssig;
+                imgSym = ImageSymbol.Procedure(arch, cvSymbol.addr, cvSymbol.name, signature:ssig);
             }
             return imgSym;
         }
@@ -81,6 +84,16 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             {
                 switch (de.Value.Leaves[0])
                 {
+                case Array a:
+                    dataTypesByTypeIndex.Add(de.Key,
+                        new ArrayType_v1());
+                    break;
+                case Pointer pt:
+                    dataTypesByTypeIndex.Add(de.Key,
+                        pt.Model == LeafType.FAR
+                            ? new PointerType_v1 { PointerSize = 4 }
+                            : (SerializedType) new MemberPointer_v1 { Size = 2 });
+                    break;
                 case Procedure p:
                     dataTypesByTypeIndex.Add(de.Key,
                         new SerializedSignature
@@ -88,6 +101,10 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                              Convention = CallingConvention(p.CallingConvention),
                              Arguments = new Argument_v1[p.ParameterCount]
                         });
+                    break;
+                case Structure str:
+                    dataTypesByTypeIndex.Add(de.Key,
+                        new StructType_v1 { Name = str.Name });
                     break;
                 case LeafType lt:
                     switch (lt)
@@ -105,6 +122,21 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             {
                 switch (de.Value.Leaves[0])
                 {
+                case Array a:
+                    var arr = (ArrayType_v1) dataTypesByTypeIndex[de.Key];
+                    var elemType = TranslateType(a.ElementType);
+                    arr.ElementType = elemType;
+                    break;
+                case Pointer pt:
+                    if (dataTypesByTypeIndex[de.Key] is PointerType_v1 ptr)
+                    {
+                        ptr.DataType = TranslateType(pt.TypeIndex);
+                    }
+                    else if (dataTypesByTypeIndex[de.Key] is MemberPointer_v1 mptr)
+                    {
+                        mptr.MemberType = TranslateType(pt.TypeIndex);
+                    }
+                    break;
                 case Procedure p:
                     var sig = (SerializedSignature) dataTypesByTypeIndex[de.Key];
                     sig.ReturnValue = new Argument_v1(
@@ -122,8 +154,42 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                     case LeafType.Nil:
                         continue;
                     }
+                case Structure st:
+                    var str = (StructType_v1) dataTypesByTypeIndex[de.Key];
+                    BuildStructure(st, str);
+                    break;
                 }
             }
+        }
+
+        private void BuildStructure(Structure st, StructType_v1 str)
+        {
+            var fieldTypes =
+                (object[]) dictionary[st.TypeList].Leaves[0];
+            var fieldNamesOffsets = 
+                (object[]) dictionary[st.NameOffsetList].Leaves[0];
+            if (2 * fieldTypes.Length != fieldNamesOffsets.Length ||
+                fieldTypes.Length != st.FieldCount)
+                throw new FormatException();
+            var fields = new StructField_v1[st.FieldCount];
+            for (int i = 0; i < st.FieldCount; ++i)
+            {
+                var type = TranslateType(Convert.ToInt32(fieldTypes[i]));
+                var name = (string) fieldNamesOffsets[i * 2];
+                var offset = Convert.ToInt32(fieldNamesOffsets[i * 2 + 1]);
+                fields[i] = new StructField_v1(offset, name, type);
+            }
+            str.Fields = fields;
+            str.ByteSize = (st.BitSize + 7) / 8;
+        }
+
+        private int ByteSize(SerializedType type)
+        {
+            if (type is PrimitiveType_v1 pt)
+                return pt.ByteSize;
+            if (type is ArrayType_v1 arr)
+                return arr.Length * ByteSize(arr.ElementType);
+            return 0;
         }
 
         private Argument_v1[] TranslateArgs(int parameterCount, int parameterTypeList)
@@ -148,7 +214,13 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         private SerializedType TranslateType(int typeIndex)
         {
             if (dataTypesByTypeIndex.TryGetValue(typeIndex, out var type))
-                return type;
+            {
+                if (type is StructType_v1 str)
+                    return new StructType_v1 { Name = str.Name };
+                else
+                    return type;
+            }
+
             if (reservedTypes.TryGetValue(typeIndex, out type))
                 return type;
             throw new NotImplementedException($"Unknown type index #{typeIndex:X}.");

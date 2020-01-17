@@ -56,8 +56,8 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                 return rdr.ReadByte();
             else
                 return ReadLeaf(rdr);
-
         }
+
         public static object ReadLeaf(LeImageReader rdr)
         {
             var b = rdr.ReadByte();
@@ -141,7 +141,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         private static Pointer ReadPointer(LeImageReader rdr)
         {
             var model = (LeafType)ReadLeaf(rdr);
-            var type = (ushort) ReadNumericLeaf(rdr);
+            var type = Convert.ToInt32(ReadNumericLeaf(rdr));
             var name = rdr.IsValid
                 ? (string) ReadLeaf(rdr)
                 : null;

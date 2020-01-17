@@ -256,7 +256,11 @@ namespace Reko.Core
 
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)
         {
-            var baseType = memptr.DeclaringClass.Accept(this);
+            DataType baseType;
+            if (memptr.DeclaringClass == null)
+                baseType = new UnknownType();
+            else 
+                baseType = memptr.DeclaringClass.Accept(this);
             DataType dt;
             if (memptr.MemberType == null)
                 dt = new UnknownType();

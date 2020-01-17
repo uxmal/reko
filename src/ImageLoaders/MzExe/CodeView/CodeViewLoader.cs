@@ -1,4 +1,3 @@
-//!/usr/bin/env python3
 //
 // Symbolik: parser for Microsoft CodeView debug symbols in MZ EXEs
 // Phil Pemberton, 2019
@@ -79,10 +78,8 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         // ----------------------------------------
         // sstModules -- module definition
         // ----------------------------------------
-        public class sstModules
-            : Subsection
+        public class sstModules : Subsection
         {
-
             private ushort csBase;
             private ushort csOfs;
             private ushort csLen;
@@ -302,11 +299,12 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                     types = new CodeViewTypeLoader(ty.data);
                 }
             }
+            var typeBuilder = new TypeBuilder(arch, types?.Load());
             foreach (var s in list.OrderBy(tu => tu.addr))
             {
                 Debug.Print("{0} [{1}] {2:X6}:{3}", s.addr, m, s.typeidx, s.name);
+                dict[s.addr] = typeBuilder.BuildSymbol(s);
             }
-            //var symbols = TypeBuilder.Build(arch, types?.Load(), list);
         }
 
         /// <summary>
