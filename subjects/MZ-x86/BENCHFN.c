@@ -96,8 +96,8 @@ void _f2()
 	_f3();
 }
 
-// 0800:0222: void fn0800-0222()
-void fn0800-0222()
+// 0800:0222: void _f1()
+void _f1()
 {
 	_f2();
 	_f2();
@@ -114,15 +114,15 @@ void fn0800-0222()
 // 0800:0245: void _f0()
 void _f0()
 {
-	fn0800-0222();
-	fn0800-0222();
-	fn0800-0222();
-	fn0800-0222();
-	fn0800-0222();
-	fn0800-0222();
-	fn0800-0222();
-	fn0800-0222();
-	fn0800-0222();
+	_f1();
+	_f1();
+	_f1();
+	_f1();
+	_f1();
+	_f1();
+	_f1();
+	_f1();
+	_f1();
 }
 
 // 0800:0265: void _main(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register (ptr16 Eq_n) es, Register Eq_n ds)

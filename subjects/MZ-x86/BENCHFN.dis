@@ -157,7 +157,7 @@ l0800_01FF:
 _f2_exit:
 
 
-void fn0800_0222()
+void _f1()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
@@ -189,15 +189,15 @@ void _f0()
 // Preserved: bp sp
 _f0_entry:
 l0800_0245:
-	fn0800_0222()
-	fn0800_0222()
-	fn0800_0222()
-	fn0800_0222()
-	fn0800_0222()
-	fn0800_0222()
-	fn0800_0222()
-	fn0800_0222()
-	fn0800_0222()
+	_f1()
+	_f1()
+	_f1()
+	_f1()
+	_f1()
+	_f1()
+	_f1()
+	_f1()
+	_f1()
 	return
 _f0_exit:
 

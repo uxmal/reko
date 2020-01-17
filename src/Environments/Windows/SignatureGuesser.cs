@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,6 +29,13 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
+    /// <summary>
+    /// Guesses a procedure signature based on the name of a procedure.
+    /// </summary>
+    /// <remarks>
+    /// Various name mangling schemes can give hints on the number of arguments,
+    /// their types, and even the type of the return value.
+    /// </remarks>
     public class SignatureGuesser
     {
         public static Tuple<string, SerializedType, SerializedType> InferTypeFromName(string fnName)
