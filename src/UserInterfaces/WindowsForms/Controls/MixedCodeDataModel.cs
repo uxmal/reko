@@ -166,7 +166,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 .ToList())
             {
                 var instrs = new List<MachineInstruction>();
-                if (bi.Size > 0)
+                if (bi.Size > 0 && bi.Block.Procedure != null)
                 {
                     var addrStart = bi.Address;
                     var addrEnd = bi.Address + bi.Size;
