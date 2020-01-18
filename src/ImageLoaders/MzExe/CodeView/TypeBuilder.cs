@@ -29,8 +29,14 @@ namespace Reko.ImageLoaders.MzExe.CodeView
 {
     public class TypeBuilder
     {
-
         private static readonly Dictionary<int, SerializedType> reservedTypes;
+        private static readonly Register_v1 regAl = new Register_v1("al");
+        private static readonly Register_v1 regAx = new Register_v1("ax");
+        private static readonly Register_v1 regDx = new Register_v1("dx");
+        private static readonly SerializedSequence regDxAx = new SerializedSequence
+        {
+            Registers = new[] { regDx, regAx }
+        };
 
         private readonly IProcessorArchitecture arch;
         private readonly Dictionary<int, TypeDefinition> dictionary;
@@ -159,13 +165,32 @@ namespace Reko.ImageLoaders.MzExe.CodeView
 
         private void BuildSignature(Procedure p, SerializedSignature sig)
         {
+            var retType = TranslateType(p.ReturnType);
+            var byteSize = ByteSize(retType);
+            var stg = ReturnTypeStorage(byteSize);
             sig.ReturnValue = new Argument_v1(
                 "",
-                TranslateType(p.ReturnType),
-                new StackVariable_v1(),
+                retType,
+                stg,
                 false);
             sig.ReturnAddressOnStack = ReturnAddressSize(p.CallingConvention);
             sig.Arguments = TranslateArgs(p.ParameterCount, p.ParameterTypeList);
+        }
+
+        private SerializedKind ReturnTypeStorage(int byteSize)
+        {
+            switch (byteSize)
+            {
+            case 0:
+            case 1:
+                return regAl;
+            case 2:
+                return regAx;
+            case 3:
+            case 4:
+                return regDxAx;
+            }
+            throw new NotImplementedException();
         }
 
         private int ReturnAddressSize(LeafType callingConvention)
@@ -201,10 +226,17 @@ namespace Reko.ImageLoaders.MzExe.CodeView
 
         private int ByteSize(SerializedType type)
         {
-            if (type is PrimitiveType_v1 pt)
+            switch (type)
+            {
+            case PrimitiveType_v1 pt:
                 return pt.ByteSize;
-            if (type is ArrayType_v1 arr)
+            case PointerType_v1 ptr:
+                return ptr.PointerSize;
+            case MemberPointer_v1 mptr:
+                return mptr.Size;
+            case ArrayType_v1 arr:
                 return arr.Length * ByteSize(arr.ElementType);
+            }
             return 0;
         }
 
