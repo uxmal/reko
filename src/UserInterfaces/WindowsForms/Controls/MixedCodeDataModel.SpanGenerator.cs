@@ -124,7 +124,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             ModelPosition pos)
         {
             SpanGenerator sp;
-            if (item is ImageMapBlock b)
+            if (item is ImageMapBlock b && b.Block.Procedure != null)
             {
                 sp = new AsmSpanifyer(program, b.Block.Procedure.Architecture, instructions[b], pos);
             }
