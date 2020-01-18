@@ -56,13 +56,15 @@ namespace Reko.Core.Serialization
 
         public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
-            sig.StackDelta = Architecture.PointerType.Size;  //$BUG: far/near pointers?
             if (ssig.StackDelta != 0)
                 sig.StackDelta = ssig.StackDelta;
             else
-                sig.StackDelta = Architecture.PointerType.Size;   //$BUG: x86 real mode?
+                sig.StackDelta = Architecture.PointerType.Size;
             sig.FpuStackDelta = FpuStackOffset;
-            sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
+            if (ssig.ReturnAddressOnStack != 0)
+                sig.ReturnAddressOnStack = ssig.ReturnAddressOnStack;
+            else
+                sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
         }
 
         public Identifier CreateId(string name, DataType type, Storage storage)

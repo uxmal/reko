@@ -139,12 +139,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                     break;
                 case Procedure p:
                     var sig = (SerializedSignature) dataTypesByTypeIndex[de.Key];
-                    sig.ReturnValue = new Argument_v1(
-                        "",
-                        TranslateType(p.ReturnType),
-                        new StackVariable_v1(),
-                        false);
-                    sig.Arguments = TranslateArgs(p.ParameterCount, p.ParameterTypeList);
+                    BuildSignature(p, sig);
                     break;
                 case LeafType lt:
                     switch (lt)
@@ -160,6 +155,27 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                     break;
                 }
             }
+        }
+
+        private void BuildSignature(Procedure p, SerializedSignature sig)
+        {
+            sig.ReturnValue = new Argument_v1(
+                "",
+                TranslateType(p.ReturnType),
+                new StackVariable_v1(),
+                false);
+            sig.ReturnAddressOnStack = ReturnAddressSize(p.CallingConvention);
+            sig.Arguments = TranslateArgs(p.ParameterCount, p.ParameterTypeList);
+        }
+
+        private int ReturnAddressSize(LeafType callingConvention)
+        {
+            switch (callingConvention)
+            {
+            case LeafType.C_NEAR: return 2;
+            case LeafType.C_FAR: return 4;
+            }
+            throw new NotImplementedException();
         }
 
         private void BuildStructure(Structure st, StructType_v1 str)
