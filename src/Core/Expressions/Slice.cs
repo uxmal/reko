@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -72,5 +73,10 @@ namespace Reko.Core.Expressions
 		{
 			return new Slice(DataType, Expression, Offset);
 		}
-	}
+
+        public override Expression Invert()
+        {
+            return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
+        }
+    }
 }
