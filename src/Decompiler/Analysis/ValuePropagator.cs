@@ -186,8 +186,8 @@ namespace Reko.Analysis
 
         public Instruction VisitSideEffect(SideEffect side)
         {
-            side.Expression = side.Expression.Accept(eval);
-            return side;
+            var exp = side.Expression.Accept(eval);
+            return new SideEffect(exp);
         }
 
         public Instruction VisitStore(Store store)
@@ -203,8 +203,8 @@ namespace Reko.Analysis
 
         public Instruction VisitSwitchInstruction(SwitchInstruction si)
         {
-            si.Expression = si.Expression.Accept(eval);
-            return si;
+            var exp = si.Expression.Accept(eval);
+            return new SwitchInstruction(exp, si.Targets);
         }
 
         public Instruction VisitUseInstruction(UseInstruction u)

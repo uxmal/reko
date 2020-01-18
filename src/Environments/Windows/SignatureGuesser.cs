@@ -142,7 +142,7 @@ namespace Reko.Environments.Windows
             var sproc = new SerializedSignature
             {
                 ParametersValid = false,
-                StackDelta = arch.PointerType.Size,
+                StackDelta = (short)arch.PointerType.Size,
             };
             return new Procedure_v1
             {
@@ -156,7 +156,7 @@ namespace Reko.Environments.Windows
             var sproc = new SerializedSignature
             {
                 ParametersValid = false,
-                StackDelta = argBytes + arch.PointerType.Size,
+                StackDelta = (short)(argBytes + arch.PointerType.Size),
             };
             return new Procedure_v1
             {

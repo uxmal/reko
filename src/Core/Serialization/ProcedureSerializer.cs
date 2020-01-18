@@ -86,7 +86,12 @@ namespace Reko.Core.Serialization
         {
             if (ss == null)
                 return null;
-            var retAddrSize = this.Architecture.ReturnAddressOnStack;
+            // If there is no explict return address size,
+            // use the architecture's default return address size.
+
+            var retAddrSize = ss.ReturnAddressOnStack != 0
+                ? ss.ReturnAddressOnStack
+                : this.Architecture.ReturnAddressOnStack;
             if (!ss.ParametersValid)
             {
                 return new FunctionType
@@ -259,6 +264,7 @@ namespace Reko.Core.Serialization
             }
             ssig.StackDelta = sig.StackDelta;
             ssig.FpuStackDelta = sig.FpuStackDelta;
+            ssig.ReturnAddressOnStack = sig.ReturnAddressOnStack;
             return ssig;
         }
 

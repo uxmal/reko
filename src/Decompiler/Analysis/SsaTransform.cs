@@ -956,6 +956,7 @@ namespace Reko.Analysis
 
         public override Expression VisitApplication(Application appl)
         {
+            var args = new Expression[appl.Arguments.Length];
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
                 if (appl.Arguments[i] is OutArgument outArg &&
@@ -963,18 +964,21 @@ namespace Reko.Analysis
                 {
                     var idOut = NewDef(id, appl, true);
                     outArg = new OutArgument(outArg.DataType, idOut);
-                    appl.Arguments[i] = outArg;
+                    args[i] = outArg;
                     ssa.Identifiers[idOut].DefExpression = outArg;
-                    continue;
                 }
-                appl.Arguments[i] = appl.Arguments[i].Accept(this);
+                else
+                {
+                    args[i] = appl.Arguments[i].Accept(this);
+                }
             }
-            appl.Procedure = appl.Procedure.Accept(this);
-            if (appl.Procedure is ProcedureConstant pc)
+
+            var proc = appl.Procedure.Accept(this);
+            if (proc is ProcedureConstant pc)
             {
                 blockstates[block].Terminates |= ProcedureTerminates(pc.Procedure);
             }
-            return appl;
+            return new Application(proc, appl.DataType, args);
         }
 
         private bool ProcedureTerminates(ProcedureBase proc)

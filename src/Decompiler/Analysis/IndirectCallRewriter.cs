@@ -233,10 +233,11 @@ namespace Reko.Analysis
 
         public override Expression VisitApplication(Application appl)
         {
-            appl.Procedure = appl.Procedure.Accept(this);
+            var proc = appl.Procedure.Accept(this);
+            var args = new Expression[appl.Arguments.Length];
             for (int i = 0; i < appl.Arguments.Length; ++i)
-                appl.Arguments[i] = TransformArgument(appl.Arguments[i]);
-            return appl;
+                args[i] = TransformArgument(appl.Arguments[i]);
+            return new Application(proc, appl.DataType, args);
         }
 
         private Expression TransformDst(Expression dst)
