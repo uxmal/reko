@@ -19759,6 +19759,7 @@ word16 fn1483_0CA0(word32 es_di, word32 ss_bp, byte al, byte ah, word16 bx, word
 // Trashed: SCZO ax bp bx cx di dx Top
 // Preserved: sp
 fn1483_0CA0_entry:
+	word16 bp = SLICE(ss_bp, word16, 0)
 	word16 di = SLICE(es_di, word16, 0)
 l1483_0CA0:
 	word16 ax_86
@@ -19766,32 +19767,35 @@ l1483_0CA0:
 	call fn1483_FD4E (retsize: 2;)
 		uses: ah:ah + Mem0[ds:bx + si:byte],al:al & Mem0[ds:0x3101:byte],bx:bx
 		defs: ax:ax_86,bx:bx_87
-	byte bl_101 = SLICE(bx_87, byte, 0)
-	byte ah_102 = SLICE(ax_86, byte, 8)
-	byte bh_107 = SLICE(bx_87, byte, 8)
-	byte bh_127 = SLICE(bx_87, byte, 8)
+	byte bl_100 = SLICE(bx_87, byte, 0)
+	byte ah_101 = SLICE(ax_86, byte, 8)
+	byte bh_106 = SLICE(bx_87, byte, 8)
+	byte bh_124 = SLICE(bx_87, byte, 8)
 l1483_0CA9_in_fn1483_0CA0:
 	word16 dx_94 = Mem0[ds:si + 0x173E:word16] *s 0x0C62
-	Mem98[ds:bx_87:byte] = v22
-	byte bl_103 = bl_101 + ah_102
-	word16 bx_108 = SEQ(bh_107, bl_103)
-	Mem111[ds:bx_108 - 0x0056 + di:byte] = __rol(Mem98[ds:bx_108 - 0x0056 + di:byte], 0xE2)
-	Mem114[ss_bp + 0x007B:word16] = __ror(Mem111[ss_bp + 0x007B:word16], 0x01)
-	Mem119[ds:bx_108:byte] = v28
-	byte bl_120 = bl_103 & Mem119[ds:bx_108:byte]
-	Mem124[es_di:byte] = SLICE(ax_86 - 0x32AC, byte, 0)
-	word16 bx_128 = SEQ(bh_127, bl_120)
-	Mem131[ds:bx_128:word16] = v29
-	Mem136[ds:di + 0x0015:word16] = ax_86 - 0xBDCB
-	word16 bx_141
+	Mem97[ds:bx_87:byte] = Mem0[ds:bx_87:byte] + SLICE(dx_94, byte, 0)
+	byte bl_102 = bl_100 + ah_101
+	word16 bx_107 = SEQ(bh_106, bl_102)
+	Mem110[ds:bx_107 - 0x0056 + di:byte] = __rol(Mem97[ds:bx_107 - 0x0056 + di:byte], 0xE2)
+	bool v19_112 = (Mem110[ss_bp + 0x007B:word16] & 0x0002) != 0x0000
+	Mem113[ss_bp + 0x007B:word16] = __ror(Mem110[ss_bp + 0x007B:word16], 0x01)
+	Mem116[ds:bx_107:byte] = Mem113[ds:bx_107:byte] + bl_102 + v19_112
+	byte bl_117 = bl_102 & Mem116[ds:bx_107:byte]
+	Mem121[es_di:byte] = SLICE(ax_86 - 0x32AC, byte, 0)
+	word16 bx_125 = SEQ(bh_124, bl_117)
+	Mem127[ds:bx_125:word16] = Mem121[ds:bx_125:word16] + bx_125
+	word16 v25_131 = Mem127[ds:di + 0x0015:word16]
+	Mem132[ds:di + 0x0015:word16] = ax_86 - 0xBDCB
+	word16 bx_136
+	word16 dx_137
 	call fn1483_4FE0 (retsize: 2;)
-		uses: ax:v30,bx:bx_128,cx:di + 0x0001 - si,dx:dx_94
-		defs: bx:bx_141
-	Mem148[ds:0xF7E3:word16] = v31
-	Mem152[ds:bx_141 + (di + 0x0001):word16] = v32
-	word16 ax_165 = __inw(0x8B)
+		uses: ax:v25_131,bx:bx_125,cx:di + 0x0001 - si,dx:dx_94
+		defs: bx:bx_136,dx:dx_137
+	Mem142[ds:0xF7E3:word16] = Mem132[ds:0xF7E3:word16] - dx_137
+	Mem145[ds:bx_136 + (di + 0x0001):word16] = Mem142[ds:bx_136 + (di + 0x0001):word16] + (bp - 0x0001)
+	word16 ax_157 = __inw(0x8B)
 	diOut = di + 0x0001
-	return ax_165
+	return ax_157
 fn1483_0CA0_exit:
 
 
@@ -20384,7 +20388,7 @@ l1483_1B7F:
 	Mem212[ss:sp_211:word16] = sp_117
 	ds = Mem212[ss:sp_211 + 2:selector]
 	dx = Mem212[ss:sp_211:word16]
-	word16 v34_217 = Mem212[ds:di + 0x0B0A:word16]
+	word16 v33_217 = Mem212[ds:di + 0x0B0A:word16]
 	Mem218[ds:di + 0x0B0A:word16] = di
 	__inb(0x41)
 	__sti()
@@ -20393,7 +20397,7 @@ l1483_1B7F:
 	bx = 0xD909
 	cx = SEQ(SLICE(ax_188, byte, 8), al_197 - 0xD9)
 	sp_117 = sp_211 + 4
-	di = v34_217
+	di = v33_217
 	C = false
 	ax = SEQ(SLICE(SEQ(0xAF, cl_189) + 0xA587 + (al_197 <u 0xD9), byte, 8), __inb(dx) - 0xF8 & 0x0A) (alias)
 

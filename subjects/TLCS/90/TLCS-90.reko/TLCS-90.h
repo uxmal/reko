@@ -2261,7 +2261,7 @@ T_455: (in a_a_264 : ui16)
   Class: Eq_455
   DataType: ui16
   OrigDataType: ui16
-T_456: (in v48_143 : uint8)
+T_456: (in v17_143 : uint8)
   Class: Eq_24
   DataType: uint8
   OrigDataType: ui8
@@ -2277,11 +2277,11 @@ T_459: (in Mem136[ix + -10:byte] : byte)
   Class: Eq_24
   DataType: uint8
   OrigDataType: uint8
-T_460: (in SEQ(v48_143, Mem136[ix + -10:byte]) : ui16)
+T_460: (in SEQ(v17_143, Mem136[ix + -10:byte]) : ui16)
   Class: Eq_460
   DataType: ui16
   OrigDataType: ui16
-T_461: (in v49_145 : ui8)
+T_461: (in v18_145 : ui8)
   Class: Eq_461
   DataType: ui8
   OrigDataType: ui8
@@ -2297,11 +2297,11 @@ T_464: (in Mem136[ix + -18:byte] : byte)
   Class: Eq_464
   DataType: uint8
   OrigDataType: uint8
-T_465: (in SEQ(v49_145, Mem136[ix + -18:byte]) : ui16)
+T_465: (in SEQ(v18_145, Mem136[ix + -18:byte]) : ui16)
   Class: Eq_465
   DataType: ui16
   OrigDataType: ui16
-T_466: (in SEQ(v48_143, ix->bFFFFFFF6) + SEQ(v49_145, ix->bFFFFFFEE) : ui16)
+T_466: (in SEQ(v17_143, ix->bFFFFFFF6) + SEQ(v18_145, ix->bFFFFFFEE) : ui16)
   Class: Eq_455
   DataType: ui16
   OrigDataType: ui16

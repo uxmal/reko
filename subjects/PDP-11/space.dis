@@ -796,10 +796,10 @@ l0D50:
 fn0D3E_exit:
 
 
-void fn0D7A(word16 r0)
+void fn0D7A(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..15]
+// MayUse:  r0:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r2 r3 sp
 // Preserved:
@@ -807,15 +807,15 @@ fn0D7A_entry:
 l0D7A:
 l123C_in_fn0D7A:
 	call 0x0D7E (retsize: 2;)
-		uses: r0:v29,Stack +0002:v35,Stack +0004:v33,Stack +0006:0x125A,Stack +0008:r0,Stack +0014:v29
+		uses: r0:wArg00,Stack +0002:wArg02,Stack +0004:wArg04,Stack +0006:0x125A,Stack +0008:r0,Stack +0014:wArg00
 	return
 fn0D7A_exit:
 
 
-void fn0DC8(word16 r0)
+void fn0DC8(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..15]
+// MayUse:  r0:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r2 r3 sp
 // Preserved:
@@ -823,7 +823,7 @@ fn0DC8_entry:
 l0DC8:
 l123C_in_fn0DC8:
 	call 0x0DCC (retsize: 2;)
-		uses: r0:v29,Stack +0002:v35,Stack +0004:v33,Stack +0006:0x125A,Stack +0008:r0,Stack +0014:v29
+		uses: r0:wArg00,Stack +0002:wArg02,Stack +0004:wArg04,Stack +0006:0x125A,Stack +0008:r0,Stack +0014:wArg00
 	return
 fn0DC8_exit:
 
@@ -880,16 +880,16 @@ l0EDA_in_fn0EA8:
 	Mem43[r3_36 + 0x0072:word16] = 0x0000
 	Mem44[r3_36 + 0x0070:word16] = 0x0000
 	Mem45[r3_36 + 0x0014:word16] = 0x0000
-	Mem49[r3_36 + 0x000C:word16] = v13
-	Mem50[r3_36 + 0x00A2:byte] = 0x00
+	Mem47[r3_36 + 0x000C:word16] = Mem45[r3_36 + 0x0058:word16]
+	Mem48[r3_36 + 0x00A2:byte] = 0x00
 	return
 l0ED4:
 l0EDA_in_fn0EA8:
-	Mem63[r3_36 + 0x0072:word16] = 0x0000
-	Mem64[r3_36 + 0x0070:word16] = 0x0000
-	Mem65[r3_36 + 0x0014:word16] = 0x0000
-	Mem69[r3_36 + 0x000C:word16] = v13
-	Mem70[r3_36 + 0x00A2:byte] = 0x00
+	Mem59[r3_36 + 0x0072:word16] = 0x0000
+	Mem60[r3_36 + 0x0070:word16] = 0x0000
+	Mem61[r3_36 + 0x0014:word16] = 0x0000
+	Mem63[r3_36 + 0x000C:word16] = Mem61[r3_36 + 0x0058:word16]
+	Mem64[r3_36 + 0x00A2:byte] = 0x00
 	return
 fn0EA8_exit:
 

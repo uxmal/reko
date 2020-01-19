@@ -163,11 +163,11 @@ l0350:
 	byte v44_127 = Mem125[ix + -32:byte]
 	Mem131[ix + -4:byte] = a_129
 	Mem136[ix + -3:byte] = a_105 + Mem131[ix + -31:byte] + (a_129 <u 0x00)
-	ui16 a_a_264 = SEQ(v48_143, Mem136[ix + -10:byte]) + SEQ(v49_145, Mem136[ix + -18:byte])
+	ui16 a_a_264 = SEQ(v17_143, Mem136[ix + -10:byte]) + SEQ(v18_145, Mem136[ix + -18:byte])
 	byte a_147 = SLICE(a_a_264, byte, 8)
 	byte a_154 = Mem136[ix + -8:byte] + Mem136[ix + -16:byte] + (a_147 <u 0x00)
-	byte v48_143 = Mem136[ix + -9:byte]
-	byte v49_145 = Mem136[ix + -17:byte]
+	byte v17_143 = Mem136[ix + -9:byte]
+	byte v18_145 = Mem136[ix + -17:byte]
 	byte a_161 = Mem136[ix + -7:byte] + Mem136[ix + -15:byte] + (a_154 <u 0x00)
 	Mem166[ix + -6:byte] = Mem136[ix + -6:byte] ^ SLICE(a_a_264, byte, 0)
 	Mem170[ix + -5:byte] = Mem166[ix + -5:byte] ^ a_147

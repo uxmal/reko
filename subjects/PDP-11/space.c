@@ -641,14 +641,14 @@ struct Eq_n * fn0D3E(struct Eq_n * r0, Eq_n r2)
 	return (char *) &r0->t0002 + 0x02;
 }
 
-// 0D7A: void fn0D7A(Register word16 r0)
-void fn0D7A(word16 r0)
+// 0D7A: void fn0D7A(Register word16 r0, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
+void fn0D7A(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04)
 {
 	globals->t0D7E();
 }
 
-// 0DC8: void fn0DC8(Register word16 r0)
-void fn0DC8(word16 r0)
+// 0DC8: void fn0DC8(Register word16 r0, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
+void fn0DC8(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04)
 {
 	globals->t0DCC();
 }
@@ -688,7 +688,7 @@ void fn0EA8(<anonymous> * wArg00)
 		r3_n->ptr0072 = null;
 		r3_n->ptr0070 = null;
 		r3_n->ptr0014 = null;
-		r3_n->w000C = v13;
+		r3_n->w000C = r3_n->w0058;
 		r3_n->t00A2.u1 = 0x00;
 	}
 	else
@@ -696,7 +696,7 @@ void fn0EA8(<anonymous> * wArg00)
 		r3_n->ptr0072 = null;
 		r3_n->ptr0070 = null;
 		r3_n->ptr0014 = null;
-		r3_n->w000C = v13;
+		r3_n->w000C = r3_n->w0058;
 		r3_n->t00A2.u1 = 0x00;
 	}
 }
