@@ -167,6 +167,7 @@ namespace Reko.Analysis
             // value propagation.
             var ssts = procs.Select(ConvertToSsa).ToArray();
             this.ssts.AddRange(ssts);
+            DumpWatchedProcedure("After extra stack vars", ssts);
 
             // At this point, the computation of ProcedureFlow is possible.
             var trf = new TrashedRegisterFinder(program, flow, ssts, this.eventListener);
@@ -477,9 +478,18 @@ namespace Reko.Analysis
         }
 
         [Conditional("DEBUG")]
+        public static void DumpWatchedProcedure(string caption, IEnumerable<SsaTransform> ssts)
+        {
+            foreach (var sst in ssts)
+            {
+                DumpWatchedProcedure(caption, sst.SsaState.Procedure);
+            }
+        }
+
+        [Conditional("DEBUG")]
         public static void DumpWatchedProcedure(string caption, Procedure proc)
         {
-            if (proc.Name == "fn00100000")
+            if (proc.Name == "fn0D7A")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 MockGenerator.DumpMethod(proc);
