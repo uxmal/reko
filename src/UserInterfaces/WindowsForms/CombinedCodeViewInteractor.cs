@@ -530,6 +530,12 @@ namespace Reko.UserInterfaces.WindowsForms
                 var endPos = MixedCodeDataModel.Position(endAddr, 0);
                 numer = mixedCodeDataModel.CountLines(startPos, endPos);
                 denom = dataItemNode.NumLines;
+                if (denom == 0)
+                {
+                    Debug.Print("dataItem.NumLines = 0");
+                    numer = 1;
+                    denom = 1;
+                }
             }
             else
             {
