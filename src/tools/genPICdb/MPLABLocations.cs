@@ -106,7 +106,7 @@ namespace Reko.Tools.genPICdb
         private sealed class RealFilePath : IDisposable
         {
 
-#if NETCOREAPP
+#if PLATFORM_UNIX
             /// <summary>
             /// Returns the canonicalized absolute pathname of given pathname.
             /// </summary>
@@ -116,7 +116,7 @@ namespace Reko.Tools.genPICdb
             /// A pointer to unmanaged memory containing the resolved pathname or null if any error.
             /// </returns>
             [DllImport("libc", EntryPoint = "realpath", CharSet = CharSet.Ansi, SetLastError = true)]
-            [SuppressMessage("Globalization", "CA2101:Specify marshaling for P/Invoke string arguments", Justification = "ANSI for Linux")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101:Specify marshaling for P/Invoke string arguments", Justification = "ANSI for Linux")]
             public static extern IntPtr RealPath(string fname, string buffer);
 
             /// <summary>
@@ -148,7 +148,7 @@ namespace Reko.Tools.genPICdb
             /// Gets the absolute path of the original path removing relative path and symbolic links.
             /// </summary>
             public string GetPath
-#if NETCOREAPP
+#if PLATFORM_UNIX
             {
                 get
                 {
@@ -173,7 +173,7 @@ namespace Reko.Tools.genPICdb
 
             private void cleanup()
             {
-#if NETCOREAPP
+#if PLATFORM_UNIX
 
 
                 if (unmanagedFName != IntPtr.Zero)

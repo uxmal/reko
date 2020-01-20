@@ -42,7 +42,7 @@ namespace Reko.Tools.genPICdb
     using System.Xml.Linq;
     using System.Diagnostics.CodeAnalysis;
 
-#if NETCOREAPP
+#if NETCOREAPP || PLATFORM_UNIX
     using System.Runtime.InteropServices;
 #endif
 
@@ -480,11 +480,11 @@ namespace Reko.Tools.genPICdb
         /// </returns>
         public int Execute(string[] args)
         {
-#if NETCOREAPP
+#if NETCOREAPP || PLATFORM_UNIX
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Console.WriteLine("On Windows, please use the .NET Frame version of this program.");
+                Console.WriteLine("On Windows, please use the .NET Framework version of this program.");
                 return -1;
             }
 #endif
