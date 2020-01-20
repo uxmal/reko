@@ -8,13 +8,20 @@ The name of this database is 'picdb.zip' and is the result of the execution of '
 
 This tool assumes that, in the development environment, the Microchip MPLAB X IDE has been installed (refer to www.microchip.com).
 This IDE contains the definitions of all the Microchip micro-controllers (PIC12, 16, 18, 24, 32 as well as AVR MCUs) from which
-only the relevant (to Reko) PIC16 and PIC18 definitions are extracted. In case this MPLAB X IDE is not installed in the current
-environment, a default database is created (more exactly we use a copy of the file 'defaultpicdb.zip').
+only the relevant (to Reko) PIC16 and PIC18 definitions are extracted.
+
+This utility tool was compiled and runs under:
+- Microsoft Windows (7, 10 or higher) with Visual Studio 2019 and .NET Framework 4.7.2 or higher,
+- Linux (Ubuntu 18.04) with Mono Develop 7.8 and Mono Framwork 6.6 or higher,
+- MacOS (MacOS Catalina 10.15 in a VMware virtual machine) and Visual Studio for Mac 2019 version 8.4 and Mono Framework 6.6 or higher.
+
 
 Usage
 -----
 
-The 'genPICdb.exe' expects no command parameter. Simply launch it in a DOS or PowerShell window or from the Windows File Explorer.
+The 'genPICdb.exe' expects no command parameter.
+Simply launch it in a terminal session window (DOS or PowerShell, /bin/bash, Xterm, etc...) with the command "./genPICdb.exe".
 If all goes well, an updated 'picdb.zip' will be created in the 'genPICdb' source directory.
 
-It is recommended to run this utility each time an updated Microchip MPLAB X IDE is installed in the development environment.
+It is recommended to run this utility any time an updated Microchip MPLAB X IDE is installed in the development environment to get
+the most up-to-date PIC definitions.

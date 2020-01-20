@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -486,21 +486,15 @@ namespace Reko.Libraries.Microchip.V1
             {
                 foreach (var smod in sfrreg.SFRModes)
                 {
-                    int bitPos = 0;
                     foreach (var bf in smod.Fields)
                     {
                         switch (bf)
                         {
                             case SFRFieldDef sfd:
-                                sfd.BitPos = (byte)bitPos;
-                                bitPos += sfd.NzWidth;
                                 yield return sfd.V1_Interface;
                                 break;
 
                             case AdjustPoint adj:
-                                bitPos += adj.Offset;
-                                break;
-
                             default:
                                 throw new InvalidOperationException($"Invalid SFR field type in '{sfrreg.CName}': {bf.GetType()}");
                         }

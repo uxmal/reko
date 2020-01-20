@@ -1,11 +1,15 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * Copyrighted (c) 2017-2020 Christian Hostelet.
+ *
+ * The contents of this file are subject to the terms of the Common Development
+ * and Distribution License (the License), or the GPL v2, or (at your option)
+ * any later version. 
+ * You may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+ * or http://www.gnu.org/licenses/gpl-2.0.html.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +19,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in each file
+ * and include the License file at http://www.netbeans.org/cddl.txt.
+ * If applicable, add the following below the CDDL Header, with the fields
+ * enclosed by brackets [] replaced by your own identifying information:
+ * "Portions Copyrighted (c) [year] [name of copyright owner]"
+ *
  */
 #endregion
 
@@ -69,7 +80,7 @@ namespace Reko.Libraries.Microchip
     {
         #region Helpers
 
-        private static XmlSerializer _getSerializer<T>(ref XElement xelem, string sdescendantName = null)
+        private static XmlSerializer getSerializer<T>(ref XElement xelem, string sdescendantName = null)
         {
             if (sdescendantName == null)
                 return new XmlSerializer(typeof(T), xelem.Name.NamespaceName);
@@ -79,8 +90,8 @@ namespace Reko.Libraries.Microchip
             if (xelem == null)
                 return null;
 
-            string snamespace = xelem.GetDefaultNamespace().NamespaceName;
-            string stypename = typeof(T).ToString();
+            var snamespace = xelem.GetDefaultNamespace().NamespaceName;
+            var stypename = typeof(T).ToString();
 
             var xAttribs = new XmlAttributes
             {
@@ -91,11 +102,11 @@ namespace Reko.Libraries.Microchip
             var xOverrides = new XmlAttributeOverrides();
             xOverrides.Add(typeof(T), xAttribs);
 
-            Type[] extraTypes = new Type[] { typeof(T) };
+            var extraTypes = new Type[] { typeof(T) };
             return new XmlSerializer(typeof(T), xOverrides, extraTypes, xAttribs.XmlRoot, snamespace);
         }
 
-        private static float _str2Float(this string str) => Convert.ToSingle(str, CultureInfo.InvariantCulture);
+        private static float str2Float(this string str) => Convert.ToSingle(str, CultureInfo.InvariantCulture);
 
         #endregion
 
@@ -329,7 +340,7 @@ namespace Reko.Libraries.Microchip
         /// The float value of the attribute.
         /// </returns>
         public static float GetAsFloat(this XElement xelem, string strLocalName)
-            => xelem.Get(strLocalName)._str2Float();
+            => xelem.Get(strLocalName).str2Float();
 
         /// <summary>
         /// Gets the value of attribute  with given name and namespace URI as a float.
@@ -341,7 +352,7 @@ namespace Reko.Libraries.Microchip
         /// The float value of the attribute.
         /// </returns>
         public static float GetAsFloat(this XElement xelem, string strLocalName, XNamespace ns)
-            => xelem.Get(strLocalName, ns)._str2Float();
+            => xelem.Get(strLocalName, ns).str2Float();
 
         /// <summary>
         /// Gets the value of specified attribute as a nullable float with node's namespace URI.
@@ -352,7 +363,7 @@ namespace Reko.Libraries.Microchip
         /// The nullable float value of the attribute.
         /// </returns>
         public static float? GetAsNullableFloat(this XElement xelem, string strLocalName)
-            => xelem.Get(strLocalName)?._str2Float();
+            => xelem.Get(strLocalName)?.str2Float();
 
         /// <summary>
         /// Gets the value of attribute with given name and namespace URI as a nullable float.
@@ -364,7 +375,7 @@ namespace Reko.Libraries.Microchip
         /// The nullable float value of the attribute.
         /// </returns>
         public static float? GetAsNullableFloat(this XElement xelem, string strLocalName, XNamespace ns)
-            => xelem?.Get(strLocalName, ns)?._str2Float();
+            => xelem?.Get(strLocalName, ns)?.str2Float();
 
         /// <summary>
         /// Gets the value of attribute  with given name and namespace URI as a float or a default value.
@@ -377,7 +388,7 @@ namespace Reko.Libraries.Microchip
         /// The float value of the attribute or specified default value.
         /// </returns>
         public static float GetAsFloatElse(this XElement xelem, string strLocalName, XNamespace ns, float fDefault)
-            => (xelem.HasAttribute(strLocalName, ns) ? xelem.Get(strLocalName, ns)._str2Float() : fDefault);
+            => (xelem.HasAttribute(strLocalName, ns) ? xelem.Get(strLocalName, ns).str2Float() : fDefault);
 
         /// <summary>
         /// Gets the value of attribute with given name in node's namespace URI as a float or a default
@@ -390,7 +401,7 @@ namespace Reko.Libraries.Microchip
         /// The float value of the attribute or specified default value.
         /// </returns>
         public static float GetAsFloatElse(this XElement xelem, string strLocalName, float fDefault)
-            => (xelem.HasAttribute(strLocalName) ? xelem.Get(strLocalName)._str2Float() : fDefault);
+            => (xelem.HasAttribute(strLocalName) ? xelem.Get(strLocalName).str2Float() : fDefault);
 
         /// <summary>
         /// Gets the value of the attribute with the specified local name and <paramref name="xelem"/> namespace.
@@ -566,12 +577,11 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="xdoc">The <see cref="XDocument"/> to act on.</param>
-        /// <param name="obj">The object of type <typeparamref name="T"/>.</param>
         /// <param name="parent">(Optional) The parent <see cref="XNode"/> node.</param>
         /// <returns>
         /// A new XElement.
         /// </returns>
-        public static XElement AttachNewElement<T>(this XDocument xdoc, T obj, XNode parent = null)
+        public static XElement AttachNewElement<T>(this XDocument xdoc, XNode parent = null)
         {
             var xelem = new XElement(typeof(T).Name);
             if (parent == null)
@@ -620,10 +630,10 @@ namespace Reko.Libraries.Microchip
                 return default(T);
             try
             {
-                XmlSerializer xmlsr = _getSerializer<T>(ref xelem, sDescendantLocalName);
+                XmlSerializer xmlsr = getSerializer<T>(ref xelem, sDescendantLocalName);
                 if (xmlsr == null)
                     return default(T);
-                return (T)xmlsr.Deserialize(xelem.CreateReader());
+                return (T) xmlsr.Deserialize(xelem.CreateReader());
             }
             catch (Exception ex)
             {
@@ -686,7 +696,7 @@ namespace Reko.Libraries.Microchip
                 using (var memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(xElement.ToString()), false))
                 {
                     var xmlSerializer = new XmlSerializer(typeof(T), sNamespae);
-                    result = (T)xmlSerializer.Deserialize(memoryStream);
+                    result = (T) xmlSerializer.Deserialize(memoryStream);
                 }
             }
             catch (Exception ex)
