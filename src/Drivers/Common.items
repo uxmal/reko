@@ -86,8 +86,8 @@ by the PreBuild.targets file.
 
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
 
-    <Assemblers Include="$(SolutionDir)Assemblers\Pdp11\bin\$(Configuration)\Reko.Assemblers.Pdp11.*" />
-    <Assemblers Include="$(SolutionDir)Assemblers\x86\bin\$(Configuration)\Reko.Assemblers.x86.*" />
+    <Assemblers Include="$(SolutionDir)Assemblers\Pdp11\bin\$(Configuration)\netstandard2.0\Reko.Assemblers.Pdp11.*" />
+    <Assemblers Include="$(SolutionDir)Assemblers\x86\bin\$(Configuration)\netstandard2.0\Reko.Assemblers.x86.*" />
 
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\bin\$(Configuration)\Reko.ImageLoaders.BinHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\bin\$(Configuration)\Reko.ImageLoaders.Dol.*" />
@@ -104,28 +104,28 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(Configuration)\Reko.ImageLoaders.VmsExe.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Xex\bin\$(Configuration)\Reko.ImageLoaders.Xex.*" />
 
-    <Environments Include="$(SolutionDir)Environments\AmigaOS\bin\$(Configuration)\Reko.Environments.AmigaOS.*" />
+    <Environments Include="$(SolutionDir)Environments\AmigaOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.AmigaOS.*" />
     <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\bin\$(Configuration)\Reko.Environments.AmigaOS.Design.*" />
-    <Environments Include="$(SolutionDir)Environments\AtariTOS\bin\$(Configuration)\Reko.Environments.AtariTOS.*" />
+    <Environments Include="$(SolutionDir)Environments\AtariTOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.AtariTOS.*" />
     <Environments Include="$(SolutionDir)Environments\C64\bin\$(Configuration)\netstandard2.0\Reko.Environments.C64.*" />
-    <Environments Include="$(SolutionDir)Environments\Cpm\bin\$(Configuration)\Reko.Environments.Cpm.*" />
-    <Environments Include="$(SolutionDir)Environments\Dreamcast\bin\$(Configuration)\Reko.Environments.Dreamcast.*" />
-    <Environments Include="$(SolutionDir)Environments\Hpux\bin\$(Configuration)\net47\Reko.Environments.Hpux.*" />
-    <Environments Include="$(SolutionDir)Environments\MacOS\bin\$(Configuration)\Reko.Environments.MacOS.*" />
-    <Environments Include="$(SolutionDir)Environments\Msdos\bin\$(Configuration)\Reko.Environments.Msdos.*" />
+    <Environments Include="$(SolutionDir)Environments\Cpm\bin\$(Configuration)\netstandard2.0\Reko.Environments.Cpm.*" />
+    <Environments Include="$(SolutionDir)Environments\Dreamcast\bin\$(Configuration)\netstandard2.0\Reko.Environments.Dreamcast.*" />
+    <Environments Include="$(SolutionDir)Environments\Hpux\bin\$(Configuration)\netstandard2.0\Reko.Environments.Hpux.*" />
+    <Environments Include="$(SolutionDir)Environments\MacOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.MacOS.*" />
+    <Environments Include="$(SolutionDir)Environments\Msdos\bin\$(Configuration)\netstandard2.0\Reko.Environments.Msdos.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos.Design\bin\$(Configuration)\Reko.Environments.Msdos.Design.*" />
-    <Environments Include="$(SolutionDir)Environments\NeoGeo\bin\$(Configuration)\Reko.Environments.NeoGeo.*" />
-    <Environments Include="$(SolutionDir)Environments\Ps3\bin\$(Configuration)\Reko.Environments.Ps3.*" />
-    <Environments Include="$(SolutionDir)Environments\RiscOS\bin\$(Configuration)\Reko.Environments.RiscOS.*" />
-    <Environments Include="$(SolutionDir)Environments\RT11\bin\$(Configuration)\Reko.Environments.RT11.*" />
-    <Environments Include="$(SolutionDir)Environments\SegaGenesis\bin\$(Configuration)\Reko.Environments.SegaGenesis.*" />
+    <Environments Include="$(SolutionDir)Environments\NeoGeo\bin\$(Configuration)\netstandard2.0\Reko.Environments.NeoGeo.*" />
+    <Environments Include="$(SolutionDir)Environments\Ps3\bin\$(Configuration)\netstandard2.0\Reko.Environments.Ps3.*" />
+    <Environments Include="$(SolutionDir)Environments\RiscOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.RiscOS.*" />
+    <Environments Include="$(SolutionDir)Environments\RT11\bin\$(Configuration)\netstandard2.0\Reko.Environments.RT11.*" />
+    <Environments Include="$(SolutionDir)Environments\SegaGenesis\bin\$(Configuration)\netstandard2.0\Reko.Environments.SegaGenesis.*" />
     <Environments Include="$(SolutionDir)Environments\Switch\bin\$(Configuration\netstandard2.0\Reko.Environments.Switch.*" />
-    <Environments Include="$(SolutionDir)Environments\SysV\bin\$(Configuration)\Reko.Environments.SysV.*" />
-    <Environments Include="$(SolutionDir)Environments\Trs80\bin\$(Configuration)\Reko.Environments.Trs80.*" />
-    <Environments Include="$(SolutionDir)Environments\Wii\bin\$(Configuration)\Reko.Environments.Wii.*" />
-    <Environments Include="$(SolutionDir)Environments\Windows\bin\$(Configuration)\Reko.Environments.Windows.*" />
-    <Environments Include="$(SolutionDir)Environments\Windows\bin\$(Configuration)\Reko.Environments.Xbox360.*" />
-    <Environments Include="$(SolutionDir)Environments\ZX81\bin\$(Configuration)\Reko.Environments.ZX81.*" />
+    <Environments Include="$(SolutionDir)Environments\SysV\bin\$(Configuration)\netstandard2.0\Reko.Environments.SysV.*" />
+    <Environments Include="$(SolutionDir)Environments\Trs80\bin\$(Configuration)\netstandard2.0\Reko.Environments.Trs80.*" />
+    <Environments Include="$(SolutionDir)Environments\Wii\bin\$(Configuration)\netstandard2.0\Reko.Environments.Wii.*" />
+    <Environments Include="$(SolutionDir)Environments\Windows\bin\$(Configuration)\netstandard2.0\Reko.Environments.Windows.*" />
+    <Environments Include="$(SolutionDir)Environments\Xbox360\bin\$(Configuration)\netstandard2.0\Reko.Environments.Xbox360.*" />
+    <Environments Include="$(SolutionDir)Environments\ZX81\bin\$(Configuration)\netstandard2.0\Reko.Environments.ZX81.*" />
 
     <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\bin\$(Configuration)\Reko.Symbols.LGSymLoader.*" />
 
