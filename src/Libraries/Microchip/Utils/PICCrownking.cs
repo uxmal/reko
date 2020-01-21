@@ -39,7 +39,6 @@ namespace Reko.Libraries.Microchip
     using System.Linq;
     using System.Reflection;
     using System.Xml.Linq;
-    using System.Diagnostics;
 
     using static Reko.Libraries.Microchip.PICConstants;
 

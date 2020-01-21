@@ -41,6 +41,7 @@ namespace Reko.Tools.genPICdb
     using System.Reflection;
     using System.Xml.Linq;
     using System.Diagnostics.CodeAnalysis;
+    using System.Text.RegularExpressions;
 
 #if NETCOREAPP || PLATFORM_UNIX
     using System.Runtime.InteropServices;
@@ -58,7 +59,6 @@ namespace Reko.Tools.genPICdb
     public class Program
     {
 
-        private const string defaultDBFilename = @"defaultpicdb.zip";
         private const string edcNamespace = @"http://crownking/edc";
 
         private bool success = false;
@@ -69,6 +69,9 @@ namespace Reko.Tools.genPICdb
 
         private static readonly HashSet<string> acceptedPICArchitectures =
             new HashSet<string>() { "16xxxx", "16Exxx", "18xxxx" };
+
+        private static Regex picFilterRegex = new Regex(@"PIC1[68][CF][1-9]\w*", RegexOptions.Compiled);
+
 
         // XML elements we are ignoring from the Microchip PIC Device definition.
         // This helps decrease the size of the generated database.
@@ -115,7 +118,6 @@ namespace Reko.Tools.genPICdb
 
 
         // Prunes the PIC XML document of unwanted/unnecessary information.
-        // Adds missing information (e.g. bitpos for bit fields).
         private static XDocument pruneAndPatch(XDocument xdoc)
         {
             XNamespace edc = edcNamespace;
@@ -264,11 +266,10 @@ namespace Reko.Tools.genPICdb
 
         // Filters acceptable PIC12, PIC16 and PIC18 by their names.
         private static bool filterPICName(string s)
-            => ((s.StartsWith("PIC12", true, CultureInfo.InvariantCulture) ||
-                 s.StartsWith("PIC16", true, CultureInfo.InvariantCulture) ||
-                 s.StartsWith("PIC18", true, CultureInfo.InvariantCulture))
-                && !s.Contains("J")
-                && !s.Contains("Q"));
+        {
+            var res = picFilterRegex.Match(s);
+            return res.Success && !s.Contains("J") && !s.Contains("Q");
+        }
 
         // Writes a PIC XML document to the PIC compact database. Keeps note of the PIC processor ID for COFF decoding.
         private static void writePICEntry(XDocument xdoc, string subdir, ZipArchive zout)
@@ -279,15 +280,14 @@ namespace Reko.Tools.genPICdb
             var picName = xroot.Attribute("name").Value;
             var procID = xroot.Attribute("procid").Value.ToUInt32Ex();
             var arch = xroot.Attribute("arch").Value;
-            var clonedFrom = xroot.Attribute("clonedfrom")?.Value;
-            picPartsInfo.Parts.Add(new PICPart(picName, procID, arch, clonedFrom));
+            picPartsInfo.Parts.Add(new PICPart(picName, procID, arch, null));
             var picpath = subdir + "/" + picName + ".PIC";
             var picentry = zout.CreateEntry(picpath);
             using (var picw = new StreamWriter(picentry.Open()))
                 xdoc.Save(picw);
         }
 
-        // Accepts only desired PIC16 and PIC18 from the more general (huge) Microchip MPLAB X database.
+        // Accepts only desired PIC16 and PIC18 from the more general (huge) Crownking JAR database.
         private static bool acceptPICEntry(ZipArchiveEntry picentry, Func<string, bool> filter)
             => ((picentry.FullName.StartsWith(PICConstants.ContentPIC16Path + "/PIC16", true, CultureInfo.InvariantCulture) ||
                  picentry.FullName.StartsWith(PICConstants.ContentPIC18Path + "/PIC18", true, CultureInfo.InvariantCulture))
@@ -403,7 +403,7 @@ namespace Reko.Tools.genPICdb
                                 ("PIC16", PICConstants.ContentPIC16Path),
                                 ("PIC18", PICConstants.ContentPIC18Path)})
                         {
-                            Console.WriteLine($"{name}(L)F");
+                            Console.WriteLine($"{name} Device Features Packages");
                             foreach (var xdoc in getValidPICInDFP($"{name}*_DFP"))
                             {
                                 writePICEntry(xdoc, folder, zoutfile);
@@ -413,20 +413,6 @@ namespace Reko.Tools.genPICdb
                             Console.WriteLine("done.");
                         }
 
-                        Console.Write("Checking clones...");
-                        var noErrorYet = true;
-
-                        foreach (var p in picPartsInfo.Parts.Where(p => !string.IsNullOrWhiteSpace(p.ClonedFrom)))
-                        {
-                            if (!picPartsInfo.Parts.Any(cl => cl.Name == p.ClonedFrom))
-                            {
-                                if (noErrorYet)
-                                    Console.WriteLine();
-                                noErrorYet = false;
-                                Console.WriteLine($"Warning: Missing '{p.ClonedFrom}' for clone '{p.Name}'");
-                            }
-                        }
-                        Console.WriteLine("Done.");
                         writePartsInfo(zoutfile);
                     }
                 }
@@ -456,7 +442,7 @@ namespace Reko.Tools.genPICdb
             {
                 foreach (var edcdir in Directory.EnumerateDirectories(dir, "edc", SearchOption.AllDirectories))
                 {
-                    foreach (var filename in Directory.EnumerateFiles(edcdir, "PIC*.PIC"))
+                    foreach (var filename in Directory.EnumerateFiles(edcdir, "PIC1*.PIC"))
                     {
                         var picname = Path.GetFileNameWithoutExtension(filename);
                         if (filterPICName(picname))
