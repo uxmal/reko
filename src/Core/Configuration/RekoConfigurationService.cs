@@ -275,10 +275,7 @@ namespace Reko.Core.Configuration
         /// <returns></returns>
         public static RekoConfigurationService Load()
         {
-            var configFileName = ConfigurationManager.AppSettings["RekoConfiguration"];
-            if (configFileName == null)
-                throw new ApplicationException("Missing app setting 'RekoConfiguration' in configuration file.");
-            return Load(configFileName);
+            return Load("reko.config");
         }
 
         public static RekoConfigurationService Load(string configFileName)
