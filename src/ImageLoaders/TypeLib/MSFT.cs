@@ -18,6 +18,7 @@
 // This file is GPL 2008, by TheirCorp
 // ****************************************
 
+#if VISUALBASIC
 using System;
 using System.IO;
 using System.Linq;
@@ -2083,7 +2084,7 @@ String ls;
 	End If
 
 }
+}
+}
+}
 #endif
-}
-}
-}

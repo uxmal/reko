@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+#if VISUALBASIC
 using TypeLib;
 
 namespace Decompiler.TypeLib
@@ -726,7 +728,7 @@ HRESULT WINAPI RegisterTypeLib(
     if (FAILED(ITypeLib_GetLibAttr(ptlib, &attr)))
         return E_FAIL;
 
-#ifndef _WIN64
+#if !_WIN64
     if (attr->syskind == SYS_WIN64) return TYPE_E_BADMODULEKIND;
 #endif
 
@@ -858,7 +860,7 @@ HRESULT WINAPI RegisterTypeLib(
 				    tattr->wTypeFlags);
 
 		    if (TRACE_ON(typelib)) {
-#define XX(x) if (TYPEFLAG_##x & tattr->wTypeFlags) MESSAGE(#x"|");
+$define XX(x) if (TYPEFLAG_##x & tattr->wTypeFlags) MESSAGE(#x"|");
 			XX(FAPPOBJECT);
 			XX(FCANCREATE);
 			XX(FLICENSED);
@@ -1250,10 +1252,10 @@ typedef struct tagTLBRefType
     struct list entry;
 } TLBRefType;
 
-#define TLB_REF_USE_GUID -2
+$define TLB_REF_USE_GUID -2
 
-#define TLB_REF_INTERNAL (void*)-2
-#define TLB_REF_NOT_FOUND (void*)-1
+$define TLB_REF_INTERNAL (void*)-2
+$define TLB_REF_NOT_FOUND (void*)-1
 
 /* internal Parameter data */
 typedef struct tagTLBParDesc
@@ -2728,7 +2730,7 @@ static void MSFT_DoImplTypes(TLBContext *pcx, ITypeInfoImpl *pTI, int count,
     }
 }
 
-#ifdef _WIN64
+#if _WIN64
 /* when a 32-bit typelib is loaded in 64-bit mode, we need to resize pointers
  * and some structures, and fix the alignment */
 static void TLB_fix_32on64_typeinfo(ITypeInfoImpl *info)
@@ -3766,7 +3768,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
         }
     }
 
-#ifdef _WIN64
+#if _WIN64
     if(pTypeLibImpl->syskind == SYS_WIN32){
         for(i = 0; i < pTypeLibImpl->TypeInfoCount; ++i)
             TLB_fix_32on64_typeinfo(pTypeLibImpl->typeinfos[i]);
@@ -4769,7 +4771,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
       /* could get cFuncs, cVars and cImplTypes from here
 		       but we've already set those */
-#define X(x) TRACE_(typelib)("tt "#x": %x\n",pTITail->res##x);
+$define X(x) TRACE_(typelib)("tt "#x": %x\n",pTITail->res##x);
       X(06);
       X(16);
       X(18);
@@ -6439,7 +6441,7 @@ static HRESULT WINAPI ITypeInfo_fnGetIDsOfNames( ITypeInfo2 *iface,
 }
 
 
-#ifdef __i386__
+#if __i386__
 
 extern LONGLONG call_method( void *func, int nb_args, const DWORD *args, int *stack_offset );
 __ASM_GLOBAL_FUNC( call_method,
@@ -6512,7 +6514,7 @@ _invoke(FARPROC func,CALLCONV callconv, int nrargs, DWORD *args) {
     return res;
 }
 
-#elif defined(__x86_64__)
+#elif __x86_64__
 
 extern DWORD_PTR CDECL call_method( void *func, int nb_args, const DWORD_PTR *args );
 __ASM_GLOBAL_FUNC( call_method,
@@ -6558,8 +6560,9 @@ __ASM_GLOBAL_FUNC( call_method,
 /* same function but returning floating point */
 static double (CDECL * const call_double_method)(void*,int,const DWORD_PTR*) = (void *)call_method;
 
-#endif  /* __x86_64__ */
+#endif  ///* __x86_64__ */
 
+#if VISUALBASIC
 static HRESULT userdefined_to_variantvt(ITypeInfo *tinfo, const TYPEDESC *tdesc, VARTYPE *vt)
 {
     HRESULT hr = S_OK;
@@ -6774,7 +6777,7 @@ DispCallFunc(
     void* pvInstance, ULONG_PTR oVft, CALLCONV cc, VARTYPE vtReturn, UINT cActuals,
     VARTYPE* prgvt, VARIANTARG** prgpvarg, VARIANT* pvargResult)
 {
-#ifdef __i386__
+#if __i386__
     int argspos, stack_offset;
     void *func;
     UINT i;
@@ -6874,7 +6877,7 @@ DispCallFunc(
     TRACE("retval: %s\n", debugstr_variant(pvargResult));
     return S_OK;
 
-#elif defined(__x86_64__)
+#elif __x86_64__
     int argspos;
     UINT i;
     DWORD_PTR *args;
@@ -6962,14 +6965,14 @@ static BOOL func_restricted( const FUNCDESC *desc )
     return (desc->wFuncFlags & FUNCFLAG_FRESTRICTED) && (desc->memid >= 0);
 }
 
-#define INVBUF_ELEMENT_SIZE \
+$define INVBUF_ELEMENT_SIZE \
     (sizeof(VARIANTARG) + sizeof(VARIANTARG) + sizeof(VARIANTARG *) + sizeof(VARTYPE))
-#define INVBUF_GET_ARG_ARRAY(buffer, params) (buffer)
-#define INVBUF_GET_MISSING_ARG_ARRAY(buffer, params) \
+$define INVBUF_GET_ARG_ARRAY(buffer, params) (buffer)
+$define INVBUF_GET_MISSING_ARG_ARRAY(buffer, params) \
     ((VARIANTARG *)((char *)(buffer) + sizeof(VARIANTARG) * (params)))
-#define INVBUF_GET_ARG_PTR_ARRAY(buffer, params) \
+$define INVBUF_GET_ARG_PTR_ARRAY(buffer, params) \
     ((VARIANTARG **)((char *)(buffer) + (sizeof(VARIANTARG) + sizeof(VARIANTARG)) * (params)))
-#define INVBUF_GET_ARG_TYPE_ARRAY(buffer, params) \
+$define INVBUF_GET_ARG_TYPE_ARRAY(buffer, params) \
     ((VARTYPE *)((char *)(buffer) + (sizeof(VARIANTARG) + sizeof(VARIANTARG) + sizeof(VARIANTARG *)) * (params)))
 
 static HRESULT WINAPI ITypeInfo_fnInvoke(
@@ -10466,7 +10469,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
             !funcDesc->cParams)
         return TYPE_E_INCONSISTENTPROPFUNCS;
 
-#ifdef _WIN64
+#if _WIN64
     if(This->pTypeLib->syskind == SYS_WIN64 &&
             funcDesc->oVft % 8 != 0)
         return E_INVALIDARG;
@@ -11273,3 +11276,5 @@ void WINAPI ClearCustData(CUSTDATA *lpCust)
 
     }
 }
+#endif
+#endif

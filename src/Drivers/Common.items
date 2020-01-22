@@ -89,20 +89,20 @@ by the PreBuild.targets file.
     <Assemblers Include="$(SolutionDir)Assemblers\Pdp11\bin\$(Configuration)\netstandard2.0\Reko.Assemblers.Pdp11.*" />
     <Assemblers Include="$(SolutionDir)Assemblers\x86\bin\$(Configuration)\netstandard2.0\Reko.Assemblers.x86.*" />
 
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\bin\$(Configuration)\Reko.ImageLoaders.BinHex.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\bin\$(Configuration)\Reko.ImageLoaders.Dol.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\bin\$(Configuration)\Reko.ImageLoaders.Elf.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\HpSom\bin\$(Configuration)\net47\Reko.ImageLoaders.HpSom.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\bin\$(Configuration)\Reko.ImageLoaders.Hunk.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\bin\$(Configuration)\Reko.ImageLoaders.IntelHex.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\bin\$(Configuration)\Reko.ImageLoaders.LLVM.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\bin\$(Configuration)\Reko.ImageLoaders.MachO.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.BinHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Dol.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Elf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\HpSom\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.HpSom.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Hunk.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.IntelHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.LLVM.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.MachO.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.MzExe.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Nro\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Nro.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.OdbgScript.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Omf\bin\$(Configuration)\Reko.ImageLoaders.Omf.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(Configuration)\Reko.ImageLoaders.VmsExe.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Xex\bin\$(Configuration)\Reko.ImageLoaders.Xex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Omf\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Omf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.VmsExe.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Xex\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Xex.*" />
 
     <Environments Include="$(SolutionDir)Environments\AmigaOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.AmigaOS.*" />
     <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\bin\$(Configuration)\Reko.Environments.AmigaOS.Design.*" />
@@ -129,8 +129,8 @@ by the PreBuild.targets file.
 
     <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\bin\$(Configuration)\Reko.Symbols.LGSymLoader.*" />
 
-    <Libraries Include="$(SolutionDir)Libraries\Libc\bin\$(Configuration)\Reko.Libraries.Libc.*" />
-    <Libraries Include="$(SolutionDir)Libraries\Python\bin\$(Configuration)\Reko.Libraries.Python.*" />
+    <Libraries Include="$(SolutionDir)Libraries\Libc\bin\$(Configuration)\netstandard2.0\Reko.Libraries.Libc.*" />
+    <Libraries Include="$(SolutionDir)Libraries\Python\bin\$(Configuration)\netstandard2.0\Reko.Libraries.Python.*" />
     <Libraries Include="$(SolutionDir)Libraries\Microchip\Utils\bin\$(Configuration)\Reko.Libraries.Microchip.Utils.*" />
 
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />

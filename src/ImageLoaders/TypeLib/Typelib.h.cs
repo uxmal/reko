@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#if VISUALBASIC
 namespace TypeLib
 {
     using INT = System.Int32;
@@ -308,7 +309,7 @@ typedef struct {
  *
  */
 
-#include "pshpack1.h"
+$include "pshpack1.h"
 
 typedef struct {
 /*00*/	DWORD SLTG_magic;	/* 0x47544c53  == "SLTG" */
@@ -342,8 +343,8 @@ typedef struct {
 /*09*/ CHAR dir_magic[4];	/* always "dir" */
 } SLTG_Magic;
 
-#define SLTG_COMPOBJ_MAGIC "CompObj"
-#define SLTG_DIR_MAGIC "dir"
+$define SLTG_COMPOBJ_MAGIC "CompObj"
+$define SLTG_DIR_MAGIC "dir"
 
 /* Next we have SLTG_Header.nrOfFileBlks - 2 of Index strings.  These
 are presumably unique to within the file and look something like
@@ -389,7 +390,7 @@ typedef struct {
 	GUID uuid;
 } SLTG_LibBlk;
 
-#define SLTG_LIBBLK_MAGIC 0x51cc
+$define SLTG_LIBBLK_MAGIC 0x51cc
 
 /* we then get 0x40 bytes worth of 0xffff or small numbers followed by
    nrOfFileBlks - 2 of these */
@@ -429,7 +430,7 @@ typedef struct {
 /*1e*/  DWORD res1e;	/* 0x00000000 or 0xffffffff */
 } SLTG_TypeInfoHeader;
 
-#define SLTG_TIHEADER_MAGIC 0x0501
+$define SLTG_TIHEADER_MAGIC 0x0501
 
 typedef struct {
 /*00*/  WORD cFuncs;
@@ -481,7 +482,7 @@ typedef struct {
 /*10*/	WORD helpstring;/* offset from start of block group to string offset */
 } SLTG_EnumItem;
 
-#define SLTG_ENUMITEM_MAGIC 0x120a
+$define SLTG_ENUMITEM_MAGIC 0x120a
 
 typedef struct {
 	BYTE magic;	/* 0x4c, 0xcb or 0x8b with optional SLTG_FUNCTION_FLAGS_PRESENT flag */
@@ -500,16 +501,16 @@ typedef struct {
 	WORD vtblpos;	/* position in vtbl? */
 	WORD funcflags; /* present if magic & 0x20 */
 /* Param list starts, repeat next two as required */
-#if 0
+#if NEVER
 	WORD  name;	/* offset to 2nd letter of name */
 	WORD+ type;	/* VT_ of param */
 #endif
 } SLTG_Function;
 
-#define SLTG_FUNCTION_FLAGS_PRESENT 0x20
-#define SLTG_FUNCTION_MAGIC 0x4c
-#define SLTG_DISPATCH_FUNCTION_MAGIC 0xcb
-#define SLTG_STATIC_FUNCTION_MAGIC 0x8b
+$define SLTG_FUNCTION_FLAGS_PRESENT 0x20
+$define SLTG_FUNCTION_MAGIC 0x4c
+$define SLTG_DISPATCH_FUNCTION_MAGIC 0xcb
+$define SLTG_STATIC_FUNCTION_MAGIC 0x8b
 
 typedef struct {
 /*00*/	BYTE magic;		/* 0xdf */
@@ -551,7 +552,7 @@ typedef struct {
 
 } SLTG_RefInfo;
 
-#define SLTG_REF_MAGIC 0xdf
+$define SLTG_REF_MAGIC 0xdf
 
 typedef struct {
 	WORD res00;	/* 0x0001 */
@@ -576,7 +577,7 @@ typedef struct {
   WORD pos_in_table; /* 0x0, 0x4, ? */
 } SLTG_ImplInfo;
 
-#define SLTG_IMPL_MAGIC 0x004a
+$define SLTG_IMPL_MAGIC 0x004a
 
 typedef struct {
   BYTE magic; /* 0x0a */
@@ -591,8 +592,8 @@ typedef struct {
   WORD varflags; /* only present if magic & 0x02 */
 } SLTG_Variable;
 
-#define SLTG_VAR_MAGIC 0x0a
-#define SLTG_VAR_WITH_FLAGS_MAGIC 0x2a
+$define SLTG_VAR_MAGIC 0x0a
+$define SLTG_VAR_WITH_FLAGS_MAGIC 0x2a
 
 
 /* CARRAYs look like this
@@ -601,7 +602,7 @@ WORD offset from start of block to SAFEARRAY
 WORD typeofarray
 */
 
-#include "poppack.h"
+$include "poppack.h"
 
 /* heap allocation helpers */
 extern void* heap_alloc_zero(unsigned size) DECLSPEC_HIDDEN __WINE_ALLOC_SIZE(1);
@@ -624,7 +625,7 @@ DEFINE_OLEGUID( CLSID_PSOAInterface, 0x00020424, 0x0000, 0x0000 );
 DEFINE_OLEGUID( CLSID_PSTypeComp,    0x00020425, 0x0000, 0x0000 );
 
 /*---------------------------END--------------------------------------------*/
-#endif
 
     }
 }
+#endif

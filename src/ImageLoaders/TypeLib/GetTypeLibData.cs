@@ -8,6 +8,8 @@
 using System.IO;
 using Reko.Core;
 
+#if VISUALBASIC
+
 public class GetTypeLibDatax
 {
 
@@ -204,5 +206,5 @@ int GetTypeLibData(string cs, string fs)
 	}
     
 } // GetTypeLibData
-
+#endif
 // ***************************************
