@@ -1,11 +1,13 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (c) 2017-2020 Christian Hostelet.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Common Development
+ * and Distribution License (the License), or the GPL v2, or (at your option)
+ * any later version. 
+ * You may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at http://www.gnu.org/licenses/gpl-2.0.html.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * If applicable, add the following below the header, with the fields
+ * enclosed by brackets [] replaced by your own identifying information:
+ * "Portions Copyrighted (c) [year] [name of copyright owner]"
+ *
  */
+
 #endregion
 
 namespace Reko.Libraries.Microchip
@@ -43,8 +51,8 @@ namespace Reko.Libraries.Microchip
         {
             unchecked
             {
-                uint m = 1U << (size - 1);
-                return (sbyte)((val ^ m) - m);
+                var m = 1U << (size - 1);
+                return (sbyte) ((val ^ m) - m);
             }
         }
 
@@ -59,8 +67,8 @@ namespace Reko.Libraries.Microchip
         {
             unchecked
             {
-                uint m = 1U << (size - 1);
-                return (short)((val ^ m) - m);
+                var m = 1U << (size - 1);
+                return (short) ((val ^ m) - m);
             }
         }
 
@@ -75,8 +83,8 @@ namespace Reko.Libraries.Microchip
         {
             unchecked
             {
-                uint m = 1U << (size - 1);
-                return (int)((val ^ m) - m);
+                var m = 1U << (size - 1);
+                return (int) ((val ^ m) - m);
             }
         }
 
@@ -91,8 +99,8 @@ namespace Reko.Libraries.Microchip
         {
             unchecked
             {
-                ulong m = 1UL << (size - 1);
-                return (long)((val ^ m) - m);
+                var m = 1UL << (size - 1);
+                return (long) ((val ^ m) - m);
             }
         }
 
@@ -114,7 +122,7 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 val >>= startbit;
-                val = (sbyte)(val & ((1 << bitcount) - 1));
+                val = (sbyte) (val & ((1 << bitcount) - 1));
                 return val;
             }
         }
@@ -133,7 +141,7 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 val >>= startbit;
-                val = (short)(val & ((1 << bitcount) - 1));
+                val = (short) (val & ((1 << bitcount) - 1));
                 return val;
             }
         }
@@ -152,7 +160,7 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 val >>= startbit;
-                val = (int)(val & ((1 << bitcount) - 1));
+                val = (int) (val & ((1 << bitcount) - 1));
                 return val;
             }
         }
@@ -171,7 +179,7 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 val >>= startbit;
-                val = (long)(val & ((1L << bitcount) - 1));
+                val = (long) (val & ((1L << bitcount) - 1));
                 return val;
             }
         }
@@ -190,7 +198,7 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 val >>= startbit;
-                val = (byte)(val & ((1 << bitcount) - 1));
+                val = (byte) (val & ((1 << bitcount) - 1));
             }
             return val;
         }
@@ -209,9 +217,9 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 val >>= startbit;
-                val = (byte)(val & ((1U << bitcount) - 1));
-                uint m = 1U << (bitcount - 1);
-                return (sbyte)((val ^ m) - m);
+                val = (byte) (val & ((1U << bitcount) - 1));
+                var m = 1U << (bitcount - 1);
+                return (sbyte) ((val ^ m) - m);
             }
         }
 
@@ -229,7 +237,7 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 val >>= startbit;
-                val = (ushort)(val & ((1U << bitcount) - 1));
+                val = (ushort) (val & ((1U << bitcount) - 1));
                 return val;
             }
         }
@@ -248,9 +256,9 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 val >>= startbit;
-                val = (ushort)(val & ((1U << bitcount) - 1));
-                uint m = 1U << (bitcount - 1);
-                return (short)((val ^ m) - m);
+                val = (ushort) (val & ((1U << bitcount) - 1));
+                var m = 1U << (bitcount - 1);
+                return (short) ((val ^ m) - m);
             }
         }
 
@@ -288,8 +296,8 @@ namespace Reko.Libraries.Microchip
             {
                 val >>= startbit;
                 val = (val & ((1U << bitcount) - 1));
-                uint m = 1U << (bitcount - 1);
-                return (int)((val ^ m) - m);
+                var m = 1U << (bitcount - 1);
+                return (int) ((val ^ m) - m);
             }
         }
 
@@ -327,8 +335,8 @@ namespace Reko.Libraries.Microchip
             {
                 val >>= startbit;
                 val = (val & ((1UL << bitcount) - 1));
-                ulong m = 1UL << (bitcount - 1);
-                return (long)((val ^ m) - m);
+                var m = 1UL << (bitcount - 1);
+                return (long) ((val ^ m) - m);
             }
         }
 
@@ -349,12 +357,12 @@ namespace Reko.Libraries.Microchip
             if (val == null) throw new ArgumentNullException(nameof(val), "Null byte array");
             switch (val.Length)
             {
-                case 1:
-                    return val[0].Extract(startbit, bitcount);
-                case 2:
-                    return BitConverter.ToUInt16(val, 0).Extract(startbit, bitcount);
-                case 4:
-                    return BitConverter.ToUInt32(val, 0).Extract(startbit, bitcount);
+            case 1:
+                return val[0].Extract(startbit, bitcount);
+            case 2:
+                return BitConverter.ToUInt16(val, 0).Extract(startbit, bitcount);
+            case 4:
+                return BitConverter.ToUInt32(val, 0).Extract(startbit, bitcount);
             }
             throw new ArgumentOutOfRangeException(nameof(val), "Invalid byte array. Must be a 1, 2 or 4 bytes array");
         }
@@ -376,12 +384,12 @@ namespace Reko.Libraries.Microchip
             if (val == null) throw new ArgumentNullException(nameof(val), "Null byte array");
             switch (val.Length)
             {
-                case 1:
-                    return val[0].ExtractSignExtend(startbit, bitcount);
-                case 2:
-                    return BitConverter.ToUInt16(val, 0).ExtractSignExtend(startbit, bitcount);
-                case 4:
-                    return BitConverter.ToUInt32(val, 0).ExtractSignExtend(startbit, bitcount);
+            case 1:
+                return val[0].ExtractSignExtend(startbit, bitcount);
+            case 2:
+                return BitConverter.ToUInt16(val, 0).ExtractSignExtend(startbit, bitcount);
+            case 4:
+                return BitConverter.ToUInt32(val, 0).ExtractSignExtend(startbit, bitcount);
             }
             throw new ArgumentException(nameof(val), "Invalid byte array. Must be a 1, 2 or 4 bytes array");
         }
@@ -401,12 +409,12 @@ namespace Reko.Libraries.Microchip
         {
             unchecked
             {
-                ui = ui - ((ui >> 1) & 0x55555555u);
+                ui -= ((ui >> 1) & 0x55555555u);
                 ui = (ui & 0x33333333u) + ((ui >> 2) & 0x33333333u);
                 ui = (ui + (ui >> 4)) & 0x0f0f0f0f;
-                ui = ui + (ui >> 8);
-                ui = ui + (ui >> 16);
-                return (int)ui & 0x3f;
+                ui += (ui >> 8);
+                ui += (ui >> 16);
+                return (int) ui & 0x3f;
             }
         }
 
@@ -418,9 +426,7 @@ namespace Reko.Libraries.Microchip
         /// The total number of one-bits.
         /// </returns>
         public static int CountBits(this int i)
-        {
-            return CountBits(unchecked((uint)i));
-        }
+            => CountBits(unchecked((uint) i));
 
         /// <summary>
         /// Returns the number of ones bits in this unsigned long integer.
@@ -445,7 +451,7 @@ namespace Reko.Libraries.Microchip
                 ul = (ul & MASK_00000000111111110000000011111111) + ((ul >> 8) & MASK_00000000111111110000000011111111);
                 ul = (ul & MASK_00000000000000001111111111111111) + ((ul >> 16) & MASK_00000000000000001111111111111111);
                 ul = (ul & MASK_11111111111111111111111111111111) + ((ul >> 32) & MASK_11111111111111111111111111111111);
-                return (int)ul & 0x7F;
+                return (int) ul & 0x7F;
             }
         }
 
@@ -456,10 +462,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>
         /// The total number of one-bits.
         /// </returns>
-        public static int CountBits(this long l)
-        {
-            return CountBits(unchecked((ulong)l));
-        }
+        public static int CountBits(this long l) 
+            => CountBits(unchecked((ulong) l));
 
         /// <summary>
         /// Returns the number of zero bits preceding the highest-order ("leftmost") one-bit in the binary representation
@@ -479,9 +483,7 @@ namespace Reko.Libraries.Microchip
         ///     int value, or 32 if the value is equal to zero.
         /// </returns>
         public static int NumberOfLeadingZeros(this int i)
-        {
-            return NumberOfLeadingZeros(unchecked((uint)i));
-        }
+            => NumberOfLeadingZeros(unchecked((uint) i));
 
         /// <summary>
         /// Returns the number of zero bits preceding the highest-order ("leftmost") one-bit in the binary representation
@@ -508,12 +510,12 @@ namespace Reko.Libraries.Microchip
             {
                 if (ui == 0)
                     return 32;
-                int n = 1;
+                var n = 1;
                 if (ui >> 16 == 0) { n += 16; ui <<= 16; }
                 if (ui >> 24 == 0) { n += 8; ui <<= 8; }
                 if (ui >> 28 == 0) { n += 4; ui <<= 4; }
                 if (ui >> 30 == 0) { n += 2; ui <<= 2; }
-                if (ui >> 31 == 0) { n += 1; ui <<= 1; }
+                if (ui >> 31 == 0) { n += 1; }
                 return n;
             }
         }
@@ -529,9 +531,7 @@ namespace Reko.Libraries.Microchip
         /// of the specified int value, or 32 if the value is equal to zero.
         /// </returns>
         public static int NumberOfTrailingZeros(this int i)
-        {
-            return NumberOfTrailingZeros(unchecked((uint)i));
-        }
+            => NumberOfTrailingZeros(unchecked((uint) i));
 
         /// <summary>
         /// Returns the number of zero bits following the lowest-order ("rightmost")
@@ -550,12 +550,12 @@ namespace Reko.Libraries.Microchip
                 if (ui == 0)
                     return 32;
                 uint y;
-                int n = 31;
+                var n = 31;
                 y = ui << 16; if (y != 0) { n -= 16; ui = y; }
                 y = ui << 8; if (y != 0) { n -= 8; ui = y; }
                 y = ui << 4; if (y != 0) { n -= 4; ui = y; }
                 y = ui << 2; if (y != 0) { n -= 2; ui = y; }
-                y = ui << 1; if (y != 0) { n -= 1; ui = y; }
+                y = ui << 1; if (y != 0) { n -= 1; }
                 return n;
             }
         }
@@ -578,9 +578,7 @@ namespace Reko.Libraries.Microchip
         /// long value, or 64 if the value is equal to zero.
         /// </returns>
         public static int NumberOfLeadingZeros(this long l)
-        {
-            return NumberOfLeadingZeros(unchecked((ulong)l));
-        }
+            => NumberOfLeadingZeros(unchecked((ulong) l));
 
         /// <summary>
         /// Returns the number of zero bits preceding the highest-order ("leftmost") one-bit in the binary representation
@@ -607,14 +605,14 @@ namespace Reko.Libraries.Microchip
             {
                 if (ul == 0)
                     return 64;
-                int n = 1;
-                uint x = (uint)(ul >> 32);
-                if (x == 0) { n += 32; x = (uint)ul; }
+                var n = 1;
+                var x = (uint) (ul >> 32);
+                if (x == 0) { n += 32; x = (uint) ul; }
                 if (x >> 16 == 0) { n += 16; x <<= 16; }
                 if (x >> 24 == 0) { n += 8; x <<= 8; }
                 if (x >> 28 == 0) { n += 4; x <<= 4; }
                 if (x >> 30 == 0) { n += 2; x <<= 2; }
-                if (x >> 31 == 0) { n += 1; x <<= 1; }
+                if (x >> 31 == 0) { n += 1; }
                 return n;
             }
         }
@@ -630,9 +628,7 @@ namespace Reko.Libraries.Microchip
         /// of the specified long value, or 64 if the value is equal to zero.
         /// </returns>
         public static int NumberOfTrailingZeros(this long l)
-        {
-            return NumberOfTrailingZeros(unchecked((ulong)l));
-        }
+            => NumberOfTrailingZeros(unchecked((ulong) l));
 
         /// <summary>
         /// Returns the number of zero bits following the lowest-order ("rightmost")
@@ -651,13 +647,13 @@ namespace Reko.Libraries.Microchip
                 uint x, y;
                 if (ul == 0)
                     return 64;
-                int n = 63;
-                y = (uint)ul; if (y != 0) { n = n - 32; x = y; } else x = (uint)(ul >> 32);
-                y = x << 16; if (y != 0) { n = n - 16; x = y; }
-                y = x << 8; if (y != 0) { n = n - 8; x = y; }
-                y = x << 4; if (y != 0) { n = n - 4; x = y; }
-                y = x << 2; if (y != 0) { n = n - 2; x = y; }
-                y = x << 1; if (y != 0) { n = n - 1; x = y; }
+                var n = 63;
+                y = (uint) ul; if (y != 0) { n -= 32; x = y; } else x = (uint) (ul >> 32);
+                y = x << 16; if (y != 0) { n -= 16; x = y; }
+                y = x << 8; if (y != 0) { n -= 8; x = y; }
+                y = x << 4; if (y != 0) { n -= 4; x = y; }
+                y = x << 2; if (y != 0) { n -= 2; x = y; }
+                y = x << 1; if (y != 0) { n -= 1; }
                 return n;
             }
         }
@@ -678,7 +674,7 @@ namespace Reko.Libraries.Microchip
         {
             Debug.Assert(CountBits(alignment) == 1);
 
-            uint result = ui & ~(alignment - 1);
+            var result = ui & ~(alignment - 1);
             if (result == ui)
                 return result;
             return result + alignment;
@@ -697,7 +693,7 @@ namespace Reko.Libraries.Microchip
             Debug.Assert(i >= 0 && alignment > 0);
             Debug.Assert(CountBits(alignment) == 1);
 
-            int result = i & ~(alignment - 1);
+            var result = i & ~(alignment - 1);
             if (result == i)
                 return result;
             return result + alignment;
@@ -718,9 +714,7 @@ namespace Reko.Libraries.Microchip
         /// The value obtained by rotating the binary representation of the specified unsigned integer value left by the specified number of bits.
         /// </returns>
         public static uint RotateLeft(this uint ui, int distance)
-        {
-            return unchecked((ui << distance) | (ui >> -distance));
-        }
+            => unchecked((ui << distance) | (ui >> -distance));
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
@@ -733,9 +727,7 @@ namespace Reko.Libraries.Microchip
         /// The value obtained by rotating the binary representation of the specified int value left by the specified number of bits.
         /// </returns>
         public static int RotateLeft(this int i, int distance)
-        {
-            return unchecked((int)RotateLeft((uint)i, distance));
-        }
+            => unchecked((int) RotateLeft((uint) i, distance));
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
@@ -748,9 +740,7 @@ namespace Reko.Libraries.Microchip
         /// The value obtained by rotating the binary representation of the specified unsigned long value left by the specified number of bits.
         /// </returns>
         public static ulong RotateLeft(this ulong ul, int distance)
-        {
-            return unchecked((ul << distance) | (ul >> -distance));
-        }
+            => unchecked((ul << distance) | (ul >> -distance));
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
@@ -762,10 +752,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>
         /// The value obtained by rotating the binary representation of the specified long value left by the specified number of bits.
         /// </returns>
-        public static long RotateLeft(this long l, int distance)
-        {
-            return unchecked((long)RotateLeft((ulong)l, distance));
-        }
+        public static long RotateLeft(this long l, int distance) 
+            => unchecked((long) RotateLeft((ulong) l, distance));
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
@@ -779,9 +767,7 @@ namespace Reko.Libraries.Microchip
         /// unsigned integer value right by the specified number of bits.
         /// </returns>
         public static uint RotateRight(this uint ui, int distance)
-        {
-            return unchecked((ui >> distance) | (ui << -distance));
-        }
+            => unchecked((ui >> distance) | (ui << -distance));
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
@@ -794,10 +780,8 @@ namespace Reko.Libraries.Microchip
         /// The value obtained by rotating the binary representation of the specified
         /// int value right by the specified number of bits.
         /// </returns>
-        public static int RotateRight(this int i, int distance)
-        {
-            return unchecked((int)RotateRight((uint)i, distance));
-        }
+        public static int RotateRight(this int i, int distance) 
+            => unchecked((int) RotateRight((uint) i, distance));
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
@@ -811,9 +795,7 @@ namespace Reko.Libraries.Microchip
         /// unsigned long value right by the specified number of bits.
         /// </returns>
         public static ulong RotateRight(this ulong ul, int distance)
-        {
-            return unchecked((ul >> distance) | (ul << -distance));
-        }
+            => unchecked((ul >> distance) | (ul << -distance));
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
@@ -826,10 +808,8 @@ namespace Reko.Libraries.Microchip
         /// The value obtained by rotating the binary representation of the specified
         /// long value right by the specified number of bits.
         /// </returns>
-        public static long RotateRight(this long l, int distance)
-        {
-            return unchecked((long)RotateRight((ulong)l, distance));
-        }
+        public static long RotateRight(this long l, int distance) 
+            => unchecked((long) RotateRight((ulong) l, distance));
 
         /// <summary>
         /// Returns the value obtained by reversing the order of the bits in binary
@@ -861,7 +841,7 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public static int Reverse(this int i)
         {
-            unchecked { return (int)Reverse(unchecked((uint)i)); }
+            unchecked { return (int) Reverse(unchecked((uint) i)); }
         }
 
         /// <summary>
@@ -876,9 +856,9 @@ namespace Reko.Libraries.Microchip
         {
             unchecked
             {
-                ulong msw = Reverse((uint)((ul >> 32) & 0xFFFFFFFF));
-                ulong lsw = Reverse((uint)(ul & 0xFFFFFFFF));
-                ulong res = lsw << 32;
+                ulong msw = Reverse((uint) ((ul >> 32) & 0xFFFFFFFF));
+                ulong lsw = Reverse((uint) (ul & 0xFFFFFFFF));
+                var res = lsw << 32;
                 return res | msw;
             }
         }
@@ -893,7 +873,7 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public static long Reverse(this long l)
         {
-            unchecked { return (long)Reverse(unchecked((ulong)l)); }
+            unchecked { return (long) Reverse(unchecked((ulong) l)); }
         }
 
         /// <summary>
@@ -905,10 +885,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>
         /// The signum function of the specified int value.
         /// </returns>
-        public static int Signum(this int i)
-        {
-            return unchecked((i >> 31) | ((int)((uint)-i >> 31)));
-        }
+        public static int Signum(this int i) 
+            => unchecked((i >> 31) | ((int) ((uint) -i >> 31)));
 
         /// <summary>
         /// Returns the Signum function of the specified long value.  (The return value is -1 if
@@ -919,10 +897,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>
         /// The Signum function of the specified long value.
         /// </returns>
-        public static long Signum(this long l)
-        {
-            return unchecked((l >> 63) | ((long)((ulong)-l >> 63)));
-        }
+        public static long Signum(this long l) 
+            => unchecked((l >> 63) | ((long) ((ulong) -l >> 63)));
 
         #endregion
 
@@ -941,7 +917,6 @@ namespace Reko.Libraries.Microchip
         public static string ToStringField(this int field, int width, char sset, char sclr = '-')
         {
             var sb = new StringBuilder(width);
-            int mask = (1 << width) - 1;
             field &= (1 << width) - 1;
             while (width > 0)
             {
@@ -963,12 +938,12 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public static int ToBitField(this string sField, int width, char sset)
         {
-            if (String.IsNullOrEmpty(sField))
+            if (string.IsNullOrEmpty(sField))
                 return 0;
-            int field = 0;
-            int lfield = sField.Length;
+            var field = 0;
+            var lfield = sField.Length;
             width = Math.Min(lfield, width);
-            for (int i = lfield - width; i < lfield; i++)
+            for (var i = lfield - width; i < lfield; i++)
             {
                 field <<= 1;
                 if (sField[i] == sset)

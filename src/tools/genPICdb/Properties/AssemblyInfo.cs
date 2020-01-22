@@ -1,15 +1,14 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Generate PIC database")]
-[assembly: AssemblyDescription("Generate the PIC definition database")]
+[assembly: AssemblyDescription("Generate the Microchip PIC16/18 definition database")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("C. Hostelet")]
-[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
+[assembly: AssemblyProduct("GenPICDb")]
 [assembly: AssemblyCopyright("Copyright © 2017-2020 Christian Hostelet")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -32,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
-[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

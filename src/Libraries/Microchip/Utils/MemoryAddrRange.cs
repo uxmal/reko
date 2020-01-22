@@ -1,13 +1,15 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (c) 2017-2020 Christian Hostelet.
  * inspired by work from:
  * Copyright (C) 1999-2020 John Källén.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Common Development
+ * and Distribution License (the License), or the GPL v2, or (at your option)
+ * any later version. 
+ * You may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at http://www.gnu.org/licenses/gpl-2.0.html.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,16 +19,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * If applicable, add the following below the header, with the fields
+ * enclosed by brackets [] replaced by your own identifying information:
+ * "Portions Copyrighted (c) [year] [name of copyright owner]"
+ *
  */
-#endregion
 
-using System;
-using System.Collections.Generic;
-using System.Xml.Schema;
-using System.Xml.Serialization;
+#endregion
 
 namespace Reko.Libraries.Microchip
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// The abstract class <see cref="MemoryAddrRange"/> represents a PIC memory address range [begin, end) (either in data, program or absolute space).
     /// </summary>
@@ -36,7 +45,7 @@ namespace Reko.Libraries.Microchip
         IComparable<MemoryAddrRange>, IComparable<IPICMemoryAddrRange>, IComparer<MemoryAddrRange>
     {
 
-        public MemoryAddrRange() { }
+        protected MemoryAddrRange() { }
 
         /// <summary> Gets the memory domain. </summary>
         [XmlIgnore]
@@ -55,10 +64,12 @@ namespace Reko.Libraries.Microchip
         public uint EndAddr { get; private set; }
 
         [XmlAttribute(AttributeName = "beginaddr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _beginaddrformatted { get => $"0x{BeginAddr:X}"; set => BeginAddr = value.ToUInt32Ex(); }
+        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Needed for serialization")]
+        public string beginaddrFormatted { get => $"0x{BeginAddr:X}"; set => BeginAddr = value.ToUInt32Ex(); }
 
         [XmlAttribute(AttributeName = "endaddr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _endaddrformatted { get => $"0x{EndAddr:X}"; set => EndAddr = value.ToUInt32Ex(); }
+        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Needed for serialization")]
+        public string endaddrFormatted { get => $"0x{EndAddr:X}"; set => EndAddr = value.ToUInt32Ex(); }
 
 
         #region Implementation of the equality/comparison interfaces
@@ -93,18 +104,18 @@ namespace Reko.Libraries.Microchip
 
         public override int GetHashCode() => (BeginAddr.GetHashCode() + 17 * EndAddr.GetHashCode()) ^ MemoryDomain.GetHashCode();
 
-        public static bool operator ==(MemoryAddrRange reg1, MemoryAddrRange reg2) => _Compare(reg1, reg2) == 0;
+        public static bool operator ==(MemoryAddrRange reg1, MemoryAddrRange reg2) => compare(reg1, reg2) == 0;
 
-        public static bool operator !=(MemoryAddrRange reg1, MemoryAddrRange reg2) => _Compare(reg1, reg2) != 0;
+        public static bool operator !=(MemoryAddrRange reg1, MemoryAddrRange reg2) => compare(reg1, reg2) != 0;
 
         public int Compare(MemoryAddrRange x, MemoryAddrRange y)
-            => _Compare(x, y);
+            => compare(x, y);
 
-        private static int _Compare(MemoryAddrRange x, IPICMemoryAddrRange y)
+        private static int compare(MemoryAddrRange x, IPICMemoryAddrRange y)
         {
             if (ReferenceEquals(x, y))
                 return 0;
-            if ((object)x == null)
+            if (x is null)
                 return -1;
             return x.CompareTo(y);
         }
@@ -143,6 +154,18 @@ namespace Reko.Libraries.Microchip
                 return EndAddr.CompareTo(other.EndAddr);
             return BeginAddr.CompareTo(other.BeginAddr);
         }
+
+        public static bool operator <(MemoryAddrRange left, MemoryAddrRange right)
+            => left is null ? right is object : left.CompareTo(right) < 0;
+
+        public static bool operator <=(MemoryAddrRange left, MemoryAddrRange right)
+            => left is null || left.CompareTo(right) <= 0;
+
+        public static bool operator >(MemoryAddrRange left, MemoryAddrRange right)
+            => left is object && left.CompareTo(right) > 0;
+
+        public static bool operator >=(MemoryAddrRange left, MemoryAddrRange right)
+            => left is null ? right is null : left.CompareTo(right) >= 0;
 
         #endregion
 
