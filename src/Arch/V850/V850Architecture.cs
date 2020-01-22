@@ -31,11 +31,12 @@ namespace Reko.Arch.V850
     {
         public V850Architecture(string archId) : base(archId)
         {
+            Endianness = EndianServices.Little;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            throw new NotImplementedException();
+            return new V850Disassembler(this);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
