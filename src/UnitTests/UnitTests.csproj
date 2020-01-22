@@ -225,6 +225,7 @@
     <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000RewriterTests.cs" />
+    <Compile Include="Arch\V850\V850DisassemblerTests.cs" />
     <Compile Include="Arch\WE32100\WE32100DisassemblerTests.cs" />
     <Compile Include="Arch\X86\NasmSyntaxTests.cs" />
     <Compile Include="Arch\XCore\XCoreDisassemblerTests.cs" />
@@ -973,6 +974,10 @@
     <ProjectReference Include="..\Arch\Tlcs\Tlcs.csproj">
       <Project>{B15C2937-0FB8-4F3B-8B84-BEE861DC841B}</Project>
       <Name>Tlcs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\v850\V850.csproj">
+      <Project>{3C9E8F29-7D4C-4754-BE9C-28D572E834C1}</Project>
+      <Name>V850</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Project>{82777964-B370-431A-AC97-733C594C02B5}</Project>
