@@ -22,6 +22,7 @@ namespace Reko.Arch.V850
 {
     public enum Mnemonic
     {
-        invalid
+        invalid,
+        nop
     }
 }

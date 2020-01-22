@@ -19,6 +19,7 @@
 #endregion
 
 using System.Collections.Generic;
+using Reko.Core;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.V850
@@ -26,15 +27,23 @@ namespace Reko.Arch.V850
     public class V850Disassembler : DisassemblerBase<V850Instruction, Mnemonic>
     {
         private readonly V850Architecture arch;
+        private readonly EndianImageReader rdr;
 
-        public V850Disassembler(V850Architecture arch)
+        public V850Disassembler(V850Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
+            this.rdr = rdr;
         }
 
         public override V850Instruction DisassembleInstruction()
         {
-            throw new System.NotImplementedException();
+            if (!rdr.TryReadLeUInt16(out ushort uInstr))
+                return null;
+            return new V850Instruction
+            {
+                Mnemonic = Mnemonic.nop,
+                Operands = MachineInstruction.NoOperands,
+            };
         }
 
         public override V850Instruction CreateInvalidInstruction()

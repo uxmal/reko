@@ -36,7 +36,7 @@ namespace Reko.Arch.V850
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new V850Disassembler(this);
+            return new V850Disassembler(this, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
