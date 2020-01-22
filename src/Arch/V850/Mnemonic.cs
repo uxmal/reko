@@ -23,6 +23,14 @@ namespace Reko.Arch.V850
     public enum Mnemonic
     {
         invalid,
-        nop
+        nop,
+        mov,
+        sld_w,
+        sst_w,
+        or,
+        sld_b,
+        sst_b,
+        sld_h,
+        sst_h
     }
 }

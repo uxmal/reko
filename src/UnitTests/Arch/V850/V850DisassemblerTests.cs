@@ -51,9 +51,82 @@ namespace Reko.UnitTests.Arch.V850
         }
 
         [Test]
+        public void V850Dis_Generate()
+        {
+            var buf = new byte[1000];
+            var rnd = new Random(0x4711);
+            rnd.NextBytes(buf);
+            var mem = new MemoryArea(addr, buf);
+            var rdr = mem.CreateLeReader(mem.BaseAddress);
+            var dasm = arch.CreateDisassembler(rdr);
+            foreach (var instr in dasm)
+            {
+                dasm.ToString();
+            }
+        }
+
+
+        [Test]
+        public void V850Dis_mov()
+        {
+            AssertCode("mov\tr31,r25", "1FC8");
+        }
+
+        [Test]
+        public void V850Dis_mov_neg_imm()
+        {
+            AssertCode("mov\tFFFFFFF0,r17", "108A");
+        }
+
+        [Test]
         public void V850Dis_nop()
         {
             AssertCode("nop", "0000");
         }
+
+        [Test]
+        public void V850Dis_or()
+        {
+            AssertCode("or\tr2,r24", "02C1");
+        }
+
+        [Test]
+        public void V850Dis_sld_b()
+        {
+            AssertCode("sld.b\t3[ep],r14", "0373");
+        }
+
+        [Test]
+        public void V850Dis_sld_h()
+        {
+            AssertCode("sld.h\t6[ep],r24", "06C4");
+        }
+
+        [Test]
+        public void V850Dis_sld_w()
+        {
+            AssertCode("sld.w\t0[ep],r8", "0045");
+        }
+
+        [Test]
+        public void V850Dis_sst_b()
+        {
+            AssertCode("sst.b\tr15,108[ep]", "EC7B");
+        }
+
+        [Test]
+        public void V850Dis_sst_h()
+        {
+            AssertCode("sst.h\tr24,90[ep]", "DAC4");
+        }
+
+        [Test]
+        public void V850Dis_sst_w()
+        {
+            AssertCode("sst.w\tr24,2[ep]", "05C5");
+        }
+
+        /////////////////////////////////////////////////////////////////////////
+
     }
 }

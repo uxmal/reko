@@ -18,30 +18,29 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.Arch.V850
 {
-    public class V850Instruction : MachineInstruction
+    public class MemoryOperand : MachineOperand
     {
-        public Mnemonic Mnemonic { get; set; }
-
-        public override int OpcodeAsInteger => (int)Mnemonic;
-
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public MemoryOperand(PrimitiveType dt, RegisterStorage ep, int offset) : base(dt)
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            this.Base = ep;
+            this.Offset = offset;
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        public RegisterStorage Base { get; }
+        public int Offset { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var sMnemonic = Mnemonic.ToString()
-                .Replace('_', '.');
-            writer.WriteString(sMnemonic);
+            writer.WriteFormat("{0}[", Offset);
+            writer.WriteString(Base.Name);
+            writer.WriteChar(']');
         }
+
     }
 }

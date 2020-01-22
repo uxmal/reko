@@ -18,30 +18,24 @@
  */
 #endregion
 
-using Reko.Core.Machine;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Reko.Core;
+using Reko.Core.Types;
 
 namespace Reko.Arch.V850
 {
-    public class V850Instruction : MachineInstruction
+    public static class Registers
     {
-        public Mnemonic Mnemonic { get; set; }
+        public static RegisterStorage[] GpRegs { get; }
+        public static RegisterStorage ElementPtr { get; }
 
-        public override int OpcodeAsInteger => (int)Mnemonic;
-
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        static Registers()
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            var factory = new StorageFactory();
+            var gpRegs = factory.RangeOfReg32(32, "r{0}");
+            gpRegs[30] = new RegisterStorage("ep", 30, 0, PrimitiveType.Word32);
+            GpRegs = gpRegs;
+            ElementPtr = gpRegs[30];
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
-        {
-            var sMnemonic = Mnemonic.ToString()
-                .Replace('_', '.');
-            writer.WriteString(sMnemonic);
-        }
     }
 }
