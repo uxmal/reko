@@ -118,29 +118,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hunktool", "tools\hunktool\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Loaders", "Loaders", "{E34BB92E-9C1E-41E8-8333-8BB69831BB63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinHex", "ImageLoaders\BinHex\BinHex.csproj", "{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinHex", "ImageLoaders\BinHex\BinHex.csproj", "{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elf", "ImageLoaders\Elf\Elf.csproj", "{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elf", "ImageLoaders\Elf\Elf.csproj", "{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coff", "ImageLoaders\Coff\Coff.csproj", "{02595A47-2592-441D-B44D-8EA8C19EE5E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coff", "ImageLoaders\Coff\Coff.csproj", "{02595A47-2592-441D-B44D-8EA8C19EE5E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachO", "ImageLoaders\MachO\MachO.csproj", "{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachO", "ImageLoaders\MachO\MachO.csproj", "{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hunk", "ImageLoaders\Hunk\Hunk.csproj", "{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hunk", "ImageLoaders\Hunk\Hunk.csproj", "{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MzExe", "ImageLoaders\MzExe\MzExe.csproj", "{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdbgScript", "ImageLoaders\OdbgScript\OdbgScript.csproj", "{2882376F-663A-4FC8-842C-B0300A6829E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeLib", "ImageLoaders\TypeLib\TypeLib.csproj", "{A4DEF935-217C-4107-998C-C7845893CFA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeLib", "ImageLoaders\TypeLib\TypeLib.csproj", "{A4DEF935-217C-4107-998C-C7845893CFA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VmsExe", "ImageLoaders\VmsExe\VmsExe.csproj", "{4059BEBF-7B5C-4701-AC98-ADE2515D8823}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VmsExe", "ImageLoaders\VmsExe\VmsExe.csproj", "{4059BEBF-7B5C-4701-AC98-ADE2515D8823}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dol", "ImageLoaders\Dol\Dol.csproj", "{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dol", "ImageLoaders\Dol\Dol.csproj", "{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelHex", "ImageLoaders\IntelHex\IntelHex.csproj", "{72641087-68D2-41E7-9B29-BC9D4213940A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelHex", "ImageLoaders\IntelHex\IntelHex.csproj", "{72641087-68D2-41E7-9B29-BC9D4213940A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLVM", "ImageLoaders\Llvm\LLVM.csproj", "{9292F9E7-2CE7-470D-B5F0-72D775720BC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLVM", "ImageLoaders\Llvm\LLVM.csproj", "{9292F9E7-2CE7-470D-B5F0-72D775720BC0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblers", "Assemblers", "{4663BBB9-AF99-4C57-A355-5D7814284BB1}"
 EndProject
@@ -378,9 +378,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "website", "Drivers\WebSite\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libc", "Libraries\Libc\Libc.csproj", "{FDAF4CA9-085C-473E-BCB5-0D2A4354A949}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libc", "Libraries\Libc\Libc.csproj", "{FDAF4CA9-085C-473E-BCB5-0D2A4354A949}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Python", "Libraries\Python\Python.csproj", "{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Python", "Libraries\Python\Python.csproj", "{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{EF16C5BE-595C-4A9F-9CA6-028D993661E7}"
 EndProject
@@ -398,9 +398,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Gui\Gui.csproj", "{1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsForms", "UserInterfaces\WindowsForms\WindowsForms.csproj", "{60CC0C65-E629-4923-9112-2A46371C90AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Omf", "ImageLoaders\Omf\Omf.csproj", "{0E00ED86-372C-4497-85BB-428BDD1C5CCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Omf", "ImageLoaders\Omf\Omf.csproj", "{0E00ED86-372C-4497-85BB-428BDD1C5CCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xex", "ImageLoaders\XexLoader\Xex.csproj", "{E6D43750-9ABC-407D-B247-C91593C77062}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xex", "ImageLoaders\XexLoader\Xex.csproj", "{E6D43750-9ABC-407D-B247-C91593C77062}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xbox360", "Environments\Xbox360\Xbox360.csproj", "{E45B5B79-17ED-4B74-A68B-CE9119C51677}"
 EndProject
@@ -581,12 +581,12 @@ Global
 		{32F09304-51BE-4797-A86A-C0BEFED2422B}.TravisRelease|x64.Build.0 = Release|Any CPU
 		{32F09304-51BE-4797-A86A-C0BEFED2422B}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{32F09304-51BE-4797-A86A-C0BEFED2422B}.TravisRelease|x86.Build.0 = Release|Any CPU
-		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|Any CPU.ActiveCfg = UnixRelease|Any CPU
-		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|Any CPU.Build.0 = UnixRelease|Any CPU
-		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|x64.ActiveCfg = UnixRelease|Any CPU
-		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|x64.Build.0 = UnixRelease|Any CPU
-		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|x86.ActiveCfg = UnixRelease|Any CPU
-		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|x86.Build.0 = UnixRelease|Any CPU
+		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
+		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|x64.ActiveCfg = Release|Any CPU
+		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|x64.Build.0 = Release|Any CPU
+		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|x86.ActiveCfg = Release|Any CPU
+		{32F09304-51BE-4797-A86A-C0BEFED2422B}.UnixRelease|x86.Build.0 = Release|Any CPU
 		{454D9734-EDF3-4646-8C7F-8449C68EB826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{454D9734-EDF3-4646-8C7F-8449C68EB826}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{454D9734-EDF3-4646-8C7F-8449C68EB826}.Debug|x64.ActiveCfg = Debug|Any CPU
