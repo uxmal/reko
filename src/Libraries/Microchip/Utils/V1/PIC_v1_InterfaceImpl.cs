@@ -1,13 +1,15 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (c) 2017-2020 Christian Hostelet.
  * inspired by work from:
  * Copyright (C) 1999-2020 John Källén.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Common Development
+ * and Distribution License (the License), or the GPL v2, or (at your option)
+ * any later version. 
+ * You may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at http://www.gnu.org/licenses/gpl-2.0.html.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,15 +19,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * If applicable, add the following below the header, with the fields
+ * enclosed by brackets [] replaced by your own identifying information:
+ * "Portions Copyrighted (c) [year] [name of copyright owner]"
+ *
  */
-#endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+#endregion
 
 namespace Reko.Libraries.Microchip.V1
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
 
     /// <summary>
     /// This class implements the <see cref="IPICDescriptor"/> interface for <see cref="PIC_v1"/> class instances.
@@ -135,15 +143,13 @@ namespace Reko.Libraries.Microchip.V1
                     {
                         switch (d)
                         {
-                            case DCRDef dcr:
-                                yield return dcr.V1_Interface;
-                                break;
+                        case DCRDef dcr:
+                            yield return dcr.V1_Interface;
+                            break;
 
-                            case AdjustPoint adj:
-                                break;
-
-                            default:
-                                throw new InvalidOperationException($"Invalid configuration fuse type: {d.GetType()}");
+                        case AdjustPoint adj:
+                        default:
+                            throw new InvalidOperationException($"Invalid configuration fuse type: {d.GetType()}");
                         }
                     }
                 }
@@ -200,20 +206,20 @@ namespace Reko.Libraries.Microchip.V1
             }
             switch (mode)
             {
-                case PICExecMode.Traditional:
-                    if (dataspace.TraditionalModeOnly != null)
-                    {
-                        foreach (var gpr in dataspace.TraditionalModeOnly)
-                            yield return gpr.V1_Interface;
-                    }
-                    break;
-                case PICExecMode.Extended:
-                    if (dataspace.ExtendedModeOnly != null)
-                    {
-                        foreach (var gpr in dataspace.ExtendedModeOnly)
-                            yield return gpr.V1_Interface;
-                    }
-                    break;
+            case PICExecMode.Traditional:
+                if (dataspace.TraditionalModeOnly != null)
+                {
+                    foreach (var gpr in dataspace.TraditionalModeOnly)
+                        yield return gpr.V1_Interface;
+                }
+                break;
+            case PICExecMode.Extended:
+                if (dataspace.ExtendedModeOnly != null)
+                {
+                    foreach (var gpr in dataspace.ExtendedModeOnly)
+                        yield return gpr.V1_Interface;
+                }
+                break;
             }
         }
 
@@ -234,7 +240,7 @@ namespace Reko.Libraries.Microchip.V1
                             {
                                 sfr.BitPos = bitPos;
                                 yield return sfr.V1_Interface;
-                                bitPos += (byte)(sfr.ByteWidth * 8);
+                                bitPos += (byte) (sfr.ByteWidth * 8);
                             }
                         }
                         foreach (var mfsr in sfrd.MuxedSFRs)
@@ -267,7 +273,7 @@ namespace Reko.Libraries.Microchip.V1
                             {
                                 jsize += sfr.NzWidth;
                                 sfr.BitPos = bitPos;
-                                bitPos += (byte)(sfr.ByteWidth * 8);
+                                bitPos += (byte) (sfr.ByteWidth * 8);
                             }
                             jsfr.NzWidth = jsize;
                             yield return jsfr.V1_Interface;
@@ -319,10 +325,8 @@ namespace Reko.Libraries.Microchip.V1
     {
         private readonly PICMemTrait picmemtrt;
 
-        public PICMemTrait_v1_Interface(PICMemTrait picMemTrait)
-        {
-            picmemtrt = picMemTrait ?? throw new ArgumentNullException(nameof(picMemTrait));
-        }
+        public PICMemTrait_v1_Interface(PICMemTrait picMemTrait) 
+            => picmemtrt = picMemTrait ?? throw new ArgumentNullException(nameof(picMemTrait));
 
         PICMemoryDomain IPICMemTrait.Domain => picmemtrt.Domain;
         PICMemorySubDomain IPICMemTrait.SubDomain => picmemtrt.SubDomain;
@@ -337,10 +341,8 @@ namespace Reko.Libraries.Microchip.V1
     {
         private readonly DCRDef fuse;
 
-        public DeviceFuse_v1_Interface(DCRDef cfgfuse)
-        {
-            fuse = cfgfuse;
-        }
+        public DeviceFuse_v1_Interface(DCRDef cfgfuse) 
+            => fuse = cfgfuse;
 
         int IDeviceFuse.Addr => fuse.Addr;
         string IDeviceFuse.Name => fuse.CName;
@@ -366,23 +368,17 @@ namespace Reko.Libraries.Microchip.V1
             {
                 foreach (var mode in fuse.DCRModes)
                 {
-                    int bitpos = 0;
                     foreach (var fld in mode.Fields)
                     {
                         switch (fld)
                         {
-                            case AdjustPoint adj:
-                                bitpos += adj.Offset;
-                                break;
+                        case DCRFieldDef fdef:
+                            yield return fdef.V1_Interface;
+                            break;
 
-                            case DCRFieldDef fdef:
-                                fdef.BitPos = (byte)bitpos;
-                                bitpos += fdef.NzWidth;
-                                yield return fdef.V1_Interface;
-                                break;
-
-                            default:
-                                throw new InvalidOperationException($"Invalid PIC device configuration field in '{fuse.CName}' register: {fld.GetType()}");
+                        case AdjustPoint adj:
+                        default:
+                            throw new InvalidOperationException($"Invalid PIC device configuration field in '{fuse.CName}' register: {fld.GetType()}");
                         }
                     }
                 }
@@ -395,10 +391,8 @@ namespace Reko.Libraries.Microchip.V1
     {
         private readonly DCRDefIllegal illg;
 
-        public DeviceFusesIllegal_v1_Interface(DCRDefIllegal dcrIllg)
-        {
-            illg = dcrIllg ?? throw new ArgumentNullException(nameof(dcrIllg));
-        }
+        public DeviceFusesIllegal_v1_Interface(DCRDefIllegal dcrIllg) 
+            => illg = dcrIllg ?? throw new ArgumentNullException(nameof(dcrIllg));
 
         string IDeviceFusesIllegal.When => illg.When;
         string IDeviceFusesIllegal.Description => illg.Desc;
@@ -409,10 +403,8 @@ namespace Reko.Libraries.Microchip.V1
     {
         private readonly DCRFieldDef dcrflddef;
 
-        public DeviceFusesField_v1_Interface(DCRFieldDef dcrFieldDef)
-        {
-            dcrflddef = dcrFieldDef ?? throw new ArgumentNullException(nameof(dcrFieldDef));
-        }
+        public DeviceFusesField_v1_Interface(DCRFieldDef dcrFieldDef) 
+            => dcrflddef = dcrFieldDef ?? throw new ArgumentNullException(nameof(dcrFieldDef));
 
         string IRegisterBitField.Name => dcrflddef.CName;
         string IRegisterBitField.Description => dcrflddef.Desc;
@@ -442,10 +434,8 @@ namespace Reko.Libraries.Microchip.V1
     {
         private readonly DCRFieldSemantic dcrfldsem;
 
-        public DeviceFusesSemantic_v1_Interface(DCRFieldSemantic dcrFieldSem)
-        {
-            dcrfldsem = dcrFieldSem ?? throw new ArgumentNullException(nameof(dcrFieldSem));
-        }
+        public DeviceFusesSemantic_v1_Interface(DCRFieldSemantic dcrFieldSem) 
+            => dcrfldsem = dcrFieldSem ?? throw new ArgumentNullException(nameof(dcrFieldSem));
 
         string IDeviceFusesSemantic.Name => dcrfldsem.CName;
         string IDeviceFusesSemantic.Description => dcrfldsem.Descr;
@@ -459,9 +449,7 @@ namespace Reko.Libraries.Microchip.V1
         private readonly SFRDef sfrreg;
 
         public SFRRegister_v1_Interface(SFRDef sfrDef)
-        {
-            sfrreg = sfrDef ?? throw new ArgumentNullException(nameof(sfrDef));
-        }
+            => sfrreg = sfrDef ?? throw new ArgumentNullException(nameof(sfrDef));
 
         uint IRegisterBasicInfo.Addr => sfrreg.Addr;
         string IRegisterBasicInfo.Name => sfrreg.CName;
@@ -486,23 +474,17 @@ namespace Reko.Libraries.Microchip.V1
             {
                 foreach (var smod in sfrreg.SFRModes)
                 {
-                    int bitPos = 0;
                     foreach (var bf in smod.Fields)
                     {
                         switch (bf)
                         {
-                            case SFRFieldDef sfd:
-                                sfd.BitPos = (byte)bitPos;
-                                bitPos += sfd.NzWidth;
-                                yield return sfd.V1_Interface;
-                                break;
+                        case SFRFieldDef sfd:
+                            yield return sfd.V1_Interface;
+                            break;
 
-                            case AdjustPoint adj:
-                                bitPos += adj.Offset;
-                                break;
-
-                            default:
-                                throw new InvalidOperationException($"Invalid SFR field type in '{sfrreg.CName}': {bf.GetType()}");
+                        case AdjustPoint adj:
+                        default:
+                            throw new InvalidOperationException($"Invalid SFR field type in '{sfrreg.CName}': {bf.GetType()}");
                         }
                     }
                 }
@@ -516,9 +498,7 @@ namespace Reko.Libraries.Microchip.V1
         private readonly JoinedSFRDef jsfrreg;
 
         public JoinedSFRRegister_v1_Interface(JoinedSFRDef joinedSFRDef)
-        {
-            jsfrreg = joinedSFRDef;
-        }
+            => jsfrreg = joinedSFRDef;
 
         uint IRegisterBasicInfo.Addr => jsfrreg.Addr;
         string IRegisterBasicInfo.Name => jsfrreg.CName;
@@ -540,10 +520,8 @@ namespace Reko.Libraries.Microchip.V1
     {
         private readonly SFRFieldDef sfbitdef;
 
-        public SFRBitField_v1_Interface(SFRFieldDef sfrFieldDef)
-        {
-            sfbitdef = sfrFieldDef ?? throw new ArgumentNullException(nameof(sfrFieldDef));
-        }
+        public SFRBitField_v1_Interface(SFRFieldDef sfrFieldDef) 
+            => sfbitdef = sfrFieldDef ?? throw new ArgumentNullException(nameof(sfrFieldDef));
 
         string IRegisterBitField.Name => sfbitdef.CName;
         string IRegisterBitField.Description => sfbitdef.Desc;
@@ -573,9 +551,7 @@ namespace Reko.Libraries.Microchip.V1
         private readonly SFRFieldSemantic fsem;
 
         public SFRFieldSemantic_v1_Interface(SFRFieldSemantic sfrFieldSemantic)
-        {
-            fsem = sfrFieldSemantic ?? throw new ArgumentNullException(nameof(sfrFieldSemantic));
-        }
+            => fsem = sfrFieldSemantic ?? throw new ArgumentNullException(nameof(sfrFieldSemantic));
 
         string ISFRFieldSemantic.Description => fsem.Desc;
         string ISFRFieldSemantic.When => fsem.When;
@@ -587,9 +563,7 @@ namespace Reko.Libraries.Microchip.V1
         private readonly PICMemoryRegion memReg;
 
         public PICMemoryRegion_v1_Interface(PICMemoryRegion memRegion)
-        {
-            memReg = memRegion;
-        }
+            => memReg = memRegion;
 
         string IPICMemoryRegion.RegionID => memReg.RegionID;
         bool IPICMemoryRegion.IsBank => memReg.IsBank;
@@ -597,8 +571,8 @@ namespace Reko.Libraries.Microchip.V1
         string IPICMemoryRegion.ShadowIDRef => memReg.ShadowIDRef;
         int IPICMemoryRegion.ShadowOffset => memReg.ShadowOffset;
         bool IPICMemoryRegion.IsSection => memReg.IsSection;
-        string IPICMemoryRegion.SectionDesc => memReg.IsSection ? memReg.SectionDesc : String.Empty;
-        string IPICMemoryRegion.SectionName => memReg.IsSection ? memReg.SectionName : String.Empty;
+        string IPICMemoryRegion.SectionDesc => memReg.IsSection ? memReg.SectionDesc : string.Empty;
+        string IPICMemoryRegion.SectionName => memReg.IsSection ? memReg.SectionName : string.Empty;
         uint IPICMemoryAddrRange.BeginAddr => memReg.BeginAddr;
         uint IPICMemoryAddrRange.EndAddr => memReg.EndAddr;
         PICMemoryDomain IPICMemoryAddrRange.MemoryDomain => memReg.MemoryDomain;
@@ -607,16 +581,17 @@ namespace Reko.Libraries.Microchip.V1
 
     internal sealed class MirroringRegion_v1_Interface : IPICMirroringRegion
     {
-        private Mirror mir;
+        private readonly Mirror mir;
 
         public MirroringRegion_v1_Interface(Mirror mirror)
-        {
-            mir = mirror ?? throw new ArgumentNullException(nameof(mirror));
-        }
+            => mir = mirror ?? throw new ArgumentNullException(nameof(mirror));
 
-        uint IPICMirroringRegion.Addr => mir.Addr;
-        uint IPICMirroringRegion.ByteSize => mir.NzSize;
-        string IPICMirroringRegion.TargetRegionID => mir.RegionIDRef;
+        uint IPICMirroringRegion.Addr
+            => mir.Addr;
+        uint IPICMirroringRegion.ByteSize
+            => mir.NzSize;
+        string IPICMirroringRegion.TargetRegionID 
+            => mir.RegionIDRef;
     }
 
     internal sealed class DeviceInfoSector_v1_Interface : IDeviceInfoSector
@@ -664,15 +639,13 @@ namespace Reko.Libraries.Microchip.V1
                         {
                             switch (r)
                             {
-                                case DeviceRegister dreg:
-                                    yield return dreg.V1_Interface;
-                                    break;
+                            case DeviceRegister dreg:
+                                yield return dreg.V1_Interface;
+                                break;
 
-                                case AdjustPoint adj:
-                                    break;
-
-                                default:
-                                    throw new InvalidOperationException($"Invalid PIC device info register in '{ra.Name}' : {r.GetType()}");
+                            case AdjustPoint adj:
+                            default:
+                                throw new InvalidOperationException($"Invalid PIC device info register in '{ra.Name}' : {r.GetType()}");
                             }
                         }
                     }
@@ -694,9 +667,7 @@ namespace Reko.Libraries.Microchip.V1
         private readonly DeviceRegister dreg;
 
         public DeviceInfo_v1_Interface(DeviceRegister deviceRegister)
-        {
-            dreg = deviceRegister ?? throw new ArgumentNullException(nameof(deviceRegister));
-        }
+            => dreg = deviceRegister ?? throw new ArgumentNullException(nameof(deviceRegister));
 
         int IDeviceInfoRegister.Addr => dreg.Addr;
         string IDeviceInfoRegister.Name => dreg.Name;
@@ -708,10 +679,8 @@ namespace Reko.Libraries.Microchip.V1
     {
         private readonly Interrupt inter;
 
-        public Interrupt_v1_Interface(Interrupt interrupt)
-        {
-            inter = interrupt ?? throw new ArgumentNullException(nameof(interrupt));
-        }
+        public Interrupt_v1_Interface(Interrupt interrupt) 
+            => inter = interrupt ?? throw new ArgumentNullException(nameof(interrupt));
 
         uint IInterrupt.IRQ => inter.IRQ;
         string IInterrupt.Name => inter.CName;

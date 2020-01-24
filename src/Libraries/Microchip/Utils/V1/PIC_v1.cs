@@ -1,11 +1,15 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (c) 2017-2020 Christian Hostelet.
+ * inspired by work from:
+ * Copyright (C) 1999-2020 John Källén.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Common Development
+ * and Distribution License (the License), or the GPL v2, or (at your option)
+ * any later version. 
+ * You may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at http://www.gnu.org/licenses/gpl-2.0.html.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,20 +19,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * If applicable, add the following below the header, with the fields
+ * enclosed by brackets [] replaced by your own identifying information:
+ * "Portions Copyrighted (c) [year] [name of copyright owner]"
+ *
  */
-#endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Xml.Serialization;
+#endregion
 
 // summary:	Implements the Microchip PIC XML definition serialization per Microchip Crownking Database.
 // This is version 1.
 //
 namespace Reko.Libraries.Microchip.V1
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Xml.Serialization;
+
     /// <summary>
     /// PIC definition. (Version 1).
     /// To keep independancy between the design of this class and the consumers, all accesses to information contained in any instance
@@ -61,7 +70,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int ProcID { get; private set; }
         [XmlAttribute("procid")]
-        public string _procIDFormatted { get => $"0x{ProcID:X}"; set => ProcID = value.ToInt32Ex(); }
+        public string ProcIDFormatted { get => $"0x{ProcID:X}"; set => ProcID = value.ToInt32Ex(); }
 
         /// <summary> Gets the data sheet identifier of the PIC from the XML. </summary>
         [XmlAttribute("dsid")]
@@ -184,13 +193,13 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int HWStackDepth { get; private set; }
         [XmlAttribute("hwstackdepth")]
-        public string _hwStackDepthFormatted { get => $"{HWStackDepth}"; set => HWStackDepth = value.ToInt32Ex(); }
+        public string HwStackDepthFormatted { get => $"{HWStackDepth}"; set => HWStackDepth = value.ToInt32Ex(); }
 
         /// <summary> Gets the number of memory banks. </summary>
         [XmlIgnore]
         public int BankCount { get; private set; }
         [XmlAttribute("bankcount")]
-        public string _bankCountFormatted { get => $"{BankCount}"; set => BankCount = value.ToInt32Ex(); }
+        public string BankCountFormatted { get => $"{BankCount}"; set => BankCount = value.ToInt32Ex(); }
 
         #endregion
 
@@ -228,31 +237,31 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public virtual uint WordSize { get; private set; }
         [XmlAttribute("wordsize")]
-        public string _wordSizeFormatted { get => $"0x{WordSize:X}"; set => WordSize = value.ToUInt32Ex(); }
+        public string WordSizeFormatted { get => $"0x{WordSize:X}"; set => WordSize = value.ToUInt32Ex(); }
 
         /// <summary> Gets the memory location access size (in bytes). </summary>
         [XmlIgnore]
         public virtual uint LocSize { get; private set; }
         [XmlAttribute("locsize")]
-        public string _locSizeFormatted { get => $"0x{LocSize:X}"; set => LocSize = value.ToUInt32Ex(); }
+        public string LocSizeFormatted { get => $"0x{LocSize:X}"; set => LocSize = value.ToUInt32Ex(); }
 
         /// <summary> Gets the memory word implementation (bit mask). </summary>
         [XmlIgnore]
         public virtual uint WordImpl { get; private set; }
         [XmlAttribute("wordimpl")]
-        public string _wordImplFormatted { get => $"0x{WordImpl:X}"; set => WordImpl = value.ToUInt32Ex(); }
+        public string WordImplFormatted { get => $"0x{WordImpl:X}"; set => WordImpl = value.ToUInt32Ex(); }
 
         /// <summary> Gets the initial (erased) memory word value. </summary>
         [XmlIgnore]
         public virtual uint WordInit { get; private set; }
         [XmlAttribute("wordinit")]
-        public string _wordInitFormatted { get => $"0x{WordInit:X}"; set => WordInit = value.ToUInt32Ex(); }
+        public string WordInitFormatted { get => $"0x{WordInit:X}"; set => WordInit = value.ToUInt32Ex(); }
 
         /// <summary> Gets the memory word 'safe' value. </summary>
         [XmlIgnore]
         public virtual uint WordSafe { get; private set; }
         [XmlAttribute("wordsafe")]
-        public string _wordSafeFormatted { get => $"0x{WordSafe:X}"; set => WordSafe = value.ToUInt32Ex(); }
+        public string WordSafeFormatted { get => $"0x{WordSafe:X}"; set => WordSafe = value.ToUInt32Ex(); }
 
         #endregion
 
@@ -322,7 +331,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int UnimplVal { get; private set; }
         [XmlAttribute("unimplval")]
-        public string _unimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); }
+        public string UnimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); }
 
     }
 
@@ -366,7 +375,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public uint MagicOffset { get; private set; }
         [XmlAttribute("magicoffset")]
-        public string _magicOffsetFormatted { get => $"0x{MagicOffset:X}"; set => MagicOffset = value.ToUInt32Ex(); }
+        public string MagicOffsetFormatted { get => $"0x{MagicOffset:X}"; set => MagicOffset = value.ToUInt32Ex(); }
 
     }
 
@@ -413,7 +422,7 @@ namespace Reko.Libraries.Microchip.V1
         public string Desc { get; set; }
 
         [XmlAttribute("irq")]
-        public string _irqFormatted { get => $"{IRQ}"; set => IRQ = value.ToUInt32Ex(); }
+        public string IrqFormatted { get => $"{IRQ}"; set => IRQ = value.ToUInt32Ex(); }
 
         [XmlIgnore]
         public IInterrupt V1_Interface
@@ -434,7 +443,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Offset { get; private set; }
         [XmlAttribute("offset")]
-        public string _offsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); }
+        public string OffsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); }
 
     }
 
@@ -455,9 +464,9 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Bank { get; set; } = 0;
         [XmlAttribute("bank")]
-        public string _bankFormatted { get => $"{Bank}"; set => Bank = value.ToInt32Ex(); }
+        public string BankFormatted { get => $"{Bank}"; set => Bank = value.ToInt32Ex(); }
         [XmlIgnore]
-        public bool _bankFormattedSpecified => IsBank;
+        public bool BankFormattedSpecified => IsBank;
 
         [XmlIgnore]
         public virtual string ShadowIDRef { get => string.Empty; set { } }
@@ -599,13 +608,13 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Mask { get; private set; }
         [XmlAttribute("mask")]
-        public string _maskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); }
+        public string MaskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); }
 
         /// <summary> Gets the generic value of device ID </summary>
         [XmlIgnore]
         public int Value { get; private set; }
         [XmlAttribute("value")]
-        public string _valueFormatted { get => $"0x{Value:X}"; set => Value = value.ToInt32Ex(); }
+        public string ValueFormatted { get => $"0x{Value:X}"; set => Value = value.ToInt32Ex(); }
 
         /// <summary> Gets the Device IDs to silicon revision level. </summary>
         [XmlElement("DEVIDToRev")]
@@ -626,7 +635,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Value { get; private set; }
         [XmlAttribute("value")]
-        public string _valueFormatted { get => $"0x{Value:X}"; set => Value = value.ToInt32Ex(); }
+        public string ValueFormatted { get => $"0x{Value:X}"; set => Value = value.ToInt32Ex(); }
 
     }
 
@@ -653,7 +662,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Addr { get; private set; }
         [XmlAttribute("_addr")]
-        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
 
         /// <summary> Gets the name of the configuration register. </summary>
         [XmlAttribute("cname")]
@@ -667,13 +676,13 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int NzWidth { get; private set; }
         [XmlAttribute("nzwidth")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); }
 
         /// <summary> Gets the implemented bit mask. </summary>
         [XmlIgnore]
         public int ImplMask { get; private set; }
         [XmlAttribute("impl")]
-        public string _implFormatted { get => $"0x{ImplMask:X}"; set => ImplMask = value.ToInt32Ex(); }
+        public string ImplMaskFormatted { get => $"0x{ImplMask:X}"; set => ImplMask = value.ToInt32Ex(); }
 
         /// <summary> Gets the access modes of the register's bits. </summary>
         [XmlAttribute("access")]
@@ -683,13 +692,13 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int DefaultValue { get; private set; }
         [XmlAttribute("default")]
-        public string _defaultFormatted { get => $"0x{DefaultValue:X}"; set => DefaultValue = value.ToInt32Ex(); }
+        public string DefaultValueFormatted { get => $"0x{DefaultValue:X}"; set => DefaultValue = value.ToInt32Ex(); }
 
         /// <summary> Gets the factory default value of the register. </summary>
         [XmlIgnore]
         public int FactoryDefault { get; private set; }
         [XmlAttribute("factorydefault")]
-        public string _factoryDefaultFormatted { get => $"0x{FactoryDefault:X}"; set => FactoryDefault = value.ToInt32Ex(); }
+        public string FactoryDefaultFormatted { get => $"0x{FactoryDefault:X}"; set => FactoryDefault = value.ToInt32Ex(); }
 
         /// <summary> Gets a value indicating whether this register is hidden to language tools. </summary>
         [XmlAttribute("islanghidden", DataType = "boolean")]
@@ -701,18 +710,18 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int UnimplVal { get; private set; }
         [XmlAttribute("unimplval")]
-        public string _unimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); }
+        public string UnimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); }
 
         [XmlIgnore]
         public int Unused { get; private set; }
         [XmlAttribute("unused")]
-        public string _unusedFormatted { get => $"{Unused}"; set => Unused = value.ToInt32Ex(); }
+        public string UnusedFormatted { get => $"{Unused}"; set => Unused = value.ToInt32Ex(); }
 
         /// <summary> Gets the bit mask to use in checksum computation. </summary>
         [XmlIgnore]
         public int UseInChecksum { get; private set; }
         [XmlAttribute("useinchecksum")]
-        public string _useInChecksumFormatted { get => $"0x{UseInChecksum:X}"; set => UseInChecksum = value.ToInt32Ex(); }
+        public string UseInChecksumFormatted { get => $"0x{UseInChecksum:X}"; set => UseInChecksum = value.ToInt32Ex(); }
 
         #endregion
 
@@ -786,21 +795,23 @@ namespace Reko.Libraries.Microchip.V1
         [XmlAttribute("desc")]
         public string Desc { get; set; }
 
-        /// <summary> Gets the bit position of the field. (Not currently populated by Microchip). </summary>
+        /// <summary> Gets the bit position of the field. </summary>
         [XmlIgnore]
-        public byte BitPos { get; set; }
+        public byte BitPos { get; private set; }
+        [XmlAttribute("bitpos")]
+        public string BitPosFormatted { get => $"{BitPos}"; set => BitPos = value.ToByteEx(); }
 
         /// <summary> Gets the bit width of the field. </summary>
         [XmlIgnore]
         public byte NzWidth { get; private set; }
         [XmlAttribute("nzwidth")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToByteEx(); }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToByteEx(); }
 
         /// <summary> Gets the bit mask of the field in the register. </summary>
         [XmlIgnore]
         public int Mask { get; private set; }
         [XmlAttribute("mask")]
-        public string _maskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); }
+        public string MaskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); }
 
         /// <summary> Gets a value indicating whether this configuration field is hidden. </summary>
         [XmlAttribute("ishidden", DataType = "boolean")]
@@ -872,9 +883,9 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int OscModeIDRef { get; private set; }
         [XmlAttribute("oscmodeidref")]
-        public string _oscModeIDRefFormatted { get => $"{OscModeIDRef}"; set => OscModeIDRef = value.ToInt32Ex(); }
+        public string OscModeIDRefFormatted { get => $"{OscModeIDRef}"; set => OscModeIDRef = value.ToInt32Ex(); }
         [XmlIgnore]
-        public bool _oscModeIDRefFormattedSpecified { get => OscModeIDRef != 0; set { } }
+        public bool OscModeIDRefFormattedSpecified { get => OscModeIDRef != 0; set { } }
 
         [XmlAttribute("_defeatcoercion")]
         public string DefeatCoercion { get; set; }
@@ -933,7 +944,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Addr { get; private set; }
         [XmlAttribute("_addr")]
-        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
 
         /// <summary> Gets the name of the DIA registers array. </summary>
         [XmlAttribute("cname")]
@@ -975,7 +986,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Addr { get; private set; }
         [XmlAttribute("_addr")]
-        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
 
         /// <summary> Gets the name of the register. </summary>
         [XmlAttribute("cname")]
@@ -985,7 +996,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int NzWidth { get; private set; }
         [XmlAttribute("nzwidth")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); }
 
         #endregion
 
@@ -1016,7 +1027,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Size { get; private set; }
         [XmlAttribute("nzsize")]
-        public string _nzsizeformatted { get => $"0x{Size:X}"; set => Size = value.ToInt32Ex(); }
+        public string NzSizeformatted { get => $"0x{Size:X}"; set => Size = value.ToInt32Ex(); }
 
     }
 
@@ -1032,7 +1043,7 @@ namespace Reko.Libraries.Microchip.V1
         /// <summary> Gets the highest (end) address (+1) of the data memory space. </summary>
         [XmlIgnore] public uint EndAddr { get; private set; }
         [XmlAttribute("endaddr")]
-        public string _endAddrFormatted { get => $"0x{EndAddr:X}"; set => EndAddr = value.ToUInt32Ex(); }
+        public string EndAddrFormatted { get => $"0x{EndAddr:X}"; set => EndAddr = value.ToUInt32Ex(); }
 
         /// <summary> Gets the data memory regions regardless of PIC execution mode. </summary>
         [XmlElement("RegardlessOfMode")]
@@ -1166,7 +1177,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public uint Addr { get; private set; }
         [XmlAttribute("_addr")]
-        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
 
         /// <summary> Gets the name of this SFR. </summary>
         [XmlAttribute("cname")]
@@ -1180,13 +1191,13 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public byte NzWidth { get; private set; }
         [XmlAttribute("nzwidth")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToByteEx(); }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToByteEx(); }
 
         /// <summary> Gets the bit position of this SFR when under a joined SFR. </summary>
         [XmlIgnore]
         public byte BitPos { get; set; } = 0;
         [XmlAttribute("bitpos")]
-        public string _bitPosFormatted { get => $"{BitPos}"; set => BitPos = value.ToByteEx(); }
+        public string BitPosFormatted { get => $"{BitPos}"; set => BitPos = value.ToByteEx(); }
 
         /// <summary> Gets the byte width of this SFR. </summary>
         [XmlIgnore]
@@ -1196,7 +1207,7 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public uint Impl { get; private set; }
         [XmlAttribute("impl")]
-        public string _implFormatted { get => $"0x{Impl:X}"; set => Impl = value.ToUInt32Ex(); }
+        public string ImplFormatted { get => $"0x{Impl:X}"; set => Impl = value.ToUInt32Ex(); }
 
         /// <summary> Gets the access mode bits descriptor for this SFR. </summary>
         [XmlAttribute("access")]
@@ -1249,7 +1260,7 @@ namespace Reko.Libraries.Microchip.V1
         public string NMMRID { get; set; }
         /// <summary> Gets a value indicating whether this SFR is Non-Memory-Mapped. </summary>
         [XmlIgnore]
-        public bool IsNMMR { get => !String.IsNullOrEmpty(NMMRID); set { } }
+        public bool IsNMMR { get => !string.IsNullOrEmpty(NMMRID); set { } }
 
         #endregion
 
@@ -1308,19 +1319,19 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public byte NzWidth { get; set; }
         [XmlAttribute("nzwidth")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToByteEx(); }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToByteEx(); }
 
         /// <summary> Gets the bit position/address (zero-based) of this SFR field. </summary>
         [XmlIgnore]
         public byte BitPos { get; set; }
         [XmlAttribute("bitpos")]
-        public string _bitPosFormatted { get => $"{BitPos}"; set => BitPos = value.ToByteEx(); }
+        public string BitPosFormatted { get => $"{BitPos}"; set => BitPos = value.ToByteEx(); }
 
         /// <summary> Gets the bit mask of this SFR field. </summary>
         [XmlIgnore]
         public int Mask { get; set; }
         [XmlAttribute("mask")]
-        public string _maskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); }
+        public string MaskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); }
 
         /// <summary> Gets the textual description of this SFR Field. </summary>
         [XmlAttribute("desc")]
@@ -1391,13 +1402,13 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public uint Addr { get; private set; }
         [XmlAttribute("_addr")]
-        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
 
         /// <summary> Gets the size in bytes of the mirrored area. </summary>
         [XmlIgnore]
         public uint NzSize { get; private set; }
         [XmlAttribute("nzsize")]
-        public string _nzSizeFormatted { get => $"0x{NzSize:X}"; set => NzSize = value.ToUInt32Ex(); }
+        public string NzSizeFormatted { get => $"0x{NzSize:X}"; set => NzSize = value.ToUInt32Ex(); }
 
         /// <summary> Gets the region identifier reference of the mirrored memory region. </summary>
         [XmlAttribute("regionidref")]
@@ -1429,13 +1440,13 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public uint Addr { get; private set; }
         [XmlAttribute("_addr")]
-        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
 
         /// <summary> Gets the bit width of the joined SFR. </summary>
         [XmlIgnore]
         public byte NzWidth { get; set; }
         [XmlAttribute("nzwidth")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToByteEx(); }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToByteEx(); }
 
         /// <summary> Gets the textual description of the joined SFR. </summary>
         [XmlAttribute("desc")]
@@ -1470,13 +1481,13 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int Addr { get; private set; }
         [XmlAttribute("_addr")]
-        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
 
         /// <summary> Gets the bit width of the multiplex. </summary>
         [XmlIgnore]
         public byte BitWidth { get; private set; }
         [XmlAttribute("nzwidth")]
-        public string _nzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToByteEx(); }
+        public string NzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToByteEx(); }
 
         /// <summary> Gets the byte width of the multiplex. </summary>
         [XmlIgnore]
@@ -1522,7 +1533,7 @@ namespace Reko.Libraries.Microchip.V1
 
         /// <summary> Gets the shadow identifier reference, if any. </summary>
         [XmlAttribute("shadowoffset")]
-        public string _shadowOffsetFormatted { get => $"0x{ShadowOffset}"; set => ShadowOffset = value.ToInt32Ex(); }
+        public string ShadowOffsetFormatted { get => $"0x{ShadowOffset}"; set => ShadowOffset = value.ToInt32Ex(); }
 
     }
 
@@ -1583,19 +1594,19 @@ namespace Reko.Libraries.Microchip.V1
         [XmlIgnore]
         public int BankSize { get; private set; }
         [XmlAttribute("banksize")]
-        public string _bankSizeFormatted { get => $"0x{BankSize:X}"; set => BankSize = value.ToInt32Ex(); }
+        public string BankSizeFormatted { get => $"0x{BankSize:X}"; set => BankSize = value.ToInt32Ex(); }
 
         /// <summary> Gets the beginning address of the linear memory bank. </summary>
         [XmlIgnore]
         public uint BlockBeginAddr { get; private set; }
         [XmlAttribute("blockbeginaddr")]
-        public string _blockBeginAddrFormatted { get => $"0x{BlockBeginAddr:X}"; set => BlockBeginAddr = value.ToUInt32Ex(); }
+        public string BlockBeginAddrFormatted { get => $"0x{BlockBeginAddr:X}"; set => BlockBeginAddr = value.ToUInt32Ex(); }
 
         /// <summary> Gets the ending address (+1) of the linear memory bank. </summary>
         [XmlIgnore]
         public uint BlockEndAddr { get; private set; }
         [XmlAttribute("blockendaddr")]
-        public string _blockEndAddrFormatted { get => $"0x{BlockEndAddr:X}"; set => BlockEndAddr = value.ToUInt32Ex(); }
+        public string BlockEndAddrFormatted { get => $"0x{BlockEndAddr:X}"; set => BlockEndAddr = value.ToUInt32Ex(); }
 
         private string _debugDisplay
             => $"Linear Data sector [0x{BlockBeginAddr:X}-0x{BlockEndAddr:X}]";
