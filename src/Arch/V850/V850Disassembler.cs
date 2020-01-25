@@ -126,8 +126,13 @@ namespace Reko.Arch.V850
                 return true;
             };
         }
-        private static readonly Mutator<V850Disassembler> Mep_b = Mep(0, 7, PrimitiveType.Byte);
-        private static readonly Mutator<V850Disassembler> Mep_h = Mep(0, 7, PrimitiveType.Word16);
+        private static readonly Mutator<V850Disassembler> Mep_b = Mep(0, 7, PrimitiveType.SByte);
+        private static readonly Mutator<V850Disassembler> Mep_h = Mep(0, 7, PrimitiveType.Int16);
+
+        private static Decoder<V850Disassembler, Mnemonic, V850Instruction> Instr(Mnemonic mnemonic, params Mutator<V850Disassembler>[] mutators)
+        {
+            return new InstrDecoder<V850Disassembler, Mnemonic, V850Instruction>(InstrClass.Linear, mnemonic, mutators);
+        }
 
         private static Decoder<V850Disassembler, Mnemonic, V850Instruction> Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<V850Disassembler> [] mutators)
         {
@@ -139,18 +144,60 @@ namespace Reko.Arch.V850
             return new NyiDecoder<V850Disassembler, Mnemonic, V850Instruction>(message);
         }
 
+        private static bool Ne0(uint u) => u != 0;
+
         static V850Disassembler()
         {
             var invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
             rootDecoder = Sparse(5, 6, Nyi(""),
-                (0, Select((0, 5), u => u != 0,
+                (0, Select((11, 5), Ne0,
                     Instr(Mnemonic.mov, R,r), 
-                    Instr(Mnemonic.nop, InstrClass.Padding | InstrClass.Linear | InstrClass.Zero))),
+                    Sparse(0, 5, invalid,
+                        (0, Instr(Mnemonic.nop, InstrClass.Padding | InstrClass.Linear | InstrClass.Zero)),
+                        (0x1D, Instr(Mnemonic.synce)),
+                        (0x1E, Instr(Mnemonic.syncm)),
+                        (0x1F, Instr(Mnemonic.syncp))))),
+                (1, Instr(Mnemonic.not, R, r)),
+                (2, Select((11, 5), Ne0,
+                    Select((0, 5), Ne0,
+                        Instr(Mnemonic.divh, R, r),
+                        Instr(Mnemonic.fetrap, r)),
+                    Select((0, 5), Ne0,
+                        Instr(Mnemonic.@switch, R),
+                        Instr(Mnemonic.rie)))),
+                (3, Select((11, 5), Ne0,
+                    Mask(4, 1, "000011",
+                        Instr(Mnemonic.sld_bu, Mep(0, 4, PrimitiveType.Byte)),
+                        Instr(Mnemonic.sld_hu, Mep(0, 4, PrimitiveType.Word16))),
+                    Instr(Mnemonic.jmp, InstrClass.Transfer, Mep(11, 5, PrimitiveType.Word32)))),
+                /*
+                 ZXB reg1 I 00000000100RRRRR   
+                 SXB reg1 I 00000000101RRRRR   
+                 ZXH reg1 I 00000000110RRRRR   
+                 SXH reg1 I 00000000111RRRRR   
+                 SATSUBR reg1, reg2 I rrrrr000100RRRRR   rrrrr  00000
+                 SATSUB reg1, reg2 I rrrrr000101RRRRR   rrrrr  00000
+                 SATADD reg1, reg2 I rrrrr000110RRRRR   rrrrr  00000 
+                 MULH reg1, reg2 I rrrrr000111RRRRR   rrrrr  00000
+                 */
+                /*
+                 OR reg1, reg2 I rrrrr001000RRRRR   
+                 XOR reg1, reg2 I rrrrr001001RRRRR   
+                 AND reg1, reg2 I rrrrr001010RRRRR   
+                 TST reg1, reg2 I rrrrr001011RRRRR   
+                 SUBR reg1, reg2 I rrrrr001100RRRRR   
+                 SUB reg1, reg2 I rrrrr001101RRRRR   
+                 ADD reg1, reg2 I rrrrr001110RRRRR   
+                 CMP reg1, reg2 I rrrrr001111RRRRR   
+                 MOV imm5, reg2 I rrrrr010000iiiii   rrrrr  00000              */
                 (8, Instr(Mnemonic.or, R,r)),
                 (16, Select((0, 5), u => u != 0,
                     Instr(Mnemonic.mov, Is0_5,r),
                     invalid)),
+
+                (22, Instr(Mnemonic.shl, Is0_5, r)),
+
                 (24, Instr(Mnemonic.sld_b, Mep_b, r)),
                 (25, Instr(Mnemonic.sld_b, Mep_b, r)),
                 (26, Instr(Mnemonic.sld_b, Mep_b, r)),

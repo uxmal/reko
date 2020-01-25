@@ -29,7 +29,7 @@ namespace Reko.Arch.V850
     {
         public Mnemonic Mnemonic { get; set; }
 
-        public override int OpcodeAsInteger => (int)Mnemonic;
+        public override int MnemonicAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

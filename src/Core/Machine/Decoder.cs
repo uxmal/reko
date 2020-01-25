@@ -85,7 +85,7 @@ namespace Reko.Core.Machine
             if (trace.Level != TraceLevel.Verbose)
                 return;
             var hibit = 1ul << (instrBitSize - 1);
-            var sb = new StringBuilder();
+            var sb = new StringBuilder("// ");
             for (int i = 0; i < instrBitSize; ++i)
             {
                 if ((shMask & hibit) != 0)

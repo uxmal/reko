@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
@@ -74,12 +75,12 @@ namespace Reko.Arch.V850
             throw new NotImplementedException();
         }
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             throw new NotImplementedException();
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
             throw new NotImplementedException();
         }
