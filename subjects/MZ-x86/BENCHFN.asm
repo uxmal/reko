@@ -165,16 +165,16 @@ _f3 proc
 
 ;; _f2: 0800:01FF
 ;;   Called from:
-;;     0800:0225 (in _f1)
-;;     0800:0228 (in _f1)
-;;     0800:022B (in _f1)
-;;     0800:022E (in _f1)
-;;     0800:0231 (in _f1)
-;;     0800:0234 (in _f1)
-;;     0800:0237 (in _f1)
-;;     0800:023A (in _f1)
-;;     0800:023D (in _f1)
-;;     0800:0240 (in _f1)
+;;     0800:0225 (in f1_name_overridden)
+;;     0800:0228 (in f1_name_overridden)
+;;     0800:022B (in f1_name_overridden)
+;;     0800:022E (in f1_name_overridden)
+;;     0800:0231 (in f1_name_overridden)
+;;     0800:0234 (in f1_name_overridden)
+;;     0800:0237 (in f1_name_overridden)
+;;     0800:023A (in f1_name_overridden)
+;;     0800:023D (in f1_name_overridden)
+;;     0800:0240 (in f1_name_overridden)
 _f2 proc
 	push	bp
 	mov	bp,sp
@@ -191,7 +191,7 @@ _f2 proc
 	pop	bp
 	ret
 
-;; _f1: 0800:0222
+;; f1_name_overridden: 0800:0222
 ;;   Called from:
 ;;     0800:0248 (in _f0)
 ;;     0800:024B (in _f0)
@@ -202,7 +202,7 @@ _f2 proc
 ;;     0800:025A (in _f0)
 ;;     0800:025D (in _f0)
 ;;     0800:0260 (in _f0)
-_f1 proc
+f1_name_overridden proc
 	push	bp
 	mov	bp,sp
 	call	01FF

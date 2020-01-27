@@ -6,8 +6,8 @@ void __write_char()
 // Trashed:
 // Preserved: sp
 // Terminates process
-fn09B2_exit:
-fn09B2_entry:
+__write_char_exit:
+__write_char_entry:
 l09B2:
 
 

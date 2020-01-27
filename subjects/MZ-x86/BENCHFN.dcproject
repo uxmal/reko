@@ -11,7 +11,7 @@
     <global-vars>BENCHFN.globals.c</global-vars>
     <user>
       <processor />
-      <procedure name="fn0800_0222">
+      <procedure name="f1_name_overridden">
         <address>0800:0222</address>
         <assume reg="ds" value="1000" />
       </procedure>

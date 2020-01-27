@@ -6,8 +6,8 @@ void __exit()
 // Trashed:
 // Preserved:
 // Terminates process
-fn0800_0121_exit:
-fn0800_0121_entry:
+__exit_exit:
+__exit_entry:
 l0800_0121:
 	selector ds_5 = Mem0[0x0800:0x01F8:selector]
 	__restorezero(ds_5)
@@ -66,14 +66,14 @@ void __restorezero(selector ds)
 // LiveOut:
 // Trashed: ax dx Top
 // Preserved: ds sp
-fn0800_01A5_entry:
+__restorezero_entry:
 l0800_01A5:
 	msdos_set_interrupt_vector(0x00, Mem7[ds:0x0074:segptr32])
 	msdos_set_interrupt_vector(0x04, Mem16[ds:0x0078:segptr32])
 	msdos_set_interrupt_vector(0x05, Mem25[ds:0x007C:segptr32])
 	msdos_set_interrupt_vector(0x06, Mem34[ds:0x0080:segptr32])
 	return
-fn0800_01A5_exit:
+__restorezero_exit:
 
 
 void fn0800_01DA(char * ds_dx, word16 cx)
@@ -99,8 +99,8 @@ void _abort()
 // Trashed:
 // Preserved:
 // Terminates process
-fn0800_01E2_exit:
-fn0800_01E2_entry:
+_abort_exit:
+_abort_entry:
 l0800_01E2:
 	fn0800_01DA(SEQ(Mem0[0x0800:0x01F8:selector], 0x0056), 0x001E)
 	__exit()
@@ -157,14 +157,14 @@ l0800_01FF:
 _f2_exit:
 
 
-void _f1()
+void f1_name_overridden()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
 // Trashed: Top
 // Preserved: bp sp
-fn0800_0222_entry:
+f1_name_overridden_entry:
 l0800_0222:
 	_f2()
 	_f2()
@@ -177,7 +177,7 @@ l0800_0222:
 	_f2()
 	_f2()
 	return
-fn0800_0222_exit:
+f1_name_overridden_exit:
 
 
 void _f0()
@@ -189,15 +189,15 @@ void _f0()
 // Preserved: bp sp
 _f0_entry:
 l0800_0245:
-	_f1()
-	_f1()
-	_f1()
-	_f1()
-	_f1()
-	_f1()
-	_f1()
-	_f1()
-	_f1()
+	f1_name_overridden()
+	f1_name_overridden()
+	f1_name_overridden()
+	f1_name_overridden()
+	f1_name_overridden()
+	f1_name_overridden()
+	f1_name_overridden()
+	f1_name_overridden()
+	f1_name_overridden()
 	return
 _f0_exit:
 
@@ -249,7 +249,7 @@ word16 __IOERROR(selector ds, word16 wArg02)
 // LiveOut: ax
 // Trashed: SCZO ax Top
 // Preserved: bp si sp
-fn0800_02C5_entry:
+__IOERROR_entry:
 l0800_02C5:
 	word16 si_17
 	word16 si_13 = wArg02
@@ -270,7 +270,7 @@ l0800_02F1:
 	Mem37[ds:0x0094:word16] = si_17
 l0800_02FB:
 	return 0xFFFF
-fn0800_02C5_exit:
+__IOERROR_exit:
 
 
 void _exit(selector ds, word16 wArg02)
@@ -281,8 +281,8 @@ void _exit(selector ds, word16 wArg02)
 // Trashed:
 // Preserved:
 // Terminates process
-fn0800_0301_exit:
-fn0800_0301_entry:
+_exit_exit:
+_exit_entry:
 l0800_0301:
 l0800_0310:
 	word16 ax_11 = Mem10[ds:0x023E:word16]
@@ -312,7 +312,7 @@ void __setargv(selector ds, word16 wArg00)
 // LiveOut:
 // Trashed: SCZDO ax bp bx cx di ds dx es si Top
 // Preserved: sp
-fn0800_0336_entry:
+__setargv_entry:
 l0800_0336:
 	selector es_30
 	Mem6[0x0800:0x0330:word16] = wArg00
@@ -396,7 +396,7 @@ l0800_0417:
 	call Mem164[0x0800:0x0330:word16] (retsize: 2;)
 		uses: ax:0x0000,bx:bx_130,Stack +0002:wArg00
 	return
-fn0800_0336_exit:
+__setargv_exit:
 l0800_03AA:
 	fn0800_03BF(SEQ(es_11, si_103), SEQ(ss, di_88), ax_110, cx_109, out ax_110, out cx_109, out si_103)
 	bool Z_197 = <invalid>
@@ -470,7 +470,7 @@ void __setenvp(selector ds)
 // LiveOut:
 // Trashed: SCZDO ax bx cx di dx es si Top
 // Preserved: ds sp
-fn0800_0421_entry:
+__setenvp_entry:
 l0800_0421:
 	word16 cx_6 = Mem0[ds:0x008A:word16]
 	word16 ax_10 = _malloc(ds, cx_6)
@@ -504,7 +504,7 @@ l0800_0463:
 l0800_0468:
 	Mem101[ds:bx_59:word16] = 0x0000
 	return
-fn0800_0421_exit:
+__setenvp_exit:
 l0800_0454:
 l0800_0454_thunk__abort:
 	_abort()
@@ -522,7 +522,7 @@ void ___pull_free_block(selector ds, word16 wArg02)
 // LiveOut:
 // Trashed: SCZO ax bx Top
 // Preserved: bp di si sp
-fn0800_0491_entry:
+___pull_free_block_entry:
 l0800_0491:
 	word16 ax_17 = Mem14[ds:wArg02 + 0x0006:word16]
 	Mem18[ds:0x062A:word16] = ax_17
@@ -535,7 +535,7 @@ l0800_04A3:
 	Mem26[ds:0x062A:word16] = 0x0000
 l0800_04BB:
 	return
-fn0800_0491_exit:
+___pull_free_block_exit:
 
 
 word16 fn0800_04BF(selector ds, word16 wArg02, word16 wArg04)
@@ -617,7 +617,7 @@ word16 _malloc(selector ds, word16 wArg02)
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp di si sp
-fn0800_0570_entry:
+_malloc_entry:
 l0800_0570:
 	word16 ax_106
 	branch wArg02 == 0x0000 l0800_0581
@@ -650,7 +650,7 @@ l0800_0581:
 	ax_106 = 0x0000
 l0800_05DF:
 	return ax_106
-fn0800_0570_exit:
+_malloc_exit:
 
 
 void ___brk(selector ds, word16 wArg02)
@@ -660,7 +660,7 @@ void ___brk(selector ds, word16 wArg02)
 // LiveOut:
 // Trashed: SCZO ax dx Top
 // Preserved: bp sp
-fn0800_05E3_entry:
+___brk_entry:
 l0800_05E3:
 	branch wArg02 >=u fp - 0x0102 l0800_05FA
 l0800_05FA:
@@ -669,7 +669,7 @@ l0800_05F3:
 	Mem17[ds:0x009E:word16] = wArg02
 l0800_0605:
 	return
-fn0800_05E3_exit:
+___brk_exit:
 
 
 word16 ___sbrk(selector ds, word16 wArg02, word16 wArg04)
@@ -679,7 +679,7 @@ word16 ___sbrk(selector ds, word16 wArg02, word16 wArg04)
 // LiveOut: ax
 // Trashed: SCZO ax cx Top
 // Preserved: bp sp
-fn0800_0607_entry:
+___sbrk_entry:
 l0800_0607:
 	word16 ax_29
 	word16 ax_12 = wArg02 + Mem7[ds:0x009E:word16]
@@ -695,7 +695,7 @@ l0800_0628:
 	ax_29 = v13_30
 l0800_0639:
 	return ax_29
-fn0800_0607_exit:
+___sbrk_exit:
 
 
 void _brk(selector ds, word16 wArg02)
@@ -705,12 +705,12 @@ void _brk(selector ds, word16 wArg02)
 // LiveOut:
 // Trashed: SCZO ax cx dx Top
 // Preserved: bp sp
-fn0800_063B_entry:
+_brk_entry:
 l0800_063B:
 	___brk(ds, wArg02)
 l0800_0647:
 	return
-fn0800_063B_exit:
+_brk_exit:
 
 
 word16 fn0800_065B(selector ds, word16 wArg02)
@@ -753,7 +753,7 @@ void _fseek(selector ds, word16 wArg02, ui32 dwArg04, word16 wArg08)
 // LiveOut:
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp si sp
-fn0800_06A2_entry:
+_fseek_entry:
 l0800_06A2:
 	branch _fflush(ds, wArg02) == 0x0000 l0800_06B7
 l0800_06B7:
@@ -777,7 +777,7 @@ l0800_0701:
 l0800_06B2:
 l0800_0703:
 	return
-fn0800_06A2_exit:
+_fseek_exit:
 
 
 void fn0800_075B(selector ds)
@@ -849,7 +849,7 @@ void _fgetc(selector ds, word16 wArg02)
 // LiveOut:
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: D bp si sp
-fn0800_07F2_entry:
+_fgetc_entry:
 l0800_07F2:
 l0800_07FC:
 	word16 v8_18 = Mem17[ds:wArg02:word16] - 0x0001
@@ -910,7 +910,7 @@ l0800_0800:
 	Mem213[ds:wArg02 + 0x000A:word16] = Mem19[ds:wArg02 + 0x000A:word16] + 0x0001
 l0800_08E2:
 	return
-fn0800_07F2_exit:
+_fgetc_exit:
 
 
 word16 _isatty(word16 wArg02)
@@ -920,12 +920,12 @@ word16 _isatty(word16 wArg02)
 // LiveOut: ax
 // Trashed: SCZO ax bx dx Top
 // Preserved: bp sp
-fn0800_08F2_entry:
+_isatty_entry:
 l0800_08F2:
 	word16 dx_10
 	msdos_ioctl_get_device_info(wArg02, out dx_10)
 	return dx_10 & 0x0080
-fn0800_08F2_exit:
+_isatty_exit:
 
 
 void _setvbuf(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08)
@@ -935,7 +935,7 @@ void _setvbuf(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 w
 // LiveOut:
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp di si sp
-fn0800_0904_entry:
+_setvbuf_entry:
 l0800_0904:
 	branch Mem14[ds:wArg02 + 0x000E:word16] != wArg02 l0800_0922
 l0800_0916:
@@ -991,7 +991,7 @@ l0800_09CE:
 l0800_0922:
 l0800_09D2:
 	return
-fn0800_0904_exit:
+_setvbuf_exit:
 
 
 word16 _read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
@@ -1001,7 +1001,7 @@ word16 _read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // LiveOut: ax
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di si sp
-fn0800_09F7_entry:
+_read_entry:
 l0800_09F7:
 	word16 ax_153
 	branch wArg06 <u 0x0001 l0800_0A15
@@ -1052,7 +1052,7 @@ l0800_0A15:
 	ax_153 = 0x0000
 l0800_0AAD:
 	return ax_153
-fn0800_09F7_exit:
+_read_exit:
 
 
 word16 __read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
@@ -1062,7 +1062,7 @@ word16 __read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // LiveOut: ax
 // Trashed: C ax bx cx dx Top
 // Preserved: SZO bp sp
-fn0800_0AB3_entry:
+__read_entry:
 l0800_0AB3:
 	word16 ax_15
 	branch msdos_read_file(wArg02, wArg06, SEQ(ds, wArg04), out ax_15) l0800_0AC7
@@ -1071,7 +1071,7 @@ l0800_0AC7:
 l0800_0AC5:
 l0800_0ACD:
 	return ax_15
-fn0800_0AB3_exit:
+__read_exit:
 
 
 word16 _write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
@@ -1081,7 +1081,7 @@ word16 _write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp di si sp
-fn0800_0ACF_entry:
+_write_entry:
 l0800_0ACF:
 	word16 ax_141
 	branch wArg06 >=u 0x0001 l0800_0AE6
@@ -1142,7 +1142,7 @@ l0800_0AE1:
 	ax_141 = 0x0000
 l0800_0BDC:
 	return ax_141
-fn0800_0ACF_exit:
+_write_exit:
 
 
 word16 __write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
@@ -1152,7 +1152,7 @@ word16 __write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
-fn0800_0BE2_entry:
+__write_entry:
 l0800_0BE2:
 	branch (Mem7[ds:(wArg02 << 0x0001) + 0x0482:word16] & 0x0800) == 0x0000 l0800_0C02
 l0800_0BF2:
@@ -1169,7 +1169,7 @@ l0800_0C11:
 	ax_51 = ax_46
 l0800_0C26:
 	return ax_51
-fn0800_0BE2_exit:
+__write_exit:
 
 
 word16 _lseek(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr16 & dxOut)
@@ -1179,7 +1179,7 @@ word16 _lseek(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr16 & d
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
-fn0800_0C28_entry:
+_lseek_entry:
 	word16 wArg04 = SLICE(dwArg04, word16, 0)
 l0800_0C28:
 	Mem13[ds:(wArg02 << 0x0001) + 0x0482:word16] = Mem7[ds:(wArg02 << 0x0001) + 0x0482:word16] & 0xFDFF
@@ -1194,7 +1194,7 @@ l0800_0C48:
 l0800_0C51:
 	dxOut = dx_19
 	return ax_21
-fn0800_0C28_exit:
+_lseek_exit:
 
 
 void __LONGTOA(selector ds, byte bArg02, byte bArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C)
@@ -1204,7 +1204,7 @@ void __LONGTOA(selector ds, byte bArg02, byte bArg04, word16 wArg06, word16 wArg
 // LiveOut:
 // Trashed: SCZO ax bx Top
 // Preserved: D bp cx di ds dx es si sp ss
-fn0800_0C53_entry:
+__LONGTOA_entry:
 l0800_0C53:
 	word16 di_127 = wArg08
 	byte bl_28 = SLICE(wArg06, byte, 0)
@@ -1261,7 +1261,7 @@ l0800_0CC1:
 	Mem136[ds:di_127:byte] = 0x00
 l0800_0CCA:
 	return
-fn0800_0C53_exit:
+__LONGTOA_exit:
 l0800_0C9B:
 
 
@@ -1272,7 +1272,7 @@ word16 _eof(selector ds, word16 wArg02)
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
-fn0800_0D5F_entry:
+_eof_entry:
 l0800_0D5F:
 	word16 ax_101
 	branch (Mem7[ds:(wArg02 << 0x0001) + 0x0482:word16] & 0x0200) == 0x0000 l0800_0D78
@@ -1308,7 +1308,7 @@ l0800_0D72:
 	ax_101 = 0x0001
 l0800_0DC9:
 	return ax_101
-fn0800_0D5F_exit:
+_eof_exit:
 
 
 word16 _fflush(selector ds, word16 wArg02)
@@ -1318,7 +1318,7 @@ word16 _fflush(selector ds, word16 wArg02)
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp di si sp
-fn0800_0DCD_entry:
+_fflush_entry:
 l0800_0DCD:
 	word16 ax_118
 	branch Mem14[ds:wArg02 + 0x000E:word16] == wArg02 l0800_0DE1
@@ -1352,7 +1352,7 @@ l0800_0DDC:
 	ax_118 = 0xFFFF
 l0800_0E47:
 	return ax_118
-fn0800_0DCD_exit:
+_fflush_exit:
 
 
 word16 _printf(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02)
@@ -1377,13 +1377,13 @@ void __fputc(selector ds, byte bArg02, word16 wArg04)
 // LiveOut:
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
-fn0800_0E64_entry:
+__fputc_entry:
 l0800_0E64:
 	Mem12[ds:wArg04:word16] = Mem7[ds:wArg04:word16] - 0x0001
 	_fputc(ds, SLICE((int16) bArg02, byte, 0), wArg04)
 l0800_0E7B:
 	return
-fn0800_0E64_exit:
+__fputc_exit:
 
 
 void _fputc(selector ds, byte bArg02, word16 wArg04)
@@ -1393,7 +1393,7 @@ void _fputc(selector ds, byte bArg02, word16 wArg04)
 // LiveOut:
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp si sp
-fn0800_0E7D_entry:
+_fputc_entry:
 l0800_0E7D:
 l0800_0E8D:
 	word16 v9_20 = Mem19[ds:wArg04:word16] + 0x0001
@@ -1445,7 +1445,7 @@ l0800_0EBF:
 l0800_0EB9:
 l0800_0F66:
 	return
-fn0800_0E7D_exit:
+_fputc_exit:
 
 
 void __REALCVT(selector ds)
@@ -1455,11 +1455,11 @@ void __REALCVT(selector ds)
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
-fn0800_1044_entry:
+__REALCVT_entry:
 l0800_1044:
 	call Mem0[ds:0x05E0:word16] (retsize: 2;)
 	return
-fn0800_1044_exit:
+__REALCVT_exit:
 
 
 word16 fn0800_1048(word32 es_di, selector ds, word16 wArg02)
@@ -1490,7 +1490,7 @@ word16 __VPRINTER(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02, w
 // LiveOut: di
 // Trashed: SCZDO ax di si Top
 // Preserved: bp bx cx dx es sp
-fn0800_1073_entry:
+__VPRINTER_entry:
 l0800_1073:
 	byte bLoc57_1221 = 0x50
 l0800_10CD:
@@ -1980,7 +1980,7 @@ l0800_1589:
 l0800_1582:
 l0800_158E:
 	return Mem1026[ss:sp_1048:word16]
-fn0800_1073_exit:
+__VPRINTER_exit:
 l0800_10E6:
 	Mem1067[ds:di_1001:byte] = al_1064
 	byte v15_1071 = bLoc57_1221 - 0x01
@@ -2179,7 +2179,7 @@ void _free(selector ds, word16 wArg02)
 // LiveOut:
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp si sp
-fn0800_16AD_entry:
+_free_entry:
 l0800_16AD:
 	branch wArg02 != 0x0000 l0800_16BA
 l0800_16BA:
@@ -2191,7 +2191,7 @@ l0800_16C7:
 l0800_16B8:
 l0800_16D1:
 	return
-fn0800_16AD_exit:
+_free_exit:
 
 
 word16 _scanf(word16 di, selector es, selector ds, word16 wArg02, ptr16 & bxOut, ptr16 & bpOut)
@@ -2221,7 +2221,7 @@ word16 __scanner(word16 di, selector es, selector ds, word16 wArg02, word16 wArg
 // LiveOut: bp bx dx
 // Trashed: SCZDO ax bp bx cx di dx es si Top
 // Preserved: sp
-fn0800_16F3_entry:
+__scanner_entry:
 l0800_16F3:
 	word16 wLoc28_1042 = 0x0000
 l0800_1721:
@@ -2649,7 +2649,7 @@ l0800_1764_thunk_fn0800_1AEB:
 	bxOut = bx_1311
 	bpOut = bp_924
 	return dx_1401
-fn0800_16F3_exit:
+__scanner_exit:
 
 
 word16 fn0800_1708(word32 ss_bp, selector ds, ptr16 & esOut)
@@ -2889,11 +2889,11 @@ void __scantod(selector ds)
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
-fn0800_1B92_entry:
+__scantod_entry:
 l0800_1B92:
 	call Mem0[ds:0x05E2:word16] (retsize: 2;)
 	return
-fn0800_1B92_exit:
+__scantod_exit:
 
 
 void __scanrslt(selector ds)
@@ -2903,11 +2903,11 @@ void __scanrslt(selector ds)
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
-fn0800_1B96_entry:
+__scanrslt_entry:
 l0800_1B96:
 	call Mem0[ds:0x05E4:word16] (retsize: 2;)
 	return
-fn0800_1B96_exit:
+__scanrslt_exit:
 
 
 void __scanpop(selector ds)
@@ -2917,11 +2917,11 @@ void __scanpop(selector ds)
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
-fn0800_1B9A_entry:
+__scanpop_entry:
 l0800_1B9A:
 	call Mem0[ds:0x05E6:word16] (retsize: 2;)
 	return
-fn0800_1B9A_exit:
+__scanpop_exit:
 
 
 bool fn0800_1B9E(byte cl, byte bl)
@@ -2966,7 +2966,7 @@ word16 __scantol(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word1
 // LiveOut: ax bx di dx es
 // Trashed: SCZO ax bx cx di dx es si Top
 // Preserved: bp ds sp ss
-fn0800_1BCC_entry:
+__scantol_entry:
 l0800_1BCC:
 	byte bLoc07_541 = 0x00
 	word16 wLoc06_542 = 0x0000
@@ -3187,7 +3187,7 @@ l0800_1D48:
 	diOut = di_525
 	esOut = es_523
 	return ax_478
-fn0800_1BCC_exit:
+__scantol_exit:
 
 
 void _tell(selector ds, word16 wArg02)
@@ -3197,12 +3197,12 @@ void _tell(selector ds, word16 wArg02)
 // LiveOut:
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
-fn0800_1D4E_entry:
+_tell_entry:
 l0800_1D4E:
 	word16 dx_42
 	_lseek(ds, wArg02, 0x00000000, 0x01, out dx_42)
 l0800_1D63:
 	return
-fn0800_1D4E_exit:
+_tell_exit:
 
 

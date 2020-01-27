@@ -109,16 +109,16 @@ Eq_196: (fn void ())
 	T_213 (in _f2 : segptr32)
 	T_215 (in _f2 : segptr32)
 Eq_217: (fn void ())
-	T_217 (in _f1 : segptr32)
-	T_218 (in signature of _f1 : void)
-	T_220 (in _f1 : segptr32)
-	T_222 (in _f1 : segptr32)
-	T_224 (in _f1 : segptr32)
-	T_226 (in _f1 : segptr32)
-	T_228 (in _f1 : segptr32)
-	T_230 (in _f1 : segptr32)
-	T_232 (in _f1 : segptr32)
-	T_234 (in _f1 : segptr32)
+	T_217 (in f1_name_overridden : segptr32)
+	T_218 (in signature of f1_name_overridden : void)
+	T_220 (in f1_name_overridden : segptr32)
+	T_222 (in f1_name_overridden : segptr32)
+	T_224 (in f1_name_overridden : segptr32)
+	T_226 (in f1_name_overridden : segptr32)
+	T_228 (in f1_name_overridden : segptr32)
+	T_230 (in f1_name_overridden : segptr32)
+	T_232 (in f1_name_overridden : segptr32)
+	T_234 (in f1_name_overridden : segptr32)
 Eq_236: (union "Eq_236" (bool u0) ((ptr16 Eq_4663) u1) ((memptr Eq_236 byte) u2) ((memptr Eq_236 Eq_4665) u3) (Eq_4666 u4))
 	T_236 (in cx : Eq_236)
 	T_237 (in dx : Eq_236)
@@ -2854,79 +2854,79 @@ T_216: (in _f2() : void)
   Class: Eq_198
   DataType: void
   OrigDataType: void
-T_217: (in _f1 : segptr32)
+T_217: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_219 ()))
-T_218: (in signature of _f1 : void)
+T_218: (in signature of f1_name_overridden : void)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: 
-T_219: (in _f1() : void)
+T_219: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
-T_220: (in _f1 : segptr32)
+T_220: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_221 ()))
-T_221: (in _f1() : void)
+T_221: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
-T_222: (in _f1 : segptr32)
+T_222: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_223 ()))
-T_223: (in _f1() : void)
+T_223: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
-T_224: (in _f1 : segptr32)
+T_224: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_225 ()))
-T_225: (in _f1() : void)
+T_225: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
-T_226: (in _f1 : segptr32)
+T_226: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_227 ()))
-T_227: (in _f1() : void)
+T_227: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
-T_228: (in _f1 : segptr32)
+T_228: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_229 ()))
-T_229: (in _f1() : void)
+T_229: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
-T_230: (in _f1 : segptr32)
+T_230: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_231 ()))
-T_231: (in _f1() : void)
+T_231: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
-T_232: (in _f1 : segptr32)
+T_232: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_233 ()))
-T_233: (in _f1() : void)
+T_233: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
-T_234: (in _f1 : segptr32)
+T_234: (in f1_name_overridden : segptr32)
   Class: Eq_217
   DataType: (ptr32 Eq_217)
   OrigDataType: (ptr32 (fn T_235 ()))
-T_235: (in _f1() : void)
+T_235: (in f1_name_overridden() : void)
   Class: Eq_219
   DataType: void
   OrigDataType: void
