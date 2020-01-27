@@ -529,18 +529,26 @@ namespace Reko.Core
             if (this.Procedures.TryGetValue(addr, out Procedure proc))
                 return proc;
 
-            var generatedName = procedureName ?? this.NamingPolicy.ProcedureName(addr);
-            proc = Procedure.Create(arch, generatedName, addr, arch.CreateFrame());
+            bool deduceSignatureFromName = procedureName != null;
             if (this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
             {
-                procedureName = sym.Name;
+                deduceSignatureFromName |= sym.Name != null;
+                var generatedName = procedureName ?? sym.Name ?? this.NamingPolicy.ProcedureName(addr);
+                proc = Procedure.Create(arch, generatedName, addr, arch.CreateFrame());
                 if (sym.Signature != null)
                 {
                     var sser = this.CreateProcedureSerializer();
                     proc.Signature = sser.Deserialize(sym.Signature, proc.Frame);
+                    deduceSignatureFromName = proc.Signature != null;
                 }
             }
-            if (procedureName != null)
+            else
+            {
+                var generatedName = procedureName ?? this.NamingPolicy.ProcedureName(addr);
+                proc = Procedure.Create(arch, generatedName, addr, arch.CreateFrame());
+            }
+
+            if (deduceSignatureFromName)
             {
                 var sProc = this.Platform.SignatureFromName(procedureName);
                 if (sProc != null)
@@ -550,10 +558,6 @@ namespace Reko.Core
                     proc.Name = exp.Name;
                     proc.Signature = exp.Signature;
                     proc.EnclosingType = exp.EnclosingType;
-                }
-                else
-                {
-                    proc.Name = procedureName;
                 }
             }
             this.Procedures.Add(addr, proc);

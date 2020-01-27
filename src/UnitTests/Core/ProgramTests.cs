@@ -54,6 +54,7 @@ namespace Reko.UnitTests.Core
             program.SegmentMap = new SegmentMap(addrBase);
             program.SegmentMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
             program.ImageMap = program.SegmentMap.CreateImageMap();
+            program.Platform = new DefaultPlatform(null, arch.Object);
             arch.Setup(a => a.CreateImageReader(mem, addrBase)).Returns(new LeImageReader(mem, 0));
         }
 
@@ -221,6 +222,19 @@ namespace Reko.UnitTests.Core
 
             var dt = StringType.NullTerminated(PrimitiveType.Char);
             Assert.AreEqual(6u, program.GetDataSize(program.Architecture, addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");
+        }
+
+        [Test(Description = "GitHub issue #829")]
+        public void Prog_EnsureProcedure_Override_ImageSymbol_Name()
+        {
+            Given_Architecture();
+            Given_Image(0xC3);
+            var addr = program.SegmentMap.BaseAddress;
+            var symbol = ImageSymbol.Procedure(this.arch.Object, addr, name: "NameToOverride");
+
+            var proc = program.EnsureProcedure(this.arch.Object, addr, "NewName");
+
+            Assert.AreEqual("NewName", proc.Name);
         }
 	}
 }
