@@ -811,6 +811,49 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());
         }
 
+        /// <summary>
+        /// Handle 8051 switch statements.
+        /// </summary>
+        [Test]
+        public void Bwslc_Issue_826()
+        {
+            var A = binder.EnsureRegister(new RegisterStorage("A", 0, 0, PrimitiveType.Byte));
+            var R7 = binder.EnsureRegister(new RegisterStorage("R7", 7, 0, PrimitiveType.Byte));
+            var DPTR = binder.EnsureRegister(new RegisterStorage("DPTR", 8, 0, PrimitiveType.Word16));
+            var C = Cc("C");
+            var b0082 = Given_Block(0x0082);
+            Given_Instrs(b0082, m =>
+            {
+                m.Assign(A, m.Mem(A.DataType, DPTR));
+                m.Assign(R7, A);
+                m.Assign(A, m.IAdd(A, 0xFC));   // A >= 4 will cause a carry.
+                m.Assign(C, m.Cond(A));
+                m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr16(0x00C0));
+            });
+
+            var b0088 = Given_Block(0x0088);
+            Given_Instrs(b0088, m =>
+            {
+                m.Assign(A, R7);
+                m.Assign(A, m.IAdd(A, R7));
+                m.Assign(DPTR, m.Word16(0x008E));
+                m.Goto(m.IAdd(DPTR, m.Cast(PrimitiveType.UInt16, A)));
+            });
+            graph.Nodes.Add(b0082);
+            graph.Nodes.Add(b0088);
+            graph.AddEdge(b0082, b0088);
+
+            var bwslc = new BackwardSlicer(host, b0088, processorState);
+            Assert.IsTrue(bwslc.Start(b0088, 3, Target(b0088)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("(uint16) (R7 * 0x02) + 0x008E", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("A", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("A", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
+        }
+
+
         // Test cases
         // A one-level jump table from MySQL. JTT represents the jump table.
         // mov ebp,[rsp + 0xf8]         : 0 ≤ rdx==[rsp+0xf8]==ebp≤ 5

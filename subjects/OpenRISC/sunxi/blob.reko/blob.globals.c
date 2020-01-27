@@ -167,6 +167,21 @@ Eq_n g_t12464 =
 word32 g_a12478[] = 
 	{
 	};
+<anonymous> * g_a12490[] = 
+	{
+	};
+<anonymous> * g_a12510[] = 
+	{
+	};
+<anonymous> * g_a12590[] = 
+	{
+	};
+<anonymous> * g_a12B68[] = 
+	{
+	};
+<anonymous> * g_a12BA4[] = 
+	{
+	};
 Eq_n g_t12C08 = 
 	{
 		0,

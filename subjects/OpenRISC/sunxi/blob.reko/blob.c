@@ -3779,6 +3779,15 @@ word32 fn0000AF1C(Eq_n r3, union Eq_n & r11Out)
 		r11Out.u0 = 0x00;
 		return dwLoc0C;
 	}
+	else
+	{
+		<anonymous> * r3_n = *((char *) globals->a12490 + (r3 - 0x01) * 0x04);
+		word32 r2_n;
+		Eq_n r11_n;
+		r3_n();
+		r11Out = r11_n;
+		return r2_n;
+	}
 }
 
 // 0000AF4C: Register word32 fn0000AF4C()
@@ -3886,6 +3895,15 @@ word32 fn0000B250(Eq_n r3, ptr32 & r11Out)
 		r11Out = ~0x15;
 		return dwLoc14;
 	}
+	else
+	{
+		<anonymous> * r3_n = *((char *) globals->a12510 + (r3 - 0x01) * 0x04);
+		word32 r2_n;
+		ptr32 r11_n;
+		r3_n();
+		r11Out = r11_n;
+		return r2_n;
+	}
 }
 
 // 0000B320: Register word32 fn0000B320(Register Eq_n r3)
@@ -3893,6 +3911,10 @@ word32 fn0000B320(Eq_n r3)
 {
 	if (r3 > 0x20 || r3 < 0x0E)
 		return dwLoc0C;
+	<anonymous> * r3_n = *((char *) globals->a12590 + (r3 - 0x0E) * 0x04);
+	word32 r2_n;
+	r3_n();
+	return r2_n;
 }
 
 // 0000B4D4: void fn0000B4D4(Register word32 r4, Register word32 VR)
@@ -4155,6 +4177,10 @@ word32 fn0000B950(Eq_n r3)
 {
 	if (r3 > 0x0F || r3 < 0x01)
 		return dwLoc0C;
+	<anonymous> * r3_n = *((char *) globals->a12B68 + (r3 - 0x01) * 0x04);
+	word32 r2_n;
+	r3_n();
+	return r2_n;
 }
 
 // 0000BAA8: void fn0000BAA8(Register word32 r3, Register word32 VR)
@@ -4201,6 +4227,10 @@ word32 fn0000BC38(word32 * r3)
 {
 	if (r3 > &globals->dw0021 || r3 < &globals->dw000E)
 		return dwLoc0C;
+	<anonymous> * r3_n = *((char *) globals->a12BA4 + (r3 - &globals->dw000E) * 0x04);
+	word32 r2_n;
+	r3_n();
+	return r2_n;
 }
 
 // 0000BDC8: void fn0000BDC8(Register (ptr32 word32) r3)
