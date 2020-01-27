@@ -99,30 +99,31 @@ namespace Reko.ImageLoaders.MzExe
         // ring-3 privilege level.
         const ushort LDT_RPL3 = 0x7;
 
+        private readonly SortedList<Address, ImageSymbol> imageSymbols;
+        private readonly Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
+        private readonly IDiagnosticsService diags;
+        private readonly uint lfaNew;
         private MemoryArea mem;
         private SegmentMap segmentMap;
         private List<string> moduleNames;
         private NeSegment[] segments;
         private ushort cbFileAlignmentShift;
         private ushort cSeg;
-        private IDiagnosticsService diags;
-        private uint lfaNew;
         private ushort offImportedNamesTable;
         private ushort offEntryTable;
         private ushort offResidentNameTable;
         private uint offNonResidentNameTable;
         private ushort offRsrcTable;
         private Address addrImportStubs;
-        private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
-        private SortedList<Address, ImageSymbol> imageSymbols;
         private IProcessorArchitecture arch;
         private IPlatform platform;
         private Address addrEntry;
+        private List<ImageSymbol> entryPoints;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
             : base(services, filename, rawBytes)
         {
-            diags = Services.RequireService<IDiagnosticsService>();
+            this.diags = Services.RequireService<IDiagnosticsService>();
             this.lfaNew = e_lfanew;
             this.importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
             this.imageSymbols = new SortedList<Address, ImageSymbol>();
@@ -202,6 +203,10 @@ namespace Reko.ImageLoaders.MzExe
 
             LoadModuleTable(this.lfaNew + offModuleReferenceTable, cModules);
             this.segments = ReadSegmentTable(this.lfaNew + offSegTable, cSeg);
+            var names = new Dictionary<int, string>();
+            LoadEntryNames(this.lfaNew + this.offResidentNameTable, names);
+            LoadNonresidentNames(this.offNonResidentNameTable, names);
+            this.entryPoints = LoadEntryPoints(this.lfaNew + this.offEntryTable, names);
             LoadSegments(segments);
             this.addrEntry = segments[cs - 1].Address + ip;
             return true;
@@ -368,7 +373,7 @@ namespace Reko.ImageLoaders.MzExe
             return Encoding.ASCII.GetString(abStr);
         }
 
-        string GetResourceName(ushort id)
+        private string GetResourceName(ushort id)
         {
             switch (id)
             {
@@ -388,7 +393,7 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        string GetResourceType(ushort id)
+        private string GetResourceType(ushort id)
         {
             switch (id)
             {
@@ -422,10 +427,6 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var names = new Dictionary<int, string>();
-            LoadEntryNames(this.lfaNew + this.offResidentNameTable, names);
-            LoadNonresidentNames(this.offNonResidentNameTable, names);
-            var entryPoints = LoadEntryPoints(this.lfaNew + this.offEntryTable, names);
             entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
             return new RelocationResults(
                 entryPoints,
@@ -497,8 +498,6 @@ namespace Reko.ImageLoaders.MzExe
                     for (int i = 0; i < cBundleEntries; ++i)
                     {
                         byte flags = rdr.ReadByte();
-                        if (flags == 0)
-                            break;
                         (byte iSeg, ushort offset) entry;
                         if (segNum == 0xFF)
                         {
@@ -571,7 +570,7 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        void LoadSegments(NeSegment[] segments)
+        private void LoadSegments(NeSegment[] segments)
         {
             var segFirst = segments[0];
             var segLast = segments[segments.Length - 1];
@@ -626,7 +625,7 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        bool LoadSegment(NeSegment neSeg, MemoryArea mem, SegmentMap imageMap)
+        private bool LoadSegment(NeSegment neSeg, MemoryArea mem, SegmentMap imageMap)
         {
             Array.Copy(
                 RawImage,
@@ -742,7 +741,7 @@ namespace Reko.ImageLoaders.MzExe
         /// <summary>
         /// Apply relocations to a segment.
         /// </summary>
-        bool ApplyRelocations(EndianImageReader rdr, int cRelocations, NeSegment seg)
+        private bool ApplyRelocations(EndianImageReader rdr, int cRelocations, NeSegment seg)
         {
             Address address = null;
             NeRelocationEntry rep = null;
@@ -811,7 +810,7 @@ namespace Reko.ImageLoaders.MzExe
                 case NE_RELTYPE.INTERNAL:
                     if ((rep.target1 & 0xff) == 0xff)
                     {
-                        throw new NotImplementedException();
+                        address = this.entryPoints[rep.target2 - 1].Address;
                     }
                     else
                     {

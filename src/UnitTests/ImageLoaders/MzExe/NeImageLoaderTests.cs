@@ -76,10 +76,10 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             return new BundleEntry { flags = flags, iSeg = iSeg, offset = (ushort) offset };
         }
 
-        private BundleEntry Given_BundleEntry(byte flags)
-        {
-            return new BundleEntry { flags = 0 };
-        }
+        //private BundleEntry Given_BundleEntry(byte flags)
+        //{
+        //    return new BundleEntry { flags = 0 };
+        //}
 
         private class BundleEntry
         {
@@ -136,13 +136,12 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x37, 0) },
             };
 
-            Given_Bundle(4, 1,
-                Given_BundleEntry(2, 0x42),
-                Given_BundleEntry(0));
-            Given_Bundle(4, 1,
+            Given_Bundle(1, 1,
+                Given_BundleEntry(2, 0x42));
+            Given_Bundle(3, 0);
+            Given_Bundle(2, 1,
                 Given_BundleEntry(3, 0x4B),
-                Given_BundleEntry(3, 0x3B),
-                Given_BundleEntry(0));
+                Given_BundleEntry(3, 0x3B));
             Given_Bundle(0, 0);
 
             var neldr = new NeImageLoader(services, "FOO.DLL", bytes, 0);
@@ -173,13 +172,12 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x37, 0) },
             };
 
-            Given_Bundle(4, 0xFF,
-                Given_BundleEntry(2, 1, 0x42),
-                Given_BundleEntry(0));
-            Given_Bundle(4, 0xFF,
+            Given_Bundle(1, 0xFF,
+                Given_BundleEntry(2, 1, 0x42));
+            Given_Bundle(3, 0);
+            Given_Bundle(2, 0xFF,
                 Given_BundleEntry(3, 2, 0x4B),
-                Given_BundleEntry(3, 3, 0x3B),
-                Given_BundleEntry(0));
+                Given_BundleEntry(3, 3, 0x3B));
             Given_Bundle(0, 0);
 
             var neldr = new NeImageLoader(services, "FOO.DLL", bytes, 0);
@@ -210,14 +208,12 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x37, 0) },
             };
 
-            Given_Bundle(4, 1,
-                Given_BundleEntry(2, 0x42),
-                Given_BundleEntry(0));
-            Given_Bundle(4, 0x00);      // Skip 4 bundles.
-            Given_Bundle(4, 2,
+            Given_Bundle(1, 1,
+                Given_BundleEntry(2, 0x42));
+            Given_Bundle(7, 0x00);      // Skip 7 bundles.
+            Given_Bundle(2, 2,
                 Given_BundleEntry(3, 0x4B),
-                Given_BundleEntry(3, 0x3B),
-                Given_BundleEntry(0));
+                Given_BundleEntry(3, 0x3B));
             Given_Bundle(0, 0);
             var neldr = new NeImageLoader(services, "FOO.DLL", bytes, 0);
             var syms = neldr.LoadEntryPoints(
