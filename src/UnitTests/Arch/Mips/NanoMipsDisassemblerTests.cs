@@ -33,27 +33,22 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class NanoMipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
-        private MipsProcessorArchitecture arch;
+        private MipsProcessorArchitecture arch; 
         private MipsInstruction instr;
 
-        [SetUp]
-        public void Setup()
+        public NanoMipsDisassemblerTests()
         {
             this.arch = new MipsBe32Architecture("mips-be-micro");
+            this.LoadAddress = Address.Ptr32(0x00100000);
         }
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
+        public override Address LoadAddress { get; }
 
         protected override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new NanoMipsDisassembler(this.arch, rdr);
-        }
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            throw new NotImplementedException();
         }
 
         private void AssertCode(string expectedAsm, string hexInstr)

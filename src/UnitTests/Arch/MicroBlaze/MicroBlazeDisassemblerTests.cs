@@ -46,11 +46,6 @@ namespace Reko.UnitTests.Arch.MicroBlaze
 
         public override Address LoadAddress => addr;
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
-
         private void AssertCode(string expectedAsm, string hexInstr)
         {
             var instr = DisassembleHexBytes(hexInstr);

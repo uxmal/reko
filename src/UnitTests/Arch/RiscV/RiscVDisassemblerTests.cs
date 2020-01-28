@@ -36,20 +36,13 @@ namespace Reko.UnitTests.Arch.RiscV
 
         public RiscVDisassemblerTests()
         {
-            this.arch = new RiscVArchitecture("riscV");
+            this.Architecture = new RiscVArchitecture("riscV");
+            this.LoadAddress = Address.Ptr32(0x00100000);
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture { get; }
 
-        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
+        public override Address LoadAddress { get; }
 
         private void AssertCode(string sExp, uint uInstr)
         {

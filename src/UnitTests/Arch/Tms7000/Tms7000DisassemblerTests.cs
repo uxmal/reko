@@ -49,11 +49,6 @@ namespace Reko.UnitTests.Arch.Tms7000
             get { return Address.Ptr16(0x0100); }
         }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
-
         [Test]
         public void Tms7000_dis_nop()
         {

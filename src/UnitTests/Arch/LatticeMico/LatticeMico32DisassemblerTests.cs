@@ -43,11 +43,6 @@ namespace Reko.UnitTests.Arch.LatticeMico
 
         public override Address LoadAddress => Address.Ptr32(0x00100000);
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
-
         private void Assert_HexBytes(string sExpected, string sHexBytes)
         {
             var instr = base.DisassembleHexBytes(sHexBytes);

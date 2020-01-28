@@ -32,24 +32,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
     [TestFixture]
     public class OpenRISCDisassemblerTests : DisassemblerTestBase<OpenRISCInstruction>
     {
-        private OpenRISCArchitecture arch;
-        private Address addr;
-
-        [SetUp]
-        public void Setup()
+        public OpenRISCDisassemblerTests()
         {
-            this.arch = new OpenRISCArchitecture("openRisc");
-            this.addr = Address.Ptr32(0x00100000);
+            this.Architecture = new OpenRISCArchitecture("openRisc");
+            this.LoadAddress = Address.Ptr32(0x00100000);
         }
 
-        public override IProcessorArchitecture Architecture => arch;
+        public override IProcessorArchitecture Architecture { get; }
 
-        public override Address LoadAddress => addr;
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
+        public override Address LoadAddress { get; }
 
         private void AssertCode(string sExp, string hexBytes)
         {

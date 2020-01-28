@@ -48,11 +48,6 @@ namespace Reko.UnitTests.Arch.Xtensa
 
         public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
-
         private void AssertCode(string sExp, uint uInstr)
         {
             var i = DisassembleWord(uInstr);

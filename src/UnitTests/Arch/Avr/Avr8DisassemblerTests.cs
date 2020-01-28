@@ -45,11 +45,6 @@ namespace Reko.UnitTests.Arch.Avr
 
         public override Address LoadAddress { get { return Address.Ptr16(0x0000); } }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
-
         private void AssertCode(string sExp, params ushort[] uInstrs)
         {
             // Convert to LE.

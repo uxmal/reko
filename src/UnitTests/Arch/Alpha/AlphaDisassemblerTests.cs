@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -44,11 +44,6 @@ namespace Reko.UnitTests.Arch.Alpha
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override Address LoadAddress { get { return Address.Ptr64(0x00100000); } }
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
 
         private void AssertCode(string sExp, string sActual)
         {

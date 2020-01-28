@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -35,20 +35,13 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         public SuperHDisassemblerTests()
         {
-            this.arch = new SuperHLeArchitecture("superH");
+            this.Architecture = new SuperHLeArchitecture("superH");
+            this.LoadAddress = Address.Ptr32(0x00010000);
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture { get; }
 
-        public override Address LoadAddress { get { return Address.Ptr32(0x00010000); } }
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
+        public override Address LoadAddress { get; }
 
         private void AssertCode(string sExp, string hexBytes)
         {

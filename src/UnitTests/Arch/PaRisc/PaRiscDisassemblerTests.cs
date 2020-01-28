@@ -39,12 +39,6 @@ namespace Reko.UnitTests.Arch.PaRisc
 
         public override Address LoadAddress => Address.Ptr32(0x00100000);
 
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new BeImageWriter(bytes);
-        }
-
         private void AssertCode(string sExp, string hexBytes)
         {
             this.arch = new PaRiscArchitecture("paRisc");

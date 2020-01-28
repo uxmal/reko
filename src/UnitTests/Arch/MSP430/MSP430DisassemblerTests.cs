@@ -31,24 +31,15 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class MSP430DisassemblerTests : DisassemblerTestBase<Msp430Instruction>
     {
-        private Msp430Architecture arch;
-
         public MSP430DisassemblerTests()
         {
-            this.arch = new Msp430Architecture("msp430");
+            this.Architecture = new Msp430Architecture("msp430");
+            this.LoadAddress = Address.Ptr16(0x0100);
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture { get; }
 
-        public override Address LoadAddress { get { return Address.Ptr16(0x0100); } }
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
+        public override Address LoadAddress { get; }
 
         private void AssertCode(string sExp, string hexBytes)
         {

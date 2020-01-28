@@ -31,8 +31,6 @@ namespace Reko.UnitTests.Arch
     public abstract class DisassemblerTestBase<TInstruction> : ArchTestBase
         where TInstruction : MachineInstruction
     {
-        protected abstract ImageWriter CreateImageWriter(byte[] bytes);
-
         public TInstruction DisassembleBytes(params byte[] a)
         {
             MemoryArea img = new MemoryArea(LoadAddress, a);
@@ -42,7 +40,7 @@ namespace Reko.UnitTests.Arch
         public TInstruction DisassembleWord(uint instr)
         {
             var img = new MemoryArea(LoadAddress, new byte[256]);
-            CreateImageWriter(img.Bytes).WriteUInt32(0, instr);
+            Architecture.CreateImageWriter(img, img.BaseAddress).WriteUInt32(0, instr);
             return Disassemble(img);
         }
 
@@ -50,7 +48,7 @@ namespace Reko.UnitTests.Arch
         {
             var img = new MemoryArea(LoadAddress, new byte[256]);
             uint instr = BitStringToUInt32(bitPattern);
-            CreateImageWriter(img.Bytes).WriteUInt32(0, instr);
+            Architecture.CreateImageWriter(img, img.BaseAddress).WriteUInt32(0, instr);
             return Disassemble(img);
         }
 

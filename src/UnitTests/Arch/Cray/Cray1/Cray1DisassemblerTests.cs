@@ -53,11 +53,6 @@ namespace Reko.UnitTests.Arch.Cray.Cray1
             Assert.AreEqual(sExp, instr.ToString());
         }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new BeImageWriter(bytes);
-        }
-
         protected CrayInstruction DisassembleOctBytes(string octalBytes)
         {
             var img = new MemoryArea(LoadAddress, new byte[256]);

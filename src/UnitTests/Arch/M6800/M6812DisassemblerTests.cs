@@ -47,10 +47,6 @@ namespace Reko.UnitTests.Arch.M6800
 
         public override Address LoadAddress => addrLoad;
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
         private void Given_Code(string hexBytes)
         {
             this.instr = DisassembleHexBytes(hexBytes);

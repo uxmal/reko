@@ -33,9 +33,15 @@ namespace Reko.UnitTests.Arch.PowerPC
     {
         private PowerPcArchitecture arch;
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
+        [SetUp]
+        public void Setup()
+        {
+            this.arch = new PowerPcBe32Architecture("ppc-be-32");
+        }
 
-        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
+        public override IProcessorArchitecture Architecture => arch;
+
+        public override Address LoadAddress => Address.Ptr32(0x00100000);
 
         private PowerPcInstruction DisassembleX(uint op, uint rs, uint ra, uint rb, uint xo, uint rc)
         {
@@ -49,11 +55,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
             img.WriteBeUInt32(0, w);
             return Disassemble(img);
-        }
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new BeImageWriter(bytes);
         }
 
         private void RunTest(string expected, string bits)
@@ -80,14 +81,6 @@ namespace Reko.UnitTests.Arch.PowerPC
                 { "Model", "750" }
             });
         }
-
-        [SetUp]
-        public void Setup()
-        {
-            this.arch = new PowerPcBe32Architecture("ppc-be-32");
-        }
-
-   
 
         [Test]
         public void PPCDis_IllegalOpcode()

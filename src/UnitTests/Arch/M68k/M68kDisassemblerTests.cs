@@ -52,12 +52,6 @@ namespace Reko.UnitTests.Arch.M68k
             get { return Address.Ptr32(0x10000000); }
         }
 
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new BeImageWriter(bytes);
-        }
-
         private void RunTest(string expected, params ushort[] words)
         {
             dasm = CreateDasm(words);

@@ -65,11 +65,6 @@ namespace Reko.UnitTests.Arch.Mips
 
         public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new BeImageWriter(bytes);
-        }
-
         private void Given_Mips_v6_Architecture()
         {
             arch = new MipsBe32Architecture("mipsv6-be-32");

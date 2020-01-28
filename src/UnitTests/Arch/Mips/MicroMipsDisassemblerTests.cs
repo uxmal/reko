@@ -50,11 +50,6 @@ namespace Reko.UnitTests.Arch.Mips
             return new MicroMipsDisassembler(this.arch, rdr);
         }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
-
         private void AssertCode(string expectedAsm, string hexInstr)
         {
             var instr = DisassembleHexBytes(hexInstr);

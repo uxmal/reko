@@ -46,11 +46,6 @@ namespace Reko.UnitTests.Arch.Vax
 
         public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
-
         private void AssertCode(string sExp, params byte[] bytes)
         {
             var i = DisassembleBytes(bytes);

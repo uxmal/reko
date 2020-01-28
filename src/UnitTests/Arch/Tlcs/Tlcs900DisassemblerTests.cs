@@ -36,20 +36,13 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         public Tlcs900DisassemblerTests()
         {
-            this.arch = new Tlcs900Architecture("tlcs900");
+            this.Architecture = new Tlcs900Architecture("tlcs900");
+            this.LoadAddress = Address.Ptr32(0x00010000);
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture { get; }
 
-        public override Address LoadAddress { get { return Address.Ptr32(0x00010000); } }
-
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
+        public override Address LoadAddress { get; }
 
         private void AssertCode(string sExp, string hexBytes)
         {

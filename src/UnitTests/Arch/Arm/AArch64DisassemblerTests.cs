@@ -37,11 +37,6 @@ namespace Reko.UnitTests.Arch.Arm
             get { return arch; }
         }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
-
         public override Address LoadAddress
         {
             get { return baseAddress; }

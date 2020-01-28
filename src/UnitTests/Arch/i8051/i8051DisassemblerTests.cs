@@ -49,11 +49,6 @@ namespace Reko.UnitTests.Arch.i8051
             get { return Address.Ptr16(0); }
         }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
-
         [Test]
         public void I8051_dis_nop()
         {

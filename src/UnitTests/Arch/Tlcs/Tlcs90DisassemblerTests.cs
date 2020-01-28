@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,22 +32,15 @@ namespace Reko.UnitTests.Arch.Tlcs
 {
     public class Tlcs90DisassemblerTests : DisassemblerTestBase<Tlcs90Instruction>
     {
-        private Tlcs90Architecture arch = new Tlcs90Architecture("tlcs90");
-
-        public override IProcessorArchitecture Architecture
+        public Tlcs90DisassemblerTests()
         {
-            get { return arch; }
+            this.Architecture = new Tlcs90Architecture("tlcs90");
+            this.LoadAddress = Address.Ptr16(0x0000);
         }
 
-        public override Address LoadAddress
-        {
-            get { return Address.Ptr16(0x0000); }
-        }
+        public override IProcessorArchitecture Architecture { get; }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
+        public override Address LoadAddress { get; }
 
         private void AssertCode(string sExp, string hexBytes)
         {

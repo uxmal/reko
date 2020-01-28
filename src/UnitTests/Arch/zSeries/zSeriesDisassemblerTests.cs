@@ -49,11 +49,6 @@ namespace Reko.UnitTests.Arch.zSeries
 
         public override Address LoadAddress { get; }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
-
         public void AssertCode(string sExp, string machineCode)
         {
             var instr = DisassembleHexBytes(machineCode);

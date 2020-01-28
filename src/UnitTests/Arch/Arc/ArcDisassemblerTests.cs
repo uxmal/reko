@@ -53,11 +53,6 @@ namespace Reko.UnitTests.Arch.Arc
 
         public override Address LoadAddress { get; }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            return new LeImageWriter(bytes);
-        }
-
         private void AssertCode(string expectedAsm, string hexInstr)
         {
             var instr = DisassembleHexBytes(hexInstr);
