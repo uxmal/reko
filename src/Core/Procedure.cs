@@ -68,12 +68,11 @@ namespace Reko.Core
 
         public IProcessorArchitecture Architecture { get; }
         public List<AbsynStatement> Body { get; set; }
-        public BlockGraph ControlGraph { get; private set; }
-        public Block EntryBlock { get; private set; }
-        public Block ExitBlock { get; private set; }
-        public Frame Frame { get; private set; }
+        public BlockGraph ControlGraph { get; }
+        public Block EntryBlock { get; }
+        public Block ExitBlock { get; }
+        public Frame Frame { get; }
         public Address EntryAddress { get; }
-
 
         /// <summary>
         /// Returns all the statements of the procedure, in no particular order.

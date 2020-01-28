@@ -39,7 +39,7 @@ namespace Reko.Core
 
         public Block Block { get; set; }
         public Instruction Instruction { get; set; }
-        public ulong LinearAddress { get; private set; }
+        public ulong LinearAddress { get; }
 
 		public override string ToString()
 		{

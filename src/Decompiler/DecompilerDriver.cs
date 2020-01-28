@@ -43,6 +43,7 @@ namespace Reko
 
         bool Load(string fileName, string loader=null);
         Program LoadRawImage(string file, LoadDetails raw);
+        Program LoadRawImage(byte[] bytes, LoadDetails raw);
         void ScanPrograms();
         ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
         void AnalyzeDataFlow();
@@ -253,7 +254,7 @@ namespace Reko
         }
 
         /// <summary>
-        /// Loads a program into memory using the additional information in 
+        /// Loads a program from a file into memory using the additional information in 
         /// <paramref name="raw"/>. Use this to open files with insufficient or
         /// no metadata.
         /// </summary>
@@ -266,6 +267,22 @@ namespace Reko
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.LoadRawImage(fileName, image, null, raw);
             Project = AddProgramToProject(fileName, program);
+            eventListener.ShowStatus("Raw bytes loaded.");
+            return program;
+        }
+
+        /// <summary>
+        /// Loads a program into memory using the additional information in 
+        /// <paramref name="raw"/>. Use this to decompile raw blobs of data.
+        /// </summary>
+        /// <param name="fileName">Name of the file to be loaded.</param>
+        /// <param name="raw">Extra metadata supllied by the user.</param>
+        public Program LoadRawImage(byte[] image, LoadDetails raw)
+        {
+            eventListener.ShowStatus("Loading raw bytes.");
+            raw.ArchitectureOptions = raw.ArchitectureOptions ?? new Dictionary<string, object>();
+            var program = loader.LoadRawImage("image", image, null, raw);
+            Project = AddProgramToProject("image", program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;
         }
