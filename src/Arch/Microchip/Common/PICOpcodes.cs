@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -23,8 +23,8 @@
 namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
-    /// Values that represent symbolic opcodes of the 8-bit MCU PIC16/18 family.
-    /// Note: Opcodes are defined in uppercase to conform to Microchip MPASM user's guide syntax.
+    /// Values that represent instruction mnemonics of the 8-bit MCU PIC16/18 family.
+    /// Note: Mnemonics are defined in uppercase to conform to Microchip MPASM user's guide syntax.
     /// </summary>
     public enum Mnemonic : byte
     {

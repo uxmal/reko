@@ -349,7 +349,7 @@ namespace Reko.Analysis
         /// Rewrites CALL instructions to function applications.
         /// </summary>
         /// <remarks>
-        /// Converts an opcode:
+        /// Converts an instruction:
         /// <code>
         ///   call procExpr 
         /// </code>

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -96,8 +96,7 @@ namespace Reko.Core
         {
             linAddrInstr = GetLinearAddress(rdr.Address);
             T target;
-            uint opcode;
-            if (TryPeekOpcode(rdr, out opcode))
+            if (TryPeekOpcode(rdr, out uint opcode))
             {
                 if ((flags & PointerScannerFlags.Calls) != 0)
                 {

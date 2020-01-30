@@ -1494,32 +1494,19 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        private static Decoder Instr(Mnemonic opcode, params Mutator<A32Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<A32Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators);
+            return new InstrDecoder(mnemonic, InstrClass.Linear, ArmVectorData.INVALID, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<A32Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<A32Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, ArmVectorData.INVALID, mutators);
+            return new InstrDecoder(mnemonic, iclass, ArmVectorData.INVALID, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, ArmVectorData vec, params Mutator<A32Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, ArmVectorData vec, params Mutator<A32Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, vec, mutators);
+            return new InstrDecoder(mnemonic, InstrClass.Linear, vec, mutators);
         }
 
         private static Decoder Select(string tag, int shift, uint mask, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
@@ -2970,25 +2957,25 @@ namespace Reko.Arch.Arm.AArch32
 
             //var AdvancedSIMDElementMovDuplicate = Mask(20, 1, "AdvancedSIMDElementMovDuplicate",
             //    Mask(21,2,5,2,
-            //        Instr(Opcode.vmov, I32, r(3), D7_16, Ix(21,1)),
-            //        Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 01)")),
-            //        Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 10)")),
-            //        Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 11)")),
+            //        Instr(Mnemonic.vmov, I32, r(3), D7_16, Ix(21,1)),
+            //        Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b00 01)")),
+            //        Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b00 10)")),
+            //        Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b00 11)")),
 
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 00)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 01)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 10)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 11)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b01 00)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b01 01)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b01 10)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b01 11)")),
 
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 00)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 01)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 10)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 11)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b10 00)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b10 01)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b10 10)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b10 11)")),
 
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 00)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 01)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 10)")),
-            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 11)))"))));
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b11 00)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b11 01)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b11 10)")),
+            //Instr(Mnemonic.vmov, r(3), x("*Scalar to GP op1:op2=0b11 11)))"))));
 
             var FloatingPointMoveSpecialReg = Mask(20, 1,
                 Instr(Mnemonic.vmsr, i(16,4), r(3)),

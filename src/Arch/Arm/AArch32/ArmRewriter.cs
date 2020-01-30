@@ -1055,13 +1055,13 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
-        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
+        private static HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
 
         void EmitUnitTest(AArch32Instruction instr)
         {
-            if (opcode_seen.Contains(instr.Mnemonic))
+            if (seenMnemonics.Contains(instr.Mnemonic))
                 return;
-            opcode_seen.Add(instr.Mnemonic);
+            seenMnemonics.Add(instr.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= instr.Length;

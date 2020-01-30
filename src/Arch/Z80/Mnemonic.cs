@@ -29,7 +29,7 @@ namespace Reko.Arch.Z80
     {
         illegal = 0,
 
-        // i8080 opcodes
+        // i8080 mnemonics
         aci,
         adi,
         ana,
@@ -67,7 +67,7 @@ namespace Reko.Arch.Z80
         sui,
         xra,
 
-        // Z80 opcodes
+        // Z80 mnemonics
         and,
         bit,
         call,
@@ -130,7 +130,7 @@ namespace Reko.Arch.Z80
         swap,
         xor,
 
-        // Shared opcodes
+        // Shared mnemonics
         adc,
         add,
         daa,

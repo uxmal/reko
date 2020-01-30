@@ -319,9 +319,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
         [Conditional("DEBUG")]
         private void EmitUnitTest(string prefix, string sAddr)
         {
-            //if (seen.Contains(dasm.Current.Opcode))
+            //if (seen.Contains(dasm.Current.Mnemonic))
             //    return;
-            //seen.Add(dasm.Current.Opcode);
+            //seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;

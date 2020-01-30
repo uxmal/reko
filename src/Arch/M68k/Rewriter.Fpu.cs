@@ -78,7 +78,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
         {
-            var op = orw.RewriteUnary(instr.Operands[0], instr.Address, instr.dataWidth, unaryOpGen);
+            var op = orw.RewriteUnary(instr.Operands[0], instr.Address, instr.DataWidth, unaryOpGen);
             m.Assign(FpuFlagGroup(), m.Cond(op));
         }
 

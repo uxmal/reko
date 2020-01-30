@@ -28,13 +28,13 @@ namespace Reko.Arch.RiscV
 {
     public class RiscVInstruction : MachineInstruction
     {
-        private static Dictionary<Mnemonic, string> opcodeNames;
+        private static Dictionary<Mnemonic, string> mnemonicNames;
 
         public Mnemonic Mnemonic;
 
         static RiscVInstruction()
         {
-            opcodeNames = new Dictionary<Mnemonic, string>
+            mnemonicNames = new Dictionary<Mnemonic, string>
             {
                 { Mnemonic.c_add, "c.add" },
                 { Mnemonic.c_addi, "c.addi" },
@@ -86,7 +86,7 @@ namespace Reko.Arch.RiscV
             };
         }
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -96,12 +96,12 @@ namespace Reko.Arch.RiscV
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
-            if (!opcodeNames.TryGetValue(Mnemonic, out string name))
+            if (!mnemonicNames.TryGetValue(Mnemonic, out string name))
             {
                 name = Mnemonic.ToString();
                 name = name.Replace('_', '.');
             }
-            writer.WriteOpcode(name);
+            writer.WriteMnemonic(name);
         }
 
         protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)

@@ -15,21 +15,21 @@ namespace Reko.WindowsItp.Decoders
             return new MaskDecoder(new[] { new Bitfield(pos, length) }, decoders);
         }
 
-        public abstract Decoder Instr(Opcode opcode, string format);
+        public abstract Decoder Instr(Mnemonic mnemonic, string format);
     }
 
     public class FormatDecoderBuilder : DecoderBuilder
     { 
 
-        public override Decoder Instr(Opcode opcode, string format)
+        public override Decoder Instr(Mnemonic mnemonic, string format)
         {
-            return new FormatDecoder(opcode, format);
+            return new FormatDecoder(mnemonic, format);
         }
     }
 
     public class ThreadedDecoderBuilder : DecoderBuilder
     {
-        public override Decoder Instr(Opcode opcode, string format)
+        public override Decoder Instr(Mnemonic mnemonic, string format)
         {
             var mutators = new List<Mutator<Disassembler>>();
             for (int i = 0; i < format.Length; ++i)
@@ -47,7 +47,7 @@ namespace Reko.WindowsItp.Decoders
                     throw new NotImplementedException($"{format[i]}");
                 }
             }
-            return new ThreadedDecoder(opcode, mutators.ToArray());
+            return new ThreadedDecoder(mnemonic, mutators.ToArray());
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Reko.Arch.Arc
         public bool Delay;
         public bool SetFlags;
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -71,7 +71,7 @@ namespace Reko.Arch.Arc
             {
                 sb.Append(".di");
             }
-            writer.WriteOpcode(sb.ToString());
+            writer.WriteMnemonic(sb.ToString());
         }
     }
 }

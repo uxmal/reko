@@ -196,7 +196,7 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             return Enum.GetValues(typeof(Mnemonic))
             .Cast<Mnemonic>()
@@ -205,7 +205,7 @@ namespace Reko.Arch.Xtensa
                 v => (int)v);
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
             if (!Enum.TryParse(name.Replace('.', '_'), true, out Mnemonic result))
                 return null;

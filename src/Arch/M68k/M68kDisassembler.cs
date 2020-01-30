@@ -62,7 +62,7 @@ namespace Reko.Arch.M68k
         static M68kDisassembler()
         {
             GenTable();
-            build_opcode_table();
+            BuildDecoderTable();
         }
 
         public override M68kInstruction DisassembleInstruction()
@@ -210,12 +210,12 @@ namespace Reko.Arch.M68k
             public readonly uint match;                 // opcode bit patter (after mask)
             public readonly uint ea_mask;               // Permitted ea modes are allowed 
 
-            public readonly Mnemonic mnemonic;              // The decoded opcode.
+            public readonly Mnemonic mnemonic;          // The decoded mnemonic.
             public readonly InstrClass iclass;          // Instruction class of the decoded instruction.
-            public readonly Mutator[] mutators;         // Format string which when interpreted generates the operands of the dasm.instruction.
+            public readonly Mutator[] mutators;         // Mutators used to modify the disassembler state while decoding.
 
             /// <summary>
-            /// Builds an instance of an opcode record that uses <seealso cref="OperandFormatDecoder"/> to decode
+            /// Builds an instance of an decoder record that uses <seealso cref="OperandFormatDecoder"/> to decode
             /// the operands. 
             /// </summary>
             /// <remarks>
@@ -254,14 +254,14 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private static Decoder Instr(uint mask, uint match, uint ea_mask, Mnemonic opcode, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(uint mask, uint match, uint ea_mask, Mnemonic mnemonic, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[0],
                 mask,
                 match,
                 ea_mask,
-                opcode,
+                mnemonic,
                 iclass);
         }
 
@@ -276,40 +276,40 @@ namespace Reko.Arch.M68k
                 iclass);
         }
 
-        private static Decoder Instr(Mutator m1, Mutator m2, uint mask, uint match, uint ea_mask, Mnemonic opcode, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(Mutator m1, Mutator m2, uint mask, uint match, uint ea_mask, Mnemonic mnemonic, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[] { m1, m2 },
                 mask,
                 match,
                 ea_mask,
-                opcode,
+                mnemonic,
                 iclass);
         }
 
-        private static Decoder Instr(Mutator m1, Mutator m2, Mutator m3, uint mask, uint match, uint ea_mask, Mnemonic opcode, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(Mutator m1, Mutator m2, Mutator m3, uint mask, uint match, uint ea_mask, Mnemonic mnemonic, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[] { m1, m2, m3 },
                 mask,
                 match,
                 ea_mask,
-                opcode,
+                mnemonic,
                 iclass);
         }
 
-        private static Decoder Instr(Mutator m1, Mutator m2, Mutator m3, Mutator m4, uint mask, uint match, uint ea_mask, Mnemonic opcode, InstrClass iclass = InstrClass.Linear)
+        private static Decoder Instr(Mutator m1, Mutator m2, Mutator m3, Mutator m4, uint mask, uint match, uint ea_mask, Mnemonic mnemonic, InstrClass iclass = InstrClass.Linear)
         {
             return new Decoder(
                 new Mutator[] { m1, m2, m3, m4 },
                 mask,
                 match,
                 ea_mask,
-                opcode,
+                mnemonic,
                 iclass);
         }
 
-        // Opcode handler jump table 
+        // One decoder for each possible 16-bit opcode.
         private static Decoder[] g_instruction_table = new Decoder[0x10000];
 
         // 'Q'uick dasm.instructions contain patterns that map to integers.
@@ -406,12 +406,12 @@ namespace Reko.Arch.M68k
 
         private PredecrementMemoryOperand get_pre_dec(uint uInstr, int offset)
         {
-            return new PredecrementMemoryOperand(instr.dataWidth, Registers.AddressRegister((uInstr >> offset) & 7));
+            return new PredecrementMemoryOperand(instr.DataWidth, Registers.AddressRegister((uInstr >> offset) & 7));
         }
 
         private PostIncrementMemoryOperand get_post_inc(int a)
         {
-            return new PostIncrementMemoryOperand(instr.dataWidth, Registers.AddressRegister(a & 7));
+            return new PostIncrementMemoryOperand(instr.DataWidth, Registers.AddressRegister(a & 7));
         }
 
         private RegisterOperand get_ctrl_reg(string regName, uint number)
@@ -573,7 +573,7 @@ namespace Reko.Arch.M68k
                 if (!rdr.TryReadBeInt16(out short sDisplacement))
                     return null;
                 return MemoryOperand.Indirect(
-                    instr.dataWidth,
+                    instr.DataWidth,
                     Registers.AddressRegister(uInstr & 7),
                     Constant.Int16(sDisplacement));
             case 0x30:
@@ -1024,7 +1024,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = Mnemonic.cas;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Byte;
+            dasm.instr.DataWidth = PrimitiveType.Byte;
             dasm.ops.Add(get_data_reg(extension & 7u));
             dasm.ops.Add(get_data_reg((uint)(extension >> 8) & 7));
             dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
@@ -1038,7 +1038,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = Mnemonic.cas;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(get_data_reg(extension & 7u));
             dasm.ops.Add(get_data_reg((uint) (extension >> 8) & 7));
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
@@ -1052,7 +1052,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = Mnemonic.cas;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(get_data_reg(extension & 7u));
             dasm.ops.Add(get_data_reg((uint) (extension >> 8) & 7));
             dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
@@ -1093,7 +1093,7 @@ namespace Reko.Arch.M68k
         {
             dasm.instr.Mnemonic = Mnemonic.chk;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             dasm.ops.Add(get_data_reg((uInstr >> 9) & 7));
             return true;
@@ -1104,7 +1104,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.chk;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
             dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             dasm.ops.Add(get_data_reg((uInstr >> 9) & 7));
             return true;
@@ -1118,7 +1118,7 @@ namespace Reko.Arch.M68k
 
             dasm.instr.Mnemonic = BIT_B(extension) ? Mnemonic.chk2 : Mnemonic.cmp2;
             dasm.instr.InstructionClass = InstrClass.Invalid;
-            dasm.instr.dataWidth = PrimitiveType.Byte;
+            dasm.instr.DataWidth = PrimitiveType.Byte;
             dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             dasm.ops.Add(get_addr_or_data_reg(BIT_F(extension), (uint) (extension >> 12) & 7));
             return true;
@@ -1131,7 +1131,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = BIT_B(extension) ? Mnemonic.chk2 : Mnemonic.cmp2;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             dasm.ops.Add(get_addr_or_data_reg(BIT_F(extension), (uint) (extension >> 12) & 7));
             return true;
@@ -1145,7 +1145,7 @@ namespace Reko.Arch.M68k
 
             dasm.instr.Mnemonic = BIT_B(extension) ? Mnemonic.chk2 : Mnemonic.cmp2;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
             dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             dasm.ops.Add(get_addr_or_data_reg(BIT_F(extension), (uint) (extension >> 12) & 7));
             return true;
@@ -1203,7 +1203,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Byte;
+            dasm.instr.DataWidth = PrimitiveType.Byte;
             dasm.ops.Add(imm);
             dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
@@ -1216,7 +1216,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(imm);
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
@@ -1229,7 +1229,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(imm);
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
@@ -1241,7 +1241,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
             dasm.ops.Add(imm);
             dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
@@ -1254,7 +1254,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.instr.Mnemonic = Mnemonic.cmpi;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
             dasm.ops.Add(imm);
             dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
@@ -1470,7 +1470,7 @@ namespace Reko.Arch.M68k
 
             dasm.instr.Mnemonic = code;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = dataWidth;
+            dasm.instr.DataWidth = dataWidth;
             dasm.ops.Add(ea);
             dasm.ops.Add(op2);
             return true;
@@ -1495,7 +1495,7 @@ namespace Reko.Arch.M68k
 
             dasm.instr.Mnemonic = Mnemonic.eori;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(extension1)));
             dasm.ops.Add(new RegisterOperand(Registers.sr));
             return true;
@@ -1608,14 +1608,14 @@ namespace Reko.Arch.M68k
                     if ((w2 & 0x4000) != 0)
                     {
                         instr.Mnemonic = mnemonic;
-                        instr.dataWidth = float_data_format[src];
+                        instr.DataWidth = float_data_format[src];
                         dasm.ops.Add(dasm.get_ea_mode_str(uInstr, float_data_format[src]));
                         dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
                     }
                     else
                     {
                         instr.Mnemonic = mnemonic;
-                        instr.dataWidth = PrimitiveType.Real80;
+                        instr.DataWidth = PrimitiveType.Real80;
                         dasm.ops.Add(dasm.get_fp_reg((int) src));
                         dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
                     }
@@ -1628,7 +1628,7 @@ namespace Reko.Arch.M68k
                     {
                     case 3:		// packed decimal w/fixed k-factor
                         instr.Mnemonic = Mnemonic.fmove;
-                        instr.dataWidth = float_data_format[(w2 >> 10) & 7];
+                        instr.DataWidth = float_data_format[(w2 >> 10) & 7];
                         dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
                         dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
                         // sext_7bit_int((int)w2 & 0x7f));
@@ -1639,7 +1639,7 @@ namespace Reko.Arch.M68k
 
                     default:
                         instr.Mnemonic = Mnemonic.fmove;
-                        instr.dataWidth = float_data_format[(w2 >> 10) & 7];
+                        instr.DataWidth = float_data_format[(w2 >> 10) & 7];
                         dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
                         dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
                         return true;
@@ -1676,7 +1676,7 @@ namespace Reko.Arch.M68k
                     else	// static register list
                     {
                         instr.Mnemonic = Mnemonic.fmovem;
-                        instr.dataWidth = PrimitiveType.Real96;
+                        instr.DataWidth = PrimitiveType.Real96;
                         dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
                         MachineOperand op2;
                         if (((w2 >> 12) & 1) == 0)
@@ -1697,14 +1697,14 @@ namespace Reko.Arch.M68k
                 if (((w2 >> 11) & 1) != 0)  // dynamic register list
                 {
                     instr.Mnemonic = Mnemonic.fmovem;
-                    instr.dataWidth = PrimitiveType.Real96;
+                    instr.DataWidth = PrimitiveType.Real96;
                     dasm.ops.Add(new RegisterOperand(Registers.GetRegister((int) (w2 >> 4) & 7)));
                     dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
                 }
                 else    // static register list
                 {
                     instr.Mnemonic = Mnemonic.fmovem;
-                    instr.dataWidth = PrimitiveType.Real96;
+                    instr.DataWidth = PrimitiveType.Real96;
                     if (((w2 >> 12) & 1) == 0)
                     {
                         dasm.ops.Add(RegisterSetOperand.CreateReversed((ushort) (w2 << 8), PrimitiveType.Real96));
@@ -1725,7 +1725,7 @@ namespace Reko.Arch.M68k
             var ea = dasm.get_ea_mode_str_8(uInstr);
             dasm.instr.Mnemonic = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Byte;
+            dasm.instr.DataWidth = PrimitiveType.Byte;
             dasm.ops.Add(ea);
             dasm.ops.Add(dasm.get_ea_mode_str_8(((uInstr >> 9) & 7) | ((uInstr >> 3) & 0x38)));
             return true;
@@ -1736,7 +1736,7 @@ namespace Reko.Arch.M68k
             var str = dasm.get_ea_mode_str_16(uInstr);
             dasm.instr.Mnemonic = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(str);
             dasm.ops.Add(dasm.get_ea_mode_str_16(((uInstr >> 9) & 7) | ((uInstr >> 3) & 0x38)));
             return true;
@@ -1747,7 +1747,7 @@ namespace Reko.Arch.M68k
             var str = dasm.get_ea_mode_str_32(uInstr);
             dasm.instr.Mnemonic = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
             dasm.ops.Add(str);
             dasm.ops.Add(dasm.get_ea_mode_str_32(((uInstr >> 9) & 7) | ((uInstr >> 3) & 0x38)));
             return true;
@@ -1767,7 +1767,7 @@ namespace Reko.Arch.M68k
         {
             dasm.instr.Mnemonic = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.System;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(new RegisterOperand(Registers.sr));
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
@@ -1777,7 +1777,7 @@ namespace Reko.Arch.M68k
         {
             dasm.instr.Mnemonic = Mnemonic.move;
             dasm.instr.InstructionClass = InstrClass.System;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             dasm.ops.Add(new RegisterOperand(Registers.sr));
             return true;
@@ -1964,7 +1964,7 @@ namespace Reko.Arch.M68k
             {
                 dasm.instr.Mnemonic = Mnemonic.moves;
                 dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.dataWidth = PrimitiveType.Word16;
+                dasm.instr.DataWidth = PrimitiveType.Word16;
                 dasm.ops.Add(reg);
                 dasm.ops.Add(ea);
             }
@@ -1972,7 +1972,7 @@ namespace Reko.Arch.M68k
             {
                 dasm.instr.Mnemonic = Mnemonic.moves;
                 dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.dataWidth = PrimitiveType.Word16;
+                dasm.instr.DataWidth = PrimitiveType.Word16;
                 dasm.ops.Add(ea);
                 dasm.ops.Add(reg);
             }
@@ -1990,7 +1990,7 @@ namespace Reko.Arch.M68k
             {
                 dasm.instr.Mnemonic = Mnemonic.moves;
                 dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.dataWidth = PrimitiveType.Word16;
+                dasm.instr.DataWidth = PrimitiveType.Word16;
                 dasm.ops.Add(reg);
                 dasm.ops.Add(ea);
             }
@@ -1998,7 +1998,7 @@ namespace Reko.Arch.M68k
             {
                 dasm.instr.Mnemonic = Mnemonic.moves;
                 dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.dataWidth = PrimitiveType.Word16;
+                dasm.instr.DataWidth = PrimitiveType.Word16;
                 dasm.ops.Add(ea);
                 dasm.ops.Add(reg);
             }
@@ -2014,7 +2014,7 @@ namespace Reko.Arch.M68k
             var ea = dasm.get_ea_mode_str_32(uInstr);
             dasm.instr.Mnemonic = Mnemonic.moves;
             dasm.instr.InstructionClass = InstrClass.System;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             if (BIT_B(extension))
             {
                 dasm.ops.Add(reg);
@@ -2071,7 +2071,7 @@ namespace Reko.Arch.M68k
                 return false;
             var instr = dasm.instr;
             instr.Mnemonic = Mnemonic.move16;
-            dasm.ops.Add(new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(uInstr & 7)));
+            dasm.ops.Add(new MemoryOperand(dasm.instr.DataWidth, Registers.AddressRegister(uInstr & 7)));
             dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp2)));
             return true;
         }
@@ -2085,7 +2085,7 @@ namespace Reko.Arch.M68k
             var instr = dasm.instr;
             instr.Mnemonic = Mnemonic.move16;
             dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp1)));
-            dasm.ops.Add(new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(uInstr & 7)));
+            dasm.ops.Add(new MemoryOperand(dasm.instr.DataWidth, Registers.AddressRegister(uInstr & 7)));
             return true;
         }
 
@@ -2099,7 +2099,7 @@ namespace Reko.Arch.M68k
                 : (MachineOperand) get_data_reg((uint)(extension >> 12) & 7);
             var opDecoder = new OperandFormatDecoder(dasm, 0);
             dasm.instr.Mnemonic = BIT_B(extension) ? Mnemonic.muls : Mnemonic.mulu;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
 
             if (!opDecoder.TryParseOperand((ushort)uInstr, 0, PrimitiveType.Word32, dasm.rdr, out var op1))
             {
@@ -2237,7 +2237,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Byte;
+            dasm.instr.DataWidth = PrimitiveType.Byte;
             dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
@@ -2247,7 +2247,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Byte;
+            dasm.instr.DataWidth = PrimitiveType.Byte;
             dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
@@ -2257,7 +2257,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Byte;
+            dasm.instr.DataWidth = PrimitiveType.Byte;
             dasm.ops.Add(dasm.get_ea_mode_str_8(uInstr));
             return true;
         }
@@ -2267,7 +2267,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
@@ -2277,7 +2277,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
@@ -2287,7 +2287,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
@@ -2297,7 +2297,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             dasm.ops.Add(dasm.get_ea_mode_str_16(uInstr));
             return true;
         }
@@ -2307,7 +2307,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
             dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
@@ -2317,7 +2317,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
             dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
@@ -2327,7 +2327,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_PLUS);
             dasm.instr.Mnemonic = Mnemonic.tst;
             dasm.instr.InstructionClass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.DataWidth = PrimitiveType.Word32;
             dasm.ops.Add(dasm.get_ea_mode_str_32(uInstr));
             return true;
         }
@@ -2531,26 +2531,26 @@ namespace Reko.Arch.M68k
             {
                 switch ((u >> bitOffset) & 3)
                 {
-                case 0: d.instr.dataWidth = d.dataWidth = PrimitiveType.Byte; return true;
-                case 1: d.instr.dataWidth = d.dataWidth = PrimitiveType.Word16; return true;
-                case 2: d.instr.dataWidth = d.dataWidth = PrimitiveType.Word32; return true;
+                case 0: d.instr.DataWidth = d.dataWidth = PrimitiveType.Byte; return true;
+                case 1: d.instr.DataWidth = d.dataWidth = PrimitiveType.Word16; return true;
+                case 2: d.instr.DataWidth = d.dataWidth = PrimitiveType.Word32; return true;
                 default: return false;
                 }
             };
         }
 
         private static Mutator s6 = s(6);
-        private static bool sb(uint u, M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Byte; return true; }
-        private static bool sw(uint u, M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Word16; return true; }
-        private static bool sl(uint u, M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.Word32; return true; }
-        private static bool su(uint u, M68kDisassembler d) { d.instr.dataWidth = d.dataWidth = PrimitiveType.UInt16; return true; }
+        private static bool sb(uint u, M68kDisassembler d) { d.instr.DataWidth = d.dataWidth = PrimitiveType.Byte; return true; }
+        private static bool sw(uint u, M68kDisassembler d) { d.instr.DataWidth = d.dataWidth = PrimitiveType.Word16; return true; }
+        private static bool sl(uint u, M68kDisassembler d) { d.instr.DataWidth = d.dataWidth = PrimitiveType.Word32; return true; }
+        private static bool su(uint u, M68kDisassembler d) { d.instr.DataWidth = d.dataWidth = PrimitiveType.UInt16; return true; }
         private static bool sr(uint u, M68kDisassembler d)
         {
             // If EA is register, 32 bits, else 8.
             var dt = ((u & 0x30) == 0)
                 ? PrimitiveType.Word32
                 : PrimitiveType.Byte;
-            d.instr.dataWidth = d.dataWidth = dt;
+            d.instr.DataWidth = d.dataWidth = dt;
             return true;
         }
 
@@ -2834,7 +2834,6 @@ namespace Reko.Arch.M68k
         /// <summary>
         /// Generates the table of opcode decoders. Should only be called once
         /// per execution, as the table is expensive to build. Fortunately,
-        /// 
         /// Decoders have no mutable state, so the table is reused for all
         /// disassembler instances.
         /// </summary>
@@ -3257,7 +3256,7 @@ namespace Reko.Arch.M68k
             return b - a; // reversed to get greatest to least sorting 
         }
 
-        private static void build_opcode_table()
+        private static void BuildDecoderTable()
         {
             int ostruct;
             Decoder[] opcode_info = (Decoder[])g_opcode_info.Clone();

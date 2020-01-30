@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Reko.WindowsItp.Decoders
 {
-    public enum Opcode
+    public enum Mnemonic
     {
         Invalid,
 

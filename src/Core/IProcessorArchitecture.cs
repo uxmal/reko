@@ -178,15 +178,19 @@ namespace Reko.Core
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
 
         /// <summary>
-        /// Returns a list of all the available opcodes as strings.
+        /// Returns a list of all the available mnemonics as strings.
         /// </summary>
-        SortedList<string, int> GetOpcodeNames();           // Returns all the processor opcode names and their internal Reko numbers.
+        /// <returns>
+        /// A <see cref="Dictionary{TKey, TValue}"/> mapping mnemonic names to their 
+        /// internal Reko numbers.
+        /// </returns>
+        SortedList<string, int> GetMnemonicNames();         
         
         /// <summary>
-        /// Returns an internal Reko opcode for a given instruction name, or
+        /// Returns an internal Reko number for a given instruction mnemonic, or
         /// null if none is available.
         /// </summary>
-        int? GetOpcodeNumber(string name);
+        int? GetMnemonicNumber(string sMnemonic);
         
         /// <summary>
         /// Returns register whose name is 'name'
@@ -468,16 +472,16 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// For a particular opcode name, returns its internal (Reko) number.
+        /// For a particular mnemnic, returns its internal (Reko) number.
         /// </summary>
         /// <returns></returns>
-        public abstract int? GetOpcodeNumber(string name);
+        public abstract int? GetMnemonicNumber(string name);
 
         /// <summary>
-        /// Returns a map of opcode names to their internal (Reko) numbers.
+        /// Returns a map of mnemonics to their internal (Reko) numbers.
         /// </summary>
         /// <returns></returns>
-        public abstract SortedList<string, int> GetOpcodeNames();
+        public abstract SortedList<string, int> GetMnemonicNames();
 
         /// <summary>
         /// Get the improper sub-register of <paramref name="reg"/> that starts

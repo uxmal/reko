@@ -84,14 +84,14 @@ namespace Reko.Arch.X86
                 this.rtlc = instrCur.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
-                switch (instrCur.code)
+                switch (instrCur.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
                     host.Warn(
                         dasm.Current.Address,
                         "x86 instruction '{0}' is not supported yet.",
-                        instrCur.code);
+                        instrCur.Mnemonic);
                     goto case Mnemonic.illegal;
                 case Mnemonic.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.aaa: RewriteAaa(); break;
@@ -446,7 +446,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.retf: RewriteRet(); break;
                 case Mnemonic.rsqrtps: RewritePackedUnaryop("__rsqrtps", PrimitiveType.Real32); break;
-                case Mnemonic.sahf: m.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.code)), orw.AluRegister(Registers.ah)); break;
+                case Mnemonic.sahf: m.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.Mnemonic)), orw.AluRegister(Registers.ah)); break;
                 case Mnemonic.sar: RewriteBinOp(Operator.Sar); break;
                 case Mnemonic.sbb: RewriteAdcSbb(m.ISub); break;
                 case Mnemonic.scas: RewriteStringInstruction(); break;
@@ -590,7 +590,7 @@ namespace Reko.Arch.X86
             }
             if ((flags & CopyFlags.EmitCc) != 0)
             {
-                EmitCcInstr(dst, X86Instruction.DefCc(instrCur.code));
+                EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic));
             }
             if ((flags & CopyFlags.SetCfIf0) != 0)
             {
@@ -631,15 +631,15 @@ namespace Reko.Arch.X86
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.code))
+            if (seen.Contains(dasm.Current.Mnemonic))
                 return;
-            seen.Add(dasm.Current.code);
+            seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void X86Rw_" + dasm.Current.code + "()");
+            Debug.WriteLine("        public void X86Rw_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
             Debug.Write("            BuildTest(");
             Debug.Write(string.Join(

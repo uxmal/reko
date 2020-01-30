@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -46,6 +46,6 @@ namespace Reko.Core.NativeInterface
         public ulong LinearAddress;
         public uint Length;
         public uint InstructionClass;
-        public int Opcode;
+        public int Mnemonic;
     }
 }

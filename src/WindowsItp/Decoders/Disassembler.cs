@@ -19,13 +19,13 @@ namespace Reko.WindowsItp.Decoders
         private readonly EndianImageReader rdr;
         private readonly Decoder root;
         private readonly List<MachineOperand> operands;
-        private Opcode opcode;
+        private Mnemonic mnemonic;
 
         public Disassembler(EndianImageReader rdr, Decoder root)
         {
             this.rdr = rdr;
             this.root = root;
-            this.opcode = Opcode.Invalid;
+            this.mnemonic = Mnemonic.Invalid;
             this.operands = new List<MachineOperand>();
         }
 
@@ -56,7 +56,7 @@ namespace Reko.WindowsItp.Decoders
         {
             return new TestInstruction
             {
-                Opcode = Opcode.Invalid,
+                Mnemonic = Mnemonic.Invalid,
             };
         }
 
@@ -64,14 +64,14 @@ namespace Reko.WindowsItp.Decoders
         {
             return new TestInstruction
             {
-                Opcode = opcode,
+                Mnemonic = mnemonic,
                 Operands = operands.ToArray(),
             };
         }
 
-        public TestInstruction Decode(uint wInstr, Opcode opcode, string format)
+        public TestInstruction Decode(uint wInstr, Mnemonic mnemonic, string format)
         {
-            this.opcode = opcode;
+            this.mnemonic = mnemonic;
             for (int i = 0; i < format.Length; ++i)
             {
                 switch (format[i])
@@ -95,12 +95,12 @@ namespace Reko.WindowsItp.Decoders
 
         class State
         {
-            public Opcode opcode;
+            public Mnemonic mnemonic;
             public List<MachineOperand> operands = new List<MachineOperand>();
 
             public void Reset()
             {
-                this.opcode = Opcode.Invalid;
+                this.mnemonic = Mnemonic.Invalid;
                 this.operands.Clear();
             }
 
@@ -108,10 +108,8 @@ namespace Reko.WindowsItp.Decoders
             {
                 return new TestInstruction
                 {
-                    Opcode = opcode,
-                    //Op1 = operands.Count > 0 ? operands[0] : null,
-                    //Op2 = operands.Count > 1 ? operands[1] : null,
-                    //Op3 = operands.Count > 2 ? operands[2] : null,
+                    Mnemonic = mnemonic,
+                    Operands = operands.ToArray(),
                 };
             }
         }

@@ -95,7 +95,7 @@ namespace Reko.Arch.X86
             var instrA = (X86Instruction)a;
             var instrB = (X86Instruction)b;
 
-			if (instrA.code != instrB.code)
+			if (instrA.Mnemonic != instrB.Mnemonic)
 				return false;
 			if (instrA.Operands.Length != instrB.Operands.Length)
 				return false;

@@ -31,13 +31,13 @@ namespace Reko.Arch.Arm.AArch32
     {
         #region Special cases
 
-        // Specially rendered opcodes
-        private static readonly Dictionary<Mnemonic, string> opcodes = new Dictionary<Mnemonic, string>
+        // Specially rendered mnemonics
+        private static readonly Dictionary<Mnemonic, string> mnemonics = new Dictionary<Mnemonic, string>
         {
         };
 
-        // Block data transfer opcodes that affect the rendering of the first operand.
-        private static readonly HashSet<Mnemonic> blockDataXferOpcodes = new HashSet<Mnemonic>
+        // Block data transfer mnemonics that affect the rendering of the first operand.
+        private static readonly HashSet<Mnemonic> blockDataXferMnemonics = new HashSet<Mnemonic>
         {
             Mnemonic.ldm, Mnemonic.ldmda, Mnemonic.ldmdb, Mnemonic.ldmib,
             Mnemonic.stm, Mnemonic.stmda, Mnemonic.stmdb, Mnemonic.stmib,
@@ -89,7 +89,7 @@ namespace Reko.Arch.Arm.AArch32
         public Mnemonic Mnemonic { get; set; }
         public ArmCondition condition { get; set; }
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         /// <summary>
         /// PC-relative addressing has an extra offset.This varies
@@ -103,7 +103,7 @@ namespace Reko.Arch.Arm.AArch32
             if (Mnemonic == Mnemonic.it)
             {
                 var itMnemonic = RenderIt();
-                writer.WriteOpcode(itMnemonic);
+                writer.WriteMnemonic(itMnemonic);
                 writer.Tab();
                 writer.WriteString(condition.ToString().ToLowerInvariant());
                 return;
@@ -114,7 +114,7 @@ namespace Reko.Arch.Arm.AArch32
                 writer.Tab();
                 RenderOperand(ops[0], writer, options);
                 if (writeback &&
-                    blockDataXferOpcodes.Contains(Mnemonic) &&
+                    blockDataXferMnemonics.Contains(Mnemonic) &&
                     ops[0] is RegisterOperand)
                 {
                     writer.WriteChar('!');
@@ -133,7 +133,7 @@ namespace Reko.Arch.Arm.AArch32
                     !imm.Value.IsZero)
                 {
                     writer.WriteChar(',');
-                    writer.WriteOpcode(ShiftType.ToString());
+                    writer.WriteMnemonic(ShiftType.ToString());
                     if (ShiftType != Mnemonic.rrx)
                     {
                         writer.WriteChar(' ');
@@ -185,7 +185,7 @@ namespace Reko.Arch.Arm.AArch32
                 sMnemonic = armAlias.sMnemonic;
                 ops = armAlias.NewOperands(this);
             }
-            else if (!opcodes.TryGetValue(Mnemonic, out sMnemonic))
+            else if (!mnemonics.TryGetValue(Mnemonic, out sMnemonic))
             {
                 sMnemonic = Mnemonic.ToString();
             }
@@ -210,7 +210,7 @@ namespace Reko.Arch.Arm.AArch32
                     sb.Append(".w");
                 }
             }
-            writer.WriteOpcode(sb.ToString());
+            writer.WriteMnemonic(sb.ToString());
             return ops;
         }
 

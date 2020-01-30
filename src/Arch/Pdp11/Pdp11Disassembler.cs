@@ -308,7 +308,7 @@ namespace Reko.Arch.Pdp11
                 // 4 clrf
                 // 5 tstf
                 // 6 absf
-                //{  7, "F", Opcode.negf }, 
+                //{  7, "F", Mnemonic.negf }, 
                 Instr(Mnemonic.mulf, F,f),
                 Instr(Mnemonic.modf, F,f),
 

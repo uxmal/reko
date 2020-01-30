@@ -50,9 +50,9 @@ namespace Reko.Arch.Arm.AArch32
             nInstr = null;
         }
 
-        public override int OpcodeAsInteger
+        public override int MnemonicAsInteger
         {
-            get { return info.Opcode; }
+            get { return info.Mnemonic; }
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

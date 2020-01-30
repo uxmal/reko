@@ -45,14 +45,14 @@ namespace Reko.Arch.PowerPC
             this.InstructionClass = InstrClass.Linear;
         }
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var op = string.Format("{0}{1}", 
                 Mnemonic,
                 setsCR0 ? "." : "");
-            writer.WriteOpcode(op);
+            writer.WriteMnemonic(op);
             RenderOperands(writer, options);
         }
     }

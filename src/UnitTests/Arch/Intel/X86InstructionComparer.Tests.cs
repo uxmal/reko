@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Core.Machine
         }
 
         [Test]
-        public void X86ic_CompareOpcodes()
+        public void X86ic_CompareMnemonics()
         {
             var a = Create(Mnemonic.nop);
             var b = Create(Mnemonic.nop);

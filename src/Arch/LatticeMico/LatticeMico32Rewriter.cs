@@ -143,16 +143,16 @@ namespace Reko.Arch.LatticeMico
             return GetEnumerator();
         }
 
-        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
+        private static readonly HashSet<Mnemonic> seenMnemonic = new HashSet<Mnemonic>();
 
         private void EmitUnitTest()
         {
             m.Invalid();
             iclass = InstrClass.Invalid;
 
-            if (opcode_seen.Contains(instr.Mnemonic))
+            if (seenMnemonic.Contains(instr.Mnemonic))
                 return;
-            opcode_seen.Add(instr.Mnemonic);
+            seenMnemonic.Add(instr.Mnemonic);
             host.Warn(
                 instr.Address,
                 "LatticeMico32 instruction '{0}' is not supported yet.",

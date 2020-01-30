@@ -510,9 +510,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private static Decoder DecodeBfcBfi(Mnemonic opcode, params Mutator<T32Disassembler>[] mutators)
+        private static Decoder DecodeBfcBfi(Mnemonic mnemonic, params Mutator<T32Disassembler>[] mutators)
         {
-            return new BfcBfiDecoder(opcode, mutators);
+            return new BfcBfiDecoder(mnemonic, mutators);
         }
 
         #region Mutators
@@ -2069,20 +2069,19 @@ namespace Reko.Arch.Arm.AArch32
 
         // Factory methods
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<T32Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic mnemonic, params Mutator<T32Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators);
+            return new InstrDecoder(mnemonic, InstrClass.Linear, ArmVectorData.INVALID, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<T32Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<T32Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, ArmVectorData.INVALID, mutators);
+            return new InstrDecoder(mnemonic, iclass, ArmVectorData.INVALID, mutators);
         }
 
-
-        private static InstrDecoder Instr(Mnemonic opcode, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
+        private static InstrDecoder Instr(Mnemonic mnemonic, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, vec, mutators);
+            return new InstrDecoder(mnemonic, InstrClass.Linear, vec, mutators);
         }
 
 

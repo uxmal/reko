@@ -64,15 +64,15 @@ namespace Reko.WindowsItp
                     m = new Decoders.ThreadedDecoderBuilder();
                 }
                 var root = m.Mask(29, 3,
-                    m.Instr(Opcode.add, "r8,r4,r0"),
-                    m.Instr(Opcode.sub, "r8,r4,r0"),
-                    m.Instr(Opcode.mul, "r8,r4,r0"),
-                    m.Instr(Opcode.div, "r8,r4,r0"),
+                    m.Instr(Mnemonic.add, "r8,r4,r0"),
+                    m.Instr(Mnemonic.sub, "r8,r4,r0"),
+                    m.Instr(Mnemonic.mul, "r8,r4,r0"),
+                    m.Instr(Mnemonic.div, "r8,r4,r0"),
 
-                    m.Instr(Opcode.and, "r8,r4,r0"),
-                    m.Instr(Opcode.or, "r8,r4,r0"),
-                    m.Instr(Opcode.not, "r8,r4"),
-                    m.Instr(Opcode.xor, "r8,r4,r0"));
+                    m.Instr(Mnemonic.and, "r8,r4,r0"),
+                    m.Instr(Mnemonic.or, "r8,r4,r0"),
+                    m.Instr(Mnemonic.not, "r8,r4"),
+                    m.Instr(Mnemonic.xor, "r8,r4,r0"));
 
                 if (rewriter)
                 {

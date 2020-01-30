@@ -48,7 +48,7 @@ namespace Reko.Arch.Xtensa
 
         public Mnemonic Mnemonic { get; set; }
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -56,7 +56,7 @@ namespace Reko.Arch.Xtensa
             {
                 instrName = Mnemonic.ToString();
             }
-            writer.WriteOpcode(instrName);
+            writer.WriteMnemonic(instrName);
             RenderOperands(writer, options);
         }
     }

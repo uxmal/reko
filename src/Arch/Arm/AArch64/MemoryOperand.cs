@@ -72,7 +72,7 @@ namespace Reko.Arch.Arm.AArch64
                 if (IndexExtend != Mnemonic.Invalid && (IndexExtend != Mnemonic.lsl || IndexShift != 0))
                 {
                     writer.WriteChar(',');
-                    writer.WriteOpcode(IndexExtend.ToString());
+                    writer.WriteMnemonic(IndexExtend.ToString());
                     if (IndexShift != 0)
                     {
                         writer.WriteString($" #{IndexShift}");

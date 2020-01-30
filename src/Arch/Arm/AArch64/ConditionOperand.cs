@@ -39,7 +39,7 @@ namespace Reko.Arch.Arm.AArch64
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Condition.ToString());
+            writer.WriteMnemonic(Condition.ToString());
         }
     }
 }

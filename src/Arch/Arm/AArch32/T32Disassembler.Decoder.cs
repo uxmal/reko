@@ -60,7 +60,7 @@ namespace Reko.Arch.Arm.AArch32
 
         /// <summary>
         /// This decoder hands control back to the disassembler, passing the 
-        /// deduced opcode and an array of mutator functions that are called in
+        /// decoded mnemonic and an array of mutator functions that are called in
         /// order to build instruction operands and other ARM instruction
         /// fields.
         /// </summary>
@@ -189,7 +189,7 @@ namespace Reko.Arch.Arm.AArch32
         private class MovMovsDecoder : InstrDecoder
         {
 
-            public MovMovsDecoder(Mnemonic opcode, params Mutator<T32Disassembler>[] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
+            public MovMovsDecoder(Mnemonic mnemonic, params Mutator<T32Disassembler>[] mutators) : base(mnemonic, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
             }
 
@@ -228,7 +228,7 @@ namespace Reko.Arch.Arm.AArch32
         // differently from how they are repesented in the word.
         private class BfcBfiDecoder : InstrDecoder
         {
-            public BfcBfiDecoder(Mnemonic opcode, Mutator<T32Disassembler> [] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
+            public BfcBfiDecoder(Mnemonic mnemonic, Mutator<T32Disassembler> [] mutators) : base(mnemonic, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
             }
 

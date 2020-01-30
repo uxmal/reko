@@ -141,7 +141,7 @@ namespace Reko.Arch.Mips
         // MIPS uses a link register
         public override int ReturnAddressOnStack => 0;
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             return Enum.GetValues(typeof(Mnemonic))
                 .Cast<Mnemonic>()
@@ -150,7 +150,7 @@ namespace Reko.Arch.Mips
                     v => (int)v);
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
             Mnemonic result;
             if (!Enum.TryParse(name, true, out result))

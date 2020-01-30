@@ -28,11 +28,11 @@ namespace Reko.Arch.zSeries
     {
         internal Mnemonic Mnemonic;
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(this.Mnemonic.ToString());
+            writer.WriteMnemonic(this.Mnemonic.ToString());
             if (Operands.Length == 0)
                 return;
             writer.Tab();

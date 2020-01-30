@@ -34,7 +34,7 @@ using System.Text;
 namespace Reko.Assemblers.x86
 {
     /// <summary>
-    /// A crude MASM-style assembler for x86 opcodes.
+    /// A crude MASM-style assembler for x86 instructions.
     /// </summary>
     public class X86Assembler
     {

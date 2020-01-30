@@ -96,14 +96,14 @@ namespace Reko.Arch.Mips
 
         // Factory methods for decoders
 
-        private static Decoder Instr(Mnemonic opcode, params Mutator<MicroMipsDisassembler> [] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<MicroMipsDisassembler> [] mutators)
         {
-            return new InstrDecoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<MicroMipsDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<MicroMipsDisassembler>[] mutators)
         {
-            return new InstrDecoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>(iclass, opcode, mutators);
+            return new InstrDecoder<MicroMipsDisassembler, Mnemonic, MipsInstruction>(iclass, mnemonic, mutators);
         }
 
         //

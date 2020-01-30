@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -79,9 +79,9 @@ namespace Reko.Core.Machine
         {
         }
 
-        public void WriteOpcode(string opcode)
+        public void WriteMnemonic(string sMnemonic)
         {
-            sb.Append(opcode);
+            sb.Append(sMnemonic);
         }
 
         public void Tab()

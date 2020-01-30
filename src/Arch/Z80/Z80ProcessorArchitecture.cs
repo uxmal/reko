@@ -78,7 +78,7 @@ namespace Reko.Arch.Z80
             return new Z80Rewriter(this, rdr, state, binder, host);
         }
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             return Enum.GetValues(typeof(Mnemonic))
                 .Cast<Mnemonic>()
@@ -87,7 +87,7 @@ namespace Reko.Arch.Z80
                     v => (int)v);
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
             if (string.Compare(name, "ex", StringComparison.InvariantCultureIgnoreCase) == 0)
                 return (int)Mnemonic.ex_af;

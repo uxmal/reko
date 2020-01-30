@@ -140,7 +140,7 @@ namespace Reko.Arch.X86
         private void RewriteFcom(int pops)
         {
             var op1 = FpuRegister(0);
-            var op2 = (instrCur.code == Mnemonic.fcompp || instrCur.code == Mnemonic.fucompp)
+            var op2 = (instrCur.Mnemonic == Mnemonic.fcompp || instrCur.Mnemonic == Mnemonic.fucompp)
                 ? FpuRegister(1)
                 : SrcOp(instrCur.Operands[0]);
             m.Assign(
@@ -378,7 +378,7 @@ namespace Reko.Arch.X86
         public bool MatchesFstswSequence()
         {
             var nextInstr = dasm.Peek(1);
-            if (nextInstr.code == Mnemonic.sahf)
+            if (nextInstr.Mnemonic == Mnemonic.sahf)
             {
                 this.len += nextInstr.Length;
                 dasm.Skip(1);
@@ -387,7 +387,7 @@ namespace Reko.Arch.X86
                     orw.AluRegister(Registers.FPUF));
                 return true;
             }
-            if (nextInstr.code == Mnemonic.test)
+            if (nextInstr.Mnemonic == Mnemonic.test)
             {
                 RegisterOperand acc = nextInstr.Operands[0] as RegisterOperand;
                 ImmediateOperand imm = nextInstr.Operands[1] as ImmediateOperand;
@@ -427,7 +427,7 @@ namespace Reko.Arch.X86
                         0x44   C3 and C2
 
                       Masks && jump operations:
-                        Opcode Mask Condition
+                        Mnem   Mask Condition
                         jpe    0x05    >=
                         jpe    0x41    >
                         jpe    0x44    !=
@@ -442,7 +442,7 @@ namespace Reko.Arch.X86
                         jnz    0x41    <=
                     */
 
-                    switch (instrCur.code)
+                    switch (instrCur.Mnemonic)
                     {
                     //$TODO The following instructions are being added on an ad-hoc
                     // basis, since they don't affect the x86 flags register.
@@ -457,22 +457,22 @@ namespace Reko.Arch.X86
                         if (mask == 0x05) { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
                         if (mask == 0x44) { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
                     case Mnemonic.jpo:
                         if (mask == 0x44) { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
                         if (mask == 0x05) { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
                     case Mnemonic.jz:
                         if (mask == 0x40) { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
                         if (mask == 0x01) { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
                     case Mnemonic.jnz:
                         if (mask == 0x40) { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
                         if (mask == 0x01) { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
                     default:
                         throw new AddressCorrelatedException(instrCur.Address, "Unexpected instruction {0} after fstsw", instrCur);
                     }

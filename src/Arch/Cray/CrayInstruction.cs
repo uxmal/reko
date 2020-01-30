@@ -28,7 +28,7 @@ namespace Reko.Arch.Cray
     public class CrayInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
-        public override int OpcodeAsInteger => (int)Mnemonic;
+        public override int MnemonicAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -50,7 +50,7 @@ namespace Reko.Arch.Cray
                 RenderOperand(Operands[2], writer, options);
                 return;
             }
-            writer.WriteOpcode(this.Mnemonic.ToString());
+            writer.WriteMnemonic(this.Mnemonic.ToString());
             RenderOperands(writer, options);
         }
 

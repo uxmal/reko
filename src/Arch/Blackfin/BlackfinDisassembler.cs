@@ -179,14 +179,14 @@ namespace Reko.Arch.Blackfin
             }
         }
 
-        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator[] mutators)
         {
-            return new InstrDecoder<BlackfinDisassembler,Mnemonic,BlackfinInstruction>(iclass, opcode, mutators);
+            return new InstrDecoder<BlackfinDisassembler,Mnemonic,BlackfinInstruction>(iclass, mnemonic, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, params Mutator[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator[] mutators)
         {
-            return new InstrDecoder<BlackfinDisassembler, Mnemonic, BlackfinInstruction>(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<BlackfinDisassembler, Mnemonic, BlackfinInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
         private static MaskDecoder Mask(int pos, int len, params Decoder[] decoders)

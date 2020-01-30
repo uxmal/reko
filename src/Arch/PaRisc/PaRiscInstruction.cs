@@ -41,7 +41,7 @@ namespace Reko.Arch.PaRisc
 
         public ConditionOperand Condition { get; set; }
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -79,7 +79,7 @@ namespace Reko.Arch.PaRisc
                 sb.AppendFormat(",{0}", CacheHint);
             if (Annul)
                 sb.Append(",n");
-            writer.WriteOpcode(sb.ToString());
+            writer.WriteMnemonic(sb.ToString());
         }
     }
 

@@ -304,14 +304,14 @@ namespace Reko.Arch.Avr
 
         #endregion
 
-        private static Decoder Instr(Mnemonic opcode, params Mutator<Avr8Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<Avr8Disassembler>[] mutators)
         {
-            return new InstrDecoder<Avr8Disassembler, Mnemonic, AvrInstruction>(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<Avr8Disassembler, Mnemonic, AvrInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
         {
-            return new InstrDecoder<Avr8Disassembler, Mnemonic, AvrInstruction>(iclass, opcode, mutators);
+            return new InstrDecoder<Avr8Disassembler, Mnemonic, AvrInstruction>(iclass, mnemonic, mutators);
         }
 
         private MachineOperand Register(int v)

@@ -28,11 +28,11 @@ namespace Reko.Arch.Avr
     {
         public Mnemonic Mnemonic { get; set; }
 
-        public override int OpcodeAsInteger => (int)Mnemonic;
+        public override int MnemonicAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Mnemonic.ToString());
+            writer.WriteMnemonic(Mnemonic.ToString());
             RenderOperands(writer, options);
         }
     }

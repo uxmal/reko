@@ -30,10 +30,10 @@ namespace Reko.Arch.M68k
 {
     public class M68kInstruction : MachineInstruction
     {
-        public Mnemonic Mnemonic;
-        public PrimitiveType dataWidth;
+        public Mnemonic Mnemonic { get; set; }
+        public PrimitiveType DataWidth { get; set; }
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -51,13 +51,13 @@ namespace Reko.Arch.M68k
                     return;
                 }
             }
-            if (dataWidth != null)
+            if (DataWidth != null)
             {
-                writer.WriteOpcode(string.Format("{0}{1}", Mnemonic, DataSizeSuffix(dataWidth)));
+                writer.WriteMnemonic(string.Format("{0}{1}", Mnemonic, DataSizeSuffix(DataWidth)));
             }
             else
             {
-                writer.WriteOpcode(Mnemonic.ToString());
+                writer.WriteMnemonic(Mnemonic.ToString());
             }
             RenderOperands(writer, options);
         }

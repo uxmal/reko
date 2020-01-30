@@ -37,9 +37,9 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Rewriter
     {
-        private Expression CreateTestCondition(ConditionCode cc, Mnemonic opcode)
+        private Expression CreateTestCondition(ConditionCode cc, Mnemonic mnemonic)
         {
-            var grf = orw.FlagGroup(X86Instruction.UseCc(opcode));
+            var grf = orw.FlagGroup(X86Instruction.UseCc(mnemonic));
             var tc = new TestCondition(cc, grf);
             return tc;
         }
@@ -47,7 +47,7 @@ namespace Reko.Arch.X86
             /*
             if (i < 2)
                 return tc;
-            if (instrs[i-1].code != Opcode.test)
+            if (instrs[i-1].code != Mnemonic.test)
                 return tc;
             var ah = instrs[i-1].op1 as RegisterOperand;
             if (ah == null || ah.Register != Registers.ah)
@@ -56,7 +56,7 @@ namespace Reko.Arch.X86
             if (m == null)
                 return tc;
 
-            if (instrs[i-2].code != Opcode.fstsw)
+            if (instrs[i-2].code != Mnemonic.fstsw)
                 return tc;
             int mask = m.Value.ToInt32();
 
@@ -97,7 +97,7 @@ namespace Reko.Arch.X86
                     // Calling the following address. Is the call followed by a 
                     // pop?
                     var next = dasm.Peek(1);
-                    if (next.code == Mnemonic.pop && 
+                    if (next.Mnemonic == Mnemonic.pop && 
                         next.Operands.Length > 0 &&
                         next.Operands[0] is RegisterOperand reg)
                     {
@@ -143,7 +143,7 @@ namespace Reko.Arch.X86
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
             rtlc = InstrClass.ConditionalTransfer;
-            m.Branch(CreateTestCondition(cc, instrCur.code), OperandAsCodeAddress(op1), InstrClass.ConditionalTransfer);
+            m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1), InstrClass.ConditionalTransfer);
         }
 
         private void RewriteInt()
@@ -238,7 +238,7 @@ namespace Reko.Arch.X86
                 return;
             }
             m.Return(
-                this.arch.WordWidth.Size + (instrCur.code == Mnemonic.retf ? Registers.cs.DataType.Size : 0),
+                this.arch.WordWidth.Size + (instrCur.Mnemonic == Mnemonic.retf ? Registers.cs.DataType.Size : 0),
                 extraBytesPopped);
         }
 

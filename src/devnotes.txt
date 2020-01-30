@@ -6,7 +6,7 @@ The challenge of SSA and Type information
 After scanning, we have translated machine code to IL. We now want to convert the resulting IL into SSA 
 form to facilitate later analyses. The problem comes when we don't know how many parameters a function has, 
 what registers it trashes, and how it affects the stack pointer after it returns. For instance, the x86 
-processor has two different RET opcodes: the first just pops the return address from the stack and jumps 
+processor has two different RET instructions: the first just pops the return address from the stack and jumps 
 there; the other pops the return address, adjusts the stack pointer by a number specified int the machine 
 instruction, and then jumps to the return address. The former is used by C routines, while the latter is 
 commonly used by the Win32 API and Pascal compilers. To see tht difference:

@@ -289,8 +289,8 @@ namespace Reko.Arch.X86
             // which is used by i386 ELF binaries to capture
             // the value in the EIP register.
 
-            if (instrs[0].code == Mnemonic.mov && 
-                instrs[1].code == Mnemonic.ret)
+            if (instrs[0].Mnemonic == Mnemonic.mov && 
+                instrs[1].Mnemonic == Mnemonic.ret)
             {
                 if (!(instrs[0].Operands[1] is MemoryOperand mop))
                     return null;

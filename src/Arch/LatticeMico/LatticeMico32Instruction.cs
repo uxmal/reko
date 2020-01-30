@@ -28,7 +28,7 @@ namespace Reko.Arch.LatticeMico
     public class LatticeMico32Instruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -38,7 +38,7 @@ namespace Reko.Arch.LatticeMico
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(Mnemonic.ToString());
+            writer.WriteMnemonic(Mnemonic.ToString());
         }
     }
 }

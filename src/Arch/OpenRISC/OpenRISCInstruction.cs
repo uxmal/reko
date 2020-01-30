@@ -26,7 +26,7 @@ namespace Reko.Arch.OpenRISC
     public class OpenRISCInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -38,7 +38,7 @@ namespace Reko.Arch.OpenRISC
         {
             var sMnemonic = this.Mnemonic.ToString()
                 .Replace('_', '.');
-            writer.WriteOpcode(sMnemonic);
+            writer.WriteMnemonic(sMnemonic);
         }
     }
 }

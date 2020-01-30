@@ -109,36 +109,36 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             var arch = GetArch(PIC16BasicName);
             Assert.AreEqual(
                 "__CONFIG,__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF",
-                string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
+                string.Join(",", arch.GetMnemonicNames().Keys.Take(6)));
 
             arch = GetArch(PIC16EnhancedName);
             Assert.AreEqual(
                 "__CONFIG,__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF",
-                string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
+                string.Join(",", arch.GetMnemonicNames().Keys.Take(6)));
 
             arch = GetArch(PIC16FullFeaturedName);
             Assert.AreEqual(
                 "__CONFIG,__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF",
-                string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
+                string.Join(",", arch.GetMnemonicNames().Keys.Take(6)));
         }
 
         [Test]
         public void PIC16arch_GetOpcodeNumberTests()
         {
             var arch = GetArch(PIC16BasicName);
-            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetOpcodeNumber("MOVWF"));
-            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetOpcodeNumber("ADDWF"));
+            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetMnemonicNumber("MOVWF"));
+            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetMnemonicNumber("ADDWF"));
 
             arch = GetArch(PIC16EnhancedName);
-            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetOpcodeNumber("MOVWF"));
-            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetOpcodeNumber("ADDWF"));
-            Assert.AreEqual(Mnemonic.BRW, (Mnemonic)arch.GetOpcodeNumber("BRW"));
+            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetMnemonicNumber("MOVWF"));
+            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetMnemonicNumber("ADDWF"));
+            Assert.AreEqual(Mnemonic.BRW, (Mnemonic)arch.GetMnemonicNumber("BRW"));
 
             arch = GetArch(PIC16FullFeaturedName);
-            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetOpcodeNumber("MOVWF"));
-            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetOpcodeNumber("ADDWF"));
-            Assert.AreEqual(Mnemonic.BRW, (Mnemonic)arch.GetOpcodeNumber("BRW"));
-            Assert.AreEqual(Mnemonic.RESET, (Mnemonic)arch.GetOpcodeNumber("RESET"));
+            Assert.AreEqual(Mnemonic.MOVWF, (Mnemonic)arch.GetMnemonicNumber("MOVWF"));
+            Assert.AreEqual(Mnemonic.ADDWF, (Mnemonic)arch.GetMnemonicNumber("ADDWF"));
+            Assert.AreEqual(Mnemonic.BRW, (Mnemonic)arch.GetMnemonicNumber("BRW"));
+            Assert.AreEqual(Mnemonic.RESET, (Mnemonic)arch.GetMnemonicNumber("RESET"));
 
         }
 

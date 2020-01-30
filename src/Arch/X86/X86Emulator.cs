@@ -167,7 +167,7 @@ namespace Reko.Arch.X86
                 if (instr.repPrefix == 2)
                 {
                 // repne
-                switch (instr.code)
+                switch (instr.Mnemonic)
                 {
                 case Mnemonic.scasb: Repne(); return;
                 }
@@ -176,7 +176,7 @@ namespace Reko.Arch.X86
                 else if (instr.repPrefix == 3)
                 {
                     // rep / repe
-            switch (instr.code)
+            switch (instr.Mnemonic)
             {
                     case Mnemonic.lods: Rep(); return;
                     case Mnemonic.lodsb: Rep(); return;
@@ -187,7 +187,7 @@ namespace Reko.Arch.X86
                     throw new NotImplementedException();
                 }
             }
-            switch (instr.code)
+            switch (instr.Mnemonic)
             {
             default:
                 throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));

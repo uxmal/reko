@@ -232,21 +232,21 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86arch_GetOpcodeNames()
+        public void X86arch_GetMnemonicNames()
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
             Assert.AreEqual(
                 "aaa,aad,aam,aas,adc,add",
-                string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
+                string.Join(",", arch.GetMnemonicNames().Keys.Take(6)));
         }
 
         [Test]
-        public void X86arch_GetOpcodeNumber()
+        public void X86arch_GetMnemonicNumber()
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
             Assert.AreEqual(
                 Mnemonic.mov,
-                (Mnemonic)arch.GetOpcodeNumber("mov"));
+                (Mnemonic)arch.GetMnemonicNumber("mov"));
         }
 
         [Test(Description = "Inline calls to __x86.get_pc_thunk.bx")]

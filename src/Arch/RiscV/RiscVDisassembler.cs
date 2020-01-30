@@ -90,18 +90,6 @@ namespace Reko.Arch.RiscV
             };
         }
 
-
-        //private RiscVInstruction DecodeWideOperands(Opcode opcode, InstrClass iclass, Mutator<RiscVDisassembler>[] fmt, uint wInstr)
-        //{
-        //    for (int i = 0; i < fmt.Length; ++i)
-        //    {
-        //        MachineOperand op;
-        //        switch (fmt[i++])
-        //        {
-        //        default: throw new InvalidOperationException(string.Format("Unsupported operand code {0}", fmt[i - 1]));
-        //        case ',': continue;
-        //   return BuildInstruction(opcode, iclass, ops);
-        // 
         private static bool r1(uint wInstr, RiscVDisassembler dasm)
         {
             var op = dasm.GetRegister(wInstr, 15);
@@ -380,14 +368,14 @@ namespace Reko.Arch.RiscV
 
         #endregion
 
-        private static Decoder Instr(Mnemonic opcode, params Mutator<RiscVDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
         {
-            return new InstrDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
         {
-            return new InstrDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>(iclass, opcode, mutators);
+            return new InstrDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>(iclass, mnemonic, mutators);
         }
 
         // Conditional decoder

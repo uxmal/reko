@@ -30,9 +30,9 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Blackfin
 {
-    internal class BlackfinRewriter : IEnumerable<RtlInstructionCluster>
+    public class BlackfinRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
+        private static HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
 
         private readonly BlackfinArchitecture arch;
         private readonly EndianImageReader rdr;
@@ -98,9 +98,9 @@ namespace Reko.Arch.Blackfin
 
         void EmitUnitTest(BlackfinInstruction instr)
         {
-            if (opcode_seen.Contains(instr.Mnemonic))
+            if (seenMnemonics.Contains(instr.Mnemonic))
                 return;
-            opcode_seen.Add(instr.Mnemonic);
+            seenMnemonics.Add(instr.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= instr.Length;

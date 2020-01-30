@@ -107,14 +107,14 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.bneg: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.NF))); break;
                 case Mnemonic.bpos: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.NF))); break;
                 //                    Z
-                //case Opcode.bgu  not (C or Z)
-                //case Opcode.bleu (C or Z)
-                //case Opcode.bcc  not C
-                //case Opcode.bcs   C
-                //case Opcode.bpos not N
-                //case Opcode.bneg N
-                //case Opcode.bvc  not V
-                //case Opcode.bvs  V
+                //case Mnemonic.bgu  not (C or Z)
+                //case Mnemonic.bleu (C or Z)
+                //case Mnemonic.bcc  not C
+                //case Mnemonic.bcs   C
+                //case Mnemonic.bpos not N
+                //case Mnemonic.bneg N
+                //case Mnemonic.bvc  not V
+                //case Mnemonic.bvs  V
 
                 case Mnemonic.call: RewriteCall(); break;
                 case Mnemonic.fabss: RewriteFabss(); break;
@@ -126,21 +126,21 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.fbu   : RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.UF))); break;
                 case Mnemonic.fbg   : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF))); break;
                 case Mnemonic.fbug  : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF | FlagM.UF))); break;
-                //case Opcode.fbug  : on Unordered or Greater G or U
-                //case Opcode.fbl   : on Less L
+                //case Mnemonic.fbug  : on Unordered or Greater G or U
+                //case Mnemonic.fbl   : on Less L
                 case Mnemonic.fbul: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.GF|FlagM.UF))); break;
-                //case Opcode.fbul  : on Unordered or Less L or U
-                //case Opcode.fblg  : on Less or Greater L or G
-                //case Opcode.fbne  : on Not Equal L or G or U
-                //case Opcode.fbe   : on Equal E
+                //case Mnemonic.fbul  : on Unordered or Less L or U
+                //case Mnemonic.fblg  : on Less or Greater L or G
+                //case Mnemonic.fbne  : on Not Equal L or G or U
+                //case Mnemonic.fbe   : on Equal E
                 case Mnemonic.fbue : RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.EF | FlagM.UF))); break;
                 case Mnemonic.fbuge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF | FlagM.UF))); break;
 
-                //case Opcode.fble  : on Less or Equal E or L
-                //case Opcode.fbule : on Unordered or Less or Equal E or L or U
+                //case Mnemonic.fble  : on Less or Equal E or L
+                //case Mnemonic.fbule : on Unordered or Less or Equal E or L or U
                 case Mnemonic.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
                 case Mnemonic.fbge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF))); break;
-                //                case Opcode.FBO   : on Ordered E or L or G
+                //                case Mnemonic.FBO   : on Ordered E or L or G
 
 
                 case Mnemonic.fcmpes: RewriteFcmpes(); break;

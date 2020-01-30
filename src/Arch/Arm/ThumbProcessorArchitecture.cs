@@ -155,12 +155,12 @@ namespace Reko.Arch.Arm
         }
  
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             return new SortedList<string, int>();
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
                 return null;
         }

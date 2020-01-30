@@ -63,7 +63,7 @@ namespace Reko.Arch.Tms7000
                 switch (instr.Mnemonic)
                 {
                 default:
-                    host.Error(instr.Address, "Rewriting x86 opcode '{0}' is not supported yet.", instr);
+                    host.Error(instr.Address, "Rewriting TMS7000 instruction '{0}' is not supported yet.", instr);
                     rtlc = InstrClass.Invalid;
                     break;
                 case Mnemonic.adc: RewriteAdcSbb(m.IAdd); break;

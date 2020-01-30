@@ -59,7 +59,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         public override InstructionSetID InstructionSetID => InstructionSetID.PIC18;
 
         /// <summary>
-        /// Gets the opcodes table corresponding to this PIC family.
+        /// Gets the decoder table corresponding to this PIC family.
         /// </summary>
         protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
         {
@@ -85,14 +85,13 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 throw new AddressCorrelatedException(addrCur, ex, $"An exception occurred when disassembling {InstructionSetID.ToString()} binary code 0x{uInstr:X4}.");
             }
-
             return instrCur;
         }
 
         /// <summary>
         /// The PIC18 Legacy opcodes decoder table.
         /// </summary>
-        private static Decoder[] legacyOpcodesTable = new Decoder[16]
+        private static readonly Decoder[] legacyOpcodesTable = new Decoder[16]
         {
             new SubDecoder(8, 4, new Decoder[16] {                  // 0000 ???? .... ....
                 new SubDecoder(4, 4, new Decoder[16] {              // 0000 0000 ???? ....
@@ -189,11 +188,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class MovlbImmDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public MovlbImmDecoder(Mnemonic opc)
+            public MovlbImmDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
@@ -201,7 +200,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 byte bsrval = (byte)uInstr.Extract(0, 8);
                 if (bsrval >= 16)
                     return new PICInstructionNoOpnd(Mnemonic.invalid);
-                return new PICInstructionImmedByte(opcode, bsrval);
+                return new PICInstructionImmedByte(mnemonic, bsrval);
             }
         }
 
@@ -210,11 +209,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         private class LfsrDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public LfsrDecoder(Mnemonic opc)
+            public LfsrDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
@@ -230,7 +229,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var imm12 = (ushort)((uInstr.Extract(0, 4) << 8) | word2);
-                return new PICInstructionLFSRLoad(opcode, fsrnum, imm12);
+                return new PICInstructionLFSRLoad(mnemonic, fsrnum, imm12);
 
             }
         }

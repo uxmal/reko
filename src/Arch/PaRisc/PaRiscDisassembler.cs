@@ -1381,14 +1381,14 @@ namespace Reko.Arch.PaRisc
         }
 
 
-        private static Decoder Instr(Mnemonic opcode, params Mutator<PaRiscDisassembler> [] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<PaRiscDisassembler> [] mutators)
         {
-            return new InstrDecoder<PaRiscDisassembler,Mnemonic,PaRiscInstruction>(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<PaRiscDisassembler,Mnemonic,PaRiscInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<PaRiscDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<PaRiscDisassembler>[] mutators)
         {
-            return new InstrDecoder<PaRiscDisassembler, Mnemonic, PaRiscInstruction>(iclass, opcode, mutators);
+            return new InstrDecoder<PaRiscDisassembler, Mnemonic, PaRiscInstruction>(iclass, mnemonic, mutators);
         }
 
         // Note: the bit positions are big-endian to follow the PA-RISC manual.
@@ -1430,9 +1430,9 @@ namespace Reko.Arch.PaRisc
             return new NyiDecoder(Mnemonic.invalid, message);
         }
 
-        private static NyiDecoder Nyi(Mnemonic opcode, string message)
+        private static NyiDecoder Nyi(Mnemonic mnemonic, string message)
         {
-            return new NyiDecoder(opcode, message);
+            return new NyiDecoder(mnemonic, message);
         }
 
 

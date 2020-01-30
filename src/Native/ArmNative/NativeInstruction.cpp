@@ -34,7 +34,7 @@ public:
 	STDMETHODIMP_(ULONG) AddRef() override { return 0; }
 	STDMETHODIMP_(ULONG) Release() override { return 0; }
 	STDMETHODIMP AddAnnotation(const char * a) override;
-	STDMETHODIMP WriteOpcode(const char * opcode) override;
+	STDMETHODIMP WriteMnemonic(const char * opcode) override;
 	STDMETHODIMP WriteAddress(const char * formattedAddress, uint64_t uAddr) override;
 	STDMETHODIMP Tab() override;
 	STDMETHODIMP WriteString(const char * s) override;
@@ -85,11 +85,11 @@ STDMETHODIMP NativeInstruction::Render(INativeInstructionWriter * w, MachineInst
 	auto & writer = *w;
 	if (this->instr == nullptr)
 	{
-		writer.WriteOpcode("Invalid");
+		writer.WriteMnemonic("Invalid");
 		return S_OK;
 	}
 	auto & instruction = *static_cast<cs_insn*>(this->instr);
-	writer.WriteOpcode(instruction.mnemonic);
+	writer.WriteMnemonic(instruction.mnemonic);
 	auto ops = instruction.detail->arm.operands;
 	if (instruction.detail->arm.op_count < 1)
 		return S_OK;
@@ -342,7 +342,7 @@ void NativeInstruction::WriteMemoryOperand(const cs_insn & insn, const cs_arm_op
 void NativeInstruction::WriteImmShift(const char * op, int value, INativeInstructionWriter &writer)
 {
 	writer.WriteString(",");
-	writer.WriteOpcode(op);
+	writer.WriteMnemonic(op);
 	writer.WriteString(" #");
 	WriteImmediateValue(value, writer);
 }
@@ -350,7 +350,7 @@ void NativeInstruction::WriteImmShift(const char * op, int value, INativeInstruc
 void NativeInstruction::WriteRegShift(const char * op, int value, INativeInstructionWriter & writer)
 {
 	writer.WriteString(",");
-	writer.WriteOpcode(op);
+	writer.WriteMnemonic(op);
 	writer.WriteChar(' ');
 	writer.WriteString(RegName(value));
 }
@@ -394,7 +394,7 @@ STDMETHODIMP StringRenderer::AddAnnotation(const char * a)
 	return S_OK;
 }
 
-STDMETHODIMP StringRenderer::WriteOpcode(const char * opcode)
+STDMETHODIMP StringRenderer::WriteMnemonic(const char * opcode)
 {
 	stm << opcode;
 	return S_OK;

@@ -31,18 +31,18 @@ namespace Reko.Arch.Z80
     {
         public Mnemonic Mnemonic;
 
-        public override int OpcodeAsInteger => (int)Mnemonic;
+        public override int MnemonicAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (Mnemonic == Mnemonic.ex_af)
             {
-                writer.WriteOpcode("ex");
+                writer.WriteMnemonic("ex");
                 writer.Tab();
                 writer.WriteString("af,af'");
                 return;
             }
-            writer.WriteOpcode(Mnemonic.ToString());
+            writer.WriteMnemonic(Mnemonic.ToString());
             RenderOperands(writer, options);
         }
     }

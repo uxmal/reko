@@ -65,7 +65,7 @@ namespace Reko.Core.Machine
 
         public virtual bool Equals(MachineInstruction x, MachineInstruction y)
         {
-            if (x.OpcodeAsInteger != y.OpcodeAsInteger)
+            if (x.MnemonicAsInteger != y.MnemonicAsInteger)
                 return false;
             return CompareOperands(x, y);
         }
@@ -86,7 +86,7 @@ namespace Reko.Core.Machine
 
         public int GetHashCode(MachineInstruction instr)
         {
-            int h = instr.OpcodeAsInteger.GetHashCode();
+            int h = instr.MnemonicAsInteger.GetHashCode();
             return h ^ GetOperandsHash(instr);
         }
 

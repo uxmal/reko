@@ -45,11 +45,11 @@ namespace Reko.UnitTests.Mocks
 
         public Mnemonic Mnemonic { get; set; }
 
-        public override int OpcodeAsInteger { get { return (int)Mnemonic; } }
+        public override int MnemonicAsInteger { get { return (int)Mnemonic; } }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Mnemonic.ToString().ToLower());
+            writer.WriteMnemonic(Mnemonic.ToString().ToLower());
         }
     }
 

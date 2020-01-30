@@ -70,7 +70,7 @@ namespace Reko.Arch.M68k
                 rtlInstructions = new List<RtlInstruction>();
                 rtlc = instr.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
-                orw = new OperandRewriter(arch, this.m, this.binder, instr.dataWidth);
+                orw = new OperandRewriter(arch, this.m, this.binder, instr.DataWidth);
                 switch (instr.Mnemonic)
                 {
                 default:

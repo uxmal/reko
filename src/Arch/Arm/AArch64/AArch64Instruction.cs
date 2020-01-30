@@ -52,9 +52,9 @@ namespace Reko.Arch.Arm.AArch64
             nInstr = null;
         }
 
-        public override int OpcodeAsInteger
+        public override int MnemonicAsInteger
         {
-            get { return info.Opcode; }
+            get { return info.Mnemonic; }
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -70,7 +70,7 @@ namespace Reko.Arch.Arm.AArch64
         public MachineOperand shiftAmount;
         public VectorData vectorData;
 
-        public override int OpcodeAsInteger => (int)Mnemonic;
+        public override int MnemonicAsInteger => (int)Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -90,7 +90,7 @@ namespace Reko.Arch.Arm.AArch64
             if (shiftCode == Mnemonic.lsl && (shiftAmount is ImmediateOperand imm && imm.Value.IsIntegerZero))
                 return;
             writer.WriteChar(',');
-            writer.WriteOpcode(shiftCode.ToString());
+            writer.WriteMnemonic(shiftCode.ToString());
             writer.WriteChar(' ');
             RenderOperand(shiftAmount, writer, options);
         }
@@ -99,10 +99,10 @@ namespace Reko.Arch.Arm.AArch64
         {
             if (Mnemonic == Mnemonic.b && Operands[0] is ConditionOperand cop)
             {
-                writer.WriteOpcode($"b.{cop.Condition.ToString().ToLower()}");
+                writer.WriteMnemonic($"b.{cop.Condition.ToString().ToLower()}");
                 return 1;
             }
-            writer.WriteOpcode(Mnemonic.ToString());
+            writer.WriteMnemonic(Mnemonic.ToString());
             return 0;
         }
 

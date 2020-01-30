@@ -282,11 +282,11 @@ movzx	ax,byte ptr [bp+04]
             X86Instruction one = DisEnumerator_TakeNext(instructions);
             X86Instruction two = DisEnumerator_TakeNext(instructions);
 
-            Assert.AreEqual(Mnemonic.pshuflw, one.code);
+            Assert.AreEqual(Mnemonic.pshuflw, one.Mnemonic);
             Assert.AreEqual("xmm0", one.Operands[0].ToString());
             Assert.AreEqual("[eax]", one.Operands[1].ToString());
 
-            Assert.AreEqual(Mnemonic.pshufhw, two.code);
+            Assert.AreEqual(Mnemonic.pshufhw, two.Mnemonic);
             Assert.AreEqual("xmm0", two.Operands[0].ToString());
             Assert.AreEqual("[eax]", two.Operands[1].ToString());
         }
@@ -810,34 +810,34 @@ movzx	ax,byte ptr [bp+04]
             {
                 instr.Add(DisEnumerator_TakeNext(instructions));
             }
-            Assert.AreEqual(Mnemonic.movsb, instr[0].code);
-            Assert.AreEqual(Mnemonic.movs, instr[1].code);
+            Assert.AreEqual(Mnemonic.movsb, instr[0].Mnemonic);
+            Assert.AreEqual(Mnemonic.movs, instr[1].Mnemonic);
             Assert.AreEqual("word16", instr[1].dataWidth.Name);
-            Assert.AreEqual(Mnemonic.movs, instr[2].code);
+            Assert.AreEqual(Mnemonic.movs, instr[2].Mnemonic);
             Assert.AreEqual("word32", instr[2].dataWidth.Name);
 
-            Assert.AreEqual(Mnemonic.scasb, instr[3].code);
-            Assert.AreEqual(Mnemonic.scas, instr[4].code);
+            Assert.AreEqual(Mnemonic.scasb, instr[3].Mnemonic);
+            Assert.AreEqual(Mnemonic.scas, instr[4].Mnemonic);
             Assert.AreEqual("word16", instr[4].dataWidth.Name);
-            Assert.AreEqual(Mnemonic.scas, instr[5].code);
+            Assert.AreEqual(Mnemonic.scas, instr[5].Mnemonic);
             Assert.AreEqual("word32", instr[5].dataWidth.Name);
 
-            Assert.AreEqual(Mnemonic.cmpsb, instr[6].code);
-            Assert.AreEqual(Mnemonic.cmps, instr[7].code);
+            Assert.AreEqual(Mnemonic.cmpsb, instr[6].Mnemonic);
+            Assert.AreEqual(Mnemonic.cmps, instr[7].Mnemonic);
             Assert.AreEqual("word16", instr[7].dataWidth.Name);
-            Assert.AreEqual(Mnemonic.cmps, instr[8].code);
+            Assert.AreEqual(Mnemonic.cmps, instr[8].Mnemonic);
             Assert.AreEqual("word32", instr[8].dataWidth.Name);
 
-            Assert.AreEqual(Mnemonic.lodsb, instr[9].code);
-            Assert.AreEqual(Mnemonic.lods, instr[10].code);
+            Assert.AreEqual(Mnemonic.lodsb, instr[9].Mnemonic);
+            Assert.AreEqual(Mnemonic.lods, instr[10].Mnemonic);
             Assert.AreEqual("word16", instr[10].dataWidth.Name);
-            Assert.AreEqual(Mnemonic.lods, instr[11].code);
+            Assert.AreEqual(Mnemonic.lods, instr[11].Mnemonic);
             Assert.AreEqual("word32", instr[11].dataWidth.Name);
 
-            Assert.AreEqual(Mnemonic.stosb, instr[12].code);
-            Assert.AreEqual(Mnemonic.stos, instr[13].code);
+            Assert.AreEqual(Mnemonic.stosb, instr[12].Mnemonic);
+            Assert.AreEqual(Mnemonic.stos, instr[13].Mnemonic);
             Assert.AreEqual("word16", instr[13].dataWidth.Name);
-            Assert.AreEqual(Mnemonic.stos, instr[14].code);
+            Assert.AreEqual(Mnemonic.stos, instr[14].Mnemonic);
             Assert.AreEqual("word32", instr[14].dataWidth.Name);
         }
 

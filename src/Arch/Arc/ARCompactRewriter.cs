@@ -354,15 +354,15 @@ namespace Reko.Arch.Arc
             return GetEnumerator();
         }
 
-        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
+        private static readonly HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
 
         void EmitUnitTest(ArcInstruction instr, string message = "")
         {
             m.Invalid();
             iclass = InstrClass.Invalid;
-            if (opcode_seen.Contains(instr.Mnemonic))
+            if (seenMnemonics.Contains(instr.Mnemonic))
                 return;
-            opcode_seen.Add(instr.Mnemonic);
+            seenMnemonics.Add(instr.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= instr.Length;

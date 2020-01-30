@@ -232,11 +232,11 @@ namespace Reko.Arch.i8051
             return new BitOperand(reg, b & 0x7, neg);
         }
 
-        private void EmitUnitTest(Mnemonic opcode, byte uInstr)
+        private void EmitUnitTest(Mnemonic mnemonic, byte uInstr)
         {
             Debug.Print(
 $@"    [Test]
-        public void I8051_dis_{opcode}()
+        public void I8051_dis_{mnemonic}()
         {{
             var instr = DisassembleBytes(0x{uInstr:X2});
             Assert.AreEqual(""@@@"", instr.ToString());

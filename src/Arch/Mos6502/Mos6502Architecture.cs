@@ -79,7 +79,7 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             return Enum.GetValues(typeof(Mnemonic))
                 .Cast<Mnemonic>()
@@ -88,7 +88,7 @@ namespace Reko.Arch.Mos6502
                     v => (int)v);
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
             Mnemonic result;
             if (!Enum.TryParse(name, true, out result))

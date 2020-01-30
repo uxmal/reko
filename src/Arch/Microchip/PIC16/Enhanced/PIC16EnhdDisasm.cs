@@ -71,7 +71,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             try
             {
                 var bits = uInstr.Extract(12, 2);
-                instrCur = opcodesTable[bits].Decode(uInstr, this);
+                instrCur = decoderTable[bits].Decode(uInstr, this);
                 if (instrCur is null)
                     return base.DecodePICInstruction(uInstr, addr);
                 if (!instrCur.IsValid)
@@ -94,7 +94,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         }
 
 
-        private static Decoder[] opcodesTable = new Decoder[4]
+        private static Decoder[] decoderTable = new Decoder[4]
         {
             new SubDecoder(10, 2, new Decoder[4] {                  // 00 ??.. .... ....
                 new SubDecoder(8, 2, new Decoder[4] {               // 00 00?? .... ....

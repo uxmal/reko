@@ -48,8 +48,8 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 			IntelInstruction [] instrs =
 				new IntelInstruction[] {
-										   new IntelInstruction(Opcode.cmp, PrimitiveType.Word32, PrimitiveType.Word32, new RegisterOperand(Registers.eax), new RegisterOperand(Registers.eax)),
-										   new IntelInstruction(Opcode.jnz, PrimitiveType.Word32, PrimitiveType.Word32, new ImmediateOperand(Constant.Word32(0x10001010)))
+										   new IntelInstruction(Mnemonic.cmp, PrimitiveType.Word32, PrimitiveType.Word32, new RegisterOperand(Registers.eax), new RegisterOperand(Registers.eax)),
+										   new IntelInstruction(Mnemonic.jnz, PrimitiveType.Word32, PrimitiveType.Word32, new ImmediateOperand(Constant.Word32(0x10001010)))
 									   };
 			FlagM [] deadOut = dcff.DeadOutFlags(instrs);
 			Assert.AreEqual(0, (int) deadOut[0]);
@@ -63,9 +63,9 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 			IntelInstruction [] instrs = 
 				new IntelInstruction[] {
-										   new IntelInstruction(Opcode.add, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.bx), new ImmediateOperand(Constant.Word16(0x10))),
-										   new IntelInstruction(Opcode.mov, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.si), new RegisterOperand(Registers.bx)),
-										   new IntelInstruction(Opcode.add, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx), new ImmediateOperand(Constant.Word16(1)))
+										   new IntelInstruction(Mnemonic.add, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.bx), new ImmediateOperand(Constant.Word16(0x10))),
+										   new IntelInstruction(Mnemonic.mov, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.si), new RegisterOperand(Registers.bx)),
+										   new IntelInstruction(Mnemonic.add, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx), new ImmediateOperand(Constant.Word16(1)))
 									   };
 			FlagM [] deadOut = dcff.DeadOutFlags(instrs);
 			Assert.AreEqual(FlagM.SF|FlagM.CF|FlagM.ZF|FlagM.OF, deadOut[0], "Item 0");

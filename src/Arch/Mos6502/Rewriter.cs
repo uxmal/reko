@@ -57,7 +57,7 @@ namespace Reko.Arch.Mos6502
         {
             return new AddressCorrelatedException(
                 instrCur.Address,
-                "Rewriting 6502 opcode '{0}' is not supported yet.",
+                "Rewriting 6502 instruction '{0}' is not supported yet.",
                 instrCur.Mnemonic);
         }
 

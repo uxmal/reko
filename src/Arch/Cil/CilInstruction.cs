@@ -36,11 +36,11 @@ namespace Reko.Arch.Cil
         };
 
         public OpCode Opcode { get; set; }
-        public override int OpcodeAsInteger { get { return (int)Opcode.Value; } }
+        public override int MnemonicAsInteger { get { return (int)Opcode.Value; } }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(mpopcodetostring[Opcode]);
+            writer.WriteMnemonic(mpopcodetostring[Opcode]);
         }
 
         public object Operand { get; set; }

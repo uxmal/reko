@@ -20,7 +20,7 @@ namespace Reko.Arch.PowerPC
                 uint wInstr, 
                 PowerPcDisassembler dasm, 
                 InstrClass iclass,
-                Mnemonic opcode,
+                Mnemonic mnemonic,
                 Mutator<PowerPcDisassembler>[] mutators)
             {
                 foreach (var m in mutators)
@@ -30,7 +30,7 @@ namespace Reko.Arch.PowerPC
                         return dasm.CreateInvalidInstruction();
                     }
                 }
-                return dasm.MakeInstruction(iclass, opcode);
+                return dasm.MakeInstruction(iclass, mnemonic);
             }
         }
 
@@ -128,22 +128,22 @@ namespace Reko.Arch.PowerPC
 
         public class DSDecoder : Decoder
         {
-            public readonly Mnemonic opcode0;
-            public readonly Mnemonic opcode1;
+            public readonly Mnemonic mnemonic0;
+            public readonly Mnemonic mnemonic1;
             public readonly InstrClass iclass;
             public readonly Mutator<PowerPcDisassembler> []mutators;
 
-            public DSDecoder(Mnemonic opcode0, Mnemonic opcode1, params Mutator<PowerPcDisassembler> [] mutators)
+            public DSDecoder(Mnemonic mnemonic0, Mnemonic mnemonic1, params Mutator<PowerPcDisassembler> [] mutators)
             {
-                this.opcode0 = opcode0;
-                this.opcode1 = opcode1;
+                this.mnemonic0 = mnemonic0;
+                this.mnemonic1 = mnemonic1;
                 this.iclass = InstrClass.Linear;
                 this.mutators = mutators;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                Mnemonic mnemonic = ((wInstr & 1) == 0) ? opcode0 : opcode1;
+                Mnemonic mnemonic = ((wInstr & 1) == 0) ? mnemonic0 : mnemonic1;
                 wInstr &= ~3u;
                 return DecodeOperands(wInstr & ~3u, dasm, iclass, mnemonic, mutators);
             }
@@ -258,8 +258,8 @@ namespace Reko.Arch.PowerPC
         {
             private readonly Mnemonic opLink;
 
-            public XlDecoderAux(Mnemonic opcode, Mnemonic opLink, params Mutator<PowerPcDisassembler> [] mutators)
-                : base(opcode, mutators)
+            public XlDecoderAux(Mnemonic mnemonic, Mnemonic opLink, params Mutator<PowerPcDisassembler> [] mutators)
+                : base(mnemonic, mutators)
             {
                 this.opLink = opLink;
             }
@@ -510,7 +510,7 @@ namespace Reko.Arch.PowerPC
 
         public class XfxDecoder : InstrDecoder
         {
-            public XfxDecoder(Mnemonic opcode, params Mutator<PowerPcDisassembler>[] mutators) : base(opcode, mutators)
+            public XfxDecoder(Mnemonic mnemonic, params Mutator<PowerPcDisassembler>[] mutators) : base(mnemonic, mutators)
             {
             }
 
@@ -613,7 +613,7 @@ namespace Reko.Arch.PowerPC
 
         public class XSDecoder : InstrDecoder
         {
-            public XSDecoder(Mnemonic opcode, params Mutator<PowerPcDisassembler>[] mutators) : base(opcode, mutators) { }
+            public XSDecoder(Mnemonic mnemonic, params Mutator<PowerPcDisassembler>[] mutators) : base(mnemonic, mutators) { }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {

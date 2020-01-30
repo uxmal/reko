@@ -29,7 +29,7 @@ namespace Reko.Arch.MicroBlaze
     {
         public Mnemonic Mnemonic { get; set; }
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -39,7 +39,7 @@ namespace Reko.Arch.MicroBlaze
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(Mnemonic.ToString());
+            writer.WriteMnemonic(Mnemonic.ToString());
         }
     }
 }

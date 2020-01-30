@@ -31,7 +31,7 @@ using System.Linq;
 namespace Reko.Arch.X86
 {
 	/// <summary>
-	/// Intel x86 opcode disassembler 
+	/// Intel x86 machine code disassembler 
 	/// </summary>
 	public partial class X86Disassembler : DisassemblerBase<X86Instruction, Mnemonic>
 	{

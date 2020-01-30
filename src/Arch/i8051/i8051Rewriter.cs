@@ -351,9 +351,9 @@ namespace Reko.Arch.i8051
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            //if (seen.Contains(dasm.Current.Opcode))
+            //if (seen.Contains(dasm.Current.Mnemonic))
             //    return;
-            //seen.Add(dasm.Current.Opcode);
+            //seen.Add(dasm.Current.Mnemonic);
 
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;

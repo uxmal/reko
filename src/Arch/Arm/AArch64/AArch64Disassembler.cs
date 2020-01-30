@@ -1162,10 +1162,10 @@ namespace Reko.Arch.Arm.AArch64
         //            n = ReadUnsignedBitField(wInstr, format, ref i);
         //            switch (n)
         //            {
-        //            case 0: state.shiftCode = Opcode.lsl; break;
-        //            case 1: state.shiftCode = Opcode.lsr; break;
-        //            case 2: state.shiftCode = Opcode.asr; break;
-        //            case 3: state.shiftCode = Opcode.ror; break;
+        //            case 0: state.shiftCode = Mnemonic.lsl; break;
+        //            case 1: state.shiftCode = Mnemonic.lsr; break;
+        //            case 2: state.shiftCode = Mnemonic.asr; break;
+        //            case 3: state.shiftCode = Mnemonic.ror; break;
         //            }
         //            Expect(',', format, ref i);
         //            n = ReadUnsignedBitField(wInstr, format, ref i);
@@ -1473,19 +1473,19 @@ namespace Reko.Arch.Arm.AArch64
 
         // Factory methods for different kinds of decoders.
 
-        private static Decoder Instr(Mnemonic opcode, params Mutator<AArch64Disassembler> [] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<AArch64Disassembler> [] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, VectorData.Invalid, mutators);
+            return new InstrDecoder(mnemonic, InstrClass.Linear, VectorData.Invalid, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<AArch64Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<AArch64Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, VectorData.Invalid, mutators);
+            return new InstrDecoder(mnemonic, iclass, VectorData.Invalid, mutators);
         }
 
-        private static Decoder Instr(Mnemonic opcode, VectorData vectorData, params Mutator<AArch64Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, VectorData vectorData, params Mutator<AArch64Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, vectorData, mutators);
+            return new InstrDecoder(mnemonic, InstrClass.Linear, vectorData, mutators);
         }
 
         private static Decoder Sparse(int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)

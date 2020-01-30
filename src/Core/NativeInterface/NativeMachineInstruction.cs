@@ -9,7 +9,7 @@ namespace Reko.Core.NativeInterface
 {
     public class NativeMachineInstruction : MachineInstruction
     {
-        public override int OpcodeAsInteger
+        public override int MnemonicAsInteger
         {
             get
             {

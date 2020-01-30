@@ -127,7 +127,7 @@ namespace Reko.Arch.Xtensa
             };
         }
 
-        private XtensaInstruction DecodeOperands(Mnemonic opcode, string fmt)
+        private XtensaInstruction DecodeOperands(Mnemonic mnemonic, string fmt)
         {
             var ops = new List<MachineOperand>();
             for (int i = 0; i < fmt.Length; ++i)
@@ -162,7 +162,7 @@ namespace Reko.Arch.Xtensa
             }
             return new XtensaInstruction
             {
-                Mnemonic = opcode,
+                Mnemonic = mnemonic,
                 Operands = ops.ToArray()
             };
         }

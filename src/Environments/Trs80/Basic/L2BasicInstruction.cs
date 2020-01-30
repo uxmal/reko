@@ -39,7 +39,7 @@ namespace Reko.Environments.Trs80.Basic
             this.InstructionClass = InstrClass.Linear;
         }
 
-        public override int OpcodeAsInteger
+        public override int MnemonicAsInteger
         {
             get { throw new NotImplementedException(); }
         }

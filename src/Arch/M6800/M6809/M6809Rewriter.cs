@@ -191,11 +191,11 @@ namespace Reko.Arch.M6800.M6809
             }
         }
 
-        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
+        private static readonly HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
 
         private void EmitUnitTest()
@@ -203,9 +203,9 @@ namespace Reko.Arch.M6800.M6809
             m.Invalid();
             iclass = InstrClass.Invalid;
 
-            if (opcode_seen.Contains(instr.Mnemonic))
+            if (seenMnemonics.Contains(instr.Mnemonic))
                 return;
-            opcode_seen.Add(instr.Mnemonic);
+            seenMnemonics.Add(instr.Mnemonic);
             host.Warn(
                 instr.Address,
                 "M6809 instruction '{0}' is not supported yet.",

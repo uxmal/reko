@@ -73,9 +73,9 @@ namespace Reko.Arch.PowerPC
             };
         }
 
-        public override PowerPcInstruction MakeInstruction(InstrClass iclass, Mnemonic opcode)
+        public override PowerPcInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
         {
-            return new PowerPcInstruction(opcode)
+            return new PowerPcInstruction(mnemonic)
             {
                 Address = addr,
                 InstructionClass = iclass,

@@ -325,7 +325,7 @@ namespace Reko.Arch.X86
 
         private void RewriteConditionalMove(ConditionCode cc, MachineOperand dst, MachineOperand src)
         {
-            var test = CreateTestCondition(cc, instrCur.code).Invert();
+            var test = CreateTestCondition(cc, instrCur.Mnemonic).Invert();
             m.BranchInMiddleOfInstruction(
                 test,
                 instrCur.Address + instrCur.Length,
@@ -430,7 +430,7 @@ namespace Reko.Arch.X86
             m.Assign(
                 regQuotient, 
                 m.Cast(p, op(tmp, SrcOp(instrCur.Operands[0]))));
-            EmitCcInstr(regQuotient, X86Instruction.DefCc(instrCur.code));
+            EmitCcInstr(regQuotient, X86Instruction.DefCc(instrCur.Mnemonic));
         }
 
         private void RewriteEnter()
@@ -481,7 +481,7 @@ namespace Reko.Arch.X86
 
         private void RewriteLogical(BinaryOperator op)
         {
-            if (instrCur.code == Mnemonic.and)
+            if (instrCur.Mnemonic == Mnemonic.and)
             {
                 if (instrCur.Operands[0] is RegisterOperand r &&
                     r.Register == arch.StackRegister &&
@@ -499,7 +499,7 @@ namespace Reko.Arch.X86
                 SrcOp(instrCur.Operands[0]),
                 SrcOp(instrCur.Operands[1]),
                 0);
-            EmitCcInstr(SrcOp(instrCur.Operands[0]), (X86Instruction.DefCc(instrCur.code) & ~FlagM.CF));
+            EmitCcInstr(SrcOp(instrCur.Operands[0]), (X86Instruction.DefCc(instrCur.Mnemonic) & ~FlagM.CF));
             m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -542,7 +542,7 @@ namespace Reko.Arch.X86
                         PrimitiveType.Create(resultDomain, product.DataType.BitSize),
                         SrcOp(instrCur.Operands[0]),
                         multiplicator));
-                EmitCcInstr(product, X86Instruction.DefCc(instrCur.code));
+                EmitCcInstr(product, X86Instruction.DefCc(instrCur.Mnemonic));
                 return;
             case 2:
                 EmitBinOp(op, instrCur.Operands[0], instrCur.Operands[0].Width.MaskDomain(resultDomain), SrcOp(instrCur.Operands[0]), SrcOp(instrCur.Operands[1]), 
@@ -682,7 +682,7 @@ namespace Reko.Arch.X86
         {
             if (instrCur.Operands[0] is RegisterOperand reg && reg.Register == Registers.cs)
             {
-                if (dasm.Peek(1).code == Mnemonic.call &&
+                if (dasm.Peek(1).Mnemonic == Mnemonic.call &&
                     dasm.Peek(1).Operands[0].Width == PrimitiveType.Word16)
                 {
                     dasm.MoveNext();
@@ -693,9 +693,9 @@ namespace Reko.Arch.X86
                 }
 
                 if (
-                    dasm.Peek(1).code == Mnemonic.push && (dasm.Peek(1).Operands[0] is ImmediateOperand) &&
-                    dasm.Peek(2).code == Mnemonic.push && (dasm.Peek(2).Operands[0] is ImmediateOperand) &&
-                    dasm.Peek(3).code == Mnemonic.jmp && (dasm.Peek(3).Operands[0] is X86AddressOperand))
+                    dasm.Peek(1).Mnemonic == Mnemonic.push && (dasm.Peek(1).Operands[0] is ImmediateOperand) &&
+                    dasm.Peek(2).Mnemonic == Mnemonic.push && (dasm.Peek(2).Operands[0] is ImmediateOperand) &&
+                    dasm.Peek(3).Mnemonic == Mnemonic.jmp && (dasm.Peek(3).Operands[0] is X86AddressOperand))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
                     RewriteCall(dasm.Peek(3).Operands[0], instrCur.Operands[0].Width);
@@ -905,7 +905,7 @@ namespace Reko.Arch.X86
 
         private void RewriteSet(ConditionCode cc)
         {
-            m.Assign(SrcOp(instrCur.Operands[0]), CreateTestCondition(cc, instrCur.code));
+            m.Assign(SrcOp(instrCur.Operands[0]), CreateTestCondition(cc, instrCur.Mnemonic));
         }
 
         private void RewriteSetFlag(FlagM flagM, Constant value)
@@ -997,7 +997,7 @@ namespace Reko.Arch.X86
             var incOperator = GetIncrementOperator();
 
             Identifier regDX;
-            switch (instrCur.code)
+            switch (instrCur.Mnemonic)
             {
             default:
                 return;
@@ -1063,7 +1063,7 @@ namespace Reko.Arch.X86
 
             m.Assign(regCX, m.ISub(regCX, 1));
 
-            switch (instrCur.code)
+            switch (instrCur.Mnemonic)
             {
             case Mnemonic.cmps:
             case Mnemonic.cmpsb:
@@ -1104,7 +1104,7 @@ namespace Reko.Arch.X86
                 SrcOp(instrCur.Operands[0]),
                 SrcOp(instrCur.Operands[1]));
 
-            EmitCcInstr(src, (X86Instruction.DefCc(instrCur.code) & ~FlagM.CF));
+            EmitCcInstr(src, (X86Instruction.DefCc(instrCur.Mnemonic) & ~FlagM.CF));
             m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -1120,7 +1120,7 @@ namespace Reko.Arch.X86
             m.Assign(
                 dst,
                 host.PseudoProcedure("__xadd", instrCur.Operands[0].Width, dst, src));
-            EmitCcInstr(dst, X86Instruction.DefCc(instrCur.code));
+            EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic));
         }
 
         private void RewriteXlat()

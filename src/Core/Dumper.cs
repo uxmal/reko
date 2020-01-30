@@ -389,10 +389,10 @@ namespace Reko.Core
                 formatter.WriteHyperlink(formattedAddress, addr);
             }
 
-            public void WriteOpcode(string opcode)
+            public void WriteMnemonic(string sMnemonic)
             {
-                chars += opcode.Length;
-                formatter.Write(opcode);
+                chars += sMnemonic.Length;
+                formatter.Write(sMnemonic);
             }
 
             public void WriteLine()

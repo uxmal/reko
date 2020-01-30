@@ -37,32 +37,32 @@ namespace Reko.Arch.X86
         private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
         private const InstrClass Transfer = InstrClass.Transfer;
 
-		public Mnemonic code;		        // Opcode of the instruction.
-        public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
-		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
-		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
+		public Mnemonic Mnemonic { get; set; }  // Instruction mnemonic.
+        public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
+		public PrimitiveType dataWidth;	        // Width of the data (if it's a word).
+		public PrimitiveType addrWidth;	        // width of the address mode.	// TODO: belongs in MemoryOperand
 
-		public X86Instruction(Mnemonic code, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
+		public X86Instruction(Mnemonic mnemonic, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
-			this.code = code;
+			this.Mnemonic = mnemonic;
             this.InstructionClass = iclass;
 			this.dataWidth = dataWidth;
 			this.addrWidth = addrWidth;
             this.Operands = ops;
 		}
 
-        public override int OpcodeAsInteger => (int) code;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
 		private bool NeedsExplicitMemorySize()
 		{
-			if (code == Mnemonic.movsx || code == Mnemonic.movzx)
+			if (Mnemonic == Mnemonic.movsx || Mnemonic == Mnemonic.movzx)
 				return true;
-            if (code == Mnemonic.lea ||
-                code == Mnemonic.lds ||
-                code == Mnemonic.les ||
-                code == Mnemonic.lfs || 
-                code == Mnemonic.lgs || 
-                code == Mnemonic.lss)
+            if (Mnemonic == Mnemonic.lea ||
+                Mnemonic == Mnemonic.lds ||
+                Mnemonic == Mnemonic.les ||
+                Mnemonic == Mnemonic.lfs || 
+                Mnemonic == Mnemonic.lgs || 
+                Mnemonic == Mnemonic.lss)
                 return false;
             if (Operands.Length >= 2 && Operands[0].Width.Size != Operands[1].Width.Size)
                 return true;
@@ -76,19 +76,17 @@ namespace Reko.Arch.X86
         {
             if (repPrefix == 3)
             {
-                writer.WriteOpcode("rep");
+                writer.WriteMnemonic("rep");
                 writer.WriteChar(' ');
             }
             else if (repPrefix == 2)
             {
-                writer.WriteOpcode("repne");
+                writer.WriteMnemonic("repne");
                 writer.WriteChar(' ');
             }
 
-            // Get opcode. 
-
-            string s = code.ToString();
-			switch (code)
+            string s = Mnemonic.ToString();
+			switch (Mnemonic)
 			{
 			case Mnemonic.cwd:
 				if (dataWidth == PrimitiveType.Word32)
@@ -119,7 +117,7 @@ namespace Reko.Arch.X86
 				}
 				break;
 			}
-			writer.WriteOpcode(s);
+			writer.WriteMnemonic(s);
 
             if (NeedsExplicitMemorySize())
             {
@@ -152,11 +150,12 @@ namespace Reko.Arch.X86
             }
         }
 
-        // Returns the condition codes that an instruction modifies.
-
-        public static FlagM DefCc(Mnemonic opcode)
+        /// <summary>
+        /// Returns the condition codes that an instruction modifies.
+        /// </summary>
+        public static FlagM DefCc(Mnemonic mnemonic)
 		{
-			switch (opcode)
+			switch (mnemonic)
 			{
 			case Mnemonic.aaa:
 			case Mnemonic.aas:
@@ -224,11 +223,12 @@ namespace Reko.Arch.X86
 			}
 		}
 
-		// Returns the condition codes an instruction uses.
-
-		public static FlagM UseCc(Mnemonic opcode)
+        /// <summary>
+        /// Returns the condition codes an instruction uses.
+        /// </summary>
+        public static FlagM UseCc(Mnemonic mnemonic)
 		{
-			switch (opcode)
+			switch (mnemonic)
 			{
 			case Mnemonic.adc:
 			case Mnemonic.sbb:

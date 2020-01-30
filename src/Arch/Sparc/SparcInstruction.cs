@@ -31,13 +31,13 @@ namespace Reko.Arch.Sparc
     {
         public Mnemonic Mnemonic;
 
-        public override int OpcodeAsInteger => (int)Mnemonic; 
+        public override int MnemonicAsInteger => (int)Mnemonic; 
 
         public bool Annul => (InstructionClass & InstrClass.Annul) != 0;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(
+            writer.WriteMnemonic(
                 string.Format("{0}{1}",
                 Mnemonic.ToString(),
                 Annul ? ",a" : ""));

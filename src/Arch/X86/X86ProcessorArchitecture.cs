@@ -93,7 +93,7 @@ namespace Reko.Arch.X86
             return new X86FrameApplicationBuilder(this, binder, site, callee, false);
         }
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             return Enum.GetValues(typeof(Mnemonic))
                 .Cast<Mnemonic>()
@@ -102,7 +102,7 @@ namespace Reko.Arch.X86
                     v => (int)v);
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
             if (!Enum.TryParse(name, true, out Mnemonic result))
                 return null;

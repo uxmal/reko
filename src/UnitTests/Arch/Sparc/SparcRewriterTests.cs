@@ -81,11 +81,11 @@ namespace Reko.UnitTests.Arch.Sparc
             e = new SparcRewriter(arch, exts.GetEnumerator(), state, new Frame(arch.WordWidth), host.Object);
         }
 
-        private SparcInstruction Instr(Mnemonic opcode, params object[] ops)
+        private SparcInstruction Instr(Mnemonic mnemonic, params object[] ops)
         {
             var instr = new SparcInstruction
             {
-                Mnemonic = opcode,
+                Mnemonic = mnemonic,
                 Operands = ops.Select(Op).ToArray()
             };
             return instr;

@@ -73,9 +73,9 @@ namespace Reko.Core.Machine
         }
 
         /// <summary>
-        /// Each different supported opcode should have a different numerical value, exposed here.
+        /// Each different supported mnemonic should have a different numerical value, exposed here.
         /// </summary>
-        public abstract int OpcodeAsInteger { get; }
+        public abstract int MnemonicAsInteger { get; }
 
         public sealed override string ToString()
         {

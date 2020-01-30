@@ -229,7 +229,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             uint wInstr;
             wInstr = rdr.PeekLeUInt32(-4);
-            host.Error(instr.Address, "Rewriting A64 opcode '{0}' ({1:X4}) is not supported yet.", instr.Mnemonic, wInstr);
+            host.Error(instr.Address, "Rewriting A64 mnemonic '{0}' ({1:X4}) is not supported yet.", instr.Mnemonic, wInstr);
             EmitUnitTest();
             m.Invalid();
         }

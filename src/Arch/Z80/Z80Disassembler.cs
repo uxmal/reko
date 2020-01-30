@@ -186,7 +186,7 @@ namespace Reko.Arch.Z80
 
         private class CbPrefixDecoder : Decoder
         {
-            static readonly Mnemonic[] cbOpcodes = new Mnemonic[] {
+            static readonly Mnemonic[] cbMnemonics = new Mnemonic[] {
                 Mnemonic.rlc,
                 Mnemonic.rrc,
                 Mnemonic.rl,
@@ -212,7 +212,7 @@ namespace Reko.Arch.Z80
                 {
                 default: throw new InvalidOperationException();
                 case 0:
-                    dasm.instr.Mnemonic = cbOpcodes[y];
+                    dasm.instr.Mnemonic = cbMnemonics[y];
                     break;
                 case 1:
                     dasm.instr.Mnemonic = Mnemonic.bit;

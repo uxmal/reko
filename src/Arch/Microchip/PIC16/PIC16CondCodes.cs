@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -72,23 +72,23 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         };
 
         /// <summary>
-        /// Gets the condition code flags altered by the given opcode.
+        /// Gets the condition code flags altered by the given instruction.
         /// </summary>
-        /// <param name="opc">The opcode.</param>
-        public static FlagM Defined(Mnemonic opc)
+        /// <param name="mnemonic">The mnemonic for the instruction.</param>
+        public static FlagM Defined(Mnemonic mnemonic)
         {
-            if (defCC.TryGetValue(opc, out FlagM flg))
+            if (defCC.TryGetValue(mnemonic, out FlagM flg))
                 return flg;
             return 0;
         }
 
         /// <summary>
-        /// Gets the condition code flags used by the given opcode.
+        /// Gets the condition code flags used by the given instruction.
         /// </summary>
-        /// <param name="opc">The opcode.</param>
-        public static FlagM Used(Mnemonic opc)
+        /// <param name="mnemonic">The mnemonic for the instruction.</param>
+        public static FlagM Used(Mnemonic mnemonic)
         {
-            if (useCC.TryGetValue(opc, out FlagM flg))
+            if (useCC.TryGetValue(mnemonic, out FlagM flg))
                 return flg;
             return 0;
         }

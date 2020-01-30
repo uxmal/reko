@@ -151,7 +151,7 @@ namespace Reko.Arch.Alpha
 
         private class JMemDecoder : Decoder
         {
-            private readonly static Mnemonic[] opcodes = {
+            private readonly static Mnemonic[] mnemonics = {
                 Mnemonic.jmp, Mnemonic.jsr, Mnemonic.ret, Mnemonic.jsr_coroutine
             };
 
@@ -171,7 +171,7 @@ namespace Reko.Arch.Alpha
             {
                 return new AlphaInstruction
                 {
-                    Mnemonic = opcodes[(uInstr >> 14) & 0x3],
+                    Mnemonic = mnemonics[(uInstr >> 14) & 0x3],
                     InstructionClass = iclasses[(uInstr>> 14) & 0x3],
                     Operands = new MachineOperand[]
                     {
@@ -325,16 +325,16 @@ namespace Reko.Arch.Alpha
 
         private class PalDecoder : Decoder
         {
-            private readonly Dictionary<uint, (Mnemonic,InstrClass)> opcodes;
+            private readonly Dictionary<uint, (Mnemonic,InstrClass)> mnemonics;
 
             public PalDecoder(Dictionary<uint, (Mnemonic,InstrClass)> opcodes)
             {
-                this.opcodes = opcodes;
+                this.mnemonics = opcodes;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                if (!opcodes.TryGetValue(uInstr & 0x0000FFFF, out var opcode))
+                if (!mnemonics.TryGetValue(uInstr & 0x0000FFFF, out var opcode))
                     return dasm.CreateInvalidInstruction();
                 return new AlphaInstruction {
                     Mnemonic = opcode.Item1,
@@ -558,13 +558,13 @@ namespace Reko.Arch.Alpha
                 { 0x03C, new CvtDecoder(Mnemonic.cvtqf_c) },
                 { 0x03E, new CvtDecoder(Mnemonic.cvtqg_c) },
                 { 0x080, new FRegDecoder(Mnemonic.addf) },
-                //{ 0x081, new FRegDecoder(Opcode.negf) },	_* /*pse*/udo */
+                //{ 0x081, new FRegDecoder(Mnemonic.negf) },	_* /*pse*/udo */
                 { 0x081, new FRegDecoder(Mnemonic.subf) },
                 { 0x082, new FRegDecoder(Mnemonic.mulf) },
                 { 0x083, new FRegDecoder(Mnemonic.divf) },
                 { 0x09E, new CvtDecoder(Mnemonic.cvtdg) },
                 { 0x0A0, new FRegDecoder(Mnemonic.addg) },
-                //{ 0x0A1, new FRegDecoder(Opcode.negg) },	_* pseudo */
+                //{ 0x0A1, new FRegDecoder(Mnemonic.negg) },	_* pseudo */
                 { 0x0A1, new FRegDecoder(Mnemonic.subg) },
                 { 0x0A2, new FRegDecoder(Mnemonic.mulg) },
                 { 0x0A3, new FRegDecoder(Mnemonic.divg) },
@@ -613,13 +613,13 @@ namespace Reko.Arch.Alpha
                 { 0x42D, new CvtDecoder(Mnemonic.cvtgd_sc) },
                 { 0x42F, new CvtDecoder(Mnemonic.cvtgq_sc) },
                 { 0x480, new FRegDecoder(Mnemonic.addf_s) },
-                //{ 0x481, new FRegDecoder(Opcode.negf_s) },	_* pseudo */
+                //{ 0x481, new FRegDecoder(Mnemonic.negf_s) },	_* pseudo */
                 { 0x481, new FRegDecoder(Mnemonic.subf_s) },
                 { 0x482, new FRegDecoder(Mnemonic.mulf_s) },
                 { 0x483, new FRegDecoder(Mnemonic.divf_s) },
                 { 0x49E, new CvtDecoder(Mnemonic.cvtdg_s) },
                 { 0x4A0, new FRegDecoder(Mnemonic.addg_s) },
-                //{ 0x4A1, new FRegDecoder(Opcode.negg_s) },	_* pseudo */
+                //{ 0x4A1, new FRegDecoder(Mnemonic.negg_s) },	_* pseudo */
                 { 0x4A1, new FRegDecoder(Mnemonic.subg_s) },
                 { 0x4A2, new FRegDecoder(Mnemonic.mulg_s) },
                 { 0x4A3, new FRegDecoder(Mnemonic.divg_s) },
@@ -682,12 +682,12 @@ namespace Reko.Arch.Alpha
                 { 0x07C, new CvtDecoder(Mnemonic.cvtqs_m) },
                 { 0x07E, new CvtDecoder(Mnemonic.cvtqt_m) },
                 { 0x080, new FRegDecoder(Mnemonic.adds) },
-                //{ 0x081, new FRegDecoder(Opcode.negs) },	_* pseudo */
+                //{ 0x081, new FRegDecoder(Mnemonic.negs) },	_* pseudo */
                 { 0x081, new FRegDecoder(Mnemonic.subs) },
                 { 0x082, new FRegDecoder(Mnemonic.muls) },
                 { 0x083, new FRegDecoder(Mnemonic.divs) },
                 { 0x0A0, new FRegDecoder(Mnemonic.addt) },
-                //{ 0x0A1, new FRegDecoder(Opcode.negt) },	_* pseudo */
+                //{ 0x0A1, new FRegDecoder(Mnemonic.negt) },	_* pseudo */
                 { 0x0A1, new FRegDecoder(Mnemonic.subt) },
                 { 0x0A2, new FRegDecoder(Mnemonic.mult) },
                 { 0x0A3, new FRegDecoder(Mnemonic.divt) },
@@ -773,12 +773,12 @@ namespace Reko.Arch.Alpha
                 { 0x56C, new CvtDecoder(Mnemonic.cvtts_sum) },
                 { 0x56F, new CvtDecoder(Mnemonic.cvttq_svm) },
                 { 0x580, new FRegDecoder(Mnemonic.adds_su) },
-                //{ 0x581, new FRegDecoder(Opcode.negs_su) },	_* pseudo */
+                //{ 0x581, new FRegDecoder(Mnemonic.negs_su) },	_* pseudo */
                 { 0x581, new FRegDecoder(Mnemonic.subs_su) },
                 { 0x582, new FRegDecoder(Mnemonic.muls_su) },
                 { 0x583, new FRegDecoder(Mnemonic.divs_su) },
                 { 0x5A0, new FRegDecoder(Mnemonic.addt_su) },
-                //{ 0x5A1, new FRegDecoder(Opcode.negt_su) },	_* pseudo */
+                //{ 0x5A1, new FRegDecoder(Mnemonic.negt_su) },	_* pseudo */
                 { 0x5A1, new FRegDecoder(Mnemonic.subt_su) },
                 { 0x5A2, new FRegDecoder(Mnemonic.mult_su) },
                 { 0x5A3, new FRegDecoder(Mnemonic.divt_su) },
@@ -824,12 +824,12 @@ namespace Reko.Arch.Alpha
                 { 0x77C, new CvtDecoder(Mnemonic.cvtqs_suim) },
                 { 0x77E, new CvtDecoder(Mnemonic.cvtqt_suim) },
                 { 0x780, new FRegDecoder(Mnemonic.adds_sui) },
-                //{ 0x781, new FRegDecoder(Opcode.negs_sui) },	_* pseudo */
+                //{ 0x781, new FRegDecoder(Mnemonic.negs_sui) },	_* pseudo */
                 { 0x781, new FRegDecoder(Mnemonic.subs_sui) },
                 { 0x782, new FRegDecoder(Mnemonic.muls_sui) },
                 { 0x783, new FRegDecoder(Mnemonic.divs_sui) },
                 { 0x7A0, new FRegDecoder(Mnemonic.addt_sui) },
-                //{ 0x7A1, new FRegDecoder(Opcode.negt_sui) },	_* pseudo */
+                //{ 0x7A1, new FRegDecoder(Mnemonic.negt_sui) },	_* pseudo */
                 { 0x7A1, new FRegDecoder(Mnemonic.subt_sui) },
                 { 0x7A2, new FRegDecoder(Mnemonic.mult_sui) },
                 { 0x7A3, new FRegDecoder(Mnemonic.divt_sui) },
@@ -853,12 +853,12 @@ namespace Reko.Arch.Alpha
             new FOperateDecoder(new Dictionary<int, Decoder>
             {
                   { 0x010, new CvtDecoder(Mnemonic.cvtlq) },
-                  //{ 0x020, new FRegDecoder(Opcode.fnop) },	_* pseudo */
-                  //{ 0x020, new FRegDecoder(Opcode.fclr) },	_* pseudo */
-                  //{ 0x020, new FRegDecoder(Opcode.fabs) },	_* pseudo */
-                  //{ 0x020, new FRegDecoder(Opcode.fmov) }, _* pseudo */
+                  //{ 0x020, new FRegDecoder(Mnemonic.fnop) },	_* pseudo */
+                  //{ 0x020, new FRegDecoder(Mnemonic.fclr) },	_* pseudo */
+                  //{ 0x020, new FRegDecoder(Mnemonic.fabs) },	_* pseudo */
+                  //{ 0x020, new FRegDecoder(Mnemonic.fmov) }, _* pseudo */
                   { 0x020, new FRegDecoder(Mnemonic.cpys) },
-                  //{ 0x021, new FRegDecoder(Opcode.fneg) }, _* pseudo */
+                  //{ 0x021, new FRegDecoder(Mnemonic.fneg) }, _* pseudo */
                   { 0x021, new FRegDecoder(Mnemonic.cpysn) },
                   { 0x022, new FRegDecoder(Mnemonic.cpyse) },
                   { 0x024, new FRegDecoder(Mnemonic.mt_fpcr) },

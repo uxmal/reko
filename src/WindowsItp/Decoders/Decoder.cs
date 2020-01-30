@@ -34,29 +34,29 @@ namespace Reko.WindowsItp.Decoders
 
     public class FormatDecoder : Decoder
     {
-        private readonly Opcode opcode;
+        private readonly Mnemonic mnemonic;
         private readonly string format;
 
-        public FormatDecoder(Opcode opcode, string format)
+        public FormatDecoder(Mnemonic mnemonic, string format)
         {
-            this.opcode = opcode;
+            this.mnemonic = mnemonic;
             this.format = format;
         }
 
         public override TestInstruction Decode(uint wInstr, Disassembler dasm)
         {
-            return dasm.Decode(wInstr, opcode, format);
+            return dasm.Decode(wInstr, mnemonic, format);
         }
     }
 
     public class ThreadedDecoder : Decoder
     {
-        private readonly Opcode mnemonic;
+        private readonly Mnemonic mnemonic;
         private readonly Mutator<Disassembler>[] mutators;
 
-        public ThreadedDecoder(Opcode opcode, params Mutator<Disassembler> [] mutators)
+        public ThreadedDecoder(Mnemonic mnemonic, params Mutator<Disassembler> [] mutators)
         {
-            this.mnemonic = opcode;
+            this.mnemonic = mnemonic;
             this.mutators = mutators;
         }
          

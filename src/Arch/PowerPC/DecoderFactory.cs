@@ -131,14 +131,14 @@ namespace Reko.Arch.PowerPC
                         {
                             { 0, Instr(Mnemonic.fcmpu, C1,f2,f3) },
                             { 1, Instr(Mnemonic.fcmpo, C1,f2,f3) },
-                            //{ 2, Instr(Opcode.mcrfs)}
+                            //{ 2, Instr(Mnemonic.mcrfs)}
                         })
                     },
                     { 0x06, new FpuDecoder(6, 0x1F, new Dictionary<uint,Decoder>
                         {
-                            //{ 1, Instr(Opcode.mtfsb1 },
-                            //{ 2, Instr(Opcode.mtfsb0 },
-                            //{ 4, Instr(Opcode.mtfsfi }
+                            //{ 1, Instr(Mnemonic.mtfsb1 },
+                            //{ 2, Instr(Mnemonic.mtfsb0 },
+                            //{ 4, Instr(Mnemonic.mtfsfi }
                         })
                     },
                     { 0x07, new FpuDecoder(6, 0x1F, new Dictionary<uint,Decoder>
@@ -199,14 +199,14 @@ namespace Reko.Arch.PowerPC
             return new NyiDecoder(message);
         }
 
-        private static Decoder Instr(Mnemonic opcode, params Mutator<PowerPcDisassembler> [] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<PowerPcDisassembler> [] mutators)
         {
-            return new InstrDecoder(opcode, mutators, InstrClass.Linear);
+            return new InstrDecoder(mnemonic, mutators, InstrClass.Linear);
         }
 
-        private static Decoder Instr(InstrClass iclass, Mnemonic opcode, params Mutator<PowerPcDisassembler>[] mutators)
+        private static Decoder Instr(InstrClass iclass, Mnemonic mnemonic, params Mutator<PowerPcDisassembler>[] mutators)
         {
-            return new InstrDecoder(opcode,  mutators, iclass);
+            return new InstrDecoder(mnemonic,  mutators, iclass);
         }
 
         private Decoder Mask(int ppcBitPosition, int bits, params Decoder[] decoders)
@@ -653,7 +653,7 @@ Conventions:
                         { 0x000, Instr(Mnemonic.vaddubm, v1,v2,v3) },
                         { 0x002, Instr(Mnemonic.vmaxub, v1,v2,v3) },
                         { 0x00A, Instr(Mnemonic.vaddfp, v1,v2,v3) },
-                       // { 0x010, Instr(Opcode.mulhhwu, r1,r2,r3) },
+                       // { 0x010, Instr(Mnemonic.mulhhwu, r1,r2,r3) },
                         { 0x020, Instr(Mnemonic.vmhaddshs, v1,v2,v3,v4) },
                         { 0x022, Instr(Mnemonic.vmladduhm, v1,v2,v3,v4) },
                         { 0x042, Instr(Mnemonic.vmaxuh, v1,v2,v3) },
@@ -683,8 +683,8 @@ Conventions:
                         { 0x4C6, Instr(Mnemonic.vcmpeqfp, CC,v1,v2,v3) },
                         { 0x4C7, Instr(Mnemonic.vcmpequd, CC,v1,v2,v3) },
                         // These aren't present for the VMX extension of PowerPC architecture
-                        //{ 0x503, Instr(Opcode.evmhessfaaw, r1,r2,r3) },
-                        //{ 0x50B, Instr(Opcode.evmhesmfaaw, r1,r2,r3) },
+                        //{ 0x503, Instr(Mnemonic.evmhessfaaw, r1,r2,r3) },
+                        //{ 0x50B, Instr(Mnemonic.evmhesmfaaw, r1,r2,r3) },
                         { 0x686, Instr(Mnemonic.vcmpgtuw, CC,v1,v2,v3) },
                         { 0x6C6, Instr(Mnemonic.vcmpgtfp, CC,v1,v2,v3) },
                 },
@@ -1090,7 +1090,7 @@ Conventions:
                 {
                     { 0x00, Instr(Mnemonic.xsaddsp, v1,v2,v3) },
                     { 0x01, Instr(Mnemonic.xsmaddasp, v1,v2,v3) },
-                    //{ 0x02, Instr(Opcode.xxsldwi, v1,v2,v3) },       //$TODO need extra work.
+                    //{ 0x02, Instr(Mnemonic.xxsldwi, v1,v2,v3) },       //$TODO need extra work.
                     { 0x09, Instr(Mnemonic.xsmaddmsp, v1,v2,v3) },
                 });
             }

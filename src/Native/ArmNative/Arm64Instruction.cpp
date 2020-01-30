@@ -29,11 +29,11 @@ STDMETHODIMP Arm64Instruction::Render(INativeInstructionWriter * w, MachineInstr
 	auto & writer = *w;
 	if (this->instr == nullptr)
 	{
-		writer.WriteOpcode("Invalid");
+		writer.WriteMnemonic("Invalid");
 		return S_OK;
 	}
 	auto & instruction = *static_cast<cs_insn*>(this->instr);
-	writer.WriteOpcode(instruction.mnemonic);
+	writer.WriteMnemonic(instruction.mnemonic);
 	auto & ops = instruction.detail->arm64.operands;
 	if (instruction.detail->arm64.op_count < 1)
 		return S_OK;

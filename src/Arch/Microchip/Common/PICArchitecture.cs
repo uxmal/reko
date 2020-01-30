@@ -91,7 +91,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
             => new PICInstructionComparer(norm);
 
-        public override SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetMnemonicNames()
         {
             return Enum.GetValues(typeof(Mnemonic))
                 .Cast<Mnemonic>()
@@ -100,7 +100,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                     v => (int)v);
         }
 
-        public override int? GetOpcodeNumber(string name)
+        public override int? GetMnemonicNumber(string name)
         {
             if (!Enum.TryParse(name, true, out Mnemonic result))
                 return null;

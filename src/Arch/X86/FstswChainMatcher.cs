@@ -55,12 +55,12 @@ namespace Reko.Arch.X86
         public bool Matches(int iStart)
         {
             int i = iStart;
-            if (instrs[i].code != Mnemonic.fstsw)
+            if (instrs[i].Mnemonic != Mnemonic.fstsw)
                 return false;
             ++i;
             if (i >= instrs.Length)
                 return false;
-            if (instrs[i].code == Mnemonic.sahf)
+            if (instrs[i].Mnemonic == Mnemonic.sahf)
             {
                 zappedInstructions.Add(i, Mnemonic.nop);
                 rewritten.Add(new Assignment(
@@ -68,7 +68,7 @@ namespace Reko.Arch.X86
                     orw.AluRegister(Registers.FPUF)));
                 return true;
             }
-            if (instrs[i].code == Mnemonic.test)
+            if (instrs[i].Mnemonic == Mnemonic.test)
             {
                 RegisterOperand acc = instrs[i].Operands[0] as RegisterOperand;
                 if (acc == null)
@@ -89,7 +89,7 @@ namespace Reko.Arch.X86
                 i = FindConditionalJumpInstruction(++i);
                 if (i < 0)
                     return false;
-                switch (instrs[i].code)
+                switch (instrs[i].Mnemonic)
                 {
                 case Mnemonic.jz:
                     if (mask == 0x40)
@@ -135,7 +135,7 @@ namespace Reko.Arch.X86
         {
             while (i < instrs.Length)
             {
-                switch (instrs[i].code)
+                switch (instrs[i].Mnemonic)
                 {
                 case Mnemonic.jz:
                 case Mnemonic.jnz:
@@ -150,7 +150,7 @@ namespace Reko.Arch.X86
         {
             foreach (var de in this.zappedInstructions)
             {
-                instrs[de.Key].code = de.Value;
+                instrs[de.Key].Mnemonic = de.Value;
             }
             foreach (Instruction instr in rewritten)
             {

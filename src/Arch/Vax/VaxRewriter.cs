@@ -75,7 +75,7 @@ namespace Reko.Arch.Vax
                     //host.Warn(
                     //    this.instr.Address,
                     //    "VAX instruction {0} not supported yet.",
-                    //    this.instr.Opcode);
+                    //    this.instr.Mnemonic);
                     m.Invalid();
                     break;
                 case Mnemonic.Invalid: rtlc = InstrClass.Invalid; m.Invalid(); break;

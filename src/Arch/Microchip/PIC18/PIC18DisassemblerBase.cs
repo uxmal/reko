@@ -70,7 +70,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             try
             {
                 var bits = uInstr.Extract(12, 4);
-                instrCur = opcodesTable[bits].Decode(uInstr, this);
+                instrCur = decoderTable[bits].Decode(uInstr, this);
                 if (!instrCur.IsValid)
                 {
                     rdr.Offset = offset;
@@ -121,7 +121,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// The common opcodes decoder table.
         /// </summary>
-        private static Decoder[] opcodesTable = new Decoder[16]
+        private static readonly Decoder[] decoderTable = new Decoder[16]
         {
             new SubDecoder(8, 4, new Decoder[16] {                  // 0000 ???? .... ....
                 new SubDecoder(4, 4, new Decoder[16] {              // 0000 0000 ???? ....
@@ -272,16 +272,16 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class NoOperandDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public NoOperandDecoder(Mnemonic opc)
+            public NoOperandDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
-                return new PICInstructionNoOpnd(opcode);
+                return new PICInstructionNoOpnd(mnemonic);
             }
         }
 
@@ -290,17 +290,17 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class ResetDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public ResetDecoder(Mnemonic opc)
+            public ResetDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 if (uInstr == 0x00FFU)
-                    return new PICInstructionNoOpnd(opcode);
+                    return new PICInstructionNoOpnd(mnemonic);
                 return new PICInstructionNoOpnd(Mnemonic.invalid);
             }
         }
@@ -310,7 +310,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class MemoryBitWithAccessDecoder : Decoder
         {
-            private Mnemonic mnemonic;
+            private readonly Mnemonic mnemonic;
 
             public MemoryBitWithAccessDecoder(Mnemonic mnemonic)
             {
@@ -331,18 +331,18 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class MemoryAccessDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public MemoryAccessDecoder(Mnemonic opc)
+            public MemoryAccessDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var adr = uInstr.Extract(0, 8);
                 var acc = uInstr.Extract(8, 1);
-                return new PICInstructionMemFA(opcode, adr, acc);
+                return new PICInstructionMemFA(mnemonic, adr, acc);
             }
         }
 
@@ -352,11 +352,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class MemoryAccessWithDestDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public MemoryAccessWithDestDecoder(Mnemonic opc)
+            public MemoryAccessWithDestDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
@@ -364,7 +364,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 var adr = uInstr.Extract(0, 8);
                 var acc = uInstr.Extract(8, 1);
                 var dst = uInstr.Extract(9, 1);
-                return new PICInstructionMemFDA(opcode, adr, dst, acc);
+                return new PICInstructionMemFDA(mnemonic, adr, dst, acc);
             }
         }
 
@@ -373,17 +373,17 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class Immed8Decoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public Immed8Decoder(Mnemonic opc)
+            public Immed8Decoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var imm8 = uInstr.Extract(0, 8);
-                return new PICInstructionImmedByte(opcode, imm8);
+                return new PICInstructionImmedByte(mnemonic, imm8);
             }
         }
 
@@ -392,11 +392,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class Immed12Decoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public Immed12Decoder(Mnemonic opc)
+            public Immed12Decoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
@@ -408,7 +408,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
                 var msw = uInstr.Extract(0, 4);
                 var operd = (ushort)((msw << 8) | lsw);
-                return new PICInstructionImmedUShort(opcode, operd);
+                return new PICInstructionImmedUShort(mnemonic, operd);
             }
         }
 
@@ -417,17 +417,17 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class ShadowDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public ShadowDecoder(Mnemonic opc)
+            public ShadowDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var ufast = uInstr.Extract(0, 1);
-                return new PICInstructionFast(opcode, ufast, true);
+                return new PICInstructionFast(mnemonic, ufast, true);
             }
         }
 
@@ -436,17 +436,17 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class TargetRel8Decoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public TargetRel8Decoder(Mnemonic opc)
+            public TargetRel8Decoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var off = uInstr.ExtractSignExtend(0, 8);
-                return new PICInstructionProgTarget(opcode, off, dasm.addrCur);
+                return new PICInstructionProgTarget(mnemonic, off, dasm.addrCur);
             }
         }
 
@@ -455,17 +455,17 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class TargetRel11Decoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public TargetRel11Decoder(Mnemonic opc)
+            public TargetRel11Decoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var off = uInstr.ExtractSignExtend(0, 11);
-                return new PICInstructionProgTarget(opcode, off, dasm.addrCur);
+                return new PICInstructionProgTarget(mnemonic, off, dasm.addrCur);
             }
         }
 
@@ -474,17 +474,17 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class TblDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public TblDecoder(Mnemonic opc)
+            public TblDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var mode = uInstr.Extract(0, 2);
-                return new PICInstructionTbl(opcode, mode);
+                return new PICInstructionTbl(mnemonic, mode);
             }
         }
 
@@ -493,11 +493,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class MovffDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public MovffDecoder(Mnemonic opc)
+            public MovffDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
@@ -507,7 +507,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     return new PICInstructionNoOpnd(Mnemonic.invalid);
 
                 var src = uInstr.Extract(0, 12);
-                return new PICInstructionMem2Mem(opcode, src, dst);
+                return new PICInstructionMem2Mem(mnemonic, src, dst);
             }
         }
 
@@ -516,11 +516,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class TargetAbs20Decoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public TargetAbs20Decoder(Mnemonic opc)
+            public TargetAbs20Decoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
@@ -529,7 +529,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return new PICInstructionNoOpnd(Mnemonic.invalid);
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
-                return new PICInstructionProgTarget(opcode, dstaddr);
+                return new PICInstructionProgTarget(mnemonic, dstaddr);
             }
         }
 
@@ -538,11 +538,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// </summary>
         protected class CallDecoder : Decoder
         {
-            private Mnemonic opcode;
+            private readonly Mnemonic mnemonic;
 
-            public CallDecoder(Mnemonic opc)
+            public CallDecoder(Mnemonic mnemonic)
             {
-                opcode = opc;
+                this.mnemonic = mnemonic;
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
@@ -552,7 +552,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     return new PICInstructionNoOpnd(Mnemonic.invalid);
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
                 ushort ufast = uInstr.Extract(8, 1);
-                return new PICInstructionProgTargetFast(opcode, dstaddr, ufast, false);
+                return new PICInstructionProgTargetFast(mnemonic, dstaddr, ufast, false);
             }
         }
 

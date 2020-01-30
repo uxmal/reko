@@ -29,9 +29,9 @@ namespace Reko.Arch.SuperH
     {
         public Mnemonic Mnemonic { get; set; }
 
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
-        private static Dictionary<Mnemonic, string> opcodes = new Dictionary<Mnemonic, string>
+        private static Dictionary<Mnemonic, string> mnemonics = new Dictionary<Mnemonic, string>
         {
             { Mnemonic.and_b, "and.b" },
             { Mnemonic.bf_s, "bf/s" },
@@ -72,9 +72,9 @@ namespace Reko.Arch.SuperH
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (!opcodes.TryGetValue(Mnemonic, out var sMnemonic))
+            if (!mnemonics.TryGetValue(Mnemonic, out var sMnemonic))
                 sMnemonic = Mnemonic.ToString();
-            writer.WriteOpcode(sMnemonic);
+            writer.WriteMnemonic(sMnemonic);
             RenderOperands(writer, options);
         }
 
