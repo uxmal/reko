@@ -59,7 +59,7 @@ namespace Reko.Environments.C64
                     return program;
                 }
             }
-            var arch = new Mos6502ProcessorArchitecture("mos6502");
+            var arch = new Mos6502Architecture("mos6502");
             var mem = new MemoryArea(Address.Ptr16(0), RawImage);
             var segmentMap = new SegmentMap(mem.BaseAddress);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);

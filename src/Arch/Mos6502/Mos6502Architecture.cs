@@ -33,11 +33,11 @@ using Reko.Core.Operators;
 
 namespace Reko.Arch.Mos6502
 {
-    public class Mos6502ProcessorArchitecture : ProcessorArchitecture
+    public class Mos6502Architecture : ProcessorArchitecture
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Mos6502ProcessorArchitecture(string archId) : base(archId)
+        public Mos6502Architecture(string archId) : base(archId)
         {
             CarryFlagMask = (uint)FlagM.CF;
             Endianness = EndianServices.Little;

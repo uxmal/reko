@@ -31,12 +31,12 @@ namespace Reko.Arch.Mos6502
 {
     public class Mos6502ProcessorState : ProcessorState
     {
-        private Mos6502ProcessorArchitecture arch;
+        private Mos6502Architecture arch;
         private byte[] regs;
         private bool[] valid;
         private Address ip;
 
-        public Mos6502ProcessorState(Mos6502ProcessorArchitecture arch)
+        public Mos6502ProcessorState(Mos6502Architecture arch)
         {
             this.arch = arch;
             this.regs = new byte[4];

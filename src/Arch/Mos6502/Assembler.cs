@@ -35,7 +35,7 @@ namespace Reko.Arch.Mos6502
         private static readonly Dictionary<Mnemonic, InstrOpcodes> instrOpcodes;
 
         private ServiceContainer sc;
-        private Mos6502ProcessorArchitecture arch;
+        private Mos6502Architecture arch;
         private IPlatform platform;
         private Address addrBase;
         private Core.Assemblers.IEmitter m;
@@ -45,7 +45,7 @@ namespace Reko.Arch.Mos6502
         public Assembler(ServiceContainer sc, IPlatform platform, Address addrBase, List<ImageSymbol> symbols)
         {
             this.sc = sc;
-            this.arch = new Mos6502ProcessorArchitecture("mos6502");
+            this.arch = new Mos6502Architecture("mos6502");
             this.platform = platform;
             this.addrBase = addrBase;
             this.symbols = symbols;

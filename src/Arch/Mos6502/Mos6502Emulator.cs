@@ -44,13 +44,13 @@ namespace Reko.Arch.Mos6502
             Registers.a, Registers.x, Registers.y, Registers.s, Registers.p
         };
 
-        private Mos6502ProcessorArchitecture arch;
+        private Mos6502Architecture arch;
         private SegmentMap map;
         private IPlatformEmulator envEmulator;
         private ushort[] regs;
         private IEnumerator<Instruction> dasm;
 
-        public Mos6502Emulator(Mos6502ProcessorArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        public Mos6502Emulator(Mos6502Architecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
             : base(segmentMap)
         {
             this.arch = arch;

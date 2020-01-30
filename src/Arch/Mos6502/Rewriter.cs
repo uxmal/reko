@@ -36,14 +36,14 @@ namespace Reko.Arch.Mos6502
         private readonly ProcessorState state;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
-        private readonly Mos6502ProcessorArchitecture arch;
+        private readonly Mos6502Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<Instruction> dasm;
         private Instruction instrCur;
         private InstrClass rtlc;
         private RtlEmitter m;
 
-        public Rewriter(Mos6502ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public Rewriter(Mos6502Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.state = state;

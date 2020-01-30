@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Mos6502
     public class EmulatorTests
     {
         private ServiceContainer sc;
-        private Mos6502ProcessorArchitecture arch = new Mos6502ProcessorArchitecture("mos6502");
+        private Mos6502Architecture arch = new Mos6502Architecture("mos6502");
         private Mos6502Emulator emu;
 
         public EmulatorTests()

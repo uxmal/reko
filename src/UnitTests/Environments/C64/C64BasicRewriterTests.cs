@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Environments.C64
     {
         private BasicProcessor m;
         private C64Basic arch;
-        private Mos6502ProcessorArchitecture arch6502;
+        private Mos6502Architecture arch6502;
         private SortedList<ushort, C64BasicInstruction> lines;
         private Mock<ArchTestBase.RewriterHost> host;
 
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Environments.C64
         {
             lines = new SortedList<ushort, C64BasicInstruction>();
             arch = new C64Basic(lines);
-            arch6502 = new Mos6502ProcessorArchitecture("m6502");
+            arch6502 = new Mos6502Architecture("m6502");
             m = new BasicProcessor(lines);
             host = new Mock<RewriterTestBase.RewriterHost>(arch) { CallBase = true };
             host.Setup(h => h.GetArchitecture("m6502"))
