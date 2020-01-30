@@ -80,7 +80,8 @@ namespace Reko.Arch.i8051
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            var sp = binder.EnsureRegister(this.StackRegister);
+            return MemoryAccess.Create(sp, cbOffset, dataType);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
