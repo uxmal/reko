@@ -814,27 +814,6 @@ namespace Reko.Arch.Arm.AArch32
         private static PrimitiveType s4 => PrimitiveType.Int32;
         private static PrimitiveType s8 => PrimitiveType.Int64;
 
-        //case '[':
-        //    {
-        //        int shift = 0;
-        //        ++i;
-        //        var memType = format[i];
-        //        ++i;
-        //        if (PeekAndDiscard('<', format, ref i))
-        //        {
-        //            shift = ReadDecimal(format, ref i);
-        //        }
-        //        Expect(':', format, ref i);
-        //        var dom = format[i];
-        //        ++i;
-        //        var size = format[i] - '0';
-        //        ++i;
-        //        var dt = GetDataType(dom, size);
-        //        (op, writeback) = DecodeMemoryAccess(u, memType, shift, dt);
-        //    }
-        //    break;
-
-
         // Multiple registers
         private static Mutator<A32Disassembler> Mr(int pos, int size) {
             var bitfields = new[]
@@ -1065,13 +1044,6 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Mutator<A32Disassembler> Q5_0 = Q(5, 1, 0, 4);
         private static readonly Mutator<A32Disassembler> Q7_16 = Q(7, 1, 16, 4);
         private static readonly Mutator<A32Disassembler> Q22_12 = Q(22, 1, 12, 4);
-
-        //if (PeekAndDiscard('[', format, ref i))
-        //{
-        //    // D13[3] - index into sub-element
-        //    vector_index = (int)ReadBitfields(u, format, ref i);
-        //    Expect(']', format, ref i);
-        //}
 
         // Endianness
         private static Mutator<A32Disassembler> E(int pos, int size)

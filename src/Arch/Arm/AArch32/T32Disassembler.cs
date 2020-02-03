@@ -325,7 +325,6 @@ namespace Reko.Arch.Arm.AArch32
             return CreateInvalidInstruction();
         }
 
-
         private ArmVectorData VectorFloatElementData(uint n)
         {
             switch (n)
@@ -335,7 +334,6 @@ namespace Reko.Arch.Arm.AArch32
             default: return ArmVectorData.INVALID;
             }
         }
-
 
         private ArmVectorData VectorConvertData(uint wInstr)
         {
@@ -380,40 +378,6 @@ namespace Reko.Arch.Arm.AArch32
                 return u == 0 ? ArmVectorData.S32F32 : ArmVectorData.U32F32;
             }
             return ArmVectorData.INVALID;
-        }
-
-        /// <summary>
-        /// Concatenate the value in 1 or more bit fields and then optionally
-        /// shift it to the left by a given amount.
-        /// </summary>
-        /// <param name="wInstr"></param>
-        /// <param name="format"></param>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        private uint ReadBitfields(uint wInstr, string format, ref int i)
-        {
-            uint n = 0u;
-            int bits = 0;
-            bool signExtend = PeekAndDiscard('+', format, ref i);
-            do
-            {
-                var offset = ReadDecimal(format, ref i);
-                Expect(':', format, ref i);
-                var size = ReadDecimal(format, ref i);
-                n = (n << size) | ((wInstr >> offset) & ((1u << size) - 1));
-                bits += size;
-            } while (PeekAndDiscard(':', format, ref i));
-            if (PeekAndDiscard('<', format, ref i))
-            {
-                var shift = ReadDecimal(format, ref i);
-                n <<= shift;
-                bits += shift;
-            }
-            if (signExtend)
-            {
-                n = (uint) Bits.SignExtend(n, bits);
-            }
-            return n;
         }
 
         private static ImmediateOperand ModifiedImmediate(uint wInstr)
@@ -461,53 +425,6 @@ namespace Reko.Arch.Arm.AArch32
         private static int SBitfield(uint word, int offset, int size)
         {
             return ((int) word >> offset) & ((1 << size) - 1);
-        }
-
-        private static bool PeekAndDiscard(char c, string format, ref int i)
-        {
-            if (i >= format.Length)
-                return false;
-            if (format[i] != c)
-                return false;
-            ++i;
-            return true;
-        }
-
-        private static void Expect(char c, string format, ref int i)
-        {
-            Debug.Assert(format[i] == c);
-            ++i;
-        }
-
-        private static int ReadDecimal(string format, ref int i)
-        {
-            int n = 0;
-            while (i < format.Length)
-            {
-                char c = format[i];
-                if (!char.IsDigit(c))
-                    break;
-                ++i;
-                n = n * 10 + (c - '0');
-            }
-            return n;
-        }
-
-        private PrimitiveType DataType(string format, ref int i)
-        {
-            switch (format[i++])
-            {
-            case 'd': return PrimitiveType.Word64;
-            case 'w': return PrimitiveType.Word32;
-            case 'h': return PrimitiveType.Word16;
-            case 'H': return PrimitiveType.Int16;
-            case 'b': return PrimitiveType.Byte;
-            case 'B': return PrimitiveType.SByte;
-            case 'r':
-                var n = ReadDecimal(format, ref i);
-                return PrimitiveType.Create(Domain.Real, n);
-            default: throw new InvalidOperationException($"{format[i - 1]}");
-            }
         }
 
         private static Decoder DecodeBfcBfi(Mnemonic mnemonic, params Mutator<T32Disassembler>[] mutators)
