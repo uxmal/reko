@@ -142,11 +142,23 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, PrimitiveType.Byte);
         }
 
+        public override Identifier Reg8(string name, int number)
+        {
+            var id = base.Reg8(name, number);
+            return MakeSsaIdentifier(id, name);
+        }
+
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
             ProcessInstruction(instr, stm);
             return stm;
+        }
+
+        public Identifier FramePointer()
+        {
+            var sidFp = Ssa.Identifiers.Add(Frame.FramePointer, null, null, false);
+            return sidFp.Identifier;
         }
 
         private Identifier MakeSsaIdentifier(Identifier id, string name)
