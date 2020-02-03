@@ -350,7 +350,6 @@ namespace Reko.UnitTests.Analysis
             AssertRunOutput(program, RunTest, sExp);
         }
 
-
         protected void RunStringTest(string sExp, ProcedureBuilder pb)
         {
             var program = BuildProgram(pb);
