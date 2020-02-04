@@ -125,33 +125,28 @@ namespace Reko.Core.Machine
     /// </summary>
 	public class ImmediateOperand : MachineOperand
 	{
-		private Constant value;
-
-		public ImmediateOperand(Constant c) : base((PrimitiveType)c.DataType)
+        public ImmediateOperand(Constant c) : base((PrimitiveType)c.DataType)
 		{
-			value = c;
+			Value = c;
 		}
+
+        public Constant Value { get; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var s = FormatValue(value);
-            if (value.DataType is PrimitiveType pt)
+            var s = FormatValue(Value);
+            if (Value.DataType is PrimitiveType pt)
             {
                 if (pt.Domain == Domain.Pointer)
-                    writer.WriteAddress(s, Address.FromConstant(value));
+                    writer.WriteAddress(s, Address.FromConstant(Value));
                 else
                     writer.WriteString(s);
             }
-            else if (value.DataType is Pointer)
-                writer.WriteAddress(s, Address.FromConstant(value));
+            else if (Value.DataType is Pointer)
+                writer.WriteAddress(s, Address.FromConstant(Value));
             else 
                 writer.WriteString(s);
         }
-
-		public Constant Value
-		{
-			get { return value; }
-		}
 
         public static ImmediateOperand Byte(byte value)
         {

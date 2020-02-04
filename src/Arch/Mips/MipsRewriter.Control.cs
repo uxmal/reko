@@ -46,7 +46,7 @@ namespace Reko.Arch.Mips
                 var dst = ((AddressOperand)instr.Operands[1]).Address;
                 if (instr.Address.ToLinear() + 8 == dst.ToLinear())
                 {
-                    rtlc = InstrClass.Linear;
+                    iclass = InstrClass.Linear;
                     var ra = binder.EnsureRegister(arch.LinkRegister);
                     m.Assign(ra, dst);
                 }
@@ -108,7 +108,7 @@ namespace Reko.Arch.Mips
                 // r0 has been replaced with '0'.
                 if (condOp == m.Lt)
                 {
-                    rtlc = InstrClass.Linear;
+                    iclass = InstrClass.Linear;
                     return; // Branch will never be taken
                 }
             }
@@ -155,8 +155,8 @@ namespace Reko.Arch.Mips
             if (!opTrue)
                 cond = m.Not(cond);
             var addr = (Address)RewriteOperand0(instr.Operands[1]);
-            rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
-            m.Branch(cond, addr, rtlc);
+            iclass = InstrClass.ConditionalTransfer | InstrClass.Delay;
+            m.Branch(cond, addr, iclass);
         }
 
         private void RewriteCall(MipsInstruction instr)
@@ -208,11 +208,11 @@ namespace Reko.Arch.Mips
             var reg = (RegisterStorage)((Identifier)dst).Storage;
             if (reg == arch.LinkRegister)
             {
-                m.Return(0, 0, rtlc);
+                m.Return(0, 0, iclass);
             }
 			else
             {
-                m.Goto(dst, rtlc);
+                m.Goto(dst, iclass);
             }
         }
 

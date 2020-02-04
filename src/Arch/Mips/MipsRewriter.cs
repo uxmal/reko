@@ -38,14 +38,14 @@ namespace Reko.Arch.Mips
     /// </summary>
     public partial class MipsRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private readonly EndianImageReader rdr;
-        private readonly IEnumerator<MipsInstruction> dasm;
-        private readonly IStorageBinder binder;
-        private readonly MipsProcessorArchitecture arch;
-        private readonly IRewriterHost host;
-        private readonly ExpressionValueComparer cmp;
-        private RtlEmitter m;
-        private InstrClass rtlc;
+        protected readonly EndianImageReader rdr;
+        protected readonly IEnumerator<MipsInstruction> dasm;
+        protected readonly IStorageBinder binder;
+        protected readonly MipsProcessorArchitecture arch;
+        protected readonly IRewriterHost host;
+        protected readonly ExpressionValueComparer cmp;
+        protected RtlEmitter m;
+        protected InstrClass iclass;
 
         public MipsRewriter(MipsProcessorArchitecture arch, EndianImageReader rdr, IEnumerable<MipsInstruction> instrs, IStorageBinder binder, IRewriterHost host)
         {
@@ -63,7 +63,7 @@ namespace Reko.Arch.Mips
             {
                 var instr = dasm.Current;
                 var rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (instr.Mnemonic)
                 {
@@ -74,7 +74,7 @@ namespace Reko.Arch.Mips
                     EmitUnitTest();
                     goto case Mnemonic.illegal;
                 case Mnemonic.illegal:
-                    rtlc = InstrClass.Invalid; m.Invalid(); break;
+                    iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.add:
                 case Mnemonic.addi:
                 case Mnemonic.addiu:
@@ -324,7 +324,7 @@ namespace Reko.Arch.Mips
                     instr.Length,
                     rtlInstructions.ToArray())
                 {
-                    Class = rtlc
+                    Class = iclass
                 };
             }
         }
@@ -337,7 +337,7 @@ namespace Reko.Arch.Mips
 #if DEBUG
         private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
 
-        private void EmitUnitTest()
+        protected void EmitUnitTest()
         {
             if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
                 return;

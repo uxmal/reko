@@ -493,7 +493,7 @@ namespace Reko.Arch.Mips
                 m.Return(0, 0);
         }
 
-        private void RewriteSave(MipsInstruction instr)
+        protected virtual void RewriteSave(MipsInstruction instr)
         {
             var sp = binder.EnsureRegister(arch.GetRegister(29));
             int count = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();

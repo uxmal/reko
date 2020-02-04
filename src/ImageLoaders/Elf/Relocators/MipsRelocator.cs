@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using Reko.Core;
 using System.Linq;
 using System.Diagnostics;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -31,9 +32,39 @@ namespace Reko.ImageLoaders.Elf.Relocators
     public class MipsRelocator : ElfRelocator32
     {
         const int PointerByteSize = 4;
+        private IProcessorArchitecture archMips16e;
 
         public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
+        }
+
+        public override ImageSymbol AdjustImageSymbol(ImageSymbol sym)
+        {
+            if (sym.Type != SymbolType.Code &&
+                sym.Type != SymbolType.ExternalProcedure &&
+                sym.Type != SymbolType.Procedure)
+                return sym;
+            if ((sym.Address.ToLinear() & 1) == 0)
+                return sym;
+            if (archMips16e == null)
+            {
+                var cfgSvc = loader.Services.RequireService<IConfigurationService>();
+                this.archMips16e = cfgSvc.GetArchitecture(loader.Architecture.Name);
+                archMips16e.LoadUserOptions(new Dictionary<string, object>
+                {
+                    { "decoder", "mips16e" }
+                });
+            }
+            var addrNew = sym.Address - 1;
+            var symNew = ImageSymbol.Create(
+                sym.Type,
+                archMips16e,
+                addrNew,
+                sym.Name,
+                sym.DataType,
+                !sym.NoDecompile);
+            symNew.ProcessorState = sym.ProcessorState;
+            return symNew;
         }
 
         public override void Relocate(Program program)

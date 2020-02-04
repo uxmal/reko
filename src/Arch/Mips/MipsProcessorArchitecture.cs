@@ -109,6 +109,7 @@ namespace Reko.Arch.Mips
             switch (this.instructionSetEncoding)
             {
             case "micro": return new MicroMipsDisassembler(this, imageReader);
+            case "mips16e": return new Mips16eDisassembler(this, imageReader);
             case "nano": return new NanoMipsDisassembler(this, imageReader);
             default:
                 if (rootDecoder == null)
@@ -116,7 +117,6 @@ namespace Reko.Arch.Mips
                     var factory = new MipsDisassembler.DecoderFactory(this.instructionSetEncoding);
                     rootDecoder = factory.CreateRootDecoder();
                 }
-
                 return new MipsDisassembler(this, rootDecoder, imageReader);
             }
         }
@@ -133,12 +133,24 @@ namespace Reko.Arch.Mips
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new MipsRewriter(
-                this,
-                rdr,
-                CreateDisassemblerInternal(rdr),
-                binder,
-                host);
+            if (instructionSetEncoding == "mips16e")
+            {
+                return new Mips16eRewriter(
+                    this,
+                    rdr,
+                    CreateDisassemblerInternal(rdr),
+                    binder, 
+                    host);
+            }
+            else
+            {
+                return new MipsRewriter(
+                    this,
+                    rdr,
+                    CreateDisassemblerInternal(rdr),
+                    binder,
+                    host);
+            }
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -215,6 +227,7 @@ namespace Reko.Arch.Mips
                 switch (decoderName)
                 {
                 case "micro":
+                case "mips16e":
                 case "nano":
                     this.InstructionBitSize = 16;
                     break;
