@@ -48,6 +48,7 @@ namespace Reko.Arch.Mips
         public RegisterStorage LinkRegister;
         public RegisterStorage hi;
         public RegisterStorage lo;
+        public RegisterStorage pc;
         private string instructionSetEncoding;
         private Dictionary<string, RegisterStorage> mpNameToReg;
         private Dictionary<string, object> options;
@@ -66,6 +67,7 @@ namespace Reko.Arch.Mips
 
             this.hi = new RegisterStorage("hi", 32, 0, wordSize);
             this.lo = new RegisterStorage("lo", 33, 0, wordSize);
+            this.pc = new RegisterStorage("pc", 34, 0, wordSize);
             this.fpuRegs = CreateFpuRegisters();
             this.FCSR = RegisterStorage.Reg32("FCSR", 0x201F);
             this.ccRegs = CreateCcRegs();

@@ -68,5 +68,6 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("save\tra,r17,r16,+00000080", "64F0");
         }
+
     }
 }

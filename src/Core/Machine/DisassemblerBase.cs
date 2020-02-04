@@ -127,6 +127,7 @@ namespace Reko.Core.Machine
             testBodyGenerator(writer);
             writer.WriteLine("}");
 
+            Debug.WriteLine(writer.ToString());
             Console.Out.WriteLine(writer.ToString());
         }
 
