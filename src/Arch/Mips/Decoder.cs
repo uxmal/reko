@@ -74,25 +74,5 @@ namespace Reko.Arch.Mips
                 return decoder.Decode(wInstr, dasm);
             }
         }
-
-        internal class Version6Decoder : Decoder
-        {
-            private readonly Decoder preV6Odecoder;
-            private readonly Decoder v6Odecoder;
-
-            public Version6Decoder(Decoder preDecoder, Decoder postDecoder)
-            {
-                this.preV6Odecoder = preDecoder;
-                this.v6Odecoder = postDecoder;
-            }
-
-            public override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
-            {
-                if (dasm.isVersion6OrLater)
-                    return v6Odecoder.Decode(wInstr, dasm);
-                else
-                    return preV6Odecoder.Decode(wInstr, dasm);
-            }
-        }
     }
 }

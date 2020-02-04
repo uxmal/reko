@@ -50,6 +50,8 @@ namespace Reko.Arch.Mips
         public RegisterStorage lo;
         private string instructionSetEncoding;
         private Dictionary<string, RegisterStorage> mpNameToReg;
+        private Dictionary<string, object> options;
+        private Decoder<MipsDisassembler, Mnemonic, MipsInstruction> rootDecoder;
 
         public MipsProcessorArchitecture(string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize) : base(archId)
         {
@@ -108,7 +110,14 @@ namespace Reko.Arch.Mips
             {
             case "micro": return new MicroMipsDisassembler(this, imageReader);
             case "nano": return new NanoMipsDisassembler(this, imageReader);
-            default: return new MipsDisassembler(this, imageReader, this.IsVersion6OrLater);
+            default:
+                if (rootDecoder == null)
+                {
+                    var factory = new MipsDisassembler.DecoderFactory(this.instructionSetEncoding);
+                    rootDecoder = factory.CreateRootDecoder();
+                }
+
+                return new MipsDisassembler(this, rootDecoder, imageReader);
             }
         }
 
@@ -198,6 +207,7 @@ namespace Reko.Arch.Mips
 
         public override void LoadUserOptions(Dictionary<string, object> options)
         {
+            this.options = options;
             if (options.TryGetValue("decoder", out var oDecoderName) && 
                 oDecoderName is string decoderName)
             {
@@ -213,7 +223,7 @@ namespace Reko.Arch.Mips
                     break;
                 }
             }
-            base.LoadUserOptions(options);
+            this.rootDecoder = null;
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

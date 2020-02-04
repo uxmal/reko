@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Mips
     public class MipsRewriterTests : RewriterTestBase
     {
         private MipsProcessorArchitecture arch = new MipsBe32Architecture("mips-be-32");
-        private Func<EndianImageReader, IEnumerable<MipsInstruction>> mkDasm;
+        private Func<EndianImageReader, IEnumerable<MachineInstruction>> mkDasm;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void Setup()
         {
             this.arch = new MipsBe32Architecture("mips-be-32");
-            this.mkDasm = rdr => new MipsDisassembler(arch, rdr, false);
+            this.mkDasm = rdr => arch.CreateDisassembler(rdr);
         }
 
         private void AssertCode(uint instr, params string[] sExp)
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Mips
         private void Given_Mips64_Architecture()
         {
             arch = new MipsBe64Architecture("mips-be-64");
-            mkDasm = rdr => new MipsDisassembler(arch, rdr, false);
+            mkDasm = rdr => arch.CreateDisassembler(rdr);
         }
 
         private void Given_NanoDecoder()
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var dasm = mkDasm(arch.CreateImageReader(mem, 0));
+            var dasm = mkDasm(arch.CreateImageReader(mem, 0)).Cast<MipsInstruction>();
             return new MipsRewriter(arch, null, dasm, binder, host);
         }
 

@@ -91,7 +91,20 @@ namespace Reko.ImageLoaders.Elf
                 // would be great to get our sweaty little hands on
                 // such a binary.
                 var mipsFlags = (MIPSflags) Header.e_flags;
-                var is64 = (mipsFlags & MIPSflags.EF_MIPS_ARCH) == MIPSflags.EF_MIPS_ARCH_64;
+                bool is64 = false;
+                switch (mipsFlags & MIPSflags.EF_MIPS_ARCH)
+                {
+                case MIPSflags.EF_MIPS_ARCH_64:
+                    is64 = true;
+                    break;
+                case MIPSflags.EF_MIPS_ARCH_64R2:
+                    is64 = true;
+                    options["decoder"] = "v6";
+                    break;
+                case MIPSflags.EF_MIPS_ARCH_32R2:
+                    options["decoder"] = "v6";
+                    break;
+                }
                 if (endianness == ELFDATA2LSB)
                 {
                     arch = is64 
