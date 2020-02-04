@@ -175,8 +175,7 @@ namespace Reko.Arch.Mips
 
         public override int? GetMnemonicNumber(string name)
         {
-            Mnemonic result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Mnemonic result))
                 return null;
             return (int)result;
         }

@@ -176,6 +176,22 @@ namespace Reko.Core.Rtl
             return this;
         }
 
+        /// <summary>
+        /// Called to generate a RtlCall instruction (with a delay slot) and switch to the given processor 
+        /// architecture <paramref name="arch"/>. The <paramref name="retSize"/> is the
+        /// size of the return value as placed on the stack. It will be 0 on machines
+        /// which use link registers to store the return address at a function call. 
+        /// </summary>
+        /// <param name="target">Destination of the call.</param>
+        /// <param name="retSize">Size in bytes of return address on stack</param>
+        /// <param name="arch">The processor architecture to switch to.</param>
+        /// <returns>A reference to this RtlEmitter.</returns>
+        public RtlEmitter CallXD(Expression target, byte retSize, IProcessorArchitecture arch)
+        {
+            Instructions.Add(new RtlCall(target, retSize, InstrClass.Transfer | InstrClass.Call | InstrClass.Delay, arch));
+            return this;
+        }
+
 
         /// <summary>
         /// Emit the RTL instruction <paramref name="instr"/> to the RTL 
