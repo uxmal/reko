@@ -500,7 +500,6 @@ namespace Reko.Environments.MacOS.Classic
         private void A5Relocate(BeImageReader a5dr, UInt32 a5dbelow)
 
         // Update pointers within A5World that point to an address within A5World, to the real/absolute address. 
-
         {
             var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, 0);
             var a5belowReader = new BeImageReader(platform.A5World.MemoryArea,0);
