@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -234,7 +235,7 @@ Architecture */
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
             var dst = ((AddressOperand) instr.Operands[0]).Address;
-            throw new NotImplementedException("m.CallXD(dst, 0, arch)");
+            m.CallXD(dst, 0, arch);
         }
 
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dt)
@@ -264,9 +265,27 @@ Architecture */
             m.Assign(opDst, binder.EnsureRegister(reg));
         }
 
+        private static readonly int [] saveRegs = new [] { 31, 17, 16 };
+
         private void RewriteSave(MipsInstruction instr)
         {
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            var mop = (MultiRegisterOperand) instr.Operands[0];
+            int decrement = 0;
 
+            foreach (var iReg in saveRegs)
+            {
+                var reg = arch.GeneralRegs[iReg];
+                if (Bits.IsBitSet(mop.Bitmask, iReg))
+                {
+                    decrement -= reg.DataType.Size;
+                    m.Assign(m.Mem(reg.DataType, m.AddSubSignedInt(sp, decrement)), binder.EnsureRegister(reg));
+                }
+            }
+            if (decrement != 0)
+            {
+                m.Assign(sp, m.AddSubSignedInt(sp, decrement));
+            }
         }
 
         private void RewriteScc(MipsInstruction instr, Func<Expression, Expression, Expression> fn)

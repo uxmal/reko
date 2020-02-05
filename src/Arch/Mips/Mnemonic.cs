@@ -318,5 +318,8 @@ namespace Reko.Arch.Mips
         btnez,
         jalx,
         neg,
+        zeb,
+        zeh,
+        cmp,
     }
 }

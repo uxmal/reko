@@ -118,6 +118,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void Mips16eDis_btnez()
+        {
+            AssertCode("btnez\t00100018", "610B");
+        }
+
+        [Test]
         public void Mips16eDis_cmpi()
         {
             AssertCode("cmpi\tr6,0000004B", "764B");
@@ -216,7 +222,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void Mips16eDis_save()
         {
-            AssertCode("save\tra,r17,r16,+00000080", "64F0");
+            AssertCode("save\tra,r16,r17,+00000080", "64F0");
         }
 
         [Test]
@@ -286,5 +292,6 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         ////////////////////////////////////////////////////////////////////////////////
+        ///
     }
 }
