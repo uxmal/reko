@@ -129,7 +129,7 @@ namespace Reko.Core
             case 8:
                 fmt.WriteKeyword("dq");
                 fmt.Write("\t");
-                fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt32()));
+                fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt64()));
                 fmt.WriteLine();
                 return;
             default:
