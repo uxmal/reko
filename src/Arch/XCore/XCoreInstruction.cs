@@ -28,7 +28,7 @@ namespace Reko.Arch.XCore
     public class XCoreInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
-        public override int OpcodeAsInteger => (int) Mnemonic;
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -38,7 +38,7 @@ namespace Reko.Arch.XCore
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(Mnemonic.ToString());
+            writer.WriteMnemonic(Mnemonic.ToString());
         }
     }
 }

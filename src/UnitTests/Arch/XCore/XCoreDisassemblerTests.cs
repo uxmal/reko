@@ -61,11 +61,6 @@ namespace Reko.UnitTests.Arch.XCore
             Assert.AreEqual(sExpected, instr.ToString());
         }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
-
         [Test]
         public void XCore200Dis_add()
         {
