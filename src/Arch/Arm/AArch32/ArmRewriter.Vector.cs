@@ -27,6 +27,18 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {
+        private void RewriteVbic()
+        {
+            if (instr.Operands.Length == 3)
+            {
+                RewriteVectorBinOp("__vbic_{0}", instr.vector_data, Dst(), Src1(), Src2());
+            }
+            else
+            {
+                RewriteVectorBinOp("__vbic_{0}", instr.vector_data, Dst(), Dst(), Src1());
+            }
+        }
+
         private void RewriteVecBinOp(Func<Expression, Expression, Expression> fn)
         {
             if (instr.Operands.Length == 3)
