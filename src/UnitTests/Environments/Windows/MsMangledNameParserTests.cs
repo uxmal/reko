@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void PMNP_ctor()
         {
-            RunTest("__thiscall public: void exception::exception()", "??0exception@@QAE@XZ");
+            RunTest("__thiscall public: exception * exception::exception()", "??0exception@@QAE@XZ");
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Environments.Windows
             //$TODO: need support for full C++ type system for this, since the 'A' in 'ABV0' is a C++ reference.
             // For now, fake it with a pointer.
             RunTest(
-                "__thiscall public: void exception::exception(const exception *)",
+                "__thiscall public: exception * exception::exception(const exception *)",
                 "??0exception@@QAE@ABV0@@Z");
         }
 
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_string_ctor()
         {
             RunTest(
-                "__thiscall public: void std::basic_string::basic_string(const basic_string *)",
+                "__thiscall public: std::basic_string * std::basic_string::basic_string(const basic_string *)",
                 "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z");
         }
 
@@ -173,7 +173,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_name_with_namespace()
         {
             RunTest(
-                "__thiscall public: void ATL::CSimpleStringT::CSimpleStringT(const CSimpleStringT *)",
+                "__thiscall public: ATL::CSimpleStringT * ATL::CSimpleStringT::CSimpleStringT(const CSimpleStringT *)",
                 "??0?$CSimpleStringT@_W$00@ATL@@QAE@ABV?$CSimpleStringT@_W$0A@@1@@Z");
         }
 
@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression1()
         {
             RunTest(
-                "__thiscall public: void AFX_MAINTAIN_STATE2::AFX_MAINTAIN_STATE2(AFX_MODULE_STATE *)",
+                "__thiscall public: AFX_MAINTAIN_STATE2 * AFX_MAINTAIN_STATE2::AFX_MAINTAIN_STATE2(AFX_MODULE_STATE *)",
                 "??0AFX_MAINTAIN_STATE2@@QAE@PAVAFX_MODULE_STATE@@@Z");
         }
 
@@ -269,7 +269,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression9()
         {
             RunTest(
-                "__cdecl public: void CLASS_DESCRIPTOR::CLASS_DESCRIPTOR()",
+                "__cdecl public: CLASS_DESCRIPTOR * CLASS_DESCRIPTOR::CLASS_DESCRIPTOR()",
                 "??0CLASS_DESCRIPTOR@@QEAA@XZ");
         }
 
