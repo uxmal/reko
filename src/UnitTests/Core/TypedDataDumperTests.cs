@@ -70,5 +70,19 @@ namespace Reko.UnitTests.Core
 
             Assert.AreEqual("db\t0x0D,0x0A,'Hello',0x00" + cr, sw.ToString());
         }
+
+        [Test]
+        public void Tdd_Word64()
+        {
+            var bytes = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+            };
+            Given_TypedDataDumper(bytes);
+
+            PrimitiveType.Word64.Accept(tdd);
+
+            Assert.AreEqual("dq\t0x0807060504030201" + cr, sw.ToString());
+        }
     }
 }
