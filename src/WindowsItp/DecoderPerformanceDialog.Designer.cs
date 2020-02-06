@@ -37,10 +37,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.rdbRealDasm = new System.Windows.Forms.RadioButton();
-            this.rdbInterpretedDasm = new System.Windows.Forms.RadioButton();
-            this.chkRewriter = new System.Windows.Forms.CheckBox();
             this.rdbThreadedDasm = new System.Windows.Forms.RadioButton();
+            this.rdbInterpretedDasm = new System.Windows.Forms.RadioButton();
+            this.rdbRealDasm = new System.Windows.Forms.RadioButton();
+            this.chkRewriter = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -133,6 +133,26 @@
             this.panel2.TabIndex = 8;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
+            // rdbThreadedDasm
+            // 
+            this.rdbThreadedDasm.AutoSize = true;
+            this.rdbThreadedDasm.Location = new System.Drawing.Point(6, 49);
+            this.rdbThreadedDasm.Name = "rdbThreadedDasm";
+            this.rdbThreadedDasm.Size = new System.Drawing.Size(201, 17);
+            this.rdbThreadedDasm.TabIndex = 2;
+            this.rdbThreadedDasm.Text = "Use &simulated &threading disassembler";
+            this.rdbThreadedDasm.UseVisualStyleBackColor = true;
+            // 
+            // rdbInterpretedDasm
+            // 
+            this.rdbInterpretedDasm.AutoSize = true;
+            this.rdbInterpretedDasm.Location = new System.Drawing.Point(6, 26);
+            this.rdbInterpretedDasm.Name = "rdbInterpretedDasm";
+            this.rdbInterpretedDasm.Size = new System.Drawing.Size(209, 17);
+            this.rdbInterpretedDasm.TabIndex = 1;
+            this.rdbInterpretedDasm.Text = "Use simulated &interpreting disassembler";
+            this.rdbInterpretedDasm.UseVisualStyleBackColor = true;
+            // 
             // rdbRealDasm
             // 
             this.rdbRealDasm.AutoSize = true;
@@ -145,16 +165,6 @@
             this.rdbRealDasm.Text = "Use &real A32 disassembler";
             this.rdbRealDasm.UseVisualStyleBackColor = true;
             // 
-            // rdbInterpretedDasm
-            // 
-            this.rdbInterpretedDasm.AutoSize = true;
-            this.rdbInterpretedDasm.Location = new System.Drawing.Point(6, 26);
-            this.rdbInterpretedDasm.Name = "rdbInterpretedDasm";
-            this.rdbInterpretedDasm.Size = new System.Drawing.Size(209, 17);
-            this.rdbInterpretedDasm.TabIndex = 1;
-            this.rdbInterpretedDasm.Text = "Use simulated &interpreting disassembler";
-            this.rdbInterpretedDasm.UseVisualStyleBackColor = true;
-            // 
             // chkRewriter
             // 
             this.chkRewriter.AutoSize = true;
@@ -164,16 +174,6 @@
             this.chkRewriter.TabIndex = 9;
             this.chkRewriter.Text = "Run re&writer";
             this.chkRewriter.UseVisualStyleBackColor = true;
-            // 
-            // rdbThreadedDasm
-            // 
-            this.rdbThreadedDasm.AutoSize = true;
-            this.rdbThreadedDasm.Location = new System.Drawing.Point(6, 49);
-            this.rdbThreadedDasm.Name = "rdbThreadedDasm";
-            this.rdbThreadedDasm.Size = new System.Drawing.Size(201, 17);
-            this.rdbThreadedDasm.TabIndex = 2;
-            this.rdbThreadedDasm.Text = "Use &simulated &threading disassembler";
-            this.rdbThreadedDasm.UseVisualStyleBackColor = true;
             // 
             // DecoderPerformanceDialog
             // 

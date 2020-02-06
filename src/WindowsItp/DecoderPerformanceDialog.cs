@@ -1,4 +1,5 @@
 using Reko.Core;
+using Reko.Core.Rtl;
 using Reko.WindowsItp.Decoders;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace Reko.WindowsItp
 {
     public partial class DecoderPerformanceDialog : Form
     {
+        private List<RtlInstructionCluster> rtls;
+
         public DecoderPerformanceDialog()
         {
             InitializeComponent();
@@ -40,8 +43,8 @@ namespace Reko.WindowsItp
             Func<long> test;
             if (rdbRealDasm.Checked)
             {
-                //var arch = new Reko.Arch.Arm.Arm32Architecture("arm32");
-                var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
+                var arch = new Reko.Arch.Arm.Arm32Architecture("arm32");
+                //var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
 
                 if (rewriter)
                 {
@@ -161,10 +164,12 @@ namespace Reko.WindowsItp
             var rdr = arch.CreateImageReader(mem, mem.BaseAddress);
             var dasm = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(),
                 new RewriterPerformanceDialog.RewriterHost(new Dictionary<Address, ImportReference>()));
+            this.rtls = new List<RtlInstructionCluster>();
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            foreach (var instr in dasm)
+            foreach (var rtl in dasm)
             {
+                rtls.Add(rtl);
             }
             sw.Stop();
             var time = sw.ElapsedMilliseconds;
