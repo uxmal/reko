@@ -1889,5 +1889,14 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = Mem0[0x00100008 + r3:word32]");
         }
+
+        [Test]
+        public void ArmRw_vbic()
+        {
+            Given_UInt32s(0xF2C72B3F); // vbic.i16\td18,0x7F00
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d18 = __vbic_i16(d18, 0x7F007F007F007F00)");
+        }
     }
 }
