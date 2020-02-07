@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public string label; // ;label[256];
     }
 
-    public partial class OllyLang : IScriptInterpreter
+    public partial class OllyLangInterpreter : IScriptInterpreter
     {
         private const byte OS_VERSION_HI = 1;  // High plugin version
         private const byte OS_VERSION_LO = 77; // Low plugin version
@@ -95,7 +95,7 @@ namespace Reko.ImageLoaders.OdbgScript
         //private bool back_to_debugloop;
         private string errorstr;
 
-        public OllyLang(IServiceProvider services, IProcessorArchitecture arch)
+        public OllyLangInterpreter(IServiceProvider services, IProcessorArchitecture arch)
         {
             this.services = services;
             this.arch = arch;

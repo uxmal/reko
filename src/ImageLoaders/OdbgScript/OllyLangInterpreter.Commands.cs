@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     using rulong = System.UInt64;
 
-    public partial class OllyLang
+    public partial class OllyLangInterpreter
     {
         const int MAX_INSTR_SIZE = 16;      // x86
         const int PAGE_SIZE = 4096;         // x86 sometimes.

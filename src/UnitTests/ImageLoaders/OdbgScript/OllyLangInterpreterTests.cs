@@ -30,12 +30,12 @@ using System.Text;
 namespace Reko.UnitTests.ImageLoaders.OdbgScript
 {
     [TestFixture]
-    public class OllyLangTests
+    public class OllyLangInterpreterTests
     {
         private Mock<IHost> host;
         private Mock<IProcessorEmulator> emu;
         private Mock<IProcessorArchitecture> arch;
-        private OllyLang engine;
+        private OllyLangInterpreter engine;
         private MemoryArea mem;
         private SegmentMap imageMap;
 
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
                 It.IsAny<Constant>(),
                 It.IsAny<bool>()))
                 .Returns(new Func<Constant, bool, Address>((c, f) => Address.Ptr32((uint) c.ToUInt64())));
-            engine = new OllyLang(null, arch.Object)
+            engine = new OllyLangInterpreter(null, arch.Object)
             {
                 Host = host.Object,
                 Debugger = new Debugger(emu.Object),

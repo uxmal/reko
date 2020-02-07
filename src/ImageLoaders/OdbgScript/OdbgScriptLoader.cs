@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.OdbgScript
     {
         private readonly ImageLoader originalImageLoader;
         private Debugger debugger;
-        private OllyLang scriptInterpreter;
+        private OllyLangInterpreter scriptInterpreter;
         private rulong OldIP;
 
         public OdbgScriptLoader(ImageLoader imageLoader) 
@@ -76,7 +76,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var envEmu = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
             this.debugger = new Debugger(emu);
-            this.scriptInterpreter = new OllyLang(Services, program.Architecture);
+            this.scriptInterpreter = new OllyLangInterpreter(Services, program.Architecture);
             this.scriptInterpreter.Host = new Host(this, program.SegmentMap);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
