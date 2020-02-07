@@ -34,6 +34,8 @@ namespace Reko.ImageLoaders.OdbgScript
     public class OllyScriptParser : IDisposable
     {
         private static readonly UnknownType unk = new UnknownType();
+        private static readonly ProcedureConstant interpolate = new ProcedureConstant(unk, new PseudoProcedure("Interpolate", unk, 1));
+        private static readonly ProcedureConstant hexString = new ProcedureConstant(unk, new PseudoProcedure("HexString", unk, 1));
 
         private Lexer lexer;
         private Stack<Lexer> lexerStack;
@@ -258,9 +260,9 @@ namespace Reko.ImageLoaders.OdbgScript
             case TokenType.String:
                 return MkString(token);
             case TokenType.InterpolatedString:
-                return Intrinsic("Interpolate", MkString(token));
+                return new Application( interpolate, unk, MkString(token));
             case TokenType.HexString:
-                return Intrinsic("HexString", MkString(token));
+                return new Application( hexString, unk,  MkString(token));
             case TokenType.Id:
                 return new Identifier((string) token.Value, new UnknownType(), MemoryStorage.Instance);
             case TokenType.Integer:
@@ -280,7 +282,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     return null;
                 return exp;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException($"Token {tok.Type} on line {tok.LineNumber} not implemented.");
         }
 
         private bool Expect(TokenType rBracket)
@@ -316,12 +318,6 @@ namespace Reko.ImageLoaders.OdbgScript
                 return true;
             }
             return false;
-
-        }
-
-        private Expression Intrinsic(string v, Constant constant)
-        {
-            throw new NotImplementedException();
         }
 
         private static Constant MkString(Token token)
@@ -427,7 +423,7 @@ namespace Reko.ImageLoaders.OdbgScript
                         case '(': rdr.Read(); return MakeToken(TokenType.LParen);
                         case ')': rdr.Read(); return MakeToken(TokenType.RParen);
                         default:
-                            if (Char.IsLetter(ch))
+                            if (Char.IsLetter(ch) || ch == '!')
                             {
                                 rdr.Read();
                                 sb.Append(ch);
@@ -449,7 +445,16 @@ namespace Reko.ImageLoaders.OdbgScript
                         {
                         case -1: return MakeToken(TokenType.Dollar);
                         case '"': rdr.Read(); stringType = TokenType.InterpolatedString; state = State.String; break;
-                        default: return MakeToken(TokenType.Dollar);
+                        default:
+                            if (Char.IsLetter(ch))
+                            {
+                                rdr.Read();
+                                sb.Append('$');
+                                sb.Append(ch);
+                                state = State.Identifier;
+                                break;
+                            }
+                            return MakeToken(TokenType.Dollar);
                         }
                         break;
                     case State.String:
@@ -514,8 +519,10 @@ namespace Reko.ImageLoaders.OdbgScript
                         case 'e':
                         case 'f':
                             rdr.Read(); sb.Append(ch); state = State.HexNumber; break;
+                        default:
+                            return MakeToken(TokenType.Integer, Convert.ToUInt64(sb.ToString(), 16));
                         }
-                        return MakeToken(TokenType.Integer, Convert.ToUInt64(sb.ToString(), 16));
+                        break;
                     case State.HexNumber:
                         switch (c)
                         {
@@ -543,8 +550,10 @@ namespace Reko.ImageLoaders.OdbgScript
                         case 'e':
                         case 'f':
                             rdr.Read(); sb.Append(ch); break;
+                        default:
+                            return MakeToken(TokenType.Integer, Convert.ToUInt64(sb.ToString(), 16));
                         }
-                        return MakeToken(TokenType.Integer, Convert.ToUInt64(sb.ToString(), 16));
+                        break;
                     case State.Slash:
                         switch (c)
                         {
@@ -709,6 +718,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 this.Type = type;
                 this.LineNumber = lineNumber;
                 this.Value = value;
+            }
+
+            public override string ToString()
+            {
+                return $"({Type}: {Value})";
             }
         }
 

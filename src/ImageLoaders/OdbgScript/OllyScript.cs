@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.OdbgScript
             public string RawLine;
             public bool IsCommand;
             public string Command;
-            public Func<string[], bool> CommandPtr;
+            public Func<Expression[], bool> CommandPtr;
             public string[] args = new string[0];
             public Expression[] Args = new Expression[0];
 
@@ -290,9 +290,18 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        public bool IsLabel(string s)
+        [Obsolete]
+        public bool IsLabel(Expression exp)
         {
-            return (Labels.ContainsKey(s));
+            return exp is Identifier id && Labels.ContainsKey(id.Name);
+        }
+
+        public bool TryGetLabel(Expression exp, out uint lineNumber)
+        {
+            if (exp is Identifier id && Labels.TryGetValue(id.Name, out lineNumber))
+                return true;
+            lineNumber = ~0u;
+            return false;
         }
     }
 }

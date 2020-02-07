@@ -86,5 +86,29 @@ cmd2
             Assert.AreEqual("cmd2", script.Lines[4].Command);
             Assert.AreEqual(5, script.Lines.Count);
         }
+
+        [Test]
+        public void Osp_HexString()
+        {
+            Given_Parser("foo #2A??3B#");
+            var script = parser.ParseScript();
+            Assert.AreEqual("1: foo HexString(\"2A??3B\")", script.Lines[0].ToString());
+        }
+
+        [Test]
+        public void Osp_Interpolated()
+        {
+            Given_Parser("foo $\"interpolated {var}\"");
+            var script = parser.ParseScript();
+            Assert.AreEqual("1: foo Interpolate(\"interpolated {var}\")", script.Lines[0].ToString());
+        }
+
+        [Test]
+        public void Osp_SegmentedAddress()
+        {
+            Given_Parser("foo 0B00:0C00");
+            var script = parser.ParseScript();
+            Assert.AreEqual("1: foo SEQ(0x0000000000000B00, 0x0000000000000C00)", script.Lines[0].ToString());
+        }
     }
 }
