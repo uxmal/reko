@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,19 +35,43 @@ namespace Reko.ImageLoaders.OdbgScript
         public class Line
         {
             public uint LineNumber;
+            public string Label;
             public string RawLine;
             public bool IsCommand;
             public string Command;
             public Func<string[], bool> CommandPtr;
             public string[] args = new string[0];
+            public Expression[] Args = new Expression[0];
+
+            public override string ToString()
+            {
+                var sb = new StringBuilder();
+                sb.AppendFormat("{0}", LineNumber + 1);
+                var sep = ": ";
+                if (Label != null)
+                {
+                    sb.AppendFormat("{0}{1}: ", sep, Label);
+                    sep = "";
+                }
+                if (Command != null)
+                {
+                    sb.AppendFormat("{0}{1}", sep, Command);
+                    sep = "";
+                    foreach (var arg in Args)
+                    {
+                        sb.Append(sep);
+                        sep = ", ";
+                        sb.Append(arg);
+                    }
+                }
+                return sb.ToString();
+            }
         }
 
         private string path;
-        private OllyLang interpreter;
 
-        public OllyScript(OllyLang interpreter)
+        public OllyScript()
         {
-            this.interpreter = interpreter;
             this.IsLoaded = false;
             this.Log = false;
             this.Lines = new List<Line>();
@@ -66,7 +91,7 @@ namespace Reko.ImageLoaders.OdbgScript
             Labels.Clear();
         }
 
-        private void InsertLines(List<string> toInsert, string currentdir)
+        private void InsertLines(List<string> toInsert, string currentdir, IHost host)
         {
             uint curline = 1;
             bool in_comment = false, in_asm = false;
@@ -170,11 +195,11 @@ namespace Reko.ImageLoaders.OdbgScript
                                         else
 											dir = Path.GetDirectoryName(philename);
 
-                                        InsertLines(Helper.ReadLinesFromFile(philename), dir);
+                                        InsertLines(Helper.ReadLinesFromFile(philename), dir, host);
                                     }
-                                    else interpreter.Host.MsgError("Bad #inc directive!");
+                                    else host.MsgError("Bad #inc directive!");
                                 }
-                                else this.interpreter.Host.MsgError("Bad #inc directive!");
+                                else host.MsgError("Bad #inc directive!");
                             }
                             // Logging
                             else if (!in_asm && lcline == "#log")
@@ -232,7 +257,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return from;
         }
 
-        public bool LoadFile(string file, string dir = null)
+        public bool LoadFile(IHost host, string file, string dir = null)
         {
             Clear();
 
@@ -251,11 +276,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 sdir = dir;
 
             List<string> unparsedScript = Helper.ReadLinesFromFile(path);
-            InsertLines(unparsedScript, sdir);
+            InsertLines(unparsedScript, sdir, host);
             return true;
         }
 
-        public bool LoadScriptFromString(string buff, string dir = null)
+        public bool LoadScriptFromString(IHost host, string buff, string dir = null)
         {
             Clear();
 
@@ -271,7 +296,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 sdir = dir;
 
             List<string> unparsedScript = Helper.ReadLines(new StringReader(buff));
-            InsertLines(unparsedScript, sdir);
+            InsertLines(unparsedScript, sdir, host);
             return true;
         }
 

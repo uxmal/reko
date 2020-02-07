@@ -44,6 +44,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
         {
             this.emu = new Mock<IProcessorEmulator>();
             this.arch = new Mock<IProcessorArchitecture>();
+            this.host = new Mock<IHost>();
         }
 
         [Test]
@@ -60,12 +61,11 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
         private void Given_Script(string script)
         {
             engine.Script.Clear();
-            engine.Script.LoadScriptFromString(script, ".");
+            engine.Script.LoadScriptFromString(this.host.Object, script, ".");
         }
 
         private void Given_Engine()
         {
-            this.host = new Mock<IHost>();
             arch.Setup(a => a.MakeAddressFromConstant(
                 It.IsAny<Constant>(),
                 It.IsAny<bool>()))

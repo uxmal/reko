@@ -99,7 +99,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             this.services = services;
             this.arch = arch;
-            this.Script = new OllyScript(this);
+            this.Script = new OllyScript();
 
             #region Initialize command array
             commands["add"] = DoADD;
@@ -804,14 +804,16 @@ namespace Reko.ImageLoaders.OdbgScript
             //importsCacheAddr = 0;
         }
 
-        public void LoadFromFile(string scriptFilename, string curDir)
+        public void LoadFromFile(string scriptFilename, Program program, string curDir)
         {
-            Script.LoadFile(scriptFilename, curDir);
+            var host = new Host(null, program.SegmentMap);
+            Script.LoadFile(host, scriptFilename, curDir);
         }
 
-        public void LoadFromString(string scriptString, string curDir)
+        public void LoadFromString(string scriptString, Program program, string curDir)
         {
-            Script.LoadScriptFromString(scriptString, curDir);
+            var host = new Host(null, program.SegmentMap);
+            Script.LoadScriptFromString(host, scriptString, curDir);
         }
 
         public void Run()
