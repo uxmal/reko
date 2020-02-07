@@ -28,7 +28,7 @@ using System.Text;
 namespace Reko.ImageLoaders.OdbgScript
 {
     /// <summary>
-    /// Represents loaded Odbg script state
+    /// Represents loaded Odbg script state.
     /// </summary>
     public class OllyScript
     {
@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (Command != null)
                 {
                     sb.AppendFormat("{0}{1}", sep, Command);
-                    sep = "";
+                    sep = " ";
                     foreach (var arg in Args)
                     {
                         sb.Append(sep);
@@ -72,20 +72,18 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public OllyScript()
         {
-            this.IsLoaded = false;
             this.Log = false;
             this.Lines = new List<Line>();
             this.Labels = new Dictionary<string, uint>();
         }
 
-        public bool IsLoaded { get; private set; }
         public Dictionary<string, uint> Labels { get; private set; }
         public List<Line> Lines {get; private set; }
         public bool Log { get; private set; }
 
+        [Obsolete]
         public void Clear()
         {
-            IsLoaded = false;
             path = "";
             Lines.Clear();
             Labels.Clear();
@@ -95,8 +93,6 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             uint curline = 1;
             bool in_comment = false, in_asm = false;
-
-            IsLoaded = true;
 
             for (int i = 0; i < toInsert.Count; i++, curline++)
             {
@@ -257,6 +253,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return from;
         }
 
+        [Obsolete]
         public bool LoadFile(IHost host, string file, string dir = null)
         {
             Clear();
@@ -280,21 +277,14 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
+        [Obsolete]
         public bool LoadScriptFromString(IHost host, string buff, string dir = null)
         {
             Clear();
 
-            string curdir = Helper.pathfixup(Environment.CurrentDirectory, true);
-            string sdir;
-
             this.path = "";
-            if (dir == null)
-            {
-                sdir = curdir;
-            }
-            else
-                sdir = dir;
-
+            string curdir = Helper.pathfixup(Environment.CurrentDirectory, true);
+            var sdir = dir ?? curdir;
             List<string> unparsedScript = Helper.ReadLines(new StringReader(buff));
             InsertLines(unparsedScript, sdir, host);
             return true;

@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.ImageLoaders.OdbgScript;
 using System;
@@ -35,6 +36,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
         private Mock<IHost> host;
         private Mock<IProcessorEmulator> emu;
         private Mock<IProcessorArchitecture> arch;
+        private Mock<IFileSystemService> fsSvc;
         private OllyLangInterpreter engine;
         private MemoryArea mem;
         private SegmentMap imageMap;
@@ -45,6 +47,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             this.emu = new Mock<IProcessorEmulator>();
             this.arch = new Mock<IProcessorArchitecture>();
             this.host = new Mock<IHost>();
+            this.fsSvc = new Mock<IFileSystemService>();
         }
 
         [Test]
@@ -60,8 +63,10 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
         private void Given_Script(string script)
         {
-            engine.Script.Clear();
-            engine.Script.LoadScriptFromString(this.host.Object, script, ".");
+            using (var parser = OllyScriptParser.FromString(engine.Host, fsSvc.Object, script, "."))
+            {
+                engine.Script = parser.ParseScript();
+            }
         }
 
         private void Given_Engine()

@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.ExceptionRaised += emu_ExceptionRaised;
 
             var stackSeg = envEmu.InitializeStack(emu, rr.EntryPoints[0].ProcessorState);
-            LoadScript(scriptInterpreter.Host, Argument, scriptInterpreter.Script);
+            scriptInterpreter.Script = LoadScript(scriptInterpreter.Host, Argument);
             emu.Start();
             envEmu.TearDownStack(stackSeg);
 
@@ -123,7 +123,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return pe;
         }
 
-        public virtual void LoadScript(IHost host, string scriptFilename, OllyScript script)
+        public virtual OllyScript LoadScript(IHost host, string scriptFilename)
         {
             // If the script file is not a rooted path, first try looking at 
             // the current directory. If there is no file there, try finding 
@@ -144,7 +144,10 @@ namespace Reko.ImageLoaders.OdbgScript
                     scriptFilename = absPath;
                 }
             }
-            script.LoadFile(host, scriptFilename, null);
+            using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, null))
+            {
+                return parser.ParseScript();
+            }
         }
 
         private void emu_ExceptionRaised(object sender, EventArgs e)
@@ -238,7 +241,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool ScripterAutoDebug(string szDebuggee)
         {
-            if (scriptInterpreter.Script.IsLoaded && scriptInterpreter.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
+            if (scriptInterpreter.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
             {
                 scriptInterpreter.Debugger.DebugLoop();
                 return true;

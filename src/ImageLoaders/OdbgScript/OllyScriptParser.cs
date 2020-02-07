@@ -31,7 +31,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    public class OllyScriptParser
+    public class OllyScriptParser : IDisposable
     {
         private static readonly UnknownType unk = new UnknownType();
 
@@ -41,7 +41,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private IHost host;
         private IFileSystemService fsSvc;
         private OllyScript script;
-        private string currentDir;
+        private readonly string currentDir;
 
         public OllyScriptParser(TextReader rdr, string currentDir, IHost host, IFileSystemService fsSvc)
         {
@@ -51,6 +51,17 @@ namespace Reko.ImageLoaders.OdbgScript
             this.currentDir = currentDir;
             this.lexerStack = new Stack<Lexer>();
             this.lexerStack.Push(new Lexer(rdr));
+        }
+
+        public void Dispose()
+        {
+            if (lexerStack == null)
+                throw new ObjectDisposedException(nameof(OllyScriptParser));
+            foreach (var lexer in lexerStack)
+            {
+                lexer.Dispose();
+            }
+            lexerStack = null;
         }
 
         public OllyScript ParseScript()
@@ -316,6 +327,31 @@ namespace Reko.ImageLoaders.OdbgScript
         private static Constant MkString(Token token)
         {
             return Constant.String((string) token.Value, StringType.NullTerminated(PrimitiveType.Char));
+        }
+
+        public static OllyScriptParser FromFile(IHost host, IFileSystemService fsSvc, string file, string dir = null)
+        {
+            string cdir = Environment.CurrentDirectory;
+            string curdir = Helper.pathfixup(cdir, true);
+            string sdir;
+
+            var path = Helper.pathfixup(file, false);
+            if (!Path.IsPathRooted(path))
+            {
+                path = Path.Combine(cdir, path);
+            }
+            if (string.IsNullOrEmpty(dir))
+                sdir = Path.GetDirectoryName(path);
+            else
+                sdir = dir;
+            return new OllyScriptParser(fsSvc.CreateStreamReader(path, Encoding.UTF8), sdir, host, fsSvc);
+        }
+
+        public static OllyScriptParser FromString(IHost host, IFileSystemService fsSvc, string buff, string dir)
+        {
+            string curdir = Helper.pathfixup(Environment.CurrentDirectory, true);
+            var sdir = dir ?? curdir;
+            return new OllyScriptParser(new StringReader(buff), sdir, host, fsSvc);
         }
 
         public class Lexer : IDisposable
@@ -698,5 +734,6 @@ namespace Reko.ImageLoaders.OdbgScript
             Minus,
             Directive,
         }
+
     }
 }

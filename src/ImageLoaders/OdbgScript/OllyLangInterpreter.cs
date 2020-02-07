@@ -30,6 +30,7 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     using Reko.Arch.X86;
     using Reko.Core.Expressions;
+    using Reko.Core.Services;
     using rulong = System.UInt64;
 
     // This is the table for Script Execution
@@ -649,11 +650,11 @@ namespace Reko.ImageLoaders.OdbgScript
 
         readonly static string[] e_flags = { "!cf", "!pf", "!af", "!zf", "!sf", "!df", "!of" };
 
-        readonly static constant_t[] constants =
-{
-	new constant_t("true",  1),
-	new constant_t("false", 0),
-	new constant_t("null",  0),
+        readonly static Dictionary<string, ulong> constants = new Dictionary<string, rulong>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            { "true",  1},
+            { "false", 0 },
+            { "null",  0 },
     
 #if LATER
 	new constant_t("ue_access_read",  UE_ACCESS_READ),
@@ -715,8 +716,7 @@ namespace Reko.ImageLoaders.OdbgScript
 	new constant_t("ue_on_lib_unload", UE_ON_LIB_UNLOAD),
 	new constant_t("ue_on_lib_all",    UE_ON_LIB_ALL)
 #endif
-};
-
+        };
 
         public Debugger Debugger { get; set; }
         public IHost Host { get; set; }
@@ -807,13 +807,21 @@ namespace Reko.ImageLoaders.OdbgScript
         public void LoadFromFile(string scriptFilename, Program program, string curDir)
         {
             var host = new Host(null, program.SegmentMap);
-            Script.LoadFile(host, scriptFilename, curDir);
+            var fsSvc = services.RequireService<IFileSystemService>();
+            using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, curDir))
+            {
+                this.Script = parser.ParseScript();
+            }
         }
 
         public void LoadFromString(string scriptString, Program program, string curDir)
         {
             var host = new Host(null, program.SegmentMap);
-            Script.LoadScriptFromString(host, scriptString, curDir);
+            var fsSvc = services.RequireService<IFileSystemService>();
+            using (var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir))
+            {
+                this.Script = parser.ParseScript();
+            }
         }
 
         public void Run()
@@ -834,7 +842,7 @@ namespace Reko.ImageLoaders.OdbgScript
             ignore_exceptions = false;
             stepcount = 0;
 
-            while (!resumeDebuggee && Script.IsLoaded && script_running)
+            while (!resumeDebuggee && script_running)
             {
                 if (tickcount_startup == 0)
                     tickcount_startup = Helper.MyTickCount();
@@ -852,15 +860,15 @@ namespace Reko.ImageLoaders.OdbgScript
                 // Log line of code if  enabled
                 if (Script.Log)
                 {
-                    Host.TE_Log("--> " + line.RawLine, Host.TS_LOG_COMMAND);
+                    Host.TE_Log("--> " + line.ToString(), Host.TS_LOG_COMMAND);
                 }
 
                 // Find command and execute it
                 Func<string[], bool> cmd = line.CommandPtr;
                 if (cmd == null && commands.TryGetValue(line.Command, out var it))
                 {
-                        line.CommandPtr = cmd = it;
-                    }
+                    line.CommandPtr = cmd = it;
+                }
 
                 bool result = false;
                 if (cmd != null)
@@ -1495,9 +1503,8 @@ namespace Reko.ImageLoaders.OdbgScript
                     return true;
                 }
             }
-            else if (is_constant(op))
+            else if (TryFindConstant(op, out value))
             {
-                value = find_constant(op).value;
                 return true;
             }
             else if (Helper.is_hex(op))
@@ -1733,15 +1740,9 @@ namespace Reko.ImageLoaders.OdbgScript
             return null;
         }
 
-        constant_t find_constant(string name)
+        bool TryFindConstant(string name, out ulong value)
         {
-            string lower = name.ToLowerInvariant();
-            for (int i = 0; i < constants.Length; i++)
-            {
-                if (constants[i].name == lower)
-                    return constants[i];
-            }
-            return default(constant_t);
+            return constants.TryGetValue(name, out value);
         }
 
         bool is_register(string s)
@@ -1761,17 +1762,17 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool IsVariable(string s)
         {
-            return (variables.ContainsKey(s));
+            return variables.ContainsKey(s);
         }
 
-        bool is_constant(string s)
+        bool IsConstant(string s)
         {
-            return (find_constant(s) != null);
+            return constants.ContainsKey(s);
         }
 
         bool is_valid_variable_name(string s)
         {
-            return (s.Length != 0 && char.IsLetter(s[0]) && !is_register(s) && !is_floatreg(s) && !is_constant(s));
+            return (s.Length != 0 && char.IsLetter(s[0]) && !is_register(s) && !is_floatreg(s) && !IsConstant(s));
         }
 
         bool is_writable(string s)
