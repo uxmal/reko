@@ -28,6 +28,8 @@ using System.Collections.Generic;
 using System.IO;
 using rulong = System.UInt64;
 
+#pragma warning disable IDE1006 // Naming Styles
+
 namespace Reko.ImageLoaders.OdbgScript
 {
     /// <summary>
@@ -237,16 +239,6 @@ namespace Reko.ImageLoaders.OdbgScript
         private void AutoDebugEntry()
         {
             ScripterResume();
-        }
-
-        bool ScripterAutoDebug(string szDebuggee)
-        {
-            if (scriptInterpreter.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
-            {
-                scriptInterpreter.Debugger.DebugLoop();
-                return true;
-            }
-            return false;
         }
     }
 }

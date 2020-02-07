@@ -119,22 +119,6 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
         }
 
         [Test]
-        public void Ose_LineArgs()
-        {
-            var line = new OllyScript.Line();
-            OllyScript.ParseArgumentsIntoLine( " hello,world", line);
-            Assert.AreEqual(2, line.args.Length);
-        }
-
-        [Test]
-        public void Ose_LineArgString()
-        {
-            var line = new OllyScript.Line();
-            OllyScript.ParseArgumentsIntoLine(" \"hello,world\"", line);
-            Assert.AreEqual(1, line.args.Length);
-        }
-
-        [Test]
         public void Ose_Find()
         {
             Given_Engine();

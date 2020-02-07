@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.OdbgScript
     {
         public rulong address;    //Memory Adress
         public uint size;     //Block Size
-        public uint script_pos; //Registred at script pos
+        public int script_pos; //Registred at script pos
         public bool autoclean; //On script restart/change
 
         public Address free_at_ip; //To free memory block used in ASM commands
@@ -70,14 +70,14 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private readonly IServiceProvider services;
         private readonly IProcessorArchitecture arch;
-        private readonly List<uint> calls = new List<uint>();         // Call/Ret in script
+        private readonly List<int> calls = new List<int>();         // Call/Ret in script
         public readonly Dictionary<string, Var> variables = new Dictionary<string, Var>(); // Variables that exist
-        private readonly Dictionary<rulong, uint> bpjumps = new Dictionary<rulong, uint>();  // Breakpoint Auto Jumps 
+        private readonly Dictionary<rulong, int> bpjumps = new Dictionary<rulong, int>();  // Breakpoint Auto Jumps 
         public  bool debuggee_running;
         public  bool script_running;
         public  bool run_till_return;
         public  bool return_to_usercode;
-        private  uint script_pos, script_pos_next;
+        private int script_pos, script_pos_next;
         private readonly UnknownType unk = new UnknownType();
 
         // Debugger state
@@ -403,9 +403,9 @@ namespace Reko.ImageLoaders.OdbgScript
 #endif
         }
 
-        void SoftwareCallback() { OnBreakpoint(eBreakpointType.PP_INT3BREAK); }
-        void HardwareCallback() { OnBreakpoint(eBreakpointType.PP_HWBREAK); }
-        void MemoryCallback()   { OnBreakpoint(eBreakpointType.PP_MEMBREAK); }
+        void SoftwareCallback() { OnBreakpoint(BreakpointType.PP_INT3BREAK); }
+        void HardwareCallback() { OnBreakpoint(BreakpointType.PP_HWBREAK); }
+        void MemoryCallback()   { OnBreakpoint(BreakpointType.PP_MEMBREAK); }
         void EXECJMPCallback()  { DoSTI(); }
 
         public struct callback_t
@@ -460,7 +460,7 @@ namespace Reko.ImageLoaders.OdbgScript
         //static void __stdcall LBPC_UNLOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG) { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_UNLOAD); }
         //static void __stdcall LBPC_ALL(const LOAD_DLL_DEBUG_INFO* SpecialDBG)    { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_ALL); }
 
-        private enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
+        private enum BreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
 
         public class register_t
         {
@@ -514,7 +514,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
 
         // Commands that can be executed
-        Dictionary<string, Func<Expression[], bool>> commands = new Dictionary<string, Func<Expression[], bool>>();
+        Dictionary<string, Func<Expression[], bool>> commands = new Dictionary<string, Func<Expression[], bool>>(StringComparer.InvariantCultureIgnoreCase );
 
         private int EOB_row, EOE_row;
         private bool bInternalBP;
@@ -569,7 +569,7 @@ namespace Reko.ImageLoaders.OdbgScript
             public rulong[] regs = new rulong[17];
             public ulong eflags;
             public uint threadid;
-            public uint script_pos;
+            public int script_pos;
         }
         t_reg_backup reg_backup = new t_reg_backup();
 
@@ -849,13 +849,13 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (tickcount_startup == 0)
                     tickcount_startup = Helper.MyTickCount();
 
-                script_pos = (uint) Script.NextCommandIndex((int)script_pos_next);
+                script_pos = Script.NextCommandIndex(script_pos_next);
 
                 // Check if script out of bounds
                 if (script_pos >= Script.Lines.Count)
                     return false;
 
-                var line = Script.Lines[(int)script_pos];
+                var line = Script.Lines[script_pos];
 
                 script_pos_next = script_pos + 1;
 
@@ -892,7 +892,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (!result)
                 {
                     Pause();
-                    string message = "Error on line " + Helper.rul2decstr(line.LineNumber) + ": " + line.RawLine + "\r\n" + errorstr;
+                    string message = $"Error on line {line.LineNumber + 1}: {line.RawLine}\r\n{errorstr}";
                     Host.MsgError(message);
                     errorstr = "";
                     return false;
@@ -930,7 +930,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        void OnBreakpoint(eBreakpointType reason)
+        void OnBreakpoint(BreakpointType reason)
         {
             if (bInternalBP) //dont process temporary bp (exec/ende/go)
             {
@@ -942,12 +942,12 @@ namespace Reko.ImageLoaders.OdbgScript
 
                 if (EOB_row > -1)
                 {
-                    script_pos_next = (uint)EOB_row;
+                    script_pos_next = EOB_row;
                 }
                 else
                 {
                     rulong ip = Debugger.InstructionPointer.ToLinear();
-                    if (bpjumps.TryGetValue(ip, out uint it))
+                    if (bpjumps.TryGetValue(ip, out int it))
                     {
                         script_pos_next = it;
                     }
@@ -961,7 +961,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (EOE_row > -1)
             {
-                script_pos_next = (uint)EOE_row;
+                script_pos_next = EOE_row;
             }
             else if (ignore_exceptions)
             {
@@ -1070,40 +1070,6 @@ namespace Reko.ImageLoaders.OdbgScript
             //Check after
             return ops.IndexOfAny(operators.ToCharArray(), e);
         }
-
-        /*
-        bool ParseOperands(const string* args, string* results, int count, bool preferstr)
-        {
-            for(int i = 0; i < count; i++) 
-            {
-                results[i] = args[i];
-
-                continue;
-
-                if(preferstr || args[i].IndexOf('\"') >= 0)
-                {
-                    if(!ParseString(args[i], results[i]))
-                    {
-                        if(!ParseRulong(args[i], results[i]))
-                        {
-                            ParseFloat(args[i], results[i]);
-                        }
-                    }
-                }
-                else
-                {
-                    if(!ParseRulong(args[i], results[i]))
-                    {
-                        if(!ParseFloat(args[i], results[i]))
-                        {
-                            ParseString(args[i], results[i]);
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-        */
 
 #if MIXING_PARSING_AND_EVALUATION
         bool ParseString(string arg, out string result)
@@ -1283,10 +1249,9 @@ namespace Reko.ImageLoaders.OdbgScript
         bool GetAnyValue(Expression op, out string value, bool hex8forExec = false)
         {
             value = null;
-
             if (op is Identifier id && IsVariable(id.Name))
             {
-                Var  v = variables[id.Name];
+                Var v = variables[id.Name];
                 if (v.IsString())
                 {
                     value = v.str;
@@ -1421,7 +1386,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else
             {
-                //$TODO: evaluae string expressions
+                //$TODO: evaluate string expressions
                 throw new NotImplementedException();
                 //return (ParseString(op, out string parsed) && GetString(parsed, size, out value));
             }
@@ -1748,11 +1713,6 @@ namespace Reko.ImageLoaders.OdbgScript
             return e_flags.Any(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }
 
-        bool IsVariable(Expression e)
-        {
-            return e is Identifier id && variables.ContainsKey(id.Name);
-        }
-
         bool IsVariable(string s)
         {
             return variables.ContainsKey(s);
@@ -1763,7 +1723,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return constants.ContainsKey(s);
         }
 
-        bool is_valid_variable_name(string s)
+        bool IsValidVariableName(string s)
         {
             return (s.Length != 0 && char.IsLetter(s[0]) && !is_register(s) && !is_floatreg(s) && !IsConstant(s));
         }
@@ -1856,12 +1816,6 @@ namespace Reko.ImageLoaders.OdbgScript
                 iStart = iEnd + 1;
             }
             return Helper.trim(command.ToString());
-        }
-
-        [Obsolete]
-        private bool CallCommand(Func<Expression[], bool> command, params Expression[] args)
-        {
-            return command(args);
         }
 
         void regBlockToFree(t_dbgmemblock block)
@@ -2064,7 +2018,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        bool StepCallback(uint pos, bool returns_value, Var.etype return_type, ref Var result)
+        bool StepCallback(int pos, bool returns_value, Var.etype return_type, ref Var result)
         {
             callback_t callback;
             callback.call = (uint) calls.Count;
@@ -2096,7 +2050,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             Var ret = Var.Empty();
 
-            uint label = Script.Labels[Label_AutoFixIATEx];
+            int label = Script.Labels[Label_AutoFixIATEx];
             variables["$TE_ARG_1"] = Var.Create((rulong)fIATPointer);
             if (StepCallback(label, true, Var.etype.DW, ref ret))
                 return (object)ret.ToUInt64();

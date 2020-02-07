@@ -78,7 +78,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     while (lastLineNumber < line.LineNumber)
                     {
-                        this.script.Lines.Add(new OllyScript.Line { LineNumber = (uint) lastLineNumber });
+                        this.script.Lines.Add(new OllyScript.Line { LineNumber = lastLineNumber });
                         ++lastLineNumber;
                     }
                     this.script.Lines.Add(line);
@@ -110,13 +110,12 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (PeekAndDiscard(TokenType.Colon))
                 {
-                    script.Labels[(string) tok.Value] = (uint)tok.LineNumber - 1;
+                    script.Labels[(string) tok.Value] = tok.LineNumber;
                     tok = GetToken();
                 }
             }
 
-            var line = new OllyScript.Line();
-            line.LineNumber = (uint) tok.LineNumber - 1;
+            var line = new OllyScript.Line { LineNumber = tok.LineNumber };
             if (tok.Type == TokenType.Id)
             {
                 line.Command = (string) tok.Value;
@@ -126,7 +125,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             if (tok.Type != TokenType.EOF && tok.Type != TokenType.Newline)
             {
-                host.MsgError($"Unexpected token on line {tok.LineNumber}.");
+                host.MsgError($"Unexpected token on line {tok.LineNumber + 1}.");
                 do
                 {
                     tok = GetToken();
@@ -251,23 +250,29 @@ namespace Reko.ImageLoaders.OdbgScript
     
         private Expression Atom()
         {
-            var token = GetToken();
+            var token = PeekToken();
             switch (token.Type)
             {
             case TokenType.EOF:
             case TokenType.Newline:
                 return null;
             case TokenType.String:
+                GetToken();
                 return MkString(token);
             case TokenType.InterpolatedString:
+                GetToken();
                 return new Application( interpolate, unk, MkString(token));
             case TokenType.HexString:
+                GetToken();
                 return new Application( hexString, unk,  MkString(token));
             case TokenType.Id:
+                GetToken();
                 return new Identifier((string) token.Value, new UnknownType(), MemoryStorage.Instance);
             case TokenType.Integer:
+                GetToken();
                 return Constant.UInt64(Convert.ToUInt64(token.Value));
             case TokenType.LBracket:
+                GetToken();
                 var ea = Expression();
                 if (ea == null)
                     return null;    //$TODO: SyncTo(Comma, NewLine)
@@ -275,6 +280,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     return null;
                 return new MemoryAccess(ea, new UnknownType());
             case TokenType.LParen:
+                GetToken();
                 var exp = Expression();
                 if (exp == null)
                     return null;    //$TODO: sync.
@@ -296,8 +302,8 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 return lexer.Get();
             }
-            var tmp = tok;
-            tok = new Token(TokenType.EOF, 0, null);
+            var tmp = this.tok;
+            this.tok = new Token(TokenType.EOF, 0, null);
             return tmp;
         }
 
@@ -359,7 +365,7 @@ namespace Reko.ImageLoaders.OdbgScript
             public Lexer(TextReader rdr)
             {
                 this.rdr = rdr;
-                this.lineNumber = 1;
+                this.lineNumber = 0;
                 this.sb = new StringBuilder();
             }
 

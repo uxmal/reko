@@ -447,26 +447,6 @@ namespace Reko.ImageLoaders.OdbgScript
             return @out;
         }
 
-        public static List<string> ReadLinesFromFile(string file)
-        {
-            using (StreamReader hFile = new StreamReader(file, Encoding.UTF8))
-            {
-                return ReadLines(hFile);
-            }
-        }
-
-        public static List<string> ReadLines(TextReader content)
-        {
-            List<string> script = new List<string>();
-            string line = content.ReadLine();
-            while (line != null)
-            {
-                script.Add(line);
-                line = content.ReadLine();
-            }
-            return script;
-        }
-
         // Misc functions
 #if LATER
 BOOL CALLBACK EnumThreadWndProc(HWND hwnd, LPARAM lParam) 

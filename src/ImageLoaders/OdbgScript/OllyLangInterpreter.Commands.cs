@@ -335,16 +335,17 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 1)
             {
-                return CallCommand(DoBPX, args[0], Constant.UInt64(1));
+                return DoBPX(args[0], Constant.UInt64(1));
             }
             return false;
         }
 
         private bool DoBPGOTO(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && Script.IsLabel(args[1]))
+            //$TODO: should be GetAddress
+            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && Script.TryGetLabel(args[1], out var bpLabel))
             {
-                bpjumps[addr] = Script.Labels[((Identifier)args[1]).Name];
+                bpjumps[addr] = bpLabel;
                 return true;
             }
             return false;
@@ -508,7 +509,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // TE?
-        private bool DoBPX(Expression[] args)
+        private bool DoBPX(params Expression[] args)
         {
             if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string callname))
             {
@@ -607,7 +608,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoCALL(params Expression[] args)
         {
-            if (args.Length == 1 && Script.IsLabel(args[0]))
+            if (args.Length == 1 && Script.TryGetLabel(args[0], out int lineNumber))
             {
                 calls.Add(script_pos + 1);
                 return DoJMP(args);
@@ -615,7 +616,14 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        static string[] valid_commands = { "SCRIPT", "SCRIPTLOG", "MODULES", "MEMORY", "THREADS", "BREAKPOINTS", "REFERENCES", "SOURCELIST", "WATCHES", "PATCHES", "CPU", "RUNTRACE", "WINDOWS", "CALLSTACK", "LOG", "TEXT", "FILE", "HANDLES", "SEH", "SOURCE" };
+        static string[] valid_commands =
+        {
+            "SCRIPT", "SCRIPTLOG", "MODULES", "MEMORY",
+            "THREADS", "BREAKPOINTS", "REFERENCES", "SOURCELIST",
+            "WATCHES", "PATCHES", "CPU", "RUNTRACE",
+            "WINDOWS", "CALLSTACK", "LOG", "TEXT",
+            "FILE", "HANDLES", "SEH", "SOURCE"
+        };
 
         private bool DoCLOSE(Expression[] args)
         {
@@ -934,7 +942,7 @@ rulong hwnd;
                     EOB_row = -1;
                     return true;
                 }
-                else if (Script.IsLabel(args[0])) // Set label to go to
+                else if (Script.TryGetLabel(args[0], out EOB_row)) // Set label to go to
                 {
                     EOB_row = (int)Script.Labels[((Identifier)args[0]).Name];
                     return true;
@@ -952,9 +960,9 @@ rulong hwnd;
                     EOE_row = -1;
                     return true;
                 }
-                else if (Script.IsLabel(args[0])) // Set label to go to
+                else if (Script.TryGetLabel(args[0], out int lineNumber)) // Set label to go to
                 {
-                    EOE_row = (int)Script.Labels[((Identifier)args[0]).Name];
+                    EOE_row = lineNumber;
                     return true;
                 }
             }
@@ -975,8 +983,8 @@ rulong hwnd;
         {
             if (args.Length == 0)
             {
-                uint first = script_pos + 1;
-                uint ende = (uint)Script.NextCommandIndex((int)first);
+                int first = script_pos + 1;
+                int ende = Script.NextCommandIndex(first);
 
                 if (ende > Script.Lines.Count)
                 {
@@ -992,7 +1000,7 @@ rulong hwnd;
                 {
                     int len, totallen = 0;
 
-                    for (uint i = first; i < ende; i++)
+                    for (int i = first; i < ende; i++)
                     {
                         string line = InterpolateVariables(Script.Lines[(int)i].RawLine, true);
                         if ((len = Host.AssembleEx(line, (pmemforexec + (uint)totallen))) == 0)
@@ -1082,7 +1090,7 @@ rulong hwnd;
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private bool DoFIND(Expression[] args)
+        private bool DoFIND(params Expression[] args)
         {
             string finddata;
             rulong maxsize = 0;
@@ -1543,7 +1551,7 @@ rulong hwnd;
                 variables["$RESULT"] = Var.Create(0);
                 while (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo) && variables["$RESULT"].ToUInt64() == 0)
                 {
-                    if (!CallCommand(DoFIND, addr, args[0]))
+                    if (!DoFIND(addr, args[0]))
                         return false;
                     addr = MemInfo.BaseAddress + MemInfo.RegionSize;
                 }
@@ -1767,7 +1775,7 @@ rulong addr;
                             cur = cur.Remove(8);
                         if (cur.ToLowerInvariant() == mod)
                         {
-                            return CallCommand(DoGMI, modules[i].modBaseAddr, args[1]);
+                            return DoGMI(modules[i].modBaseAddr, args[1]);
                         }
                     }
                 }
@@ -1888,7 +1896,7 @@ rulong addr;
             return false;
         }
 
-        private bool DoGMI(Expression[] args)
+        private bool DoGMI(params Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -2625,9 +2633,9 @@ string str = "";
 
         private bool DoJMP(Expression[] args)
         {
-            if (args.Length == 1 && Script.IsLabel(args[0]))
+            if (args.Length == 1 && Script.TryGetLabel(args[0], out int lineNumber))
             {
-                script_pos_next = Script.Labels[((Identifier)args[0]).Name];
+                script_pos_next = lineNumber;
                 return true;
             }
             return false;
@@ -2946,8 +2954,6 @@ string filename;
                     return false;
                 }
 
-                register_t reg;
-
                 // Check destination
                 if (args[0] is Identifier id && IsVariable(id.Name))
                 {
@@ -2959,7 +2965,7 @@ string filename;
                         {
                             Debug.Assert(src != null);
                             byte[] bytes = new byte[maxsize];
-                            if (!Host.TryReadBytes(src, (int)maxsize, bytes))
+                            if (!Host.TryReadBytes(src, (int) maxsize, bytes))
                                 return false;
                             v = Var.Create("#" + Helper.bytes2hexstr(bytes, (int) maxsize) + '#');
                         }
@@ -2975,11 +2981,11 @@ string filename;
                         // DW to DW/FLT var
                         if (maxsize == 0)
                             maxsize = sizeof(rulong);
-                        dw = Helper.resize(dw, (int)maxsize);
+                        dw = Helper.resize(dw, (int) maxsize);
                         v = Var.Create(dw);
-                        v.size = (int)maxsize;
+                        v.size = (int) maxsize;
                     }
-                    else if (GetString(args[1], (int)maxsize, out str)) // string
+                    else if (GetString(args[1], (int) maxsize, out str)) // string
                     {
                         v = Var.Create(str);
                     }
@@ -2994,14 +3000,14 @@ string filename;
                     return true;
                 }
                 //$REFACTOR: another Identifier.
-                else if (args[0] is Identifier idReg && TryFindRegister(idReg.Name, out reg))
+                else if (args[0] is Identifier idReg && TryFindRegister(idReg.Name, out register_t reg))
                 {
                     // Dest is register
                     if (GetRulong(args[1], out dw))
                     {
                         if (maxsize == 0)
                             maxsize = reg.size;
-                        dw = Helper.resize(dw, Math.Min((int)maxsize, reg.size));
+                        dw = Helper.resize(dw, Math.Min((int) maxsize, reg.size));
                         if (reg.size < sizeof(rulong))
                         {
                             //rulong oldval, newval;
@@ -3018,7 +3024,8 @@ string filename;
                 {
                     if (GetBool(args[1], out bool flagval))
                     {
-                        eflags_t flags = new eflags_t {
+                        eflags_t flags = new eflags_t
+                        {
                             dw = Debugger.GetContextData(eContextData.UE_EFLAGS)
                         };
                         switch (idFlag.Name[1])
@@ -3073,7 +3080,7 @@ string filename;
                                 copybuffer = new byte[maxsize];
                                 errorstr = "Out of memory!";
 
-                                if (!Host.TryReadBytes(src, (int)maxsize, copybuffer) || !Host.WriteMemory(target, (int) maxsize, copybuffer))
+                                if (!Host.TryReadBytes(src, (int) maxsize, copybuffer) || !Host.WriteMemory(target, (int) maxsize, copybuffer))
                                 {
                                     return false;
                                 }
@@ -3487,17 +3494,16 @@ string param;
 
         private bool DoREPL(Expression[] args)
         {
-            string v1, v2;
             rulong len = 0;
 
             if (args.Length >= 3 && args.Length <= 4 &&
                 GetAddress(args[0], out Address addr) && 
-                Helper.TryGetHexLiteral(args[1], out v1) && 
-                Helper.TryGetHexLiteral(args[2], out v2))
+                Helper.TryGetHexLiteral(args[1], out string v1) && 
+                Helper.TryGetHexLiteral(args[2], out string v2))
             {
                 if (args.Length == 4 && !GetRulong(args[3], out len))
                     return false;
-                else if (args.Length == 3)
+                if (args.Length == 3)
                 {
                     if (!Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                         return true;
@@ -4041,7 +4047,7 @@ rulong dw1, dw2;
         {
             if (args.Length == 1 && args[0] is Identifier id)
             {
-                if (is_valid_variable_name(id.Name))
+                if (IsValidVariableName(id.Name))
                 {
                     variables[id.Name] = Var.Create(0);
                     return true;
