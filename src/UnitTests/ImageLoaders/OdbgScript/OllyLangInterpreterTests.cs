@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.ImageLoaders.OdbgScript;
 using System;
@@ -30,12 +31,13 @@ using System.Text;
 namespace Reko.UnitTests.ImageLoaders.OdbgScript
 {
     [TestFixture]
-    public class OllyLangTests
+    public class OllyLangInterpreterTests
     {
         private Mock<IHost> host;
         private Mock<IProcessorEmulator> emu;
         private Mock<IProcessorArchitecture> arch;
-        private OllyLang engine;
+        private Mock<IFileSystemService> fsSvc;
+        private OllyLangInterpreter engine;
         private MemoryArea mem;
         private SegmentMap imageMap;
 
@@ -44,6 +46,8 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
         {
             this.emu = new Mock<IProcessorEmulator>();
             this.arch = new Mock<IProcessorArchitecture>();
+            this.host = new Mock<IHost>();
+            this.fsSvc = new Mock<IFileSystemService>();
         }
 
         [Test]
@@ -59,18 +63,19 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
         private void Given_Script(string script)
         {
-            engine.Script.Clear();
-            engine.Script.LoadScriptFromString(script, ".");
+            using (var parser = OllyScriptParser.FromString(engine.Host, fsSvc.Object, script, "."))
+            {
+                engine.Script = parser.ParseScript();
+            }
         }
 
         private void Given_Engine()
         {
-            this.host = new Mock<IHost>();
             arch.Setup(a => a.MakeAddressFromConstant(
                 It.IsAny<Constant>(),
                 It.IsAny<bool>()))
                 .Returns(new Func<Constant, bool, Address>((c, f) => Address.Ptr32((uint) c.ToUInt64())));
-            engine = new OllyLang(null, arch.Object)
+            engine = new OllyLangInterpreter(null, arch.Object)
             {
                 Host = host.Object,
                 Debugger = new Debugger(emu.Object),
@@ -111,22 +116,6 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             host.Setup(h => h.TE_GetMemoryInfo(
                 It.IsAny<Address>(),
                 out meminfo)).Returns(true);
-        }
-
-        [Test]
-        public void Ose_LineArgs()
-        {
-            var line = new OllyScript.Line();
-            OllyScript.ParseArgumentsIntoLine( " hello,world", line);
-            Assert.AreEqual(2, line.args.Length);
-        }
-
-        [Test]
-        public void Ose_LineArgString()
-        {
-            var line = new OllyScript.Line();
-            OllyScript.ParseArgumentsIntoLine(" \"hello,world\"", line);
-            Assert.AreEqual(1, line.args.Length);
         }
 
         [Test]

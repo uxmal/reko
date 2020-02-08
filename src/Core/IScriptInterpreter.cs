@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -27,8 +27,8 @@ namespace Reko.Core
 {
     public interface IScriptInterpreter
     {
-        void LoadFromFile(string filename, string currentDir);
-        void LoadFromString(string script, string currentDir);
+        void LoadFromFile(string filename, Program program, string currentDir);
+        void LoadFromString(string script, Program program, string currentDir);
         void Run();
     }
 }

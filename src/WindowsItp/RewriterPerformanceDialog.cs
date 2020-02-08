@@ -86,7 +86,7 @@ namespace Reko.WindowsItp
 
             public Expression GetImport(Address addrThunk, Address addrInstruction)
             {
-                throw new NotImplementedException();
+                return null;
             }
 
             public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstruction)

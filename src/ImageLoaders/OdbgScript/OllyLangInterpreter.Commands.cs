@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
@@ -32,12 +33,12 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     using rulong = System.UInt64;
 
-    public partial class OllyLang
+    public partial class OllyLangInterpreter
     {
         const int MAX_INSTR_SIZE = 16;      // x86
         const int PAGE_SIZE = 4096;         // x86 sometimes.
 
-        bool DoADD(string[] args)
+        bool DoADD(Expression[] args)
         {
             if (args.Length == 2)
             {
@@ -73,7 +74,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoAI(string[] args)
+        private bool DoAI(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -83,7 +84,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoALLOC(string[] args)
+        private bool DoALLOC(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong size))
             {
@@ -102,7 +103,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// <remarks>
         /// Only valid for ODBG, we ignore the command here.
         /// </remarks>
-        private bool DoAN(string[] args)
+        private bool DoAN(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong addr))
             {
@@ -111,7 +112,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoAND(string[] args)
+        private bool DoAND(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out rulong dw1) && GetRulong(args[1], out rulong dw2))
             {
@@ -120,7 +121,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoAO(string[] args)
+        private bool DoAO(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -130,7 +131,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoASK(string[] args)
+        private bool DoASK(Expression[] args)
         {
             if (args.Length == 1 && GetString(args[0], out string title))
             {
@@ -157,7 +158,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoASM(string[] args)
+        private bool DoASM(Expression[] args)
         {
             if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string cmd))
             {
@@ -176,7 +177,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoASMTXT(string[] args)
+        private bool DoASMTXT(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string asmfile))
             {
@@ -203,7 +204,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoATOI(string[] args)
+        private bool DoATOI(Expression[] args)
         {
             rulong @base = 16;
 
@@ -218,7 +219,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBC(string[] args)
+        private bool DoBC(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
@@ -235,7 +236,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBCA(params string[] args)
+        private bool DoBCA(params Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -246,7 +247,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBD(string[] args)
+        private bool DoBD(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
@@ -263,7 +264,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBDA(params string[] args)
+        private bool DoBDA(params Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -274,7 +275,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // Olly only
-        private bool DoBEGINSEARCH(string[] args)
+        private bool DoBEGINSEARCH(Expression[] args)
         {
             rulong start = 0;
 
@@ -289,7 +290,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // Olly only
-        private bool DoENDSEARCH(params string[] args)
+        private bool DoENDSEARCH(params Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -301,7 +302,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// <summary>
         /// Set a BreakPoint.
         /// </summary>
-        private bool DoBP(string[] args)
+        private bool DoBP(Expression[] args)
         {
             if (args.Length == 1 && GetAddress(args[0], out Address addr))
             {
@@ -312,7 +313,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // TE?
-        private bool DoBPCND(string[] args)
+        private bool DoBPCND(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string condition))
             {
@@ -330,26 +331,27 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBPD(string[] args)
+        private bool DoBPD(Expression[] args)
         {
             if (args.Length == 1)
             {
-                return CallCommand(DoBPX, args[0], "1");
+                return DoBPX(args[0], Constant.UInt64(1));
             }
             return false;
         }
 
-        private bool DoBPGOTO(string[] args)
+        private bool DoBPGOTO(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && Script.IsLabel(args[1]))
+            //$TODO: should be GetAddress
+            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && Script.TryGetLabel(args[1], out var bpLabel))
             {
-                bpjumps[addr] = Script.Labels[args[1]];
+                bpjumps[addr] = bpLabel;
                 return true;
             }
             return false;
         }
 
-        private bool DoBPHWCA(string[] args)
+        private bool DoBPHWCA(params Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -362,13 +364,13 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBPHWC(string[] args)
+        private bool DoBPHWC(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
                 if (args.Length == 0)
                 {
-                    return DoBPHWCA(new string[0]);
+                    return DoBPHWCA();
                 }
                 else if (GetRulong(args[0], out ulong addr))
                 {
@@ -391,7 +393,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBPHWS(string[] args)
+        private bool DoBPHWS(Expression[] args)
         {
             string typestr = "x";
 
@@ -417,7 +419,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // TE?
-        private bool DoBPL(string[] args)
+        private bool DoBPL(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string expression))
             {
@@ -438,7 +440,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // TE?
-        private bool DoBPLCND(string[] args)
+        private bool DoBPLCND(Expression[] args)
         {
             if (args.Length == 3 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string expression) && GetString(args[2], out string condition))
             {
@@ -457,7 +459,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBPMC(params string[] args)
+        private bool DoBPMC(params Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -472,7 +474,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBPRM(string[] args)
+        private bool DoBPRM(Expression[] args)
         {
             if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong size))
             {
@@ -489,7 +491,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBPWM(string[] args)
+        private bool DoBPWM(Expression[] args)
         {
             if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong size))
             {
@@ -507,7 +509,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // TE?
-        private bool DoBPX(string[] args)
+        private bool DoBPX(params Expression[] args)
         {
             if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string callname))
             {
@@ -583,11 +585,11 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoBUF(string[] args)
+        private bool DoBUF(Expression[] args)
         {
-            if (args.Length == 1 && IsVariable(args[0]))
+            if (args.Length == 1 && args[0] is Identifier id && IsVariable(id.Name))
             {
-                Var v = variables[args[0]];
+                Var v = variables[id.Name];
 
                 switch (v.type)
                 {
@@ -604,9 +606,9 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private bool DoCALL(params string[] args)
+        private bool DoCALL(params Expression[] args)
         {
-            if (args.Length == 1 && Script.IsLabel(args[0]))
+            if (args.Length == 1 && Script.TryGetLabel(args[0], out int lineNumber))
             {
                 calls.Add(script_pos + 1);
                 return DoJMP(args);
@@ -614,9 +616,16 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        static string[] valid_commands = { "SCRIPT", "SCRIPTLOG", "MODULES", "MEMORY", "THREADS", "BREAKPOINTS", "REFERENCES", "SOURCELIST", "WATCHES", "PATCHES", "CPU", "RUNTRACE", "WINDOWS", "CALLSTACK", "LOG", "TEXT", "FILE", "HANDLES", "SEH", "SOURCE" };
+        static string[] valid_commands =
+        {
+            "SCRIPT", "SCRIPTLOG", "MODULES", "MEMORY",
+            "THREADS", "BREAKPOINTS", "REFERENCES", "SOURCELIST",
+            "WATCHES", "PATCHES", "CPU", "RUNTRACE",
+            "WINDOWS", "CALLSTACK", "LOG", "TEXT",
+            "FILE", "HANDLES", "SEH", "SOURCE"
+        };
 
-        private bool DoCLOSE(string[] args)
+        private bool DoCLOSE(Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -639,7 +648,7 @@ rulong hwnd;
 #endif
         }
 
-        private bool DoCMP(string[] args)
+        private bool DoCMP(Expression[] args)
         {
             rulong size = 0;
 
@@ -690,7 +699,7 @@ rulong hwnd;
         }
 
         // Olly only
-        private bool DoCMT(string[] args)
+        private bool DoCMT(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string cmt))
             {
@@ -699,7 +708,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoCOB(string[] args)
+        private bool DoCOB(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -709,7 +718,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoCOE(string[] args)
+        private bool DoCOE(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -719,7 +728,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoDBH(string[] args)
+        private bool DoDBH(Expression[] args)
         {
             throw new NotImplementedException();
 #if NEVER
@@ -732,7 +741,7 @@ rulong hwnd;
 #endif
         }
 
-        private bool DoDBS(string[] args)
+        private bool DoDBS(Expression[] args)
         {
             throw new NotImplementedException();
 #if NEVER
@@ -745,7 +754,7 @@ rulong hwnd;
 #endif
         }
 
-        private bool DoDEC(string[] args)
+        private bool DoDEC(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -763,7 +772,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoDIV(string[] args)
+        private bool DoDIV(Expression[] args)
         {
             if (args.Length == 2)
             {
@@ -792,7 +801,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoDM(string[] args)
+        private bool DoDM(Expression[] args)
         {
             if (args.Length == 3 && GetRulong(args[0], out ulong addr) && GetRulong(args[1], out ulong size) && GetString(args[2], out string filename))
             {
@@ -809,7 +818,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoDMA(string[] args)
+        private bool DoDMA(Expression[] args)
         {
             if (args.Length == 3 &&
                 GetAddress(args[0], out Address addr) &&
@@ -824,35 +833,35 @@ rulong hwnd;
 
                 Stream hFile = null;
                 try
-		{
+                {
                     hFile = new FileStream(filename, FileMode.Append, FileAccess.Write);
-			byte[] membuf = new byte[PAGE_SIZE];
+                    byte[] membuf = new byte[PAGE_SIZE];
                     hFile.Seek(0, SeekOrigin.End);
                     while (size >= membuf.Length)
-			{
+                    {
                         if (!Host.TryReadBytes(addr, membuf.Length, membuf))
-				{
+                        {
                             Array.Clear(membuf, 0, membuf.Length);
-				}
+                        }
                         hFile.Write(membuf, 0, membuf.Length);
                         addr += (uint) membuf.Length;
                         size -= membuf.Length;
-			}
+                    }
 
                     if (size > 0)
-			{
+                    {
                         if (!Host.TryReadBytes(addr, size, membuf))
-				{
+                        {
                             Array.Clear(membuf, 0, size);
-				}
+                        }
                         hFile.Write(membuf, 0, size);
-			}
+                    }
                     return true;
-		}
+                }
                 catch
                 {
                     errorstr = "Couldn't create file";
-	}
+                }
                 finally
                 {
                     hFile.Close();
@@ -861,7 +870,7 @@ rulong hwnd;
 	return false;
         }
 
-        private bool DoDPE(string[] args)
+        private bool DoDPE(Expression[] args)
         {
             if (args.Length == 2 &&
                 GetString(args[0], out string filename) &&
@@ -878,7 +887,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoENDE(string[] args)
+        private bool DoENDE(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -887,7 +896,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoERUN(string[] args)
+        private bool DoERUN(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -898,7 +907,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoESTI(string[] args)
+        private bool DoESTI(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -911,7 +920,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoESTEP(string[] args)
+        private bool DoESTEP(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -924,7 +933,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoEOB(string[] args)
+        private bool DoEOB(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
@@ -933,16 +942,16 @@ rulong hwnd;
                     EOB_row = -1;
                     return true;
                 }
-                else if (Script.IsLabel(args[0])) // Set label to go to
+                else if (Script.TryGetLabel(args[0], out EOB_row)) // Set label to go to
                 {
-                    EOB_row = (int)Script.Labels[args[0]];
+                    EOB_row = (int)Script.Labels[((Identifier)args[0]).Name];
                     return true;
                 }
             }
             return false;
         }
 
-        private bool DoEOE(string[] args)
+        private bool DoEOE(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
@@ -951,16 +960,16 @@ rulong hwnd;
                     EOE_row = -1;
                     return true;
                 }
-                else if (Script.IsLabel(args[0])) // Set label to go to
+                else if (Script.TryGetLabel(args[0], out int lineNumber)) // Set label to go to
                 {
-                    EOE_row = (int)Script.Labels[args[0]];
+                    EOE_row = lineNumber;
                     return true;
                 }
             }
             return false;
         }
 
-        private bool DoEVAL(string[] args)
+        private bool DoEVAL(Expression[] args)
         {
             if (args.Length == 1 && GetString(args[0], out string to_eval))
             {
@@ -970,12 +979,12 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoEXEC(string[] args)
+        private bool DoEXEC(Expression[] args)
         {
             if (args.Length == 0)
             {
-                uint first = script_pos + 1;
-                uint ende = (uint)Script.NextCommandIndex((int)first);
+                int first = script_pos + 1;
+                int ende = Script.NextCommandIndex(first);
 
                 if (ende > Script.Lines.Count)
                 {
@@ -991,7 +1000,7 @@ rulong hwnd;
                 {
                     int len, totallen = 0;
 
-                    for (uint i = first; i < ende; i++)
+                    for (int i = first; i < ende; i++)
                     {
                         string line = InterpolateVariables(Script.Lines[(int)i].RawLine, true);
                         if ((len = Host.AssembleEx(line, (pmemforexec + (uint)totallen))) == 0)
@@ -1047,7 +1056,7 @@ rulong hwnd;
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private bool DoFILL(string[] args)
+        private bool DoFILL(Expression[] args)
         {
             byte val = 0;
             if (args.Length == 3 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong len) && GetByte(args[2], ref val))
@@ -1081,7 +1090,7 @@ rulong hwnd;
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private bool DoFIND(string[] args)
+        private bool DoFIND(params Expression[] args)
         {
             string finddata;
             rulong maxsize = 0;
@@ -1156,7 +1165,7 @@ rulong hwnd;
         }
 
         // TE?
-        private bool DoFINDCALLS(string[] args)
+        private bool DoFINDCALLS(Expression[] args)
         {
             //bool bRefVisible = false, bResetDisam = false;
             //, @base, size, disamsel = 0;
@@ -1250,7 +1259,7 @@ rulong hwnd;
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private bool DoFINDCMD(string[] args)
+        private bool DoFINDCMD(Expression[] args)
         {
             //bool bRefVisible = false, bResetDisam = false;
             //string cmd, cmds;
@@ -1452,7 +1461,7 @@ rulong hwnd;
         */
 
         // TE?
-        private bool DoFINDOP(string[] args)
+        private bool DoFINDOP(Expression[] args)
         {
             string finddata;
             rulong maxsize = 0;
@@ -1531,7 +1540,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoFINDMEM(string[] args)
+        private bool DoFINDMEM(Expression[] args)
         {
             Address addr = null;
             if (args.Length >= 1 && args.Length <= 2)
@@ -1542,7 +1551,7 @@ rulong hwnd;
                 variables["$RESULT"] = Var.Create(0);
                 while (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo) && variables["$RESULT"].ToUInt64() == 0)
                 {
-                    if (!CallCommand(DoFIND, addr.ToString(), args[0]))
+                    if (!DoFIND(addr, args[0]))
                         return false;
                     addr = MemInfo.BaseAddress + MemInfo.RegionSize;
                 }
@@ -1551,7 +1560,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoFREE(string[] args)
+        private bool DoFREE(Expression[] args)
         {
             rulong size = 0;
 
@@ -1572,7 +1581,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoGAPI(string[] args)
+        private bool DoGAPI(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong addr))
             {
@@ -1631,7 +1640,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoGBPM(string[] args)
+        private bool DoGBPM(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -1641,7 +1650,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoGBPR(string[] args)
+        private bool DoGBPR(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -1651,11 +1660,11 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoGCI(string[] args)
+        private bool DoGCI(Expression[] args)
         {
-            if (args.Length == 2 && GetAddress(args[0], out Address addr))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && args[1] is Identifier cmd)
             {
-                var param = args[1].ToUpperInvariant();
+                var param = cmd.Name.ToUpperInvariant();
                 if (param == "COMMAND")
                 {
                     int size = 0;
@@ -1695,7 +1704,7 @@ rulong hwnd;
         }
 
         // Olly only
-        private bool DoGCMT(string[] args)
+        private bool DoGCMT(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong addr))
             {
@@ -1705,7 +1714,7 @@ rulong hwnd;
             return false;
         }
 
-        private bool DoGFO(string[] args)
+        private bool DoGFO(Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -1738,7 +1747,7 @@ rulong addr;
         }
 
         // Olly only
-        private bool DoGLBL(string[] args)
+        private bool DoGLBL(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong addr))
             {
@@ -1748,7 +1757,7 @@ rulong addr;
             return false;
         }
 
-        private bool DoGMA(string[] args)
+        private bool DoGMA(Expression[] args)
         {
             if (args.Length == 2 && GetString(args[0], out string mod))
             {
@@ -1766,7 +1775,7 @@ rulong addr;
                             cur = cur.Remove(8);
                         if (cur.ToLowerInvariant() == mod)
                         {
-                            return CallCommand(DoGMI, Helper.rul2hexstr((rulong) modules[i].modBaseAddr), args[1]);
+                            return DoGMI(modules[i].modBaseAddr, args[1]);
                         }
                     }
                 }
@@ -1776,17 +1785,15 @@ rulong addr;
             return false;
         }
 
-        private bool DoGMEMI(string[] args)
+        private bool DoGMEMI(Expression[] args)
         {
-            string val;
-
-            if (args.Length == 2 && GetAddress(args[0], out Address addr))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && args[1] is Identifier cmd)
             {
                 variables["$RESULT"] = Var.Create(0);
 
                 if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                 {
-                    val = args[1].ToUpperInvariant();
+                    var val = cmd.Name.ToUpperInvariant();
 
                     if (val == "MEMORYBASE") variables["$RESULT"] = Var.Create(MemInfo.BaseAddress);
                     else if (val == "MEMORYSIZE") variables["$RESULT"] = Var.Create(MemInfo.RegionSize);
@@ -1803,7 +1810,7 @@ rulong addr;
         }
 
         // Olly only
-        private bool DoNAMES(string[] args)
+        private bool DoNAMES(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong addr))
             {
@@ -1812,7 +1819,7 @@ rulong addr;
             return false;
         }
 
-        private bool DoGMEXP(string[] args)
+        private bool DoGMEXP(Expression[] args)
         {
             rulong num = 0;
             if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out ulong addr))
@@ -1889,7 +1896,7 @@ rulong addr;
             return false;
         }
 
-        private bool DoGMI(string[] args)
+        private bool DoGMI(params Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -2080,12 +2087,12 @@ string str;
 #endif
         }
 
-        private bool DoGMIMP(string[] args)
+        private bool DoGMIMP(Expression[] args)
         {
             rulong num = 0;
             string str;
 
-            if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out ulong addr) && args[1] is Identifier cmd)
             {
                 if (args.Length == 3 && !GetRulong(args[2], out num))
                     return false;
@@ -2094,7 +2101,7 @@ string str;
 
                 variables["$RESULT"] = Var.Create(0);
 
-                str = (args[1]).ToUpperInvariant();
+                str = cmd.Name.ToUpperInvariant();
                 return false;
 
                 /*
@@ -2188,7 +2195,7 @@ string str;
             return false;
         }
 
-        private bool DoGN(string[] args)
+        private bool DoGN(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong addr))
             {
@@ -2215,7 +2222,7 @@ string str;
             return false;
         }
 
-        private bool DoGO(string[] args)
+        private bool DoGO(Expression[] args)
         {
             if (args.Length == 1 && GetAddress(args[0], out Address addr))
             {
@@ -2227,13 +2234,14 @@ string str;
             return false;
         }
 
-        private bool DoGOPI(string[] args)
+        private bool DoGOPI(Expression[] args)
         {
             string param;
 
             if (args.Length == 3 &&
-                GetRulong(args[0], out ulong addr) &&
-                GetRulong(args[1], out ulong index))
+                GetAddress(args[0], out Address addr) &&
+                GetRulong(args[1], out ulong index) &&
+                args[2] is Identifier cmd)
             {
                 if (index < 1 || index > 3)
                 {
@@ -2243,7 +2251,7 @@ string str;
 
                 index--;
 
-                param = args[2].ToUpperInvariant();
+                param = cmd.Name.ToUpperInvariant();
 
                 errorstr = "Unsupported command!";
                 return false;
@@ -2294,7 +2302,7 @@ string str;
             return false;
         }
 
-        private bool DoGPA(string[] args)
+        private bool DoGPA(Expression[] args)
         {
             if (args.Length >= 2 && args.Length <= 3 && GetString(args[0], out string proc) && GetString(args[1], out string lib))
             {
@@ -2317,11 +2325,13 @@ string str;
             return false;
         }
 
-        private bool DoGPI(string[] args)
+        private bool DoGPI(Expression[] args)
         {
             if (args.Length != 1)
                 return false;
-            var str = args[0].ToUpperInvariant();
+            if (!(args[0] is Identifier cmd))
+                return false;
+            var str = cmd.Name.ToUpperInvariant();
 
             if (str == "HPROCESS") // Handle of debugged process 
             {
@@ -2370,7 +2380,7 @@ string str;
         }
 
         //in dev... i try to find API parameters number and types
-        private bool DoGPP(string[] args)
+        private bool DoGPP(Expression[] args)
         {
             /*
             if (!DoGPA(args))
@@ -2422,7 +2432,7 @@ string str;
         }
 
         // Olly only
-        private bool DoGREF(string[] args)
+        private bool DoGREF(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
@@ -2436,7 +2446,7 @@ string str;
         }
 
         // Olly only
-        private bool DoGRO(string[] args)
+        private bool DoGRO(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong addr))
             {
@@ -2447,7 +2457,7 @@ string str;
         }
 
         // Olly only
-        private bool DoGSL(string[] args)
+        private bool DoGSL(Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -2470,7 +2480,7 @@ string str = "";
 #endif
         }
 
-        private bool DoGSTR(string[] args)
+        private bool DoGSTR(Expression[] args)
         {
             rulong size = 2;
             if (args.Length >= 1 && args.Length <= 2 && GetAddress(args[0], out Address addr))
@@ -2505,7 +2515,7 @@ string str = "";
             return false;
         }
 
-        private bool DoHANDLE(string[] args)
+        private bool DoHANDLE(Expression[] args)
         {
             if (args.Length == 3 && GetRulong(args[0], out ulong x) && GetRulong(args[1], out ulong y) && GetString(args[2], out string sClassName))
             {
@@ -2515,7 +2525,7 @@ string str = "";
             return false;
         }
 
-        private bool DoINC(string[] args)
+        private bool DoINC(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -2534,7 +2544,7 @@ string str = "";
         }
 
         // Olly only
-        private bool DoHISTORY(string[] args)
+        private bool DoHISTORY(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong dw))
             {
@@ -2543,7 +2553,7 @@ string str = "";
             return false;
         }
 
-        private bool DoITOA(string[] args)
+        private bool DoITOA(Expression[] args)
         {
             rulong @base = 16;
             if (args.Length >= 1 && args.Length <= 2 && GetRulong(args[0], out ulong dw))
@@ -2561,7 +2571,7 @@ string str = "";
             return false;
         }
 
-        private bool DoJA(string[] args)
+        private bool DoJA(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -2573,7 +2583,7 @@ string str = "";
             return false;
         }
 
-        private bool DoJAE(string[] args)
+        private bool DoJAE(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -2585,7 +2595,7 @@ string str = "";
             return false;
         }
 
-        private bool DoJB(string[] args)
+        private bool DoJB(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -2597,7 +2607,7 @@ string str = "";
             return false;
         }
 
-        private bool DoJBE(string[] args)
+        private bool DoJBE(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -2609,7 +2619,7 @@ string str = "";
             return false;
         }
 
-        private bool DoJE(string[] args)
+        private bool DoJE(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -2621,17 +2631,17 @@ string str = "";
             return false;
         }
 
-        private bool DoJMP(string[] args)
+        private bool DoJMP(Expression[] args)
         {
-            if (args.Length == 1 && Script.IsLabel(args[0]))
+            if (args.Length == 1 && Script.TryGetLabel(args[0], out int lineNumber))
             {
-                script_pos_next = Script.Labels[args[0]];
+                script_pos_next = lineNumber;
                 return true;
             }
             return false;
         }
 
-        private bool DoJNE(string[] args)
+        private bool DoJNE(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -2644,7 +2654,7 @@ string str = "";
         }
 
         // TE?
-        private bool DoKEY(string[] args)
+        private bool DoKEY(Expression[] args)
         {
             bool shift = false, ctrl = false;
             if (args.Length >= 1 && args.Length <= 3 && GetRulong(args[0], out ulong key))
@@ -2665,7 +2675,7 @@ string str = "";
         }
 
         // Olly only
-        private bool DoLBL(string[] args)
+        private bool DoLBL(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string lbl))
             {
@@ -2674,7 +2684,7 @@ string str = "";
             return false;
         }
 
-        private bool DoLM(string[] args)
+        private bool DoLM(Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -2738,7 +2748,7 @@ string filename;
         }
 
         // Olly only
-        private bool DoLC(string[] args)
+        private bool DoLC(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -2748,7 +2758,7 @@ string filename;
         }
 
         // Olly only
-        private bool DoLCLR(string[] args)
+        private bool DoLCLR(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -2757,7 +2767,7 @@ string filename;
             return false;
         }
 
-        private bool DoLEN(string[] args)
+        private bool DoLEN(Expression[] args)
         {
             if (args.Length == 1 && GetString(args[0], out string str))
             {
@@ -2767,7 +2777,7 @@ string filename;
             return false;
         }
 
-        private bool DoLOADLIB(string[] args)
+        private bool DoLOADLIB(Expression[] args)
         {
             if (args.Length == 1 && GetString(args[0], out string str))
             {
@@ -2835,7 +2845,7 @@ string filename;
             return false;
         }
 
-        private bool DoLOG(string[] args)
+        private bool DoLOG(Expression[] args)
         {
             string prefix = "";
 
@@ -2845,7 +2855,7 @@ string filename;
                     return false;
 
                 bool noprefix = (args.Length == 1);
-                if (noprefix && is_writable(args[0]))
+                if (noprefix && IsWriteable(args[0]))
                     prefix = args[0] + ": ";
 
                 string @out;
@@ -2870,12 +2880,12 @@ string filename;
             return false;
         }
 
-        private bool DoLOGBUF(string[] args)
+        private bool DoLOGBUF(Expression[] args)
         {
             string sep = " ";
             rulong dw = 0;
 
-            if (args.Length >= 1 && args.Length <= 3 && IsVariable(args[0]))
+            if (args.Length >= 1 && args.Length <= 3 && args[0] is Identifier id && IsVariable(id.Name))
             {
                 switch (args.Length)
                 {
@@ -2890,7 +2900,7 @@ string filename;
                 if (0 == dw)
                     dw = 16;
 
-                Var v = variables[args[0]];
+                Var v = variables[id.Name];
 
                 string line = "";
                 string data = v.ToHexString();
@@ -2913,11 +2923,11 @@ string filename;
             return false;
         }
 
-        private bool DoMEMCPY(string[] args)
+        private bool DoMEMCPY(Expression[] args)
         {
             if (args.Length == 3)
             {
-                return CallCommand(DoMOV, ('[' + args[0] + ']'), ('[' + args[1] + ']'), args[2]);
+                return DoMOV(new MemoryAccess(args[0], unk), new MemoryAccess(args[1], unk), args[2]);
             }
             return false;
         }
@@ -2927,7 +2937,7 @@ string filename;
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private bool DoMOV(string[] args)
+        private bool DoMOV(params Expression[] args)
         {
             if (args.Length >= 2 && args.Length <= 3)
             {
@@ -2939,25 +2949,23 @@ string filename;
                 string str;
                 double flt;
 
-                if (!is_writable(args[0]) && !DoVAR(args[0]))
+                if (!IsWriteable(args[0]) && !DoVAR(args[0]))
                 {
                     return false;
                 }
 
-                register_t reg;
-
                 // Check destination
-                if (IsVariable(args[0]))
+                if (args[0] is Identifier id && IsVariable(id.Name))
                 {
                     Var v;
-                    if (maxsize > sizeof(rulong) && Helper.IsMemoryAccess(args[1])) // byte string
+                    if (maxsize > sizeof(rulong) && args[1] is MemoryAccess mem) // byte string
                     {
-                        string tmp = Helper.UnquoteString(args[1], '[', ']');
+                        Expression tmp = mem.EffectiveAddress;
                         if (GetAddress(tmp, out Address src))
                         {
                             Debug.Assert(src != null);
                             byte[] bytes = new byte[maxsize];
-                            if (!Host.TryReadBytes(src, (int)maxsize, bytes))
+                            if (!Host.TryReadBytes(src, (int) maxsize, bytes))
                                 return false;
                             v = Var.Create("#" + Helper.bytes2hexstr(bytes, (int) maxsize) + '#');
                         }
@@ -2973,11 +2981,11 @@ string filename;
                         // DW to DW/FLT var
                         if (maxsize == 0)
                             maxsize = sizeof(rulong);
-                        dw = Helper.resize(dw, (int)maxsize);
+                        dw = Helper.resize(dw, (int) maxsize);
                         v = Var.Create(dw);
-                        v.size = (int)maxsize;
+                        v.size = (int) maxsize;
                     }
-                    else if (GetString(args[1], (int)maxsize, out str)) // string
+                    else if (GetString(args[1], (int) maxsize, out str)) // string
                     {
                         v = Var.Create(str);
                     }
@@ -2988,17 +2996,18 @@ string filename;
                     else
                         return false;
 
-                    variables[args[0]] = v;
+                    variables[id.Name] = v;
                     return true;
                 }
-                else if ((reg = find_register(args[0])) != null)
+                //$REFACTOR: another Identifier.
+                else if (args[0] is Identifier idReg && TryFindRegister(idReg.Name, out register_t reg))
                 {
                     // Dest is register
                     if (GetRulong(args[1], out dw))
                     {
                         if (maxsize == 0)
                             maxsize = reg.size;
-                        dw = Helper.resize(dw, Math.Min((int)maxsize, reg.size));
+                        dw = Helper.resize(dw, Math.Min((int) maxsize, reg.size));
                         if (reg.size < sizeof(rulong))
                         {
                             //rulong oldval, newval;
@@ -3010,14 +3019,16 @@ string filename;
                         return Debugger.SetContextData(reg.id, dw);
                     }
                 }
-                else if (is_flag(args[0]))
+                //$REFACTOR: all these dudes are using an Identifier
+                else if (args[0] is Identifier idFlag && IsFlag(idFlag.Name))
                 {
                     if (GetBool(args[1], out bool flagval))
                     {
-                        eflags_t flags = new eflags_t {
+                        eflags_t flags = new eflags_t
+                        {
                             dw = Debugger.GetContextData(eContextData.UE_EFLAGS)
                         };
-                        switch (args[0][1])
+                        switch (idFlag.Name[1])
                         {
                         case 'a': flags.bits.AF = flagval; break;
                         case 'c': flags.bits.CF = flagval; break;
@@ -3031,7 +3042,7 @@ string filename;
                         return Debugger.SetContextData(eContextData.UE_EFLAGS, flags.dw);
                     }
                 }
-                else if (is_floatreg(args[0]))
+                else if (args[0] is Identifier idFloat && is_floatreg(idFloat.Name))
                 {
                     if (GetFloat(args[1], out flt))
                     {
@@ -3054,17 +3065,13 @@ string filename;
 #endif
                     }
                 }
-                else if (Helper.IsMemoryAccess(args[0]))
+                else if (args[0] is MemoryAccess memDst)
                 {
-                    string tmp = Helper.UnquoteString(args[0], '[', ']');
-                    if (GetAddress(tmp, out Address target))
+                    if (GetAddress(memDst.EffectiveAddress, out Address target))
                     {
-                        Debug.Assert(target != null);
-
-                        if (maxsize > sizeof(rulong) && Helper.IsMemoryAccess(args[1]))
+                        if (maxsize > sizeof(rulong) && args[1] is MemoryAccess memSrc)
                         {
-                            tmp = Helper.UnquoteString(args[1], '[', ']');
-                            if (GetAddress(tmp, out Address src))
+                            if (GetAddress(memSrc.EffectiveAddress, out Address src))
                             {
                                 Debug.Assert(src != null);
 
@@ -3073,7 +3080,7 @@ string filename;
                                 copybuffer = new byte[maxsize];
                                 errorstr = "Out of memory!";
 
-                                if (!Host.TryReadBytes(src, (int)maxsize, copybuffer) || !Host.WriteMemory(target, (int) maxsize, copybuffer))
+                                if (!Host.TryReadBytes(src, (int) maxsize, copybuffer) || !Host.WriteMemory(target, (int) maxsize, copybuffer))
                                 {
                                     return false;
                                 }
@@ -3104,7 +3111,7 @@ string filename;
             return false;
         }
 
-        private bool DoMSG(string[] args)
+        private bool DoMSG(Expression[] args)
         {
             if (args.Length == 1 && GetAnyValue(args[0], out string msg))
             {
@@ -3119,7 +3126,7 @@ string filename;
             return false;
         }
 
-        private bool DoMSGYN(string[] args)
+        private bool DoMSGYN(Expression[] args)
         {
             if (args.Length == 1 && GetString(args[0], out string msg))
             {
@@ -3143,7 +3150,7 @@ string filename;
             return false;
         }
 
-        private bool DoOLLY(string[] args)
+        private bool DoOLLY(Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -3168,7 +3175,7 @@ string param;
 #endif
         }
 
-        private bool DoOR(string[] args)
+        private bool DoOR(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
             {
@@ -3177,7 +3184,7 @@ string param;
             return false;
         }
 
-        private bool DoMUL(string[] args)
+        private bool DoMUL(Expression[] args)
         {
             if (args.Length == 2)
             {
@@ -3201,7 +3208,7 @@ string param;
             return false;
         }
 
-        private bool DoNEG(string[] args)
+        private bool DoNEG(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -3217,7 +3224,7 @@ string param;
             return false;
         }
 
-        private bool DoNOT(string[] args)
+        private bool DoNOT(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong dw))
             {
@@ -3227,7 +3234,7 @@ string param;
         }
 
         //see also GCI
-        private bool DoOPCODE(string[] args)
+        private bool DoOPCODE(Expression[] args)
         {
             if (args.Length == 1 && GetAddress(args[0], out Address addr))
             {
@@ -3251,7 +3258,7 @@ string param;
         }
 
         // Olly only
-        private bool DoOPENDUMP(string[] args)
+        private bool DoOPENDUMP(Expression[] args)
         {
             if (args.Length >= 1 && args.Length <= 3 && GetRulong(args[0], out ulong addr))
             {
@@ -3272,7 +3279,7 @@ string param;
         }
 
         // Olly only
-        private bool DoOPENTRACE(string[] args)
+        private bool DoOPENTRACE(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3281,7 +3288,7 @@ string param;
             return false;
         }
 
-        private bool DoPAUSE(string[] args)
+        private bool DoPAUSE(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3290,7 +3297,7 @@ string param;
             return false;
         }
 
-        private bool DoPOP(string[] args)
+        private bool DoPOP(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
@@ -3312,7 +3319,7 @@ string param;
             return false;
         }
 
-        private bool DoPOPA(string[] args)
+        private bool DoPOPA(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3321,7 +3328,7 @@ string param;
             return false;
         }
 
-        private bool DoPREOP(string[] args)
+        private bool DoPREOP(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
@@ -3343,7 +3350,7 @@ string param;
             return false;
         }
 
-        private bool DoPUSH(string[] args)
+        private bool DoPUSH(Expression[] args)
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong dw))
             {
@@ -3354,7 +3361,7 @@ string param;
             return false;
         }
 
-        private bool DoPUSHA(string[] args)
+        private bool DoPUSHA(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3363,7 +3370,7 @@ string param;
             return false;
         }
 
-        private bool DoREADSTR(string[] args)
+        private bool DoREADSTR(Expression[] args)
         {
             if (args.Length == 2 && 
                 GetRulong(args[1], out ulong maxsize) &&
@@ -3390,13 +3397,13 @@ string param;
 
         // ex     : rbp
         //        : rbp STRICT
-        private bool DoRBP(string[] args)
+        private bool DoRBP(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
-                if (args.Length == 1)
+                if (args.Length == 1 && args[0] is Identifier cmd)
                 {
-                    if (args[0].ToUpperInvariant() != "STRICT")
+                    if (cmd.Name.ToUpperInvariant() != "STRICT")
                         return false;
                 }
 
@@ -3455,14 +3462,14 @@ string param;
 
 
         // Olly only
-        private bool DoREF(string[] args)
+        private bool DoREF(Expression[] args)
         {
             string str = "MEMORY";
 
             if (args.Length >= 1 && args.Length <= 2 && GetRulong(args[0], out ulong addr))
             {
-                if (args.Length == 2)
-                    str = args[1];
+                if (args.Length == 2 && args[1] is Identifier domain)
+                    str = domain.Name.ToUpperInvariant();
 
                 string[] valid_commands = { "MEMORY", "CODE", "MODULE" };
 
@@ -3476,7 +3483,7 @@ string param;
         }
 
         // Olly only
-        private bool DoREFRESH(string[] args)
+        private bool DoREFRESH(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3485,28 +3492,25 @@ string param;
             return false;
         }
 
-        private bool DoREPL(string[] args)
+        private bool DoREPL(Expression[] args)
         {
-            string v1, v2;
             rulong len = 0;
 
-            if (args.Length >= 3 && args.Length <= 4 && GetAddress(args[0], out Address addr) && Helper.IsHexLiteral(args[1]) && Helper.IsHexLiteral(args[2]))
+            if (args.Length >= 3 && args.Length <= 4 &&
+                GetAddress(args[0], out Address addr) && 
+                Helper.TryGetHexLiteral(args[1], out string v1) && 
+                Helper.TryGetHexLiteral(args[2], out string v2))
             {
                 if (args.Length == 4 && !GetRulong(args[3], out len))
                     return false;
-                else if (args.Length == 3)
+                if (args.Length == 3)
                 {
                     if (!Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                         return true;
 
                     len = (rulong) (MemInfo.BaseAddress - addr) + MemInfo.RegionSize;
                 }
-
-                v1 = Helper.UnquoteString(args[1], '#');
-                v2 = Helper.UnquoteString(args[2], '#');
-
                 int oplen = v1.Length;
-
                 if (oplen != v2.Length)
                 {
                     errorstr = "Hex strings must have the same size!";
@@ -3514,7 +3518,6 @@ string param;
                 }
 
                 byte[] membuf = null, mask1 = null, mask2 = null, bytes1 = null, bytes2;
-
                 membuf = new byte[len];
                 if (Host.TryReadBytes(addr, (int)len, membuf))
                 {
@@ -3553,7 +3556,7 @@ string param;
         }
 
         // TE?
-        private bool DoRESET(string[] args)
+        private bool DoRESET(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3563,7 +3566,7 @@ string param;
             return false;
         }
 
-        private bool DoRET(string[] args)
+        private bool DoRET(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
@@ -3603,7 +3606,8 @@ string param;
                             if (callbacks.Last().returns_value)
                             {
                                 variables["$TEMP"] = Var.Create(0);
-                                if (CallCommand(DoMOV, "$TEMP", args[0]))
+                                var _temp = new Identifier("$TEMP", unk, MemoryStorage.Instance);   //$REFACTOR: make this a method
+                                if (DoMOV(_temp, args[0]))
                                 {
                                     callback_return = variables["$TEMP"];
                                     variables.Remove("$TEMP");
@@ -3626,7 +3630,7 @@ string param;
             return false;
         }
 
-        private bool DoREV(string[] args)
+        private bool DoREV(Expression[] args)
         {
             if (args.Length == 1)
             {
@@ -3645,7 +3649,7 @@ string param;
             return false;
         }
 
-        private bool DoROL(string[] args)
+        private bool DoROL(Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -3659,7 +3663,7 @@ rulong dw1, dw2;
 #endif
         }
 
-        private bool DoROR(string[] args)
+        private bool DoROR(Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -3673,7 +3677,7 @@ rulong dw1, dw2;
 #endif
         }
 
-        private bool DoRTR(string[] args)
+        private bool DoRTR(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3686,7 +3690,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoRTU(string[] args)
+        private bool DoRTU(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3699,7 +3703,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoRUN(string[] args)
+        private bool DoRUN(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3719,7 +3723,7 @@ rulong dw1, dw2;
         // ex 	: sbp
         // 		: no argument
 
-        private bool DoSBP(string[] args)
+        private bool DoSBP(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3778,7 +3782,12 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoSCMP(string[] args)
+        private bool DoSCMP(params Expression[] args)
+        {
+            return DoSCMP(StringComparer.InvariantCulture, args);
+        }
+
+        private bool DoSCMP(StringComparer cmp, Expression [] args)
         {
             if (args.Length >= 2 && args.Length <= 3)
             {
@@ -3788,30 +3797,20 @@ rulong dw1, dw2;
 
                 if (GetString(args[0], (int) size, out string s1) && GetString(args[1], (int) size, out string s2))
                 {
-                    SetCMPFlags(s1.CompareTo(s2));
+                    SetCMPFlags(cmp.Compare(s1, s2));
                     return true;
                 }
             }
             return false;
         }
 
-        private bool DoSCMPI(string[] args)
+        private bool DoSCMPI(Expression[] args)
         {
-            if (args.Length >= 2 && args.Length <= 3)
-            {
-                switch (args.Length)
-                {
-                case 2:
-                    return CallCommand(DoSCMP, args[0].ToLowerInvariant(), args[1].ToLowerInvariant());
-                case 3:
-                    return CallCommand(DoSCMP, args[0].ToLowerInvariant(), args[1].ToLowerInvariant(), args[2]);
-                }
-            }
-            return false;
+            return DoSCMP(StringComparer.InvariantCultureIgnoreCase, args);
         }
 
         // Olly only
-        private bool DoSETOPTION(string[] args)
+        private bool DoSETOPTION(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3820,7 +3819,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoSHL(string[] args)
+        private bool DoSHL(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out rulong dw1) && GetRulong(args[1], out rulong dw2))
             {
@@ -3829,7 +3828,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoSHR(string[] args)
+        private bool DoSHR(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out rulong dw1) && GetRulong(args[1], out rulong dw2))
             {
@@ -3838,7 +3837,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoSTI(params string[] args)
+        private bool DoSTI(params Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3853,7 +3852,7 @@ rulong dw1, dw2;
         /// <summary>
         /// Step over
         /// </summary>
-        private bool DoSTO(string[] args)
+        private bool DoSTO(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3865,11 +3864,11 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoSTR(string[] args)
+        private bool DoSTR(Expression[] args)
         {
-            if (args.Length == 1 && IsVariable(args[0]))
+            if (args.Length == 1 && args[0] is Identifier id && IsVariable(id.Name))
             {
-                Var v = variables[args[0]];
+                Var v = variables[id.Name];
                 switch (v.type)
                 {
                 case Var.etype.DW: // empty buf + dw ->  buf
@@ -3884,7 +3883,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoSUB(string[] args)
+        private bool DoSUB(Expression[] args)
         {
             if (args.Length == 2 && GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
             {
@@ -3901,7 +3900,7 @@ rulong dw1, dw2;
         }
 
         // Olly only
-        private bool DoTC(string[] args)
+        private bool DoTC(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3910,7 +3909,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoTEST(string[] args)
+        private bool DoTEST(Expression[] args)
         {
             if (args.Length == 2)
             {
@@ -3928,7 +3927,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoTI(string[] args)
+        private bool DoTI(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -3938,7 +3937,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoTICK(string[] args)
+        private bool DoTICK(Expression[] args)
         {
             rulong timeref = 0;
 
@@ -3954,9 +3953,9 @@ rulong dw1, dw2;
                     variables["$RESULT"] = Var.Create(Helper.rul2decstr(tickcount / 1000) + " ms");
                     return true;
                 }
-                else if (IsVariable(args[0]) || DoVAR(args[0]))
+                else if (args[0] is Identifier id && (IsVariable(id.Name) || DoVAR(id)))
                 {
-                    variables[args[0]] = Var.Create((uint)tickcount);
+                    variables[id.Name] = Var.Create((uint)tickcount);
                     if (args.Length == 2)
                         variables["$RESULT"] = Var.Create((uint)(tickcount - timeref));
                     return true;
@@ -3966,7 +3965,7 @@ rulong dw1, dw2;
         }
 
         // TE?
-        private bool DoTICND(string[] args)
+        private bool DoTICND(Expression[] args)
         {
             if (args.Length == 1 && GetString(args[0], out string condition))
             {
@@ -3995,7 +3994,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoTO(string[] args)
+        private bool DoTO(Expression[] args)
         {
             if (args.Length == 0)
             {
@@ -4006,7 +4005,7 @@ rulong dw1, dw2;
         }
 
         // TE?
-        private bool DoTOCND(string[] args)
+        private bool DoTOCND(Expression[] args)
         {
             if (args.Length == 1 && GetString(args[0], out string condition))
             {
@@ -4035,7 +4034,7 @@ rulong dw1, dw2;
         }
 
         // Unused
-        private bool DoUNICODE(string[] args)
+        private bool DoUNICODE(Expression[] args)
         {
             if (args.Length == 1 && GetBool(args[0], out bool enable))
             {
@@ -4044,13 +4043,13 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoVAR(params string[] args)
+        private bool DoVAR(params Expression[] args)
         {
-            if (args.Length == 1)
+            if (args.Length == 1 && args[0] is Identifier id)
             {
-                if (is_valid_variable_name(args[0]))
+                if (IsValidVariableName(id.Name))
                 {
-                    variables[args[0]] = Var.Create(0);
+                    variables[id.Name] = Var.Create(0);
                     return true;
                 }
                 errorstr = "Bad variable name: " + args[0];
@@ -4058,7 +4057,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoXCHG(string[] args)
+        private bool DoXCHG(Expression[] args)
         {
             if (args.Length == 2)
             {
@@ -4070,11 +4069,12 @@ rulong dw1, dw2;
                 {
                     return SetFloat(args[0], flt2) && SetFloat(args[1], flt1);
                 }
-                else if (IsVariable(args[0]) && IsVariable(args[1]))
+                else if (args[0] is Identifier id0 && IsVariable(id0.Name) && 
+                         args[1] is Identifier id1 && IsVariable(id1.Name))
                 {
-                    Var tmp = variables[args[0]];
-                    variables[args[0]] = variables[args[1]];
-                    variables[args[1]] = tmp;
+                    Var tmp = variables[id0.Name];
+                    variables[id0.Name] = variables[id1.Name];
+                    variables[id1.Name] = tmp;
                     return true;
                 }
             }
@@ -4082,7 +4082,7 @@ rulong dw1, dw2;
         }
 
 
-        private bool DoXOR(string[] args)
+        private bool DoXOR(Expression[] args)
         {
             if (args.Length == 2 &&
                 GetRulong(args[0], out ulong dw1) &&
@@ -4093,7 +4093,7 @@ rulong dw1, dw2;
             return false;
         }
 
-        private bool DoWRT(string[] args)
+        private bool DoWRT(Expression[] args)
         {
             throw new NotImplementedException();
 #if LATER
@@ -4117,7 +4117,7 @@ string filename, data;
 #endif
         }
 
-        private bool DoWRTA(string[] args)
+        private bool DoWRTA(Expression[] args)
         {
             string @out = "\r\n";
             if (args.Length >= 2 && args.Length <= 3 && GetString(args[0], out string filename) && GetAnyValue(args[1], out string data))
@@ -4141,7 +4141,7 @@ string filename, data;
             return false;
         }
 
-        private bool RekoAddSegmentReference(string [] args)
+        private bool RekoAddSegmentReference(Expression [] args)
         {
             if (args.Length == 2)
             {

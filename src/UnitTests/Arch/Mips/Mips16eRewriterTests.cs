@@ -256,12 +256,14 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("RISC? lol")]
         public void Mips16eRw_save()
         {
             AssertCode("64F0",        // save\tra,r17,r16,+00000080
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(2): 4 instructions",
+                "1|L--|Mem0[sp - 4:word32] = ra",
+                "2|L--|Mem0[sp - 8:word32] = r17",
+                "3|L--|Mem0[sp - 12:word32] = r16",
+                "4|L--|sp = sp - 12");
         }
 
         [Test]

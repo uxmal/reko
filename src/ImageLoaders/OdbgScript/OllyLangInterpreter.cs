@@ -30,6 +30,8 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     using Reko.Arch.X86;
     using Reko.Core.Expressions;
+    using Reko.Core.Services;
+    using Reko.Core.Types;
     using rulong = System.UInt64;
 
     // This is the table for Script Execution
@@ -37,7 +39,7 @@ namespace Reko.ImageLoaders.OdbgScript
     {
         public rulong address;    //Memory Adress
         public uint size;     //Block Size
-        public uint script_pos; //Registred at script pos
+        public int script_pos; //Registred at script pos
         public bool autoclean; //On script restart/change
 
         public Address free_at_ip; //To free memory block used in ASM commands
@@ -56,7 +58,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public string label; // ;label[256];
     }
 
-    public partial class OllyLang : IScriptInterpreter
+    public partial class OllyLangInterpreter : IScriptInterpreter
     {
         private const byte OS_VERSION_HI = 1;  // High plugin version
         private const byte OS_VERSION_LO = 77; // Low plugin version
@@ -68,14 +70,15 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private readonly IServiceProvider services;
         private readonly IProcessorArchitecture arch;
-        private readonly List<uint> calls = new List<uint>();         // Call/Ret in script
+        private readonly List<int> calls = new List<int>();         // Call/Ret in script
         public readonly Dictionary<string, Var> variables = new Dictionary<string, Var>(); // Variables that exist
-        private readonly Dictionary<rulong, uint> bpjumps = new Dictionary<rulong, uint>();  // Breakpoint Auto Jumps 
+        private readonly Dictionary<rulong, int> bpjumps = new Dictionary<rulong, int>();  // Breakpoint Auto Jumps 
         public  bool debuggee_running;
         public  bool script_running;
         public  bool run_till_return;
         public  bool return_to_usercode;
-        private  uint script_pos, script_pos_next;
+        private int script_pos, script_pos_next;
+        private readonly UnknownType unk = new UnknownType();
 
         // Debugger state
         private bool resumeDebuggee;
@@ -95,11 +98,11 @@ namespace Reko.ImageLoaders.OdbgScript
         //private bool back_to_debugloop;
         private string errorstr;
 
-        public OllyLang(IServiceProvider services, IProcessorArchitecture arch)
+        public OllyLangInterpreter(IServiceProvider services, IProcessorArchitecture arch)
         {
             this.services = services;
             this.arch = arch;
-            this.Script = new OllyScript(this);
+            this.Script = new OllyScript();
 
             #region Initialize command array
             commands["add"] = DoADD;
@@ -400,9 +403,9 @@ namespace Reko.ImageLoaders.OdbgScript
 #endif
         }
 
-        void SoftwareCallback() { OnBreakpoint(eBreakpointType.PP_INT3BREAK); }
-        void HardwareCallback() { OnBreakpoint(eBreakpointType.PP_HWBREAK); }
-        void MemoryCallback()   { OnBreakpoint(eBreakpointType.PP_MEMBREAK); }
+        void SoftwareCallback() { OnBreakpoint(BreakpointType.PP_INT3BREAK); }
+        void HardwareCallback() { OnBreakpoint(BreakpointType.PP_HWBREAK); }
+        void MemoryCallback()   { OnBreakpoint(BreakpointType.PP_MEMBREAK); }
         void EXECJMPCallback()  { DoSTI(); }
 
         public struct callback_t
@@ -417,7 +420,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         //bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result);
 
-        private readonly Dictionary<eCustomException, string> CustomHandlerLabels = new Dictionary<eCustomException, string>();
+        private readonly Dictionary<eCustomException, Expression> CustomHandlerLabels = new Dictionary<eCustomException, Expression>();
         private readonly Dictionary<eCustomException, Debugger.fCustomHandlerCallback> CustomHandlerCallbacks = new Dictionary<eCustomException, Debugger.fCustomHandlerCallback>();
 
         //void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId);
@@ -457,7 +460,7 @@ namespace Reko.ImageLoaders.OdbgScript
         //static void __stdcall LBPC_UNLOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG) { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_UNLOAD); }
         //static void __stdcall LBPC_ALL(const LOAD_DLL_DEBUG_INFO* SpecialDBG)    { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_ALL); }
 
-        private enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
+        private enum BreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
 
         public class register_t
         {
@@ -511,7 +514,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
 
         // Commands that can be executed
-        Dictionary<string, Func<string[], bool>> commands = new Dictionary<string, Func<string[], bool>>();
+        Dictionary<string, Func<Expression[], bool>> commands = new Dictionary<string, Func<Expression[], bool>>(StringComparer.InvariantCultureIgnoreCase );
 
         private int EOB_row, EOE_row;
         private bool bInternalBP;
@@ -533,9 +536,9 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         // Commands
-        bool GetByte(string op, ref byte value)
+        bool GetByte(Expression op, ref byte value)
         {
-            if (GetRulong(op, out rulong temp) && temp <= Byte.MaxValue)
+            if (GetRulong(op, out ulong temp) && temp <= Byte.MaxValue)
             {
                 value = (byte) temp;
                 return true;
@@ -566,7 +569,7 @@ namespace Reko.ImageLoaders.OdbgScript
             public rulong[] regs = new rulong[17];
             public ulong eflags;
             public uint threadid;
-            public uint script_pos;
+            public int script_pos;
         }
         t_reg_backup reg_backup = new t_reg_backup();
 
@@ -623,7 +626,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
 #else
 
-        readonly register_t[] registers = new register_t[]
+        readonly Dictionary<string, register_t> registers = new register_t[]
         {
             new register_t("eax", eContextData.UE_EAX, 4, 0), new register_t("ebx", eContextData.UE_EBX, 4, 0), new register_t("ecx", eContextData.UE_ECX, 4, 0),
             new register_t("edx", eContextData.UE_EDX, 4, 0), new register_t("esi", eContextData.UE_ESI, 4, 0), new register_t("edi", eContextData.UE_EDI, 4, 0),
@@ -641,7 +644,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             new register_t("al", eContextData. UE_EAX, 1, 0), new register_t("bl", eContextData. UE_EBX, 1, 0), new register_t("cl", eContextData. UE_ECX, 1, 0),
             new register_t("dl", eContextData. UE_EDX, 1, 0)
-        };
+        }.ToDictionary(reg => reg.name, StringComparer.InvariantCultureIgnoreCase);
 
 #endif
 
@@ -649,11 +652,11 @@ namespace Reko.ImageLoaders.OdbgScript
 
         readonly static string[] e_flags = { "!cf", "!pf", "!af", "!zf", "!sf", "!df", "!of" };
 
-        readonly static constant_t[] constants =
-{
-	new constant_t("true",  1),
-	new constant_t("false", 0),
-	new constant_t("null",  0),
+        readonly static Dictionary<string, ulong> constants = new Dictionary<string, rulong>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            { "true",  1},
+            { "false", 0 },
+            { "null",  0 },
     
 #if LATER
 	new constant_t("ue_access_read",  UE_ACCESS_READ),
@@ -715,8 +718,7 @@ namespace Reko.ImageLoaders.OdbgScript
 	new constant_t("ue_on_lib_unload", UE_ON_LIB_UNLOAD),
 	new constant_t("ue_on_lib_all",    UE_ON_LIB_ALL)
 #endif
-};
-
+        };
 
         public Debugger Debugger { get; set; }
         public IHost Host { get; set; }
@@ -804,14 +806,24 @@ namespace Reko.ImageLoaders.OdbgScript
             //importsCacheAddr = 0;
         }
 
-        public void LoadFromFile(string scriptFilename, string curDir)
+        public void LoadFromFile(string scriptFilename, Program program, string curDir)
         {
-            Script.LoadFile(scriptFilename, curDir);
+            var host = new Host(null, program.SegmentMap);
+            var fsSvc = services.RequireService<IFileSystemService>();
+            using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, curDir))
+            {
+                this.Script = parser.ParseScript();
+            }
         }
 
-        public void LoadFromString(string scriptString, string curDir)
+        public void LoadFromString(string scriptString, Program program, string curDir)
         {
-            Script.LoadScriptFromString(scriptString, curDir);
+            var host = new Host(null, program.SegmentMap);
+            var fsSvc = services.RequireService<IFileSystemService>();
+            using (var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir))
+            {
+                this.Script = parser.ParseScript();
+            }
         }
 
         public void Run()
@@ -832,38 +844,38 @@ namespace Reko.ImageLoaders.OdbgScript
             ignore_exceptions = false;
             stepcount = 0;
 
-            while (!resumeDebuggee && Script.IsLoaded && script_running)
+            while (!resumeDebuggee && script_running)
             {
                 if (tickcount_startup == 0)
                     tickcount_startup = Helper.MyTickCount();
 
-                script_pos = (uint) Script.NextCommandIndex((int)script_pos_next);
+                script_pos = Script.NextCommandIndex(script_pos_next);
 
                 // Check if script out of bounds
                 if (script_pos >= Script.Lines.Count)
                     return false;
 
-                var line = Script.Lines[(int)script_pos];
+                var line = Script.Lines[script_pos];
 
                 script_pos_next = script_pos + 1;
 
                 // Log line of code if  enabled
                 if (Script.Log)
                 {
-                    Host.TE_Log("--> " + line.RawLine, Host.TS_LOG_COMMAND);
+                    Host.TE_Log("--> " + line.ToString(), Host.TS_LOG_COMMAND);
                 }
 
                 // Find command and execute it
-                Func<string[], bool> cmd = line.CommandPtr;
+                Func<Expression[], bool> cmd = line.CommandPtr;
                 if (cmd == null && commands.TryGetValue(line.Command, out var it))
                 {
-                        line.CommandPtr = cmd = it;
-                    }
+                    line.CommandPtr = cmd = it;
+                }
 
                 bool result = false;
                 if (cmd != null)
                 {
-                    result = cmd(line.args); // Call command
+                    result = cmd(line.Args); // Call command
                 }
                 else
                 {
@@ -880,7 +892,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (!result)
                 {
                     Pause();
-                    string message = "Error on line " + Helper.rul2decstr(line.LineNumber) + ": " + line.RawLine + "\r\n" + errorstr;
+                    string message = $"Error on line {line.LineNumber + 1}: {line.RawLine}\r\n{errorstr}";
                     Host.MsgError(message);
                     errorstr = "";
                     return false;
@@ -918,7 +930,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        void OnBreakpoint(eBreakpointType reason)
+        void OnBreakpoint(BreakpointType reason)
         {
             if (bInternalBP) //dont process temporary bp (exec/ende/go)
             {
@@ -930,12 +942,12 @@ namespace Reko.ImageLoaders.OdbgScript
 
                 if (EOB_row > -1)
                 {
-                    script_pos_next = (uint)EOB_row;
+                    script_pos_next = EOB_row;
                 }
                 else
                 {
                     rulong ip = Debugger.InstructionPointer.ToLinear();
-                    if (bpjumps.TryGetValue(ip, out uint it))
+                    if (bpjumps.TryGetValue(ip, out int it))
                     {
                         script_pos_next = it;
                     }
@@ -949,7 +961,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (EOE_row > -1)
             {
-                script_pos_next = (uint)EOE_row;
+                script_pos_next = EOE_row;
             }
             else if (ignore_exceptions)
             {
@@ -1059,40 +1071,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return ops.IndexOfAny(operators.ToCharArray(), e);
         }
 
-        /*
-        bool ParseOperands(const string* args, string* results, int count, bool preferstr)
-        {
-            for(int i = 0; i < count; i++) 
-            {
-                results[i] = args[i];
-
-                continue;
-
-                if(preferstr || args[i].IndexOf('\"') >= 0)
-                {
-                    if(!ParseString(args[i], results[i]))
-                    {
-                        if(!ParseRulong(args[i], results[i]))
-                        {
-                            ParseFloat(args[i], results[i]);
-                        }
-                    }
-                }
-                else
-                {
-                    if(!ParseRulong(args[i], results[i]))
-                    {
-                        if(!ParseFloat(args[i], results[i]))
-                        {
-                            ParseString(args[i], results[i]);
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-        */
-
+#if MIXING_PARSING_AND_EVALUATION
         bool ParseString(string arg, out string result)
         {
             int start = 0, offs;
@@ -1195,6 +1174,8 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool ParseFloat(string arg, out string result)
         {
+            throw new NotImplementedException();
+            /*
             int start = 0, offs;
             char oper = '+';
             double val = 0, curval;
@@ -1261,15 +1242,16 @@ namespace Reko.ImageLoaders.OdbgScript
             }
 
             return false;
+            */
         }
+#endif
 
-        bool GetAnyValue(string op, out string value, bool hex8forExec = false)
+        bool GetAnyValue(Expression op, out string value, bool hex8forExec = false)
         {
             value = null;
-
-            if (IsVariable(op))
+            if (op is Identifier id && IsVariable(id.Name))
             {
-                Var  v = variables[op];
+                Var v = variables[id.Name];
                 if (v.IsString())
                 {
                     value = v.str;
@@ -1284,30 +1266,22 @@ namespace Reko.ImageLoaders.OdbgScript
                     return true;
                 }
             }
-            else if (op.Contains(':') && GetAddress(op, out Address addr))
+            else if (op is MkSequence seq && GetAddress(op, out Address addr))
             {
                 value = addr.ToString();
                 //$TODO: hex8forexec?
                 return true;
             }
-            else if (Helper.is_float(op))
+            else if (op is Constant c)
             {
-                value = op;
+                //$TODO: should be hex.
+                value = c.ToString();
+                if (hex8forExec && !char.IsDigit(value[0]))
+                    value = '0' + value;
                 return true;
             }
-            else if (Helper.is_hex(op))
-            {
-                if (hex8forExec)
-                    value = '0' + op;
-                else
-                    value = op;
-                return true;
-            }
-            else if (Helper.is_dec(op))
-            {
-                value = Helper.rul2hexstr(Helper.decstr2rul(op.Substring(0, op.Length - 1))).ToUpperInvariant();
-                return true;
-            }
+            //$TODO: more values.
+            /*
             else if (Helper.IsInterpolatedString(op))
             {
                 value = Helper.UnquoteInterpolatedString(op);
@@ -1321,12 +1295,13 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else if (Helper.IsHexLiteral(op))
             {
-                value = op;
+                value = op.ToString();
                 return true;
             }
-            else if (Helper.IsMemoryAccess(op))
+            */
+            else if (op is MemoryAccess mem)
             {
-                return GetString(op, out value);
+                return GetString(mem, out value);
             }
             else if (GetRulong(op, out ulong dw))
             {
@@ -1339,50 +1314,47 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool GetString(string op, out string value)
+        bool GetString(Expression op, out string value)
         {
             return GetString(op, 0, out value);
         }
 
-        bool GetString(string op, int size, out string value)
+        bool GetString(Expression op, int size, out string value)
         {
             value = "";
-            if (IsVariable(op))
+            if (op is Identifier id && IsVariable(id.Name))
             {
-                if (variables[op].IsString())
+                if (variables[id.Name].IsString())
                 {
-                    if (size != 0 && size < variables[op].size)
+                    if (size != 0 && size < variables[id.Name].size)
                     {
-                        Var tmp = variables[op];
+                        Var tmp = variables[id.Name];
                         tmp.resize(size);
                         value = tmp.str;
                     }
                     else
                     {
-                        value = variables[op].str;
+                        value = variables[id.Name].str;
                     }
                     return true;
                 }
             }
-            else if (Helper.IsStringLiteral(op))
+            else if (op is StringConstant str)
             {
-                value = Helper.UnquoteString(op, '"');
+                value = str.ToString();
                 if (size!=0 && size < value.Length)
                     value = value.Remove(size);
                 return true;
             }
-            else if (Helper.IsHexLiteral(op))
+            else if (Helper.TryGetHexLiteral(op, out value))
             {
-                if (size!= 0 && (size * 2) < (op.Length - 2))
-                    value = op.Substring(0, (size * 2) + 1) + '#';
-                else
-                    value = op;
+                if (size!= 0 && (size * 2) < (value.Length - 2))
+                    value = value.Substring(0, (size * 2) + 1) + '#';
                 return true;
             }
-            else if (Helper.IsMemoryAccess(op))
+            else if (op is MemoryAccess mem)
             {
-                string tmp = Helper.UnquoteString(op, '[', ']');
-                if (GetAddress(tmp, out Address src))
+                if (GetAddress(mem.EffectiveAddress, out Address src))
                 {
                     Debug.Assert(src != null);
 
@@ -1414,13 +1386,15 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else
             {
-                return (ParseString(op, out string parsed) && GetString(parsed, size, out value));
+                //$TODO: evaluate string expressions
+                throw new NotImplementedException();
+                //return (ParseString(op, out string parsed) && GetString(parsed, size, out value));
             }
             value = "";
             return false;
         }
 
-        bool GetBool(string op, out bool value)
+        bool GetBool(Expression op, out bool value)
         {
             if (GetRulong(op, out rulong temp))
             {
@@ -1431,18 +1405,15 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        public bool GetAddress(string op, out Address value)
+        public bool GetAddress(Expression op, out Address value)
         {
             value = null;
-            if (op.StartsWith("["))
-                return false;
-            int iColon = op.IndexOf(':');
-            if (iColon > 0)
+            if (op is MkSequence seq && seq.Expressions.Length == 2)
             {
                 // Possible segmented address. Evaluate part before
                 // and after colon.
-                if (GetRulong(op.Remove(iColon), out var seg) &&
-                    GetRulong(op.Substring(iColon+1), out var off))
+                if (GetRulong(seq.Expressions[0], out var seg) &&
+                    GetRulong(seq.Expressions[1], out var off))
                 {
                     var cSeg = Constant.UInt16((ushort) seg);
                     var cOff = Constant.UInt32((uint) off);
@@ -1450,9 +1421,9 @@ namespace Reko.ImageLoaders.OdbgScript
                     return true;
                 }
             }
-            if (IsVariable(op) && variables[op].Address != null)
+            if (op is Identifier id && IsVariable(id.Name) && variables[id.Name].Address != null)
             {
-                value = variables[op].Address;
+                value = variables[id.Name].Address;
                 return true;
             }
             if (!GetRulong(op, out rulong uAddr))
@@ -1461,58 +1432,53 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        bool GetRulong(string op, out rulong value)
+        bool GetRulong(Expression op, out rulong value)
         {
             value = 0;
-            if (arch.TryGetRegister(op, out var reg))
+            if (op is Identifier id)
             {
-                value = Debugger.GetRegisterValue(reg);
+                if (arch.TryGetRegister(id.Name, out var reg))
+                {
+                    value = Debugger.GetRegisterValue(reg);
                     return true;
                 }
-            else if (is_flag(op))
-            {
-                eflags_t flags = new eflags_t();
-                flags.dw = Debugger.GetContextData(eContextData.UE_EFLAGS);
-                switch (op[1])
+                else if (IsFlag(id.Name))
                 {
-                case 'a': value = (flags.bits.AF ? 1u : 0u); break;
-                case 'c': value = (flags.bits.CF ? 1u : 0u); break;
-                case 'd': value = (flags.bits.DF ? 1u : 0u); break;
-                case 'o': value = (flags.bits.OF ? 1u : 0u); break;
-                case 'p': value = (flags.bits.PF ? 1u : 0u); break;
-                case 's': value = (flags.bits.SF ? 1u : 0u); break;
-                case 'z': value = (flags.bits.ZF ? 1u : 0u); break;
+                    eflags_t flags = new eflags_t();
+                    flags.dw = Debugger.GetContextData(eContextData.UE_EFLAGS);
+                    switch (id.Name[1])
+                    {
+                    case 'a': value = (flags.bits.AF ? 1u : 0u); break;
+                    case 'c': value = (flags.bits.CF ? 1u : 0u); break;
+                    case 'd': value = (flags.bits.DF ? 1u : 0u); break;
+                    case 'o': value = (flags.bits.OF ? 1u : 0u); break;
+                    case 'p': value = (flags.bits.PF ? 1u : 0u); break;
+                    case 's': value = (flags.bits.SF ? 1u : 0u); break;
+                    case 'z': value = (flags.bits.ZF ? 1u : 0u); break;
+                    }
+                    return true;
                 }
-                return true;
-            }
-            else if (IsVariable(op))
-            {
-                if (variables[op].IsInteger())
+                else if (IsVariable(id.Name))
                 {
-                    value = variables[op].ToUInt64();
+                    if (variables[id.Name].IsInteger())
+                    {
+                        value = variables[id.Name].ToUInt64();
+                        return true;
+                    }
+                }
+                else if (TryFindConstant(id.Name, out value))
+                {
                     return true;
                 }
             }
-            else if (is_constant(op))
+            else if (op is Constant c)
             {
-                value = find_constant(op).value;
+                value = c.ToUInt64();
                 return true;
             }
-            else if (Helper.is_hex(op))
+            else if (op is MemoryAccess mem)
             {
-                value = Helper.hexstr2rul(op);
-                return true;
-            }
-            else if (Helper.is_dec(op))
-            {
-                value = Helper.decstr2rul(op.Substring(0, op.Length - 1));
-                return true;
-            }
-            else if (Helper.IsQuotedString(op, '[', ']'))
-            {
-                string tmp = Helper.UnquoteString(op, '[', ']');
-
-                if (GetAddress(tmp, out Address ea))
+                if (GetAddress(mem.EffectiveAddress, out Address ea))
                 {
                     if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                         throw new AccessViolationException();
@@ -1521,26 +1487,29 @@ namespace Reko.ImageLoaders.OdbgScript
                     return ret;
                 }
             }
-            else
+            else if (op is BinaryExpression bin)
             {
-                return (ParseRulong(op, out string parsed) &&
-                        GetRulong(parsed, out value));
+                throw new NotImplementedException("Expressions");
+                //return (ParseRulong(op, out string parsed) &&
+                //        GetRulong(parsed, out value));
             }
             value = 0;
             return false;
         }
 
-        bool GetFloat(string op, out double value)
+        bool GetFloat(Expression op, out double value)
         {
             value = 0.0;
-            if (Helper.is_float(op))
+            if (op is Constant c)
             {
-                value = Helper.str2dbl(op);
+                value = c.ToDouble();
                 return true;
             }
-            else if (is_floatreg(op))
+            else if (op is Identifier id)
             {
-                int index = op[3] - '0';
+                if (is_floatreg(id.Name))
+                {
+                    int index = id.Name[3] - '0';
 #if LATER
                 double reg;
 #if _WIN64
@@ -1556,26 +1525,23 @@ namespace Reko.ImageLoaders.OdbgScript
                     return true;
                 }
 #else
-                value = 0;
-                throw new NotImplementedException();
+                    value = 0;
+                    throw new NotImplementedException();
 #endif
-            }
-            else if (IsVariable(op))
-            {
-                if (variables[op].type == Var.etype.FLT)
+                }
+                else if (IsVariable(id.Name))
                 {
-                    value = variables[op].flt;
-                    return true;
+                    if (variables[id.Name].type == Var.etype.FLT)
+                    {
+                        value = variables[id.Name].flt;
+                        return true;
+                    }
                 }
             }
-            else if (Helper.IsMemoryAccess(op))
+            else if (op is MemoryAccess mem)
             {
-                string tmp = Helper.UnquoteString(op, '[', ']');
-
-                if (GetRulong(tmp, out rulong src))
+                if (GetAddress(mem.EffectiveAddress, out Address ea))
                 {
-                    Debug.Assert(src != 0);
-                    var ea = Address.Ptr32((uint) src);
                     if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                         throw new AccessViolationException();
                     value = segment.MemoryArea.ReadLeDouble(ea).ToDouble();
@@ -1584,51 +1550,55 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else
             {
-                return (ParseFloat(op, out string parsed) && GetFloat(parsed, out value));
+                //$TODO: evaluate binary exp
+                throw new NotImplementedException("//$ return (ParseFloat(op, out string parsed) && GetFloat(parsed, out value));");
             }
             return false;
         }
 
-        bool SetRulong(string op, rulong value, int size = 0)
+        bool SetRulong(Expression op, rulong value, int size = 0)
         {
             if (size > sizeof(rulong))
                 size = sizeof(rulong);
 
-            if (IsVariable(op))
+            if (op is Identifier id)
             {
-                variables[op] = Var.Create(value);
-                variables[op].resize(size);
-                return true;
-            }
-            else if (arch.TryGetRegister(op, out var reg))
-            {
-                Debugger.SetRegisterValue(reg, value);
-                return true;
-                }
-            else if (is_flag(op))
-            {
-                throw new NotImplementedException();
-#if NYI
-                bool flagval = value != 0;
-
-                eflags_t flags;
-                flags.dw = Debugger.GetContextData(UE_EFLAGS);
-
-                switch (op[1])
+                if (IsVariable(id.Name))
                 {
-                case 'a': flags.bits.AF = flagval; break;
-                case 'c': flags.bits.CF = flagval; break;
-                case 'd': flags.bits.DF = flagval; break;
-                case 'o': flags.bits.OF = flagval; break;
-                case 'p': flags.bits.PF = flagval; break;
-                case 's': flags.bits.SF = flagval; break;
-                case 'z': flags.bits.ZF = flagval; break;
+                    variables[id.Name] = Var.Create(value);
+                    variables[id.Name].resize(size);
+                    return true;
                 }
+                else if (arch.TryGetRegister(id.Name, out var reg))
+                {
+                    Debugger.SetRegisterValue(reg, value);
+                    return true;
+                }
+                else if (IsFlag(id.Name))
+                {
+                    throw new NotImplementedException();
+#if NYI
+                    bool flagval = value != 0;
 
-                return Debugger.SetContextData(eContextData.UE_EFLAGS, flags.dw);
+                    eflags_t flags;
+                    flags.dw = Debugger.GetContextData(UE_EFLAGS);
+
+                    switch (op[1])
+                    {
+                    case 'a': flags.bits.AF = flagval; break;
+                    case 'c': flags.bits.CF = flagval; break;
+                    case 'd': flags.bits.DF = flagval; break;
+                    case 'o': flags.bits.OF = flagval; break;
+                    case 'p': flags.bits.PF = flagval; break;
+                    case 's': flags.bits.SF = flagval; break;
+                    case 'z': flags.bits.ZF = flagval; break;
+                    }
+
+                    return Debugger.SetContextData(eContextData.UE_EFLAGS, flags.dw);
 #endif
+                }
             }
-            else if (Helper.IsMemoryAccess(op))
+            else if (op is MemoryAccess)
             {
                 throw new NotImplementedException();
 #if NYI
@@ -1645,67 +1615,65 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool SetAddress(string op, Address addr)
+        bool SetAddress(Expression op, Address addr)
         {
-            if (IsVariable(op))
+            if (op is Identifier id && variables.TryGetValue(id.Name, out var variable))
             {
-                variables[op] = Var.Create(addr);
+                variables[id.Name] = Var.Create(addr);
                 return true;
             }
             throw new NotImplementedException();
         }
 
-        bool SetFloat(string op, double value)
+        bool SetFloat(Expression op, double value)
         {
-            if (IsVariable(op))
+            if (op is Identifier id)
             {
-                variables[op] = Var.Create(value);
-                return true;
-            }
-            else if (is_floatreg(op))
-            {
-                int index = op[3] - '0';
-                double preg = 0.0;
+                if (IsVariable(id.Name))
+                {
+                    variables[id.Name] = Var.Create(value);
+                    return true;
+                }
+                else if (is_floatreg(id.Name))
+                {
+                    int index = id.Name[3] - '0';
+                    double preg = 0.0;
 #if _WIN64
 			XMM_SAVE_AREA32 fltctx;
 			preg = (double*)&fltctx.FloatRegisters + index;
 #else
-                FLOATING_SAVE_AREA fltctx = null;
-                //preg = (double*)&fltctx.RegisterArea[0] + index;
+                    FLOATING_SAVE_AREA fltctx = null;
+                    //preg = (double*)&fltctx.RegisterArea[0] + index;
 #endif
-                if (Debugger.GetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx))
-                {
-                    preg = value;
-                    return Debugger.SetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx);
+                    if (Debugger.GetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx))
+                    {
+                        preg = value;
+                        return Debugger.SetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx);
+                    }
                 }
             }
-            else if (Helper.IsMemoryAccess(op))
+            else if (op is MemoryAccess mem)
             {
-                string tmp = Helper.UnquoteString(op, '[', ']');
-
-                if (GetAddress(tmp, out Address target))
+                if (GetAddress(mem.EffectiveAddress, out Address target))
                 {
-                    Debug.Assert(target != null);
-
                     return Host.WriteMemory(target, value);
                 }
             }
             return false;
         }
 
-        bool SetString(string op, string value, int size = 0)
+        bool SetString(Expression op, string value, int size = 0)
         {
-            if (IsVariable(op))
+            if (op is Identifier id && IsVariable(id.Name))
             {
-                variables[op] = Var.Create(value);
-                if (size!=0 && size < variables[op].size)
-                    variables[op].resize(size);
+                variables[id.Name] = Var.Create(value);
+                if (size!=0 && size < variables[id.Name].size)
+                    variables[id.Name].resize(size);
                 return true;
             }
-            else if (Helper.IsMemoryAccess(op))
+            else if (op is MemoryAccess mem)
             {
-                string tmp = Helper.UnquoteString(op, '[', ']');
-                if (GetAddress(tmp, out Address target))
+                if (GetAddress(mem, out Address target))
                 {
                     Debug.Assert(target != null);
                     var bytes = Encoding.ASCII.GetBytes(value);
@@ -1715,36 +1683,24 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool SetBool(string op, bool value)
+        bool SetBool(Expression op, bool value)
         {
             return SetRulong(op, value?1u:0u, 1);
         }
 
-        register_t find_register(string name)
+        bool TryFindRegister(string name, out register_t reg)
         {
-            string lower = name.ToLowerInvariant();
-            for (int i = 0; i < registers.Length; i++)
-            {
-                if (registers[i].name == lower)
-                    return registers[i];
-            }
-            return null;
+            return registers.TryGetValue(name, out reg);
         }
 
-        constant_t find_constant(string name)
+        bool TryFindConstant(string name, out ulong value)
         {
-            string lower = name.ToLowerInvariant();
-            for (int i = 0; i < constants.Length; i++)
-            {
-                if (constants[i].name == lower)
-                    return constants[i];
-            }
-            return default(constant_t);
+            return constants.TryGetValue(name, out value);
         }
 
         bool is_register(string s)
         {
-            return (find_register(s) != null);
+            return registers.ContainsKey(s);
         }
 
         bool is_floatreg(string s)
@@ -1752,29 +1708,34 @@ namespace Reko.ImageLoaders.OdbgScript
             return fpu_registers.Any<string>(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }
 
-        bool is_flag(string s)
+        bool IsFlag(string s)
         {
             return e_flags.Any(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }
 
         bool IsVariable(string s)
         {
-            return (variables.ContainsKey(s));
+            return variables.ContainsKey(s);
         }
 
-        bool is_constant(string s)
+        bool IsConstant(string s)
         {
-            return (find_constant(s) != null);
+            return constants.ContainsKey(s);
         }
 
-        bool is_valid_variable_name(string s)
+        bool IsValidVariableName(string s)
         {
-            return (s.Length != 0 && char.IsLetter(s[0]) && !is_register(s) && !is_floatreg(s) && !is_constant(s));
+            return (s.Length != 0 && char.IsLetter(s[0]) && !is_register(s) && !is_floatreg(s) && !IsConstant(s));
         }
 
-        bool is_writable(string s)
+        bool IsWriteable(Expression e)
         {
-            return (IsVariable(s) || Helper.IsMemoryAccess(s) || is_register(s) || is_flag(s) || is_floatreg(s));
+            if (e is Identifier id)
+            {
+                var s = id.Name;
+                return IsVariable(s) || is_register(s) || IsFlag(s) || is_floatreg(s);
+            }
+            return e is MemoryAccess;
         }
 
 
@@ -1800,7 +1761,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 else if (ti[i] == '}')
                 {
                     insideVar = false;
-                    GetAnyValue(varname.ToString(), out string value, hex8forExec);
+                    GetAnyValue(MkId(varname.ToString()), out string value, hex8forExec);
                     sb.Append(value);
                     varname.Clear();
                 }
@@ -1857,11 +1818,6 @@ namespace Reko.ImageLoaders.OdbgScript
             return Helper.trim(command.ToString());
         }
 
-        private bool CallCommand(Func<string[], bool> command, params string[] args)
-        {
-            return command(args);
-        }
-
         void regBlockToFree(t_dbgmemblock block)
         {
             tMemBlocks.Add(block);
@@ -1906,14 +1862,14 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool SaveRegisters(bool stackToo)
         {
-            for (int i = 0; i < registers.Length; i++)
+            foreach (var register in registers.Values)
             {
-                if (registers[i].size == sizeof(rulong))
+                if (register.size == sizeof(rulong))
                 {
-                    eContextData reg = registers[i].id;
+                    eContextData reg = register.id;
                     if (stackToo || (reg != eContextData.UE_ESP && reg != eContextData.UE_RSP && reg != eContextData.UE_EBP && reg != eContextData.UE_RBP))
                     {
-                        reg_backup.regs[i] = Debugger.GetContextData(reg);
+                        reg_backup.regs[(int)register.id] = Debugger.GetContextData(reg);
                     }
                 }
             }
@@ -1933,14 +1889,14 @@ namespace Reko.ImageLoaders.OdbgScript
             if (Host.TE_GetCurrentThreadId() != reg_backup.threadid)
                 return false;
 
-            for (int i = 0; i <registers.Length; i++)
+            foreach (var register in registers.Values)
             {
-                if (registers[i].size == sizeof(rulong))
+                if (register.size == sizeof(rulong))
                 {
-                    eContextData reg = registers[i].id;
+                    eContextData reg = register.id;
                     if (stackToo || (reg != eContextData.UE_ESP && reg != eContextData.UE_RSP && reg != eContextData.UE_EBP && reg != eContextData.UE_RBP))
                     {
-                        Debugger.SetContextData(reg, reg_backup.regs[i]);
+                        Debugger.SetContextData(reg, reg_backup.regs[(int)register.id]);
                     }
                 }
             }
@@ -2062,7 +2018,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        bool StepCallback(uint pos, bool returns_value, Var.etype return_type, ref Var result)
+        bool StepCallback(int pos, bool returns_value, Var.etype return_type, ref Var result)
         {
             callback_t callback;
             callback.call = (uint) calls.Count;
@@ -2083,7 +2039,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId)
         {
-            if (CustomHandlerLabels.TryGetValue(ExceptionId, out string it))
+            if (CustomHandlerLabels.TryGetValue(ExceptionId, out Expression it))
             {
                 //variables["$TE_ARG_1"] = (rulong)ExceptionData;
                 DoCALL(it);
@@ -2094,7 +2050,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             Var ret = Var.Empty();
 
-            uint label = Script.Labels[Label_AutoFixIATEx];
+            int label = Script.Labels[Label_AutoFixIATEx];
             variables["$TE_ARG_1"] = Var.Create((rulong)fIATPointer);
             if (StepCallback(label, true, Var.etype.DW, ref ret))
                 return (object)ret.ToUInt64();
@@ -2110,9 +2066,20 @@ namespace Reko.ImageLoaders.OdbgScript
                 Dictionary<string, string> labels = LibraryBreakpointLabels[bpxType];
                 if (labels.TryGetValue(Lib.szLibraryPath, out string it))
                 {
-                    DoCALL(new[] { it });
+
+                    DoCALL(new[] { MkString(it) });
                 }
             }
+        }
+
+        private Identifier MkId(string id)
+        {
+            return new Identifier(id, unk, MemoryStorage.Instance);
+        }
+
+        private Constant MkString(string s)
+        {
+            return Constant.String(s, StringType.NullTerminated(PrimitiveType.Char));
         }
     }
 }

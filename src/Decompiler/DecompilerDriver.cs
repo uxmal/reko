@@ -236,7 +236,7 @@ namespace Reko
 
             try
             {
-                interpreter.LoadFromString(script.Script, null);
+                interpreter.LoadFromString(script.Script, program, null);
                 interpreter.Run();
             }
             catch (Exception ex)

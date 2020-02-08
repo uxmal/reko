@@ -28,6 +28,8 @@ using System.Collections.Generic;
 using System.IO;
 using rulong = System.UInt64;
 
+#pragma warning disable IDE1006 // Naming Styles
+
 namespace Reko.ImageLoaders.OdbgScript
 {
     /// <summary>
@@ -40,7 +42,7 @@ namespace Reko.ImageLoaders.OdbgScript
     {
         private readonly ImageLoader originalImageLoader;
         private Debugger debugger;
-        private OllyLang scriptInterpreter;
+        private OllyLangInterpreter scriptInterpreter;
         private rulong OldIP;
 
         public OdbgScriptLoader(ImageLoader imageLoader) 
@@ -76,7 +78,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var envEmu = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
             this.debugger = new Debugger(emu);
-            this.scriptInterpreter = new OllyLang(Services, program.Architecture);
+            this.scriptInterpreter = new OllyLangInterpreter(Services, program.Architecture);
             this.scriptInterpreter.Host = new Host(this, program.SegmentMap);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
@@ -84,7 +86,7 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.ExceptionRaised += emu_ExceptionRaised;
 
             var stackSeg = envEmu.InitializeStack(emu, rr.EntryPoints[0].ProcessorState);
-            LoadScript(Argument, scriptInterpreter.Script);
+            scriptInterpreter.Script = LoadScript(scriptInterpreter.Host, Argument);
             emu.Start();
             envEmu.TearDownStack(stackSeg);
 
@@ -123,7 +125,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return pe;
         }
 
-        public virtual void LoadScript(string scriptFilename, OllyScript script)
+        public virtual OllyScript LoadScript(IHost host, string scriptFilename)
         {
             // If the script file is not a rooted path, first try looking at 
             // the current directory. If there is no file there, try finding 
@@ -144,7 +146,10 @@ namespace Reko.ImageLoaders.OdbgScript
                     scriptFilename = absPath;
                 }
             }
-            script.LoadFile(scriptFilename, null);
+            using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, null))
+            {
+                return parser.ParseScript();
+            }
         }
 
         private void emu_ExceptionRaised(object sender, EventArgs e)
@@ -220,18 +225,6 @@ namespace Reko.ImageLoaders.OdbgScript
             }
         }
 
-        public bool ScripterLoadFile(string szFileName)
-        {
-            scriptInterpreter.Reset();
-            return scriptInterpreter.Script.LoadFile(szFileName);
-        }
-
-        public bool ScripterLoadBuffer(string szScript)
-        {
-            scriptInterpreter.Reset();
-            return scriptInterpreter.Script.LoadScriptFromString(szScript);
-        }
-
         public bool ScripterResume()
         {
             scriptInterpreter.Run();
@@ -246,16 +239,6 @@ namespace Reko.ImageLoaders.OdbgScript
         private void AutoDebugEntry()
         {
             ScripterResume();
-        }
-
-        bool ScripterAutoDebug(string szDebuggee)
-        {
-            if (scriptInterpreter.Script.IsLoaded && scriptInterpreter.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
-            {
-                scriptInterpreter.Debugger.DebugLoop();
-                return true;
-            }
-            return false;
         }
     }
 }

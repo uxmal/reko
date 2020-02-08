@@ -462,7 +462,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Mnemonic.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
                 case Mnemonic.vand: RewriteVecBinOp(m.And); break;
-                case Mnemonic.vbic: RewriteVectorBinOp("__vbic_{0}"); break;
+                case Mnemonic.vbic: RewriteVbic(); break;
                 case Mnemonic.vcmp: RewriteVcmp(); break;
                 case Mnemonic.vbif: RewriteIntrinsic("__vbif", Domain.UnsignedInt); break;
                 case Mnemonic.vbit: RewriteIntrinsic("__vbit", Domain.UnsignedInt); break;

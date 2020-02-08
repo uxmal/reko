@@ -165,17 +165,18 @@ namespace Reko.Arch.Mips
         /// <summary>
         /// Decode a single bit corresponding to a register.
         /// </summary>
-        public static Mutator<Mips16eDisassembler> RBit(int bitpos, int iReg)
+        public static bool MultiRegs(uint uInstr, Mips16eDisassembler dasm)
         {
-            var reg = new RegisterOperand(Registers.generalRegs[iReg]);
-            return (u, d) =>
-            {
-                if (Bits.IsBitSet(u, bitpos))
-                {
-                    d.ops.Add(reg);
-                }
-                return true;
-            };
+            uint regMask = 0;
+            if (Bits.IsBitSet(uInstr, 6))
+                regMask |= (1u << 31); // ra
+            if (Bits.IsBitSet(uInstr, 4))
+                regMask |= (1u << 17);
+            if (Bits.IsBitSet(uInstr, 5))
+                regMask |= (1u << 16);
+            var mop = new MultiRegisterOperand(dasm.arch.GeneralRegs, dasm.arch.WordWidth, regMask);
+            dasm.ops.Add(mop);
+            return true;
         }
 
         /// <summary>
@@ -379,43 +380,54 @@ namespace Reko.Arch.Mips
 
             var svrsDecoders = Mask(7, 1,
                 Instr(Mnemonic.restore),
-                Instr(Mnemonic.save, RBit(6, 31), RBit(4, 17), RBit(5, 16), SaveFramesize));
+                Instr(Mnemonic.save, MultiRegs, SaveFramesize));
 
             var i8decoders = Mask(8, 3, "  I8",
-               Instr(Mnemonic.bteqz, ARel8),
-               Nyi("BTNEZ"), //  Instr(Mnemonic.btnez, ARel8),
-               Instr(Mnemonic.sw, ra,MptrSp8),
-               Instr(Mnemonic.addi,sp,SImm8s3),
+                Instr(Mnemonic.bteqz, ARel8),
+                Instr(Mnemonic.btnez, ARel8),
+                Instr(Mnemonic.sw, ra,MptrSp8),
+                Instr(Mnemonic.addi,sp,SImm8s3),
 
-               svrsDecoders,
-               Instr(Mnemonic.move,Reg((3,2),(5,3)),R0),
-               invalid,
-               Instr(Mnemonic.move,R5,Reg((0,5))));
+                svrsDecoders,
+                Instr(Mnemonic.move,Reg((3,2),(5,3)),R0),
+                invalid,
+                Instr(Mnemonic.move,R5,Reg((0,5))));
 
             var cnvtDecoders = Mask(5, 3, "  CNVT",
-                Nyi("ZEB"),
-                Nyi("ZEH"),
+                Instr(Mnemonic.zeb, R8),
+                Instr(Mnemonic.zeh, R8),
                 invalid,
                 invalid,
-                Nyi("SEB"),
-                Nyi("SEH"),
+                Instr(Mnemonic.seb, R8),
+                Instr(Mnemonic.seh, R8),
                 invalid,
                 invalid);
 
+            var jrcDecoders = Mask(5, 3, "  JRC",
+                Instr(Mnemonic.jr, InstrClass.Transfer|InstrClass.Delay, R8),
+                Instr(Mnemonic.jr, InstrClass.Transfer | InstrClass.Delay, ra),
+                Instr(Mnemonic.jalr, InstrClass.Transfer | InstrClass.Delay | InstrClass.Call, R8),
+                invalid,
+
+                Instr(Mnemonic.jrc, InstrClass.Transfer, R8),
+                Instr(Mnemonic.jrc, InstrClass.Transfer, ra),
+                Instr(Mnemonic.jalrc, InstrClass.Transfer | InstrClass.Call, R8),
+                invalid);
+
             var rrDecoders = Mask(0, 5, "  RR",
-                Nyi("JRC"),
-                Nyi("SDBBP"),
-                Nyi("SLT"),
-                Nyi("SLTU"),
+                jrcDecoders,
+                Instr(Mnemonic.sdbbp, UImmSh(5, 6, 0)),
+                Instr(Mnemonic.slt, R8, R5),
+                Instr(Mnemonic.sltu, R8, R5),
 
                 Instr(Mnemonic.sllv, R5,R8),
-                Nyi("BREAK"),
+                Instr(Mnemonic.@break, UImmSh(5, 6, 0)),
                 Instr(Mnemonic.srlv, R5,R8),
                 Instr(Mnemonic.srav, R5,R8),
 
                 invalid,  // reserved
                 invalid,  // reserved
-                Nyi("CMP"),
+                Instr(Mnemonic.cmp, R8,R5),
                 Instr(Mnemonic.neg, R8,R5),
 
                 Instr(Mnemonic.and, R8,R5),
@@ -433,10 +445,10 @@ namespace Reko.Arch.Mips
                 invalid,  // reserved
                 invalid,  // reserved
 
-                Nyi("MULT"),
-                Nyi("MULTU"),
-                Nyi("DIV"),
-                Nyi("DIVU"),
+                Instr(Mnemonic.mult, R8,R5),
+                Instr(Mnemonic.multu, R8,R5),
+                Instr(Mnemonic.div, R8, R5),
+                Instr(Mnemonic.divu, R8, R5),
 
                 invalid,  // reserved
                 invalid,  // reserved

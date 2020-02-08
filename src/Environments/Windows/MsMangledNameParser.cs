@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -44,6 +44,7 @@ namespace Reko.Environments.Windows
         private string str;
         private int i;
         private List<string> namesSeen;
+        private int pointerSize;
         private List<string> templateNamesSeen;
         private List<Argument_v1> compoundArgs;
         private bool isInstanceMethod;
@@ -53,11 +54,13 @@ namespace Reko.Environments.Windows
             this.str = str;
             this.i = 0;
             this.namesSeen = new List<string>();
+            this.pointerSize = 4;  //$TODO: should follow platform pointer size, really.
         }
 
         public string Modifier;
         public string ClassName;
         public string Scope;
+        private bool isConstuctor;
 
         public Tuple<string,SerializedType,SerializedType> Parse()
         {
@@ -389,8 +392,21 @@ namespace Reko.Environments.Windows
             SerializedType retType;
             if (PeekAndDiscard('@'))
             {
-                // C++ ctors have no return type!
-                retType = null;
+                // C++ ctors have no explicit return type!
+                if (isConstuctor)
+                {
+                    // C++ constructor implicitly returns pointer to
+                    // initialised object
+                    retType = new PointerType_v1
+                    {
+                        DataType = CreateEnclosingType(Scope),
+                        PointerSize = pointerSize,
+                    };
+                }
+                else
+                {
+                    retType = null;
+                }
             }
             else
             {
@@ -438,7 +454,9 @@ namespace Reko.Environments.Windows
         {
             switch (str[i++])
             {
-            case '0': return "{0}";
+            case '0':
+                this.isConstuctor = true;
+                return "{0}";
             case '1': return "~{0}";
             case '2': return "operator new";
             case '3': return "operator delete";
@@ -629,7 +647,7 @@ namespace Reko.Environments.Windows
 
         public SerializedType ParsePointer(List<Argument_v1> compoundArgs, Qualifier q)
         {
-            int size = 4;       //$TODO: should follow platform pointer size, really.
+            int size = pointerSize;
             SerializedType type;
             if (PeekAndDiscard('E')) // 64-bit pointer
             {

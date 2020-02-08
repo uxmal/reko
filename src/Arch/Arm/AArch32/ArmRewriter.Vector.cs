@@ -27,6 +27,18 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {
+        private void RewriteVbic()
+        {
+            if (instr.Operands.Length == 3)
+            {
+                RewriteVectorBinOp("__vbic_{0}", instr.vector_data, Dst(), Src1(), Src2());
+            }
+            else
+            {
+                RewriteVectorBinOp("__vbic_{0}", instr.vector_data, Dst(), Dst(), Src1());
+            }
+        }
+
         private void RewriteVecBinOp(Func<Expression, Expression, Expression> fn)
         {
             if (instr.Operands.Length == 3)
@@ -336,16 +348,26 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVectorBinOp(string fnNameFormat)
         {
-            RewriteVectorBinOp(fnNameFormat, instr.vector_data);
+            RewriteVectorBinOp(fnNameFormat, instr.vector_data, Dst(), Src1(), Src2());
         }
 
         private void RewriteVectorBinOp(string fnNameFormat, ArmVectorData elemType)
         {
-            var src1 = this.Operand(Src1());
-            var src2 = this.Operand(Src2());
-            var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var dstType = Dst().Width;
-            var srcType = Src1().Width;
+            RewriteVectorBinOp(fnNameFormat, elemType, Dst(), Src1(), Src2());
+        }
+
+        private void RewriteVectorBinOp(
+            string fnNameFormat, 
+            ArmVectorData elemType, 
+            MachineOperand opDst, 
+            MachineOperand opSrc1, 
+            MachineOperand opSrc2)
+        {
+            var src1 = this.Operand(opSrc1);
+            var src2 = this.Operand(opSrc2);
+            var dst = this.Operand(opDst, PrimitiveType.Word32, true);
+            var dstType = opDst.Width;
+            var srcType = opSrc1.Width;
             var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
             //$BUG: some instructions are returned with srcElemnSize == 0!
             var celemSrc = srcType.BitSize / (srcElemSize.BitSize != 0 ? srcElemSize.BitSize : 8);
