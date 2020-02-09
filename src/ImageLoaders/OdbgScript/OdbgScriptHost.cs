@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 var maxSegment = SegmentMap.Segments.Values
                     .OrderByDescending(s => s.Address.ToLinear() + s.Size)
                     .First();
-                var addrHeap = (maxSegment.Address + maxSegment.Size + 0x10).Align(0x10);
+                var addrHeap = (maxSegment.Address + maxSegment.Size).Align(0x10);
 
                 // Make a 1 MiB heap. We want as simple an implementation as possible,
                 // since OllyDebug scripts are not expected to be running very long.
@@ -64,7 +64,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var newHeapAlloc = heapAlloc + size;
             if ((uint) heap.MemoryArea.Length <= newHeapAlloc)
                 return null;
-            var addrChunk = heap.MemoryArea.BaseAddress + heapAlloc;
+            var addrChunk = (heap.MemoryArea.BaseAddress + heapAlloc).Align(0x10);
             this.heapAlloc = newHeapAlloc;
             return addrChunk;
         }

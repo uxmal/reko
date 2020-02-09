@@ -32,7 +32,7 @@ using System.Text;
 
 namespace Reko.Assemblers.M68k
 {
-    public class M68kTextAssembler : Assembler
+    public class M68kTextAssembler : IAssembler
     {
         private M68kArchitecture arch;
         private Address addrBase;

@@ -21,13 +21,14 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Environments.Msdos;
 using Reko.Loading;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -41,7 +42,7 @@ namespace Reko.UnitTests.Arch.Intel
 	{
         private ServiceContainer sc;
         private string configFile;
-		protected Assembler asm; 
+		protected IAssembler asm; 
 		protected Program program;
 		protected Scanner scanner;
 		protected Address baseAddress;
@@ -58,7 +59,7 @@ namespace Reko.UnitTests.Arch.Intel
             program = new Program() { Architecture = arch };
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            asm = new X86TextAssembler(sc, arch);
+            asm = new X86TextAssembler(arch);
 			configFile = null;
 		}
 
@@ -71,6 +72,7 @@ namespace Reko.UnitTests.Arch.Intel
 		protected Procedure DoRewrite(string code)
 		{
             program = asm.AssembleFragment(baseAddress, code);
+            program.Platform = new MsdosPlatform(sc, program.Architecture);
 			DoRewriteCore();
 			return program.Procedures.Values[0];
 		}
@@ -135,7 +137,7 @@ namespace Reko.UnitTests.Arch.Intel
                 var lr = asm.Assemble(baseAddress, stm);
                 program.SegmentMap = lr.SegmentMap;
                 program.ImageMap = lr.ImageMap;
-                program.Platform = lr.Platform ?? new DefaultPlatform(null, lr.Architecture);
+                program.Platform = lr.Platform ?? new MsdosPlatform(sc, lr.Architecture);
             }
 			DoRewriteCore();
 		}
@@ -172,7 +174,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void IfTest()
+		public void X86Rw_real_IfTest()
 		{
 			Procedure proc = DoRewrite(
 				@"	.i86

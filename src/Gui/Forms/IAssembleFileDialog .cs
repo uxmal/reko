@@ -31,6 +31,6 @@ namespace Reko.Gui.Forms
         IServiceProvider Services { get; set; }
 
         ITextBox FileName { get; }
-        string SelectedArchitectureTypeName { get; }
+        string SelectedArchitectureName { get; }
     }
 }

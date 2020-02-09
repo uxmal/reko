@@ -42,11 +42,9 @@ namespace Reko.UnitTests.Arch.Mos6502
             this.sc = new ServiceContainer();
         }
 
-       
-
         private void Given_Code(Action<Assembler> p)
         {
-            var asm = new Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr16(0x0800), new List<ImageSymbol>());
+            var asm = new Assembler(sc, arch, Address.Ptr16(0x0800), new List<ImageSymbol>());
             p(asm);
             var program = asm.GetImage();
             program.SegmentMap.AddSegment(

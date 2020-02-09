@@ -20,11 +20,13 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
+using Reko.Core.Assemblers;
 using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Environments.Msdos;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
@@ -147,7 +149,8 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86dis_Sequence()
         {
-            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
+            var arch = new X86ArchitectureReal("x86-real-16");
+            X86TextAssembler asm = new X86TextAssembler(arch);
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 @"	mov	ax,0
@@ -179,7 +182,8 @@ foo:
         [Test]
         public void SegmentOverrides()
         {
-            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
+            var arch = new X86ArchitectureReal("x86-real-16");
+            X86TextAssembler asm = new X86TextAssembler(arch);
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 "foo	proc\r\n" +
@@ -197,7 +201,8 @@ foo:
         [Test]
         public void Rotations()
         {
-            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
+            var arch = new X86ArchitectureReal("x86-real-16");
+            X86TextAssembler asm = new X86TextAssembler(arch);
             var lr = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 "foo	proc\r\n" +
@@ -224,7 +229,8 @@ foo:
         [Test]
         public void Extensions()
         {
-            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
+            var arch = new X86ArchitectureReal("x86-real-16");
+            IAssembler asm = arch.CreateAssembler(null);
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xA14, 0),
 @"		.i86
@@ -234,6 +240,7 @@ foo		proc
 		movsx	ebx,bx
 		movzx	ax,byte ptr [bp+04]
 ");
+            program.Platform = new DefaultPlatform(sc, arch);
             CreateDisassembler16(program.SegmentMap.Segments.Values.First().MemoryArea);
             StringBuilder sb = new StringBuilder();
             foreach (var ii in dasm.Take(4))
@@ -258,7 +265,8 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void Dis_x86_InvalidKeptStateRegression()
         {
-            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32("x86-protected-32"));
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            X86TextAssembler asm = new X86TextAssembler(arch);
             var lr = asm.AssembleFragment(
                 Address.Ptr32(0x01001000),
 
@@ -294,7 +302,8 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void DisEdiTimes2()
         {
-            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32("x86-protected-32"));
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            X86TextAssembler asm = new X86TextAssembler(arch);
             var program = asm.AssembleFragment(Address.SegPtr(0x0B00, 0),
                 @"	.i386
 	mov ebx,[edi*2]
@@ -312,7 +321,8 @@ movzx	ax,byte ptr [bp+04]
         {
             using (FileUnitTester fut = new FileUnitTester("Intel/DisFpuInstructions.txt"))
             {
-                X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
+                var arch = new X86ArchitectureReal("x86-real-16");
+                X86TextAssembler asm = new X86TextAssembler(arch);
                 Program lr;
                 using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))
                 {
@@ -777,7 +787,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void Dis_x86_StringOps()
         {
-            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32("x86-protected-32"));
+            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureFlat32("x86-protected-32"));
             var lr = asm.AssembleFragment(
                 Address.Ptr32(0x01001000),
 

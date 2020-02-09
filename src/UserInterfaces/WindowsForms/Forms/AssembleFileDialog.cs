@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -39,19 +39,19 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             InitializeComponent();
             FileName = new TextBoxWrapper(txtFileName);
-            AssemblerList = ddlAssembler;
+            ArchitectureList = ddlAssembler;
             BrowseButton = new ButtonWrapper(btnBrowse);
             new AssembleFileInteractor().Attach(this);
         }
 
         public IServiceProvider Services { get; set; }
         public ITextBox FileName {get; private set;}
-        public ComboBox AssemblerList { get; private set; }
+        public ComboBox ArchitectureList { get; private set; }
         public IButton BrowseButton { get; private set; }
 
-        public string SelectedArchitectureTypeName
+        public string SelectedArchitectureName
         {
-            get { return ((AssemblerDefinition)((ListOption)ddlAssembler.SelectedValue).Value).TypeName; }
+            get { return ((ArchitectureDefinition)((ListOption)ddlAssembler.SelectedValue).Value).Name; }
         }
     }
 }

@@ -18,31 +18,47 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Machine;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
 
-namespace Reko.Core.Configuration
+namespace Reko.Arch.X86.Assembler
 {
-    public class AssemblerDefinition
-    {
-        /// <summary>
-        /// Short, technical name for the assembler.
-        /// the assembler.
-        /// </summary>
-        public string Name { get; set; }
+	public class ParsedOperand
+	{
+		private MachineOperand op;
+		private bool longJmp;
 
-        /// <summary>
-        /// Human friendly description of the assembler.
-        /// the assembler.
-        /// </summary>
-        public string Description { get; set; }
+		public ParsedOperand(MachineOperand op, Symbol sym, bool longJmp)
+		{
+			this.op = op;
+			this.Symbol = sym;
+			this.longJmp = longJmp;
+		}
 
-        /// <summary>
-        /// The assembly-qualified name for the .NET type that implements
-        /// the assembler.
-        /// </summary>
-        public string TypeName { get; set; }
-    }
+		public ParsedOperand(MachineOperand op, Symbol sym)
+		{
+			this.op = op;
+			this.Symbol = sym;
+		}
+
+		public ParsedOperand(MachineOperand op)
+		{
+			this.op = op;
+			this.Symbol = null;
+		}
+
+		public bool Long
+		{
+			get { return longJmp; }
+		}
+
+		public MachineOperand Operand
+		{
+			get { return op; }
+		}
+
+		public Symbol Symbol { get; set; }
+	}
 }

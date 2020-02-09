@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Types;
@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void Fstsw_Setup()
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
-            asm = new X86Assembler(null, new DefaultPlatform(null, new X86ArchitectureFlat32("x86-protected-32")), Address.Ptr32(0x10000), new List<ImageSymbol>());
+            asm = new X86Assembler(new X86ArchitectureFlat32("x86-protected-32"), Address.Ptr32(0x10000), new List<ImageSymbol>());
             Procedure proc = new Procedure(arch, "test", Address.Ptr32(0x00123400), arch.CreateFrame());
             orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, null);
             emitter = new ProcedureBuilder();

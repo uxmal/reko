@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -125,6 +126,16 @@ namespace Reko.Core
         /// <param name="addr">Address to start writing at.</param>
         /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
+
+        /// <summary>
+        /// Creates an <see cref="IAssembler"/> instance which can be used to translate
+        /// assembly language to machine code for this processor architecture.
+        /// </summary>
+        /// <param name="asmDialect">On some processors there are many "dialects" of assembly
+        /// language. This parameter allows the caller to select a dialect. Passing null
+        /// uses the default, manufacturer dialect.</param>
+        /// <returns></returns>
+        IAssembler CreateAssembler(string asmDialect);
 
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
@@ -408,6 +419,7 @@ namespace Reko.Core
         public RegisterStorage FpuStackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 
+        public virtual IAssembler CreateAssembler(string asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
         public EndianImageReader CreateImageReader(MemoryArea img, Address addr) => this.Endianness.CreateImageReader(img, addr);

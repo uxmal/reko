@@ -22,20 +22,18 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Types;
-using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Reko.Assemblers.x86
+namespace Reko.Arch.X86.Assembler
 {
     /// <summary>
     /// A crude MASM-style assembler for x86 opcodes.
     /// </summary>
-    public class X86TextAssembler : Assembler
+    public class X86TextAssembler : IAssembler
 	{
-        private IServiceProvider services;
 		private Lexer lexer;
 		private Address addrBase;
 		private Address addrStart;
@@ -43,9 +41,8 @@ namespace Reko.Assemblers.x86
         private X86Assembler asm;
         private IntelArchitecture arch;
 
-		public X86TextAssembler(IServiceProvider services, IntelArchitecture arch)
+		public X86TextAssembler(IntelArchitecture arch)
 		{
-            this.services = services;
             this.entryPoints = new List<ImageSymbol>();
             this.ImageSymbols = new List<ImageSymbol>();
             this.arch = arch;
@@ -56,8 +53,7 @@ namespace Reko.Assemblers.x86
             addrBase = addr;
             lexer = new Lexer(rdr);
 
-            asm = new X86Assembler(services, new MsdosPlatform(services, arch), addrBase, entryPoints);
-            asm.Platform = Platform;
+            asm = new X86Assembler(this.arch, addrBase, entryPoints);
 
             // Assemblers are strongly line-oriented.
 
@@ -182,12 +178,6 @@ namespace Reko.Assemblers.x86
 				return null;
 			}
 		}
-
-        public IPlatform Platform
-        {
-            get;
-            set;
-        }
 
 		public void ProcessAssume()
 		{

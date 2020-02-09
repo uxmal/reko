@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Arch.X86;
-using Reko.Environments.Msdos;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
@@ -31,7 +30,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 
-namespace Reko.Assemblers.x86
+namespace Reko.Arch.X86.Assembler
 {
     /// <summary>
     /// A crude MASM-style assembler for x86 instructions.
@@ -46,7 +45,6 @@ namespace Reko.Assemblers.x86
             Load = 0xAC,
             Scan = 0xAE,
         }
-        private IServiceProvider services;
         private IProcessorArchitecture arch;
         private Address addrBase;
         private ModRmBuilder modRm;
@@ -61,11 +59,9 @@ namespace Reko.Assemblers.x86
         private Dictionary<string, AssembledSegment> mpNameToSegment;
         private Dictionary<Symbol, AssembledSegment> symbolSegments;        // The segment to which a symbol belongs.
 
-        public X86Assembler(IServiceProvider services, IPlatform platform, Address addrBase, List<ImageSymbol> entryPoints)
+        public X86Assembler(IntelArchitecture arch, Address addrBase, List<ImageSymbol> entryPoints)
         {
-            this.services = services;
-            this.Platform = platform;
-            this.arch = platform.Architecture;
+            this.arch = arch;
             this.addrBase = addrBase;
             this.entryPoints = entryPoints;
             this.defaultWordSize = arch.WordWidth;
@@ -85,14 +81,17 @@ namespace Reko.Assemblers.x86
             SetDefaultWordWidth(defaultWordSize);
         }
 
-
-        public IPlatform Platform { get; set; }
-
         public Dictionary<Address, ImportReference> ImportReferences
         {
             get { return importReferences; }
         }
 
+        /// <summary>
+        /// Extracts the assembled machine code into a <see cref="Program"/> instance.
+        /// </summary>
+        /// <remarks>
+        /// Callers must provide their own <see cref="IPlatform"/> instance.
+        /// </remarks>
         public Program GetImage()
         {
             var stm = new MemoryStream();
@@ -104,7 +103,7 @@ namespace Reko.Assemblers.x86
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,
-                Platform);
+                null);
         }
 
         private void LoadSegments(MemoryStream stm)
@@ -1142,7 +1141,6 @@ namespace Reko.Assemblers.x86
         public void i86()
         {
             arch = new X86ArchitectureReal("x86-real-16");
-            Platform = new MsdosPlatform(services, arch);
             SetDefaultWordWidth(PrimitiveType.Word16);
         }
 

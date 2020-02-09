@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -26,7 +26,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Assemblers.x86
+namespace Reko.Arch.X86.Assembler
 {
 	/// <summary>
 	/// This class is in charge of parsing an operand or several operands and 

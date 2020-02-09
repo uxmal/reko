@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Assemblers.x86
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             arch = new X86ArchitectureReal("x86-real-16");
-            asm = new X86TextAssembler(sc, arch);
+            asm = new X86TextAssembler(arch);
         }
 
         protected void AssertEqualBytes(string expected, byte[] actual)
@@ -121,6 +121,7 @@ namespace Reko.UnitTests.Assemblers.x86
 
         private void AssembleFragment(string asmSrc)
         {
+            var arch = new X86ArchitectureReal("x86-real-16");
             program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), asmSrc);
             mem = program.SegmentMap.Segments.Values.First().MemoryArea;
         }

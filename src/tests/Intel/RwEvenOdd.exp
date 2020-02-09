@@ -6,10 +6,12 @@
 // ax:ax
 // ds:ds
 // al:al
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax = 0x0003
@@ -32,10 +34,12 @@ fn0C00_0000_exit:
 // C:C
 // Z:Z
 // al:al
+// Top:Top
 // return address size: 2
 define fn0C00_0015
 fn0C00_0015_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_0015
 l0C00_0015:
 	ax = ax | ax
@@ -67,10 +71,12 @@ fn0C00_0015_exit:
 // C:C
 // Z:Z
 // al:al
+// Top:Top
 // return address size: 2
 define fn0C00_0020
 fn0C00_0020_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_0020
 l0C00_0020:
 	ax = ax | ax

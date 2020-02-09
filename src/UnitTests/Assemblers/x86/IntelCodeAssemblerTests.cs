@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Environments.Msdos;
@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Assemblers.x86
         public new void Setup()
         {
             base.Setup();
-            m = new X86Assembler(sc, new MsdosPlatform(sc, new X86ArchitectureReal("x86-real-16")), Address.SegPtr(0x100, 0x0100), new List<ImageSymbol>());
+            m = new X86Assembler(new X86ArchitectureReal("x86-real-16"), Address.SegPtr(0x100, 0x0100), new List<ImageSymbol>());
         }
 
         private byte[] GetBytes(X86Assembler m)

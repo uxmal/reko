@@ -31,7 +31,7 @@ using System.Text;
 
 namespace Reko.Assemblers.Pdp11
 {
-    public class Pdp11TextAssembler : Assembler
+    public class Pdp11TextAssembler : IAssembler
     {
         private Lexer lexer;
         private IEmitter emitter;

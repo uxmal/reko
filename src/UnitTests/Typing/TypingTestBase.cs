@@ -21,7 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
@@ -69,9 +69,11 @@ namespace Reko.UnitTests.Typing
             ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
-                new X86TextAssembler(sc, arch),
+                new X86TextAssembler(arch),
+                null,
                 addrBase);
             program.Platform = mkPlatform(sc, program.Architecture);
+
             var ep = ImageSymbol.Procedure(arch, program.SegmentMap.BaseAddress);
             var project = new Project { Programs = { program } };
             var scan = new Scanner(

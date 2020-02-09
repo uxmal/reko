@@ -5,10 +5,12 @@
 // sp:sp
 // ss:ss
 // SCZO:SCZO
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = sp - 2
@@ -37,6 +39,7 @@ fn0C00_0000_exit:
 define fn0C00_0010
 fn0C00_0010_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_0010
 l0C00_0010:
 	sp = sp - 2
@@ -81,6 +84,7 @@ fn0C00_0010_exit:
 define fn0C00_0037
 fn0C00_0037_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_0037
 l0C00_0037:
 	Top = Top - 1

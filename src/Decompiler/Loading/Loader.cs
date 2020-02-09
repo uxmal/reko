@@ -55,25 +55,17 @@ namespace Reko.Loading
         public string DefaultToFormat { get; set; }
         public IServiceProvider Services { get; private set; }
 
-        public Program AssembleExecutable(string filename, string assemblerName, Address addrLoad)
-        {
-            var bytes = LoadImageBytes(filename, 0);
-            var asm = cfgSvc.GetAssembler(assemblerName);
-            if (asm == null)
-                throw new ApplicationException(string.Format("Unknown assembler name '{0}'.", assemblerName));
-            return AssembleExecutable(filename, bytes, asm, addrLoad);
-        }
-
-        public Program AssembleExecutable(string fileName, Assembler asm, Address addrLoad)
+        public Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address addrLoad)
         {
             var bytes = LoadImageBytes(fileName, 0);
-            return AssembleExecutable(fileName, bytes, asm, addrLoad);
+            return AssembleExecutable(fileName, bytes, asm, platform, addrLoad);
         }
 
-        public Program AssembleExecutable(string fileName, byte[] image, Assembler asm, Address addrLoad)
+        public Program AssembleExecutable(string fileName, byte[] image, IAssembler asm, IPlatform platform, Address addrLoad)
         {
             var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             program.Name = Path.GetFileName(fileName);
+            program.Platform = platform;
             foreach (var sym in asm.ImageSymbols)
             {
                 program.ImageSymbols[sym.Address] = sym;

@@ -30,23 +30,21 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Mos6502
 {
-    public class Assembler : Reko.Core.Assemblers.Assembler
+    public class Assembler : IAssembler
     {
         private static readonly Dictionary<Mnemonic, InstrOpcodes> instrOpcodes;
 
         private ServiceContainer sc;
         private Mos6502Architecture arch;
-        private IPlatform platform;
         private Address addrBase;
         private Core.Assemblers.IEmitter m;
         private List<ImageSymbol> symbols;
         private SymbolTable symtab;
 
-        public Assembler(ServiceContainer sc, IPlatform platform, Address addrBase, List<ImageSymbol> symbols)
+        public Assembler(ServiceContainer sc, Mos6502Architecture arch, Address addrBase, List<ImageSymbol> symbols)
         {
             this.sc = sc;
-            this.arch = new Mos6502Architecture("mos6502");
-            this.platform = platform;
+            this.arch = arch;
             this.addrBase = addrBase;
             this.symbols = symbols;
             this.m = new Core.Assemblers.Emitter();
@@ -57,10 +55,13 @@ namespace Reko.Arch.Mos6502
         {
             var mem = new MemoryArea(addrBase, m.GetBytes());
             var seg = new ImageSegment("code", mem, AccessMode.ReadWriteExecute);
-            var program = new Program(
-                new SegmentMap(addrBase, seg),
-                arch,
-                platform);
+            var map = new SegmentMap(addrBase, seg);
+            var program = new Program
+            {
+                SegmentMap = map,
+                ImageMap = map.CreateImageMap(),
+                Architecture = arch,
+            };
             return program;
         }
 

@@ -13,8 +13,6 @@ loaded dynamically (using the services provided by IConfigurationService).
     <Message Importance="high" Text="Copying Architectures to $(TargetDir)" />
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Assemblers to $(TargetDir)" />
-    <Copy SourceFiles="@(Assemblers)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying Environments to $(TargetDir)" />
     <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Libraries to $(TargetDir)" />
     <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

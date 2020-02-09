@@ -21,7 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
@@ -157,11 +157,11 @@ namespace Reko.UnitTests.Arch.Intel
         private void RunTest(string sourceFile, string outputFile)
 		{
 			Program program;
-            var asm = new X86TextAssembler(services, new X86ArchitectureFlat32("x86-protected-32"));
+            var asm = new X86TextAssembler(new X86ArchitectureFlat32("x86-protected-32"));
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
-                program.Platform = win32;
+                program.Platform = new Win32Platform(services, program.Architecture);
                 program.User.Heuristics.Add("shingle");
             }
             foreach (var item in asm.ImportReferences)

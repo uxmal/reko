@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,47 +18,33 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Assemblers;
-using Reko.Core.Machine;
 using System;
+using System.Collections.Generic;
+using System.Text;
+using Reko.Core.Types;
 
-namespace Reko.Assemblers.x86
+namespace Reko.Arch.X86.Assembler
 {
-	public class ParsedOperand
-	{
-		private MachineOperand op;
-		private bool longJmp;
+    public class AssembledSegment
+    {
+        public IEmitter Emitter { get; private set; } 
+        public Symbol Symbol { get; private set; }
+        public List<Relocation> Relocations { get; private set; }
+        public ushort Selector { get; set; }
 
-		public ParsedOperand(MachineOperand op, Symbol sym, bool longJmp)
-		{
-			this.op = op;
-			this.Symbol = sym;
-			this.longJmp = longJmp;
-		}
+        public AssembledSegment(IEmitter emitter, Symbol sym)
+        {
+            this.Emitter = emitter;
+            this.Symbol = sym;
+            this.Relocations = new List<Relocation>();
+        }
 
-		public ParsedOperand(MachineOperand op, Symbol sym)
-		{
-			this.op = op;
-			this.Symbol = sym;
-		}
+        public class Relocation
+        {
+            public AssembledSegment Segment;
+            public uint Offset;
+        }
 
-		public ParsedOperand(MachineOperand op)
-		{
-			this.op = op;
-			this.Symbol = null;
-		}
-
-		public bool Long
-		{
-			get { return longJmp; }
-		}
-
-		public MachineOperand Operand
-		{
-			get { return op; }
-		}
-
-		public Symbol Symbol { get; set; }
-	}
+    }
 }

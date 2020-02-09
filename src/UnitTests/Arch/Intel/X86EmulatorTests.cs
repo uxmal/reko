@@ -21,7 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_Win32Code(Action<X86Assembler> coder)
         {
-            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr32(0x00100000), new List<ImageSymbol>());
+            var asm = new X86Assembler(arch, Address.Ptr32(0x00100000), new List<ImageSymbol>());
             coder(asm);
             var program = asm.GetImage();
             this.segmentMap = program.SegmentMap;
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_MsdosCode(Action<X86Assembler> coder)
         {
             arch = new X86ArchitectureReal("x86-real-16");
-            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.SegPtr(0x07F0, 0), new List<ImageSymbol>());
+            var asm = new X86Assembler(arch, Address.SegPtr(0x07F0, 0), new List<ImageSymbol>());
             asm.Segment("PSP");
             asm.Repeat(0x100, m => m.Db(0));
             asm.Segment("Code");

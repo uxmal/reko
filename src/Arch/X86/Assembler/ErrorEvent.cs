@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Reko.Assemblers.x86
+namespace Reko.Arch.X86.Assembler
 {
 	public delegate void ErrorEventHandler(object sender, ErrorEventArgs args);
 

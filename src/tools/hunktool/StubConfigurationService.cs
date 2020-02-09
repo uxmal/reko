@@ -44,16 +44,6 @@ namespace hunktool
             throw new NotImplementedException();
         }
 
-        public Assembler GetAssembler(string assemblerName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICollection<AssemblerDefinition> GetAssemblers()
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<UiStyleDefinition> GetDefaultPreferences()
         {
             throw new NotImplementedException();

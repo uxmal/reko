@@ -946,18 +946,6 @@
       <Project>{33CE0D6A-8762-4505-975F-EE61C355FD04}</Project>
       <Name>zSeries</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Assemblers\M68k\M68kAssembler.csproj">
-      <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>
-      <Name>M68kAssembler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Assemblers\Pdp11\Pdp11Assembler.csproj">
-      <Project>{3BB6B0FB-6686-428B-9DC9-A32F349E50E6}</Project>
-      <Name>Pdp11Assembler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Assemblers\x86\X86Assembler.csproj">
-      <Project>{3805DE2C-659A-442D-8C34-E88822A4D27C}</Project>
-      <Name>X86Assembler</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>

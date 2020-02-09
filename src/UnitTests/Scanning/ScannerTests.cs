@@ -21,13 +21,14 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Environments.Msdos;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.Scanning.Fragments;
@@ -106,9 +107,10 @@ namespace Reko.UnitTests.Scanning
         {
             var addr = Address.SegPtr(0x0C00, 0);
             var arch = new X86ArchitectureReal("x86-real-16");
-            var m = new X86Assembler(sc, new FakePlatform(null, arch), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(arch, addr, new List<ImageSymbol>());
             test(m);
             this.program = m.GetImage();
+            this.program.Platform = new MsdosPlatform(sc, arch);
             this.scan = this.CreateScanner(this.program);
             var sym = ImageSymbol.Procedure(arch, addr);
             scan.EnqueueImageSymbol(sym, true);
@@ -319,7 +321,7 @@ namespace Reko.UnitTests.Scanning
             program = new Program();
             program.Architecture = arch;
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(arch, addr, new List<ImageSymbol>());
             m.i86();
 
             m.Proc("main");

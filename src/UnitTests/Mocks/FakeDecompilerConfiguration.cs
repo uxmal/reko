@@ -53,11 +53,6 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public ICollection<AssemblerDefinition> GetAssemblers()
-        {
-            throw new NotImplementedException();
-        }
-
         public ICollection<RawFileDefinition> GetRawFiles()
         {
             throw new NotImplementedException();
@@ -86,11 +81,6 @@ namespace Reko.UnitTests.Mocks
         public IProcessorArchitecture GetArchitecture(string sArch)
         {
             throw new NotImplementedException();
-        }
-
-        public Assembler GetAssembler(string sAsm)
-        {
-            return new Reko.Assemblers.x86.X86TextAssembler(services, new Reko.Arch.X86.X86ArchitectureReal("x86-real-16"));
         }
 
         public PlatformDefinition GetEnvironment(string envName)

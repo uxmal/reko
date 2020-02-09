@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = arch16;
             baseAddr = baseAddr16;
-            var asm = new X86Assembler(sc, new MsdosPlatform(sc, arch), baseAddr16, new List<ImageSymbol>());
+            var asm = new X86Assembler(arch, baseAddr16, new List<ImageSymbol>());
             host = new RewriterHost(arch, asm.ImportReferences);
             return asm;
         }
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = arch32;
             baseAddr = baseAddr32;
-            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), baseAddr32, new List<ImageSymbol>());
+            var asm = new X86Assembler(arch, baseAddr32, new List<ImageSymbol>());
             host = new RewriterHost(arch, asm.ImportReferences);
             return asm;
         }

@@ -24,13 +24,17 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Assemblers
 {
-	public interface Assembler
+	public interface IAssembler
 	{
         Address StartAddress { get; }
         ICollection<ImageSymbol> EntryPoints { get; }
         ICollection<ImageSymbol> ImageSymbols { get; }
         Dictionary<Address, ImportReference> ImportReferences { get; }
 
+        /// <summary>
+        /// Assembles the provided assembly langugage program into a new
+        /// <see cref="Program"/>.
+        /// </summary>
         Program Assemble(Address baseAddress, TextReader reader);
         Program AssembleFragment(Address baseAddress, string asmFragment);
 

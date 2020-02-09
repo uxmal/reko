@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.Intel
             arch = new X86ArchitectureFlat32("x86-protected-32");
             var services = new ServiceContainer();
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            asm = new X86Assembler(services, new DefaultPlatform(services, arch), loadAddress, new List<ImageSymbol>());
+            asm = new X86Assembler(arch, loadAddress, new List<ImageSymbol>());
         }
 
         public override IProcessorArchitecture Architecture => arch;
