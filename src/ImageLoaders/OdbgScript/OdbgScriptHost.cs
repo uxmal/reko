@@ -105,7 +105,7 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual int AssembleEx(string p, Address addr)
+        public virtual int Assemble(string p, Address addr)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,20 @@ namespace Reko.Core.Assemblers
         Dictionary<Address, ImportReference> ImportReferences { get; }
 
         Program Assemble(Address baseAddress, TextReader reader);
-        Program AssembleFragment(Address baseAddress, string fragment);
+        Program AssembleFragment(Address baseAddress, string asmFragment);
+
+        /// <summary>
+        /// Assembles the assembler language program from <paramref name="reader"/> and mutates 
+        /// the provided <paramref name="program"/> starting at <paramref name="address"/>. 
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="baseAddress"></param>
+        /// <param name="reader"></param>
+        /// <remarks>
+        /// Side effects include: the memory areas of the program may be mutated, and <see cref="ImageSymbol"/>s
+        /// may be added to <see cref="Program.ImageSymbols"/>.
+        /// </remarks>
+        void AssembleAt(Program program, Address address, TextReader reader);
+        void AssembleFragmentAt(Program program, Address address, string asmFragment);
     }
 }

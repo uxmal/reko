@@ -551,6 +551,16 @@ namespace Reko.Assemblers.M68k
             return Assemble(baseAddress, rdr);
         }
 
+        public void AssembleAt(Program program, Address address, TextReader rdr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AssembleFragmentAt(Program program, Address addr, string asm)
+        {
+            throw new NotImplementedException();
+        }
+
         public MemoryArea GetImage()
         {
             return new MemoryArea(addrBase, emitter.GetBytes());

@@ -286,6 +286,15 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+        public void AssembleAt(Program program, Address addr, TextReader asm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AssembleFragmentAt(Program program, Address addr, string asm)
+        {
+            throw new NotImplementedException();
+        }
 
 
         public class ParsedOperand

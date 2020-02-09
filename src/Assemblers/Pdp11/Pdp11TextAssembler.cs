@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -69,6 +69,16 @@ namespace Reko.Assemblers.Pdp11
         public Program AssembleFragment(Address baseAddress, string fragment)
         {
             return Assemble(baseAddress, new StringReader(fragment));
+        }
+
+        public void AssembleAt(Program progra, Address addr, TextReader asm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AssembleFragmentAt(Program progra, Address addr, string asm)
+        {
+            throw new NotImplementedException();
         }
 
         private void ProcessLine()

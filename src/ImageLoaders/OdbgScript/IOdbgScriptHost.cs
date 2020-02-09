@@ -31,7 +31,7 @@ namespace Reko.ImageLoaders.OdbgScript
         SegmentMap SegmentMap { get; }
 
         Address AllocateMemory(ulong size);
-        int AssembleEx(string asm, Address addr);
+        int Assemble(string asm, Address addr);
         bool DialogASK(string title, out string returned);
         bool DialogMSG(string msg, out int input);
         bool DialogMSGYN(string msg, out int dialogResult);

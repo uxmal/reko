@@ -165,7 +165,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (args.Length == 3 && !GetRulong(args[2], out ulong attempt))
                     return false;
 
-                int len = Host.AssembleEx(FormatAsmDwords(cmd), addr);
+                int len = Host.Assemble(FormatAsmDwords(cmd), addr);
                 if (len == 0)
                 {
                     errorstr = "Invalid command: " + cmd;
@@ -188,7 +188,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     string line = lines[i];
                     if (line.Length != 0)
                     {
-                        int len = Host.AssembleEx(FormatAsmDwords(line), addr + totallen);
+                        int len = Host.Assemble(FormatAsmDwords(line), addr + totallen);
                         if (len == 0)
                         {
                             errorstr = "Invalid command: " + line;
@@ -1012,7 +1012,7 @@ rulong hwnd;
                     for (int i = first; i < ende; i++)
                     {
                         string line = InterpolateVariables(Script.Lines[(int)i].RawLine, true);
-                        len = Host.AssembleEx(line, pmemforexec + totallen);
+                        len = Host.Assemble(line, pmemforexec + totallen);
                         if (len == 0)
                         {
                             Host.FreeMemory(pmemforexec);
@@ -1031,7 +1031,7 @@ rulong hwnd;
                     string jmpstr = "jmp " + eip.ToString();
                     Address jmpaddr = pmemforexec + (uint)totallen;
 
-                    len = Host.AssembleEx(jmpstr, pmemforexec + totallen);
+                    len = Host.Assemble(jmpstr, pmemforexec + totallen);
                     totallen += len;
 
                     // Set new eip and run to the original one

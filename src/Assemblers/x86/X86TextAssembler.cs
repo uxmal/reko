@@ -83,6 +83,16 @@ namespace Reko.Assemblers.x86
 			return Assemble(addr, new StringReader(fragment));
 		}
 
+        public void AssembleAt(Program program, Address addr, TextReader rdr)
+        {
+
+        }
+
+        public void AssembleFragmentAt(Program program, Address addr, string asmFragment)
+        {
+
+        }
+
         public IProcessorArchitecture Architecture
         {
             get { return arch; }
