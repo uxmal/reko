@@ -33,7 +33,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
     [TestFixture]
     public class OllyLangInterpreterTests
     {
-        private Mock<IHost> host;
+        private Mock<IOdbgScriptHost> host;
         private Mock<IProcessorEmulator> emu;
         private Mock<IProcessorArchitecture> arch;
         private Mock<IFileSystemService> fsSvc;
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
         {
             this.emu = new Mock<IProcessorEmulator>();
             this.arch = new Mock<IProcessorArchitecture>();
-            this.host = new Mock<IHost>();
+            this.host = new Mock<IOdbgScriptHost>();
             this.fsSvc = new Mock<IFileSystemService>();
         }
 
@@ -149,8 +149,8 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             Given_Script(
                 "find 001000, #21??21#\r\n" +
                 "test $RESULT,$RESULT\r\n" +
-                "jz done\r\n"+
-                "fill $RESULT,3,2d\r\n"+
+                "jz done\r\n" +
+                "fill $RESULT,3,2d\r\n" +
                 "done:\r\n"
                 );
 
@@ -158,7 +158,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
             Assert.AreEqual("***---#", Encoding.ASCII.GetString(mem.Bytes));
         }
-        
+
         [Test]
         public void Ose_FormatWords()
         {
@@ -242,6 +242,19 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             int x;
             host.Setup(h => h.DialogMSG("foo: 0123:4567", out x));
             engine.Run();
+        }
+
+        [Test]
+        public void Ose_add()
+        {
+            Given_Engine();
+            Given_Script(
+@"var foo
+mov foo,3
+add foo,4
+");
+            engine.Run();
+            Assert.AreEqual(7, engine.variables["foo"].ToUInt64());
         }
     }
 

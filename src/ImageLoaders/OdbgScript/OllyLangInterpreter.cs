@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.OdbgScript
     // This is the table for Script Execution
     public class t_dbgmemblock
     {
-        public rulong address;    //Memory Adress
+        public Address address;    //Memory Adress
         public uint size;     //Block Size
         public int script_pos; //Registred at script pos
         public bool autoclean; //On script restart/change
@@ -70,7 +70,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private readonly IServiceProvider services;
         private readonly IProcessorArchitecture arch;
-        private readonly List<int> calls = new List<int>();         // Call/Ret in script
+        private readonly List<int> calls = new List<int>();         // Call/Ret stack in script
         public readonly Dictionary<string, Var> variables = new Dictionary<string, Var>(); // Variables that exist
         private readonly Dictionary<rulong, int> bpjumps = new Dictionary<rulong, int>();  // Breakpoint Auto Jumps 
         public  bool debuggee_running;
@@ -91,7 +91,7 @@ namespace Reko.ImageLoaders.OdbgScript
         //last breakpoint reason
         private rulong break_reason;
         private rulong break_memaddr;
-        private rulong pmemforexec;
+        private Address pmemforexec;
         private Address membpaddr;
         private ulong membpsize;
         //private bool require_addonaction;
@@ -418,47 +418,15 @@ namespace Reko.ImageLoaders.OdbgScript
         private readonly List<callback_t> callbacks = new List<callback_t>();
         private Var callback_return;
 
-        //bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result);
-
         private readonly Dictionary<eCustomException, Expression> CustomHandlerLabels = new Dictionary<eCustomException, Expression>();
         private readonly Dictionary<eCustomException, Debugger.fCustomHandlerCallback> CustomHandlerCallbacks = new Dictionary<eCustomException, Debugger.fCustomHandlerCallback>();
 
-        //void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId);
-
-        //static void __stdcall CHC_BREAKPOINT(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_BREAKPOINT); }
-        //static void __stdcall CHC_SINGLESTEP(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_SINGLESTEP); }
-        //static void __stdcall CHC_ACCESSVIOLATION(object  ExceptionData)         { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ACCESSVIOLATION); }
-        //static void __stdcall CHC_ILLEGALINSTRUCTION(object  ExceptionData)      { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ILLEGALINSTRUCTION); }
-        //static void __stdcall CHC_NONCONTINUABLEEXCEPTION(object  ExceptionData) { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_NONCONTINUABLEEXCEPTION); }
-        //static void __stdcall CHC_ARRAYBOUNDSEXCEPTION(object  ExceptionData)    { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_ARRAYBOUNDSEXCEPTION); }
-        //static void __stdcall CHC_FLOATDENORMALOPERAND(object  ExceptionData)    { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_FLOATDENORMALOPERAND); }
-        //static void __stdcall CHC_FLOATDEVIDEBYZERO(object  ExceptionData)       { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_FLOATDEVIDEBYZERO); }
-        //static void __stdcall CHC_INTEGERDEVIDEBYZERO(object  ExceptionData)     { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_INTEGERDEVIDEBYZERO); }
-        //static void __stdcall CHC_INTEGEROVERFLOW(object  ExceptionData)         { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_INTEGEROVERFLOW); }
-        //static void __stdcall CHC_PRIVILEGEDINSTRUCTION(object  ExceptionData)   { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_PRIVILEGEDINSTRUCTION); }
-        //static void __stdcall CHC_PAGEGUARD(object  ExceptionData)               { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_PAGEGUARD); }
-        //static void __stdcall CHC_EVERYTHINGELSE(object  ExceptionData)          { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EVERYTHINGELSE); }
-        //static void __stdcall CHC_CREATETHREAD(object  ExceptionData)            { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_CREATETHREAD); }
-        //static void __stdcall CHC_EXITTHREAD(object  ExceptionData)              { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EXITTHREAD); }
-        //static void __stdcall CHC_CREATEPROCESS(object  ExceptionData)           { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_CREATEPROCESS); }
-        //static void __stdcall CHC_EXITPROCESS(object  ExceptionData)             { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_EXITPROCESS); }
-        //static void __stdcall CHC_LOADDLL(object  ExceptionData)                 { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_LOADDLL); }
-        //static void __stdcall CHC_UNLOADDLL(object  ExceptionData)               { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_UNLOADDLL); }
-        //static void __stdcall CHC_OUTPUTDEBUGSTRING(object  ExceptionData)       { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_OUTPUTDEBUGSTRING); }
-
         private string Label_AutoFixIATEx = "";
-        //static void __stdcall Callback_AutoFixIATEx(object fIATPointer);
 
         private Dictionary<eLibraryEvent, Dictionary<string, string>> LibraryBreakpointLabels = //<library path, label name>
             new Dictionary<eLibraryEvent, Dictionary<string, string>>();
         private Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback> LibraryBreakpointCallbacks =
             new Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback>();
-
-        //void LBPC_TRAMPOLINE(const LOAD_DLL_DEBUG_INFO* SpecialDBG, eLibraryEvent bpxType);
-
-        //static void __stdcall LBPC_LOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG)   { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_LOAD); }
-        //static void __stdcall LBPC_UNLOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG) { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_UNLOAD); }
-        //static void __stdcall LBPC_ALL(const LOAD_DLL_DEBUG_INFO* SpecialDBG)    { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_ALL); }
 
         private enum BreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
 
@@ -721,7 +689,7 @@ namespace Reko.ImageLoaders.OdbgScript
         };
 
         public Debugger Debugger { get; set; }
-        public IHost Host { get; set; }
+        public IOdbgScriptHost Host { get; set; }
         public OllyScript Script { get; set; }
 
         public void Dispose()
@@ -785,7 +753,7 @@ namespace Reko.ImageLoaders.OdbgScript
             break_memaddr = 0;
             break_reason = 0;
 
-            pmemforexec = 0;
+            pmemforexec = null;
             membpaddr = null;
             membpsize = 0;
 
@@ -808,7 +776,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromFile(string scriptFilename, Program program, string curDir)
         {
-            var host = new Host(null, program.SegmentMap);
+            var host = new OdbgScriptHost(null, program.SegmentMap);
             var fsSvc = services.RequireService<IFileSystemService>();
             using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, curDir))
             {
@@ -818,7 +786,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromString(string scriptString, Program program, string curDir)
         {
-            var host = new Host(null, program.SegmentMap);
+            var host = new OdbgScriptHost(null, program.SegmentMap);
             var fsSvc = services.RequireService<IFileSystemService>();
             using (var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir))
             {
@@ -862,7 +830,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 // Log line of code if  enabled
                 if (Script.Log)
                 {
-                    Host.TE_Log("--> " + line.ToString(), Host.TS_LOG_COMMAND);
+                    Host.TE_Log("--> " + line.ToString());
                 }
 
                 // Find command and execute it
@@ -914,7 +882,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (tMemBlocks[i].free_at_ip == ip)
                 {
-                    Host.TE_FreeMemory(tMemBlocks[i].address, tMemBlocks[i].size);
+                    Host.FreeMemory(tMemBlocks[i].address, tMemBlocks[i].size);
                     if (tMemBlocks[i].result_register)
                         variables["$RESULT"] = Var.Create((rulong)Debugger.GetContextData(tMemBlocks[i].reg_to_return));
                     if (tMemBlocks[i].restore_registers)
@@ -1480,6 +1448,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (GetAddress(mem.EffectiveAddress, out Address ea))
                 {
+                    //$TODO: add a method IHost.TryReadLeUint32.
                     if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                         throw new AccessViolationException();
                     bool ret = segment.MemoryArea.TryReadLeUInt32(ea, out uint dw);
@@ -1815,7 +1784,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 iStart = iEnd + 1;
             }
-            return Helper.trim(command.ToString());
+            return command.ToString().Trim();
         }
 
         void regBlockToFree(t_dbgmemblock block)
@@ -1823,7 +1792,7 @@ namespace Reko.ImageLoaders.OdbgScript
             tMemBlocks.Add(block);
         }
 
-        void regBlockToFree(rulong address, rulong size, bool autoclean)
+        void regBlockToFree(Address address, rulong size, bool autoclean)
         {
             t_dbgmemblock block = new t_dbgmemblock();
 
@@ -1836,7 +1805,7 @@ namespace Reko.ImageLoaders.OdbgScript
             regBlockToFree(block);
         }
 
-        private bool UnregMemBlock(rulong address)
+        private bool UnregMemBlock(Address address)
         {
             for (int i = 0; i < tMemBlocks.Count; i++)
             {
@@ -1854,7 +1823,7 @@ namespace Reko.ImageLoaders.OdbgScript
             for (int i = 0; i < tMemBlocks.Count; i++)
             {
                 if (tMemBlocks[i].autoclean)
-                    Host.TE_FreeMemory(tMemBlocks[i].address, tMemBlocks[i].size);
+                    Host.FreeMemory(tMemBlocks[i].address, tMemBlocks[i].size);
             }
             tMemBlocks.Clear();
             return true;
@@ -1978,7 +1947,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 else if (run_till_return)
                 {
-                    var instr = (X86Instruction) Host.DisassembleEx(Debugger.InstructionPointer);
+                    var instr = (X86Instruction) Host.Disassemble(Debugger.InstructionPointer);
                     if (instr.Mnemonic == Arch.X86.Mnemonic.ret ||
                        instr.Mnemonic == Arch.X86.Mnemonic.retf)
                     {
@@ -1995,7 +1964,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     that's not gonna do us any good for jumps
                     so we'll stepinto except for a few exceptions
                     */
-                    var instr = (X86Instruction) Host.DisassembleEx(Debugger.InstructionPointer);
+                    var instr = (X86Instruction) Host.Disassemble(Debugger.InstructionPointer);
                     if (instr.Mnemonic == Arch.X86.Mnemonic.call || instr.repPrefix != 0)
                         Debugger.StepOver(StepOverCallback);
                     else

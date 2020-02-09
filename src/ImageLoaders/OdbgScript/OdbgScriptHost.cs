@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -31,66 +32,53 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    public interface IHost
-    {
-        SegmentMap SegmentMap { get; }
-        object TS_LOG_COMMAND { get; set; }
-
-        ulong TE_AllocMemory(ulong size);
-        int AssembleEx(string asm, ulong addr);
-        bool DialogASK(string title, out string returned);
-        bool DialogMSG(string msg, out int input);
-        bool DialogMSGYN(string msg, out int dialogResult);
-        string Disassemble(byte[] buffer, Address addr, out int opsize);
-        MachineInstruction DisassembleEx(Address addr);
-        ulong FindHandle(ulong var, string sClassName, ulong x, ulong y);
-        bool TE_FreeMemory(ulong pmemforexec);
-        bool TE_FreeMemory(ulong addr, ulong size);
-        object TE_GetCurrentThreadHandle();
-        uint TE_GetCurrentThreadId();
-        List<string> getlines_file(string p);
-        ulong TE_GetMainThreadId();
-        ulong TE_GetMainThreadHandle();
-        bool TE_GetMemoryInfo(Address addr, out MEMORY_BASIC_INFORMATION MemInfo);
-        bool TE_GetModules(List<MODULEENTRY32> Modules);
-        object TE_GetProcessHandle();
-        ulong TE_GetProcessId();
-        string TE_GetTargetDirectory();
-        string TE_GetTargetPath();
-        string TE_GetOutputPath();
-        int LengthDisassemble(byte[] membuf, int i);
-        int LengthDisassembleBackEx(Address addr);
-        uint LengthDisassembleEx(Address addr);
-        void TE_Log(string message);
-        void TE_Log(string message, object p);
-        void MsgError(string message);
-        void SetOriginalEntryPoint(Address ep);
-        bool TryReadBytes(Address addr, int memlen, byte[] membuf);
-        bool WriteMemory(Address addr, int length, byte[] membuf);
-        bool WriteMemory(Address addr, ulong qw);
-        bool WriteMemory(Address addr, uint dw);
-        bool WriteMemory(Address addr, ushort w);
-        bool WriteMemory(Address addr, byte b);
-        bool WriteMemory(Address target, double value);
-        void AddSegmentReference(Address addr, ushort seg);
-    }
-
-    public class Host : IHost
+    public class OdbgScriptHost : IOdbgScriptHost
     {
         private OdbgScriptLoader loader;
+        private ImageSegment heap;
+        private ulong heapAlloc;
 
-		public Host(OdbgScriptLoader loader, SegmentMap segmentMap)
+		public OdbgScriptHost(OdbgScriptLoader loader, SegmentMap segmentMap)
         {
             this.loader = loader;
 			this.SegmentMap = segmentMap;
         }
 
         public SegmentMap SegmentMap { get; set; }
-        public object TS_LOG_COMMAND { get; set; }
 
-        public virtual ulong TE_AllocMemory(ulong size)
+        public virtual Address AllocateMemory(ulong size)
         {
-            throw new NotImplementedException();
+            if (heap == null)
+            {
+                // Find an available spot in th address space & align it up to a 16-byte boundary.
+                var maxSegment = SegmentMap.Segments.Values
+                    .OrderByDescending(s => s.Address.ToLinear() + s.Size)
+                    .First();
+                var addrHeap = (maxSegment.Address + maxSegment.Size + 0x10).Align(0x10);
+
+                // Make a 1 MiB heap. We want as simple an implementation as possible,
+                // since OllyDebug scripts are not expected to be running very long.
+                this.heap = SegmentMap.AddSegment(new MemoryArea(addrHeap, new byte[1024 * 1024]), ".Emulated_heap", AccessMode.ReadWrite);
+                this.heapAlloc = 0;
+            }
+            var newHeapAlloc = heapAlloc + size;
+            if ((uint) heap.MemoryArea.Length <= newHeapAlloc)
+                return null;
+            var addrChunk = heap.MemoryArea.BaseAddress + heapAlloc;
+            this.heapAlloc = newHeapAlloc;
+            return addrChunk;
+        }
+
+        public virtual bool FreeMemory(Address addr)
+        {
+            // We leak memory
+            return true;
+        }
+
+        public virtual bool FreeMemory(Address addr, ulong size)
+        {
+            // We leak memory
+            return true;
         }
 
         public virtual void AddSegmentReference(Address addr, ushort seg)
@@ -110,17 +98,14 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual void TE_FreeMemory(ulong p1, uint p2)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public virtual bool DialogASK(string title, out string returned)
         {
             throw new NotImplementedException();
         }
 
-        public virtual int AssembleEx(string p, ulong addr)
+        public virtual int AssembleEx(string p, Address addr)
         {
             throw new NotImplementedException();
         }
@@ -182,16 +167,6 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual bool TE_FreeMemory(ulong addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual bool TE_FreeMemory(ulong addr, ulong size)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual uint LengthDisassembleEx(Address addr)
         {
             throw new NotImplementedException();
@@ -222,11 +197,6 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual void TE_Log(string message, object p)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual bool WriteMemory(Address addr, int p, byte[] membuf)
         {
             throw new NotImplementedException();
@@ -247,7 +217,7 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual MachineInstruction DisassembleEx(Address addr)
+        public virtual MachineInstruction Disassemble(Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out ImageSegment segment))
                 throw new AccessViolationException();

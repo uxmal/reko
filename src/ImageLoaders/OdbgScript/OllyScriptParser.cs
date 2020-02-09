@@ -31,6 +31,14 @@ using System.Text;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
+    /// <summary>
+    /// This class parses an extended version of OllyScript 
+    /// (https://github.com/epsylon3/odbgscript/blob/master/doc/ODbgScript.txt). In addition
+    /// to the language described there, it supports reading sequences: 
+    ///  expr ':' expr ... ':' expr
+    /// In particular, a sequence seg ':' offset is used to model segmented pointers 
+    /// on x86 real mode.
+    /// </summary>
     public class OllyScriptParser : IDisposable
     {
         private static readonly UnknownType unk = new UnknownType();
@@ -40,12 +48,12 @@ namespace Reko.ImageLoaders.OdbgScript
         private Lexer lexer;
         private Stack<Lexer> lexerStack;
         private Token tok;
-        private IHost host;
+        private IOdbgScriptHost host;
         private IFileSystemService fsSvc;
         private OllyScript script;
         private readonly string currentDir;
 
-        public OllyScriptParser(TextReader rdr, string currentDir, IHost host, IFileSystemService fsSvc)
+        public OllyScriptParser(TextReader rdr, string currentDir, IOdbgScriptHost host, IFileSystemService fsSvc)
         {
             this.host = host;
             this.fsSvc = fsSvc;
@@ -202,13 +210,86 @@ namespace Reko.ImageLoaders.OdbgScript
                 return new MkSequence(unk, sums.ToArray());
         }
 
+        private Expression OrExpr()
+        {
+            var left = XorExpr();
+            if (left == null)
+                return null;
+            while (PeekAndDiscard(TokenType.Or))
+            {
+                var right = XorExpr();
+                if (right == null)
+                    return null;
+                left = new BinaryExpression(Operator.Or, unk, left, right);
+            }
+            return left;
+        }
+
+        private Expression XorExpr()
+        {
+            var left = AndExpr();
+            if (left == null)
+                return null;
+            while (PeekAndDiscard(TokenType.Xor))
+            {
+                var right = AndExpr();
+                if (right == null)
+                    return null;
+                left = new BinaryExpression(Operator.Xor, unk, left, right);
+            }
+            return left;
+        }
+
+        private Expression AndExpr()
+        {
+            var left = ShiftExpr();
+            if (left == null)
+                return null;
+            while (PeekAndDiscard(TokenType.And))
+            {
+                var right = ShiftExpr();
+                if (right == null)
+                    return null;
+                left = new BinaryExpression(Operator.And, unk, left, right);
+            }
+            return left;
+        }
+
+        private Expression ShiftExpr()
+        {
+            var left = Sum();
+            if (left == null)
+                return null;
+            for (; ; )
+            {
+                var tok = PeekToken();
+                Operator op;
+                switch (tok.Type)
+                {
+                case TokenType.Shl:
+                    op = Operator.Shl;
+                    break;
+                case TokenType.Shr:
+                    op = Operator.Shr;
+                    break;
+                default:
+                    return left;
+                }
+                GetToken();
+                var right = Sum();
+                if (right == null)
+                    return null;
+                left = new BinaryExpression(op, unk, left, right);
+            }
+        }
+
         //sum ::= term
         //        | sum '+'/'-' term
 
         private Expression Sum()
         {
-            var sum = Term();
-            if (sum == null)
+            var left = Term();
+            if (left == null)
                 return null;
             for (; ; )
             {
@@ -223,21 +304,42 @@ namespace Reko.ImageLoaders.OdbgScript
                     op = Operator.ISub;
                     break;
                 default:
-                    return sum;
+                    return left;
                 }
-                var term = Term();
-                if (term == null)
+                GetToken();
+                var right = Term();
+                if (right == null)
                     return null;
-                sum = new BinaryExpression(Operator.IAdd, unk, sum, term);
+                left = new BinaryExpression(op, unk, left, right);
             }
         }
 
         private Expression Term()
         {
-            var atom = Atom();
-            if (atom == null)
+            var left = Atom();
+            if (left == null)
                 return null;
-            return atom;
+            for (; ; )
+            {
+                var tok = PeekToken();
+                Operator op;
+                switch (tok.Type)
+                {
+                case TokenType.Times:
+                    op = Operator.IMul;
+                    break;
+                case TokenType.Slash:
+                    op = Operator.UDiv;
+                    break;
+                default:
+                    return left;
+                }
+                GetToken();
+                var right = Atom();
+                if (right == null)
+                    return null;
+                left = new BinaryExpression(op, unk, left, right);
+            }
         }
 
         //atom ::=     number
@@ -276,7 +378,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 var ea = Expression();
                 if (ea == null)
                     return null;    //$TODO: SyncTo(Comma, NewLine)
-                if (!Expect(TokenType.RBracket))
+                if (!PeekAndDiscard(TokenType.RBracket))
                     return null;
                 return new MemoryAccess(ea, new UnknownType());
             case TokenType.LParen:
@@ -284,16 +386,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 var exp = Expression();
                 if (exp == null)
                     return null;    //$TODO: sync.
-                if (!Expect(TokenType.RParen))
+                if (!PeekAndDiscard(TokenType.RParen))
                     return null;
                 return exp;
             }
             throw new NotImplementedException($"Token {tok.Type} on line {tok.LineNumber} not implemented.");
-        }
-
-        private bool Expect(TokenType rBracket)
-        {
-            throw new NotImplementedException();
         }
 
         private Token GetToken()
@@ -331,7 +428,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return Constant.String((string) token.Value, StringType.NullTerminated(PrimitiveType.Char));
         }
 
-        public static OllyScriptParser FromFile(IHost host, IFileSystemService fsSvc, string file, string dir = null)
+        public static OllyScriptParser FromFile(IOdbgScriptHost host, IFileSystemService fsSvc, string file, string dir = null)
         {
             string cdir = Environment.CurrentDirectory;
             string curdir = Helper.pathfixup(cdir, true);
@@ -349,7 +446,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return new OllyScriptParser(fsSvc.CreateStreamReader(path, Encoding.UTF8), sdir, host, fsSvc);
         }
 
-        public static OllyScriptParser FromString(IHost host, IFileSystemService fsSvc, string buff, string dir)
+        public static OllyScriptParser FromString(IOdbgScriptHost host, IFileSystemService fsSvc, string buff, string dir)
         {
             string curdir = Helper.pathfixup(Environment.CurrentDirectory, true);
             var sdir = dir ?? curdir;
@@ -427,7 +524,14 @@ namespace Reko.ImageLoaders.OdbgScript
                         case '[': rdr.Read(); return MakeToken(TokenType.LBracket);
                         case ']': rdr.Read(); return MakeToken(TokenType.RBracket);
                         case '(': rdr.Read(); return MakeToken(TokenType.LParen);
-                        case ')': rdr.Read(); return MakeToken(TokenType.RParen);
+                        case '|': rdr.Read(); return MakeToken(TokenType.Or);
+                        case '^': rdr.Read(); return MakeToken(TokenType.Xor);
+                        case '&': rdr.Read(); return MakeToken(TokenType.And);
+                        case '>': rdr.Read(); return MakeToken(TokenType.Shr);
+                        case '<': rdr.Read(); return MakeToken(TokenType.Shl);
+                        case '+': rdr.Read(); return MakeToken(TokenType.Plus);
+                        case '-': rdr.Read(); return MakeToken(TokenType.Minus);
+                        case '*': rdr.Read(); return MakeToken(TokenType.Times);
                         default:
                             if (Char.IsLetter(ch) || ch == '!')
                             {
@@ -753,6 +857,12 @@ namespace Reko.ImageLoaders.OdbgScript
             Plus,
             Minus,
             Directive,
+            Xor,
+            Or,
+            And,
+            Shr,
+            Shl,
+            Times,
         }
 
     }

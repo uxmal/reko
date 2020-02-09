@@ -328,6 +328,7 @@
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\CodeView\CodeViewTypeLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\CodeView\TypeBuilderTests.cs" />
+    <Compile Include="ImageLoaders\OdbgScript\OllyScriptHostTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyLangInterpreterTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyScriptParserTests.cs" />
     <Compile Include="Loading\NullImageLoaderTests.cs" />
