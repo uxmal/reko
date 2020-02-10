@@ -59,43 +59,6 @@ namespace Reko.Arch.M68k
             return TryParseOperandInner(opcode, addressMode, operandBits, dataWidth, rdr, out op);
         }
 
-		private bool TryParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
-		{
-            opcode >>= bitOffset;
-            byte addressMode = (byte) (opcode & 7);
-            byte operandBits = (byte) ((opcode >> 3) & 7);
-            return TryParseOperandInner(opcode, addressMode, operandBits, dataWidth, rdr, out op);
-        }
-
-        private static int GetOpcodeOffset(char c)
-        {
-            int offset = c - '0';
-            if (offset < 0)
-                throw new FormatException("Invalid offset specification.");
-            if (offset < 10)
-                return offset;
-            return offset - 6;
-        }
-
-        public static PrimitiveType GetSizeType(ushort opcode, char c, PrimitiveType dataWidth)
-        {
-            switch (c)
-            {
-            case 'b': return PrimitiveType.Byte;
-            case 'v': return dataWidth;
-            case 'u': return PrimitiveType.UInt16;
-            case 'w': return PrimitiveType.Word16;
-            case 'l': return PrimitiveType.Word32;
-            case 'r':
-                // If EA is register, 32 bits, else 8.
-                if ((opcode & 0x30) == 0)
-                    return PrimitiveType.Word32;
-                else
-                    return PrimitiveType.Byte;
-            default: return SizeField(opcode, GetOpcodeOffset(c));
-            }
-        }
-
 		private bool TryParseOperandInner(ushort uInstr, byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
 		{
             Constant offset;

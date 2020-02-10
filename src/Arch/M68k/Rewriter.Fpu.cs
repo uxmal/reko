@@ -45,19 +45,19 @@ namespace Reko.Arch.M68k
             }
             else if (cc == ConditionCode.ALWAYS)
             {
-                rtlc = InstrClass.Transfer;
+                iclass = InstrClass.Transfer;
                 m.Goto(addr);
             }
             else
             {
-                rtlc = InstrClass.ConditionalTransfer;
+                iclass = InstrClass.ConditionalTransfer;
                 var test = m.Test(cc, FpuFlagGroup());
-                m.Branch(test, addr, rtlc);
+                m.Branch(test, addr, iclass);
             }
         }
         private void RewriteFbcc(Func<Expression, Expression> fnTest)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             m.Branch(fnTest(
                 binder.EnsureRegister(Registers.fpsr)),
                 ((M68kAddressOperand)instr.Operands[0]).Address,

@@ -48,7 +48,7 @@ namespace Reko.Arch.M68k
         private M68kInstruction instr;
         private RtlEmitter m;
         private List<RtlInstruction> rtlInstructions;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private OperandRewriter orw;
 
         public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)
@@ -68,7 +68,7 @@ namespace Reko.Arch.M68k
                 var addr = instr.Address;
                 var len = instr.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = instr.InstructionClass;
+                iclass = instr.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, instr.DataWidth);
                 switch (instr.Mnemonic)
@@ -280,7 +280,7 @@ VS Overflow Set 1001 V
                     len,
                     rtlInstructions.ToArray())
                 {
-                    Class = rtlc
+                    Class = iclass
                 };
             }
             yield break;
@@ -300,7 +300,7 @@ VS Overflow Set 1001 V
         private void EmitInvalid()
         {
             rtlInstructions.Clear();
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
 

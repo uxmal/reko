@@ -1960,19 +1960,16 @@ namespace Reko.Arch.M68k
                 return false;
             var reg = get_addr_or_data_reg(BIT_F(extension), (uint)(extension >> 12) & 7);
             var ea = dasm.get_ea_mode_str_8(uInstr);
+            dasm.instr.Mnemonic = Mnemonic.moves;
+            dasm.instr.InstructionClass = InstrClass.System;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             if (BIT_B(extension))
             {
-                dasm.instr.Mnemonic = Mnemonic.moves;
-                dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.DataWidth = PrimitiveType.Word16;
                 dasm.ops.Add(reg);
                 dasm.ops.Add(ea);
             }
             else
             {
-                dasm.instr.Mnemonic = Mnemonic.moves;
-                dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.DataWidth = PrimitiveType.Word16;
                 dasm.ops.Add(ea);
                 dasm.ops.Add(reg);
             }
@@ -1986,19 +1983,16 @@ namespace Reko.Arch.M68k
                 return false;
             var reg = get_addr_or_data_reg(BIT_F(extension), (uint) (extension >> 12) & 7);
             var ea = dasm.get_ea_mode_str_16(uInstr);
+            dasm.instr.Mnemonic = Mnemonic.moves;
+            dasm.instr.InstructionClass = InstrClass.System;
+            dasm.instr.DataWidth = PrimitiveType.Word16;
             if (BIT_B(extension))
             {
-                dasm.instr.Mnemonic = Mnemonic.moves;
-                dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.DataWidth = PrimitiveType.Word16;
                 dasm.ops.Add(reg);
                 dasm.ops.Add(ea);
             }
             else
             {
-                dasm.instr.Mnemonic = Mnemonic.moves;
-                dasm.instr.InstructionClass = InstrClass.System;
-                dasm.instr.DataWidth = PrimitiveType.Word16;
                 dasm.ops.Add(ea);
                 dasm.ops.Add(reg);
             }
@@ -3041,18 +3035,18 @@ namespace Reko.Arch.M68k
 	Instr(sb,E0, 0xffc0, 0x4000, 0xbf8, Mnemonic.negx),         // d68000_negx_8
 	Instr(sw,E0, 0xffc0, 0x4040, 0xbf8, Mnemonic.negx),         // d68000_negx_16
 	Instr(sl,E0, 0xffc0, 0x4080, 0xbf8, Mnemonic.negx),         // d68000_negx_32,
-	Instr(0xffff, 0x4e71, 0x000, Mnemonic.nop),                  // d68000_nop
+	Instr(0xffff, 0x4e71, 0x000, Mnemonic.nop),                 // d68000_nop
 	Instr(sb,E0, 0xffc0, 0x4600, 0xbf8, Mnemonic.not),          // d68000_not_8
 	Instr(sw,E0, 0xffc0, 0x4640, 0xbf8, Mnemonic.not),          // d68000_not_16
 	Instr(sl,E0, 0xffc0, 0x4680, 0xbf8, Mnemonic.not),          // d68000_not_32       
 	Instr(sb,E0,D9, 0xf1c0, 0x8000, 0xbff, Mnemonic.or),        // d68000_or_er_8      
 	Instr(sw,E0,D9, 0xf1c0, 0x8040, 0xbff, Mnemonic.or),        // d68000_or_er_16     
 	Instr(sl,E0,D9, 0xf1c0, 0x8080, 0xbff, Mnemonic.or),        // d68000_or_er_32   
-	Instr(sb,D9,E0, 0xf1c0, 0x8100, 0x3f8, Mnemonic.or),       // d68000_or_re_8     
-	Instr(sw,D9,E0, 0xf1c0, 0x8140, 0x3f8, Mnemonic.or),       // d68000_or_re_16    
+	Instr(sb,D9,E0, 0xf1c0, 0x8100, 0x3f8, Mnemonic.or),        // d68000_or_re_8     
+	Instr(sw,D9,E0, 0xf1c0, 0x8140, 0x3f8, Mnemonic.or),        // d68000_or_re_16    
 	Instr(sl,D9,E0, 0xf1c0, 0x8180, 0x3f8, Mnemonic.or),        // d68000_or_re_32
-	Instr(sb,Ib,ccr, 0xffff, 0x003c, 0x000, Mnemonic.ori),        // d68000_ori_to_ccr   
-	Instr(sw,Iw,SR, 0xffff, 0x007c, 0x000, Mnemonic.ori),        // d68000_ori_to_sr    
+	Instr(sb,Ib,ccr, 0xffff, 0x003c, 0x000, Mnemonic.ori),      // d68000_ori_to_ccr   
+	Instr(sw,Iw,SR, 0xffff, 0x007c, 0x000, Mnemonic.ori),       // d68000_ori_to_sr    
 	Instr(s6,Iv,E0, 0xffc0, 0x0000, 0xbf8, Mnemonic.ori),       // d68000_ori_8        
 	Instr(s6,Iv,E0, 0xffc0, 0x0040, 0xbf8, Mnemonic.ori),       // d68000_ori_16        
 	Instr(s6,Iv,E0, 0xffc0, 0x0080, 0xbf8, Mnemonic.ori),       // d68000_ori_32       
@@ -3074,7 +3068,7 @@ namespace Reko.Arch.M68k
 	Instr(sb,D9,D0, 0xf1f8, 0xe138, 0x000, Mnemonic.rol),       // d68000_rol_r_8
 	Instr(sw,D9,D0, 0xf1f8, 0xe178, 0x000, Mnemonic.rol),       // d68000_rol_r_16
 	Instr(sl,D9,D0, 0xf1f8, 0xe1b8, 0x000, Mnemonic.rol),       // d68000_rol_r_32
-	Instr(sl,E0,    0xffc0, 0xe7c0, 0x3f8, Mnemonic.rol),         // d68000_rol_ea
+	Instr(sl,E0,    0xffc0, 0xe7c0, 0x3f8, Mnemonic.rol),       // d68000_rol_ea
 	Instr(sb,q9,D0, 0xf1f8, 0xe010, 0x000, Mnemonic.roxr),      // d68000_roxr_s_8 
 	Instr(sw,q9,D0, 0xf1f8, 0xe050, 0x000, Mnemonic.roxr),      // d68000_roxr_s_16
 	Instr(sl,q9,D0, 0xf1f8, 0xe090, 0x000, Mnemonic.roxr),      // d68000_roxr_s_32
@@ -3095,7 +3089,7 @@ namespace Reko.Arch.M68k
 	Instr(0xffff, 0x4e77, 0x000, Mnemonic.rtr, InstrClass.Transfer),        // d68000_rtr
 	Instr(0xffff, 0x4e75, 0x000, Mnemonic.rts, InstrClass.Transfer),        // d68000_rts
 	Instr(D0,D9, 0xf1f8, 0x8100, 0x000, Mnemonic.sbcd),         // d68000_sbcd_rr
-	Instr(Pre0,Pre9, 0xf1f8, 0x8108, 0x000, Mnemonic.sbcd),         // d68000_sbcd_mm
+	Instr(Pre0,Pre9, 0xf1f8, 0x8108, 0x000, Mnemonic.sbcd),     // d68000_sbcd_mm
 	Instr(d68000_scc          , 0xf0c0, 0x50c0, 0xbf8),
 	Instr(d68000_stop         , 0xffff, 0x4e72, 0x000),
 	Instr(sb,E0,D9, 0xf1c0, 0x9000, 0xbff, Mnemonic.sub),       // d68000_sub_er_8
@@ -3106,19 +3100,19 @@ namespace Reko.Arch.M68k
 	Instr(sl,D9,E0, 0xf1c0, 0x9180, 0x3f8, Mnemonic.sub),       // d68000_sub_re_32
 	Instr(sw,E0,A9, 0xf1c0, 0x90c0, 0xfff, Mnemonic.suba),      // d68000_suba_16
 	Instr(sl,E0,A9, 0xf1c0, 0x91c0, 0xfff, Mnemonic.suba),      // d68000_suba_32
-	Instr(sb,Ib,E0,   0xffc0, 0x0400, 0xbf8, Mnemonic.subi),      // d68000_subi_8
-	Instr(sw,Iw,E0,   0xffc0, 0x0440, 0xbf8, Mnemonic.subi),      // d68000_subi_16
-	Instr(sl,Il,E0,   0xffc0, 0x0480, 0xbf8, Mnemonic.subi),      // d68000_subi_32
-	Instr(sb,q9,E0,   0xf1c0, 0x5100, 0xbf8, Mnemonic.subq),      // d68000_subq_8
-	Instr(sw,q9,E0,   0xf1c0, 0x5140, 0xff8, Mnemonic.subq),      // d68000_subq_16
-	Instr(sl,q9,E0,   0xf1c0, 0x5180, 0xff8, Mnemonic.subq),      // d68000_subq_32
-	Instr(sb,D0,D9,   0xf1f8, 0x9100, 0x000, Mnemonic.subx),      // d68000_subx_rr_8
-	Instr(sw,D0,D9,   0xf1f8, 0x9140, 0x000, Mnemonic.subx),      // d68000_subx_rr_16
-	Instr(sl,D0,D9,   0xf1f8, 0x9180, 0x000, Mnemonic.subx),      // d68000_subx_rr_32
-	Instr(sb,Pre0,Pre9,   0xf1f8, 0x9108, 0x000, Mnemonic.subx),      // d68000_subx_mm_8
-	Instr(sw,Pre0,Pre9,   0xf1f8, 0x9148, 0x000, Mnemonic.subx),      // d68000_subx_mm_16
+	Instr(sb,Ib,E0,   0xffc0, 0x0400, 0xbf8, Mnemonic.subi),    // d68000_subi_8
+	Instr(sw,Iw,E0,   0xffc0, 0x0440, 0xbf8, Mnemonic.subi),    // d68000_subi_16
+	Instr(sl,Il,E0,   0xffc0, 0x0480, 0xbf8, Mnemonic.subi),    // d68000_subi_32
+	Instr(sb,q9,E0,   0xf1c0, 0x5100, 0xbf8, Mnemonic.subq),    // d68000_subq_8
+	Instr(sw,q9,E0,   0xf1c0, 0x5140, 0xff8, Mnemonic.subq),    // d68000_subq_16
+	Instr(sl,q9,E0,   0xf1c0, 0x5180, 0xff8, Mnemonic.subq),    // d68000_subq_32
+	Instr(sb,D0,D9,   0xf1f8, 0x9100, 0x000, Mnemonic.subx),    // d68000_subx_rr_8
+	Instr(sw,D0,D9,   0xf1f8, 0x9140, 0x000, Mnemonic.subx),    // d68000_subx_rr_16
+	Instr(sl,D0,D9,   0xf1f8, 0x9180, 0x000, Mnemonic.subx),    // d68000_subx_rr_32
+	Instr(sb,Pre0,Pre9,   0xf1f8, 0x9108, 0x000, Mnemonic.subx),        // d68000_subx_mm_8
+	Instr(sw,Pre0,Pre9,   0xf1f8, 0x9148, 0x000, Mnemonic.subx),        // d68000_subx_mm_16
 	Instr(sl,Pre0,Pre9,     0xf1f8, 0x9188, 0x000, Mnemonic.subx),      // d68000_subx_mm_32
-	Instr(sl,D0,      0xfff8, 0x4840, 0x000, Mnemonic.swap),      // d68000_swap
+	Instr(sl,D0,      0xfff8, 0x4840, 0x000, Mnemonic.swap),    // d68000_swap
 	Instr(d68000_tas          , 0xffc0, 0x4ac0, 0xbf8),
 	Instr(d68000_trap         , 0xfff0, 0x4e40, 0x000, iclass:InstrClass.Transfer|InstrClass.Call),
 	Instr(d68020_trapcc_0     , 0xf0ff, 0x50fc, 0x000, iclass:InstrClass.Transfer|InstrClass.Call),

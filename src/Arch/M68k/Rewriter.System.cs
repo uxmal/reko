@@ -33,7 +33,7 @@ namespace Reko.Arch.M68k
     {
         private void RewriteBkpt()
         {
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
             m.SideEffect(host.PseudoProcedure("__bkpt", VoidType.Instance, src));
         }
