@@ -77,5 +77,25 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             Assert.AreEqual(0x00100100, addr1.ToUInt32());
             Assert.AreEqual(0x00100110, addr2.ToUInt32());
         }
+
+        [Test]
+        public void OdbgHost_Asm()
+        {
+            Given_X86Program();
+            Given_Host();
+
+            var len = host.Assemble("mov bl,03", Address.Ptr32(0x0010_0002));
+            Assert.AreEqual(2, len);
+        }
+
+        [Test]
+        public void OdbgHost_Asm_invalid_instruction()
+        {
+            Given_X86Program();
+            Given_Host();
+
+            var len = host.Assemble("zlorgo", Address.Ptr32(0x0010_0002));
+            Assert.AreEqual(0, len);
+        }
     }
 }

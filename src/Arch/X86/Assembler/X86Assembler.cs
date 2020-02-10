@@ -113,6 +113,8 @@ namespace Reko.Arch.X86.Assembler
             SetDefaultWordWidth(defaultWordSize);
         }
 
+        public int CurrentPosition => this.emitter.Position;
+
         public Dictionary<Address, ImportReference> ImportReferences
         {
             get { return importReferences; }

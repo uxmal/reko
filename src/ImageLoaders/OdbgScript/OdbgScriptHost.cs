@@ -107,9 +107,10 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual int Assemble(string p, Address addr)
+        public virtual int Assemble(string asmText, Address addr)
         {
-            throw new NotImplementedException();
+            var asm = program.Architecture.CreateAssembler(null);
+            return asm.AssembleFragmentAt(program, addr, asmText);
         }
 
         public virtual List<string> getlines_file(string p)
