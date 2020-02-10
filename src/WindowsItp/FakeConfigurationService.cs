@@ -35,11 +35,6 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public ICollection<AssemblerDefinition> GetAssemblers()
-        {
-            throw new NotImplementedException();
-        }
-
         public ICollection<PlatformDefinition> GetEnvironments()
         {
             throw new NotImplementedException();
@@ -61,11 +56,6 @@ namespace Reko.WindowsItp
         }
 
         public IProcessorArchitecture GetArchitecture(string archLabel)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Assembler GetAssembler(string assemblerName)
         {
             throw new NotImplementedException();
         }

@@ -52,7 +52,7 @@ namespace Reko
         void WriteDecompilerProducts();
         void ExtractResources();
 
-        void Assemble(string file, Assembler asm);
+        void Assemble(string file, IAssembler asm, IPlatform platform);
     }
 
 	/// <summary>
@@ -245,10 +245,10 @@ namespace Reko
             }
         }
 
-        public void Assemble(string fileName, Assembler asm)
+        public void Assemble(string fileName, IAssembler asm, IPlatform platform)
         {
             eventListener.ShowStatus("Assembling program.");
-            var program = loader.AssembleExecutable(fileName, asm, null);
+            var program = loader.AssembleExecutable(fileName, asm, platform, null);
             Project = AddProgramToProject(fileName, program);
             eventListener.ShowStatus("Assembled program.");
         }

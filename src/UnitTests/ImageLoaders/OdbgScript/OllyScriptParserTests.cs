@@ -36,14 +36,14 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
     public class OllyScriptParserTests
     {
         private OllyScriptParser parser;
-        private Mock<IHost> host;
+        private Mock<IOdbgScriptHost> host;
         private Mock<IFileSystemService> fsSvc;
 
         [SetUp]
         public void Setup()
         {
             this.parser = null;
-            this.host = new Mock<IHost>();
+            this.host = new Mock<IOdbgScriptHost>();
             this.fsSvc = new Mock<IFileSystemService>();
         }
 

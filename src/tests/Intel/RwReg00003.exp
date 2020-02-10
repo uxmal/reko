@@ -7,10 +7,12 @@
 // SZO:SZO
 // C:C
 // ds:ds
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
@@ -28,10 +30,12 @@ fn0C00_0000_exit:
 // Mem0:Mem
 // fp:fp
 // sp:sp
+// Top:Top
 // return address size: 2
 define fn0C00_000F
 fn0C00_000F_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_000F
 l0C00_000F:
 	return
@@ -49,10 +53,12 @@ fn0C00_000F_exit:
 // cl:cl
 // ds:ds
 // cx:cx
+// Top:Top
 // return address size: 2
 define fn0C00_0010
 fn0C00_0010_entry:
 	sp = fp
+	Top = 0
 	// succ:  l0C00_0010
 l0C00_0010:
 	ch = ch ^ ch

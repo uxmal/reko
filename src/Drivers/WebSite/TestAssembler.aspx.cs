@@ -72,7 +72,7 @@ namespace Reko.WebSite
 		{
             try
             {
-                DecompileAssembler("x86-asm", null);
+                DecompileAssembler("x86-protected-32", null);
             } 
             catch
             {
@@ -80,10 +80,11 @@ namespace Reko.WebSite
             }
 		}
 
-		private void DecompileAssembler(string asmLabel, Address loadAddress)
+		private void DecompileAssembler(string archName, Address loadAddress)
 		{
             var cfg = RekoConfigurationService.Load();
-            var asm = cfg.GetAssembler(asmLabel);
+            var arch = cfg.GetArchitecture(archName);
+            var asm = arch.CreateAssembler(null);
             var program = asm.AssembleFragment(loadAddress, txtAssembler.Text + Environment.NewLine);
             var sc = new ServiceContainer();
             var loader = new Loader(sc);

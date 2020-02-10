@@ -42,13 +42,11 @@ namespace Reko.Core.Configuration
          ICollection<ArchitectureDefinition> GetArchitectures();
          ICollection<PlatformDefinition> GetEnvironments();
          ICollection<SignatureFileDefinition> GetSignatureFiles();
-         ICollection<AssemblerDefinition> GetAssemblers();
          ICollection<RawFileDefinition> GetRawFiles();
 
          PlatformDefinition GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
          ICollection<SymbolSourceDefinition> GetSymbolSources();
-         Assembler GetAssembler(string assemblerName);
          RawFileDefinition GetRawFile(string rawFileFormat);
 
          IEnumerable<UiStyleDefinition> GetDefaultPreferences ();
@@ -69,7 +67,6 @@ namespace Reko.Core.Configuration
         private readonly List<SignatureFileDefinition> sigFiles;
         private readonly List<ArchitectureDefinition> architectures;
         private readonly List<PlatformDefinition> opEnvs;
-        private readonly List<AssemblerDefinition> asms;
         private readonly List<SymbolSourceDefinition> symSources;
         private readonly List<RawFileDefinition> rawFiles;
         private readonly UiPreferencesConfiguration uiPreferences;
@@ -80,7 +77,6 @@ namespace Reko.Core.Configuration
             this.sigFiles = LoadCollection(config.SignatureFiles, LoadSignatureFile);
             this.architectures = LoadCollection(config.Architectures, LoadArchitecture);
             this.opEnvs = LoadCollection(config.Environments, LoadEnvironment);
-            this.asms = LoadCollection(config.Assemblers, LoadAssembler);
             this.symSources = LoadCollection(config.SymbolSources, LoadSymbolSource);
             this.rawFiles = LoadCollection(config.RawFiles, LoadRawFile);
             this.uiPreferences = new UiPreferencesConfiguration();
@@ -156,16 +152,6 @@ namespace Reko.Core.Configuration
                         .ToArray(),
                         StringComparer.OrdinalIgnoreCase)
                     : new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
-            };
-        }
-
-        private AssemblerDefinition LoadAssembler(Assembler_v1 sAsm)
-        {
-            return new AssemblerDefinition
-            {
-                Description = sAsm.Description,
-                Name = sAsm.Name,
-                TypeName = sAsm.Type,
             };
         }
 
@@ -343,11 +329,6 @@ namespace Reko.Core.Configuration
             return opEnvs;
         }
 
-        public virtual ICollection<AssemblerDefinition> GetAssemblers()
-        {
-            return asms;
-        }
-
         public virtual ICollection<RawFileDefinition> GetRawFiles()
         {
             return rawFiles;
@@ -366,16 +347,6 @@ namespace Reko.Core.Configuration
             var arch = (IProcessorArchitecture)Activator.CreateInstance(t, elem.Name);
             arch.Description = elem.Description;
             return arch;
-        }
-
-        public virtual Assembler GetAssembler(string asmLabel)
-        {
-            var elem = GetAssemblers()
-                .Where(e => e.Name == asmLabel).SingleOrDefault();
-            if (elem == null)
-                return null;
-            Type t = Type.GetType(elem.TypeName, true);
-            return (Assembler)t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
 
         public PlatformDefinition GetEnvironment(string envName)

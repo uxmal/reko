@@ -21,7 +21,7 @@
 using Moq;
 using Reko.Analysis;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
@@ -59,7 +59,8 @@ namespace Reko.UnitTests.Structure
 
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new X86TextAssembler(sc, arch) { Platform = new MsdosPlatform(sc, arch) },
+                new X86TextAssembler(arch),
+                new MsdosPlatform(sc, arch),
                 addrBase);
             return RewriteProgram();
 		}
@@ -74,7 +75,8 @@ namespace Reko.UnitTests.Structure
             var arch = new X86ArchitectureFlat32("x86-protected-32");
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new X86TextAssembler(sc, arch) { Platform = new DefaultPlatform(sc, arch) },
+                new X86TextAssembler(arch),
+                new DefaultPlatform(sc, arch),
                 addrBase);
             return RewriteProgram();
         }
@@ -83,7 +85,7 @@ namespace Reko.UnitTests.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            var asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
+            var asm = new X86TextAssembler(new X86ArchitectureReal("x86-real-16"));
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
@@ -97,7 +99,7 @@ namespace Reko.UnitTests.Structure
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var asm = new X86TextAssembler(sc, arch);
+            var asm = new X86TextAssembler(arch);
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Linq;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Collections.Generic;
@@ -167,12 +167,13 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<DecompilerEventListener>(el);
             var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var asm = new X86TextAssembler(sc, arch);
+            var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var platform = new DefaultPlatform(sc, arch);
-                asm.Platform = platform;
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+                program.Platform = platform;
+
             }
             var scanner = new Scanner(program, null, sc);
             scanner.EnqueueImageSymbol(ImageSymbol.Procedure(arch, program.ImageMap.BaseAddress), true);

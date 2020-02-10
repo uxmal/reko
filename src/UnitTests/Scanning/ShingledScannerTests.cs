@@ -22,13 +22,14 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Environments.Windows;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -128,9 +129,10 @@ namespace Reko.UnitTests.Scanning
             var addrBase = Address.Ptr32(0x100000);
             var arch = new X86ArchitectureFlat32("x86-protected-32");
             var entry = ImageSymbol.Procedure(arch, addrBase);
-            var m = new X86Assembler(null, new DefaultPlatform(null, arch), addrBase, new List<ImageSymbol> { entry });
+            var m = new X86Assembler(arch, addrBase, new List<ImageSymbol> { entry });
             asm(m);
             this.program = m.GetImage();
+            this.program.Platform = new Win32Platform(null, arch);
         }
 
         private void Given_x86_64_Image(params byte[] bytes)

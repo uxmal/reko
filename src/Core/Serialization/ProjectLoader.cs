@@ -829,12 +829,12 @@ namespace Reko.Core.Serialization
 
         public Program VisitAssemblerFile(AssemblerFile_v3 sAsmFile)
         {
-            return loader.AssembleExecutable(sAsmFile.Filename, sAsmFile.Assembler, null);
+            throw new NotImplementedException("return loader.AssembleExecutable(sAsmFile.Filename, sAsmFile.Assembler, null);");
         }
 
         public Program VisitAssemblerFile(AssemblerFile_v2 sAsmFile)
         {
-            return loader.AssembleExecutable(sAsmFile.Filename, sAsmFile.Assembler, null);
+            throw new NotImplementedException("   return loader.AssembleExecutable(sAsmFile.Filename, sAsmFile.Assembler, null);");
         }
     }
 

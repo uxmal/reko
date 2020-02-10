@@ -88,9 +88,9 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 1 && GetRulong(args[0], out ulong size))
             {
-                rulong addr = Host.TE_AllocMemory(size);
+                Address addr = Host.AllocateMemory(size);
                 variables["$RESULT"] = Var.Create(addr);
-                if (addr != 0)
+                if (addr != null)
                     regBlockToFree(addr, size, false);
                 return true;
             }
@@ -160,12 +160,12 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoASM(Expression[] args)
         {
-            if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string cmd))
+            if (args.Length >= 2 && args.Length <= 3 && GetAddress(args[0], out Address addr) && GetString(args[1], out string cmd))
             {
                 if (args.Length == 3 && !GetRulong(args[2], out ulong attempt))
                     return false;
 
-                int len = Host.AssembleEx(FormatAsmDwords(cmd), addr);
+                int len = Host.Assemble(FormatAsmDwords(cmd), addr);
                 if (len == 0)
                 {
                     errorstr = "Invalid command: " + cmd;
@@ -179,7 +179,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoASMTXT(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string asmfile))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetString(args[1], out string asmfile))
             {
                 int totallen = 0;
                 List<string> lines = Host.getlines_file(asmfile);
@@ -188,7 +188,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     string line = lines[i];
                     if (line.Length != 0)
                     {
-                        int len = Host.AssembleEx(FormatAsmDwords(line), (rulong) (addr + (uint) totallen));
+                        int len = Host.Assemble(FormatAsmDwords(line), addr + totallen);
                         if (len == 0)
                         {
                             errorstr = "Invalid command: " + line;
@@ -454,7 +454,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 expression = 'C' + expression; // 0x43
                 Insertname(addr, NM_BREAKEXPR, expression);
                 return true;
-                */
+                */ 
             }
             return false;
         }
@@ -933,6 +933,11 @@ rulong hwnd;
             return false;
         }
 
+        /// <summary>
+        /// Transfer execution to a label when next breakpoint is hit.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private bool DoEOB(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
@@ -944,13 +949,17 @@ rulong hwnd;
                 }
                 else if (Script.TryGetLabel(args[0], out EOB_row)) // Set label to go to
                 {
-                    EOB_row = (int)Script.Labels[((Identifier)args[0]).Name];
                     return true;
                 }
             }
             return false;
         }
 
+        /// <summary>
+        /// Transfer script execution to a label when next exception is hit.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private bool DoEOE(Expression[] args)
         {
             if (args.Length >= 0 && args.Length <= 1)
@@ -995,17 +1004,18 @@ rulong hwnd;
                 // max size for all commands + jmp eip
                 int memsize = (int)(ende - first + 1) * MAX_INSTR_SIZE;
 
-                pmemforexec = Host.TE_AllocMemory((uint)memsize);
-                if (pmemforexec != 0)
+                pmemforexec = Host.AllocateMemory((uint)memsize);
+                if (pmemforexec != null)
                 {
                     int len, totallen = 0;
 
                     for (int i = first; i < ende; i++)
                     {
                         string line = InterpolateVariables(Script.Lines[(int)i].RawLine, true);
-                        if ((len = Host.AssembleEx(line, (pmemforexec + (uint)totallen))) == 0)
+                        len = Host.Assemble(line, pmemforexec + totallen);
+                        if (len == 0)
                         {
-                            Host.TE_FreeMemory(pmemforexec);
+                            Host.FreeMemory(pmemforexec);
                             errorstr = "Invalid command: " + line;
                             return false;
                         }
@@ -1019,13 +1029,13 @@ rulong hwnd;
 
                     // Add jump to original EIP
                     string jmpstr = "jmp " + eip.ToString();
-                    rulong jmpaddr = pmemforexec + (uint)totallen;
+                    Address jmpaddr = pmemforexec + (uint)totallen;
 
-                    len = Host.AssembleEx(jmpstr, pmemforexec + (uint)totallen);
+                    len = Host.Assemble(jmpstr, pmemforexec + totallen);
                     totallen += len;
 
                     // Set new eip and run to the original one
-                    Debugger.SetContextData(eContextData.UE_CIP, pmemforexec);
+                    Debugger.SetContextData(eContextData.UE_CIP, pmemforexec.ToLinear());
 
                     // ignore next breakpoint
                     bInternalBP = true;
@@ -1564,14 +1574,14 @@ rulong hwnd;
         {
             rulong size = 0;
 
-            if (args.Length >= 1 && args.Length <= 2 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 1 && args.Length <= 2 && GetAddress(args[0], out Address addr))
             {
                 if (args.Length == 2 && !GetRulong(args[1], out size))
                     return false;
 
                 variables["$RESULT"] = Var.Create(0);
 
-                if ((size == 0 && Host.TE_FreeMemory(addr)) || (size != 0 && Host.TE_FreeMemory(addr, size)))
+                if ((size == 0 && Host.FreeMemory(addr)) || (size != 0 && Host.FreeMemory(addr, size)))
                 {
                     variables["$RESULT"] = Var.Create(1);
                     UnregMemBlock(addr);
@@ -1668,7 +1678,7 @@ rulong hwnd;
                 if (param == "COMMAND")
                 {
                     int size = 0;
-                    var instr = Host.DisassembleEx(addr);
+                    var instr = Host.Disassemble(addr);
                     if (size != 0)
                         variables["$RESULT"] = Var.Create(instr.ToString());
                     else

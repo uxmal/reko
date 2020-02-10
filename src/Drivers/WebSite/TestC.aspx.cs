@@ -148,8 +148,12 @@ namespace Reko.WebSite
                     var sc = new ServiceContainer();
                     var ldr = new Loader(sc);
                     var cfg = RekoConfigurationService.Load();
-                    var asm = cfg.GetAssembler("x86-masm");
+                    var arch = cfg.GetArchitecture("x86-protected-32");
+                    var env = cfg.GetEnvironment("win32");
+                    var platform = env.Load(sc, arch);
+                    var asm = arch.CreateAssembler(null);
                     var program = asm.AssembleFragment(Address.Ptr32(0x10000000), txtAssembler.Text + Environment.NewLine);
+                    program.Platform = platform;
 					var decomp = new Decompiler(ldr, sc);
 					var project = new Project
                     {

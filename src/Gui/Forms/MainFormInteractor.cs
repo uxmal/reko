@@ -320,10 +320,9 @@ namespace Reko.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
-                var typeName = dlg.SelectedArchitectureTypeName;
-                var t = Type.GetType(typeName, true);
-                var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
-                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm), f => false);
+                var arch = this.config.GetArchitecture(dlg.SelectedArchitectureName);
+                var asm = arch.CreateAssembler(null);
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm, null), f => false);
                 RememberFilenameInMru(dlg.FileName.Text);
             }
             catch (Exception e)

@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLangInterpreter(Services, program.Architecture);
-            this.scriptInterpreter.Host = new Host(this, program.SegmentMap);
+            this.scriptInterpreter.Host = new OdbgScriptHost(this, program.SegmentMap);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.BeforeStart += emu_BeforeStart;
@@ -125,7 +125,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return pe;
         }
 
-        public virtual OllyScript LoadScript(IHost host, string scriptFilename)
+        public virtual OllyScript LoadScript(IOdbgScriptHost host, string scriptFilename)
         {
             // If the script file is not a rooted path, first try looking at 
             // the current directory. If there is no file there, try finding 

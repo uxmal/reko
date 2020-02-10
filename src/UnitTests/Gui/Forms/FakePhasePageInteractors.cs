@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Gui.Forms
         }
 
 
-        public bool Assemble(string file, Assembler asm)
+        public bool Assemble(string file, IAssembler asm, IPlatform platform)
         {
             throw new NotImplementedException();
         }

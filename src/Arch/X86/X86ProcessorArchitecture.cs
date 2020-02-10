@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Code;
 using Reko.Core.Operators;
+using Reko.Core.Assemblers;
 
 namespace Reko.Arch.X86
 {
@@ -71,6 +72,11 @@ namespace Reko.Arch.X86
             this.StackRegister = mode.StackRegister;
             this.FpuStackRegister = Registers.Top;
             this.Options = new X86Options();
+        }
+
+        public override IAssembler CreateAssembler(string asmDialect)
+        {
+            return new Assembler.X86TextAssembler(this);
         }
 
         public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
@@ -179,8 +185,7 @@ namespace Reko.Arch.X86
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
 		{
-            FlagGroupStorage f;
-            if (flagGroupCache.TryGetValue(grf, out f))
+            if (flagGroupCache.TryGetValue(grf, out FlagGroupStorage f))
 			{
 				return f;
 			}

@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Environments.Msdos;
@@ -64,10 +64,11 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var entryPoints = new List<ImageSymbol>();
-            var asm = new X86Assembler(sc, platform, addrBase, entryPoints);
+            var asm = new X86Assembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
             program = asm.GetImage();
+            program.Platform = platform;
             var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,

@@ -21,7 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.M68k;
-using Reko.Assemblers.M68k;
+using Reko.Arch.M68k.Assembler;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Scanning;

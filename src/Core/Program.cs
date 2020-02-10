@@ -106,7 +106,7 @@ namespace Reko.Core
 
         /// <summary>
         /// Contains the segments that the binary consists of. This data
-        /// is discovered by the loader, with optiona additional input
+        /// is discovered by the loader, with optional additional input
         /// from the user.
         /// </summary>
         public SegmentMap SegmentMap { get; set; }

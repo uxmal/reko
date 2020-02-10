@@ -199,11 +199,6 @@
         <File Source="$(var.Python.TargetPath)" />
         <File Source="$(var.Microchip.Utils.TargetPath)" />
 
-        <!-- Assemblers -->
-        <File Source="$(var.M68kAssembler.TargetPath)" />
-        <File Source="$(var.Pdp11Assembler.TargetPath)" />
-        <File Source="$(var.X86Assembler.TargetPath)" />
-
         <!-- Unpacker signatures -->
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml" />
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_ARM.xml" />
