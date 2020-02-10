@@ -34,8 +34,8 @@ namespace Reko.Core.Assemblers
 	/// </summary>
     public interface IEmitter
     {
-        int Length { get; }
-        int Position { get; }
+        int Size { get; }
+        int Position { get; set; }
 
         void Align(int extra, int align);
         void EmitBeUInt16(int us);
@@ -55,7 +55,28 @@ namespace Reko.Core.Assemblers
     
 	public class Emitter : IEmitter
 	{
-		private MemoryStream stmOut = new MemoryStream();
+        private MemoryStream stmOut;
+
+        public Emitter()
+        {
+            this.stmOut = new MemoryStream();
+        }
+
+        public Emitter(byte [] existingBytes)
+        {
+            this.stmOut = new MemoryStream(existingBytes);
+        }
+
+        public int Size
+        {
+            get { return (int) stmOut.Length; }
+        }
+
+        public int Position
+        {
+            get { return (int) stmOut.Position; }
+            set { stmOut.Position = value; }
+        }
 
         public byte[] GetBytes()
         {
@@ -151,11 +172,6 @@ namespace Reko.Core.Assemblers
             stmOut.WriteByte((byte) (s & 0xFF));
         }
 
-		public int Length
-		{
-			get { return (int) stmOut.Length; }
-		}
-
         /// <summary>
         /// Patches a big-endian value by fetching it from the stream and adding an offset.
         /// </summary>
@@ -246,10 +262,7 @@ namespace Reko.Core.Assemblers
 			stmOut.Position = posOrig;
 		}
 
-		public int Position
-		{
-			get { return (int) stmOut.Position; }
-		}
+
 
         public void Reserve(int size)
         {

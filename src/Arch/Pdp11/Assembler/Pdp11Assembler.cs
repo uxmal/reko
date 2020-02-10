@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -132,14 +132,14 @@ namespace Reko.Assemblers.Pdp11
                 emitter.EmitLeUInt16((int) BaseAddress.ToLinear() + op.Offset);
                 if (op.Symbol != null)
                 {
-                    ReferToSymbol(op.Symbol, emitter.Length - 2, PrimitiveType.Word16);
+                    ReferToSymbol(op.Symbol, emitter.Position - 2, PrimitiveType.Word16);
                 }
                 break;
             case AddressMode.Absolute:
                 emitter.EmitLeUInt16((int) BaseAddress.ToLinear());
                 if (op.Symbol != null)
                 {
-                    ReferToSymbol(op.Symbol, emitter.Length - 2, PrimitiveType.Word16);
+                    ReferToSymbol(op.Symbol, emitter.Position - 2, PrimitiveType.Word16);
                 }
                 break;
             default:
@@ -200,10 +200,10 @@ namespace Reko.Assemblers.Pdp11
 
         internal void ProcessShortBranch(int opcode, string destination)
         {
-            emitter.EmitLeUInt16(opcode | (byte)-(emitter.Length/2 + 1));
+            emitter.EmitLeUInt16(opcode | (byte)-(emitter.Position/2 + 1));
             
             var sym = symtab.CreateSymbol(destination);
-            sym.ReferToLeWordCount(emitter.Length - 1, PrimitiveType.Byte, emitter);
+            sym.ReferToLeWordCount(emitter.Position - 1, PrimitiveType.Byte, emitter);
         }
 
         internal void Asr(ParsedOperand op)

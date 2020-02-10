@@ -117,11 +117,11 @@ namespace Reko.Arch.Mos6502
             int offBytes = dt.Size;
             switch (offBytes)
             {
-            case 1: m.EmitByte(-(m.Length + 1)); break;
-            case 2: m.EmitLeUInt16(-(m.Length + 2)); break;
+            case 1: m.EmitByte(-(m.Position + 1)); break;
+            case 2: m.EmitLeUInt16(-(m.Position + 2)); break;
             }
             var sym = symtab.CreateSymbol(target);
-            sym.ReferToLe(m.Length - offBytes, dt, m);
+            sym.ReferToLe(m.Position - offBytes, dt, m);
             return sym;
         }
 
@@ -164,7 +164,7 @@ namespace Reko.Arch.Mos6502
             m.EmitByte(0x4C);
             m.EmitLeUInt16(addrBase.ToUInt16());  // 6502 jmps are absolute.
             var sym = symtab.CreateSymbol(target);
-            sym.ReferToLe(m.Length - 2, PrimitiveType.Word16, m);
+            sym.ReferToLe(m.Position - 2, PrimitiveType.Word16, m);
         }
 
         public void Nop()

@@ -600,8 +600,8 @@ namespace Reko.Arch.M68k.Assembler
         public void BraB(string target)
         {
             emitter.EmitByte(0x60);
-            emitter.EmitByte(-(emitter.Length + 1));
-            asm.Symbols.CreateSymbol(target).ReferToLe(emitter.Length - 1, PrimitiveType.Byte, emitter);
+            emitter.EmitByte(-(emitter.Position + 1));
+            asm.Symbols.CreateSymbol(target).ReferToLe(emitter.Position - 1, PrimitiveType.Byte, emitter);
         }
 
         public void Move(DataRegister dSrc, DataRegister dDst)

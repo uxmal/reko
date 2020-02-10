@@ -28,9 +28,9 @@ namespace Reko.Arch.X86.Assembler
 {
     public class AssembledSegment
     {
-        public IEmitter Emitter { get; private set; } 
-        public Symbol Symbol { get; private set; }
-        public List<Relocation> Relocations { get; private set; }
+        public IEmitter Emitter { get; } 
+        public Symbol Symbol { get; }
+        public List<Relocation> Relocations { get; }
         public ushort Selector { get; set; }
 
         public AssembledSegment(IEmitter emitter, Symbol sym)

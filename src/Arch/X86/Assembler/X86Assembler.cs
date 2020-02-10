@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.Text;
+using System.Linq;
 
 namespace Reko.Arch.X86.Assembler
 {
@@ -78,6 +79,37 @@ namespace Reko.Arch.X86.Assembler
 
             SwitchSegment(unknownSegment);
 
+            SetDefaultWordWidth(defaultWordSize);
+        }
+
+        /// <summary>
+        /// This constructor makes an X86Assembler that modifies an existing chunk of memory.
+        /// It is intended for small mutations of code (like patching NOPs over unwanted code).
+        /// It should not be used for generation of large amounts of code.
+        /// </summary>
+        /// <param name="program">Program to mutate.</param>
+        /// <param name="addrStart">The address at which to start mutating.</param>
+        public X86Assembler(Program program, Address addrStart)
+        {
+            this.arch = (IntelArchitecture) program.Architecture;
+            this.addrBase = program.SegmentMap.BaseAddress;
+            this.entryPoints = program.EntryPoints.Values.ToList();
+            this.defaultWordSize = arch.WordWidth;
+            this.textEncoding = Encoding.GetEncoding("ISO_8859-1");
+            symtab = new SymbolTable();
+            importReferences = program.ImportReferences;
+            mpNameToSegment = new Dictionary<string, AssembledSegment>();
+            symbolSegments = new Dictionary<Symbol, AssembledSegment>();
+            this.SegmentOverride = RegisterStorage.None;
+            segments = program.SegmentMap.Segments.Values
+                .Select(seg => new AssembledSegment(new Emitter(seg.MemoryArea.Bytes), new Symbol(seg.Name)))
+                .ToList();
+            if (!program.SegmentMap.TryFindSegment(addrStart, out var segmentToMutate))
+                throw new InvalidOperationException($"Address {addrStart} is not a valid location in the program.");
+            var offset = addrStart - segmentToMutate.MemoryArea.BaseAddress;
+            var asmSeg = this.segments.Single(seg => seg.Symbol.sym == segmentToMutate.Name);
+            asmSeg.Emitter.Position = (int)offset;
+            SwitchSegment(asmSeg);
             SetDefaultWordWidth(defaultWordSize);
         }
 
@@ -480,9 +512,9 @@ namespace Reko.Arch.X86.Assembler
         internal void ProcessLoop(int opcode, string destination)
         {
             EmitOpcode(0xE0 | opcode, null);
-            emitter.EmitByte(-(emitter.Length + 1));
+            emitter.EmitByte(-(emitter.Position + 1));
             ReferToSymbol(symtab.CreateSymbol(destination),
-                emitter.Length - 1, PrimitiveType.Byte);
+                emitter.Position - 1, PrimitiveType.Byte);
         }
 
         public void ProcessLxs(int prefix, int b, params ParsedOperand[] ops)
@@ -569,7 +601,7 @@ namespace Reko.Arch.X86.Assembler
 
                     if (ops[1].Symbol != null && isWord != 0)
                     {
-                        ReferToSymbol(ops[1].Symbol, emitter.Length - (int) immOpSrc.Width.Size, immOpSrc.Width);
+                        ReferToSymbol(ops[1].Symbol, emitter.Position - (int) immOpSrc.Width.Size, immOpSrc.Width);
                     }
                     return;
                 }
@@ -789,7 +821,7 @@ namespace Reko.Arch.X86.Assembler
                     if (ops[1].Symbol != null && isWord != 0)
                     {
                         Debug.Assert(immOpSrc.Value.ToUInt32() == 0);
-                        ReferToSymbol(ops[1].Symbol, emitter.Length - 2, PrimitiveType.Word16);
+                        ReferToSymbol(ops[1].Symbol, emitter.Position - 2, PrimitiveType.Word16);
                     }
                     return;
                 }
@@ -806,7 +838,7 @@ namespace Reko.Arch.X86.Assembler
 
             if (ops[1].Symbol != null && isWord != 0)
             {
-                ReferToSymbol(ops[1].Symbol, emitter.Length - 2, PrimitiveType.Word16);
+                ReferToSymbol(ops[1].Symbol, emitter.Position - 2, PrimitiveType.Word16);
             }
         }
 
@@ -827,29 +859,27 @@ namespace Reko.Arch.X86.Assembler
 
         private void ResolveSegmentForwardReferences(Symbol sym)
         {
-            AssembledSegment tempSeg;
-            if (symbolSegments.TryGetValue(sym, out tempSeg))
+            if (symbolSegments.TryGetValue(sym, out AssembledSegment asmSeg))
             {
-                currentSegment.Relocations.AddRange(tempSeg.Relocations);
+                currentSegment.Relocations.AddRange(asmSeg.Relocations);
             }
         }
 
         internal void EmitModRM(int reg, ParsedOperand op)
         {
-            RegisterOperand regOp = op.Operand as RegisterOperand;
-            if (regOp != null)
+            switch (op.Operand)
             {
+            case RegisterOperand regOp:
                 modRm.EmitModRM(reg, regOp);
                 return;
-            }
-            FpuOperand fpuOp = op.Operand as FpuOperand;
-            if (fpuOp != null)
-            {
+            case FpuOperand fpuOp:
                 modRm.EmitModRM(reg, fpuOp);
-            }
-            else
-            {
-                EmitModRM(reg, (MemoryOperand) op.Operand, op.Symbol);
+                return;
+            case MemoryOperand mem:
+                EmitModRM(reg, mem, op.Symbol);
+                break;
+            default:
+                throw new NotImplementedException();
             }
         }
 
@@ -866,7 +896,6 @@ namespace Reko.Arch.X86.Assembler
                 EmitModRM(reg, (MemoryOperand) op.Operand, b, op.Symbol);
             }
         }
-
 
         internal void EmitModRM(int reg, MemoryOperand memOp, Symbol sym)
         {
@@ -944,19 +973,19 @@ namespace Reko.Arch.X86.Assembler
             int offBytes = (int) offsetSize.Size;
             switch (offBytes)
             {
-            case 1: emitter.EmitByte(-(emitter.Length + 1)); break;
-            case 2: emitter.EmitLeUInt16(-(emitter.Length + 2)); break;
-            case 4: emitter.EmitLeUInt32((uint)-(emitter.Length + 4)); break;
+            case 1: emitter.EmitByte(-(emitter.Position + 1)); break;
+            case 2: emitter.EmitLeUInt16(-(emitter.Position + 2)); break;
+            case 4: emitter.EmitLeUInt32((uint)-(emitter.Position + 4)); break;
             }
             var sym = symtab.CreateSymbol(target);
-            sym.ReferToLe(emitter.Length - offBytes, offsetSize, emitter);
+            sym.ReferToLe(emitter.Position - offBytes, offsetSize, emitter);
             return sym;
         }
 
         private void EmitReferenceToSymbolSegment(Symbol sym)
         {
             var seg = GetSymbolSegmentReference(sym);
-            seg.Relocations.Add(new AssembledSegment.Relocation { Segment=currentSegment, Offset=(uint) emitter.Length });
+            seg.Relocations.Add(new AssembledSegment.Relocation { Segment=currentSegment, Offset=(uint) emitter.Position });
             emitter.EmitLeUInt16(0);            // make space for the segment selector, will be overwritten at relocation time.
         }
 
@@ -1696,7 +1725,7 @@ namespace Reko.Arch.X86.Assembler
             if (far)
             {
                 var sym = symtab.CreateSymbol(destination);
-                sym.ReferToLe(emitter.Length, SegmentAddressWidth, emitter);
+                sym.ReferToLe(emitter.Position, SegmentAddressWidth, emitter);
 
                 emitter.EmitLe(SegmentAddressWidth, 0);
 
@@ -1765,7 +1794,7 @@ namespace Reko.Arch.X86.Assembler
         {
             Symbol sym = symtab.CreateSymbol(symbolText);
             emitter.EmitLe(width, (int)addrBase.Offset);
-            ReferToSymbol(sym, emitter.Length - (int) width.Size, SegmentAddressWidth);
+            ReferToSymbol(sym, emitter.Position - (int) width.Size, SegmentAddressWidth);
         }
 
         internal void DefineWord(PrimitiveType width, int value)

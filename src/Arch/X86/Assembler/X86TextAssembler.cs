@@ -81,12 +81,31 @@ namespace Reko.Arch.X86.Assembler
 
         public void AssembleAt(Program program, Address addr, TextReader rdr)
         {
+            addrBase = addr;
+            lexer = new Lexer(rdr);
 
+            asm = new X86Assembler(program, addrBase);
+
+            // Assemblers are strongly line-oriented.
+
+            while (lexer.PeekToken() != Token.EOFile)
+            {
+                try
+                {
+                    ProcessLine();
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print("Error on line {0}: {1}", lexer.LineNumber, ex.Message);
+                    throw;
+                }
+            }
+            asm.ReportUnresolvedSymbols();
         }
 
         public void AssembleFragmentAt(Program program, Address addr, string asmFragment)
         {
-
+            AssembleAt(program, addr, new StringReader(asmFragment));
         }
 
         public IProcessorArchitecture Architecture
@@ -1008,7 +1027,10 @@ namespace Reko.Arch.X86.Assembler
 				ProcessBinop(0x07);
 				break;
 			}
-			Expect(Token.EOL);
+            if (lexer.PeekToken() != Token.EOFile)
+            {
+                Expect(Token.EOL);
+            }
 		}
 
 		private void ProcessLxs(int prefix, int b)

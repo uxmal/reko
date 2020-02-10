@@ -182,6 +182,7 @@
     <Compile Include="Arch\X86\Assembler\AssemblerOverrides.cs" />
     <Compile Include="Arch\X86\Assembler\IntelCodeAssemblerTests.cs" />
     <Compile Include="Arch\X86\Assembler\OperandParserTests.cs" />
+    <Compile Include="Arch\X86\Assembler\X86TextAssemblerTests.cs" />
     <Compile Include="Arch\X86\FastcallConventionTests.cs" />
     <Compile Include="Arch\LatticeMico\LatticeMico32DisassemblerTests.cs" />
     <Compile Include="Arch\LatticeMico\LatticeMico32RewriterTests.cs" />
