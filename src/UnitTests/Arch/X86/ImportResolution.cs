@@ -18,17 +18,19 @@
  */
 #endregion
 
+using Reko.Arch.X86;
+using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Arch.M68k.Assembler
+namespace Reko.UnitTests.Arch.X86
 {
-    public class AssemblerException : Exception
-    {
-        public AssemblerException(string message) : base(message)
-        {
-        }
-    }
+	[TestFixture]
+	public class ImportResolution
+	{
+		[Test]
+		public void ImpMsvcrt()
+		{
+
+		}
+	}
 }

@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Arch.M68k;
-using Reko.Assemblers.M68k;
+using Reko.Arch.M68k.Assembler;
 using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Core.Machine;

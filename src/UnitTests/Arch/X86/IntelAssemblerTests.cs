@@ -18,17 +18,30 @@
  */
 #endregion
 
+using Reko.Arch.X86.Assembler;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Arch.M68k.Assembler
+namespace Reko.UnitTests.Arch.X86
 {
-    public class AssemblerException : Exception
-    {
-        public AssemblerException(string message) : base(message)
-        {
-        }
-    }
+	[TestFixture]
+	public class IntelAssemblerTests
+	{
+		[Test]
+		public void IntegralConstant32()
+		{
+			Constant c;
+			c = X86Assembler.IntegralConstant(-2, PrimitiveType.Word32);
+			Assert.AreSame(PrimitiveType.SByte, c.DataType);
+			c = X86Assembler.IntegralConstant(-128, PrimitiveType.Word32);
+			Assert.AreSame(PrimitiveType.SByte, c.DataType);
+			c = X86Assembler.IntegralConstant(-129, PrimitiveType.Word32);
+			Assert.AreSame(PrimitiveType.Word32, c.DataType);
+			c = X86Assembler.IntegralConstant(-129, PrimitiveType.Word16);
+			Assert.AreSame(PrimitiveType.Word16, c.DataType);
+		}
+	}
 }

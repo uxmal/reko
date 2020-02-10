@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Assemblers.M68k
+namespace Reko.Arch.M68k.Assembler
 {
     /// <summary>
     /// Handy little assembler that lets you write C# code that assembles 

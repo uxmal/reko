@@ -18,17 +18,34 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
+using NUnit.Framework;
+using Reko.Core;
 using System.Linq;
-using System.Text;
 
-namespace Reko.Arch.M68k.Assembler
+namespace Reko.UnitTests.Arch.X86.Assembler
 {
-    public class AssemblerException : Exception
-    {
-        public AssemblerException(string message) : base(message)
-        {
-        }
-    }
+	[TestFixture]
+	public class AssemblerOverrides : AssemblerBase
+	{
+		[Test]
+		public void DataOverrides()
+		{
+			var lr = asm.AssembleFragment(
+				Address.SegPtr(0xC00, 0),
+				@".86
+		mov	eax,32
+		mov si,0x2234
+		mov ebx,0x2234
+		add	eax,0x12345678
+		add ebx,0x87654321
+");
+			Assert.IsTrue(Compare(lr.SegmentMap.Segments.Values.First().MemoryArea.Bytes, 
+                new byte[]
+				{	0x66,0xb8,0x20,0x00,0x00,0x00,0xbe,0x34,
+					0x22,0x66,0xbb,0x34,0x22,0x00,0x00,0x66,
+					0x05,0x78,0x56,0x34,0x12,0x66,0x81,0xC3,
+					0x21,0x43,0x65,0x87
+                }));
+		}
+	}
 }

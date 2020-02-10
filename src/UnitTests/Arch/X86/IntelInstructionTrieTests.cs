@@ -18,17 +18,36 @@
  */
 #endregion
 
+using Reko.Arch.X86;
+using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Arch.M68k.Assembler
+namespace Reko.UnitTests.Arch.X86
 {
-    public class AssemblerException : Exception
-    {
-        public AssemblerException(string message) : base(message)
-        {
-        }
-    }
+	[TestFixture]
+	public class IntelInstructionTrieTests
+	{
+		public IntelInstructionTrieTests()
+		{
+		}
+
+		[Test]
+		public void Creation()
+		{
+//			IntelInstructionTrie trie = new IntelInstructionTrie();
+		}
+
+		[Test]
+		public void AddInstruction()
+		{
+/*			IntelInstructionTrie trie = new IntelInstructionTrie();
+			IntelInstruction inst = new IntelInstruction();
+			inst.code = Mnemonic.push;
+			inst.op1 = new RegisterOperand(Register.bp);
+			inst.cOperands = 1;
+			trie.Add(inst);
+			Assertion.AssertEquals(trie.Instructions == 1);
+*/
+		}
+	}
 }

@@ -30,7 +30,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Reko.Assemblers.M68k
+namespace Reko.Arch.M68k.Assembler
 {
     public class M68kTextAssembler : IAssembler
     {
