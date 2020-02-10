@@ -32,32 +32,34 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
     [TestFixture]
     public class OllyScriptHostTests
     {
-        private SegmentMap segmentMap;
+        private Program program;
         private OdbgScriptHost host;
 
         [SetUp]
         public void Setup()
         {
-            this.segmentMap = null;
+            this.program = null;
             this.host = null;
         }
 
-        private void Given_SegmentMap()
+        private void Given_X86Program()
         {
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
             var addrBase = Address.Ptr32(0x00100000);
-            this.segmentMap = new SegmentMap(addrBase);
-            this.segmentMap.AddSegment(new MemoryArea(addrBase, new byte[0xFF]), ".text", AccessMode.ReadWrite);
+            var segmentMap = new SegmentMap(addrBase);
+            segmentMap.AddSegment(new MemoryArea(addrBase, new byte[0xFF]), ".text", AccessMode.ReadWrite);
+            this.program = new Program(segmentMap, arch, null);
         }
 
         private void Given_Host()
         {
-            this.host = new OdbgScriptHost(null, segmentMap);
+            this.host = new OdbgScriptHost(null, program);
         }
 
         [Test]
         public void OdbgHost_Alloc()
         {
-            Given_SegmentMap();
+            Given_X86Program();
             Given_Host();
 
             var addr = host.AllocateMemory(4);
@@ -67,7 +69,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
         [Test]
         public void OdbgHost_Alloc_TwoAllocations()
         {
-            Given_SegmentMap();
+            Given_X86Program();
             Given_Host();
 
             var addr1 = host.AllocateMemory(4);

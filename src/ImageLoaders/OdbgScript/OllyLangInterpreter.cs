@@ -18,20 +18,20 @@
  */
 #endregion
 
+using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    using Reko.Arch.X86;
-    using Reko.Core.Expressions;
-    using Reko.Core.Services;
-    using Reko.Core.Types;
     using rulong = System.UInt64;
 
     // This is the table for Script Execution
@@ -72,7 +72,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private readonly IProcessorArchitecture arch;
         private readonly List<int> calls = new List<int>();         // Call/Ret stack in script
         public readonly Dictionary<string, Var> variables = new Dictionary<string, Var>(); // Variables that exist
-        private readonly Dictionary<rulong, int> bpjumps = new Dictionary<rulong, int>();  // Breakpoint Auto Jumps 
+        private readonly Dictionary<Address, int> bpjumps = new Dictionary<Address, int>();  // Breakpoint Auto Jumps 
         public  bool debuggee_running;
         public  bool script_running;
         public  bool run_till_return;
@@ -776,7 +776,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromFile(string scriptFilename, Program program, string curDir)
         {
-            var host = new OdbgScriptHost(null, program.SegmentMap);
+            var host = new OdbgScriptHost(null, program);
             var fsSvc = services.RequireService<IFileSystemService>();
             using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, curDir))
             {
@@ -786,7 +786,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromString(string scriptString, Program program, string curDir)
         {
-            var host = new OdbgScriptHost(null, program.SegmentMap);
+            var host = new OdbgScriptHost(null, program);
             var fsSvc = services.RequireService<IFileSystemService>();
             using (var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir))
             {
@@ -898,6 +898,10 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
+        /// <summary>
+        /// This method is called when the debugger hits a breakpoint.
+        /// </summary>
+        /// <param name="reason"></param>
         void OnBreakpoint(BreakpointType reason)
         {
             if (bInternalBP) //dont process temporary bp (exec/ende/go)
@@ -914,7 +918,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 else
                 {
-                    rulong ip = Debugger.InstructionPointer.ToLinear();
+                    Address ip = Debugger.InstructionPointer;
                     if (bpjumps.TryGetValue(ip, out int it))
                     {
                         script_pos_next = it;
@@ -1352,11 +1356,14 @@ namespace Reko.ImageLoaders.OdbgScript
                     }
                 }
             }
-            else
+            else if (op is BinaryExpression bin && bin.Operator == Operator.IAdd)
             {
-                //$TODO: evaluate string expressions
-                throw new NotImplementedException();
-                //return (ParseString(op, out string parsed) && GetString(parsed, size, out value));
+                if (GetString(bin.Left, out var left) &&
+                    GetString(bin.Right, out var right))
+                {
+                    value = left + right;
+                    return true;
+                }
             }
             value = "";
             return false;
@@ -1476,7 +1483,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else if (op is Identifier id)
             {
-                if (is_floatreg(id.Name))
+                if (IsFloatRegister(id.Name))
                 {
                     int index = id.Name[3] - '0';
 #if LATER
@@ -1603,7 +1610,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     variables[id.Name] = Var.Create(value);
                     return true;
                 }
-                else if (is_floatreg(id.Name))
+                else if (IsFloatRegister(id.Name))
                 {
                     int index = id.Name[3] - '0';
                     double preg = 0.0;
@@ -1667,12 +1674,12 @@ namespace Reko.ImageLoaders.OdbgScript
             return constants.TryGetValue(name, out value);
         }
 
-        bool is_register(string s)
+        bool IsRegister(string s)
         {
             return registers.ContainsKey(s);
         }
 
-        bool is_floatreg(string s)
+        bool IsFloatRegister(string s)
         {
             return fpu_registers.Any<string>(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }
@@ -1694,7 +1701,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool IsValidVariableName(string s)
         {
-            return (s.Length != 0 && char.IsLetter(s[0]) && !is_register(s) && !is_floatreg(s) && !IsConstant(s));
+            return (s.Length != 0 && char.IsLetter(s[0]) && !IsRegister(s) && !IsFloatRegister(s) && !IsConstant(s));
         }
 
         bool IsWriteable(Expression e)
@@ -1702,7 +1709,7 @@ namespace Reko.ImageLoaders.OdbgScript
             if (e is Identifier id)
             {
                 var s = id.Name;
-                return IsVariable(s) || is_register(s) || IsFlag(s) || is_floatreg(s);
+                return IsVariable(s) || IsRegister(s) || IsFlag(s) || IsFloatRegister(s);
             }
             return e is MemoryAccess;
         }
@@ -1947,6 +1954,8 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 else if (run_till_return)
                 {
+                    //$TODO: bleh. To remove this hard-coded dependence of X86,
+                    // we need to implement a new InstrClass type, Return.
                     var instr = (X86Instruction) Host.Disassemble(Debugger.InstructionPointer);
                     if (instr.Mnemonic == Arch.X86.Mnemonic.ret ||
                        instr.Mnemonic == Arch.X86.Mnemonic.retf)

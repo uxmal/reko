@@ -35,13 +35,15 @@ namespace Reko.ImageLoaders.OdbgScript
     public class OdbgScriptHost : IOdbgScriptHost
     {
         private OdbgScriptLoader loader;
+        private Program program;
         private ImageSegment heap;
         private ulong heapAlloc;
 
-		public OdbgScriptHost(OdbgScriptLoader loader, SegmentMap segmentMap)
+		public OdbgScriptHost(OdbgScriptLoader loader, Program program)
         {
             this.loader = loader;
-			this.SegmentMap = segmentMap;
+            this.program = program;
+			this.SegmentMap = program.SegmentMap;
         }
 
         public SegmentMap SegmentMap { get; set; }

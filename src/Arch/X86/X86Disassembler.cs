@@ -143,7 +143,6 @@ namespace Reko.Arch.X86
             public List<MachineOperand> ops;
             public PrimitiveType iWidth;
 
-
             internal X86InstructionDecodeInfo()
             {
                 this.registerExtension = new X86LegacyCodeRegisterExtension(0);
@@ -213,6 +212,7 @@ namespace Reko.Arch.X86
                     return this.registerExtension;
                 }
             }
+
             internal byte RegisterExtensionPrefixByte
             {
                 get
@@ -772,10 +772,9 @@ namespace Reko.Arch.X86
                     return false;
                 if ((modRm & 0xC0) == 0xC0)
                     return false;
-                var op = d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits) as MemoryOperand;
-                if (op == null)
+                if (!(d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits) is MemoryOperand mem))
                     return false;
-                d.decodingContext.ops.Add(op);
+                d.decodingContext.ops.Add(mem);
                 return true;
             };
         }

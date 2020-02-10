@@ -12,7 +12,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Environments\Windows\Windows.csproj" />
-    <ProjectReference Include="..\MzExe\MzExe.csproj" />
   </ItemGroup>
 </Project>

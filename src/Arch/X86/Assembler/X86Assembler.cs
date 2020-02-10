@@ -343,10 +343,8 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessFst(bool pop, ParsedOperand operand)
         {
-            FpuOperand fop = operand.Operand as FpuOperand;
-            MemoryOperand mop = operand.Operand as MemoryOperand;
             int regBits = pop ? 3 : 2;
-            if (mop != null)
+            if (operand.Operand is MemoryOperand mop)
             {
                 switch (mop.Width.Size)
                 {
@@ -356,7 +354,7 @@ namespace Reko.Arch.X86.Assembler
                 }
                 EmitModRM(regBits, operand);
             }
-            else if (fop != null)
+            else if (operand.Operand is FpuOperand fop)
             {
                 EmitOpcode(0xDD, null);
                 EmitModRM(regBits, new ParsedOperand(fop, null));
@@ -1632,8 +1630,7 @@ namespace Reko.Arch.X86.Assembler
         internal void ProcessBinop(int binop, params ParsedOperand[] ops)
         {
             PrimitiveType dataWidth = EnsureValidOperandSizes(ops, 2);
-            ImmediateOperand immOp = ops[1].Operand as ImmediateOperand;
-            if (immOp != null)
+            if (ops[1].Operand is ImmediateOperand immOp)
             {
                 int imm = immOp.Value.ToInt32();
                 RegisterOperand regOpDst = ops[0].Operand as RegisterOperand;
@@ -1673,8 +1670,7 @@ namespace Reko.Arch.X86.Assembler
                 return;
             }
 
-            MemoryOperand memOpDst = ops[0].Operand as MemoryOperand;
-            if (memOpDst != null)
+            if (ops[0].Operand is MemoryOperand memOpDst)
             {
                 RegisterOperand regOpSrc = (RegisterOperand) ops[1].Operand;
                 EmitOpcode((binop << 3) | 0x00 | IsWordWidth(ops[1].Operand), dataWidth);
@@ -1691,8 +1687,7 @@ namespace Reko.Arch.X86.Assembler
         internal void ProcessBitOp(ParsedOperand[] ops)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-            ImmediateOperand imm2 = ops[1].Operand as ImmediateOperand;
-            if (imm2 != null)
+            if (ops[1].Operand is ImmediateOperand imm2)
             {
                 EmitOpcode(0x0F, dataWidth);
                 emitter.EmitByte(0xBA);

@@ -18,11 +18,8 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Environments.Windows;
-using Reko.ImageLoaders.MzExe;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -79,7 +76,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLangInterpreter(Services, program.Architecture);
-            this.scriptInterpreter.Host = new OdbgScriptHost(this, program.SegmentMap);
+            this.scriptInterpreter.Host = new OdbgScriptHost(this, program);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.BeforeStart += emu_BeforeStart;
@@ -113,16 +110,6 @@ namespace Reko.ImageLoaders.OdbgScript
                 eps.Add(sym);
             }
             return new RelocationResults(eps, syms);
-        }
-
-        public virtual PeImageLoader CreatePeImageLoader()
-        {
-            ExeImageLoader mz = new ExeImageLoader(Services, Filename, RawImage);
-            var e_lfanew = mz.LoadLfaToNewHeader();
-            if (!e_lfanew.HasValue)
-                throw new BadImageFormatException();
-            PeImageLoader pe = new PeImageLoader(Services, Filename, RawImage, e_lfanew.Value);
-            return pe;
         }
 
         public virtual OllyScript LoadScript(IOdbgScriptHost host, string scriptFilename)
