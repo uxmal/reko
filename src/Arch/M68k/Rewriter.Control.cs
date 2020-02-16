@@ -37,7 +37,7 @@ namespace Reko.Arch.M68k
             var addr = ((M68kAddressOperand)instr.Operands[0]).Address;
             if ((addr.ToUInt32() & 1) != 0)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
             }
             else
@@ -59,7 +59,7 @@ namespace Reko.Arch.M68k
             var addr = ((M68kAddressOperand)instr.Operands[0]).Address;
             if ((addr.ToUInt32() & 1) != 0)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
             }
             else
@@ -127,10 +127,10 @@ namespace Reko.Arch.M68k
             var addr = (Address)orw.RewriteSrc(instr.Operands[1], instr.Address, true);
             if (cc == ConditionCode.ALWAYS)
             {
-                rtlc = InstrClass.Transfer;
+                iclass = InstrClass.Transfer;
                 m.Goto(addr);
             }
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             if (cc != ConditionCode.None)
             {
                 m.BranchInMiddleOfInstruction(
@@ -156,11 +156,11 @@ namespace Reko.Arch.M68k
             if (this.instr.Operands.Length > 0)
             {
                 m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(this.instr.Operands[0])));
-                rtlc = InstrClass.Call | InstrClass.Transfer;
+                iclass = InstrClass.Call | InstrClass.Transfer;
             }
             else
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
             }
         }
@@ -203,7 +203,7 @@ namespace Reko.Arch.M68k
             }
             if (cc != ConditionCode.ALWAYS)
             {
-                rtlc |= InstrClass.Conditional;
+                iclass |= InstrClass.Conditional;
                 m.BranchInMiddleOfInstruction(
                     m.Test(cc, orw.FlagGroup(flags)).Invert(),
                     instr.Address + instr.Length,

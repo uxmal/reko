@@ -1,4 +1,3 @@
-using Reko.Arch.X86;
 using Reko.Core;
 using System;
 using System.Collections.Generic;

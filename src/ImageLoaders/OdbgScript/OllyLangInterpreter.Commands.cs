@@ -33,6 +33,7 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     using rulong = System.UInt64;
 
+    // https://github.com/x64dbg/ODbgScript/tree/master/ODbgScript
     public partial class OllyLangInterpreter
     {
         const int MAX_INSTR_SIZE = 16;      // x86
@@ -105,7 +106,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// </remarks>
         private bool DoAN(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetAddress(args[0], out Address addr))
             {
                 return true;
             }
@@ -342,8 +343,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoBPGOTO(Expression[] args)
         {
-            //$TODO: should be GetAddress
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && Script.TryGetLabel(args[1], out var bpLabel))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && Script.TryGetLabel(args[1], out var bpLabel))
             {
                 bpjumps[addr] = bpLabel;
                 return true;
@@ -393,6 +393,14 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
+        /// <summary>
+        /// Set a hardware breakpoint. An optional type can specify the type of breakpoint
+        /// r: break when memory address is read.
+        /// w: break when memory address is written.
+        /// x: break when program execution reaches the given address.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private bool DoBPHWS(Expression[] args)
         {
             string typestr = "x";
@@ -421,7 +429,7 @@ namespace Reko.ImageLoaders.OdbgScript
         // TE?
         private bool DoBPL(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string expression))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetString(args[1], out string expression))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -442,7 +450,7 @@ namespace Reko.ImageLoaders.OdbgScript
         // TE?
         private bool DoBPLCND(Expression[] args)
         {
-            if (args.Length == 3 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string expression) && GetString(args[2], out string condition))
+            if (args.Length == 3 && GetAddress(args[0], out Address addr) && GetString(args[1], out string expression) && GetString(args[2], out string condition))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -508,7 +516,9 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        // TE?
+        /// <summary>
+        /// Set a breakpoint on call to an imported API call.
+        /// </summary>
         private bool DoBPX(params Expression[] args)
         {
             if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string callname))
@@ -3052,7 +3062,7 @@ string filename;
                         return Debugger.SetContextData(eContextData.UE_EFLAGS, flags.dw);
                     }
                 }
-                else if (args[0] is Identifier idFloat && is_floatreg(idFloat.Name))
+                else if (args[0] is Identifier idFloat && IsFloatRegister(idFloat.Name))
                 {
                     if (GetFloat(args[1], out flt))
                     {

@@ -117,11 +117,11 @@ namespace Reko.Arch.X86
         private void UpdateIp(Address value)
         {
             this.ip = value;
-            WriteRegister(this.ipReg, (TWord)value.Offset);
+            WriteRegister(this.ipReg, (TWord) value.Offset);
             if (value.Selector.HasValue)
-        {
+            {
                 WriteRegister(X86.Registers.cs, value.Selector.Value);
-        }
+            }
         }
 
         private StringBuilder DumpRegs()
@@ -142,10 +142,10 @@ namespace Reko.Arch.X86
                 UpdateIp(dasm.Current.Address);
                 ulong eip = ip.ToLinear();
                 if (!TestForBreakpoint(eip))
-                            break;
-                    Execute(dasm.Current);
-                }
+                    break;
+                Execute(dasm.Current);
             }
+        }
 
         [Conditional("DEBUG")]
         private void TraceCurrentInstruction()
@@ -166,18 +166,18 @@ namespace Reko.Arch.X86
             {
                 if (instr.repPrefix == 2)
                 {
-                // repne
-                switch (instr.Mnemonic)
-                {
-                case Mnemonic.scasb: Repne(); return;
+                    // repne
+                    switch (instr.Mnemonic)
+                    {
+                    case Mnemonic.scasb: Repne(); return;
+                    }
+                    throw new NotImplementedException();
                 }
-                throw new NotImplementedException();
-            }
                 else if (instr.repPrefix == 3)
                 {
                     // rep / repe
-            switch (instr.Mnemonic)
-            {
+                    switch (instr.Mnemonic)
+                    {
                     case Mnemonic.lods: Rep(); return;
                     case Mnemonic.lodsb: Rep(); return;
                     case Mnemonic.movs: Rep(); return;
@@ -672,5 +672,5 @@ namespace Reko.Arch.X86
                 ((xor & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 0;                          // Overflow
         }
-        }
+    }
 }

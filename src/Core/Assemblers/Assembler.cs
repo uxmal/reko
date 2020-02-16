@@ -42,14 +42,15 @@ namespace Reko.Core.Assemblers
         /// Assembles the assembler language program from <paramref name="reader"/> and mutates 
         /// the provided <paramref name="program"/> starting at <paramref name="address"/>. 
         /// </summary>
-        /// <param name="program"></param>
-        /// <param name="baseAddress"></param>
-        /// <param name="reader"></param>
+        /// <param name="program">The program to mutate.</param>
+        /// <param name="baseAddress">Location at which to start writing machine code.</param>
+        /// <param name="reader">Assembly language source code.</param>
+        /// <returns>The number of machine code bytes written.</returns>
         /// <remarks>
-        /// Side effects include: the memory areas of the program may be mutated, and <see cref="ImageSymbol"/>s
+        /// Side effects include: the memory areas of the program will be mutated, and <see cref="ImageSymbol"/>s
         /// may be added to <see cref="Program.ImageSymbols"/>.
         /// </remarks>
-        void AssembleAt(Program program, Address address, TextReader reader);
-        void AssembleFragmentAt(Program program, Address address, string asmFragment);
+        int AssembleAt(Program program, Address address, TextReader reader);
+        int AssembleFragmentAt(Program program, Address address, string asmFragment);
     }
 }

@@ -551,12 +551,12 @@ namespace Reko.Arch.M68k.Assembler
             return Assemble(baseAddress, rdr);
         }
 
-        public void AssembleAt(Program program, Address address, TextReader rdr)
+        public int AssembleAt(Program program, Address address, TextReader rdr)
         {
             throw new NotImplementedException();
         }
 
-        public void AssembleFragmentAt(Program program, Address addr, string asm)
+        public int AssembleFragmentAt(Program program, Address addr, string asm)
         {
             throw new NotImplementedException();
         }

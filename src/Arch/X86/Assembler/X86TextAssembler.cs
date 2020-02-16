@@ -79,12 +79,13 @@ namespace Reko.Arch.X86.Assembler
 			return Assemble(addr, new StringReader(fragment));
 		}
 
-        public void AssembleAt(Program program, Address addr, TextReader rdr)
+        public int AssembleAt(Program program, Address addr, TextReader rdr)
         {
             addrBase = addr;
             lexer = new Lexer(rdr);
 
             asm = new X86Assembler(program, addrBase);
+            var initialPos = asm.CurrentPosition;
 
             // Assemblers are strongly line-oriented.
 
@@ -97,15 +98,17 @@ namespace Reko.Arch.X86.Assembler
                 catch (Exception ex)
                 {
                     Debug.Print("Error on line {0}: {1}", lexer.LineNumber, ex.Message);
-                    throw;
+                    break;
                 }
             }
             asm.ReportUnresolvedSymbols();
+            var bytesWritten = asm.CurrentPosition - initialPos;
+            return bytesWritten;
         }
 
-        public void AssembleFragmentAt(Program program, Address addr, string asmFragment)
+        public int AssembleFragmentAt(Program program, Address addr, string asmFragment)
         {
-            AssembleAt(program, addr, new StringReader(asmFragment));
+            return AssembleAt(program, addr, new StringReader(asmFragment));
         }
 
         public IProcessorArchitecture Architecture

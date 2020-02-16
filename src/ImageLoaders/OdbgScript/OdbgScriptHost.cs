@@ -35,13 +35,15 @@ namespace Reko.ImageLoaders.OdbgScript
     public class OdbgScriptHost : IOdbgScriptHost
     {
         private OdbgScriptLoader loader;
+        private Program program;
         private ImageSegment heap;
         private ulong heapAlloc;
 
-		public OdbgScriptHost(OdbgScriptLoader loader, SegmentMap segmentMap)
+		public OdbgScriptHost(OdbgScriptLoader loader, Program program)
         {
             this.loader = loader;
-			this.SegmentMap = segmentMap;
+            this.program = program;
+			this.SegmentMap = program.SegmentMap;
         }
 
         public SegmentMap SegmentMap { get; set; }
@@ -105,9 +107,10 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual int Assemble(string p, Address addr)
+        public virtual int Assemble(string asmText, Address addr)
         {
-            throw new NotImplementedException();
+            var asm = program.Architecture.CreateAssembler(null);
+            return asm.AssembleFragmentAt(program, addr, asmText);
         }
 
         public virtual List<string> getlines_file(string p)
