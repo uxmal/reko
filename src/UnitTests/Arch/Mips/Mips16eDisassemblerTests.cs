@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void Mips16eDis_generate()
         {
             var rnd = new Random(4711);
-            var buf = new byte[100_000];
+            var buf = new byte[1_000_000];
             rnd.NextBytes(buf);
             var mem = new MemoryArea(LoadAddress, buf);
             var rdr = new BeImageReader(mem, 0);
@@ -82,15 +82,42 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void Mips16eDis_addiu_ext()
+        {
+            AssertCode("addiu\tr17,r3,00000026", "F020 4166");
+            AssertCode("addiu\tr17,r3,FFFFC006", "F008 4166");
+        }
+
+        [Test]
         public void Mips16eDis_addiu_sp()
         {
             AssertCode("addiu\tr17,sp,00000344", "01D1");
         }
 
         [Test]
+        public void Mips16eDis_la()
+        {
+            AssertCode("la\tr16,00100344", "08D1");
+        }
+
+        [Test]
+        public void Mips16eDis_la_ext()
+        {
+            AssertCode("la\tr16,00100031", "F020 0811");
+            AssertCode("la\tr16,000F8011", "F010 0811");
+        }
+
+        [Test]
         public void Mips16eDis_addiu8()
         {
             AssertCode("addiu\tr6,0000007E", "4E7E");
+        }
+
+        [Test]
+        public void Mips16eDis_addiu8_ext()
+        {
+            AssertCode("addiu\tr6,00000020", "F020 4E00");
+            AssertCode("addiu\tr6,FFFF8000", "F010 4E00");
         }
 
         [Test]
@@ -106,15 +133,27 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void Mips16eDis_bnez()
+        public void Mips16eDis_b_ext()
         {
-            AssertCode("bnez\tr5,000FFFD6", "2DEA");
+            AssertCode("b\t000F0004", "F010 1000");
         }
 
         [Test]
         public void Mips16eDis_beqz()
         {
             AssertCode("beqz\tr3,001000D8", "236B");
+        }
+
+        [Test]
+        public void Mips16eDis_beqz_ext()
+        {
+            AssertCode("beqz\tr3,000F001A", "F010 230B");
+        }
+
+        [Test]
+        public void Mips16eDis_bnez()
+        {
+            AssertCode("bnez\tr5,000FFFD6", "2DEA");
         }
 
         [Test]
@@ -151,6 +190,12 @@ namespace Reko.UnitTests.Arch.Mips
         public void Mips16eDis_lb()
         {
             AssertCode("lb\tr7,000E(r7)", "86EE");
+        }
+
+        [Test]
+        public void Mips16eDis_lb_ext()
+        {
+            AssertCode("lb\tr16,-8000(r16)", "F010 8600");
         }
 
         [Test]
@@ -220,6 +265,18 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void Mips16eDis_restore()
+        {
+            AssertCode("restore\tra,r16,r17,+00000080", "6470");
+        }
+
+        [Test]
+        public void Mips16eDis_restore_ext()
+        {
+            AssertCode("restore\tra,r4,r5,r6,r7,r16,r17,r18,r19,r20,r21,r22,r23,r30,+000007F8", "F7FB 647F");
+        }
+
+        [Test]
         public void Mips16eDis_save()
         {
             AssertCode("save\tra,r16,r17,+00000080", "64F0");
@@ -280,6 +337,24 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void Mips16eDis_sw_rasp()
+        {
+            AssertCode("sw\tra,03CC(sp)", "62F3");
+        }
+
+        [Test]
+        public void Mips16eDis_sw_rasp_extend()
+        {
+            AssertCode("sw\tra,001F(sp)", "F000 621F");
+            AssertCode("sw\tra,003F(sp)", "F020 621F");
+            AssertCode("sw\tra,041F(sp)", "F400 621F");
+            AssertCode("sw\tra,081F(sp)", "F001 621F");
+            AssertCode("sw\tra,101F(sp)", "F002 621F");
+            AssertCode("sw\tra,-8000(sp)", "F010 6200");
+            AssertCode("sw\tra,-52EB(sp)", "F515 6215");
+        }
+
+        [Test]
         public void Mips16eDis_swrasp()
         {
             AssertCode("sw\tra,03CC(sp)", "62F3");
@@ -290,8 +365,5 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("xor\tr2,r4", "EA8E");
         }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        ///
     }
 }

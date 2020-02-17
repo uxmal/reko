@@ -317,6 +317,7 @@ namespace Reko.Arch.Mips
         bteqz,
         btnez,
         jalx,
+        la,
         neg,
         zeb,
         zeh,

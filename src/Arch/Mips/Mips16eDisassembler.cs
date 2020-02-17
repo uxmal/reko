@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -39,6 +40,7 @@ namespace Reko.Arch.Mips
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
+        private uint? extend;
 
         public Mips16eDisassembler(MipsProcessorArchitecture arch, EndianImageReader rdr)
         {
@@ -51,6 +53,7 @@ namespace Reko.Arch.Mips
         {
             this.addr = rdr.Address;
             this.ops.Clear();
+            this.extend = null;
             if (!rdr.TryReadUInt16(out ushort wInstr))
                 return null;
             var instr = rootDecoder.Decode(wInstr, this);
@@ -96,9 +99,15 @@ namespace Reko.Arch.Mips
         #region Bitfields
 
         private static readonly Bitfield bf0_8 = new Bitfield(0, 8);
+        private static readonly Bitfield bf0_4 = new Bitfield(0, 4);
+        private static readonly Bitfield bf0_5 = new Bitfield(0, 5);
         private static readonly Bitfield bf2_3 = new Bitfield(2, 3);
+        private static readonly Bitfield bf4_4 = new Bitfield(4, 4);
+        private static readonly Bitfield bf6_5 = new Bitfield(6, 5);
+        private static readonly Bitfield bf8_3 = new Bitfield(8, 3);
         private static readonly Bitfield[] bf_jal = Bf((16, 5), (20, 5), (0, 16));
-
+        private static readonly Bitfield[] bf_extend4 = Bf((0, 4), (4, 7));
+        private static readonly Bitfield[] bf_extend5 = Bf((0, 5), (5, 6));
         #endregion
 
         private static readonly RegisterOperand[] registerEncoding = new uint[8] { 16, 17, 2, 3, 4, 5, 6, 7 }
@@ -165,9 +174,64 @@ namespace Reko.Arch.Mips
         /// <summary>
         /// Decode a single bit corresponding to a register.
         /// </summary>
-        public static bool MultiRegs(uint uInstr, Mips16eDisassembler dasm)
+        private static bool MultiRegs(uint uInstr, Mips16eDisassembler dasm)
         {
             uint regMask = 0;
+            if (Bits.IsBitSet(uInstr, 6))
+                regMask |= (1u << 31); // ra
+            if (Bits.IsBitSet(uInstr, 4))
+                regMask |= (1u << 17);
+            if (Bits.IsBitSet(uInstr, 5))
+                regMask |= (1u << 16);
+            var mop = new MultiRegisterOperand(dasm.arch.GeneralRegs, dasm.arch.WordWidth, regMask);
+            dasm.ops.Add(mop);
+            return true;
+        }
+
+        private static readonly uint[] aregsEncoding = new uint[16]
+        {
+            0,
+            0b1000_0000,
+            0b1100_0000,
+            0b1110_0000,
+
+            0,
+            0b1000_0000,
+            0b1100_0000,
+            0b1110_0000,
+
+            0,
+            0b1000_0000,
+            0b1100_0000,
+            0b1111_0000,
+
+            0,
+            0b1000_0000,
+            0,
+            ~0u,        // Invalid
+        };
+
+        private static readonly uint[] xregsEncoding = new uint[8]
+        {
+            0,
+            0x0004_0000,
+            0x000C_0000,
+            0x001C_0000,
+
+            0x003C_0000,
+            0x007C_0000,
+            0x00FC_0000,
+            0x40FC_0000,
+        };
+
+        private static bool MultiRegsEx(uint uInstr, Mips16eDisassembler dasm)
+        {
+            Debug.Assert(dasm.extend.HasValue);
+            uint uExtend = dasm.extend.Value;
+            uint aregs = aregsEncoding[bf0_4.Read(uExtend)];
+            if (aregs == ~0u)
+                return false;
+            uint regMask = aregs | xregsEncoding[bf8_3.Read(uExtend)];
             if (Bits.IsBitSet(uInstr, 6))
                 regMask |= (1u << 31); // ra
             if (Bits.IsBitSet(uInstr, 4))
@@ -196,6 +260,26 @@ namespace Reko.Arch.Mips
         public static readonly Mutator<Mips16eDisassembler> UImm8 = UImmSh(0, 8, 0);
         public static readonly Mutator<Mips16eDisassembler> UImm8s2 = UImmSh(0, 8, 2);
 
+
+        /// <summary>
+        /// A unsigned immediate involving the extended bits and the 5 least significant bits.
+        /// </summary>
+        public static Mutator<Mips16eDisassembler> UImmEx(Bitfield[] extFields, int bitfieldLsb, int significantDigits)
+        {
+            var fieldLsb = new Bitfield(0, bitfieldLsb);
+            return (u, d) =>
+            {
+                Debug.Assert(d.extend.HasValue);
+                var uImm =
+                    (Bitfield.ReadFields(extFields, d.extend.Value) << fieldLsb.Length) |
+                    fieldLsb.Read(u);
+                d.ops.Add(ImmediateOperand.Word32(uImm));
+                return true;
+            };
+        }
+        private static readonly Mutator<Mips16eDisassembler> UImmEx5 = UImmEx(bf_extend5, 5, 16);
+
+
         /// <summary>
         /// A shifted signed immediate.
         /// </summary>
@@ -211,6 +295,46 @@ namespace Reko.Arch.Mips
         }
         public static readonly Mutator<Mips16eDisassembler> SImm8s3 = SImmSh(0, 8, 3);
 
+
+        /// <summary>
+        /// A sign-extended immediate involving the extended bits and the 5 least significant bits.
+        /// </summary>
+        public static Mutator<Mips16eDisassembler> SImmEx(Bitfield[] extFields, int bitfieldLsb, int significantDigits)
+        {
+            var fieldLsb = new Bitfield(0, bitfieldLsb);
+            return (u, d) =>
+            {
+                Debug.Assert(d.extend.HasValue);
+                var uImm =
+                    (Bitfield.ReadFields(extFields, d.extend.Value) << fieldLsb.Length) |
+                    fieldLsb.Read(u);
+                var sImm = Bits.SignExtend(uImm, significantDigits);
+                d.ops.Add(ImmediateOperand.Word32(sImm));
+                return true;
+            };
+        }
+        private static readonly Mutator<Mips16eDisassembler> SImmEx4 = SImmEx(bf_extend4, 4, 15);
+        private static readonly Mutator<Mips16eDisassembler> SImmEx5 = SImmEx(bf_extend5, 5, 16);
+
+        /// <summary>
+        /// PC-Relative address from the 8 lsb
+        /// </summary>
+        public static bool AImm8(uint uInstr, Mips16eDisassembler dasm)
+        {
+            var addr = dasm.addr.Align(4) + (bf0_8.Read(uInstr) << 2);
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
+        }
+
+        private static bool AImmEx5(uint uInstr, Mips16eDisassembler dasm)
+        {
+            Debug.Assert(dasm.extend.HasValue);
+            var uExt = ((Bitfield.ReadFields(bf_extend5, dasm.extend.Value) << bf0_5.Length | bf0_5.Read(uInstr)));
+            var addr = dasm.addr.Align(4) + Bits.SignExtend(uExt, 16);
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
+        }
+
         /// <summary>
         /// Shift amount
         /// </summary>
@@ -225,6 +349,14 @@ namespace Reko.Arch.Mips
             .Select(n => ImmediateOperand.Int32(n))
             .ToArray();
         
+        private static bool ShAmtEx(uint uInstr, Mips16eDisassembler dasm)
+        {
+            Debug.Assert(dasm.extend.HasValue);
+            var shAmt = (int) bf6_5.Read(dasm.extend.Value);
+            dasm.ops.Add(ImmediateOperand.Int32(shAmt));
+            return true;
+        }
+
         /// <summary>
         /// Decode the frame size used in SAVE and RESTORE instructions.
         /// </summary>
@@ -247,6 +379,16 @@ namespace Reko.Arch.Mips
             .Select(n => ImmediateOperand.Int32(n * 8))
             .ToArray();
 
+        private static bool SaveFramesizeEx(uint uInstr, Mips16eDisassembler dasm)
+        {
+            Debug.Assert(dasm.extend.HasValue);
+            var hi = (int) bf4_4.Read(dasm.extend.Value);
+            var lo = (int) bf0_4.Read(uInstr);
+            var imm = ImmediateOperand.Int32(((hi << 4) | lo) << 3);
+            dasm.ops.Add(imm);
+            return true;
+        }
+
         /// <summary>
         /// PC-relative address.
         /// </summary>
@@ -261,8 +403,19 @@ namespace Reko.Arch.Mips
                 return true;
             };
         }
-        public static readonly Mutator<Mips16eDisassembler> ARel8 = ARel(0, 8);
-        public static readonly Mutator<Mips16eDisassembler> ARel11 = ARel(0, 11);
+        private static readonly Mutator<Mips16eDisassembler> ARel8 = ARel(0, 8);
+        private static readonly Mutator<Mips16eDisassembler> ARel11 = ARel(0, 11);
+
+        private static bool ARelEx(uint uInstr, Mips16eDisassembler dasm)
+        {
+            Debug.Assert(dasm.extend.HasValue);
+            var uOffset =
+                (Bitfield.ReadFields(bf_extend5, dasm.extend.Value) << bf0_5.Length) |
+                bf0_5.Read(uInstr);
+            var offset = Bits.SignExtend(uOffset, 16) << 1;
+            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            return true;
+        }
 
         /// <summary>
         /// Region-relative address.
@@ -289,6 +442,15 @@ namespace Reko.Arch.Mips
         }
         private static readonly Mutator<Mips16eDisassembler> MspW8 = Msp(PrimitiveType.Word32, bf0_8);
 
+        private static bool MspEx(uint uInstr, Mips16eDisassembler dasm)
+        {
+            Debug.Assert(dasm.extend.HasValue);
+            var uExt = ((Bitfield.ReadFields(bf_extend5, dasm.extend.Value) << bf0_5.Length | bf0_5.Read(uInstr)));
+            var addr = dasm.addr.Align(4) + Bits.SignExtend(uExt, 16);
+            var mem = AddressOperand.Create(addr);
+            dasm.ops.Add(mem);
+            return true;
+        }
 
         private static Mutator<Mips16eDisassembler> Mpc(PrimitiveType dt, Bitfield fieldOffset)
         {
@@ -302,22 +464,56 @@ namespace Reko.Arch.Mips
         }
         private static readonly Mutator<Mips16eDisassembler> MpcW8 = Mpc(PrimitiveType.Word32, bf0_8);
 
+        private static Mutator<Mips16eDisassembler> MpcEx(PrimitiveType dt, Bitfield fieldOffset)
+        {
+            return (u, d) =>
+            {
+                Debug.Assert(d.extend.HasValue);
+                var uExt = ((Bitfield.ReadFields(bf_extend5, d.extend.Value) << bf0_5.Length | bf0_5.Read(u)));
+                var addr = d.addr.Align(4) + Bits.SignExtend(uExt, 16);
+                var mem = AddressOperand.Create(addr);
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+
         /// <summary>
         /// Stack-based memory access of a pointer.
         /// </summary>
         private static bool MptrSp8(uint uInstr, Mips16eDisassembler dasm)
         {
-            var offset = bf0_8.Read(uInstr) << 2;
-            var mem = new IndirectOperand(dasm.arch.PointerType, (int) offset, dasm.arch.StackRegister);
+            //    var uExtend = Bitfield.ReadFields(bf_extend, dasm.extend.Value) << bf0_5.Length;
+            //    offset = (int) Bits.SignExtend(uExtend | bf0_5.Read(uInstr), bf0_5.Length + 11);
+            int offset = (int) bf0_8.Read(uInstr) << 2;
+            var mem = new IndirectOperand(dasm.arch.PointerType, offset, dasm.arch.StackRegister);
             dasm.ops.Add(mem);
             return true;
         }
+
+        private static bool MptrSp8Ex(uint uInstr, Mips16eDisassembler dasm)
+        {
+            var uExtend = Bitfield.ReadFields(bf_extend5, dasm.extend.Value) << bf0_5.Length;
+            var offset = (int) Bits.SignExtend(uExtend | bf0_5.Read(uInstr), bf0_5.Length + 11);
+            var mem = new IndirectOperand(dasm.arch.PointerType, offset, dasm.arch.StackRegister);
+            dasm.ops.Add(mem);
+            return true;
+        }
+
 
         private static Mutator<Mips16eDisassembler> M(PrimitiveType dt, Bitfield fieldreg, Bitfield fieldOffset)
         {
             return (u, d) =>
             {
-                var offset = (int) (fieldOffset.Read(u) * dt.Size);
+                int offset;
+                if (d.extend.HasValue)
+                {
+                    var uExtend = Bitfield.ReadFields(bf_extend5, d.extend.Value) << fieldOffset.Length;
+                    offset = (int) Bits.SignExtend(uExtend | fieldOffset.Read(u), fieldOffset.Length + 11);
+                }
+                else
+                {
+                    offset = (int) (fieldOffset.Read(u) * dt.Size);
+                }
                 var encReg = fieldreg.Read(u);
                 var reg = registerEncoding[encReg].Register;
                 var mem = new IndirectOperand(dt, offset, reg);
@@ -330,6 +526,9 @@ namespace Reko.Arch.Mips
         private static readonly Mutator<Mips16eDisassembler> Mbu5 = M(PrimitiveType.Byte, new Bitfield(5, 3), new Bitfield(0, 5));
         private static readonly Mutator<Mips16eDisassembler> Mhu5 = M(PrimitiveType.Word16, new Bitfield(5, 3), new Bitfield(0, 5));
         private static readonly Mutator<Mips16eDisassembler> Mw5 = M(PrimitiveType.Word32, new Bitfield(5, 3), new Bitfield(0, 5));
+
+
+
 
         #region  Decoders
 
@@ -356,6 +555,41 @@ namespace Reko.Arch.Mips
             }
         }
 
+        /// <summary>
+        /// This decoder remembers the extension word in the <see cref="Mips16eDisassembler.extend"/>
+        /// member variable.
+        /// </summary>
+        private class ExtendDecoder : Decoder
+        {
+            public override MipsInstruction Decode(uint wInstr, Mips16eDisassembler dasm)
+            {
+                if (!dasm.rdr.TryReadUInt16(out ushort uLow16bits))
+                    return dasm.CreateInvalidInstruction();
+                dasm.extend = wInstr;
+                return rootDecoder.Decode(uLow16bits, dasm);
+            }
+        }
+
+        private class SelectExtendDecoder : Decoder
+        {
+            private readonly Decoder nonExtended;
+            private readonly Decoder extended;
+
+            public SelectExtendDecoder(Decoder nonExtended, Decoder extended)
+            {
+                this.nonExtended = nonExtended;
+                this.extended = extended;
+            }
+
+            public override MipsInstruction Decode(uint wInstr, Mips16eDisassembler dasm)
+            {
+                if (dasm.extend.HasValue)
+                    return extended.Decode(wInstr, dasm);
+                else 
+                    return nonExtended.Decode(wInstr, dasm);
+            }
+        }
+
 
         public static Decoder Instr(Mnemonic mnemonic, params Mutator<Mips16eDisassembler> [] mutators)
         {
@@ -372,6 +606,15 @@ namespace Reko.Arch.Mips
             return new NyiDecoder<Mips16eDisassembler, Mnemonic, MipsInstruction>(message);
         }
 
+        /// <summary>
+        /// Selects one of two instruction formats depending on whether the EXTEND 
+        /// instruction has been seen or not.
+        /// </summary>
+        private static Decoder Ex(Decoder nonExtended, Decoder extended)
+        {
+            return new SelectExtendDecoder(nonExtended, extended);
+        }
+
         #endregion
 
         static Mips16eDisassembler()
@@ -379,14 +622,26 @@ namespace Reko.Arch.Mips
             var invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
 
             var svrsDecoders = Mask(7, 1,
-                Instr(Mnemonic.restore),
-                Instr(Mnemonic.save, MultiRegs, SaveFramesize));
+                Ex(
+                    Instr(Mnemonic.restore, MultiRegs, SaveFramesize),
+                    Instr(Mnemonic.restore, MultiRegsEx, SaveFramesizeEx)),
+                Ex(
+                    Instr(Mnemonic.save, MultiRegs, SaveFramesize),
+                    Instr(Mnemonic.save, MultiRegsEx, SaveFramesizeEx)));
 
             var i8decoders = Mask(8, 3, "  I8",
-                Instr(Mnemonic.bteqz, ARel8),
-                Instr(Mnemonic.btnez, ARel8),
-                Instr(Mnemonic.sw, ra,MptrSp8),
-                Instr(Mnemonic.addi,sp,SImm8s3),
+                Ex(
+                    Instr(Mnemonic.bteqz, ARel8),
+                    Instr(Mnemonic.bteqz, ARelEx)),
+                Ex(
+                    Instr(Mnemonic.btnez, ARel8),
+                    Instr(Mnemonic.btnez, ARelEx)),
+                Ex(
+                    Instr(Mnemonic.sw, ra,MptrSp8),
+                    Instr(Mnemonic.sw, ra,MptrSp8Ex)),
+                Ex(
+                    Instr(Mnemonic.addi,sp,SImm8s3),
+                    Instr(Mnemonic.addi,sp,SImmEx5)),
 
                 svrsDecoders,
                 Instr(Mnemonic.move,Reg((3,2),(5,3)),R0),
@@ -413,6 +668,7 @@ namespace Reko.Arch.Mips
                 Instr(Mnemonic.jrc, InstrClass.Transfer, ra),
                 Instr(Mnemonic.jalrc, InstrClass.Transfer | InstrClass.Call, R8),
                 invalid);
+
 
             var rrDecoders = Mask(0, 5, "  RR",
                 jrcDecoders,
@@ -456,42 +712,74 @@ namespace Reko.Arch.Mips
                 invalid);  // reserved
 
             rootDecoder = Mask(11, 5, "MIPS16e",
-                Instr(Mnemonic.addiu, R8, sp, UImm8s2),
-                Instr(Mnemonic.addiu, R8, pc, UImm8s2),
-                Instr(Mnemonic.b, InstrClass.Transfer, ARel11),
+                Ex(
+                    Instr(Mnemonic.addiu, R8, sp, UImm8s2),
+                    Instr(Mnemonic.addiu, R8, sp, SImmEx5)),
+                Ex(
+                    Instr(Mnemonic.la, R8, AImm8),
+                    Instr(Mnemonic.la, R8, AImmEx5)),
+                Ex(
+                    Instr(Mnemonic.b, InstrClass.Transfer, ARel11),
+                    Instr(Mnemonic.b, InstrClass.Transfer, ARelEx)),
                 new Read32Decoder(Mask(26, 1, "  JAL(X)",
                     Instr(Mnemonic.jal, InstrClass.Transfer|InstrClass.Call|InstrClass.Delay, ARegRel),
                     Instr(Mnemonic.jalx, InstrClass.Transfer|InstrClass.Call|InstrClass.Delay, ARegRel))),
 
-                Instr(Mnemonic.beqz, InstrClass.ConditionalTransfer, R8, ARel8),
-                Instr(Mnemonic.bnez, InstrClass.ConditionalTransfer, R8, ARel8),
+                Ex(
+                    Instr(Mnemonic.beqz, InstrClass.ConditionalTransfer, R8, ARel8),
+                    Instr(Mnemonic.beqz, InstrClass.ConditionalTransfer, R8, ARelEx)),
+                Ex(
+                    Instr(Mnemonic.bnez, InstrClass.ConditionalTransfer, R8, ARel8),
+                    Instr(Mnemonic.bnez, InstrClass.ConditionalTransfer, R8, ARelEx)),
                 Mask(0, 2, "  SHIFT",
-                    Instr(Mnemonic.sll, R8,R5,ShAmt),
+                    Ex(
+                        Instr(Mnemonic.sll, R8,R5,ShAmt),
+                        Instr(Mnemonic.sll, R8,R5,ShAmtEx)),
                     invalid,    // reserved
-                    Instr(Mnemonic.srl, R8,R5,ShAmt),
-                    Instr(Mnemonic.sra, R8,R5,ShAmt)),
+                    Ex(
+                        Instr(Mnemonic.srl, R8,R5,ShAmt),
+                        Instr(Mnemonic.srl, R8,R5,ShAmtEx)),
+                    Ex(
+                        Instr(Mnemonic.sra, R8,R5,ShAmt),
+                        Instr(Mnemonic.sra, R8,R5,ShAmtEx))),
                 invalid,        // reserved
 
                 Mask(4, 1, "  RRI - A ",
-                    Instr(Mnemonic.addiu, R8, R5, UImm4),
+                    Ex(
+                        Instr(Mnemonic.addiu, R8, R5, UImm4),
+                        Instr(Mnemonic.addiu, R8, R5, SImmEx4)),
                     invalid),  // reserved
-                Instr(Mnemonic.addiu, R8, UImm8),
-                Instr(Mnemonic.slti, R8, UImm8),
-                Instr(Mnemonic.sltiu, R8, UImm8),
+                Ex(
+                    Instr(Mnemonic.addiu, R8, UImm8), 
+                    Instr(Mnemonic.addiu, R8, SImmEx5)),
+                Ex(
+                    Instr(Mnemonic.slti, R8, UImm8),
+                    Instr(Mnemonic.slti, R8, SImmEx5)),
+                Ex(
+                    Instr(Mnemonic.sltiu, R8, UImm8),
+                    Instr(Mnemonic.sltiu, R8, SImmEx5)),
 
                 i8decoders,
-                Instr(Mnemonic.li, R8, UImm8),
-                Instr(Mnemonic.cmpi, R8, UImm8),
+                Ex(
+                    Instr(Mnemonic.li, R8, UImm8),
+                    Instr(Mnemonic.li, R8, UImmEx5)),
+                Ex(
+                    Instr(Mnemonic.cmpi, R8, UImm8),
+                    Instr(Mnemonic.cmpi, R8, UImmEx5)),
                 invalid,      // reserved
 
                 Instr(Mnemonic.lb, R5, Mb5),
                 Instr(Mnemonic.lh, R5, Mh5),
-                Instr(Mnemonic.lw, R8, MspW8),
+                Ex(
+                    Instr(Mnemonic.lw, R8, MspW8),
+                    Instr(Mnemonic.lw, R8, MspEx)),
                 Instr(Mnemonic.lw, R5, Mw5),
 
                 Instr(Mnemonic.lbu, R5, Mbu5),
                 Instr(Mnemonic.lhu, R5, Mhu5),
-                Instr(Mnemonic.lw, R8, MpcW8),
+                Ex(
+                    Instr(Mnemonic.lw, R8, MpcW8),
+                    Instr(Mnemonic.lw, R8, MpcEx(PrimitiveType.Word32, bf0_5))),
                 invalid,      // reserved
 
                 Instr(Mnemonic.sb, R5, Mbu5),
@@ -505,7 +793,7 @@ namespace Reko.Arch.Mips
                     invalid,    // reserved,
                     Instr(Mnemonic.subu, R2,R8,R5)),
                 rrDecoders,
-                Nyi("EXTEND     "),
+                new ExtendDecoder(),
                 invalid);      // reserved
         }
     }

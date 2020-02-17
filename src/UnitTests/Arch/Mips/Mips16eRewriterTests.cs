@@ -160,6 +160,14 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void Mips16eDis_la_ext()
+        {
+            AssertCode("F010 0811",     // la\tr16,000F8011
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r16 = 000F8011");
+        }
+
+        [Test]
         public void Mips16eRw_lb()
         {
             AssertCode("86EE",        // lb\tr7,000E(r7)
