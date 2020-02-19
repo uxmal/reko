@@ -942,75 +942,6 @@ namespace Reko.ImageLoaders.OdbgScript
             StepChecked();
         }
 
-        int GetStringOperatorPos(string ops)
-        {
-            string cache = ops;
-            int b = 0, e = 0, p = 0;
-
-            //hide [pointer operations]
-            while ((p = cache.IndexOf('[', p)) >= 0 && (e = cache.IndexOf(']', p)) >= 0)
-            {
-                cache = cache.Remove(p) + cache.Substring(e - p + 1);
-            }
-            e = p = 0;
-
-            //Search for operator(s) outside "quotes" 
-            while ((b = cache.IndexOf('\"', b)) >= 0)
-            {
-                //Check Before
-                p = cache.IndexOf('+');
-                if (e >= 0 && p < b)
-                {
-                    return p;
-                }
-
-                if ((e = cache.IndexOf('\"', b + 1)) >= 0)
-                {
-                    //Check between
-                    if ((p = cache.IndexOf('+', e + 1)) >= 0 && p < cache.IndexOf('\"', e + 1))
-                    {
-                        return p;
-                    }
-                    b = e;
-                }
-                b++;
-            }
-
-            //Check after
-            return cache.IndexOf('+', e);
-        }
-
-        int GetRulongOperatorPos(string ops)
-        {
-            var operators = "+-*/&|^<>".ToCharArray();
-            int b = 0, e = 0, p;
-
-            //Search for operator(s) outside [pointers]
-            while ((b = ops.IndexOf('[', b)) >= 0)
-            {
-                //Check Before
-                p = ops.IndexOfAny(operators);
-                if (e >= 0 && p < b)
-                {
-                    return p;
-                }
-                e = ops.IndexOf(']', b + 1);
-                if (e >= 0)
-                {
-                    //Check between
-                    if ((p = ops.IndexOfAny(operators, e + 1)) >= 0 && p < ops.IndexOf('[', e + 1))
-                    {
-                        return p;
-                    }
-                    b = e;
-                }
-                b++;
-            }
-
-            // look for operators after
-            return ops.IndexOfAny(operators, e);
-        }
-
         int GetFloatOperatorPos(string ops)
         {
             string operators = "+-*/";
@@ -1044,105 +975,6 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
 #if MIXING_PARSING_AND_EVALUATION
-        bool ParseString(string arg, out string result)
-        {
-            int start = 0, offs;
-            char oper = '+';
-            Var val = Var.Create("");
-            result = "";
-
-            if ((offs = GetStringOperatorPos(arg)) >= 0)
-            {
-                do
-                {
-                    string token = Helper.trim(arg.Substring(start, offs));
-
-                    if (!GetString(token, out string curval))
-                        return false;
-
-                    switch (oper)
-                    {
-                    case '+': val += Var.Create(curval); break;
-                    }
-
-                    if (offs < 0)
-                        break;
-
-                    oper = arg[start + offs];
-
-                    start += offs + 1;
-                    offs = GetRulongOperatorPos(arg.Substring(start));
-                }
-                while (start < arg.Length);
-
-                if (!val.IsBuf)
-                    result = '\"' + val.str + '\"';
-                else
-                    result = val.str;
-                return true;
-            }
-
-            return false;
-        }
-
-        bool ParseRulong(string arg, out string result)
-        {
-            int start = 0, offs;
-            char oper = '+';
-            rulong val = 0, curval;
-
-            result = "";
-            if ((offs = GetRulongOperatorPos(arg)) >= 0)
-            {
-                do
-                {
-                    if (start == 0 && offs == 0) // allow leading +/-
-                    {
-                        curval = 0;
-                    }
-                    else
-                    {
-                        string token = Helper.trim(arg.Substring(start, offs));
-
-                        if (!GetRulong(token, out curval))
-                            return false;
-                    }
-
-                    if (oper == '/' && curval == 0)
-                    {
-                        errorstr = "Division by 0";
-                        return false;
-                    }
-
-                    switch (oper)
-                    {
-                    case '+': val += curval; break;
-                    case '-': val -= curval; break;
-                    case '*': val *= curval; break;
-                    case '/': val /= curval; break;
-                    case '&': val &= curval; break;
-                    case '|': val |= curval; break;
-                    case '^': val ^= curval; break;
-                    case '>': val >>= (int)curval; break;
-                    case '<': val <<= (int)curval; break;
-                    }
-
-                    if (offs < 0)
-                        break;
-
-                    oper = arg[start + offs];
-
-                    start += offs + 1;
-                    offs = GetRulongOperatorPos(arg.Substring(start));
-                }
-                while (start < arg.Length);
-
-                result = Helper.rul2hexstr(val);
-                return true;
-            }
-
-            return false;
-        }
 
         bool ParseFloat(string arg, out string result)
         {
@@ -1293,7 +1125,6 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool GetString(Expression op, int size, out string value)
         {
-            value = "";
             if (op is Identifier id && IsVariable(id.Name))
             {
                 if (variables[id.Name].IsString())
@@ -1465,9 +1296,29 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else if (op is BinaryExpression bin)
             {
-                throw new NotImplementedException("Expressions");
-                //return (ParseRulong(op, out string parsed) &&
-                //        GetRulong(parsed, out value));
+                if (!GetRulong(bin.Left, out value) ||
+                    !GetRulong(bin.Right, out var right))
+                    return false;
+
+                if (bin.Operator is UDivOperator && right == 0)
+                {
+                    errorstr = "Division by 0";
+                    return false;
+                }
+
+                switch (bin.Operator)
+                {
+                case IAddOperator _: value += right; break;
+                case ISubOperator _: value -= right; break;
+                case IMulOperator _: value *= right; break;
+                case UDivOperator _: value /= right; break;
+                case AndOperator _: value &= right; break;
+                case OrOperator _: value |= right; break;
+                case XorOperator _: value ^= right; break;
+                case ShlOperator _: value >>= (int) right; break;
+                case ShrOperator _: value <<= (int) right; break;
+                }
+                return true;
             }
             value = 0;
             return false;
