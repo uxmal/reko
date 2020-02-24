@@ -1,7 +1,7 @@
 const config = {
 	"gatsby": {
 		"pathPrefix": "/",
-		"siteUrl": "https://learn.hasura.io",
+		"siteUrl": "https://uxmal.github.io/reko/",
 		"gaTrackingId": null,
 		"trailingSlash": false
 	},
@@ -34,14 +34,14 @@ const config = {
       		"/codeblock" // add trailing slash if enabled above
     	],
 		"links": [
-			{ "text": "Hasura", "link": "https://hasura.io"},
+			{ "text": "GitHub repository", "link": "https://github.com/uxmal/reko/"},
 		],
 		"frontline": false,
 		"ignoreIndex": true,
 	},
 	"siteMetadata": {
 		"title": "@@@ | Reko Decompiler",
-		"description": "Documentation built with mdx. Powering learn.hasura.io ",
+		"description": "Documentation built with mdx. Powering uxmal.reko.io ",
 		"ogImage": null,
 		"docsLocation": "https://github.com/uxmal/reko/tree/master/content",
 		"favicon": "https://graphql-engine-cdn.hasura.io/img/hasura_icon_black.svg"
