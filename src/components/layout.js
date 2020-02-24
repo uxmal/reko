@@ -1,51 +1,62 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
+import React from "react";
+import styled from "@emotion/styled";
+import { MDXProvider } from "@mdx-js/react";
+import ThemeProvider from "./themeProvider";
+import mdxComponents from "./mdxComponents";
+import Sidebar from "./sidebar";
+import RightSidebar from "./rightSidebar";
 
-import React from "react"
-import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+const Wrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
 
-import Header from "./header"
-import "./layout.css"
+  @media only screen and (max-width: 767px) {
+    display: block;
+  }
+`;
 
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+const Content = styled('main')`
+  display: flex;
+  flex-grow: 1;
+  margin: 0px 88px;
+  margin-top: 3rem;
 
-  return (
-    <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
-    </>
-  )
-}
+  @media only screen and (max-width: 1023px) {
+    padding-left: 0;
+    margin: 0 10px;
+    margin-top: 3rem;
+  }
+`;
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-}
+const MaxWidth = styled('div')`
 
-export default Layout
+  @media only screen and (max-width: 50rem) {
+    width: 100%;
+    position: relative;
+  }
+`;
+const LeftSideBarWidth = styled('div')`
+  width: 298px;
+`;
+const RightSideBarWidth = styled('div')`
+  width: 224px;
+`;
+const Layout = ({ children, location }) => (
+  <ThemeProvider location={location}>
+    <MDXProvider components={mdxComponents}>
+      <Wrapper>
+        <LeftSideBarWidth className={'hiddenMobile'}>
+          <Sidebar location={location} />
+        </LeftSideBarWidth>
+        <Content>
+          <MaxWidth>{children}</MaxWidth>
+        </Content>
+        <RightSideBarWidth className={'hiddenMobile'}>
+          <RightSidebar location={location} />
+        </RightSideBarWidth>
+      </Wrapper>
+    </MDXProvider>
+  </ThemeProvider>
+);
+
+export default Layout;
