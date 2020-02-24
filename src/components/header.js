@@ -58,7 +58,7 @@ const Header = ({location}) => (
         }
         `}
     render={(data) => {
-      const logoImg = require('./images/logo.svg');
+      const logoImg = require('./images/reko.png');
       const twitter = require('./images/twitter.svg');
       const {
         site: {

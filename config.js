@@ -6,7 +6,7 @@ const config = {
 		"trailingSlash": false
 	},
 	"header": {
-		"logo": "https://graphql-engine-cdn.hasura.io/learn-hasura/assets/homepage/favicon.png",
+		"logo": "",
 		"logoLink": "https://learn.hasura.io",
 		"title": "Reko Decompiler",
 		"githubUrl": "https://github.com/uxmal/reko",
