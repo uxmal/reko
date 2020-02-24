@@ -7,7 +7,7 @@ const config = {
 	},
 	"header": {
 		"logo": "",
-		"logoLink": "https://learn.hasura.io",
+		"logoLink": "https://uxmal.github.io/reko/",
 		"title": "Reko Decompiler",
 		"githubUrl": "https://github.com/uxmal/reko",
 		"helpUrl": "",
@@ -44,7 +44,7 @@ const config = {
 		"description": "Documentation built with mdx. Powering uxmal.reko.io ",
 		"ogImage": null,
 		"docsLocation": "https://github.com/uxmal/reko/tree/master/content",
-		"favicon": "https://graphql-engine-cdn.hasura.io/img/hasura_icon_black.svg"
+		"favicon": ""
 	},
 	"pwa": {
 		"enabled": false, // disabling this will also remove the existing service worker.
