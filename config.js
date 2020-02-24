@@ -1,6 +1,6 @@
 const config = {
 	"gatsby": {
-		"pathPrefix": "/",
+		"pathPrefix": "/reko",
 		"siteUrl": "https://uxmal.github.io/reko/",
 		"gaTrackingId": null,
 		"trailingSlash": false
