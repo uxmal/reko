@@ -7,7 +7,7 @@ const config = {
 	},
 	"header": {
 		"logo": "",
-		"logoLink": "https://learn.hasura.io",
+		"logoLink": "https://uxmal.github.io/reko/",
 		"title": "Reko Decompiler",
 		"githubUrl": "https://github.com/uxmal/reko",
 		"helpUrl": "",
