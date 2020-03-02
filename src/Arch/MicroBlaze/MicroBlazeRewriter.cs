@@ -133,10 +133,7 @@ namespace Reko.Arch.MicroBlaze
                 var addr = addrInstr ?? instrCur.Address;
                 var length = (int) (rdr.Address - addr);
                 this.addrInstr = null;
-                yield return new RtlInstructionCluster(addr, length, instrs.ToArray())
-                {
-                    Class = iclass,
-                };
+                yield return m.MakeCluster(addr, length, iclass);
                 this.immHiBits = 0;
                 addrInstr = null;
             }

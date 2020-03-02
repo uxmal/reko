@@ -38,7 +38,7 @@ namespace Reko.Arch.Pdp11
             var dst = RewriteDst(instr.Operands[0], src, fn);
             if (dst == null)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
             }
             else
@@ -193,7 +193,7 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -210,7 +210,7 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -227,7 +227,7 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }

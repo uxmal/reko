@@ -40,7 +40,7 @@ namespace Reko.Arch.Vax
         private readonly ProcessorState state;
         private readonly VaxArchitecture arch;
         private readonly IEnumerator<VaxInstruction> dasm;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private VaxInstruction instr;
         private RtlEmitter m;
         private List<RtlInstruction> rtlInstructions;
@@ -63,7 +63,7 @@ namespace Reko.Arch.Vax
                 var addr = this.instr.Address;
                 var len = this.instr.Length;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = this.instr.InstructionClass;
+                this.iclass = this.instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (this.instr.Mnemonic)
                 {
@@ -78,8 +78,8 @@ namespace Reko.Arch.Vax
                     //    this.instr.Mnemonic);
                     m.Invalid();
                     break;
-                case Mnemonic.Invalid: rtlc = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.Reserved: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.Invalid: iclass = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.Reserved: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.acbb: RewriteAcbi(PrimitiveType.Byte); break;
                 case Mnemonic.acbd: RewriteAcbf(PrimitiveType.Real64); break;
                 case Mnemonic.acbf: RewriteAcbf(PrimitiveType.Real32); break;
@@ -465,13 +465,7 @@ namespace Reko.Arch.Vax
                 case Mnemonic.bugl: goto default;
                 case Mnemonic.bugw: goto default;
                 }
-                yield return new RtlInstructionCluster(
-                    addr,
-                    len, 
-                    rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(addr, len, iclass);
             }
         }
 
@@ -768,7 +762,7 @@ namespace Reko.Arch.Vax
         private void EmitInvalid()
         {
             rtlInstructions.Clear();
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
     }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -99,15 +99,12 @@ namespace Reko.Core.NativeInterface
             if (this.address == null || this.instrLength == 0)
                 throw new InvalidOperationException();
 
-            var rtlc = new RtlInstructionCluster(address, instrLength, m.Instructions.ToArray());
-            rtlc.Class = this.rtlClass;
+            var cluster = m.MakeCluster(address, instrLength, this.rtlClass);
 
             address = null;
             instrLength = 0;
-
-            return rtlc;
+            return cluster;
         }
-
 
         #region Factory methods
 

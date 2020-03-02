@@ -34,8 +34,8 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64BasicReader : IEnumerable<C64BasicInstruction>
     {
-        private MemoryArea image;
-        private ushort lineOffset;
+        private readonly MemoryArea image;
+        private readonly ushort lineOffset;
 
         public C64BasicReader(MemoryArea image, ushort lineOffset)
         {

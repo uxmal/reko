@@ -42,7 +42,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private readonly Tlcs90Architecture arch;
         private readonly IEnumerator<Tlcs90Instruction> dasm;
         private Tlcs90Instruction instr;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public Tlcs90Rewriter(Tlcs90Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -60,7 +60,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                rtlc = instr.InstructionClass;
+                iclass = instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
@@ -130,10 +130,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case Mnemonic.swi: RewriteSwi(); break;
                 case Mnemonic.xor: RewriteBinOp(m.Xor, "**-10*00"); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = rtlc,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -149,7 +146,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                string.Format(
                    "Rewriting of TLCS-90 instruction '{0}' not implemented yet.",
                    instr.Mnemonic));
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
 

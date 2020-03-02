@@ -116,7 +116,7 @@ namespace Reko.Core
         /// <returns></returns>
         string GetPrimitiveTypeName(PrimitiveType t, string language);
 
-        ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host);
+        ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host);
 
         /// <summary>
         /// Given an executable entry point, find the location of the "main" program,
@@ -413,7 +413,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="imageReader"></param>
         /// <returns></returns>
-        public virtual ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
+        public virtual ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             return null;
         }

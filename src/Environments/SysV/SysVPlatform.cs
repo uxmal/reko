@@ -146,16 +146,16 @@ namespace Reko.Environments.SysV
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rw, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
         {
-            var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Length == 0)
+            var instr = rw.FirstOrDefault();
+            if (instr == null)
                 return null;
 
             // Match x86 pattern.
             // jmp [destination]
             Address addrTarget = null;
-            if (rtlc.Instructions[0] is RtlGoto jump)
+            if (instr is RtlGoto jump)
             {
                 if (jump.Target is ProcedureConstant pc)
                     return pc.Procedure;
@@ -174,7 +174,7 @@ namespace Reko.Environments.SysV
             if (addrTarget == null)
                 return null;
             var arch = this.Architecture;
-            ProcedureBase proc = host.GetImportedProcedure(arch, addrTarget, rtlc.Address);
+            ProcedureBase proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
             if (proc != null)
                 return proc;
             return host.GetInterceptedCall(arch, addrTarget);

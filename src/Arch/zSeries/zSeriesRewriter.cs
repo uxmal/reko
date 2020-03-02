@@ -41,7 +41,7 @@ namespace Reko.Arch.zSeries
         private readonly ExpressionValueComparer cmp;
         private zSeriesInstruction instr;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
 
         public zSeriesRewriter(zSeriesArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -59,7 +59,7 @@ namespace Reko.Arch.zSeries
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.rtlc = InstrClass.Linear;
+                this.iclass = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
@@ -68,7 +68,7 @@ namespace Reko.Arch.zSeries
                     EmitUnitTest();
                     goto case Mnemonic.invalid;
                 case Mnemonic.invalid:
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Mnemonic.aghi: RewriteAhi(PrimitiveType.Word64); break;
@@ -115,10 +115,7 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.stmg: RewriteStmg(); break;
                 case Mnemonic.xc: RewriteXc(); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 

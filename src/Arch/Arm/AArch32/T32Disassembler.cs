@@ -68,7 +68,7 @@ namespace Reko.Arch.Arm.AArch32
             this.state = new DasmState();
             var instr = decoders[wInstr >> 13].Decode(wInstr, this);
             instr.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
-            instr.InstructionClass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
+            instr.InstructionClass |= instr.Condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
             if ((itState & 0x1F) == 0x10)
@@ -81,7 +81,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 // We're still under the influence of the IT instruction.
                 var bit = ((itState >> 4) ^ ((int) this.itCondition)) & 1;
-                instr.condition = (ArmCondition) ((int) this.itCondition ^ bit);
+                instr.Condition = (ArmCondition) ((int) this.itCondition ^ bit);
                 itState <<= 1;
             }
             return instr;
@@ -114,7 +114,7 @@ namespace Reko.Arch.Arm.AArch32
                     Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Operands = ops.ToArray(),
-                    condition = cc,
+                    Condition = cc,
                     SetFlags = updateFlags,
                     Wide = wide,
                     Writeback = writeback,

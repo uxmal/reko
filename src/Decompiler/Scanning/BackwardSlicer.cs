@@ -1114,6 +1114,16 @@ namespace Reko.Scanning
             state.iInstr = state.instrs.Length - 1;
             return state;
         }
+
+        public SlicerResult VisitMicroGoto(RtlMicroGoto uGoto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SlicerResult VisitMicroLabel(RtlMicroLabel uLabel)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class SlicerResult

@@ -102,9 +102,9 @@ namespace Reko.UnitTests.Mocks
             return Emit(ret);
         }
 
-        public RtlInstruction SideEffect(Expression exp)
+        public RtlInstruction SideEffect(Expression exp, InstrClass iclass = InstrClass.Linear)
         {
-            var side = new RtlSideEffect(exp);
+            var side = new RtlSideEffect(exp, iclass);
             return Emit(side);
         }
     }

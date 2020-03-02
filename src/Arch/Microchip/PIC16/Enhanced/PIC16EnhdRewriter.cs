@@ -154,21 +154,21 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_BRA()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var target = instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.Operands[0]}");
             m.Goto(target.CodeTarget);
         }
 
         private void Rewrite_BRW()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             Address nextAddr = instrCurr.Address + instrCurr.Length;
             m.Goto(m.IAdd(nextAddr, Wreg));
         }
 
         private void Rewrite_CALLW()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             var pclath = binder.EnsureRegister(PICRegisters.PCLATH);
             var target = m.IAdd(m.Shl(pclath, 8), Wreg);
             Address retaddr = instrCurr.Address + instrCurr.Length;

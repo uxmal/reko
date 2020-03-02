@@ -41,7 +41,7 @@ namespace Reko.Arch.RiscV
         private readonly ProcessorState state;
         private RiscVInstruction instr;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
 
         public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -61,7 +61,7 @@ namespace Reko.Arch.RiscV
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 var rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = this.instr.InstructionClass;
+                this.iclass = this.instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
 
                 switch (instr.Mnemonic)
@@ -72,10 +72,10 @@ namespace Reko.Arch.RiscV
                         "Risc-V instruction '{0}' not supported yet.",
                         instr.Mnemonic);
                     EmitUnitTest();
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.invalid: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.invalid: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.add: RewriteAdd(); break;
                 case Mnemonic.addi: RewriteAdd(); break;
                 case Mnemonic.addiw: RewriteAddw(); break;
@@ -172,13 +172,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.xor: RewriteXor(); break;
                 case Mnemonic.xori: RewriteXor(); break;
                 }
-                yield return new RtlInstructionCluster(
-                    addr,
-                    len,
-                    rtlInstructions.ToArray())
-                {
-                    Class = rtlc,
-                };
+                yield return m.MakeCluster(addr, len, iclass);
             }
         }
 

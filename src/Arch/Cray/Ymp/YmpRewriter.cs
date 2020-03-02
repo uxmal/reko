@@ -75,14 +75,9 @@ namespace Reko.Arch.Cray.Ymp
                 case Mnemonic._mov: RewriteMov(); break;
                 case Mnemonic._fmul: Rewrite3(m.FMul); break;
                 }
-                yield return new RtlInstructionCluster(instrCur.Address, instrCur.Length, instrs.ToArray())
-                {
-                    Class = this.iclass
-                };
+                yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
             }
         }
-
-
 
         IEnumerator IEnumerable.GetEnumerator()
         {

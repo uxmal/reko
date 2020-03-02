@@ -56,7 +56,7 @@ namespace Reko.Arch.PowerPC
             if (addrDst != null && instr.Address.ToLinear() + 4 == addrDst.ToLinear())
             {
                 // PowerPC idiom to get the current instruction pointer in the lr register
-                rtlc = InstrClass.Linear;
+                iclass = InstrClass.Linear;
                 m.Assign(binder.EnsureRegister(arch.lr), addrDst);
             }
             else

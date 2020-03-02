@@ -128,10 +128,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Mnemonic.xor: RewriteBinOp(m.Xor, "**0*00"); break;
                 case Mnemonic.zcf: RewriteZcf(); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = iclass
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 

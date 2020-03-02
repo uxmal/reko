@@ -112,7 +112,7 @@ namespace Reko.Arch.Alpha
             {
                 if (ret.Number == ReturnAddress)
                 {
-                    rtlc = InstrClass.Transfer | InstrClass.Call;
+                    iclass = InstrClass.Transfer | InstrClass.Call;
                     m.Call(dst, 0);
                 }
                 else

@@ -47,7 +47,7 @@ namespace Reko.Arch.X86
 
         public void RewriteClts()
         {
-            rtlc = InstrClass.System;
+            iclass = InstrClass.System;
             var cr0 = binder.EnsureRegister(arch.GetControlRegister(0));
             m.Assign(cr0, host.PseudoProcedure("__clts", cr0.DataType, cr0));
         }
@@ -96,7 +96,7 @@ namespace Reko.Arch.X86
 
         private void RewriteLxdt(string intrinsicName)
         {
-            rtlc = InstrClass.System;
+            iclass = InstrClass.System;
             m.SideEffect(
                 host.PseudoProcedure(
                     intrinsicName,
@@ -106,7 +106,7 @@ namespace Reko.Arch.X86
 
         private void RewriteSxdt(string intrinsicName)
         {
-            rtlc = InstrClass.System;
+            iclass = InstrClass.System;
             m.Assign(
                 SrcOp(instrCur.Operands[0]),
                 host.PseudoProcedure(
@@ -157,7 +157,7 @@ namespace Reko.Arch.X86
 
         private void RewriteWbinvd()
         {
-            rtlc = InstrClass.System;
+            iclass = InstrClass.System;
             m.SideEffect(host.PseudoProcedure("__wbinvd", VoidType.Instance));
         }
 

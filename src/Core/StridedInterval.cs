@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -61,7 +61,7 @@ namespace Reko.Core
         public static StridedInterval Create(int stride, long low, long high)
         {
             if (stride < 0)
-                throw new ArgumentOutOfRangeException("stride", "Negative strides are not allowed.");
+                throw new ArgumentOutOfRangeException(nameof(stride), "Negative strides are not allowed.");
             if (low > high)
                 throw new ArgumentException("Parameter 'low' mustn't be larger than 'high'.");
             return new StridedInterval(stride, low, high);

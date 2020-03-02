@@ -1017,7 +1017,7 @@ namespace Reko.UnitTests.Arch.X86
             });
             AssertCode(
                 "0|H--|10000000(1): 1 instructions",
-                "1|L--|__hlt()");
+                "1|H--|__hlt()");
         }
 
         [Test]

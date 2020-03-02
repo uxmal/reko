@@ -83,14 +83,14 @@ namespace Reko.Arch.RiscV
         {
             var continuation = ((RegisterOperand)instr.Operands[0]).Register;
             var dst = RewriteOp(instr.Operands[1]);
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             if (continuation.Number == 0)
             {
                 m.Goto(dst);
             }
             else
             {
-                rtlc |= InstrClass.Call;
+                iclass |= InstrClass.Call;
                 m.Call(dst, 0);
             }
         }
@@ -101,7 +101,7 @@ namespace Reko.Arch.RiscV
             var rDst = ((RegisterOperand)instr.Operands[1]).Register;
             var dst = RewriteOp(instr.Operands[1]);
             var off = RewriteOp(instr.Operands[2]);
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             if (!off.IsZero)
             {
                 dst = m.IAdd(dst, off);
@@ -119,7 +119,7 @@ namespace Reko.Arch.RiscV
             }
             else if (continuation.Number == 1)     // 'r1'
             {
-                rtlc |= InstrClass.Call;
+                iclass |= InstrClass.Call;
                 m.Call(dst, 0);
             } 
             else 

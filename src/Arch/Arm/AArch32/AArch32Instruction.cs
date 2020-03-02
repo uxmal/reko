@@ -83,11 +83,11 @@ namespace Reko.Arch.Arm.AArch32
 
         public AArch32Instruction()
         {
-            this.condition = ArmCondition.AL;
+            this.Condition = ArmCondition.AL;
         }
 
         public Mnemonic Mnemonic { get; set; }
-        public ArmCondition condition { get; set; }
+        public ArmCondition Condition { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
@@ -105,7 +105,7 @@ namespace Reko.Arch.Arm.AArch32
                 var itMnemonic = RenderIt();
                 writer.WriteMnemonic(itMnemonic);
                 writer.Tab();
-                writer.WriteString(condition.ToString().ToLowerInvariant());
+                writer.WriteString(Condition.ToString().ToLowerInvariant());
                 return;
             }
             var (ops, writeback) = RenderMnemonic(writer);
@@ -190,7 +190,7 @@ namespace Reko.Arch.Arm.AArch32
                 sMnemonic = Mnemonic.ToString();
             }
             var sUpdate = SetFlags ? "s" : "";
-            var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
+            var sCond = Condition == ArmCondition.AL ? "" : Condition.ToString().ToLowerInvariant();
             sb.Append(sMnemonic);
             if (Mnemonic != Mnemonic.Invalid)
             {
@@ -217,9 +217,9 @@ namespace Reko.Arch.Arm.AArch32
         private string RenderIt()
         {
             var sb = new StringBuilder();
-            ;  sb.Append("it");
+            sb.Append("it");
             int mask = this.itmask;
-            var bit = (~(int)this.condition & 1) << 3;
+            var bit = (~(int)this.Condition & 1) << 3;
 
             while ((mask & 0xF) != 8)
             {

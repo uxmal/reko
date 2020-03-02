@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -52,8 +52,7 @@ namespace Reko.Core.Rtl
 
         public bool VisitAssignment(RtlAssignment ass)
         {
-            var assPat = pattern as RtlAssignment;
-            if (assPat == null)
+            if (!(pattern is RtlAssignment assPat))
                 return false;
             matcher.Pattern = assPat.Src;
             if (!matcher.Match(ass.Src))
@@ -64,17 +63,36 @@ namespace Reko.Core.Rtl
 
         public bool VisitGoto(RtlGoto go)
         {
-            var gPat = pattern as RtlGoto;
-            if (gPat == null)
+            if (!(pattern is RtlGoto gPat))
                 return false;
             matcher.Pattern = gPat.Target;
             return matcher.Match(go.Target);
         }
 
+        public bool VisitMicroGoto(RtlMicroGoto mgo)
+        {
+            if (!(pattern is RtlMicroGoto mgPat))
+                return false;
+            if (mgPat.Condition != null)
+            {
+                if (mgo.Condition == null)
+                    return false;
+                matcher.Pattern = mgPat.Condition;
+                if (!matcher.Match(mgo.Condition))
+                    return false;
+            }
+            return mgo.Target == mgPat.Target;
+        }
+
+        public bool VisitMicroLabel(RtlMicroLabel mlabel)
+        {
+            return (pattern is RtlMicroLabel mpattern &&
+                mlabel.Name == mpattern.Name);
+        }
+
         public bool VisitIf(RtlIf rtlIf)
         {
-            var pIf = pattern as RtlIf;
-            if (pIf == null)
+            if (!(pattern is RtlIf pIf))
                 return false;
             var p = pattern;
             pattern = pIf.Instruction;
@@ -85,8 +103,7 @@ namespace Reko.Core.Rtl
 
         public bool VisitInvalid(RtlInvalid invalid)
         {
-            var pInvalid = pattern as RtlInvalid;
-            return pInvalid != null;
+            return pattern is RtlInvalid;
         }
 
         public bool VisitNop(RtlNop nop)
@@ -96,8 +113,7 @@ namespace Reko.Core.Rtl
 
         public bool VisitBranch(RtlBranch branch)
         {
-            var branchPat = pattern as RtlBranch;
-            if (branchPat == null)
+            if (!(pattern is RtlBranch branchPat))
                 return false;
             matcher.Pattern = branchPat.Condition;
             return matcher.Match(branch.Condition);
@@ -105,8 +121,7 @@ namespace Reko.Core.Rtl
 
         public bool VisitCall(RtlCall call)
         {
-            var callPat = pattern as RtlCall;
-            if (callPat == null)
+            if (!(pattern is RtlCall callPat))
                 return false;
             matcher.Pattern = callPat.Target;
             return matcher.Match(call.Target);
@@ -119,8 +134,7 @@ namespace Reko.Core.Rtl
 
         public bool VisitSideEffect(RtlSideEffect side)
         {
-            var sidePat = pattern as RtlSideEffect;
-            if (sidePat == null)
+            if (!(pattern is RtlSideEffect sidePat))
                 return false;
             matcher.Pattern = sidePat.Expression;
             return matcher.Match(side.Expression);

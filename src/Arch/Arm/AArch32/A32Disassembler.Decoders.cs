@@ -103,7 +103,7 @@ namespace Reko.Arch.Arm.AArch32
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 var instr = base.Decode(wInstr, dasm);
-                instr.condition = (ArmCondition)(wInstr >> 28);
+                instr.Condition = (ArmCondition)(wInstr >> 28);
                 return instr;
             }
         }

@@ -28,9 +28,10 @@ namespace Reko.Core.Rtl
 {
     public sealed class RtlSideEffect : RtlInstruction
     {
-        public RtlSideEffect(Expression sideEffect)
+        public RtlSideEffect(Expression sideEffect, InstrClass iclass)
         {
             this.Expression = sideEffect;
+            this.Class = iclass;
         }
 
         public Expression Expression { get; }

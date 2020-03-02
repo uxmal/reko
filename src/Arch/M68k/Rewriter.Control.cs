@@ -101,7 +101,8 @@ namespace Reko.Arch.M68k
                 instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
                 new RtlSideEffect(
-                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
+                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)),
+                    InstrClass.Linear);
         }
 
         private void RewriteJmp()
@@ -204,7 +205,7 @@ namespace Reko.Arch.M68k
             if (cc != ConditionCode.ALWAYS)
             {
                 iclass |= InstrClass.Conditional;
-                m.BranchInMiddleOfInstruction(
+                m.Branch(
                     m.Test(cc, orw.FlagGroup(flags)).Invert(),
                     instr.Address + instr.Length,
                     InstrClass.ConditionalTransfer);

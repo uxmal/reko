@@ -455,7 +455,8 @@ namespace Reko.UnitTests.Analysis
                          StackDelta = 4,
                      }));
             platformMock.Setup(p => p.GetTrampolineDestination(
-                It.IsNotNull<IEnumerable<RtlInstructionCluster>>(),
+                It.IsNotNull<Address>(),
+                It.IsNotNull<IEnumerable<RtlInstruction>>(),
                 It.IsNotNull<IRewriterHost>()))
                 .Returns((ProcedureBase)null);
 

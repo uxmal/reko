@@ -213,13 +213,13 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     Mnemonic = Mnemonic.it,
                     InstructionClass = InstrClass.Linear,
-                    condition = (ArmCondition)SBitfield(wInstr, 4, 4),
+                    Condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte)SBitfield(wInstr, 0, 4),
                     Operands = MachineInstruction.NoOperands
                 };
                 // Add an extra bit for the 't' in 'it'.
                 dasm.itState = instr.itmask | (SBitfield(wInstr, 4, 1) << 4);
-                dasm.itCondition = instr.condition;
+                dasm.itCondition = instr.Condition;
                 return instr;
             }
         }

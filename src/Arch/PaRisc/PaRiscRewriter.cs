@@ -125,10 +125,7 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.subi: RewriteSubi(); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = iclass,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 

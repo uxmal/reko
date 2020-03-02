@@ -111,7 +111,7 @@ namespace Reko.Scanning
                     yield return new RtlCall(call.Callee, (byte)call.CallSite.SizeOfReturnAddressOnStack, InstrClass.Call);
                     break;
                 case SideEffect side:
-                    yield return new RtlSideEffect(side.Expression);
+                    yield return new RtlSideEffect(side.Expression, InstrClass.Linear);
                     break;
                 case GotoInstruction go:
                     yield return new RtlGoto(go.Target, InstrClass.Transfer);

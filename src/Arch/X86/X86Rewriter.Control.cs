@@ -114,7 +114,7 @@ namespace Reko.Arch.X86
                             m.Assign(r, addr);
                         }
                         this.len += 1;
-                        rtlc = InstrClass.Linear;
+                        iclass = InstrClass.Linear;
                         return;
                     }
                 }
@@ -128,7 +128,7 @@ namespace Reko.Arch.X86
                     if (arch.WordWidth.Size > 2)
                     {
                         // call bx doesn't work on 32- or 64-bit architectures.
-                        rtlc = InstrClass.Invalid;
+                        iclass = InstrClass.Invalid;
                         m.Invalid();
                         return;
                     }
@@ -137,19 +137,19 @@ namespace Reko.Arch.X86
                 }
                 m.Call(target, (byte) opsize.Size);
             }
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
         }
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1), InstrClass.ConditionalTransfer);
         }
 
         private void RewriteInt()
         {
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.Operands[0])));
-            rtlc |= InstrClass.Call | InstrClass.Transfer;
+            iclass |= InstrClass.Call | InstrClass.Transfer;
         }
 
         private void RewriteInto()
@@ -189,7 +189,7 @@ namespace Reko.Arch.X86
 				return;
 			}
 
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
 			if (instrCur.Operands[0] is ImmediateOperand)
 			{
 				Address addr = OperandAsCodeAddress(instrCur.Operands[0]);
@@ -199,7 +199,7 @@ namespace Reko.Arch.X86
             var target = SrcOp(instrCur.Operands[0]);
             if (target.DataType.Size == 2 && arch.WordWidth.Size > 2)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -233,7 +233,7 @@ namespace Reko.Arch.X86
             if ((extraBytesPopped & 1) == 1)
             {
                 // Unlikely that an odd number of bytes are pushed on the stack.
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }

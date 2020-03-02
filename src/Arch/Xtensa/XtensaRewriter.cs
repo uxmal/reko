@@ -38,7 +38,7 @@ namespace Reko.Arch.Xtensa
         private readonly XtensaArchitecture arch;
         private readonly IEnumerator<XtensaInstruction> dasm;
         private XtensaInstruction instr;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -58,7 +58,7 @@ namespace Reko.Arch.Xtensa
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 var rtlInstructions = new List<RtlInstruction>();
-                rtlc = InstrClass.Linear;
+                iclass = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 this.instr = dasm.Current;
                 switch (instr.Mnemonic)
@@ -182,10 +182,7 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.xor: RewriteBinOp(m.Xor); break;
 
                 }
-                yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
-                {
-                    Class = rtlc,
-                };
+                yield return m.MakeCluster(addr, len, iclass);
             }
         }
 

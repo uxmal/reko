@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,6 +32,8 @@ namespace Reko.Core.Rtl
         T VisitGoto(RtlGoto go);
         T VisitIf(RtlIf rtlIf);
         T VisitInvalid(RtlInvalid invalid);
+        T VisitMicroGoto(RtlMicroGoto uGoto);
+        T VisitMicroLabel(RtlMicroLabel uLabel);
         T VisitNop(RtlNop rtlNop);
         T VisitReturn(RtlReturn ret);
         T VisitSideEffect(RtlSideEffect side);

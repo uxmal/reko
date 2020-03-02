@@ -32,7 +32,7 @@ namespace Reko.Arch.Arm.AArch64
             if (instr.Operands[0] is ConditionOperand cop)
             {
                 var cc = cop.Condition;
-                m.Branch(TestCond(cc), ((AddressOperand) instr.Operands[1]).Address, rtlc);
+                m.Branch(TestCond(cc), ((AddressOperand) instr.Operands[1]).Address, iclass);
             }
             else
             {
@@ -58,7 +58,7 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteCb(Func<Expression, Expression> fn)
         {
             var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
-            m.Branch(fn(reg), ((AddressOperand)instr.Operands[1]).Address, rtlc);
+            m.Branch(fn(reg), ((AddressOperand)instr.Operands[1]).Address, iclass);
         }
 
         private void RewriteRet()

@@ -43,7 +43,7 @@ namespace Reko.Arch.SuperH
         private readonly IEnumerator<SuperHInstruction> dasm;
         private SuperHInstruction instr;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
 
         public SuperHRewriter(SuperHArchitecture arch, EndianImageReader rdr, SuperHState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -60,7 +60,7 @@ namespace Reko.Arch.SuperH
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.rtlc = InstrClass.Linear;
+                this.iclass = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
@@ -172,11 +172,7 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.xor: RewriteBinOp(m.Xor, n => (byte)n); break;
                 case Mnemonic.xtrct: RewriteXtrct(); break;
                 }
-                var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = this.rtlc,
-                };
-                yield return rtlc;
+                yield return m.MakeCluster(instr.Address, instr.Length, this.iclass);
             }
         }
 
@@ -187,7 +183,7 @@ namespace Reko.Arch.SuperH
 
         private void Invalid()
         {
-            this.rtlc = InstrClass.Invalid;
+            this.iclass = InstrClass.Invalid;
             m.Invalid();
         }
 
@@ -402,19 +398,19 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBranch(bool takenOnTset, bool delaySlot)
         {
-            this.rtlc = delaySlot
+            this.iclass = delaySlot
                 ? InstrClass.ConditionalTransfer | InstrClass.Delay
                 : InstrClass.ConditionalTransfer;
             Expression cond = binder.EnsureFlagGroup(Registers.T);
             var addr = ((AddressOperand)instr.Operands[0]).Address;
             if (!takenOnTset)
                 cond = m.Not(cond);
-            m.Branch(cond, addr, this.rtlc);
+            m.Branch(cond, addr, this.iclass);
         }
 
         private void RewriteBraf()
         {
-            this.rtlc = InstrClass.Delay | InstrClass.Transfer;
+            this.iclass = InstrClass.Delay | InstrClass.Transfer;
             var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
             m.GotoD(m.IAdd(instr.Address + 4, reg));
         }
@@ -426,14 +422,14 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBsr()
         {
-            this.rtlc = InstrClass.Transfer | InstrClass.Call | InstrClass.Delay;
+            this.iclass = InstrClass.Transfer | InstrClass.Call | InstrClass.Delay;
             var dst = SrcOp(instr.Operands[0], null);
             m.CallD(dst, 0);
         }
 
         private void RewriteBsrf()
         {
-            this.rtlc = InstrClass.Transfer | InstrClass.Delay;
+            this.iclass = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.Operands[0], null);
             var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
             m.CallD(m.IAdd(instr.Address + 4, src), 0);
@@ -441,7 +437,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteGoto()
         {
-            this.rtlc = InstrClass.Transfer | InstrClass.Delay;
+            this.iclass = InstrClass.Transfer | InstrClass.Delay;
             var addr = ((AddressOperand)instr.Operands[0]).Address;
             m.GotoD(addr);
         }
@@ -457,7 +453,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteClr(RegisterStorage reg)
         {
-            rtlc = InstrClass.Linear;
+            iclass = InstrClass.Linear;
             var dst = binder.EnsureRegister(reg);
             var z = Constant.Zero(dst.DataType);
             m.Assign(dst, z);
@@ -551,14 +547,14 @@ namespace Reko.Arch.SuperH
 
         private void RewriteJmp()
         {
-            this.rtlc = InstrClass.Transfer | InstrClass.Delay;
+            this.iclass = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.Operands[0]);
             m.GotoD(((MemoryAccess)src).EffectiveAddress);
         }
 
         private void RewriteJsr()
         {
-            this.rtlc = InstrClass.Transfer | InstrClass.Delay;
+            this.iclass = InstrClass.Transfer | InstrClass.Delay;
             var dst = SrcOp(instr.Operands[0], null);
             m.CallD(dst, 0);
         }
@@ -629,7 +625,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteRts()
         {
-            this.rtlc = InstrClass.Transfer | InstrClass.Delay;
+            this.iclass = InstrClass.Transfer | InstrClass.Delay;
             m.Return(0, 0);
         }
 
