@@ -38,14 +38,14 @@ namespace Reko.Arch.Mips
     /// </summary>
     public partial class MipsRewriter : IEnumerable<RtlInstructionCluster>
     {
-        protected readonly EndianImageReader rdr;
-        protected readonly IEnumerator<MipsInstruction> dasm;
-        protected readonly IStorageBinder binder;
-        protected readonly MipsProcessorArchitecture arch;
-        protected readonly IRewriterHost host;
-        protected readonly ExpressionValueComparer cmp;
-        protected RtlEmitter m;
-        protected InstrClass iclass;
+        private readonly EndianImageReader rdr;
+        private readonly IEnumerator<MipsInstruction> dasm;
+        private readonly IStorageBinder binder;
+        private readonly MipsProcessorArchitecture arch;
+        private readonly IRewriterHost host;
+        private readonly ExpressionValueComparer cmp;
+        private RtlEmitter m;
+        private InstrClass iclass;
 
         public MipsRewriter(MipsProcessorArchitecture arch, EndianImageReader rdr, IEnumerable<MipsInstruction> instrs, IStorageBinder binder, IRewriterHost host)
         {
@@ -319,13 +319,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.swxs: RewriteSwxs(instr); break;
                 case Mnemonic.ualwm: RewriteLwm(instr); break;
                 }
-                yield return new RtlInstructionCluster(
-                    instr.Address,
-                    instr.Length,
-                    rtlInstructions.ToArray())
-                {
-                    Class = iclass
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 

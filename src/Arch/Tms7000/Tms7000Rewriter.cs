@@ -40,7 +40,7 @@ namespace Reko.Arch.Tms7000
         private readonly IStorageBinder binder;
         private readonly IEnumerator<Tms7000Instruction> dasm;
         private Tms7000Instruction instr;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public Tms7000Rewriter(Tms7000Architecture arch, EndianImageReader rdr, Tms7000State state, IStorageBinder binder, IRewriterHost host)
@@ -57,14 +57,14 @@ namespace Reko.Arch.Tms7000
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.rtlc = InstrClass.Linear;
+                this.iclass = InstrClass.Linear;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
                 switch (instr.Mnemonic)
                 {
                 default:
                     host.Error(instr.Address, "Rewriting TMS7000 instruction '{0}' is not supported yet.", instr);
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     break;
                 case Mnemonic.adc: RewriteAdcSbb(m.IAdd); break;
                 case Mnemonic.add: RewriteArithmetic(m.IAdd); break;
@@ -146,10 +146,7 @@ namespace Reko.Arch.Tms7000
                 case Mnemonic.xor: RewriteLogical(m.Xor); break;
                 case Mnemonic.xorp: RewriteLogical(m.Xor); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
-                {
-                    Class = rtlc,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -240,7 +237,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteBtj(Func<Expression, Expression> fn)
         {
-            this.rtlc = InstrClass.ConditionalTransfer;
+            this.iclass = InstrClass.ConditionalTransfer;
             var opLeft = Operand(instr.Operands[1]);
             var opRight = Operand(instr.Operands[0]);
             NZ0(m.And(opLeft, fn(opRight)));
@@ -253,7 +250,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteBr()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var dst = Operand(instr.Operands[0]);
             var ea = ((MemoryAccess)dst).EffectiveAddress;
             m.Goto(ea);
@@ -261,7 +258,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteCall()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             var dst = Operand(instr.Operands[0]);
             var ea = ((MemoryAccess)dst).EffectiveAddress;
             m.Call(ea, 2);
@@ -329,10 +326,10 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteDjnz()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var reg = Operand(instr.Operands[0]);
             m.Assign(reg, m.ISub(reg, 1));
-            m.Branch(m.Ne0(reg), ((AddressOperand)instr.Operands[1]).Address, rtlc);
+            m.Branch(m.Ne0(reg), ((AddressOperand)instr.Operands[1]).Address, iclass);
         }
 
         private void RewriteIdle()
@@ -349,15 +346,15 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteJcc(ConditionCode cc, FlagM grf)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var dst = ((AddressOperand)instr.Operands[0]).Address;
             var flags = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)grf));
-            m.Branch(m.Test(cc, flags), dst, rtlc);
+            m.Branch(m.Test(cc, flags), dst, iclass);
         }
 
         private void RewriteJmp()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Goto(Operand(instr.Operands[0]));
         }
 
@@ -436,13 +433,13 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteReti()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(2, 1);
         }
 
         private void RewriteRets()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(2, 0);
         }
 

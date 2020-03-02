@@ -26,6 +26,13 @@ namespace Reko.Core
 {
     public static class BytePattern
     {
+        /// <summary>
+        /// Generate an array of bytes from a string of hexadecimal digits.
+        /// </summary>
+        /// <param name="sBytes">String containing hexadecimal digits. Non-hexadecimal characters 
+        /// are ignored.</param>
+        /// <returns>A <see cref="List{byte}"/>.
+        /// </returns>
         public static List<byte> FromHexBytes(string sBytes)
         {
             int shift = 4;

@@ -28,6 +28,11 @@ namespace Reko.Core.Rtl
 {
     public sealed class RtlNop : RtlInstruction
     {
+        public RtlNop(InstrClass iclass = 0)
+        {
+            base.Class = InstrClass.Padding | InstrClass.Linear | iclass;
+        }
+
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitNop(this);

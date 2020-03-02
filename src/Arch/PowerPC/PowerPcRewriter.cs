@@ -42,7 +42,7 @@ namespace Reko.Arch.PowerPC
         private readonly IEnumerator<PowerPcInstruction> dasm;
         private PowerPcInstruction instr;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private List<RtlInstruction> rtlInstructions;
 
         public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, IStorageBinder binder, IRewriterHost host)
@@ -69,7 +69,7 @@ namespace Reko.Arch.PowerPC
                 this.instr = dasm.Current;
                 var addr = this.instr.Address;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Mnemonic)
                 {
@@ -79,7 +79,7 @@ namespace Reko.Arch.PowerPC
                         string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                     EmitUnitTest();
                     goto case Mnemonic.illegal;
-                case Mnemonic.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.addi: RewriteAddi(); break;
                 case Mnemonic.addc: RewriteAddc(); break;
                 case Mnemonic.addic: RewriteAddic(); break;
@@ -421,10 +421,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.xori: RewriteXor(false); break;
                 case Mnemonic.xoris: RewriteXoris(); break;
                 }
-                yield return new RtlInstructionCluster(addr, 4, this.rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(addr, 4, iclass);
             }
         }
 

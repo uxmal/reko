@@ -138,12 +138,8 @@ namespace Reko.Arch.OpenRISC
                 case Mnemonic.l_sys: RewriteSys(); break;
                 case Mnemonic.l_xor: RewriteBinOp(m.Xor); break;
                 case Mnemonic.l_xori: RewriteBinOpImm(m.Xor); break;
-
                 }
-                yield return new RtlInstructionCluster(instrCur.Address, instrCur.Length, rtls.ToArray())
-                {
-                    Class = this.iclass
-                };
+                yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
             }
         }
 

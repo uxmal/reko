@@ -84,10 +84,7 @@ namespace Reko.Arch.Blackfin
                 case Mnemonic.sub3: RewriteBinop(m.ISub); break;
                 case Mnemonic.xor3: RewriteBinop(m.Xor); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
-                {
-                    Class = iclass
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 

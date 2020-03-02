@@ -27,8 +27,8 @@ namespace Reko.ImageLoaders.MzExe.CodeView
 {
     public class CodeViewTypeLoader
     {
-        private byte[] typeSection;
-        private LeImageReader rdr;
+        private readonly byte[] typeSection;
+        private readonly LeImageReader rdr;
 
         public CodeViewTypeLoader(byte[] typeSection)
         {

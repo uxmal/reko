@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm.AArch32
         private readonly IEnumerator<AArch32Instruction> dasm;
         protected int pcValueOffset;        // The offset to add to the current instruction's address when reading the PC register. 
         protected AArch32Instruction instr;
-        protected InstrClass rtlClass;
+        protected InstrClass iclass;
         protected RtlEmitter m;
 
         public ArmRewriter(Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, new A32Disassembler(arch, rdr).GetEnumerator())
@@ -76,7 +76,7 @@ namespace Reko.Arch.Arm.AArch32
                 this.instr = dasm.Current;
                 var addrInstr = instr.Address;
                 // Most instructions are linear.
-                this.rtlClass = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
                 // Most instructions have a conditional mode of operation.
@@ -531,10 +531,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vsubw: RewriteVectorBinOp("__vsubw_{0}"); break;
                 case Mnemonic.vtst: RewriteVectorBinOp("__vtst_{0}"); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
-                {
-                    Class = rtlClass,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -545,7 +542,7 @@ namespace Reko.Arch.Arm.AArch32
 
         void Invalid()
         {
-            this.rtlClass = InstrClass.Invalid;
+            this.iclass = InstrClass.Invalid;
             m.Invalid();
         }
 
@@ -612,23 +609,23 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (link)
             {
-                rtlClass = InstrClass.Transfer | InstrClass.Call;
-                if (instr.condition == ArmCondition.AL)
+                iclass = InstrClass.Transfer | InstrClass.Call;
+                if (instr.Condition == ArmCondition.AL)
                 {
                     m.Call(dst, 0);
                 }
                 else
                 {
-                    rtlClass = InstrClass.ConditionalTransfer | InstrClass.Call;
+                    iclass = InstrClass.ConditionalTransfer | InstrClass.Call;
                     ConditionalSkip(true);
                     m.Call(dst, 0);
                 }
             }
             else
             {
-                if (instr.condition == ArmCondition.AL)
+                if (instr.Condition == ArmCondition.AL)
                 {
-                    rtlClass = InstrClass.Transfer;
+                    iclass = InstrClass.Transfer;
                     if (Dst() is RegisterOperand rop && rop.Register == Registers.lr)
                     {
                         //$TODO: cheating a little since
@@ -643,10 +640,10 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else
                 {
-                    rtlClass = InstrClass.ConditionalTransfer;
+                    iclass = InstrClass.ConditionalTransfer;
                     if (dstIsAddress)
                     {
-                        m.Branch(TestCond(instr.condition), (Address) dst, rtlClass);
+                        m.Branch(TestCond(instr.Condition), (Address) dst, iclass);
                     }
                     else
                     {
@@ -659,7 +656,7 @@ namespace Reko.Arch.Arm.AArch32
 
         void RewriteCbnz(Func<Expression, Expression> ctor)
         {
-            rtlClass = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var cond = Operand(Dst(), PrimitiveType.Word32, true);
             m.Branch(ctor(Operand(Dst())),
                     ((AddressOperand) Src1()).Address,
@@ -670,7 +667,7 @@ namespace Reko.Arch.Arm.AArch32
         // instruction to skip the remainder of the instruction cluster.
         protected virtual void ConditionalSkip(bool force)
         {
-            var cc = instr.condition;
+            var cc = instr.Condition;
             if (!force)
             {
                 if (cc == ArmCondition.AL)

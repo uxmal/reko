@@ -160,7 +160,7 @@ namespace Reko.Arch.PowerPC
             var rDst = ((RegisterOperand)instr.Operands[0]).Register;
             if ((rDst.Number & 1) == 1)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -435,7 +435,7 @@ namespace Reko.Arch.PowerPC
                 host.Error(
                     instr.Address,
                     string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }

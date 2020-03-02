@@ -87,8 +87,8 @@ namespace Reko.Arch.X86
             {
                 Terminates = true,
             };
-            var ppp = host.PseudoProcedure("__hlt", c, VoidType.Instance);
-            m.SideEffect(ppp);
+            var intrinsic = host.PseudoProcedure("__hlt", c, VoidType.Instance);
+            m.SideEffect(intrinsic, InstrClass.Terminates);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Reko.Arch.X86
 
         private void RewriteRdpmc()
         {
-            rtlc = InstrClass.System;
+            iclass = InstrClass.System;
             Identifier edx_eax = binder.EnsureSequence(
                 PrimitiveType.Word64,
                 Registers.edx,

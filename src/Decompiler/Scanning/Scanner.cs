@@ -642,7 +642,7 @@ namespace Reko.Scanning
                 return null;
             var rdr = Program.CreateImageReader(arch, addr);
             var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), arch.CreateFrame(), this);
-            var target = Program.Platform.GetTrampolineDestination(rw, this);
+            var target = Program.Platform.GetTrampolineDestination(addr, rw.SelectMany(c => c.Instructions), this);
             return target;
         }
 
@@ -1049,7 +1049,7 @@ namespace Reko.Scanning
         public bool FilterRtlProcedure(RtlProcedure rtlProc)
         {
             var addrRtlProc = rtlProc.Entry.Address;
-            var trampoline = Program.Platform.GetTrampolineDestination(rtlProc.Entry.Instructions, this);
+            var trampoline = Program.Platform.GetTrampolineDestination(addrRtlProc, rtlProc.Entry.Instructions.SelectMany(c => c.Instructions), this);
             if (trampoline != null)
             {
                 //$REVIEW: consider adding known trampolines to Program. Then, when code calls or 

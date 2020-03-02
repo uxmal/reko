@@ -39,7 +39,7 @@ namespace Reko.Arch.Z80
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<Z80Instruction> dasm;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -56,7 +56,7 @@ namespace Reko.Arch.Z80
             {
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                this.rtlc = dasm.Current.InstructionClass;
+                this.iclass = dasm.Current.InstructionClass;
                 var rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Mnemonic)
@@ -141,10 +141,7 @@ namespace Reko.Arch.Z80
         case Mnemonic.rrd: goto default;
         case Mnemonic.swap: goto default;
                 }
-                yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(addr, len, iclass);
             }
         }
 
@@ -482,7 +479,7 @@ namespace Reko.Arch.Z80
                         cc,
                         binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.f, (uint)cr))),
                     target.Address,
-                    rtlc);
+                    iclass);
             }
             else
             {

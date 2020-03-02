@@ -577,7 +577,8 @@ fn00001000_exit:
             var scan = CreateScanner(0x1000, 0x2000);
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.GetTrampolineDestination(
-                It.IsAny<IEnumerable<RtlInstructionCluster>>(),
+                It.IsAny<Address>(),
+                It.IsAny<IEnumerable<RtlInstruction>>(),
                 It.IsAny<IRewriterHost>()))
                 .Returns(new ExternalProcedure("bar", new FunctionType()));
             platform.Setup(p => p.LookupProcedureByName("foo.dll", "bar")).Returns(

@@ -226,7 +226,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteTableBranch(DataType elemSize)
         {
-            this.rtlClass = InstrClass.Transfer;
+            this.iclass = InstrClass.Transfer;
             var mem = (MemoryOperand) instr.Operands[0];
             Expression tableBase;
             if (mem.BaseRegister == Registers.pc)
@@ -303,7 +303,7 @@ namespace Reko.Arch.Arm.AArch32
                     // something other than the LR (or continuation)
                     // of this procedure. That requires more advanced 
                     // analyses than Reko can manage presently.
-                    rtlClass = instr.condition == ArmCondition.AL
+                    iclass = instr.Condition == ArmCondition.AL
                         ? InstrClass.Transfer
                         : InstrClass.ConditionalTransfer;
                     m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
@@ -322,7 +322,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (isJump)
             {
-                rtlClass = InstrClass.Transfer;
+                iclass = InstrClass.Transfer;
                 m.Goto(src);
             }
             else
@@ -430,7 +430,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (pcRestored)
             {
-                rtlClass = instr.condition == ArmCondition.AL
+                iclass = instr.Condition == ArmCondition.AL
                     ? InstrClass.Transfer
                     : InstrClass.ConditionalTransfer;
                 m.Return(0, 0);
@@ -496,7 +496,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (Dst() is RegisterOperand rOp && rOp.Register == Registers.pc)
             {
-                rtlClass = InstrClass.Transfer;
+                iclass = InstrClass.Transfer;
                 if (Src1() is RegisterOperand ropSrc && ropSrc.Register == Registers.lr)
                 {
                     m.Return(0, 0);

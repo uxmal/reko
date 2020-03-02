@@ -623,8 +623,7 @@ namespace Reko.Scanning
             sig = GuessProcedureSignature(ic);
             return OnAfterCall(sig, chr);
         }
-
-
+        
         /// <summary>
         /// If the architecture can inline this call, do so.
         /// </summary>
@@ -801,6 +800,16 @@ namespace Reko.Scanning
             if (!program.User.Calls.TryGetValue(addrCallInstruction, out var call))
                 return null;
             return call.Signature;
+        }
+
+        public bool VisitMicroGoto(RtlMicroGoto uGoto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMicroLabel(RtlMicroLabel uLabel)
+        {
+            throw new NotImplementedException();
         }
 
         public bool VisitReturn(RtlReturn ret)

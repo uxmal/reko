@@ -39,6 +39,21 @@ namespace Reko.Core.Rtl
 
         public List<RtlInstruction> Instructions { get; set; }
 
+        /// <summary>
+        /// This method is used to build an <see cref="RtlInstructionCluster"/> from the accumulated
+        /// <see cref="RtlInstruction"/>s.
+        /// </summary>
+        /// <param name="address">Address of the cluster.</param>
+        /// <param name="instrLength">The length of the originating machine code instruction.</param>
+        /// <param name="iclass">Instruction class of the originating machine code instruction.</param>
+        /// <returns></returns>
+        public RtlInstructionCluster MakeCluster(Address address, int instrLength, InstrClass iclass)
+        {
+            return new RtlInstructionCluster(address, instrLength, this.Instructions.ToArray())
+            {
+                Class = iclass,
+            };
+        }
 
         /// <summary>
         /// Generates a RtlAssignment ('dst = src' in the C language family).
@@ -249,12 +264,47 @@ namespace Reko.Core.Rtl
         }
 
         /// <summary>
+        /// Generates an unconditional <see cref="RtlMicroGoto"/> to a <see cref="RtlMicroLabel" />.
+        /// </summary>
+        /// <param name="microLabel">The RtlMicroLabel to go to.</param>
+        /// <returns>A reference to this RtlEmitter.</returns>
+        public RtlEmitter MicroGoto(string microLabel)
+        {
+            Instructions.Add(new RtlMicroGoto(null, microLabel));
+            return this;
+        }
+
+        /// <summary>
+        /// Generates a conditional <see cref="RtlMicroGoto"/> to a <see cref="RtlMicroLabel" />.
+        /// </summary>
+        /// <param name="cond">Condition which, when true, causes a transfer to the targetted microlabel</param>
+        /// <param name="microLabel">That RtlMicroLabel to go to.</param>
+        /// <returns>A reference to this RtlEmitter.</returns>
+        public RtlEmitter MicroBranch(Expression cond, string microLabel)
+        {
+            Instructions.Add(new RtlMicroGoto(cond, microLabel));
+            return this;
+        }
+
+        /// <summary>
+        /// Generates a microlabel, only reachable via a corresponding 
+        /// <see cref="RtlMicroGoto"/> or <see cref="RtlMicroBranch"/> instruction.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>A reference to this RtlEmitter.</returns>
+        public RtlEmitter MicroLabel(string name)
+        {
+            Instructions.Add(new RtlMicroLabel(name));
+            return this;
+        }
+
+        /// <summary>
         /// Generates a no-op instruction.
         /// </summary>
         /// <returns>A reference to this RtlEmitter.</returns>
         public RtlEmitter Nop()
         {
-            Instructions.Add(new RtlNop { Class = InstrClass.Linear });
+            Instructions.Add(new RtlNop());
             return this;
         }
 
@@ -314,12 +364,11 @@ namespace Reko.Core.Rtl
         /// registers or memory.
         /// </summary>
         /// <param name="sideEffect">Expression which when evaluated causes the side effect.</param>
-        /// <param name="rtlc"></param>
+        /// <param name="iclass"></param>
         /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter SideEffect(Expression sideEffect, InstrClass rtlc = InstrClass.Linear)
+        public RtlEmitter SideEffect(Expression sideEffect, InstrClass iclass = InstrClass.Linear)
         {
-            var se = new RtlSideEffect(sideEffect);
-            se.Class = rtlc;
+            var se = new RtlSideEffect(sideEffect, iclass);
             Instructions.Add(se);
             return this;
         }

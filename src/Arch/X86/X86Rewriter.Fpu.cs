@@ -484,7 +484,7 @@ namespace Reko.Arch.X86
 
         private void Branch(ConditionCode code, MachineOperand op)
         {
-            this.rtlc = InstrClass.ConditionalTransfer;
+            this.iclass = InstrClass.ConditionalTransfer;
             m.Branch(m.Test(code, orw.AluRegister(Registers.FPUF)), OperandAsCodeAddress( op), InstrClass.ConditionalTransfer);
         }
 

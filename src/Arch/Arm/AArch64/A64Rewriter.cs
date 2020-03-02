@@ -42,7 +42,7 @@ namespace Reko.Arch.Arm.AArch64
         private IEnumerator<AArch64Instruction> dasm;
         private AArch64Instruction instr;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
 
         public A64Rewriter(Arm64Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -61,7 +61,7 @@ namespace Reko.Arch.Arm.AArch64
                 this.instr = dasm.Current;
                 var cluster = new List<RtlInstruction>();
                 m = new RtlEmitter(cluster);
-                rtlc = instr.InstructionClass;
+                iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -72,7 +72,7 @@ namespace Reko.Arch.Arm.AArch64
                         instr);
                     goto case Mnemonic.Invalid;
                 case Mnemonic.Invalid:
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Mnemonic.add: RewriteMaybeSimdBinary(m.IAdd, "__add_{0}"); break;
@@ -212,10 +212,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.uxtw: RewriteUSxt(Domain.UnsignedInt, 32); break;
                 case Mnemonic.xtn: RewriteSimdUnary("__xtn_{0}", Domain.None); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, cluster.ToArray())
-                {
-                    Class = rtlc,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 

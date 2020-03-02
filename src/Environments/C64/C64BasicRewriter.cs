@@ -45,7 +45,7 @@ namespace Reko.Environments.C64
         private readonly IRewriterHost host;
         private readonly StringType strType;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private List<RtlInstruction> rtlInstructions;
         private byte[] line;
         private int i;
@@ -79,7 +79,7 @@ namespace Reko.Environments.C64
         private RtlInstructionCluster GetRtl(C64BasicInstruction line)
         {
             this.rtlInstructions = new List<RtlInstruction>();
-            this.rtlc = InstrClass.Linear;
+            this.iclass = InstrClass.Linear;
             this.m = new RtlEmitter(rtlInstructions);
             Debug.Print("{0}", line);
             this.line = line.Line;
@@ -88,10 +88,7 @@ namespace Reko.Environments.C64
             {
                 ParseStatement();
             }
-            return new RtlInstructionCluster(line.Address, 1, rtlInstructions.ToArray())
-            {
-                Class = rtlc
-            };
+            return m.MakeCluster(line.Address, 1, iclass);
         }
 
         private void ParseStatement()
@@ -424,7 +421,7 @@ namespace Reko.Environments.C64
                     ExpectExpr(); //$TODO == what is this for?
                 }
             }
-            rtlc = InstrClass.Linear;
+            iclass = InstrClass.Linear;
             m.SideEffect(
                 host.PseudoProcedure("__Close", VoidType.Instance,
                 handle));
@@ -453,7 +450,7 @@ namespace Reko.Environments.C64
             {
                 step = Constant.Int32(1);
             }
-            rtlc = InstrClass.Linear;
+            iclass = InstrClass.Linear;
             m.SideEffect(host.PseudoProcedure("__For", VoidType.Instance,
                 m.Out(PrimitiveType.Ptr16, id),
                 start,
@@ -473,7 +470,7 @@ namespace Reko.Environments.C64
         {
             if (!GetIdentifier(out Identifier id))
                 SyntaxError();
-            rtlc = InstrClass.Linear;
+            iclass = InstrClass.Linear;
             m.SideEffect(
                 host.PseudoProcedure("__Get",
                 VoidType.Instance,
@@ -486,7 +483,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             m.Call(Address.Ptr16((ushort)lineNumber), 2);
         }
 
@@ -496,7 +493,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Goto(Address.Ptr16((ushort)lineNumber));
         }
 
@@ -514,7 +511,7 @@ namespace Reko.Environments.C64
                 {
                     if (!GetInteger(out int lineNumber))
                         SyntaxError();
-                    rtlc = InstrClass.ConditionalTransfer;
+                    iclass = InstrClass.ConditionalTransfer;
                     m.Branch(expr, Address.Ptr16((ushort)lineNumber), InstrClass.ConditionalTransfer);
                     return;
                 }
@@ -532,7 +529,7 @@ namespace Reko.Environments.C64
             {
                 if (!GetInteger(out int lineNumber))
                     SyntaxError();
-                rtlc = InstrClass.ConditionalTransfer;
+                iclass = InstrClass.ConditionalTransfer;
                 m.Branch(expr, Address.Ptr16((ushort)lineNumber), InstrClass.ConditionalTransfer);
                 return;
             }
@@ -559,7 +556,7 @@ namespace Reko.Environments.C64
                 m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, str));
             }
             Expression lValue = ExpectLValue();
-            rtlc = InstrClass.Linear;
+            iclass = InstrClass.Linear;
             m.SideEffect(host.PseudoProcedure("__Input", VoidType.Instance,
                 m.Out(PrimitiveType.Ptr16, lValue)));
         }
@@ -570,7 +567,7 @@ namespace Reko.Environments.C64
             EatSpaces();
             Expect((byte)',');
             Expression lValue = ExpectLValue();
-            rtlc = InstrClass.Linear;
+            iclass = InstrClass.Linear;
             m.SideEffect(host.PseudoProcedure("__InputStm", VoidType.Instance,
                 logFileNo,
                 m.Out(PrimitiveType.Ptr16, lValue)));
@@ -721,7 +718,7 @@ namespace Reko.Environments.C64
         
         private void RewriteReturn()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
@@ -732,7 +729,7 @@ namespace Reko.Environments.C64
                 throw new InvalidOperationException("Expected address after SYS.");
             var addrMachineCode = Address.Ptr16((ushort) addr);
             IProcessorArchitecture arch6502 = host.GetArchitecture("m6502");
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             m.CallX(addrMachineCode, 2, arch6502);
         }
 

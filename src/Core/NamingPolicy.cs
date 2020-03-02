@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Generates the name for a block stating at address <paramref name="addr"/>.
+        /// Generates the name for a block starting at address <paramref name="addr"/>.
         /// </summary>
         /// <returns>The name as a string.</returns>
         public virtual string BlockName(Address addr)
@@ -58,6 +59,14 @@ namespace Reko.Core
             if (addr == null) throw new ArgumentNullException(nameof(addr));
             return addr.GenerateName("l", "");
         }
+
+        public virtual string BlockName(RtlLocation loc)
+        {
+            if (loc.Index == 0)
+                return BlockName(loc.Address);
+            return loc.Address.GenerateName("l", $"_{loc.Index}");
+        }
+
 
         public virtual string StackArgumentName(DataType type, int cbOffset, string nameOverride)
         {

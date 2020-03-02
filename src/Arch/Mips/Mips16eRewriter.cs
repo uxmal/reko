@@ -90,6 +90,7 @@ Architecture */
                 case Mnemonic.lbu: RewriteLoad(instr, PrimitiveType.Byte); break;
                 case Mnemonic.lh: RewriteLoad(instr, PrimitiveType.Int16); break;
                 case Mnemonic.lhu: RewriteLoad(instr, PrimitiveType.UInt16); break;
+                case Mnemonic.la: RewriteMove(instr); break;
                 case Mnemonic.li: RewriteMove(instr); break;
                 case Mnemonic.lw: RewriteLoad(instr, PrimitiveType.Word32); break;
                 case Mnemonic.mfhi: RewriteMf(instr, arch.hi); break;
@@ -158,6 +159,8 @@ Architecture */
                 return binder.EnsureRegister(rop.Register);
             case ImmediateOperand imm:
                 return imm.Value;
+            case AddressOperand addr:
+                return addr.Address;
             case IndirectOperand mem:
                 Expression ea;
                 if (mem.Base == arch.pc)

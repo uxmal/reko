@@ -145,10 +145,7 @@ namespace Reko.Arch.Rl78
                 case Mnemonic.xor: RewriteLogical(m.Xor); break;
                 case Mnemonic.xor1: RewriteLogical1(m.Xor); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = this.iclass
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 

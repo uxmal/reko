@@ -37,7 +37,7 @@ namespace Reko.Arch.Pdp11
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private Pdp11Instruction instr;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
 
@@ -59,7 +59,7 @@ namespace Reko.Arch.Pdp11
             {
                 this.instr = dasm.Current;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 m = new RtlEmitter(this.rtlInstructions);
                 switch (instr.Mnemonic)
                 {
@@ -68,10 +68,10 @@ namespace Reko.Arch.Pdp11
                         instr.Address,
                         "PDP-11 instruction {0} is not supported yet.", 
                         instr.Mnemonic);
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
                 case Mnemonic.add: RewriteAdd(); break;
                 case Mnemonic.addb: RewriteAdd(); break;
@@ -152,10 +152,7 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.wait: RewriteWait(); break;
                 case Mnemonic.xor: RewriteXor(); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, this.rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -603,7 +600,7 @@ namespace Reko.Arch.Pdp11
         private void Invalid()
         {
             rtlInstructions.Clear();
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
     }

@@ -35,7 +35,7 @@ namespace Reko.Arch.Xtensa
     {
         private void RewriteBall()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
             var cond = m.Eq0(m.And(m.Comp(a), b));
@@ -47,7 +47,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBany()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
             var cond = m.Ne0(m.And(a, b));
@@ -59,7 +59,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBbx(Func<Expression, Expression> cmp0)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var src = RewriteOp(instr.Operands[0]);
             var immOp = instr.Operands[1] as ImmediateOperand;
             Expression mask;
@@ -79,7 +79,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBnall()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
             var cond = m.Ne0(m.And(m.Comp(a), b));
@@ -91,7 +91,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBnone()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
             var cond = m.Eq0(m.And(a, b));
@@ -103,7 +103,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBranch(Func<Expression,Expression,Expression> cmp)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
             m.Branch(
@@ -114,7 +114,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBranchZ(Func<Expression, Expression> cmp0)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var src = RewriteOp(instr.Operands[0]);
             m.Branch(
                 cmp0(src),
@@ -124,7 +124,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteCall0()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             var dst = RewriteOp(instr.Operands[0]);
             var rDst = dst as Identifier;
             if (rDst != null && rDst.Storage == Registers.a0)
@@ -140,13 +140,13 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteJ()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.Operands[0]));
         }
 
         private void RewriteRet()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(0, 0);
         }
     }

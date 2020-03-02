@@ -40,7 +40,7 @@ namespace Reko.Arch.Alpha
         private readonly IRewriterHost host;
         private readonly IEnumerator<AlphaInstruction> dasm;
         private AlphaInstruction instr;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public AlphaRewriter(AlphaArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
@@ -59,7 +59,7 @@ namespace Reko.Arch.Alpha
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -210,12 +210,8 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.xor: RewriteBin(xor); break;
                 case Mnemonic.zap: RewriteInstrinsic("__zap"); break;
                 case Mnemonic.zapnot: RewriteInstrinsic("__zapnot"); break;
-
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -259,7 +255,7 @@ namespace Reko.Arch.Alpha
         private void Invalid()
         {
             m.Invalid();
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
         }
 
         private Expression Rewrite(MachineOperand op, bool highWord = false)

@@ -40,7 +40,7 @@ namespace Reko.Arch.Mos6502
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<Instruction> dasm;
         private Instruction instrCur;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public Rewriter(Mos6502Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -67,13 +67,13 @@ namespace Reko.Arch.Mos6502
             {
                 this.instrCur = dasm.Current;
                 var instrs = new List<RtlInstruction>();
-                this.rtlc = instrCur.InstructionClass;
+                this.iclass = instrCur.InstructionClass;
                 this.m = new RtlEmitter(instrs);
                 switch (instrCur.Mnemonic)
                 {
                 default:
                     EmitUnitTest();
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Mnemonic.illegal: m.Invalid(); break;
@@ -134,13 +134,7 @@ namespace Reko.Arch.Mos6502
                 case Mnemonic.txs: Copy(Registers.s, Registers.x); break;
                 case Mnemonic.tya: Copy(Registers.a, Registers.y); break;
                 }
-                yield return new RtlInstructionCluster(
-                    instrCur.Address,
-                    instrCur.Length,
-                    instrs.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
             }
         }
 
@@ -174,7 +168,7 @@ namespace Reko.Arch.Mos6502
             m.Branch(
                 m.Test(cc, f),
                 Address.Ptr16(((Operand)instrCur.Operands[0]).Offset.ToUInt16()),
-                rtlc);
+                iclass);
         }
 
         private Identifier FlagGroupStorage(FlagM flags)

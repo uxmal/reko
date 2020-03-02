@@ -364,7 +364,7 @@ namespace Reko.Arch.Vax
                     return;
                 }
             }
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
 

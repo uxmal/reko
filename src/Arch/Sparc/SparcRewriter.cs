@@ -39,7 +39,7 @@ namespace Reko.Arch.Sparc
         private readonly EndianImageReader rdr;
         private RtlEmitter m;
         private SparcInstruction instrCur;
-        private InstrClass rtlc;
+        private InstrClass iclass;
 
         public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -70,7 +70,7 @@ namespace Reko.Arch.Sparc
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
                 var rtlInstructions = new List<RtlInstruction>();
-                rtlc = InstrClass.Linear;
+                iclass = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Mnemonic)
                 {
@@ -82,7 +82,7 @@ namespace Reko.Arch.Sparc
                         instrCur.Mnemonic);
                     goto case Mnemonic.illegal;
                 case Mnemonic.illegal:
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Mnemonic.add: RewriteAlu(m.IAdd, false); break;
@@ -208,12 +208,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.xorcc: RewriteAlu(m.Xor, true); break;
                 case Mnemonic.xnor: RewriteAlu(XNor, false); break;
                 case Mnemonic.xnorcc: RewriteAlu(XNor, true); break;
-
                 }
-                yield return new RtlInstructionCluster(addr, 4, rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(addr, 4, iclass);
             }
         }
 

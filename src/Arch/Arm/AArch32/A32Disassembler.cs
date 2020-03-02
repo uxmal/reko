@@ -61,7 +61,7 @@ namespace Reko.Arch.Arm.AArch32
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = this.addr;
             instr.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
-            instr.InstructionClass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
+            instr.InstructionClass |= instr.Condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Length = 4;
             return instr;
         }

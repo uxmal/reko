@@ -49,7 +49,7 @@ namespace Reko.Arch.X86
         private RtlEmitter m;
         private OperandRewriter orw;
         private X86Instruction instrCur;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private int len;
         private List<RtlInstruction> rtlInstructions;
 
@@ -81,7 +81,7 @@ namespace Reko.Arch.X86
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = instrCur.InstructionClass;
+                this.iclass = instrCur.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.Mnemonic)
@@ -93,7 +93,7 @@ namespace Reko.Arch.X86
                         "x86 instruction '{0}' is not supported yet.",
                         instrCur.Mnemonic);
                     goto case Mnemonic.illegal;
-                case Mnemonic.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.aaa: RewriteAaa(); break;
                 case Mnemonic.aad: RewriteAad(); break;
                 case Mnemonic.aam: RewriteAam(); break;
@@ -495,9 +495,9 @@ namespace Reko.Arch.X86
                 case Mnemonic.sysret: RewriteSysret(); break;
                 case Mnemonic.ucomiss: RewriteComis(PrimitiveType.Real32); break;
                 case Mnemonic.ucomisd: RewriteComis(PrimitiveType.Real64); break;
-                case Mnemonic.ud0: rtlc = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.ud1: rtlc = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.ud2: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.ud0: iclass = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.ud1: iclass = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.ud2: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.unpcklpd: RewritePackedBinop("__unpcklpd", PrimitiveType.Real64); break;
                 case Mnemonic.unpcklps: RewritePackedBinop("__unpcklps", PrimitiveType.Real32); break;
                 case Mnemonic.test: RewriteTest(); break;
@@ -518,10 +518,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.BOR_ln: RewriteFUnary("log"); break;
                 }
                 var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
-                yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(addr, len, iclass);
             }
         }
 

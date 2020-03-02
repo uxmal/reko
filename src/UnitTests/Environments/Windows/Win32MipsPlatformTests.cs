@@ -28,6 +28,7 @@ using Reko.Environments.Windows;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Environments.Windows
 {
@@ -58,7 +59,7 @@ namespace Reko.UnitTests.Environments.Windows
                 It.IsNotNull<Address>())).Returns(new ExternalProcedure("foo", new FunctionType()));
 
             var platform = new Win32MipsPlatform(services.Object, arch.Object);
-            var result = platform.GetTrampolineDestination(rtl, host.Object);
+            var result = platform.GetTrampolineDestination(rtl.StartAddress, rtl.SelectMany(c => c.Instructions), host.Object);
             Assert.IsNotNull(result);
         }
     }

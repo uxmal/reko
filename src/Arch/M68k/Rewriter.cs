@@ -275,15 +275,8 @@ VS Overflow Set 1001 V
                 case Mnemonic.unlk: RewriteUnlk(); break;
                 case Mnemonic.unpk: RewriteUnpk(); break;
                 }
-                yield return new RtlInstructionCluster(
-                    addr,
-                    len,
-                    rtlInstructions.ToArray())
-                {
-                    Class = iclass
-                };
+                yield return m.MakeCluster(addr, len, iclass);
             }
-            yield break;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

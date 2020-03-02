@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,24 +23,31 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Core.Rtl
 {
-    public sealed class RtlInvalid : RtlInstruction
+    /// <summary>
+    /// This instruction represents "micro-jump"s between <see cref="RtlInstruction"/>s
+    /// in a <see cref="RtlInstructionCluster"/>. 
+    /// </summary>
+    public class RtlMicroLabel : RtlInstruction
     {
-        public RtlInvalid()
+        public RtlMicroLabel(string name)
         {
-            this.Class = InstrClass.Invalid;
+            this.Name = name;
         }
+
+        public string Name { get; }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
-            return visitor.VisitInvalid(this);
+            return visitor.VisitMicroLabel(this);
         }
 
         protected override void WriteInner(TextWriter writer)
         {
-            writer.Write("<invalid>");
+            writer.Write("{0}::", Name);
         }
     }
 }

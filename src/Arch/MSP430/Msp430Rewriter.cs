@@ -41,7 +41,7 @@ namespace Reko.Arch.Msp430
         private readonly IEnumerator<Msp430Instruction> dasm;
         private Msp430Instruction instr;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
 
         public Msp430Rewriter(Msp430Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -60,7 +60,7 @@ namespace Reko.Arch.Msp430
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = InstrClass.Linear;
+                this.iclass = InstrClass.Linear;
                 switch (instr.Mnemonic)
                 {
                 case Mnemonics.invalid: Invalid(); break;
@@ -105,11 +105,7 @@ namespace Reko.Arch.Msp430
                 case Mnemonics.sxt: RewriteSxt("0-----NZC"); break;
                 case Mnemonics.xor: RewriteBinop(m.Xor,  "V-----NZC"); break;
                 }
-                var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = this.rtlc,
-                };
-                yield return rtlc;
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -276,20 +272,20 @@ namespace Reko.Arch.Msp430
 
         private void RewriteBr()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.Operands[0]));
         }
 
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)flags));
             m.Branch(m.Test(cc, grf), ((AddressOperand)instr.Operands[0]).Address, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteCall()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             m.Call(RewriteOp(instr.Operands[0]), 2);
         }
 
@@ -302,7 +298,7 @@ namespace Reko.Arch.Msp430
 
         private void RewriteGoto()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.Operands[0]));
         }
 
@@ -354,13 +350,13 @@ namespace Reko.Arch.Msp430
 
         private void RewriteRet()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
         private void RewriteReti()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
@@ -435,7 +431,7 @@ namespace Reko.Arch.Msp430
         private void Invalid()
         {
             m.Invalid();
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
         }
 
         private static HashSet<Mnemonics> seen = new HashSet<Mnemonics>();

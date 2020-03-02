@@ -130,10 +130,11 @@ namespace Reko.Arch.Tlcs
         {
             if (!Registers.Subregisters.TryGetValue(regDomain, out var subs))
                 return null;
-            int key = (range.Extent << 4) | range.Lsb;
-            if (!subs.TryGetValue(key, out var subreg))
-                return null;
-            return subreg;
+            int key = (range.Extent * 4) + range.Lsb;
+            if (subs.TryGetValue(key, out var subreg))
+                return subreg;
+            else
+                return Registers.regs[regDomain - StorageDomain.Register];
         }
 
         public override RegisterStorage[] GetRegisters()

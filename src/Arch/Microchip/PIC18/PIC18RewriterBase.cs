@@ -350,7 +350,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             var fsridx = instrCurr.Operands[0] as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR indexation operand: {instrCurr.Operands[0]}");
             m.Assign(Fsr2, m.IAdd(Fsr2, fsridx.Offset));
             SetStatusFlags(Fsr2);
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(0, 0);
         }
 
@@ -430,7 +430,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteBRA()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             if (instrCurr.Operands[0] is PICOperandProgMemoryAddress brop)
             {
                 m.Goto(brop.CodeTarget);
@@ -448,7 +448,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteBTFSC()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
             var mask = GetBitMask(instrCurr.Operands[1], false);
             Expression res = null;
@@ -476,12 +476,12 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     res = m.And(memExpr, mask);
                     break;
             }
-            m.Branch(m.Eq0(res), SkipToAddr(), rtlc);
+            m.Branch(m.Eq0(res), SkipToAddr(), iclass);
         }
 
         private void RewriteBTFSS()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
             var mask = GetBitMask(instrCurr.Operands[1], false);
             Expression res = null;
@@ -510,7 +510,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     break;
 
             }
-            m.Branch(m.Ne0(res), SkipToAddr(), rtlc);
+            m.Branch(m.Ne0(res), SkipToAddr(), iclass);
         }
 
         private void RewriteBTG()
@@ -530,7 +530,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var target =  instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid CALL target operand: {instrCurr.Operands[0]}.");
             var fast = instrCurr.Operands[1] as PICOperandFast ?? throw new InvalidOperationException($"Invalid FAST indicator operand: {instrCurr.Operands[1]}.");
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
 
             Address retaddr = instrCurr.Address + instrCurr.Length;
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
@@ -553,7 +553,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         private void RewriteCALLW()
         {
 
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
 
             var pclat = binder.EnsureRegister(PIC18Registers.PCLAT);
             var target = m.Fn(host.PseudoProcedure("__callw", VoidType.Instance, Wreg, pclat));
@@ -631,21 +631,21 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteCPFSEQ()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
             CondSkipIndirect(m.Eq(memExpr, Wreg), indMode, memPtr);
         }
 
         private void RewriteCPFSGT()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
             CondSkipIndirect(m.Ugt(memExpr, Wreg), indMode, memPtr);
         }
 
         private void RewriteCPFSLT()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
             CondSkipIndirect(m.Ult(memExpr, Wreg), indMode, memPtr);
         }
@@ -667,14 +667,14 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteDECFSZ()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithCondSkip(dst, m.ISub(memExpr, 1), m.Eq0(dst), indMode, memPtr);
         }
 
         private void RewriteDCFSNZ()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithCondSkip(dst, m.ISub(memExpr, 1), m.Ne0(dst), indMode, memPtr);
         }
@@ -683,7 +683,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var target = instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid GOTO target operand: {instrCurr.Operands[0]}.");
 
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Goto(target.CodeTarget);
         }
 
@@ -695,14 +695,14 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteINCFSZ()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithCondSkip(dst, m.IAdd(memExpr, 1), m.Eq0(dst), indMode, memPtr);
         }
 
         private void RewriteINFSNZ()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithCondSkip(dst, m.IAdd(memExpr, 1), m.Ne0(dst), indMode, memPtr);
         }
@@ -933,7 +933,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         private void RewriteRCALL()
         {
             var target = instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid CALL target operand: {instrCurr.Operands[0]}.");
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
 
             var retaddr = instrCurr.Address + instrCurr.Length;
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
@@ -946,7 +946,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteRESET()
         {
-            rtlc = InstrClass.Terminates;
+            iclass = InstrClass.Terminates;
 
             var stkptr = binder.EnsureRegister(arch.StackRegister);
             m.Assign(stkptr, Constant.Byte(0));
@@ -955,7 +955,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteRETFIE()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
 
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
@@ -966,7 +966,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteRETLW()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
 
             var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
@@ -980,7 +980,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         private void RewriteRETURN()
         {
             var fast = instrCurr.Operands[0] as PICOperandFast ?? throw new InvalidOperationException($"Invalid FAST indicator operand: {instrCurr.Operands[0]}.");
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
 
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
             Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
@@ -1088,7 +1088,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteSUBULNK()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
 
             var k = instrCurr.Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[1]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
@@ -1135,7 +1135,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         private void RewriteTSTFSZ()
         {
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             CondSkipIndirect(m.Eq0(memExpr), indMode, memPtr);
         }
 

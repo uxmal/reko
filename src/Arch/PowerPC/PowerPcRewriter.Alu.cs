@@ -589,7 +589,7 @@ namespace Reko.Arch.PowerPC
                     instr.Address,
                     string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                 EmitUnitTest();
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -634,7 +634,7 @@ namespace Reko.Arch.PowerPC
                     instr.Address,
                     string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                 EmitUnitTest();
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -660,7 +660,7 @@ namespace Reko.Arch.PowerPC
                     instr.Address,
                     string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                 EmitUnitTest();
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
