@@ -171,23 +171,32 @@ namespace Reko.Gui
         private void EditProcedureSignature()
         {
             var item = listProcedures.SelectedItems[0];
-            var pp = (ProgramProcedure) item.Tag;
-            services.RequireService<ICommandFactory>().EditSignature(pp.Program, pp.Procedure, pp.Procedure.EntryAddress).Do();
-            UpdateItem(item);
+            if (item.Tag != null)
+            {
+                var pp = (ProgramProcedure) item.Tag;
+                services.RequireService<ICommandFactory>().EditSignature(pp.Program, pp.Procedure, pp.Procedure.EntryAddress).Do();
+                UpdateItem(item);
+            }
         }
 
         private void GotoProcedureAddress()
         {
             var item = listProcedures.SelectedItems[0];
-            var pp = (ProgramProcedure) item.Tag;
-            services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(pp.Program, pp.Procedure.EntryAddress);
+            if (item.Tag != null)
+            {
+                var pp = (ProgramProcedure) item.Tag;
+                services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(pp.Program, pp.Procedure.EntryAddress);
+            }
         }
 
         private void ShowProcedureCallHierarchy()
         {
             var item = listProcedures.SelectedItems[0];
-            var pp = (ProgramProcedure) item.Tag;
-            services.RequireService<ICallHierarchyService>().Show(pp.Program, pp.Procedure);
+            if (item.Tag != null)
+            {
+                var pp = (ProgramProcedure) item.Tag;
+                services.RequireService<ICallHierarchyService>().Show(pp.Program, pp.Procedure);
+            }
         }
 
         private IEnumerable<ProgramProcedure> SelectedItems()
@@ -199,6 +208,9 @@ namespace Reko.Gui
 
         private void UpdateItem(ListViewItem item)
         {
+            if (item.Tag == null)
+                return;
+
             var subItems = CreateListItemTexts((ProgramProcedure) item.Tag);
             for (int i = 0; i < subItems.Length; ++i)
             {
