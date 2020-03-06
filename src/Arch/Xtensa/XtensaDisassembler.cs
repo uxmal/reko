@@ -25,23 +25,31 @@ using Reko.Core.Machine;
 using System.Diagnostics;
 using System.Text;
 using Reko.Core.Expressions;
+using System.Linq;
+
+#pragma warning disable IDE1006 // Naming Styles
+
 
 namespace Reko.Arch.Xtensa
 {
+    using Decoder = Reko.Core.Machine.Decoder<XtensaDisassembler, Mnemonic, XtensaInstruction>;
+
     public class XtensaDisassembler : DisassemblerBase<XtensaInstruction, Mnemonic>
     {
-        private static readonly Decoder[] deocders;
+        private static readonly Decoder[] rootDecoder;
         private static readonly int[] b4const;
         private static readonly int[] b4constu;
 
         private readonly XtensaArchitecture arch;
         private readonly EndianImageReader rdr;
+        private readonly List<MachineOperand> ops;
         private State state;
 
         public XtensaDisassembler(XtensaArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.ops = new List<MachineOperand>();
         }
 
         private struct State
@@ -88,6 +96,7 @@ namespace Reko.Arch.Xtensa
             if (!this.rdr.TryReadByte(out byte b0)) return null;
             if (!this.rdr.TryReadByte(out byte b1)) return null;
             if (!this.rdr.TryReadByte(out byte b2)) return null;
+            ops.Clear();
 
             // Extract little endian pieces.
             state.op0 = (byte)(b0 & 0x0F);
@@ -104,7 +113,7 @@ namespace Reko.Arch.Xtensa
             XtensaInstruction instr;
             try
             {
-                instr = deocders[state.op0].Decode(this);
+                instr = rootDecoder[state.op0].Decode(0, this);
             }
             catch
             {
@@ -127,117 +136,283 @@ namespace Reko.Arch.Xtensa
             };
         }
 
-        private XtensaInstruction DecodeOperands(Mnemonic mnemonic, string fmt)
+        public override XtensaInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
         {
-            var ops = new List<MachineOperand>();
-            for (int i = 0; i < fmt.Length; ++i)
-            {
-                MachineOperand op;
-                switch (fmt[i++])
-                {
-                default: throw new NotImplementedException(
-                    string.Format("Operand type {0} not implemented.", fmt[i - 1]));
-                case ',':
-                    continue;
-                case '4': op = ImmediateOperand.Byte((byte)(state.r << fmt[i++] - '0')); break;
-                case '8': op = ImmediateOperand.UInt16((ushort)(state.imm8 << fmt[i++] - '0')); break;
-                case 'B': op = GetBoolRegister(fmt[i++]); break;
-                case 'F': op = GetFpuRegister(fmt[i++]); break;
-                case 'I': op = ImmediateOperand.Byte(FieldValue(fmt[i++])); break;
-                case 'J': op = LongJumpOffset(); break;
-                case 'R': op = GetAluRegister(fmt[i++]); break;
-                case 'a': op = ImmediateOperand.SByte(state.t == 0 ?(sbyte) -1 : (sbyte)state.t); break;
-                case 'b': op = ImmediateBranchOperand(fmt, ref i); break;
-                case 'c': op = CallOffset(state.offset); break;
-                case 'e': op = L32e_Value(state.r); break;
-                case 'i': op = SplitImmediate(); break;
-                case 'j': op = JumpOffset(state.imm8); break;
-                case 'm': op = Scaled256Immediate(fmt, ref i); break;
-                case 'p':
-                    op = NegativePcRelativeAddress();
-                    break;
-                case 'S': op = SpecialRegister((state.r << 4) | state.s); break;
-                }
-                ops.Add(op);
-            }
             return new XtensaInstruction
             {
+                InstructionClass = iclass,
                 Mnemonic = mnemonic,
                 Operands = ops.ToArray()
             };
         }
 
-        private MachineOperand L32e_Value(byte r)
+        public override XtensaInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var off = ~0x3F | (r << 2);
-            return ImmediateOperand.Int32(off);
-        }
+            var len = rdr.Address - this.state.addr;
+            var rdr2 = rdr.Clone();
+            rdr2.Offset -= len;
+            var hexBytes = string.Join("", rdr2.ReadBytes((int) len).Select(b => b.ToString("X2")));
 
-        private MachineOperand ImmediateBranchOperand(string fmt, ref int i)
-        {
-            switch (fmt[i++])
+            base.EmitUnitTest("Xtensa", hexBytes, message, "Xtdasm", this.state.addr, w =>
             {
-            case 'u': return ImmediateOperand.Word32(b4constu[state.r]);
-            case 's': return ImmediateOperand.Int32(b4const[state.r]);
-            default: throw new NotImplementedException();
-            }
+                w.WriteLine("AssertCode(\"@@@\", \"{0}\");", hexBytes);
+            });
+            return CreateInvalidInstruction();
         }
 
-        private byte FieldValue(char f)
+        // GP register
+        private static bool Rr(uint wInstr, XtensaDisassembler dasm)
         {
-            switch (f)
-            {
-            default:  throw new NotImplementedException();
-            case 'r': return state.r;
-            case 's': return state.s;
-            case 't': return state.t;
-            case '1': return state.op1;
-            case '2': return state.op2;
-            case 'S': return (byte)(state.t | ((state.op2 & 1) << 4)); // used by slli
-            case 'R': return (byte)(state.s | ((state.op2 & 1) << 4)); // used by srai
-            case 'I': return (byte)(state.s | ((state.r & 1) << 4));   // used by ssai
-            }
+            var reg = dasm.arch.GetAluRegister(dasm.state.r);
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
         }
 
-        private ImmediateOperand Scaled256Immediate(string fmt, ref int i)
+        private static bool Rs(uint wInstr, XtensaDisassembler dasm)
         {
-            int n = (sbyte)state.imm8;
-            n <<= (fmt[i++] - '0');
-            return ImmediateOperand.Word32(n);
+            var reg = dasm.arch.GetAluRegister(dasm.state.s);
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
         }
 
-        private MachineOperand CallOffset(int offset)
+        private static bool Rt(uint wInstr, XtensaDisassembler dasm)
         {
-            return AddressOperand.Ptr32((uint)((state.addr.ToUInt32() & ~3) + (offset << 2) + 4));
+            var reg = dasm.arch.GetAluRegister(dasm.state.t);
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
         }
 
-        private AddressOperand LongJumpOffset()
+        // FPU register
+        private static bool Fr(uint wInstr, XtensaDisassembler dasm)
         {
-            return AddressOperand.Ptr32((uint)((int)state.addr.ToLinear() + (state.offset + 4)));
+            var freg = dasm.arch.GetFpuRegister(dasm.state.r);
+            dasm.ops.Add(new RegisterOperand(freg));
+            return true;
         }
 
-        private MachineOperand JumpOffset(byte offset)
+        private static bool Fs(uint wInstr, XtensaDisassembler dasm)
         {
-            int dst = (int)state.addr.ToUInt32() + (sbyte)offset + 4;
-            return AddressOperand.Ptr32((uint)dst);
+            var freg = dasm.arch.GetFpuRegister(dasm.state.s);
+            dasm.ops.Add(new RegisterOperand(freg));
+            return true;
         }
 
-        private ImmediateOperand SplitImmediate()
+        private static bool Ft(uint wInstr, XtensaDisassembler dasm)
         {
-            int n = ((state.imm8 | (state.s << 8)) << 20) >> 20;
-            return new ImmediateOperand(Constant.Word32(n));
+            var freg = dasm.arch.GetFpuRegister(dasm.state.t);
+            dasm.ops.Add(new RegisterOperand(freg));
+            return true;
         }
 
-        private MachineOperand GetAluRegister(char pos)
+        // Special register
+        private static bool S(uint wInstr, XtensaDisassembler dasm)
         {
-            RegisterStorage reg = arch.GetAluRegister(this.FieldValue(pos));
-            return new RegisterOperand(reg);
+            var reg = dasm.arch.GetSpecialRegister((dasm.state.r << 4) | dasm.state.s); ;
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
+
         }
-    
-        private MachineOperand GetFpuRegister(char pos)
+
+
+        // 'e'
+        private static bool e(uint wInstr, XtensaDisassembler dasm)
         {
-            var freg = arch.GetFpuRegister(this.FieldValue(pos));
-            return new RegisterOperand(freg);
+            var off = ~0x3F | (dasm.state.r << 2);
+            dasm.ops.Add(ImmediateOperand.Int32(off));
+            return true;
+        }
+
+        // Bool register
+        private static bool Br(uint wInstr, XtensaDisassembler dasm)
+        {
+            var reg = dasm.arch.GetBoolRegister(dasm.state.r);
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
+
+        private static bool Bs(uint wInstr, XtensaDisassembler dasm)
+        {
+            var reg = dasm.arch.GetBoolRegister(dasm.state.s);
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
+
+        private static bool Bt(uint wInstr, XtensaDisassembler dasm)
+        {
+            var reg = dasm.arch.GetBoolRegister(dasm.state.t);
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
+
+
+        // Immediate
+        private static bool Is(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.Byte(dasm.state.s);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool It(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.Byte(dasm.state.t);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Immediate shift amount used by slli
+        private static bool IS(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.Byte((byte) (dasm.state.t | ((dasm.state.op2 & 1) << 4)));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Immediate shift amount used by srai
+        private static bool IR(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.Byte((byte) (dasm.state.s | ((dasm.state.op2 & 1) << 4)));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+
+        // Immediate shift amount used by ssai
+        private static bool II(uint wInstr, XtensaDisassembler dasm)
+        { 
+            var op = ImmediateOperand.Byte((byte) (dasm.state.s | ((dasm.state.r & 1) << 4)));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+
+        private static bool I4_2(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.Byte((byte)(dasm.state.r << 2)); 
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool I8_0(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.UInt16((ushort)dasm.state.imm8);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool I8_1(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.UInt16((ushort) (dasm.state.imm8 << 1));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool I8_2(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.UInt16((ushort) (dasm.state.imm8 << 2));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool Irt(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.Byte((byte) (((dasm.state.r & 1) << 4) | dasm.state.t));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool a(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.SByte(dasm.state.t == 0 ? (sbyte) -1 : (sbyte) dasm.state.t);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Scaled immediates
+        private static bool m0(uint wInstr, XtensaDisassembler dasm)
+        {
+            int n = (sbyte) dasm.state.imm8;
+            var op = ImmediateOperand.Word32(n);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool m8(uint wInstr, XtensaDisassembler dasm)
+        {
+            int n = (sbyte) dasm.state.imm8;
+            n <<= 8;
+            var op = ImmediateOperand.Word32(n);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Split immediate
+        private static bool i(uint wInstr, XtensaDisassembler dasm)
+        {
+            int n = ((dasm.state.imm8 | (dasm.state.s << 8)) << 20) >> 20;
+            dasm.ops.Add(ImmediateOperand.Word32(n));
+            return true;
+        }
+
+        // 'bs'
+        private static bool bs(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.Int32(b4const[dasm.state.r]);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool bu(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.Word32(b4constu[dasm.state.r]);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Jump
+        private static bool j(uint wInstr, XtensaDisassembler dasm)
+        { 
+            int dst = (int) dasm.state.addr.ToUInt32() + (sbyte) dasm.state.imm8 + 4;
+            dasm.ops.Add(AddressOperand.Ptr32((uint) dst));
+            return true;
+        }
+
+        private static bool jrt(uint wInstr, XtensaDisassembler dasm)
+        {
+            var n =
+                dasm.state.r |
+                ((dasm.state.t & 0x3) << 4);
+            int dst = (int) dasm.state.addr.ToUInt32() + (sbyte) n + 4;
+            dasm.ops.Add(AddressOperand.Ptr32((uint) dst));
+            return true;
+        }
+
+
+
+        private static bool J(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = AddressOperand.Ptr32((uint) ((int) dasm.state.addr.ToLinear() + (dasm.state.offset + 4)));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Call offset
+        private static bool c(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = AddressOperand.Ptr32((uint) ((dasm.state.addr.ToUInt32() & ~3) + (dasm.state.offset << 2) + 4));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // NegativePcRelativeAddress();
+        private static bool p(uint wInstr, XtensaDisassembler dasm)
+        {
+            var nAddr =
+                ((0xFFFF0000 | dasm.state.imm16) << 2) +
+                 (int) (dasm.rdr.Address.ToUInt32() & ~3);
+            var op = AddressOperand.Ptr32((uint) nAddr);
+            dasm.ops.Add(op);
+            return true;
         }
 
         private MachineOperand GetAluRegister(byte r)
@@ -245,40 +420,9 @@ namespace Reko.Arch.Xtensa
             return new RegisterOperand(arch.GetAluRegister(r));
         }
 
-        private MachineOperand GetBoolRegister(char pos)
-        {
-            RegisterStorage reg;
-            switch (pos)
-            {
-            case 'r': reg =  arch.GetBoolRegister(state.r); break;
-            case 's': reg =  arch.GetBoolRegister(state.s); break;
-            case 't': reg =  arch.GetBoolRegister(state.t); break;
-            default: throw new ArgumentOutOfRangeException();
-            }
-            return new RegisterOperand(reg);
-        }
-
-        private MachineOperand SpecialRegister(int sr)
-        {
-            return new RegisterOperand(arch.GetSpecialRegister(sr));
-        }
-
-        private MachineOperand NegativePcRelativeAddress()
-        {
-            var nAddr = 
-                ((0xFFFF0000 | state.imm16) << 2) +
-                 (int)(rdr.Address.ToUInt32() & ~3);
-            return AddressOperand.Ptr32((uint)nAddr);
-        }
-
-        public abstract class Decoder
-        {
-            public abstract XtensaInstruction Decode(XtensaDisassembler dasm);
-        }
-
         public class Op1Decoder : Decoder
         {
-            private Decoder[] decoders;
+            private readonly Decoder[] decoders;
 
             public Op1Decoder(params Decoder [] decoders)
             {
@@ -286,15 +430,15 @@ namespace Reko.Arch.Xtensa
                 this.decoders = decoders;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
-                return decoders[dasm.state.op1].Decode(dasm);
+                return decoders[dasm.state.op1].Decode(wInstr, dasm);
             }
         }
 
         public class Op2Decoder : Decoder
         {
-            private Decoder[] decoders;
+            private readonly Decoder[] decoders;
 
             public Op2Decoder(params Decoder[] decoders)
             {
@@ -302,16 +446,16 @@ namespace Reko.Arch.Xtensa
                 this.decoders = decoders;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
-                return decoders[dasm.state.op2].Decode(dasm);
+                return decoders[dasm.state.op2].Decode(wInstr, dasm);
             }
         }
 
 
         public class r_Rec : Decoder
         {
-            private Decoder[] decoders;
+            private readonly Decoder[] decoders;
 
             public r_Rec(params Decoder[] decoders)
             {
@@ -319,15 +463,15 @@ namespace Reko.Arch.Xtensa
                 this.decoders = decoders;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
-                return decoders[dasm.state.r].Decode(dasm);
+                return decoders[dasm.state.r].Decode(wInstr, dasm);
             }
         }
 
         public class m_Rec : Decoder
         {
-            private Decoder[] decoders;
+            private readonly Decoder[] decoders;
 
             public m_Rec(params Decoder[] decoders)
             {
@@ -335,15 +479,15 @@ namespace Reko.Arch.Xtensa
                 this.decoders = decoders;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
-                return decoders[dasm.state.t >> 2].Decode(dasm);
+                return decoders[dasm.state.t >> 2].Decode(wInstr, dasm);
             }
         }
 
         public class n_Rec : Decoder
         {
-            private Decoder[] decoders;
+            private readonly Decoder[] decoders;
 
             public n_Rec(params Decoder[] decoders)
             {
@@ -351,9 +495,9 @@ namespace Reko.Arch.Xtensa
                 this.decoders = decoders;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
-                return decoders[dasm.state.t & 0x03].Decode(dasm);
+                return decoders[dasm.state.t & 0x03].Decode(wInstr, dasm);
             }
         }
 
@@ -367,15 +511,15 @@ namespace Reko.Arch.Xtensa
                 this.decoders = decoders;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
-                return decoders[dasm.state.s].Decode(dasm);
+                return decoders[dasm.state.s].Decode(wInstr, dasm);
             }
         }
 
         public class t_Rec : Decoder
         {
-            private Decoder[] decoders;
+            private readonly Decoder[] decoders;
 
             public t_Rec(params Decoder[] decoders)
             {
@@ -383,51 +527,47 @@ namespace Reko.Arch.Xtensa
                 this.decoders = decoders;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
-                return decoders[dasm.state.t].Decode(dasm);
+                return decoders[dasm.state.t].Decode(wInstr, dasm);
             }
         }
 
-        public class InstrDecoder : Decoder
+        public class InstrDecoder : Decoder<XtensaDisassembler, Mnemonic, XtensaInstruction>
         {
-            private Mnemonic mnemonic;
-            private InstrClass iclass;
-            private string fmt;
-            private bool twoByte;
+            private readonly InstrClass iclass;
+            private readonly Mnemonic mnemonic;
+            private readonly bool twoByte;
+            private readonly Mutator<XtensaDisassembler>[] mutators;
 
-            public InstrDecoder(Mnemonic mnemonic, string fmt)
+            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, bool twoByte, params Mutator<XtensaDisassembler> [] mutators)
             {
-                this.mnemonic = mnemonic;
-                this.fmt = fmt;
-            }
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, string fmt)
-            {
-                this.mnemonic = mnemonic;
                 this.iclass = iclass;
-                this.fmt = fmt;
-            }
-
-            public InstrDecoder(Mnemonic mnemonic, string fmt, bool twoByte)
-            {
                 this.mnemonic = mnemonic;
-                this.fmt = fmt;
                 this.twoByte = twoByte;
+                this.mutators = mutators;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
                 if (this.twoByte)
                     dasm.rdr.Offset -= 1;
-                return dasm.DecodeOperands(mnemonic, fmt);
+                foreach (var m in mutators)
+                {
+                    if (!m(wInstr, dasm))
+                        return dasm.CreateInvalidInstruction();
+                }
+                return dasm.MakeInstruction(iclass, mnemonic);
             }
         }
 
+
+
         public class Movi_nDecoder : Decoder
         {
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
+                Rs(wInstr, dasm);
                 var n = 
                     dasm.state.r |
                     ((dasm.state.t & 0x7) << 4) |
@@ -435,32 +575,24 @@ namespace Reko.Arch.Xtensa
                         ? ~0x1F
                         : 0);
                 var imm = ImmediateOperand.SByte((sbyte)n);
+                dasm.ops.Add(imm);
 
                 // this is a 2-byte instruction, so back up one byte.
                 dasm.rdr.Offset -= 1;
-
-                return new XtensaInstruction
-                {
-                    Mnemonic = Mnemonic.movi_n,
-                    Operands = new MachineOperand[]
-                    {
-                        dasm.GetAluRegister(dasm.state.s),
-                        imm,
-                    }
-                };
+                return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.movi_n);
             }
         }
 
         public class bz_Decoder : Decoder
         {
-            private Mnemonic mnemonic;
+            private readonly Mnemonic mnemonic;
 
             public bz_Decoder(Mnemonic mnemonic)
             {
                 this.mnemonic = mnemonic;
             }
 
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
                 int shoff = dasm.state.imm12;
                 if (shoff > 0x7FF)
@@ -481,63 +613,9 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class Beqxx_n_Decoder : Decoder
-        {
-            private Mnemonic mnemonic;
-
-            public Beqxx_n_Decoder(Mnemonic mnemonic)
-            {
-                this.mnemonic = mnemonic;
-            }
-
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
-            {
-                var n =
-                    dasm.state.r |
-                    ((dasm.state.t & 0x3) << 4);
-                var dst = dasm.JumpOffset((byte)n);
-
-                // this is a 2-byte instruction, so back up one byte.
-                dasm.rdr.Offset -= 1;
-
-                return new XtensaInstruction
-                {
-                    Mnemonic = mnemonic,
-                    Operands = new MachineOperand[]
-                    {
-                        dasm.GetAluRegister(dasm.state.s),
-                        dst,
-                    }
-                };
-            }
-        }
-
-        public class bbxi_Decoder : Decoder
-        {
-            private Mnemonic mnemonic;
-
-            public bbxi_Decoder(Mnemonic mnemonic)
-            {
-                this.mnemonic = mnemonic;
-            }
-
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
-            {
-                return new XtensaInstruction
-                {
-                    Mnemonic = this.mnemonic,
-                    Operands = new MachineOperand[] {
-                        dasm.GetAluRegister(dasm.state.s),
-                        ImmediateOperand.Byte((byte)(((dasm.state.r & 1) << 4) | dasm.state.t)),
-                        dasm.JumpOffset(dasm.state.imm8)
-                    }
-                };
-            }
-        }
-
         public class ExtuiDecoder : Decoder
         {
-            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            public override XtensaInstruction Decode(uint wInstr, XtensaDisassembler dasm)
             {
                 return new XtensaInstruction
                 {
@@ -551,6 +629,27 @@ namespace Reko.Arch.Xtensa
                     }
                 };
             }
+        }
+
+        private static InstrDecoder Instr(Mnemonic mnemonic, params Mutator<XtensaDisassembler> [] mutators)
+        {
+            return new InstrDecoder(InstrClass.Linear, mnemonic, false, mutators);
+        }
+
+        private static InstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<XtensaDisassembler>[] mutators)
+        {
+            return new InstrDecoder(iclass, mnemonic, false, mutators);
+        }
+
+        private static InstrDecoder Instr2byte(Mnemonic mnemonic, InstrClass iclass, params Mutator<XtensaDisassembler>[] mutators)
+        {
+            return new InstrDecoder(iclass, mnemonic, true, mutators);
+        }
+
+
+        private static Decoder Nyi(string message)
+        {
+            return new NyiDecoder<XtensaDisassembler, Mnemonic, XtensaInstruction>(message);
         }
 
         static XtensaDisassembler()
@@ -581,10 +680,11 @@ namespace Reko.Arch.Xtensa
                 0x100,
             };
 
-            var reserved = new InstrDecoder(Mnemonic.reserved, "");
+            var reserved = Instr(Mnemonic.reserved);
 
             var decoderLSCX = new Op1Decoder(
-                new InstrDecoder(Mnemonic.lsx,"T,Rs,Rr"),
+                Instr(Mnemonic.lsx, Fr,Rs,Rt),
+                Nyi("lsxu"),
                 null,
                 reserved,
                 reserved,
@@ -605,12 +705,12 @@ namespace Reko.Arch.Xtensa
                 reserved);
 
             var decoderLSC4 = new Op2Decoder(
-                new InstrDecoder(Mnemonic.l32e, "Rt,Rs,e"),
+                Instr(Mnemonic.l32e, Rt,Rs,e),
                 reserved,
                 reserved,
                 reserved,
 
-                new InstrDecoder(Mnemonic.s32e, "Rt,Rs,e"),
+                Instr(Mnemonic.s32e, Rt,Rs,e),
                 reserved,
                 reserved,
                 reserved,
@@ -626,9 +726,9 @@ namespace Reko.Arch.Xtensa
                 reserved);
 
             var decoderFP0 = new Op2Decoder(
-                new InstrDecoder(Mnemonic.add_s, "Fr,Fs,Ft"),
-                new InstrDecoder(Mnemonic.sub_s, "Fr,Fs,Ft"),
-                new InstrDecoder(Mnemonic.mul_s, "Fr,Fs,Ft"),
+                Instr(Mnemonic.add_s, Fr,Fs,Ft),
+                Instr(Mnemonic.sub_s, Fr,Fs,Ft),
+                Instr(Mnemonic.mul_s, Fr,Fs,Ft),
                 reserved,
 
                 null,
@@ -639,7 +739,7 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
                 null,
-                new InstrDecoder(Mnemonic.floor_s, "Rr,Fs,It"),
+                Instr(Mnemonic.floor_s, Rr,Fs,It),
 
                 null,
                 null,
@@ -650,14 +750,14 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 null,
                 null,
-                new InstrDecoder(Mnemonic.ueq_s, "Br,Fs,Ft"),
+                Instr(Mnemonic.ueq_s, Br,Fs,Ft),
 
                 null,
                 null,
                 null,
                 null,
 
-                new InstrDecoder(Mnemonic.moveqz_s, "Fr,Fs,Rt"),
+                Instr(Mnemonic.moveqz_s, Fr,Fs,Rt),
                 null,
                 null,
                 null,
@@ -668,25 +768,25 @@ namespace Reko.Arch.Xtensa
                 reserved);
 
             var decoderJR = new n_Rec(
-                new InstrDecoder(Mnemonic.ret, ""),
+                Instr2byte(Mnemonic.ret, InstrClass.Transfer),
                 null,
-                new InstrDecoder(Mnemonic.jx, "Rs"),
+                Instr(Mnemonic.jx, Rs),
                 reserved);
 
             var decoderCALLX = new n_Rec(
-                new InstrDecoder(Mnemonic.callx0, "Rs"),
-                new InstrDecoder(Mnemonic.callx4, "Rs"),
-                new InstrDecoder(Mnemonic.callx8, "Rs"),
-                new InstrDecoder(Mnemonic.callx12, "Rs"));
+                Instr(Mnemonic.callx0, Rs),
+                Instr(Mnemonic.callx4, Rs),
+                Instr(Mnemonic.callx8, Rs),
+                Instr(Mnemonic.callx12, Rs));
 
             var decoderSNM0 = new m_Rec(
-                new InstrDecoder(Mnemonic.ill, InstrClass.Invalid|InstrClass.Zero, ""),
+                Instr(Mnemonic.ill, InstrClass.Invalid|InstrClass.Zero),
                 null,
                 decoderJR,
                 decoderCALLX);
 
             var decoderSYNC = new t_Rec(
-                new InstrDecoder(Mnemonic.isync, ""),
+                Instr(Mnemonic.isync),
                 null,
                 null,
                 null,
@@ -701,13 +801,13 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
 
-                new InstrDecoder(Mnemonic.memw, ""),
+                Instr(Mnemonic.memw),
                 null,
                 null,
                 null);
 
             var decoderRFET = new s_Rec(
-                new InstrDecoder(Mnemonic.rfe, ""),
+                Instr(Mnemonic.rfe),
                 null,
                 null,
                 reserved,
@@ -729,7 +829,7 @@ namespace Reko.Arch.Xtensa
 
             var decoderRFEI = new t_Rec(
                 decoderRFET,
-                new InstrDecoder(Mnemonic.rfi, "Is"),
+                Instr(Mnemonic.rfi, Is),
                 null,
                 reserved,
 
@@ -756,43 +856,43 @@ namespace Reko.Arch.Xtensa
                 new bz_Decoder(Mnemonic.bgez));
 
             var decoderBI0 = new m_Rec(
-                new InstrDecoder(Mnemonic.beqi, "Rs,bs,j"),
-                new InstrDecoder(Mnemonic.bnei, "Rs,bs,j"),
-                new InstrDecoder(Mnemonic.blti, "Rs,bs,j"),
-                new InstrDecoder(Mnemonic.bgei, "Rs,bs,j"));
+                Instr(Mnemonic.beqi, Rs,bs,j),
+                Instr(Mnemonic.bnei, Rs,bs,j),
+                Instr(Mnemonic.blti, Rs,bs,j),
+                Instr(Mnemonic.bgei, Rs,bs,j));
 
             var decoderBI1 = new m_Rec(
                 null,
                 null,
-                new InstrDecoder(Mnemonic.bltui, "Rs,bu,j"),
-                new InstrDecoder(Mnemonic.bgeui, "Rs,bu,j"));
+                Instr(Mnemonic.bltui, Rs,bu,j),
+                Instr(Mnemonic.bgeui, Rs,bu,j));
 
             var decoderSI = new n_Rec(
-                new InstrDecoder(Mnemonic.j, "J"),
+                Instr(Mnemonic.j, J),
                 decoderBZ,
                 decoderBI0,
                 decoderBI1);
 
             var decoderB = new r_Rec(
-               new InstrDecoder(Mnemonic.bnone, "Rs,Rt,j"),
-               new InstrDecoder(Mnemonic.beq, "Rs,Rt,j"),
-               new InstrDecoder(Mnemonic.blt, "Rs,Rt,j"),
-               new InstrDecoder(Mnemonic.bltu, "Rs,Rt,j"),
+               Instr(Mnemonic.bnone, Rs,Rt,j),
+               Instr(Mnemonic.beq, Rs,Rt,j),
+               Instr(Mnemonic.blt, Rs,Rt,j),
+               Instr(Mnemonic.bltu, Rs,Rt,j),
 
-               new InstrDecoder(Mnemonic.ball, "Rs,Rt,j"),
-               new InstrDecoder(Mnemonic.bbc, "Rs,Rt,j"),
-               new bbxi_Decoder(Mnemonic.bbci),
-               new bbxi_Decoder(Mnemonic.bbci),
+               Instr(Mnemonic.ball, Rs,Rt,j),
+               Instr(Mnemonic.bbc, Rs,Rt,j),
+               Instr(Mnemonic.bbci, InstrClass.ConditionalTransfer, Rs, Irt, j),
+               Instr(Mnemonic.bbci, InstrClass.ConditionalTransfer, Rs, Irt, j),
 
-               new InstrDecoder(Mnemonic.bany, "Rs,Rt,j"),
-               new InstrDecoder(Mnemonic.bne, "Rs,Rt,j"),
-               new InstrDecoder(Mnemonic.bge, "Rs,Rt,j"),
-               new InstrDecoder(Mnemonic.bgeu, "Rs,Rt,j"),
+               Instr(Mnemonic.bany, Rs,Rt,j),
+               Instr(Mnemonic.bne, Rs,Rt,j),
+               Instr(Mnemonic.bge, Rs,Rt,j),
+               Instr(Mnemonic.bgeu, Rs,Rt,j),
 
-               new InstrDecoder(Mnemonic.bnall, "Rs,Rt,j"),
-               new InstrDecoder(Mnemonic.bbs, "Rs,Rt,j"),
-               new bbxi_Decoder(Mnemonic.bbsi),
-               new bbxi_Decoder(Mnemonic.bbsi));
+               Instr(Mnemonic.bnall, Rs,Rt,j),
+               Instr(Mnemonic.bbs, Rs,Rt,j),
+               Instr(Mnemonic.bbsi, InstrClass.ConditionalTransfer, Rs, Irt, j),
+               Instr(Mnemonic.bbsi, InstrClass.ConditionalTransfer, Rs, Irt, j));
 
             var decoderST0 = new r_Rec(
                 decoderSNM0,
@@ -800,9 +900,9 @@ namespace Reko.Arch.Xtensa
                 decoderSYNC,
                 decoderRFEI,
 
-                new InstrDecoder(Mnemonic.@break, "Is,It"),
+                Instr(Mnemonic.@break, Is,It),
                 null,
-                new InstrDecoder(Mnemonic.rsil, "Rt,Is"),
+                Instr(Mnemonic.rsil, Rt,Is),
                 null,
 
                 null,
@@ -816,12 +916,12 @@ namespace Reko.Arch.Xtensa
                 null);
 
             var decoderST1 = new r_Rec(
-                new InstrDecoder(Mnemonic.ssr, "Rs"),
-                new InstrDecoder(Mnemonic.ssl, "Rs"),
-                new InstrDecoder(Mnemonic.ssa8l, "Rs"),
+                Instr(Mnemonic.ssr, Rs),
+                Instr(Mnemonic.ssl, Rs),
+                Instr(Mnemonic.ssa8l, Rs),
                 null,
 
-                new InstrDecoder(Mnemonic.ssai, "II"),
+                Instr(Mnemonic.ssai, II),
                 reserved,
                 null,
                 null,
@@ -833,8 +933,8 @@ namespace Reko.Arch.Xtensa
 
                 reserved,
                 reserved,
-                new InstrDecoder(Mnemonic.nsa, "Rt,Rs"),
-                new InstrDecoder(Mnemonic.nsau, "Rt,Rs"));
+                Instr(Mnemonic.nsa, Rt,Rs),
+                Instr(Mnemonic.nsau, Rt,Rs));
 
             var decoderST2 = new t_Rec(
                 new Movi_nDecoder(),
@@ -847,18 +947,18 @@ namespace Reko.Arch.Xtensa
                 new Movi_nDecoder(),
                 new Movi_nDecoder(),
 
-                new Beqxx_n_Decoder(Mnemonic.beqz_n),
-                new Beqxx_n_Decoder(Mnemonic.beqz_n),
-                new Beqxx_n_Decoder(Mnemonic.beqz_n),
-                new Beqxx_n_Decoder(Mnemonic.beqz_n),
+                Instr2byte(Mnemonic.beqz_n, InstrClass.ConditionalTransfer, Rs, jrt),
+                Instr2byte(Mnemonic.beqz_n, InstrClass.ConditionalTransfer, Rs, jrt),
+                Instr2byte(Mnemonic.beqz_n, InstrClass.ConditionalTransfer, Rs, jrt),
+                Instr2byte(Mnemonic.beqz_n, InstrClass.ConditionalTransfer, Rs, jrt),
 
-                new Beqxx_n_Decoder(Mnemonic.bnez_n),
-                new Beqxx_n_Decoder(Mnemonic.bnez_n),
-                new Beqxx_n_Decoder(Mnemonic.bnez_n),
-                new Beqxx_n_Decoder(Mnemonic.bnez_n));
+                Instr2byte(Mnemonic.bnez_n, InstrClass.ConditionalTransfer, Rs, jrt),
+                Instr2byte(Mnemonic.bnez_n, InstrClass.ConditionalTransfer, Rs, jrt),
+                Instr2byte(Mnemonic.bnez_n, InstrClass.ConditionalTransfer, Rs, jrt),
+                Instr2byte(Mnemonic.bnez_n, InstrClass.ConditionalTransfer, Rs, jrt));
 
             var decoderS3 = new t_Rec(
-                new InstrDecoder(Mnemonic.ret_n, "", true),
+                Instr2byte(Mnemonic.ret_n, InstrClass.Transfer),
                 reserved,
                 reserved,
                 reserved,
@@ -879,7 +979,7 @@ namespace Reko.Arch.Xtensa
                 reserved);
 
             var decoderST3 = new r_Rec(
-                new InstrDecoder(Mnemonic.mov_n, "Rt,Rs", true),
+                Instr2byte(Mnemonic.mov_n, InstrClass.Linear, Rt,Rs),
                 reserved,
                 reserved,
                 reserved,
@@ -900,8 +1000,8 @@ namespace Reko.Arch.Xtensa
                 decoderS3);
 
             var decoderRT0 = new s_Rec(
-                new InstrDecoder(Mnemonic.neg, "Rr,Rt"),
-                new InstrDecoder(Mnemonic.abs, "Rr,Rt"),
+                Instr(Mnemonic.neg, Rr,Rt),
+                Instr(Mnemonic.abs, Rr,Rt),
                 reserved,
                 reserved,
                 
@@ -922,24 +1022,24 @@ namespace Reko.Arch.Xtensa
 
             var decoderRST0 = new Op2Decoder(
                 decoderST0,
-                new InstrDecoder(Mnemonic.and, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.or, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.xor, "Rr,Rs,Rt"),
+                Instr(Mnemonic.and, Rr,Rs,Rt),
+                Instr(Mnemonic.or, Rr,Rs,Rt),
+                Instr(Mnemonic.xor, Rr,Rs,Rt),
 
                 decoderST1,
                 null,
                 decoderRT0,
                 reserved,
 
-                new InstrDecoder(Mnemonic.add, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.addx2, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.addx4, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.addx8, "Rr,Rs,Rt"),
+                Instr(Mnemonic.add, Rr,Rs,Rt),
+                Instr(Mnemonic.addx2, Rr,Rs,Rt),
+                Instr(Mnemonic.addx4, Rr,Rs,Rt),
+                Instr(Mnemonic.addx8, Rr,Rs,Rt),
 
-                new InstrDecoder(Mnemonic.sub, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.subx2, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.subx4, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.subx8, "Rr,Rs,Rt"));
+                Instr(Mnemonic.sub, Rr,Rs,Rt),
+                Instr(Mnemonic.subx2, Rr,Rs,Rt),
+                Instr(Mnemonic.subx4, Rr,Rs,Rt),
+                Instr(Mnemonic.subx8, Rr,Rs,Rt));
 
             var decoderIMP = new r_Rec(
                 reserved,
@@ -960,65 +1060,65 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved,
                 reserved,
-                new InstrDecoder(Mnemonic.ldpte, ""));       //$TODO: doesn't appear to be documented
+                Instr(Mnemonic.ldpte));       //$TODO: doesn't appear to be documented
 
             var decoderRST1 = new Op2Decoder(
-                new InstrDecoder(Mnemonic.slli, "Rr,Rs,IS"),
-                new InstrDecoder(Mnemonic.slli, "Rr,Rs,IS"),
-                new InstrDecoder(Mnemonic.srai, "Rr,Rt,IR"),
-                new InstrDecoder(Mnemonic.srai, "Rr,Rt,IR"),
+                Instr(Mnemonic.slli, Rr,Rs,IS),
+                Instr(Mnemonic.slli, Rr,Rs,IS),
+                Instr(Mnemonic.srai, Rr,Rt,IR),
+                Instr(Mnemonic.srai, Rr,Rt,IR),
 
-                new InstrDecoder(Mnemonic.srli, "Rr,Rt,Is"),
+                Instr(Mnemonic.srli, Rr,Rt,Is),
                 reserved,
                 null,
                 null,
 
-                new InstrDecoder(Mnemonic.src, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.srl, "Rr,Rt"),
-                new InstrDecoder(Mnemonic.sll, "Rr,Rs"),
-                new InstrDecoder(Mnemonic.sra, "Rr,Rs"),
+                Instr(Mnemonic.src, Rr,Rs,Rt),
+                Instr(Mnemonic.srl, Rr,Rt),
+                Instr(Mnemonic.sll, Rr,Rs),
+                Instr(Mnemonic.sra, Rr,Rs),
 
-                new InstrDecoder(Mnemonic.mul16u, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.mul16s, "Rr,Rs,Rt"),
+                Instr(Mnemonic.mul16u, Rr,Rs,Rt),
+                Instr(Mnemonic.mul16s, Rr,Rs,Rt),
                 reserved,
                 decoderIMP);
 
             var decoderRST2 = new Op2Decoder(
-                new InstrDecoder(Mnemonic.andb, "Br,Bs,Bt"),
-                new InstrDecoder(Mnemonic.andbc, "Br,Bs,Bt"),
-                new InstrDecoder(Mnemonic.orb, "Br,Bs,Bt"),
-                new InstrDecoder(Mnemonic.orbc, "Br,Bs,Bt"),
+                Instr(Mnemonic.andb, Br,Bs,Bt),
+                Instr(Mnemonic.andbc, Br,Bs,Bt),
+                Instr(Mnemonic.orb, Br,Bs,Bt),
+                Instr(Mnemonic.orbc, Br,Bs,Bt),
 
-                new InstrDecoder(Mnemonic.xorb, "Br,Bs,Bt"),
+                Instr(Mnemonic.xorb, Br,Bs,Bt),
                 reserved,
                 reserved,
                 reserved,
 
-                new InstrDecoder(Mnemonic.mull, "Rr,Rs,Rt"),
+                Instr(Mnemonic.mull, Rr,Rs,Rt),
                 reserved,
                 null,
                 null,
 
-                new InstrDecoder(Mnemonic.quou, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.quos, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.remu, "Rr,Rs,Rt"),
-                new InstrDecoder(Mnemonic.rems, "Rr,Rs,Rt"));
+                Instr(Mnemonic.quou, Rr,Rs,Rt),
+                Instr(Mnemonic.quos, Rr,Rs,Rt),
+                Instr(Mnemonic.remu, Rr,Rs,Rt),
+                Instr(Mnemonic.rems, Rr,Rs,Rt));
 
             var decoderRST3 = new Op2Decoder(
-               new InstrDecoder(Mnemonic.rsr, "Rt,S"),
-               new InstrDecoder(Mnemonic.wsr, "Rt,S"),
+               Instr(Mnemonic.rsr, Rt,S),
+               Instr(Mnemonic.wsr, Rt,S),
                null,
                null,
 
-               new InstrDecoder(Mnemonic.min, "Rr,Rs,Rt"),
-               new InstrDecoder(Mnemonic.max, "Rr,Rs,Rt"),
-               new InstrDecoder(Mnemonic.minu, "Rr,Rs,Rt"),
-               new InstrDecoder(Mnemonic.maxu, "Rr,Rs,Rt"),
+               Instr(Mnemonic.min, Rr,Rs,Rt),
+               Instr(Mnemonic.max, Rr,Rs,Rt),
+               Instr(Mnemonic.minu, Rr,Rs,Rt),
+               Instr(Mnemonic.maxu, Rr,Rs,Rt),
 
-               new InstrDecoder(Mnemonic.moveqz, "Rr,Rs,Rt"),
-               new InstrDecoder(Mnemonic.movnez, "Rr,Rs,Rt"),
-               new InstrDecoder(Mnemonic.movltz, "Rr,Rs,Rt"),
-               new InstrDecoder(Mnemonic.movgez, "Rr,Rs,Rt"),
+               Instr(Mnemonic.moveqz, Rr,Rs,Rt),
+               Instr(Mnemonic.movnez, Rr,Rs,Rt),
+               Instr(Mnemonic.movltz, Rr,Rs,Rt),
+               Instr(Mnemonic.movgez, Rr,Rs,Rt),
 
                null,
                null,
@@ -1033,39 +1133,39 @@ namespace Reko.Arch.Xtensa
 
                 new ExtuiDecoder(),
                 new ExtuiDecoder(),
-                new InstrDecoder(Mnemonic.cust0, ""),
-                new InstrDecoder(Mnemonic.cust1, ""),
+                Instr(Mnemonic.cust0),
+                Instr(Mnemonic.cust1),
 
                 decoderLSCX,
                 decoderLSC4,
                 decoderFP0,
                 decoderFP1,
 
-                new InstrDecoder(Mnemonic.reserved, ""),
-                new InstrDecoder(Mnemonic.reserved, ""),
-                new InstrDecoder(Mnemonic.reserved, ""),
-                new InstrDecoder(Mnemonic.reserved, ""));
+                Instr(Mnemonic.reserved),
+                Instr(Mnemonic.reserved),
+                Instr(Mnemonic.reserved),
+                Instr(Mnemonic.reserved));
 
             var decoderLSAI = new r_Rec(
-                new InstrDecoder(Mnemonic.l8ui, "Rt,Rs,80"),
-                new InstrDecoder(Mnemonic.l16ui, "Rt,Rs,81"),
-                new InstrDecoder(Mnemonic.l32i, "Rt,Rs,82"),
+                Instr(Mnemonic.l8ui, Rt,Rs,I8_0),
+                Instr(Mnemonic.l16ui, Rt,Rs,I8_1),
+                Instr(Mnemonic.l32i, Rt,Rs,I8_2),
                 reserved,
 
-                new InstrDecoder(Mnemonic.s8i, "Rt,Rs,80"),
-                new InstrDecoder(Mnemonic.s16i, "Rt,Rs,81"),
-                new InstrDecoder(Mnemonic.s32i, "Rt,Rs,82"),
+                Instr(Mnemonic.s8i, Rt,Rs,I8_0),
+                Instr(Mnemonic.s16i, Rt,Rs,I8_1),
+                Instr(Mnemonic.s32i, Rt,Rs,I8_2),
                 null,
 
                 null,
-                new InstrDecoder(Mnemonic.l16si, "Rt,Rs,81"),
-                new InstrDecoder(Mnemonic.movi, "Rt,i"),
+                Instr(Mnemonic.l16si, Rt,Rs,I8_1),
+                Instr(Mnemonic.movi, Rt,i),
                 null,
 
-                new InstrDecoder(Mnemonic.addi, "Rt,Rs,m0"),
-                new InstrDecoder(Mnemonic.addmi, "Rt,Rs,m8"),
+                Instr(Mnemonic.addi, Rt,Rs,m0),
+                Instr(Mnemonic.addmi, Rt,Rs,m8),
                 null,
-                new InstrDecoder(Mnemonic.s32ri, "Rt,Rs,82"));
+                Instr(Mnemonic.s32ri, Rt,Rs,I8_2));
 
             var decoderLSCI = new r_Rec(
                 reserved,
@@ -1073,12 +1173,12 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved,
 
-                new InstrDecoder(Mnemonic.ssi, "Ft,Rs,82"),
+                Instr(Mnemonic.ssi, Ft,Rs,I8_2),
                 reserved,
                 reserved,
                 reserved,
 
-                new InstrDecoder(Mnemonic.lsiu, "Ft,Rs,82"),
+                Instr(Mnemonic.lsiu, Ft,Rs,I8_2),
                 reserved,
                 reserved,
                 reserved,
@@ -1172,15 +1272,15 @@ namespace Reko.Arch.Xtensa
                 reserved);
 
             var decoderCALLN = new n_Rec(
-                new InstrDecoder(Mnemonic.call0, "c"),
-                new InstrDecoder(Mnemonic.call4, "c"),
-                new InstrDecoder(Mnemonic.call8, "c"),
-                new InstrDecoder(Mnemonic.call12, "c"));
+                Instr(Mnemonic.call0, c),
+                Instr(Mnemonic.call4, c),
+                Instr(Mnemonic.call8, c),
+                Instr(Mnemonic.call12, c));
 
-            deocders = new Decoder[]
+            rootDecoder = new Decoder[]
             {
                 decoderQRST,
-                new InstrDecoder(Mnemonic.l32r, "Rt,p"),
+                Instr(Mnemonic.l32r, Rt,p),
                 decoderLSAI,
                 decoderLSCI,
 
@@ -1189,10 +1289,10 @@ namespace Reko.Arch.Xtensa
                 decoderSI,
                 decoderB,
 
-                new InstrDecoder(Mnemonic.l32i_n, "Rt,Rs,42", true),
-                new InstrDecoder(Mnemonic.s32i_n, "Rt,Rs,42", true),
-                new InstrDecoder(Mnemonic.add_n, "Rr,Rs,Rt", true),
-                new InstrDecoder(Mnemonic.addi_n, "Rr,Rs,a", true),
+                Instr2byte(Mnemonic.l32i_n,InstrClass.Linear, Rt,Rs,I4_2),
+                Instr2byte(Mnemonic.s32i_n,InstrClass.Linear, Rt,Rs,I4_2),
+                Instr2byte(Mnemonic.add_n, InstrClass.Linear, Rr,Rs,Rt),
+                Instr2byte(Mnemonic.addi_n,InstrClass.Linear, Rr,Rs,a),
 
                 decoderST2,
                 decoderST3,
