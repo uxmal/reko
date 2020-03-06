@@ -685,12 +685,11 @@ namespace Reko.Arch.Xtensa
             var decoderLSCX = new Op1Decoder(
                 Instr(Mnemonic.lsx, Fr,Rs,Rt),
                 Nyi("lsxu"),
-                null,
                 reserved,
                 reserved,
 
-                null,
-                null,
+                Nyi("ssx"),
+                Nyi("ssxu"),
                 reserved,
                 reserved,
 
@@ -726,50 +725,50 @@ namespace Reko.Arch.Xtensa
                 reserved);
 
             var decoderFP0 = new Op2Decoder(
-                Instr(Mnemonic.add_s, Fr,Fs,Ft),
-                Instr(Mnemonic.sub_s, Fr,Fs,Ft),
-                Instr(Mnemonic.mul_s, Fr,Fs,Ft),
+                Instr(Mnemonic.add_s, Fr, Fs, Ft),
+                Instr(Mnemonic.sub_s, Fr, Fs, Ft),
+                Instr(Mnemonic.mul_s, Fr, Fs, Ft),
                 reserved,
 
-                null,
-                null,
-                null,
-                null,
+                Nyi("madd.s"),
+                Nyi("msub.s"),
+                reserved,
+                reserved,
 
-                null,
-                null,
-                null,
-                Instr(Mnemonic.floor_s, Rr,Fs,It),
+                Nyi("round.s"),
+                Nyi("trunc.s"),
+                Instr(Mnemonic.floor_s, Rr, Fs, It),
+                Nyi("ceil.s"),
 
-                null,
-                null,
-                null,
-                null);
+                Nyi("float.s"),
+                Nyi("ufloat.s"),
+                Nyi("utrunc.s"),
+                Nyi("fp1op.s"));
 
             var decoderFP1 = new Op2Decoder(
                 reserved,
-                null,
-                null,
+                Nyi("un.s"),
+                Nyi("oeq.s"),
                 Instr(Mnemonic.ueq_s, Br,Fs,Ft),
 
-                null,
-                null,
-                null,
-                null,
+                Nyi("olt.s"),
+                Nyi("ult.s"),
+                Nyi("ole.s"),
+                Nyi("ule.s"),
 
                 Instr(Mnemonic.moveqz_s, Fr,Fs,Rt),
-                null,
-                null,
-                null,
+                Instr(Mnemonic.movnez_s, Fr,Fs,Rt),
+                Instr(Mnemonic.movltz_s, Fr,Fs,Rt),
+                Instr(Mnemonic.movgez_s, Fr,Fs,Rt),
 
-                null,
-                null,
+                Nyi("movf.s"),
+                Nyi("movt.s"),
                 reserved,
                 reserved);
 
             var decoderJR = new n_Rec(
                 Instr2byte(Mnemonic.ret, InstrClass.Transfer),
-                null,
+                Nyi("retw"),
                 Instr(Mnemonic.jx, Rs),
                 reserved);
 
@@ -781,39 +780,39 @@ namespace Reko.Arch.Xtensa
 
             var decoderSNM0 = new m_Rec(
                 Instr(Mnemonic.ill, InstrClass.Invalid|InstrClass.Zero),
-                null,
+                reserved,
                 decoderJR,
                 decoderCALLX);
 
             var decoderSYNC = new t_Rec(
                 Instr(Mnemonic.isync),
-                null,
-                null,
-                null,
+                Nyi("rsync"),
+                Nyi("esync"),
+                Nyi("dsync"),
 
-                null,
-                null,
-                null,
-                null,
+                reserved,
+                reserved,
+                reserved,
+                reserved,
 
-                null,
-                null,
-                null,
-                null,
+                Nyi("excw"),
+                reserved,
+                reserved,
+                reserved,
 
                 Instr(Mnemonic.memw),
-                null,
-                null,
-                null);
+                Nyi("extw"),
+                reserved,
+                reserved);
 
             var decoderRFET = new s_Rec(
                 Instr(Mnemonic.rfe),
-                null,
-                null,
+                Nyi("rfue"),
+                Nyi("rfde"),
                 reserved,
 
-                null,
-                null,
+                Nyi("rfwo"),
+                Nyi("rfwu"),
                 reserved,
                 reserved,
 
@@ -830,7 +829,7 @@ namespace Reko.Arch.Xtensa
             var decoderRFEI = new t_Rec(
                 decoderRFET,
                 Instr(Mnemonic.rfi, Is),
-                null,
+                Nyi("rfme"),
                 reserved,
 
                 reserved,
@@ -862,8 +861,8 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.bgei, Rs,bs,j));
 
             var decoderBI1 = new m_Rec(
-                null,
-                null,
+                Nyi("entry"),
+                Nyi("Table B1"),
                 Instr(Mnemonic.bltui, Rs,bu,j),
                 Instr(Mnemonic.bgeui, Rs,bu,j));
 
@@ -896,37 +895,37 @@ namespace Reko.Arch.Xtensa
 
             var decoderST0 = new r_Rec(
                 decoderSNM0,
-                null,
+                Nyi("movsp"),
                 decoderSYNC,
                 decoderRFEI,
 
                 Instr(Mnemonic.@break, Is,It),
-                null,
+                Nyi("syscall"),
                 Instr(Mnemonic.rsil, Rt,Is),
-                null,
+                Nyi("waiti"),
 
-                null,
-                null,
-                null,
-                null,
+                Nyi("any4"),
+                Nyi("all4"),
+                Nyi("any8"),
+                Nyi("all8"),
 
-                null,
-                null,
-                null,
-                null);
+                reserved,
+                reserved,
+                reserved,
+                reserved);
 
             var decoderST1 = new r_Rec(
                 Instr(Mnemonic.ssr, Rs),
                 Instr(Mnemonic.ssl, Rs),
                 Instr(Mnemonic.ssa8l, Rs),
-                null,
+                Nyi("ssa8b"),
 
                 Instr(Mnemonic.ssai, II),
                 reserved,
-                null,
-                null,
+                Nyi("rer"),
+                Nyi("wer"),
 
-                null,
+                Nyi("rotw"),
                 reserved,
                 reserved,
                 reserved,
@@ -1027,7 +1026,7 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.xor, Rr,Rs,Rt),
 
                 decoderST1,
-                null,
+                Nyi("Table TLB"),
                 decoderRT0,
                 reserved,
 
@@ -1070,8 +1069,8 @@ namespace Reko.Arch.Xtensa
 
                 Instr(Mnemonic.srli, Rr,Rt,Is),
                 reserved,
-                null,
-                null,
+                Nyi("xsr"),
+                Nyi("Table ACCER"),
 
                 Instr(Mnemonic.src, Rr,Rs,Rt),
                 Instr(Mnemonic.srl, Rr,Rt),
@@ -1096,8 +1095,8 @@ namespace Reko.Arch.Xtensa
 
                 Instr(Mnemonic.mull, Rr,Rs,Rt),
                 reserved,
-                null,
-                null,
+                Nyi("muluh"),
+                Nyi("mulsh"),
 
                 Instr(Mnemonic.quou, Rr,Rs,Rt),
                 Instr(Mnemonic.quos, Rr,Rs,Rt),
@@ -1107,8 +1106,8 @@ namespace Reko.Arch.Xtensa
             var decoderRST3 = new Op2Decoder(
                Instr(Mnemonic.rsr, Rt,S),
                Instr(Mnemonic.wsr, Rt,S),
-               null,
-               null,
+               Nyi("sext"),
+               Nyi("clamps"),
 
                Instr(Mnemonic.min, Rr,Rs,Rt),
                Instr(Mnemonic.max, Rr,Rs,Rt),
@@ -1120,10 +1119,10 @@ namespace Reko.Arch.Xtensa
                Instr(Mnemonic.movltz, Rr,Rs,Rt),
                Instr(Mnemonic.movgez, Rr,Rs,Rt),
 
-               null,
-               null,
-               null,
-               null);
+               Nyi("movf"),
+               Nyi("movt"),
+               Nyi("rur"),
+               Nyi("wur"));
 
             var decoderQRST = new Op1Decoder(
                 decoderRST0,
@@ -1155,16 +1154,16 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.s8i, Rt,Rs,I8_0),
                 Instr(Mnemonic.s16i, Rt,Rs,I8_1),
                 Instr(Mnemonic.s32i, Rt,Rs,I8_2),
-                null,
+                Nyi("Table CACHE"),
 
-                null,
+                reserved,
                 Instr(Mnemonic.l16si, Rt,Rs,I8_1),
                 Instr(Mnemonic.movi, Rt,i),
-                null,
+                Nyi("l32ai"),
 
                 Instr(Mnemonic.addi, Rt,Rs,m0),
                 Instr(Mnemonic.addmi, Rt,Rs,m8),
-                null,
+                Nyi("s32c1i"),
                 Instr(Mnemonic.s32ri, Rt,Rs,I8_2));
 
             var decoderLSCI = new r_Rec(
@@ -1199,10 +1198,10 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved,
 
-                null,
-                null,
-                null,
-                null,
+                Nyi("MULA.DA.LL.LDINC"),
+                Nyi("MULA.DA.HL.LDINC"),
+                Nyi("MULA.DA.LH.LDINC"),
+                Nyi("MULA.DA.HH.LDINC"),
 
                 reserved,
                 reserved,
@@ -1214,20 +1213,20 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved,
 
-                null,
-                null,
-                null,
-                null,
+                Nyi("MUL.DD.LL"),
+                Nyi("MUL.DD.HL"),
+                Nyi("MUL.DD.LH"),
+                Nyi("MUL.DD.HH"),
 
-                null,
-                null,
-                null,
-                null,
+                Nyi("MULA.DD.LL"),
+                Nyi("MULA.DD.HL"),
+                Nyi("MULA.DD.LH"),
+                Nyi("MULA.DD.HH"),
 
-                null,
-                null,
-                null,
-                null);
+                Nyi("MULS.DD.LL"),
+                Nyi("MULS.DD.HL"),
+                Nyi("MULS.DD.LH"),
+                Nyi("MULS.DD.HH"));
 
             var decoderMACC = new Op1Decoder(
                 reserved,
@@ -1252,16 +1251,16 @@ namespace Reko.Arch.Xtensa
 
             var decoderMAC16 = new Op2Decoder(
                 decoderMACID,
-                null,
+                Nyi("Table MACCD"),
                 decoderMACDD,
-                null,
+                Nyi("Table MACAD"),
 
-                null,
-                null,
-                null,
-                null,
+                Nyi("Table MACIA"),
+                Nyi("Table MACCA"),
+                Nyi("Table MACDA"),
+                Nyi("Table MACAA"),
 
-                null,
+                Nyi("Table MACI"),
                 decoderMACC,
                 reserved,
                 reserved,

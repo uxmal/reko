@@ -152,5 +152,8 @@ namespace Reko.Arch.Xtensa
         mul_s,
         sub_s,
         ueq_s,
+        movnez_s,
+        movltz_s,
+        movgez_s,
     }
 }
