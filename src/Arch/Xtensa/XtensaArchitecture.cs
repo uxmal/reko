@@ -105,12 +105,27 @@ namespace Reko.Arch.Xtensa
             Registers.f15,
         };
 
+        private static RegisterStorage[] mac16regs = new RegisterStorage[4]
+        {
+            Registers.mr0,
+            Registers.mr1,
+            Registers.mr2,
+            Registers.mr3,
+        };
+
         private static RegisterStorage[] allRegs =
             aregs.Concat(bregs).Concat(fregs).ToArray();
 
         private static Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
         {
+            { 0x00, Registers.LBEG },
+            { 0x01, Registers.LEND },
+            { 0x02, Registers.LCOUNT },
             { 0x03, Registers.SAR },
+            { 0x0C, Registers.SCOMPARE1 },
+            { 0x10, Registers.ACCLO },
+            { 0x11, Registers.ACCHI },
+
             { 0xA2, new RegisterStorage("CCOUNT", 0x1A2, 0, PrimitiveType.Word32) },
             { 0xA3, new RegisterStorage("INTENABLE", 0x1A3, 0, PrimitiveType.Word32) },
             { 0xB1, new RegisterStorage("EPC1", 0x1B1, 0, PrimitiveType.Ptr32) },
@@ -132,6 +147,10 @@ namespace Reko.Arch.Xtensa
             { 0xEE, new RegisterStorage("EXCVADDR", 0x1EE, 0, PrimitiveType.Ptr32) },
             { 0xF0, new RegisterStorage("CCOMPARE0", 0x1F0, 0, PrimitiveType.Word32) },
         };
+
+        private static readonly RegisterStorage[] uregs = Enumerable.Range(0, 0x100)
+            .Select(n => new RegisterStorage($"user{n}", 0x800 + n, 0, PrimitiveType.Word32))
+            .ToArray();
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -181,9 +200,25 @@ namespace Reko.Arch.Xtensa
             return fregs[i];
         }
 
+        public RegisterStorage GetMac16Register(int i)
+        {
+            if (0 <= i && i < mac16regs.Length)
+                return mac16regs[i];
+            else
+                return null;
+        }
+
         public RegisterStorage GetSpecialRegister(int sr)
         {
-            return sregs[sr];
+            if (sregs.TryGetValue(sr, out var sreg))
+                return sreg;
+            else
+                return null;
+        }
+
+        public RegisterStorage GetUserRegister(int ur)
+        {
+            return uregs[ur];
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)

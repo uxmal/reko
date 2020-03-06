@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -39,6 +39,15 @@ namespace Reko.Arch.Xtensa
                 RewriteOp(instr.Operands[1])));
         }
 
+        private void RewriteCacheFn(string fnName)
+        {
+            var ptr = RewriteOp(instr.Operands[0]);
+            var off = RewriteOp(instr.Operands[1]);
+            var location = m.IAdd(ptr, off);
+            location.DataType = PrimitiveType.Ptr32;
+            m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, location));
+        }
+
         private void RewriteIll()
         {
             var c = new ProcedureCharacteristics
@@ -46,6 +55,19 @@ namespace Reko.Arch.Xtensa
                 Terminates = true,
             };
             m.SideEffect(host.PseudoProcedure("__ill", c, VoidType.Instance));
+        }
+
+        private void RewriteL32ai()
+        {
+            var ptr = m.IAdd(
+                RewriteOp(instr.Operands[1]),
+                RewriteOp(instr.Operands[2]));
+            ptr.DataType = PrimitiveType.Ptr32;
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, host.PseudoProcedure(
+                "__l32ai",
+                PrimitiveType.Word32,
+                ptr));
         }
 
         private void RewriteL32e()
@@ -62,6 +84,26 @@ namespace Reko.Arch.Xtensa
                         offset)));
         }
 
+        private void RewriteRsync()
+        {
+            m.SideEffect(host.PseudoProcedure("__rsync", VoidType.Instance));
+        }
+
+        private void RewriteS32c1i()
+        {
+            var ea = m.IAdd(
+                RewriteOp(instr.Operands[1]),
+                RewriteOp(instr.Operands[2]));
+            ea.DataType = new Pointer(PrimitiveType.Word32, 32);
+            var scomp = binder.EnsureRegister(Registers.SCOMPARE1);
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, host.PseudoProcedure(
+                "__s32c1i",
+                PrimitiveType.Word32,
+                ea,
+                scomp));
+        }
+
         private void RewriteS32e()
         {
             var src = RewriteOp(this.instr.Operands[0]);
@@ -76,9 +118,9 @@ namespace Reko.Arch.Xtensa
                     src));
         }
 
-        private void RewriteReserved()
+        private void RewriteSyscall()
         {
-            m.SideEffect(host.PseudoProcedure("__reserved", VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance));
         }
 
         private void RewriteWsr()
@@ -86,6 +128,13 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(dasm.Current.Operands[1]);
             var src = RewriteOp(dasm.Current.Operands[0]);
             m.Assign(dst, src);
+        }
+
+        private void RewriteXsr()
+        {
+            var src = RewriteOp(dasm.Current.Operands[1]);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            m.Assign(dst, host.PseudoProcedure("__xsr", PrimitiveType.Word32, dst, src));
         }
     }
 }

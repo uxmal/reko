@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Text;
 using Reko.Core.Expressions;
 using System.Linq;
+using Reko.Core.Lib;
 
 #pragma warning disable IDE1006 // Naming Styles
 
@@ -108,19 +109,9 @@ namespace Reko.Arch.Xtensa
             state.imm8 = b2;
             state.imm12 = (ushort)((b2 << 4) | (b1 >> 4));
             state.imm16 = (ushort)((b2 << 8) | b1);
-            state.offset = (((b2 << 16) | (b1 << 8) | b0) >> 6);
+            state.offset = (int) Bits.SignExtend((ulong)((b2 << 16) | (b1 << 8) | b0) >> 6, 18);
 
-            XtensaInstruction instr;
-            try
-            {
-                instr = rootDecoder[state.op0].Decode(0, this);
-            }
-            catch
-            {
-                Debug.Print("instr: {0:X2} {1:X2} {2:X2}", b0, b1, b2);
-                Debug.Print("{0}", state);
-                instr = CreateInvalidInstruction();
-            };
+            var instr = rootDecoder[state.op0].Decode(0, this);
             instr.Address = state.addr;
             instr.Length = (int)(this.rdr.Address - state.addr);
             return instr;
@@ -204,15 +195,72 @@ namespace Reko.Arch.Xtensa
             return true;
         }
 
+        // MAC16 register
+
+        private static bool Mr(uint _, XtensaDisassembler dasm)
+        {
+            var mac16reg = dasm.arch.GetMac16Register(dasm.state.r & 3);
+            if (mac16reg == null)
+                return false;
+            dasm.ops.Add(new RegisterOperand(mac16reg));
+            return true;
+        }
+
+        // Mr operand can be m0 or m1.
+        private static bool Mr_01(uint _, XtensaDisassembler dasm)
+        {
+            var mac16reg = dasm.arch.GetMac16Register((dasm.state.r >> 2) & 1);
+            if (mac16reg == null)
+                return false;
+            dasm.ops.Add(new RegisterOperand(mac16reg));
+            return true;
+        }
+
+        private static bool Mt(uint wInstr, XtensaDisassembler dasm)
+        {
+            var mac16reg = dasm.arch.GetMac16Register(dasm.state.t);
+            if (mac16reg == null)
+                return false;
+            dasm.ops.Add(new RegisterOperand(mac16reg));
+            return true;
+        }
+
+        // Mt operand can be m2 or m3.
+
+        private static bool Mt_23(uint wInstr, XtensaDisassembler dasm)
+        {
+            var mac16reg = dasm.arch.GetMac16Register((dasm.state.t >> 2) | 0b10);
+            if (mac16reg == null)
+                return false;
+            dasm.ops.Add(new RegisterOperand(mac16reg));
+            return true;
+        }
+
         // Special register
         private static bool S(uint wInstr, XtensaDisassembler dasm)
         {
-            var reg = dasm.arch.GetSpecialRegister((dasm.state.r << 4) | dasm.state.s); ;
+            //$REVIEW: Is this correct in bigendian?
+            var reg = dasm.arch.GetSpecialRegister((dasm.state.r << 4) | dasm.state.s);
+            if (reg == null)
+                return false;
             dasm.ops.Add(new RegisterOperand(reg));
             return true;
-
         }
 
+        // User register
+        private static bool Ust(uint wINstr, XtensaDisassembler dasm)
+        {
+            var reg = dasm.arch.GetUserRegister((dasm.state.s << 4) | dasm.state.t);
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
+
+        private static bool Usr(uint wINstr, XtensaDisassembler dasm)
+        {
+            var reg = dasm.arch.GetUserRegister((dasm.state.s << 4) | dasm.state.r);
+            dasm.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
 
         // 'e'
         private static bool e(uint wInstr, XtensaDisassembler dasm)
@@ -237,6 +285,19 @@ namespace Reko.Arch.Xtensa
             return true;
         }
 
+        private static Mutator<XtensaDisassembler> Bs_MultipleOf(int multiple)
+        {
+            return (uint wInstr, XtensaDisassembler dasm) =>
+            {
+                var iReg = dasm.state.s;
+                if (iReg % multiple != 0)
+                    return false;
+                var reg = dasm.arch.GetBoolRegister(iReg);
+                dasm.ops.Add(new RegisterOperand(reg));
+                return true;
+            };
+        }
+        
         private static bool Bt(uint wInstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetBoolRegister(dasm.state.t);
@@ -256,6 +317,73 @@ namespace Reko.Arch.Xtensa
         private static bool It(uint wInstr, XtensaDisassembler dasm)
         {
             var op = ImmediateOperand.Byte(dasm.state.t);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Immediate from t field, offset by 7.
+        private static bool It_7(uint wInstr, XtensaDisassembler dasm)
+        {
+            var n = (byte) (dasm.state.t + 7);
+            var op = ImmediateOperand.Byte(n);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Immediate from t field, offset by -8.
+        private static bool It_m8(uint wInstr, XtensaDisassembler dasm)
+        {
+            var n = (sbyte) (dasm.state.t - 8);
+            var op = ImmediateOperand.SByte(n);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool Iop2(uint wInstr, XtensaDisassembler dasm)
+        {
+            var n = dasm.state.op2;
+            var op = ImmediateOperand.Byte(n);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool Iop2_4(uint wInstr, XtensaDisassembler dasm)
+        {
+            var n = dasm.state.op2 << 4;
+            var op = ImmediateOperand.Byte((byte)n);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+
+        // Floating point constant (in 't' field)
+
+        private static readonly float[] floatImms = new float[16]
+        {
+            1.0F,
+            2.0F,
+            4.0F,
+            8.0F,
+
+            16.0F,
+            32.0F,
+            64.0F,
+            128.0F,
+
+            256.0F,
+            512.0F,
+            1024.0F,
+            2048.0F,
+
+            4096.0F,
+            8192.0F,
+            16384.0F,
+            32768.0F,
+        };
+
+        private static bool Ift(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = new ImmediateOperand(Constant.Real32(floatImms[dasm.state.t]));
             dasm.ops.Add(op);
             return true;
         }
@@ -310,6 +438,13 @@ namespace Reko.Arch.Xtensa
         private static bool I8_2(uint wInstr, XtensaDisassembler dasm)
         {
             var op = ImmediateOperand.UInt16((ushort) (dasm.state.imm8 << 2));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool I12_3(uint wInstr, XtensaDisassembler dasm)
+        {
+            var op = ImmediateOperand.UInt16((ushort) (dasm.state.imm12 << 3));
             dasm.ops.Add(op);
             return true;
         }
@@ -376,6 +511,14 @@ namespace Reko.Arch.Xtensa
             dasm.ops.Add(AddressOperand.Ptr32((uint) dst));
             return true;
         }
+
+        private static bool ju(uint wInstr, XtensaDisassembler dasm)
+        {
+            uint dst = dasm.state.addr.ToUInt32() + (byte) dasm.state.imm8 + 4;
+            dasm.ops.Add(AddressOperand.Ptr32(dst));
+            return true;
+        }
+
 
         private static bool jrt(uint wInstr, XtensaDisassembler dasm)
         {
@@ -453,11 +596,11 @@ namespace Reko.Arch.Xtensa
         }
 
 
-        public class r_Rec : Decoder
+        public class r_Decoder : Decoder
         {
             private readonly Decoder[] decoders;
 
-            public r_Rec(params Decoder[] decoders)
+            public r_Decoder(params Decoder[] decoders)
             {
                 Debug.Assert(decoders.Length == 16);
                 this.decoders = decoders;
@@ -469,11 +612,11 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class m_Rec : Decoder
+        public class m_Decoder : Decoder
         {
             private readonly Decoder[] decoders;
 
-            public m_Rec(params Decoder[] decoders)
+            public m_Decoder(params Decoder[] decoders)
             {
                 Debug.Assert(decoders.Length == 4);
                 this.decoders = decoders;
@@ -517,11 +660,11 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public class t_Rec : Decoder
+        public class t_Decoder : Decoder
         {
             private readonly Decoder[] decoders;
 
-            public t_Rec(params Decoder[] decoders)
+            public t_Decoder(params Decoder[] decoders)
             {
                 Debug.Assert(decoders.Length == 16);
                 this.decoders = decoders;
@@ -684,12 +827,12 @@ namespace Reko.Arch.Xtensa
 
             var decoderLSCX = new Op1Decoder(
                 Instr(Mnemonic.lsx, Fr,Rs,Rt),
-                Nyi("lsxu"),
+                Instr(Mnemonic.lsxu, Fr,Rs,Rt),
                 reserved,
                 reserved,
 
-                Nyi("ssx"),
-                Nyi("ssxu"),
+                Instr(Mnemonic.ssx, Fr, Rs, Rt),
+                Instr(Mnemonic.ssxu, Fr, Rs, Rt),
                 reserved,
                 reserved,
 
@@ -724,95 +867,110 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
+            var decoderFP1OP = new t_Decoder(
+                Instr(Mnemonic.mov_s, Fr, Fs),
+                Instr(Mnemonic.abs_s, Fr, Fs),
+                reserved,
+                reserved,
+                
+                Instr(Mnemonic.rfr, Rr, Fs),
+                Instr(Mnemonic.wfr, Fr, Rs),
+                Instr(Mnemonic.neg_s, Fr, Fs),
+                reserved,
+
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved
+                );
+
             var decoderFP0 = new Op2Decoder(
                 Instr(Mnemonic.add_s, Fr, Fs, Ft),
                 Instr(Mnemonic.sub_s, Fr, Fs, Ft),
                 Instr(Mnemonic.mul_s, Fr, Fs, Ft),
                 reserved,
 
-                Nyi("madd.s"),
-                Nyi("msub.s"),
+                Instr(Mnemonic.madd_s, Fr, Fs, Ft),
+                Instr(Mnemonic.msub_s, Fr, Fs, Ft),
                 reserved,
                 reserved,
 
-                Nyi("round.s"),
-                Nyi("trunc.s"),
-                Instr(Mnemonic.floor_s, Rr, Fs, It),
-                Nyi("ceil.s"),
+                Instr(Mnemonic.round_s, Rr, Fs, Ift),
+                Instr(Mnemonic.trunc_s, Rr, Fs, Ift),
+                Instr(Mnemonic.floor_s, Rr, Fs, Ift),
+                Instr(Mnemonic.ceil_s, Rr, Fs, Ift),
 
-                Nyi("float.s"),
-                Nyi("ufloat.s"),
-                Nyi("utrunc.s"),
-                Nyi("fp1op.s"));
+                Instr(Mnemonic.float_s, Fr, Rs, Ift),
+                Instr(Mnemonic.ufloat_s, Fr, Rs, Ift),
+                Instr(Mnemonic.utrunc_s, Rr, Fs, Ift),
+                decoderFP1OP);
 
             var decoderFP1 = new Op2Decoder(
                 reserved,
-                Nyi("un.s"),
-                Nyi("oeq.s"),
+                Instr(Mnemonic.un_s, Br,Fs,Ft),
+                Instr(Mnemonic.oeq_s, Br,Fs,Ft),
                 Instr(Mnemonic.ueq_s, Br,Fs,Ft),
 
-                Nyi("olt.s"),
-                Nyi("ult.s"),
-                Nyi("ole.s"),
-                Nyi("ule.s"),
+                Instr(Mnemonic.olt_s, Br,Fs,Ft),
+                Instr(Mnemonic.ult_s, Br,Fs,Ft),
+                Instr(Mnemonic.ole_s, Br,Fs,Ft),
+                Instr(Mnemonic.ule_s, Br,Fs,Ft),
 
                 Instr(Mnemonic.moveqz_s, Fr,Fs,Rt),
                 Instr(Mnemonic.movnez_s, Fr,Fs,Rt),
                 Instr(Mnemonic.movltz_s, Fr,Fs,Rt),
                 Instr(Mnemonic.movgez_s, Fr,Fs,Rt),
 
-                Nyi("movf.s"),
-                Nyi("movt.s"),
+                Instr(Mnemonic.movf_s, Fr,Fs,Bt),
+                Instr(Mnemonic.movt_s, Fr,Fs,Bt),
                 reserved,
                 reserved);
 
             var decoderJR = new n_Rec(
-                Instr2byte(Mnemonic.ret, InstrClass.Transfer),
-                Nyi("retw"),
-                Instr(Mnemonic.jx, Rs),
+                Instr(Mnemonic.ret, InstrClass.Transfer),
+                Instr(Mnemonic.retw, InstrClass.Transfer),
+                Instr(Mnemonic.jx, InstrClass.Transfer, Rs),
                 reserved);
 
             var decoderCALLX = new n_Rec(
-                Instr(Mnemonic.callx0, Rs),
-                Instr(Mnemonic.callx4, Rs),
-                Instr(Mnemonic.callx8, Rs),
-                Instr(Mnemonic.callx12, Rs));
+                Instr(Mnemonic.callx0,  InstrClass.Transfer|InstrClass.Call, Rs),
+                Instr(Mnemonic.callx4,  InstrClass.Transfer|InstrClass.Call, Rs),
+                Instr(Mnemonic.callx8,  InstrClass.Transfer|InstrClass.Call, Rs),
+                Instr(Mnemonic.callx12, InstrClass.Transfer|InstrClass.Call, Rs));
 
-            var decoderSNM0 = new m_Rec(
+            var decoderSNM0 = new m_Decoder(
                 Instr(Mnemonic.ill, InstrClass.Invalid|InstrClass.Zero),
                 reserved,
                 decoderJR,
                 decoderCALLX);
 
-            var decoderSYNC = new t_Rec(
+            var decoderSYNC = new t_Decoder(
                 Instr(Mnemonic.isync),
-                Nyi("rsync"),
-                Nyi("esync"),
-                Nyi("dsync"),
+                Instr(Mnemonic.rsync),
+                Instr(Mnemonic.esync),
+                Instr(Mnemonic.dsync),
 
                 reserved,
                 reserved,
                 reserved,
                 reserved,
 
-                Nyi("excw"),
+                Instr(Mnemonic.excw),
                 reserved,
                 reserved,
                 reserved,
 
                 Instr(Mnemonic.memw),
-                Nyi("extw"),
+                Instr(Mnemonic.extw),
                 reserved,
                 reserved);
 
             var decoderRFET = new s_Rec(
                 Instr(Mnemonic.rfe),
-                Nyi("rfue"),
-                Nyi("rfde"),
+                Instr(Mnemonic.rfue),
+                Instr(Mnemonic.rfde),
                 reserved,
 
-                Nyi("rfwo"),
-                Nyi("rfwu"),
+                Instr(Mnemonic.rfwo),
+                Instr(Mnemonic.rfwu),
                 reserved,
                 reserved,
 
@@ -826,10 +984,10 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
-            var decoderRFEI = new t_Rec(
+            var decoderRFEI = new t_Decoder(
                 decoderRFET,
                 Instr(Mnemonic.rfi, Is),
-                Nyi("rfme"),
+                Instr(Mnemonic.rfme),
                 reserved,
 
                 reserved,
@@ -848,23 +1006,44 @@ namespace Reko.Arch.Xtensa
                 reserved);
 
 
-            var decoderBZ = new m_Rec(
+            var decoderBZ = new m_Decoder(
                 new bz_Decoder(Mnemonic.beqz),
                 new bz_Decoder(Mnemonic.bnez),
                 new bz_Decoder(Mnemonic.bltz),
                 new bz_Decoder(Mnemonic.bgez));
 
-            var decoderBI0 = new m_Rec(
-                Instr(Mnemonic.beqi, Rs,bs,j),
-                Instr(Mnemonic.bnei, Rs,bs,j),
-                Instr(Mnemonic.blti, Rs,bs,j),
-                Instr(Mnemonic.bgei, Rs,bs,j));
+            var decoderBI0 = new m_Decoder(
+                Instr(Mnemonic.beqi, InstrClass.ConditionalTransfer, Rs,bs,j),
+                Instr(Mnemonic.bnei, InstrClass.ConditionalTransfer, Rs,bs,j),
+                Instr(Mnemonic.blti, InstrClass.ConditionalTransfer, Rs,bs,j),
+                Instr(Mnemonic.bgei, InstrClass.ConditionalTransfer, Rs,bs,j));
 
-            var decoderBI1 = new m_Rec(
-                Nyi("entry"),
-                Nyi("Table B1"),
-                Instr(Mnemonic.bltui, Rs,bu,j),
-                Instr(Mnemonic.bgeui, Rs,bu,j));
+            var decoderB1 = new r_Decoder(
+                Instr(Mnemonic.bf, Bs, j),
+                Instr(Mnemonic.bt, Bs, j),
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                Instr(Mnemonic.loop, Rs,ju),
+                Instr(Mnemonic.loopnez, Rs,ju),
+                Instr(Mnemonic.loopgtz, Rs,ju),
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+
+            var decoderBI1 = new m_Decoder(
+                Instr(Mnemonic.entry, Rs, I12_3),
+                decoderB1,
+                Instr(Mnemonic.bltui, InstrClass.ConditionalTransfer, Rs,bu,j),
+                Instr(Mnemonic.bgeui, InstrClass.ConditionalTransfer, Rs,bu,j));
 
             var decoderSI = new n_Rec(
                 Instr(Mnemonic.j, J),
@@ -872,60 +1051,60 @@ namespace Reko.Arch.Xtensa
                 decoderBI0,
                 decoderBI1);
 
-            var decoderB = new r_Rec(
-               Instr(Mnemonic.bnone, Rs,Rt,j),
-               Instr(Mnemonic.beq, Rs,Rt,j),
-               Instr(Mnemonic.blt, Rs,Rt,j),
-               Instr(Mnemonic.bltu, Rs,Rt,j),
+            var decoderB = new r_Decoder(
+               Instr(Mnemonic.bnone, InstrClass.ConditionalTransfer, Rs,Rt,j),
+               Instr(Mnemonic.beq, InstrClass.ConditionalTransfer, Rs,Rt,j),
+               Instr(Mnemonic.blt, InstrClass.ConditionalTransfer, Rs,Rt,j),
+               Instr(Mnemonic.bltu, InstrClass.ConditionalTransfer, Rs,Rt,j),
 
-               Instr(Mnemonic.ball, Rs,Rt,j),
-               Instr(Mnemonic.bbc, Rs,Rt,j),
+               Instr(Mnemonic.ball, InstrClass.ConditionalTransfer, Rs, Rt,j),
+               Instr(Mnemonic.bbc,  InstrClass.ConditionalTransfer, Rs, Rt,j),
                Instr(Mnemonic.bbci, InstrClass.ConditionalTransfer, Rs, Irt, j),
                Instr(Mnemonic.bbci, InstrClass.ConditionalTransfer, Rs, Irt, j),
 
-               Instr(Mnemonic.bany, Rs,Rt,j),
-               Instr(Mnemonic.bne, Rs,Rt,j),
-               Instr(Mnemonic.bge, Rs,Rt,j),
-               Instr(Mnemonic.bgeu, Rs,Rt,j),
+               Instr(Mnemonic.bany, InstrClass.ConditionalTransfer, Rs,Rt,j),
+               Instr(Mnemonic.bne, InstrClass.ConditionalTransfer, Rs,Rt,j),
+               Instr(Mnemonic.bge, InstrClass.ConditionalTransfer, Rs,Rt,j),
+               Instr(Mnemonic.bgeu, InstrClass.ConditionalTransfer, Rs,Rt,j),
 
-               Instr(Mnemonic.bnall, Rs,Rt,j),
-               Instr(Mnemonic.bbs, Rs,Rt,j),
+               Instr(Mnemonic.bnall, InstrClass.ConditionalTransfer, Rs,Rt,j),
+               Instr(Mnemonic.bbs,  InstrClass.ConditionalTransfer, Rs,Rt,j),
                Instr(Mnemonic.bbsi, InstrClass.ConditionalTransfer, Rs, Irt, j),
                Instr(Mnemonic.bbsi, InstrClass.ConditionalTransfer, Rs, Irt, j));
 
-            var decoderST0 = new r_Rec(
+            var decoderST0 = new r_Decoder(
                 decoderSNM0,
-                Nyi("movsp"),
+                Instr(Mnemonic.movsp, Rt, Rs),
                 decoderSYNC,
                 decoderRFEI,
 
                 Instr(Mnemonic.@break, Is,It),
-                Nyi("syscall"),
+                Instr(Mnemonic.syscall, InstrClass.Transfer|InstrClass.Call),
                 Instr(Mnemonic.rsil, Rt,Is),
-                Nyi("waiti"),
+                Instr(Mnemonic.waiti, Is),
 
-                Nyi("any4"),
-                Nyi("all4"),
-                Nyi("any8"),
-                Nyi("all8"),
+                Instr(Mnemonic.any4, Bt, Bs_MultipleOf(4)),
+                Instr(Mnemonic.all4, Bt, Bs_MultipleOf(4)),
+                Instr(Mnemonic.any8, Bt, Bs_MultipleOf(8)),
+                Instr(Mnemonic.all8, Bt, Bs_MultipleOf(8)),
 
                 reserved,
                 reserved,
                 reserved,
                 reserved);
 
-            var decoderST1 = new r_Rec(
+            var decoderST1 = new r_Decoder(
                 Instr(Mnemonic.ssr, Rs),
                 Instr(Mnemonic.ssl, Rs),
                 Instr(Mnemonic.ssa8l, Rs),
-                Nyi("ssa8b"),
+                Instr(Mnemonic.ssa8b, Rs),
 
                 Instr(Mnemonic.ssai, II),
                 reserved,
-                Nyi("rer"),
-                Nyi("wer"),
+                Instr(Mnemonic.rer, Rt,Rs),
+                Instr(Mnemonic.wer, Rt,Rs),
 
-                Nyi("rotw"),
+                Instr(Mnemonic.rotw, It_m8),
                 reserved,
                 reserved,
                 reserved,
@@ -935,7 +1114,7 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.nsa, Rt,Rs),
                 Instr(Mnemonic.nsau, Rt,Rs));
 
-            var decoderST2 = new t_Rec(
+            var decoderST2 = new t_Decoder(
                 new Movi_nDecoder(),
                 new Movi_nDecoder(),
                 new Movi_nDecoder(),
@@ -956,7 +1135,7 @@ namespace Reko.Arch.Xtensa
                 Instr2byte(Mnemonic.bnez_n, InstrClass.ConditionalTransfer, Rs, jrt),
                 Instr2byte(Mnemonic.bnez_n, InstrClass.ConditionalTransfer, Rs, jrt));
 
-            var decoderS3 = new t_Rec(
+            var decoderS3 = new t_Decoder(
                 Instr2byte(Mnemonic.ret_n, InstrClass.Transfer),
                 reserved,
                 reserved,
@@ -977,7 +1156,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
-            var decoderST3 = new r_Rec(
+            var decoderST3 = new r_Decoder(
                 Instr2byte(Mnemonic.mov_n, InstrClass.Linear, Rt,Rs),
                 reserved,
                 reserved,
@@ -1019,6 +1198,27 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
+            var decoderTLB = new r_Decoder(
+                reserved,
+                reserved,
+                reserved,
+                Instr(Mnemonic.ritlb0, Rt,Rs),
+
+                Instr(Mnemonic.iitlb, Rt,Rs),
+                Instr(Mnemonic.pitlb, Rt,Rs),
+                Instr(Mnemonic.witlb, Rt,Rs),
+                Instr(Mnemonic.ritlb1, Rt,Rs),
+
+                reserved,
+                reserved,
+                reserved,
+                Instr(Mnemonic.rdtlb0, Rt,Rs),
+
+                Instr(Mnemonic.idtlb, Rs),
+                Instr(Mnemonic.pdtlb, Rt,Rs),
+                Instr(Mnemonic.wdtlb, Rt,Rs),
+                Instr(Mnemonic.rdtlb1, Rt,Rs));
+
             var decoderRST0 = new Op2Decoder(
                 decoderST0,
                 Instr(Mnemonic.and, Rr,Rs,Rt),
@@ -1026,7 +1226,7 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.xor, Rr,Rs,Rt),
 
                 decoderST1,
-                Nyi("Table TLB"),
+                decoderTLB,
                 decoderRT0,
                 reserved,
 
@@ -1040,7 +1240,7 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.subx4, Rr,Rs,Rt),
                 Instr(Mnemonic.subx8, Rr,Rs,Rt));
 
-            var decoderIMP = new r_Rec(
+            var decoderIMP = new r_Decoder(
                 reserved,
                 reserved,
                 reserved,
@@ -1069,7 +1269,7 @@ namespace Reko.Arch.Xtensa
 
                 Instr(Mnemonic.srli, Rr,Rt,Is),
                 reserved,
-                Nyi("xsr"),
+                Instr(Mnemonic.xsr,Rt,S),
                 Nyi("Table ACCER"),
 
                 Instr(Mnemonic.src, Rr,Rs,Rt),
@@ -1095,8 +1295,8 @@ namespace Reko.Arch.Xtensa
 
                 Instr(Mnemonic.mull, Rr,Rs,Rt),
                 reserved,
-                Nyi("muluh"),
-                Nyi("mulsh"),
+                Instr(Mnemonic.muluh, Rr,Rs,Rt),
+                Instr(Mnemonic.mulsh, Rr,Rs,Rt),
 
                 Instr(Mnemonic.quou, Rr,Rs,Rt),
                 Instr(Mnemonic.quos, Rr,Rs,Rt),
@@ -1106,8 +1306,8 @@ namespace Reko.Arch.Xtensa
             var decoderRST3 = new Op2Decoder(
                Instr(Mnemonic.rsr, Rt,S),
                Instr(Mnemonic.wsr, Rt,S),
-               Nyi("sext"),
-               Nyi("clamps"),
+               Instr(Mnemonic.sext, Rr,Rs,It_7),
+               Instr(Mnemonic.clamps, Rr,Rs,It_7),
 
                Instr(Mnemonic.min, Rr,Rs,Rt),
                Instr(Mnemonic.max, Rr,Rs,Rt),
@@ -1119,10 +1319,10 @@ namespace Reko.Arch.Xtensa
                Instr(Mnemonic.movltz, Rr,Rs,Rt),
                Instr(Mnemonic.movgez, Rr,Rs,Rt),
 
-               Nyi("movf"),
-               Nyi("movt"),
-               Nyi("rur"),
-               Nyi("wur"));
+               Instr(Mnemonic.movf, Rr,Rs,Bt),
+               Instr(Mnemonic.movt, Rr,Rs,Bt),
+               Instr(Mnemonic.rur, Rr,Ust),
+               Instr(Mnemonic.wur, Rt,Usr));
 
             var decoderQRST = new Op1Decoder(
                 decoderRST0,
@@ -1145,7 +1345,54 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.reserved),
                 Instr(Mnemonic.reserved));
 
-            var decoderLSAI = new r_Rec(
+            var decoderDCE = new Op1Decoder(
+                Instr(Mnemonic.dpfl, Rs, Iop2_4),
+                reserved,
+                Instr(Mnemonic.dhu, Rs, Iop2),
+                Instr(Mnemonic.diu, Rs, Iop2),
+
+                Instr(Mnemonic.diwb, Rs, Iop2_4),
+                Instr(Mnemonic.diwbi, Rs, Iop2_4),
+                reserved,
+                reserved,
+
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved
+                );
+
+            var decoderICE = new Op1Decoder(
+                Instr(Mnemonic.ipfl, Rs,Iop2_4),
+                reserved, 
+                Instr(Mnemonic.ihu, Rs,Iop2_4),
+                Instr(Mnemonic.iiu, Rs,Iop2_4),
+                
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved
+            );
+
+            var decoderCACHE = new t_Decoder(
+                Instr(Mnemonic.dpfr, Rs,I8_2),
+                Instr(Mnemonic.dpfw, Rs,I8_2),
+                Instr(Mnemonic.dpfro, Rs,I8_2),
+                Instr(Mnemonic.dpfwo, Rs,I8_2),
+
+                Instr(Mnemonic.dhwb, Rs,I8_2),
+                Instr(Mnemonic.dhwbi, Rs,I8_2),
+                Instr(Mnemonic.dhi, Rs,I8_2),
+                Instr(Mnemonic.dii, Rs,I8_2),
+
+                decoderDCE,
+                reserved,
+                reserved,
+                reserved,
+                
+                Instr(Mnemonic.ipf, Rs,I8_2),
+                decoderICE,
+                Instr(Mnemonic.ihi, Rs, I8_2),
+                Instr(Mnemonic.iii, Rs, I8_2));
+
+            var decoderLSAI = new r_Decoder(
                 Instr(Mnemonic.l8ui, Rt,Rs,I8_0),
                 Instr(Mnemonic.l16ui, Rt,Rs,I8_1),
                 Instr(Mnemonic.l32i, Rt,Rs,I8_2),
@@ -1154,19 +1401,19 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.s8i, Rt,Rs,I8_0),
                 Instr(Mnemonic.s16i, Rt,Rs,I8_1),
                 Instr(Mnemonic.s32i, Rt,Rs,I8_2),
-                Nyi("Table CACHE"),
+                decoderCACHE,
 
                 reserved,
                 Instr(Mnemonic.l16si, Rt,Rs,I8_1),
                 Instr(Mnemonic.movi, Rt,i),
-                Nyi("l32ai"),
+                Instr(Mnemonic.l32ai, Rt,Rs,I8_2),
 
                 Instr(Mnemonic.addi, Rt,Rs,m0),
                 Instr(Mnemonic.addmi, Rt,Rs,m8),
-                Nyi("s32c1i"),
+                Instr(Mnemonic.s32c1i, Rt,Rs,I8_2),
                 Instr(Mnemonic.s32ri, Rt,Rs,I8_2));
 
-            var decoderLSCI = new r_Rec(
+            var decoderLSCI = new r_Decoder(
                 reserved,
                 reserved,
                 reserved,
@@ -1198,38 +1445,73 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved,
 
-                Nyi("MULA.DA.LL.LDINC"),
-                Nyi("MULA.DA.HL.LDINC"),
-                Nyi("MULA.DA.LH.LDINC"),
-                Nyi("MULA.DA.HH.LDINC"),
+                Instr(Mnemonic.mula_da_ll_ldinc, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_hl_ldinc, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_lh_ldinc, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_hh_ldinc, Mr, Rs, Mr_01, Rt),
 
                 reserved,
                 reserved,
                 reserved,
                 reserved);
+
+            var decoderMACAD = new Op1Decoder(
+                reserved, reserved, reserved, reserved,
+                Instr(Mnemonic.mul_ad_ll, Rs, Mt_23),
+                Instr(Mnemonic.mul_ad_hl, Rs, Mt_23),
+                Instr(Mnemonic.mul_ad_lh, Rs, Mt_23),
+                Instr(Mnemonic.mul_ad_hh, Rs, Mt_23),
+
+                Instr(Mnemonic.mula_ad_ll, Rs, Mt_23),
+                Instr(Mnemonic.mula_ad_hl, Rs, Mt_23),
+                Instr(Mnemonic.mula_ad_lh, Rs, Mt_23),
+                Instr(Mnemonic.mula_ad_hh, Rs, Mt_23),
+
+                Instr(Mnemonic.muls_ad_ll, Rs, Mt_23),
+                Instr(Mnemonic.muls_ad_hl, Rs, Mt_23),
+                Instr(Mnemonic.muls_ad_lh, Rs, Mt_23),
+                Instr(Mnemonic.muls_ad_hh, Rs, Mt_23));
+
+            var decoderMACCD = new Op1Decoder(
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved,
+
+                Instr(Mnemonic.mula_dd_ll_lddec, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_dd_hl_lddec, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_dd_lh_lddec, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_dd_hh_lddec, Mr, Rs, Mr_01, Rt),
+
+                reserved, reserved, reserved, reserved);
+
             var decoderMACDD = new Op1Decoder(
                 reserved,
                 reserved,
                 reserved,
                 reserved,
 
-                Nyi("MUL.DD.LL"),
-                Nyi("MUL.DD.HL"),
-                Nyi("MUL.DD.LH"),
-                Nyi("MUL.DD.HH"),
+                Instr(Mnemonic.mul_dd_ll, Mr_01, Mt_23),
+                Instr(Mnemonic.mul_dd_hl, Mr_01, Mt_23),
+                Instr(Mnemonic.mul_dd_lh, Mr_01, Mt_23),
+                Instr(Mnemonic.mul_dd_hh, Mr_01, Mt_23),
 
-                Nyi("MULA.DD.LL"),
-                Nyi("MULA.DD.HL"),
-                Nyi("MULA.DD.LH"),
-                Nyi("MULA.DD.HH"),
+                Instr(Mnemonic.mula_dd_ll, Mr_01, Mt_23),
+                Instr(Mnemonic.mula_dd_hl, Mr_01, Mt_23),
+                Instr(Mnemonic.mula_dd_lh, Mr_01, Mt_23),
+                Instr(Mnemonic.mula_dd_hh, Mr_01, Mt_23),
 
-                Nyi("MULS.DD.LL"),
-                Nyi("MULS.DD.HL"),
-                Nyi("MULS.DD.LH"),
-                Nyi("MULS.DD.HH"));
+                Instr(Mnemonic.muls_dd_ll, Mr_01, Mt_23),
+                Instr(Mnemonic.muls_dd_hl, Mr_01, Mt_23),
+                Instr(Mnemonic.muls_dd_lh, Mr_01, Mt_23),
+                Instr(Mnemonic.muls_dd_hh, Mr_01, Mt_23));
+
+            var decoderMACI = new Op1Decoder(
+                Instr(Mnemonic.ldinc, Mr,Rs), reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved);
 
             var decoderMACC = new Op1Decoder(
-                reserved,
+                Instr(Mnemonic.lddec, Mr,Rs),
                 reserved,
                 reserved,
                 reserved,
@@ -1249,18 +1531,71 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 reserved);
 
+            var decoderMACIA = new Op1Decoder(
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved,
+                Instr(Mnemonic.mula_da_ll_ldinc, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_hl_ldinc, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_lh_ldinc, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_hh_ldinc, Mr, Rs, Mr_01, Rt),
+                reserved, reserved, reserved, reserved);
+
+            var decoderMACCA = new Op1Decoder(
+                reserved, reserved, reserved, reserved,
+                reserved, reserved, reserved, reserved,
+                Instr(Mnemonic.mula_da_ll_lddec, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_hl_lddec, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_lh_lddec, Mr, Rs, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_hh_lddec, Mr, Rs, Mr_01, Rt),
+                reserved, reserved, reserved, reserved);
+
+            var decoderMACDA = new Op1Decoder(
+                reserved, reserved, reserved, reserved,
+                Instr(Mnemonic.mul_da_ll, Mr_01, Rt),
+                Instr(Mnemonic.mul_da_hl, Mr_01, Rt),
+                Instr(Mnemonic.mul_da_lh, Mr_01, Rt),
+                Instr(Mnemonic.mul_da_hh, Mr_01, Rt),
+
+                Instr(Mnemonic.mula_da_ll, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_hl, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_lh, Mr_01, Rt),
+                Instr(Mnemonic.mula_da_hh, Mr_01, Rt),
+
+                Instr(Mnemonic.muls_da_ll, Mr_01, Rt),
+                Instr(Mnemonic.muls_da_hl, Mr_01, Rt),
+                Instr(Mnemonic.muls_da_lh, Mr_01, Rt),
+                Instr(Mnemonic.muls_da_hh, Mr_01, Rt));
+
+            var decoderMACAA = new Op1Decoder(
+                Instr(Mnemonic.umul_aa_ll, Rs, Rt),
+                Instr(Mnemonic.umul_aa_hl, Rs, Rt),
+                Instr(Mnemonic.umul_aa_lh, Rs, Rt),
+                Instr(Mnemonic.umul_aa_hh, Rs, Rt),
+                Instr(Mnemonic.mul_aa_ll, Rs,Rt),
+                Instr(Mnemonic.mul_aa_hl, Rs,Rt),
+                Instr(Mnemonic.mul_aa_lh, Rs,Rt),
+                Instr(Mnemonic.mul_aa_hh, Rs,Rt),
+                Instr(Mnemonic.mula_aa_ll, Rs,Rt),
+                Instr(Mnemonic.mula_aa_hl, Rs,Rt),
+                Instr(Mnemonic.mula_aa_lh, Rs,Rt),
+                Instr(Mnemonic.mula_aa_hh, Rs,Rt),
+                Instr(Mnemonic.muls_aa_ll, Rs,Rt),
+                Instr(Mnemonic.muls_aa_hl, Rs,Rt),
+                Instr(Mnemonic.muls_aa_lh, Rs,Rt),
+                Instr(Mnemonic.muls_aa_hh, Rs,Rt));
+
             var decoderMAC16 = new Op2Decoder(
                 decoderMACID,
-                Nyi("Table MACCD"),
+                decoderMACCD,
                 decoderMACDD,
-                Nyi("Table MACAD"),
+                decoderMACAD,
 
-                Nyi("Table MACIA"),
-                Nyi("Table MACCA"),
-                Nyi("Table MACDA"),
-                Nyi("Table MACAA"),
+                decoderMACIA,
+                decoderMACCA,
+                decoderMACDA,
+                decoderMACAA,
 
-                Nyi("Table MACI"),
+                decoderMACI,
                 decoderMACC,
                 reserved,
                 reserved,
