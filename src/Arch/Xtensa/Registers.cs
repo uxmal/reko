@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,22 +29,22 @@ namespace Reko.Arch.Xtensa
 {
     public class Registers
     {
-        public static RegisterStorage a0  ;
-        public static RegisterStorage a1  ;
-        public static RegisterStorage a2  ;
-        public static RegisterStorage a3  ;
-        public static RegisterStorage a4  ;
-        public static RegisterStorage a5  ;
-        public static RegisterStorage a6  ;
-        public static RegisterStorage a7  ;
-        public static RegisterStorage a8  ;
-        public static RegisterStorage a9  ;
-        public static RegisterStorage a10 ;
-        public static RegisterStorage a11 ;
-        public static RegisterStorage a12 ;
-        public static RegisterStorage a13 ;
-        public static RegisterStorage a14 ;
-        public static RegisterStorage a15 ;
+        public static RegisterStorage a0;
+        public static RegisterStorage a1;
+        public static RegisterStorage a2;
+        public static RegisterStorage a3;
+        public static RegisterStorage a4;
+        public static RegisterStorage a5;
+        public static RegisterStorage a6;
+        public static RegisterStorage a7;
+        public static RegisterStorage a8;
+        public static RegisterStorage a9;
+        public static RegisterStorage a10;
+        public static RegisterStorage a11;
+        public static RegisterStorage a12;
+        public static RegisterStorage a13;
+        public static RegisterStorage a14;
+        public static RegisterStorage a15;
 
         public static RegisterStorage b0;
         public static RegisterStorage b1;
@@ -80,7 +80,18 @@ namespace Reko.Arch.Xtensa
         public static RegisterStorage f14;
         public static RegisterStorage f15;
 
-        public static RegisterStorage SAR;
+        public static RegisterStorage mr0;
+        public static RegisterStorage mr1;
+        public static RegisterStorage mr2;
+        public static RegisterStorage mr3;
+
+        public static readonly RegisterStorage LBEG;
+        public static readonly RegisterStorage LEND;
+        public static readonly RegisterStorage SAR;
+        public static readonly RegisterStorage SCOMPARE1;
+        public static readonly RegisterStorage LCOUNT;
+        public static readonly RegisterStorage ACCLO;
+        public static readonly RegisterStorage ACCHI;
 
         static Registers()
         {
@@ -135,7 +146,18 @@ namespace Reko.Arch.Xtensa
             f14 = new RegisterStorage("f14", 0x2E, 0, PrimitiveType.Real32);
             f15 = new RegisterStorage("f15", 0x2F, 0, PrimitiveType.Real32);
 
+            mr0 = new RegisterStorage("mr0", 0x30, 0, PrimitiveType.Word32);
+            mr1 = new RegisterStorage("mr1", 0x31, 0, PrimitiveType.Word32);
+            mr2 = new RegisterStorage("mr2", 0x32, 0, PrimitiveType.Word32);
+            mr3 = new RegisterStorage("mr3", 0x33, 0, PrimitiveType.Word32);
+
+            LBEG = new RegisterStorage("LBEG", 0x100, 0, PrimitiveType.Word32);
+            LEND = new RegisterStorage("LEND", 0x101, 0, PrimitiveType.Word32);
+            LCOUNT = new RegisterStorage("LCOUNT", 0x102, 0, PrimitiveType.Word32);
             SAR = new RegisterStorage("SAR", 0x103, 0, PrimitiveType.Word32);
+            SCOMPARE1 = new RegisterStorage("SCOMPARE1", 0x10C, 0, PrimitiveType.Word32);
+            ACCLO = new RegisterStorage("ACCLO", 0x110, 0, PrimitiveType.Word32);
+            ACCHI = new RegisterStorage("ACCHI", 0x111, 0, PrimitiveType.Byte);
         }
     }
 }

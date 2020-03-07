@@ -111,6 +111,8 @@ namespace Reko.Core
 
         public void AddItemWithSize(Address addr, ImageMapItem itemNew)
         {
+            if (addr.ToLinear() == 0x0804A000)  //$DEBUG
+                addr.ToString();
             if (!TryFindItem(addr, out var item))
             {
                 throw new ArgumentException(string.Format("Address {0} is not within the image range.", addr));
@@ -158,13 +160,20 @@ namespace Reko.Core
                     }
                 }
                 Items.Remove(item.Address);
-                item.Address += itemNew.Size;
-                item.Size -= itemNew.Size;
-
-                Items.Add(addr, itemNew);
-                if (item.Size > 0 && !Items.ContainsKey(item.Address))
+                if (item.Size > 0)
                 {
-                    Items.Add(item.Address, item);
+                    item.Address += itemNew.Size;
+                    item.Size -= itemNew.Size;
+
+                    Items.Add(addr, itemNew);
+                    if (item.Size > 0 && !Items.ContainsKey(item.Address))
+                    {
+                        Items.Add(item.Address, item);
+                    }
+                }
+                else
+                { 
+                    Items.Add(addr, itemNew);
                 }
             }
             FireMapChanged();
