@@ -793,13 +793,17 @@ namespace Reko.UnitTests.Arch.Xtensa
         }
 
         [Test]
-        [Ignore("Study the manual")]
         public void Xtrw_loop()
         {
-            Given_HexString("76807D");    // loop	a0,0000436D
+            Given_HexString("768002 3022A0");    // loop	a0,00010006; addx4...
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|LCOUNT = a0 - 0x00000001",
+                "2|L--|00010003(3): 4 instructions",
+                "3|L--|a2 = a3 + a2 * 0x00000004",
+                "4|T--|if (LCOUNT == 0x00000000) branch 00010006",
+                "5|L--|LCOUNT = LCOUNT - 0x00000001",
+                "6|T--|goto 00010003");
         }
 
         [Test]

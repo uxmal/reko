@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -142,6 +142,24 @@ namespace Reko.Arch.Xtensa
         {
             iclass = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.Operands[0]));
+        }
+
+        private void RewriteLoop()
+        {
+            if (this.lend != null)
+            {
+                // Nested LOOPxx instructions are not valid according to the
+                // Xtensa instruction manual.
+                iclass = InstrClass.Invalid;
+                this.lbegin = null;
+                this.lend = null;
+                m.Invalid();
+                return;
+            }
+            this.lbegin = instr.Address + instr.Length;
+            this.lend = ((AddressOperand) instr.Operands[1]).Address;
+            var reg = RewriteOp(instr.Operands[0]);
+            m.Assign(binder.EnsureRegister(Registers.LCOUNT), m.ISub(reg, 1));
         }
 
         private void RewriteRet()

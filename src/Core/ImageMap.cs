@@ -111,8 +111,6 @@ namespace Reko.Core
 
         public void AddItemWithSize(Address addr, ImageMapItem itemNew)
         {
-            if (addr.ToLinear() == 0x0804A000)  //$DEBUG
-                addr.ToString();
             if (!TryFindItem(addr, out var item))
             {
                 throw new ArgumentException(string.Format("Address {0} is not within the image range.", addr));

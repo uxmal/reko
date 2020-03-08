@@ -132,8 +132,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         // ----------------------------------------
         // sstPublics
         // ----------------------------------------
-        public class sstPublics
-            : Subsection
+        public class sstPublics : Subsection
         {
 
             public List<PublicSymbol> symbols;

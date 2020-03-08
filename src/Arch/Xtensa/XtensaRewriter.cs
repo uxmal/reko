@@ -45,6 +45,8 @@ namespace Reko.Arch.Xtensa
         private XtensaInstruction instr;
         private InstrClass iclass;
         private RtlEmitter m;
+        private Address lbegin;
+        private Address lend;
 
         public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -160,6 +162,7 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.lddec: RewriteLddecinc(m.ISub); break;
                 case Mnemonic.ldinc: RewriteLddecinc(m.IAdd); break;
                 case Mnemonic.ldpte: RewritePseudoProc("__ldpte"); break;
+                case Mnemonic.loop: RewriteLoop(); break;
                 case Mnemonic.lsiu: RewriteLsiu(); break;
                 case Mnemonic.madd_s: RewriteMaddSub(m.FAdd); break;
                 case Mnemonic.memw: RewriteNop(); break; /// memory sync barriers?
@@ -309,6 +312,7 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.xorb: RewriteBinOp(m.Xor); break;
                 case Mnemonic.xsr: RewriteXsr(); break;
                 }
+                CheckForLoopExit();
                 yield return m.MakeCluster(addr, len, iclass);
             }
         }
@@ -343,6 +347,23 @@ namespace Reko.Arch.Xtensa
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        void CheckForLoopExit()
+        {
+            if (lend == null)
+                return;
+            if (instr.Address.ToLinear() + (uint)instr.Length == lend.ToLinear())
+            {
+                var addrNext = instr.Address + instr.Length;
+                var lcount = binder.EnsureRegister(Registers.LCOUNT);
+                m.BranchInMiddleOfInstruction(m.Eq0(lcount), addrNext, InstrClass.ConditionalTransfer);
+                m.Assign(lcount, m.ISub(lcount, 1));
+                m.Goto(this.lbegin);
+
+                lbegin = null;
+                lend = null;
+            }
         }
 
         private Expression RewriteOp(MachineOperand op)
