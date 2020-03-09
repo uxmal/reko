@@ -322,7 +322,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtdasm_iitlb()
         {
-            AssertCode("iitlb\ta4,a0", "404050");
+            AssertCode("iitlb\ta0", "404050");
         }
 
         [Test]
