@@ -84,6 +84,13 @@ namespace Reko.Arch.Xtensa
                         offset)));
         }
 
+        private void RewriteRer()
+        {
+            var src = RewriteOp(instr.Operands[1]);
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, host.PseudoProcedure("__rer", PrimitiveType.Word32, src));
+        }
+
         private void RewriteRsync()
         {
             m.SideEffect(host.PseudoProcedure("__rsync", VoidType.Instance));
@@ -121,6 +128,13 @@ namespace Reko.Arch.Xtensa
         private void RewriteSyscall()
         {
             m.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance));
+        }
+
+        private void RewriteWer()
+        {
+            var dst = RewriteOp(dasm.Current.Operands[1]);
+            var src = RewriteOp(dasm.Current.Operands[0]);
+            m.SideEffect(host.PseudoProcedure("__wer", VoidType.Instance, dst, src));
         }
 
         private void RewriteWsr()

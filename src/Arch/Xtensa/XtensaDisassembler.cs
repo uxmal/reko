@@ -1204,7 +1204,7 @@ namespace Reko.Arch.Xtensa
                 reserved,
                 Instr(Mnemonic.ritlb0, Rt,Rs),
 
-                Instr(Mnemonic.iitlb, Rt,Rs),
+                Instr(Mnemonic.iitlb, Rs),
                 Instr(Mnemonic.pitlb, Rt,Rs),
                 Instr(Mnemonic.witlb, Rt,Rs),
                 Instr(Mnemonic.ritlb1, Rt,Rs),

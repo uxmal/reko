@@ -342,6 +342,18 @@ namespace Reko.Arch.Xtensa
             m.Assign(dst, m.IAdd(dst, product));
         }
 
+        private void RewriteMulaIncDec(string fnName, PrimitiveType dtProduct, int increment)
+        {
+            var addr = RewriteOp(instr.Operands[1]);
+            m.Assign(addr, m.AddSubSignedInt(addr, increment));
+            var src1 = RewriteOp(instr.Operands[2]);
+            var src2 = RewriteOp(instr.Operands[3]);
+            var product = host.PseudoProcedure(fnName, dtProduct, src1, src2);
+            var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
+            m.Assign(dst, m.IAdd(dst, product));
+            m.Assign(RewriteOp(instr.Operands[0]), m.Mem32(addr));
+        }
+
         private void RewriteMuls(string fnName, PrimitiveType dtProduct)
         {
             var src1 = RewriteOp(instr.Operands[0]);

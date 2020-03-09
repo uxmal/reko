@@ -200,6 +200,15 @@ namespace Reko.UnitTests.Arch.Xtensa
         }
 
         [Test]
+        public void Xtrw_iitlb()
+        {
+            Given_HexString("404050");    // iitlb	a4,a0
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|__iitlb(a0)");
+        }
+
+        [Test]
         public void Xtrw_ill()
         {
             Given_UInt32s(0x000000);  // ill
@@ -248,33 +257,61 @@ namespace Reko.UnitTests.Arch.Xtensa
         }
 
         [Test]
-        [Ignore("Study the manual")]
         public void Xtrw_call4()
         {
             Given_HexString("95F620");    // call4	00020FC4
             AssertCode(
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00010000(3): 14 instructions",
+                "1|L--|a2 = a6",
+                "2|L--|a3 = a7",
+                "3|L--|a4 = a8",
+                "4|L--|a5 = a9",
+                "5|L--|a6 = a10",
+                "6|L--|a7 = a11",
+                "7|L--|a0 = 00010003",
+                "8|T--|call 00030F6C (0)",
+                "9|L--|a11 = a7",
+                "10|L--|a10 = a6",
+                "11|L--|a9 = a5",
+                "12|L--|a8 = a4",
+                "13|L--|a7 = a3",
+                "14|L--|a6 = a2");
         }
 
         [Test]
-        [Ignore("Study the manual")]
         public void Xtrw_call8()
         {
             Given_HexString("A5FFF0");    // call8	FFFF1508
             AssertCode(
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00010000(3): 14 instructions",
+                "1|L--|a2 = a10",
+                "2|L--|a3 = a11",
+                "3|L--|a4 = a12",
+                "4|L--|a5 = a13",
+                "5|L--|a6 = a14",
+                "6|L--|a7 = a15",
+                "7|L--|a0 = 00010003",
+                "8|T--|call 00000FFC (0)",
+                "9|L--|a15 = a7",
+                "10|L--|a14 = a6",
+                "11|L--|a13 = a5",
+                "12|L--|a12 = a4",
+                "13|L--|a11 = a3",
+                "14|L--|a10 = a2");
         }
 
         [Test]
-        [Ignore("Study the manual")]
         public void Xtrw_call12()
         {
             Given_HexString("F5FF30");    // call12	000310B0
             AssertCode(
-                "0|L--|00010000(3): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00010000(3): 6 instructions",
+                "1|L--|a2 = a14",
+                "2|L--|a3 = a15",
+                "3|L--|a0 = 00010003",
+                "4|T--|call 00041000 (0)",
+                "5|L--|a15 = a3",
+                "6|L--|a14 = a2");
         }
 
         [Test]
@@ -399,16 +436,7 @@ namespace Reko.UnitTests.Arch.Xtensa
                "1|L--|Mem0[a13 + 0x0000001C:word32] = a3");
         }
 
-        [Test]
-        public void Xtrw_mov_n()
-        {
-            Given_UInt32s(0x013D);    // mov.n\ta3,a1;
-            AssertCode(
-               "0|L--|00010000(2): 1 instructions",
-               "1|L--|a3 = a1");
-        }
-
-
+        
 
         [Test]
         public void Xtrw_srli()
@@ -598,6 +626,36 @@ namespace Reko.UnitTests.Arch.Xtensa
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|f12 = f12 + f1 * f0");
         }
+
+        [Test]
+        public void Xtrw_mov_n()
+        {
+            Given_UInt32s(0x013D);    // mov.n\ta3,a1;
+            AssertCode(
+               "0|L--|00010000(2): 1 instructions",
+               "1|L--|a3 = a1");
+        }
+
+        [Test]
+        public void Xtrw_mov_s()
+        {
+            Given_HexString("0031FA");    // mov.s	f3,f1
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|f3 = f1");
+        }
+
+        [Test]
+        public void Xtrw_moveqz_s()
+        {
+            // moveqz.s\tf15,f12,a0
+            Given_UInt32s(0x8bfc00);
+            AssertCode(
+                "0|L--|00010000(3): 2 instructions",
+                "1|T--|if (a0 != 0x00000000) branch 00010003",
+                "2|L--|f15 = f12");
+        }
+
 
         [Test]
         public void Xtrw_movf()
@@ -841,13 +899,18 @@ namespace Reko.UnitTests.Arch.Xtensa
         }
 
         [Test]
-        [Ignore("Study the manual")]
         public void Xtrw_callx12()
         {
             Given_HexString("F00000");    // callx12	a0
             AssertCode(
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00010000(3): 7 instructions",
+                "1|L--|a2 = a14",
+                "2|L--|a3 = a15",
+                "3|L--|v7 = a0",
+                "4|L--|a0 = 00010003",
+                "5|T--|call v7 (0)",
+                "6|L--|a15 = a3",
+                "7|L--|a14 = a2");
         }
 
         [Test]
@@ -1035,7 +1098,23 @@ namespace Reko.UnitTests.Arch.Xtensa
                 "1|L--|a1 = a6 /u a0");
         }
 
+        [Test]
+        public void Xtrw_rdtlb0()
+        {
+            Given_HexString("30B150");    // rdtlb0	a3,a1
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|a3 = __rdtlb0(a1)");
+        }
 
+        [Test]
+        public void Xtrw_rdtlb1()
+        {
+            Given_HexString("70F550");    // rdtlb1	a7,a5
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|a7 = __rdtlb1(a5)");
+        }
 
         [Test]
         public void Xtrw_rems()
@@ -1045,6 +1124,15 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|a3 = a1 % a0");
+        }
+
+        [Test]
+        public void Xtrw_rer()
+        {
+            Given_HexString("606440");    // rer	a6,a4
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|a6 = __rer(a4)");
         }
 
         [Test]
@@ -1096,6 +1184,15 @@ namespace Reko.UnitTests.Arch.Xtensa
         }
 
         [Test]
+        public void Xtrw_ritlb0()
+        {
+            Given_HexString("503150");    // ritlb0	a5,a1
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|a5 = __ritlb0(a1)");
+        }
+
+        [Test]
         public void Xtrw_ritlb1()
         {
             Given_HexString("C07450");    // ritlb1	a12,a4
@@ -1105,12 +1202,30 @@ namespace Reko.UnitTests.Arch.Xtensa
         }
 
         [Test]
+        public void Xtrw_rotw()
+        {
+            Given_HexString("208940");    // rotw	-06
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|__rotw(-6)");
+        }
+
+        [Test]
         public void Xtrw_round_s()
         {
             Given_HexString("00418A");    // round.s	a4,f1,1.0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|a4 = __round(f1)");
+        }
+
+        [Test]
+        public void Xtrw_rfr()
+        {
+            Given_HexString("4031FA");    // rfr	a3,f1
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|a3 = f1");
         }
 
         [Test]
@@ -1560,7 +1675,6 @@ namespace Reko.UnitTests.Arch.Xtensa
                 "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(a13, mr2)");
         }
 
-
         [Test]
         public void Xtrw_mula_ad_ll()
         {
@@ -1568,6 +1682,103 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(a7, mr3)");
+        }
+
+        [Test]
+        public void Xtrw_mula_da_hh_ldinc()
+        {
+            Given_HexString("04054B");    // mula.da.hh.ldinc	mr0,a5,mr0,a0
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a5 = a5 + 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh(mr0, a0)",
+                "3|L--|mr0 = Mem0[a5:word32]");
+        }
+
+        [Test]
+        public void Xtrw_mula_da_hl_lddec()
+        {
+            Given_HexString("044559");    // mula.da.hl.lddec	mr0,a5,mr1,a0
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a5 = a5 - 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl(mr1, a0)");
+        }
+
+        [Test]
+        public void Xtrw_mula_da_hl_ldinc()
+        {
+            Given_HexString("248149");    // mula.da.hl.ldinc	mr0,a1,mr0,a2
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a1 = a1 + 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl(mr0, a2)",
+                "3|L--|mr0 = Mem0[a1:word32]");
+        }
+
+        [Test]
+        public void Xtrw_mula_da_lh_lddec()
+        {
+            Given_HexString("04015A");    // mula.da.lh.lddec	mr0,a1,mr0,a0
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a1 = a1 - 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(mr0, a0)",
+                "3|L--|mr0 = Mem0[a1:word32]");
+        }
+
+        [Test]
+        public void Xtrw_mula_da_lh_ldinc()
+        {
+            Given_HexString("040C0A");    // mula.da.lh.ldinc	mr0,a12,mr0,a0
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a12 = a12 + 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(mr0, a0)",
+                "3|L--|mr0 = Mem0[a12:word32]");
+        }
+
+        [Test]
+        public void Xtrw_mula_da_ll_lddec()
+        {
+            Given_HexString("F45158");    // mula.da.ll.lddec	mr1,a1,mr1,a15
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a1 = a1 - 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr1, a15)",
+                "3|L--|mr1 = Mem0[a1:word32]");
+        }
+
+        [Test]
+        public void Xtrw_mula_da_ll_ldinc()
+        {
+            Given_HexString("040C08");    // mula.da.ll.ldinc	mr0,a12,mr0,a0
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a12 = a12 + 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr0, a0)",
+                "3|L--|mr0 = Mem0[a12:word32]");
+        }
+
+        [Test]
+        public void Xtrw_mula_dd_hh_lddec()
+        {
+            Given_HexString("64FF1B");    // mula.dd.hh.lddec	mr3,a15,mr1,a6
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a15 = a15 - 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh(mr1, a6)",
+                "3|L--|mr3 = Mem0[a15:word32]");
+        }
+
+        [Test]
+        public void Xtrw_mula_dd_ll_lddec()
+        {
+            Given_HexString("448518");    // mula.dd.ll.lddec	mr0,a5,mr0,a4
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|a5 = a5 - 4",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr0, a4)");
         }
 
         [Test]
@@ -1674,17 +1885,6 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
                 "1|T--|if ((a2 & 0x00000001 << a4) == 0x00000000) branch 00010008");
-        }
-
-        [Test]
-        public void Xtrw_moveqz_s()
-        {
-            // moveqz.s\tf15,f12,a0
-            Given_UInt32s(0x8bfc00);
-            AssertCode(
-                "0|L--|00010000(3): 2 instructions",
-                "1|T--|if (a0 != 0x00000000) branch 00010003",
-                "2|L--|f15 = f12");
         }
 
         [Test]
@@ -1826,6 +2026,24 @@ namespace Reko.UnitTests.Arch.Xtensa
         }
 
         [Test]
+        public void Xtrw_wdtlb()
+        {
+            Given_HexString("40E350");    // wdtlb	a4,a3
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|__wdtlb(a4, a3)");
+        }
+
+        [Test]
+        public void Xtrw_wer()
+        {
+            Given_HexString("207040");    // wer	a2,a0
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|__wer(a0, a2)");
+        }
+
+        [Test]
         public void Xtrw_witlb()
         {
             Given_HexString("406350");    // witlb	a4,a3
@@ -1871,5 +2089,33 @@ namespace Reko.UnitTests.Arch.Xtensa
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|a2 = __xsr(a2, PS)");
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
