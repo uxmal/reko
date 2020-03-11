@@ -107,6 +107,11 @@ namespace Reko.Scanning
                 this.ric = rtlStream.Current;
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
+                if (program.User.Patches.TryGetValue(ric.Address, out var patch))
+                {
+                    Debug.Print("BWI: Applying patch at address {0}", ric.Address);
+                    ric = patch.Code;
+                }
                 if (!ProcessRtlCluster(ric))
                     break;
                 var addrInstrEnd = ric.Address + ric.Length;
@@ -258,6 +263,8 @@ namespace Reko.Scanning
                 ric = ricDelayed;
             }
             var fallthruAddress = ric.Address + ric.Length;
+            if (!blockCur.IsSynthesized)
+                scanner.TerminateBlock(blockCur, fallthruAddress);
 
             Block blockThen;
             if (!program.SegmentMap.IsValidAddress((Address)b.Target))
@@ -955,7 +962,6 @@ namespace Reko.Scanning
             else if (!DiscoverTableExtent(addrSwitch, xfer, out vector, out imgVector, out switchExp))
             {
                 var navigator = eventListener.CreateJumpTableNavigator(program, this.arch, addrSwitch, null, 0);
-                eventListener.Warn(navigator, $"Unable to resolve indirect jump.");
                 return false;
             }
 

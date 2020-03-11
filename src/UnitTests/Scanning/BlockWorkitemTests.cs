@@ -180,9 +180,9 @@ namespace Reko.UnitTests.Scanning
                 .Returns(trace);
         }
 
-        private Address Given_Trace(Action<RtlEmitter> generator)
+        private Address Given_Trace(uint uAddr, Action<RtlEmitter> generator)
         {
-            var addr = Address.Ptr32(0x00100000);
+            var addr = Address.Ptr32(uAddr);
             trace.Add(generator);
             scanner.Setup(s => s.GetTrace(
                 It.IsAny<IProcessorArchitecture>(),
@@ -193,6 +193,29 @@ namespace Reko.UnitTests.Scanning
             scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>()))
                 .Returns(block);
             return addr;
+        }
+
+        /// <summary>
+        /// Generate a CodePatch that ends in a Transfer instruction.
+        /// </summary>
+        private void Given_TransferPatch(uint uAddr, int length, Action<RtlEmitter> generateCode)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var m = new RtlEmitter(new List<RtlInstruction>());
+            generateCode(m);
+            var cluster = m.MakeCluster(addr, length, InstrClass.Transfer);
+            program.User.Patches.Add(addr, new CodePatch(cluster));
+        }
+
+
+        private void Given_ExpectedBranchTarget(uint uAddrDst, Block block)
+        {
+            scanner.Setup(x => x.EnqueueJumpTarget(
+                It.IsNotNull<Address>(),
+                It.Is<Address>(a => a.ToUInt32() == uAddrDst),
+                block.Procedure,
+                It.IsAny<ProcessorState>()))
+                .Returns(block);
         }
 
         private void AssertBlockCode(string expected, Block block)
@@ -206,6 +229,17 @@ namespace Reko.UnitTests.Scanning
             {
                 Debug.Print(actual);
                 Assert.AreEqual(expected, actual);
+            }
+        }
+
+        private void AssertProcedureCode(string expected, Procedure proc)
+        {
+            var sw = new StringWriter();
+            proc.WriteBody(false, sw);
+            if (expected != sw.ToString())
+            {
+                Debug.WriteLine(sw.ToString());
+                Assert.AreEqual(expected, sw.ToString());
             }
         }
 
@@ -978,7 +1012,7 @@ testProc_exit:
         public void BwiTrashRegisterAfterCall()
         {
             Given_TrashedRegisters(r1);
-            var addrStart = Given_Trace(m =>
+            var addrStart = Given_Trace(0x00100000, m =>
             {
                 m.Assign(r1, 0xBAD);
                 m.Call(r2, 4);
@@ -995,6 +1029,52 @@ call r2 (retsize: 4;)
 call r1 (retsize: 4;)
 ";
             AssertBlockCode(expected, block);
-    }
+        }
+
+        [Test]
+        public void BwiUsePatch()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+
+            trace.Add(m => m.Assign(r0, m.Mem8(m.Word16(0x0042))));
+            trace.Add(m => m.Assign(r1, 42));
+            Given_SimpleTrace(trace);
+            Given_TransferPatch(addrStart.ToUInt32() + 4, 8, m => {
+                m.BranchInMiddleOfInstruction(m.Eq(r0, 1), Address.Ptr32(0x00100100), InstrClass.ConditionalTransfer);
+                m.BranchInMiddleOfInstruction(m.Eq(r0, 2), Address.Ptr32(0x00100200), InstrClass.ConditionalTransfer);
+                m.BranchInMiddleOfInstruction(m.Eq(r0, 3), Address.Ptr32(0x00100300), InstrClass.ConditionalTransfer);
+                m.Goto(Address.Ptr32(0x00100400));
+            });
+            Given_ExpectedBranchTarget(0x00100100, proc.AddBlock("case1"));
+            Given_ExpectedBranchTarget(0x00100200, proc.AddBlock("case2"));
+            Given_ExpectedBranchTarget(0x00100300, proc.AddBlock("case3"));
+            Given_ExpectedBranchTarget(0x00100400, proc.AddBlock("default"));
+
+            scanner.Setup(s => s.FindContainingBlock(addrStart)).Returns(block);
+            scanner.Setup(s => s.FindContainingBlock(addrStart + 4)).Returns(block);
+
+            var wi = CreateWorkItem(addrStart);
+            wi.Process();
+
+            var expected =
+@"testProc_entry:
+case1:
+case2:
+case3:
+default:
+l00100000:
+	r0 = Mem0[0x0042:byte]
+	branch r0 == 0x00000001 case1
+l00100004_1:
+	branch r0 == 0x00000002 case2
+l00100004_2:
+	branch r0 == 0x00000003 case3
+l00100004_3:
+	goto 0x00100400
+	goto default
+testProc_exit:
+";
+            AssertProcedureCode(expected, block.Procedure);
+        }
     }
 }

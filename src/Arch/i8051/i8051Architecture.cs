@@ -170,7 +170,6 @@ namespace Reko.Arch.i8051
             return Address.TryParse16(txtAddr, out addr);
         }
 
-
         /*
          * The Keil C compiler emits a call to the following subroutine if 
          * a switch statement is sparse.
@@ -218,6 +217,7 @@ namespace Reko.Arch.i8051
                 {
                     if (b != LCall_Opcode)
                         continue;
+                    var addrCall = rdr.Address - 1;
                     if (!rdr.TryReadBeUInt16(out ushort uAddrSwitchSubroutine))
                         break;
                     var addrSwitchSubroutine = Address.Ptr16(uAddrSwitchSubroutine);
@@ -231,7 +231,7 @@ namespace Reko.Arch.i8051
                     // We found the sparse switch subroutine. Now we parse the sparse switch
                     // data.
 
-                    var cluster = MakeCluster(rdr);
+                    var cluster = MakeCluster(addrCall, rdr);
                     yield return new CodePatch(cluster);
                 }
             }
@@ -242,9 +242,8 @@ namespace Reko.Arch.i8051
         /// an <see cref="RtlInstructionCluster" /> that implements the table as a 
         /// sequence of RTL if-instructions.
         /// </summary>
-        private RtlInstructionCluster MakeCluster(EndianImageReader rdr)
+        private RtlInstructionCluster MakeCluster(Address addrPatch, ImageReader rdr)
         {
-            var addrPatch = rdr.Address;
             var binder = new StorageBinder();
             var areg = binder.EnsureRegister(Registers.A);
             var m = new RtlEmitter(new List<RtlInstruction>());
