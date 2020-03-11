@@ -130,7 +130,6 @@ namespace Reko.Arch.i8051
             }
         }
 
-     
         private void RewriteJump()
         {
             iclass = InstrClass.Transfer;
