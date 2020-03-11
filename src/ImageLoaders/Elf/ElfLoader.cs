@@ -622,11 +622,15 @@ namespace Reko.ImageLoaders.Elf
             return ReadAsciiString(strSection.FileOffset + offset);
         }
 
+        [Conditional("DEBUG")]
         public void Dump()
         {
-            var sw = new StringWriter();
-            Dump(sw);
-            Debug.Print(sw.ToString());
+            if (ElfImageLoader.trace.TraceVerbose)
+            {
+                var sw = new StringWriter();
+                Dump(sw);
+                Debug.Print(sw.ToString());
+            }
         }
 
 

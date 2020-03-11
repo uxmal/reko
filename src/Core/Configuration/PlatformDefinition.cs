@@ -107,8 +107,8 @@ namespace Reko.Core.Configuration
 
         public MaskedPattern LoadMaskedPattern(BytePattern_v1 sPattern)
         {
-            List<byte> bytes = null;
-            List<byte> mask = null;
+            List<byte> bytes;
+            List<byte> mask;
             if (sPattern.Bytes == null)
                 return null;
             if (sPattern.Mask == null)
@@ -121,11 +121,10 @@ namespace Reko.Core.Configuration
                 for (int i = 0; i < sPattern.Bytes.Length; ++i)
                 {
                     char c = sPattern.Bytes[i];
-                    byte b;
-                    if (BytePattern.TryParseHexDigit(c, out b))
+                    if (BytePattern.TryParseHexDigit(c, out byte b))
                     {
-                        bb = bb | (b << shift);
-                        mm = mm | (0x0F << shift);
+                        bb |= (b << shift);
+                        mm |= (0x0F << shift);
                         shift -= 4;
                         if (shift < 0)
                         {
@@ -162,9 +161,7 @@ namespace Reko.Core.Configuration
                     Bytes = bytes.ToArray(),
                     Mask = mask.ToArray()
                 };
-
         }
-
 
         public override string ToString()
         {
