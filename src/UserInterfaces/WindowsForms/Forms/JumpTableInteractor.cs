@@ -60,8 +60,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             var vectorBuilder = new VectorBuilder(null, dlg.Program, null);
             var addresses = new List<Address>();
-            Address addrTable;
-            if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addrTable))
+            if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out Address addrTable))
             {
                 var stride = TableStride();
                 var state = dlg.Program.Architecture.CreateProcessorState();
@@ -126,7 +125,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void Dlg_Load(object sender, EventArgs e)
         {
-            dlg.CaptionLabel.Text = string.Format("Jump table for {0}", dlg.Instruction.Address);
+            dlg.CaptionLabel.Text = $"Jump table for {dlg.Instruction.Address}";
+            dlg.JumpInstructionAddress.Text = dlg.Instruction.Address.ToString();
             dlg.InstructionLabel.Text = dlg.Instruction.ToString().Replace('\t', ' ');
             if (dlg.VectorAddress != null)
             {
@@ -147,8 +147,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             if ((Gui.DialogResult)dlg.DialogResult != Gui.DialogResult.OK)
                 return;
-            Address addr;
-            if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addr))
+            if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out Address addr))
             {
                 dlg.VectorAddress = addr;
             }
@@ -169,6 +168,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 text = string.Join(
                     Environment.NewLine,
                     dasm.TakeWhile(i => (i.InstructionClass & InstrClass.Transfer) == 0)
+                        .Take(400)
                         .Select(i => i.ToString()));
             }
             else

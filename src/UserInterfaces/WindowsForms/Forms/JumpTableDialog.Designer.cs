@@ -50,6 +50,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listEntries = new System.Windows.Forms.ListBox();
             this.txtDasm = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtJumpAddress = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numEntries)).BeginInit();
             this.panelSegmentedAddresses.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -69,18 +71,17 @@
             // 
             // lblInstruction
             // 
-            this.lblInstruction.AutoSize = true;
             this.lblInstruction.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInstruction.Location = new System.Drawing.Point(13, 31);
+            this.lblInstruction.Location = new System.Drawing.Point(13, 58);
             this.lblInstruction.Name = "lblInstruction";
-            this.lblInstruction.Size = new System.Drawing.Size(47, 11);
+            this.lblInstruction.Size = new System.Drawing.Size(217, 11);
             this.lblInstruction.TabIndex = 1;
             this.lblInstruction.Text = "label1";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 59);
+            this.label1.Location = new System.Drawing.Point(12, 80);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 13);
             this.label1.TabIndex = 2;
@@ -88,7 +89,7 @@
             // 
             // txtStartAddress
             // 
-            this.txtStartAddress.Location = new System.Drawing.Point(104, 56);
+            this.txtStartAddress.Location = new System.Drawing.Point(104, 77);
             this.txtStartAddress.MaxLength = 16;
             this.txtStartAddress.Name = "txtStartAddress";
             this.txtStartAddress.Size = new System.Drawing.Size(126, 20);
@@ -97,7 +98,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 84);
+            this.label2.Location = new System.Drawing.Point(12, 105);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 13);
             this.label2.TabIndex = 4;
@@ -107,7 +108,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(456, 320);
+            this.btnOK.Location = new System.Drawing.Point(456, 333);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 17;
@@ -118,7 +119,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(537, 320);
+            this.btnCancel.Location = new System.Drawing.Point(537, 333);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 18;
@@ -128,7 +129,7 @@
             // chkIndirectTable
             // 
             this.chkIndirectTable.AutoSize = true;
-            this.chkIndirectTable.Location = new System.Drawing.Point(15, 144);
+            this.chkIndirectTable.Location = new System.Drawing.Point(15, 158);
             this.chkIndirectTable.Name = "chkIndirectTable";
             this.chkIndirectTable.Size = new System.Drawing.Size(87, 17);
             this.chkIndirectTable.TabIndex = 8;
@@ -137,7 +138,7 @@
             // 
             // numEntries
             // 
-            this.numEntries.Location = new System.Drawing.Point(104, 82);
+            this.numEntries.Location = new System.Drawing.Point(104, 103);
             this.numEntries.Maximum = new decimal(new int[] {
             1000000000,
             0,
@@ -159,7 +160,7 @@
             // 
             // txtIndirectTable
             // 
-            this.txtIndirectTable.Location = new System.Drawing.Point(29, 186);
+            this.txtIndirectTable.Location = new System.Drawing.Point(29, 196);
             this.txtIndirectTable.MaxLength = 16;
             this.txtIndirectTable.Name = "txtIndirectTable";
             this.txtIndirectTable.Size = new System.Drawing.Size(126, 20);
@@ -168,7 +169,7 @@
             // lblIndirectTable
             // 
             this.lblIndirectTable.AutoSize = true;
-            this.lblIndirectTable.Location = new System.Drawing.Point(26, 170);
+            this.lblIndirectTable.Location = new System.Drawing.Point(26, 180);
             this.lblIndirectTable.Name = "lblIndirectTable";
             this.lblIndirectTable.Size = new System.Drawing.Size(107, 13);
             this.lblIndirectTable.TabIndex = 9;
@@ -181,9 +182,9 @@
             this.panelSegmentedAddresses.Controls.Add(this.label4);
             this.panelSegmentedAddresses.Controls.Add(this.rdbOffsets);
             this.panelSegmentedAddresses.Controls.Add(this.rdbFarAddresses);
-            this.panelSegmentedAddresses.Location = new System.Drawing.Point(0, 212);
+            this.panelSegmentedAddresses.Location = new System.Drawing.Point(0, 222);
             this.panelSegmentedAddresses.Name = "panelSegmentedAddresses";
-            this.panelSegmentedAddresses.Size = new System.Drawing.Size(258, 120);
+            this.panelSegmentedAddresses.Size = new System.Drawing.Size(258, 109);
             this.panelSegmentedAddresses.TabIndex = 16;
             // 
             // rdbRelativeOffsets
@@ -239,7 +240,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 111);
+            this.label5.Location = new System.Drawing.Point(13, 132);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 13);
             this.label5.TabIndex = 6;
@@ -249,7 +250,7 @@
             // 
             this.ddlRegisters.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlRegisters.FormattingEnabled = true;
-            this.ddlRegisters.Location = new System.Drawing.Point(104, 108);
+            this.ddlRegisters.Location = new System.Drawing.Point(104, 129);
             this.ddlRegisters.Name = "ddlRegisters";
             this.ddlRegisters.Size = new System.Drawing.Size(92, 21);
             this.ddlRegisters.TabIndex = 7;
@@ -266,7 +267,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.txtDasm);
-            this.splitContainer1.Size = new System.Drawing.Size(316, 273);
+            this.splitContainer1.Size = new System.Drawing.Size(316, 287);
             this.splitContainer1.SplitterDistance = 126;
             this.splitContainer1.TabIndex = 18;
             // 
@@ -274,9 +275,10 @@
             // 
             this.listEntries.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listEntries.FormattingEnabled = true;
+            this.listEntries.IntegralHeight = false;
             this.listEntries.Location = new System.Drawing.Point(0, 0);
             this.listEntries.Name = "listEntries";
-            this.listEntries.Size = new System.Drawing.Size(126, 273);
+            this.listEntries.Size = new System.Drawing.Size(126, 287);
             this.listEntries.TabIndex = 0;
             // 
             // txtDasm
@@ -286,8 +288,24 @@
             this.txtDasm.Location = new System.Drawing.Point(0, 0);
             this.txtDasm.Multiline = true;
             this.txtDasm.Name = "txtDasm";
-            this.txtDasm.Size = new System.Drawing.Size(186, 273);
+            this.txtDasm.Size = new System.Drawing.Size(186, 287);
             this.txtDasm.TabIndex = 16;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 33);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(72, 13);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "&Jump address";
+            // 
+            // txtJumpAddress
+            // 
+            this.txtJumpAddress.Location = new System.Drawing.Point(104, 30);
+            this.txtJumpAddress.Name = "txtJumpAddress";
+            this.txtJumpAddress.Size = new System.Drawing.Size(126, 20);
+            this.txtJumpAddress.TabIndex = 2;
             // 
             // JumpTableDialog
             // 
@@ -295,7 +313,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(624, 355);
+            this.ClientSize = new System.Drawing.Size(624, 368);
+            this.Controls.Add(this.txtJumpAddress);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.ddlRegisters);
             this.Controls.Add(this.label5);
@@ -355,5 +375,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox txtDasm;
         private System.Windows.Forms.ListBox listEntries;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtJumpAddress;
     }
 }

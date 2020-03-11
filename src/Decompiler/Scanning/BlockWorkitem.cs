@@ -944,7 +944,7 @@ namespace Reko.Scanning
             List<Address> vector;
             ImageMapVectorTable imgVector;
             Expression switchExp;
-
+            var eventListener = this.scanner.Services.RequireService<DecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
             {
                 // Trust the user knows what they're doing.
@@ -952,10 +952,11 @@ namespace Reko.Scanning
                 switchExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
                 imgVector = indJump.Table;
             }
-            else
+            else if (!DiscoverTableExtent(addrSwitch, xfer, out vector, out imgVector, out switchExp))
             {
-                if (!DiscoverTableExtent(addrSwitch, xfer, out vector, out imgVector, out switchExp))
-                    return false;
+                var navigator = eventListener.CreateJumpTableNavigator(program, this.arch, addrSwitch, null, 0);
+                eventListener.Warn(navigator, $"Unable to resolve indirect jump.");
+                return false;
             }
 
             if (xfer is RtlCall)

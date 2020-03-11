@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -37,6 +37,7 @@ namespace Reko.Gui.Forms
         int Stride { get; set; }
 
         ILabel CaptionLabel { get; }
+        ITextBox JumpInstructionAddress { get; }
         IComboBox IndexRegister { get; }
         ILabel InstructionLabel { get; }
         ITextBox JumpTableStartAddress { get; }

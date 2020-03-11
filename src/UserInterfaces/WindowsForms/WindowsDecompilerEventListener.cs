@@ -254,9 +254,9 @@ namespace Reko.UserInterfaces.WindowsForms
             return new StatementNavigator(program, stm, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride)
+        ICodeLocation DecompilerEventListener.CreateJumpTableNavigator(Program program, IProcessorArchitecture arch, Address addrIndirectJump, Address addrVector, int stride)
         {
-            return new JumpVectorNavigator(program, addrIndirectJump, addrVector, stride, sp);
+            return new JumpVectorNavigator(program, arch, addrIndirectJump, addrVector, stride, sp);
         }
 
         private void ShowStatus(string newStatus)
