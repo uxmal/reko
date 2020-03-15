@@ -36,7 +36,7 @@ namespace Reko.Arch.i8051
     public class i8051Architecture : ProcessorArchitecture
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
-
+        
         public i8051Architecture(string archId) : base(archId)
         {
             this.Endianness = EndianServices.Big;
@@ -46,7 +46,16 @@ namespace Reko.Arch.i8051
             this.FramePointerType = PrimitiveType.Byte; // tiny stack pointer!
             this.InstructionBitSize = 8;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+
+            this.DataMemory = new RegisterStorage("__data", 300, 0, PrimitiveType.SegmentSelector); 
         }
+
+        /// <summary>
+        /// This pseudo-register is not architectural, but is required to represent
+        /// data memory accesses, which don't occupy the same address space as code
+        /// memory accesses.
+        /// </summary>
+        public RegisterStorage DataMemory { get; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {

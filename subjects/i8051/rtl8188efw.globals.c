@@ -4,8 +4,4 @@
 
 #include "rtl8188efw.h"
 
-byte g_b001D = 0x00;
-byte g_b0157 = 0x00;
-bcu8 g_b80EA;
-byte g_b80F0;
 

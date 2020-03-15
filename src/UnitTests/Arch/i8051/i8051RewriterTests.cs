@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x05, 0x88); // inc\t[0088]
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|Mem0[0x0088:byte] = Mem0[0x0088:byte] + 0x01");
+                "1|L--|Mem0[__data:0x0088:byte] = Mem0[__data:0x0088:byte] + 0x01");
         }
 
         [Test]
@@ -120,13 +120,13 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x25, 0x25); // add\tA,[0025]
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A + Mem0[0x0025:byte]",
+                "1|L--|A = A + Mem0[__data:0x0025:byte]",
                 "2|L--|CAOP = cond(A)");
 
             Given_Bytes(0x27); // add\tA,@R1
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A + Mem0[R1:byte]",
+                "1|L--|A = A + Mem0[__data:R1:byte]",
                 "2|L--|CAOP = cond(A)");
 
             Given_Bytes(0x2B); // add\tA,R3
@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x56); // anl\tA,@R0
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A & Mem0[R0:byte]",
+                "1|L--|A = A & Mem0[__data:R0:byte]",
                 "2|L--|P = cond(A)");
         }
 
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x75, 0x42, 0x1); // mov\t[0042],01
             AssertCode(
                 "0|L--|0000(3): 1 instructions",
-                "1|L--|Mem0[0x0042:byte] = 0x01");
+                "1|L--|Mem0[__data:0x0042:byte] = 0x01");
 
             Given_Bytes(0x79, 0x42); // mov\tR1,42
             AssertCode(
@@ -172,22 +172,22 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x85, 0x90, 0x80); // mov\t[0090],[0080]
             AssertCode(
                 "0|L--|0000(3): 1 instructions",
-                "1|L--|Mem0[0x0090:byte] = Mem0[0x0080:byte]");
+                "1|L--|Mem0[__data:0x0090:byte] = Mem0[__data:0x0080:byte]");
 
             Given_Bytes(0x8A, 0x42); // mov\t[0042],R2
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|Mem0[0x0042:byte] = R2");
+                "1|L--|Mem0[__data:0x0042:byte] = R2");
 
             Given_Bytes(0xAA, 0x42); // mov\tR2,[0042]
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|R2 = Mem0[0x0042:byte]");
+                "1|L--|R2 = Mem0[__data:0x0042:byte]");
 
             Given_Bytes(0xE5, 0x42); // mov\tA,[0042]
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|A = Mem0[0x0042:byte]");
+                "1|L--|A = Mem0[__data:0x0042:byte]");
 
             Given_Bytes(0xEC); // mov\tA,R4
             AssertCode(
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xF5, 0x42); // mov\t[0042],A
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|Mem0[0x0042:byte] = A");
+                "1|L--|Mem0[__data:0x0042:byte] = A");
 
             Given_Bytes(0xFF); // mov\tR7,A
             AssertCode(
@@ -244,7 +244,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xD0, 0x82); // pop\t[0082]
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|Mem0[0x0082:byte] = Mem0[SP:byte]",
+                "1|L--|DPL = Mem0[__data:SP:byte]",
                 "2|L--|SP = SP - 0x01");
         }
 
@@ -254,12 +254,12 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xE0); // movx\tA,@DPTR
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|A = Mem0[DPTR:byte]");
+                "1|L--|A = Mem0[__data:DPTR:byte]");
 
             Given_Bytes(0xF2); // movx\t@R0,A
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|Mem0[R0:byte] = A");
+                "1|L--|Mem0[__data:R0:byte] = A");
         }
 
         [Test]
@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x67); // xrl\tA,@R1
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A ^ Mem0[R1:byte]",
+                "1|L--|A = A ^ Mem0[__data:R1:byte]",
                 "2|L--|P = cond(A)");
         }
 
@@ -306,7 +306,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x95, 0x42); // subb\tA,[0042]
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A - Mem0[0x0042:byte] - C",
+                "1|L--|A = A - Mem0[__data:0x0042:byte] - C",
                 "2|L--|CAOP = cond(A)");
         }
 
@@ -316,7 +316,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x40, 0x0E); // jc\t0010
             AssertCode(
                 "0|T--|0000(2): 1 instructions",
-                "1|T--|if (C) branch 0010");
+                "1|T--|if (Test(ULT,C)) branch 0010");
         }
 
         [Test]
@@ -401,7 +401,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x50, 0x1E); // jnc\t0020
             AssertCode(
                 "0|T--|0000(2): 1 instructions",
-                "1|T--|if (!C) branch 0020");
+                "1|T--|if (Test(UGE,C)) branch 0020");
         }
 
         [Test]
@@ -429,7 +429,7 @@ namespace Reko.UnitTests.Arch.i8051
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
                 "1|L--|SP = SP + 0x01",
-                "2|L--|Mem0[SP:byte] = Mem0[0x0090:byte]");
+                "2|L--|Mem0[__data:SP:byte] = Mem0[__data:0x0090:byte]");
         }
 
         [Test]
@@ -439,7 +439,7 @@ namespace Reko.UnitTests.Arch.i8051
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
                 "1|L--|SP = SP + 0x01",
-                "2|L--|Mem0[SP:byte] = A");
+                "2|L--|Mem0[__data:SP:byte] = A");
         }
 
         [Test]
@@ -487,7 +487,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x73); // jmp\t@DPTR+A
             AssertCode(
                 "0|T--|0000(1): 1 instructions",
-                "1|T--|goto Mem0[DPTR + A:ptr16]");
+                "1|T--|goto DPTR + A");
         }
 
         [Test]

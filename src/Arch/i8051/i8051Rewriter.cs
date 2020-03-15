@@ -36,12 +36,12 @@ namespace Reko.Arch.i8051
     // http://www.keil.com/support/man/docs/is51/is51_instructions.htm
     public class i8051Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private i8051Architecture arch;
-        private EndianImageReader rdr;
-        private ProcessorState state;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private IEnumerator<i8051Instruction> dasm;
+        private readonly i8051Architecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly ProcessorState state;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly IEnumerator<i8051Instruction> dasm;
         private i8051Instruction instr;
         private RtlEmitter m;
         private InstrClass iclass;
@@ -89,10 +89,10 @@ namespace Reko.Arch.i8051
                 case Mnemonic.inc: RewriteIncDec(m.IAdd); break;
                 case Mnemonic.jb: RewriteJb(m.Ne0); break;
                 case Mnemonic.jbc: RewriteJbc(); break;
-                case Mnemonic.jc: RewriteJc(e => e); break;
+                case Mnemonic.jc: RewriteJc(ConditionCode.ULT); break;
                 case Mnemonic.jmp: RewriteJump(); break;
                 case Mnemonic.jnb: RewriteJb(m.Eq0); break;
-                case Mnemonic.jnc: RewriteJc(m.Not); break;
+                case Mnemonic.jnc: RewriteJc(ConditionCode.UGE); break;
                 case Mnemonic.jnz: RewriteJz(m.Ne0); break;
                 case Mnemonic.jz: RewriteJz(m.Eq0); break;
                 case Mnemonic.lcall: RewriteCall(); break;
@@ -133,15 +133,19 @@ namespace Reko.Arch.i8051
         private void RewriteJump()
         {
             iclass = InstrClass.Transfer;
-            var dst = OpSrc(instr.Operands[0]);
+            var dst = OpSrc(instr.Operands[0], null);
+            if (dst is MemoryAccess mem)
+            {
+                dst = mem.EffectiveAddress;
+            }
             dst.DataType = PrimitiveType.Ptr16;
             m.Goto(dst);
         }
 
         private void RewriteBinop(Func<Expression, Expression, BinaryExpression> fn, FlagM grf)
         {
-            var dst = OpSrc(instr.Operands[0]);
-            var src = OpSrc(instr.Operands[1]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
+            var src = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(dst, fn(dst, src));
             if (grf != 0)
             {
@@ -155,8 +159,8 @@ namespace Reko.Arch.i8051
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.C));
-            var dst = OpSrc(instr.Operands[0]);
-            var src = OpSrc(instr.Operands[1]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
+            var src = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(
                 dst,
                 opr(
@@ -171,7 +175,7 @@ namespace Reko.Arch.i8051
         private void RewriteCall()
         {
             iclass = InstrClass.Transfer | InstrClass.Call;
-            var dst = OpSrc(instr.Operands[0]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             dst.DataType = PrimitiveType.Ptr16;
             m.Call(dst, 2);
         }
@@ -179,15 +183,15 @@ namespace Reko.Arch.i8051
         private void RewriteCjne()
         {
             iclass = InstrClass.ConditionalTransfer;
-            var a = OpSrc(instr.Operands[0]);
-            var b = OpSrc(instr.Operands[1]);
+            var a = OpSrc(instr.Operands[0], arch.DataMemory);
+            var b = OpSrc(instr.Operands[1], arch.DataMemory);
             var addr = ((AddressOperand)instr.Operands[2]).Address;
             m.Branch(m.Ne(a, b), addr, iclass);
         }
 
         private void RewriteClr()
         {
-            var dst = OpSrc(instr.Operands[0]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             WriteDst(instr.Operands[0], Constant.Zero(dst.DataType));
             if (dst is Identifier id && id.Storage is RegisterStorage)
             {
@@ -199,7 +203,7 @@ namespace Reko.Arch.i8051
         private void RewriteDjnz()
         {
             iclass = InstrClass.ConditionalTransfer;
-            var dst = OpSrc(instr.Operands[0]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             var addr = ((AddressOperand)instr.Operands[1]).Address;
             m.Assign(dst, m.ISub(dst, 1));
             m.Branch(m.Ne0(dst), addr, InstrClass.ConditionalTransfer);
@@ -207,7 +211,7 @@ namespace Reko.Arch.i8051
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn)
         {
-            var dst = OpSrc(instr.Operands[0]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             m.Assign(dst, fn(dst, m.Const(dst.DataType, 1)));
             if (dst is Identifier id && id.Storage is RegisterStorage)
             {
@@ -219,26 +223,26 @@ namespace Reko.Arch.i8051
         private void RewriteJb(Func<Expression, Expression> cmp)
         {
             iclass = InstrClass.ConditionalTransfer;
-            var src = OpSrc(instr.Operands[0]);
+            var src = OpSrc(instr.Operands[0], arch.DataMemory);
             var addr = ((AddressOperand)instr.Operands[1]).Address;
             m.Branch(cmp(src), addr, InstrClass.ConditionalTransfer);
         }
 
-        private void RewriteJc(Func<Expression, Expression> cmp)
+        private void RewriteJc(ConditionCode cc)
         {
             iclass = InstrClass.ConditionalTransfer;
             var src = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.C));
             var addr = ((AddressOperand)instr.Operands[0]).Address;
-            m.Branch(cmp(src), addr, InstrClass.ConditionalTransfer);
+            m.Branch(m.Test(cc, src), addr, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteJbc()
         {
             iclass = InstrClass.ConditionalTransfer;
-            var src = OpSrc(instr.Operands[0]);
+            var src = OpSrc(instr.Operands[0], arch.DataMemory);
             m.BranchInMiddleOfInstruction(m.Eq0(src), instr.Address + instr.Length, iclass);
             WriteDst(instr.Operands[0], Constant.Zero(src.DataType));
-            m.Goto(OpSrc(instr.Operands[1]));
+            m.Goto(OpSrc(instr.Operands[1], null));
         }
 
         private void RewriteJz(Func<Expression, Expression> cmp)
@@ -251,8 +255,8 @@ namespace Reko.Arch.i8051
 
         private void RewriteLogical(Func<Expression, Expression, Expression> fn)
         {
-            var dst = OpSrc(instr.Operands[0]);
-            var src = OpSrc(instr.Operands[1]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
+            var src = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(dst, fn(dst, src));
             if (dst is Identifier id && id.Storage is RegisterStorage)
             {
@@ -263,22 +267,22 @@ namespace Reko.Arch.i8051
 
         private void RewriteMov()
         {
-            var dst = OpSrc(instr.Operands[0]);
-            var src = OpSrc(instr.Operands[1]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
+            var src = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(dst, src);
         }
 
         private void RewriteMovc()
         {
             var dst = binder.EnsureRegister(Registers.A);
-            var src = OpSrc(instr.Operands[0]);
+            var src = OpSrc(instr.Operands[0], null);
             m.Assign(dst, src);
         }
 
         private void RewriteMovx()
         {
-            var dst = OpSrc(instr.Operands[0]);
-            var src = OpSrc(instr.Operands[1]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
+            var src = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(dst, src);
         }
 
@@ -295,22 +299,24 @@ namespace Reko.Arch.i8051
 
         private void RewritePop()
         {
-            var dst = OpSrc(instr.Operands[0]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             var sp = binder.EnsureRegister(Registers.SP);
-            m.Assign(dst, m.Mem(dst.DataType, sp));
+            var dataMemory = binder.EnsureRegister(arch.DataMemory);
+            m.Assign(dst, m.SegMem(dst.DataType, dataMemory, sp));
             m.Assign(sp, m.ISub(sp, 1));
         }
 
         private void RewritePush() {
-            var src = OpSrc(instr.Operands[0]);
+            var src = OpSrc(instr.Operands[0], arch.DataMemory);
             var sp = binder.EnsureRegister(Registers.SP);
             m.Assign(sp, m.IAdd(sp, 1));
-            m.Assign(m.Mem8(sp), src);
+            var dataMemory = binder.EnsureRegister(arch.DataMemory);
+            m.Assign(m.SegMem8(dataMemory, sp), src);
         }
 
         private void RewriteRotate(string rot)
         {
-            var dst = OpSrc(instr.Operands[0]);
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             m.Assign(dst, host.PseudoProcedure(rot, dst.DataType, dst, m.Byte(1)));
         }
 
@@ -337,8 +343,8 @@ namespace Reko.Arch.i8051
         private void RewriteXch()
         {
             var tmp = binder.CreateTemporary(Registers.A.DataType);
-            var a = OpSrc(instr.Operands[0]);
-            var b = OpSrc(instr.Operands[1]);
+            var a = OpSrc(instr.Operands[0], arch.DataMemory);
+            var b = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(tmp, a);
             m.Assign(a, b);
             m.Assign(b, tmp);
@@ -380,7 +386,7 @@ namespace Reko.Arch.i8051
             return GetEnumerator();
         }
 
-        private Expression OpSrc(MachineOperand op)
+        private Expression OpSrc(MachineOperand op, RegisterStorage dataMemory)
         {
             switch (op)
             {
@@ -437,7 +443,14 @@ namespace Reko.Arch.i8051
                 {
                     throw new NotImplementedException();
                 }
-                return m.Mem(mem.Width, ea);
+                if (dataMemory != null)
+                {
+                    return m.SegMem(mem.Width, binder.EnsureRegister(dataMemory), ea);
+                }
+                else
+                {
+                    return m.Mem(mem.Width, ea);
+                }
             case BitOperand bit:
                 Expression e = binder.EnsureRegister(bit.Register);
                 if (bit.Bit > 0)
@@ -465,6 +478,8 @@ namespace Reko.Arch.i8051
             switch (uAddress)
             {
             case 0x81: return binder.EnsureIdentifier(Registers.SP);
+            case 0x82: return binder.EnsureIdentifier(Registers.DPL);
+            case 0x83: return binder.EnsureIdentifier(Registers.DPH);
             case 0xE0: return binder.EnsureIdentifier(Registers.A);
             case 0xF0: return binder.EnsureIdentifier(Registers.B);
             }
