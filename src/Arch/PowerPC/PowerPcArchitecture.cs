@@ -253,8 +253,8 @@ namespace Reko.Arch.PowerPC
             if (this.primaryDecoders == null)
             {
                 this.Options.TryGetValue("Model", out var model);
-                var factory = new DecoderFactory((string)model);
-                this.primaryDecoders = factory.CreateDecoders();
+                var iset = InstructionSet.Create((string)model);
+                this.primaryDecoders = iset.CreateDecoders();
             }
             return this.primaryDecoders;
         }

@@ -28,15 +28,27 @@ using static Reko.Arch.PowerPC.PowerPcDisassembler;
 
 namespace Reko.Arch.PowerPC
 {
-    public class DecoderFactory
+    /// <summary>
+    /// An instruction set builds the decoders for a particular PowerPC instruction set.
+    /// </summary>
+    public class InstructionSet
     {
         private readonly Decoder invalid;
-        private readonly string model;
 
-        public DecoderFactory(string model)
+        public static InstructionSet Create(string model)
+        {
+            model = model ?? "";
+            switch (model.ToLowerInvariant())
+            {
+            case "750cl": return new PPC750clInstructionSet();
+            case "xenon": return new XenonInstructionSet();
+            default: return new InstructionSet();
+            }
+        }
+
+        public InstructionSet()
         {
             this.invalid = new InvalidDecoder();
-            this.model = model ?? ""; 
         }
 
         public Decoder[] CreateDecoders()
@@ -197,27 +209,27 @@ namespace Reko.Arch.PowerPC
         }
 
 
-        private static Decoder Nyi(string message)
+        protected static Decoder Nyi(string message)
         {
             return new NyiDecoder(message);
         }
 
-        private static Decoder Instr(Mnemonic mnemonic, params Mutator<PowerPcDisassembler> [] mutators)
+        protected static Decoder Instr(Mnemonic mnemonic, params Mutator<PowerPcDisassembler> [] mutators)
         {
             return new InstrDecoder(mnemonic, mutators, InstrClass.Linear);
         }
 
-        private static Decoder Instr(InstrClass iclass, Mnemonic mnemonic, params Mutator<PowerPcDisassembler>[] mutators)
+        protected static Decoder Instr(InstrClass iclass, Mnemonic mnemonic, params Mutator<PowerPcDisassembler>[] mutators)
         {
             return new InstrDecoder(mnemonic,  mutators, iclass);
         }
 
-        private Decoder Mask(int ppcBitPosition, int bits, params Decoder[] decoders)
+        protected Decoder Mask(int ppcBitPosition, int bits, params Decoder[] decoders)
         {
             return new MaskDecoder(ppcBitPosition, bits, decoders);
         }
 
-        private Decoder Sparse(int ppcBitPosition, int bits, params (uint, Decoder)[] sparseDecoders)
+        protected Decoder Sparse(int ppcBitPosition, int bits, params (uint, Decoder)[] sparseDecoders)
         {
             var decoders = new Decoder[1 << bits];
             foreach (var (code, decoder) in sparseDecoders)
@@ -234,19 +246,12 @@ namespace Reko.Arch.PowerPC
             return new MaskDecoder(ppcBitPosition, bits, decoders);
         }
 
-        private Decoder Ext4Decoder()
+        public virtual Decoder Ext4Decoder()
         {
-            if (string.Compare(this.model, "750") == 0)
-            {
-                return Ext4Decoder_PPC750CL();
-            }
-            else
-            {
-                return Ext4Decoder_VMX128();
-            }
+            return Nyi("Ext4");
         }
 
-        private Decoder Ext4Decoder_VMX128()
+        protected Decoder Ext4Decoder_VMX128()
         {
             var decoder = new VXDecoder(
                 new Dictionary<uint, Decoder>     // 4
@@ -705,64 +710,6 @@ Conventions:
             return decoder;
         }
 
-        private Decoder Ext4Decoder_PPC750CL()
-        {
-            var decoder = Mask(26, 5,
-                Sparse(21, 5,
-                    (1, Instr(Mnemonic.ps_cmpo0, c1,f2,f3))
-                    ),
-                Nyi("0b00001"),
-                Nyi("0b00010"),
-                Nyi("0b00011"),
-
-                Nyi("0b00100"),
-                Nyi("0b00101"),
-                Mask(25, 1,
-                    Instr(Mnemonic.psq_lx, f1,r2,r3,u21_1,u22_3),
-                    Instr(Mnemonic.psq_lux, f1,r2,r3,u21_1,u22_3)),
-                Mask(25, 1,
-                    Instr(Mnemonic.psq_stx, f1,r2,r3,u21_1,u22_3),
-                    Instr(Mnemonic.psq_stux, f1,r2,r3,u21_1,u22_3)),
-
-                Sparse(21, 5,
-                    (1, Instr(Mnemonic.ps_neg, C,f1,f3)),
-                    (2, Instr(Mnemonic.ps_mr, C,f1,f3)),
-                    (4, Instr(Mnemonic.ps_nabs, C,f1,f3)),
-                    (8, Instr(Mnemonic.ps_abs, C,f1,f3))),
-                Nyi("0b01001"),
-                Instr(Mnemonic.ps_sum0, C,f1,f2,f4,f3),
-                Instr(Mnemonic.ps_sum1, C,f1,f2,f4,f3),
-
-                Instr(Mnemonic.ps_muls0, C,f1,f2,f4),
-                Instr(Mnemonic.ps_muls1, C,f1,f2,f4),
-                Instr(Mnemonic.ps_madds0, C,f1,f2,f4,f3),
-                Instr(Mnemonic.ps_madds1, C,f1,f2,f4,f3),
-
-                Sparse(21, 5,
-                    (0b10000, Instr(Mnemonic.ps_merge00, C,f1,f2,f3)),
-                    (0b10001, Instr(Mnemonic.ps_merge01, C,f1,f2,f3)),
-                    (0b10010, Instr(Mnemonic.ps_merge10, C,f1,f2,f3)),
-                    (0b10011, Instr(Mnemonic.ps_merge11, C,f1,f2,f3))),
-                Nyi("0b10001"),
-                Instr(Mnemonic.ps_div, C,f1,f2,f3),
-                Nyi("0b10011"),
-
-                Instr(Mnemonic.ps_sub, C,f1,f2,f3),
-                Instr(Mnemonic.ps_add, C,f1,f2,f3),
-                Nyi("0b10110"),
-                Instr(Mnemonic.ps_sel, C,f1,f2,f4,f3),
-
-                Instr(Mnemonic.ps_res, C,f1,f3),
-                Instr(Mnemonic.ps_mul, C,f1,f2,f4),
-                Instr(Mnemonic.ps_rsqrte, C,f1,f3),
-                Nyi("0b11011"),
-
-                Instr(Mnemonic.ps_msub, C,f1,f2,f4,f3),
-                Instr(Mnemonic.ps_madd, C,f1,f2,f4,f3),
-                Instr(Mnemonic.ps_nmsub, C,f1,f2,f4,f3),
-                Instr(Mnemonic.ps_nmadd, C,f1,f2,f4,f3));
-            return decoder;
-        }
 
         private Decoder Ext5Decoder()
         {
@@ -1045,28 +992,14 @@ Conventions:
              });
         }
 
-        private Decoder Ext38Decoder()
+        public virtual Decoder Ext38Decoder()
         {
-            if (model == "750")
-            {
-                return Instr(Mnemonic.psq_l, f1,r2,s0_12,u21_1,u22_3);
-            }
-            else
-            {
-                return Instr(Mnemonic.lq, Is64Bit, r1,E2);
-            }
+            return Instr(Mnemonic.lq, Is64Bit, r1,E2);
         }
 
-        private Decoder Ext39Decoder()
+        public virtual Decoder Ext39Decoder()
         {
-            if (model == "750")
-            {
-                return Instr(Mnemonic.psq_lu, f1,r2,s0_12,u21_1,u22_3);
-            }
-            else
-            {
-                return Instr(Mnemonic.lfdp, p1,E2_2);
-            }
+            return Instr(Mnemonic.lfdp, p1, E2_2);
         }
 
         private Decoder Ext3BDecoder()
@@ -1086,34 +1019,20 @@ Conventions:
             });
         }
 
-        private Decoder Ext3CDecoder()
+        public virtual Decoder Ext3CDecoder()
         {
-            if (model == "750")
-            {
-                return Instr(Mnemonic.psq_st, f1,r2,s0_12,u21_1,u22_3);
-            }
-            else
-            {
-                return new XX3Decoder(new Dictionary<uint, Decoder>                // 3C
+            return new XX3Decoder(new Dictionary<uint, Decoder>                // 3C
                 {
                     { 0x00, Instr(Mnemonic.xsaddsp, v1,v2,v3) },
                     { 0x01, Instr(Mnemonic.xsmaddasp, v1,v2,v3) },
                     //{ 0x02, Instr(Mnemonic.xxsldwi, v1,v2,v3) },       //$TODO need extra work.
                     { 0x09, Instr(Mnemonic.xsmaddmsp, v1,v2,v3) },
                 });
-            }
         }
 
-        private Decoder Ext3DDecoder()
+        public virtual Decoder Ext3DDecoder()
         {
-            if (model == "750")
-            {
-                return Instr(Mnemonic.psq_stu, f1,r2,s0_12,u21_1,u22_3);
-            }
-            else
-            {
-                return Instr(Mnemonic.stfdp, p1,E2_2);
-            }
+            return Instr(Mnemonic.stfdp, p1,E2_2);
         }
     }
 }
