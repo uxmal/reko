@@ -254,30 +254,6 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class XlDecoderAux : InstrDecoder
-        {
-            private readonly Mnemonic opLink;
-
-            public XlDecoderAux(Mnemonic mnemonic, Mnemonic opLink, params Mutator<PowerPcDisassembler> [] mutators)
-                : base(mnemonic, mutators)
-            {
-                this.opLink = opLink;
-            }
-
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
-            {
-                bool link = (wInstr & 1) != 0;
-                var mnemonic = link ? this.opLink : this.mnemonic;
-                var iclass = link ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                return dasm.MakeInstruction(iclass, mnemonic);
-            }
-        }
-
         public class IDecoder : Decoder
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)

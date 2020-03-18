@@ -87,14 +87,18 @@ namespace Reko.Arch.PowerPC
 
         #region Mutators
 
-        // If the instructions LSB is '1', then set the setsCR0
+        /// <summary>
+        /// If the instruction's LSB is '1', then set the setsCR0 bit.
+        /// </summary>
         internal static bool C(uint wInstr, PowerPcDisassembler dasm)
         {
             dasm.allowSetCR0 = (wInstr & 1) != 0;
             return true;
         }
-        
-        // Force the setsCR0 flag to '1'.
+
+        /// <summary>
+        /// Force the setsCR0 flag to '1'.
+        /// </summary>
         internal static bool CC(uint uInstr, PowerPcDisassembler dasm)
         {
             dasm.allowSetCR0 = true;

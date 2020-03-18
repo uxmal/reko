@@ -410,6 +410,10 @@ namespace Reko.Arch.PowerPC
         ps_cmpo0,
         psq_l,
         psq_lu,
-        psq_stu
+        psq_stu,
+        lhzux,
+        subfco,
+        tlbie,
+        tlbsync
     }
 }

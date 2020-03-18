@@ -196,23 +196,19 @@ namespace Reko.Arch.PowerPC
                 switch (bi)
                 {
                 // Fixed arithmetic flags.
-                    case 0: cc = ConditionCode.GE; break;
-                    case 1: cc = ConditionCode.LE; break;
-                    case 2: cc = ConditionCode.NE; break;
-                    case 3: cc = ConditionCode.NO; break;
+                case 0: cc = ConditionCode.GE; break;
+                case 1: cc = ConditionCode.LE; break;
+                case 2: cc = ConditionCode.NE; break;
+                case 3: cc = ConditionCode.NO; break;
+                // Floating point flags.
+                case 4: cc = ConditionCode.GE; break;
+                case 5: cc = ConditionCode.LE; break;
+                case 6: cc = ConditionCode.NE; break;
+                case 7: cc = ConditionCode.NO; break;
                 default:
                     throw new NotImplementedException("condition false");
                 }
-                var flag = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.cr, 1u << bi));
-                if (destination is Address addrDst)
-                {
-                    m.Branch(m.Test(cc, flag), addrDst);
-                }
-                else
-                {
-                    m.BranchInMiddleOfInstruction(m.Test(cc.Invert(), flag), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
-                    m.Goto(destination);
-                }
+                EmitBranch(destination, bi, cc);
                 break;
             case 0x08:
             case 0x09:
@@ -222,7 +218,23 @@ namespace Reko.Arch.PowerPC
             case 0x0C:
             case 0x0D:
             case 0x0E:
-            case 0x0F: throw new NotImplementedException("condition true");
+            case 0x0F:
+                switch (bi)
+                {
+                // Fixed arithmetic flags.
+                case 0: cc = ConditionCode.LT; break;
+                case 1: cc = ConditionCode.GT; break;
+                case 2: cc = ConditionCode.EQ; break;
+                case 3: cc = ConditionCode.OV; break;
+                // Floating point flags
+                case 4: cc = ConditionCode.LT; break;
+                case 5: cc = ConditionCode.GT; break;
+                case 6: cc = ConditionCode.EQ; break;
+                case 7: cc = ConditionCode.OV; break;
+                default: throw new NotImplementedException("condition true");
+                }
+                EmitBranch(destination, bi, cc);
+                break;
             case 0x10:
             case 0x11:
             case 0x18:
@@ -237,6 +249,20 @@ namespace Reko.Arch.PowerPC
                 else
                     m.Goto(ctr);
                 return;
+            }
+        }
+
+        private void EmitBranch(Expression destination, byte bi, ConditionCode cc)
+        {
+            var flag = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.cr, 1u << bi));
+            if (destination is Address addrDst)
+            {
+                m.Branch(m.Test(cc, flag), addrDst);
+            }
+            else
+            {
+                m.BranchInMiddleOfInstruction(m.Test(cc.Invert(), flag), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
+                m.Goto(destination);
             }
         }
 

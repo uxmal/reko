@@ -2572,5 +2572,40 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|T--|if (Test(EQ,cr0)) branch 00100004",
                 "2|T--|goto ctr");
         }
+
+        [Test]
+        public void PPCRw_lhzux()
+        {
+            AssertCode(0x7D69026E, // lhzux
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r11 = (word32) Mem0[r9 + r0:word16]",
+                "2|L--|r9 = r9 + r0");
+        }
+
+        [Test]
+        public void PPCRw_subfco()
+        {
+            AssertCode(0x7C0A5C11, //subfco
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r0 = r11 - r10",
+                "2|L--|cr0 = cond(r0)",
+                "3|L--|xer = cond(r0)");
+        }
+
+        [Test]
+        public void PPCRw_tlbie()
+        {
+            AssertCode(0x7C004A64, // tlbie\tr9
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__tlbie(r9)");
+        }
+
+        [Test]
+        [Ignore("WIP")]
+        public void PPCRw_sdf()
+        {
+            AssertCode(0x4E6F7420,
+                "");
+        }
     }
 }

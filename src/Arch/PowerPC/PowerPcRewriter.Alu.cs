@@ -48,12 +48,13 @@ namespace Reko.Arch.PowerPC
             RewriteAdd(opD, opL, opR);
         }
 
-        public void RewriteAddc()
+        private void RewriteAddc()
         {
-            var opL = RewriteOperand(instr.Operands[1], true);
+            var opL = RewriteOperand(instr.Operands[1]);
             var opR = RewriteOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
+            MaybeEmitCr0(opD);
             var xer = binder.EnsureRegister(arch.xer);
             m.Assign(xer, m.Cond(opD));
         }

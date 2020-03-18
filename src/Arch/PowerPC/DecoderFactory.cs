@@ -74,7 +74,10 @@ namespace Reko.Arch.PowerPC
                     { 449, Instr(Mnemonic.cror, I1,I2,I3) },
                     { 0x0C1, Instr(Mnemonic.crxor, I1,I2,I3) },
                     { 0x121, Instr(Mnemonic.creqv, I1,I2,I3) },
-                    { 0x210, new XlDecoderAux(Mnemonic.bcctr, Mnemonic.bctrl, I1,I2)}
+                    { 0x210, Mask(31, 1, 
+                        Instr(InstrClass.ConditionalTransfer, Mnemonic.bcctr, I1, I2),
+                        Instr(InstrClass.ConditionalTransfer|InstrClass.Call, Mnemonic.bctrl, I1,I2))
+                    }
                 }),
                 Instr(Mnemonic.rlwimi, r2,r1,I3,I4,I5),
                 Instr(Mnemonic.rlwinm, C,r2,r1,I3,I4,I5),
@@ -989,6 +992,8 @@ Conventions:
                 { 279, Instr(Mnemonic.lhzx, r1,r2,r3) },
                 { 0x116, Instr(Mnemonic.dcbt, r2,r3,u21_4) },
                 { 0x11C, Instr(Mnemonic.eqv, r1,r2,r3) },
+                { 306, Instr(Mnemonic.tlbie, r3) },
+                { 311, Instr(Mnemonic.lhzux, r1,r2,r3) },
                 { 316, Instr(Mnemonic.xor, C,r2,r1,r3) },
                 { 444, Instr(Mnemonic.or, C,r2,r1,r3) },
 
@@ -1007,11 +1012,14 @@ Conventions:
                 { 0x1E9, Instr(Mnemonic.divd, C,r1,r2,r3)},
                 { 0x1EB, Instr(Mnemonic.divw, C,r1,r2,r3)},
                 { 0x207, Instr(Mnemonic.lvlx, r1,r2,r3) },
+                { 0x208, Instr(Mnemonic.subfco, C,r1,r2,r3)},
+                { 0x20A, Instr(Mnemonic.addco, C,r1,r2,r3)},
                 { 0x216, Instr(Mnemonic.lwbrx, r1,r2,r3) },
                 { 0x217, Instr(Mnemonic.lfsx, f1,r2,r3) },
                 { 0x218, Instr(Mnemonic.srw, C,r2,r1,r3) },
                 { 0x21B, Instr(Mnemonic.srd, C,r2,r1,r3) },
                 { 0x255, Instr(Mnemonic.lswi, r1,r2,I3) },
+                { 566, Instr(Mnemonic.tlbsync) },
                 { 0x237, Instr(Mnemonic.lfsux, f1,r2,r3) },
                 { 0x257, Instr(Mnemonic.lfdx, f1,r2,r3) },
                 { 0x277, Instr(Mnemonic.lfdux, f1,r2,r3) },
