@@ -74,11 +74,13 @@ namespace Reko.ImageLoaders.Elf
 
         public override Program Load(Address addrLoad)
         {
-            LoadElfIdentification();
+            var rdr = new BeImageReader(this.RawImage, 0);
+            LoadElfIdentification(rdr);
             this.innerLoader = CreateLoader();
             this.innerLoader.LoadArchitectureFromHeader();
             addrLoad = addrLoad ?? innerLoader.DefaultAddress;
             var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
+            
             int cHeaders = innerLoader.LoadSegments();
             innerLoader.LoadSectionHeaders();
             innerLoader.LoadSymbolsFromSections();
@@ -105,6 +107,11 @@ namespace Reko.ImageLoaders.Elf
         public void LoadElfIdentification()
         {
             var rdr = new BeImageReader(base.RawImage, 0);
+            LoadElfIdentification(rdr);
+        }
+
+        public void LoadElfIdentification(EndianImageReader rdr)
+        {
             var elfMagic = rdr.ReadBeInt32();
             if (elfMagic != ELF_MAGIC)
                 throw new BadImageFormatException("File is not in ELF format.");
@@ -155,6 +162,17 @@ namespace Reko.ImageLoaders.Elf
             else
             {
                 var header32 = Elf32_EHdr.Load(rdr);
+                trace.Verbose("== ELF header =================");
+                trace.Verbose("  e_entry: {0}", header32.e_entry);
+                trace.Verbose("  e_phoff: {0}", header32.e_phoff);
+                trace.Verbose("  e_shoff: {0}", header32.e_shoff);
+                trace.Verbose("  e_flags: {0}", header32.e_flags);
+                trace.Verbose("  e_ehsize: {0}", header32.e_ehsize);
+                trace.Verbose("  e_phentsize: {0}", header32.e_phentsize);
+                trace.Verbose("  e_phnum: {0}", header32.e_phnum);
+                trace.Verbose("  e_shentsize: {0}", header32.e_shentsize);
+                trace.Verbose("  e_shnum: {0}", header32.e_shnum);
+                trace.Verbose("  e_shstrndx: {0}", header32.e_shstrndx);
                 return new ElfLoader32(this, header32, RawImage, endianness);
             }
         }

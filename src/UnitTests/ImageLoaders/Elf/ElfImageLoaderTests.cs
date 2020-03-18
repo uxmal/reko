@@ -422,7 +422,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             el.LoadSegments();
             el.LoadSectionHeaders();
             //el.Dump(Console.Out);
-
         }
 
         [Test]
