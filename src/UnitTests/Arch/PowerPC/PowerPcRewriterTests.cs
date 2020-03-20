@@ -1423,7 +1423,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCrw_rfi()
         {
-            AssertCode(0x4C000064, //  rfi
+            AssertCode(0x4C000024, //  rfi
                 "0|T--|00100000(4): 2 instructions",
                 "1|L--|__write_msr(srr1)",
                 "2|T--|goto srr0");
@@ -2630,6 +2630,40 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x4E6F7420,
                 "");
+        }
+
+        [Test]
+        public void PPCRw_fctiw()
+        {
+            AssertCode(0xFC00081C,   // fctiw	f0,f1
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = f1",
+                "2|L--|f0 = __fctiw(v4)");
+        }
+
+        [Test]
+        public void PPCRw_bsolr()
+        {
+            AssertCode(0x4D830020,   // bsolr	cr0
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(NO,cr0)) branch 00100004",
+                "2|T--|return (0,0)");
+        }
+
+        [Test]
+        public void PPCRw_vnor()
+        {
+            AssertCode(0x11338D04,   // vnor	v9,v19,v17
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v9 = ~(v19 | v17)");
+        }
+
+        [Test]
+        public void PPCRw_vorc()
+        {
+            AssertCode(0x11338D44,   // vorc	v9,v19,v17
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v9 = v19 | ~v17");
         }
     }
 }

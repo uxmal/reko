@@ -28,8 +28,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
+#pragma warning disable IDE1006 // Naming Styles
+
 namespace Reko.Arch.PowerPC
 {
+    using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
+ 
     public partial class PowerPcDisassembler : DisassemblerBase<PowerPcInstruction, Mnemonic>
     {
         private readonly PowerPcArchitecture arch;
@@ -56,7 +60,7 @@ namespace Reko.Arch.PowerPC
                 return null;
             this.allowSetCR0 = false;
             this.ops.Clear();
-            var instrCur = primaryDecoders[wInstr >> 26].Decode(this, wInstr);
+            var instrCur = primaryDecoders[wInstr >> 26].Decode(wInstr, this);
             if (wInstr == 0)
                 instrCur.InstructionClass |= InstrClass.Zero;
             instrCur.Address = addr;
@@ -97,9 +101,18 @@ namespace Reko.Arch.PowerPC
         }
 
         /// <summary>
+        /// If the instruction's bit 10 is '1', then set the setsCR0 bit.
+        /// </summary>
+        internal static bool C10(uint wInstr, PowerPcDisassembler dasm)
+        {
+            dasm.allowSetCR0 = (wInstr & (1 << 10)) != 0;
+            return true;
+        }
+
+        /// <summary>
         /// Force the setsCR0 flag to '1'.
         /// </summary>
-        internal static bool CC(uint uInstr, PowerPcDisassembler dasm)
+        internal static bool CC(uint _, PowerPcDisassembler dasm)
         {
             dasm.allowSetCR0 = true;
             return true;
@@ -277,11 +290,15 @@ namespace Reko.Arch.PowerPC
             };
         }
         internal static readonly Mutator<PowerPcDisassembler> u6_2 = u(6, 2);
+        internal static readonly Mutator<PowerPcDisassembler> u6_4 = u(6, 4);
         internal static readonly Mutator<PowerPcDisassembler> u6_5 = u(6, 5);
         internal static readonly Mutator<PowerPcDisassembler> u9_1 = u(9, 1);
+        internal static readonly Mutator<PowerPcDisassembler> u11_5 = u(11, 5);
         internal static readonly Mutator<PowerPcDisassembler> u14_2 = u(14, 2);
         internal static readonly Mutator<PowerPcDisassembler> u16_1 = u(16, 1);
         internal static readonly Mutator<PowerPcDisassembler> u16_2 = u(16, 2);
+        internal static readonly Mutator<PowerPcDisassembler> u16_3 = u(16, 3);
+        internal static readonly Mutator<PowerPcDisassembler> u16_4 = u(16, 4);
         internal static readonly Mutator<PowerPcDisassembler> u16_5 = u(16, 5);
         internal static readonly Mutator<PowerPcDisassembler> u17_8 = u(17, 8);
         internal static readonly Mutator<PowerPcDisassembler> u18_3 = u(18, 3);
@@ -301,6 +318,17 @@ namespace Reko.Arch.PowerPC
         }
         internal static readonly Mutator<PowerPcDisassembler> s0_12 = s(0, 12);
         internal static readonly Mutator<PowerPcDisassembler> s16_5 = s(16, 5);
+
+        internal static Mutator<PowerPcDisassembler> s(Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var n = Bitfield.ReadSignedFields(fields, u);
+                var op = ImmediateOperand.Int32(n);
+                d.ops.Add(op);
+                return true;
+            };
+        }
 
         // VMX extension to access 128 vector regs
         //    //| A | 0 0 0 0 | a | 1 | VDh | VBh |
@@ -379,6 +407,11 @@ namespace Reko.Arch.PowerPC
             //");
 #endif
             return CreateInvalidInstruction();
+        }
+
+        public override PowerPcInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            return base.NotYetImplemented(wInstr, message);
         }
     }
 }

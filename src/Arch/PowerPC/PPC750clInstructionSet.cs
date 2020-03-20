@@ -18,10 +18,13 @@
  */
 #endregion
 
-using static Reko.Arch.PowerPC.PowerPcDisassembler;
+using Reko.Core.Machine;
 
 namespace Reko.Arch.PowerPC
 {
+    using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
+    using static Reko.Arch.PowerPC.PowerPcDisassembler;
+
     public class PPC750clInstructionSet : InstructionSet
     {
         public override Decoder Ext4Decoder()

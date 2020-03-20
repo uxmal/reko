@@ -10,33 +10,13 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.PowerPC
 {
+    using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
+    
     public partial class PowerPcDisassembler
     {
-        public abstract class Decoder
-        {
-            public abstract PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr);
-
-            public static PowerPcInstruction DecodeOperands(
-                uint wInstr, 
-                PowerPcDisassembler dasm, 
-                InstrClass iclass,
-                Mnemonic mnemonic,
-                Mutator<PowerPcDisassembler>[] mutators)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                    {
-                        return dasm.CreateInvalidInstruction();
-                    }
-                }
-                return dasm.MakeInstruction(iclass, mnemonic);
-            }
-        }
-
         public class InvalidDecoder : Decoder
         {
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 return dasm.CreateInvalidInstruction();
             }
@@ -51,7 +31,7 @@ namespace Reko.Arch.PowerPC
                 this.message = message;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 EmitUnitTest(wInstr);
                 return dasm.CreateInvalidInstruction();
@@ -68,27 +48,10 @@ namespace Reko.Arch.PowerPC
                 Debug.Print("    }");
                 Debug.Print("");
             }
-        }
 
-        public class MaskDecoder : Decoder
-        {
-            private readonly int shift;
-            private readonly uint mask;
-            private readonly Decoder[] decoders;
-
-            public MaskDecoder(int ppcBitPosition, int bits, params Decoder[] decoders)
+            public override string ToString()
             {
-                // Convert awkward PPC bit numbering to something sane.
-                this.shift = 32 - (ppcBitPosition + bits);
-                this.mask = (1u << bits) - 1;
-                Debug.Assert(decoders.Length == (1 << bits));
-                this.decoders = decoders;
-            }
-
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
-            {
-                var bitfield = (wInstr >> shift) & mask;
-                return decoders[bitfield].Decode(dasm, wInstr);
+                return $"Nyi: {message}";
             }
         }
 
@@ -101,7 +64,7 @@ namespace Reko.Arch.PowerPC
                 this.decoder = decoder;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 return decoder(dasm, wInstr);
             }
@@ -120,9 +83,26 @@ namespace Reko.Arch.PowerPC
                 this.mutators = mutators;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 return DecodeOperands(wInstr, dasm, iclass, mnemonic, mutators);
+            }
+
+            public static PowerPcInstruction DecodeOperands(
+                uint wInstr,
+                PowerPcDisassembler dasm,
+                InstrClass iclass,
+                Mnemonic mnemonic,
+                Mutator<PowerPcDisassembler>[] mutators)
+            {
+                foreach (var m in mutators)
+                {
+                    if (!m(wInstr, dasm))
+                    {
+                        return dasm.CreateInvalidInstruction();
+                    }
+                }
+                return dasm.MakeInstruction(iclass, mnemonic);
             }
         }
 
@@ -141,17 +121,17 @@ namespace Reko.Arch.PowerPC
                 this.mutators = mutators;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 Mnemonic mnemonic = ((wInstr & 1) == 0) ? mnemonic0 : mnemonic1;
                 wInstr &= ~3u;
-                return DecodeOperands(wInstr & ~3u, dasm, iclass, mnemonic, mutators);
+                return InstrDecoder.DecodeOperands(wInstr & ~3u, dasm, iclass, mnemonic, mutators);
             }
         }
 
         public class MDDecoder : Decoder
         {
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 // Only supported on 64-bit arch.
                 if (dasm.defaultWordWidth.BitSize == 32)
@@ -197,9 +177,9 @@ namespace Reko.Arch.PowerPC
                 this.xDecoders = xDecoders;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
-                return xDecoders[(wInstr >> 1) & 0x3FF].Decode(dasm, wInstr);
+                return xDecoders[(wInstr >> 1) & 0x3FF].Decode(wInstr, dasm);
             }
         }
 
@@ -212,12 +192,12 @@ namespace Reko.Arch.PowerPC
                 this.xDecoders = xDecoders;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var xOp = (wInstr >> 1) & 0x3FF;
                 if (xDecoders.TryGetValue(xOp, out var decoder))
                 {
-                    return decoder.Decode(dasm, wInstr);
+                    return decoder.Decode(wInstr, dasm);
                 }
                 else
                 {
@@ -240,12 +220,12 @@ namespace Reko.Arch.PowerPC
                 this.decoders = decoders;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var x = (wInstr >> shift) & mask;
                 if (decoders.TryGetValue(x, out Decoder decoder))
                 {
-                    return decoder.Decode(dasm, wInstr);
+                    return decoder.Decode(wInstr, dasm);
                 }
                 else
                 {
@@ -256,7 +236,7 @@ namespace Reko.Arch.PowerPC
 
         public class IDecoder : Decoder
         {
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var mnemonic = (wInstr & 1) == 1 ? Mnemonic.bl : Mnemonic.b;
                 var iclass = (wInstr & 1) == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
@@ -325,7 +305,7 @@ namespace Reko.Arch.PowerPC
                 Mnemonic.b, Mnemonic.bl
             };
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 uint link = (wInstr & 1);
                 var uOffset = wInstr & 0x0000FFFC;
@@ -437,7 +417,7 @@ namespace Reko.Arch.PowerPC
             {
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 bool link = (wInstr & 1) != 0;
                 var mnemonic = link ? Mnemonic.blrl : Mnemonic.blr;
@@ -490,7 +470,7 @@ namespace Reko.Arch.PowerPC
             {
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var reg = dasm.RegFromBits(wInstr >> 21);
                 var spr = (wInstr >> 11) & 0x3FF;
@@ -514,7 +494,7 @@ namespace Reko.Arch.PowerPC
                 this.to = to;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var ops = new List<MachineOperand> { dasm.RegFromBits(wInstr >> 21) };
                 var spr = ((wInstr >> 16) & 0x1F) | ((wInstr >> 6) & 0x3E0);
@@ -541,7 +521,7 @@ namespace Reko.Arch.PowerPC
             public CmpDecoder(Mnemonic op, params Mutator<PowerPcDisassembler>[] mutators) : base(op, mutators)
             { }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var l = ((wInstr >> 21) & 1) != 0;
                 var op = Mnemonic.illegal;
@@ -568,16 +548,16 @@ namespace Reko.Arch.PowerPC
                 this.vaDecoders = vaDecoders;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var xOp = wInstr & 0x7FFu;
                 if (vxDecoders.TryGetValue(xOp, out Decoder decoder))
                 {
-                    return decoder.Decode(dasm, wInstr);
+                    return decoder.Decode(wInstr, dasm);
                 }
                 else if (vaDecoders.TryGetValue(wInstr & 0x3Fu, out decoder))
                 {
-                    return decoder.Decode(dasm, wInstr);
+                    return decoder.Decode(wInstr, dasm);
                 }
                 else
                 {
@@ -591,9 +571,9 @@ namespace Reko.Arch.PowerPC
         {
             public XSDecoder(Mnemonic mnemonic, params Mutator<PowerPcDisassembler>[] mutators) : base(mnemonic, mutators) { }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
-                var instr = base.Decode(dasm, wInstr);
+                var instr = base.Decode(wInstr, dasm);
                 var c = ((ImmediateOperand)instr.Operands[2]).Value.ToInt32();
                 if ((wInstr & 2) != 0)
                     c += 32;
@@ -611,12 +591,12 @@ namespace Reko.Arch.PowerPC
                 this.decoders = decoders;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var subOp = (wInstr & 0xFFFF) >> 3;
                 if (decoders.TryGetValue(subOp, out var decoder))
                 {
-                    return decoder.Decode(dasm, wInstr);
+                    return decoder.Decode(wInstr, dasm);
                 }
                 else
                 {
@@ -637,12 +617,12 @@ namespace Reko.Arch.PowerPC
                 this.decoders = decoders;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var key = (wInstr >> 0x4) & mask;
                 if (decoders.TryGetValue(key, out Decoder decoder))
                 {
-                    return decoder.Decode(dasm, wInstr);
+                    return decoder.Decode(wInstr, dasm);
                 }
                 else
                 {
@@ -653,7 +633,7 @@ namespace Reko.Arch.PowerPC
 
             public static PowerPcInstruction DecodeVperm128(PowerPcDisassembler dasm, uint wInstr)
             {
-                var instr = Decoder.DecodeOperands(
+                var instr = InstrDecoder.DecodeOperands(
                     wInstr, dasm, 
                     InstrClass.Linear, Mnemonic.vperm128,
                     new Mutator<PowerPcDisassembler>[] { Wd, Wa, Wb, v3_6 });

@@ -96,6 +96,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.b: RewriteB(); break;
                 case Mnemonic.bc: RewriteBc(false); break;
                 case Mnemonic.bcctr: RewriteBcctr(false); break;
+                case Mnemonic.bcctrl: RewriteBcctr(true); break;
                 case Mnemonic.bctrl: RewriteBcctr(true); break;
                 case Mnemonic.bcdadd: RewriteBcdadd(); break;
                 case Mnemonic.bdnz: RewriteCtrBranch(false, false, m.Ne, false); break;
@@ -135,6 +136,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.bnsl: RewriteBranch(true, false, ConditionCode.NO); break;
                 case Mnemonic.bso: RewriteBranch(false, false, ConditionCode.OV); break;
                 case Mnemonic.bsol: RewriteBranch(true, false, ConditionCode.OV); break;
+                case Mnemonic.bsolr: RewriteBranch(false, true, ConditionCode.OV); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
                 case Mnemonic.cmpi: RewriteCmpi(); break;
                 case Mnemonic.cmpl: RewriteCmpl(); break;
@@ -171,6 +173,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.fcfid: RewriteFcfid(); break;
                 case Mnemonic.fctid: RewriteFctid(); break;
                 case Mnemonic.fctidz: RewriteFctidz(); break;
+                case Mnemonic.fctiw: RewriteFctiw(); break;
                 case Mnemonic.fctiwz: RewriteFctiwz(); break;
                 case Mnemonic.fcmpo: RewriteFcmpo(); break;
                 case Mnemonic.fcmpu: RewriteFcmpu(); break;
@@ -298,6 +301,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.psq_stx: Rewrite_psq_st(false); break;
                 case Mnemonic.psq_stux: Rewrite_psq_st(true); break;
                 case Mnemonic.rfi: RewriteRfi(); break;
+                case Mnemonic.rfid: RewriteRfi(); break;
                 case Mnemonic.rldicl: RewriteRldicl(); break;
                 case Mnemonic.rldicr: RewriteRldicr(); break;
                 case Mnemonic.rldimi: RewriteRldimi(); break;
@@ -396,8 +400,10 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp", PrimitiveType.Real32); break;  //$REVIEW: is it correct?
                 case Mnemonic.vmulfp128: RewriteVectorBinOp("__vmulfp", PrimitiveType.Real32); break;         //$REVIEW: is it correct?
                 case Mnemonic.vnmsubfp: RewriteVnmsubfp(); break;
+                case Mnemonic.vnor: RewriteOr(true); break;
                 case Mnemonic.vor:
                 case Mnemonic.vor128: RewriteVor(); break;
+                case Mnemonic.vorc: RewriteOrc(false);break;
                 case Mnemonic.vperm:
                 case Mnemonic.vperm128: RewriteVperm(); break;
                 case Mnemonic.vpkd3d128: RewriterVpkD3d(); break;

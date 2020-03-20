@@ -18,11 +18,16 @@
  */
 #endregion
 
+using Reko.Core.Machine;
+
 namespace Reko.Arch.PowerPC
 {
-    internal class XenonInstructionSet : InstructionSet
+    using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
+    
+    public class XenonInstructionSet : InstructionSet
     {
-        public override PowerPcDisassembler.Decoder Ext4Decoder()
+
+        public override Decoder Ext4Decoder()
         {
             return Ext4Decoder_VMX128();
         }

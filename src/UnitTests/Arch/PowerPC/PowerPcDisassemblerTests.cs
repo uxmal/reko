@@ -362,8 +362,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_rfi()
         {
-            var instr = DisassembleBits("010011 00000 00000 00000 0 0001100100");
-            Assert.AreEqual("rfi", instr.ToString());
+            var instr = DisassembleBits("010011 00000 00000 00000 0 0000100100");
+            Assert.AreEqual("rfid", instr.ToString());
         }
 
         [Test]
@@ -562,6 +562,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xfc00081e, "fctiwz\tf0,f1");
         }
+
         [Test]
         public void PPCDis_fmul()
         {
@@ -578,10 +579,11 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7d808120, "mtcrf\t08,r12");
         }
 
+
         [Test]
-        public void PPCDis_bctrl()
+        public void PPCDis_bcctrl()
         {
-            AssertCode(0x4e800421, "bctrl\t14,00");
+            AssertCode(0x4e800421, "bcctrl\t14,00");
         }
 
         [Test]
@@ -725,6 +727,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x4260fef9, "bdzl\t$000FFEF8");
             //AssertCode(0x4280fef8, "bc+    20,lt,0xffffffffffffff24	 ");
             AssertCode(0x4300fef8, "bdnz\t$000FFEF8");
+            AssertCode(0x4e800420, "bcctr\t14,00");
         }
 
         [Test]
@@ -971,121 +974,135 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        [Ignore("WIP")]
-        public void PPCDis_many()
+        public void PPCDis_vmaxfp()
         {
-            AssertCode(0x136D9010, "@@@");    // VX   04-010 (16)
-            AssertCode(0x7C00007C, "@@@");    // X   1F-03E (62)
-            AssertCode(0x1133805C, "@@@");    // VX   04-05C (92)
-            AssertCode(0x11901091, "@@@");    // VX   04-091 (145)
-            AssertCode(0x4C064143, "@@@");    // X   13-0A1 (161)
-            AssertCode(0x4C6F6164, "@@@");    // X   13-0B2 (178)
-            AssertCode(0x7C0101A4, "@@@");    // X   1F-0D2 (210)
-            AssertCode(0x7F4D0A06, "@@@");    // X   1F-103 (259)
-            AssertCode(0x1042910F, "@@@");    // VX   04-10F (271)
-            AssertCode(0x4E435220, "@@@");    // X   13-110 (272)
-            AssertCode(0x10431141, "@@@");    // VX   04-141 (321)
-            AssertCode(0x7F440ADF, "@@@");    // X   1F-16F (367)
-            AssertCode(0x7F41930D, "@@@");    // X   1F-186 (390)
-            AssertCode(0x4D616368, "@@@");    // X   13-1B4 (436)
-            AssertCode(0x4D697373, "@@@");    // X   13-1B9 (441)
-            AssertCode(0x4C657375, "@@@");    // X   13-1BA (442)
-            AssertCode(0x7F9D039E, "@@@");    // X   1F-1CF (463)
-            AssertCode(0x7F0263DC, "@@@");    // X   1F-1EE (494)
-            AssertCode(0x7C000400, "@@@");    // X   1F-200 (512)
-            AssertCode(0x7F429C04, "@@@");    // X   1F-202 (514)
-            AssertCode(0x7F49DC41, "@@@");    // X   1F-220 (544)
-            AssertCode(0x7F9C0442, "@@@");    // X   1F-221 (545)
-            AssertCode(0x11338A64, "@@@");    // VX   04-264 (612)
-            AssertCode(0x7F49D4D7, "@@@");    // X   1F-26B (619)
-            AssertCode(0x4CDDDCD9, "@@@");    // X   13-26C (620)
-            AssertCode(0x7F029CDC, "@@@");    // X   1F-26E (622)
-            AssertCode(0x11338A7C, "@@@");    // VX   04-27C (636)
-            AssertCode(0x11338280, "@@@");    // VX   04-280 (640)
-            AssertCode(0x7F479D03, "@@@");    // X   1F-281 (641)
-            AssertCode(0x7CCB4D11, "@@@");    // X   1F-288 (648)
-            AssertCode(0x7E10B515, "@@@");    // X   1F-28A (650)
-            AssertCode(0x11338A9C, "@@@");    // VX   04-29C (668)
-            AssertCode(0x11000AB8, "@@@");    // VX   04-2B8 (696)
-            AssertCode(0x11338ABC, "@@@");    // VX   04-2BC (700)
-            AssertCode(0x11338ACC, "@@@");    // VX   04-2CC (716)
-            AssertCode(0x11338ADC, "@@@");    // VX   04-2DC (732)
-            AssertCode(0x11338AFC, "@@@");    // VX   04-2FC (764)
-            AssertCode(0x7F054610, "@@@");    // X   1F-308 (776)
-            AssertCode(0x11338B0C, "@@@");    // VX   04-30C (780)
-            AssertCode(0x11338B1C, "@@@");    // VX   04-31C (796)
-            AssertCode(0x7F670641, "@@@");    // X   1F-320 (800)
-            AssertCode(0x7F4EDE45, "@@@");    // X   1F-322 (802)
-            AssertCode(0x4D616E61, "@@@");    // X   13-330 (816)
-            AssertCode(0x4C657665, "@@@");    // X   13-332 (818)
-            AssertCode(0x4D6F6E69, "@@@");    // X   13-334 (820)
-            AssertCode(0x7E00066C, "@@@");    // X   1F-336 (822)
-            AssertCode(0x4F666673, "@@@");    // X   13-339 (825)
-            AssertCode(0x11338B3C, "@@@");    // VX   04-33C (828)
-            AssertCode(0x11338B4C, "@@@");    // VX   04-34C (844)
-            AssertCode(0x11338B5C, "@@@");    // VX   04-35C (860)
-            AssertCode(0x11338B7C, "@@@");    // VX   04-37C (892)
-            AssertCode(0x11338B9C, "@@@");    // VX   04-39C (924)
-            AssertCode(0x4E0ACF41, "@@@");    // X   13-3A0 (928)
-            AssertCode(0x11338BBC, "@@@");    // VX   04-3BC (956)
-            AssertCode(0x11338BCC, "@@@");    // VX   04-3CC (972)
-            AssertCode(0x7C0007A4, "@@@");    // X   1F-3D2 (978)
-            AssertCode(0x11338BDC, "@@@");    // VX   04-3DC (988)
-            AssertCode(0x7F43D7D8, "@@@");    // X   1F-3EC (1004)
-            AssertCode(0x7C0007E4, "@@@");    // X   1F-3F2 (1010)
-            AssertCode(0x11338BFC, "@@@");    // VX   04-3FC (1020)
-            AssertCode(0x1102640A, "@@@");    // VX   04-40A (1034)
-            AssertCode(0x11338C1C, "@@@");    // VX   04-41C (1052)
-            AssertCode(0x11338C38, "@@@");    // VX   04-438 (1080)
-            AssertCode(0x11338C48, "@@@");    // VX   04-448 (1096)
-            AssertCode(0x11338C64, "@@@");    // VX   04-464 (1124)
-            AssertCode(0x11338C80, "@@@");    // VX   04-480 (1152)
-            AssertCode(0x11338C9C, "@@@");    // VX   04-49C (1180)
-            AssertCode(0x11338CB8, "@@@");    // VX   04-4B8 (1208)
-            AssertCode(0x11338CD8, "@@@");    // VX   04-4D8 (1240)
-            AssertCode(0x11338CF8, "@@@");    // VX   04-4F8 (1272)
-            AssertCode(0x11338D04, "@@@");    // VX   04-504 (1284)
-            AssertCode(0x11338D0C, "@@@");    // VX   04-50C (1292)
-            AssertCode(0x11338D18, "@@@");    // VX   04-518 (1304)
-            AssertCode(0x11338D38, "@@@");    // VX   04-538 (1336)
-            AssertCode(0x11338D44, "@@@");    // VX   04-544 (1348)
-            AssertCode(0x11338D54, "@@@");    // VX   04-554 (1364)
-            AssertCode(0x11338D5C, "@@@");    // VX   04-55C (1372)
-            AssertCode(0x11338D7C, "@@@");    // VX   04-57C (1404)
-            AssertCode(0x11338D90, "@@@");    // VX   04-590 (1424)
-            AssertCode(0x10930D94, "@@@");    // VX   04-594 (1428)
-            AssertCode(0x11338D9C, "@@@");    // VX   04-59C (1436)
-            AssertCode(0x11338DB4, "@@@");    // VX   04-5B4 (1460)
-            AssertCode(0x11337E98, "@@@");    // VX   04-698 (1688)
-            AssertCode(0x109A069B, "@@@");    // VX   04-69B (1691)
-            AssertCode(0x11337EB0, "@@@");    // VX   04-6B0 (1712)
-            AssertCode(0x11337EC0, "@@@");    // VX   04-6C0 (1728)
-            AssertCode(0x11337ED4, "@@@");    // VX   04-6D4 (1748)
-            AssertCode(0x11337EE4, "@@@");    // VX   04-6E4 (1764)
-            AssertCode(0x11337EF4, "@@@");    // VX   04-6F4 (1780)
-            AssertCode(0x11337F04, "@@@");    // VX   04-704 (1796)
-            AssertCode(0x11417F05, "@@@");    // VX   04-705 (1797)
-            AssertCode(0x11337F14, "@@@");    // VX   04-714 (1812)
-            AssertCode(0x11337F24, "@@@");    // VX   04-724 (1828)
-            AssertCode(0x11337F34, "@@@");    // VX   04-734 (1844)
-            AssertCode(0x11417F41, "@@@");    // VX   04-741 (1857)
-            AssertCode(0x11337F44, "@@@");    // VX   04-744 (1860)
-            AssertCode(0x11417F46, "@@@");    // VX   04-746 (1862)
-            AssertCode(0x11417F48, "@@@");    // VX   04-748 (1864)
-            AssertCode(0x11417F49, "@@@");    // VX   04-749 (1865)
-            AssertCode(0x11417F4B, "@@@");    // VX   04-74B (1867)
-            AssertCode(0x11337F54, "@@@");    // VX   04-754 (1876)
-            AssertCode(0x11337F64, "@@@");    // VX   04-764 (1892)
-            AssertCode(0x11337F78, "@@@");    // VX   04-778 (1912)
-            AssertCode(0x11337F8C, "@@@");    // VX   04-78C (1932)
-            AssertCode(0x11417F92, "@@@");    // VX   04-792 (1938)
-            AssertCode(0x11417F9C, "@@@");    // VX   04-79C (1948)
-            AssertCode(0x11337FA0, "@@@");    // VX   04-7A0 (1952)
-            AssertCode(0x11337FA2, "@@@");    // VX   04-7A2 (1954)
-            AssertCode(0x11337FA4, "@@@");    // VX   04-7A4 (1956)
-            AssertCode(0x11000FC4, "@@@");    // VX   04-7C4 (1988)
-            AssertCode(0x11337FF4, "@@@");    // VX   04-7F4 (2036)
-            AssertCode(0xF020910F, "@@@");    // XX3   3C-1221 (4641)
+            AssertCode(0x1102640A, "vmaxfp\tv8,v2,v12");
+        }
+
+        [Test]
+        public void PPCDis_bcdutrunc()
+        {
+            AssertCode(0x11417F41, "bcdutrunc.\tv10,v1,v15");
+        }
+
+        [Test]
+        public void PPCDis_vcmpgtsh()
+        {
+            AssertCode(0x11417F46, "vcmpgtsh.\tv10,v1,v15");
+        }
+
+        [Test]
+        public void PPCDis_vslv()
+        {
+            AssertCode(0x11417F44, "vslv\tv10,v1,v15");
+        }
+
+        [Test]
+        public void PPCDis_vmsumubm()
+        {
+            AssertCode(0x11337F64, "vmsumubm\tv9,v19,v15,v29");
+        }
+
+        [Test]
+        public void PPCDis_vsrv()
+        {
+            AssertCode(0x11337F04, "vsrv\tv9,v19,v15");
+        }
+
+        [Test]
+        public void PPCDis_maddhd()
+        {
+            AssertCode(0x11337EB0, "maddhd\tr9,r19,r15,r26");
+        }
+
+        [Test]
+        public void PPCDis_vmhaddshs()
+        {
+            AssertCode(0x11337FA0, "vmhaddshs\tv9,v19,v15,v30");
+        }
+
+        [Test]
+        public void PPCDis_vmsumshm()
+        {
+            AssertCode(0x11338028, "vmsumshm\tv9,v19,v16,v0");
+        }
+
+        [Test]
+        public void PPCDis_vmladduhm()
+        {
+            AssertCode(0x11337FA2, "vmladduhm\tv9,v19,v15,v30");
+        }
+
+        [Test]
+        public void PPCDis_vsldoi()
+        {
+            AssertCode(0x1133812C, "vsldoi\tv9,v19,v16,04");
+        }
+
+        [Test]
+        public void PPCDis_vaddubs()
+        {
+            AssertCode(0x11338200, "vaddubs\tv9,v19,v16");
+        }
+
+        [Test]
+        public void PPCDis_vadduws()
+        {
+            AssertCode(0x11338280, "vadduws\tv9,v19,v16");
+        }
+
+        [Test]
+        public void PPCDis_vaddeuqm()
+        {
+            AssertCode(0x11338D7C, "vaddeuqm\tv9,v19,v17,v21");
+        }
+
+        [Test]
+        public void PPCDis_vmrgew()
+        {
+            AssertCode(0x11337F8C, "vmrgew\tv9,v19,v15");
+        }
+
+        [Test]
+        public void PPCDis_vgbbd()
+        {
+            AssertCode(0x11338D0C, "vgbbd\tv9,v17");
+        }
+
+        [Test]
+        public void PPCDis_vsubuwm()
+        {
+            AssertCode(0x11338C80, "vsubuwm\tv9,v19,v17");
+        }
+
+        [Test]
+        public void PPCDis_vpmsumh()
+        {
+            AssertCode(0x11338C48, "vpmsumh\tv9,v19,v17");
+        }
+
+        [Test]
+        public void PPCDis_vspltisw()
+        {
+            AssertCode(0x11338B8C, "vspltisw\tv9,-0000000D");
+        }
+
+        [Test]
+        public void PPCDis_vspltish()
+        {
+            AssertCode(0x11338B4C, "vspltish\tv9,-0000000D");
+        }
+
+        [Test]
+        public void PPCDis_vspltisb()
+        {
+            AssertCode(0x11338B0C, "vspltisb\tv9,-0000000D");
+        }
+
+        [Test]
+        public void PPCDis_vspltw()
+        {
+            AssertCode(0x11338A8C, "vspltw\tv9,v17,03");
         }
     }
 }
