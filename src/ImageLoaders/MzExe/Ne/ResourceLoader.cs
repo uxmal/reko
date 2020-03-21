@@ -23,6 +23,53 @@ namespace Reko.ImageLoaders.MzExe.Ne
         const ushort NE_RSCTYPE_GROUP_ICON = 0x800e;
         const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
 
+        /// <summary>OS/2 Resource types. Common between NE and LX files.</summary>
+        public enum Os2ResourceTypes : ushort
+        {
+            /// <summary>mouse pointer shape</summary>
+            RT_POINTER = 1,
+            /// <summary>bitmap</summary>
+            RT_BITMAP = 2,
+            /// <summary>menu template</summary>
+            RT_MENU = 3,
+            /// <summary>dialog template</summary>
+            RT_DIALOG = 4,
+            /// <summary>string tables</summary>
+            RT_STRING = 5,
+            /// <summary>font directory</summary>
+            RT_FONTDIR = 6,
+            /// <summary>font</summary>
+            RT_FONT = 7,
+            /// <summary>accelerator tables</summary>
+            RT_ACCELTABLE = 8,
+            /// <summary>binary data</summary>
+            RT_RCDATA = 9,
+            /// <summary>error msg     tables</summary>
+            RT_MESSAGE = 10,
+            /// <summary>dialog include file name</summary>
+            RT_DLGINCLUDE = 11,
+            /// <summary>key to vkey tables</summary>
+            RT_VKEYTBL = 12,
+            /// <summary>key to UGL tables</summary>
+            RT_KEYTBL = 13,
+            /// <summary>glyph to character tables</summary>
+            RT_CHARTBL = 14,
+            /// <summary>screen display information</summary>
+            RT_DISPLAYINFO = 15,
+            /// <summary>function key area short form</summary>
+            RT_FKASHORT = 16,
+            /// <summary>function key area long form</summary>
+            RT_FKALONG = 17,
+            /// <summary>Help table for IPFC</summary>
+            RT_HELPTABLE = 18,
+            /// <summary>Help subtable for IPFC</summary>
+            RT_HELPSUBTABLE = 19,
+            /// <summary>DBCS uniq/font driver directory</summary>
+            RT_FDDIR = 20,
+            /// <summary>DBCS uniq/font driver</summary>
+            RT_FD = 21
+        }
+
         private byte[] RawImage;
         private uint OffRsrcTable;
         private ushort ResourceTableEntries;
@@ -184,10 +231,38 @@ namespace Reko.ImageLoaders.MzExe.Ne
             return Encoding.ASCII.GetString(abStr);
         }
 
+        /// <summary>
+        ///     Gets the name of a resource type according to its identifier
+        /// </summary>
+        /// <returns>The resource type name.</returns>
+        /// <param name="id">Resource type identifier.</param>
         private string GetOs2ResourceName(ushort id)
         {
-            // TODO: Implement
-            return "";
+            switch (id)
+            {
+                case (int) Os2ResourceTypes.RT_POINTER: return "RT_POINTER";
+                case (int) Os2ResourceTypes.RT_BITMAP: return "RT_BITMAP";
+                case (int) Os2ResourceTypes.RT_MENU: return "RT_MENU";
+                case (int) Os2ResourceTypes.RT_DIALOG: return "RT_DIALOG";
+                case (int) Os2ResourceTypes.RT_STRING: return "RT_STRING";
+                case (int) Os2ResourceTypes.RT_FONTDIR: return "RT_FONTDIR";
+                case (int) Os2ResourceTypes.RT_FONT: return "RT_FONT";
+                case (int) Os2ResourceTypes.RT_ACCELTABLE: return "RT_ACCELTABLE";
+                case (int) Os2ResourceTypes.RT_RCDATA: return "RT_RCDATA";
+                case (int) Os2ResourceTypes.RT_MESSAGE: return "RT_MESSAGE";
+                case (int) Os2ResourceTypes.RT_DLGINCLUDE: return "RT_DLGINCLUDE";
+                case (int) Os2ResourceTypes.RT_VKEYTBL: return "RT_VKEYTBL";
+                case (int) Os2ResourceTypes.RT_KEYTBL: return "RT_KEYTBL";
+                case (int) Os2ResourceTypes.RT_CHARTBL: return "RT_CHARTBL";
+                case (int) Os2ResourceTypes.RT_DISPLAYINFO: return "RT_DISPLAYINFO";
+                case (int) Os2ResourceTypes.RT_FKASHORT: return "RT_FKASHORT";
+                case (int) Os2ResourceTypes.RT_FKALONG: return "RT_FKALONG";
+                case (int) Os2ResourceTypes.RT_HELPTABLE: return "RT_HELPTABLE";
+                case (int) Os2ResourceTypes.RT_HELPSUBTABLE: return "RT_HELPSUBTABLE";
+                case (int) Os2ResourceTypes.RT_FDDIR: return "RT_FDDIR";
+                case (int) Os2ResourceTypes.RT_FD: return "RT_FD";
+                default: return $"{id}";
+            }
         }
 
         private string GetResourceName(ushort id)
