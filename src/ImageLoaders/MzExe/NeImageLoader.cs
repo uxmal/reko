@@ -653,6 +653,7 @@ namespace Reko.ImageLoaders.MzExe
                         importStubs.Add(lp, new Tuple<Address, ImportReference>(
                             address,
                             new NamedImportReference(address, module, fnName, SymbolType.ExternalProcedure)));
+                        addrImportStubs += 8;
                     }
                     break;
                 case NE_RELTYPE.INTERNAL:
