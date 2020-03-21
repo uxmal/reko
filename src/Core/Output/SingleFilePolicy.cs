@@ -20,6 +20,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Output
@@ -35,7 +37,11 @@ namespace Reko.Core.Output
 
         public override Dictionary<string, List<Procedure>> GetProcedurePlacements(string fileExtension)
         {
-            throw new NotImplementedException();
+            var filename = Path.ChangeExtension(program.Name, fileExtension);
+            return new Dictionary<string, List<Procedure>>
+            {
+                { filename, program.Procedures.Values.ToList() }
+            };
         }
     }
 }
