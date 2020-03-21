@@ -25,11 +25,13 @@ namespace Reko.ImageLoaders.MzExe.Ne
 
         private byte[] RawImage;
         private uint OffRsrcTable;
+        private ushort ResourceTableEntries;
 
-        public ResourceLoader(byte[] rawImage, uint offRsrcTable)
+        public ResourceLoader(byte[] rawImage, uint offRsrcTable, ushort cResourceTableEntries)
         {
             RawImage = rawImage;
             OffRsrcTable = offRsrcTable;
+            ResourceTableEntries = cResourceTableEntries;
         }
 
         /// <summary>
@@ -102,6 +104,77 @@ namespace Reko.ImageLoaders.MzExe.Ne
 
             return resources;
         }
+
+        public struct ResourceTableEntry
+        {
+            public ushort etype;
+            public ushort ename;
+        }
+
+        /// <summary>
+        /// Reads in the NE resources from OS/2.
+        /// </summary>
+        public List<ProgramResource> LoadOs2Resources(NeImageLoader.NeSegment[] segments, ushort segmentCount, ushort alignmentShift)
+        {
+            List<ProgramResource> resources = new List<ProgramResource>();
+            var rsrcTable = new LeImageReader(RawImage, OffRsrcTable);
+            var rdr = rsrcTable.Clone();
+
+            ResourceTableEntry[] entries = new ResourceTableEntry[ResourceTableEntries];
+            for (int i = 0; i < entries.Length; i++)
+            {
+                entries[i].etype = rdr.ReadUInt16();
+                entries[i].ename = rdr.ReadUInt16();
+            }
+
+            NeImageLoader.NeSegment[] resourceSegments = new NeImageLoader.NeSegment[ResourceTableEntries];
+            Array.Copy(segments, segmentCount - ResourceTableEntries, resourceSegments, 0,
+                ResourceTableEntries);
+            NeImageLoader.NeSegment[] realSegments = new NeImageLoader.NeSegment[segmentCount - ResourceTableEntries];
+            Array.Copy(segments, 0, realSegments, 0, realSegments.Length);
+            segments = realSegments;
+
+            SortedDictionary<ushort, ProgramResourceGroup> os2Resources =
+                new SortedDictionary<ushort, ProgramResourceGroup>();
+
+            for (int i = 0; i < entries.Length; i++)
+            {
+                os2Resources.TryGetValue(entries[i].etype, out ProgramResourceGroup resGrp);
+
+                if (resGrp == null) resGrp = new ProgramResourceGroup { Name = GetOs2ResourceName(entries[i].etype) };
+
+                uint length = resourceSegments[i].DataLength;
+                var dataOffset = (uint) (resourceSegments[i].DataOffset << alignmentShift);
+
+                if (length == 0) length = 65536;
+                if (dataOffset == 0) dataOffset = 65536;
+
+                if ((resourceSegments[i].Flags & (ushort) 0x4000) != 0)
+                    length <<= alignmentShift;
+
+                var rdrRsrc = new LeImageReader(RawImage, dataOffset);
+                var rsrc = rdrRsrc.ReadBytes(length);
+
+                var rsrcInstance = new ProgramResourceInstance
+                {
+                    Name = $"{entries[i].ename}",
+                    Type = "Os2_" + resGrp.Name,
+                    Bytes = rsrc,
+                };
+                resGrp.Resources.Add(rsrcInstance);
+
+                os2Resources.Remove(entries[i].etype);
+                os2Resources[entries[i].etype]= resGrp;
+            }
+
+            foreach (var kvp in os2Resources)
+            {
+                resources.Add(kvp.Value);
+            }
+
+            return resources;
+        }
+
         string ReadByteLengthString(EndianImageReader rdr, int offset)
         {
             var clone = rdr.Clone();
@@ -109,6 +182,12 @@ namespace Reko.ImageLoaders.MzExe.Ne
             var len = clone.ReadByte();
             var abStr = clone.ReadBytes(len);
             return Encoding.ASCII.GetString(abStr);
+        }
+
+        private string GetOs2ResourceName(ushort id)
+        {
+            // TODO: Implement
+            return "";
         }
 
         private string GetResourceName(ushort id)

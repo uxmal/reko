@@ -116,6 +116,7 @@ namespace Reko.ImageLoaders.MzExe
         private Address addrEntry;
         private List<ImageSymbol> entryPoints;
         private NE_TARGETOS bTargetOs;
+        private ushort cResourceTableEntries;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
             : base(services, filename, rawBytes)
@@ -183,7 +184,7 @@ namespace Reko.ImageLoaders.MzExe
                 return false;
             if (!rdr.TryReadUInt16(out cbFileAlignmentShift))
                 return false;
-            if (!rdr.TryReadUInt16(out ushort cResourceTableEntries))
+            if (!rdr.TryReadUInt16(out cResourceTableEntries))
                 return false;
             if (!rdr.TryReadByte(out byte targetOs))
                 return false;
@@ -241,7 +242,7 @@ namespace Reko.ImageLoaders.MzExe
                 arch,
                 platform);
 
-            var rsrcLoader = new ResourceLoader(RawImage, this.lfaNew + offRsrcTable);
+            var rsrcLoader = new ResourceLoader(RawImage, this.lfaNew + offRsrcTable, cResourceTableEntries);
 
             switch (bTargetOs)
             {
@@ -252,8 +253,8 @@ namespace Reko.ImageLoaders.MzExe
                     break;
                 case NE_TARGETOS.Os2:
                     program.Resources.Name = "OS/2 resources";
-                    // Not implemented
-                    break;
+                    program.Resources.Resources.AddRange(rsrcLoader.LoadOs2Resources(segments, cSeg, cbFileAlignmentShift));
+                break;
                 default:
                     // Don´t support resources
                     break;
