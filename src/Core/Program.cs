@@ -86,6 +86,10 @@ namespace Reko.Core
             this.Platform = platform;
         }
 
+
+        /// <summary>
+        /// The program's file name and extension, but not its path.
+        /// </summary>
         public string Name { get; set; }
 
         /// <summary>

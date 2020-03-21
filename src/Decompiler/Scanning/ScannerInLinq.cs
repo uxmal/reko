@@ -96,7 +96,7 @@ namespace Reko.Scanning
             var pads = ppf.FindPaddingBlocks();
             ppf.Remove(pads);
 
-            // Detect procedures from the "soup" of baslic blocks in sr.
+            // Detect procedures from the "soup" of basic blocks in sr.
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
@@ -104,6 +104,15 @@ namespace Reko.Scanning
             return sr;
         }
 
+        /// <summary>
+        /// Shingle scan all unscanned regions of the image map, returning an unstructured
+        /// "soup" of instructions in the <see cref="ScanResults"/>.
+        /// </summary>
+        /// <param name="sr">Initial scan results, with known entry points,
+        /// procedures, etc.</param>
+        /// <returns>The <paramref name="sr"/> object, mutated to contain all the
+        /// new instructions.
+        /// </returns>
         public ScanResults ScanInstructions(ScanResults sr)
         {
             var ranges = FindUnscannedRanges().ToList();
