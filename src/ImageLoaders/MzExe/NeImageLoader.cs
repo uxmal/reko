@@ -272,7 +272,10 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
+            if (addrEntry != null)
+            {
+                entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
+            }
             return new RelocationResults(
                 entryPoints,
                 imageSymbols);

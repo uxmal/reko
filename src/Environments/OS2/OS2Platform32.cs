@@ -12,9 +12,9 @@ namespace Reko.Environments.OS2
     /// <remarks>
     /// Yes, the "Warp" may be a bit of a misnomer.
     /// </remarks>
-    public class OS2WarpPlatform : Platform
+    public class OS2Platform32 : Platform
     {
-        public OS2WarpPlatform(IServiceProvider services, IProcessorArchitecture arch, string platformId) : base(services, arch, platformId)
+        public OS2Platform32(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "os2-32")
         {
         }
 

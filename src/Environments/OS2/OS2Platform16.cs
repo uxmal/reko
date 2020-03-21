@@ -12,9 +12,9 @@ namespace Reko.Environments.OS2
     /// <remarks>
     /// There will be a lot of similarities with Win16 here.
     /// </remarks>
-    public class OS2Platform : Platform
+    public class OS2Platform16 : Platform
     {
-        public OS2Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId) : base(services, arch, platformId)
+        public OS2Platform16(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "os2-16")
         {
         }
 
