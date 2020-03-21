@@ -221,7 +221,10 @@ namespace Reko.ImageLoaders.MzExe
             LoadNonresidentNames(this.offNonResidentNameTable, names);
             this.entryPoints = LoadEntryPoints(this.lfaNew + this.offEntryTable, names);
             LoadSegments(segments);
-            this.addrEntry = segments[cs - 1].Address + ip;
+
+            // On OS/2 drivers CS is equal to the ring it runs on
+            if (cs >= 1)
+                this.addrEntry = segments[cs - 1].Address + ip;
             return true;
         }
 
