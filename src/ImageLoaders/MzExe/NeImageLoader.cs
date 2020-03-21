@@ -66,6 +66,16 @@ namespace Reko.ImageLoaders.MzExe
             ADDITIVE = 4,
         }
 
+        private enum NE_TARGETOS : byte
+        {
+            Unknown = 0,
+            Os2 = 1,
+            Windows = 2,
+            EuropeanDos = 3,
+            Windows386 = 4,
+            Borland = 5
+        }
+
         // Segment table flags
         const ushort NE_STFLAGS_DATA = 0x0001;
         const ushort NE_STFLAGS_REALMODE = 0x0004;
@@ -119,6 +129,7 @@ namespace Reko.ImageLoaders.MzExe
         private IPlatform platform;
         private Address addrEntry;
         private List<ImageSymbol> entryPoints;
+        private NE_TARGETOS bTargetOs;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
             : base(services, filename, rawBytes)
@@ -188,7 +199,7 @@ namespace Reko.ImageLoaders.MzExe
                 return false;
             if (!rdr.TryReadUInt16(out ushort cResourceTableEntries))
                 return false;
-            if (!rdr.TryReadByte(out byte bTargetOs))
+            if (!rdr.TryReadByte(out byte targetOs))
                 return false;
             if (!rdr.TryReadByte(out byte bOsExeFlags))
                 return false;
@@ -200,6 +211,8 @@ namespace Reko.ImageLoaders.MzExe
                 return false;
             if (!rdr.TryReadUInt16(out ushort wWindowsVersion))
                 return false;
+
+            bTargetOs = (NE_TARGETOS) targetOs;
 
             LoadModuleTable(this.lfaNew + offModuleReferenceTable, cModules);
             this.segments = ReadSegmentTable(this.lfaNew + offSegTable, cSeg);
@@ -407,17 +420,45 @@ namespace Reko.ImageLoaders.MzExe
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-16");
-            this.platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
             var rdr = new LeImageReader(RawImage, this.lfaNew);
             if (!LoadNeHeader(rdr))
                 throw new BadImageFormatException("Unable to read NE header.");
+
+            switch (bTargetOs)
+            {
+                case NE_TARGETOS.Windows:
+                case NE_TARGETOS.Windows386:
+                    this.platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
+                    break;
+                case NE_TARGETOS.EuropeanDos:
+                    this.platform = cfgSvc.GetEnvironment("ms-dos").Load(Services, arch);
+                    break;
+                default:
+                    // Not implemented
+                    break;
+            }
 
             var program = new Program(
                 this.segmentMap,
                 arch,
                 platform);
-            program.Resources.Name = "NE resources";
-            LoadResources(program.Resources.Resources);
+
+            switch (bTargetOs)
+            {
+                case NE_TARGETOS.Windows:
+                case NE_TARGETOS.Windows386:
+                    program.Resources.Name = "NE resources";
+                    LoadResources(program.Resources.Resources);
+                    break;
+                case NE_TARGETOS.Os2:
+                    program.Resources.Name = "OS/2 resources";
+                    // Not implemented
+                    break;
+                default:
+                    // Don´t support resources
+                    break;
+            }
+
             foreach (var impRef in this.importStubs.Values)
             {
                 program.ImportReferences.Add(impRef.Item1, impRef.Item2);
