@@ -113,6 +113,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\Msdos\bin\$(Configuration)\netstandard2.0\Reko.Environments.Msdos.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos.Design\bin\$(Configuration)\Reko.Environments.Msdos.Design.*" />
     <Environments Include="$(SolutionDir)Environments\NeoGeo\bin\$(Configuration)\netstandard2.0\Reko.Environments.NeoGeo.*" />
+    <Environments Include="$(SolutionDir)Environments\OS2\bin\$(Configuration)\netstandard2.0\Reko.Environments.OS2.*" />
     <Environments Include="$(SolutionDir)Environments\Ps3\bin\$(Configuration)\netstandard2.0\Reko.Environments.Ps3.*" />
     <Environments Include="$(SolutionDir)Environments\RiscOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\RT11\bin\$(Configuration)\netstandard2.0\Reko.Environments.RT11.*" />
