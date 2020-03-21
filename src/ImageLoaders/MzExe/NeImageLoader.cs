@@ -30,6 +30,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.ImageLoaders.MzExe.Ne;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -66,6 +67,16 @@ namespace Reko.ImageLoaders.MzExe
             ADDITIVE = 4,
         }
 
+        private enum NE_TARGETOS : byte
+        {
+            Unknown = 0,
+            Os2 = 1,
+            Windows = 2,
+            EuropeanDos = 3,
+            Windows386 = 4,
+            Borland = 5
+        }
+
         // Segment table flags
         const ushort NE_STFLAGS_DATA = 0x0001;
         const ushort NE_STFLAGS_REALMODE = 0x0004;
@@ -79,21 +90,6 @@ namespace Reko.ImageLoaders.MzExe
         const ushort NE_STFLAGS_DPL = 0x0C00;
         const ushort NE_STFLAGS_DISCARDABLE = 0x1000;
         const ushort NE_STFLAGS_DISCARD_PRIORITY = 0xE000;
-
-        // Resource types
-        const ushort NE_RSCTYPE_CURSOR            =0x8001;
-        const ushort NE_RSCTYPE_BITMAP            =0x8002;
-        const ushort NE_RSCTYPE_ICON              =0x8003;
-        const ushort NE_RSCTYPE_MENU              =0x8004;
-        const ushort NE_RSCTYPE_DIALOG            =0x8005;
-        const ushort NE_RSCTYPE_STRING            =0x8006;
-        const ushort NE_RSCTYPE_FONTDIR           =0x8007;
-        const ushort NE_RSCTYPE_FONT              =0x8008;
-        const ushort NE_RSCTYPE_ACCELERATOR       =0x8009;
-        const ushort NE_RSCTYPE_RCDATA            =0x800a;
-        const ushort NE_RSCTYPE_GROUP_CURSOR      =0x800c;
-        const ushort NE_RSCTYPE_GROUP_ICON        =0x800e;
-        const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
 
         // Lowest 3 bits of a selector to the Local Descriptor Table requesting
         // ring-3 privilege level.
@@ -119,6 +115,8 @@ namespace Reko.ImageLoaders.MzExe
         private IPlatform platform;
         private Address addrEntry;
         private List<ImageSymbol> entryPoints;
+        private NE_TARGETOS bTargetOs;
+        private ushort cResourceTableEntries;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
             : base(services, filename, rawBytes)
@@ -186,9 +184,9 @@ namespace Reko.ImageLoaders.MzExe
                 return false;
             if (!rdr.TryReadUInt16(out cbFileAlignmentShift))
                 return false;
-            if (!rdr.TryReadUInt16(out ushort cResourceTableEntries))
+            if (!rdr.TryReadUInt16(out cResourceTableEntries))
                 return false;
-            if (!rdr.TryReadByte(out byte bTargetOs))
+            if (!rdr.TryReadByte(out byte targetOs))
                 return false;
             if (!rdr.TryReadByte(out byte bOsExeFlags))
                 return false;
@@ -201,6 +199,8 @@ namespace Reko.ImageLoaders.MzExe
             if (!rdr.TryReadUInt16(out ushort wWindowsVersion))
                 return false;
 
+            bTargetOs = (NE_TARGETOS) targetOs;
+
             LoadModuleTable(this.lfaNew + offModuleReferenceTable, cModules);
             this.segments = ReadSegmentTable(this.lfaNew + offSegTable, cSeg);
             var names = new Dictionary<int, string>();
@@ -208,216 +208,61 @@ namespace Reko.ImageLoaders.MzExe
             LoadNonresidentNames(this.offNonResidentNameTable, names);
             this.entryPoints = LoadEntryPoints(this.lfaNew + this.offEntryTable, names);
             LoadSegments(segments);
-            this.addrEntry = segments[cs - 1].Address + ip;
+
+            // On OS/2 drivers CS is equal to the ring it runs on
+            if (cs >= 1)
+                this.addrEntry = segments[cs - 1].Address + ip;
             return true;
-        }
-
-        /// <summary>
-        /// Reads in the NE image resources.
-        /// </summary>
-        //$REFACTOR: resource loading seems to want to belong in a separate file.
-        private void LoadResources(List<ProgramResource> resources)
-        {
-            var rsrcTable = new LeImageReader(RawImage, this.lfaNew + offRsrcTable);
-            var rdr = rsrcTable.Clone();
-            ushort size_shift = rdr.ReadLeUInt16();
-            ProgramResourceGroup bitmaps = null;
-            ProgramResourceGroup iconGroups = null;
-            ProgramResourceGroup icons = null;
-            var iconIds = new Dictionary<ushort, ProgramResourceInstance>();
-            ushort rsrcType = rdr.ReadLeUInt16();
-            while (rsrcType != 0) 
-            {
-                var resGrp = new ProgramResourceGroup { Name = GetResourceType(rsrcType) };
-                if (rsrcType == NE_RSCTYPE_GROUP_ICON)
-                    iconGroups = resGrp;
-                else if (rsrcType == NE_RSCTYPE_ICON)
-                    icons = resGrp;
-                else if (rsrcType == NE_RSCTYPE_BITMAP)
-                    bitmaps = resGrp;
-
-                ushort typeCount = rdr.ReadLeUInt16();
-                uint resLoader = rdr.ReadLeUInt32();
-                for (int count = typeCount; count > 0; --count)
-                {
-                    ushort nameOffset = rdr.ReadLeUInt16();
-                    ushort nameLength = rdr.ReadLeUInt16();
-                    ushort nameFlags = rdr.ReadLeUInt16();
-                    ushort nameId = rdr.ReadLeUInt16();
-                    ushort nameHandle = rdr.ReadLeUInt16();
-                    ushort nameUsage = rdr.ReadLeUInt16();
-
-                    string resname;
-                    if ((nameId & 0x8000) != 0)
-                    {
-                        resname = (nameId & ~0x8000).ToString();
-                    }
-                    else
-                    {
-                        resname = ReadByteLengthString(rsrcTable, nameId);
-                    }
-
-                    var offset = (uint)nameOffset << size_shift;
-                    var rdrRsrc = new LeImageReader(base.RawImage, offset);
-                    var rsrc = rdrRsrc.ReadBytes((uint)nameLength << size_shift);
-
-                    var rsrcInstance = new ProgramResourceInstance
-                    {
-                        Name = resname,
-                        Type = "Win16_" + resGrp.Name,
-                        Bytes = rsrc,
-                    };
-                    resGrp.Resources.Add(rsrcInstance);
-
-                    if (rsrcType == NE_RSCTYPE_ICON)
-                        iconIds[(ushort)(nameId & ~0x8000)] = rsrcInstance;
-                }
-                resources.Add(resGrp);
-
-                rsrcType = rdr.ReadLeUInt16();
-            }
-
-            PostProcessIcons(iconGroups, icons, iconIds, resources);
-            PostProcessBitmaps(bitmaps);
-        }
-
-        /// <summary>
-        /// Build icons out of the icon groups + icons.
-        /// </summary>
-        /// <param name="iconGroups"></param>
-        /// <param name="icons"></param>
-        private void PostProcessIcons(
-            ProgramResourceGroup iconGroups, 
-            ProgramResourceGroup icons, 
-            Dictionary<ushort, ProgramResourceInstance> iconIds,
-            List<ProgramResource> resources)
-        {
-            if (icons == null)
-            {
-                if (iconGroups != null)
-                    resources.Remove(iconGroups);
-                return;
-            }
-            if (iconGroups == null)
-            {
-                if (icons == null)
-                    resources.Remove(icons);
-                return;
-            }
-
-            foreach (ProgramResourceInstance iconGroup in iconGroups.Resources)
-            {
-                var r = new BinaryReader(new MemoryStream(iconGroup.Bytes));
-                var stm = new MemoryStream();
-                var w = new BinaryWriter(stm);
-
-                // Copy the group header
-                w.Write(r.ReadInt16());
-                w.Write(r.ReadInt16());
-                short dirEntries = r.ReadInt16();
-                w.Write(dirEntries);
-
-                var icIds = new List<Tuple<ushort, int>>();
-                for (int i = 0; i < dirEntries; ++i)
-                {
-                    w.Write(r.ReadInt32());
-                    w.Write(r.ReadInt32());
-                    w.Write(r.ReadInt32());
-                    var iconId = r.ReadUInt16();
-                    w.Flush();
-                    icIds.Add(Tuple.Create(iconId, (int)stm.Position));
-                    w.Write(0);
-                }
-                foreach (var id in icIds)
-                {
-                    var icon = iconIds[id.Item1];
-                    var icOffset = (int) w.Seek(0, SeekOrigin.Current);
-                    w.Seek(id.Item2, SeekOrigin.Begin);
-                    w.Write(icOffset);
-                    w.Seek(icOffset, SeekOrigin.Begin);
-                    w.Write(icon.Bytes);
-                }
-                iconGroup.Bytes = stm.ToArray();
-                iconGroup.Type = "Win16_ICON";
-            }
-            iconGroups.Name = "ICON";
-            resources.Remove(icons);
-        }
-
-        void PostProcessBitmaps(ProgramResourceGroup bitmaps)
-        {
-            if (bitmaps == null)
-                return;
-            foreach (ProgramResourceInstance bitmap in bitmaps.Resources)
-            {
-                var stm = new MemoryStream();
-                var bw = new BinaryWriter(stm);
-
-                bw.Write('B');
-                bw.Write('M');
-                bw.Write(14 + bitmap.Bytes.Length);
-                bw.Write(0);
-                bw.Write(14);
-                bw.Write(bitmap.Bytes, 0, bitmap.Bytes.Length);
-                bw.Flush();
-                bitmap.Bytes = stm.ToArray();
-            }
-        }
-
-        string ReadByteLengthString(EndianImageReader rdr, int offset)
-        {
-            var clone = rdr.Clone();
-            clone.Offset = clone.Offset + offset;
-            var len = clone.ReadByte();
-            var abStr = clone.ReadBytes(len);
-            return Encoding.ASCII.GetString(abStr);
-        }
-
-        private string GetResourceName(ushort id)
-        {
-            switch (id)
-            {
-            case NE_RSCTYPE_CURSOR: return "CURSOR";
-            case NE_RSCTYPE_BITMAP: return "BITMAP";
-            case NE_RSCTYPE_ICON: return "ICON";
-            case NE_RSCTYPE_MENU: return "MENU";
-            case NE_RSCTYPE_DIALOG: return "DIALOG";
-            case NE_RSCTYPE_STRING: return "STRING";
-            case NE_RSCTYPE_FONTDIR: return "FONTDIR";
-            case NE_RSCTYPE_FONT: return "FONT";
-            case NE_RSCTYPE_ACCELERATOR: return "ACCELERATOR";
-            case NE_RSCTYPE_RCDATA: return "RCDATA";
-            case NE_RSCTYPE_GROUP_CURSOR: return "CURSOR_GROUP";
-            case NE_RSCTYPE_GROUP_ICON: return "ICON_GROUP";
-            default: return id.ToString("X4");
-            }
-        }
-
-        private string GetResourceType(ushort id)
-        {
-            switch (id)
-            {
-            case NE_RSCTYPE_BITMAP: return "Windows.BMP";
-            case NE_RSCTYPE_ICON: return "Windows.ICO";
-            default: return id.ToString("X4");
-            }
         }
 
         public override Program Load(Address addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-16");
-            this.platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
             var rdr = new LeImageReader(RawImage, this.lfaNew);
             if (!LoadNeHeader(rdr))
                 throw new BadImageFormatException("Unable to read NE header.");
+
+            switch (bTargetOs)
+            {
+                case NE_TARGETOS.Windows:
+                case NE_TARGETOS.Windows386:
+                    this.platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
+                    break;
+                case NE_TARGETOS.EuropeanDos:
+                    this.platform = cfgSvc.GetEnvironment("ms-dos").Load(Services, arch);
+                    break;
+                case NE_TARGETOS.Os2:
+                    this.platform = cfgSvc.GetEnvironment("os2").Load(Services, arch);
+                    break;
+                default:
+                    // Not implemented
+                    break;
+            }
 
             var program = new Program(
                 this.segmentMap,
                 arch,
                 platform);
-            program.Resources.Name = "NE resources";
-            LoadResources(program.Resources.Resources);
+
+            var rsrcLoader = new ResourceLoader(RawImage, this.lfaNew + offRsrcTable, cResourceTableEntries);
+
+            switch (bTargetOs)
+            {
+                case NE_TARGETOS.Windows:
+                case NE_TARGETOS.Windows386:
+                    program.Resources.Name = "NE resources";
+                    program.Resources.Resources.AddRange(rsrcLoader.LoadResources());
+                    break;
+                case NE_TARGETOS.Os2:
+                    program.Resources.Name = "OS/2 resources";
+                    program.Resources.Resources.AddRange(rsrcLoader.LoadOs2Resources(segments, cSeg, cbFileAlignmentShift));
+                break;
+                default:
+                    // Don´t support resources
+                    break;
+            }
+
             foreach (var impRef in this.importStubs.Values)
             {
                 program.ImportReferences.Add(impRef.Item1, impRef.Item2);
