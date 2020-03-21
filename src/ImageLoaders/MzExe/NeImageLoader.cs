@@ -232,6 +232,9 @@ namespace Reko.ImageLoaders.MzExe
                 case NE_TARGETOS.EuropeanDos:
                     this.platform = cfgSvc.GetEnvironment("ms-dos").Load(Services, arch);
                     break;
+                case NE_TARGETOS.Os2:
+                    this.platform = cfgSvc.GetEnvironment("os2").Load(Services, arch);
+                    break;
                 default:
                     // Not implemented
                     break;
