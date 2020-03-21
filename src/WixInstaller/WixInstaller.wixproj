@@ -425,6 +425,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\OS2\OS2.csproj">
+      <Name>OS2</Name>
+      <Project>{6369aaec-5946-412b-929b-024c4fb1cfd6}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\Ps3\Ps3.csproj">
       <Name>Ps3</Name>
       <Project>{1a60f017-4e4c-48f8-bb97-47d52186c7fd}</Project>

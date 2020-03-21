@@ -292,6 +292,10 @@
       <Project>{1e57924e-b623-4894-8e3a-87e3e99e2303}</Project>
       <Name>NeoGeo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\OS2\OS2.csproj">
+      <Project>{6369aaec-5946-412b-929b-024c4fb1cfd6}</Project>
+      <Name>OS2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Environments\Ps3\Ps3.csproj">
       <Project>{1a60f017-4e4c-48f8-bb97-47d52186c7fd}</Project>
       <Name>Ps3</Name>
