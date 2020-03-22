@@ -126,7 +126,8 @@ namespace Reko.ImageLoaders.MzExe
                 }
                 else if (IsLinearExecutable(e_lfanew.Value))
                 {
-                    throw new NotImplementedException();
+                    var leLdr = new LeImageLoader(services, Filename, base.RawImage, e_lfanew.Value);
+                    return leLdr;
                 }
             }
 
