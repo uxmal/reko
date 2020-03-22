@@ -48,6 +48,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             this.bytes = new byte[4096];
             this.writer = new LeImageWriter(bytes);
         }
+
         private void Given_Bundle(byte nEntries, byte iSeg, params BundleEntry[] entries)
         {
             writer.WriteByte(nEntries);
