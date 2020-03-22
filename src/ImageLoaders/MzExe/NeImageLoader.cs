@@ -360,6 +360,7 @@ namespace Reko.ImageLoaders.MzExe
                         var seg = segments[entry.iSeg - 1];
                         var addr = seg.Address + entry.offset;
                         var ep = ImageSymbol.Procedure(arch, addr);
+                        ep.Ordinal = bundleOrdinal + i;
                         if (names.TryGetValue(bundleOrdinal + i, out string name))
                         {
                             ep.Name = name;
@@ -368,7 +369,7 @@ namespace Reko.ImageLoaders.MzExe
                         ep.ProcessorState = arch.CreateProcessorState();
                         imageSymbols[ep.Address] = ep;
                         entries.Add(ep);
-                        DebugEx.Verbose(trace, "   {0:X2} {1} {2} - {3}", segNum, ep.Address, ep.Name, bundleOrdinal + i);
+                        DebugEx.Verbose(trace, "   {0:X2} {1} {2} - {3}", segNum, ep.Address, ep.Name, ep.Ordinal);
                     }
                 }
                 bundleOrdinal = nextbundleOrdinal;

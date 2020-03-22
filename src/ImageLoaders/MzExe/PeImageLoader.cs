@@ -136,7 +136,7 @@ namespace Reko.ImageLoaders.MzExe
 			uint timestamp = rdr.ReadLeUInt32();
 			uint version = rdr.ReadLeUInt32();
 			uint binaryNameAddr = rdr.ReadLeUInt32();
-			uint baseOrdinal = rdr.ReadLeUInt32();
+			int baseOrdinal = rdr.ReadLeInt32();
 
 			int nExports = rdr.ReadLeInt32();
 			int nNames = rdr.ReadLeInt32();
@@ -147,12 +147,15 @@ namespace Reko.ImageLoaders.MzExe
             EndianImageReader rdrNames = nNames != 0
                 ? imgLoaded.CreateLeReader(rvaNames)
                 : null;
+            trace.Verbose("== Exports");
 			for (int i = 0; i < nExports; ++i)
 			{
-                ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, rdrNames);
+                ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, i < nNames ? rdrNames : null);
 				if (imageMap.IsExecutableAddress(ep.Address))
 				{
+                    ep.Ordinal = baseOrdinal + i;
                     ImageSymbols[ep.Address] = ep;
+                    trace.Verbose("  {0,-8} {1} {2}", ep.Ordinal, ep.Address, ep.Name);
 					entryPoints.Add(ep);
 				}
 			}
