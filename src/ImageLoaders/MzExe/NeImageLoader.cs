@@ -235,7 +235,7 @@ namespace Reko.ImageLoaders.MzExe
                     this.platform = cfgSvc.GetEnvironment("ms-dos").Load(Services, arch);
                     break;
                 case NE_TARGETOS.Os2:
-                    this.platform = cfgSvc.GetEnvironment("os2").Load(Services, arch);
+                    this.platform = cfgSvc.GetEnvironment("os2-16").Load(Services, arch);
                     break;
                 default:
                     // Not implemented

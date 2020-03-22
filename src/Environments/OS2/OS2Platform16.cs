@@ -78,6 +78,7 @@ namespace Reko.Environments.OS2
                     return new X86CallingConvention(4, 2, 4, true, false);
                 // Default for system libraries
                 case "pascal":
+                case "__pascal":
                     return new X86CallingConvention(4, 2, 4, false, true);
             }
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
@@ -85,7 +86,26 @@ namespace Reko.Environments.OS2
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            throw new NotImplementedException();
+            EnsureTypeLibraries(PlatformIdentifier);
+            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
+            {
+                if (mod.ServicesByName.TryGetValue(procName, out SystemService svc))
+                {
+                    var chr = LookupCharacteristicsByName(svc.Name);
+                    return new ExternalProcedure(svc.Name, svc.Signature, chr);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (!Metadata.Signatures.TryGetValue(procName, out var sig))
+                    return null;
+                var chr = LookupCharacteristicsByName(procName);
+                return new ExternalProcedure(procName, sig, chr);
+            }
         }
     }
 }
