@@ -87,7 +87,7 @@ namespace Reko.ImageLoaders.MzExe
 		}
         public bool IsLinearExecutable(uint e_lfanew)
         {
-            return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'L' && RawImage[e_lfanew + 1] == 'E';
+            return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'L' && (RawImage[e_lfanew + 1] == 'E' || RawImage[e_lfanew + 1] == 'X');
         }
 
 		/// <summary>
