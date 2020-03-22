@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -228,9 +228,11 @@ namespace Reko.Core.CLanguage
                 lexer.SkipToNextLine();
                 return lexer.Read();
             }
-            else 
+            else
             {
-                throw new FormatException(string.Format("Unknown #pragma {0}.", pragma));
+                // Ignore unknown #pragmas
+                lexer.SkipToNextLine();
+                return lexer.Read();
             }
         }
 

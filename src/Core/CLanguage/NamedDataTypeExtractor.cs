@@ -558,6 +558,7 @@ namespace Reko.Core.CLanguage
             {
             case CTokenType.__Cdecl:
             case CTokenType.__Fastcall:
+            case CTokenType.__Pascal:
             case CTokenType.__Stdcall:
             case CTokenType.__Thiscall:
                 ApplyCallConvention(storageClassSpec.Type);

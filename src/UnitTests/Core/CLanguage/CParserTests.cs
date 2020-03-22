@@ -1295,5 +1295,26 @@ int x = 3;
                     "(ptr32 (ref esiOut)))))))",
                 decl.ToString());
         }
+
+        [Test]
+        public void CParser_Far_Pascal_Pointer_to_function()
+        {
+            Lex("typedef int (__pascal __far  *PFN)();");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual(
+                "(decl Typedef Int ((init-decl (func (__Pascal (ptr _Far PFN)))))))",
+                decl.ToString());
+        }
+
+        [Test]
+        public void CParser_loadds()
+        {
+            Lex("int __pascal __loadds fn();");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual(
+                "(decl Int __Pascal __LoadDs ((init-decl (func fn)))))",
+                decl.ToString());
+        }
+
     }
 }
