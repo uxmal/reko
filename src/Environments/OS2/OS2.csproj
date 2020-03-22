@@ -5,6 +5,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>Reko.Environments.OS2</AssemblyName>
     <RootNamespace>Reko.Environments.OS2</RootNamespace>
+    <Configurations>Debug;Release;UnixRelease</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
