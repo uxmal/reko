@@ -1,7 +1,7 @@
-void fn0000()
+void fn0000(selector __data)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  __data:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -10,11 +10,11 @@ fn0000_exit:
 fn0000_entry:
 l0000:
 l002C:
-	byte R0_3 = 0x7F
+	byte R0_10 = 0x7F
 l002F:
-	Mem8[R0_3:byte] = 0x00
-	R0_3 = R0_3 - 0x01
-	branch R0_3 != 0x00 l002F
+	Mem9[__data:R0_10:byte] = 0x00
+	R0_10 = R0_10 - 0x01
+	branch R0_10 != 0x00 l002F
 l0032:
 l0020:
 	fn0003()

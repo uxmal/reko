@@ -107,6 +107,11 @@ namespace Reko.Scanning
                 this.ric = rtlStream.Current;
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
+                if (program.User.Patches.TryGetValue(ric.Address, out var patch))
+                {
+                    Debug.Print("BWI: Applying patch at address {0}", ric.Address);
+                    ric = patch.Code;
+                }
                 if (!ProcessRtlCluster(ric))
                     break;
                 var addrInstrEnd = ric.Address + ric.Length;
@@ -258,6 +263,8 @@ namespace Reko.Scanning
                 ric = ricDelayed;
             }
             var fallthruAddress = ric.Address + ric.Length;
+            if (!blockCur.IsSynthesized)
+                scanner.TerminateBlock(blockCur, fallthruAddress);
 
             Block blockThen;
             if (!program.SegmentMap.IsValidAddress((Address)b.Target))
@@ -944,7 +951,7 @@ namespace Reko.Scanning
             List<Address> vector;
             ImageMapVectorTable imgVector;
             Expression switchExp;
-
+            var eventListener = this.scanner.Services.RequireService<DecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
             {
                 // Trust the user knows what they're doing.
@@ -952,10 +959,10 @@ namespace Reko.Scanning
                 switchExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
                 imgVector = indJump.Table;
             }
-            else
+            else if (!DiscoverTableExtent(addrSwitch, xfer, out vector, out imgVector, out switchExp))
             {
-                if (!DiscoverTableExtent(addrSwitch, xfer, out vector, out imgVector, out switchExp))
-                    return false;
+                var navigator = eventListener.CreateJumpTableNavigator(program, this.arch, addrSwitch, null, 0);
+                return false;
             }
 
             if (xfer is RtlCall)

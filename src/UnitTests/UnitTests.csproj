@@ -175,6 +175,7 @@
     <Compile Include="Arch\M68k\Assembler\M68kAssemblerTests.cs" />
     <Compile Include="Arch\M68k\Assembler\M68kTextAssemblerTests.cs" />
     <Compile Include="Arch\Pdp11\Assembler\Pdp11TextAssemblerTests.cs" />
+    <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\X86\Assembler\AssembleFragmentTests.cs" />
     <Compile Include="Arch\X86\Assembler\AssemblerAdvanced.cs" />
     <Compile Include="Arch\X86\Assembler\AssemblerBasic.cs" />
@@ -317,6 +318,7 @@
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Avr8CallingConventionTests.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\XtensaCallingConventionTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\AlphaCallingConventionTests.cs" />
     <Compile Include="Environments\Windows\BorlandMangledNameParserTests.cs" />

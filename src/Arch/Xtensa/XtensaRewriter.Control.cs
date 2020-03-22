@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -138,10 +138,77 @@ namespace Reko.Arch.Xtensa
             m.Call(dst, 0);
         }
 
+        private void RewriteCallW(int iReg)
+        {
+            void ShiftRegisters(int shift)
+            {
+                int iDst = 2;
+                for (int i = 0; i < 6; ++i)
+                {
+                    var iSrc = iDst + i + shift;
+                    if (iSrc < 16)
+                    {
+                        m.Assign(
+                            binder.EnsureRegister(arch.GetAluRegister(iDst + i)),
+                            binder.EnsureRegister(arch.GetAluRegister(iSrc)));
+                    }
+                }
+            }
+
+            void UnshiftRegisters(int shift)
+            {
+                int iDst = 2;
+                for (int i = 5; i >= 0; --i)
+                {
+                    var iSrc = iDst + i + shift;
+                    if (iSrc < 16)
+                    {
+                        m.Assign(
+                          binder.EnsureRegister(arch.GetAluRegister(iSrc)),
+                          binder.EnsureRegister(arch.GetAluRegister(iDst + i)));
+                    }
+                }
+            }
+
+            iclass = InstrClass.Transfer | InstrClass.Call;
+            ShiftRegisters(iReg);
+            var dst = RewriteOp(instr.Operands[0]);
+            var rDst = dst as Identifier;
+            if (rDst != null && rDst.Storage == Registers.a0)
+            {
+                var tmp = binder.CreateTemporary(rDst.DataType);
+                m.Assign(tmp, dst);
+                dst = tmp;
+            }
+            var cont = instr.Address + instr.Length;
+            m.Assign(binder.EnsureRegister(Registers.a0), cont);
+            m.Call(dst, 0);
+            UnshiftRegisters(iReg);
+        }
+
+
         private void RewriteJ()
         {
             iclass = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.Operands[0]));
+        }
+
+        private void RewriteLoop()
+        {
+            if (this.lend != null)
+            {
+                // Nested LOOPxx instructions are not valid according to the
+                // Xtensa instruction manual.
+                iclass = InstrClass.Invalid;
+                this.lbegin = null;
+                this.lend = null;
+                m.Invalid();
+                return;
+            }
+            this.lbegin = instr.Address + instr.Length;
+            this.lend = ((AddressOperand) instr.Operands[1]).Address;
+            var reg = RewriteOp(instr.Operands[0]);
+            m.Assign(binder.EnsureRegister(Registers.LCOUNT), m.ISub(reg, 1));
         }
 
         private void RewriteRet()

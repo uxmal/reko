@@ -101,5 +101,16 @@ namespace Reko.Arch.PowerPC
             m.SideEffect(host.PseudoProcedure("__write_msr", PrimitiveType.Word32, srr1));
             m.Goto(srr0);
         }
+
+        private void RewriteTlbie()
+        {
+            var src = RewriteOperand(instr.Operands[0]);
+            m.SideEffect(host.PseudoProcedure("__tlbie", VoidType.Instance, src));
+        }
+
+        private void RewriteTlbsync()
+        {
+            m.SideEffect(host.PseudoProcedure("__tlbie", VoidType.Instance));
+        }
     }
 }

@@ -259,6 +259,11 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_BLACKFIN:
                 arch = "blackfin";
                 break;
+
+            case ElfMachine.EM_MORPHOS_PPC:
+                arch = "ppc-be-32";
+                break;
+
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machine));
             }
@@ -270,8 +275,6 @@ namespace Reko.ImageLoaders.Elf
             }
             return a;
         }
-
- 
 
         private static Dictionary<ElfSymbolType, SymbolType> mpSymbolType = new Dictionary<ElfSymbolType, SymbolType>
         {
@@ -622,11 +625,15 @@ namespace Reko.ImageLoaders.Elf
             return ReadAsciiString(strSection.FileOffset + offset);
         }
 
+        [Conditional("DEBUG")]
         public void Dump()
         {
-            var sw = new StringWriter();
-            Dump(sw);
-            Debug.Print(sw.ToString());
+            if (ElfImageLoader.trace.TraceVerbose)
+            {
+                var sw = new StringWriter();
+                Dump(sw);
+                Debug.Print(sw.ToString());
+            }
         }
 
 
@@ -716,7 +723,7 @@ namespace Reko.ImageLoaders.Elf
             while (bytes[u] != 0)
             {
                 ++u;
-        }
+            }
             return Encoding.ASCII.GetString(bytes, (int) fileOffset, u - (int) fileOffset);
         }
 

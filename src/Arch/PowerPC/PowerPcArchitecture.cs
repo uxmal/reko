@@ -34,6 +34,8 @@ using System.Linq;
 
 namespace Reko.Arch.PowerPC
 {
+    using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
+
     [Designer("Reko.Arch.PowerPC.Design.PowerPCArchitectureDesigner,Reko.Arch.PowerPC.Design")]
     public abstract class PowerPcArchitecture : ProcessorArchitecture
     {
@@ -47,7 +49,7 @@ namespace Reko.Arch.PowerPC
         private Dictionary<int, RegisterStorage> spregs;
         private Dictionary<uint, FlagGroupStorage> ccFlagGroups;
         private Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
-        private PowerPcDisassembler.Decoder[] primaryDecoders;
+        private Decoder[] primaryDecoders;
 
         public RegisterStorage lr { get; private set; }
         public RegisterStorage ctr { get; private set; }
@@ -248,13 +250,13 @@ namespace Reko.Arch.PowerPC
         // PowerPC uses a link register
         public override int ReturnAddressOnStack => 0;
 
-        private PowerPcDisassembler.Decoder[] EnsureDecoders()
+        private Decoder[] EnsureDecoders()
         {
             if (this.primaryDecoders == null)
             {
                 this.Options.TryGetValue("Model", out var model);
-                var factory = new DecoderFactory((string)model);
-                this.primaryDecoders = factory.CreateDecoders();
+                var iset = InstructionSet.Create((string)model);
+                this.primaryDecoders = iset.CreateDecoders();
             }
             return this.primaryDecoders;
         }

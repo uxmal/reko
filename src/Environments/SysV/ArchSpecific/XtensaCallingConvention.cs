@@ -41,6 +41,16 @@ using Reko.Core.Types;
 // a function with return value occupying more than 2 registers may not be
 // called with call12).
 
+//           return addr  stack ptr       arg0, arg1, arg2, arg3, arg4, arg5
+//           -----------  ---------       ----------------------------------
+//             a0           a1              a2,   a3,   a4,   a5,   a6,   a7
+// 
+// call4       a4           a5              a6,   a7,   a8,   a9,  a10,  a11
+// call8       a8           a9             a10,  a11,  a12,  a13,  a14,  a15
+// call12     a12          a13             a14,  a15   ---   ---   ---   --- 
+
+
+
 // Syscall ABI
 // Linux takes system-call arguments in registers.The ABI and Xtensa software
 // conventions require the system-call number in a2.For improved efficiency,
@@ -56,13 +66,33 @@ namespace Reko.Environments.SysV.ArchSpecific
 {
     public class XtensaCallingConvention : CallingConvention
     {
+        private static readonly BitRange r32 = new BitRange(0, 31);
+
+        private IProcessorArchitecture arch;
+
         public XtensaCallingConvention(IProcessorArchitecture arch)
         {
+            this.arch = arch;
         }
 
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            throw new NotImplementedException();
+            ccr.LowLevelDetails(4, 0);
+            if (dtRet != null)
+            {
+                var a2 = (StorageDomain) 2;
+                //$TODO: size > 4 bytes?
+                ccr.RegReturn(arch.GetRegister(a2, r32));
+            }
+            int iReg = 2;
+            foreach (var dtParam in dtParams)
+            {
+                //$TODO: size > 4 bytes?
+                //$TODO: iReg > 6?
+                var arg = (StorageDomain) iReg;
+                ccr.RegParam(arch.GetRegister(arg, r32));
+                ++iReg;
+            }
         }
 
         public bool IsArgument(Storage stg)

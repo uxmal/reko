@@ -4,15 +4,16 @@
 
 #include "rtl8188efw.h"
 
-// 0000: void fn0000(Register byte R1)
-void fn0000(byte R1)
+// 0000: void fn0000(Register byte R1, Register (ptr16 Eq_n) __data)
+void fn0000(byte R1, struct Eq_n * __data)
 {
-	globals->b001D = 0x00;
-	byte A_n = *(byte *) 0x80F0;
+	__data->*0x1D = 0x00;
+	byte A_n = __data->b80F0;
 	byte R1_n;
+	struct Eq_n * __data_n;
 	fn4EF3();
-	globals->b0157 = 0x05;
-	if ((*(bcu8 *) 33002 >> 0x02 & 0x01) == 0x00)
+	__data_n->b0157 = 0x05;
+	if ((__data_n->b80EA >> 0x02 & 0x01) == 0x00)
 		fn4AC0();
 }
 

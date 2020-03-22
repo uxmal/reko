@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -94,6 +94,15 @@ namespace Reko.Arch.PowerPC
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
             m.Assign(dst, host.PseudoProcedure("trunc", PrimitiveType.Real64, src));
+        }
+
+        private void RewriteFctiw()
+        {
+            var dst = RewriteOperand(instr.Operands[0]);
+            var src = RewriteOperand(instr.Operands[1]);
+            var tmp = binder.CreateTemporary(PrimitiveType.Real64);
+            m.Assign(tmp, src);
+            m.Assign(dst, host.PseudoProcedure("__fctiw", PrimitiveType.Int32, tmp));
         }
 
         private void RewriteFctiwz()

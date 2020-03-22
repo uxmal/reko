@@ -4,12 +4,12 @@
 
 #include "ledwith8051.h"
 
-// 0000: void fn0000()
-void fn0000()
+// 0000: void fn0000(Register (ptr16 Eq_n) __data)
+void fn0000(struct Eq_n * __data)
 {
 	Eq_n R0_n;
 	for (R0_n = 0x7F; R0_n != 0x00; --R0_n)
-		R0_n->u0 = 0x00;
+		__data->*R0_n = 0x00;
 	while (true)
 	{
 		fn0003();

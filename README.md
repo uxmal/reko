@@ -3,7 +3,7 @@
 
  [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko) 
  [![Join the chat at https://gitter.im/uxmal/reko](https://badges.gitter.im/uxmal/reko.svg)](https://gitter.im/uxmal/reko?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
- [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uxmal/reko?branch=master)](https://ci.appveyor.com/project/uxmal/reko)
+ [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uxmal/reko?branch=master&svg=true)](https://ci.appveyor.com/project/uxmal/reko)
  
 <img align="right" src="https://raw.githubusercontent.com/uxmal/reko/analysis-development/web/images/reko.png" /> 
 

@@ -514,7 +514,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            DebugEx.Inform(ElfImageLoader.trace, "== Symbols from {0} ==", symSection.Name);
+            ElfImageLoader.trace.Inform("== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();

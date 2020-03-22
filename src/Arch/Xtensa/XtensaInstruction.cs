@@ -52,12 +52,17 @@ namespace Reko.Arch.Xtensa
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            RenderMnemonic(writer);
+            RenderOperands(writer, options);
+        }
+
+        private void RenderMnemonic(MachineInstructionWriter writer)
+        {
             if (!instrNames.TryGetValue(Mnemonic, out string instrName))
             {
-                instrName = Mnemonic.ToString();
+                instrName = Mnemonic.ToString().Replace('_', '.');
             }
             writer.WriteMnemonic(instrName);
-            RenderOperands(writer, options);
         }
     }
 }
