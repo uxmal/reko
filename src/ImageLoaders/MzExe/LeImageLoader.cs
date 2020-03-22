@@ -21,20 +21,32 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
+using Reko.Core.Types;
 
 namespace Reko.ImageLoaders.MzExe
 {
     public class LeImageLoader : ImageLoader
     {
+        /// <summary>
+        ///     Linear Executable signature, "LE"
+        /// </summary>
+        const ushort SIGNATURE16 = 0x454C;
+        /// <summary>
+        ///     Linear eXecutable signature, "LX"
+        /// </summary>
+        const ushort SIGNATURE = 0x584C;
+
         private readonly SortedList<Address, ImageSymbol> imageSymbols;
         private readonly Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
         private readonly IDiagnosticsService diags;
         private readonly uint lfaNew;
         private IProcessorArchitecture arch;
         private LXHeader hdr;
+        private List<string> moduleNames;
 
         /// <summary>
         ///     Executable module flags.
@@ -118,6 +130,58 @@ namespace Reko.ImageLoaders.MzExe
             Win32 = 4,
             NT = 0x20,
             Posix = 0x21
+        }
+
+        [Flags]
+        public enum ObjectFlags
+        {
+            Readable = 0x0001,
+            Writable = 0x0002,
+            Executable = 0x0004,
+            Resource = 0x0008,
+            Discardable = 0x0010,
+            Shared = 0x0020,
+            Preload = 0x0040,
+            Invalid = 0x0080,
+            Zeroed = 0x0100,
+            Resident = 0x0200,
+            Contiguous = 0x0300,
+            LongLockable = 0x0400,
+            Reserved = 0x0800,
+            Alias1616Required = 0x1000,
+            BigDefaultBitSetting = 0x2000,
+            Conforming = 0x4000,
+            Privilege = 0x8000
+        }
+
+        enum PageTableAttributes : ushort
+        {
+            /// <summary>
+            ///     Offset from preload page section
+            /// </summary>
+            LegalPhysicalPage = 0,
+            /// <summary>
+            ///     Offset from iterated page section
+            /// </summary>
+            IteratedDataPage = 1,
+            Invalid = 2,
+            Zeroed = 3,
+            RangeOfPages = 4
+        }
+
+        enum PageTableAttributes16 : byte
+        {
+            /// <summary>
+            ///     Offset from preload page section
+            /// </summary>
+            LegalPhysicalPage = (byte) PageTableAttributes.LegalPhysicalPage,
+            /// <summary>
+            ///     Offset from iterated page section
+            /// </summary>
+            IteratedDataPage = (byte) PageTableAttributes.IteratedDataPage,
+            Invalid = (byte) PageTableAttributes.Invalid,
+            Zeroed = (byte) PageTableAttributes.Zeroed,
+            RangeOfPages = (byte) PageTableAttributes.RangeOfPages
         }
 
         /// <summary>
@@ -323,6 +387,47 @@ namespace Reko.ImageLoaders.MzExe
             public byte ddk_major;
         }
 
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        struct ObjectTableEntry
+        {
+            public uint VirtualSize;
+            public uint RelocationBaseAddress;
+            public ObjectFlags ObjectFlags;
+            public uint PageTableIndex;
+            public uint PageTableEntries;
+            /// <summary>
+            ///     Only used in LE
+            /// </summary>
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public byte[] Name;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        struct ObjectPageTableEntry
+        {
+            public uint PageDataOffset;
+            public ushort DataSize;
+            public PageTableAttributes Flags;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        struct ObjectPageTableEntry16
+        {
+            public ushort High;
+            public byte Low;
+            public PageTableAttributes16 Flags;
+        }
+
+        public class Segment
+        {
+            public uint DataOffset;
+            public uint DataLength;
+            public ObjectFlags Flags;
+            public Address Address;
+            public string Name;
+            public uint BaseAddress;
+        }
+
         public LeImageLoader(IServiceProvider services, string filename, byte[] imgRaw, uint e_lfanew) : base(services, filename, imgRaw)
         {
             diags = Services.RequireService<IDiagnosticsService>();
@@ -344,12 +449,138 @@ namespace Reko.ImageLoaders.MzExe
             this.hdr = (LXHeader) Marshal.PtrToStructure(hdrPtr, typeof(LXHeader));
             Marshal.FreeHGlobal(hdrPtr);
 
+            LoadModuleTable();
+
             throw new NotImplementedException();
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             throw new NotImplementedException();
+        }
+
+        void LoadModuleTable()
+        {
+            var rdr = new LeImageReader(RawImage, lfaNew+ hdr.import_module_table_off);
+            moduleNames = new List<string>();
+
+            if (hdr.import_module_table_off == 0 || hdr.import_module_entries == 0)
+                return;
+
+            for (int i = 0; i < hdr.import_module_entries; i++)
+            {
+                int len = rdr.ReadByte();
+                var abModuleName = rdr.ReadBytes(len);
+                var moduleName = Encoding.ASCII.GetString(abModuleName);
+                moduleNames.Add(moduleName);
+            }
+        }
+
+        Segment[] LoadSegmentTable()
+        {
+            var objectTableEntries = new ObjectTableEntry[hdr.obj_no];
+            var objectPageTableEntries = new ObjectPageTableEntry[hdr.module_pages_no];
+
+            var rdr = new LeImageReader(RawImage, hdr.obj_table_off + lfaNew);
+            var objTblEntryReader = new StructureReader<ObjectTableEntry>(rdr);
+
+            for (int i = 0; i < hdr.obj_no; i++)
+                objectTableEntries[i] = objTblEntryReader.Read();
+            
+            rdr = new LeImageReader(RawImage, hdr.obj_page_table_off + lfaNew);
+
+            if (hdr.signature == SIGNATURE16)
+            {
+                var objPageTblEntry16Reader = new StructureReader<ObjectPageTableEntry16>(rdr);
+
+                for (int i = 0; i < hdr.module_pages_no; i++)
+                {
+                    ObjectPageTableEntry16 page16 = objPageTblEntry16Reader.Read();
+
+                    int pageNo = (page16.High << 8) + page16.Low;
+
+                    objectPageTableEntries[i] = new ObjectPageTableEntry
+                    {
+                        DataSize = (ushort) hdr.page_size,
+                        Flags = (PageTableAttributes) page16.Flags,
+                        PageDataOffset = (uint) ((pageNo - 1) * hdr.page_size)
+                    };
+                }
+            }
+            else
+            {
+                var objPageTblEntryReader = new StructureReader<ObjectPageTableEntry>(rdr);
+                for (int i = 0; i < hdr.module_pages_no; i++)
+                    objectPageTableEntries[i] = objPageTblEntryReader.Read();
+            }
+
+            int debugSections = 0;
+            int winrsrcSections = 0;
+
+            if (hdr.debug_info_len > 0) debugSections = 1;
+            if (hdr.win_res_len > 0) winrsrcSections = 1;
+
+            Segment[] sections = new Segment[objectTableEntries.Length + debugSections + winrsrcSections];
+            for (int i = 0; i < objectTableEntries.Length; i++)
+            {
+                sections[i] = new Segment { Flags = objectTableEntries[i].ObjectFlags };
+                if (objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Resource)) sections[i].Name = ".rsrc";
+                else if (objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Executable)) sections[i].Name = ".text";
+                else if (!objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Writable)) sections[i].Name = ".rodata";
+                else if (new LeImageReader(objectTableEntries[i].Name).ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString().ToLower() == "bss")
+                    sections[i].Name = ".bss";
+                else if (!string.IsNullOrWhiteSpace(new LeImageReader(objectTableEntries[i].Name).ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString().Trim()))
+                    sections[i].Name = new LeImageReader(objectTableEntries[i].Name).ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString().Trim();
+                else sections[i].Name = ".data";
+
+                if (objectTableEntries[i].PageTableEntries == 0 ||
+                   objectTableEntries[i].PageTableIndex > objectPageTableEntries.Length)
+                {
+                    sections[i].DataLength = objectTableEntries[i].VirtualSize;
+                    continue;
+                }
+
+                int shift = (int) (hdr.signature == SIGNATURE16 ? 0 : hdr.page_off_shift);
+
+                if (objectPageTableEntries[objectTableEntries[i].PageTableIndex - 1]
+                  .Flags.HasFlag(PageTableAttributes.IteratedDataPage))
+                    sections[i].DataOffset =
+                        (objectPageTableEntries[objectTableEntries[i].PageTableIndex - 1].PageDataOffset << shift) +
+                        hdr.obj_iter_pages_off;
+                else if (objectPageTableEntries[objectTableEntries[i].PageTableIndex - 1]
+                       .Flags.HasFlag(PageTableAttributes.LegalPhysicalPage))
+                    sections[i].DataOffset =
+                        (objectPageTableEntries[objectTableEntries[i].PageTableIndex - 1].PageDataOffset << shift) +
+                        hdr.data_pages_off;
+                else sections[i].DataOffset = 0;
+
+                sections[i].DataLength = 0;
+                for (int j = 0; j < objectTableEntries[i].PageTableEntries; j++)
+                    sections[i].DataLength += objectPageTableEntries[j + objectTableEntries[i].PageTableIndex - 1].DataSize;
+
+                if (sections[i].DataOffset + sections[i].DataLength > RawImage.Length)
+                    sections[i].DataLength = (uint)RawImage.Length - sections[i].DataOffset;
+
+                sections[i].BaseAddress = objectTableEntries[i].RelocationBaseAddress;
+            }
+
+            if (winrsrcSections > 0)
+                sections[sections.Length - debugSections - winrsrcSections] = new Segment
+                {
+                    Name = ".rsrc",
+                    DataLength = hdr.win_res_len,
+                    DataOffset = hdr.win_res_off
+                };
+
+            if (debugSections > 0)
+                sections[sections.Length - debugSections] = new Segment
+                {
+                    Name = ".debug",
+                    DataLength = hdr.debug_info_len,
+                    DataOffset = hdr.debug_info_off
+                };
+
+            return sections;
         }
     }
 }
