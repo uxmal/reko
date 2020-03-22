@@ -76,21 +76,25 @@ namespace Reko.ImageLoaders.MzExe
             return ldrDeferred;
         }
 
-		public bool IsNewExecutable(uint e_lfanew)
-		{
-			return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew+1] == 'E';
-		}
+        public bool IsNewExecutable(uint e_lfanew)
+        {
+            return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew + 1] == 'E';
+        }
 
 		public bool IsPortableExecutable(uint e_lfanew)
 		{
 			return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'P' && RawImage[e_lfanew+1] == 'E';
 		}
+        public bool IsLinearExecutable(uint e_lfanew)
+        {
+            return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'L' && RawImage[e_lfanew + 1] == 'E';
+        }
 
 		/// <summary>
-		/// Loads a Microsoft .EXE file. There are several widely varying 
+        /// Loads a Microsoft .EXE file. There are several widely varying 
         /// sub-formats, so we need to discover what flavour it is before we
         /// can proceed.
-		/// </summary>
+        /// </summary>
         public override Program Load(Address addrLoad)
 		{
 			return GetDeferredLoader().Load(addrLoad);
@@ -119,6 +123,10 @@ namespace Reko.ImageLoaders.MzExe
                     // http://support.microsoft.com/kb/65122
                     var neLdr = new NeImageLoader(services, Filename, base.RawImage, e_lfanew.Value);
                     return neLdr;
+                }
+                else if (IsLinearExecutable(e_lfanew.Value))
+                {
+                    throw new NotImplementedException();
                 }
             }
 
