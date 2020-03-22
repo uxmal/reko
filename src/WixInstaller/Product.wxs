@@ -121,6 +121,7 @@
         <File Source="$(var.Msdos.Design.TargetPath)" />
         <File Source="$(var.Ps3.TargetPath)" />
         <File Source="$(var.OS2.TargetPath)" />
+        <File Source="$(var.OS2.ProjectDir)os2-16.xml" />
         <File Source="$(var.RiscOS.TargetPath)" />
         <File Source="$(var.RT11.TargetPath)" />
         <File Source="$(var.RT11.ProjectDir)rt11_services.xml" />
