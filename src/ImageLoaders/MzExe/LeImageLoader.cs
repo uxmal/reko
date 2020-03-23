@@ -444,10 +444,8 @@ namespace Reko.ImageLoaders.MzExe
             this.arch = cfgSvc.GetArchitecture("x86-protected-32");
             var rdr = new LeImageReader(RawImage, this.lfaNew);
 
-            IntPtr hdrPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(LXHeader)));
-            Marshal.Copy(RawImage, (int)lfaNew, hdrPtr, Marshal.SizeOf(typeof(LXHeader)));
-            this.hdr = (LXHeader) Marshal.PtrToStructure(hdrPtr, typeof(LXHeader));
-            Marshal.FreeHGlobal(hdrPtr);
+            var hdrReader = new StructureReader<LXHeader>(rdr);
+            this.hdr = hdrReader.Read();
 
             LoadModuleTable();
 
