@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Reko.Core;
@@ -29,6 +30,12 @@ using Reko.Core.Types;
 
 namespace Reko.ImageLoaders.MzExe
 {
+    /// <summary>
+    /// Image loader for the Linear Executable (LE) binary file format.
+    /// </summary>
+    /// <remarks>
+    /// http://faydoc.tripod.com/formats/exe-LE.htm
+    /// </remarks>
     public class LeImageLoader : ImageLoader
     {
         /// <summary>
@@ -48,6 +55,15 @@ namespace Reko.ImageLoaders.MzExe
         private LXHeader hdr;
         private List<string> moduleNames;
 
+        public LeImageLoader(IServiceProvider services, string filename, byte[] imgRaw, uint e_lfanew) : base(services, filename, imgRaw)
+        {
+            diags = Services.RequireService<IDiagnosticsService>();
+            lfaNew = e_lfanew;
+            importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
+            imageSymbols = new SortedList<Address, ImageSymbol>();
+            PreferredBaseAddress = Address.Ptr32(0x0010_0000);  //$REVIEW: arbitrary address.
+        }
+        
         /// <summary>
         ///     Executable module flags.
         /// </summary>
@@ -428,13 +444,6 @@ namespace Reko.ImageLoaders.MzExe
             public uint BaseAddress;
         }
 
-        public LeImageLoader(IServiceProvider services, string filename, byte[] imgRaw, uint e_lfanew) : base(services, filename, imgRaw)
-        {
-            diags = Services.RequireService<IDiagnosticsService>();
-            lfaNew = e_lfanew;
-            importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
-            imageSymbols = new SortedList<Address, ImageSymbol>();
-        }
 
         public override Address PreferredBaseAddress { get; set; }
 
@@ -448,13 +457,19 @@ namespace Reko.ImageLoaders.MzExe
             this.hdr = hdrReader.Read();
 
             LoadModuleTable();
+            var leSegs = LoadSegmentTable();
 
-            throw new NotImplementedException();
+            var segments = MakeSegmentMap(addrLoad, leSegs);
+            var platform = MakePlatform();
+            return new Program(segments, arch, platform);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            throw new NotImplementedException();
+            //$TODO: actual relocation!
+            var entryPoints = new List<ImageSymbol>();
+            var symbols = new SortedList<Address, ImageSymbol>();
+            return new RelocationResults(entryPoints, symbols);
         }
 
         void LoadModuleTable()
@@ -579,6 +594,53 @@ namespace Reko.ImageLoaders.MzExe
                 };
 
             return sections;
+        }
+
+        private SegmentMap MakeSegmentMap(Address addrLoad, Segment[] leSegments)
+        {
+            var segments = leSegments.Select(s => MakeImageSegment(s, addrLoad)).ToArray();
+            return new SegmentMap(addrLoad, segments);
+        }
+
+        private ImageSegment MakeImageSegment(Segment seg, Address addrLoad)
+        {
+            AccessMode access = 0;
+            if ((seg.Flags & ObjectFlags.Readable) != 0)
+                access |= AccessMode.Read;
+            if ((seg.Flags & ObjectFlags.Writable) != 0)
+                access |= AccessMode.Write;
+            if ((seg.Flags & ObjectFlags.Executable) != 0)
+                access |= AccessMode.Execute;
+
+            //$REVIEW: the address calculation doesn't take into account zero-filled pages. 
+            var mem = new MemoryArea(addrLoad + seg.DataOffset, new byte[seg.DataLength]);
+            Buffer.BlockCopy(
+                RawImage, (int)seg.DataOffset,
+                mem.Bytes, 0,
+                mem.Bytes.Length);
+            var imgSegment = new ImageSegment(seg.Name, mem, access);
+            return imgSegment;
+        }
+
+        private IPlatform MakePlatform()
+        {
+            string envName;
+            switch (this.hdr.os_type)
+            {
+            case TargetOS.OS2:
+                envName = "os2-32";
+                break;
+            case TargetOS.Win32:
+                envName = "win32";
+                break;
+            default:
+                diags.Error($"Unsupported operating environment {this.hdr.os_type}.");
+                return new DefaultPlatform(this.Services, this.arch);
+            }
+            var platform = Services.RequireService<IConfigurationService>()
+                .GetEnvironment(envName)
+                .Load(Services, arch);
+            return platform;
         }
     }
 }
