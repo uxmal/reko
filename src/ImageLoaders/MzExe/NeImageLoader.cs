@@ -279,7 +279,7 @@ namespace Reko.ImageLoaders.MzExe
                 entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
             }
             return new RelocationResults(
-                entryPoints,
+                entryPoints.Where(e => e != null).ToList(),
                 imageSymbols);
         }
 
@@ -371,6 +371,11 @@ namespace Reko.ImageLoaders.MzExe
                         entries.Add(ep);
                         DebugEx.Verbose(trace, "   {0:X2} {1} {2} - {3}", segNum, ep.Address, ep.Name, ep.Ordinal);
                     }
+                }
+                else
+                {
+                    // We have unused entries, they have to occupy a space in the resulting entries table.
+                    entries.AddRange(Enumerable.Range(0, cBundleEntries).Select(x => (ImageSymbol) null));
                 }
                 bundleOrdinal = nextbundleOrdinal;
             }
