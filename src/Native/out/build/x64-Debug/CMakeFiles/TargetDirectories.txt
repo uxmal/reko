@@ -1,8 +1,0 @@
-C:/Users/claunia/source/repos/reko/src/Native/out/build/x64-Debug/CMakeFiles/edit_cache.dir
-C:/Users/claunia/source/repos/reko/src/Native/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
-C:/Users/claunia/source/repos/reko/src/Native/out/build/x64-Debug/common/CMakeFiles/common.dir
-C:/Users/claunia/source/repos/reko/src/Native/out/build/x64-Debug/common/CMakeFiles/edit_cache.dir
-C:/Users/claunia/source/repos/reko/src/Native/out/build/x64-Debug/common/CMakeFiles/rebuild_cache.dir
-C:/Users/claunia/source/repos/reko/src/Native/out/build/x64-Debug/ArmNative/CMakeFiles/ArmNative.dir
-C:/Users/claunia/source/repos/reko/src/Native/out/build/x64-Debug/ArmNative/CMakeFiles/edit_cache.dir
-C:/Users/claunia/source/repos/reko/src/Native/out/build/x64-Debug/ArmNative/CMakeFiles/rebuild_cache.dir
