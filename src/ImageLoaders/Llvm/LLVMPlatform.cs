@@ -214,5 +214,9 @@ namespace Reko.ImageLoaders.LLVM
         {
             throw new NotImplementedException();
         }
+
+        public void WriteMetadata(Program program, string path)
+        {
+        }
     }
 }

@@ -174,6 +174,13 @@ namespace Reko.Core
         Dictionary<string, object> SaveUserOptions();
         ProcedureBase_v1 SignatureFromName(string importName);
         Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName);
+
+        /// <summary>
+        /// Write one or more metadata files for the loaded program.
+        /// </summary>
+        /// <param name="program">A <see cref="Program"/> whose file metadata is to be written.</param>
+        /// <param name="path">Full path to use (without file extension).</param>
+        void WriteMetadata(Program program, string path);
     }
 
     /// <summary>
@@ -519,6 +526,10 @@ namespace Reko.Core
             return CharacteristicsLibs.Select(cl => cl.Lookup(procName))
                 .Where(c => c != null)
                 .FirstOrDefault();
+        }
+
+        public virtual void WriteMetadata(Program program, string path)
+        {
         }
     }
 
