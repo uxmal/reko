@@ -11,6 +11,7 @@ namespace Reko.Environments.OS2
     /// </summary>
     /// <remarks>
     /// There will be a lot of similarities with Win16 here.
+    /// http://www.edm2.com/index.php/OS/2_DLL_Entry_Points
     /// </remarks>
     public class OS2Platform16 : Platform
     {
