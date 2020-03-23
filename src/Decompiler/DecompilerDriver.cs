@@ -544,7 +544,7 @@ namespace Reko
         }
 
         public IDictionary<Address, FunctionType> LoadCallSignatures(
-            Program program, 
+            Program program,
             ICollection<SerializedCall_v1> userCalls)
         {
             return

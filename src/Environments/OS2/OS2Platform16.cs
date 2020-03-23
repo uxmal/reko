@@ -3,6 +3,7 @@ using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
 using Reko.Arch.X86;
+using System.Linq;
 
 namespace Reko.Environments.OS2
 {
@@ -83,6 +84,29 @@ namespace Reko.Environments.OS2
                     return new X86CallingConvention(4, 2, 4, false, true);
             }
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
+        }
+
+        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+            foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
+            {
+                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
+                {
+                    // Found the name of the imported procedure, now try to find its signature.
+                    string procName = svc.Name;
+                    if (!Metadata.Signatures.TryGetValue(procName, out var sig))
+                    {
+                        return new ExternalProcedure(svc.Name, svc.Signature);
+                    }
+                    else
+                    {
+                        var chr = LookupCharacteristicsByName(procName);
+                        return new ExternalProcedure(procName, sig, chr);
+                    }
+                }
+            }
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
