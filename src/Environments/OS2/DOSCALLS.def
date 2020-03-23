@@ -2,7 +2,7 @@
 ;;;
 ;;; Obtained from http://www.edm2.com/index.php/DOSCALLS.DLL
 
-LIBRARY DOSCALLS.DLL
+LIBRARY DOSCALLS
 EXPORTS
 DosICreateThread @ 1
 Dos16Cwait @ 2
@@ -434,7 +434,7 @@ DosIODelayCnt @ 427
 Dos32SetFileLocks @ 428
 Dos32CancelLockRequest @ 429
 Dos32GetLocaleModule @ 430
-LogOpen @ 430
+; LogOpen @ 430		//$BUG: re-used ordinal number? Or more likely, transcription error.
 LogClose @ 431
 LogAddEntries @ 432
 LogGetEntries @ 433
@@ -537,18 +537,18 @@ T32QUERYMUXWAITSEM @ 538
 T32QUERYSYSINFO @ 539
 T32WAITTHREAD @ 540
 DosIOpenL @ 541
-T32GETRESOURCE @ 541
+; T32GETRESOURCE @ 541			//$BUG: re-used ordinal number? Or more likely, transcription error.
 DosIProtectOpenL @ 542
-T32FREERESOURCE @ 542
+; T32FREERESOURCE @ 542			//$BUG: re-used ordinal number? Or more likely, transcription error.
 DosISetFileSizeL @ 543
-T32EXCEPTIONCALLBACK @ 543
+; T32EXCEPTIONCALLBACK @ 543	//$BUG: re-used ordinal number? Or more likely, transcription error.
 DosIProtectSetFileSizeL @ 544
-T32QUERYPAGEUSAGE @ 544
+;T32QUERYPAGEUSAGE @ 544		//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32ExceptionCallBack @ 545
 TI32ASYNCTIMER @ 546
 THK32STRLEN @ 546
 TI32STARTTIMER @ 547
-THK_UNITHUNK @ 547
+; THK_UNITHUNK @ 547			//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32R3ExceptionDispatcher @ 548
 DosLibiDisp @ 549
 DosLibiDisp16 @ 550
@@ -559,52 +559,52 @@ Dos32IRead @ 554
 T32IREAD @ 555
 Dos32IWrite @ 556
 Dos32CreateSpinLock @ 557
-T32IWRITE @ 557
+; T32IWRITE @ 557				//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32AcquireSpinLock @ 558
 T32TMRQUERYFREQ @ 558
 Dos32ReleaseSpinLock @ 559
-T32TMRQUERYTIME @ 559
+; T32TMRQUERYTIME @ 559			//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32FreeSpinLock @ 560
-T32ALIASPERFCTRS @ 560
+; T32ALIASPERFCTRS @ 560		//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32PMR3WaitEventSem @ 561
-T32CONFIGUREPERF @ 561
+; T32CONFIGUREPERF @ 561		//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32PMR3PostEventSem @ 562
-T32DECONPERF @ 562
+; T32DECONPERF @ 562			//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32QueryThreadAffinity @ 563
-T32REGISTERPERFCTRS @ 563
+; T32REGISTERPERFCTRS @ 563		//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32SetThreadAffinity @ 564
 T32QUERYSYSSTATE @ 564
 DosISetFileInfo @ 565
 DosISetPathInfo @ 566
 DosOpenL @ 567
-T32QUERYDOSPROPERTY @ 567
+; T32QUERYDOSPROPERTY @ 567		//$BUG: re-used ordinal number? Or more likely, transcription error.
 DosSetFilePtrL @ 568
-T32SETDOSPROPERTY @ 568
+; T32SETDOSPROPERTY @ 568		//$BUG: re-used ordinal number? Or more likely, transcription error.
 DosIFindNext @ 569
 DosSetFileSizeL @ 570
-T32PROFILE @ 570
+; T32PROFILE @ 570				//$BUG: re-used ordinal number? Or more likely, transcription error.
 T32QUERYRESOURCESIZE @ 571
 Dos32QueryResourceSize @ 572
 DosQueryResourceSize @ 573
-T32SETSIGNALEXCEPTIONFOCUS @ 574
+; T32SETSIGNALEXCEPTIONFOCUS @ 574	//$BUG: re-used ordinal number? Or more likely, transcription error.
 DosPMSemWait @ 574
-T32SENDSIGNALEXCEPTION @ 575
+; T32SENDSIGNALEXCEPTION @ 575	//$BUG: re-used ordinal number? Or more likely, transcription error.
 DosPMMuxSemWait @ 575
-T32STARTTIMER @ 576
+; T32STARTTIMER @ 576			//$BUG: re-used ordinal number? Or more likely, transcription error.
 THK16_UNITHUNK @ 576
-T32STOPTIMER @ 577
+; T32STOPTIMER @ 577			//$BUG: re-used ordinal number? Or more likely, transcription error.
 HT16_STARTUP @ 577
-T32ASYNCTIMER @ 578
+; T32ASYNCTIMER @ 578			//$BUG: re-used ordinal number? Or more likely, transcription error.
 HT16_CLEANUP @ 578
-T32INITIALIZEPORTHOLE @ 579
+; T32INITIALIZEPORTHOLE @ 579	//$BUG: re-used ordinal number? Or more likely, transcription error.
 HT32_STARTUP @ 579
 Dos32InitializePorthole @ 580
-T32QUERYHEADERINFO @ 581
+; T32QUERYHEADERINFO @ 581		//$BUG: re-used ordinal number? Or more likely, transcription error.
 HT32_CLEANUP @ 581
 Dos32QueryHeaderInfo @ 582
 DosInitializePorthole @ 583
 DosQueryHeaderInfo @ 584
-T32QUERYPROCTYPE @ 585
+; T32QUERYPROCTYPE @ 585		//$BUG: re-used ordinal number? Or more likely, transcription error.
 _Dos32IMonRead @ 585
 Dos32QueryProcType @ 586
 DosQueryProcType @ 587
@@ -613,7 +613,7 @@ _Dos32IMonWrite @ 588
 DosISigDispatch @ 589
 T32ICACHEMODULE @ 590
 Dos32PMPostEventSem @ 590
-T32DLLTERM @ 591
+; T32DLLTERM @ 591				//$BUG: re-used ordinal number? Or more likely, transcription error.
 Dos32PMWaitEventSem @ 591
 Dos32DllTermDisp @ 592
 T32IRAISEEXCEPTION @ 593

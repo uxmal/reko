@@ -36,17 +36,17 @@ namespace Reko.Core
     /// </summary>
     public class TypeLibraryDeserializer : ISerializedTypeVisitor<DataType>
     {
-        private IPlatform platform;
-        private IDictionary<string, DataType> types;
-        private Dictionary<string, UnionType> unions;
-        private Dictionary<string, StructureType> structures;
+        private readonly IPlatform platform;
+        private readonly IDictionary<string, DataType> types;
+        private readonly Dictionary<string, UnionType> unions;
+        private readonly Dictionary<string, StructureType> structures;
+        private readonly TypeLibrary library;
         private string defaultConvention;
         private string moduleName;
-        private TypeLibrary library;
 
         public TypeLibraryDeserializer(IPlatform platform, bool caseInsensitive, TypeLibrary dstLib)
         {
-            this.library = dstLib ?? throw new ArgumentNullException("dstLib");
+            this.library = dstLib ?? throw new ArgumentNullException(nameof(dstLib));
             this.platform = platform;
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
             types = dstLib.Types;
@@ -160,7 +160,14 @@ namespace Reko.Core
             var mod = EnsureModule(svc.ModuleName, this.library);
             if (ordinal != Serialization.Procedure_v1.NoOrdinal)
             {
-                mod.ServicesByOrdinal.Add(ordinal, svc);
+                if (mod.ServicesByOrdinal.ContainsKey(ordinal))
+                {
+                    Debug.Print("{0}: Duplicated ordinal {1} used for {2}", svc.ModuleName, ordinal, svc.Name);
+                }
+                else
+                {
+                    mod.ServicesByOrdinal.Add(ordinal, svc);
+                }
             }
             if (svc.SyscallInfo != null)
             {
