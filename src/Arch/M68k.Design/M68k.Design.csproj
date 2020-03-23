@@ -1,93 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{90B83EC1-915B-471B-8F86-6A71B17DB6A1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Arch.M68k.Design</RootNamespace>
     <AssemblyName>Reko.Arch.M68k.Design</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>7</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
-    <OutputPath>bin\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net472</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="M68kArchitectureDesigner.cs" />
-    <Compile Include="M68kPropertiesControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="M68kPropertiesControl.Designer.cs">
-      <DependentUpon>M68kPropertiesControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="M68kPropertiesInteractor.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Gui\Gui.csproj" />
+    <ProjectReference Include="..\M68k\M68k.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Gui\Gui.csproj">
-      <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
-      <Name>Gui</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\M68k\M68k.csproj">
-      <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
-      <Name>M68k</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="M68kPropertiesControl.resx">
-      <DependentUpon>M68kPropertiesControl.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -618,8 +618,8 @@ Global
 		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.TravisRelease|x86.Build.0 = Release|Any CPU
 		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
-		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.UnixRelease|x64.ActiveCfg = UnixRelease|Any CPU
-		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.UnixRelease|x64.Build.0 = UnixRelease|Any CPU
+		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.UnixRelease|x64.ActiveCfg = Release|Any CPU
+		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.UnixRelease|x64.Build.0 = Release|Any CPU
 		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.UnixRelease|x86.ActiveCfg = Release|Any CPU
 		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.UnixRelease|x86.Build.0 = Release|Any CPU
 		{66A00AB2-6964-4815-9140-F28FEE48E6D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -2478,8 +2478,8 @@ Global
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.TravisRelease|x86.Build.0 = Release|Any CPU
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
-		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x64.ActiveCfg = UnixRelease|Any CPU
-		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x64.Build.0 = UnixRelease|Any CPU
+		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x64.ActiveCfg = Release|Any CPU
+		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x64.Build.0 = Release|Any CPU
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x86.ActiveCfg = Release|Any CPU
 		{C57B1AD7-336A-4CE6-8A8C-836760029EBB}.UnixRelease|x86.Build.0 = Release|Any CPU
 		{6FAA0B0C-F6C2-4091-9CC8-1DC2CF708BC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -2790,8 +2790,8 @@ Global
 		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.TravisRelease|x86.Build.0 = Release|Any CPU
 		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
-		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.UnixRelease|x64.ActiveCfg = UnixRelease|Any CPU
-		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.UnixRelease|x64.Build.0 = UnixRelease|Any CPU
+		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.UnixRelease|x64.ActiveCfg = Release|Any CPU
+		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.UnixRelease|x64.Build.0 = Release|Any CPU
 		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.UnixRelease|x86.ActiveCfg = Release|Any CPU
 		{6369AAEC-5946-412B-929B-024C4FB1CFD6}.UnixRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection

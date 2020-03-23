@@ -1,81 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5307665E-072F-4398-872D-6550BE6FC1EB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Environments.SysV</RootNamespace>
     <AssemblyName>Reko.Environments.SysV</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>7</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ArchSpecific\AlphaCallingConvention.cs" />
-    <Compile Include="ArchSpecific\Arm64CallingConvention.cs" />
-    <Compile Include="ArchSpecific\ArmCallingConvention.cs" />
-    <Compile Include="ArchSpecific\Avr8CallingConvention.cs" />
-    <Compile Include="ArchSpecific\BlackfinCallingConvention.cs" />
-    <Compile Include="ArchSpecific\M68kCallingConvention.cs" />
-    <Compile Include="ArchSpecific\MipsCallingConvention.cs" />
-    <Compile Include="ArchSpecific\Msp430CallingConvention.cs" />
-    <Compile Include="ArchSpecific\PowerPcCallingConvention.cs" />
-    <Compile Include="ArchSpecific\SparcCallingConvention.cs" />
-    <Compile Include="ArchSpecific\SuperHCallingConvention.cs" />
-    <Compile Include="ArchSpecific\X86_64CallingConvention.cs" />
-    <Compile Include="ArchSpecific\XtensaCallingConvention.cs" />
-    <Compile Include="ArchSpecific\zSeriesCallingConvention.cs" />
-    <Compile Include="GccMangledNameParser.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="sysvcharacteristics.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Compile Include="SysVPlatform.cs" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
-    <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <TranslateHeader Include="lp32.inc" />
@@ -83,21 +19,11 @@
     <TranslateHeader Include="Xlib.inc" />
     <TranslateHeader Include="opengl.inc" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="linux-syscalls-i386.xml" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-       -->
-  <Target Name="AfterBuild">
-    <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\Reko.Environments.SysV.dll" DestinationFolder="$(SolutionDir)tools" />
+
+  <Target Name="RunC2Xml" AfterTargets="CoreBuild">
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)\Reko.Environments.SysV.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\bin\$(Configuration)\netstandard2.0\Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
     <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/c2xml.exe -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
     <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
   </Target>
-  <!--
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

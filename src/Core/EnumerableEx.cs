@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -83,7 +83,23 @@ namespace Reko.Core
             return list;
         }
 
+        // The big .NET Core messup.
+        // This extension method was added before .NET Core existed. 
+        // In their wisdom, Microsoft added Enumerable.ToHashSet<T> to the
+        // netcoreapp2.0 and net472 frameworks, but for some reason they did
+        // not add it to netstandard2.0. This leads to ambiguities when using
+        // EnumerableEx in net572 projects.
+        //
+        // In the glorious future, everthing will be net5 and this all goes away.
+        // In the meantime, use EnumerableEx.ToHashSet<T> in netstandard2.0 projects,
+        // and EnumerableEx.ToSet<T> in net472 and netcoreapp2.0 projects.
         public static HashSet<TElement> ToHashSet<TElement>(
+            this IEnumerable<TElement> source)
+        {
+            return new HashSet<TElement>(source);
+        }
+
+        public static HashSet<TElement> ToSet<TElement>(
             this IEnumerable<TElement> source)
         {
             return new HashSet<TElement>(source);
