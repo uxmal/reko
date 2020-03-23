@@ -144,6 +144,9 @@ namespace Reko.Environments.OS2
         public void WriteModuleDefinition(Program program, string path)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
+            var dir = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(dir))
+                fsSvc.CreateDirectory(dir);
             using (var w = fsSvc.CreateStreamWriter(path, false, new UTF8Encoding(false)))
             {
                 w.WriteLine("; {0}", Path.GetFileName(path));
