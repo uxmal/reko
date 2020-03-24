@@ -133,7 +133,7 @@ namespace Reko.Scanning
 
         private bool ProcessRtlCluster(RtlInstructionCluster ric)
         {
-            state.SetInstructionPointer(ric.Address);
+            state.InstructionPointer = ric.Address;
             SetAssumedRegisterValues(ric.Address);
             foreach (var rtlInstr in ric.Instructions)
             {
@@ -618,7 +618,7 @@ namespace Reko.Scanning
                 return OnAfterCall(sig, chr);
             }
 
-            var syscall = program.Platform.FindService(call, state);
+            var syscall = program.Platform.FindService(call, state, program.SegmentMap);
             if (syscall != null)
             {
                 return !EmitSystemServiceCall(syscall);
@@ -1263,7 +1263,7 @@ namespace Reko.Scanning
 
             if (!(fn.Arguments[0] is Constant vector))
                 return null;
-            var svc = program.Platform.FindService(vector.ToInt32(), state);
+            var svc = program.Platform.FindService(vector.ToInt32(), state, program.SegmentMap);
             //$TODO if SVC uis null (and not-speculating) report the error.
             if (svc != null && svc.Signature == null)
             {

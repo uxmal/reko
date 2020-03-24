@@ -72,7 +72,7 @@ namespace Reko.Environments.RT11
             return new Rt11CallingConvention(this.arch);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             base.EnsureTypeLibraries(PlatformIdentifier);
             int uVec = vector & 0xFFFF;

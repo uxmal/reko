@@ -173,7 +173,7 @@ namespace Reko.ImageLoaders.MzExe
         private ImageSymbol CreateEntryPointSymbol(Address addrLoad, Address addrStart, Address addrStackTop)
         {
             var state = arch.CreateProcessorState();
-            state.SetInstructionPointer(addrStart);
+            state.InstructionPointer = addrStart;
             state.SetRegister(Registers.cs, Constant.UInt16(addrLoad.Selector.Value));
             state.SetRegister(Registers.ss, Constant.UInt16((ushort) addrStackTop.Selector.Value));
             state.SetRegister(Registers.sp, Constant.UInt16((ushort) addrStackTop.Offset));

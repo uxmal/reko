@@ -64,7 +64,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 var stride = TableStride();
                 var state = dlg.Program.Architecture.CreateProcessorState();
-                state.SetInstructionPointer(dlg.Instruction.Address);
+                state.InstructionPointer = dlg.Instruction.Address;
                 addresses = vectorBuilder.BuildTable(addrTable, stride * (int)dlg.EntryCount.Value, null, stride, state);
             }
             dlg.Entries.DataSource = addresses;

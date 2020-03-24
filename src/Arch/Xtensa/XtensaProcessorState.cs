@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,8 +28,7 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaProcessorState : ProcessorState
     {
-        private XtensaArchitecture arch;
-        private Address ip;
+        private readonly XtensaArchitecture arch;
 
         public XtensaProcessorState(XtensaArchitecture arch)
         {
@@ -39,7 +38,7 @@ namespace Reko.Arch.Xtensa
         public XtensaProcessorState(XtensaProcessorState that) : base(that)
         {
             this.arch = that.arch;
-            this.ip = that.ip;
+            this.InstructionPointer = that.InstructionPointer;
         }
 
         public override IProcessorArchitecture Architecture {  get { return arch; } }
@@ -69,11 +68,6 @@ namespace Reko.Arch.Xtensa
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
-            this.ip = addr;
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

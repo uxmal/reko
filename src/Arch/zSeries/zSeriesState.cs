@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -73,11 +73,6 @@ namespace Reko.Arch.zSeries
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
             throw new System.NotImplementedException();
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
-            //$TODO: is the IP exposed, architecturally for s390 / zSeries?
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

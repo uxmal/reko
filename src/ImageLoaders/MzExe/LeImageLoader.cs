@@ -37,6 +37,8 @@ namespace Reko.ImageLoaders.MzExe
     /// http://faydoc.tripod.com/formats/exe-LE.htm
     /// vmm.inc
     /// https://www-user.tu-chemnitz.de/~heha/viewzip.cgi/hs/doslfn.zip/vmm.inc?auto=ASM
+    /// 
+    /// https://defacto2.net/f/b22f966
     /// </remarks>
     public class LeImageLoader : ImageLoader
     {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,7 +29,6 @@ namespace Reko.Arch.RiscV
     public class RiscVState : ProcessorState
     {
         private RiscVArchitecture arch;
-        private Address pc;
 
         public RiscVState(RiscVArchitecture arch)
         {
@@ -39,7 +38,7 @@ namespace Reko.Arch.RiscV
         public RiscVState(RiscVState that) : base(that)
         {
             this.arch = that.arch;
-            this.pc = that.pc;
+            this.InstructionPointer = that.InstructionPointer;
         }
 
         public override IProcessorArchitecture Architecture
@@ -72,11 +71,6 @@ namespace Reko.Arch.RiscV
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
-            pc = addr;
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

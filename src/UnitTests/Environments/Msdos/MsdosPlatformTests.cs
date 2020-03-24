@@ -74,19 +74,19 @@ namespace Reko.UnitTests.Environments.Msdos
 
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.ah, Constant.Byte(0x3E));
-            SystemService svc = platform.FindService(0x21, state);
+            SystemService svc = platform.FindService(0x21, state, null);
             Assert.AreEqual("msdos_close_file", svc.Name);
             Assert.AreEqual(1, svc.Signature.Parameters.Length);
             Assert.IsFalse(svc.Characteristics.Terminates, "close() shouldn't terminate program");
 
             state.SetRegister(Registers.ah, Constant.Byte(0x4C));
-            svc = platform.FindService(0x21, state);
+            svc = platform.FindService(0x21, state, null);
             Assert.AreEqual("msdos_terminate", svc.Name);
             Assert.AreEqual(1, svc.Signature.Parameters.Length);
             Assert.IsTrue(svc.Characteristics.Terminates, "terminate() should terminate program");
 
             state.SetRegister(Registers.ah, Constant.Byte(0x2F));
-            svc = platform.FindService(0x21, state);
+            svc = platform.FindService(0x21, state, null);
             Assert.AreEqual("msdos_get_disk_transfer_area_address", svc.Name);
             Assert.AreEqual(0, svc.Signature.Parameters.Length);
             SequenceStorage seq = (SequenceStorage)svc.Signature.ReturnValue.Storage;

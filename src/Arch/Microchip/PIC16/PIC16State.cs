@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -26,6 +26,7 @@ using Reko.Core.Expressions;
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
+    using System;
 
     public class PIC16State: PICProcessorState
     {
@@ -53,16 +54,25 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         public override ProcessorState Clone() => new PIC16State(this);
 
         /// <summary>
-        /// Sets the instruction pointer (PC - Program Counter).
+        /// Gets and sets the instruction pointer (PC - Program Counter).
         /// </summary>
         /// <param name="addr">The address to assign to the PC.</param>
-        public override void SetInstructionPointer(Address addr)
+        public override Address InstructionPointer
         {
-            uint off = addr.ToUInt32();
-            SetRegister(PICRegisters.PCL, Constant.Byte((byte)(off)));
-            SetRegister(PICRegisters.PCLATH, Constant.Byte((byte)(off>>8)));
-        }
+            get
+            {
+                var low = GetRegister(PICRegisters.PCL).ToByte();
+                var high = GetRegister(PICRegisters.PCLATH).ToByte();
+                return Address.Ptr16((ushort)((high<< 8) | low));
+            }
 
+            set
+            {
+                uint off = value.ToUInt32();
+                SetRegister(PICRegisters.PCL, Constant.Byte((byte) (off)));
+                SetRegister(PICRegisters.PCLATH, Constant.Byte((byte) (off >> 8)));
+            }
+        }
     }
 
 }

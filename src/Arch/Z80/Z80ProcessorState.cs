@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -78,10 +78,6 @@ namespace Reko.Arch.Z80
             {
                 isValid[(int)reg.Domain] = false;
             }
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
         }
 
         public override void OnProcedureEntered()

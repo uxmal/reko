@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             When_Create_Platform();
             m.Call(m.IAdd(binder.EnsureRegister(Registers.a6), -512), 4);
             var state = arch.CreateProcessorState();
-            var svc = platform.FindService(rtls.Last(), state);
+            var svc = platform.FindService(rtls.Last(), state, null);
 
             Assert.AreEqual("Allocate", svc.Name);
             Assert.AreEqual(2, svc.Signature.Parameters.Length);
