@@ -1,0 +1,21 @@
+LIBRARY MDM
+EXPORTS
+    mciSendCommand                              @1
+    mciSendString                               @2
+    mciGetErrorString                           @3
+    mciQueryDefaultConnections                  @6
+    mciDefaultConnection                        @7
+    mciQueryConnections                         @8
+    mciConnection                               @9
+    mciSetSysValue                              @10
+    mciQuerySysValue                            @11
+    mciMakeGroup                                @12
+    mciDeleteGroup                              @13
+    mciGetDeviceID                              @16
+    mdmDriverNotify                             @17
+    MCI16GETERRORSTRING                         @18
+    MCI16SENDSTRING                             @19
+    MCI16GETDEVICEID                            @20
+    MM_DosLoadModule                            @21
+    mdmAPMEntry                                 @22
+

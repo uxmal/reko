@@ -1,0 +1,37 @@
+LIBRARY SESMGR
+EXPORTS
+    DOSSMSGDOPOPUP                              @1
+    DOSSMSWITCH                                 @2
+    DOSSMSERVEAPPREQ                            @3
+    DOSGETTIMES                                 @4
+    DOSSMSETTITLE                               @5
+    DOSSCRUNLOCK                                @6
+    DOSSMDOAPPREQ                               @7
+    DOSSTOPSESSION                              @8
+    DOSSELECTSESSION                            @9
+    DOSSCRLOCK                                  @10
+    DOSSAVREDRAWWAIT                            @11
+    DOSSAVREDRAWUNDO                            @12
+    DOSSMSGENDPOPUP                             @13
+    DOSSETSESSION                               @14
+    DOSSETMNLOCKTIME                            @15
+    DOSMODEUNDO                                 @16
+    DOSSTARTSESSION                             @17
+    DOSSMGETSTATUS                              @18
+    DOSMODEWAIT                                 @19
+    DOSSMTERMINATE                              @20
+    DOSSMGETAPPREQ                              @21
+    DOSSMREALPRTSC                              @22
+    DOSSMINITIALIZE                             @23
+    DOSSMSTART                                  @24
+    DOSSMPARENTSWITCH                           @25
+    DOSSMPAUSE                                  @26
+    DOSSMHDEINIT                                @27
+    DOSSMPMPRESENT                              @28
+    DOSSMREGISTERDD                             @29
+    DOSSMSYSINIT                                @30
+    DOSSMNOTIFYDD                               @31
+    DOSSMNOTIFYDD                               @32
+    DOSSMOPENDD                                 @33
+    QHKEYBDHANDLE                               @34
+    QHMOUSEHANDLE                               @35

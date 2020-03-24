@@ -1,0 +1,8 @@
+LIBRARY PMCTLS
+EXPORTS
+    WinFontDlg                                  @2
+    WinDefFontDlgProc                           @3
+    WinFileDlg                                  @4
+    WinDefFileDlgProc                           @5
+    WinFreeFileDlgList                          @6
+    WinRegisterCircularSlider                   @24

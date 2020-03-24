@@ -1,0 +1,29 @@
+LIBRARY MOUCALLS
+EXPORTS
+    MOUGETPTRSHAPE                              @1
+    MOUSETPTRSHAPE                              @2
+    MOUGETNUMMICKEYS                            @3
+    MOUGETHOTKEY                                @4
+    MOUSHELLINIT                                @5
+    MOUGETSCALEFACT                             @6
+    MOUFLUSHQUE                                 @7
+    MOUGETNUMBUTTONS                            @8
+    MOUCLOSE                                    @9
+    MOUSETHOTKEY                                @10
+    MOUSETSCALEFACT                             @11
+    MOUFREE                                     @12
+    MOUGETNUMQUEEL                              @13
+    MOUDEREGISTER                               @14
+    MOUGETEVENTMASK                             @15
+    MOUSETEVENTMASK                             @16
+    MOUOPEN                                     @17
+    MOUREMOVEPTR                                @18
+    MOUGETPTRPOS                                @19
+    MOUREADEVENTQUE                             @20
+    MOUSETPTRPOS                                @21
+    MOUGETDEVSTATUS                             @22
+    MOUSYNCH                                    @23
+    MOUREGISTER                                 @24
+    MOUSETDEVSTATUS                             @25
+    MOUDRAWPTR                                  @26
+    MOUINITREAL                                 @27

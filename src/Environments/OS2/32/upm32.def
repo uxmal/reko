@@ -1,0 +1,11 @@
+LIBRARY UPM32
+EXPORTS
+    U32ELGN                                     @1
+    U32ELGFF                                    @2
+    U32ELOCL                                    @4
+    U32ELOCU                                    @3
+    U32EULGF                                    @6
+    U32EULGN                                    @5
+    U32EUSRL                                    @7
+    U32ESETP                                    @8
+    U32EGETP                                    @9

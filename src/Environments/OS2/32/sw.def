@@ -1,0 +1,21 @@
+LIBRARY SW
+EXPORTS
+    WinSecondaryWindow                          @1
+    WinLoadSecondaryWindow                      @2
+    WinProcessSecondaryWindow                   @3
+    WinCreateSecondaryWindow                    @4
+    WinSecondaryMessageBox                      @5
+    WinDismissSecondaryWindow                   @6
+    WinDestroySecondaryWindow                   @7
+    WinDefSecondaryWindowProc                   @8
+    WinQuerySecondaryFrame                      @9
+    WinQuerySecondaryDialog                     @10
+    WinDefaultSize                              @11
+    WinInsertDefaultSize                        @12
+    WinRegisterCircularSlider                   @13
+    WinRegisterGraphicButton                    @14
+    WinQuerySecondaryHWND                       @52
+    WinQueryDefaultSize                         @53
+    WinRegisterSelectionSlider                  @61
+    WinRegisterCircularSlider2                  @67
+

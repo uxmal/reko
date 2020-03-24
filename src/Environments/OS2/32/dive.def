@@ -1,0 +1,22 @@
+LIBRARY DIVE
+EXPORTS
+    DiveQueryCaps                               @1
+    DiveOpen                                    @2
+    DiveClose                                   @3
+    DiveSetupBlitter                            @4
+    DiveBlitImage                               @5
+    DiveAcquireFrameBuffer                      @6
+    DiveSwitchBank                              @7
+    DiveDeacquireFrameBuffer                    @8
+    DiveSetDestinationPalette                   @9
+    DiveSetSourcePalette                        @10
+    DiveCalcFrameBufferAddress                  @11
+    DiveAllocImageBuffer                        @12
+    DiveFreeImageBuffer                         @13
+    DiveBeginImageBufferAccess                  @14
+    DiveEndImageBufferAccess                    @15
+    DiveFullScreenInit                          @16
+    DiveFullScreenTerm                          @17
+    DiveSetTransparentBlitMode                  @18
+    DiveBlitImageLines                          @19
+

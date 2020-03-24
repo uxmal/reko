@@ -1,0 +1,13 @@
+LIBRARY BDCALLS
+EXPORTS
+    NLS16CONVERTBIDINUMERICS                    @1
+    NLS16CONVERTBIDISTRING                      @2
+    NLS16INTSETBIDIATT                          @3
+    NLS16INTQUERYBIDIATT                        @4
+    NLS16SETBIDIATT                             @5
+    NLS16QUERYBIDIATT                           @6
+    NLS16INVERSESTRING                          @7
+    NLS16SETBIDIPRINT                           @8
+    NLS16EDITSHAPE                              @9
+    NLS16SHAPEBIDISTRING                        @10
+    NL16POPUP                                   @11

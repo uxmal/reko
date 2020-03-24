@@ -10,8 +10,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <TranslateHeader Include="os2-16.inc" />
-
   </ItemGroup>
 
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
