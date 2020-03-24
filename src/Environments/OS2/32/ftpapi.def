@@ -1,0 +1,36 @@
+LIBRARY FTPAPI
+EXPORTS
+    ftpappend                                   @1
+    ftpcd                                       @2
+    ftpdelete                                   @3
+    ftpdir                                      @4
+    ftpget                                      @5
+    ftplogoff                                   @6
+    ftpls                                       @7
+    ftpmkd                                      @8
+    ftpping                                     @9
+    ftpproxy                                    @10
+    ftpput                                      @11
+    ftpputunique                                @12
+    ftppwd                                      @13
+    ftpquote                                    @14
+    ftprename                                   @15
+    ftprmd                                      @16
+    ftpsite                                     @17
+    ftpsys                                      @18
+    ping                                        @19
+    ftperrno                                    @20
+    ftp_errno                                   @21
+    ftpxlate                                    @22
+    ftpver                                      @23
+    ftptrcon                                    @24
+    ftptrcoff                                   @25
+    ftpxferwnd                                  @26
+    ftpsetconvertmode                           @27
+    ftpsetencodemode                            @28
+    ftpsetdecodemode                            @29
+    keep_file_date                              @30
+    ftprestart                                  @31
+    ftpremsize                                  @32
+    ftpquotereply                               @33
+    ftpsetactivemode                            @34

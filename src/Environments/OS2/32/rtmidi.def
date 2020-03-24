@@ -1,0 +1,27 @@
+LIBRARY RTMIDI
+EXPORTS
+    MIDIAddLink                                 @1
+    MIDICreateInstance                          @2
+    MIDIDeleteInstance                          @3
+    MIDIDisableInstance                         @4
+    MIDIEnableInstance                          @5
+    MIDIQueryClassList                          @6
+    MIDIQueryInstanceConfiguration              @8
+    MIDIQueryInstanceLinks                      @9
+    MIDIQueryInstanceList                       @10
+    MIDIQueryInstanceName                       @11
+    MIDIQueryNumClasses                         @12
+    MIDIQueryNumInstances                       @14
+    MIDIQueryVersion                            @15
+    MIDIRemoveLink                              @16
+    MIDIRetrieveMessages                        @17
+    MIDISendMessages                            @18
+    MIDISendSysexMessage                        @19
+    MIDISetDefaultHardwareNode                  @20
+    MIDISetInstanceConfiguration                @22
+    MIDISetup                                   @23
+    MIDISimpleClose                             @24
+    MIDISimpleOpen                              @25
+    MIDITimer                                   @26
+    TimerGetPointer                             @27
+    TimerSleep                                  @28

@@ -1,0 +1,7 @@
+LIBRARY MONCALLS
+EXPORTS
+    DOS16MONWRITE                               @1
+    DOS16MONREAD                                @2
+    DOS16MONCLOSE                               @3
+    DOS16MONOPEN                                @4
+    DOS16MONREG                                 @5

@@ -1,0 +1,23 @@
+LIBRARY MCIAPI
+EXPORTS
+    mciRxSendString                             @2
+    mciRxGetErrorString                         @3
+    mciRxGetDeviceID                            @4
+    mciRxInit                                   @5
+    mciRxExit                                   @6
+    mciPlayFile                                 @10
+    mciPlayResource                             @11
+    mciRecordAudioFile                          @12
+    MCI16PLAYFILE                               @13
+    MCI16PLAYRESOURCE                           @14
+    MCI16RECORDAUDIOFILE                        @15
+    mmioRemoveElement                           @16
+    MMIO16REMOVEELEMENT                         @17
+    mmioFindElement                             @18
+    MMIO16FINDELEMENT                           @19
+    MCI32PLAYFILE                               @20
+    MCI32PLAYRESOURCE                           @21
+    MCI32RECORDAUDIOFILE                        @22
+    MMIO32REMOVEELEMENT                         @23
+    MMIO32FINDELEMENT                           @24
+    mciCreatePlayFilePalette                    @25

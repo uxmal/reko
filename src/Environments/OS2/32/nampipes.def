@@ -1,0 +1,16 @@
+LIBRARY NAMPIPES
+EXPORTS
+    DOS16MAKENMPIPE                             @1 
+    DOS16QNMPIPEINFO                            @2 
+    DOS16CONNECTNMPIPE                          @3 
+    DOS16DISCONNECTNMPIPE                       @4 
+    DOS16QNMPHANDSTATE                          @5 
+    DOS16SETNMPHANDSTATE                        @6 
+    DOS16PEEKNMPIPE                             @7 
+    DOS16WAITNMPIPE                             @8 
+    DOS16TRANSACTNMPIPE                         @9 
+    DOS16CALLNMPIPE                             @10
+    DOS16RAWREADNMPIPE                          @11
+    DOS16RAWWRITENMPIPE                         @12
+    DOS16SETNMPIPESEM                           @13
+    DOS16QNMPIPESEMSTATE                        @14

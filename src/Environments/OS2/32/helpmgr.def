@@ -1,0 +1,23 @@
+LIBRARY HELPMGR
+EXPORTS
+    WinCreateHelpInstance                       @51
+    WinDestroyHelpInstance                      @52
+    WinQueryHelpInstance                        @53
+    WinAssociateHelpInstance                    @54
+    WinLoadHelpTable                            @55
+    WinCreateHelpTable                          @56
+    DdfInitialize                               @74
+    DdfPara                                     @75
+    DdfSetFormat                                @76
+    DdfSetTextAlign                             @77
+    DdfSetColor                                 @78
+    DdfInform                                   @79
+    DdfSetFontStyle                             @80
+    DdfHyperText                                @81
+    DdfBeginList                                @82
+    DdfListItem                                 @83
+    DdfEndList                                  @84
+    DdfText                                     @85
+    DdfMetafile                                 @86
+    DdfSetFont                                  @87
+    DdfBitmap                                   @88
