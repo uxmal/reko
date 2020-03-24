@@ -621,7 +621,7 @@ namespace Reko.Scanning
             var syscall = program.Platform.FindService(call, state, program.SegmentMap);
             if (syscall != null)
             {
-                return !EmitSystemServiceCall(syscall);
+                return EmitSystemServiceCall(syscall);
             }
 
             ProcessIndirectControlTransfer(ric.Address, call);
@@ -787,7 +787,17 @@ namespace Reko.Scanning
                         new BinaryExpression(op, fpuStackReg.DataType, fpuStackReg, d)));
                 }
             }
+
             TrashRegistersAfterCall();
+            if (characteristics != null && characteristics.ReturnAddressAdjustment > 0)
+            {
+                var addrNext = ric.Address + characteristics.ReturnAddressAdjustment;
+                scanner.TerminateBlock(blockCur, addrNext);
+                var blockNext = scanner.EnqueueJumpTarget(ric.Address, addrNext, blockCur.Procedure, state);
+                Emit(new GotoInstruction(addrNext));
+                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockNext);
+                return false;
+            }
             return true;
         }
 
@@ -858,7 +868,7 @@ namespace Reko.Scanning
             var svc = MatchSyscallToService(side);
             if (svc != null)
             {
-                return !EmitSystemServiceCall(svc);
+                return EmitSystemServiceCall(svc);
             }
             else
             {
@@ -878,7 +888,8 @@ namespace Reko.Scanning
         /// Takes a system service description and generates a system call from it.
         /// </summary>
         /// <param name="svc"></param>
-        /// <returns>True if the system service terminates.</returns>
+        /// <returns>True if the system service does not terminate, false if it does
+        /// and scanning should stop.</returns>
         private bool EmitSystemServiceCall(SystemService svc)
         {
             var ep = svc.CreateExternalProcedure(arch);
@@ -890,18 +901,17 @@ namespace Reko.Scanning
                 if (svc.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                    //blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-                    return true;
+                    return false;
                 }
                 AffectProcessorState(svc.Signature);
-                OnAfterCall(svc.Signature, svc.Characteristics);
+                return OnAfterCall(svc.Signature, svc.Characteristics);
             }
             else
             {
                 var site = state.OnBeforeCall(stackReg, 0);
                 Emit(new CallInstruction(fn, site));
             }
-            return false;
+            return true;
         }
 
         private FunctionType GuessProcedureSignature(CallInstruction call)
