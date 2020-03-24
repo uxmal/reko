@@ -635,7 +635,14 @@ namespace Reko.ImageLoaders.MzExe
                 envName = "os2-32";
                 break;
             case TargetOS.Win32:
-                envName = "win32";
+                if (hdr.module_flags.HasFlag(ModuleFlags.VirtualDeviceDriver))
+                {
+                    envName = "win-vmm";
+                }
+                else
+                {
+                    envName = "win32";
+                }
                 break;
             default:
                 diags.Error($"Unsupported operating environment {this.hdr.os_type}.");

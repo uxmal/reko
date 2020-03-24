@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 namespace Reko.ImageLoaders.Omf
 {
     /// <summary>
-    /// Loads OMF object files.
+    /// Loads OMF object files and libraries
     /// </summary>
     public class OmfLoader : ImageLoader
     {
