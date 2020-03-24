@@ -89,7 +89,7 @@ namespace Reko.Environments.Windows
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             return null;
         }

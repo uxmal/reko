@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -82,10 +82,6 @@ namespace Reko.Arch.Tlcs
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
-        {
-        }
-
-        public override void SetInstructionPointer(Address addr)
         {
         }
 

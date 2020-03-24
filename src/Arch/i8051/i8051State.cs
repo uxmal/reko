@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -79,9 +79,17 @@ namespace Reko.Arch.i8051
         {
         }
 
-        public override void SetInstructionPointer(Address addr)
+        public override Address InstructionPointer
         {
-            regValues[Registers.PC] = Constant.Word16(addr.ToUInt16());
+            get
+            {
+                return Address.Ptr16(regValues[Registers.PC].ToUInt16());
+            }
+
+            set
+            {
+                regValues[Registers.PC] = Constant.Word16(value.ToUInt16());
+            }
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -56,15 +56,20 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         public override ProcessorState Clone() => new PIC18State(this);
 
         /// <summary>
-        /// Sets the instruction pointer (PC - Program Counter).
+        /// Gets or sets the instruction pointer (PC - Program Counter).
         /// </summary>
         /// <param name="addr">The address to assign to the PC.</param>
-        public override void SetInstructionPointer(Address addr)
+        public override Address InstructionPointer
         {
-            uint off = addr.ToUInt32();
-            SetRegister(PIC18Registers.PCLAT, Constant.Word32(off));
+            get
+            {
+                return Address.Ptr32(GetRegister(PIC18Registers.PCLAT).ToUInt32());
+            }
+            set
+            {
+                uint off = value.ToUInt32();
+                SetRegister(PIC18Registers.PCLAT, Constant.Word32(off));
+            }
         }
-
     }
-
 }

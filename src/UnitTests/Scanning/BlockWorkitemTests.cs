@@ -550,7 +550,8 @@ testProc_exit:
             };
             platform.Setup(p => p.FindService(
                 It.IsAny<RtlInstruction>(),
-                It.IsAny<ProcessorState>()))
+                It.IsAny<ProcessorState>(),
+                It.IsAny<SegmentMap>()))
                 .Returns(sysSvc)
                 .Verifiable();
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
@@ -578,7 +579,8 @@ testProc_exit:
             var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14, 0, PrimitiveType.Ptr32));
             platform.Setup(p => p.FindService(
                 It.IsAny<RtlInstruction>(),
-                It.IsAny<ProcessorState>())).Returns((SystemService)null);
+                It.IsAny<ProcessorState>(),
+                It.IsAny<SegmentMap>())).Returns((SystemService)null);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
             Given_SimpleTrace(trace);
             //scanner.Setup(s => s.TerminateBlock(null, null)).IgnoreArguments();

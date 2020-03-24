@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -70,11 +70,6 @@ namespace Reko.Arch.M6800.M6812
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SetInstructionPointer(Address addr)
         {
             throw new NotImplementedException();
         }

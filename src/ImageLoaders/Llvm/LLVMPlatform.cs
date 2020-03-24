@@ -120,12 +120,12 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public SystemService FindService(RtlInstruction call, ProcessorState state)
+        public SystemService FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }
 
-        public SystemService FindService(int vector, ProcessorState state)
+        public SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }

@@ -304,11 +304,6 @@ namespace Reko.UnitTests.Core
                 regs[r] = v;
             }
 
-            public override void SetInstructionPointer(Address addr)
-            {
-                throw new NotImplementedException();
-            }
-
             public override void OnProcedureEntered()
             {
                 throw new NotImplementedException();

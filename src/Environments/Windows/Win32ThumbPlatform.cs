@@ -150,7 +150,7 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             SystemService svc;
             systemServices.TryGetValue(vector, out svc);

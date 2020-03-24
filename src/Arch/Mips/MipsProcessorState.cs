@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,7 +32,6 @@ namespace Reko.Arch.Mips
     public class MipsProcessorState : ProcessorState
     {
         private MipsProcessorArchitecture arch;
-        private Address ip;         // Instruction pointer
         private Constant[] iregs;       // integer register values.
         private bool[] valid;       // whether the regs are valid or not.
 
@@ -89,11 +88,6 @@ namespace Reko.Arch.Mips
             }
         }
 
-        public override void SetInstructionPointer(Address addr)
-        {
-            this.ip = addr;
-        }
-
         public override void OnProcedureEntered()
         {
             // The ELF abi states that r25 must contain the address
@@ -101,7 +95,7 @@ namespace Reko.Arch.Mips
             // it's a TMP register that is never used to pass arguments.
             // It should be harmless to set it to a constant value at the
             // entry of the function.
-            iregs[25] = ip.ToConstant();
+            iregs[25] = this.InstructionPointer.ToConstant();
             SetRegister(arch.GeneralRegs[25], iregs[25]);
         }
 

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -71,10 +71,6 @@ namespace Reko.Arch.M68k
             {
                 isValid[r.Number] = false;
             }
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
         }
 
         public override Constant GetRegister(RegisterStorage r)

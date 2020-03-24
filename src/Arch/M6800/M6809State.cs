@@ -63,10 +63,6 @@ namespace Reko.Arch.M6800
         {
         }
 
-        public override void SetInstructionPointer(Address addr)
-        {
-        }
-
         public override void SetRegister(RegisterStorage r, Constant v)
         {
         }

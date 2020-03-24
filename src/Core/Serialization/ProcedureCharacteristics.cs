@@ -42,6 +42,7 @@ namespace Reko.Core.Serialization
             Allocator = old.Allocator;
             ArraySize = old.ArraySize;
             VarargsParserClass = old.VarargsParserClass;
+            ReturnAddressAdjustment = old.ReturnAddressAdjustment;
         }
 
 		[XmlElement("is-alloca")]
@@ -68,6 +69,21 @@ namespace Reko.Core.Serialization
 
         [XmlElement("varargs")]
         public virtual string VarargsParserClass { get; set; }
+
+        /// <summary>
+        /// After the call has returned, increment the instruction pointer
+        /// by this many bytes.
+        /// </summary>
+        /// <remarks>
+        /// This field is used to model VxD calls on 16-bit Windows, where an
+        /// `int 20h` instruction will be followed by a 4-byte value. The value
+        /// is used at runtime to resolve the dynamic call, and the `int` instruction
+        /// and the 4-byte value are replaced with a `call` statement. We model this
+        /// by injecting an RtlGoto right after the call, jumping over this many bytes.
+        /// </remarks>
+        [XmlElement("adjustRet")]
+        [DefaultValue(0)]
+        public int ReturnAddressAdjustment { get; set; }
 
         public void Write()
         {

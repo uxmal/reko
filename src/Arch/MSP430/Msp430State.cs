@@ -75,10 +75,6 @@ namespace Reko.Arch.Msp430
         {
         }
 
-        public override void SetInstructionPointer(Address addr)
-        {
-        }
-
         public override void SetRegister(RegisterStorage r, Constant v)
         {
             
