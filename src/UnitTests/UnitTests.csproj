@@ -344,6 +344,7 @@
     <Compile Include="ImageLoaders\OdbgScript\OllyScriptHostTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyLangInterpreterTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyScriptParserTests.cs" />
+    <Compile Include="ImageLoaders\Omf\OmfLoaderTests.cs" />
     <Compile Include="Loading\NullImageLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />

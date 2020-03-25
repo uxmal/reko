@@ -90,7 +90,7 @@ namespace Reko.Libraries.Microchip
             var path = Path.Combine(sDir, LocalDBFilename);
             if (!File.Exists(path))
             {
-                sDir = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                sDir = AppDomain.CurrentDomain.BaseDirectory;
                 path = Path.Combine(sDir, LocalDBFilename);
             }
             return path;

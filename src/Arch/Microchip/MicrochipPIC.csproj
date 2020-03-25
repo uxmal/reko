@@ -1,133 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A959C1A2-A622-4600-81AD-29E08545B2F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Arch.MicrochipPIC</RootNamespace>
     <AssemblyName>Reko.Arch.MicrochipPIC</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>7</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>7</LangVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\FlagM.cs" />
-    <Compile Include="Common\FSRIndexedMode.cs" />
-    <Compile Include="Common\IOperandVisitor.cs" />
-    <Compile Include="Common\IPICProcessorModel.cs" />
-    <Compile Include="Common\PICArchitectureOptions.cs" />
-    <Compile Include="Common\PICMemoryDescriptor.cs" />
-    <Compile Include="Common\PICPointerScanner.cs" />
-    <Compile Include="Common\PICProgramPostprocessor.cs" />
-    <Compile Include="Common\PICRegisterAccessMasks.cs" />
-    <Compile Include="Common\PICRegisterContent.cs" />
-    <Compile Include="Common\PICRegisterBitFieldStorage.cs" />
-    <Compile Include="Common\PICDisassemblerBase.cs" />
-    <Compile Include="Common\PICInstructionComparer.cs" />
-    <Compile Include="Common\PICOpcodes.cs" />
-    <Compile Include="Common\PICOperand.cs" />
-    <Compile Include="Common\PICProcessorModel.cs" />
-    <Compile Include="Common\PICProcessorState.cs" />
-    <Compile Include="Common\PICDevConfigRegister.cs" />
-    <Compile Include="Common\ILinearRegion.cs" />
-    <Compile Include="Common\IMemoryRegion.cs" />
-    <Compile Include="Common\IPICDeviceConfigDefs.cs" />
-    <Compile Include="Common\PICAddresses.cs" />
-    <Compile Include="Common\PICDeviceConfigDefs.cs" />
-    <Compile Include="Common\PICArchitecture.cs" />
-    <Compile Include="Common\PICInstruction.cs" />
-    <Compile Include="Common\PICRegisters.cs" />
-    <Compile Include="Common\PICRegisterSizedUniqueAddress.cs" />
-    <Compile Include="Common\PICRegisterTraits.cs" />
-    <Compile Include="Common\PICRegisterUniqueAddress.cs" />
-    <Compile Include="Common\PICRewriter.cs" />
-    <Compile Include="PIC16\Basic\PIC16BasicDisasm.cs" />
-    <Compile Include="PIC16\Basic\PIC16BasicRegisters.cs" />
-    <Compile Include="PIC16\Basic\PIC16BasicRewriter.cs" />
-    <Compile Include="PIC16\Enhanced\PIC16EnhdRewriter.cs" />
-    <Compile Include="PIC16\Enhanced\PIC16EnhdDisasm.cs" />
-    <Compile Include="PIC16\Enhanced\PIC16EnhdRegisters.cs" />
-    <Compile Include="PIC16\FullFeatured\PIC16FullRewriter.cs" />
-    <Compile Include="PIC16\FullFeatured\PIC16FullRegisters.cs" />
-    <Compile Include="PIC16\FullFeatured\PIC16FullDisasm.cs" />
-    <Compile Include="PIC16\PIC16CondCodes.cs" />
-    <Compile Include="PIC16\PIC16DisassemblerBase.cs" />
-    <Compile Include="PIC16\PIC16MemoryDescriptor.cs" />
-    <Compile Include="PIC16\PIC16PointerScanner.cs" />
-    <Compile Include="PIC16\PIC16RewriterBase.cs" />
-    <Compile Include="PIC16\PIC16State.cs" />
-    <Compile Include="PIC16\PIC16Registers.cs" />
-    <Compile Include="PIC16\PIC16ProcessorModels.cs" />
-    <Compile Include="Common\IPICMemoryMap.cs" />
-    <Compile Include="Common\IPICMemoryDescriptor.cs" />
-    <Compile Include="Common\IPICRegisterSymTable.cs" />
-    <Compile Include="Common\PICMemoryMap.cs" />
-    <Compile Include="Common\PICRegistersBuilder.cs" />
-    <Compile Include="Common\PICRegisterStorage.cs" />
-    <Compile Include="PIC18\Egg\PIC18EggDisasm.cs" />
-    <Compile Include="PIC18\Egg\PIC18EggRegisters.cs" />
-    <Compile Include="PIC18\Egg\PIC18EggRewriter.cs" />
-    <Compile Include="PIC18\Enhanced\PIC18EnhancedDisasm.cs" />
-    <Compile Include="PIC18\Enhanced\PIC18EnhancedRegisters.cs" />
-    <Compile Include="PIC18\Enhanced\PIC18EnhancedRewriter.cs" />
-    <Compile Include="PIC18\Legacy\PIC18LegacyDisasm.cs" />
-    <Compile Include="PIC18\Legacy\PIC18LegacyRegisters.cs" />
-    <Compile Include="PIC18\Legacy\PIC18LegacyRewriter.cs" />
-    <Compile Include="PIC18\PIC18CondCodes.cs" />
-    <Compile Include="PIC18\PIC18DisassemblerBase.cs" />
-    <Compile Include="PIC18\PIC18ProcessorModels.cs" />
-    <Compile Include="PIC18\PIC18PointerScanner.cs" />
-    <Compile Include="PIC18\PIC18Registers.cs" />
-    <Compile Include="PIC18\PIC18RewriterBase.cs" />
-    <Compile Include="PIC18\PIC18State.cs" />
-    <Compile Include="PIC18\PIC18MemoryDescriptor.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
-      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
-      <Name>Microchip.Utils</Name>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Microchip.licenseheader" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
