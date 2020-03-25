@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -54,6 +54,7 @@ namespace Reko.UnitTests.Core
                     2);
             StringConstant str = img.ReadLengthPrefixedString(PrimitiveType.Int32, PrimitiveType.WChar, Encoding.Unicode);
             Assert.AreEqual("Foo", str.ToString());
+            Assert.AreEqual(-1, img.Offset);
         }
 
         [Test(Description = "Tests a bounded image")]

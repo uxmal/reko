@@ -114,12 +114,14 @@ namespace Reko.Core
 		{
 			int length = Read(lengthType).ToInt32();
 			int iStart = (int)Offset;
-			return new StringConstant(
+            var cStr = new StringConstant(
 				StringType.LengthPrefixedStringType(charType, lengthType),
 				encoding.GetString(
 					bytes,
 					iStart,
 					length * charType.Size));
+            Offset += length;
+            return cStr;
 		}
 
 		public abstract short ReadInt16();
