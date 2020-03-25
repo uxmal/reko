@@ -46,7 +46,7 @@ namespace Reko.Environments.OS2
 
         public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)
