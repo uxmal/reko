@@ -225,7 +225,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86arch_SetAxAliasesTrue()
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
-            var aliases = arch.GetAliases(Registers.ax).ToHashSet();
+            var aliases = arch.GetAliases(Registers.ax).ToSet();
             Assert.IsTrue(aliases.Contains(Registers.ax), "Expected ax set");
             Assert.IsTrue(aliases.Contains(Registers.ah), "Expected ah set");
             Assert.IsTrue(aliases.Contains(Registers.al), "Expected al set");

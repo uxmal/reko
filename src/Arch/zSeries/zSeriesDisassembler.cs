@@ -39,14 +39,14 @@ namespace Reko.Arch.zSeries
 
         private readonly zSeriesArchitecture arch;
         private readonly EndianImageReader rdr;
-        private readonly State state;
+        private readonly List<MachineOperand> ops;
         private Address addr;
 
         public zSeriesDisassembler(zSeriesArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.state = new State();
+            this.ops = new List<MachineOperand>();
         }
 
         public override zSeriesInstruction DisassembleInstruction()
@@ -54,8 +54,8 @@ namespace Reko.Arch.zSeries
             this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out var opcode))
                 return null;
+            this.ops.Clear();
             var instr = decoders[opcode >> 8].Decode(opcode, this);
-            state.Reset();
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             instr.InstructionClass |= opcode == 0 ? InstrClass.Zero : 0;
@@ -68,11 +68,10 @@ namespace Reko.Arch.zSeries
             {
                 InstructionClass = iclass,
                 Mnemonic = mnemonic,
-                Operands = state.ops.ToArray(),
+                Operands = this.ops.ToArray(),
             };
             return instr;
         }
-
 
         public override zSeriesInstruction CreateInvalidInstruction()
         {
@@ -145,25 +144,14 @@ namespace Reko.Arch.zSeries
             });
         }
 
-        private class State
-        {
-            public List<MachineOperand> ops = new List<MachineOperand>();
-            public InstrClass iclass;
-            public Mnemonic mnemonic;
 
-            public void Reset()
-            {
-                this.mnemonic = Mnemonic.invalid;
-                this.ops.Clear();
-            }
-        }
 
         #region Mutators
 
         public static bool FF(ulong uInstr, zSeriesDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.FpRegisters[(uInstr >> 4) & 0xF]));
-            dasm.state.ops.Add(new RegisterOperand(Registers.FpRegisters[(uInstr) & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.FpRegisters[(uInstr >> 4) & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.FpRegisters[(uInstr) & 0xF]));
             return true;
         }
 
@@ -173,8 +161,8 @@ namespace Reko.Arch.zSeries
             var x2 = Registers.GpRegisters[(uInstr >> 16) & 0xF];
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(f1);
-            dasm.state.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            dasm.ops.Add(f1);
+            dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
             return true;
         }
 
@@ -183,66 +171,66 @@ namespace Reko.Arch.zSeries
             var m1 = (byte)((uInstr >> 36) & 0xF);
             var r2 = (int) Bits.SignExtend((uint)(uInstr >> 24), 12);
             var r3 = (int) Bits.SignExtend((uint)uInstr, 24);
-            dasm.state.ops.Add(ImmediateOperand.Byte(m1));
-            dasm.state.ops.Add(ImmediateOperand.Int32(r2));
-            dasm.state.ops.Add(ImmediateOperand.Int32(r3));
+            dasm.ops.Add(ImmediateOperand.Byte(m1));
+            dasm.ops.Add(ImmediateOperand.Int32(r2));
+            dasm.ops.Add(ImmediateOperand.Int32(r3));
             return true;
         }
 
         public static bool R(ulong uInstr, zSeriesDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[uInstr & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[uInstr & 0xF]));
             return true;
         }
 
         public static bool RR(ulong uInstr, zSeriesDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 4) & 0xF]));
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr) & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 4) & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr) & 0xF]));
             return true;
         }
 
         public static bool RRE(ulong uInstr, zSeriesDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 4) & 0xF]));
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr) & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 4) & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr) & 0xF]));
             return true;
         }
 
         public static bool RIa(ulong uInstr, zSeriesDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 20) & 0xF]));
-            dasm.state.ops.Add(ImmediateOperand.Int32((int)Bits.SignExtend(uInstr, 16)));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 20) & 0xF]));
+            dasm.ops.Add(ImmediateOperand.Int32((int)Bits.SignExtend(uInstr, 16)));
             return true;
         }
 
         public static bool RIb(ulong uInstr, zSeriesDisassembler dasm)
         {
             var addr = dasm.addr + 2 * (int)Bits.SignExtend(uInstr, 16);
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 20) & 0xF]));
-            dasm.state.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 20) & 0xF]));
+            dasm.ops.Add(AddressOperand.Create(addr));
             return true;
         }
 
         public static bool RIc(ulong uInstr, zSeriesDisassembler dasm)
         {
             var addr = dasm.addr + 2*(int)Bits.SignExtend(uInstr, 16);
-            dasm.state.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(AddressOperand.Create(addr));
             return true;
         }
 
         public static bool RILb(ulong uInstr, zSeriesDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]));
             var offset = 2 * (int)Bits.SignExtend(uInstr, 32);
-            dasm.state.ops.Add(AddressOperand.Create(dasm.addr + offset));
+            dasm.ops.Add(AddressOperand.Create(dasm.addr + offset));
             return true;
         }
 
         public static bool RILc(ulong uInstr, zSeriesDisassembler dasm)
         {
             var offset = 2 * (int)Bits.SignExtend(uInstr, 32);
-            dasm.state.ops.Add(AddressOperand.Create(dasm.addr + offset));
+            dasm.ops.Add(AddressOperand.Create(dasm.addr + offset));
             return true;
         }
 
@@ -252,8 +240,8 @@ namespace Reko.Arch.zSeries
             var x2 = Registers.GpRegisters[(uInstr >> 16) & 0xF];
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(r1);
-            dasm.state.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            dasm.ops.Add(r1);
+            dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
             return true;
         }
 
@@ -262,7 +250,7 @@ namespace Reko.Arch.zSeries
             var x2 = Registers.GpRegisters[(uInstr >> 16) & 0xF];
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
             return true;
         }
 
@@ -270,7 +258,7 @@ namespace Reko.Arch.zSeries
         {
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
             return true;
         }
 
@@ -281,8 +269,8 @@ namespace Reko.Arch.zSeries
             var d1 = (int)Bits.SignExtend(uInstr >> 16, 12);
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(dasm.CreateAccessLength(b1, d1, l + 1));
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(dasm.CreateAccessLength(b1, d1, l + 1));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
             return true;
         }
 
@@ -294,8 +282,8 @@ namespace Reko.Arch.zSeries
             var d1 = (int)Bits.SignExtend(uInstr >> 16, 12);
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(dasm.CreateAccessLength(b1, d1, l1+ 1));
-            dasm.state.ops.Add(dasm.CreateAccessLength(b2, d2, l2+1));
+            dasm.ops.Add(dasm.CreateAccessLength(b1, d1, l1+ 1));
+            dasm.ops.Add(dasm.CreateAccessLength(b2, d2, l2+1));
             return true;
         }
 
@@ -307,9 +295,9 @@ namespace Reko.Arch.zSeries
             var d1 = (int)Bits.SignExtend(uInstr >> 16, 12);
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(dasm.CreateAccessLength(b1, d1, l + 1));
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
-            dasm.state.ops.Add(ImmediateOperand.Byte(i3));
+            dasm.ops.Add(dasm.CreateAccessLength(b1, d1, l + 1));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(ImmediateOperand.Byte(i3));
             return true;
         }
 
@@ -321,9 +309,9 @@ namespace Reko.Arch.zSeries
             var d1 = (int)Bits.SignExtend(uInstr >> 16, 12);
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(dasm.CreateAccess(b1, r1, d1));
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
-            dasm.state.ops.Add(new RegisterOperand(r3));
+            dasm.ops.Add(dasm.CreateAccess(b1, r1, d1));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(new RegisterOperand(r3));
             return true;
         }
 
@@ -334,8 +322,8 @@ namespace Reko.Arch.zSeries
             var d1 = (int)Bits.SignExtend(uInstr >> 16, 12);
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(dasm.CreateAccess(b1, d1));
-            dasm.state.ops.Add(dasm.CreateAccessLength(b2, d2, l2 + 1));
+            dasm.ops.Add(dasm.CreateAccess(b1, d1));
+            dasm.ops.Add(dasm.CreateAccessLength(b2, d2, l2 + 1));
             return true;
         }
 
@@ -344,8 +332,8 @@ namespace Reko.Arch.zSeries
             var r1 = Registers.GpRegisters[(uInstr >> 20) & 0xF];
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(new RegisterOperand(r1));
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
             return true;
         }
 
@@ -355,9 +343,9 @@ namespace Reko.Arch.zSeries
             var r3 = Registers.GpRegisters[(uInstr >> 16) & 0xF];
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(new RegisterOperand(r1));
-            dasm.state.ops.Add(new RegisterOperand(r3));
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(new RegisterOperand(r3));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
             return true;
         }
 
@@ -367,9 +355,9 @@ namespace Reko.Arch.zSeries
             var m3 = ImmediateOperand.Byte((byte)((uInstr >> 16) & 0xF));
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(new RegisterOperand(r1));
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
-            dasm.state.ops.Add(m3);
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(m3);
             return true;
         }
 
@@ -384,9 +372,9 @@ namespace Reko.Arch.zSeries
             var r3 = Registers.GpRegisters[(uInstr >> 32) & 0xF];
             var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
             var d2 = Bitfield.ReadSignedFields(rsya_offset, (uint)uInstr);
-            dasm.state.ops.Add(new RegisterOperand(r1));
-            dasm.state.ops.Add(new RegisterOperand(r3));
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(new RegisterOperand(r3));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
             return true;
         }
 
@@ -396,9 +384,9 @@ namespace Reko.Arch.zSeries
             var m3 = (byte)((uInstr >> 32) & 0xF);
             var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
             var d2 = Bitfield.ReadSignedFields(rsya_offset, (uint)uInstr);
-            dasm.state.ops.Add(new RegisterOperand(r1));
-            dasm.state.ops.Add(ImmediateOperand.Byte(m3));
-            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(ImmediateOperand.Byte(m3));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
             return true;
         }
 
@@ -414,8 +402,8 @@ namespace Reko.Arch.zSeries
             var x2 = Registers.GpRegisters[(uInstr >> 32) & 0xF];
             var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
             var d2 = Bitfield.ReadSignedFields(rxya_offset, (uint)uInstr);
-            dasm.state.ops.Add(r1);
-            dasm.state.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            dasm.ops.Add(r1);
+            dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
             return true;
         }
 
@@ -424,8 +412,8 @@ namespace Reko.Arch.zSeries
             var i2 = ImmediateOperand.Byte((byte)(uInstr >> 16));
             var b1 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d1 = (int)Bits.SignExtend(uInstr, 12);
-            dasm.state.ops.Add(dasm.CreateAccess(b1, d1));
-            dasm.state.ops.Add(i2);
+            dasm.ops.Add(dasm.CreateAccess(b1, d1));
+            dasm.ops.Add(i2);
             return true;
         }
 

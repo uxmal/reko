@@ -94,6 +94,8 @@ namespace Reko.ImageLoaders.MzExe
         // Lowest 3 bits of a selector to the Local Descriptor Table requesting
         // ring-3 privilege level.
         const ushort LDT_RPL3 = 0x7;
+        const ushort RPL_MASK = 0x3;        // Requested privilege level
+        const ushort TI_BIT = 0x04;         // TI = Table indicator.
 
         private readonly SortedList<Address, ImageSymbol> imageSymbols;
         private readonly Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
@@ -233,7 +235,7 @@ namespace Reko.ImageLoaders.MzExe
                     this.platform = cfgSvc.GetEnvironment("ms-dos").Load(Services, arch);
                     break;
                 case NE_TARGETOS.Os2:
-                    this.platform = cfgSvc.GetEnvironment("os2").Load(Services, arch);
+                    this.platform = cfgSvc.GetEnvironment("os2-16").Load(Services, arch);
                     break;
                 default:
                     // Not implemented
@@ -277,7 +279,7 @@ namespace Reko.ImageLoaders.MzExe
                 entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
             }
             return new RelocationResults(
-                entryPoints,
+                entryPoints.Where(e => e != null).ToList(),
                 imageSymbols);
         }
 
@@ -358,6 +360,7 @@ namespace Reko.ImageLoaders.MzExe
                         var seg = segments[entry.iSeg - 1];
                         var addr = seg.Address + entry.offset;
                         var ep = ImageSymbol.Procedure(arch, addr);
+                        ep.Ordinal = bundleOrdinal + i;
                         if (names.TryGetValue(bundleOrdinal + i, out string name))
                         {
                             ep.Name = name;
@@ -366,8 +369,13 @@ namespace Reko.ImageLoaders.MzExe
                         ep.ProcessorState = arch.CreateProcessorState();
                         imageSymbols[ep.Address] = ep;
                         entries.Add(ep);
-                        DebugEx.Verbose(trace, "   {0:X2} {1} {2} - {3}", segNum, ep.Address, ep.Name, bundleOrdinal + i);
+                        DebugEx.Verbose(trace, "   {0:X2} {1} {2} - {3}", segNum, ep.Address, ep.Name, ep.Ordinal);
                     }
+                }
+                else
+                {
+                    // We have unused entries, they have to occupy a space in the resulting entries table.
+                    entries.AddRange(Enumerable.Range(0, cBundleEntries).Select(x => (ImageSymbol) null));
                 }
                 bundleOrdinal = nextbundleOrdinal;
             }
@@ -428,7 +436,7 @@ namespace Reko.ImageLoaders.MzExe
                 this.mem = new MemoryArea(
                     segment.Address, 
                     new byte[Math.Max(segment.Alloc, segment.DataLength)]);
-                LoadSegment(segment, mem, segmentMap);
+                LoadSegment(segment, mem);
             }
         }
 
@@ -449,13 +457,17 @@ namespace Reko.ImageLoaders.MzExe
                     Alloc = rdr.ReadLeUInt16()
                 };
                 uint cbSegmentPage = Math.Max(seg.Alloc, seg.DataLength);
+
+                // Segment Bits 11-12 encode the RPL for the segment.
+                var rpl = (ushort) (((seg.Flags >> 11) & RPL_MASK) | TI_BIT);
+
                 // We allocate segments on 4 kb boundaries for convenience,
                 // but protected mode code must never assume addresses are
                 // linear.
                 // Align to 4kb boundary.
                 cbSegmentPage = (cbSegmentPage + 0xFFFu) & ~0xFFFu;
                 seg.LinearAddress = linAddress;
-                seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | LDT_RPL3), 0);
+                seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | rpl), 0);
                 Debug.Print("{0}:{1:X4} {2:X4} {3:X4} {4:X4}",
                     seg.Address,
                     seg.DataOffset,
@@ -473,7 +485,7 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        private bool LoadSegment(NeSegment neSeg, MemoryArea mem, SegmentMap imageMap)
+        private bool LoadSegment(NeSegment neSeg, MemoryArea mem)
         {
             Array.Copy(
                 RawImage,
@@ -592,7 +604,7 @@ namespace Reko.ImageLoaders.MzExe
         private bool ApplyRelocations(EndianImageReader rdr, int cRelocations, NeSegment seg)
         {
             Address address = null;
-            NeRelocationEntry rep = null;
+            NeRelocationEntry rep;
             Debug.Print("== Relocating segment {0}", seg.Address);
             for (int i = 0; i < cRelocations; i++)
             {

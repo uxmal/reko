@@ -57,7 +57,7 @@ namespace Reko.Environments.SegaGenesis
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             //$TODO: implement some services;
             return null;

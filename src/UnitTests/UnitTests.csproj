@@ -15,7 +15,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -344,6 +344,7 @@
     <Compile Include="ImageLoaders\OdbgScript\OllyScriptHostTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyLangInterpreterTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyScriptParserTests.cs" />
+    <Compile Include="ImageLoaders\Omf\OmfLoaderTests.cs" />
     <Compile Include="Loading\NullImageLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />

@@ -978,6 +978,45 @@ namespace Reko.Tools.C2Xml.UnitTests
 </library>";
             RunTest("typedef void _near * PVOID;", sExp);
         }
+
+        [Test]
+        public void C2X_far_ptr_to_pascal_fn()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""PFN"">
+      <ptr size=""4"">
+        <fn convention=""__pascal"">
+          <return>
+            <prim domain=""SignedInt"" size=""4"" />
+          </return>
+        </fn>
+      </ptr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest("typedef int (__pascal __far  *PFN)();", sExp);
+        }
+
+        [Test]
+        public void C2X_loadds()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""fn"">
+    <signature convention=""__pascal"">
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+      </return>
+    </signature>
+  </procedure>
+</library>";
+            RunTest("int __pascal __loadds fn();", sExp);
+
+        }
     }
 }
+
 #endif

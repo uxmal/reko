@@ -73,12 +73,7 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
-        {
-            return base.FindService(rtl, state);
-        }
-
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }

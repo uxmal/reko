@@ -552,10 +552,6 @@ namespace Reko.UnitTests.Mocks
             regValues[r] = v;
 		}
 
-        public override void SetInstructionPointer(Address addr)
-		{
-		}
-
         public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)
         {
             return new CallSite(returnAddressSize, 0);

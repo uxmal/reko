@@ -60,11 +60,11 @@ namespace Reko
 	/// </summary>
 	public class Decompiler : IDecompiler
 	{
-		private IDecompiledFileService host;
+		private readonly IDecompiledFileService host;
 		private readonly ILoader loader;
 		private IScanner scanner;
-        private DecompilerEventListener eventListener;
-        private IServiceProvider services;
+        private readonly DecompilerEventListener eventListener;
+        private readonly IServiceProvider services;
 
         public Decompiler(ILoader ldr, IServiceProvider services)
         {
@@ -201,6 +201,7 @@ namespace Reko
                 program.EnvironmentMetadata = this.Project.LoadedMetadata;
             }
             BuildImageMaps();
+            WriteEntryPoints();
             eventListener.ShowStatus("Source program loaded.");
             return true;
         }
@@ -250,6 +251,7 @@ namespace Reko
             eventListener.ShowStatus("Assembling program.");
             var program = loader.AssembleExecutable(fileName, asm, platform, null);
             Project = AddProgramToProject(fileName, program);
+            WriteEntryPoints(program);
             eventListener.ShowStatus("Assembled program.");
         }
 
@@ -267,6 +269,7 @@ namespace Reko
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.LoadRawImage(fileName, image, null, raw);
             Project = AddProgramToProject(fileName, program);
+            WriteEntryPoints(program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;
         }
@@ -544,7 +547,7 @@ namespace Reko
         }
 
         public IDictionary<Address, FunctionType> LoadCallSignatures(
-            Program program, 
+            Program program,
             ICollection<SerializedCall_v1> userCalls)
         {
             return
@@ -617,6 +620,22 @@ namespace Reko
                 host.WriteGlobals(program, (n, w) => WriteGlobals(program, n, w));
             }
 		}
+
+        private void WriteEntryPoints()
+        {
+            foreach (var program in Project.Programs)
+            {
+                WriteEntryPoints(program);
+            }
+        }
+
+        private void WriteEntryPoints(Program program)
+        {
+            if (program.Platform == null)
+                return;
+            var irPath = Path.Combine(program.SourceDirectory, Path.GetFileNameWithoutExtension(program.Filename));
+            program.Platform.WriteMetadata(program, irPath);
+        }
 
 		public void WriteHeaderComment(string filename, Program program, TextWriter w)
 		{

@@ -67,7 +67,7 @@ namespace Reko.Environments.RiscOS
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             switch (vector)
             {

@@ -120,12 +120,12 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public SystemService FindService(RtlInstruction call, ProcessorState state)
+        public SystemService FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }
 
-        public SystemService FindService(int vector, ProcessorState state)
+        public SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -213,6 +213,10 @@ namespace Reko.ImageLoaders.LLVM
         public bool TryParseAddress(string sAddress, out Address addr)
         {
             throw new NotImplementedException();
+        }
+
+        public void WriteMetadata(Program program, string path)
+        {
         }
     }
 }

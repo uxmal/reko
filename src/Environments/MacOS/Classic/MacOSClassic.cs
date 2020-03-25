@@ -70,7 +70,7 @@ namespace Reko.Environments.MacOS.Classic
                 return new M68kCallingConvention((M68kArchitecture)this.Architecture);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             vector &= 0xFFFF;

@@ -35,8 +35,8 @@ namespace Reko.Core
     /// </summary>
     public abstract class ProcessorState : EvaluationContext
     {
-        private Dictionary<RegisterStorage, Expression> linearDerived;
-        private SortedList<int, Expression> stackState;
+        private readonly Dictionary<RegisterStorage, Expression> linearDerived;
+        private readonly SortedList<int, Expression> stackState;
 
         public ProcessorState()
         {
@@ -57,11 +57,16 @@ namespace Reko.Core
         public Action<string> ErrorListener { get; set; }
 
         public abstract IProcessorArchitecture Architecture { get; }
+
+        /// <summary>
+        /// Current value of the instruction pointer.
+        /// </summary>
+        public virtual Address InstructionPointer { get; set; }
+
         public abstract ProcessorState Clone();
 
         public abstract Constant GetRegister(RegisterStorage r);
         public abstract void SetRegister(RegisterStorage r, Constant v);
-        public abstract void SetInstructionPointer(Address addr);
 
         public abstract void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.
         public abstract void OnProcedureLeft(FunctionType procedureSignature);
@@ -167,7 +172,7 @@ namespace Reko.Core
             return Constant.Invalid;
         }
 
-        private Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
+        public Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
         {
             if (!(dt is PrimitiveType pt))
                 return Constant.Invalid;

@@ -136,12 +136,12 @@ namespace Reko.Environments.AmigaOS
             };
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             return null;
         }
 
-        public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
+        public override SystemService FindService(RtlInstruction rtl, ProcessorState state, SegmentMap segmentMap)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             if (!a6Pattern.Match(rtl))

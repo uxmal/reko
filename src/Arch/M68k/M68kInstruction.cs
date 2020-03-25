@@ -44,7 +44,7 @@ namespace Reko.Arch.M68k
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
                 // "legitimate" TRAP calls.
-                var svc = writer.Platform.FindService((int)imm.Constant.ToUInt32(), null);
+                var svc = writer.Platform.FindService((int)imm.Constant.ToUInt32(), null, null);
                 if (svc != null)
                 {
                     writer.WriteString(svc.Name);

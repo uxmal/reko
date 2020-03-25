@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -72,10 +72,6 @@ namespace Reko.Arch.PowerPC
         {
             c = c ?? Constant.Invalid;
             regs[reg] = c;
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
         }
 
         public override void OnProcedureEntered()

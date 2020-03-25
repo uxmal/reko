@@ -28,75 +28,74 @@ using System.Threading.Tasks;
 namespace Reko.ImageLoaders.Omf
 {
     /// <summary>
-    /// Loads OMF object files.
+    /// Loads OMF object files and libraries
     /// </summary>
-    public class OmfLoader : ImageLoader
+    public class OmfLoader : MetadataLoader
     {
-        // http://www.azillionmonkeys.com/qed/Omfg.pdf
+        // http://www.azillionmonkeys.com/qed/Omfg.pdf "OMF: Relocatable Object Module Format
+        // http://www.bitsavers.org/pdf/intel/ISIS_II/121748-001_8086_Relocatable_Object_Module_Formats_Nov81.pdf 8086 Relocatable Object Module Formats (Intel ordr # 121748-001 )
+
+        private byte[] rawImage;
+
         public OmfLoader(IServiceProvider services, string filename, byte[] rawImage) : base(services, filename, rawImage)
         {
+            this.rawImage = rawImage;
         }
 
-        public override Address PreferredBaseAddress
+        public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
-            get
+            var rdr = new LeImageReader(rawImage);
+            var (type, _) = ReadRecord(rdr);
+            if (type != RecordType.LibraryHeader)
             {
-                return Address.SegPtr(0x0800, 0);
+                return dstLib;
             }
 
-            set
+            (type, _) = ReadRecord(rdr);
+            if (type != RecordType.THEADR)
             {
-                throw new NotImplementedException();
+                return dstLib;
             }
+            var imp = ReadImpref(rdr);
+            while (imp != null)
+            {
+                //var svc = new SystemService
+                //{
+                //    ModuleName = moduleName,
+                //    Name = ep != null ? ep.Name : entryName,
+                //    Signature = ep?.Signature,
+                //};
+
+                //mod.ServicesByName[sp.Name] = svc;    //$BUGBUG: catch dupes?
+
+                //if (sp.Ordinal != Procedure_v1.NoOrdinal)
+                //{
+                //    mod.ServicesByOrdinal[sp.Ordinal] = svc;
+                //}
+
+                imp = ReadImpref(rdr);
+            }
+            return dstLib;
         }
 
-        public override Program Load(Address addrLoad)
+        private SystemService ReadImpref(LeImageReader rdr)
         {
-            throw new NotImplementedException();
+            var(type, data) = ReadRecord(rdr);
+            if (type != RecordType.COMENT)
+                return null;
+            var rdrComent = new LeImageReader(data);
+            return null;
         }
 
-        private (byte, byte[]) ReadRecord(LeImageReader rdr)
+        private (RecordType, byte[]) ReadRecord(LeImageReader rdr)
         {
             if (!rdr.TryReadByte(out var type))
                 throw new BadImageFormatException();
             if (!rdr.TryReadUInt16(out var length))
                 throw new BadImageFormatException();
+            //$PERF: use Span<T>
             var bytes = rdr.ReadBytes(length);
-            return (type, bytes);
+            return ((RecordType)type, bytes);
         }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            throw new NotImplementedException();
-        }
-
-        private const byte THEADR = 0x80;           // Translator Header Record
-        private const byte LHEADR = 0x82;           // Library Module Header Record
-        private const byte COMENT = 0x88;           // Comment Record(Including all comment class extensions)
-        private const byte MODEND = 0x8A/0x8B;      // Module End Record
-        private const byte EXTDEF = 0x8C;           // External Names Definition Record
-        private const byte PUBDEF = 0x90/0x91;      // Public Names Definition Record
-        private const byte LINNUM = 0x94/0x95;      // Line Numbers Record
-        private const byte LNAMES = 0x96;           // List of Names Record
-        private const byte SEGDEF = 0x98/0x99;      // Segment Definition Record
-        private const byte GRPDEF = 0x9A;           // Group Definition Record
-        private const byte FIXUPP = 0x9C/0x9D;      // Fixup Record
-        private const byte LEDATA = 0xA0/0xA1;      // Logical Enumerated Data Record
-        private const byte LIDATA = 0xA2/0xA3;      // Logical Iterated Data Record
-        private const byte COMDEF = 0xB0;           // Communal Names Definition Record
-        private const byte BAKPAT = 0xB2/0xB3;      // Backpatch Record
-        private const byte LEXTDEF = 0xB4;          // Local External Names Definition Record
-        private const byte LPUBDEF = 0xB6/0xB7;     // Local Public Names Definition Record
-        private const byte LCOMDEF = 0xB8;          // Local Communal Names Definition Record
-        private const byte CEXTDEF = 0xBC;          // COMDAT External Names Definition Record
-        private const byte COMDAT = 0xC2/0xC3;      // Initialized Communal Data Record
-        private const byte LINSYM = 0xC4/0xC5;      // Symbol Line Numbers Record
-        private const byte ALIAS = 0xC6;            // Alias Definition Record
-        private const byte NBKPAT = 0xC8/0xC9;      // Named Backpatch Record
-        private const byte LLNAMES = 0xCA;          // Local Logical Names Definition Record
-        private const byte VERNUM = 0xCC;           // OMF Version Number Record
-        private const byte VENDEXT = 0xCE;          // Vendor-specific OMF Extension Record
-        private const byte LibraryHeader = 0xF0;    // Header Record
-        private const byte LibraryEnd = 0xF1;       // End Record
     }
 }

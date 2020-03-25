@@ -185,6 +185,12 @@ namespace Reko.Core
 
         public DataType DataType { get; set; }
 
+        /// <summary>
+        /// If it makes sense in the current platform, an export ordinal
+        /// for this symbol.
+        /// </summary>
+        public int? Ordinal { get; set; }
+
         public override string ToString()
         {
             return string.Format(

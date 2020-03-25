@@ -66,11 +66,6 @@ namespace Reko.Arch.LatticeMico
             throw new System.NotImplementedException();
         }
 
-        public override void SetInstructionPointer(Address addr)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void SetRegister(RegisterStorage r, Constant v)
         {
             throw new System.NotImplementedException();

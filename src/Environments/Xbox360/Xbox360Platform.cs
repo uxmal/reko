@@ -80,7 +80,7 @@ namespace Reko.Environments.Xbox360
             return new PowerPcCallingConvention((PowerPcArchitecture)Architecture);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }

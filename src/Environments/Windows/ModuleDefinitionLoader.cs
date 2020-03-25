@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -100,7 +100,7 @@ namespace Reko.Environments.Windows
                 {
                     ModuleName = moduleName,
                     Name = ep != null ? ep.Name : entryName,
-                    Signature = ep != null ? ep.Signature : null,
+                    Signature = ep?.Signature,
                 };
                 Debug.Print("Loaded {0} @ {1}", entryName, ordinal);
                 if (ordinal != -1)

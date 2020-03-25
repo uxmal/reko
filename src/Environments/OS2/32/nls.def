@@ -1,0 +1,10 @@
+LIBRARY NLS
+EXPORTS
+    DOS16CASEMAP                                @1
+    DOS16GETCOLLATE                             @2
+    DOS16GETCTRYINFO                            @3
+    DOS16GETDBCSEV                              @4
+    DosQueryCtryInfo                            @5
+    DosQueryDBCSEnv                             @6
+    DosMapCase                                  @7
+    DosQueryCollate                             @8

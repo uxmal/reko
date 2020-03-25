@@ -195,10 +195,6 @@ namespace Reko.Environments.C64
             {
             }
 
-            public override void SetInstructionPointer(Address addr)
-            {
-            }
-
             public override void OnProcedureEntered()
             {
             }

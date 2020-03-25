@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -72,14 +72,18 @@ namespace Reko.Core.CLanguage
             { "__asm", CTokenType.__Asm },
             { "__cdecl", CTokenType.__Cdecl },
             { "__declspec", CTokenType.__Declspec },
+            { "__far", CTokenType._Far },
             { "__fastcall", CTokenType.__Fastcall },
             { "__forceinline", CTokenType.__ForceInline },
             { "__in", CTokenType.__In },
             { "__in_opt", CTokenType.__In_Opt },
             { "__inline", CTokenType.__Inline },
             { "__int64", CTokenType.__Int64 },
+            { "__loadds", CTokenType.__LoadDs },
+            { "__near", CTokenType._Near },
             { "__out", CTokenType.__Out},
             { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
+            { "__pascal", CTokenType.__Pascal },
             { "__pragma", CTokenType.__Pragma },
             { "__ptr64", CTokenType.__Ptr64 },
             { "__stdcall", CTokenType.__Stdcall },
@@ -877,8 +881,10 @@ namespace Reko.Core.CLanguage
         __In_Opt,
         __Inline,
         __Int64,
+        __LoadDs,
         __Out,
         __Out_Bcount_Opt,
+        __Pascal,
         __Pragma,
         __Ptr64,
         __Stdcall,

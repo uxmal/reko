@@ -1,0 +1,5 @@
+LIBRARY MSG
+EXPORTS
+    DOSPUTMESSAGE                               @1
+    DOSTRUEGETMESSAGE                           @2
+    DOSINSMESSAGE                               @3

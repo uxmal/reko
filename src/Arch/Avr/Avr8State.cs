@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,8 +28,7 @@ namespace Reko.Arch.Avr
 {
     public class Avr8State : ProcessorState
     {
-        private Avr8Architecture arch;
-        private Address ip;
+        private readonly Avr8Architecture arch;
 
         public Avr8State(Avr8Architecture arch)
         {
@@ -68,11 +67,6 @@ namespace Reko.Arch.Avr
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
-            this.ip = addr;
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

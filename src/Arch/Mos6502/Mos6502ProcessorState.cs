@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -34,7 +34,6 @@ namespace Reko.Arch.Mos6502
         private Mos6502Architecture arch;
         private byte[] regs;
         private bool[] valid;
-        private Address ip;
 
         public Mos6502ProcessorState(Mos6502Architecture arch)
         {
@@ -48,7 +47,7 @@ namespace Reko.Arch.Mos6502
             this.arch = that.arch;
             regs = (byte[])that.regs.Clone();
             this.valid = (bool[])that.valid.Clone();
-            ip = that.ip;
+            this.InstructionPointer = that.InstructionPointer;
         }
 
         public override IProcessorArchitecture Architecture
@@ -80,11 +79,6 @@ namespace Reko.Arch.Mos6502
             {
                 valid[r.Number] = false;
             }
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
-            this.ip = addr;
         }
 
         public override void OnProcedureEntered()

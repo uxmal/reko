@@ -139,8 +139,8 @@ namespace Reko.Core
         /// <param name="vector"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        SystemService FindService(int vector, ProcessorState state);
-        SystemService FindService(RtlInstruction call, ProcessorState state);
+        SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap);
+        SystemService FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap);
         DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr);
 
         string FormatProcedureName(Program program, Procedure proc);
@@ -174,6 +174,13 @@ namespace Reko.Core
         Dictionary<string, object> SaveUserOptions();
         ProcedureBase_v1 SignatureFromName(string importName);
         Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName);
+
+        /// <summary>
+        /// Write one or more metadata files for the loaded program.
+        /// </summary>
+        /// <param name="program">A <see cref="Program"/> whose file metadata is to be written.</param>
+        /// <param name="path">Full path to use (without file extension).</param>
+        void WriteMetadata(Program program, string path);
     }
 
     /// <summary>
@@ -389,14 +396,14 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
-        public abstract SystemService FindService(int vector, ProcessorState state);
+        public abstract SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap);
 
         public virtual DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr)
         {
             return null;
         }
 
-        public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
+        public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state, SegmentMap segmentMap)
         {
             return null;
         }
@@ -520,6 +527,10 @@ namespace Reko.Core
                 .Where(c => c != null)
                 .FirstOrDefault();
         }
+
+        public virtual void WriteMetadata(Program program, string path)
+        {
+        }
     }
 
     /// <summary>
@@ -572,7 +583,7 @@ namespace Reko.Core
             return this.Architecture.GetCallingConvention(ccName);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             return null;
         }

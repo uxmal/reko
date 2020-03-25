@@ -126,7 +126,7 @@ namespace Reko.Environments.Msdos
             return sf.FindMainAddress();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
 		{
             EnsureTypeLibraries(PlatformIdentifier);
 			foreach (SystemService svc in realModeServices)

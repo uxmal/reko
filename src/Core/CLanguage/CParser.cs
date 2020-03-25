@@ -74,7 +74,8 @@ namespace Reko.Core.CLanguage
             CTokenType.Signed, CTokenType.Unsigned,CTokenType.Struct, CTokenType.Union,
             CTokenType.Enum, CTokenType._Far, CTokenType._Near);
         static BitArray startOfDeclarator = NewBitArray(
-            CTokenType.Star, CTokenType.Ampersand, CTokenType.LParen, CTokenType.LBracket, CTokenType.Semicolon);
+            CTokenType.Star, CTokenType.Ampersand, CTokenType.LParen, CTokenType.LBracket,
+            CTokenType.Semicolon);
 
 
         private static BitArray NewBitArray(params CTokenType[] val)
@@ -222,7 +223,8 @@ namespace Reko.Core.CLanguage
             while (x.Type == CTokenType.Star || x.Type == CTokenType.Ampersand || x.Type == CTokenType.LParen || x.Type == CTokenType.Const ||
                    x.Type == CTokenType.Volatile || x.Type == CTokenType.__Ptr64 ||
                    x.Type == CTokenType.__Fastcall || x.Type == CTokenType.__Stdcall ||
-                   x.Type == CTokenType.__Thiscall || x.Type == CTokenType.__Cdecl)
+                   x.Type == CTokenType.__Thiscall || x.Type == CTokenType.__Cdecl ||
+                   x.Type == CTokenType.__Pascal)
             {
                 x = lexer.Peek(++i);
             }
@@ -466,7 +468,6 @@ IGNORE tab + cr + lf
             return grammar.Decl(attrs, declSpecifiers, listDecls);
         }
 
-        
         /// <summary>
         /// Parses a (possibly initialized) declarator.
         /// </summary>
@@ -494,7 +495,7 @@ IGNORE tab + cr + lf
             if (ds == null)
                 return null;
             list.Add(ds);
-            bool inTypeDef = (ds is StorageClassSpec && ((StorageClassSpec) ds).Type == CTokenType.Typedef);
+            bool inTypeDef = (ds is StorageClassSpec scspec && scspec.Type == CTokenType.Typedef);
                 
             while (!IsComplexType(ds))
             {
@@ -545,9 +546,11 @@ IGNORE tab + cr + lf
             case CTokenType.__Cdecl:
             case CTokenType.__ForceInline:
             case CTokenType.__Inline:
+            case CTokenType.__LoadDs:
+            case CTokenType.__Pascal:
             case CTokenType.__Stdcall:
             case CTokenType.__Thiscall:
-                return grammar.StorageClass( lexer.Read().Type);
+                return grammar.StorageClass(lexer.Read().Type);
             case CTokenType.Const:
             case CTokenType.Volatile:
             case CTokenType.__Ptr64:
@@ -831,7 +834,19 @@ IGNORE tab + cr + lf
                 return Parse_Pointer();
             case CTokenType.Ampersand:
                 return Parse_Reference();
+            case CTokenType._Near:
+            case CTokenType._Far:
+                var tq = grammar.TypeQualifier(lexer.Read().Type);
+                decl = Parse_Declarator();
+                if (decl is PointerDeclarator ptr)
+                {
+                    if (ptr.TypeQualifierList == null)
+                        ptr.TypeQualifierList = new List<TypeQualifier>();
+                    ptr.TypeQualifierList.Add(tq);
+                }
+                break;
             case CTokenType.__Stdcall:
+            case CTokenType.__Pascal:
             case CTokenType.__Thiscall:
             case CTokenType.__Cdecl:
                 lexer.Read();
@@ -1017,6 +1032,7 @@ IGNORE tab + cr + lf
             switch (token.Type)
             {
             case CTokenType.__Cdecl:
+            case CTokenType.__Pascal:
                 lexer.Read();
                 decl = Parse_AbstractPointer();
                 return grammar.CallConventionDeclarator(token.Type, decl);

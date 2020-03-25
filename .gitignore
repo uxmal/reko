@@ -13,17 +13,11 @@ TestResults
 *.ubj
 *.VC.opendb
 *.VC.db
-/src/UpgradeLog.htm
-/src/UnitTests/UnitTests.VisualState.xml
-/src/UnitTests/UnitTests.csproj.VisualState.xml
-/src/UnitTests/TestResult.xml
-/src/tools/reko.config
 /src/Reko-decompiler.VC.db
-**/ipch/
-/subjects/subject_weights.txt
-/subjects/regressionTests.pyc
+/src/UpgradeLog.htm
 
 # MSVC build directories
+**/ipch/
 **/x86/Debug
 **/x86/Release
 **/x64/Debug
@@ -39,5 +33,12 @@ TestResults
 /src/Release
 /src/Native/build
 /src/Native/include/reko.h
-/src/WixInstaller/*.user
+/src/Native/out
 /src/packages
+/src/tools/reko.config
+/src/tools/c2xml.dll.config/src/UnitTests/UnitTests.VisualState.xml
+/src/UnitTests/UnitTests.csproj.VisualState.xml
+/src/UnitTests/TestResult.xml
+/src/WixInstaller/*.user
+/subjects/subject_weights.txt
+/subjects/regressionTests.pyc

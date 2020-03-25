@@ -41,9 +41,8 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7</LangVersion>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -96,7 +95,6 @@
     <Compile Include="Decoders\Decoder.cs" />
     <Compile Include="Decoders\DecoderBuilder.cs" />
     <Compile Include="Decoders\Disassembler.cs" />
-    <Compile Include="Decoders\Mnemonic.cs" />
     <Compile Include="Decoders\TestInstruction.cs" />
     <Compile Include="DisassemblyControlForm.cs">
       <SubType>Form</SubType>

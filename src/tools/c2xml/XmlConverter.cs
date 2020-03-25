@@ -37,7 +37,7 @@ namespace Reko.Tools.C2Xml
     /// Parses a C compilation unit and transforms all declarations to the 
     /// XML syntax used by Reko.
     /// </summary>
-    public class XmlConverter 
+    public class XmlConverter
     {
         private readonly TextReader rdr;
         private readonly XmlWriter writer;
@@ -50,7 +50,7 @@ namespace Reko.Tools.C2Xml
             this.writer = writer;
             this.platform = platform ?? throw new ArgumentNullException(nameof(platform));
             this.parserState = new ParserState();
-       }
+        }
 
         public void Convert()
         {
