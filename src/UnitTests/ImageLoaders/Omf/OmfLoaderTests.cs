@@ -85,6 +85,7 @@ namespace Reko.UnitTests.ImageLoaders.Omf
         }
 
         [Test]
+        [Ignore("WIP")]
         public void Omfldr_Library_Single_Record()
         {
             Given_Omf(LibraryHeader, 0xD, DW(0x10), W(1), B(0), Pad(3));
