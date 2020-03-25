@@ -46,6 +46,8 @@
       <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="jklSoftFolder" Name="jklSoft">
           <Directory Id="INSTALLFOLDER" Name="Reko">
+            <Directory Id="Os2_16Folder" Name="os2-16" /> <!-- Folder for OS/2 16-bit specific files-->
+            <Directory Id="Os2_32Folder" Name="os2-32" /> <!-- Folder for OS/2 32-bit specific files-->
           </Directory>
         </Directory>
       </Directory>
@@ -121,84 +123,6 @@
         <File Source="$(var.Msdos.Design.TargetPath)" />
         <File Source="$(var.Ps3.TargetPath)" />
         <File Source="$(var.OS2.TargetPath)" />
-        <File Source="$(var.OS2.ProjectDir)os2-16.xml" />
-        <File Source="$(var.OS2.ProjectDir)16\ANSICALL.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BKSCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BMSCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVH8514A.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVHCGA.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVHEGA.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVHINIT.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVHMPA.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVHVGA.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVHWNDW.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVHXGA.def" />
-        <File Source="$(var.OS2.ProjectDir)16\BVSCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\DOSCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\DOSRFICO.def" />
-        <File Source="$(var.OS2.ProjectDir)16\HELPMGR.def" />
-        <File Source="$(var.OS2.ProjectDir)16\KBDCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\LOCKDLL.def" />
-        <File Source="$(var.OS2.ProjectDir)16\MONCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\MOUCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\MSG.def" />
-        <File Source="$(var.OS2.ProjectDir)16\NAMPIPES.def" />
-        <File Source="$(var.OS2.ProjectDir)16\NLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\OS2SM.def" />
-        <File Source="$(var.OS2.ProjectDir)16\OS2SMDUM.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMDRAG.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMGPI.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMSHAPI.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMSHLTKT.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMSPL.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMTKT.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMTRACE.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMVIOP.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMWIN.def" />
-        <File Source="$(var.OS2.ProjectDir)16\PMWINDUM.def" />
-        <File Source="$(var.OS2.ProjectDir)16\QUECALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)16\REXX.def" />
-        <File Source="$(var.OS2.ProjectDir)16\REXXAPI.def" />
-        <File Source="$(var.OS2.ProjectDir)16\SESMGR.def" />
-        <File Source="$(var.OS2.ProjectDir)16\SPOOLCP.def" />
-        <File Source="$(var.OS2.ProjectDir)16\VIOCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)32\bdcalls.def" />
-        <File Source="$(var.OS2.ProjectDir)32\dive.def" />
-        <File Source="$(var.OS2.ProjectDir)32\DOSCALLS.def" />
-        <File Source="$(var.OS2.ProjectDir)32\ftpapi.def" />
-        <File Source="$(var.OS2.ProjectDir)32\glut.def" />
-        <File Source="$(var.OS2.ProjectDir)32\helpmgr.def" />
-        <File Source="$(var.OS2.ProjectDir)32\kbdcalls.def" />
-        <File Source="$(var.OS2.ProjectDir)32\libaux.def" />
-        <File Source="$(var.OS2.ProjectDir)32\libtk.def" />
-        <File Source="$(var.OS2.ProjectDir)32\libuni.def" />
-        <File Source="$(var.OS2.ProjectDir)32\mciapi.def" />
-        <File Source="$(var.OS2.ProjectDir)32\mdm.def" />
-        <File Source="$(var.OS2.ProjectDir)32\mmio.def" />
-        <File Source="$(var.OS2.ProjectDir)32\moncalls.def" />
-        <File Source="$(var.OS2.ProjectDir)32\moucalls.def" />
-        <File Source="$(var.OS2.ProjectDir)32\msg.def" />
-        <File Source="$(var.OS2.ProjectDir)32\nampipes.def" />
-        <File Source="$(var.OS2.ProjectDir)32\nls.def" />
-        <File Source="$(var.OS2.ProjectDir)32\opengl.def" />
-        <File Source="$(var.OS2.ProjectDir)32\pmctls.def" />
-        <File Source="$(var.OS2.ProjectDir)32\pmdrag.def" />
-        <File Source="$(var.OS2.ProjectDir)32\pmgpi.def" />
-        <File Source="$(var.OS2.ProjectDir)32\pmshapi.def" />
-        <File Source="$(var.OS2.ProjectDir)32\pmspl.def" />
-        <File Source="$(var.OS2.ProjectDir)32\pmviop.def" />
-        <File Source="$(var.OS2.ProjectDir)32\pmwin.def" />
-        <File Source="$(var.OS2.ProjectDir)32\pmwp.def" />
-        <File Source="$(var.OS2.ProjectDir)32\quecalls.def" />
-        <File Source="$(var.OS2.ProjectDir)32\rexx.def" />
-        <File Source="$(var.OS2.ProjectDir)32\rexxapi.def" />
-        <File Source="$(var.OS2.ProjectDir)32\rtmidi.def" />
-        <File Source="$(var.OS2.ProjectDir)32\sesmgr.def" />
-        <File Source="$(var.OS2.ProjectDir)32\sw.def" />
-        <File Source="$(var.OS2.ProjectDir)32\tcpip32.def" />
-        <File Source="$(var.OS2.ProjectDir)32\uconv.def" />
-        <File Source="$(var.OS2.ProjectDir)32\upm32.def" />
-        <File Source="$(var.OS2.ProjectDir)32\viocalls.def" />
         <File Source="$(var.RiscOS.TargetPath)" />
         <File Source="$(var.RT11.TargetPath)" />
         <File Source="$(var.RT11.ProjectDir)rt11_services.xml" />
@@ -311,9 +235,95 @@
       </Component>
     </ComponentGroup>
 
+    <Component Id="Comp_Os2_16" Directory="Os2_16Folder" Guid="0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C">
+      <File Source="$(var.OS2.ProjectDir)os2-16.xml" />
+      <File Id="File_Os2_16_ANSICALL" Source="$(var.OS2.ProjectDir)16\ANSICALL.def" />
+      <File Id="File_Os2_16_BKSCALLS" Source="$(var.OS2.ProjectDir)16\BKSCALLS.def" />
+      <File Id="File_Os2_16_BMSCALLS" Source="$(var.OS2.ProjectDir)16\BMSCALLS.def" />
+      <File Id="File_Os2_16_BVH8514A" Source="$(var.OS2.ProjectDir)16\BVH8514A.def" />
+      <File Id="File_Os2_16_BVHCGA" Source="$(var.OS2.ProjectDir)16\BVHCGA.def" />
+      <File Id="File_Os2_16_BVHEGA" Source="$(var.OS2.ProjectDir)16\BVHEGA.def" />
+      <File Id="File_Os2_16_BVHINIT" Source="$(var.OS2.ProjectDir)16\BVHINIT.def" />
+      <File Id="File_Os2_16_BVHMPA" Source="$(var.OS2.ProjectDir)16\BVHMPA.def" />
+      <File Id="File_Os2_16_BVHVGA" Source="$(var.OS2.ProjectDir)16\BVHVGA.def" />
+      <File Id="File_Os2_16_BVHWNDW" Source="$(var.OS2.ProjectDir)16\BVHWNDW.def" />
+      <File Id="File_Os2_16_BVHXGA" Source="$(var.OS2.ProjectDir)16\BVHXGA.def" />
+      <File Id="File_Os2_16_BVSCALLS" Source="$(var.OS2.ProjectDir)16\BVSCALLS.def" />
+      <File Id="File_Os2_16_DOSCALLS" Source="$(var.OS2.ProjectDir)16\DOSCALLS.def" />
+      <File Id="File_Os2_16_DOSRFICO" Source="$(var.OS2.ProjectDir)16\DOSRFICO.def" />
+      <File Id="File_Os2_16_HELPMGR" Source="$(var.OS2.ProjectDir)16\HELPMGR.def" />
+      <File Id="File_Os2_16_KBDCALLS" Source="$(var.OS2.ProjectDir)16\KBDCALLS.def" />
+      <File Id="File_Os2_16_LOCKDLL" Source="$(var.OS2.ProjectDir)16\LOCKDLL.def" />
+      <File Id="File_Os2_16_MONCALLS" Source="$(var.OS2.ProjectDir)16\MONCALLS.def" />
+      <File Id="File_Os2_16_MOUCALLS" Source="$(var.OS2.ProjectDir)16\MOUCALLS.def" />
+      <File Id="File_Os2_16_MSG" Source="$(var.OS2.ProjectDir)16\MSG.def" />
+      <File Id="File_Os2_16_NAMPIPES" Source="$(var.OS2.ProjectDir)16\NAMPIPES.def" />
+      <File Id="File_Os2_16_NLS" Source="$(var.OS2.ProjectDir)16\NLS.def" />
+      <File Id="File_Os2_16_OS2SM" Source="$(var.OS2.ProjectDir)16\OS2SM.def" />
+      <File Id="File_Os2_16_OS2SMDUM" Source="$(var.OS2.ProjectDir)16\OS2SMDUM.def" />
+      <File Id="File_Os2_16_PMDRAG" Source="$(var.OS2.ProjectDir)16\PMDRAG.def" />
+      <File Id="File_Os2_16_PMGPI" Source="$(var.OS2.ProjectDir)16\PMGPI.def" />
+      <File Id="File_Os2_16_PMSHAPI" Source="$(var.OS2.ProjectDir)16\PMSHAPI.def" />
+      <File Id="File_Os2_16_PMSHLTKT" Source="$(var.OS2.ProjectDir)16\PMSHLTKT.def" />
+      <File Id="File_Os2_16_PMSPL" Source="$(var.OS2.ProjectDir)16\PMSPL.def" />
+      <File Id="File_Os2_16_PMTKT" Source="$(var.OS2.ProjectDir)16\PMTKT.def" />
+      <File Id="File_Os2_16_PMTRACE" Source="$(var.OS2.ProjectDir)16\PMTRACE.def" />
+      <File Id="File_Os2_16_PMVIOP" Source="$(var.OS2.ProjectDir)16\PMVIOP.def" />
+      <File Id="File_Os2_16_PMWIN" Source="$(var.OS2.ProjectDir)16\PMWIN.def" />
+      <File Id="File_Os2_16_PMWINDUM" Source="$(var.OS2.ProjectDir)16\PMWINDUM.def" />
+      <File Id="File_Os2_16_QUECALLS" Source="$(var.OS2.ProjectDir)16\QUECALLS.def" />
+      <File Id="File_Os2_16_REXX" Source="$(var.OS2.ProjectDir)16\REXX.def" />
+      <File Id="File_Os2_16_REXXAPI" Source="$(var.OS2.ProjectDir)16\REXXAPI.def" />
+      <File Id="File_Os2_16_SESMGR" Source="$(var.OS2.ProjectDir)16\SESMGR.def" />
+      <File Id="File_Os2_16_SPOOLCP" Source="$(var.OS2.ProjectDir)16\SPOOLCP.def" />
+      <File Id="File_Os2_16_VIOCALLS" Source="$(var.OS2.ProjectDir)16\VIOCALLS.def" />
+    </Component>
+
+    <Component Id="Comp_Os2_32" Directory="Os2_32Folder" Guid="17698BD8-9701-44F7-8D05-F42F450334C6">
+      <File Source="$(var.OS2.ProjectDir)32\bdcalls.def" />
+      <File Source="$(var.OS2.ProjectDir)32\dive.def" />
+      <File Source="$(var.OS2.ProjectDir)32\DOSCALLS.def" />
+      <File Source="$(var.OS2.ProjectDir)32\ftpapi.def" />
+      <File Source="$(var.OS2.ProjectDir)32\glut.def" />
+      <File Source="$(var.OS2.ProjectDir)32\helpmgr.def" />
+      <File Source="$(var.OS2.ProjectDir)32\kbdcalls.def" />
+      <File Source="$(var.OS2.ProjectDir)32\libaux.def" />
+      <File Source="$(var.OS2.ProjectDir)32\libtk.def" />
+      <File Source="$(var.OS2.ProjectDir)32\libuni.def" />
+      <File Source="$(var.OS2.ProjectDir)32\mciapi.def" />
+      <File Source="$(var.OS2.ProjectDir)32\mdm.def" />
+      <File Source="$(var.OS2.ProjectDir)32\mmio.def" />
+      <File Source="$(var.OS2.ProjectDir)32\moncalls.def" />
+      <File Source="$(var.OS2.ProjectDir)32\moucalls.def" />
+      <File Source="$(var.OS2.ProjectDir)32\msg.def" />
+      <File Source="$(var.OS2.ProjectDir)32\nampipes.def" />
+      <File Source="$(var.OS2.ProjectDir)32\nls.def" />
+      <File Source="$(var.OS2.ProjectDir)32\opengl.def" />
+      <File Source="$(var.OS2.ProjectDir)32\pmctls.def" />
+      <File Source="$(var.OS2.ProjectDir)32\pmdrag.def" />
+      <File Source="$(var.OS2.ProjectDir)32\pmgpi.def" />
+      <File Source="$(var.OS2.ProjectDir)32\pmshapi.def" />
+      <File Source="$(var.OS2.ProjectDir)32\pmspl.def" />
+      <File Source="$(var.OS2.ProjectDir)32\pmviop.def" />
+      <File Source="$(var.OS2.ProjectDir)32\pmwin.def" />
+      <File Source="$(var.OS2.ProjectDir)32\pmwp.def" />
+      <File Source="$(var.OS2.ProjectDir)32\quecalls.def" />
+      <File Source="$(var.OS2.ProjectDir)32\rexx.def" />
+      <File Source="$(var.OS2.ProjectDir)32\rexxapi.def" />
+      <File Source="$(var.OS2.ProjectDir)32\rtmidi.def" />
+      <File Source="$(var.OS2.ProjectDir)32\sesmgr.def" />
+      <File Source="$(var.OS2.ProjectDir)32\sw.def" />
+      <File Source="$(var.OS2.ProjectDir)32\tcpip32.def" />
+      <File Source="$(var.OS2.ProjectDir)32\uconv.def" />
+      <File Source="$(var.OS2.ProjectDir)32\upm32.def" />
+      <File Source="$(var.OS2.ProjectDir)32\viocalls.def" />
+    </Component>
+
     <Feature Id="ProductFeature" Title="Complete" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="Comp_Os2_16" />
+      <ComponentRef Id="Comp_Os2_32" />
     </Feature>
 
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
