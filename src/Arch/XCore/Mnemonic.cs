@@ -37,5 +37,9 @@ namespace Reko.Arch.XCore
         ld16s = 12,
         ldapb = 13,
         ldapf = 14,
+        eef = 15,
+        bru = 16,
+        or = 17,
+        setv = 18,
     }
 }
