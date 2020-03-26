@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Core
                     2);
             StringConstant str = img.ReadLengthPrefixedString(PrimitiveType.Int32, PrimitiveType.WChar, Encoding.Unicode);
             Assert.AreEqual("Foo", str.ToString());
-            Assert.AreEqual(-1, img.Offset);
+            Assert.AreEqual(9, img.Offset);
         }
 
         [Test(Description = "Tests a bounded image")]
