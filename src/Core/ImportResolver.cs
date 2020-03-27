@@ -111,6 +111,12 @@ namespace Reko.Core
                         return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                     }
                 }
+                if (project.LoadedMetadata.Modules.TryGetValue(moduleName, out var module) &&
+                    module.ServicesByName.TryGetValue(importName, out var service))
+                {
+                    return new ExternalProcedure(service.Name, service.Signature, service.Characteristics);
+                }
+
             }
 
             foreach (var program in project.Programs)
@@ -124,7 +130,10 @@ namespace Reko.Core
                         return new ExternalProcedure(importName, sig);
                 }
             }
-
+            if (project.LoadedMetadata.Signatures.TryGetValue(importName, out var signature))
+            {
+                return new ExternalProcedure(importName, signature);
+            }
             return platform.LookupProcedureByName(moduleName, importName);
         }
 
@@ -151,6 +160,24 @@ namespace Reko.Core
                             "Unable to resolve signature for {0}", svc.Name);
                         return new ExternalProcedure(svc.Name, new FunctionType());
                     }
+                }
+            }
+            if (project.LoadedMetadata.Modules.TryGetValue(moduleName, out var module) &&
+                module.ServicesByOrdinal.TryGetValue(ordinal, out var service))
+            {
+                EnsureSignature(program, service);
+                if (service.Signature != null)
+                {
+                    return new ExternalProcedure(service.Name, service.Signature, service.Characteristics);
+                }
+                else
+                {
+                    // We have a name for the external procedure, but can't find a proper signature for it. 
+                    // So we make a "dumb" one. It's better than nothing.
+                    eventListener.Warn(
+                        new NullCodeLocation(moduleName),
+                        "Unable to resolve signature for {0}", service.Name);
+                    return new ExternalProcedure(service.Name, new FunctionType());
                 }
             }
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
