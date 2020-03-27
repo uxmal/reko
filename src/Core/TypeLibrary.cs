@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,18 +32,24 @@ namespace Reko.Core
     /// </summary>
     public class TypeLibrary
 	{
-		public TypeLibrary() : this(
+        private bool isCaseInsensitive;
+
+		public TypeLibrary(bool caseInsensitive = false) : this(
+            caseInsensitive,
             new Dictionary<string, DataType>(),
-            new Dictionary<string, FunctionType>(),
+            new Dictionary<string, FunctionType>(TypeLibrary.Comparer(caseInsensitive)),
             new Dictionary<string, DataType>())
         {
         }
 
+
         public TypeLibrary(
+            bool caseInsensitive,
             IDictionary<string,DataType> types,
             IDictionary<string, FunctionType> procedures,
             IDictionary<string, DataType> globals)
         {
+            this.isCaseInsensitive = caseInsensitive;
             this.Types = types;
             this.Signatures = procedures;
             this.Globals = globals;
@@ -55,14 +61,20 @@ namespace Reko.Core
         public IDictionary<string, DataType> Globals { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
 
+        private static StringComparer Comparer(bool caseSensitive) =>
+            caseSensitive
+                ? StringComparer.InvariantCultureIgnoreCase
+                : StringComparer.InvariantCulture;
+
         public TypeLibrary Clone()
         {
-            var clone = new TypeLibrary
+            var clone = new TypeLibrary(false)
             {
                 Types = new Dictionary<string, DataType>(this.Types),
-                Signatures = new Dictionary<string, FunctionType>(this.Signatures),
+                Signatures = new Dictionary<string, FunctionType>(this.Signatures, Comparer(this.isCaseInsensitive)),
                 Globals = new Dictionary<string, DataType>(this.Globals),
-                Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase)
+                Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase),
+                isCaseInsensitive = this.isCaseInsensitive
             };
             return clone;
         }

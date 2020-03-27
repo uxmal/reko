@@ -142,6 +142,7 @@ namespace Reko.Core.Configuration
                 Description = env.Description,
                 MemoryMapFile = env.MemoryMap,
                 TypeName = env.Type,
+                CaseInsensitive = env.CaseInsensitive,
                 Heuristics = env.Heuristics,
                 TypeLibraries = LoadCollection(env.TypeLibraries, LoadTypeLibraryReference),
                 CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference),

@@ -48,6 +48,8 @@ namespace Reko.Core.Configuration
 
         public string MemoryMapFile { get; set; }
 
+        public bool CaseInsensitive { get; set; }
+
         public virtual List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
         public virtual List<TypeLibraryDefinition> CharacteristicsLibraries { get; internal set; }
         public virtual List<PlatformArchitectureDefinition> Architectures { get; internal set; }
