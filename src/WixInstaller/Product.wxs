@@ -277,6 +277,10 @@
       <File Id="File_Os2_16_SESMGR" Source="$(var.OS2.ProjectDir)16\SESMGR.def" />
       <File Id="File_Os2_16_SPOOLCP" Source="$(var.OS2.ProjectDir)16\SPOOLCP.def" />
       <File Id="File_Os2_16_VIOCALLS" Source="$(var.OS2.ProjectDir)16\VIOCALLS.def" />
+      <File Source="$(var.OS2.ProjectDir)fsd.xml" />
+      <File Source="$(var.OS2.ProjectDir)fsh.xml" />
+      <File Source="$(var.OS2.ProjectDir)fsu.xml" />
+
     </Component>
 
     <Component Id="Comp_Os2_32" Directory="Os2_32Folder" Guid="17698BD8-9701-44F7-8D05-F42F450334C6">

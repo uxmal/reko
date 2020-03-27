@@ -92,15 +92,15 @@ namespace Reko.Environments.OS2
                 ccName = "";
             switch (ccName)
             {
-                case "":
-                // Used by Microsoft C
-                case "__cdecl":
-                case "cdecl":
-                    return new X86CallingConvention(4, 2, 4, true, false);
-                // Default for system libraries
-                case "pascal":
-                case "__pascal":
-                    return new X86CallingConvention(4, 2, 4, false, true);
+            case "":
+            // Used by Microsoft C
+            case "__cdecl":
+            case "cdecl":
+                return new X86CallingConvention(4, 2, 4, true, false);
+            // Default for system libraries
+            case "pascal":
+            case "__pascal":
+                return new X86CallingConvention(4, 2, 4, false, true);
             }
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }

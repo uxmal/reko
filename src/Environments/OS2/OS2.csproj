@@ -14,6 +14,9 @@
   
   <ItemGroup>
     <TranslateHeader Include="os2-16.inc" />
+    <TranslateHeader Include="16/fsu.inc" />
+    <TranslateHeader Include="16/fsh.inc" />
+    <TranslateHeader Include="16/fsd.inc" /> 
   </ItemGroup>
 
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
