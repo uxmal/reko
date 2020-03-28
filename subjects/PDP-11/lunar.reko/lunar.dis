@@ -861,8 +861,8 @@ l0D3C:
 	Mem22[0x182A:word16] = 0x9854
 	Mem24[0x182C:word16] = 0xF0A0
 	Mem26[0x182E:word16] = 0x0000
-	call ptrArg00 (retsize: 2;)
-		uses: r0:r0,Stack +0006:r0,Stack +000C:ptrArg00
+	call ptrArg00 (retsize: 0;)
+		uses: r0:r0,Stack +0004:r0,Stack +000A:ptrArg00
 	return 0x1830
 fn0D3C_exit:
 

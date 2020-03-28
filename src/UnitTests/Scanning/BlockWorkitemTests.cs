@@ -589,7 +589,7 @@ testProc_exit:
             var wi = CreateWorkItem(Address.Ptr32(0x0100000));
             wi.Process();
 
-            Assert.AreEqual("call Mem0[sp:word32] (retsize: 4;)", block.Statements[0].ToString());
+            Assert.AreEqual("call Mem0[sp:word32] (retsize: 0;)", block.Statements[0].ToString());
             Assert.AreEqual("return", block.Statements[1].ToString());
             platform.Verify();
         }
@@ -948,7 +948,7 @@ testProc_exit:
             var wi = CreateWorkItem(addrStart);
             wi.Process();
 
-            Assert.AreEqual("call fn00123400 (retsize: 4;)", block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("call fn00123400 (retsize: 0;)", block.Statements[0].Instruction.ToString());
             Assert.AreEqual("return", block.Statements[1].Instruction.ToString());
             scanner.Verify();
         }

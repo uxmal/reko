@@ -8,8 +8,8 @@ void fn0387()
 fn0387_entry:
 l0387:
 	word16 hl_6 = Mem5[0x1648:word16]
-	call hl_6 (retsize: 2;)
-		uses: hl:hl_6,Stack +0002:0x038F
+	call hl_6 (retsize: 0;)
+		uses: hl:hl_6,Stack +0000:0x038F
 	return
 fn0387_exit:
 
@@ -997,17 +997,17 @@ l0C92:
 	return
 l0C8F:
 l0105:
-	call fn1729 (retsize: 2;)
+	call fn1729 (retsize: 0;)
 		uses: f:f_190
 	return
 l0C84:
 l0224:
-	call fn177D (retsize: 2;)
+	call fn177D (retsize: 0;)
 		uses: f:f_190
 	return
 l0C79:
 l020A:
-	call fn172D (retsize: 2;)
+	call fn172D (retsize: 0;)
 		uses: f:f_190
 	return
 fn0BE4_exit:

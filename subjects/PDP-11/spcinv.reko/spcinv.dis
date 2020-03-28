@@ -176,7 +176,7 @@ l02B8:
 	r1_442 = r1_339
 	branch Mem338[r1_442:byte] - r0_92 != 0x0000 l02B8
 l02BC:
-	call Mem338[(r1_339 - 0x02C7 << 1) + 0x02CC:ptr16] (retsize: 2;)
+	call Mem338[(r1_339 - 0x02C7 << 1) + 0x02CC:ptr16] (retsize: 0;)
 	return
 fn0200_exit:
 l0234:
@@ -1037,8 +1037,8 @@ l0AEC:
 l0AF0:
 	word16 r0_33
 	byte NZV_34
-	call r5 + 0x0002 (retsize: 2;)
-		uses: r0:r0,Stack +0000:wArg00
+	call r5 + 0x0002 (retsize: 0;)
+		uses: r0:r0,Stack +FFFFFFFE:wArg00
 		defs: NZV:NZV_34,r0:r0_33
 	r0Out = r0_33
 	r4Out = r4 - 0x0001

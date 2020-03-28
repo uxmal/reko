@@ -514,7 +514,7 @@ void fn00401972()
 // Preserved: esp
 fn00401972_entry:
 l00401972:
-	call Mem0[0x004020D4:word32] (retsize: 4;)
+	call Mem0[0x004020D4:word32] (retsize: 0;)
 	return
 fn00401972_exit:
 

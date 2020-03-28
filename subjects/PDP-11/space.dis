@@ -217,8 +217,8 @@ l0648:
 	wArg00_68 = __ror(r1_43, r1_43)
 	wArg02 = SEQ(__ror(bArg03_89, bArg03_89), bArg02_91) (alias)
 l065C:
-	call Mem58[r4_4 + 0x002A:word16] (retsize: 2;)
-		uses: Stack +0000:wLoc02_99,Stack +0002:wArg00_81,Stack +0004:wArg02_82,Stack +FFFFFFFE:wLoc04_85
+	call Mem58[r4_4 + 0x002A:word16] (retsize: 0;)
+		uses: Stack +0000:wArg00_81,Stack +0002:wArg02_82,Stack +FFFFFFFC:wLoc04_85,Stack +FFFFFFFE:wLoc02_99
 	return
 fn0608_exit:
 l0644:
@@ -327,8 +327,8 @@ l06B2:
 	r2_170 = 0x0000
 	r3_167 = 0x0000
 l0738:
-	call Mem206[r4_4 + 0x002A:word16] (retsize: 2;)
-		uses: Stack +0000:wArg04_261,Stack +0002:r2_205,Stack +0004:r3_202,Stack +FFFFFFFC:wArg00,Stack +FFFFFFFE:wArg02
+	call Mem206[r4_4 + 0x002A:word16] (retsize: 0;)
+		uses: Stack +0000:r2_205,Stack +0002:r3_202,Stack +FFFFFFFA:wArg00,Stack +FFFFFFFC:wArg02,Stack +FFFFFFFE:wArg04_261
 	return
 fn0670_exit:
 
@@ -423,8 +423,8 @@ l080A:
 l080C:
 l07E8:
 l07FE:
-	call Mem179[wArg02:word16] (retsize: 2;)
-		uses: Stack +0002:wArg00,Stack +0004:wArg02_231,Stack +0006:wArg04_241,Stack +000A:r4_4 + 0x002A
+	call Mem179[wArg02:word16] (retsize: 0;)
+		uses: Stack +0000:wArg00,Stack +0002:wArg02_231,Stack +0004:wArg04_241,Stack +0008:r4_4 + 0x002A
 	return
 fn0754_exit:
 
@@ -439,7 +439,7 @@ void fn0818(word16 r5)
 fn0818_entry:
 l0818:
 	fn11A6(r5 + Mem0[r5:word16] + Mem0[r5:word16] + 0x0002, r5)
-	call Mem0[0x53F0:word16] (retsize: 2;)
+	call Mem0[0x53F0:word16] (retsize: 0;)
 		uses: r0:0x53F2
 	return
 fn0818_exit:
@@ -455,7 +455,7 @@ void fn0A64(word16 r5)
 fn0A64_entry:
 l0A64:
 	fn11A6(r5 + Mem0[r5:word16] + Mem0[r5:word16] + 0x0002, r5)
-	call Mem0[0x5414:word16] (retsize: 2;)
+	call Mem0[0x5414:word16] (retsize: 0;)
 		uses: r0:0x5416
 	return
 fn0A64_exit:
@@ -506,8 +506,8 @@ l1082:
 	r3_28 = r3_28 + r0_32
 	branch r3_28 < 0x0000 l105E
 l1086:
-	call Mem94[0x0ABE:word16] (retsize: 2;)
-		uses: Stack +0002:r0_73
+	call Mem94[0x0ABE:word16] (retsize: 0;)
+		uses: Stack +0000:r0_73
 	return
 fn0AAE_exit:
 
@@ -602,16 +602,16 @@ l0B02:
 l0B22:
 	Mem20[r3 + 0x0052:word16] = wArg04
 	Mem22[r3 + 0x0044:word16] = wArg08
-	call wArg0A (retsize: 2;)
-		uses: Stack +0000:wArg0A,Stack +0002:wArg06,Stack +FFFFFFF8:v6_7,Stack +FFFFFFFA:wArg02,Stack +FFFFFFFC:bArg04,Stack +FFFFFFFD:bArg05,Stack +FFFFFFFE:wArg06
+	call wArg0A (retsize: 0;)
+		uses: Stack +0000:wArg06,Stack +FFFFFFF6:v6_7,Stack +FFFFFFF8:wArg02,Stack +FFFFFFFA:bArg04,Stack +FFFFFFFB:bArg05,Stack +FFFFFFFC:wArg06,Stack +FFFFFFFE:wArg0A
 	return
 l0B14:
 	Mem48[r3 + 0x0052:word16] = wArg04
 	Mem51[r3 + 0x0044:word16] = wArg06
 	call wArg08 (retsize: 2;)
 		uses: Stack +0000:wArg08,Stack +0002:wArg0A,Stack +FFFFFFF8:v6_7,Stack +FFFFFFFA:wArg02,Stack +FFFFFFFC:bArg04,Stack +FFFFFFFD:bArg05,Stack +FFFFFFFE:wArg06
-	call Mem51[r4:word16] (retsize: 2;)
-		uses: Stack +0000:wArg08,Stack +0002:wArg0A,Stack +FFFFFFF8:v6_7,Stack +FFFFFFFA:wArg02,Stack +FFFFFFFC:bArg04,Stack +FFFFFFFD:bArg05,Stack +FFFFFFFE:wArg06
+	call Mem51[r4:word16] (retsize: 0;)
+		uses: Stack +0000:wArg0A,Stack +FFFFFFF6:v6_7,Stack +FFFFFFF8:wArg02,Stack +FFFFFFFA:bArg04,Stack +FFFFFFFB:bArg05,Stack +FFFFFFFC:wArg06,Stack +FFFFFFFE:wArg08
 	return
 fn0B02_exit:
 
@@ -705,8 +705,8 @@ l0BC4:
 l0BE0:
 	Mem116[sp_86 - 0x0004:word16] = Mem104[sp_86 - 0x0002:word16]
 	Mem118[sp_86 - 0x0002:word16] = Mem116[r3_95 + 0x007E:word16]
-	call Mem118[sp_86 - 0x0002:word16] (retsize: 2;)
-		uses: r0:v36_100,Stack +0002:bArg00,Stack +0003:bArg01,Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:ptrArg06_155
+	call Mem118[sp_86 - 0x0002:word16] (retsize: 0;)
+		uses: r0:v36_100,Stack +0000:bArg00,Stack +0001:bArg01,Stack +0002:wArg02,Stack +0004:wArg04,Stack +0006:ptrArg06_155
 	return
 fn0B60_exit:
 
@@ -734,13 +734,13 @@ l0C5A:
 	r1 = __rol(r1_30, r1_30)
 	branch OVERFLOW(r1) l0C44
 l0C44:
-	call wArg04 (retsize: 2;)
-		uses: r0:r0 - 0x0001,Stack +0000:wArg02 << 1,Stack +0002:r1_31 & ~r1_31,Stack +FFFFFFFE:wArg00
+	call wArg04 (retsize: 0;)
+		uses: r0:r0 - 0x0001,Stack +0000:r1_31 & ~r1_31,Stack +FFFFFFFC:wArg00,Stack +FFFFFFFE:wArg02 << 1
 	return
 l0C60:
 l0C62:
-	call wArg04 (retsize: 2;)
-		uses: r0:r0 - 0x0001,Stack +0000:wArg02 << 1,Stack +0002:r1_55,Stack +FFFFFFFE:wArg00
+	call wArg04 (retsize: 0;)
+		uses: r0:r0 - 0x0001,Stack +0000:r1_55,Stack +FFFFFFFC:wArg00,Stack +FFFFFFFE:wArg02 << 1
 	return
 fn0C4A_exit:
 
@@ -806,8 +806,8 @@ void fn0D7A(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04)
 fn0D7A_entry:
 l0D7A:
 l123C_in_fn0D7A:
-	call 0x0D7E (retsize: 2;)
-		uses: r0:wArg00,Stack +0002:wArg02,Stack +0004:wArg04,Stack +0006:0x125A,Stack +0008:r0,Stack +0014:wArg00
+	call 0x0D7E (retsize: 0;)
+		uses: r0:wArg00,Stack +0000:wArg02,Stack +0002:wArg04,Stack +0004:0x125A,Stack +0006:r0,Stack +0012:wArg00
 	return
 fn0D7A_exit:
 
@@ -822,8 +822,8 @@ void fn0DC8(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04)
 fn0DC8_entry:
 l0DC8:
 l123C_in_fn0DC8:
-	call 0x0DCC (retsize: 2;)
-		uses: r0:wArg00,Stack +0002:wArg02,Stack +0004:wArg04,Stack +0006:0x125A,Stack +0008:r0,Stack +0014:wArg00
+	call 0x0DCC (retsize: 0;)
+		uses: r0:wArg00,Stack +0000:wArg02,Stack +0002:wArg04,Stack +0004:0x125A,Stack +0006:r0,Stack +0012:wArg00
 	return
 fn0DC8_exit:
 
@@ -851,8 +851,8 @@ l0E76:
 	branch C_35 l0E7C
 l0E7A:
 l0E7C:
-	call Mem9[r4_4 + 0x002A:word16] (retsize: 2;)
-		uses: Stack +0000:wArg08,Stack +FFFFFFF8:wArg00,Stack +FFFFFFFA:wArg02,Stack +FFFFFFFC:wArg04,Stack +FFFFFFFE:wArg06
+	call Mem9[r4_4 + 0x002A:word16] (retsize: 0;)
+		uses: Stack +FFFFFFF6:wArg00,Stack +FFFFFFF8:wArg02,Stack +FFFFFFFA:wArg04,Stack +FFFFFFFC:wArg06,Stack +FFFFFFFE:wArg08
 	return
 fn0E0E_exit:
 
@@ -953,8 +953,8 @@ l0F34:
 	Mem104[r4_95 + 0x0074:byte] = bArg00_123
 	return
 l0F32:
-	call Mem79[r4 + 0x0002:word16] (retsize: 2;)
-		uses: r0:r0_85,Stack +000A:wArg00_124
+	call Mem79[r4 + 0x0002:word16] (retsize: 0;)
+		uses: r0:r0_85,Stack +0008:wArg00_124
 	return
 fn0EF8_exit:
 
@@ -1037,7 +1037,7 @@ l13EC:
 l13EE:
 	EXIT(r0_18)
 l13E2:
-	call r0_18 (retsize: 2;)
+	call r0_18 (retsize: 0;)
 	return
 fn0F9C_exit:
 l13C2:
@@ -1102,8 +1102,8 @@ l0FCC:
 	Mem24[r3_10 + 0x0014:word16] = wArg00
 	Mem26[r3_10 + 0x001C:word16] = wArg04
 l123C:
-	call 0x0FE2 (retsize: 2;)
-		uses: r0:wArg02,Stack +0002:wArg06,Stack +0004:wArg08,Stack +0006:0x125A,Stack +0008:r0,Stack +0014:wArg02
+	call 0x0FE2 (retsize: 0;)
+		uses: r0:wArg02,Stack +0000:wArg06,Stack +0002:wArg08,Stack +0004:0x125A,Stack +0006:r0,Stack +0012:wArg02
 	return
 fn0FB2_exit:
 
@@ -1703,8 +1703,8 @@ l1860:
 	word16 r2_37 = fn1900(r3, r4, out r3_38, out r4_39)
 	byte v26_50 = Mem49[r4_39 + 0x0011:byte] | 0x90
 	word16 r0_64
-	call SEQ(0x88, v26_50) (retsize: 2;)
-		uses: r0:Mem60[r4_39 + 0x0016:word16],Stack +0002:Mem57[r4_39 + 0x0002:word16],Stack +0004:0x0100,Stack +0006:0x0001,Stack +0008:0x1888,Stack +000A:v26_50,Stack +000B:0x88,Stack +000C:0x099E
+	call SEQ(0x88, v26_50) (retsize: 0;)
+		uses: r0:Mem60[r4_39 + 0x0016:word16],Stack +0000:Mem57[r4_39 + 0x0002:word16],Stack +0002:0x0100,Stack +0004:0x0001,Stack +0006:0x1888,Stack +0008:v26_50,Stack +0009:0x88,Stack +000A:0x099E
 		defs: r0:r0_64
 	r2Out = r2_37
 	r3Out = r3_38
@@ -1736,8 +1736,8 @@ l18CE:
 	word16 r4_31
 	fn1900(r3, r4, out r3_30, out r4_31)
 	byte v18_41 = Mem40[r4_31 + 0x0011:byte] | 0x80
-	call SEQ(0x88, v18_41) (retsize: 2;)
-		uses: r0:Mem52[r4_31 + 0x0016:word16],Stack +0002:Mem49[r4_31 + 0x0002:word16],Stack +0004:0x0100,Stack +0006:0x0000,Stack +0008:0x18F4,Stack +000A:v18_41,Stack +000B:0x88,Stack +000C:0x099E
+	call SEQ(0x88, v18_41) (retsize: 0;)
+		uses: r0:Mem52[r4_31 + 0x0016:word16],Stack +0000:Mem49[r4_31 + 0x0002:word16],Stack +0002:0x0100,Stack +0004:0x0000,Stack +0006:0x18F4,Stack +0008:v18_41,Stack +0009:0x88,Stack +000A:0x099E
 	r4Out = r4_31
 	return r3_30
 fn18BE_exit:
@@ -1920,7 +1920,7 @@ l19B0:
 	return
 l1992:
 	fn1966(13, r3)
-	call Mem13[r3 + 0x0060:ptr16] (retsize: 2;)
+	call Mem13[r3 + 0x0060:ptr16] (retsize: 0;)
 	return
 fn197A_exit:
 
@@ -2121,10 +2121,10 @@ l0332:
 	branch Mem222[r4_87 - 0x003D:byte] == 0x00 l03B2
 l03B2:
 	Mem232[sp_16 - 0x0002:word16] = 0x1396
-	call v54_208 + 0x0002 (retsize: 2;)
+	call v54_208 + 0x0002 (retsize: 0;)
 	return
 l0370:
-	call Mem222[v54_208 + 0x0002:word16] (retsize: 2;)
+	call Mem222[v54_208 + 0x0002:word16] (retsize: 0;)
 	return
 fn1DAE_exit:
 

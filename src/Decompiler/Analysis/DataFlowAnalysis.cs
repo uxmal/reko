@@ -180,7 +180,7 @@ namespace Reko.Analysis
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
-                DumpWatchedProcedure("After extra stack vars", sst.SsaState.Procedure);
+                DumpWatchedProcedure("After extra stack vars 2", sst.SsaState.Procedure);
             }
 
             foreach (var ssa in ssts.Select(sst => sst.SsaState))

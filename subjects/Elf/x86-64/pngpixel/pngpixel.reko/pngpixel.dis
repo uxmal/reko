@@ -46,7 +46,7 @@ l0000000000400D15:
 l0000000000400D30:
 	return
 l0000000000400D1F:
-	call 0x0000000000000000 (retsize: 8;)
+	call 0x0000000000000000 (retsize: 0;)
 		uses: r8:r8 - 6299896,rdi:0x00000000006020F8
 	return
 deregister_tm_clones_exit:
@@ -67,7 +67,7 @@ l0000000000400D63:
 l0000000000400D78:
 	return
 l0000000000400D6D:
-	call 0x0000000000000000 (retsize: 8;)
+	call 0x0000000000000000 (retsize: 0;)
 		uses: rdi:0x00000000006020F8
 	return
 register_tm_clones_exit:

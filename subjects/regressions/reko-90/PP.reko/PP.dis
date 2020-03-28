@@ -7923,7 +7923,7 @@ l0800_4E84:
 l0800_4E94:
 	word16 dx_645
 	word16 ax_646
-	call Mem628[0x0800:bx_630 + 0x0010:word16] (retsize: 2;)
+	call Mem628[0x0800:bx_630 + 0x0010:word16] (retsize: 0;)
 		uses: ax:ax_638
 		defs: ax:ax_646,dx:dx_645
 	dxOut = dx_645
@@ -10473,7 +10473,7 @@ l0800_6D26:
 	word16 cx_595
 	word16 dx_596
 	word16 bx_597
-	call Mem576[0x0800:bx_578 + 0x001C:word16] (retsize: 2;)
+	call Mem576[0x0800:bx_578 + 0x001C:word16] (retsize: 0;)
 		uses: bx:bx_597,ch:ch_853
 		defs: ax:ax_594,bx:bx_597,cx:cx_595,dx:dx_596
 	dxOut = dx_596
@@ -14360,7 +14360,7 @@ l0800_93D7:
 l0800_93DB:
 	branch Mem16[ds:ax_21 + 0x257C:byte] == 0x01 l0800_93C5
 l0800_93E4:
-	call wLoc02 + 0x0003 (retsize: 2;)
+	call wLoc02 + 0x0003 (retsize: 0;)
 		uses: cx:wLoc02 + 0x0003
 	diOut = di
 	return bp
@@ -14428,7 +14428,7 @@ l0800_9450_thunk_fn0800_93A6:
 	fn0800_93A6(ss_bp, out di_176)
 	return
 l0800_9449:
-	call wLoc02 + 0x0003 (retsize: 2;)
+	call wLoc02 + 0x0003 (retsize: 0;)
 		uses: cx:wLoc02 + 0x0003
 	return
 fn0800_93EF_exit:
@@ -16157,7 +16157,7 @@ void fn0800_A2CC(selector ds)
 // Preserved: sp
 fn0800_A2CC_entry:
 l0800_A2CC:
-	call Mem0[ds:0x26F4:word16] (retsize: 2;)
+	call Mem0[ds:0x26F4:word16] (retsize: 0;)
 	return
 fn0800_A2CC_exit:
 
@@ -16171,7 +16171,7 @@ void fn0800_A2D0(selector ds)
 // Preserved: sp
 fn0800_A2D0_entry:
 l0800_A2D0:
-	call Mem0[ds:0x26F6:word16] (retsize: 2;)
+	call Mem0[ds:0x26F6:word16] (retsize: 0;)
 	return
 fn0800_A2D0_exit:
 
@@ -16185,7 +16185,7 @@ void fn0800_A2D4(selector ds)
 // Preserved: sp
 fn0800_A2D4_entry:
 l0800_A2D4:
-	call Mem0[ds:0x26F8:word16] (retsize: 2;)
+	call Mem0[ds:0x26F8:word16] (retsize: 0;)
 	return
 fn0800_A2D4_exit:
 
@@ -16199,7 +16199,7 @@ void fn0800_A2D8(selector ds)
 // Preserved: sp
 fn0800_A2D8_entry:
 l0800_A2D8:
-	call Mem0[ds:0x26FA:word16] (retsize: 2;)
+	call Mem0[ds:0x26FA:word16] (retsize: 0;)
 	return
 fn0800_A2D8_exit:
 
@@ -18709,8 +18709,8 @@ l0800_BBFC:
 l0800_BC0F:
 	branch Mem29[0x0800:bx_31:word16] == ax_28 l0800_BC1E
 l0800_BC1E:
-	call Mem29[0x0800:bx_31 + 0x0008:word16] (retsize: 2;)
-		uses: Stack +0008:ptrArg02_67
+	call Mem29[0x0800:bx_31 + 0x0008:word16] (retsize: 0;)
+		uses: Stack +0006:ptrArg02_67
 	return
 l0800_BC17:
 	bx_31 = bx_31 + 0x0002
@@ -18787,8 +18787,8 @@ l0800_BCF5:
 	branch Mem161[0x0800:bx_163:word16] == ax_160 l0800_BD04
 l0800_BD04:
 	word16 bx_177
-	call Mem161[0x0800:bx_163 + 0x000E:word16] (retsize: 2;)
-		uses: Stack +0062:ptrArg02_274,Stack +0066:wArg06,Stack +0068:wArg08,Stack +006A:wArg0A,Stack +006C:wArg0C,Stack +006E:wArg0E,Stack +0070:wArg10,Stack +0072:wArg12,Stack +0074:wArg14
+	call Mem161[0x0800:bx_163 + 0x000E:word16] (retsize: 0;)
+		uses: Stack +0060:ptrArg02_274,Stack +0064:wArg06,Stack +0066:wArg08,Stack +0068:wArg0A,Stack +006A:wArg0C,Stack +006C:wArg0E,Stack +006E:wArg10,Stack +0070:wArg12,Stack +0072:wArg14
 		defs: bx:bx_177
 	return bx_177
 fn0800_BC49_exit:
@@ -20064,8 +20064,8 @@ l1483_0EEE:
 	Mem272[bx_201:0x0300:word16] = Mem267[bx_201:0x0300:word16] + SEQ(ah_244, al_259 | 0x20)
 	__cli()
 	Mem275[bx_201:0x8602:word16] = Mem272[bx_201:0x8602:word16] + dx_115
-	call fn3024_8E10 (retsize: 4;)
-		uses: ax:Mem275[bx_201:si_268:word16],bh:bh_496,bl:bl_494,cx:cx_263,dx:dx_115,Stack +0004:wArg02,Stack +0006:wArg02,Stack +0008:wArg06,Stack +000A:wArg06,Stack +000E:wArg0C,Stack +0010:wArg0C,Stack +02C3:v57_241,Stack +0FA2:v56_234
+	call fn3024_8E10 (retsize: 0;)
+		uses: ax:Mem275[bx_201:si_268:word16],bh:bh_496,bl:bl_494,cx:cx_263,dx:dx_115,Stack +0000:wArg02,Stack +0002:wArg02,Stack +0004:wArg06,Stack +0006:wArg06,Stack +000A:wArg0C,Stack +000C:wArg0C,Stack +02BF:v57_241,Stack +0F9E:v56_234
 	return
 l1483_0EDB:
 	__aad(Mem267[bx_201:si_228:word16] + dx_115)
@@ -20301,7 +20301,7 @@ l1483_1B13:
 	word32 ecx_45
 	word16 ax_46
 	word16 bx_47
-	call Mem6[0x1483:bx:ptr32] (retsize: 4;)
+	call Mem6[0x1483:bx:ptr32] (retsize: 0;)
 		uses: ax:ax_46,bx:bx_47,cx:cx_259,dx:dx_44
 		defs: ax:ax_46,bx:bx_47,dx:dx_44,ecx:ecx_45
 	cxOut = <invalid>
@@ -20412,7 +20412,7 @@ void fn1483_1C50(byte ah, word16 dx)
 fn1483_1C50_entry:
 l1483_1C50:
 	byte al_5 = __inb(dx)
-	call SEQ(ah, al_5) (retsize: 2;)
+	call SEQ(ah, al_5) (retsize: 0;)
 		uses: ah:ah,al:al_5,dx:dx
 	return
 fn1483_1C50_exit:

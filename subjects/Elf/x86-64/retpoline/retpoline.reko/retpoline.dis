@@ -46,7 +46,7 @@ l00000000004004C1:
 l00000000004004D8:
 	return
 l00000000004004CB:
-	call 0x0000000000000000 (retsize: 8;)
+	call 0x0000000000000000 (retsize: 0;)
 		uses: r8:r8,rdi:0x0000000000601040
 	return
 deregister_tm_clones_exit:
@@ -67,7 +67,7 @@ l0000000000400503:
 l0000000000400518:
 	return
 l000000000040050D:
-	call 0x0000000000000000 (retsize: 8;)
+	call 0x0000000000000000 (retsize: 0;)
 		uses: rdi:0x0000000000601040
 	return
 register_tm_clones_exit:
