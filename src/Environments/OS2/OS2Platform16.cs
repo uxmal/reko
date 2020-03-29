@@ -42,6 +42,16 @@ namespace Reko.Environments.OS2
             throw new NotImplementedException();
         }
 
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        {
+            return new HashSet<RegisterStorage>
+            {
+                Registers.cs,
+                Registers.ss,
+                Registers.sp,
+            };
+        }
+
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // Some calling conventions can save registers, like _watcall
