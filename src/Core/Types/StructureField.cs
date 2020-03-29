@@ -30,22 +30,17 @@ namespace Reko.Core.Types
     /// </summary>
 	public class StructureField : Field
 	{
-        public StructureField()
-        {
-        }
-
         public StructureField(int offset, DataType type)
 		{
-            if (type == null)
-                throw new ArgumentNullException("type");
-			this.Offset = offset; this.DataType = type;
+            this.Offset = offset;
+            this.DataType = type ?? throw new ArgumentNullException(nameof(type));
 		}
 
 		public StructureField(int offset, DataType type, string name)
 		{
-            if (type == null)
-                throw new ArgumentNullException("type");
-            this.Offset = offset; this.DataType = type; this.name = name;
+            this.Offset = offset;
+            this.DataType = type ?? throw new ArgumentNullException("type");
+            this.name = name;
 		}
 
         public override string Name

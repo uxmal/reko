@@ -415,7 +415,10 @@ namespace Reko.Scanning
                 var impProc = scanner.GetImportedProcedure(this.arch, addrTarget, this.ric.Address);
                 if (impProc != null)
                 {
-                    site = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    // Since we are tail jumping to another procedure, if there is a return
+                    // address (continuation) pushed on the stack, we reuse that 
+                    // continuation.
+                    site = state.OnBeforeCall(stackReg, 0);
                     var sig = impProc.Signature;
                     var chr = impProc.Characteristics;
                     if (chr != null && chr.IsAlloca)
@@ -427,7 +430,7 @@ namespace Reko.Scanning
                 }
                 if (!program.SegmentMap.IsValidAddress(addrTarget))
                 {
-                    var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    var jmpSite = state.OnBeforeCall(stackReg, 0);
                     GenerateCallToOutsideProcedure(jmpSite, addrTarget);
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -436,38 +439,14 @@ namespace Reko.Scanning
                 var trampoline = scanner.GetTrampoline(blockCur.Procedure.Architecture, addrTarget);
                 if (trampoline != null)
                 {
-                    var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    var jmpSite = state.OnBeforeCall(stackReg, 0);
                     if (trampoline is DispatchProcedure disp)
                     {
                         trampoline = ResolveDispatchProcedureCall(disp, state);
                     }
                     var sig = trampoline.Signature;
                     var chr = trampoline.Characteristics;
-                    // Adjust stack to "hide" any pushed return value since
-                    // currently Reko treats the return value as an implicit detail
-                    // of the calling convention. Had the x86 rewriter explicity
-                    // generated code to predecrement the stack pointer
-                    // when encountering CALL instructions this would 
-                    // not be necessary.
-                    if (sig != null && sig.ReturnAddressOnStack != 0)
-                    {
-                        Emit(new Assignment(stackReg, new BinaryExpression(
-                            Operator.IAdd,
-                            stackReg.DataType,
-                            stackReg,
-                            Constant.Word(stackReg.DataType.BitSize, sig.ReturnAddressOnStack))));
-                    }
                     EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
-                    if (sig != null && sig.ReturnAddressOnStack != 0)
-                    {
-                        //$TODO: make x86 calls' implicit storage explicit
-                        // to avoid this hacky dance,
-                        Emit(new Assignment(stackReg, new BinaryExpression(
-                            Operator.ISub,
-                            stackReg.DataType,
-                            stackReg,
-                            Constant.Word(stackReg.DataType.BitSize, sig.ReturnAddressOnStack))));
-                    }
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
@@ -497,7 +476,7 @@ namespace Reko.Scanning
             if (g.Target is MemoryAccess mem && mem.EffectiveAddress is Constant)
             {
                 // jmp [address]
-                site = state.OnBeforeCall(this.stackReg, mem.DataType.Size);
+                site = state.OnBeforeCall(this.stackReg, 0);
                 Emit(new CallInstruction(g.Target, site));
                 Emit(new ReturnInstruction());
                 blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -511,7 +490,7 @@ namespace Reko.Scanning
             // We've encountered JMP <exp> and we can't determine the limits of <exp>.
             // We emit a call-return pair and call it a day.
 
-            site = state.OnBeforeCall(this.stackReg, g.Target.DataType.Size);
+            site = state.OnBeforeCall(this.stackReg, 0);
             Emit(new CallInstruction(g.Target, site));
             Emit(new ReturnInstruction());
             blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);

@@ -160,7 +160,7 @@ l00009B22_1:
 	word32 r3_65
 	word32 r5_67
 	word32 r6_68
-	call 0x00009B26 + r0_14 * 0x00000002 (retsize: 4;)
+	call 0x00009B26 + r0_14 * 0x00000002 (retsize: 0;)
 		uses: ap:ap_12,fp:fp_13,r10:r10_16,r11:r11_17,r8:r8_24
 		defs: ap:ap_58,fp:fp_59,r0:r0_57,r3:r3_65,r5:r5_67,r6:r6_68,r8:r8_61
 	r3Out = r3_65
@@ -385,7 +385,7 @@ l0000A560:
 	vax_addp4(0x0000, 0x11, 0x0028, 0x17)
 l0000A554_1:
 	word32 r3_308
-	call 0x0000A558 + (r0_290 - 0x00000002) * 0x00000002 (retsize: 4;)
+	call 0x0000A558 + (r0_290 - 0x00000002) * 0x00000002 (retsize: 0;)
 		uses: fp:fp,r3:r3_308,r6:r6,r7:r7,r8:r8
 		defs: r3:r3_308
 	return
@@ -429,7 +429,7 @@ l0000A67E:
 	vax_subp4(0x0000, 0x11, 0x002A, Mem46[Mem46[r5 + 5968:word32]:ptr32])
 l0000A672_1:
 	word32 r8_65
-	call 0x0000A676 + (r3_15 - 0x00000002) * 0x00000002 (retsize: 4;)
+	call 0x0000A676 + (r3_15 - 0x00000002) * 0x00000002 (retsize: 0;)
 		uses: r2:r2_14,r5:r5,r6:r6,r7:r7,r8:r8_65
 		defs: r8:r8_65
 	return
@@ -568,14 +568,14 @@ l0000A9DE:
 	vax_subp4(0x0000, 0x31, Mem223[r0_224:word16], 0x00)
 	word32 r7_240
 	word32 r6_241
-	call fn40009A48 (retsize: 4;)
+	call fn40009A48 (retsize: 0;)
 		uses: fp:fp_222,r0:r0_224 + 0x00000002,r6:r6_241,r7:r7_240,r9:r9_232
 		defs: r6:r6_241,r7:r7_240
 	return
 l0000A9C6_1:
 	word32 r7_251
 	word32 r6_252
-	call 0x0000A9CE + (r0_224 - 0x0000006E) * 0x00000002 (retsize: 4;)
+	call 0x0000A9CE + (r0_224 - 0x0000006E) * 0x00000002 (retsize: 0;)
 		uses: fp:fp_222,r0:r0_224,r6:r6_252,r7:r7_251,r9:r9_232
 		defs: r6:r6_252,r7:r7_251
 	return
@@ -814,7 +814,7 @@ l0000ACD8_1:
 	word32 r5_537
 	word32 r4_538
 	word32 r1_539
-	call 0x0000ACDC + (r0_517 - 0x00000003) * 0x00000002 (retsize: 4;)
+	call 0x0000ACDC + (r0_517 - 0x00000003) * 0x00000002 (retsize: 0;)
 		uses: ap:ap_530,fp:fp_529,r1:r1_539,r10:r10_522,r11:r11_531,r2:r2_532,r3:r3_533,r4:r4_538,r5:r5_537,r6:r6_534,r7:r7_536,r8:r8_523,r9:r9_535
 		defs: ap:ap_530,fp:fp_529,r0:r0_528,r1:r1_539,r10:r10_526,r11:r11_531,r2:r2_532,r3:r3_533,r4:r4_538,r5:r5_537,r6:r6_534,r7:r7_536,r8:r8_527,r9:r9_535
 	r3Out = r3_533
@@ -959,7 +959,7 @@ l0000AF71_1:
 	word32 r6_132
 	word32 r3_136
 	word32 fp_137
-	call 0x0000AF75 + r6_113 * 0x00000002 (retsize: 4;)
+	call 0x0000AF75 + r6_113 * 0x00000002 (retsize: 0;)
 		uses: ap:ap_126
 		defs: ap:ap_129,fp:fp_137,r0:r0_131,r3:r3_136,r6:r6_132
 	r3Out = r3_136
@@ -1687,7 +1687,7 @@ l0000C327:
 l0000C354:
 	fn0000F457()
 l0000C330_1:
-	call 0x0000C334 + r0_38 * 0x00000002 (retsize: 4;)
+	call 0x0000C334 + r0_38 * 0x00000002 (retsize: 0;)
 		uses: pc:pc,r2:r2,r3:r3
 	return
 fn0000C1FE_exit:
@@ -2920,7 +2920,7 @@ l0000DCA3_1:
 	word32 ap_32
 	word32 r0_33
 	word32 fp_34
-	call 0x0000DCA7 + r0_13 * 0x00000002 (retsize: 4;)
+	call 0x0000DCA7 + r0_13 * 0x00000002 (retsize: 0;)
 		uses: ap:ap,fp:fp
 		defs: ap:ap_32,fp:fp_34,r0:r0_33
 	apOut = ap_32
@@ -3233,7 +3233,7 @@ l0000F8DA:
 	branch r0_196 > 0x00000008 l0000F8FC
 l0000F8FC:
 l0000F8E8_1:
-	call 0x0000F8EC + r0_196 * 0x00000002 (retsize: 4;)
+	call 0x0000F8EC + r0_196 * 0x00000002 (retsize: 0;)
 		uses: ap:ap_187,fp:fp_188,r3:r3_194,r5:r5_201,r6:r6_203,r8:r8_202
 	return
 fn0000F816_exit:
@@ -3298,7 +3298,7 @@ l000101A7:
 	word32 r4_87
 	word32 r6_88
 	word32 r10_752
-	call fn4000E3D8 (retsize: 4;)
+	call fn4000E3D8 (retsize: 0;)
 		uses: ap:ap_45,fp:fp_85,r1:r1_86,r10:r10_752,r11:r11_78,r2:r2_81,r3:r3_83,r4:r4_87,r5:r5_84,r6:r6_88,r7:r7_82,r8:r8_80
 		defs: fp:fp_85,r1:r1_86,r10:r10_752,r11:r11_78,r2:r2_81,r3:r3_83,r4:r4_87,r5:r5_84,r6:r6_88,r7:r7_82,r8:r8_80
 	return
@@ -3326,7 +3326,7 @@ l000101D9_1:
 	word32 r4_113
 	word32 r6_114
 	word32 r10_753
-	call 0x000101E1 + (r1_64 - 0x00004704) * 0x00000002 (retsize: 4;)
+	call 0x000101E1 + (r1_64 - 0x00004704) * 0x00000002 (retsize: 0;)
 		uses: ap:ap_45,fp:fp_111,r1:r1_112,r10:r10_753,r11:r11_104,r2:r2_107,r3:r3_109,r4:r4_113,r5:r5_110,r6:r6_114,r7:r7_108,r8:r8_106
 		defs: fp:fp_111,r1:r1_112,r10:r10_753,r11:r11_104,r2:r2_107,r3:r3_109,r4:r4_113,r5:r5_110,r6:r6_114,r7:r7_108,r8:r8_106
 	return
@@ -3422,7 +3422,7 @@ l00010432_1:
 	word32 r4_291
 	word32 r6_292
 	word32 r10_293
-	call 0x00010436 + v48_276 * 0x00000002 (retsize: 4;)
+	call 0x00010436 + v48_276 * 0x00000002 (retsize: 0;)
 		uses: ap:ap_277,fp:fp_289,r1:r1_290,r10:r10_293,r11:r11_282,r2:r2_285,r3:r3_287,r4:r4_291,r5:r5_288,r6:r6_292,r7:r7_286,r8:r8_284
 		defs: fp:fp_289,r1:r1_290,r10:r10_293,r11:r11_282,r2:r2_285,r3:r3_287,r4:r4_291,r5:r5_288,r6:r6_292,r7:r7_286,r8:r8_284
 	return
@@ -3546,7 +3546,7 @@ l00010193_1:
 	word32 r4_494
 	word32 r6_495
 	word32 r10_496
-	call 0x00010197 + (r1_64 - 0x00000007) * 0x00000002 (retsize: 4;)
+	call 0x00010197 + (r1_64 - 0x00000007) * 0x00000002 (retsize: 0;)
 		uses: ap:ap_45,fp:fp_492,r1:r1_493,r10:r10_496,r11:r11_485,r2:r2_488,r3:r3_490,r4:r4_494,r5:r5_491,r6:r6_495,r7:r7_489,r8:r8_487
 		defs: fp:fp_492,r1:r1_493,r10:r10_496,r11:r11_485,r2:r2_488,r3:r3_490,r4:r4_494,r5:r5_491,r6:r6_495,r7:r7_489,r8:r8_487
 	return
@@ -3816,7 +3816,7 @@ l000106FB:
 	word32 r7_78
 	word32 r4_80
 	word32 fp_81
-	call fn4000E3D8 (retsize: 4;)
+	call fn4000E3D8 (retsize: 0;)
 		uses: ap:ap_35,fp:fp_36,r2:r2_39,r4:r4 + 0x00000004,r7:r7_30
 		defs: ap:ap_75,fp:fp_81,r0:r0_77,r3:r3_76,r4:r4_80,r7:r7_78
 	r3Out = r3_76
@@ -3832,7 +3832,7 @@ l000106E7_1:
 	word32 r7_92
 	word32 r4_94
 	word32 fp_95
-	call 0x000106EB + r0_58 * 0x00000002 (retsize: 4;)
+	call 0x000106EB + r0_58 * 0x00000002 (retsize: 0;)
 		uses: ap:ap_35,fp:fp_36,r2:r2_39,r4:r4,r7:r7_30
 		defs: ap:ap_89,fp:fp_95,r0:r0_91,r3:r3_90,r4:r4_94,r7:r7_92
 	r3Out = r3_90
@@ -4368,7 +4368,7 @@ l00011C5A_1:
 	word32 ap_118
 	word32 r4_121
 	word32 r3_122
-	call 0x00011C5E + r0_108 * 0x00000002 (retsize: 4;)
+	call 0x00011C5E + r0_108 * 0x00000002 (retsize: 0;)
 		uses: ap:ap_107,fp:fp_12,r0:r0_108,r1:r1_48,r4:r4_16
 		defs: ap:ap_118,fp:fp_117,r0:r0_116,r3:r3_122,r4:r4_121
 	r3Out = r3_122
@@ -5010,7 +5010,7 @@ l00012758:
 	branch r4_34 > 0x0000007A l000127FD
 l000127FD:
 l0001275B_1:
-	call 0x00012763 + (r4_34 - 0x0000002D) * 0x00000002 (retsize: 4;)
+	call 0x00012763 + (r4_34 - 0x0000002D) * 0x00000002 (retsize: 0;)
 		uses: ap:ap,r2:r2
 	return
 l00012755:
@@ -5053,7 +5053,7 @@ l000129A6:
 	branch r0_143 > 0x0000000A l000129C2
 l000129C2:
 l000129AA_1:
-	call 0x000129AE + r0_143 * 0x00000002 (retsize: 4;)
+	call 0x000129AE + r0_143 * 0x00000002 (retsize: 0;)
 		uses: ap:ap_149,r2:r2_121
 	return
 fn00012702_exit:
@@ -5762,7 +5762,7 @@ l00012F4F_1:
 	word32 ap_439
 	word32 r8_440
 	word32 r1_441
-	call 0x00012F53 + (r0_411 - 0x00000001) * 0x00000002 (retsize: 4;)
+	call 0x00012F53 + (r0_411 - 0x00000001) * 0x00000002 (retsize: 0;)
 		uses: ap:ap_439,fp:fp_421,r0:r0_411,r1:r1_441,r3:r3_397,r4:r4_417,r8:r8_440
 		defs: ap:ap_439,r1:r1_441,r8:r8_440
 	return
@@ -7554,7 +7554,7 @@ l00013E8D:
 	branch r2_3789 > 0x0000000D l00013EA0
 l00013EA0:
 l00013E90_1:
-	call 0x00013E94 + (r2_3789 - 0x00000007) * 0x00000002 (retsize: 4;)
+	call 0x00013E94 + (r2_3789 - 0x00000007) * 0x00000002 (retsize: 0;)
 		uses: ap:ap_3798,fp:fp_3801,r10:r10_3804,r4:r4_3802,r5:r5_3799,r6:r6_3800,r8:r8_3805,r9:r9_3803
 	return
 l00013E8A:
@@ -8620,7 +8620,7 @@ l000148F9:
 	branch r0_194 > 0x0000000F l0001492E
 l0001492E:
 l0001490C_1:
-	call 0x00014910 + r0_194 * 0x00000002 (retsize: 4;)
+	call 0x00014910 + r0_194 * 0x00000002 (retsize: 0;)
 		uses: fp:fp_164,r10:r10_191,r3:r3_200,r4:r4_180,r6:r6_203,r8:r8_211,r9:r9_207
 	return
 fn00014812_exit:

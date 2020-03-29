@@ -393,8 +393,8 @@ l0800_0415:
 	branch al_149 == 0x00 l0800_0407
 l0800_0417:
 	Mem164[ss:bp_133:word16] = 0x0000
-	call Mem164[0x0800:0x0330:word16] (retsize: 2;)
-		uses: ax:0x0000,bx:bx_130,Stack +0002:wArg00
+	call Mem164[0x0800:0x0330:word16] (retsize: 0;)
+		uses: ax:0x0000,bx:bx_130,Stack +0000:wArg00
 	return
 __setargv_exit:
 l0800_03AA:
@@ -1457,7 +1457,7 @@ void __REALCVT(selector ds)
 // Preserved: sp
 __REALCVT_entry:
 l0800_1044:
-	call Mem0[ds:0x05E0:word16] (retsize: 2;)
+	call Mem0[ds:0x05E0:word16] (retsize: 0;)
 	return
 __REALCVT_exit:
 
@@ -2804,7 +2804,7 @@ l0800_1B18:
 	branch Mem13[ds:ax_18 + 0x055A:byte] == 0x01 l0800_1B06
 l0800_1B21:
 	word16 bx_68
-	call wLoc02 + 0x0003 (retsize: 2;)
+	call wLoc02 + 0x0003 (retsize: 0;)
 		uses: cx:wLoc02 + 0x0003
 		defs: bx:bx_68
 	bpOut = bp
@@ -2871,7 +2871,7 @@ l0800_1B89_thunk_fn0800_1AEB:
 	fn0800_1AEB(ss_bp)
 	return
 l0800_1B82:
-	call wLoc02 + 0x0003 (retsize: 2;)
+	call wLoc02 + 0x0003 (retsize: 0;)
 		uses: cx:wLoc02 + 0x0003
 	return
 fn0800_1B2C_exit:
@@ -2891,7 +2891,7 @@ void __scantod(selector ds)
 // Preserved: sp
 __scantod_entry:
 l0800_1B92:
-	call Mem0[ds:0x05E2:word16] (retsize: 2;)
+	call Mem0[ds:0x05E2:word16] (retsize: 0;)
 	return
 __scantod_exit:
 
@@ -2905,7 +2905,7 @@ void __scanrslt(selector ds)
 // Preserved: sp
 __scanrslt_entry:
 l0800_1B96:
-	call Mem0[ds:0x05E4:word16] (retsize: 2;)
+	call Mem0[ds:0x05E4:word16] (retsize: 0;)
 	return
 __scanrslt_exit:
 
@@ -2919,7 +2919,7 @@ void __scanpop(selector ds)
 // Preserved: sp
 __scanpop_entry:
 l0800_1B9A:
-	call Mem0[ds:0x05E6:word16] (retsize: 2;)
+	call Mem0[ds:0x05E6:word16] (retsize: 0;)
 	return
 __scanpop_exit:
 

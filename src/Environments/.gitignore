@@ -5,4 +5,5 @@ libc.so.xml
 msvcrt.xml
 opengl.xml
 os2-16.xml
+os2/**/fs*.xml
 Xlib.xml

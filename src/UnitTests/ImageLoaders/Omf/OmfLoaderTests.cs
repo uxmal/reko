@@ -84,11 +84,21 @@ namespace Reko.UnitTests.ImageLoaders.Omf
             };
         }
 
+        private Action Align(int aligment)
+        {
+            return () =>
+            {
+                while ((writer.Position % aligment) != 0)
+                {
+                    writer.WriteByte(0);
+                }
+            };
+        }
+
         [Test]
-        [Ignore("WIP")]
         public void Omfldr_Library_Single_Record()
         {
-            Given_Omf(LibraryHeader, 0xD, DW(0x10), W(1), B(0), Pad(3));
+            Given_Omf(LibraryHeader, 0xD, DW(0x10), W(1), B(0), Pad(6));
             Given_Omf(THEADR, 0x0C, S("ANSIINJECT"), B(42));
             Given_Omf(COMENT, 0x1B,
                 B(0x80), B(0xA0), B(0x01),
@@ -98,8 +108,9 @@ namespace Reko.UnitTests.ImageLoaders.Omf
                     W(1),
                     B(42));
             Given_Omf(COMENT, 0x08,
-                B(0xC0, 0xFE), DW(0x12345678), B(42));
-            Given_Omf(MODEND, 0x02, B(0), B(42), Pad(3));
+                B(0xC0, 0xFE), DW(0x12345678), B(0), B(42));
+            Given_Omf(MODEND, 0x02, B(0), B(42), Align(0x10));
+            Given_Omf(LibraryEnd, 0x0, Align(0x10));
 
             var omf = new OmfLoader(null, "foo.lib", writer.ToArray());
             var typelib = omf.Load(null, new TypeLibrary());

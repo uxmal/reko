@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +46,7 @@ namespace Reko.ImageLoaders.Omf
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
+            var loader = new TypeLibraryDeserializer(platform, true, dstLib);
             var rdr = new LeImageReader(rawImage);
             var (type, _) = ReadRecord(rdr);
             if (type != RecordType.LibraryHeader)
@@ -56,41 +59,94 @@ namespace Reko.ImageLoaders.Omf
             {
                 return dstLib;
             }
-            var imp = ReadImpref(rdr);
-            while (imp != null)
+            for (; ;)
             {
-                //var svc = new SystemService
-                //{
-                //    ModuleName = moduleName,
-                //    Name = ep != null ? ep.Name : entryName,
-                //    Signature = ep?.Signature,
-                //};
-
-                //mod.ServicesByName[sp.Name] = svc;    //$BUGBUG: catch dupes?
-
-                //if (sp.Ordinal != Procedure_v1.NoOrdinal)
-                //{
-                //    mod.ServicesByOrdinal[sp.Ordinal] = svc;
-                //}
-
-                imp = ReadImpref(rdr);
+                byte[] data;
+                (type, data) = ReadRecord(rdr);
+                if (data == null)
+                    break;
+                switch (type)
+                {
+                default: throw new NotImplementedException($"OMF record type {type} ({(int) type:X} has not been implemented yet.");
+                case RecordType.THEADR:
+                    // Can't seem to do anything useful with THEADRs
+                    break;
+                case RecordType.COMENT:
+                    var rdrComent = new LeImageReader(data);
+                    if (!rdrComent.TryReadByte(out byte _)) // Ignore the comment type
+                        break;
+                    if (!rdrComent.TryReadByte(out byte cmtClass))
+                        break;
+                    if ((CommentClass) cmtClass != CommentClass.Extensions)
+                        break;
+                    if (!rdrComent.TryReadByte(out byte cmtExt))
+                        break;
+                    if ((CommentExtension) cmtExt == CommentExtension.IMPDEF)
+                    {
+                        ReadImpdef(rdrComent, loader);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException($"OMF COMENT extension {(CommentExtension) cmtExt} (0x{cmtExt:X}) is not implemented yet.");
+                    }
+                    break;
+                case RecordType.MODEND:
+                    // Modend's seem to be followed by padding to a 16-byte boundary.
+                    while ((rdr.Offset & 0xF) != 0 && rdr.TryReadByte(out _))
+                        ;
+                    break;
+                case RecordType.LibraryEnd:
+                    return dstLib;
+                }
             }
             return dstLib;
         }
 
-        private SystemService ReadImpref(LeImageReader rdr)
+        private SystemService ReadImpdef(LeImageReader rdr, TypeLibraryDeserializer loader)
         {
-            var(type, data) = ReadRecord(rdr);
-            if (type != RecordType.COMENT)
+            if (!rdr.TryReadByte(out byte useOrdinal))
                 return null;
-            var rdrComent = new LeImageReader(data);
-            return null;
+            var internalName = ReadString(rdr);
+            if (internalName == null)
+                return null;
+            var moduleName = ReadString(rdr);
+            if (moduleName == null)
+                return null;
+            if (useOrdinal != 0)
+            {
+                if (!rdr.TryReadLeInt16(out var ordinal))
+                    return null;
+                var svc = new SystemService
+                {
+                    ModuleName = moduleName,
+                    Name = internalName,
+                    SyscallInfo = new SyscallInfo
+                    {
+                        Vector = ordinal
+                    }
+                };
+                loader.LoadService(ordinal, svc);
+                return svc;
+            }
+            else
+            {
+                throw new NotImplementedException("non-ordinals");
+            }
+        }
+
+        private string ReadString(LeImageReader rdr)
+        {
+            var cStr = rdr.ReadLengthPrefixedString(
+                PrimitiveType.Byte,
+                PrimitiveType.Char,
+                Encoding.ASCII);
+            return cStr?.ToString();
         }
 
         private (RecordType, byte[]) ReadRecord(LeImageReader rdr)
         {
             if (!rdr.TryReadByte(out var type))
-                throw new BadImageFormatException();
+                return (0, null);
             if (!rdr.TryReadUInt16(out var length))
                 throw new BadImageFormatException();
             //$PERF: use Span<T>

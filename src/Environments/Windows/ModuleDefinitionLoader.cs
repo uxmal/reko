@@ -34,6 +34,8 @@ namespace Reko.Environments.Windows
     /// </summary>
     public class ModuleDefinitionLoader : MetadataLoader
     {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ModuleDefinitionLoader), "Traces for ModuleDefinitionLoader") { Level = TraceLevel.Warning };
+
         private Lexer lexer;
         private Token bufferedTok;
         private string filename;
@@ -102,7 +104,7 @@ namespace Reko.Environments.Windows
                     Name = ep != null ? ep.Name : entryName,
                     Signature = ep?.Signature,
                 };
-                Debug.Print("Loaded {0} @ {1}", entryName, ordinal);
+                trace.Verbose("Loaded {0} @ {1}", entryName, ordinal);
                 if (ordinal != -1)
                 {
                     svc.SyscallInfo = new SyscallInfo { Vector = ordinal };

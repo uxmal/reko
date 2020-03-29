@@ -1289,7 +1289,7 @@ l00000000004048C0:
 l00000000004048D7:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004048D5
 l00000000004048E1:
-	call 0x0000000000000000 (retsize: 8;)
+	call 0x0000000000000000 (retsize: 0;)
 		uses: r8:r8 - 6399480,rdi:0x000000000061A5F8
 	return
 l00000000004048D5:
@@ -1432,7 +1432,7 @@ l0000000000404B35:
 	word64 r8_217
 	word64 rax_219
 	byte dl_225
-	call Mem160[rcx_192 * 0x0000000000000008 + 0x00411F40:word64] (retsize: 8;)
+	call Mem160[rcx_192 * 0x0000000000000008 + 0x00411F40:word64] (retsize: 0;)
 		uses: dl:dl_225,rcx:rcx_192,rdi:rdi,rsi:rsi
 		defs: dl:dl_225,r8:r8_217,rax:rax_219
 	ebxOut = <invalid>
@@ -7752,8 +7752,8 @@ l000000000040DA2F:
 	word64 rax_1313
 	word64 rsi_1315
 	word64 r10_1317
-	call Mem314[rax_1168 * 0x0000000000000008 + 0x00416068:word64] (retsize: 8;)
-		uses: r10:r10_1317,r8d:r8d_1205,r9d:r9d_1249,rax:rax_1168,rcx:rcx_1169,rdi:rdi_1250,rdx:rdx_2618,rsi:rsi_1281,Stack +00B4:dwLoc4C,Stack +0108:qwArg08,Stack +0110:qwArg10,Stack +0118:qwArg18
+	call Mem314[rax_1168 * 0x0000000000000008 + 0x00416068:word64] (retsize: 0;)
+		uses: r10:r10_1317,r8d:r8d_1205,r9d:r9d_1249,rax:rax_1168,rcx:rcx_1169,rdi:rdi_1250,rdx:rdx_2618,rsi:rsi_1281,Stack +00AC:dwLoc4C,Stack +0100:qwArg08,Stack +0108:qwArg10,Stack +0110:qwArg18
 		defs: r10:r10_1317,r8:r8_1310,r9:r9_1312,rax:rax_1313,rsi:rsi_1315
 	rbxOut = rbx_100
 	rbpOut = rbp_236
@@ -8362,7 +8362,7 @@ l000000000040EE60:
 	word64 r9_571
 	word64 rdi_572
 	word64 r11_573
-	call Mem98[rdx_514 * 0x0000000000000008 + 0x004164E8:word64] (retsize: 8;)
+	call Mem98[rdx_514 * 0x0000000000000008 + 0x004164E8:word64] (retsize: 0;)
 		uses: dil:dil_192,r11:r11_573,r8:r8_638,r9_32_32:r9_32_32_1079,r9d:r9d_597,rcx:rcx_541,rdi_56_8:rdi_56_8_1080,rdx:rdx_514,rsi:rsi_531
 		defs: r11:r11_573,r9:r9_571,rax:rax_569,rdi:rdi_572
 	word32 r9_32_32_1079 = SLICE(r9_571, word32, 32)
@@ -8422,7 +8422,7 @@ l00000000004107A1:
 	__fprintf_chk(rdi, 0x0000000000000001, dcgettext(0x0000000000000000, 0x0000000000416B08, 0x0000000000000005), 0x00000000)
 	return
 l00000000004106BE:
-	call Mem25[0x0000000000416B48:word64] (retsize: 8;)
+	call Mem25[0x0000000000416B48:word64] (retsize: 0;)
 		uses: r8:0x00000000000007DD,r9:r9_129,rcx:rax_57,rdi:rax_69,rdx:0x0000000000000005,rsi:rdi
 	return
 fn0000000000410630_exit:
@@ -8676,7 +8676,7 @@ l0000000000410FDD:
 	word64 rdx_221 = SEQ(rdx_32_32_220, (word32) dl_187)
 	word64 rax_272
 	word64 r9_277
-	call Mem155[rdx_221 * 0x0000000000000008 + 0x00416C18:word64] (retsize: 8;)
+	call Mem155[rdx_221 * 0x0000000000000008 + 0x00416C18:word64] (retsize: 0;)
 		uses: r8:r8,r9_32_32:r9_32_32_333,rcx:rcx_251,rdi:r8,rdx:rdx_221,rsi:0x0000000000000030
 		defs: r9:r9_277,rax:rax_272
 	ebxOut = <invalid>
@@ -8845,7 +8845,7 @@ l00000000004114B5:
 	word64 rax_271
 	word64 r8_275
 	word64 r9_276
-	call Mem156[rdx_222 * 0x0000000000000008 + 0x00416E38:word64] (retsize: 8;)
+	call Mem156[rdx_222 * 0x0000000000000008 + 0x00416E38:word64] (retsize: 0;)
 		uses: r8:rax_66,r9_32_32:r9_32_32_332,rcx:rcx_252,rdi:r8,rdx:rdx_222,rsi:0x0000000000000030
 		defs: r8:r8_275,r9:r9_276,rax:rax_271
 	rbxOut = rbx_105

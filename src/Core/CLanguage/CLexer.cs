@@ -134,6 +134,8 @@ namespace Reko.Core.CLanguage
             DotDot,
             Colon,
             LineComment,
+            MultiLineComment,
+            MultiLineCommentStar,
         }
 
         public int LineNumber { get; private set; }
@@ -557,6 +559,7 @@ namespace Reko.Core.CLanguage
                     {
                     case '=': rdr.Read(); return Tok(CTokenType.DivAssign);
                     case '/': rdr.Read(); state = State.LineComment; break;
+                    case '*': rdr.Read(); state = State.MultiLineComment; break;
                     default: return Tok(CTokenType.Slash);
                     }
                     break;
@@ -666,6 +669,47 @@ namespace Reko.Core.CLanguage
                         rdr.Read(); break;
                     }
                     break;
+                case State.MultiLineComment:
+                    if (c < 0)
+                        throw new FormatException("Unterminated comment.");
+                    switch (ch)
+                    {
+                    case '\r':
+                    case '\n':
+                        EatWs();
+                        break;
+                    case '*':
+                        rdr.Read();
+                        state = State.MultiLineCommentStar;
+                        break;
+                    default:
+                        rdr.Read(); break;
+                    }
+                    break;
+                case State.MultiLineCommentStar:
+                    if (c < 0)
+                        throw new FormatException("Unterminated comment.");
+                    switch (ch)
+                    {
+                    case '\r':
+                    case '\n':
+                        EatWs();
+                        state = State.MultiLineComment;
+                        break;
+                    case '*':
+                        rdr.Read();
+                        state = State.MultiLineCommentStar;
+                        break;
+                    case '/':
+                        rdr.Read();
+                        if (!EatWs())
+                            return Tok(CTokenType.EOF);
+                        state = State.Start;
+                        break;
+                    default:
+                        rdr.Read(); break;
+                    }
+                    break;
                 default:
                     Nyi(state, ch);
                     break;
@@ -696,8 +740,7 @@ namespace Reko.Core.CLanguage
         private CToken LookupId()
         {
             string id = sb.ToString();
-            CTokenType type;
-            if (keywordHash.TryGetValue(id, out type))
+            if (keywordHash.TryGetValue(id, out CTokenType type))
             {
                 return new CToken(type);
             }

@@ -741,7 +741,8 @@ namespace Reko.Core.Output
 
         public int VisitUnion(UnionType ut)
         {
-            throw new NotImplementedException();
+            writer.Write("new UnionType({0})", ut.Name ?? "<not-set>");
+            return 0;
         }
 
         public int VisitUnknownType(UnknownType ut)

@@ -224,7 +224,8 @@ namespace Reko.Core.CLanguage
                    x.Type == CTokenType.Volatile || x.Type == CTokenType.__Ptr64 ||
                    x.Type == CTokenType.__Fastcall || x.Type == CTokenType.__Stdcall ||
                    x.Type == CTokenType.__Thiscall || x.Type == CTokenType.__Cdecl ||
-                   x.Type == CTokenType.__Pascal)
+                   x.Type == CTokenType.__Pascal || x.Type == CTokenType._Far ||
+                   x.Type == CTokenType._Near)
             {
                 x = lexer.Peek(++i);
             }
@@ -722,6 +723,8 @@ IGNORE tab + cr + lf
             case CTokenType.Comma:
             case CTokenType.Const:
             case CTokenType.RBrace:
+            case CTokenType._Far:
+            case CTokenType._Near:
                 return null;
             default:
                 throw Unexpected(token);

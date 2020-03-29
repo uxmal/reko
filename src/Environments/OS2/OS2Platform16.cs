@@ -7,6 +7,7 @@ using System.Linq;
 using System.IO;
 using Reko.Core.Services;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.Environments.OS2
 {
@@ -19,6 +20,17 @@ namespace Reko.Environments.OS2
     /// </remarks>
     public class OS2Platform16 : Platform
     {
+        private static readonly SystemService int3svc = new SystemService
+        {
+            Name = "DebugBreak",
+            Signature = FunctionType.Action(),
+            Characteristics = Core.Serialization.DefaultProcedureCharacteristics.Instance,
+            SyscallInfo = new SyscallInfo
+            {
+                 Vector = 3,
+            }
+        };
+
         public OS2Platform16(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "os2-16")
         {
         }
@@ -28,6 +40,16 @@ namespace Reko.Environments.OS2
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {
             throw new NotImplementedException();
+        }
+
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        {
+            return new HashSet<RegisterStorage>
+            {
+                Registers.cs,
+                Registers.ss,
+                Registers.sp,
+            };
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -46,7 +68,11 @@ namespace Reko.Environments.OS2
 
         public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
-            throw new NotImplementedException();
+            if (vector == 3)
+            {
+                return int3svc;
+            }
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)
@@ -76,15 +102,15 @@ namespace Reko.Environments.OS2
                 ccName = "";
             switch (ccName)
             {
-                case "":
-                // Used by Microsoft C
-                case "__cdecl":
-                case "cdecl":
-                    return new X86CallingConvention(4, 2, 4, true, false);
-                // Default for system libraries
-                case "pascal":
-                case "__pascal":
-                    return new X86CallingConvention(4, 2, 4, false, true);
+            case "":
+            // Used by Microsoft C
+            case "__cdecl":
+            case "cdecl":
+                return new X86CallingConvention(4, 2, 4, true, false);
+            // Default for system libraries
+            case "pascal":
+            case "__pascal":
+                return new X86CallingConvention(4, 2, 4, false, true);
             }
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }

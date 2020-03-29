@@ -1316,5 +1316,52 @@ int x = 3;
                 decl.ToString());
         }
 
+        [Test]
+        public void CParser_Far_Ptr()
+        {
+            Lex("int __pascal CHKDSK(int argc, char __far** argv, char __far** envp);");
+            var decl = parser.Parse_ExternalDecl();
+            Assert.AreEqual("(decl Int __Pascal ((init-decl (func CHKDSK ((Int argc) (Char _Far (ptr (ptr argv))) (Char _Far (ptr (ptr envp))))))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_MultilineComent()
+        {
+            Lex(@"int /* This is a multi line
+comment*/ x;");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual("(decl Int ((init-decl x)))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Far_ptr_struct_field()
+        {
+            Lex(@"
+struct TheStruct {
+    void _far * field;
+};");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual("(decl (Struct TheStruct ((Void) (((ptr _Far field)))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Regression2()
+        {
+            Lex(@"
+int __far __pascal FS_ALLOCATEPAGESPACE(struct sffsi __far * psffsi, struct sffsd __far * psffsd, unsigned long ulsize, unsigned short ulWantContig);
+");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual(
+                "(decl Int _Far __Pascal ((init-decl (func FS_ALLOCATEPAGESPACE (((Struct sffsi) (ptr _Far psffsi)) ((Struct sffsd) (ptr _Far psffsd)) (Unsigned Long ulsize) (Unsigned Short ulWantContig))))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Regression3()
+        {
+            Lex(@"
+int __far __pascal FS_FILELOCKS(struct sffsi __far * psffsi, struct sffsd __far * psffsd, struct filelock __far * pUnLockRange, struct filelock __far * pLockRange, unsigned long timeout, unsigned long flags);
+");
+            var decl = parser.Parse();
+        }
     }
 }

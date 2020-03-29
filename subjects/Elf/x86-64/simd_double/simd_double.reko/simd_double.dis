@@ -46,7 +46,7 @@ l0000000000000667:
 l0000000000000680:
 	return
 l0000000000000673:
-	call _ITM_deregisterTMCloneTable (retsize: 8;)
+	call _ITM_deregisterTMCloneTable (retsize: 0;)
 	return
 deregister_tm_clones_exit:
 
@@ -67,7 +67,7 @@ l00000000000006B8:
 l00000000000006D0:
 	return
 l00000000000006C4:
-	call _ITM_registerTMCloneTable (retsize: 8;)
+	call _ITM_registerTMCloneTable (retsize: 0;)
 	return
 register_tm_clones_exit:
 

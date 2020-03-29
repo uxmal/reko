@@ -270,8 +270,8 @@ l00001C34:
 l00001750:
 	word32 d0_154 = SEQ(SLICE(d0, word16, 16), Mem108[0x00001758 + (int32) ((int16) d0) * 2:word16])
 	word32 d2_189
-	call 0x00001758 + (int32) ((int16) d0_154) (retsize: 4;)
-		uses: a2:a5 + -2072,a3:a5 + -2040,a4:dwLoc1C,a5:a5,a6:fp - 0x00000004,d0:d0_154,d2:d2_189,d3:dwLoc10,d4:dwLoc14,d5:dwLoc18,d6:d6_64,d7:dwLoc20,Stack +0228:dwLoc20,Stack +022C:dwLoc1C,Stack +0230:dwLoc18,Stack +0234:dwLoc14,Stack +0238:dwLoc10,Stack +0250:dwArg08_216
+	call 0x00001758 + (int32) ((int16) d0_154) (retsize: 0;)
+		uses: a2:a5 + -2072,a3:a5 + -2040,a4:dwLoc1C,a5:a5,a6:fp - 0x00000004,d0:d0_154,d2:d2_189,d3:dwLoc10,d4:dwLoc14,d5:dwLoc18,d6:d6_64,d7:dwLoc20,Stack +0224:dwLoc20,Stack +0228:dwLoc1C,Stack +022C:dwLoc18,Stack +0230:dwLoc14,Stack +0234:dwLoc10,Stack +024C:dwArg08_216
 		defs: d2:d2_189
 	return
 fn000016D0_exit:
@@ -1980,8 +1980,8 @@ l00002C4E:
 	word32 d0_304
 	word32 a5_306
 	word32 a1_307
-	call 0x00002C58 + (int32) ((int16) d0_296) (retsize: 4;)
-		uses: a1:a1_307,a2:dwArg04,a3:a3_103,a5:a5,a6:fp - 0x00000004,d0:d0_296,Stack +0020:dwLoc08,Stack +002C:dwArg04,Stack +0030:dwArg08
+	call 0x00002C58 + (int32) ((int16) d0_296) (retsize: 0;)
+		uses: a1:a1_307,a2:dwArg04,a3:a3_103,a5:a5,a6:fp - 0x00000004,d0:d0_296,Stack +001C:dwLoc08,Stack +0028:dwArg04,Stack +002C:dwArg08
 		defs: a1:a1_307,a5:a5_306,a6:a6_299,d0:d0_304
 	a5Out = a5_306
 	a6Out = a6_299

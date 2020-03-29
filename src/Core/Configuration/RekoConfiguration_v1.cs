@@ -160,6 +160,10 @@ namespace Reko.Core.Configuration
         [XmlAttribute("MemoryMap")]
         public string MemoryMap;
 
+        [XmlAttribute("CaseInsensitive")]
+        [DefaultValue(false)]
+        public bool CaseInsensitive;
+
         [XmlArray("TypeLibraries")]
         [XmlArrayItem("TypeLibrary")]
         public TypeLibraryReference_v1[] TypeLibraries;
