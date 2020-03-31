@@ -811,12 +811,15 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitSegmentedAccess(SegmentedAccess segMem)
         {
-            segMem =
-                new SegmentedAccess(
-                segMem.MemoryId,
-                segMem.BasePointer.Accept(this),
-                segMem.EffectiveAddress.Accept(this),
-                segMem.DataType);
+            var basePtr = segMem.BasePointer.Accept(this);
+            var offset = segMem.EffectiveAddress.Accept(this);
+            if (basePtr is Constant cBase && offset is Constant cOffset)
+            {
+                var addr = ctx.MakeSegmentedAddress(cBase, cOffset);
+                var mem = new MemoryAccess(segMem.MemoryId, addr, segMem.DataType);
+                return ctx.GetValue(mem, segmentMap);
+            }
+            segMem = new SegmentedAccess(segMem.MemoryId, basePtr, offset, segMem.DataType);
             if (sliceSegPtr.Match(segMem))
             {
                 Changed = true;

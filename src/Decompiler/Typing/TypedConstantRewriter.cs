@@ -109,7 +109,14 @@ namespace Reko.Typing
                 if (ptrSeg == null)
                 {
                     //$TODO: what should the warning be?
-                    return addr;
+                    //$BUG: create a fake field for now.
+                    var field = new StructureField((int)addr.Offset, new UnknownType());
+                    Expression x = new FieldAccess(new UnknownType(), new Dereference(segId.DataType, segId), field);
+                    if (!dereferenced)
+                    {
+                        x = new UnaryExpression(Operator.AddrOf, addr.DataType, x);
+                    }
+                    return x;
                 }
                 var baseType = ptrSeg.Pointee.ResolveAs<StructureType>();
                 var dt = addr.TypeVariable.DataType.ResolveAs<Pointer>();

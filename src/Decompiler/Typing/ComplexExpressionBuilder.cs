@@ -117,10 +117,15 @@ namespace Reko.Typing
             var e = CreateAddressOf(expComplex);
             DataType dt;
             if (enclosingPtr != null)
+            {
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.BitSize);
-            else
+                e = new Cast(dt, e);
+            }
+            else if (!(e.DataType is UnknownType u))
+            {
                 dt = PrimitiveType.CreateWord(e.DataType.BitSize);
-            e = new Cast(dt, e);
+                e = new Cast(dt, e);
+            }
             var eOffset = CreateOffsetExpression(offset, index);
             var op = Operator.IAdd;
             if (eOffset is Constant cOffset && cOffset.IsNegative)

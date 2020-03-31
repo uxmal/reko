@@ -28,6 +28,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.UnitTests.Mocks;
+using System;
 
 namespace Reko.UnitTests.Evaluation
 {
@@ -59,6 +60,17 @@ namespace Reko.UnitTests.Evaluation
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Endianness).Returns(EndianServices.Big);
         }
+
+        private void Given_SegmentedArchitecture()
+        {
+            arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
+            arch.Setup(a => a.MakeSegmentedAddress(
+                It.IsNotNull<Constant>(),
+                It.IsNotNull<Constant>()))
+                .Returns(new Func<Constant,Constant, Address>((seg, off) => Address.SegPtr(seg.ToUInt16(), off.ToUInt16())));
+        }
+
 
         private void Given_ExpressionSimplifier()
         {
@@ -349,6 +361,22 @@ namespace Reko.UnitTests.Evaluation
             var result = exp.Accept(simplifier);
 
             Assert.AreEqual("(<type-error>) foo_1", result.ToString());
+        }
+
+        [Test]
+        public void Exs_SegMem_Constants()
+        {
+            Given_SegmentedArchitecture();
+            Given_ExpressionSimplifier();
+            var seg = m.Word16(0x1234);
+            var off = m.Word16(0x5678);
+            var exp = m.SegMem16(seg, off);
+
+            var result = (MemoryAccess) exp.Accept(simplifier);
+
+            var addr = result.EffectiveAddress as Address;
+            Assert.IsNotNull(addr);
+            Assert.AreEqual("1234:5678", addr.ToString());
         }
     }
 }

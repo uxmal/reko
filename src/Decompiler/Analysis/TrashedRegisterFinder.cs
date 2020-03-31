@@ -760,7 +760,7 @@ namespace Reko.Analysis
 
             public Expression MakeSegmentedAddress(Constant c1, Constant c2)
             {
-                throw new NotImplementedException();
+                return ssa.Procedure.Architecture.MakeSegmentedAddress(c1, c2);
             }
 
             public void RemoveExpressionUse(Expression expr)
