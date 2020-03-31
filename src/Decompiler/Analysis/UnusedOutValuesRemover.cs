@@ -220,13 +220,13 @@ namespace Reko.Analysis
         public bool RemoveUnusedDefinedValues(SsaState ssa, WorkList<SsaState> wl)
         {
             bool change = false;
-            DebugEx.Verbose(trace, "UVR: {0}", ssa.Procedure.Name);
+            trace.Verbose("UVR: {0}", ssa.Procedure.Name);
             var (deadStms, deadStgs) = FindDeadStatementsInExitBlock(ssa, this.dataFlow[ssa.Procedure].BitsLiveOut);
 
             // Remove 'use' statements that are known to be dead from the exit block.
             foreach (var stm in deadStms)
             {
-                DebugEx.Verbose(trace, "UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
+                trace.Verbose("UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
                 ssa.DeleteStatement(stm);
                 change = true;
             }
@@ -284,7 +284,7 @@ namespace Reko.Analysis
         /// <returns></returns>
         private Dictionary<Storage, BitRange> CollectLiveOutStorages(Procedure procCallee)
         {
-            DebugEx.Verbose(trace, "== Collecting live out storages of {0}", procCallee.Name);
+            trace.Verbose("== Collecting live out storages of {0}", procCallee.Name);
             var liveOutStorages = new Dictionary<Storage, BitRange>();
 
             var sig = procCallee.Signature;
@@ -307,7 +307,7 @@ namespace Reko.Analysis
                 {
                     if (!(stm.Instruction is CallInstruction ci))
                         continue;
-                    DebugEx.Verbose(trace, "  {0}", ci);
+                    trace.Verbose("  {0}", ci);
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     foreach (var def in ci.Definitions)
                     {
@@ -317,7 +317,7 @@ namespace Reko.Analysis
                         if (sid.Uses.Count > 0)
                         {
                             var br = urf.Classify(ssaCaller, sid, def.Storage, true);
-                            DebugEx.Verbose(trace, "  {0}: {1}", sid.Identifier.Name, br);
+                            trace.Verbose("  {0}: {1}", sid.Identifier.Name, br);
                             if (liveOutStorages.TryGetValue(def.Storage, out BitRange brOld))
                             {
                                 br |= brOld;
