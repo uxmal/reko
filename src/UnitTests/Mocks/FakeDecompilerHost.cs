@@ -42,6 +42,12 @@ namespace Reko.UnitTests.Mocks
         {
         }
 
+
+        public TextWriter CreateTextWriter(string file)
+        {
+            return TextWriter.Null; 
+        }
+
         public TextWriter CreateDecompiledCodeWriter(string file)
         {
             return decompiled;

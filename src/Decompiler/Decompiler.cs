@@ -543,6 +543,8 @@ namespace Reko
                 eventListener.ShowStatus("Writing .asm and .dis files.");
                 host.WriteDisassembly(program, (n, w) => DumpAssembler(program, n, w));
                 host.WriteIntermediateCode(program, (n, w) => EmitProgram(program, null, n, w));
+                // Use the following for debugging.
+                // WriteSccs(program);
             }
         }
 
@@ -644,5 +646,36 @@ namespace Reko
 			w.WriteLine("// using Reko decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
 			w.WriteLine();
 		}
-	}
+
+        /// <summary>
+        /// Writes the strongly-connected components (SCCs) of the given <see cref="Program"/>'s 
+        /// call graph.
+        /// </summary>
+        /// <remarks>
+        /// The entries are reverse depth first ordered, which means leaf procedures are written
+        /// before their callers. The intent is to assist in debugging large program with deep
+        /// call hierarchies.
+        /// </remarks>
+        public void WriteSccs(Program program)
+        {
+            var filename = Path.ChangeExtension(Path.GetFileName(program.Filename), "sccs");
+            var globalsPath = Path.Combine(program.SourceDirectory, filename);
+            using (TextWriter output = host.CreateTextWriter(globalsPath))
+            {
+                var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), procs =>
+                {
+                    output.WriteLine("== {0} procedures ===", procs.Count);
+                    procs = procs.OrderBy(p => p.EntryAddress).ToList();
+                    foreach (var proc in procs)
+                    {
+                        output.Write(proc.Name);
+                        if (program.EntryPoints.ContainsKey(proc.EntryAddress))
+                            output.Write(" (Entry point)");
+                        output.WriteLine();
+                    }
+                });
+                sscf.FindAll();
+            }
+        }
+    }
 }

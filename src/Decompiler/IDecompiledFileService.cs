@@ -36,6 +36,15 @@ namespace Reko
     /// </summary>
     public interface IDecompiledFileService
     {
+        /// <summary>
+        /// Creates a <see cref="TextWriter"/> given an absolute filename, creating
+        /// any intermediary directories if necessary. If the file already exists, 
+        /// it is overwritten.
+        /// </summary>
+        /// <param name="filename">Absolute path to the file being created.</param>
+        /// <returns>A <see cref="TextWriter"/> to the created file.
+        /// </returns>
+        TextWriter CreateTextWriter(string filename);
         void WriteDisassembly(Program program, Action<string, Formatter> writer);
         void WriteIntermediateCode(Program program, Action<string, TextWriter> writer);
         void WriteTypes(Program program, Action<string, TextWriter> writer);
@@ -55,6 +64,11 @@ namespace Reko
         }
 
 		#region DecompilerHost Members
+
+        public TextWriter CreateTextWriter(string path)
+        {
+            return TextWriter.Null;
+        }
 
         public void WriteDisassembly(Program program, Action<string, Formatter> writer)
         {
@@ -93,7 +107,7 @@ namespace Reko
             this.fsSvc = fsSvc;
         }
 
-        private TextWriter CreateTextWriter(string filename)
+        public TextWriter CreateTextWriter(string filename)
         {
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;

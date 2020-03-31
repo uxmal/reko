@@ -42,6 +42,11 @@ namespace Reko.WebSite
 			discard = new StringWriter();
 		}
 
+        public TextWriter CreateTextWriter(string path)
+        {
+            throw new NotImplementedException();
+        }
+
 		public string FetchSample(HttpServerUtility server, string file)
 		{
 			StringWriter sw = new StringWriter();
