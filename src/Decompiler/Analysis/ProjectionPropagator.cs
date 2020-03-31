@@ -41,9 +41,11 @@ namespace Reko.Analysis
     ///     es_bx = SEQ(dx, ax)
     /// * Sequences where we use adjacent parts of the stack:
     ///     dwLoc0010 = SEQ(wLoc0012, wLoc0010)
+    /// * Sequences where we use adjacent parts of memory
+    ///     es_bx = SEQ(Mem11[0x0234:word16],Mem11[0x0232:word16])
     /// We convert SEQ(reg1,reg2) to either the widened register (i.e. hl)
-    /// or the combined register dx_ax, then "push" the widened register to all the 
-    /// statements that use both halves.
+    /// the combined register dx_ax, or a widenened memory access, then "push" the widened
+    /// register to all the statements that use both halves.
     /// 
     /// Narrowing projections are casts or slices:
     ///     al = (byte) rax
