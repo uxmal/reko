@@ -354,6 +354,7 @@ namespace Reko.Environments.MacOS.Classic
                 if (a5dr == null)
                     return;
 
+                var a5hdroffset = a5dr.Offset;
                 var a5dbelow = a5dr.ReadBeUInt32();
                 var a5dbankSize = a5dr.ReadBeUInt32();
                 var a5doffset = a5dr.ReadBeUInt32();
@@ -365,6 +366,8 @@ namespace Reko.Environments.MacOS.Classic
                     return;
                 }
                 A5Expand(a5dr, a5dbelow);
+                a5dr.Seek(a5hdroffset + a5dreloc, System.IO.SeekOrigin.Begin);
+                A5Relocate(a5dr, a5dbelow);
             }
         }
 
@@ -492,6 +495,79 @@ namespace Reko.Environments.MacOS.Classic
             runLength = GetRunLengthValue(a5dr, ref a5repeat);
             a5repeat = GetRunLengthValue(a5dr, ref a5repeat);
             return runLength;
+        }
+
+        private void A5Relocate(BeImageReader a5dr, UInt32 a5dbelow)
+
+        // Update pointers within A5World that point to an address within A5World, to the real/absolute address. 
+        {
+            var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, 0);
+            var a5belowReader = new BeImageReader(platform.A5World.MemoryArea,0);
+            uint a5globalSkip = 0;
+            uint a5globalOffset = platform.A5Offset - a5dbelow;
+            uint a5ptrOffset = 0;
+            int a5repeat = 0;
+            bool a5dataEnd = false;
+            var str = StringType.NullTerminated(PrimitiveType.Char);
+
+            var a5WorldAddress = (UInt32)((platform.A5World.Address.Offset + platform.A5Offset) & 0xFFFFFFFF);
+
+            // set Repeat count = 1, reset after each completed copy cycle
+            // byte token lower 4 bits number of words to copy from compressed data
+            // byte token upper 4 bits number of words to skip in global application data space
+            // if either value is 0 then get run length value which is in bytes.
+            // if the new run length value for copy is 0 then it's the end of compression data.
+
+            do
+            {
+                a5repeat = 1;
+                // Skip is number of words to skip  
+                a5globalSkip = a5dr.ReadByte();
+                if (a5globalSkip == 0)
+                {
+                    a5globalSkip = a5dr.ReadByte();
+                    if (a5globalSkip == 0)
+                    {
+                        a5dataEnd = true;
+                    }
+                    else
+                    {
+                        if (a5globalSkip > 0x7F)
+                        {
+                            a5globalSkip = ((a5globalSkip & 0x7F) << 8) + a5dr.ReadByte();
+                            a5globalSkip = (a5globalSkip << 16) + a5dr.ReadBeUInt16();
+                        }
+                        else
+                        {
+                            a5repeat = GetRunLengthValue(a5dr, ref a5repeat);
+                        }
+                    }
+                }
+                else
+                {
+                    if ((a5globalSkip & 0x80) == 0x80)
+                    {
+                        a5globalSkip = ((a5globalSkip & 0x7F) << 8) + a5dr.ReadByte();
+                    }
+                }
+                if (!a5dataEnd)
+                {
+                    a5globalSkip = a5globalSkip * 2;
+                    do
+                    {
+                        a5globalOffset = a5globalOffset + a5globalSkip;
+                        a5belowReader.Seek(a5globalOffset, System.IO.SeekOrigin.Begin);
+                        a5ptrOffset = a5belowReader.ReadBeUInt32();
+                        a5belowWriter.Position = (int) a5globalOffset;
+
+                        // write relocated A5World pointers to absolute address in A5World segment
+                        // Possible register/mark as Global pointer references to strings
+
+                        a5belowWriter.WriteBeUInt32((a5WorldAddress + a5ptrOffset) & 0xFFFFFFFF);
+                        a5repeat -= 1;
+                    } while (a5repeat > 0);
+                }
+            } while (!a5dataEnd);
         }
 
         /// <summary>
