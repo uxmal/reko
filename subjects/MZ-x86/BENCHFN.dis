@@ -9,7 +9,7 @@ void __exit()
 __exit_exit:
 __exit_entry:
 l0800_0121:
-	selector ds_5 = Mem0[0x0800:0x01F8:selector]
+	selector ds_5 = Mem0[0800:01F8:selector]
 	__restorezero(ds_5)
 	word16 sp_9
 	call SEQ(0x0800, Mem0[ds_5:0x05DC:word16]) (retsize: 2;)
@@ -102,7 +102,7 @@ void _abort()
 _abort_exit:
 _abort_entry:
 l0800_01E2:
-	fn0800_01DA(SEQ(Mem0[0x0800:0x01F8:selector], 0x0056), 0x001E)
+	fn0800_01DA(SEQ(Mem0[0800:01F8:selector], 0x0056), 0x001E)
 	__exit()
 
 
@@ -117,7 +117,7 @@ void fn0800_01E9(word16 cx, word16 dx)
 fn0800_01E9_exit:
 fn0800_01E9_entry:
 l0800_01E9:
-	fn0800_01DA(SEQ(Mem0[0x0800:0x01F8:selector], dx), cx)
+	fn0800_01DA(SEQ(Mem0[0800:01F8:selector], dx), cx)
 	__exit()
 
 
@@ -315,8 +315,8 @@ void __setargv(selector ds, word16 wArg00)
 __setargv_entry:
 l0800_0336:
 	selector es_30
-	Mem6[0x0800:0x0330:word16] = wArg00
-	Mem9[0x0800:0x0332:word16] = ds
+	Mem6[0800:0330:word16] = wArg00
+	Mem9[0800:0332:word16] = ds
 	word16 si_25 = Mem9[ds:0x008A:word16]
 	selector es_11 = Mem9[ds:0x0090:selector]
 	word16 ax_16 = (uint16) (uint8) Mem9[ds:0x0080:byte]
@@ -368,7 +368,7 @@ l0800_03A8:
 	branch C_114 l0800_03EA
 l0800_03EA:
 	word16 cx_125 = Mem87[ss:di_65 - 2:word16] + cx_219
-	selector ds_126 = Mem87[0x0800:0x0332:selector]
+	selector ds_126 = Mem87[0800:0332:selector]
 	Mem128[ds_126:0x0084:word16] = bx_100
 	word16 bx_130 = (bx_100 + 0x0001) * 0x0002
 	word16 si_131 = di_65
@@ -393,7 +393,7 @@ l0800_0415:
 	branch al_149 == 0x00 l0800_0407
 l0800_0417:
 	Mem164[ss:bp_133:word16] = 0x0000
-	call Mem164[0x0800:0x0330:word16] (retsize: 0;)
+	call Mem164[0800:0330:word16] (retsize: 0;)
 		uses: ax:0x0000,bx:bx_130,Stack +0000:wArg00
 	return
 __setargv_exit:

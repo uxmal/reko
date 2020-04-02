@@ -7,10 +7,10 @@
 // 0800:0121: void __exit()
 void __exit()
 {
-	struct Eq_n * ds_n = 0x0800->ptr01F8;
+	struct Eq_n * ds_n = seg0800->ptr01F8;
 	__restorezero(ds_n);
 	struct Eq_n Eq_n::* sp_n;
-	(0x0800->*ds_n->ptr05DC)();
+	(seg0800->*ds_n->ptr05DC)();
 	cu8 al_n = 0x00;
 	byte ah_n = 0x00;
 	byte Eq_n::* si_n = Eq_n::a0000;
@@ -65,7 +65,7 @@ void fn0800-01DA(char * ds_dx, word16 cx)
 // 0800:01E2: void _abort()
 void _abort()
 {
-	fn0800-01DA(&0x0800->ptr01F8->b002F + 0x0027, 0x1E);
+	fn0800-01DA((char *) seg0800->ptr01F8 + 0x0056, 0x1E);
 	__exit();
 }
 
@@ -192,22 +192,22 @@ void _exit(struct Eq_n * ds, word16 wArg02)
 		if (ax_n == 0x00)
 			break;
 		ui16 bx_n = ds->w023E;
-		(0x0800->*(ds->a05E8)[bx_n])();
+		(seg0800->*(ds->a05E8)[bx_n])();
 	}
-	(0x0800->*ds->ptr0234)();
-	(0x0800->*ds->ptr0236)();
+	(seg0800->*ds->ptr0234)();
+	(seg0800->*ds->ptr0236)();
 	word16 Eq_n::* sp_n;
-	(0x0800->*ds->ptr0238)();
+	(seg0800->*ds->ptr0238)();
 	ss->*(sp_n - 0x02) = wArg02;
 	__exit();
 }
 
-// 0800:0336: void __setargv(Register (ptr16 Eq_n) ds, Stack Eq_n wArg00)
-void __setargv(struct Eq_n * ds, Eq_n wArg00)
+// 0800:0336: void __setargv(Register (ptr16 Eq_n) ds, Stack word16 wArg00)
+void __setargv(struct Eq_n * ds, word16 wArg00)
 {
 	struct Eq_n * es_n;
-	0x0800->t0330 = wArg00;
-	0x0800->ptr0332 = ds;
+	seg0800->w0330 = (word16 *) wArg00;
+	seg0800->ptr0332 = (struct Eq_n **) ds;
 	word16 si_n = ds->w008A;
 	struct Eq_n * es_n = ds->ptr0090;
 	uint16 ax_n = (uint16) (uint8) ds->b0080;
@@ -272,7 +272,7 @@ l0800_nA3:
 					if (C_n)
 					{
 						word16 cx_n = ss->*(di_n - 0x02) + cx_n;
-						struct Eq_n * ds_n = 0x0800->ptr0332;
+						struct Eq_n * ds_n = seg0800->ptr0332;
 						ds_n->w0084 = bx_n;
 						Eq_n bx_n = (bx_n + 0x01) * 0x02;
 						Eq_n si_n = di_n;
@@ -294,7 +294,7 @@ l0800_nA3:
 								break;
 						}
 						ss->*bp_n = 0x00;
-						0x0800->t0330();
+						seg0800->w0330();
 						return;
 					}
 					fn0800-03BF(si_n, di_n, ax_n, cx_n, out ax_n, out cx_n, out si_n);
@@ -1650,7 +1650,7 @@ byte Eq_n::* fn0800-10A1(struct Eq_n * ss_bp, Eq_n cx, Eq_n dx, Eq_n bx, byte Eq
 	word16 bp = (word16) ss_bp;
 	word16 di_n = di - (bp - 0x54);
 	word16 ax_n;
-	(0x0800->*ss_bp->ptr000A)();
+	(seg0800->*ss_bp->ptr000A)();
 	if (ax_n == 0x00)
 		*(ss_bp - 0x02) = 0x01;
 	*(ss_bp - 0x55) = 0x50;
@@ -1844,7 +1844,7 @@ l0800_nE6:
 						{
 							word16 v49_n = wLoc28_n + 0x01;
 							ci16 ax_n;
-							(0x0800->*wArg02)();
+							(seg0800->*wArg02)();
 							wLoc28_n = v49_n;
 							byte al_n = (byte) ax_n;
 							if ((bLoc2B_n & 0x01) == 0x00)
@@ -1970,7 +1970,7 @@ l0800_nA23:
 								word16 v66_n = wLoc28_n + 0x01;
 								wchar_t ax_n;
 								Eq_n bx_n;
-								(0x0800->*wArg02)();
+								(seg0800->*wArg02)();
 								wLoc28_n = v66_n;
 								es_n = es;
 								if (ax_n < 0x00)
@@ -2011,7 +2011,7 @@ l0800_nA23:
 l0800_nAB6:
 									struct Eq_n Eq_n::* sp_n;
 									word16 ax_n;
-									(0x0800->*wArg04)();
+									(seg0800->*wArg04)();
 									word16 cx_n = (ss->*sp_n).w0002;
 									es = (ss->*sp_n).ptr0004;
 									dx = dx_n;
@@ -2130,7 +2130,7 @@ l0800_nF:
 		word16 v17_n = wLoc28_n + 0x01;
 		union Eq_n Eq_n::* sp_n;
 		Eq_n ax_n;
-		(0x0800->*wArg02)();
+		(seg0800->*wArg02)();
 		Eq_n ax_n = (int16) al_n;
 		wLoc28_n = v17_n;
 		Eq_n cx_n = ss->*sp_n;
@@ -2155,7 +2155,7 @@ l0800_n:
 					ss->*sp_n = wArg06;
 					ss->*(sp_n - 0x02) = ax_n;
 					struct Eq_n Eq_n::* sp_n;
-					(0x0800->*wArg04)();
+					(seg0800->*wArg04)();
 					word16 cx_n = (ss->*sp_n).w0002;
 					--wLoc28_n;
 					bx = bx_n;
@@ -2166,7 +2166,7 @@ l0800_n:
 				word16 v25_n = wLoc28_n + 0x01;
 				union Eq_n Eq_n::* sp_n;
 				Eq_n ax_n;
-				(0x0800->*wArg02)();
+				(seg0800->*wArg02)();
 				wLoc28_n = v25_n;
 				Eq_n cx_n = ss->*sp_n;
 				sp_n = (union Eq_n Eq_n::*) ((char *) sp_n + 0x02);
@@ -2181,7 +2181,7 @@ l0800_n:
 	ss->*(sp_n - 0x02) = ax_n;
 	Eq_n bx_n;
 	word16 dx_n;
-	(0x0800->*wArg04)();
+	(seg0800->*wArg04)();
 	ptr16 bp_n = fn0800-1AEB(fp - 0x02);
 	bxOut = bx_n;
 	bpOut = bp_n;
@@ -2241,7 +2241,7 @@ word16 fn0800-196F(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 // 0800:1AEB: Register ptr16 fn0800-1AEB(Sequence (ptr32 Eq_n) ss_bp)
 ptr16 fn0800-1AEB(struct Eq_n * ss_bp)
 {
-	(0x0800->*ss_bp->ptr0006)();
+	(seg0800->*ss_bp->ptr0006)();
 	*(ss_bp - 0x28) -= *(ss_bp - 0x28) < 0x01;
 	return fn0800-1AFF(ss_bp);
 }
@@ -2264,7 +2264,7 @@ word16 fn0800-1B06(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 		ss->*(sp_n - 0x02) = ss_bp->w0008;
 		Eq_n ax_n;
 		word16 bx_n;
-		(0x0800->*ss_bp->ptr0004)();
+		(seg0800->*ss_bp->ptr0004)();
 		sp_n = fp - 0x02;
 		ci8 al_n = (byte) ax_n;
 		if (ax_n <= 0x00)
@@ -2302,7 +2302,7 @@ void fn0800-1B2C(struct Eq_n * ss_bp)
 		ss->*(sp_n - 0x04) = ss_bp->w0008;
 		struct Eq_n Eq_n::* sp_n;
 		ci16 ax_n;
-		(0x0800->*ss_bp->ptr0004)();
+		(seg0800->*ss_bp->ptr0004)();
 		cl_n = (ss->*sp_n).b0002;
 		cui16 dx_n = (ss->*sp_n).w0004;
 		sp_n = (struct Eq_n Eq_n::*) (&(ss->*sp_n).w0004 + 0x01);
@@ -2400,7 +2400,7 @@ Eq_n __scantol(Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04, 
 		word16 v9_n = wLoc06_n + 0x01;
 		union Eq_n Eq_n::* sp_n;
 		Eq_n ax_n;
-		(0x0800->*wArg02)();
+		(seg0800->*wArg02)();
 		wLoc06_n = v9_n;
 		sp_n = (union Eq_n Eq_n::*) ((char *) sp_n + 0x02);
 		Eq_n ax_n = ax_n;
@@ -2421,7 +2421,7 @@ l0800_nC66:
 		ss->*sp_n = wArg06;
 		ss->*(sp_n - 0x02) = ax_n;
 		word16 sp_n;
-		(0x0800->*wArg04)();
+		(seg0800->*wArg04)();
 		sp_n = sp_n + 0x04;
 		--wLoc06_n;
 		ax_n.u0 = 0x00;
@@ -2440,7 +2440,7 @@ l0800_nC66:
 		goto l0800_nC61;
 	ss->*sp_n = wArg06;
 	word16 sp_n;
-	(0x0800->*wArg02)();
+	(seg0800->*wArg02)();
 	wLoc06_n = v9_n + 0x01;
 	sp_n = sp_n + 0x02;
 	ax_n = ax_n;
@@ -2469,7 +2469,7 @@ l0800_nC24:
 				word16 v63_n = wLoc06_n + 0x01;
 				word16 sp_n;
 				word16 ax_n;
-				(0x0800->*wArg02)();
+				(seg0800->*wArg02)();
 				wLoc06_n = v63_n;
 				byte al_n = (byte) ax_n;
 				sp_n = sp_n + 0x02;
@@ -2490,7 +2490,7 @@ l0800_nD03:
 							ss->*sp_n = wArg06;
 							ss->*(sp_n - 0x02) = ax_n;
 							word16 sp_n;
-							(0x0800->*wArg04)();
+							(seg0800->*wArg04)();
 							sp_n = sp_n + 0x04;
 							--wLoc06_n;
 l0800_nD0F:
@@ -2519,7 +2519,7 @@ l0800_nD0F:
 								word16 v48_n = wLoc06_n + 0x01;
 								word16 sp_n;
 								Eq_n ax_n;
-								(0x0800->*wArg02)();
+								(seg0800->*wArg02)();
 								wLoc06_n = v48_n;
 								sp_n = sp_n + 0x02;
 								ax_n = ax_n;
@@ -2557,7 +2557,7 @@ l0800_nCBE:
 						word16 v40_n = wLoc06_n + 0x01;
 						word16 sp_n;
 						uint16 ax_n;
-						(0x0800->*wArg02)();
+						(seg0800->*wArg02)();
 						wLoc06_n = v40_n;
 						sp_n = sp_n + 0x02;
 						di_ax_n = SEQ(di_n, ax_n);
@@ -2590,7 +2590,7 @@ l0800_nCA5:
 				word16 v31_n = wLoc06_n + 0x01;
 				word16 sp_n;
 				word16 ax_n;
-				(0x0800->*wArg02)();
+				(seg0800->*wArg02)();
 				wLoc06_n = v31_n;
 				byte al_n = (byte) ax_n;
 				sp_n = sp_n + 0x02;

@@ -36,8 +36,8 @@ namespace Reko.ImageLoaders.MzExe
 	/// </summary>
 	public class MsdosImageLoader : ImageLoader
 	{
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private readonly IProcessorArchitecture arch;
+        private readonly IPlatform platform;
 		private MemoryArea imgLoaded;
         private SegmentMap segmentMap;
         private Address addrStackTop;
@@ -106,7 +106,15 @@ namespace Reko.ImageLoaders.MzExe
             int i = ExeLoader.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
             var linBase = addrLoad.ToLinear();
-			while (i != 0)
+
+            segmentMap.AddOverlappingSegment(
+                addrLoad.Selector.Value.ToString("X4"),
+                imgLoaded,
+                addrLoad,
+                AccessMode.ReadWriteExecute);
+            segments.Add(addrLoad, addrLoad.Selector.Value);
+
+            while (i != 0)
 			{
 				uint offset = rdr.ReadLeUInt16();
 				ushort segOffset = rdr.ReadLeUInt16();
