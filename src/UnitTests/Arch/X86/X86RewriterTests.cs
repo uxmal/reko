@@ -3424,5 +3424,14 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|v5 = xmm6",
                 "3|L--|xmm6 = __sha1msg2(v5, v4)");
         }
+
+        [Test]
+        public void X86Rw_movbe()
+        {
+            Run32bitTest(0x0F, 0x38, 0xF1, 0xC3);
+            AssertCode(
+                "0|L--|10000000(4): 1 instructions",
+                "1|L--|ebx = __movbe_32(eax)");
+        }
     }
 }

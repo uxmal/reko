@@ -644,6 +644,14 @@ namespace Reko.Arch.X86
             }
         }
 
+        private void RewriteMovbe()
+        {
+            var src = SrcOp(instrCur.Operands[1], instrCur.Operands[0].Width);
+            var dst = SrcOp(instrCur.Operands[0]);
+            src = host.PseudoProcedure($"__movbe_{src.DataType.BitSize}", dst.DataType, src);
+            EmitCopy(instrCur.Operands[0], src, 0);
+        }
+
         private void RewriteMovssd(PrimitiveType dt)
         {
             var dst = SrcOp(instrCur.Operands[0]);

@@ -326,6 +326,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.vmovaps: RewriteMov(); break;
                 case Mnemonic.vmread: RewriteVmread(); break;
                 case Mnemonic.vmwrite: RewriteVmwrite(); break;
+                case Mnemonic.movbe: RewriteMovbe(); break;
                 case Mnemonic.movd: RewriteMovzx(); break;
                 case Mnemonic.movdqa: RewriteMov(); break;
                 case Mnemonic.movhpd: RewritePackedUnaryop("__movhpd", PrimitiveType.Real64, PrimitiveType.Real64); break;

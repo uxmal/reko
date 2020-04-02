@@ -300,6 +300,7 @@ namespace Reko.Arch.X86
         mov,
         movapd,
         movaps,
+        movbe,
         movd,
         movddup,
         movdqa,

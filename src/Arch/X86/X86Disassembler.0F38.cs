@@ -422,8 +422,8 @@ namespace Reko.Arch.X86
                 s_invalid,
 
                 // F0
-                s_nyi,
-                s_nyi,
+                Instr(Mnemonic.movbe, Gv,Ev),
+                Instr(Mnemonic.movbe, Ev,Gv),
                 s_nyi,
                 s_nyi,
                 s_invalid,
