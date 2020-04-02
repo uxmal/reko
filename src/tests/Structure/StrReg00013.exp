@@ -2,16 +2,16 @@
 // Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	Mem10[0x0C00:0x0001:word16] = 0x0800
-	Mem11[0x0800:0x5422:word16] = ds
-	Mem17[0x0800:0x0066:word16] = Mem11[0x0800:0x5420:word16]
-	selector es_20 = Mem17[0x0800:0x5422:selector]
+	Mem10[0C00:0001:word16] = 0x0800
+	Mem11[0800:5422:word16] = ds
+	Mem17[0800:0066:word16] = Mem11[0800:5420:word16]
+	selector es_20 = Mem17[0800:5422:selector]
 	word16 bx_21
 	msdos_resize_memory_block(es_20, 0xFFFF, out bx_21)
-	Mem26[0x0800:0x53CD:word16] = Mem17[0x0800:0x5422:word16] + bx_21
+	Mem26[0800:53CD:word16] = Mem17[0800:5422:word16] + bx_21
 	word16 bx_28
 	msdos_resize_memory_block(es_20, bx_21, out bx_28)
-	Mem30[0x0800:0x0400:word16] = 0x1758
+	Mem30[0800:0400:word16] = 0x1758
 	fn0C00_0288()
 	word16 sp_32 = SLICE(SEQ(esp_16_16, fp) & 0x0000FFFF, word16, 0)
 	Mem35[ss:sp_32 - 2:word16] = cs
@@ -232,16 +232,16 @@ fn0C00_0000_exit:
 
 void fn0C00_0000(selector ds)
 {
-	Mem10[0x0C00:0x0001:word16] = 0x0800;
-	Mem11[0x0800:0x5422:word16] = ds;
-	Mem17[0x0800:0x0066:word16] = Mem11[0x0800:0x5420:word16];
-	selector es_20 = Mem17[0x0800:0x5422:selector];
+	Mem10[0C00:0001:word16] = 0x0800;
+	Mem11[0800:5422:word16] = ds;
+	Mem17[0800:0066:word16] = Mem11[0800:5420:word16];
+	selector es_20 = Mem17[0800:5422:selector];
 	word16 bx_21;
 	msdos_resize_memory_block(es_20, 0xFFFF, out bx_21);
-	Mem26[0x0800:0x53CD:word16] = Mem17[0x0800:0x5422:word16] + bx_21;
+	Mem26[0800:53CD:word16] = Mem17[0800:5422:word16] + bx_21;
 	word16 bx_28;
 	msdos_resize_memory_block(es_20, bx_21, out bx_28);
-	Mem30[0x0800:0x0400:word16] = 0x1758;
+	Mem30[0800:0400:word16] = 0x1758;
 	fn0C00_0288();
 	word16 sp_32 = SLICE(SEQ(esp_16_16, fp) & 0x0000FFFF, word16, 0);
 	Mem35[ss:sp_32 - 2:word16] = cs;
