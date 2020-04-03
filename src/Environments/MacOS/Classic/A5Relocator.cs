@@ -42,7 +42,6 @@ namespace Reko.Environments.MacOS.Classic
             this.a5dbelow = a5dbelow;
         }
 
-
         public void Relocate()
         {
             var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, 0);
@@ -52,7 +51,6 @@ namespace Reko.Environments.MacOS.Classic
             uint a5ptrOffset = 0;
             int a5repeat = 0;
             bool a5dataEnd = false;
-            var str = StringType.NullTerminated(PrimitiveType.Char);
 
             var a5WorldAddress = (UInt32) ((platform.A5World.Address.Offset + platform.A5Offset) & 0xFFFFFFFF);
 

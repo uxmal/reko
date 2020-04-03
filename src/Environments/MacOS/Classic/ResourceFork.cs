@@ -343,7 +343,6 @@ namespace Reko.Environments.MacOS.Classic
                 platform.A5Offset = jt.BelowA5Size;
                 segmentMap.AddSegment(a5world);
 
-
                 // Find first (and only!) segment containing the name %A5Init.
                 var a5dataSegment = segmentMap.Segments.Values.SingleOrDefault(SegmentNamedA5Init);
                 if (a5dataSegment == null)

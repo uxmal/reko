@@ -307,6 +307,7 @@
     <Compile Include="Core\Types\DataTypeComparerTests.cs" />
     <Compile Include="DecompiledFileServiceTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
+    <Compile Include="Environments\MacOS\Classic\A5RelocatorTests.cs" />
     <Compile Include="Environments\MacOS\Classic\MacOSClassicTests.cs" />
     <Compile Include="Environments\MacOS\Classic\MacsBugSymbolScannerTests.cs" />
     <Compile Include="Environments\MacOS\Classic\MpwPascalInterfaceLoaderTests.cs" />
