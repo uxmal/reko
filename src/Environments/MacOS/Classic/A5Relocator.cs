@@ -19,10 +19,8 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace Reko.Environments.MacOS.Classic
 {
@@ -46,11 +44,7 @@ namespace Reko.Environments.MacOS.Classic
         {
             var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, 0);
             var a5belowReader = new BeImageReader(platform.A5World.MemoryArea, 0);
-            uint a5globalSkip = 0;
             uint a5globalOffset = platform.A5Offset - a5dbelow;
-            uint a5ptrOffset = 0;
-            int a5repeat = 0;
-            bool a5dataEnd = false;
 
             var a5WorldAddress = (UInt32) ((platform.A5World.Address.Offset + platform.A5Offset) & 0xFFFFFFFF);
 
@@ -60,29 +54,29 @@ namespace Reko.Environments.MacOS.Classic
             // if either value is 0 then get run length value which is in bytes.
             // if the new run length value for copy is 0 then it's the end of compression data.
 
-            do
+            for (;;)
             {
-                a5repeat = 1;
-                // Skip is number of words to skip  
-                a5globalSkip = a5dr.ReadByte();
+                int a5repeat = 1;
+                // Skip is number of 16-bit words to skip  
+                uint a5globalSkip = a5dr.ReadByte();
                 if (a5globalSkip == 0)
                 {
                     a5globalSkip = a5dr.ReadByte();
                     if (a5globalSkip == 0)
                     {
-                        a5dataEnd = true;
+                        break;
+                    }
+                    if (a5globalSkip > 0x7F)
+                    {
+                        a5globalSkip = ((a5globalSkip & 0x7F) << 8) + a5dr.ReadByte();
+                        a5globalSkip = (a5globalSkip << 16) + a5dr.ReadBeUInt16();
                     }
                     else
                     {
-                        if (a5globalSkip > 0x7F)
-                        {
-                            a5globalSkip = ((a5globalSkip & 0x7F) << 8) + a5dr.ReadByte();
-                            a5globalSkip = (a5globalSkip << 16) + a5dr.ReadBeUInt16();
-                        }
-                        else
-                        {
-                            a5repeat = ResourceFork.GetRunLengthValue(a5dr, ref a5repeat);
-                        }
+                        a5repeat = ResourceFork.GetRunLengthValue(a5dr, ref a5repeat);
+                        //$BUG: a5repeat could return the value 0. The do-while below will 
+                        // decrement a5repeat before testing. This will lead to an effective
+                        // repeat count of 2^32; likely not wanted.
                     }
                 }
                 else
@@ -92,26 +86,21 @@ namespace Reko.Environments.MacOS.Classic
                         a5globalSkip = ((a5globalSkip & 0x7F) << 8) + a5dr.ReadByte();
                     }
                 }
-                if (!a5dataEnd)
+                a5globalSkip = a5globalSkip * 2;
+                do
                 {
-                    a5globalSkip = a5globalSkip * 2;
-                    do
-                    {
-                        a5globalOffset = a5globalOffset + a5globalSkip;
-                        a5belowReader.Seek(a5globalOffset, System.IO.SeekOrigin.Begin);
-                        a5ptrOffset = a5belowReader.ReadBeUInt32();
-                        a5belowWriter.Position = (int) a5globalOffset;
+                    a5globalOffset += a5globalSkip;
+                    a5belowReader.Seek(a5globalOffset, SeekOrigin.Begin);
+                    uint a5ptrOffset = a5belowReader.ReadBeUInt32();
+                    a5belowWriter.Position = (int) a5globalOffset;
 
-                        // write relocated A5World pointers to absolute address in A5World segment
-                        // Possible register/mark as Global pointer references to strings
+                    // write relocated A5World pointers to absolute address in A5World segment
+                    // Possible register/mark as Global pointer references to strings
 
-                        a5belowWriter.WriteBeUInt32((a5WorldAddress + a5ptrOffset) & 0xFFFFFFFF);
-                        a5repeat -= 1;
-                    } while (a5repeat > 0);
-                }
-            } while (!a5dataEnd);
+                    a5belowWriter.WriteBeUInt32((a5WorldAddress + a5ptrOffset) & 0xFFFFFFFF);
+                    --a5repeat;
+                } while (a5repeat > 0);
+            }
         }
-
-
     }
 }

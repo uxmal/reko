@@ -466,8 +466,8 @@ namespace Reko.Environments.MacOS.Classic
             // Run length returned is in byte(s).
             // next byte read - see bit pattern from the following table for the return value
             // 0xxxxxxx - 0 - $7F
-            // 10xxxxxx - 0 - $3FFF(run length and $3F + next byte, 14 bits)
-            // 110xxxxx - 0 - $1FFFFF(run length and $1F + next two bytes, 21 bits)
+            // 10xxxxxx - 0 - $3FFF (run length and $3F + next byte, 14 bits)
+            // 110xxxxx - 0 - $1FFFFF (run length and $1F + next two bytes, 21 bits)
             // 1110xxxx - next 4 bytes, 32 bits
             // 1111xxxx - get both new runtime length copy in bytes and new runtime length repeat count
 
