@@ -36,7 +36,7 @@ namespace Reko.Environments.MacOS.Classic
     /// </summary>
     public class ResourceFork
     {
-        private byte[]  image;
+        private byte[] image;
         private MacOSClassic platform;
         private IProcessorArchitecture arch;
         private ResourceTypeCollection rsrcTypes;
@@ -343,7 +343,6 @@ namespace Reko.Environments.MacOS.Classic
                 platform.A5Offset = jt.BelowA5Size;
                 segmentMap.AddSegment(a5world);
 
-
                 // Find first (and only!) segment containing the name %A5Init.
                 var a5dataSegment = segmentMap.Segments.Values.SingleOrDefault(SegmentNamedA5Init);
                 if (a5dataSegment == null)
@@ -354,6 +353,7 @@ namespace Reko.Environments.MacOS.Classic
                 if (a5dr == null)
                     return;
 
+                var a5hdroffset = a5dr.Offset;
                 var a5dbelow = a5dr.ReadBeUInt32();
                 var a5dbankSize = a5dr.ReadBeUInt32();
                 var a5doffset = a5dr.ReadBeUInt32();
@@ -365,6 +365,9 @@ namespace Reko.Environments.MacOS.Classic
                     return;
                 }
                 A5Expand(a5dr, a5dbelow);
+                a5dr.Seek(a5hdroffset + a5dreloc, System.IO.SeekOrigin.Begin);
+                var relocator = new A5Relocator(platform, a5dr, a5dbelow);
+                relocator.Relocate();
             }
         }
 
@@ -395,7 +398,7 @@ namespace Reko.Environments.MacOS.Classic
             return segment.Name.Length >= 12 && segment.Name.Substring(5, 7) == "%A5Init";
         }
 
-        private void A5Expand(BeImageReader a5dr, UInt32 a5dbelow)
+        public void A5Expand(BeImageReader a5dr, UInt32 a5dbelow)
         {
             var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, platform.A5Offset - a5dbelow);
             int a5RunLengthToken = 0;
@@ -458,13 +461,13 @@ namespace Reko.Environments.MacOS.Classic
             } while (!a5dataEnd);
         }
 
-        private int GetRunLengthValue(BeImageReader a5dr, ref int a5repeat)
+        public static int GetRunLengthValue(BeImageReader a5dr, ref int a5repeat)
         {
             // Run length returned is in byte(s).
             // next byte read - see bit pattern from the following table for the return value
             // 0xxxxxxx - 0 - $7F
-            // 10xxxxxx - 0 - $3FFF(run length and $3F + next byte, 14 bits)
-            // 110xxxxx - 0 - $1FFFFF(run length and $1F + next two bytes, 21 bits)
+            // 10xxxxxx - 0 - $3FFF (run length and $3F + next byte, 14 bits)
+            // 110xxxxx - 0 - $1FFFFF (run length and $1F + next two bytes, 21 bits)
             // 1110xxxx - next 4 bytes, 32 bits
             // 1111xxxx - get both new runtime length copy in bytes and new runtime length repeat count
 
