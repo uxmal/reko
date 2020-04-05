@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Typing
         private void Given_Global(uint address, DataType dt)
         {
             var str = globals.DataType.ResolveAs<Pointer>().Pointee.ResolveAs<StructureType>();
-            str.Fields.Add((int)(address - 0x00100000u), dt);
+            str.Fields.Add((int)address, dt);
         }
 
         private void Given_Segment(ushort selector, string name)
@@ -239,8 +239,8 @@ namespace Reko.UnitTests.Typing
         public void Tcr_ArrayEnd()
         {
             Given_TypedConstantRewriter();
-            Given_Global(0x00100000, new ArrayType(PrimitiveType.Real32, 16));
-            Given_Global(0x00100040, PrimitiveType.Word16);
+            Given_Global(0x00000000, new ArrayType(PrimitiveType.Real32, 16));
+            Given_Global(0x00000040, PrimitiveType.Word16);
             var c = Constant.Word32(0x00100040);
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Real32, 32);
