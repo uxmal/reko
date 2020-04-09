@@ -161,7 +161,7 @@ namespace Reko.Arch.i8051
          * The Keil C compiler emits a call to the following subroutine if 
          * a switch statement is sparse.
          */
-        private static byte[] sparseSwitchSubroutine = new byte[]
+        private readonly static byte[] sparseSwitchSubroutine = new byte[]
         {
             0xD0, 0x83, 0xD0, 0x82,  0xF8, 0xE4, 0x93, 0x70,
             0x12, 0x74, 0x01, 0x93,  0x70, 0x0D, 0xA3, 0xA3,
