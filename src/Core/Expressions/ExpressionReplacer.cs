@@ -48,7 +48,7 @@ namespace Reko.Core.Expressions
         public static Expression Replace(Expression original, Expression replacement, Expression root)
         {
             var rep = new ExpressionReplacer(original, replacement);
-            return root.Accept(rep);
+            return root?.Accept(rep);
         }
 
         public Expression VisitAddress(Address addr)

@@ -65,7 +65,7 @@ namespace Reko.Scanning
                 if (b.Procedure == ProcNew || b == b.Procedure.ExitBlock || b.Procedure.EntryBlock.Succ[0] == b)
                     continue;
 
-                DebugEx.Inform(trace, "PromoteBlock visiting block {0}, stack depth {1}", b.Name, stack.Count);
+                trace.Verbose("PBW:     Visiting block {0}, stack depth {1}", b.Name, stack.Count);
                 b.Procedure.RemoveBlock(b);
                 ProcNew.AddBlock(b);
                 b.Procedure = ProcNew;
@@ -82,21 +82,30 @@ namespace Reko.Scanning
                 FixExitEdges(b);
                 FixInboundEdges(b);
                 FixOutboundEdges(b);
+               //  SanityCheck(b);
             }
         }
 
-        [Conditional("DEBU")]
+        [Conditional("DEBUG")]
+        public static void SanityCheck(Block block)
+        {
+         //   Debug.Assert(block.Pred.Count == 0 && block != block.Procedure.EntryBlock);
+        }
+
+        [Conditional("DEBUG")]
         private void DumpBlocks(Procedure procedure)
         {
-            DebugEx.Verbose(trace, "{0}", procedure.Name);
+            trace.Verbose("{0}", procedure.Name);
             foreach (var block in procedure.ControlGraph.Blocks)
             {
-                DebugEx.Verbose(trace, "  {0}; {1}", block.Name, block.Procedure.Name);
+                trace.Verbose("  {0}; {1}", block.Name, block.Procedure.Name);
             }
         }
 
         public void FixInboundEdges(Block blockToPromote)
         {
+            trace.Verbose("PBW: Fixing inbound edges of {0}", blockToPromote.Name);
+
             // Get all blocks that are from "outside" blocks.
             var inboundBlocks = blockToPromote.Pred.Where(p => p.Procedure != ProcNew).ToArray();
             foreach (var inb in inboundBlocks)
@@ -137,6 +146,7 @@ namespace Reko.Scanning
 
         public void FixOutboundEdges(Block block)
         {
+            trace.Verbose("PBW: Fixing outbound edges of {0}", block.Name);
             for (int i = 0; i < block.Succ.Count; ++i)
             {
                 var s = block.Succ[i];
@@ -165,6 +175,7 @@ namespace Reko.Scanning
 
         private void FixExitEdges(Block block)
         {
+            trace.Verbose("PBW: Fixing exit edges of {0}", block.Name);
             for (int i = 0; i < block.Succ.Count; ++i)
             {
                 var s = block.Succ[i];

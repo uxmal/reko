@@ -198,7 +198,8 @@ namespace Reko.Arch.X86
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
+            // Must pass segment:offset to make a segmented address.
+            return null;
         }
 
         public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)

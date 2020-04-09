@@ -537,7 +537,7 @@ namespace Reko.Scanning
                 return proc;
 
             visitedProcs.Add(proc);
-            Debug.WriteLineIf(trace.TraceInfo, string.Format("Scanning procedure at {0}", addr));
+            trace.Inform("Scanning procedure at {0}", addr);
 
             var st = state.Clone();
             EstablishInitialState(addr, st, proc);

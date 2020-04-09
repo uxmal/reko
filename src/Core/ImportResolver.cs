@@ -279,6 +279,8 @@ namespace Reko.Core
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c, true);
+            if (addrImportThunk == null)
+                return null;
             if (!program.ImportReferences.TryGetValue(addrImportThunk, out var impref))
                 return null;
 

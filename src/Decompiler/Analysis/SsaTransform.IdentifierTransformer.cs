@@ -38,6 +38,7 @@ namespace Reko.Analysis
         public abstract class IdentifierTransformer
         {
             protected Identifier id;
+            private int depth;
             protected readonly Statement stm;
             protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
@@ -67,6 +68,7 @@ namespace Reko.Analysis
             /// <returns>The SSA name of the identifier that was read.</returns>
             public virtual SsaIdentifier ReadVariable(SsaBlockState bs)
             {
+                trace.Verbose("ReadVariable {0} in block {1}", this.id, bs.Block.Name);
                 if (bs.Terminates)
                 {
                     // Reko has determined that this block diverges. We fall back to 
@@ -78,7 +80,11 @@ namespace Reko.Analysis
                 if (sid != null)
                     return sid;
                 // Keep probin'.
-                return ReadVariableRecursive(bs);
+                if (++this.depth > 100)
+                    throw new StackOverflowException("");
+                var x = ReadVariableRecursive(bs);
+                --this.depth;
+                return x;
             }
 
             /// <summary>
