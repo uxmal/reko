@@ -8362,8 +8362,8 @@ l0000F588:
 	branch r4_24 == 0x00000067 l0000F588_ds_t
 l0000F588_ds_t:
 l0000F7D0:
-	word32 r15_705
-	r2_113 = fn0000EC54(r15, VR, out r14_120, out r15_705, out r16_121)
+	word32 r15_728
+	r2_113 = fn0000EC54(r15, VR, out r14_120, out r15_728, out r16_121)
 l0000F588_ds_f:
 l0000F590:
 	branch r4_24 >u 0x00000067 l0000F590_ds_t
@@ -8464,9 +8464,9 @@ l0000F50C:
 	branch r4_24 == 0x00000055 l0000F50C_ds_t
 l0000F50C_ds_t:
 l0000F6F0:
-	word32 r15_702
-	word32 r22_703
-	r2_113 = fn00009C2C(Mem25[r3 + 40:word32], Mem25[r3 + 44:word32], r15, VR, out r15_702, out r22_703)
+	word32 r15_725
+	word32 r22_726
+	r2_113 = fn00009C2C(Mem25[r3 + 40:word32], Mem25[r3 + 44:word32], r15, VR, out r15_725, out r22_726)
 l0000F50C_ds_f:
 l0000F514:
 	branch r4_24 <u 0x00000055 l0000F514_ds_t
@@ -8480,8 +8480,8 @@ l0000F51C_ds_t:
 l0000F51C_ds_f:
 l0000F524:
 l0000F704:
-	word32 r22_704
-	fn00009DDC(Mem25[r3 + 40:word32], VR, out r11_193, out r22_704)
+	word32 r22_727
+	fn00009DDC(Mem25[r3 + 40:word32], VR, out r11_193, out r22_727)
 	r2_113 = r11_193
 l0000F734:
 	branch r11_193 < 0 l0000F734_ds_t
@@ -8540,51 +8540,54 @@ l0000F660:
 	r2_113 = fn00010570(r3, r9, r15, VR)
 l0000F7F8:
 l0000F7FC:
-	Mem518[r14_120 + 3:byte] = SLICE(r2_113, byte, 0)
-	Mem520[r14_120:byte] = 0xFB
-	branch ((word32) Mem520[r14_120 + 1:byte] & 0x00000003) == 0x00000000 l0000F7F8_ds_t
+	Mem539[r14_120 + 3:byte] = SLICE(r2_113, byte, 0)
+	Mem541[r14_120:byte] = 0xFB
+	branch ((word32) Mem541[r14_120 + 1:byte] & 0x00000003) == 0x00000000 l0000F7F8_ds_t
 l0000F7F8_ds_t:
 l0000F820:
-	branch (word32) Mem520[r14_120 + 1:byte] != 0x00000000 l0000F820_ds_t
+	branch (word32) Mem541[r14_120 + 1:byte] != 0x00000000 l0000F820_ds_t
 l0000F820_ds_t:
 l0000F820_ds_f:
-	bool F_528 = r2_113 == 0x00000000
+	bool F_549 = r2_113 == 0x00000000
 l0000F830:
-	branch F_528 l0000F830_ds_t
+	branch F_549 l0000F830_ds_t
 l0000F830_ds_t:
 l0000F848:
-	word32 r9_698
-	word32 r14_699
-	fn0000F368(r14_120, VR, out r9_698, out r14_699)
+	word32 r14_722
+	word32 r9_721
+	fn0000F368(r14_120, VR, out r9_721, out r14_722)
 l0000F830_ds_f:
 l0000F838:
-	word32 r14_701
-	word32 r9_700
-	fn00008574(r14_120, -4000, out r9_700, out r14_701, out r16_121)
+	word32 r9_723
+	word32 r14_724
+	fn00008574(r14_120, -4000, out r9_723, out r14_724, out r16_121)
 l0000F850:
 	fn0000E740(r16_121, VR)
 	return
 fn0000F444_exit:
 l0000F7F8_ds_f:
 l0000F818:
-	word32 r9_695
-	word32 r16_697
-	word32 r14_696
-	fn00008574(r14_120, -4000, out r9_695, out r14_696, out r16_697)
+	word32 r9_716
+	word32 r16_718
+	word32 r14_717
+	fn00008574(r14_120, -4000, out r9_716, out r14_717, out r16_718)
 l0000F604_ds_f:
 l0000F61C:
 	Mem459[0x00013778:word32] = -3
 	fn0000DF10(0x000100B8, Mem459[0x00013980:word32] + 0x000100B8, 0x000023BE)
 	fn0000FA94()
+	word32 r14_719
+	word32 r15_720
+	fn0000C8A0(-1000, r15, out r14_719, out r15_720)
 l0000F4AC_ds_f:
 l0000F4B8:
 	branch !(r4_24 == 0x00000019) l0000F4B8_ds_t
 l0000F4B8_ds_t:
 l0000F7E4:
-	word32 r16_694
-	word32 r15_693
-	word32 r14_692
-	fn0000DD60(-128, r15, VR, out r14_692, out r15_693, out r16_694)
+	word32 r16_715
+	word32 r15_714
+	word32 r14_713
+	fn0000DD60(-128, r15, VR, out r14_713, out r15_714, out r16_715)
 l0000F4B8_ds_f:
 l0000F4C0:
 l0000F678:
@@ -8714,12 +8717,23 @@ void fn0000FA94()
 
 // MayUse: 
 // LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000FA94_exit:
+// Trashed: CV
+// Preserved: r1 r3 r4 r5 r9
 fn0000FA94_entry:
 l0000FA94:
+	__msync()
+	__csync()
+	word32 r4_12 = 0
+l0000FAB8:
+	__mtspr(0x00002002, r4_12)
+	branch r4_12 != -4096 l0000FAB8_ds_t
+l0000FAB8_ds_t:
+	r4_12 = r4_12 + -16
+l0000FAB8_ds_f:
+l0000FAC8:
+	__psync()
+	return
+fn0000FA94_exit:
 
 
 word32 fn0000FEDC(word32 r3, word32 r4, word32 r15, ptr32 & r11Out, ptr32 & r15Out)

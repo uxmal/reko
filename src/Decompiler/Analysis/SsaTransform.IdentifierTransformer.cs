@@ -80,11 +80,16 @@ namespace Reko.Analysis
                 if (sid != null)
                     return sid;
                 // Keep probin'.
-                if (++this.depth > 100)
-                    throw new StackOverflowException("");
-                var x = ReadVariableRecursive(bs);
-                --this.depth;
-                return x;
+                // The commented-out code below is for assistance when troubleshooting
+                // stack overflows in the code. These are always caused by the
+                // CFG of the Procedure being malformed due to errors in the Scanning
+                // phase. Once #726 is addressed, there should be no need for this
+                // code.
+                //if (++this.depth > 1000)
+                //    throw new StackOverflowException("");
+                sid = ReadVariableRecursive(bs);
+                //--this.depth;
+                return sid;
             }
 
             /// <summary>

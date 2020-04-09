@@ -648,5 +648,14 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__psync()");
         }
+
+        [Test]
+        public void OpenRiscRw_l_msync()
+        {
+            Given_HexString("22000000");	// l.msync
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__msync()");
+        }
     }
 }

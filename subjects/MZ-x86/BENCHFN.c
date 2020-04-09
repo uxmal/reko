@@ -263,8 +263,8 @@ l0800_nE7:
 l0800_nA3:
 			word16 ax_n;
 			fn0800-03BF(si_n, di_n, ax_n, cx_n, out ax_n, out cx_n, out si_n);
-			bool Z_n = <invalid>;
-			bool C_n = <invalid>;
+			Eq_n Z_n = (struct Eq_n *) <invalid>;
+			Eq_n C_n = (struct Eq_n *) <invalid>;
 			if (!(Z_n | C_n))
 			{
 				do
@@ -298,8 +298,8 @@ l0800_nA3:
 						return;
 					}
 					fn0800-03BF(si_n, di_n, ax_n, cx_n, out ax_n, out cx_n, out si_n);
-					bool Z_n = <invalid>;
-					C_n = <invalid>;
+					Eq_n Z_n = (struct Eq_n *) <invalid>;
+					&C_n.u0->w0000 = (struct Eq_n *) <invalid>;
 				} while (Z_n | C_n);
 			}
 			byte ah_n = SLICE(ax_n, byte, 8);
@@ -342,7 +342,7 @@ Eq_n fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, Eq_n cx, ptr16 & 
 	axOut = ax_n;
 	cxOut = cx;
 	siOut = si;
-	return <invalid>;
+	return (struct Eq_n *) <invalid>;
 }
 
 // 0800:0421: void __setenvp(Register (ptr16 Eq_n) ds)
@@ -2078,7 +2078,7 @@ l0800_n:
 l0800_nE:
 							struct Eq_n * es_n;
 							fn0800-1708(fp - 0x02, ds, out es_n);
-							word32 es_di_n = <invalid>;
+							Eq_n es_di_n = (struct Eq_n *) <invalid>;
 							es_di_n.u0->w0000 = ax_n;
 							word16 di_n = (word16) es_di_n;
 							es = SLICE(es_di_n, selector, 16);

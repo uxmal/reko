@@ -97,6 +97,7 @@ namespace Reko.Arch.OpenRISC
                 case Mnemonic.l_macrc: RewriteMacrc(); break;
                 case Mnemonic.l_movhi: RewriteMovhi(); break;
                 case Mnemonic.l_mfspr: RewriteMfspr(); break;
+                case Mnemonic.l_msync: RewriteMsync(); break;
                 case Mnemonic.l_mtspr: RewriteMtspr(); break;
                 case Mnemonic.l_mul: RewriteAluV(m.SMul); break;
 
@@ -166,7 +167,7 @@ namespace Reko.Arch.OpenRISC
             Console.WriteLine("        [Test]");
             Console.WriteLine("        public void OpenRiscRw_" + dasm.Current.Mnemonic + "()");
             Console.WriteLine("        {");
-            Console.WriteLine("            BuildTest(\"{0:X8}\");\t// {1}", bytes, dasm.Current.ToString());
+            Console.WriteLine("            Given_HexString(\"{0:X8}\");\t// {1}", bytes, dasm.Current.ToString());
             Console.WriteLine("            AssertCode(");
             Console.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
             Console.WriteLine("                \"1|L--|@@@\");");
@@ -427,6 +428,11 @@ namespace Reko.Arch.OpenRISC
             var dst = Reg(instrCur.Operands[0]);
             var imm = Imm(instrCur.Operands[1]);
             m.Assign(dst, Constant.Word32(imm.ToUInt32() << 16));
+        }
+
+        private void RewriteMsync()
+        {
+            m.SideEffect(host.PseudoProcedure("__msync", VoidType.Instance));
         }
 
         private void RewriteMtspr()

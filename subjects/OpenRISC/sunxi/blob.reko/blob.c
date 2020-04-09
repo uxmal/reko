@@ -6161,6 +6161,9 @@ void fn0000F444(union Eq_n * r3, Eq_n r9, Eq_n r15, word32 VR)
 					globals->dw13778 = -0x03;
 					fn0000DF10(globals->a100B8, (word64) globals->t13980 + 0x000100B8, 0x23BE);
 					fn0000FA94();
+					word32 r14_n;
+					word32 r15_n;
+					fn0000C8A0(-1000, r15, out r14_n, out r15_n);
 				}
 				fn0000AEDC(0xF3F30000);
 				r2_n = fn00010570(r3, r9, r15, VR);
@@ -6280,12 +6283,12 @@ l0000F7FC:
 					bool F_n = r2_n == 0x00;
 					if (F_n)
 					{
-						word32 r9_n;
 						word32 r14_n;
+						word32 r9_n;
 						fn0000F368(r14_n, VR, out r9_n, out r14_n);
 					}
-					word32 r14_n;
 					word32 r9_n;
+					word32 r14_n;
 					fn00008574(r14_n, -4000, out r9_n, out r14_n, out r16_n);
 				}
 				fn0000E740(r16_n, VR);
@@ -6385,6 +6388,17 @@ void fn0000FA38(struct Eq_n ** r3, int32 r4, Eq_n r5, Eq_n r9)
 // 0000FA94: void fn0000FA94()
 void fn0000FA94()
 {
+	__msync();
+	__csync();
+	int32 r4_n = 0x00;
+	while (true)
+	{
+		__mtspr(0x2002, r4_n);
+		if (r4_n == -0x00001000)
+			break;
+		r4_n += -0x0010;
+	}
+	__psync();
 }
 
 // 0000FEDC: Register Eq_n fn0000FEDC(Register Eq_n r3, Register Eq_n r4, Register Eq_n r15, Register out Eq_n r11Out, Register out Eq_n r15Out)
