@@ -888,6 +888,7 @@ namespace Reko.Arch.X86
         }
 
         private static readonly Mutator<X86Disassembler> Rv = R("v");
+        private static readonly Mutator<X86Disassembler> Rw = R("w");
         private static readonly Mutator<X86Disassembler> Ry = R("y");
 
         // XMM operand specified by the modRm field of the modRM byte.

@@ -2749,6 +2749,13 @@ movzx	ax,byte ptr [bp+04]
             Assert.AreEqual("ffreep\tst(1)", instr.ToString());
         }
 
+        [Test]
+        public void X86Dis_XXX()
+        {
+            var instr = Disassemble32(0x0F, 0x00, 0xD0);
+            Assert.AreEqual("lldt\tax", instr.ToString());
+        }
+
         // Sad tests below
 
 #if false

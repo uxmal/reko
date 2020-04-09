@@ -2500,13 +2500,12 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        [Ignore("Find Intel definition for this instr")]
         public void X86rw_getsec()
         {
-            Run32bitTest(0x0F, 0x37, 0x42, 0x42);    // getsec
+            Run32bitTest(0x0F, 0x37);    // getsec
             AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|S--|10000000(2): 1 instructions",
+                "1|L--|edx_ebx = __getsec(eax)");
         }
 
         [Test]
@@ -3432,6 +3431,36 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|10000000(4): 1 instructions",
                 "1|L--|ebx = __movbe_32(eax)");
+        }
+
+        /// <summary>
+        /// This appears to be an obsolete 286 whose net effect is negligible.
+        /// </summary>
+        [Test]
+        public void X86Rw_fnsetpm()
+        {
+            Run32bitTest(0xDB, 0xE4);	// fnsetpm
+            AssertCode(
+                "0|L--|10000000(2): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
+        public void X86Rw_smsw()
+        {
+            Run32bitTest(0x0F, 0x01, 0xE0);	// smsw	ax
+            AssertCode(
+                "0|L--|10000000(3): 1 instructions",
+                "1|L--|eax = __smsw()");
+        }
+
+        [Test]
+        public void X86Rw_lmsw()
+        {
+            Run32bitTest(0x0F, 0x01, 0xF0);	// lmsw	ax
+            AssertCode(
+                "0|S--|10000000(3): 1 instructions",
+                "1|L--|__lmsw(ax)");
         }
     }
 }

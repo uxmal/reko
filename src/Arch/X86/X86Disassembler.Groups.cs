@@ -90,8 +90,10 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.sldt, InstrClass.System, Rv)),
                 new Group6Decoder(
                     Instr(Mnemonic.str, Ew),
-                    Instr(Mnemonic.str, Rv)),
-                Instr(Mnemonic.lldt, InstrClass.System, Ms),
+                    Instr(Mnemonic.str, Rw)),
+                new Group6Decoder(
+                    Instr(Mnemonic.lldt, InstrClass.System, Ms),
+                    Instr(Mnemonic.lldt, InstrClass.System, Rw)),
                 Instr(Mnemonic.ltr, Ew),
                 Instr(Mnemonic.verr, Ew),
                 Instr(Mnemonic.verw, Ew),
@@ -149,7 +151,7 @@ namespace Reko.Arch.X86
                     s_invalid,
                     Instr(Mnemonic.rdpkru),
                     Instr(Mnemonic.wrpkru)),
-                Instr(Mnemonic.lmsw, Ew),
+                Instr(Mnemonic.lmsw, InstrClass.System, Ew),
                 new Group7Decoder(
                     Instr(Mnemonic.invlpg, Mb),
 

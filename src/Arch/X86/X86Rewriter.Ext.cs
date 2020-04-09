@@ -84,6 +84,11 @@ namespace Reko.Arch.X86
                 Constant.True());
         }
 
+        private void RewriteLmsw()
+        {
+            m.SideEffect(host.PseudoProcedure("__lmsw", VoidType.Instance, SrcOp(instrCur.Operands[0])));
+        }
+
         private void RewriteLsl()
         {
             m.Assign(
@@ -134,6 +139,11 @@ namespace Reko.Arch.X86
             m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, SrcOp(instrCur.Operands[0])));
         }
 
+        private void RewriteSmsw()
+        {
+            var dst = SrcOp(instrCur.Operands[0]);
+            m.Assign(dst, host.PseudoProcedure("__smsw", dst.DataType));
+        }
 
         public void RewriteSfence()
         {

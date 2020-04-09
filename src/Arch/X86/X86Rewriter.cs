@@ -231,6 +231,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
                 case Mnemonic.fninit: RewriteFninit(); break;
                 case Mnemonic.fnop: m.Nop(); break;
+                case Mnemonic.fnsetpm: m.Nop(); break;
                 case Mnemonic.fpatan: RewriteFpatan(); break;
                 case Mnemonic.fprem: RewriteFprem(); break;
                 case Mnemonic.fprem1: RewriteFprem1(); break;
@@ -306,6 +307,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.lgdt: RewriteLxdt("__lgdt"); break;
                 case Mnemonic.lidt: RewriteLxdt("__lidt"); break;
                 case Mnemonic.lldt: RewriteLxdt("__lldt"); break;
+                case Mnemonic.lmsw: RewriteLmsw(); break;
                 case Mnemonic.@lock: RewriteLock(); break;
                 case Mnemonic.lods: RewriteStringInstruction(); break;
                 case Mnemonic.lodsb: RewriteStringInstruction(); break;
@@ -478,6 +480,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.sidt: RewriteSxdt("__sidt"); break;
                 case Mnemonic.vshufps: RewritePackedTernaryop("__vshufps", PrimitiveType.Real32); break;
                 case Mnemonic.sldt: RewriteSxdt("__sldt"); break;
+                case Mnemonic.smsw: RewriteSmsw(); break;
                 case Mnemonic.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;
                 case Mnemonic.sqrtsd: RewriteSqrtsd(); break;
                 case Mnemonic.stc: RewriteSetFlag(FlagM.CF, Constant.True()); break;
