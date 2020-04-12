@@ -1551,7 +1551,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x58EE, 0x26FC);    // svc $26FC(a6)
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|Mem0[a6 + 9980:byte] = V");
+                "1|L--|Mem0[a6 + 9980:byte] = Test(NO,V) ? 0xFF : 0x00");
         }
 
         [Test]
@@ -1734,6 +1734,16 @@ namespace Reko.UnitTests.Arch.M68k
                 "2|L--|v6 = SLICE(d4, word24, 8)",
                 "3|L--|d4 = SEQ(v6, v5)",
                 "4|L--|CVZNX = cond(v5)");
+        }
+
+        [Test]
+        public void M68krw_seq()
+        {
+            Given_UInt16s(0x57C4);  // seq d4
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|v5 = SLICE(d4, word24, 8)",
+                "2|L--|d4 = SEQ(v5, Test(EQ,Z) ? 0xFF : 0x00)");
         }
     }
 }

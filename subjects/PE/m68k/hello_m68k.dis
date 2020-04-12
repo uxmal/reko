@@ -454,7 +454,7 @@ l00001D60:
 	a2Out = a2_73
 	a5Out = a5_58
 	a6Out = a6_75
-	return (int32) (int8) SEQ(SLICE(d0_56, word31, 8), SLICE(cond(d0_56), bool, 2))
+	return (int32) (int8) SEQ(SLICE(d0_56, word24, 8), d0_56 != 0x00000000 ? 0xFF : 0x00)
 l00001D50:
 	word32 a2_80 = Mem18[a7_28 + 4:word32]
 	word32 a6_82 = Mem18[a6_27:word32]

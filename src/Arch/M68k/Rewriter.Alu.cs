@@ -254,7 +254,12 @@ namespace Reko.Arch.M68k
 
         private void RewriteScc(ConditionCode cc, FlagM flagsUsed)
         {
-            orw.RewriteMoveDst(instr.Operands[0], instr.Address, PrimitiveType.Byte, orw.FlagGroup(flagsUsed));
+            var cond = m.Conditional(
+                PrimitiveType.Byte,
+                m.Test(cc, orw.FlagGroup(flagsUsed)),
+                m.Byte(0xFF),
+                m.Byte(0x00));
+            orw.RewriteMoveDst(instr.Operands[0], instr.Address, PrimitiveType.Byte, cond);
         }
         
         private void RewriteSwap()

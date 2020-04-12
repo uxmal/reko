@@ -375,7 +375,7 @@ int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union E
 				a2Out = a2_n;
 				a5Out = a5_n;
 				a6Out = a6_n;
-				return (int32) (int8) SEQ(SLICE(d0_n, word31, 8), SLICE(cond(d0_n), bool, 2));
+				return (int32) (int8) SEQ(SLICE(d0_n, word24, 8), d0_n != 0x00 ? ~0x00 : 0x00);
 			}
 		}
 		else
