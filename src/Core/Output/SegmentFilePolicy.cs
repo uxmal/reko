@@ -141,10 +141,33 @@ namespace Reko.Core.Output
         private string SanitizeSegmentName(string name)
         {
             var sb = new StringBuilder();
-            foreach (var ch in name)
+            int n = name.Length;
+            int i;
+
+            // Skip leading unprintables.
+            for (i = 0; i < n; ++i)
             {
-                if (Char.IsLetterOrDigit(ch))
+                if (char.IsLetterOrDigit(name[i]))
+                    break;
+            }
+
+            bool emitUnderscore = false;
+            for (; i < n; ++i)
+            {
+                char ch = name[i];
+                if (char.IsLetterOrDigit(ch))
+                {
+                    if (emitUnderscore)
+                    {
+                        sb.Append('_');
+                        emitUnderscore = false;
+                    }
                     sb.Append(ch);
+                }
+                else
+                {
+                    emitUnderscore = true;
+                }
             }
             return sb.ToString();
         }
