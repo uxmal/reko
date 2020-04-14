@@ -76,5 +76,62 @@ namespace Reko.UnitTests.Core.Output
             Assert.AreEqual(1, procs.Count);
             Assert.AreEqual("fn00101000", procs[0].Name);
         }
+
+        [Test]
+        public void Segfp_Single_Segment_Two_procs()
+        {
+            Given_Executable(".text", 0x00100000, 0x4000);
+            Given_Procedure(0x00101000);
+            Given_Procedure(0x00101400);
+
+            var ofp = new SegmentFilePolicy(program);
+            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            Assert.AreEqual(1, placements.Length);
+            Assert.AreEqual("myprogram_text.asm", placements[0].Key);
+            var procs = placements[0].Value;
+            Assert.AreEqual(2, procs.Count);
+            Assert.AreEqual("fn00101000", procs[0].Name);
+            Assert.AreEqual("fn00101400", procs[1].Name);
+        }
+
+        [Test]
+        public void Segfp_Two_segments_two_procs()
+        {
+            Given_Executable(".text", 0x00100000, 0x4000);
+            Given_Executable(".init", 0x00200000, 0x4000);
+            Given_Procedure(0x00101000);
+            Given_Procedure(0x00201400);
+
+            var ofp = new SegmentFilePolicy(program);
+            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            Assert.AreEqual(2, placements.Length);
+            Assert.AreEqual("myprogram_text.asm", placements[0].Key);
+            Assert.AreEqual("myprogram_init.asm", placements[1].Key);
+            var procs = placements[0].Value;
+            Assert.AreEqual(1, procs.Count);
+            Assert.AreEqual("fn00101000", procs[0].Name);
+            procs = placements[1].Value;
+            Assert.AreEqual(1, procs.Count);
+            Assert.AreEqual("fn00201400", procs[0].Name);
+        }
+
+        // In binaries with large segments, we divide the segment up in to subregions,
+        // arbitrarily at 64-kiB boundaries. Users can always override this if they want.
+        [Test]
+        public void Segfp_large_segment()
+        {
+            Given_Executable(".text", 0x0010_0000, 0x10_0000);
+            Given_Procedure(0x00101000);
+            Given_Procedure(0x00113F00);
+            Given_Procedure(0x00133F00);
+
+            var ofp = new SegmentFilePolicy(program);
+            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            Assert.AreEqual(3, placements.Length);
+            Assert.AreEqual("myprogram_text_0000.asm", placements[0].Key);
+            Assert.AreEqual("myprogram_text_0001.asm", placements[1].Key);
+            Assert.AreEqual("myprogram_text_0003.asm", placements[2].Key);
+            Assert.IsTrue(placements.All(p => p.Value.Count == 1));
+        }
     }
 }

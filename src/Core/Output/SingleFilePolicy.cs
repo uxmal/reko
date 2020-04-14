@@ -27,7 +27,7 @@ using System.Text;
 namespace Reko.Core.Output
 {
     /// <summary>
-    /// This class implements the ad-hoc policy used by Reko in the beginning,
+    /// This class implements the ad-hoc policy originally used by Reko,
     /// namely all code goes into a single file.
     /// </summary>
     public class SingleFilePolicy : OutputFilePolicy

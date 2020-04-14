@@ -26,9 +26,13 @@ using System.Text;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// This <see cref="OutputFilePolicy" /> places procedures and global data objects in
+    /// files that are named after the segments of the decompiled binary.
+    /// </summary>
     public class SegmentFilePolicy : OutputFilePolicy
     {
-        private const int MaxKbSize = 64;
+        private const int MaxChunkSize = 64 * 1024;
         
         private string defaultFile;
         private string progname;
@@ -65,13 +69,20 @@ namespace Reko.Core.Output
         {
             if (program.SegmentMap.TryFindSegment(proc.EntryAddress, out var seg))
             {
-                if (!segmentFilenames.TryGetValue(seg, out var segFilename))
+                if (!segmentFilenames.TryGetValue(seg, out var filename))
                 {
                     var sanitizedSegName = SanitizeSegmentName(seg.Name);
-                    segFilename = $"{progname}_{sanitizedSegName}";
-                    segmentFilenames.Add(seg, segFilename);
+                    filename = $"{progname}_{sanitizedSegName}";
+                    segmentFilenames.Add(seg, filename);
                 }
-                return segFilename;
+                // If the segment is large, we need to subdivide it.
+                if (seg.Size > MaxChunkSize)
+                {
+                    var offset = proc.EntryAddress - seg.Address;
+                    var chunk = offset / MaxChunkSize;
+                    filename = $"{filename}_{chunk:X4}"; 
+                }
+                return filename;
             }
             else
             {
