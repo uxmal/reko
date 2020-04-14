@@ -1,0 +1,2662 @@
+void prvUnlockQueue(word32 r0, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r2 r3
+// Preserved: lr r1 r4 r5 r6 sp
+prvUnlockQueue_entry:
+l00000058:
+	vPortEnterCritical(cpsr)
+	word32 r4_133 = (int32) (int8) (word32) Mem11[r0 + 69:byte]
+	branch r4_133 <= 0x00000000 l00000098
+l0000006A:
+	branch Mem11[r0 + 36:word32] == 0x00000000 l00000098
+l0000006E:
+l00000080:
+	branch xTaskRemoveFromEventList(r0 + 0x00000024) == 0x00000000 l00000074
+l00000074:
+	word32 r3_41 = (uint32) (byte) (r4_133 - 0x00000001)
+	r4_133 = (int32) (int8) r3_41
+	branch r3_41 == 0x00000000 l00000098
+l0000008A:
+	vTaskMissedYield()
+	word32 r3_47 = (uint32) (byte) (r4_133 - 0x00000001)
+	r4_133 = (int32) (int8) r3_47
+	branch r3_47 != 0x00000000 l0000007C
+l0000007C:
+	branch Mem11[r0 + 36:word32] == 0x00000000 l00000098
+l00000098:
+	Mem58[r0 + 69:byte] = 0xFF
+	vPortExitCritical(cpsr)
+	vPortEnterCritical(cpsr)
+	word32 r4_101 = (int32) (int8) (word32) Mem58[r0 + 68:byte]
+	branch r4_101 <= 0x00000000 l000000DE
+l000000B0:
+	branch Mem58[r0 + 16:word32] == 0x00000000 l000000DE
+l000000B4:
+l000000C6:
+	branch xTaskRemoveFromEventList(r0 + 0x00000010) == 0x00000000 l000000BA
+l000000BA:
+	word32 r3_94 = (uint32) (byte) (r4_101 - 0x00000001)
+	r4_101 = (int32) (int8) r3_94
+	branch r3_94 == 0x00000000 l000000DE
+l000000D0:
+	vTaskMissedYield()
+	word32 r3_100 = (uint32) (byte) (r4_101 - 0x00000001)
+	r4_101 = (int32) (int8) r3_100
+	branch r3_100 != 0x00000000 l000000C2
+l000000C2:
+	branch Mem58[r0 + 16:word32] == 0x00000000 l000000DE
+l000000DE:
+	Mem111[r0 + 68:byte] = 0xFF
+l000000E8_thunk_vPortExitCritical:
+	vPortExitCritical(cpsr)
+	return
+prvUnlockQueue_exit:
+
+
+bool prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, word32 r7, word32 lr, ptr32 & r0Out, ptr32 & r7Out, ptr32 & lrOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r7:[0..31]
+// LiveOut: Z lr r0 r7
+// Trashed: NZCV lr r0 r1 r2 r3 r7
+// Preserved: r4 r5 r6 sp
+prvCopyDataToQueue_entry:
+l000000EC:
+	bool Z_201
+	word32 r5_114
+	word32 r4_121 = r0
+	word32 r0_106 = Mem11[r0 + 64:word32]
+	word32 r5_15 = Mem11[r0 + 56:word32]
+	branch r0_106 != 0x00000000 l00000102
+l00000102:
+	branch r2 != 0x00000000 l00000128
+l00000128:
+	word32 r6_29
+	memcpy(Mem11[r0 + 12:word32], r1, r0_106, r0, r5_15, r2, r7, lr, out r4_121, out r5_114, out r6_29, out r7, out lr)
+	word32 r3_36 = Mem11[r4_121 + 12:word32]
+	word32 r1_38 = Mem11[r4_121:word32]
+	Mem41[r4_121 + 12:word32] = r3_36
+	branch r3_36 >=u r1_38 l00000144
+l0000013E:
+	Mem46[r4_121 + 12:word32] = Mem41[r4_121 + 4:word32]
+l00000144:
+	Z_201 = SLICE(cond(r6_29 - 0x00000002), bool, 2) (alias)
+	branch r6_29 == 0x00000002 l00000158
+l00000158:
+	branch r5_114 != 0x00000000 l0000015C
+l0000015A:
+	r5_114 = 0x00000001
+l0000015C:
+	r0_106 = 0x00000000
+l00000148:
+	Mem57[r4_121 + 56:word32] = r5_114 + 0x00000001
+	r0Out = 0x00000000
+	r7Out = r7
+	lrOut = lr
+	return SLICE(cond(r5_114 + 0x00000001), bool, 2)
+l00000108:
+	word32 lr_64
+	word32 r4_69
+	word32 r5_70
+	word32 r6_71
+	word32 r7_72
+	memcpy(Mem11[r0 + 8:word32], r1, r0_106, r0, r5_15, r2, r7, lr, out r4_69, out r5_70, out r6_71, out r7_72, out lr_64)
+	word32 r2_79 = Mem11[r4_69 + 4:word32]
+	word32 r3_80 = Mem11[r4_69 + 8:word32] + Mem11[r4_69 + 64:word32]
+	Mem82[r4_69 + 8:word32] = r3_80
+	branch r3_80 <u r2_79 l00000150
+l00000150:
+	Mem87[r4_69 + 56:word32] = r5_70 + 0x00000001
+	r0Out = r6_71
+	r7Out = r7_72
+	lrOut = lr_64
+	return SLICE(cond(r5_70 + 0x00000001), bool, 2)
+l0000011C:
+	Mem96[r4_69 + 8:word32] = Mem82[r4_69:word32]
+	Mem97[r4_69 + 56:word32] = r5_70 + 0x00000001
+	r0Out = r6_71
+	r7Out = r7_72
+	lrOut = lr_64
+	return SLICE(cond(r5_70 + 0x00000001), bool, 2)
+l000000F6:
+	word32 r6_102 = Mem11[r0:word32]
+	branch r6_102 == 0x00000000 l00000160
+l00000160:
+	r0_106 = xTaskPriorityDisinherit(Mem11[r0 + 4:word32], out lr)
+	Mem116[r0 + 4:word32] = r6_102
+	r5_114 = r5_15 + 0x00000001
+	Z_201 = SLICE(cond(r5_15 + 0x00000001), bool, 2) (alias)
+l000000FC:
+	r5_114 = r5_15 + 0x00000001
+	Z_201 = SLICE(cond(r5_15 + 0x00000001), bool, 2) (alias)
+l000000FE:
+	Mem123[r4_121 + 56:word32] = r5_114
+	r0Out = r0_106
+	r7Out = r7
+	lrOut = lr
+	return Z_201
+prvCopyDataToQueue_exit:
+
+
+word32 prvCopyDataFromQueue(word32 r0, word32 r1, word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
+// LiveOut: lr r4 r5 r6 r7
+// Trashed: lr r0 r1 r2 r3 r4 r5 r6 r7
+// Preserved: NZCV sp
+prvCopyDataFromQueue_entry:
+l0000016C:
+	word32 r2_5 = Mem0[r0 + 64:word32]
+	branch r2_5 == 0x00000000 l0000018C
+l0000018C:
+	r5Out = r5
+	r6Out = r6
+	r7Out = r7
+	lrOut = lr
+	return r4
+l00000170:
+	word32 r4_12 = Mem10[r0 + 4:word32]
+	word32 r1_13 = Mem10[r0 + 12:word32] + r2_5
+	Mem15[r0 + 12:word32] = r1_13
+	branch r1_13 <u r4_12 l00000182
+l00000180_1:
+	r1_13 = Mem15[r0:word32]
+l00000182:
+	Mem20[r0 + 12:word32] = r1_13
+l00000188_thunk_memcpy:
+	word32 lr_35
+	word32 r4_40
+	word32 r5_41
+	word32 r6_42
+	word32 r7_43
+	memcpy(r1, r1_13, r2_5, r4, r5, r6, r7, lr, out r4_40, out r5_41, out r6_42, out r7_43, out lr_35)
+	r5Out = r5_41
+	r6Out = r6_42
+	r7Out = r7_43
+	lrOut = lr_35
+	return r4_40
+prvCopyDataFromQueue_exit:
+
+
+word32 xQueueGenericSend(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut: lr
+// Trashed: NZCV lr r0 r1 r2 r3
+// Preserved: r10 r4 r5 r6 r7 r8 r9 sp
+xQueueGenericSend_entry:
+l00000190:
+	word32 r5_124 = 0x00000000
+	word32 r9_31 = Mem27[0x000002A0:word32]
+l000001F8:
+	vPortEnterCritical(cpsr)
+	branch Mem40[r0 + 56:word32] <u Mem40[r0 + 60:word32] l00000246
+l00000204:
+	branch r3 == 0x00000002 l00000246
+l00000246:
+	word32 lr_57
+	word32 r0_58
+	word32 r7_402
+	prvCopyDataToQueue(r0, r1, r3, r3, lr, out r0_58, out r7_402, out lr_57)
+	branch Mem40[r0 + 36:word32] != 0x00000000 l00000290
+l00000290:
+	branch xTaskRemoveFromEventList(r0 + 0x00000024) != 0x00000000 l00000256
+l0000029C:
+l00000254:
+	branch r0_58 == 0x00000000 l00000266
+l00000256:
+	Mem82[Mem40[0x000002A0:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l00000266:
+	vPortExitCritical(cpsr)
+	return lr_57
+l00000208:
+	branch r2 == 0x00000000 l00000272
+l00000272:
+	vPortExitCritical(cpsr)
+	return lr
+l0000020C:
+	branch r5_124 != 0x00000000 l000001A8
+l00000210:
+	vTaskSetTimeOutState(fp - 40)
+l000001A8:
+	vPortExitCritical(cpsr)
+	vTaskSuspendAll()
+	vPortEnterCritical(cpsr)
+	branch (word32) Mem40[r0 + 68:byte] != 0x000000FF l000001C0
+l000001BC_1:
+	Mem156[r0 + 68:byte] = 0x00
+l000001C0:
+	branch (word32) Mem158[r0 + 69:byte] != 0x000000FF l000001CC
+l000001C8_1:
+	Mem163[r0 + 69:byte] = 0x00
+l000001CC:
+	vPortExitCritical(cpsr)
+	branch xTaskCheckForTimeOut(fp - 40, fp - 44, cpsr) != 0x00000000 l0000027E
+l0000027E:
+	prvUnlockQueue(r0, cpsr)
+	xTaskResumeAll(cpsr)
+	return lr
+xQueueGenericSend_exit:
+l000001DC:
+	vPortEnterCritical(cpsr)
+	branch Mem206[r0 + 56:word32] == Mem206[r0 + 60:word32] l00000218
+l00000218:
+	vPortExitCritical(cpsr)
+	vTaskPlaceOnEventList(r0 + 0x00000010, r2)
+	prvUnlockQueue(r0, cpsr)
+	branch xTaskResumeAll(cpsr) != 0x00000000 l000001F6
+l00000234:
+	Mem264[r9_31:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l000001E8:
+	vPortExitCritical(cpsr)
+	prvUnlockQueue(r0, cpsr)
+	xTaskResumeAll(cpsr)
+l000001F6:
+	r5_124 = 0x00000001
+
+
+void xQueuePeekFromISR(word32 r0, word32 r1, word32 r7, word32 lr, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r7:[0..31]
+// LiveOut:
+// Trashed: lr r0 r1 r2 r3 r7
+// Preserved: r4 r5 r6 sp
+xQueuePeekFromISR_entry:
+l000002A4:
+	word32 r5_13 = __mrs(cpsr)
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	branch Mem11[r0 + 56:word32] != 0x00000000 l000002C6
+l000002C6:
+	word32 r5_27
+	word32 r6_28
+	word32 r7_56
+	word32 lr_57
+	Mem30[prvCopyDataFromQueue(r0, r1, r0, r5_13, Mem11[r0 + 12:word32], r7, lr, out r5_27, out r6_28, out r7_56, out lr_57) + 12:word32] = r6_28
+	__msr(cpsr, r5_27)
+	return
+l000002BE:
+	__msr(cpsr, r5_13)
+	return
+xQueuePeekFromISR_exit:
+
+
+word32 xQueueGenericReceive(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, word32 cpsr, ptr32 & lrOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut: lr r0
+// Trashed: NZCV lr r0 r1 r2 r3
+// Preserved: r10 r4 r5 r6 r7 r8 r9 sp
+xQueueGenericReceive_entry:
+l000002D8:
+	word32 r5_133 = 0x00000000
+	word32 r8_31 = Mem27[0x00000424:word32]
+l0000030A:
+	vPortEnterCritical(cpsr)
+	word32 r6_41 = Mem40[r0 + 56:word32]
+	branch r6_41 != 0x00000000 l000003B0
+l000003B0:
+	word32 lr_51
+	word32 r5_56
+	word32 r6_57
+	word32 r7_483
+	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12:word32], r6_41, 0x00000000, lr, out r5_56, out r6_57, out r7_483, out lr_51)
+	branch r3 != 0x00000000 l000003E8
+l000003E8:
+	word32 r3_62 = Mem40[r4_55 + 36:word32]
+	Mem63[r4_55 + 12:word32] = r5_56
+	branch r3_62 == 0x00000000 l000003CC
+l000003F0:
+	branch xTaskRemoveFromEventList(r4_55 + 0x00000024) == 0x00000000 l000003CC
+l000003C0:
+	word32 r3_76 = Mem40[r4_55:word32]
+	Mem79[r4_55 + 56:word32] = r6_57 - 0x00000001
+	branch r3_76 == 0x00000000 l0000041C
+l0000041C:
+	Mem88[r4_55 + 4:word32] = pvTaskIncrementMutexHeldCount()
+l000003C8:
+	branch Mem90[r4_55 + 16:word32] != 0x00000000 l0000040E
+l0000040E:
+	branch xTaskRemoveFromEventList(r4_55 + 0x00000010) != 0x00000000 l000003FC
+l000003FC:
+	Mem105[Mem103[0x00000424:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l0000041A:
+l000003CC:
+	vPortExitCritical(cpsr)
+	lrOut = lr_51
+	return 0x00000001
+l00000314:
+	branch r2 == 0x00000000 l000003A4
+l0000031A:
+	branch r5_133 == 0x00000000 l0000039C
+l0000039C:
+	vTaskSetTimeOutState(fp - 40)
+l0000031E:
+	vPortExitCritical(cpsr)
+	vTaskSuspendAll()
+	vPortEnterCritical(cpsr)
+	branch (word32) Mem40[r0 + 68:byte] != 0x000000FF l00000336
+l00000332_1:
+	Mem164[r0 + 68:byte] = 0x00
+l00000336:
+	branch (word32) Mem166[r0 + 69:byte] != 0x000000FF l00000342
+l0000033E_1:
+	Mem171[r0 + 69:byte] = 0x00
+l00000342:
+	vPortExitCritical(cpsr)
+	branch xTaskCheckForTimeOut(fp - 40, fp - 44, cpsr) == 0x00000000 l000002F0
+l000002F0:
+	vPortEnterCritical(cpsr)
+	branch Mem202[r0 + 56:word32] == 0x00000000 l0000036A
+l0000036A:
+	vPortExitCritical(cpsr)
+	branch Mem202[r0:word32] == 0x00000000 l000003D8
+l000003D8:
+	vPortEnterCritical(cpsr)
+	vTaskPriorityInherit(Mem202[r0 + 4:word32])
+	vPortExitCritical(cpsr)
+l00000372:
+	vTaskPlaceOnEventList(r0 + 0x00000024, r2)
+	prvUnlockQueue(r0, cpsr)
+	branch xTaskResumeAll(cpsr) != 0x00000000 l00000308
+l0000038A:
+	Mem272[r8_31:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l000002FA:
+	vPortExitCritical(cpsr)
+	prvUnlockQueue(r0, cpsr)
+	xTaskResumeAll(cpsr)
+l00000352:
+	prvUnlockQueue(r0, cpsr)
+	xTaskResumeAll(cpsr)
+	vPortEnterCritical(cpsr)
+	branch Mem202[r0 + 56:word32] == 0x00000000 l000003A4
+l000003A4:
+	vPortExitCritical(cpsr)
+	lrOut = lr
+	return 0x00000000
+xQueueGenericReceive_exit:
+l00000364:
+	vPortExitCritical(cpsr)
+l00000308:
+	r5_133 = 0x00000001
+
+
+void uxQueueMessagesWaiting(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r2
+// Preserved: r4 sp
+uxQueueMessagesWaiting_entry:
+l00000428:
+	vPortEnterCritical(cpsr)
+	vPortExitCritical(cpsr)
+	return
+uxQueueMessagesWaiting_exit:
+
+
+void uxQueueSpacesAvailable(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r2
+// Preserved: r3 r4 r5 sp
+uxQueueSpacesAvailable_entry:
+l0000043C:
+	vPortEnterCritical(cpsr)
+	vPortExitCritical(cpsr)
+	return
+uxQueueSpacesAvailable_exit:
+
+
+void vQueueDelete()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+vQueueDelete_entry:
+l00000454:
+l00000454_thunk_vPortFree:
+	vPortFree()
+	return
+vQueueDelete_exit:
+
+
+void xQueueGenericSendFromISR(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2
+// Preserved: r3 r4 r5 r6 r7 sp
+xQueueGenericSendFromISR_entry:
+l00000458:
+	word32 r6_17 = __mrs(cpsr)
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	branch Mem15[r0 + 56:word32] <u Mem15[r0 + 60:word32] l00000482
+l00000476:
+	branch r3 == 0x00000002 l00000482
+l00000482:
+	word32 r4_32 = (int32) (int8) (word32) Mem15[r0 + 69:byte]
+	word32 r0_162
+	word32 lr_39
+	word32 r7_44
+	branch prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_162, out r7_44, out lr_39) l000004A6
+l000004A6:
+	branch Mem15[r0 + 36:word32] == 0x00000000 l0000049E
+l000004AC:
+	branch xTaskRemoveFromEventList(r0 + 0x00000024) == 0x00000000 l0000049E
+l000004B8:
+	branch r7_44 == 0x00000000 l0000049E
+l000004BC:
+	Mem66[r7_44:word32] = 0x00000001
+l00000496:
+	Mem70[r0 + 69:byte] = (byte) (int32) (int8) (r4_32 + 0x00000001)
+l0000049E:
+	__msr(cpsr, r6_17)
+	return
+l0000047A:
+l0000047C:
+	__msr(cpsr, r6_17)
+	return
+xQueueGenericSendFromISR_exit:
+
+
+void xQueueGiveFromISR(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2
+// Preserved: r3 r4 r5 sp
+xQueueGiveFromISR_entry:
+l000004C4:
+	word32 r4_13 = __mrs(cpsr)
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	word32 r2_16 = Mem11[r0 + 56:word32]
+	branch r2_16 >=u Mem11[r0 + 60:word32] l00000500
+l00000500:
+	__msr(cpsr, r4_13)
+	return
+l000004E2:
+	word32 r3_28 = (int32) (int8) (word32) Mem11[r0 + 69:byte]
+	Mem29[r0 + 56:word32] = r2_16 + 0x00000001
+	branch r2_16 == 0x00000001 l00000508
+l00000508:
+	branch Mem29[r0 + 36:word32] == 0x00000000 l000004F8
+l0000050E:
+	branch xTaskRemoveFromEventList(r0 + 0x00000024) == 0x00000000 l000004F8
+l0000051A:
+	branch r1 == 0x00000000 l000004F8
+l0000051E:
+	Mem51[r1:word32] = 0x00000001
+l000004F0:
+	Mem55[r0 + 69:byte] = (byte) (int32) (int8) (r3_28 + 0x00000001)
+l000004F8:
+l000004FA:
+	__msr(cpsr, r4_13)
+	return
+xQueueGiveFromISR_exit:
+
+
+void xQueueReceiveFromISR(word32 r0, word32 r1, word32 r2, word32 lr, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2 r3
+// Preserved: r4 r5 r6 r7 r8 sp
+xQueueReceiveFromISR_entry:
+l00000524:
+	word32 r6_17 = __mrs(cpsr)
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	word32 r4_20 = Mem15[r0 + 56:word32]
+	branch r4_20 != 0x00000000 l0000054A
+l0000054A:
+	word32 lr_28
+	word32 r5_33
+	word32 r7_35
+	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, (int32) (int8) (word32) Mem15[r0 + 68:byte], r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_28)
+	Mem39[r7_35 + 56:word32] = r4_32 - 0x00000001
+	branch r4_32 == 0x00000001 l00000572
+l00000572:
+	branch Mem39[r7_35 + 16:word32] == 0x00000000 l00000568
+l00000578:
+	branch xTaskRemoveFromEventList(r7_35 + 0x00000010) == 0x00000000 l00000568
+l00000584:
+	branch r2 == 0x00000000 l00000568
+l0000058A:
+	Mem57[r2:word32] = 0x00000001
+l00000560:
+	Mem61[r7_35 + 68:byte] = (byte) (int32) (int8) (r5_33 + 0x00000001)
+l00000568:
+	__msr(cpsr, r6_17)
+	return
+l00000540:
+l00000542:
+	__msr(cpsr, r6_17)
+	return
+xQueueReceiveFromISR_exit:
+
+
+void xQueueIsQueueEmptyFromISR(word32 r0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31]
+// LiveOut:
+// Trashed: NZC r0
+// Preserved: sp
+xQueueIsQueueEmptyFromISR_entry:
+l00000594:
+	__clz(Mem0[r0 + 56:word32])
+	return
+xQueueIsQueueEmptyFromISR_exit:
+
+
+void xQueueIsQueueFullFromISR(word32 r0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31]
+// LiveOut:
+// Trashed: NZC r0 r3
+// Preserved: sp
+xQueueIsQueueFullFromISR_entry:
+l000005A0:
+	__clz(Mem0[r0 + 60:word32] - Mem0[r0 + 56:word32])
+	return
+xQueueIsQueueFullFromISR_exit:
+
+
+void uxQueueMessagesWaitingFromISR()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r0
+// Preserved: sp
+uxQueueMessagesWaitingFromISR_entry:
+l000005B0:
+	return
+uxQueueMessagesWaitingFromISR_exit:
+
+
+void xQueueGetMutexHolder(word32 r0, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r2 r3
+// Preserved: r4 sp
+xQueueGetMutexHolder_entry:
+l000005B4:
+	vPortEnterCritical(cpsr)
+	branch Mem7[r0:word32] != 0x00000000 l000005CA
+l000005CA:
+	vPortExitCritical(cpsr)
+	return
+l000005C0:
+	vPortExitCritical(cpsr)
+	return
+xQueueGetMutexHolder_exit:
+
+
+void xQueueTakeMutexRecursive(word32 r0, word32 r1, word32 lr, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2 r3
+// Preserved: r4 r5 r6 sp
+xQueueTakeMutexRecursive_entry:
+l000005D4:
+	branch Mem11[r0 + 4:word32] == xTaskGetCurrentTaskHandle() l000005FA
+l000005FA:
+	Mem25[r0 + 12:word32] = Mem11[r0 + 12:word32] + 0x00000001
+	return
+l000005E4:
+	word32 lr_92
+	branch xQueueGenericReceive(r0, 0x00000000, r1, 0x00000000, lr, cpsr, out lr_92) == 0x00000000 l000005F8
+l000005F2:
+	Mem47[r0 + 12:word32] = Mem11[r0 + 12:word32] + 0x00000001
+l000005F8:
+	return
+xQueueTakeMutexRecursive_exit:
+
+
+void xQueueGiveMutexRecursive(word32 r0, word32 lr, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2
+// Preserved: r3 r4 r5 sp
+xQueueGiveMutexRecursive_entry:
+l00000604:
+	branch Mem11[r0 + 4:word32] == xTaskGetCurrentTaskHandle() l00000616
+l00000616:
+	word32 r3_19 = Mem11[r0 + 12:word32]
+	Mem22[r0 + 12:word32] = r3_19 - 0x00000001
+	branch r3_19 == 0x00000001 l00000622
+l00000622:
+	xQueueGenericSend(r0, r3_19 - 0x00000001, r3_19 - 0x00000001, r3_19 - 0x00000001, lr, cpsr)
+	return
+l0000061E:
+	return
+l00000612:
+	return
+xQueueGiveMutexRecursive_exit:
+
+
+void xQueueGenericReset(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 r6 sp
+xQueueGenericReset_entry:
+l00000630:
+	vPortEnterCritical(cpsr)
+	word32 r3_25 = Mem11[r0 + 64:word32]
+	word32 r2_28 = Mem11[r0 + 60:word32] * r3_25
+	word32 r0_27 = Mem11[r0:word32]
+	Mem33[r0 + 56:word32] = 0x00000000
+	Mem34[r0 + 4:word32] = r2_28 + r0_27
+	Mem35[r0 + 68:byte] = 0xFF
+	Mem36[r0 + 12:word32] = r2_28 - r3_25 + r0_27
+	Mem37[r0 + 8:word32] = r0_27
+	Mem38[r0 + 69:byte] = 0xFF
+	branch r1 != 0x00000000 l00000690
+l00000690:
+	vListInitialise(r0 + 0x00000010)
+	vListInitialise(r0 + 0x00000024)
+	vPortExitCritical(cpsr)
+	return
+l00000660:
+	branch Mem38[r0 + 16:word32] != 0x00000000 l0000066C
+l0000066C:
+	branch xTaskRemoveFromEventList(r0 + 0x00000010) == 0x00000000 l00000664
+l00000678:
+	Mem71[Mem38[0x000006A8:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+	vPortExitCritical(cpsr)
+	return
+l00000664:
+	vPortExitCritical(cpsr)
+	return
+xQueueGenericReset_exit:
+
+
+void xQueueGenericCreate(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r1 r2 r3
+// Preserved: r4 r5 r6 sp
+xQueueGenericCreate_entry:
+l000006AC:
+	word32 r0_20 = pvPortMalloc(r0 * r1 + 0x00000048, cpsr)
+	branch r0_20 == 0x00000000 l000006D4
+l000006C0:
+	branch r1 == 0x00000000 l000006D8
+l000006D8:
+	Mem29[r0_20:word32] = r0_20
+l000006C2:
+	Mem31[r0_20:word32] = r0_20 + 0x00000048
+l000006C8:
+	Mem34[r0_20 + 60:word32] = r0
+	Mem36[r0_20 + 64:word32] = r1
+	xQueueGenericReset(r0_20, 0x00000001, cpsr)
+l000006D4:
+	return
+xQueueGenericCreate_exit:
+
+
+void xQueueCreateMutex(word32 lr, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2 r3
+// Preserved: r4 sp
+xQueueCreateMutex_entry:
+l000006DC:
+	xQueueGenericCreate(0x00000001, 0x00000000, cpsr)
+	branch 0x00000001 == 0x00000000 l000006FC
+l000006EC:
+	Mem22[0x00000005:word32] = 0x00000000
+	Mem23[0x00000001:word32] = 0x00000000
+	Mem24[0x0000000D:word32] = 0x00000000
+	xQueueGenericSend(0x00000001, 0x00000000, 0x00000000, 0x00000000, lr, cpsr)
+l000006FC:
+	return
+xQueueCreateMutex_exit:
+
+
+void prvInitialiseNewTask(word32 r0, word32 r1, word32 r2, word32 r3, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2
+// Preserved: fp r10 r3 r4 r5 r6 r7 r8 r9 sp
+prvInitialiseNewTask_entry:
+l00000700:
+	word32 r3_36 = r1 - 0x00000001 + 1
+	word32 r5_38 = Mem23[dwArg08 + 80:word32] + (r2 + 0x3FFFFFFF << 0x00000002) & ~0x00000007
+	word32 r0_41 = dwArg08 + 0x00000054
+	word32 r2_42 = dwArg00 & ~0x80000000
+l0000072E:
+	Mem47[r0_41:byte] = (byte) (word32) Mem44[r3_36 + 0:byte]
+	r3_36 = r3_36 + 1
+	r0_41 = r0_41 + 1
+	branch (word32) Mem47[r3_36:byte] == 0x00000000 l0000073E
+l0000073A:
+	branch r3_36 != r1 + 0x00000002 l0000072E
+l0000073E:
+	branch r2_42 <u 0x00000001 l00000744
+l00000742_1:
+	r2_42 = 0x00000001
+l00000744:
+	Mem65[dwArg08 + 76:word32] = r2_42
+	Mem66[dwArg08 + 88:word32] = r2_42
+	Mem68[dwArg08 + 86:byte] = 0x00
+	Mem69[dwArg08 + 92:word32] = 0x00000000
+	vListInitialiseItem(dwArg08 + 0x00000024)
+	vListInitialiseItem(dwArg08 + 0x00000038)
+	Mem74[dwArg08 + 56:word32] = 0x00000002 - r2_42
+	word32 r2_75 = Mem74[dwArg08 + 80:word32]
+	Mem85[dwArg08 + 48:word32] = dwArg08
+	Mem86[dwArg08 + 68:word32] = dwArg08
+	vPortStoreTaskMPUSettings(dwArg08 + 0x00000004, dwArg0C, r2_75, r2)
+	Mem95[dwArg08 + 96:word32] = 0x00000000
+	Mem100[dwArg08 + 100:byte] = 0x00
+	Mem122[dwArg08:word32] = pxPortInitialiseStack(r5_38, r0, r3, dwArg00 >> 0x0000001F)
+	branch dwArg04 == 0x00000000 l00000792
+l00000790:
+	Mem123[dwArg04:word32] = dwArg08
+l00000792:
+	return
+prvInitialiseNewTask_exit:
+
+
+void prvAddNewTaskToReadyList(word32 r0, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 r6 r7 r8 sp
+prvAddNewTaskToReadyList_entry:
+l00000798:
+	word32 r0_60
+	word32 r4_16 = Mem15[0x00000854:word32]
+	vPortEnterCritical(cpsr)
+	Mem28[r4_16:word32] = Mem15[r4_16:word32] + 0x00000001
+	branch Mem28[r4_16 + 4:word32] == 0x00000000 l00000812
+l00000812:
+	Mem32[r4_16 + 4:word32] = r0
+	branch Mem32[r4_16:word32] != 0x00000001 l000007B4
+l0000081A:
+	vListInitialise(r4_16 + 0x00000008)
+	vListInitialise(r4_16 + 0x0000001C)
+	vListInitialise(r4_16 + 0x00000030)
+	vListInitialise(r4_16 + 0x00000044)
+	vListInitialise(r4_16 + 0x00000058)
+	Mem59[r4_16 + 108:word32] = r4_16 + 0x00000030
+	r0_60 = Mem59[r0 + 76:word32]
+	Mem61[r4_16 + 112:word32] = r4_16 + 0x00000044
+l000007B0:
+	branch Mem28[r4_16 + 116:word32] == 0x00000000 l00000800
+l00000800:
+	r0_60 = Mem28[r0 + 76:word32]
+	branch Mem28[Mem28[r4_16 + 4:word32] + 76:word32] >u r0_60 l00000810
+l0000080E_1:
+	Mem69[r4_16 + 4:word32] = r0
+l00000810:
+l000007B4:
+	r0_60 = Mem71[r0 + 76:word32]
+l000007BA:
+	word32 r2_81 = Mem78[r4_16 + 120:word32]
+	Mem95[r4_16 + 124:word32] = 0x00000001 << r0_60 | Mem78[r4_16 + 124:word32]
+	Mem96[r4_16 + 120:word32] = r2_81 + 0x00000001
+	vListInsertEnd(r4_16 + 0x00000008 + r0_60 * 0x00000014, r0 + 0x00000024)
+	vPortExitCritical(cpsr)
+	branch Mem96[r4_16 + 116:word32] == 0x00000000 l000007FC
+l000007E2:
+	branch Mem96[Mem96[r4_16 + 4:word32] + 76:word32] >=u Mem96[r0 + 76:word32] l000007FC
+l000007EC:
+	Mem120[Mem96[0x00000858:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l000007FC:
+	return
+prvAddNewTaskToReadyList_exit:
+
+
+void prvAddCurrentTaskToDelayedList.isra.0(word32 r0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: lr r4 r5 r6 sp
+prvAddCurrentTaskToDelayedList.isra.0_entry:
+l0000085C:
+	word32 r4_12 = Mem11[0x000008B0:word32]
+	word32 r6_15 = Mem11[r4_12 + 128:word32]
+	branch uxListRemove(Mem11[r4_12 + 4:word32] + 0x00000024) != 0x00000000 l00000880
+l00000870:
+	Mem34[r4_12 + 124:word32] = Mem11[r4_12 + 124:word32] & ~(0x00000001 << Mem11[Mem11[r4_12 + 4:word32] + 76:word32])
+l00000880:
+	word32 r5_37 = r0 + r6_15
+	Mem42[Mem39[r4_12 + 4:word32] + 36:word32] = r5_37
+	branch r6_15 >u r5_37 l000008A2
+l000008A2:
+	word32 r0_44 = Mem42[r4_12 + 112:word32]
+	word32 r1_45 = Mem42[r4_12 + 4:word32]
+l000008AC_thunk_vListInsert:
+	vListInsert(r0_44, r1_45 + 0x00000024)
+	return
+l0000088A:
+	vListInsert(Mem42[r4_12 + 108:word32], Mem42[r4_12 + 4:word32] + 0x00000024)
+	branch r5_37 >=u Mem42[r4_12 + 132:word32] l000008A0
+l0000089C_1:
+	Mem73[r4_12 + 132:word32] = r5_37
+l000008A0:
+	return
+prvAddCurrentTaskToDelayedList.isra.0_exit:
+
+
+word32 xTaskCreate(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr, word32 dwArg00, word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31] Stack +0004:[0..31]
+// LiveOut: r0
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r10 r4 r5 r6 r7 r8 r9 sp
+xTaskCreate_entry:
+l000008B4:
+	word32 r0_32 = pvPortMalloc(r2 << 2, cpsr)
+	branch r0_32 == 0x00000000 l00000904
+l00000904:
+	return 0xFFFFFFFF
+l000008CA:
+	word32 r0_130
+	word32 r0_52 = pvPortMalloc(0x00000068, cpsr)
+	branch r0_52 == 0x00000000 l0000090E
+l0000090E:
+	vPortFree()
+	r0_130 = 0xFFFFFFFF
+l000008D6:
+	Mem64[r0_52 + 80:word32] = r0_32
+	Mem66[r0_52 + 101:byte] = 0x00
+	prvInitialiseNewTask(r0, r1, r2, r3, dwArg00, dwArg04, r0_52, 0x00000000)
+	prvAddNewTaskToReadyList(r0_52, cpsr)
+	r0_130 = 0x00000001
+l000008FE:
+	return r0_130
+xTaskCreate_exit:
+
+
+void xTaskCreateRestricted(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: lr r0 r1 r2 r3
+// Preserved: NZCV r4 r5 r6 r7 sp
+xTaskCreateRestricted_entry:
+l0000091C:
+	branch Mem0[r0 + 20:word32] == 0x00000000 l0000096A
+l0000096A:
+	return
+l00000920:
+	word32 r0_24 = pvPortMalloc(0x00000068, cpsr)
+	branch r0_24 == 0x00000000 l00000964
+l00000964:
+l00000932:
+	word32 r1_35 = Mem17[r0 + 20:word32]
+	Mem36[r0_24 + 101:byte] = 0x01
+	word32 r3_37 = Mem36[r0 + 12:word32]
+	word32 r2_38 = (word32) Mem36[r0 + 8:word16]
+	word32 lr_39 = Mem36[r0 + 16:word32]
+	Mem40[r0_24 + 80:word32] = r1_35
+	prvInitialiseNewTask(Mem43[r0:word32], Mem40[r0 + 4:word32], r2_38, r3_37, lr_39, r1, r0_24, r0 + 24)
+	prvAddNewTaskToReadyList(r0_24, cpsr)
+l00000960:
+	return
+xTaskCreateRestricted_exit:
+
+
+void vTaskAllocateMPURegions(word32 r0, word32 r1)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: sp
+vTaskAllocateMPURegions_entry:
+l00000970:
+	branch r0 == 0x00000000 l0000097C
+l0000097C:
+	word32 r0_6 = Mem0[Mem0[0x0000098C:word32] + 4:word32]
+l00000986_thunk_vPortStoreTaskMPUSettings:
+	vPortStoreTaskMPUSettings(r0_6 + 0x00000004, r1, 0x00000000, 0x00000000)
+	return
+l00000972:
+l00000978_thunk_vPortStoreTaskMPUSettings:
+	vPortStoreTaskMPUSettings(r0 + 0x00000004, r1, 0x00000000, 0x00000000)
+	return
+vTaskAllocateMPURegions_exit:
+
+
+void vTaskStartScheduler(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: lr r4 sp
+vTaskStartScheduler_entry:
+l00000990:
+	word32 r4_9 = Mem8[0x000009E0:word32]
+	word32 r0_19 = xTaskCreate(Mem13[0x000009E8:word32], Mem13[0x000009E4:word32], 0x0000003B, 0x00000000, cpsr, 0x80000000, r4_9 + 0x00000088)
+	branch r0_19 == 0x00000001 l000009B6
+l000009B6:
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	Mem32[r4_9 + 132:word32] = 0xFFFFFFFF
+	Mem33[r4_9 + 116:word32] = r0_19
+	Mem34[r4_9 + 128:word32] = 0x00000000
+l000009DC_thunk_xPortStartScheduler:
+	xPortStartScheduler(cpsr)
+	return
+l000009B2:
+	return
+vTaskStartScheduler_exit:
+
+
+void vTaskEndScheduler(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: r2 r3
+// Preserved: sp
+vTaskEndScheduler_entry:
+l000009EC:
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	Mem8[Mem0[0x00000A08:word32] + 116:word32] = 0x00000000
+l00000A02_thunk_vPortEndScheduler:
+	vPortEndScheduler()
+	return
+vTaskEndScheduler_exit:
+
+
+bool vTaskSuspendAll()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: C
+// Trashed: NZCV r2 r3
+// Preserved: sp
+vTaskSuspendAll_entry:
+l00000A0C:
+	word32 r2_4 = Mem0[0x00000A1C:word32]
+	word32 r3_5 = Mem0[r2_4 + 140:word32]
+	Mem8[r2_4 + 140:word32] = r3_5 + 0x00000001
+	return SLICE(cond(r3_5 + 0x00000001), bool, 1)
+vTaskSuspendAll_exit:
+
+
+void xTaskGetTickCount()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r0 r3
+// Preserved: sp
+xTaskGetTickCount_entry:
+l00000A20:
+	return
+xTaskGetTickCount_exit:
+
+
+void xTaskGetTickCountFromISR()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r0 r3
+// Preserved: sp
+xTaskGetTickCountFromISR_entry:
+l00000A2C:
+	return
+xTaskGetTickCountFromISR_exit:
+
+
+void uxTaskGetNumberOfTasks()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r0 r3
+// Preserved: sp
+uxTaskGetNumberOfTasks_entry:
+l00000A38:
+	return
+uxTaskGetNumberOfTasks_exit:
+
+
+void pcTaskGetName(word32 r0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r3
+// Preserved: sp
+pcTaskGetName_entry:
+l00000A44:
+	branch r0 == 0x00000000 l00000A4A
+l00000A4A:
+	return
+l00000A46:
+	return
+pcTaskGetName_exit:
+
+
+void xTaskGenericNotify(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2
+// Preserved: r3 r4 r5 r6 r7 sp
+xTaskGenericNotify_entry:
+l00000A58:
+	vPortEnterCritical(cpsr)
+	branch r3 == 0x00000000 l00000A6C
+l00000A68:
+	Mem31[r3:word32] = Mem15[r0 + 96:word32]
+l00000A6C:
+	word32 r4_35 = (word32) Mem34[r0 + 100:byte]
+	Mem38[r0 + 100:byte] = 0x02
+	word32 r4_39 = (uint32) (byte) r4_35
+	branch r2 >u 0x00000004 l00000A8C
+l00000A7E:
+	switch (r2 - 0x00000001) { l00000AF6 l00000A9A l00000A8A l00000A86 }
+l00000A86:
+	branch r4_39 == 0x00000002 l00000AFE
+l00000AFE:
+l00000A8A:
+	Mem48[r0 + 96:word32] = r1
+l00000A9A:
+	Mem52[r0 + 96:word32] = Mem38[r0 + 96:word32] + 0x00000001
+	branch r4_39 != 0x00000001 l00000A90
+l00000AF6:
+	Mem57[r0 + 96:word32] = r1 | Mem38[r0 + 96:word32]
+l00000A8C:
+	branch r4_39 == 0x00000001 l00000AA6
+l00000AA6:
+	word32 r5_67 = Mem65[0x00000B04:word32]
+	uxListRemove(r0 + 0x00000024)
+	word32 r0_77 = Mem65[r0 + 76:word32]
+	Mem86[r5_67 + 124:word32] = r4_39 << r0_77 | Mem65[r5_67 + 124:word32]
+	vListInsertEnd(r5_67 + 0x00000008 + r0_77 * 0x00000014, r0 + 0x00000024)
+	branch Mem86[r0 + 76:word32] <=u Mem86[Mem86[r5_67 + 4:word32] + 76:word32] l00000A90
+l00000ADE:
+	Mem100[Mem86[0x00000B08:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+	vPortExitCritical(cpsr)
+	return
+l00000A90:
+l00000A92:
+	vPortExitCritical(cpsr)
+	return
+xTaskGenericNotify_exit:
+
+
+void xTaskGenericNotifyFromISR(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr, word32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 r6 r7 r8 sp
+xTaskGenericNotifyFromISR_entry:
+l00000B0C:
+	word32 r5_17 = __mrs(cpsr)
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	branch r3 == 0x00000000 l00000B2A
+l00000B26:
+	Mem22[r3:word32] = Mem15[r0 + 96:word32]
+l00000B2A:
+	word32 r4_26 = (word32) Mem25[r0 + 100:byte]
+	Mem30[r0 + 100:byte] = 0x02
+	word32 r4_31 = (uint32) (byte) r4_26
+	branch r2 >u 0x00000004 l00000B4A
+l00000B3C:
+	switch (r2 - 0x00000001) { l00000B94 l00000B58 l00000B48 l00000B44 }
+l00000B44:
+	branch r4_31 == 0x00000002 l00000BC4
+l00000BC4:
+l00000B48:
+	Mem41[r0 + 96:word32] = r1
+l00000B58:
+	Mem45[r0 + 96:word32] = Mem30[r0 + 96:word32] + 0x00000001
+	branch r4_31 != 0x00000001 l00000B4E
+l00000B94:
+	Mem50[r0 + 96:word32] = r1 | Mem30[r0 + 96:word32]
+l00000B4A:
+	branch r4_31 == 0x00000001 l00000B64
+l00000B64:
+	word32 r6_57 = Mem55[0x00000BD0:word32]
+	branch Mem55[r6_57 + 140:word32] == 0x00000000 l00000B9C
+l00000B9C:
+	uxListRemove(r0 + 0x00000024)
+	word32 r0_72 = Mem55[r0 + 76:word32]
+	Mem82[r6_57 + 124:word32] = r4_31 << r0_72 | Mem55[r6_57 + 124:word32]
+	vListInsertEnd(r6_57 + 0x00000008 + r0_72 * 0x00000014, r0 + 0x00000024)
+l00000B6E:
+	vListInsertEnd(r6_57 + 0x00000058, r0 + 0x00000038)
+l00000B7A:
+	branch Mem98[r0 + 76:word32] <=u Mem98[Mem98[r6_57 + 4:word32] + 76:word32] l00000B4E
+l00000B84:
+	branch dwArg00 == 0x00000000 l00000BC8
+l00000BC8:
+	Mem112[r6_57 + 144:word32] = 0x00000001
+l00000B8A:
+	Mem113[dwArg00:word32] = 0x00000001
+	__msr(cpsr, r5_17)
+	return
+l00000B4E:
+l00000B50:
+	__msr(cpsr, r5_17)
+	return
+xTaskGenericNotifyFromISR_exit:
+
+
+void xTaskNotifyWait(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 r6 r7 r8 sp
+xTaskNotifyWait_entry:
+l00000BD4:
+	word32 r4_16 = Mem15[0x00000C58:word32]
+	vPortEnterCritical(cpsr)
+	branch (word32) Mem15[Mem15[r4_16 + 4:word32] + 100:byte] == 0x00000002 l00000C04
+l00000BF0:
+	word32 r1_37 = Mem15[r4_16 + 4:word32]
+	Mem40[r1_37 + 96:word32] = Mem15[r1_37 + 96:word32] & ~r0
+	Mem42[Mem40[r4_16 + 4:word32] + 100:byte] = 0x01
+	branch r3 != 0x00000000 l00000C3C
+l00000C3C:
+	prvAddCurrentTaskToDelayedList.isra.0(r3)
+	Mem54[Mem42[0x00000C5C:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l00000C04:
+	vPortExitCritical(cpsr)
+	vPortEnterCritical(cpsr)
+	branch r2 == 0x00000000 l00000C14
+l00000C0E:
+	Mem73[r2:word32] = Mem70[Mem70[r4_16 + 4:word32] + 96:word32]
+l00000C14:
+	branch (word32) Mem75[Mem75[r4_16 + 4:word32] + 100:byte] == 0x00000001 l00000C54
+l00000C54:
+l00000C1E:
+	word32 r3_82 = Mem75[r4_16 + 4:word32]
+	Mem87[r3_82 + 96:word32] = Mem75[r3_82 + 96:word32] & ~r1
+l00000C2A:
+	Mem92[Mem90[r4_16 + 4:word32] + 100:byte] = 0x00
+	vPortExitCritical(cpsr)
+	return
+xTaskNotifyWait_exit:
+
+
+void vTaskNotifyGiveFromISR(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2
+// Preserved: r3 r4 r5 r6 r7 r8 r9 sp
+vTaskNotifyGiveFromISR_entry:
+l00000C60:
+	word32 r6_21 = __mrs(cpsr)
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	word32 r5_25 = (word32) Mem19[r0 + 100:byte]
+	Mem26[r0 + 100:byte] = 0x02
+	Mem31[r0 + 96:word32] = Mem26[r0 + 96:word32] + 0x00000001
+	word32 r5_28 = (uint32) (byte) r5_25
+	branch r5_28 == 0x00000001 l00000C96
+l00000C96:
+	word32 r7_33 = Mem31[0x00000CFC:word32]
+	branch Mem31[r7_33 + 140:word32] == 0x00000000 l00000CCC
+l00000CCC:
+	uxListRemove(r0 + 0x00000024)
+	word32 r0_48 = Mem31[r0 + 76:word32]
+	Mem57[r7_33 + 124:word32] = r5_28 << r0_48 | Mem31[r7_33 + 124:word32]
+	vListInsertEnd(r7_33 + 0x00000008 + r0_48 * 0x00000014, r0 + 0x00000024)
+l00000CA2:
+	vListInsertEnd(r7_33 + 0x00000058, r0 + 0x00000038)
+l00000CAE:
+	branch Mem73[r0 + 76:word32] <=u Mem73[Mem73[r7_33 + 4:word32] + 76:word32] l00000C8E
+l00000CB8:
+	branch r1 == 0x00000000 l00000CF4
+l00000CF4:
+	Mem84[r7_33 + 144:word32] = 0x00000001
+l00000CC0:
+	Mem85[r1:word32] = 0x00000001
+	__msr(cpsr, r6_21)
+	return
+l00000C8E:
+	__msr(cpsr, r6_21)
+	return
+vTaskNotifyGiveFromISR_exit:
+
+
+void ulTaskNotifyTake(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r2 r3
+// Preserved: r1 r4 r5 r6 sp
+ulTaskNotifyTake_entry:
+l00000D00:
+	word32 r4_12 = Mem11[0x00000D64:word32]
+	vPortEnterCritical(cpsr)
+	branch Mem11[Mem11[r4_12 + 4:word32] + 96:word32] != 0x00000000 l00000D1C
+l00000D12:
+	Mem28[Mem11[r4_12 + 4:word32] + 100:byte] = 0x01
+	branch r1 != 0x00000000 l00000D4A
+l00000D4A:
+	prvAddCurrentTaskToDelayedList.isra.0(r1)
+	Mem40[Mem28[0x00000D68:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l00000D1C:
+	vPortExitCritical(cpsr)
+	vPortEnterCritical(cpsr)
+	word32 r5_57 = Mem55[Mem55[r4_12 + 4:word32] + 96:word32]
+	branch r5_57 == 0x00000000 l00000D32
+l00000D2A:
+	branch r0 != 0x00000000 l00000D42
+l00000D42:
+	Mem61[Mem55[r4_12 + 4:word32] + 96:word32] = 0x00000000
+l00000D2C:
+	Mem64[Mem55[r4_12 + 4:word32] + 96:word32] = r5_57 - 0x00000001
+l00000D32:
+	Mem69[Mem67[r4_12 + 4:word32] + 100:byte] = 0x00
+	vPortExitCritical(cpsr)
+	return
+ulTaskNotifyTake_exit:
+
+
+word32 xTaskIncrementTick()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: r0
+// Trashed: NZCV r0 r3
+// Preserved: r1 r10 r2 r4 r5 r6 r7 r8 r9 sp
+xTaskIncrementTick_entry:
+l00000D6C:
+	word32 r6_127
+	word32 r4_20 = Mem19[0x00000E64:word32]
+	branch Mem19[r4_20 + 140:word32] != 0x00000000 l00000E38
+l00000E38:
+	Mem28[r4_20 + 152:word32] = Mem19[r4_20 + 152:word32] + 0x00000001
+	r6_127 = 0x00000000
+l00000D7A:
+	word32 r7_29 = Mem19[r4_20 + 128:word32]
+	Mem32[r4_20 + 128:word32] = r7_29 + 0x00000001
+	branch r7_29 != 0x00000001 l00000DA8
+l00000D86:
+	word32 r3_33 = Mem32[r4_20 + 108:word32]
+	Mem35[r4_20 + 108:word32] = Mem32[r4_20 + 112:word32]
+	Mem36[r4_20 + 112:word32] = r3_33
+	Mem39[r4_20 + 148:word32] = Mem36[r4_20 + 148:word32] + 0x00000001
+	branch Mem39[Mem39[r4_20 + 108:word32]:word32] != 0x00000000 l00000E46
+l00000E46:
+	Mem49[r4_20 + 132:word32] = Mem39[Mem39[Mem39[Mem39[r4_20 + 108:word32] + 12:word32] + 12:word32] + 36:word32]
+	r6_127 = 0x00000000
+	branch r7_29 + 0x00000001 <u Mem49[r4_20 + 132:word32] l00000E14
+l00000E5C:
+l00000DA0:
+	Mem54[r4_20 + 132:word32] = 0xFFFFFFFF
+l00000DA8:
+	r6_127 = 0x00000000
+	branch r7_29 + 0x00000001 <u Mem56[r4_20 + 132:word32] l00000E14
+l00000DB2:
+	r6_127 = 0x00000000
+	word32 r8_64 = Mem63[0x00000E68:word32]
+l00000E04:
+	branch Mem66[Mem66[r4_20 + 108:word32]:word32] != 0x00000000 l00000DBC
+l00000DBC:
+	word32 r5_73 = Mem66[Mem66[Mem66[r4_20 + 108:word32] + 12:word32] + 12:word32]
+	word32 r3_74 = Mem66[r5_73 + 36:word32]
+	branch r7_29 + 0x00000001 <u r3_74 l00000E5E
+l00000E5E:
+	Mem79[r4_20 + 132:word32] = r3_74
+l00000DCC:
+	uxListRemove(r5_73 + 0x00000024)
+	branch Mem66[r5_73 + 72:word32] == 0x00000000 l00000DDE
+l00000DDA:
+	uxListRemove(r5_73 + 0x00000038)
+l00000DDE:
+	word32 r0_101 = Mem66[r5_73 + 76:word32]
+	Mem115[r4_20 + 124:word32] = 0x00000001 << r0_101 | Mem66[r4_20 + 124:word32]
+	vListInsertEnd(r8_64 + r0_101 * 0x00000014, r5_73 + 0x00000024)
+	branch Mem115[r5_73 + 76:word32] <u Mem115[Mem115[r4_20 + 4:word32] + 76:word32] l00000E04
+l00000E02_1:
+	r6_127 = 0x00000001
+l00000E0C:
+	Mem129[r4_20 + 132:word32] = 0xFFFFFFFF
+l00000E14:
+	branch Mem131[r4_20 + Mem131[Mem131[r4_20 + 4:word32] + 76:word32] * 0x00000014 + 8:word32] <u 0x00000002 l00000E28
+l00000E26_1:
+	r6_127 = 0x00000001
+l00000E28:
+	branch Mem141[r4_20 + 144:word32] == 0x00000000 l00000E32
+l00000E30_1:
+	r6_127 = 0x00000001
+l00000E32:
+	return r6_127
+xTaskIncrementTick_exit:
+
+
+word32 xTaskResumeAll(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut: r0
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 r6 r7 r8 sp
+xTaskResumeAll_entry:
+l00000E6C:
+	word32 r4_16 = Mem15[0x00000F40:word32]
+	vPortEnterCritical(cpsr)
+	Mem26[r4_16 + 140:word32] = Mem15[r4_16 + 140:word32] - 0x00000001
+	word32 r5_27 = Mem26[r4_16 + 140:word32]
+	branch r5_27 != 0x00000000 l00000F26
+l00000E88:
+	branch Mem26[r4_16:word32] == 0x00000000 l00000F26
+l00000E8E:
+l00000ED4:
+	branch Mem36[r4_16 + 88:word32] != 0x00000000 l00000E96
+l00000E96:
+	r5_27 = Mem36[Mem36[r4_16 + 100:word32] + 12:word32]
+	uxListRemove(r5_27 + 0x00000038)
+	uxListRemove(r5_27 + 0x00000024)
+	word32 r0_61 = Mem36[r5_27 + 76:word32]
+	Mem71[r4_16 + 124:word32] = 0x00000001 << r0_61 | Mem36[r4_16 + 124:word32]
+	vListInsertEnd(r4_16 + 0x00000008 + r0_61 * 0x00000014, r5_27 + 0x00000024)
+	branch Mem71[r5_27 + 76:word32] <u Mem71[Mem71[r4_16 + 4:word32] + 76:word32] l00000ED4
+l00000ED0_1:
+	Mem83[r4_16 + 144:word32] = 0x00000001
+l00000EDA:
+	branch r5_27 == 0x00000000 l00000EEA
+l00000EDC:
+	branch Mem36[Mem36[r4_16 + 108:word32]:word32] != 0x00000000 l00000F32
+l00000F32:
+	Mem91[r4_16 + 132:word32] = Mem36[Mem36[Mem36[Mem36[r4_16 + 108:word32] + 12:word32] + 12:word32] + 36:word32]
+l00000EE2:
+	Mem93[r4_16 + 132:word32] = 0xFFFFFFFF
+l00000EEA:
+	word32 r5_108 = Mem95[r4_16 + 152:word32]
+	branch r5_108 == 0x00000000 l00000F04
+l00000EF0:
+l00000EF2:
+	branch xTaskIncrementTick() == 0x00000000 l00000EFC
+l00000EF8:
+	Mem106[r4_16 + 144:word32] = 0x00000001
+l00000EFC:
+	r5_108 = r5_108 - 0x00000001
+	branch r5_108 != 0x00000000 l00000EF2
+l00000F00:
+	Mem113[r4_16 + 152:word32] = r5_108
+l00000F04:
+	branch Mem115[r4_16 + 144:word32] == 0x00000000 l00000F26
+l00000F26:
+	vPortExitCritical(cpsr)
+	return 0x00000000
+l00000F0A:
+	Mem146[Mem115[0x00000F44:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+	vPortExitCritical(cpsr)
+	return 0x00000001
+xTaskResumeAll_exit:
+
+
+void vTaskDelay(word32 r0, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2
+// Preserved: r3 sp
+vTaskDelay_entry:
+l00000F48:
+	branch r0 != 0x00000000 l00000F5E
+l00000F5E:
+	word32 r2_9 = Mem7[0x00000F7C:word32]
+	Mem13[r2_9 + 140:word32] = Mem7[r2_9 + 140:word32] + 0x00000001
+	prvAddCurrentTaskToDelayedList.isra.0(r0)
+	branch xTaskResumeAll(cpsr) == 0x00000000 l00000F4C
+l00000F76:
+	return
+l00000F4C:
+	Mem38[Mem36[0x00000F78:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+	return
+vTaskDelay_exit:
+
+
+void vTaskDelayUntil(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 sp
+vTaskDelayUntil_entry:
+l00000F80:
+	word32 r2_4 = Mem0[0x00000FD4:word32]
+	word32 r3_12 = Mem9[r0:word32]
+	Mem14[r2_4 + 140:word32] = Mem9[r2_4 + 140:word32] + 0x00000001
+	word32 r2_15 = Mem14[r2_4 + 128:word32]
+	word32 r1_17 = r1 + r3_12
+	branch r2_15 >=u r3_12 l00000FB8
+l00000FB8:
+	branch r3_12 >u r1_17 l00000FC0
+l00000F9A:
+	branch r3_12 >u r1_17 l00000FBC
+l00000FBC:
+	branch r2_15 >=u r1_17 l00000F9E
+l00000FC0:
+	Mem31[r0:word32] = r1_17
+	prvAddCurrentTaskToDelayedList.isra.0(r1_17 - r2_15)
+	branch xTaskResumeAll(cpsr) == 0x00000000 l00000FA6
+l00000F9E:
+	Mem57[r0:word32] = r1_17
+	branch xTaskResumeAll(cpsr) != 0x00000000 l00000FD0
+l00000FD0:
+	return
+l00000FA6:
+	Mem77[Mem75[0x00000FD8:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+	return
+vTaskDelayUntil_exit:
+
+
+void vTaskPlaceOnEventList(word32 r0, word32 r1)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: lr r4 sp
+vTaskPlaceOnEventList_entry:
+l00000FDC:
+	vListInsert(r0, Mem7[Mem7[0x00000FF4:word32] + 4:word32] + 0x00000038)
+l00000FF0_thunk_prvAddCurrentTaskToDelayedList.isra.0:
+	prvAddCurrentTaskToDelayedList.isra.0(r1)
+	return
+vTaskPlaceOnEventList_exit:
+
+
+void vTaskPlaceOnUnorderedEventList(word32 r0, word32 r1, word32 r2)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: lr r4 r5 sp
+vTaskPlaceOnUnorderedEventList_entry:
+l00000FF8:
+	word32 r3_14 = Mem11[0x00001018:word32]
+	word32 r3_18 = Mem11[r3_14 + 4:word32]
+	Mem19[Mem11[r3_14 + 4:word32] + 56:word32] = r1 | 0x80000000
+	vListInsertEnd(r0, r3_18 + 0x00000038)
+l00001016_thunk_prvAddCurrentTaskToDelayedList.isra.0:
+	prvAddCurrentTaskToDelayedList.isra.0(r2)
+	return
+vTaskPlaceOnUnorderedEventList_exit:
+
+
+word32 xTaskRemoveFromEventList(word32 r0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31]
+// LiveOut: r0
+// Trashed: NZCV r0 r1 r2
+// Preserved: r3 r4 r5 r6 r7 sp
+xTaskRemoveFromEventList_entry:
+l0000101C:
+	word32 r0_32
+	word32 r4_18 = Mem15[0x0000107C:word32]
+	word32 r5_19 = Mem15[Mem15[r0 + 12:word32] + 12:word32]
+	uxListRemove(r5_19 + 0x00000038)
+	branch Mem15[r4_18 + 140:word32] != 0x00000000 l00001070
+l00001070:
+	vListInsertEnd(r4_18 + 0x00000058, r5_19 + 0x00000038)
+	r0_32 = r4_18 + 0x00000058
+l00001034:
+	uxListRemove(r5_19 + 0x00000024)
+	word32 r0_50 = Mem15[r5_19 + 76:word32]
+	Mem59[r4_18 + 124:word32] = 0x00000001 << r0_50 | Mem15[r4_18 + 124:word32]
+	r0_32 = r4_18 + 0x00000008 + r0_50 * 0x00000014
+	vListInsertEnd(r0_32, r5_19 + 0x00000024)
+l0000105C:
+	branch Mem67[r5_19 + 76:word32] <=u Mem67[Mem67[r4_18 + 4:word32] + 76:word32] l00001068
+l00001066_1:
+	r0_32 = 0x00000001
+l00001068:
+	Mem78[r4_18 + 144:word32] = r0_32
+	return 0x00000000
+xTaskRemoveFromEventList_exit:
+
+
+void xTaskRemoveFromUnorderedEventList(word32 r0, word32 r1)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2
+// Preserved: r3 r4 r5 r6 r7 sp
+xTaskRemoveFromUnorderedEventList_entry:
+l00001080:
+	word32 r6_18 = Mem15[r0 + 12:word32]
+	Mem21[r0:word32] = r1 | 0x80000000
+	uxListRemove(r0)
+	word32 r4_31 = Mem21[0x000010D4:word32]
+	uxListRemove(r6_18 + 0x00000024)
+	word32 r3_41 = Mem21[r6_18 + 76:word32]
+	Mem49[r4_31 + 124:word32] = 0x00000001 << r3_41 | Mem21[r4_31 + 124:word32]
+	vListInsertEnd(r4_31 + 0x00000008 + r3_41 * 0x00000014, r6_18 + 0x00000024)
+	branch Mem49[r6_18 + 76:word32] <=u Mem49[Mem49[r4_31 + 4:word32] + 76:word32] l000010CA
+l000010C8_1:
+l000010CA:
+	Mem64[r4_31 + 144:word32] = 0x00000001
+	return
+xTaskRemoveFromUnorderedEventList_exit:
+
+
+void vTaskSwitchContext()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r3
+// Preserved: NZCV r0 r1 sp
+vTaskSwitchContext_entry:
+l000010D8:
+	word32 r2_4 = Mem0[0x0000111C:word32]
+	word32 r3_5 = Mem0[r2_4 + 140:word32]
+	branch r3_5 != 0x00000000 l00001112
+l00001112:
+	Mem7[r2_4 + 144:word32] = 0x00000001
+	return
+l000010E0:
+	word32 r1_23
+	Mem8[r2_4 + 144:word32] = r3_5
+	word32 r0_15 = r2_4 + (0x0000001F - (uint32) ((byte) __clz(Mem8[r2_4 + 124:word32]))) * 0x00000014
+	word32 r1_19 = Mem8[Mem8[r0_15 + 12:word32] + 4:word32]
+	Mem21[r0_15 + 12:word32] = r1_19
+	r1_23 = r1_19
+	branch r1_19 != r0_15 + 0x00000010 l00001108
+l00001106_1:
+	r1_23 = Mem21[r1_19 + 4:word32]
+l00001108:
+	word32 r3_26 = Mem21[r1_23 + 12:word32]
+	branch r1_19 != r0_15 + 0x00000010 l0000110E
+l0000110C_1:
+	Mem29[r0_15 + 12:word32] = r1_23
+l0000110E:
+	Mem33[r2_4 + 4:word32] = r3_26
+	return
+vTaskSwitchContext_exit:
+
+
+word32 uxTaskResetEventItemValue()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: r0
+// Trashed: r0 r1 r2 r3
+// Preserved: sp
+uxTaskResetEventItemValue_entry:
+l00001120:
+	word32 r3_4 = Mem0[0x00001134:word32]
+	word32 r0_8 = Mem0[Mem0[r3_4 + 4:word32] + 56:word32]
+	Mem11[Mem0[r3_4 + 4:word32] + 56:word32] = 0x00000002 - Mem0[Mem0[r3_4 + 4:word32] + 76:word32]
+	return r0_8
+uxTaskResetEventItemValue_exit:
+
+
+word32 xTaskGetCurrentTaskHandle()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: r0
+// Trashed: r0 r3
+// Preserved: sp
+xTaskGetCurrentTaskHandle_entry:
+l00001138:
+	return Mem0[Mem0[0x00001140:word32] + 4:word32]
+xTaskGetCurrentTaskHandle_exit:
+
+
+void vTaskSetTimeOutState(word32 r0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31]
+// LiveOut:
+// Trashed: r2 r3
+// Preserved: sp
+vTaskSetTimeOutState_entry:
+l00001144:
+	word32 r3_4 = Mem0[0x00001154:word32]
+	word32 r3_6 = Mem0[r3_4 + 128:word32]
+	Mem8[r0:word32] = Mem0[r3_4 + 148:word32]
+	Mem9[r0 + 4:word32] = r3_6
+	return
+vTaskSetTimeOutState_exit:
+
+
+word32 xTaskCheckForTimeOut(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut: r0
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 r6 sp
+xTaskCheckForTimeOut_entry:
+l00001158:
+	vPortEnterCritical(cpsr)
+	word32 r3_23 = Mem11[0x000011A8:word32]
+	word32 r5_25 = Mem11[r3_23 + 128:word32]
+	word32 r0_27 = Mem11[r0 + 4:word32]
+	branch Mem11[r0:word32] == Mem11[r3_23 + 148:word32] l00001178
+l00001174:
+	branch r5_25 >=u r0_27 l0000119C
+l00001178:
+	word32 r2_34 = Mem11[r1:word32]
+	branch r5_25 - r0_27 >=u r2_34 l0000119C
+l0000119C:
+	vPortExitCritical(cpsr)
+	return 0x00000001
+l00001180:
+	word32 r1_60 = Mem11[r3_23 + 148:word32]
+	word32 r3_61 = Mem11[r3_23 + 128:word32]
+	Mem64[r1:word32] = r2_34 - r5_25 + r0_27
+	Mem66[r0:word32] = r1_60
+	Mem67[r0 + 4:word32] = r3_61
+	vPortExitCritical(cpsr)
+	return 0x00000000
+xTaskCheckForTimeOut_exit:
+
+
+void vTaskMissedYield()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r3
+// Preserved: sp
+vTaskMissedYield_entry:
+l000011AC:
+	Mem6[Mem0[0x000011B8:word32] + 144:word32] = 0x00000001
+	return
+vTaskMissedYield_exit:
+
+
+void vTaskPriorityInherit(word32 r0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: lr r4 r5 r6 r7 sp
+vTaskPriorityInherit_entry:
+l000011BC:
+	branch r0 == 0x00000000 l00001246
+l00001246:
+	return
+l000011C0:
+	word32 r4_19 = Mem18[0x00001248:word32]
+	word32 r3_20 = Mem18[r0 + 76:word32]
+	branch r3_20 >=u Mem18[Mem18[r4_19 + 4:word32] + 76:word32] l000011F4
+l000011CE:
+	branch Mem18[r0 + 56:word32] < 0x00000000 l000011DE
+l000011D4:
+	Mem31[r0 + 56:word32] = 0x00000002 - Mem18[Mem18[r4_19 + 4:word32] + 76:word32]
+l000011DE:
+	word32 r5_33 = Mem32[0x0000124C:word32]
+	branch Mem32[r0 + 52:word32] == r5_33 + r3_20 * 0x00000014 l000011F6
+l000011F6:
+	branch uxListRemove(r0 + 0x00000024) != 0x00000000 l00001220
+l00001204:
+	word32 r2_52 = Mem32[r0 + 76:word32]
+	branch Mem32[r4_19 + r2_52 * 0x00000014 + 8:word32] != 0x00000000 l00001220
+l00001212:
+	Mem61[r4_19 + 124:word32] = Mem32[r4_19 + 124:word32] & ~(0x00000001 << r2_52)
+l00001220:
+	word32 r2_67 = Mem64[Mem64[r4_19 + 4:word32] + 76:word32]
+	word32 r3_72 = 0x00000001 << r2_67 | Mem64[r4_19 + 124:word32]
+	Mem75[r0 + 76:word32] = r2_67
+	Mem78[r4_19 + 124:word32] = r3_72
+	word32 r0_77 = r5_33 + r2_67 * 0x00000014
+l00001242_thunk_vListInsertEnd:
+	vListInsertEnd(r0_77, r0 + 0x00000024)
+	return
+l000011EE:
+	Mem96[r0 + 76:word32] = Mem32[Mem32[r4_19 + 4:word32] + 76:word32]
+l000011F4:
+	return
+vTaskPriorityInherit_exit:
+
+
+word32 xTaskPriorityDisinherit(word32 r0, ptr32 & lrOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31]
+// LiveOut: lr r0
+// Trashed: NZCV lr r0 r1 r2
+// Preserved: r3 r4 r5 r6 r7 sp
+xTaskPriorityDisinherit_entry:
+l00001250:
+	branch r0 == 0x00000000 l000012C8
+l000012C8:
+	lrOut = lr
+	return 0x00000000
+l00001254:
+	word32 r1_20 = Mem19[r0 + 76:word32]
+	word32 r3_21 = Mem19[r0 + 92:word32]
+	word32 r2_22 = Mem19[r0 + 88:word32]
+	Mem25[r0 + 92:word32] = r3_21 - 0x00000001
+	branch r1_20 == r2_22 l00001266
+l00001264:
+	branch r3_21 == 0x00000001 l0000126A
+l0000126A:
+	word32 r2_38
+	branch uxListRemove(r0 + 0x00000024) != 0x00000000 l00001298
+l00001298:
+	r2_38 = Mem25[0x000012CC:word32]
+l00001278:
+	word32 r1_39 = Mem25[r0 + 76:word32]
+	r2_38 = Mem25[0x000012CC:word32]
+	branch Mem25[r2_38 + r1_39 * 0x00000014 + 8:word32] != 0x00000000 l0000129A
+l00001288:
+	Mem48[r2_38 + 124:word32] = Mem25[r2_38 + 124:word32] & ~(0x00000001 << r1_39)
+l0000129A:
+	word32 r3_52 = Mem51[r0 + 88:word32]
+	word32 lr_54 = Mem51[r2_38 + 124:word32]
+	word32 r0_55 = Mem51[0x000012D0:word32]
+	Mem59[r0 + 76:word32] = r3_52
+	Mem64[r0 + 56:word32] = 0x00000002 - r3_52
+	Mem65[r2_38 + 124:word32] = 0x00000001 << r3_52 | lr_54
+	vListInsertEnd(r0_55 + r3_52 * 0x00000014, r0 + 0x00000024)
+	lrOut = lr_54
+	return 0x00000001
+l00001266:
+	lrOut = lr
+	return 0x00000000
+xTaskPriorityDisinherit_exit:
+
+
+word32 pvTaskIncrementMutexHeldCount()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: r0
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: sp
+pvTaskIncrementMutexHeldCount_entry:
+l000012D4:
+	word32 r3_4 = Mem0[0x000012E8:word32]
+	branch Mem0[r3_4 + 4:word32] == 0x00000000 l000012E2
+l000012DA:
+	word32 r1_6 = Mem0[r3_4 + 4:word32]
+	Mem10[r1_6 + 92:word32] = Mem0[r1_6 + 92:word32] + 0x00000001
+l000012E2:
+	return Mem12[r3_4 + 4:word32]
+pvTaskIncrementMutexHeldCount_exit:
+
+
+void prvRestoreContextOfFirstTask(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: fp lr r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: sp
+prvRestoreContextOfFirstTask_entry:
+l000012F0:
+	__msr(cpsr, Mem0[Mem0[Mem0[0x00001724:word32]:word32]:word32])
+	word32 r1_9 = Mem0[Mem0[0x00001330:word32]:word32]
+	word32 r0_10 = Mem0[r1_9:word32]
+	word32 r2_12 = Mem0[0x00001728:word32]
+	word32 r5_14 = Mem0[r1_9 + 0x00000008:word32]
+	word32 r6_15 = Mem0[r1_9 + 0x0000000C:word32]
+	word32 r7_16 = Mem0[r1_9 + 0x00000010:word32]
+	word32 r8_17 = Mem0[r1_9 + 0x00000014:word32]
+	word32 r9_18 = Mem0[r1_9 + 0x00000018:word32]
+	word32 r10_19 = Mem0[r1_9 + 0x0000001C:word32]
+	word32 fp_20 = Mem0[r1_9 + 0x00000020:word32]
+	Mem22[r2_12:word32] = Mem0[r1_9 + 0x00000004:word32]
+	Mem23[r2_12 + 4:word32] = r5_14
+	Mem24[r2_12 + 8:word32] = r6_15
+	Mem25[r2_12 + 12:word32] = r7_16
+	Mem26[r2_12 + 16:word32] = r8_17
+	Mem27[r2_12 + 20:word32] = r9_18
+	Mem28[r2_12 + 24:word32] = r10_19
+	Mem29[r2_12 + 28:word32] = fp_20
+	__msr(cpsr, Mem29[r0_10:word32])
+	__msr(cpsr, r0_10 + 36)
+	__msr(cpsr, 0x00000000)
+	return
+prvRestoreContextOfFirstTask_exit:
+
+
+void prvSVCHandler(word32 r0, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31]
+// LiveOut:
+// Trashed: NZCV fp lr r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: sp
+prvSVCHandler_entry:
+l00001334:
+	word32 r3_6 = (word32) Mem0[Mem0[r0 + 24:word32] - 2:byte]
+	branch r3_6 == 0x00000001 l00001360
+l00001360:
+	Mem11[Mem0[0x00001378:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+	return
+l0000133E:
+	branch r3_6 <u 0x00000001 l00001354
+l00001354:
+	word32 r2_13 = Mem0[0x00001374:word32]
+	Mem16[r2_13:word32] = Mem0[r2_13:word32] | 0xBE000000
+l0000135E_thunk_prvRestoreContextOfFirstTask:
+	prvRestoreContextOfFirstTask(cpsr)
+	return
+l00001340:
+	branch r3_6 != 0x00000002 l00001352
+l00001352:
+	return
+l00001344:
+	__msr(cpsr, __mrs(cpsr) & ~0x00000001)
+	return
+prvSVCHandler_exit:
+
+
+word32 pxPortInitialiseStack(word32 r0, word32 r1, word32 r2, word32 r3)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut: r0
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 sp
+pxPortInitialiseStack_entry:
+l0000137C:
+	word32 r3_11
+	r3_11 = r3
+	branch r3 != 0x00000001 l00001384
+l00001382_1:
+	r3_11 = 0x00000002
+l00001384:
+	branch r3 == 0x00000001 l00001390
+l0000138E_1:
+	r3_11 = 0x00000003
+l00001390:
+	Mem22[r0 - 32:word32] = r2
+	Mem28[r0 + -8:word32] = r1 & ~0x00000001
+	Mem30[r0 + -4:word32] = 0x01000000
+	Mem32[r0 - 12:word32] = 0x00000000
+	Mem35[r0 - 68:word32] = r3_11
+	return r0 - 0x00000044
+pxPortInitialiseStack_exit:
+
+
+void xPortStartScheduler(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 r6 sp
+xPortStartScheduler_entry:
+l000013B0:
+	word32 r3_4 = Mem0[0x000014E8:word32]
+	word32 r1_13 = Mem11[0x000014EC:word32]
+	Mem15[r3_4:word32] = Mem11[r3_4:word32] | 0x00FF0000
+	Mem18[r3_4:word32] = Mem15[r3_4:word32] | 0xFF000000
+	branch Mem18[r1_13:word32] == 0x00000800 l00001400
+l00001400:
+	word32 r2_30
+	word32 r0_22 = Mem18[0x000014FC:word32]
+	word32 r1_25 = Mem18[0x00001500:word32] - r0_22
+	Mem28[Mem18[0x00001504:word32]:word32] = r0_22 | 0x00000010
+	branch r1_25 <=u 0x00000020 l000014DE
+l000014DE:
+	r2_30 = Mem28[0x00001548:word32]
+l00001412:
+	word32 r3_31 = 0x00000040
+	word32 r2_32 = 0x00000005
+l0000141E:
+	r3_31 = r3_31 << 0x00000001
+	branch r1_25 >u r3_31 l00001418
+l00001418:
+	r2_32 = r2_32 + 0x00000001
+	branch r2_32 == 0x0000001F l000014CE
+l000014CE:
+	r2_30 = Mem28[0x00001538:word32]
+l00001426:
+	r2_30 = Mem28[0x00001508:word32] | r2_32 << 0x00000001
+l0000142C:
+	word32 r2_59
+	word32 r1_51 = Mem28[0x0000150C:word32] - r0_22
+	word32 r3_52 = Mem28[0x00001504:word32]
+	Mem56[Mem28[0x00001510:word32]:word32] = r2_30
+	Mem57[r3_52:word32] = r0_22 | 0x00000011
+	branch r1_51 <=u 0x00000020 l000014DA
+l000014DA:
+	r2_59 = Mem57[0x00001544:word32]
+l00001440:
+	word32 r3_60 = 0x00000040
+	word32 r2_61 = 0x00000005
+l0000144C:
+	r3_60 = r3_60 << 0x00000001
+	branch r1_51 >u r3_60 l00001446
+l00001446:
+	r2_61 = r2_61 + 0x00000001
+	branch r2_61 == 0x0000001F l000014D2
+l000014D2:
+	r2_59 = Mem57[0x0000153C:word32]
+l00001454:
+	r2_59 = Mem57[0x00001514:word32] | r2_61 << 0x00000001
+l0000145A:
+	word32 r0_100
+	word32 r3_76 = Mem57[0x00001518:word32]
+	word32 r0_79 = Mem57[0x00001504:word32]
+	word32 r1_80 = Mem57[0x0000151C:word32] - r3_76
+	Mem84[Mem57[0x00001510:word32]:word32] = r2_59
+	Mem85[r0_79:word32] = r3_76 | 0x00000012
+	branch r1_80 <=u 0x00000020 l000014E2
+l000014E2:
+	r0_100 = Mem85[0x0000154C:word32]
+l00001470:
+	word32 r3_88 = 0x00000040
+	word32 r2_89 = 0x00000005
+l0000147C:
+	r3_88 = r3_88 << 0x00000001
+	branch r1_80 >u r3_88 l00001476
+l00001476:
+	r2_89 = r2_89 + 0x00000001
+	branch r2_89 == 0x0000001F l000014D6
+l000014D6:
+	r0_100 = Mem85[0x00001540:word32]
+l00001484:
+	r0_100 = Mem85[0x00001520:word32] | r2_89 << 0x00000001
+l0000148A:
+	word32 r4_107 = Mem85[0x00001504:word32]
+	word32 r5_108 = Mem85[0x00001524:word32]
+	word32 r1_109 = Mem85[0x00001528:word32]
+	Mem111[Mem85[0x00001510:word32]:word32] = r0_100
+	Mem112[r4_107:word32] = r5_108
+	word32 r3_103 = 0x00000005
+	word32 r2_104 = 0x00000040
+l0000149A:
+	word32 r3_120
+	r3_103 = r3_103 + 0x00000001
+	r2_104 = r2_104 << 0x00000001
+	branch r3_103 == 0x0000001F l000014CA
+l000014CA:
+	r3_120 = Mem112[0x00001534:word32]
+l000014A4:
+	branch r2_104 <=u r1_109 l0000149A
+l000014A8:
+	r3_120 = Mem112[0x0000152C:word32] | r3_103 << 0x00000001
+l000014AE:
+	word32 r2_127 = Mem112[0x00001510:word32]
+	word32 r1_128 = Mem112[0x00001530:word32]
+	Mem130[r2_127:word32] = r3_120
+	Mem133[r1_128:word32] = Mem130[r1_128:word32] | 0x00010000
+	Mem136[r2_127 - 12:word32] = Mem133[r2_127 - 12:word32] | 0x00000005
+l000013CE:
+	word32 r2_142 = Mem140[0x000014F4:word32]
+	word32 r3_143 = Mem140[0x000014F8:word32]
+	Mem144[Mem140[0x000014F0:word32]:word32] = 0x00004E1F
+	Mem145[r2_142:word32] = 0x00000007
+	Mem146[r3_143:word32] = 0x00000000
+	__msr(cpsr, Mem146[Mem146[Mem146[0x00001724:word32]:word32]:word32])
+	__cps()
+	__cps()
+	__dsb_sy()
+	__isb_sy()
+	__syscall(0x00000000)
+	return
+xPortStartScheduler_exit:
+
+
+void vPortEndScheduler()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+vPortEndScheduler_entry:
+l00001550:
+	return
+vPortEndScheduler_exit:
+
+
+void vPortStoreTaskMPUSettings(word32 r0, word32 r1, word32 r2, word32 r3)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 sp
+vPortStoreTaskMPUSettings_entry:
+l00001554:
+	branch r1 == 0x00000000 l000015DE
+l000015DE:
+	word32 r2_19
+	word32 r3_11 = Mem7[0x00001668:word32]
+	word32 r1_14 = Mem7[0x0000166C:word32] - r3_11
+	Mem17[r0:word32] = r3_11 | 0x00000014
+	branch r1_14 <=u 0x00000020 l0000165C
+l0000165C:
+	r2_19 = Mem17[0x00001680:word32]
+l000015EE:
+	word32 r3_20 = 0x00000040
+	word32 r2_21 = 0x00000005
+l000015FA:
+	r3_20 = r3_20 << 0x00000001
+	branch r3_20 <u r1_14 l000015F4
+l000015F4:
+	r2_21 = r2_21 + 0x00000001
+	branch r2_21 == 0x0000001F l00001648
+l00001648:
+	r2_19 = Mem17[0x00001664:word32]
+l00001602:
+	r2_19 = Mem17[0x00001660:word32] | r2_21 << 0x00000001
+l00001608:
+	word32 r2_47
+	word32 r3_36 = Mem17[0x00001670:word32]
+	word32 r1_39 = Mem17[0x00001674:word32] - r3_36
+	Mem44[r0 + 4:word32] = r2_19
+	Mem45[r0 + 8:word32] = r3_36 | 0x00000015
+	branch r1_39 <=u 0x00000020 l00001658
+l00001658:
+	r2_47 = Mem45[0x00001684:word32]
+l0000161A:
+	word32 r2_48 = 0x00000005
+	word32 r3_49 = 0x00000040
+l00001626:
+	r3_49 = r3_49 << 0x00000001
+	branch r1_39 >u r3_49 l00001620
+l00001620:
+	r2_48 = r2_48 + 0x00000001
+	branch r2_48 == 0x0000001F l0000164C
+l0000164C:
+	r2_47 = Mem45[0x0000167C:word32]
+l0000162E:
+	r2_47 = Mem45[0x00001678:word32] | r2_48 << 0x00000001
+l00001634:
+	Mem68[r0 + 16:word32] = 0x00000016
+	Mem70[r0 + 12:word32] = r2_47
+	Mem71[r0 + 20:word32] = 0x00000000
+	Mem72[r0 + 28:word32] = 0x00000000
+	Mem73[r0 + 24:word32] = 0x00000017
+	return
+l0000155A:
+	branch r3 != 0x00000000 l000015B0
+l000015B0:
+	word32 r4_101
+	Mem86[r0:word32] = r2 | 0x00000014
+	branch r3 << 2 <=u 0x00000020 l00001654
+l00001654:
+	r4_101 = Mem86[0x00001680:word32]
+l000015BC:
+	word32 r2_89 = 0x00000040
+	word32 r4_90 = 0x00000005
+l000015C8:
+	r2_89 = r2_89 << 0x00000001
+	branch r3 << 2 >u r2_89 l000015C2
+l000015C2:
+	r4_90 = r4_90 + 0x00000001
+	branch r4_90 == 0x0000001F l000015DA
+l000015DA:
+	r4_101 = Mem86[0x00001664:word32]
+l000015D0:
+	r4_101 = Mem86[0x00001660:word32] | r4_90 << 0x00000001
+l000015D6:
+	Mem107[r0 + 4:word32] = r4_101
+l0000155C:
+	word32 r5_108 = 0x00000005
+l0000155E:
+	word32 r4_111 = Mem110[r1 + 4:word32]
+	branch r4_111 == 0x00000000 l000015A2
+l000015A2:
+	Mem115[r0 + 12:word32] = r4_111
+	Mem116[r0 + 8:word32] = r5_108 | 0x00000010
+l00001562:
+	word32 r3_123
+	Mem121[r0 + 8:word32] = Mem110[r1:word32] | (r5_108 | 0x00000010)
+	branch r4_111 <=u 0x00000020 l00001650
+l00001650:
+	r3_123 = 0x00000008
+l00001570:
+	word32 r2_124 = 0x00000040
+	word32 r3_125 = 0x00000005
+l0000157C:
+	r2_124 = r2_124 << 0x00000001
+	branch r4_111 >u r2_124 l00001576
+l00001576:
+	r3_125 = r3_125 + 0x00000001
+	branch r3_125 == 0x0000001F l000015AC
+l000015AC:
+	r3_123 = 0x0000003E
+l00001584:
+	r3_123 = r3_125 << 1
+l00001586:
+	Mem149[r0 + 12:word32] = r3_123 | (Mem121[r1 + 8:word32] | 0x00000001)
+l00001590:
+	r5_108 = r5_108 + 0x00000001
+	r1 = r1 + 0x0000000C
+	r0 = r0 + 0x00000008
+	branch r5_108 != 0x00000008 l0000155E
+l0000159E:
+	return
+vPortStoreTaskMPUSettings_exit:
+
+
+void xPortPendSVHandler(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] fp:[0..31] r10:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31] r9:[0..31]
+// LiveOut:
+// Trashed: fp r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr sp
+xPortPendSVHandler_entry:
+l00001688:
+	word32 r0_4 = __mrs(cpsr)
+	word32 r3_6 = Mem0[0x000016E0:word32]
+	word32 r2_7 = Mem0[r3_6:word32]
+	Mem9[r0_4 + -36:word32] = __mrs(cpsr)
+	Mem11[r0_4 + -32:word32] = r4
+	Mem13[r0_4 + -28:word32] = r5
+	Mem15[r0_4 + -24:word32] = r6
+	Mem17[r0_4 + -20:word32] = r7
+	Mem19[r0_4 + -16:word32] = r8
+	Mem21[r0_4 + -12:word32] = r9
+	Mem23[r0_4 + -8:word32] = r10
+	Mem25[r0_4 + -4:word32] = fp
+	Mem27[r2_7:word32] = r0_4 - 36
+	__msr(cpsr, 0x000000BF)
+	vTaskSwitchContext()
+	__msr(cpsr, 0x00000000)
+	word32 r1_39 = Mem31[r3_6:word32]
+	word32 r0_40 = Mem31[r1_39:word32]
+	word32 r2_42 = Mem31[0x00001728:word32]
+	word32 r5_44 = Mem31[r1_39 + 0x00000008:word32]
+	word32 r6_45 = Mem31[r1_39 + 0x0000000C:word32]
+	word32 r7_46 = Mem31[r1_39 + 0x00000010:word32]
+	word32 r8_47 = Mem31[r1_39 + 0x00000014:word32]
+	word32 r9_48 = Mem31[r1_39 + 0x00000018:word32]
+	word32 r10_49 = Mem31[r1_39 + 0x0000001C:word32]
+	word32 fp_50 = Mem31[r1_39 + 0x00000020:word32]
+	Mem52[r2_42:word32] = Mem31[r1_39 + 0x00000004:word32]
+	Mem53[r2_42 + 4:word32] = r5_44
+	Mem54[r2_42 + 8:word32] = r6_45
+	Mem55[r2_42 + 12:word32] = r7_46
+	Mem56[r2_42 + 16:word32] = r8_47
+	Mem57[r2_42 + 20:word32] = r9_48
+	Mem58[r2_42 + 24:word32] = r10_49
+	Mem59[r2_42 + 28:word32] = fp_50
+	__msr(cpsr, Mem59[r0_40:word32])
+	__msr(cpsr, r0_40 + 36)
+	return
+xPortPendSVHandler_exit:
+
+
+void xPortSysTickHandler(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r2 r3
+// Preserved: r4 sp
+xPortSysTickHandler_entry:
+l000016E4:
+	word32 r4_9 = __mrs(cpsr)
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	branch xTaskIncrementTick() == 0x00000000 l00001708
+l00001700:
+	Mem19[Mem7[0x00001710:word32]:word32] = 0x10000000
+l00001708:
+	__msr(cpsr, r4_9)
+	return
+xPortSysTickHandler_exit:
+
+
+void vPortSVCHandler(word32 lr, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] lr:[0..31]
+// LiveOut:
+// Trashed: NZCV fp lr r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: sp
+vPortSVCHandler_entry:
+l00001714:
+	branch (lr & 0x00000004) != 0x00000000 l0000171E
+l0000171A_1:
+	__mrs(cpsr)
+l0000171E:
+	word32 r0_9 = __mrs(cpsr)
+l00001722_thunk_prvSVCHandler:
+	prvSVCHandler(r0_9, cpsr)
+	return
+vPortSVCHandler_exit:
+
+
+word32 pvPortMalloc(word32 r0, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31]
+// LiveOut: r0
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 sp
+pvPortMalloc_entry:
+l0000172C:
+	word32 r4_13 = r0
+	branch r0 << 29 == 0x00000000 l00001738
+l00001734_1:
+	r4_13 = r0 & ~0x00000007
+l00001738:
+	vTaskSuspendAll()
+	word32 r3_24 = Mem7[0x0000177C:word32]
+	word32 r4_15 = r4_13 + 0x00000008
+	branch Mem7[r3_24:word32] == 0x00000000 l00001770
+l00001770:
+	Mem28[r3_24:word32] = r3_24 + 0x0000000C & ~0x00000007
+l00001744:
+	word32 r2_32 = Mem31[r3_24 + 1472:word32]
+	word32 r4_34 = r4_15 + r2_32
+	branch r4_34 >u 0x000005B3 l00001766
+l00001752:
+	branch r2_32 >=u r4_34 l00001766
+l00001766:
+	xTaskResumeAll(cpsr)
+	return 0x00000000
+l00001756:
+	word32 r1_59 = Mem31[r3_24:word32]
+	Mem60[r3_24 + 1472:word32] = r4_34
+	xTaskResumeAll(cpsr)
+	return r1_59 + r2_32
+pvPortMalloc_exit:
+
+
+void vPortFree()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+vPortFree_entry:
+l00001780:
+	return
+vPortFree_exit:
+
+
+void vPortInitialiseBlocks()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r3
+// Preserved: sp
+vPortInitialiseBlocks_entry:
+l00001784:
+	Mem6[Mem0[0x00001790:word32] + 1472:word32] = 0x00000000
+	return
+vPortInitialiseBlocks_exit:
+
+
+void xPortGetFreeHeapSize()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: NZCV r0 r3
+// Preserved: sp
+xPortGetFreeHeapSize_entry:
+l00001794:
+	return
+xPortGetFreeHeapSize_exit:
+
+
+void xEventGroupCreate(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: NZCV r1 r2 r3
+// Preserved: r4 sp
+xEventGroupCreate_entry:
+l000017A8:
+	word32 r0_10 = pvPortMalloc(0x00000018, cpsr)
+	branch r0_10 == 0x00000000 l000017BE
+l000017B4:
+	Mem20[r0_10:word32] = 0x00000000
+	vListInitialise(r0_10 + 4)
+l000017BE:
+	return
+xEventGroupCreate_exit:
+
+
+void xEventGroupWaitBits(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr, word32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: r4 r5 r6 r7 r8 sp
+xEventGroupWaitBits_entry:
+l000017C4:
+	bool C_28 = vTaskSuspendAll()
+	word32 r5_112 = r1
+	word32 r4_157 = Mem15[r0:word32]
+	branch r3 != 0x00000000 l000017F2
+l000017F2:
+	branch (r1 & ~r4_157) == 0x00000000 l000017DC
+l000017D8:
+	r4_157 = r4_157 + r1 + C_28
+	branch r4_157 == 0x00000000 l000017F8
+l000017F8:
+	branch dwArg00 == 0x00000000 l000017E8
+l000017FE:
+	branch r2 != 0x00000000 l00001806
+l00001804_1:
+l00001806:
+	word32 r1_46 = 0x01000000
+	branch r3 != 0x00000000 l0000183E
+l0000183E:
+	r1_46 = 0x05000000
+l0000180C:
+	vTaskPlaceOnUnorderedEventList(r0 + 0x00000004, r1_46 | r1, dwArg00)
+	branch xTaskResumeAll(cpsr) != 0x00000000 l0000182C
+l0000181C:
+	Mem87[Mem15[0x00001870:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l0000182C:
+	branch uxTaskResetEventItemValue() << 6 >= 0x00000000 l00001844
+l00001844:
+	bool C_101 = vPortEnterCritical(cpsr)
+	word32 r4_105 = Mem104[r0:word32]
+	branch r3 != 0x00000000 l00001868
+l00001868:
+	branch (r1 & ~r4_105) != 0x00000000 l0000185C
+l0000186E:
+l0000184C:
+	r5_112 = r1 + r4_105 + C_101
+	branch r5_112 == 0x00000000 l0000185C
+l00001850:
+	branch r2 == 0x00000000 l0000185C
+l00001856:
+	Mem125[r0:word32] = r4_105 & ~r5_112
+l0000185C:
+	vPortExitCritical(cpsr)
+	return
+l00001836:
+	return
+l000017DC:
+	branch r2 == 0x00000000 l000017E8
+l000017E2:
+	Mem161[r0:word32] = r4_157 & ~r1
+l000017E8:
+	xTaskResumeAll(cpsr)
+	return
+xEventGroupWaitBits_exit:
+
+
+void xEventGroupClearBits(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r2
+// Preserved: r4 r5 r6 sp
+xEventGroupClearBits_entry:
+l00001874:
+	vPortEnterCritical(cpsr)
+	Mem25[r0:word32] = Mem11[r0:word32] & ~r1
+	vPortExitCritical(cpsr)
+	return
+xEventGroupClearBits_exit:
+
+
+void xEventGroupSetBits(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2
+// Preserved: r3 r4 r5 r6 r7 sp
+xEventGroupSetBits_entry:
+l00001890:
+	word32 r7_33
+	vTaskSuspendAll()
+	word32 r0_27 = Mem15[r0 + 16:word32]
+	word32 r1_29 = Mem15[r0:word32] | r1
+	Mem31[r0:word32] = r1_29
+	branch r0 + 0x0000000C == r0_27 l000018F0
+l000018F0:
+	r7_33 = 0xFFFFFFFF
+l000018AA:
+	word32 r7_34 = 0x00000000
+l000018C8:
+	word32 r3_37 = Mem31[r0_27:word32]
+	word32 r4_38 = Mem31[r0_27 + 4:word32]
+	word32 r2_40 = r3_37 & ~0xFF000000
+	branch (r3_37 & 0x04000000) == 0x00000000 l000018AE
+l000018AE:
+	r2_40 = r2_40 + r1_29 + ((r3_37 & 0x04000000) <u 0x00000000)
+	branch r2_40 == 0x00000000 l000018C2
+l000018D6:
+	branch (r2_40 & ~r1_29) == 0x00000000 l000018B2
+l000018B2:
+	branch r3_37 << 7 >= 0x00000000 l000018B8
+l000018B6:
+	r7_34 = r7_34 | r2_40
+l000018B8:
+	xTaskRemoveFromUnorderedEventList(r0_27, r1_29 | 0x02000000)
+	r1_29 = Mem31[r0:word32]
+l000018C2:
+	r0_27 = r4_38
+	branch r0 + 0x0000000C == r4_38 l000018E2
+l000018DC:
+	r0_27 = r4_38
+	branch r0 + 0x0000000C != r4_38 l000018C8
+l000018E2:
+	r7_33 = ~r7_34
+l000018E4:
+	Mem105[r0:word32] = r1_29 & r7_33
+	xTaskResumeAll(cpsr)
+	return
+xEventGroupSetBits_exit:
+
+
+void xEventGroupSync(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2 r3
+// Preserved: r4 r5 r6 r7 r8 sp
+xEventGroupSync_entry:
+l000018F8:
+	vTaskSuspendAll()
+	word32 r4_33 = Mem15[r0:word32] | r1
+	xEventGroupSetBits(r0, r1, cpsr)
+	word32 r6_21 = r2
+	branch (r2 & ~r4_33) == 0x00000000 l0000195E
+l0000195E:
+	Mem49[r0:word32] = Mem15[r0:word32] & ~r2
+l0000191A:
+	branch r3 != 0x00000000 l00001928
+l00001928:
+	vTaskPlaceOnUnorderedEventList(r0 + 0x00000004, r2 | 0x05000000, r3)
+	branch xTaskResumeAll(cpsr) != 0x00000000 l0000194A
+l0000193A:
+	Mem71[Mem15[0x00001984:word32]:word32] = 0x10000000
+	__dsb_sy()
+	__isb_sy()
+l0000194A:
+	branch uxTaskResetEventItemValue() << 6 >= 0x00000000 l00001968
+l00001968:
+	vPortEnterCritical(cpsr)
+	word32 r4_89 = Mem88[r0:word32]
+	branch (r2 & ~r4_89) != 0x00000000 l00001978
+l00001974_1:
+	r6_21 = r4_89 & ~r2
+l00001978:
+	Mem97[r0:word32] = r6_21
+	vPortExitCritical(cpsr)
+l00001954:
+l00001958:
+	return
+l0000191C:
+l0000191E:
+	xTaskResumeAll(cpsr)
+	return
+xEventGroupSync_exit:
+
+
+void xEventGroupGetBitsFromISR(word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31]
+// LiveOut:
+// Trashed: r0 r2 r3
+// Preserved: sp
+xEventGroupGetBitsFromISR_entry:
+l00001988:
+	word32 r3_4 = __mrs(cpsr)
+	__msr(cpsr, 0x000000BF)
+	__isb_sy()
+	__dsb_sy()
+	__msr(cpsr, r3_4)
+	return
+xEventGroupGetBitsFromISR_exit:
+
+
+void vEventGroupDelete(word32 r0, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r1 r2 r3
+// Preserved: lr r4 sp
+vEventGroupDelete_entry:
+l000019A4:
+	vTaskSuspendAll()
+	branch Mem7[r0 + 4:word32] == 0x00000000 l000019C0
+l000019B0:
+	xTaskRemoveFromUnorderedEventList(Mem7[r0 + 16:word32], 0x02000000)
+	branch Mem7[r0 + 4:word32] != 0x00000000 l000019B0
+l000019C0:
+	vPortFree()
+l000019CA_thunk_xTaskResumeAll:
+	xTaskResumeAll(cpsr)
+	return
+vEventGroupDelete_exit:
+
+
+void vEventGroupSetBitsCallback(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV lr r0 r1 r2
+// Preserved: sp
+vEventGroupSetBitsCallback_entry:
+l000019D0:
+l000019D0_thunk_xEventGroupSetBits:
+	xEventGroupSetBits(r0, r1, cpsr)
+	return
+vEventGroupSetBitsCallback_exit:
+
+
+void vEventGroupClearBitsCallback(word32 r0, word32 r1, word32 cpsr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
+// LiveOut:
+// Trashed: NZCV r0 r2
+// Preserved: lr r3 r4 r5 sp
+vEventGroupClearBitsCallback_entry:
+l000019D4:
+	vPortEnterCritical(cpsr)
+	Mem25[r0:word32] = Mem11[r0:word32] & ~r1
+l000019EA_thunk_vPortExitCritical:
+	vPortExitCritical(cpsr)
+	return
+vEventGroupClearBitsCallback_exit:
+
+
