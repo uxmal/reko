@@ -99,6 +99,10 @@ namespace Reko.Core.Output
             {
                 return userProc.OutputFile;
             }
+            if (program.User.ProcedureSourceFiles.TryGetValue(proc.EntryAddress, out var sourcefile))
+            {
+                return sourcefile;
+            }
 
             if (program.SegmentMap.TryFindSegment(proc.EntryAddress, out var seg))
             {

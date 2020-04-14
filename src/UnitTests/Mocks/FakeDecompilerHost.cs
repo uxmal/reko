@@ -58,9 +58,9 @@ namespace Reko.UnitTests.Mocks
             writer("test.asm", new Dictionary<ImageSegment, List<ImageMapItem>>(), new TextFormatter(disassembly));
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
         {
-            writer("test.dis", intermediate);
+            writer("test.dis", new Procedure[0], intermediate);
         }
 
         public void WriteTypes(Program program, Action<string, TextWriter> writer)

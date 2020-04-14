@@ -126,7 +126,7 @@ namespace Reko
                 }
                 eventListener.ShowStatus("Building complex expressions.");
                 dfa.BuildExpressionTrees();
-                host.WriteIntermediateCode(program, (name, writer) => { EmitProgram(program, dfa, name, writer); });
+                host.WriteIntermediateCode(program, (name, procs, writer) => { EmitProgram(program, procs, dfa, name, writer); });
             }
             eventListener.ShowStatus("Interprocedural analysis complete.");
         }
@@ -143,11 +143,11 @@ namespace Reko
             dump.Dump(segmentItems, wr);
         }
 
-        private void EmitProgram(Program program, DataFlowAnalysis dfa, string filename, TextWriter output)
+        private void EmitProgram(Program program, IEnumerable<Procedure> procs, DataFlowAnalysis dfa, string filename, TextWriter output)
         {
             if (output == null)
                 return;
-            foreach (Procedure proc in program.Procedures.Values)
+            foreach (Procedure proc in procs)
             {
                 if (program.NeedsSsaTransform && dfa != null)
                 {
@@ -542,7 +542,7 @@ namespace Reko
             {
                 eventListener.ShowStatus("Writing .asm and .dis files.");
                 host.WriteDisassembly(program, (n, items, w) => DumpAssembler(program, n, items, w));
-                host.WriteIntermediateCode(program, (n, w) => EmitProgram(program, null, n, w));
+                host.WriteIntermediateCode(program, (n, procs, w) => EmitProgram(program, procs, null, n, w));
                 // Use the following for debugging.
                 // WriteSccs(program);
             }

@@ -240,8 +240,6 @@ namespace Reko.Core
         /// </summary>
         public OutputFilePolicy CreateOutputPolicy()
         {
-            //$TODO: leave this in until users get a call.
-            return new SingleFilePolicy(this);
             switch (User.OutputFilePolicy)
             {
             case Program.SingleFilePolicy:

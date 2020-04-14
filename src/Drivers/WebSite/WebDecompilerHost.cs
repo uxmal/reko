@@ -106,7 +106,7 @@ namespace Reko.WebSite
             throw new NotImplementedException();
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
         {
             throw new NotImplementedException();
         }

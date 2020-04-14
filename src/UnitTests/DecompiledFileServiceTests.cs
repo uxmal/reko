@@ -45,7 +45,9 @@ namespace Reko.UnitTests
         public void Setup()
         {
             this.program = new Program();
+            program.SegmentMap = new SegmentMap(Address.Ptr32(0x00100000));
             program.Filename = Path.Combine("bar", "foo.exe");
+            program.Name = "foo.exe";
             program.SourceDirectory = "bar";
 
             this.fsSvc = new Mock<IFileSystemService>();
@@ -83,11 +85,11 @@ namespace Reko.UnitTests
         [Test]
         public void DfSvc_Write_CustomFile()
         {
-            var customSourceFile = Path.Combine("bar", "src", "proc1.c");
+            var customSourceFile = Path.Combine("src", "proc1.c");
             program.Procedures.Add(proc1.EntryAddress, proc1);
             program.User.ProcedureSourceFiles.Add(proc1.EntryAddress, customSourceFile);
 
-            Expect_FileCreated(customSourceFile);
+            Expect_FileCreated("bar", "src", "proc1.c");
 
             dfSvc.WriteDecompiledCode(program, (n, p, w) => { });
 
