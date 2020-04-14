@@ -1,38 +1,14 @@
-char * get(uint32 n)
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  Stack +0004:[0..31]
-// LiveOut: eax
-// Trashed: eax
-// Preserved:
-get_entry:
-l10071000:
-	branch n >u 0x00000002 l10071029
-l10071029:
-	return 0x10072000
-l1007100A:
-	switch (n + 0x00000001) { l10071011 l10071017 l1007101D l10071023 }
-l10071023:
-	return 0x10072008
-l1007101D:
-	return 0x10072010
-l10071017:
-	return 0x10072014
-l10071011:
-	return 0x10072018
-get_exit:
-
-
+// DllMain
+// Return size: 4
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
-// stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut: eax
-// Trashed: eax
-// Preserved:
 DllMain_entry:
+	esp = fp
+	Top = 0
+	// succ:  l10071080
 l10071080:
-	return 0x00000001
+	eax = 0x00000001
+	return
+	// succ:  DllMain_exit
 DllMain_exit:
 
 

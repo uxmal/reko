@@ -1,0 +1,14 @@
+void _fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: NZCV lr pc r2 r3 r4 r5
+// Preserved: sp
+_fini_entry:
+l0000874C:
+	__do_global_dtors_aux()
+	return
+_fini_exit:
+
+

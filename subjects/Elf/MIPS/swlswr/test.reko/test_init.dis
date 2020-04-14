@@ -1,0 +1,28 @@
+void _init()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r25 r28
+// Preserved: ra sp
+_init_entry:
+l00000588:
+	branch __gmon_start__ == 0x00000000 l00000588_ds_t
+l00000588_ds_t:
+l000005B8:
+	word32 r25_16 = Mem10[0x00020A4C:word32]
+	call r25_16 + 2004 (retsize: 0;)
+		uses: r25:r25_16 + 2004
+	word32 r25_24 = Mem10[0x00020A4C:word32]
+	call r25_24 + 2416 (retsize: 0;)
+		uses: r25:r25_24 + 2416
+	return
+_init_exit:
+l00000588_ds_f:
+l000005AC:
+	word32 r25_31
+	call __gmon_start__ (retsize: 0;)
+		uses: r25:r25_31
+		defs: r25:r25_31
+
+

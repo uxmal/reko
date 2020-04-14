@@ -1,0 +1,839 @@
+void fn000015E8(word32 d3, word32 a2, word32 a5, word32 a6, word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a2:[0..31] a5:[0..31] a6:[0..31] d3:[0..31] Stack +0004:[0..31]
+// LiveOut:
+// Trashed: CVZNX a0 a2 a5 a6 a7 d0 d3
+// Preserved:
+fn000015E8_entry:
+l000015E8:
+	word32 a7_23
+	word32 a6_24
+	word32 d0_28
+	word32 a5_27
+	word32 a2_26
+	call a5 + 130 (retsize: 4;)
+		uses: a2:dwArg04,a5:a5,a6:fp - 0x00000004,d3:d3,Stack +0004:Mem15[dwArg04 + 16:word32],Stack +0008:a2,Stack +000C:d3,Stack +0010:a6,Stack +0018:dwArg04
+		defs: a2:a2_26,a5:a5_27,a6:a6_24,a7:a7_23,d0:d0_28
+	branch d0_28 == 0x00000000 l0000162A
+l00001602:
+	word32 d3_44
+	branch a2_26 - (a5_27 + -2656) != 0x00000000 l00001610
+l00001610:
+	branch a2_26 - (a5_27 + -2624) != 0x00000000 l00001628
+l00001618:
+	d3_44 = 1
+l0000160A:
+	d3_44 = 0
+l0000161A:
+	Mem51[a5_27 + -1368:word32] = Mem20[a5_27 + -1368:word32] + 0x00000001
+	branch (Mem51[a2_26 + 0x0000000C:word16] & 0x010C) == 0x0000 l00001634
+l00001634:
+	branch Mem51[a5_27 + -2696 + d3_44 * 4:word32] != 0x00000000 l00001652
+l0000163E:
+	Mem70[a7_23:word32] = 0x00000200
+	word32 d0_77
+	call a5_27 + 114 (retsize: 4;)
+		uses: a2:a2_26,a5:a5_27,a6:a6_24,d3:d3_63,Stack +0008:dwArg04
+		defs: a2:a2_75,a5:a5_76,d0:d0_77,d3:d3_74
+	Mem83[a5_27 + -2696 + d3_44 * 4:word32] = d0_77
+	branch d0_77 == 0x00000000 l0000162A
+l00001652:
+	word32 d0_90 = Mem89[a5_27 + -2696 + d3_44 * 4:word32]
+	Mem93[a2_26 + 8:word32] = d0_90
+	Mem95[a2_26:word32] = d0_90
+	Mem97[a2_26 + 24:word32] = 0x00000200
+	Mem99[a2_26 + 4:word32] = 0x00000200
+	Mem101[a2_26 + 14:word16] = Mem99[a2_26 + 14:word16] | 0x1102
+	return
+l00001628:
+l0000162A:
+	return
+fn000015E8_exit:
+
+
+void fn00001680(word32 a5, word32 dwArg04, word32 dwArg08)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
+// LiveOut:
+// Trashed: CVZN a2 a5 a6 a7 d0 d1 d2 d3 d4
+// Preserved: X
+fn00001680_entry:
+l00001680:
+	branch dwArg04 == 0x00000000 l000016B8
+l000016B8:
+	branch __btst(Mem11[dwArg08 + 14:byte], 0x0004) l000016C8
+l000016C0:
+	word32 d3_126
+	word32 d4_127
+	word32 a2_128
+	word32 a5_129
+	word32 a6_130
+	fn00001D80(a5, dwArg08, out d3_126, out d4_127, out a2_128, out a5_129, out a6_130)
+l00001690:
+	branch __btst(Mem11[dwArg08 + 14:byte], 0x0004) l000016C8
+l000016C8:
+	return
+l00001698:
+	word32 a2_51
+	word32 a6_57
+	word32 d3_123
+	word32 d4_124
+	word32 a5_125
+	fn00001D80(a5, dwArg08, out d3_123, out d4_124, out a2_51, out a5_125, out a6_57)
+	Mem67[a2_51 + 14:word16] = Mem49[a2_51 + 14:word16] & 0xEEFF
+	Mem70[a2_51 + 24:word32] = 0
+	Mem72[a2_51:word32] = 0
+	Mem74[a2_51 + 8:word32] = 0
+	return
+fn00001680_exit:
+
+
+void fn000016D0(word32 d6, word32 a5, word32 dwArg08)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] d6:[8..31] Stack +0008:[0..31]
+// LiveOut:
+// Trashed: CVZNX a0 a2 a3 a4 a5 a6 d0 d2 d3 d4 d5 d6 d7
+// Preserved: a7
+fn000016D0_entry:
+l000016D0:
+	byte v17_41 = Mem39[dwArg08:byte]
+	word32 dwLoc0C_202 = 0
+	word32 d6_118 = SEQ(SLICE(d6, word24, 8), v17_41)
+	word32 dwArg08_204 = dwArg08 + 0x00000001
+	branch v17_41 == 0x00 l00001C34
+l000016FA:
+l0000170E:
+	branch false l00001C34
+l00001716:
+	word32 d0_71
+	branch SLICE(d6_118, byte, 0) < 0x20 l00001734
+l0000171C:
+	branch SLICE(d6_118, byte, 0) > 0x78 l00001734
+l00001734:
+	d0_71 = 0
+l00001722:
+	word32 d0_77 = (int32) (int8) SEQ(SLICE(d0, word24, 8), SLICE(d6_118, byte, 0))
+	d0_71 = (int32) (int8) SEQ(SLICE(d0_77, word24, 8), Mem58[a5 + -2072 + d0_77:byte] & 0x0F)
+l00001736:
+	word32 d0_95 = (d0_71 << 0x00000003) + dwLoc0C_202
+	d0 = (int32) (int8) SEQ(SLICE(d0_95, word24, 8), Mem58[a5 + -2040 + d0_95:byte] >> 0x04)
+	dwLoc0C_202 = d0
+	branch d0 >u 7 l00001C24
+l00001C24:
+	byte v45_114 = Mem108[dwArg08_204:byte]
+	d6_118 = SEQ(SLICE(d6_118, word24, 8), v45_114)
+	dwArg08_204 = dwArg08_204 + 0x00000001
+	branch v45_114 != 0x00 l0000170E
+l00001C34:
+	return
+l00001750:
+	word32 d0_154 = SEQ(SLICE(d0, word16, 16), Mem108[0x00001758 + (int32) ((int16) d0) * 2:word16])
+	word32 d2_189
+	call 0x00001758 + (int32) ((int16) d0_154) (retsize: 0;)
+		uses: a2:a5 + -2072,a3:a5 + -2040,a4:dwLoc1C,a5:a5,a6:fp - 0x00000004,d0:d0_154,d2:d2_189,d3:dwLoc10,d4:dwLoc14,d5:dwLoc18,d6:d6_64,d7:dwLoc20,Stack +0224:dwLoc20,Stack +0228:dwLoc1C,Stack +022C:dwLoc18,Stack +0230:dwLoc14,Stack +0234:dwLoc10,Stack +024C:dwArg08_216
+		defs: d2:d2_189
+	return
+fn000016D0_exit:
+
+
+word32 fn00001C40(word32 a5, byte bArg04, word32 dwArg08, ptr32 & d4Out, ptr32 & d5Out, ptr32 & a5Out, ptr32 & a6Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0004:[0..7] Stack +0008:[0..31]
+// LiveOut: a5 a6 a7 d3 d4 d5
+// Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5
+// Preserved:
+fn00001C40_entry:
+	byte bArg07_78 = SLICE(dwArg04, byte, 0)
+l00001C40:
+	word32 d0_22
+	word32 v5_9 = Mem5[dwArg08 + 4:word32] - 0x00000001
+	Mem10[dwArg08 + 4:word32] = v5_9
+	word32 a6_28 = fp - 0x00000004
+	branch v5_9 < 0x00000000 l00001C60
+l00001C60:
+	word32 a5_27
+	word32 d3_31
+	word32 d4_32
+	word32 d5_33
+	d0_22 = fn00001E94(a5, dwArg08, out d3_31, out d4_32, out d5_33, out a5_27, out a6_28)
+l00001C4E:
+	Mem42[Mem10[dwArg08:word32]:byte] = bArg07_78
+	word32 a0_43 = Mem42[dwArg08:word32]
+	d0_22 = (int32) (int16) (uint32) (uint8) Mem42[a0_43:byte]
+	Mem51[dwArg08:word32] = a0_43 + 1
+l00001C6C:
+	word32 a0_59 = Mem58[a6_28 + 16:word32]
+	branch d0_22 != -1 l00001C7C
+l00001C7C:
+	Mem62[a0_59:word32] = Mem58[a0_59:word32] + 0x00000001
+	word32 a6_65 = Mem62[a6_28:word32]
+	d4Out = <invalid>
+	d5Out = <invalid>
+	a5Out = <invalid>
+	a6Out = a6_65
+	return <invalid>
+l00001C76:
+	Mem68[a0_59:word32] = d0_22
+	word32 a6_71 = Mem68[a6_28:word32]
+	d4Out = <invalid>
+	d5Out = <invalid>
+	a5Out = <invalid>
+	a6Out = a6_71
+	return <invalid>
+fn00001C40_exit:
+
+
+void fn00001C84(word32 a5, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
+// LiveOut:
+// Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6
+// Preserved:
+fn00001C84_entry:
+l00001C84:
+	word32 a7_17 = fp - 0x00000014
+	branch dwArg08 <= 0x00000000 l00001CBA
+l00001C98:
+	word32 d3_28 = dwArg04
+	word32 d4_29 = dwArg0C
+l00001CA4:
+	word32 a7_33 = a7_17 - 4
+	Mem36[a7_33:word32] = dwArg10
+	Mem40[a7_33 - 4:word32] = d4_29
+	Mem44[a7_33 - 8:word32] = d3_28
+	word32 a7_53 = <invalid>
+	word32 d5_59
+	word32 a6_121
+	d3_28 = fn00001C40(a5, Mem44[a7_33 - 8:word32], Mem44[a7_33 - 4:word32], out d4_29, out d5_59, out a5, out a6_121)
+	a7_17 = a7_53 + 12
+	branch d5_59 > 0x00000000 l00001CA4
+l00001CBA:
+	return
+fn00001C84_exit:
+
+
+void fn00001CC4(word32 a5, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
+// LiveOut:
+// Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6
+// Preserved:
+fn00001CC4_entry:
+l00001CC4:
+	word32 a7_17 = fp - 0x00000014
+	word32 d0_21 = dwArg08
+	branch dwArg08 <= 0x00000000 l00001D02
+l00001CD8:
+	word32 d3_28 = dwArg04
+	word32 d4_29 = dwArg0C
+l00001CE4:
+	word32 a7_37 = a7_17 - 4
+	Mem40[a7_37:word32] = dwArg10
+	Mem44[a7_37 - 4:word32] = d4_29
+	Mem52[a7_37 - 8:word32] = (int32) (int8) SEQ(SLICE(d0_21, word24, 8), Mem44[d3_28:byte])
+	word32 a7_61 = <invalid>
+	word32 d5_67
+	word32 a6_129
+	d3_28 = fn00001C40(a5, Mem52[a7_37 - 8:word32], Mem52[a7_37 - 4:word32], out d4_29, out d5_67, out a5, out a6_129)
+	a7_17 = a7_61 + 12
+	d0_21 = d5_67
+	branch d5_67 > 0x00000000 l00001CE4
+l00001D02:
+	return
+fn00001CC4_exit:
+
+
+void fn00001D0C(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..31]
+// LiveOut:
+// Trashed: CVZN a0 a1 d0
+// Preserved: a6 a7
+fn00001D0C_entry:
+l00001D0C:
+	Mem11[dwArg04:word32] = Mem5[dwArg04:word32] + 4
+	return
+fn00001D0C_exit:
+
+
+word32 fn00001D24(word32 a5, word32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, ptr32 & d5Out, ptr32 & d6Out, ptr32 & d7Out, ptr32 & a2Out, ptr32 & a5Out, ptr32 & a6Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0004:[0..31]
+// LiveOut: a2 a5 a6 a7 d0 d3 d4 d5 d6 d7
+// Trashed: CVZNX a2 a5 a6 a7 d0 d1 d2 d3 d4
+// Preserved:
+fn00001D24_entry:
+l00001D24:
+	branch dwArg04 != 0x00000000 l00001D44
+l00001D44:
+	word32 a7_28 = <invalid>
+	word32 a2_21
+	word32 d4_25
+	word32 a5_26
+	word32 a6_27
+	word32 d3_29
+	branch fn00001D80(a5, dwArg04, out d3_29, out d4_25, out a2_21, out a5_26, out a6_27) == 0x00000000 l00001D58
+l00001D58:
+	branch __btst(Mem18[a2_21 + 14:byte], 0x0006) l00001D78
+l00001D78:
+	word32 a2_44 = Mem18[a7_28 + 4:word32]
+	word32 a6_46 = Mem18[a6_27:word32]
+	d3Out = d3_29
+	d4Out = d4_25
+	d5Out = <invalid>
+	d6Out = <invalid>
+	d7Out = <invalid>
+	a2Out = a2_44
+	a5Out = a5_26
+	a6Out = a6_46
+	return 0
+l00001D60:
+	Mem51[a7_28:word32] = Mem18[a2_21 + 16:word32]
+	word32 a7_53
+	word32 a6_54
+	word32 d0_56
+	word32 a5_58
+	word32 d4_60
+	word32 d3_61
+	call a5_26 + 138 (retsize: 4;)
+		uses: a2:a2_21,a5:a5_26,a6:a6_27,Stack +0008:dwArg04
+		defs: a5:a5_58,a6:a6_54,a7:a7_53,d0:d0_56,d3:d3_61,d4:d4_60
+	word32 a2_73 = Mem51[a7_53 + 4:word32]
+	word32 a6_75 = Mem51[a6_54:word32]
+	d3Out = d3_61
+	d4Out = d4_60
+	d5Out = <invalid>
+	d6Out = <invalid>
+	d7Out = <invalid>
+	a2Out = a2_73
+	a5Out = a5_58
+	a6Out = a6_75
+	return (int32) (int8) SEQ(SLICE(d0_56, word24, 8), d0_56 != 0x00000000 ? 0xFF : 0x00)
+l00001D50:
+	word32 a2_80 = Mem18[a7_28 + 4:word32]
+	word32 a6_82 = Mem18[a6_27:word32]
+	d3Out = d3_29
+	d4Out = d4_25
+	d5Out = <invalid>
+	d6Out = <invalid>
+	d7Out = <invalid>
+	a2Out = a2_80
+	a5Out = a5_26
+	a6Out = a6_82
+	return -1
+l00001D32:
+	word32 a6_90
+	word32 a5_94
+	word32 d4_96
+	word32 d3_97
+	word32 d0_92 = fn00001E04(a5, 0, out d3_97, out d4_96, out a5_94, out a6_90)
+	word32 a6_103 = Mem87[a6_90:word32]
+	d3Out = d3_97
+	d4Out = d4_96
+	d5Out = <invalid>
+	d6Out = <invalid>
+	d7Out = <invalid>
+	a2Out = a2
+	a5Out = a5_94
+	a6Out = a6_103
+	return d0_92
+fn00001D24_exit:
+
+
+word32 fn00001D80(word32 a5, word32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, ptr32 & a2Out, ptr32 & a5Out, ptr32 & a6Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0004:[0..31]
+// LiveOut: a2 a5 a6 a7 d0 d3 d4
+// Trashed: CVZNX a2 a5 a6 a7 d0 d1 d2 d3 d4
+// Preserved:
+fn00001D80_entry:
+l00001D80:
+	word32 d1_19 = Mem16[dwArg04 + 12:word32]
+	word32 a6_52 = fp - 0x00000004
+	word32 a7_14 = fp - 0x00000010
+	word32 d3_17 = 0
+	word32 a2_18 = dwArg04
+	branch (d1_19 & 3) != 2 l00001DE0
+l00001D9E:
+	branch (SLICE(d1_19, word16, 0) & 0x0108) == 0x0000 l00001DE0
+l00001DA4:
+	word32 d0_34 = Mem16[dwArg04 + 8:word32]
+	word32 d4_36 = Mem16[dwArg04:word32] - d0_34
+	branch d4_36 <= 0x00000000 l00001DE0
+l00001DAE:
+	word32 a7_51
+	word32 d4_54
+	word32 d0_57
+	call a5 + 146 (retsize: 4;)
+		uses: a2:dwArg04,a5:a5,a6:fp - 0x00000004,d3:0,d4:d4_36,Stack +0004:Mem44[dwArg04 + 16:word32],Stack +0008:d0_34,Stack +000C:d4_36,Stack +0024:dwArg04
+		defs: a2:a2_53,a5:a5_59,a6:a6_52,a7:a7_51,d0:d0_57,d3:d3_55,d4:d4_54
+	a7_14 = a7_51 + 12
+	branch d0_57 - d4_54 != 0x00000000 l00001DD8
+l00001DD8:
+	__bset(Mem48[a2_18 + 15:byte], 0x0005, out Mem48[a2_18 + 15:byte])
+	d3_17 = -1
+l00001DC2:
+	word32 d0_68 = Mem48[a2_18 + 12:word32]
+	branch __btst(SLICE(d0_68, byte, 0), 0x0007) l00001DE0
+l00001DCC:
+	word32 d0_71
+	__bclr(d0_68, 0x00000001, out d0_71)
+	Mem74[a2_18 + 12:word32] = d0_71
+l00001DE0:
+	Mem79[a2_18:word32] = Mem77[a2_18 + 8:word32]
+	Mem82[a2_18 + 4:word32] = 0
+	word32 a7_88 = a7_14 + 4
+	word32 d4_89 = Mem82[a7_88:word32]
+	word32 a2_91 = Mem82[a7_88 + 4:word32]
+	word32 a6_94 = Mem82[a6_52:word32]
+	d3Out = Mem82[a7_14:word32]
+	d4Out = d4_89
+	a2Out = a2_91
+	a5Out = a5
+	a6Out = a6_94
+	return d3_17
+fn00001D80_exit:
+
+
+void fn00001DF4(word32 a5)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31]
+// LiveOut:
+// Trashed: CVZNX a2 a5 a6 a7 d0 d2 d3 d4 d5 d6 d7
+// Preserved:
+fn00001DF4_entry:
+l00001DF4:
+	word32 a6_16
+	word32 d3_34
+	word32 d4_35
+	word32 a5_36
+	fn00001E04(a5, 1, out d3_34, out d4_35, out a5_36, out a6_16)
+	return
+fn00001DF4_exit:
+
+
+word32 fn00001E04(word32 a5, word32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, ptr32 & a5Out, ptr32 & a6Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0004:[0..31]
+// LiveOut: a5 a6 d0 d3 d4
+// Trashed: CVZNX a2 a5 a6 a7 d0 d3 d4 d5 d6 d7
+// Preserved:
+fn00001E04_entry:
+l00001E04:
+	word32 d3_107
+	word32 a6_101 = fp - 0x00000004
+	word32 a7_111 = fp - 0x0000001C
+	word32 d6_104 = 1
+	word32 a2_102 = a5 + -2688
+	word32 d4_106 = 0
+	word32 d5_105 = 0
+	branch a5 + -2688 - Mem25[a5 + -2048:word32] >u 0x00000000 l00001E64
+l00001E64:
+	d3_107 = dwArg04
+l00001E1E:
+	d3_107 = dwArg04
+l00001E22:
+	branch d3_107 - d6_104 != 0x00000000 l00001E40
+l00001E26:
+	branch (Mem45[a2_102 + 0x0000000C:word16] & 0x0083) == 0x0000 l00001E40
+l00001E40:
+	branch d3_107 != 0x00000000 l00001E58
+l00001E44:
+	branch __btst(Mem45[a2_102 + 15:word32], d6_104) l00001E58
+l00001E4A:
+	Mem67[a7_111 - 4:word32] = a2_102
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word32 stackArg4 = <invalid>
+	word32 a7_79 = <invalid>
+	word32 d7_82
+	word32 d0_88 = fn00001D24(a5, stackArg4, out d3_107, out d4_106, out d5_105, out d6_104, out d7_82, out a2_102, out a5, out a6_101)
+	a7_111 = a7_79 + 4
+	branch d0_88 - d7_82 != 0x00000000 l00001E58
+l00001E56:
+	d5_105 = d0_88
+l00001E30:
+	Mem98[a7_111 - 4:word32] = a2_102
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word32 a7_100 = <invalid>
+	word32 stackArg4 = <invalid>
+	a7_111 = a7_100 + 4
+	word32 d7_103
+	branch fn00001D24(a5, stackArg4, out d3_107, out d4_106, out d5_105, out d6_104, out d7_103, out a2_102, out a5, out a6_101) - d7_103 == 0x00000000 l00001E58
+l00001E3C:
+	d4_106 = d4_106 + d6_104
+l00001E58:
+	a2_102 = a2_102 + 32
+	branch a2_102 - Mem120[a5 + -2048:word32] <=u 0x00000000 l00001E22
+l00001E62:
+l00001E68:
+	branch d3_107 == 1 l00001E70
+l00001E6E:
+	d4_106 = d5_105
+l00001E70:
+	word32 d4_146 = Mem143[a7_111 + 4:word32]
+	word32 a6_159 = Mem143[a6_101:word32]
+	d3Out = Mem143[a7_111:word32]
+	d4Out = d4_146
+	a5Out = a5
+	a6Out = a6_159
+	return d4_106
+fn00001E04_exit:
+
+
+word32 fn00001E94(word32 a5, word32 dwArg08, ptr32 & d3Out, ptr32 & d4Out, ptr32 & d5Out, ptr32 & a5Out, ptr32 & a6Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0008:[0..31]
+// LiveOut: a5 a6 d0 d3 d4 d5
+// Trashed: CVZNX a0 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5
+// Preserved:
+fn00001E94_entry:
+l00001E94:
+	word32 d0_26 = Mem22[dwArg08 + 12:word32]
+	word32 a6_119 = fp - 0x00000004
+	word32 a7_131 = fp - 0x0000001C
+	word32 a3_120 = dwArg08
+	word32 d3_124 = Mem22[dwArg08 + 16:word32]
+	word32 a2_121 = dwArg08 + 12
+	branch (SLICE(d0_26, word16, 0) & 0x0082) == 0x0000 l00001F5C
+l00001EB4:
+	branch __btst(SLICE(d0_26, byte, 0), 0x0006) l00001F5C
+l00001EBC:
+	branch __btst(SLICE(d0_26, byte, 0), 0x0000) l00001EDA
+l00001EC2:
+	Mem39[dwArg08 + 4:word32] = 0
+	d0_26 = Mem39[dwArg08 + 12:word32]
+	branch __btst(SLICE(d0_26, byte, 0), 0x0004) l00001F5C
+l00001F5C:
+	word32 d0_44
+	__bset(d0_26, 0x0005, out d0_44)
+	Mem48[dwArg08 + 12:word32] = d0_44
+	d3Out = d3
+	d4Out = d4
+	d5Out = d5
+	a5Out = a5
+	a6Out = a6
+	return -1
+l00001ED2:
+	Mem66[dwArg08:word32] = Mem39[dwArg08 + 8:word32]
+	__bclr(Mem66[dwArg08 + 15:byte], 0x00, out Mem66[dwArg08 + 15:byte])
+l00001EDA:
+	word32 d0_72
+	__bset(Mem70[dwArg08 + 12:word32], 0x0001, out d0_72)
+	Mem75[dwArg08 + 12:word32] = d0_72
+	word32 d0_76
+	__bclr(d0_72, 0x00000004, out d0_76)
+	Mem79[dwArg08 + 12:word32] = d0_76
+	Mem83[dwArg08 + 4:word32] = 0
+	word32 d4_123 = 0
+	branch (Mem83[dwArg08 + 0x0000000C:word16] & 0x010C) != 0x0000 l00001F1C
+l00001EF8:
+	branch dwArg08 - (a5 + -2656) == 0x00000000 l00001F08
+l00001F00:
+	branch dwArg08 - (a5 + -2624) != 0x00000000 l00001F14
+l00001F08:
+	word32 a7_118
+	word32 d0_125
+	word32 a0_127
+	word32 d2_129
+	call a5 + 130 (retsize: 4;)
+		uses: a0:a0_127,a2:dwArg08 + 12,a3:dwArg08,a5:a5,a6:fp - 0x00000004,d2:d2_129,d3:d3_24,d4:0,d5:0,Stack +0004:d3_24,Stack +002C:dwArg08
+		defs: a0:a0_127,a2:a2_121,a3:a3_120,a5:a5_128,a6:a6_119,a7:a7_118,d0:d0_125,d2:d2_129,d3:d3_124,d4:d4_123
+	a7_131 = a7_118 + 4
+	branch d0_125 != 0x00000000 l00001F1C
+l00001F14:
+	word32 a7_137 = a7_131 - 4
+	Mem140[a7_137:word32] = a3_120
+	word32 a7_149 = <invalid>
+	a2_121 = fn00002014(a2_121, a5, a6_119, Mem140[a7_137:word32], out a5, out a6_119)
+	a7_131 = a7_149 + 4
+l00001F1C:
+	word32 d5_192
+	branch (Mem159[a2_121:word16] & 0x0108) == 0x0000 l00001F94
+l00001F94:
+	Mem171[a6_119 + -1:byte] = Mem159[a6_119 + 11:byte]
+	word32 a7_173 = a7_131 - 4
+	Mem175[a7_173:word32] = 1
+	Mem177[a7_173 - 0x00000004:word32] = a6_119 + -1
+	Mem182[a7_173 - 0x00000008:word32] = d3_124
+	word32 a7_188
+	word32 d0_195
+	word32 a0_197
+	word32 d2_199
+	call a5 + 146 (retsize: 4;)
+		uses: a0:a0_197,a2:a2_158,a3:a3_185,a5:a5_184,a6:a6_169,d2:d2_199,d3:d3_179,d4:d4_186,d5:1,Stack +000C:dwArg08
+		defs: a0:a0_197,a2:a2_191,a5:a5_198,a6:a6_189,a7:a7_188,d0:d0_195,d2:d2_199,d5:d5_192
+	a7_131 = a7_188 + 12
+	d4_123 = d0_195
+l00001F24:
+	word32 d0_204 = Mem159[a3_120 + 8:word32]
+	d5_192 = Mem159[a3_120:word32] - d0_204
+	Mem210[a3_120:word32] = d0_204 + 1
+	Mem215[a3_120 + 4:word32] = Mem210[a3_120 + 24:word32] - 0x00000001
+	branch d5_192 <= 0x00000000 l00001F6C
+l00001F6C:
+	branch __btst(Mem215[a5 + -1704 + d3_124:byte], 0x0005) l00001F8A
+l00001F78:
+	word32 a7_223 = a7_131 - 4
+	Mem225[a7_223:word32] = 2
+	Mem229[a7_223 - 4:word32] = 0
+	Mem232[a7_223 - 8:word32] = d3_124
+	word32 a7_234
+	word32 a0_243
+	call a5 + 154 (retsize: 4;)
+		uses: a0:a0_243,a2:a2_158,a3:a3_185,a5:a5_184,a6:a6_169,d1:0,d2:2,d3:d3_179,d4:d4_186,d5:d5_206,Stack +000C:dwArg08
+		defs: a0:a0_243,a2:a2_237,a3:a3_236,a5:a5_244,a6:a6_235,a7:a7_234,d4:d4_239,d5:d5_238
+	a7_131 = a7_234 + 12
+l00001F8A:
+	Mem253[Mem249[a3_120 + 8:word32]:byte] = Mem249[a6_119 + 11:byte]
+l00001F40:
+	word32 a7_255 = a7_131 - 4
+	Mem257[a7_255:word32] = d5_192
+	Mem261[a7_255 - 4:word32] = Mem257[a3_120 + 8:word32]
+	Mem264[a7_255 - 8:word32] = d3_124
+	word32 a7_266
+	word32 a3_268
+	word32 d0_273
+	word32 d2_277
+	call a5 + 146 (retsize: 4;)
+		uses: a0:a0_281,a2:a2_158,a3:a3_185,a5:a5_184,a6:a6_169,d2:d2_277,d3:d3_179,d4:d4_186,d5:d5_206,Stack +000C:dwArg08
+		defs: a2:a2_269,a3:a3_268,a5:a5_276,a6:a6_267,a7:a7_266,d0:d0_273,d2:d2_277,d5:d5_270
+	word32 a0_281 = Mem264[a3_268 + 8:word32]
+	Mem283[a0_281:byte] = Mem264[a6_119 + 11:byte]
+	a7_131 = a7_266 + 12
+	d4_123 = d0_273
+l00001FAE:
+	branch d4_123 - d5_192 == 0x00000000 l00001FC4
+l00001FC4:
+	word32 a7_302 = a7_131 + 4
+	word32 d0_295 = Mem293[a6_119 + 8:word32] & 0x000000FF
+	word32 d4_303 = Mem293[a7_302:word32]
+	word32 d5_305 = Mem293[a7_302 + 4:word32]
+	word32 a6_311 = Mem293[a6_119:word32]
+	d3Out = Mem293[a7_131:word32]
+	d4Out = d4_303
+	d5Out = d5_305
+	a5Out = a5
+	a6Out = a6_311
+	return d0_295
+l00001FB2:
+	__bset(Mem293[a2_121 + 3:byte], 0x0005, out Mem293[a2_121 + 3:byte])
+	word32 a7_319 = a7_131 + 4
+	word32 d4_320 = Mem293[a7_319:word32]
+	word32 d5_322 = Mem293[a7_319 + 4:word32]
+	word32 a6_328 = Mem293[a6_119:word32]
+	d3Out = Mem293[a7_131:word32]
+	d4Out = d4_320
+	d5Out = d5_322
+	a5Out = a5
+	a6Out = a6_328
+	return -1
+fn00001E94_exit:
+
+
+void fn00001FD8(word32 a5)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31]
+// LiveOut:
+// Trashed: CVZNX a0 a2 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6
+// Preserved:
+fn00001FD8_entry:
+l00001FD8:
+	word32 a7_17 = fp - 0x00000014
+	word32 d3_22 = 0
+	word32 d4_25 = a5 + -2592
+	branch a5 + -2592 - Mem19[a5 + -2048:word32] >u 0x00000000 l00002008
+l00001FF2:
+	word32 a7_30 = a7_17 - 4
+	Mem33[a7_30:word32] = d4_25
+	word32 a7_43 = <invalid>
+	a7_17 = a7_43 + 4
+	word32 d4_45
+	word32 a6_113
+	branch fn00002068(d3_22, a5, Mem33[a7_30:word32], out d3_22, out d4_45, out a5, out a6_113) == -1 l00002000
+l00001FFE:
+	d3_22 = d3_22 + 0x00000001
+l00002000:
+	d4_25 = d4_45 + 32
+	branch d4_45 + 32 - Mem33[a5 + -2048:word32] <=u 0x00000000 l00001FF2
+l00002008:
+	return
+fn00001FD8_exit:
+
+
+word32 fn00002014(word32 a2, word32 a5, word32 a6, word32 dwArg04, ptr32 & a5Out, ptr32 & a6Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a2:[0..31] a5:[0..31] a6:[0..31] Stack +0004:[0..31]
+// LiveOut: a2 a5 a6 a7
+// Trashed: CVZNX a0 a2 a5 a6 a7 d0 d2
+// Preserved:
+fn00002014_entry:
+l00002014:
+	Mem14[a5 + -1368:word32] = Mem11[a5 + -1368:word32] + 0x00000001
+	word32 a7_19
+	word32 a6_20
+	word32 a2_21
+	word32 a5_22
+	word32 d0_23
+	call a5 + 114 (retsize: 4;)
+		uses: a2:dwArg04,a5:a5,a6:fp - 0x00000004,Stack +0004:0x00000200,Stack +0008:a2,Stack +000C:a6,Stack +0014:dwArg04
+		defs: a2:a2_21,a5:a5_22,a6:a6_20,a7:a7_19,d0:d0_23
+	Mem29[a2_21 + 8:word32] = d0_23
+	branch d0_23 == 0x00000000 l00002044
+l00002044:
+	__bset(Mem29[a2_21 + 15:byte], 0x0002, out Mem29[a2_21 + 15:byte])
+	Mem35[a2_21 + 8:word32] = a2_21 + 20
+	Mem38[a2_21 + 24:word32] = 1
+l00002032:
+	__bset(Mem29[a2_21 + 15:byte], 0x0003, out Mem29[a2_21 + 15:byte])
+	Mem42[a2_21 + 24:word32] = 0x00000200
+l00002058:
+	Mem47[a2_21:word32] = Mem45[a2_21 + 8:word32]
+	Mem50[a2_21 + 4:word32] = 0
+	word32 a2_54 = Mem50[a7_19 + 4:word32]
+	word32 a6_57 = Mem50[a6_20:word32]
+	a5Out = a5_22
+	a6Out = a6_57
+	return a2_54
+fn00002014_exit:
+
+
+word32 fn00002068(word32 d3, word32 a5, word32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, ptr32 & a5Out, ptr32 & a6Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] d3:[0..31] Stack +0004:[0..31]
+// LiveOut: a5 a6 a7 d0 d3 d4
+// Trashed: CVZNX a2 a5 a6 a7 d0 d1 d2 d3 d4
+// Preserved:
+fn00002068_entry:
+l00002068:
+	word32 d0_18 = Mem15[dwArg04 + 12:word32]
+	word32 a6_122 = fp - 0x00000004
+	word32 a7_12 = fp - 0x0000000C
+	word32 d3_123 = -1
+	word32 a2_124 = dwArg04
+	branch __btst(SLICE(d0_18, byte, 0), 0x0006) l00002090
+l00002090:
+	branch (SLICE(d0_18, word16, 0) & 0x0083) == 0x0000 l000020E0
+l00002096:
+	word32 a2_33
+	word32 a5_38
+	word32 d3_210
+	word32 d4_211
+	word32 a6_212
+	word32 d0_34 = fn00001D80(a5, dwArg04, out d3_210, out d4_211, out a2_33, out a5_38, out a6_212)
+	word32 a7_40 = <invalid>
+	Mem51[a7_40:word32] = a2_33
+	word32 a5_56
+	word32 a6_57
+	word32 a2_55 = fn000020F0(a5_38, Mem51[a7_40:word32], out a5_56, out a6_57)
+	word32 a7_58 = <invalid>
+	Mem68[a7_58:word32] = Mem51[a2_55 + 16:word32]
+	word32 a7_70
+	word32 d0_74
+	word32 d2_76
+	word32 d1_77
+	call a5_56 + 162 (retsize: 4;)
+		uses: a2:a2_55,a5:a5_56,a6:a6_57,d1:d1_77,d2:d2_76,d3:d0_34,d4:d4_78,Stack +0008:dwArg04
+		defs: a2:a2_73,a5:a5_75,a6:a6_71,a7:a7_70,d0:d0_74,d1:d1_77,d2:d2_76,d3:d3_72,d4:d4_78
+	a7_12 = a7_70 + 4
+	branch d0_74 >= 0x00000000 l000020BC
+l000020BC:
+	word32 d0_86 = Mem68[a2_124 + 28:word32]
+	branch d0_86 == 0x00000000 l000020E0
+l000020C2:
+	Mem91[a7_70:word32] = d0_86
+	word32 a7_93
+	word32 a6_94
+	word32 a2_96
+	word32 d0_97
+	word32 a5_98
+	word32 d2_99
+	word32 d1_100
+	word32 d4_101
+	word32 d3_108
+	call a5 + 178 (retsize: 4;)
+		uses: a2:a2_73,a5:a5_75,a6:a6_71,d1:d1_100,d2:d2_99,d3:d3_72,d4:d4_101,Stack +0008:dwArg04
+		defs: a2:a2_96,a5:a5_98,a6:a6_94,a7:a7_93,d0:d0_97,d1:d1_100,d2:d2_99,d3:d3_95,d4:d4_101
+	branch d0_97 == 0x00000000 l000020D0
+l000020CE:
+	d3_108 = -1
+l000020D0:
+	Mem116[a7_93:word32] = Mem91[a2_96 + 28:word32]
+	word32 a7_121
+	word32 d1_128
+	call a5_98 + 122 (retsize: 4;)
+		uses: a2:a2_96,a5:a5_98,a6:a6_94,d1:d1_128,d2:0,d3:d3_120,d4:d4_129,Stack +0008:dwArg04
+		defs: a2:a2_124,a5:a5_126,a6:a6_122,a7:a7_121,d1:d1_128,d3:d3_123,d4:d4_129
+	Mem134[a2_124 + 28:word32] = 0
+	a7_12 = a7_121 + 4
+l000020B6:
+	d3_123 = -1
+l000020E0:
+	Mem141[a2_124 + 12:word32] = 0
+	word32 a6_153 = Mem141[a6_122:word32]
+	d3Out = Mem141[a7_12 + 4:word32]
+	d4Out = d4
+	a5Out = a5
+	a6Out = a6_153
+	return d3_123
+l00002080:
+	Mem157[dwArg04 + 12:word32] = 0
+	d3Out = d3
+	d4Out = d4
+	a5Out = a5
+	a6Out = a6
+	return -1
+fn00002068_exit:
+
+
+word32 fn000020F0(word32 a5, word32 dwArg04, ptr32 & a5Out, ptr32 & a6Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0004:[0..31]
+// LiveOut: a2 a5 a6 a7
+// Trashed: CVZN a2 a5 a6 a7 d0 d1 d2
+// Preserved:
+fn000020F0_entry:
+l000020F0:
+	word32 d0_13 = Mem11[dwArg04 + 12:word32]
+	word32 a6_30 = fp - 0x00000004
+	word32 a7_37 = fp - 0x00000008
+	branch (SLICE(d0_13, word16, 0) & 0x0083) == 0x0000 l00002128
+l00002106:
+	branch __btst(SLICE(d0_13, byte, 0), 0x0003) l00002128
+l0000210C:
+	word32 a7_29
+	word32 a2_31
+	call a5 + 122 (retsize: 4;)
+		uses: a2:dwArg04,a5:a5,a6:fp - 0x00000004,d2:0,Stack +0004:Mem11[dwArg04 + 8:word32],Stack +0014:dwArg04
+		defs: a2:a2_31,a5:a5_34,a6:a6_30,a7:a7_29
+	__bclr(Mem26[a2_31 + 15:byte], 0x03, out Mem26[a2_31 + 15:byte])
+	Mem41[a2_31:word32] = 0
+	Mem43[a2_31 + 8:word32] = 0
+	Mem45[a2_31 + 4:word32] = 0
+	a7_37 = a7_29 + 4
+l00002128:
+	word32 a2_50 = Mem48[a7_37:word32]
+	word32 a6_53 = Mem48[a6_30:word32]
+	a5Out = a5
+	a6Out = a6_53
+	return a2_50
+fn000020F0_exit:
+
+

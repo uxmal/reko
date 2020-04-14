@@ -72,7 +72,7 @@ word32 verify(Eq_n rdi[])
 	{
 		uint64 rax_n;
 		byte * rax_n = (rdi + (int64) ((word32) ((uint64) dwLoc0C_n)))->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000;
-		word32 rax_32_32_n = SLICE(rax_n, word32, 32);
+		word32 rax_32_n_n = SLICE(rax_n, word32, 32);
 		if ((byte) (word32) *rax_n == 0x00)
 			break;
 		byte al_n = (byte) (uint64) ((word32) (uint64) dwLoc0C_n ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_n))].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000)[0x00])));
@@ -84,7 +84,7 @@ word32 verify(Eq_n rdi[])
 		}
 		++dwLoc0C_n;
 	}
-	rax_n = SEQ(rax_32_32_n, (word32) (dwLoc0C_n == 0x17));
+	rax_n = SEQ(rax_32_n_n, (word32) (dwLoc0C_n == 0x17));
 	return (word32) rax_n;
 }
 

@@ -1,0 +1,27 @@
+void fn00003340(word32 a5, word16 wArg06)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5:[0..31] Stack +0006:[0..15]
+// LiveOut:
+// Trashed: CVZNX a0 a1 d0 d1 d2
+// Preserved: a6 a7
+fn00003340_entry:
+l00003340:
+	Mem20[a5 + -1728:word32] = (int32) (int16) SEQ(SLICE(d0, word16, 16), wArg06)
+	word32 d2_21 = 0
+	word32 d0_23 = a5 + -1284
+l0000335C:
+	branch wArg06 - Mem20[d0_23:word16] == 0x0000 l00003374
+l00003374:
+	Mem40[a5 + -1732:word32] = (uint32) (uint16) Mem20[a5 + -1282 + d2_21 * 4:word16]
+	return
+l00003362:
+	d0_23 = d0_23 + 0x00000004
+	d2_21 = d2_21 + 0x00000001
+	branch d0_23 - (a5 + -1100) <u 0x00000000 l0000335C
+l0000336A:
+	Mem55[a5 + -1732:word32] = 22
+	return
+fn00003340_exit:
+
+

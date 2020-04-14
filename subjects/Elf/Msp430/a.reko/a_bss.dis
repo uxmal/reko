@@ -1,0 +1,13 @@
+void __write_char()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+// Terminates process
+__write_char_exit:
+__write_char_entry:
+l09B2:
+
+

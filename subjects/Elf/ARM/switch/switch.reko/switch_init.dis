@@ -1,0 +1,17 @@
+word32 _init(ptr32 & r10Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: r10 r4
+// Trashed: NZCV lr pc r0 r10 r2 r3 r4
+// Preserved: sp
+_init_entry:
+l000082F0:
+	word32 r10_8 = call_gmon_start()
+	frame_dummy()
+	word32 r4_24 = __do_global_ctors_aux()
+	r10Out = r10_8
+	return r4_24
+_init_exit:
+
+
