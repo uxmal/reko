@@ -98,6 +98,7 @@ namespace Reko.Core.Serialization
                     ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly,
                     ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
                     ExtractResources = program.User.ExtractResources,
+                    OutputFilePolicy = program.User.OutputFilePolicy,
                 },
                 DisassemblyDirectory =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyDirectory),
                 SourceDirectory =       ConvertToProjectRelativePath(projectAbsPath, program.SourceDirectory),

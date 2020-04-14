@@ -61,6 +61,7 @@ namespace Reko.UnitTests.Core.Output
             {
                 Address = Address.Ptr32(uAddr),
             };
+            program.ImageMap.AddItem(item.Address, item);
         }
 
         [Test]
@@ -73,8 +74,9 @@ namespace Reko.UnitTests.Core.Output
             var sfp = new SingleFilePolicy(program);
             var placements = sfp.GetItemPlacements(".asm").ToList();
             Assert.AreEqual(1, placements.Count);
-            Assert.AreEqual("@@@", placements[0].Key);
+            Assert.AreEqual("myprogram.asm", placements[0].Key);
             Assert.AreEqual(1, placements[0].Value.Count);
+            Assert.AreEqual(2, placements[0].Value.Values.First().Count);
         }
     }
 }

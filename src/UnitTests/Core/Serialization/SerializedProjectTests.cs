@@ -270,6 +270,7 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 { jumpTable.Address, jumpTable }
                             },
+                            OutputFilePolicy = Program.SegmentFilePolicy,
                         }
                     }
                 }

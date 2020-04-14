@@ -36,10 +36,13 @@
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.tabLoading = new System.Windows.Forms.TabPage();
             this.tabScanning = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listHeuristics = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ddlOutputPolicies = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
+            this.tabGeneral.SuspendLayout();
             this.tabLoading.SuspendLayout();
             this.tabScanning.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -105,6 +108,8 @@
             // 
             // tabGeneral
             // 
+            this.tabGeneral.Controls.Add(this.ddlOutputPolicies);
+            this.tabGeneral.Controls.Add(this.label2);
             this.tabGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabGeneral.Name = "tabGeneral";
             this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
@@ -135,18 +140,6 @@
             this.tabScanning.Text = "Scanning";
             this.tabScanning.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(3, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(358, 43);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Heuristic scanning guesses where executable statements are by disassembling the b" +
-    "inary and resolving possible conflicts.  Different scanning heuristics give diff" +
-    "erent results.";
-            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -170,6 +163,36 @@
             this.listHeuristics.Size = new System.Drawing.Size(354, 95);
             this.listHeuristics.TabIndex = 2;
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Location = new System.Drawing.Point(3, 31);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(358, 43);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Heuristic scanning guesses where executable statements are by disassembling the b" +
+    "inary and resolving possible conflicts.  Different scanning heuristics give diff" +
+    "erent results.";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(7, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "&Output files:";
+            // 
+            // ddlOutputPolicies
+            // 
+            this.ddlOutputPolicies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlOutputPolicies.FormattingEnabled = true;
+            this.ddlOutputPolicies.Location = new System.Drawing.Point(10, 24);
+            this.ddlOutputPolicies.Name = "ddlOutputPolicies";
+            this.ddlOutputPolicies.Size = new System.Drawing.Size(360, 21);
+            this.ddlOutputPolicies.TabIndex = 1;
+            // 
             // ProgramPropertiesDialog
             // 
             this.AcceptButton = this.btnOk;
@@ -188,6 +211,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Program Properties";
             this.tabControl1.ResumeLayout(false);
+            this.tabGeneral.ResumeLayout(false);
+            this.tabGeneral.PerformLayout();
             this.tabLoading.ResumeLayout(false);
             this.tabLoading.PerformLayout();
             this.tabScanning.ResumeLayout(false);
@@ -209,5 +234,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ListBox listHeuristics;
+        private System.Windows.Forms.ComboBox ddlOutputPolicies;
+        private System.Windows.Forms.Label label2;
     }
 }

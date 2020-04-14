@@ -295,7 +295,8 @@ namespace Reko.UnitTests.Core.Serialization
                                         "11504F",
                                     }
                                 }
-                            }
+                            },
+                            OutputFilePolicy = Program.SegmentFilePolicy,
                         }
                     }
                 }
@@ -316,6 +317,8 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(1, inputFile.User.IndirectJumps.Count);
             var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
             Assert.AreSame(jumpTable, indJump.Table);
+
+            Assert.AreEqual(Program.SegmentFilePolicy, inputFile.User.OutputFilePolicy);
         }
 
 
