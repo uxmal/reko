@@ -77,6 +77,7 @@ namespace Reko.Loading
             program.EntryPoints[asm.StartAddress] =
                 ImageSymbol.Procedure(program.Architecture, asm.StartAddress);
             CopyImportReferences(asm.ImportReferences, program);
+            program.User.OutputFilePolicy = Program.SegmentFilePolicy;
             return program;
         }
 
@@ -139,6 +140,7 @@ namespace Reko.Loading
                 }
                 program.ImageMap = program.SegmentMap.CreateImageMap();
             }
+            program.User.OutputFilePolicy = Program.SegmentFilePolicy;
             return program;
         }
 
@@ -185,6 +187,7 @@ namespace Reko.Loading
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;
             program.User.LoadAddress = addrLoad;
+            program.User.OutputFilePolicy = Program.SegmentFilePolicy;
 
             program.Architecture.PostprocessProgram(program);
             program.ImageMap = program.SegmentMap.CreateImageMap();

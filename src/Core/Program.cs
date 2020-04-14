@@ -48,6 +48,9 @@ namespace Reko.Core
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public const string SingleFilePolicy = "SingleFile";
+        public const string SegmentFilePolicy = "Segment";
+
         private IProcessorArchitecture archDefault;
         private Identifier globals;
         private Encoding encoding;
@@ -237,8 +240,16 @@ namespace Reko.Core
         /// </summary>
         public OutputFilePolicy CreateOutputPolicy()
         {
-            //return new SegmentFilePolicy(this);
+            //$TODO: leave this in until users get a call.
             return new SingleFilePolicy(this);
+            switch (User.OutputFilePolicy)
+            {
+            case Program.SingleFilePolicy:
+                return new SingleFilePolicy(this);
+            case Program.SegmentFilePolicy:
+            default:
+                return new SegmentFilePolicy(this);
+            }
         }
 
         public ProcedureSerializer CreateProcedureSerializer()

@@ -171,6 +171,9 @@ namespace Reko.Core.Serialization
         [XmlElement("extractResources")]
         [DefaultValue(true)]
         public bool ExtractResources;
+
+        [XmlElement("outputFilePolicy")]
+        public string OutputFilePolicy;
     }
 
     public class PlatformOptions_v4

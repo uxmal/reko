@@ -32,6 +32,7 @@ using System.Text;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Globalization;
+using Reko.Core.Output;
 
 namespace Reko.Core.Serialization
 {
@@ -269,6 +270,7 @@ namespace Reko.Core.Serialization
             var sUser = sInput.User ?? new UserData_v4
             {
                 ExtractResources = true,
+                OutputFilePolicy = Program.SingleFilePolicy,
             };
             var address = LoadAddress(sUser, this.arch);
             var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
@@ -346,6 +348,8 @@ namespace Reko.Core.Serialization
             program.ResourcesDirectory = ConvertToAbsolutePath(projectFilePath, sInput.ResourcesDirectory);
             program.EnsureDirectoryNames(program.Filename);
             program.User.LoadAddress = address;
+            // We're not fettered by backwards compatibility here, and can use the improved segment file policy.
+            program.User.OutputFilePolicy = Program.SegmentFilePolicy;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }
@@ -519,6 +523,8 @@ namespace Reko.Core.Serialization
             program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
             program.User.ShowBytesInDisassembly = sUser.ShowBytesInDisassembly;
             program.User.ExtractResources = sUser.ExtractResources;
+            // Backwards compatibility: older versions used single file policy.
+            program.User.OutputFilePolicy = sUser.OutputFilePolicy ?? Program.SingleFilePolicy;
         }
 
         private Annotation LoadAnnotation(Annotation_v3 annotation)
@@ -706,12 +712,9 @@ namespace Reko.Core.Serialization
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
             }
+            // Backwards compatibility: older versions used single file policy.
+            program.User.OutputFilePolicy = Program.SingleFilePolicy;
             program.EnvironmentMetadata = project.LoadedMetadata;
-        }
-
-        private TypeLibraryDeserializer CreateTypeLibraryDeserializer()
-        {
-            return new TypeLibraryDeserializer(platform, true, project.LoadedMetadata.Clone());
         }
 
         public Program VisitInputFile(string projectFilePath, DecompilerInput_v2 sInput)
@@ -758,6 +761,8 @@ namespace Reko.Core.Serialization
             {
                 program.User.Heuristics.Add("shingle");
             }
+            // Backwards compatibility: older versions used single file policy.
+            program.User.OutputFilePolicy = Program.SingleFilePolicy;
         }
 
         private KeyValuePair<Address, Procedure_v1> LoadUserProcedure_v1(

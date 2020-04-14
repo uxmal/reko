@@ -110,6 +110,11 @@ namespace Reko.Core
         /// address, it replaces the patch with the IR instructions in the patch.
         /// </summary>
         public Dictionary<Address, CodePatch> Patches { get; set; }
+
+        /// <summary>
+        /// Selects the policy to use when generating output files.
+        /// </summary>
+        public string OutputFilePolicy { get; set; }
     }
 
     public class Annotation
