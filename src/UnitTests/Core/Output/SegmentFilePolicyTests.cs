@@ -62,6 +62,18 @@ namespace Reko.UnitTests.Core.Output
             program.Procedures.Add(addr, proc);
         }
 
+        private void Given_UserProcedure(uint uAddr, string procName, string placement)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var uProc = new Reko.Core.Serialization.Procedure_v1
+            {
+                Address = addr.ToString(),
+                Name = procName,
+                OutputFile = placement
+            };
+            program.User.Procedures.Add(addr, uProc);
+        }
+
         [Test]
         public void Segfp_Single_Segment()
         {
@@ -132,6 +144,22 @@ namespace Reko.UnitTests.Core.Output
             Assert.AreEqual("myprogram_text_0001.asm", placements[1].Key);
             Assert.AreEqual("myprogram_text_0003.asm", placements[2].Key);
             Assert.IsTrue(placements.All(p => p.Value.Count == 1));
+        }
+
+        // Allow users to override the default placement.
+        [Test]
+        public void Segfp_user_placement()
+        {
+            Given_Executable(".text", 0x0010_0000, 0x4000);
+            Given_Procedure(0x00101000);
+            Given_Procedure(0x00101100);
+            Given_UserProcedure(0x00101000, "myproc", "myproc.c");
+
+            var ofp = new SegmentFilePolicy(program);
+            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            Assert.AreEqual(2, placements.Length);
+            Assert.AreEqual("myproc.asm", placements[0].Key);
+            Assert.AreEqual("myprogram_text.asm", placements[1].Key);
         }
     }
 }

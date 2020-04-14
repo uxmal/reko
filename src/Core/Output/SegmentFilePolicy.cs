@@ -40,14 +40,14 @@ namespace Reko.Core.Output
 
         public SegmentFilePolicy(Program program) : base(program)
         {
+            this.segmentFilenames = new Dictionary<ImageSegment, string>();
+            this.progname = Path.GetFileNameWithoutExtension(program.Name);
         }
 
         public override Dictionary<string, List<Procedure>> GetProcedurePlacements(string fileExtension)
         {
             // Default file if we cannot find segment.
             this.defaultFile = Path.ChangeExtension(program.Name, fileExtension);
-            this.progname = Path.GetFileNameWithoutExtension(program.Name);
-            this.segmentFilenames = new Dictionary<ImageSegment, string>();
 
             // Find the segment for each procedure
             var result = new Dictionary<string, List<Procedure>>();
@@ -65,30 +65,73 @@ namespace Reko.Core.Output
             return result;
         }
 
+        public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)
+        {
+            var mappedItems = program.GetItemsBySegment();
+            var result = new Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>>();
+            foreach (var entry in mappedItems)
+            {
+                var segment = entry.Key;
+                foreach (var item in entry.Value)
+                {
+                    var filename = DetermineFilename(item, segment);
+                    filename = Path.ChangeExtension(filename, fileExtension);
+                    if (!result.TryGetValue(filename, out var segments))
+                    {
+                        segments = new Dictionary<ImageSegment, List<ImageMapItem>>();
+                        result.Add(filename, segments);
+                    }
+                    if (!segments.TryGetValue(segment, out var items))
+                    {
+                        items = new List<ImageMapItem>();
+                        segments.Add(segment, items);
+                    }
+                    items.Add(item);
+                }
+            }
+            return result;
+        }
+
         private string DetermineFilename(Procedure proc)
         {
+            if (program.User.Procedures.TryGetValue(proc.EntryAddress, out var userProc) &&
+                !string.IsNullOrWhiteSpace(userProc.OutputFile))
+            {
+                return userProc.OutputFile;
+            }
+
             if (program.SegmentMap.TryFindSegment(proc.EntryAddress, out var seg))
             {
-                if (!segmentFilenames.TryGetValue(seg, out var filename))
-                {
-                    var sanitizedSegName = SanitizeSegmentName(seg.Name);
-                    filename = $"{progname}_{sanitizedSegName}";
-                    segmentFilenames.Add(seg, filename);
-                }
-                // If the segment is large, we need to subdivide it.
-                if (seg.Size > MaxChunkSize)
-                {
-                    var offset = proc.EntryAddress - seg.Address;
-                    var chunk = offset / MaxChunkSize;
-                    filename = $"{filename}_{chunk:X4}"; 
-                }
-                return filename;
+                return FilenameBasedOnSegment(proc.EntryAddress, seg);
             }
             else
             {
                 // No known segment for this procedure, so add it to the default.
                 return this.defaultFile;
             }
+        }
+
+        private string DetermineFilename(ImageMapItem item, ImageSegment seg)
+        {
+            return FilenameBasedOnSegment(item.Address, seg);
+        }
+
+        private string FilenameBasedOnSegment(Address addr, ImageSegment seg)
+        {
+            if (!segmentFilenames.TryGetValue(seg, out var filename))
+            {
+                var sanitizedSegName = SanitizeSegmentName(seg.Name);
+                filename = $"{progname}_{sanitizedSegName}";
+                segmentFilenames.Add(seg, filename);
+            }
+            // If the segment is large, we need to subdivide it.
+            if (seg.Size > MaxChunkSize)
+            {
+                var offset = addr - seg.Address;
+                var chunk = offset / MaxChunkSize;
+                filename = $"{filename}_{chunk:X4}";
+            }
+            return filename;
         }
 
         private string SanitizeSegmentName(string name)

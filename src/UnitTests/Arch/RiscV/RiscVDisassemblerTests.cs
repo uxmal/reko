@@ -32,8 +32,6 @@ namespace Reko.UnitTests.Arch.RiscV
     [TestFixture]
     public class RiscVDisassemblerTests : DisassemblerTestBase<RiscVInstruction>
     {
-        private RiscVArchitecture arch;
-
         public RiscVDisassemblerTests()
         {
             this.Architecture = new RiscVArchitecture("riscV");

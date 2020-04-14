@@ -131,7 +131,7 @@ namespace Reko
             eventListener.ShowStatus("Interprocedural analysis complete.");
         }
 
-        public void DumpAssembler(Program program, string filename, Formatter wr)
+        public void DumpAssembler(Program program, string filename, Dictionary<ImageSegment, List<ImageMapItem>> segmentItems, Formatter wr)
         {
             if (wr == null || program.Architecture == null)
                 return;
@@ -140,7 +140,7 @@ namespace Reko
                 ShowAddresses = program.User.ShowAddressesInDisassembly,
                 ShowCodeBytes = program.User.ShowBytesInDisassembly
             };
-            dump.Dump(wr);
+            dump.Dump(segmentItems, wr);
         }
 
         private void EmitProgram(Program program, DataFlowAnalysis dfa, string filename, TextWriter output)
@@ -541,7 +541,7 @@ namespace Reko
             finally
             {
                 eventListener.ShowStatus("Writing .asm and .dis files.");
-                host.WriteDisassembly(program, (n, w) => DumpAssembler(program, n, w));
+                host.WriteDisassembly(program, (n, items, w) => DumpAssembler(program, n, items, w));
                 host.WriteIntermediateCode(program, (n, w) => EmitProgram(program, null, n, w));
                 // Use the following for debugging.
                 // WriteSccs(program);

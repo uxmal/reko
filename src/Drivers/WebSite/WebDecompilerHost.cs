@@ -101,7 +101,7 @@ namespace Reko.WebSite
 			writer.WriteLine("<br />");
 		}
 
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
             throw new NotImplementedException();
         }

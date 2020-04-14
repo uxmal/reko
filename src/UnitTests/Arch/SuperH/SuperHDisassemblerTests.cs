@@ -31,8 +31,6 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class SuperHDisassemblerTests : DisassemblerTestBase<SuperHInstruction>
     {
-        private SuperHArchitecture arch;
-
         public SuperHDisassemblerTests()
         {
             this.Architecture = new SuperHLeArchitecture("superH");

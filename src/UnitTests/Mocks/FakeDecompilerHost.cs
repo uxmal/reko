@@ -53,9 +53,9 @@ namespace Reko.UnitTests.Mocks
             return decompiled;
         }
 
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
-            writer("test.asm", new TextFormatter(disassembly));
+            writer("test.asm", new Dictionary<ImageSegment, List<ImageMapItem>>(), new TextFormatter(disassembly));
         }
 
         public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)

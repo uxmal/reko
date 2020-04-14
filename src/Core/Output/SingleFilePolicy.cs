@@ -43,5 +43,17 @@ namespace Reko.Core.Output
                 { filename, program.Procedures.Values.ToList() }
             };
         }
+
+        public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)
+        {
+            var filename = Path.ChangeExtension(program.Name, fileExtension);
+            var mappedItems = program.GetItemsBySegment();
+
+            return new Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>>
+            {
+                { filename, mappedItems }
+            };
+        }
+
     }
 }

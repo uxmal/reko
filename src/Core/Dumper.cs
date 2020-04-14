@@ -50,26 +50,25 @@ namespace Reko.Core
         public void Dump(Formatter formatter)
         {
             var map = program.SegmentMap;
-            var mappedItems =
-                from seg in map.Segments.Values
-                from item in program.ImageMap.Items.Values
-                where seg.IsInRange(item.Address) && !seg.IsHidden
-                group new { seg, item } by seg into g
-                orderby g.Key.Address
-                select new { g.Key, Items = g.Select(gg => gg.item) }; 
+            var mappedItems = program.GetItemsBySegment();
+            Dump(mappedItems, formatter);
+        }
 
-            foreach (var g in mappedItems)
+        public void Dump(Dictionary<ImageSegment, List<ImageMapItem>> segmentItems, Formatter formatter)
+        {
+            foreach (var segmentEntry in segmentItems)
             {
-                formatter.WriteLine(";;; Segment {0} ({1})", g.Key.Name, g.Key.Address);
-                if (g.Key.Designer != null)
+                var seg = segmentEntry.Key;
+                formatter.WriteLine(";;; Segment {0} ({1})", seg.Name, seg.Address);
+                if (seg.Designer != null)
                 {
-                    g.Key.Designer.Render(g.Key, program, new AsmCommentFormatter(formatter));
+                    seg.Designer.Render(seg, program, new AsmCommentFormatter(formatter));
                 }
                 else
                 {
-                    foreach (var item in g.Items)
+                    foreach (var item in segmentEntry.Value)
                     {
-                        DumpItem(g.Key, item, formatter);
+                        DumpItem(seg, item, formatter);
                     }
                 }
             }
@@ -296,6 +295,14 @@ namespace Reko.Core
 
             var rdr = arch.CreateImageReader(segment.MemoryArea, item.Address);
             item.DataType.Accept(new TypedDataDumper(rdr, item.Size, w));
+        }
+
+        private ImageSegment FindSegment(Address addr)
+        {
+            if (program.SegmentMap.TryFindSegment(addr, out var segment))
+                return segment;
+            else
+                return null;
         }
 
         private void WriteLabel(Address addr, Formatter w)

@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -39,5 +40,7 @@ namespace Reko.Core.Output
         }
 
         public abstract Dictionary<string, List<Procedure>> GetProcedurePlacements(string fileExtension);
+
+        public abstract Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension);
     }
 }

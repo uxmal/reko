@@ -32,8 +32,6 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs900DisassemblerTests : DisassemblerTestBase<Tlcs900Instruction>
     {
-        private readonly Tlcs900Architecture arch;
-
         public Tlcs900DisassemblerTests()
         {
             this.Architecture = new Tlcs900Architecture("tlcs900");

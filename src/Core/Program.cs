@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Reko.Core.Lib;
+using Reko.Core.Output;
 
 namespace Reko.Core
 {
@@ -230,6 +231,16 @@ namespace Reko.Core
             return new SymbolTable(Platform, primitiveTypes, namedTypes);
         }
 
+        /// <summary>
+        /// Creates an output policy based on the user's preferences, defaulting to the old
+        /// <see cref="SingleFilePolicy"/>.
+        /// </summary>
+        public OutputFilePolicy CreateOutputPolicy()
+        {
+            //return new SegmentFilePolicy(this);
+            return new SingleFilePolicy(this);
+        }
+
         public ProcedureSerializer CreateProcedureSerializer()
         {
             var typeLoader = new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
@@ -257,7 +268,7 @@ namespace Reko.Core
         public SortedList<Address, ImageSymbol> EntryPoints { get; private set; }
 
         /// <summary>
-        /// The name of the file from which this Program was loaded.
+        /// Absolute path of the file from which this Program was loaded.
         /// </summary>
         public string Filename { get; set; }
 
@@ -319,22 +330,22 @@ namespace Reko.Core
         public UserData User { get; set; }
 
         /// <summary>
-        /// The name of the directory into which disassemblies are dumped.
+        /// Absolute path of the directory into which disassemblies are dumped.
         /// </summary>
         public string DisassemblyDirectory { get; set; }
 
         /// <summary>
-        /// The name of the directory into which final source code is stored
+        /// Absolute path of the directory into which final source code is stored
         /// </summary>
         public string SourceDirectory { get; set; }
 
         /// <summary>
-        /// The name of the directory into which type definitions are stored.
+        /// Absolute path of the directory into which type definitions are stored.
         /// </summary>
         public string IncludeDirectory { get; set; }
 
         /// <summary>
-        /// The name of the directory in which embedded resources will be written.
+        /// Absolute path the directory in which embedded resources will be written.
         /// </summary>
         public string ResourcesDirectory { get; set; }
 
@@ -380,6 +391,17 @@ namespace Reko.Core
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return arch.CreateDisassembler(
                 arch.CreateImageReader(segment.MemoryArea, addr));
+        }
+
+        public Dictionary<ImageSegment, List<ImageMapItem>> GetItemsBySegment()
+        {
+            return (from seg in this.SegmentMap.Segments.Values
+                    from item in this.ImageMap.Items.Values
+                    where seg.IsInRange(item.Address) && !seg.IsHidden
+                    group new { seg, item } by seg into g
+                    orderby g.Key.Address
+                    select new { g.Key, Items = g.Select(gg => gg.item) })
+                .ToDictionary(a => a.Key, a => a.Items.OrderBy(i => i.Address).ToList());
         }
 
         // Mutators /////////////////////////////////////////////////////////////////

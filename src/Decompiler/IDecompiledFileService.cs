@@ -45,7 +45,7 @@ namespace Reko
         /// <returns>A <see cref="TextWriter"/> to the created file.
         /// </returns>
         TextWriter CreateTextWriter(string filename);
-        void WriteDisassembly(Program program, Action<string, Formatter> writer);
+        void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer);
         void WriteIntermediateCode(Program program, Action<string, TextWriter> writer);
         void WriteTypes(Program program, Action<string, TextWriter> writer);
         void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer);
@@ -70,9 +70,9 @@ namespace Reko
             return TextWriter.Null;
         }
 
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
-            writer("",new NullFormatter());
+            writer("", new Dictionary<ImageSegment, List<ImageMapItem>>(), new NullFormatter());
         }
 
         public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
@@ -117,13 +117,17 @@ namespace Reko
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
-            var dasmFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".asm");
-            var dasmPath = Path.Combine(program.DisassemblyDirectory, dasmFilename);
-            using (TextWriter output = CreateTextWriter(dasmPath))
+            var outputPolicy = program.CreateOutputPolicy();
+            foreach (var placement in outputPolicy.GetItemPlacements(".asm"))
             {
-                writer(dasmFilename, new TextFormatter(output));
+                var dasmFilename = Path.GetFileName(placement.Key);
+                var dasmPath = Path.Combine(program.DisassemblyDirectory, dasmFilename);
+                using (TextWriter output = CreateTextWriter(dasmPath))
+                {
+                    writer(dasmFilename, placement.Value, new TextFormatter(output));
+                }
             }
         }
 
