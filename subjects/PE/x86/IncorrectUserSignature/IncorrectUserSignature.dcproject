@@ -78,6 +78,7 @@
       <annotation addr="00401138">Incorrect user-defined signature
 "void sum(int, int)" is set instead of "int sum(int, int)"
 Reko should emit code which gives chance for user to find this mistake</annotation>
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
   <metadata>

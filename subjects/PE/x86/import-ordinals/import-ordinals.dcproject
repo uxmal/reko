@@ -12,6 +12,7 @@
     <user>
       <processor />
       <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
 </project>

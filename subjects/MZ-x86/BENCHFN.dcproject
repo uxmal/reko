@@ -18,6 +18,7 @@
       <heuristic name="shingle" />
       <onLoad Enabled="false" />
       <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
 </project>

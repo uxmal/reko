@@ -348,8 +348,9 @@ namespace Reko.Core.Serialization
             program.ResourcesDirectory = ConvertToAbsolutePath(projectFilePath, sInput.ResourcesDirectory);
             program.EnsureDirectoryNames(program.Filename);
             program.User.LoadAddress = address;
-            // We're not fettered by backwards compatibility here, and can use the improved segment file policy.
-            program.User.OutputFilePolicy = Program.SegmentFilePolicy;
+            // We are fettered by backwards compatibility here, don't suddenly change behavior
+            // but keep all code in one file. After loading users can change to other policies.
+            program.User.OutputFilePolicy = program.User.OutputFilePolicy ?? Program.SingleFilePolicy;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }
