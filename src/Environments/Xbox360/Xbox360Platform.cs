@@ -77,6 +77,46 @@ namespace Reko.Environments.Xbox360
             //$TODO: investigate whether the calling
             // convention on Xbox deviates from the convention
             // specified by the PowerPC specs.
+            // https://github.com/OGRECave/ogitor/blob/master/Dependencies/Angelscript/source/as_callfunc_xenon.cpp
+#if XBOX_SPEC
+// XBox 360 calling convention
+// ===========================
+// I've yet to find an official document with the ABI for XBox 360, 
+// but I'll describe what I've gathered from the code and tests
+// performed by the AngelScript community.
+//
+// Arguments are passed in the following registers:
+// r3  - r10   : integer/pointer arguments (each register is 64bit)
+// fr1 - fr13  : float/double arguments    (each register is 64bit)
+// 
+// Arguments that don't fit in the registers will be pushed on the stack.
+// 
+// When a float or double is passed as argument, its value will be placed
+// in the next available float register, but it will also reserve general
+// purpose register. 
+// 
+// Example: void foo(float a, int b). a will be passed in fr1 and b in r4.
+//
+// For each argument passed to a function an 8byte slot is reserved on the 
+// stack, so that the function can offload the value there if needed. The
+// first slot is at r1+20, the next at r1+28, etc.
+//
+// If the function is a class method, the this pointer is passed as hidden 
+// first argument. If the function returns an object in memory, the address
+// for that memory is passed as hidden first argument.
+//
+// Return value are placed in the following registers:
+// r3  : integer/pointer values
+// fr1 : float/double values
+//
+// Rules for registers
+// r1          : stack pointer
+// r14-r31     : nonvolatile, i.e. their values must be preserved
+// fr14-fr31   : nonvolatile, i.e. their values must be preserved
+// r0, r2, r13 : dedicated. I'm not sure what it means, but it is probably best not to use them
+//
+// The stack pointer must always be aligned at 8 bytes
+#endif
             return new PowerPcCallingConvention((PowerPcArchitecture)Architecture);
         }
 
