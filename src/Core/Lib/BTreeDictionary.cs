@@ -725,6 +725,7 @@ namespace Reko.Core.Lib
                 foreach (var item in btree)
                 {
                     array[iDst] = item.Value;
+                    ++iDst;
                 }
             }
 
