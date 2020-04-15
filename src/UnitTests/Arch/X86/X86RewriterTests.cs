@@ -22,18 +22,11 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
-using Reko.Core.Configuration;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
-using Reko.Core.Types;
-using Reko.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.UnitTests.Arch.X86
@@ -41,17 +34,16 @@ namespace Reko.UnitTests.Arch.X86
     [TestFixture]
     partial class X86RewriterTests : Arch.RewriterTestBase
     {
+        private readonly IntelArchitecture arch16;
+        private readonly IntelArchitecture arch32;
+        private readonly IntelArchitecture arch64;
+        private readonly Address baseAddr16;
+        private readonly Address baseAddr32;
+        private readonly Address baseAddr64;
         private IntelArchitecture arch;
-        private IntelArchitecture arch16;
-        private IntelArchitecture arch32;
-        private IntelArchitecture arch64;
-        private RewriterHost host;
-        private X86State state;
         private Address baseAddr;
-        private Address baseAddr16;
-        private Address baseAddr32;
-        private Address baseAddr64;
         private ServiceContainer sc;
+        private RewriterHost host;
 
         public X86RewriterTests()
         {
@@ -100,20 +92,6 @@ namespace Reko.UnitTests.Arch.X86
             host = new RewriterHost(arch, asm.ImportReferences);
             return asm;
         }
-
-        private Identifier Reg(RegisterStorage r)
-        {
-            return new Identifier(r.Name, r.DataType, r);
-        }
-
-        private MemoryOperand Mem16(RegisterOperand reg, int offset)
-        {
-            return new MemoryOperand(PrimitiveType.Word16, reg.Register, Constant.Create(reg.Register.DataType, offset));
-        }
-
-        private ImmediateOperand Imm16(ushort u) { return new ImmediateOperand(Constant.Word16(u)); }
-
-        private PrimitiveType Word16 { get { return PrimitiveType.Word16; } }
 
         private void Run16bitTest(Action<X86Assembler> fn)
         {
@@ -167,18 +145,6 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|0C00:0000(2): 1 instructions",
                 "1|L--|ax = bx");
-        }
-
-        private X86Rewriter CreateRewriter32(X86Assembler m)
-        {
-            var program = m.GetImage();
-            state = new X86State(arch32);
-            return new X86Rewriter(
-                arch32,
-                host,
-                state,
-                program.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0),
-                new Frame(arch32.WordWidth));
         }
 
         [Test]
@@ -692,14 +658,6 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|0C00:0000(3): 1 instructions",
                 "1|L--|es_bx = Mem0[ss:bp + 0x0006:segptr32]");
-        }
-
-        private RtlInstruction SingleInstruction(IEnumerator<RtlInstructionCluster> e)
-        {
-            Assert.IsTrue(e.MoveNext());
-            Assert.AreEqual(1, e.Current.Instructions.Length);
-            var instr = e.Current.Instructions[0];
-            return instr;
         }
 
         [Test]
@@ -3461,6 +3419,108 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|S--|10000000(3): 1 instructions",
                 "1|L--|__lmsw(ax)");
+        }
+
+        [Test]
+         public void X86Rw_cmpxchg8b()
+        {
+            Run32bitTest(0x0F, 0xC7, 0x0F);	// cmpxchg8b	qword ptr [edi]
+            AssertCode(
+                "0|L--|10000000(3): 1 instructions",
+                "1|L--|Z = __cmpxchg8b(edx_eax, Mem0[edi:word64], ecx_ebx, out edx_eax)");
+        }
+
+        [Test]
+        public void X86Rw_unpckhps()
+        {
+            Run32bitTest(0x0F, 0x15, 0x10);	// unpckhps	xmm2,[eax]
+            AssertCode(
+                "0|L--|10000000(3): 3 instructions",
+                "1|L--|v4 = xmm2",
+                "2|L--|v5 = Mem0[eax:word128]",
+                "3|L--|xmm2 = __unpckhps128(v4, v5)");
+        }
+
+        [Test]
+        public void X86Rw_ltr()
+        {
+            Run32bitTest(0x0F, 0x00, 0x98, 0x3F, 0x05, 0x10, 0x19);	// ltr	word ptr [eax+1910053F]
+            AssertCode(
+                "0|S--|10000000(7): 1 instructions",
+                "1|L--|__load_task_register(Mem0[eax + 0x1910053F:word16])");
+        }
+
+        [Test]
+        public void X86Rw_ffreep()
+        {
+            Run32bitTest(0xDF, 0xC7);	// ffreep	st(7)
+            AssertCode(
+                "0|L--|10000000(2): 2 instructions",
+                "1|L--|__ffree(ST[Top + 7:real64])",
+                "2|L--|Top = Top + 1");
+        }
+
+        [Test]
+        public void X86Rw_verr()
+        {
+            Run32bitTest(0x0F, 0x00, 0xA5, 0x64, 0x0F, 0x00, 0xA5);	// verr	word ptr [ebp+A5000F64]
+            AssertCode(
+                "0|L--|10000000(7): 1 instructions",
+                "1|L--|Z = __verify_readable(Mem0[ebp + 0xA5000F64:word16])");
+        }
+
+        [Test]
+        public void X86Rw_verw()
+        {
+            Run32bitTest(0x0F, 0x00, 0xEB);	// verw	bx
+            AssertCode(
+                "0|L--|10000000(3): 1 instructions",
+                "1|L--|Z = __verify_writeable(bx)");
+        }
+
+        [Test]
+        public void X86Rw_str()
+        {
+            Run32bitTest(0x0F, 0x00, 0x8B, 0xF3, 0x8B, 0x4D, 0xFC);	// str	word ptr [ebx+FC4D8BF3]
+            AssertCode(
+                "0|S--|10000000(7): 1 instructions",
+                "1|L--|Mem0[ebx + 0xFC4D8BF3:word16] = __store_task_register()");
+        }
+
+        [Test]
+        public void X86Rw_jmpe()
+        {
+            Run32bitTest(0x0F, 0xB8);	// jmpe
+            AssertCode(
+                "0|L--|10000000(2): 1 instructions",
+                "1|L--|__jmpe()");
+        }
+
+        [Test]
+        public void X86Rw_femms()
+        {
+            Run32bitTest(0x0F, 0x0E);	// femms
+            AssertCode(
+                "0|L--|10000000(2): 1 instructions",
+                "1|L--|__femms()");
+        }
+
+        [Test]
+        public void X86Rw_invlpg()
+        {
+            Run32bitTest(0x0F, 0x01, 0x38);	// invlpg	byte ptr [eax]
+            AssertCode(
+                "0|S--|10000000(3): 1 instructions",
+                "1|L--|__invlpg(Mem0[eax:byte])");
+        }
+
+        [Test]
+        public void X86Rw_rsm()
+        {
+            Run32bitTest(0x0F, 0xAA);	// rsm
+            AssertCode(
+                "0|S--|10000000(2): 1 instructions",
+                "1|T--|return (0,0)");
         }
     }
 }

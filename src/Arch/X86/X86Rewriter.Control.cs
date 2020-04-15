@@ -206,6 +206,11 @@ namespace Reko.Arch.X86
             m.Goto(target);
         }
 
+        private void RewriteJmpe()
+        {
+            m.SideEffect(host.PseudoProcedure("__jmpe", VoidType.Instance));
+        }
+
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
         {
             Identifier cx = orw.AluRegister(Registers.rcx, instrCur.dataWidth);
@@ -223,6 +228,13 @@ namespace Reko.Arch.X86
             {
                 m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.Operands[0]), InstrClass.ConditionalTransfer);
             }
+        }
+
+        private void RewriteLtr()
+        {
+            m.SideEffect(host.PseudoProcedure("__load_task_register",
+                VoidType.Instance,
+                SrcOp(instrCur.Operands[0])));
         }
 
         public void RewriteRet()
@@ -252,6 +264,19 @@ namespace Reko.Arch.X86
                 0);
         }
 
+        private void RewriteRsm()
+        {
+            m.Return(0, 0);
+        }
+
+        private void RewriteStr()
+        {
+            m.Assign(
+                SrcOp(instrCur.Operands[0]),
+                host.PseudoProcedure("__store_task_register",
+                    PrimitiveType.Word16));
+        }
+
         private void RewriteSyscall()
         {
             m.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance));
@@ -274,6 +299,13 @@ namespace Reko.Arch.X86
             m.Return(0,0);
         }
 
+        private void RewriteVerrw(string intrinsicName)
+        {
+            var z = orw.FlagGroup(FlagM.ZF);
+            m.Assign(z, host.PseudoProcedure(intrinsicName,
+                z.DataType,
+                SrcOp(instrCur.Operands[0])));
+        }
 
         /// <summary>
         /// A jump to 0xFFFF:0x0000 in real mode is a reboot.

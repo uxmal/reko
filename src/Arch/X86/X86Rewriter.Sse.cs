@@ -153,6 +153,11 @@ namespace Reko.Arch.X86
             m.Assign(SrcOp(instrCur.Operands[0]), m.Seq(tmp2, tmp1));
         }
 
+        private void RewriteFemms()
+        {
+            m.SideEffect(host.PseudoProcedure("__femms", VoidType.Instance));
+        }
+
         private void RewriteLdmxcsr()
         {
             var src = SrcOp(instrCur.Operands[0]);
@@ -522,6 +527,12 @@ namespace Reko.Arch.X86
             var dst = this.SrcOp(instrCur.Operands[0]);
             var src = this.SrcOp(instrCur.Operands[1]);
             m.Assign(dst, host.PseudoProcedure("__pxor", dst.DataType, dst, src));
+        }
+
+        private void RewriteUnpckhps()
+        {
+            var bitsize = instrCur.Operands[0].Width.BitSize;
+            RewritePackedBinop($"__unpckhps{bitsize}", PrimitiveType.Real32);
         }
     }
 }

@@ -352,9 +352,31 @@ namespace Reko.Arch.X86
             var Z = orw.FlagGroup(FlagM.ZF);
             m.Assign(
                 Z,
-                host.PseudoProcedure("__cmpxchg",
+                host.PseudoProcedure(
+                    "__cmpxchg",
                     PrimitiveType.Bool,
                     op1, op2, acc, m.Out(instrCur.dataWidth, acc)));
+        }
+
+        private void RewriteCmpxchgNb(
+            string intrinsicName,
+            RegisterStorage edx,
+            RegisterStorage eax,
+            RegisterStorage ecx,
+            RegisterStorage ebx)
+        {
+            var bitsize = edx.DataType.BitSize * 2;
+            var dt = PrimitiveType.CreateWord(bitsize);
+            var op1 = binder.EnsureSequence(dt, edx, eax);
+            var op2 = SrcOp(instrCur.Operands[0], dt);
+            var acc = binder.EnsureSequence(dt, ecx, ebx);
+            var Z = orw.FlagGroup(FlagM.ZF);
+            m.Assign(
+                Z,
+                host.PseudoProcedure(
+                    intrinsicName,
+                    Z.DataType,
+                    op1, op2, acc, m.Out(instrCur.dataWidth, op1)));
         }
 
         private void RewriteCwd()

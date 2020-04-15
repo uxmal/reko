@@ -156,10 +156,14 @@ namespace Reko.Arch.X86
             m.Nop();
         }
 
-        private void RewriteFfree()
+        private void RewriteFfree(bool pop)
         {
             m.SideEffect(
                 host.PseudoProcedure("__ffree", VoidType.Instance, SrcOp(instrCur.Operands[0])));
+            if (pop)
+            {
+                ShrinkFpuStack(1);
+            }
         }
 
         private void RewriteFUnary(string name)

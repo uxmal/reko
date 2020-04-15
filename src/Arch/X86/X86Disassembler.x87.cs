@@ -762,7 +762,7 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.fistp, Mq),
 
 				// DF C0
-				Instr(Mnemonic.ffreep, F),
+				Instr(Mnemonic.ffreep, F),  // ffreep is rarely used.
 				Instr(Mnemonic.ffreep, F),
 				Instr(Mnemonic.ffreep, F),
 				Instr(Mnemonic.ffreep, F),

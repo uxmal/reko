@@ -395,7 +395,7 @@ namespace Reko.Arch.X86
 
 				Instr(Mnemonic.push, s5),
 				Instr(Mnemonic.pop, s5),
-				Instr(Mnemonic.rsm),
+				Instr(Mnemonic.rsm, InstrClass.System),
                 Instr(Mnemonic.bts, Ev,Gv),
 				Instr(Mnemonic.shrd, Ev,Gv,Ib),
 				Instr(Mnemonic.shrd, Ev,Gv,c),

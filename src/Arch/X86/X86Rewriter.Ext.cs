@@ -71,6 +71,14 @@ namespace Reko.Arch.X86
             m.SideEffect(host.PseudoProcedure("__invd", VoidType.Instance));
         }
 
+        private void RewriteInvlpg()
+        {
+            var op = SrcOp(instrCur.Operands[0]);
+            m.SideEffect(host.PseudoProcedure("__invlpg", VoidType.Instance,
+                op));
+
+        }
+
         private void RewriteLar()
         {
             m.Assign(
