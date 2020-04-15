@@ -374,8 +374,6 @@ l0000000000400F4C: warning: Non-integral switch expression
 0800:1ADD: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE3: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE8: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:092E: warning: x86 instruction 'jmpe' is not supported yet.
-0800:0956: warning: x86 instruction 'jmpe' is not supported yet.
 0800:0BA1: error: An error occurred while processing the statement word16 di_45 = si_102 - (fp - 0x0084).
     Not handling mp16 and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
@@ -1079,4 +1077,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 60 binaries in 57.25 seconds ---
+Decompiled 60 binaries in 65.75 seconds ---
