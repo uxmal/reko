@@ -1,56 +1,58 @@
-// fn0003
-// Return size: 2
-define fn0003
+void fn0000(selector __data)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  __data:[0..15]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000_exit:
+fn0000_entry:
+l0000:
+l002C:
+	byte R0_10 = 0x7F
+l002F:
+	Mem9[__data:R0_10:byte] = 0x00
+	R0_10 = R0_10 - 0x01
+	branch R0_10 != 0x00 l002F
+l0032:
+l0020:
+	fn0003()
+	fn0003()
+
+
+void fn0003()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: P A R4 R5 R6 R7
+// Preserved: SP
 fn0003_entry:
-	SP = fp
-	// succ:  l0003
 l0003:
-	A = 0x00
-	P = cond(A)
-	R7 = A
-	R6 = A
-	// succ:  l0006
+	byte R7_21 = 0x00
+	byte R6_26 = 0x00
 l0006:
-	A = 0x00
-	P = cond(A)
-	R5 = A
-	R4 = A
-	// succ:  l0009
+	byte R5_11 = 0x00
+	byte R4_10 = 0x00
 l0009:
-	R5 = R5 + 0x01
-	P = cond(R5)
-	branch R5 != 0x00 l000E
-	// succ:  l000D l000E
+	R5_11 = R5_11 + 0x01
+	branch R5_11 != 0x00 l000E
 l000D:
-	R4 = R4 + 0x01
-	P = cond(R4)
-	// succ:  l000E
+	R4_10 = R4_10 + 0x01
 l000E:
-	branch R4 != 0x27 l0009
-	// succ:  l0011 l0009
+	branch R4_10 != 0x27 l0009
 l0011:
-	branch R5 != 0x10 l0009
-	// succ:  l0014 l0009
+	branch R5_11 != 0x10 l0009
 l0014:
-	R7 = R7 + 0x01
-	P = cond(R7)
-	branch R7 != 0x00 l0019
-	// succ:  l0018 l0019
+	R7_21 = R7_21 + 0x01
+	branch R7_21 != 0x00 l0019
 l0018:
-	R6 = R6 + 0x01
-	P = cond(R6)
-	// succ:  l0019
+	R6_26 = R6_26 + 0x01
 l0019:
-	A = R7
-	A = A ^ 0x0A
-	P = cond(A)
-	A = A | R6
-	P = cond(A)
-	branch A != 0x00 l0006
-	// succ:  l001F l0006
+	branch (R7_21 ^ 0x0A | R6_26) != 0x00 l0006
 l001F:
 	return
-	// succ:  fn0003_exit
 fn0003_exit:
 
 

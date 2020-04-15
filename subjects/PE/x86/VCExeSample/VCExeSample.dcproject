@@ -4,10 +4,10 @@
   <platform>win32</platform>
   <input>
     <filename>VCExeSample.exe</filename>
-    <asmDir>.</asmDir>
-    <srcDir>.</srcDir>
-    <includeDir>.</includeDir>
-    <resources>.</resources>
+    <asmDir>VCExeSample.reko</asmDir>
+    <srcDir>VCExeSample.reko</srcDir>
+    <includeDir>VCExeSample.reko</includeDir>
+    <resources>VCExeSample.reko</resources>
     <user>
       <processor />
       <procedure name="main">
@@ -43,7 +43,7 @@
       </procedure>
       <call>
         <address>00401113</address>
-        <signature stackDelta="4">
+        <signature retOnStack="4" stackDelta="4">
           <return name="">
             <void />
           </return>
@@ -78,6 +78,7 @@
       <onLoad Enabled="false" />
       <registerValues />
       <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
   <metadata>

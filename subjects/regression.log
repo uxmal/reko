@@ -410,14 +410,6 @@ error: An error occurred during decompilation. System.InvalidOperationException:
    at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 252
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 224
 === OpenRISC\sunxi\blob.dcproject
-*** OpenRISC\sunxi\blob.dcproject
-error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
-   at Reko.Decompiler.EmitProgram(Program program, IEnumerable`1 procs, DataFlowAnalysis dfa, String filename, TextWriter output) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 171
-   at Reko.Decompiler.<>c__DisplayClass33_0.<ScanProgram>b__1(String n, IEnumerable`1 procs, TextWriter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.DecompiledFileService.WriteIntermediateCode(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 143
-   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 526
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 181
 === PDP-11\lunar.lda
 === PDP-11\space.dcproject
 *** PDP-11\space.dcproject
@@ -537,16 +529,6 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\IncorrectUserSignature\IncorrectUserSignature.dcproject
 === PE\x86\RussianText\RussianText.exe
 === PE\x86\VCExeSample\VCExeSample.dcproject
-*** PE\x86\VCExeSample\VCExeSample.dcproject
-0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
-004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
-error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
-   at Reko.Decompiler.EmitProgram(Program program, IEnumerable`1 procs, DataFlowAnalysis dfa, String filename, TextWriter output) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 171
-   at Reko.Decompiler.<>c__DisplayClass33_0.<ScanProgram>b__1(String n, IEnumerable`1 procs, TextWriter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.DecompiledFileService.WriteIntermediateCode(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 143
-   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 526
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 181
 === PE\x86\demo_upx\Demo.exe
 === PE\x86\import-ordinals\import-ordinals.dcproject
 === PE\x86\pySample\pySample.dcproject
@@ -560,12 +542,21 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
 000257A4: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 0001E3F0: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
-   at Reko.Decompiler.EmitProgram(Program program, IEnumerable`1 procs, DataFlowAnalysis dfa, String filename, TextWriter output) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 171
-   at Reko.Decompiler.<>c__DisplayClass33_0.<ScanProgram>b__1(String n, IEnumerable`1 procs, TextWriter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.DecompiledFileService.WriteIntermediateCode(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 143
-   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 526
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 181
+   at Reko.Analysis.StackPointerBackpropagator.MatchStackOffsetPattern(Identifier sp) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\StackPointerBackpropagator.cs:line 117
+   at Reko.Analysis.StackPointerBackpropagator.BackpropagateStackPointer(Identifier spAtExit) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\StackPointerBackpropagator.cs:line 86
+   at Reko.Analysis.StackPointerBackpropagator.BackpropagateStackPointer() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\StackPointerBackpropagator.cs:line 76
+   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 463
+   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.FindAll() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 119
+   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 152
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 119
+   at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 125
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 184
 === TLCS\900\ngp_iq\NGP_IQ.NGP
 *** TLCS\900\ngp_iq\NGP_IQ.NGP
 error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
@@ -971,14 +962,6 @@ Parameter name: key
    at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 115
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 === i8051\reko-825\ledwith8051.dcproject
-*** i8051\reko-825\ledwith8051.dcproject
-error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
-   at Reko.Decompiler.EmitProgram(Program program, IEnumerable`1 procs, DataFlowAnalysis dfa, String filename, TextWriter output) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 171
-   at Reko.Decompiler.<>c__DisplayClass33_0.<ScanProgram>b__1(String n, IEnumerable`1 procs, TextWriter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.DecompiledFileService.WriteIntermediateCode(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 143
-   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 526
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 181
 === i8051\rtl8188efw.dcproject
 === regressions\angr-148\test
 === regressions\reko-121\m68k_jump.dcproject
@@ -1090,16 +1073,8 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 === regressions\snowman-51\switch.dcproject
-*** regressions\snowman-51\switch.dcproject
-error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
-   at Reko.Decompiler.EmitProgram(Program program, IEnumerable`1 procs, DataFlowAnalysis dfa, String filename, TextWriter output) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 171
-   at Reko.Decompiler.<>c__DisplayClass33_0.<ScanProgram>b__1(String n, IEnumerable`1 procs, TextWriter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.DecompiledFileService.WriteIntermediateCode(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 143
-   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 545
-   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 526
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 181
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 60 binaries in 68.71 seconds ---
+Decompiled 60 binaries in 62.21 seconds ---
