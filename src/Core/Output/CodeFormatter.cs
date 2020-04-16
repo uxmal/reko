@@ -313,7 +313,7 @@ namespace Reko.Core.Output
                 else 
                 {
                     object v = c.GetValue();
-                    writer.Write(FormatString(pt, v), v);
+                    writer.Write(FormatString(pt, v), v, pt.BitSize);
                 }
                 return;
             }
@@ -876,7 +876,7 @@ namespace Reko.Core.Output
             if (nybbles < unsignedConstantFormatStrings.Length)
                 return unsignedConstantFormatStrings[nybbles];
             else
-                return "0x{0:X16}";
+                return "0x{0}_";
         }
 
         private static int Nybbles(int bitSize)
@@ -890,7 +890,7 @@ namespace Reko.Core.Output
             switch (type.Domain)
             {
             case Domain.SignedInt:
-                return "{0}";
+                return "{0}i{1}";
             case Domain.Character:
                 switch (type.Size)
                 {
@@ -904,8 +904,10 @@ namespace Reko.Core.Output
                 else if (ch == '\'' || ch == '\\')
                     return string.Format(format, string.Format("\\{0}", ch));
                 return format;
+            case Domain.UnsignedInt:
+                return "0x{0:X}u{1}";
             default:
-                return UnsignedFormatString(type, Convert.ToUInt64(value));
+                return "0x{0:X}_{1}";
             }
         }
 
