@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -101,7 +101,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     item.SubItems.Add(nam.ImportName);
                 }
             }
-            item.SubItems[0].ForeColor = uiPrefsSvc.Styles["link"].Foreground.Color;
+            item.SubItems[0].ForeColor = ((SolidBrush)uiPrefsSvc.Styles["link"].Foreground).Color;
             return item;
         }
 

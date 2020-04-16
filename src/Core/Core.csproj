@@ -7,6 +7,8 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageProjectUrl>https://github.com/uxmal/reko</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/uxmal/reko</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Serialization\DecompilerDiscoveries.cs" />

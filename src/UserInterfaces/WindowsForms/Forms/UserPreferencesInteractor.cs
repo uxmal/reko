@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -159,7 +159,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 var style = outer.localSettings.Styles[Style.Name];
                 return style.Foreground != null
-                    ? style.Foreground.Color
+                    ? ((SolidBrush)style.Foreground).Color
                     : Color.Empty;
             }
 
@@ -167,7 +167,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 var style = outer.localSettings.Styles[Style.Name];
                 return style.Background != null
-                    ? style.Background.Color
+                    ? ((SolidBrush) style.Background).Color
                     : Color.Empty;
             }
 
@@ -176,7 +176,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var style = outer.localSettings.Styles[Style.Name];
                 if (style.Foreground != null)
                 {
-                    style.Foreground.Dispose();
+                    ((SolidBrush)style.Foreground).Dispose();
                 }
                 style.Foreground = new SolidBrush(color);
                 Control.Refresh();
@@ -187,7 +187,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var style = outer.localSettings.Styles[Style.Name];
                 if (style.Background != null)
                 {
-                    style.Background.Dispose();
+                    ((SolidBrush)style.Background).Dispose();
                 }
                 style.Background = new SolidBrush(color);
                 Control.Refresh();
@@ -198,7 +198,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var style = outer.localSettings.Styles[Style.Name];
                 if (style.Font != null)
                 {
-                    style.Font.Dispose();
+                    ((SolidBrush)style.Font).Dispose();
                 }
                 style.Font = font;
                 Control.Refresh();
@@ -216,7 +216,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var style = outer.localSettings.Styles[Style.Name];
                 if (style.Foreground != null)
                 {
-                    style.Foreground.Dispose();
+                    ((SolidBrush)style.Foreground).Dispose();
                 }
                 style.Foreground = new SolidBrush(color);
                 Control.ForeColor = color;
@@ -228,7 +228,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var style = outer.localSettings.Styles[Style.Name];
                 if (style.Background != null)
                 {
-                    style.Background.Dispose();
+                    ((SolidBrush) style.Background).Dispose();
                 }
                 style.Background = new SolidBrush(color);
                 Control.BackColor = color;
@@ -240,7 +240,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var style = outer.localSettings.Styles[Style.Name];
                 if (style.Font != null)
                 {
-                    style.Font.Dispose();
+                    ((Font) style.Font).Dispose();
                 }
                 style.Font = font;
                 Control.Font = font;
@@ -253,11 +253,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 {
                     if (Style.Foreground != null)
                     {
-                        Control.ForeColor = Style.Foreground.Color;
+                        Control.ForeColor = ((SolidBrush)Style.Foreground).Color;
                     }
                     if (Style.Background != null)
                     {
-                        Control.BackColor = Style.Background.Color;
+                        Control.BackColor = ((SolidBrush)Style.Background).Color;
                     }
                 }
             }

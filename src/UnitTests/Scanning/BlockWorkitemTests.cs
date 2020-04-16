@@ -1031,7 +1031,7 @@ call r2 (retsize: 4;)
 call r1 (retsize: 4;)
 ";
             AssertBlockCode(expected, block);
-        }
+    }
 
         [Test]
         public void BwiUsePatch()
@@ -1077,6 +1077,6 @@ l00100004_3:
 testProc_exit:
 ";
             AssertProcedureCode(expected, block.Procedure);
-        }
+    }
     }
 }

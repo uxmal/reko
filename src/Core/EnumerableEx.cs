@@ -108,13 +108,8 @@ namespace Reko.Core
         public static SortedSet<TElement> ToSortedSet<TElement>(
             this IEnumerable<TElement> source)
         {
-            SortedSet<TElement> set = new SortedSet<TElement>();
-            foreach (var element in source)
-            {
-                set.Add(element);
+            return new SortedSet<TElement>(source);
             }
-            return set;
-        }
 
         public static IEnumerable<IEnumerable<T>> Chunks<T>(
             this IEnumerable<T> enumerable,

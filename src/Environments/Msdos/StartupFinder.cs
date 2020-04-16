@@ -254,12 +254,11 @@ namespace Reko.Environments.Msdos
             }
 
             gotVendor:
-            ;
-            //sSigName = string.Format("dcc{0}{1}{2}.sig",
-            //        chVendor, /* Add vendor */
-            //        chVersion, /* Add version */
-            //        chModel); /* Add model */
-            //Debug.Print("Signature file: {0}", sSigName);
+            var sSigName = string.Format("dcc{0}{1}{2}.sig",
+                   chVendor, /* Add vendor */
+                   chVersion, /* Add version */
+                   chModel); /* Add model */
+            Debug.Print("Signature file: {0}", sSigName);
             return ImageSymbol.Procedure(arch, addrEntry, "main", state: this.state);
         }
 

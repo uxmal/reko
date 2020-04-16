@@ -56,7 +56,7 @@ namespace Reko.Core.Machine
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
         {
-            if (trace.Level != TraceLevel.Verbose)
+            if (!trace.TraceVerbose)
                 return;
             var hibit = 0x80000000u;
             var sb = new StringBuilder();

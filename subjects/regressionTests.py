@@ -30,6 +30,9 @@ parser.add_option("-o", "--check-output", dest="check_output",
 parser.add_option("-p", "--platform", dest="platform",
                   help="define platform (x86, x64)",
                   default="x64")
+parser.add_option("-f", "--framework", dest="framework",
+                  help="define .NET framework (net472,netcoreapp2.0)",
+                  default="net472")
 parser.add_option("--strip-suffixes", dest="strip_suffixes",
                   help="strip number suffixes from SSA identifiers (yes, no)",
                   default="yes")
@@ -43,7 +46,7 @@ reko_cmdline_dir = os.path.abspath(script_dir + "/../src/Drivers/CmdLine")
 
 start_dir = os.getcwd()
 
-reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.platform, options.configuration, "decompile.exe")
+reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.platform, options.configuration, options.framework, "decompile.exe")
 
 output_extensions = [".asm", ".c", ".dis", ".h"]
 source_extensions = [".c"]

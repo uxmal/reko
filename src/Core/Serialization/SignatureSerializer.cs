@@ -22,6 +22,7 @@ using Reko.Core.Lib;
 using System;
 using System.Collections;
 using System.Xml;
+using Reko.Core;
 
 namespace Decompiler.Core.Serialization
 {

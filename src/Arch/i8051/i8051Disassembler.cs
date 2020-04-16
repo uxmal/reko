@@ -247,12 +247,12 @@ $@"    [Test]
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<i8051Disassembler>[] mutators)
         {
             return new InstrDecoder<i8051Disassembler, Mnemonic, i8051Instruction>(InstrClass.Linear, mnemonic, mutators);
-        }
+            }
 
         private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<i8051Disassembler>[] mutators)
-        {
+            {
             return new InstrDecoder<i8051Disassembler, Mnemonic, i8051Instruction>(iclass, mnemonic, mutators);
-        }
+                    }
 
         private static readonly Decoder[] decoders = new Decoder[256] {
         /*

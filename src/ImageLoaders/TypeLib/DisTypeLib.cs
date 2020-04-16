@@ -37,10 +37,6 @@ const int ProfileOn		= 1;
 public static int dbg;		
 public static string  dbs;	
 
-public void zz()
-{
-
-}
 
 #else
 

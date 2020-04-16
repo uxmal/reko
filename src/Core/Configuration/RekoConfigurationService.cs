@@ -259,14 +259,14 @@ namespace Reko.Core.Configuration
         /// <summary>
         /// Load the reko.config file.
         /// </summary>
+        /// <remarks>
+        /// For now, we assume the config file is called "reko.config" located in the same directory as the assembly we're executing.
+        /// It's possible that on Un*x systems, the Reko binary could be installed in /usr/bin, while 
+        /// </remarks>
         /// <returns></returns>
         public static RekoConfigurationService Load()
         {
-            return Load("reko.config");
-        }
-
-        public static RekoConfigurationService Load(string configFileName)
-        {
+            string configFileName = "reko.config";
             var appDir = AppDomain.CurrentDomain.BaseDirectory;
             configFileName = Path.Combine(appDir, configFileName);
 

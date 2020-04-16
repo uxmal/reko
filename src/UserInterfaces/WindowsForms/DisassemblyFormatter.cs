@@ -54,6 +54,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void WriteMnemonic(string sMnemonic)
         {
+            TerminateSpan();
             line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, sMnemonic + " ", Gui.UiStyles.DisassemblerOpcode));
         }
 

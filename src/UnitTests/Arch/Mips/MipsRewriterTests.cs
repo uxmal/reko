@@ -466,23 +466,23 @@ namespace Reko.UnitTests.Arch.Mips
             // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
             Given_BitStrings("011111 00000 00110 00000 00000 111011");   // CPU number
             AssertCode("0|L--|00100000(4): 1 instructions",
-                       "1|L--|r6 = __read_hardware_register(0x00)");
+                        "1|L--|r6 = __read_hardware_register(0x00)");
 
             Given_BitStrings("011111 00000 01000 00001 00000 111011");   // SYNCI step size
             AssertCode("0|L--|00100000(4): 1 instructions",
-                       "1|L--|r8 = __read_hardware_register(0x01)");
+                        "1|L--|r8 = __read_hardware_register(0x01)");
 
             Given_BitStrings("011111 00000 00001 00010 00000 111011");   // Cycle counter
             AssertCode("0|L--|00100000(4): 1 instructions",
-                       "1|L--|r1 = __read_hardware_register(0x02)");
+                        "1|L--|r1 = __read_hardware_register(0x02)");
 
             Given_BitStrings("011111 00000 00011 00011 00000 111011");   // Cycle counter resolution
             AssertCode("0|L--|00100000(4): 1 instructions",
-                       "1|L--|r3 = __read_hardware_register(0x03)");
+                        "1|L--|r3 = __read_hardware_register(0x03)");
 
             Given_BitStrings("011111 00000 00111 11101 00000 111011");   // OS-specific, thread local pointer on Linux
             AssertCode("0|L--|00100000(4): 1 instructions",
-                       "1|L--|r7 = __read_hardware_register(0x1D)");
+                        "1|L--|r7 = __read_hardware_register(0x1D)");
         }
 
         [Test]
@@ -605,9 +605,9 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_trunc_l_d()
         {
             AssertCode(0x46200049, // trunc.l.d $f1,$f0
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = f0",
-                "2|L--|f1 = (int64) trunc(v2)");
+            "0|L--|00100000(4): 2 instructions",
+            "1|L--|v2 = f0",
+            "2|L--|f1 = (int64) trunc(v2)");
         }
 
         [Test]
@@ -615,24 +615,24 @@ namespace Reko.UnitTests.Arch.Mips
         {
             Given_Mips64_Architecture();
             AssertCode(0xf7a10018, // sdc1 $f1,24(sp)
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x0000000000000018:word64] = f1");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|Mem0[sp + 0x0000000000000018:word64] = f1");
         }
 
         [Test]
         public void MipsRw_mov_d()
         {
             AssertCode(0x46200806, // mov.d $f0,$f1
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|f0 = f1");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f0 = f1");
         }
 
         [Test]
         public void MipsRw_div_d()
         {
             AssertCode(0x46220003, // div.d $f0,$f0,$f2
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|f0_f1 = f0_f1 / f2_f3");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f0_f1 = f0_f1 / f2_f3");
         }
 
         [Test]
@@ -640,16 +640,16 @@ namespace Reko.UnitTests.Arch.Mips
         {
             Given_Mips64_Architecture();
             AssertCode(0x00221016, // dsrlv v0, v0, at
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = r2 >>u r1");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|r2 = r2 >>u r1");
         }
 
         [Test]
         public void MipsRw_lwc1()
         {
             AssertCode(0xc4240000, // lwc1 $f4,0(at)
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|f4 = Mem0[r1:word32]");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f4 = Mem0[r1:word32]");
         }
 
         [Test]

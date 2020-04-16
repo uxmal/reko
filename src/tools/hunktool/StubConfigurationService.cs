@@ -28,7 +28,7 @@ using Reko.Core.Assemblers;
 using Reko.Arch.M68k;
 using Reko.Environments.AmigaOS;
 
-namespace hunktool
+namespace Reko.Tools.HunkTool
 {
     public class StubConfigurationService : IConfigurationService
     {

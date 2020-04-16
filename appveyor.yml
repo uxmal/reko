@@ -16,22 +16,23 @@ before_build:
 # If you want more build spew, change the verbosity below
 build:
   project: src/Reko-decompiler.sln
-  verbosity: minimal
+  verbosity: normal
 
 environment:
   artifacts_dir: bin
 
+# //$HACK: we've had to hard-wire the 'net472' here.
 after_build:
   - ps : >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
-        $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/Reko.Core.dll | % VersionInfo | % ProductVersion;
+        $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/net472/Reko.Core.dll | % VersionInfo | % ProductVersion;
         mkdir $env:artifacts_dir;
         ;
         <# zip WindowsDecompiler and CmdLine, append version and short hash #>;
         "[after_build] compressing WindowsDecompiler...";
-        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/.;
+        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/net472/.;
         "[after_build] compressing CmdLine...";
-        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:PLATFORM/$env:CONFIGURATION/.;
+        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:PLATFORM/$env:CONFIGURATION/net472/.;
         mv ./src/WixInstaller/bin/$env:PLATFORM/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
         ;
         <# Append the short hash to the .msi setup #>;
@@ -42,7 +43,7 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
-  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/Reko.UnitTests.dll --where="cat != FailedTests" --framework:net-4.5
+  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/net472/Reko.UnitTests.dll --where="cat != FailedTests && cat != UserInterface" --framework:net-4.5
   - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
 
 artifacts:

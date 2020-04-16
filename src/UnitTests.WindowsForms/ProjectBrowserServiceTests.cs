@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,7 +37,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using DataObject = System.Windows.Forms.DataObject;
-using DragDropEffects = System.Windows.Forms.DragDropEffects;
+using DragDropEffects = Reko.Gui.Controls.DragDropEffects;
 using DragEventArgs = System.Windows.Forms.DragEventArgs;
 using DragEventHandler = System.Windows.Forms.DragEventHandler;
 
@@ -122,13 +123,52 @@ namespace Reko.UnitTests.Gui.Windows
             public event DragEventHandler DragOver;
             public event DragEventHandler DragDrop;
             public event EventHandler DragLeave;
-            public event MouseEventHandler MouseWheel;
+            public event Reko.Gui.Controls.MouseEventHandler MouseWheel;
             public event EventHandler GotFocus;
             public event EventHandler LostFocus;
 
             public FakeTreeView()
             {
                 this.Nodes = new FakeTreeNodeCollection();
+            }
+
+            event Reko.Gui.Controls.DragEventHandler ITreeView.DragEnter
+            {
+                add
+                {
+                    throw new NotImplementedException();
+                }
+
+                remove
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            event Reko.Gui.Controls.DragEventHandler ITreeView.DragOver
+            {
+                add
+                {
+                    throw new NotImplementedException();
+                }
+
+                remove
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            event Reko.Gui.Controls.DragEventHandler ITreeView.DragDrop
+            {
+                add
+                {
+                    throw new NotImplementedException();
+                }
+
+                remove
+                {
+                    throw new NotImplementedException();
+                }
             }
 
             public object ContextMenu { get; set; }
@@ -170,14 +210,26 @@ namespace Reko.UnitTests.Gui.Windows
                 DragEnter(this, e);
             }
 
-            public void PerformDragOver(DragEventArgs e)
+            public void PerformDragOver(Reko.Gui.Controls.DragEventArgs e)
             {
-                DragOver(this, e);
+                DragOver(this, new DragEventArgs(
+                    (IDataObject)e.Data,
+                    e.KeyState,
+                    e.X,
+                    e.Y,
+                    (System.Windows.Forms.DragDropEffects) e.AllowedEffect,
+                    (System.Windows.Forms.DragDropEffects) e.Effect));
             }
 
-            public void PerformDragDrop(DragEventArgs e)
+            public void PerformDragDrop(Reko.Gui.Controls.DragEventArgs e)
             {
-                DragDrop(this, e);
+                DragDrop(this, new DragEventArgs(
+                    (IDataObject) e.Data,
+                    e.KeyState,
+                    e.X,
+                    e.Y,
+                    (System.Windows.Forms.DragDropEffects) e.AllowedEffect,
+                    (System.Windows.Forms.DragDropEffects) e.Effect));
             }
 
             public void PerformDragLeave(EventArgs e)
@@ -185,7 +237,7 @@ namespace Reko.UnitTests.Gui.Windows
                 DragLeave(this, e);
             }
 
-            public void PerformMouseWheel(MouseEventArgs e)
+            public void PerformMouseWheel(Reko.Gui.Controls.MouseEventArgs e)
             {
                 MouseWheel(this, e);
             }
@@ -658,7 +710,14 @@ namespace Reko.UnitTests.Gui.Windows
 
             var project = new Project();
             pbs.Load(project);
-            mockTree.PerformDragEnter(e);
+            var winEvent = new System.Windows.Forms.DragEventArgs(
+                (IDataObject)e.Data,
+                e.KeyState,
+                e.X,
+                e.Y,
+                (System.Windows.Forms.DragDropEffects)e.AllowedEffect,
+                (System.Windows.Forms.DragDropEffects)e.Effect);
+            mockTree.PerformDragEnter(winEvent);
             Assert.AreEqual(DragDropEffects.Copy, e.Effect);
         }
 
@@ -672,7 +731,8 @@ namespace Reko.UnitTests.Gui.Windows
             var project = new Project();
             pbs.Load(project);
             mockTree.PerformDragEnter(e);
-            Assert.AreEqual(DragDropEffects.None, e.Effect);
+            var winEvent = TreeViewWrapper.Convert(e);
+            Assert.AreEqual(DragDropEffects.None, (DragDropEffects)(int) winEvent.Effect);
         }
 
         [Test]
@@ -690,16 +750,16 @@ namespace Reko.UnitTests.Gui.Windows
             Assert.AreEqual("/home/bob/foo.exe", filename);
         }
 
-        private DragEventArgs Given_DraggedFile()
+        private Reko.Gui.Controls.DragEventArgs Given_DraggedFile()
         {
             var dObject = new DataObject(
                 DataFormats.FileDrop,
                 "/home/bob/foo.exe");
 
-            return new DragEventArgs(
+            return new Reko.Gui.Controls.DragEventArgs(
                     dObject, 0, 40, 40,
-                    DragDropEffects.All,
-                    DragDropEffects.All);
+                    Reko.Gui.Controls.DragDropEffects.All,
+                    Reko.Gui.Controls.DragDropEffects.All);
         }
 
         private DragEventArgs Given_DraggedText()
@@ -710,8 +770,8 @@ namespace Reko.UnitTests.Gui.Windows
 
             return new DragEventArgs(
                     dObject, 0, 40, 40,
-                    DragDropEffects.All,
-                    DragDropEffects.All);
+                    (System.Windows.Forms.DragDropEffects) (int) DragDropEffects.All,
+                    (System.Windows.Forms.DragDropEffects) (int) DragDropEffects.All);
         }
 
         [Test]

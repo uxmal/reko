@@ -750,7 +750,7 @@ all other cases, together they constitute a Switch[].
         /// </returns>
         private bool RefinePredecessor(Region n, Region s)
         {
-            ISet<Region> unstructuredPreds = regionGraph.Predecessors(s).Where(p => p != n).ToHashSet();
+            ISet<Region> unstructuredPreds = new HashSet<Region>(regionGraph.Predecessors(s).Where(p => p != n));
             if (unstructuredPreds.Count == 0)
                 return false;
             return true;

@@ -193,7 +193,8 @@
         <File Source="$(var.X86.Design.TargetPath)" />
         <File Source="$(var.Xtensa.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
-        <File Source="$(var.SolutionDir)Native/build/$(var.Platform)/$(var.Configuration)/ArmNative/ArmNative.dll" />
+    <!-- We may drop Capstone support; we don't need it -->
+    <!--    <File Source="$(var.SolutionDir)Native/build/$(var.Platform)/$(var.Configuration)/ArmNative/ArmNative.dll" /> -->
 
         <!-- Symbol sources -->
         <File Source="$(var.LGSymLoader.TargetPath)" />

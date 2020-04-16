@@ -1,22 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{E75C3BE2-0F98-48CD-943D-198159B57DC7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <!-- dotnet restore goes into this project; doesn't seem to be a way to stop it. -->
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.Arch.MicrochipPIC.Design</RootNamespace>
     <AssemblyName>Reko.Arch.MicrochipPIC.Design</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <ProjectReference Include="..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\Gui\Gui.csproj"/>
+    <ProjectReference Include="..\M68k\M68k.csproj"/>
+    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj"/>
+    <ProjectReference Include="..\Microchip\MicrochipPIC.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Gui\Gui.csproj" />
-    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj" />
-    <ProjectReference Include="..\Microchip\MicrochipPIC.csproj" />
+    <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
-  <ItemGroup />
+
+  <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
+  <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
+    <ItemGroup>
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\net472\$(AssemblyName).dll" />
+    </ItemGroup>
+  </Target>
+
 </Project>

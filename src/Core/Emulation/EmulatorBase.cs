@@ -116,7 +116,7 @@ namespace Reko.Core.Emulation
         public abstract ulong WriteRegister(RegisterStorage reg, ulong value);
 
         /// <summary>
-        /// Test if 
+        /// Test if a breakpoint has been hit.
         /// </summary>
         /// <param name="linAddrInstr"></param>
         /// <returns></returns>

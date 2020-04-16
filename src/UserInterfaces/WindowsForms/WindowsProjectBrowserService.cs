@@ -40,36 +40,36 @@ namespace Reko.UserInterfaces.WindowsForms
             this.tree.MouseWheel += tree_MouseWheel;
         }
 
-        void tree_DragEnter(object sender, DragEventArgs e)
+        void tree_DragEnter(object sender, Gui.Controls.DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = e.AllowedEffect & DragDropEffects.Copy;
+            if (((IDataObject) e.Data).GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect & Gui.Controls.DragDropEffects.Copy;
             else
-                e.Effect = DragDropEffects.None;
+                e.Effect = Gui.Controls.DragDropEffects.None;
         }
 
-        void tree_DragOver(object sender, DragEventArgs e)
+        void tree_DragOver(object sender, Gui.Controls.DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = e.AllowedEffect & DragDropEffects.Copy;
+            if (((IDataObject) e.Data).GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect & Gui.Controls.DragDropEffects.Copy;
             else
-                e.Effect = DragDropEffects.None;
+                e.Effect = Gui.Controls.DragDropEffects.None;
         }
 
         void tree_DragLeave(object sender, EventArgs e)
         {
         }
 
-        void tree_DragDrop(object sender, DragEventArgs e)
+        void tree_DragDrop(object sender, Gui.Controls.DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (((IDataObject)e.Data).GetDataPresent(DataFormats.FileDrop))
             {
-                var filename = (string)e.Data.GetData(DataFormats.FileDrop);
+                var filename = (string) ((IDataObject) e.Data).GetData(DataFormats.FileDrop);
                 OnFileDropped(new FileDropEventArgs(filename));
             }
         }
 
-        private void tree_MouseWheel(object sender, MouseEventArgs e)
+        private void tree_MouseWheel(object sender, Gui.Controls.MouseEventArgs e)
         {
             //model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
             //RecomputeLayout();
