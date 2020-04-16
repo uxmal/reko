@@ -42,6 +42,7 @@ namespace Reko.Environments.Xbox360
     {
         public Xbox360Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "xbox360")
         {
+            EnsureTypeLibraries(this.PlatformIdentifier);
         }
 
         public override string DefaultCallingConvention { get { return ""; } }
