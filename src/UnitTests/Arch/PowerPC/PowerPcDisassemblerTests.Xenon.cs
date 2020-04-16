@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.PowerPC
     public class PowerPcXenonDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>
     {
         private PowerPcBe32Architecture arch;
-        
+
         public PowerPcXenonDisassemblerTests()
         {
             this.arch = new PowerPcBe32Architecture("ppc-be-32");
@@ -172,6 +172,5 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x18099FD1, "vrlimi128\tv0,v51,09,02");  // 06 - 07D(125)
             AssertCode(0x1B24DFF5, "vupkd3d128\tv57,v59,04");   // 06 - 07F(127)
         }
-
     }
 }

@@ -31,22 +31,28 @@ namespace Reko.Arch.PowerPC
                 this.message = message;
             }
 
+            private static readonly HashSet<uint> seen = new HashSet<uint>();
+
             public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
-                EmitUnitTest(wInstr);
+                if (!seen.Contains(wInstr))
+                {
+                    seen.Add(wInstr);
+                    EmitUnitTest(wInstr);
+                }
                 return dasm.CreateInvalidInstruction();
             }
 
             [Conditional("DEBUG")]
             private void EmitUnitTest(uint wInstr)
             {
-                Debug.Print("    // {0}", message);
-                Debug.Print("    [Test]");
-                Debug.Print("    public void PPCDis_{0:X8}()", wInstr);
-                Debug.Print("    {");
-                Debug.Print("        AssertCode(0x{0:X8}, \"@@@\");", wInstr);
-                Debug.Print("    }");
-                Debug.Print("");
+                Console.WriteLine("    // {0}", message);
+                Console.WriteLine("    [Test]");
+                Console.WriteLine("    public void PPCDis_{0:X8}()", wInstr);
+                Console.WriteLine("    {");
+                Console.WriteLine("        AssertCode(0x{0:X8}, \"@@@\");", wInstr);
+                Console.WriteLine("    }");
+                Console.WriteLine("");
             }
 
             public override string ToString()

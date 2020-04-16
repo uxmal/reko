@@ -265,7 +265,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.nand: RewriteAnd(true); break;
                 case Mnemonic.nor: RewriteOr(true); break;
                 case Mnemonic.or: RewriteOr(false); break;
-                case Mnemonic.orc: RewriteOrc(false); break;
+                case Mnemonic.orc: RewriteOrc(); break;
                 case Mnemonic.ori: RewriteOr(false); break;
                 case Mnemonic.oris: RewriteOris(); break;
                 case Mnemonic.ps_abs: RewritePairedInstruction_Src1("__ps_abs"); break;
@@ -403,7 +403,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vnor: RewriteOr(true); break;
                 case Mnemonic.vor:
                 case Mnemonic.vor128: RewriteVor(); break;
-                case Mnemonic.vorc: RewriteOrc(false);break;
+                case Mnemonic.vorc: RewriteOrc();break;
                 case Mnemonic.vperm:
                 case Mnemonic.vperm128: RewriteVperm(); break;
                 case Mnemonic.vpkd3d128: RewriterVpkD3d(); break;
@@ -485,14 +485,14 @@ namespace Reko.Arch.PowerPC
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var uInstr = r2.ReadUInt32();
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void PPCRw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            Console.WriteLine("        [Test]");
+            Console.WriteLine("        public void PPCRw_{0}()", dasm.Current.Mnemonic);
+            Console.WriteLine("        {");
+            Console.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
+            Console.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
+            Console.WriteLine("                \"1|L--|@@@\");");
+            Console.WriteLine("        }");
+            Console.WriteLine("");
         }
 #else
         private void EmitUnitTest() { }

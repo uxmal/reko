@@ -152,5 +152,5 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_ProcessorModel_750cl();
             AssertCode(0x10320030, "ps_res\tf1,f0");
         }
-    } 
+    }
 }

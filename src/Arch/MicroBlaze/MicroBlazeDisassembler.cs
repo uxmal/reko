@@ -59,7 +59,7 @@ namespace Reko.Arch.MicroBlaze
 
 
         /// <summary>
-        /// Create a Reko bitfield using PA Risc bit position and bit length.
+        /// Create a Reko bitfield using big-endian bit position and bit length.
         /// </summary>
         /// <remarks>
         /// PA Risc instruction bits are numbered from the MSB to LSB, but 

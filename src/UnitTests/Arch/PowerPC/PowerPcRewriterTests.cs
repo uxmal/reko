@@ -20,13 +20,10 @@
 
 using Reko.Arch.PowerPC;
 using Reko.Core;
-using Reko.Core.Types;
 using Reko.Core.Rtl;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.PowerPC
 {
@@ -835,6 +832,9 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x78840fe2, // rldicl  r4,r4,33,63	
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = r4 << 0x21 & 0x0000000000000001");
+            AssertCode(0x7863AB02,   // rldicl	r3,r3,35,0C
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = (word64) SLICE(r3, word52, 62)");
         }
 
         [Test]
@@ -1078,7 +1078,10 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x790A000E,  // rldimi r10,r8,20,00
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = DPB(r10, (word32) r8, 32)");
+                "1|L--|r10 = DPB(r10, SLICE(r8, word32, 0), 32)");
+            AssertCode(0x78A3A04E,   // rldimi	r3,r5,34,01
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = DPB(r3, SLICE(r5, word11, 0), 52)");
         }
 
         [Test]
@@ -2622,14 +2625,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7C004A64, // tlbie\tr9
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__tlbie(r9)");
-        }
-
-        [Test]
-        [Ignore("WIP")]
-        public void PPCRw_sdf()
-        {
-            AssertCode(0x4E6F7420,
-                "");
         }
 
         [Test]
