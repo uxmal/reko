@@ -522,7 +522,7 @@ namespace Reko.Core
         /// <summary>
         /// Bitmask used to extract subregister values from a larger backing register.
         /// </summary>
-        public ulong BitMask { get; private set; }
+        public ulong BitMask { get; }
 
         /// <summary>
         /// The size and domain of the register.

@@ -634,7 +634,7 @@ namespace Reko.Arch.PowerPC
             }
             else if (me == 63)
             {
-                // rotldi
+                // rotldi: The mask is 0b111.....111, so we have a full rotation
                 m.Assign(rd, host.PseudoProcedure(
                     PseudoProcedure.Rol,
                     PrimitiveType.Word64,
@@ -672,12 +672,11 @@ namespace Reko.Arch.PowerPC
             byte sh = ((Constant)RewriteOperand(instr.Operands[2])).ToByte();
             byte me = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
 
-            MaybeEmitCr0(rd);
             var n = 64 - (sh + me);
             if (0 < n && n < 64)
             {
                 var slice = m.Slice(PrimitiveType.CreateWord(n), rs, 0);
-                m.Assign(rd, m.Dpb(rd, slice, sh));
+                Dpb(rd, slice, sh);
             }
             else
             {
@@ -690,7 +689,40 @@ namespace Reko.Arch.PowerPC
                 return;
             }
             MaybeEmitCr0(rd);
+        }
 
+        private void Dpb(Expression dst, Expression bits, int offset)
+        {
+            int dstBitsLeft = dst.DataType.BitSize;
+            var elems = new List<Expression>(4);
+            if (offset > 0)
+            {
+                var dtLo = PrimitiveType.CreateWord(offset);
+                var tmp = binder.CreateTemporary(dtLo);
+                m.Assign(tmp, m.Slice(dtLo, dst, 0));
+                elems.Add(tmp);
+                dstBitsLeft -= offset;
+            }
+            elems.Add(bits);
+            dstBitsLeft -= bits.DataType.BitSize;
+
+            if (dstBitsLeft > 0)
+            {
+                var dtHi = PrimitiveType.CreateWord(dstBitsLeft);
+                var tmp = binder.CreateTemporary(dtHi);
+                m.Assign(tmp, m.Slice(dtHi, dst, dst.DataType.BitSize - dstBitsLeft));
+                elems.Add(tmp);
+            }
+
+            if (elems.Count == 1)
+            {
+                m.Assign(dst, elems[0]);
+            }
+            else
+            {
+                elems.Reverse();
+                m.Assign(dst, m.Seq(dst.DataType, elems.ToArray()));
+            }
         }
 
         void RewriteRlwinm()

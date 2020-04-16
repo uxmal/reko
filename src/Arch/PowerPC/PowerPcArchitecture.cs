@@ -168,7 +168,7 @@ namespace Reko.Arch.PowerPC
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
-            throw new NotImplementedException();
+            return new PowerPcEmulator(this, segmentMap, envEmulator);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

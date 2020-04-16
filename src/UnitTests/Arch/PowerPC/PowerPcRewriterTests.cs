@@ -820,7 +820,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCrw_rldicl()
+        public void PPCRw_rldicl()
         {
             Given_PowerPcBe64();
             AssertCode(0x790407c0,    // clrldi  r4,r8,31
@@ -835,6 +835,42 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7863AB02,   // rldicl	r3,r3,35,0C
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = (word64) SLICE(r3, word52, 62)");
+            AssertCode(0x7863e102, //"rldicl\tr3,r3,3C,04");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = r3 >>u 0x04");
+            AssertCode(0x790407c0, //"rldicl\tr4,r8,00,1F");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = r8 & 0x00000001FFFFFFFF");
+            AssertCode(0x790407E0, //"rldicl\tr4,r8,00,3F");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = r8 & 0x0000000000000001");
+        }
+
+        [Test]
+        public void PPCrw_rldicl_clearHighBits()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x79290040,              // rldicl	r9,r9,00,01
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r9 = r9 & 0x7FFFFFFFFFFFFFFF");
+        }
+
+        [Test]
+        public void PPCRw_rldicr()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x798C0F86, // rldicr\tr12,r12,33,30
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r12 = r12 << 0x21");
+        }
+
+        [Test]
+        public void PPCRw_rldicr_rotate()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x798CCFE6,              // rldicr	r12,r12,39,3F
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r12 = __rol(r12, 0x39)");
         }
 
         [Test]
@@ -1049,39 +1085,25 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_rldicl()
-        {
-            Given_PowerPcBe64();
-            AssertCode(0x7863e102, //"rldicl\tr3,r3,3C,04");
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = r3 >>u 0x04");
-            AssertCode(0x790407c0, //"rldicl\tr4,r8,00,1F");
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r8 & 0x00000001FFFFFFFF");
-            AssertCode(0x790407E0, //"rldicl\tr4,r8,00,3F");
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r8 & 0x0000000000000001");
-        }
-
-        [Test]
-        public void PPCRw_rldicr()
-        {
-            Given_PowerPcBe64();
-            AssertCode(0x798C0F86, // rldicr\tr12,r12,33,30
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r12 = r12 << 0x21");
-        }
-
-        [Test]
-        public void PPCRw_rldimi()
+        public void PPCRw_rldimi_highword()
         {
             Given_PowerPcBe64();
             AssertCode(0x790A000E,  // rldimi r10,r8,20,00
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = DPB(r10, SLICE(r8, word32, 0), 32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(r10, word32, 0)",
+                "2|L--|r10 = SEQ(SLICE(r8, word32, 0), v4)");
+        }
+
+        [Test]
+        [Ignore("These PPC masks are horrible")]
+        public void PPCRw_rldimi_General()
+        {
+            Given_PowerPcBe64();
             AssertCode(0x78A3A04E,   // rldimi	r3,r5,34,01
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = DPB(r3, SLICE(r5, word11, 0), 52)");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(r3, word52, 0)",
+                "2|L--|v5 = SLICE(r3, bool, 63)",
+                "3|L--|r3 = DPB(r3, SLICE(r5, word11, 0), 52)");
         }
 
         [Test]

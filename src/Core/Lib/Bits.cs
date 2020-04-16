@@ -122,6 +122,11 @@ namespace Reko.Core.Lib
             return (u << (32 - s)) | (u >> s);
         }
 
+        public static ulong RotateL64(ulong u, int s)
+        {
+            return (u << s) | (u >> (64 - s));
+        }
+
         /// <summary>
         /// Rotate the <paramref name="wordSize"/> least significant bits of 
         /// the unsigned value <paramref name="u"/> to the right by <paramref name="s"/>
