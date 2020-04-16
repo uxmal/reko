@@ -37,24 +37,6 @@ using System.Linq;
 
 namespace Reko
 {
-    public interface IDecompiler
-    {
-        Project Project { get; }
-
-        bool Load(string fileName, string loader=null);
-        Program LoadRawImage(string file, LoadDetails raw);
-        Program LoadRawImage(byte[] bytes, LoadDetails raw);
-        void ScanPrograms();
-        ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
-        void AnalyzeDataFlow();
-        void ReconstructTypes();
-        void StructureProgram();
-        void WriteDecompilerProducts();
-        void ExtractResources();
-
-        void Assemble(string file, IAssembler asm, IPlatform platform);
-    }
-
 	/// <summary>
 	/// The main driver class for decompilation of binaries. 
 	/// </summary>
