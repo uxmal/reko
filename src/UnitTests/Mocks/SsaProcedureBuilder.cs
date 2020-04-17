@@ -119,6 +119,12 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, PrimitiveType.Word32);
         }
 
+        public override Identifier Reg64(string name, int number)
+        {
+            var id = base.Reg64(name, number);
+            return MakeSsaIdentifier(id, name);
+        }
+
         public override Identifier Reg32(string name, int number)
         {
             var id = base.Reg32(name, number);

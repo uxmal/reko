@@ -439,7 +439,12 @@ namespace Reko.Arch.PowerPC
         private Expression Shift16(MachineOperand machineOperand)
         {
             var imm = (ImmediateOperand)machineOperand;
-            return Constant.Word32(imm.Value.ToInt32() << 16);
+            return Constant.Create(arch.WordWidth, imm.Value.ToInt32() << 16);
+        }
+
+        private Expression ImmOperand(MachineOperand op)
+        {
+            return ((ImmediateOperand) op).Value;
         }
 
         private Expression RewriteOperand(MachineOperand op, bool maybe0 = false)
@@ -458,13 +463,39 @@ namespace Reko.Arch.PowerPC
                     return binder.EnsureRegister(rOp.Register);
                 }
             case ImmediateOperand iOp:
-                // Sign-extend the bastard.
-                return SignExtend(iOp.Value);
+                // Extend the immediate value to word size. If this is not wanted,
+                // convert the operand manually or use RewriteSignedOperand
+                return Constant.Create(arch.WordWidth, iOp.Value.ToInt64());
             case AddressOperand aOp:
                 return aOp.Address;
             default:
-                throw new NotImplementedException(
-                    string.Format("RewriteOperand:{0} ({1}}}", op, op.GetType()));
+                throw new NotImplementedException($"RewriteOperand:{op} ({op.GetType()}");
+            }
+        }
+
+        private Expression RewriteSignedOperand(MachineOperand op, bool maybe0 = false)
+        {
+            switch (op)
+            {
+            case RegisterOperand rOp:
+                if (maybe0 && rOp.Register.Number == 0)
+                    return Constant.Zero(rOp.Register.DataType);
+                if (arch.IsCcField(rOp.Register))
+                {
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register));
+                }
+                else
+                {
+                    return binder.EnsureRegister(rOp.Register);
+                }
+            case ImmediateOperand iOp:
+                // Extend the immediate value to word size. If this is not wanted,
+                // convert the operand manually or use RewriteSignedOperand
+                return Constant.Int(arch.WordWidth, iOp.Value.ToInt64());
+            case AddressOperand aOp:
+                return aOp.Address;
+            default:
+                throw new NotImplementedException($"RewriteOperand:{op} ({op.GetType()}");
             }
         }
 
@@ -474,7 +505,7 @@ namespace Reko.Arch.PowerPC
         }
 
 #if DEBUG
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
+        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
         
         private void EmitUnitTest()
         {
@@ -529,23 +560,6 @@ namespace Reko.Arch.PowerPC
                 return e2;
             else
                 return m.IAdd(e1, e2);
-        }
-
-        private Expression SignExtend(Constant value)
-        {
-            PrimitiveType iType = (PrimitiveType)value.DataType;
-            if (arch.WordWidth.BitSize == 64)
-            {
-                return (iType.Domain == Domain.SignedInt)
-                    ? Constant.Int64(value.ToInt64())
-                    : Constant.Word64(value.ToUInt64());
-            }
-            else
-            {
-                return (iType.Domain == Domain.SignedInt)
-                    ? Constant.Int32(value.ToInt32())
-                    : Constant.Word32(value.ToUInt32());
-            }
         }
 
         private Expression UpdatedRegister(Expression effectiveAddress)

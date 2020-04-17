@@ -93,9 +93,9 @@ namespace Reko.Analysis
         public void Transform(Statement stm)
         {
             evalCtx.Statement = stm;
-            if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
+            trace.Verbose("From: {0}", stm.Instruction.ToString());
             stm.Instruction = stm.Instruction.Accept(this);
-            if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
+            trace.Verbose("  To: {0}", stm.Instruction.ToString());
         }
 
         #region InstructionVisitor<Instruction> Members

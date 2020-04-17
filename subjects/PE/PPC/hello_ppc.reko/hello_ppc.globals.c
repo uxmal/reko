@@ -9,9 +9,9 @@ Eq_n g_tFFFFFFA0;
 Eq_n g_tFFFFFFBF;
 Eq_n g_tFFFFFFFD;
 Eq_n g_tFFFFFFFE;
-<anonymous> * g_ptrFFFFFFFF;
+Eq_n g_tFFFFFFFF;
 Eq_n g_t0001;
-int32 g_dw0003;
+word32 g_dw0003;
 Eq_n g_t0016;
 Eq_n g_t0017;
 ui32 g_dw0120;
@@ -19,5 +19,5 @@ word32 g_dw092C;
 byte g_b0BFF;
 Eq_n g_t1000;
 Eq_n g_t1008;
-int32 g_dw1FF8;
+word32 g_dw1FF8;
 

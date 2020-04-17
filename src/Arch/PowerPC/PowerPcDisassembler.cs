@@ -371,7 +371,7 @@ namespace Reko.Arch.PowerPC
 
         private MachineOperand MemOff(uint reg, uint wInstr)
         {
-            var d = Constant.Int32((short)wInstr);
+            var d = Constant.Int(arch.WordWidth, (short)wInstr);
             return new MemoryOperand(PrimitiveType.Word32, arch.Registers[(int)reg & 0x1F], d);
         }
 

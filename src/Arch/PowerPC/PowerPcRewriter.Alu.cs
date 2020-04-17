@@ -252,33 +252,33 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteCreqv()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__creqv", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCrnor()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__crnor", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCror()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__cror", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCrxor()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
             m.SideEffect(host.PseudoProcedure("__crxor", VoidType.Instance, cr, r, i));
         }
 
@@ -406,12 +406,10 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr0(opD);
         }
 
-
-
         private void RewriteMull()
         {
             var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
+            var opR = RewriteSignedOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.IMul(opL, opR));
             MaybeEmitCr0(opD);
@@ -431,11 +429,32 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.Operands[1]);
             var opR = RewriteOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
-            var s = (opL == opR)
-                ? opL
-                :  m.Or(opL, opR);
-            if (negate)
-                s = m.Comp(s);
+            RewriteOr(opD, opL, opR, negate);
+        }
+
+        private void RewriteOr(Expression opD, Expression opL, Expression opR, bool negate)
+        {
+            Expression s;
+            if (opL.IsZero && opR.IsZero)
+            {
+                var c = negate ? ~0ul : 0ul;
+                s = Constant.Create(opD.DataType, c);
+            } else {
+                if (opR.IsZero || opL == opR)
+                {
+                    s = opL;
+                }
+                else if (opL.IsZero)
+                {
+                    s = opR;
+                }
+                else
+                {
+                    s = m.Or(opL, opR);
+                }
+                if (negate)
+                    s = m.Comp(s);
+            }
             m.Assign(opD, s);
             MaybeEmitCr0(opD);
         }
@@ -454,11 +473,11 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteOris()
         {
-            m.Assign(
+            RewriteOr(
                 RewriteOperand(instr.Operands[0]),
-                m.Or(
-                    RewriteOperand(instr.Operands[1]),
-                    Shift16(dasm.Current.Operands[2])));
+                RewriteOperand(instr.Operands[1]),
+                Shift16(dasm.Current.Operands[2]),
+                false);
         }
 
         void RewriteRlwimi()
@@ -471,9 +490,9 @@ namespace Reko.Arch.PowerPC
                     "__rlwimi",
                     PrimitiveType.Word32,
                     src,
-                    RewriteOperand(instr.Operands[2]),
-                    RewriteOperand(instr.Operands[3]),
-                    RewriteOperand(instr.Operands[4]))
+                    ImmOperand(instr.Operands[2]),
+                    ImmOperand(instr.Operands[3]),
+                    ImmOperand(instr.Operands[4]))
                 );
         }
 

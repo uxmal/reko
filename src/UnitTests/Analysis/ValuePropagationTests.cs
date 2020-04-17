@@ -1294,5 +1294,83 @@ SsaProcedureBuilder_exit:
             #endregion
             AssertStringsEqual(sExp, m.Ssa);
         }
+
+        /// <summary>
+        /// This reassembles 64-bit constants. It is based on actual PowerPC code.
+        /// </summary>
+        [Test]
+        public void Vp64BitConstant()
+        {
+            var r9_1 = m.Reg32("r9_1", 9);
+            var r10_1 = m.Reg64("r10_1", 10);
+            var r10_2 = m.Reg64("r10_2", 10);
+            var r11_1 = m.Reg64("r11_1", 11);
+            var r11_2 = m.Reg64("r11_2", 11);
+            var r11_3 = m.Reg64("r11_3", 11);
+            var r4_1 = m.Reg64("r4_1", 4);
+            var r19 = m.Reg64("r19", 19);
+            var r30 = m.Reg64("r30", 30);
+            var v30 = m.Temp(PrimitiveType.Word32, "v30");
+
+            m.AddDefToEntryBlock(r19);
+            m.AddDefToEntryBlock(r30);
+            m.Assign(r11_1, m.Word64(0x91690000));
+            m.Assign(r4_1, m.Cast(PrimitiveType.Word64, m.Mem32(m.IAdd(r19, 28))));
+            m.Assign(r10_1, m.Word64(0x42420000));
+            m.Assign(r11_2, m.Or(r11_1, 0x1448));
+            m.Assign(r10_2, m.Or(r10_1, 0x8DA6));
+            m.Assign(r9_1, m.And(r30, m.Word64(0x00000000FFFFFFFF)));
+            m.Assign(v30, m.Slice(PrimitiveType.Word32, r11_2, 0));
+            m.Assign(r11_3, m.Seq(m.Slice(PrimitiveType.Word32, r10_2, 0), v30));
+
+            RunValuePropagator();
+
+            var sExp =
+            #region Expected
+@"r9_1: orig: r9_1
+    def:  r9_1 = r30 & 0x00000000FFFFFFFF
+r10_1: orig: r10_1
+    def:  r10_1 = 0x0000000042420000
+r10_2: orig: r10_2
+    def:  r10_2 = 0x0000000042428DA6
+r11_1: orig: r11_1
+    def:  r11_1 = 0x0000000091690000
+r11_2: orig: r11_2
+    def:  r11_2 = 0x0000000091691448
+r11_3: orig: r11_3
+    def:  r11_3 = 0x42428DA691691448
+r4_1: orig: r4_1
+    def:  r4_1 = (word64) Mem10[r19 + 0x000000000000001C:word32]
+r19: orig: r19
+    def:  def r19
+    uses: r4_1 = (word64) Mem10[r19 + 0x000000000000001C:word32]
+r30: orig: r30
+    def:  def r30
+    uses: r9_1 = r30 & 0x00000000FFFFFFFF
+v30: orig: v30
+    def:  v30 = 0x91691448
+Mem10: orig: Mem0
+    uses: r4_1 = (word64) Mem10[r19 + 0x000000000000001C:word32]
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	def r19
+	def r30
+	// succ:  l1
+l1:
+	r11_1 = 0x0000000091690000
+	r4_1 = (word64) Mem10[r19 + 0x000000000000001C:word32]
+	r10_1 = 0x0000000042420000
+	r11_2 = 0x0000000091691448
+	r10_2 = 0x0000000042428DA6
+	r9_1 = r30 & 0x00000000FFFFFFFF
+	v30 = 0x91691448
+	r11_3 = 0x42428DA691691448
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            AssertStringsEqual(sExp, m.Ssa);
+        }
     }
 }
