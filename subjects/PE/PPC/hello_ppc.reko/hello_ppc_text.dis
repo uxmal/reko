@@ -239,7 +239,7 @@ l00400548:
 l00400578:
 	lr = fn004005A0(r4_122 << 0x02, lr)
 l004005B0:
-	branch ((word32) Mem125[Mem125[r16_85:word32] + ((r31_198 & 0x000000FF) << 0x01):word16] & 0xFFFF8000) == 0x00000000 l004005EC
+	branch ((word32) Mem125[Mem125[r16_85:word32] + ((r31_198 & 0x000000FF) << 0x01):word16] & 0x00008000) == 0x00000000 l004005EC
 l004005C8:
 	r2 = fn00400E04(r2, r31_198, r3, fp + 0xFFFFFD78, r25, r26_170, r27, r28, r29, r30, out r25, out r26_170, out r27, out r28, out r29, out r30)
 	r23_193 = r23_193 + 0x00000001
@@ -882,9 +882,9 @@ fn00401554_entry:
 l00401554:
 	branch r3 != 0x00000000 l00401568
 l00401568:
-	branch (r4 & 0xFFFFFFFF) <= 0x000000FF l00401584
+	branch (r4 & 0x0000FFFF) <= 0x000000FF l00401584
 l00401584:
-	Mem13[r3:byte] = (byte) (int32) (int8) (r4 & 0xFFFFFFFF & 0x000000FF)
+	Mem13[r3:byte] = (byte) (int32) (int8) (r4 & 0x0000FFFF & 0x000000FF)
 	return
 l00401570:
 	Mem19[Mem0[r2 + 124:word32]:word32] = 0x0000002A
@@ -2493,7 +2493,7 @@ l00403450:
 l0040347C:
 	branch r6 == 0x00000000 l004034A4
 l00403484:
-	branch r6 > 0xFFFFFFFF l004034A4
+	branch r6 > 0x7FFFFFFF l004034A4
 l00403494:
 	branch r5 == 0x00000000 l004034B4
 l0040349C:
@@ -2963,7 +2963,7 @@ fn00403C20_entry:
 l00403C20:
 	word32 r10_6 = Mem0[r2 + 244:word32]
 	word32 r11_11 = r10_6
-	word32 r10_10 = Mem0[Mem0[r2 + 240:word32]:word32] * 12 + r10_6
+	word32 r10_10 = Mem0[Mem0[r2 + 240:word32]:word32] * 0x0000000C + r10_6
 l00403C38:
 	branch Mem0[r11_11 + 4:word32] == r3 l00403C50
 l00403C44:

@@ -454,6 +454,24 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_addi_r0()
+        {
+            AssertCode(0x38008045,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = 0xFFFF8045");
+        }
+
+        [Test]
+        public void PPCRw_addi_r0_64bit()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x38008045,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = 0xFFFFFFFFFFFF8045");
+        }
+
+
+        [Test]
         public void PPCRw_addis_r0()
         {
             AssertCode(0x3C000045,
@@ -560,6 +578,15 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_ori_highbitset()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x60008020, // ori     r0,r0,0x8020	
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r0 | 0x0000000000008020");
+        }
+
+        [Test]
         public void PPCRw_rlwinm_1_31_31()
         {
             AssertCode(0x54630ffe, // rlwinm r3,r3,1,31,31
@@ -612,7 +639,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             AssertCode(0x1f9c008c, // mulli   r28,r28,140	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r28 = r28 * 140");
+                "1|L--|r28 = r28 * 0x0000008C");
 
             AssertCode(0x7c1ed9ae, // stbx    r0,r30,r27	
                 "0|L--|00100000(4): 1 instructions",
@@ -2389,9 +2416,9 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0x1009000C,   // psq_lx	f0,r9,r0,00,00
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v4 = Mem0[r9 + r0:word64]",
-                "2|L--|v5 = __unpack_quantized(v4, 0x00, 0x00)",
-                "3|L--|f0 = v5");
+                "1|L--|v3 = Mem0[r9:word64]",
+                "2|L--|v4 = __unpack_quantized(v3, 0x00, 0x00)",
+                "3|L--|f0 = v4");
         }
 
         [Test]

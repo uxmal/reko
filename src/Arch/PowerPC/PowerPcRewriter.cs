@@ -465,7 +465,7 @@ namespace Reko.Arch.PowerPC
             case ImmediateOperand iOp:
                 // Extend the immediate value to word size. If this is not wanted,
                 // convert the operand manually or use RewriteSignedOperand
-                return Constant.Create(arch.WordWidth, iOp.Value.ToInt64());
+                return Constant.Create(arch.WordWidth, iOp.Value.ToUInt64());
             case AddressOperand aOp:
                 return aOp.Address;
             default:
@@ -491,7 +491,7 @@ namespace Reko.Arch.PowerPC
             case ImmediateOperand iOp:
                 // Extend the immediate value to word size. If this is not wanted,
                 // convert the operand manually or use RewriteSignedOperand
-                return Constant.Int(arch.WordWidth, iOp.Value.ToInt64());
+                return Constant.Word(arch.WordWidth.BitSize, iOp.Value.ToInt64());
             case AddressOperand aOp:
                 return aOp.Address;
             default:

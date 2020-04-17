@@ -212,7 +212,7 @@ Eq_n fn004004B4(Eq_n r2, Eq_n r3, byte * r4, word32 r13, word32 r14, word32 r15,
 			if (r4_n < 0x08)
 			{
 				lr = fn004005A0(r4_n << 0x02, lr);
-				if (((word32) *((char *) *r16_n + (r31_n & 0xFF) * 0x02) & ~0x7FFF) != 0x00)
+				if (((word32) *((char *) *r16_n + (r31_n & 0xFF) * 0x02) & 0x8000) != 0x00)
 				{
 					r2 = fn00400E04(r2, r31_n, r3, fp + ~0x0287, r25, r26_n, r27, r28, r29, r30, out r25, out r26_n, out r27, out r28, out r29, out r30);
 					++r23_n;
@@ -718,8 +718,8 @@ void fn00401554(struct Eq_n * r2, byte * r3, ui32 r4)
 {
 	if (r3 == null)
 		return;
-	if ((r4 & ~0x00) <= 0xFF)
-		*r3 = (byte) (int32) (int8) (r4 & ~0x00 & 0xFF);
+	if ((r4 & 0xFFFF) <= 0xFF)
+		*r3 = (byte) (int32) (int8) (r4 & 0xFFFF & 0xFF);
 	else
 		*r2->ptr007C = 0x2A;
 }
@@ -2093,7 +2093,7 @@ Eq_n fn00403450(Eq_n r2, Eq_n r3, struct Eq_n * r4, Eq_n r5, Eq_n r6, ptr32 r25,
 	v3->t000C = r30;
 	v3->ptr0010 = r31;
 	Eq_n r28_n = r6;
-	if (r5 != 0x04 && (r6 == 0x00 || (r6 > ~0x00 || r5 != 0x00 && r5 != 0x40)))
+	if (r5 != 0x04 && (r6 == 0x00 || (r6 > 0x7FFFFFFF || r5 != 0x00 && r5 != 0x40)))
 	{
 		r25Out = r25;
 		r26Out = r26;

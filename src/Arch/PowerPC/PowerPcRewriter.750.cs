@@ -88,7 +88,18 @@ namespace Reko.Arch.PowerPC
             {
                 ea = RewriteOperand(instr.Operands[1]);
                 baseReg = ea;
-                ea = m.IAdd(ea, RewriteSignedOperand(instr.Operands[2]));
+                if (instr.Operands[2] is RegisterOperand rIdx)
+                {
+                    if (rIdx.Register.Number != 0)
+                    {
+                        ea = m.IAdd(ea, binder.EnsureRegister(rIdx.Register));
+                    }
+                }
+                else
+                {
+                    var offset = ((ImmediateOperand) instr.Operands[2]).Value.ToInt64();
+                    ea = m.IAdd(ea, Constant.Create(arch.SignedWord, offset));
+                }
             }
             return (ea, baseReg);
         }

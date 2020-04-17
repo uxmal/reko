@@ -87,7 +87,7 @@ namespace Reko.Arch.PowerPC
         public void RewriteAddi()
         {
             var opL = RewriteOperand(instr.Operands[1], true);
-            var opR = RewriteOperand(instr.Operands[2]);
+            var opR = RewriteSignedOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
         }
@@ -95,7 +95,7 @@ namespace Reko.Arch.PowerPC
         public void RewriteAddic()
         {
             var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
+            var opR = RewriteSignedOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
             var xer = binder.EnsureRegister(arch.xer);
