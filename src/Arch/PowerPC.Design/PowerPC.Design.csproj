@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <ProjectGuid>{16550DF3-0916-4BDD-AA7A-7E1BAD7ABA3B}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -7,10 +7,11 @@
     <RootNamespace>Reko.Arch.PowerPC.Design</RootNamespace>
     <AssemblyName>Reko.Arch.PowerPC.Design</AssemblyName>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Resources.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />

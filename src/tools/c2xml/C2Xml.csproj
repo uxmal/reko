@@ -29,11 +29,21 @@
     <PackageReference Include="Microsoft.NET.Test.SDK" Version="16.5.0-preview-20200116-01" />
   </ItemGroup>
 
+  <ItemGroup>
+    <C2xmlExtraFiles Include="$(TargetDir)c2xml.deps.json" />
+    <C2xmlExtraFiles Include="$(TargetDir)c2xml.runtimeconfig.dev.json" />
+    <C2xmlExtraFiles Include="$(TargetDir)c2xml.runtimeconfig.json" />
+  </ItemGroup>
+
+
   <!-- Copy dependencies to the `tools` directory.-->
 
   <Target Name="CopyToToolsDir" AfterTargets="CoreBuild">
     <Message Text="Copy $(ProjectDir)$(OutputPath)$(TargetFileName) to $(ProjectDir)..\..\tools" Importance="High" />
     <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName)" DestinationFolder="$(ProjectDir)..\..\tools" />
+    <Copy SourceFiles="$(ProjectDir)$(OutputPath)c2xml.exe" DestinationFolder="$(ProjectDir)..\..\tools" />
+    <Copy SourceFiles="@(C2xmlExtraFiles)" DestinationFolder="$(ProjectDir)..\..\tools" />
+
     <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName).config" DestinationFolder="$(ProjectDir)..\..\tools" />
     <Copy SourceFiles="$(ProjectDir)$(OutputPath)Reko.Core.dll" DestinationFolder=".." />
     <Copy SourceFiles="$(ProjectDir)..\..\..\external\docopt.net-0.6.1.4\DocoptNet.dll" DestinationFolder=".." />

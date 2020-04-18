@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -7,12 +7,17 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.UserInterfaces.WindowsForms</RootNamespace>
     <AssemblyName>Reko.UserInterfaces.WindowsForms</AssemblyName>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="System.Resources.Extensions" />
+  </ItemGroup>
+
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Msbuild Projects="$(ProjectDir)..\tools\xslt\xslt.csproj" Properties="Configuration=$(Configuration)" />
-    <Exec Condition=" '$(MSBuildRuntimeType)' == 'Core' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Forms/decompiler-menus.xslt $(ProjectDir)../../Gui/decompiler-menus.xml $(ProjectDir)Forms/DecompilerMenus.cs" />
-    <Exec Condition=" '$(MSBuildRuntimeType)' != 'Core' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(ProjectDir)..\..\tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
+    <Msbuild Projects="$(ProjectDir)..\..\tools\xslt\xslt.csproj" Properties="Configuration=$(Configuration);TargetFramework=netcoreapp3.1" />
+    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="dotnet &quot;$(ProjectDir)../../tools/xslt.dll&quot; &quot;$(ProjectDir)Forms/decompiler-menus.xslt&quot; &quot;$(ProjectDir)../../Gui/decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms/DecompilerMenus.cs&quot;" />
+    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(ProjectDir)..\..\tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
   </Target>
 
   <ItemGroup>
