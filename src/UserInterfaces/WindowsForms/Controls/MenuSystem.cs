@@ -159,7 +159,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 		protected void subMenu_Popup(object sender, EventArgs e)
 		{
-			SetStatusForMenuItems(((MenuStrip) sender).Items);
+			SetStatusForMenuItems(((ToolStrip) sender).Items);
 		}
 
 		private void item_Click(object sender, CommandMenuEventArgs e)

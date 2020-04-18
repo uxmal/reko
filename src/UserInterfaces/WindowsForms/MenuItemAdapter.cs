@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -43,10 +43,12 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public CommandID GetCommandID(int i)
         {
-            var item = (CommandMenuItem) menuItems[i];
-            if (item.MenuCommand == null)
-                return null;
-            return item.MenuCommand.CommandID;
+            if(menuItems[i] is CommandMenuItem item) {
+                if (item.MenuCommand == null)
+                    return null;
+                return item.MenuCommand.CommandID;
+            }
+            return null;
         }
 
         public void RemoveAt(int i)
@@ -65,13 +67,16 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public bool IsTemporary(int i)
         {
-            var item = (CommandMenuItem) menuItems[i];
-            return item.IsTemporary;
+            if (menuItems[i] is CommandMenuItem item)
+            {
+                return item.IsTemporary;
+            }
+            return false;
         }
 
         public bool IsSeparator(int i)
         {
-            var item = (CommandMenuItem) menuItems[i];
+            var item = (ToolStripItem) menuItems[i];
             return item.Text == "-";
         }
 
@@ -88,10 +93,13 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void SetStatus(int i, MenuStatus s)
         {
-            var item = (CommandMenuItem) menuItems[i];
+            var item = (ToolStripItem) menuItems[i];
             item.Visible = (s & MenuStatus.Visible) != 0;
             item.Enabled = (s & MenuStatus.Enabled) != 0;
-            item.Checked = (s & MenuStatus.Checked) != 0;
+            if (item is CommandMenuItem citem)
+            {
+                citem.Checked = (s & MenuStatus.Checked) != 0;
+            }
         }
     }
 }

@@ -200,7 +200,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public virtual void SetContextMenu(object control, int menuId)
         {
             var ctxMenu = dm.GetContextMenu(menuId);
-            var ctxMenuProp = control.GetType().GetProperty("ContextMenu");
+            var ctxMenuProp = control.GetType().GetProperty("ContextMenuStrip");
             ctxMenuProp.SetValue(control, ctxMenu);
         }
 
