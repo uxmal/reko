@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Analysis
 
         private void ProcessScc(IList<Procedure> scc)
         {
-            var procSet = scc.ToSet();
+            var procSet = scc.ToHashSet();
             var sstSet = new HashSet<SsaTransform>();
             foreach (var proc in scc)
             {
@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Analysis
         private void Given_PlatformTrashedRegisters(params RegisterStorage[] regs)
         {
             platform.Setup(p => p.CreateTrashedRegisters())
-                .Returns(regs.ToSet());
+                .Returns(regs.ToHashSet());
         }
 
         private void Given_Architecture(IProcessorArchitecture arch)

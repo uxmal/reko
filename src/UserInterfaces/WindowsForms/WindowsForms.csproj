@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
+    <Msbuild Projects="$(ProjectDir)..\tools\xslt\xslt.csproj" Properties="Configuration=$(Configuration)" />
     <Exec Condition=" '$(MSBuildRuntimeType)' == 'Core' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Forms/decompiler-menus.xslt $(ProjectDir)../../Gui/decompiler-menus.xml $(ProjectDir)Forms/DecompilerMenus.cs" />
     <Exec Condition=" '$(MSBuildRuntimeType)' != 'Core' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(ProjectDir)..\..\tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
   </Target>

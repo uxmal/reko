@@ -23,13 +23,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
-    <ProjectReference Include="..\tools\xslt\xslt.csproj" />
   </ItemGroup>
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
     <Message Importance="high" Text="Generating C# files for Gui.csproj" />
     <Message Importance="high" Text="xslt.exe exists" Condition="Exists('$(ProjectDir)../tools/xslt.exe')" />
     <!--
-        It seems we can't rely on xslt.exe / xslt.dll (net472 or netcoreapp20)
+        It seems we can't rely on xslt.exe / xslt.dll (netcoreapp3.1 or netcoreapp20)
         have been built, despite all efforts to express this in the SLN file.
         Thanks, build system.
     -->

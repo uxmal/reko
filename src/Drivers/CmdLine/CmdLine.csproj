@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472;netcoreapp2.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">netcoreapp3.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp3.1</TargetFrameworks>
     <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -94,7 +94,7 @@
     <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
   <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
     <ItemGroup>
-      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\net472\$(AssemblyName).exe" />
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\netcoreapp3.1\$(AssemblyName).exe" />
     </ItemGroup>
   </Target>
   <ItemGroup>

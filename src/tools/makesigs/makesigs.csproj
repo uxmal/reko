@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472;netcoreapp2.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">netcoreapp3.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp3.1</TargetFrameworks>
     <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -2,8 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- dotnet restore goes into this project; doesn't seem to be a way to stop it. -->
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472</TargetFrameworks>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp2.0</TargetFrameworks>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -24,7 +25,7 @@
   <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
   <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
     <ItemGroup>
-      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\net472\$(AssemblyName).dll" />
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\netcoreapp3.1\$(AssemblyName).dll" />
     </ItemGroup>
   </Target>
 

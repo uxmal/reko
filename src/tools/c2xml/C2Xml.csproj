@@ -2,10 +2,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 <!-- 
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472;netcoreapp2.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">netcoreapp3.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp3.1</TargetFrameworks>
 -->
-    <TargetFrameworks>net472;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;netcoreapp3.1</TargetFrameworks>
 <!--    <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers> -->
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

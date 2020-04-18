@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
+    <Msbuild Projects="$(ProjectDir)..\tools\c2xml\c2xml.csproj" Properties="Configuration=$(Configuration)" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)\Reko.Environments.SysV.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\bin\$(Configuration)\netstandard2.1\Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
     <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/c2xml.exe -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />

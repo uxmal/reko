@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Reko.Core.Serialization;
 using X86Registers = Reko.Arch.X86.Registers;
@@ -58,7 +59,7 @@ namespace Reko.Environments.Windows
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new[] { X86Registers.eax, X86Registers.edx, X86Registers.ecx }
-                .ToSet();
+                .ToHashSet();
         }
 
         public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
