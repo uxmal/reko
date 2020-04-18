@@ -51,17 +51,10 @@ namespace Reko.Arch.Sparc
             case RegisterOperand reg:
                 writer.WriteFormat("%{0}", reg.Register.Name);
                 return;
-            case ImmediateOperand imm:
-                writer.WriteString(imm.Value.ToString());
-                return;
-            case MemoryOperand mem:
-                mem.Write(writer, options);
-                return;
-            case IndexedMemoryOperand idx:
-                idx.Write(writer, options);
+            default:
+                op.Write(writer, options);
                 return;
             }
-            writer.WriteString(op.ToString());
         }
 
         [Flags]
