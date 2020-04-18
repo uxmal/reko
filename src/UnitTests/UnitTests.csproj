@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!-- We have to target net472 and netcoreapp3.0 (not netstandard2.0) because Nuint3testAdapter 
+    <!-- We have to target net472 and netcoreapp3.0 (not netstandard2.1) because Nuint3testAdapter 
     requires it. See:
     https://stackoverflow.com/questions/48043023/how-can-i-get-nunit3testadapter-to-work-with-net-standard-2-0
     -->

@@ -90,8 +90,6 @@
     <ProjectReference Include="..\..\Native\NativeProxy.csproj" />
     <ProjectReference Include="..\..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
-  <Import Project="$(ProjectDir)..\Common.items" />
-  <Import Project="$(ProjectDir)..\PreBuild.targets" />
 
     <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
   <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">

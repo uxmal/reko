@@ -6,7 +6,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Environments.Windows</RootNamespace>
     <AssemblyName>Reko.Environments.Windows</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy SourceFiles="$(ProjectDir)..\..\Arch\X86\bin\$(Configuration)\netstandard2.0\Reko.Arch.X86.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
+    <Copy SourceFiles="$(ProjectDir)..\..\Arch\X86\bin\$(Configuration)\netstandard2.1\Reko.Arch.X86.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
     <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(ProjectDir)../../tools/c2xml.exe -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
     <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(PRojectDir)..\..\tools\c2xml.exe&quot; -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
   </Target>

@@ -3,8 +3,8 @@
   <PropertyGroup>
     <RootNamespace>Reko.ImageLoaders.MzExe</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.MzExe</AssemblyName>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>

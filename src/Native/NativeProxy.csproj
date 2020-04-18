@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472;netstandard2.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netstandard2.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">net472;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netstandard2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>NativeProxy</RootNamespace>
     <AssemblyName>NativeProxy</AssemblyName>
