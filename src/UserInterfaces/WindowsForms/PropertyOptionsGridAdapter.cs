@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -231,7 +232,9 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 var svc = provider.RequireService<IWindowsFormsEditorService>();
                 var pd = DictionaryPropertyDescriptor.GetFromContext(context);
-                var dlgType = Type.GetType(pd.Option.TypeName);
+                var pluginSvc = provider.RequireService<IPluginLoaderService>();
+
+                var dlgType = pluginSvc.GetType(pd.Option.TypeName);
                 if (dlgType == null)
                     return value;
                 var form = Activator.CreateInstance(dlgType) as Form;

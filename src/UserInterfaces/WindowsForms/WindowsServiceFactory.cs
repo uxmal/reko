@@ -59,7 +59,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IConfigurationService CreateDecompilerConfiguration()
         {
-            return RekoConfigurationService.Load();
+            return RekoConfigurationService.Load(services);
         }
 
         public IDiagnosticsService CreateDiagnosticsService()

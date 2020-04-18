@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -33,7 +34,8 @@ namespace Reko.UnitTests.Core.Configuration
         [Test]
         public void Rcfg_LoadOperatingEnvironment()
         {
-            var cfgSvc = new RekoConfigurationService(new RekoConfiguration_v1
+            var sc = new ServiceContainer();
+            var cfgSvc = new RekoConfigurationService(sc, new RekoConfiguration_v1
             {
                 Environments = new []
                 {
@@ -92,7 +94,7 @@ namespace Reko.UnitTests.Core.Configuration
         [Test]
         public void Rcfg_LoadLoader()
         {
-            var cfgSvc = new RekoConfigurationService(new RekoConfiguration_v1
+            var cfgSvc = new RekoConfigurationService(new ServiceContainer(), new RekoConfiguration_v1
             {
                 Loaders = new[]
                 {

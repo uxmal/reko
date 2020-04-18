@@ -21,6 +21,7 @@
 using DocoptNet;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -59,7 +60,8 @@ Options:
             TextReader input = Console.In;
             Stream output = Console.OpenStandardOutput();
             var sc = new ServiceContainer();
-            var rekoCfg = RekoConfigurationService.Load();
+            sc.AddService(typeof(IPluginLoaderService), new PluginLoaderService());
+            var rekoCfg = RekoConfigurationService.Load(sc);
             sc.AddService<IConfigurationService>(rekoCfg);
 
             var docopt = new Docopt();
@@ -71,6 +73,26 @@ Options:
                 Console.Error.WriteLine(ex);
                 return 1;
             }
+
+
+
+
+
+
+            //System.Diagnostics.Debugger.Launch();
+            //do
+            //{
+            //    System.Threading.Thread.Sleep(200);
+            //} while (!System.Diagnostics.Debugger.IsAttached);
+
+
+
+
+
+
+
+
+
             var arch = rekoCfg.GetArchitecture(options["-a"].ToString());
             if (arch == null)
             {

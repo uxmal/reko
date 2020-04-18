@@ -47,7 +47,7 @@ namespace Reko.CmdLine
         {
             var services = new ServiceContainer();
             var listener = new CmdLineListener();
-            var config = RekoConfigurationService.Load();
+            var config = RekoConfigurationService.Load(services);
             var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
             var fsSvc = new FileSystemServiceImpl();
             services.AddService<DecompilerEventListener>(listener);
@@ -56,6 +56,8 @@ namespace Reko.CmdLine
             services.AddService<IDiagnosticsService>(diagnosticSvc);
             services.AddService<IFileSystemService>(fsSvc);
             services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc));
+            services.AddService<IPluginLoaderService>(new PluginLoaderService());
+
             var ldr = new Loader(services);
             var decompiler = new Decompiler(ldr, services);
             var driver = new CmdLineDriver(services, ldr, decompiler, listener);

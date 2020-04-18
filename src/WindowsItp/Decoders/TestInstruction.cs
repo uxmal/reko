@@ -17,20 +17,4 @@ namespace Reko.WindowsItp.Decoders
 
         public override int MnemonicAsInteger => (int) Mnemonic;
     }
-
-    public enum Mnemonic
-    {
-        Invalid,
-
-        add,
-        sub,
-        mul,
-        div,
-
-        and,
-        or,
-        xor,
-        not,
-
-    }
 }

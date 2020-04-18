@@ -15,4 +15,7 @@
     <Compile Remove="Serialization\EnumType_v1.cs" />
     <Compile Remove="Serialization\SignatureSerializer.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+  </ItemGroup>
 </Project>

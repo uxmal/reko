@@ -2,9 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">netcoreapp3.1;netcoreapp3.1</TargetFrameworks>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp3.1</TargetFrameworks>
-    <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <!-- <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers> -->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -68,7 +67,6 @@
     <ProjectReference Include="..\..\Environments\Windows\Windows.csproj" />
     <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj" />
     <ProjectReference Include="..\..\Environments\ZX81\ZX81.csproj" />
-    <ProjectReference Include="..\..\Gui\Gui.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\BinHex\BinHex.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Coff\Coff.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj" />
@@ -156,7 +154,6 @@
     <ProjectReference Include="..\..\Environments\Windows\Windows.csproj" />
     <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj" />
     <ProjectReference Include="..\..\Environments\ZX81\ZX81.csproj" />
-    <ProjectReference Include="..\..\Gui\Gui.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\BinHex\BinHex.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Coff\Coff.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj" />

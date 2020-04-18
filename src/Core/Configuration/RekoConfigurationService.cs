@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Assemblers;
+using Reko.Core.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -63,6 +66,7 @@ namespace Reko.Core.Configuration
 
     public class RekoConfigurationService : IConfigurationService
     {
+        private readonly IServiceProvider services;
         private readonly List<LoaderDefinition> loaders;
         private readonly List<SignatureFileDefinition> sigFiles;
         private readonly List<ArchitectureDefinition> architectures;
@@ -71,8 +75,9 @@ namespace Reko.Core.Configuration
         private readonly List<RawFileDefinition> rawFiles;
         private readonly UiPreferencesConfiguration uiPreferences;
 
-        public RekoConfigurationService(RekoConfiguration_v1 config)
+        public RekoConfigurationService(IServiceProvider services, RekoConfiguration_v1 config)
         {
+            this.services = services;
             this.loaders = LoadCollection(config.Loaders, LoadLoaderConfiguration);
             this.sigFiles = LoadCollection(config.SignatureFiles, LoadSignatureFile);
             this.architectures = LoadCollection(config.Architectures, LoadArchitecture);
@@ -264,7 +269,7 @@ namespace Reko.Core.Configuration
         /// It's possible that on Un*x systems, the Reko binary could be installed in /usr/bin, while 
         /// </remarks>
         /// <returns></returns>
-        public static RekoConfigurationService Load()
+        public static RekoConfigurationService Load(IServiceProvider services)
         {
             string configFileName = "reko.config";
             var appDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -274,7 +279,8 @@ namespace Reko.Core.Configuration
             {
                 var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
                 var sConfig = (RekoConfiguration_v1)ser.Deserialize(stm);
-                return new RekoConfigurationService(sConfig);
+                var cfg = new RekoConfigurationService(services, sConfig);
+                return cfg; ;
             }
         }
 
@@ -342,13 +348,15 @@ namespace Reko.Core.Configuration
             if (elem == null)
                 return null;
 
-            Type t = Type.GetType(elem.TypeName, true);
+            var svc = services.RequireService<IPluginLoaderService>();
+            var t = svc.GetType(elem.TypeName);
             if (t == null)
                 return null;
             var arch = (IProcessorArchitecture)Activator.CreateInstance(t, elem.Name);
             arch.Description = elem.Description;
             return arch;
         }
+
 
         public PlatformDefinition GetEnvironment(string envName)
         {

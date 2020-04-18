@@ -44,7 +44,7 @@ namespace Reko.Core.Services
 
     public class TypeLibraryLoaderServiceImpl : ITypeLibraryLoaderService
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
         public TypeLibraryLoaderServiceImpl(IServiceProvider services)
         {
@@ -91,7 +91,8 @@ namespace Reko.Core.Services
                 var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader);
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
                 {
-                    loaderType = Type.GetType(ldrElement.TypeName, false);
+                    var svc = services.RequireService<IPluginLoaderService>();
+                    loaderType = svc.GetType(ldrElement.TypeName);
                 }
                 if (loaderType == null)
                 {

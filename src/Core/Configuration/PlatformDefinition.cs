@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -58,7 +59,8 @@ namespace Reko.Core.Configuration
 
         public virtual IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {
-            var type = Type.GetType(TypeName, true);
+            var svc = services.RequireService<IPluginLoaderService>();
+            var type = svc.GetType(TypeName);
             if (type == null)
                 throw new TypeLoadException(
                     string.Format("Unable to load {0} environment.", Description));

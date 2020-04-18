@@ -166,7 +166,8 @@ namespace Reko.Scanning
             ProcedureCharacteristics chr,
             string format)
         {
-            var type = Type.GetType(chr.VarargsParserClass);
+            var svc = services.RequireService<IPluginLoaderService>();
+            var type = svc.GetType(chr.VarargsParserClass);
             if (type == null)
                 throw new TypeLoadException(
                     string.Format(

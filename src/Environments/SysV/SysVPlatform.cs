@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,8 @@ namespace Reko.Environments.SysV
             case "x86-protected-32":
                 if (this.ccX86 == null)
                 {
-                    var t = Type.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86", true);
+                    var svc = Services.RequireService<IPluginLoaderService>();
+                    var t = svc.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86");
                     this.ccX86 = (CallingConvention)Activator.CreateInstance(
                         t,
                         4,      // retAddressOnStack,
@@ -99,7 +101,8 @@ namespace Reko.Environments.SysV
             case "risc-v":
                 if (this.ccRiscV == null)
                 {
-                    var t = Type.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV", true);
+                    var svc = Services.RequireService<IPluginLoaderService>();
+                    var t = svc.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV");
                     this.ccRiscV = (CallingConvention)Activator.CreateInstance(t, Architecture);
                 }
                 return this.ccRiscV;

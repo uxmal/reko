@@ -77,7 +77,9 @@ namespace Reko.Loading
         // This method is virtual so that it can be overload in unit tests.
         public virtual SignatureLoader CreateSignatureLoader(SignatureFileDefinition sfe)
         {
-            Type t = Type.GetType(sfe.Type, true);
+            var svc = Services.RequireService<IPluginLoaderService>();
+            Type t = svc.GetType(sfe.Type);
+
             var ldr = (SignatureLoader)Activator.CreateInstance(t);
             return ldr;
         }
@@ -106,7 +108,7 @@ namespace Reko.Loading
                 //$TODO: warn if loader is missing?
                 return loader;
             }
-            var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(le.TypeName, loader);
+            var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(Services, le.TypeName, loader);
             if (unpacker == null)
                 return loader;
             unpacker.Argument = le.Argument;
