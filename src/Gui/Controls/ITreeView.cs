@@ -44,7 +44,7 @@ namespace Reko.Gui.Controls
         bool ShowRootLines { get; set; }
 
         ITreeNodeCollection Nodes { get; }
-        object ContextMenu { get; set; }
+        object ContextMenuStrip { get; set; }
 
         void CollapseAll();
         ITreeNode CreateNode();

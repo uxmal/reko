@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John Kï¿½llï¿½n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 						? new CommandMenuItem(cmi.Text, cmi.MenuCommand.CommandID.Guid, cmi.MenuCommand.CommandID.ID)
 						: cmi;
 					cmiNew.IsDynamic = cmi.IsDynamic;
-					cmiNew.Popup += new EventHandler(subMenu_Popup);
+					cmiNew.DropDownOpening += new EventHandler(subMenu_Popup);
 					cmiNew.Click += new CommandMenuEventHandler(item_Click);
 					m.Add(cmiNew);
 				}
@@ -115,9 +115,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 			return new SortedList(new PriorityComparer());
 		}
 
-		public abstract ContextMenu GetContextMenu(int menuId);
+		public abstract ContextMenuStrip GetContextMenu(int menuId);
 
-		public abstract Menu GetMenu(int menuId);
+		public abstract MenuStrip GetMenu(int menuId);
 
         public abstract ToolStrip GetToolStrip(int menuId);
 
@@ -130,6 +130,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public int SetStatusForMenuItems(IList menuItems)
         {
+            var x = new ContextMenuStrip();
             var ms = new MenuStatusSetter(subMenu_Popup, item_Click);
             return ms.SetStatus(new MenuItemAdapter(menuItems), target);
         }
@@ -158,7 +159,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 		protected void subMenu_Popup(object sender, EventArgs e)
 		{
-			SetStatusForMenuItems(((Menu) sender).MenuItems);
+			SetStatusForMenuItems(((MenuStrip) sender).Items);
 		}
 
 		private void item_Click(object sender, CommandMenuEventArgs e)

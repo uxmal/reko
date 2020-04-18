@@ -49,9 +49,6 @@
     <ProjectReference Include="..\..\Arch\Xtensa\Xtensa.csproj" />
     <ProjectReference Include="..\..\Arch\Z80\Z80.csproj" />
     <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj" />
-    <ProjectReference Include="..\..\Assemblers\M68k\M68kAssembler.csproj" />
-    <ProjectReference Include="..\..\Assemblers\Pdp11\Pdp11Assembler.csproj" />
-    <ProjectReference Include="..\..\Assemblers\x86\X86Assembler.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Decompiler\Decompiler.csproj" />
     <ProjectReference Include="..\..\Environments\AmigaOS\AmigaOS.csproj" />

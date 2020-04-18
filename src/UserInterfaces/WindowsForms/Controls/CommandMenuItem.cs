@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John Kï¿½llï¿½n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@ using System.Windows.Forms;
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
 	/// <summary>
-	/// Extends MenuItems to contain a MenuCommand.
+	/// Extends ToolStripMenuItem to contain a MenuCommand.
 	/// </summary>
-	public class CommandMenuItem : MenuItem
+	public class CommandMenuItem : ToolStripMenuItem
 	{
 		public new event CommandMenuEventHandler Click;
 

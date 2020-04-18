@@ -82,7 +82,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                             {
                                 CommandMenuItem itemNew = new CommandMenuItem(cmdText.Text, cmdId.Guid, cmdId.ID);
                                 itemNew.IsTemporary = true;
-                                itemNew.Popup += popupHandler;
+                                itemNew.DropDownOpening += popupHandler;
                                 itemNew.Click += clickHandler;
                                 menu.InsertAt(++i, itemNew);
                                 if ((cmdStatus.Status & MenuStatus.Visible) != 0)

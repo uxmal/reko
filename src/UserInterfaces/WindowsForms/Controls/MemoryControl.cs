@@ -262,9 +262,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                 case Keys.Shift | Keys.F10:
                     var addrRange = GetAddressRange();
-                    if (ContextMenu != null && addrRange.IsValid)
+                    if (this.ContextMenuStrip != null && addrRange.IsValid)
                     {
-                        ContextMenu.Show(this, AddressToPoint(addrRange.Begin));
+                        this.ContextMenuStrip.Show(this, AddressToPoint(addrRange.Begin));
                     }
                     break;
                 default:

@@ -8,6 +8,7 @@
     <RootNamespace>Decompiler.UiPrototype</RootNamespace>
     <AssemblyName>Decompiler.UiPrototype</AssemblyName>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Resources.Extensions" />

@@ -65,7 +65,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
 
 
-        public object ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = (ContextMenu) value; } }
+        public object ContextMenuStrip { get { return treeView.ContextMenuStrip; } set { treeView.ContextMenuStrip = (ContextMenuStrip) value; } }
         public bool Focused { get { return treeView.Focused; } } 
         public ITreeNodeCollection Nodes { get; private set; }
         public bool ShowLines { get { return treeView.ShowLines; } set { treeView.ShowLines = value; } }
