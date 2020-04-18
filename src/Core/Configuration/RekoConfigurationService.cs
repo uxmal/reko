@@ -18,18 +18,12 @@
  */
 #endregion
 
-using Reko.Core.Assemblers;
 using Reko.Core.Services;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Loader;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
