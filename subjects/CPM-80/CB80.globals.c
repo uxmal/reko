@@ -5,16 +5,16 @@
 #include "CB80.h"
 
 byte g_b0000 = 0x00;
-word16 g_w0006 = 0x0000;
+word16 g_w0006 = 0x00;
 byte g_b0080 = 0x00;
 Eq_n g_t0103 = 
 	{
 		0x00,
 		0x5A,
 	};
-word16 g_w0108 = 0x1700;
+word16 g_w0108 = 5888;
 char g_b02A3 = 'd';
-ptr16 g_ptr1388 = 0x0000;
+ptr16 g_ptr1388 = 0x00;
 cu8 g_b138A = 0x00;
 byte g_b138B = 0x00;
 Eq_n g_t138C = 
@@ -22,15 +22,15 @@ Eq_n g_t138C =
 		0x00
 	};
 byte g_b138D = 0x00;
-ptr16 g_ptr14BC = 0x0000;
-int16 g_w14BE = 0;
+ptr16 g_ptr14BC = 0x00;
+int16 g_w14BE = 0x00;
 byte g_b14EF = 0x01;
 byte g_b14F0 = 0x00;
 cu8 g_b14F3 = 0x02;
 cu8 g_b14F4 = 0x00;
 byte g_b14F5 = 0x00;
 cu8 g_b14F6 = 0x01;
-cu8 g_b14F7 = 0x42;
+cu8 g_b14F7 = 66;
 byte g_b14F8 = 0x50;
 cu8 g_b14F9 = 0x00;
 byte g_b14FA = 0x00;
@@ -48,7 +48,7 @@ cu8 g_b151F = 0x00;
 cu8 g_b1520 = 0x00;
 struct Eq_n * g_ptr1521 = null;
 byte g_b1529 = 0x00;
-word16 g_w1640 = 0x0000;
+word16 g_w1640 = 0x00;
 byte g_b1645 = 0x30;
 <anonymous> * g_ptr1648 = null;
 struct Eq_n * g_ptr164E = &g_t1A1A;
@@ -118,7 +118,7 @@ Eq_n g_t166F =
 byte g_b1670 = 0x1A;
 Eq_n g_t1671 = 
 	{
-		6682
+		0x00001A1A
 	};
 Eq_n g_t1672 = 
 	{
@@ -151,21 +151,21 @@ Eq_n g_t167D =
 		0x1A
 	};
 byte g_b167E = 0x1A;
-cu8 g_b1681 = 0xEC;
+cu8 g_b1681 = ~0x13;
 cu8 g_b1682 = 0x08;
 Eq_n g_t1683 = 
 	{
-		0xDA
+		~0x25
 	};
 byte g_b1684 = 0x94;
 Eq_n g_t1685 = 
 	{
 		0x14
 	};
-byte g_b1686 = 0xCD;
+byte g_b1686 = ~0x32;
 Eq_n g_t1687 = 
 	{
-		0x0B
+		11
 	};
 byte g_b1688 = 0x14;
 Eq_n g_t1689 = 
@@ -177,11 +177,11 @@ Eq_n g_t168B =
 	{
 		0x17
 	};
-byte g_b168C = 0xEB;
+byte g_b168C = ~0x14;
 cu8 g_b168D = 0x3E;
 byte g_b168E = 0x82;
-cu8 g_b168F = 0xB7;
-cu8 g_b1690 = 0x37;
+cu8 g_b168F = ~0x48;
+cu8 g_b1690 = 55;
 cu8 g_b1691 = 0xC3;
 Eq_n g_t1692 = 
 	{
@@ -199,7 +199,7 @@ Eq_n g_t1696 =
 	};
 Eq_n g_t1697 = 
 	{
-		-15689
+		-0x00003D49
 	};
 byte g_b16A6 = 0x23;
 Eq_n g_t16A7 = 
@@ -209,6 +209,6 @@ Eq_n g_t16A7 =
 cu8 g_b16A8 = 0x23;
 cu8 g_b16A9 = 0x56;
 bui8 g_b16AA = 0x2A;
-cu8 g_b16AB = 0xE5;
+cu8 g_b16AB = 229;
 Eq_n g_t1A1A;
 

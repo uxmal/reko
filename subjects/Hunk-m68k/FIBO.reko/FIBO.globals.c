@@ -14,14 +14,14 @@ byte g_b1410 = 0x49;
 struct Eq_n g_t1420 = 
 	{
 		0x25,
-		0x64,
+		100,
 	};
 byte g_b1424 = 0x66;
 byte g_b1438 = 0x49;
 struct Eq_n g_t1458 = 
 	{
 		0x25,
-		0x64,
+		100,
 	};
 byte g_b1E08 = 0x25;
 Eq_n g_t28B1 = 
@@ -30,26 +30,26 @@ Eq_n g_t28B1 =
 		{
 		},
 	};
-ptr32 g_ptr3E94 = 0x00000000;
+ptr32 g_ptr3E94 = 0x00;
 struct Eq_n * g_ptr3E98 = &g_t4000;
 struct Eq_n * g_ptr3E9C = null;
 struct Eq_n * g_ptr3EA0 = &g_t10202;
 struct Eq_n * g_ptr3EA4 = &g_t3030303;
 Eq_n g_t3EA8 = 
 	{
-		67372036
+		0x04040404
 	};
 Eq_n g_t3EAC = 
 	{
-		67372036
+		0x04040404
 	};
 Eq_n g_t3EB0 = 
 	{
-		84215045
+		0x05050505
 	};
 word32 g_dw3EBC = 0x05050505;
 ptr32 g_ptr3EC0 = 0x06060606;
-int32 g_dw3EC4 = 101058054;
+int32 g_dw3EC4 = 0x06060606;
 struct Eq_n * g_ptr3EC8 = &g_t6060606;
 struct Eq_n * g_ptr3ECC = &g_t6060606;
 Eq_n g_t3ED0 = 

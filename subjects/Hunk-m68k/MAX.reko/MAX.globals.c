@@ -12,7 +12,7 @@ ui32 g_a0010[];
 struct Eq_n g_t13F0 = 
 	{
 		0x25,
-		0x64,
+		100,
 	};
 Eq_n g_t2BED = 
 	{
@@ -20,26 +20,26 @@ Eq_n g_t2BED =
 		{
 		},
 	};
-ptr32 g_ptr3D90 = 0x00000000;
+ptr32 g_ptr3D90 = 0x00;
 struct Eq_n * g_ptr3D94 = &g_t4000;
 struct Eq_n * g_ptr3D98 = null;
 struct Eq_n * g_ptr3D9C = &g_t10202;
 struct Eq_n * g_ptr3DA0 = &g_t3030303;
 Eq_n g_t3DA4 = 
 	{
-		67372036
+		0x04040404
 	};
 Eq_n g_t3DA8 = 
 	{
-		67372036
+		0x04040404
 	};
 Eq_n g_t3DAC = 
 	{
-		84215045
+		0x05050505
 	};
 word32 g_dw3DB8 = 0x05050505;
 ptr32 g_ptr3DBC = 0x06060606;
-int32 g_dw3DC0 = 101058054;
+int32 g_dw3DC0 = 0x06060606;
 struct Eq_n * g_ptr3DC4 = &g_t6060606;
 struct Eq_n * g_ptr3DC8 = &g_t6060606;
 Eq_n g_t3DCC = 

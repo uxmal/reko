@@ -9,7 +9,7 @@ void _start(word32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptr
 _start_exit:
 _start_entry:
 l00008334:
-	__libc_start_main(Mem14[0x00008364:word32], dwArg00, fp + 4, Mem14[0x00008368:word32], ptrArg08, ptrArg0C, ptrArg10)
+	__libc_start_main(Mem14[0x00008364:word32], dwArg00, fp + 4_i, Mem14[0x00008368:word32], ptrArg08, ptrArg0C, ptrArg10)
 	abort()
 
 
@@ -24,7 +24,7 @@ call_gmon_start_entry:
 l0000836C:
 	word32 r10_10 = 0x00008380 + Mem6[0x00008394:word32]
 	word32 r3_11 = Mem6[r10_10 + Mem6[0x00008398:word32]:word32]
-	branch r3_11 != 0x00000000 l00008388
+	branch r3_11 != 0 l00008388
 l00008388:
 	word32 r10_16
 	word32 pc_18
@@ -47,21 +47,21 @@ void __do_global_dtors_aux()
 __do_global_dtors_aux_entry:
 l0000839C:
 	word32 r5_10 = Mem8[0x000083F4:word32]
-	branch (word32) Mem8[r5_10:byte] == 0x00000000 l000083B0
+	branch (word32) Mem8[r5_10:byte] == 0 l000083B0
 l000083B0:
 	word32 r4_14 = Mem8[0x000083F8:word32]
 	word32 r2_16 = Mem8[Mem8[r4_14:word32]:word32]
-	branch r2_16 == 0x00000000 l000083E8
+	branch r2_16 == 0 l000083E8
 l000083E8:
-	Mem20[r5_10:byte] = 0x01
+	Mem20[r5_10:byte] = 1_8
 	return
 l000083C4:
 	word32 r3_24 = Mem8[r4_14:word32]
-	Mem26[r4_14:word32] = r3_24 + 0x00000004
+	Mem26[r4_14:word32] = r3_24 + 4
 	word32 pc_32
 	word32 r2_34
 	call r2_16 (retsize: 0;)
-		uses: lr:0x000083D8,pc:pc_32,r2:r2_34,r3:r3_24 + 0x00000004,r4:r4_14,r5:r5_10
+		uses: lr:0x000083D8,pc:pc_32,r2:r2_34,r3:r3_24 + 4,r4:r4_14,r5:r5_10
 		defs: pc:pc_32,r2:r2_34
 	return
 l000083AC_1:
@@ -91,9 +91,9 @@ void frame_dummy()
 // Preserved: pc sp
 frame_dummy_entry:
 l00008404:
-	branch Mem0[Mem0[0x00008424:word32]:word32] != 0x00000000 l00008414
+	branch Mem0[Mem0[0x00008424:word32]:word32] != 0 l00008414
 l00008414:
-	branch Mem0[0x00008428:word32] != 0x00000000 l00008420
+	branch Mem0[0x00008428:word32] != 0 l00008420
 l00008420:
 	word32 pc_13
 	call fn00000000 (retsize: 0;)
@@ -129,7 +129,7 @@ word32 frobulate(word32 r0, word32 dwArg00)
 // Preserved:
 frobulate_entry:
 l00008434:
-	__divsi3(r0 * r0, 0x00000539)
+	__divsi3(r0 * r0, 0x539)
 	return dwArg00
 frobulate_exit:
 
@@ -146,7 +146,7 @@ l00008470:
 	word32 fp_24 = frobulate(r0, r1)
 	word32 r0_38 = __divsi3(r0 + r1, r0)
 	word32 sp_29 = <invalid>
-	word32 r0_47 = Mem19[fp_24 - 24:word32]
+	word32 r0_47 = Mem19[fp_24 - 24_i:word32]
 	word32 fp_48 = frobulate(r0_47, Mem19[sp_29:word32])
 	__divsi3(r0_38, r0_47)
 	return Mem19[fp_48:word32]
@@ -163,19 +163,19 @@ word32 switcheroo(word32 r0)
 switcheroo_entry:
 l000084D4:
 	word32 fp_35
-	branch r0 >u 0x00000006 l000084F4
+	branch r0 >u 6 l000084F4
 	switch (r0) { l00008514 l00008514 l00008514 l00008540 l00008520 l00008540 l00008534 }
 l00008534:
 	bazulate(r0, r0)
 l00008520:
-	fp_35 = frobulate(r0 - 0x00000003, r0)
+	fp_35 = frobulate(r0 - 3, r0)
 l00008514:
 	fp_35 = frobulate(r0, r0)
 l000084F4:
 l00008540:
-	fp_35 = bazulate(0x00000000, 0x00000000)
+	fp_35 = bazulate(0, 0)
 l0000854C:
-	return Mem15[fp_35 - -4:word32]
+	return Mem15[fp_35 - -4_i:word32]
 switcheroo_exit:
 l000084F0_1:
 
@@ -205,21 +205,21 @@ __divsi3_entry:
 l00008588:
 	word32 r1_10
 	word32 ip_5 = r0 ^ r1
-	word32 r3_134 = 0x00000001
-	word32 r2_103 = 0x00000000
+	word32 r3_134 = 1
+	word32 r2_103 = 0
 	r1_10 = r1
-	branch r1 >= 0x00000000 l0000859C
+	branch r1 >= 0 l0000859C
 l00008598_1:
-	r1_10 = 0x00000000 - r1
+	r1_10 = 0 - r1
 l0000859C:
-	branch r1 == 0x00000000 l00008628
+	branch r1 == 0 l00008628
 l00008628:
 	__div0(r0)
-	return 0x00000000
+	return 0
 l000085A0:
-	branch r0 >= 0x00000000 l000085A8
+	branch r0 >= 0 l000085A8
 l000085A4_1:
-	r0 = 0x00000000 - r0
+	r0 = 0 - r0
 l000085A8:
 	branch r0 <u r1_10 l00008618
 l000085B0:
@@ -230,9 +230,9 @@ l000085B4_1:
 l000085B8:
 	branch C_35 l000085C0
 l000085B8_1:
-	r1_10 = r1_10 << 4
+	r1_10 = r1_10 << 4_i
 l000085BC_1:
-	r3_134 = r3_134 << 4
+	r3_134 = r3_134 << 4_i
 l000085C0:
 	branch C_35 l000085B0
 l000085C4:
@@ -243,9 +243,9 @@ l000085C8_1:
 l000085CC:
 	branch C_48 l000085D4
 l000085CC_1:
-	r1_10 = r1_10 << 1
+	r1_10 = r1_10 << 1_i
 l000085D0_1:
-	r3_134 = r3_134 << 1
+	r3_134 = r3_134 << 1_i
 l000085D4:
 	branch C_48 l000085C4
 l000085D8:
@@ -255,40 +255,40 @@ l000085DC_1:
 l000085E0_1:
 	r2_103 = r2_103 | r3_134
 l000085E4:
-	branch r0 <u r1_10 >> 1 l000085F0
+	branch r0 <u r1_10 >> 1_i l000085F0
 l000085E8_1:
-	r0 = r0 - (r1_10 >> 1)
+	r0 = r0 - (r1_10 >> 1_i)
 l000085EC_1:
-	r2_103 = r2_103 | r3_134 >> 1
+	r2_103 = r2_103 | r3_134 >> 1_i
 l000085F0:
-	branch r0 <u r1_10 >> 2 l000085FC
+	branch r0 <u r1_10 >> 2_i l000085FC
 l000085F4_1:
-	r0 = r0 - (r1_10 >> 2)
+	r0 = r0 - (r1_10 >> 2_i)
 l000085F8_1:
-	r2_103 = r2_103 | r3_134 >> 2
+	r2_103 = r2_103 | r3_134 >> 2_i
 l000085FC:
-	branch r0 <u r1_10 >> 3 l00008608
+	branch r0 <u r1_10 >> 3_i l00008608
 l00008600_1:
-	r0 = r0 - (r1_10 >> 3)
+	r0 = r0 - (r1_10 >> 3_i)
 l00008604_1:
-	r2_103 = r2_103 | r3_134 >> 3
+	r2_103 = r2_103 | r3_134 >> 3_i
 l00008608:
 	bool Z_93 = SLICE(cond(r0), bool, 2)
-	branch r0 == 0x00000000 l00008610
+	branch r0 == 0 l00008610
 l0000860C_1:
-	r3_134 = r3_134 >>u 4
+	r3_134 = r3_134 >>u 4_i
 	Z_93 = SLICE(cond(r3_134), bool, 2) (alias)
 l00008610:
 	branch Z_93 l00008614
 l00008610_1:
-	r1_10 = r1_10 >>u 4
+	r1_10 = r1_10 >>u 4_i
 l00008614:
 	branch Z_93 l000085D8
 l00008618:
 	word32 r0_109 = r2_103
-	branch ip_5 >= 0x00000000 l00008624
+	branch ip_5 >= 0 l00008624
 l00008620_1:
-	r0_109 = 0x00000000 - r2_103
+	r0_109 = 0 - r2_103
 l00008624:
 	return r0_109
 __divsi3_exit:
@@ -303,10 +303,10 @@ void __div0(word32 r0)
 // Preserved: r1 sp
 __div0_entry:
 l00008638:
-	__syscall(0x00900014)
-	branch r0 <u 0x000003E8 l00008648
+	__syscall(0x900014)
+	branch r0 <u 0x3E8 l00008648
 l00008648:
-	__syscall(0x00900025)
+	__syscall(0x900025)
 	return
 l00008644_1:
 	return
@@ -326,9 +326,9 @@ l00008654:
 	word32 r4_23 = _init(out r10_20)
 	word32 r1_30 = Mem12[r10_20 + Mem12[0x000086A8:word32]:word32]
 	word32 r3_32 = Mem12[r10_20 + Mem12[0x000086AC:word32]:word32] - r1_30
-	branch r4_23 <u r3_32 >> 2 l00008684
+	branch r4_23 <u r3_32 >> 2_i l00008684
 l00008684:
-	call Mem12[r1_30 + (r4_23 << 2):word32] (retsize: 0;)
+	call Mem12[r1_30 + (r4_23 << 2_i):word32] (retsize: 0;)
 		uses: lr:0x00008694,r10:r10_20,r4:r4_23,r5:r3_32,r6:r1_30
 	return
 l00008680_1:
@@ -348,14 +348,14 @@ l000086B0:
 	word32 r10_15 = 0x000086C8 + Mem10[0x00008700:word32]
 	word32 r1_16 = Mem10[r10_15 + Mem10[0x00008704:word32]:word32]
 	word32 r3_18 = Mem10[r10_15 + Mem10[0x00008708:word32]:word32] - r1_16
-	word32 r4_21 = (r3_18 >> 2) - 0x00000001
-	branch r3_18 >> 2 == 0x00000000 l000086F8
+	word32 r4_21 = (r3_18 >> 2_i) - 1
+	branch r3_18 >> 2_i == 0 l000086F8
 l000086F8:
 l000086FC_thunk__fini:
 	_fini()
 	return
 l000086E0:
-	call Mem10[r1_16 + (r4_21 << 2):word32] (retsize: 0;)
+	call Mem10[r1_16 + (r4_21 << 2_i):word32] (retsize: 0;)
 		uses: lr:0x000086EC,r10:r10_15,r4:r4_21,r5:r1_16
 	return
 __libc_csu_fini_exit:
@@ -371,14 +371,14 @@ word32 __do_global_ctors_aux()
 __do_global_ctors_aux_entry:
 l0000870C:
 	word32 r3_8 = Mem6[0x00008740:word32]
-	word32 r2_9 = Mem6[r3_8 - 4:word32]
-	branch r2_9 != 0x00000001 l00008724
+	word32 r2_9 = Mem6[r3_8 - 4_i:word32]
+	branch r2_9 != 1 l00008724
 l00008724:
 	word32 r4_16
 	word32 r3_18
 	word32 pc_19
 	call r2_9 (retsize: 0;)
-		uses: lr:0x00008730,pc:pc_19,r3:r3_18,r4:r3_8 - 0x00000004
+		uses: lr:0x00008730,pc:pc_19,r3:r3_18,r4:r3_8 - 4
 		defs: pc:pc_19,r3:r3_18,r4:r4_16
 	return r4_16
 l00008720_1:

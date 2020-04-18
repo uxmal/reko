@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -34,7 +34,7 @@ namespace Reko.Core.Output
         private const string DecimalSymbols = "0123456789";
         private const string HexSymbols = "0123456789ABCDEF";
 
-        public AbsynCodeFormatter(Formatter writer) : base(writer)
+        public AbsynCodeFormatter(Formatter writer) : base(writer, 0, 0)
         {
 
         }

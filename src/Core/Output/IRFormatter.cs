@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -47,7 +47,10 @@ namespace Reko.Core.Output
         public void WriteProcedure(Procedure procedure)
         {
             //@"define void @empty() {
-            var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(w)));
+            var arch = procedure.Architecture;
+            var w = arch.WordWidth.BitSize;
+            var p = arch.PointerType.BitSize;
+            var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(this.w), w, p));
             pd.WriteProcedureBlocks();
         }
     }

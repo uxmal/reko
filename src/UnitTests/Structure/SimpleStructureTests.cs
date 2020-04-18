@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Structure
 
                 var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                 sa.Structure();
-                CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                CodeFormatter fmt = proc.CreateCodeFormatter(new TextFormatter(fut.TextWriter));
                 fmt.Write(proc);
                 fut.TextWriter.WriteLine("===========================");
 
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Structure
 
                     var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                     sa.Structure();
-                    var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                    var fmt = proc.CreateCodeFormatter(new TextFormatter(fut.TextWriter));
                     fmt.Write(proc);
                     fut.TextWriter.WriteLine("===========================");
                 }
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Structure
 
                     var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                     sa.Structure();
-                    var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                    var fmt = proc.CreateCodeFormatter(new TextFormatter(fut.TextWriter));
                     fmt.Write(proc);
                     fut.TextWriter.WriteLine("===========================");
                 }
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Structure
 
                 var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                 sa.Structure();
-                CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                CodeFormatter fmt = proc.CreateCodeFormatter(new TextFormatter(fut.TextWriter));
                 fmt.Write(proc);
                 fut.TextWriter.WriteLine("===========================");
 
@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Structure
                 cfgc.Transform();
                 var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                 sa.Structure();
-                var fmt = new CodeFormatter(new TextFormatter(sw));
+                var fmt = proc.CreateCodeFormatter(new TextFormatter(sw));
                 fmt.Write(proc);
                 sw.WriteLine("===");
             }
@@ -159,7 +159,7 @@ namespace Reko.UnitTests.Structure
                 cfgc.Transform();
                 var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                 sa.Structure();
-                var fmt = new CodeFormatter(new TextFormatter(sw));
+                var fmt = proc.CreateCodeFormatter(new TextFormatter(sw));
                 fmt.Write(proc);
                 sw.WriteLine("===");
             }

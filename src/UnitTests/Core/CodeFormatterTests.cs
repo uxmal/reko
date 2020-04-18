@@ -36,18 +36,19 @@ namespace Reko.UnitTests.Core
 	[TestFixture]
 	public class CodeFormatterTests
 	{
+		private static readonly string nl = Environment.NewLine;
+        
         private TextFormatter formatter;
 		private CodeFormatter cf;
 		private StringWriter sw;
         private ExpressionEmitter m;
-		private string nl = Environment.NewLine;
 
         [SetUp]
         public void Setup()
         {
             sw = new StringWriter();
             formatter = new TextFormatter(sw);
-            cf = new CodeFormatter(formatter);
+            cf = new CodeFormatter(formatter, 32, 32);
             m = new ExpressionEmitter();
         }
 
@@ -344,6 +345,13 @@ Second abstract syntax comment line");
  // Second abstract syntax comment line
 ";
             Assert.AreEqual(expected, sw.ToString());
+        }
+
+        [Test]
+        public void CfInt_DefaultSize()
+        {
+            Constant.Int32(-3).Accept(cf);
+            Assert.AreEqual("-3i", sw.ToString());
         }
     }
 }

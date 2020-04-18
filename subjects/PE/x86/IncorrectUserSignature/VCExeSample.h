@@ -11,17 +11,17 @@ Eq_2: cdecl_class
 Eq_5: cdecl_class
 	T_5 (in c : (ptr32 cdecl_class))
 Eq_7: cdecl_class_vtbl
-	T_7 (in c + 0x00000000 : word32)
+	T_7 (in c + 0_32 : word32)
 Eq_8: cdecl_class_vtbl
-	T_8 (in Mem19[c + 0x00000000:word32] : word32)
+	T_8 (in Mem19[c + 0_32:word32] : word32)
 Eq_10: (fn void ((ptr32 cdecl_class), int32, int32))
-	T_10 (in Mem19[c + 0x00000000:word32] + 0x00000008 : word32)
+	T_10 (in Mem19[c + 0_32:word32] + 8_32 : word32)
 Eq_11: (fn void ((ptr32 cdecl_class), int32, int32))
-	T_11 (in Mem19[Mem19[c + 0x00000000:word32] + 0x00000008:word32] : word32)
+	T_11 (in Mem19[Mem19[c + 0_32:word32] + 8_32:word32] : word32)
 Eq_19: (struct "Eq_19" (4 (ptr32 Eq_22) ptr0004))
-	T_19 (in Mem37[c + 0x00000000:word32] : word32)
+	T_19 (in Mem37[c + 0_32:word32] : word32)
 Eq_22: (fn void ((ptr32 Eq_5), word32))
-	T_22 (in Mem37[Mem37[c + 0x00000000:word32] + 0x00000004:word32] : word32)
+	T_22 (in Mem37[Mem37[c + 0_32:word32] + 4_32:word32] : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -43,27 +43,27 @@ T_5: (in c : (ptr32 cdecl_class))
   Class: Eq_5
   DataType: (ptr32 Eq_5)
   OrigDataType: (ptr32 cdecl_class)
-T_6: (in 0x00000000 : word32)
+T_6: (in 0_32 : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7: (in c + 0x00000000 : word32)
+T_7: (in c + 0_32 : word32)
   Class: Eq_7
   DataType: (ptr32 (ptr32 Eq_7))
   OrigDataType: (ptr32 (ptr32 cdecl_class_vtbl))
-T_8: (in Mem19[c + 0x00000000:word32] : word32)
+T_8: (in Mem19[c + 0_32:word32] : word32)
   Class: Eq_8
   DataType: (ptr32 Eq_8)
   OrigDataType: (ptr32 (union (cdecl_class_vtbl u1)))
-T_9: (in 0x00000008 : word32)
+T_9: (in 8_32 : word32)
   Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_10: (in Mem19[c + 0x00000000:word32] + 0x00000008 : word32)
+T_10: (in Mem19[c + 0_32:word32] + 8_32 : word32)
   Class: Eq_10
   DataType: (ptr32 (ptr32 Eq_10))
   OrigDataType: (ptr32 (ptr32 (fn void ((ptr32 cdecl_class), int32, int32))))
-T_11: (in Mem19[Mem19[c + 0x00000000:word32] + 0x00000008:word32] : word32)
+T_11: (in Mem19[Mem19[c + 0_32:word32] + 8_32:word32] : word32)
   Class: Eq_11
   DataType: (ptr32 Eq_11)
   OrigDataType: (ptr32 (fn T_14 ((ptr32 cdecl_class), int32, int32)))
@@ -87,27 +87,27 @@ T_16: (in <invalid> : void)
   Class: Eq_15
   DataType: word32
   OrigDataType: void
-T_17: (in 0x00000000 : word32)
+T_17: (in 0_32 : word32)
   Class: Eq_17
   DataType: word32
   OrigDataType: word32
-T_18: (in c + 0x00000000 : word32)
+T_18: (in c + 0_32 : word32)
   Class: Eq_18
   DataType: ptr32
   OrigDataType: ptr32
-T_19: (in Mem37[c + 0x00000000:word32] : word32)
+T_19: (in Mem37[c + 0_32:word32] : word32)
   Class: Eq_19
   DataType: (ptr32 Eq_19)
   OrigDataType: (ptr32 (struct (4 T_22 t0004)))
-T_20: (in 0x00000004 : word32)
+T_20: (in 4_32 : word32)
   Class: Eq_20
   DataType: word32
   OrigDataType: word32
-T_21: (in Mem37[c + 0x00000000:word32] + 0x00000004 : word32)
+T_21: (in Mem37[c + 0_32:word32] + 4_32 : word32)
   Class: Eq_21
   DataType: word32
   OrigDataType: word32
-T_22: (in Mem37[Mem37[c + 0x00000000:word32] + 0x00000004:word32] : word32)
+T_22: (in Mem37[Mem37[c + 0_32:word32] + 4_32:word32] : word32)
   Class: Eq_22
   DataType: (ptr32 Eq_22)
   OrigDataType: (ptr32 (fn T_23 (T_5, T_15)))

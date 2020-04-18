@@ -4,6 +4,6 @@
 
 #include "m68k_jump.h"
 
-int32 g_dwFF0F04 = 0;
-int32 g_dwFF0F08 = 0;
+int32 g_dwFF0F04 = 0x00;
+int32 g_dwFF0F08 = 0x00;
 

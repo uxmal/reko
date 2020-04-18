@@ -126,13 +126,13 @@ Eq_n g_t12B60 =
 	};
 Eq_n g_t12B68 = 
 	{
-		1868721529
+		0x6F626D79
 	};
 Eq_n g_t12B70 = 
 	{
-		1768693870
+		0x696C206E
 	};
-int32 g_dw12B78 = 675913;
+int32 g_dw12B78 = 0x000A5049;
 char g_str12B80[] = "%f,%f";
 char g_str12B88[] = "%u.%u.%u.%u.in-addr.arpa.";
 char g_str12BA8[] = "%u.%u.%u.in-addr.arpa.";
@@ -148,5 +148,5 @@ void g_t182E8() = Unexpected function type (fn void ())
 void g_t18378() = Unexpected function type (fn void ())
 ;
 <anonymous> * g_ptr19E18 = fn0000000000015F94;
-word64 g_qw19E28 = 0x0000000000000000;
+word64 g_qw19E28 = 0x00;
 

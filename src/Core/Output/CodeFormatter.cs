@@ -43,14 +43,17 @@ namespace Reko.Core.Output
 		private int precedenceCur = PrecedenceLeast;
         private bool forceParensIfSamePrecedence = false;
         private Formatter writer;
+        private TypeGraphWriter typeWriter;
+        private int wordBitSize;
+        private int ptrBitSize;
 
         //$TODO: move this to a language-specific class.
-		private static Dictionary<Operator,int> precedences;
+        private static Dictionary<Operator,int> precedences;
         private static HashSet<Type> singleStatements;
         /// <summary>
         /// Maps # of nybbles to an appropriate format string.
         /// </summary>
-        private static string[] unsignedConstantFormatStrings; 
+        private static readonly string[] unsignedConstantFormatStrings; 
 
         private const int PrecedenceApplication = 1;
 		private const int PrecedenceArrayAccess = 1;
@@ -61,11 +64,12 @@ namespace Reko.Core.Output
         private const int PrecedenceConditional = 14;
         private const int PrecedenceLeast = 20;
 
-        private TypeGraphWriter typeWriter;
 
-		public CodeFormatter(Formatter writer)
+		public CodeFormatter(Formatter writer, int wordBitSize, int ptrBitSize)
 		{
             this.writer = writer;
+            this.wordBitSize = wordBitSize;
+            this.ptrBitSize = ptrBitSize;
 		}
 
         public Formatter InnerFormatter
@@ -872,6 +876,8 @@ namespace Reko.Core.Output
 
         protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
         {
+            if (value < 10)
+                return "{0}";
             var nybbles = Nybbles(type.BitSize);
             if (nybbles < unsignedConstantFormatStrings.Length)
                 return unsignedConstantFormatStrings[nybbles];
@@ -890,7 +896,10 @@ namespace Reko.Core.Output
             switch (type.Domain)
             {
             case Domain.SignedInt:
-                return "{0}i{1}";
+                if (type.BitSize == wordBitSize)
+                    return "{0}_i";
+                else 
+                    return "{0}_i{1}";
             case Domain.Character:
                 switch (type.Size)
                 {
@@ -905,9 +914,51 @@ namespace Reko.Core.Output
                     return string.Format(format, string.Format("\\{0}", ch));
                 return format;
             case Domain.UnsignedInt:
-                return "0x{0:X}u{1}";
+                if (!(value is ulong n))
+                    n = Convert.ToUInt64(value);
+                if (type.BitSize == wordBitSize)
+                {
+                    if (n > 9)
+                        return "0x{0:X}_u";
+                    else
+                        return "{0}_u";
+                }
+                else
+                {
+                    if (n > 9)
+                        return "0x{0:X}_u{1}";
+                    else
+                        return "{0}_u{1}";
+                }
+            case Domain.Pointer:
+            case Domain.Offset:
+                if (type.BitSize == ptrBitSize)
+                    return "0x{0:X}_p";
+                else
+                    return "0x{0:X}_p{1}";
+
+            case Domain.SegPointer:
+                if (type.BitSize == ptrBitSize)
+                    return "{0:X}_p";
+                else
+                    return "{0:X}_p{1}";
             default:
-                return "0x{0:X}_{1}";
+                if (!(value is ulong w))
+                    w = Convert.ToUInt64(value);
+                if (type.BitSize == wordBitSize)
+                {
+                    if (w > 9)
+                        return "0x{0:X}";
+                    else
+                        return "{0}";
+                }
+                else
+                {
+                    if (w > 9)
+                        return "0x{0:X}_{1}";
+                    else
+                        return "{0}_{1}";
+                }
             }
         }
 

@@ -156,7 +156,11 @@ namespace Reko.Core
                 UseTabs = true,
                 TabSize = 4
             };
-            CodeFormatter cf = new CodeFormatter(f);
+            var arch = Procedure.Architecture;
+            CodeFormatter cf = new CodeFormatter(
+                f, 
+                arch.WordWidth.BitSize, 
+                arch.PointerType.BitSize);
 			int i = 0;
 			foreach (Statement s in Statements)
 			{

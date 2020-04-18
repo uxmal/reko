@@ -75,7 +75,7 @@ T_11: (in dwLoc14_59 : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
-T_12: (in 0x00000000 : word32)
+T_12: (in 0_32 : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
@@ -87,11 +87,11 @@ T_14: (in rLoc10_71 * rArg04 : real96)
   Class: Eq_5
   DataType: real96
   OrigDataType: real96
-T_15: (in 0x00000001 : word32)
+T_15: (in 1_32 : word32)
   Class: Eq_15
   DataType: word32
   OrigDataType: word32
-T_16: (in dwLoc14_59 + 0x00000001 : word32)
+T_16: (in dwLoc14_59 + 1_32 : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
@@ -143,7 +143,7 @@ T_28: (in dwLoc14_59 : int32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
-T_29: (in 1 : int32)
+T_29: (in 1_i32 : int32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
@@ -163,11 +163,11 @@ T_33: (in rLoc10_71 * (real80) ((real96) dwLoc14_59) : real96)
   Class: Eq_23
   DataType: real96
   OrigDataType: real96
-T_34: (in 0x00000001 : word32)
+T_34: (in 1_32 : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_35: (in dwLoc14_59 + 0x00000001 : word32)
+T_35: (in dwLoc14_59 + 1_32 : word32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
@@ -219,7 +219,7 @@ T_47: (in dwLoc20_110 : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
-T_48: (in 3 : int32)
+T_48: (in 3_i32 : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
@@ -303,11 +303,11 @@ T_68: (in rLoc10_127 + (real80) fp0_91 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
-T_69: (in 0x00000002 : word32)
+T_69: (in 2_32 : word32)
   Class: Eq_69
   DataType: word32
   OrigDataType: word32
-T_70: (in dwLoc20_110 + 0x00000002 : word32)
+T_70: (in dwLoc20_110 + 2_32 : word32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
@@ -327,11 +327,11 @@ T_74: (in SEQ(SLICE(fp1_93, word32, 0), SLICE(fp1_93, word32, 32), SLICE(fp1_93,
   Class: Eq_66
   DataType: real96
   OrigDataType: real96
-T_75: (in 100 : int32)
+T_75: (in 100_i32 : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
-T_76: (in dwLoc20_110 > 100 : bool)
+T_76: (in dwLoc20_110 > 100_i32 : bool)
   Class: Eq_76
   DataType: bool
   OrigDataType: bool
@@ -371,7 +371,7 @@ T_85: (in dwLoc20_109 : int32)
   Class: Eq_85
   DataType: int32
   OrigDataType: int32
-T_86: (in 2 : int32)
+T_86: (in 2_i32 : int32)
   Class: Eq_85
   DataType: int32
   OrigDataType: int32
@@ -443,11 +443,11 @@ T_103: (in rLoc10_126 + (real80) fp0_91 : real96)
   Class: Eq_77
   DataType: real96
   OrigDataType: real96
-T_104: (in 0x00000002 : word32)
+T_104: (in 2_32 : word32)
   Class: Eq_104
   DataType: word32
   OrigDataType: word32
-T_105: (in dwLoc20_109 + 0x00000002 : word32)
+T_105: (in dwLoc20_109 + 2_32 : word32)
   Class: Eq_85
   DataType: int32
   OrigDataType: int32
@@ -467,11 +467,11 @@ T_109: (in SEQ(SLICE(fp0_15, word32, 0), SLICE(fp0_15, word32, 32), SLICE(fp0_15
   Class: Eq_101
   DataType: real96
   OrigDataType: real96
-T_110: (in 100 : int32)
+T_110: (in 100_i32 : int32)
   Class: Eq_85
   DataType: int32
   OrigDataType: int32
-T_111: (in dwLoc20_109 > 100 : bool)
+T_111: (in dwLoc20_109 > 100_i32 : bool)
   Class: Eq_111
   DataType: bool
   OrigDataType: bool

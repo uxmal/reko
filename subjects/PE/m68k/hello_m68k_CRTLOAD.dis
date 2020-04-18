@@ -22,21 +22,21 @@ void fn0000149C()
 fn0000149C_exit:
 fn0000149C_entry:
 l0000149C:
-	__syscall(0xA9A0)
+	__syscall(0xA9A0_16)
 	branch true l000014BE
 l000014BE:
-	__syscall(0xA86E)
-	__syscall(0xA8FE)
-	__syscall(0xA912)
-	__syscall(0xA930)
-	__syscall(0xA9CC)
-	__syscall(0xA97B)
-	__syscall(0xA850)
-	__syscall(0xA986)
+	__syscall(0xA86E_16)
+	__syscall(0xA8FE_16)
+	__syscall(0xA912_16)
+	__syscall(0xA930_16)
+	__syscall(0xA9CC_16)
+	__syscall(0xA97B_16)
+	__syscall(0xA850_16)
+	__syscall(0xA986_16)
 l000014B6:
-	Mem27[0x00000AF0:word16] = 0x001A
+	Mem27[0x00000AF0:word16] = 0x1A_16
 l000014E2:
-	__syscall(0xA9F4)
+	__syscall(0xA9F4_16)
 
 
 void fn000014E8(word32 a3, word32 a5, word16 wArg00, word32 dwArg02)
@@ -48,75 +48,75 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, word32 dwArg02)
 // Preserved:
 fn000014E8_entry:
 l000014E8:
-	Mem14[0x0000:word16] = 0x0000
-	__syscall(0xA9A0)
-	word32 dwLoc12_189 = SEQ(wLoc12, 0x4441)
+	Mem14[0_16:word16] = 0_16
+	__syscall(0xA9A0_16)
+	word32 dwLoc12_189 = SEQ(wLoc12, 0x4441_16)
 	word32 dwLoc02_199 = SEQ(SLICE(a3, word16, 0), wArg00)
-	branch dwLoc12_189 == 0x00000000 l00001592
+	branch dwLoc12_189 == 0 l00001592
 l00001592:
-	Mem20[0x00000AF0:word16] = 0xFDA3
-	__syscall(0xA9F4)
+	Mem20[0x00000AF0:word16] = 0xFDA3_16
+	__syscall(0xA9F4_16)
 l000014FE:
 	word32 a3_23 = Mem14[dwLoc12_189:word32]
 	word32 d0_26 = Mem14[a3_23:word32]
 	word32 a2_27 = a5 - d0_26
 	word32 a0_28 = a2_27
-	word32 d0_29 = d0_26 >>u 0x00000001
-	branch d0_26 >>u 0x00000001 == 0x00000000 l00001514
+	word32 d0_29 = d0_26 >>u 1
+	branch d0_26 >>u 1 == 0 l00001514
 l0000150E:
-	Mem33[a0_28:word16] = 0x0000
-	a0_28 = a0_28 + 2
-	d0_29 = d0_29 - 0x00000001
-	branch d0_29 != 0x00000000 l0000150E
+	Mem33[a0_28:word16] = 0_16
+	a0_28 = a0_28 + 2_i
+	d0_29 = d0_29 - 1
+	branch d0_29 != 0 l0000150E
 l00001514:
-	word32 a2_45 = a2_27 - Mem41[a3_23 + 4:word32]
-	__syscall(0xA02E)
-	word32 d0_47 = Mem41[a3_23 + 8:word32]
+	word32 a2_45 = a2_27 - Mem41[a3_23 + 4_i:word32]
+	__syscall(0xA02E_16)
+	word32 d0_47 = Mem41[a3_23 + 8_i:word32]
 	word32 a2_48 = a2_45 - d0_47
 	word32 a0_49 = a2_48
-	word32 d0_50 = d0_47 >>u 0x00000001
-	branch d0_47 >>u 0x00000001 == 0x00000000 l00001534
+	word32 d0_50 = d0_47 >>u 1
+	branch d0_47 >>u 1 == 0 l00001534
 l0000152E:
-	Mem54[a0_49:word16] = 0x0000
-	a0_49 = a0_49 + 2
-	d0_50 = d0_50 - 0x00000001
-	branch d0_50 != 0x00000000 l0000152E
+	Mem54[a0_49:word16] = 0_16
+	a0_49 = a0_49 + 2_i
+	d0_50 = d0_50 - 1
+	branch d0_50 != 0 l0000152E
 l00001534:
-	word32 a2_139 = a2_48 - Mem62[a3_23 + 12:word32]
-	word32 a3_133 = Mem62[a3_23 + 12:word32] + ((a3_23 + 16) + Mem62[a3_23 + 4:word32])
-	__syscall(0xA02E)
+	word32 a2_139 = a2_48 - Mem62[a3_23 + 12_i:word32]
+	word32 a3_133 = Mem62[a3_23 + 12_i:word32] + ((a3_23 + 16_i) + Mem62[a3_23 + 4_i:word32])
+	__syscall(0xA02E_16)
 l00001556:
 	word32 d0_102
 	byte v19_83 = Mem82[a3_133:byte]
-	a3_133 = a3_133 + 1
+	a3_133 = a3_133 + 1_i
 	word32 d0_86 = (uint32) (uint8) v19_83
-	branch v19_83 > 0x00 l00001576
+	branch v19_83 > 0_8 l00001576
 l0000155C:
-	branch v19_83 < 0x00 l00001572
+	branch v19_83 < 0_8 l00001572
 l00001572:
-	a3_133 = a3_133 + 1
-	d0_86 = SEQ(SLICE(SEQ(SLICE(d0_86, word16, 16), SLICE(d0_86, word16, 0) << 0x0008), word24, 8), Mem82[a3_133:byte])
+	a3_133 = a3_133 + 1_i
+	d0_86 = SEQ(SLICE(SEQ(SLICE(d0_86, word16, 16), SLICE(d0_86, word16, 0) << 8_16), word24, 8), Mem82[a3_133:byte])
 l00001576:
-	d0_102 = SEQ(SLICE(d0_86, word16, 16), SLICE(d0_86 * 0x00000002, word16, 0))
+	d0_102 = SEQ(SLICE(d0_86, word16, 16), SLICE(d0_86 * 2, word16, 0))
 l0000155E:
 	byte v23_104 = Mem82[a3_133:byte]
 	word32 d0_107 = (uint32) (uint8) v23_104
-	branch v23_104 == 0x00 l0000159A
+	branch v23_104 == 0_8 l0000159A
 l0000159A:
-	__syscall(0xA9A3)
+	__syscall(0xA9A3_16)
 	return
 fn000014E8_exit:
 l00001562:
-	word32 d0_128 = SEQ(SLICE(__swap(SEQ(SLICE(SEQ(SLICE(d0_107, word16, 16), SLICE(d0_107, word16, 0) << 0x0008), word24, 8), Mem82[a3_133 + 1:byte])), word24, 8), Mem82[a3_133 + 2:byte])
-	a3_133 = a3_133 + 4
-	d0_102 = SEQ(SLICE(SEQ(SLICE(d0_128, word16, 16), SLICE(d0_128, word16, 0) << 0x0008), word24, 8), Mem82[a3_133 + 3:byte]) * 0x00000002
+	word32 d0_128 = SEQ(SLICE(__swap(SEQ(SLICE(SEQ(SLICE(d0_107, word16, 16), SLICE(d0_107, word16, 0) << 8_16), word24, 8), Mem82[a3_133 + 1_i:byte])), word24, 8), Mem82[a3_133 + 2_i:byte])
+	a3_133 = a3_133 + 4_i
+	d0_102 = SEQ(SLICE(SEQ(SLICE(d0_128, word16, 16), SLICE(d0_128, word16, 0) << 8_16), word24, 8), Mem82[a3_133 + 3_i:byte]) * 2
 l00001578:
 	a2_139 = a2_139 + d0_102
-	branch dwArg02 == 0x00000000 l00001582
+	branch dwArg02 == 0 l00001582
 l0000157E:
-	branch Mem82[a2_139:word32] >= 0x00000000 l00001586
+	branch Mem82[a2_139:word32] >= 0 l00001586
 l00001586:
-	Mem160[a2_139:word32] = Mem82[Mem82[a2_139:word32] + dwArg02 + 2:word32]
+	Mem160[a2_139:word32] = Mem82[Mem82[a2_139:word32] + dwArg02 + 2_i:word32]
 l00001582:
 	Mem169[a2_139:word32] = Mem82[a2_139:word32] + dwLoc02_199
 l0000158E:

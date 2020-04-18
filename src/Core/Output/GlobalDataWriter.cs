@@ -54,7 +54,7 @@ namespace Reko.Core.Output
         public void WriteGlobals(Formatter formatter)
         {
             this.formatter = formatter;
-            this.codeFormatter = new CodeFormatter(formatter);
+            this.codeFormatter = new AbsynCodeFormatter(formatter);
             this.tw = new TypeReferenceFormatter(formatter);
             var eqGlobalStruct = program.Globals.TypeVariable.Class;
             this.globals = eqGlobalStruct.ResolveAs<StructureType>();
@@ -99,7 +99,7 @@ namespace Reko.Core.Output
         public void WriteGlobalVariable(Address address, DataType dataType, string name, Formatter formatter)
         {
             this.formatter = formatter;
-            this.codeFormatter = new CodeFormatter(formatter);
+            this.codeFormatter = new AbsynCodeFormatter(formatter);
             this.tw = new TypeReferenceFormatter(formatter);
             this.globals = new StructureType();
             this.queue = new Queue<StructureField>(globals.Fields);

@@ -27,7 +27,7 @@ T_3: (in __data : (ptr16 Eq_3))
   Class: Eq_3
   DataType: (ptr16 Eq_3)
   OrigDataType: (ptr16 (segment (80F0 T_11 t80F0)))
-T_4: (in 0x00 : byte)
+T_4: (in 0_8 : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte
@@ -35,15 +35,15 @@ T_5: (in 001D : ptr16)
   Class: Eq_5
   DataType: (memptr (ptr16 Eq_3) byte)
   OrigDataType: (union ((memptr T_3 (struct (0 byte b0000))) u1) ((union (ptr16 u0) ((memptr (ptr16 Eq_3) byte) u1)) u0))
-T_6: (in 0x0000 : word16)
+T_6: (in 0_16 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_7: (in 0x001D + 0x0000 : word16)
+T_7: (in 0x001D + 0_16 : word16)
   Class: Eq_7
   DataType: ptr16
   OrigDataType: ptr16
-T_8: (in Mem8[__data:0x001D + 0x0000:byte] : byte)
+T_8: (in Mem8[__data:0x001D + 0_16:byte] : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte
@@ -51,11 +51,11 @@ T_9: (in A_12 : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte
-T_10: (in 0x80F0 : word16)
+T_10: (in 0x80F0_16 : word16)
   Class: Eq_10
   DataType: (memptr (ptr16 Eq_3) byte)
   OrigDataType: (memptr T_3 (struct (0 T_11 t0000)))
-T_11: (in Mem8[__data:0x80F0:byte] : byte)
+T_11: (in Mem8[__data:0x80F0_16:byte] : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte
@@ -75,47 +75,47 @@ T_15: (in signature of fn4EF3 : void)
   Class: Eq_15
   DataType: Eq_15
   OrigDataType: 
-T_16: (in 0x05 : byte)
+T_16: (in 5_8 : byte)
   Class: Eq_16
   DataType: byte
   OrigDataType: byte
-T_17: (in 0x0157 : word16)
+T_17: (in 0x157_16 : word16)
   Class: Eq_17
   DataType: (memptr (ptr16 Eq_13) byte)
   OrigDataType: (memptr T_13 (struct (0 T_18 t0000)))
-T_18: (in Mem32[__data_23:0x0157:byte] : byte)
+T_18: (in Mem32[__data_23:0x157_16:byte] : byte)
   Class: Eq_16
   DataType: byte
   OrigDataType: byte
-T_19: (in 0x80EA : word16)
+T_19: (in 0x80EA_16 : word16)
   Class: Eq_19
   DataType: (memptr (ptr16 Eq_13) bcu8)
   OrigDataType: (memptr T_13 (struct (0 T_20 t0000)))
-T_20: (in Mem32[__data_23:0x80EA:byte] : byte)
+T_20: (in Mem32[__data_23:0x80EA_16:byte] : byte)
   Class: Eq_20
   DataType: bcu8
   OrigDataType: bcu8
-T_21: (in 0x02 : byte)
+T_21: (in 2_8 : byte)
   Class: Eq_21
   DataType: byte
   OrigDataType: byte
-T_22: (in __data_23->b80EA >> 0x02 : byte)
+T_22: (in __data_23->b80EA >> 2_8 : byte)
   Class: Eq_22
   DataType: uint8
   OrigDataType: uint8
-T_23: (in 0x01 : byte)
+T_23: (in 1_8 : byte)
   Class: Eq_23
   DataType: byte
   OrigDataType: byte
-T_24: (in __data_23->b80EA >> 0x02 & 0x01 : byte)
+T_24: (in __data_23->b80EA >> 2_8 & 1_8 : byte)
   Class: Eq_24
   DataType: byte
   OrigDataType: byte
-T_25: (in 0x00 : byte)
+T_25: (in 0_8 : byte)
   Class: Eq_24
   DataType: byte
   OrigDataType: byte
-T_26: (in (__data_23->b80EA >> 0x02 & 0x01) != 0x00 : bool)
+T_26: (in (__data_23->b80EA >> 2_8 & 1_8) != 0_8 : bool)
   Class: Eq_26
   DataType: bool
   OrigDataType: bool

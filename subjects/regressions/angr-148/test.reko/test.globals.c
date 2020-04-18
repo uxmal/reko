@@ -13,6 +13,6 @@ Eq_n g_t4005C0 = Unexpected function type (fn void ())
 <anonymous> * g_a600E10[] = 
 	{
 	};
-word64 g_qw600E20 = 0x0000000000000000;
+word64 g_qw600E20 = 0x00;
 byte g_b601040 = 0x00;
 

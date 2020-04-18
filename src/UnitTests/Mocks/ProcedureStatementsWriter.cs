@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 Pavel Tomin.
  *
@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Mocks
                 Indentation = 0,
             };
             textFormatter.WriteLine();
-            var codeFormatter = new CodeFormatter(textFormatter);
+            var codeFormatter = proc.CreateCodeFormatter(textFormatter);
             foreach (var stm in proc.Statements)
                 stm.Instruction.Accept(codeFormatter);
         }

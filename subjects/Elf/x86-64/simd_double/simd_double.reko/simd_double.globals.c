@@ -10,7 +10,7 @@ void g_t0A70() = Unexpected function type (fn void ())
 ;
 void g_t0AE0() = Unexpected function type (fn void ())
 ;
-uint64 g_qw0B00 = 0x0000000000000004;
+uint64 g_qw0B00 = 0x04;
 <anonymous> * g_a200DE8[] = 
 	{
 	};

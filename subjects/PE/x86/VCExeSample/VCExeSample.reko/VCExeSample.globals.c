@@ -16,7 +16,7 @@ real32 g_r4020EC = 1000.1F;
 real64 g_r4020F0 = 321.0;
 real64 g_r4020F8 = 123.0;
 cdecl_class_ptr g_gbl_c = null;
-uint32 g_dw40301C = 0x00000000;
-uint32 g_dw403020 = 0x00000000;
+uint32 g_dw40301C = 0x00;
+uint32 g_dw403020 = 0x00;
 thiscall_class * g_gbl_thiscall = null;
 

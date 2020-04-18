@@ -1,17 +1,26 @@
-void _init()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SCZO rax Top
-// Preserved: rsp
+// _init
+// Return size: 8
+define _init
 _init_entry:
+	rsp = fp
+	Top = 0_i8
+	// succ:  l0000000000402168
 l0000000000402168:
-	branch __gmon_start__ == 0x0000000000000000 l000000000040217D
+	rsp = rsp - 8
+	SCZO = cond(rsp)
+	rax = __gmon_start__
+	SZO = cond(rax & rax)
+	C = false
+	branch Test(EQ,Z) l000000000040217D
+	// succ:  l0000000000402178 l000000000040217D
 l0000000000402178:
 	call __gmon_start__ (retsize: 8;)
+	// succ:  l000000000040217D
 l000000000040217D:
+	rsp = rsp + 8
+	SCZO = cond(rsp)
 	return
+	// succ:  _init_exit
 _init_exit:
 
 

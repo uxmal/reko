@@ -9,25 +9,25 @@ void _start(word32 g1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7, wo
 _start_exit:
 _start_entry:
 l00010958:
-	Mem8[0x00020E60:word32] = fp + 0x00000044
-	Mem13[0x00020E3C:word32] = fp + 0x00000044 + ((dwArg40 << 0x00000002) + 0x00000004)
-	branch 0x00000000 == 0x00000000 l00010958_ds_t
+	Mem8[0x20E60:word32] = fp + 0x44
+	Mem13[0x20E3C:word32] = fp + 0x44 + ((dwArg40 << 2) + 4)
+	branch 0 == 0 l00010958_ds_t
 l00010958_ds_t:
 l00010958_ds_f:
 l00010994:
-	Mem27[0x00020E58:word32] = fsr
-	Mem33[0x00020E58:word32] = Mem27[0x00020E58:word32] & 0x303FFFFF
+	Mem27[0x20E58:word32] = fsr
+	Mem33[0x20E58:word32] = Mem27[0x20E58:word32] & 0x303FFFFF
 	branch true l00010994_ds_t
 l00010994_ds_t:
 l00010994_ds_f:
 l000109E8:
-	Mem44[0x00020E5C:word32] = 0x00000001
+	Mem44[0x20E5C:word32] = 1
 l000109F8:
-	branch g1 == 0x00000000 l000109F8_ds_t
+	branch g1 == 0 l000109F8_ds_t
 l000109F8_ds_t:
 l00010A10:
-	atexit(0x00010CB8)
-	_init(0x00010CB8, 0x00020C00, o2, o3, o4, o5, o7)
+	atexit(0x10CB8)
+	_init(0x10CB8, 0x20C00, o2, o3, o4, o5, o7)
 l000109F8_ds_f:
 l00010A08:
 	atexit(g1)
@@ -146,106 +146,106 @@ void main(word32 o0)
 // Preserved: o2 o3 o4 o5 o7 sp
 main_entry:
 l00010B0C:
-	word32 o0_20 = 0x00000001
-	branch o0 <= 0x00000001 l00010B0C_ds_t
+	word32 o0_20 = 1
+	branch o0 <= 1 l00010B0C_ds_t
 l00010B0C_ds_t:
-	o0_20 = 0x00000000
+	o0_20 = 0
 l00010B20:
 	word32 o0_31
-	branch o0_20 == 0x00000000 l00010B20_ds_t
+	branch o0_20 == 0 l00010B20_ds_t
 l00010B20_ds_t:
 l00010B34:
-	o0_31 = 0x00010A74
+	o0_31 = 0x10A74
 l00010B20_ds_f:
 l00010B2C:
-	o0_31 = 0x00010A5C
+	o0_31 = 0x10A5C
 l00010B3C:
 	word32 o3_37
-	branch o0_20 == 0x00000000 l00010B3C_ds_t
+	branch o0_20 == 0 l00010B3C_ds_t
 l00010B3C_ds_t:
 l00010B4C:
-	o3_37 = 0x00010AA4
+	o3_37 = 0x10AA4
 l00010B3C_ds_f:
 l00010B44:
-	o3_37 = 0x00010A8C
+	o3_37 = 0x10A8C
 l00010B54:
 	word32 o2_43
-	branch o0_20 == 0x00000000 l00010B54_ds_t
+	branch o0_20 == 0 l00010B54_ds_t
 l00010B54_ds_t:
 l00010B64:
-	o2_43 = 0x00010AD4
+	o2_43 = 0x10AD4
 l00010B54_ds_f:
 l00010B5C:
-	o2_43 = 0x00010ABC
+	o2_43 = 0x10ABC
 l00010B6C:
 	word32 o1_49
-	branch o0_20 == 0x00000000 l00010B6C_ds_t
+	branch o0_20 == 0 l00010B6C_ds_t
 l00010B6C_ds_t:
 l00010B7C:
-	o1_49 = 0x00010B04
+	o1_49 = 0x10B04
 l00010B6C_ds_f:
 l00010B74:
-	o1_49 = 0x00010AEC
+	o1_49 = 0x10AEC
 l00010B84:
 	word32 i1_114
 	bool Z_122
-	branch o0_20 == 0x00000000 l00010B84_ds_t
+	branch o0_20 == 0 l00010B84_ds_t
 l00010B84_ds_t:
 l00010BE8:
-	branch o0_31 != 0x00010A74 l00010BE8_ds_t
+	branch o0_31 != 0x10A74 l00010BE8_ds_t
 l00010BE8_ds_t:
 l00010BE8_ds_f:
 l00010BFC:
-	branch o3_37 != 0x00010AA4 l00010BFC_ds_t
+	branch o3_37 != 0x10AA4 l00010BFC_ds_t
 l00010BFC_ds_t:
 l00010BFC_ds_f:
 l00010C0C:
-	branch o2_43 != 0x00010AD4 l00010C0C_ds_t
+	branch o2_43 != 0x10AD4 l00010C0C_ds_t
 l00010C0C_ds_t:
 l00010C0C_ds_f:
 l00010C20:
-	branch o1_49 != 0x00010B04 l00010C20_ds_t
+	branch o1_49 != 0x10B04 l00010C20_ds_t
 l00010C20_ds_t:
 l00010C3C:
-	i1_114 = 0x00000000
+	i1_114 = 0
 l00010C20_ds_f:
 l00010C34:
-	i1_114 = 0x00000001
+	i1_114 = 1
 l00010B84_ds_f:
 l00010B8C:
-	branch o0_31 != 0x00010A5C l00010B8C_ds_t
+	branch o0_31 != 0x10A5C l00010B8C_ds_t
 l00010B8C_ds_t:
 l00010BDC:
 l00010B8C_ds_f:
 l00010B9C:
-	branch o3_37 != 0x00010A8C l00010B9C_ds_t
+	branch o3_37 != 0x10A8C l00010B9C_ds_t
 l00010B9C_ds_t:
 l00010B9C_ds_f:
 l00010BAC:
-	branch o2_43 != 0x00010ABC l00010BAC_ds_t
+	branch o2_43 != 0x10ABC l00010BAC_ds_t
 l00010BAC_ds_t:
 l00010BAC_ds_f:
 l00010BC0:
-	branch o1_49 != 0x00010AEC l00010BC0_ds_t
+	branch o1_49 != 0x10AEC l00010BC0_ds_t
 l00010BC0_ds_t:
 l00010BE0:
-	i1_114 = 0x00000000
-	Z_122 = SLICE(cond(0x00000000), bool, 2) (alias)
+	i1_114 = 0
+	Z_122 = SLICE(cond(0), bool, 2) (alias)
 l00010BC0_ds_f:
 l00010BD4:
-	i1_114 = 0x00000001
+	i1_114 = 1
 l00010C40:
 	Z_122 = SLICE(cond(i1_114), bool, 2) (alias)
 l00010C44:
 	branch Z_122 l00010C40_ds_t
 l00010C40_ds_t:
 l00010C5C:
-	printf(0x00010D00)
+	printf(0x10D00)
 l00010C40_ds_f:
 l00010C4C:
-	printf(0x00010CF8)
+	printf(0x10CF8)
 l00010C6C:
-	branch i1_114 == 0x00000000 l00010C6C_ds_t
+	branch i1_114 == 0 l00010C6C_ds_t
 l00010C6C_ds_t:
 l00010C78:
 	return

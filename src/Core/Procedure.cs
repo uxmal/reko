@@ -183,7 +183,7 @@ namespace Reko.Core
 
         public void WriteBody(bool showEdges, TextWriter writer)
         {
-            var formatter = new CodeFormatter(new TextFormatter(writer));
+            var formatter = CreateCodeFormatter(new TextFormatter(writer));
             new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();
         }
 
@@ -195,8 +195,15 @@ namespace Reko.Core
             var formatter = new TextFormatter(writer);
             Signature.Emit(Name, FunctionType.EmitFlags.None, new TextFormatter(writer));
             writer.WriteLine();
-            var codeFormatter = new CodeFormatter(formatter);
+            var codeFormatter = CreateCodeFormatter(formatter);
             new ProcedureFormatter(this, decorator, codeFormatter).WriteProcedureBlocks();
+        }
+
+        public CodeFormatter CreateCodeFormatter(Formatter formatter)
+        {
+            var w = Architecture.WordWidth.BitSize;
+            var p = Architecture.PointerType.BitSize;
+            return new CodeFormatter(formatter, w, p);
         }
 
         public void WriteGraph(TextWriter writer)

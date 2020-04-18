@@ -18,7 +18,7 @@ Eq_n g_t16F14 =
 char g_str17218[] = "";
 char g_str17268[] = "%s: ";
 char g_str17270[] = ": %s\n";
-int8 g_b17468 = 46;
+int8 g_b17468 = 0x002E;
 Eq_n g_t1753C = 
 	{
 		'\x00'
@@ -34,14 +34,14 @@ char g_str178D0[] = "memory exhausted\n";
 char g_str178E8[] = "TMPDIR";
 char g_str178F0[] = "TMP";
 char g_str178F8[] = "TEMP";
-byte g_b17918 = 0x63;
-byte g_b17919 = 0x63;
-byte g_b1791A = 0x58;
-byte g_b1791B = 0x58;
-byte g_b1791C = 0x58;
-byte g_b1791D = 0x58;
-byte g_b1791E = 0x58;
-byte g_b1791F = 0x58;
+byte g_b17918 = 99;
+byte g_b17919 = 99;
+byte g_b1791A = 88;
+byte g_b1791B = 88;
+byte g_b1791C = 88;
+byte g_b1791D = 88;
+byte g_b1791E = 88;
+byte g_b1791F = 88;
 byte g_b17920 = 0x00;
 char g_str17928[] = "POSIXLY_CORRECT";
 char g_str17940[] = "%s: option `%s' is ambiguous\n";
@@ -62,17 +62,17 @@ Eq_n g_t27ED0 =
 	{
 		'\x00'
 	};
-word32 g_dw27F20 = 0x00000000;
+word32 g_dw27F20 = 0x00;
 word32 g_dw27F24 = 0x00017098;
-word32 g_dw27F28 = 0x00000000;
-word32 g_dw27F2C = 0x00000000;
+word32 g_dw27F28 = 0x00;
+word32 g_dw27F2C = 0x00;
 Eq_n g_t27F3C = 
 	{
 		'\x00'
 	};
-word32 g_dw27F44 = 0x00000000;
-ui32 g_dw27F48 = 0x00000000;
-ui32 g_dw27F4C = 0x00000000;
+word32 g_dw27F44 = 0x00;
+ui32 g_dw27F48 = 0x00;
+ui32 g_dw27F4C = 0x00;
 Eq_n g_t27F50 = 
 	{
 		'\x00'
@@ -87,14 +87,14 @@ Eq_n g_t28000 =
 	};
 char * g_ptr28028 = &g_str178B0;
 <anonymous> * g_ptr2802C = print_and_abort;
-int32 g_dw28030 = 1;
+int32 g_dw28030 = 0x01;
 Eq_n g_t28064 = 
 	{
 		'\x00'
 	};
 ptr32 * g_ptr28068 = &g_ptr0001;
-word32 g_dw2806C = 0x00000000;
-word32 g_dw28070 = 0x00000001;
+word32 g_dw2806C = 0x00;
+word32 g_dw28070 = 0x01;
 Eq_n g_t28074 = 
 	{
 		'\x00'
@@ -125,33 +125,33 @@ Eq_n g_t28190 =
 	{
 		'\x00'
 	};
-word32 g_dw281A0 = 0x00000000;
+word32 g_dw281A0 = 0x00;
 Eq_n g_t281C0 = 
 	{
 		null
 	};
-up32 g_dw281D0 = 0x00000000;
-ui32 g_dw281E0 = 0x00000000;
+up32 g_dw281D0 = 0x00;
+ui32 g_dw281E0 = 0x00;
 Eq_n g_t281F0 = 
 	{
 		'\x00'
 	};
-up32 g_dw28200 = 0x00000000;
-up32 g_dw28210 = 0x00000000;
+up32 g_dw28200 = 0x00;
+up32 g_dw28210 = 0x00;
 int8 * g_ptr28220 = null;
-int32 g_dw28230 = 0;
+int32 g_dw28230 = 0x00;
 Eq_n g_t28240 = 
 	{
-		0x00000000,
-		0x00000000,
+		0x00,
+		0x00,
 		null,
 	};
 Eq_n g_t2B270 = 
 	{
 		'\x00'
 	};
-ui32 g_dw2B280 = 0x00000000;
-up32 g_dw2B290 = 0x00000000;
+ui32 g_dw2B280 = 0x00;
+up32 g_dw2B290 = 0x00;
 Eq_n g_t2B2A0 = 
 	{
 		'\x00'
@@ -161,7 +161,7 @@ Eq_n g_t2B2C0 =
 	{
 		'\x00'
 	};
-word32 g_dw2B2D0 = 0x00000000;
+word32 g_dw2B2D0 = 0x00;
 Eq_n g_t2B2E0 = 
 	{
 		'\x00'
@@ -172,9 +172,9 @@ Eq_n g_t2B310 =
 	{
 		'\x00'
 	};
-word64 g_qw2B400 = 0x0000000000000000;
+word64 g_qw2B400 = 0x00;
 struct Eq_n * g_ptr2B408 = null;
-ptr32 g_ptr2B40C = 0x00000000;
+ptr32 g_ptr2B40C = 0x00;
 Eq_n g_t2B640 = 
 	{
 	};

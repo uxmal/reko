@@ -30,7 +30,7 @@ Eq_n g_t28C5 =
 		{
 		},
 	};
-ptr32 g_ptr3E20 = 0x00000000;
+ptr32 g_ptr3E20 = 0x00;
 struct Eq_n * g_ptr3E24 = &g_t4000;
 Eq_n g_t3E28 = 
 	{
@@ -52,7 +52,7 @@ Eq_n g_t3E3C =
 	};
 word32 g_dw3E48 = 0x05050505;
 ptr32 g_ptr3E4C = 0x06060606;
-int32 g_dw3E50 = 101058054;
+int32 g_dw3E50 = 0x06060606;
 struct Eq_n * g_ptr3E54 = &g_t6060606;
 struct Eq_n * g_ptr3E58 = &g_t6060606;
 Eq_n g_t3E5C = 

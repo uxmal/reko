@@ -7,8 +7,8 @@ PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 // Preserved:
 fn10001000_entry:
 l10001000:
-	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002144, fp - 0x00000004, fp - 0x00000008)
-	branch eax_17 != 0x00000000 l10001027
+	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002144, fp - 4, fp - 8)
+	branch eax_17 != 0 l10001027
 l10001027:
 	return Py_BuildValue(0x1000214C, dwLoc04 + dwLoc08)
 l10001023:
@@ -25,8 +25,8 @@ PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 // Preserved:
 fn10001050_entry:
 l10001050:
-	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002150, fp - 0x00000008, fp - 0x00000004)
-	branch eax_17 != 0x00000000 l10001078
+	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002150, fp - 8, fp - 4)
+	branch eax_17 != 0 l10001078
 l10001078:
 	return Py_BuildValue(0x1000214C, dwLoc08 - dwLoc04)
 l10001074:
@@ -43,8 +43,8 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 // Preserved:
 fn100010A0_entry:
 l100010A0:
-	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158, fp - 0x00000008, fp - 0x00000004)
-	branch eax_17 != 0x00000000 l100010C8
+	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158, fp - 8, fp - 4)
+	branch eax_17 != 0 l100010C8
 l100010C8:
 	return Py_BuildValue(0x1000214C, (int32) ((int64) dwLoc08 / dwLoc04))
 l100010C4:
@@ -61,8 +61,8 @@ PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 // Preserved:
 fn100010F0_entry:
 l100010F0:
-	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160, fp - 0x00000008, fp - 0x00000004)
-	branch eax_17 != 0x00000000 l10001118
+	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160, fp - 8, fp - 4)
+	branch eax_17 != 0 l10001118
 l10001118:
 	return Py_BuildValue(0x10002168, (real64) rLoc08 / rLoc04)
 l10001114:
@@ -79,7 +79,7 @@ void initpySample()
 // Preserved: esp
 initpySample_entry:
 l10001170:
-	Py_InitModule4(0x10002174, 0x10003010, 0x00000000, 0x00000000, 0x000003EF)
+	Py_InitModule4(0x10002174, 0x10003010, 0, 0, 0x3EF)
 	return
 initpySample_exit:
 
@@ -94,44 +94,44 @@ word32 fn100011E9(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & ecxOut
 fn100011E9_entry:
 l100011E9:
 	word32 eax_14
-	word32 ebp_145 = 0x00000000
-	branch dwArg08 != 0x00000000 l10001202
+	word32 ebp_145 = 0
+	branch dwArg08 != 0 l10001202
 l100011F4:
-	branch Mem8[0x10003070:word32] <= 0x00000000 l10001233
+	branch Mem8[0x10003070:word32] <= 0 l10001233
 l10001233:
-	eax_14 = 0x00000000
+	eax_14 = 0
 l100011FC:
-	Mem18[0x10003070:word32] = Mem8[0x10003070:word32] - 0x00000001
+	Mem18[0x10003070:word32] = Mem8[0x10003070:word32] - 1
 l10001202:
 	ecx = Mem23[adjust_fdiv:word32]
 	Mem38[0x100033A4:word32] = ecx
-	word32 esp_118 = fp - 16
-	branch dwArg08 != 0x00000001 l100012E8
+	word32 esp_118 = fp - 16_i
+	branch dwArg08 != 1 l100012E8
 l100012E8:
-	branch dwArg08 != 0x00000000 l1000137E
+	branch dwArg08 != 0 l1000137E
 l100012F0:
 l10001308:
-	branch InterlockedCompareExchange(0x100033AC, 0x00000001, 0x00000000) != 0x00000000 l100012FD
+	branch InterlockedCompareExchange(0x100033AC_p, 1, 0) != 0 l100012FD
 l100012FD:
-	Sleep(0x000003E8)
+	Sleep(0x3E8)
 l10001312:
-	branch Mem53[0x100033A8:word32] == 0x00000002 l10001326
+	branch Mem53[0x100033A8:word32] == 2 l10001326
 l10001326:
 	word32 v15_65 = Mem53[0x100033B4:word32]
 	word32 eax_69 = _decode_pointer(v15_65)
 	ecx = v15_65
-	word32 esp_105 = fp - 16
-	branch eax_69 == 0x00000000 l1000136F
+	word32 esp_105 = fp - 16_i
+	branch eax_69 == 0 l1000136F
 l1000133B:
-	word32 esp_81 = fp - 16
+	word32 esp_81 = fp - 16_i
 	word32 edi_82 = _decode_pointer(Mem67[0x100033B0:word32])
 l10001350:
 	word32 edx_286
-	edi_82 = edi_82 - 0x00000004
+	edi_82 = edi_82 - 4
 	branch edi_82 >=u eax_69 l10001348
 l10001348:
 	word32 eax_89 = Mem78[edi_82:word32]
-	branch eax_89 == 0x00000000 l10001350
+	branch eax_89 == 0 l10001350
 l1000134E:
 	word32 ecx_99
 	call eax_89 (retsize: 4;)
@@ -139,72 +139,72 @@ l1000134E:
 		defs: ecx:ecx_99,edx:edx_286,esp:esp_97
 	edx = edx_286
 l10001357:
-	word32 esp_102 = esp_81 - 4
+	word32 esp_102 = esp_81 - 4_i
 	Mem103[esp_102:word32] = eax_69
 	free(Mem103[esp_102:(ptr32 void)])
 	ecx = Mem103[esp_102:word32]
 	word32 eax_106 = _encoded_null()
 	Mem107[0x100033B0:word32] = eax_106
 	Mem108[0x100033B4:word32] = eax_106
-	esp_105 = esp_102 + 4
+	esp_105 = esp_102 + 4_i
 l1000136F:
-	word32 esp_110 = esp_105 - 4
-	Mem111[esp_110:word32] = 0x00000000
-	Mem114[esp_110 - 4:word32] = 0x100033AC
-	Mem116[0x100033A8:word32] = 0x00000000
-	InterlockedExchange(Mem116[esp_110 - 4:(ptr32 LONG)], Mem116[esp_110:LONG])
-	esp_118 = esp_110 + 0x00000004
+	word32 esp_110 = esp_105 - 4_i
+	Mem111[esp_110:word32] = 0
+	Mem114[esp_110 - 4_i:word32] = 0x100033AC_p
+	Mem116[0x100033A8:word32] = 0
+	InterlockedExchange(Mem116[esp_110 - 4_i:(ptr32 LONG)], Mem116[esp_110:LONG])
+	esp_118 = esp_110 + 4
 l1000131C:
-	_amsg_exit(0x0000001F)
+	_amsg_exit(0x1F)
 l1000121C:
-	word32 edi_124 = Mem38[Mem38[fs:0x00000018:word32] + 0x00000004:word32]
+	word32 edi_124 = Mem38[Mem38[fs:0x18:word32] + 4:word32]
 l1000124B:
-	word32 eax_136 = InterlockedCompareExchange(0x100033AC, edi_124, 0x00000000)
-	branch eax_136 != 0x00000000 l1000123A
+	word32 eax_136 = InterlockedCompareExchange(0x100033AC_p, edi_124, 0)
+	branch eax_136 != 0 l1000123A
 l1000123A:
 	branch eax_136 == edi_124 l10001255
 l10001255:
-	ebp_145 = 0x00000001
+	ebp_145 = 1
 l1000123E:
-	Sleep(0x000003E8)
+	Sleep(0x3E8)
 l10001253:
 l10001258:
-	branch Mem135[0x100033A8:word32] == 0x00000000 l1000126D
+	branch Mem135[0x100033A8:word32] == 0 l1000126D
 l1000126D:
-	Mem166[0x100033A8:word32] = 0x00000001
+	Mem166[0x100033A8:word32] = 1
 	ecx = 0x100020A8
-	esp_118 = fp - 16
-	branch _initterm_e(0x100020A0, 0x100020A8) == 0x00000000 l10001293
+	esp_118 = fp - 16_i
+	branch _initterm_e(0x100020A0, 0x100020A8) == 0 l10001293
 l10001293:
 	_initterm(0x10002098, 0x1000209C)
-	Mem181[0x100033A8:word32] = 0x00000002
+	Mem181[0x100033A8:word32] = 2
 	ecx = 0x1000209C
-	branch ebp_145 != 0x00000000 l100012B6
+	branch ebp_145 != 0 l100012B6
 l100012AE:
-	InterlockedExchange(0x100033AC, ebp_145)
+	InterlockedExchange(0x100033AC_p, ebp_145)
 l100012B6:
-	esp_118 = fp - 16
-	branch Mem196[0x100033B8:word32] == 0x00000000 l100012DD
+	esp_118 = fp - 16_i
+	branch Mem196[0x100033B8:word32] == 0 l100012DD
 l100012BF:
 	ecx = 0x100033B8
-	esp_118 = fp - 16
+	esp_118 = fp - 16_i
 	word32 edi_214
-	branch fn10001742(InterlockedCompareExchange, 0x100033AC, 0x00000002, out edx, out edi_214) == 0x00000000 l100012DD
+	branch fn10001742(InterlockedCompareExchange, 0x100033AC_p, 2, out edx, out edi_214) == 0 l100012DD
 l100012CE:
 	call Mem233[0x100033B8:word32] (retsize: 4;)
 		uses: ecx:ecx_240,edx:edx_242,Stack +0004:dwArg04,Stack +0008:edi_214,Stack +000C:dwArg0C,Stack +0024:dwArg04,Stack +0028:dwArg08,Stack +002C:dwArg0C
 		defs: ecx:ecx_240,edx:edx_242,esp:esp_238
 l100012DD:
-	Mem246[0x10003070:word32] = Mem244[0x10003070:word32] + 0x00000001
+	Mem246[0x10003070:word32] = Mem244[0x10003070:word32] + 1
 l1000137E:
-	eax_14 = 0x00000001
+	eax_14 = 1
 l1000128C:
-	eax_14 = 0x00000000
+	eax_14 = 0
 l10001381:
-	word32 esp_261 = esp_118 + 4
+	word32 esp_261 = esp_118 + 4_i
 	edi = Mem258[esp_118:word32]
 	esi = Mem258[esp_261:word32]
-	ebx = Mem258[esp_261 + 4:word32]
+	ebx = Mem258[esp_261 + 4_i:word32]
 l10001384:
 	ecxOut = ecx
 	edxOut = edx
@@ -214,7 +214,7 @@ l10001384:
 	return eax_14
 fn100011E9_exit:
 l10001264:
-	_amsg_exit(0x0000001F)
+	_amsg_exit(0x1F)
 
 
 word32 fn10001388(word32 ecx, word32 edx, word32 ebx, word32 esi, word32 edi)
@@ -226,115 +226,115 @@ word32 fn10001388(word32 ecx, word32 edx, word32 ebx, word32 esi, word32 edi)
 // Preserved: esp
 fn10001388_entry:
 l10001388:
-	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x00000010)
-	word32 ebx_113 = Mem7[ebp_13 + 0x00000008:word32]
-	Mem25[ebp_13 - 0x0000001C:word32] = 0x00000001
-	Mem27[ebp_13 - 0x00000004:word32] = 0x00000000
+	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10)
+	word32 ebx_113 = Mem7[ebp_13 + 8:word32]
+	Mem25[ebp_13 - 0x1C:word32] = 1
+	Mem27[ebp_13 - 4:word32] = 0
 	Mem28[0x10003008:word32] = edx
-	Mem29[ebp_13 - 0x00000004:word32] = 0x00000001
-	word32 esp_100 = fp - 8
+	Mem29[ebp_13 - 4:word32] = 1
+	word32 esp_100 = fp - 8_i
 	word32 edi_107 = ecx
 	word32 esi_110 = edx
-	branch edx != 0x00000000 l100013C3
+	branch edx != 0 l100013C3
 l100013B3:
-	branch Mem29[0x10003070:word32] != 0x00000000 l100013C3
+	branch Mem29[0x10003070:word32] != 0 l100013C3
 l100013C3:
-	branch edx == 0x00000001 l100013CC
+	branch edx == 1 l100013CC
 l100013C7:
-	branch edx != 0x00000002 l100013FA
+	branch edx != 2 l100013FA
 l100013CC:
-	branch Mem29[0x100020CC:word32] == 0x00000000 l100013DD
+	branch Mem29[0x100020CC:word32] == 0 l100013DD
 l100013D5:
 	word32 eax_69
 	call fn00000000 (retsize: 4;)
-		uses: ecx:0x00000000,edx:edx,Stack +0004:ebx_22,Stack +0008:edx,Stack +000C:ecx
+		uses: ecx:0,edx:edx,Stack +0004:ebx_22,Stack +0008:edx,Stack +000C:ecx
 		defs: eax:eax_69,esp:esp_66
-	Mem74[ebp_13 - 0x0000001C:word32] = eax_69
+	Mem74[ebp_13 - 0x1C:word32] = eax_69
 	dwLoc0C = ecx
 l100013DD:
-	branch Mem76[ebp_13 - 0x0000001C:word32] == 0x00000000 l1000147A
+	branch Mem76[ebp_13 - 0x1C:word32] == 0 l1000147A
 l100013E7:
-	word32 esp_80 = esp_100 - 4
+	word32 esp_80 = esp_100 - 4_i
 	Mem82[esp_80:word32] = ecx
-	Mem85[esp_80 - 4:word32] = edx
-	Mem88[esp_80 - 8:word32] = ebx_113
+	Mem85[esp_80 - 4_i:word32] = edx
+	Mem88[esp_80 - 8_i:word32] = ebx_113
 	word32 edx_291
 	word32 ecx_290
-	word32 eax_90 = fn100011E9(Mem88[esp_80 - 8:word32], Mem88[esp_80 - 4:word32], Mem88[esp_80:word32], out ecx_290, out edx_291, out ebx_113, out esi_110, out edi_107)
-	Mem101[ebp_13 - 0x0000001C:word32] = eax_90
-	esp_100 = esp_80 + 0x00000004
-	branch eax_90 == 0x00000000 l1000147A
+	word32 eax_90 = fn100011E9(Mem88[esp_80 - 8_i:word32], Mem88[esp_80 - 4_i:word32], Mem88[esp_80:word32], out ecx_290, out edx_291, out ebx_113, out esi_110, out edi_107)
+	Mem101[ebp_13 - 0x1C:word32] = eax_90
+	esp_100 = esp_80 + 4
+	branch eax_90 == 0 l1000147A
 l100013FA:
-	word32 esp_106 = esp_100 - 4
+	word32 esp_106 = esp_100 - 4_i
 	Mem108[esp_106:word32] = edi_107
-	Mem111[esp_106 - 4:word32] = esi_110
-	Mem114[esp_106 - 8:word32] = ebx_113
-	word32 eax_115 = fn100017C6(Mem114[esp_106 - 8:word32], Mem114[esp_106 - 4:word32])
-	Mem122[ebp_13 - 0x0000001C:word32] = eax_115
-	esp_100 = esp_106 + 0x00000004
-	branch esi_110 != 0x00000001 l1000142E
+	Mem111[esp_106 - 4_i:word32] = esi_110
+	Mem114[esp_106 - 8_i:word32] = ebx_113
+	word32 eax_115 = fn100017C6(Mem114[esp_106 - 8_i:word32], Mem114[esp_106 - 4_i:word32])
+	Mem122[ebp_13 - 0x1C:word32] = eax_115
+	esp_100 = esp_106 + 4
+	branch esi_110 != 1 l1000142E
 l1000140A:
-	branch eax_115 != 0x00000000 l1000142E
+	branch eax_115 != 0 l1000142E
 l1000140E:
 	Mem129[esp_106:word32] = edi_107
-	Mem131[esp_106 - 4:word32] = eax_115
-	Mem133[esp_106 - 8:word32] = ebx_113
-	fn100017C6(Mem133[esp_106 - 8:word32], Mem133[esp_106 - 4:word32])
+	Mem131[esp_106 - 4_i:word32] = eax_115
+	Mem133[esp_106 - 8_i:word32] = ebx_113
+	fn100017C6(Mem133[esp_106 - 8_i:word32], Mem133[esp_106 - 4_i:word32])
 	Mem141[esp_106:word32] = edi_107
-	Mem143[esp_106 - 4:word32] = 0x00000000
-	Mem145[esp_106 - 8:word32] = ebx_113
+	Mem143[esp_106 - 4_i:word32] = 0
+	Mem145[esp_106 - 8_i:word32] = ebx_113
 	word32 ecx_149
 	word32 edx_152
-	fn100011E9(Mem145[esp_106 - 8:word32], Mem145[esp_106 - 4:word32], Mem145[esp_106:word32], out ecx_149, out edx_152, out ebx_113, out esi_110, out edi_107)
-	esp_100 = esp_106 + 0x00000004
-	branch Mem145[0x100020CC:word32] == 0x00000000 l1000142E
+	fn100011E9(Mem145[esp_106 - 8_i:word32], Mem145[esp_106 - 4_i:word32], Mem145[esp_106:word32], out ecx_149, out edx_152, out ebx_113, out esi_110, out edi_107)
+	esp_100 = esp_106 + 4
+	branch Mem145[0x100020CC:word32] == 0 l1000142E
 l10001428:
 	Mem163[esp_106:word32] = edi_107
-	Mem165[esp_106 - 4:word32] = 0x00000000
-	Mem167[esp_106 - 8:word32] = ebx_113
+	Mem165[esp_106 - 4_i:word32] = 0
+	Mem167[esp_106 - 8_i:word32] = ebx_113
 	call fn00000000 (retsize: 4;)
 		uses: ecx:ecx_149,edx:edx_152,Stack +FFFFFFF8:dwLoc0C_272
 		defs: esp:esp_170
 l1000142E:
-	branch esi_110 == 0x00000000 l10001437
+	branch esi_110 == 0 l10001437
 l10001432:
-	branch esi_110 != 0x00000003 l1000147A
+	branch esi_110 != 3 l1000147A
 l10001437:
-	word32 esp_184 = esp_100 - 4
+	word32 esp_184 = esp_100 - 4_i
 	Mem187[esp_184:word32] = edi_107
-	Mem190[esp_184 - 4:word32] = esi_110
-	Mem194[esp_184 - 8:word32] = ebx_113
+	Mem190[esp_184 - 4_i:word32] = esi_110
+	Mem194[esp_184 - 8_i:word32] = ebx_113
 	word32 ebx_198
 	word32 ecx_199
 	word32 esi_200
 	word32 edi_201
 	word32 edx_202
-	word32 eax_197 = fn100011E9(Mem194[esp_184 - 8:word32], Mem194[esp_184 - 4:word32], Mem194[esp_184:word32], out ecx_199, out edx_202, out ebx_198, out esi_200, out edi_201)
-	esp_100 = esp_184 + 0x00000004
-	branch eax_197 != 0x00000000 l10001446
+	word32 eax_197 = fn100011E9(Mem194[esp_184 - 8_i:word32], Mem194[esp_184 - 4_i:word32], Mem194[esp_184:word32], out ecx_199, out edx_202, out ebx_198, out esi_200, out edi_201)
+	esp_100 = esp_184 + 4
+	branch eax_197 != 0 l10001446
 l10001443:
-	Mem214[ebp_13 - 0x0000001C:word32] = Mem194[ebp_13 - 0x0000001C:word32] & eax_197
+	Mem214[ebp_13 - 0x1C:word32] = Mem194[ebp_13 - 0x1C:word32] & eax_197
 l10001446:
-	branch Mem218[ebp_13 - 0x0000001C:word32] == 0x00000000 l1000147A
+	branch Mem218[ebp_13 - 0x1C:word32] == 0 l1000147A
 l1000144C:
-	branch Mem218[0x100020CC:word32] == 0x00000000 l1000147A
+	branch Mem218[0x100020CC:word32] == 0 l1000147A
 l10001455:
 	Mem228[esp_184:word32] = edi_201
-	Mem231[esp_184 - 4:word32] = esi_200
-	Mem234[esp_184 - 8:word32] = ebx_198
+	Mem231[esp_184 - 4_i:word32] = esi_200
+	Mem234[esp_184 - 8_i:word32] = ebx_198
 	word32 eax_244
 	call fn00000000 (retsize: 4;)
 		uses: ecx:ecx_199,edx:edx_202,Stack +FFFFFFF8:dwLoc0C_272
 		defs: eax:eax_244,esp:esp_241
-	Mem247[ebp_13 - 0x0000001C:word32] = eax_244
+	Mem247[ebp_13 - 0x1C:word32] = eax_244
 l100013BB:
-	Mem248[ebp_13 - 0x0000001C:word32] = 0x00000000
+	Mem248[ebp_13 - 0x1C:word32] = 0
 l1000147A:
-	Mem253[ebp_13 - 0x00000004:word32] = Mem250[ebp_13 - 0x00000004:word32] & 0x00000000
-	Mem256[ebp_13 - 0x00000004:word32] = 0xFFFFFFFE
+	Mem253[ebp_13 - 4:word32] = Mem250[ebp_13 - 4:word32] & 0
+	Mem256[ebp_13 - 4:word32] = 0xFFFFFFFE
 	fn10001493()
-	word32 eax_257 = Mem256[ebp_13 - 0x0000001C:word32]
-	fn1000182D(ebp_13, Mem256[esp_100 + -4:word32])
+	word32 eax_257 = Mem256[ebp_13 - 0x1C:word32]
+	fn1000182D(ebp_13, Mem256[esp_100 + -4_i:word32])
 	return eax_257
 fn10001388_exit:
 
@@ -362,7 +362,7 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // Preserved:
 DllMain_entry:
 l1000149E:
-	branch dwReason != 0x00000001 l100014AA
+	branch dwReason != 1 l100014AA
 l100014A5:
 	fn10001864()
 l100014AA:
@@ -381,49 +381,49 @@ fn100015CF_entry:
 l100015CF:
 	word32 eax_111
 	word32 esp_80
-	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x00000014)
+	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x14)
 	word32 eax_22 = _decode_pointer(Mem7[0x100033B4:word32])
-	Mem25[ebp_13 - 0x0000001C:word32] = eax_22
+	Mem25[ebp_13 - 0x1C:word32] = eax_22
 	branch eax_22 != 0xFFFFFFFF l100015FE
 l100015FE:
 	word32 esp_30
 	call lock (retsize: 4;)
-		uses: Stack +0004:0x00000008
+		uses: Stack +0004:8
 		defs: esp:esp_30
 	word32 ecx_35 = Mem29[esp_30:word32]
-	Mem38[ebp_13 - 0x00000004:word32] = Mem29[ebp_13 - 0x00000004:word32] & 0x00000000
+	Mem38[ebp_13 - 4:word32] = Mem29[ebp_13 - 4:word32] & 0
 	Mem43[esp_30:word32] = Mem38[0x100033B4:word32]
-	Mem45[ebp_13 - 0x0000001C:word32] = _decode_pointer(Mem43[esp_30:(ptr32 void)])
-	Mem48[esp_30 - 4:word32] = Mem45[0x100033B0:word32]
-	Mem50[ebp_13 - 0x00000020:word32] = _decode_pointer(Mem48[esp_30 - 4:(ptr32 void)])
-	Mem53[esp_30 - 8:word32] = ebp_13 - 0x00000020
-	Mem56[esp_30 - 12:word32] = ebp_13 - 0x0000001C
-	Mem59[esp_30 - 16:word32] = Mem56[ebp_13 + 0x00000008:word32]
-	word32 eax_60 = __dllonexit(Mem59[esp_30 - 16:_onexit_t], Mem59[esp_30 - 12:(ptr32 (ptr32 PVFV))], Mem59[esp_30 - 8:(ptr32 (ptr32 PVFV))])
-	Mem61[ebp_13 - 0x00000024:word32] = eax_60
-	Mem64[esp_30 - 20:word32] = Mem61[ebp_13 - 0x0000001C:word32]
+	Mem45[ebp_13 - 0x1C:word32] = _decode_pointer(Mem43[esp_30:(ptr32 void)])
+	Mem48[esp_30 - 4_i:word32] = Mem45[0x100033B0:word32]
+	Mem50[ebp_13 - 0x20:word32] = _decode_pointer(Mem48[esp_30 - 4_i:(ptr32 void)])
+	Mem53[esp_30 - 8_i:word32] = ebp_13 - 0x20
+	Mem56[esp_30 - 12_i:word32] = ebp_13 - 0x1C
+	Mem59[esp_30 - 16_i:word32] = Mem56[ebp_13 + 8:word32]
+	word32 eax_60 = __dllonexit(Mem59[esp_30 - 16_i:_onexit_t], Mem59[esp_30 - 12_i:(ptr32 (ptr32 PVFV))], Mem59[esp_30 - 8_i:(ptr32 (ptr32 PVFV))])
+	Mem61[ebp_13 - 0x24:word32] = eax_60
+	Mem64[esp_30 - 20_i:word32] = Mem61[ebp_13 - 0x1C:word32]
 	word32 esp_66
 	word32 eax_67
 	call encode_pointer (retsize: 4;)
-		uses: eax:eax_60,ecx:ecx_35,Stack +FFFFFFF8:0x00000008
+		uses: eax:eax_60,ecx:ecx_35,Stack +FFFFFFF8:8
 		defs: eax:eax_67,esp:esp_66
 	Mem71[0x100033B4:word32] = eax_67
-	Mem74[esp_66 - 4:word32] = Mem71[ebp_13 - 0x00000020:word32]
+	Mem74[esp_66 - 4_i:word32] = Mem71[ebp_13 - 0x20:word32]
 	word32 esp_75
 	word32 eax_76
 	call encode_pointer (retsize: 4;)
-		uses: Stack +FFFFFFF8:0x00000008
+		uses: Stack +FFFFFFF8:8
 		defs: eax:eax_76,esp:esp_75
 	Mem82[0x100033B0:word32] = eax_76
-	Mem83[ebp_13 - 0x00000004:word32] = 0xFFFFFFFE
+	Mem83[ebp_13 - 4:word32] = 0xFFFFFFFE
 	fn10001665()
-	esp_80 = esp_75 + 0x0000001C
-	eax_111 = Mem83[ebp_13 - 0x00000024:word32]
+	esp_80 = esp_75 + 0x1C
+	eax_111 = Mem83[ebp_13 - 0x24:word32]
 l100015F2:
-	eax_111 = _onexit(Mem25[ebp_13 + 0x00000008:word32])
-	esp_80 = fp - 8
+	eax_111 = _onexit(Mem25[ebp_13 + 8:word32])
+	esp_80 = fp - 8_i
 l1000165F:
-	fn1000182D(ebp_13, Mem95[esp_80 + -4:word32])
+	fn1000182D(ebp_13, Mem95[esp_80 + -4_i:word32])
 	return eax_111
 fn100015CF_exit:
 
@@ -438,7 +438,7 @@ void fn10001665()
 fn10001665_entry:
 l10001665:
 	call unlock (retsize: 4;)
-		uses: Stack +0004:0x00000008
+		uses: Stack +0004:8
 	return
 fn10001665_exit:
 
@@ -466,15 +466,15 @@ void fn10001680()
 // Preserved: edi esi esp
 fn10001680_entry:
 l10001680:
-	word32 esi_13 = 0x100021D8
+	word32 esi_13 = 0x100021D8_p
 	branch true l100016A1
 l10001692:
-	branch Mem9[esi_13:word32] == 0x00000000 l1000169A
+	branch Mem9[esi_13:word32] == 0 l1000169A
 l10001698:
 	call fn00000000 (retsize: 4;)
 l1000169A:
-	esi_13 = esi_13 + 0x00000004
-	branch esi_13 <u 0x100021D8 l10001692
+	esi_13 = esi_13 + 4
+	branch esi_13 <u 0x100021D8_p l10001692
 l100016A1:
 	return
 fn10001680_exit:
@@ -489,14 +489,14 @@ word32 fn100016D0(word32 dwArg04)
 // Preserved: esp
 fn100016D0_entry:
 l100016D0:
-	branch Mem0[dwArg04:word16] == 0x5A4D l100016DE
+	branch Mem0[dwArg04:word16] == 0x5A4D_16 l100016DE
 l100016DE:
-	word32 eax_9 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04
-	branch Mem0[eax_9:word32] != 0x00004550 l100016DB
+	word32 eax_9 = Mem0[dwArg04 + 0x3C:word32] + dwArg04
+	branch Mem0[eax_9:word32] != 0x4550 l100016DB
 l100016EB:
-	return (uint32) (uint8) (Mem0[eax_9 + 0x00000018:word16] == 0x010B)
+	return (uint32) (uint8) (Mem0[eax_9 + 0x18:word16] == 0x10B_16)
 l100016DB:
-	return 0x00000000
+	return 0
 fn100016D0_exit:
 
 
@@ -509,23 +509,23 @@ word32 fn10001700(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
 // Preserved: ebx edi esi esp
 fn10001700_entry:
 l10001700:
-	word32 ecx_7 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04
-	word32 esi_15 = (word32) Mem14[ecx_7 + 0x00000006:word16]
-	word32 edx_16 = 0x00000000
-	word32 eax_22 = (word32) Mem0[ecx_7 + 0x00000014:word16] + 0x00000018 + ecx_7
-	branch esi_15 <=u 0x00000000 l1000173C
+	word32 ecx_7 = Mem0[dwArg04 + 0x3C:word32] + dwArg04
+	word32 esi_15 = (word32) Mem14[ecx_7 + 6:word16]
+	word32 edx_16 = 0
+	word32 eax_22 = (word32) Mem0[ecx_7 + 0x14:word16] + 0x18 + ecx_7
+	branch esi_15 <=u 0 l1000173C
 l1000171E:
 l10001722:
-	word32 ecx_28 = Mem21[eax_22 + 0x0000000C:word32]
+	word32 ecx_28 = Mem21[eax_22 + 0xC:word32]
 	branch dwArg08 <u ecx_28 l10001732
 l10001729:
-	branch dwArg08 <u Mem21[eax_22 + 0x00000008:word32] + ecx_28 l1000173E
+	branch dwArg08 <u Mem21[eax_22 + 8:word32] + ecx_28 l1000173E
 l10001732:
-	edx_16 = edx_16 + 0x00000001
-	eax_22 = eax_22 + 0x00000028
+	edx_16 = edx_16 + 1
+	eax_22 = eax_22 + 0x28
 	branch edx_16 <u esi_15 l10001722
 l1000173C:
-	eax_22 = 0x00000000
+	eax_22 = 0
 l1000173E:
 	edxOut = edx_16
 	return eax_22
@@ -542,22 +542,22 @@ word32 fn10001742(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ed
 fn10001742_entry:
 l10001742:
 	word32 eax_59
-	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x00000008)
-	Mem19[ebp_13 - 0x00000004:word32] = Mem7[ebp_13 - 0x00000004:word32] & 0x00000000
-	word32 edx_22 = 0x10000000
-	word32 dwLoc0C_84 = 0x10000000
-	branch fn100016D0(0x10000000) == 0x00000000 l1000179F
+	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 8)
+	Mem19[ebp_13 - 4:word32] = Mem7[ebp_13 - 4:word32] & 0
+	word32 edx_22 = 0x10000000_p
+	word32 dwLoc0C_84 = 0x10000000_p
+	branch fn100016D0(0x10000000_p) == 0 l1000179F
 l10001762:
-	word32 eax_36 = Mem24[ebp_13 + 0x00000008:word32]
-	dwLoc0C_84 = eax_36 - 0x10000000
-	word32 eax_43 = fn10001700(0x10000000, eax_36 - 0x10000000, out edx_22)
-	branch eax_43 == 0x00000000 l1000179F
+	word32 eax_36 = Mem24[ebp_13 + 8:word32]
+	dwLoc0C_84 = eax_36 - 0x10000000_p
+	word32 eax_43 = fn10001700(0x10000000_p, eax_36 - 0x10000000_p, out edx_22)
+	branch eax_43 == 0 l1000179F
 l1000179F:
-	Mem58[ebp_13 - 0x00000004:word32] = 0xFFFFFFFE
-	eax_59 = 0x00000000
+	Mem58[ebp_13 - 4:word32] = 0xFFFFFFFE
+	eax_59 = 0
 l10001774:
-	eax_59 = ~(Mem42[eax_43 + 0x00000024:word32] >>u 0x0000001F) & 0x00000001
-	Mem68[ebp_13 - 0x00000004:word32] = 0xFFFFFFFE
+	eax_59 = ~(Mem42[eax_43 + 0x24:word32] >>u 0x1F) & 1
+	Mem68[ebp_13 - 4:word32] = 0xFFFFFFFE
 l100017A8:
 	word32 edi_78 = fn1000182D(ebp_13, dwLoc0C_84)
 	edxOut = edx_22
@@ -575,13 +575,13 @@ word32 fn100017C6(word32 dwArg04, word32 dwArg08)
 // Preserved: esp
 fn100017C6_entry:
 l100017C6:
-	branch dwArg08 != 0x00000001 l100017E0
+	branch dwArg08 != 1 l100017E0
 l100017CD:
-	branch Mem0[0x100020CC:word32] != 0x00000000 l100017E0
+	branch Mem0[0x100020CC:word32] != 0 l100017E0
 l100017D6:
 	DisableThreadLibraryCalls(dwArg04)
 l100017E0:
-	return 0x00000001
+	return 1
 fn100017C6_exit:
 
 
@@ -594,14 +594,14 @@ word32 fn100017E8(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwA
 // Preserved: esp
 fn100017E8_entry:
 l100017E8:
-	word32 esp_14 = fp - 8 - dwArg08
-	Mem17[esp_14 - 4:word32] = ebx
-	Mem20[esp_14 - 8:word32] = esi
-	Mem23[esp_14 - 12:word32] = edi
-	Mem32[esp_14 - 16:word32] = Mem23[0x10003000:word32] ^ fp + 0x00000008
-	Mem36[esp_14 - 20:word32] = dwArg00
-	Mem41[fs:0x00000000:word32] = fp - 0x00000008
-	return fp + 0x00000008
+	word32 esp_14 = fp - 8_i - dwArg08
+	Mem17[esp_14 - 4_i:word32] = ebx
+	Mem20[esp_14 - 8_i:word32] = esi
+	Mem23[esp_14 - 12_i:word32] = edi
+	Mem32[esp_14 - 16_i:word32] = Mem23[0x10003000:word32] ^ fp + 8
+	Mem36[esp_14 - 20_i:word32] = dwArg00
+	Mem41[fs:0:word32] = fp - 8
+	return fp + 8
 fn100017E8_exit:
 
 
@@ -614,7 +614,7 @@ word32 fn1000182D(word32 ebp, word32 dwArg00)
 // Preserved:
 fn1000182D_entry:
 l1000182D:
-	Mem8[fs:0x00000000:word32] = Mem0[ebp - 0x00000010:word32]
+	Mem8[fs:0x0_p:word32] = Mem0[ebp - 0x10:word32]
 	Mem22[ebp:word32] = dwArg00
 	return dwArg08
 fn1000182D_exit:
@@ -632,17 +632,17 @@ l10001864:
 	word32 eax_9 = Mem6[0x10003000:word32]
 	branch eax_9 == 0xBB40E64E l10001894
 l10001887:
-	branch (eax_9 & 0xFFFF0000) == 0x00000000 l10001894
+	branch (eax_9 & 0xFFFF0000) == 0 l10001894
 l10001894:
-	GetSystemTimeAsFileTime(fp - 0x0000000C)
-	word32 esi_46 = dwLoc08 & 0x00000000 ^ dwLoc0C & 0x00000000 ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount()
-	QueryPerformanceCounter(fp - 0x00000014)
+	GetSystemTimeAsFileTime(fp - 0xC)
+	word32 esi_46 = dwLoc08 & 0 ^ dwLoc0C & 0 ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount()
+	QueryPerformanceCounter(fp - 0x14)
 	word32 esi_54 = esi_46 ^ (dwLoc10 ^ dwLoc14)
 	branch esi_54 != 0xBB40E64E l100018DA
 l100018DA:
-	branch (esi_54 & 0xFFFF0000) != 0x00000000 l100018E5
+	branch (esi_54 & 0xFFFF0000) != 0 l100018E5
 l100018DE:
-	esi_54 = esi_54 | esi_54 << 0x00000010
+	esi_54 = esi_54 | esi_54 << 0x10
 l100018D3:
 	esi_54 = 0xBB40E64F
 l100018E5:

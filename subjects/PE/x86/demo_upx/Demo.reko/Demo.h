@@ -12,19 +12,19 @@ Eq_2: (fn void (Eq_4))
 Eq_4: (union "Eq_4" (int32 u0) (UINT u1))
 	T_4 (in uExitCode : UINT)
 	T_10 (in uType : UINT)
-	T_14 (in 0x00000000 : word32)
-	T_15 (in MessageBoxA(null, &globals->t403000, &globals->t403007, 0x00000000) : int32)
+	T_14 (in 0_32 : word32)
+	T_15 (in MessageBoxA(null, &globals->t403000, &globals->t403007, 0_32) : int32)
 Eq_5: (fn Eq_4 (Eq_7, Eq_8, Eq_8, Eq_4))
 	T_5 (in MessageBoxA : ptr32)
 	T_6 (in signature of MessageBoxA : void)
 Eq_7: HWND
 	T_7 (in hWnd : HWND)
-	T_11 (in 0x00000000 : word32)
+	T_11 (in 0_32 : word32)
 Eq_8: LPCSTR
 	T_8 (in lpText : LPCSTR)
 	T_9 (in lpCaption : LPCSTR)
-	T_12 (in 0x00403000 : word32)
-	T_13 (in 0x00403007 : word32)
+	T_12 (in 0x403000_32 : word32)
+	T_13 (in 0x403007_32 : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -66,27 +66,27 @@ T_10: (in uType : UINT)
   Class: Eq_4
   DataType: Eq_4
   OrigDataType: 
-T_11: (in 0x00000000 : word32)
+T_11: (in 0_32 : word32)
   Class: Eq_7
   DataType: Eq_7
   OrigDataType: HWND
-T_12: (in 0x00403000 : word32)
+T_12: (in 0x403000_32 : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: LPCSTR
-T_13: (in 0x00403007 : word32)
+T_13: (in 0x403007_32 : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: LPCSTR
-T_14: (in 0x00000000 : word32)
+T_14: (in 0_32 : word32)
   Class: Eq_4
   DataType: int32
   OrigDataType: UINT
-T_15: (in MessageBoxA(null, &globals->t403000, &globals->t403007, 0x00000000) : int32)
+T_15: (in MessageBoxA(null, &globals->t403000, &globals->t403007, 0_32) : int32)
   Class: Eq_4
   DataType: Eq_4
   OrigDataType: (union (int32 u0) (UINT u2))
-T_16: (in ExitProcess(MessageBoxA(null, &globals->t403000, &globals->t403007, 0x00000000)) : void)
+T_16: (in ExitProcess(MessageBoxA(null, &globals->t403000, &globals->t403007, 0_32)) : void)
   Class: Eq_16
   DataType: void
   OrigDataType: void

@@ -7,14 +7,14 @@
 word32 g_dwFFFFFFFF;
 Eq_n g_t10000000 = 
 	{
-		0x5A4D,
-		0x000000F0,
+		23117,
+		0xF0,
 	};
 Eq_n g_t10002098 = null;
 Eq_n g_t1000209C = null;
 Eq_n g_t100020A0 = null;
-word32 g_dw100020A8 = 0x00000000;
-word32 g_dw100020CC = 0x00000000;
+word32 g_dw100020A8 = 0x00;
+word32 g_dw100020CC = 0x00;
 char g_str100020E0[] = "fdiv(a, b) = a / b";
 char g_str100020F4[] = "fdiv";
 char g_str100020FC[] = "div(a, b) = a / b";
@@ -33,53 +33,53 @@ char g_str1000216C[] = ":unused";
 char g_str10002174[] = "pySample";
 word32 g_a100021D8[1] = 
 	{
-		0x00000000,
+		0x00,
 	};
 ui32 g_dw10003000 = 0xBB40E64E;
-ui32 g_dw10003004 = 0x44BF19B1;
-Eq_n g_t10003008 = 0xFFFFFFFF;
+ui32 g_dw10003004 = 1153374641;
+Eq_n g_t10003008 = ~0x00;
 PyMethodDef g_methods[5] = 
 	{
 		
 		{
 			&g_str10002140,
 			fn10001000,
-			1,
+			0x01,
 			&g_str1000212C,
 		},
 		
 		{
 			&g_str10002128,
 			fn10001050,
-			1,
+			0x01,
 			&g_str10002114,
 		},
 		
 		{
 			&g_str10002110,
 			fn100010A0,
-			1,
+			0x01,
 			&g_str100020FC,
 		},
 		
 		{
 			&g_str100020F4,
 			fn100010F0,
-			1,
+			0x01,
 			&g_str100020E0,
 		},
 		
 		{
 			null,
 			null,
-			0,
+			0x00,
 			null,
 		},
 	};
-int32 g_dw10003070 = 0;
+int32 g_dw10003070 = 0x00;
 word32 * g_ptr100033A4 = null;
-word32 g_dw100033A8 = 0x00000000;
-Eq_n g_t100033AC = 0;
+word32 g_dw100033A8 = 0x00;
+Eq_n g_t100033AC = 0x00;
 word32 * g_ptr100033B0 = null;
 word32 * g_ptr100033B4 = null;
 <anonymous> * g_ptr100033B8 = null;

@@ -192,7 +192,7 @@ namespace Reko.Core.Types
 
         public void Emit(string fnName, EmitFlags f, Formatter fmt)
         {
-            Emit(fnName, f, fmt, new CodeFormatter(fmt), new TypeReferenceFormatter(fmt));
+            Emit(fnName, f, fmt, new CodeFormatter(fmt, 0, 0), new TypeReferenceFormatter(fmt));
         }
 
         public void Emit(string fnName, EmitFlags f, Formatter fmt, CodeFormatter w, TypeReferenceFormatter t)
@@ -260,7 +260,7 @@ namespace Reko.Core.Types
         {
             var sw = new StringWriter();
             var f = new TextFormatter(sw);
-            var cf = new CodeFormatter(f);
+            var cf = new CodeFormatter(f, 0, 0);
             var tf = new TypeReferenceFormatter(f);
             Emit(name, flags, f, cf, tf);
             return sw.ToString();

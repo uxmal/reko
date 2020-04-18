@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Structure
             sb.WriteLine("{0}()", proc.Name);
             sb.WriteLine("{");
 
-            CodeFormatter cf = new CodeFormatter(new TextFormatter(sb));
+            CodeFormatter cf = proc.CreateCodeFormatter(new TextFormatter(sb));
             cf.WriteStatementList(proc.Body);
 
             sb.WriteLine("}");

@@ -101,6 +101,7 @@ namespace Reko.Analysis
         public void AnalyzeProgram()
         {
             UntangleProcedures();
+            if (eventListener.IsCanceled()) return;
             BuildExpressionTrees();
         }
 
@@ -124,6 +125,7 @@ namespace Reko.Analysis
             ssts = RewriteProceduresToSsa();
             if (eventListener.IsCanceled())
                 return ssts;
+            if (eventListener.IsCanceled()) return ssts;
 
             // Recreate user-defined signatures. It should prevent type
             // inference between user-defined parameters and other expressions
@@ -181,10 +183,12 @@ namespace Reko.Analysis
             var ssts = procs.Select(ConvertToSsa).ToArray();
             this.ssts.AddRange(ssts);
             DumpWatchedProcedure("After extra stack vars", ssts);
+            if (eventListener.IsCanceled()) return;
 
             // At this point, the computation of ProcedureFlow is possible.
             var trf = new TrashedRegisterFinder(program, flow, ssts, this.eventListener);
             trf.Compute();
+            if (eventListener.IsCanceled()) return;
 
             // New stack based variables may be available now.
             foreach (var sst in ssts)

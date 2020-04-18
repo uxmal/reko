@@ -8,14 +8,14 @@ struct Eq_n * g_ptr0000;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-ptr32 g_ptr1494 = 0x00000000;
+ptr32 g_ptr1494 = 0x00;
 struct Eq_n * g_ptr1498 = null;
 struct Eq_n * g_ptr149C = null;
 struct Eq_n * g_ptr14A0 = null;
 struct Eq_n * g_ptr14A4 = null;
 Eq_n g_t14A8 = 
 	{
-		0
+		0x00
 	};
 Eq_n g_t14AC;
 Eq_n g_t14B0;

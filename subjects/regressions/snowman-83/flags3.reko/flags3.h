@@ -15,31 +15,31 @@ T_2: (in rdi : (ptr64 word32))
   Class: Eq_2
   DataType: (ptr64 word32)
   OrigDataType: (ptr64 (struct (0 T_5 t0000)))
-T_3: (in 0x0000000000000000 : word64)
+T_3: (in 0_64 : word64)
   Class: Eq_3
   DataType: word64
   OrigDataType: word64
-T_4: (in rdi + 0x0000000000000000 : word64)
+T_4: (in rdi + 0_64 : word64)
   Class: Eq_4
   DataType: word64
   OrigDataType: word64
-T_5: (in Mem0[rdi + 0x0000000000000000:word32] : word32)
+T_5: (in Mem0[rdi + 0_64:word32] : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in (uint64) Mem0[rdi + 0x0000000000000000:word32] : uint64)
+T_6: (in (uint64) Mem0[rdi + 0_64:word32] : uint64)
   Class: Eq_6
   DataType: uint64
   OrigDataType: uint64
-T_7: (in SLICE((uint64) Mem0[rdi + 0x0000000000000000:word32], word32, 0) : word32)
+T_7: (in SLICE((uint64) Mem0[rdi + 0_64:word32], word32, 0) : word32)
   Class: Eq_7
   DataType: int32
   OrigDataType: int32
-T_8: (in 0x00000101 : word32)
+T_8: (in 0x101_32 : word32)
   Class: Eq_7
   DataType: int32
   OrigDataType: int32
-T_9: (in (word32) (uint64) *rdi < 0x00000101 : bool)
+T_9: (in (word32) (uint64) *rdi < 0x101_32 : bool)
   Class: Eq_9
   DataType: bool
   OrigDataType: bool

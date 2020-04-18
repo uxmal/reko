@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ namespace Reko.Core
 		{
 			var sw = new StringWriter();
             var fmt = new TextFormatter(sw);
-            var cf = new CodeFormatter(fmt);
+            var cf = new CodeFormatter(fmt, 0, 0);
             var tf = new TypeReferenceFormatter(fmt);
 			Signature.Emit(Name, FunctionType.EmitFlags.ArgumentKind, fmt, cf, tf);
 			return sw.ToString();
