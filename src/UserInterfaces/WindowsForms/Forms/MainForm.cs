@@ -59,8 +59,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.dm.MainToolbar.Text = "";
             this.dm.MainToolbar.ImageList = this.ImageList;
             this.dm.ProjectBrowserToolbar.ImageList = this.ImageList;
-            this.AddMenuStrip(dm.MainMenu);
             this.AddToolbar(dm.MainToolbar);
+            this.AddMenuStrip(dm.MainMenu);
             this.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
 
             this.ToolBar.ItemClicked += toolBar_ItemClicked;
