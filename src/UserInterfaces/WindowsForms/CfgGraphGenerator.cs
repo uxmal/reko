@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Microsoft.Msagl.Core.Geometry.Curves;
-using Microsoft.Msagl.Drawing;
+//using Microsoft.Msagl.Core.Geometry.Curves;
+//using Microsoft.Msagl.Drawing;
 using Reko.Core;
 using Reko.Core.Output;
 using Reko.Gui;
@@ -32,6 +32,7 @@ using System;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
+#if USE_MSAGL
     public class CfgGraphGenerator
     {
         private Graph graph;
@@ -127,4 +128,5 @@ namespace Reko.UserInterfaces.WindowsForms
             return tsf.GetModel();
         }
     }
+#endif
 }

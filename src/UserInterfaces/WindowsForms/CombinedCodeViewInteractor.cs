@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Microsoft.Msagl.Core.Geometry;
-using Microsoft.Msagl.Drawing;
-using Microsoft.Msagl.GraphViewerGdi;
+//using Microsoft.Msagl.Core.Geometry;
+//using Microsoft.Msagl.Drawing;
+//using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Output;
@@ -51,7 +51,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private SortedList<Address, MixedCodeDataModel.DataItemNode> nodeByAddress;
         private NestedTextModel nestedTextModel;
-        private GViewer gViewer;
+        //private GViewer gViewer;
+        private Label gViewer;
 
         private DeclarationFormInteractor declarationFormInteractor;
         private CommentFormInteractor commentFormInteractor;
@@ -235,6 +236,11 @@ namespace Reko.UserInterfaces.WindowsForms
             this.combinedCodeView.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.combinedCodeView.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
 
+            this.gViewer = new Label();
+            this.gViewer.Dock = DockStyle.Fill;
+            this.gViewer.AutoSize = false;
+            this.gViewer.Text = "Graphs will be available in a future release.";
+#if USE_MSAGL
             this.gViewer = new GViewer();
             this.gViewer.Dock = DockStyle.Fill;
             this.gViewer.Visible = false;
@@ -256,7 +262,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var iViewer = (IViewer)gViewer;
             iViewer.MouseUp += IViewer_MouseUp;
             iViewer.MouseDown += IViewer_MouseDown;
-
+#endif
             this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.combinedCodeView);
 
@@ -487,7 +493,9 @@ namespace Reko.UserInterfaces.WindowsForms
             using (var g = combinedCodeView.CreateGraphics())
             {
                 var uiPreferences = services.RequireService<IUiPreferencesService>();
+#if USE_MSAGL
                 gViewer.Graph = CfgGraphGenerator.Generate(uiPreferences, proc, g, combinedCodeView.Font);
+#endif
             }
             combinedCodeView.Visible = false;
             gViewer.Visible = true;
@@ -496,7 +504,9 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void ViewCode()
         {
+#if USE_MSGAGL
             gViewer.Graph = null;
+#endif
             gViewer.Visible = false;
             combinedCodeView.Visible = true;
             combinedCodeView.BringToFront();
@@ -622,6 +632,7 @@ namespace Reko.UserInterfaces.WindowsForms
             UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress, addr);
         }
 
+#if USE_MSAGL
         private void GViewer_KeyDown(object sender, KeyEventArgs e)
         {
             Debug.Print("{0} {1:X} {2}", e.KeyCode, e.KeyValue, e.KeyData);
@@ -663,6 +674,6 @@ namespace Reko.UserInterfaces.WindowsForms
             var blockData = userObj.UserData as CfgBlockNode;
 			Debug.Print("Node: {0}", blockData.Block.Name);
         }
-
+#endif
     }
 }

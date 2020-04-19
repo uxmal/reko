@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Microsoft.Msagl.Drawing;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -28,6 +27,9 @@ using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
+#if USE_MSAGL
+    using Microsoft.Msagl.Drawing;
+
     public class CallGraphGenerator
     {
         private Graph graph;
@@ -86,4 +88,5 @@ namespace Reko.UserInterfaces.WindowsForms
             return node;
         }
     }
+#endif
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
 using Reko.Gui;
 using System;
@@ -39,7 +38,8 @@ namespace Reko.UserInterfaces.WindowsForms
             this.program = program;
         }
 
-        public GViewer Control { get; private set; }
+        //public GViewer Control { get; private set; }
+        public Label Control { get; private set; }
         public IWindowFrame Frame { get; set; }
 
         public void Close()
@@ -53,12 +53,19 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public object CreateControl()
         {
+#if USE_MSAGL
             this.Control = new GViewer();
             this.Control.Dock = DockStyle.Fill;
             this.Control.Visible = true;
             this.Control.PanButtonPressed = true;
             this.Control.ToolBarIsVisible = true;
             this.Control.Graph = CallGraphGenerator.Generate(program);
+            return Control;
+#endif
+            this.Control = new Label();
+            this.Control.Dock = DockStyle.Fill;
+            this.Control.AutoSize = false;
+            this.Control.Text = "Graph drawing will be available in future releases.";
             return Control;
         }
 

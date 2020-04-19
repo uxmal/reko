@@ -18,18 +18,19 @@
  */
 #endregion
 
-using Microsoft.Msagl.Core.Geometry.Curves;
-using Microsoft.Msagl.Drawing;
+//using Microsoft.Msagl.Core.Geometry.Curves;
+//using Microsoft.Msagl.Drawing;
 using Reko.Core;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using P2 = Microsoft.Msagl.Core.Geometry.Point;
+//using P2 = Microsoft.Msagl.Core.Geometry.Point;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
+#if USE_MSAGL
     public class CfgBlockNode
     {
         public IUiPreferencesService UiPreferences { get; set; }
@@ -127,7 +128,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         static internal PointF PointF(P2 p) { return new PointF((float)p.X, (float)p.Y); }
 
-
     }
+#endif
 
 }

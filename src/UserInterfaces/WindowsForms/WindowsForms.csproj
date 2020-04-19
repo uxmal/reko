@@ -2,12 +2,12 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.UserInterfaces.WindowsForms</RootNamespace>
     <AssemblyName>Reko.UserInterfaces.WindowsForms</AssemblyName>
-    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +32,7 @@
     <ProjectReference Include="..\..\Gui\Gui.csproj" />
   </ItemGroup>
   <ItemGroup>
+<!-- MSAGL is not compatible with netcoreapp3.1
     <Reference Include="Microsoft.Msagl">
       <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.dll</HintPath>
     </Reference>
@@ -41,6 +42,7 @@
     <Reference Include="Microsoft.Msagl.GraphViewerGdi">
       <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
     </Reference>
+-->
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 </Project>
