@@ -3,7 +3,6 @@
   <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <!-- <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers> -->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -89,12 +88,6 @@
     <ProjectReference Include="..\..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
 
-    <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
-  <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
-    <ItemGroup>
-      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\netcoreapp3.1\$(AssemblyName).exe" />
-    </ItemGroup>
-  </Target>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>

@@ -97,12 +97,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
-  <!-- Workaround found at https://github.com/wixtoolset/issues/issues/5705 -->
-  <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
-    <ItemGroup>
-      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\netcoreapp3.1\$(AssemblyName).exe" />
-    </ItemGroup>
-  </Target>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj" />
     <ProjectReference Include="..\..\Arch\Arc\Arc.csproj" />
