@@ -25,7 +25,7 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
   </ItemGroup>
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Msbuild Projects="$(ProjectDir)..\tools\xslt\xslt.csproj" Properties="Configuration=$(Configuration);TargetFramework=netcoreapp3.1" />
+    <Msbuild Projects="$(ProjectDir)..\tools\xslt\xslt.csproj" RemoveProperties="TargetFramework" />
     <Message Importance="high" Text="Generating C# files for Gui.csproj" />
     <Message Importance="high" Text="xslt.exe exists" Condition="Exists('$(ProjectDir)../tools/xslt.exe')" />
     <!--

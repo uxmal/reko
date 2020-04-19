@@ -20,7 +20,7 @@
     <TranslateHeader Include="msvcrt.inc" />
   </ItemGroup>
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
-    <Msbuild Projects="$(ProjectDir)..\..\tools\c2xml\c2xml.csproj" Properties="Configuration=$(Configuration);TargetFramework=netcoreapp3.1" />
+    <Msbuild Projects="$(ProjectDir)..\..\tools\c2xml\c2xml.csproj" RemoveProperties="TargetFramework" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
     <Copy SourceFiles="$(ProjectDir)..\..\Arch\X86\bin\$(Configuration)\netstandard2.1\Reko.Arch.X86.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
     <Exec Condition=" '$(OS)' == 'Unix' " Command="dotnet &quot;$(ProjectDir)../../tools/c2xml.dll&quot; -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
