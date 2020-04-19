@@ -2,8 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- dotnet restore goes into this project; doesn't seem to be a way to stop it. -->
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'!='Core'">netcoreapp3.1</TargetFrameworks>
-    <TargetFrameworks Condition="'$(MSBuildRuntimeType)'=='Core'">netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
