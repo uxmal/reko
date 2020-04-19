@@ -48,28 +48,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public Dictionary<string, Dictionary<int, CommandID>> KeyBindings { get; set; }
 
-		public void BuildMenu(SortedList menu, IList m)
-		{
-			bool separator = false;
-			foreach (SortedList group in menu.Values)
-			{
-				if (group.Count == 0)
-					continue;
-				if (separator)
-					m.Add(new CommandMenuItem("-"));
-				separator = true;
-				foreach (CommandMenuItem cmi in group.Values)
-				{
-					CommandMenuItem cmiNew = (cmi.MenuCommand != null)
-						? new CommandMenuItem(cmi.Text, cmi.MenuCommand.CommandID.Guid, cmi.MenuCommand.CommandID.ID)
-						: cmi;
-					cmiNew.IsDynamic = cmi.IsDynamic;
-					cmiNew.DropDownOpening += new EventHandler(subMenu_Popup);
-					cmiNew.Click += new CommandMenuEventHandler(item_Click);
-					m.Add(cmiNew);
-				}
-			}
-		}
+
 
         public void AddBinding(string windowKey, Guid cmdSet, int id, int key, int modifiers)
         {
@@ -87,7 +66,30 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             bindingList[key] = new CommandID(cmdSet, id);
         }
 
-        public void BuildMenu(SortedList menu, ToolStripItemCollection items)
+        public void BuildMenu(SortedList menu, IList m)
+        {
+            bool separator = false;
+            foreach (SortedList group in menu.Values)
+            {
+                if (group.Count == 0)
+                    continue;
+                if (separator)
+                    m.Add(new ToolStripSeparator());
+                separator = true;
+                foreach (CommandMenuItem cmi in group.Values)
+                {
+                    CommandMenuItem cmiNew = (cmi.MenuCommand != null)
+                        ? new CommandMenuItem(cmi.Text, cmi.MenuCommand.CommandID.Guid, cmi.MenuCommand.CommandID.ID)
+                        : cmi;
+                    cmiNew.IsDynamic = cmi.IsDynamic;
+                    cmiNew.DropDownOpening += new EventHandler(subMenu_Popup);
+                    cmiNew.Click += new CommandMenuEventHandler(item_Click);
+                    m.Add(cmiNew);
+                }
+            }
+        }
+
+        public void BuildToolMenu(SortedList menu, ToolStripItemCollection items)
         {
             foreach (SortedList group in menu.Values)
             {
@@ -159,8 +161,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 		protected void subMenu_Popup(object sender, EventArgs e)
 		{
-			SetStatusForMenuItems(((ToolStrip) sender).Items);
+			SetStatusForMenuItems(((ToolStripDropDownItem) sender).DropDownItems);
 		}
+
+        protected void ctxMenu_Popup(object sender, EventArgs e)
+        {
+            SetStatusForMenuItems(((ContextMenuStrip) sender).Items);
+        }
 
 		private void item_Click(object sender, CommandMenuEventArgs e)
 		{

@@ -95,21 +95,24 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 			</when>
       <when test="@type='ContextMenu'">
 				<call-template name="build-menu">
-					<with-param name="menuType" select="'System.Windows.Forms.ContextMenuStrip'"/>
+          <with-param name="methodName" select="'BuildMenu'" />
+          <with-param name="menuType" select="'System.Windows.Forms.ContextMenuStrip'"/>
           <with-param name="menuName" select="@id"/>
           <with-param name="itemCollectionName" select="'Items'"/>
         </call-template>
-        this.<value-of select="@id"/>.Opening += subMenu_Popup;
+        this.<value-of select="@id"/>.Opening += ctxMenu_Popup;
       </when>
       <when test="@type='MainMenu'">
 				<call-template name="build-menu">
-					<with-param name="menuType" select="'System.Windows.Forms.MenuStrip'"/>
+          <with-param name="methodName" select="'BuildMenu'" />
+          <with-param name="menuType" select="'System.Windows.Forms.MenuStrip'"/>
 					<with-param name="menuName" select="@id"/>
           <with-param name="itemCollectionName" select="'Items'"/>
         </call-template>
       </when>
       <when test="@type='ToolStrip'">
           <call-template name="build-menu">
+            <with-param name="methodName" select="'BuildToolMenu'" />
             <with-param name="menuType" select="'System.Windows.Forms.ToolStrip'"/>
             <with-param name="menuName" select="@id"/>
             <with-param name="itemCollectionName" select="'Items'"/>
@@ -154,11 +157,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
   </template>
   
   <template name="build-menu">
+  <param name="methodName" />
 	<param name="menuType"/>
 	<param name="menuName"/>
     <param name="itemCollectionName"/>
 			this.<value-of select="$menuName"/> = new <value-of select="$menuType"/>();
-			BuildMenu(sl<value-of select="$menuName"/>, <value-of select="$menuName"/>.<value-of select="$itemCollectionName"/>);
+			<value-of select="$methodName"/>(sl<value-of select="$menuName"/>, <value-of select="$menuName"/>.<value-of select="$itemCollectionName"/>);
   </template>
   
   <template name="priority">
