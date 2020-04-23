@@ -1,0 +1,94 @@
+void fn0000000000001460()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: x0 x1 x16 x17 x2 x29 x3 x30 x4 x5 x6
+// Preserved: sp
+fn0000000000001460_entry:
+l0000000000001460:
+	fn0000000000000E70()
+	fn0000000000000EC0()
+	branch Mem0[0x000000000001FFD0:word64] == 0x0000000000000000 l00000000000014A8
+l00000000000014A8:
+	return
+l00000000000014A0_thunk_fn00000000000014A4:
+	fn00000000000014A4()
+	return
+fn0000000000001460_exit:
+
+
+void fn0000000000001498()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: x0 x16 x17
+// Preserved: sp
+fn0000000000001498_entry:
+l0000000000001498:
+	branch Mem0[0x000000000001FFD0:word64] == 0x0000000000000000 l00000000000014A8_in_fn0000000000001498
+l00000000000014A8_in_fn0000000000001498:
+	return
+l00000000000014A0_thunk_fn00000000000014A4:
+	fn00000000000014A4()
+	return
+fn0000000000001498_exit:
+
+
+void fn00000000000014A4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: x16 x17
+// Preserved: sp
+fn00000000000014A4_entry:
+l00000000000014A4:
+l0000000000000EB0:
+	call Mem0[0x000000000001FF08:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF08
+	return
+fn00000000000014A4_exit:
+
+
+void fn00000000000014B0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: NZCV x0 x1 x31
+// Preserved: sp
+fn00000000000014B0_entry:
+l00000000000014B0:
+	branch 0x0000000000020008 - 0x0000000000020008 == 0x0000000000000000 l00000000000014D8
+l00000000000014C8:
+	word64 x1_12 = Mem0[0x000000000001FFA0:word64]
+	branch x1_12 == 0x0000000000000000 l00000000000014D8
+l00000000000014D8:
+	return
+l00000000000014D4:
+	call x1_12 (retsize: 0;)
+	return
+fn00000000000014B0_exit:
+
+
+void fn0000000000001740()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: x1 x16 x17 x2
+// Preserved: sp
+fn0000000000001740_entry:
+l0000000000001740:
+	branch Mem0[0x000000000001FFD8:word64] == 0x0000000000000000 l0000000000001754
+l0000000000001750:
+l0000000000001754:
+l0000000000000E00:
+	call Mem0[0x000000000001FEB0:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEB0
+	return
+fn0000000000001740_exit:
+
+
