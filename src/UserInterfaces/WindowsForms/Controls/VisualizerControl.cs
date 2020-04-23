@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -145,6 +145,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            if (Width <= 0 || Height <= 0)
+                return;
             using (var bmp = new Bitmap(Width, Height, e.Graphics))
             using (var g = Graphics.FromImage(bmp))
             using (var bytesImage = RenderVisualization())
