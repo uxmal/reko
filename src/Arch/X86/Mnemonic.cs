@@ -506,6 +506,7 @@ namespace Reko.Arch.X86
         unpcklps,
         vaddpd,
         vaddsd,
+        vaddss,
         vaddsubpd,
         vaddsubps,
         vblendvpdv,
@@ -515,6 +516,8 @@ namespace Reko.Arch.X86
         vcvtsi2sd,
         vcvtsi2ss,
         vcvttpd2dq,
+        vdivsd,
+        vdivss,
         verr,
         verw,
         vextrw,
@@ -539,6 +542,8 @@ namespace Reko.Arch.X86
         vmptrst,
         vmread,
         vmresume,
+        vmulsd,
+        vmulss,
         vmwrite,
         vmxoff,
         vmxon,
@@ -601,6 +606,8 @@ namespace Reko.Arch.X86
         vshufps,
         vunpckhpd,
         vunpckhps,
+        vsubsd,
+        vsubss,
         vxorpd,
         vxorps,
         wait,
@@ -622,11 +629,6 @@ namespace Reko.Arch.X86
         xsetbv,
         xtest,
 
-
-        // Borland implemented an x87 emulator, and introduced these
-        // pseudo-instructions.
-        BOR_exp,
-        BOR_ln,
         vtestpd,
         vtestps,
         vpermilpd,
@@ -684,6 +686,7 @@ namespace Reko.Arch.X86
         pabsw,
         vpabsw,
         pabsd,
+        vmovdqa,
         vpabsd,
         vpmuldq,
         vpcmpeqq,
@@ -730,8 +733,15 @@ namespace Reko.Arch.X86
         vpermpd,
         vpblendd,
         vperm2f128,
+        vpbroadcastb,
         vpbroadcastd,
         vpbroadcastq,
+        vpbroadcastw,
         vpbroadcasti128,
+
+        // Borland implemented an x87 emulator, and introduced these
+        // pseudo-instructions.
+        BOR_exp,
+        BOR_ln,
     }
 }

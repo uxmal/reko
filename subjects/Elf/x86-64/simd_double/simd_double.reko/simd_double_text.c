@@ -101,7 +101,7 @@ void main(Eq_n xmm0)
 		else
 		{
 			real64 v26_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
-			xmm0 = DPB(xmm0, v26_n + v26_n, 0);
+			xmm0.u0 = (uint128) (uint64) (v26_n + v26_n);
 		}
 		*rcx_n = (real64) xmm0;
 		qwLoc10_n = (word64) qwLoc10_n + 0x01;
@@ -116,7 +116,7 @@ void main(Eq_n xmm0)
 		else
 		{
 			real64 v19_n = (real64) ((word64) qwLoc18_n + 0x01 >> 0x01 | (uint64) (eax_n & 0x01));
-			xmm0 = DPB(xmm0, v19_n + v19_n, 0);
+			xmm0.u0 = (uint128) (uint64) (v19_n + v19_n);
 		}
 		*rcx_n = (real64) xmm0;
 		qwLoc18_n = (word64) qwLoc18_n + 0x01;

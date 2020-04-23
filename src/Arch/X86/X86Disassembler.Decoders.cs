@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -27,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Reko.Arch.X86
 {
@@ -413,6 +415,53 @@ namespace Reko.Arch.X86
                 {
                     disasm.decodingContext.mnemonic = vCode;
                 }
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Decoder for EVEX-prefixed instructions.
+        /// </summary>
+        public class EvexDecoder : Decoder
+        {
+            private static readonly Bitfield p0Reserved = new Bitfield(2, 2);
+            private static readonly Bitfield p1Reserved = new Bitfield(2, 1);
+            private static readonly Bitfield p1Vvvv = new Bitfield(3, 4);
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                // 62 must be the first byte. The presence of previous
+                // prefixes is an error (according to Intel manual 2.6, vol 2A.
+                var ctx = disasm.decodingContext;
+                if (ctx.F2Prefix |
+                    ctx.F3Prefix |
+                    ctx.IsRegisterExtensionActive() |
+                    ctx.SizeOverridePrefix)
+                        return false;
+                // The EVEX prefix consists of a leading 0x62 byte, and three
+                // packed payload bytes P0, P1, and P2.
+                //$TODO: this is incomplete: there are many missing flags.
+                if (!disasm.rdr.TryReadByte(out byte p0)) return false;
+                if (!disasm.rdr.TryReadByte(out byte p1)) return false;
+                if (!disasm.rdr.TryReadByte(out byte p2)) return false;
+                if (p0Reserved.Read(p0) != 0)
+                    return false;
+                if (p1Reserved.Read(p1) != 1)
+                    return false;
+                var pp = p1 & 3;
+                var rxb = p0 >> 5;
+                var w = p1 >> 7;
+                var vvvv = p1Vvvv.Read(p1);
+                ctx.IsVex = true;
+                ctx.VexRegister = (byte) vvvv;
+                ctx.VexLong = (op & 4) != 0;
+                ctx.RegisterExtension.FlagWideValue = w != 0;
+                ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
+                ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
+                ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
+                ctx.F2Prefix = pp == 3;
+                ctx.F3Prefix = pp == 2;
+                ctx.SizeOverridePrefix = pp == 1;
                 return true;
             }
         }

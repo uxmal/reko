@@ -120,6 +120,7 @@ namespace Reko.Core.Expressions
                 case Domain.Real: return new ConstantUInt64(p, (ulong) value);
                 default: return new ConstantUInt64(p, (ulong) value);
                 }
+            case 96:
             case 128:
                 switch (p.Domain)
                 {

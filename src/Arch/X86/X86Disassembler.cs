@@ -176,8 +176,11 @@ namespace Reko.Arch.X86
             {
                 return new X86Instruction(this.mnemonic, this.iclass, this.iWidth, this.addressWidth, this.ops.ToArray())
                 {
-                    repPrefix = this.F2Prefix ? 2 :
-                                this.F3Prefix ? 3 : 0
+                    repPrefix = this.iclass.HasFlag(InstrClass.Invalid)
+                        ? 0
+                        : this.F2Prefix 
+                            ? 2 :
+                            this.F3Prefix ? 3 : 0
                 };
             }
 

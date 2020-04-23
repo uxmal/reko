@@ -240,8 +240,8 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-                new PrefixedDecoder(dec66: Instr(Mnemonic.vbroadcastb, Vx,Eb)),
-                new PrefixedDecoder(dec66: Instr(Mnemonic.vbroadcastw, Vx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Mnemonic.vpbroadcastb, Vx,Eb)),
+                new PrefixedDecoder(dec66: Instr(Mnemonic.vpbroadcastw, Vx,Wx)),
                 s_invalid,
                 s_invalid,
                 s_invalid,
