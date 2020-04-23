@@ -475,6 +475,7 @@ namespace Reko.CmdLine
             DumpEnvironments(config, w, "    {0,-25} {1}");
             w.WriteLine(" --base <address>         Use <address> as the base address of the program.");
             w.WriteLine(" --dasm-address           Display addresses in disassembled machine code.");
+            w.WriteLine(" --dasm-bytes             Display individual bytes in disassembled machine code.");
             w.WriteLine(" --data <hex-bytes>       Supply machine code as hex bytes");
             w.WriteLine(" --default-to <format>    If no executable format can be recognized, default");
             w.WriteLine("                          to one of the following formats:");
