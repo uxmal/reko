@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -72,39 +72,39 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        public void SparcDis_subcc()
+        public void SparcDis_subx()
         {
-            AssertInstruction(0x986060FF, "subx\t%g1,0x000000FF,%o4");
+            AssertInstruction(0x986060FF, "subx\t%g1,000000FF,%o4");
         }
 
         [Test]
         public void SparcDis_or_imm()
         {
-            AssertInstruction(0xBE10E004, "or\t%g3,0x00000004,%i7");
+            AssertInstruction(0xBE10E004, "or\t%g3,00000004,%i7");
         }
 
         [Test]
         public void SparcDis_and_neg()
         {
-            AssertInstruction(0x86087FFE, "and\t%g1,0xFFFFFFFE,%g3");
+            AssertInstruction(0x86087FFE, "and\t%g1,FFFFFFFE,%g3");
         }
 
         [Test]
         public void SparcDis_sll_imm()
         {
-            AssertInstruction(0xAB2EA01F, "sll\t%i2,0x0000001F,%l5");
+            AssertInstruction(0xAB2EA01F, "sll\t%i2,0000001F,%l5");
         }
 
         [Test]
         public void SparcDis_sethi()
         {
-            AssertInstruction(0x0B00AAAA, "sethi\t0x0000AAAA,%g5");
+            AssertInstruction(0x0B00AAAA, "sethi\t0000AAAA,%g5");
         }
 
         [Test]
         public void SparcDis_taddcc()
         {
-            AssertInstruction(0x8B006001, "taddcc\t%g1,0x00000001,%g5");
+            AssertInstruction(0x8B006001, "taddcc\t%g1,00000001,%g5");
         }
 
         [Test]
@@ -158,19 +158,19 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcDis_jmpl()
         {
-            AssertInstruction(0x8FC07FFF, "jmpl\t%g1,-1,%g7");
+            AssertInstruction(0x8FC07FFF, "jmpl\t%g1,-00000001,%g7");
         }
 
         [Test]
         public void SparcDis_rett()
         {
-            AssertInstruction(0x81C86009, "rett\t%g1,9");
+            AssertInstruction(0x81C86009, "rett\t%g1,+00000009");
         }
 
         [Test]
         public void SparcDis_ta()
         {
-            AssertInstruction(0x91D06999, "ta\t%g1,0x00000019");
+            AssertInstruction(0x91D06999, "ta\t%g1,00000019");
         }
 
         [Test]
