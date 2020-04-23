@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -204,5 +205,12 @@ namespace Reko.Arch.SuperH
         {
             fv0, fv4, fv8, fv12,
         };
+
+        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
+
+        static Registers()
+        {
+            RegistersByDomain = gpregs.ToDictionary(r => r.Domain);
+        }
     }
 }
