@@ -256,14 +256,12 @@ namespace Reko.ImageLoaders.Elf
                 }
                 options["decoder"] = "nano";
                 break;
-            case ElfMachine.EM_BLACKFIN:
-                arch = "blackfin";
+            case ElfMachine.EM_BLACKFIN: arch = "blackfin"; break;
+            case ElfMachine.EM_MORPHOS_PPC: arch = "ppc-be-32"; break;
+            case ElfMachine.EM_PARISC:
+                arch = "paRisc";
+                options["WordSize"] = "32";
                 break;
-
-            case ElfMachine.EM_MORPHOS_PPC:
-                arch = "ppc-be-32";
-                break;
-
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machine));
             }

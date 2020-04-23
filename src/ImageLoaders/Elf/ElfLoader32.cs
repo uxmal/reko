@@ -158,6 +158,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_AVR: return new AvrRelocator(this, imageSymbols);
             case ElfMachine.EM_SH: return new SuperHRelocator(this, imageSymbols);
             case ElfMachine.EM_BLACKFIN: return new BlackfinRelocator(this, imageSymbols);
+            case ElfMachine.EM_PARISC: return new PaRiscRelocator(this, imageSymbols);
             }
             return base.CreateRelocator(machine, imageSymbols);
         }
