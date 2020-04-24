@@ -360,11 +360,11 @@ T_59: (in Mem0[0x0000000000201048:byte] : byte)
   Class: Eq_59
   DataType: byte
   OrigDataType: byte
-T_60: (in 0_8 : byte)
+T_60: (in 0_08 : byte)
   Class: Eq_59
   DataType: byte
   OrigDataType: byte
-T_61: (in globals->b201048 != 0_8 : bool)
+T_61: (in globals->b201048 != 0_08 : bool)
   Class: Eq_61
   DataType: bool
   OrigDataType: bool
@@ -396,7 +396,7 @@ T_68: (in deregister_tm_clones() : void)
   Class: Eq_68
   DataType: void
   OrigDataType: void
-T_69: (in 1_8 : byte)
+T_69: (in 1_08 : byte)
   Class: Eq_59
   DataType: byte
   OrigDataType: byte

@@ -390,11 +390,11 @@ T_49: (in Mem0[0x0000000000602108:byte] : byte)
   Class: Eq_49
   DataType: byte
   OrigDataType: byte
-T_50: (in 0_8 : byte)
+T_50: (in 0_08 : byte)
   Class: Eq_49
   DataType: byte
   OrigDataType: byte
-T_51: (in globals->b602108 != 0_8 : bool)
+T_51: (in globals->b602108 != 0_08 : bool)
   Class: Eq_51
   DataType: bool
   OrigDataType: bool
@@ -410,7 +410,7 @@ T_54: (in deregister_tm_clones(r8) : void)
   Class: Eq_54
   DataType: void
   OrigDataType: void
-T_55: (in 1_8 : byte)
+T_55: (in 1_08 : byte)
   Class: Eq_49
   DataType: byte
   OrigDataType: byte

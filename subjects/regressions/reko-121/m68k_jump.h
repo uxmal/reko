@@ -169,15 +169,15 @@ T_40: (in SLICE(d0_79, byte, 0) : byte)
   Class: Eq_40
   DataType: bcu8
   OrigDataType: bcu8
-T_41: (in 2_8 : byte)
+T_41: (in 2_08 : byte)
   Class: Eq_41
   DataType: byte
   OrigDataType: byte
-T_42: (in (byte) d0_79 >> 2_8 : byte)
+T_42: (in (byte) d0_79 >> 2_08 : byte)
   Class: Eq_42
   DataType: uint8
   OrigDataType: uint8
-T_43: (in SEQ(SLICE(d0_79, word24, 8), SLICE(d0_79, byte, 0) >>u 2_8) : uip32)
+T_43: (in SEQ(SLICE(d0_79, word24, 8), SLICE(d0_79, byte, 0) >>u 2_08) : uip32)
   Class: Eq_38
   DataType: uip32
   OrigDataType: uip32

@@ -21,7 +21,7 @@ void fn00010C90(word32 o7, word32 i0, word32 i1, word32 i2, word32 i3, word32 i4
 // Preserved:
 fn00010C90_entry:
 l00010C90:
-	branch Mem0[o7 + Mem0[o7 + 8_i:word32] + -8_i:word32] == 0 l00010C90_ds_t
+	branch Mem0[o7 + Mem0[o7 + 8_i32:word32] + -8_i32:word32] == 0_32 l00010C90_ds_t
 l00010C90_ds_t:
 l00010CB0:
 	return

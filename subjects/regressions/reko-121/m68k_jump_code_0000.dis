@@ -8,29 +8,29 @@ void fn0000C02A(word32 a0, word32 a1)
 fn0000C02A_entry:
 l0000C02A:
 	Mem54[0x00FF0F08:word32] = Mem47[a0:word32]
-	Mem57[0x00FF0F04:word32] = 0_i
+	Mem57[0x00FF0F04:word32] = 0_i32
 	word32 a6_101 = a1
-	word32 a4_58 = 0_i
+	word32 a4_58 = 0_i32
 l0000C3DE:
-	branch Mem62[0x00FF0F04:word32] - Mem62[0x00FF0F08:word32] < 0 l0000C050
+	branch Mem62[0x00FF0F04:word32] - Mem62[0x00FF0F08:word32] < 0_32 l0000C050
 l0000C050:
-	word32 d3_73 = SEQ(SLICE(a4_58, word24, 8), Mem62[a0 + 4_i + a4_58:byte])
-	word32 d0_79 = SEQ(SLICE(d3_73 & 0xFF, word16, 16), SLICE(d3_73 & 0xFF, word16, 0) & 0xF0_16)
-	word32 d0_82 = SEQ(SLICE(d0_79, word24, 8), SLICE(d0_79, byte, 0) >>u 2_8)
-	a4_58 = a4_58 + 1_i
+	word32 d3_73 = SEQ(SLICE(a4_58, word24, 8), Mem62[a0 + 4_i32 + a4_58:byte])
+	word32 d0_79 = SEQ(SLICE(d3_73 & 0xFF_32, word16, 16), SLICE(d3_73 & 0xFF_32, word16, 0) & 0xF0_16)
+	word32 d0_82 = SEQ(SLICE(d0_79, word24, 8), SLICE(d0_79, byte, 0) >>u 2_08)
+	a4_58 = a4_58 + 1_i32
 	branch SLICE(d0_82, word16, 0) > 0x2C_16 l0000C3DE
 l0000C06A:
 	switch (SLICE(d0_82, word16, 0)) { l0000C0A0 }
 l0000C0A0:
-	word32 d3_90 = (d3_73 & 0xFF & 15_i) + 1
+	word32 d3_90 = (d3_73 & 0xFF_32 & 15_i32) + 1_32
 l0000C0AE:
 	word16 v36_93 = SLICE(d3_90, word16, 0)
 	d3_90 = SEQ(SLICE(d3_90, word16, 16), v36_93 - 1_i16)
 	branch v36_93 != 0_16 l0000C0A6
 l0000C0A6:
-	Mem100[a6_101:word32] = 0_i
-	Mem103[0x00FF0F04:word32] = Mem100[0x00FF0F04:word32] + 4
-	a6_101 = a6_101 + 4_i
+	Mem100[a6_101:word32] = 0_i32
+	Mem103[0x00FF0F04:word32] = Mem100[0x00FF0F04:word32] + 4_32
+	a6_101 = a6_101 + 4_i32
 l0000C0B2:
 l0000C3EE:
 	return

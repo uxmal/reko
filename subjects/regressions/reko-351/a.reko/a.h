@@ -175,11 +175,11 @@ T_35: (in Mem15[0x80002724:byte] : byte)
   Class: Eq_35
   DataType: byte
   OrigDataType: byte
-T_36: (in 0_8 : byte)
+T_36: (in 0_08 : byte)
   Class: Eq_35
   DataType: byte
   OrigDataType: byte
-T_37: (in globals->b80002724 != 0_8 : bool)
+T_37: (in globals->b80002724 != 0_08 : bool)
   Class: Eq_37
   DataType: bool
   OrigDataType: bool
@@ -315,7 +315,7 @@ T_70: (in d2_25 - d0_21 > 0_32 : bool)
   Class: Eq_70
   DataType: bool
   OrigDataType: bool
-T_71: (in 1_8 : byte)
+T_71: (in 1_08 : byte)
   Class: Eq_35
   DataType: byte
   OrigDataType: byte

@@ -434,7 +434,7 @@ T_74: (in r2_16 == null : bool)
   Class: Eq_74
   DataType: bool
   OrigDataType: bool
-T_75: (in 1_8 : byte)
+T_75: (in 1_08 : byte)
   Class: Eq_59
   DataType: byte
   OrigDataType: byte

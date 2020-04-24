@@ -9,8 +9,8 @@ void _start(word64 rdx, word64 qwArg00)
 _start_exit:
 _start_entry:
 l0000000000400480:
-	__align(fp + 8_i)
-	__libc_start_main(0x400660, qwArg00, fp + 8_i, 0x400710, 0x400780, rdx, fp)
+	__align(fp + 8_i64)
+	__libc_start_main(0x400660_64, qwArg00, fp + 8_i64, 0x400710_64, 0x400780_64, rdx, fp)
 	__hlt()
 
 
@@ -23,14 +23,14 @@ void deregister_tm_clones(word64 r8)
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l00000000004004B0:
-	branch r8 == 0x601040 l00000000004004D8
+	branch r8 == 0x601040_64 l00000000004004D8
 l00000000004004C1:
-	branch 0_u == 0 l00000000004004D8
+	branch 0_u64 == 0_64 l00000000004004D8
 l00000000004004D8:
 	return
 l00000000004004CB:
-	call 0_u (retsize: 0;)
-		uses: r8:r8,rdi:0x601040_u
+	call 0_u64 (retsize: 0;)
+		uses: r8:r8,rdi:0x601040_u64
 	return
 deregister_tm_clones_exit:
 
@@ -44,14 +44,14 @@ void register_tm_clones()
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l00000000004004E0:
-	branch 0_i == 0 l0000000000400518
+	branch 0_i64 == 0_64 l0000000000400518
 l0000000000400503:
-	branch 0_u == 0 l0000000000400518
+	branch 0_u64 == 0_64 l0000000000400518
 l0000000000400518:
 	return
 l000000000040050D:
-	call 0_u (retsize: 0;)
-		uses: rdi:0x601040_u
+	call 0_u64 (retsize: 0;)
+		uses: rdi:0x601040_u64
 	return
 register_tm_clones_exit:
 
@@ -65,12 +65,12 @@ void __do_global_dtors_aux(word64 r8)
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
 l0000000000400520:
-	branch Mem0[0x0000000000601040:byte] != 0_8 l0000000000400540
+	branch Mem0[0x0000000000601040:byte] != 0_08 l0000000000400540
 l0000000000400540:
 	return
 l0000000000400529:
 	deregister_tm_clones(r8)
-	Mem19[0x0000000000601040:byte] = 1_8
+	Mem19[0x0000000000601040:byte] = 1_08
 	return
 __do_global_dtors_aux_exit:
 
@@ -205,14 +205,14 @@ l0000000000400710:
 	_init()
 	word32 r15d_84 = SLICE((uint64) edi, word32, 0)
 	word64 rbp_30 = 0x0000000000600E18 - 0x0000000000600E10
-	branch rbp_30 >> 3 == 0 l0000000000400766
+	branch rbp_30 >> 3_64 == 0_64 l0000000000400766
 l0000000000400746:
-	word64 rbx_42 = 0_u
+	word64 rbx_42 = 0_u64
 l0000000000400750:
-	call Mem25[0x0000000000600E10 + rbx_42 * 8:word64] (retsize: 8;)
+	call Mem25[0x0000000000600E10 + rbx_42 * 8_64:word64] (retsize: 8;)
 		uses: rdi:(uint64) r15d_84,rdx:rdx,rsi:rsi
-	rbx_42 = rbx_42 + 1
-	branch rbp_30 >> 3 != rbx_42 l0000000000400750
+	rbx_42 = rbx_42 + 1_64
+	branch rbp_30 >> 3_64 != rbx_42 l0000000000400750
 l0000000000400766:
 	return
 __libc_csu_init_exit:

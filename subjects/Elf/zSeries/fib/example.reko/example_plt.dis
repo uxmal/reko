@@ -1,14 +1,24 @@
-// __cxa_finalize
-// Return size: 0
-define __cxa_finalize
-__cxa_finalize_entry:
+void __cxa_finalize()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: r15
+// Terminates process
 __cxa_finalize_exit:
+__cxa_finalize_entry:
 
 
-// __libc_start_main
-// Return size: 0
-define __libc_start_main
-__libc_start_main_entry:
+void __libc_start_main()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: r15
+// Terminates process
 __libc_start_main_exit:
+__libc_start_main_entry:
 
 

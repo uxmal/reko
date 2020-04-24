@@ -62,11 +62,11 @@ T_13: (in (byte) (uint64) ((word32) (uint64) *rdi >> 0xA_32) ^ sil : byte)
   Class: Eq_13
   DataType: ui8
   OrigDataType: ui8
-T_14: (in 0_8 : byte)
+T_14: (in 0_08 : byte)
   Class: Eq_13
   DataType: ui8
   OrigDataType: byte
-T_15: (in ((byte) (uint64) ((word32) (uint64) *rdi >> 0xA_32) ^ sil) == 0_8 : bool)
+T_15: (in ((byte) (uint64) ((word32) (uint64) *rdi >> 0xA_32) ^ sil) == 0_08 : bool)
   Class: Eq_15
   DataType: bool
   OrigDataType: bool

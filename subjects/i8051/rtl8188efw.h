@@ -27,7 +27,7 @@ T_3: (in __data : (ptr16 Eq_3))
   Class: Eq_3
   DataType: (ptr16 Eq_3)
   OrigDataType: (ptr16 (segment (80F0 T_11 t80F0)))
-T_4: (in 0_8 : byte)
+T_4: (in 0_08 : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte
@@ -75,7 +75,7 @@ T_15: (in signature of fn4EF3 : void)
   Class: Eq_15
   DataType: Eq_15
   OrigDataType: 
-T_16: (in 5_8 : byte)
+T_16: (in 5_08 : byte)
   Class: Eq_16
   DataType: byte
   OrigDataType: byte
@@ -95,27 +95,27 @@ T_20: (in Mem32[__data_23:0x80EA_16:byte] : byte)
   Class: Eq_20
   DataType: bcu8
   OrigDataType: bcu8
-T_21: (in 2_8 : byte)
+T_21: (in 2_08 : byte)
   Class: Eq_21
   DataType: byte
   OrigDataType: byte
-T_22: (in __data_23->b80EA >> 2_8 : byte)
+T_22: (in __data_23->b80EA >> 2_08 : byte)
   Class: Eq_22
   DataType: uint8
   OrigDataType: uint8
-T_23: (in 1_8 : byte)
+T_23: (in 1_08 : byte)
   Class: Eq_23
   DataType: byte
   OrigDataType: byte
-T_24: (in __data_23->b80EA >> 2_8 & 1_8 : byte)
+T_24: (in __data_23->b80EA >> 2_08 & 1_08 : byte)
   Class: Eq_24
   DataType: byte
   OrigDataType: byte
-T_25: (in 0_8 : byte)
+T_25: (in 0_08 : byte)
   Class: Eq_24
   DataType: byte
   OrigDataType: byte
-T_26: (in (__data_23->b80EA >> 2_8 & 1_8) != 0_8 : bool)
+T_26: (in (__data_23->b80EA >> 2_08 & 1_08) != 0_08 : bool)
   Class: Eq_26
   DataType: bool
   OrigDataType: bool

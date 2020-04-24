@@ -21,7 +21,7 @@ Eq_7: (union "Eq_7" (int32 u0) (size_t u1))
 	T_260 (in Mem35[sp_3 + 0x18_32:word32] : word32)
 	T_263 (in Mem35[sp_3 + 0x24_32:word32] : word32)
 	T_313 (in Mem35[sp_3 + 0x18_32:word32] : word32)
-	T_315 (in sp_3->t0018 << 1_8 : word32)
+	T_315 (in sp_3->t0018 << 1_08 : word32)
 	T_318 (in Mem42[sp_3 + 0x20_32:word32] : word32)
 	T_321 (in Mem42[sp_3 + 0x18_32:word32] : word32)
 	T_322 (in 513_i32 : int32)
@@ -126,7 +126,7 @@ Eq_147: (union "Eq_147" ((ptr32 (ptr32 code)) u0) ((ptr32 void) u1))
 	T_342 (in Mem71[sp_3 + 0x14_32:word32] : word32)
 	T_345 (in Mem71[sp_3 + 0x28_32:word32] : word32)
 	T_348 (in Mem71[sp_3 + 0x1C_32:word32] : word32)
-	T_354 (in Mem71[sp_3 + 0x14_32:word32] + ((Mem71[sp_3 + 0x28_32:word32] - Mem71[sp_3 + 0x1C_32:word32] >> 2_8) << 2_8) : word32)
+	T_354 (in Mem71[sp_3 + 0x14_32:word32] + ((Mem71[sp_3 + 0x28_32:word32] - Mem71[sp_3 + 0x1C_32:word32] >> 2_08) << 2_08) : word32)
 	T_357 (in Mem80[sp_3 + 0x28_32:word32] : word32)
 	T_360 (in Mem80[sp_3 + 0x14_32:word32] : word32)
 	T_363 (in Mem82[sp_3 + 0x1C_32:word32] : word32)
@@ -292,7 +292,7 @@ T_30: (in memcpy(r2_20, fp + -20_i32, 5_i32) : (ptr32 void))
   Class: Eq_30
   DataType: (ptr32 void)
   OrigDataType: (ptr32 void)
-T_31: (in 0xC_8 : byte)
+T_31: (in 0xC_08 : byte)
   Class: Eq_31
   DataType: byte
   OrigDataType: byte
@@ -572,11 +572,11 @@ T_100: (in r8_24 : ui32)
   Class: Eq_92
   DataType: ui32
   OrigDataType: ui32
-T_101: (in 0x10_8 : byte)
+T_101: (in 0x10_08 : byte)
   Class: Eq_101
   DataType: byte
   OrigDataType: byte
-T_102: (in r2_16 >> 0x10_8 : word32)
+T_102: (in r2_16 >> 0x10_08 : word32)
   Class: Eq_102
   DataType: uint32
   OrigDataType: uint32
@@ -588,7 +588,7 @@ T_104: (in r2_16 + 0xFFFF_32 : word32)
   Class: Eq_104
   DataType: word32
   OrigDataType: word32
-T_105: (in r2_16 >> 0x10_8 ^ r2_16 + 0xFFFF_32 : word32)
+T_105: (in r2_16 >> 0x10_08 ^ r2_16 + 0xFFFF_32 : word32)
   Class: Eq_92
   DataType: ui32
   OrigDataType: ui32
@@ -680,23 +680,23 @@ T_127: (in fn000112A8(r4, 0_32, 0_32) : void)
   Class: Eq_127
   DataType: void
   OrigDataType: void
-T_128: (in 0x18_8 : byte)
+T_128: (in 0x18_08 : byte)
   Class: Eq_128
   DataType: byte
   OrigDataType: byte
-T_129: (in r6 << 0x18_8 : word32)
+T_129: (in r6 << 0x18_08 : word32)
   Class: Eq_129
   DataType: int32
   OrigDataType: int32
-T_130: (in 0x18_8 : byte)
+T_130: (in 0x18_08 : byte)
   Class: Eq_130
   DataType: byte
   OrigDataType: byte
-T_131: (in r6 << 0x18_8 >> 0x18_8 : word32)
+T_131: (in r6 << 0x18_08 >> 0x18_08 : word32)
   Class: Eq_131
   DataType: int32
   OrigDataType: int32
-T_132: (in (byte) (r6 << 0x18_8 >> 0x18_8) : byte)
+T_132: (in (byte) (r6 << 0x18_08 >> 0x18_08) : byte)
   Class: Eq_132
   DataType: byte
   OrigDataType: byte
@@ -1424,11 +1424,11 @@ T_313: (in Mem35[sp_3 + 0x18_32:word32] : word32)
   Class: Eq_7
   DataType: Eq_7
   OrigDataType: uint32
-T_314: (in 1_8 : byte)
+T_314: (in 1_08 : byte)
   Class: Eq_314
   DataType: byte
   OrigDataType: byte
-T_315: (in sp_3->t0018 << 1_8 : word32)
+T_315: (in sp_3->t0018 << 1_08 : word32)
   Class: Eq_7
   DataType: Eq_7
   OrigDataType: ui32
@@ -1568,23 +1568,23 @@ T_349: (in sp_3->t0028 - sp_3->t001C : word32)
   Class: Eq_349
   DataType: Eq_349
   OrigDataType: (union (int32 u1) (ptr32 u0))
-T_350: (in 2_8 : byte)
+T_350: (in 2_08 : byte)
   Class: Eq_350
   DataType: byte
   OrigDataType: byte
-T_351: (in sp_3->t0028 - sp_3->t001C >> 2_8 : word32)
+T_351: (in sp_3->t0028 - sp_3->t001C >> 2_08 : word32)
   Class: Eq_351
   DataType: int32
   OrigDataType: int32
-T_352: (in 2_8 : byte)
+T_352: (in 2_08 : byte)
   Class: Eq_352
   DataType: byte
   OrigDataType: byte
-T_353: (in sp_3->t0028 - sp_3->t001C >> 2_8 << 2_8 : word32)
+T_353: (in sp_3->t0028 - sp_3->t001C >> 2_08 << 2_08 : word32)
   Class: Eq_353
   DataType: int32
   OrigDataType: int32
-T_354: (in Mem71[sp_3 + 0x14_32:word32] + ((Mem71[sp_3 + 0x28_32:word32] - Mem71[sp_3 + 0x1C_32:word32] >> 2_8) << 2_8) : word32)
+T_354: (in Mem71[sp_3 + 0x14_32:word32] + ((Mem71[sp_3 + 0x28_32:word32] - Mem71[sp_3 + 0x1C_32:word32] >> 2_08) << 2_08) : word32)
   Class: Eq_147
   DataType: Eq_147
   OrigDataType: ptr32

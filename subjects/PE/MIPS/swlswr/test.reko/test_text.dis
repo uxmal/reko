@@ -7,12 +7,12 @@ word32 fn00011000()
 // Preserved: ra sp
 fn00011000_entry:
 l00011000:
-	memset(fp + -20_i, 0, 5_i)
-	word32 r2_20 = calloc(1_i, 5_i)
-	memcpy(r2_20, fp + -20_i, 5_i)
-	Mem28[r2_20:byte] = 0xC_8
-	Mem32[r2_20 + 1_i:word32] = 0
-	return 0
+	memset(fp + -20_i32, 0_32, 5_i32)
+	word32 r2_20 = calloc(1_i32, 5_i32)
+	memcpy(r2_20, fp + -20_i32, 5_i32)
+	Mem28[r2_20:byte] = 0xC_08
+	Mem32[r2_20 + 1_i32:word32] = 0_32
+	return 0_32
 fn00011000_exit:
 
 
@@ -56,13 +56,13 @@ void fn0001116C(word32 r2, word32 r4, word32 dwArg00)
 // Preserved:
 fn0001116C_entry:
 l0001116C:
-	Mem11[r2 + 0xFFFFFFEC:word32] = r4
-	Mem13[r2 + 0xFFFFFFF0:word32] = Mem11[r2 + 0xFFFFFFEC:word32]
-	Mem17[r2 + 0xFFFFFFF4:word32] = Mem13[Mem13[Mem13[r2 + 0xFFFFFFEC:word32]:word32]:word32]
-	word32 r8_18 = Mem17[r2 + 0xFFFFFFF4:word32]
-	Mem19[r2 + 0xFFFFFFE8:word32] = r8_18
+	Mem11[r2 + 0xFFFFFFEC_32:word32] = r4
+	Mem13[r2 + 0xFFFFFFF0_32:word32] = Mem11[r2 + 0xFFFFFFEC_32:word32]
+	Mem17[r2 + 0xFFFFFFF4_32:word32] = Mem13[Mem13[Mem13[r2 + 0xFFFFFFEC_32:word32]:word32]:word32]
+	word32 r8_18 = Mem17[r2 + 0xFFFFFFF4_32:word32]
+	Mem19[r2 + 0xFFFFFFE8_32:word32] = r8_18
 	call XcptFilter (retsize: 0;)
-		uses: r2:r2,r4:Mem19[r2 + 0xFFFFFFE8:word32],r5:Mem19[r2 + 0xFFFFFFF0:word32],r8:r8_18,Stack +0018:dwArg00
+		uses: r2:r2,r4:Mem19[r2 + 0xFFFFFFE8_32:word32],r5:Mem19[r2 + 0xFFFFFFF0_32:word32],r8:r8_18,Stack +0018:dwArg00
 	return
 fn0001116C_exit:
 
@@ -76,31 +76,31 @@ void fn000111C4()
 // Preserved: r2 ra sp
 fn000111C4_entry:
 l000111C4:
-	word32 r8_7 = Mem5[0x13030:word32]
-	branch r8_7 == 0 l000111C4_ds_t
+	word32 r8_7 = Mem5[0x13030_32:word32]
+	branch r8_7 == 0_32 l000111C4_ds_t
 l000111C4_ds_t:
 l000111C4_ds_f:
 l000111E4:
-	branch r8_7 == 0xB064 l000111E4_ds_t
+	branch r8_7 == 0xB064_32 l000111E4_ds_t
 l000111E4_ds_t:
 l0001120C:
 	word32 r2_16
 	call COREDLL.dll!Ordinal_2696 (retsize: 0;)
 		uses: r2:r2_16
 		defs: r2:r2_16
-	word32 r8_24 = r2_16 >>u 0x10_8 ^ r2_16 + 0xFFFF
+	word32 r8_24 = r2_16 >>u 0x10_08 ^ r2_16 + 0xFFFF_32
 	word32 dwLoc0C_50 = r8_24
-	branch r8_24 != 0 l0001120C_ds_t
+	branch r8_24 != 0_32 l0001120C_ds_t
 l0001120C_ds_t:
 l0001120C_ds_f:
 l00011244:
-	dwLoc0C_50 = 0xB064
+	dwLoc0C_50 = 0xB064_32
 l0001124C:
-	Mem33[0x13030:word32] = dwLoc0C_50
-	Mem37[0x13034:word32] = ~dwLoc0C_50
+	Mem33[0x13030_32:word32] = dwLoc0C_50
+	Mem37[0x13034_32:word32] = ~dwLoc0C_50
 l000111E4_ds_f:
 l000111F4:
-	Mem41[0x13034:word32] = ~r8_7
+	Mem41[0x13034_32:word32] = ~r8_7
 l00011268:
 	return
 fn000111C4_exit:
@@ -115,7 +115,7 @@ void fn00011278(word32 r4)
 // Preserved: ra sp
 fn00011278_entry:
 l00011278:
-	fn000112A8(r4, 0, 0)
+	fn000112A8(r4, 0_32, 0_32)
 	return
 fn00011278_exit:
 
@@ -129,12 +129,12 @@ void fn000112A8(word32 r4, word32 r5, word32 r6)
 // Preserved: ra sp
 fn000112A8_entry:
 l000112A8:
-	Mem16[0x13038:byte] = (byte) (r6 << 0x18_8 >> 0x18_8)
-	branch r5 != 0 l000112A8_ds_t
+	Mem16[0x13038_32:byte] = (byte) (r6 << 0x18_08 >> 0x18_08)
+	branch r5 != 0_32 l000112A8_ds_t
 l000112A8_ds_t:
 l0001138C:
-	fn0001147C(0x12018, 0x1201C)
-	branch r6 != 0 l0001138C_ds_t
+	fn0001147C(0x12018_32, 0x1201C_32)
+	branch r6 != 0_32 l0001138C_ds_t
 l0001138C_ds_t:
 l000113C8:
 	return
@@ -144,27 +144,27 @@ l000113B0:
 	TerminateProcess(fn00011460(), r4)
 l000112A8_ds_f:
 l000112DC:
-	branch Mem16[0x13040:word32] == 0 l000112DC_ds_t
+	branch Mem16[0x13040_32:word32] == 0_32 l000112DC_ds_t
 l000112DC_ds_t:
 l000112DC_ds_f:
 l000112EC:
-	Mem39[0x1303C:word32] = Mem35[0x1303C:word32] + -4_i
-	branch (word32) (Mem39[0x1303C:word32] <u Mem39[0x13040:word32]) != 0 l000112EC_ds_t
+	Mem39[0x1303C_32:word32] = Mem35[0x1303C_32:word32] + -4_i32
+	branch (word32) (Mem39[0x1303C_32:word32] <u Mem39[0x13040_32:word32]) != 0_32 l000112EC_ds_t
 l000112EC_ds_t:
 l0001134C:
-	free(Mem39[0x13040:word32])
-	Mem48[0x1303C:word32] = 0
-	Mem52[0x13040:word32] = Mem48[0x1303C:word32]
+	free(Mem39[0x13040_32:word32])
+	Mem48[0x1303C_32:word32] = 0_32
+	Mem52[0x13040_32:word32] = Mem48[0x1303C_32:word32]
 l00011374:
-	fn0001147C(0x12010, 0x12014)
+	fn0001147C(0x12010_32, 0x12014_32)
 l000112EC_ds_f:
 l0001131C:
-	branch Mem39[Mem39[0x1303C:word32]:word32] == 0 l0001131C_ds_t
+	branch Mem39[Mem39[0x1303C_32:word32]:word32] == 0_32 l0001131C_ds_t
 l0001131C_ds_t:
 l00011344:
 l0001131C_ds_f:
 l00011330:
-	word32 r8_64 = Mem39[Mem39[0x1303C:word32]:word32]
+	word32 r8_64 = Mem39[Mem39[0x1303C_32:word32]:word32]
 	call r8_64 (retsize: 0;)
 		uses: r4:r4,r5:r5,r6:r6,r8:r8_64
 
@@ -178,7 +178,7 @@ void fn000113D8(word32 r4)
 // Preserved: ra sp
 fn000113D8_entry:
 l000113D8:
-	fn000112A8(r4, 1_i, 0)
+	fn000112A8(r4, 1_i32, 0_32)
 	return
 fn000113D8_exit:
 
@@ -192,7 +192,7 @@ void fn00011408()
 // Preserved: ra sp
 fn00011408_entry:
 l00011408:
-	fn000112A8(0, 0, 1_i)
+	fn000112A8(0_32, 0_32, 1_i32)
 	return
 fn00011408_exit:
 
@@ -206,7 +206,7 @@ void fn00011434()
 // Preserved: ra sp
 fn00011434_entry:
 l00011434:
-	fn000112A8(0, 1_i, 1_i)
+	fn000112A8(0_32, 1_i32, 1_i32)
 	return
 fn00011434_exit:
 
@@ -220,7 +220,7 @@ word32 fn00011460()
 // Preserved: sp
 fn00011460_entry:
 l00011460:
-	return 66_i
+	return 66_i32
 fn00011460_exit:
 
 
@@ -235,17 +235,17 @@ fn0001147C_entry:
 l0001147C:
 	word32 dwArg00_33 = r4
 l0001148C:
-	branch (word32) (dwArg00_33 <u r5) == 0 l0001147C_ds_t
+	branch (word32) (dwArg00_33 <u r5) == 0_32 l0001147C_ds_t
 l0001147C_ds_t:
 l000114D4:
 	return
 fn0001147C_exit:
 l0001147C_ds_f:
 l000114A0:
-	branch Mem11[dwArg00_33:word32] == 0 l000114A0_ds_t
+	branch Mem11[dwArg00_33:word32] == 0_32 l000114A0_ds_t
 l000114A0_ds_t:
 l000114C0:
-	dwArg00_33 = dwArg00_33 + 4_i
+	dwArg00_33 = dwArg00_33 + 4_i32
 l000114A0_ds_f:
 l000114B0:
 	call fn00000000 (retsize: 0;)
@@ -261,8 +261,8 @@ void fn000114E4()
 // Preserved: ra sp
 fn000114E4_entry:
 l000114E4:
-	fn0001147C(0x12008, 0x1200C)
-	fn0001147C(0x12000, 0x12004)
+	fn0001147C(0x12008_32, 0x1200C_32)
+	fn0001147C(0x12000_32, 0x12004_32)
 	return
 fn000114E4_exit:
 
@@ -276,12 +276,12 @@ word32 fn0001152C()
 // Preserved: ra sp
 fn0001152C_entry:
 l0001152C:
-	word32 r8_10 = Mem8[0x13040:word32]
-	word32 sp_3 = fp + -56_i
-	branch Mem11[0x1303C:word32] - r8_10 >= 0 l0001152C_ds_t
+	word32 r8_10 = Mem8[0x13040_32:word32]
+	word32 sp_3 = fp + -56_i32
+	branch Mem11[0x1303C_32:word32] - r8_10 >= 0_32 l0001152C_ds_t
 l0001152C_ds_t:
 l00011588:
-	branch r8_10 == 0 l00011588_ds_t
+	branch r8_10 == 0_32 l00011588_ds_t
 l00011588_ds_t:
 l00011588_ds_f:
 l000115A0:
@@ -289,58 +289,58 @@ l000115A0:
 	call msize (retsize: 0;)
 		uses: r4:r8_10,r5:r5_31
 		defs: r5:r5_31
-	sp_3 = fp + 0xFFFFFFCC
+	sp_3 = fp + 0xFFFFFFCC_32
 l000115B0:
-	branch (word32) (Mem35[sp_3 + 0x18:word32] <u Mem35[sp_3 + 0x24:word32]) == 0 l000115B0_ds_t
+	branch (word32) (Mem35[sp_3 + 0x18_32:word32] <u Mem35[sp_3 + 0x24_32:word32]) == 0_32 l000115B0_ds_t
 l000115B0_ds_t:
 l000115B0_ds_f:
 l000115C4:
-	branch Mem35[sp_3 + 0x1C:word32] != 0 l000115C4_ds_t
+	branch Mem35[sp_3 + 0x1C_32:word32] != 0_32 l000115C4_ds_t
 l000115C4_ds_t:
 l000115E8:
-	Mem42[sp_3 + 0x20:word32] = Mem35[sp_3 + 0x18:word32] << 1_8
-	branch (word32) (Mem42[sp_3 + 0x18:word32] <u 513_i) != 0 l000115E8_ds_t
+	Mem42[sp_3 + 0x20_32:word32] = Mem35[sp_3 + 0x18_32:word32] << 1_08
+	branch (word32) (Mem42[sp_3 + 0x18_32:word32] <u 513_i32) != 0_32 l000115E8_ds_t
 l000115E8_ds_t:
 l000115E8_ds_f:
 l00011604:
-	Mem47[sp_3 + 0x20:word32] = Mem42[sp_3 + 0x18:word32] + 512_i
+	Mem47[sp_3 + 0x20_32:word32] = Mem42[sp_3 + 0x18_32:word32] + 512_i32
 l00011610:
-	branch (word32) (Mem49[sp_3 + 0x18:word32] <u Mem49[sp_3 + 0x20:word32]) == 0 l00011610_ds_t
+	branch (word32) (Mem49[sp_3 + 0x18_32:word32] <u Mem49[sp_3 + 0x20_32:word32]) == 0_32 l00011610_ds_t
 l00011610_ds_t:
 l00011610_ds_f:
 l00011624:
-	Mem56[sp_3 + 0x14:word32] = realloc(Mem49[sp_3 + 0x1C:word32], Mem49[sp_3 + 0x20:word32])
+	Mem56[sp_3 + 0x14_32:word32] = realloc(Mem49[sp_3 + 0x1C_32:word32], Mem49[sp_3 + 0x20_32:word32])
 l00011638:
-	branch Mem58[sp_3 + 0x14:word32] != 0 l00011638_ds_t
+	branch Mem58[sp_3 + 0x14_32:word32] != 0_32 l00011638_ds_t
 l00011638_ds_t:
 l00011638_ds_f:
 l00011644:
-	branch (word32) (Mem58[sp_3 + 0x18:word32] <u Mem58[sp_3 + 0x24:word32]) == 0 l00011644_ds_t
+	branch (word32) (Mem58[sp_3 + 0x18_32:word32] <u Mem58[sp_3 + 0x24_32:word32]) == 0_32 l00011644_ds_t
 l00011644_ds_t:
 l00011644_ds_f:
 l00011658:
-	Mem66[sp_3 + 0x14:word32] = realloc(Mem58[sp_3 + 0x1C:word32], Mem58[sp_3 + 0x24:word32])
+	Mem66[sp_3 + 0x14_32:word32] = realloc(Mem58[sp_3 + 0x1C_32:word32], Mem58[sp_3 + 0x24_32:word32])
 l000115C4_ds_f:
 l000115D0:
-	Mem69[sp_3 + 0x14:word32] = malloc(16_i)
+	Mem69[sp_3 + 0x14_32:word32] = malloc(16_i32)
 l0001166C:
-	branch Mem71[sp_3 + 0x14:word32] != 0 l0001166C_ds_t
+	branch Mem71[sp_3 + 0x14_32:word32] != 0_32 l0001166C_ds_t
 l0001166C_ds_t:
 l00011688:
-	Mem80[sp_3 + 0x28:word32] = Mem71[sp_3 + 0x14:word32] + ((Mem71[sp_3 + 0x28:word32] - Mem71[sp_3 + 0x1C:word32] >> 2_8) << 2_8)
-	Mem82[sp_3 + 0x1C:word32] = Mem80[sp_3 + 0x14:word32]
+	Mem80[sp_3 + 0x28_32:word32] = Mem71[sp_3 + 0x14_32:word32] + ((Mem71[sp_3 + 0x28_32:word32] - Mem71[sp_3 + 0x1C_32:word32] >> 2_08) << 2_08)
+	Mem82[sp_3 + 0x1C_32:word32] = Mem80[sp_3 + 0x14_32:word32]
 l000116B0:
-	Mem87[Mem84[sp_3 + 0x28:word32]:word32] = Mem84[sp_3 + 0x38:word32]
-	Mem90[sp_3 + 0x28:word32] = Mem87[sp_3 + 0x28:word32] + 4_i
-	Mem93[0x1303C:word32] = Mem90[sp_3 + 0x28:word32]
-	Mem96[0x13040:word32] = Mem93[sp_3 + 0x1C:word32]
-	Mem98[sp_3 + 0x2C:word32] = Mem96[sp_3 + 0x38:word32]
+	Mem87[Mem84[sp_3 + 0x28_32:word32]:word32] = Mem84[sp_3 + 0x38_32:word32]
+	Mem90[sp_3 + 0x28_32:word32] = Mem87[sp_3 + 0x28_32:word32] + 4_i32
+	Mem93[0x1303C_32:word32] = Mem90[sp_3 + 0x28_32:word32]
+	Mem96[0x13040_32:word32] = Mem93[sp_3 + 0x1C_32:word32]
+	Mem98[sp_3 + 0x2C_32:word32] = Mem96[sp_3 + 0x38_32:word32]
 l0001166C_ds_f:
 l00011678:
-	Mem100[sp_3 + 0x2C:word32] = 0
+	Mem100[sp_3 + 0x2C_32:word32] = 0_32
 l0001152C_ds_f:
 l00011578:
-	dwLoc0C = 0
+	dwLoc0C = 0_32
 l000116E8:
 	return dwLoc0C
 fn0001152C_exit:
@@ -355,7 +355,7 @@ void fn000116FC()
 // Preserved: ra sp
 fn000116FC_entry:
 l000116FC:
-	branch fn0001152C() == 0 l000116FC_ds_t
+	branch fn0001152C() == 0_32 l000116FC_ds_t
 l000116FC_ds_t:
 l00011728:
 l000116FC_ds_f:

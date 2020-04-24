@@ -35,17 +35,17 @@ void fn0040110B()
 // Preserved: esp
 fn0040110B_entry:
 l0040110B:
-	branch Mem0[0x0040208B:word32] <u 0 l0040113C
+	branch Mem0[0x0040208B:word32] <u 0_32 l0040113C
 l00401114:
 	word32 eax_11
 	call __CRTL_TLS_GetValue (retsize: 4;)
 		uses: eax:eax_11,Stack +0004:Mem0[0x0040208B:word32]
 		defs: eax:eax_11
-	branch eax_11 == 0 l0040113C
+	branch eax_11 == 0_32 l0040113C
 l00401123:
 	word32 eax_22 = GetProcessHeap()
 	call __CRTL_TLS_ExitThread (retsize: 4;)
-		uses: eax:HeapFree(eax_22, 8, eax_11),Stack +0000:8,Stack +0004:Mem24[0x0040208B:word32],Stack +FFFFFFFC:eax_22
+		uses: eax:HeapFree(eax_22, 8_32, eax_11),Stack +0000:8_32,Stack +0004:Mem24[0x0040208B:word32],Stack +FFFFFFFC:eax_22
 l0040113C:
 	return
 fn0040110B_exit:
@@ -60,7 +60,7 @@ word32 fn00401158()
 // Preserved: esp
 fn00401158_entry:
 l00401158:
-	return Mem0[Mem0[fs:0x2C_16:word32] + Mem0[0x0040208B:word32] * 4:word32]
+	return Mem0[Mem0[fs:0x2C_16:word32] + Mem0[0x0040208B:word32] * 4_32:word32]
 fn00401158_exit:
 
 
@@ -73,8 +73,8 @@ int32 main(int32 argc, char ** argv)
 // Preserved:
 main_entry:
 l00401168:
-	printf(0x4020A4)
-	return 0
+	printf(0x4020A4_32)
+	return 0_32
 main_exit:
 
 
@@ -114,14 +114,14 @@ void fn004011B0(word32 dwArg04)
 fn004011B0_entry:
 l004011B0:
 	word32 ebx_12 = dwArg04
-	branch dwArg04 != 0 l004011D7
+	branch dwArg04 != 0_32 l004011D7
 l004011C6:
-	branch dwArg04 != 0 l004011D7
+	branch dwArg04 != 0_32 l004011D7
 l004011CA:
-	fn004011FC(fp - 0xC)
+	fn004011FC(fp - 0xC_32)
 	ebx_12 = dwLoc08
 l004011D7:
-	memcpy(fn00401158(), ebx_12, 0x9C)
+	memcpy(fn00401158(), ebx_12, 0x9C_32)
 	_InitTermAndUnexPtrs()
 	return
 fn004011B0_exit:
@@ -136,9 +136,9 @@ void fn004011FC(word32 dwArg04)
 // Preserved: ebp ebx esp
 fn004011FC_entry:
 l004011FC:
-	Mem17[0x004020F8:word32] = fn00401158() + 0x1C
-	Mem18[dwArg04:word32] = 0x82727349
-	Mem19[dwArg04 + 4:word32] = 0x4020E4_p
+	Mem17[0x004020F8:word32] = fn00401158() + 0x1C_32
+	Mem18[dwArg04:word32] = 0x82727349_32
+	Mem19[dwArg04 + 4_32:word32] = 0x4020E4_p32
 	return
 fn004011FC_exit:
 

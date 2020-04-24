@@ -20,7 +20,7 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // Preserved:
 DllMain_entry:
 l10071010:
-	return 1
+	return 1_32
 DllMain_exit:
 
 

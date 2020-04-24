@@ -4703,7 +4703,7 @@ T_398: (in __fprintf_chk(gp->tFFFFF880, 1_i32, "ipcalc: could not resolve %s\n",
   Class: Eq_357
   DataType: int32
   OrigDataType: int32
-T_399: (in 0_8 : byte)
+T_399: (in 0_08 : byte)
   Class: Eq_399
   DataType: byte
   OrigDataType: byte
@@ -7675,7 +7675,7 @@ T_1141: (in fn0000000000015EF0() : void)
   Class: Eq_1141
   DataType: void
   OrigDataType: void
-T_1142: (in 1_8 : byte)
+T_1142: (in 1_08 : byte)
   Class: Eq_1142
   DataType: byte
   OrigDataType: byte
@@ -9207,7 +9207,7 @@ T_1524: (in s3_37 == 1_i64 : bool)
   Class: Eq_1524
   DataType: bool
   OrigDataType: bool
-T_1525: (in 0_8 : byte)
+T_1525: (in 0_08 : byte)
   Class: Eq_1525
   DataType: byte
   OrigDataType: byte

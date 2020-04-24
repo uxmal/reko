@@ -7,14 +7,14 @@ word32 deregister_tm_clones()
 // Preserved:
 deregister_tm_clones_entry:
 l80000080:
-	word32 a6_23 = fp - 4
+	word32 a6_23 = fp - 4_32
 	branch true l800000AA
 l80000096:
-	branch null == 0 l800000AA
+	branch null == 0_32 l800000AA
 l800000A0:
 	word32 a0_26
 	call null (retsize: 4;)
-		uses: a0:a0_26,a6:fp - 4,Stack +0004:0x80002724
+		uses: a0:a0_26,a6:fp - 4_32,Stack +0004:0x80002724
 		defs: a0:a0_26,a6:a6_23
 l800000AA:
 	return Mem31[a6_23:word32]
@@ -30,19 +30,19 @@ void register_tm_clones()
 // Preserved:
 register_tm_clones_entry:
 l800000AE:
-	word32 d0_12 = 0_i
+	word32 d0_12 = 0_i32
 	branch false l800000C6
 l800000C4:
-	d0_12 = 1
+	d0_12 = 1_32
 l800000C6:
-	word32 d0_18 = d0_12 >> 1
-	branch d0_18 == 0 l800000E0
+	word32 d0_18 = d0_12 >> 1_32
+	branch d0_18 == 0_32 l800000E0
 l800000CA:
-	branch null == 0 l800000E0
+	branch null == 0_32 l800000E0
 l800000D4:
 	word32 a0_37
 	call null (retsize: 4;)
-		uses: a0:a0_37,a6:fp - 4,Stack +0004:0x80002724,Stack +0008:d0_18
+		uses: a0:a0_37,a6:fp - 4_32,Stack +0004:0x80002724,Stack +0008:d0_18
 		defs: a0:a0_37
 l800000E0:
 	return
@@ -58,29 +58,29 @@ void __do_global_dtors_aux()
 // Preserved:
 __do_global_dtors_aux_entry:
 l800000E4:
-	word32 a6_38 = fp - 4
-	branch Mem15[0x80002724:byte] != 0_8 l8000014C
+	word32 a6_38 = fp - 4_32
+	branch Mem15[0x80002724:byte] != 0_08 l8000014C
 l800000F4:
 	word32 d0_21 = Mem15[0x80002726:word32]
 	word32 a2_20 = 0x80002714
-	word32 d2_25 = 0
-	branch d0_21 >=u 0 l8000012C
+	word32 d2_25 = 0_32
+	branch d0_21 >=u 0_32 l8000012C
 l80000114:
-	word32 d0_31 = d0_21 + 1
+	word32 d0_31 = d0_21 + 1_32
 	Mem34[0x80002726:word32] = d0_31
 	word32 a0_46
 	word32 d1_95
-	call Mem34[a2_20 + d0_31 * 4_i:word32] (retsize: 4;)
+	call Mem34[a2_20 + d0_31 * 4_i32:word32] (retsize: 4;)
 		uses: a0:a0_46,a2:a2_36,a6:a6_38,d0:d0_31,d1:d1_95,d2:d2_39
 		defs: a0:a0_46,a2:a2_43,a6:a6_42,d1:d1_95,d2:d2_44
 	d0_21 = Mem34[0x80002726:word32]
-	branch d2_25 - d0_21 >u 0 l80000114
+	branch d2_25 - d0_21 >u 0_32 l80000114
 l8000012C:
 	word32 a6_55 = deregister_tm_clones()
 	word32 a7_56 = <invalid>
-	branch null == 0 l80000144
+	branch null == 0_32 l80000144
 l8000013A:
-	Mem68[a7_56 - 4:word32] = 0x8000065C
+	Mem68[a7_56 - 4_32:word32] = 0x8000065C
 	word32 d0_75
 	word32 a0_76
 	word32 d1_77
@@ -88,7 +88,7 @@ l8000013A:
 		uses: a0:a0_76,a2:a2_69,a6:a6_55,d0:d0_75,d1:d1_77,d2:d2_70
 		defs: a0:a0_76,d0:d0_75,d1:d1_77
 l80000144:
-	Mem81[0x80002724:byte] = 1_8
+	Mem81[0x80002724:byte] = 1_08
 l8000014C:
 	return
 __do_global_dtors_aux_exit:
@@ -116,22 +116,22 @@ void frame_dummy()
 // Preserved: a7
 frame_dummy_entry:
 l80000160:
-	word32 a6_18 = fp - 4
-	word32 a7_23 = fp - 4
-	branch null == 0 l8000017E
+	word32 a6_18 = fp - 4_32
+	word32 a7_23 = fp - 4_32
+	branch null == 0_32 l8000017E
 l8000016E:
 	word32 a7_17
 	word32 a1_20
 	call null (retsize: 4;)
-		uses: a1:a1_20,a6:fp - 4,Stack +0004:0x8000065C,Stack +0008:0x8000272A
+		uses: a1:a1_20,a6:fp - 4_32,Stack +0004:0x8000065C,Stack +0008:0x8000272A
 		defs: a1:a1_20,a6:a6_18,a7:a7_17
-	a7_23 = a7_17 + 8_i
+	a7_23 = a7_17 + 8_i32
 l8000017E:
-	branch Mem25[0x8000271C:word32] != 0 l8000018E
+	branch Mem25[0x8000271C:word32] != 0_32 l8000018E
 l8000018E:
-	branch null == 0 l80000188
+	branch null == 0_32 l80000188
 l80000198:
-	Mem38[a7_23 - 4_i:word32] = 0x8000271C
+	Mem38[a7_23 - 4_i32:word32] = 0x8000271C
 	word32 a1_44
 	call null (retsize: 4;)
 		uses: a1:a1_44,a6:a6_40
@@ -181,14 +181,14 @@ void factorial(int32 dwArg04)
 // Preserved:
 _ZL9factoriali_entry:
 l8000033C:
-	word32 dwLoc08_35 = 2_i
+	word32 dwLoc08_35 = 2_i32
 l8000034C:
-	branch dwLoc08_35 - dwArg04 > 0 l8000036A
+	branch dwLoc08_35 - dwArg04 > 0_32 l8000036A
 l8000036A:
 	return
 _ZL9factoriali_exit:
 l80000356:
-	dwLoc08_35 = dwLoc08_35 + 1
+	dwLoc08_35 = dwLoc08_35 + 1_32
 
 
 void pow_int(real64 rArg04, int32 dwArg0C)
@@ -200,14 +200,14 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 // Preserved:
 _ZL7pow_intdi_entry:
 l80000372:
-	word32 dwLoc08_49 = 0
+	word32 dwLoc08_49 = 0_32
 l80000386:
-	branch dwLoc08_49 - dwArg0C >= 0 l800003A8
+	branch dwLoc08_49 - dwArg0C >= 0_32 l800003A8
 l800003A8:
 	return
 _ZL7pow_intdi_exit:
 l80000390:
-	dwLoc08_49 = dwLoc08_49 + 1
+	dwLoc08_49 = dwLoc08_49 + 1_32
 
 
 void sine_taylor(real64 rArg04, int32 dwArg0C)
@@ -219,24 +219,24 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // Preserved:
 _Z11sine_taylordi_entry:
 l800003BC:
-	word32 dwLoc08_127 = 3_i
+	word32 dwLoc08_127 = 3_i32
 l800003D6:
-	branch dwLoc08_127 - dwArg0C > 0 l80000428
+	branch dwLoc08_127 - dwArg0C > 0_32 l80000428
 l80000428:
-	word32 dwLoc08_130 = 5_i
+	word32 dwLoc08_130 = 5_i32
 l8000042E:
-	branch dwLoc08_130 - dwArg0C > 0 l80000480
+	branch dwLoc08_130 - dwArg0C > 0_32 l80000480
 l80000480:
 	return
 _Z11sine_taylordi_exit:
 l80000438:
 	pow_int(rArg04, dwLoc08_130)
 	factorial(dwLoc08_130)
-	dwLoc08_130 = dwLoc08_130 + 4
+	dwLoc08_130 = dwLoc08_130 + 4_32
 l800003E0:
 	pow_int(rArg04, dwLoc08_127)
 	factorial(dwLoc08_127)
-	dwLoc08_127 = dwLoc08_127 + 4
+	dwLoc08_127 = dwLoc08_127 + 4_32
 
 
 void main()
@@ -249,7 +249,7 @@ void main()
 main_entry:
 l8000049A:
 	sine_taylor(4.61425307021499e+18)
-	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 8)
+	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 8_32)
 	return
 main_exit:
 
@@ -265,7 +265,7 @@ _Z4_sinddRi_entry:
 l800004DE:
 	real64 rLoc0C_114 = rArg04
 	real64 v9_14 = (real64) ((real96) rArg04 * rArg04)
-	word32 dwLoc20_120 = 2
+	word32 dwLoc20_120 = 2_32
 	real64 rLoc14_122 = 0x3FF0000000000000_64
 l8000051A:
 	branch (real64) ((real96) rLoc0C_114 / rLoc14_122) < rArg0C l8000060E
@@ -273,11 +273,11 @@ l8000060E:
 	return
 _Z4_sinddRi_exit:
 l80000530:
-	Mem106[tArg14:word32] = Mem98[tArg14:word32] + 1
-	word32 v23_57 = dwLoc20_120 + 0
+	Mem106[tArg14:word32] = Mem98[tArg14:word32] + 1_32
+	word32 v23_57 = dwLoc20_120 + 0_32
 	rLoc0C_114 = (real64) ((real96) (real64) ((real96) rLoc0C_114 * v9_14) * v9_14)
-	dwLoc20_120 = v23_57 + 3
-	rLoc14_122 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_122 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 1))) * (real80) ((real96) (v23_57 + 2))) * (real80) ((real96) (v23_57 + 3)))
+	dwLoc20_120 = v23_57 + 3_32
+	rLoc14_122 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_122 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 1_32))) * (real80) ((real96) (v23_57 + 2_32))) * (real80) ((real96) (v23_57 + 3_32)))
 
 
 void __do_global_ctors_aux()
@@ -290,17 +290,17 @@ void __do_global_ctors_aux()
 __do_global_ctors_aux_entry:
 l80000624:
 	word32 a0_12 = Mem11[0x8000270C:word32]
-	word32 a6_19 = fp - 4
+	word32 a6_19 = fp - 4_32
 	word32 a2_13 = 0x8000270C
-	branch a0_12 == -1_i l80000646
+	branch a0_12 == -1_i32 l80000646
 l8000063C:
 	word32 a2_24
 	call a0_12 (retsize: 4;)
 		uses: a2:a2_20,a6:a6_19
 		defs: a2:a2_24,a6:a6_23
-	a0_12 = Mem11[a2_24 - 4_i:word32]
-	a2_13 = a2_24 - 4_i
-	branch a0_12 != -1_i l8000063C
+	a0_12 = Mem11[a2_24 - 4_i32:word32]
+	a2_13 = a2_24 - 4_i32
+	branch a0_12 != -1_i32 l8000063C
 l80000646:
 	return
 __do_global_ctors_aux_exit:

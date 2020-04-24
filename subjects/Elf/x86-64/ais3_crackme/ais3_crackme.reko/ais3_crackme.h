@@ -269,11 +269,11 @@ T_50: (in Mem0[0x0000000000601038:byte] : byte)
   Class: Eq_50
   DataType: byte
   OrigDataType: byte
-T_51: (in 0_8 : byte)
+T_51: (in 0_08 : byte)
   Class: Eq_50
   DataType: byte
   OrigDataType: byte
-T_52: (in globals->b601038 != 0_8 : bool)
+T_52: (in globals->b601038 != 0_08 : bool)
   Class: Eq_52
   DataType: bool
   OrigDataType: bool
@@ -289,7 +289,7 @@ T_55: (in deregister_tm_clones(r8) : void)
   Class: Eq_55
   DataType: void
   OrigDataType: void
-T_56: (in 1_8 : byte)
+T_56: (in 1_08 : byte)
   Class: Eq_50
   DataType: byte
   OrigDataType: byte
@@ -433,11 +433,11 @@ T_91: (in SLICE((word32) Mem12[rax_17 + 0_64:byte], byte, 0) : byte)
   Class: Eq_91
   DataType: byte
   OrigDataType: byte
-T_92: (in 0_8 : byte)
+T_92: (in 0_08 : byte)
   Class: Eq_91
   DataType: byte
   OrigDataType: byte
-T_93: (in (byte) (word32) *rax_17 != 0_8 : bool)
+T_93: (in (byte) (word32) *rax_17 != 0_08 : bool)
   Class: Eq_93
   DataType: bool
   OrigDataType: bool
@@ -729,15 +729,15 @@ T_165: (in SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) al_34 >> SLIC
   Class: Eq_165
   DataType: byte
   OrigDataType: byte
-T_166: (in 8_8 : byte)
+T_166: (in 8_08 : byte)
   Class: Eq_166
   DataType: byte
   OrigDataType: byte
-T_167: (in (byte) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) al_34 >> (byte) ((uint64) ((word32) ((uint64) (8_32 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9_32)) & 3_32))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_34 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9_32)) & 3_32))))))))))) + 8_8 : byte)
+T_167: (in (byte) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) al_34 >> (byte) ((uint64) ((word32) ((uint64) (8_32 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9_32)) & 3_32))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_34 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9_32)) & 3_32))))))))))) + 8_08 : byte)
   Class: Eq_118
   DataType: byte
   OrigDataType: byte
-T_168: (in (byte) (word32) SEQ(SLICE(rax_75, word48, 16), (int16) (byte) rax_75)->b601020 == (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_34 >> (byte) ((uint64) ((word32) ((uint64) (8_32 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9_32)) & 3_32)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_34 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9_32)) & 3_32)))))))))))) + 8_8 : bool)
+T_168: (in (byte) (word32) SEQ(SLICE(rax_75, word48, 16), (int16) (byte) rax_75)->b601020 == (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_34 >> (byte) ((uint64) ((word32) ((uint64) (8_32 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9_32)) & 3_32)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_34 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9_32)) & 3_32)))))))))))) + 8_08 : bool)
   Class: Eq_168
   DataType: bool
   OrigDataType: bool

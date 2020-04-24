@@ -7,19 +7,19 @@ char * get(uint32 n)
 // Preserved:
 get_entry:
 l10071000:
-	branch n >u 2 l10071029
+	branch n >u 2_32 l10071029
 l10071029:
-	return 0x10072000_p
+	return 0x10072000_p32
 l1007100A:
-	switch (n + 1) { l10071011 l10071017 l1007101D l10071023 }
+	switch (n + 1_32) { l10071011 l10071017 l1007101D l10071023 }
 l10071023:
-	return 0x10072008_p
+	return 0x10072008_p32
 l1007101D:
-	return 0x10072010_p
+	return 0x10072010_p32
 l10071017:
-	return 0x10072014_p
+	return 0x10072014_p32
 l10071011:
-	return 0x10072018_p
+	return 0x10072018_p32
 get_exit:
 
 
@@ -32,7 +32,7 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // Preserved:
 DllMain_entry:
 l10071080:
-	return 1
+	return 1_32
 DllMain_exit:
 
 

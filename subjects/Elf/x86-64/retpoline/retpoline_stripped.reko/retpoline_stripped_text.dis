@@ -9,8 +9,8 @@ void fn0000000000400480(word64 rdx, word64 qwArg00)
 fn0000000000400480_exit:
 fn0000000000400480_entry:
 l0000000000400480:
-	__align(fp + 8_i)
-	__libc_start_main(0x400660, qwArg00, fp + 8_i, 0x400710, 0x400780, rdx, fp)
+	__align(fp + 8_i64)
+	__libc_start_main(0x400660_64, qwArg00, fp + 8_i64, 0x400710_64, 0x400780_64, rdx, fp)
 	__hlt()
 
 
@@ -23,14 +23,14 @@ void fn00000000004004B0(word64 r8)
 // Preserved: rbp rsp
 fn00000000004004B0_entry:
 l00000000004004B0:
-	branch r8 == 0x601040 l00000000004004D8
+	branch r8 == 0x601040_64 l00000000004004D8
 l00000000004004C1:
-	branch 0_u == 0 l00000000004004D8
+	branch 0_u64 == 0_64 l00000000004004D8
 l00000000004004D8:
 	return
 l00000000004004CB:
-	call 0_u (retsize: 0;)
-		uses: r8:r8,rdi:0x601040_u
+	call 0_u64 (retsize: 0;)
+		uses: r8:r8,rdi:0x601040_u64
 	return
 fn00000000004004B0_exit:
 
