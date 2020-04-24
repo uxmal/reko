@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var state = (SuperHState)arch.CreateProcessorState();
+            var state = (SuperHState) arch.CreateProcessorState();
             return new SuperHRewriter(arch, new LeImageReader(mem, 0), state, binder, host);
         }
 
@@ -954,6 +954,60 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|fr13 = Mem0[r12:word32]");
+        }
+
+        [Test]
+        public void SHRw_fsts()
+        {
+            Given_HexString("0DF1");    // fsts	fpul,fr1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|fr1 = fpul");
+        }
+
+        [Test]
+        public void SHRw_fmov()
+        {
+            Given_HexString("2CF0");    // fmov	dr2,dr0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|dr0 = dr2");
+        }
+
+        [Test]
+        public void SHRw_float_d()
+        {
+            Given_HexString("2DF4");    // float	fpul,dr4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|dr4 = (real64) fpul");
+        }
+
+        [Test]
+        public void SHRw_float_s()
+        {
+            Given_HexString("2DF5");    // float	fpul,fr5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|fr5 = (real32) fpul");
+        }
+
+        [Test]
+        public void SHRw_ftrc()
+        {
+            Given_HexString("3DF2");    // ftrc	dr2,fpul
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|fpul = (int32) trunc(dr2)");
+        }
+
+        [Test]
+        public void SHRw_ftrc_s()
+        {
+            Given_HexString("3DF1");    // ftrc	fr1,fpul
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|fpul = (int32) truncf(fr1)");
         }
     }
 }

@@ -702,15 +702,21 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void ShDis_fmov_d_idx()
+        public void ShDis_fmov_s_idx()
         {
-            AssertCode("fmov.d\t@(r0,r1),dr4", "46F1");
+            AssertCode("fmov.s\t@(r0,r1),fr4", "46F1");
+        }
+
+        [Test]
+        public void ShDis_fmov_s_indir()
+        {
+            AssertCode("fmov.s\tfr1,@r4", "1AF4");
         }
 
         [Test]
         public void ShDis_fadd_dr()
         {
-            AssertCode("fadd\tdr0,dr0", "10F0");
+            AssertCode("fadd\tfr1,fr3", "10F3");
         }
 
         [Test]
@@ -777,6 +783,23 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("ftrc\tdr2,fpul", "3DF2");
         }
 
+        [Test]
+        public void ShDis_fmov_s_predec()
+        {
+            AssertCode("fmov.s\tfr5,@-r1", "5BF1");
+        }
+
+        [Test]
+        public void ShDis_fmov_s_postinc()
+        {
+            AssertCode("fmov.s\t@r1+,fr3", "19F3");
+        }
+
+        [Test]
+        public void ShDis_fsts_fpul()
+        {
+            AssertCode("fsts\tfpul,fr1", "0DF1");
+        }
 #if NYI
         //$TODO: DSP instructions
         [Test]

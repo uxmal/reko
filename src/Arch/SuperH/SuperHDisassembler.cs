@@ -93,7 +93,7 @@ namespace Reko.Arch.SuperH
             }
         }
 
-        private SuperHInstruction NotYetImplemented(ushort wInstr)
+        public override SuperHInstruction NotYetImplemented(uint wInstr, string message)
         {
             var instrHex = $"{wInstr & 0xFF:X2}{wInstr >> 8:X2}";
             base.EmitUnitTest("SuperH", instrHex, "", "ShDis", this.addr, w =>
@@ -170,6 +170,14 @@ namespace Reko.Arch.SuperH
         {
             var reg = (uInstr >> (1 + 4)) & 0x7;
             dasm.state.ops.Add(new RegisterOperand(Registers.dfpregs[reg]));
+            return true;
+        }
+
+
+        private static bool xd2(uint uInstr, SuperHDisassembler dasm)
+        {
+            var reg = (uInstr >> (1 + 4)) & 0x7;
+            dasm.state.ops.Add(new RegisterOperand(Registers.XdRegisters[reg]));
             return true;
         }
 
@@ -379,6 +387,13 @@ namespace Reko.Arch.SuperH
             return true;
         }
 
+        private static bool Pre1d(uint uInstr, SuperHDisassembler dasm)
+        {
+            var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
+            dasm.state.ops.Add(MemoryOperand.IndirectPreDecr(PrimitiveType.Word64, reg));
+            return true;
+        }
+
         private static bool Pre15l(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.r15;
@@ -400,6 +415,13 @@ namespace Reko.Arch.SuperH
             return true;
         }
 
+        private static bool Post1d(uint uInstr, SuperHDisassembler dasm)
+        {
+            var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
+            dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Word64, reg));
+            return true;
+        }
+
         private static bool Post2b(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0x0F];
@@ -418,6 +440,13 @@ namespace Reko.Arch.SuperH
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Word32, reg));
+            return true;
+        }
+
+        private static bool Post2d(uint uInstr, SuperHDisassembler dasm)
+        {
+            var reg = Registers.gpregs[(uInstr >> 4) & 0x0F];
+            dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Word64, reg));
             return true;
         }
 
@@ -558,6 +587,12 @@ namespace Reko.Arch.SuperH
 
         private static readonly Decoder invalid = Instr(Mnemonic.invalid);
 
+        /*
+1111101111111101 ~ FRCHG ~FPSCR.FR → SPFCR.FR 
+1111001111111101 ~ FSCHG ~FPSCR.SZ → SPFCR.SZ 
+1111nn0111111101 ~ FTRV XMTRX,FVn transform_vector [XMTRX, FVn] → FVn 
+*/
+
         private static readonly Decoder decode_FxFD = Mask(8, 4,
             Instr(Mnemonic.fsca, fpul, f1),
             Instr(Mnemonic.ftrv, xmtrx, v2),
@@ -579,26 +614,60 @@ namespace Reko.Arch.SuperH
             Instr(Mnemonic.fsca, fpul, f1),
             invalid);
 
-        private static readonly Decoder decode_FxxD = Sparse(4, 5, "  FxxD", invalid,
-            (0x01, Instr(Mnemonic.flds, d1, fpul)),
-            (0x02, Instr(Mnemonic.@float, fpul, d1)),
-            (0x03, Instr(Mnemonic.ftrc, d1, fpul)),
-            (0x04, Instr(Mnemonic.fneg, d1)),
-            (0x05, Instr(Mnemonic.fabs, d1)),
-            (0x06, Instr(Mnemonic.fsqrt, f1)),
+        /*
+1111nnnn 0000 1101 ~ FSTS FPUL,FRn FPUL → FRn 
+1111mmmm 0001 1101 ~ FLDS FRm,FPUL FRm → FPUL 
+1111nnn0 0010 1101 ~ FLOAT FPUL,DRn (float)FPUL → DRn 
+1111nnnn 0100 1101 ~ FNEG FRn FRn ∧ 0x80000000 → FRn 
+1111nnn0 0100 1101 ~ FNEG DRn DRn ^ 0x8000 0000 0000 0000 → DRn 
+1111mmmm 0011 1101 ~ FTRC FRm,FPUL (long) FRm → FPUL 
+1111mmm0 0011 1101 ~ FTRC DRm,FPUL (long) DRm → FPUL 
+1111nnnn 0101 1101 ~ FABS FRn FRn & 0x7FFF FFFF → FRn 
+1111nnn0 0101 1101 ~ FABS DRn DRn & 0x7FFF FFFF FFFF FFFF → DRn 
+1111nnnn 0010 1101 ~ FLOAT FPUL,FRn (float) FPUL → FRn 
+1111nnnn 0110 1101 ~ FSQRT FRn √FRn → FRn 
+1111nnn0 0110 1101 ~ FSQRT DRn √DRn → DRn 
+1111nnnn 1000 1101 ~ FLDI0 FRn 0x00000000 → FRn 
+1111nnnn 1001 1101 ~ FLDI1 FRn 0x3F800000 → FRn 
+1111nnn0 1010 1101 ~ FCNVSD FPUL,DRn float_to_ double [FPUL] → DRn 
+1111mmm0 1011 1101 ~ FCNVDS DRm,FPUL double_to_ float[DRm] → FPUL 
+1111nnmm 1110 1101 ~ FIPR FVm,FVn inner_product [FVm, FVn] → FR[n+3] 
+*/
+
+        private static readonly Decoder decode_FxxD = Sparse(4, 4, "  FxxD", invalid,
+            (0x00, Mask(8, 1, 
+                Instr(Mnemonic.fsts, fpul, d1),
+                Instr(Mnemonic.fsts, fpul, f1))),
+            (0x01, Mask(8, 1,
+                Instr(Mnemonic.flds, d1, fpul),
+                Instr(Mnemonic.flds, f1, fpul))),
+            (0x02, Mask(8, 1, 
+                Instr(Mnemonic.@float, fpul, d1),
+                Instr(Mnemonic.@float, fpul, f1))),
+            (0x03, Mask(8, 1,
+                Instr(Mnemonic.ftrc, d1, fpul),
+                Instr(Mnemonic.ftrc, f1, fpul))),
+            (0x04, Mask(8, 1,
+                Instr(Mnemonic.fneg, d1),
+                Instr(Mnemonic.fneg, f1))),
+            (0x05, Mask(8, 1,
+                Instr(Mnemonic.fabs, d1),
+                Instr(Mnemonic.fabs, f1))),
+            (0x06, Mask(8, 1,
+                Instr(Mnemonic.fsqrt, d1),
+                Instr(Mnemonic.fsqrt, f1))),
             (0x08, Instr(Mnemonic.fldi0, f1)),
             (0x09, Instr(Mnemonic.fldi1, f1)),
             (0x0A, Instr(Mnemonic.fcnvsd, fpul, d1)),
             (0x0B, Instr(Mnemonic.fcnvds, d1, fpul)),
             (0x0E, Instr(Mnemonic.fipr, v2, v1)),
-            (0x0F, decode_FxFD),
+            (0x0F, decode_FxFD));
 
-            (0x11, Instr(Mnemonic.flds, f1, fpul)),
-            (0x15, Instr(Mnemonic.fabs, f1)),
-            (0x18, Instr(Mnemonic.fldi0, f1)),
-            (0x19, Instr(Mnemonic.fldi1, f1)),
-            (0x1E, Instr(Mnemonic.fipr, v2, v1)),
-            (0x1F, decode_FxFD));
+        private static readonly Bitfield[] bfFpuBinop = new[]
+        {
+            new Bitfield(8, 1),
+            new Bitfield(4, 1)
+        };
 
         private static readonly Decoder[] decoders = new Decoder[]
         {
@@ -681,7 +750,7 @@ namespace Reko.Arch.SuperH
                 (0xB, Select((8, 4), Ne0,
                     invalid,
                     Sparse(4, 4, "  B", invalid,
-                        (0x0, Instr(Mnemonic.rts)),
+                        (0x0, Instr(Mnemonic.rts, InstrClass.Transfer|InstrClass.Delay)),
                         (0x1, Instr(Mnemonic.sleep)),
                         (0x2, Instr(Mnemonic.rte)),
                         (0x3, Instr(Mnemonic.brk))))
@@ -951,71 +1020,104 @@ namespace Reko.Arch.SuperH
             Instr(Mnemonic.mov_l, Pl,r1),
             Instr(Mnemonic.mov, I,r1),
             // F...
-            Sparse(0, 5, "  F...", invalid, 
-                ( 0x0, Mask(8, 1,
+            Mask(0, 4, "  F...", 
+                Select(bfFpuBinop, u => u == 0, "F..0",
                         Instr(Mnemonic.fadd, d2,d1),
-                        Instr(Mnemonic.fadd, f2,f1))
-                ),
-                ( 0x10, Mask(8, 1,
-                        Instr(Mnemonic.fadd, d2,d1),
-                        Instr(Mnemonic.fadd, f2,f1))
-                ),
-                ( 0x01, Mask(8, 1,
+                        Instr(Mnemonic.fadd, f2,f1)),
+                Select(bfFpuBinop, u => u == 0, "F..1",
                         Instr(Mnemonic.fsub, d2,d1),
-                        Instr(Mnemonic.fsub, f2,f1))
-                ),
-                ( 0x11, Instr(Mnemonic.fsub, f2,f1) ),
-
-                ( 0x02, Mask(8, 1,
+                        Instr(Mnemonic.fsub, f2,f1)),
+                Select(bfFpuBinop, u => u == 0, "F..2",
                         Instr(Mnemonic.fmul, d2,d1),
-                        Instr(Mnemonic.fmul, f2,f1))
-                ),
-                ( 0x12, Instr(Mnemonic.fmul, f2,f1) ),
-
-                ( 0x3, Mask(8, 1,
+                        Instr(Mnemonic.fmul, f2,f1)),
+                Select(bfFpuBinop, u => u == 0, "F..3",
                         Instr(Mnemonic.fdiv, d2,d1),
-                        Instr(Mnemonic.fdiv, f2,f1))
-                ),
-                ( 0x4, Mask(8, 1,
+                        Instr(Mnemonic.fdiv, f2,f1)),
+
+                Select(bfFpuBinop, u => u == 0, "F..4",
                         Instr(Mnemonic.fcmp_eq, d2,d1),
-                        Instr(Mnemonic.fcmp_eq, f2,f1))
-                ),
-                ( 0x5, Mask(8, 1,
+                        Instr(Mnemonic.fcmp_eq, f2,f1)),
+                Select(bfFpuBinop, u => u == 0, "F..5",
                         Instr(Mnemonic.fcmp_gt, d2,d1),
-                        Instr(Mnemonic.fcmp_gt, f2,f1))
-                ),
+                        Instr(Mnemonic.fcmp_gt, f2,f1)),
+/*
+1111nnnnmmmm0110 ~ FMOV.S @(R0,Rm),FRn (R0 + Rm) → FRn 
+1111nnn0mmmm0110 ~ FMOV @(R0,Rm),DRn (R0 + Rm) → DRn 
+1111nnnnmmmm0111 ~ FMOV.S FRm,@(R0,Rn) FRm → (R0 + Rn) 
+1111nnnnmmm00111 ~ FMOV DRm,@(R0,Rn) DRm → (R0 + Rn) 
+*/
+                Mask(8, 1, "F..6",
+                    Instr(Mnemonic.fmov_d, X1d,d2),
+                    Instr(Mnemonic.fmov_s, X1l,f2)),
 
-                ( 0x06, Instr(Mnemonic.fmov_d, X1d,d2) ),
-                ( 0x16, Instr(Mnemonic.fmov_s, X1l,f2) ),
+                Mask(4, 1, "F..7",
+                    Instr(Mnemonic.fmov_d, d2,X1d),
+                    Instr(Mnemonic.fmov_s, f2,X1l)),
 
-                ( 0x08, Instr(Mnemonic.fmov_d, Ind1d,d2) ),
-                ( 0x18, Instr(Mnemonic.fmov_s, Ind1l,f2) ),
+/*
+1111nnnnmmmm1000 ~ FMOV.S @Rm,FRn (Rm) → FRn 
+1111nnn0mmmm1000 ~ FMOV @Rm,DRn (Rm) → DRn 
+1111nnnnmmmm1001 ~ FMOV.S @Rm+,FRn (Rm) → FRn, Rm + 4 → Rm 
+1111nnn0mmmm1001 ~ FMOV @Rm+,DRn (Rm) → DRn, Rm + 8 → Rm 
+1111nnnnmmmm1010 ~ FMOV.S FRm,@Rn FRm → (Rn) 
+1111nnnnmmm01010 ~ FMOV DRm,@Rn DRm → (Rn) 
+1111nnnnmmmm1011 ~ FMOV.S FRm,@-Rn Rn-4 → Rn, FRm → (Rn) 
+1111nnnnmmm01011 ~ FMOV DRm,@-Rn Rn-8 → Rn, DRm → (Rn) 
+*/
+                Mask(4, 1, "F..8",
+                    Instr(Mnemonic.fmov_d, Ind1d,d2),
+                    Instr(Mnemonic.fmov_s, Ind1l,f2)),
 
-                ( 0x9, Mask(8, 1,
-                    Instr(Mnemonic.fcmp_gt, d2,d1),
-                    Instr(Mnemonic.fcmp_gt, f2,f1))
-                ),
+                Mask(8, 1, "F..9",
+                    Instr(Mnemonic.fmov_d, Post2d,d1),
+                    Instr(Mnemonic.fmov_s, Post2l,f1)),
 
-                ( 0x0A, Instr(Mnemonic.fmov_d, Ind1d,d2) ),
-                ( 0x1A, Instr(Mnemonic.fmov_s, Ind1l,f2) ),
+                Mask(4, 1, "F..A",
+                    Instr(Mnemonic.fmov_d, d2, Ind1d),
+                    Instr(Mnemonic.fmov_s, f2, Ind1l)),
 
-                ( 0xC, Mask(8, 1,
+                Mask(4, 1, "F..B",
+                    Instr(Mnemonic.fmov_d, d2, Pre1d),
+                    Instr(Mnemonic.fmov_s, f2, Pre1l)),
+
+/*
+1111nnnnmmmm1100 ~ FMOV FRm,FRn FRm → FRn 
+1111nnn0mmm01100 ~ FMOV DRm,DRn DRm → DRn 
+*/
+                // 
+                Select(bfFpuBinop, u => u == 0, "F..C",
                     Instr(Mnemonic.fmov, d2,d1),
-                    Instr(Mnemonic.fmov, f2,f1))
-                ),
-                ( 0x1C, Mask(8, 1,
-                    Instr(Mnemonic.fmov, d2,d1),
-                    Instr(Mnemonic.fmov, f2,f1))
-                ),
-                ( 0xD, decode_FxxD ),
-                
-                ( 0x0E, Instr(Mnemonic.fmac, F0,f2,f1) ),
-                ( 0x0F, invalid ),
-                ( 0x14, Instr(Mnemonic.fcmp_eq, f2,f1) ),
-                ( 0x1D, decode_FxxD ),
-                ( 0x1E, Instr(Mnemonic.fmac, F0,f2,f1) ),
-                ( 0x1F, invalid )
+                    Instr(Mnemonic.fmov, f2,f1)),
+                decode_FxxD,
+                Instr(Mnemonic.fmac, F0,f2,f1),
+                invalid
             )
         };
+
+        /*
+        0100mmmm01101010 ~ LDS Rm,FPSCR Rm → FPSCR 
+        0100mmmm01011010 ~ LDS Rm,FPUL Rm → FPUL 
+        0100mmmm01100110 ~ LDS.L @Rm+,FPSCR (Rm) → FPSCR, Rm+4 → Rm 
+        0100mmmm01010110 ~ LDS.L @Rm+,FPUL (Rm) → FPUL, Rm+4 → Rm 
+        0000nnnn01101010 ~ STS FPSCR,Rn FPSCR → Rn 
+        0000nnnn01011010 ~ STS FPUL,Rn FPUL → Rn 
+        0100nnnn01100010 ~ STS.L FPSCR,@-Rn Rn – 4 → Rn, FPSCR → (Rn) 
+        0100nnnn01010010 ~ STS.L FPUL,@-Rn Rn – 4 → Rn, FPUL → (Rn) 
+
+        1111nnn1mmmm0110 ~ FMOV @(R0,Rm),XDn (R0 + Rm) → XDn 
+        1111nnnnmmm10111 ~ FMOV XDm,@(R0,Rn) XDm → (R0+Rn) 
+        1111nnn1mmmm1000 ~ FMOV @Rm,XDn (Rm) → XDn 
+        1111nnn1mmmm1001 ~ FMOV @Rm+,XDn (Rm) → XDn, Rm + 8 → Rm 
+        1111nnnnmmm11010 ~ FMOV XDm,@Rn XDm → (Rn) 
+        1111nnnnmmm11011 ~ FMOV XDm,@-Rn Rn – 8 → Rn, XDm → (Rn) 
+        1111nnn1mmm01100 ~ FMOV DRm,XDn DRm → XDn 
+        1111nnn0mmm11100 ~ FMOV XDm,DRn XDm → DRn 
+        1111nnn1mmm11100 ~ FMOV XDm,XDn XDm → XDn 
+
+                 */
+
+        /*
+        1111nnnnmmmm1110 ~ FMAC FR0,FRm,FRn FR0*FRm + FRn → FRn 
+        */
     }
 }

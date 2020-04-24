@@ -125,6 +125,14 @@ namespace Reko.Arch.SuperH
             if (domain == Registers.fr0.Domain)
             {
                 // Special case the floating point numbers.
+                if (range.Extent == 32)
+                {
+                    return Registers.fpregs[range.Lsb / 32];
+                }
+                if (range.Extent == 64)
+                {
+                    return Registers.dfpregs[range.Lsb / 64];
+                }
                 throw new NotImplementedException("GetRegister: FP registers not done yet.");
             }
             return Registers.RegistersByDomain.TryGetValue(domain, out var reg)

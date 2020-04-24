@@ -121,9 +121,13 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.fldi0: RewriteFldi(0.0F); break;
                 case Mnemonic.fldi1: RewriteFldi(1.0F); break;
                 case Mnemonic.flds: RewriteMov(); break;
+                case Mnemonic.@float: RewriteFloat(); break;
                 case Mnemonic.fmac: RewriteFmac(); break;
+                case Mnemonic.fmov: RewriteMov(); break;
                 case Mnemonic.fmov_d: RewriteMov(); break;
                 case Mnemonic.fmov_s: RewriteMov(); break;
+                case Mnemonic.fsts: RewriteMov(); break;
+                case Mnemonic.ftrc: RewriteFtrc(); break;
                 case Mnemonic.jmp: RewriteJmp(); break;
                 case Mnemonic.jsr: RewriteJsr(); break;
                 case Mnemonic.lds: RewriteMov(); break;
@@ -202,7 +206,7 @@ namespace Reko.Arch.SuperH
             Debug.WriteLine("        [Test]");
             Debug.WriteLine("        public void SHRw_" + dasm.Current.Mnemonic + "()");
             Debug.WriteLine("        {");
-            Debug.Write("            RewriteCode(\"");
+            Debug.Write("            Given_HexString(\"");
             Debug.Write(string.Join(
                 "",
                 bytes.Select(b => string.Format("{0:X2}", (int)b))));
@@ -537,6 +541,12 @@ namespace Reko.Arch.SuperH
             DstOp(instr.Operands[0], Constant.Real32(f), a => a);
         }
 
+        private void RewriteFloat()
+        {
+            var src = SrcOp(instr.Operands[0]);
+            var dst = DstOp(instr.Operands[1], src, (a, b) => m.Cast(PrimitiveType.Create(Domain.Real, a.DataType.BitSize), b));
+        }
+
         private void RewriteFmac()
         {
             var f0 = binder.EnsureRegister(Registers.fr0);
@@ -545,6 +555,23 @@ namespace Reko.Arch.SuperH
             m.Assign(dst, m.FAdd(m.FMul(f0, mul), dst));
         }
 
+        private void RewriteFtrc()
+        {
+            var src = SrcOp(instr.Operands[0]);
+            var dst = DstOp(instr.Operands[1], src, (d, s) =>
+            {
+                Expression e;
+                if (s.DataType.BitSize == 64)
+                {
+                    e = host.PseudoProcedure("trunc", PrimitiveType.Real64, s);
+                }
+                else
+                {
+                    e = host.PseudoProcedure("truncf", PrimitiveType.Real32, s);
+                }
+                return m.Cast(PrimitiveType.Int32, e);
+            });
+        }
         private void RewriteJmp()
         {
             this.iclass = InstrClass.Transfer | InstrClass.Delay;

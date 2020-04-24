@@ -90,9 +90,11 @@ namespace Reko.Arch.SuperH
         public static RegisterStorage fpscr = new RegisterStorage("fpscr", 18, 0, PrimitiveType.Word32);
         public static RegisterStorage pr = new RegisterStorage("pr", 19, 0, PrimitiveType.Word32);
         public static RegisterStorage gbr = new RegisterStorage("gbr", 20, 0, PrimitiveType.Word32);
+
         public static RegisterStorage mac = new RegisterStorage("mac", 21, 0, PrimitiveType.Word64);
         public static RegisterStorage macl = new RegisterStorage("macl", 21, 0, PrimitiveType.Word32);
         public static RegisterStorage mach = new RegisterStorage("mach", 21, 32, PrimitiveType.Word32);
+
         public static RegisterStorage sr = new RegisterStorage("sr", 22, 0, PrimitiveType.Word32);
         public static RegisterStorage tbr = new RegisterStorage("tbr", 23, 0, PrimitiveType.Word32);
         public static RegisterStorage vbr = new RegisterStorage("vbr", 24, 0, PrimitiveType.Word32);
@@ -185,15 +187,15 @@ namespace Reko.Arch.SuperH
              fr6,
              fr7,
 
-             fr8 ,
-             fr9 ,
+             fr8,
+             fr9,
              fr10,
              fr11,
 
-             fr12 ,
-             fr13 ,
-             fr14 ,
-             fr15 ,
+             fr12,
+             fr13,
+             fr14,
+             fr15,
         };
 
         public static RegisterStorage[] dfpregs = new[]
@@ -208,8 +210,20 @@ namespace Reko.Arch.SuperH
 
         public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
 
+        public static RegisterStorage[] XdRegisters { get; }
+        public static RegisterStorage[] XfRegisters { get; }
+
         static Registers()
         {
+            var factory = new StorageFactory(StorageDomain.Register + 0x60);
+            XdRegisters = factory.RangeOfReg(8, i => $"xd{i * 2}", PrimitiveType.Word64);
+            var n = XdRegisters[0].Number;
+            XfRegisters = XdRegisters.SelectMany(r => new[]
+            {
+                new RegisterStorage($"xf{2*(r.Number-n)}", r.Number, 0, PrimitiveType.Word32),
+                new RegisterStorage($"xf{2*(r.Number-n)+1}", r.Number, 32, PrimitiveType.Word32),
+            }).ToArray();
+
             RegistersByDomain = gpregs.ToDictionary(r => r.Domain);
         }
     }
