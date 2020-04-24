@@ -126,6 +126,7 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.fmov: RewriteMov(); break;
                 case Mnemonic.fmov_d: RewriteMov(); break;
                 case Mnemonic.fmov_s: RewriteMov(); break;
+                case Mnemonic.fmul: RewriteBinOp(m.FMul, n => n); break;
                 case Mnemonic.fsts: RewriteMov(); break;
                 case Mnemonic.ftrc: RewriteFtrc(); break;
                 case Mnemonic.jmp: RewriteJmp(); break;
