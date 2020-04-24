@@ -245,7 +245,7 @@ namespace Reko.ImageLoaders.Elf
 
                 uint sym = info >> 8;
                 string symStr = GetStrPtr(symtab, sym);
-                DebugEx.Verbose(ElfImageLoader.trace, "  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+                ElfImageLoader.trace.Verbose("  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
 
@@ -336,7 +336,7 @@ namespace Reko.ImageLoaders.Elf
 
             foreach (var ph in Segments)
             {
-                DebugEx.Inform(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                ElfImageLoader.trace.Inform("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = Address.Ptr32((uint) ph.p_vaddr);
@@ -523,7 +523,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 var sym = Elf32_Sym.Load(rdr);
                 var symName = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
-                DebugEx.Verbose(ElfImageLoader.trace, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                ElfImageLoader.trace.Verbose("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     string.IsNullOrWhiteSpace(symName) ? "<empty>" : symName,
                     (ElfSymbolType) (sym.st_info & 0xF),

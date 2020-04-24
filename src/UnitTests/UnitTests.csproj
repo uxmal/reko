@@ -324,6 +324,7 @@
     <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Arm64CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Avr8CallingConventionTests.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\PowerPc64CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\XtensaCallingConventionTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\AlphaCallingConventionTests.cs" />

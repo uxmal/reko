@@ -76,7 +76,7 @@ namespace Reko.Core
         /// stack) and the initial stack offset of the first parameter
         /// passed on the stack.
         /// </summary>
-        void LowLevelDetails(int stackAlignment, int initialStackOffset);
+        void LowLevelDetails(int stackAlignment, int parameterStackSaveOffset);
 
         /// <summary>
         /// Add a register parameter.
