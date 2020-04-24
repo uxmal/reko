@@ -892,14 +892,22 @@ namespace Reko.Core.Output
 
         private string FormatString(PrimitiveType type, object value)
         {
+#if ALWAYS_SHOW_SIGIL
+            int wordBitSize = 0;
+            int ptrBitSize = 0;
+#endif
             string format;
             switch (type.Domain)
             {
             case Domain.SignedInt:
+#if USE_ANGR_STYLE_SIGILS
+                return "{0}<i{1:00}>";
+#else
                 if (type.BitSize == wordBitSize)
                     return "{0}_i";
                 else 
-                    return "{0}_i{1}";
+                    return "{0}_i{1:00}";
+#endif
             case Domain.Character:
                 switch (type.Size)
                 {
@@ -916,6 +924,16 @@ namespace Reko.Core.Output
             case Domain.UnsignedInt:
                 if (!(value is ulong n))
                     n = Convert.ToUInt64(value);
+#if USE_ANGR_STYLE_SIGILS
+                if (n > 9)
+                {
+                    return "0x{0:X}<u{1:00}>";
+                }
+                else
+                {
+                    return "{0}<u{1:00}>";
+                }
+#else
                 if (type.BitSize == wordBitSize)
                 {
                     if (n > 9)
@@ -926,25 +944,39 @@ namespace Reko.Core.Output
                 else
                 {
                     if (n > 9)
-                        return "0x{0:X}_u{1}";
+                        return "0x{0:X}_u{1:00}";
                     else
-                        return "{0}_u{1}";
+                        return "{0}_u{1:00}";
                 }
+#endif
             case Domain.Pointer:
             case Domain.Offset:
+#if USE_ANGR_STYLE_SIGILS
+                return "0x{0:X}<p{1}>";
+#else
                 if (type.BitSize == ptrBitSize)
                     return "0x{0:X}_p";
                 else
-                    return "0x{0:X}_p{1}";
-
+                    return "0x{0:X}_p{1:00}";
+#endif
             case Domain.SegPointer:
                 if (type.BitSize == ptrBitSize)
                     return "{0:X}_p";
                 else
-                    return "{0:X}_p{1}";
+                    return "{0:X}_p{1:00}";
             default:
                 if (!(value is ulong w))
                     w = Convert.ToUInt64(value);
+#if USE_ANGR_STYLE_SIGILS
+                if (w > 9)
+                {
+                    return "0x{0:X}<{1:00}>";
+                }
+                else
+                {
+                    return "{0}<{1:00}>";
+                }
+#else
                 if (type.BitSize == wordBitSize)
                 {
                     if (w > 9)
@@ -955,10 +987,11 @@ namespace Reko.Core.Output
                 else
                 {
                     if (w > 9)
-                        return "0x{0:X}_{1}";
+                        return "0x{0:X}_{1:00}";
                     else
-                        return "{0}_{1}";
+                        return "{0}_{1:00}";
                 }
+#endif
             }
         }
 
