@@ -12197,8 +12197,8 @@ l0800_nFCB:
 					diOut = di_n;
 					return dx_n;
 				case 0x03:
-					al_n = (byte) ax_n;
 					di_n = di_n;
+					al_n = (byte) ax_n;
 					goto l0800_nFD8;
 				case 0x04:
 					bLoc03_n = bLoc03_n | 0x01;
@@ -14407,8 +14407,8 @@ Eq_n fn0800_A53C(Eq_n ds, byte bArg06, union Eq_n & cxOut)
 	Eq_n ax_n = SEQ(0x43, bArg06);
 	if (!C)
 	{
-		ax_n = wArg08;
 		cx_n = ax_n;
+		ax_n = wArg08;
 	}
 	else
 		ax_n = fn0800-8D2B(ds, ax_n);

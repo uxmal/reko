@@ -271,7 +271,7 @@ l1483_0C6C:
 	call	1BB8
 	add	di,[bx]
 	add	ax,[bx+3303]
-	xchg	eax,ebx
+	xchg	ebx,eax
 	adc	dh,[si+147C]
 	sbb	ax,0903
 	pop	sp
@@ -443,7 +443,7 @@ l1483_0D69:
 	and	[bx+007D],al
 	sbb	ax,8747
 	adc	al,ch
-	xchg	ax,si
+	xchg	si,ax
 	aad	08
 	xchg	[si+995D],si
 	push	sp
@@ -879,14 +879,14 @@ l1483_1B3B:
 l1483_1B3D:
 	clc
 	pop	es
-	xchg	ax,si
+	xchg	si,ax
 	cmp	ax,bx
 	jz	1B51
 
 l1483_1B44:
 	dec	ax
 	mov	dx,02E2
-	xchg	ax,sp
+	xchg	sp,ax
 	adc	al,bh
 	jz	1B13
 
@@ -942,7 +942,7 @@ fn1483_1B91 proc
 	xor	ax,2EF9
 	sub	al,bh
 	not	word ptr [bx+di+10F8]
-	xchg	ax,cx
+	xchg	cx,ax
 	push	sp
 	pop	dx
 	pop	ds
@@ -976,7 +976,7 @@ l1483_1BBC:
 
 l1483_1BBF:
 	mov	ax,[E10D]
-	illegal
+	icebp
 	cmp	[di],cx
 	aas
 	mov	di,4D25
@@ -984,7 +984,7 @@ l1483_1BBF:
 	and	ax,0EBA
 	add	bp,cx
 	stc
-	xchg	ax,di
+	xchg	di,ax
 	shl	word ptr [di],01
 	cmp	ah,dh
 	and	ax,BE33

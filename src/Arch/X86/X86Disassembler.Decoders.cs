@@ -158,18 +158,17 @@ namespace Reko.Arch.X86
         /// </summary>
         public class GroupDecoder : Decoder
         {
-            private readonly int group;
-            public readonly Mutator<X86Disassembler>[] mutators;
+            private readonly Decoder[] group;
+            private readonly Mutator<X86Disassembler>[] mutators;
 
-            public GroupDecoder(int group, params Mutator<X86Disassembler>[] mutators)
+            public GroupDecoder(Decoder[] groupDecoders, params Mutator<X86Disassembler>[] mutators)
             {
-                this.group = group;
+                this.group = groupDecoders;
                 this.mutators = mutators;
             }
 
             public override bool Decode(X86Disassembler disasm, byte op)
             {
-                int grp = group;
                 if (!disasm.TryEnsureModRM(out byte modRm))
                     return false;
                 if (mutators != null)
@@ -181,7 +180,7 @@ namespace Reko.Arch.X86
                     }
                 }
 
-                Decoder decoder = s_groupDecoders[grp * 8 + ((modRm >> 3) & 0x07)];
+                Decoder decoder = group[((modRm >> 3) & 0x07)];
                 return decoder.Decode(disasm, op);
             }
         }

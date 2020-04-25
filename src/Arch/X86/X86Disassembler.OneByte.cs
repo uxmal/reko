@@ -29,27 +29,6 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        // The numbering is a bit weird. Thanks to Intel squeezing in Grp1A between 1 and 2.
-        private const int Grp1 = 0;
-        private const int Grp1A = 1;
-        private const int Grp2 = 2;
-        private const int Grp3 = 3;
-        private const int Grp4 = 4;
-        private const int Grp5 = 5;
-        private const int Grp6 = 6;
-        private const int Grp7 = 7;
-        private const int Grp8 = 8;
-        private const int Grp9 = 9;
-        private const int Grp10 = 10;
-        private const int Grp11 = 11;
-        private const int Grp12 = 12;
-        private const int Grp13 = 13;
-        private const int Grp14 = 14;
-        private const int Grp15 = 15;
-        private const int Grp16 = 16;
-
-
-
         private static Decoder[] CreateOnebyteDecoders()
         {
             return new Decoder[] { 

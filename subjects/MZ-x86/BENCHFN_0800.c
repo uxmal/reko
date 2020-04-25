@@ -1999,8 +1999,8 @@ l0800_nA23:
 									}
 								}
 								si_n = si_n;
-								byte al_n = (byte) ax_n;
 								bx = ax_n >> 0x03;
+								byte al_n = (byte) ax_n;
 								if ((Mem215[ss:fp - 0x22 + (ax_n >>u 0x03):byte] & 0x01 << (SLICE(ax_n, byte, 0) & 0x07)) != 0x00)
 								{
 									if ((bLoc2B_n & 0x10) != 0x00)

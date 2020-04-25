@@ -1411,26 +1411,45 @@ namespace Reko.Arch.X86
 			return op is RegisterOperand || op is X86AddressOperand;
 		}
 
-        private static Decoder s_invalid;
-        private static Decoder s_nyi;
-		private static Decoder [] s_rootDecoders;
-		private static Decoder [] s_decoders0F;
-		private static Decoder [] s_decoders0F38;
-		private static Decoder [] s_decoders0F3A;
-        private static Decoder [] s_groupDecoders;
-		private static Decoder [] s_fpuDecoders;
+        private static readonly Decoder s_invalid;
+        private static readonly Decoder s_nyi;
+		private static readonly Decoder [] s_rootDecoders;
+		private static readonly Decoder [] s_decoders0F;
+		private static readonly Decoder [] s_decoders0F38;
+		private static readonly Decoder [] s_decoders0F3A;
+        private static Decoder [] Grp1;
+        private static Decoder [] Grp1A;
+        private static Decoder [] Grp2;
+        private static Decoder [] Grp3;
+        private static Decoder [] Grp4;
+        private static Decoder [] Grp5;
+        private static Decoder [] Grp6;
+        private static Decoder [] Grp7;
+        private static Decoder [] Grp8;
+        private static Decoder [] Grp9;
+        private static Decoder [] Grp10;
+        private static Decoder [] Grp11;
+        private static Decoder [] Grp12;
+        private static Decoder [] Grp13;
+        private static Decoder [] Grp14;
+        private static Decoder [] Grp15;
+        private static Decoder [] Grp16;
+        private static Decoder [] Grp17;
+
+
+        private static Decoder [] s_fpuDecoders;
         private static Dictionary<Mnemonic, Mnemonic> s_mpVex;
 
         static X86Disassembler()
 		{
             s_invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
             s_nyi = nyi("This could be invalid or it could be not yet implemented");
+            CreateGroupDecoders();
             s_rootDecoders = CreateOnebyteDecoders();
             s_decoders0F = CreateTwobyteDecoders();
             s_decoders0F38 = Create0F38Decoders();
             s_decoders0F3A = Create0F3ADecoders();
 
-            s_groupDecoders = CreateGroupDecoders();
             s_fpuDecoders = CreateFpuDecoders();
             s_mpVex = CreateVexMapping();
             Debug.Assert(s_fpuDecoders.Length == 8 * 0x48);
