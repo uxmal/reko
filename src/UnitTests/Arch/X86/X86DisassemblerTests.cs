@@ -127,9 +127,21 @@ namespace Reko.UnitTests.Arch.X86
             Assert.AreEqual(sExp, instr.ToString());
         }
 
+        private void AssertCode16(string sExp, string hexBytes)
+        {
+            var instr = Disassemble16(BytePattern.FromHexBytes(hexBytes).ToArray());
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
         private void AssertCode32(string sExp, params byte[] bytes)
         {
             var instr = Disassemble32(bytes);
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
+        private void AssertCode32(string sExp, string hexBytes)
+        {
+            var instr = Disassemble32(BytePattern.FromHexBytes(hexBytes).ToArray());
             Assert.AreEqual(sExp, instr.ToString());
         }
 
@@ -138,6 +150,12 @@ namespace Reko.UnitTests.Arch.X86
             var instr = Disassemble64(bytes);
             Assert.AreEqual(sExp, instr.ToString());
             return instr;
+        }
+
+        private void AssertCode64(string sExp, string hexBytes)
+        {
+            var instr = Disassemble64(BytePattern.FromHexBytes(hexBytes).ToArray());
+            Assert.AreEqual(sExp, instr.ToString());
         }
 
         [SetUp]
@@ -942,13 +960,13 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void X86dis_mfence()
         {
-            AssertCode32("mfence", 0x0F, 0xAE, 0xF0);
+            AssertCode64("mfence", 0x0F, 0xAE, 0xF0);
         }
 
         [Test]
         public void X86dis_lfence()
         {
-            AssertCode32("lfence", 0x0F, 0xAE, 0xE8);
+            AssertCode64("lfence", 0x0F, 0xAE, 0xE8);
         }
 
         [Test]
@@ -2826,5 +2844,41 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble64(0xdf, 0xc0);
             Assert.AreEqual("ffreep\tst(0)", instr.ToString());
         }
+
+        [Test]
+        public void X86Dis_expected_bad_group11_instruction()
+        {
+            var instr = Disassemble64(0xC6, 0xAE, 0x53, 0x87, 0x7A, 0x9B, 0xC3);
+            Assert.AreEqual("illegal", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_mov_Ea_imm_group11()
+        {
+            var instr = Disassemble64(0xC6, 0x86, 0x53, 0x87, 0x7A, 0x9B, 0xC3);
+            Assert.AreEqual("mov\tbyte ptr [rsi+9B7A8753],C3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_move_ea_group11_16bit()
+        {
+            var instr = Disassemble16(0xC6, 0xAE, 0x53, 0x87, 0x7A);
+            Assert.AreEqual("mov\tbyte ptr [bp+8753],7A", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_pop_group_1A_16bit()
+        {
+            AssertCode16("pop\tbx", "8FC3");
+            AssertCode16("pop\tbx", "8FCB");
+        }
+
+        [Test]
+        public void X86Dis_pop_group_1A_64bit()
+        {
+            AssertCode64("pop\tebx", "8FC3");
+            AssertCode64("illegal", "8FCF");
+        }
+
     }
 }
