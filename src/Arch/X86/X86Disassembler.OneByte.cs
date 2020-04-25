@@ -29,6 +29,27 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
+        // The numbering is a bit weird. Thanks to Intel squeezing in Grp1A between 1 and 2.
+        private const int Grp1 = 0;
+        private const int Grp1A = 1;
+        private const int Grp2 = 2;
+        private const int Grp3 = 3;
+        private const int Grp4 = 4;
+        private const int Grp5 = 5;
+        private const int Grp6 = 6;
+        private const int Grp7 = 7;
+        private const int Grp8 = 8;
+        private const int Grp9 = 9;
+        private const int Grp10 = 10;
+        private const int Grp11 = 11;
+        private const int Grp12 = 12;
+        private const int Grp13 = 13;
+        private const int Grp14 = 14;
+        private const int Grp15 = 15;
+        private const int Grp16 = 16;
+
+
+
         private static Decoder[] CreateOnebyteDecoders()
         {
             return new Decoder[] { 
@@ -247,12 +268,12 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.jg, InstrClass.Transfer|InstrClass.Conditional, Jb),
 
 				// 80
-				new GroupDecoder(1, Eb,Ib),
-				new GroupDecoder(1, Ev,Iz),
+				new GroupDecoder(Grp1, Eb,Ib),
+				new GroupDecoder(Grp1, Ev,Iz),
 				new Alternative64Decoder(
-                    new GroupDecoder(1, Eb,Ib),
+                    new GroupDecoder(Grp1, Eb,Ib),
                     s_invalid),
-				new GroupDecoder(1, Ev,Ib),
+				new GroupDecoder(Grp1, Ev,Ib),
 				Instr(Mnemonic.test, Eb,Gb),
 				Instr(Mnemonic.test, Ev,Gv),
 				Instr(Mnemonic.xchg, Eb,Gb),
@@ -265,7 +286,9 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.mov, Ew,Sw),
 				Instr(Mnemonic.lea, Gv,Mv),
 				Instr(Mnemonic.mov, Sw,Ew),
-				Instr(Mnemonic.pop, Ev),
+				new Alternative64Decoder(
+                    Instr(Mnemonic.pop, Ev),
+                    new GroupDecoder(Grp1A)),
 
 				// 90
 				new PrefixedDecoder(
@@ -273,13 +296,13 @@ namespace Reko.Arch.X86
                     dec:Instr(Mnemonic.nop),
                     dec66:Instr(Mnemonic.nop),
                     decF3:Instr(Mnemonic.pause)),
-				Instr(Mnemonic.xchg, av,rv),
-				Instr(Mnemonic.xchg, av,rv),
-				Instr(Mnemonic.xchg, av,rv),
-				Instr(Mnemonic.xchg, av,rv),
-				Instr(Mnemonic.xchg, av,rv),
-				Instr(Mnemonic.xchg, av,rv),
-				Instr(Mnemonic.xchg, av,rv),
+				Instr(Mnemonic.xchg, rv,av),
+				Instr(Mnemonic.xchg, rv,av),
+				Instr(Mnemonic.xchg, rv,av),
+				Instr(Mnemonic.xchg, rv,av),
+				Instr(Mnemonic.xchg, rv,av),
+				Instr(Mnemonic.xchg, rv,av),
+				Instr(Mnemonic.xchg, rv,av),
 
 				Instr(Mnemonic.cbw),
 				Instr(Mnemonic.cwd),
@@ -331,8 +354,8 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.mov, rv,Iv),
 
 				// C0
-				new GroupDecoder(2, Eb,Ib),
-				new GroupDecoder(2, Ev,Ib),
+				new GroupDecoder(Grp2, Eb,Ib),
+				new GroupDecoder(Grp2, Ev,Ib),
 				Instr(Mnemonic.ret, InstrClass.Transfer, Iw),
 				Instr(Mnemonic.ret, InstrClass.Transfer),
 				new Alternative64Decoder(
@@ -341,10 +364,14 @@ namespace Reko.Arch.X86
 				new Alternative64Decoder(
                     Instr(Mnemonic.lds,	Gv,Mp),
                     new VexDecoder2()),
-                Instr(Mnemonic.mov,	Eb,Ib),
-				Instr(Mnemonic.mov,	Ev,Iz),
+                new Alternative64Decoder(
+                    Instr(Mnemonic.mov, Eb,Ib),
+                    new GroupDecoder(Grp11, Eb,Ib)),
+                new Alternative64Decoder(
+                    Instr(Mnemonic.mov, Ev,Iz),
+                    new GroupDecoder(Grp11, Ev,Iz)),
 
-				Instr(Mnemonic.enter, Iw,Ib),
+                Instr(Mnemonic.enter, Iw,Ib),
 				Instr(Mnemonic.leave),
 				Instr(Mnemonic.retf, InstrClass.Transfer, Iw),
 				Instr(Mnemonic.retf, InstrClass.Transfer),
@@ -356,10 +383,10 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.iret, InstrClass.Transfer),
 
 				// D0
-				new GroupDecoder(2, Eb,n1),
-				new GroupDecoder(2, Ev,n1),
-				new GroupDecoder(2, Eb,c),
-				new GroupDecoder(2, Ev,c),
+				new GroupDecoder(Grp2, Eb,n1),
+				new GroupDecoder(Grp2, Ev,n1),
+				new GroupDecoder(Grp2, Eb,c),
+				new GroupDecoder(Grp2, Ev,c),
 				new Alternative64Decoder(
                     Instr(Mnemonic.aam, Ib),
                     s_invalid),
@@ -401,13 +428,13 @@ namespace Reko.Arch.X86
 
 				// F0
 				Instr(Mnemonic.@lock),
-				s_invalid,
+				Instr(Mnemonic.icebp, InstrClass.Invalid),
 				new F2PrefixDecoder(),
 				new F3PrefixDecoder(),
 				Instr(Mnemonic.hlt, InstrClass.Terminates),
 				Instr(Mnemonic.cmc),
-				new GroupDecoder(3, Eb),
-				new GroupDecoder(3, Ev),
+				new GroupDecoder(Grp3, Eb),
+				new GroupDecoder(Grp3, Ev),
 
 				Instr(Mnemonic.clc),
 				Instr(Mnemonic.stc),
@@ -415,8 +442,8 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.sti),
 				Instr(Mnemonic.cld),
 				Instr(Mnemonic.std),
-				new GroupDecoder(4),
-				new GroupDecoder(5)
+				new GroupDecoder(Grp4),
+				new GroupDecoder(Grp5)
 			};
         }
     }

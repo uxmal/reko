@@ -38,6 +38,16 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.xor),
                 Instr(Mnemonic.cmp),
 
+                // group 1A
+                Instr(Mnemonic.pop, Ev),
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
 				// group 2
 				Instr(Mnemonic.rol),
                 Instr(Mnemonic.ror),
@@ -201,17 +211,17 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.rdseed, Rv)),
 
 				// group 10
-				s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
 
 				// group 11
-				s_nyi,
+				Instr(Mnemonic.mov),
                 s_nyi,
                 s_nyi,
                 s_nyi,

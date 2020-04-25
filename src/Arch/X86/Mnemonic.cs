@@ -231,6 +231,7 @@ namespace Reko.Arch.X86
         fyl2xp1,
         getsec,
         hlt,
+        icebp,
         idiv,
         imul,
         inc,

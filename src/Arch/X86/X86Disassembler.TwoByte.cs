@@ -34,8 +34,8 @@ namespace Reko.Arch.X86
             return new Decoder[]
             {
 				// 0F 00
-				new GroupDecoder(6),
-                new GroupDecoder(7),
+				new GroupDecoder(Grp6),
+                new GroupDecoder(Grp7),
                 Instr(Mnemonic.lar, InstrClass.System, Gv,Ew),
                 Instr(Mnemonic.lsl, InstrClass.System, Gv,Ew),
                 s_invalid,
@@ -90,7 +90,7 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.movhps, Mq,Vq),
                     Instr(Mnemonic.movhpd, Mq,Vq)),
 
-                new GroupDecoder(16),
+                new GroupDecoder(Grp16),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
@@ -306,9 +306,9 @@ namespace Reko.Arch.X86
                     dec66:Instr(Mnemonic.pshufd, Vx,Wx,Ib),
                     decF3:Instr(Mnemonic.pshufhw, Vx,Wx,Ib),
                     decF2:Instr(Mnemonic.pshuflw, Vx,Wx,Ib)),
-                new GroupDecoder(12),
-                new GroupDecoder(13),
-                new GroupDecoder(14),
+                new GroupDecoder(Grp12),
+                new GroupDecoder(Grp13),
+                new GroupDecoder(Grp14),
 
 				new PrefixedDecoder(
                     Instr(Mnemonic.pcmpeqb, Pq,Qq),
@@ -399,7 +399,7 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.bts, Ev,Gv),
 				Instr(Mnemonic.shrd, Ev,Gv,Ib),
 				Instr(Mnemonic.shrd, Ev,Gv,c),
-				new GroupDecoder(15),
+				new GroupDecoder(Grp15),
 				Instr(Mnemonic.imul, Gv,Ev),
 
 				// 0F B0
@@ -415,8 +415,8 @@ namespace Reko.Arch.X86
 				new PrefixedDecoder(
                     dec:Instr(Mnemonic.jmpe),
                     decF3:Instr(Mnemonic.popcnt, Gv,Ev)),
-				Instr(Mnemonic.ud1, InstrClass.Invalid, Gv,Ev),
-				new GroupDecoder(8, Ev,Ib),
+				new GroupDecoder(Grp10, Gv,Ev), 
+				new GroupDecoder(Grp8, Ev,Ib),
 				Instr(Mnemonic.btc, Gv,Ev),
 
                 new PrefixedDecoder(
@@ -449,7 +449,7 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Instr(Mnemonic.vshufps, Vps,Hps,Wps,Ib),
                     Instr(Mnemonic.vshufpd, Vpd,Hpd,Wpd,Ib)),
-				new GroupDecoder(9),
+				new GroupDecoder(Grp9),
 
 				Instr(Mnemonic.bswap, rv),
 				Instr(Mnemonic.bswap, rv),
