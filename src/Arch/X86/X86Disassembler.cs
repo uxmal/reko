@@ -972,7 +972,6 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Wx = W("x");
         private static readonly Mutator<X86Disassembler> Wy = W("y");
 
-
         // Segment register encoded by reg field of modRM byte.
         public static bool Sw(uint op, X86Disassembler d)
         {
@@ -983,20 +982,43 @@ namespace Reko.Arch.X86
         }
 
         // Implicit use of accumulator.
-        public static Mutator<X86Disassembler> a(string sWidth)
+
+        private static bool AL(uint uInstr, X86Disassembler dasm)
         {
-            return (u, d) =>
-            {
-                int i = 0;
-                var op = new RegisterOperand(d.RegFromBitsRexW(0, d.OperandWidth(sWidth, ref i)));
-                d.decodingContext.ops.Add(op);
-                return true;
-            };
+            dasm.decodingContext.ops.Add(new RegisterOperand(Registers.al));
+            return true;
         }
 
-        private static readonly Mutator<X86Disassembler> ab = a("b");
-        private static readonly Mutator<X86Disassembler> av = a("v");
-        private static readonly Mutator<X86Disassembler> aw = a("w");
+        private static bool AX(uint uInstr, X86Disassembler dasm)
+        {
+            dasm.decodingContext.ops.Add(new RegisterOperand(Registers.ax));
+            return true;
+        }
+
+        private static bool eAX(uint uInstr, X86Disassembler dasm)
+        {
+            RegisterStorage reg;
+            if (dasm.decodingContext.dataWidth.BitSize == 16)
+                reg = Registers.ax;
+            else
+                reg = Registers.eax;
+            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
+
+        private static bool rAX(uint uInstr, X86Disassembler dasm)
+        {
+            RegisterStorage reg;
+            var bitsize = dasm.decodingContext.dataWidth.BitSize;
+            if (bitsize == 16)
+                reg = Registers.ax;
+            else if (bitsize == 32)
+                reg = Registers.eax;
+            else
+                reg = Registers.rax;
+            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
 
         private static bool b(uint op, X86Disassembler d)
         {
@@ -1093,6 +1115,16 @@ namespace Reko.Arch.X86
             return new InstructionDecoder(op, iclass, mutators);
         }
 
+        public static Alternative64Decoder Amd64Instr(Decoder legacy, Decoder amd64)
+        {
+            return new Alternative64Decoder(legacy, amd64);
+        }
+
+        public static VexInstructionDecoder VexInstr(Mnemonic legacy, Mnemonic vex, params Mutator<X86Disassembler> [] mutators)
+        {
+            return new VexInstructionDecoder(legacy, vex, InstrClass.Linear, mutators);
+        }
+
         public static PrefixedDecoder Prefixed(Mnemonic op, string format)
         {
             return new PrefixedDecoder();
@@ -1142,8 +1174,7 @@ namespace Reko.Arch.X86
 			case 'v':
 				break;
 			case 'w':
-				decodingContext.dataWidth = PrimitiveType.Word16;
-				break;
+				return PrimitiveType.Word16;
 			case 'd':
                 if (i < fmt.Length - 1 && fmt[i + 1] == 'q')
                 {
@@ -1438,7 +1469,7 @@ namespace Reko.Arch.X86
 
 
         private static Decoder [] s_fpuDecoders;
-        private static Dictionary<Mnemonic, Mnemonic> s_mpVex;
+        [Obsolete("", false)] private static Dictionary<Mnemonic, Mnemonic> s_mpVex;
 
         static X86Disassembler()
 		{

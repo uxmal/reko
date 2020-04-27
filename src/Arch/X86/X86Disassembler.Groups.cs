@@ -91,15 +91,15 @@ namespace Reko.Arch.X86
             {
                 Instr(Mnemonic.inc, Ev),
                 Instr(Mnemonic.dec, Ev),
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ev),
                     Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Eq)),
                 Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ep),
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.jmp, InstrClass.Transfer, Ev),
                     Instr(Mnemonic.jmp, InstrClass.Transfer, Eq)),
                 Instr(Mnemonic.jmp, InstrClass.Transfer, Ep),
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.push, Ev),
                     Instr(Mnemonic.push, Eq)),
                 s_invalid,
@@ -207,7 +207,7 @@ namespace Reko.Arch.X86
                 s_invalid,
                 new Group6Decoder(
                     new PrefixedDecoder(
-                        new Alternative64Decoder(
+                        Amd64Instr(
                             Instr(Mnemonic.cmpxchg8b, Mq),
                             Instr(Mnemonic.cmpxchg16b, Mdq))),
                     s_invalid),
@@ -318,7 +318,7 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.ldmxcsr, Md),
                 Instr(Mnemonic.stmxcsr, Md),
 
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.xsave, Mb),
                     Instr(Mnemonic.xsave64, Mb)),
 				new Group7Decoder(

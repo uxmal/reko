@@ -39,11 +39,11 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.lar, InstrClass.System, Gv,Ew),
                 Instr(Mnemonic.lsl, InstrClass.System, Gv,Ew),
                 s_invalid,
-                new Alternative64Decoder(
+                Amd64Instr(
                     s_invalid,
                     Instr(Mnemonic.syscall, InstrClass.Transfer|InstrClass.Call)),
                 Instr(Mnemonic.clts),
-                new Alternative64Decoder(
+                Amd64Instr(
                     s_invalid,
                     Instr(Mnemonic.sysret, InstrClass.Transfer)),
 

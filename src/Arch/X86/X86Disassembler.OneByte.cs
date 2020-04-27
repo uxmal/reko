@@ -37,12 +37,12 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.add, Ev,Gv),
 				Instr(Mnemonic.add, Gb,Eb),
 				Instr(Mnemonic.add, Gv,Ev),
-				Instr(Mnemonic.add, ab,Ib),
-				Instr(Mnemonic.add, av,Iz),
-				new Alternative64Decoder(
+				Instr(Mnemonic.add, AL,Ib),
+				Instr(Mnemonic.add, rAX,Iz),
+				Amd64Instr(
                     Instr(Mnemonic.push, s0),
                     s_invalid),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, s0),
                     s_invalid),
 
@@ -50,9 +50,9 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.or, Ev,Gv),
 				Instr(Mnemonic.or, Gb,Eb),
 				Instr(Mnemonic.or, Gv,Ev),
-				Instr(Mnemonic.or, ab,Ib),
-				Instr(Mnemonic.or, av,Iz),
-				new Alternative64Decoder(
+				Instr(Mnemonic.or, AL,Ib),
+				Instr(Mnemonic.or, rAX,Iz),
+				Amd64Instr(
                     Instr(Mnemonic.push, s1),
                     s_invalid),
 				new AdditionalByteDecoder(),
@@ -62,12 +62,12 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.adc, Ev,Gv),
 				Instr(Mnemonic.adc, Gb,Eb),
 				Instr(Mnemonic.adc, Gv,Ev),
-				Instr(Mnemonic.adc, ab,Ib),
-				Instr(Mnemonic.adc, av,Iz),
-				new Alternative64Decoder(
+				Instr(Mnemonic.adc, AL,Ib),
+				Instr(Mnemonic.adc, rAX,Iz),
+				Amd64Instr(
                     Instr(Mnemonic.push, s2),
                     s_invalid),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, s2),
                     s_invalid),
 
@@ -75,12 +75,12 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.sbb, Ev,Gv),
 				Instr(Mnemonic.sbb, Gb,Eb),
 				Instr(Mnemonic.sbb, Gv,Ev),
-				Instr(Mnemonic.sbb, ab,Ib),
-				Instr(Mnemonic.sbb, av,Iz),
-				new Alternative64Decoder(
+				Instr(Mnemonic.sbb, AL,Ib),
+				Instr(Mnemonic.sbb, rAX,Iz),
+				Amd64Instr(
                     Instr(Mnemonic.push, s3),
                     s_invalid),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, s3),
                     s_invalid),
 
@@ -89,10 +89,10 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.and, Ev,Gv),
 				Instr(Mnemonic.and, Gb,Eb),
 				Instr(Mnemonic.and, Gv,Ev),
-				Instr(Mnemonic.and, ab,Ib),
-				Instr(Mnemonic.and, av,Iz),
+				Instr(Mnemonic.and, AL,Ib),
+				Instr(Mnemonic.and, rAX,Iz),
 				new SegmentOverrideDecoder(0),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.daa),
                     s_invalid),
 
@@ -100,10 +100,10 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.sub, Ev,Gv),
 				Instr(Mnemonic.sub, Gb,Eb),
 				Instr(Mnemonic.sub, Gv,Ev),
-				Instr(Mnemonic.sub, ab,Ib),
-				Instr(Mnemonic.sub, av,Iz),
+				Instr(Mnemonic.sub, AL,Ib),
+				Instr(Mnemonic.sub, rAX,Iz),
                 new SegmentOverrideDecoder(1),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.das),
                     s_invalid),
 
@@ -112,10 +112,10 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.xor, Ev,Gv),
 				Instr(Mnemonic.xor, Gb,Eb),
 				Instr(Mnemonic.xor, Gv,Ev),
-				Instr(Mnemonic.xor, ab,Ib),
-				Instr(Mnemonic.xor, av,Iz),
+				Instr(Mnemonic.xor, AL,Ib),
+				Instr(Mnemonic.xor, rAX,Iz),
                 new SegmentOverrideDecoder(2),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.aaa),
                     s_invalid),
 
@@ -123,10 +123,10 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.cmp, Ev,Gv),
 				Instr(Mnemonic.cmp, Gb,Eb),
 				Instr(Mnemonic.cmp, Gv,Ev),
-				Instr(Mnemonic.cmp, ab,Ib),
-				Instr(Mnemonic.cmp, av,Iz),
+				Instr(Mnemonic.cmp, AL,Ib),
+				Instr(Mnemonic.cmp, rAX,Iz),
                 new SegmentOverrideDecoder(3),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.aas),
                     s_invalid),
 
@@ -150,67 +150,67 @@ namespace Reko.Arch.X86
 				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
 
 				// 50
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.push, rv),
                     Instr(Mnemonic.push, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.push, rv),
                     Instr(Mnemonic.push, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.push, rv),
                     Instr(Mnemonic.push, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.push, rv),
                     Instr(Mnemonic.push, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.push, rv),
                     Instr(Mnemonic.push, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.push, rv),
                     Instr(Mnemonic.push, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.push, rv),
                     Instr(Mnemonic.push, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.push, rv),
                     Instr(Mnemonic.push, rq)),
 
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, rv),
                     Instr(Mnemonic.pop, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, rv),
                     Instr(Mnemonic.pop, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, rv),
                     Instr(Mnemonic.pop, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, rv),
                     Instr(Mnemonic.pop, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, rv),
                     Instr(Mnemonic.pop, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, rv),
                     Instr(Mnemonic.pop, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, rv),
                     Instr(Mnemonic.pop, rq)),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, rv),
                     Instr(Mnemonic.pop, rq)),
 
 				// 60
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pusha),
                     s_invalid),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.popa),
                     s_invalid),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.bound, Gv,Mv),
                     s_invalid),
-                new Alternative64Decoder(
+                Amd64Instr(
     				Instr(Mnemonic.arpl, Ew,rw),
     				Instr(Mnemonic.movsx, Gv,Ed)),
 				new SegmentOverrideDecoder(4),
@@ -249,7 +249,7 @@ namespace Reko.Arch.X86
 				// 80
 				new GroupDecoder(Grp1, Eb,Ib),
 				new GroupDecoder(Grp1, Ev,Iz),
-				new Alternative64Decoder(
+				Amd64Instr(
                     new GroupDecoder(Grp1, Eb,Ib),
                     s_invalid),
 				new GroupDecoder(Grp1, Ev,Ib),
@@ -262,10 +262,10 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.mov, Ev,Gv),
 				Instr(Mnemonic.mov, Gb,Eb),
 				Instr(Mnemonic.mov, Gv,Ev),
-				Instr(Mnemonic.mov, Ew,Sw),
+				Instr(Mnemonic.mov, Ev,Sw),
 				Instr(Mnemonic.lea, Gv,Mv),
 				Instr(Mnemonic.mov, Sw,Ew),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.pop, Ev),
                     new GroupDecoder(Grp1A)),
 
@@ -275,17 +275,17 @@ namespace Reko.Arch.X86
                     dec:Instr(Mnemonic.nop),
                     dec66:Instr(Mnemonic.nop),
                     decF3:Instr(Mnemonic.pause)),
-				Instr(Mnemonic.xchg, rv,av),
-				Instr(Mnemonic.xchg, rv,av),
-				Instr(Mnemonic.xchg, rv,av),
-				Instr(Mnemonic.xchg, rv,av),
-				Instr(Mnemonic.xchg, rv,av),
-				Instr(Mnemonic.xchg, rv,av),
-				Instr(Mnemonic.xchg, rv,av),
+				Instr(Mnemonic.xchg, rv,rAX),
+				Instr(Mnemonic.xchg, rv,rAX),
+				Instr(Mnemonic.xchg, rv,rAX),
+				Instr(Mnemonic.xchg, rv,rAX),
+				Instr(Mnemonic.xchg, rv,rAX),
+				Instr(Mnemonic.xchg, rv,rAX),
+				Instr(Mnemonic.xchg, rv,rAX),
 
 				Instr(Mnemonic.cbw),
 				Instr(Mnemonic.cwd),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ap),
                     s_invalid),
 				Instr(Mnemonic.wait),
@@ -295,17 +295,17 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.lahf),
 
 				// A0
-				Instr(Mnemonic.mov, ab,Ob),
-				Instr(Mnemonic.mov, av,Ov),
-				Instr(Mnemonic.mov, Ob,ab),
-				Instr(Mnemonic.mov, Ov,av),
+				Instr(Mnemonic.mov, AL,Ob),
+				Instr(Mnemonic.mov, rAX,Ov),
+				Instr(Mnemonic.mov, Ob,AL),
+				Instr(Mnemonic.mov, Ov,rAX),
 				Instr(Mnemonic.movsb, b),
 				Instr(Mnemonic.movs),
 				Instr(Mnemonic.cmpsb, b),
 				Instr(Mnemonic.cmps),
 
-				Instr(Mnemonic.test, ab,Ib),
-				Instr(Mnemonic.test, av,Iz),
+				Instr(Mnemonic.test, AL,Ib),
+				Instr(Mnemonic.test, rAX,Iz),
 				Instr(Mnemonic.stosb, b),
 				Instr(Mnemonic.stos),
 				Instr(Mnemonic.lodsb, b),
@@ -337,16 +337,16 @@ namespace Reko.Arch.X86
 				new GroupDecoder(Grp2, Ev,Ib),
 				Instr(Mnemonic.ret, InstrClass.Transfer, Iw),
 				Instr(Mnemonic.ret, InstrClass.Transfer),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.les,	Gv,Mp),
                     new VexDecoder3()),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.lds,	Gv,Mp),
                     new VexDecoder2()),
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.mov, Eb,Ib),
                     new GroupDecoder(Grp11, Eb,Ib)),
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.mov, Ev,Iz),
                     new GroupDecoder(Grp11, Ev,Iz)),
 
@@ -356,7 +356,7 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.retf, InstrClass.Transfer),
 				Instr(Mnemonic.@int, InstrClass.Linear|InstrClass.Padding, n3),
 				new InterruptDecoder(Mnemonic.@int, Ib),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.into),
                     s_invalid),
 				Instr(Mnemonic.iret, InstrClass.Transfer),
@@ -366,10 +366,10 @@ namespace Reko.Arch.X86
 				new GroupDecoder(Grp2, Ev,n1),
 				new GroupDecoder(Grp2, Eb,c),
 				new GroupDecoder(Grp2, Ev,c),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.aam, Ib),
                     s_invalid),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.aad, Ib),
 				    s_invalid),
 				s_invalid,
@@ -389,21 +389,21 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.loope, InstrClass.ConditionalTransfer, Jb),
 				Instr(Mnemonic.loop, InstrClass.ConditionalTransfer, Jb),
 				Instr(Mnemonic.jcxz, InstrClass.ConditionalTransfer, Jb),
-				Instr(Mnemonic.@in, ab,Ib),
-				Instr(Mnemonic.@in, av,Ib),
-				Instr(Mnemonic.@out, Ib,ab),
-				Instr(Mnemonic.@out, Ib,av),
+				Instr(Mnemonic.@in, AL,Ib),
+				Instr(Mnemonic.@in, eAX,Ib),
+				Instr(Mnemonic.@out, Ib,AL),
+				Instr(Mnemonic.@out, Ib,eAX),
 
 				Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Jv),
 				Instr(Mnemonic.jmp, InstrClass.Transfer, Jv),
-				new Alternative64Decoder(
+				Amd64Instr(
                     Instr(Mnemonic.jmp, InstrClass.Transfer, Ap),
                     s_invalid),
 				Instr(Mnemonic.jmp, InstrClass.Transfer, Jb),
-				Instr(Mnemonic.@in, ab,dw),
-				Instr(Mnemonic.@in, av,dw),
-				Instr(Mnemonic.@out, dw,ab),
-				Instr(Mnemonic.@out, dw,av),
+				Instr(Mnemonic.@in, AL,dw),
+				Instr(Mnemonic.@in, eAX,dw),
+				Instr(Mnemonic.@out, dw,AL),
+				Instr(Mnemonic.@out, dw,eAX),
 
 				// F0
 				Instr(Mnemonic.@lock),

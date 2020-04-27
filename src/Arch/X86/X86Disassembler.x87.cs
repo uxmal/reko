@@ -800,7 +800,7 @@ namespace Reko.Arch.X86
 				s_invalid,
 						
 				// DF E0
-				Instr(Mnemonic.fstsw, aw),
+				Instr(Mnemonic.fstsw, AX),
 				s_invalid,
 				s_invalid,
 				s_invalid,
