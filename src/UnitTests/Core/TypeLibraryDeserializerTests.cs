@@ -359,5 +359,39 @@ namespace Reko.UnitTests.Core
 
             Assert.AreEqual("(enum empty,())", lib.LookupType("empty_enum").ToString());
         }
+
+        [Test(Description = "Keep size of forward declaration of a structure")]
+        public void Tlldr_typedef_forwarded_struct_size()
+        {
+            Given_ArchitectureStub();
+
+            var typelib = new TypeLibrary();
+            var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
+            new SerializedTypedef
+            {
+                Name = "_sized_struct",
+                DataType = new StructType_v1
+                {
+                    Name = "sized_struct",
+                }
+            }.Accept(tlldr);
+            new StructType_v1
+            {
+                Name = "sized_struct",
+                Fields = new StructField_v1[]
+                {
+                    new StructField_v1 {
+                        Name = "foo",
+                        Offset = 0,
+                        Type = PrimitiveType_v1.Int64(),
+                    }
+                },
+                ByteSize = 8,
+            }.Accept(tlldr);
+
+            var str = (StructureType) typelib.Types["_sized_struct"];
+            var expected = @"(struct ""sized_struct"" 0008 (0 int64 foo))";
+            Assert.AreEqual(expected, str.ToString());
+        }
     }
 }
