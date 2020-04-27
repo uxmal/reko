@@ -12,8 +12,8 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 	__hlt();
 }
 
-// 0000000000400D00: void deregister_tm_clones(Register word64 r8)
-void deregister_tm_clones(word64 r8)
+// 0000000000400D00: void deregister_tm_clones()
+void deregister_tm_clones()
 {
 	if (false || 0x00 == 0x00)
 		return;
@@ -28,12 +28,12 @@ void register_tm_clones()
 	null();
 }
 
-// 0000000000400D80: void __do_global_dtors_aux(Register word64 r8)
-void __do_global_dtors_aux(word64 r8)
+// 0000000000400D80: void __do_global_dtors_aux()
+void __do_global_dtors_aux()
 {
 	if (globals->b602108 == 0x00)
 	{
-		deregister_tm_clones(r8);
+		deregister_tm_clones();
 		globals->b602108 = 0x01;
 	}
 }

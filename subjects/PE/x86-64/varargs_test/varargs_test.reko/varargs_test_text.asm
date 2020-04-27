@@ -658,7 +658,7 @@ fn0000000140001718 proc
 	jnz	00000001400017A6
 
 l000000014000172D:
-	movsx	rax,[000000014000003C]                               ; [rip-000016F8]
+	movsxd	rax,[000000014000003C]                              ; [rip-000016F8]
 	lea	rdx,[0000000140000000]                                 ; [rip-0000173B]
 	lea	rcx,[rax+rdx]
 	cmp	dword ptr [rcx],00004550
@@ -1080,7 +1080,7 @@ l0000000140001AD8:
 	jnz	0000000140001AD4
 
 l0000000140001AE2:
-	movsx	rax,dword ptr [rcx+3C]
+	movsxd	rax,dword ptr [rcx+3C]
 	add	rax,rcx
 	cmp	dword ptr [rax],00004550
 	jnz	0000000140001AD4
@@ -1434,14 +1434,14 @@ fn0000000140001E9C proc
 
 l0000000140001EB4:
 	mov	eax,[r8+08]
-	movsx	r10,dword ptr [r8+04]
+	movsxd	r10,dword ptr [r8+04]
 	neg	eax
 	add	r10,rcx
-	movsx	rcx,eax
+	movsxd	rcx,eax
 	and	r10,rcx
 
 l0000000140001EC7:
-	movsx	rax,r11d
+	movsxd	rax,r11d
 	mov	rdx,[rax+r10]
 	mov	rax,[rbx+10]
 	mov	ecx,[rax+08]

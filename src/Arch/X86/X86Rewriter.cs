@@ -361,6 +361,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.movss:
                 case Mnemonic.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
                 case Mnemonic.movsx: RewriteMovsx(); break;
+                case Mnemonic.movsxd: RewriteMovsx(); break;
                 case Mnemonic.movups: RewriteMov(); break;
                 case Mnemonic.movupd: RewriteMov(); break;
                 case Mnemonic.movzx: RewriteMovzx(); break;
@@ -493,7 +494,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Mnemonic.shrd: RewriteShxd("__shrd"); break;
                 case Mnemonic.sidt: RewriteSxdt("__sidt"); break;
-                case Mnemonic.vshufps: RewritePackedTernaryop("__vshufps", PrimitiveType.Real32); break;
+                case Mnemonic.shufps:
+                case Mnemonic.vshufps: RewritePackedTernaryop("__shufps", PrimitiveType.Real32); break;
                 case Mnemonic.sldt: RewriteSxdt("__sldt"); break;
                 case Mnemonic.smsw: RewriteSmsw(); break;
                 case Mnemonic.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;

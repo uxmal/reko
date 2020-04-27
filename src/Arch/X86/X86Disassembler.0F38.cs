@@ -128,10 +128,10 @@ namespace Reko.Arch.X86
                 s_invalid,
 
                 // 0F 38 20
-                new PrefixedDecoder(dec66: Instr(Mnemonic.vpmovsxbw, Vx,Mq)),
-                new PrefixedDecoder(dec66: Instr(Mnemonic.vpmovsxbd, Vx,Mq)),
-                new PrefixedDecoder(dec66: Instr(Mnemonic.vpmovsxbq, Vx,Mq)),
-                new PrefixedDecoder(dec66: Instr(Mnemonic.vpmovsxwd, Vx,Mq)),
+                new PrefixedDecoder(dec66: VexInstr(Mnemonic.pmovsxbw, Mnemonic.vpmovsxbw, Vx,Mq)),
+                new PrefixedDecoder(dec66: VexInstr(Mnemonic.pmovsxbd, Mnemonic.vpmovsxbd, Vx,Md)),
+                new PrefixedDecoder(dec66: VexInstr(Mnemonic.pmovsxbq, Mnemonic.vpmovsxbq, Vx,Mw)),
+                new PrefixedDecoder(dec66: VexInstr(Mnemonic.pmovsxwd, Mnemonic.vpmovsxwd, Vx,Mq)),
 
                 new PrefixedDecoder(dec66: Instr(Mnemonic.vpmovsxwq, Vx,Mq)),
                 new PrefixedDecoder(dec66: Instr(Mnemonic.vpmovsxdq, Vx,Mq)),
@@ -276,26 +276,26 @@ namespace Reko.Arch.X86
 
                 // 90
                 new PrefixedDecoder(
-                    dec66: Instr(Mnemonic.vgatherdd, Vx,Hx,Wx),
-                    dec66Wide: Instr(Mnemonic.vgatherdq, Vx,Hx,Wx)),
+                    dec66: VexInstr(Mnemonic.illegal, Mnemonic.vgatherdd, Vx,Hx,Wx),
+                    dec66Wide: VexInstr(Mnemonic.illegal, Mnemonic.vgatherdq, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    dec66: Instr(Mnemonic.vgatherqd, Vx,Hx,Wx),
-                    dec66Wide: Instr(Mnemonic.vgatherqq, Vx,Hx,Wx)),
+                    dec66: VexInstr(Mnemonic.illegal, Mnemonic.vgatherqd, Vx,Hx,Wx),
+                    dec66Wide: VexInstr(Mnemonic.illegal, Mnemonic.vgatherqq, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    dec66: Instr(Mnemonic.vgatherdps, Vx,Hx,Wx),
-                    dec66Wide: Instr(Mnemonic.vgatherdpd, Vx,Hx,Wx)),
+                    dec66: VexInstr(Mnemonic.illegal, Mnemonic.vgatherdps, Vx,Hx,Wx),
+                    dec66Wide: VexInstr(Mnemonic.illegal, Mnemonic.vgatherdpd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    dec66: Instr(Mnemonic.vgatherqps, Vx,Hx,Wx),
-                    dec66Wide: Instr(Mnemonic.vgatherqpd, Vx,Hx,Wx)),
+                    dec66: VexInstr(Mnemonic.illegal, Mnemonic.vgatherqps, Vx,Hx,Wx),
+                    dec66Wide: VexInstr(Mnemonic.illegal, Mnemonic.vgatherqpd, Vx,Hx,Wx)),
 
                 s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
-                    dec66: Instr(Mnemonic.vfmaddsub132ps, Vx,Hx,Wx),
-                    dec66Wide: Instr(Mnemonic.vfmaddsub132pd, Vx,Hx,Wx)),
+                    dec66: VexInstr(Mnemonic.illegal, Mnemonic.vfmaddsub132ps, Vx,Hx,Wx),
+                    dec66Wide: VexInstr(Mnemonic.illegal, Mnemonic.vfmaddsub132pd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    dec66: Instr(Mnemonic.vfmsubadd132ps, Vx,Hx,Wx),
-                    dec66Wide: Instr(Mnemonic.vfmsubadd132pd, Vx,Hx,Wx)),
+                    dec66: VexInstr(Mnemonic.illegal, Mnemonic.vfmsubadd132ps, Vx,Hx,Wx),
+                    dec66Wide: VexInstr(Mnemonic.illegal, Mnemonic.vfmsubadd132pd, Vx,Hx,Wx)),
 
                 s_nyi,
                 s_nyi,

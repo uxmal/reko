@@ -18,19 +18,13 @@
  */
 #endregion
 
-using Reko.Arch.X86;
-using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.Arch.X86
 {
-	[TestFixture]
-	public class ImportResolution
-	{
-		[Test]
-		public void ImpMsvcrt()
-		{
-
-		}
-	}
+    public class InstructionSet
+    {
+    }
 }

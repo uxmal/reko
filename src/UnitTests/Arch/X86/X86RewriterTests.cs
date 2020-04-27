@@ -1219,10 +1219,19 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86rw_64_movsxd()
         {
-            Run64bitTest(0x48, 0x63, 0x48, 0x3c); // "movsx\trcx,dword ptr [rax+3C]", 
+            Run64bitTest(0x48, 0x63, 0x48, 0x3c); // "movsxd\trcx,dword ptr [rax+3C]", 
             AssertCode(
                 "0|L--|0000000140000000(4): 1 instructions",
                 "1|L--|rcx = (int64) Mem0[rax + 0x000000000000003C:word32]");
+        }
+
+        [Test]
+        public void X86rw_64_movsxd_dword()
+        {
+            Run64bitTest(0x63, 0x48, 0x3c); // "movsxd\tecx,dword ptr [rax+3C]", 
+            AssertCode(
+                "0|L--|0000000140000000(3): 1 instructions",
+                "1|L--|ecx = Mem0[rax + 0x000000000000003C:word32]");
         }
 
         [Test]
@@ -2698,7 +2707,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(5): 3 instructions",
                 "1|L--|v4 = xmm0",
                 "2|L--|v5 = Mem0[edx + 0x00000042:word128]",
-                "3|L--|xmm0 = __vshufps(v4, v5, 0x07)");
+                "3|L--|xmm0 = __shufps(v4, v5, 0x07)");
         }
 
         [Test]
@@ -3126,14 +3135,14 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86Rw_vpmullw()
+        public void X86Rw_vpsrlq()
         {
-            Run32bitTest(0x66, 0x0F, 0xD3, 0xCA);	// vpmullw	xmm1,xmm2
+            Run32bitTest(0x66, 0x0F, 0xD3, 0xCA);	// vpsrlq	xmm1,xmm2
             AssertCode(
                 "0|L--|10000000(4): 3 instructions",
                 "1|L--|v4 = xmm1",
                 "2|L--|v5 = xmm2",
-                "3|L--|xmm1 = __pmullw(v4, v5)");
+                "3|L--|xmm1 = __psrlq(v4, v5)");
         }
 
         [Test]
@@ -3576,5 +3585,32 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|v3 = (real64) xmm0 / Mem0[rbp - 0x0000000000000018:real64]",
                 "2|L--|xmm0 = SEQ(0x0000000000000000, v3)");
         }
+        /*
+R:push   rcx                               66 51
+O:push   cx                                66 51
+*/
+        /*
+        R:push   0x8f865955                        68 55 59 86 8F
+        O:push   0xffffffff8f865955                68 55 59 86 8F
+        */
+
+        /*
+         * R:imul   eax,esi,0xea                      6B C6 EA
+        O:imul   eax,esi,0xffffffea                6B C6 EA
+        */
+
+
+        [Test]
+        public void X86Rw_and_64_rex()
+        {
+            Run64bitTest("48 25 44 EB 24 C4"); // and rax,0xffffffffc424eb44
+            //$REVIEW: and's should be unsigned masks no?
+            AssertCode(
+                "0|L--|0000000140000000(6): 3 instructions",
+                "1|L--|rax = rax & -1004213436",
+                "2|L--|SZO = cond(rax)",
+                "3|L--|C = false");
+        }
     }
 }
+ 

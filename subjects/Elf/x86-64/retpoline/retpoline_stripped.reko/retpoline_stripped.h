@@ -173,15 +173,15 @@ T_32: (in __hlt() : void)
   Class: Eq_32
   DataType: void
   OrigDataType: void
-T_33: (in r8 : word64)
+T_33: (in 0x0000000000000000 : word64)
   Class: Eq_33
   DataType: word64
   OrigDataType: word64
-T_34: (in 0x0000000000601040 : word64)
+T_34: (in 0x0000000000000000 : word64)
   Class: Eq_33
   DataType: word64
   OrigDataType: word64
-T_35: (in r8 == 0x0000000000601040 : bool)
+T_35: (in 0x0000000000000000 == 0x0000000000000000 : bool)
   Class: Eq_35
   DataType: bool
   OrigDataType: bool

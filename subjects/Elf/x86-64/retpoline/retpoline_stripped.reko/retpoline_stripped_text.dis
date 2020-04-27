@@ -14,23 +14,23 @@ l0000000000400480:
 	__hlt()
 
 
-void fn00000000004004B0(word64 r8)
+void fn00000000004004B0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi Top
+// Trashed: SCZO rax rdi Top
 // Preserved: rbp rsp
 fn00000000004004B0_entry:
 l00000000004004B0:
-	branch r8 == 0x0000000000601040 l00000000004004D8
+	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004D8
 l00000000004004C1:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004D8
 l00000000004004D8:
 	return
 l00000000004004CB:
 	call 0x0000000000000000 (retsize: 0;)
-		uses: r8:r8,rdi:0x0000000000601040
+		uses: rdi:0x0000000000601040
 	return
 fn00000000004004B0_exit:
 

@@ -19,42 +19,41 @@ void call_gmon_start()
 		__gmon_start__();
 }
 
-// 0000000000400460: void deregister_tm_clones(Register word64 r8)
-void deregister_tm_clones(word64 r8)
+// 0000000000400460: void deregister_tm_clones()
+void deregister_tm_clones()
 {
 	if (true || 0x00 == 0x00)
 		return;
 	null();
 }
 
-// 0000000000400490: void register_tm_clones(Register word64 r8)
-void register_tm_clones(word64 r8)
+// 0000000000400490: void register_tm_clones()
+void register_tm_clones()
 {
-	if (false || 0x00 == 0x00)
+	if (true || 0x00 == 0x00)
 		return;
 	null();
 }
 
-// 00000000004004D0: void __do_global_dtors_aux(Register word64 r8)
-void __do_global_dtors_aux(word64 r8)
+// 00000000004004D0: void __do_global_dtors_aux()
+void __do_global_dtors_aux()
 {
 	if (globals->b601038 == 0x00)
 	{
-		deregister_tm_clones(r8);
+		deregister_tm_clones();
 		globals->b601038 = 0x01;
 	}
 }
 
-// 00000000004004F0: void frame_dummy(Register word64 r8)
-void frame_dummy(word64 r8)
+// 00000000004004F0: void frame_dummy()
+void frame_dummy()
 {
 	if (globals->qw600E08 == 0x00 || 0x00 == 0x00)
-		register_tm_clones(r8);
+		register_tm_clones();
 	else
 	{
-		word64 r8_n;
 		fn0000000000000000();
-		register_tm_clones(r8_n);
+		register_tm_clones();
 	}
 }
 

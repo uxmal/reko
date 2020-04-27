@@ -763,5 +763,10 @@ namespace Reko.UnitTests.Arch.M68k
         {
             RunTest("eori.b\t#$80,ccr", 0x0A3C, 0x0080);
         }
+
+        /*
+        R:rorl  %a2@(19131)                         E6 EA 4A BB
+        O:rorw %a2@(0)                             E6 EA 4A BB
+        */
     }
 }

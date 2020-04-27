@@ -209,10 +209,10 @@ namespace Reko.Arch.X86
                     s_invalid),
 				Amd64Instr(
                     Instr(Mnemonic.bound, Gv,Mv),
-                    s_invalid),
+                    new EvexDecoder()),
                 Amd64Instr(
     				Instr(Mnemonic.arpl, Ew,rw),
-    				Instr(Mnemonic.movsx, Gv,Ed)),
+    				Instr(Mnemonic.movsxd, Gv,Ed)),
 				new SegmentOverrideDecoder(4),
 				new SegmentOverrideDecoder(5),
 				new ChangeDataWidth(),

@@ -1189,17 +1189,16 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("Requires MIPS processor option support")]
+        [Ignore("Discovered by RekoSifter tool")]
         public void MipsDis_jalx()
         {
-            AssertCode("jalx	0x01bdc881", 0x746f7220);
+            AssertCode("jalx\t0x01bdc881", 0x746f7220);
         }
 
         [Test]
-        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_cache()
         {
-            AssertCode("cache	0x2,0(k0)", 0xbf420000);
+            AssertCode("cache\t02,0000(r26)", 0xbf420000);
         }
 
         [Test]
@@ -1318,5 +1317,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("clo\tr24,r12", 0x7186C4E1);
         }
+
+ 
     }
 }

@@ -551,7 +551,6 @@
     <Compile Include="Scanning\Backwalker_x86_Tests.cs" />
     <Compile Include="Arch\X86\X86DisassemblerTests.cs" />
     <Compile Include="Arch\X86\Fragments\Factorial.cs" />
-    <Compile Include="Arch\X86\ImportResolution.cs" />
     <Compile Include="Arch\X86\X86ArchitectureTests.cs" />
     <Compile Include="Arch\X86\IntelAssemblerTests.cs" />
     <Compile Include="Arch\X86\IntelInstructionTrieTests.cs" />

@@ -22,7 +22,7 @@ _start proc
 deregister_tm_clones proc
 	mov	eax,00601047
 	push	rbp
-	sub	r8,+00601040
+	sub	rax,+00601040
 	cmp	rax,0E
 	mov	rbp,rsp
 	ja	0000000000400487
@@ -49,7 +49,7 @@ l0000000000400491:
 register_tm_clones proc
 	mov	eax,00601040
 	push	rbp
-	sub	r8,+00601040
+	sub	rax,+00601040
 	sar	rax,03
 	mov	rbp,rsp
 	mov	rdx,rax

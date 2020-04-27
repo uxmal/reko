@@ -22,7 +22,7 @@ _start proc
 deregister_tm_clones proc
 	push	rbp
 	mov	eax,00601040
-	cmp	r8,+00601040
+	cmp	rax,+00601040
 	mov	rbp,rsp
 	jz	00000000004004D8
 
@@ -108,8 +108,8 @@ my1 proc
 	sub	rsp,10
 	mov	[rbp-04],edi
 	mov	[rbp-08],esi
-	movsx	rdi,dword ptr [rbp-04]
-	movsx	rsi,dword ptr [rbp-08]
+	movsxd	rdi,dword ptr [rbp-04]
+	movsxd	rsi,dword ptr [rbp-08]
 	call	0000000000400470
 	mov	[rbp-10],rax
 	mov	rax,[rbp-10]

@@ -31,12 +31,12 @@ l000000000040044E:
 call_gmon_start_exit:
 
 
-void deregister_tm_clones(word64 r8)
+void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi Top
+// Trashed: SCZO rax rdi Top
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l0000000000400460:
@@ -45,58 +45,58 @@ l0000000000400477:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400475
 l0000000000400481:
 	call 0x0000000000000000 (retsize: 0;)
-		uses: r8:r8 - 6295608,rdi:0x0000000000601038
+		uses: rdi:0x0000000000601038
 	return
 l0000000000400475:
 	return
 deregister_tm_clones_exit:
 
 
-void register_tm_clones(word64 r8)
+void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi rdx rsi Top
+// Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l0000000000400490:
-	branch true l00000000004004B4
+	branch false l00000000004004B4
 l00000000004004B4:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004B2
 l00000000004004BE:
 	call 0x0000000000000000 (retsize: 0;)
-		uses: r8:r8 - 6295608,rdi:0x0000000000601038,rsi:393475
+		uses: rdi:0x0000000000601038,rsi:0
 	return
 l00000000004004B2:
 	return
 register_tm_clones_exit:
 
 
-void __do_global_dtors_aux(word64 r8)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi Top
+// Trashed: SCZO rax rdi Top
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
 l00000000004004D0:
 	branch Mem0[0x0000000000601038:byte] != 0x00 l00000000004004EA
 l00000000004004D9:
-	deregister_tm_clones(r8)
-	Mem21[0x0000000000601038:byte] = 0x01
+	deregister_tm_clones()
+	Mem19[0x0000000000601038:byte] = 0x01
 l00000000004004EA:
 	return
 __do_global_dtors_aux_exit:
 
 
-void frame_dummy(word64 r8)
+void frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi rdx rsi Top
+// Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: rbp rsp
 frame_dummy_entry:
 l00000000004004F0:
@@ -105,15 +105,13 @@ l00000000004004FA:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400518
 l0000000000400518:
 l0000000000400518_thunk_register_tm_clones:
-	register_tm_clones(r8)
+	register_tm_clones()
 	return
 l0000000000400504:
-	word64 r8_29
 	call fn0000000000000000 (retsize: 8;)
-		uses: r8:r8,rdi:0x0000000000600E08
-		defs: r8:r8_29
+		uses: rdi:0x0000000000600E08
 l0000000000400510_thunk_register_tm_clones:
-	register_tm_clones(r8_29)
+	register_tm_clones()
 	return
 frame_dummy_exit:
 

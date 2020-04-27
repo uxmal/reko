@@ -694,11 +694,14 @@ namespace Reko.Arch.X86
 
         private void RewriteMovsx()
         {
-            m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                m.Cast(
-                    PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize),
-                    SrcOp(instrCur.Operands[1])));
+            var dst = SrcOp(instrCur.Operands[0]);
+            var src = SrcOp(instrCur.Operands[1]);
+            var dstBitSize = dst.DataType.BitSize;
+            if (dstBitSize != src.DataType.BitSize)
+            {
+                src = m.Cast(PrimitiveType.Create(Domain.SignedInt, dstBitSize), src);
+            }
+            m.Assign(dst, src);
         }
 
         private void RewriteMovzx()

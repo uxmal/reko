@@ -501,10 +501,17 @@ namespace Reko.Arch.X86
             Expression src1;
             Expression src2;
             Expression src3;
+            if (instrCur.Operands.Length == 3)
             {
                 src1 = SrcOp(instrCur.Operands[0]);
                 src2 = SrcOp(instrCur.Operands[1]);
                 src3 = SrcOp(instrCur.Operands[2]);
+            }
+            else
+            {
+                src1 = SrcOp(instrCur.Operands[0]);
+                src2 = src1;
+                src3 = SrcOp(instrCur.Operands[1]);
             }
             var tmp1 = binder.CreateTemporary(arrayType);
             var tmp2 = binder.CreateTemporary(arrayType);

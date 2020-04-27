@@ -13,7 +13,6 @@ Eq_n g_t4028C0 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char))
 ;
 <anonymous> g_t404980 = <code>;
 <anonymous> g_t404990 = <code>;
-int32 g_dw4049D0 = -2614295;
 <anonymous> g_t409E40 = <code>;
 Eq_n g_t40A200 = Unexpected function type (fn void ((ptr64 void)))
 ;
@@ -121,7 +120,31 @@ char g_str415BC8[] = "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1";
 char g_str415C58[] = "sizeof (struct dev_ino) <= __extension__ ({ struct obstack const *__o = (&dev_ino_obstack); (unsigned) (__o->next_free - __o->object_base); })";
 char g_str415D68[] = "hash_get_n_entries (active_dir_set) == 0";
 char g_str415E6A[] = "POSIX";
-int32 g_dw415EE0 = 0;
+Eq_n g_t415EE0 = 
+	{
+		
+		{
+			0.0F
+		},
+		
+		{
+			
+			{
+				0x00, 0x00, 0x80, 0x3F, 0xCD, 0xCC, 0x4C, 0x3F, 0xF4, 0xFD, 0xB4, 0x3F, 0x00, 0x00, 0x00, 0x00, 
+			}
+		},
+		
+		{
+			
+			{
+				0xCD, 0xCC, 0x4C, 0x3F, 0xF4, 0xFD, 0xB4, 0x3F, 0x00, 0x00, 0x00, 0x00, 0xCD, 0xCC, 0xCC, 0x3D, 
+			}
+		},
+		
+		{
+			1.414F
+		},
+	};
 Eq_n g_t415EF4 = 
 	{
 		

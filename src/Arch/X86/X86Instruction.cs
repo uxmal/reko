@@ -55,7 +55,9 @@ namespace Reko.Arch.X86
 
 		private bool NeedsExplicitMemorySize()
 		{
-			if (Mnemonic == Mnemonic.movsx || Mnemonic == Mnemonic.movzx)
+			if (Mnemonic == Mnemonic.movsx ||
+                Mnemonic == Mnemonic.movzx ||
+                Mnemonic == Mnemonic.movsxd)
 				return true;
             if (Mnemonic == Mnemonic.lea ||
                 Mnemonic == Mnemonic.lds ||

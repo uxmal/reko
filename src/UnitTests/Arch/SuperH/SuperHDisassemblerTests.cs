@@ -800,6 +800,46 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("fsts\tfpul,fr1", "0DF1");
         }
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ShDis_mov_l()
+        {
+            AssertCode("mov.l   r0,@(520,gbr)", "C282C304D9422CEDB0CA48A7FA1547");
+        }
+
+        /*
+        R:muls_w        r7,r6                             26 7F
+O:muls.w        r7,r6                             26 7F */
+
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ShDis_4D9E251060B73EE3A15B83FA3C394A()
+        {
+            AssertCode("ldc     r13,r1_bank", "4D9E251060B73EE3A15B83FA3C394A");
+        }
+
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ShDis_C3F8D3CBB6234F136439CEFC7E47D2()
+        {
+            AssertCode("trapa   #-8", "C3F8D3CBB6234F136439CEFC7E47D2");
+        }
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ShDis_CFF265B105DCCA3B1C9F2F70F45627()
+        {
+            AssertCode("or.b    #-14,@(r0,gbr)", "CFF265B105DCCA3B1C9F2F70F45627");
+        }
+
+    /* Verify that the rewriter is generating a sign-extended constant here
+R:add   #A6,r15                              7F A6
+O:add   #-90,r15                             7F A6
+     */
+
 #if NYI
         //$TODO: DSP instructions
         [Test]

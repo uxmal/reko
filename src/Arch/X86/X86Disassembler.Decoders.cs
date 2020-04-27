@@ -82,40 +82,21 @@ namespace Reko.Arch.X86
         /// </summary>
         public class VexInstructionDecoder : Decoder
         {
-            public readonly InstrClass iclass;
-            public readonly Mnemonic mnemonic;       // legacy mnemonic for the decoded instruction
-            private readonly Mnemonic vexMnemonic;
-            public readonly Mutator<X86Disassembler>[] mutators;  // mutators for decoding operands to this instruction
+            private readonly Decoder legacy;
+            private readonly Decoder vex;
 
-            public VexInstructionDecoder(Mnemonic mnemonic, Mnemonic vexMnemonic, InstrClass icl, params Mutator<X86Disassembler>[] mutators)
+            public VexInstructionDecoder(Decoder legacy, Decoder vex)
             {
-                this.iclass = icl;
-                this.mnemonic = mnemonic;
-                this.vexMnemonic = vexMnemonic;
-                this.mutators = mutators;
+                this.legacy = legacy;
+                this.vex = vex;
             }
 
             public override bool Decode(X86Disassembler disasm, byte op)
             {
-                disasm.decodingContext.iclass = this.iclass;
-                disasm.decodingContext.mnemonic = disasm.decodingContext.IsVex
-                    ? this.vexMnemonic
-                    : this.mnemonic;
-                if (disasm.decodingContext.mnemonic == Mnemonic.illegal)
-                {
-                    return false;
-                }
-                foreach (var m in mutators)
-                {
-                    if (!m(op, disasm))
-                        return false;
-                }
-                return true;
-            }
-
-            public override string ToString()
-            {
-                return $"{iclass}:{mnemonic}:VEX={vexMnemonic}";
+                var decoder = disasm.decodingContext.IsVex
+                    ? this.vex
+                    : this.legacy;
+                return decoder.Decode(disasm, op);
             }
         }
 
@@ -397,16 +378,7 @@ namespace Reko.Arch.X86
                     return false;
                 if (op == 0x38 || op == 0x3A)
                     return false;
-                var instr = s_decoders0F[op].Decode(disasm, op);
-                if (!instr)
-                    return false;
-                if (!s_mpVex.TryGetValue(disasm.decodingContext.mnemonic, out Mnemonic vexCode))
-                {
-                    Debug.Print("X86Disassembler: {0} Failed to map {1} to VEX counterpart", disasm.addr, disasm.decodingContext.mnemonic);
-                    return false;
-                }
-                disasm.decodingContext.mnemonic = vexCode;
-                return true;
+                return s_decoders0F[op].Decode(disasm, op);
             }
         }
 
@@ -450,13 +422,7 @@ namespace Reko.Arch.X86
                 }
                 if (!disasm.rdr.TryReadByte(out op))
                     return false;
-                if (!decoders[op].Decode(disasm, op))
-                    return false;
-                if (s_mpVex.TryGetValue(disasm.decodingContext.mnemonic, out var vCode))
-                {
-                    disasm.decodingContext.mnemonic = vCode;
-                }
-                return true;
+                return decoders[op].Decode(disasm, op);
             }
         }
 
@@ -503,7 +469,17 @@ namespace Reko.Arch.X86
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
-                return true;
+
+                Decoder[] decoders;
+                switch (pp)
+                {
+                case 2: decoders = s_decoders0F38; break;
+                case 3: decoders = s_decoders0F3A; break;
+                default: decoders = s_decoders0F; break;
+                }
+                if (!disasm.rdr.TryReadByte(out op))
+                    return false;
+                return decoders[op].Decode(disasm, op);
             }
         }
 
@@ -556,10 +532,23 @@ namespace Reko.Arch.X86
         {
             public override bool Decode(X86Disassembler disasm, byte op)
             {
-                disasm.decodingContext.addressWidth = (disasm.decodingContext.addressWidth == PrimitiveType.Word16)
-                    ? PrimitiveType.Word32
-                    : PrimitiveType.Word16;
-                op = disasm.rdr.ReadByte();
+                PrimitiveType addrWidth;
+                if (disasm.decodingContext.addressWidth != disasm.defaultAddressWidth)
+                {
+                    addrWidth = disasm.defaultAddressWidth;
+                }
+                else
+                {
+                    if (disasm.defaultAddressWidth.BitSize == 16)
+                        addrWidth = PrimitiveType.Word32;
+                    else if (disasm.defaultAddressWidth.BitSize == 32)
+                        addrWidth = PrimitiveType.Word16;
+                    else
+                        addrWidth = PrimitiveType.Word32;
+                }
+                disasm.decodingContext.addressWidth = addrWidth;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return false;
                 return s_rootDecoders[op].Decode(disasm, op);
             }
         }

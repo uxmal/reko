@@ -14,12 +14,12 @@ l0000000000400CD0:
 	__hlt()
 
 
-void deregister_tm_clones(word64 r8)
+void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi Top
+// Trashed: SCZO rax rdi Top
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l0000000000400D00:
@@ -30,7 +30,7 @@ l0000000000400D30:
 	return
 l0000000000400D1F:
 	call 0x0000000000000000 (retsize: 0;)
-		uses: r8:r8 - 6299896,rdi:0x00000000006020F8
+		uses: rdi:0x00000000006020F8
 	return
 deregister_tm_clones_exit:
 
@@ -56,19 +56,19 @@ l0000000000400D6D:
 register_tm_clones_exit:
 
 
-void __do_global_dtors_aux(word64 r8)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi Top
+// Trashed: SCZO rax rdi Top
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
 l0000000000400D80:
 	branch Mem0[0x0000000000602108:byte] != 0x00 l0000000000400D9A
 l0000000000400D89:
-	deregister_tm_clones(r8)
-	Mem21[0x0000000000602108:byte] = 0x01
+	deregister_tm_clones()
+	Mem19[0x0000000000602108:byte] = 0x01
 l0000000000400D9A:
 	return
 __do_global_dtors_aux_exit:
