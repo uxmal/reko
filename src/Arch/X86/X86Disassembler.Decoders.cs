@@ -44,7 +44,7 @@ namespace Reko.Arch.X86
         }
 
         /// <summary>
-        /// Decodes a single instructions by interpreting a format string.
+        /// Decodes a single instructions by executing an array of mutators.
         /// </summary>
         public class InstructionDecoder : Decoder
         {
@@ -74,6 +74,48 @@ namespace Reko.Arch.X86
             public override string ToString()
             {
                 return $"{iclass}:{mnemonic}";
+            }
+        }
+
+        /// <summary>
+        /// Decodes an instruction that has a different mnemonic when using a VEX prefix.
+        /// </summary>
+        public class VexInstructionDecoder : Decoder
+        {
+            public readonly InstrClass iclass;
+            public readonly Mnemonic mnemonic;       // legacy mnemonic for the decoded instruction
+            private readonly Mnemonic vexMnemonic;
+            public readonly Mutator<X86Disassembler>[] mutators;  // mutators for decoding operands to this instruction
+
+            public VexInstructionDecoder(Mnemonic mnemonic, Mnemonic vexMnemonic, InstrClass icl, params Mutator<X86Disassembler>[] mutators)
+            {
+                this.iclass = icl;
+                this.mnemonic = mnemonic;
+                this.vexMnemonic = vexMnemonic;
+                this.mutators = mutators;
+            }
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                disasm.decodingContext.iclass = this.iclass;
+                disasm.decodingContext.mnemonic = disasm.decodingContext.IsVex
+                    ? this.vexMnemonic
+                    : this.mnemonic;
+                if (disasm.decodingContext.mnemonic == Mnemonic.illegal)
+                {
+                    return false;
+                }
+                foreach (var m in mutators)
+                {
+                    if (!m(op, disasm))
+                        return false;
+                }
+                return true;
+            }
+
+            public override string ToString()
+            {
+                return $"{iclass}:{mnemonic}:VEX={vexMnemonic}";
             }
         }
 
