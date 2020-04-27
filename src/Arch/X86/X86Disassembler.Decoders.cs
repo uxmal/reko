@@ -616,6 +616,39 @@ namespace Reko.Arch.X86
             }
         }
 
+
+        /// <summary>
+        /// This decoder will use a different sub-decoder depending on the current
+        /// address width.
+        /// </summary>
+        public class AddrWidthDecoder : Decoder
+        {
+            private readonly Decoder bit16;
+            private readonly Decoder bit32;
+            private readonly Decoder bit64;
+
+            public AddrWidthDecoder(
+                Decoder bit16,
+                Decoder bit32,
+                Decoder bit64)
+            {
+                this.bit16 = bit16;
+                this.bit32 = bit32;
+                this.bit64 = bit64;
+            }
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                switch (disasm.decodingContext.addressWidth.Size)
+                {
+                case 2: return bit16.Decode(disasm, op);
+                case 4: return bit32.Decode(disasm, op);
+                case 8: return bit64.Decode(disasm, op);
+                default: return false;
+                }
+            }
+        }
+
         /// <summary>
         /// This hacky decoder will interpret old-school software emulated
         /// X87 instructions implemented as interrupts.

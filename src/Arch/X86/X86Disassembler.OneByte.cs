@@ -388,8 +388,11 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.loopne, InstrClass.ConditionalTransfer, Jb),
 				Instr(Mnemonic.loope, InstrClass.ConditionalTransfer, Jb),
 				Instr(Mnemonic.loop, InstrClass.ConditionalTransfer, Jb),
-				Instr(Mnemonic.jcxz, InstrClass.ConditionalTransfer, Jb),
-				Instr(Mnemonic.@in, AL,Ib),
+				AdddWidthDependent(
+                    bit16:Instr(Mnemonic.jcxz, InstrClass.ConditionalTransfer, Jb),
+                    bit32:Instr(Mnemonic.jecxz, InstrClass.ConditionalTransfer, Jb),
+                    bit64:Instr(Mnemonic.jrcxz, InstrClass.ConditionalTransfer, Jb)),
+                Instr(Mnemonic.@in, AL,Ib),
 				Instr(Mnemonic.@in, eAX,Ib),
 				Instr(Mnemonic.@out, Ib,AL),
 				Instr(Mnemonic.@out, Ib,eAX),

@@ -2877,12 +2877,12 @@ movzx	ax,byte ptr [bp+04]
             AssertCode64("movsxd\trsp,dword ptr [rcx]", "48 63 21");
         }
 
-        //[Test]: //$TODO: do we really care?
+        [Test]
         public void X86Dis_jcxz()
         {
             AssertCode16("jcxz\t0006", "E3 04");
-            AssertCode32("jecxz\t0006", "E3 04");
-            AssertCode64("jrcxz\t0006", "E3 04");
+            AssertCode32("jecxz\t00010006", "E3 04");
+            AssertCode64("jrcxz\t0000000000010006", "E3 04");
         }
 
         [Test]

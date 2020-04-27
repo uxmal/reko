@@ -1121,6 +1121,17 @@ namespace Reko.Arch.X86
             return new PrefixedDecoder();
         }
 
+        public static AddrWidthDecoder AdddWidthDependent(
+            Decoder bit16 = null,
+            Decoder bit32 = null, 
+            Decoder bit64 = null)
+        {
+            return new AddrWidthDecoder(
+                bit16 ?? s_invalid,
+                bit32 ?? s_invalid,
+                bit64 ?? s_invalid);
+        }
+
         public static NyiDecoder nyi(string message)
         {
             return new NyiDecoder(message);

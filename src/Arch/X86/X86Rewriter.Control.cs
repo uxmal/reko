@@ -162,10 +162,10 @@ namespace Reko.Arch.X86
                     host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.Byte(4)));
         }
 
-        private void RewriteJcxz()
+        private void RewriteJcxz(RegisterStorage cx)
         {
             m.Branch(
-                m.Eq0(orw.AluRegister(Registers.rcx, instrCur.dataWidth)),
+                m.Eq0(orw.AluRegister(cx)),
                 OperandAsCodeAddress(instrCur.Operands[0]),
                 InstrClass.ConditionalTransfer);
         }

@@ -288,7 +288,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.ja: RewriteConditionalGoto(ConditionCode.UGT, instrCur.Operands[0]); break;
                 case Mnemonic.jbe: RewriteConditionalGoto(ConditionCode.ULE, instrCur.Operands[0]); break;
                 case Mnemonic.jc: RewriteConditionalGoto(ConditionCode.ULT, instrCur.Operands[0]); break;
-                case Mnemonic.jcxz: RewriteJcxz(); break;
+                case Mnemonic.jcxz: RewriteJcxz(Registers.cx); break;
+                case Mnemonic.jecxz: RewriteJcxz(Registers.ecx); break;
                 case Mnemonic.jge: RewriteConditionalGoto(ConditionCode.GE, instrCur.Operands[0]); break;
                 case Mnemonic.jg: RewriteConditionalGoto(ConditionCode.GT, instrCur.Operands[0]); break;
                 case Mnemonic.jl: RewriteConditionalGoto(ConditionCode.LT, instrCur.Operands[0]); break;
@@ -300,6 +301,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.jo: RewriteConditionalGoto(ConditionCode.OV, instrCur.Operands[0]); break;
                 case Mnemonic.jpe: RewriteConditionalGoto(ConditionCode.PE, instrCur.Operands[0]); break;
                 case Mnemonic.jpo: RewriteConditionalGoto(ConditionCode.PO, instrCur.Operands[0]); break;
+                case Mnemonic.jrcxz: RewriteJcxz(Registers.rcx); break;
                 case Mnemonic.js: RewriteConditionalGoto(ConditionCode.SG, instrCur.Operands[0]); break;
                 case Mnemonic.jz: RewriteConditionalGoto(ConditionCode.EQ, instrCur.Operands[0]); break;
                 case Mnemonic.lahf: RewriteLahf(); break;
