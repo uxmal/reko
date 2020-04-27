@@ -340,6 +340,7 @@ namespace Reko.Core
                         f.Type.Accept(this),
                         f.Name));
                 str.Fields.AddRange(fields);
+                str.Size = structure.ByteSize;
                 return str;
             }
             else
