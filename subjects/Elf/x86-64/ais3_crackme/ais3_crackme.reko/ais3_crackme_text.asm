@@ -172,7 +172,7 @@ l0000000000400531:
 	mov	[rbp-05],al
 	add	byte ptr [rbp-05],08
 	mov	eax,[rbp-04]
-	cbw
+	cdqe
 	movzx	eax,byte ptr [rax+00601020]
 	cmp	al,[rbp-05]
 	jz	000000000040059D

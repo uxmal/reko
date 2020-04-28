@@ -99,7 +99,7 @@ l0000000000402A50:
 	js	0000000000403786
 
 l0000000000402A6F:
-	cbw
+	cdqe
 	xor	edi,edi
 	mov	esi,[00416460+rax*4]
 	call	000000000040E640
@@ -2989,7 +2989,7 @@ l0000000000404F54:
 	cmovz	edx,[000000000061B14C]                               ; [rip+002161EC]
 
 l0000000000404F60:
-	cbw
+	cdqe
 	movzx	r8d,[000000000061B10C]                               ; [rip+002161A2]
 	add	edx,ecx
 	lea	rdx,[rax+rdx*2]
@@ -3496,7 +3496,7 @@ l00000000004054C8:
 	jnz	00000000004054C8
 
 l00000000004054DD:
-	cbw
+	cdqe
 	add	rbx,r14
 	add	r12,rax
 
@@ -5371,7 +5371,7 @@ l0000000000406C60:
 	jnz	0000000000406C60
 
 l0000000000406C6D:
-	cbw
+	cdqe
 	lea	rdx,[rbp+rax+01]
 
 l0000000000406C74:
@@ -5486,7 +5486,7 @@ l0000000000406DC8:
 	jnz	0000000000406DC8
 
 l0000000000406DD5:
-	cbw
+	cdqe
 	lea	rbp,[rbp+rax+01]
 
 l0000000000406DDC:
@@ -11951,7 +11951,7 @@ l000000000040C833:
 	js	000000000040C8B0
 
 l000000000040C84E:
-	cbw
+	cdqe
 	mov	qword ptr [r12],+00000001
 	mov	edx,00000001
 	or	ebp,[00415F50+rax*4]
@@ -12630,7 +12630,7 @@ l000000000040D092:
 000000000040D09A                               66 0F 1F 44 00 00           f..D..
 
 l000000000040D0A0:
-	cbw
+	cdqe
 	add	rax,r15
 	cmp	[rsp+08],rax
 	jc	000000000040D0E0
@@ -15059,7 +15059,7 @@ l000000000040F0D7:
 	cmovns	eax,ebp
 
 l000000000040F0E1:
-	cbw
+	cdqe
 	cmp	rcx,rax
 	mov	rbx,rax
 	cmovnc	rbx,rcx

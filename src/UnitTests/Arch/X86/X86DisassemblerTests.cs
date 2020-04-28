@@ -2859,9 +2859,47 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_cdq_64()
+        public void X86Dis_cwd16()
+        {
+            AssertCode16("cwd", "99");
+            AssertCode16("cdq", "66 99");
+        }
+
+        [Test]
+        public void X86Dis_cwd32()
+        {
+            AssertCode32("cdq", "99");
+            AssertCode32("cwd", "66 99");
+        }
+
+        [Test]
+        public void X86Dis_cdq64()
         {
             AssertCode64("cdq", "99");
+            AssertCode32("cwd", "66 99");
+            AssertCode64("cqo", "48 99");
+        }
+
+        [Test]
+        public void X86Dis_cbw16()
+        {
+            AssertCode16("cbw", "98");
+            AssertCode16("cwde", "66 98");
+        }
+
+        [Test]
+        public void X86Dis_cwde32()
+        {
+            AssertCode32("cwde", "98");
+            AssertCode32("cbw", "66 98");
+        }
+
+        [Test]
+        public void X86Dis_cdqe64()
+        {
+            AssertCode64("cwde", "98");
+            AssertCode32("cbw",  "66 98");
+            AssertCode64("cdqe", "48 98");
         }
 
         [Test]

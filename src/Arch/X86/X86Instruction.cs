@@ -90,18 +90,6 @@ namespace Reko.Arch.X86
             string s = Mnemonic.ToString();
 			switch (Mnemonic)
 			{
-			case Mnemonic.cwd:
-				if (dataWidth == PrimitiveType.Word32)
-				{
-					s = "cdq";
-				}
-				break;
-			case Mnemonic.cbw:
-				if (dataWidth == PrimitiveType.Word32)
-				{
-					s = "cwde";
-				}
-				break;
 			case Mnemonic.ins:
 			case Mnemonic.outs:
 			case Mnemonic.movs:

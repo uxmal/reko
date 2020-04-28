@@ -3611,6 +3611,62 @@ O:push   cx                                66 51
                 "2|L--|SZO = cond(rax)",
                 "3|L--|C = false");
         }
+
+        [Test]
+        public void X86Rw_cwd()
+        {
+            Run16bitTest(0x99); // cwd
+            AssertCode(
+                "0|L--|0C00:0000(1): 1 instructions",
+                "1|L--|dx_ax = (int32) ax");
+        }
+
+        [Test]
+        public void X86Rw_cdq()
+        {
+            Run32bitTest(0x99); // cdq
+            AssertCode(
+                "0|L--|10000000(1): 1 instructions",
+                "1|L--|edx_eax = (int64) eax");
+        }
+
+
+        [Test]
+        public void X86Dis_cqo()
+        {
+            Run64bitTest(0x48, 0x99); // cqo
+            AssertCode(
+                "0|L--|0000000140000000(2): 1 instructions",
+                "1|L--|rdx_rax = (int128) rax");
+        }
+
+
+        [Test]
+        public void X86Dis_cbw()
+        {
+            Run16bitTest(0x98); // cbw
+            AssertCode(
+                "0|L--|0C00:0000(1): 1 instructions",
+                "1|L--|ax = (int16) al");
+        }
+
+        [Test]
+        public void X86Dis_cwde()
+        {
+            Run32bitTest(0x98); // cwde
+            AssertCode(
+                "0|L--|10000000(1): 1 instructions",
+                "1|L--|eax = (int32) ax");
+        }
+
+        [Test]
+        public void X86Dis_cdqe()
+        {
+            Run64bitTest(0x48, 0x98); // cdqe
+            AssertCode(
+                "0|L--|0000000140000000(2): 1 instructions",
+                "1|L--|rax = (int64) eax");
+        }
     }
 }
  

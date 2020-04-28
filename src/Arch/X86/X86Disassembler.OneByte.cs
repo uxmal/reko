@@ -283,8 +283,14 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.xchg, rv,rAX),
 				Instr(Mnemonic.xchg, rv,rAX),
 
-				Instr(Mnemonic.cbw),
-				Instr(Mnemonic.cwd),
+				DataWidthDependent(
+                    bit16:Instr(Mnemonic.cbw),
+                    bit32:Instr(Mnemonic.cwde),
+                    bit64:Instr(Mnemonic.cdqe)),
+				DataWidthDependent(
+                    bit16:Instr(Mnemonic.cwd),
+                    bit32:Instr(Mnemonic.cdq),
+                    bit64:Instr(Mnemonic.cqo)),
 				Amd64Instr(
                     Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ap),
                     s_invalid),
@@ -388,7 +394,7 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.loopne, InstrClass.ConditionalTransfer, Jb),
 				Instr(Mnemonic.loope, InstrClass.ConditionalTransfer, Jb),
 				Instr(Mnemonic.loop, InstrClass.ConditionalTransfer, Jb),
-				AdddWidthDependent(
+				AddrWidthDependent(
                     bit16:Instr(Mnemonic.jcxz, InstrClass.ConditionalTransfer, Jb),
                     bit32:Instr(Mnemonic.jecxz, InstrClass.ConditionalTransfer, Jb),
                     bit64:Instr(Mnemonic.jrcxz, InstrClass.ConditionalTransfer, Jb)),

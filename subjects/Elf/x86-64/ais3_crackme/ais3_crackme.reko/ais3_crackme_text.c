@@ -69,8 +69,7 @@ word32 verify(Eq_n rdi[])
 		if ((byte) (word32) *rax_n == 0x00)
 			break;
 		byte al_n = (byte) (uint64) ((word32) (uint64) dwLoc0C_n ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_n))].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000)[0x00])));
-		uint64 rax_n = (uint64) dwLoc0C_n;
-		if ((byte) (word32) SEQ(SLICE(rax_n, word48, 16), (int16) (byte) rax_n)->b601020 != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) + 0x08)
+		if ((byte) (word32) ((int64) (word32) (uint64) dwLoc0C_n + 0x00601020) != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) + 0x08)
 		{
 			rax_n = 0x00;
 			return (word32) rax_n;

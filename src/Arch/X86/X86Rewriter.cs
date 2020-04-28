@@ -122,6 +122,9 @@ namespace Reko.Arch.X86
                 case Mnemonic.bts: RewriteBts(); break;
                 case Mnemonic.call: RewriteCall(instrCur.Operands[0], instrCur.Operands[0].Width); break;
                 case Mnemonic.cbw: RewriteCbw(); break;
+                case Mnemonic.cdq: RewriteCdq(); break;
+                case Mnemonic.cdqe: RewriteCdqe(); break;
+                case Mnemonic.cqo: RewriteCqo(); break;
                 case Mnemonic.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
                 case Mnemonic.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
                 case Mnemonic.cli: RewriteCli(); break;
@@ -170,6 +173,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
                 case Mnemonic.cvttps2pi: RewriteCvttps2pi(); break;
                 case Mnemonic.cwd: RewriteCwd(); break;
+                case Mnemonic.cwde: RewriteCwde(); break;
                 case Mnemonic.daa: EmitDaaDas("__daa"); break;
                 case Mnemonic.das: EmitDaaDas("__das"); break;
                 case Mnemonic.dec: RewriteIncDec(-1); break;
