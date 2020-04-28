@@ -297,8 +297,8 @@ namespace Reko.UnitTests.Scanning
             var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
             Assert.AreEqual(2, block.Statements.Count);
-            Assert.AreEqual("r0 = 0x00000003", block.Statements[0].ToString());
-            Assert.AreEqual("goto 0x00104000", block.Statements[1].ToString());
+            Assert.AreEqual("r0 = 3<32>", block.Statements[0].ToString());
+            Assert.AreEqual("goto 0x00104000<p32>", block.Statements[1].ToString());
             Assert.AreEqual(1, proc.ControlGraph.Successors(block).Count);
             var items = new List<Block>(proc.ControlGraph.Successors(block));
             Assert.AreSame(next, items[0]);
@@ -420,7 +420,7 @@ namespace Reko.UnitTests.Scanning
 
             scanner.Verify();
             Assert.AreEqual(1, block.Statements.Count);
-            Assert.AreEqual("esp = esp - 0x00000400", block.Statements.Last.ToString());
+            Assert.AreEqual("esp = esp - 0x400<32>", block.Statements.Last.ToString());
         }
 
         [Test]
@@ -620,7 +620,7 @@ testProc_exit:
 
             Assert.AreEqual(2, block.Statements.Count);
             Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
-            Assert.AreEqual("goto 0x00100100", block.Statements[1].ToString());
+            Assert.AreEqual("goto 0x00100100<p32>", block.Statements[1].ToString());
 
             Assert.AreEqual("l00101000", block.Succ[0].Name);
             scanner.Verify();
@@ -883,8 +883,8 @@ testProc_exit:
                 new UserRegisterValue { Register = (RegisterStorage)r1.Storage, Value= Constant.Word32(0x4711) },
                 new UserRegisterValue { Register = (RegisterStorage)r2.Storage, Value= Constant.Word32(0x1147) },
             };
-            trace.Add(m => { m.Assign(r1, m.Mem32(m.Word32(0x112200))); });
-            trace.Add(m => { m.Assign(m.Mem32(m.Word32(0x112204)), r1); });
+            trace.Add(m => { m.Assign(r1, m.Mem32(m.Ptr32(0x112200))); });
+            trace.Add(m => { m.Assign(m.Mem32(m.Ptr32(0x112204)), r1); });
             scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>())).Returns(block);
             Given_SimpleTrace(trace);
             arch.Setup(s => s.GetRegister("r1")).Returns((RegisterStorage)r1.Storage);
@@ -901,10 +901,10 @@ testProc_exit:
             var wi = CreateWorkItem(addrStart);
             wi.Process();
 
-            Assert.AreEqual("r1 = Mem0[0x00112200:word32]", block.Statements[0].Instruction.ToString());
-            Assert.AreEqual("r1 = 0x00004711", block.Statements[1].Instruction.ToString());
-            Assert.AreEqual("r2 = 0x00001147", block.Statements[2].Instruction.ToString());
-            Assert.AreEqual("Mem0[0x00112204:word32] = r1", block.Statements[3].Instruction.ToString());
+            Assert.AreEqual("r1 = Mem0[0x00112200<p32>:word32]", block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("r1 = 0x4711<32>", block.Statements[1].Instruction.ToString());
+            Assert.AreEqual("r2 = 0x1147<32>", block.Statements[2].Instruction.ToString());
+            Assert.AreEqual("Mem0[0x00112204<p32>:word32] = r1", block.Statements[3].Instruction.ToString());
         }
 
         [Test(Description = "If we fall into another procedure (that may not yet have been processed), we should generate an call-ret sequence")]
@@ -912,7 +912,7 @@ testProc_exit:
         {
             var addrStart = Address.Ptr32(0x00100000);
             var blockCallRet = new Block(proc, "callRetStub");
-            trace.Add(m => { m.Assign(m.Mem32(m.Word32(0x00123400)), m.Word32(1)); });
+            trace.Add(m => { m.Assign(m.Mem32(m.Ptr32(0x00123400)), m.Word32(1)); });
             Given_SimpleTrace(trace);
             scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>())).Returns(block);
             scanner.Setup(s => s.CreateCallRetThunk(
@@ -925,7 +925,7 @@ testProc_exit:
             var wi = CreateWorkItem(addrStart);
             wi.Process();
 
-            Assert.AreEqual("Mem0[0x00123400:word32] = 0x00000001", block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("Mem0[0x00123400<p32>:word32] = 1<32>", block.Statements[0].Instruction.ToString());
             scanner.Verify();
         }
 
@@ -1026,7 +1026,7 @@ testProc_exit:
 
             var expected =
 @"
-r1 = 0x00000BAD
+r1 = 0xBAD<32>
 call r2 (retsize: 4;)
 call r1 (retsize: 4;)
 ";
@@ -1065,14 +1065,14 @@ case2:
 case3:
 default:
 l00100000:
-	r0 = Mem0[0x0042:byte]
-	branch r0 == 0x00000001 case1
+	r0 = Mem0[0x42<16>:byte]
+	branch r0 == 1<32> case1
 l00100004_1:
-	branch r0 == 0x00000002 case2
+	branch r0 == 2<32> case2
 l00100004_2:
-	branch r0 == 0x00000003 case3
+	branch r0 == 3<32> case3
 l00100004_3:
-	goto 0x00100400
+	goto 0x00100400<p32>
 	goto default
 testProc_exit:
 ";

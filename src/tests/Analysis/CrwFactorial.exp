@@ -26,8 +26,8 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_8 = fn0C00_000F(0x0064)
-	Mem17[ds:0x0064:word16] = ax_8
+	ax_8 = fn0C00_000F(0x64<16>)
+	Mem17[ds:0x64<16>:word16] = ax_8
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -62,16 +62,16 @@ fn0C00_000F_entry:
 	def wArg02
 	// succ:  l0C00_000F
 l0C00_000F:
-	branch wArg02 == 0x0001 l0C00_0026
+	branch wArg02 == 1<16> l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	ax_17 = fn0C00_000F(wArg02 - 0x0001)
+	ax_17 = fn0C00_000F(wArg02 - 1<16>)
 	dx_ax_26 = wArg02 *s ax_17
 	ax_28 = SLICE(dx_ax_26, word16, 0) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
-	ax_13 = 0x0001
+	ax_13 = 1<16>
 	// succ:  l0C00_0029
 l0C00_0029:
 	ax_38 = PHI((ax_28, l0C00_0018), (ax_13, l0C00_0026))

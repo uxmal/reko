@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using Reko.Libraries.Microchip;
 
 namespace Reko.UnitTests.Arch.Microchip
@@ -81,16 +81,16 @@ namespace Reko.UnitTests.Arch.Microchip
             val = 1;
             Assert.AreEqual((ushort)1, val.Extract(0, 1), "Result differs : val=1[0:1]");
             val = 0xFFFF;
-            Assert.AreEqual((ushort)7, val.Extract(2, 3), "Result differs : val=0xFFFF[2:3]");
-            Assert.AreEqual((ushort)15, val.Extract(5, 4), "Result differs : val=0xFFFF[5:4]");
+            Assert.AreEqual((ushort)7, val.Extract(2, 3), "Result differs : val=0xFFFF<16>[2:3]");
+            Assert.AreEqual((ushort)15, val.Extract(5, 4), "Result differs : val=0xFFFF<16>[5:4]");
             val = 0xF7F7;
-            Assert.AreEqual((ushort)5, val.Extract(2, 3), "Result differs : val=0xF7F7[2:3]");
-            Assert.AreEqual((ushort)5, val.Extract(10, 3), "Result differs : val=0xF7F7[10:3]");
+            Assert.AreEqual((ushort)5, val.Extract(2, 3), "Result differs : val=0xF7F7<16>[2:3]");
+            Assert.AreEqual((ushort)5, val.Extract(10, 3), "Result differs : val=0xF7F7<16>[10:3]");
             val = 0xAAAA;
-            Assert.AreEqual((ushort)2, val.Extract(2, 3), "Result differs : val=0xAAAA[2:3]");
-            Assert.AreEqual((ushort)1, val.Extract(3, 2), "Result differs : val=0xAAAA[3:2]");
-            Assert.AreEqual((ushort)2, val.Extract(10, 3), "Result differs : val=0xAAAA[10:3]");
-            Assert.AreEqual((ushort)1, val.Extract(11, 2), "Result differs : val=0xAAAA[11:2]");
+            Assert.AreEqual((ushort)2, val.Extract(2, 3), "Result differs : val=0xAAAA<16>[2:3]");
+            Assert.AreEqual((ushort)1, val.Extract(3, 2), "Result differs : val=0xAAAA<16>[3:2]");
+            Assert.AreEqual((ushort)2, val.Extract(10, 3), "Result differs : val=0xAAAA<16>[10:3]");
+            Assert.AreEqual((ushort)1, val.Extract(11, 2), "Result differs : val=0xAAAA<16>[11:2]");
         }
 
         [Test]
@@ -103,16 +103,16 @@ namespace Reko.UnitTests.Arch.Microchip
             val = 1;
             Assert.AreEqual((ushort)1, val.Extract(0, 1), "Result differs : val=1[0:1]");
             val = -1;
-            Assert.AreEqual((ushort)7, val.Extract(2, 3), "Result differs : val=0xFFFF[2:3]");
-            Assert.AreEqual((ushort)15, val.Extract(5, 4), "Result differs : val=0xFFFF[5:4]");
+            Assert.AreEqual((ushort)7, val.Extract(2, 3), "Result differs : val=0xFFFF<16>[2:3]");
+            Assert.AreEqual((ushort)15, val.Extract(5, 4), "Result differs : val=0xFFFF<16>[5:4]");
             val = -2057;
-            Assert.AreEqual((ushort)5, val.Extract(2, 3), "Result differs : val=0xF7F7[2:3]");
-            Assert.AreEqual((ushort)5, val.Extract(10, 3), "Result differs : val=0xF7F7[10:3]");
+            Assert.AreEqual((ushort)5, val.Extract(2, 3), "Result differs : val=0xF7F7<16>[2:3]");
+            Assert.AreEqual((ushort)5, val.Extract(10, 3), "Result differs : val=0xF7F7<16>[10:3]");
             val = -21846;
-            Assert.AreEqual((ushort)2, val.Extract(2, 3), "Result differs : val=0xAAAA[2:3]");
-            Assert.AreEqual((ushort)1, val.Extract(3, 2), "Result differs : val=0xAAAA[3:2]");
-            Assert.AreEqual((ushort)2, val.Extract(10, 3), "Result differs : val=0xAAAA[10:3]");
-            Assert.AreEqual((ushort)1, val.Extract(11, 2), "Result differs : val=0xAAAA[11:2]");
+            Assert.AreEqual((ushort)2, val.Extract(2, 3), "Result differs : val=0xAAAA<16>[2:3]");
+            Assert.AreEqual((ushort)1, val.Extract(3, 2), "Result differs : val=0xAAAA<16>[3:2]");
+            Assert.AreEqual((ushort)2, val.Extract(10, 3), "Result differs : val=0xAAAA<16>[10:3]");
+            Assert.AreEqual((ushort)1, val.Extract(11, 2), "Result differs : val=0xAAAA<16>[11:2]");
         }
 
         [Test]
@@ -125,17 +125,17 @@ namespace Reko.UnitTests.Arch.Microchip
             val = 1;
             Assert.AreEqual(1U, val.Extract(0, 1), "Result differs : val=1[0:1]");
             val = 0xFFFF;
-            Assert.AreEqual(7U, val.Extract(2, 3), "Result differs : val=0xFFFF[2:3]");
-            Assert.AreEqual(15U, val.Extract(5, 4), "Result differs : val=0xFFFF[5:4]");
+            Assert.AreEqual(7U, val.Extract(2, 3), "Result differs : val=0xFFFF<16>[2:3]");
+            Assert.AreEqual(15U, val.Extract(5, 4), "Result differs : val=0xFFFF<16>[5:4]");
             val = 0xF7F7F7F7;
-            Assert.AreEqual(5U, val.Extract(2, 3), "Result differs : val=0xF7F7F7F7[2:3]");
-            Assert.AreEqual(5U, val.Extract(10, 3), "Result differs : val=0xF7F7F7F7[10:3]");
-            Assert.AreEqual(5U, val.Extract(18, 3), "Result differs : val=0xF7F7F7F7[18:3]");
+            Assert.AreEqual(5U, val.Extract(2, 3), "Result differs : val=0xF7F7F7F7<32>[2:3]");
+            Assert.AreEqual(5U, val.Extract(10, 3), "Result differs : val=0xF7F7F7F7<32>[10:3]");
+            Assert.AreEqual(5U, val.Extract(18, 3), "Result differs : val=0xF7F7F7F7<32>[18:3]");
             val = 0xAAAAAAAA;
-            Assert.AreEqual(2U, val.Extract(2, 3), "Result differs : val=0xAAAAAAAA[2:3]");
-            Assert.AreEqual(1U, val.Extract(3, 2), "Result differs : val=0xAAAAAAAA[3:2]");
-            Assert.AreEqual(2U, val.Extract(18, 3), "Result differs : val=0xAAAAAAAA[18:3]");
-            Assert.AreEqual(1U, val.Extract(19, 2), "Result differs : val=0xAAAAAAAA[19:2]");
+            Assert.AreEqual(2U, val.Extract(2, 3), "Result differs : val=0xAAAAAAAA<32>[2:3]");
+            Assert.AreEqual(1U, val.Extract(3, 2), "Result differs : val=0xAAAAAAAA<32>[3:2]");
+            Assert.AreEqual(2U, val.Extract(18, 3), "Result differs : val=0xAAAAAAAA<32>[18:3]");
+            Assert.AreEqual(1U, val.Extract(19, 2), "Result differs : val=0xAAAAAAAA<32>[19:2]");
         }
 
         [Test]
@@ -148,17 +148,17 @@ namespace Reko.UnitTests.Arch.Microchip
             val = 1;
             Assert.AreEqual(1U, val.Extract(0, 1), "Result differs : val=1[0:1]");
             val = 0xFFFF;
-            Assert.AreEqual(7U, val.Extract(2, 3), "Result differs : val=0xFFFF[2:3]");
-            Assert.AreEqual(15U, val.Extract(5, 4), "Result differs : val=0xFFFF[5:4]");
+            Assert.AreEqual(7U, val.Extract(2, 3), "Result differs : val=0xFFFF<16>[2:3]");
+            Assert.AreEqual(15U, val.Extract(5, 4), "Result differs : val=0xFFFF<16>[5:4]");
             val = -134744073;
-            Assert.AreEqual(5U, val.Extract(2, 3), "Result differs : val=0xF7F7F7F7[2:3]");
-            Assert.AreEqual(5U, val.Extract(10, 3), "Result differs : val=0xF7F7F7F7[10:3]");
-            Assert.AreEqual(5U, val.Extract(18, 3), "Result differs : val=0xF7F7F7F7[18:3]");
+            Assert.AreEqual(5U, val.Extract(2, 3), "Result differs : val=0xF7F7F7F7<32>[2:3]");
+            Assert.AreEqual(5U, val.Extract(10, 3), "Result differs : val=0xF7F7F7F7<32>[10:3]");
+            Assert.AreEqual(5U, val.Extract(18, 3), "Result differs : val=0xF7F7F7F7<32>[18:3]");
             val = -1431655766;
-            Assert.AreEqual(2U, val.Extract(2, 3), "Result differs : val=0xAAAAAAAA[2:3]");
-            Assert.AreEqual(1U, val.Extract(3, 2), "Result differs : val=0xAAAAAAAA[3:2]");
-            Assert.AreEqual(2U, val.Extract(18, 3), "Result differs : val=0xAAAAAAAA[18:3]");
-            Assert.AreEqual(1U, val.Extract(19, 2), "Result differs : val=0xAAAAAAAA[19:2]");
+            Assert.AreEqual(2U, val.Extract(2, 3), "Result differs : val=0xAAAAAAAA<32>[2:3]");
+            Assert.AreEqual(1U, val.Extract(3, 2), "Result differs : val=0xAAAAAAAA<32>[3:2]");
+            Assert.AreEqual(2U, val.Extract(18, 3), "Result differs : val=0xAAAAAAAA<32>[18:3]");
+            Assert.AreEqual(1U, val.Extract(19, 2), "Result differs : val=0xAAAAAAAA<32>[19:2]");
         }
 
         [Test]

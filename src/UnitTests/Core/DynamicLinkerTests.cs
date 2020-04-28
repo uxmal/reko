@@ -289,16 +289,16 @@ namespace Reko.UnitTests.Core
                 new NamedImportReference(
                     Address.Ptr32(0x00200000), null, "my_global_var", SymbolType.Data));
 
-            var impres = new DynamicLinker(project, program, new FakeDecompilerEventListener());
+            var dynlink = new DynamicLinker(project, program, new FakeDecompilerEventListener());
 
             var m = new ExpressionEmitter();
             var proc = program.EnsureProcedure(program.Architecture, Address.Ptr64(0x00123000), "foo_proc");
             var block = new Block(proc, "foo");
             var stm = new Statement(0x00123400, new Store(m.Word64(0x00123400), Constant.Real32(1.0F)), block);
 
-            var result = impres.ResolveToImportedValue(stm, Constant.Word32(0x00200000));
+            var result = dynlink.ResolveToImportedValue(stm, Constant.Word32(0x00200000));
 
-            Assert.AreEqual("0x0000000000300000", result.ToString());
+            Assert.AreEqual("0x300000<64>", result.ToString());     //$LIT: pointer? p64?
         }
     }
 }

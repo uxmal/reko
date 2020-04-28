@@ -236,8 +236,8 @@ namespace Reko.UnitTests.Scanning
             var c = Constant.Word32(666);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
-                "0x0000029A(Mem0[esp:(ptr32 char)], Mem0[esp + 4:int32], " +
-                           "Mem0[esp + 8:real64])",
+                "0x29A<32>(Mem0[esp:(ptr32 char)], Mem0[esp + 4<i32>:int32], " +
+                           "Mem0[esp + 8<i32>:real64])",
                 instr.ToString());
         }
 
@@ -251,8 +251,8 @@ namespace Reko.UnitTests.Scanning
             var pc = new ProcedureConstant(new CodeType(), ep);
             var instr = vafs.BuildInstruction(pc, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
-                "sprintf(Mem0[esp:(ptr32 char)], Mem0[esp + 4:(ptr32 char)], " +
-                        "Mem0[esp + 8:char])",
+                "sprintf(Mem0[esp:(ptr32 char)], Mem0[esp + 4<i32>:(ptr32 char)], " +
+                        "Mem0[esp + 8<i32>:char])",
                 instr.ToString());
             var appl = (Application)((SideEffect)instr).Expression;
             var sig = ((ProcedureConstant)appl.Procedure).Procedure.Signature;
@@ -270,7 +270,7 @@ namespace Reko.UnitTests.Scanning
             var c = Constant.Word32(666);
             var instr = vafs.BuildInstruction(c, new CallSite(8, 0), printfChr);
             Assert.AreEqual(
-                "0x0000029A(rcx, rdx, xmm2, r9, Mem0[rsp + 32:uint64], Mem0[rsp + 40:uint64])",
+                "0x29A<32>(rcx, rdx, xmm2, r9, Mem0[rsp + 32<i64>:uint64], Mem0[rsp + 40<i64>:uint64])",
                 instr.ToString());
         }
 
@@ -283,7 +283,7 @@ namespace Reko.UnitTests.Scanning
             var c = Constant.Word32(0x123);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
-                "0x00000123(r3, r4, r5)",
+                "0x123<32>(r3, r4, r5)",
                 instr.ToString());
         }
 

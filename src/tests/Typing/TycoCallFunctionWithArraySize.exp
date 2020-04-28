@@ -4,7 +4,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	eax = malloc(0x00000003)
+	eax = malloc(3<32>)
 proc1_exit:
 
 // Equivalence classes ////////////
@@ -25,11 +25,11 @@ T_4: (in dwArg00 : word32)
   Class: Eq_4
   DataType: 
   OrigDataType: 
-T_5: (in 0x00000003 : word32)
+T_5: (in 3<32> : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
-T_6: (in malloc(0x00000003) : word32)
+T_6: (in malloc(3<32>) : word32)
   Class: Eq_6
   DataType: (ptr32 void)
   OrigDataType: (ptr32 void)

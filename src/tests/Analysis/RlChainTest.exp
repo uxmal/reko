@@ -9,9 +9,9 @@ fn0C00_0000_entry:
 	def ds
 l0C00_0000:
 	call fn0C00_000B (retsize: 2;)
-		uses: dx:0x001E
+		uses: dx:0x1E<16>
 		defs: ax:ax_5
-	Mem12[ds:0x012C:word16] = ax_5
+	Mem12[ds:0x12C<16>:word16] = ax_5
 	return
 fn0C00_0000_exit:
 // fn0C00_000B /////////////////////
@@ -40,14 +40,14 @@ define fn0C00_000F
 fn0C00_000F_entry:
 	def dx
 l0C00_000F:
-	si_8 = 0x0000
+	si_8 = 0<16>
 l0C00_0015:
 	si_15 = si_14 + dx_11
-	dx_17 = dx_11 - 0x0001
+	dx_17 = dx_11 - 1<16>
 l0C00_0018:
 	si_14 = PHI((si_8, l0C00_000F), (si_15, l0C00_0015))
 	dx_11 = PHI((dx, l0C00_000F), (dx_17, l0C00_0015))
-	branch dx_11 >= 0x0000 l0C00_0015
+	branch dx_11 >= 0<16> l0C00_0015
 l0C00_001D:
 	ax_19 = si_14
 	return

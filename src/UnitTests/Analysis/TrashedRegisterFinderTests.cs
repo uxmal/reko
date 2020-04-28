@@ -181,14 +181,14 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
 
-            Expect("main", "Preserved: r63", "Trashed: r1", "Constants: r1:0x00000000");
+            Expect("main", "Preserved: r63", "Trashed: r1", "Constants: r1:0<32>");
             RunTest();
         }
 
         [Test]
         public void TrfSimple()
         {
-            Expect("TrfSimple", "Preserved: r63", "Trashed: r1", "Constants: r1:0x0000002A");
+            Expect("TrfSimple", "Preserved: r63", "Trashed: r1", "Constants: r1:0x2A<32>");
             builder.Add("TrfSimple", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
@@ -230,7 +230,7 @@ namespace Reko.UnitTests.Analysis
         public void TrfConstants()
         {
             Given_Architecture(new Reko.Arch.X86.X86ArchitectureReal("x86-real-16"));
-            Expect("TrfConstants", "Preserved: sp", "Trashed: ds", "Constants: ds:0x0C00");
+            Expect("TrfConstants", "Preserved: sp", "Trashed: ds", "Constants: ds:0xC00<16>");
             builder.Add("TrfConstants", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
@@ -493,7 +493,7 @@ Constants: cl:0x00
                 "TrfFpuReturn",
                 "Preserved: r63",
                 "Trashed: Top",
-                "Constants: Top:0xFF");
+                "Constants: Top:0xFF<8>");
 
             builder.Add("TrfFpuReturn", m =>
             {
@@ -517,7 +517,7 @@ Constants: cl:0x00
                 "TrfFpuReturnTwoValues",
                 "Preserved: r63",
                 "Trashed: Top",
-                "Constants: Top:0xFE");
+                "Constants: Top:0xFE<8>");
 
             builder.Add("TrfFpuReturnTwoValues", m =>
             {
@@ -544,7 +544,7 @@ Constants: cl:0x00
                 "TrfFpuMultiplyAdd",
                 "Preserved: r63",
                 "Trashed: Top",
-                "Constants: Top:0x02");
+                "Constants: Top:2<8>");
             builder.Add("TrfFpuMultiplyAdd", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
@@ -675,7 +675,7 @@ Constants: cl:0x00
                 "recursive",
                 "Preserved: ",
                 "Trashed: r1",
-                "Constants: r1:0x00000002");
+                "Constants: r1:2<32>");
             builder.Add("recursive", m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -808,7 +808,7 @@ Constants: cl:0x00
             Assert.AreEqual(ebp, ctx.StackState[-4]);
             Assert.AreEqual(esi, ctx.StackState[-8]);
             Assert.AreEqual(edi, ctx.StackState[-12]);
-            Assert.AreEqual("0x00000042", ctx.StackState[-16].ToString());
+            Assert.AreEqual("0x42<32>", ctx.StackState[-16].ToString());
             Assert.AreSame(Constant.Invalid, ctx.StackState[-20]);
         }
 

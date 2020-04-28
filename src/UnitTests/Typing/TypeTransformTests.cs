@@ -435,7 +435,7 @@ namespace Reko.UnitTests.Typing
                 var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
                 var bx = m.Temp(PrimitiveType.Word16, "bx");
                 m.SStore(
-                    ds, m.Word16( 0x1234),
+                    ds, m.Word16(0x1234),
                     m.SegMem16(
                         ds,
                         m.IAdd(m.IMul(bx, 2), m.Word16(0x5388))));

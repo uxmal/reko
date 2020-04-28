@@ -150,7 +150,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             m.Assign(m.Mem(dt, dst), tmp);
             m.Assign(src, m.IAddS(src, dt.Size));
             m.Assign(dst, m.IAddS(dst, dt.Size));
-            m.Assign(cnt, m.ISubS(cnt, 1));
+            m.Assign(cnt, m.ISub(cnt, 1));
             m.Branch(m.Ne0(cnt), instr.Address, InstrClass.ConditionalTransfer);
             EmitCc(null, flags);
         }
@@ -191,9 +191,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 (a, b) => m.And(
                     a,
                     m.Comp(
-                        m.Shl(m.Const(
-                            PrimitiveType.Create(Domain.SignedInt, op1.DataType.BitSize),
-                            1), b))));
+                        m.Shl(m.Const(op1.DataType, 1), b))));
         }
 
         private void RewriteScc()

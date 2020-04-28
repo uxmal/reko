@@ -44,8 +44,6 @@ namespace Reko.Core.Output
         private bool forceParensIfSamePrecedence = false;
         private Formatter writer;
         private TypeGraphWriter typeWriter;
-        private int wordBitSize;
-        private int ptrBitSize;
 
         //$TODO: move this to a language-specific class.
         private static Dictionary<Operator,int> precedences;
@@ -64,12 +62,9 @@ namespace Reko.Core.Output
         private const int PrecedenceConditional = 14;
         private const int PrecedenceLeast = 20;
 
-
-		public CodeFormatter(Formatter writer, int wordBitSize, int ptrBitSize)
+		public CodeFormatter(Formatter writer)
 		{
             this.writer = writer;
-            this.wordBitSize = wordBitSize;
-            this.ptrBitSize = ptrBitSize;
 		}
 
         public Formatter InnerFormatter
@@ -138,7 +133,7 @@ namespace Reko.Core.Output
             };
 
             unsignedConstantFormatStrings = Enumerable.Range(0, 17)
-                .Select(n => $"0x{{0:X{n}}}")
+                .Select(n => $"0x{{0:X{n*2}}}")
                 .ToArray();
         }
 
@@ -176,7 +171,9 @@ namespace Reko.Core.Output
             {
                 var s = addr.ToString();
                 if (!s.Contains(':'))
-                    s = string.Format("0x{0}", s);
+                {
+                    s = string.Format("0x{0}<p{1}>", s, addr.DataType.BitSize);
+                }
                 writer.Write(s);
             }
         }
@@ -317,7 +314,9 @@ namespace Reko.Core.Output
                 else 
                 {
                     object v = c.GetValue();
-                    writer.Write(FormatString(pt, v), v, pt.BitSize);
+                    var (fmtNumber, fmtSigil) = FormatStrings(pt, v);
+                    writer.Write(fmtNumber, v);
+                    writer.Write(fmtSigil, pt.BitSize);
                 }
                 return;
             }
@@ -890,24 +889,13 @@ namespace Reko.Core.Output
             return (bitSize + 3) / 4;
         }
 
-        private string FormatString(PrimitiveType type, object value)
+        private (string,string) FormatStrings(PrimitiveType type, object value)
         {
-#if ALWAYS_SHOW_SIGIL
-            int wordBitSize = 0;
-            int ptrBitSize = 0;
-#endif
             string format;
             switch (type.Domain)
             {
             case Domain.SignedInt:
-#if USE_ANGR_STYLE_SIGILS
-                return "{0}<i{1:00}>";
-#else
-                if (type.BitSize == wordBitSize)
-                    return "{0}_i";
-                else 
-                    return "{0}_i{1:00}";
-#endif
+                return ("{0}","<i{0}>");
             case Domain.Character:
                 switch (type.Size)
                 {
@@ -917,81 +905,39 @@ namespace Reko.Core.Output
                 }
                 var ch = Convert.ToChar(value);
                 if (Char.IsControl(ch))
-                    return string.Format(format, string.Format("\\x{0:X2}", (int) ch));
+                    return (string.Format(format, string.Format("\\x{0:X2}", (int) ch)), "");
                 else if (ch == '\'' || ch == '\\')
-                    return string.Format(format, string.Format("\\{0}", ch));
-                return format;
+                    return (string.Format(format, string.Format("\\{0}", ch)), "");
+                return (format, "");
             case Domain.UnsignedInt:
                 if (!(value is ulong n))
                     n = Convert.ToUInt64(value);
-#if USE_ANGR_STYLE_SIGILS
                 if (n > 9)
                 {
-                    return "0x{0:X}<u{1:00}>";
+                    format = "0x{0:X}";
                 }
                 else
                 {
-                    return "{0}<u{1:00}>";
+                    format = "{0}";
                 }
-#else
-                if (type.BitSize == wordBitSize)
-                {
-                    if (n > 9)
-                        return "0x{0:X}_u";
-                    else
-                        return "{0}_u";
-                }
-                else
-                {
-                    if (n > 9)
-                        return "0x{0:X}_u{1:00}";
-                    else
-                        return "{0}_u{1:00}";
-                }
-#endif
+                return(format, "<u{0}>");
             case Domain.Pointer:
             case Domain.Offset:
-#if USE_ANGR_STYLE_SIGILS
-                return "0x{0:X}<p{1}>";
-#else
-                if (type.BitSize == ptrBitSize)
-                    return "0x{0:X}_p";
-                else
-                    return "0x{0:X}_p{1:00}";
-#endif
+                return (unsignedConstantFormatStrings[type.Size], "<p{0}>");
             case Domain.SegPointer:
-                if (type.BitSize == ptrBitSize)
-                    return "{0:X}_p";
-                else
-                    return "{0:X}_p{1:00}";
+                 return ("{0:X}", "p{0}");
             default:
                 if (!(value is ulong w))
                     w = Convert.ToUInt64(value);
-#if USE_ANGR_STYLE_SIGILS
                 if (w > 9)
                 {
-                    return "0x{0:X}<{1:00}>";
+                    format = "0x{0:X}";
                 }
                 else
                 {
-                    return "{0}<{1:00}>";
+                    format = "{0}";
                 }
-#else
-                if (type.BitSize == wordBitSize)
-                {
-                    if (w > 9)
-                        return "0x{0:X}";
-                    else
-                        return "{0}";
-                }
-                else
-                {
-                    if (w > 9)
-                        return "0x{0:X}_{1:00}";
-                    else
-                        return "{0}_{1:00}";
-                }
-#endif
+                return (format, "<{0}>");
             }
         }
 

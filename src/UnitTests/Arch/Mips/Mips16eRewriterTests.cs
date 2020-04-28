@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("63CC",        // addi\tsp,-000001A0
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|sp = sp + -416");
+                "1|L--|sp = sp + -416<i32>");
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("4166",        // addiu\tr17,r3,00000006
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r17 = r3 + 0x00000006");
+                "1|L--|r17 = r3 + 6<32>");
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("01D1",        // addiu\tr17,sp,00000344
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r17 = sp + 0x00000344");
+                "1|L--|r17 = sp + 0x344<32>");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("4E7E",        // addiu\tr6,0000007E
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r6 = r6 + 0x0000007E");
+                "1|L--|r6 = r6 + 0x7E<32>");
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("236B",        // beqz\tr3,001000D8
                 "0|T--|00100000(2): 1 instructions",
-                "1|T--|if (r3 == 0x00000000) branch 001000D8");
+                "1|T--|if (r3 == 0<32>) branch 001000D8");
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("2DEA",        // bnez\tr5,000FFFD6
                 "0|T--|00100000(2): 1 instructions",
-                "1|T--|if (r5 != 0x00000000) branch 000FFFD6");
+                "1|T--|if (r5 != 0<32>) branch 000FFFD6");
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("764B",        // cmpi\tr6,0000004B
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r24 = r6 ^ 0x0000004B");
+                "1|L--|r24 = r6 ^ 0x4B<32>");
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("86EE",        // lb\tr7,000E(r7)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r7 = (word32) Mem0[r7 + 14:int8]");
+                "1|L--|r7 = (word32) Mem0[r7 + 14<i32>:int8]");
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("A1BE",        // lbu\tr5,001E(r5)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r5 = (word32) Mem0[r5 + 30:byte]");
+                "1|L--|r5 = (word32) Mem0[r5 + 30<i32>:byte]");
         }
 
         [Test]
@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("8888",        // lh\tr4,0010(r4)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r4 = (word32) Mem0[r4 + 16:int16]");
+                "1|L--|r4 = (word32) Mem0[r4 + 16<i32>:int16]");
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("AE47",        // lhu\tr2,000E(r2)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r2 = (word32) Mem0[r2 + 14:uint16]");
+                "1|L--|r2 = (word32) Mem0[r2 + 14<i32>:uint16]");
         }
 
         [Test]
@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("B4D9",        // lw\tr4,0364(pc)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r4 = Mem0[0x00100364:word32]");
+                "1|L--|r4 = Mem0[0x00100364<p32>:word32]");
         }
 
         [Test]
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("B17D",        // lw\tr17,01F4(pc)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r17 = Mem0[0x001001F4:word32]");
+                "1|L--|r17 = Mem0[0x001001F4<p32>:word32]");
         }
 
         [Test]
@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("94FC",        // lw\tr4,03F0(sp)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r4 = Mem0[sp + 1008:word32]");
+                "1|L--|r4 = Mem0[sp + 1008<i32>:word32]");
         }
 
         [Test]
@@ -228,7 +228,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("6CB3",        // li\tr4,000000B3
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r4 = 0x000000B3");
+                "1|L--|r4 = 0xB3<32>");
         }
 
         [Test]
@@ -268,10 +268,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("64F0",        // save\tra,r17,r16,+00000080
                 "0|L--|00100000(2): 4 instructions",
-                "1|L--|Mem0[sp - 4:word32] = ra",
-                "2|L--|Mem0[sp - 8:word32] = r17",
-                "3|L--|Mem0[sp - 12:word32] = r16",
-                "4|L--|sp = sp - 12");
+                "1|L--|Mem0[sp - 4<i32>:word32] = ra",
+                "2|L--|Mem0[sp - 8<i32>:word32] = r17",
+                "3|L--|Mem0[sp - 12<i32>:word32] = r16",
+                "4|L--|sp = sp - 12<i32>");
         }
 
         [Test]
@@ -279,7 +279,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("C275",        // sb\tr3,0015(r3)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[r3 + 21:byte] = (byte) r3");
+                "1|L--|Mem0[r3 + 21<i32>:byte] = (byte) r3");
         }
 
         [Test]
@@ -287,7 +287,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("C84D",        // sh\tr2,001A(r2)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[r2 + 26:word16] = (word16) r2");
+                "1|L--|Mem0[r2 + 26<i32>:word16] = (word16) r2");
         }
 
         [Test]
@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("31E4",        // sll\tr17,r7,+00000001
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r17 = r7 << 1");
+                "1|L--|r17 = r7 << 1<i32>");
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("50B8",        // slti\tr16,000000B8
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r24 = r16 < 0x000000B8");
+                "1|L--|r24 = r16 < 0xB8<32>");
         }
 
         [Test]
@@ -311,7 +311,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("5E0A",        // sltiu\tr6,0000000A
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r24 = r6 <u 0x0000000A");
+                "1|L--|r24 = r6 <u 0xA<32>");
         }
 
         [Test]
@@ -319,7 +319,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("341F",        // sra\tr4,r16,+00000007
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r4 = r16 >> 7");
+                "1|L--|r4 = r16 >> 7<i32>");
         }
 
         [Test]
@@ -335,7 +335,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("33F2",        // srl\tr3,r7,+00000004
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r3 = r7 >>u 4");
+                "1|L--|r3 = r7 >>u 4<i32>");
         }
 
         [Test]
@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("62F3",        // sw\tra,03CC(sp)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[sp + 972:ptr32] = ra");
+                "1|L--|Mem0[sp + 972<i32>:ptr32] = ra");
         }
 
         [Test]

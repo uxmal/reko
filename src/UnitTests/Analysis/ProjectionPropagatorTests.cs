@@ -163,7 +163,7 @@ SsaProcedureBuilder_exit:
 l1:
 	h = SLICE(hl, byte, 8)
 	l = SLICE(hl, byte, 0)
-	branch a == 0x00 m2azero
+	branch a == 0<8> m2azero
 m1anotzero:
 	de_1 = hl
 	goto m3done
@@ -253,7 +253,7 @@ loop:
 	hl_9 = PHI((hl_8, l1), (hl_1, loop))
 	h_4 = SLICE(hl_9, byte, 8) (alias)
 	l_5 = SLICE(hl_9, byte, 0) (alias)
-	hl_1 = hl_9 << 0x01
+	hl_1 = hl_9 << 1<8>
 	h_2 = SLICE(hl_1, byte, 8)
 	l_3 = (byte) hl_1
 	goto loop
@@ -405,7 +405,7 @@ l1:
 		defs: hl:hl_4
 	h_1 = SLICE(hl_4, byte, 8) (alias)
 	l_2 = SLICE(hl_4, byte, 0) (alias)
-	Mem2[0x1234:cui16] = hl_4
+	Mem2[0x1234<16>:cui16] = hl_4
 	return
 SsaProcedureBuilder_exit:
 ";
@@ -435,8 +435,8 @@ l1:
 		defs: hl:hl_5
 	h_1 = SLICE(hl_5, byte, 8) (alias)
 	l_2 = SLICE(hl_5, byte, 0) (alias)
-	Mem2[0x1234:cui16] = hl_5
-	Mem3[0x1236:cui16] = hl_5
+	Mem2[0x1234<16>:cui16] = hl_5
+	Mem3[0x1236<16>:cui16] = hl_5
 	return
 SsaProcedureBuilder_exit:
 ";
@@ -464,10 +464,10 @@ SsaProcedureBuilder_exit:
 @"SsaProcedureBuilder_entry:
 l1:
 	def ds
-	es_bx_1 = Mem5[ds:0x1234:ptr32]
+	es_bx_1 = Mem5[ds:0x1234<16>:ptr32]
 	es_2 = SLICE(es_bx_1, selector, 16) (alias)
 	bx_3 = SLICE(es_bx_1, word16, 0) (alias)
-	Mem6[es_bx_1 + 4:byte] = 0x03
+	Mem6[es_bx_1 + 4<i16>:byte] = 3<8>
 	return
 SsaProcedureBuilder_exit:
 ";
@@ -505,7 +505,7 @@ l1:
 	def ds
 	def si
 	def di
-	ax_1 = Mem5[ds:0x1234:ptr32]
+	ax_1 = Mem5[ds:0x1234<16>:ptr32]
 	es_2 = SLICE(es_bx_1, selector, 16) (alias)
 	bx_3 = SLICE(es_bx_1, word16, 0) (alias)
 	Mem6[es_bx_1 + 4:byte] = 0x03
@@ -541,7 +541,7 @@ SsaProcedureBuilder_exit:
 @"SsaProcedureBuilder_entry:
 	def ds
 l1:
-	es_ax_1 = Mem4[ds:0x1234:word32]
+	es_ax_1 = Mem4[ds:0x1234<16>:word32]
 	ax_2 = (word16) es_ax_1 (alias)
 	es_3 = SLICE(es_ax_1, word16, 16) (alias)
 	return
@@ -573,13 +573,13 @@ SsaProcedureBuilder_exit:
             #region Expected
 @"SsaProcedureBuilder_entry:
 m1:
-	wLoc06_1 = Mem7[0x1200:word16]
-	wLoc08_1 = Mem8[0x1202:word16]
+	wLoc06_1 = Mem7[0x1200<16>:word16]
+	wLoc08_1 = Mem8[0x1202<16>:word16]
 	dwLoc08_13 = SEQ(wLoc08_1, wLoc06_1) (alias)
-	branch Mem9[0x1100:byte] == 0x00 m3
+	branch Mem9[0x1100<16>:byte] == 0<8> m3
 m2:
-	wLoc06_2 = Mem10[0x1204:word16]
-	wLoc08_2 = Mem11[0x1206:word16]
+	wLoc06_2 = Mem10[0x1204<16>:word16]
+	wLoc08_2 = Mem11[0x1206<16>:word16]
 	dwLoc08_14 = SEQ(wLoc08_2, wLoc06_2) (alias)
 m3:
 	dwLoc08_15 = PHI((dwLoc08_13, m1), (dwLoc08_14, m2))
@@ -627,13 +627,13 @@ SsaProcedureBuilder_exit:
             #region Expected
 @"SsaProcedureBuilder_entry:
 m1:
-	ptrLoc06_1 = Mem8[0x1200:word32]
+	ptrLoc06_1 = Mem8[0x1200<16>:word32]
 	wLoc06_1 = SLICE(ptrLoc06_1, word16, 0) (alias)
 	wLoc08_1 = SLICE(ptrLoc06_1, word16, 16) (alias)
-	branch Mem9[0x1100:byte] == 0x00 m3
+	branch Mem9[0x1100<16>:byte] == 0<8> m3
 m2:
-	wLoc06_2 = Mem10[0x1204:word16]
-	wLoc08_2 = Mem11[0x1206:word16]
+	wLoc06_2 = Mem10[0x1204<16>:word16]
+	wLoc08_2 = Mem11[0x1206<16>:word16]
 	dwLoc08_13 = SEQ(wLoc08_2, wLoc06_2) (alias)
 m3:
 	dwLoc08_14 = PHI((ptrLoc06_1, m1), (dwLoc08_13, m2))

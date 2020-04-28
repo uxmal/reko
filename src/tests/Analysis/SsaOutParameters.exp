@@ -1,15 +1,15 @@
 r4_1: orig: r4
-    def:  Mem2[0x00000400:word32] = foo(out r4_1)
+    def:  Mem2[0x400<32>:word32] = foo(out r4_1)
     uses: use r4_1
 Mem2: orig: Mem0
-    def:  Mem2[0x00000400:word32] = foo(out r4_1)
+    def:  Mem2[0x400<32>:word32] = foo(out r4_1)
 // foo
 // Return size: 0
 define foo
 foo_entry:
 	// succ:  l1
 l1:
-	Mem2[0x00000400:word32] = foo(out r4_1)
+	Mem2[0x400<32>:word32] = foo(out r4_1)
 	return
 	// succ:  foo_exit
 foo_exit:

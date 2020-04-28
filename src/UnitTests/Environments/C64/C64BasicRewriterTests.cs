@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, "AB", Token.eq, "8");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|AB_r = 8");
+                "1|L--|AB_r = 8<i16>");
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.PRINT, " ", Token.CHR_s, "(147)");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|__PrintLine(__Chr(147))");
+                "1|L--|__PrintLine(__Chr(147<i16>))");
         }
 
         [Test]
@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.PRINT, " 3:", Token.PRINT);
             AssertCode(
                 "0|L--|000A(1): 2 instructions",
-                "1|L--|__PrintLine(3)",
+                "1|L--|__PrintLine(3<i16>)",
                 "2|L--|__PrintEmptyLine()");
         }
 
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.POKE, " ", "51231,123");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|__Poke(-14305, 123)");
+                "1|L--|__Poke(-14305<i16>, 123<i16>)");
         }
 
         [Test]
@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.IF, "A", Token.THEN, "A ", Token.eq, " 3");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|if (A_r) A_r = 3");
+                "1|L--|if (A_r) A_r = 3<i16>");
         }
 
         [Test]
@@ -262,7 +262,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.PRINT,Token.TAB_lp,"5);\"HELLO\"");
             AssertCode(
                 "0|L--|000A(1): 2 instructions",
-                "1|L--|__PrintTab(5)",
+                "1|L--|__PrintTab(5<i16>)",
                 "2|L--|__PrintLine(\"HELLO\")");
         }
 
@@ -282,7 +282,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.OPEN,"8,1,1,\"FOO,SEQ,R\"");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|__Open(8, 1, 1, \"FOO,SEQ,R\")");
+                "1|L--|__Open(8<i16>, 1<i16>, 1<i16>, \"FOO,SEQ,R\")");
         }
 
         [Test]
@@ -291,8 +291,8 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.INPUT_hash, "8,A$,B%");
             AssertCode(
                 "0|L--|000A(1): 2 instructions",
-                "1|L--|__InputStm(8, out A_s)",
-                "2|L--|__InputStm(8, out B_i)");
+                "1|L--|__InputStm(8<i16>, out A_s)",
+                "2|L--|__InputStm(8<i16>, out B_i)");
         }
 
         [Test]
@@ -301,7 +301,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, "B", Token.eq, "A(1)");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|B_r = A_r[1]");
+                "1|L--|B_r = A_r[1<i16>]");
         }
 
 
@@ -311,7 +311,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.CLOSE, "3");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|__Close(3)");
+                "1|L--|__Close(3<i16>)");
         }
 
         [Test]
@@ -341,8 +341,8 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.PRINT_hash, "2,C$,A$");
             AssertCode(
                 "0|L--|000A(1): 2 instructions",
-                "1|L--|__PrintStm(2, C_s)",
-                "2|L--|__PrintStm(2, A_s)");
+                "1|L--|__PrintStm(2<i32>, C_s)",
+                "2|L--|__PrintStm(2<i32>, A_s)");
         }
 
         [Test]
@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, "CA$(3)",Token.eq,"M$(I)");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|CA_s[3] = M_s[I_r]");
+                "1|L--|CA_s[3<i16>] = M_s[I_r]");
         }
 
         [Test]
@@ -360,7 +360,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.IF, "S",Token.gt,"3",Token.GOTO, "123");
             AssertCode(
                 "0|T--|000A(1): 1 instructions",
-                "1|T--|if (S_r > 3) branch 007B");
+                "1|T--|if (S_r > 3<i16>) branch 007B");
         }
 
         [Test]
@@ -369,7 +369,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, "S", Token.eq, "S", Token.mul,"3");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|S_r = S_r * 3");
+                "1|L--|S_r = S_r * 3<i16>");
         }
 
         [Test]
@@ -378,7 +378,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, "S", Token.eq, Token.sub, "3");
             AssertCode(
                 "0|L--|000A(1): 1 instructions",
-                "1|L--|S_r = -3");
+                "1|L--|S_r = -3<i16>");
         }
     }
 }

@@ -379,16 +379,16 @@ namespace Reko.UnitTests.Scanning
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax = 0x0000
+	ax = 0<16>
 	// succ:  l0C00_0003
 l0C00_0003:
-	Mem0[ds:si + 0x0000:byte] = 0x00
-	si = si + 0x0001
+	Mem0[ds:si + 0<16>:byte] = 0<8>
+	si = si + 1<16>
 	SZO = cond(si)
-	cx = cx - 0x0001
+	cx = cx - 1<16>
 	SZO = cond(cx)
 	branch Test(NE,Z) l0C00_0003
 	// succ:  l0C00_000B l0C00_0003
@@ -474,12 +474,12 @@ fn0C00_0000_exit:
             Given_Trace(new RtlTrace(0x1000)
             {
                 m => { m.Assign(reg1, m.Word32(0)); },
-                m => { m.Assign(m.Mem32(m.Word32(0x1800)), reg1); },
+                m => { m.Assign(m.Mem32(m.Ptr32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
             Given_Trace(new RtlTrace(0x1004)
             {
-                m => { m.Assign(m.Mem32(m.Word32(0x1800)), reg1); },
+                m => { m.Assign(m.Mem32(m.Ptr32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
             Given_Trace(new RtlTrace(0x1100)
@@ -500,9 +500,9 @@ define fn00001000
 fn00001000_entry:
 	r63 = fp
 l00001000:
-	r1 = 0x00000000
+	r1 = 0<32>
 l00001004:
-	Mem0[0x00001800:word32] = r1
+	Mem0[0x00001800<p32>:word32] = r1
 	return
 fn00001000_exit:
 
@@ -513,10 +513,10 @@ fn00001100_entry:
 	r63 = fp
 	goto l00001100
 l00001004_in_fn00001100:
-	Mem0[0x00001800:word32] = r1
+	Mem0[0x00001800<p32>:word32] = r1
 	return
 l00001100:
-	r1 = 0x00000001
+	r1 = 1<32>
 	goto l00001004_in_fn00001100
 fn00001100_exit:
 
@@ -530,16 +530,16 @@ fn00001100_exit:
             var scan = CreateScanner(0x1000, 0x2000);
             Given_Trace(new RtlTrace(0x1000)
             {
-                // 0x1000:
+                // 0x1000<16>:
                 m => { m.Assign(reg1, m.Word32(0)); },
-                // 0x1004:
+                // 0x1004<16>:
                 m => { m.Goto(Address.Ptr32(0x1100)); }
             });
             Given_Trace(new RtlTrace(0x1100)
             {
-                // 0x1100:
+                // 0x1100<16>:
                 m => { m.Assign(reg1, m.Word32(1)); },
-                // 0x1104:
+                // 0x1104<16>:
                 m => { m.Goto(Address.Ptr32(0x1004)); },
             });
             fakeArch.Test_IgnoreAllUnkownTraces();
@@ -557,12 +557,12 @@ fn00001000_entry:
 	r63 = fp
 	// succ:  l00001000
 l00001000:
-	r1 = 0x00000000
+	r1 = 0<32>
 	// succ:  l00001004
 l00001004:
 	// succ:  l00001100
 l00001100:
-	r1 = 0x00000001
+	r1 = 1<32>
 	goto l00001004
 	// succ:  l00001004
 fn00001000_exit:
@@ -772,16 +772,16 @@ define fn1000
 fn1000_entry:
 	r63 = fp
 l00001000:
-	r1 = 0x00000003
-	r63 = r63 - 0x00000004
+	r1 = 3<32>
+	r63 = r63 - 4<32>
 	Mem0[r63:word32] = r1
 	call fn00001200 (retsize: 4;)
-	r63 = r63 + 0x00000008
-	r1 = 0x00000003
-	r63 = r63 - 0x00000004
+	r63 = r63 + 8<32>
+	r1 = 3<32>
+	r63 = r63 - 4<32>
 	Mem0[r63:word32] = r1
 	call fn00001100 (retsize: 4;)
-	r63 = r63 + 0x00000008
+	r63 = r63 + 8<32>
 	return
 fn1000_exit:
 
@@ -791,20 +791,20 @@ define fn00001100
 fn00001100_entry:
 	r63 = fp
 l00001100:
-	r1 = Mem0[r63 + 0x00000004:word32]
-	branch r1 == 0x00000000 l00001120
+	r1 = Mem0[r63 + 4<32>:word32]
+	branch r1 == 0<32> l00001120
 	goto l00001108
 l00001100:
 l00001108:
-	r1 = Mem0[r63 + 0x00000004:word32]
-	r1 = r1 - 0x00000001
-	Mem0[r63 + 0x00000004:word32] = r1
-	goto 0x00001200
+	r1 = Mem0[r63 + 4<32>:word32]
+	r1 = r1 - 1<32>
+	Mem0[r63 + 4<32>:word32] = r1
+	goto 0x00001200<p32>
 l00001114_thunk_fn00001200:
 	call fn00001200 (retsize: 0;)
 	return
 l00001120:
-	r1 = 0x00000000
+	r1 = 0<32>
 	return
 fn00001100_exit:
 
@@ -814,18 +814,18 @@ define fn00001200
 fn00001200_entry:
 	r63 = fp
 l00001200:
-	r1 = Mem0[r63 + 0x00000004:word32]
-	branch r1 == 0x00000000 l00001220
+	r1 = Mem0[r63 + 4<32>:word32]
+	branch r1 == 0<32> l00001220
 l00001208:
-	r1 = Mem0[r63 + 0x00000004:word32]
-	r1 = r1 - 0x00000001
-	Mem0[r63 + 0x00000004:word32] = r1
-	goto 0x00001100
+	r1 = Mem0[r63 + 4<32>:word32]
+	r1 = r1 - 1<32>
+	Mem0[r63 + 4<32>:word32] = r1
+	goto 0x00001100<p32>
 l00001214_thunk_fn00001100:
 	call fn00001100 (retsize: 0;)
 	return
 l00001220:
-	r1 = 0x00000001
+	r1 = 1<32>
 	return
 fn00001200_exit:
 
@@ -868,7 +868,7 @@ fn00001200_exit:
                 arch.CreateProcessorState());
 
             var r1 = proc.Frame.EnsureIdentifier(arch.GetRegister("r1"));
-            Assert.AreEqual("0x00000DC0", scanner.Test_State.GetValue(r1).ToString());
+            Assert.AreEqual("0xDC0<32>", scanner.Test_State.GetValue(r1).ToString());
         }
 
         [Test(Description = "EntryPoints with no discernible type should not crash")]

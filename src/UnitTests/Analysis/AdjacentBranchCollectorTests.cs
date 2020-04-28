@@ -100,7 +100,7 @@ m1do:
 	r1 = r2
 	// succ:  m3do
 m3do:
-	r2 = 0x00000000
+	r2 = 0<32>
 	// succ:  m4skip
 m4skip:
 	return
@@ -151,7 +151,7 @@ m2skip:
 	branch Test(ULT,C) m4skip
 	// succ:  m3do m4skip
 m3do:
-	r2 = 0x00000000
+	r2 = 0<32>
 	// succ:  m4skip
 m4skip:
 	return
@@ -198,7 +198,7 @@ define ProcedureBuilder
 ProcedureBuilder_entry:
 	// succ:  m1Header
 m1Header:
-	Mem0[0x00123400:byte] = 0x2A
+	Mem0[0x00123400<p32>:byte] = 0x2A<8>
 	// succ:  m1Prev
 m1Prev:
 	branch Test(UGE,CZ) m1Prev
@@ -207,7 +207,7 @@ m2Block:
 	branch Test(EQ,Z) m4Done
 	// succ:  m3Leg m4Done
 m3Leg:
-	CZ = 0x00
+	CZ = 0<8>
 	// succ:  m4Done
 m4Done:
 	return
@@ -221,7 +221,7 @@ ProcedureBuilder_exit:
                 var Z = m.Frame.EnsureFlagGroup(arch.GetFlagGroup("Z"));
                 var CZ = m.Frame.EnsureFlagGroup(arch.GetFlagGroup("CZ"));
                 m.Label("m1Header");
-                m.MStore(m.Word32(0x00123400), m.Byte(42));
+                m.MStore(m.Ptr32(0x00123400), m.Byte(42));
                 m.Label("m1Prev");
                 m.BranchIf(m.Test(ConditionCode.UGE, CZ), "m1Prev");
                 m.Label("m2Block");

@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("34C7DE88"); // addi	r7,r6,FFFFDE88
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = r6 + 0xFFFFDE88");
+                "1|L--|r7 = r6 + 0xFFFFDE88<32>");
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("636A76B3"); // andhi	r10,fp,000076B3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = fp & 0x76B30000");
+                "1|L--|r10 = fp & 0x76B30000<32>");
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("20753331"); // andi	r21,r3,00003331
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = r3 & 0x00003331");
+                "1|L--|r21 = r3 & 0x3331<32>");
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("5CE07589"); // bne	r0,r7,0011D694
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (0x00000000 != r7) branch 0011D624");
+                "1|T--|if (0<32> != r7) branch 0011D624");
         }
 
         [Test]
@@ -215,7 +215,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("676F2A16"); // cmpei	r15,fp,00002A16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r15 = fp == 0x00002A16");
+                "1|L--|r15 = fp == 0x2A16<32>");
         }
 
         [Test]
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("6AE97BA3"); // cmpgi	r9,r23,00007BA3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = r23 > 0x00007BA3");
+                "1|L--|r9 = r23 > 0x7BA3<32>");
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("6C31BAD9"); // cmpgei	r1,r0,FFFFBAD9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r17 = r1 >= 0xFFFFBAD9");
+                "1|L--|r17 = r1 >= 0xFFFFBAD9<32>");
         }
 
         [Test]
@@ -269,7 +269,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("73C5A1E5"); // cmpgeui	r5,ea,FFFFA1E5
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = ea >=u 0xFFFFA1E5");
+                "1|L--|r5 = ea >=u 0xFFFFA1E5<32>");
         }
 
         [Test]
@@ -278,7 +278,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("74432EA1"); // cmpgui	r3,r2,00002EA1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = r2 >u 0x00002EA1");
+                "1|L--|r3 = r2 >u 0x2EA1<32>");
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("7FA229E1"); // cmpnei	r2,ra,000029E1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = ra != 0x000029E1");
+                "1|L--|r2 = ra != 0x29E1<32>");
         }
 
         [Test]
@@ -323,7 +323,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("122DFFFF"); // lb	r13,(r17-1)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r13 = (int32) Mem0[r17 - 1:int8]");
+                "1|L--|r13 = (int32) Mem0[r17 - 1<i32>:int8]");
         }
 
         [Test]
@@ -332,7 +332,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("4025FFFF"); // lbu	r5,(r1-1)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = (word32) Mem0[r1 - 1:byte]");
+                "1|L--|r5 = (word32) Mem0[r1 - 1<i32>:byte]");
         }
 
         [Test]
@@ -341,7 +341,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("1D92FFFE"); // lh	r18,(r12-2)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r18 = (int32) Mem0[r12 - 2:int16]");
+                "1|L--|r18 = (int32) Mem0[r12 - 2<i32>:int16]");
         }
 
         [Test]
@@ -350,7 +350,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("2EC9FFFE"); // lhu	r9,(r22-2)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = (word32) Mem0[r22 - 2:word16]");
+                "1|L--|r9 = (word32) Mem0[r22 - 2<i32>:word16]");
         }
 
         [Test]
@@ -359,7 +359,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("284FFFFC"); // lw	r15,(r2-4)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r15 = Mem0[r2 - 4:word32]");
+                "1|L--|r15 = Mem0[r2 - 4<i32>:word32]");
         }
 
         [Test]
@@ -395,7 +395,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("097B47FD"); // muli	fp,r11,000047FD
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|fp = r11 * 0x000047FD");
+                "1|L--|fp = r11 * 0x47FD<32>");
         }
 
         [Test]
@@ -413,7 +413,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("05C5AF45"); // nori	r5,r14,FFFFAF45
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = ~(r14 | 0xFFFFAF45)");
+                "1|L--|r5 = ~(r14 | 0xFFFFAF45<32>)");
         }
 
         [Test]
@@ -431,7 +431,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("78308D9D"); // orhi	r16,r1,FFFF8D9D
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r16 = r1 | 0x8D9D0000");
+                "1|L--|r16 = r1 | 0x8D9D0000<32>");
         }
 
         [Test]
@@ -440,7 +440,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("3945A263"); // ori	r5,r10,FFFFA263
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = r10 | 0xFFFFA263");
+                "1|L--|r5 = r10 | 0xFFFFA263<32>");
         }
 
         [Test]
@@ -476,7 +476,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("0EE60020"); // sh	(r23+32),r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r23 + 32:word16] = SLICE(r6, word16, 0)");
+                "1|L--|Mem0[r23 + 32<i32>:word16] = SLICE(r6, word16, 0)");
         }
 
         [Test]
@@ -485,7 +485,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("3FC5000E"); // sli	r5,ea,0000000E
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = ea << 0x0000000E");
+                "1|L--|r5 = ea << 0xE<32>");
         }
 
         [Test]
@@ -494,7 +494,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("16D9000D"); // sri	r25,r22,0000000D
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r25 = r22 >> 0x0000000D");
+                "1|L--|r25 = r22 >> 0xD<32>");
         }
 
         [Test]
@@ -512,7 +512,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("02C9B9A9"); // srui	r9,r22,FFFFB9A9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = r22 >>u 0x00000009");
+                "1|L--|r9 = r22 >>u 9<32>");
         }
 
         [Test]
@@ -530,7 +530,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("5B530400"); // sw	(gp+1024),r19
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[gp + 1024:word32] = r19");
+                "1|L--|Mem0[gp + 1024<i32>:word32] = r19");
         }
 
         [Test]
@@ -548,7 +548,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("270A27E3"); // xnori	r10,r24,000027E3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = ~(r24 ^ 0x000027E3)");
+                "1|L--|r10 = ~(r24 ^ 0x27E3<32>)");
         }
 
         [Test]
@@ -566,7 +566,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("1A41D9FB"); // xori	r1,r18,FFFFD9FB
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = r18 ^ 0xFFFFD9FB");
+                "1|L--|r1 = r18 ^ 0xFFFFD9FB<32>");
         }
     }
 }

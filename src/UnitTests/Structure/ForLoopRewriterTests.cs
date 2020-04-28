@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Structure
             sw.WriteLine("{0}()", proc.Name);
             sw.WriteLine("{");
 
-            CodeFormatter cf = proc.CreateCodeFormatter(new TextFormatter(sw) { UseTabs = false });
+            var cf = new AbsynCodeFormatter(new TextFormatter(sw) { UseTabs = false });
             cf.WriteStatementList(proc.Body);
 
             sw.WriteLine("}");

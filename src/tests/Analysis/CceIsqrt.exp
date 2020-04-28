@@ -33,7 +33,7 @@ sp_2: orig: sp
 eax:eax
     def:  def eax
     uses: ax_70 = (word16) eax (alias)
-          dx_69 = (word16) (eax >>u 0x00000010) (alias)
+          dx_69 = (word16) (eax >>u 0x00000010<32>) (alias)
 edx_4: orig: edx
 edx_5: orig: edx
 SCZO_6: orig: SCZO
@@ -194,7 +194,7 @@ di_67: orig: di
     uses: di_20 = PHI(di_19, di_67)
 SZO_68: orig: SZO
 dx_69: orig: dx
-    def:  dx_69 = (word16) (eax >>u 0x00000010) (alias)
+    def:  dx_69 = (word16) (eax >>u 0x00000010<32>) (alias)
     uses: dx_24 = PHI(dx_69, dx_60)
 ax_70: orig: ax
     def:  ax_70 = (word16) eax (alias)
@@ -233,7 +233,7 @@ fn0C00_0008_entry:
 	ax_70 = (word16) eax (alias)
 	// succ:  l0C00_0008
 l0C00_0008:
-	dx_69 = (word16) (eax >>u 0x00000010) (alias)
+	dx_69 = (word16) (eax >>u 0x00000010<32>) (alias)
 	bx_8 = 0x0000
 	si_12 = 0x0000
 	cx_16 = 0x0000

@@ -18,16 +18,16 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0D00
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 0xD00<16>
 	ds = Mem0[ss:sp:selector]
-	sp = sp + 2
-	dx = 0x3000
-	bx = Mem0[ds:0x0300:word16]
-	cx = 0x0100
+	sp = sp + 2<i16>
+	dx = 0x3000<16>
+	bx = Mem0[ds:0x300<16>:word16]
+	cx = 0x100<16>
 	call fn0C00_0023 (retsize: 2;)
 	ax = ax | ax
 	SZO = cond(ax)
@@ -35,11 +35,11 @@ l0C00_0000:
 	branch Test(GE,SO) l0C00_001A
 	// succ:  l0C00_0015 l0C00_001A
 l0C00_0015:
-	al = 0x01
+	al = 1<8>
 	call fn0C00_001F (retsize: 2;)
 	// succ:  l0C00_001A
 l0C00_001A:
-	Mem0[ds:0x0302:word16] = ax
+	Mem0[ds:0x302<16>:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -55,10 +55,10 @@ fn0C00_0000_exit:
 define fn0C00_001F
 fn0C00_001F_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_001F
 l0C00_001F:
-	ah = 0x4C
+	ah = 0x4C<8>
 	msdos_terminate(al)
 fn0C00_001F_exit:
 // fn0C00_0023
@@ -79,15 +79,15 @@ fn0C00_001F_exit:
 define fn0C00_0023
 fn0C00_0023_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0023
 l0C00_0023:
-	ah = 0x3F
+	ah = 0x3F<8>
 	C = msdos_read_file(bx, cx, ds_dx, out ax)
 	branch Test(UGE,C) l0C00_002C
 	// succ:  l0C00_0029 l0C00_002C
 l0C00_0029:
-	ax = 0xFFFF
+	ax = 0xFFFF<16>
 	// succ:  l0C00_002C
 l0C00_002C:
 	return

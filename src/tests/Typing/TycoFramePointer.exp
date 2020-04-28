@@ -5,7 +5,7 @@ FramePointerFragment_entry:
 	// succ:  l1
 l1:
 	word32 framep_4 = &frame
-	Mem6[framep_4 + 0x00000004:word32] = Mem0[framep_4 + 0x00000008:word32]
+	Mem6[framep_4 + 4<32>:word32] = Mem0[framep_4 + 8<32>:word32]
 FramePointerFragment_exit:
 
 // Equivalence classes ////////////
@@ -26,27 +26,27 @@ T_4: (in &frame : ptr32)
   Class: Eq_2
   DataType: (ptr32 (struct "frame_t"))
   OrigDataType: (ptr32 (struct "frame_t"))
-T_5: (in 0x00000008 : word32)
+T_5: (in 8<32> : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in framep_4 + 0x00000008 : word32)
+T_6: (in framep_4 + 8<32> : word32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
-T_7: (in Mem0[framep_4 + 0x00000008:word32] : word32)
+T_7: (in Mem0[framep_4 + 8<32>:word32] : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in 0x00000004 : word32)
+T_8: (in 4<32> : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in framep_4 + 0x00000004 : word32)
+T_9: (in framep_4 + 4<32> : word32)
   Class: Eq_9
   DataType: ptr32
   OrigDataType: ptr32
-T_10: (in Mem6[framep_4 + 0x00000004:word32] : word32)
+T_10: (in Mem6[framep_4 + 4<32>:word32] : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32

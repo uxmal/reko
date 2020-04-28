@@ -106,10 +106,10 @@ FakeTop_2 = FakeTop_1
 call f (retsize: 4;)
 	uses: Top:FakeTop_1
 	defs: FPU -1:rRet0
-FakeST8[FakeTop_1 - 0x01:real64] = rRet0
-FakeTop_2 = FakeTop_1 - 1
+FakeST8[FakeTop_1 - 1<8>:real64] = rRet0
+FakeTop_2 = FakeTop_1 - 1<i8>
 a = FakeST[FakeTop_2:real64]
-FakeTop_3 = FakeTop_2 + 1
+FakeTop_3 = FakeTop_2 + 1<i8>
 ";
             AssertProcedureCode(expected);
         }
@@ -135,8 +135,8 @@ FakeTop_3 = FakeTop_2 + 1
 call f (retsize: 4;)
 	uses: Top:FakeTop_1
 	defs: FPU -1:rRet0
-FakeST9[FakeTop_1 - 0x01:real64] = rRet0
-FakeTop_2 = FakeTop_1 - 1
+FakeST9[FakeTop_1 - 1<8>:real64] = rRet0
+FakeTop_2 = FakeTop_1 - 1<i8>
 FakeST[FakeTop_2:real64] = -FakeST[FakeTop_2:real64]
 ";
             AssertProcedureCode(expected);

@@ -10,16 +10,16 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0320
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0300
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 0x320<16>
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 0x300<16>
 	call fn0C00_0010 (retsize: 2;)
 	call fn0C00_0037 (retsize: 2;)
-	sp = sp + 0x0004
+	sp = sp + 4<16>
 	SCZO = cond(sp)
 	return
 	// succ:  fn0C00_0000_exit
@@ -39,36 +39,36 @@ fn0C00_0000_exit:
 define fn0C00_0010
 fn0C00_0010_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0010
 l0C00_0010:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	bx = Mem0[ss:bp + 0x0004:word16]
-	Top = Top - 1
+	bx = Mem0[ss:bp + 4<16>:word16]
+	Top = Top - 1<i8>
 	ST[Top:real64] = Mem0[ds:bx:real64]
 	ST[Top:real64] = ST[Top:real64] * ST[Top:real64]
-	Top = Top - 1
-	ST[Top:real64] = Mem0[ds:bx + 0x0008:real64]
+	Top = Top - 1<i8>
+	ST[Top:real64] = Mem0[ds:bx + 8<16>:real64]
 	ST[Top:real64] = ST[Top:real64] * ST[Top:real64]
-	ST[Top + 1:real64] = ST[Top + 1:real64] + ST[Top:real64]
-	Top = Top + 1
-	Top = Top - 1
-	ST[Top:real64] = Mem0[ds:bx + 0x0010:real64]
+	ST[Top + 1<i8>:real64] = ST[Top + 1<i8>:real64] + ST[Top:real64]
+	Top = Top + 1<i8>
+	Top = Top - 1<i8>
+	ST[Top:real64] = Mem0[ds:bx + 0x10<16>:real64]
 	ST[Top:real64] = ST[Top:real64] * ST[Top:real64]
-	ST[Top + 1:real64] = ST[Top + 1:real64] + ST[Top:real64]
-	Top = Top + 1
-	bx = Mem0[ss:bp + 0x0006:word16]
+	ST[Top + 1<i8>:real64] = ST[Top + 1<i8>:real64] + ST[Top:real64]
+	Top = Top + 1<i8>
+	bx = Mem0[ss:bp + 6<16>:word16]
 	Mem0[ds:bx:real64] = ST[Top:real64]
-	Top = Top + 1
-	Top = Top - 1
-	ST[Top:real64] = (real64) Mem0[ds:bx + 0x0020:int16]
-	Mem0[ds:bx + 0x0028:real64] = ST[Top:real64]
-	Top = Top + 1
+	Top = Top + 1<i8>
+	Top = Top - 1<i8>
+	ST[Top:real64] = (real64) Mem0[ds:bx + 0x20<16>:int16]
+	Mem0[ds:bx + 0x28<16>:real64] = ST[Top:real64]
+	Top = Top + 1<i8>
 	sp = bp
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:
@@ -84,17 +84,17 @@ fn0C00_0010_exit:
 define fn0C00_0037
 fn0C00_0037_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0037
 l0C00_0037:
-	Top = Top - 1
+	Top = Top - 1<i8>
 	ST[Top:real64] = 0.0
-	Mem0[ds:0x0400:real64] = ST[Top:real64]
-	Top = Top + 1
-	Top = Top - 1
+	Mem0[ds:0x400<16>:real64] = ST[Top:real64]
+	Top = Top + 1<i8>
+	Top = Top - 1<i8>
 	ST[Top:real64] = 1.0
-	Mem0[ds:0x0408:int32] = (int32) ST[Top:real64]
-	Top = Top + 1
+	Mem0[ds:0x408<16>:int32] = (int32) ST[Top:real64]
+	Top = Top + 1<i8>
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:

@@ -830,6 +830,36 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generate a 16-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 16-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr16(ushort ptr)
+        {
+            return Address.Ptr16(ptr);
+        }
+
+        /// <summary>
+        /// Generate a 32-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 32-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr32(uint ptr)
+        {
+            return Address.Ptr32(ptr);
+        }
+
+        /// <summary>
+        /// Generate a 64-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 64-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr64(ulong ptr)
+        {
+            return Address.Ptr64(ptr);
+        }
+
+        /// <summary>
         /// Generate the integer remainder ('%' in the C language family).
         /// </summary>
         /// <param name="opLeft">Dividend.</param>

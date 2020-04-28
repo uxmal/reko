@@ -221,7 +221,7 @@ namespace Reko.Arch.Rl78
                 }
                 else
                 {
-                    ea = m.Word32(mop.Offset);
+                    ea = m.Ptr32((uint)mop.Offset);
                 }
                 if (mop.Index != null)
                 {
@@ -267,7 +267,7 @@ namespace Reko.Arch.Rl78
                 }
                 else
                 {
-                    ea = m.Word32(mop.Offset);
+                    ea = m.Ptr32((uint)mop.Offset);
                 }
                 if (mop.Index != null)
                 {

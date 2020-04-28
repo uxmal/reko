@@ -8,11 +8,11 @@ T_2: (in x : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_3: (in 0x03 : byte)
+T_3: (in 3<8> : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte
-T_4: (in x & 0x03 : byte)
+T_4: (in x & 3<8> : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte

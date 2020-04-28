@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -256,7 +256,7 @@ namespace Reko.UnitTests.Structure
             break;
     }
     finalize();
-    return 0x01;
+    return 1;
 ";
             RunTest(sExp, m.Procedure);
         }
@@ -305,7 +305,7 @@ failed:
         wait();
     }
     finalize();
-    return 0x00;
+    return 0;
 ";
             RunTest(sExp, m.Procedure);
         }
@@ -884,7 +884,7 @@ case_0:
 
             var sExp =
 @"    initialize();
-    if (r1 <= 0x03)
+    if (r1 <= 3)
     {
         switch (r1)
         {
@@ -1115,7 +1115,7 @@ case_1:
 @"    do
     {
         if (!check())
-            return -0x01;
+            return -1;
     } while (next());
     return r1;
 ";
@@ -1143,7 +1143,7 @@ case_1:
             break;
     } while (next());
     finalize();
-    return 0x01;
+    return 1;
 ";
             RunTest(sExp, m.Procedure);
         }

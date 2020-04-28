@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Core
             sr.Read(rdr);
 
             Assert.IsNotNull(test.extra);
-            Assert.AreEqual((ushort) 0x1234, test.extra.sig);
+            Assert.AreEqual((ushort) 0x1234<16>, test.extra.sig);
         }
 
         public class TestStruct6

@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Analysis
             var sExp =
 @"l1:
 	dx_ax_6 = SEQ(dx, ax)
-	dx_ax_7 = dx_ax_6 + 0x12345678
+	dx_ax_7 = dx_ax_6 + 0x12345678<32>
 	ax_2 = SLICE(dx_ax_7, word16, 0) (alias)
 	dx_5 = SLICE(dx_ax_7, word16, 16) (alias)
 	C_3 = cond(ax_2)
@@ -243,7 +243,7 @@ namespace Reko.UnitTests.Analysis
             var sExp =
 @"l1:
 	dx_ax_6 = SEQ(dx, ax)
-	dx_ax_7 = dx_ax_6 + 0x00000001
+	dx_ax_7 = dx_ax_6 + 1<32>
 	ax_2 = SLICE(dx_ax_7, word16, 0) (alias)
 	dx_5 = SLICE(dx_ax_7, word16, 16) (alias)
 	C_3 = cond(ax_2)
@@ -293,7 +293,7 @@ namespace Reko.UnitTests.Analysis
             var sExp =
 @"l1:
 	dx_ax_9 = SEQ(dx, ax)
-	dx_ax_10 = dx_ax_9 + Mem0[bx + 0x0300:ui32]
+	dx_ax_10 = dx_ax_9 + Mem0[bx + 0x300<16>:ui32]
 	ax_4 = SLICE(dx_ax_10, word16, 0) (alias)
 	dx_7 = SLICE(dx_ax_10, word16, 16) (alias)
 	C_5 = cond(ax_4)
@@ -331,11 +331,11 @@ namespace Reko.UnitTests.Analysis
             rw.Transform();
 
             var sExp = @"l1:
-	SCZ_2 = cond(cx - 0x0030)
+	SCZ_2 = cond(cx - 0x30<16>)
 	C_3 = SLICE(SCZ_2, bool, 2) (alias)
-	ax_4 = 0x0000 + C_3
+	ax_4 = 0<16> + C_3
 	SCZ_5 = cond(ax_4)
-	SCZ_6 = cond(cx - 0x003A)
+	SCZ_6 = cond(cx - 0x3A<16>)
 	C_7 = SLICE(SCZ_6, bool, 2) (alias)
 	C_8 = !C_7
 	ax_9 = ax_4 + ax_4 + C_8
@@ -355,9 +355,9 @@ namespace Reko.UnitTests.Analysis
         {
             var sExp =
 @"l1:
-	ax_2 = Mem0[0x0210:word16]
-	dx_3 = Mem0[0x0212:word16]
-	es_cx_4 = Mem0[0x0214:word32]
+	ax_2 = Mem0[0x0210<p16>:word16]
+	dx_3 = Mem0[0x0212<p16>:word16]
+	es_cx_4 = Mem0[0x0214<p16>:word32]
 	es_5 = SLICE(es_cx_4, word16, 16) (alias)
 	cx_7 = SLICE(es_cx_4, word16, 0) (alias)
 	bx_6 = es_5
@@ -368,21 +368,21 @@ namespace Reko.UnitTests.Analysis
 	dx_12 = SLICE(dx_ax_16, word16, 16) (alias)
 	SCZ_9 = cond(ax_8)
 	C_11 = SLICE(SCZ_9, bool, 2) (alias)
-	Mem10[0x0218:word16] = ax_8
-	Mem13[0x021A:word16] = dx_12
+	Mem10[0x0218<p16>:word16] = ax_8
+	Mem13[0x021A<p16>:word16] = dx_12
 ";
             RunTest(sExp, m =>
             {
                 var es_cx = m.Procedure.Frame.EnsureSequence(PrimitiveType.Word32, es.Storage, cx.Storage);
-                m.Assign(ax, m.Mem16(m.Word16(0x210)));
-                m.Assign(dx, m.Mem16(m.Word16(0x212)));
-                m.Assign(es_cx, m.Mem32(m.Word16(0x214)));
+                m.Assign(ax, m.Mem16(m.Ptr16(0x210)));
+                m.Assign(dx, m.Mem16(m.Ptr16(0x212)));
+                m.Assign(es_cx, m.Mem32(m.Ptr16(0x214)));
                 m.Assign(bx, es);
                 m.Assign(ax, m.ISub(ax, cx));
                 m.Assign(this.SCZ, m.Cond(ax));
-                m.MStore(m.Word16(0x218), ax);
+                m.MStore(m.Ptr16(0x218), ax);
                 m.Assign(dx, m.ISub(m.ISub(dx, bx), this.CF));
-                m.MStore(m.Word16(0x21A), dx);
+                m.MStore(m.Ptr16(0x21A), dx);
                 block = m.Block;
             });
         }

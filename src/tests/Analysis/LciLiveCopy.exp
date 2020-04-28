@@ -11,10 +11,10 @@ even:
 	// succ:  LiveCopyMock_exit
 l1:
 	reg_4 = reg
-	branch (reg & 0x00000001) == 0x00000000 even
+	branch (reg & 1<32>) == 0<32> even
 	// succ:  l2 even
 l2:
-	reg_3 = reg + 0x00000002
+	reg_3 = reg + 2<32>
 	goto even
 	// succ:  even
 LiveCopyMock_exit:

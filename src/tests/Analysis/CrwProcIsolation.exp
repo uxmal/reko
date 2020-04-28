@@ -27,8 +27,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	fn0C00_000F(ds_di)
-	ax_11 = fn0C00_0014(0x0100)
-	Mem17[ds:0x0300:word16] = ax_11
+	ax_11 = fn0C00_0014(0x100<16>)
+	Mem17[ds:0x300<16>:word16] = ax_11
 	// succ:  l0C00_000E_thunk_fn0C00_000F
 l0C00_000E_thunk_fn0C00_000F:
 	fn0C00_000F(ds_di)
@@ -55,7 +55,7 @@ fn0C00_000F_entry:
 	def ds_di
 	// succ:  l0C00_000F
 l0C00_000F:
-	Mem6[ds_di:word16] = 0x0000
+	Mem6[ds_di:word16] = 0<16>
 	return
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
@@ -83,7 +83,7 @@ fn0C00_0014_entry:
 	def ax
 	// succ:  l0C00_0014
 l0C00_0014:
-	ax_8 = ax - 0x0001
+	ax_8 = ax - 1<16>
 	return ax_8
 	// succ:  fn0C00_0014_exit
 fn0C00_0014_exit:

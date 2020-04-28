@@ -82,7 +82,7 @@ namespace Reko.Core.Expressions
         public override string ToString()
         {
             var sw = new StringWriter();
-            var fmt = new CodeFormatter(new TextFormatter(sw), 0, 0);
+            var fmt = new CodeFormatter(new TextFormatter(sw));
             fmt.WriteExpression(this);
             return sw.ToString();
         }

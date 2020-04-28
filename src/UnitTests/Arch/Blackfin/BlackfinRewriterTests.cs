@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("0EE1EC0F");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|SP.L = 0x0FEC");
+                "1|L--|SP.L = 0xFEC<16>");
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("20E1E803");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|R0 = (word32) 0x03E8");
+                "1|L--|R0 = (word32) 0x3E8<16>");
         }
 
         [Test]

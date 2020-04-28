@@ -406,6 +406,7 @@ namespace Reko.Arch.Mos6502
         private Expression RewriteOperand(MachineOperand mop)
         {
             Constant offset;
+            Address addrZeroPage;
             var op = (Operand) mop;
             switch (op.Mode)
             {
@@ -416,19 +417,19 @@ namespace Reko.Arch.Mos6502
                 return op.Offset;
             case AddressMode.IndirectIndexed:
                 var y = binder.EnsureRegister(Registers.y);
-                offset = Constant.Word16((ushort) op.Offset.ToByte());
+                addrZeroPage = m.Ptr16(op.Offset.ToByte());
                 return m.Mem8(
                     m.IAdd(
-                        m.Mem(PrimitiveType.Ptr16, offset),
+                        m.Mem(PrimitiveType.Ptr16, addrZeroPage),
                         m.Cast(PrimitiveType.UInt16, y)));
             case AddressMode.IndexedIndirect:
                 var x = binder.EnsureRegister(Registers.x);
-                offset = Constant.Word16(op.Offset.ToByte());
+                addrZeroPage = m.Ptr16(op.Offset.ToByte());
                 return m.Mem8(
                     m.Mem(
                         PrimitiveType.Ptr16,
                         m.IAdd(
-                            offset,
+                            addrZeroPage,
                             m.Cast(PrimitiveType.UInt16, x))));
             case AddressMode.Absolute:
                 return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));

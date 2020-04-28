@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Structure
             var id = new Identifier("id", PrimitiveType.Word32, null);
             var pp = new ProcedurePrettifier(null);
             var m = new AbsynCodeEmitter(new List<AbsynStatement>());
-            Assert.AreEqual("id += 0x00000002;", m.Assign(id, m.IAdd(id, 2)).Accept(pp).ToString());
+            Assert.AreEqual("id += 2<32>;", m.Assign(id, m.IAdd(id, 2)).Accept(pp).ToString());
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Structure
             #region Expected
 @"test()
 {
-    for (id = 0x00000000; id != 0x000003E8; ++id)
+    for (id = 0<32>; id != 0x3E8<32>; ++id)
         foo(id);
 }
 ";

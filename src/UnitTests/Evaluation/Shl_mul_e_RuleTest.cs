@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Evaluation
 		/// (shl (* e c1) c2) => (* e (c1 shl c2))
 		/// </summary>
 		[Test]
-		public void Test1()
+		public void ShlMul_Test1()
 		{
 			BinaryExpression b = m.Shl(m.SMul(id, 3), 2);
 			Assignment ass = new Assignment(x, b);
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Evaluation
 			var rule = new Shl_mul_e_Rule(null);
 			Assert.IsTrue(rule.Match(b));
 			ass.Src = rule.Transform();
-			Assert.AreEqual("x = id *s 0x0000000C", ass.ToString());
+			Assert.AreEqual("x = id *s 0xC<32>", ass.ToString());
 		}
 			
 		

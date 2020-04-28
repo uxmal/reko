@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r0 | 0x12340000");
+                "1|L--|r4 = r0 | 0x12340000<32>");
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r0 | 0x0000000012340000");
+                "1|L--|r4 = r0 | 0x12340000<64>");
         }
 
         [Test]
@@ -160,8 +160,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r2 = Mem0[r1 + 4:word32]",
-                "2|L--|r1 = r1 + 4"
+                "1|L--|r2 = Mem0[r1 + 4<i16>:word32]",      //$LIT should be 4<i32>
+                "2|L--|r1 = r1 + 4<i16>"
                 );
         }
 
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = Mem0[0xFFFFFFFC:word32]"
+                "1|L--|r2 = Mem0[0xFFFFFFFC<32>:word32]"
                 );
         }
         [Test]
@@ -186,9 +186,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r3 + 18:byte] = (byte) r2",
-                "2|L--|r3 = r3 + 18"
-                );
+                "1|L--|Mem0[r3 + 18<i16>:byte] = (byte) r2",
+                "2|L--|r3 = r3 + 18<i16>");
         }
 
         [Test]
@@ -240,19 +239,19 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x57200036, // "rlwinm\tr0,r25,04,00,1B");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r25 & 0xFFFFFFF0");
+                "1|L--|r0 = r25 & 0xFFFFFFF0<u32>");
             AssertCode(0x5720EEFA, //,rlwinm	r9,r31,1D,1B,1D not handled yet.
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r25 >>u 0x03 & 0x0000001C");
+                "1|L--|r0 = r25 >>u 3<8> & 0x1C<32>");
             AssertCode(0x5720421E, //  rlwinm	r0,r25,08,08,0F not handled yet.
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r25 << 0x08 & 0x00FF0000");
+                "1|L--|r0 = r25 << 8<8> & 0xFF0000<32>");
             AssertCode(0x57897c20, // rlwinm  r9,r28,15,16,16	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = r28 << 0x0F & 0x00008000");
+                "1|L--|r9 = r28 << 0xF<8> & 0x8000<32>");
             AssertCode(0x556A06F7, // rlwinm.\tr10,r11,00,1B,1B
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r10 = r11 & 0x00000010",
+                "1|L--|r10 = r11 & 0x10<u32>",
                 "2|L--|cr0 = cond(r10)");
         }
 
@@ -285,7 +284,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7c002670, //"srawi\tr0,r0,04");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r0 >> 0x00000004");
+                "1|L--|r0 = r0 >> 4<32>");
         }
 
         [Test]
@@ -301,8 +300,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x9521016e, // "stwu\tr9,r1,r0");
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r1 + 366:word32] = r9",
-                "2|L--|r1 = r1 + 366");
+                "1|L--|Mem0[r1 + 366<i32>:word32] = r9",
+                "2|L--|r1 = r1 + 366<i32>");
         }
 
         [Test]
@@ -367,7 +366,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x38000000,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0x00000000");
+                "1|L--|r0 = 0<32>");
         }
 
         [Test]
@@ -426,7 +425,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7d808120, //"mtcrf\t08,r12");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__mtcrf(0x00000008, r12)");
+                "1|L--|__mtcrf(8<32>, r12)");
         }
 
         [Test]
@@ -442,7 +441,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x5120f042, // "rlwimi\tr0,r9,1E,01,01");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __rlwimi(r9, 0x1E, 0x01, 0x01)");
+                "1|L--|r0 = __rlwimi(r9, 0x1E<8>, 1<8>, 1<8>)");
         }
 
         [Test]
@@ -458,7 +457,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x38008045,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0xFFFF8045");
+                "1|L--|r0 = 0xFFFF8045<32>");
         }
 
         [Test]
@@ -467,7 +466,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x38008045,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0xFFFFFFFFFFFF8045");
+                "1|L--|r0 = 0xFFFFFFFFFFFF8045<64>");
         }
 
 
@@ -476,7 +475,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x3C000045,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0x00450000");
+                "1|L--|r0 = 0x450000<32>");
         }
 
         [Test]
@@ -485,7 +484,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x3C000045,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0x0000000000450000");
+                "1|L--|r0 = 0x450000<64>");
         }
 
         [Test]
@@ -493,7 +492,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x3C810045,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r1 + 0x00450000");
+                "1|L--|r4 = r1 + 0x450000<32>");
         }
 
         [Test]
@@ -501,7 +500,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x2f830005, // 	cmpwi   cr7,r3,5
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|cr7 = cond(r3 - 0x00000005)");
+                "1|L--|cr7 = cond(r3 - 5<32>)");
         }
 
         [Test]
@@ -525,7 +524,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x98010018u, // "stb\tr0,1(r1)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r1 + 24:byte] = (byte) r0");
+                "1|L--|Mem0[r1 + 24<i32>:byte] = (byte) r0");
         }
 
         [Test]
@@ -541,7 +540,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x8809002a,	//lbz     r0,42(r9)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = (word32) Mem0[r9 + 42:byte]");
+                "1|L--|r0 = (word32) Mem0[r9 + 42<i32>:byte]");
         }
 
         [Test]
@@ -549,7 +548,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x4cc63182, // crclr   4*cr1+eq	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__crxor(0x06, 0x06, 0x06)");
+                "1|L--|__crxor(6<8>, 6<8>, 6<8>)");
         }
 
         [Test]
@@ -574,16 +573,16 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x60000020, // ori     r0,r0,32	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r0 | 0x00000020");
+                "1|L--|r0 = r0 | 0x20<32>");
         }
 
         [Test]
         public void PPCRw_ori_highbitset()
         {
             Given_PowerPcBe64();
-            AssertCode(0x60008020, // ori     r0,r0,0x8020	
+            AssertCode(0x60008020, // ori     r0,r0,0x8020<16>	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r0 | 0x0000000000008020");
+                "1|L--|r0 = r0 | 0x8020<64>");
         }
 
         [Test]
@@ -591,7 +590,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x54630ffe, // rlwinm r3,r3,1,31,31
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = r3 >>u 0x1F");
+                "1|L--|r3 = r3 >>u 0x1F<8>");
         }
 
         [Test]
@@ -603,11 +602,11 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             AssertCode(0x38a0ffff, // li      r5,-1
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = 0xFFFFFFFF");
+                "1|L--|r5 = 0xFFFFFFFF<32>");
 
             AssertCode(0x575a1838, // rlwinm  r26,r26,3,0,28 
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r26 = r26 << 0x03");
+                "1|L--|r26 = r26 << 3<8>");
 
             AssertCode(0x7c03db96, // divwu   r0,r3,r27
                 "0|L--|00100000(4): 1 instructions",
@@ -619,7 +618,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             AssertCode(0x6fde8000, // xoris   r30,r30,32768
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r30 = r30 ^ 0x80000000");
+                "1|L--|r30 = r30 ^ 0x80000000<32>");
 
             AssertCode(0x7f891800, // cmpw    cr7,r9,r3	
                 "0|L--|00100000(4): 1 instructions",
@@ -627,19 +626,19 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             AssertCode(0xdbe10038, // stfd    f31,56(r1)	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r1 + 56:real64] = f31");
+                "1|L--|Mem0[r1 + 56<i32>:real64] = f31");
 
             AssertCode(0xc00b821c, // lfs     f0,-32228(r11)	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|f0 = (real64) Mem0[r11 + -32228:real32]");
+                "1|L--|f0 = (real64) Mem0[r11 + -32228<i32>:real32]");
 
             AssertCode(0xc8098220, // lfd     f0,-32224(r9)	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|f0 = Mem0[r9 + -32224:real64]");
+                "1|L--|f0 = Mem0[r9 + -32224<i32>:real64]");
 
             AssertCode(0x1f9c008c, // mulli   r28,r28,140	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r28 = r28 * 0x0000008C");
+                "1|L--|r28 = r28 * 0x8C<32>");
 
             AssertCode(0x7c1ed9ae, // stbx    r0,r30,r27	
                 "0|L--|00100000(4): 1 instructions",
@@ -647,15 +646,15 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             AssertCode(0xa001001c, // lhz     r0,28(r1)	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = (word32) Mem0[r1 + 28:word16]");
+                "1|L--|r0 = (word32) Mem0[r1 + 28<i32>:word16]");
 
-            AssertCode(0x409c0ff0, // bge-   cr7,0x00001004	
+            AssertCode(0x409c0ff0, // bge-   cr7,0x00001004<32>	
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|if (Test(GE,cr7)) branch 00100FF0");
 
             AssertCode(0x2b8300ff, // cmplwi  cr7,r3,255	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|cr7 = cond(r3 - 0x000000FF)");
+                "1|L--|cr7 = cond(r3 - 0xFF<32>)");
         }
 
         [Test]
@@ -663,8 +662,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x8D010004, // lbzu
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r8 = (word32) Mem0[r1 + 4:byte]",
-                "2|L--|r1 = r1 + 4");
+                "1|L--|r8 = (word32) Mem0[r1 + 4<i32>:byte]",
+                "2|L--|r1 = r1 + 4<i32>");
         }
 
         [Test]
@@ -672,7 +671,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xB0920004u, // sth
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r18 + 4:word16] = (word16) r4"
+                "1|L--|Mem0[r18 + 4<i32>:word16] = (word16) r4"
                 );
         }
 
@@ -681,7 +680,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x20320100, // subfic
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = 0x00000100 - r18");
+                "1|L--|r1 = 0x100<32> - r18");
         }
 
         [Test]
@@ -689,7 +688,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x74320100, // andis
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r18 = r1 & 0x01000000",
+                "1|L--|r18 = r1 & 0x1000000<32>",
                 "2|L--|cr0 = cond(r18)");
         }
 
@@ -715,7 +714,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x4cc63242, // "creqv\t06,06,06");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__creqv(0x06, 0x06, 0x06)");
+                "1|L--|__creqv(6<8>, 6<8>, 6<8>)");
         }
         //AssertCode(0x4e080000, "mcrf\tcr4,cr2");
 
@@ -750,7 +749,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7ce03897, //"mulhw.\tr7,r0,r7");
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r7 = r0 * r7 >> 0x00000020",
+                "1|L--|r7 = r0 * r7 >> 0x20<32>",
                 "2|L--|cr0 = cond(r7)");
         }
 
@@ -776,7 +775,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7fde0190, // "subfze\tr30,r30");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r30 = 0x00000000 - r30 + xer");
+                "1|L--|r30 = 0<32> - r30 + xer");
         }
 
 
@@ -871,16 +870,17 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0xf8410028, // "std\tr2,40(r1)");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r1 + 40:word64] = r2");
+                "1|L--|Mem0[r1 + 40<i64>:word64] = r2");
         }
 
         [Test]
         public void PPCrw_stdu()
         {
+            Given_PowerPcBe64();
             AssertCode(0xf8410029, //	stdu    r2,40(r1))"
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r1 + 40:word64] = (word64) r2",
-                "2|L--|r1 = r1 + 40");
+                "1|L--|Mem0[r1 + 40<i64>:word64] = r2",
+                "2|L--|r1 = r1 + 40<i64>");
         }
 
         [Test]
@@ -889,25 +889,25 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x790407c0,    // clrldi  r4,r8,31
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r8 & 0x00000001FFFFFFFF");
+                "1|L--|r4 = r8 & 0x1FFFFFFFF<64>");
             AssertCode(0x79040020,    // clrldi  r4,r8,63
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r8 & 0x00000000FFFFFFFF");
+                "1|L--|r4 = r8 & 0xFFFFFFFF<64>");
             AssertCode(0x78840fe2, // rldicl  r4,r4,33,63	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r4 << 0x21 & 0x0000000000000001");
+                "1|L--|r4 = r4 << 0x21<8> & 1<64>");
             AssertCode(0x7863AB02,   // rldicl	r3,r3,35,0C
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = (word64) SLICE(r3, word52, 62)");
             AssertCode(0x7863e102, //"rldicl\tr3,r3,3C,04");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = r3 >>u 0x04");
+                "1|L--|r3 = r3 >>u 4<8>");
             AssertCode(0x790407c0, //"rldicl\tr4,r8,00,1F");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r8 & 0x00000001FFFFFFFF");
+                "1|L--|r4 = r8 & 0x1FFFFFFFF<64>");
             AssertCode(0x790407E0, //"rldicl\tr4,r8,00,3F");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r8 & 0x0000000000000001");
+                "1|L--|r4 = r8 & 1<64>");
         }
 
         [Test]
@@ -916,7 +916,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x79290040,              // rldicl	r9,r9,00,01
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = r9 & 0x7FFFFFFFFFFFFFFF");
+                "1|L--|r9 = r9 & 0x7FFFFFFFFFFFFFFF<64>");
         }
 
         [Test]
@@ -925,7 +925,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x798C0F86, // rldicr\tr12,r12,33,30
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r12 = r12 << 0x21");
+                "1|L--|r12 = r12 << 0x21<8>");
         }
 
         [Test]
@@ -934,7 +934,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x798CCFE6,              // rldicr	r12,r12,39,3F
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r12 = __rol(r12, 0x39)");
+                "1|L--|r12 = __rol(r12, 0x39<8>)");
         }
 
         [Test]
@@ -950,7 +950,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xd0010208, //stfs    f0,520(r1)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r1 + 520:real32] = (real32) f0");
+                "1|L--|Mem0[r1 + 520<i32>:real32] = (real32) f0");
         }
 
         [Test]
@@ -1000,7 +1000,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_Xenon();
             AssertCode(0x10601a8c, // vspltw\tv3,v3,00");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v3 = __vspltw(v3, 0x00000000)");
+                "1|L--|v3 = __vspltw(v3, 0<32>)");
         }
 
         [Test]
@@ -1009,7 +1009,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_Xenon();
             AssertCode(0x100004c4, ///vxor\tv0,v0,v0");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v0 = 0x0000000000000000");
+                "1|L--|v0 = 0<128>");
             AssertCode(0x100404c4, ///vxor\tv0,v4,v0");
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v0 = v4 ^ v0");
@@ -1068,7 +1068,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7c0bfe76, //sradi\tr11,r0,3F");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r11 = r0 >> 0x0000003F");
+                "1|L--|r11 = r0 >> 0x3F<32>");
         }
 
         [Test]
@@ -1090,10 +1090,10 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_regression_3()
         {
-            AssertCode(0x4200fff8, // bdnz+   0xfffffffffffffff8	
+            AssertCode(0x4200fff8, // bdnz+   0xfffffffffffffff8<64>	
                         "0|T--|00100000(4): 2 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr != 0x00000000) branch 000FFFF8");
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr != 0<32>) branch 000FFFF8");
             AssertCode(0x7cc73378, // mr      r7,r6	
                         "0|L--|00100000(4): 1 instructions",
                         "1|L--|r7 = r6");
@@ -1107,45 +1107,45 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x4000fef8, //"bdnzf\tlt,$000FFEF8");
                         "0|T--|00100000(4): 2 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr != 0x00000000 && Test(GE,cr0)) branch 000FFEF8");
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr != 0<32> && Test(GE,cr0)) branch 000FFEF8");
             AssertCode(0x4040fef8, //"bdzf\tlt,$000FFEF8");
                         "0|T--|00100000(4): 2 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr == 0x00000000 && Test(GE,cr0)) branch 000FFEF8");
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr == 0<32> && Test(GE,cr0)) branch 000FFEF8");
             AssertCode(0x4080fef8, //"bge\t$000FFEF8");
                         "0|T--|00100000(4): 1 instructions",
                         "1|T--|if (Test(GE,cr0)) branch 000FFEF8");
             AssertCode(0x4100fef8, //"bdnzt\tlt,$000FFEF8");
                         "0|T--|00100000(4): 2 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr != 0x00000000 && Test(LT,cr0)) branch 000FFEF8");
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr != 0<32> && Test(LT,cr0)) branch 000FFEF8");
             AssertCode(0x4180fef8, //"blt\t$000FFEF8");
                         "0|T--|00100000(4): 1 instructions",
                         "1|T--|if (Test(LT,cr0)) branch 000FFEF8");
             AssertCode(0x4200fef8, //"bdnz\t$000FFEF8");
                         "0|T--|00100000(4): 2 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr != 0x00000000) branch 000FFEF8");
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr != 0<32>) branch 000FFEF8");
             AssertCode(0x4220fef9, //"bdnzl\t$000FFEF8");
                         "0|T--|00100000(4): 3 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr == 0x00000000) branch 00100004",
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr == 0<32>) branch 00100004",
                         "3|T--|call 000FFEF8 (0)");
             AssertCode(0x4240fef8, //"bdz\t$000FFEF8");
                         "0|T--|00100000(4): 2 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr == 0x00000000) branch 000FFEF8");
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr == 0<32>) branch 000FFEF8");
             AssertCode(0x4260fef9, //"bdzl\t$000FFEF8");
                         "0|T--|00100000(4): 3 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr != 0x00000000) branch 00100004",
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr != 0<32>) branch 00100004",
                         "3|T--|call 000FFEF8 (0)");
-            //AssertCode(0x4280fef8//, "bc+    20,lt,0xffffffffffffff24	 ");
+            //AssertCode(0x4280fef8<32>//, "bc+    20,lt,0xffffffffffffff24<64>	 ");
             AssertCode(0x4300fef8, //"bdnz\t$000FFEF8");
                         "0|T--|00100000(4): 2 instructions",
-                        "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr != 0x00000000) branch 000FFEF8");
+                        "1|L--|ctr = ctr - 1<32>",
+                        "2|T--|if (ctr != 0<32>) branch 000FFEF8");
         }
 
         [Test]
@@ -1209,8 +1209,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0x41700000,   // bdzt	cr4+lt,$803CDB28
                 "0|T--|00100000(4): 2 instructions",
-                "1|L--|ctr = ctr - 0x00000001",
-                "2|T--|if (ctr == 0x00000000 && Test(LT,cr4)) branch 00100000");
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr == 0<32> && Test(LT,cr4)) branch 00100000");
         }
 
         [Test]
@@ -1219,8 +1219,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0x40490FDB,   // bdzfl	cr2+gt,$00000FD8
                 "0|T--|00100000(4): 3 instructions",
-                "1|L--|ctr = ctr - 0x00000001",
-                "2|T--|if (ctr != 0x00000000 || Test(GT,cr2)) branch 00100004",
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr != 0<32> || Test(GT,cr2)) branch 00100004",
                 "3|T--|call 00000FD8 (0)");
         }
 
@@ -1230,8 +1230,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0x412F6C6F,   // bdnztl	cr3+so,$00006C6C
                 "0|T--|00100000(4): 3 instructions",
-                "1|L--|ctr = ctr - 0x00000001",
-                "2|T--|if (ctr == 0x00000000 || Test(NO,cr3)) branch 00100004",
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr == 0<32> || Test(NO,cr3)) branch 00100004",
                 "3|T--|call 00006C6C (0)");
         }
         [Test]
@@ -1240,8 +1240,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0x41747461,   // bdztl	cr5+lt,$80273FB0
                 "0|T--|00100000(4): 3 instructions",
-                "1|L--|ctr = ctr - 0x00000001",
-                "2|T--|if (ctr != 0x00000000 || Test(GE,cr5)) branch 00100004",
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr != 0<32> || Test(GE,cr5)) branch 00100004",
                 "3|T--|call 00107460 (0)");
         }
 
@@ -1256,7 +1256,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_Muxx()
         {
-            AssertCode(0x7c6b040e, // .long 0x7c6b040e	
+            AssertCode(0x7c6b040e, // .long 0x7c6b040e<32>	
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = __lvlx(r11, r0)");
         }
@@ -1267,7 +1267,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_Xenon();
             AssertCode(0x10601a8c, // vspltw  v3,v3,0	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v3 = __vspltw(v3, 0x00000000)");
+                "1|L--|v3 = __vspltw(v3, 0<32>)");
         }
 
         [Test]
@@ -1299,7 +1299,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                           "1|L--|v5 = __vmaddfp(v9, v9, v8)");
             AssertCode(0x10200a8c, //"vspltw\tv1,v1,0");
                           "0|L--|00100000(4): 1 instructions",
-                          "1|L--|v1 = __vspltw(v1, 0x00000000)");
+                          "1|L--|v1 = __vspltw(v1, 0<32>)");
             AssertCode(0x1160094a, //"vrsqrtefp\tv11,v1");
                           "0|L--|00100000(4): 1 instructions",
                           "1|L--|v11 = __vrsqrtefp(v1)");
@@ -1311,10 +1311,10 @@ namespace Reko.UnitTests.Arch.PowerPC
                           "1|L--|v11 = __vsel(v11, v1, v12)");
             AssertCode(0x1000002c, //"vsldoi\tv0,v0,v0,0");
                           "0|L--|00100000(4): 1 instructions",
-                          "1|L--|v0 = __vsldoi(v0, v0, 0x00000000)");
+                          "1|L--|v0 = __vsldoi(v0, v0, 0<32>)");
             AssertCode(0x101f038c, //"vspltisw\tv0,140");
                           "0|L--|00100000(4): 1 instructions",
-                          "1|L--|v0 = __vspltisw(0xFFFFFFFF)");
+                          "1|L--|v0 = __vspltisw(0xFFFFFFFF<32>)");
             AssertCode(0x114948ab, //"vperm\tv10,v9,v9,v2");
                           "0|L--|00100000(4): 1 instructions",
                           "1|L--|v10 = __vperm(v9, v9, v2)");
@@ -1370,10 +1370,10 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|L--|__stvewx(v0, r8)");
             AssertCode(0x118063ca, //"vctsxs\tv12,v12,00");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v12 = __vctsxs(v12, 0x00000000)");
+                "1|L--|v12 = __vctsxs(v12, 0<32>)");
             AssertCode(0x1020634a, //"vcfsx\tv1,v12,00");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v1 = __vcfsx(v12, 0x00000000)");
+                "1|L--|v1 = __vcfsx(v12, 0<32>)");
             AssertCode(0x118c0404, //"vand\tv12,v12,v0");
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v12 = v12 & v0");
@@ -1411,7 +1411,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xfdfe058e, //"mtfsf\tFF,f0");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__mtfsf(f0, 0xFF)");
+                "1|L--|__mtfsf(f0, 0xFF<8>)");
         }
 
         [Test]
@@ -1453,7 +1453,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7D0301D4,  // "addme\tr8,r3,r0");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = r3 + cr0 - 0xFFFFFFFF");
+                "1|L--|r8 = r3 + cr0 - 0xFFFFFFFF<32>");
         }
 
         [Test]
@@ -1461,8 +1461,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xAD49FFFE, // lhau r10,-2(r9)
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r10 = (int32) Mem0[r9 + -2:int16]",
-                "2|L--|r10 = r9 + -2");
+                "1|L--|r10 = (int32) Mem0[r9 + -2<i32>:int16]",
+                "2|L--|r10 = r9 + -2<i32>");
         }
 
         [Test]
@@ -1470,7 +1470,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x4FDCE042, // crnor 1E,1C,1C
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__crnor(0x1E, 0x1C, 0x1C)");
+                "1|L--|__crnor(0x1E<8>, 0x1C<8>, 0x1C<8>)");
         }
 
 
@@ -1479,7 +1479,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7C7A03A6, // mtspr 0000340, r3
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__write_spr(0x0000001A, r3)");
+                "1|L--|__write_spr(0x1A<32>, r3)");
         }
 
         [Test]
@@ -1488,9 +1488,9 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0xBFC10008, // stmw r30,8(r1)
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|Mem0[v3:word32] = r30",
-                "2|L--|v3 = v3 + 4",
+                "2|L--|v3 = v3 + 4<i32>",
                 "3|L--|Mem0[v3:word32] = r31",
-                "4|L--|v3 = v3 + 4");
+                "4|L--|v3 = v3 + 4<i32>");
         }
 
         [Test]
@@ -1532,13 +1532,13 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xBBA1000C, // lmwr29,12(r1)
                 "0|L--|00100000(4): 7 instructions",
-                "1|L--|v3 = r1 + 12",
+                "1|L--|v3 = r1 + 12<i32>",
                 "2|L--|r29 = Mem0[v3:word32]",
-                "3|L--|v3 = v3 + 4",
+                "3|L--|v3 = v3 + 4<i32>",
                 "4|L--|r30 = Mem0[v3:word32]",
-                "5|L--|v3 = v3 + 4",
+                "5|L--|v3 = v3 + 4<i32>",
                 "6|L--|r31 = Mem0[v3:word32]",
-                "7|L--|v3 = v3 + 4");
+                "7|L--|v3 = v3 + 4<i32>");
         }
 
         [Test]
@@ -1546,7 +1546,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7CB0E2A6, // mfspr 0000021C,r5
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = __read_spr(0x00000390)");
+                "1|L--|r5 = __read_spr(0x390<32>)");
         }
 
         [Test]
@@ -1563,7 +1563,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0xE0030000,   // lq	r0,0(r3)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0_r1 = Mem0[r3 + 0:word128]");
+                "1|L--|r0_r1 = Mem0[r3 + 0<i64>:word128]");
         }
 
         [Test]
@@ -1652,8 +1652,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xDC0B0010,   // stfdu	f0,16(r11)
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r11 + 16:real64] = f0",
-                "2|L--|r11 = r11 + 16");
+                "1|L--|Mem0[r11 + 16<i32>:real64] = f0",
+                "2|L--|r11 = r11 + 16<i32>");
         }
 
         [Test]
@@ -1661,8 +1661,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xCC0B0010,   // lfdu	f0,16(r11)
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|f0 = Mem0[r11 + 16:real64]",
-                "2|L--|r11 = r11 + 16");
+                "1|L--|f0 = Mem0[r11 + 16<i32>:real64]",
+                "2|L--|r11 = r11 + 16<i32>");
         }
 
         [Test]
@@ -1670,8 +1670,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xC43D0004,   // lfsu	f1,4(r29)
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|f1 = (real64) Mem0[r29 + 4:real32]",
-                "2|L--|r29 = r29 + 4");
+                "1|L--|f1 = (real64) Mem0[r29 + 4<i32>:real32]",
+                "2|L--|r29 = r29 + 4<i32>");
         }
 
         [Test]
@@ -1711,7 +1711,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x0CCA0000,   // twi	06,r10,+0000
                 "0|L--|00100000(4): 2 instructions",
-                "1|T--|if (r10 >u 0x00000000) branch 00100004",
+                "1|T--|if (r10 >u 0<32>) branch 00100004",
                 "2|L--|__trap()");
         }
 
@@ -1745,8 +1745,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xD41C0010,   // stfsu	f0,16(r28)
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r28 + 16:real32] = (real32) f0",
-                "2|L--|r28 = r28 + 16");
+                "1|L--|Mem0[r28 + 16<i32>:real32] = (real32) f0",
+                "2|L--|r28 = r28 + 16<i32>");
         }
 
         [Test]
@@ -2073,7 +2073,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x1923CF31,   // vspltw128	v9,v57,03
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v9 = __vspltw(v57, 0x00000003)");
+                "1|L--|v9 = __vspltw(v57, 3<32>)");
         }
 
         [Test]
@@ -2167,7 +2167,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x1B24DFF5,   // vupkd3d128	v57,v59,04
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v57 = __vupkd3d(v59, 0x00000004)");
+                "1|L--|v57 = __vupkd3d(v59, 4<32>)");
         }
 
         [Test]
@@ -2175,7 +2175,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x19ACFF91,   // vrlimi128	v13,v63,0C,03
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v13 = __vrlimi(v63, 0x0000000C, 0x00000003)");
+                "1|L--|v13 = __vrlimi(v63, 0xC<32>, 3<32>)");
         }
 
         [Test]
@@ -2184,7 +2184,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x08C40000,   // tdi	06,r4,+0000
                 "0|L--|00100000(4): 2 instructions",
-                "1|T--|if (r4 >u 0x0000000000000000) branch 00100004",
+                "1|T--|if (r4 >u 0<64>) branch 00100004",
                 "2|L--|__trap()");
         }
 
@@ -2203,7 +2203,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_Xenon();
             AssertCode(0x1AC0FA35,   // vcfpsxws128	v54,v63,+0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v54 = __vcfpsxws(v63, 0x00000000)");
+                "1|L--|v54 = __vcfpsxws(v63, 0<32>)");
         }
 
         [Test]
@@ -2230,7 +2230,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_Xenon();
             AssertCode(0x1801F2B1,   // vcsxwfp128	v0,v62,01
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v0 = __vcsxwfp(v62, 0x00000001)");
+                "1|L--|v0 = __vcsxwfp(v62, 1<32>)");
         }
 
         [Test]
@@ -2310,7 +2310,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_Xenon();
             AssertCode(0x1BEDFED7,   // vpkd3d128	v63,v127,03,01,03
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v63 = __vpkd3d(v127, 0x00000003, 0x00000001, 0x00000003)");
+                "1|L--|v63 = __vpkd3d(v127, 3<32>, 1<32>, 3<32>)");
         }
 
         [Test]
@@ -2374,8 +2374,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0xF3E10038,   // psq_st	f31,r1,+00000038,01,07
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v3 = f31",
-                "2|L--|v4 = __pack_quantized(v3, 0x00000001, 0x00000007)",
-                "3|L--|Mem0[r1 + 56:word64] = v4");
+                "2|L--|v4 = __pack_quantized(v3, 1<32>, 7<32>)",
+                "3|L--|Mem0[r1 + 56<i32>:word64] = v4");
         }
 
         [Test]
@@ -2385,7 +2385,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x11C0180E,   // psq_stx	f14,r0,r3,00,07
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v3 = f14",
-                "2|L--|v4 = __pack_quantized(v3, 0x00000000, 0x00000007)",
+                "2|L--|v4 = __pack_quantized(v3, 0<32>, 7<32>)",
                 "3|L--|Mem0[r3:word64] = v4");
         }
 
@@ -2405,8 +2405,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0xE3E10028,   // psq_l	f31,r1,+00000028,01,07
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = Mem0[r1 + 40:word64]",
-                "2|L--|v4 = __unpack_quantized(v3, 0x01, 0x07)",
+                "1|L--|v3 = Mem0[r1 + 40<i32>:word64]",
+                "2|L--|v4 = __unpack_quantized(v3, 1<8>, 7<8>)",
                 "3|L--|f31 = v4");
         }
 
@@ -2417,7 +2417,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x1009000C,   // psq_lx	f0,r9,r0,00,00
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v3 = Mem0[r9:word64]",
-                "2|L--|v4 = __unpack_quantized(v3, 0x00, 0x00)",
+                "2|L--|v4 = __unpack_quantized(v3, 0<8>, 0<8>)",
                 "3|L--|f0 = v4");
         }
 
@@ -2428,7 +2428,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x10245F4C,   // psq_lux	f1,r4,r11,01,00
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v4 = Mem0[r4 + r11:word64]",
-                "2|L--|v5 = __unpack_quantized(v4, 0x01, 0x00)",
+                "2|L--|v5 = __unpack_quantized(v4, 1<8>, 0<8>)",
                 "3|L--|f1 = v5",
                 "4|L--|r4 = r4 + r11");
         }
@@ -2453,7 +2453,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "2|L--|v6 = f16",
                 "3|L--|v7 = __ps_add(v5, v6)",
                 "4|L--|f13 = v7",
-                "5|L--|cr1 = cond(f13[0])");
+                "5|L--|cr1 = cond(f13[0<i32>])");
         }
 
         [Test]
@@ -2544,7 +2544,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "3|L--|v8 = f16",
                 "4|L--|v9 = __ps_madds0(v6, v7, v8)",
                 "5|L--|f1 = v9",
-                "6|L--|cr1 = cond(f1[0])");
+                "6|L--|cr1 = cond(f1[0<i32>])");
         }
 
         [Test]
@@ -2558,7 +2558,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "3|L--|v8 = f0",
                 "4|L--|v9 = __ps_madds1(v6, v7, v8)",
                 "5|L--|f16 = v9",
-                "6|L--|cr1 = cond(f16[0])");
+                "6|L--|cr1 = cond(f16[0<i32>])");
         }
 
         [Test]

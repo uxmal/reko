@@ -51,7 +51,7 @@ namespace Reko.Arch.Rl78
                 return;
             case ImmediateOperand imm:
                 var sbImm = new StringBuilder("#");
-                var sImm = imm.Value.ToString();
+                var sImm = imm.Value.ToUInt32().ToString("X");
                 writer.WriteString(sImm);
                 return;
             case MemoryOperand mem:

@@ -126,17 +126,17 @@ fn00100000_entry:
 	a7 = fp
 	// succ:  l00100000
 l00100000:
-	a7 = a7 - 4
+	a7 = a7 - 4<i32>
 	v4 = d0
 	Mem0[a7:word32] = v4
 	CVZN = cond(v4)
-	d0 = 0x00000000
+	d0 = 0<32>
 	Z = true
 	C = false
 	N = false
 	V = false
 	v10 = Mem0[a7:word32]
-	a7 = a7 + 4
+	a7 = a7 + 4<i32>
 	d0 = v10
 	CVZN = cond(d0)
 	return
@@ -180,22 +180,22 @@ fn00001020_entry:
 	a7 = fp
 	// succ:  l00001020
 l00001020:
-	a0 = 0x00003E94
-	d0 = 0x00000030
+	a0 = 0x00003E94<p32>
+	d0 = 0x30<32>
 	CVZN = cond(d0)
-	d0 = d0 + 0x00000003
+	d0 = d0 + 3<32>
 	CVZNX = cond(d0)
-	d0 = d0 >>u 0x00000002
+	d0 = d0 >>u 2<32>
 	CVZNX = cond(d0)
 	// succ:  l00001030
 l00001030:
-	Mem0[a0:word32] = 0x00000000
-	a0 = a0 + 4
+	Mem0[a0:word32] = 0<32>
+	a0 = a0 + 4<i32>
 	Z = true
 	C = false
 	N = false
 	V = false
-	d0 = d0 - 0x00000001
+	d0 = d0 - 1<32>
 	CVZNX = cond(d0)
 	branch Test(NE,Z) l00001030
 	// succ:  l00001036 l00001030

@@ -14,10 +14,10 @@
 define fn10000000
 fn10000000_entry:
 	esp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l10000000
 l10000000:
-	esp = esp - 0x0000000C
+	esp = esp - 0xC<32>
 	SCZO = cond(esp)
 	eax = eax ^ eax
 	SZO = cond(eax)
@@ -25,25 +25,25 @@ l10000000:
 	ecx = ecx ^ ecx
 	SZO = cond(ecx)
 	C = false
-	Mem0[esp:word32] = 0x00000001
-	Mem0[esp + 0x00000004:word32] = 0x00000002
-	Mem0[esp + 0x00000008:word32] = 0x00000003
+	Mem0[esp:word32] = 1<32>
+	Mem0[esp + 4<32>:word32] = 2<32>
+	Mem0[esp + 8<32>:word32] = 3<32>
 	goto l10000027
 	// succ:  l10000027
 l10000023:
-	eax = eax + Mem0[esp + ecx * 0x00000004:word32]
+	eax = eax + Mem0[esp + ecx * 4<32>:word32]
 	SCZO = cond(eax)
-	ecx = ecx + 0x00000001
+	ecx = ecx + 1<32>
 	SZO = cond(ecx)
 	// succ:  l10000027
 l10000027:
-	SCZO = cond(ecx - 0x00000003)
+	SCZO = cond(ecx - 3<32>)
 	branch Test(LE,SZO) l10000023
 	// succ:  l1000002C l10000023
 l1000002C:
-	edi = Mem0[esp + 0x00000010:word32]
+	edi = Mem0[esp + 0x10<32>:word32]
 	Mem0[edi:word32] = eax
-	esp = esp + 0x0000000C
+	esp = esp + 0xC<32>
 	SCZO = cond(esp)
 	return
 	// succ:  fn10000000_exit

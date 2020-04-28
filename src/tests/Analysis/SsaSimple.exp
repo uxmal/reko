@@ -5,21 +5,21 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: bp_4 = sp_2
 Top_3: orig: Top
-    def:  Top_3 = 0
+    def:  Top_3 = 0<i8>
     uses: use Top_3
 bp_4: orig: bp
     def:  bp_4 = sp_2
-    uses: ax_7 = Mem0[ss:bp_4 + 0x0006:word16]
+    uses: ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
           sp_14 = bp_4
           use bp_4
 ss:ss
     def:  def ss
-    uses: ax_7 = Mem0[ss:bp_4 + 0x0006:word16]
+    uses: ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
 Mem0:Mem
     def:  def Mem0
-    uses: ax_7 = Mem0[ss:bp_4 + 0x0006:word16]
+    uses: ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
 ax_7: orig: ax
-    def:  ax_7 = Mem0[ss:bp_4 + 0x0006:word16]
+    def:  ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
     uses: ax_8 = ax_7 | ax_7
           ax_8 = ax_7 | ax_7
 ax_8: orig: ax
@@ -39,7 +39,7 @@ Z_11: orig: Z
     uses: branch Test(NE,Z_11) l0C00_000C
           use Z_11
 ax_12: orig: ax
-    def:  ax_12 = 0xFFFF
+    def:  ax_12 = 0xFFFF<16>
     uses: ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
 ax_15: orig: ax
     def:  ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
@@ -61,11 +61,11 @@ fn0C00_0000_entry:
 	def ss
 	def Mem0
 	sp_2 = fp
-	Top_3 = 0
+	Top_3 = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
 	bp_4 = sp_2
-	ax_7 = Mem0[ss:bp_4 + 0x0006:word16]
+	ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
 	ax_8 = ax_7 | ax_7
 	SZO_9 = cond(ax_8)
 	Z_11 = SLICE(SZO_9, bool, 2) (alias)
@@ -75,7 +75,7 @@ l0C00_0000:
 	branch Test(NE,Z_11) l0C00_000C
 	// succ:  l0C00_0009 l0C00_000C
 l0C00_0009:
-	ax_12 = 0xFFFF
+	ax_12 = 0xFFFF<16>
 	// succ:  l0C00_000C
 l0C00_000C:
 	ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))

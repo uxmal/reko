@@ -48,9 +48,7 @@ namespace Reko.Core.Output
         {
             //@"define void @empty() {
             var arch = procedure.Architecture;
-            var w = arch.WordWidth.BitSize;
-            var p = arch.PointerType.BitSize;
-            var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(this.w), w, p));
+            var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(this.w)));
             pd.WriteProcedureBlocks();
         }
     }

@@ -42,7 +42,7 @@ namespace Reko.Arch.PowerPC
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteString(string.Format("{0}({1})", Offset, BaseRegister));
+            writer.WriteString(string.Format("{0}({1})", Offset.ToInt32(), BaseRegister));
         }
     }
 }

@@ -35,10 +35,8 @@ namespace Reko.Gui
 
         public HtmlCodeFormatter(
             TextWriter writer, 
-            IDictionary<Address, Procedure> procedureMap,
-            int wordBitSize,
-            int ptrBitSize)
-            : base(new HtmlFormatter(writer), wordBitSize, ptrBitSize)
+            IDictionary<Address, Procedure> procedureMap)
+            : base(new HtmlFormatter(writer))
         {
             this.formatter = (HtmlFormatter)InnerFormatter;
             this.formatter.Terminator = "<br />" + Environment.NewLine;

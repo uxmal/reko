@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.X86
 				Registers.bx,
 				Constant.Int32(32));
 			var e = orw.CreateMemoryAccess(instr, m, state);
-			Assert.AreEqual("Mem0[ds:bx + 0x0020:byte]", e.ToString());
+			Assert.AreEqual("Mem0[ds:bx + 0x20<16>:byte]", e.ToString());
 		}
 	}
 }

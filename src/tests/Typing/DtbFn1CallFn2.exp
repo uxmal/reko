@@ -15,7 +15,7 @@ word32 Fn2(word32 arg1)
 Fn2_entry:
 	// succ:  l1
 l1:
-	r1 = arg1 + 0x00000001
+	r1 = arg1 + 1<32>
 	return r1
 	// succ:  Fn2_exit
 Fn2_exit:
@@ -34,9 +34,9 @@ Eq_6: word32
 	T_7 (in loc2 : word32)
 Eq_8: word32
 	T_8 (in r1 : word32)
-	T_10 (in arg1 + 0x00000001 : word32)
+	T_10 (in arg1 + 1<32> : word32)
 Eq_9: word32
-	T_9 (in 0x00000001 : word32)
+	T_9 (in 1<32> : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -70,11 +70,11 @@ T_8: (in r1 : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in 0x00000001 : word32)
+T_9: (in 1<32> : word32)
   Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_10: (in arg1 + 0x00000001 : word32)
+T_10: (in arg1 + 1<32> : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32

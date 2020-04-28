@@ -348,13 +348,13 @@ void ProcedureBuilder(word16 cx, word16 ds)
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	segptr32 es_bx_2 = Mem0[ds:0x0100:word32]
+	segptr32 es_bx_2 = Mem0[ds:0x0100<16>:word32]
 	// succ:  mHead
 mHead:
 	Mem8[es_bx_2:byte] = 0x00
-	es_bx_4 = es_bx_4 + 0x0001
-	cx = cx - 0x0001
-	branch cx != 0x0000 mHead
+	es_bx_4 = es_bx_4 + 0x0001<16>
+	cx = cx - 0x0001<16>
+	branch cx != 0x0000<16> mHead
 	// succ:  mReturn mHead
 mReturn:
 	return

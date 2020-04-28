@@ -201,9 +201,7 @@ namespace Reko.Core
 
         public CodeFormatter CreateCodeFormatter(Formatter formatter)
         {
-            var w = Architecture.WordWidth.BitSize;
-            var p = Architecture.PointerType.BitSize;
-            return new CodeFormatter(formatter, w, p);
+            return new CodeFormatter(formatter);
         }
 
         public void WriteGraph(TextWriter writer)

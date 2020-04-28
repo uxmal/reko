@@ -65,7 +65,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
                 .WriteLeUInt32(0x00123400)
                 .WriteLeUInt32(0x00123400)
                 .WriteLeUInt32(0x00123400)
-                .WriteLeUInt32(0x00001036)  // Points 6 bytes into PLT stub at 0x1030
+                .WriteLeUInt32(0x00001036)  // Points 6 bytes into PLT stub at 0x1030<16>
                 .WriteLeUInt32(0x00123400)
                 .WriteLeUInt32(0x00123400)
                 .WriteLeUInt32(0x00123400);

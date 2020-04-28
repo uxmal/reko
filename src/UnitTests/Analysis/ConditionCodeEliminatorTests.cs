@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Analysis
                 fstsw   ax
                 test    bl,ah
                 jz      done
-                mov     byte ptr [0x0300],1
+                mov     byte ptr [0x0300<16>],1
 done:
                 ret
 ");
@@ -344,7 +344,7 @@ done:
 
             Given_ConditionCodeEliminator();
 			cce.Transform();
-			Assert.AreEqual("branch r == 0x00000000 foo", stmBr.Instruction.ToString());
+			Assert.AreEqual("branch r == 0<32> foo", stmBr.Instruction.ToString());
 		}
 
 		[Test]
@@ -363,7 +363,7 @@ done:
 
             Given_ConditionCodeEliminator();
 			cce.Transform();
-			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
+			Assert.AreEqual("f = r != 0<32>", stmF.Instruction.ToString());
 		}
 
         [Test]
@@ -399,7 +399,7 @@ done:
                 new Identifier("a", w16, null),
                 new Identifier("b", w16, null));
             var b = (BinaryExpression)cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
-            Assert.AreEqual("a + b < 0x0000", b.ToString());
+            Assert.AreEqual("a + b < 0<16>", b.ToString());
             Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
         }
 
@@ -506,14 +506,14 @@ done:
             #region Expected
 @"r2:r2
     def:  def r2
-    uses: Mem5[0x00123400:word32] = r2
-          branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
-          branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
+    uses: Mem5[0x00123400<p32>:word32] = r2
+          branch r2 >u 7<32> || r2 <u 2<32> mElse
+          branch r2 >u 7<32> || r2 <u 2<32> mElse
 r1_2: orig: r1
 SCZ_3: orig: SCZ
 CZ_4: orig: CZ
 Mem5: orig: Mem0
-    def:  Mem5[0x00123400:word32] = r2
+    def:  Mem5[0x00123400<p32>:word32] = r2
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -521,10 +521,10 @@ ProcedureBuilder_entry:
 	def r2
 	// succ:  l1
 l1:
-	branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
+	branch r2 >u 7<32> || r2 <u 2<32> mElse
 	// succ:  mDo mElse
 mDo:
-	Mem5[0x00123400:word32] = r2
+	Mem5[0x00123400<p32>:word32] = r2
 	// succ:  mElse
 mElse:
 	return
@@ -546,7 +546,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
-                m.MStore(m.Word32(0x00123400), r2);
+                m.MStore(m.Ptr32(0x00123400), r2);
 
                 m.Label("mElse");
                 m.Return();
@@ -583,7 +583,7 @@ ProcedureBuilder_exit:
             Given_ConditionCodeEliminator();
             cce.Transform();
 
-            Assert.AreEqual("branch r1 <=u 0x00000000 yay", block.Statements.Last.Instruction.ToString());
+            Assert.AreEqual("branch r1 <=u 0<32> yay", block.Statements.Last.Instruction.ToString());
         }
 
         [Test]
@@ -594,13 +594,13 @@ ProcedureBuilder_exit:
             #region Expected
 @"rax:rax
     def:  def rax
-    uses: branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
-          branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
+    uses: branch rax >u 0x1FFFFFFFFFFFFFFF<64> || rax <u 1<64> mElse
+          branch rax >u 0x1FFFFFFFFFFFFFFF<64> || rax <u 1<64> mElse
 rdx_2: orig: rdx
 rax_3: orig: rax
 CZ_4: orig: CZ
 Mem5: orig: Mem0
-    def:  Mem5[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
+    def:  Mem5[0x00123400<p32>:word64] = 0x1FFFFFFFFFFFFFFE<64>
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -608,10 +608,10 @@ ProcedureBuilder_entry:
 	def rax
 	// succ:  l1
 l1:
-	branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
+	branch rax >u 0x1FFFFFFFFFFFFFFF<64> || rax <u 1<64> mElse
 	// succ:  mDo mElse
 mDo:
-	Mem5[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
+	Mem5[0x00123400<p32>:word64] = 0x1FFFFFFFFFFFFFFE<64>
 	// succ:  mElse
 mElse:
 	return
@@ -633,7 +633,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
-                m.MStore(m.Word32(0x00123400), rax);
+                m.MStore(m.Ptr32(0x00123400), rax);
 
                 m.Label("mElse");
                 m.Return();
@@ -650,7 +650,7 @@ ProcedureBuilder_exit:
 sp_2: orig: sp
 h_3: orig: h
     def:  h_3 = PHI((h, l1), (h_10, m1Loop))
-    uses: v13_27 = SEQ(h_3, l_11) >>u 0x01
+    uses: v13_27 = SEQ(h_3, l_11) >>u 1<8>
 a_4: orig: a
 a_5: orig: a
 SZC_6: orig: SZC
@@ -658,35 +658,35 @@ C_7: orig: C
 a_8: orig: a
     def:  a_8 = SLICE(v13_27, byte, 8)
     uses: h_10 = a_8
-          Mem21[0x00001001:byte] = a_8
+          Mem21[0x1001<32>:byte] = a_8
 h_10: orig: h
     def:  h_10 = a_8
     uses: h_3 = PHI((h, l1), (h_10, m1Loop))
 l_11: orig: l
     def:  l_11 = PHI((l, l1), (l_15, m1Loop))
-    uses: v13_27 = SEQ(h_3, l_11) >>u 0x01
+    uses: v13_27 = SEQ(h_3, l_11) >>u 1<8>
 a_12: orig: a
 a_13: orig: a
     def:  a_13 = (byte) v13_27
     uses: l_15 = a_13
-          Mem20[0x00001000:byte] = a_13
+          Mem20[0x1000<32>:byte] = a_13
 C_14: orig: C
 l_15: orig: l
     def:  l_15 = a_13
     uses: l_11 = PHI((l, l1), (l_15, m1Loop))
 c_16: orig: c
     def:  c_16 = PHI((c, l1), (c_17, m1Loop))
-    uses: c_17 = c_16 - 0x01
+    uses: c_17 = c_16 - 1<8>
 c_17: orig: c
-    def:  c_17 = c_16 - 0x01
-    uses: branch c_17 != 0x00 m1Loop
+    def:  c_17 = c_16 - 1<8>
+    uses: branch c_17 != 0<8> m1Loop
           c_16 = PHI((c, l1), (c_17, m1Loop))
 SZP_18: orig: SZP
 Z_19: orig: Z
 Mem20: orig: Mem0
-    def:  Mem20[0x00001000:byte] = a_13
+    def:  Mem20[0x1000<32>:byte] = a_13
 Mem21: orig: Mem0
-    def:  Mem21[0x00001001:byte] = a_8
+    def:  Mem21[0x1001<32>:byte] = a_8
 h:h
     def:  def h
     uses: h_3 = PHI((h, l1), (h_10, m1Loop))
@@ -699,7 +699,7 @@ c:c
 v11_25: orig: v11
 v12_26: orig: v12
 v13_27: orig: v13
-    def:  v13_27 = SEQ(h_3, l_11) >>u 0x01
+    def:  v13_27 = SEQ(h_3, l_11) >>u 1<8>
     uses: a_8 = SLICE(v13_27, byte, 8)
           a_13 = (byte) v13_27
 // RorChainFragment
@@ -717,16 +717,16 @@ m1Loop:
 	l_11 = PHI((l, l1), (l_15, m1Loop))
 	h_3 = PHI((h, l1), (h_10, m1Loop))
 	h_10 = a_8
-	v13_27 = SEQ(h_3, l_11) >>u 0x01
+	v13_27 = SEQ(h_3, l_11) >>u 1<8>
 	a_8 = SLICE(v13_27, byte, 8)
 	a_13 = (byte) v13_27
 	l_15 = a_13
-	c_17 = c_16 - 0x01
-	branch c_17 != 0x00 m1Loop
+	c_17 = c_16 - 1<8>
+	branch c_17 != 0<8> m1Loop
 	// succ:  m2Done m1Loop
 m2Done:
-	Mem20[0x00001000:byte] = a_13
-	Mem21[0x00001001:byte] = a_8
+	Mem20[0x1000<32>:byte] = a_13
+	Mem21[0x1001<32>:byte] = a_8
 	return
 	// succ:  RorChainFragment_exit
 RorChainFragment_exit:
@@ -762,10 +762,10 @@ l1:
 	branch !isunordered(rArg0, rArg1) m3Done
 	// succ:  m1isNan m3Done
 m1isNan:
-	return 0x00000000
+	return 0<32>
 	// succ:  ProcedureBuilder_exit
 m3Done:
-	return 0x00000001
+	return 1<32>
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 

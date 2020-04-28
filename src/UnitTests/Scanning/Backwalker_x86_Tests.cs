@@ -448,7 +448,7 @@ namespace Reko.UnitTests.Scanning
             var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             var ret = bw.BackwalkInstructions(Registers.eax, block1);
             Assert.AreEqual("None", bw.Index.ToString());
-            Assert.AreEqual("Mem0[ebp - 0x000000C4:word32]", bw.IndexExpression.ToString());
+            Assert.AreEqual("Mem0[ebp - 0xC4<32>:word32]", bw.IndexExpression.ToString());
             Assert.AreEqual(4, bw.JumpSize);
             Assert.IsTrue(ret);
 

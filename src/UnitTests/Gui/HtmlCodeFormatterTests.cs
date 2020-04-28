@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Gui
         {
             sb = new StringWriter();
             map = new Dictionary<Address,Procedure>();
-            hcf = new HtmlCodeFormatter(sb, map, 32, 32);
+            hcf = new HtmlCodeFormatter(sb, map);
             arch = new Mock<IProcessorArchitecture>();
         }
 

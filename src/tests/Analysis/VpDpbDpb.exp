@@ -8,6 +8,6 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	d32_4 = DPB(d32, Mem0[a32:word16], 0)
-	d32_5 = DPB(d32, Mem0[a32 + 0x00000004:word16], 0)
+	d32_5 = DPB(d32, Mem0[a32 + 4<32>:word16], 0)
 ProcedureBuilder_exit:
 

@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("EB002026");	// ld	(2000),a
             AssertCode(
                 "0|L--|0100(4): 1 instructions",
-                "1|L--|Mem0[0x2000:byte] = a");
+                "1|L--|Mem0[0x2000<p16>:byte] = a");
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|bc = Mem0[sp:word16]",
-                "2|L--|sp = sp + 2");
+                "2|L--|sp = sp + 2<i16>");
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("50");	// push	bc
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|sp = sp - 2",
+                "1|L--|sp = sp - 2<i16>",
                 "2|L--|Mem0[sp:word16] = bc");
         }
 
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("E300404D");    // ld\tiy,(4000)
             AssertCode(
                 "0|L--|0100(4): 2 instructions",
-                "1|L--|v2 = Mem0[0x4000:word16]",
+                "1|L--|v2 = Mem0[0x4000<p16>:word16]",
                 "2|L--|iy = v2");
         }
 
@@ -133,7 +133,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("3F3F3412");	// ldw (3fh),1234h
             AssertCode(
                 "0|L--|0100(4): 1 instructions",
-                "1|L--|Mem0[0xFF3F:word16] = 0x1234");
+                "1|L--|Mem0[0xFF3F<p16>:word16] = 0x1234<16>");
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("6869");    // add A,69h
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|a = a + 0x69",
+                "1|L--|a = a + 0x69<8>",
                 "2|L--|N = false",
                 "3|L--|SZHXVC = cond(a)");
         }
@@ -182,7 +182,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|T--|0100(1): 3 instructions",
                 "1|L--|af = Mem0[sp:word16]",
-                "2|L--|sp = sp + 2",
+                "2|L--|sp = sp + 2<i16>",
                 "3|T--|return (2,0)");
         }
 
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A1");  // rrc
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __ror(a, 0x01)",
+                "1|L--|a = __ror(a, 1<8>)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("FF");  // swi
             AssertCode(
                 "0|T--|0100(1): 3 instructions",
-                "1|L--|sp = sp - 2",
+                "1|L--|sp = sp - 2<i16>",
                 "2|L--|Mem0[sp:word16] = af",
                 "3|T--|call 0100 (2)");
         }
@@ -224,7 +224,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A5");  // sra
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = a >> 1",
+                "1|L--|a = a >> 1<i8>",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -247,8 +247,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("E33412B9");  // set
             AssertCode(
                 "0|L--|0100(4): 2 instructions",
-                "1|L--|v2 = Mem0[0x1234:byte] | 0x02",
-                "2|L--|Mem0[0x1234:byte] = v2");
+                "1|L--|v2 = Mem0[0x1234<p16>:byte] | 2<8>",
+                "2|L--|Mem0[0x1234<p16>:byte] = v2");
         }
 
         [Test]
@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|0100(2): 6 instructions",
                 "1|L--|v4 = Mem0[hl + (int16) a:byte]",
-                "2|L--|v5 = v4 << 1",
+                "2|L--|v5 = v4 << 1<i8>",
                 "3|L--|Mem0[hl + (int16) a:byte] = v5",
                 "4|L--|H = false",
                 "5|L--|N = false",
@@ -288,7 +288,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("82");  // inc
             AssertCode(
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|d = d + 1",
+                "1|L--|d = d + 1<i8>",
                 "2|L--|N = false",
                 "3|L--|SZHXV = cond(d)");
         }
@@ -299,7 +299,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("92");  // inc
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|hl = hl + 1",
+                "1|L--|hl = hl + 1<i16>",
                 "2|L--|X = cond(hl)");
         }
 
@@ -310,7 +310,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|N = true",
-                "2|L--|SZHXV = cond(a - 0x04)");
+                "2|L--|SZHXV = cond(a - 4<8>)");
         }
 
         [Test]
@@ -319,7 +319,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("E4B4");  // res
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|v3 = Mem0[ix:byte] & 0xEF",
+                "1|L--|v3 = Mem0[ix:byte] & 0xEF<8>",
                 "2|L--|Mem0[ix:byte] = v3");
         }
 
@@ -330,9 +330,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|0100(2): 6 instructions",
                 "1|T--|if (!X) branch 0102",
-                "2|L--|v3 = Mem0[0xFF20:byte]",
-                "3|L--|v4 = v3 - 1",
-                "4|L--|Mem0[0xFF20:byte] = v4",
+                "2|L--|v3 = Mem0[0xFF20<p16>:byte]",
+                "3|L--|v4 = v3 - 1<i8>",        //$LIT: 1<8>
+                "4|L--|Mem0[0xFF20<p16>:byte] = v4",
                 "5|L--|N = true",
                 "6|L--|SZHXV = cond(v4)");
         }
@@ -343,9 +343,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("F0F097");  // incw
             AssertCode(
                 "0|L--|0100(3): 5 instructions",
-                "1|L--|v3 = Mem0[ix + -16:word16]",
-                "2|L--|v4 = v3 + 1",
-                "3|L--|Mem0[ix + -16:word16] = v4",
+                "1|L--|v3 = Mem0[ix + -16<i16>:word16]",
+                "2|L--|v4 = v3 + 1<i8>",        //$LIT 1<8>
+                "3|L--|Mem0[ix + -16<i16>:word16] = v4",
                 "4|L--|N = false",
                 "5|L--|SZHXV = cond(v4)");
         }
@@ -367,7 +367,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("F9A9");  // bit
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|Z = (c & 0x02) == 0x00",
+                "1|L--|Z = (c & 2<8>) == 0<8>",
                 "2|L--|N = false",
                 "3|L--|SHXV = cond(c)");
         }
@@ -387,7 +387,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("6B00");  // sbc
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|a = a - 0x00 - C",
+                "1|L--|a = a - 0<8> - C",
                 "2|L--|N = true",
                 "3|L--|SZHXVC = cond(a)");
         }
@@ -400,10 +400,10 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|0100(2): 9 instructions",
                 "1|L--|v2 = Mem0[hl:byte]",
                 "2|L--|Mem0[de:byte] = v2",
-                "3|L--|hl = hl + 1",
-                "4|L--|de = de + 1",
-                "5|L--|bc = bc - 1",
-                "6|T--|if (bc != 0x0000) branch 0100",
+                "3|L--|hl = hl + 1<i16>",
+                "4|L--|de = de + 1<i16>",
+                "5|L--|bc = bc - 1<16>",
+                "6|T--|if (bc != 0<16>) branch 0100",
                 "7|L--|H = false",
                 "8|L--|V = false",
                 "9|L--|N = false");
@@ -416,7 +416,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|T--|0100(3): 3 instructions",
                 "1|T--|if (Test(GT,SZV)) branch 0103",
-                "2|L--|v4 = Mem0[ix + 55:ptr16]",
+                "2|L--|v4 = Mem0[ix + 55<i16>:ptr16]",
                 "3|T--|call v4 (2)");
         }  
         
@@ -426,7 +426,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("F6 24 42");    // ld(sp + 0x24),hl
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|Mem0[sp + 36:word16] = hl");
+                "1|L--|Mem0[sp + 36<i16>:word16] = hl");
         }
 
         [Test]
@@ -467,7 +467,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("65F4");	// xor	a,(FFF4)
             AssertCode(
                 "0|L--|0100(2): 7 instructions",
-                "1|L--|v2 = Mem0[0xFFF4:byte]",
+                "1|L--|v2 = Mem0[0xFFF4<p16>:byte]",
                 "2|L--|a = a ^ v2",
                 "3|L--|H = true",
                 "4|L--|X = false",
@@ -482,8 +482,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("EF2E6979");	// adc	(FF2E),79
             AssertCode(
                 "0|L--|0100(4): 4 instructions",
-                "1|L--|v3 = Mem0[0xFF2E:byte] + 0x79 + C",
-                "2|L--|Mem0[0xFF2E:byte] = v3", 
+                "1|L--|v3 = Mem0[0xFF2E<p16>:byte] + 0x79<8> + C",
+                "2|L--|Mem0[0xFF2E<p16>:byte] = v3", 
                 "3|L--|N = false",
                 "4|L--|SZHXVC = cond(v3)");
         }
@@ -494,7 +494,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("79F4EF");	// adc	hl,EFF4
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
-                "1|L--|hl = hl + 0xEFF4 + C",
+                "1|L--|hl = hl + 0xEFF4<16> + C",
                 "2|L--|N = false",
                 "3|L--|SZHXVC = cond(hl)");
         }
@@ -505,7 +505,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("F8A2");	// rl	b
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|b = __rcl(b, 0x01, C)",
+                "1|L--|b = __rcl(b, 1<8>, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(b)");
@@ -517,7 +517,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A2");	// rl
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __rcl(a, 0x01, C)",
+                "1|L--|a = __rcl(a, 1<8>, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -529,7 +529,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("FCA7");	// srl	h
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|h = h >>u 1",
+                "1|L--|h = h >>u 1<i8>",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(h)");
@@ -541,7 +541,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A7");	// srl
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = a >>u 1",
+                "1|L--|a = a >>u 1<i8>",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -553,7 +553,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("FDA3");	// rr	l
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|l = __rcr(l, 0x01, C)",
+                "1|L--|l = __rcr(l, 1<8>, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(l)");
@@ -565,7 +565,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A3");	// rr
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __rcr(a, 0x01, C)",
+                "1|L--|a = __rcr(a, 1<8>, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -589,8 +589,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("18FE");	// djnz	0100
             AssertCode(
                 "0|T--|0100(2): 2 instructions",
-                "1|L--|b = b - 1",
-                "2|T--|if (b != 0x00) branch 0100");
+                "1|L--|b = b - 1<i8>",      //$LIT 1<8>
+                "2|T--|if (b != 0<8>) branch 0100");
         }
 
         [Test]
@@ -608,7 +608,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("1203");	// mul	hl,03
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|hl = l * 0x03");
+                "1|L--|hl = l * 3<8>");
         }
 
         [Test]
@@ -628,7 +628,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("62F4");	// sub	a,(FFF4)
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|v2 = Mem0[0xFFF4:byte]",
+                "1|L--|v2 = Mem0[0xFFF4<p16>:byte]",
                 "2|L--|a = a - v2",
                 "3|L--|N = true",
                 "4|L--|SZHXVC = cond(a)");
@@ -661,7 +661,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A6");	// sll
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = a << 1");
+                "1|L--|a = a << 1<i8>");
         }
 
         [Test]
@@ -690,9 +690,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("F0 ED 87");    //  inc (ix-0x13)
             AssertCode(
               "0|L--|0100(3): 5 instructions",
-              "1|L--|v3 = Mem0[ix + -19:byte]",
-              "2|L--|v4 = v3 + 1",
-              "3|L--|Mem0[ix + -19:byte] = v4",
+              "1|L--|v3 = Mem0[ix + -19<i16>:byte]",
+              "2|L--|v4 = v3 + 1<i8>",
+              "3|L--|Mem0[ix + -19<i16>:byte] = v4",
               "4|L--|N = false",
               "5|L--|SZHXV = cond(v4)");
         }
@@ -704,8 +704,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|v5 = hl",
-                "2|L--|l = v5 / 0x4A",
-                "3|L--|h = v5 % 0x4A",
+                "2|L--|l = v5 / 0x4A<8>",
+                "3|L--|h = v5 % 0x4A<8>",
                 "4|L--|V = cond(l)");
         }
 
@@ -725,10 +725,10 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("FB1B");    // tset 3,e
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|Z = (e & 0x08) == 0x00",
+                "1|L--|Z = (e & 8<8>) == 0<8>",
                 "2|L--|N = false",
                 "3|L--|SHXV = cond(e)",
-                "4|L--|e = e | 0x08");
+                "4|L--|e = e | 8<8>");
         }
 
 

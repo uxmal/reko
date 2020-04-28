@@ -527,14 +527,14 @@ CrwSinglePredecessorToExitBlock_exit:
             #region Expected 
 @"eax:eax
     def:  def eax
-    uses: branch eax >= 0x00000000 m2Ge
-          branch eax != 0x00000000 m4Gt
+    uses: branch eax >= 0<32> m2Ge
+          branch eax != 0<32> m4Gt
           return eax
 eax_2: orig: eax
-    def:  eax_2 = 0x00000001
+    def:  eax_2 = 1<32>
     uses: return eax_2
 eax_3: orig: eax
-    def:  eax_3 = 0xFFFFFFFF
+    def:  eax_3 = 0xFFFFFFFF<32>
     uses: return eax_3
 eax_4: orig: eax
 // CrwManyPredecessorsToExitBlock
@@ -544,20 +544,20 @@ CrwManyPredecessorsToExitBlock_entry:
 	def eax
 	// succ:  l1
 l1:
-	branch eax >= 0x00000000 m2Ge
+	branch eax >= 0<32> m2Ge
 	// succ:  m1Lt m2Ge
 m1Lt:
-	eax_3 = 0xFFFFFFFF
+	eax_3 = 0xFFFFFFFF<32>
 	return eax_3
 	// succ:  CrwManyPredecessorsToExitBlock_exit
 m2Ge:
-	branch eax != 0x00000000 m4Gt
+	branch eax != 0<32> m4Gt
 	// succ:  m3Eq m4Gt
 m3Eq:
 	return eax
 	// succ:  CrwManyPredecessorsToExitBlock_exit
 m4Gt:
-	eax_2 = 0x00000001
+	eax_2 = 1<32>
 	return eax_2
 	// succ:  CrwManyPredecessorsToExitBlock_exit
 CrwManyPredecessorsToExitBlock_exit:
@@ -588,7 +588,7 @@ CrwManyPredecessorsToExitBlock_exit:
                 m.MStore(ST, Top, Constant.Real64(5.0));
                 // At this point there are 3 values on the FPU stack
                 m.Call("FpuMultiplyAdd", 0);
-                m.MStore(m.Word32(0x00123400), m.Mem(ST, dt, Top));
+                m.MStore(m.Ptr32(0x00123400), m.Mem(ST, dt, Top));
                 m.Assign(Top, m.IAdd(Top, 1));
                 m.Return();
             });
@@ -635,7 +635,7 @@ main_entry:
 	// succ:  l1
 l1:
 	rRet0_10 = FpuMultiplyAdd(5.0, 4.0, 3.0)
-	Mem13[0x00123400:real64] = rRet0_10
+	Mem13[0x00123400<p32>:real64] = rRet0_10
 	return
 	// succ:  main_exit
 main_exit:
@@ -682,8 +682,8 @@ FpuMultiplyAdd_exit:
                 var r2 = m.Reg32("r2");
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("fnOutParam", 0);
-                m.MStore(m.Word32(0x00123400), r1);
-                m.MStore(m.Word32(0x00123404), r2);
+                m.MStore(m.Ptr32(0x00123400), r1);
+                m.MStore(m.Ptr32(0x00123404), r2);
                 m.Return();
             });
             pb.Add("fnOutParam", m =>
@@ -728,8 +728,8 @@ main_entry:
 	// succ:  l1
 l1:
 	r1_5 = fnOutParam(r1, r2, out r2_6)
-	Mem7[0x00123400:word32] = r1_5
-	Mem8[0x00123404:word32] = r2_6
+	Mem7[0x00123400<p32>:word32] = r1_5
+	Mem8[0x00123404<p32>:word32] = r2_6
 	return
 	// succ:  main_exit
 main_exit:
@@ -753,17 +753,17 @@ fnOutParam_entry:
 	def r2
 	// succ:  m0
 m0:
-	branch r1 == 0x00000000 m2
+	branch r1 == 0<32> m2
 	// succ:  m1 m2
 m1:
-	r1_6 = r1 + 0x00000003
-	r2_8 = r2 - 0x00000003
+	r1_6 = r1 + 3<32>
+	r2_8 = r2 - 3<32>
 	r2Out = r2_8
 	return r1_6
 	// succ:  fnOutParam_exit
 m2:
-	r1_4 = 0x00000000
-	r2_5 = 0x00000000
+	r1_4 = 0<32>
+	r2_5 = 0<32>
 	r2Out = r2_5
 	return r1_4
 	// succ:  fnOutParam_exit
@@ -1016,7 +1016,7 @@ main_exit:
             #region Expected
 @"main_entry:
 body:
-	ret = 0x12345678
+	ret = 0x12345678<32>
 	return SLICE(ret, word16, 16)
 main_exit:
 	use ret
@@ -1049,7 +1049,7 @@ main_exit:
                 m.Call(r1, 0,
                     new[] { r2, r3 },
                     new[] { r2_1 });
-                m.MStore(m.Word32(0x00123400), r2_1);
+                m.MStore(m.Ptr32(0x00123400), r2_1);
                 m.Return();
             });
 
@@ -1062,7 +1062,7 @@ body:
 	call r1 (retsize: 0;)
 		uses: r2:r2,r3:r3
 		defs: r2_1:r2_1
-	Mem4[0x00123400:word32] = r2_1
+	Mem4[0x00123400<p32>:word32] = r2_1
 	return
 main_exit:
 ";

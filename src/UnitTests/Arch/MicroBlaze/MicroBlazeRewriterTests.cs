@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("00600000"); // add\tr3,r0,r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = 0x00000000");
+                "1|L--|r3 = 0<32>");
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("10600000"); // addk\tr3,r0,r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = 0x00000000");
+                "1|L--|r3 = 0<32>");
         }
 
         [Test]
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             AssertCode(
                 "0|TD-|00100000(4): 2 instructions",
                 "1|L--|r15 = 00100000",
-                "2|TD-|call 0x00100000 + r3 (0)");
+                "2|TD-|call 0x00100000<p32> + r3 (0)");
         }
 
         [Test]
@@ -305,7 +305,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("B0002000E060D644"); // imm 2000; lbui\tr3,r0,FFFFD644
             AssertCode(
                 "0|L--|00100000(8): 2 instructions",
-                "1|L--|v3 = Mem0[0x1FFFD644:byte]",
+                "1|L--|v3 = Mem0[0x1FFFD644<p32>:byte]",
                 "2|L--|r3 = (word32) v3");
         }
 
@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("E060D644"); // lbui\tr3,r0,FFFFD644
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = Mem0[0xFFFFD644:byte]",
+                "1|L--|v3 = Mem0[0xFFFFD644<p32>:byte]",
                 "2|L--|r3 = (word32) v3");
         }
 
@@ -354,7 +354,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("EAA10028"); // lwi\tr21,r1,00000028
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = Mem0[r1 + 40:word32]");
+                "1|L--|r21 = Mem0[r1 + 40<i32>:word32]");
         }
 
         [Test]
@@ -390,7 +390,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("A2D60020");   // ori	r22,r22,00000020
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r22 = r22 | 0x00000020");
+                "1|L--|r22 = r22 | 0x20<32>");
         }
 
         [Test]
@@ -437,7 +437,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v3 = SLICE(r3, byte, 0)",
-                "2|L--|Mem0[0xFFFFD644:byte] = v3");
+                "2|L--|Mem0[0xFFFFD644<p32>:byte] = v3");
         }
 
         [Test]
@@ -476,7 +476,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("92640001"); // sra\tr19,r4
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r19 = r4 >> 1",
+                "1|L--|r19 = r4 >> 1<i32>",
                 "2|L--|C = cond(r19)");
         }
 
@@ -486,7 +486,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("90F90021");   // src	r7,r25
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r7 = __rcr(r25, 1, C)",
+                "1|L--|r7 = __rcr(r25, 1<i32>, C)",
                 "2|L--|C = cond(r7)");
         }
 
@@ -496,7 +496,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("92A40041"); // srl\tr21,r4
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r21 = r4 >>u 1",
+                "1|L--|r21 = r4 >>u 1<i32>",
                 "2|L--|C = cond(r21)");
         }
 
@@ -506,7 +506,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("F8650008"); // swi\tr3,r5,00000008
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r5 + 8:word32] = r3");
+                "1|L--|Mem0[r5 + 8<i32>:word32] = r3");
         }
 
         [Test]

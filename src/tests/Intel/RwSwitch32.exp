@@ -15,37 +15,37 @@
 define fn10000000
 fn10000000_entry:
 	esp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l10000000
 l10000000:
-	eax = Mem0[esp + 0x00000004:word32]
-	SCZO = cond(eax - 0x00000003)
+	eax = Mem0[esp + 4<32>:word32]
+	SCZO = cond(eax - 3<32>)
 	branch Test(UGT,CZ) l10000048
 	// succ:  l1000000B l10000048
 l1000000B:
 	edx = edx ^ edx
 	SZO = cond(edx)
 	C = false
-	dl = Mem0[eax + 0x1000001A:byte]
+	dl = Mem0[eax + 0x1000001A<32>:byte]
 	switch (eax) { l10000034 l1000002A l10000034 l1000003E }
 	// succ:  l10000034 l1000002A l10000034 l1000003E
 l1000002A:
-	eax = 0x00000000
+	eax = 0<32>
 	goto l1000004D
 	// succ:  l1000004D
 l10000034:
-	eax = 0x00000001
+	eax = 1<32>
 	goto l1000004D
 	// succ:  l1000004D
 l1000003E:
-	eax = 0x00000002
+	eax = 2<32>
 	goto l1000004D
 	// succ:  l1000004D
 l10000048:
-	eax = 0xFFFFFFFF
+	eax = 0xFFFFFFFF<32>
 	// succ:  l1000004D
 l1000004D:
-	Mem0[0x10000054:word32] = eax
+	Mem0[0x10000054<p32>:word32] = eax
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

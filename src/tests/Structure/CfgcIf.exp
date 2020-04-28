@@ -5,14 +5,14 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	word16 bx_7
-	branch ax != 0x0000 l0C00_000B
+	branch ax != 0<16> l0C00_000B
 	// succ:  l0C00_0005 l0C00_000B
 l0C00_0005:
-	bx_7 = 0x1234
+	bx_7 = 0x1234<16>
 	goto l0C00_000E
 	// succ:  l0C00_000E
 l0C00_000B:
-	bx_7 = 0x1211
+	bx_7 = 0x1211<16>
 	// succ:  l0C00_000E
 l0C00_000E:
 	Mem14[ds_si:word16] = bx_7
@@ -25,16 +25,16 @@ fn0C00_0000_exit:
 void fn0C00_0000(word32 ds_si, word16 ax)
 fn0C00_0000_entry:
 	word16 bx_7
-	branch ax != 0x0000 l0C00_000B
+	branch ax != 0<16> l0C00_000B
 	goto l0C00_0005
 	// succ:  l0C00_0005 l0C00_000B
 l0C00_0000:
 l0C00_0005:
-	bx_7 = 0x1234
+	bx_7 = 0x1234<16>
 	goto l0C00_000E
 	// succ:  l0C00_000E
 l0C00_000B:
-	bx_7 = 0x1211
+	bx_7 = 0x1211<16>
 	// succ:  l0C00_000E
 l0C00_000E:
 	Mem14[ds_si:word16] = bx_7

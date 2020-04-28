@@ -6,7 +6,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	fn0C00_000C(ds)
 	fn0C00_0015(ds)
-	Mem7[ds:0x0100:word16] = 0x0000
+	Mem7[ds:0x100<16>:word16] = 0<16>
 	// succ:  l0C00_0006_thunk_fn0C00_000C
 l0C00_0006_thunk_fn0C00_000C:
 	fn0C00_000C(ds)
@@ -20,7 +20,7 @@ void fn0C00_000C(selector ds)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	Mem7[ds:0x0302:word16] = Mem0[ds:0x0300:word16]
+	Mem7[ds:0x302<16>:word16] = Mem0[ds:0x300<16>:word16]
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
@@ -31,7 +31,7 @@ void fn0C00_0015(selector ds)
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
-	Mem7[ds:0x0202:word16] = Mem0[ds:0x0200:word16]
+	Mem7[ds:0x202<16>:word16] = Mem0[ds:0x200<16>:word16]
 	return
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:
@@ -68,37 +68,37 @@ T_9 (in ds : selector)
 	trait_mem(T_23, 202)
 T_10 (in fn0C00_0015(ds) : void)
 	trait_primitive(void)
-T_11 (in 0x0000 : word16)
+T_11 (in 0<16> : word16)
 	trait_primitive(word16)
-T_12 (in 0x0100 : word16)
+T_12 (in 0x100<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_2:T_13, 0)
-T_13 (in Mem7[ds:0x0100:word16] : word16)
+T_13 (in Mem7[ds:0x100<16>:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_11)
 T_14 (in fn0C00_000C : segptr32)
 	trait_func(T_2 -> T_15)
 T_15 (in fn0C00_000C(ds) : void)
 	trait_primitive(void)
-T_16 (in 0x0300 : word16)
+T_16 (in 0x300<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_5:T_17, 0)
-T_17 (in Mem0[ds:0x0300:word16] : word16)
+T_17 (in Mem0[ds:0x300<16>:word16] : word16)
 	trait_primitive(word16)
-T_18 (in 0x0302 : word16)
+T_18 (in 0x302<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_5:T_19, 0)
-T_19 (in Mem7[ds:0x0302:word16] : word16)
+T_19 (in Mem7[ds:0x302<16>:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_17)
-T_20 (in 0x0200 : word16)
+T_20 (in 0x200<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_9:T_21, 0)
-T_21 (in Mem0[ds:0x0200:word16] : word16)
+T_21 (in Mem0[ds:0x200<16>:word16] : word16)
 	trait_primitive(word16)
-T_22 (in 0x0202 : word16)
+T_22 (in 0x202<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_9:T_23, 0)
-T_23 (in Mem7[ds:0x0202:word16] : word16)
+T_23 (in Mem7[ds:0x202<16>:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_21)

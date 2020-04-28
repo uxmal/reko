@@ -24,20 +24,20 @@ fn0C00_0000_entry:
 	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	si_6 = Mem0[ds:0x0200:word16]
+	si_6 = Mem0[ds:0x200<16>:word16]
 	ds_si_7 = SEQ(ds, si_6) (alias)
 	ax_8 = fn0C00_0025(ds_si_7, out si_9)
-	Mem10[ds:0x0310:word16] = ax_8
+	Mem10[ds:0x310<16>:word16] = ax_8
 	ds_si_11 = SEQ(ds, si_9) (alias)
 	ax_12 = fn0C00_0027(ds_si_11, out si_13)
-	Mem18[ds:0x0320:word16] = ax_12
+	Mem18[ds:0x320<16>:word16] = ax_12
 	ds_si_19 = SEQ(ds, si_13) (alias)
 	ax_20 = fn0C00_002F(ds_si_19, out si_21)
-	Mem22[ds:0x0330:word16] = ax_20
+	Mem22[ds:0x330<16>:word16] = ax_20
 	ds_si_23 = SEQ(ds, si_21) (alias)
 	ax_24 = fn0C00_0036(ds_si_23, out si_25)
-	Mem26[ds:0x0340:word16] = ax_24
-	Mem27[ds:0x0400:word16] = si_25
+	Mem26[ds:0x340<16>:word16] = ax_24
+	Mem27[ds:0x400<16>:word16] = si_25
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -66,7 +66,7 @@ fn0C00_0025_entry:
 	// succ:  l0C00_0025
 l0C00_0025:
 	ax_7 = Mem0[ds_si:word16]
-	si_8 = si + 0x0002
+	si_8 = si + 2<16>
 	siOut = si_8
 	return ax_7
 	// succ:  fn0C00_0025_exit
@@ -100,13 +100,13 @@ fn0C00_0027_entry:
 	def Mem0
 	// succ:  l0C00_0027
 l0C00_0027:
-	ax_4 = 0x0000
+	ax_4 = 0<16>
 	si_8 = si
-	branch si == 0x0000 l0C00_002E
+	branch si == 0<16> l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:
 	ax_14 = Mem0[ds_si:word16]
-	si_15 = si + 0x0002
+	si_15 = si + 2<16>
 	// succ:  l0C00_002E
 l0C00_002E:
 	si_22 = PHI((si_8, l0C00_0027), (si_15, l0C00_002D))
@@ -140,8 +140,8 @@ fn0C00_002F_entry:
 	// succ:  l0C00_002F
 l0C00_002F:
 	ax_7 = Mem0[ds_si:word16]
-	si_8 = si + 0x0002
-	Mem9[ds_si + 0x0004:word16] = 0x0000
+	si_8 = si + 2<16>
+	Mem9[ds_si + 4<16>:word16] = 0<16>
 	siOut = si_8
 	return ax_7
 	// succ:  fn0C00_002F_exit
@@ -170,7 +170,7 @@ fn0C00_0036_entry:
 	si = SLICE(ds_si, word16, 0)
 	// succ:  l0C00_0036
 l0C00_0036:
-	ds_si_9 = SEQ(ds, si + 0x0002) (alias)
+	ds_si_9 = SEQ(ds, si + 2<16>) (alias)
 	ax_10 = fn0C00_0025(ds_si_9, out si_11)
 	siOut = si_11
 	return ax_10

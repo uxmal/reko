@@ -34,7 +34,7 @@ namespace Reko.Core.Output
         private const string DecimalSymbols = "0123456789";
         private const string HexSymbols = "0123456789ABCDEF";
 
-        public AbsynCodeFormatter(Formatter writer) : base(writer, 0, 0)
+        public AbsynCodeFormatter(Formatter writer) : base(writer)
         {
 
         }
@@ -124,8 +124,10 @@ namespace Reko.Core.Output
             var hexRep = n.ToString("X", CultureInfo.InvariantCulture);
             var decEntropy = Entropy(decRep, DecimalSymbols);
             var hexEntropy = Entropy(hexRep, HexSymbols);
-            if (decEntropy < hexEntropy)
+            if (decEntropy <= hexEntropy)
+            {
                 return Convert.ToString(p, 10);
+            }
             else
             {
                 var sb = new StringBuilder();
@@ -148,27 +150,6 @@ namespace Reko.Core.Output
             }
         }
 
-
-        public string ChooseFormatStringBasedOnPattern(string decRep, string hexRep, string decInverted, string hexInverted)
-        {
-            var decEntropy = Entropy(decRep, DecimalSymbols);
-            var hexEntropy = Entropy(hexRep, HexSymbols);
-            if (hexEntropy < decEntropy)
-            {
-                int length = hexRep.Length;
-                if (length < 2)
-                    length = 2;
-                else if (length < 4)
-                    length = 4;
-                else
-                    length = (length + 1) & ~1;
-                return string.Format("0x{0}0:X{1}{2}", "{", length, "}");
-            }
-            else
-            {
-                return "{0}";
-            }
-        }
 
         // Entropy =  -\sum prob_i * ln prob_i
         /// <summary>

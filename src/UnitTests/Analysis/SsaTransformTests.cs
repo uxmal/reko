@@ -338,18 +338,18 @@ proc1_exit:
 @"fp:fp
     def:  def fp
     uses: r63_2 = fp
-          r63_3 = fp - 0x00000004
-          r63_6 = fp - 0x00000008
+          r63_3 = fp - 4<32>
+          r63_6 = fp - 8<32>
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
-    def:  r63_3 = fp - 0x00000004
+    def:  r63_3 = fp - 4<32>
 r1:r1
     def:  def r1
     uses: dwLoc04_13 = r1
 Mem5: orig: Mem0
 r63_6: orig: r63
-    def:  r63_6 = fp - 0x00000008
+    def:  r63_6 = fp - 8<32>
     uses: use r63_6
 r2:r2
     def:  def r2
@@ -364,10 +364,10 @@ r2_10: orig: r2
           use r2_10
 r1_11: orig: r1
     def:  r1_11 = r1_9 + r2_10
-    uses: Mem12[0x00010008:word32] = r1_11
+    uses: Mem12[0x10008<32>:word32] = r1_11
           use r1_11
 Mem12: orig: Mem0
-    def:  Mem12[0x00010008:word32] = r1_11
+    def:  Mem12[0x10008<32>:word32] = r1_11
 dwLoc04_13: orig: dwLoc04
     def:  dwLoc04_13 = r1
     uses: r1_9 = dwLoc04_13
@@ -384,14 +384,14 @@ proc1_entry:
 	// succ:  l1
 l1:
 	r63_2 = fp
-	r63_3 = fp - 0x00000004
+	r63_3 = fp - 4<32>
 	dwLoc04_13 = r1
-	r63_6 = fp - 0x00000008
+	r63_6 = fp - 8<32>
 	dwLoc08_14 = r2
 	r1_9 = dwLoc04_13
 	r2_10 = dwLoc08_14
 	r1_11 = r1_9 + r2_10
-	Mem12[0x00010008:word32] = r1_11
+	Mem12[0x10008<32>:word32] = r1_11
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -427,34 +427,34 @@ proc1_exit:
 @"fp:fp
     def:  def fp
     uses: r63_2 = fp
-          r63_3 = fp - 0x00000004
-          bp_6 = fp - 0x00000004
+          r63_3 = fp - 4<32>
+          bp_6 = fp - 4<32>
           r63_13 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
-    def:  r63_3 = fp - 0x00000004
+    def:  r63_3 = fp - 4<32>
 bp:bp
     def:  def bp
     uses: dwLoc04_14 = bp
 Mem5: orig: Mem0
 bp_6: orig: bp
-    def:  bp_6 = fp - 0x00000004
+    def:  bp_6 = fp - 4<32>
 SZC_7: orig: SZC
-    def:  SZC_7 = cond(wArg04 - 0x0003)
+    def:  SZC_7 = cond(wArg04 - 3<16>)
     uses: branch Test(GE,SZC_7) ge3
           C_18 = SLICE(SZC_7, bool, 2) (alias)
           S_21 = SLICE(SZC_7, bool, 0) (alias)
           Z_23 = SLICE(SZC_7, bool, 1) (alias)
 r1_8: orig: r1
-    def:  r1_8 = 0x00000001
+    def:  r1_8 = 1<32>
     uses: r1_19 = PHI((r1_9, l2), (r1_8, ge3))
 r1_9: orig: r1
-    def:  r1_9 = 0x00000000
+    def:  r1_9 = 0<32>
     uses: r1_19 = PHI((r1_9, l2), (r1_8, ge3))
 wArg04:Stack +0004
     def:  def wArg04
-    uses: SZC_7 = cond(wArg04 - 0x0003)
+    uses: SZC_7 = cond(wArg04 - 3<16>)
 dwLoc04_14: orig: dwLoc04
     def:  dwLoc04_14 = bp
     uses: bp_12 = dwLoc04_14
@@ -492,22 +492,22 @@ done:
 	return
 	// succ:  proc1_exit
 ge3:
-	r1_8 = 0x00000001
+	r1_8 = 1<32>
 	goto done
 	// succ:  done
 l1:
 	r63_2 = fp
-	r63_3 = fp - 0x00000004
+	r63_3 = fp - 4<32>
 	dwLoc04_14 = bp
-	bp_6 = fp - 0x00000004
-	SZC_7 = cond(wArg04 - 0x0003)
+	bp_6 = fp - 4<32>
+	SZC_7 = cond(wArg04 - 3<16>)
 	C_18 = SLICE(SZC_7, bool, 2) (alias)
 	S_21 = SLICE(SZC_7, bool, 0) (alias)
 	Z_23 = SLICE(SZC_7, bool, 1) (alias)
 	branch Test(GE,SZC_7) ge3
 	// succ:  l2 ge3
 l2:
-	r1_9 = 0x00000000
+	r1_9 = 0<32>
 	goto done
 	// succ:  done
 proc1_exit:
@@ -556,21 +556,21 @@ proc1_exit:
 @"fp:fp
     def:  def fp
     uses: r63_2 = fp
-          r63_3 = fp - 0x00000004
-          bp_6 = fp - 0x00000004
+          r63_3 = fp - 4<32>
+          bp_6 = fp - 4<32>
           r63_14 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
-    def:  r63_3 = fp - 0x00000004
+    def:  r63_3 = fp - 4<32>
 bp:bp
     def:  def bp
     uses: dwLoc04_15 = bp
 Mem5: orig: Mem0
 bp_6: orig: bp
-    def:  bp_6 = fp - 0x00000004
+    def:  bp_6 = fp - 4<32>
 SZC_7: orig: SZC
-    def:  SZC_7 = wArg04 - 0x0003
+    def:  SZC_7 = wArg04 - 3<16>
     uses: branch Test(GE,SZC_7) ge3
           C_21 = SLICE(SZC_7, bool, 2) (alias)
           S_25 = SLICE(SZC_7, bool, 0) (alias)
@@ -578,7 +578,7 @@ SZC_7: orig: SZC
 Mem8: orig: Mem0
     uses: Mem12 = PHI((Mem10, l2), (Mem8, ge3))
 r1_9: orig: r1
-    def:  r1_9 = 0x00000001
+    def:  r1_9 = 1<32>
     uses: r1_22 = PHI((r1, l2), (r1_9, ge3))
 Mem10: orig: Mem0
     uses: Mem12 = PHI((Mem10, l2), (Mem8, ge3))
@@ -595,11 +595,11 @@ r63_14: orig: r63
     uses: use r63_14
 wArg04:Stack +0004
     def:  def wArg04
-    uses: SZC_7 = wArg04 - 0x0003
+    uses: SZC_7 = wArg04 - 3<16>
 wArg04_17: orig: wArg04
-    def:  wArg04_17 = -3
+    def:  wArg04_17 = -3<i16>
 wArg04_18: orig: wArg04
-    def:  wArg04_18 = 0x0003
+    def:  wArg04_18 = 3<16>
 C_21: orig: C
     def:  C_21 = SLICE(SZC_7, bool, 2) (alias)
     uses: use C_21
@@ -633,23 +633,23 @@ done:
 	return
 	// succ:  proc1_exit
 ge3:
-	wArg04_17 = -3
-	r1_9 = 0x00000001
+	wArg04_17 = -3<i16>
+	r1_9 = 1<32>
 	goto done
 	// succ:  done
 l1:
 	r63_2 = fp
-	r63_3 = fp - 0x00000004
+	r63_3 = fp - 4<32>
 	dwLoc04_15 = bp
-	bp_6 = fp - 0x00000004
-	SZC_7 = wArg04 - 0x0003
+	bp_6 = fp - 4<32>
+	SZC_7 = wArg04 - 3<16>
 	C_21 = SLICE(SZC_7, bool, 2) (alias)
 	S_25 = SLICE(SZC_7, bool, 0) (alias)
 	Z_27 = SLICE(SZC_7, bool, 1) (alias)
 	branch Test(GE,SZC_7) ge3
 	// succ:  l2 ge3
 l2:
-	wArg04_18 = 0x0003
+	wArg04_18 = 3<16>
 	goto done
 	// succ:  done
 proc1_exit:
@@ -703,27 +703,27 @@ Adder_entry:
 Adder_exit:
 ======
 r1_1: orig: r1
-    def:  r1_1 = 0x00000003
+    def:  r1_1 = 3<32>
 r2_2: orig: r2
-    def:  r2_2 = 0x00000004
+    def:  r2_2 = 4<32>
     uses: use r2_2
 r1_3: orig: r1
     def:  call Adder (retsize: 4;)	defs: r1:r1_3
-    uses: Mem4[0x00012300:word32] = r1_3
+    uses: Mem4[0x12300<32>:word32] = r1_3
           use r1_3
 Mem4: orig: Mem0
-    def:  Mem4[0x00012300:word32] = r1_3
+    def:  Mem4[0x12300<32>:word32] = r1_3
 // proc1
 // Return size: 0
 define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	r1_1 = 0x00000003
-	r2_2 = 0x00000004
+	r1_1 = 3<32>
+	r2_2 = 4<32>
 	call Adder (retsize: 4;)
 		defs: r1:r1_3
-	Mem4[0x00012300:word32] = r1_3
+	Mem4[0x12300<32>:word32] = r1_3
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -765,22 +765,22 @@ Adder_exit:
 ======
 r63:r63
     def:  def r63
-    uses: r63_2 = r63 - 0x00000004
+    uses: r63_2 = r63 - 4<32>
 r63_2: orig: r63
-    def:  r63_2 = r63 - 0x00000004
-    uses: Mem3[r63_2:word32] = 0x0000002A
+    def:  r63_2 = r63 - 4<32>
+    uses: Mem3[r63_2:word32] = 0x2A<32>
           call Adder (retsize: 4;)	uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]	defs: r1:r1_5
 Mem3: orig: Mem0
-    def:  Mem3[r63_2:word32] = 0x0000002A
+    def:  Mem3[r63_2:word32] = 0x2A<32>
     uses: call Adder (retsize: 4;)	uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]	defs: r1:r1_5
 r1_4: orig: r1
-    def:  r1_4 = 0x00000018
+    def:  r1_4 = 0x18<32>
     uses: call Adder (retsize: 4;)	uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]	defs: r1:r1_5
 r1_5: orig: r1
     def:  call Adder (retsize: 4;)	uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]	defs: r1:r1_5
-    uses: Mem6[0x00012300:word32] = r1_5
+    uses: Mem6[0x12300<32>:word32] = r1_5
 Mem6: orig: Mem0
-    def:  Mem6[0x00012300:word32] = r1_5
+    def:  Mem6[0x12300<32>:word32] = r1_5
 // proc1
 // Return size: 0
 define proc1
@@ -788,13 +788,13 @@ proc1_entry:
 	def r63
 	// succ:  l1
 l1:
-	r63_2 = r63 - 0x00000004
-	Mem3[r63_2:word32] = 0x0000002A
-	r1_4 = 0x00000018
+	r63_2 = r63 - 4<32>
+	Mem3[r63_2:word32] = 0x2A<32>
+	r1_4 = 0x18<32>
 	call Adder (retsize: 4;)
 		uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]
 		defs: r1:r1_5
-	Mem6[0x00012300:word32] = r1_5
+	Mem6[0x12300<32>:word32] = r1_5
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -838,22 +838,22 @@ proc1_exit:
 @"fp:fp
     def:  def fp
     uses: r63_2 = fp
-          r63_3 = fp - 0x00000004
-          bp_6 = fp - 0x00000004
+          r63_3 = fp - 4<32>
+          bp_6 = fp - 4<32>
           r63_17 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
-    def:  r63_3 = fp - 0x00000004
+    def:  r63_3 = fp - 4<32>
 bp:bp
     def:  def bp
     uses: dwLoc04_18 = bp
 Mem5: orig: Mem0
 bp_6: orig: bp
-    def:  bp_6 = fp - 0x00000004
+    def:  bp_6 = fp - 4<32>
 Mem7: orig: Mem0
 CZS_8: orig: CZS
-    def:  CZS_8 = wArg04 - 0x0003
+    def:  CZS_8 = wArg04 - 3<16>
     uses: branch Test(GE,CZS_8) ge3
           C_26 = SLICE(CZS_8, bool, 2) (alias)
           S_28 = SLICE(CZS_8, bool, 0) (alias)
@@ -867,7 +867,7 @@ Mem10: orig: Mem0
 Mem11: orig: Mem0
     uses: Mem13 = PHI((Mem11, l2), (Mem10, ge3))
 dwLoc0C_19: orig: dwLoc0C
-    def:  dwLoc0C_19 = 0x00000000
+    def:  dwLoc0C_19 = 0<32>
 Mem13: orig: Mem0
     def:  Mem13 = PHI((Mem11, l2), (Mem10, ge3))
 r1_14: orig: r1
@@ -884,7 +884,7 @@ r63_17: orig: r63
     uses: use r63_17
 wArg04:Stack +0004
     def:  def wArg04
-    uses: CZS_8 = wArg04 - 0x0003
+    uses: CZS_8 = wArg04 - 3<16>
 dwLoc0C_21: orig: dwLoc0C
     def:  dwLoc0C_21 = r1
     uses: dwLoc0C_23 = PHI((dwLoc0C_22, l2), (dwLoc0C_21, ge3))
@@ -927,11 +927,11 @@ ge3:
 	// succ:  done
 l1:
 	r63_2 = fp
-	r63_3 = fp - 0x00000004
+	r63_3 = fp - 4<32>
 	dwLoc04_18 = bp
-	bp_6 = fp - 0x00000004
-	dwLoc0C_19 = 0x00000000
-	CZS_8 = wArg04 - 0x0003
+	bp_6 = fp - 4<32>
+	dwLoc0C_19 = 0<32>
+	CZS_8 = wArg04 - 3<16>
 	C_26 = SLICE(CZS_8, bool, 2) (alias)
 	S_28 = SLICE(CZS_8, bool, 0) (alias)
 	Z_30 = SLICE(CZS_8, bool, 1) (alias)
@@ -1047,7 +1047,7 @@ proc1_exit:
     uses: branch r1 true
           call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
 r2_2: orig: r2
-    def:  r2_2 = 0x00000010
+    def:  r2_2 = 0x10<32>
 r3:r3
     def:  def r3
     uses: call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
@@ -1072,7 +1072,7 @@ l1:
 	branch r1 true
 	// succ:  l2 true
 l2:
-	r2_2 = 0x00000010
+	r2_2 = 0x10<32>
 	// succ:  true
 true:
 	call r3 (retsize: 4;)
@@ -1109,50 +1109,50 @@ proc1_exit:
 @"fp:fp
     def:  def fp
     uses: r63_2 = fp
-          r63_7 = fp - 0x00000004
-          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+          r63_7 = fp - 4<32>
+          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r63_2: orig: r63
     def:  r63_2 = fp
     uses: r63_19 = PHI((r63_13, m0Induction), (r63_2, m1Base))
 Mem0:Mem
     def:  def Mem0
-    uses: r2_6 = Mem0[r2_4 + 0x00000004:word32]
+    uses: r2_6 = Mem0[r2_4 + 4<32>:word32]
 r2_4: orig: r2
     def:  r2_4 = dwArg04
-    uses: branch r2_4 == 0x00000000 m1Base
-          r2_6 = Mem0[r2_4 + 0x00000004:word32]
+    uses: branch r2_4 == 0<32> m1Base
+          r2_6 = Mem0[r2_4 + 4<32>:word32]
 r2_5: orig: r2
-    def:  r2_5 = 0x00000000
+    def:  r2_5 = 0<32>
     uses: r2_16 = PHI((r2_12, m0Induction), (r2_5, m1Base))
 r2_6: orig: r2
-    def:  r2_6 = Mem0[r2_4 + 0x00000004:word32]
+    def:  r2_6 = Mem0[r2_4 + 4<32>:word32]
     uses: dwLoc04_15 = r2_6
-          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r63_7: orig: r63
-    def:  r63_7 = fp - 0x00000004
+    def:  r63_7 = fp - 4<32>
 Mem8: orig: Mem0
 r63_9: orig: r63
-    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
-    uses: r63_13 = r63_9 + 0x00000004
+    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    uses: r63_13 = r63_9 + 4<32>
 r3_10: orig: r3
-    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
     uses: r3_17 = PHI((r3_10, m0Induction), (r3, m1Base))
 r2_11: orig: r2
-    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
-    uses: r2_12 = r2_11 + 0x00000001
+    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    uses: r2_12 = r2_11 + 1<32>
 r2_12: orig: r2
-    def:  r2_12 = r2_11 + 0x00000001
+    def:  r2_12 = r2_11 + 1<32>
     uses: r2_16 = PHI((r2_12, m0Induction), (r2_5, m1Base))
 r63_13: orig: r63
-    def:  r63_13 = r63_9 + 0x00000004
+    def:  r63_13 = r63_9 + 4<32>
     uses: r63_19 = PHI((r63_13, m0Induction), (r63_2, m1Base))
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: r2_4 = dwArg04
-          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 dwLoc04_15: orig: dwLoc04
     def:  dwLoc04_15 = r2_6
-    uses: call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    uses: call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r2_16: orig: r2
     def:  r2_16 = PHI((r2_12, m0Induction), (r2_5, m1Base))
     uses: use r2_16
@@ -1177,21 +1177,21 @@ proc1_entry:
 l1:
 	r63_2 = fp
 	r2_4 = dwArg04
-	branch r2_4 == 0x00000000 m1Base
+	branch r2_4 == 0<32> m1Base
 	// succ:  m0Induction m1Base
 m0Induction:
-	r2_6 = Mem0[r2_4 + 0x00000004:word32]
-	r63_7 = fp - 0x00000004
+	r2_6 = Mem0[r2_4 + 4<32>:word32]
+	r63_7 = fp - 4<32>
 	dwLoc04_15 = r2_6
 	call proc1 (retsize: 0;)
-		uses: r2:r2_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_15,Stack +0008:dwArg04
+		uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04
 		defs: r2:r2_11,r3:r3_10,r63:r63_9
-	r2_12 = r2_11 + 0x00000001
-	r63_13 = r63_9 + 0x00000004
+	r2_12 = r2_11 + 1<32>
+	r63_13 = r63_9 + 4<32>
 	goto m2Done
 	// succ:  m2Done
 m1Base:
-	r2_5 = 0x00000000
+	r2_5 = 0<32>
 	// succ:  m2Done
 m2Done:
 	r63_19 = PHI((r63_13, m0Induction), (r63_2, m1Base))
@@ -1240,7 +1240,7 @@ proc1_exit:
             var sExp =
             #region Expected
 @"a_1: orig: a
-    def:  a_1 = 0x00000003
+    def:  a_1 = 3<32>
     uses: b_2 = a_1
 b_2: orig: b
     def:  b_2 = a_1
@@ -1250,7 +1250,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	a_1 = 0x00000003
+	a_1 = 3<32>
 	b_2 = a_1
 	return
 	// succ:  proc1_exit
@@ -1278,9 +1278,9 @@ proc1_exit:
             #region Expected
 @"a:a
     def:  def a
-    uses: Mem2[0x00123400:word32] = a
+    uses: Mem2[0x123400<32>:word32] = a
 Mem2: orig: Mem0
-    def:  Mem2[0x00123400:word32] = a
+    def:  Mem2[0x123400<32>:word32] = a
 // proc1
 // Return size: 0
 define proc1
@@ -1288,7 +1288,7 @@ proc1_entry:
 	def a
 	// succ:  l1
 l1:
-	Mem2[0x00123400:word32] = a
+	Mem2[0x123400<32>:word32] = a
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1312,9 +1312,9 @@ proc1_exit:
             #region Expected
 @"a:a
     def:  def a
-    uses: branch a == 0x00000000 m_2
+    uses: branch a == 0<32> m_2
 b_2: orig: b
-    def:  b_2 = 0xFFFFFFFF
+    def:  b_2 = 0xFFFFFFFF<32>
     uses: b_3 = PHI((b, l1), (b_2, m_1))
 b_3: orig: b
     def:  b_3 = PHI((b, l1), (b_2, m_1))
@@ -1330,10 +1330,10 @@ proc1_entry:
 	def b
 	// succ:  l1
 l1:
-	branch a == 0x00000000 m_2
+	branch a == 0<32> m_2
 	// succ:  m_1 m_2
 m_1:
-	b_2 = 0xFFFFFFFF
+	b_2 = 0xFFFFFFFF<32>
 	// succ:  m_2
 m_2:
 	b_3 = PHI((b, l1), (b_2, m_1))
@@ -1376,9 +1376,9 @@ eax_3: orig: eax
           use eax_3
 ah_4: orig: ah
     def:  ah_4 = SLICE(eax_3, byte, 8) (alias)
-    uses: Mem5[0x00001234:byte] = ah_4
+    uses: Mem5[0x1234<32>:byte] = ah_4
 Mem5: orig: Mem0
-    def:  Mem5[0x00001234:byte] = ah_4
+    def:  Mem5[0x1234<32>:byte] = ah_4
 // proc1
 // Return size: 0
 define proc1
@@ -1389,7 +1389,7 @@ proc1_entry:
 l1:
 	eax_3 = Mem0[eax:word32]
 	ah_4 = SLICE(eax_3, byte, 8) (alias)
-	Mem5[0x00001234:byte] = ah_4
+	Mem5[0x1234<32>:byte] = ah_4
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1417,20 +1417,20 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: ecx_2 = Mem0[0x00542300:word32]
-          branch Mem0[0x00010042:bool] mBranch2
+    uses: ecx_2 = Mem0[0x00542300<p32>:word32]
+          branch Mem0[0x00010042<p32>:bool] mBranch2
 ecx_2: orig: ecx
-    def:  ecx_2 = Mem0[0x00542300:word32]
+    def:  ecx_2 = Mem0[0x00542300<p32>:word32]
     uses: ecx_24_8_6 = SLICE(ecx_2, word24, 8) (alias)
 ecx_3: orig: ecx
-    def:  ecx_3 = 0x00000020
+    def:  ecx_3 = 0x20<32>
     uses: ecx_5 = PHI((ecx_7, mBranch1), (ecx_3, mBranch2))
 cl_4: orig: cl
-    def:  cl_4 = 0x2A
+    def:  cl_4 = 0x2A<8>
     uses: ecx_7 = SEQ(ecx_24_8_6, cl_4) (alias)
 ecx_5: orig: ecx
     def:  ecx_5 = PHI((ecx_7, mBranch1), (ecx_3, mBranch2))
-    uses: Mem8[0x00010232:word32] = ecx_5
+    uses: Mem8[0x00010232<p32>:word32] = ecx_5
 ecx_24_8_6: orig: ecx_24_8
     def:  ecx_24_8_6 = SLICE(ecx_2, word24, 8) (alias)
     uses: ecx_7 = SEQ(ecx_24_8_6, cl_4) (alias)
@@ -1438,7 +1438,7 @@ ecx_7: orig: ecx
     def:  ecx_7 = SEQ(ecx_24_8_6, cl_4) (alias)
     uses: ecx_5 = PHI((ecx_7, mBranch1), (ecx_3, mBranch2))
 Mem8: orig: Mem0
-    def:  Mem8[0x00010232:word32] = ecx_5
+    def:  Mem8[0x00010232<p32>:word32] = ecx_5
 // proc1
 // Return size: 0
 define proc1
@@ -1446,21 +1446,21 @@ proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	ecx_2 = Mem0[0x00542300:word32]
+	ecx_2 = Mem0[0x00542300<p32>:word32]
 	ecx_24_8_6 = SLICE(ecx_2, word24, 8) (alias)
-	branch Mem0[0x00010042:bool] mBranch2
+	branch Mem0[0x00010042<p32>:bool] mBranch2
 	// succ:  mBranch1 mBranch2
 mBranch1:
-	cl_4 = 0x2A
+	cl_4 = 0x2A<8>
 	ecx_7 = SEQ(ecx_24_8_6, cl_4) (alias)
 	goto mCommon
 	// succ:  mCommon
 mBranch2:
-	ecx_3 = 0x00000020
+	ecx_3 = 0x20<32>
 	// succ:  mCommon
 mCommon:
 	ecx_5 = PHI((ecx_7, mBranch1), (ecx_3, mBranch2))
-	Mem8[0x00010232:word32] = ecx_5
+	Mem8[0x00010232<p32>:word32] = ecx_5
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1474,8 +1474,8 @@ proc1_exit:
                 var ecx = m.Register(Registers.ecx);
                 var cl = m.Register(Registers.cl);
 
-                m.Assign(ecx, m.Mem32(m.Word32(0x542300)));
-                m.BranchIf(m.Mem(PrimitiveType.Bool, m.Word32(0x10042)), "mBranch2");
+                m.Assign(ecx, m.Mem32(m.Ptr32(0x542300)));
+                m.BranchIf(m.Mem(PrimitiveType.Bool, m.Ptr32(0x10042)), "mBranch2");
 
                 m.Label("mBranch1");
                 m.Assign(cl, 42);
@@ -1485,7 +1485,7 @@ proc1_exit:
                 m.Assign(ecx, 32);
 
                 m.Label("mCommon");
-                m.MStore(m.Word32(0x10232), ecx);
+                m.MStore(m.Ptr32(0x10232), ecx);
                 m.Return();
             });
         }
@@ -1497,19 +1497,19 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: eax_2 = Mem0[0x00543200:word32]
-          edx_3 = Mem0[0x00543208:word32]
+    uses: eax_2 = Mem0[0x543200<32>:word32]
+          edx_3 = Mem0[0x543208<32>:word32]
 eax_2: orig: eax
-    def:  eax_2 = Mem0[0x00543200:word32]
+    def:  eax_2 = Mem0[0x543200<32>:word32]
     uses: eax_4 = eax_2 + edx_3
 edx_3: orig: edx
-    def:  edx_3 = Mem0[0x00543208:word32]
+    def:  edx_3 = Mem0[0x543208<32>:word32]
     uses: eax_4 = eax_2 + edx_3
 eax_4: orig: eax
     def:  eax_4 = eax_2 + edx_3
-    uses: Mem5[0x00642300:word32] = eax_4
+    uses: Mem5[0x642300<32>:word32] = eax_4
 Mem5: orig: Mem0
-    def:  Mem5[0x00642300:word32] = eax_4
+    def:  Mem5[0x642300<32>:word32] = eax_4
 // proc1
 // Return size: 0
 define proc1
@@ -1517,10 +1517,10 @@ proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	eax_2 = Mem0[0x00543200:word32]
-	edx_3 = Mem0[0x00543208:word32]
+	eax_2 = Mem0[0x543200<32>:word32]
+	edx_3 = Mem0[0x543208<32>:word32]
 	eax_4 = eax_2 + edx_3
-	Mem5[0x00642300:word32] = eax_4
+	Mem5[0x642300<32>:word32] = eax_4
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1548,24 +1548,24 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: edx_2 = Mem0[0x00543200:word32]
+    uses: edx_2 = Mem0[0x543200<32>:word32]
 edx_2: orig: edx
-    def:  edx_2 = Mem0[0x00543200:word32]
+    def:  edx_2 = Mem0[0x543200<32>:word32]
     uses: dl_3 = SLICE(edx_2, byte, 0) (alias)
 dl_3: orig: dl
     def:  dl_3 = SLICE(edx_2, byte, 0) (alias)
-    uses: Mem4[0x00642300:byte] = dl_3
+    uses: Mem4[0x642300<32>:byte] = dl_3
 Mem4: orig: Mem0
-    def:  Mem4[0x00642300:byte] = dl_3
-    uses: edx_5 = Mem4[0x00543208:word32]
+    def:  Mem4[0x642300<32>:byte] = dl_3
+    uses: edx_5 = Mem4[0x543208<32>:word32]
 edx_5: orig: edx
-    def:  edx_5 = Mem4[0x00543208:word32]
+    def:  edx_5 = Mem4[0x543208<32>:word32]
     uses: dl_6 = SLICE(edx_5, byte, 0) (alias)
 dl_6: orig: dl
     def:  dl_6 = SLICE(edx_5, byte, 0) (alias)
-    uses: Mem7[0x00642308:byte] = dl_6
+    uses: Mem7[0x642308<32>:byte] = dl_6
 Mem7: orig: Mem0
-    def:  Mem7[0x00642308:byte] = dl_6
+    def:  Mem7[0x642308<32>:byte] = dl_6
 // proc1
 // Return size: 0
 define proc1
@@ -1573,12 +1573,12 @@ proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	edx_2 = Mem0[0x00543200:word32]
+	edx_2 = Mem0[0x543200<32>:word32]
 	dl_3 = SLICE(edx_2, byte, 0) (alias)
-	Mem4[0x00642300:byte] = dl_3
-	edx_5 = Mem4[0x00543208:word32]
+	Mem4[0x642300<32>:byte] = dl_3
+	edx_5 = Mem4[0x543208<32>:word32]
 	dl_6 = SLICE(edx_5, byte, 0) (alias)
-	Mem7[0x00642308:byte] = dl_6
+	Mem7[0x642308<32>:byte] = dl_6
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1609,11 +1609,11 @@ proc1_exit:
     uses: C_3 = os_service(ebx, out ebx_2)
 ebx_2: orig: ebx
     def:  C_3 = os_service(ebx, out ebx_2)
-    uses: Mem4[0x00123400:word32] = ebx_2
+    uses: Mem4[0x123400<32>:word32] = ebx_2
 C_3: orig: C
     def:  C_3 = os_service(ebx, out ebx_2)
 Mem4: orig: Mem0
-    def:  Mem4[0x00123400:word32] = ebx_2
+    def:  Mem4[0x123400<32>:word32] = ebx_2
 // proc1
 // Return size: 0
 define proc1
@@ -1622,7 +1622,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	C_3 = os_service(ebx, out ebx_2)
-	Mem4[0x00123400:word32] = ebx_2
+	Mem4[0x123400<32>:word32] = ebx_2
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1656,19 +1656,19 @@ bx:bx
 Mem0:Mem
     def:  def Mem0
     uses: es_bx_4 = Mem0[es:bx:word32]
-          bx_7 = Mem0[es_bx_4 + 0x0010:word32]
+          bx_7 = Mem0[es_bx_4 + 0x10<16>:word32]
 es_bx_4: orig: es_bx
     def:  es_bx_4 = Mem0[es:bx:word32]
     uses: es_5 = SLICE(es_bx_4, word16, 16) (alias)
           bx_6 = SLICE(es_bx_4, word16, 0) (alias)
-          bx_7 = Mem0[es_bx_4 + 0x0010:word32]
+          bx_7 = Mem0[es_bx_4 + 0x10<16>:word32]
 es_5: orig: es
     def:  es_5 = SLICE(es_bx_4, word16, 16) (alias)
     uses: use es_5
 bx_6: orig: bx
     def:  bx_6 = SLICE(es_bx_4, word16, 0) (alias)
 bx_7: orig: bx
-    def:  bx_7 = Mem0[es_bx_4 + 0x0010:word32]
+    def:  bx_7 = Mem0[es_bx_4 + 0x10<16>:word32]
     uses: use bx_7
 // proc1
 // Return size: 0
@@ -1682,7 +1682,7 @@ l1:
 	es_bx_4 = Mem0[es:bx:word32]
 	es_5 = SLICE(es_bx_4, word16, 16) (alias)
 	bx_6 = SLICE(es_bx_4, word16, 0) (alias)
-	bx_7 = Mem0[es_bx_4 + 0x0010:word32]
+	bx_7 = Mem0[es_bx_4 + 0x10<16>:word32]
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1720,12 +1720,12 @@ eax_3: orig: eax
     uses: al_4 = SLICE(eax_3, byte, 0) (alias)
 al_4: orig: al
     def:  al_4 = SLICE(eax_3, byte, 0) (alias)
-    uses: Mem5[0x00123100:byte] = al_4
-          Mem6[0x00123108:byte] = al_4
+    uses: Mem5[0x00123100<p32>:byte] = al_4
+          Mem6[0x00123108<p32>:byte] = al_4
 Mem5: orig: Mem0
-    def:  Mem5[0x00123100:byte] = al_4
+    def:  Mem5[0x00123100<p32>:byte] = al_4
 Mem6: orig: Mem0
-    def:  Mem6[0x00123108:byte] = al_4
+    def:  Mem6[0x00123108<p32>:byte] = al_4
 // proc1
 // Return size: 0
 define proc1
@@ -1736,8 +1736,8 @@ proc1_entry:
 l1:
 	eax_3 = Mem0[eax:word32]
 	al_4 = SLICE(eax_3, byte, 0) (alias)
-	Mem5[0x00123100:byte] = al_4
-	Mem6[0x00123108:byte] = al_4
+	Mem5[0x00123100<p32>:byte] = al_4
+	Mem6[0x00123108<p32>:byte] = al_4
 proc1_exit:
 ======
 ";
@@ -1749,8 +1749,8 @@ proc1_exit:
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
 
                 m.Assign(eax, m.Mem32(eax));
-                m.MStore(m.Word32(0x123100), al);            // store the low-order byte
-                m.MStore(m.Word32(0x123108), al);            // ...twice.
+                m.MStore(m.Ptr32(0x123100), al);            // store the low-order byte
+                m.MStore(m.Ptr32(0x123108), al);            // ...twice.
             });
         }
 
@@ -1766,11 +1766,11 @@ proc1_exit:
         [Test(Description = "Emulates calling an imported API Win32 on MIPS")]
         public void Ssa_ConstantPropagation()
         {
-            // 0x00031234
+            // 0x31234<32>
             //this.importReferences
             var sExp =
 @"r13_1: orig: r13
-    def:  r13_1 = 0x00030000
+    def:  r13_1 = 0x30000<32>
 r12_2: orig: r12
     def:  r12_2 = ImportedFunc
 r6:r6
@@ -1785,7 +1785,7 @@ proc1_entry:
 	def r6
 	// succ:  l1
 l1:
-	r13_1 = 0x00030000
+	r13_1 = 0x30000<32>
 	r12_2 = ImportedFunc
 	r14_4 = ImportedFunc(r6)
 	return
@@ -1822,15 +1822,15 @@ proc1_exit:
             var sExp =
             #region Expected
 @"eax_1: orig: eax
-    def:  eax_1 = 0x00000000
+    def:  eax_1 = 0<32>
     uses: eax_5 = PHI((eax_1, l1), (eax_7, l2Body))
 ebx_2: orig: ebx
     def:  ebx_2 = PHI((ebx, l1), (ebx_8, l2Body))
-    uses: SCZ_3 = cond(ebx_2 - 0x00000000)
+    uses: SCZ_3 = cond(ebx_2 - 0<32>)
           eax_7 = eax_5 + Mem0[ebx_2:word32]
-          ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
+          ebx_8 = Mem0[ebx_2 + 4<32>:word32]
 SCZ_3: orig: SCZ
-    def:  SCZ_3 = cond(ebx_2 - 0x00000000)
+    def:  SCZ_3 = cond(ebx_2 - 0<32>)
     uses: Z_4 = SLICE(SCZ_3, bool, 1) (alias)
 Z_4: orig: Z
     def:  Z_4 = SLICE(SCZ_3, bool, 1) (alias)
@@ -1843,7 +1843,7 @@ eax_7: orig: eax
     def:  eax_7 = eax_5 + Mem0[ebx_2:word32]
     uses: eax_5 = PHI((eax_1, l1), (eax_7, l2Body))
 ebx_8: orig: ebx
-    def:  ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
+    def:  ebx_8 = Mem0[ebx_2 + 4<32>:word32]
     uses: ebx_2 = PHI((ebx, l1), (ebx_8, l2Body))
 ebx:ebx
     def:  def ebx
@@ -1851,7 +1851,7 @@ ebx:ebx
 Mem0:Mem
     def:  def Mem0
     uses: eax_7 = eax_5 + Mem0[ebx_2:word32]
-          ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
+          ebx_8 = Mem0[ebx_2 + 4<32>:word32]
 // proc1
 // Return size: 0
 define proc1
@@ -1860,17 +1860,17 @@ proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	eax_1 = 0x00000000
+	eax_1 = 0<32>
 	goto l3Head
 	// succ:  l3Head
 l2Body:
 	eax_7 = eax_5 + Mem0[ebx_2:word32]
-	ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
+	ebx_8 = Mem0[ebx_2 + 4<32>:word32]
 	// succ:  l3Head
 l3Head:
 	eax_5 = PHI((eax_1, l1), (eax_7, l2Body))
 	ebx_2 = PHI((ebx, l1), (ebx_8, l2Body))
-	SCZ_3 = cond(ebx_2 - 0x00000000)
+	SCZ_3 = cond(ebx_2 - 0<32>)
 	Z_4 = SLICE(SCZ_3, bool, 1) (alias)
 	branch Test(NE,Z_4) l2Body
 	// succ:  l4Exit l2Body
@@ -1912,19 +1912,19 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: cx_2 = Mem0[0x1234:word16]
+    uses: cx_2 = Mem0[0x00001234<p32>:word16]
 cx_2: orig: cx
-    def:  cx_2 = Mem0[0x1234:word16]
-    uses: Mem3[0x00001236:word16] = cx_2
+    def:  cx_2 = Mem0[0x00001234<p32>:word16]
+    uses: Mem3[0x00001236<p32>:word16] = cx_2
 Mem3: orig: Mem0
-    def:  Mem3[0x00001236:word16] = cx_2
-    uses: es_cx_4 = Mem3[0x00001238:word32]
+    def:  Mem3[0x00001236<p32>:word16] = cx_2
+    uses: es_cx_4 = Mem3[0x00001238<p32>:word32]
 es_cx_4: orig: es_cx
-    def:  es_cx_4 = Mem3[0x00001238:word32]
+    def:  es_cx_4 = Mem3[0x00001238<p32>:word32]
     uses: ch_6 = SLICE(es_cx_4, byte, 8) (alias)
           es_8 = SLICE(es_cx_4, selector, 16) (alias)
 cl_5: orig: cl
-    def:  cl_5 = 0x2D
+    def:  cl_5 = 0x2D<8>
     uses: cx_7 = SEQ(ch_6, cl_5) (alias)
 ch_6: orig: ch
     def:  ch_6 = SLICE(es_cx_4, byte, 8) (alias)
@@ -1942,12 +1942,12 @@ proc1_entry:
 	def Mem0
 	// succ:  m0
 m0:
-	cx_2 = Mem0[0x1234:word16]
-	Mem3[0x00001236:word16] = cx_2
-	es_cx_4 = Mem3[0x00001238:word32]
+	cx_2 = Mem0[0x00001234<p32>:word16]
+	Mem3[0x00001236<p32>:word16] = cx_2
+	es_cx_4 = Mem3[0x00001238<p32>:word32]
 	ch_6 = SLICE(es_cx_4, byte, 8) (alias)
 	es_8 = SLICE(es_cx_4, selector, 16) (alias)
-	cl_5 = 0x2D
+	cl_5 = 0x2D<8>
 	cx_7 = SEQ(ch_6, cl_5) (alias)
 	return
 	// succ:  proc1_exit
@@ -1958,7 +1958,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32("x86-protected-32"));
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -1968,9 +1968,9 @@ proc1_exit:
                 var es_cx = m.Frame.EnsureSequence(PrimitiveType.SegPtr32, es.Storage, cx.Storage);
 
                 m.Label("m0");
-                m.Assign(cx, m.Mem16(m.Word16(0x1234)));
-                m.MStore(m.Word32(0x1236), cx);
-                m.Assign(es_cx, m.Mem32(m.Word32(0x1238)));
+                m.Assign(cx, m.Mem16(m.Ptr32(0x1234)));
+                m.MStore(m.Ptr32(0x1236), cx);
+                m.Assign(es_cx, m.Mem32(m.Ptr32(0x1238)));
                 m.Assign(cl, m.Byte(45));
                 m.Return();
             });
@@ -1983,7 +1983,7 @@ proc1_exit:
             #region Expected
 @"r1_1: orig: r1
     def:  r1_1 = PHI((r1, proc1_entry), (r1_4, m1notdone))
-    uses: branch r1_1 == 0x00000000 m3done
+    uses: branch r1_1 == 0<32> m3done
           r1_4 = r1_1 + Mem0[r2:word32]
           use r1_1
 r1_4: orig: r1
@@ -2008,7 +2008,7 @@ proc1_entry:
 	// succ:  m0
 m0:
 	r1_1 = PHI((r1, proc1_entry), (r1_4, m1notdone))
-	branch r1_1 == 0x00000000 m3done
+	branch r1_1 == 0<32> m3done
 	// succ:  m1notdone m3done
 m1notdone:
 	r1_4 = r1_1 + Mem0[r2:word32]
@@ -2047,18 +2047,18 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: bl_2 = Mem0[0x1234:word16]
+    uses: bl_2 = Mem0[0x1234<16>:word16]
 bl_2: orig: bl
-    def:  bl_2 = Mem0[0x1234:word16]
+    def:  bl_2 = Mem0[0x1234<16>:word16]
     uses: bx_4 = SEQ(bh_3, bl_2) (alias)
 bh_3: orig: bh
-    def:  bh_3 = 0x00
+    def:  bh_3 = 0<8>
     uses: bx_4 = SEQ(bh_3, bl_2) (alias)
 bx_4: orig: bx
     def:  bx_4 = SEQ(bh_3, bl_2) (alias)
-    uses: Mem5[0x1236:word16] = bx_4
+    uses: Mem5[0x1236<16>:word16] = bx_4
 Mem5: orig: Mem0
-    def:  Mem5[0x1236:word16] = bx_4
+    def:  Mem5[0x1236<16>:word16] = bx_4
 // proc1
 // Return size: 0
 define proc1
@@ -2066,12 +2066,12 @@ proc1_entry:
 	def Mem0
 	// succ:  m0
 m0:
-	bl_2 = Mem0[0x1234:word16]
+	bl_2 = Mem0[0x1234<16>:word16]
 	// succ:  m1
 m1:
-	bh_3 = 0x00
+	bh_3 = 0<8>
 	bx_4 = SEQ(bh_3, bl_2) (alias)
-	Mem5[0x1236:word16] = bx_4
+	Mem5[0x1236<16>:word16] = bx_4
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2101,20 +2101,20 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: bl_2 = Mem0[0x1234:byte]
+    uses: bl_2 = Mem0[0x1234<16>:byte]
 bl_2: orig: bl
-    def:  bl_2 = Mem0[0x1234:byte]
-    uses: branch bl_2 > 3 m2
+    def:  bl_2 = Mem0[0x1234<16>:byte]
+    uses: branch bl_2 > 3<i32> m2
           bx_4 = (uint16) (uint8) bl_2 (alias)
           bx_8 = SEQ(bh, bl_2) (alias)
 bh_3: orig: bh
-    def:  bh_3 = 0x00
+    def:  bh_3 = 0<8>
 bx_4: orig: bx
     def:  bx_4 = (uint16) (uint8) bl_2 (alias)
-    uses: Mem5[0x1236:word16] = bx_4
+    uses: Mem5[0x1236<16>:word16] = bx_4
           bx_6 = PHI((bx_8, m0), (bx_4, m1))
 Mem5: orig: Mem0
-    def:  Mem5[0x1236:word16] = bx_4
+    def:  Mem5[0x1236<16>:word16] = bx_4
 bx_6: orig: bx
     def:  bx_6 = PHI((bx_8, m0), (bx_4, m1))
     uses: use bx_6
@@ -2132,14 +2132,14 @@ proc1_entry:
 	def bh
 	// succ:  m0
 m0:
-	bl_2 = Mem0[0x1234:byte]
+	bl_2 = Mem0[0x1234<16>:byte]
 	bx_8 = SEQ(bh, bl_2) (alias)
-	branch bl_2 > 3 m2
+	branch bl_2 > 3<i32> m2
 	// succ:  m1 m2
 m1:
-	bh_3 = 0x00
+	bh_3 = 0<8>
 	bx_4 = (uint16) (uint8) bl_2 (alias)
-	Mem5[0x1236:word16] = bx_4
+	Mem5[0x1236<16>:word16] = bx_4
 	// succ:  m2
 m2:
 	bx_6 = PHI((bx_8, m0), (bx_4, m1))
@@ -2185,13 +2185,13 @@ Mem0:Mem
     uses: bl_3 = Mem0[si:byte]
 bl_3: orig: bl
     def:  bl_3 = Mem0[si:byte]
-    uses: SCZO_4 = cond(bl_3 - 0x02)
+    uses: SCZO_4 = cond(bl_3 - 2<8>)
           bx_6 = SEQ(bh_5, bl_3) (alias)
 SCZO_4: orig: SCZO
-    def:  SCZO_4 = cond(bl_3 - 0x02)
+    def:  SCZO_4 = cond(bl_3 - 2<8>)
     uses: branch Test(UGT,SCZO_4) m2
 bh_5: orig: bh
-    def:  bh_5 = 0x00
+    def:  bh_5 = 0<8>
     uses: bx_6 = SEQ(bh_5, bl_3) (alias)
 bx_6: orig: bx
     def:  bx_6 = SEQ(bh_5, bl_3) (alias)
@@ -2199,9 +2199,9 @@ bx_6: orig: bx
           bx_7 = bx_6 + bx_6
 bx_7: orig: bx
     def:  bx_7 = bx_6 + bx_6
-    uses: Mem8[bx_7:word16] = 0x0000
+    uses: Mem8[bx_7:word16] = 0<16>
 Mem8: orig: Mem0
-    def:  Mem8[bx_7:word16] = 0x0000
+    def:  Mem8[bx_7:word16] = 0<16>
 // proc1
 // Return size: 0
 define proc1
@@ -2211,14 +2211,14 @@ proc1_entry:
 	// succ:  m0
 m0:
 	bl_3 = Mem0[si:byte]
-	SCZO_4 = cond(bl_3 - 0x02)
+	SCZO_4 = cond(bl_3 - 2<8>)
 	branch Test(UGT,SCZO_4) m2
 	// succ:  m1 m2
 m1:
-	bh_5 = 0x00
+	bh_5 = 0<8>
 	bx_6 = SEQ(bh_5, bl_3) (alias)
 	bx_7 = bx_6 + bx_6
-	Mem8[bx_7:word16] = 0x0000
+	Mem8[bx_7:word16] = 0<16>
 	// succ:  m2
 m2:
 	return
@@ -2313,17 +2313,17 @@ proc1_exit:
             #region Expected
 @"r1:r1
     def:  def r1
-    uses: r2_r1_2 = r1 *s 1431655765
-          r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
+    uses: r2_r1_2 = r1 *s 1431655765<i32>
+          r2_3 = SLICE(r1 *s 1431655765<i32>, word32, 32) (alias)
 r2_r1_2: orig: r2_r1
-    def:  r2_r1_2 = r1 *s 1431655765
+    def:  r2_r1_2 = r1 *s 1431655765<i32>
     uses: r1_5 = SLICE(r2_r1_2, word32, 0) (alias)
 r2_3: orig: r2
-    def:  r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
-    uses: Mem4[0x00040000:word32] = r2_3
+    def:  r2_3 = SLICE(r1 *s 1431655765<i32>, word32, 32) (alias)
+    uses: Mem4[0x00040000<p32>:word32] = r2_3
           use r2_3
 Mem4: orig: Mem0
-    def:  Mem4[0x00040000:word32] = r2_3
+    def:  Mem4[0x00040000<p32>:word32] = r2_3
 r1_5: orig: r1
     def:  r1_5 = SLICE(r2_r1_2, word32, 0) (alias)
     uses: use r1_5
@@ -2334,10 +2334,10 @@ proc1_entry:
 	def r1
 	// succ:  l1
 l1:
-	r2_r1_2 = r1 *s 1431655765
-	r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
+	r2_r1_2 = r1 *s 1431655765<i32>
+	r2_3 = SLICE(r1 *s 1431655765<i32>, word32, 32) (alias)
 	r1_5 = SLICE(r2_r1_2, word32, 0) (alias)
-	Mem4[0x00040000:word32] = r2_3
+	Mem4[0x00040000<p32>:word32] = r2_3
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2355,7 +2355,7 @@ proc1_exit:
                 var r2_r1 = m.Frame.EnsureSequence(PrimitiveType.Word64, r2.Storage, r1.Storage);
 
                 m.Assign(r2_r1, m.SMul(r1, c));
-                m.MStore(m.Word32(0x0040000), r2);
+                m.MStore(m.Ptr32(0x0040000), r2);
                 m.Return();
             });
         }
@@ -2367,12 +2367,12 @@ proc1_exit:
             #region Expected
 @"Mem1: orig: Mem0
     def:  Mem1 = PHI((Mem0, proc1_entry), (Mem3, m3))
-    uses: branch Mem1[0x00004010:bool] m4
-          branch Mem1[0x00004011:bool] m4
+    uses: branch Mem1[0x4010<32>:bool] m4
+          branch Mem1[0x4011<32>:bool] m4
 r1_2: orig: r1
-    def:  r1_2 = 0x00000003
+    def:  r1_2 = 3<32>
 Mem3: orig: Mem0
-    def:  Mem3[0x00004020:bool] = true
+    def:  Mem3[0x4020<32>:bool] = true
     uses: Mem1 = PHI((Mem0, proc1_entry), (Mem3, m3))
 Mem0:Mem
     def:  def Mem0
@@ -2385,17 +2385,17 @@ proc1_entry:
 	// succ:  m1
 m1:
 	Mem1 = PHI((Mem0, proc1_entry), (Mem3, m3))
-	branch Mem1[0x00004010:bool] m4
+	branch Mem1[0x4010<32>:bool] m4
 	// succ:  m2 m4
 m2:
-	branch Mem1[0x00004011:bool] m4
+	branch Mem1[0x4011<32>:bool] m4
 	// succ:  m3 m4
 m3:
-	Mem3[0x00004020:bool] = true
+	Mem3[0x4020<32>:bool] = true
 	goto m1
 	// succ:  m1
 m4:
-	r1_2 = 0x00000003
+	r1_2 = 3<32>
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2431,12 +2431,12 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: ax_2 = Mem0[0x00002000:word16]
-          bx_3 = Mem0[0x00002002:word16]
+    uses: ax_2 = Mem0[0x2000<32>:word16]
+          bx_3 = Mem0[0x2002<32>:word16]
 ax_2: orig: ax
-    def:  ax_2 = Mem0[0x00002000:word16]
+    def:  ax_2 = Mem0[0x2000<32>:word16]
 bx_3: orig: bx
-    def:  bx_3 = Mem0[0x00002002:word16]
+    def:  bx_3 = Mem0[0x2002<32>:word16]
     uses: bh_8 = SLICE(bx_3, byte, 8) (alias)
           bl_9 = SLICE(bx_3, byte, 0) (alias)
 al_5: orig: al
@@ -2444,7 +2444,7 @@ al_5: orig: al
     uses: return al_5
 bx_7: orig: bx
     def:  bx_7 = SEQ(bh_8, bl_9) (alias)
-    uses: branch bx_7 >= 0x0000 m0
+    uses: branch bx_7 >= 0<16> m0
 bh_8: orig: bh
     def:  bh_8 = SLICE(bx_3, byte, 8) (alias)
     uses: al_5 = bh_8
@@ -2459,15 +2459,15 @@ proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	ax_2 = Mem0[0x00002000:word16]
-	bx_3 = Mem0[0x00002002:word16]
+	ax_2 = Mem0[0x2000<32>:word16]
+	bx_3 = Mem0[0x2002<32>:word16]
 	bh_8 = SLICE(bx_3, byte, 8) (alias)
 	bl_9 = SLICE(bx_3, byte, 0) (alias)
 	// succ:  m0
 m0:
 	al_5 = bh_8
 	bx_7 = SEQ(bh_8, bl_9) (alias)
-	branch bx_7 >= 0x0000 m0
+	branch bx_7 >= 0<16> m0
 	// succ:  m1 m0
 m1:
 	return al_5
@@ -2689,15 +2689,15 @@ proc1_exit:
             #region Expected
                 @"Mem0:Mem
     def:  def Mem0
-    uses: al_2 = Mem0[0x1234:byte]
+    uses: al_2 = Mem0[0x1234<16>:byte]
 al_2: orig: al
-    def:  al_2 = Mem0[0x1234:byte]
-    uses: Mem4[0x1236:byte] = al_2 *u ah_3
+    def:  al_2 = Mem0[0x1234<16>:byte]
+    uses: Mem4[0x1236<16>:byte] = al_2 *u ah_3
 ah_3: orig: ah
-    def:  ah_3 = 0x03
-    uses: Mem4[0x1236:byte] = al_2 *u ah_3
+    def:  ah_3 = 3<8>
+    uses: Mem4[0x1236<16>:byte] = al_2 *u ah_3
 Mem4: orig: Mem0
-    def:  Mem4[0x1236:byte] = al_2 *u ah_3
+    def:  Mem4[0x1236<16>:byte] = al_2 *u ah_3
 // proc1
 // Return size: 0
 define proc1
@@ -2705,9 +2705,9 @@ proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	al_2 = Mem0[0x1234:byte]
-	ah_3 = 0x03
-	Mem4[0x1236:byte] = al_2 *u ah_3
+	al_2 = Mem0[0x1234<16>:byte]
+	ah_3 = 3<8>
+	Mem4[0x1236<16>:byte] = al_2 *u ah_3
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2733,9 +2733,9 @@ proc1_exit:
             var sExp =
             #region Expected
 @"Top_1: orig: Top
-    def:  Top_1 = 0x00
+    def:  Top_1 = 0<8>
 Top_2: orig: Top
-    def:  Top_2 = 0xFF
+    def:  Top_2 = 0xFF<8>
     uses: use Top_2
 ST3: orig: ST
 rLoc1_4: orig: rLoc1
@@ -2747,8 +2747,8 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	Top_1 = 0x00
-	Top_2 = 0xFF
+	Top_1 = 0<8>
+	Top_2 = 0xFF<8>
 	rLoc1_4 = 2.0
 	return
 	// succ:  proc1_exit
@@ -2782,25 +2782,25 @@ proc1_exit:
 @"fp:fp
     def:  def fp
     uses: r63_2 = fp
-          r63_3 = fp - 0x00000002
-          r63_5 = fp - 0x00000004
+          r63_3 = fp - 2<32>
+          r63_5 = fp - 4<32>
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
-    def:  r63_3 = fp - 0x00000002
+    def:  r63_3 = fp - 2<32>
 Mem4: orig: Mem0
 r63_5: orig: r63
-    def:  r63_5 = fp - 0x00000004
+    def:  r63_5 = fp - 4<32>
     uses: use r63_5
 Mem6: orig: Mem0
 r1_7: orig: r1
     def:  r1_7 = dwLoc04_10
     uses: use r1_7
 wLoc02_8: orig: wLoc02
-    def:  wLoc02_8 = 0x1234
+    def:  wLoc02_8 = 0x1234<16>
     uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
 wLoc04_9: orig: wLoc04
-    def:  wLoc04_9 = 0x5678
+    def:  wLoc04_9 = 0x5678<16>
     uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
 dwLoc04_10: orig: dwLoc04
     def:  dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
@@ -2813,10 +2813,10 @@ proc1_entry:
 	// succ:  l1
 l1:
 	r63_2 = fp
-	r63_3 = fp - 0x00000002
-	wLoc02_8 = 0x1234
-	r63_5 = fp - 0x00000004
-	wLoc04_9 = 0x5678
+	r63_3 = fp - 2<32>
+	wLoc02_8 = 0x1234<16>
+	r63_5 = fp - 4<32>
+	wLoc04_9 = 0x5678<16>
 	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
 	r1_7 = dwLoc04_10
 	return
@@ -2853,11 +2853,11 @@ proc1_exit:
 @"fp:fp
     def:  def fp
     uses: r63_2 = fp
-          r63_3 = fp - 0x00000004
+          r63_3 = fp - 4<32>
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
-    def:  r63_3 = fp - 0x00000004
+    def:  r63_3 = fp - 4<32>
     uses: use r63_3
 r1:r1
     def:  def r1
@@ -2869,7 +2869,7 @@ t2_7: orig: t2
 dwLoc04_8: orig: dwLoc04
     def:  dwLoc04_8 = r1
 wLoc04_9: orig: wLoc04
-    def:  wLoc04_9 = 0x0000
+    def:  wLoc04_9 = 0<16>
     uses: t2_7 = wLoc04_9
 // proc1
 // Return size: 0
@@ -2880,9 +2880,9 @@ proc1_entry:
 	// succ:  l1
 l1:
 	r63_2 = fp
-	r63_3 = fp - 0x00000004
+	r63_3 = fp - 4<32>
 	dwLoc04_8 = r1
-	wLoc04_9 = 0x0000
+	wLoc04_9 = 0<16>
 	t2_7 = wLoc04_9
 	return
 	// succ:  proc1_exit
@@ -2945,26 +2945,26 @@ r63_2: orig: r63
     uses: use r63_2
 Mem0:Mem
     def:  def Mem0
-    uses: ax_4 = Mem0[0x00123400:word16]
+    uses: ax_4 = Mem0[0x123400<32>:word16]
 ax_4: orig: ax
-    def:  ax_4 = Mem0[0x00123400:word16]
-    uses: Mem5[0x00123402:word16] = ax_4
+    def:  ax_4 = Mem0[0x123400<32>:word16]
+    uses: Mem5[0x123402<32>:word16] = ax_4
 Mem5: orig: Mem0
-    def:  Mem5[0x00123402:word16] = ax_4
-    uses: al_6 = Mem5[0x00123404:byte]
-          ah_7 = Mem5[0x00123405:byte]
+    def:  Mem5[0x123402<32>:word16] = ax_4
+    uses: al_6 = Mem5[0x123404<32>:byte]
+          ah_7 = Mem5[0x123405<32>:byte]
 al_6: orig: al
-    def:  al_6 = Mem5[0x00123404:byte]
-    uses: Mem8[0x00123406:byte] = al_6
+    def:  al_6 = Mem5[0x123404<32>:byte]
+    uses: Mem8[0x123406<32>:byte] = al_6
           ax_10 = SEQ(ah_7, al_6) (alias)
 ah_7: orig: ah
-    def:  ah_7 = Mem5[0x00123405:byte]
-    uses: Mem9[0x00123407:byte] = ah_7
+    def:  ah_7 = Mem5[0x123405<32>:byte]
+    uses: Mem9[0x123407<32>:byte] = ah_7
           ax_10 = SEQ(ah_7, al_6) (alias)
 Mem8: orig: Mem0
-    def:  Mem8[0x00123406:byte] = al_6
+    def:  Mem8[0x123406<32>:byte] = al_6
 Mem9: orig: Mem0
-    def:  Mem9[0x00123407:byte] = ah_7
+    def:  Mem9[0x123407<32>:byte] = ah_7
 ax_10: orig: ax
     def:  ax_10 = SEQ(ah_7, al_6) (alias)
     uses: use ax_10
@@ -2977,12 +2977,12 @@ proc1_entry:
 	// succ:  l1
 l1:
 	r63_2 = fp
-	ax_4 = Mem0[0x00123400:word16]
-	Mem5[0x00123402:word16] = ax_4
-	al_6 = Mem5[0x00123404:byte]
-	ah_7 = Mem5[0x00123405:byte]
-	Mem8[0x00123406:byte] = al_6
-	Mem9[0x00123407:byte] = ah_7
+	ax_4 = Mem0[0x123400<32>:word16]
+	Mem5[0x123402<32>:word16] = ax_4
+	al_6 = Mem5[0x123404<32>:byte]
+	ah_7 = Mem5[0x123405<32>:byte]
+	Mem8[0x123406<32>:byte] = al_6
+	Mem9[0x123407<32>:byte] = ah_7
 	ax_10 = SEQ(ah_7, al_6) (alias)
 	return
 	// succ:  proc1_exit
@@ -3020,32 +3020,32 @@ proc1_exit:
             var sExp =
             #region Expected
 @"eax_1: orig: eax
-    def:  eax_1 = 0x00000004
+    def:  eax_1 = 4<32>
     uses: eax_24_8_13 = SLICE(eax_1, word24, 8) (alias)
 Mem2: orig: Mem0
-    def:  Mem2[0x00123400:word32] = 0x00000004
-    uses: al_3 = Mem2[0x00123408:byte]
+    def:  Mem2[0x123400<32>:word32] = 4<32>
+    uses: al_3 = Mem2[0x123408<32>:byte]
 al_3: orig: al
-    def:  al_3 = Mem2[0x00123408:byte]
-    uses: SCZ_4 = cond(al_3 - 0x30)
-          SCZ_5 = cond(al_3 - 0x39)
+    def:  al_3 = Mem2[0x123408<32>:byte]
+    uses: SCZ_4 = cond(al_3 - 0x30<8>)
+          SCZ_5 = cond(al_3 - 0x39<8>)
 SCZ_4: orig: SCZ
-    def:  SCZ_4 = cond(al_3 - 0x30)
+    def:  SCZ_4 = cond(al_3 - 0x30<8>)
     uses: branch Test(LT,SCZ_4) m4_not_number
           C_11 = SLICE(SCZ_4, bool, 1) (alias)
           S_20 = SLICE(SCZ_4, bool, 0) (alias)
           Z_24 = SLICE(SCZ_4, bool, 2) (alias)
 SCZ_5: orig: SCZ
-    def:  SCZ_5 = cond(al_3 - 0x39)
+    def:  SCZ_5 = cond(al_3 - 0x39<8>)
     uses: branch Test(GT,SCZ_5) m4_not_number
           C_9 = SLICE(SCZ_5, bool, 1) (alias)
           S_18 = SLICE(SCZ_5, bool, 0) (alias)
           Z_22 = SLICE(SCZ_5, bool, 2) (alias)
 al_6: orig: al
-    def:  al_6 = 0x00
+    def:  al_6 = 0<8>
     uses: eax_16 = SEQ(eax_24_8_13, al_6) (alias)
 al_7: orig: al
-    def:  al_7 = 0x01
+    def:  al_7 = 1<8>
     uses: eax_14 = SEQ(eax_24_8_13, al_7) (alias)
 C_8: orig: C
     def:  C_8 = PHI((C_9, m2_number), (C_10, m4_not_number))
@@ -3105,25 +3105,25 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	eax_1 = 0x00000004
+	eax_1 = 4<32>
 	eax_24_8_13 = SLICE(eax_1, word24, 8) (alias)
-	Mem2[0x00123400:word32] = 0x00000004
-	al_3 = Mem2[0x00123408:byte]
-	SCZ_4 = cond(al_3 - 0x30)
+	Mem2[0x123400<32>:word32] = 4<32>
+	al_3 = Mem2[0x123408<32>:byte]
+	SCZ_4 = cond(al_3 - 0x30<8>)
 	C_11 = SLICE(SCZ_4, bool, 1) (alias)
 	S_20 = SLICE(SCZ_4, bool, 0) (alias)
 	Z_24 = SLICE(SCZ_4, bool, 2) (alias)
 	branch Test(LT,SCZ_4) m4_not_number
 	// succ:  m1_maybe_number m4_not_number
 m1_maybe_number:
-	SCZ_5 = cond(al_3 - 0x39)
+	SCZ_5 = cond(al_3 - 0x39<8>)
 	C_9 = SLICE(SCZ_5, bool, 1) (alias)
 	S_18 = SLICE(SCZ_5, bool, 0) (alias)
 	Z_22 = SLICE(SCZ_5, bool, 2) (alias)
 	branch Test(GT,SCZ_5) m4_not_number
 	// succ:  m2_number m4_not_number
 m2_number:
-	al_7 = 0x01
+	al_7 = 1<8>
 	eax_14 = SEQ(eax_24_8_13, al_7) (alias)
 	return
 	// succ:  proc1_exit
@@ -3131,7 +3131,7 @@ m4_not_number:
 	Z_23 = PHI((Z_24, l1), (Z_22, m1_maybe_number))
 	S_19 = PHI((S_20, l1), (S_18, m1_maybe_number))
 	C_10 = PHI((C_11, l1), (C_9, m1_maybe_number))
-	al_6 = 0x00
+	al_6 = 0<8>
 	eax_16 = SEQ(eax_24_8_13, al_6) (alias)
 	return
 	// succ:  proc1_exit
@@ -3213,22 +3213,22 @@ proc1_exit:
 	def Mem0
 	goto init
 check_failed:
-	a_7 = a_2 + 0x00000001
+	a_7 = a_2 + 1<32>
 done:
 	a_8 = PHI((a_7, check_failed), (a_2, head))
-	Mem9[0x00005678:word32] = a_8
+	Mem9[0x5678<32>:word32] = a_8
 	return
 head:
 	b_4 = PHI((b_3, init), (b_6, loop))
 	branch b_4 >= a_2 done
 	goto loop
 init:
-	a_2 = Mem0[0x00001234:word32]
-	b_3 = 0x00000000
-	branch a_2 <= 0x0000000A head
+	a_2 = Mem0[0x1234<32>:word32]
+	b_3 = 0<32>
+	branch a_2 <= 0xA<32> head
 	goto check_failed
 loop:
-	b_6 = b_4 + 0x00000001
+	b_6 = b_4 + 1<32>
 	goto head
 proc_exit:
 ";
@@ -3249,7 +3249,7 @@ proc_exit:
 
                 m.Label("init");
                 m.Assign(rLocal, a);
-                m.Assign(a, m.Mem32(m.Word32(0x100)));
+                m.Assign(a, m.Mem32(m.Ptr32(0x100)));
                 m.Goto("looptest");
 
                 m.Label("again");
@@ -3280,23 +3280,23 @@ proc_exit:
 	def Mem0
 	goto init
 again:
-	branch a_7 != 0x00000000 looptest
+	branch a_7 != 0<32> looptest
 	goto failed
 done:
 	a_10 = rLoc8_2
 exit:
-	Mem12[0x00000300:real32] = rLoc8_2
+	Mem12[0x300<32>:real32] = rLoc8_2
 	return
 failed:
-	a_8 = 0x000000FF
+	a_8 = 0xFF<32>
 	goto exit
 init:
 	rLoc8_2 = a
-	a_4 = Mem0[0x00000100:word32]
+	a_4 = Mem0[0x00000100<p32>:word32]
 looptest:
 	a_5 = PHI((a_4, init), (a_7, again))
 	a_7 = a_5 + Mem0[a_5:word32]
-	branch a_7 != 0x00000020 again
+	branch a_7 != 0x20<32> again
 	goto done
 proc_exit:
 ";
@@ -3351,8 +3351,8 @@ proc_exit:
 	r1_2 = r2
 	r2_5 = r1
 l1:
-	Mem3[0x00123400:byte] = (byte) r1_2
-	Mem6[0x00123404:real32] = (real32) r2_5
+	Mem3[0x123400<32>:byte] = (byte) r1_2
+	Mem6[0x123404<32>:real32] = (real32) r2_5
 	return
 test_exit:
 ";
@@ -3400,8 +3400,8 @@ test_exit:
 body:
 	a_3 = dwArg04_8
 	b_4 = dwArg08_9
-	Mem5[0x00005678:word32] = a_3
-	Mem6[0x0000567C:word32] = b_4
+	Mem5[0x5678<32>:word32] = a_3
+	Mem6[0x567C<32>:word32] = b_4
 	return
 proc_exit:
 ";
@@ -3426,7 +3426,7 @@ proc_exit:
                 m.Label("body");
                 m.Assign(a, m.Mem32(m.IAdd(fp, 4)));
                 m.Assign(a, m.And(a, 0xFF));
-                m.MStore(m.Word32(0x5678), a);
+                m.MStore(m.Ptr32(0x5678), a);
                 m.Return();
             });
             proc.Signature = FunctionType.Action(
@@ -3449,8 +3449,8 @@ proc_exit:
 	dwArg04_8 = DPB(dwArg04, byteArg, 0)
 body:
 	a_3 = dwArg04_8
-	a_4 = a_3 & 0x000000FF
-	Mem5[0x00005678:word32] = a_4
+	a_4 = a_3 & 0xFF<32>
+	Mem5[0x00005678<p32>:word32] = a_4
 	return
 proc_exit:
 ";
@@ -3466,8 +3466,8 @@ proc_exit:
                 var global = Identifier.Global("gbl", PrimitiveType.Word32);
 
                 m.Label("body");
-                m.MStore(m.Word32(0x5678), m.Mem32(m.Word32(0x1234)));
-                m.MStore(m.Word32(0x1234), global);
+                m.MStore(m.Ptr32(0x5678), m.Mem32(m.Word32(0x1234)));
+                m.MStore(m.Ptr32(0x1234), global);
                 m.Return();
             });
 
@@ -3479,8 +3479,8 @@ proc_exit:
 	def Mem0
 	def gbl
 body:
-	Mem2[0x00005678:word32] = Mem0[0x00001234:word32]
-	Mem4[0x00001234:word32] = gbl
+	Mem2[0x00005678<p32>:word32] = Mem0[0x1234<32>:word32]
+	Mem4[0x00001234<p32>:word32] = gbl
 	return
 proc_exit:
 ";
@@ -3501,7 +3501,7 @@ proc_exit:
                 m.Label("body");
                 m.Assign(Top, 0);
                 m.Call("fn", 4);
-                m.MStore(m.Word32(0x1234), m.Mem(ST, PrimitiveType.Real64, Top));
+                m.MStore(m.Ptr32(0x1234), m.Mem(ST, PrimitiveType.Real64, Top));
                 m.Assign(Top, m.IAdd(Top, 1));
                 m.Return();
             });
@@ -3523,13 +3523,13 @@ proc_exit:
             #region Expected
 @"main_entry:
 body:
-	Top_1 = 0x00
+	Top_1 = 0<8>
 	call fn (retsize: 4;)
 		defs: FPU -1:rRet0_2
-	ST3[Top_1 - 0x01:real64] = rRet0_2
-	Top_4 = Top_1 - 1
-	Mem5[0x00001234:real64] = ST3[Top_4:real64]
-	Top_6 = Top_4 + 0x01
+	ST3[Top_1 - 1<8>:real64] = rRet0_2
+	Top_4 = Top_1 - 1<i8>
+	Mem5[0x00001234<p32>:real64] = ST3[Top_4:real64]
+	Top_6 = Top_4 + 1<8>
 	return
 main_exit:
 ";
@@ -3560,12 +3560,12 @@ main_exit:
 @"proc_entry:
 	def fp
 body:
-	qwLoc08_6 = 0x0000000000005678
+	qwLoc08_6 = 0x5678<64>
 	dwLoc04_9 = SLICE(qwLoc08_6, word32, 32) (alias)
-	dwLoc08_7 = 0x00001234
-	dwLoc08_8 = dwLoc08_7 + 0x00000001
+	dwLoc08_7 = 0x1234<32>
+	dwLoc08_8 = dwLoc08_7 + 1<32>
 	qwLoc08_10 = SEQ(dwLoc04_9, dwLoc08_8) (alias)
-	Mem5[0x0000567C:word64] = qwLoc08_10
+	Mem5[0x567C<32>:word64] = qwLoc08_10
 	return
 proc_exit:
 ";
@@ -3625,37 +3625,37 @@ proc_exit:
 @"proc_entry:
 	def Mem0
 body:
-	a_2 = Mem0[0x00001234:word32]
+	a_2 = Mem0[0x1234<32>:word32]
 	goto head
 break:
-	Mem7[0x00005001:word32] = 0x00001111
+	Mem7[0x5001<32>:word32] = 0x1111<32>
 	goto follow
 failed:
-	Mem6[0x00005002:word32] = 0x00002222
+	Mem6[0x5002<32>:word32] = 0x2222<32>
 	goto head
 firstAndSecondFailed:
 	goto failed
 firstCondition:
-	branch Mem3[0x00000001:word32]() thirdCondition
+	branch Mem3[1<32>:word32]() thirdCondition
 	goto secondCondition
 follow:
-	Mem8[0x0000567C:word32] = 0x00004444
+	Mem8[0x567C<32>:word32] = 0x4444<32>
 	goto return
 head:
 	Mem3 = PHI((Mem0, body), (Mem6, failed))
-	branch Mem3[0x0000000F:word32]() firstCondition
+	branch Mem3[0xF<32>:word32]() firstCondition
 	goto break
 return:
-	Mem13[0x0000567C:word32] = a_2
+	Mem13[0x567C<32>:word32] = a_2
 	return
 secondCondition:
-	branch Mem3[0x00000002:word32]() thirdCondition
+	branch Mem3[2<32>:word32]() thirdCondition
 	goto firstAndSecondFailed
 success:
-	Mem5[0x0000567C:word32] = 0x00003333
+	Mem5[0x567C<32>:word32] = 0x3333<32>
 	goto return
 thirdCondition:
-	branch Mem3[0x00000003:word32]() success
+	branch Mem3[3<32>:word32]() success
 	goto failed
 proc_exit:
 ";
@@ -3695,17 +3695,17 @@ proc_exit:
 @"proc_entry:
 	def Mem0
 body:
-	a_2 = Mem0[0x00001234:word32]
-	branch Mem0[0x00000001:word32]() return
+	a_2 = Mem0[0x1234<32>:word32]
+	branch Mem0[1<32>:word32]() return
 head:
 	Mem3 = PHI((Mem0, body), (Mem8, loopBody))
-	branch Mem3[0x00000002:word32]() return
+	branch Mem3[2<32>:word32]() return
 loopBody:
-	Mem8[0x00005002:word32] = 0x00002222
+	Mem8[0x5002<32>:word32] = 0x2222<32>
 	goto head
 return:
-	Mem6[0x0000567C:word32] = a_2
-	a_7 = Mem6[0x00005002:word32]
+	Mem6[0x567C<32>:word32] = a_2
+	a_7 = Mem6[0x5002<32>:word32]
 	return
 proc_exit:
 	use a_7
@@ -3729,11 +3729,11 @@ proc_exit:
                 var fp = m.Frame.FramePointer;
                 m.Assign(sp, fp);
                 m.Assign(sp, m.ISubS(fp, 12));  // make space on stack
-                m.Assign(r1, m.Mem32(m.Word32(0x00123400)));
+                m.Assign(r1, m.Mem32(m.Ptr32(0x00123400)));
                 m.MStore(m.ISubS(fp, 12), r1);
-                m.Assign(r1, m.Mem32(m.Word32(0x00123404)));
+                m.Assign(r1, m.Mem32(m.Ptr32(0x00123404)));
                 m.MStore(m.ISubS(fp, 8), r1);
-                m.Assign(r1, m.Mem32(m.Word32(0x00123408)));
+                m.Assign(r1, m.Mem32(m.Ptr32(0x00123408)));
                 m.MStore(m.ISubS(fp, 4), r1);
 
                 m.Assign(fp0, m.Mem(fp0.DataType, m.ISubS(fp, 12)));
@@ -3750,12 +3750,12 @@ proc_exit:
 	def Mem0
 l1:
 	r63_2 = fp
-	r63_3 = fp - 12
-	r1_5 = Mem0[0x00123400:word32]
+	r63_3 = fp - 12<i32>
+	r1_5 = Mem0[0x00123400<p32>:word32]
 	dwLoc0C_12 = r1_5
-	r1_7 = Mem6[0x00123404:word32]
+	r1_7 = Mem6[0x00123404<p32>:word32]
 	dwLoc08_13 = r1_7
-	r1_9 = Mem8[0x00123408:word32]
+	r1_9 = Mem8[0x00123408<p32>:word32]
 	dwLoc04_14 = r1_9
 	nLoc0C_15 = SEQ(dwLoc0C_12, dwLoc08_13, dwLoc04_14) (alias)
 	fp0_11 = nLoc0C_15
@@ -3789,10 +3789,10 @@ Ssa96BitStackLocal_exit:
 @"SsaDpb_entry:
 	def Mem0
 l1:
-	bl_2 = Mem0[0x1234:byte]
-	bh_3 = Mem0[0x1235:byte]
+	bl_2 = Mem0[0x1234<p16>:byte]
+	bh_3 = Mem0[0x1235<p16>:byte]
 	bx_4 = SEQ(bh_3, bl_2) (alias)
-	Mem5[bx_4:word16] = 0x0042
+	Mem5[bx_4:word16] = 0x42<16>
 	return
 SsaDpb_exit:
 ";
@@ -3822,10 +3822,10 @@ SsaDpb_exit:
 @"SsaOverlappedStackIntervals_entry:
 	def fp
 l1:
-	qwLoc08_6 = 0x1234567800000000
-	Mem3[0x000000AB:word64] = qwLoc08_6
-	dwLoc04_7 = 0x12340000
-	Mem5[0x000000CD:word32] = dwLoc04_7
+	qwLoc08_6 = 0x1234567800000000<64>
+	Mem3[0xAB<32>:word64] = qwLoc08_6
+	dwLoc04_7 = 0x12340000<32>
+	Mem5[0xCD<32>:word32] = dwLoc04_7
 	return
 SsaOverlappedStackIntervals_exit:
 ";
@@ -3867,17 +3867,17 @@ SsaOverlappedStackIntervals_exit:
 	def fp
 	def nLoc03
 b_init:
-	branch byte == 0x00 b1
+	branch byte == 0<8> b1
 b0:
-	byte_3 = 0x00
+	byte_3 = 0<8>
 	goto finalize
 b1:
-	byte_2 = 0x01
+	byte_2 = 1<8>
 finalize:
 	byte_4 = PHI((byte_3, b0), (byte_2, b1))
 	bLoc04_9 = byte_4
 	dwLoc04_12 = SEQ(nLoc03, bLoc04_9) (alias)
-	byte_8 = dwLoc04_12 & 0x000000FF
+	byte_8 = dwLoc04_12 & 0xFF<32>
 	return
 SsaLocalStackSlice_exit:
 ";
@@ -3923,12 +3923,12 @@ b_init:
 	wLoc02_8 = a
 	wLoc04_9 = b
 	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
-	branch b == 0x0000 b1
+	branch b == 0<16> b1
 b0:
-	Mem7[0x0000000A:word32] = dwLoc04_10
+	Mem7[0xA<32>:word32] = dwLoc04_10
 	goto finalize
 b1:
-	Mem6[0x0000000B:word32] = dwLoc04_10
+	Mem6[0xB<32>:word32] = dwLoc04_10
 finalize:
 	return
 SsaLocalStackCommonSequence_exit:
@@ -3970,7 +3970,7 @@ SsaLocalStackCommonSequence_exit:
 @"SsaDoNotSearchImportedProcInFpuStack_entry:
 	def FakeST
 init:
-	a_2 = FakeST[0x00000001:word32]
+	a_2 = FakeST[1<32>:word32]
 	return
 SsaDoNotSearchImportedProcInFpuStack_exit:
 ";
@@ -4012,7 +4012,7 @@ r0_5: orig: r0
     def:  r0_5 = DPB(r0, v3_3, 0)
     uses: use r0_5
 wLoc04_6: orig: wLoc04
-    def:  wLoc04_6 = 0x0001
+    def:  wLoc04_6 = 1<16>
     uses: bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
 bLoc04_7: orig: bLoc04
     def:  bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
@@ -4025,7 +4025,7 @@ proc1_entry:
 	def r0
 	// succ:  l1
 l1:
-	wLoc04_6 = 0x0001
+	wLoc04_6 = 1<16>
 	bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
 	v3_3 = bLoc04_7
 	r0_5 = DPB(r0, v3_3, 0)
@@ -4064,7 +4064,7 @@ r0_5: orig: r0
     def:  r0_5 = DPB(r0, v3_3, 0)
     uses: use r0_5
 wLoc04_6: orig: wLoc04
-    def:  wLoc04_6 = 0x0001
+    def:  wLoc04_6 = 1<16>
     uses: bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
 bLoc04_7: orig: bLoc04
     def:  bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
@@ -4077,7 +4077,7 @@ proc1_entry:
 	def r0
 	// succ:  l1
 l1:
-	wLoc04_6 = 0x0001
+	wLoc04_6 = 1<16>
 	bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
 	v3_3 = bLoc04_7
 	r0_5 = DPB(r0, v3_3, 0)
@@ -4124,9 +4124,9 @@ proc1_exit:
 @"SsaSequenceInALoop_entry:
 	def fp
 l1:
-	dwLoc08_12 = 0x3FF00000
-	dwLoc04_13 = 0x00000000
-	r1_4 = 0x00000000
+	dwLoc08_12 = 0x3FF00000<32>
+	dwLoc04_13 = 0<32>
+	r1_4 = 0<32>
 	qwLoc08_16 = SEQ(dwLoc04_13, dwLoc08_12) (alias)
 m0:
 	qwLoc08_14 = PHI((qwLoc08_16, l1), (qwLoc08_15, m0))
@@ -4135,8 +4135,8 @@ m0:
 	f1_7 = qwLoc08_14
 	f1_9 = f1_7 * (real64) r1_8
 	qwLoc08_15 = f1_9
-	r1_11 = r1_8 + 1
-	branch r1_11 != 0x0000000A m0
+	r1_11 = r1_8 + 1<i32>
+	branch r1_11 != 0xA<32> m0
 m1:
 	return
 SsaSequenceInALoop_exit:
@@ -4293,9 +4293,9 @@ proc1_exit:
             #region Expected
 @"Mem0:Mem
     def:  def Mem0
-    uses: al_2 = Mem0[0x00123400:byte]
+    uses: al_2 = Mem0[0x123400<32>:byte]
 al_2: orig: al
-    def:  al_2 = Mem0[0x00123400:byte]
+    def:  al_2 = Mem0[0x123400<32>:byte]
     uses: return al_2
 // proc1
 // Return size: 0
@@ -4304,7 +4304,7 @@ proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	al_2 = Mem0[0x00123400:byte]
+	al_2 = Mem0[0x123400<32>:byte]
 	return al_2
 	// succ:  proc1_exit
 proc1_exit:
@@ -4330,7 +4330,7 @@ proc1_exit:
             #region Expected
 @"r1:r1
     def:  def r1
-    uses: branch r1 == 0x00000000 m2
+    uses: branch r1 == 0<32> m2
           r1_2 = r1 (alias)
           r1_5 = r1 (alias)
 r1_2: orig: r1
@@ -4361,7 +4361,7 @@ proc1_entry:
 	def r2
 	// succ:  l1
 l1:
-	branch r1 == 0x00000000 m2
+	branch r1 == 0<32> m2
 	// succ:  m1 m2
 m1:
 	r2_3 = r2 (alias)
@@ -4400,10 +4400,10 @@ proc1_exit:
             var sExp =
             #region Expected
 @"r2_1: orig: r2
-    def:  r2_1 = 0x00123400
+    def:  r2_1 = 0x123400<32>
     uses: call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
 r4_2: orig: r4
-    def:  r4_2 = 0x00BCDE00
+    def:  r4_2 = 0xBCDE00<32>
     uses: call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
 r1:r1
     def:  def r1
@@ -4418,8 +4418,8 @@ proc1_entry:
 	def r1
 	// succ:  l1
 l1:
-	r2_1 = 0x00123400
-	r4_2 = 0x00BCDE00
+	r2_1 = 0x123400<32>
+	r4_2 = 0xBCDE00<32>
 	call r1 (retsize: 0;)
 		uses: r1:r1,r2:r2_1,r4:r4_2
 		defs: r2:r2_4
@@ -4453,19 +4453,19 @@ proc1_exit:
 Mem0:Mem
     def:  def Mem0
 Mem3: orig: Mem0
-    def:  Mem3[0x00123400:word32] = dwArg08_6
+    def:  Mem3[0x123400<32>:word32] = dwArg08_6
 Mem4: orig: Mem0
-    def:  Mem4[0x00123404:word32] = dwArg0C_7
+    def:  Mem4[0x123404<32>:word32] = dwArg0C_7
 rArg08:Stack +0008
     def:  def rArg08
     uses: dwArg08_6 = SLICE(rArg08, word32, 32)
           dwArg0C_7 = SLICE(rArg08, word32, 0)
 dwArg08_6: orig: dwArg08
     def:  dwArg08_6 = SLICE(rArg08, word32, 32)
-    uses: Mem3[0x00123400:word32] = dwArg08_6
+    uses: Mem3[0x123400<32>:word32] = dwArg08_6
 dwArg0C_7: orig: dwArg0C
     def:  dwArg0C_7 = SLICE(rArg08, word32, 0)
-    uses: Mem4[0x00123404:word32] = dwArg0C_7
+    uses: Mem4[0x123404<32>:word32] = dwArg0C_7
 // proc1
 // Return size: 0
 void proc1(real64 rArg08)
@@ -4477,8 +4477,8 @@ proc1_entry:
 	dwArg0C_7 = SLICE(rArg08, word32, 0)
 	// succ:  l1
 l1:
-	Mem3[0x00123400:word32] = dwArg08_6
-	Mem4[0x00123404:word32] = dwArg0C_7
+	Mem3[0x123400<32>:word32] = dwArg08_6
+	Mem4[0x123404<32>:word32] = dwArg0C_7
 proc1_exit:
 ======
 ";

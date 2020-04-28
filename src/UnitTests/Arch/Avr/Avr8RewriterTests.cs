@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0xBE16); // "out\t36,r1"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|__out(0x36, r1)");
+                "1|L--|__out(0x36<8>, r1)");
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0xB617); // "in\tr1,37"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|r1 = __in(0x37)");
+                "1|L--|r1 = __in(0x37<8>)");
             Given_UInt16s(0xB61F); // "in\tr1,3F"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0xE5CF); // "ldi\tr28,5F"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|r28 = 0x5F");
+                "1|L--|r28 = 0x5F<8>");
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x93DF); // "push\tr29"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|SP = SP - 1",
+                "1|L--|SP = SP - 1<i16>",
                 "2|L--|Mem0[SP:byte] = r29");
         }
 
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|r28 = Mem0[SP:byte]",
-                "2|L--|SP = SP + 1");
+                "2|L--|SP = SP + 1<i16>");
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9403); // "inc\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = r0 + 1",
+                "1|L--|r0 = r0 + 1<i8>",
                 "2|L--|SVNZ = cond(r0)");
         }
 
@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9405); // "asr\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = r0 >> 0x01",
+                "1|L--|r0 = r0 >> 1<8>",
                 "2|L--|SVNZC = cond(r0)");
         }
 
@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9406); // "lsr\tr0"
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|r0 = r0 >>u 0x01",
+                "1|L--|r0 = r0 >>u 1<8>",
                 "2|L--|SVZC = cond(r0)",
                 "3|L--|N = false");
         }
@@ -228,7 +228,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9407); // "ror\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = __rcr(r0, 1, C)",
+                "1|L--|r0 = __rcr(r0, 1<i32>, C)",
                 "2|L--|HSVNZC = cond(r0)");
         }
 
@@ -256,7 +256,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x940A); // "dec\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = r0 - 1",
+                "1|L--|r0 = r0 - 1<i8>",
                 "2|L--|SVNZ = cond(r0)");
         }
 
@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x940B); // "des\t00"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|__des(0x00, H)");
+                "1|L--|__des(0<8>, H)");
         }
 
         [Test]
@@ -293,7 +293,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x30A9); // "cpi\tr26,09"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|HSVNZC = r26 - 0x09");
+                "1|L--|HSVNZC = r26 - 9<8>");
         }
 
         [Test]
@@ -333,7 +333,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9601); // "adiw\tr24,01"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r25_r24 = r25_r24 + 0x0001");
+                "1|L--|r25_r24 = r25_r24 + 1<16>");
         }
 
         [Test]
@@ -352,7 +352,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9210, 0x1234); // "sts\t1234,r1"
             AssertCode(
                 "0|L--|0100(4): 1 instructions",
-                "1|L--|Mem0[0x1234:byte] = r1");
+                "1|L--|Mem0[0x1234<p16>:byte] = r1");
         }
 
         [Test]
@@ -371,7 +371,7 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|Mem0[z:byte] = r9",
-                "2|L--|z = z + 1");
+                "2|L--|z = z + 1<i16>");
         }
 
         [Test]
@@ -380,10 +380,10 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9BA8, 0x9291); // "sbis\t05,00; "st\tZ+,r9
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|if (__bit_set(__in(0x05), 0x00)) branch 0104",
+                "1|T--|if (__bit_set(__in(5<8>), 0<8>)) branch 0104",
                 "2|L--|0102(2): 2 instructions",
                 "3|L--|Mem0[z:byte] = r9",
-                "4|L--|z = z + 1");
+                "4|L--|z = z + 1<i16>");
         }
 
         [Test]
@@ -401,7 +401,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9120, 0x0080); // "lds\tr18,0080"
             AssertCode(
                 "0|L--|0100(4): 1 instructions",
-                "1|L--|r18 = Mem0[0x0080:byte]");
+                "1|L--|r18 = Mem0[0x0080<p16>:byte]");
         }
 
         [Test]
@@ -415,7 +415,7 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(
                   "0|L--|0100(2): 2 instructions",
                   "1|L--|r25 = Mem0[code:z:byte]",
-                  "2|L--|z = z + 1");
+                  "2|L--|z = z + 1<i16>");
         }
 
         [Test]
@@ -435,7 +435,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x818E);	// ldd	r24,y+06
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|r24 = Mem0[y + 6:byte]");
+                "1|L--|r24 = Mem0[y + 6<i16>:byte]");
         }
 
                 [Test]
@@ -444,7 +444,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x8964);	
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|r22 = Mem0[z + 20:byte]");
+                "1|L--|r22 = Mem0[z + 20<i16>:byte]");
         }
 
         [Test]
@@ -453,7 +453,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x8213);	// std	z+0B,r1
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|Mem0[z + 3:byte] = r1");
+                "1|L--|Mem0[z + 3<i16>:byte] = r1");
         }
 
         [Test]
@@ -471,9 +471,9 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0xFF84, 0x8213);	// sbrs	r24,04; std	z+0B,r1
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|if ((r24 & 0x10) != 0x00) branch 0104",
+                "1|T--|if ((r24 & 0x10<8>) != 0<8>) branch 0104",
                 "2|L--|0102(2): 1 instructions",
-                "3|L--|Mem0[z + 3:byte] = r1");
+                "3|L--|Mem0[z + 3<i16>:byte] = r1");
         }
 
 
@@ -483,9 +483,9 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0xFD84, 0x8213);	// sbrc	r24,04; std	z+0B,r1
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|if ((r24 & 0x10) == 0x00) branch 0104",
+                "1|T--|if ((r24 & 0x10<8>) == 0<8>) branch 0104",
                 "2|L--|0102(2): 1 instructions",
-                "3|L--|Mem0[z + 3:byte] = r1");
+                "3|L--|Mem0[z + 3<i16>:byte] = r1");
         }
 
         [Test]
@@ -495,8 +495,8 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|r1_r0 = r30 *s r18",
-                "2|L--|C = r1_r0 < 0x0000",
-                "3|L--|Z = r1_r0 == 0x0000");
+                "2|L--|C = r1_r0 < 0<16>",
+                "3|L--|Z = r1_r0 == 0<16>");
         }
     }
 }

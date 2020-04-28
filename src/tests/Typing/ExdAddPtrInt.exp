@@ -8,11 +8,11 @@ T_2: (in p : word32)
   Class: Eq_2
   DataType: ptr32
   OrigDataType: ptr32
-T_3: (in 0x00000004 : word32)
+T_3: (in 4<32> : word32)
   Class: Eq_3
   DataType: int32
   OrigDataType: int32
-T_4: (in p + 0x00000004 : word32)
+T_4: (in p + 4<32> : word32)
   Class: Eq_4
   DataType: ptr32
   OrigDataType: ptr32

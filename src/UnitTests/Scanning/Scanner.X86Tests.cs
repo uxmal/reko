@@ -126,15 +126,15 @@ namespace Reko.UnitTests.Scanning
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch cx == 0x0000 l0C00_0002
+	branch cx == 0<16> l0C00_0002
 	// succ:  l0C00_0000_1 l0C00_0002
 l0C00_0000_1:
 	SCZO = cond(ax - Mem0[es:di:word16])
-	di = di + 0x0002
-	cx = cx - 0x0001
+	di = di + 2<16>
+	cx = cx - 1<16>
 	branch Test(NE,Z) l0C00_0000
 	// succ:  l0C00_0002 l0C00_0000
 l0C00_0002:

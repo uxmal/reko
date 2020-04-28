@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,21 +55,21 @@ namespace Reko.UnitTests.Typing
 		}
 
 		[Test]
-		public void Pattern3()
+		public void Aem_Pattern3()
 		{
 			Expression e = m.IAdd(r, m.IAdd(m.SMul(c, i), off));
 			Assert.IsTrue(aem.Match(e));
-			Assert.AreEqual("r + 42", aem.ArrayPointer.ToString());
+			Assert.AreEqual("r + 42<i32>", aem.ArrayPointer.ToString());
 			Assert.AreEqual("i", aem.Index.ToString());
             Assert.AreEqual(0x10, aem.ElementSize.ToInt32());
 		}
 
 		[Test]
-		public void Pattern4()
+		public void Aem_Pattern4()
 		{
 			Expression e = m.IAdd(m.IAdd(r, off), m.SMul(i, c));
 			Assert.IsTrue(aem.Match(e));
-			Assert.AreEqual("r + 42", aem.ArrayPointer.ToString());
+			Assert.AreEqual("r + 42<i32>", aem.ArrayPointer.ToString());
 			Assert.AreEqual("i", aem.Index.ToString());
             Assert.AreEqual(0x10, aem.ElementSize.ToInt32());
         }

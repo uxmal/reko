@@ -1,10 +1,10 @@
 Mem0: Mem0:Mem, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
-eax: eax:Register, def: {def eax}, uses: {eax_6 = eax + eax * 0x00000004}{eax_6 = eax + eax * 0x00000004}
+eax: eax:Register, def: {def eax}, uses: {eax_6 = eax + eax * 0x00000004<32>}{eax_6 = eax + eax * 0x00000004<32>}
 si: si:Register, def: {def si}, uses: {eax_8 = Mem7[si:word32]}{si_9 = si + 0x0004}
 di: di:Register, def: {def di}, uses: {call fn0C00_0026 (depth: 0;)}
 ax: ax:Register, def: {def ax}
-eax_6: orig: eax, def: {eax_6 = eax + eax * 0x00000004}, uses: {Mem7[0x02FC:word32] = eax_6}
+eax_6: orig: eax, def: {eax_6 = eax + eax * 0x00000004<32>}, uses: {Mem7[0x02FC:word32] = eax_6}
 Mem7: orig: Mem0, def: {Mem7[0x02FC:word32] = eax_6}, uses: {eax_8 = Mem7[si:word32]}
 eax_8: orig: eax, def: {eax_8 = Mem7[si:word32]}, uses: {Mem10[0x0300:word32] = eax_8}
 si_9: orig: si, def: {si_9 = si + 0x0004}, uses: {eax_11 = Mem10[si_9:word32]}{si_12 = si_9 + 0x0004}
@@ -30,7 +30,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	def ax
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	eax_6 = eax + eax * 0x00000004
+	eax_6 = eax + eax * 0x00000004<32>
 	Mem7[0x02FC:word32] = eax_6
 	eax_8 = Mem7[si:word32]
 	si_9 = si + 0x0004
@@ -55,7 +55,7 @@ Values:
 	ax: <ax>
 	di: <di>
 	DPB(eax_11, ax_17, 0, 16): <eax_18>
-	eax + eax * 0x00000004: <eax_6>
+	eax + eax * 0x00000004<32>: <eax_6>
 	eax: <eax>
 	fp: <fp>
 	Mem0: <Mem0>

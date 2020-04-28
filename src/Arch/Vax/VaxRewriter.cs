@@ -558,7 +558,14 @@ namespace Reko.Arch.Vax
                     ea = reg;
                     if (memOp.Offset != null)
                     {
-                        ea = m.IAdd(ea, memOp.Offset);
+                        if (memOp.Offset.DataType.BitSize < ea.DataType.BitSize)
+                        {
+                            ea = m.IAddS(ea, memOp.Offset.ToInt32());
+                        }
+                        else
+                        {
+                            ea = m.IAdd(ea, memOp.Offset);
+                        }
                     }
                     if (memOp.Index != null)
                     {
@@ -644,8 +651,7 @@ namespace Reko.Arch.Vax
                 // Can't assign to an immediate.
                 return null;
             }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            if (op is MemoryOperand memOp)
             {
                 Expression ea;
                 Identifier reg = null;
@@ -659,7 +665,14 @@ namespace Reko.Arch.Vax
                     ea = reg;
                     if (memOp.Offset != null)
                     {
-                        ea = m.IAdd(ea, memOp.Offset);
+                        if (memOp.Offset.DataType.BitSize < ea.DataType.BitSize)
+                        {
+                            ea = m.IAddS(ea, memOp.Offset.ToInt32());
+                        }
+                        else
+                        {
+                            ea = m.IAdd(ea, memOp.Offset);
+                        }
                     }
                 }
                 else
@@ -668,7 +681,7 @@ namespace Reko.Arch.Vax
                 }
                 var tmp = binder.CreateTemporary(width);
                 m.Assign(tmp, fn(m.Mem(width, ea)));
-                Expression load; 
+                Expression load;
                 if (memOp.Deferred)
                     load = m.Mem(width, m.Mem32(ea));
                 else

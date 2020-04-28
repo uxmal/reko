@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x58, 0x32);
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|b = b + 0x32",
+                "1|L--|b = b + 0x32<8>",
                 "2|L--|CNZ = cond(b)");
         }
 
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xA3, 0x03, 0x44);
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
-                "1|L--|p68 = p68 & 0x03",
+                "1|L--|p68 = p68 & 3<8>",
                 "2|L--|NZ = cond(p68)",
                 "3|L--|C = false");
         }
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x27, 0x0F, 0x44);
             AssertCode(
                 "0|T--|0100(3): 3 instructions",
-                "1|L--|NZ = cond(a & ~0x0F)",
+                "1|L--|NZ = cond(a & ~0xF<8>)",
                 "2|L--|C = false",
                 "3|T--|if (Test(NE,Z)) branch 0147");
         }
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xAC, 0x12, 0x34);
             AssertCode(
                 "0|T--|0100(3): 1 instructions",
-                "1|T--|goto 0x1234 + (uint16) b");
+                "1|T--|goto 0x1234<p16> + (uint16) b");
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xC5);
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|b = 0x00",
+                "1|L--|b = 0<8>",
                 "2|L--|C = false",
                 "3|L--|N = false",
                 "4|L--|Z = true");
@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xB2);
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = a - 0x01",
+                "1|L--|a = a - 1<8>",
                 "2|L--|CNZ = cond(a)");
         }
 
@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xDB, 0x12);
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r18_r17 = r18_r17 - 0x0001",
+                "1|L--|r18_r17 = r18_r17 - 1<16>",
                 "2|L--|CNZ = cond(r18_r17)");
         }
 
@@ -197,8 +197,8 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xCA, 0xFE);
             AssertCode(
                 "0|T--|0100(2): 2 instructions",
-                "1|L--|b = b - 0x01",
-                "2|T--|if (b != 0x00) branch 0100");
+                "1|L--|b = b - 1<8>",
+                "2|T--|if (b != 0<8>) branch 0100");
         }
 
         [Test]
@@ -226,7 +226,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x8A, 0x12, 0x34);
             AssertCode(
                  "0|L--|0100(3): 3 instructions",
-                 "1|L--|a = Mem0[0x1234:byte]",
+                 "1|L--|a = Mem0[0x1234<p16>:byte]",
                  "2|L--|NZ = cond(a)",
                  "3|L--|C = false");
         }
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x52, 0x52);
             AssertCode(
                  "0|L--|0100(2): 3 instructions",
-                 "1|L--|b = 0x52",
+                 "1|L--|b = 0x52<8>",
                  "2|L--|NZ = cond(b)",
                  "3|L--|C = false");
         }
@@ -257,7 +257,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x88, 0x12, 0x34, 0x0A);
             AssertCode(
                  "0|L--|0100(4): 3 instructions",
-                 "1|L--|r10_r9 = 0x1234",
+                 "1|L--|r10_r9 = 0x1234<16>",
                  "2|L--|NZ = cond(r10_r9)",
                  "3|L--|C = false");
         }
@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xA8, 0x12, 0x34, 0x0A);
             AssertCode(
                  "0|L--|0100(4): 3 instructions",
-                 "1|L--|r10_r9 = 0x1234 + (uint16) b",
+                 "1|L--|r10_r9 = 0x1234<p16> + (uint16) b",
                  "2|L--|NZ = cond(r10_r9)",
                  "3|L--|C = false");
         }
@@ -280,7 +280,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             AssertCode(
                  "0|L--|0100(1): 4 instructions",
                  "1|L--|a = Mem0[(ptr16) sp:byte]",
-                 "2|L--|sp = sp - 0x01",
+                 "2|L--|sp = sp - 1<8>",        //$LIT extend to 1<i16>
                  "3|L--|NZ = cond(a)",
                  "4|L--|C = false");
         }
@@ -291,7 +291,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x0E);
             AssertCode(
                  "0|L--|0100(1): 2 instructions",
-                 "1|L--|sp = sp + 0x01",
+                 "1|L--|sp = sp + 1<8>",
                  "2|L--|Mem0[(ptr16) sp:byte] = st");
         }
 
@@ -361,7 +361,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xAB, 0x12, 0x34);
             AssertCode(
                  "0|L--|0100(3): 1 instructions",
-                 "1|L--|Mem0[0x1234 + (uint16) b:byte] = a");
+                 "1|L--|Mem0[0x1234<p16> + (uint16) b:byte] = a");
         }
 
 

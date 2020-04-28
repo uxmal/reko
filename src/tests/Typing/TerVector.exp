@@ -5,7 +5,7 @@ define VectorFragment
 VectorFragment_entry:
 	// succ:  l1
 l1:
-	mod = Mem0[v:real32] + (Mem0[v + 0x00000004:real32] + Mem0[v + 0x00000008:real32])
+	mod = Mem0[v:real32] + (Mem0[v + 4<32>:real32] + Mem0[v + 8<32>:real32])
 VectorFragment_exit:
 
 // After ///////
@@ -32,39 +32,39 @@ T_2: (in v : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (struct (0 T_5 t0000) (4 T_8 t0004) (8 T_11 t0008)))
-T_3: (in 0x00000000 : word32)
+T_3: (in 0<32> : word32)
   Class: Eq_3
   DataType: word32
   OrigDataType: word32
-T_4: (in v + 0x00000000 : word32)
+T_4: (in v + 0<32> : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
-T_5: (in Mem0[v + 0x00000000:real32] : real32)
+T_5: (in Mem0[v + 0<32>:real32] : real32)
   Class: Eq_5
   DataType: real32
   OrigDataType: real32
-T_6: (in 0x00000004 : word32)
+T_6: (in 4<32> : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7: (in v + 0x00000004 : word32)
+T_7: (in v + 4<32> : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in Mem0[v + 0x00000004:real32] : real32)
+T_8: (in Mem0[v + 4<32>:real32] : real32)
   Class: Eq_8
   DataType: real32
   OrigDataType: real32
-T_9: (in 0x00000008 : word32)
+T_9: (in 8<32> : word32)
   Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_10: (in v + 0x00000008 : word32)
+T_10: (in v + 8<32> : word32)
   Class: Eq_10
   DataType: word32
   OrigDataType: word32
-T_11: (in Mem0[v + 0x00000008:real32] : real32)
+T_11: (in Mem0[v + 8<32>:real32] : real32)
   Class: Eq_11
   DataType: real32
   OrigDataType: real32

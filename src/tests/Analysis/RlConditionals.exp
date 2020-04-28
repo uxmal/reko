@@ -11,52 +11,52 @@ fn0C00_0000_entry:
 	def ss
 	def bp
 l0C00_0000:
-	ax_6 = Mem0[ds:0x0100:word16]
-	branch Mem0[ds:0x0102:word16] == ax_6 l0C00_000F
+	ax_6 = Mem0[ds:0x100<16>:word16]
+	branch Mem0[ds:0x102<16>:word16] == ax_6 l0C00_000F
 l0C00_000A:
-	Mem9[ds:0x0F00:byte] = 0x01
+	Mem9[ds:0xF00<16>:byte] = 1<8>
 l0C00_000F:
 	Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
-	ax_12 = Mem11[ds:0x0104:word16]
-	v7_13 = Mem11[ds:0x0106:word16] - ax_12
-	Mem14[ds:0x0106:word16] = v7_13
-	branch v7_13 <= 0x0000 l0C00_001E
+	ax_12 = Mem11[ds:0x104<16>:word16]
+	v7_13 = Mem11[ds:0x106<16>:word16] - ax_12
+	Mem14[ds:0x106<16>:word16] = v7_13
+	branch v7_13 <= 0<16> l0C00_001E
 l0C00_0019:
-	Mem17[ds:0x0F01:byte] = 0x01
+	Mem17[ds:0xF01<16>:byte] = 1<8>
 l0C00_001E:
 	Mem19 = PHI((Mem14, l0C00_000F), (Mem17, l0C00_0019))
-	ax_20 = Mem19[ds:0x0106:word16]
-	ax_21 = ax_20 & Mem19[ds:0x0108:word16]
-	branch ax_21 == 0x0000 l0C00_002D
+	ax_20 = Mem19[ds:0x106<16>:word16]
+	ax_21 = ax_20 & Mem19[ds:0x108<16>:word16]
+	branch ax_21 == 0<16> l0C00_002D
 l0C00_0028:
-	Mem25[ds:0x0F02:byte] = 0x01
+	Mem25[ds:0xF02<16>:byte] = 1<8>
 l0C00_002D:
 	Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
-	ax_28 = Mem27[ds:0x010A:word16]
-	branch ax_28 >=u Mem27[ds:0x010C:word16] l0C00_003D
+	ax_28 = Mem27[ds:0x10A<16>:word16]
+	branch ax_28 >=u Mem27[ds:0x10C<16>:word16] l0C00_003D
 l0C00_0038:
-	Mem32[ds:0x0F03:byte] = 0x01
+	Mem32[ds:0xF03<16>:byte] = 1<8>
 l0C00_003D:
 	call fn0C00_0069 (retsize: 2;)
-		uses: Stack +0002:0x0003
+		uses: Stack +0002:3<16>
 		defs: C:C_45
 	branch C_45 l0C00_0049
 l0C00_0044:
-	Mem49[ds:0x0F04:byte] = 0x01
+	Mem49[ds:0xF04<16>:byte] = 1<8>
 l0C00_0049:
 	Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
-	branch (Mem51[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056
+	branch (Mem51[ds:0x10E<16>:word16] & 0x1FF<16>) == 0<16> l0C00_0056
 l0C00_0051:
-	Mem55[ds:0x0F05:byte] = 0x01
+	Mem55[ds:0xF05<16>:byte] = 1<8>
 l0C00_0056:
-	branch bp < 0x0010 l0C00_005F
+	branch bp < 0x10<16> l0C00_005F
 l0C00_005B:
-	Mem68[ss:bp - 0x000A:byte] = 0x01
+	Mem68[ss:bp - 0xA<16>:byte] = 1<8>
 l0C00_005F:
-	bp_70 = (bp - 0x0010) * 0x0002
+	bp_70 = (bp - 0x10<16>) * 2<16>
 	branch !OVERFLOW(bp_70) l0C00_0068
 l0C00_0063:
-	Mem75[ds:0x0F07:byte] = 0x01
+	Mem75[ds:0xF07<16>:byte] = 1<8>
 l0C00_0068:
 	return
 fn0C00_0000_exit:

@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.X86
             state.OnProcedureEntered();
             var site = state.OnBeforeCall(esp, 4);
             Assert.AreEqual(4, site.SizeOfReturnAddressOnStack);
-            Assert.AreEqual("0xFFFFFFFC", state.GetValue(esp).ToString());
+            Assert.AreEqual("0xFFFFFFFC<32>", state.GetValue(esp).ToString());
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Arch.X86
             Assert.IsFalse(state.IsValid(Registers.dh));
             Assert.IsFalse(state.IsValid(Registers.dx));
             Assert.IsFalse(state.IsValid(Registers.edx));
-            Assert.AreEqual("0x03", ctx[Registers.dl].ToString());
+            Assert.AreEqual("3<8>", ctx[Registers.dl].ToString());
         }
 
     }

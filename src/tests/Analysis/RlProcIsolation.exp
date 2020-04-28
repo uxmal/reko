@@ -12,9 +12,9 @@ l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
 		uses: Sequence ds:di:ds_di
 	call fn0C00_0014 (retsize: 2;)
-		uses: ax:0x0100
+		uses: ax:0x100<16>
 		defs: ax:ax_11
-	Mem17[ds:0x0300:word16] = ax_11
+	Mem17[ds:0x300<16>:word16] = ax_11
 l0C00_000E_thunk_fn0C00_000F:
 	call fn0C00_000F (retsize: 0;)
 		uses: Sequence ds:di:ds_di
@@ -30,7 +30,7 @@ define fn0C00_000F
 fn0C00_000F_entry:
 	def ds_di
 l0C00_000F:
-	Mem6[ds_di:word16] = 0x0000
+	Mem6[ds_di:word16] = 0<16>
 	return
 fn0C00_000F_exit:
 // fn0C00_0014 /////////////////////
@@ -43,7 +43,7 @@ define fn0C00_0014
 fn0C00_0014_entry:
 	def ax
 l0C00_0014:
-	ax_7 = ax - 0x0001
+	ax_7 = ax - 1<16>
 	return
 fn0C00_0014_exit:
 	use ax_7

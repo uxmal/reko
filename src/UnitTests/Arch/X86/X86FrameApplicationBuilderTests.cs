@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.X86
                     PrimitiveType.Real64,
                     new FpuStackStorage(1, PrimitiveType.Real64)));
             var instr = fab.CreateInstruction(sigCallee, new ProcedureCharacteristics());
-            Assert.AreEqual("eax(ST[Top:real64], ST[Top + 1:real64])", instr.ToString());
+            Assert.AreEqual("eax(ST[Top:real64], ST[Top + 1<i8>:real64])", instr.ToString());
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Arch.X86
             // Top below refers to the value of Top _before_ the call.
             // Rewriters must remember to emit an instruction to adjust  Top
             // _after_ the call.
-            Assert.AreEqual("ST[Top - 1:real64] = eax()", instr.ToString());
+            Assert.AreEqual("ST[Top - 1<i8>:real64] = eax()", instr.ToString());
         }
     }
 }

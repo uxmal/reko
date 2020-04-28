@@ -4,15 +4,15 @@ define SegmentedPointerProc
 SegmentedPointerProc_entry:
 	// succ:  l1
 l1:
-	Mem0[ds:0x0300:word16] = 0x1234
-	Mem0[ds:0x0302:word16] = 0x5550
-	es_bx = Mem0[ds:0x0300:segptr32]
-	Mem0[ds:0x0304:word16] = Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16]
+	Mem0[ds:0x300<16>:word16] = 0x1234<16>
+	Mem0[ds:0x302<16>:word16] = 0x5550<16>
+	es_bx = Mem0[ds:0x300<16>:segptr32]
+	Mem0[ds:0x304<16>:word16] = Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 4<16>:word16]
 SegmentedPointerProc_exit:
 
 globals_t (in globals : (ptr32 (struct "Globals")))
 	trait_primitive((ptr32 (struct "Globals")))
-T_2 (in 0x1234 : word16)
+T_2 (in 0x1234<16> : word16)
 	trait_primitive(word16)
 T_3 (in ds : selector)
 	trait_primitive(selector)
@@ -23,24 +23,24 @@ T_3 (in ds : selector)
 	trait_mem(T_10, 300)
 	trait_primitive(selector)
 	trait_mem(T_18, 304)
-T_4 (in 0x0300 : word16)
+T_4 (in 0x300<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_3:T_5, 0)
-T_5 (in Mem0[ds:0x0300:word16] : word16)
+T_5 (in Mem0[ds:0x300<16>:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_2)
-T_6 (in 0x5550 : word16)
+T_6 (in 0x5550<16> : word16)
 	trait_primitive(word16)
-T_7 (in 0x0302 : word16)
+T_7 (in 0x302<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_3:T_8, 0)
-T_8 (in Mem0[ds:0x0302:word16] : word16)
+T_8 (in Mem0[ds:0x302<16>:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_6)
-T_9 (in 0x0300 : word16)
+T_9 (in 0x300<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_3:T_10, 0)
-T_10 (in Mem0[ds:0x0300:segptr32] : segptr32)
+T_10 (in Mem0[ds:0x300<16>:segptr32] : segptr32)
 	trait_primitive(segptr32)
 T_11 (in es_bx : segptr32)
 	trait_primitive(segptr32)
@@ -53,15 +53,15 @@ T_12 (in SLICE(es_bx, selector, 16) : selector)
 T_13 (in SLICE(es_bx, word16, 0) : word16)
 	trait_primitive(word16)
 	trait_mem(T_12:T_16, 4)
-T_14 (in 0x0004 : word16)
+T_14 (in 4<16> : word16)
 	trait_primitive(word16)
-T_15 (in SLICE(es_bx, word16, 0) + 0x0004 : word16)
+T_15 (in SLICE(es_bx, word16, 0) + 4<16> : word16)
 	trait_primitive(word16)
-T_16 (in Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16] : word16)
+T_16 (in Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 4<16>:word16] : word16)
 	trait_primitive(word16)
-T_17 (in 0x0304 : word16)
+T_17 (in 0x304<16> : word16)
 	trait_primitive(word16)
 	trait_mem(T_3:T_18, 0)
-T_18 (in Mem0[ds:0x0304:word16] : word16)
+T_18 (in Mem0[ds:0x304<16>:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_16)

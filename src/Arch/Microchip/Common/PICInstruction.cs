@@ -269,7 +269,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 case PICOperandFSRIndexation srcidx:
                     if (srcidx.Mode != FSRIndexedMode.FSR2INDEXED)
                         throw new InvalidOperationException($"Invalid FSR2 indexing mode: {srcidx.Mode}.");
-                    writer.WriteString($"[{srcidx.Offset:X2}]");
+                    writer.WriteString($"[0x{srcidx.Offset.ToUInt16():X2}]");
                     break;
             }
 
@@ -291,7 +291,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 case PICOperandFSRIndexation dstidx:
                     if (dstidx.Mode != FSRIndexedMode.FSR2INDEXED)
                         throw new InvalidOperationException($"Invalid FSR2 indexing mode: {dstidx.Mode}.");
-                    writer.WriteString($"[{dstidx.Offset:X2}]");
+                    writer.WriteString($"[0x{dstidx.Offset.ToUInt16():X2}]");
                     break;
             }
 
@@ -421,7 +421,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmem))
             {
-                writer.WriteString($"[{bankmem.BankOffset:X2}]");
+                writer.WriteString($"[0x{bankmem.BankOffset.ToUInt16():X2}]");
                 return;
             }
 
@@ -437,7 +437,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 return;
             }
 
-            writer.WriteString($"{bankmem.BankOffset:X2}{sAcc}");
+            writer.WriteString($"0x{bankmem.BankOffset.ToUInt16():X2}{sAcc}");
         }
 
     }
@@ -464,7 +464,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmem))
             {
-                writer.WriteString($"[{bankmem.BankOffset:X2}],");
+                writer.WriteString($"[0x{bankmem.BankOffset.ToUInt16():X2}],");
                 bitno.Write(writer, options);
                 return;
             }
@@ -485,10 +485,8 @@ namespace Reko.Arch.MicrochipPIC.Common
                 writer.WriteString($"0x{absaddr.Offset:X2},{bitno.BitNo}{sAcc}");
                 return;
             }
-
-            writer.WriteString($"{bankmem.BankOffset:X2},{bitno.BitNo}{sAcc}");
+            writer.WriteString($"0x{bankmem.BankOffset.ToUInt16():X2},{bitno.BitNo}{sAcc}");
         }
-
     }
 
     /// <summary>
@@ -513,7 +511,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmem))
             {
-                writer.WriteString($"[{bankmem.BankOffset:X2}]");
+                writer.WriteString($"[0x{bankmem.BankOffset.ToUInt16():X2}]");
                 wregdest.Write(writer, options);
                 return;
             }
@@ -534,7 +532,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 return;
             }
 
-            writer.WriteString($"{bankmem.BankOffset:X2}");
+            writer.WriteString($"0x{bankmem.BankOffset.ToUInt16():X2}");
             wregdest.Write(writer, options);
             writer.WriteString(sAcc);
         }
@@ -724,7 +722,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             switch (fsridx.Mode)
             {
                 case FSRIndexedMode.INDEXED:
-                    writer.WriteString($"{fsridx.Offset}[{fsrnum}]");
+                    writer.WriteString($"{fsridx.Offset.ToInt16()}[{fsrnum}]");
                     break;
                 case FSRIndexedMode.POSTDEC:
                     writer.WriteString($"FSR{fsrnum}--");

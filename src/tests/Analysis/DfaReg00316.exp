@@ -12,7 +12,7 @@ fn10000000_entry:
 l10000000:
 	word32 ecx_6 = Mem0[a:word32]
 	word32 ecx_11
-	return Mem8[ecx_6 + 0x00000004:word32](a, ecx_6, 0x0000000A, a) + 0x00000001
+	return Mem8[ecx_6 + 0x00000004<32>:word32](a, ecx_6, 0x0000000A<32>, a) + 0x00000001<32>
 	// succ:  fn10000000_exit
 fn10000000_exit:
 

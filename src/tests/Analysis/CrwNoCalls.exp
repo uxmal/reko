@@ -28,15 +28,15 @@ l0C00_0000:
 	branch ax == bx l0C00_000A
 	// succ:  l0C00_0004 l0C00_000A
 l0C00_0004:
-	ax_9 = 0x0000
+	ax_9 = 0<16>
 	goto l0C00_000D
 	// succ:  l0C00_000D
 l0C00_000A:
-	ax_8 = 0x0001
+	ax_8 = 1<16>
 	// succ:  l0C00_000D
 l0C00_000D:
 	ax_10 = PHI((ax_9, l0C00_0004), (ax_8, l0C00_000A))
-	Mem13[ds:0x0064:word16] = ax_10
+	Mem13[ds:0x64<16>:word16] = ax_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

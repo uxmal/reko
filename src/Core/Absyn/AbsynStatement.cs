@@ -46,7 +46,7 @@ namespace Reko.Core.Absyn
             TextFormatter f = new TextFormatter(sw);
 			f.Terminator = "";
 			f.Indentation = 0;
-			CodeFormatter fmt = new CodeFormatter(f, 0, 0);
+			CodeFormatter fmt = new CodeFormatter(f);
 			Accept(fmt);
 			return sw.ToString();
         }

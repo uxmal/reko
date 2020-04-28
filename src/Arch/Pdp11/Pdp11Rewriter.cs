@@ -254,7 +254,7 @@ namespace Reko.Arch.Pdp11
                 {
                     var offset = (short)memOp.EffectiveAddress;
                     var addrBase = (long)instr.Address.ToLinear() + instr.Length;
-                    var addr = Constant.Word16((ushort) (addrBase + offset));
+                    var addr = m.Ptr16((ushort) (addrBase + offset));
                     return m.Mem(
                         PrimitiveType.Word16,
                         addr);

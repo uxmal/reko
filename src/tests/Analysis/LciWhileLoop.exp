@@ -8,10 +8,10 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem7[ss:fp - 2:word16] = bp
-	ax_12 = Mem7[ss:fp + 0x0004:word16]
-	bx_9 = 0x0000
-	branch ax_12 <= 0x0000 l0C00_0015
+	Mem7[ss:fp - 2<i16>:word16] = bp
+	ax_12 = Mem7[ss:fp + 4<16>:word16]
+	bx_9 = 0<16>
+	branch ax_12 <= 0<16> l0C00_0015
 	// succ:  l0C00_000C l0C00_0015
 l0C00_000C:
 	cx_20 = ax_12
@@ -20,8 +20,8 @@ l0C00_000E:
 	cx_22 = PHI((cx_20, l0C00_000C), (cx_25, l0C00_000E))
 	bx_21 = PHI((bx_9, l0C00_000C), (bx_23, l0C00_000E))
 	bx_23 = bx_21 + cx_22
-	cx_25 = cx_22 - 0x0001
-	branch cx_25 != 0x0000 l0C00_000E
+	cx_25 = cx_22 - 1<16>
+	branch cx_25 != 0<16> l0C00_000E
 	// succ:  l0C00_0012 l0C00_000E
 l0C00_0012:
 	goto l0C00_0019
@@ -31,7 +31,7 @@ l0C00_0015:
 	// succ:  l0C00_0019
 l0C00_0019:
 	bx_26 = PHI((bx_23, l0C00_0012), (bx_19, l0C00_0015))
-	Mem30[ds:0x0300:word16] = bx_26
+	Mem30[ds:0x300<16>:word16] = bx_26
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

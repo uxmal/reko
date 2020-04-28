@@ -21,35 +21,35 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	sp = sp - 0x0004
+	sp = sp - 4<16>
 	SCZO = cond(sp)
-	ax = 0x3D00
-	dx = Mem0[ss:bp + 0x0004:word16]
+	ax = 0x3D00<16>
+	dx = Mem0[ss:bp + 4<16>:word16]
 	C = msdos_open_file(ds_dx, al, out ax)
-	Mem0[ss:bp - 0x0002:word16] = ax
-	ax = 0x3D01
-	dx = Mem0[ss:bp + 0x0006:word16]
+	Mem0[ss:bp - 2<16>:word16] = ax
+	ax = 0x3D01<16>
+	dx = Mem0[ss:bp + 6<16>:word16]
 	C = msdos_open_file(ds_dx, al, out ax)
-	Mem0[ss:bp - 0x0004:word16] = ax
+	Mem0[ss:bp - 4<16>:word16] = ax
 	goto l0C00_002A
 	// succ:  l0C00_002A
 l0C00_001F:
-	bx = Mem0[ss:bp - 0x0004:word16]
-	dx = 0x0800
-	ax = 0x4000
+	bx = Mem0[ss:bp - 4<16>:word16]
+	dx = 0x800<16>
+	ax = 0x4000<16>
 	C = msdos_write_file(bx, cx, ds_dx, out ax)
 	// succ:  l0C00_002A
 l0C00_002A:
-	bx = Mem0[ss:bp - 0x0002:word16]
-	dx = 0x0800
-	cx = 0x0800
-	ax = 0x3F00
+	bx = Mem0[ss:bp - 2<16>:word16]
+	dx = 0x800<16>
+	cx = 0x800<16>
+	ax = 0x3F00<16>
 	C = msdos_read_file(bx, cx, ds_dx, out ax)
 	branch Test(ULT,C) l0C00_003E
 	// succ:  l0C00_003A l0C00_003E
@@ -62,7 +62,7 @@ l0C00_003A:
 l0C00_003E:
 	sp = bp
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

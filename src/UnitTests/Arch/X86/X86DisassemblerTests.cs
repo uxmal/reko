@@ -396,7 +396,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void X86dis_RelocatedOperand()
         {
-            byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678
+            byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678<32>
             MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001ul, 0x12345678);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
@@ -2353,7 +2353,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_vmaskmovps_2()
         {
             var instr = Disassemble64(0xc4, 0x02, 0x75, 0x2e, 0x80, 0xcc, 0x02);
-            Assert.AreEqual("vmaskmovps\tymmword ptr [r8-0x76befd34],ymm1,ymm8", instr.ToString());
+            Assert.AreEqual("vmaskmovps\tymmword ptr [r8-0x76befd34<32>],ymm1,ymm8", instr.ToString());
         }
 
         [Test]
@@ -2382,7 +2382,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_vpmovzxbq_2()
         {
             var instr = Disassemble64(0xc4, 0x02, 0x75, 0x32, 0x8b, 0x7b, 0x10);
-            Assert.AreEqual("vpmovzxbq\tymm9,DWORD PTR [r11-0x12ceef85]", instr.ToString());
+            Assert.AreEqual("vpmovzxbq\tymm9,DWORD PTR [r11-0x12ceef85<32>]", instr.ToString());
         }
 
         [Test]
@@ -2444,7 +2444,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_vaesenc_2()
         {
             var instr = Disassemble64(0xc4, 0x02, 0x75, 0xdc, 0x83, 0xe0, 0xf7, 0x00);
-            Assert.AreEqual("vaesenc\tymm8,ymm1,YMMWORD PTR [r11-0x76bb0820]", instr.ToString());
+            Assert.AreEqual("vaesenc\tymm8,ymm1,YMMWORD PTR [r11-0x76bb0820<32>]", instr.ToString());
         }
 
         [Test]

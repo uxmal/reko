@@ -372,7 +372,7 @@ namespace Reko.UnitTests.Scanning
             var sw = new StringWriter();
             block.WriteStatements(sw);
             string sExp =
-                "\tax = SEQ(0x0C00, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
+                "\tax = SEQ(0xC00<16>, Mem0[ds:bx + 4<16>:word16])(cx)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -425,7 +425,7 @@ namespace Reko.UnitTests.Scanning
             wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(sw);
-            string sExp = "\tbx = bx & 0x0003" + nl +
+            string sExp = "\tbx = bx & 3<16>" + nl +
                 "\tSZO = cond(bx)" + nl +
                 "\tC = false" + nl +
                 "\tbx = bx + bx" + nl + 
@@ -523,7 +523,7 @@ namespace Reko.UnitTests.Scanning
                 "\tesi = esi ^ esi" + nl +
                 "\tSZO = cond(esi)" + nl +
                 "\tC = false" + nl + 
-                "\tesi = esi + 0x00000001" + nl +
+                "\tesi = esi + 1<32>" + nl +
                 "\tSZO = cond(esi)" + nl +
                  "\tgoto 0C00:0003" + nl;
             var sw = new StringWriter();
@@ -555,7 +555,7 @@ namespace Reko.UnitTests.Scanning
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +
                 "\teax = GetDC(Mem0[esp:HWND])" + nl +
-                "\tesp = esp + 0x00000004" + nl +
+                "\tesp = esp + 4<32>" + nl +
                 "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);

@@ -222,7 +222,7 @@ foo		endp
 		}
 
 		[Test]
-		public void StringInstruction()
+		public void Asm86_StringInstruction()
 		{
 			AssembleFragment(
 				@"	.i86

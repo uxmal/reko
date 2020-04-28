@@ -4,43 +4,43 @@ void fn0C00_0000(word16 ax, word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch ax == 0x0001 l0C00_000E
+	branch ax == 1<16> l0C00_000E
 	// succ:  l0C00_0005 l0C00_000E
 l0C00_0005:
-	Mem13[ds:0x0302:word16] = 0x0000
+	Mem13[ds:0x302<16>:word16] = 0<16>
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_000E:
-	branch bx == 0x0002 l0C00_0005
+	branch bx == 2<16> l0C00_0005
 	// succ:  l0C00_0013 l0C00_0005
 l0C00_0013:
-	Mem11[ds:0x0302:word16] = 0x0001
+	Mem11[ds:0x302<16>:word16] = 1<16>
 	// succ:  l0C00_0019
 l0C00_0019:
-	branch ax == 0x0001 l0C00_002C
+	branch ax == 1<16> l0C00_002C
 	// succ:  l0C00_001E l0C00_002C
 l0C00_001E:
-	branch bx == 0x0002 l0C00_002C
+	branch bx == 2<16> l0C00_002C
 	// succ:  l0C00_0023 l0C00_002C
 l0C00_0023:
-	Mem25[ds:0x0304:word16] = 0x0000
+	Mem25[ds:0x304<16>:word16] = 0<16>
 	goto l0C00_0032
 	// succ:  l0C00_0032
 l0C00_002C:
-	Mem24[ds:0x0304:word16] = 0x0001
+	Mem24[ds:0x304<16>:word16] = 1<16>
 	// succ:  l0C00_0032
 l0C00_0032:
-	branch ax == 0x0001 l0C00_003C
+	branch ax == 1<16> l0C00_003C
 	// succ:  l0C00_0037 l0C00_003C
 l0C00_0037:
-	branch bx == 0x0002 l0C00_0045
+	branch bx == 2<16> l0C00_0045
 	// succ:  l0C00_003C l0C00_0045
 l0C00_003C:
-	Mem37[ds:0x0306:word16] = 0x0000
+	Mem37[ds:0x306<16>:word16] = 0<16>
 	goto l0C00_004B
 	// succ:  l0C00_004B
 l0C00_0045:
-	Mem35[ds:0x0306:word16] = 0x0001
+	Mem35[ds:0x306<16>:word16] = 1<16>
 	// succ:  l0C00_004B
 l0C00_004B:
 	return
@@ -53,39 +53,39 @@ void fn0C00_0000(word16 ax, word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch ax == 0x0001 && bx != 0x0002 l0C00_000E
+	branch ax == 1<16> && bx != 2<16> l0C00_000E
 	// succ:  l0C00_0005 l0C00_0013
 l0C00_0005:
-	Mem13[ds:0x0302:word16] = 0x0000
+	Mem13[ds:0x302<16>:word16] = 0<16>
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_000E:
 l0C00_0013:
-	Mem11[ds:0x0302:word16] = 0x0001
+	Mem11[ds:0x302<16>:word16] = 1<16>
 	// succ:  l0C00_0019
 l0C00_0019:
-	branch ax == 0x0001 || bx == 0x0002 l0C00_002C
+	branch ax == 1<16> || bx == 2<16> l0C00_002C
 	goto l0C00_0023
 	// succ:  l0C00_0023 l0C00_002C
 l0C00_001E:
 l0C00_0023:
-	Mem25[ds:0x0304:word16] = 0x0000
+	Mem25[ds:0x304<16>:word16] = 0<16>
 	goto l0C00_0032
 	// succ:  l0C00_0032
 l0C00_002C:
-	Mem24[ds:0x0304:word16] = 0x0001
+	Mem24[ds:0x304<16>:word16] = 1<16>
 	// succ:  l0C00_0032
 l0C00_0032:
-	branch ax == 0x0001 || bx != 0x0002 l0C00_003C
+	branch ax == 1<16> || bx != 2<16> l0C00_003C
 	goto l0C00_0045
 	// succ:  l0C00_0045 l0C00_003C
 l0C00_0037:
 l0C00_003C:
-	Mem37[ds:0x0306:word16] = 0x0000
+	Mem37[ds:0x306<16>:word16] = 0<16>
 	goto l0C00_004B
 	// succ:  l0C00_004B
 l0C00_0045:
-	Mem35[ds:0x0306:word16] = 0x0001
+	Mem35[ds:0x306<16>:word16] = 1<16>
 	// succ:  l0C00_004B
 l0C00_004B:
 	return

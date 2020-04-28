@@ -3,19 +3,19 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	ebx = 0x00000020
-	eax = 0x00000064
+	ebx = 0x20<32>
+	eax = 0x64<32>
 	edx_eax = (int64) eax
 	v7 = edx_eax
 	edx = (int32) (v7 % ebx)
 	eax = (int32) (v7 / ebx)
 	SCZO = cond(eax)
 	cx = Mem0[ds:si:word16]
-	ax = Mem0[ds:si + 0x0002:word16]
-	dx = Mem0[ds:si + 0x0004:word16]
+	ax = Mem0[ds:si + 2<16>:word16]
+	dx = Mem0[ds:si + 4<16>:word16]
 	v15 = dx_ax
 	dx = (uint16) (v15 % cx)
 	ax = (uint16) (v15 /u cx)

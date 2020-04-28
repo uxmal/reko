@@ -90,40 +90,40 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         /*
-0x798C27E6              // rldicr	r12,r12,24,3F
-0x7929FFE6              // rldicr	r9,r9,3F,3F
-0x786A0620              // rldicl	r10,r3,00,38
-0x790A0620              // rldicl	r10,r8,00,38
-0x798CC7E6              // rldicr	r12,r12,38,3F
-0x798C2FE6              // rldicr	r12,r12,25,3F
-0x798CBFE6              // rldicr	r12,r12,37,3F
-0x798C4FE6              // rldicr	r12,r12,29,3F
-0x794B1FE6              // rldicr	r11,r10,23,3F
-0x798C47E6              // rldicr	r12,r12,28,3F
-0x798C3FE6              // rldicr	r12,r12,27,3F
-0x798C67E6              // rldicr	r12,r12,2C,3F
-0x798C2FE6              // rldicr	r12,r12,25,3F
-0x798CB7E6              // rldicr	r12,r12,36,3F
-0x798CC7E6              // rldicr	r12,r12,38,3F
-0x798CC7E6              // rldicr	r12,r12,38,3F
-0x794A0020              // rldicl	r10,r10,00,20
-0x796B0022              // rldicl	r11,r11,20,20
-0x796B0020              // rldicl	r11,r11,00,20
-0x79290040              // rldicl	r9,r9,00,01
-0x794A0040              // rldicl	r10,r10,00,01
-0x79680020              // rldicl	r8,r11,00,20
-0x79690020              // rldicl	r9,r11,00,20
-0x796B0020              // rldicl	r11,r11,00,20
-0x797DFFE6              // rldicr	r29,r11,3F,3F
-0x796B0020              // rldicl	r11,r11,00,20
-0x796B0020              // rldicl	r11,r11,00,20
-0x796B0020              // rldicl	r11,r11,00,20
-0x794AFFE6              // rldicr	r10,r10,3F,3F
-0x79290020              // rldicl	r9,r9,00,20
-0x786B0020              // rldicl	r11,r3,00,20
-0x788B0020              // rldicl	r11,r4,00,20
-0x792807E0              // rldicl	r8,r9,00,3F
-0x792807E0              // rldicl	r8,r9,00,3F
+0x798C27E6<32>              // rldicr	r12,r12,24,3F
+0x7929FFE6<32>              // rldicr	r9,r9,3F,3F
+0x786A0620<32>              // rldicl	r10,r3,00,38
+0x790A0620<32>              // rldicl	r10,r8,00,38
+0x798CC7E6<32>              // rldicr	r12,r12,38,3F
+0x798C2FE6<32>              // rldicr	r12,r12,25,3F
+0x798CBFE6<32>              // rldicr	r12,r12,37,3F
+0x798C4FE6<32>              // rldicr	r12,r12,29,3F
+0x794B1FE6<32>              // rldicr	r11,r10,23,3F
+0x798C47E6<32>              // rldicr	r12,r12,28,3F
+0x798C3FE6<32>              // rldicr	r12,r12,27,3F
+0x798C67E6<32>              // rldicr	r12,r12,2C,3F
+0x798C2FE6<32>              // rldicr	r12,r12,25,3F
+0x798CB7E6<32>              // rldicr	r12,r12,36,3F
+0x798CC7E6<32>              // rldicr	r12,r12,38,3F
+0x798CC7E6<32>              // rldicr	r12,r12,38,3F
+0x794A0020<32>              // rldicl	r10,r10,00,20
+0x796B0022<32>              // rldicl	r11,r11,20,20
+0x796B0020<32>              // rldicl	r11,r11,00,20
+0x79290040<32>              // rldicl	r9,r9,00,01
+0x794A0040<32>              // rldicl	r10,r10,00,01
+0x79680020<32>              // rldicl	r8,r11,00,20
+0x79690020<32>              // rldicl	r9,r11,00,20
+0x796B0020<32>              // rldicl	r11,r11,00,20
+0x797DFFE6<32>              // rldicr	r29,r11,3F,3F
+0x796B0020<32>              // rldicl	r11,r11,00,20
+0x796B0020<32>              // rldicl	r11,r11,00,20
+0x796B0020<32>              // rldicl	r11,r11,00,20
+0x794AFFE6<32>              // rldicr	r10,r10,3F,3F
+0x79290020<32>              // rldicl	r9,r9,00,20
+0x786B0020<32>              // rldicl	r11,r3,00,20
+0x788B0020<32>              // rldicl	r11,r4,00,20
+0x792807E0<32>              // rldicl	r8,r9,00,3F
+0x792807E0<32>              // rldicl	r8,r9,00,3F
         */
     }
 }

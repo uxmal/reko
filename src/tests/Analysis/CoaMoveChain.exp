@@ -6,9 +6,9 @@ bx_5: orig: bx
 cx_6: orig: cx
 ds:ds
     def:  def ds
-    uses: Mem8[ds:0x0300:word16] = 0x0004
+    uses: Mem8[ds:0x300<16>:word16] = 4<16>
 Mem8: orig: Mem0
-    def:  Mem8[ds:0x0300:word16] = 0x0004
+    def:  Mem8[ds:0x300<16>:word16] = 4<16>
 bx_9: orig: bx
 ax_10: orig: ax
 // fn0C00_0000
@@ -18,7 +18,7 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem8[ds:0x0300:word16] = 0x0004
+	Mem8[ds:0x300<16>:word16] = 4<16>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

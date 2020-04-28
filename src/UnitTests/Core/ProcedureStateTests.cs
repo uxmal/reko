@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Core
 
             sce.SetValue(idSp, m.ISub(idSp, 4));
 
-            Assert.AreEqual("sp - 0x00000004", sce.GetValue(idSp).ToString());
+            Assert.AreEqual("sp - 4<32>", sce.GetValue(idSp).ToString());
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Core
             sce.SetValue(idSp, m.ISub(idSp, 4));
             sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
-            Assert.AreEqual("0x12345678", sce.GetValue(m.Mem32(idSp), map).ToString());
+            Assert.AreEqual("0x12345678<32>", sce.GetValue(m.Mem32(idSp), map).ToString());
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Core
             var access = new MemoryAccess(Constant.Word32(0x00100000), PrimitiveType.Word32);
             var c = sce.GetValue(access, map);
 
-            Assert.AreEqual("0x01234567", c.ToString());
+            Assert.AreEqual("0x1234567<32>", c.ToString());
         }
 
         public class FakeArchitecture : ProcessorArchitecture

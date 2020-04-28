@@ -10,7 +10,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem12[ds:0x0302:word16] = fn0C00_000C(Mem0[ds:0x0300:word16])
+	Mem12[ds:0x302<16>:word16] = fn0C00_000C(Mem0[ds:0x300<16>:word16])
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -27,25 +27,25 @@ word16 fn0C00_000C(word16 ax)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	branch ax != 0x0000 l0C00_0014
+	branch ax != 0<16> l0C00_0014
 	// succ:  l0C00_0010 l0C00_0014
 l0C00_0010:
-	return 0x0123
+	return 0x123<16>
 	// succ:  fn0C00_000C_exit
 l0C00_0014:
-	branch ax != 0x0001 l0C00_001B
+	branch ax != 1<16> l0C00_001B
 	// succ:  l0C00_0017 l0C00_001B
 l0C00_0017:
-	return 0x0125
+	return 0x125<16>
 	// succ:  fn0C00_000C_exit
 l0C00_001B:
-	branch ax != 0x0002 l0C00_0022
+	branch ax != 2<16> l0C00_0022
 	// succ:  l0C00_001E l0C00_0022
 l0C00_001E:
-	return 0x0127
+	return 0x127<16>
 	// succ:  fn0C00_000C_exit
 l0C00_0022:
-	return 0x0000
+	return 0<16>
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
 

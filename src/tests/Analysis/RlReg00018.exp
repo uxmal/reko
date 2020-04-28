@@ -15,7 +15,7 @@ fn10000000_entry:
 // SymbolicIn: esp:fp
 l10000000:
 	esp = fp
-	ecx = Mem0[esi + 0x0000006C:word32]
+	ecx = Mem0[esi + 0x0000006C<32>:word32]
 	SZO = cond(ecx & ecx)
 	C = false
 	branch Test(NE,Z) l10000012
@@ -34,7 +34,7 @@ l10000007:
 
 // SymbolicIn: esp:fp ecx:<invalid>
 l1000000B:
-	SCZO = cond(eax - 0x0000029A)
+	SCZO = cond(eax - 0x0000029A<32>)
 	branch Test(EQ,Z) l10000021
 // DataOut: esi
 // DataOut (flags): 
@@ -42,11 +42,11 @@ l1000000B:
 
 // SymbolicIn: esp:fp ecx:<invalid>
 l10000012:
-	eax = Mem0[esi + 0x0000007C:word32]
-	esp = fp - 0x00000004
+	eax = Mem0[esi + 0x0000007C<32>:word32]
+	esp = fp - 0x00000004<32>
 	dwLoc04 = ebp
-	ecx = eax + eax * 0x00000002
-	esp = fp - 0x00000008
+	ecx = eax + eax * 0x00000002<32>
+	esp = fp - 0x00000008<32>
 	dwLoc08 = esi
 // DataOut:
 // DataOut (flags): 

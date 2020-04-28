@@ -4,7 +4,7 @@ define IndirectCallFragment
 IndirectCallFragment_entry:
 	// succ:  l1
 l1:
-	call SEQ(0x2700, SEQ(ds, 0x2040)[di * 0x0002]) (retsize: 4;)
+	call SEQ(0x2700<16>, SEQ(ds, 0x2040<16>)[di * 2<16>]) (retsize: 4;)
 	return
 	// succ:  IndirectCallFragment_exit
 IndirectCallFragment_exit:
@@ -13,7 +13,7 @@ IndirectCallFragment_exit:
 Eq_1: (struct "Globals" (27000 (ptr16 Eq_2) ptr27000))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (segment)
-	T_2 (in 0x2700 : selector)
+	T_2 (in 0x2700<16> : selector)
 Eq_3: (segment (2040 (arr (memptr (ptr16 Eq_2) code)) a2040))
 	T_3 (in ds : selector)
 // Type Variables ////////////
@@ -21,7 +21,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in 0x2700 : selector)
+T_2: (in 0x2700<16> : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: (ptr16 (segment))
@@ -29,11 +29,11 @@ T_3: (in ds : selector)
   Class: Eq_3
   DataType: (ptr16 Eq_3)
   OrigDataType: (ptr16 (segment (2040 (arr T_11) a2040)))
-T_4: (in 0x2040 : word16)
+T_4: (in 0x2040<16> : word16)
   Class: Eq_4
   DataType: (memptr (ptr16 Eq_3) (memptr (ptr16 Eq_2) code))
   OrigDataType: (memptr T_3 T_11)
-T_5: (in SEQ(ds, 0x2040) : ptr32)
+T_5: (in SEQ(ds, 0x2040<16>) : ptr32)
   Class: Eq_5
   DataType: (ptr32 (memptr (ptr16 Eq_2) code))
   OrigDataType: (ptr32 T_11)
@@ -41,19 +41,19 @@ T_6: (in di : word16)
   Class: Eq_6
   DataType: ui16
   OrigDataType: ui16
-T_7: (in 0x0002 : word16)
+T_7: (in 2<16> : word16)
   Class: Eq_7
   DataType: ui16
   OrigDataType: ui16
-T_8: (in di * 0x0002 : word16)
+T_8: (in di * 2<16> : word16)
   Class: Eq_8
   DataType: ui16
   OrigDataType: ui16
-T_9: (in SEQ(ds, 0x2040)[di * 0x0002] : word16)
+T_9: (in SEQ(ds, 0x2040<16>)[di * 2<16>] : word16)
   Class: Eq_9
   DataType: (memptr (ptr16 Eq_2) code)
   OrigDataType: (memptr T_2 code)
-T_10: (in SEQ(0x2700, SEQ(ds, 0x2040)[di * 0x0002]) : ptr32)
+T_10: (in SEQ(0x2700<16>, SEQ(ds, 0x2040<16>)[di * 2<16>]) : ptr32)
   Class: Eq_10
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)

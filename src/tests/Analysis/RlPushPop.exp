@@ -11,12 +11,12 @@ fn0C00_0000_entry:
 	ds = SLICE(ds_si, selector, 16)
 l0C00_0000:
 	call fn0C00_0008 (retsize: 2;)
-		uses: cx:0x0014,di:di,ds:ds
+		uses: cx:0x14<16>,di:di,ds:ds
 		defs: ax:ax_7
 	Mem13[ds_si:word16] = ax_7
 l0C00_0006_thunk_fn0C00_0008:
 	call fn0C00_0008 (retsize: 0;)
-		uses: cx:0x0014,di:di,ds:ds
+		uses: cx:0x14<16>,di:di,ds:ds
 	return
 fn0C00_0000_exit:
 // fn0C00_0008 /////////////////////
@@ -31,14 +31,14 @@ fn0C00_0008_entry:
 	def cx
 	def ds
 l0C00_0008:
-	si_11 = 0x0000
+	si_11 = 0<16>
 l0C00_000D:
 	di_25 = PHI((di, l0C00_0008), (di_27, l0C00_0012))
 	si_15 = PHI((si_11, l0C00_0008), (si_26, l0C00_0012))
-	branch cx == 0x0000 l0C00_001A
+	branch cx == 0<16> l0C00_001A
 l0C00_0012:
 	si_26 = si_15 + Mem10[ds:di_25:word16]
-	di_27 = di_25 + 0x0002
+	di_27 = di_25 + 2<16>
 l0C00_001A:
 	ax_16 = si_15
 	return

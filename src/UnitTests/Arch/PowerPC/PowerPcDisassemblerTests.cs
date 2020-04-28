@@ -725,7 +725,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x4220fef9, "bdnzl\t$000FFEF8");
             AssertCode(0x4240fef8, "bdz\t$000FFEF8");
             AssertCode(0x4260fef9, "bdzl\t$000FFEF8");
-            //AssertCode(0x4280fef8, "bc+    20,lt,0xffffffffffffff24	 ");
+            //AssertCode(0x4280fef8, "bc+    20,lt,0xffffffffffffff24<64>	 ");
             AssertCode(0x4300fef8, "bdnz\t$000FFEF8");
             AssertCode(0x4e800420, "bcctr\t14,00");
         }
@@ -827,7 +827,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7CA464AA, "lswi\tr5,r4,0C");
             AssertCode(0x7CA965AA, "stswi\tr5,r9,0C");
             AssertCode(0x7C0018AC, "dcbf\tr0,r3");
-            //AssertCode(0x7c00188c, ".long 0x7c00188c");
+            //AssertCode(0x7c00188c, ".long 0x7c00188c<32>");
             AssertCode(0xE0030000, "lq\tr0,0(r3)");
             AssertCode(0xF0090000, "xsaddsp\tv0,v9,v0");
             AssertCode(0x7D0B506E, "lwzux\tr8,r11,r10");
@@ -868,37 +868,37 @@ namespace Reko.UnitTests.Arch.PowerPC
             // XBox 360 binary, but no PowerPC documentation
             // seems to exist for them.
             /*
-            AssertCode(0x12a0f9c7, ".long 0x12a0f9c7");
-            AssertCode(0x10030001, ".long 0x10030001");
-            AssertCode(0x10011003, ".long 0x10011003");
-            AssertCode(0x111110b0, ".long 0x111110b0");
-            AssertCode(0x100050c3, ".long 0x100050c3");
-            AssertCode(0x100130cb, ".long 0x100130cb");
-            AssertCode(0x13fff935, ".long 0x13fff935");
-            AssertCode(0x136a2987, ".long 0x136a2987");
-            AssertCode(0x13D29A35, ".long 0x13d29a35");
-            AssertCode(0x13e95187, ".long 0x13e95187");
-            AssertCode(0x100059c3, ".long 0x100059c3");
-            AssertCode(0x100b61cb, ".long 0x100b61cb");
-            AssertCode(0x13d29a35, ".long 0x13d29a35");
-            AssertCode(0x4d48c976, ".long 0x4d48c976");
-            AssertCode(0x4f8e1ae5, ".long 0x4f8e1ae5");
-            AssertCode(0x4c4d4e4f, ".long 0x4c4d4e4f");
-            AssertCode(0x7c53b17e, ".long 0x7c53b17e");
-            AssertCode(0x7dc2dec0, ".long 0x7dc2dec0");
-            AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f");
-            AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f");
-            AssertCode(0x7fefffff, ".long 0x7fefffff");
+            AssertCode(0x12a0f9c7, ".long 0x12a0f9c7<32>");
+            AssertCode(0x10030001, ".long 0x10030001<32>");
+            AssertCode(0x10011003, ".long 0x10011003<32>");
+            AssertCode(0x111110b0, ".long 0x111110b0<32>");
+            AssertCode(0x100050c3, ".long 0x100050c3<32>");
+            AssertCode(0x100130cb, ".long 0x100130cb<32>");
+            AssertCode(0x13fff935, ".long 0x13fff935<32>");
+            AssertCode(0x136a2987, ".long 0x136a2987<32>");
+            AssertCode(0x13D29A35, ".long 0x13d29a35<32>");
+            AssertCode(0x13e95187, ".long 0x13e95187<32>");
+            AssertCode(0x100059c3, ".long 0x100059c3<32>");
+            AssertCode(0x100b61cb, ".long 0x100b61cb<32>");
+            AssertCode(0x13d29a35, ".long 0x13d29a35<32>");
+            AssertCode(0x4d48c976, ".long 0x4d48c976<32>");
+            AssertCode(0x4f8e1ae5, ".long 0x4f8e1ae5<32>");
+            AssertCode(0x4c4d4e4f, ".long 0x4c4d4e4f<32>");
+            AssertCode(0x7c53b17e, ".long 0x7c53b17e<32>");
+            AssertCode(0x7dc2dec0, ".long 0x7dc2dec0<32>");
+            AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f<32>");
+            AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f<32>");
+            AssertCode(0x7fefffff, ".long 0x7fefffff<32>");
 
 
 
-            AssertCode(0x102038C3, ".long 0x102038c3");
-            AssertCode(0x102020CB, ".long 0x102020cb");
-            AssertCode(0x13CA1987, ".long 0x13ca1987");
-            AssertCode(0x100059C3, ".long 0x100059c3");
-            AssertCode(0x13E051C7, ".long 0x13e051c7");
-            AssertCode(0x116021C3, ".long 0x116021c3");
-            AssertCode(0x126B61CB, ".long 0x126b61cb");
+            AssertCode(0x102038C3, ".long 0x102038c3<32>");
+            AssertCode(0x102020CB, ".long 0x102020cb<32>");
+            AssertCode(0x13CA1987, ".long 0x13ca1987<32>");
+            AssertCode(0x100059C3, ".long 0x100059c3<32>");
+            AssertCode(0x13E051C7, ".long 0x13e051c7<32>");
+            AssertCode(0x116021C3, ".long 0x116021c3<32>");
+            AssertCode(0x126B61CB, ".long 0x126b61cb<32>");
 
 
             AssertCode(0x100b60cf, "psq_stux\tf0,r11,r12,0,1");

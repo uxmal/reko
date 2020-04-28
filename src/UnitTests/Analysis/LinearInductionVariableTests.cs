@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Analysis
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, dom);
 			Constant c = liv.FindLinearIncrement(a);
 			Assert.AreEqual(4, c.ToInt32());
-            Assert.AreEqual("a_3 = a_2 + 0x00000004", liv.Context.DeltaStatement.ToString());
+            Assert.AreEqual("a_3 = a_2 + 4<32>", liv.Context.DeltaStatement.ToString());
 		}
 
 		[Test]
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Analysis
 			PhiFunction phi = liv.FindPhiFunction(a);
 			Constant c = liv.FindInitialValue(phi);
             Assert.AreEqual(0, c.ToInt32());
-            Assert.AreEqual("a_1 = 0x00000000", liv.Context.InitialStatement.ToString());
+            Assert.AreEqual("a_1 = 0<32>", liv.Context.InitialStatement.ToString());
 		}
 
 		[Test]
@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Analysis
 			a.Add(ssa.Identifiers.Where(s => s.Identifier.Name == "i_5").Single());
 			Constant c = liv.FindFinalValue(a);
 			Assert.AreEqual(10, c.ToInt32());
-            Assert.AreEqual("branch i_2 < 0x0000000A body", liv.Context.TestStatement.ToString());
+            Assert.AreEqual("branch i_2 < 0xA<32> body", liv.Context.TestStatement.ToString());
 		}
 
 		[Test]
@@ -214,7 +214,7 @@ namespace Reko.UnitTests.Analysis
             liv.Context.PhiIdentifier = phi;
 			liv.Context.DeltaValue = Constant.Word32(1);
 			LinearInductionVariable iv = liv.CreateInductionVariable();
-			Assert.AreEqual("(? 0x00000001 ?)", iv.ToString());
+			Assert.AreEqual("(? 1<32> ?)", iv.ToString());
 		}
 
 		[Test]
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Analysis
 			ssa.Identifiers[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
-			Assert.AreEqual("(0x00000001 0x00000001 ?)", iv.ToString());
+			Assert.AreEqual("(1<32> 1<32> ?)", iv.ToString());
 		}
 
 		[Test]
@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Analysis
 			ssa.Identifiers[id3].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
-			Assert.AreEqual("(0x00000000 0x00000001 ?)", iv.ToString());
+			Assert.AreEqual("(0<32> 1<32> ?)", iv.ToString());
 
 		}
 
@@ -287,7 +287,7 @@ namespace Reko.UnitTests.Analysis
             });
             var liv = new LinearInductionVariableFinder(ssa, doms);
             liv.Find();
-            Assert.AreEqual("(? 0x00000001 0x0000000A)", liv.InductionVariables[0].ToString());
+            Assert.AreEqual("(? 1<32> 0xA<32>)", liv.InductionVariables[0].ToString());
         }
 
 		[Test]
@@ -306,7 +306,7 @@ namespace Reko.UnitTests.Analysis
             var liv = new LinearInductionVariableFinder(ssa, doms);
             liv.Find();
 			var iv = liv.InductionVariables[0];
-			Assert.AreEqual("(0x00000009 -1 0xFFFFFFFF signed)", iv.ToString());
+			Assert.AreEqual("(9<32> -1<i32> 0xFFFFFFFF<32> signed)", iv.ToString());
 		}
 
 		[Test]

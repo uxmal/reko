@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Arch.X86
 		{
 			var imm = new ImmediateOperand(Constant.Word16(0x0003));
 			var c = (Constant) orw.Transform(null, imm, imm.Width, state);
-			Assert.AreEqual("0x0003", c.ToString());
+			Assert.AreEqual("3<16>", c.ToString());
 		}
 
 		[Test]
@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Arch.X86
 		{
 			var imm = new ImmediateOperand(Constant.SByte(-1));
 			var c = (Constant) orw.Transform(null, imm, PrimitiveType.Word16, state);
-			Assert.AreEqual("0xFFFF", c.ToString());
+			Assert.AreEqual("0xFFFF<16>", c.ToString());
 		}
 
 		[Test]
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Arch.X86
 			mem.Base = Registers.ecx;
 			mem.Offset = Constant.Word32(4);
 			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
-			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
+			Assert.AreEqual("Mem0[ecx + 4<32>:word32]", expr.ToString());
 		}
 
 		[Test]
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Arch.X86
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, Constant.Word32(0x24));
 			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
-			Assert.AreEqual("Mem0[eax + 0x00000024 + edx * 0x00000004:word32]", expr.ToString());
+			Assert.AreEqual("Mem0[eax + 0x24<32> + edx * 4<32>:word32]", expr.ToString());
 		}
 
 		[Test]
