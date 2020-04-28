@@ -100,10 +100,18 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
 
 				// 0F 20
-				Instr(Mnemonic.mov, Rv,Cd),
-                Instr(Mnemonic.mov, Rv,Dd),
-                Instr(Mnemonic.mov, Cd,Rv),
-                Instr(Mnemonic.mov, Dd,Rv),
+                Amd64Instr(
+				    Instr(Mnemonic.mov, Rd,Cd),
+				    Instr(Mnemonic.mov, Rq,Cd)),
+                Amd64Instr(
+                    Instr(Mnemonic.mov, Rd,Dd),
+                    Instr(Mnemonic.mov, Rq,Dd)),
+                Amd64Instr(
+                    Instr(Mnemonic.mov, Cd,Rd),
+                    Instr(Mnemonic.mov, Cd,Rq)),
+                Amd64Instr(
+                    Instr(Mnemonic.mov, Dd,Rd),
+                    Instr(Mnemonic.mov, Dd,Rq)),
 				s_invalid,
                 s_invalid,
                 s_invalid,

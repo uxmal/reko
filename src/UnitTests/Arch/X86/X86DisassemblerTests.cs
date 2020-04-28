@@ -3094,5 +3094,11 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("add\t[rax],ebp", "012c20");
         }
+
+        [Test]
+        public void X86Dis_mov_dr0_rax()
+        {
+            AssertCode64("mov\tdr0,rax", "0F23C0");
+        }
     }
 }

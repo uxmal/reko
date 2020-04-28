@@ -3632,7 +3632,7 @@ O:push   cx                                66 51
 
 
         [Test]
-        public void X86Dis_cqo()
+        public void X86Rw_cqo()
         {
             Run64bitTest(0x48, 0x99); // cqo
             AssertCode(
@@ -3642,7 +3642,7 @@ O:push   cx                                66 51
 
 
         [Test]
-        public void X86Dis_cbw()
+        public void X86Rw_cbw()
         {
             Run16bitTest(0x98); // cbw
             AssertCode(
@@ -3651,7 +3651,7 @@ O:push   cx                                66 51
         }
 
         [Test]
-        public void X86Dis_cwde()
+        public void X86Rw_cwde()
         {
             Run32bitTest(0x98); // cwde
             AssertCode(
@@ -3660,7 +3660,7 @@ O:push   cx                                66 51
         }
 
         [Test]
-        public void X86Dis_cdqe()
+        public void X86Rw_cdqe()
         {
             Run64bitTest(0x48, 0x98); // cdqe
             AssertCode(
