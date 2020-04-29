@@ -262,7 +262,8 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.mov, Ev,Gv),
 				Instr(Mnemonic.mov, Gb,Eb),
 				Instr(Mnemonic.mov, Gv,Ev),
-				Instr(Mnemonic.mov, Ev,Sw),
+
+				Instr(Mnemonic.mov, Ewv,Sw),
 				Instr(Mnemonic.lea, Gv,Mv),
 				Instr(Mnemonic.mov, Sw,Ew),
 				Amd64Instr(
@@ -409,10 +410,10 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.jmp, InstrClass.Transfer, Ap),
                     s_invalid),
 				Instr(Mnemonic.jmp, InstrClass.Transfer, Jb),
-				Instr(Mnemonic.@in, AL,dw),
-				Instr(Mnemonic.@in, eAX,dw),
-				Instr(Mnemonic.@out, dw,AL),
-				Instr(Mnemonic.@out, dw,eAX),
+				Instr(Mnemonic.@in, AL,DX),
+				Instr(Mnemonic.@in, eAX,DX),
+				Instr(Mnemonic.@out, DX,AL),
+				Instr(Mnemonic.@out, DX,eAX),
 
 				// F0
 				Instr(Mnemonic.@lock),

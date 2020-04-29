@@ -27,6 +27,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Reko.Arch.X86
 {
@@ -626,6 +627,22 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Ey = E(OperandType.y);
         private static readonly Mutator<X86Disassembler> Ew = E(OperandType.w);
 
+        // Hybrid decoding: if effective memory address, use word16 size, if register 
+        // use the current GP register size.
+        public static bool Ewv(uint top, X86Disassembler dasm)
+        {
+            if (!dasm.TryEnsureModRM(out byte modRm))
+                return false;
+            PrimitiveType width;
+            if ((modRm & 0xC0) == 0xC0)
+                width = dasm.decodingContext.dataWidth;
+            else
+                width = PrimitiveType.Word16;
+            var op = dasm.DecodeModRM(width, dasm.decodingContext.SegmentOverride, dasm.GpRegFromBits);
+            dasm.decodingContext.ops.Add(op);
+            return true;
+        }
+
         // Floating-point ST(x)
         private static bool F(uint op, X86Disassembler d)
         {
@@ -1023,18 +1040,11 @@ namespace Reko.Arch.X86
         }
 
         // Implicit use of DX or EDX.
-        private static Mutator<X86Disassembler> d(OperandType opType)
+        private static bool DX(uint u, X86Disassembler dasm)
         {
-            return (u, d) =>
-            {
-                var width = d.OperandWidth(opType);
-                var op = new RegisterOperand(d.RegFromBitsRexW(2, width));
-                d.decodingContext.ops.Add(op);
-                return true;
-            };
+            dasm.decodingContext.ops.Add(new RegisterOperand(Registers.dx));
+            return true;
         }
-
-        private static readonly Mutator<X86Disassembler> dw = d(OperandType.w);
 
         private static bool n1(uint u, X86Disassembler d)
         {

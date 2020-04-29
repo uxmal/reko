@@ -3100,5 +3100,23 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("mov\tdr0,rax", "0F23C0");
         }
+
+        [Test]
+        public void X86Dis_out_with_rex_prefix()
+        {
+            // REX prefix should have no effect.
+            AssertCode64("out\tdx,al", "4F EE");
+        }
+
+        [Test]
+        public void X86Dis_rw_mov_seg()
+        {
+            AssertCode64("mov\t[rax+76],cs", "8C 48 76    ");
+            AssertCode64("mov\t[rax+76],cs", "48 8C 48 76 ");
+            AssertCode64("mov\teax,cs",      "8c c8       ");
+            AssertCode64("mov\tax,cs",       "66 8c c8    ");
+            AssertCode64("mov\trax,cs",      "66 48 8c c8 ");       // REX prefix wins
+            AssertCode64("mov\tax,cs",       "48 66 8c c8 ");        // data size override prefix wins
+        }
     }
 }

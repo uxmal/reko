@@ -1896,7 +1896,7 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|10000000(4): 1 instructions",
                 "1|L--|xmm0 = __andnps(xmm0, Mem0[edx + 0x00000042:word128])");
-    }
+        }
 
         [Test]
         public void X86rw_andps()
@@ -3457,7 +3457,7 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-         public void X86Rw_cmpxchg8b()
+        public void X86Rw_cmpxchg8b()
         {
             Run32bitTest(0x0F, 0xC7, 0x0F);	// cmpxchg8b	qword ptr [edi]
             AssertCode(
@@ -3667,6 +3667,6 @@ O:push   cx                                66 51
                 "0|L--|0000000140000000(2): 1 instructions",
                 "1|L--|rax = (int64) eax");
         }
+
     }
 }
- 
