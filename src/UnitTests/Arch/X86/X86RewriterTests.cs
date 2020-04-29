@@ -121,6 +121,13 @@ namespace Reko.UnitTests.Arch.X86
             host = new RewriterHost(null);
         }
 
+        private void Run32bitTest(string hexBytes)
+        {
+            arch = arch32;
+            Given_MemoryArea(new MemoryArea(baseAddr32, BytePattern.FromHexBytes(hexBytes).ToArray()));
+            host = new RewriterHost(null);
+        }
+
         private void Run64bitTest(params byte[] bytes)
         {
             arch = arch64;
@@ -3668,5 +3675,13 @@ O:push   cx                                66 51
                 "1|L--|rax = (int64) eax");
         }
 
+        [Test]
+        public void X86Rw_icebp()
+        {
+            Run32bitTest("F1");
+            AssertCode(
+                "0|---|10000000(1): 1 instructions",
+                "1|---|<invalid>");
+        }
     }
 }

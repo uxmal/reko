@@ -276,6 +276,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.fyl2xp1: RewriteFyl2xp1(); break;
                 case Mnemonic.getsec: RewriteGetsec(); break;
                 case Mnemonic.hlt: RewriteHlt(); break;
+                case Mnemonic.icebp: RewriteIcebp(); break;
                 case Mnemonic.idiv: RewriteDivide(m.SDiv, Domain.SignedInt); break;
                 case Mnemonic.@in: RewriteIn(); break;
                 case Mnemonic.imul: RewriteMultiply(Operator.SMul, Domain.SignedInt); break;

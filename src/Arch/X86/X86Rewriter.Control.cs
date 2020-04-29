@@ -152,6 +152,14 @@ namespace Reko.Arch.X86
             iclass |= InstrClass.Call | InstrClass.Transfer;
         }
 
+        private void RewriteIcebp()
+        {
+            // This is not supposed to be executed, so we mark the cluster as invalid.
+            //$REVIEW: the new scanner being developed should make this less necessary.
+            this.iclass = InstrClass.Invalid;
+            m.Invalid();
+        }
+
         private void RewriteInto()
         {
             m.BranchInMiddleOfInstruction(

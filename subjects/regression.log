@@ -92,38 +92,8 @@ Parameter name: index
 000000000040216C: warning: Unable to resolve imported reference __gmon_start__.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
 00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
-000000000040590F: warning: x86 instruction 'icebp' is not supported yet.
-000000000040599F: warning: x86 instruction 'icebp' is not supported yet.
-0000000000405B5F: warning: x86 instruction 'icebp' is not supported yet.
-0000000000405BCF: warning: x86 instruction 'icebp' is not supported yet.
-0000000000405C03: warning: x86 instruction 'icebp' is not supported yet.
-000000000040627F: warning: x86 instruction 'icebp' is not supported yet.
-0000000000408D1F: warning: x86 instruction 'icebp' is not supported yet.
-0000000000408E3F: warning: x86 instruction 'icebp' is not supported yet.
-0000000000408F6F: warning: x86 instruction 'icebp' is not supported yet.
-00000000004093FF: warning: x86 instruction 'icebp' is not supported yet.
-000000000040A1E3: warning: x86 instruction 'icebp' is not supported yet.
-000000000040A752: warning: x86 instruction 'icebp' is not supported yet.
-000000000040A782: warning: x86 instruction 'icebp' is not supported yet.
-000000000040A92A: warning: x86 instruction 'icebp' is not supported yet.
-000000000040A937: warning: x86 instruction 'icebp' is not supported yet.
-000000000040AA19: warning: x86 instruction 'icebp' is not supported yet.
-000000000040CA6E: warning: x86 instruction 'icebp' is not supported yet.
-000000000040CAB6: warning: x86 instruction 'icebp' is not supported yet.
-000000000040CBFE: warning: x86 instruction 'icebp' is not supported yet.
-000000000040CC46: warning: x86 instruction 'icebp' is not supported yet.
 000000000040E250: warning: x86 instruction 'vpsubsw' is not supported yet.
-000000000040E7B2: warning: x86 instruction 'icebp' is not supported yet.
-000000000040E815: warning: x86 instruction 'icebp' is not supported yet.
-000000000040F998: warning: x86 instruction 'icebp' is not supported yet.
 000000000040FEF4: warning: x86 instruction 'vminpd' is not supported yet.
-000000000040FF0E: warning: x86 instruction 'icebp' is not supported yet.
-000000000040FF25: warning: x86 instruction 'icebp' is not supported yet.
-000000000040FF40: warning: x86 instruction 'icebp' is not supported yet.
-000000000041029F: warning: x86 instruction 'icebp' is not supported yet.
-00000000004102D0: warning: x86 instruction 'icebp' is not supported yet.
-0000000000410389: warning: x86 instruction 'icebp' is not supported yet.
-00000000004104F1: warning: x86 instruction 'icebp' is not supported yet.
 000000000040401D: error: An error occurred while processing the statement word64 rax_2504 = Mem2502[rax_2479 - 0x0000000000000008 + 0x0000000000000000:word64].
     Not handling (ptr64 (struct (0 T_2285 t0000))) and (union (int64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
@@ -407,9 +377,6 @@ l0000000000400F4C: warning: Non-integral switch expression
 0800:1ADD: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE3: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE8: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:0372: warning: x86 instruction 'icebp' is not supported yet.
-0800:0FDA: warning: x86 instruction 'icebp' is not supported yet.
-0800:0FEF: warning: x86 instruction 'icebp' is not supported yet.
 0800:0BA1: error: An error occurred while processing the statement word16 di_45 = si_102 - (fp - 0x0084).
     Not handling mp16 and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
@@ -1030,25 +997,8 @@ Borland C v3 runtime detected
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:4EC7: warning: x86 instruction 'icebp' is not supported yet.
-0800:6EC4: warning: x86 instruction 'icebp' is not supported yet.
-0800:A08E: warning: x86 instruction 'icebp' is not supported yet.
-0800:A328: warning: x86 instruction 'icebp' is not supported yet.
-0800:A45B: warning: x86 instruction 'icebp' is not supported yet.
-0800:BE7E: warning: x86 instruction 'icebp' is not supported yet.
-1483:0515: warning: x86 instruction 'icebp' is not supported yet.
-1483:0D0B: warning: x86 instruction 'icebp' is not supported yet.
-1483:0DD7: warning: x86 instruction 'icebp' is not supported yet.
 1483:1390: warning: x86 instruction 'vblendvpdv' is not supported yet.
-1483:164B: warning: x86 instruction 'icebp' is not supported yet.
-1483:164E: warning: x86 instruction 'icebp' is not supported yet.
-1483:18D6: warning: x86 instruction 'icebp' is not supported yet.
-1483:19BF: warning: x86 instruction 'icebp' is not supported yet.
-1483:1BC2: warning: x86 instruction 'icebp' is not supported yet.
-1483:1D2C: warning: x86 instruction 'icebp' is not supported yet.
 1483:1DB0: warning: x86 instruction 'phsubsw' is not supported yet.
-1483:20E1: warning: x86 instruction 'icebp' is not supported yet.
-1483:2123: warning: x86 instruction 'icebp' is not supported yet.
 1483:0D6F: warning: Call target address 1483:8A82 is invalid.
 1483:0DCF: warning: Procedure fn1483_0D3F previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0DFC: warning: Call target address 1483:E62A is invalid.
@@ -1062,7 +1012,6 @@ Borland C v3 runtime detected
 1483:0CD2: warning: Call target address 1483:4FE0 is invalid.
 1483:0CE6: warning: Procedure fn1483_0C91 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 1483:0C5C: warning: Procedure fn1483_0C55 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-1483:1BC2: warning: x86 instruction 'icebp' is not supported yet.
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 fn0800_8F97: error: An internal error occurred while building the expressions of fn0800_8F97
     Dominator graph calculation timed out.
@@ -1131,4 +1080,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 61 binaries in 57.18 seconds ---
+Decompiled 61 binaries in 70.36 seconds ---
