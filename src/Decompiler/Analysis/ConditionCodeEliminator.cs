@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Output;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -49,21 +50,21 @@ namespace Reko.Analysis
 	/// </remarks>
 	public class ConditionCodeEliminator : InstructionTransformer
 	{
-        private SsaState ssa;
-		private SsaIdentifierCollection ssaIds;
+        private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator", "Verbose");
+        
+        private readonly SsaState ssa;
+		private readonly SsaIdentifierCollection ssaIds;
+        private readonly IPlatform platform;
+        private readonly ExpressionEmitter m;
+        private HashSet<Identifier> aliases;
 		private SsaIdentifier sidGrf;
         private Statement useStm;
-        private IPlatform platform;
-        private ExpressionEmitter m;
 
-        private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator", "Verbose");
-        private HashSet<Identifier> aliases;
-
-        public ConditionCodeEliminator(SsaState ssa, IPlatform arch)
+        public ConditionCodeEliminator(SsaState ssa, IPlatform platform, DecompilerEventListener listener)
 		{
-            this.ssa=ssa;
+            this.ssa = ssa;
 			this.ssaIds = ssa.Identifiers;
-            this.platform = arch;
+            this.platform = platform;
             this.m = new ExpressionEmitter();
 		}
 

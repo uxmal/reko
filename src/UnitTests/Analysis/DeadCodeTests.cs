@@ -91,12 +91,13 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, listener);
 			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)
 			{
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
 				cce.Transform();
 
 				DeadCode.Eliminate(ssa);

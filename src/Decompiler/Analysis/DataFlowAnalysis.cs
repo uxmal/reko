@@ -112,16 +112,25 @@ namespace Reko.Analysis
         {
             eventListener.ShowProgress("Rewriting procedures.", 0, program.Procedures.Count);
 
+            var ssts = new List<SsaTransform>();
             IntraBlockDeadRegisters.Apply(program, eventListener);
+            if (eventListener.IsCanceled())
+                return ssts;
 
             AdjacentBranchCollector.Transform(program, eventListener);
+            if (eventListener.IsCanceled())
+                return ssts;
 
-            var ssts = RewriteProceduresToSsa();
+            ssts = RewriteProceduresToSsa();
+            if (eventListener.IsCanceled())
+                return ssts;
 
             // Recreate user-defined signatures. It should prevent type
             // inference between user-defined parameters and other expressions
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(eventListener);
+            if (eventListener.IsCanceled())
+                return ssts;
 
             // Discover ssaId's that are live out at each call site.
             // Delete all others.
@@ -132,6 +141,8 @@ namespace Reko.Analysis
                 dynamicLinker,
                 eventListener);
             uvr.Transform();
+            if (eventListener.IsCanceled())
+                return ssts;
 
             // At this point, the exit blocks contain only live out registers.
             // We can create signatures from that.
@@ -160,6 +171,8 @@ namespace Reko.Analysis
         /// <param name="procs"></param>
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
+            if (eventListener.IsCanceled())
+                return;
             this.sccProcs = procs.ToHashSet();
             flow.CreateFlowsFor(procs);
 
@@ -176,6 +189,8 @@ namespace Reko.Analysis
             // New stack based variables may be available now.
             foreach (var sst in ssts)
             {
+                if (eventListener.IsCanceled())
+                    return;
                 var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, program.CallGraph, dynamicLinker, this.eventListener);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
@@ -183,8 +198,11 @@ namespace Reko.Analysis
                 DumpWatchedProcedure("After extra stack vars 2", sst.SsaState.Procedure);
             }
 
-            foreach (var ssa in ssts.Select(sst => sst.SsaState))
+            foreach (var sst in ssts)
             {
+                if (eventListener.IsCanceled())
+                    return;
+                var ssa = sst.SsaState;
                 RemoveImplicitRegistersFromHellNodes(ssa);
                 var sac = new SegmentedAccessClassifier(ssa);
                 sac.Classify();
@@ -196,6 +214,8 @@ namespace Reko.Analysis
             var uid = new UsedRegisterFinder(flow, procs, this.eventListener);
             foreach (var sst in ssts)
             {
+                if (eventListener.IsCanceled())
+                    return;
                 var ssa = sst.SsaState;
                 RemovePreservedUseInstructions(ssa);
                 DeadCode.Eliminate(ssa);
@@ -424,11 +444,11 @@ namespace Reko.Analysis
                 DumpWatchedProcedure("After first VP", ssa.Procedure);
 
                 // Fuse additions and subtractions that are linked by the carry flag.
-                var larw = new LongAddRewriter(ssa);
+                var larw = new LongAddRewriter(ssa, eventListener);
                 larw.Transform();
 
                 // Propagate condition codes and registers. 
-                var cce = new ConditionCodeEliminator(ssa, program.Platform);
+                var cce = new ConditionCodeEliminator(ssa, program.Platform, eventListener);
                 cce.Transform();
 
                 vp.Transform();
@@ -450,8 +470,8 @@ namespace Reko.Analysis
                     sst.Transform();
                 }
 
-                var fpuGuesser = new FpuStackReturnGuesser(ssa);
-                fpuGuesser.Rewrite();
+                var fpuGuesser = new FpuStackReturnGuesser(ssa, eventListener);
+                fpuGuesser.Transform();
 
                 // By placing use statements in the exit block, we will collect
                 // reaching definitions in the use statements.
@@ -459,7 +479,7 @@ namespace Reko.Analysis
                 sst.RemoveDeadSsaIdentifiers();
 
                 // Backpropagate stack pointer from procedure return.
-                var spBackpropagator = new StackPointerBackpropagator(ssa);
+                var spBackpropagator = new StackPointerBackpropagator(ssa, eventListener);
                 spBackpropagator.BackpropagateStackPointer();
                 DumpWatchedProcedure("After SP BP", ssa.Procedure);
 

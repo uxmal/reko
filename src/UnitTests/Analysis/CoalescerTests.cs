@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Analysis
                 var sst = ssts.Single(s => s.SsaState.Procedure == proc);
                 SsaState ssa = sst.SsaState;
 
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
                 cce.Transform();
                 DeadCode.Eliminate(ssa);
 

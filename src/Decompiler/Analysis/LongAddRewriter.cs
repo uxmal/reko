@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Reko.Core.Services;
 
 namespace Reko.Analysis
 {
@@ -59,17 +60,18 @@ namespace Reko.Analysis
         private SsaState ssa;
         private Expression dst;
         private IProcessorArchitecture arch;
-
+        private DecompilerEventListener listener;
         private static InstructionMatcher adcPattern;
         private static InstructionMatcher addPattern;
         private static ExpressionMatcher memOffset;
         private static ExpressionMatcher segMemOffset;
         private static InstructionMatcher condm;
 
-        public LongAddRewriter(SsaState ssa)
+        public LongAddRewriter(SsaState ssa, DecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.arch = ssa.Procedure.Architecture;
+            this.listener = listener;
         }
 
         static LongAddRewriter()
@@ -269,6 +271,8 @@ namespace Reko.Analysis
         {
             foreach (var block in ssa.Procedure.ControlGraph.Blocks)
             {
+                if (listener.IsCanceled())
+                    return;
                 ReplaceLongAdditions(block);
             }
         }
@@ -282,6 +286,8 @@ namespace Reko.Analysis
             var stmtsOrig = block.Statements.ToList();
             for (int i = 0; i < block.Statements.Count; ++i)
             {
+                if (listener.IsCanceled())
+                    return;
                 var loInstr = MatchAddSub(block.Statements[i]);
                 if (loInstr == null)
                     continue;

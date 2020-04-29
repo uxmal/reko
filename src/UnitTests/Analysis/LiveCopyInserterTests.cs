@@ -192,17 +192,18 @@ namespace Reko.UnitTests.Analysis
             this.ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
+            var listener = new FakeDecompilerEventListener();
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform, listener);
 			cce.Transform();
 			DeadCode.Eliminate(ssa);
 
             var segmentMap = new SegmentMap(Address.Ptr32(0x00400000));
-			ValuePropagator vp = new ValuePropagator(
-                segmentMap, 
+            ValuePropagator vp = new ValuePropagator(
+                segmentMap,
                 ssa,
-                program.CallGraph, 
-                null, 
-                new FakeDecompilerEventListener());
+                program.CallGraph,
+                null,
+                listener);
 			vp.Transform();
 
 			Coalescer coa = new Coalescer(ssa);

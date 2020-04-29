@@ -51,8 +51,8 @@ namespace Reko.UnitTests.Analysis
 
         private void RunFpuStackReturnGuesser()
         {
-            var fpuGuesser = new FpuStackReturnGuesser(m.Ssa);
-            fpuGuesser.Rewrite();
+            var fpuGuesser = new FpuStackReturnGuesser(m.Ssa, new FakeDecompilerEventListener());
+            fpuGuesser.Transform();
             m.Ssa.Validate(s => Assert.Fail(s));
         }
 

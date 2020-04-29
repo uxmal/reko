@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(SsaState ssa)
         {
-            var spbp = new StackPointerBackpropagator(ssa);
+            var spbp = new StackPointerBackpropagator(ssa, new FakeDecompilerEventListener());
             spbp.BackpropagateStackPointer();
             ssa.Validate(s => Assert.Fail(s));
         }

@@ -127,6 +127,7 @@ namespace Reko.UnitTests.Analysis
             };
             this.proc = proc;
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
+            var listener = new FakeDecompilerEventListener();
             var sst = new SsaTransform(
                 program,
                 proc,
@@ -135,10 +136,10 @@ namespace Reko.UnitTests.Analysis
                 new ProgramDataFlow());
             sst.Transform();
 			ssa = sst.SsaState;
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform, listener);
 			cce.Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker, new FakeDecompilerEventListener());
+            ValuePropagator vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker, listener);
 			vp.Transform();
 			DeadCode.Eliminate(ssa);
 			Coalescer coa = new Coalescer(ssa);

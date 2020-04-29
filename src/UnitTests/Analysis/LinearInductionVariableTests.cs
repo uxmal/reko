@@ -355,7 +355,7 @@ namespace Reko.UnitTests.Analysis
 			this.ssa = sst.SsaState;
 
             var arch = new FakeArchitecture();
-            var cce = new ConditionCodeEliminator(ssa, new DefaultPlatform(null, arch));
+            var cce = new ConditionCodeEliminator(ssa, new DefaultPlatform(null, arch), listener);
 			cce.Transform();
 
 			DeadCode.Eliminate(ssa);

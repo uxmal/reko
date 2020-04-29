@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,15 +52,17 @@ namespace Reko.Analysis
         private readonly SsaState ssa;
         private readonly SsaMutator ssam;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
+        private readonly DecompilerEventListener listener;
 
-        public FpuStackReturnGuesser(SsaState ssa)
+        public FpuStackReturnGuesser(SsaState ssa, DecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.ssam = new SsaMutator(ssa);
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            this.listener = listener;
         }
 
-        public void Rewrite()
+        public void Transform()
         {
             var fpuStack = ssa.Procedure.Architecture.FpuStackRegister;
             if (fpuStack == null)
@@ -71,6 +74,8 @@ namespace Reko.Analysis
                 .ToList();
             foreach (var sid in fpuStackIds)
             {
+                if (listener.IsCanceled())
+                    return;
                 if (!(sid.DefStatement.Instruction is CallInstruction ci))
                     continue;
                 var callStm = sid.DefStatement;

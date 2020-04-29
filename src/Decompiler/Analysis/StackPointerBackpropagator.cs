@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,7 +30,7 @@ namespace Reko.Analysis
 {
     /// <summary>
     /// Backpropagate stack pointer from procedure return.
-    /// Assume that stack pointer at the end of procedure has the same
+    /// Assumes that stack pointer at the end of procedure has the same
     /// value as at the start
     /// </summary>
     /// <example>
@@ -54,11 +55,13 @@ namespace Reko.Analysis
     {
         private readonly SsaState ssa;
         private readonly ExpressionEmitter m;
+        private readonly DecompilerEventListener listener;
 
-        public StackPointerBackpropagator(SsaState ssa)
+        public StackPointerBackpropagator(SsaState ssa, DecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.m = new ExpressionEmitter();
+            this.listener = listener;
         }
 
         /// <summary>
@@ -73,6 +76,8 @@ namespace Reko.Analysis
         {
             foreach (var spAtExit in FindStackUsesAtExit(ssa.Procedure))
             {
+                if (listener.IsCanceled())
+                    return;
                 BackpropagateStackPointer(spAtExit);
             }
         }
@@ -83,6 +88,8 @@ namespace Reko.Analysis
             var offset = 0;
             for (; ; )
             {
+                if (listener.IsCanceled())
+                    return;
                 var (spPrevious, delta) = MatchStackOffsetPattern(spCur);
                 if (spPrevious == null)
                     break;

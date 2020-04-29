@@ -29,6 +29,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -54,7 +55,7 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_ConditionCodeEliminator()
         {
-            cce = new ConditionCodeEliminator(ssaState, new DefaultPlatform(null, new FakeArchitecture()));
+            cce = new ConditionCodeEliminator(ssaState, new DefaultPlatform(null, new FakeArchitecture()), new FakeDecompilerEventListener());
         }
 
         protected Program CompileTest(Action<ProcedureBuilder> m)
@@ -102,10 +103,10 @@ namespace Reko.UnitTests.Analysis
                     new ProgramDataFlow());
                 var ssa = sst.Transform();
 
-                var larw = new LongAddRewriter(ssa);
+                var larw = new LongAddRewriter(ssa, listener);
                 larw.Transform();
 
-                var cce = new ConditionCodeEliminator(ssa, program.Platform);
+                var cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
                 cce.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 

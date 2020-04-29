@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Analysis
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
 
-                var larw = new LongAddRewriter(sst.SsaState);
+                var larw = new LongAddRewriter(sst.SsaState, eventListener);
                 larw.Transform();
 
                 proc.Write(false, writer);
@@ -145,7 +145,7 @@ namespace Reko.UnitTests.Analysis
             sst.AddUsesToExitBlock();
             sst.RemoveDeadSsaIdentifiers();
 
-            rw = new LongAddRewriter(sst.SsaState);
+            rw = new LongAddRewriter(sst.SsaState, new FakeDecompilerEventListener());
             this.ssa = sst.SsaState;
         }
 
@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Analysis
             sst.AddUsesToExitBlock();
             sst.RemoveDeadSsaIdentifiers();
 
-            rw = new LongAddRewriter(sst.SsaState);
+            rw = new LongAddRewriter(sst.SsaState, new FakeDecompilerEventListener());
             this.ssa = sst.SsaState;
 
             rw.Transform();
