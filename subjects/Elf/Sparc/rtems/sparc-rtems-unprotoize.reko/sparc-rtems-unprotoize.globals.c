@@ -18,7 +18,7 @@ Eq_n g_t16F14 =
 char g_str17218[] = "";
 char g_str17268[] = "%s: ";
 char g_str17270[] = ": %s\n";
-int8 g_b17468 = 0x002E;
+int8 g_b17468 = 46;
 Eq_n g_t1753C = 
 	{
 		'\x00'
@@ -87,7 +87,7 @@ Eq_n g_t28000 =
 	};
 char * g_ptr28028 = &g_str178B0;
 <anonymous> * g_ptr2802C = print_and_abort;
-int32 g_dw28030 = 0x01;
+int32 g_dw28030 = 1;
 Eq_n g_t28064 = 
 	{
 		'\x00'
@@ -139,7 +139,7 @@ Eq_n g_t281F0 =
 up32 g_dw28200 = 0x00;
 up32 g_dw28210 = 0x00;
 int8 * g_ptr28220 = null;
-int32 g_dw28230 = 0x00;
+int32 g_dw28230 = 0;
 Eq_n g_t28240 = 
 	{
 		0x00,

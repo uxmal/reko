@@ -11,7 +11,7 @@ Eq_n g_t0001 =
 		0x00,
 		
 		{
-			0x00
+			0
 		},
 		0x00,
 	};
@@ -38,7 +38,7 @@ word32 g_dw400C = 0x00;
 word32 g_dw4010 = 0x00;
 Eq_n g_t4020 = 
 	{
-		0x00
+		0
 	};
 struct Eq_n g_t4034 = 
 	{
@@ -51,23 +51,23 @@ Eq_n g_t4238 =
 		0x00,
 		
 		{
-			0x00
+			0
 		},
 		0x00,
 		
 		{
-			0x00
+			0
 		},
 		
 		{
-			0x00
+			0
 		},
 		0x00,
+		0,
+		0,
 		0x00,
 		0x00,
-		0x00,
-		0x00,
-		0x00,
+		0,
 		0x00,
 		0x00,
 		
@@ -108,7 +108,7 @@ Eq_n g_t43C4 =
 			0x00,
 			0x00,
 			0x00,
-			0x00,
+			0,
 			-673099780,
 			0x10000027,
 			-0x477BFFFE,
@@ -136,32 +136,32 @@ Eq_n g_a100B8[] =
 	};
 Eq_n g_t12420 = 
 	{
-		0x00,
-		0x0025,
+		0,
+		37,
 	};
 Eq_n g_t1242A = 
 	{
-		0x00,
+		0,
 		0x0077,
 	};
 Eq_n g_t12430 = 
 	{
-		0x00,
+		0,
 		100,
 	};
 Eq_n g_t12443 = 
 	{
-		0x00,
+		0,
 		0x0077,
 	};
 Eq_n g_t12459 = 
 	{
-		0x00,
-		0x0025,
+		0,
+		37,
 	};
 Eq_n g_t12464 = 
 	{
-		0x00,
+		0,
 		114,
 	};
 word32 g_a12478[] = 
@@ -184,97 +184,97 @@ word32 g_a12478[] =
 	};
 Eq_n g_t12C08 = 
 	{
-		0x00,
+		0,
 		112,
 	};
 Eq_n g_t12C16 = 
 	{
-		0x00,
+		0,
 		112,
 	};
 Eq_n g_t12C28 = 
 	{
-		0x00,
+		0,
 		114,
 	};
 Eq_n g_t12C37 = 
 	{
-		0x00,
+		0,
 		112,
 	};
 Eq_n g_t12C41 = 
 	{
-		0x00,
+		0,
 		115,
 	};
 Eq_n g_t12C4B = 
 	{
-		0x00,
+		0,
 		99,
 	};
 Eq_n g_t12C6D = 
 	{
-		0x00,
-		0x0025,
+		0,
+		37,
 	};
 Eq_n g_t12C73 = 
 	{
-		0x00,
+		0,
 		0x0A,
 	};
 Eq_n g_t12C7D = 
 	{
-		0x00,
-		0x0025,
+		0,
+		37,
 	};
 Eq_n g_t12C82 = 
 	{
-		0x00,
+		0,
 		99,
 	};
 Eq_n g_t12C90 = 
 	{
-		0x00,
+		0,
 		115,
 	};
 Eq_n g_t12C9F = 
 	{
-		0x00,
+		0,
 		99,
 	};
 Eq_n g_t12CC1 = 
 	{
-		0x00,
+		0,
 		101,
 	};
 Eq_n g_t12CE8 = 
 	{
-		0x00,
+		0,
 		114,
 	};
 Eq_n g_t12CF8 = 
 	{
-		0x00,
+		0,
 		114,
 	};
 Eq_n g_t12D08 = 
 	{
-		0x00,
+		0,
 		99,
 	};
 Eq_n g_t12E02 = 
 	{
-		0x00,
-		0x0041,
+		0,
+		65,
 	};
 Eq_n g_t12E0B = 
 	{
-		0x0020,
+		32,
 		0x0A,
 	};
 Eq_n g_t12E0D = 
 	{
-		0x00,
+		0,
 		110,
 	};
 Eq_n g_t12E16 = 
@@ -350,23 +350,23 @@ Eq_n g_t12E16 =
 	};
 Eq_n g_t12E1E = 
 	{
-		0x00,
+		0,
 		115,
 	};
 Eq_n g_t12E2A = 
 	{
-		0x00,
+		0,
 		110,
 	};
 Eq_n g_t12E38 = 
 	{
-		0x00,
-		0x0061,
+		0,
+		97,
 	};
 Eq_n g_t12E4C = 
 	{
-		0x00,
-		0x002D,
+		0,
+		45,
 	};
 struct Eq_n g_t12E71 = 
 	{
@@ -394,10 +394,10 @@ struct Eq_n * g_ptr130A0 = &g_t0001;
 Eq_n g_t130A4 = 
 	{
 		0x00,
-		0x00,
+		0,
 		null,
 	};
-int32 g_dw130A8 = 0x00;
+int32 g_dw130A8 = 0;
 ui32 * g_ptr130BC = null;
 Eq_n g_t130DC = 
 	{
@@ -422,18 +422,18 @@ Eq_n g_t13150 =
 	{
 		0x00
 	};
-int32 g_dw13154 = 0x01;
-int32 g_dw13158 = 0x00;
+int32 g_dw13154 = 1;
+int32 g_dw13158 = 0;
 struct Eq_n * g_ptr1315C = null;
 word32 * g_ptr13160 = null;
 ui32 g_dw13164 = 0x00;
 Eq_n g_t13168 = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t1316C = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t13170 = 
 	{
@@ -445,11 +445,11 @@ uint32 g_dw13478 = 0x00;
 word32 g_dw1347C = 0x00;
 word32 g_dw13480 = 0x00;
 word32 g_dw13484 = 0x00;
-int32 g_dw13488 = 0x00;
+int32 g_dw13488 = 0;
 word32 g_dw1348C = 0x00;
 Eq_n g_t13490 = 
 	{
-		0x00
+		0
 	};
 word32 g_dw13494 = 0x00;
 uint32 g_dw13498 = 0x00;
@@ -472,7 +472,7 @@ Eq_n g_t134AC =
 	};
 word32 g_dw134B0 = 0x00;
 struct Eq_n * g_ptr134B4 = null;
-int32 g_dw134B8 = 0x00;
+int32 g_dw134B8 = 0;
 byte g_b134C0 = 0x00;
 uint32 g_dw134C4 = 0x00;
 Eq_n g_t134C8 = 
@@ -487,9 +487,9 @@ uint32 g_dw134D0 = 0x00;
 uint32 g_dw134D4 = 0x00;
 Eq_n g_t134D8 = 
 	{
-		0x00
+		0
 	};
-int32 g_dw134DC = 0x00;
+int32 g_dw134DC = 0;
 Eq_n g_t134E0 = 
 	{
 		0x00
@@ -539,31 +539,31 @@ ui32 g_dw1365C = 0x00;
 ui32 g_dw13664 = 0x00;
 Eq_n g_t13668 = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t13698 = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t136B8 = 
 	{
-		0x00
+		0
 	};
 ui32 g_dw136BC = 0x00;
 ui32 g_dw136C0 = 0x00;
 Eq_n g_t136CC = 
 	{
-		0x00
+		0
 	};
 ui32 g_dw136E8 = 0x00;
 Eq_n g_t136F4 = 
 	{
-		0x00
+		0
 	};
-int32 g_dw13708 = 0x00;
+int32 g_dw13708 = 0;
 Eq_n g_t1370C = 
 	{
-		0x00
+		0
 	};
 ui32 g_dw13710 = 0x00;
 Eq_n g_t13714 = 
@@ -572,7 +572,7 @@ Eq_n g_t13714 =
 	};
 Eq_n g_t13718 = 
 	{
-		0x00
+		0
 	};
 word16 g_w1371C = 0x00;
 Eq_n g_t13744 = 
@@ -583,10 +583,10 @@ Eq_n g_t13744 =
 			0x00,
 			0x00,
 			0x00,
-			0x00,
-			0x00,
-			0x00,
-			0x00,
+			0,
+			0,
+			0,
+			0,
 			
 			{
 				0x00
@@ -609,21 +609,21 @@ Eq_n g_t1375C =
 	};
 struct Eq_n * g_ptr13764 = null;
 struct Eq_n * g_ptr13768 = null;
-int32 g_dw1376C = 0x00;
+int32 g_dw1376C = 0;
 struct Eq_n * g_ptr13770 = null;
 union Eq_n * g_ptr13774 = null;
-int32 g_dw13778 = 0x00;
+int32 g_dw13778 = 0;
 union Eq_n * g_ptr1377C = null;
 union Eq_n * g_ptr13780 = null;
 word32 g_dw13784 = 0x00;
-int32 g_dw13788 = 0x00;
-int32 g_dw13794 = 0x00;
-int32 g_dw137A0 = 0x00;
-int32 g_dw137AC = 0x00;
-int32 g_dw137B8 = 0x00;
-int32 g_dw137C4 = 0x00;
-int32 g_dw137D0 = 0x00;
-int32 g_dw137DC = 0x00;
+int32 g_dw13788 = 0;
+int32 g_dw13794 = 0;
+int32 g_dw137A0 = 0;
+int32 g_dw137AC = 0;
+int32 g_dw137B8 = 0;
+int32 g_dw137C4 = 0;
+int32 g_dw137D0 = 0;
+int32 g_dw137DC = 0;
 Eq_n g_a137E8[] = 
 	{
 	};
@@ -636,8 +636,8 @@ word32 * g_ptr13814 = null;
 word32 * g_ptr1381C = null;
 word32 * g_ptr13824 = null;
 struct Eq_n * g_ptr13828 = null;
-int32 g_dw1382C = 0x00;
-int32 g_dw13830 = 0x00;
+int32 g_dw1382C = 0;
+int32 g_dw13830 = 0;
 Eq_n g_t13834 = 
 	{
 		0x00,
@@ -907,17 +907,17 @@ Eq_n g_t1395C =
 	{
 		0x00
 	};
-int32 g_dw13960 = 0x00;
+int32 g_dw13960 = 0;
 Eq_n g_t13964 = 
 	{
 		0x00
 	};
 Eq_n g_t13968 = 
 	{
-		0x00
+		0
 	};
-int32 g_dw1396C = 0x00;
-int32 g_dw13970 = 0x00;
+int32 g_dw1396C = 0;
+int32 g_dw13970 = 0;
 Eq_n g_a13974[] = 
 	{
 	};
@@ -934,10 +934,10 @@ Eq_n g_t13984 =
 		0x00,
 	};
 union Eq_n * g_ptr13A04 = null;
-int32 g_dw13A08 = 0x00;
-int32 g_dw13A0C = 0x00;
-int32 g_dw13A10 = 0x00;
-int32 g_dw13A14 = 0x00;
+int32 g_dw13A08 = 0;
+int32 g_dw13A0C = 0;
+int32 g_dw13A10 = 0;
+int32 g_dw13A14 = 0;
 Eq_n g_t100000;
 ui32 g_dw1700000;
 ui32 g_dw1700004;

@@ -15,7 +15,7 @@ struct Eq_n * g_ptr14A0 = null;
 struct Eq_n * g_ptr14A4 = null;
 Eq_n g_t14A8 = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t14AC;
 Eq_n g_t14B0;

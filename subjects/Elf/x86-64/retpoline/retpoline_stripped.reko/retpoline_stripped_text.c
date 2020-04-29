@@ -7,8 +7,8 @@
 // 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
 void fn0000000000400480(void (* rdx)(), Eq_n qwArg00)
 {
-	__align((char *) fp + 0x08);
-	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);
+	__align((char *) fp + 8);
+	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 8, &globals->t400710, &globals->t400780, rdx, fp);
 	__hlt();
 }
 

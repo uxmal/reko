@@ -30,7 +30,7 @@ word16 fn02F4(byte a, byte c, byte b, Eq_n de, byte h, struct Eq_n * ix, Eq_n wA
 	ui16 hl_n = SEQ(ix->bFFFFFFF9, ix->bFFFFFFF8);
 	for (a_n = 0x04; a_n != 0x00; --a_n)
 	{
-		c_n <<= 0x01;
+		c_n <<= 1;
 		b_n = __rcl(b_n, 0x01, (bool) cond(c_n));
 		hl_n = hl_n * 0x02 + (b_n < 0x00);
 		uint8 h_n = SLICE(hl_n, byte, 8);
@@ -97,7 +97,7 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 	ui16 hl_n = SEQ(ix->bFFFFFFE9, ix->bFFFFFFE8);
 	for (a_n = 0x04; a_n != 0x00; --a_n)
 	{
-		c_n <<= 0x01;
+		c_n <<= 1;
 		b_n = __rcl(b_n, 0x01, (bool) cond(c_n));
 		hl_n = hl_n * 0x02 + (b_n < 0x00);
 		byte l_n = (byte) hl_n;
@@ -128,7 +128,7 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 	byte a_n;
 	for (a_n = 0x05; a_n != 0x00; --a_n)
 	{
-		h_n >>= 0x01;
+		h_n >>= 1;
 		l_n = __rcr(l_n, 0x01, (bool) cond(h_n));
 		b_n = __rcr(b_n, 0x01, (bool) cond(l_n));
 		c_n = __rcr(c_n, 0x01, (bool) cond(b_n));
@@ -153,7 +153,7 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 	ui16 hl_n = SEQ(ix->bFFFFFFE1, ix->bFFFFFFE0);
 	for (a_n = 0x04; a_n != 0x00; --a_n)
 	{
-		c_n <<= 0x01;
+		c_n <<= 1;
 		b_n = __rcl(b_n, 0x01, (bool) cond(c_n));
 		hl_n = hl_n * 0x02 + (b_n < 0x00);
 		byte l_n = (byte) hl_n;
@@ -199,7 +199,7 @@ void fn060E(uint8 a, uint8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 		byte a_n;
 		for (a_n = 0x05; a_n != 0x00; --a_n)
 		{
-			h_n >>= 0x01;
+			h_n >>= 1;
 			l_n = __rcr(l_n, 0x01, (bool) cond(h_n));
 			b_n = __rcr(b_n, 0x01, (bool) cond(l_n));
 			c_n = __rcr(c_n, 0x01, (bool) cond(b_n));
@@ -241,8 +241,8 @@ void fn060E(uint8 a, uint8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 	for (bc_n = 0x04; bc_n != 0x00; --bc_n)
 	{
 		*de = *hl_n;
-		hl_n = (word32) hl_n + 0x01;
-		de = (word32) de + 0x01;
+		hl_n = (word32) hl_n + 1;
+		de = (word32) de + 1;
 	}
 	Eq_n de_n = wArg20;
 	Eq_n hl_n = fp + 0x04;
@@ -250,8 +250,8 @@ void fn060E(uint8 a, uint8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 	for (bc_n = 0x04; bc_n != 0x00; --bc_n)
 	{
 		*de_n = *hl_n;
-		hl_n = (word32) hl_n + 0x01;
-		de_n = (word32) de_n + 0x01;
+		hl_n = (word32) hl_n + 1;
+		de_n = (word32) de_n + 1;
 	}
 }
 
@@ -284,7 +284,7 @@ void fn0C1D(Eq_n de, struct Eq_n * ix, Eq_n wArg22)
 	ui16 hl_n = SEQ(ix->bFFFFFFE9, ix->bFFFFFFE8);
 	do
 	{
-		c_n <<= 0x01;
+		c_n <<= 1;
 		b_n = __rcl(b_n, 0x01, (bool) cond(c_n));
 		hl_n = hl_n * 0x02 + (b_n < 0x00);
 		byte l_n = (byte) hl_n;
@@ -361,7 +361,7 @@ void fn0C9D(byte a, uint8 b, uint8 c, Eq_n de, uint8 h, uint8 l, struct Eq_n * i
 {
 	do
 	{
-		h >>= 0x01;
+		h >>= 1;
 		l = __rcr(l, 0x01, (bool) cond(h));
 		b = __rcr(b, 0x01, (bool) cond(l));
 		c = __rcr(c, 0x01, (bool) cond(b));
@@ -411,7 +411,7 @@ void fn0D00(byte a, uint8 c, uint8 b, Eq_n de, ui16 hl, struct Eq_n * ix, Eq_n w
 {
 	do
 	{
-		c <<= 0x01;
+		c <<= 1;
 		b = __rcl(b, 0x01, (bool) cond(c));
 		hl = hl * 0x02 + (b < 0x00);
 		byte l_n = (byte) hl;
@@ -443,7 +443,7 @@ void fn0D00(byte a, uint8 c, uint8 b, Eq_n de, ui16 hl, struct Eq_n * ix, Eq_n w
 	byte a_n;
 	for (a_n = 0x05; a_n != 0x00; --a_n)
 	{
-		h_n >>= 0x01;
+		h_n >>= 1;
 		l_n = __rcr(l_n, 0x01, (bool) cond(h_n));
 		b_n = __rcr(b_n, 0x01, (bool) cond(l_n));
 		c_n = __rcr(c_n, 0x01, (bool) cond(b_n));
@@ -506,7 +506,7 @@ void fn0E13(Eq_n de, Eq_n wArg20)
 	for (bc_n = 0x04; bc_n != 0x00; --bc_n)
 	{
 		*de = *hl_n;
-		hl_n = (word32) hl_n + 0x01;
+		hl_n = (word32) hl_n + 1;
 		++de;
 	}
 	Eq_n de_n = wArg20;
@@ -515,7 +515,7 @@ void fn0E13(Eq_n de, Eq_n wArg20)
 	for (bc_n = 0x04; bc_n != 0x00; --bc_n)
 	{
 		*de_n = *hl_n;
-		hl_n = (word32) hl_n + 0x01;
+		hl_n = (word32) hl_n + 1;
 		++de_n;
 	}
 }
@@ -548,7 +548,7 @@ void fn164F(uint8 a, word16 bc, byte h, struct Eq_n * ix, struct Eq_n * wArg0C, 
 	{
 		uint8 v31_n = wArg15->b0000;
 		ui8 v32_n = wArg15->b0001;
-		ui16 a_a_n = SEQ(v32_n, v31_n) - SEQ(*((word32) wArg13 + 0x01), *wArg13);
+		ui16 a_a_n = SEQ(v32_n, v31_n) - SEQ(*((word32) wArg13 + 1), *wArg13);
 		ix_n->bFFFFFFEC = (byte) a_a_n;
 		ix_n->bFFFFFFED = SLICE(a_a_n, byte, 8);
 		uint8 v39_n = wArg1F->b0000;
@@ -610,7 +610,7 @@ void fn1BF9(byte b, byte c, Eq_n de, struct Eq_n * ix)
 	{
 		*de = *hl_n;
 		++hl_n;
-		de = (word32) de + 0x01;
+		de = (word32) de + 1;
 		--bc_n;
 	} while (bc_n != 0x00);
 }
@@ -625,7 +625,7 @@ void fn22A6(word16 bc, struct Eq_n * ix, word16 wArg05, ptr16 wArg10)
 {
 	ix->bFFFFFFFC = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = 0x00;
-	byte v15_n = wArg10 + (wArg05 + 0x01);
+	byte v15_n = wArg10 + (wArg05 + 1);
 	struct Eq_n * hl_n = (uint16) (uint8) v15_n * 0x08 + (uint16) ((uint8) v15_n) + bc;
 	ix->bFFFFFFF8 = hl_n->b0002;
 	ix->bFFFFFFF9 = hl_n->b0003;
@@ -637,7 +637,7 @@ void fn3E2D(word16 bc, struct Eq_n * ix, word16 wArg05, ptr16 wArg10)
 {
 	ix->bFFFFFFFC = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = 0x00;
-	byte v15_n = wArg10 + (wArg05 + 0x01);
+	byte v15_n = wArg10 + (wArg05 + 1);
 	struct Eq_n * hl_n = (uint16) (uint8) v15_n * 0x08 + (uint16) ((uint8) v15_n) + bc;
 	ix->bFFFFFFF8 = hl_n->b0002;
 	ix->bFFFFFFF9 = hl_n->b0003;

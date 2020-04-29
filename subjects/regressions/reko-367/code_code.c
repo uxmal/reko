@@ -30,7 +30,7 @@ real96 fn80000132(real96 rArg04, real96 rArg10)
 real96 fn8000018E(real96 rArg04)
 {
 	real96 fp0_n = *(real96 *) 0x80000508;
-	int32 dwLoc14_n = 0x01;
+	int32 dwLoc14_n = 1;
 	while (true)
 	{
 		real96 rLoc10_n = SEQ((word32) fp0_n, SLICE(fp0_n, word32, 32), SLICE(fp0_n, word32, 64));
@@ -46,7 +46,7 @@ real96 fn8000018E(real96 rArg04)
 real96 fn800001F2(real96 rArg04)
 {
 	real96 rLoc1C_n = *(real96 *) 0x80000514;
-	int32 dwLoc20_n = 0x03;
+	int32 dwLoc20_n = 3;
 	fp1_n = rArg04;
 	while (true)
 	{
@@ -67,7 +67,7 @@ real96 fn800002AE(real96 rArg04)
 {
 	real96 fp0_n = *(real96 *) 0x80000520;
 	real96 rLoc1C_n = *(real96 *) 0x8000052C;
-	int32 dwLoc20_n = 0x02;
+	int32 dwLoc20_n = 2;
 	while (true)
 	{
 		real96 rLoc10_n = SEQ((word32) fp0_n, SLICE(fp0_n, word32, 32), SLICE(fp0_n, word32, 64));

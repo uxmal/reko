@@ -7,8 +7,8 @@
 // 0000000000400410: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
 void _start(void (* rdx)(), Eq_n qwArg00)
 {
-	__align((char *) fp + 0x08);
-	__libc_start_main(&globals->t4005C5, qwArg00, (char *) fp + 0x08, &globals->t400620, &globals->t4006B0, rdx, fp);
+	__align((char *) fp + 8);
+	__libc_start_main(&globals->t4005C5, qwArg00, (char *) fp + 8, &globals->t400620, &globals->t4006B0, rdx, fp);
 	__hlt();
 }
 
@@ -68,7 +68,7 @@ word32 verify(Eq_n rdi[])
 		word32 rax_32_32_n = SLICE(rax_n, word32, 32);
 		if ((byte) (word32) *rax_n == 0x00)
 			break;
-		byte al_n = (byte) (uint64) ((word32) (uint64) dwLoc0C_n ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_n))].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000)[0x00])));
+		byte al_n = (byte) (uint64) ((word32) (uint64) dwLoc0C_n ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_n))].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000)[0])));
 		if ((byte) (word32) ((int64) (word32) (uint64) dwLoc0C_n + 0x00601020) != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) + 0x08)
 		{
 			rax_n = 0x00;
@@ -104,7 +104,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 		do
 		{
 			(*((char *) globals->a600DF8 + rbx_n * 0x08))();
-			rbx_n = (word64) rbx_n.u1 + 0x01;
+			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbx_n != rbp_n >> 0x03);
 	}
 }

@@ -27,7 +27,7 @@ void __adddf3(Eq_n r4, Eq_n r5, uint32 r6, Eq_n r7)
 			{
 				if ((r9_n | r6 << 0x03) == 0x00)
 					goto l08048052;
-				r7_n = (word32) r11_n.u0 - 0x01;
+				r7_n = (word32) r11_n.u0 - 1;
 				if (r11_n == ~0x00)
 				{
 					Eq_n r6_n = (r4 << 0x03) + (r6 << 0x03);
@@ -91,7 +91,7 @@ l08048112:
 l08048064:
 			if (!__bit(r8_n, 0x17))
 			{
-				r10_n = (word32) r10_n.u0 + 0x01;
+				r10_n = (word32) r10_n.u0 + 1;
 				r8_n = __ins(r8_n, 0x00, 0x07, 0x01);
 				if (r10_n == 0x07FF)
 				{
@@ -133,11 +133,11 @@ l080481C2:
 l080480CC:
 					if (!__bit(r8_n, 0x17))
 					{
-						r10_n = (word32) r10_n.u0 + 0x01;
+						r10_n = (word32) r10_n.u0 + 1;
 						if (r10_n != 0x07FF)
 						{
 							Eq_n r6_n = __ins(r8_n, 0x00, 0x07, 0x01);
-							r12_n = r6_n << 0x1F | (r12_n >> 0x01 | (word32) r12_n.u0 + 0x01);
+							r12_n = r6_n << 0x1F | (r12_n >> 0x01 | (word32) r12_n.u0 + 1);
 							r8_n = r6_n >> 0x01;
 							goto l0804827A;
 						}
@@ -190,7 +190,7 @@ l080481F8:
 			r8_n = (word32) r9_n.u1 + r11_n;
 			goto l080481C2;
 		}
-		r10_n = (word32) r13_n.u0 + 0x01;
+		r10_n = (word32) r13_n.u0 + 1;
 		if (r13_n >= 0x07FE)
 		{
 			if (r13_n == ~0x07FD)
@@ -207,7 +207,7 @@ l08048060:
 l0804827A:
 			if (r12_n != 0x07 && r12_n != 11)
 			{
-				Eq_n r6_n = (word32) r12_n.u0 + 0x04;
+				Eq_n r6_n = (word32) r12_n.u0 + 4;
 				r12_n = r6_n;
 				r8_n = (word32) r8_n.u0 + (word32) (r6_n < r12_n);
 			}
@@ -283,7 +283,7 @@ l08048052:
 					goto l08048060;
 				goto l0804827A;
 			}
-			r7_n = (word32) r11_n.u0 - 0x01;
+			r7_n = (word32) r11_n.u0 - 1;
 			if (r11_n == ~0x00)
 			{
 				Eq_n r6_n = (r4 << 0x03) - (r6 << 0x03);

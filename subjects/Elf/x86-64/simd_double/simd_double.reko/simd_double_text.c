@@ -7,8 +7,8 @@
 // 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
 void _start(void (* rdx)(), Eq_n qwArg00)
 {
-	__align((char *) fp + 0x08);
-	__libc_start_main(&globals->t0898, qwArg00, (char *) fp + 0x08, &globals->t0A70, &globals->t0AE0, rdx, fp);
+	__align((char *) fp + 8);
+	__libc_start_main(&globals->t0898, qwArg00, (char *) fp + 8, &globals->t0A70, &globals->t0AE0, rdx, fp);
 	__hlt();
 }
 
@@ -104,22 +104,22 @@ void main(Eq_n xmm0)
 			xmm0.u0 = (uint128) (uint64) (v26_n + v26_n);
 		}
 		*rcx_n = (real64) xmm0;
-		qwLoc10_n = (word64) qwLoc10_n + 0x01;
+		qwLoc10_n = (word64) qwLoc10_n + 1;
 	}
 	Eq_n qwLoc18_n = 0x00;
 	while (qwLoc18_n < 0x0400)
 	{
-		ui32 eax_n = (word32) ((word64) qwLoc18_n + 0x01);
+		ui32 eax_n = (word32) ((word64) qwLoc18_n + 1);
 		real64 * rcx_n = rax_n + qwLoc18_n;
 		if (qwLoc18_n >= 0x01)
-			xmm0 = DPB(xmm0, (real64) ((word64) qwLoc18_n + 0x01), 0);
+			xmm0 = DPB(xmm0, (real64) ((word64) qwLoc18_n + 1), 0);
 		else
 		{
-			real64 v19_n = (real64) ((word64) qwLoc18_n + 0x01 >> 0x01 | (uint64) (eax_n & 0x01));
+			real64 v19_n = (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01));
 			xmm0.u0 = (uint128) (uint64) (v19_n + v19_n);
 		}
 		*rcx_n = (real64) xmm0;
-		qwLoc18_n = (word64) qwLoc18_n + 0x01;
+		qwLoc18_n = (word64) qwLoc18_n + 1;
 	}
 	uint64 qwLoc20_n;
 	for (qwLoc20_n = 0x00; qwLoc20_n < 0x0400; ++qwLoc20_n)
@@ -149,7 +149,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 		do
 		{
 			(*((char *) globals->a200DE8 + rbx_n * 0x08))();
-			rbx_n = (word64) rbx_n.u1 + 0x01;
+			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbp_n >> 0x03 != rbx_n);
 	}
 }

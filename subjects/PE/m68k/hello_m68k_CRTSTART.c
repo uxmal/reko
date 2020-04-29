@@ -12,7 +12,7 @@ void fn000021F0(struct Eq_n * a5)
 	if (d0_n != null)
 	{
 		int32 d1_n;
-		for (d1_n = 0x00; d1_n < 0x03; ++d1_n)
+		for (d1_n = 0; d1_n < 3; ++d1_n)
 		{
 			word32 d0_n = *a1_n->ptr0004;
 			if (d0_n != 0x45434F4E)
@@ -44,7 +44,7 @@ void fn00002264(byte * dwArg04)
 		{
 			byte * a2_n = dwArg04;
 			uint32 d0_n;
-			byte * a1_n = dwArg04 + 0x01;
+			byte * a1_n = dwArg04 + 1;
 			for (d0_n = (uint32) (uint8) v11_n; d0_n != 0x00; --d0_n)
 			{
 				*a2_n = *a1_n;
@@ -59,16 +59,16 @@ void fn00002264(byte * dwArg04)
 // 00002294: void fn00002294(Register (ptr32 Eq_n) a5)
 void fn00002294(struct Eq_n * a5)
 {
-	fn00002354(a5, 0x00, 0x00);
+	fn00002354(a5, 0, 0x00);
 }
 
 // 000022C4: void fn000022C4(Register word32 a2, Register ptr32 a5)
 void fn000022C4(word32 a2, ptr32 a5)
 {
-	fn000023B4(a5 + -744, a5 + -0x02E4);
+	fn000023B4(a5 + -744, a5 + -740);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-	a7_n->t0004 = a5 + -0x02EC;
-	a7_n->t0000 = a5 + -0x02F0;
+	a7_n->t0004 = a5 + -748;
+	a7_n->t0000 = a5 + -752;
 	struct Eq_n * a6_n = fn000023B4(a7_n->t0000, a7_n->t0004);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 	a7_n->w0002 = ~0x5760;
@@ -78,7 +78,7 @@ void fn000022C4(word32 a2, ptr32 a5)
 	ptr32 a5_n;
 	(a5 + 0x00C2)();
 	word32 v10_n = *a7_n;
-	*(a7_n - 0x02) = 0xA1AD;
+	*(a7_n - 2) = 0xA1AD;
 	0x00 = 0x00;
 	word32 * a7_n;
 	struct Eq_n * a6_n;
@@ -110,20 +110,20 @@ word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 		}
 		union Eq_n * a7_n = a7_n - 0x04;
 		*a7_n = (union Eq_n *) ((char *) &a5->ptrFFFFFAA0 + 0x0288);
-		*(a7_n - 0x04) = (char *) &a5->ptrFFFFFAA0 + 0x0280;
+		*(a7_n - 0x04) = (char *) &a5->ptrFFFFFAA0 + 640;
 		fn000023B4(*(a7_n - 0x04), *a7_n);
 		struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 		a7_n = &a7_n->t0008;
 	}
 	union Eq_n * a7_n = a7_n - 0x04;
 	*a7_n = (union Eq_n *) ((char *) &a5->ptrFFFFFAA0 + 656);
-	*(a7_n - 0x04) = (char *) &a5->ptrFFFFFAA0 + 0x028C;
+	*(a7_n - 0x04) = (char *) &a5->ptrFFFFFAA0 + 652;
 	struct Eq_n * a6_n = fn000023B4(*(a7_n - 0x04), *a7_n);
 	if (a6_n->dw0010 == 0x00)
 	{
 		if (a5->ptrFFFFFAA0 != null)
 			a5->ptrFFFFFAA0->dw000E = a6_n->dw0008;
-		(*((char *) &a5->tFFFFFD3C + 0x0326))();
+		(*((char *) &a5->tFFFFFD3C + 806))();
 	}
 	return a6_n->dw0000;
 }
@@ -132,7 +132,7 @@ word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 word32 fn000023B4(Eq_n dwArg04, Eq_n dwArg08)
 {
 	word32 * a6_n = fp - 0x04;
-	int32 d5_n = -0x01;
+	int32 d5_n = -1;
 	Eq_n d4_n = dwArg08;
 	Eq_n d3_n = dwArg04;
 	if (dwArg08 - dwArg04 > 0x00)
@@ -146,7 +146,7 @@ word32 fn000023B4(Eq_n dwArg04, Eq_n dwArg08)
 				word32 d0_n;
 				d0_n();
 			}
-			d3_n = (word32) d3_n + 0x04;
+			d3_n = (word32) d3_n + 4;
 		} while (d4_n - d3_n > 0x00);
 	}
 	return *a6_n;
@@ -158,9 +158,9 @@ void fn000023F8(Eq_n a5)
 	struct Eq_n * a6_n;
 	Eq_n a5_n = fn00002418(a5, out a6_n);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-	*(a7_n - 0x04) = a6_n->dw0008;
+	*(a7_n - 4) = a6_n->dw0008;
 	word32 a6_n;
-	Eq_n a5_n = fn0000243C(a5_n, *(a7_n - 0x04), out a6_n);
+	Eq_n a5_n = fn0000243C(a5_n, *(a7_n - 4), out a6_n);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 	&a7_n->t0000.u0->dw0000 = 0xFF;
 	(*((word32) a5_n - 1288))();
@@ -188,7 +188,7 @@ Eq_n fn00002418(Eq_n a5, ptr32 & a6Out)
 Eq_n fn0000243C(Eq_n a5, ptr32 dwArg04, ptr32 & a6Out)
 {
 	ptr32 * a6_n = fp - 0x04;
-	int32 d1_n = 0x00;
+	int32 d1_n = 0;
 	struct Eq_n * d2_n = (word32) a5 - 0x044C;
 	while (dwArg04 - d2_n->dw0000 != 0x00)
 	{
@@ -197,16 +197,16 @@ Eq_n fn0000243C(Eq_n a5, ptr32 dwArg04, ptr32 & a6Out)
 		if (d2_n - (a5 + -1012) >=u 0x00)
 			break;
 	}
-	if (dwArg04 - *((word32) a5 + (d1_n * 0x08 - 0x044C)) == 0x00)
+	if (dwArg04 - *((word32) a5 + (d1_n * 8 - 0x044C)) == 0x00)
 	{
-		byte * a0_n = *((word32) a5 + (d1_n * 0x08 - 0x0448));
+		byte * a0_n = *((word32) a5 + (d1_n * 8 - 0x0448));
 		byte * a1_n = a0_n;
 		do
 		{
-			a1_n = a1_n + 0x01;
+			a1_n = a1_n + 1;
 			a1_n = a1_n;
 		} while (*a1_n != 0x00);
-		word32 a1_n = a1_n - (a0_n + 0x01);
+		word32 a1_n = a1_n - (a0_n + 1);
 		(a5 + 0x0092)();
 	}
 	a6Out = *a6_n;

@@ -69,7 +69,7 @@ void fn004011B0(void * dwArg04)
 // 004011FC: void fn004011FC(Stack (ptr32 Eq_n) dwArg04)
 void fn004011FC(struct Eq_n * dwArg04)
 {
-	globals->dw4020F8 = (char *) fn00401158() + 0x001C;
+	globals->dw4020F8 = (char *) fn00401158() + 28;
 	dwArg04->dw0000 = 0x82727349;
 	dwArg04->ptr0004 = 0x004020E4;
 }

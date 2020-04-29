@@ -38,6 +38,6 @@
 <anonymous> * g_ptr1FF80 = &g_t0DA0;
 <anonymous> * g_ptr1FF88 = &g_t0DA0;
 <anonymous> * g_ptr1FFA0 = null;
-word64 g_qw1FFD0 = 0x0000000000000000;
-word64 g_qw1FFD8 = 0x000000000001FC20;
+word64 g_qw1FFD0 = 0x00;
+word64 g_qw1FFD8 = 130080;
 

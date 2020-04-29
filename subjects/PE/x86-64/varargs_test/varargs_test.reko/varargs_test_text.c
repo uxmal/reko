@@ -376,7 +376,7 @@ uint64 fn0000000140001718(<anonymous> ** rcx, <anonymous> & r8Out)
 			if (rcx_n->w0018 == 0x020B)
 			{
 				word32 eax_n = (word32) rcx_n->w0006;
-				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) ((uint32) ((word32) rcx_n->w0014)) / 0x001A;
+				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) ((uint32) ((word32) rcx_n->w0014)) / 26;
 				r8_n = rcx - 0x140000000;
 				struct Eq_n * r9_n = rdx_n + (uint64) ((uint32) eax_n);
 				uint56 rax_56_8_n = (uint56) (uint24) SLICE(eax_n, word24, 8);
@@ -567,7 +567,7 @@ void fn0000000140001AC0()
 	Eq_n rax_n = GetModuleHandleW(null);
 	if (rax_n == null || rax_n->unused != 23117)
 		return;
-	struct Eq_n * rax_n = rax_n + (int64) rax_n->dw003C / 0x0040;
+	struct Eq_n * rax_n = rax_n + (int64) rax_n->dw003C / 64;
 	if (rax_n->dw0000 != 0x4550 || (rax_n->w0018 != 0x020B || rax_n->dw0084 <= 0x0E))
 		;
 }

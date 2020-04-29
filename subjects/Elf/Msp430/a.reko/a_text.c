@@ -146,7 +146,7 @@ Eq_n msp430_compute_modulator_bits(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 			}
 			r7_n |= r15_n;
 		}
-		r6_n = (word24) r6_n + 0x01;
+		r6_n = (word24) r6_n + 1;
 	} while (r6_n >= 0x08);
 	return r7_n;
 }
@@ -292,7 +292,7 @@ ui20 xTaskCreate(struct Eq_n * pc, ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r
 	if (r15_n != 0x00)
 	{
 		prvInitialiseTCBVariables(v15_n, r14, r13, r15_n);
-		*r15_n = pxPortInitialiseStack(r12, r15, (word24) *((word24) r15_n + 0x02) + *((word24) r15_n + 0x0024) * 0x02 - 0x02);
+		*r15_n = pxPortInitialiseStack(r12, r15, (word24) *((word24) r15_n + 2) + *((word24) r15_n + 36) * 0x02 - 0x02);
 		++globals->ptr0218;
 		++globals->ptr0206;
 		sr_n &= ~0x08;
@@ -306,15 +306,15 @@ ui20 xTaskCreate(struct Eq_n * pc, ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r
 			globals->t0202 = r15_n;
 			prvInitialiseTaskLists();
 		}
-		Eq_n v25_n = *((word24) r15_n + 0x06);
+		Eq_n v25_n = *((word24) r15_n + 6);
 		if (522 >= v25_n)
 			globals->t020A = v25_n;
-		((word24) r15_n + 0x04)->u0 = 0x0214;
+		((word24) r15_n + 4)->u0 = 0x0214;
 		++globals->ptr0214;
-		*((word24) r15_n + 0x08) = 0x00;
+		*((word24) r15_n + 8) = 0x00;
 		if (0x020C >= v25_n)
 			globals->t020C = v25_n;
-		vListInsertEnd((word24) r15_n + 0x08, v25_n * 0x10 + 0x0222);
+		vListInsertEnd((word24) r15_n + 8, v25_n * 0x10 + 0x0222);
 		r10_n.u0 = 0x01;
 		if (0x0218 != 0x00)
 		{
@@ -349,10 +349,10 @@ void vTaskDelete(struct Eq_n * pc, ui20 sr, Eq_n r15)
 	Eq_n r11_n = r15;
 	if (r15 == 0x00)
 		r11_n.u0 = 0x0202;
-	Eq_n r10_n = (word16) r11_n.u0 + 0x08;
+	Eq_n r10_n = (word16) r11_n.u0 + 8;
 	vListRemove(r10_n);
-	if (*((word16) r11_n.u0 + 0x001A) != 0x00)
-		vListRemove((word16) r11_n.u0 + 0x0012);
+	if (*((word16) r11_n.u0 + 26) != 0x00)
+		vListRemove((word16) r11_n.u0 + 18);
 	vListInsertEnd(r10_n, 662);
 	++globals->ptr0204;
 	if (0x0218 != 0x00)
@@ -514,15 +514,15 @@ ui20 xTaskResumeAll(struct Eq_n * pc, ui20 sr, union Eq_n & r15Out)
 				r11_n.u0 = 0x00;
 			if (r11_n == 0x00)
 				break;
-			vListRemove((word16) r11_n.u0 + 0x0012);
-			Eq_n r10_n = (word16) r11_n.u0 + 0x08;
+			vListRemove((word16) r11_n.u0 + 18);
+			Eq_n r10_n = (word16) r11_n.u0 + 8;
 			vListRemove(r10_n);
-			*((word16) r11_n.u0 + 0x08) = 0x00;
-			Eq_n v14_n = *((word16) r11_n.u0 + 0x06);
+			*((word16) r11_n.u0 + 8) = 0x00;
+			Eq_n v14_n = *((word16) r11_n.u0 + 6);
 			if (0x020C >= v14_n)
 				globals->t020C = v14_n;
 			vListInsertEnd(r10_n, v14_n * 0x10 + 0x0222);
-			if (globals->t0208 >= *((word16) r11_n.u0 + 0x06))
+			if (globals->t0208 >= *((word16) r11_n.u0 + 6))
 				r9_n.u1 = 0x01;
 		}
 		if (0x0212 != 0x00)
@@ -587,7 +587,7 @@ void vTaskIncrementTick()
 {
 	if (0x0210 == 0x00)
 	{
-		globals->t0208 = (word24) globals->t0208 + 0x01;
+		globals->t0208 = (word24) globals->t0208 + 1;
 		if (globals->t0208 == 0x00)
 		{
 			globals->ptr0282 = 644;
@@ -598,17 +598,17 @@ void vTaskIncrementTick()
 			Eq_n r11_n;
 			Eq_n r15_n = 0x0282;
 			if (*r15_n != 0x00)
-				r11_n = *((word24) *((word24) *((word24) r15_n + 0x02) + 0x02) + 0x06);
+				r11_n = *((word24) *((word24) *((word24) r15_n + 2) + 2) + 6);
 			else
 				r11_n.u0 = 0x00;
-			if (r11_n == 0x00 || 0x0208 >= *((word24) r11_n + 0x08))
+			if (r11_n == 0x00 || 0x0208 >= *((word24) r11_n + 8))
 				break;
-			Eq_n r10_n = (word24) r11_n + 0x08;
+			Eq_n r10_n = (word24) r11_n + 8;
 			vListRemove(r10_n);
-			if (*((word24) r11_n + 0x001A) != 0x00)
-				vListRemove((word24) r11_n + 0x0012);
-			*((word24) r11_n + 0x08) = 0x00;
-			Eq_n v18_n = *((word24) r11_n + 0x06);
+			if (*((word24) r11_n + 26) != 0x00)
+				vListRemove((word24) r11_n + 18);
+			*((word24) r11_n + 8) = 0x00;
+			Eq_n v18_n = *((word24) r11_n + 6);
 			if (0x020C >= v18_n)
 				globals->t020C = v18_n;
 			vListInsertEnd(r10_n, v18_n * 0x10 + 0x0222);
@@ -625,7 +625,7 @@ void vTaskPlaceOnEventList(Eq_n r14, Eq_n r15)
 	Eq_n r15_n;
 	vListInsert(&globals->ptr0214, r15);
 	vListRemove(522);
-	Eq_n r11_n = (word20) r14.u0 + 0x0208;
+	Eq_n r11_n = (word20) r14.u0 + 520;
 	globals->t020A = r11_n;
 	if (r11_n >= 0x0208)
 	{
@@ -645,30 +645,30 @@ Eq_n xTaskRemoveFromEventList(Eq_n r15)
 {
 	Eq_n r10_n;
 	if (*r15 != 0x00)
-		r10_n = *((word24) *((word24) *((word24) r15 + 0x02) + 0x02) + 0x06);
+		r10_n = *((word24) *((word24) *((word24) r15 + 2) + 2) + 6);
 	else
 		r10_n.u0 = 0x00;
 	Eq_n r14_n;
 	Eq_n r15_n;
-	vListRemove((word24) r10_n + 0x0012);
+	vListRemove((word24) r10_n + 18);
 	if (0x0210 == 0x00)
 	{
-		vListRemove((word24) r10_n + 0x08);
-		*((word24) r10_n + 0x08) = 0x00;
-		Eq_n v13_n = *((word24) r10_n + 0x06);
+		vListRemove((word24) r10_n + 8);
+		*((word24) r10_n + 8) = 0x00;
+		Eq_n v13_n = *((word24) r10_n + 6);
 		if (0x020C >= v13_n)
 			globals->t020C = v13_n;
 		r15_n = v13_n * 0x10 + 0x0222;
-		r14_n = (word24) r10_n + 0x08;
+		r14_n = (word24) r10_n + 8;
 	}
 	else
 	{
-		r14_n = (word24) r10_n + 0x0012;
+		r14_n = (word24) r10_n + 18;
 		r15_n.u0 = 646;
 	}
 	Eq_n r15_n;
 	vListInsertEnd(r14_n, r15_n);
-	if (globals->t0208 >= *((word24) r10_n + 0x06))
+	if (globals->t0208 >= *((word24) r10_n + 6))
 		r15_n.u0 = 0x01;
 	else
 		r15_n.u0 = 0x00;
@@ -695,18 +695,18 @@ void prvIdleTask(struct Eq_n * pc, ui20 sr)
 // 49BE: void prvInitialiseTCBVariables(Register Eq_n r12, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
 void prvInitialiseTCBVariables(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 {
-	*((word24) r15 + 0x0024) = r14;
-	strncpy(0x08, r13, (word24) r15 + 0x001C);
-	*((word24) r15 + 0x0023) = 0x00;
+	*((word24) r15 + 36) = r14;
+	strncpy(0x08, r13, (word24) r15 + 28);
+	*((word24) r15 + 35) = 0x00;
 	Eq_n r10_n = r12;
 	if (r12 < 0x04)
 		r10_n.u0 = 0x03;
-	*((word24) r15 + 0x06) = r10_n;
-	vListInitialiseItem((word24) r15 + 0x08);
-	vListInitialiseItem((word24) r15 + 0x0012);
+	*((word24) r15 + 6) = r10_n;
+	vListInitialiseItem((word24) r15 + 8);
+	vListInitialiseItem((word24) r15 + 18);
 	*((word24) r15 + 0x0E) = r15;
-	*((word24) r15 + 0x0012) = 0x04 - r10_n;
-	*((word24) r15 + 0x0018) = r15;
+	*((word24) r15 + 18) = 0x04 - r10_n;
+	*((word24) r15 + 24) = r15;
 }
 
 // 4A12: void prvInitialiseTaskLists()
@@ -716,7 +716,7 @@ void prvInitialiseTaskLists()
 	do
 	{
 		vListInitialise(r11_n * 0x10 + 0x0222);
-		r11_n = (word24) r11_n + 0x01;
+		r11_n = (word24) r11_n + 1;
 	} while (r11_n >= 0x04);
 	vListInitialise(0x0262);
 	vListInitialise(0x0272);
@@ -746,7 +746,7 @@ ui20 prvCheckTasksWaitingTermination(struct Eq_n * pc, ui20 sr)
 				r11_n = globals->ptr029A->t0006;
 			else
 				r11_n.u1 = 0x00;
-			vListRemove((word16) r11_n.u1 + 0x08);
+			vListRemove((word16) r11_n.u1 + 8);
 			globals->ptr0206 += ~0x00;
 			globals->ptr0204 += ~0x00;
 			if (0x0218 != 0x00)
@@ -771,7 +771,7 @@ ui20 prvAllocateTCBAndStack(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r1
 	{
 		Eq_n r15_n;
 		sr_n = pvPortMalloc(pc, sr_n, r15 * 0x02, out r15_n);
-		*((word24) r15_n + 0x02) = r15_n;
+		*((word24) r15_n + 2) = r15_n;
 		if (r15_n == 0x00)
 		{
 			vPortFree();
@@ -799,9 +799,9 @@ void vTaskSwitchContext()
 		while (globals->a0222[0x020C] == 0x00)
 			globals->t020C = (word24) globals->t020C + 0x0000FFFF;
 		Eq_n r13_n = 0x0222;
-		(word24) r13_n + 0x020C * 0x10 + 0x04 = (ui20) ((word24) r13_n + 0x020C * 0x10 + 0x04 + 0x02);
-		if ((word24) r13_n + 0x020C * 0x10 + 0x04 == ((word24) r13_n + 0x020C * 0x10) + 0x02)
-			globals->a0226[0x020C] = *((word128) globals->a0226[0x020C] + 0x02);
+		(word24) r13_n + 0x020C * 0x10 + 4 = (ui20) ((word24) r13_n + 0x020C * 0x10 + 4 + 2);
+		if ((word24) r13_n + 0x020C * 0x10 + 4 == ((word24) r13_n + 0x020C * 0x10) + 2)
+			globals->a0226[0x020C] = *((word128) globals->a0226[0x020C] + 2);
 		globals->t0202 = globals->a0226[0x020C].ptr0004->w0002;
 	}
 }
@@ -809,13 +809,13 @@ void vTaskSwitchContext()
 // 4BD4: void vListInitialise(Register Eq_n r15)
 void vListInitialise(Eq_n r15)
 {
-	*((word24) r15 + 0x02) = (word24) r15 + 0x06;
-	*((word24) r15 + 0x04) = (word24) r15 + 0x06;
-	((word24) r15 + 0x06)->u0 = ~0x00;
-	*((word24) r15 + 0x08) = (word24) r15 + 0x06;
-	*((word24) r15 + 0x0A) = (word24) r15 + 0x06;
+	*((word24) r15 + 2) = (word24) r15 + 6;
+	*((word24) r15 + 4) = (word24) r15 + 6;
+	((word24) r15 + 6)->u0 = ~0x00;
+	*((word24) r15 + 8) = (word24) r15 + 6;
+	*((word24) r15 + 0x0A) = (word24) r15 + 6;
 	((word24) r15 + 0x0C)->u0 = 0x00;
-	vListInitialiseItem((word24) r15 + 0x06);
+	vListInitialiseItem((word24) r15 + 6);
 	r15->u0 = 0x00;
 }
 
@@ -828,14 +828,14 @@ void vListInitialiseItem(struct Eq_n * r15)
 // 4C06: void vListInsertEnd(Register Eq_n r14, Register Eq_n r15)
 void vListInsertEnd(Eq_n r14, Eq_n r15)
 {
-	Eq_n v5_n = *((word24) r15 + 0x04);
-	*((word24) r14 + 0x02) = *((word24) v5_n + 0x02);
-	*((word24) r14 + 0x04) = *((word24) r15 + 0x04);
-	*((word24) *((word24) v5_n + 0x02) + 0x04) = r14;
-	*((word24) v5_n + 0x02) = r14;
-	*((word24) r15 + 0x04) = r14;
-	*((word24) r14 + 0x08) = r15;
-	*r15 = (word24) *r15 + 0x01;
+	Eq_n v5_n = *((word24) r15 + 4);
+	*((word24) r14 + 2) = *((word24) v5_n + 2);
+	*((word24) r14 + 4) = *((word24) r15 + 4);
+	*((word24) *((word24) v5_n + 2) + 4) = r14;
+	*((word24) v5_n + 2) = r14;
+	*((word24) r15 + 4) = r14;
+	*((word24) r14 + 8) = r15;
+	*r15 = (word24) *r15 + 1;
 }
 
 // 4C32: void vListInsert(Register (ptr24 Eq_n) r14, Register Eq_n r15)
@@ -845,7 +845,7 @@ void vListInsert(struct Eq_n * r14, Eq_n r15)
 	cup16 v6_n = r14->w0000;
 	if (v6_n != ~0x00)
 	{
-		struct Eq_n * v10_n = *((word24) r15 + 0x02);
+		struct Eq_n * v10_n = *((word24) r15 + 2);
 		r13_n = v10_n;
 		if (v6_n < *v10_n->t0002)
 		{
@@ -858,7 +858,7 @@ void vListInsert(struct Eq_n * r14, Eq_n r15)
 	}
 	else
 	{
-		struct Eq_n * v18_n = *((word24) r15 + 0x02);
+		struct Eq_n * v18_n = *((word24) r15 + 2);
 		r13_n = v18_n;
 		if (*v18_n->t0002 >= ~0x00)
 		{
@@ -870,24 +870,24 @@ void vListInsert(struct Eq_n * r14, Eq_n r15)
 		}
 	}
 	r14->t0002 = r13_n->t0002;
-	*((word24) r14->t0002 + 0x04) = r14;
+	*((word24) r14->t0002 + 4) = r14;
 	r14->ptr0004 = r13_n;
 	r13_n->t0002 = r14;
 	r14->t0008 = r15;
-	*r15 = (word24) *r15 + 0x01;
+	*r15 = (word24) *r15 + 1;
 }
 
 // 4C98: void vListRemove(Register Eq_n r15)
 void vListRemove(Eq_n r15)
 {
-	Eq_n v5_n = *((word24) r15 + 0x02);
-	*((word24) v5_n + 0x04) = *((word24) r15 + 0x04);
-	Eq_n v8_n = *((word24) r15 + 0x04);
-	*((word24) v8_n + 0x02) = v5_n;
-	Eq_n v11_n = *((word24) r15 + 0x08);
-	if (*((word24) v11_n + 0x04) == r15)
-		*((word24) v11_n + 0x04) = v8_n;
-	((word24) r15 + 0x08)->u0 = 0x00;
+	Eq_n v5_n = *((word24) r15 + 2);
+	*((word24) v5_n + 4) = *((word24) r15 + 4);
+	Eq_n v8_n = *((word24) r15 + 4);
+	*((word24) v8_n + 2) = v5_n;
+	Eq_n v11_n = *((word24) r15 + 8);
+	if (*((word24) v11_n + 4) == r15)
+		*((word24) v11_n + 4) = v8_n;
+	((word24) r15 + 8)->u0 = 0x00;
 	*v11_n = (word24) *v11_n + 0x0000FFFF;
 }
 
@@ -911,8 +911,8 @@ ui20 xQueueSend(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union E
 {
 	ui20 sr_n = vTaskSuspendAll(sr) & ~0x08;
 	++globals->ptr0218;
-	*((word24) r15 + 0x002E) = (word24) *((word24) r15 + 0x002E) + 0x01;
-	*((word24) r15 + 0x0030) = (word24) *((word24) r15 + 0x0030) + 0x01;
+	*((word24) r15 + 46) = (word24) *((word24) r15 + 46) + 1;
+	*((word24) r15 + 48) = (word24) *((word24) r15 + 48) + 1;
 	Eq_n r11_n = r15;
 	Eq_n r9_n = r14;
 	if (0x0218 != 0x00)
@@ -925,7 +925,7 @@ ui20 xQueueSend(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union E
 	ui20 sr_n = prvIsQueueFull(sr_n, r15, out r15_n);
 	if (r15_n != 0x00 && r13 != 0x00)
 	{
-		vTaskPlaceOnEventList(r13, (word24) r15 + 0x08);
+		vTaskPlaceOnEventList(r13, (word24) r15 + 8);
 		++globals->ptr0218;
 		word20 r15_n;
 		word20 r15_n;
@@ -938,8 +938,8 @@ ui20 xQueueSend(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union E
 		}
 		sr_n = vTaskSuspendAll(sr_n) & ~0x08;
 		++globals->ptr0218;
-		*((word24) r11_n + 0x002E) = (word24) *((word24) r11_n + 0x002E) + 0x01;
-		*((word24) r11_n + 0x0030) = (word24) *((word24) r11_n + 0x0030) + 0x01;
+		*((word24) r11_n + 46) = (word24) *((word24) r11_n + 46) + 1;
+		*((word24) r11_n + 48) = (word24) *((word24) r11_n + 48) + 1;
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
@@ -956,17 +956,17 @@ ui20 xQueueSend(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union E
 	Eq_n r10_n;
 	++globals->ptr0218;
 	ui20 sr_n = sr_n & ~0x08;
-	if (*((word24) r11_n + 0x0028) < *((word24) r11_n + 0x002A))
+	if (*((word24) r11_n + 40) < *((word24) r11_n + 42))
 		r10_n.u0 = ~0x02;
 	else
 	{
-		sr_n = memcpy(sr_n, *((word24) r11_n + 44), r9_n, *((word24) r11_n + 0x04));
-		*((word24) r11_n + 0x0028) = (word24) *((word24) r11_n + 0x0028) + 0x01;
-		word20 r15_n = Mem166[r11_n + 0x04:word16] + Mem166[r11_n + 44:word16];
-		*((word24) r11_n + 0x04) = r15_n;
-		if (r15_n < *((word24) r11_n + 0x02))
-			*((word24) r11_n + 0x04) = *r11_n;
-		*((word24) r11_n + 0x0030) = (word24) *((word24) r11_n + 0x0030) + 0x01;
+		sr_n = memcpy(sr_n, *((word24) r11_n + 44), r9_n, *((word24) r11_n + 4));
+		*((word24) r11_n + 40) = (word24) *((word24) r11_n + 40) + 1;
+		word20 r15_n = Mem166[r11_n + 4:word16] + Mem166[r11_n + 44:word16];
+		*((word24) r11_n + 4) = r15_n;
+		if (r15_n < *((word24) r11_n + 2))
+			*((word24) r11_n + 4) = *r11_n;
+		*((word24) r11_n + 48) = (word24) *((word24) r11_n + 48) + 1;
 		r10_n.u0 = 0x01;
 	}
 	if (0x0218 != 0x00)
@@ -1003,18 +1003,18 @@ ui20 xQueueSend(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union E
 ui20 xQueueSendFromISR(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
 	Eq_n r13_n;
-	if (*((word24) r15 + 0x0028) >= *((word24) r15 + 0x002A))
+	if (*((word24) r15 + 40) >= *((word24) r15 + 42))
 	{
-		sr = memcpy(sr, *((word24) r15 + 44), r14, *((word24) r15 + 0x04));
-		*((word24) r15 + 0x0028) = (word24) *((word24) r15 + 0x0028) + 0x01;
-		word20 r15_n = Mem33[r15 + 0x04:word16] + Mem33[r15 + 44:word16];
-		*((word24) r15 + 0x04) = r15_n;
-		if (r15_n < *((word24) r15 + 0x02))
-			*((word24) r15 + 0x04) = *r15;
-		word16 v22_n = *((word24) r15 + 0x0030);
+		sr = memcpy(sr, *((word24) r15 + 44), r14, *((word24) r15 + 4));
+		*((word24) r15 + 40) = (word24) *((word24) r15 + 40) + 1;
+		word20 r15_n = Mem33[r15 + 4:word16] + Mem33[r15 + 44:word16];
+		*((word24) r15 + 4) = r15_n;
+		if (r15_n < *((word24) r15 + 2))
+			*((word24) r15 + 4) = *r15;
+		word16 v22_n = *((word24) r15 + 48);
 		if (v22_n != ~0x00)
-			*((word24) r15 + 0x0030) = v22_n + 0x01;
-		else if (r13 == 0x00 && (*((word24) r15 + 0x0018) != 0x00 && xTaskRemoveFromEventList((word24) r15 + 0x0018) != 0x00))
+			*((word24) r15 + 48) = v22_n + 0x01;
+		else if (r13 == 0x00 && (*((word24) r15 + 24) != 0x00 && xTaskRemoveFromEventList((word24) r15 + 24) != 0x00))
 		{
 			r13_n.u0 = 0x01;
 l4EE8:
@@ -1031,8 +1031,8 @@ ui20 xQueueReceive(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, unio
 {
 	ui20 sr_n = vTaskSuspendAll(sr) & ~0x08;
 	++globals->ptr0218;
-	*((word24) r15 + 0x002E) = (word24) *((word24) r15 + 0x002E) + 0x01;
-	*((word24) r15 + 0x0030) = (word24) *((word24) r15 + 0x0030) + 0x01;
+	*((word24) r15 + 46) = (word24) *((word24) r15 + 46) + 1;
+	*((word24) r15 + 48) = (word24) *((word24) r15 + 48) + 1;
 	Eq_n r11_n = r15;
 	Eq_n r9_n = r14;
 	if (0x0218 != 0x00)
@@ -1045,7 +1045,7 @@ ui20 xQueueReceive(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, unio
 	ui20 sr_n = prvIsQueueEmpty(sr_n, r15, out r15_n);
 	if (r15_n != 0x00 && r13 != 0x00)
 	{
-		vTaskPlaceOnEventList(r13, (word24) r15 + 0x0018);
+		vTaskPlaceOnEventList(r13, (word24) r15 + 24);
 		++globals->ptr0218;
 		word20 r15_n;
 		word20 r15_n;
@@ -1058,8 +1058,8 @@ ui20 xQueueReceive(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, unio
 		}
 		sr_n = vTaskSuspendAll(sr_n) & ~0x08;
 		++globals->ptr0218;
-		*((word24) r11_n + 0x002E) = (word24) *((word24) r11_n + 0x002E) + 0x01;
-		*((word24) r11_n + 0x0030) = (word24) *((word24) r11_n + 0x0030) + 0x01;
+		*((word24) r11_n + 46) = (word24) *((word24) r11_n + 46) + 1;
+		*((word24) r11_n + 48) = (word24) *((word24) r11_n + 48) + 1;
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
@@ -1076,17 +1076,17 @@ ui20 xQueueReceive(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, unio
 	Eq_n r10_n;
 	++globals->ptr0218;
 	ui20 sr_n = sr_n & ~0x08;
-	cup16 v14_n = *((word24) r11_n + 0x0028);
+	cup16 v14_n = *((word24) r11_n + 40);
 	if (v14_n != 0x00)
 	{
 		Eq_n v15_n = *((word24) r11_n + 44);
-		word20 r15_n = Mem139[r11_n + 0x06:word16] + v15_n;
-		*((word24) r11_n + 0x06) = r15_n;
-		if (r15_n < *((word24) r11_n + 0x02))
-			*((word24) r11_n + 0x06) = *r11_n;
-		*((word24) r11_n + 0x0028) = v14_n + ~0x00;
-		sr_n = memcpy(sr_n, v15_n, *((word24) r11_n + 0x06), r9_n);
-		*((word24) r11_n + 0x002E) = (word24) *((word24) r11_n + 0x002E) + 0x01;
+		word20 r15_n = Mem139[r11_n + 6:word16] + v15_n;
+		*((word24) r11_n + 6) = r15_n;
+		if (r15_n < *((word24) r11_n + 2))
+			*((word24) r11_n + 6) = *r11_n;
+		*((word24) r11_n + 40) = v14_n + ~0x00;
+		sr_n = memcpy(sr_n, v15_n, *((word24) r11_n + 6), r9_n);
+		*((word24) r11_n + 46) = (word24) *((word24) r11_n + 46) + 1;
 		r10_n.u0 = 0x01;
 	}
 	else
@@ -1125,20 +1125,20 @@ ui20 xQueueReceive(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, unio
 Eq_n xQueueReceiveFromISR(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	Eq_n r15_n;
-	word16 v9_n = *((word24) r15 + 0x0028);
+	word16 v9_n = *((word24) r15 + 40);
 	if (v9_n != 0x00)
 	{
 		Eq_n v12_n = *((word24) r15 + 44);
-		word20 r15_n = Mem8[r15 + 0x06:word16] + v12_n;
-		*((word24) r15 + 0x06) = r15_n;
-		if (r15_n < *((word24) r15 + 0x02))
-			*((word24) r15 + 0x06) = *r15;
-		*((word24) r15 + 0x0028) = v9_n + ~0x00;
-		memcpy(sr, v12_n, *((word24) r15 + 0x06), r14);
-		word16 v23_n = *((word24) r15 + 0x002E);
+		word20 r15_n = Mem8[r15 + 6:word16] + v12_n;
+		*((word24) r15 + 6) = r15_n;
+		if (r15_n < *((word24) r15 + 2))
+			*((word24) r15 + 6) = *r15;
+		*((word24) r15 + 40) = v9_n + ~0x00;
+		memcpy(sr, v12_n, *((word24) r15 + 6), r14);
+		word16 v23_n = *((word24) r15 + 46);
 		if (v23_n != ~0x00)
-			*((word24) r15 + 0x002E) = v23_n + 0x01;
-		else if (*r13 == 0x00 && (*((word24) r15 + 0x08) != 0x00 && xTaskRemoveFromEventList((word24) r15 + 0x08) != 0x00))
+			*((word24) r15 + 46) = v23_n + 0x01;
+		else if (*r13 == 0x00 && (*((word24) r15 + 8) != 0x00 && xTaskRemoveFromEventList((word24) r15 + 8) != 0x00))
 			r13->u0 = 0x01;
 		r15_n.u0 = 0x01;
 	}
@@ -1169,14 +1169,14 @@ void vQueueDelete()
 ui20 prvUnlockQueue(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 {
 	++globals->ptr0218;
-	ci16 v8_n = *((word24) r15 + 0x0030);
-	*((word24) r15 + 0x0030) = v8_n + ~0x00;
+	ci16 v8_n = *((word24) r15 + 48);
+	*((word24) r15 + 48) = v8_n + ~0x00;
 	Eq_n r10_n = 0x00;
 	ui20 sr_n = sr & ~0x08;
 	if (v8_n >= ~0x00)
 	{
-		*((word24) r15 + 0x0030) = ~0x00;
-		if (*((word24) r15 + 0x0018) != 0x00 && xTaskRemoveFromEventList((word24) r15 + 0x0018) != 0x00)
+		*((word24) r15 + 48) = ~0x00;
+		if (*((word24) r15 + 24) != 0x00 && xTaskRemoveFromEventList((word24) r15 + 24) != 0x00)
 			r10_n.u0 = 0x01;
 	}
 	if (0x0218 != 0x00)
@@ -1186,13 +1186,13 @@ ui20 prvUnlockQueue(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 			sr_n |= 0x08;
 	}
 	++globals->ptr0218;
-	ci16 v13_n = *((word24) r15 + 0x002E);
-	*((word24) r15 + 0x002E) = v13_n + ~0x00;
+	ci16 v13_n = *((word24) r15 + 46);
+	*((word24) r15 + 46) = v13_n + ~0x00;
 	ui20 sr_n = sr_n & ~0x08;
 	if (v13_n >= ~0x00)
 	{
-		*((word24) r15 + 0x002E) = ~0x00;
-		if (*((word24) r15 + 0x08) != 0x00 && xTaskRemoveFromEventList((word24) r15 + 0x08) != 0x00)
+		*((word24) r15 + 46) = ~0x00;
+		if (*((word24) r15 + 8) != 0x00 && xTaskRemoveFromEventList((word24) r15 + 8) != 0x00)
 			r10_n.u0 = 0x01;
 	}
 	if (0x0218 != 0x00)
@@ -1211,7 +1211,7 @@ ui20 prvIsQueueEmpty(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 	++globals->ptr0218;
 	ui20 sr_n = sr & ~0x08;
 	Eq_n r14_n = 0x00;
-	if (*((word24) r15 + 0x0028) == 0x00)
+	if (*((word24) r15 + 40) == 0x00)
 		r14_n.u0 = 0x01;
 	if (0x0218 != 0x00)
 	{
@@ -1229,7 +1229,7 @@ ui20 prvIsQueueFull(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 	++globals->ptr0218;
 	ui20 sr_n = sr & ~0x08;
 	Eq_n r14_n = 0x00;
-	if (*((word24) r15 + 0x0028) == *((word24) r15 + 0x002A))
+	if (*((word24) r15 + 40) == *((word24) r15 + 42))
 		r14_n.u0 = 0x01;
 	if (0x0218 != 0x00)
 	{
@@ -1309,7 +1309,7 @@ void vPortEndScheduler()
 // 523A: Register ui20 vPortYield(Register (ptr20 Eq_n) pc, Register ui20 sr, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out)
 ui20 vPortYield(struct Eq_n * pc, ui20 sr, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out)
 {
-	*pc->ptrFFFFAFA4 = fp - 0x001C;
+	*pc->ptrFFFFAFA4 = fp - 28;
 	vTaskSwitchContext();
 	struct Eq_n * v21_n = *pc->ptrFFFFAF98;
 	pc->wFFFFAFA6 = v21_n->w0000;
@@ -1338,7 +1338,7 @@ void prvSetupTimerInterrupt()
 // 52B4: void prvTickISR(Register (ptr20 Eq_n) pc)
 void prvTickISR(struct Eq_n * pc)
 {
-	*pc->ptrFFFFAF2E = fp - 0x001A;
+	*pc->ptrFFFFAF2E = fp - 26;
 	vTaskIncrementTick();
 	vTaskSwitchContext();
 	pc->wFFFFAF2C = **pc->ptrFFFFAF1E;
@@ -1347,7 +1347,7 @@ void prvTickISR(struct Eq_n * pc)
 // 5308: void printf(Register Eq_n r8)
 void printf(Eq_n r8)
 {
-	vuprintf(r8, (char *) &fp->t0002 + 0x02, fp->t0002, 17314);
+	vuprintf(r8, (char *) &fp->t0002 + 2, fp->t0002, 17314);
 }
 
 // 531A: Register Eq_n PRINT(Register Eq_n r14)
@@ -1392,7 +1392,7 @@ l53A6:
 		{
 			do
 			{
-				r6_n = (word20) r6_n + 0x01;
+				r6_n = (word20) r6_n + 1;
 				Eq_n v19_n = *r6_n;
 				r7_n = v19_n;
 			} while (v19_n != 0x00 && v19_n != 0x25);
@@ -1420,11 +1420,11 @@ l53E8:
 				{
 					r5_n += 0x04;
 					wLoc1C_n = *r5_n;
-					wLoc1A_n = *((word24) r5_n + 0x02);
+					wLoc1A_n = *((word24) r5_n + 2);
 				}
 				else
 				{
-					r5_n = (word24) r5_n + 0x02;
+					r5_n = (word24) r5_n + 2;
 					wLoc1C_n = *r5_n;
 					wLoc1A_n.u0 = 0x00;
 				}
@@ -1503,7 +1503,7 @@ l57AE:
 					{
 						r5_n += 0x04;
 						wLoc1C_n = *r5_n;
-						wLoc1A_n = *((word24) r5_n + 0x02);
+						wLoc1A_n = *((word24) r5_n + 2);
 					}
 					else
 					{
@@ -1515,7 +1515,7 @@ l57AE:
 					if (wLoc1A_n < 0x00)
 					{
 						Eq_n wLoc1C_n = wLoc1C_n ^ ~0x00;
-						wLoc1C_n = (word24) wLoc1C_n + 0x01;
+						wLoc1C_n = (word24) wLoc1C_n + 1;
 						wLoc1A_n = (wLoc1A_n ^ ~0x00) + (wLoc1C_n < 0x01);
 						bLoc24_n.u2 = 0x2D;
 					}
@@ -1598,12 +1598,12 @@ l564A:
 							word20 r15_n;
 							fn00005B4E(r8, wLoc14_n, 0x00, wLoc1C_n, wLoc1A_n, out r8_n, out r12_n, out r13_n, out r14_n, out r15_n);
 							if (r14_n >= 0x0A)
-								r4_n = (word24) r14_n + 0x0030;
+								r4_n = (word24) r14_n + 48;
 							else
 							{
-								r4_n = (word24) r14_n + 0x0057;
+								r4_n = (word24) r14_n + 87;
 								if (r7_n == 88)
-									r4_n = (word24) r14_n + 0x0057 & ~0x20;
+									r4_n = (word24) r14_n + 87 & ~0x20;
 							}
 							wLoc20_n = wLoc20_n + 0x0000FFFF;
 							wLoc20_n->b0000 = (byte) r4_n;
@@ -1660,9 +1660,9 @@ l54FC:
 				if (r10_n < 0x00)
 					r10_n.u0 = 0x00;
 				if (bLoc24_n != 0x00)
-					r11_n.u1 = (byte) r9_n.u1 + 0x01;
+					r11_n.u1 = (byte) r9_n.u1 + 1;
 				else if ((bLoc1E_n & 0x40) != 0x00)
-					r11_n.u1 = (byte) r9_n.u1 + 0x02;
+					r11_n.u1 = (byte) r9_n.u1 + 2;
 				word20 r11_n = r11_n + r10_n;
 				r8 = bLoc1E_n & 0x30;
 				if ((bLoc1E_n & 0x30) == 0x00)
@@ -1754,7 +1754,7 @@ Eq_n memchr(Eq_n r13, Eq_n r14, Eq_n r15)
 		Eq_n r14_n = r15;
 		do
 		{
-			r14_n = (word24) r14_n + 0x01;
+			r14_n = (word24) r14_n + 1;
 			if (*r14_n == r14)
 			{
 				r15_n = (word24) r14_n + 0x0000FFFF;
@@ -1827,7 +1827,7 @@ ui20 memcpy(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 			while (r14_n != 0x00)
 			{
 				*r13_n = *r12_n;
-				r12_n += 0x02;
+				r12_n += 2;
 				r13_n += 0x02;
 				r14_n = (word24) r14_n + 0x0000FFFF;
 			}

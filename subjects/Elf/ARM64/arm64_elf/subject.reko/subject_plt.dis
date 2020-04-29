@@ -7,8 +7,8 @@ void fn0000000000000DC0()
 // Preserved: sp
 fn0000000000000DC0_entry:
 l0000000000000DC0:
-	call Mem0[0x000000000001FE90:word64] (retsize: 0;)
-		uses: x16:0x000000000001FE90
+	call Mem0[0x000000000001FE90<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FE90<p64>
 	return
 fn0000000000000DC0_exit:
 
@@ -22,8 +22,8 @@ void fn0000000000000DD0()
 // Preserved: sp
 fn0000000000000DD0_entry:
 l0000000000000DD0:
-	call Mem0[0x000000000001FE98:word64] (retsize: 0;)
-		uses: x16:0x000000000001FE98
+	call Mem0[0x000000000001FE98<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FE98<p64>
 	return
 fn0000000000000DD0_exit:
 
@@ -37,8 +37,8 @@ void fn0000000000000DE0()
 // Preserved: sp
 fn0000000000000DE0_entry:
 l0000000000000DE0:
-	call Mem0[0x000000000001FEA0:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEA0
+	call Mem0[0x000000000001FEA0<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEA0<p64>
 	return
 fn0000000000000DE0_exit:
 
@@ -52,8 +52,8 @@ void fn0000000000000DF0()
 // Preserved: sp
 fn0000000000000DF0_entry:
 l0000000000000DF0:
-	call Mem0[0x000000000001FEA8:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEA8
+	call Mem0[0x000000000001FEA8<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEA8<p64>
 	return
 fn0000000000000DF0_exit:
 
@@ -67,8 +67,8 @@ void fn0000000000000E10()
 // Preserved: sp
 fn0000000000000E10_entry:
 l0000000000000E10:
-	call Mem0[0x000000000001FEB8:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEB8
+	call Mem0[0x000000000001FEB8<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEB8<p64>
 	return
 fn0000000000000E10_exit:
 
@@ -82,8 +82,8 @@ void fn0000000000000E20()
 // Preserved: sp
 fn0000000000000E20_entry:
 l0000000000000E20:
-	call Mem0[0x000000000001FEC0:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEC0
+	call Mem0[0x000000000001FEC0<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEC0<p64>
 	return
 fn0000000000000E20_exit:
 
@@ -97,8 +97,8 @@ void fn0000000000000E30()
 // Preserved: sp
 fn0000000000000E30_entry:
 l0000000000000E30:
-	call Mem0[0x000000000001FEC8:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEC8
+	call Mem0[0x000000000001FEC8<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEC8<p64>
 	return
 fn0000000000000E30_exit:
 
@@ -112,8 +112,8 @@ void fn0000000000000E40()
 // Preserved: sp
 fn0000000000000E40_entry:
 l0000000000000E40:
-	call Mem0[0x000000000001FED0:word64] (retsize: 0;)
-		uses: x16:0x000000000001FED0
+	call Mem0[0x000000000001FED0<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FED0<p64>
 	return
 fn0000000000000E40_exit:
 
@@ -127,8 +127,8 @@ void fn0000000000000E50()
 // Preserved: sp
 fn0000000000000E50_entry:
 l0000000000000E50:
-	call Mem0[0x000000000001FED8:word64] (retsize: 0;)
-		uses: x16:0x000000000001FED8
+	call Mem0[0x000000000001FED8<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FED8<p64>
 	return
 fn0000000000000E50_exit:
 
@@ -142,8 +142,8 @@ void fn0000000000000E60()
 // Preserved: sp
 fn0000000000000E60_entry:
 l0000000000000E60:
-	call Mem0[0x000000000001FEE0:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEE0
+	call Mem0[0x000000000001FEE0<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEE0<p64>
 	return
 fn0000000000000E60_exit:
 
@@ -157,8 +157,8 @@ void fn0000000000000E70()
 // Preserved: sp
 fn0000000000000E70_entry:
 l0000000000000E70:
-	call Mem0[0x000000000001FEE8:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEE8
+	call Mem0[0x000000000001FEE8<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEE8<p64>
 	return
 fn0000000000000E70_exit:
 
@@ -172,8 +172,8 @@ void fn0000000000000E80()
 // Preserved: sp
 fn0000000000000E80_entry:
 l0000000000000E80:
-	call Mem0[0x000000000001FEF0:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEF0
+	call Mem0[0x000000000001FEF0<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEF0<p64>
 	return
 fn0000000000000E80_exit:
 
@@ -187,8 +187,8 @@ void fn0000000000000E90()
 // Preserved: sp
 fn0000000000000E90_entry:
 l0000000000000E90:
-	call Mem0[0x000000000001FEF8:word64] (retsize: 0;)
-		uses: x16:0x000000000001FEF8
+	call Mem0[0x000000000001FEF8<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FEF8<p64>
 	return
 fn0000000000000E90_exit:
 
@@ -202,8 +202,8 @@ void fn0000000000000EA0()
 // Preserved: sp
 fn0000000000000EA0_entry:
 l0000000000000EA0:
-	call Mem0[0x000000000001FF00:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF00
+	call Mem0[0x000000000001FF00<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF00<p64>
 	return
 fn0000000000000EA0_exit:
 
@@ -217,8 +217,8 @@ void fn0000000000000EC0()
 // Preserved: sp
 fn0000000000000EC0_entry:
 l0000000000000EC0:
-	call Mem0[0x000000000001FF10:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF10
+	call Mem0[0x000000000001FF10<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF10<p64>
 	return
 fn0000000000000EC0_exit:
 
@@ -232,8 +232,8 @@ void fn0000000000000ED0()
 // Preserved: sp
 fn0000000000000ED0_entry:
 l0000000000000ED0:
-	call Mem0[0x000000000001FF18:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF18
+	call Mem0[0x000000000001FF18<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF18<p64>
 	return
 fn0000000000000ED0_exit:
 
@@ -247,8 +247,8 @@ void fn0000000000000EE0()
 // Preserved: sp
 fn0000000000000EE0_entry:
 l0000000000000EE0:
-	call Mem0[0x000000000001FF20:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF20
+	call Mem0[0x000000000001FF20<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF20<p64>
 	return
 fn0000000000000EE0_exit:
 
@@ -262,8 +262,8 @@ void fn0000000000000EF0()
 // Preserved: sp
 fn0000000000000EF0_entry:
 l0000000000000EF0:
-	call Mem0[0x000000000001FF28:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF28
+	call Mem0[0x000000000001FF28<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF28<p64>
 	return
 fn0000000000000EF0_exit:
 
@@ -277,8 +277,8 @@ void fn0000000000000F00()
 // Preserved: sp
 fn0000000000000F00_entry:
 l0000000000000F00:
-	call Mem0[0x000000000001FF30:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF30
+	call Mem0[0x000000000001FF30<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF30<p64>
 	return
 fn0000000000000F00_exit:
 
@@ -292,8 +292,8 @@ void fn0000000000000F10()
 // Preserved: sp
 fn0000000000000F10_entry:
 l0000000000000F10:
-	call Mem0[0x000000000001FF38:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF38
+	call Mem0[0x000000000001FF38<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF38<p64>
 	return
 fn0000000000000F10_exit:
 
@@ -307,8 +307,8 @@ void fn0000000000000F20()
 // Preserved: sp
 fn0000000000000F20_entry:
 l0000000000000F20:
-	call Mem0[0x000000000001FF40:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF40
+	call Mem0[0x000000000001FF40<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF40<p64>
 	return
 fn0000000000000F20_exit:
 
@@ -322,8 +322,8 @@ void fn0000000000000F30()
 // Preserved: sp
 fn0000000000000F30_entry:
 l0000000000000F30:
-	call Mem0[0x000000000001FF48:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF48
+	call Mem0[0x000000000001FF48<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF48<p64>
 	return
 fn0000000000000F30_exit:
 
@@ -337,8 +337,8 @@ void fn0000000000000F40()
 // Preserved: sp
 fn0000000000000F40_entry:
 l0000000000000F40:
-	call Mem0[0x000000000001FF50:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF50
+	call Mem0[0x000000000001FF50<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF50<p64>
 	return
 fn0000000000000F40_exit:
 
@@ -352,8 +352,8 @@ void fn0000000000000F50()
 // Preserved: sp
 fn0000000000000F50_entry:
 l0000000000000F50:
-	call Mem0[0x000000000001FF58:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF58
+	call Mem0[0x000000000001FF58<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF58<p64>
 	return
 fn0000000000000F50_exit:
 
@@ -367,8 +367,8 @@ void fn0000000000000F60()
 // Preserved: sp
 fn0000000000000F60_entry:
 l0000000000000F60:
-	call Mem0[0x000000000001FF60:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF60
+	call Mem0[0x000000000001FF60<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF60<p64>
 	return
 fn0000000000000F60_exit:
 
@@ -382,8 +382,8 @@ void fn0000000000000F70()
 // Preserved: sp
 fn0000000000000F70_entry:
 l0000000000000F70:
-	call Mem0[0x000000000001FF68:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF68
+	call Mem0[0x000000000001FF68<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF68<p64>
 	return
 fn0000000000000F70_exit:
 
@@ -397,8 +397,8 @@ void fn0000000000000F80()
 // Preserved: sp
 fn0000000000000F80_entry:
 l0000000000000F80:
-	call Mem0[0x000000000001FF70:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF70
+	call Mem0[0x000000000001FF70<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF70<p64>
 	return
 fn0000000000000F80_exit:
 
@@ -412,8 +412,8 @@ void fn0000000000000F90()
 // Preserved: sp
 fn0000000000000F90_entry:
 l0000000000000F90:
-	call Mem0[0x000000000001FF78:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF78
+	call Mem0[0x000000000001FF78<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF78<p64>
 	return
 fn0000000000000F90_exit:
 
@@ -427,8 +427,8 @@ void fn0000000000000FA0()
 // Preserved: sp
 fn0000000000000FA0_entry:
 l0000000000000FA0:
-	call Mem0[0x000000000001FF80:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF80
+	call Mem0[0x000000000001FF80<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF80<p64>
 	return
 fn0000000000000FA0_exit:
 
@@ -442,8 +442,8 @@ void fn0000000000000FB0()
 // Preserved: sp
 fn0000000000000FB0_entry:
 l0000000000000FB0:
-	call Mem0[0x000000000001FF88:word64] (retsize: 0;)
-		uses: x16:0x000000000001FF88
+	call Mem0[0x000000000001FF88<p64>:word64] (retsize: 0;)
+		uses: x16:0x000000000001FF88<p64>
 	return
 fn0000000000000FB0_exit:
 

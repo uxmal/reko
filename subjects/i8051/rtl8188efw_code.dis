@@ -9,16 +9,16 @@ fn0000_entry:
 l0000:
 l0788:
 l077A:
-	Mem8[__data:0x001D:byte] = 0_08
-	byte A_12 = Mem8[__data:0x80F0_16:byte]
+	Mem8[__data:0x001D<p16>:byte] = 0<8>
+	byte A_12 = Mem8[__data:0x80F0<16>:byte]
 l0791:
 	byte R1_21
 	selector __data_23
 	call fn4EF3 (retsize: 2;)
-		uses: __data:__data,A:Mem8[__data:0x80EF_16:byte] + A_12,DPH:0x80_08,DPL:0xEF_08,R1:R1 + 1_08,R7:A_12
+		uses: __data:__data,A:Mem8[__data:0x80EF<16>:byte] + A_12,DPH:0x80<8>,DPL:0xEF<8>,R1:R1 + 1<8>,R7:A_12
 		defs: __data:__data_23,R1:R1_21
-	Mem32[__data_23:0x157_16:byte] = 5_08
-	branch (Mem32[__data_23:0x80EA_16:byte] >>u 2_08 & 1_08) != 0_08 l07AA
+	Mem32[__data_23:0x157<16>:byte] = 5<8>
+	branch (Mem32[__data_23:0x80EA<16>:byte] >>u 2<8> & 1<8>) != 0<8> l07AA
 l07A7:
 	call fn4AC0 (retsize: 2;)
 		uses: __data:__data_23,R1:R1_21

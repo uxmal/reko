@@ -74,7 +74,7 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 			} while (d0_n != 0x00);
 		}
 		union Eq_n * a2_n = a2_n - a3_n->dw000C;
-		struct Eq_n * a3_n = &a3_n->dw000C + 0x01 + a3_n->dw0004 / 0x0010 + a3_n->dw000C / 0x0010;
+		struct Eq_n * a3_n = &a3_n->dw000C + 1 + a3_n->dw0004 / 16 + a3_n->dw000C / 16;
 		__syscall(0xA02E);
 l00001556:
 		ui32 d0_n;
@@ -89,13 +89,13 @@ l00001556:
 				uint32 d0_n = (uint32) (uint8) v23_n;
 				if (v23_n != 0x00)
 				{
-					uip32 d0_n = SEQ(SLICE(__swap(SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n[0x01])), word24, 8), a3_n[0x02]);
-					a3_n += 0x04;
-					d0_n = SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n[0x03]) * 0x02;
+					uip32 d0_n = SEQ(SLICE(__swap(SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n[1])), word24, 8), a3_n[2]);
+					a3_n += 4;
+					d0_n = SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n[3]) * 0x02;
 l00001578:
 					a2_n = (union Eq_n *) ((char *) a2_n + d0_n);
 					if (dwArg02 != 0x00 && *a2_n >= 0x00)
-						*a2_n = (union Eq_n *) ((char *) *a2_n + dwArg02)[0x02];
+						*a2_n = (union Eq_n *) ((char *) *a2_n + dwArg02)[2];
 					else
 						*a2_n = (union Eq_n *) ((char *) *a2_n + dwLoc02_n);
 					goto l00001556;

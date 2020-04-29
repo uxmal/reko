@@ -67,7 +67,7 @@ T_9: (in 800004FC : ptr32)
   Class: Eq_9
   DataType: (ptr32 real96)
   OrigDataType: (ptr32 (struct (0 T_10 t0000)))
-T_10: (in Mem11[0x800004FC:real96] : real96)
+T_10: (in Mem11[0x800004FC<p32>:real96] : real96)
   Class: Eq_5
   DataType: real96
   OrigDataType: real96
@@ -75,7 +75,7 @@ T_11: (in dwLoc14_59 : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
-T_12: (in 0_32 : word32)
+T_12: (in 0<32> : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
@@ -87,11 +87,11 @@ T_14: (in rLoc10_71 * rArg04 : real96)
   Class: Eq_5
   DataType: real96
   OrigDataType: real96
-T_15: (in 1_32 : word32)
+T_15: (in 1<32> : word32)
   Class: Eq_15
   DataType: word32
   OrigDataType: word32
-T_16: (in dwLoc14_59 + 1_32 : word32)
+T_16: (in dwLoc14_59 + 1<32> : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
@@ -135,7 +135,7 @@ T_26: (in 80000508 : ptr32)
   Class: Eq_26
   DataType: (ptr32 real96)
   OrigDataType: (ptr32 (struct (0 T_27 t0000)))
-T_27: (in Mem11[0x80000508:real96] : real96)
+T_27: (in Mem11[0x80000508<p32>:real96] : real96)
   Class: Eq_23
   DataType: real96
   OrigDataType: real96
@@ -143,7 +143,7 @@ T_28: (in dwLoc14_59 : int32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
-T_29: (in 1_i32 : int32)
+T_29: (in 1<i32> : int32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
@@ -163,11 +163,11 @@ T_33: (in rLoc10_71 * (real80) ((real96) dwLoc14_59) : real96)
   Class: Eq_23
   DataType: real96
   OrigDataType: real96
-T_34: (in 1_32 : word32)
+T_34: (in 1<32> : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_35: (in dwLoc14_59 + 1_32 : word32)
+T_35: (in dwLoc14_59 + 1<32> : word32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
@@ -211,7 +211,7 @@ T_45: (in 80000514 : ptr32)
   Class: Eq_45
   DataType: (ptr32 real96)
   OrigDataType: (ptr32 (struct (0 T_46 t0000)))
-T_46: (in Mem17[0x80000514:real96] : real96)
+T_46: (in Mem17[0x80000514<p32>:real96] : real96)
   Class: Eq_44
   DataType: real96
   OrigDataType: real96
@@ -219,7 +219,7 @@ T_47: (in dwLoc20_110 : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
-T_48: (in 3_i32 : int32)
+T_48: (in 3<i32> : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
@@ -303,11 +303,11 @@ T_68: (in rLoc10_127 + (real80) fp0_91 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
-T_69: (in 2_32 : word32)
+T_69: (in 2<32> : word32)
   Class: Eq_69
   DataType: word32
   OrigDataType: word32
-T_70: (in dwLoc20_110 + 2_32 : word32)
+T_70: (in dwLoc20_110 + 2<32> : word32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
@@ -327,11 +327,11 @@ T_74: (in SEQ(SLICE(fp1_93, word32, 0), SLICE(fp1_93, word32, 32), SLICE(fp1_93,
   Class: Eq_66
   DataType: real96
   OrigDataType: real96
-T_75: (in 100_i32 : int32)
+T_75: (in 100<i32> : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
-T_76: (in dwLoc20_110 > 100_i32 : bool)
+T_76: (in dwLoc20_110 > 100<i32> : bool)
   Class: Eq_76
   DataType: bool
   OrigDataType: bool
@@ -351,7 +351,7 @@ T_80: (in 80000520 : ptr32)
   Class: Eq_80
   DataType: (ptr32 real96)
   OrigDataType: (ptr32 (struct (0 T_81 t0000)))
-T_81: (in Mem14[0x80000520:real96] : real96)
+T_81: (in Mem14[0x80000520<p32>:real96] : real96)
   Class: Eq_77
   DataType: real96
   OrigDataType: real96
@@ -363,7 +363,7 @@ T_83: (in 8000052C : ptr32)
   Class: Eq_83
   DataType: (ptr32 real96)
   OrigDataType: (ptr32 (struct (0 T_84 t0000)))
-T_84: (in Mem17[0x8000052C:real96] : real96)
+T_84: (in Mem17[0x8000052C<p32>:real96] : real96)
   Class: Eq_82
   DataType: real96
   OrigDataType: real96
@@ -371,7 +371,7 @@ T_85: (in dwLoc20_109 : int32)
   Class: Eq_85
   DataType: int32
   OrigDataType: int32
-T_86: (in 2_i32 : int32)
+T_86: (in 2<i32> : int32)
   Class: Eq_85
   DataType: int32
   OrigDataType: int32
@@ -443,11 +443,11 @@ T_103: (in rLoc10_126 + (real80) fp0_91 : real96)
   Class: Eq_77
   DataType: real96
   OrigDataType: real96
-T_104: (in 2_32 : word32)
+T_104: (in 2<32> : word32)
   Class: Eq_104
   DataType: word32
   OrigDataType: word32
-T_105: (in dwLoc20_109 + 2_32 : word32)
+T_105: (in dwLoc20_109 + 2<32> : word32)
   Class: Eq_85
   DataType: int32
   OrigDataType: int32
@@ -467,11 +467,11 @@ T_109: (in SEQ(SLICE(fp0_15, word32, 0), SLICE(fp0_15, word32, 32), SLICE(fp0_15
   Class: Eq_101
   DataType: real96
   OrigDataType: real96
-T_110: (in 100_i32 : int32)
+T_110: (in 100<i32> : int32)
   Class: Eq_85
   DataType: int32
   OrigDataType: int32
-T_111: (in dwLoc20_109 > 100_i32 : bool)
+T_111: (in dwLoc20_109 > 100<i32> : bool)
   Class: Eq_111
   DataType: bool
   OrigDataType: bool
@@ -511,7 +511,7 @@ T_120: (in 80000538 : ptr32)
   Class: Eq_120
   DataType: (ptr32 real96)
   OrigDataType: (ptr32 (struct (0 T_121 t0000)))
-T_121: (in Mem5[0x80000538:real96] : real96)
+T_121: (in Mem5[0x80000538<p32>:real96] : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96

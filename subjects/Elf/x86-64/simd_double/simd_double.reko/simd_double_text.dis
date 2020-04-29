@@ -9,8 +9,8 @@ void _start(word64 rdx, word64 qwArg00)
 _start_exit:
 _start_entry:
 l0000000000000620:
-	__align(fp + 8_i64)
-	__libc_start_main(0x0000000000000898, qwArg00, fp + 8_i64, 0x0000000000000A70, 0x0000000000000AE0, rdx, fp)
+	__align(fp + 8<i64>)
+	__libc_start_main(0x0000000000000898<p64>, qwArg00, fp + 8<i64>, 0x0000000000000A70<p64>, 0x0000000000000AE0<p64>, rdx, fp)
 	__hlt()
 
 
@@ -23,9 +23,9 @@ void deregister_tm_clones()
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l0000000000000650:
-	branch 0x0000000000201048 == 0x0000000000201048 l0000000000000680
+	branch 0x0000000000201048<p64> == 0x0000000000201048<p64> l0000000000000680
 l0000000000000667:
-	branch _ITM_deregisterTMCloneTable == 0_64 l0000000000000680
+	branch _ITM_deregisterTMCloneTable == 0<64> l0000000000000680
 l0000000000000680:
 	return
 l0000000000000673:
@@ -43,10 +43,10 @@ void register_tm_clones()
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l0000000000000690:
-	word64 rsi_9 = 0x0000000000201048 - 0x0000000000201048
-	branch (rsi_9 >> 3_64) + ((rsi_9 >> 3_64) >>u 0x3F_64) >> 1_64 == 0_64 l00000000000006D0
+	word64 rsi_9 = 0x0000000000201048<p64> - 0x0000000000201048<p64>
+	branch (rsi_9 >> 3<64>) + ((rsi_9 >> 3<64>) >>u 0x3F<64>) >> 1<64> == 0<64> l00000000000006D0
 l00000000000006B8:
-	branch _ITM_registerTMCloneTable == 0_64 l00000000000006D0
+	branch _ITM_registerTMCloneTable == 0<64> l00000000000006D0
 l00000000000006D0:
 	return
 l00000000000006C4:
@@ -64,19 +64,19 @@ void __do_global_dtors_aux()
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
 l00000000000006E0:
-	branch Mem0[0x0000000000201048:byte] != 0_08 l0000000000000718
+	branch Mem0[0x0000000000201048<p64>:byte] != 0<8> l0000000000000718
 l0000000000000718:
 	return
 l00000000000006E9:
-	branch __cxa_finalize == 0_64 l0000000000000703
+	branch __cxa_finalize == 0<64> l0000000000000703
 l00000000000006F7:
 	word64 rax_27
 	call __cxa_finalize (retsize: 8;)
-		uses: rax:rax_27,rdi:Mem10[0x0000000000201040:word64]
+		uses: rax:rax_27,rdi:Mem10[0x0000000000201040<p64>:word64]
 		defs: rax:rax_27
 l0000000000000703:
 	deregister_tm_clones()
-	Mem22[0x0000000000201048:byte] = 1_08
+	Mem22[0x0000000000201048<p64>:byte] = 1<8>
 	return
 __do_global_dtors_aux_exit:
 
@@ -107,21 +107,21 @@ _mm_malloc_entry:
 l000000000000072A:
 	word64 rax_42
 	word64 qwLoc28_54 = rsi
-	branch rsi != 1_64 l000000000000074F
+	branch rsi != 1<64> l000000000000074F
 l000000000000074F:
-	branch rsi == 2_64 l000000000000075D
+	branch rsi == 2<64> l000000000000075D
 l0000000000000756:
-	branch rsi != 4_64 l0000000000000765
+	branch rsi != 4<64> l0000000000000765
 l000000000000075D:
-	qwLoc28_54 = 8_64
+	qwLoc28_54 = 8<64>
 l0000000000000765:
 	word64 rax_34
 	call posix_memalign (retsize: 8;)
-		uses: rax:fp - 0x10_64,rcx:qwLoc28_58,rdi:fp - 0x10_64,rdx:rdi,rsi:qwLoc28_58,Stack +0020:qwLoc10
+		uses: rax:fp - 0x10<64>,rcx:qwLoc28_58,rdi:fp - 0x10<64>,rdx:rdi,rsi:qwLoc28_58,Stack +0020:qwLoc10
 		defs: rax:rax_34
-	branch SLICE(rax_34, word32, 0) != 0_32 l0000000000000786
+	branch SLICE(rax_34, word32, 0) != 0<32> l0000000000000786
 l0000000000000786:
-	rax_42 = 0_u64
+	rax_42 = 0<u64>
 l0000000000000780:
 	rax_42 = qwLoc10
 l0000000000000741:
@@ -155,9 +155,9 @@ void vec_add(word64 rdi)
 vec_add_entry:
 l00000000000007A8:
 	__align(fp)
-	word64 rax_30 = (uint64) ((uint128) (uint64) rdi /u Mem23[0x0000000000000B00:word64])
+	word64 rax_30 = (uint64) ((uint128) (uint64) rdi /u Mem23[0x0000000000000B00<p64>:word64])
 l0000000000000881:
-	branch rax_30 >u 0_64 l0000000000000820
+	branch rax_30 >u 0<64> l0000000000000820
 l0000000000000820:
 l000000000000088B:
 	return
@@ -173,56 +173,56 @@ void main(word128 xmm0)
 // Preserved: rbp rsp
 main_entry:
 l0000000000000898:
-	word64 rax_15 = _mm_malloc(0x20_u64, 0x2000_64)
-	word64 rax_27 = _mm_malloc(0x20_u64, 0x2000_64)
-	word64 rax_39 = _mm_malloc(0x20_u64, 0x2000_64)
-	word64 qwLoc10_199 = 0_64
+	word64 rax_15 = _mm_malloc(0x20<u64>, 0x2000<64>)
+	word64 rax_27 = _mm_malloc(0x20<u64>, 0x2000<64>)
+	word64 rax_39 = _mm_malloc(0x20<u64>, 0x2000<64>)
+	word64 qwLoc10_199 = 0<64>
 l000000000000093F:
-	branch qwLoc10_199 <u 0x400_64 l00000000000008FD
+	branch qwLoc10_199 <u 0x400<64> l00000000000008FD
 l00000000000008FD:
-	word64 rcx_55 = qwLoc10_199 * 8_64 + rax_15
+	word64 rcx_55 = qwLoc10_199 * 8<64> + rax_15
 	word32 eax_62 = SLICE(qwLoc10_199, word32, 0)
-	branch qwLoc10_199 < 0_64 l0000000000000921
+	branch qwLoc10_199 < 0<64> l0000000000000921
 l0000000000000921:
-	real64 v26_67 = (real64) (qwLoc10_199 >>u 1_64 | (uint64) (eax_62 & 1_32))
-	xmm0 = DPB(xmm0, v26_67 + v26_67, 0)
+	real64 v26_67 = (real64) (qwLoc10_199 >>u 1<64> | (uint64) (eax_62 & 1<32>))
+	xmm0 = (uint128) (uint64) (v26_67 + v26_67)
 l000000000000091A:
 	xmm0 = DPB(xmm0, (real64) qwLoc10_199, 0)
 l0000000000000936:
 	Mem76[rcx_55:real64] = (real64) xmm0
-	qwLoc10_199 = qwLoc10_199 + 1_64
+	qwLoc10_199 = qwLoc10_199 + 1<64>
 l0000000000000949:
-	word64 qwLoc18_205 = 0_64
+	word64 qwLoc18_205 = 0<64>
 l0000000000000998:
-	branch qwLoc18_205 <u 0x400_64 l0000000000000953
+	branch qwLoc18_205 <u 0x400<64> l0000000000000953
 l0000000000000953:
-	word32 eax_98 = SLICE(qwLoc18_205 + 1_64, word32, 0)
-	word64 rcx_92 = qwLoc18_205 * 8_64 + rax_27
-	branch qwLoc18_205 < 1_64 l000000000000097A
+	word32 eax_98 = SLICE(qwLoc18_205 + 1<64>, word32, 0)
+	word64 rcx_92 = qwLoc18_205 * 8<64> + rax_27
+	branch qwLoc18_205 < 1<64> l000000000000097A
 l000000000000097A:
-	real64 v19_103 = (real64) (qwLoc18_205 + 1_64 >>u 1_64 | (uint64) (eax_98 & 1_32))
-	xmm0 = DPB(xmm0, v19_103 + v19_103, 0)
+	real64 v19_103 = (real64) (qwLoc18_205 + 1<64> >>u 1<64> | (uint64) (eax_98 & 1<32>))
+	xmm0 = (uint128) (uint64) (v19_103 + v19_103)
 l0000000000000973:
-	xmm0 = DPB(xmm0, (real64) (qwLoc18_205 + 1_64), 0)
+	xmm0 = DPB(xmm0, (real64) (qwLoc18_205 + 1<64>), 0)
 l000000000000098F:
 	Mem112[rcx_92:real64] = (real64) xmm0
-	qwLoc18_205 = qwLoc18_205 + 1_64
+	qwLoc18_205 = qwLoc18_205 + 1<64>
 l00000000000009A2:
-	word64 qwLoc20_211 = 0_64
+	word64 qwLoc20_211 = 0<64>
 l00000000000009CC:
-	branch qwLoc20_211 <u 0x400_64 l00000000000009AC
+	branch qwLoc20_211 <u 0x400<64> l00000000000009AC
 l00000000000009AC:
 	xmm0 = __xorpd(xmm0, xmm0)
-	Mem131[rax_39 + qwLoc20_211 * 8_64:real64] = (real64) xmm0
-	qwLoc20_211 = qwLoc20_211 + 1_64
+	Mem131[rax_39 + qwLoc20_211 * 8<64>:real64] = (real64) xmm0
+	qwLoc20_211 = qwLoc20_211 + 1<64>
 l00000000000009D6:
-	vec_add(0x400_64)
-	word64 qwLoc28_220 = 0_64
+	vec_add(0x400<64>)
+	word64 qwLoc28_220 = 0<64>
 l0000000000000A2D:
-	branch qwLoc28_220 <u 0x400_64 l00000000000009F8
+	branch qwLoc28_220 <u 0x400<64> l00000000000009F8
 l00000000000009F8:
-	printf(0x0000000000000AF8, 0_32)
-	qwLoc28_220 = qwLoc28_220 + 1_64
+	printf(0x0000000000000AF8<p64>, 0<32>)
+	qwLoc28_220 = qwLoc28_220 + 1<64>
 l0000000000000A37:
 	_mm_free(rax_15)
 	_mm_free(rax_27)
@@ -243,15 +243,15 @@ __libc_csu_init_entry:
 l0000000000000A70:
 	_init()
 	word32 r15d_84 = SLICE((uint64) edi, word32, 0)
-	word64 rbp_30 = 0x0000000000200DF0 - 0x0000000000200DE8
-	branch rbp_30 >> 3_64 == 0_64 l0000000000000AC6
+	word64 rbp_30 = 0x0000000000200DF0<p64> - 0x0000000000200DE8<p64>
+	branch rbp_30 >> 3<64> == 0<64> l0000000000000AC6
 l0000000000000AA6:
-	word64 rbx_42 = 0_u64
+	word64 rbx_42 = 0<u64>
 l0000000000000AB0:
-	call Mem25[0x0000000000200DE8 + rbx_42 * 8_64:word64] (retsize: 8;)
+	call Mem25[0x0000000000200DE8<p64> + rbx_42 * 8<64>:word64] (retsize: 8;)
 		uses: rdi:(uint64) r15d_84,rdx:rdx,rsi:rsi
-	rbx_42 = rbx_42 + 1_64
-	branch rbp_30 >> 3_64 != rbx_42 l0000000000000AB0
+	rbx_42 = rbx_42 + 1<64>
+	branch rbp_30 >> 3<64> != rbx_42 l0000000000000AB0
 l0000000000000AC6:
 	return
 __libc_csu_init_exit:

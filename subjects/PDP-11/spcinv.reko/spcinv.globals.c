@@ -242,7 +242,7 @@ Eq_n g_t0F0A =
 	};
 Eq_n g_t0F0C = 
 	{
-		0x01
+		1
 	};
 cui16 g_w0F0E = 0x00;
 ci16 g_w0F10 = 0x00;

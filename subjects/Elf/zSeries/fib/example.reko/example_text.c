@@ -9,9 +9,9 @@ void _start(word64 r2, word64 r5, word64 r6, Eq_n r14)
 {
 	Eq_n r15_n = fp - 0x00A0 & ~0x0F;
 	*(r15_n - 0x00B0) = 0x00;
-	*(r15_n - 0x0010) = r14;
-	*(r15_n - 0x08) = r15_n - 0x00B0;
-	__libc_start_main(DPB(r2, 0x2040, 0) + 0x00, qwLocA0, fp - 0x0098, DPB(r5, 0x0820, 0), DPB(r6, 0x0888, 0), *(r15_n - 0x0010), *(r15_n - 0x08));
+	*(r15_n - 16) = r14;
+	*(r15_n - 8) = r15_n - 0x00B0;
+	__libc_start_main(DPB(r2, 0x2040, 0) + 0x00, qwLocA0, fp - 0x0098, DPB(r5, 0x0820, 0), DPB(r6, 0x0888, 0), *(r15_n - 16), *(r15_n - 8));
 }
 
 // 00000648: Register (ptr64 byte) deregister_tm_clones(Register (ptr64 byte) r1, Register word64 r2, Register word64 r5, Register Eq_n r14, Register out Eq_n r2Out, Register out Eq_n r5Out)
@@ -19,7 +19,7 @@ byte * deregister_tm_clones(byte * r1, word64 r2, word64 r5, Eq_n r14, union Eq_
 {
 	word64 r2_n = DPB(r2, 0x2068, 0);
 	union Eq_n * r5_n = DPB(r5, 0x08C8, 0);
-	Eq_n r1_n = DPB(r1, 0x2068, 0) + 0x07 - r2_n;
+	Eq_n r1_n = DPB(r1, 0x2068, 0) + 7 - r2_n;
 	if (r1_n > *r5_n)
 	{
 		Eq_n r1_n = *DPB(r1_n, 0x2030, 0);
@@ -61,8 +61,8 @@ byte * deregister_tm_clones(byte * r1, word64 r2, word64 r5, Eq_n r14, union Eq_
 void register_tm_clones(Eq_n r1, byte * r2, word64 r3, Eq_n r14)
 {
 	int64 r3_n = DPB(r3, 0x2068, 0) - DPB(r1, 0x2068, 0);
-	uint64 r1_n = r3_n >> 0x03 >> 0x003F;
-	uint64 r3_n = (r3_n >> 0x03) + r1_n;
+	uint64 r1_n = r3_n >> 3 >> 63;
+	uint64 r3_n = (r3_n >> 3) + r1_n;
 	if (r3_n != 0x00)
 	{
 		Eq_n r1_n = DPB(r1_n, 0x2050, 0) + 0x00;
@@ -82,7 +82,7 @@ void register_tm_clones(Eq_n r1, byte * r2, word64 r3, Eq_n r14)
 void __do_global_dtors_aux(word64 r1, word64 r2, word64 r5, word64 r11, word64 r12, word64 r13)
 {
 	byte * r13_n = DPB(r13, 0x08D0, 0);
-	Eq_n r15_n = fp - 0x0140;
+	Eq_n r15_n = fp - 320;
 	byte * r11_n = DPB(r11, 0x2068, 0);
 	if (*r11_n == 0x00)
 	{
@@ -96,7 +96,7 @@ void __do_global_dtors_aux(word64 r1, word64 r2, word64 r5, word64 r11, word64 r
 		*r11_n = 0x01;
 	}
 	Eq_n v12_n = (word64) r15_n + 0x00F8;
-	(*((word64) r15_n + 0x0110))();
+	(*((word64) r15_n + 272))();
 }
 
 // 00000720: void frame_dummy(Register Eq_n r1, Register word64 r2, Register word64 r3, Register word64 r13)
@@ -105,16 +105,16 @@ void frame_dummy(Eq_n r1, word64 r2, word64 r3, word64 r13)
 	word64 r3_n;
 	byte * r13_n = DPB(r13, 0x08D8, 0);
 	byte * r2_n = DPB(r2, 0x1E18, 0);
-	Eq_n r15_n = fp - 0x0140;
+	Eq_n r15_n = fp - 320;
 	Eq_n CC_n = cond(*r13_n - *r2_n);
 	if (*r13_n == *r2_n)
 	{
 l00000740:
 		Mem18 = Mem10;
-		Eq_n v8_n = (word64) r15_n + 0x0108;
+		Eq_n v8_n = (word64) r15_n + 264;
 		r13_n = (byte *) *v8_n;
-		Eq_n r14_n = *((word64) v8_n + 0x08);
-		r15_n = *((word64) v8_n + 0x0010);
+		Eq_n r14_n = *((word64) v8_n + 8);
+		r15_n = *((word64) v8_n + 16);
 		if (CC_n)
 		{
 			register_tm_clones(r1, r2_n, r3, r14_n);
@@ -136,7 +136,7 @@ l00000740:
 Eq_n fib(Eq_n r2, union Eq_n & r10Out, union Eq_n & r11Out)
 {
 	Eq_n r1_n;
-	Eq_n r11_n = fp - 0x0148;
+	Eq_n r11_n = fp - 328;
 	word32 v12_n = SLICE(r2, word32, 32);
 	if (r2 <= 0x01)
 		r1_n = r2;
@@ -144,9 +144,9 @@ Eq_n fib(Eq_n r2, union Eq_n & r10Out, union Eq_n & r11Out)
 	{
 		struct Eq_n * r11_n;
 		word64 r10_n;
-		word32 v18_n = SLICE(fib((int64) (word32) SEQ(v12_n, (word32) r2 - 0x01), out r10_n, out r11_n), word32, 32);
+		word32 v18_n = SLICE(fib((int64) (word32) SEQ(v12_n, (word32) r2 - 1), out r10_n, out r11_n), word32, 32);
 		word64 r10_n;
-		word64 r2_n = fib((int64) (word32) SEQ(v18_n, (word32) SEQ(v18_n, r11_n->dw00A4) - 0x02), out r10_n, out r11_n);
+		word64 r2_n = fib((int64) (word32) SEQ(v18_n, (word32) SEQ(v18_n, r11_n->dw00A4) - 2), out r10_n, out r11_n);
 		r1_n = SEQ(SLICE(r2_n, word32, 32), r2_n + r10_n);
 	}
 	Eq_n v26_n = (word64) r11_n + 0x00F8;
@@ -173,8 +173,8 @@ void main(word64 r3)
 void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word64 r11, word64 r12, word64 r13)
 {
 	union Eq_n * r1_n = DPB(r1_n, 7688, 0);
-	Eq_n r15_n = fp - 0x0140;
-	int64 r11_n = DPB(r11_n, 0x1E10, 0) - r1_n >> 0x03;
+	Eq_n r15_n = fp - 320;
+	int64 r11_n = DPB(r11_n, 0x1E10, 0) - r1_n >> 3;
 	word64 r1_n;
 	word64 r11_n;
 	word64 r8_n;
@@ -190,11 +190,11 @@ void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word
 		{
 			word64 r11_n;
 			(*r7_n)();
-			r11_n = r11_n - 0x01;
+			r11_n = r11_n - 1;
 		} while (r11_n != 0x01);
 	}
 	Eq_n v17_n = (word64) r15_n + 0x00D8;
-	Eq_n r4_n = *((word64) r15_n + 0x0110);
+	Eq_n r4_n = *((word64) r15_n + 272);
 	r4_n();
 }
 

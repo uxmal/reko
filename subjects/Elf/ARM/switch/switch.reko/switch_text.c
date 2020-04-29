@@ -7,7 +7,7 @@
 // 00008334: void _start(Stack int32 dwArg00, Stack (ptr32 Eq_n) ptrArg08, Stack (ptr32 Eq_n) ptrArg0C, Stack (ptr32 void) ptrArg10)
 void _start(int32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
 {
-	__libc_start_main(globals->ptr8364, dwArg00, fp + 0x04, globals->ptr8368, ptrArg08, ptrArg0C, ptrArg10);
+	__libc_start_main(globals->ptr8364, dwArg00, fp + 4, globals->ptr8368, ptrArg08, ptrArg0C, ptrArg10);
 	abort();
 }
 
@@ -37,7 +37,7 @@ void __do_global_dtors_aux()
 	else
 	{
 		<anonymous> ** r3_n = *r4_n;
-		*r4_n = (<anonymous> ***) ((char *) r3_n + 0x04);
+		*r4_n = (<anonymous> ***) ((char *) r3_n + 4);
 		word32 pc_n;
 		word32 r2_n;
 		r2_n();
@@ -78,7 +78,7 @@ word32 bazulate(Eq_n r0, Eq_n r1)
 	word32 * fp_n = frobulate(r0, r1);
 	word32 r0_n = __divsi3(r0 + r1, r0);
 	union Eq_n * sp_n = (union Eq_n *) <invalid>;
-	Eq_n r0_n = *(fp_n - 0x0018);
+	Eq_n r0_n = *(fp_n - 24);
 	word32 * fp_n = frobulate(r0_n, *sp_n);
 	__divsi3(r0_n, r0_n);
 	return *fp_n;
@@ -110,7 +110,7 @@ l00008540:
 		bazulate(r0, r0);
 		goto l00008540;
 	}
-	return *(fp_n - -0x04);
+	return *(fp_n - -4);
 }
 
 // 0000855C: void main(Register Eq_n r0)
@@ -147,8 +147,8 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 					C_n = SLICE(cond(r1_n - r0), bool, 1);
 				if (!C_n)
 				{
-					r1_n <<= 0x04;
-					r3_n <<= 0x04;
+					r1_n <<= 4;
+					r3_n <<= 4;
 				}
 			} while (C_n);
 			do
@@ -158,8 +158,8 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 					C_n = SLICE(cond(r1_n - r0), bool, 1);
 				if (!C_n)
 				{
-					r1_n <<= 0x01;
-					r3_n <<= 0x01;
+					r1_n <<= 1;
+					r3_n <<= 1;
 				}
 			} while (C_n);
 			do
@@ -169,29 +169,29 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 					r0 -= r1_n;
 					r2_n |= r3_n;
 				}
-				if (r0 >= r1_n >> 0x01)
+				if (r0 >= r1_n >> 1)
 				{
-					r0 -= r1_n >> 0x01;
-					r2_n |= r3_n >> 0x01;
+					r0 -= r1_n >> 1;
+					r2_n |= r3_n >> 1;
 				}
-				if (r0 >= r1_n >> 0x02)
+				if (r0 >= r1_n >> 2)
 				{
-					r0 -= r1_n >> 0x02;
-					r2_n |= r3_n >> 0x02;
+					r0 -= r1_n >> 2;
+					r2_n |= r3_n >> 2;
 				}
-				if (r0 >= r1_n >> 0x03)
+				if (r0 >= r1_n >> 3)
 				{
-					r0 -= r1_n >> 0x03;
-					r2_n |= r3_n >> 0x03;
+					r0 -= r1_n >> 3;
+					r2_n |= r3_n >> 3;
 				}
 				bool Z_n = SLICE(cond(r0), bool, 2);
 				if (r0 != 0x00)
 				{
-					r3_n >>= 0x04;
+					r3_n >>= 4;
 					Z_n = SLICE(cond(r3_n), bool, 2);
 				}
 				if (!Z_n)
-					r1_n >>= 0x04;
+					r1_n >>= 4;
 			} while (Z_n);
 		}
 		Eq_n r0_n = r2_n;
@@ -217,7 +217,7 @@ void __libc_csu_init()
 	Eq_n r4_n = _init(out r10_n);
 	<anonymous> * r1_n[] = r10_n + globals->dw86A8;
 	int32 r3_n = r10_n + globals->dw86AC - r1_n;
-	if (r4_n >= r3_n >> 0x02)
+	if (r4_n >= r3_n >> 2)
 		return;
 	r1_n[r4_n]();
 }
@@ -228,8 +228,8 @@ void __libc_csu_fini()
 	ptr32 r10_n = 0x86C8 + globals->dw8700;
 	<anonymous> * r1_n[] = r10_n + globals->dw8704;
 	int32 r3_n = r10_n + globals->dw8708 - r1_n;
-	int32 r4_n = (r3_n >> 0x02) - 0x01;
-	if (r3_n >> 0x02 == 0x00)
+	int32 r4_n = (r3_n >> 2) - 0x01;
+	if (r3_n >> 2 == 0x00)
 		_fini();
 	else
 		r1_n[r4_n]();
@@ -239,7 +239,7 @@ void __libc_csu_fini()
 word32 __do_global_ctors_aux()
 {
 	ptr32 r3_n = globals->ptr8740;
-	<anonymous> * r2_n = *(r3_n - 0x04);
+	<anonymous> * r2_n = *(r3_n - 4);
 	if (r2_n == (<anonymous> *) 0x01)
 		return r4;
 	word32 r4_n;

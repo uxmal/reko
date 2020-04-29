@@ -7,9 +7,9 @@
 // 00011000: Register word32 fn00011000()
 word32 fn00011000()
 {
-	memset(fp + -0x0014, 0x00, 0x05);
-	struct Eq_n * r2_n = calloc(0x01, 0x05);
-	memcpy(r2_n, fp + -0x0014, 0x05);
+	memset(fp + -20, 0x00, 5);
+	struct Eq_n * r2_n = calloc(1, 5);
+	memcpy(r2_n, fp + -20, 5);
 	r2_n->b0000 = 0x0C;
 	r2_n->dw0001 = 0x00;
 	return 0x00;
@@ -87,7 +87,7 @@ l00011374:
 	{
 		do
 		{
-			globals->t1303C = (word32) globals->t1303C - 0x04;
+			globals->t1303C = (word32) globals->t1303C - 4;
 			if ((word32) (globals->t1303C < globals->t13040) != 0x00)
 			{
 				free(globals->t13040);
@@ -104,19 +104,19 @@ l00011374:
 // 000113D8: void fn000113D8(Register Eq_n r4)
 void fn000113D8(Eq_n r4)
 {
-	fn000112A8(r4, 0x01, 0x00);
+	fn000112A8(r4, 1, 0x00);
 }
 
 // 00011408: void fn00011408()
 void fn00011408()
 {
-	fn000112A8(0x00, 0x00, 0x01);
+	fn000112A8(0x00, 0x00, 1);
 }
 
 // 00011434: void fn00011434()
 void fn00011434()
 {
-	fn000112A8(0x00, 0x01, 0x01);
+	fn000112A8(0x00, 1, 1);
 }
 
 // 00011460: Register int32 fn00011460()
@@ -148,7 +148,7 @@ void fn000114E4()
 word32 fn0001152C()
 {
 	Eq_n r8_n = globals->t13040;
-	struct Eq_n * sp_n = fp + -0x0038;
+	struct Eq_n * sp_n = fp + -56;
 	if (globals->t1303C - r8_n >= 0x00)
 	{
 		if (r8_n != 0x00)
@@ -160,11 +160,11 @@ word32 fn0001152C()
 		if ((word32) (sp_n->t0018 < sp_n->t0024) != 0x00)
 		{
 			if (sp_n->t001C == 0x00)
-				sp_n->t0014 = malloc(0x0010);
+				sp_n->t0014 = malloc(16);
 			else
 			{
 				sp_n->t0020 = sp_n->t0018 << 0x01;
-				if ((word32) (sp_n->t0018 < 0x0201) == 0x00)
+				if ((word32) (sp_n->t0018 < 513) == 0x00)
 					sp_n->t0020 = (word32) sp_n->t0018 + 0x0200;
 				if ((word32) (sp_n->t0018 < sp_n->t0020) != 0x00)
 					sp_n->t0014 = realloc(sp_n->t001C, sp_n->t0020);
@@ -180,7 +180,7 @@ word32 fn0001152C()
 			sp_n->t001C = sp_n->t0014;
 		}
 		*sp_n->t0028 = sp_n->ptr0038;
-		sp_n->t0028 = (word32) sp_n->t0028 + 0x04;
+		sp_n->t0028 = (word32) sp_n->t0028 + 4;
 		globals->t1303C = sp_n->t0028;
 		globals->t13040 = sp_n->t001C;
 		sp_n->ptr002C = sp_n->ptr0038;

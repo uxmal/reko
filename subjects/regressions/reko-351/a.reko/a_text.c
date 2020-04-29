@@ -19,7 +19,7 @@ word32 deregister_tm_clones()
 // 800000AE: void register_tm_clones()
 void register_tm_clones()
 {
-	int32 d0_n = 0x00;
+	int32 d0_n = 0;
 	if (true)
 		d0_n = 0x01;
 	int32 d0_n = d0_n >> 0x01;
@@ -80,11 +80,11 @@ void frame_dummy()
 		word32 a7_n;
 		word32 a1_n;
 		null();
-		a7_n = a7_n + 0x08;
+		a7_n = a7_n + 8;
 	}
 	if (globals->dw8000271C != 0x00 && 0x00 != 0x00)
 	{
-		*(a7_n - 0x04) = 0x8000271C;
+		*(a7_n - 4) = 0x8000271C;
 		word32 a1_n;
 		null();
 		register_tm_clones();
@@ -106,7 +106,7 @@ void sine_taylor(real64 rArg04)
 // 8000033C: void factorial(Stack int32 dwArg04)
 void factorial(int32 dwArg04)
 {
-	int32 dwLoc08_n = 0x02;
+	int32 dwLoc08_n = 2;
 	while (dwLoc08_n - dwArg04 <= 0x00)
 		++dwLoc08_n;
 }
@@ -122,14 +122,14 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 {
-	int32 dwLoc08_n = 0x03;
+	int32 dwLoc08_n = 3;
 	while (dwLoc08_n - dwArg0C <= 0x00)
 	{
 		pow_int(rArg04, dwLoc08_n);
 		factorial(dwLoc08_n);
 		dwLoc08_n += 0x04;
 	}
-	int32 dwLoc08_n = 0x05;
+	int32 dwLoc08_n = 5;
 	while (dwLoc08_n - dwArg0C <= 0x00)
 	{
 		pow_int(rArg04, dwLoc08_n);
@@ -154,7 +154,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 	real64 rLoc14_n = 1.0;
 	while ((real64) ((real96) rLoc0C_n / rLoc14_n) >= rArg0C)
 	{
-		*tArg14 = (word32) *tArg14 + 0x01;
+		*tArg14 = (word32) *tArg14 + 1;
 		word32 v23_n = dwLoc20_n + 0x00;
 		rLoc0C_n = (real64) ((real96) (real64) ((real96) rLoc0C_n * v9_n) * v9_n);
 		dwLoc20_n = v23_n + 0x03;
@@ -168,12 +168,12 @@ void __do_global_ctors_aux()
 	<anonymous> * a0_n = globals->ptr8000270C;
 	ptr32 a6_n = fp - 0x04;
 	ptr32 a2_n = 0x8000270C;
-	while (a0_n != (<anonymous> *) -0x01)
+	while (a0_n != (<anonymous> *) -1)
 	{
 		ptr32 a2_n;
 		a0_n();
-		a0_n = (<anonymous> *) *(a2_n - 0x04);
-		a2_n = a2_n - 0x04;
+		a0_n = (<anonymous> *) *(a2_n - 4);
+		a2_n = a2_n - 4;
 	}
 }
 

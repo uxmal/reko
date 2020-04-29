@@ -49,7 +49,7 @@ void vPrintTask(Eq_n lr, ptr32 cpsr)
 	union Eq_n * r5_n = globals->ptr8064;
 	while (true)
 	{
-		lr = MPU_xQueueGenericReceive(*r5_n, fp - 0x0014, ~0x00, 0x00, lr, cpsr);
+		lr = MPU_xQueueGenericReceive(*r5_n, fp - 20, ~0x00, 0x00, lr, cpsr);
 		OSRAMClear();
 		++r4_n;
 		OSRAMStringDraw(dwLoc14, r4_n & 0x3F, r4_n & 0x01);
@@ -63,8 +63,8 @@ void vCheckTask(Eq_n lr, ptr32 cpsr)
 	union Eq_n * r5_n = globals->ptr809C;
 	while (true)
 	{
-		MPU_vTaskDelayUntil(fp - 0x0018, 5000, cpsr);
-		lr = MPU_xQueueGenericSend(*r5_n, fp - 0x0014, ~0x00, 0x00, lr, cpsr);
+		MPU_vTaskDelayUntil(fp - 24, 5000, cpsr);
+		lr = MPU_xQueueGenericSend(*r5_n, fp - 20, ~0x00, 0x00, lr, cpsr);
 	}
 }
 
@@ -88,17 +88,17 @@ void vUART_ISR(Eq_n lr, ptr32 cpsr)
 	struct Eq_n * r5_n = globals->ptr8174;
 	Eq_n r0_n = UARTIntStatus(r5_n, 0x01);
 	UARTIntClear(r5_n, r0_n);
-	if (r0_n << 0x001B < 0x00 && *globals->ptr8178 << 0x0019 < 0x00)
-		xQueueGenericSendFromISR(fp - 0x15, r0_n, fp - 0x0014, 0x00, lr, cpsr);
-	if (r0_n << 0x001A < 0x00)
+	if (r0_n << 27 < 0x00 && *globals->ptr8178 << 25 < 0x00)
+		xQueueGenericSendFromISR(fp - 0x15, r0_n, fp - 20, 0x00, lr, cpsr);
+	if (r0_n << 26 < 0x00)
 	{
 		byte * r2_n = globals->ptr817C;
 		up32 r3_n = (word32) *r2_n;
 		if (r3_n <= 122)
 		{
 			ui32 r1_n = *globals->ptr8178;
-			struct Eq_n * r1_n = r1_n << 0x001A;
-			if (r1_n << 0x001A >= 0x00)
+			struct Eq_n * r1_n = r1_n << 26;
+			if (r1_n << 26 >= 0x00)
 				r1_n = globals->ptr8174;
 			r1_n->dw0000 = r3_n;
 			*r2_n = (byte) (r3_n + 0x01);
@@ -169,8 +169,8 @@ struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 	struct Eq_n * r4_n = globals->ptr82CC;
 	SSIDataPut(r4_n, r0 & 0x0F);
 	SSIDataPut(r4_n, r1);
-	SSIDataGet(r4_n, fp - 0x0014);
-	SSIDataGet(r4_n, fp - 0x0014);
+	SSIDataGet(r4_n, fp - 20);
+	SSIDataGet(r4_n, fp - 20);
 	return r4_n;
 }
 
@@ -212,7 +212,7 @@ bool vListInsert(struct Eq_n * r0, struct Eq_n * r1)
 	up32 r5_n = r1->dw0000;
 	if (!Z)
 	{
-		r2_n = (struct Eq_n *) (&r0->dw0000 + 0x02);
+		r2_n = (struct Eq_n *) (&r0->dw0000 + 2);
 		while (true)
 		{
 			r3_n = r2_n->ptr0004;
@@ -260,12 +260,12 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 	__isb_sy();
 	__dsb_sy();
 	vPortEnterCritical(cpsr);
-	if (*((word32) r0 + 0x0038) == *((word32) r0 + 0x003C))
+	if (*((word32) r0 + 56) == *((word32) r0 + 60))
 	{
 		bool Z_n = vPortExitCritical(cpsr);
 		if (r2 != 0x00)
 		{
-			bool Z_n = vCoRoutineAddToDelayedList(r2, (word32) r0 + 0x0010);
+			bool Z_n = vCoRoutineAddToDelayedList(r2, (word32) r0 + 16);
 			__msr(cpsr, 0x00);
 			r0Out = ~0x03;
 			return Z_n;
@@ -282,8 +282,8 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 	__msr(cpsr, 191);
 	__isb_sy();
 	__dsb_sy();
-	Eq_n r2_n = *((word32) r0 + 0x0038);
-	Eq_n r3_n = *((word32) r0 + 0x003C);
+	Eq_n r2_n = *((word32) r0 + 56);
+	Eq_n r3_n = *((word32) r0 + 60);
 	Eq_n r0_n = 0x00;
 	bool Z_n = SLICE(cond(r2_n - r3_n), bool, 2);
 	if (r2_n < r3_n)
@@ -292,10 +292,10 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 		word32 r7_n;
 		word32 r0_n;
 		Z_n = prvCopyDataToQueue(r0, r1, 0x00, r7, lr, out r0_n, out r7_n, out lr_n);
-		if (*((word32) r0 + 0x0024) != 0x00)
+		if (*((word32) r0 + 36) != 0x00)
 		{
 			word32 r0_n;
-			xCoRoutineRemoveFromEventList((word32) r0 + 0x0024, out r0_n);
+			xCoRoutineRemoveFromEventList((word32) r0 + 36, out r0_n);
 			Z_n = SLICE(cond(r0_n), bool, 2);
 			if (r0_n != 0x00)
 			{
@@ -322,13 +322,13 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 	__msr(cpsr, 191);
 	__isb_sy();
 	__dsb_sy();
-	Eq_n r5_n = *((word32) r0 + 0x0038);
+	Eq_n r5_n = *((word32) r0 + 56);
 	if (r5_n == 0x00)
 	{
 		bool Z_n = SLICE(cond(r2), bool, 2);
 		if (r2 != 0x00)
 		{
-			bool Z_n = vCoRoutineAddToDelayedList(r2, (word32) r0 + 0x0024);
+			bool Z_n = vCoRoutineAddToDelayedList(r2, (word32) r0 + 36);
 			__msr(cpsr, r5_n);
 			r0Out = ~0x03;
 			r6Out = r6;
@@ -351,19 +351,19 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 	__msr(cpsr, 191);
 	__isb_sy();
 	__dsb_sy();
-	Eq_n r2_n = *((word32) r0 + 0x0038);
+	Eq_n r2_n = *((word32) r0 + 56);
 	if (r2_n != 0x00)
 	{
 		Eq_n r1_n;
-		Eq_n r2_n = *((word32) r0 + 0x0040);
-		Eq_n r3_n = *((word32) r0 + 0x04);
+		Eq_n r2_n = *((word32) r0 + 64);
+		Eq_n r3_n = *((word32) r0 + 4);
 		word32 r1_n = Mem11[r0 + 0x0C:word32] + r2_n;
-		Eq_n r3_n = *((word32) r0 + 0x0038);
+		Eq_n r3_n = *((word32) r0 + 56);
 		*((word32) r0 + 0x0C) = r1_n;
 		r1_n = r1_n;
 		if (r1_n >= r3_n)
 			r1_n = *r0;
-		*((word32) r0 + 0x0038) = (word32) r3_n - 0x01;
+		*((word32) r0 + 56) = (word32) r3_n - 1;
 		if (r1_n >= r3_n)
 			*((word32) r0 + 0x0C) = r1_n;
 		struct Eq_n * r4_n;
@@ -403,16 +403,16 @@ l00008440:
 // 000084A0: void xQueueCRSendFromISR(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register Eq_n r7, Register Eq_n lr)
 void xQueueCRSendFromISR(Eq_n r0, Eq_n r1, word32 r2, Eq_n r7, Eq_n lr)
 {
-	if (*((word32) r0 + 0x0038) < *((word32) r0 + 0x003C))
+	if (*((word32) r0 + 56) < *((word32) r0 + 60))
 	{
 		word32 lr_n;
 		word32 r7_n;
 		word32 r0_n;
 		prvCopyDataToQueue(r0, r1, 0x00, r7, lr, out r0_n, out r7_n, out lr_n);
-		if (r2 == 0x00 && *((word32) r0 + 0x0024) != 0x00)
+		if (r2 == 0x00 && *((word32) r0 + 36) != 0x00)
 		{
 			word32 r0_n;
-			xCoRoutineRemoveFromEventList((word32) r0 + 0x0024, out r0_n);
+			xCoRoutineRemoveFromEventList((word32) r0 + 36, out r0_n);
 		}
 	}
 }
@@ -420,26 +420,26 @@ void xQueueCRSendFromISR(Eq_n r0, Eq_n r1, word32 r2, Eq_n r7, Eq_n lr)
 // 000084D4: void xQueueCRReceiveFromISR(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2)
 void xQueueCRReceiveFromISR(Eq_n r0, Eq_n r1, Eq_n r2)
 {
-	if (*((word32) r0 + 0x0038) == 0x00)
+	if (*((word32) r0 + 56) == 0x00)
 		return;
 	Eq_n r3_n;
-	Eq_n lr_n = *((word32) r0 + 0x0040);
-	Eq_n r4_n = *((word32) r0 + 0x04);
+	Eq_n lr_n = *((word32) r0 + 64);
+	Eq_n r4_n = *((word32) r0 + 4);
 	word32 r3_n = Mem15[r0 + 0x0C:word32] + lr_n;
-	Eq_n r7_n = *((word32) r0 + 0x0038);
+	Eq_n r7_n = *((word32) r0 + 56);
 	*((word32) r0 + 0x0C) = r3_n;
 	r3_n = r3_n;
 	if (r3_n >= r4_n)
 		r3_n = *r0;
 	if (r3_n >= r4_n)
 		*((word32) r0 + 0x0C) = r3_n;
-	*((word32) r0 + 0x0038) = (word32) r7_n - 0x01;
+	*((word32) r0 + 56) = (word32) r7_n - 1;
 	word32 r6_n;
 	struct Eq_n * r4_n;
 	word32 * r5_n;
 	word32 r7_n;
 	word32 lr_n;
-	memcpy(r1, r3_n, lr_n, r0, r2, r1, (word32) r7_n - 0x01, lr_n, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
+	memcpy(r1, r3_n, lr_n, r0, r2, r1, (word32) r7_n - 1, lr_n, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
 	if (*r5_n != 0x00 || r4_n->dw0010 == 0x00)
 		return;
 	word32 r0_n;
@@ -566,13 +566,13 @@ void prvFlashCoRoutine(struct Eq_n * r0, Eq_n r7, Eq_n lr, ptr32 cpsr)
 		if (r3_n == 0x01C3)
 		{
 			r5_n = globals->ptr86E0;
-			r6_n = fp - 0x0014;
+			r6_n = fp - 20;
 			goto l00008690;
 		}
 		if (r3_n != 0x00)
 			return;
 		r5_n = globals->ptr86E0;
-		r6_n = fp - 0x0014;
+		r6_n = fp - 20;
 l00008696:
 		bool Z_n = xQueueCRReceive(*r5_n, r6_n, ~0x00, r6_n, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr);
 		if (Z_n)
@@ -596,7 +596,7 @@ l00008690:
 	else
 	{
 		r5_n = globals->ptr86E0;
-		if (xQueueCRReceive(*r5_n, fp - 0x0014, 0x00, fp - 0x0014, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr))
+		if (xQueueCRReceive(*r5_n, fp - 20, 0x00, fp - 20, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr))
 			goto l000086AA;
 	}
 	r0->w0034 = 0x01C3;
@@ -671,7 +671,7 @@ void vStartFlashCoRoutines(struct Eq_n * r0, ptr32 cpsr)
 		do
 		{
 			xCoRoutineCreate(r6_n, 0x00, r4_n, cpsr);
-			r4_n = (struct Eq_n *) ((char *) &r4_n->ptr0000 + 0x01);
+			r4_n = (struct Eq_n *) ((char *) &r4_n->ptr0000 + 1);
 		} while (r4_n != r0);
 	}
 	struct Eq_n * r0_n = globals->ptr87CC;
@@ -1044,13 +1044,13 @@ void xCoRoutineCreate(struct Eq_n * r0, uint32 r1, struct Eq_n * r2, ptr32 cpsr)
 	if (r7_n->ptr0000 == null)
 	{
 		r7_n->ptr0000 = r0_n;
-		vListInitialise((char *) &r7_n->ptr0000 + 0x04);
-		vListInitialise((char *) &r7_n->ptr0000 + 0x0018);
+		vListInitialise((char *) &r7_n->ptr0000 + 4);
+		vListInitialise((char *) &r7_n->ptr0000 + 24);
 		vListInitialise((char *) &r7_n->ptr0000 + 44);
-		vListInitialise((char *) &r7_n->ptr0000 + 0x0040);
-		vListInitialise((char *) &r7_n->ptr0000 + 0x0054);
+		vListInitialise((char *) &r7_n->ptr0000 + 64);
+		vListInitialise((char *) &r7_n->ptr0000 + 84);
 		r7_n->ptr0068 = (char *) &r7_n->ptr0000 + 44;
-		r7_n->ptr006C = (char *) &r7_n->ptr0000 + 0x0040;
+		r7_n->ptr006C = (char *) &r7_n->ptr0000 + 64;
 	}
 	if (r1 >= 0x01)
 		r5_n = 0x01;
@@ -1067,7 +1067,7 @@ void xCoRoutineCreate(struct Eq_n * r0, uint32 r1, struct Eq_n * r2, ptr32 cpsr)
 	r0_n->dw0018 = r5_n;
 	r0_n->ptr0010 = r0_n;
 	r0_n->ptr0024 = r0_n;
-	vListInsertEnd((char *) &r7_n->ptr0000 + 0x04 + r0_n * 0x14, &r0_n->dw0004);
+	vListInsertEnd((char *) &r7_n->ptr0000 + 4 + r0_n * 0x14, &r0_n->dw0004);
 }
 
 // 00008EF0: FlagGroup bool vCoRoutineAddToDelayedList(Register Eq_n r0, Register (ptr32 Eq_n) r1)
@@ -1083,7 +1083,7 @@ bool vCoRoutineAddToDelayedList(Eq_n r0, struct Eq_n * r1)
 	if (r1 == null)
 		return Z_n;
 	struct Eq_n * r1_n = r4_n->ptr0000;
-	return vListInsert(r1, &r1_n->dw0004 + 0x05);
+	return vListInsert(r1, &r1_n->dw0004 + 5);
 }
 
 // 00008F2C: Register word32 vCoRoutineSchedule(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 cpsr, Register out ptr32 cpsrOut)
@@ -1096,14 +1096,14 @@ word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, wor
 		__isb_sy();
 		__dsb_sy();
 		struct Eq_n * r4_n = r5_n->ptr0060->ptr000C;
-		uxListRemove((char *) r4_n + 0x0018);
+		uxListRemove((char *) r4_n + 24);
 		__msr(cpsr, 0x00);
-		uxListRemove((char *) r4_n + 0x04);
+		uxListRemove((char *) r4_n + 4);
 		uint32 r3_n = r4_n->dw002C;
-		r0 = (struct Eq_n *) ((char *) &r5_n->ptr0000 + 0x04 + r3_n * 0x14);
+		r0 = (struct Eq_n *) ((char *) &r5_n->ptr0000 + 4 + r3_n * 0x14);
 		if (r3_n > r5_n->dw0070)
 			r5_n->dw0070 = r3_n;
-		vListInsertEnd(r0, (char *) r4_n + 0x04);
+		vListInsertEnd(r0, (char *) r4_n + 4);
 	}
 	MPU_xTaskGetTickCount(cpsr);
 	up32 r3_n = r5_n->dw0074;
@@ -1138,7 +1138,7 @@ l00008F94:
 			__dsb_sy();
 			struct Eq_n * r6_n = &r4_n->dw0004;
 			uxListRemove(r6_n);
-			struct Eq_n * r0_n = &r4_n->dw0004 + 0x05;
+			struct Eq_n * r0_n = &r4_n->dw0004 + 5;
 			if (r4_n->dw0028 != 0x00)
 				uxListRemove(r0_n);
 			__msr(cpsr, 0x00);
@@ -1161,17 +1161,17 @@ l00008F94:
 	uint32 r2_n;
 	uint32 r1_n = r5_n->dw0070;
 	r5_n->dw0078 = r3_n;
-	ui32 r3_n = r1_n << 0x02;
-	if (*((char *) &(r5_n + (r1_n * 0x14) / 0x0080)->ptr0000 + 0x04) == 0x00)
+	ui32 r3_n = r1_n << 2;
+	if (*((char *) &(r5_n + (r1_n * 0x14) / 0x0080)->ptr0000 + 4) == 0x00)
 	{
 		if (r1_n == 0x00)
 		{
 			cpsrOut = cpsr;
 			return lr;
 		}
-		r3_n = r1_n - 0x01 << 0x02;
+		r3_n = r1_n - 0x01 << 2;
 		r2_n = r1_n - 0x01;
-		if (*((char *) &(r5_n + (r3_n + (r1_n - 0x01) << 0x02) / 0x0080)->ptr0000 + 0x04) == 0x00)
+		if (*((char *) &(r5_n + (r3_n + (r1_n - 0x01) << 0x02) / 0x0080)->ptr0000 + 4) == 0x00)
 		{
 			if (r1_n == 0x01)
 			{
@@ -1180,9 +1180,9 @@ l00009046:
 				cpsrOut = cpsr;
 				return lr;
 			}
-			r3_n = r1_n - 0x02 << 0x02;
+			r3_n = r1_n - 0x02 << 2;
 			r2_n = r1_n - 0x02;
-			if (*((char *) &(r5_n + (r3_n + (r1_n - 0x02) << 0x02) / 0x0080)->ptr0000 + 0x04) == 0x00)
+			if (*((char *) &(r5_n + (r3_n + (r1_n - 0x02) << 0x02) / 0x0080)->ptr0000 + 4) == 0x00)
 				goto l00009046;
 		}
 		r5_n->dw0070 = r2_n;
@@ -1191,9 +1191,9 @@ l00009046:
 		r2_n = r1_n;
 	struct Eq_n * r2_n;
 	ui32 r3_n = r3_n + r2_n;
-	struct Eq_n * r1_n = r5_n + (r3_n << 0x02) / 0x0080;
+	struct Eq_n * r1_n = r5_n + (r3_n << 2) / 0x0080;
 	struct Eq_n * r2_n = r1_n->ptr0008->ptr0004;
-	struct Eq_n * r3_n = (r3_n << 0x02) + globals->dw908C;
+	struct Eq_n * r3_n = (r3_n << 2) + globals->dw908C;
 	r1_n->ptr0008 = r2_n;
 	r2_n = r2_n;
 	if (r2_n == r3_n)
@@ -1215,8 +1215,8 @@ bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, ptr32 & r0Out)
 {
 	struct Eq_n * r4_n = r0->ptr000C->ptr000C;
 	struct Eq_n ** r5_n = globals->ptr90C0;
-	uxListRemove((char *) r4_n + 0x0018);
-	vListInsertEnd((char *) r5_n + 0x0054, (char *) r4_n + 0x0018);
+	uxListRemove((char *) r4_n + 24);
+	vListInsertEnd((char *) r5_n + 84, (char *) r4_n + 24);
 	up32 r0_n = r4_n->dw002C;
 	up32 r3_n = *((char *) *r5_n + 44);
 	bool Z_n = SLICE(cond(r0_n - r3_n), bool, 2);
@@ -1255,7 +1255,7 @@ void GPIODirModeSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 		r3_n |= r1;
 	r0->dw0400 = r3_n & ~r1;
 	ui32 r3_n = r0->dw0420;
-	if (r2 << 0x001E < 0x00)
+	if (r2 << 30 < 0x00)
 		r1 |= r3_n;
 	r0->dw0420 = r3_n & ~r1;
 }
@@ -1280,7 +1280,7 @@ void GPIOIntTypeSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 		r3_n |= r1;
 	r0->dw0404 = r3_n & ~r1;
 	ui32 r3_n = r0->dw040C;
-	if (r2 << 0x001D < 0x00)
+	if (r2 << 29 < 0x00)
 		r1 |= r3_n;
 	r0->dw040C = r3_n & ~r1;
 }
@@ -1315,15 +1315,15 @@ void GPIOPadConfigSet(struct Eq_n * r0, ui32 r1, ui32 r2, ui32 r3)
 		r2_n |= r1;
 	r0->dw0518 = r2_n & ~r1;
 	ui32 r2_n = r0->dw050C;
-	if (r3 << 0x001F < 0x00)
+	if (r3 << 31 < 0x00)
 		r2_n |= r1;
 	r0->dw050C = r2_n & ~r1;
 	ui32 r2_n = r0->dw0510;
-	if (r3 << 0x001E < 0x00)
+	if (r3 << 30 < 0x00)
 		r2_n |= r1;
 	r0->dw0510 = r2_n & ~r1;
 	ui32 r2_n = r0->dw0514;
-	if (r3 << 0x001D < 0x00)
+	if (r3 << 29 < 0x00)
 		r2_n |= r1;
 	r0->dw0514 = r2_n & ~r1;
 	ui32 r3_n = r0->dw051C;
@@ -1567,8 +1567,8 @@ void IntRegister(ui32 r0, word32 r1)
 		do
 		{
 			Mem21[r3_n + 0x00:word32] = Mem19[r3_n - r4_n + 0x00:word32];
-			r3_n = (word32 (*)[]) (r3_n + 0x01);
-		} while (r3_n != r4_n + 0x002E);
+			r3_n = (word32 (*)[]) (r3_n + 1);
+		} while (r3_n != r4_n + 46);
 		*globals->ptr9530 = r4_n;
 	}
 	r4_n[r0] = r1;
@@ -1607,7 +1607,7 @@ void IntPriorityGroupingGet()
 void IntPrioritySet(ui32 r0, ui32 r1)
 {
 	ui32 * r4_n = (globals->ptr95B8 + (r0 & ~0x03))->ptr0020;
-	ui32 r0_n = (r0 & 0x03) << 0x03;
+	ui32 r0_n = (r0 & 0x03) << 3;
 	*r4_n = r1 << r0_n | *r4_n & ~(0xFF << r0_n);
 }
 
@@ -1821,7 +1821,7 @@ void OSRAMImageDraw(byte * r0, word32 r1, word32 r2, word32 r3, word32 dwArg00)
 			OSRAMWriteByte(0x40);
 			OSRAMWriteArray(r5_n, r3 + ~0x00);
 			r5_n += r3;
-			OSRAMWriteFinal((word32) *(r5_n - 0x01));
+			OSRAMWriteFinal((word32) *(r5_n - 1));
 			++r4_n;
 		} while (r6_n != r4_n);
 	}
@@ -1851,7 +1851,7 @@ void OSRAMInit(word32 r0)
 			break;
 		r4_n = (word32) r3_n->b01EC;
 		r0_n = (word32) r3_n->b01ED;
-		r6_n = (word32) (r3_n + r4_n / 0x01EE)->b01EC;
+		r6_n = (word32) (r3_n + r4_n / 494)->b01EC;
 	}
 	OSRAMClear();
 }
@@ -1875,7 +1875,7 @@ void OSRAMDisplayOn()
 			break;
 		r4_n = (word32) r3_n->b01EC;
 		r0_n = (word32) r3_n->b01ED;
-		r6_n = (word32) (r3_n + r4_n / 0x01EE)->b01EC;
+		r6_n = (word32) (r3_n + r4_n / 494)->b01EC;
 	}
 }
 
@@ -1970,7 +1970,7 @@ void SSIDataPut(struct Eq_n * r0, ui32 r1)
 {
 	do
 		;
-	while (r0->dw000C << 0x001E >= 0x00);
+	while (r0->dw000C << 30 >= 0x00);
 	r0->dw0008 = r1;
 }
 
@@ -1986,7 +1986,7 @@ void SSIDataGet(struct Eq_n * r0, ui32 * r1)
 {
 	do
 		;
-	while (r0->dw000C << 0x001D >= 0x00);
+	while (r0->dw000C << 29 >= 0x00);
 	*r1 = r0->dw0008;
 }
 
@@ -2019,13 +2019,13 @@ void SysCtlPinPresent(word32 r0)
 // 00009B20: void SysCtlPeripheralPresent(Register uint32 r0)
 void SysCtlPeripheralPresent(uint32 r0)
 {
-	(r0 & ~0xF0000000) + *(globals->ptr9B38)[r0 >> 0x001C] + (r0 >> 0x001C < 0x00) == 0x00;
+	(r0 & ~0xF0000000) + *(globals->ptr9B38)[r0 >> 28] + (r0 >> 28 < 0x00) == 0x00;
 }
 
 // 00009B3C: void SysCtlPeripheralReset(Register uint32 r0)
 void SysCtlPeripheralReset(uint32 r0)
 {
-	ui32 * r2_n = (globals->ptr9B78 + ((r0 >> 0x001C) << 0x02))->ptr0010;
+	ui32 * r2_n = (globals->ptr9B78 + ((r0 >> 28) << 0x02))->ptr0010;
 	*r2_n = r0 & ~0xF0000000 | *r2_n;
 	up32 dwLoc0C_n = 0x00;
 	if (false)
@@ -2040,42 +2040,42 @@ void SysCtlPeripheralReset(uint32 r0)
 // 00009B7C: void SysCtlPeripheralEnable(Register uint32 r0)
 void SysCtlPeripheralEnable(uint32 r0)
 {
-	ui32 * r3_n = (globals->ptr9B94 + ((r0 >> 0x001C) << 0x02))->ptr001C;
+	ui32 * r3_n = (globals->ptr9B94 + ((r0 >> 28) << 0x02))->ptr001C;
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
 // 00009B98: void SysCtlPeripheralDisable(Register uint32 r0)
 void SysCtlPeripheralDisable(uint32 r0)
 {
-	ui32 * r2_n = (globals->ptr9BB0 + ((r0 >> 0x001C) << 0x02))->ptr001C;
+	ui32 * r2_n = (globals->ptr9BB0 + ((r0 >> 28) << 0x02))->ptr001C;
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
 // 00009BB4: void SysCtlPeripheralSleepEnable(Register uint32 r0)
 void SysCtlPeripheralSleepEnable(uint32 r0)
 {
-	ui32 * r3_n = (globals->ptr9BCC + ((r0 >> 0x001C) << 0x02))->ptr0028;
+	ui32 * r3_n = (globals->ptr9BCC + ((r0 >> 28) << 0x02))->ptr0028;
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
 // 00009BD0: void SysCtlPeripheralSleepDisable(Register uint32 r0)
 void SysCtlPeripheralSleepDisable(uint32 r0)
 {
-	ui32 * r2_n = (globals->ptr9BE8 + ((r0 >> 0x001C) << 0x02))->ptr0028;
+	ui32 * r2_n = (globals->ptr9BE8 + ((r0 >> 28) << 0x02))->ptr0028;
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
 // 00009BEC: void SysCtlPeripheralDeepSleepEnable(Register uint32 r0)
 void SysCtlPeripheralDeepSleepEnable(uint32 r0)
 {
-	ui32 * r3_n = (globals->ptr9C04 + ((r0 >> 0x001C) << 0x02))->ptr0034;
+	ui32 * r3_n = (globals->ptr9C04 + ((r0 >> 28) << 0x02))->ptr0034;
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
 // 00009C08: void SysCtlPeripheralDeepSleepDisable(Register uint32 r0)
 void SysCtlPeripheralDeepSleepDisable(uint32 r0)
 {
-	ui32 * r2_n = (globals->ptr9C20 + ((r0 >> 0x001C) << 0x02))->ptr0034;
+	ui32 * r2_n = (globals->ptr9C20 + ((r0 >> 28) << 0x02))->ptr0034;
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
@@ -2209,17 +2209,17 @@ void SysCtlClockSet(ui32 r0)
 	ui32 r2_n = r2_n & ~0x03 | r0 & 0x03;
 	*globals->ptr9DE0 = r2_n;
 	ui32 r1_n = r0 & 0x07C00000 | r2_n & ~0x07C00000;
-	if (r0 << 0x0014 >= 0x00)
+	if (r0 << 20 >= 0x00)
 	{
 		word32 dwLoc14_n = 0x8000;
 		if (0x8000 != 0x00)
 		{
 			ui32 * r2_n = globals->ptr9DEC;
-			if (*r2_n << 0x0019 >= 0x00)
+			if (*r2_n << 25 >= 0x00)
 			{
 				do
 					--dwLoc14_n;
-				while (dwLoc14_n != 0x00 && *r2_n << 0x0019 >= 0x00);
+				while (dwLoc14_n != 0x00 && *r2_n << 25 >= 0x00);
 			}
 		}
 		r1_n &= ~0x0800;
@@ -2255,16 +2255,16 @@ uint32 SysCtlClockGet()
 	}
 	else
 		r0_n = globals->dw9E64;
-	if (r3_n << 0x0014 >= 0x00)
+	if (r3_n << 20 >= 0x00)
 	{
 		ui32 r2_n = *globals->ptr9E5C;
 		r0_n = r0_n * ((uint32) SLICE(r2_n, ui9, 5) + 0x02) /u ((r2_n & 0x1F) + 0x02);
 		if (r2_n << 0x0011 < 0x00)
-			r0_n >>= 0x01;
-		if (r2_n << 0x0010 < 0x00)
-			r0_n >>= 0x02;
+			r0_n >>= 1;
+		if (r2_n << 16 < 0x00)
+			r0_n >>= 2;
 	}
-	if (r3_n << 0x09 >= 0x00)
+	if (r3_n << 9 >= 0x00)
 		return r0_n;
 	return r0_n /u ((uint32) SLICE(r3_n, ui4, 23) + 0x01);
 }
@@ -2359,9 +2359,9 @@ void UARTConfigSet(struct Eq_n * r0, uint32 r1, ui32 r2)
 	r0->dw002C &= ~0x10;
 	r0->dw0030 = r0->dw0030 & ~0x0300 & ~0x01;
 	uint32 r0_n = SysCtlClockGet();
-	uint32 r2_n = r0_n /u (r1 << 0x04);
+	uint32 r2_n = r0_n /u (r1 << 4);
 	r0->dw0024 = r2_n;
-	r0->dw0028 = (r0_n - (r1 << 0x04) * r2_n << 0x03) /u r1 + 0x01 >> 0x01;
+	r0->dw0028 = (r0_n - (r1 << 4) * r2_n << 3) /u r1 + 0x01 >> 1;
 	r0->dw002C = r2;
 	r0->dw0018 = r4_n & 0x08;
 	r0->dw002C |= 0x10;
@@ -2371,7 +2371,7 @@ void UARTConfigSet(struct Eq_n * r0, uint32 r1, ui32 r2)
 // 00009FA8: void UARTConfigGet(Register (ptr32 Eq_n) r0, Register (ptr32 uint32) r1, Register (ptr32 ui32) r2)
 void UARTConfigGet(struct Eq_n * r0, uint32 * r1, ui32 * r2)
 {
-	*r1 = (SysCtlClockGet() << 0x02) /u (r0->dw0028 + (r0->dw0024 << 0x06));
+	*r1 = (SysCtlClockGet() << 2) /u (r0->dw0028 + (r0->dw0024 << 0x06));
 	*r2 = r0->dw002C & 0xEE;
 }
 
@@ -2387,7 +2387,7 @@ void UARTDisable(struct Eq_n * r0)
 {
 	do
 		;
-	while (r0->dw0018 << 0x001C < 0x00);
+	while (r0->dw0018 << 28 < 0x00);
 	r0->dw002C &= ~0x10;
 	r0->dw0030 = r0->dw0030 & ~0x0300 & ~0x01;
 }
@@ -2405,7 +2405,7 @@ void UARTSpaceAvail()
 // 0000A024: void UARTCharNonBlockingGet(Register (ptr32 Eq_n) r0)
 void UARTCharNonBlockingGet(struct Eq_n * r0)
 {
-	r0->dw0018 << 0x001B < 0x00;
+	r0->dw0018 << 27 < 0x00;
 }
 
 // 0000A034: void UARTCharGet(Register (ptr32 Eq_n) r0)
@@ -2413,13 +2413,13 @@ void UARTCharGet(struct Eq_n * r0)
 {
 	do
 		;
-	while (r0->dw0018 << 0x001B < 0x00);
+	while (r0->dw0018 << 27 < 0x00);
 }
 
 // 0000A044: void UARTCharNonBlockingPut(Register (ptr32 Eq_n) r0, Register word32 r1)
 void UARTCharNonBlockingPut(struct Eq_n * r0, word32 r1)
 {
-	if (r0->dw0018 << 0x001A >= 0x00)
+	if (r0->dw0018 << 26 >= 0x00)
 		r0->dw0000 = r1;
 }
 
@@ -2428,7 +2428,7 @@ void UARTCharPut(struct Eq_n * r0, word32 r1)
 {
 	do
 		;
-	while (r0->dw0018 << 0x001A < 0x00);
+	while (r0->dw0018 << 26 < 0x00);
 	r0->dw0000 = r1;
 }
 
@@ -2655,7 +2655,7 @@ void I2CMasterControl(struct Eq_n * r0, word32 r1)
 void I2CMasterErr(struct Eq_n * r0)
 {
 	ui32 r3_n = r0->dw0004;
-	if (r3_n << 0x001F < 0x00 || (r3_n & 0x02) == 0x00)
+	if (r3_n << 31 < 0x00 || (r3_n & 0x02) == 0x00)
 		;
 }
 

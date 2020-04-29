@@ -44,42 +44,42 @@ PyMethodDef g_methods[5] =
 		{
 			&g_str10002140,
 			fn10001000,
-			0x01,
+			1,
 			&g_str1000212C,
 		},
 		
 		{
 			&g_str10002128,
 			fn10001050,
-			0x01,
+			1,
 			&g_str10002114,
 		},
 		
 		{
 			&g_str10002110,
 			fn100010A0,
-			0x01,
+			1,
 			&g_str100020FC,
 		},
 		
 		{
 			&g_str100020F4,
 			fn100010F0,
-			0x01,
+			1,
 			&g_str100020E0,
 		},
 		
 		{
 			null,
 			null,
-			0x00,
+			0,
 			null,
 		},
 	};
-int32 g_dw10003070 = 0x00;
+int32 g_dw10003070 = 0;
 word32 * g_ptr100033A4 = null;
 word32 g_dw100033A8 = 0x00;
-Eq_n g_t100033AC = 0x00;
+Eq_n g_t100033AC = 0;
 word32 * g_ptr100033B0 = null;
 word32 * g_ptr100033B4 = null;
 <anonymous> * g_ptr100033B8 = null;

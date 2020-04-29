@@ -23,7 +23,7 @@ Eq_n g_t138C =
 	};
 byte g_b138D = 0x00;
 ptr16 g_ptr14BC = 0x00;
-int16 g_w14BE = 0x00;
+int16 g_w14BE = 0;
 byte g_b14EF = 0x01;
 byte g_b14F0 = 0x00;
 cu8 g_b14F3 = 0x02;

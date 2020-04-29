@@ -49,10 +49,10 @@ void __do_global_dtors_aux()
 			__cxa_finalize();
 		}
 		Eq_n r2_n = globals->t10AF4;
-		Eq_n r16_n = (globals->dw10AB0 - 68200 >> 0x02) + -0x01;
+		Eq_n r16_n = (globals->dw10AB0 - 68200 >> 0x02) + -1;
 		while ((word32) (r2_n < r16_n) != 0x00)
 		{
-			Eq_n r2_n = (word32) r2_n + 0x01;
+			Eq_n r2_n = (word32) r2_n + 1;
 			globals->t10AF4 = r2_n;
 			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
 			word32 r4_n;
@@ -73,8 +73,8 @@ void frame_dummy()
 // 000007F0: void main()
 void main()
 {
-	memset(fp + -0x0014, 0x00, 0x05);
-	struct Eq_n * r2_n = calloc(0x01, 0x05);
+	memset(fp + -20, 0x00, 5);
+	struct Eq_n * r2_n = calloc(1, 5);
 	r2_n->t0000 = dwLoc14;
 	r2_n->b0004 = (byte) (word32) bLoc10;
 	r2_n->t0000.u0 = 0x0C;
@@ -99,7 +99,7 @@ void __libc_csu_init(word32 r4, word32 r5, word32 r6)
 			++r17_n;
 			if (r18_n >> 0x02 == r17_n)
 				break;
-			r16_n = (<anonymous> **) ((char *) r16_n + 0x04);
+			r16_n = (<anonymous> **) ((char *) r16_n + 4);
 		}
 	}
 }
@@ -113,15 +113,15 @@ void __libc_csu_fini()
 void __do_global_ctors_aux()
 {
 	<anonymous> * r25_n = globals->ptr10A60;
-	if (r25_n != (<anonymous> *) -0x01)
+	if (r25_n != (<anonymous> *) -1)
 	{
 		word32 * r16_n = &globals->ptr10A60;
 		do
 		{
 			r25_n();
-			r16_n += -0x01;
+			r16_n += -1;
 			r25_n = *r16_n;
-		} while (r25_n != (<anonymous> *) -0x01);
+		} while (r25_n != (<anonymous> *) -1);
 	}
 }
 

@@ -10,7 +10,7 @@ Eq_3: (struct "A" (0 word32 dw0000))
 	T_3 (in this : (ptr32 Eq_3))
 Eq_9: BOOL
 	T_9 (in eax : Eq_9)
-	T_13 (in 1_32 : word32)
+	T_13 (in 1<32> : word32)
 Eq_10: HANDLE
 	T_10 (in hModule : Eq_10)
 Eq_11: DWORD
@@ -34,15 +34,15 @@ T_4: (in dwArg04 : int32)
   Class: Eq_4
   DataType: int32
   OrigDataType: int32
-T_5: (in 0_32 : word32)
+T_5: (in 0<32> : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in this + 0_32 : word32)
+T_6: (in this + 0<32> : word32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
-T_7: (in Mem0[this + 0_32:word32] : word32)
+T_7: (in Mem0[this + 0<32>:word32] : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
@@ -66,7 +66,7 @@ T_12: (in lpReserved : Eq_12)
   Class: Eq_12
   DataType: Eq_12
   OrigDataType: LPVOID
-T_13: (in 1_32 : word32)
+T_13: (in 1<32> : word32)
   Class: Eq_9
   DataType: Eq_9
   OrigDataType: word32

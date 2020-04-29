@@ -8,9 +8,9 @@
 void fn0000C02A(struct Eq_n * a0, word32 * a1)
 {
 	globals->dwFF0F08 = a0->dw0000;
-	globals->dwFF0F04 = 0x00;
+	globals->dwFF0F04 = 0;
 	word32 * a6_n = a1;
-	int32 a4_n = 0x00;
+	int32 a4_n = 0;
 	while (globals->dwFF0F04 - globals->dwFF0F08 < 0x00)
 	{
 		ui32 d3_n = SEQ(SLICE(a4_n, word24, 8), a0->a0004[a4_n]);
@@ -26,10 +26,10 @@ void fn0000C02A(struct Eq_n * a0, word32 * a1)
 				while (true)
 				{
 					word16 v36_n = (word16) d3_n;
-					d3_n = SEQ(SLICE(d3_n, word16, 16), v36_n - 0x01);
+					d3_n = SEQ(SLICE(d3_n, word16, 16), v36_n - 1);
 					if (v36_n == 0x00)
 						break;
-					*a6_n = 0x00;
+					*a6_n = 0;
 					globals->dwFF0F04 += 0x04;
 					++a6_n;
 				}

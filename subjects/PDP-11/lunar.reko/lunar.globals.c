@@ -8,35 +8,35 @@ word16 g_w0004 = 0x0200;
 word16 g_w0006 = 0xE0;
 Eq_n g_t0044 = 
 	{
-		0x00
+		0
 	};
 ci16 g_w0046 = 0x00;
 wchar_t g_w0048 = L'\x00';
 Eq_n g_t004A = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t004C = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t004E = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t0050 = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t0052 = 
 	{
-		0x00
+		0
 	};
 ci16 g_w0054 = 0x00;
 wchar_t g_w0056 = L'\x00';
 Eq_n g_t0058 = 
 	{
-		0x00
+		0
 	};
 wchar_t g_w005A = L'\x00';
 word16 g_w005C = 0x00;
@@ -45,26 +45,26 @@ wchar_t g_w0060 = L'\x00';
 wchar_t g_w0062 = L'\x00';
 Eq_n g_t0064 = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t0066 = 
 	{
-		0x00
+		0
 	};
 wchar_t g_w0068 = L'\x00';
 word16 g_w006A = 0x00;
 Eq_n g_t006C = 
 	{
-		0x00
+		0
 	};
 Eq_n g_t006E = 
 	{
-		0x00
+		0
 	};
 cu16 g_w0070 = 0x00;
-int16 g_w0072 = 0x00;
+int16 g_w0072 = 0;
 cui16 g_w0074 = 0x00;
-int16 g_w0078 = 0x00;
+int16 g_w0078 = 0;
 word16 g_w007A = 0x00;
 ci16 g_w007E = 0x00;
 word16 g_w0080 = 0x00;
@@ -89,7 +89,7 @@ ci16 g_w00A4 = 0x00;
 cui16 g_w00A6 = 0x00;
 cui16 g_w00A8 = 0x00;
 wchar_t g_w00AA = L'\x00';
-int16 g_w00AC = 0x00;
+int16 g_w00AC = 0;
 ci16 g_w00AE = 0x00;
 struct Eq_n * g_ptr00B0 = &g_ptr00B0;
 word16 * g_a013E[] = 
@@ -124,7 +124,7 @@ Eq_n g_t1F96 =
 	{
 		0x00,
 		0x00,
-		0x00,
+		0,
 	};
 word16 g_w25AA = 0x00;
 Eq_n g_t25B8 = 

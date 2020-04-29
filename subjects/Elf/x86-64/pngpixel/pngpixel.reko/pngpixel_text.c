@@ -7,8 +7,8 @@
 // 0000000000400CD0: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
 void _start(void (* rdx)(), Eq_n qwArg00)
 {
-	__align((char *) fp + 0x08);
-	__libc_start_main(&globals->t4012F9, qwArg00, (char *) fp + 0x08, &globals->t401780, &globals->t4017F0, rdx, fp);
+	__align((char *) fp + 8);
+	__libc_start_main(&globals->t4012F9, qwArg00, (char *) fp + 8, &globals->t401780, &globals->t4017F0, rdx, fp);
 	__hlt();
 }
 
@@ -23,7 +23,7 @@ void deregister_tm_clones()
 // 0000000000400D40: void register_tm_clones()
 void register_tm_clones()
 {
-	if (0x00 == 0x00 || 0x00 == 0x00)
+	if (0 == 0x00 || 0x00 == 0x00)
 		return;
 	null();
 }
@@ -334,7 +334,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 		do
 		{
 			(*((char *) globals->a601E00 + rbx_n * 0x08))();
-			rbx_n = (word64) rbx_n.u1 + 0x01;
+			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbx_n != rbp_n >> 0x03);
 	}
 }
