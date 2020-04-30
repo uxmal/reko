@@ -410,6 +410,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vrefp:
                 case Mnemonic.vrefp128: RewriteVrefp(); break;
                 case Mnemonic.vrfin128: RewriteVectorUnary("__vrfin"); break;
+                case Mnemonic.vrfip128: RewriteVectorUnary("__vrfip"); break;
                 case Mnemonic.vrfiz128: RewriteVectorUnary("__vrfiz"); break;
                 case Mnemonic.vrlimi128: RewriteVrlimi(); break;
                 case Mnemonic.vrsqrtefp: 

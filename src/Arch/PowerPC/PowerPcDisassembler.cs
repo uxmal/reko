@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Text;
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -103,11 +104,18 @@ namespace Reko.Arch.PowerPC
         /// <summary>
         /// If the instruction's bit 10 is '1', then set the setsCR0 bit.
         /// </summary>
+        internal static bool C6(uint wInstr, PowerPcDisassembler dasm)
+        {
+            dasm.allowSetCR0 = (wInstr & (1 << 6)) != 0;
+            return true;
+        }
+
         internal static bool C10(uint wInstr, PowerPcDisassembler dasm)
         {
             dasm.allowSetCR0 = (wInstr & (1 << 10)) != 0;
             return true;
         }
+
 
         /// <summary>
         /// Force the setsCR0 flag to '1'.
@@ -271,6 +279,17 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> I4 = I(6) ;
         internal static readonly Mutator<PowerPcDisassembler> I5 = I(1);
 
+        internal static Mutator<PowerPcDisassembler> i(params Bitfield[] bitfields)
+        {
+            return (u, d) =>
+            {
+                var i = (int) Bitfield.ReadFields(bitfields, u);
+                var op = ImmediateOperand.Int32(i);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+
         // Condition register fields.
         internal static bool M(uint wInstr, PowerPcDisassembler dasm)
         {
@@ -289,6 +308,18 @@ namespace Reko.Arch.PowerPC
                 return true;
             };
         }
+
+        internal static Mutator<PowerPcDisassembler> u(Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var n = Bitfield.ReadSignedFields(fields, u);
+                var op = ImmediateOperand.Int32(n);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+
         internal static readonly Mutator<PowerPcDisassembler> u6_2 = u(6, 2);
         internal static readonly Mutator<PowerPcDisassembler> u6_4 = u(6, 4);
         internal static readonly Mutator<PowerPcDisassembler> u6_5 = u(6, 5);
@@ -317,6 +348,7 @@ namespace Reko.Arch.PowerPC
             };
         }
         internal static readonly Mutator<PowerPcDisassembler> s0_12 = s(0, 12);
+        internal static readonly Mutator<PowerPcDisassembler> s11_5 = s(11, 5);
         internal static readonly Mutator<PowerPcDisassembler> s16_5 = s(16, 5);
 
         internal static Mutator<PowerPcDisassembler> s(Bitfield[] fields)
@@ -354,6 +386,33 @@ namespace Reko.Arch.PowerPC
             return true;
         }
 
+        /// <summary>
+        /// Wc encoding only allows for v0-v7
+        /// </summary>
+        internal static bool Wc(uint wInstr, PowerPcDisassembler dasm)
+        {
+            var op = dasm.VRegFromBits((wInstr >> 6) & 7);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        /// <summary>
+        /// Special purpose register field has its two halves swapped.
+        /// </summary>
+        internal static bool SPR(uint wInstr, PowerPcDisassembler dasm)
+        {
+            var nSpr = ((wInstr >> 16) & 0x1F) | ((wInstr >> 6) & 0x3E0);
+            if (dasm.arch.SpRegisters.TryGetValue((int)nSpr, out var spr))
+            {
+                dasm.ops.Add(new RegisterOperand(spr));
+            }
+            else
+            {
+                dasm.ops.Add(ImmediateOperand.UInt32(nSpr));
+            }
+            return true;
+        }
+
         // Special format used by the CMP[L][I] instructions.
         internal static bool X3(uint wInstr, PowerPcDisassembler dasm)
         {
@@ -362,7 +421,7 @@ namespace Reko.Arch.PowerPC
             return true;
         }
 
-        internal static bool Is64Bit(uint wInstr, PowerPcDisassembler dasm)
+        internal static bool Is64Bit(uint _, PowerPcDisassembler dasm)
         {
             return dasm.defaultWordWidth.BitSize == 64;
         }

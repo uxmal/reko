@@ -1080,4 +1080,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 61 binaries in 66.90 seconds ---
+Decompiled 61 binaries in 72.98 seconds ---

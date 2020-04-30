@@ -1,3 +1,23 @@
+#region License
+/* 
+ * Copyright (C) 1999-2020 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -201,6 +221,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var xOp = (wInstr >> 1) & 0x3FF;
+                DumpMaskedInstruction(wInstr, 0x3FF << 1, "  XDecoder");
                 if (xDecoders.TryGetValue(xOp, out var decoder))
                 {
                     return decoder.Decode(wInstr, dasm);
@@ -494,7 +515,7 @@ namespace Reko.Arch.PowerPC
         public class SprDecoder : Decoder
         {
             private readonly bool to;
-
+            
             public SprDecoder(bool to)
             {
                 this.to = to;
@@ -502,22 +523,27 @@ namespace Reko.Arch.PowerPC
 
             public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
-                var ops = new List<MachineOperand> { dasm.RegFromBits(wInstr >> 21) };
+                //var ops = new List<MachineOperand> { dasm.RegFromBits(wInstr >> 21) };
                 var spr = ((wInstr >> 16) & 0x1F) | ((wInstr >> 6) & 0x3E0);
                 Mnemonic mnemonic;
                 switch (spr)
                 {
-                case 0x08: mnemonic = to ? Mnemonic.mtlr : Mnemonic.mflr; break;
-                case 0x09: mnemonic = to ? Mnemonic.mtctr : Mnemonic.mfctr; break;
+                case 0x08: mnemonic = to ? Mnemonic.mtlr : Mnemonic.mflr;
+                    r1(wInstr, dasm);
+                    break;
+                case 0x09: mnemonic = to ? Mnemonic.mtctr : Mnemonic.mfctr; 
+                    r1(wInstr, dasm);
+                    break;
                 default:
                     mnemonic = to ? Mnemonic.mtspr : Mnemonic.mfspr;
-                    ops.Insert(0, ImmediateOperand.UInt32(spr));
+                    SPR(wInstr, dasm);
+                    r1(wInstr, dasm);
                     break;
                 }
                 return new PowerPcInstruction(mnemonic)
                 {
                     InstructionClass = InstrClass.Linear,
-                    Operands = ops.ToArray()
+                    Operands = dasm.ops.ToArray()
                 };
             }
         }
@@ -540,51 +566,6 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.cmpli: op = l ? Mnemonic.cmpli : Mnemonic.cmplwi; break;
                 }
                 return DecodeOperands(wInstr, dasm, iclass, op, mutators);
-            }
-        }
-
-        public class VXDecoder : Decoder
-        {
-            private Dictionary<uint, Decoder> vxDecoders;
-            private Dictionary<uint, Decoder> vaDecoders;
-
-            public VXDecoder(Dictionary<uint, Decoder> vxDecoders, Dictionary<uint, Decoder> vaDecoders)
-            {
-                this.vxDecoders = vxDecoders;
-                this.vaDecoders = vaDecoders;
-            }
-
-            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
-            {
-                var xOp = wInstr & 0x7FFu;
-                if (vxDecoders.TryGetValue(xOp, out Decoder decoder))
-                {
-                    return decoder.Decode(wInstr, dasm);
-                }
-                else if (vaDecoders.TryGetValue(wInstr & 0x3Fu, out decoder))
-                {
-                    return decoder.Decode(wInstr, dasm);
-                }
-                else
-                {
-                    Debug.Print("Unknown PowerPC VX instruction {0:X8} {1:X2}-{2:X3} ({2})", wInstr, wInstr >> 26, xOp);
-                    return dasm.EmitUnknown(wInstr);
-                }
-            }
-        }
-
-        public class XSDecoder : InstrDecoder
-        {
-            public XSDecoder(Mnemonic mnemonic, params Mutator<PowerPcDisassembler>[] mutators) : base(mnemonic, mutators) { }
-
-            public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
-            {
-                var instr = base.Decode(wInstr, dasm);
-                var c = ((ImmediateOperand)instr.Operands[2]).Value.ToInt32();
-                if ((wInstr & 2) != 0)
-                    c += 32;
-                instr.Operands[2] = new ImmediateOperand(Constant.Byte((byte)c));
-                return instr;
             }
         }
 
@@ -615,7 +596,7 @@ namespace Reko.Arch.PowerPC
         public class VMXDecoder : Decoder
         {
             private readonly uint mask;
-            public Dictionary<uint, Decoder> decoders;
+            public readonly Dictionary<uint, Decoder> decoders;
 
             public VMXDecoder(uint mask, Dictionary<uint, Decoder> decoders)
             {
@@ -626,6 +607,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var key = (wInstr >> 0x4) & mask;
+                DumpMaskedInstruction(wInstr, mask << 4, "  VMX");
                 if (decoders.TryGetValue(key, out Decoder decoder))
                 {
                     return decoder.Decode(wInstr, dasm);

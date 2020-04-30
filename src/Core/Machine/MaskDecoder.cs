@@ -76,6 +76,11 @@ namespace Reko.Core.Machine
             var shMask = this.bitfield.Mask << this.bitfield.Position;
             DumpMaskedInstruction(wInstr, shMask, tag);
         }
+
+        public override string ToString()
+        {
+            return $"{{Mask {bitfield}}}";
+        }
     }
 }
 

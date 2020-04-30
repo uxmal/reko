@@ -117,6 +117,8 @@ namespace Reko.Arch.PowerPC
 
             spregs = new Dictionary<int, RegisterStorage>
             {
+                { 8, new RegisterStorage("lr", 0x0100 + 8, 0, PointerType) },
+                { 9, new RegisterStorage("ctr", 0x0100 + 9, 0, WordWidth) },
                 { 26, new RegisterStorage("srr0", 0x0100 + 26, 0, PrimitiveType.Word32) },
                 { 27, new RegisterStorage("srr1", 0x0100 + 27, 0, PrimitiveType.Word32) },
             };

@@ -671,6 +671,12 @@ namespace Reko.Arch.PowerPC
                     rd,
                     m.Shl(slice, 64 - wordSize));
             }
+            else if (sh == 0)
+            {
+                // No rotation, just mask the low bits.
+                var mask = (ulong) -(1L << (63 - me));
+                m.Assign(rd, m.And(rs, mask));
+            }
             else
             {
                 host.Error(

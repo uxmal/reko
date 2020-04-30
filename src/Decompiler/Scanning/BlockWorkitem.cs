@@ -105,8 +105,6 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
-                if (ric.Address.Offset == 0x1BBF)   //$DEBUG
-                    ric.ToString();
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (program.User.Patches.TryGetValue(ric.Address, out var patch))

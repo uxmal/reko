@@ -452,6 +452,13 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_addo()
+        {
+            var instr = DisassembleWord(0x7C9AA614);
+            Assert.AreEqual("addo\tr4,r26,r20", instr.ToString());
+        }
+
+        [Test]
         public void PPCDis_mfcr()
         {
             var instr = DisassembleWord(0x7d800026);
@@ -629,7 +636,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_nor()
         {
-            AssertCode(0x7c6318f8, "nor\tr3,r3,r3");
+            AssertCode(0x7c8318f8, "nor\tr3,r4,r3");
         }
 
         [Test]
@@ -701,15 +708,20 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7c0004ac, "sync");
             AssertCode(0x7c00f078, "andc\tr0,r0,r30");
             AssertCode(0x7c005836, "sld\tr0,r0,r11");
-            AssertCode(0x7c0bfe76, "sradi\tr11,r0,3F");
             AssertCode(0x7c0a31d2, "mulld\tr0,r10,r6");
             AssertCode(0x7c07492a, "stdx\tr0,r7,r9");
         }
 
         [Test]
+        public void PPCDis_sradi()
+        {
+            AssertCode(0x7c0bfe76, "sradi\tr11,r0,+0000003F");
+        }
+
+        [Test]
         public void PPCDis_lvlx()
         {
-            AssertCode(0x7c6b040e, "lvlx\tr3,r11,r0");
+            AssertCode(0x7c6b040e, "lvlx\tv3,r11,r0");
         }
 
         [Test]
@@ -761,6 +773,11 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7d600074, "cntlzd\tr0,r11");
         }
 
+        [Test]
+        public void PPCDis_vctsxs()
+        {
+            AssertCode(0x118063ca, "vctsxs\tv12,v12,00");
+        }
 
         [Test]
         public void PPCDis_regression4()
@@ -777,7 +794,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x11a0010a, "vrefp\tv13,v0");
             AssertCode(0x10006e86, "vcmpgtuw.\tv0,v0,v13");
             AssertCode(0x7c00418e, "stvewx\tv0,r0,r8");
-            AssertCode(0x118063ca, "vctsxs\tv12,v12,00");
             AssertCode(0x1020634a, "vcfsx\tv1,v12,00");
             AssertCode(0x118c0404, "vand\tv12,v12,v0");
             AssertCode(0x116c5080, "vadduwm\tv11,v12,v10");
@@ -815,7 +831,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCDis_regression6()
         {
             AssertCode(0x7C6000A6, "mfmsr\tr3");
-            AssertCode(0x7C7A03A6, "mtspr\t0000001A,r3");
+            AssertCode(0x7C7A03A6, "mtspr\tsrr0,r3");
             AssertCode(0x7C600124, "mtmsr\tr3,00");
             AssertCode(0x4C00012C, "isync");
         }
@@ -827,13 +843,11 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7CA464AA, "lswi\tr5,r4,0C");
             AssertCode(0x7CA965AA, "stswi\tr5,r9,0C");
             AssertCode(0x7C0018AC, "dcbf\tr0,r3");
-            //AssertCode(0x7c00188c, ".long 0x7c00188c<32>");
             AssertCode(0xE0030000, "lq\tr0,0(r3)");
             AssertCode(0xF0090000, "xsaddsp\tv0,v9,v0");
             AssertCode(0x7D0B506E, "lwzux\tr8,r11,r10");
 
             AssertCode(0x7c001fac, "icbi\tr0,r3");
-            AssertCode(0x7c001bac, "dcbi\tr0,r3");
             AssertCode(0x7c0006ac, "eieio");
             AssertCode(0x7c0b4e2c, "lhbrx\tr0,r11,r9");
             AssertCode(0x7fa65aae, "lhax\tr29,r6,r11");
@@ -916,14 +930,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
 
-        [Test]
-        public void PPCDis_vaddfp128()
-        {
-            //| 0 0 0 1 0 1 | VD128 | VA128 | VB128 | A | 0 0 0 0 | a | 1 | VDh | VBh |
-            // 000101 01010 11111 10101 1 0000 1 1 10 01
-            // 0001 0101 0101 1111 1010 1100 0011 1001
-            AssertCode(0x155FAC39, "vaddfp128\tv74,v127,v53");
-        }
+
 
         [Test]
         public void PPCDis_regression9()
@@ -1104,5 +1111,18 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x11338A8C, "vspltw\tv9,v17,03");
         }
+
+        [Test]
+        public void PPCDis_vnmsubfp()
+        {
+            AssertCode(0x102bf06f, "vnmsubfp\tv1,v11,v1,v30");
+    }
+
+        [Test]
+        public void PPCDis_vperm()
+        {
+            AssertCode(0x114948ab, "vperm\tv10,v9,v9,v2");
+        }
+
     }
 }
