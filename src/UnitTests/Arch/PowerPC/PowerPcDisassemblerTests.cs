@@ -575,6 +575,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0xfc010032, "fmul\tf0,f1,f0");
         }
+
         [Test]
         public void PPCDis_fcmpu()
         {

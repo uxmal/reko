@@ -1093,211 +1093,222 @@ namespace Reko.Arch.PowerPC
 
         public virtual Decoder Ext3CDecoder()
         {
-            return new XX3Decoder(new Dictionary<uint, Decoder>                // 3C
-            {
-                { 0x00, Instr(Mnemonic.xsaddsp, v1,v2,v3) },
-                { 0x01, Instr(Mnemonic.xsmaddasp, v1,v2,v3) },
-                //{ 0x02, Instr(Mnemonic.xxsldwi, v1,v2,v3) },       //$TODO need extra work.
-                { 0x09, Instr(Mnemonic.xsmaddmsp, v1,v2,v3) },
-            });
-/*
-111100 ..... ..... ..... 00000 000... XX3 I 519 v2.07 xsaddsp VSX Scalar Add SP
-111100 ..... ..... ..... 00001 000... XX3 I 651 v2.07 xssubsp VSX Scalar Subtract SP
-111100 ..... ..... ..... 00010 000... XX3 I 606 v2.07 xsmulsp VSX Scalar Multiply SP
-111100 ..... ..... ..... 00011 000... XX3 I 568 v2.07 xsdivsp VSX Scalar Divide SP
-111100 ..... ..... ..... 00100 000... XX3 I 514 v2.06 xsadddp VSX Scalar Add DP
-111100 ..... ..... ..... 00101 000... XX3 I 647 v2.06 xssubdp VSX Scalar Subtract DP
-111100 ..... ..... ..... 00110 000... XX3 I 602 v2.06 xsmuldp VSX Scalar Multiply DP
-111100 ..... ..... ..... 00111 000... XX3 I 564 v2.06 xsdivdp VSX Scalar Divide DP
-111100 ..... ..... ..... 01000 000... XX3 I 665 v2.06 xvaddsp VSX Vector Add SP
-111100 ..... ..... ..... 01001 000... XX3 I 759 v2.06 xvsubsp VSX Vector Subtract SP
-111100 ..... ..... ..... 01010 000... XX3 I 727 v2.06 xvmulsp VSX Vector Multiply SP
-111100 ..... ..... ..... 01011 000... XX3 I 702 v2.06 xvdivsp VSX Vector Divide SP
-111100 ..... ..... ..... 01100 000... XX3 I 661 v2.06 xvadddp VSX Vector Add DP
-111100 ..... ..... ..... 01101 000... XX3 I 757 v2.06 xvsubdp VSX Vector Subtract DP
-111100 ..... ..... ..... 01110 000... XX3 I 725 v2.06 xvmuldp VSX Vector Multiply DP
-111100 ..... ..... ..... 01111 000... XX3 I 700 v2.06 xvdivdp VSX Vector Divide DP
-111100 ..... ..... ..... 10000 000... XX3 I 583 v3.0 xsmaxcdp VSX Scalar Maximum Type-C Double-Precision
-111100 ..... ..... ..... 10001 000... XX3 I 589 v3.0 xsmincdp VSX Scalar Minimum Type-C Double-Precision
-111100 ..... ..... ..... 10010 000... XX3 I 585 v3.0 xsmaxjdp VSX Scalar Maximum Type-J Double-Precision
-111100 ..... ..... ..... 10011 000... XX3 I 591 v3.0 xsminjdp VSX Scalar Minimum Type-J Double-Precision
-111100 ..... ..... ..... 10100 000... XX3 I 581 v2.06 xsmaxdp VSX Scalar Maximum DP
-111100 ..... ..... ..... 10101 000... XX3 I 587 v2.06 xsmindp VSX Scalar Minimum DP
-111100 ..... ..... ..... 10110 000... XX3 I 535 v2.06 xscpsgndp VSX Scalar Copy Sign DP
-111100 ..... ..... ..... 11000 000... XX3 I 713 v2.06 xvmaxsp VSX Vector Maximum SP
-111100 ..... ..... ..... 11001 000... XX3 I 717 v2.06 xvminsp VSX Vector Minimum SP
-111100 ..... ..... ..... 11010 000... XX3 I 675 v2.06 xvcpsgnsp VSX Vector Copy Sign SP
-111100 ..... ..... ..... 11011 000... XX3 I 704 v3.0 xviexpsp VSX Vector Insert Exponent SP
-111100 ..... ..... ..... 11100 000... XX3 I 711 v2.06 xvmaxdp VSX Vector Maximum DP
-111100 ..... ..... ..... 11101 000... XX3 I 715 v2.06 xvmindp VSX Vector Minimum DP
-111100 ..... ..... ..... 11110 000... XX3 I 675 v2.06 xvcpsgndp VSX Vector Copy Sign DP
-111100 ..... ..... ..... 11111 000... XX3 I 704 v3.0 xviexpdp VSX Vector Insert Exponent DP
+            var decoder = Mask(26, 3, "Ext3C",
+                Mask(21, 5, "  000",
+                    Instr(Mnemonic.xsaddsp, v1, v2, v3),            // 111100 ..... ..... ..... 00000 000... XX3 I 519 v2.07 xsaddsp VSX Scalar Add SP
+                    Nyi("xssubsp"),    // 111100 ..... ..... ..... 00001 000... XX3 I 651 v2.07 xssubsp VSX Scalar Subtract SP
+                    Nyi("xsmulsp"),    // 111100 ..... ..... ..... 00010 000... XX3 I 606 v2.07 xsmulsp VSX Scalar Multiply SP
+                    Nyi("xsdivsp"),    // 111100 ..... ..... ..... 00011 000... XX3 I 568 v2.07 xsdivsp VSX Scalar Divide SP
+                    Nyi("xsadddp"),    // 111100 ..... ..... ..... 00100 000... XX3 I 514 v2.06 xsadddp VSX Scalar Add DP
+                    Nyi("xssubdp"),    // 111100 ..... ..... ..... 00101 000... XX3 I 647 v2.06 xssubdp VSX Scalar Subtract DP
+                    Nyi("xsmuldp"),    // 111100 ..... ..... ..... 00110 000... XX3 I 602 v2.06 xsmuldp VSX Scalar Multiply DP
+                    Nyi("xsdivdp"),    // 111100 ..... ..... ..... 00111 000... XX3 I 564 v2.06 xsdivdp VSX Scalar Divide DP
+                    Nyi("xvaddsp"),    // 111100 ..... ..... ..... 01000 000... XX3 I 665 v2.06 xvaddsp VSX Vector Add SP
+                    Nyi("xvsubsp"),    // 111100 ..... ..... ..... 01001 000... XX3 I 759 v2.06 xvsubsp VSX Vector Subtract SP
+                    Nyi("xvmulsp"),    // 111100 ..... ..... ..... 01010 000... XX3 I 727 v2.06 xvmulsp VSX Vector Multiply SP
+                    Nyi("xvdivsp"),    // 111100 ..... ..... ..... 01011 000... XX3 I 702 v2.06 xvdivsp VSX Vector Divide SP
+                    Nyi("xvadddp"),    // 111100 ..... ..... ..... 01100 000... XX3 I 661 v2.06 xvadddp VSX Vector Add DP
+                    Nyi("xvsubdp"),    // 111100 ..... ..... ..... 01101 000... XX3 I 757 v2.06 xvsubdp VSX Vector Subtract DP
+                    Nyi("xvmuldp"),    // 111100 ..... ..... ..... 01110 000... XX3 I 725 v2.06 xvmuldp VSX Vector Multiply DP
+                    Nyi("xvdivdp"),    // 111100 ..... ..... ..... 01111 000... XX3 I 700 v2.06 xvdivdp VSX Vector Divide DP
+                    Nyi("xsmaxcdp"),   // 111100 ..... ..... ..... 10000 000... XX3 I 583 v3.0 xsmaxcdp VSX Scalar Maximum Type-C Double-Precision
+                    Nyi("xsmincdp"),   // 111100 ..... ..... ..... 10001 000... XX3 I 589 v3.0 xsmincdp VSX Scalar Minimum Type-C Double-Precision
+                    Nyi("xsmaxjdp"),   // 111100 ..... ..... ..... 10010 000... XX3 I 585 v3.0 xsmaxjdp VSX Scalar Maximum Type-J Double-Precision
+                    Nyi("xsminjdp"),   // 111100 ..... ..... ..... 10011 000... XX3 I 591 v3.0 xsminjdp VSX Scalar Minimum Type-J Double-Precision
+                    Nyi("xsmaxdp"),    // 111100 ..... ..... ..... 10100 000... XX3 I 581 v2.06 xsmaxdp VSX Scalar Maximum DP
+                    Nyi("xsmindp"),    // 111100 ..... ..... ..... 10101 000... XX3 I 587 v2.06 xsmindp VSX Scalar Minimum DP
+                    Nyi("xscpsgndp"),  // 111100 ..... ..... ..... 10110 000... XX3 I 535 v2.06 xscpsgndp VSX Scalar Copy Sign DP
+                    invalid,
+                    Nyi("xvmaxsp"),    // 111100 ..... ..... ..... 11000 000... XX3 I 713 v2.06 xvmaxsp VSX Vector Maximum SP
+                    Nyi("xvminsp"),    // 111100 ..... ..... ..... 11001 000... XX3 I 717 v2.06 xvminsp VSX Vector Minimum SP
+                    Nyi("xvcpsgnsp"),  // 111100 ..... ..... ..... 11010 000... XX3 I 675 v2.06 xvcpsgnsp VSX Vector Copy Sign SP
+                    Nyi("xviexpsp"),   // 111100 ..... ..... ..... 11011 000... XX3 I 704 v3.0 xviexpsp VSX Vector Insert Exponent SP
+                    Nyi("xvmaxdp"),    // 111100 ..... ..... ..... 11100 000... XX3 I 711 v2.06 xvmaxdp VSX Vector Maximum DP
+                    Nyi("xvmindp"),    // 111100 ..... ..... ..... 11101 000... XX3 I 715 v2.06 xvmindp VSX Vector Minimum DP
+                    Nyi("xvcpsgndp"),  // 111100 ..... ..... ..... 11110 000... XX3 I 675 v2.06 xvcpsgndp VSX Vector Copy Sign DP
+                    Nyi("xviexpdp")),  // 111100 ..... ..... ..... 11111 000... XX3 I 704 v3.0 xviexpdp VSX Vector Insert Exponent DP
+                Mask(21, 5, "  001",
+                    Instr(Mnemonic.xsmaddasp, v1,v2,v3),            // 111100 ..... ..... ..... 00000 001... XX3 I 575 v2.07 xsmaddasp VSX Scalar Multiply-Add Type-A SP
+                    Instr(Mnemonic.xsmaddmsp, v1,v2,v3),            // 111100 ..... ..... ..... 00001 001... XX3 I 575 v2.07 xsmaddmsp VSX Scalar Multiply-Add Type-M SP
+                    Nyi("xsmsubasp"),    // 111100 ..... ..... ..... 00010 001... XX3 I 596 v2.07 xsmsubasp VSX Scalar Multiply-Subtract Type-A SP
+                    Nyi("xsmsubmsp"),    // 111100 ..... ..... ..... 00011 001... XX3 I 596 v2.07 xsmsubmsp VSX Scalar Multiply-Subtract Type-M SP
+                    
+                    Nyi("xsmaddadp"),    // 111100 ..... ..... ..... 00100 001... XX3 I 572 v2.06 xsmaddadp VSX Scalar Multiply-Add Type-A DP
+                    Nyi("xsmaddmdp"),    // 111100 ..... ..... ..... 00101 001... XX3 I 572 v2.06 xsmaddmdp VSX Scalar Multiply-Add Type-M DP
+                    Nyi("xsmsubadp"),    // 111100 ..... ..... ..... 00110 001... XX3 I 593 v2.06 xsmsubadp VSX Scalar Multiply-Subtract Type-A DP
+                    Nyi("xsmsubmdp"),    // 111100 ..... ..... ..... 00111 001... XX3 I 593 v2.06 xsmsubmdp VSX Scalar Multiply-Subtract Type-M DP
+                    
+                    Nyi("xvmaddasp"),    // 111100 ..... ..... ..... 01000 001... XX3 I 708 v2.06 xvmaddasp VSX Vector Multiply-Add Type-A SP
+                    Nyi("xvmaddmsp"),    // 111100 ..... ..... ..... 01001 001... XX3 I 708 v2.06 xvmaddmsp VSX Vector Multiply-Add Type-M SP
+                    Nyi("xvmsubasp"),    // 111100 ..... ..... ..... 01010 001... XX3 I 722 v2.06 xvmsubasp VSX Vector Multiply-Subtract Type-A SP
+                    Nyi("xvmsubmsp"),    // 111100 ..... ..... ..... 01011 001... XX3 I 722 v2.06 xvmsubmsp VSX Vector Multiply-Subtract Type-M SP
+                    
+                    Nyi("xvmaddadp"),    // 111100 ..... ..... ..... 01100 001... XX3 I 705 v2.06 xvmaddadp VSX Vector Multiply-Add Type-A DP
+                    Nyi("xvmaddmdp"),    // 111100 ..... ..... ..... 01101 001... XX3 I 705 v2.06 xvmaddmdp VSX Vector Multiply-Add Type-M DP
+                    Nyi("xvmsubadp"),    // 111100 ..... ..... ..... 01110 001... XX3 I 719 v2.06 xvmsubadp VSX Vector Multiply-Subtract Type-A DP
+                    Nyi("xvmsubmdp"),    // 111100 ..... ..... ..... 01111 001... XX3 I 719 v2.06 xvmsubmdp VSX Vector Multiply-Subtract Type-M DP
+                    
+                    Nyi("xsnmaddasp"),   // 111100 ..... ..... ..... 10000 001... XX3 I 615 v2.07 xsnmaddasp VSX Scalar Negative Multiply-Add Type-A SP
+                    Nyi("xsnmaddmsp"),   // 111100 ..... ..... ..... 10001 001... XX3 I 615 v2.07 xsnmaddmsp VSX Scalar Negative Multiply-Add Type-M SP
+                    Nyi("xsnmsubasp"),   // 111100 ..... ..... ..... 10010 001... XX3 I 624 v2.07 xsnmsubasp VSX Scalar Negative Multiply-Subtract Type-A SP
+                    Nyi("xsnmsubmsp"),   // 111100 ..... ..... ..... 10011 001... XX3 I 624 v2.07 xsnmsubmsp VSX Scalar Negative Multiply-Subtract Type-M SP
+                    
+                    Nyi("xsnmaddadp"),   // 111100 ..... ..... ..... 10100 001... XX3 I 610 v2.06 xsnmaddadp VSX Scalar Negative Multiply-Add Type-A DP
+                    Nyi("xsnmaddmdp"),   // 111100 ..... ..... ..... 10101 001... XX3 I 610 v2.06 xsnmaddmdp VSX Scalar Negative Multiply-Add Type-M DP
+                    Nyi("xsnmsubadp"),   // 111100 ..... ..... ..... 10110 001... XX3 I 621 v2.06 xsnmsubadp VSX Scalar Negative Multiply-Subtract Type-A DP
+                    Nyi("xsnmsubmdp"),   // 111100 ..... ..... ..... 10111 001... XX3 I 621 v2.06 xsnmsubmdp VSX Scalar Negative Multiply-Subtract Type-M DP
+                    
+                    Nyi("xvnmaddasp"),   // 111100 ..... ..... ..... 11000 001... XX3 I 736 v2.06 xvnmaddasp VSX Vector Negative Multiply-Add Type-A SP
+                    Nyi("xvnmaddmsp"),   // 111100 ..... ..... ..... 11001 001... XX3 I 736 v2.06 xvnmaddmsp VSX Vector Negative Multiply-Add Type-M SP
+                    Nyi("xvnmsubasp"),   // 111100 ..... ..... ..... 11010 001... XX3 I 742 v2.06 xvnmsubasp VSX Vector Negative Multiply-Subtract Type-A SP
+                    Nyi("xvnmsubmsp"),   // 111100 ..... ..... ..... 11011 001... XX3 I 742 v2.06 xvnmsubmsp VSX Vector Negative Multiply-Subtract Type-M SP
+                    
+                    Nyi("xvnmaddadp"),   // 111100 ..... ..... ..... 11100 001... XX3 I 731 v2.06 xvnmaddadp VSX Vector Negative Multiply-Add Type-A DP
+                    Nyi("xvnmaddmdp"),   // 111100 ..... ..... ..... 11101 001... XX3 I 731 v2.06 xvnmaddmdp VSX Vector Negative Multiply-Add Type-M DP
+                    Nyi("xvnmsubadp"),   // 111100 ..... ..... ..... 11110 001... XX3 I 739 v2.06 xvnmsubadp VSX Vector Negative Multiply-Subtract Type-A DP
+                    Nyi("xvnmsubmdp")),  // 111100 ..... ..... ..... 11111 001... XX3 I 739 v2.06 xvnmsubmdp VSX Vector Negative Multiply-Subtract Type-M DP
+                Nyi("Ext3C 010"),
+                /*
+                Instr(Mnemonic.xxsldwi, v1,v2,v3),         // 111100 ..... ..... ..... 0..00 010... XX3 I 778 v2.06 xxsldwi VSX Vector Shift Left Double by Word Immediate
+                Nyi("xxpermdi"),        // 111100 ..... ..... ..... 0..01 010... XX3 I 777 v2.06 xxpermdi VSX Vector Dword Permute Immediate
+                Nyi("xxmrghw"),         // 111100 ..... ..... ..... 00010 010... XX3 I 775 v2.06 xxmrghw VSX Vector Merge Word High
+                Nyi("xxperm"),          // 111100 ..... ..... ..... 00011 010... XX3 I 776 v3.0 xxperm VSX Vector Permute
+                Nyi("xxmrglw"),         // 111100 ..... ..... ..... 00110 010... XX3 I 775 v2.06 xxmrglw VSX Vector Merge Word Low
+                Nyi("xxpermr"),         // 111100 ..... ..... ..... 00111 010... XX3 I 776 v3.0 xxpermr VSX Vector Permute Right-indexed
+                Nyi("xxland"),          // 111100 ..... ..... ..... 10000 010... XX3 I 771 v2.06 xxland VSX Vector Logical AND
+                Nyi("xxlandc"),         // 111100 ..... ..... ..... 10001 010... XX3 I 771 v2.06 xxlandc VSX Vector Logical AND with Complement
+                Nyi("xxlor"),           // 111100 ..... ..... ..... 10010 010... XX3 I 774 v2.06 xxlor VSX Vector Logical OR
+                Nyi("xxlxor"),          // 111100 ..... ..... ..... 10011 010... XX3 I 774 v2.06 xxlxor VSX Vector Logical XOR
+                Nyi("xxlnor"),          // 111100 ..... ..... ..... 10100 010... XX3 I 773 v2.06 xxlnor VSX Vector Logical NOR
+                Nyi("xxlorc"),          // 111100 ..... ..... ..... 10101 010... XX3 I 773 v2.07 xxlorc VSX Vector Logical OR with Complement
+                Nyi("xxlnand"),         // 111100 ..... ..... ..... 10110 010... XX3 I 772 v2.07 xxlnand VSX Vector Logical NAND
+                Nyi("xxleqv"),          // 111100 ..... ..... ..... 10111 010... XX3 I 772 v2.07 xxleqv VSX Vector Logical Equivalence
+                Nyi("xxspltw"),         // 111100 ..... ///.. ..... 01010 0100.. XX2 I 778 v2.06 xxspltw VSX Vector Splat Word
+                Nyi("xxspltib"),        // 111100 ..... 00... ..... 01011 01000. XX1 I 778 v3.0 xxspltib VSX Vector Splat Immediate Byte
+                Nyi("xxextractuw"),     // 111100 ..... /.... ..... 01010 0101.. XX2 I 770 v3.0 xxextractuw VSX Vector Extract Unsigned Word
+                Nyi("xxinsertw"),       // 111100 ..... /.... ..... 01011 0101.. XX2 I 770 v3.0 xxinsertw VSX Vector Insert Word
+                */
+                Nyi("Ext3C 011"),
+                /*
+                Nyi("xvcmpeqsp[.]"),    // 111100 ..... ..... ..... .1000 011... XX3 I 668 v2.06 xvcmpeqsp[.] VSX Vector Compare Equal SP
+                Nyi("xvcmpgtsp[.]"),    // 111100 ..... ..... ..... .1001 011... XX3 I 672 v2.06 xvcmpgtsp[.] VSX Vector Compare Greater Than SP
+                Nyi("xvcmpgesp[.]"),    // 111100 ..... ..... ..... .1010 011... XX3 I 670 v2.06 xvcmpgesp[.] VSX Vector Compare Greater Than or Equal SP
+                Nyi("xvcmpnesp[.]"),    // 111100 ..... ..... ..... .1011 011... XX3 I 674 v3.0 xvcmpnesp[.] VSX Vector Compare Not Equal Single-Precision
+                Nyi("xvcmpeqdp[.]"),    // 111100 ..... ..... ..... .1100 011... XX3 I 667 v2.06 xvcmpeqdp[.] VSX Vector Compare Equal DP
+                Nyi("xvcmpgtdp[.]"),    // 111100 ..... ..... ..... .1101 011... XX3 I 671 v2.06 xvcmpgtdp[.] VSX Vector Compare Greater Than DP
+                Nyi("xvcmpgedp[.]"),    // 111100 ..... ..... ..... .1110 011... XX3 I 669 v2.06 xvcmpgedp[.] VSX Vector Compare Greater Than or Equal DP
+                Nyi("xvcmpnedp[.]"),    // 111100 ..... ..... ..... .1111 011... XX3 I 673 v3.0 xvcmpnedp[.] VSX Vector Compare Not Equal Double-Precision
+                Nyi("xscmpeqdp"),       // 111100 ..... ..... ..... 00000 011... XX3 I 525 v3.0 xscmpeqdp VSX Scalar Compare Equal Double-Precision
+                Nyi("xscmpgtdp"),       // 111100 ..... ..... ..... 00001 011... XX3 I 527 v3.0 xscmpgtdp VSX Scalar Compare Greater Than Double-Precision
+                Nyi("xscmpgedp"),       // 111100 ..... ..... ..... 00010 011... XX3 I 526 v3.0 xscmpgedp VSX Scalar Compare Greater Than or Equal Double-Precision
+                Nyi("xscmpnedp"),       // 111100 ..... ..... ..... 00011 011... XX3 I 528 v3.0 xscmpnedp VSX Scalar Compare Not Equal Double-Precision
+                Nyi("xscmpudp"),        // 111100 ...// ..... ..... 00100 011../ XX3 I 532 v2.06 xscmpudp VSX Scalar Compare Unordered DP
+                Nyi("xscmpodp"),        // 111100 ...// ..... ..... 00101 011../ XX3 I 529 v2.06 xscmpodp VSX Scalar Compare Ordered DP
+                Nyi("xscmpexpdp"),      // 111100 ...// ..... ..... 00111 011../ XX3 I 523 v3.0 xscmpexpdp VSX Scalar Compare Exponents DP
+                */
+                Nyi("Ext3C 100"),
+                /*
+                Nyi("xscvdpuxws"),      // 111100 ..... ///// ..... 00100 1000.. XX2 I 546 v2.06 xscvdpuxws VSX Scalar Convert DP to Unsigned Word truncate
+                Nyi("xscvdpsxws"),      // 111100 ..... ///// ..... 00101 1000.. XX2 I 542 v2.06 xscvdpsxws VSX Scalar Convert DP to Signed Word truncate
+                Nyi("xvcvspuxws"),      // 111100 ..... ///// ..... 01000 1000.. XX2 I 694 v2.06 xvcvspuxws VSX Vector Convert SP to Unsigned Word truncate
+                Nyi("xvcvspsxws"),      // 111100 ..... ///// ..... 01001 1000.. XX2 I 690 v2.06 xvcvspsxws VSX Vector Convert SP to Signed Word truncate
+                Nyi("xvcvuxwsp"),       // 111100 ..... ///// ..... 01010 1000.. XX2 I 699 v2.06 xvcvuxwsp VSX Vector Convert Unsigned Word to SP
+                Nyi("xvcvsxwsp"),       // 111100 ..... ///// ..... 01011 1000.. XX2 I 697 v2.06 xvcvsxwsp VSX Vector Convert Signed Word to SP
+                Nyi("xvcvdpuxws"),      // 111100 ..... ///// ..... 01100 1000.. XX2 I 683 v2.06 xvcvdpuxws VSX Vector Convert DP to Unsigned Word truncate
+                Nyi("xvcvdpsxws"),      // 111100 ..... ///// ..... 01101 1000.. XX2 I 679 v2.06 xvcvdpsxws VSX Vector Convert DP to Signed Word truncate
+                Nyi("xvcvuxwdp"),       // 111100 ..... ///// ..... 01110 1000.. XX2 I 699 v2.06 xvcvuxwdp VSX Vector Convert Unsigned Word to DP
+                Nyi("xvcvsxwdp"),       // 111100 ..... ///// ..... 01111 1000.. XX2 I 697 v2.06 xvcvsxwdp VSX Vector Convert Signed Word to DP
+                Nyi("xscvuxdsp"),       // 111100 ..... ///// ..... 10010 1000.. XX2 I 563 v2.07 xscvuxdsp VSX Scalar Convert Unsigned Dword to SP
+                Nyi("xscvsxdsp"),       // 111100 ..... ///// ..... 10011 1000.. XX2 I 561 v2.07 xscvsxdsp VSX Scalar Convert Signed Dword to SP
+                Nyi("xscvdpuxds"),      // 111100 ..... ///// ..... 10100 1000.. XX2 I 544 v2.06 xscvdpuxds VSX Scalar Convert DP to Unsigned Dword truncate
+                Nyi("xscvdpsxds"),      // 111100 ..... ///// ..... 10101 1000.. XX2 I 539 v2.06 xscvdpsxds VSX Scalar Convert DP to Signed Dword truncate
+                Nyi("xscvuxddp"),       // 111100 ..... ///// ..... 10110 1000.. XX2 I 563 v2.06 xscvuxddp VSX Scalar Convert Unsigned Dword to DP
+                Nyi("xscvsxddp"),       // 111100 ..... ///// ..... 10111 1000.. XX2 I 561 v2.06 xscvsxddp VSX Scalar Convert Signed Dword to DP
+                Nyi("xvcvspuxds"),      // 111100 ..... ///// ..... 11000 1000.. XX2 I 692 v2.06 xvcvspuxds VSX Vector Convert SP to Unsigned Dword truncate
+                Nyi("xvcvspsxds"),      // 111100 ..... ///// ..... 11001 1000.. XX2 I 688 v2.06 xvcvspsxds VSX Vector Convert SP to Signed Dword truncate
+                Nyi("xvcvuxdsp"),       // 111100 ..... ///// ..... 11010 1000.. XX2 I 698 v2.06 xvcvuxdsp VSX Vector Convert Unsigned Dword to SP
+                Nyi("xvcvsxdsp"),       // 111100 ..... ///// ..... 11011 1000.. XX2 I 696 v2.06 xvcvsxdsp VSX Vector Convert Signed Dword to SP
+                Nyi("xvcvdpuxds"),      // 111100 ..... ///// ..... 11100 1000.. XX2 I 681 v2.06 xvcvdpuxds VSX Vector Convert DP to Unsigned Dword truncate
+                Nyi("xvcvdpsxds"),      // 111100 ..... ///// ..... 11101 1000.. XX2 I 677 v2.06 xvcvdpsxds VSX Vector Convert DP to Signed Dword truncate
+                Nyi("xvcvuxddp"),       // 111100 ..... ///// ..... 11110 1000.. XX2 I 698 v2.06 xvcvuxddp VSX Vector Convert Unsigned Dword to DP
+                Nyi("xvcvsxddp"),       // 111100 ..... ///// ..... 11111 1000.. XX2 I 696 v2.06 xvcvsxddp VSX Vector Convert Signed Dword to DP
 
-111100 ..... ..... ..... 00000 001... XX3 I 575 v2.07 xsmaddasp VSX Scalar Multiply-Add Type-A SP
-111100 ..... ..... ..... 00001 001... XX3 I 575 v2.07 xsmaddmsp VSX Scalar Multiply-Add Type-M SP
-111100 ..... ..... ..... 00010 001... XX3 I 596 v2.07 xsmsubasp VSX Scalar Multiply-Subtract Type-A SP
-111100 ..... ..... ..... 00011 001... XX3 I 596 v2.07 xsmsubmsp VSX Scalar Multiply-Subtract Type-M SP
-111100 ..... ..... ..... 00100 001... XX3 I 572 v2.06 xsmaddadp VSX Scalar Multiply-Add Type-A DP
-111100 ..... ..... ..... 00101 001... XX3 I 572 v2.06 xsmaddmdp VSX Scalar Multiply-Add Type-M DP
-111100 ..... ..... ..... 00110 001... XX3 I 593 v2.06 xsmsubadp VSX Scalar Multiply-Subtract Type-A DP
-111100 ..... ..... ..... 00111 001... XX3 I 593 v2.06 xsmsubmdp VSX Scalar Multiply-Subtract Type-M DP
-111100 ..... ..... ..... 01000 001... XX3 I 708 v2.06 xvmaddasp VSX Vector Multiply-Add Type-A SP
-111100 ..... ..... ..... 01001 001... XX3 I 708 v2.06 xvmaddmsp VSX Vector Multiply-Add Type-M SP
-111100 ..... ..... ..... 01010 001... XX3 I 722 v2.06 xvmsubasp VSX Vector Multiply-Subtract Type-A SP
-111100 ..... ..... ..... 01011 001... XX3 I 722 v2.06 xvmsubmsp VSX Vector Multiply-Subtract Type-M SP
-111100 ..... ..... ..... 01100 001... XX3 I 705 v2.06 xvmaddadp VSX Vector Multiply-Add Type-A DP
-111100 ..... ..... ..... 01101 001... XX3 I 705 v2.06 xvmaddmdp VSX Vector Multiply-Add Type-M DP
-111100 ..... ..... ..... 01110 001... XX3 I 719 v2.06 xvmsubadp VSX Vector Multiply-Subtract Type-A DP
-111100 ..... ..... ..... 01111 001... XX3 I 719 v2.06 xvmsubmdp VSX Vector Multiply-Subtract Type-M DP
-111100 ..... ..... ..... 10000 001... XX3 I 615 v2.07 xsnmaddasp VSX Scalar Negative Multiply-Add Type-A SP
-111100 ..... ..... ..... 10001 001... XX3 I 615 v2.07 xsnmaddmsp VSX Scalar Negative Multiply-Add Type-M SP
-111100 ..... ..... ..... 10010 001... XX3 I 624 v2.07 xsnmsubasp VSX Scalar Negative Multiply-Subtract Type-A SP
-111100 ..... ..... ..... 10011 001... XX3 I 624 v2.07 xsnmsubmsp VSX Scalar Negative Multiply-Subtract Type-M SP
-111100 ..... ..... ..... 10100 001... XX3 I 610 v2.06 xsnmaddadp VSX Scalar Negative Multiply-Add Type-A DP
-111100 ..... ..... ..... 10101 001... XX3 I 610 v2.06 xsnmaddmdp VSX Scalar Negative Multiply-Add Type-M DP
-111100 ..... ..... ..... 10110 001... XX3 I 621 v2.06 xsnmsubadp VSX Scalar Negative Multiply-Subtract Type-A DP
-111100 ..... ..... ..... 10111 001... XX3 I 621 v2.06 xsnmsubmdp VSX Scalar Negative Multiply-Subtract Type-M DP
-111100 ..... ..... ..... 11000 001... XX3 I 736 v2.06 xvnmaddasp VSX Vector Negative Multiply-Add Type-A SP
-111100 ..... ..... ..... 11001 001... XX3 I 736 v2.06 xvnmaddmsp VSX Vector Negative Multiply-Add Type-M SP
-111100 ..... ..... ..... 11010 001... XX3 I 742 v2.06 xvnmsubasp VSX Vector Negative Multiply-Subtract Type-A SP
-111100 ..... ..... ..... 11011 001... XX3 I 742 v2.06 xvnmsubmsp VSX Vector Negative Multiply-Subtract Type-M SP
-111100 ..... ..... ..... 11100 001... XX3 I 731 v2.06 xvnmaddadp VSX Vector Negative Multiply-Add Type-A DP
-111100 ..... ..... ..... 11101 001... XX3 I 731 v2.06 xvnmaddmdp VSX Vector Negative Multiply-Add Type-M DP
-111100 ..... ..... ..... 11110 001... XX3 I 739 v2.06 xvnmsubadp VSX Vector Negative Multiply-Subtract Type-A DP
-111100 ..... ..... ..... 11111 001... XX3 I 739 v2.06 xvnmsubmdp VSX Vector Negative Multiply-Subtract Type-M DP
+                Nyi("xsrdpi"),          // 111100 ..... ///// ..... 00100 1001.. XX2 I 630 v2.06 xsrdpi VSX Scalar Round DP to Integral to Nearest Away
+                Nyi("xsrdpiz"),         // 111100 ..... ///// ..... 00101 1001.. XX2 I 633 v2.06 xsrdpiz VSX Scalar Round DP to Integral toward Zero
+                Nyi("xsrdpip"),         // 111100 ..... ///// ..... 00110 1001.. XX2 I 632 v2.06 xsrdpip VSX Scalar Round DP to Integral toward +Infinity
+                Nyi("xsrdpim"),         // 111100 ..... ///// ..... 00111 1001.. XX2 I 632 v2.06 xsrdpim VSX Scalar Round DP to Integral toward -Infinity
+                Nyi("xvrspi"),          // 111100 ..... ///// ..... 01000 1001.. XX2 I 750 v2.06 xvrspi VSX Vector Round SP to Integral to Nearest Away
+                Nyi("xvrspiz"),         // 111100 ..... ///// ..... 01001 1001.. XX2 I 752 v2.06 xvrspiz VSX Vector Round SP to Integral toward Zero
+                Nyi("xvrspip"),         // 111100 ..... ///// ..... 01010 1001.. XX2 I 751 v2.06 xvrspip VSX Vector Round SP to Integral toward +Infinity
+                Nyi("xvrspim"),         // 111100 ..... ///// ..... 01011 1001.. XX2 I 751 v2.06 xvrspim VSX Vector Round SP to Integral toward -Infinity
+                Nyi("xvrdpi"),          // 111100 ..... ///// ..... 01100 1001.. XX2 I 745 v2.06 xvrdpi VSX Vector Round DP to Integral to Nearest Away
+                Nyi("xvrdpiz"),         // 111100 ..... ///// ..... 01101 1001.. XX2 I 747 v2.06 xvrdpiz VSX Vector Round DP to Integral toward Zero
+                Nyi("xvrdpip"),         // 111100 ..... ///// ..... 01110 1001.. XX2 I 746 v2.06 xvrdpip VSX Vector Round DP to Integral toward +Infinity
+                Nyi("xvrdpim"),         // 111100 ..... ///// ..... 01111 1001.. XX2 I 746 v2.06 xvrdpim VSX Vector Round DP to Integral toward -Infinity
+                Nyi("xscvdpsp"),        // 111100 ..... ///// ..... 10000 1001.. XX2 I 538 v2.06 xscvdpsp VSX Scalar Convert DP to SP
+                Nyi("xsrsp"),           // 111100 ..... ///// ..... 10001 1001.. XX2 I 640 v2.07 xsrsp VSX Scalar Round DP to SP
+                Nyi("xscvspdp"),        // 111100 ..... ///// ..... 10100 1001.. XX2 I 559 v2.06 xscvspdp VSX Scalar Convert SP to DP
+                Nyi("xsabsdp"),         // 111100 ..... ///// ..... 10101 1001.. XX2 I 513 v2.06 xsabsdp VSX Scalar Absolute DP
+                Nyi("xsnabsdp"),        // 111100 ..... ///// ..... 10110 1001.. XX2 I 608 v2.06 xsnabsdp VSX Scalar Negative Absolute DP
+                Nyi("xsnegdp"),         // 111100 ..... ///// ..... 10111 1001.. XX2 I 609 v2.06 xsnegdp VSX Scalar Negate DP
+                Nyi("xvcvdpsp"),        // 111100 ..... ///// ..... 11000 1001.. XX2 I 676 v2.06 xvcvdpsp VSX Vector Convert DP to SP
+                Nyi("xvabssp"),         // 111100 ..... ///// ..... 11001 1001.. XX2 I 660 v2.06 xvabssp VSX Vector Absolute SP
+                Nyi("xvnabssp"),        // 111100 ..... ///// ..... 11010 1001.. XX2 I 729 v2.06 xvnabssp VSX Vector Negative Absolute SP
+                Nyi("xvnegsp"),         // 111100 ..... ///// ..... 11011 1001.. XX2 I 730 v2.06 xvnegsp VSX Vector Negate SP
+                Nyi("xvcvspdp"),        // 111100 ..... ///// ..... 11100 1001.. XX2 I 686 v2.06 xvcvspdp VSX Vector Convert SP to DP
+                Nyi("xvabsdp"),         // 111100 ..... ///// ..... 11101 1001.. XX2 I 660 v2.06 xvabsdp VSX Vector Absolute DP
+                Nyi("xvnabsdp"),        // 111100 ..... ///// ..... 11110 1001.. XX2 I 729 v2.06 xvnabsdp VSX Vector Negative Absolute DP
+                Nyi("xvnegdp"),         // 111100 ..... ///// ..... 11111 1001.. XX2 I 730 v2.06 xvnegdp VSX Vector Negate DP
+                */
+                Nyi("Ext3C 101"),
+                /*
+                Nyi("xstdivdp"),    // 111100 ...// ..... ..... 00111 101../ XX3 I 653 v2.06 xstdivdp VSX Scalar Test for software Divide DP
+                Nyi("xvtdivsp"),    // 111100 ...// ..... ..... 01011 101../ XX3 I 762 v2.06 xvtdivsp VSX Vector Test for software Divide SP
+                Nyi("xvtdivdp"),    // 111100 ...// ..... ..... 01111 101../ XX3 I 761 v2.06 xvtdivdp VSX Vector Test for software Divide DP
+                Nyi("xvtstdcsp"),    // 111100 ..... ..... ..... 1101. 101... XX2 I 765 v3.0 xvtstdcsp VSX Vector Test Data Class SP
+                Nyi("xvtstdcdp"),    // 111100 ..... ..... ..... 1111. 101... XX2 I 764 v3.0 xvtstdcdp VSX Vector Test Data Class DP
+                Nyi("xsrsqrtesp"),    // 111100 ..... ///// ..... 00000 1010.. XX2 I 642 v2.07 xsrsqrtesp VSX Scalar Reciprocal Square Root Estimate SP
+                Nyi("xsresp"),    // 111100 ..... ///// ..... 00001 1010.. XX2 I 635 v2.07 xsresp VSX Scalar Reciprocal Estimate SP
+                Nyi("xsrsqrtedp"),    // 111100 ..... ///// ..... 00100 1010.. XX2 I 641 v2.06 xsrsqrtedp VSX Scalar Reciprocal Square Root Estimate DP
+                Nyi("xsredp"),    // 111100 ..... ///// ..... 00101 1010.. XX2 I 634 v2.06 xsredp VSX Scalar Reciprocal Estimate DP
+                Nyi("xstsqrtdp"),    // 111100 ...// ///// ..... 00110 1010./ XX2 I 654 v2.06 xstsqrtdp VSX Scalar Test for software Square Root DP
+                Nyi("xvrsqrtesp"),    // 111100 ..... ///// ..... 01000 1010.. XX2 I 754 v2.06 xvrsqrtesp VSX Vector Reciprocal Square Root Estimate SP
+                Nyi("xvresp"),    // 111100 ..... ///// ..... 01001 1010.. XX2 I 749 v2.06 xvresp VSX Vector Reciprocal Estimate SP
+                Nyi("xvtsqrtsp"),    // 111100 ...// ///// ..... 01010 1010./ XX2 I 763 v2.06 xvtsqrtsp VSX Vector Test for software Square Root SP
+                Nyi("xvrsqrtedp"),    // 111100 ..... ///// ..... 01100 1010.. XX2 I 752 v2.06 xvrsqrtedp VSX Vector Reciprocal Square Root Estimate DP
+                Nyi("xvredp"),    // 111100 ..... ///// ..... 01101 1010.. XX2 I 748 v2.06 xvredp VSX Vector Reciprocal Estimate DP
+                Nyi("xvtsqrtdp"),    // 111100 ...// ///// ..... 01110 1010./ XX2 I 763 v2.06 xvtsqrtdp VSX Vector Test for software Square Root DP
+                Nyi("xststdcsp"),    // 111100 ..... ..... ..... 10010 1010./ XX2 I 657 v3.0 xststdcsp VSX Scalar Test Data Class SP
+                Nyi("xststdcdp"),    // 111100 ..... ..... ..... 10110 1010./ XX2 I 655 v3.0 xststdcdp VSX Scalar Test Data Class DP
+                Nyi("xssqrtsp"),    // 111100 ..... ///// ..... 00000 1011.. XX2 I 646 v2.07 xssqrtsp VSX Scalar Square Root SP
+                Nyi("xssqrtdp"),    // 111100 ..... ///// ..... 00100 1011.. XX2 I 643 v2.06 xssqrtdp VSX Scalar Square Root DP
+                Nyi("xsrdpic"),    // 111100 ..... ///// ..... 00110 1011.. XX2 I 631 v2.06 xsrdpic VSX Scalar Round DP to Integral using Current rounding mode
+                Nyi("xvsqrtsp"),    // 111100 ..... ///// ..... 01000 1011.. XX2 I 756 v2.06 xvsqrtsp VSX Vector Square Root SP
+                Nyi("xvrspic"),    // 111100 ..... ///// ..... 01010 1011.. XX2 I 750 v2.06 xvrspic VSX Vector Round SP to Integral using Current rounding mode
+                Nyi("xvsqrtdp"),    // 111100 ..... ///// ..... 01100 1011.. XX2 I 755 v2.06 xvsqrtdp VSX Vector Square Root DP
+                Nyi("xvrdpic"),    // 111100 ..... ///// ..... 01110 1011.. XX2 I 745 v2.06 xvrdpic VSX Vector Round DP to Integral using Current rounding mode
+                Nyi("xscvdpspn"),    // 111100 ..... ///// ..... 10000 1011.. XX2 I 539 v2.07 xscvdpspn VSX Scalar Convert DP to SP Non-signalling
+                Nyi("xscvspdpn"),    // 111100 ..... ///// ..... 10100 1011.. XX2 I 560 v2.07 xscvspdpn VSX Scalar Convert SP to DP Non-signalling
+                Nyi("xsxexpdp"),    // 111100 ..... 00000 ..... 10101 1011./ XX2 I 658 v3.0 xsxexpdp VSX Scalar Extract Exponent DP
+                Nyi("xsxsigdp"),    // 111100 ..... 00001 ..... 10101 1011./ XX2 I 659 v3.0 xsxsigdp VSX Scalar Extract Significand DP
+                Nyi("xscvhpdp"),    // 111100 ..... 10000 ..... 10101 1011.. XX2 I 548 v3.0 xscvhpdp VSX Scalar Convert HP to DP
+                Nyi("xscvdphp"),    // 111100 ..... 10001 ..... 10101 1011.. XX2 I 536 v3.0 xscvdphp VSX Scalar Convert DP to HP
+                Nyi("xvxexpdp"),    // 111100 ..... 00000 ..... 11101 1011.. XX2 I 766 v3.0 xvxexpdp VSX Vector Extract Exponent DP
+                Nyi("xvxsigdp"),    // 111100 ..... 00001 ..... 11101 1011.. XX2 I 767 v3.0 xvxsigdp VSX Vector Extract Significand DP
+                Nyi("xxbrh"),    // 111100 ..... 00111 ..... 11101 1011.. XX2 I 768 v3.0 xxbrh VSX Vector Byte-Reverse Hword
+                Nyi("xvxexpsp"),    // 111100 ..... 01000 ..... 11101 1011.. XX2 I 766 v3.0 xvxexpsp VSX Vector Extract Exponent SP
+                Nyi("xvxsigsp"),    // 111100 ..... 01001 ..... 11101 1011.. XX2 I 767 v3.0 xvxsigsp VSX Vector Extract Significand SP
+                Nyi("xxbrw"),    // 111100 ..... 01111 ..... 11101 1011.. XX2 I 769 v3.0 xxbrw VSX Vector Byte-Reverse Word
+                Nyi("xxbrd"),    // 111100 ..... 10111 ..... 11101 1011.. XX2 I 768 v3.0 xxbrd VSX Vector Byte-Reverse Dword
+                Nyi("xvcvhpsp"),    // 111100 ..... 11000 ..... 11101 1011.. XX2 I 685 v3.0 xvcvhpsp VSX Vector Convert HP to SP
+                Nyi("xvcvsphp"),    // 111100 ..... 11001 ..... 11101 1011.. XX2 I 687 v3.0 xvcvsphp VSX Vector Convert SP to HP
+                Nyi("xxbrq"),    // 111100 ..... 11111 ..... 11101 1011.. XX2 I 769 v3.0 xxbrq VSX Vector Byte-Reverse Qword
+                Nyi("xsiexpdp"),    // 111100 ..... ..... ..... 11100 10110. XX1 I 570 v3.0 xsiexpdp VSX Scalar Insert Exponent DP
+                */
+                Nyi("xxsel"),       // 111100 ..... ..... ..... ..... 11.... XX4 I 777 v2.06 xxsel VSX Vector Select
+                Nyi("xxsel"));      // 111100 ..... ..... ..... ..... 11.... XX4 I 777 v2.06 xxsel VSX Vector Select
+            return decoder;
 
-111100 ..... ..... ..... 0..00 010... XX3 I 778 v2.06 xxsldwi VSX Vector Shift Left Double by Word Immediate
-111100 ..... ..... ..... 0..01 010... XX3 I 777 v2.06 xxpermdi VSX Vector Dword Permute Immediate
-111100 ..... ..... ..... 00010 010... XX3 I 775 v2.06 xxmrghw VSX Vector Merge Word High
-111100 ..... ..... ..... 00011 010... XX3 I 776 v3.0 xxperm VSX Vector Permute
-111100 ..... ..... ..... 00110 010... XX3 I 775 v2.06 xxmrglw VSX Vector Merge Word Low
-111100 ..... ..... ..... 00111 010... XX3 I 776 v3.0 xxpermr VSX Vector Permute Right-indexed
-111100 ..... ..... ..... 10000 010... XX3 I 771 v2.06 xxland VSX Vector Logical AND
-111100 ..... ..... ..... 10001 010... XX3 I 771 v2.06 xxlandc VSX Vector Logical AND with Complement
-111100 ..... ..... ..... 10010 010... XX3 I 774 v2.06 xxlor VSX Vector Logical OR
-111100 ..... ..... ..... 10011 010... XX3 I 774 v2.06 xxlxor VSX Vector Logical XOR
-111100 ..... ..... ..... 10100 010... XX3 I 773 v2.06 xxlnor VSX Vector Logical NOR
-111100 ..... ..... ..... 10101 010... XX3 I 773 v2.07 xxlorc VSX Vector Logical OR with Complement
-111100 ..... ..... ..... 10110 010... XX3 I 772 v2.07 xxlnand VSX Vector Logical NAND
-111100 ..... ..... ..... 10111 010... XX3 I 772 v2.07 xxleqv VSX Vector Logical Equivalence
-111100 ..... ///.. ..... 01010 0100.. XX2 I 778 v2.06 xxspltw VSX Vector Splat Word
-111100 ..... 00... ..... 01011 01000. XX1 I 778 v3.0 xxspltib VSX Vector Splat Immediate Byte
-111100 ..... /.... ..... 01010 0101.. XX2 I 770 v3.0 xxextractuw VSX Vector Extract Unsigned Word
-111100 ..... /.... ..... 01011 0101.. XX2 I 770 v3.0 xxinsertw VSX Vector Insert Word
-
-111100 ..... ..... ..... .1000 011... XX3 I 668 v2.06 xvcmpeqsp[.] VSX Vector Compare Equal SP
-111100 ..... ..... ..... .1001 011... XX3 I 672 v2.06 xvcmpgtsp[.] VSX Vector Compare Greater Than SP
-111100 ..... ..... ..... .1010 011... XX3 I 670 v2.06 xvcmpgesp[.] VSX Vector Compare Greater Than or Equal SP
-111100 ..... ..... ..... .1011 011... XX3 I 674 v3.0 xvcmpnesp[.] VSX Vector Compare Not Equal Single-Precision
-111100 ..... ..... ..... .1100 011... XX3 I 667 v2.06 xvcmpeqdp[.] VSX Vector Compare Equal DP
-111100 ..... ..... ..... .1101 011... XX3 I 671 v2.06 xvcmpgtdp[.] VSX Vector Compare Greater Than DP
-111100 ..... ..... ..... .1110 011... XX3 I 669 v2.06 xvcmpgedp[.] VSX Vector Compare Greater Than or Equal DP
-111100 ..... ..... ..... .1111 011... XX3 I 673 v3.0 xvcmpnedp[.] VSX Vector Compare Not Equal Double-Precision
-111100 ..... ..... ..... 00000 011... XX3 I 525 v3.0 xscmpeqdp VSX Scalar Compare Equal Double-Precision
-111100 ..... ..... ..... 00001 011... XX3 I 527 v3.0 xscmpgtdp VSX Scalar Compare Greater Than Double-Precision
-111100 ..... ..... ..... 00010 011... XX3 I 526 v3.0 xscmpgedp VSX Scalar Compare Greater Than or Equal Double-Precision
-111100 ..... ..... ..... 00011 011... XX3 I 528 v3.0 xscmpnedp VSX Scalar Compare Not Equal Double-Precision
-111100 ...// ..... ..... 00100 011../ XX3 I 532 v2.06 xscmpudp VSX Scalar Compare Unordered DP
-111100 ...// ..... ..... 00101 011../ XX3 I 529 v2.06 xscmpodp VSX Scalar Compare Ordered DP
-111100 ...// ..... ..... 00111 011../ XX3 I 523 v3.0 xscmpexpdp VSX Scalar Compare Exponents DP
-
-111100 ..... ///// ..... 00100 1000.. XX2 I 546 v2.06 xscvdpuxws VSX Scalar Convert DP to Unsigned Word truncate
-111100 ..... ///// ..... 00101 1000.. XX2 I 542 v2.06 xscvdpsxws VSX Scalar Convert DP to Signed Word truncate
-111100 ..... ///// ..... 01000 1000.. XX2 I 694 v2.06 xvcvspuxws VSX Vector Convert SP to Unsigned Word truncate
-111100 ..... ///// ..... 01001 1000.. XX2 I 690 v2.06 xvcvspsxws VSX Vector Convert SP to Signed Word truncate
-111100 ..... ///// ..... 01010 1000.. XX2 I 699 v2.06 xvcvuxwsp VSX Vector Convert Unsigned Word to SP
-111100 ..... ///// ..... 01011 1000.. XX2 I 697 v2.06 xvcvsxwsp VSX Vector Convert Signed Word to SP
-111100 ..... ///// ..... 01100 1000.. XX2 I 683 v2.06 xvcvdpuxws VSX Vector Convert DP to Unsigned Word truncate
-111100 ..... ///// ..... 01101 1000.. XX2 I 679 v2.06 xvcvdpsxws VSX Vector Convert DP to Signed Word truncate
-111100 ..... ///// ..... 01110 1000.. XX2 I 699 v2.06 xvcvuxwdp VSX Vector Convert Unsigned Word to DP
-111100 ..... ///// ..... 01111 1000.. XX2 I 697 v2.06 xvcvsxwdp VSX Vector Convert Signed Word to DP
-111100 ..... ///// ..... 10010 1000.. XX2 I 563 v2.07 xscvuxdsp VSX Scalar Convert Unsigned Dword to SP
-111100 ..... ///// ..... 10011 1000.. XX2 I 561 v2.07 xscvsxdsp VSX Scalar Convert Signed Dword to SP
-111100 ..... ///// ..... 10100 1000.. XX2 I 544 v2.06 xscvdpuxds VSX Scalar Convert DP to Unsigned Dword truncate
-111100 ..... ///// ..... 10101 1000.. XX2 I 539 v2.06 xscvdpsxds VSX Scalar Convert DP to Signed Dword truncate
-111100 ..... ///// ..... 10110 1000.. XX2 I 563 v2.06 xscvuxddp VSX Scalar Convert Unsigned Dword to DP
-111100 ..... ///// ..... 10111 1000.. XX2 I 561 v2.06 xscvsxddp VSX Scalar Convert Signed Dword to DP
-111100 ..... ///// ..... 11000 1000.. XX2 I 692 v2.06 xvcvspuxds VSX Vector Convert SP to Unsigned Dword truncate
-111100 ..... ///// ..... 11001 1000.. XX2 I 688 v2.06 xvcvspsxds VSX Vector Convert SP to Signed Dword truncate
-111100 ..... ///// ..... 11010 1000.. XX2 I 698 v2.06 xvcvuxdsp VSX Vector Convert Unsigned Dword to SP
-111100 ..... ///// ..... 11011 1000.. XX2 I 696 v2.06 xvcvsxdsp VSX Vector Convert Signed Dword to SP
-111100 ..... ///// ..... 11100 1000.. XX2 I 681 v2.06 xvcvdpuxds VSX Vector Convert DP to Unsigned Dword truncate
-111100 ..... ///// ..... 11101 1000.. XX2 I 677 v2.06 xvcvdpsxds VSX Vector Convert DP to Signed Dword truncate
-111100 ..... ///// ..... 11110 1000.. XX2 I 698 v2.06 xvcvuxddp VSX Vector Convert Unsigned Dword to DP
-111100 ..... ///// ..... 11111 1000.. XX2 I 696 v2.06 xvcvsxddp VSX Vector Convert Signed Dword to DP
-
-111100 ..... ///// ..... 00100 1001.. XX2 I 630 v2.06 xsrdpi VSX Scalar Round DP to Integral to Nearest Away
-111100 ..... ///// ..... 00101 1001.. XX2 I 633 v2.06 xsrdpiz VSX Scalar Round DP to Integral toward Zero
-111100 ..... ///// ..... 00110 1001.. XX2 I 632 v2.06 xsrdpip VSX Scalar Round DP to Integral toward +Infinity
-111100 ..... ///// ..... 00111 1001.. XX2 I 632 v2.06 xsrdpim VSX Scalar Round DP to Integral toward -Infinity
-111100 ..... ///// ..... 01000 1001.. XX2 I 750 v2.06 xvrspi VSX Vector Round SP to Integral to Nearest Away
-111100 ..... ///// ..... 01001 1001.. XX2 I 752 v2.06 xvrspiz VSX Vector Round SP to Integral toward Zero
-111100 ..... ///// ..... 01010 1001.. XX2 I 751 v2.06 xvrspip VSX Vector Round SP to Integral toward +Infinity
-111100 ..... ///// ..... 01011 1001.. XX2 I 751 v2.06 xvrspim VSX Vector Round SP to Integral toward -Infinity
-111100 ..... ///// ..... 01100 1001.. XX2 I 745 v2.06 xvrdpi VSX Vector Round DP to Integral to Nearest Away
-111100 ..... ///// ..... 01101 1001.. XX2 I 747 v2.06 xvrdpiz VSX Vector Round DP to Integral toward Zero
-111100 ..... ///// ..... 01110 1001.. XX2 I 746 v2.06 xvrdpip VSX Vector Round DP to Integral toward +Infinity
-111100 ..... ///// ..... 01111 1001.. XX2 I 746 v2.06 xvrdpim VSX Vector Round DP to Integral toward -Infinity
-111100 ..... ///// ..... 10000 1001.. XX2 I 538 v2.06 xscvdpsp VSX Scalar Convert DP to SP
-111100 ..... ///// ..... 10001 1001.. XX2 I 640 v2.07 xsrsp VSX Scalar Round DP to SP
-111100 ..... ///// ..... 10100 1001.. XX2 I 559 v2.06 xscvspdp VSX Scalar Convert SP to DP
-111100 ..... ///// ..... 10101 1001.. XX2 I 513 v2.06 xsabsdp VSX Scalar Absolute DP
-111100 ..... ///// ..... 10110 1001.. XX2 I 608 v2.06 xsnabsdp VSX Scalar Negative Absolute DP
-111100 ..... ///// ..... 10111 1001.. XX2 I 609 v2.06 xsnegdp VSX Scalar Negate DP
-111100 ..... ///// ..... 11000 1001.. XX2 I 676 v2.06 xvcvdpsp VSX Vector Convert DP to SP
-111100 ..... ///// ..... 11001 1001.. XX2 I 660 v2.06 xvabssp VSX Vector Absolute SP
-111100 ..... ///// ..... 11010 1001.. XX2 I 729 v2.06 xvnabssp VSX Vector Negative Absolute SP
-111100 ..... ///// ..... 11011 1001.. XX2 I 730 v2.06 xvnegsp VSX Vector Negate SP
-111100 ..... ///// ..... 11100 1001.. XX2 I 686 v2.06 xvcvspdp VSX Vector Convert SP to DP
-111100 ..... ///// ..... 11101 1001.. XX2 I 660 v2.06 xvabsdp VSX Vector Absolute DP
-111100 ..... ///// ..... 11110 1001.. XX2 I 729 v2.06 xvnabsdp VSX Vector Negative Absolute DP
-111100 ..... ///// ..... 11111 1001.. XX2 I 730 v2.06 xvnegdp VSX Vector Negate DP
-
-111100 ...// ..... ..... 00111 101../ XX3 I 653 v2.06 xstdivdp VSX Scalar Test for software Divide DP
-111100 ...// ..... ..... 01011 101../ XX3 I 762 v2.06 xvtdivsp VSX Vector Test for software Divide SP
-111100 ...// ..... ..... 01111 101../ XX3 I 761 v2.06 xvtdivdp VSX Vector Test for software Divide DP
-111100 ..... ..... ..... 1101. 101... XX2 I 765 v3.0 xvtstdcsp VSX Vector Test Data Class SP
-111100 ..... ..... ..... 1111. 101... XX2 I 764 v3.0 xvtstdcdp VSX Vector Test Data Class DP
-111100 ..... ///// ..... 00000 1010.. XX2 I 642 v2.07 xsrsqrtesp VSX Scalar Reciprocal Square Root Estimate SP
-111100 ..... ///// ..... 00001 1010.. XX2 I 635 v2.07 xsresp VSX Scalar Reciprocal Estimate SP
-111100 ..... ///// ..... 00100 1010.. XX2 I 641 v2.06 xsrsqrtedp VSX Scalar Reciprocal Square Root Estimate DP
-111100 ..... ///// ..... 00101 1010.. XX2 I 634 v2.06 xsredp VSX Scalar Reciprocal Estimate DP
-111100 ...// ///// ..... 00110 1010./ XX2 I 654 v2.06 xstsqrtdp VSX Scalar Test for software Square Root DP
-111100 ..... ///// ..... 01000 1010.. XX2 I 754 v2.06 xvrsqrtesp VSX Vector Reciprocal Square Root Estimate SP
-111100 ..... ///// ..... 01001 1010.. XX2 I 749 v2.06 xvresp VSX Vector Reciprocal Estimate SP
-111100 ...// ///// ..... 01010 1010./ XX2 I 763 v2.06 xvtsqrtsp VSX Vector Test for software Square Root SP
-111100 ..... ///// ..... 01100 1010.. XX2 I 752 v2.06 xvrsqrtedp VSX Vector Reciprocal Square Root Estimate DP
-111100 ..... ///// ..... 01101 1010.. XX2 I 748 v2.06 xvredp VSX Vector Reciprocal Estimate DP
-111100 ...// ///// ..... 01110 1010./ XX2 I 763 v2.06 xvtsqrtdp VSX Vector Test for software Square Root DP
-111100 ..... ..... ..... 10010 1010./ XX2 I 657 v3.0 xststdcsp VSX Scalar Test Data Class SP
-111100 ..... ..... ..... 10110 1010./ XX2 I 655 v3.0 xststdcdp VSX Scalar Test Data Class DP
-111100 ..... ///// ..... 00000 1011.. XX2 I 646 v2.07 xssqrtsp VSX Scalar Square Root SP
-111100 ..... ///// ..... 00100 1011.. XX2 I 643 v2.06 xssqrtdp VSX Scalar Square Root DP
-111100 ..... ///// ..... 00110 1011.. XX2 I 631 v2.06 xsrdpic VSX Scalar Round DP to Integral using Current rounding mode
-111100 ..... ///// ..... 01000 1011.. XX2 I 756 v2.06 xvsqrtsp VSX Vector Square Root SP
-111100 ..... ///// ..... 01010 1011.. XX2 I 750 v2.06 xvrspic VSX Vector Round SP to Integral using Current rounding mode
-111100 ..... ///// ..... 01100 1011.. XX2 I 755 v2.06 xvsqrtdp VSX Vector Square Root DP
-111100 ..... ///// ..... 01110 1011.. XX2 I 745 v2.06 xvrdpic VSX Vector Round DP to Integral using Current rounding mode
-111100 ..... ///// ..... 10000 1011.. XX2 I 539 v2.07 xscvdpspn VSX Scalar Convert DP to SP Non-signalling
-111100 ..... ///// ..... 10100 1011.. XX2 I 560 v2.07 xscvspdpn VSX Scalar Convert SP to DP Non-signalling
-111100 ..... 00000 ..... 10101 1011./ XX2 I 658 v3.0 xsxexpdp VSX Scalar Extract Exponent DP
-111100 ..... 00001 ..... 10101 1011./ XX2 I 659 v3.0 xsxsigdp VSX Scalar Extract Significand DP
-111100 ..... 10000 ..... 10101 1011.. XX2 I 548 v3.0 xscvhpdp VSX Scalar Convert HP to DP
-111100 ..... 10001 ..... 10101 1011.. XX2 I 536 v3.0 xscvdphp VSX Scalar Convert DP to HP
-111100 ..... 00000 ..... 11101 1011.. XX2 I 766 v3.0 xvxexpdp VSX Vector Extract Exponent DP
-111100 ..... 00001 ..... 11101 1011.. XX2 I 767 v3.0 xvxsigdp VSX Vector Extract Significand DP
-111100 ..... 00111 ..... 11101 1011.. XX2 I 768 v3.0 xxbrh VSX Vector Byte-Reverse Hword
-111100 ..... 01000 ..... 11101 1011.. XX2 I 766 v3.0 xvxexpsp VSX Vector Extract Exponent SP
-111100 ..... 01001 ..... 11101 1011.. XX2 I 767 v3.0 xvxsigsp VSX Vector Extract Significand SP
-111100 ..... 01111 ..... 11101 1011.. XX2 I 769 v3.0 xxbrw VSX Vector Byte-Reverse Word
-111100 ..... 10111 ..... 11101 1011.. XX2 I 768 v3.0 xxbrd VSX Vector Byte-Reverse Dword
-111100 ..... 11000 ..... 11101 1011.. XX2 I 685 v3.0 xvcvhpsp VSX Vector Convert HP to SP
-111100 ..... 11001 ..... 11101 1011.. XX2 I 687 v3.0 xvcvsphp VSX Vector Convert SP to HP
-111100 ..... 11111 ..... 11101 1011.. XX2 I 769 v3.0 xxbrq VSX Vector Byte-Reverse Qword
-111100 ..... ..... ..... 11100 10110. XX1 I 570 v3.0 xsiexpdp VSX Scalar Insert Exponent DP
-
-111100 ..... ..... ..... ..... 11.... XX4 I 777 v2.06 xxsel VSX Vector Select
- */
         }
 
         public virtual Decoder Ext3DDecoder()
@@ -1318,8 +1329,8 @@ namespace Reko.Arch.PowerPC
         {
             var decoder = Mask(26, 5, "  Ext3F",
                 Sparse(21, 5, invalid, "  00000",
-                    ( 0b00000, Nyi("fcmpu")),       // 111111 ...// ..... ..... 00000 00000/ X I 168 P1 fcmpu Floating Compare Unordered
-                    ( 0b00001, Nyi("fcmpo")),       // 111111 ...// ..... ..... 00001 00000/ X I 168 P1 fcmpo Floating Compare Ordered
+                    ( 0b00000, Instr(Mnemonic.fcmpu, C1,f2,f3)),        // 111111 ...// ..... ..... 00000 00000/ X I 168 P1 fcmpu Floating Compare Unordered
+                    ( 0b00001, Instr(Mnemonic.fcmpo, C1,f2,f3)),        // 111111 ...// ..... ..... 00001 00000/ X I 168 P1 fcmpo Floating Compare Ordered
                     ( 0b00010, Nyi("mcrfs")),       // 111111 ...// ...// ///// 00010 00000/ X I 171 P1 mcrfs Move To CR from FPSCR
                     ( 0b00100, Nyi("ftdiv")),       // 111111 ...// ..... ..... 00100 00000/ X I 157 v2.06 ftdiv Floating Test for software Divide
                     ( 0b00101, Nyi("ftsqrt"))),     // 111111 ...// ///// ..... 00101 00000/ X I 157 v2.06 ftsqrt Floating Test for software Square Root
