@@ -20,9 +20,9 @@ void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 // 00401060: void test2(Stack word32 dwArg04)
 void test2(word32 dwArg04)
 {
-	test1("1", 0x02, "3", globals->r4020E8);
+	test1("1", 0x02, "3", globals->r4020F0);
 	if (dwArg04 == 0x00)
-		test1("5", 0x06, "7", globals->r4020E4);
+		test1("5", 0x06, "7", globals->r4020EC);
 }
 
 // 004010B0: void indirect_call_test3(Stack (ptr32 Eq_n) c)
@@ -40,7 +40,7 @@ void test4()
 // 004010F0: void test5()
 void test5()
 {
-	globals->gbl_c->vtbl->method04(globals->gbl_c, 999, globals->r4020EC);
+	globals->gbl_c->vtbl->method04(globals->gbl_c, 999, globals->r4020F4);
 }
 
 // 00401120: void test6(Stack Eq_n c, Stack int32 a, Stack int32 b)
@@ -61,7 +61,7 @@ void test7(real64 rArg04)
 void nested_if_blocks_test8(real64 rArg04)
 {
 	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, ~0x00, rArg04);
-	if (globals->r4020F8 != rArg04 && globals->r4020F0 > rArg04)
+	if (globals->r402100 != rArg04 && globals->r4020F8 > rArg04)
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
 	test6(globals->gbl_c, 0x06, 0x07);
 }
@@ -84,8 +84,8 @@ void const_div_test10(word32 dwArg04)
 		eax_n = 0x03;
 		ecx_n = 0x01;
 	}
-	globals->dw40301C = ecx_n;
-	globals->dw403020 = eax_n;
+	globals->dw40302C = ecx_n;
+	globals->dw403030 = eax_n;
 }
 
 // 004012D0: void loop_test11(Stack real64 rArg04)
@@ -117,5 +117,18 @@ void nested_structs_test12(nested_structs_type * dwArg04)
 void nested_structs_test13(nested_structs_type * str)
 {
 	nested_structs_test12(str);
+}
+
+// 00401380: void gbl_nested_structs_test14()
+void gbl_nested_structs_test14()
+{
+	// gbl_nested_structs.a = 5
+	globals->gbl_nested_structs = (Eq_n) 0x05;
+	// gbl_nested_structs.str.b = 6
+	globals->t403020 = (Eq_n) 0x06;
+	// gbl_nested_structs.str.c = 7
+	globals->t403024 = (Eq_n) 0x07;
+	// gbl_nested_structs.d = 8
+	globals->t403028 = (Eq_n) 0x08;
 }
 

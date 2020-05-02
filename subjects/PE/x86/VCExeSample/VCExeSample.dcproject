@@ -37,10 +37,14 @@
       </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>00401623</address>
+        <address>0040164F</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>
+      <annotation addr="00401383">gbl_nested_structs.a = 5</annotation>
+      <annotation addr="0040138D">gbl_nested_structs.str.b = 6</annotation>
+      <annotation addr="00401397">gbl_nested_structs.str.c = 7</annotation>
+      <annotation addr="004013A1">gbl_nested_structs.d = 8</annotation>
       <call>
         <address>00401113</address>
         <signature retOnStack="4" stackDelta="4">
@@ -69,7 +73,12 @@
         <Name>gbl_c</Name>
       </global>
       <global>
-        <Address>00403024</Address>
+        <Address>0040301C</Address>
+        <type>nested_structs_type</type>
+        <Name>gbl_nested_structs</Name>
+      </global>
+      <global>
+        <Address>00403034</Address>
         <ptr size="4">
           <type>thiscall_class</type>
         </ptr>
