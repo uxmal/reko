@@ -41,7 +41,7 @@ l0C00_0000:
 	SZO = cond(dx)
 	al = __inb(dx)
 	Mem0[es:di:byte] = al
-	di = di + 1<16>
+	di = di + 1<i16>
 	C = __bt(Mem0[ds:0x3000<16>:word16], ax)
 	C = __bt(cx, ax)
 	C = __bt(cx, 2<8>)

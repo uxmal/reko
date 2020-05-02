@@ -1026,6 +1026,24 @@ namespace Reko.Arch.X86
             return true;
         }
 
+        internal static bool rV(uint uInstr, X86Disassembler dasm)
+        {
+            RegisterStorage reg;
+            var bitsize = dasm.decodingContext.dataWidth.BitSize;
+            if (dasm.decodingContext.SizeOverridePrefix)
+                reg = dasm.RegFromBitsRexB((int)uInstr & 7, dasm.decodingContext.dataWidth);
+            else
+                reg = dasm.RegFromBitsRexB((int) uInstr & 7, dasm.mode.WordWidth);
+            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
+        /*                d.decodingContext.iWidth = d.OperandWidth(width);
+                var op = new RegisterOperand(d.RegFromBitsRexB(
+                    (byte)u, 
+                    d.decodingContext.iWidth));
+                d.decodingContext.ops.Add(op);
+*/
+
         private static bool b(uint op, X86Disassembler d)
         {
             d.decodingContext.iWidth = PrimitiveType.Byte;

@@ -254,12 +254,12 @@ namespace Reko.Arch.M6800.M6809
 
         private Expression Dec(Expression e)
         {
-            return m.ISubS(e, 1);
+            return m.ISub(e, 1);
         }
 
         private Expression Inc(Expression e)
         {
-            return m.IAddS(e, 1);
+            return m.IAdd(e, 1);
         }
 
         private Expression Load(Expression d, Expression t)
@@ -497,7 +497,7 @@ namespace Reko.Arch.M6800.M6809
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.Direct:
-                    ea = m.IAdd(binder.EnsureRegister(Registers.DP), Constant.Byte((byte) mem.Offset));
+                    ea = m.IAdd(binder.EnsureRegister(Registers.DP), Constant.Word16((byte) mem.Offset));
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.PostInc1:

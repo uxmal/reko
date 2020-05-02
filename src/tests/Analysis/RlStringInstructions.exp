@@ -14,11 +14,11 @@ l0C00_0000:
 	Mem7[ds:0x2FC<16>:word32] = eax * 5<32>
 	eax_9 = Mem7[ds:si:word32]
 	Mem11[ds:0x300<16>:word32] = eax_9
-	eax_12 = Mem11[ds:si + 4<16>:word32]
+	eax_12 = Mem11[ds:si + 4<i16>:word32]
 	Mem14[ds:0x304<16>:word32] = eax_12
-	ax_15 = Mem14[ds:si + 8<16>:word16]
+	ax_15 = Mem14[ds:si + 8<i16>:word16]
 	Mem17[ds:0x308<16>:word16] = ax_15
-	ax_18 = Mem17[ds:si + 0xA<16>:word16]
+	ax_18 = Mem17[ds:si + 10<i16>:word16]
 	Mem20[ds:0x30A<16>:word16] = ax_18
 	call fn0C00_0026 (retsize: 2;)
 		uses: ds:ds,es:es
@@ -43,7 +43,7 @@ l0C00_0030:
 	cx_9 = PHI((cx_6, l0C00_0026), (cx_16, l0C00_0030_1))
 	branch cx_9 == 0<16> l0C00_0032
 l0C00_0030_1:
-	di_15 = di_12 + 1<16>
+	di_15 = di_12 + 1<i16>
 	cx_16 = cx_9 - 1<16>
 	branch Mem0[es:di_12:byte] != 0<8> l0C00_0030
 l0C00_0032:

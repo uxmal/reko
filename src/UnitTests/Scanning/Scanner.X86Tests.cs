@@ -133,7 +133,7 @@ l0C00_0000:
 	// succ:  l0C00_0000_1 l0C00_0002
 l0C00_0000_1:
 	SCZO = cond(ax - Mem0[es:di:word16])
-	di = di + 2<16>
+	di = di + 2<i16>
 	cx = cx - 1<16>
 	branch Test(NE,Z) l0C00_0000
 	// succ:  l0C00_0002 l0C00_0000

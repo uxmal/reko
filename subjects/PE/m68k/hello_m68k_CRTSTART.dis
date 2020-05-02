@@ -90,7 +90,7 @@ fn000022C4_entry:
 l000022C4:
 	fn000023B4(a5 + -744<i32>, a5 + -740<i32>)
 	word32 a7_23 = <invalid>
-	Mem32[a7_23 + 4<32>:word32] = a5 + -748<i32>
+	Mem32[a7_23 + 4<i32>:word32] = a5 + -748<i32>
 	Mem34[a7_23:word32] = a5 + -752<i32>
 	word32 a6_39 = fn000023B4(Mem34[a7_23:word32], Mem34[a7_23 + 4<i32>:word32])
 	word32 a7_40 = <invalid>
@@ -144,17 +144,17 @@ l0000236A:
 	word32 a7_33 = <invalid>
 	a7_40 = a7_33 + 8<i32>
 l00002378:
-	word32 a7_42 = a7_40 - 4<32>
+	word32 a7_42 = a7_40 - 4<i32>
 	Mem44[a7_42:word32] = a5 + -728<i32>
-	Mem46[a7_42 - 4<32>:word32] = a5 + -736<i32>
-	fn000023B4(Mem46[a7_42 - 4<32>:word32], Mem46[a7_42:word32])
+	Mem46[a7_42 - 4<i32>:word32] = a5 + -736<i32>
+	fn000023B4(Mem46[a7_42 - 4<i32>:word32], Mem46[a7_42:word32])
 	word32 a7_52 = <invalid>
 	a7_40 = a7_52 + 8<i32>
 l00002386:
-	word32 a7_61 = a7_40 - 4<32>
+	word32 a7_61 = a7_40 - 4<i32>
 	Mem63[a7_61:word32] = a5 + -720<i32>
-	Mem65[a7_61 - 4<32>:word32] = a5 + -724<i32>
-	word32 a6_103 = fn000023B4(Mem65[a7_61 - 4<32>:word32], Mem65[a7_61:word32])
+	Mem65[a7_61 - 4<i32>:word32] = a5 + -724<i32>
+	word32 a6_103 = fn000023B4(Mem65[a7_61 - 4<i32>:word32], Mem65[a7_61:word32])
 	branch Mem65[a6_103 + 16<i32>:word32] != 0<32> l000023AE
 l0000239A:
 	branch Mem65[a5 + -1376<i32>:word32] == 0<32> l000023AA
@@ -245,7 +245,7 @@ l0000242E:
 		uses: a5:a5_17,a6:a6_18
 		defs: a5:a5_32,a7:a7_30
 l00002430:
-	word32 a7_41 = a7_25 - 4<32>
+	word32 a7_41 = a7_25 - 4<i32>
 	Mem42[a7_41:word32] = 0x000000FF<p32>
 	word32 a6_51
 	word32 a5_50 = fn0000243C(a5_17, Mem42[a7_41:word32], out a6_51)

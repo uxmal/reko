@@ -46,50 +46,50 @@ l0C00_0000:
 l0C00_0020:
 	v11 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v11
-	si = si + 2<16>
-	di = di + 2<16>
+	si = si + 2<i16>
+	di = di + 2<i16>
 	// succ:  l0C00_0021
 l0C00_0021:
 	v15 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v15
-	si = si + 2<16>
-	di = di + 2<16>
+	si = si + 2<i16>
+	di = di + 2<i16>
 	// succ:  l0C00_0022
 l0C00_0022:
 	v16 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v16
-	si = si + 2<16>
-	di = di + 2<16>
+	si = si + 2<i16>
+	di = di + 2<i16>
 	// succ:  l0C00_0023
 l0C00_0023:
 	v17 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v17
-	si = si + 2<16>
-	di = di + 2<16>
+	si = si + 2<i16>
+	di = di + 2<i16>
 	// succ:  l0C00_0024
 l0C00_0024:
 	v18 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v18
-	si = si + 2<16>
-	di = di + 2<16>
+	si = si + 2<i16>
+	di = di + 2<i16>
 	// succ:  l0C00_0025
 l0C00_0025:
 	v14 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v14
-	si = si + 2<16>
-	di = di + 2<16>
+	si = si + 2<i16>
+	di = di + 2<i16>
 	// succ:  l0C00_0026
 l0C00_0026:
 	v19 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v19
-	si = si + 2<16>
-	di = di + 2<16>
+	si = si + 2<i16>
+	di = di + 2<i16>
 	// succ:  l0C00_0027
 l0C00_0027:
 	v13 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v13
-	si = si + 2<16>
-	di = di + 2<16>
+	si = si + 2<i16>
+	di = di + 2<i16>
 	cx = cx - 1<16>
 	SZO = cond(cx)
 	branch Test(GT,SZO) l0C00_0020

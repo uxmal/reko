@@ -21,7 +21,7 @@ l0C00_0000:
 	word16 si_28 = dx_26
 	// succ:  l0C00_0019
 l0C00_0019:
-	si_28 = si_58 + 1<16>
+	si_28 = si_58 + 1<i16>
 	si_58 = si_28
 	branch Mem14[ds_24:si_58:byte] != 0<8> l0C00_0019
 	// succ:  l0C00_001E l0C00_0019

@@ -64,11 +64,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCEmu_rldicr()
         {
-
-            Given_Code(
-                0x798CCFE6              // rldicr	r12,r12,39,3F
-
-                );
+            Given_Code(0x798CCFE6);            // rldicr	r12,r12,39,3F
 
             emu.WriteRegister(arch.Registers[12], 0x12345678);
             emu.Start();
@@ -79,9 +75,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCEmu_rldicl()
         {
-            Given_Code(
-                0x79290040              // rldicl	r9,r9,00,01
-                );
+            Given_Code(0x79290040);              // rldicl	r9,r9,00,01
 
             emu.WriteRegister(arch.Registers[9], 0xA1234567_89ABCDEF);
             emu.Start();

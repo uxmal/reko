@@ -18,16 +18,16 @@ l0C00_0000:
 	eax = eax + eax * 4<32>
 	Mem0[ds:0x2FC<16>:word32] = eax
 	eax = Mem0[ds:si:word32]
-	si = si + 4<16>
+	si = si + 4<i16>
 	Mem0[ds:0x300<16>:word32] = eax
 	eax = Mem0[ds:si:word32]
-	si = si + 4<16>
+	si = si + 4<i16>
 	Mem0[ds:0x304<16>:word32] = eax
 	ax = Mem0[ds:si:word16]
-	si = si + 2<16>
+	si = si + 2<i16>
 	Mem0[ds:0x308<16>:word16] = ax
 	ax = Mem0[ds:si:word16]
-	si = si + 2<16>
+	si = si + 2<i16>
 	Mem0[ds:0x30A<16>:word16] = ax
 	call fn0C00_0026 (retsize: 2;)
 	return
@@ -62,7 +62,7 @@ l0C00_0030:
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
 	SCZO = cond(al - Mem0[es:di:byte])
-	di = di + 1<16>
+	di = di + 1<i16>
 	cx = cx - 1<16>
 	branch Test(NE,Z) l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030

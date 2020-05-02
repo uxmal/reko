@@ -188,8 +188,7 @@ namespace Reko.Arch.RiscV
             case RegisterOperand rop:
                 if (rop.Register.Number == 0)
                 {
-                    //$TODO: 32-bit!
-                    return Constant.Word64(0);
+                    return Constant.Zero(arch.WordWidth);
                 }
                 return binder.EnsureRegister(rop.Register);
             case ImmediateOperand immop:

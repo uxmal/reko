@@ -367,10 +367,10 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 					Mem226[bx_n:bx_n + 0x01 + si_n:word16] = Mem209[bx_n:bx_n + 0x01 + si_n:word16] + (fp + ~0x7055);
 					byte cl_n = cl_n - bx_n->*((word32) si_n + 95);
 					byte al_n = bx_n->*si_n;
-					byte ah_n = ah_n ^ Mem242[bx_n:(bx_n + 0x02) + (si_n + 0x01):byte];
+					byte ah_n = ah_n ^ Mem242[bx_n:(bx_n + 0x02) + (si_n + 1):byte];
 					bx_n->*((word32) si_n + 25415) = bx_n->*((word32) si_n + 25415) ^ cl_n;
 					ui16 v57_v56_n = SEQ(bArg02C1, bArg0FA0) + SEQ(232, dl_n);
-					word16 si_n = si_n + 0x01;
+					word16 si_n = si_n + 1;
 					word16 Eq_n::* di_n = &Eq_n::w0000;
 					byte v56_n = (byte) v57_v56_n;
 					byte v57_n = SLICE(v57_v56_n, byte, 8);
@@ -384,7 +384,7 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 							if (cx_n == 0x00)
 								break;
 							__aad((word32) dx_n + bx_n->*si_n);
-							word16 si_n = si_n + 0x02;
+							word16 si_n = si_n + 2;
 							ah_n = 0x00;
 							word16 cx_n = SEQ(0x2A, cl_n);
 							do
@@ -396,7 +396,7 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 								byte ch_n = SLICE(cx_n, byte, 8);
 							} while (cx_n != 0x00);
 							al_n = bx_n->*si_n;
-							si_n = si_n + 0x01;
+							si_n = si_n + 1;
 							cx_n = SEQ(ch_n, al_n);
 						}
 						word16 si_n = *((word16) bx_n + 0x00009004);

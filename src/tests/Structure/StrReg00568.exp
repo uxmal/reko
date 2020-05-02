@@ -36,7 +36,7 @@ l0C00_0020:
 	// succ:  l0C00_0021
 l0C00_0021:
 	byte al_22 = Mem0[ds:si:byte]
-	si = si + 1<16>
+	si = si + 1<i16>
 	branch al_22 == 0<8> l0C00_003C
 	// succ:  l0C00_0026 l0C00_003C
 l0C00_0026:

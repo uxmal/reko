@@ -23,12 +23,12 @@ di_8: orig: di
 si_10: orig: si
     def:  si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
     uses: ax_12 = Mem0[ds:si_10:word16]
-          si_13 = si_10 + 2<16>
+          si_13 = si_10 + 2<i16>
 ax_12: orig: ax
     def:  ax_12 = Mem0[ds:si_10:word16]
     uses: dx_15 = dx_14 + ax_12
 si_13: orig: si
-    def:  si_13 = si_10 + 2<16>
+    def:  si_13 = si_10 + 2<i16>
     uses: si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
           si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 dx_14: orig: dx
@@ -102,7 +102,7 @@ l0C00_0008:
 	dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
 	si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 	ax_12 = Mem0[ds:si_10:word16]
-	si_13 = si_10 + 2<16>
+	si_13 = si_10 + 2<i16>
 	dx_15 = dx_14 + ax_12
 	SCZO_16 = cond(dx_15)
 	cx_18 = cx_17 - 1<16>
@@ -144,12 +144,12 @@ di_8: orig: di
 si_10: orig: si
     def:  si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
     uses: ax_12 = Mem0[ds:si_10:word16]
-          si_13 = si_10 + 2<16>
+          si_13 = si_10 + 2<i16>
 ax_12: orig: ax
     def:  ax_12 = Mem0[ds:si_10:word16]
     uses: dx_15 = dx_14 + ax_12
 si_13: orig: si
-    def:  si_13 = si_10 + 2<16>
+    def:  si_13 = si_10 + 2<i16>
     uses: si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
           si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 dx_14: orig: dx
@@ -223,7 +223,7 @@ l0C00_0008:
 	dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
 	si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 	ax_12 = Mem0[ds:si_10:word16]
-	si_13 = si_10 + 2<16>
+	si_13 = si_10 + 2<i16>
 	dx_15 = dx_14 + ax_12
 	SCZO_16 = cond(dx_15)
 	cx_18 = cx_17 - 1<16>

@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("C272D7");    // ipf	a2,035C
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__ipf(a2 + 0x35C<u16>)");       //$LIT
+                "1|L--|__ipf(a2 + 0x35C<u16>)");
         }
 
         [Test]

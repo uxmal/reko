@@ -31,18 +31,18 @@ namespace Reko.Arch.PowerPC
 {
     public class MemoryOperand : MachineOperand
     {
-        public MemoryOperand(PrimitiveType size, RegisterStorage reg, Constant offset) : base(size)
+        public MemoryOperand(PrimitiveType size, RegisterStorage reg, int offset) : base(size)
         {
             this.BaseRegister = reg;
             this.Offset = offset;
         }
 
         public RegisterStorage BaseRegister { get; }
-        public Constant Offset { get; } 
+        public int Offset { get; } 
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteString(string.Format("{0}({1})", Offset.ToInt32(), BaseRegister));
+            writer.WriteString($"{Offset}({BaseRegister})");
         }
     }
 }

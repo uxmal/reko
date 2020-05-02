@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("1CFE"); // andcc #$FE
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|cc = cc & 0xFE<8>");     //$LIT: sign extend
+                "1|L--|cc = cc & 0xFE<8>");
         }
 
         [Test]
@@ -271,7 +271,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("3C26"); // cwai	#$26
             AssertCode(
                 "0|L--|0100(2): 17 instructions",
-                "1|L--|cc = cc & 0x26<8>",  //$LIT
+                "1|L--|cc = cc & 0x26<8>",
                 "2|L--|s = s - 2<i16>",
                 "3|L--|Mem0[s:ptr16] = pcr",
                 "4|L--|s = s - 2<i16>",
@@ -305,7 +305,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("4A"); // deca
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = a - 1<i8>",
+                "1|L--|a = a - 1<8>",
                 "2|L--|NZV = cond(a)");
         }
 
@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("7A1234"); // dec $1234
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
-                "1|L--|v2 = Mem0[0x1234<p16>:byte] - 1<i8>",
+                "1|L--|v2 = Mem0[0x1234<p16>:byte] - 1<8>",
                 "2|L--|Mem0[0x1234<p16>:byte] = v2",
                 "3|L--|NZV = cond(v2)");
         }
@@ -326,7 +326,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("6CA0"); //inc ,y+
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|v3 = Mem0[y:byte] + 1<i8>",      //$LIT: 1<8>
+                "1|L--|v3 = Mem0[y:byte] + 1<8>",
                 "2|L--|Mem0[y:byte] = v3",
                 "3|L--|y = y + 1<i16>",
                 "4|L--|NZV = cond(v3)");
@@ -417,8 +417,8 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("0412"); // lsr	>$12
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|v3 = Mem0[dp + 0x12<8>:byte] >>u 1<8>",  //$LIT = 0x0012
-                "2|L--|Mem0[dp + 0x12<8>:byte] = v3",
+                "1|L--|v3 = Mem0[dp + 0x12<16>:byte] >>u 1<8>",
+                "2|L--|Mem0[dp + 0x12<16>:byte] = v3",
                 "3|L--|NZC = cond(v3)");
         }
 
@@ -438,8 +438,8 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("0042");
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|v3 = -Mem0[dp + 0x42<8>:byte]",  //$LIT
-                "2|L--|Mem0[dp + 0x42<8>:byte] = v3",
+                "1|L--|v3 = -Mem0[dp + 0x42<16>:byte]",
+                "2|L--|Mem0[dp + 0x42<16>:byte] = v3",
                 "3|L--|NZVC = cond(v3)");
         }
 
@@ -449,7 +449,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("9ACE"); // ora	>$CE
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|a = a | Mem0[dp + 0xCE<8>:byte]",
+                "1|L--|a = a | Mem0[dp + 0xCE<16>:byte]",
                 "2|L--|NZ = cond(a)",
                 "3|L--|V = false");
         }
@@ -460,7 +460,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("1A7E"); // orcc	#$7E
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|cc = cc | 0x7E<8>");     //$LIT
+                "1|L--|cc = cc | 0x7E<8>");
         }
 
         [Test]
@@ -541,8 +541,8 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("0630"); // ror	>$30
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|v3 = __ror(Mem0[dp + 0x30<8>:byte], 1<8>)",
-                "2|L--|Mem0[dp + 0x30<8>:byte] = v3",
+                "1|L--|v3 = __ror(Mem0[dp + 0x30<16>:byte], 1<8>)",
+                "2|L--|Mem0[dp + 0x30<16>:byte] = v3",
                 "3|L--|NZC = cond(v3)");
         }
 

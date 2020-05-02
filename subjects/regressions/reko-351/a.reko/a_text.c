@@ -55,7 +55,7 @@ void __do_global_dtors_aux()
 		ptr32 a7_n = <invalid>;
 		if (0x00 != 0x00)
 		{
-			*(a7_n - 0x04) = 0x8000065C;
+			*(a7_n - 4) = 0x8000065C;
 			word32 d0_n;
 			word32 a0_n;
 			word32 d1_n;

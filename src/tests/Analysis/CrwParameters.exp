@@ -66,7 +66,7 @@ fn0C00_0025_entry:
 	// succ:  l0C00_0025
 l0C00_0025:
 	ax_7 = Mem0[ds_si:word16]
-	si_8 = si + 2<16>
+	si_8 = si + 2<i16>
 	siOut = si_8
 	return ax_7
 	// succ:  fn0C00_0025_exit
@@ -106,7 +106,7 @@ l0C00_0027:
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:
 	ax_14 = Mem0[ds_si:word16]
-	si_15 = si + 2<16>
+	si_15 = si + 2<i16>
 	// succ:  l0C00_002E
 l0C00_002E:
 	si_22 = PHI((si_8, l0C00_0027), (si_15, l0C00_002D))
@@ -140,7 +140,7 @@ fn0C00_002F_entry:
 	// succ:  l0C00_002F
 l0C00_002F:
 	ax_7 = Mem0[ds_si:word16]
-	si_8 = si + 2<16>
+	si_8 = si + 2<i16>
 	Mem9[ds_si + 4<16>:word16] = 0<16>
 	siOut = si_8
 	return ax_7
@@ -170,7 +170,7 @@ fn0C00_0036_entry:
 	si = SLICE(ds_si, word16, 0)
 	// succ:  l0C00_0036
 l0C00_0036:
-	ds_si_9 = SEQ(ds, si + 2<16>) (alias)
+	ds_si_9 = SEQ(ds, si + 2<i16>) (alias)
 	ax_10 = fn0C00_0025(ds_si_9, out si_11)
 	siOut = si_11
 	return ax_10

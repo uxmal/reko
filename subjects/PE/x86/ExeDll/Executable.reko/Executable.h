@@ -2900,19 +2900,19 @@ T_629: (in Mem83[0x0040333C<p32>:word32] : word32)
   Class: Eq_611
   DataType: ui32
   OrigDataType: word32
-T_630: (in 0x403340<32> : word32)
+T_630: (in 0x00403340<p32> : ptr32)
   Class: Eq_630
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_631 t0000)))
-T_631: (in Mem87[0x403340<32>:word32] : word32)
+T_631: (in Mem87[0x00403340<p32>:word32] : word32)
   Class: Eq_611
   DataType: ui32
   OrigDataType: word32
-T_632: (in 0x403344<32> : word32)
+T_632: (in 0x00403344<p32> : ptr32)
   Class: Eq_632
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_633 t0000)))
-T_633: (in Mem91[0x403344<32>:word32] : word32)
+T_633: (in Mem91[0x00403344<p32>:word32] : word32)
   Class: Eq_611
   DataType: ui32
   OrigDataType: word32
@@ -2924,19 +2924,19 @@ T_635: (in Mem99[0x00403348<p32>:word32] : word32)
   Class: Eq_611
   DataType: ui32
   OrigDataType: word32
-T_636: (in 0x40334C<32> : word32)
+T_636: (in 0x0040334C<p32> : ptr32)
   Class: Eq_636
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_637 t0000)))
-T_637: (in Mem103[0x40334C<32>:word32] : word32)
+T_637: (in Mem103[0x0040334C<p32>:word32] : word32)
   Class: Eq_611
   DataType: ui32
   OrigDataType: word32
-T_638: (in 0x403350<32> : word32)
+T_638: (in 0x00403350<p32> : ptr32)
   Class: Eq_638
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_639 t0000)))
-T_639: (in Mem107[0x403350<32>:word32] : word32)
+T_639: (in Mem107[0x00403350<p32>:word32] : word32)
   Class: Eq_611
   DataType: ui32
   OrigDataType: word32

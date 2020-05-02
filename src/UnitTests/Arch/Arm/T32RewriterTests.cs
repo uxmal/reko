@@ -6465,9 +6465,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("DFE802F0");	// tbb [pc, r2]
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto 0x00100004<p32> + Mem0[0x00100004<p32> + r2:byte] * 2<8>");   //$LIT 2<32>? sext?
+                "1|T--|goto 0x00100004<p32> + (uint32) Mem0[0x00100004<p32> + r2:byte] * 2<u32>");
         }
-
 
         [Test]
         public void ThumbRw_tbh()
@@ -6475,7 +6474,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("DFE813F0");	// tbh [pc, r3, lsl #1]
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto 0x00100004<p32> + Mem0[0x00100004<p32> + r3 * 2<32>:word16] * 2<16>");//$LIST 2<32>? sext?
+                "1|T--|goto 0x00100004<p32> + (uint32) Mem0[0x00100004<p32> + r3 * 2<32>:word16] * 2<u32>");
         }
 
         [Test]

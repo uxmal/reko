@@ -60,7 +60,7 @@ l0C00_0019:
 	// succ:  l0C00_0019_1 l0C00_001B
 l0C00_0019_1:
 	SCZO = cond(al - Mem0[es:di:byte])
-	di = di + 1<16>
+	di = di + 1<i16>
 	cx = cx - 1<16>
 	branch Test(NE,Z) l0C00_0019
 	// succ:  l0C00_001B l0C00_0019

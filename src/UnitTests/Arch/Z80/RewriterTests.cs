@@ -270,7 +270,7 @@ namespace Reko.UnitTests.Arch.Z80
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|Z = cond(a - Mem0[hl:byte])",
                 "2|L--|hl = hl - 1<i16>",
-                "3|L--|bc = bc - 1<i16>",               //$LIT: bc should be treated as a unsigned
+                "3|L--|bc = bc - 1<16>", 
                 "4|T--|if (bc == 0<16>) branch 0102",
                 "5|T--|if (Test(NE,Z)) branch 0100");
         }

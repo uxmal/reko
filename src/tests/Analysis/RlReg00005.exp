@@ -40,7 +40,7 @@ l0C00_0019:
 l0C00_0019_1:
 	SCZO_17 = cond(0<8> - Mem0[ds:di_15:byte])
 	Z_20 = SLICE(SCZO_17, bool, 2) (alias)
-	di_18 = di_15 + 1<16>
+	di_18 = di_15 + 1<i16>
 	cx_19 = cx_12 - 1<16>
 	ch_52 = SLICE(cx_19, byte, 8) (alias)
 	branch Mem0[ds:di_15:byte] != 0<8> l0C00_0019

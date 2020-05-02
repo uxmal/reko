@@ -22,7 +22,7 @@ void fn00000000004028C0(char ** rsi, word32 edi, ptr64 r9, struct Eq_n * fs, Eq_
 	globals->b61B0F0 = 0x00;
 	char ** rbp_n = rsi;
 	int32 ebx_n = (word32) (uint64) edi;
-	Eq_n rsp_n = fp - 952;
+	Eq_n rsp_n = fp - 0x03B8;
 	if (eax_n != 0x02)
 	{
 		if (eax_n != 0x03)
@@ -1943,7 +1943,7 @@ FILE * fn00000000004052D0(FILE * rcx, struct Eq_n * rdx, Eq_n rsi, FILE * rdi, E
 	Eq_n qwLoc2070_n = (word64) fp - 8264;
 	if (rax_n > 0x1FFF)
 	{
-		word64 v24_n = fp - 8328 - (rax_n + 0x1F & ~0x0F) + 0x0F & ~0x0F;
+		word64 v24_n = fp - 0x2088 - (rax_n + 0x1F & ~0x0F) + 0x0F & ~0x0F;
 		qwLoc2070_n = v24_n;
 		rax_32_32_n = SLICE(fn000000000040E6F0(~0x00, rsi, (word64) rax_n + 1, v24_n, rdx, fs, out rsi_n, out r8_n), word32, 32);
 	}
@@ -2928,10 +2928,10 @@ word64 fn0000000000406A80(Eq_n rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 		word32 rax_32_32_n = SLICE(rax_n, word32, 32);
 		if (rax_n != null && SEQ(rax_32_32_n, strlen(rsi)) <= 101)
 		{
-			char * rax_n = __mempcpy_chk(fp - 312, rsi, rax_n - rsi, 0x0105);
+			char * rax_n = __mempcpy_chk(fp - 0x0138, rsi, rax_n - rsi, 0x0105);
 			int64 rcx_n = (int64) *((word64) rdx + 16);
 			strcpy(stpcpy(rax_n, rcx_n + 0x0061A760 + rcx_n * 0xA0), rax_n + 2);
-			rbx_n = fp - 312;
+			rbx_n = fp - 0x0138;
 		}
 	}
 	word64 rax_n = fn0000000000410600(rdx, rbx_n, 1001, rdi, fs);
@@ -3668,7 +3668,7 @@ l0000000000407F68:
 					byte r15b_n = (byte) (word32) *rcx;
 					if (r15b_n != 0x00)
 					{
-						Eq_n rax_n = (word64) (fp - 936 - ((SEQ(rax_32_32_n, strlen(rdi)) + 0x20) + SEQ(rax_32_32_n, strlen(rcx)) & ~0x0F)) + 0x0F & ~0x0F;
+						Eq_n rax_n = (word64) (fp - 0x03A8 - ((SEQ(rax_32_32_n, strlen(rdi)) + 0x20) + SEQ(rax_32_32_n, strlen(rcx)) & ~0x0F)) + 0x0F & ~0x0F;
 						byte sil_n = (byte) (uint64) esi_n;
 						ecx_n = (word32) (uint64) ecx_n;
 						r12_n = rax_n;

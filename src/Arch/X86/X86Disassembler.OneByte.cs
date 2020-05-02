@@ -150,55 +150,23 @@ namespace Reko.Arch.X86
 				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
 
 				// 50
-				Amd64Instr(
-                    Instr(Mnemonic.push, rv),
-                    Instr(Mnemonic.push, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.push, rv),
-                    Instr(Mnemonic.push, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.push, rv),
-                    Instr(Mnemonic.push, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.push, rv),
-                    Instr(Mnemonic.push, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.push, rv),
-                    Instr(Mnemonic.push, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.push, rv),
-                    Instr(Mnemonic.push, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.push, rv),
-                    Instr(Mnemonic.push, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.push, rv),
-                    Instr(Mnemonic.push, rq)),
+                Instr(Mnemonic.push, rV),
+                Instr(Mnemonic.push, rV),
+                Instr(Mnemonic.push, rV),
+                Instr(Mnemonic.push, rV),
+                Instr(Mnemonic.push, rV),
+                Instr(Mnemonic.push, rV),
+                Instr(Mnemonic.push, rV),
+                Instr(Mnemonic.push, rV),
 
-				Amd64Instr(
-                    Instr(Mnemonic.pop, rv),
-                    Instr(Mnemonic.pop, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.pop, rv),
-                    Instr(Mnemonic.pop, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.pop, rv),
-                    Instr(Mnemonic.pop, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.pop, rv),
-                    Instr(Mnemonic.pop, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.pop, rv),
-                    Instr(Mnemonic.pop, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.pop, rv),
-                    Instr(Mnemonic.pop, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.pop, rv),
-                    Instr(Mnemonic.pop, rq)),
-				Amd64Instr(
-                    Instr(Mnemonic.pop, rv),
-                    Instr(Mnemonic.pop, rq)),
+                Instr(Mnemonic.pop, rV),
+                Instr(Mnemonic.pop, rV),
+                Instr(Mnemonic.pop, rV),
+                Instr(Mnemonic.pop, rV),
+                Instr(Mnemonic.pop, rV),
+                Instr(Mnemonic.pop, rV),
+                Instr(Mnemonic.pop, rV),
+                Instr(Mnemonic.pop, rV),
 
 				// 60
 				Amd64Instr(

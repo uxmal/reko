@@ -71,8 +71,8 @@ l0C00_00D8:
 	// succ:  l0C00_00D8_1 l0C00_00DB
 l0C00_00D8_1:
 	Mem256[es_84:di_255:word32] = Mem252[ds_93:si_251:word32]
-	si_251 = si_251 + 4<16>
-	di_255 = di_255 + 4<16>
+	si_251 = si_251 + 4<i16>
+	di_255 = di_255 + 4<i16>
 	cx_259 = cx_259 - 1<16>
 	goto l0C00_00D8
 	// succ:  l0C00_00D8
@@ -92,8 +92,8 @@ l0C00_00F5:
 	// succ:  l0C00_00F5_1 l0C00_00F8
 l0C00_00F5_1:
 	Mem246[es_107:di_108:word32] = Mem242[ds_111:si_113:word32]
-	si_113 = si_113 + 4<16>
-	di_108 = di_108 + 4<16>
+	si_113 = si_113 + 4<i16>
+	di_108 = di_108 + 4<i16>
 	cx_116 = cx_116 - 1<16>
 	goto l0C00_00F5
 	// succ:  l0C00_00F5
@@ -287,8 +287,8 @@ void fn0C00_0000(selector ds)
 		for (cx_259 = 0x4000<16>; cx_259 != 0<16>; --cx_259)
 		{
 			Mem256[es_84:di_255:word32] = Mem252[ds_93:si_251:word32];
-			si_251 += 4<16>;
-			di_255 += 4<16>;
+			si_251 += 4<i16>;
+			di_255 += 4<i16>;
 		}
 		Mem103[ss:sp_88:word16] = 0x800<16>;
 		selector ds_104 = Mem103[ss:sp_88:selector];
@@ -302,8 +302,8 @@ void fn0C00_0000(selector ds)
 		for (cx_116 = 0x4000<16>; cx_116 != 0<16>; --cx_116)
 		{
 			Mem246[es_107:di_108:word32] = Mem242[ds_111:si_113:word32];
-			si_113 += 4<16>;
-			di_108 += 4<16>;
+			si_113 += 4<i16>;
+			di_108 += 4<i16>;
 		}
 		Mem121[ss:sp_88:word16] = 0x800<16>;
 		selector ds_122 = Mem121[ss:sp_88:selector];

@@ -248,7 +248,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 ea = m.IAdd(tableBase, idxReg);
             }
-            m.Goto(m.IAdd(instr.Address + this.pcValueOffset, m.IMul(m.Mem(elemSize, ea), 2)));
+            m.Goto(m.IAdd(
+                instr.Address + this.pcValueOffset,
+                m.IMul(
+                    m.Cast(PrimitiveType.UInt32, m.Mem(elemSize, ea)),
+                    2)));
         }
 
         private void RewriteTeq()

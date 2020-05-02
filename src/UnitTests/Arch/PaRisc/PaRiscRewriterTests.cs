@@ -428,7 +428,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscRw_subi()
         {
-            Given_HexString("97E40002");	// subi	+00000002,r31,r4
+            Given_HexString("97E40002");	// subi	+00000001,r31,r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = r31 - 1<i32>");     //$LIT

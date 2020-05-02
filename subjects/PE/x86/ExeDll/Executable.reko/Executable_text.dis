@@ -329,11 +329,11 @@ l004014F3:
 	word32 eax_55 = Mem11[0x00403004<p32>:word32]
 	word32 eax_76 = __ror(eax_55 & 0x1F<32> | 0xFFFFFFFF<32>, SLICE(0x20<32> - (eax_55 & 0x1F<32>), byte, 0)) ^ Mem68[0x00403004<p32>:word32]
 	Mem83[0x0040333C<p32>:word32] = eax_76
-	Mem87[0x403340<32>:word32] = eax_76
-	Mem91[0x403344<32>:word32] = eax_76
+	Mem87[0x00403340<p32>:word32] = eax_76
+	Mem91[0x00403344<p32>:word32] = eax_76
 	Mem99[0x00403348<p32>:word32] = eax_76
-	Mem103[0x40334C<32>:word32] = eax_76
-	Mem107[0x403350<32>:word32] = eax_76
+	Mem103[0x0040334C<p32>:word32] = eax_76
+	Mem107[0x00403350<p32>:word32] = eax_76
 l004014CD:
 	word32 esp_116
 	word32 eax_117

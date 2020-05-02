@@ -553,7 +553,7 @@ namespace Reko.Arch.X86
             var rsrc = instrCur.Operands[1] as RegisterOperand;
             if (rdst != null && rsrc != null && rdst.Register.Number == rsrc.Register.Number)
             { // selfie!
-                m.Assign(orw.AluRegister(rdst), m.Cast(rdst.Width, Constant.Int32(0)));
+                m.Assign(orw.AluRegister(rdst), Constant.Zero(rdst.Width));
                 return;
             }
             var dst = this.SrcOp(instrCur.Operands[0]);

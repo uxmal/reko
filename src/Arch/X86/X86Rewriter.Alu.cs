@@ -342,9 +342,9 @@ namespace Reko.Arch.X86
         {
             if (right is Constant c)
             {
-                if (c.DataType == PrimitiveType.Byte && left.DataType != c.DataType)
+                if (c.DataType.BitSize  < left.DataType.BitSize)
                 {
-                    right = m.Const(left.DataType, c.ToInt32());
+                    right = m.Const(left.DataType, c.ToInt64());
                 }
             }
             EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), flags);
@@ -1134,11 +1134,11 @@ namespace Reko.Arch.X86
         {
             Constant direction = state.GetFlagGroup((uint)FlagM.DF);
             if (direction == null || !direction.IsValid)
-                return m.IAdd;        // Better safe than sorry.
+                return m.IAddS;        // Better safe than sorry.
             if (direction.ToBoolean())
-                return m.ISub;
+                return m.ISubS;
             else
-                return m.IAdd;
+                return m.IAddS;
         }
 
         private void RewriteSti()

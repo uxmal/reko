@@ -32,7 +32,7 @@ l0C00_0000:
 	// succ:  l0C00_0008
 l0C00_0008:
 	al = Mem0[ds:si:byte]
-	si = si + 1<16>
+	si = si + 1<i16>
 	SCZO = cond(al - ah)
 	cx = cx - 1<16>
 	branch Test(NE,Z) && cx != 0<16> l0C00_0008
@@ -40,14 +40,14 @@ l0C00_0008:
 l0C00_000D:
 	si = Mem0[ds:0x100<16>:word16]
 	ax = Mem0[ds:si:word16]
-	si = si + 2<16>
+	si = si + 2<i16>
 	al = al ^ al
 	SZO = cond(al)
 	C = false
 	// succ:  l0C00_0014
 l0C00_0014:
 	Mem0[es:di:byte] = al
-	di = di + 1<16>
+	di = di + 1<i16>
 	cx = cx - 1<16>
 	branch cx != 0<16> l0C00_0014
 	// succ:  l0C00_0017 l0C00_0014

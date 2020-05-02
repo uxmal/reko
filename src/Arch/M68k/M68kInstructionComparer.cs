@@ -221,25 +221,25 @@ namespace Reko.Arch.M68k
                 int h = 53;
                 if (!NormalizeRegisters)
                 {
-                    if (indexOp.base_reg != null)
+                    if (indexOp.Base != null)
                     {
-                        h = h * 7 ^ GetRegisterHash(indexOp.base_reg);
+                        h = h * 7 ^ GetRegisterHash(indexOp.Base);
                     }
-                    if (indexOp.index_reg != null)
+                    if (indexOp.Index != null)
                     {
-                        h = h * 11 ^ GetRegisterHash(indexOp.index_reg);
+                        h = h * 11 ^ GetRegisterHash(indexOp.Index);
                         h = h * 13 ^ indexOp.index_reg_width.GetHashCode();
                     }
                 }
                 if (!NormalizeConstants)
                 {
-                    if (indexOp.Base != null)
+                    if (indexOp.BaseDisplacement != null)
                     {
-                        h = h * 17 ^ indexOp.Base.GetHashCode();
+                        h = h * 17 ^ indexOp.BaseDisplacement.GetHashCode();
                     }
-                    if (indexOp.index_scale != 0)
+                    if (indexOp.IndexScale != 0)
                     {
-                        h = h * 19 ^ indexOp.index_scale;
+                        h = h * 19 ^ indexOp.IndexScale;
                     }
                 }
                 return h;

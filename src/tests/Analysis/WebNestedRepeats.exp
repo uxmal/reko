@@ -9,7 +9,7 @@ l0C00_0000:
 	word16 di_20 = 4<16>
 	// succ:  l0C00_0008
 l0C00_0008:
-	si = si + 2<16>
+	si = si + 2<i16>
 	dx_14 = dx_14 + Mem0[ds:si:word16]
 	cx_17 = cx_17 - 1<16>
 	branch cx_17 != 0<16> l0C00_0008

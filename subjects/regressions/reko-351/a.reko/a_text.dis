@@ -80,7 +80,7 @@ l8000012C:
 	word32 a7_56 = <invalid>
 	branch null == 0<32> l80000144
 l8000013A:
-	Mem68[a7_56 - 4<32>:word32] = 0x8000065C<p32>
+	Mem68[a7_56 - 4<i32>:word32] = 0x8000065C<p32>
 	word32 d0_75
 	word32 a0_76
 	word32 d1_77

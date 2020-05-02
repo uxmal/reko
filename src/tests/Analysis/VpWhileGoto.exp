@@ -16,7 +16,7 @@ bx_5: orig: bx
 si_7: orig: si
     def:  si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
     uses: ax_9 = Mem8[ds:si_7:word16]
-          si_10 = si_7 + 2<16>
+          si_10 = si_7 + 2<i16>
 Mem8: orig: Mem0
     def:  Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
     uses: ax_9 = Mem8[ds:si_7:word16]
@@ -28,7 +28,7 @@ ax_9: orig: ax
           ax_15 = ax_9 | ax_9
           branch ax_9 != 0x20<16> l0C00_0005
 si_10: orig: si
-    def:  si_10 = si_7 + 2<16>
+    def:  si_10 = si_7 + 2<i16>
     uses: ax_25 = si_10
           si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
           si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
@@ -140,7 +140,7 @@ l0C00_001A:
 	Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
 	si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
 	ax_9 = Mem8[ds:si_7:word16]
-	si_10 = si_7 + 2<16>
+	si_10 = si_7 + 2<i16>
 	SCZO_11 = cond(ax_9 - 0x20<16>)
 	Z_12 = SLICE(SCZO_11, bool, 2) (alias)
 	branch ax_9 != 0x20<16> l0C00_0005
@@ -174,7 +174,7 @@ bx_5: orig: bx
 si_7: orig: si
     def:  si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
     uses: ax_9 = Mem8[ds:si_7:word16]
-          si_10 = si_7 + 2<16>
+          si_10 = si_7 + 2<i16>
 Mem8: orig: Mem0
     def:  Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
     uses: ax_9 = Mem8[ds:si_7:word16]
@@ -189,7 +189,7 @@ ax_9: orig: ax
           SCZO_19 = cond(ax_9 - 0xD<16>)
           branch ax_9 != 0xD<16> l0C00_001A
 si_10: orig: si
-    def:  si_10 = si_7 + 2<16>
+    def:  si_10 = si_7 + 2<i16>
     uses: ax_25 = si_10
           ax_27 = si_10 - si
           si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
@@ -297,7 +297,7 @@ l0C00_001A:
 	Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
 	si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))
 	ax_9 = Mem8[ds:si_7:word16]
-	si_10 = si_7 + 2<16>
+	si_10 = si_7 + 2<i16>
 	SCZO_11 = cond(ax_9 - 0x20<16>)
 	Z_12 = SLICE(SCZO_11, bool, 2) (alias)
 	branch ax_9 != 0x20<16> l0C00_0005

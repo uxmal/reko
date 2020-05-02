@@ -331,11 +331,11 @@ T_74: (in 8000065C : ptr32)
   Class: Eq_74
   DataType: ptr32
   OrigDataType: ptr32
-T_75: (in 4<32> : word32)
+T_75: (in 4<i32> : int32)
   Class: Eq_75
-  DataType: ui32
-  OrigDataType: ui32
-T_76: (in a7_56 - 4<32> : word32)
+  DataType: int32
+  OrigDataType: int32
+T_76: (in a7_56 - 4<i32> : word32)
   Class: Eq_76
   DataType: (ptr32 ptr32)
   OrigDataType: (ptr32 (struct (0 T_79 t0000)))
@@ -343,11 +343,11 @@ T_77: (in 0<32> : word32)
   Class: Eq_77
   DataType: word32
   OrigDataType: word32
-T_78: (in a7_56 - 4<32> + 0<32> : word32)
+T_78: (in a7_56 - 4<i32> + 0<32> : word32)
   Class: Eq_78
   DataType: word32
   OrigDataType: word32
-T_79: (in Mem68[a7_56 - 4<32> + 0<32>:word32] : word32)
+T_79: (in Mem68[a7_56 - 4<i32> + 0<32>:word32] : word32)
   Class: Eq_74
   DataType: ptr32
   OrigDataType: word32

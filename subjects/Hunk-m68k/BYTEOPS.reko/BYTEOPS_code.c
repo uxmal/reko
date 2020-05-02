@@ -959,9 +959,9 @@ l00001BC4:
 					{
 						struct Eq_n ** a7_n = a7_n - 4;
 						*a7_n = (struct Eq_n **) a5_n;
-						*(a7_n - 0x04) = 0x30;
+						*(a7_n - 4) = 0x30;
 						word32 a0_n;
-						d0_n = fn00001DD8(*(a7_n - 0x04), *a7_n, out a0_n, out a5_n);
+						d0_n = fn00001DD8(*(a7_n - 4), *a7_n, out a0_n, out a5_n);
 						if (d0_n == ~0x00)
 						{
 							d0_n = d6_n;
@@ -1002,9 +1002,9 @@ l00001BC4:
 						{
 							struct Eq_n ** a7_n = a7_n - 4;
 							*a7_n = (struct Eq_n **) a5_n;
-							*(a7_n - 0x04) = 0x20;
+							*(a7_n - 4) = 0x20;
 							word32 a0_n;
-							d0 = fn00001DD8(*(a7_n - 0x04), *a7_n, out a0_n, out a5_n);
+							d0 = fn00001DD8(*(a7_n - 4), *a7_n, out a0_n, out a5_n);
 							if (d0 == ~0x00)
 							{
 								d0_n = d6_n;

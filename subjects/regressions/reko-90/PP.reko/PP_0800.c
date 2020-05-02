@@ -11347,7 +11347,7 @@ l0800_n:
 		if (al_n * 0x02 == 0x00)
 		{
 			al_n = ax_n->*(si_n & 0x0F) * 0x02 + (al_n * 0x02 < 0x00);
-			si_n = (si_n & 0x0F) + 0x01;
+			si_n = (si_n & 0x0F) + 1;
 			C_n = SLICE(cond(al_n), bool, 1);
 		}
 	} while (!C_n);
@@ -11367,7 +11367,7 @@ word16 fn0800-87EF(word32 ds_si)
 word16 fn0800-87F4(word32 ds_si)
 {
 	word16 si = (word16) ds_si;
-	return si + 0x02;
+	return si + 2;
 }
 
 // 0800:87F8: void fn0800-87F8(Register Eq_n ds)
@@ -12487,12 +12487,12 @@ l0800_n:
 							es_di_n.u0 = <invalid>;
 							*es_di_n.u0 = ax_n;
 							di_n = (word16) es_di_n;
-							di_n = di_n + 0x02;
+							di_n = di_n + 2;
 							if ((bLoc03_n & 0x04) != 0x00)
 							{
 								*((byte) es_di_n.u0 + 2) = dx_n;
 								dx_n = ax_n;
-								di_n = di_n + 0x04;
+								di_n = di_n + 4;
 							}
 						}
 						dx_n = ϕ(dx_n, dx_n, dx_n);
@@ -13117,7 +13117,7 @@ word16 fn0800-9820(byte * es_di, byte al)
 	byte al_n = (bool) __daa(al + 0x90, &(al + 0x90)) + (al + 0xD0);
 	__daa(al_n, &al_n);
 	*es_di = al_n;
-	return di + 0x01;
+	return di + 1;
 }
 
 // 0800:9828: Register word16 fn0800-9828(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 siOut, Register out ptr16 diOut)

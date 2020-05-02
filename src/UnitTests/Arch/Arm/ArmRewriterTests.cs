@@ -466,7 +466,7 @@ means
             Given_UInt32s(0xF2C00051); // vmov.i32 q8,#1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q8 = SEQ(0x100000001<64>, 0x100000001<64>)");    //$LIT: maybe a <128>?
+                "1|L--|q8 = SEQ(0x100000001<64>, 0x100000001<64>)");    //$TODO: support for 128-bit and larger constants LIT: maybe a <128>?
         }
 
         [Test]

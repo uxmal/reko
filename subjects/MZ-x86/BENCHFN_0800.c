@@ -333,7 +333,7 @@ Eq_n fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, Eq_n cx, ptr16 & 
 			ax_n = SEQ(al_n, al_n);
 			if (al_n == 0x5C && ds_si->b0001 == 0x22)
 			{
-				si += 0x02;
+				si += 2;
 				cx -= 0x02;
 				ax_n = SEQ(al_n, ds_si->b0001);
 			}
@@ -1079,7 +1079,7 @@ word16 fn0800-1048(struct Eq_n * es_di, Eq_n ds, Eq_n wArg02)
 	bcu8 dl_n = (byte) wArg02;
 	es_di->b0002 = (uint16) (dl_n >> 0x04) + 0x04E9;
 	es_di->b0003 = (uint16) (dl_n & 0x0F) + 0x04E9;
-	return di + 0x04;
+	return di + 4;
 }
 
 // 0800:1073: Register word16 __VPRINTER(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
@@ -2082,12 +2082,12 @@ l0800_nE:
 							es_di_n.u0->w0000 = ax_n;
 							word16 di_n = (word16) es_di_n;
 							es = SLICE(es_di_n, selector, 16);
-							di = di_n + 0x02;
+							di = di_n + 2;
 							if ((bLoc2B_n & 0x04) != 0x00)
 							{
 								es_di_n.u0->w0002 = dx;
 								dx = ax_n;
-								di = di_n + 0x04;
+								di = di_n + 4;
 							}
 						}
 						goto l0800_n;

@@ -480,31 +480,31 @@ namespace Reko.Arch.M68k
             var indop = op as IndexedOperand;
             if (indop != null)
             {
-                var c = indop.Base;
-                if (indop.base_reg == Registers.pc)
+                var c = indop.BaseDisplacement;
+                if (indop.Base == Registers.pc)
                 {
                     var addr = instr.Address + c.ToInt32();
                     return addr;
                 }
-                Expression ea = orw.Combine(indop.Base, indop.base_reg, instr.Address);
+                Expression ea = orw.Combine(indop.BaseDisplacement, indop.Base, instr.Address);
                 if (indop.postindex)
                 {
                     ea = m.Mem32(ea);
                 }
-                if (indop.index_reg != null)
+                if (indop.Index != null)
                 {
-                    var idx = orw.Combine(null, indop.index_reg, instr.Address);
+                    var idx = orw.Combine(null, indop.Index, instr.Address);
                     if (indop.index_reg_width.BitSize != 32)
                         idx = m.Cast(PrimitiveType.Word32, m.Slice(PrimitiveType.Int16, idx, 0));
-                    if (indop.index_scale > 1)
-                        idx = m.IMul(idx, m.Int32(indop.index_scale));
+                    if (indop.IndexScale > 1)
+                        idx = m.IMul(idx, m.Int32(indop.IndexScale));
                     ea = orw.Combine(ea, idx);
                 }
                 if (indop.preindex)
                 {
                     ea = m.Mem32(ea);
                 }
-                ea = orw.Combine(ea, indop.outer);
+                ea = orw.Combine(ea, indop.OuterDisplacement);
                 return ea;
             }
             var indIdx = instr.Operands[0] as IndirectIndexedOperand;
@@ -549,7 +549,7 @@ namespace Reko.Arch.M68k
         public void RewritePea()
         {
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(sp, m.ISub(sp, 4));
+            m.Assign(sp, m.ISubS(sp, 4));
             var ea = GetEffectiveAddress(instr.Operands[0]);
             m.Assign(m.Mem32(sp), ea);
         }
@@ -775,7 +775,7 @@ namespace Reko.Arch.M68k
             var aSp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(aSp, aReg);
             m.Assign(aReg, m.Mem32(aSp));
-            m.Assign(aSp, m.IAdd(aSp, 4));
+            m.Assign(aSp, m.IAddS(aSp, 4));
         }
 
         private void Copy(Expression dst, Expression src, int bitSize)

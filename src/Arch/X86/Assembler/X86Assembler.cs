@@ -701,16 +701,11 @@ namespace Reko.Arch.X86.Assembler
                 {
                     int mask = (fPop ? 1 : 0);
                     if (regOp.Register == Registers.es) emitter.EmitByte(0x06 | mask);
-                    else
-                        if (regOp.Register == Registers.cs) emitter.EmitByte(0x0E | mask);
-                        else
-                            if (regOp.Register == Registers.ss) emitter.EmitByte(0x16 | mask);
-                            else
-                                if (regOp.Register == Registers.ds) emitter.EmitByte(0x1E | mask);
-                                else
-                                    if (regOp.Register == Registers.fs) { emitter.EmitByte(0x0F); emitter.EmitByte(0xA0 | mask); }
-                                    else
-                                        if (regOp.Register == Registers.gs) { emitter.EmitByte(0x0F); emitter.EmitByte(0xA8 | mask); }
+                    else if (regOp.Register == Registers.cs) emitter.EmitByte(0x0E | mask);
+                    else if (regOp.Register == Registers.ss) emitter.EmitByte(0x16 | mask);
+                    else if (regOp.Register == Registers.ds) emitter.EmitByte(0x1E | mask);
+                    else if (regOp.Register == Registers.fs) { emitter.EmitByte(0x0F); emitter.EmitByte(0xA0 | mask); }
+                    else if (regOp.Register == Registers.gs) { emitter.EmitByte(0x0F); emitter.EmitByte(0xA8 | mask); }
                 }
                 return;
             }

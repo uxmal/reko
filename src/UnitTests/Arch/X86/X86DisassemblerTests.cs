@@ -3118,5 +3118,11 @@ movzx	ax,byte ptr [bp+04]
             AssertCode64("mov\trax,cs",      "66 48 8c c8 ");       // REX prefix wins
             AssertCode64("mov\tax,cs",       "48 66 8c c8 ");        // data size override prefix wins
         }
+
+        [Test]
+        public void X86Dis_push_64_size_override()
+        {
+            AssertCode64("push\tcx", "66 51");
+        }
     }
 }

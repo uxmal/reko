@@ -224,7 +224,7 @@ namespace Reko.Arch.PowerPC
                 return null;
             if (mem.BaseRegister != reg)
                 return null;
-            uAddr = (uint)((int)uAddr + mem.Offset.ToInt32());
+            uAddr = (uint)((int)uAddr + mem.Offset);
             reg = ((RegisterOperand)e.Current.Operands[0]).Register;
 
             if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.mtctr)

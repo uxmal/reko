@@ -111,25 +111,25 @@ namespace Reko.Arch.M68k
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
                 return m.Mem(DataWidth, m.IAdd(ea, ix));
             case IndexedOperand indop:  
-                ea = Combine(indop.Base, indop.base_reg, addrInstr);
+                ea = Combine(indop.BaseDisplacement, indop.Base, addrInstr);
                 if (indop.postindex)
                 {
                     ea = m.Mem32(ea);
                 }
-                if (indop.index_reg != null)
+                if (indop.Index != null)
                 {
-                    var idx = Combine(null, indop.index_reg, addrInstr);
+                    var idx = Combine(null, indop.Index, addrInstr);
                     if (indop.index_reg_width.BitSize != 32)
                         idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
-                    if (indop.index_scale > 1)
-                        idx = m.IMul(idx, indop.index_scale);
+                    if (indop.IndexScale > 1)
+                        idx = m.IMul(idx, indop.IndexScale);
                     ea = Combine(ea, idx);
                 }
                 if (indop.preindex)
                 {
                     ea = m.Mem32(ea);
                 }
-                ea = Combine(ea, indop.outer);
+                ea = Combine(ea, indop.OuterDisplacement);
                 return m.Mem(DataWidth, ea);
             }
             throw new NotImplementedException("Unimplemented RewriteSrc for operand type " + operand.GetType().Name);
@@ -182,6 +182,8 @@ namespace Reko.Arch.M68k
                 return e;
             if (e == null)
                 return o;
+            if (o is Constant c && c.DataType.BitSize < 32)
+                o = Constant.Int32(c.ToInt32());    // Sign extend displacements shorter than a pointer.
             return m.IAdd(e, o);
         }
 
@@ -388,25 +390,25 @@ namespace Reko.Arch.M68k
                 }
             case IndexedOperand indop:
                 {
-                    Expression ea = Combine(indop.Base, indop.base_reg, addrInstr);
+                    Expression ea = Combine(indop.BaseDisplacement, indop.Base, addrInstr);
                     if (indop.postindex)
                     {
                         ea = m.Mem32(ea);
                     }
-                    if (indop.index_reg != null)
+                    if (indop.Index != null)
                     {
-                        var idx = Combine(null, indop.index_reg, addrInstr);
+                        var idx = Combine(null, indop.Index, addrInstr);
                         if (indop.index_reg_width.BitSize != 32)
                             idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
-                        if (indop.index_scale > 1)
-                            idx = m.IMul(idx, m.Int32(indop.index_scale));
+                        if (indop.IndexScale > 1)
+                            idx = m.IMul(idx, m.Int32(indop.IndexScale));
                         ea = Combine(ea, idx);
                     }
                     if (indop.preindex)
                     {
                         ea = m.Mem32(ea);
                     }
-                    ea = Combine(ea, indop.outer);
+                    ea = Combine(ea, indop.OuterDisplacement);
                     var load = m.Mem(DataWidth, ea);
 
                     var tmp = binder.CreateTemporary(dataWidth);
@@ -471,13 +473,13 @@ namespace Reko.Arch.M68k
                 }
             case IndexedOperand idxop:
                 {
-                    var b = binder.EnsureRegister(idxop.base_reg);
-                    var i = binder.EnsureRegister(idxop.index_reg);
+                    var b = binder.EnsureRegister(idxop.Base);
+                    var i = binder.EnsureRegister(idxop.Index);
                     Expression ea = b;
                     if (i != null)
                     {
-                        var s = m.Const(i.DataType, idxop.index_scale);
-                        if (idxop.index_scale > 1)
+                        var s = m.Const(i.DataType, idxop.IndexScale);
+                        if (idxop.IndexScale > 1)
                         {
                             ea = m.IMul(i, s);
                         }
@@ -497,15 +499,15 @@ namespace Reko.Arch.M68k
                             ea = b;
                         }
                     }
-                    if (idxop.Base != null)
+                    if (idxop.BaseDisplacement != null)
                     {
                         if (ea != null)
                         {
-                            ea = m.IAdd(ea, idxop.Base);
+                            ea = m.IAdd(ea, idxop.BaseDisplacement);
                         }
                         else
                         {
-                            ea = idxop.Base;
+                            ea = idxop.BaseDisplacement;
                         }
                     }
                     var load = m.Mem(dataWidth, ea);
@@ -525,7 +527,7 @@ namespace Reko.Arch.M68k
                     m.Assign(
                         m.Mem(
                             dataWidth,
-                            Constant.Word32(mAddr.Address.ToUInt32())),
+                            m.Ptr32(mAddr.Address.ToUInt32())),
                         src);
                     return src;
                 }

@@ -6,8 +6,6 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (40000000 word16 w40000000) (4000003C word32 dw4000003C) (40001ABC (fn int32 ((ptr64 (struct "_exception")))) t40001ABC) (40001B24 (fn LONG ((ptr64 (struct "_EXCEPTION_POINTERS")))) t40001B24) (40002190 (ptr64 code) ptr40002190) (400021A0 PVFV t400021A0) (400021B0 PVFV t400021B0) (400021B8 PVFV t400021B8) (400021D0 PVFV t400021D0) (40002200 (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord)) t40002200) (40002680 word64 qw40002680) (40002690 word64 qw40002690) (40003000 ui64 qw40003000) (40003008 word64 qw40003008) (40003014 word32 dw40003014) (40003018 word32 dw40003018) (4000301C ui32 dw4000301C) (40003020 ui64 qw40003020) (40003030 word32 dw40003030) (40003040 word32 dw40003040) (40003044 word32 dw40003044) (40003050 word64 qw40003050) (40003058 word32 dw40003058) (40003060 word64 qw40003060) (400030E0 CONTEXT t400030E0) (40003160 ui64 qw40003160) (40003178 ptr64 ptr40003178) (400031D8 word64 qw400031D8) (400035B0 word32 dw400035B0) (400035B8 uint64 qw400035B8) (400035C0 Eq_647 t400035C0) (400035D0 Eq_117 t400035D0) (400035D8 uint128 ow400035D8) (400035E8 Eq_117 t400035E8) (400035F0 byte b400035F0) (40003600 (union "_SLIST_HEADER" ((struct "struct_59" (0 SINGLE_LIST_ENTRY Next) (4 WORD Depth) (6 WORD Sequence)) u1) (ULONGLONG Alignment)) u40003600) (40003610 ui32 dw40003610) (40003614 ui32 dw40003614))
 	globals_t (in globals : (ptr64 (struct "Globals")))
-Eq_7: (union "Eq_7" (int32 u0) (ui64 u1))
-	T_7 (in 200<i32> : int32)
 Eq_10: (fn void (ptr64, uint64, ptr64, ptr64))
 	T_10 (in fn0000000140001140 : ptr64)
 	T_11 (in signature of fn0000000140001140 : void)
@@ -484,15 +482,15 @@ T_6: (in fp : ptr64)
   Class: Eq_6
   DataType: ptr64
   OrigDataType: ptr64
-T_7: (in 200<i32> : int32)
+T_7: (in 0xC8<64> : word64)
   Class: Eq_7
-  DataType: int32
-  OrigDataType: (union (int32 u0) (ui64 u1))
-T_8: (in fp - 200<i32> : word64)
+  DataType: ui64
+  OrigDataType: ui64
+T_8: (in fp - 0xC8<64> : word64)
   Class: Eq_8
   DataType: ptr64
   OrigDataType: ptr64
-T_9: (in globals->qw40003000 ^ fp - 200<i32> : word64)
+T_9: (in globals->qw40003000 ^ fp - 0xC8<64> : word64)
   Class: Eq_3
   DataType: ui64
   OrigDataType: ui64
@@ -599,7 +597,7 @@ T_34: (in fn00000001400010D0(0x140002228<u64>, fp - 0x7C<64>, fp - 0x70<64>, fp 
 T_35: (in fn00000001400011B0 : ptr64)
   Class: Eq_35
   DataType: (ptr64 Eq_35)
-  OrigDataType: 
+  OrigDataType: (ptr64 (fn T_42 (T_40, T_41)))
 T_36: (in signature of fn00000001400011B0 : void)
   Class: Eq_35
   DataType: (ptr64 Eq_35)
@@ -612,22 +610,22 @@ T_38: (in qwArg00 : word64)
   Class: Eq_38
   DataType: word64
   OrigDataType: word64
-T_39: (in fp - 200<i32> : word64)
+T_39: (in fp - 0xC8<64> : word64)
   Class: Eq_39
-  DataType: Eq_39
-  OrigDataType: 
-T_40: (in rax_6 ^ fp - 200<i32> : word64)
+  DataType: ptr64
+  OrigDataType: ptr64
+T_40: (in rax_6 ^ fp - 0xC8<64> : word64)
   Class: Eq_5
   DataType: ui64
-  OrigDataType: 
+  OrigDataType: ui64
 T_41: (in qwLocD0 : word64)
   Class: Eq_38
   DataType: word64
-  OrigDataType: 
-T_42: (in fn00000001400011B0(rax_6 ^ fp - 200<i32>, qwLocD0) : word64)
+  OrigDataType: word64
+T_42: (in fn00000001400011B0(rax_6 ^ fp - 0xC8<64>, qwLocD0) : word64)
   Class: Eq_2
   DataType: word64
-  OrigDataType: 
+  OrigDataType: word64
 T_43: (in rax : ptr64)
   Class: Eq_43
   DataType: ptr64
@@ -6229,7 +6227,7 @@ T_1442: (in fn00000001400011B0 : ptr64)
   DataType: (ptr64 Eq_35)
   OrigDataType: (ptr64 (fn T_1443 (T_1432, T_1369)))
 T_1443: (in fn00000001400011B0(r9_48, qwArg00) : word64)
-  Class: Eq_1443
+  Class: Eq_2
   DataType: word64
   OrigDataType: word64
 T_1444: (in rax : (ptr64 code))
@@ -6311,11 +6309,6 @@ union _SLIST_HEADER {
 	ui32 dw40003610;	// 40003610
 	ui32 dw40003614;	// 40003614
 } Eq_1;
-
-typedef union Eq_7 {
-	int32 u0;
-	ui64 u1;
-} Eq_7;
 
 typedef void (Eq_10)(ptr64, uint64, ptr64, ptr64);
 

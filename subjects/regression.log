@@ -199,7 +199,7 @@ Parameter name: index
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 000000000040C39F: error: An error occurred while processing the statement word64 rax_1151 = memcpy(r9_1107 - r15_1094, fp - 0x78<64> + r14_1095, r15_1094).
-    Pulling difference ptr64 and (union ((ptr64 void) u0) (size_t u1))
+    Pulling difference ptr64 and (union ((ptr64 byte) u2) ((ptr64 void) u0) (size_t u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -473,61 +473,6 @@ fn0EF8: warning: Structure analysis stopped making progress, quitting. Please re
 === PE\PPC\hello_ppc.exe
 === PE\m68k\hello_m68k.dcproject
 === PE\x86-64\varargs_test\varargs_test.exe
-*** PE\x86-64\varargs_test\varargs_test.exe
-varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented yet.
-0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
-0000000140001E46: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
-0000000140001E34: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
-0000000140001E2E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
-0000000140001E0A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
-0000000140001168: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
-0000000140001187: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfprintf.
-00000001400010F5: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
-0000000140001114: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfscanf.
-00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
-0000000140001E3A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
-0000000140001E52: warning: Unable to guess parameters of api-ms-win-crt-heap-l1-1-0.dll!_set_new_mode.
-0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
-0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
-0000000140001DEC: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_seh_filter_exe.
-0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
-0000000140001E6A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
-0000000140001E64: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_onexit_function.
-00000001400011CC: warning: Procedure fn00000001400011B0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000140001441: warning: Procedure Win32CrtStartup previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000140001DF2: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_set_app_type.
-0000000140001DFE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_configure_narrow_argv.
-0000000140001E4C: warning: Unable to guess parameters of api-ms-win-crt-locale-l1-1-0.dll!_configthreadlocale.
-0000000140001E04: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_narrow_environment.
-0000000140001DE0: warning: Unable to guess parameters of VCRUNTIME140.dll!__C_specific_handler.
-0000000140001DEC: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_seh_filter_exe.
-0000000140001DF2: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_set_app_type.
-0000000140001DFE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_configure_narrow_argv.
-0000000140001E04: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_narrow_environment.
-0000000140001E0A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
-0000000140001E2E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
-0000000140001E34: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
-0000000140001E3A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
-0000000140001E40: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_c_exit.
-0000000140001E46: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
-0000000140001E4C: warning: Unable to guess parameters of api-ms-win-crt-locale-l1-1-0.dll!_configthreadlocale.
-0000000140001E52: warning: Unable to guess parameters of api-ms-win-crt-heap-l1-1-0.dll!_set_new_mode.
-0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
-0000000140001E64: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_onexit_function.
-0000000140001E6A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
-0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
-00000001400010B0: error: An error occurred while processing the statement return fn00000001400011B0(rax_6 ^ fp - 200<i32>, qwLocD0).
-    Pulling difference ptr64 and (union (int32 u0) (ui64 u1))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 65
-   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 55
-   at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 224
-   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 135
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 === PE\x86\ExeDll\Executable.exe
 === PE\x86\IncorrectUserSignature\IncorrectUserSignature.dcproject
 === PE\x86\RussianText\RussianText.exe
@@ -1080,4 +1025,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 61 binaries in 64.37 seconds ---
+Decompiled 61 binaries in 60.13 seconds ---

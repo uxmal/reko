@@ -12,9 +12,9 @@ fn0C00_0000_entry:
 l0C00_0000:
 	Mem7[ds:0x2FC<16>:word32] = eax * 5<32>
 	Mem11[ds:0x300<16>:word32] = Mem7[ds:si:word32]
-	Mem14[ds:0x304<16>:word32] = Mem11[ds:si + 4<16>:word32]
-	Mem17[ds:0x308<16>:word16] = Mem14[ds:si + 8<16>:word16]
-	Mem20[ds:0x30A<16>:word16] = Mem17[ds:si + 0xA<16>:word16]
+	Mem14[ds:0x304<16>:word32] = Mem11[ds:si + 4<i16>:word32]
+	Mem17[ds:0x308<16>:word16] = Mem14[ds:si + 8<i16>:word16]
+	Mem20[ds:0x30A<16>:word16] = Mem17[ds:si + 10<i16>:word16]
 	fn0C00_0026(es, ds)
 	return
 	// succ:  fn0C00_0000_exit
@@ -39,7 +39,7 @@ l0C00_0030:
 	branch cx_16 == 0<16> l0C00_0032
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
-	di_12 = di_12 + 1<16>
+	di_12 = di_12 + 1<i16>
 	cx_16 = cx_16 - 1<16>
 	branch Mem0[es:di_12:byte] != 0<8> l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030

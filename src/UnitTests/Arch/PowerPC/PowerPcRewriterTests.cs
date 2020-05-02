@@ -160,8 +160,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r2 = Mem0[r1 + 4<i16>:word32]",      //$LIT should be 4<i32>
-                "2|L--|r1 = r1 + 4<i16>"
+                "1|L--|r2 = Mem0[r1 + 4<i32>:word32]",      //$LIT should be 4<i32>
+                "2|L--|r1 = r1 + 4<i32>"
                 );
         }
 
@@ -186,8 +186,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r3 + 18<i16>:byte] = (byte) r2",
-                "2|L--|r3 = r3 + 18<i16>");
+                "1|L--|Mem0[r3 + 18<i32>:byte] = (byte) r2",
+                "2|L--|r3 = r3 + 18<i32>");
         }
 
         [Test]
@@ -1568,7 +1568,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0xE0030000,   // lq	r0,0(r3)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0_r1 = Mem0[r3 + 0<i64>:word128]");
+                "1|L--|r0_r1 = Mem0[r3:word128]");
         }
 
         [Test]

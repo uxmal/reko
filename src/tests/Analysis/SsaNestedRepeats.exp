@@ -27,7 +27,7 @@ O_29: orig: O
 si_10: orig: si
     def:  si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
     uses: ax_12 = Mem0[ds:si_10:word16]
-          si_13 = si_10 + 2<16>
+          si_13 = si_10 + 2<i16>
 C_28: orig: C
     def:  C_28 = SLICE(SCZO_16, bool, 1) (alias)
     uses: use C_28
@@ -36,7 +36,7 @@ ax_12: orig: ax
     uses: dx_15 = dx_14 + ax_12
           use ax_12
 si_13: orig: si
-    def:  si_13 = si_10 + 2<16>
+    def:  si_13 = si_10 + 2<i16>
     uses: si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
           si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
           use si_13
@@ -121,7 +121,7 @@ l0C00_0008:
 	dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
 	si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 	ax_12 = Mem0[ds:si_10:word16]
-	si_13 = si_10 + 2<16>
+	si_13 = si_10 + 2<i16>
 	dx_15 = dx_14 + ax_12
 	SCZO_16 = cond(dx_15)
 	C_28 = SLICE(SCZO_16, bool, 1) (alias)
