@@ -7,7 +7,7 @@ int32 main(int32 argc, char ** argv)
 // Preserved:
 main_entry:
 l00401000:
-	test1(Mem19[argv:word32], argc, 0x4020C0<32>, 1.0F)
+	test1(Mem19[argv:word32], argc, 0x4020C8<32>, 1.0F)
 	return 0<32>
 main_exit:
 
@@ -21,7 +21,7 @@ void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 // Preserved:
 test1_entry:
 l00401030:
-	printf(0x4020C8<32>, arg1, arg2, arg3, (real64) arg4)
+	printf(0x4020D0<32>, arg1, arg2, arg3, (real64) arg4)
 	return
 test1_exit:
 
@@ -35,10 +35,10 @@ void test2(word32 dwArg04)
 // Preserved: ebp esp
 test2_entry:
 l00401060:
-	test1(0x4020D8<32>, 2<32>, 0x4020D4<32>, Mem10[0x004020E8<p32>:real32])
+	test1(0x4020E0<32>, 2<32>, 0x4020DC<32>, Mem10[0x004020F0<p32>:real32])
 	branch dwArg04 != 0<32> l004010A5
 l00401087:
-	test1(0x4020E0<32>, 6<32>, 0x4020DC<32>, Mem25[0x004020E4<p32>:real32])
+	test1(0x4020E8<32>, 6<32>, 0x4020E4<32>, Mem25[0x004020EC<p32>:real32])
 l004010A5:
 	return
 test2_exit:
@@ -81,7 +81,7 @@ void test5()
 // Preserved: ebp esp
 test5_entry:
 l004010F0:
-	Mem18[Mem18[Mem18[0x00403018<p32>:word32]:word32] + 4<32>:word32](Mem15[0x00403018<p32>:word32], 0x3E7<32>, Mem9[0x004020EC<p32>:real32])
+	Mem18[Mem18[Mem18[0x00403018<p32>:word32]:word32] + 4<32>:word32](Mem15[0x00403018<p32>:word32], 0x3E7<32>, Mem9[0x004020F4<p32>:real32])
 	return
 test5_exit:
 
@@ -111,9 +111,9 @@ test7_entry:
 l00401160:
 	branch rArg04 <= 1.0 l00401189
 l0040116F:
-	Mem17[Mem17[Mem17[0x00403024<p32>:word32]:word32]:word32](Mem17[0x00403024<p32>:word32], rArg04)
+	Mem17[Mem17[Mem17[0x00403034<p32>:word32]:word32]:word32](Mem17[0x00403034<p32>:word32], rArg04)
 l00401189:
-	Mem40[Mem40[Mem40[0x00403024<p32>:word32]:word32] + 4<32>:word32](Mem40[0x00403024<p32>:word32], 0xD<32>, rArg04)
+	Mem40[Mem40[Mem40[0x00403034<p32>:word32]:word32] + 4<32>:word32](Mem40[0x00403034<p32>:word32], 0xD<32>, rArg04)
 	return
 test7_exit:
 
@@ -127,12 +127,12 @@ void nested_if_blocks_test8(real64 rArg04)
 // Preserved: ebp esp
 nested_if_blocks_test8_entry:
 l004011B0:
-	Mem15[Mem15[Mem15[0x00403024<p32>:word32]:word32] + 4<32>:word32](Mem15[0x00403024<p32>:word32], 0xFFFFFFFF<32>, rArg04)
-	branch Mem15[0x004020F8<p32>:real64] == rArg04 l0040120D
+	Mem15[Mem15[Mem15[0x00403034<p32>:word32]:word32] + 4<32>:word32](Mem15[0x00403034<p32>:word32], 0xFFFFFFFF<32>, rArg04)
+	branch Mem15[0x00402100<p32>:real64] == rArg04 l0040120D
 l004011E2:
-	branch Mem15[0x004020F0<p32>:real64] <= rArg04 l0040120D
+	branch Mem15[0x004020F8<p32>:real64] <= rArg04 l0040120D
 l004011F2:
-	Mem42[Mem42[Mem42[0x00403024<p32>:word32]:word32]:word32](Mem42[0x00403024<p32>:word32], rArg04)
+	Mem42[Mem42[Mem42[0x00403034<p32>:word32]:word32]:word32](Mem42[0x00403034<p32>:word32], rArg04)
 l0040120D:
 	test6(Mem58[0x00403018<p32>:word32], 6<32>, 7<32>)
 	return
@@ -150,12 +150,12 @@ loop_test9_entry:
 l00401230:
 	word32 dwLoc08_65 = 0<32>
 l00401248:
-	branch Mem25[Mem25[Mem25[0x00403024<p32>:word32]:word32] + 4<32>:word32](Mem25[0x00403024<p32>:word32], dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 l00401294
+	branch Mem25[Mem25[Mem25[0x00403034<p32>:word32]:word32] + 4<32>:word32](Mem25[0x00403034<p32>:word32], dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 l00401294
 l00401294:
 	return
 loop_test9_exit:
 l00401278:
-	Mem48[Mem48[Mem48[0x00403024<p32>:word32]:word32]:word32](Mem48[0x00403024<p32>:word32], (real64) rArg04)
+	Mem48[Mem48[Mem48[0x00403034<p32>:word32]:word32]:word32](Mem48[0x00403034<p32>:word32], (real64) rArg04)
 l0040123F:
 	dwLoc08_65 = dwLoc08_65 + 1<32>
 
@@ -176,8 +176,8 @@ l004012B4:
 	eax_18 = 3<u32>
 	ecx_20 = 1<u32>
 l004012BA:
-	Mem22[0x0040301C<p32>:word32] = ecx_20
-	Mem24[0x00403020<p32>:word32] = eax_18
+	Mem22[0x0040302C<p32>:word32] = ecx_20
+	Mem24[0x00403030<p32>:word32] = eax_18
 	return
 const_div_test10_exit:
 
@@ -241,5 +241,26 @@ l00401360:
 	nested_structs_test12(str)
 	return
 nested_structs_test13_exit:
+
+
+void gbl_nested_structs_test14()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: Top
+// Preserved: ebp esp
+gbl_nested_structs_test14_entry:
+l00401380:
+	// gbl_nested_structs.a = 5
+	Mem7[0x0040301C<p32>:word32] = 5<32>
+	// gbl_nested_structs.str.b = 6
+	Mem8[0x00403020<p32>:word32] = 6<32>
+	// gbl_nested_structs.str.c = 7
+	Mem9[0x00403024<p32>:word32] = 7<32>
+	// gbl_nested_structs.d = 8
+	Mem10[0x00403028<p32>:word32] = 8<32>
+	return
+gbl_nested_structs_test14_exit:
 
 

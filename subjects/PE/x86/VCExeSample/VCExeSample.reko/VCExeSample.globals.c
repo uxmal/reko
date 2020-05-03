@@ -4,19 +4,59 @@
 
 #include "VCExeSample.h"
 
-char g_str4020C0[] = "test123";
-char g_str4020C8[] = "%s %d %s %f";
-char g_str4020D4[] = "3";
-char g_str4020D8[] = "1";
-char g_str4020DC[] = "7";
-char g_str4020E0[] = "5";
-real32 g_r4020E4 = 8.567F;
-real32 g_r4020E8 = 4.123F;
-real32 g_r4020EC = 1000.1F;
-real64 g_r4020F0 = 321.0;
-real64 g_r4020F8 = 123.0;
+char g_str4020C8[] = "test123";
+char g_str4020D0[] = "%s %d %s %f";
+char g_str4020DC[] = "3";
+char g_str4020E0[] = "1";
+char g_str4020E4[] = "7";
+char g_str4020E8[] = "5";
+real32 g_r4020EC = 8.567F;
+real32 g_r4020F0 = 4.123F;
+real32 g_r4020F4 = 1000.1F;
+real64 g_r4020F8 = 321.0;
+real64 g_r402100 = 123.0;
 cdecl_class_ptr g_gbl_c = null;
-uint32 g_dw40301C = 0x00;
-uint32 g_dw403020 = 0x00;
+nested_structs_type g_gbl_nested_structs = 
+	{
+		0,
+		
+		{
+			0,
+			0,
+		},
+		0,
+	};
+nested_structs_type g_t403020 = 
+	{
+		0,
+		
+		{
+			0,
+			0,
+		},
+		0,
+	};
+nested_structs_type g_t403024 = 
+	{
+		0,
+		
+		{
+			0,
+			0,
+		},
+		0,
+	};
+nested_structs_type g_t403028 = 
+	{
+		0,
+		
+		{
+			0,
+			0,
+		},
+		0,
+	};
+uint32 g_dw40302C = 0x00;
+uint32 g_dw403030 = 0x00;
 thiscall_class * g_gbl_thiscall = null;
 
