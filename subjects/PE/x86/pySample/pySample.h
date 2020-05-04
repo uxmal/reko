@@ -73,7 +73,7 @@ Eq_110: PyObject
 Eq_111: PyObject
 	T_111 (in _Py_NoneStruct : PyObject)
 	T_121 (in _Py_NoneStruct : PyObject)
-Eq_123: (fn (ptr32 Eq_135) ((ptr32 char), (ptr32 Eq_126), (ptr32 char), (ptr32 Eq_128), int32))
+Eq_123: (fn (ptr32 Eq_135) ((ptr32 char), (ptr32 (arr PyMethodDef 5)), (ptr32 char), (ptr32 Eq_128), int32))
 	T_123 (in Py_InitModule4 : ptr32)
 	T_124 (in signature of Py_InitModule4 : void)
 Eq_126: PyMethodDef
@@ -896,7 +896,7 @@ T_125: (in ptrArg04 : (ptr32 char))
   OrigDataType: 
 T_126: (in ptrArg08 : (ptr32 PyMethodDef))
   Class: Eq_126
-  DataType: (ptr32 Eq_126)
+  DataType: (ptr32 (arr PyMethodDef 5))
   OrigDataType: 
 T_127: (in ptrArg0C : (ptr32 char))
   Class: Eq_127
@@ -916,8 +916,8 @@ T_130: (in 0x10002174<32> : word32)
   OrigDataType: (ptr32 char)
 T_131: (in 0x10003010<32> : word32)
   Class: Eq_126
-  DataType: (ptr32 Eq_126)
-  OrigDataType: (ptr32 PyMethodDef)
+  DataType: (ptr32 (arr PyMethodDef 5))
+  OrigDataType: (ptr32 (arr PyMethodDef 5))
 T_132: (in 0<32> : word32)
   Class: Eq_127
   DataType: (ptr32 char)
@@ -5547,7 +5547,7 @@ typedef PyObject Eq_110;
 
 typedef PyObject Eq_111;
 
-typedef PyObject * (Eq_123)(char *, PyMethodDef *, char *, PyObject *, int32);
+typedef PyObject * (Eq_123)(char *, PyMethodDef *[5], char *, PyObject *, int32);
 
 typedef PyMethodDef Eq_126;
 

@@ -1614,7 +1614,7 @@ void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
 		}
 		else
 		{
-			(word32) r4 + 4 + ((word32) (*((word32) r4 + 0x0558)) + 0x0510) = (byte *) (byte) (word32) bArg0B_n;
+			(word32) r4 + 4 + ((word32) (*((word32) r4 + 0x0558)) + 0x0510) = (int8 *) (byte) (word32) bArg0B_n;
 			memcpy(*((word32) ((word32) r4 + 4) + (*((word32) r4 + 0x0558) * 0x04 + 1040)), r5, r6);
 		}
 	}

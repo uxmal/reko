@@ -13888,7 +13888,7 @@ Eq_n fn0800-9F02(Eq_n ax, struct Eq_n & dxOut)
 l0800_nF25:
 			word16 cx_n = seg0800->wFFFF9D37;
 			seg0800->wFFFF9D37 = (struct Eq_n **) dx_n;
-			dx_n->w0000 = ax;
+			dx_n->t0000 = ax;
 			dx_n->w0002 = cx_n;
 			dxOut = dx_n;
 			return 0x04;
@@ -13896,7 +13896,7 @@ l0800_nF25:
 		word16 dx_n;
 		if (fn0800_A215(ds_n, (uint32) (uint16) (-(ax_n & 0x0F) + 0x10), out dx_n) != ~0x00)
 		{
-			dx_n = (struct Eq_n *) ((char *) &dx_n->w0000 + 1);
+			dx_n = (struct Eq_n *) ((char *) &dx_n->t0000 + 1);
 			goto l0800_nF25;
 		}
 	}
@@ -14060,7 +14060,7 @@ void fn0800_A006(Eq_n bx, Eq_n ds)
 		while (true)
 		{
 			word16 Eq_n::* di_n = Eq_n::a0000;
-			word16 Eq_n::* si_n = &Eq_n::t0000;
+			word16 Eq_n::* si_n = Eq_n::a0000;
 			cu16 cx_n = dx_n;
 			if (dx_n > 0x1000)
 				cx_n = 0x1000;
@@ -14075,7 +14075,7 @@ void fn0800_A006(Eq_n bx, Eq_n ds)
 			if (dx_n <= 0x00)
 				break;
 			es_n = (struct Eq_n *) (es_n->a0000 + 0x0800);
-			ds_n = (struct Eq_n *) ((char *) &ds_n->t0000 + 0x00001000);
+			ds_n = (struct Eq_n *) (ds_n->a0000 + 0x0800);
 		}
 	}
 	struct Eq_n * ds_n;

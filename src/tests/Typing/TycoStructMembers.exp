@@ -57,21 +57,21 @@ T_11: (in 0xE<32> : word32)
   OrigDataType: word32
 T_12: (in ptr + 0xE<32> : word32)
   Class: Eq_12
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
+  DataType: ptr32
+  OrigDataType: ptr32
 T_13: (in Mem0[ptr + 0xE<32>:word16] : word16)
   Class: Eq_13
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: cui16
+  OrigDataType: cui16
 T_14: (in 0xFF<16> : word16)
   Class: Eq_14
-  DataType: (union (ui32 u1) (word16 u0))
-  OrigDataType: (union (ui32 u0) (word16 u1))
+  DataType: cui16
+  OrigDataType: cui16
 T_15: (in Mem0[ptr + 0xE<32>:word16] | 0xFF<16> : word16)
   Class: Eq_15
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: cui16
+  OrigDataType: cui16
 T_16: (in b16 : word16)
   Class: Eq_15
-  DataType: (union (ui32 u1) (word16 u0))
-  OrigDataType: (union (ui32 u1) (word16 u0))
+  DataType: cui16
+  OrigDataType: cui16

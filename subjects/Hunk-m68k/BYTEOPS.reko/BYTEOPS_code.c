@@ -619,7 +619,7 @@ l000016D6:
 						}
 						if (d4_n == 0x68)
 						{
-							Eq_n v262_n = a7_n->dw003E;
+							word16 v262_n = a7_n->w003E;
 							struct Eq_n * a7_n = a7_n - 4;
 							a7_n->ptr0000 = d1_n;
 							a7_n->dw0040 = (uint32) (uint16) v262_n;
@@ -628,7 +628,7 @@ l000016D6:
 						}
 						if (d4_n == 0x02)
 						{
-							Eq_n v277_n = a7_n->dw003F;
+							byte v277_n = a7_n->b003F;
 							struct Eq_n * a7_n = a7_n - 4;
 							a7_n->ptr0000 = d1_n;
 							a7_n->dw0040 = (uint32) (uint8) v277_n;
@@ -739,7 +739,7 @@ l00001932:
 							}
 							if (d4_n == 0x02)
 							{
-								Eq_n v248_n = a7_n->dw0037;
+								byte v248_n = a7_n->b0037;
 								struct Eq_n * a7_n = a7_n - 4;
 								a7_n->ptr0000 = d1_n;
 								int32 d1_n = (int32) (int16) (int8) SEQ(SLICE(d1_n, word24, 8), v248_n);

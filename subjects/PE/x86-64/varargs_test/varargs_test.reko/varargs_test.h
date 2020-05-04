@@ -274,12 +274,12 @@ Eq_504: (fn void (Eq_469))
 	T_504 (in RtlCaptureContext : ptr64)
 	T_505 (in signature of RtlCaptureContext : void)
 	T_962 (in RtlCaptureContext : ptr64)
-Eq_508: (union "Eq_508" ((arr BYTE 512) u0) (ULONGLONG u1))
+Eq_508: (union "Eq_508" (DWORD u0) (ULONGLONG u1))
 	T_508 (in rsi_15 : Eq_508)
 	T_511 (in Mem11[rcx + 0xF8<64>:word64] : word64)
 	T_531 (in ControlPc : ULONGLONG)
 	T_968 (in qwLoc03E0 : word64)
-Eq_510: BYTE
+Eq_510: PCONTEXT
 	T_510 (in rcx + 0xF8<64> : word64)
 Eq_528: PVOID
 	T_528 (in rax_25 : Eq_528)
@@ -2489,19 +2489,19 @@ T_507: (in RtlCaptureContext(rcx) : void)
 T_508: (in rsi_15 : Eq_508)
   Class: Eq_508
   DataType: Eq_508
-  OrigDataType: (union (ULONGLONG u0) ((arr BYTE 512) u1))
+  OrigDataType: (union (ULONGLONG u0) (DWORD u1))
 T_509: (in 0xF8<64> : word64)
   Class: Eq_509
   DataType: word64
   OrigDataType: word64
 T_510: (in rcx + 0xF8<64> : word64)
   Class: Eq_510
-  DataType: (ptr64 (arr BYTE 512))
-  OrigDataType: (ptr64 (arr BYTE 512))
+  DataType: Eq_510
+  OrigDataType: PCONTEXT
 T_511: (in Mem11[rcx + 0xF8<64>:word64] : word64)
   Class: Eq_508
   DataType: Eq_508
-  OrigDataType: (arr BYTE 512)
+  OrigDataType: DWORD
 T_512: (in rdi_16 : uint64)
   Class: Eq_512
   DataType: uint64
@@ -6469,11 +6469,11 @@ typedef void (Eq_499)(_EXCEPTION_POINTERS *);
 typedef void (Eq_504)(PCONTEXT);
 
 typedef union Eq_508 {
-	BYTE u0[512];
+	DWORD u0;
 	ULONGLONG u1;
 } Eq_508;
 
-typedef BYTE Eq_510;
+typedef PCONTEXT Eq_510;
 
 typedef PVOID Eq_528;
 

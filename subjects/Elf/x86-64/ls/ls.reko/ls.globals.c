@@ -347,12 +347,12 @@ Eq_n g_t61AF00 =
 	{
 	};
 word64 g_qw61AF10 = 0x00;
-union Eq_n * g_ptr61AF18 = null;
+DIR * g_ptr61AF18 = null;
 int64 g_qw61AF20 = 0;
 Eq_n g_t61AF60 = 
 	{
 	};
-union Eq_n * g_ptr61AF78 = null;
+DIR * g_ptr61AF78 = null;
 word64 * g_ptr61AF80 = null;
 Eq_n g_t61AFC0 = 
 	{

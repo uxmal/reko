@@ -648,10 +648,10 @@ l0000606C:
 				r3->t0020 = r24_n;
 			if ((word32) r3->dw0024 == 0x00)
 				r3->dw0024 = r20_n;
-			*(word32 *) 0x01C63030 = (word32) r3->dw001A;
-			*(word32 *) 0x01C63034 = (word32) r3->dw001E;
-			*(word32 *) 0x01C63038 = (word32) r3->t0022;
-			*(word32 *) 0x01C6303C = (word32) r3->dw0026;
+			*(word32 *) 0x01C63030 = (word32) r3->w001A;
+			*(word32 *) 0x01C63034 = (word32) r3->w001E;
+			*(word32 *) 0x01C63038 = (word32) r3->w0022;
+			*(word32 *) 0x01C6303C = (word32) r3->w0026;
 			*(ui32 *) 29765676 = r3->dw000C >> 0x04 & 0x03;
 			*(ui32 *) 29765720 = dwArg74 << 0x10 | dwArg7C | r16_n << 0x18 | dwArg8C << 0x08;
 			*(ui32 *) 0x01C6305C = dwArg60 << 0x10 | dwArg70 << 0x08 | dwArg78;
@@ -2117,7 +2117,7 @@ Eq_n fn00007AE0(struct Eq_n * r4, Eq_n r14, Eq_n r15, Eq_n r18, ptr32 r20)
 			else
 			{
 				uint32 r11_n = fn00006E54();
-				r2_n->t0014 = r11_n << 0x10 | (word32) r2_n->dw0016;
+				r2_n->t0014 = r11_n << 0x10 | (word32) r2_n->w0016;
 				r14_n = r11_n;
 			}
 			ui32 r5_n;

@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4020C8 (str char) str4020C8) (4020D0 (str char) str4020D0) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 (str char) str4020E4) (4020E8 (str char) str4020E8) (4020EC real32 r4020EC) (4020F0 real32 r4020F0) (4020F4 real32 r4020F4) (4020F8 real64 r4020F8) (402100 real64 r402100) (403018 cdecl_class_ptr gbl_c) (40301C nested_structs_type gbl_nested_structs) (403020 nested_structs_type t403020) (403024 nested_structs_type t403024) (403028 nested_structs_type t403028) (40302C uint32 dw40302C) (403030 uint32 dw403030) (403034 (ptr32 thiscall_class) gbl_thiscall))
+Eq_1: (struct "Globals" (4020C8 (str char) str4020C8) (4020D0 (str char) str4020D0) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 (str char) str4020E4) (4020E8 (str char) str4020E8) (4020EC real32 r4020EC) (4020F0 real32 r4020F0) (4020F4 real32 r4020F4) (4020F8 real64 r4020F8) (402100 real64 r402100) (403018 cdecl_class_ptr gbl_c) (40301C nested_structs_type gbl_nested_structs) (403020 nested_struct t403020) (403024 int32 dw403024) (403028 int32 dw403028) (40302C uint32 dw40302C) (403030 uint32 dw403030) (403034 (ptr32 thiscall_class) gbl_thiscall))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (fn void ((ptr32 char), int32, (ptr32 char), real32))
 	T_5 (in test1 : ptr32)
@@ -181,12 +181,8 @@ Eq_260: (fn void ((ptr32 Eq_242)))
 	T_261 (in signature of nested_structs_test12 : void)
 Eq_265: nested_structs_type
 	T_265 (in 0040301C : ptr32)
-Eq_268: nested_structs_type
+Eq_268: nested_struct
 	T_268 (in 00403020 : ptr32)
-Eq_271: nested_structs_type
-	T_271 (in 00403024 : ptr32)
-Eq_274: nested_structs_type
-	T_274 (in 00403028 : ptr32)
 Eq_276: (struct "nested_struct" (0 int32 b) (4 int32 c))
 	T_276
 Eq_277: (struct "nested_structs_type" 0010 (0 int32 a) (4 nested_struct str) (C int32 d))
@@ -1265,7 +1261,7 @@ T_267: (in 6<32> : word32)
 T_268: (in 00403020 : ptr32)
   Class: Eq_268
   DataType: (ptr32 Eq_268)
-  OrigDataType: (ptr32 (union (nested_structs_type u1)))
+  OrigDataType: (ptr32 (union (nested_struct u1)))
 T_269: (in Mem8[0x00403020<p32>:word32] : word32)
   Class: Eq_267
   DataType: int32
@@ -1276,8 +1272,8 @@ T_270: (in 7<32> : word32)
   OrigDataType: word32
 T_271: (in 00403024 : ptr32)
   Class: Eq_271
-  DataType: (ptr32 Eq_271)
-  OrigDataType: (ptr32 (union (nested_structs_type u1)))
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 (struct (0 int32 dw0000)))
 T_272: (in Mem9[0x00403024<p32>:word32] : word32)
   Class: Eq_270
   DataType: int32
@@ -1288,8 +1284,8 @@ T_273: (in 8<32> : word32)
   OrigDataType: word32
 T_274: (in 00403028 : ptr32)
   Class: Eq_274
-  DataType: (ptr32 Eq_274)
-  OrigDataType: (ptr32 (union (nested_structs_type u1)))
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 (struct (0 int32 dw0000)))
 T_275: (in Mem10[0x00403028<p32>:word32] : word32)
   Class: Eq_273
   DataType: int32
@@ -1321,9 +1317,9 @@ typedef struct Globals {
 	real64 r402100;	// 402100
 	cdecl_class_ptr gbl_c;	// 403018
 	nested_structs_type gbl_nested_structs;	// 40301C
-	nested_structs_type t403020;	// 403020
-	nested_structs_type t403024;	// 403024
-	nested_structs_type t403028;	// 403028
+	nested_struct t403020;	// 403020
+	int32 dw403024;	// 403024
+	int32 dw403028;	// 403028
 	uint32 dw40302C;	// 40302C
 	uint32 dw403030;	// 403030
 	thiscall_class * gbl_thiscall;	// 403034
@@ -1485,11 +1481,7 @@ typedef void (Eq_260)(nested_structs_type *);
 
 typedef nested_structs_type Eq_265;
 
-typedef nested_structs_type Eq_268;
-
-typedef nested_structs_type Eq_271;
-
-typedef nested_structs_type Eq_274;
+typedef nested_struct Eq_268;
 
 typedef struct nested_struct {
 	int32 b;	// 0

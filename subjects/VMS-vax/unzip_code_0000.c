@@ -537,7 +537,7 @@ Eq_n fn0000AA6A(struct Eq_n * r8, struct Eq_n * r10, struct Eq_n * r11, struct E
 				{
 					sp_n->t0004.u0 = 0x01;
 					r3 = sp_n->t0010;
-					word32 r4_n = Mem42[r3 + 4:word32];
+					Eq_n r4_n = *((word32) r3 + 4);
 					if (r4_n == r11->t0342)
 					{
 						uint32 * sp_n = sp_n - 0x04;
@@ -628,7 +628,7 @@ Eq_n fn0000AA6A(struct Eq_n * r8, struct Eq_n * r10, struct Eq_n * r11, struct E
 					{
 						word32 * sp_n = sp_n - 0x04;
 						*sp_n = 0x01;
-						Mem73[sp_n - 0x04 + 0x00:word32] = r3 + 4;
+						*(sp_n - 0x04) = (word32) r3 + 4;
 						*(sp_n - 0x08) = (char *) &r11->t0365 + 5;
 						*(sp_n - 0x0C) = (char *) r10 + 1515;
 						ptr32 sp_n;
@@ -717,7 +717,7 @@ Eq_n fn0000AA6A(struct Eq_n * r8, struct Eq_n * r10, struct Eq_n * r11, struct E
 	}
 }
 
-// 0000AEF2: Register word32 fn0000AEF2(Register (ptr32 Eq_n) ap, Register out (ptr64 Eq_n) r3Out, Register out (ptr32 word16) r6Out, Register out Eq_n apOut, Register out (ptr32 Eq_n) fpOut)
+// 0000AEF2: Register word32 fn0000AEF2(Register (ptr32 Eq_n) ap, Register out (ptr32 Eq_n) r3Out, Register out (ptr32 word16) r6Out, Register out Eq_n apOut, Register out (ptr32 Eq_n) fpOut)
 word32 fn0000AEF2(struct Eq_n * ap, struct Eq_n & r3Out, word16 & r6Out, union Eq_n & apOut, struct Eq_n & fpOut)
 {
 	Eq_n r2_n;
@@ -1419,8 +1419,8 @@ void fn0000C6FA(struct Eq_n * r6, Eq_n r7, word32 r8, struct Eq_n * ap, struct E
 		if (r6_n->dw10CE4 == 0x00)
 			r2_n = 0x01;
 		r6_n->dw10CE0 = r2_n;
-		Eq_n v65_n = r6_n->t10CD8;
-		r6_n->t10CD0 = v65_n;
+		word32 v65_n = r6_n->dw10CD8;
+		r6_n->dw10CD0 = v65_n;
 		if (v65_n != 0x00)
 			r6_n->ptr10CDC->bFFFFFFFF = 0x2E;
 		r6_n->ptr10CDC->b0000 = 0x00;
@@ -1439,7 +1439,7 @@ void fn0000C6FA(struct Eq_n * r6, Eq_n r7, word32 r8, struct Eq_n * ap, struct E
 				struct Eq_n * ap_n;
 				struct Eq_n * sp_n;
 				*r6->ptr10CDC = 0x00;
-				if (r6->t10CD0 != 0x00)
+				if (r6->dw10CD0 != 0x00)
 				{
 					*r6->ptr10CC4 = 0x5D;
 					sp_n = (struct Eq_n *) <invalid>;

@@ -330,7 +330,7 @@ int32 fn00001D80(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, ptr32 &
 			}
 			else
 			{
-				__bset(a2_n->t000F, 0x05, out a2_n->t000F);
+				__bset(a2_n->b000F, 0x05, out a2_n->b000F);
 				d3_n = -1;
 			}
 		}
@@ -527,7 +527,7 @@ l00001F1C:
 			}
 			else
 			{
-				__bset(a2_n->t0003, 0x05, out a2_n->t0003);
+				__bset(a2_n->b0003, 0x05, out a2_n->b0003);
 				struct Eq_n * a7_n = a7_n + 1;
 				ptr32 d4_n = a7_n->ptr0000;
 				ptr32 d5_n = a7_n->ptr0004;
@@ -545,7 +545,7 @@ l00001F1C:
 		if (!__btst((byte) d0_n, 0x04))
 		{
 			dwArg08->ptr0000 = dwArg08->ptr0008;
-			__bclr(dwArg08->t000F, 0x00, out dwArg08->t000F);
+			__bclr(dwArg08->b000F, 0x00, out dwArg08->b000F);
 			goto l00001EDA;
 		}
 	}
@@ -596,13 +596,13 @@ struct Eq_n * fn00002014(struct Eq_n * a2, struct Eq_n * a5, struct Eq_n * a6, s
 	a2_n->ptr0008 = d0_n;
 	if (d0_n != 0x00)
 	{
-		__bset(a2_n->t000F, 0x03, out a2_n->t000F);
+		__bset(a2_n->b000F, 0x03, out a2_n->b000F);
 		a2_n->dw0018 = 0x0200;
 	}
 	else
 	{
-		__bset(a2_n->t000F, 0x02, out a2_n->t000F);
-		a2_n->ptr0008 = (char *) &a2_n->t000F + 5;
+		__bset(a2_n->b000F, 0x02, out a2_n->b000F);
+		a2_n->ptr0008 = &a2_n->b000F + 5;
 		a2_n->dw0018 = 1;
 	}
 	a2_n->ptr0000 = a2_n->ptr0008;
@@ -704,7 +704,7 @@ word32 fn000020F0(ptr32 a5, Eq_n dwArg04, ptr32 & a5Out, ptr32 & a6Out)
 		word32 a7_n;
 		struct Eq_n * a2_n;
 		(a5 + 122)();
-		__bclr(a2_n->t000F, 0x03, out a2_n->t000F);
+		__bclr(a2_n->b000F, 0x03, out a2_n->b000F);
 		a2_n->dw0000 = 0;
 		a2_n->dw0008 = 0;
 		a2_n->dw0004 = 0;

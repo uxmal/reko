@@ -1119,7 +1119,7 @@ Eq_1215: (union "Eq_1215" (word16 u0) ((ptr24 Eq_3900) u1))
 	T_1215 (in r11_24 + 6<i16> : word20)
 Eq_1240: (union "Eq_1240" (ptr16 u0) (word20 u1))
 	T_1240 (in 0208 : ptr16)
-Eq_1252: (union "Eq_1252" (word16 u0) ((ptr20 word20) u1) ((ptr20 word16) u2) ((ptr20 Eq_3901) u3))
+Eq_1252: (union "Eq_1252" (word16 u0) ((ptr20 word16) u1) ((ptr20 Eq_3901) u2))
 	T_1252 (in r15 : Eq_1252)
 	T_1301 (in 0<16> : word16)
 	T_1302 (in r15_111 : Eq_1252)
@@ -1453,9 +1453,6 @@ Eq_2359: (union "Eq_2359" (ui20 u0) (word16 u1))
 	T_2359 (in 8<16> : word16)
 Eq_2392: (union "Eq_2392" (cup16 u0) (word20 u1))
 	T_2392 (in r15 + 6<i16> : word20)
-Eq_2420: (union "Eq_2420" (word20 u0) (word16 u1))
-	T_2420 (in Mem42[r15 + 8<i16>:word16] : word16)
-	T_2421 (in 0<16> : word16)
 Eq_2424: (union "Eq_2424" (int20 u0) (word16 u1))
 	T_2424 (in 8<16> : word16)
 Eq_2471: (union "Eq_2471" (ui20 u0) (word16 u1))
@@ -2153,7 +2150,7 @@ Eq_3882: (struct "Eq_3882" (0 Eq_444 t0000) (2 Eq_444 t0002) (4 Eq_444 t0004) (1
 	T_3882
 Eq_3883: (struct "Eq_3883" (0 Eq_444 t0000) (2 Eq_444 t0002) (4 Eq_444 t0004) (6 Eq_444 t0006) (28 cup16 w0028) (2A cup16 w002A) (2C Eq_1502 t002C) (2E ci16 w002E) (30 ci16 w0030))
 	T_3883
-Eq_3884: (struct "Eq_3884" (0 Eq_444 t0000) (2 Eq_444 t0002) (6 Eq_444 t0006) (8 Eq_2420 t0008) (28 word16 w0028) (2C Eq_1502 t002C) (2E word16 w002E))
+Eq_3884: (struct "Eq_3884" (0 Eq_444 t0000) (2 Eq_444 t0002) (6 Eq_444 t0006) (8 word16 w0008) (28 word16 w0028) (2C Eq_1502 t002C) (2E word16 w002E))
 	T_3884
 Eq_3885: (union "Eq_3885" (up24 u0) (word20 u1))
 	T_3885
@@ -11978,12 +11975,12 @@ T_2418: (in 8<i16> : int16)
   OrigDataType: int16
 T_2419: (in r15 + 8<i16> : word20)
   Class: Eq_2419
-  DataType: (ptr20 word20)
-  OrigDataType: (ptr20 word20)
+  DataType: ptr20
+  OrigDataType: ptr20
 T_2420: (in Mem42[r15 + 8<i16>:word16] : word16)
   Class: Eq_2420
-  DataType: Eq_2420
-  OrigDataType: word20
+  DataType: word16
+  OrigDataType: word16
 T_2421: (in 0<16> : word16)
   Class: Eq_2420
   DataType: word16
@@ -12003,7 +12000,7 @@ T_2424: (in 8<16> : word16)
 T_2425: (in r15 + 8<16> : word20)
   Class: Eq_1252
   DataType: Eq_1252
-  OrigDataType: (ptr20 word20)
+  OrigDataType: (ptr20 word16)
 T_2426: (in xTaskRemoveFromEventList((word24) r15 + 8<i32>) : word20)
   Class: Eq_2121
   DataType: word20
@@ -18995,9 +18992,8 @@ typedef union Eq_1240 {
 
 typedef union Eq_1252 {
 	word16 u0;
-	word20 * u1;
-	word16 * u2;
-	struct Eq_3901 * u3;
+	word16 * u1;
+	struct Eq_3901 * u2;
 } Eq_1252;
 
 typedef union Eq_1253 {
@@ -19424,11 +19420,6 @@ typedef union Eq_2392 {
 	cup16 u0;
 	word20 u1;
 } Eq_2392;
-
-typedef union Eq_2420 {
-	word20 u0;
-	word16 u1;
-} Eq_2420;
 
 typedef union Eq_2424 {
 	int20 u0;
@@ -20589,7 +20580,7 @@ typedef struct Eq_3884 {
 	Eq_444 t0000;	// 0
 	Eq_444 t0002;	// 2
 	Eq_444 t0006;	// 6
-	Eq_2420 t0008;	// 8
+	word16 w0008;	// 8
 	word16 w0028;	// 28
 	Eq_1502 t002C;	// 2C
 	word16 w002E;	// 2E

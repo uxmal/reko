@@ -3786,8 +3786,8 @@ T_761: (in 1<16> : word16)
   OrigDataType: word16
 T_762: (in sp_206 + 1<16> : word16)
   Class: Eq_762
-  DataType: (ptr16 word16)
-  OrigDataType: (ptr16 word16)
+  DataType: ptr16
+  OrigDataType: ptr16
 T_763: (in Mem209[sp_206 + 1<16>:byte] : byte)
   Class: Eq_599
   DataType: Eq_599

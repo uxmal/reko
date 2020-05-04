@@ -127,8 +127,8 @@ void gbl_nested_structs_test14()
 	// gbl_nested_structs.str.b = 6
 	globals->t403020 = (Eq_n) 0x06;
 	// gbl_nested_structs.str.c = 7
-	globals->t403024 = (Eq_n) 0x07;
+	globals->dw403024 = 0x07;
 	// gbl_nested_structs.d = 8
-	globals->t403028 = (Eq_n) 0x08;
+	globals->dw403028 = 0x08;
 }
 
