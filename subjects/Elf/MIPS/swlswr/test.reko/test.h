@@ -659,8 +659,8 @@ T_149: (in 1<32> : word32)
   OrigDataType: word32
 T_150: (in r2_38 + 1<32> : word32)
   Class: Eq_150
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
+  DataType: ptr32
+  OrigDataType: ptr32
 T_151: (in Mem53[r2_38 + 1<32>:word32] : word32)
   Class: Eq_148
   DataType: word32

@@ -211,10 +211,14 @@ namespace Reko.Core.Expressions
             var dtField = field.DataType.ResolveAs<DataType>();
             if (dtField == null)
                 return null;
-            //$TODO This really should be offset != field.Offset
-            // However doing so causes a regression in hello_ppc.exe
-            if (offset >= field.Offset + dtField.Size)
-                return null;
+            // If we access beyond the start of the field, we can't have the
+            // same type as the field.
+            if (offset != field.Offset)
+            {
+                // Check if field is nested structure
+                var ptrField = factory.CreatePointer(dtField, ptrLeft.BitSize);
+                return GetPossibleFieldType(ptrField, offset - field.Offset);
+            }
             return factory.CreatePointer(dtField, dtLeft.BitSize);
         }
 
