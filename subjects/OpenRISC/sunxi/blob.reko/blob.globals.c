@@ -6,7 +6,7 @@
 
 Eq_n g_tE0432800;
 Eq_n g_tFFFFFFFF;
-Eq_n g_t0001 = 
+struct Eq_n g_t0001 = 
 	{
 		0x00,
 		

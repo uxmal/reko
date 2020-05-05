@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFFFF98 Eq_3115 tFFFFFF98) (FFFFFFA0 Eq_2574 tFFFFFFA0) (FFFFFFBF Eq_3115 tFFFFFFBF) (FFFFFFFD Eq_909 tFFFFFFFD) (FFFFFFFE Eq_909 tFFFFFFFE) (FFFFFFFF Eq_87 tFFFFFFFF) (1 Eq_909 t0001) (3 word32 dw0003) (16 Eq_2914 t0016) (17 Eq_2914 t0017) (120 ui32 dw0120) (92C word32 dw092C) (BFF byte b0BFF) (1000 Eq_1793 t1000) (1008 Eq_1793 t1008) (1FF8 word32 dw1FF8))
+Eq_1: (struct "Globals" (FFFFFF98 Eq_3115 tFFFFFF98) (FFFFFFA0 Eq_2574 tFFFFFFA0) (FFFFFFBF Eq_3115 tFFFFFFBF) (FFFFFFFD Eq_909 tFFFFFFFD) (FFFFFFFF Eq_87 tFFFFFFFF) (1 Eq_909 t0001) (3 word32 dw0003) (16 Eq_2914 t0016) (120 ui32 dw0120) (92C word32 dw092C) (BFF byte b0BFF) (1000 Eq_1793 t1000) (1008 Eq_1793 t1008) (1FF8 word32 dw1FF8))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (union "Eq_2" ((ptr32 Eq_5628) u0) ((ptr32 Eq_5629) u1))
 	T_2 (in r2 : Eq_2)
@@ -24394,12 +24394,10 @@ typedef struct Globals {
 	Eq_2574 tFFFFFFA0;	// FFFFFFA0
 	Eq_3115 tFFFFFFBF;	// FFFFFFBF
 	Eq_909 tFFFFFFFD;	// FFFFFFFD
-	Eq_909 tFFFFFFFE;	// FFFFFFFE
 	Eq_87 tFFFFFFFF;	// FFFFFFFF
 	Eq_909 t0001;	// 1
 	word32 dw0003;	// 3
 	Eq_2914 t0016;	// 16
-	Eq_2914 t0017;	// 17
 	ui32 dw0120;	// 120
 	word32 dw092C;	// 92C
 	byte b0BFF;	// BFF

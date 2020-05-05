@@ -141,7 +141,8 @@ namespace Reko.Typing
                 var strGlobals = Globals.TypeVariable.Class.ResolveAs<StructureType>();
                 if (strGlobals.Fields.AtOffset(offset) == null)
                 {
-                    if (!IsInsideArray(strGlobals, offset, pointee))
+                    if (!IsInsideArray(strGlobals, offset, pointee) &&
+                        !IsInsideStruct(strGlobals, offset))
                     {
                         strGlobals.Fields.Add(offset, pointee);
                     }
@@ -169,6 +170,20 @@ namespace Reko.Typing
             if (array == null)
                 return false;
             return unifier.AreCompatible(array.ElementType, dt);
+        }
+
+        public bool IsInsideStruct(StructureType strGlobals, int offset)
+        {
+            //$PERF: LowerBound have a complexity of O(n^2)
+            var field = strGlobals.Fields.LowerBound(offset);
+            if (field == null)
+                return false;
+            var str = field.DataType.ResolveAs<StructureType>();
+            if (str == null)
+                return false;
+            return (
+                offset >= field.Offset &&
+                offset < field.Offset + str.GetInferredSize());
         }
 
         /// <summary>
