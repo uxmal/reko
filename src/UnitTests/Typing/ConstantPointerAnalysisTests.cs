@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Mocks;
+using System;
 
 namespace Reko.UnitTests.Typing
 {
@@ -32,12 +33,15 @@ namespace Reko.UnitTests.Typing
 	{
 		private TypeStore store;
 		private TypeFactory factory;
+        private ProgramBuilder pb;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
             store = new TypeStore();
             factory = new TypeFactory();
+            pb = new ProgramBuilder();
         }
 
         private void RunTest(Program program, string outputFile)
@@ -61,7 +65,57 @@ namespace Reko.UnitTests.Typing
             Verify(null, outputFile);
         }
 
-		[Test]
+        private Expression EnsureTypeVariable(Expression e, DataType dt)
+        {
+            var tv = store.EnsureExpressionTypeVariable(factory, e);
+            tv.DataType = dt;
+            return e;
+        }
+
+        private Expression Ptr32ToInt32(ProcedureBuilder m, uint ptr)
+        {
+            var dt = new Pointer(PrimitiveType.Int32, 32);
+            return EnsureTypeVariable(m.Word32(ptr), dt);
+        }
+
+        private Expression Word32(ProcedureBuilder m, uint n)
+        {
+            return EnsureTypeVariable(m.Word32(n), PrimitiveType.Word32);
+        }
+
+        private Procedure Given_Procedure(string name, Action<ProcedureBuilder> builder)
+        {
+            return pb.Add(name, builder);
+        }
+
+        private void Given_Program(StructureFieldCollection globalVariables)
+        {
+            this.program = pb.BuildProgram();
+            program.Globals.TypeVariable = store.CreateTypeVariable(factory);
+            var globalStructure = new StructureType();
+            globalStructure.Fields.AddRange(globalVariables);
+            program.Globals.TypeVariable.Class.DataType = globalStructure;
+        }
+
+        private void When_RunConstantPointerAnalysis()
+        {
+            var cpa = new ConstantPointerAnalysis(factory, store, program);
+            cpa.FollowConstantPointers();
+        }
+
+        private void AssertGlobalVariables(string expected)
+        {
+            var eqGlobals = program.Globals.TypeVariable.Class;
+            var strGlobals = eqGlobals.ResolveAs<StructureType>();
+            var actual = strGlobals.ToString();
+            if (actual != expected)
+            {
+                Console.WriteLine(actual);
+            }
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
 		public void CpaSimple()
 		{
 			var program = new ProgramBuilder();
@@ -137,6 +191,40 @@ namespace Reko.UnitTests.Typing
                 304,
                 PrimitiveType.Int32);
             Assert.IsTrue(isInside, "Since the array has no specified size, offset 304 should be inside the array.");
+        }
+
+        [Test(Description = "If the data pointer is inside structure, it should be added to globals.")]
+        public void CpaPointerToGlobalStructureField()
+        {
+            Given_Procedure("proc", m =>
+            {
+                m.MStore(Ptr32ToInt32(m, 0x123130), Word32(m, 1));
+                m.MStore(Ptr32ToInt32(m, 0x123134), Word32(m, 2));
+                m.MStore(Ptr32ToInt32(m, 0x123138), Word32(m, 3));
+            });
+            var strFieldType = new StructureType
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Int32 },
+                    { 4, PrimitiveType.Real32 },
+                    { 8, PrimitiveType.Int32 },
+                }
+            };
+            var globalVariables = new StructureFieldCollection
+            {
+                { 0x123130, strFieldType }
+            };
+            Given_Program(globalVariables);
+
+            When_RunConstantPointerAnalysis();
+
+            var expected =
+                "(struct (123130 (struct" +
+                " (0 int32 dw0000)" +
+                " (4 real32 r0004)" +
+                " (8 int32 dw0008)) t123130))";
+            AssertGlobalVariables(expected);
         }
     }
 }

@@ -895,7 +895,7 @@ l000000000040451F:
 									{
 										do
 										{
-											Eq_n rsi_n = *((char *) globals->a4135E0 + r15_n * 0x08);
+											Eq_n rsi_n = globals->a4135E0[r15_n];
 											int64 r14_n = (int64) (word32) r15_n;
 											if (rsi_n == 0x00)
 												goto l0000000000404857;
