@@ -33,6 +33,8 @@ namespace Reko.Arch.Pdp11
 
     public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction, Mnemonic>
     {
+#pragma warning disable IDE1006 // Naming Styles
+
         private static readonly Decoder[] decoders;
 
         private readonly Pdp11Architecture arch;
@@ -370,47 +372,6 @@ namespace Reko.Arch.Pdp11
             if (freg == null)
                 return null;
             return new RegisterOperand(freg);
-        }
-
-        private PrimitiveType DataWidthFromSizeBit(uint p)
-        {
-            return p != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
-        }
-
-        private Pdp11Instruction DecodeCondCode(ushort opcode)
-        {
-            if ((opcode & 0x1F) == 0)
-            {
-                return new Pdp11Instruction
-                {
-                    Mnemonic = Mnemonic.nop,
-                    InstructionClass = InstrClass.Linear|InstrClass.Padding,
-                    Operands = new MachineOperand[0]
-                };
-            } 
-            return new Pdp11Instruction
-            {
-                Mnemonic = ((opcode & 0x10) != 0) ? Mnemonic.setflags : Mnemonic.clrflags,
-                InstructionClass = InstrClass.Linear,
-                DataWidth = dataWidth,
-                Operands = new MachineOperand[] { new ImmediateOperand(Constant.Byte((byte) (opcode & 0xF))) },
-            };
-        }
-
-        private static MachineOperand Reg(int bits, Pdp11Disassembler dasm)
-        {
-            return new RegisterOperand(dasm.arch.GetRegister(bits & 7));
-        }
-
-        private Pdp11Instruction BranchInstruction(ushort opcode, Mnemonic oc, InstrClass iclass = InstrClass.ConditionalTransfer)
-        {
-            return new Pdp11Instruction
-            {
-                Mnemonic = oc,
-                InstructionClass = iclass,
-                DataWidth = PrimitiveType.Word16,
-                Operands = new MachineOperand[] { new AddressOperand(this.rdr.Address + 2 * (sbyte) (opcode & 0xFF)) },
-            };
         }
 
         /// <summary>

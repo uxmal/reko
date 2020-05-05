@@ -34,6 +34,8 @@ namespace Reko.Arch.M68k
     // M68k opcode map in http://www.freescale.com/files/archives/doc/ref_manual/M68000PRM.pdf
     using Mutator = Mutator<M68kDisassembler>;
 
+#pragma warning disable IDE1006 // Naming Styles
+
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction, Mnemonic>
     {
         public const string HexStringFormat = "{0}${1}";
@@ -70,7 +72,6 @@ namespace Reko.Arch.M68k
             var addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out ushort uInstr))
                 return null;
-            var offset = rdr.Offset;
             Decoder handler = g_instruction_table[uInstr];
             instr = new M68kInstruction
             {
@@ -1501,7 +1502,7 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        static PrimitiveType[] float_data_format = new PrimitiveType[8] 
+        private static readonly PrimitiveType[] float_data_format = new PrimitiveType[8] 
 	    {
             PrimitiveType.Int32,  // ".l",
             PrimitiveType.Real32, // ".s",
@@ -2682,8 +2683,8 @@ namespace Reko.Arch.M68k
             };
         }
 
-        private static Mutator q9 = Q(9, 0x07, 8, PrimitiveType.Byte);
-        private static Mutator Q0 = Q(0, 0xFF, 0, PrimitiveType.SByte);
+        private static readonly Mutator q9 = Q(9, 0x07, 8, PrimitiveType.Byte);
+        private static readonly Mutator Q0 = Q(0, 0xFF, 0, PrimitiveType.SByte);
 
         // Predecrement operator
         private static Mutator Pre(int bitOffset)
@@ -3145,7 +3146,7 @@ namespace Reko.Arch.M68k
 };
         }
 
-        private static Decoder illegal = new Decoder(new Mutator[0], 0, 0, 0, Mnemonic.illegal);
+        private static readonly Decoder illegal = new Decoder(new Mutator[0], 0, 0, 0, Mnemonic.illegal);
 
         // Check if opcode is using a valid ea mode
         static bool valid_ea(uint opcode, uint mask)

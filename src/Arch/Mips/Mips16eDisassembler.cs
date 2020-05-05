@@ -34,6 +34,7 @@ namespace Reko.Arch.Mips
 
     public class Mips16eDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {
+#pragma warning disable IDE1006
         private static readonly Decoder rootDecoder;
 
         private readonly MipsProcessorArchitecture arch;
@@ -370,7 +371,7 @@ namespace Reko.Arch.Mips
                 return true;
             };
         }
-        private static Mutator<Mips16eDisassembler> SaveFramesize = Framesize(Bf((0, 4)));
+        private static readonly Mutator<Mips16eDisassembler> SaveFramesize = Framesize(Bf((0, 4)));
 
         private static readonly ImmediateOperand[] frameSizeEncoding = new int[16]
         {

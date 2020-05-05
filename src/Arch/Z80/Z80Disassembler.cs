@@ -37,6 +37,8 @@ namespace Reko.Arch.Z80
     /// </summary>
     public class Z80Disassembler : DisassemblerBase<Z80Instruction, Mnemonic>
     {
+#pragma warning disable IDE1006 // Naming Styles
+
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
@@ -78,7 +80,7 @@ namespace Reko.Arch.Z80
             };
         }
 
-        private static CondCode[] ConditionCode =
+        private static readonly CondCode[] ConditionCode =
         {
             CondCode.nz,
             CondCode.z,
@@ -90,7 +92,7 @@ namespace Reko.Arch.Z80
             CondCode.m,
         };
 
-        private static RegisterStorage[] ByteRegister =
+        private static readonly RegisterStorage[] ByteRegister =
         {
             Registers.b,
             Registers.c,
@@ -240,7 +242,7 @@ namespace Reko.Arch.Z80
             {
                 if (!disasm.rdr.TryReadByte(out var op2))
                     return disasm.CreateInvalidInstruction();
-                Decoder decoder = null;
+                Decoder decoder;
                 if (0x40 <= op2 && op2 < 0x80)
                     decoder = edDecoders[op2 - 0x40];
                 else if (0xA0 <= op2 && op2 < 0xC0)

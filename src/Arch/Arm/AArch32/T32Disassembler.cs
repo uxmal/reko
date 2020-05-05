@@ -40,6 +40,8 @@ namespace Reko.Arch.Arm.AArch32
     /// </summary>
     public partial class T32Disassembler : DisassemblerBase<AArch32Instruction, Mnemonic>
     {
+#pragma warning disable IDE1006 // Naming Styles
+
         private const uint ArmRegPC = 0xFu;
 
         private static readonly Decoder[] decoders;
@@ -160,7 +162,6 @@ namespace Reko.Arch.Arm.AArch32
                 return (v << 48) | (v << 32) | (v << 16) | v;
             }
 
-            int op = SBitfield(wInstr, 5, 1);
             int cmode = SBitfield(wInstr, 8, 4);
             ulong imm64 = 0;
             switch (cmode >> 1)
@@ -187,6 +188,7 @@ namespace Reko.Arch.Arm.AArch32
             case 7:
                 throw new NotImplementedException();
                 /*
+                int op = SBitfield(wInstr, 5, 1);
                 if (cmode < 0 > == '0' && op == '0') {
                     imm64 = Replicate(imm8, 8);
                 }
@@ -380,36 +382,6 @@ namespace Reko.Arch.Arm.AArch32
             return ArmVectorData.INVALID;
         }
 
-        private static ImmediateOperand ModifiedImmediate(uint wInstr)
-        {
-            var i_imm3_a = (SBitfield(wInstr, 10 + 16, 1) << 4) |
-                (SBitfield(wInstr, 12, 3) << 1) |
-                (SBitfield(wInstr, 7, 1));
-            var abcdefgh = wInstr & 0xFF;
-            switch (i_imm3_a)
-            {
-            case 0:
-            case 1:
-                return ImmediateOperand.Word32(abcdefgh);
-            case 2:
-            case 3:
-                return ImmediateOperand.Word32((abcdefgh << 16) | abcdefgh);
-            case 4:
-            case 5:
-                return ImmediateOperand.Word32((abcdefgh << 24) | (abcdefgh << 8));
-            case 6:
-            case 7:
-                return ImmediateOperand.Word32(
-                    (abcdefgh << 24) |
-                    (abcdefgh << 16) |
-                    (abcdefgh << 8) |
-                    (abcdefgh));
-            default:
-                abcdefgh |= 0x80;
-                return ImmediateOperand.Word32(abcdefgh << (0x20 - i_imm3_a));
-            }
-        }
-
         private RegisterOperand Coprocessor(uint wInstr, int bitPos)
         {
             var cp = Registers.Coprocessors[SBitfield(wInstr, bitPos, 4)];
@@ -451,8 +423,6 @@ namespace Reko.Arch.Arm.AArch32
             dasm.state.updateFlags = dasm.itCondition == ArmCondition.AL;
             return true;
         }
-
-
 
         /// <summary>
         /// This is the wide form of an ARM Thumb instruction.
@@ -500,7 +470,7 @@ namespace Reko.Arch.Arm.AArch32
         }
         private static readonly Mutator<T32Disassembler> w21 = w(21);
 
-        private static Bitfield[] vifFields = {
+        private static readonly Bitfield[] vifFields = {
             new Bitfield(10,1), new Bitfield(18, 2)
         };
 
@@ -523,7 +493,7 @@ namespace Reko.Arch.Arm.AArch32
         /// </summary>
         private static Mutator<T32Disassembler> vi(int bitpos, int length, params ArmVectorData[] sizes)
         {
-            var field = new Bitfield(bitpos, 2);
+            var field = new Bitfield(bitpos, length);
             return (u, d) =>
             {
                 d.state.vectorData = sizes[field.Read(u)];
@@ -582,14 +552,15 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static ArmVectorData[] signed_bhw_ = new[]
+        private static readonly ArmVectorData[] signed_bhw_ = new[]
         {
             ArmVectorData.S8,
             ArmVectorData.S16,
             ArmVectorData.S32,
             ArmVectorData.INVALID,
         };
-        private static ArmVectorData[] unsigned_bhw_ = new[]
+
+        private static readonly ArmVectorData[] unsigned_bhw_ = new[]
         {
             ArmVectorData.U8,
             ArmVectorData.U16,
@@ -602,15 +573,16 @@ namespace Reko.Arch.Arm.AArch32
             return vu(bitpos, signed_bhw_, unsigned_bhw_);
         }
 
-        private static ArmVectorData[] signed_bhwd = new[]
-{
+        private static readonly ArmVectorData[] signed_bhwd = new[]
+        {
             ArmVectorData.S8,
             ArmVectorData.S16,
             ArmVectorData.S32,
             ArmVectorData.S64,
         };
-        private static ArmVectorData[] unsigned_bhwd = new[]
- {
+
+        private static readonly ArmVectorData[] unsigned_bhwd = new[]
+        {
             ArmVectorData.U8,
             ArmVectorData.U16,
             ArmVectorData.U32,
@@ -697,7 +669,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static ArmVectorData[] _hw_ = new[]
+        private static readonly ArmVectorData[] _hw_ = new[]
         {
             INVALID,
             I16,
@@ -796,9 +768,9 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
-        private static Mutator<T32Disassembler> sp = Reg(Registers.sp);
-        private static Mutator<T32Disassembler> cpsr = Reg(Registers.cpsr);
-        private static Mutator<T32Disassembler> spsr = Reg(Registers.spsr);
+        private static readonly Mutator<T32Disassembler> sp = Reg(Registers.sp);
+        private static readonly Mutator<T32Disassembler> cpsr = Reg(Registers.cpsr);
+        private static readonly Mutator<T32Disassembler> spsr = Reg(Registers.spsr);
 
         /// SIMD / FP system registers
         private static Mutator<T32Disassembler> SIMDSysReg(int bitoffset)
@@ -862,7 +834,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
             };
         }
-        private static Mutator<T32Disassembler> Rp_0 = rp(0);
+        private static readonly Mutator<T32Disassembler> Rp_0 = rp(0);
 
         // 'mw': 16-bit instruction register mask used by push
         private static bool mw(uint wInstr, T32Disassembler dasm)
@@ -1024,7 +996,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     regMask = (regMask << incr) | 1u;
                 }
-                regMask = regMask << iStartReg;
+                regMask <<= iStartReg;
                 var size = sizeFld.Read(u);
                 int index = (int) indexFields[size].Read(u);
                 d.state.ops.Add(new MultiRegisterOperand(Registers.DRegs, PrimitiveType.Word64, regMask, index));
@@ -1177,44 +1149,6 @@ namespace Reko.Arch.Arm.AArch32
             var q = ((wInstr >> 1) & 0x10) | (wInstr & 0xF);
             dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
             return true;
-        }
-
-        /// <summary>
-        /// Floating-point register specifier.
-        /// </summary>
-        /// <remarks>
-        /// FP registers need 5-bit numbers to identify them. The 5 bits
-        /// are broken up into a single bit and a four bit field. Annoyingly
-        /// the encoding for single-precision instructions is nnnn:m while
-        /// double-precision instructions is m:nnnn.
-        /// </remarks>
-        private static Mutator<T32Disassembler> Fp(int bitpos, int fourBitPos)
-        {
-            var singleFields = new[] {
-                new Bitfield(fourBitPos, 4),
-                new Bitfield(bitpos, 1)
-            };
-            var doubleFields = new[]
-            {
-                singleFields[1],
-                singleFields[0]
-            };
-            return (u, d) =>
-            {
-                RegisterStorage reg;
-                if (d.state.vectorData == ArmVectorData.F64)
-                {
-                    var iReg = Bitfield.ReadFields(doubleFields, u);
-                    reg = Registers.DRegs[iReg];
-                }
-                else
-                {
-                    var iReg = Bitfield.ReadFields(singleFields, u);
-                    reg = Registers.DRegs[iReg];
-                }
-                d.state.ops.Add(new RegisterOperand(reg));
-                return true;
-            };
         }
 
         private static bool Q5_0_times2(uint wInstr, T32Disassembler dasm)
@@ -1572,7 +1506,7 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
-        private static (ArmVectorData, uint)[] vectorImmediateShiftSize = new[]
+        private static readonly (ArmVectorData, uint)[] vectorImmediateShiftSize = new[]
         {
            (ArmVectorData.INVALID, 0u),
            (ArmVectorData.I8,  8u),
@@ -1894,7 +1828,7 @@ namespace Reko.Arch.Arm.AArch32
             var rm = wInstr & 0b1111;
             var rn = (wInstr >> 16) & 0b1111;
             var baseReg = Registers.GpRegs[rn];
-            MemoryOperand mop = new MemoryOperand(Arm32Architecture.VectorElementDataType(dasm.state.vectorData));
+            var mop = new MemoryOperand(Arm32Architecture.VectorElementDataType(dasm.state.vectorData));
             mop.BaseRegister = baseReg;
             if (rm == 0b1101)
             {
@@ -1938,7 +1872,7 @@ namespace Reko.Arch.Arm.AArch32
 
         // Branch targets
 
-        private static Bitfield[] B_T4_fields = new Bitfield[]
+        private static readonly Bitfield[] B_T4_fields = new Bitfield[]
         {
             new Bitfield(26, 1),
             new Bitfield(13, 1),

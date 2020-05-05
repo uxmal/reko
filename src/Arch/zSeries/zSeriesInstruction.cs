@@ -24,6 +24,7 @@ using System;
 
 namespace Reko.Arch.zSeries
 {
+#pragma warning disable IDE1006 // Naming Styles
     public class zSeriesInstruction : MachineInstruction
     {
         internal Mnemonic Mnemonic;

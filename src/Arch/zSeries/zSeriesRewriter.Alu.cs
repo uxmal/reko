@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.zSeries
 {
+#pragma warning disable IDE1006 // Naming Styles
     public partial class zSeriesRewriter
     {
         private void RewriteAhi(PrimitiveType dt)

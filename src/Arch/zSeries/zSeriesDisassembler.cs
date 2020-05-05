@@ -32,6 +32,7 @@ namespace Reko.Arch.zSeries
     using Decoder = WideDecoder<zSeriesDisassembler, Mnemonic, zSeriesInstruction>;
     using WideInstrDecoder = WideInstrDecoder<zSeriesDisassembler, Mnemonic, zSeriesInstruction>;
 
+#pragma warning disable IDE1006 // Naming Styles
     public class zSeriesDisassembler : DisassemblerBase<zSeriesInstruction, Mnemonic>
     {
         private readonly static Decoder[] decoders;
@@ -361,11 +362,12 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        private static Bitfield[] rsya_offset = new[]
+        private static readonly Bitfield[] rsya_offset = new[]
         {
             new Bitfield(8, 8),
             new Bitfield(16, 12),
         };
+
         private static bool RSYa(ulong uInstr, zSeriesDisassembler dasm)
         {
             var r1 = Registers.GpRegisters[(uInstr >> 36) & 0xF];
@@ -390,7 +392,7 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        private static Bitfield[] rxya_offset = new[]
+        private static readonly Bitfield[] rxya_offset = new[]
         {
             new Bitfield(8, 8),
             new Bitfield(16, 12),

@@ -198,8 +198,7 @@ namespace Reko.Arch.Pdp11
 
         private Expression RewriteJmpSrc(MachineOperand op)
         {
-            var memOp = op as MemoryOperand;
-            if (memOp == null)
+            if (!(op is MemoryOperand memOp))
             {
                 // PDP-11 always has a memory reference 
                 // for the destination of a transfer instruction.

@@ -244,8 +244,8 @@ namespace Reko.Arch.OpenRISC
 
         private class Instr64Decoder : Decoder
         {
-            private Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec32bit;
-            private Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec64bit;
+            private readonly Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec32bit;
+            private readonly Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec64bit;
 
             public Instr64Decoder(Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec32bit, Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec64bit)
             {

@@ -35,12 +35,14 @@ namespace Reko.Arch.Mips
 
     public class MicroMipsDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {
-        private static Decoder rootDecoder;
+#pragma warning disable IDE1006
+
+        private static readonly Decoder rootDecoder;
 
         private readonly MipsProcessorArchitecture arch;
         private readonly EndianImageReader rdr;
+        private readonly List<MachineOperand> ops;
         private Address addr;
-        private List<MachineOperand> ops;
 
         public MicroMipsDisassembler(MipsProcessorArchitecture arch, EndianImageReader rdr)
         {
@@ -246,8 +248,8 @@ namespace Reko.Arch.Mips
         private static readonly Mutator<MicroMipsDisassembler> pcRel26 = pcRel(26);
 
         // Ms - memory access: base + offset with 5-bit register encodings; offset scaled
-        private static Bitfield baseField = new Bitfield(16, 5);
-        private static Bitfield offsetField = new Bitfield(0, 16);
+        private static readonly Bitfield baseField = new Bitfield(16, 5);
+        private static readonly Bitfield offsetField = new Bitfield(0, 16);
 
         private static Mutator<MicroMipsDisassembler> Ms(PrimitiveType dt)
         {

@@ -35,13 +35,15 @@ namespace Reko.Arch.Arm.AArch64
 
     public partial class AArch64Disassembler : DisassemblerBase<AArch64Instruction, Mnemonic>
     {
+#pragma warning disable IDE1006 // Naming Styles
+
         private const uint RegisterMask = 0b11111;
 
         private static readonly Decoder rootDecoder;
         private static readonly Decoder invalid;
 
-        private Arm64Architecture arch;
-        private EndianImageReader rdr;
+        private readonly Arm64Architecture arch;
+        private readonly EndianImageReader rdr;
         private Address addr;
         private DasmState state;
 
@@ -232,10 +234,10 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator<AArch64Disassembler> W_0 = W(0, 5);
-        private static Mutator<AArch64Disassembler> W_5 = W(5, 5);
-        private static Mutator<AArch64Disassembler> W_10 = W(10, 5);
-        private static Mutator<AArch64Disassembler> W_16 = W(16, 5);
+        private static readonly Mutator<AArch64Disassembler> W_0 = W(0, 5);
+        private static readonly Mutator<AArch64Disassembler> W_5 = W(5, 5);
+        private static readonly Mutator<AArch64Disassembler> W_10 = W(10, 5);
+        private static readonly Mutator<AArch64Disassembler> W_16 = W(16, 5);
 
         // 32-bit register - but use stack register instead of w31
 
@@ -252,9 +254,9 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator<AArch64Disassembler> Ws_0 = Ws(0, 5);
-        private static Mutator<AArch64Disassembler> Ws_5 = Ws(5, 5);
-        private static Mutator<AArch64Disassembler> Ws_16 = Ws(16, 5);
+        private static readonly Mutator<AArch64Disassembler> Ws_0 = Ws(0, 5);
+        private static readonly Mutator<AArch64Disassembler> Ws_5 = Ws(5, 5);
+        private static readonly Mutator<AArch64Disassembler> Ws_16 = Ws(16, 5);
 
 
         // 64-bit register.
