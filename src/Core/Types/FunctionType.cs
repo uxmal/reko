@@ -77,6 +77,8 @@ namespace Reko.Core.Types
             return new FunctionType(new Identifier("", VoidType.Instance, null), parameters);
         }
 
+        public bool IsVariadic { get; set; }
+
         /// <summary>
         /// The return value of a function. 
         /// </summary>
@@ -116,15 +118,6 @@ namespace Reko.Core.Types
             ft.FpuStackOutArgumentMax = FpuStackOutArgumentMax;
             return ft;
 		}
-
-        public bool IsVarargs
-        {
-            get
-            {
-                var last = Parameters?.LastOrDefault();
-                return last != null && last.Name == "...";
-            }
-        }
 
         /// <summary>
         /// Create a new signature with the parameters replaced with
@@ -247,6 +240,13 @@ namespace Reko.Core.Types
                         fmt.Write(sep);
                         sep = ", ";
                         w.WriteFormalArgument(p, emitStorage, t);
+                    }
+                    if (this.IsVariadic)
+                    {
+                        fmt.Write(sep);
+                        if (sep.Length == 0)
+                            fmt.Write(' ');
+                        fmt.Write("...");
                     }
                 }
                 fmt.Write(")");

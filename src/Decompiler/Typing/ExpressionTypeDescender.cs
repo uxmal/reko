@@ -95,10 +95,10 @@ namespace Reko.Typing
 
         private FunctionType MatchFunctionPointer(DataType dt)
         {
-            var ptr = dt as Pointer;
-            if (ptr == null)
+            if (dt is Pointer ptr)
+                return ptr.Pointee as FunctionType;
+            else
                 return null;
-            return ptr.Pointee as FunctionType;
         }
 
         private FunctionType ExtractSignature(Expression proc)
@@ -113,14 +113,17 @@ namespace Reko.Typing
             var sig = ExtractSignature(appl.Procedure);
             if (sig == null)
                 return;
-            if (appl.Arguments.Length != sig.Parameters.Length)
+            if (!sig.IsVariadic && appl.Arguments.Length != sig.Parameters.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
                     appl.Procedure, appl.Arguments.Length, sig.Parameters.Length));
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                 MeetDataType(appl.Arguments[i], sig.Parameters[i].DataType);
-                sig.Parameters[i].Accept(this, sig.Parameters[i].TypeVariable);
+                if (!sig.IsVariadic || i < sig.Parameters.Length)
+                {
+                    MeetDataType(appl.Arguments[i], sig.Parameters[i].DataType);
+                    sig.Parameters[i].Accept(this, sig.Parameters[i].TypeVariable);
+                }
             }
         }
 

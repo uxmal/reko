@@ -47,12 +47,13 @@ namespace Reko.Core.Serialization
 			this.DefaultConvention = defaultConvention;
 		}
 
-        public IProcessorArchitecture Architecture { get; private set; }
-        public ISerializedTypeVisitor<DataType> TypeLoader { get; private set; }
+        public IProcessorArchitecture Architecture { get; }
+        public ISerializedTypeVisitor<DataType> TypeLoader { get; }
         public string DefaultConvention { get; set; }
 
         public int FpuStackOffset { get; set; }
         public int StackOffset { get; set; }
+        public bool IsVariadic { get; set; }
 
         public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
@@ -130,13 +131,17 @@ namespace Reko.Core.Serialization
                     {
                         var sArg = ss.Arguments[iArg];
                         var arg = DeserializeArgument(sArg, iArg, ss.Convention);
-                        parameters.Add(arg);
+                        if (arg != null)
+                        {
+                            parameters.Add(arg);
+                        }
                     }
                 }
                 fpuDelta -= FpuStackOffset;
                 FpuStackOffset = fpuDelta;
                 var sig = new FunctionType(ret, parameters.ToArray())
                 {
+                    IsVariadic = this.IsVariadic,
                     IsInstanceMetod = ss.IsInstanceMethod,
                 };
                 ApplyConvention(ss, sig);
@@ -183,14 +188,14 @@ namespace Reko.Core.Serialization
                     var param = new Identifier("this", dtThis, res.ImplicitThis);
                     parameters.Add(param);
                 }
+                bool isVariadic = false;
                 if (ss.Arguments != null)
                 {
                     for (int i = 0; i < ss.Arguments.Length; ++i)
                     {
                         if (ss.Arguments[i].Name == "...")
                         {
-                            var unk = new UnknownType();
-                            parameters.Add(new Identifier("...", unk, new StackArgumentStorage(0, unk)));
+                            isVariadic = true;
                         }
                         else
                         {
@@ -208,6 +213,7 @@ namespace Reko.Core.Serialization
                         : res.StackDelta,
                     FpuStackDelta = res.FpuStackDelta,
                     ReturnAddressOnStack = retAddrSize,
+                    IsVariadic = isVariadic,
                 };
                 return ft;
             }

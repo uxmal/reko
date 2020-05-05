@@ -79,21 +79,17 @@ namespace Reko.UnitTests.Scanning
             };
             this.x86PrintfSig = new FunctionType(
                 null,
-                StackId(null,   4, CStringType32()),
-                StackId("...",  8, new UnknownType()));
+                StackId(null, 4, CStringType32())) { IsVariadic = true };
             this.x86SprintfSig = new FunctionType(
                 null,
                 StackId(null,   4, CStringType32()),
-                StackId(null,   8, CStringType32()),
-                StackId("...", 12, new UnknownType()));
+                StackId(null,   8, CStringType32())) { IsVariadic = true };
             this.win_x86_64PrintfSig = new FunctionType(
                 null,
-                RegId(null, win_x86_64, "rcx", CStringType64()),
-                RegId("...", win_x86_64, "rdx", new UnknownType()));
+                RegId(null, win_x86_64, "rcx", CStringType64())) { IsVariadic = true };
             this.ppcPrintfSig = new FunctionType(
                 null,
-                RegId(null,  sysV_ppc, "r3", CStringType32()),
-                RegId("...", sysV_ppc, "r4", new UnknownType()));
+                RegId(null,  sysV_ppc, "r3", CStringType32())) { IsVariadic = true };
             this.addrInstr = Address.Ptr32(0x123400);
             this.listener = new FakeDecompilerEventListener();
             sc.AddService<DecompilerEventListener>(listener);

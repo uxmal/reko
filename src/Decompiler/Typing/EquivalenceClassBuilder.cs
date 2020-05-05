@@ -138,14 +138,14 @@ namespace Reko.Typing
 
 			if (sig != null)
 			{
-				if (sig.Parameters.Length != appl.Arguments.Length)
+				if (!sig.IsVariadic && sig.Parameters.Length != appl.Arguments.Length)
 					throw new InvalidOperationException("Parameter count must match.");
 			}
 
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
 				appl.Arguments[i].Accept(this);
-				if (sig != null)
+				if (sig != null && (!sig.IsVariadic || i < sig.Parameters.Length))
 				{
 					EnsureTypeVariable(sig.Parameters[i]);
 					store.MergeClasses(appl.Arguments[i].TypeVariable, sig.Parameters[i].TypeVariable);

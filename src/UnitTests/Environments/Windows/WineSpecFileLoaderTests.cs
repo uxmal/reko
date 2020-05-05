@@ -190,7 +190,7 @@ namespace Reko.UnitTests.Environments.Windows
             var mod = lib.Modules["FOO.DLL"];
             var _DebugOutput = mod.ServicesByOrdinal[328];
             Assert.AreEqual(
-                "void _DebugOutput(Stack word16 wArg04, Stack (ptr32 char) ptrArg06, Stack <unknown> ...)" + nl +
+                "void _DebugOutput(Stack word16 wArg04, Stack (ptr32 char) ptrArg06, ...)" + nl +
                 "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl,
                 _DebugOutput.Signature.ToString("_DebugOutput", FunctionType.EmitFlags.AllDetails));
         }

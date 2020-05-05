@@ -124,7 +124,8 @@ namespace Reko.UnitTests.Core
                 new CallSite(4, 0),
                 new ProcedureConstant(PrimitiveType.Ptr32, callee));
             var unk = new UnknownType();
-            var sig = FunctionType.Action(new Identifier("...", unk, new StackArgumentStorage(0, unk)));
+            var sig = FunctionType.Action();
+            sig.IsVariadic = true;
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("callee(0<32>)", instr.ToString());//$BUG: obviously wrong
         }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -81,12 +81,8 @@ namespace Reko.Core.Serialization
         {
             if (argCur.Name == "...")
             {
-                return procSer.CreateId(
-                    "...",
-                    new UnknownType(),
-                    new StackArgumentStorage(
-                        procSer.StackOffset + retAddressOnStack,
-                        new UnknownType()));
+                procSer.IsVariadic = true;
+                return null;
             }
             if (argCur.Type == null)
                 throw new ApplicationException(string.Format("Argument '{0}' has no type.", argCur.Name));

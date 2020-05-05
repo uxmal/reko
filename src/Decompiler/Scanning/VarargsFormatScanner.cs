@@ -76,7 +76,7 @@ namespace Reko.Scanning
         public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics chr)
         {
             if (
-                sig == null || !sig.IsVarargs ||
+                sig == null || !sig.IsVariadic ||
                 chr == null || !VarargsParserSet(chr)
             )
             {
@@ -98,10 +98,9 @@ namespace Reko.Scanning
 
         private string ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig)
         {
-            var formatIndex = sig.Parameters.Length - 2;
+            var formatIndex = sig.Parameters.Length - 1;
             if (formatIndex < 0)
-                throw new ApplicationException(
-                    string.Format("Varargs: should be at least 2 parameters"));
+                throw new ApplicationException("Expected variadic function to take at least one parameter.");
             var formatParam = sig.Parameters[formatIndex];
             // $TODO: Issue #471: what about non-x86 architectures, like Sparc or PowerPC,
             // there can be varargs functions where the first N parameters are

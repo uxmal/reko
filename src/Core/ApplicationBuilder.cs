@@ -133,10 +133,6 @@ namespace Reko.Core
             for (int i = 0; i < sigCallee.Parameters.Length; ++i)
             {
                 var formalArg = sigCallee.Parameters[i];
-                if (formalArg.Name == "...")
-                {
-                    return BindVariadicArguments(sigCallee, chr, actuals);
-                }
                 if (formalArg.Storage is OutArgumentStorage)
                 {
                     var outArg = BindOutArg(formalArg);
@@ -148,7 +144,14 @@ namespace Reko.Core
                     actuals.Add(actualArg);
                 }
             }
-            return actuals;
+            if (sigCallee.IsVariadic)
+            {
+                return BindVariadicArguments(sigCallee, chr, actuals);
+            }
+            else
+            {
+                return actuals;
+            }
         }
 
         public List<Expression> BindVariadicArguments(FunctionType sig, ProcedureCharacteristics chr, List<Expression> actuals)
