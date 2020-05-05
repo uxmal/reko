@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 
 namespace Reko.Arch.i8051
 {
@@ -122,7 +123,9 @@ namespace Reko.Arch.i8051
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(MemoryOperand.Direct(Address.Ptr16(b)));
+            var offset = Constant.UInt16(b);
+            offset.DataType = PrimitiveType.Offset16;
+            dasm.ops.Add(MemoryOperand.Direct(offset));
             return true;
         }
 

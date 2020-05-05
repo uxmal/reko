@@ -30,7 +30,7 @@ Eq_n g_t28B1 =
 		{
 		},
 	};
-ptr32 g_ptr3E94 = 0x00;
+struct Eq_n * g_ptr3E94 = null;
 struct Eq_n * g_ptr3E98 = &g_t4000;
 struct Eq_n * g_ptr3E9C = null;
 struct Eq_n * g_ptr3EA0 = &g_t10202;

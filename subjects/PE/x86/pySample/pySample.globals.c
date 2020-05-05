@@ -4,7 +4,6 @@
 
 #include "pySample.h"
 
-word32 g_dwFFFFFFFF;
 Eq_n g_t10000000 = 
 	{
 		23117,
@@ -13,7 +12,7 @@ Eq_n g_t10000000 =
 Eq_n g_t10002098 = null;
 Eq_n g_t1000209C = null;
 Eq_n g_t100020A0 = null;
-word32 g_dw100020A8 = 0x00;
+Eq_n g_t100020A8 = null;
 word32 g_dw100020CC = 0x00;
 char g_str100020E0[] = "fdiv(a, b) = a / b";
 char g_str100020F4[] = "fdiv";
@@ -77,10 +76,10 @@ PyMethodDef g_methods[5] =
 		},
 	};
 int32 g_dw10003070 = 0;
-word32 * g_ptr100033A4 = null;
+Eq_n g_t100033A4 = 0x00;
 word32 g_dw100033A8 = 0x00;
 Eq_n g_t100033AC = 0;
-word32 * g_ptr100033B0 = null;
-word32 * g_ptr100033B4 = null;
+Eq_n g_t100033B0 = 0x00;
+Eq_n g_t100033B4 = 0x00;
 <anonymous> * g_ptr100033B8 = null;
 

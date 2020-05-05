@@ -12,7 +12,7 @@ ui32 g_a0010[];
 Eq_n g_t0078;
 byte g_b142C = 0x61;
 byte g_b1DAC = 0x25;
-ptr32 g_ptr2B88 = 0x00;
+struct Eq_n * g_ptr2B88 = null;
 struct Eq_n * g_ptr2B8C = &g_t4000;
 struct Eq_n * g_ptr2B90 = null;
 struct Eq_n * g_ptr2B94 = &g_t10202;

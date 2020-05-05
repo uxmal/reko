@@ -4,6 +4,7 @@
 
 #include "switch.h"
 
+<anonymous> g_tFFFFFFFF;
 <anonymous> g_t0001;
 int32 (* g_ptr8364)(int32 r0, char ** r1, char ** r2) = main;
 void (* g_ptr8368)() = __libc_csu_init;
@@ -18,8 +19,12 @@ int32 g_dw86AC = 28;
 int32 g_dw8700 = 0x00008180;
 int32 g_dw8704 = 32;
 int32 g_dw8708 = 36;
-ptr32 g_ptr8740 = 0x00010838;
+struct Eq_n * g_ptr8740 = &g_t10838;
 <anonymous> ** g_ptr10764 = &g_ptr10840;
+Eq_n g_t10838 = 
+	{
+		&g_tFFFFFFFF,
+	};
 <anonymous> * g_ptr10840 = null;
 word32 g_dw10844 = 0x00;
 byte g_b10870 = 0x00;

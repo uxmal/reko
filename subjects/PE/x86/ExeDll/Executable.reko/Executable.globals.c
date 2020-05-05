@@ -10,7 +10,9 @@ struct Eq_n * g_ptr40003C = &g_t0100;
 LONG g_t4018DF(struct _EXCEPTION_POINTERS * ExceptionInfo) = Unexpected function type (fn LONG ((ptr32 (struct "_EXCEPTION_POINTERS"))))
 ;
 <anonymous> * g_ptr4020D0 = fn00401BA4;
+Eq_n g_t4020D4 = null;
 Eq_n g_t4020DC = null;
+Eq_n g_t4020E0 = null;
 Eq_n g_t4020EC = null;
 word32 g_a4024C8[1] = 
 	{

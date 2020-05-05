@@ -14,7 +14,7 @@ Eq_n g_t0103 =
 	};
 word16 g_w0108 = 5888;
 char g_b02A3 = 'd';
-ptr16 g_ptr1388 = 0x00;
+struct Eq_n * g_ptr1388 = null;
 cu8 g_b138A = 0x00;
 byte g_b138B = 0x00;
 Eq_n g_t138C = 

@@ -47,7 +47,7 @@ Eq_n g_t4000 =
 		0x2848528C,
 		0x228C1010,
 	};
-ptr32 g_ptr40F8 = 0x00;
+struct Eq_n * g_ptr40F8 = null;
 struct Eq_n * g_ptr40FC = &g_t4000;
 struct Eq_n * g_ptr4100 = null;
 struct Eq_n * g_ptr4104 = &g_t10202;

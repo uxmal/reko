@@ -6,7 +6,7 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr16 (struct "Globals")))
-Eq_2: (segment "Eq_2" (0 (arr byte 128) a0000))
+Eq_2: (segment "Eq_2" (0 (arr byte 128) a0000) (81 byte b0081))
 	T_2 (in __data : (ptr16 Eq_2))
 Eq_3: (union "Eq_3" (byte u0) ((memptr (ptr16 Eq_2) byte) u1))
 	T_3 (in R0_10 : Eq_3)
@@ -15,10 +15,10 @@ Eq_3: (union "Eq_3" (byte u0) ((memptr (ptr16 Eq_2) byte) u1))
 	T_11 (in 0<8> : byte)
 Eq_9: (union "Eq_9" (byte u0) ((memptr (ptr16 Eq_2) byte) u1))
 	T_9 (in 1<8> : byte)
-Eq_13: (fn void ())
-	T_13 (in fn0003 : ptr16)
-	T_14 (in signature of fn0003 : void)
+Eq_16: (fn void ())
 	T_16 (in fn0003 : ptr16)
+	T_17 (in signature of fn0003 : void)
+	T_19 (in fn0003 : ptr16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
   Class: Eq_1
@@ -27,7 +27,7 @@ globals_t: (in globals : (ptr16 (struct "Globals")))
 T_2: (in __data : (ptr16 Eq_2))
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment (0 (arr T_47 128) a0000)))
+  OrigDataType: (ptr16 (segment (0 (arr T_50 128) a0000) (81 T_15 t0081)))
 T_3: (in R0_10 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
@@ -68,144 +68,156 @@ T_12: (in R0_10 != 0<8> : bool)
   Class: Eq_12
   DataType: bool
   OrigDataType: bool
-T_13: (in fn0003 : ptr16)
+T_13: (in 7<8> : byte)
   Class: Eq_13
-  DataType: (ptr16 Eq_13)
-  OrigDataType: (ptr16 (fn T_15 ()))
-T_14: (in signature of fn0003 : void)
+  DataType: byte
+  OrigDataType: byte
+T_14: (in 0x0081<p16> : mp16)
+  Class: Eq_14
+  DataType: (memptr (ptr16 Eq_2) byte)
+  OrigDataType: (memptr T_2 (struct (0 T_15 t0000)))
+T_15: (in Mem11[__data:0x0081<p16>:byte] : byte)
   Class: Eq_13
-  DataType: (ptr16 Eq_13)
-  OrigDataType: 
-T_15: (in fn0003() : void)
-  Class: Eq_15
-  DataType: void
-  OrigDataType: void
+  DataType: byte
+  OrigDataType: byte
 T_16: (in fn0003 : ptr16)
-  Class: Eq_13
-  DataType: (ptr16 Eq_13)
-  OrigDataType: (ptr16 (fn T_17 ()))
-T_17: (in fn0003() : void)
-  Class: Eq_15
+  Class: Eq_16
+  DataType: (ptr16 Eq_16)
+  OrigDataType: (ptr16 (fn T_18 ()))
+T_17: (in signature of fn0003 : void)
+  Class: Eq_16
+  DataType: (ptr16 Eq_16)
+  OrigDataType: 
+T_18: (in fn0003() : void)
+  Class: Eq_18
   DataType: void
   OrigDataType: void
-T_18: (in R7_21 : byte)
+T_19: (in fn0003 : ptr16)
+  Class: Eq_16
+  DataType: (ptr16 Eq_16)
+  OrigDataType: (ptr16 (fn T_20 ()))
+T_20: (in fn0003() : void)
   Class: Eq_18
+  DataType: void
+  OrigDataType: void
+T_21: (in R7_21 : byte)
+  Class: Eq_21
   DataType: byte
   OrigDataType: byte
-T_19: (in 0<8> : byte)
-  Class: Eq_18
+T_22: (in 0<8> : byte)
+  Class: Eq_21
   DataType: byte
   OrigDataType: byte
-T_20: (in R6_26 : byte)
-  Class: Eq_20
+T_23: (in R6_26 : byte)
+  Class: Eq_23
   DataType: byte
   OrigDataType: byte
-T_21: (in 0<8> : byte)
-  Class: Eq_20
+T_24: (in 0<8> : byte)
+  Class: Eq_23
   DataType: byte
   OrigDataType: byte
-T_22: (in R4_10 : byte)
-  Class: Eq_22
-  DataType: byte
-  OrigDataType: byte
-T_23: (in 0x27<8> : byte)
-  Class: Eq_22
-  DataType: byte
-  OrigDataType: byte
-T_24: (in R4_10 != 0x27<8> : bool)
-  Class: Eq_24
-  DataType: bool
-  OrigDataType: bool
-T_25: (in 1<8> : byte)
+T_25: (in R4_10 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_26: (in R4_10 + 1<8> : byte)
-  Class: Eq_22
+T_26: (in 0x27<8> : byte)
+  Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_27: (in R5_11 : byte)
+T_27: (in R4_10 != 0x27<8> : bool)
   Class: Eq_27
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_28: (in 1<8> : byte)
   Class: Eq_28
   DataType: byte
   OrigDataType: byte
-T_29: (in R5_11 + 1<8> : byte)
-  Class: Eq_27
+T_29: (in R4_10 + 1<8> : byte)
+  Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_30: (in 0<8> : byte)
-  Class: Eq_27
+T_30: (in R5_11 : byte)
+  Class: Eq_30
   DataType: byte
   OrigDataType: byte
-T_31: (in R5_11 != 0<8> : bool)
+T_31: (in 1<8> : byte)
   Class: Eq_31
-  DataType: bool
-  OrigDataType: bool
-T_32: (in 0x10<8> : byte)
-  Class: Eq_27
   DataType: byte
   OrigDataType: byte
-T_33: (in R5_11 != 0x10<8> : bool)
-  Class: Eq_33
-  DataType: bool
-  OrigDataType: bool
-T_34: (in 1<8> : byte)
+T_32: (in R5_11 + 1<8> : byte)
+  Class: Eq_30
+  DataType: byte
+  OrigDataType: byte
+T_33: (in 0<8> : byte)
+  Class: Eq_30
+  DataType: byte
+  OrigDataType: byte
+T_34: (in R5_11 != 0<8> : bool)
   Class: Eq_34
-  DataType: byte
-  OrigDataType: byte
-T_35: (in R7_21 + 1<8> : byte)
-  Class: Eq_18
-  DataType: byte
-  OrigDataType: byte
-T_36: (in 0<8> : byte)
-  Class: Eq_18
-  DataType: byte
-  OrigDataType: byte
-T_37: (in R7_21 != 0<8> : bool)
-  Class: Eq_37
   DataType: bool
   OrigDataType: bool
-T_38: (in 0xA<8> : byte)
-  Class: Eq_38
+T_35: (in 0x10<8> : byte)
+  Class: Eq_30
   DataType: byte
   OrigDataType: byte
-T_39: (in R7_21 ^ 0xA<8> : byte)
-  Class: Eq_39
+T_36: (in R5_11 != 0x10<8> : bool)
+  Class: Eq_36
+  DataType: bool
+  OrigDataType: bool
+T_37: (in 1<8> : byte)
+  Class: Eq_37
+  DataType: byte
+  OrigDataType: byte
+T_38: (in R7_21 + 1<8> : byte)
+  Class: Eq_21
+  DataType: byte
+  OrigDataType: byte
+T_39: (in 0<8> : byte)
+  Class: Eq_21
+  DataType: byte
+  OrigDataType: byte
+T_40: (in R7_21 != 0<8> : bool)
+  Class: Eq_40
+  DataType: bool
+  OrigDataType: bool
+T_41: (in 0xA<8> : byte)
+  Class: Eq_41
+  DataType: byte
+  OrigDataType: byte
+T_42: (in R7_21 ^ 0xA<8> : byte)
+  Class: Eq_42
   DataType: ui8
   OrigDataType: ui8
-T_40: (in R7_21 ^ 0xA<8> | R6_26 : byte)
-  Class: Eq_40
-  DataType: byte
-  OrigDataType: byte
-T_41: (in 0<8> : byte)
-  Class: Eq_40
-  DataType: byte
-  OrigDataType: byte
-T_42: (in (R7_21 ^ 0xA<8> | R6_26) != 0<8> : bool)
-  Class: Eq_42
-  DataType: bool
-  OrigDataType: bool
-T_43: (in 1<8> : byte)
+T_43: (in R7_21 ^ 0xA<8> | R6_26 : byte)
   Class: Eq_43
   DataType: byte
   OrigDataType: byte
-T_44: (in R6_26 + 1<8> : byte)
-  Class: Eq_20
+T_44: (in 0<8> : byte)
+  Class: Eq_43
   DataType: byte
   OrigDataType: byte
-T_45: (in 0<8> : byte)
-  Class: Eq_27
+T_45: (in (R7_21 ^ 0xA<8> | R6_26) != 0<8> : bool)
+  Class: Eq_45
+  DataType: bool
+  OrigDataType: bool
+T_46: (in 1<8> : byte)
+  Class: Eq_46
   DataType: byte
   OrigDataType: byte
-T_46: (in 0<8> : byte)
-  Class: Eq_22
+T_47: (in R6_26 + 1<8> : byte)
+  Class: Eq_23
   DataType: byte
   OrigDataType: byte
-T_47:
-  Class: Eq_47
+T_48: (in 0<8> : byte)
+  Class: Eq_30
+  DataType: byte
+  OrigDataType: byte
+T_49: (in 0<8> : byte)
+  Class: Eq_25
+  DataType: byte
+  OrigDataType: byte
+T_50:
+  Class: Eq_50
   DataType: byte
   OrigDataType: (struct 0001 (0 T_8 t0000))
 */
@@ -214,6 +226,7 @@ typedef struct Globals {
 
 typedef struct Eq_2 {
 	byte a0000[128];	// 0
+	byte b0081;	// 81
 } Eq_2;
 
 typedef union Eq_3 {
@@ -226,5 +239,5 @@ typedef union Eq_9 {
 	byte Eq_2::* u1;
 } Eq_9;
 
-typedef void (Eq_13)();
+typedef void (Eq_16)();
 

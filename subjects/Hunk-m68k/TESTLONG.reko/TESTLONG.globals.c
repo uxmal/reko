@@ -51,7 +51,7 @@ Eq_n g_t2815 =
 		{
 		},
 	};
-ptr32 g_ptr3D70 = 0x00;
+struct Eq_n * g_ptr3D70 = null;
 struct Eq_n * g_ptr3D74 = &g_t4000;
 struct Eq_n * g_ptr3D78 = null;
 struct Eq_n * g_ptr3D7C = &g_t10202;

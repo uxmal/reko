@@ -20,7 +20,7 @@ Eq_n g_t2BED =
 		{
 		},
 	};
-ptr32 g_ptr3D90 = 0x00;
+struct Eq_n * g_ptr3D90 = null;
 struct Eq_n * g_ptr3D94 = &g_t4000;
 struct Eq_n * g_ptr3D98 = null;
 struct Eq_n * g_ptr3D9C = &g_t10202;

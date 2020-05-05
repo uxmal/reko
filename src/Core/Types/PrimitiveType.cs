@@ -82,7 +82,7 @@ namespace Reko.Core.Types
 			this.Name = name;
 		}
 
-        public Domain Domain { get; private set; }
+        public Domain Domain { get; }
 
         public override bool IsPointer { get { return Domain == Domain.Pointer; } }
 

@@ -8,7 +8,7 @@ struct Eq_n * g_ptr0000;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-ptr32 g_ptr1494 = 0x00;
+struct Eq_n * g_ptr1494 = null;
 struct Eq_n * g_ptr1498 = null;
 struct Eq_n * g_ptr149C = null;
 struct Eq_n * g_ptr14A0 = null;

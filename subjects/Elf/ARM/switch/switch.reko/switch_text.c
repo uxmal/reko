@@ -75,19 +75,19 @@ Eq_n frobulate(Eq_n r0, Eq_n dwArg00)
 // 00008470: Register word32 bazulate(Register Eq_n r0, Register Eq_n r1)
 word32 bazulate(Eq_n r0, Eq_n r1)
 {
-	word32 * fp_n = frobulate(r0, r1);
+	struct Eq_n * fp_n = frobulate(r0, r1);
 	word32 r0_n = __divsi3(r0 + r1, r0);
 	union Eq_n * sp_n = (union Eq_n *) <invalid>;
-	Eq_n r0_n = *(fp_n - 24);
-	word32 * fp_n = frobulate(r0_n, *sp_n);
+	Eq_n r0_n = fp_n->tFFFFFFE8;
+	struct Eq_n * fp_n = frobulate(r0_n, *sp_n);
 	__divsi3(r0_n, r0_n);
-	return *fp_n;
+	return fp_n->dw0000;
 }
 
 // 000084D4: Register word32 switcheroo(Register Eq_n r0)
 word32 switcheroo(Eq_n r0)
 {
-	word32 * fp_n;
+	struct Eq_n * fp_n;
 	switch (r0)
 	{
 	case 0x00:
@@ -110,7 +110,7 @@ l00008540:
 		bazulate(r0, r0);
 		goto l00008540;
 	}
-	return *(fp_n - -4);
+	return fp_n->dw0004;
 }
 
 // 0000855C: void main(Register Eq_n r0)
@@ -238,8 +238,8 @@ void __libc_csu_fini()
 // 0000870C: Register word32 __do_global_ctors_aux()
 word32 __do_global_ctors_aux()
 {
-	ptr32 r3_n = globals->ptr8740;
-	<anonymous> * r2_n = *(r3_n - 4);
+	struct Eq_n * r3_n = globals->ptr8740;
+	<anonymous> * r2_n = r3_n->ptrFFFFFFFC;
 	if (r2_n == (<anonymous> *) 0x01)
 		return r4;
 	word32 r4_n;

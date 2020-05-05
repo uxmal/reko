@@ -1566,7 +1566,7 @@ void IntRegister(ui32 r0, word32 r1)
 		word32 r3_n[] = r4_n;
 		do
 		{
-			Mem21[r3_n + 0x00:word32] = Mem19[r3_n - r4_n + 0x00:word32];
+			Mem21[r3_n + 0x00:word32] = Mem19[r3_n - r4_n:word32];
 			r3_n = (word32 (*)[]) (r3_n + 1);
 		} while (r3_n != r4_n + 46);
 		*globals->ptr9530 = r4_n;
@@ -1687,22 +1687,22 @@ void OSRAMWriteFirst(ui32 r0)
 	I2CMasterControl(r4_n, 0x03);
 }
 
-// 000096C4: void OSRAMWriteArray(Register (ptr32 byte) r0, Register int32 r1)
-void OSRAMWriteArray(byte * r0, int32 r1)
+// 000096C4: void OSRAMWriteArray(Register (ptr32 Eq_n) r0, Register int32 r1)
+void OSRAMWriteArray(struct Eq_n * r0, int32 r1)
 {
 	if (r1 == 0x00)
 		return;
-	byte * r5_n;
+	struct Eq_n * r5_n;
 	word32 * r7_n = globals->ptr96FC;
 	struct Eq_n * r4_n = globals->ptr9700;
-	byte * r6_n = r0 + r1;
+	struct Eq_n * r6_n = r0 + r1;
 	do
 	{
 		do
 			;
 		while (I2CMasterIntStatus(r4_n, 0x00) == 0x00);
 		OSRAMDelay(*r7_n);
-		I2CMasterDataPut(r4_n, (word32) *r5_n);
+		I2CMasterDataPut(r4_n, (word32) r5_n->b0000);
 		I2CMasterControl(r4_n, 0x01);
 		++r5_n;
 	} while (r6_n != r5_n);
@@ -1800,12 +1800,12 @@ l00009846:
 	OSRAMWriteFinal(r0_n);
 }
 
-// 00009880: void OSRAMImageDraw(Register (ptr32 byte) r0, Register word32 r1, Register word32 r2, Register word32 r3, Stack word32 dwArg00)
-void OSRAMImageDraw(byte * r0, word32 r1, word32 r2, word32 r3, word32 dwArg00)
+// 00009880: void OSRAMImageDraw(Register (ptr32 Eq_n) r0, Register word32 r1, Register word32 r2, Register word32 r3, Stack word32 dwArg00)
+void OSRAMImageDraw(struct Eq_n * r0, word32 r1, word32 r2, word32 r3, word32 dwArg00)
 {
 	if (dwArg00 != 0x00)
 	{
-		byte * r5_n = r0;
+		struct Eq_n * r5_n = r0;
 		word32 r4_n;
 		uint32 r8_n = (uint32) SLICE(r1 + 0x24, ui4, 4);
 		word32 r6_n = dwArg00 + r2;
@@ -1821,7 +1821,7 @@ void OSRAMImageDraw(byte * r0, word32 r1, word32 r2, word32 r3, word32 dwArg00)
 			OSRAMWriteByte(0x40);
 			OSRAMWriteArray(r5_n, r3 + ~0x00);
 			r5_n += r3;
-			OSRAMWriteFinal((word32) *(r5_n - 1));
+			OSRAMWriteFinal((word32) r5_n->bFFFFFFFF);
 			++r4_n;
 		} while (r6_n != r4_n);
 	}
@@ -2517,7 +2517,7 @@ void I2CMasterInit(struct Eq_n * r0, word32 r1)
 // 0000A128: void I2CSlaveInit(Register (ptr32 Eq_n) r0, Register word32 r1)
 void I2CSlaveInit(struct Eq_n * r0, word32 r1)
 {
-	*(r0 - 0x07E0) |= 0x20;
+	r0->dwFFFFF820 |= 0x20;
 	r0->dw0004 = 0x01;
 	r0->dw0000 = r1;
 }
@@ -2531,7 +2531,7 @@ void I2CMasterEnable(struct Eq_n * r0)
 // 0000A14C: void I2CSlaveEnable(Register (ptr32 Eq_n) r0)
 void I2CSlaveEnable(struct Eq_n * r0)
 {
-	*(r0 - 0x07E0) |= 0x20;
+	r0->dwFFFFF820 |= 0x20;
 	r0->dw0004 = 0x01;
 }
 
@@ -2545,7 +2545,7 @@ void I2CMasterDisable(struct Eq_n * r0)
 void I2CSlaveDisable(struct Eq_n * r0)
 {
 	r0->dw0004 = 0x00;
-	*(r0 - 0x07E0) &= ~0x20;
+	r0->dwFFFFF820 &= ~0x20;
 }
 
 // 0000A180: void I2CIntRegister(Register word32 r1)

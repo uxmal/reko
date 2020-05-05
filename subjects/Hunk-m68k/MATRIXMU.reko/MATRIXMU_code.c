@@ -236,9 +236,9 @@ void fn00001278(word32 dwArg04)
 // 0000127C: void fn0000127C()
 void fn0000127C()
 {
-	ptr32 a7_n = globals->ptr1494;
-	struct Eq_n * v7_n = *(a7_n - 4);
-	struct Eq_n * v5_n = *(a7_n - 8);
+	struct Eq_n * a7_n = globals->ptr1494;
+	struct Eq_n * v7_n = a7_n->ptrFFFFFFFC;
+	struct Eq_n * v5_n = a7_n->ptrFFFFFFF8;
 	if (v7_n->dw0004 != 0x00)
 		execPrivate1();
 	CloseLibrary(globals->ptr149C);

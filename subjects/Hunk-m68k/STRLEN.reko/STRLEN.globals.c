@@ -9,7 +9,7 @@ struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b13A4 = 116;
-ptr32 g_ptr13C8 = 0x00;
+struct Eq_n * g_ptr13C8 = null;
 struct Eq_n * g_ptr13CC = null;
 struct Eq_n * g_ptr13D0 = null;
 struct Eq_n * g_ptr13D4 = null;

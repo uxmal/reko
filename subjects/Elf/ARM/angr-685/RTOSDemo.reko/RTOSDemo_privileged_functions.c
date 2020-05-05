@@ -1432,7 +1432,7 @@ void prvRestoreContextOfFirstTask(ptr32 cpsr)
 // 00001334: void prvSVCHandler(Register Eq_n r0, Register ptr32 cpsr)
 void prvSVCHandler(Eq_n r0, ptr32 cpsr)
 {
-	up32 r3_n = (word32) *(*((word32) r0 + 24) - 2);
+	up32 r3_n = (word32) *((word32) *((word32) r0 + 24) - 2);
 	if (r3_n == 0x01)
 	{
 		*globals->ptr1378 = 0x10000000;
@@ -1462,11 +1462,11 @@ struct Eq_n * pxPortInitialiseStack(struct Eq_n * r0, ui32 r1, word32 r2, int32 
 		r3_n = 0x02;
 	if (r3 != 0x01)
 		r3_n = 0x03;
-	*(r0 - 32) = r2;
+	r0->dwFFFFFFE0 = r2;
 	r0->dwFFFFFFF8 = r1 & ~0x01;
 	r0->dwFFFFFFFC = 0x01000000;
-	*(r0 - 0x0C) = 0x00;
-	*(r0 - 0x0044) = r3_n;
+	r0->dwFFFFFFF4 = 0x00;
+	r0->dwFFFFFFBC = r3_n;
 	return r0 - 0x44;
 }
 
@@ -1504,7 +1504,7 @@ l0000142C:
 		ui32 r2_n;
 		uint32 r1_n = globals->dw150C - r0_n;
 		ui32 * r3_n = globals->ptr1504;
-		*globals->ptr1510 = r2_n;
+		globals->ptr1510->dw0000 = r2_n;
 		*r3_n = r0_n | 0x11;
 		if (r1_n > 0x20)
 		{
@@ -1528,7 +1528,7 @@ l0000145A:
 		ui32 r3_n = globals->dw1518;
 		ui32 * r0_n = globals->ptr1504;
 		uint32 r1_n = globals->dw151C - r3_n;
-		*globals->ptr1510 = r2_n;
+		globals->ptr1510->dw0000 = r2_n;
 		*r0_n = r3_n | 0x12;
 		if (r1_n > 0x20)
 		{
@@ -1551,7 +1551,7 @@ l0000148A:
 		ui32 * r4_n = globals->ptr1504;
 		ui32 r5_n = globals->dw1524;
 		uint32 r1_n = globals->dw1528;
-		*globals->ptr1510 = r0_n;
+		globals->ptr1510->dw0000 = r0_n;
 		*r4_n = r5_n;
 		ui32 r3_n = 0x05;
 		uint32 r2_n = 0x40;
@@ -1568,11 +1568,11 @@ l0000148A:
 		} while (r2_n <= r1_n);
 		r3_n = globals->dw152C | r3_n << 0x01;
 l000014AE:
-		ui32 * r2_n = globals->ptr1510;
+		struct Eq_n * r2_n = globals->ptr1510;
 		ui32 * r1_n = globals->ptr1530;
-		*r2_n = r3_n;
+		r2_n->dw0000 = r3_n;
 		*r1_n |= 0x00010000;
-		*(r2_n - 0x0C) |= 0x05;
+		r2_n->dwFFFFFFF4 |= 0x05;
 	}
 	word32 * r2_n = globals->ptr14F4;
 	word32 * r3_n = globals->ptr14F8;

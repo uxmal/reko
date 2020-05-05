@@ -6,6 +6,7 @@
 
 word16 g_w0004 = 0x0200;
 word16 g_w0006 = 0xE0;
+word16 g_w0030 = 0x00;
 Eq_n g_t0044 = 
 	{
 		0
@@ -68,15 +69,9 @@ int16 g_w0078 = 0;
 word16 g_w007A = 0x00;
 ci16 g_w007E = 0x00;
 word16 g_w0080 = 0x00;
-Eq_n g_t0082 = 
-	{
-		L'\x00'
-	};
+word16 * g_ptr0082 = null;
 word16 g_w0084 = 0x00;
-Eq_n g_t0086 = 
-	{
-		L'\x00'
-	};
+word16 * g_ptr0086 = null;
 cui16 g_w008A = 0x00;
 cui16 g_w008C = 0x00;
 cui16 g_w008E = 0x00;
@@ -106,6 +101,8 @@ Eq_n g_t021C =
 			13536
 		},
 	};
+word16 g_w03FF = 0xC500;
+word16 g_w0400 = 0x15C5;
 word16 g_w07BA = 0x00;
 word16 g_w0C72 = 0x00;
 word16 g_w0F70 = 0x0A9F;
@@ -164,7 +161,7 @@ word16 g_w35CC = 0x5541;
 word16 g_w35CE = 17747;
 word16 g_w35D0 = 0x4F20;
 word16 g_w35D2 = 8262;
-ci16 * g_ptr3FFC;
+struct Eq_n * g_ptr3FFC;
 word16 g_wF400;
 word16 g_wF402;
 ci8 g_bFB8C;

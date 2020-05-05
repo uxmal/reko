@@ -7,7 +7,7 @@
 // 0000: void fn0000(Register byte R1, Register (ptr16 Eq_n) __data)
 void fn0000(byte R1, struct Eq_n * __data)
 {
-	__data->*0x1D = 0x00;
+	__data->b001D = 0x00;
 	byte A_n = __data->b80F0;
 	byte R1_n;
 	struct Eq_n * __data_n;

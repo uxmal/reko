@@ -101,6 +101,7 @@ Eq_n g_t10000AAC =
 	{
 		0x00
 	};
+Eq_n g_t10008860;
 word32 g_dw100107A0;
 <anonymous> * g_ptr100107F8;
 

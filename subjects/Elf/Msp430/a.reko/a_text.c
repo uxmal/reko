@@ -1274,23 +1274,23 @@ void vPortInitialiseBlocks()
 }
 
 // 519A: Register (ptr20 Eq_n) pxPortInitialiseStack(Register Eq_n r13, Register Eq_n r14, Register (ptr20 Eq_n) r15)
-union Eq_n * pxPortInitialiseStack(Eq_n r13, Eq_n r14, union Eq_n * r15)
+struct Eq_n * pxPortInitialiseStack(Eq_n r13, Eq_n r14, struct Eq_n * r15)
 {
-	*r15 = (union Eq_n *) r14;
-	*(r15 - 0x02) = 0x08;
-	*(r15 - 0x04) = 0x4444;
-	*(r15 - 0x06) = 0x5555;
-	*(r15 - 0x08) = 0x6666;
-	*(r15 - 0x0A) = 0x7777;
-	*(r15 - 0x0C) = 0x8888;
-	*(r15 - 0x0E) = 0x9999;
-	*(r15 - 0x10) = 0xAAAA;
-	*(r15 - 0x12) = ~0x4444;
-	*(r15 - 0x14) = 0xCCCC;
-	*(r15 - 22) = ~0x2222;
-	*(r15 - 0x18) = ~0x1111;
-	*(r15 - 0x1A) = (union Eq_n *) r13;
-	*(r15 - 0x1C) = 0x00;
+	r15->t0000 = r14;
+	r15->wFFFFFFFE = 0x08;
+	r15->wFFFFFFFC = 0x4444;
+	r15->wFFFFFFFA = 0x5555;
+	r15->wFFFFFFF8 = 0x6666;
+	r15->wFFFFFFF6 = 0x7777;
+	r15->wFFFFFFF4 = 0x8888;
+	r15->wFFFFFFF2 = 0x9999;
+	r15->wFFFFFFF0 = 0xAAAA;
+	r15->wFFFFFFEE = ~0x4444;
+	r15->wFFFFFFEC = 0xCCCC;
+	r15->wFFFFFFEA = ~0x2222;
+	r15->wFFFFFFE8 = ~0x1111;
+	r15->tFFFFFFE6 = r13;
+	r15->wFFFFFFE4 = 0x00;
 	return r15 - 0x1C;
 }
 

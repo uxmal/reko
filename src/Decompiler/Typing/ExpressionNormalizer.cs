@@ -35,36 +35,15 @@ namespace Reko.Typing
 	/// </summary>
 	public class ExpressionNormalizer : InstructionTransformer
 	{
-        private ArrayExpressionMatcher aem;
+        private readonly ArrayExpressionMatcher aem;
 
         public ExpressionNormalizer(PrimitiveType pointerType)
         {
 		    this.aem = new ArrayExpressionMatcher(pointerType);
         }
 
-        /// <summary>
-        /// Extends an effective address ''id'' to ''id'' + 0. 
-        /// </summary>
-        /// <remarks>
-        /// The purpose here is to extend the effective address to avoid premature typing of id.
-        /// If later in the type inference process [[id]] is discovered to be a signed integer, the
-        /// decompiler can accomodate that by having the added 0 be [[pointer]] or [[member pointer]].
-        /// This is not possible if all we have is the id.
-        /// </remarks>
-        /// <param name="ea"></param>
-        /// <returns></returns>
-        private Expression AddZeroToEffectiveAddress(Expression ea)
-        {
-            BinaryExpression bin = new BinaryExpression(
-                Operator.IAdd,
-                PrimitiveType.CreateWord(ea.DataType.BitSize),
-                ea,
-                Constant.Create(PrimitiveType.CreateWord(ea.DataType.BitSize), 0));
-            return bin;
-        }
-
 		public override Expression VisitMemoryAccess(MemoryAccess access)
-		{
+        {
             var ea = access.EffectiveAddress.Accept(this);
             if (aem.Match(ea))
             {
@@ -78,13 +57,45 @@ namespace Reko.Typing
                 }
                 return aem.Transform(null, access.DataType);
             }
-            if (!(ea is BinaryExpression bin && bin.Operator == Operator.IAdd) &&
-                !(ea is Constant) && 
-                !(ea is Address))
+            var newEa = ExtendEffectiveAddress(ea);
+            return new MemoryAccess(access.MemoryId, newEa, access.DataType);
+        }
+
+        /// <summary>
+        /// Extends an effective address ''id'' to ''id'' + 0. 
+        /// </summary>
+        /// <remarks>
+        /// The purpose here is to extend the effective address to avoid premature typing of id.
+        /// If later in the type inference process [[id]] is discovered to be a signed integer, the
+        /// decompiler can accomodate that by having the added 0 be [[pointer]] or [[member pointer]].
+        /// This is not possible if all we have is the id.
+        /// </remarks>
+        /// <param name="ea">Effective address.</param>
+        /// <returns>A normalized effective address.</returns>
+        private Expression ExtendEffectiveAddress(Expression ea)
+        {
+            switch (ea)
             {
-                ea = AddZeroToEffectiveAddress(ea);
+            case BinaryExpression bin:
+                if (bin.Operator == Operator.IAdd)
+                    return ea;
+                if (bin.Operator == Operator.ISub)
+                {
+                    if (bin.Right is Constant offset)
+                    {
+                        offset = offset.Negate();
+                        return new BinaryExpression(Operator.IAdd, ea.DataType, bin.Left, offset);
+                    }
+                    return ea;
+                }
+                break;
+            case Address _:
+            case Constant _:
+                return ea;
             }
-            return new MemoryAccess(access.MemoryId, ea, access.DataType);
+            var w = PrimitiveType.CreateWord(ea.DataType.BitSize);
+            var newEa = new BinaryExpression(Operator.IAdd, w, ea, Constant.Zero(w));
+            return newEa;
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -94,11 +105,7 @@ namespace Reko.Typing
             {
                 return aem.Transform(access.BasePointer, access.DataType);
             }
-            if (!(ea is BinaryExpression bin && bin.Operator == Operator.IAdd) &&
-                !(ea is Constant))
-            {
-                ea = AddZeroToEffectiveAddress(ea);
-            }
+            ea = ExtendEffectiveAddress(ea);
             var memId = access.MemoryId;
             var basePtr = access.BasePointer;
             return new SegmentedAccess(memId, basePtr, ea, access.DataType);

@@ -8,10 +8,10 @@
 void _start(word64 r2, word64 r5, word64 r6, Eq_n r14)
 {
 	Eq_n r15_n = fp - 0x00A0 & ~0x0F;
-	*(r15_n - 0x00B0) = 0x00;
-	*(r15_n - 16) = r14;
-	*(r15_n - 8) = r15_n - 0x00B0;
-	__libc_start_main(DPB(r2, 0x2040, 0) + 0x00, qwLocA0, fp - 0x0098, DPB(r5, 0x0820, 0), DPB(r6, 0x0888, 0), *(r15_n - 16), *(r15_n - 8));
+	*((word64) r15_n - 0x00B0) = 0x00;
+	*((word64) r15_n - 16) = r14;
+	*((word64) r15_n - 8) = r15_n - 0x00B0;
+	__libc_start_main(DPB(r2, 0x2040, 0) + 0x00, qwLocA0, fp - 0x0098, DPB(r5, 0x0820, 0), DPB(r6, 0x0888, 0), *((word64) r15_n - 16), *((word64) r15_n - 8));
 }
 
 // 00000648: Register (ptr64 byte) deregister_tm_clones(Register (ptr64 byte) r1, Register word64 r2, Register word64 r5, Register Eq_n r14, Register out Eq_n r2Out, Register out Eq_n r5Out)
