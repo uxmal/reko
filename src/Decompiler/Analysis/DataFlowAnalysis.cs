@@ -125,7 +125,6 @@ namespace Reko.Analysis
             ssts = RewriteProceduresToSsa();
             if (eventListener.IsCanceled())
                 return ssts;
-            if (eventListener.IsCanceled()) return ssts;
 
             // Recreate user-defined signatures. It should prevent type
             // inference between user-defined parameters and other expressions

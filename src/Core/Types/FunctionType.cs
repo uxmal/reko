@@ -77,6 +77,13 @@ namespace Reko.Core.Types
             return new FunctionType(new Identifier("", VoidType.Instance, null), parameters);
         }
 
+        /// <summary>
+        /// The return value of a function. 
+        /// </summary>
+        /// <remarks>
+        /// The 'Name' property of the <see cref="Identifier"/> is not applicable, and will typically
+        /// be the empty string.
+        /// </remarks>
         public Identifier ReturnValue { get; private set; }
         public Identifier [] Parameters { get; private set; }
         public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
@@ -110,10 +117,13 @@ namespace Reko.Core.Types
             return ft;
 		}
 
-        public bool IsVarargs()
+        public bool IsVarargs
         {
-            var last = Parameters?.LastOrDefault();
-            return last != null && last.Name == "...";
+            get
+            {
+                var last = Parameters?.LastOrDefault();
+                return last != null && last.Name == "...";
+            }
         }
 
         /// <summary>

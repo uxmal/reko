@@ -76,7 +76,7 @@ namespace Reko.Scanning
         public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics chr)
         {
             if (
-                sig == null || !sig.IsVarargs() ||
+                sig == null || !sig.IsVarargs ||
                 chr == null || !VarargsParserSet(chr)
             )
             {
