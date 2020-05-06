@@ -500,6 +500,10 @@
       <Project>{4059bebf-7b5c-4701-ac98-ade2515d8823}</Project>
       <Name>VmsExe</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Xbe\Xbe.csproj">
+      <Project>{4078724e-b5d2-494b-b56a-b8693db2d5ff}</Project>
+      <Name>Xbe</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj">
       <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
       <Name>Xex</Name>

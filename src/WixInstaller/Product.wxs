@@ -101,6 +101,7 @@
         <File Source="$(var.Nro.TargetPath)" />
         <File Source="$(var.OdbgScript.TargetPath)" />
         <File Source="$(var.VmsExe.TargetPath)" />
+        <File Source="$(var.Xbe.TargetPath)" />
         <File Source="$(var.Xex.TargetPath)" />
 
         <!-- Environments -->

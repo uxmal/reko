@@ -183,6 +183,7 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Omf\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Omf.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.VmsExe.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Xbe\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Xbe.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Xex\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Xex.*" />
 
     <Environments Include="$(SolutionDir)Environments\AmigaOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.AmigaOS.*" />
