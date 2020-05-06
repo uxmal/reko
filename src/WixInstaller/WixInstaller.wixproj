@@ -505,8 +505,8 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Xbox360\Xbox360.csproj">
-      <Name>Xbox360</Name>
+    <ProjectReference Include="..\Environments\Xbox\Xbox.csproj">
+      <Name>Xbox</Name>
       <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>

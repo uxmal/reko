@@ -1047,9 +1047,9 @@
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
       <Name>Windows</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Xbox360\Xbox360.csproj">
+    <ProjectReference Include="..\Environments\Xbox\Xbox.csproj">
       <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
-      <Name>Xbox360</Name>
+      <Name>Xbox</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\ZX81\ZX81.csproj">
       <Project>{2b4e0f2e-b458-4bc2-96ac-6a4d9324f974}</Project>

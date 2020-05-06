@@ -156,8 +156,8 @@
         <File Source="$(var.Windows.ProjectDir)wininet.xml" />
         <File Source="$(var.Windows.ProjectDir)winspool.xml" />
         <File Source="$(var.Windows.ProjectDir)wsock32.xml" />
-        <File Source="$(var.Xbox360.TargetPath)" />
-        <File Source="$(var.Xbox360.ProjectDir)xboxkrnl.def" />
+        <File Source="$(var.Xbox.TargetPath)" />
+        <File Source="$(var.Xbox.ProjectDir)/Xbox360/xboxkrnl.def" />
         <File Source="$(var.ZX81.TargetPath)" />
 
         <!-- Architectures -->

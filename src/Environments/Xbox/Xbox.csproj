@@ -3,8 +3,8 @@
   <PropertyGroup>
     <ProjectGuid>{E45B5B79-17ED-4B74-A68B-CE9119C51677}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Reko.Environments.Xbox360</RootNamespace>
-    <AssemblyName>Reko.Environments.Xbox360</AssemblyName>
+    <RootNamespace>Reko.Environments.Xbox</RootNamespace>
+    <AssemblyName>Reko.Environments.Xbox</AssemblyName>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

@@ -29,7 +29,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Environments.Xbox360
+namespace Reko.Environments.Xbox
 {
     /// <remarks>
     /// A particularity of this platform is that even though the PowerPC 

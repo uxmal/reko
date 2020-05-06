@@ -1,4 +1,4 @@
-﻿using Reko;
+using Reko;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Xbox360")]
-[assembly: AssemblyDescription("Reko decompiler support for Microsoft Xbox 360")]
+[assembly: AssemblyTitle("Xbox")]
+[assembly: AssemblyDescription("Reko decompiler support for Microsoft Xbox console family")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(AssemblyMetadata.Product)]
