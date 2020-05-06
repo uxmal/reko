@@ -406,12 +406,12 @@ namespace Reko.Arch.i8051
                     {
                         ea = m.IAdd(mem.DirectAddress, binder.EnsureRegister(mem.Index));
                     }
-                    else if (mem.DirectAddress is Address addr)
+                    else if (mem.DirectAddress is Constant c)
                     {
-                        var alias = AliasedSpecialFunctionRegister(addr.ToUInt16());
+                        var alias = AliasedSpecialFunctionRegister(c.ToUInt16());
                         if (alias != null)
                             return alias;
-                        ea =  addr;
+                        ea = c;
                     }
                     else
                     {
