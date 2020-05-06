@@ -19,12 +19,123 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Pascal;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static Reko.ImageLoaders.Xbe.Structures;
 
 namespace Reko.ImageLoaders.Xbe
 {
+    public enum XbeBuildType
+    {
+        Debug,
+        Release,
+        SegaChihiro
+    }
+
+    internal class XbeImage
+    {
+        public XbeImageHeader ImageHeader;
+        public XbeBuildType BuildType;
+
+        public Address BaseAddress;
+        public Address EntryPointAddress;
+        public Address KernelThunkAddress;
+        public Address SectionHeadersAddress;
+
+        public Address LibraryVersionsAddress;
+        public Address KernelLibraryAddress;
+        public Address XapiLibraryAddress;
+
+        private XbeBuildType DetectBuildType()
+        {
+            if ((ImageHeader.EntryPoint & 0xf0000000) == 0x40000000)
+            {
+                return XbeBuildType.SegaChihiro;
+            }
+
+            if ((ImageHeader.EntryPoint ^ XBE_XORKEY_ENTRYPOINT_RELEASE) > ImageHeader.BaseAddress)
+            {
+                return XbeBuildType.Debug;
+            }
+
+            return XbeBuildType.Release;
+        }
+
+        private (UInt32, UInt32) DetermineXorKeys()
+        {
+            UInt32 entryXorKey;
+            UInt32 kernelThunkXorKey;
+            switch (this.BuildType)
+            {
+            case XbeBuildType.Debug:
+                entryXorKey = XBE_XORKEY_ENTRYPOINT_DEBUG;
+                kernelThunkXorKey = XBE_XORKEY_KERNELTHUNK_DEBUG;
+                break;
+            case XbeBuildType.Release:
+                entryXorKey = XBE_XORKEY_ENTRYPOINT_RELEASE;
+                kernelThunkXorKey = XBE_XORKEY_KERNELTHUNK_RELEASE;
+                break;
+            case XbeBuildType.SegaChihiro:
+                entryXorKey = XBE_XORKEY_ENTRYPOINT_CHIHIRO;
+                kernelThunkXorKey = XBE_XORKEY_KERNELTHUNK_CHIHIRO;
+                break;
+            default:
+                throw new BadImageFormatException("Cannot determine XBE build type");
+            }
+
+            return (entryXorKey, kernelThunkXorKey);
+        }
+
+        public XbeImage(XbeImageHeader hdr)
+        {
+            this.ImageHeader = hdr;
+            this.BuildType = DetectBuildType();
+
+            UInt32 entryXorKey, kernelThunkXorKey;
+            (entryXorKey, kernelThunkXorKey) = this.DetermineXorKeys();
+
+            EntryPointAddress = new Address32(hdr.EntryPoint ^ entryXorKey);
+            KernelThunkAddress = new Address32(hdr.KernelImageThunkAddress ^ kernelThunkXorKey);
+            SectionHeadersAddress = new Address32(hdr.SectionHeadersAddress);
+            BaseAddress = new Address32(hdr.BaseAddress);
+
+            LibraryVersionsAddress = new Address32(hdr.LibraryVersionsAddress);
+            KernelLibraryAddress = new Address32(hdr.KernelLibraryVersionAddress);
+            XapiLibraryAddress = new Address32(hdr.XapiLibraryVersionAddress);
+        }
+    }
+
+    internal class XbeSection
+    {
+        public readonly XbeSectionHeader SectionHeader;
+
+        public readonly Address Address;
+        public readonly Address NameAddress;
+
+        public XbeSection(XbeSectionHeader hdr)
+        {
+            SectionHeader = hdr;
+            Address = new Address32(SectionHeader.RawAddress);
+            NameAddress = new Address32(SectionHeader.SectionNameAddress);
+        }
+    }
+
+    internal class XbeLibrary
+    {
+        public readonly XbeLibraryVersion LibraryHeader;
+        public readonly string LibraryName;
+        
+        public XbeLibrary(XbeLibraryVersion xbeLibHeader)
+        {
+            LibraryHeader = xbeLibHeader;
+            LibraryName = Encoding.ASCII.GetString(xbeLibHeader.LibraryName);
+        }
+    }
+
     /// <summary>
     /// Loads Xbox XBE executable files.
     /// </summary>
@@ -33,17 +144,20 @@ namespace Reko.ImageLoaders.Xbe
     /// </remarks>
     public class XbeLoader : ImageLoader
     {
+        private readonly LeImageReader rdr;
+
+
         public XbeLoader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)
         {
-            
+            rdr = new LeImageReader(rawImage);
         }
 
         public override Address PreferredBaseAddress
         {
             get
             {
-                throw new NotImplementedException();
+                return null; //the format is self describing
             }
 
             set
@@ -54,12 +168,116 @@ namespace Reko.ImageLoaders.Xbe
 
         public override Program Load(Address addrLoad)
         {
-            throw new NotImplementedException();
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("x86-protected-32");
+            var platform = cfgSvc.GetEnvironment("xbox").Load(Services, arch);
+
+            XbeImageHeader hdr = rdr.ReadStruct<XbeImageHeader>();
+            if (hdr.Magic != XBE_MAGIC)
+            {
+                throw new BadImageFormatException("Invalid XBE Magic");
+            }
+            XbeImage ctx = new XbeImage(hdr);
+
+            long sectionHeadersOffset = ctx.SectionHeadersAddress - ctx.BaseAddress;
+            rdr.Seek(sectionHeadersOffset, System.IO.SeekOrigin.Begin);
+
+            List<ImageSegment> segments = new List<ImageSegment>((int)hdr.NumberOfSections + 1);
+
+            //// Load sections
+
+            int i;
+            for(i=0; i<hdr.NumberOfSections; i++)
+            {
+                XbeSectionHeader sectionHeader = rdr.ReadStruct<XbeSectionHeader>();
+                XbeSection section = new XbeSection(sectionHeader);
+
+                string sectionName = rdr.ReadAt<string>(section.NameAddress - ctx.BaseAddress, (rdr) =>
+                {
+                    return rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString();
+                });
+
+                long sectionOffset = section.Address - ctx.EntryPointAddress;
+
+                AccessMode accessFlgs = AccessMode.Read;
+                if (sectionHeader.Flags.HasFlag(XbeSectionFlags.Executable))
+                {
+                    accessFlgs |= AccessMode.Execute;
+                }
+                if (sectionHeader.Flags.HasFlag(XbeSectionFlags.Writable))
+                {
+                    accessFlgs |= AccessMode.Write;
+                }
+
+                ImageSegment segment = new ImageSegment(
+                    sectionName,
+                    new MemoryArea(section.Address, rdr.ReadAt<byte[]>(sectionOffset, (rdr) =>
+                    {
+                        return rdr.CreateBinaryReader().ReadBytes((int) sectionHeader.RawSize);
+                    })), accessFlgs);
+
+                segments.Add(segment);
+            }
+
+            //// Load TLS
+
+            Address tlsDirectoryAddress = new Address32(hdr.TlsAddress);
+            XbeTls tls = rdr.ReadAt<XbeTls>(tlsDirectoryAddress - ctx.BaseAddress, (rdr) =>
+            {
+                return rdr.ReadStruct<XbeTls>();
+            });
+
+            if (tls.DataStartAddress != 0 && tls.DataEndAddress != 0 && tls.DataEndAddress > tls.DataStartAddress)
+            {
+                byte[] tlsData = new byte[tls.DataEndAddress - tls.DataStartAddress];
+
+                ImageSegment tlsSegment = new ImageSegment(".tls", new MemoryArea(
+                    new Address32(tls.DataStartAddress), tlsData
+                ), AccessMode.ReadWrite);
+
+                segments.Add(tlsSegment);
+            }
+
+            //// Load Imports
+
+            XbeLibrary kernelLibrary = new XbeLibrary(rdr.ReadAt(ctx.KernelLibraryAddress - ctx.BaseAddress, (rdr) =>
+            {
+                return rdr.ReadStruct<XbeLibraryVersion>();
+            }));
+
+            Dictionary<Address32, ImportReference> imports = new Dictionary<Address32, ImportReference>();
+            rdr.Seek(ctx.KernelThunkAddress - ctx.BaseAddress, System.IO.SeekOrigin.Begin);
+
+            for(i=0; ; i++)
+            {
+                Address32 ordinalAddress = (Address32)ctx.KernelThunkAddress.Add(i * 4);
+                uint dword = rdr.ReadUInt32();
+                if (dword == 0)
+                    break;
+
+                int ordinalValue = (int)(dword & 0x7FFFFFFF);
+                imports.Add(ordinalAddress, new OrdinalImportReference(ordinalAddress, kernelLibrary.LibraryName, ordinalValue, SymbolType.ExternalProcedure));
+            }
+
+            SegmentMap segmentMap = new SegmentMap(ctx.EntryPointAddress, segments.ToArray());
+            ImageSymbol entryPoint = ImageSymbol.Procedure(arch, ctx.EntryPointAddress);
+
+            Program program = new Program(segmentMap, arch, platform)
+            {
+                EntryPoints = { { ctx.EntryPointAddress, entryPoint } }
+            };
+
+            foreach (var import in imports)
+            {
+                program.ImportReferences.Add(import.Key, import.Value);
+            }
+
+            return program;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            throw new NotImplementedException();
+            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
         }
     }
 }
