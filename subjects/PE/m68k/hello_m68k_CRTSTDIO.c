@@ -79,11 +79,11 @@ void fn00001680(struct Eq_n * a5, word32 dwArg04, struct Eq_n * dwArg08)
 // 000016D0: void fn000016D0(Register word32 d6, Register (ptr32 Eq_n) a5, Stack (ptr32 byte) dwArg08)
 void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 {
-	byte v17_n = *dwArg08;
+	byte v15_n = *dwArg08;
 	Eq_n dwLoc0C_n = 0;
-	uip32 d6_n = SEQ(SLICE(d6, word24, 8), v17_n);
+	uip32 d6_n = SEQ(SLICE(d6, word24, 8), v15_n);
 	byte * dwArg08_n = dwArg08 + 1;
-	if (v17_n != 0x00)
+	if (v15_n != 0x00)
 	{
 		while (true)
 		{
@@ -105,10 +105,10 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 				(0x1758 + (int32) ((int16) d0_n))();
 				return;
 			}
-			byte v45_n = *dwArg08_n;
-			d6_n = SEQ(SLICE(d6_n, word24, 8), v45_n);
+			byte v42_n = *dwArg08_n;
+			d6_n = SEQ(SLICE(d6_n, word24, 8), v42_n);
 			++dwArg08_n;
-			if (v45_n == 0x00)
+			if (v42_n == 0x00)
 				return;
 		}
 	}

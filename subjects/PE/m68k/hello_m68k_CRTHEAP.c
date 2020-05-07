@@ -394,10 +394,10 @@ l00002974:
 		a0_n->dw0030 = 0;
 		a0_n->dw0034 = 0;
 		a0_n->dw0038 = 0;
-		word16 v49_n = (word16) d0_n;
+		word16 v29_n = (word16) d0_n;
 		a0 = &a0_n->dw0038 + 1;
-		d0_n = SEQ(SLICE(d0_n, word16, 16), v49_n - 1);
-	} while (v49_n != 0x00);
+		d0_n = SEQ(SLICE(d0_n, word16, 16), v29_n - 1);
+	} while (v29_n != 0x00);
 	d5_n = a5->dwFFFFFAE0;
 	a5->dwFFFFFAE0 += 32;
 	goto l000029B4;
@@ -614,9 +614,9 @@ l00002DE8:
 		{
 			**dwLoc1C_n = (struct Eq_n ***) a5->ptrFFFFFAD0;
 			a5->ptrFFFFFAD0 = (struct Eq_n *) *dwLoc1C_n;
-			struct Eq_n *** v30_n = (char *) dwLoc1C_n + 4;
-			dwLoc1C_n = v30_n;
-		} while (*v30_n != 0x00);
+			struct Eq_n *** v19_n = (char *) dwLoc1C_n + 4;
+			dwLoc1C_n = v19_n;
+		} while (*v19_n != 0x00);
 	}
 	a5Out = a5;
 	a6Out = a6;
@@ -647,16 +647,16 @@ void fn00002E18(struct Eq_n * dwArg04, up32 dwArg08, struct Eq_n * dwArg0C, stru
 		if (SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03) - d2_n != 0x00)
 		{
 			struct Eq_n ** a0_n = *dwArg10;
-			struct Eq_n * v36_n = *a0_n;
+			struct Eq_n * v32_n = *a0_n;
 			*dwArg10 = (struct Eq_n ***) ((char *) a0_n + 4);
-			v36_n->ptr0004 = d2_n;
+			v32_n->ptr0004 = d2_n;
 			struct Eq_n * d2_n;
 			__bclr(d2_n, 0x00, out d2_n);
 			struct Eq_n * d2_n;
 			__bset(d2_n, 0x01, out d2_n);
-			v36_n->ptr0004 = d2_n;
-			dwArg04->dw0000 = v36_n;
-			a2_n = v36_n;
+			v32_n->ptr0004 = d2_n;
+			dwArg04->dw0000 = v32_n;
+			a2_n = v32_n;
 		}
 	}
 	a2_n->dw0000 = dwArg0C;

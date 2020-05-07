@@ -91,7 +91,7 @@ l000011F8:
 			byte * a1_n = d0_n->ptr0008;
 			Eq_n (* a0_n)[] = (d0_n << 0x02) + 1;
 			Eq_n d0_n = (uint32) (uint8) null[d0_n].b0000;
-			Mem263[a0_n + d0_n:byte] = 0x00;
+			Mem245[a0_n + d0_n:byte] = 0x00;
 			d0_n->ptr0010 = a0_n;
 			word32 * a6_n = (char *) &d0_n->ptr0010 + 4;
 			int32 d3_n = 1;
@@ -101,38 +101,38 @@ l000011F8:
 				--a0_n;
 				if (a0_n->b0000 > 0x20)
 					break;
-				word16 v37_n = (word16) d2_n;
-				d2_n = SEQ(SLICE(d2_n, word16, 16), v37_n - 1);
-			} while (v37_n != 0x00);
+				word16 v29_n = (word16) d2_n;
+				d2_n = SEQ(SLICE(d2_n, word16, 16), v29_n - 1);
+			} while (v29_n != 0x00);
 			a0_n[1] = (struct Eq_n) 0x00;
 			do
 			{
 l000010E6:
-				byte v40_n = *a2_n;
+				byte v31_n = *a2_n;
 				++a2_n;
-				d1_n = SEQ(SLICE(d1_n, word24, 8), v40_n);
-				if (v40_n == 0x00)
+				d1_n = SEQ(SLICE(d1_n, word24, 8), v31_n);
+				if (v31_n == 0x00)
 					goto l00001148;
-			} while (v40_n == 0x20 || v40_n == 0x09);
+			} while (v31_n == 0x20 || v31_n == 0x09);
 			if (d3_n - d0_n->dw000C != 0x00)
 			{
 				*a6_n = a1_n;
 				++a6_n;
 				d3_n = SEQ(SLICE(d3_n, word16, 16), (word16) d3_n + 0x01);
-				if (v40_n != 0x22)
+				if (v31_n != 0x22)
 				{
-					*a1_n = v40_n;
+					*a1_n = v31_n;
 					++a1_n;
 					while (true)
 					{
-						byte v50_n = *a2_n;
+						byte v40_n = *a2_n;
 						++a2_n;
-						d1_n = SEQ(SLICE(d1_n, word24, 8), v50_n);
-						if (v50_n == 0x00)
+						d1_n = SEQ(SLICE(d1_n, word24, 8), v40_n);
+						if (v40_n == 0x00)
 							break;
-						if (v50_n == 0x20)
+						if (v40_n == 0x20)
 							goto l00001116;
-						*a1_n = v50_n;
+						*a1_n = v40_n;
 						++a1_n;
 					}
 				}
@@ -140,27 +140,27 @@ l000010E6:
 				{
 					while (true)
 					{
-						byte v71_n = *a2_n;
-						word24 v72_n = SLICE(d1_n, word24, 8);
+						byte v50_n = *a2_n;
+						word24 v51_n = SLICE(d1_n, word24, 8);
 						++a2_n;
-						d1_n = SEQ(v72_n, v71_n);
-						if (v71_n == 0x00)
+						d1_n = SEQ(v51_n, v50_n);
+						if (v50_n == 0x00)
 							break;
-						if (v71_n == 0x22)
+						if (v50_n == 0x22)
 						{
 l00001116:
 							*a1_n = 0x00;
 							++a1_n;
 							goto l000010E6;
 						}
-						if (v71_n == 0x2A)
+						if (v50_n == 0x2A)
 						{
-							byte v75_n = *a2_n;
+							byte v54_n = *a2_n;
 							++a2_n;
-							d1_n = SEQ(v72_n, v75_n);
-							if ((v75_n & 223) == 0x4E)
+							d1_n = SEQ(v51_n, v54_n);
+							if ((v54_n & 223) == 0x4E)
 								d1_n = 0x0A;
-							else if ((v75_n & 223) == 0x45)
+							else if ((v54_n & 223) == 0x45)
 								d1_n = 27;
 						}
 						*a1_n = (byte) d1_n;
@@ -179,9 +179,9 @@ l00001148:
 			dwLoc10 = d3_n;
 			if (globals->ptr13CC->w0014 >= 0x24)
 			{
-				Eq_n v92_n = d0_n->t00E0;
-				*(union Eq_n *) 0x13E4 = v92_n;
-				if (v92_n != 0x00)
+				Eq_n v64_n = d0_n->t00E0;
+				*(union Eq_n *) 0x13E4 = v64_n;
+				if (v64_n != 0x00)
 				{
 l0000117E:
 					if (d0_n->b0008 == 0x0D)

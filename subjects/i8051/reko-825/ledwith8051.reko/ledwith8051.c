@@ -10,7 +10,6 @@ void fn0000(struct Eq_n * __data)
 	Eq_n R0_n;
 	for (R0_n = 0x7F; R0_n != 0x00; --R0_n)
 		__data->*R0_n = 0x00;
-	__data->b0081 = 0x07;
 	while (true)
 	{
 		fn0003();

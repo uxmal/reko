@@ -25,9 +25,9 @@ void fn0000C02A(struct Eq_n * a0, word32 * a1)
 				ui32 d3_n = (d3_n & 0xFF & 0x0F) + 0x01;
 				while (true)
 				{
-					word16 v36_n = (word16) d3_n;
-					d3_n = SEQ(SLICE(d3_n, word16, 16), v36_n - 1);
-					if (v36_n == 0x00)
+					word16 v34_n = (word16) d3_n;
+					d3_n = SEQ(SLICE(d3_n, word16, 16), v34_n - 1);
+					if (v34_n == 0x00)
 						break;
 					*a6_n = 0;
 					globals->dwFF0F04 += 0x04;

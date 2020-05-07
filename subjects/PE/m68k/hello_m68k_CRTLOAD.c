@@ -78,16 +78,16 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 		__syscall(0xA02E);
 l00001556:
 		ui32 d0_n;
-		ci8 v19_n = a3_n->b0000;
+		ci8 v18_n = a3_n->b0000;
 		++a3_n;
-		uint32 d0_n = (uint32) (uint8) v19_n;
-		if (v19_n <= 0x00)
+		uint32 d0_n = (uint32) (uint8) v18_n;
+		if (v18_n <= 0x00)
 		{
-			if (v19_n >= 0x00)
+			if (v18_n >= 0x00)
 			{
-				byte v23_n = a3_n->b0000;
-				uint32 d0_n = (uint32) (uint8) v23_n;
-				if (v23_n != 0x00)
+				byte v22_n = a3_n->b0000;
+				uint32 d0_n = (uint32) (uint8) v22_n;
+				if (v22_n != 0x00)
 				{
 					uip32 d0_n = SEQ(SLICE(__swap(SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n[1])), word24, 8), a3_n[2]);
 					a3_n += 4;
