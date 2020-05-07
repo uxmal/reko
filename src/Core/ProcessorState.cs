@@ -88,13 +88,10 @@ namespace Reko.Core
 
         private bool IsStackRegister(Expression ea)
         {
-            var id = ea as Identifier;
-            if (id == null)
-                return false;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
-                return false;
-            return (reg == Architecture.StackRegister);
+            return
+                ea is Identifier id &&
+                id.Storage is RegisterStorage reg &&
+                reg == Architecture.StackRegister;
         }
 
         private bool GetStackOffset(Expression ea, out int offset)

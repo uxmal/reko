@@ -113,6 +113,7 @@ namespace Reko.Typing
             timer.Stop();
             DebugEx.Inform(trace, "   {0} msec", timer.Elapsed);
         }
+
         /// <summary>
         /// $DEBUG: for debugging only, only performs type analysis on the 
         /// <param name="count"/> procedures starting at
