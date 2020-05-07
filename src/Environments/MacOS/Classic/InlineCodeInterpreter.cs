@@ -121,8 +121,8 @@ namespace Reko.Environments.MacOS.Classic
                     if (reg != null)
                     {
                         if (ssig.ReturnValue == null)
-                            throw new InvalidOperationException(string.Format(
-                                "Service {0} is specified as returning void, but returns value in {1}.", name, reg.Name));
+                            throw new InvalidOperationException(
+                                $"Service {name} is specified as returning void, but returns value in {reg.Name}.");
                         ssig.ReturnValue.Kind = new Register_v1 { Name = reg.Name };
                         continue;
                     }
@@ -161,7 +161,7 @@ namespace Reko.Environments.MacOS.Classic
 
         private RegisterStorage PushRegister(ushort uInstr)
         {
-            if ((uInstr & 0xFFF8) == 0x2F00)
+            if ((uInstr & 0xFFF8) == 0x2F00)    // move.l dN,-(a7)
             {
                 return Registers.DataRegister(uInstr & 7);
             }
@@ -173,12 +173,12 @@ namespace Reko.Environments.MacOS.Classic
             RegisterStorage reg;
             switch (uInstr & 0xF1FF)
             {
-            case 0x203C:
+            case 0x203C:    // move.l   <w32>,dN
                 var n4 = (uOpcodes[i + 1] << 16 | uOpcodes[i + 2]).ToString("X8");
                 i += 2;
                 reg = Registers.DataRegister((uInstr >> 9) & 7);
                 return new SerializedRegValue(reg.Name, n4);
-            case 0x303C:
+            case 0x303C:    // move.w   <w16>,dN
                 var n2 = uOpcodes[i + 1].ToString("X4");
                 i += 1;
                 reg = Registers.DataRegister((uInstr >> 9) & 7);
@@ -192,15 +192,15 @@ namespace Reko.Environments.MacOS.Classic
         {
             switch (uInstr)
             {
-            case 0x2F3C:
+            case 0x2F3C:        // move.l <w32>,-(a7)
                 i += 2; 
                 return Tuple.Create(4, (uOpcodes[i - 1] << 16 | uOpcodes[i]).ToString("X8"));
-            case 0x3F3C:
+            case 0x3F3C:        // move.w <w16>,-(a7)
                 i += 1;
                 return Tuple.Create(2, (uOpcodes[i]).ToString("X4"));
-            case 0x4267:
+            case 0x4267:        // clr.w -(a7)
                 return Tuple.Create(2, "0000");
-            case 0x42A7:
+            case 0x42A7:        // clr.l -(a7)
                 return Tuple.Create(4, "00000000");
             default:
                 return null;
