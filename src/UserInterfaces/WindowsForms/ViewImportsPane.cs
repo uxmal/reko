@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,12 +19,14 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui;
 using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -88,23 +90,34 @@ namespace Reko.UserInterfaces.WindowsForms
             item.UseItemStyleForSubItems = false;
             item.SubItems[0].Tag = imp.ReferenceAddress;
             item.SubItems.Add(imp.ModuleName);
-            var ord = imp as OrdinalImportReference;
-            if (ord != null)
+            switch (imp)
             {
-                item.SubItems.Add(ord.Ordinal.ToString());
-            }
-            else
-            {
-                var nam = imp as NamedImportReference;
-                if (nam != null)
+            case OrdinalImportReference ord:
+                var refText = new StringBuilder(ord.Ordinal.ToString());
+                string importName = TryGetImportName(ord);
+                if (importName != null)
                 {
-                    item.SubItems.Add(nam.ImportName);
+                    refText.AppendFormat(" ({0})", importName);
                 }
+                item.SubItems.Add(refText.ToString());
+                break;
+            case NamedImportReference nam:
+                item.SubItems.Add(nam.ImportName);
+                break;
             }
             item.SubItems[0].ForeColor = uiPrefsSvc.Styles["link"].Foreground.Color;
             return item;
         }
 
+        private string TryGetImportName(OrdinalImportReference ord)
+        {
+            var dec = services.RequireService<IDecompilerService>();
+            var project = dec.Decompiler.Project;
+            var dynLinker = new DynamicLinker(project, program, new NullDecompilerEventListener());
+            var e = dynLinker.ResolveImport(ord.ModuleName, ord.Ordinal, program.Platform);
+            string importName = e?.ToString();
+            return importName;
+        }
 
         private void Imports_MouseMove(object sender, MouseEventArgs e)
         {
