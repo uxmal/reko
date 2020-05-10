@@ -72175,7 +72175,7 @@ T_16943: (in sp_601 + -12<i32> : word32)
 T_16944: (in Mem619[sp_601 + -12<i32>:word32] : word32)
   Class: Eq_1234
   DataType: Eq_1234
-  OrigDataType: word64
+  OrigDataType: word32
 T_16945: (in -16<i32> : int32)
   Class: Eq_16945
   DataType: int32

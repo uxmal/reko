@@ -661,10 +661,10 @@ void fn0D66()
 cui16 * fn0D78(word16 * r4, cui16 * r5)
 {
 	cui16 wLoc02_n = 0x0200;
-	if (r4 <=u 0x0400)
+	if (r4 <= &(globals->t021C + 484))
 	{
-		r4 = 0x03FF;
-		if (Mem4[0x0082<p16>:word16] == 0x03FF)
+		r4 = &(globals->t021C + 483);
+		if (globals->ptr0082 == &(globals->t021C + 483))
 			goto l0D9C;
 	}
 	if (r4 <= null)
@@ -822,8 +822,8 @@ void fn0F04(int16 r0)
 	word16 * r4_n = fn100C(*r0_n);
 	if (r4_n <= null)
 		r4_n = null;
-	else if (r4_n <=u 0x0400)
-		r4_n = 0x03FF;
+	else if (r4_n <= &(globals->t021C + 484))
+		r4_n = &(globals->t021C + 483);
 	r5_n->ptr0000 = r4_n;
 	globals->ptr0082 = r4_n;
 	r5_n->w0002 = 0x8C50;

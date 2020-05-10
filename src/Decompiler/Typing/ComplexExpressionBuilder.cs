@@ -121,7 +121,7 @@ namespace Reko.Typing
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.BitSize);
                 e = new Cast(dt, e);
             }
-            else if (!(e.DataType is UnknownType u))
+            else if (e.DataType.Size != 0)
             {
                 dt = PrimitiveType.CreateWord(e.DataType.BitSize);
                 e = new Cast(dt, e);
