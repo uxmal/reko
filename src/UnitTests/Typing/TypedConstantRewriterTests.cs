@@ -153,6 +153,27 @@ namespace Reko.UnitTests.Typing
             Assert.AreEqual("(word32 *) 0xFFFFFFFF<32>", e.ToString());
         }
 
+        [Test]
+        public void Tcr_RewritePointerToStructField()
+        {
+            Given_TypedConstantRewriter();
+            var str = new StructureType
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Int32 },
+                    { 4, PrimitiveType.Real32 },
+                },
+            };
+            Given_Global(0x00100100, str);
+            var c = Constant.Word32(0x00100104);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
+            c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
+            var e = tcr.Rewrite(c, false);
+            Assert.AreEqual("&globals->t100100.r0004", e.ToString());
+        }
+
         private void Given_String(string str, uint addr)
         {
             var w = new LeImageWriter(mem.Bytes, addr - (uint)mem.BaseAddress.ToLinear());
