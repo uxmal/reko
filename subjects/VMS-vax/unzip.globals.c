@@ -4,7 +4,6 @@
 
 #include "unzip.h"
 
-struct Eq_n ********** g_ptr9EFF72CD;
 Eq_n g_t0001;
 word16 g_w0002;
 Eq_n g_t0004;
@@ -17,18 +16,6 @@ byte g_b1A01 = 0x00;
 byte g_b1C01 = 0x69;
 byte g_b1E01 = 114;
 byte g_b2001 = 116;
-struct Eq_n g_tC701 = 
-	{
-		0x9E5A0000,
-		0x00010CC0,
-		0xD0AD50B0,
-		3511832636,
-		&g_ptr9EFF72CD,
-		0x5600,
-		0xD501,
-		464,
-		0x122D,
-	};
 ui32 * g_ptr13206 = &g_dw3C301267;
 ptr32 g_ptr19248 = 0x040C;
 ptr32 g_ptr1924C = 0x6C;

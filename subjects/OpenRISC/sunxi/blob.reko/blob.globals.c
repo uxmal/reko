@@ -6,19 +6,12 @@
 
 Eq_n g_tE0432800;
 Eq_n g_tFFFFFFFF;
-struct Eq_n g_t0001 = 
+Eq_n g_t0001 = 
 	{
-		0x00,
-		
-		{
-			0
-		},
-		0x00,
+		0,
 	};
-word32 g_dw0002 = 0x00;
 word32 g_dw0003 = 0x00;
 word32 g_dw000B = 0x00;
-word32 g_dw000E = 0x00;
 word32 g_dw0021 = 0x00;
 struct Eq_n g_t0070 = 
 	{

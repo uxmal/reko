@@ -26,13 +26,6 @@ nested_structs_type g_gbl_nested_structs =
 		},
 		0,
 	};
-nested_struct g_t403020 = 
-	{
-		0,
-		0,
-	};
-int32 g_dw403024 = 0;
-int32 g_dw403028 = 0;
 uint32 g_dw40302C = 0x00;
 uint32 g_dw403030 = 0x00;
 thiscall_class * g_gbl_thiscall = null;
