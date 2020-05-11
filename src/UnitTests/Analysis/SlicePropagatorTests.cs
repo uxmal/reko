@@ -53,14 +53,9 @@ namespace Reko.UnitTests.Analysis
             var sActual = sw.ToString();
             if (sActual != sExpected)
             {
-                Console.WriteLine(m.Ssa.ToString());
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExpected, sActual);
             }
-            sw = new StringWriter();
-            m.Ssa.Write(sw);
-            m.Ssa.Procedure.Write(false, sw);
-            Debug.WriteLine(sw.ToString());
-            Console.WriteLine(sw.ToString());
             m.Ssa.Validate(s => { m.Ssa.Dump(true); Assert.Fail(s); });
         }
 
@@ -69,7 +64,7 @@ namespace Reko.UnitTests.Analysis
         /// extended to a full word, which is then stored in a register.
         /// </summary>
         [Test]
-        public void Slp_LinearSlice()
+        public void Slp_Linear()
         {
             var sExp =
             #region Expected 
@@ -93,7 +88,7 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
-        public void Slp_SliceDef()
+        public void Slp_Def()
         {
             var sExp =
             #region Expected
@@ -117,7 +112,7 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
-        public void Slp_SliceSum()
+        public void Slp_Sum()
         {
             var sExp =
             #region Expected
@@ -141,7 +136,7 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
-        public void Slp_SlicePhi()
+        public void Slp_Phi()
         {
             var sExp =
             #region Expected
@@ -151,7 +146,7 @@ define SsaProcedureBuilder
 SsaProcedureBuilder_entry:
 	// succ:  m1
 m1:
-	branch Mem4[0x123400<32>:bool] >= false m3
+	branch Mem4[0x123400<32>:word32] >= 0<32> m3
 	// succ:  m2 m3
 m2:
 	r1_7 = 0x3404<16>
@@ -197,7 +192,7 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
-        public void Slp_SliceSeq()
+        public void Slp_Seq()
         {
             var sExp =
             #region Expected
@@ -223,31 +218,32 @@ SsaProcedureBuilder_exit:
 
         }
 
+
         [Test]
-        public void Slp_Call()
+        public void Slp_NecessarySlice()
         {
             var sExp =
             #region Expected
-@"// SsaProcedureBuilder
+                @"// SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
 SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	r3_5 = Mem2[0x123400<32>:byte]
-	Mem3[0x123404<32>:byte] = r3_5
+	id_1 = (word32) Mem1[0x123400<32>:byte]
+	Mem2[0x123408<32>:word16] = SLICE(id_1, word16, 0)
+	Mem3[0x12340C<32>:word32] = id_1
 SsaProcedureBuilder_exit:
 ";
             #endregion
+
             RunTest(sExp, m =>
             {
-                var tmpHi = m.Temp(PrimitiveType.CreateWord(24), "tmp");
                 var r3 = m.Register(arch.GetRegister("r3"));
-
-                m.Assign(r3, m.Seq(tmpHi, m.Mem8(m.Word32(0x00123400))));
-                m.MStore(m.Word32(0x00123404), m.Slice(PrimitiveType.Byte, r3, 0));
+                m.Assign(r3, m.Cast(PrimitiveType.Word32, m.Mem8(m.Word32(0x00123400))));
+                m.MStore(m.Word32(0x00123408), m.Slice(PrimitiveType.Word16, r3, 0));
+                m.MStore(m.Word32(0x0012340C), r3);
             });
-
         }
     }
 }

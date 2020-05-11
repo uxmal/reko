@@ -74,8 +74,19 @@ namespace Reko.Analysis
 
         private void DetermineNeededSlices()
         {
+            bool IsCopy(Instruction instr)
+            {
+                if (instr is PhiAssignment)
+                    return true;
+                if (instr is Assignment ass)
+                {
+                    return (ass.Src is Identifier);
+                }
+                return false;
+            }
+
             var wl = new WorkList<(SsaIdentifier, BitRange)>(ssa.Identifiers
-                .Where(s => s.DefStatement != null)
+                .Where(s => s.DefStatement != null && !IsCopy(s.DefStatement.Instruction))
                 .Select(s => (s, Br(s.Identifier))));
             var sliceFinder = new SliceFinder(this, wl);
             while (wl.GetWorkItem(out var item))
@@ -86,8 +97,6 @@ namespace Reko.Analysis
 
         private void GenerateNeededSlices()
         {
-            if (ssa.Procedure.Name == "INITCURSORCTL")
-                ssa.ToString(); //$DEBUG
             foreach (var needed in this.neededSlices)
             {
                 var sidOld = needed.Key;
@@ -146,7 +155,7 @@ namespace Reko.Analysis
                 idSliced = ssa.Procedure.Frame.CreateTemporary(dt);
                 break;
             default:
-                throw new NotImplementedException();
+                throw new NotImplementedException($"Support for slicing {sidOriginal.Identifier.Storage.GetType().Name} not supported yet.");
             }
             var sidTo = ssa.Identifiers.Add(idSliced, sidOriginal.DefStatement, new Slice(dt, sidOriginal.Identifier, brNeeded.Lsb), false);
             return sidTo;
@@ -265,7 +274,8 @@ namespace Reko.Analysis
 
             public Instruction VisitSideEffect(SideEffect side, BitRange ctx)
             {
-                throw new NotImplementedException();
+                side.Expression.Accept(this, Br(side.Expression));
+                return side;
             }
 
             public Instruction VisitStore(Store store, BitRange ctx)
@@ -314,10 +324,10 @@ public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
                 {
                 case IAddOperator _:
                 case ISubOperator _:
+                case USubOperator _:
                 case AndOperator _:
                 case OrOperator _:
                 case XorOperator _:
-                case ConditionalOperator _:
                     binExp.Left.Accept(this, ctx);
                     binExp.Right.Accept(this, ctx);
                     return binExp;
@@ -330,9 +340,14 @@ public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
                 case IMulOperator _:
                 case SDivOperator _:
                 case UDivOperator _:
+                case FAddOperator _:
+                case FSubOperator _:
                 case FMulOperator _:
                 case FDivOperator _:
                 case IModOperator _:
+                case ConditionalOperator _:
+                case CandOperator _:
+                case CorOperator _:
                     binExp.Left.Accept(this, Br(binExp.Left));
                     binExp.Right.Accept(this, Br(binExp.Right));
                     return binExp;
@@ -382,11 +397,11 @@ public Expression VisitFieldAccess(FieldAccess acc, BitRange ctx)
 
             public Expression VisitIdentifier(Identifier id, BitRange ctx)
             {
+                var sid = outer.ssa.Identifiers[id];
+                var added = outer.neededSlices[sid].Add(ctx);
                 if (!ctx.Covers(Br(id)))
                 {
                     trace.Verbose("SLP: found a narrowed use of {0} ({1}", id, ctx);
-                    var sid = outer.ssa.Identifiers[id];
-                    var added = outer.neededSlices[sid].Add(ctx);
                     if (added)
                     {
                         trace.Verbose("SLP: Id {0} needs bitrange {1}", sid.Identifier.Name, ctx);
@@ -450,10 +465,12 @@ public Expression VisitScopeResolution(ScopeResolution scopeResolution, BitRange
     throw new NotImplementedException();
 }
 
-public Expression VisitSegmentedAccess(SegmentedAccess access, BitRange ctx)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitSegmentedAccess(SegmentedAccess access, BitRange ctx)
+            {
+                access.BasePointer.Accept(this, Br(access.BasePointer));
+                access.EffectiveAddress.Accept(this, Br(access.EffectiveAddress));
+                return access;
+            }
 
             public Expression VisitSlice(Slice slice, BitRange ctx)
             {
@@ -462,10 +479,11 @@ public Expression VisitSegmentedAccess(SegmentedAccess access, BitRange ctx)
                 return slice;
             }
 
-public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
+            {
+                tc.Expression.Accept(this, Br(tc.Expression));
+                return tc;
+            }
 
             public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
             {
@@ -504,6 +522,12 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
 
             public Instruction VisitAssignment(Assignment ass)
             {
+                Assignment MkAlias(Identifier id, Expression e) => new AliasAssignment(id, e);
+                Assignment MkAssign(Identifier id, Expression e) => new Assignment(id, e);
+                Func<Identifier, Expression, Assignment> mk = ass is AliasAssignment
+                    ? new Func<Identifier,Expression,Assignment>(MkAlias)
+                    : MkAssign;
+
                 var sidDst = outer.ssa.Identifiers[ass.Dst];
                 if (outer.replaceIds.TryGetValue(sidDst, out var sidDstNew))
                 {
@@ -512,13 +536,13 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
                     sidDstNew.DefExpression = src;
                     sidDst.DefStatement = null;
                     sidDst.DefExpression = null;
-                    return new Assignment(sidDstNew.Identifier, src);
+                    return mk(sidDstNew.Identifier, src);
                 }
                 else
                 {
                     var src = ass.Src.Accept(this, Br(ass.Dst));
                     sidDst.DefExpression = src;
-                    return new Assignment(ass.Dst, src);
+                    return mk(ass.Dst, src);
                 }
             }
 
@@ -641,6 +665,7 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
 
             public Instruction VisitUseInstruction(UseInstruction use)
             {
+                use.Expression.Accept(this, Br(use.Expression));
                 return use;
             }
 
@@ -675,10 +700,10 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
                 {
                 case IAddOperator _:
                 case ISubOperator _:
+                case USubOperator _:
                 case AndOperator _:
                 case OrOperator _:
                 case XorOperator _:
-                case ConditionalOperator _:
                     left = binExp.Left.Accept(this, ctx);
                     right = binExp.Right.Accept(this, ctx);
                     dt = left.DataType;
@@ -689,16 +714,22 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
                     left = binExp.Left.Accept(this, ctx);
                     dt = left.DataType;
                     break;
+                case ConditionalOperator _:
                 case IMulOperator _:
+                case FAddOperator _:
+                case FSubOperator _:
                 case FMulOperator _:
                 case SDivOperator _:
                 case UDivOperator _:
                 case FDivOperator _:
+                case IModOperator _:
+                case CandOperator _:
+                case CorOperator _:
                     left = binExp.Left.Accept(this, Br(binExp.Left));
                     right = binExp.Right.Accept(this, Br(binExp.Right));
-                    break;
+                    return MaybeSlice(new BinaryExpression(binExp.Operator, dt, left, right), ctx);
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"SLP: support for {binExp.Operator.GetType().Name} not implemented yet.");
                 }
                 return new BinaryExpression(binExp.Operator, dt, left, right);
             }
@@ -788,14 +819,17 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
                     sid = sidNew;
                 }
 
-                if (outer.availableSlices[sid].TryGetValue(ctx, out var sidSlice))
+                if (outer.availableSlices[sid].TryGetValue(ctx, out var sidSlice) && 
+                    sidSlice.DefStatement != Statement)
                 {
                     sid.Uses.Remove(Statement);
                     sidSlice.Uses.Add(Statement);
                     return sidSlice.Identifier;
                 }
-                return sid.Identifier;
+                return MaybeSlice(sid.Identifier, ctx);
             }
+
+
 
             public Expression VisitMemberPointerSelector(MemberPointerSelector mps, BitRange ctx)
             {
@@ -844,6 +878,7 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
                 }
                 else
                 {
+                    seqNew.Reverse();
                     var dtNew = PrimitiveType.CreateWord(totalBits);
                     return new MkSequence(dtNew, seqNew.ToArray());
                 }
@@ -876,7 +911,19 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
 
             public Expression VisitSegmentedAccess(SegmentedAccess access, BitRange ctx)
             {
-                throw new NotImplementedException();
+                var b = access.BasePointer.Accept(this, Br(access.BasePointer));
+                var ea = access.EffectiveAddress.Accept(this, Br(access.EffectiveAddress));
+                DataType dt;
+                var brMem = Br(access);
+                if (brMem.Covers(ctx) && !ctx.Covers(brMem))
+                {
+                    dt = Word(ctx);
+                }
+                else
+                {
+                    dt = access.DataType;
+                }
+                return new SegmentedAccess(access.MemoryId, b, ea, dt);
             }
 
             public Expression VisitSlice(Slice slice, BitRange ctx)
@@ -908,6 +955,20 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
                     return new UnaryExpression(unary.Operator, unary.DataType, ee);
                 }
                 throw new NotImplementedException();
+            }
+
+            private Expression MaybeSlice(Expression expr, BitRange ctx)
+            {
+                var br = Br(expr);
+                if (ctx.Covers(br))
+                {
+                    return expr;
+                }
+                else
+                {
+                    var dt = Word(ctx);
+                    return new Slice(dt, expr, ctx.Lsb);
+                }
             }
         }
     }
