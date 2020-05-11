@@ -55,5 +55,10 @@ namespace Reko.Core.Code
         {
             return visitor.VisitComment(this);
         }
+
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitComment(this, ctx);
+        }
     }
 }

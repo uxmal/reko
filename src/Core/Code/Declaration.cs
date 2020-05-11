@@ -50,7 +50,12 @@ namespace Reko.Core.Code
 		}
 
 		public Expression? Expression { get; set; }
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitDeclaration(this, ctx);
+        }
 
+		public override bool IsControlFlow
         public override bool IsControlFlow => false;
 
 		public Identifier Identifier { get; set; }

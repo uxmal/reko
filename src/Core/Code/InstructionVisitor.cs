@@ -60,6 +60,23 @@ namespace Reko.Core.Code
         T VisitUseInstruction(UseInstruction use);
     }
 
+    public interface InstructionVisitor<T, C>
+    {
+        T VisitAssignment(Assignment ass, C ctx);
+        T VisitBranch(Branch branch, C ctx);
+        T VisitComment(CodeComment comment, C ctx);
+        T VisitCallInstruction(CallInstruction ci, C ctx);
+        T VisitDeclaration(Declaration decl, C ctx);
+        T VisitDefInstruction(DefInstruction def, C ctx);
+        T VisitGotoInstruction(GotoInstruction gotoInstruction, C ctx);
+        T VisitPhiAssignment(PhiAssignment phi, C ctx);
+        T VisitReturnInstruction(ReturnInstruction ret, C ctx);
+        T VisitSideEffect(SideEffect side, C ctx);
+        T VisitStore(Store store, C ctx);
+        T VisitSwitchInstruction(SwitchInstruction si, C ctx);
+        T VisitUseInstruction(UseInstruction use, C ctx);
+    }
+
 	/// <summary>
 	/// Useful base classes when only a few of the methods of InstructionVisitor and IExpressionVisitor 
 	/// are actually implemented.

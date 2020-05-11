@@ -54,6 +54,11 @@ namespace Reko.Core.Code
             return visitor.VisitPhiAssignment(this);
         }
 
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitPhiAssignment(this, ctx);
+        }
+
         public override void Accept(InstructionVisitor v)
 		{
 			v.VisitPhiAssignment(this);
