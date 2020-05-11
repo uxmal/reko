@@ -142,6 +142,12 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, PrimitiveType.Byte);
         }
 
+        public new Identifier Register(RegisterStorage reg)
+        {
+            var id = base.Register(reg);
+            return MakeSsaIdentifier(id, $"id_{Ssa.Identifiers.Count+1}");
+        }
+
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
