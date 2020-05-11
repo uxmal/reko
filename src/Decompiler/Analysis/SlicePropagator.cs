@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Dfa;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
@@ -67,24 +68,20 @@ namespace Reko.Analysis
 
         public void Transform()
         {
-            InitializeAvailableSlices();
             DetermineNeededSlices();
             GenerateNeededSlices();
             ReplaceSlices();
         }
 
-        private void InitializeAvailableSlices()
-        {
-
-        }
-
         private void DetermineNeededSlices()
         {
-            var wl = new WorkList<Statement>(ssa.Procedure.Statements);
+            var wl = new WorkList<(SsaIdentifier, BitRange)>(ssa.Identifiers
+                .Where(s => s.DefStatement != null)
+                .Select(s => (s, Br(s.Identifier))));
             var sliceFinder = new SliceFinder(this, wl);
-            while (wl.GetWorkItem(out var stm))
+            while (wl.GetWorkItem(out var item))
             {
-                stm.Instruction.Accept(sliceFinder);
+                item.Item1.DefStatement.Instruction.Accept(sliceFinder, item.Item2);
             }
         }
 
@@ -125,6 +122,7 @@ namespace Reko.Analysis
                 sidOld.Uses.Clear();
                 this.replaceIds.Add(sidOld, sidNew);
                 this.availableSlices.Add(sidNew, new Dictionary<BitRange, SsaIdentifier> { { brNeeded, sidNew } });
+                trace.Verbose("Slp: Narrowing {0} down to {1} ({2})", sidOld.Identifier, sidNew.Identifier, brNeeded);
             }
         }
 
@@ -170,26 +168,30 @@ namespace Reko.Analysis
             return PrimitiveType.CreateWord(range.Extent);
         }
 
-        public class SliceFinder : InstructionVisitor<Instruction>, ExpressionVisitor<Expression, BitRange>
+        /// <summary>
+        /// This visitor class discovers Slices and Casts in the program and propagates these 
+        /// to the leaves of the Expressions in the procedure. If an Identifier is encountered
+        /// it records the size of the slice at that point.
+        /// </summary>
+        public class SliceFinder : InstructionVisitor<Instruction, BitRange>, ExpressionVisitor<Expression, BitRange>
         {
             private readonly SlicePropagator outer;
-            private readonly WorkList<Statement> wl;
+            private readonly WorkList<(SsaIdentifier, BitRange)> wl;
 
-            public SliceFinder(SlicePropagator outer, WorkList<Statement> wl)
+            public SliceFinder(SlicePropagator outer, WorkList<(SsaIdentifier, BitRange)> wl)
             {
                 this.outer = outer;
                 this.wl = wl;
             }
 
-            public Instruction VisitAssignment(Assignment ass)
+            public Instruction VisitAssignment(Assignment ass, BitRange ctx)
             {
-                var br = Br(ass.Dst);
-                ass.Src.Accept(this, br);
+                ass.Src.Accept(this, ctx);
                 if (ass.Src is Slice slice && slice.Expression is Identifier slicedId)
                 {
                     var sidSlice = outer.ssa.Identifiers[ass.Dst];
                     var sidOriginal = outer.ssa.Identifiers[slicedId];
-                    br = Br(slice);
+                    var br = Br(slice);
                     if (!outer.availableSlices[sidOriginal].ContainsKey(br))
                     {
                         outer.availableSlices[sidOriginal].Add(br, sidSlice);
@@ -198,44 +200,48 @@ namespace Reko.Analysis
                 return ass;
             }
 
-            public Instruction VisitBranch(Branch branch)
+            public Instruction VisitBranch(Branch branch, BitRange ctx)
             {
                 branch.Condition.Accept(this, Br(branch.Condition));
                 return branch;
             }
 
-            public Instruction VisitCallInstruction(CallInstruction ci)
+            public Instruction VisitCallInstruction(CallInstruction ci, BitRange ctx)
             {
                 throw new NotImplementedException();
             }
 
-            public Instruction VisitComment(CodeComment comment)
+            public Instruction VisitComment(CodeComment comment, BitRange ctx)
             {
                 return comment;
             }
 
-            public Instruction VisitDeclaration(Declaration decl)
+            public Instruction VisitDeclaration(Declaration decl, BitRange ctx)
             {
                 throw new NotImplementedException();
             }
 
-            public Instruction VisitDefInstruction(DefInstruction def)
+            public Instruction VisitDefInstruction(DefInstruction def, BitRange ctx)
             {
                 return def;
             }
 
-            public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
+            public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction, BitRange ctx)
             {
                 gotoInstruction.Target.Accept(this, Br(gotoInstruction.Target));
                 throw new NotImplementedException();
             }
 
-            public Instruction VisitPhiAssignment(PhiAssignment phi)
+            public Instruction VisitPhiAssignment(PhiAssignment phi, BitRange ctx)
             {
-                throw new NotImplementedException();
+                foreach (var arg in phi.Src.Arguments)
+                {
+                    arg.Value.Accept(this, ctx);
+                }
+                return phi;
             }
 
-            public Instruction VisitReturnInstruction(ReturnInstruction ret)
+            public Instruction VisitReturnInstruction(ReturnInstruction ret, BitRange ctx)
             {
                 if (ret.Expression != null)
                 {
@@ -244,12 +250,12 @@ namespace Reko.Analysis
                 return ret;
             }
 
-            public Instruction VisitSideEffect(SideEffect side)
+            public Instruction VisitSideEffect(SideEffect side, BitRange ctx)
             {
                 throw new NotImplementedException();
             }
 
-            public Instruction VisitStore(Store store)
+            public Instruction VisitStore(Store store, BitRange ctx)
             {
                 var br = Br(store.Dst);
                 store.Src.Accept(this, br);
@@ -257,13 +263,13 @@ namespace Reko.Analysis
                 return store;
             }
 
-            public Instruction VisitSwitchInstruction(SwitchInstruction si)
+            public Instruction VisitSwitchInstruction(SwitchInstruction si, BitRange ctx)
             {
                 si.Expression.Accept(this, Br(si.Expression));
                 return si;
             }
 
-            public Instruction VisitUseInstruction(UseInstruction use)
+            public Instruction VisitUseInstruction(UseInstruction use, BitRange ctx)
             {
                 use.Expression.Accept(this, Br(use.Expression));
                 return use;
@@ -293,6 +299,7 @@ public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
                 case AndOperator _:
                 case OrOperator _:
                 case XorOperator _:
+                case ConditionalOperator _:
                     binExp.Left.Accept(this, ctx);
                     binExp.Right.Accept(this, ctx);
                     return binExp;
@@ -303,7 +310,7 @@ public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
                     binExp.Right.Accept(this, Br(binExp.Right));
                     return binExp;
                 }
-                throw new NotImplementedException();
+                throw new NotImplementedException($"SliceFinder not implemented for {binExp.Operator.GetType().Name}.");
             }
 
             public Expression VisitCast(Cast cast, BitRange ctx)
@@ -312,7 +319,7 @@ public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
                 return cast;
             }
 
-public Expression VisitConditionalExpression(Core.Expressions.ConditionalExpression c, BitRange context)
+public Expression VisitConditionalExpression(ConditionalExpression c, BitRange context)
 {
     throw new NotImplementedException();
 }
@@ -344,10 +351,17 @@ public Expression VisitFieldAccess(FieldAccess acc, BitRange ctx)
 
             public Expression VisitIdentifier(Identifier id, BitRange ctx)
             {
-                var sid = outer.ssa.Identifiers[id];
-                var added = outer.neededSlices[sid].Add(ctx);
-                if (added)
-                    trace.Verbose("SLP: Id {0} needs bitrange {1}", sid.Identifier.Name, ctx);
+                if (!ctx.Covers(Br(id)))
+                {
+                    trace.Verbose("SLP: found a narrowed use of {0} ({1}", id, ctx);
+                    var sid = outer.ssa.Identifiers[id];
+                    var added = outer.neededSlices[sid].Add(ctx);
+                    if (added)
+                    {
+                        trace.Verbose("SLP: Id {0} needs bitrange {1}", sid.Identifier.Name, ctx);
+                        wl.Add((sid, ctx));
+                    }
+                }
                 return id;
             }
 
@@ -400,11 +414,7 @@ public Expression VisitSegmentedAccess(SegmentedAccess access, BitRange ctx)
             public Expression VisitSlice(Slice slice, BitRange ctx)
             {
                 var brSlice = Br(slice);
-                var brIntersect = ctx & brSlice;
-                if (!brIntersect.IsEmpty)
-                {
-                    slice.Expression.Accept(this, brIntersect);
-                }
+                slice.Expression.Accept(this, brSlice);
                 return slice;
             }
 
@@ -420,6 +430,11 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
         }
 
+        /// <summary>
+        /// This instruction visitor will 'push' slice expressions towards the leaves of an expression. Slicing an
+        /// identifier may result in the use of an existing slice alias -- a code improvement. Likewise, slicing
+        /// a Constant will also result in a code improvement.
+        /// </summary>
         public class SlicePusher : InstructionVisitor<Instruction>, ExpressionVisitor<Expression, BitRange>
         {
             private readonly SlicePropagator outer;
@@ -453,7 +468,8 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Instruction VisitBranch(Branch branch)
             {
-                throw new NotImplementedException();
+                var cond = branch.Condition.Accept(this, Br(branch.Condition));
+                return new Branch(cond, branch.Target);
             }
 
             public Instruction VisitCallInstruction(CallInstruction ci)
@@ -495,12 +511,46 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Instruction VisitPhiAssignment(PhiAssignment phi)
             {
-                throw new NotImplementedException();
+                var newArgs = new List<PhiArgument>();
+                foreach (var oldArg in phi.Src.Arguments)
+                {
+                    var sidOld = outer.ssa.Identifiers[(Identifier) oldArg.Value];
+                    if (outer.replaceIds.TryGetValue(sidOld, out var sidNew))
+                    {
+                        sidNew.Uses.Add(Statement);
+                        newArgs.Add(new PhiArgument(oldArg.Block, sidNew.Identifier));
+                    }
+                    else
+                    {
+                        newArgs.Add(oldArg);
+                    }
+                }
+                var phiFn = new PhiFunction(phi.Src.DataType, newArgs.ToArray());
+                var sidDst = outer.ssa.Identifiers[phi.Dst];
+                if (outer.replaceIds.TryGetValue(sidDst, out var sidDstNew))
+                {
+                    sidDstNew.DefStatement = this.Statement;
+                    sidDstNew.DefExpression = phiFn;
+                    sidDst.DefStatement = null;
+                    sidDst.DefExpression = null;
+                    return new PhiAssignment(sidDstNew.Identifier, phiFn);
+                }
+                else
+                {
+                    sidDst.DefExpression = phiFn;
+                    return new PhiAssignment(phi.Dst, phiFn);
+                }
             }
 
             public Instruction VisitReturnInstruction(ReturnInstruction ret)
             {
-                throw new NotImplementedException();
+                if (ret.Expression == null)
+                    return ret;
+                else
+                {
+                    var e = ret.Expression.Accept(this, Br(ret.Expression));
+                    return new ReturnInstruction(e);
+                }
             }
 
             public Instruction VisitSideEffect(SideEffect side)
@@ -553,6 +603,7 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
                 case AndOperator _:
                 case OrOperator _:
                 case XorOperator _:
+                case ConditionalOperator _:
                     left = binExp.Left.Accept(this, ctx);
                     right = binExp.Right.Accept(this, ctx);
                     dt = left.DataType;

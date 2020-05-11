@@ -134,5 +134,62 @@ SsaProcedureBuilder_exit:
                 m.MStore(m.Word32(0x00123400), m.Slice(PrimitiveType.Word16, m.IAdd(r1, 4), 0));
             });
         }
+
+        [Test]
+        public void Slp_SlicePhi()
+        {
+            var sExp =
+            #region Expected
+@"// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  m1
+m1:
+	branch Mem4[0x123400<32>:bool] >= false m3
+	// succ:  m2 m3
+m2:
+	r1_7 = 0x3404<16>
+	goto m4
+	// succ:  m4
+m3:
+	r1_8 = 0x3408<16>
+	// succ:  m4
+m4:
+	r1_9 = PHI((r1_7, m2), (r1_8, m3))
+	r2_10 = r1_9
+	Mem5[0x12340C<32>:word16] = r2_10
+	return
+	// succ:  SsaProcedureBuilder_exit
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var r1_1 = m.Register(arch.GetRegister("r1"));
+                var r1_2 = m.Register(arch.GetRegister("r1"));
+                var r1_3 = m.Register(arch.GetRegister("r1"));
+                var r2_4 = m.Register(arch.GetRegister("r2"));
+
+
+                m.Label("m1");
+                m.BranchIf(m.Ge0(m.Mem32(m.Word32(0x00123400))), "m3");
+
+                m.Label("m2");
+                m.Assign(r1_1, m.Word32(0x00123404));
+                m.Goto("m4");
+
+                m.Label("m3");
+                m.Assign(r1_2, m.Word32(0x00123408));
+                m.Goto("m4");
+
+                m.Label("m4");
+                m.Phi(r1_3, (r1_1, "m2"), (r1_2, "m3"));
+                m.Assign(r2_4, r1_3);
+                m.MStore(m.Word32(0x0012340C), m.Slice(PrimitiveType.Word16, r2_4, 0));
+                m.Return();
+            });
         }
+
     }
+}
